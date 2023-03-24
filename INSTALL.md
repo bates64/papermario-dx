@@ -25,7 +25,7 @@ Install build dependencies:
 ```
 
 > **NOTE:** On Mac, if you get an error that looks like
-> 
+>
 >```sh
 >Error: Cannot install md5sha1sum because conflicting formulae are installed.
 >  coreutils: because both install `md5sum` and `sha1sum` binaries
@@ -35,10 +35,9 @@ Install build dependencies:
 >
 >it's fine to just open `install.sh` in a text editor, delete the `md5sha1sum` from the `brew install` line, and rerun it (put it back after so you don't accidentally commit it!)
 
-Copy baseroms into the following places (at least 1 is required):
+Copy baserom into the following place:
 
 * `ver/us/baserom.z64` (sha1: `3837f44cda784b466c9a2d99df70d77c322b97a0`)
-* `ver/jp/baserom.z64` (sha1: `b9cca3ff260b9ff427d981626b82f96de73586d3`)
 
 (If you're using WSL, you can enter the Linux filesystem by opening `\\wsl$` in File Explorer; e.g. `\\wsl$\Ubuntu\home\<your username>\papermario`.)
 
@@ -52,9 +51,7 @@ Compile the game:
 ninja
 ```
 
-If you get `papermario.z64: OK` at the end, the build succeeded!
-
-The output ROM is `papermario.z64` - you can run this in any N64 emulator.
+The output ROM is `ver/us/build/papermario.z64` - you can run this in any N64 emulator.
 
 
 ## WSL 2
