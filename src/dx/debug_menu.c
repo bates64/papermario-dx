@@ -6,6 +6,7 @@
 
 void dx_debug_menu_cb_gotomap(void* arg);
 void dx_debug_menu_cb_fullrestore(void* arg);
+void dx_debug_menu_cb_playerequipment(void* arg);
 
 struct dx_debug_menu_item {
     char* name;
@@ -14,6 +15,7 @@ struct dx_debug_menu_item {
 } dx_rootDebugMenuItems[] = {
     { "Go to map", dx_debug_menu_cb_gotomap },
     { "Full Restore", dx_debug_menu_cb_fullrestore },
+    { "Equipment", dx_debug_menu_cb_playerequipment },
     { NULL, NULL },
     {},
 };
@@ -290,6 +292,59 @@ void dx_debug_menu_cb_gotomap(void* arg) {
 void dx_debug_menu_cb_fullrestore(void* arg) {
     recover_hp(-1);
     recover_fp(-1);
+}
+
+void increasejump(void* args);
+void decreasejump(void* args);
+
+void increasehammer(void* args);
+void decreasehammer(void* args);
+
+void dx_debug_menu_cb_playerequipment(void* arg) {
+    struct dx_debug_menu_item* items;
+
+    dx_debug_menu_push();
+    dx_debugMenu.title = "Equipment";
+    items = general_heap_malloc(5 * sizeof(struct dx_debug_menu_item));
+    dx_debugMenu.items = items;
+    items[0].name = "Increase Jump";
+    items[0].callback = increasejump;
+    items[1].name = "Decrease Jump";
+    items[1].callback = decreasejump;
+    items[2].name = "Increase Hammer";
+    items[2].callback = increasehammer;
+    items[3].name = "Decrease Hammer";
+    items[3].callback = decreasehammer;
+    items[4].name = NULL;
+}
+
+
+void increasejump(void* args){
+    if (gPlayerData.bootsLevel < 2)
+    {
+        gPlayerData.bootsLevel++;
+    }
+}
+
+void decreasejump(void* args){
+    if (gPlayerData.bootsLevel > 0)
+    {
+        gPlayerData.bootsLevel--;
+    }
+}
+
+void increasehammer(void* args){
+    if (gPlayerData.hammerLevel < 2)
+    {
+        gPlayerData.hammerLevel++;
+    }
+}
+
+void decreasehammer(void* args){
+    if (gPlayerData.hammerLevel >= 0)
+    {
+        gPlayerData.hammerLevel--;
+    }
 }
 
 #endif
