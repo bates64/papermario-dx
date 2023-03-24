@@ -320,7 +320,6 @@ void dx_debug_menu_cb_playerequipment(void* arg) {
     items[3].callback = dx_debug_menu_cb_decreasehammer;
 }
 
-
 void dx_debug_menu_cb_increasejump(void* args){
     if (gPlayerData.bootsLevel < 2) {
         gPlayerData.bootsLevel++;
