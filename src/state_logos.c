@@ -230,14 +230,15 @@ void state_step_logos(void) {
                 gLogosImages = NULL;
                 intro_logos_set_fade_alpha(255);
 #if DX_SKIP_TITLE
-                initialize_curtains();
-                gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
-                fio_load_game(0);
-                set_game_mode(GAME_MODE_WORLD);
-#else
+                if (fio_load_game(0)) {
+                    initialize_curtains();
+                    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+                    set_game_mode(GAME_MODE_WORLD);
+                    break;
+                }
+#endif
                 gGameStatusPtr->creditsViewportMode = 0;
                 set_game_mode(GAME_MODE_INTRO);
-#endif
                 break;
         }
     }
