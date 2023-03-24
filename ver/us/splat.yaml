@@ -27,6 +27,7 @@ options:
   ld_wildcard_sections: True
   ld_use_follows: False
 asset_stack:
+  - star_rod_build
   - us
 segments:
   - name: header
