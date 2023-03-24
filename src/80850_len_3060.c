@@ -1,5 +1,6 @@
 #include "common.h"
 #include "hud_element.h"
+#include "dx/config.h"
 
 extern HudScript* TimesHudScript;
 extern HudScript* SPIncrementHudScripts[];
@@ -682,11 +683,19 @@ void update_status_menu(void) {
             break;
     }
 
+#if !DX_FULL_VIEWPORT
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 12, 20, SCREEN_WIDTH - 12, SCREEN_HEIGHT - 20);
+#endif
     x = uiStatus->drawPosX;
     y = uiStatus->drawPosY;
+#if DX_FULL_VIEWPORT
+    draw_box(0, WINDOW_STYLE_5, x,       y - 20, 0, 174, 35 + 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+    draw_box(0, WINDOW_STYLE_6, x + 174, y - 20, 0, 122, 25 + 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+#else
     draw_box(0, WINDOW_STYLE_5, x,       y, 0, 174, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
     draw_box(0, WINDOW_STYLE_6, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+#endif
+
 
     if (uiStatus->hpBlinkTimer > 0) {
         uiStatus->hpBlinkTimer--;

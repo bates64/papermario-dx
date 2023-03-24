@@ -6,6 +6,7 @@
 #include "rumble.h"
 #include "sprite.h"
 #include "model.h"
+#include "dx/config.h"
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
@@ -218,7 +219,11 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gCameras[CAM_3].flags |= CAMERA_FLAG_ENABLED;
 
     if (gGameStatusPtr->creditsViewportMode == -1) {
+#if DX_FULL_VIEWPORT
+        set_cam_viewport(0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+#else
         set_cam_viewport(0, 12, 20, 296, 200);
+#endif
     } else {
         set_cam_viewport(0, 29, 28, 262, 162);
     }
