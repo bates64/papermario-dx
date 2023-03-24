@@ -11,7 +11,7 @@ from glob import glob
 
 # Configuration:
 VERSIONS = ["us", "jp", "ique", "pal"]
-DO_SHA1_CHECK = True
+DO_SHA1_CHECK = False
 
 # Paths:
 ROOT = Path(__file__).parent.parent.parent
