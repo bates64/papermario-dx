@@ -4,6 +4,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "overlay.h"
+#include "dx/debug_menu.h"
 
 s8 gGameStepDelayAmount = 1;
 s8 gGameStepDelayCount = 5;
@@ -237,6 +238,10 @@ void gfx_draw_frame(void) {
                 break;
         }
     }
+
+#if DX_DEBUG_MENU
+    dx_render_debug_menu();
+#endif
 
     ASSERT((s32)(((u32)(gMainGfxPos - gDisplayContext->mainGfx) << 3) >> 3) < ARRAY_COUNT(gDisplayContext->mainGfx));
 

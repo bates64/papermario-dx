@@ -58,6 +58,8 @@ segments:
     - [0x6240, c, fio]
     - [0x6E40, c, curtains]
     - [0x7340, c, crash_screen]
+    - [auto,   c, dx/debug_menu]
+    - [auto,   .data, dx/debug_menu]
     - [0x7E40, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [0x8230, c, os/nusys/nusimgr]
     - [0x8560, c, load_obfuscation_shims]
