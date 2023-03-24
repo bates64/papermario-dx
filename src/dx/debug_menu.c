@@ -216,6 +216,9 @@ void dx_debug_menu_cb_gotomap_execute(void* arg) {
     set_map_transition_effect(0);
     set_game_mode(GAME_MODE_UNUSED);
 
+    // Stop ambient sounds
+    play_ambient_sounds(AMBIENT_SILENCE, 1);
+
     dx_debug_menu_close();
 }
 
