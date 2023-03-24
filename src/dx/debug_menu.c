@@ -320,29 +320,25 @@ void dx_debug_menu_cb_playerequipment(void* arg) {
 
 
 void increasejump(void* args){
-    if (gPlayerData.bootsLevel < 2)
-    {
+    if (gPlayerData.bootsLevel < 2) {
         gPlayerData.bootsLevel++;
     }
 }
 
 void decreasejump(void* args){
-    if (gPlayerData.bootsLevel > 0)
-    {
+    if (gPlayerData.bootsLevel > 0) {
         gPlayerData.bootsLevel--;
     }
 }
 
 void increasehammer(void* args){
-    if (gPlayerData.hammerLevel < 2)
-    {
+    if (gPlayerData.hammerLevel < 2) {
         gPlayerData.hammerLevel++;
     }
 }
 
 void decreasehammer(void* args){
-    if (gPlayerData.hammerLevel >= 0)
-    {
+    if (gPlayerData.hammerLevel >= 0) {
         gPlayerData.hammerLevel--;
     }
 }
