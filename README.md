@@ -13,6 +13,7 @@ Changes:
 - US release only (no JP, PAL, or iQue - none of these are near 100% yet)
 - Shiftable builds by default
 - `DX_DEBUG_MENU` - Enables a debug menu. Toggle with the L button and navigate with the D-pad.
+- `DX_SKIP_LOGOS` - Skips the logos at the start of the game.
 
 [discord]: https://discord.gg/urUm3VG
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff

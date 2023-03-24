@@ -2,6 +2,7 @@
 #include "hud_element.h"
 #include "fio.h"
 #include "sprite.h"
+#include "dx/config.h"
 
 void state_init_startup(void) {
     gOverrideFlags |= GLOBAL_OVERRIDES_8;
@@ -80,7 +81,11 @@ void state_step_startup(void) {
     }
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
+#if DX_SKIP_LOGOS
+    set_game_mode(GAME_MODE_TITLE_SCREEN);
+#else
     set_game_mode(GAME_MODE_LOGOS);
+#endif
 }
 
 void state_drawUI_startup(void) {
