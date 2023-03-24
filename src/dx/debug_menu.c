@@ -287,7 +287,7 @@ void dx_debug_menu_cb_gotomap(void* arg) {
     dx_debugMenu.items = items;
 }
 
-void dx_debug_menu_cb_fullrestore(void* arg) { // probably want to name this ..._cb_fullrestore or something
+void dx_debug_menu_cb_fullrestore(void* arg) {
     recover_hp(-1);
     recover_fp(-1);
 }
