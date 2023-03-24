@@ -82,7 +82,12 @@ void state_step_startup(void) {
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
 #if DX_SKIP_LOGOS
+# if DX_SKIP_TITLE
+    fio_load_game(0);
+    set_game_mode(GAME_MODE_WORLD);
+# else
     set_game_mode(GAME_MODE_TITLE_SCREEN);
+# endif
 #else
     set_game_mode(GAME_MODE_LOGOS);
 #endif

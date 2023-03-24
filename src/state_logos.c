@@ -4,6 +4,8 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "nu/nusys.h"
+#include "dx/config.h"
+#include "fio.h"
 
 void appendGfx_intro_logos(void);
 
@@ -227,8 +229,15 @@ void state_step_logos(void) {
                 heap_free(gLogosImages);
                 gLogosImages = NULL;
                 intro_logos_set_fade_alpha(255);
+#if DX_SKIP_TITLE
+                initialize_curtains();
+                gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+                fio_load_game(0);
+                set_game_mode(GAME_MODE_WORLD);
+#else
                 gGameStatusPtr->creditsViewportMode = 0;
                 set_game_mode(GAME_MODE_INTRO);
+#endif
                 break;
         }
     }
