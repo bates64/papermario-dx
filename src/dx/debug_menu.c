@@ -5,6 +5,7 @@
 #include "gcc/string.h"
 
 void dx_debug_menu_cb_gotomap(void* arg);
+void dx_debug_menu_cb_fullrestore(void* arg);
 
 struct dx_debug_menu_item {
     char* name;
@@ -12,6 +13,7 @@ struct dx_debug_menu_item {
     void* callbackArg;
 } dx_rootDebugMenuItems[] = {
     { "Go to map", dx_debug_menu_cb_gotomap },
+    { "Full Restore", dx_debug_menu_cb_fullrestore },
     { NULL, NULL },
     {},
 };
@@ -286,6 +288,11 @@ void dx_debug_menu_cb_gotomap(void* arg) {
     dx_debug_menu_push();
     dx_debugMenu.title = "Go to map";
     dx_debugMenu.items = items;
+}
+
+void dx_debug_menu_cb_fullrestore(void* arg) {
+    recover_hp(-1);
+    recover_fp(-1);
 }
 
 #endif
