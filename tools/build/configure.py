@@ -10,7 +10,7 @@ import ninja_syntax
 from glob import glob
 
 # Configuration:
-VERSIONS = ["us", "jp", "ique", "pal"]
+VERSIONS = ["us"]
 DO_SHA1_CHECK = False
 
 # Paths:
@@ -761,10 +761,10 @@ if __name__ == "__main__":
     parser.add_argument("--no-split-assets", action="store_true", help="Don't split assets from the baserom(s)")
     parser.add_argument("-d", "--debug", action="store_true", help="Generate debugging information")
     parser.add_argument("-n", "--non-matching", action="store_true", help="Compile nonmatching code. Combine with --debug for more detailed debug info")
-    parser.add_argument("--shift", action="store_true", help="Build a shiftable version of the game (non-matching)")
     parser.add_argument("--modern-gcc", action="store_true", help="Use modern GCC instead of the original compiler")
     parser.add_argument("--ccache", action="store_true", help="Use ccache")
     args = parser.parse_args()
+    args.shift = True
 
     exec_shell(["make", "-C", str(ROOT / args.splat)])
 
