@@ -12,6 +12,7 @@
 
 // Disables letterboxing of the viewport, making it full screen
 // Also moves around some HUD elements
-#define DX_FULL_VIEWPORT 1
+// WARNING: experimental, has issues such as the background
+#define DX_FULL_VIEWPORT 0
 
 #endif
