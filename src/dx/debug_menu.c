@@ -6,6 +6,7 @@
 
 void dx_debug_menu_cb_gotomap(void* arg);
 void dx_debug_menu_cb_fullrestore(void* arg);
+void dx_debug_menu_cb_playerequipment(void* arg);
 
 struct dx_debug_menu_item {
     char* name;
@@ -14,6 +15,7 @@ struct dx_debug_menu_item {
 } dx_rootDebugMenuItems[] = {
     { "Go to map", dx_debug_menu_cb_gotomap },
     { "Full Restore", dx_debug_menu_cb_fullrestore },
+    { "Equipment", dx_debug_menu_cb_playerequipment },
     { NULL, NULL },
     {},
 };
@@ -293,6 +295,54 @@ void dx_debug_menu_cb_gotomap(void* arg) {
 void dx_debug_menu_cb_fullrestore(void* arg) {
     recover_hp(-1);
     recover_fp(-1);
+}
+
+void dx_debug_menu_cb_increasejump(void* args);
+void dx_debug_menu_cb_decreasejump(void* args);
+
+void dx_debug_menu_cb_increasehammer(void* args);
+void dx_debug_menu_cb_decreasehammer(void* args);
+
+void dx_debug_menu_cb_playerequipment(void* arg) {
+    struct dx_debug_menu_item* items;
+
+    dx_debug_menu_push();
+    dx_debugMenu.title = "Equipment";
+    items = general_heap_malloc(5 * sizeof(struct dx_debug_menu_item));
+    dx_debugMenu.items = items;
+    items[0].name = "Increase Jump";
+    items[0].callback = dx_debug_menu_cb_increasejump;
+    items[1].name = "Decrease Jump";
+    items[1].callback = dx_debug_menu_cb_decreasejump;
+    items[2].name = "Increase Hammer";
+    items[2].callback = dx_debug_menu_cb_increasehammer;
+    items[3].name = "Decrease Hammer";
+    items[3].callback = dx_debug_menu_cb_decreasehammer;
+}
+
+
+void dx_debug_menu_cb_increasejump(void* args){
+    if (gPlayerData.bootsLevel < 2) {
+        gPlayerData.bootsLevel++;
+    }
+}
+
+void dx_debug_menu_cb_decreasejump(void* args){
+    if (gPlayerData.bootsLevel > 0) {
+        gPlayerData.bootsLevel--;
+    }
+}
+
+void dx_debug_menu_cb_increasehammer(void* args){
+    if (gPlayerData.hammerLevel < 2) {
+        gPlayerData.hammerLevel++;
+    }
+}
+
+void dx_debug_menu_cb_decreasehammer(void* args){
+    if (gPlayerData.hammerLevel > -1) {
+        gPlayerData.hammerLevel--;
+    }
 }
 
 #endif
