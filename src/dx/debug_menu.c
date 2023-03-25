@@ -102,7 +102,7 @@ void dx_render_debug_menu(void) {
 
     // Don't render if the menu isn't visible
     if (!dx_debug_menu_isVisible) {
-        if (gGameStatus.pressedButtons[0] & BUTTON_D_RIGHT) {
+        if (gGameStatus.pressedButtons[0] & BUTTON_D_LEFT) {
             dx_debug_menu_isVisible = TRUE;
         }
 
