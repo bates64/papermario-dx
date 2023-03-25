@@ -20,8 +20,9 @@ To use Star Rod, when prompted to select a directory for your mod, select the `p
 
 ## List of changes
 
-- US release only (no JP, PAL, or iQue - none of these are near 100% yet)
-- Shiftable builds by default
+- US release only (no JP, PAL, or iQue - none of these are near 100% yet).
+- Shiftable builds by default.
+- Added `assets/star_rod_build` directory where Star Rod will write assets, such as map shape/hit files, to.
 - `DX_DEBUG_MENU` - Enables a debug menu. Navigate with the D-pad (D-L for back, D-R for open, D-U/D-D for up/down).
 - `DX_SKIP_LOGOS` - Skips the logos at the start of the game.
 - `DX_SKIP_TITLE` - Skips the title screen and file select, loading the first savefile automatically.
