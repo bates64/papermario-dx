@@ -13,7 +13,7 @@ If you encounter any issues setting up the repo, please feel free to [reach out 
 
 Clone the repository:
 ```sh
-git clone https://github.com/pmret/papermario
+git clone https://github.com/nanaian/papermario-dx
 cd papermario
 ```
 
@@ -39,7 +39,7 @@ Copy baserom into the following place:
 
 * `ver/us/baserom.z64` (sha1: `3837f44cda784b466c9a2d99df70d77c322b97a0`)
 
-(If you're using WSL, you can enter the Linux filesystem by opening `\\wsl$` in File Explorer; e.g. `\\wsl$\Ubuntu\home\<your username>\papermario`.)
+(If you're using WSL, you can enter the Linux filesystem by opening `\\wsl$` in File Explorer; e.g. `\\wsl$\Ubuntu\home\<your username>\papermario-dx`.)
 
 Configure the build and extract assets from the base ROM:
 ```sh
