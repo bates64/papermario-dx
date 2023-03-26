@@ -24,9 +24,9 @@ Configuration is located in [src/dx/config.h](src/dx/config.h).
 
 ## How do I modify assets?
 
-Assets dumped from the game are placed in `assets/us/`. You should not modify the dumped assets directly. Instead, any files you modify should be placed in `assets/dx/`, which will override the dumped assets when the game is built.
+Assets dumped from the game are placed in `assets/us/`. You should not modify the dumped assets directly. Instead, any files you modify should be placed in `assets/dx/`, which will override the dumped assets when the game is built. When searching for an asset, `./configure` looks under `assets/dx/` first, then `/assets/us/`. You can change this behaviour by modifying the `asset_stack` in `ver/us/splat.yaml`.
 
-When adding a new file to `assets/dx/`, make sure
+**Whenever you add a new file you must run `./configure` again to update the build.**
 
 ## Does it support Star Rod?
 
