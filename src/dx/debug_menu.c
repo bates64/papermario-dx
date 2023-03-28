@@ -7,6 +7,7 @@
 void dx_debug_menu_cb_gotomap(void* arg);
 void dx_debug_menu_cb_fullrestore(void* arg);
 void dx_debug_menu_cb_playerequipment(void* arg);
+void dx_debug_menu_cb_partners (void* arg);
 
 struct dx_debug_menu_item {
     char* name;
@@ -16,6 +17,7 @@ struct dx_debug_menu_item {
     { "Go to map", dx_debug_menu_cb_gotomap },
     { "Full Restore", dx_debug_menu_cb_fullrestore },
     { "Equipment", dx_debug_menu_cb_playerequipment },
+    { "Partners", dx_debug_menu_cb_partners },
     { NULL, NULL },
     {},
 };
@@ -345,4 +347,94 @@ void dx_debug_menu_cb_decreasehammer(void* args){
     }
 }
 
+u8 cb_currentpartner = 0;
+
+void dx_debug_menu_cb_partnerincreaselevel(void* args){
+    if(gPlayerData.partners[*(u8*)args].level < 2 ) {
+        gPlayerData.partners[*(u8*)args].level++;
+    }
+}
+void dx_debug_menu_cb_partnerdecreaselevel(void* args){
+    if(gPlayerData.partners[*(u8*)args].level > 0 ) {
+        gPlayerData.partners[*(u8*)args].level--;
+    }
+}
+
+void dx_debug_menu_cb_partnerenable(void* args){
+    if(gPlayerData.partners[*(u8*)args].enabled != 1 ) {
+        gPlayerData.partners[*(u8*)args].enabled = 1;
+    }
+}
+
+void dx_debug_menu_cb_partnerdisable(void* args){
+    if(gPlayerData.partners[*(u8*)args].enabled != 0 ) {
+        gPlayerData.partners[*(u8*)args].enabled = 0;
+    }
+}
+
+void dx_debug_menu_cb_partnermenu(void* args){
+    struct dx_debug_menu_item* items;
+        dx_debug_menu_push();
+         cb_currentpartner = *(u8*)args; //current partner in the menu
+    dx_debugMenu.title = "partner options";
+    items = general_heap_malloc(5 * sizeof(struct dx_debug_menu_item));
+    dx_debugMenu.items = items;
+    items[0].name = "Increase Level";
+    items[0].callback = dx_debug_menu_cb_partnerincreaselevel;
+    items[0].callbackArg = &cb_currentpartner;
+    items[1].name = "Decrease Level";
+    items[1].callback = dx_debug_menu_cb_partnerdecreaselevel;
+    items[1].callbackArg = &cb_currentpartner;
+    items[2].name = "Enable Partner";
+    items[2].callback = dx_debug_menu_cb_partnerenable;
+    items[2].callbackArg = &cb_currentpartner;
+    items[3].name = "Disable Partner";
+    items[3].callback = dx_debug_menu_cb_partnerdisable;
+    items[3].callbackArg = &cb_currentpartner;
+    items[4].name = NULL;
+}
+u8 selectedpartner[] = {PARTNER_GOOMBARIO, PARTNER_KOOPER, PARTNER_BOMBETTE, PARTNER_PARAKARRY, PARTNER_GOOMPA, PARTNER_WATT, PARTNER_SUSHIE, PARTNER_LAKILESTER, PARTNER_BOW, PARTNER_GOOMBARIA, PARTNER_TWINK}; // partner enums
+void dx_debug_menu_cb_partners(void* arg){
+        struct dx_debug_menu_item* items;
+
+    dx_debug_menu_push();
+    dx_debugMenu.title = "Give Partners";
+    items = general_heap_malloc(12 * sizeof(struct dx_debug_menu_item));
+    dx_debugMenu.items = items;
+    items[0].name = "Goombario";
+    items[0].callback = dx_debug_menu_cb_partnermenu;
+    items[0].callbackArg = &selectedpartner[0];
+    items[1].name = "Kooper";
+    items[1].callback = dx_debug_menu_cb_partnermenu;
+    items[1].callbackArg = &selectedpartner[1];
+    items[2].name = "Bombette";
+    items[2].callback = dx_debug_menu_cb_partnermenu;
+    items[2].callbackArg = &selectedpartner[2];
+    items[3].name = "Parakarry";
+    items[3].callback = dx_debug_menu_cb_partnermenu;
+    items[3].callbackArg = &selectedpartner[3];
+    items[4].name = "Goompa";
+    items[4].callback = dx_debug_menu_cb_partnermenu;
+    items[4].callbackArg = &selectedpartner[4];
+    items[5].name = "Watt";
+    items[5].callback = dx_debug_menu_cb_partnermenu;
+    items[5].callbackArg = &selectedpartner[5];
+    items[6].name = "Sushie";
+    items[6].callback = dx_debug_menu_cb_partnermenu;
+    items[6].callbackArg = &selectedpartner[6];
+    items[7].name = "Lakilester";
+    items[7].callback = dx_debug_menu_cb_partnermenu;
+    items[7].callbackArg = &selectedpartner[7];
+    items[8].name = "Bow";
+    items[8].callback = dx_debug_menu_cb_partnermenu;
+    items[8].callbackArg = &selectedpartner[8];
+    items[9].name = "Goombaria";
+    items[9].callback = dx_debug_menu_cb_partnermenu;
+    items[9].callbackArg = &selectedpartner[9];
+    items[10].name = "Twink";
+    items[10].callback = dx_debug_menu_cb_partnermenu;
+    items[10].callbackArg = &selectedpartner[10];
+    items[11].name = NULL;
+
+}
 #endif
