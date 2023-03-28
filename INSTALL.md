@@ -53,6 +53,11 @@ ninja
 
 The output ROM is `ver/us/build/papermario.z64` - you can run this in any N64 emulator.
 
+Alternative, to compile _and_ run, you can use the `run` script:
+```sh
+./run
+```
+(This will search [known paths](run) for an emulator. If your emulator isn't listed, add it to the list and contribute!)
 
 ## WSL 2
 
