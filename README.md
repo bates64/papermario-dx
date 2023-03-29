@@ -39,30 +39,11 @@ Star Rod will write assets to `assets/star_rod_build/`. If you add a new file to
 
 (Note: this will be made easier in the future.)
 
-To add a new C file to the build, you should add it as a subsegment to `ver/us/splat.yaml`. This file describes how to dump and build the ROM.
+To add a new C file to the build, you should add it as a `c` subsegment as part of a `code` segment in `ver/us/splat.yaml`. This file describes how to dump and build the ROM. When adding files not in the original game, make sure you set the ROM address as `auto` so that splat won't attempt to dump it.
 
-For example, the `src/dx/debug_menu.c` file is included in the build like this, under the `main` section:
+[See splat's documentation for more information.](https://github.com/ethteck/splat/wiki/Segments)
 
-```yaml
-segments:
-  # ...
-  - name: main
-    type: code
-    start: 0x1000
-    vram: 0x80025C00
-    subsegments:
-    # ...
-    - [auto,   c, dx/debug_menu]
-     [auto,   .data, dx/debug_menu]
-```
-
-The use of `auto` for the first argument means that the file will not be dumped, and its address in ROM will be determined automatically. The `c` argument means that the file's C code will be built. The last argument is the path to the file, relative to the `src/` directory.
-
-Notice we also have a `.data` subsegment for the file. This is because the file contains data, and we want to make sure it is placed in the `.data` section of the ROM. If you don't have a `.data` subsegment, global variables declared in the file will not be placed in the ROM, resulting in a linker (`ld`) error when building.
-
-If the file contains read-only data, you can use the `.rodata` subsegment too.
-
-**Whenever `splat.yaml` is modified, you must run `./configure` again to update the build.**
+Whenever `splat.yaml` is modified, you must run `./configure` again to update the build.
 
 ## How do I add new maps?
 
