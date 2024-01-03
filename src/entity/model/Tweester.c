@@ -10,7 +10,7 @@
 Gfx Entity_Tweester_LoadTextures[] = {
     gsDPSetTextureLUT(G_TT_NONE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPSetCombineLERP(TEXEL1, 0, TEXEL0, 0, TEXEL1, 0, TEXEL0, 0, COMBINED, 0, SHADE, 0, COMBINED, 0, SHADE, 0),
+    gsDPSetCombineMode(PM_CC_ALT_INTERFERENCE, G_CC_MODULATEIA2),
     gsDPSetTextureDetail(G_TD_CLAMP),
     gsDPSetTextureLOD(G_TL_TILE),
     gsDPSetTextureImage(G_IM_FMT_I, G_IM_SIZ_8b, 32, D_0A000BF0_E57A50),
@@ -47,31 +47,19 @@ Gfx Entity_Tweester_LoadTextureFace[] = {
     gsSPEndDisplayList(),
 };
 
-Mtx Entity_Tweester_mtxInnerWhirl = {
-    .m = {
-        { 0x0000FFFF, 0x00000000,
-          0x00000000, 0x00000000 },
-        { 0x00000000, 0x00010000,
-          0x00000000, 0x00000001 },
-        { 0xFFF6FB88, 0x00000000,
-          0x0478FFF6, 0x00000000 },
-        { 0x00000000, 0x00000000,
-          0x00000000, 0x00000000 }
-    }
-};
+Mtx Entity_Tweester_mtxInnerWhirl = RDP_MATRIX(
+    0.999848, 0.017457, 0.000000, 0.000000,
+    -0.01746, 0.999848, 0.000000, 0.000000,
+    0.000000, 0.000000, 1.000000, 0.000000,
+    0.000000, 0.000000, 0.000000, 1.000000
+);
 
-Mtx Entity_Tweester_mtxOuterWhirl = {
-    .m = {
-        { 0x00010000, 0x00000000,
-          0x00000000, 0x00000000 },
-        { 0x00000000, 0x00010000,
-          0x00000000, 0x00000001 },
-        { 0x33330000, 0x00000000,
-          0x0000E666, 0x00000000 },
-        { 0x00000000, 0x33330000,
-          0x00000000, 0x00000000 }
-    }
-};
+Mtx Entity_Tweester_mtxOuterWhirl = RDP_MATRIX(
+    1.199997, 0.000000, 0.000000, 0.000000,
+    0.000000, 0.899994, 0.000000, 0.000000,
+    0.000000, 0.000000, 1.199997, 0.000000,
+    0.000000, 0.000000, 0.000000, 1.000000
+);
 
 Gfx D_0A0019E8_E58848[] = {
     gsDPPipeSync(),

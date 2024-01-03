@@ -31,15 +31,15 @@ EffectInstance* sun_main(s32 shineFromRight, f32 offsetX, f32 offsetY, f32 offse
     bp.update = sun_update;
     bp.renderWorld = sun_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SUN;
-    
-    effect = shim_create_effect_instance(&bp);
+
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    
-    data = effect->data.sun = shim_general_heap_malloc(sizeof(*data));
+
+    data = effect->data.sun = general_heap_malloc(sizeof(*data));
     ASSERT(data != NULL);
-    
+
     data->shineFromRight = shineFromRight;
     data->lifeTime = 0;
     if (duration <= 0) {
@@ -64,7 +64,7 @@ EffectInstance* sun_main(s32 shineFromRight, f32 offsetX, f32 offsetY, f32 offse
     }
     data->targetAlpha = 255;
     data->alpha = 0;
-    
+
     return effect;
 }
 
@@ -76,23 +76,23 @@ void sun_update(EffectInstance* effect) {
     s32 time;
     s32 i;
 
-    if (effect->flags & EFFECT_INSTANCE_FLAG_10) {
-        effect->flags &= ~EFFECT_INSTANCE_FLAG_10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->timeLeft = 16;
     }
     if (data->timeLeft < 1000) {
         data->timeLeft--;
     }
-    
+
     data->lifeTime++;
     if (data->lifeTime > 90*60*60) {
         data->lifeTime = 256;
     }
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
-    
+
     time = data->lifeTime;
     if (data->timeLeft < 16) {
         data->alpha -= 16;
@@ -105,7 +105,7 @@ void sun_update(EffectInstance* effect) {
     } else if (data->targetAlpha > 255) {
         data->targetAlpha = 255;
     }
-    
+
     if (data->alpha > data->targetAlpha) {
         data->alpha -= 8;
         if (data->alpha < data->targetAlpha) {
@@ -120,8 +120,8 @@ void sun_update(EffectInstance* effect) {
 
     for (i = 0; i < 5; i++) {
         data->texScrollAmt[i] -= 4.0
-            * ((shim_sin_deg((time * 2 + (20 * i))) * 0.01) + 0.05)
-            * shim_sin_deg(((f32) time * 0.25) + (SQ(i) * 20));
+            * ((sin_deg((time * 2 + (20 * i))) * 0.01) + 0.05)
+            * sin_deg(((f32) time * 0.25) + (SQ(i) * 20));
 
         if (data->texScrollAmt[i] < 0.0f) {
             data->texScrollAmt[i] += 256.0f;
@@ -138,10 +138,10 @@ void sun_render(EffectInstance* effect) {
 
     renderTask.appendGfx = sun_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 10;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -154,29 +154,29 @@ void sun_appendGfx(void* argEffect) {
     s32 offsetS;
     s32 fromRight;
     s32 i;
-    
+
     data = effect->data.sun;
     alpha = data->alpha;
     fromRight = data->shineFromRight;
-    
+
     if (alpha != 0) {
         gDPPipeSync(gMainGfxPos++);
         gSPSegment(gMainGfxPos++, 0x9, VIRTUAL_TO_PHYSICAL(effect->graphics->data));
-        
+
         if (!fromRight) {
-            shim_guOrthoF(mtx, -1600.0f, 1600.0f, -1200.0f, 1200.0f, -100.0f, 100.0f, 1.0f);
+            guOrthoF(mtx, -1600.0f, 1600.0f, -1200.0f, 1200.0f, -100.0f, 100.0f, 1.0f);
         } else {
-            shim_guOrthoF(mtx, 1600.0f, -1600.0f, -1200.0f, 1200.0f, -100.0f, 100.0f, 1.0f);
+            guOrthoF(mtx, 1600.0f, -1600.0f, -1200.0f, 1200.0f, -100.0f, 100.0f, 1.0f);
         }
-        
-        shim_guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+
+        guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
             G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-        shim_guTranslateF(mtx, 0.0f, 0.0f, 0.0f);
-        shim_guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
+        guTranslateF(mtx, 0.0f, 0.0f, 0.0f);
+        guMtxF2L(mtx, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
             G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        
+
         gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primColor.r, data->primColor.g, data->primColor.b, alpha >> 1);
         gDPSetEnvColor(gMainGfxPos++, data->envColor.r, data->envColor.g, data->envColor.b, data->envColor.a);
         gSPDisplayList(gMainGfxPos++, D_E0120794[0]);

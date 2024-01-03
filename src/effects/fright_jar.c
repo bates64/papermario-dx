@@ -33,12 +33,12 @@ EffectInstance* fright_jar_main(
     bp.update = fright_jar_update;
     bp.renderWorld = fright_jar_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_FRIGHT_JAR;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.frightJar = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.frightJar = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.frightJar != NULL);
 
     data->unk_00 = arg0;
@@ -67,8 +67,8 @@ void fright_jar_update(EffectInstance* effect) {
     FrightJarFXData* data = effect->data.frightJar;
     s32 unk_10;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_10 = 16;
     }
 
@@ -79,7 +79,7 @@ void fright_jar_update(EffectInstance* effect) {
     data->unk_14++;
 
     if (data->unk_10 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -102,10 +102,10 @@ void fright_jar_render(EffectInstance* effect) {
 
     renderTask.appendGfx = fright_jar_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 10;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -126,10 +126,10 @@ void fright_jar_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(sp10, data->unk_04, data->unk_08, data->unk_0C);
-    shim_guScaleF(sp50, -data->unk_28, data->unk_28, data->unk_28);
-    shim_guMtxCatF(sp50, sp10, sp10);
-    shim_guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp10, data->unk_04, data->unk_08, data->unk_0C);
+    guScaleF(sp50, -data->unk_28, data->unk_28, data->unk_28);
+    guMtxCatF(sp50, sp10, sp10);
+    guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gMainGfxPos++, camera->unkMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);

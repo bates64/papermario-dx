@@ -56,7 +56,7 @@ EvtScript N(EVS_Inspect_FlipBush) = {
             EVT_CALL(PlayerMoveTo, -340, LVar5, 20)
             EVT_CALL(PlayerFaceNpc, NPC_YoshiKid, FALSE)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_o88, SOUND_209F, 0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_o88, SOUND_SEPARATE_BUSHES, 0)
             EVT_SET(LVar3, 0)
             EVT_LOOP(10)
                 EVT_ADD(LVar3, 9)
@@ -88,7 +88,7 @@ EvtScript N(EVS_Inspect_FlipBush) = {
 FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o59);;
 
 FoliageDropList N(Bush1_Drops) = {
-    .count = 1, 
+    .count = 1,
     .drops = {
         {
             .itemID = ITEM_COIN,
@@ -115,7 +115,7 @@ SearchBushConfig N(SearchBush_Bush1) = {
 FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o164);;
 
 FoliageDropList N(Bush2_Drops) = {
-    .count = 1, 
+    .count = 1,
     .drops = {
         {
             .itemID = ITEM_COIN,

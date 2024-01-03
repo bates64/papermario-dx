@@ -13,9 +13,9 @@ API_CALLABLE(N(SetSpringPosition)) {
     s32 z = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIndex);
 
-    entity->position.x = x;
-    entity->position.y = y;
-    entity->position.z = z;
+    entity->pos.x = x;
+    entity->pos.y = y;
+    entity->pos.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -35,8 +35,8 @@ EvtScript N(EVS_OnShakeTree1) = {
         EVT_END_THREAD
         EVT_CALL(SetNpcJumpscale, NPC_Dummy, EVT_FLOAT(0.8))
         EVT_CALL(NpcJump0, NPC_Dummy, 370, 10, 20, 15)
-        EVT_CALL(PlaySoundAt, SOUND_48, SOUND_SPACE_MODE_0, 370, 10, 20)
-        EVT_CALL(PlaySoundAt, SOUND_2086, SOUND_SPACE_MODE_0, 370, 10, 20)
+        EVT_CALL(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, 370, 10, 20)
+        EVT_CALL(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, 370, 10, 20)
         EVT_CALL(N(PlaySpringReboundAnimation), MV_SpringEntityIndex)
         EVT_IF_EQ(GF_KMR10_UnreadFlagForSpring, FALSE)
             EVT_ADD(GF_KMR10_UnreadFlagForSpring, 1)

@@ -2,10 +2,11 @@
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_super_soda
 
-extern EntityModelScript D_80283EE8;
+extern EntityModelScript EMS_StarIcon;
 
 #include "battle/common/move/ItemRefund.inc.c"
 
@@ -16,9 +17,9 @@ API_CALLABLE(N(func_802A123C_724F1C)) {
     s32 c = evt_get_variable(script, *args++);
     ItemEntity* item = get_item_entity(script->varTable[14]);
 
-    item->position.x = a;
-    item->position.y = b;
-    item->position.z = c;
+    item->pos.x = a;
+    item->pos.y = b;
+    item->pos.z = c;
 
     return ApiStatus_DONE2;
 }
@@ -52,7 +53,7 @@ API_CALLABLE(N(func_802A1378_725058)) {
     Actor* actor = get_actor(actorId);
     s32 actorClass = actor->actorID & ACTOR_CLASS_MASK;
 
-    if (actor->debuff != STATUS_END) {
+    if (actor->debuff != 0) {
         actor->debuffDuration = 0;
         actor->debuff = 0;
         remove_status_debuff(actor->hudElementDataIndex);
@@ -78,7 +79,7 @@ API_CALLABLE(N(func_802A1378_725058)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowFlowerRecoveryFX)) {
+API_CALLABLE(N(SpawnFlowerRecoveryFX)) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -93,7 +94,7 @@ API_CALLABLE(N(ShowFlowerRecoveryFX)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(script6) = {
+EvtScript N(EVS_UseOnPartner) = {
     EVT_CALL(SetActorYaw, ACTOR_PLAYER, 30)
     EVT_WAIT(1)
     EVT_CALL(SetActorYaw, ACTOR_PLAYER, 60)
@@ -114,7 +115,7 @@ EvtScript N(script6) = {
         EVT_WAIT(20)
         EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EVT_END_THREAD
-    EVT_CALL(CreateVirtualEntity, LVarA, EVT_PTR(D_80283EE8))
+    EVT_CALL(CreateVirtualEntity, LVarA, EVT_PTR(EMS_StarIcon))
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_ADD(LVar0, 0)
     EVT_ADD(LVar1, 30)
@@ -176,14 +177,14 @@ EvtScript N(EVS_UseItem) = {
     EVT_EXEC_WAIT(N(UseItemWithEffect))
     EVT_CALL(InitTargetIterator)
     EVT_CALL(GetOwnerTarget, LVar0, LVar1)
-    EVT_IF_EQ(LVar0, 0)
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_2095)
+    EVT_IF_EQ(LVar0, ACTOR_PLAYER)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EAT_OR_DRINK)
         EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Drink)
         EVT_WAIT(45)
         EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         EVT_ADD(LVar0, 0)
         EVT_ADD(LVar1, 35)
-        EVT_CALL(N(ShowFlowerRecoveryFX), LVar0, LVar1, LVar2, 5)
+        EVT_CALL(N(SpawnFlowerRecoveryFX), LVar0, LVar1, LVar2, 5)
         EVT_CALL(N(AddFP), 5)
         EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         EVT_ADD(LVar1, 25)
@@ -203,7 +204,7 @@ EvtScript N(EVS_UseItem) = {
         EVT_SET(LVarB, 0)
         EVT_SET(LVarC, 0)
         EVT_SET(LVarF, 0)
-        EVT_EXEC_WAIT(N(script6))
+        EVT_EXEC_WAIT(N(EVS_UseOnPartner))
     EVT_END_IF
     EVT_EXEC_WAIT(N(PlayerGoHome))
     EVT_RETURN

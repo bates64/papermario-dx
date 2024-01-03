@@ -1,69 +1,79 @@
-#include "common.h"
 #include "battle/battle.h"
 #include "script_api/battle.h"
 #include "sprite/npc/LargePiranha.h"
 
-extern EvtScript N(init_8021B1F8);
-extern EvtScript N(takeTurn_8021B8A8);
-extern EvtScript N(idle_8021B244);
-extern EvtScript N(handleEvent_8021B3D0);
-extern EvtScript N(bite);
-extern EvtScript N(breath);
+#define NAMESPACE A(putrid_piranha)
 
-s32 N(IdleAnimations_8021B0A0)[] = {
-    STATUS_NORMAL,    ANIM_LargePiranha_Putrid_Anim01,
-    STATUS_STONE,     ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_SLEEP,     ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_POISON,    ANIM_LargePiranha_Putrid_Anim01,
-    STATUS_STOP,      ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_STATIC,    ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_PARALYZE,  ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_PARALYZE,  ANIM_LargePiranha_Putrid_Anim00,
-    STATUS_DIZZY,     ANIM_LargePiranha_Putrid_Anim0F,
+extern EvtScript N(EVS_Init);
+extern EvtScript N(EVS_Idle);
+extern EvtScript N(EVS_TakeTurn);
+extern EvtScript N(EVS_HandleEvent);
+extern EvtScript N(EVS_Attack_Bite);
+extern EvtScript N(EVS_Attack_BadBreath);
+
+enum N(ActorPartIDs) {
+    PRT_MAIN        = 1,
+};
+
+enum N(ActorParams) {
+    DMG_BITE        = 3,
+    DMG_BREATH      = 2,
+};
+
+s32 N(DefaultAnims)[] = {
+    STATUS_KEY_NORMAL,    ANIM_LargePiranha_Putrid_Anim01,
+    STATUS_KEY_STONE,     ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_SLEEP,     ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_POISON,    ANIM_LargePiranha_Putrid_Anim01,
+    STATUS_KEY_STOP,      ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_STATIC,    ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_PARALYZE,  ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_PARALYZE,  ANIM_LargePiranha_Putrid_Anim00,
+    STATUS_KEY_DIZZY,     ANIM_LargePiranha_Putrid_Anim0F,
     STATUS_END,
 };
 
-s32 N(DefenseTable_8021B0EC)[] = {
-    ELEMENT_NORMAL, 0,
-    ELEMENT_FIRE, 0,
+s32 N(DefenseTable)[] = {
+    ELEMENT_NORMAL,   0,
+    ELEMENT_FIRE,     0,
     ELEMENT_END,
 };
 
-s32 N(StatusTable_8021B100)[] = {
-    STATUS_NORMAL, 0,
-    STATUS_DEFAULT, 0,
-    STATUS_SLEEP, 95,
-    STATUS_POISON, 0,
-    STATUS_FROZEN, 0,
-    STATUS_DIZZY, 50,
-    STATUS_FEAR, 0,
-    STATUS_STATIC, 0,
-    STATUS_PARALYZE, 90,
-    STATUS_SHRINK, 75,
-    STATUS_STOP, 85,
-    STATUS_DEFAULT_TURN_MOD, 0,
-    STATUS_SLEEP_TURN_MOD, 1,
-    STATUS_POISON_TURN_MOD, 0,
-    STATUS_FROZEN_TURN_MOD, 0,
-    STATUS_DIZZY_TURN_MOD, 0,
-    STATUS_FEAR_TURN_MOD, 0,
-    STATUS_STATIC_TURN_MOD, 0,
-    STATUS_PARALYZE_TURN_MOD, 0,
-    STATUS_SHRINK_TURN_MOD, 0,
-    STATUS_STOP_TURN_MOD, 0,
+s32 N(StatusTable)[] = {
+    STATUS_KEY_NORMAL,              0,
+    STATUS_KEY_DEFAULT,             0,
+    STATUS_KEY_SLEEP,              95,
+    STATUS_KEY_POISON,              0,
+    STATUS_KEY_FROZEN,              0,
+    STATUS_KEY_DIZZY,              50,
+    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_STATIC,              0,
+    STATUS_KEY_PARALYZE,           90,
+    STATUS_KEY_SHRINK,             75,
+    STATUS_KEY_STOP,               85,
+    STATUS_TURN_MOD_DEFAULT,        0,
+    STATUS_TURN_MOD_SLEEP,          1,
+    STATUS_TURN_MOD_POISON,         0,
+    STATUS_TURN_MOD_FROZEN,         0,
+    STATUS_TURN_MOD_DIZZY,          0,
+    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_STATIC,         0,
+    STATUS_TURN_MOD_PARALYZE,       0,
+    STATUS_TURN_MOD_SHRINK,         0,
+    STATUS_TURN_MOD_STOP,           0,
     STATUS_END,
 };
 
-ActorPartBlueprint N(PartsTable_8021B1AC)[] = {
+ActorPartBlueprint N(ActorParts)[] = {
     {
-        .flags = ACTOR_PART_FLAG_MULTI_TARGET,
-        .index = 1,
+        .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
+        .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
         .targetOffset = { -15, 50 },
         .opacity = 255,
-        .idleAnimations = N(IdleAnimations_8021B0A0),
-        .defenseTable = N(DefenseTable_8021B0EC),
-        .eventFlags = ACTOR_EVENT_FLAG_0,
+        .idleAnimations = N(DefaultAnims),
+        .defenseTable = N(DefenseTable),
+        .eventFlags = ACTOR_EVENT_FLAGS_NONE,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 3, -14 },
     },
@@ -72,12 +82,12 @@ ActorPartBlueprint N(PartsTable_8021B1AC)[] = {
 ActorBlueprint NAMESPACE = {
     .flags = 0,
     .type = ACTOR_TYPE_PUTRID_PIRANHA,
-    .level = 17,
+    .level = ACTOR_LEVEL_PUTRID_PIRANHA,
     .maxHP = 12,
-    .partCount = ARRAY_COUNT( N(PartsTable_8021B1AC)),
-    .partsData = N(PartsTable_8021B1AC),
-    .initScript = &N(init_8021B1F8),
-    .statusTable = N(StatusTable_8021B100),
+    .partCount = ARRAY_COUNT(N(ActorParts)),
+    .partsData = N(ActorParts),
+    .initScript = &N(EVS_Init),
+    .statusTable = N(StatusTable),
     .escapeChance = 60,
     .airLiftChance = 20,
     .hurricaneChance = 20,
@@ -87,166 +97,166 @@ ActorBlueprint NAMESPACE = {
     .powerBounceChance = 95,
     .coinReward = 1,
     .size = { 60, 52 },
-    .hpBarOffset = { 0, 0 },
+    .healthBarOffset = { 0, 0 },
     .statusIconOffset = { -22, 32 },
-    .statusMessageOffset = { 1, 44 },
+    .statusTextOffset = { 1, 44 },
 };
 
-EvtScript N(init_8021B1F8) = {
-    EVT_CALL(BindTakeTurn, ACTOR_SELF, EVT_PTR(N(takeTurn_8021B8A8)))
-    EVT_CALL(BindIdle, ACTOR_SELF, EVT_PTR(N(idle_8021B244)))
-    EVT_CALL(BindHandleEvent, ACTOR_SELF, EVT_PTR(N(handleEvent_8021B3D0)))
+EvtScript N(EVS_Init) = {
+    EVT_CALL(BindTakeTurn, ACTOR_SELF, EVT_PTR(N(EVS_TakeTurn)))
+    EVT_CALL(BindIdle, ACTOR_SELF, EVT_PTR(N(EVS_Idle)))
+    EVT_CALL(BindHandleEvent, ACTOR_SELF, EVT_PTR(N(EVS_HandleEvent)))
     EVT_RETURN
     EVT_END
 };
 
-#include "common/UnkBattleFunc1.inc.c"
+#include "common/battle/SetAbsoluteStatusOffsets.inc.c"
 
-EvtScript N(idle_8021B244) = {
+EvtScript N(EVS_Idle) = {
     EVT_LABEL(0)
-    EVT_CALL(GetStatusFlags, ACTOR_SELF, LVarA)
-    EVT_IF_FLAG(LVarA, STATUS_FLAG_DIZZY)
-        EVT_CALL(SetTargetOffset, ACTOR_SELF, 1, -27, 33)
-        EVT_CALL(SetProjectileTargetOffset, ACTOR_SELF, 1, 5, -11)
-        EVT_CALL(N(UnkBattleFunc1), -37, 9, -7, 31)
-    EVT_ELSE
-        EVT_CALL(SetTargetOffset, ACTOR_SELF, 1, -15, 50)
-        EVT_CALL(SetProjectileTargetOffset, ACTOR_SELF, 1, 3, -14)
-        EVT_CALL(N(UnkBattleFunc1), -22, 32, 1, 44)
-    EVT_END_IF
-    EVT_WAIT(1)
-    EVT_GOTO(0)
+        EVT_CALL(GetStatusFlags, ACTOR_SELF, LVarA)
+        EVT_IF_FLAG(LVarA, STATUS_FLAG_DIZZY)
+            EVT_CALL(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -27, 33)
+            EVT_CALL(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 5, -11)
+            EVT_CALL(N(SetAbsoluteStatusOffsets), -37, 9, -7, 31)
+        EVT_ELSE
+            EVT_CALL(SetTargetOffset, ACTOR_SELF, PRT_MAIN, -15, 50)
+            EVT_CALL(SetProjectileTargetOffset, ACTOR_SELF, PRT_MAIN, 3, -14)
+            EVT_CALL(N(SetAbsoluteStatusOffsets), -22, 32, 1, 44)
+        EVT_END_IF
+        EVT_WAIT(1)
+        EVT_GOTO(0)
     EVT_RETURN
     EVT_END
 };
 
-EvtScript N(8021B354) = {
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim03)
+EvtScript N(EVS_ReturnHome) = {
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim03)
     EVT_CALL(SetGoalToHome, ACTOR_SELF)
     EVT_CALL(RunToGoal, ACTOR_SELF, 0, FALSE)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim01)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim01)
     EVT_CALL(SetActorYaw, ACTOR_SELF, 0)
     EVT_RETURN
     EVT_END
 };
 
-EvtScript N(handleEvent_8021B3D0) = {
+EvtScript N(EVS_HandleEvent) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(GetLastEvent, ACTOR_SELF, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_OR_EQ(EVENT_HIT_COMBO)
         EVT_CASE_OR_EQ(EVENT_HIT)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoNormalHit)
+            EVT_EXEC_WAIT(EVS_Enemy_Hit)
         EVT_END_CASE_GROUP
         EVT_CASE_EQ(EVENT_BURN_HIT)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim10)
             EVT_SET_CONST(LVar2, ANIM_LargePiranha_Putrid_Anim11)
-            EVT_EXEC_WAIT(DoBurnHit)
+            EVT_EXEC_WAIT(EVS_Enemy_BurnHit)
         EVT_CASE_EQ(EVENT_BURN_DEATH)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim10)
             EVT_SET_CONST(LVar2, ANIM_LargePiranha_Putrid_Anim11)
-            EVT_EXEC_WAIT(DoBurnHit)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_EXEC_WAIT(EVS_Enemy_BurnHit)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim11)
-            EVT_EXEC_WAIT(DoDeath)
+            EVT_EXEC_WAIT(EVS_Enemy_Death)
             EVT_RETURN
         EVT_CASE_EQ(EVENT_SPIN_SMASH_HIT)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoSpinSmashHit)
+            EVT_EXEC_WAIT(EVS_Enemy_SpinSmashHit)
         EVT_CASE_EQ(EVENT_SPIN_SMASH_DEATH)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoSpinSmashHit)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_EXEC_WAIT(EVS_Enemy_SpinSmashHit)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoDeath)
+            EVT_EXEC_WAIT(EVS_Enemy_Death)
             EVT_RETURN
         EVT_CASE_EQ(EVENT_SHOCK_HIT)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoShockHit)
+            EVT_EXEC_WAIT(EVS_Enemy_ShockHit)
             EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(4.0))
-            EVT_EXEC_WAIT(N(8021B354))
+            EVT_EXEC_WAIT(N(EVS_ReturnHome))
         EVT_CASE_EQ(EVENT_SHOCK_DEATH)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoShockHit)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_EXEC_WAIT(EVS_Enemy_ShockHit)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoDeath)
+            EVT_EXEC_WAIT(EVS_Enemy_Death)
             EVT_RETURN
         EVT_CASE_OR_EQ(EVENT_ZERO_DAMAGE)
         EVT_CASE_OR_EQ(EVENT_IMMUNE)
         EVT_CASE_OR_EQ(EVENT_AIR_LIFT_FAILED)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim01)
-            EVT_EXEC_WAIT(DoImmune)
+            EVT_EXEC_WAIT(EVS_Enemy_NoDamageHit)
         EVT_END_CASE_GROUP
         EVT_CASE_EQ(EVENT_DEATH)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoNormalHit)
+            EVT_EXEC_WAIT(EVS_Enemy_Hit)
             EVT_WAIT(10)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoDeath)
+            EVT_EXEC_WAIT(EVS_Enemy_Death)
             EVT_RETURN
         EVT_CASE_EQ(EVENT_RECOVER_STATUS)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim01)
-            EVT_EXEC_WAIT(DoRecover)
+            EVT_EXEC_WAIT(EVS_Enemy_Recover)
         EVT_CASE_EQ(EVENT_SCARE_AWAY)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim03)
             EVT_SET_CONST(LVar2, ANIM_LargePiranha_Putrid_Anim0E)
-            EVT_EXEC_WAIT(DoScareAway)
+            EVT_EXEC_WAIT(EVS_Enemy_ScareAway)
             EVT_RETURN
         EVT_CASE_EQ(EVENT_BEGIN_AIR_LIFT)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim03)
-            EVT_EXEC_WAIT(DoAirLift)
+            EVT_EXEC_WAIT(EVS_Enemy_AirLift)
         EVT_CASE_EQ(EVENT_BLOW_AWAY)
-            EVT_SET_CONST(LVar0, 1)
+            EVT_SET_CONST(LVar0, PRT_MAIN)
             EVT_SET_CONST(LVar1, ANIM_LargePiranha_Putrid_Anim03)
-            EVT_EXEC_WAIT(DoBlowAway)
+            EVT_EXEC_WAIT(EVS_Enemy_BlowAway)
             EVT_RETURN
         EVT_CASE_DEFAULT
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END
 };
 
-EvtScript N(takeTurn_8021B8A8) = {
+EvtScript N(EVS_TakeTurn) = {
     EVT_CALL(GetBattlePhase, LVar0)
     EVT_IF_EQ(LVar0, PHASE_FIRST_STRIKE)
-        EVT_EXEC_WAIT(N(bite))
+        EVT_EXEC_WAIT(N(EVS_Attack_Bite))
         EVT_RETURN
     EVT_END_IF
     EVT_CALL(RandInt, 100, LVar0)
     EVT_IF_LT(LVar0, 70)
-        EVT_EXEC_WAIT(N(breath))
+        EVT_EXEC_WAIT(N(EVS_Attack_BadBreath))
     EVT_ELSE
-        EVT_EXEC_WAIT(N(bite))
+        EVT_EXEC_WAIT(N(EVS_Attack_Bite))
     EVT_END_IF
     EVT_RETURN
     EVT_END
 };
 
-EvtScript N(bite) = {
+EvtScript N(EVS_Attack_Bite) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     EVT_CALL(GetBattlePhase, LVar0)
     EVT_IF_EQ(LVar0, PHASE_FIRST_STRIKE)
-        EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim18)
+        EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim18)
         EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, TRUE)
         EVT_WAIT(8)
         EVT_CALL(SetGoalToTarget, ACTOR_SELF)
@@ -271,15 +281,15 @@ EvtScript N(bite) = {
         EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_SURFACE)
         EVT_CALL(SetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, FALSE)
-        EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim17)
+        EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim17)
         EVT_WAIT(8)
     EVT_ELSE
-        EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_63)
+        EVT_CALL(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
         EVT_CALL(BattleCamTargetActor, ACTOR_SELF)
-        EVT_CALL(func_8024ECF8, -1, 1, 0)
-        EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim03)
+        EVT_CALL(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+        EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim03)
         EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(4.0))
-        EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim03)
+        EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim03)
         EVT_CALL(SetGoalToTarget, ACTOR_SELF)
         EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(GetStatusFlags, ACTOR_SELF, LVarA)
@@ -291,26 +301,26 @@ EvtScript N(bite) = {
         EVT_SET(LVar1, 0)
         EVT_CALL(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(RunToGoal, ACTOR_SELF, 0, FALSE)
-        EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim01)
+        EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim01)
     EVT_END_IF
     EVT_THREAD
         EVT_WAIT(8)
-        EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_20DE)
+        EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_PIRANHA_BITE)
     EVT_END_THREAD
-    EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_10)
+    EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     EVT_SWITCH(LVarA)
         EVT_CASE_OR_EQ(HIT_RESULT_MISS)
         EVT_CASE_OR_EQ(HIT_RESULT_LUCKY)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim05)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim05)
             EVT_WAIT(10)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim06)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim06)
             EVT_WAIT(6)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim07)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim07)
             EVT_IF_EQ(LVarA, HIT_RESULT_LUCKY)
                 EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EVT_END_IF
             EVT_WAIT(14)
-            EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+            EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
             EVT_CALL(MoveBattleCamOver, 20)
             EVT_CALL(YieldTurn)
             EVT_CALL(GetBattlePhase, LVar0)
@@ -318,43 +328,43 @@ EvtScript N(bite) = {
                 EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(7.0))
                 EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, TRUE)
                 EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)
-                EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim18)
+                EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim18)
                 EVT_WAIT(10)
                 EVT_CALL(SetGoalToHome, ACTOR_SELF)
                 EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 EVT_CALL(SetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_SURFACE)
-                EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim17)
+                EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim17)
                 EVT_WAIT(10)
                 EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, FALSE)
             EVT_ELSE
-                EVT_CALL(SetAnimationRate, ACTOR_SELF, 1, EVT_FLOAT(2.0))
+                EVT_CALL(SetAnimationRate, ACTOR_SELF, PRT_MAIN, EVT_FLOAT(2.0))
                 EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(7.0))
                 EVT_CALL(SetActorYaw, ACTOR_SELF, 180)
-                EVT_CALL(AddActorDecoration, ACTOR_SELF, 1, 0, ACTOR_DECORATION_SWEAT)
-                EVT_EXEC_WAIT(N(8021B354))
-                EVT_CALL(RemoveActorDecoration, ACTOR_SELF, 1, 0)
-                EVT_CALL(SetAnimationRate, ACTOR_SELF, 1, EVT_FLOAT(1.0))
+                EVT_CALL(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
+                EVT_EXEC_WAIT(N(EVS_ReturnHome))
+                EVT_CALL(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
+                EVT_CALL(SetAnimationRate, ACTOR_SELF, PRT_MAIN, EVT_FLOAT(1.0))
             EVT_END_IF
-            EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+            EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
             EVT_RETURN
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim05)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim05)
     EVT_WAIT(10)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim06)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim06)
     EVT_WAIT(1)
     EVT_WAIT(2)
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
-    EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, 0, 0, 3, BS_FLAGS1_SP_EVT_ACTIVE)
+    EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, 0, 0, DMG_BITE, BS_FLAGS1_TRIGGER_EVENTS)
     EVT_SET(LVarF, LVar0)
     EVT_SWITCH(LVarF)
         EVT_CASE_OR_EQ(HIT_RESULT_HIT)
         EVT_CASE_OR_EQ(HIT_RESULT_NO_DAMAGE)
-            EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+            EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
             EVT_WAIT(10)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim07)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim07)
             EVT_WAIT(20)
             EVT_CALL(YieldTurn)
             EVT_CALL(GetBattlePhase, LVar0)
@@ -362,22 +372,22 @@ EvtScript N(bite) = {
                 EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(7.0))
                 EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, TRUE)
                 EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_DIG)
-                EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim18)
+                EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim18)
                 EVT_WAIT(10)
                 EVT_CALL(SetGoalToHome, ACTOR_SELF)
                 EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 EVT_CALL(SetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                 EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BURROW_SURFACE)
-                EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim17)
+                EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim17)
                 EVT_WAIT(10)
                 EVT_CALL(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, FALSE)
             EVT_ELSE
                 EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(6.0))
-                EVT_EXEC_WAIT(N(8021B354))
+                EVT_EXEC_WAIT(N(EVS_ReturnHome))
             EVT_END_IF
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END
@@ -385,16 +395,16 @@ EvtScript N(bite) = {
 
 #include "common/UnkEffect6FFunc.inc.c"
 
-EvtScript N(breath) = {
+EvtScript N(EVS_Attack_BadBreath) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 0)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_63)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     EVT_CALL(BattleCamTargetActor, ACTOR_SELF)
-    EVT_CALL(func_8024ECF8, -1, 1, 0)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim03)
+    EVT_CALL(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim03)
     EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(4.0))
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim03)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim03)
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
     EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(GetStatusFlags, ACTOR_SELF, LVarA)
@@ -406,10 +416,10 @@ EvtScript N(breath) = {
     EVT_SET(LVar1, 0)
     EVT_CALL(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(RunToGoal, ACTOR_SELF, 0, FALSE)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim01)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim08)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim01)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim08)
     EVT_WAIT(11)
-    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_3AB)
+    EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_PIRANHA_BREATH)
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
     EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(GetStatusFlags, ACTOR_SELF, LVarA)
@@ -424,49 +434,49 @@ EvtScript N(breath) = {
     EVT_END_IF
     EVT_CALL(N(UnkEffect6FFunc), LVar2, LVar0, LVar1, LVar2, LVar3, 30, 120, 0, 120)
     EVT_WAIT(1)
-    EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim09)
+    EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim09)
     EVT_WAIT(5)
-    EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_10)
+    EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVarA, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     EVT_SWITCH(LVarA)
         EVT_CASE_OR_EQ(HIT_RESULT_MISS)
         EVT_CASE_OR_EQ(HIT_RESULT_LUCKY)
             EVT_WAIT(10)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim0A)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim0A)
             EVT_IF_EQ(LVarA, HIT_RESULT_LUCKY)
                 EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EVT_END_IF
             EVT_WAIT(14)
-            EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+            EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
             EVT_CALL(YieldTurn)
-            EVT_CALL(SetAnimationRate, ACTOR_SELF, 1, EVT_FLOAT(2.0))
+            EVT_CALL(SetAnimationRate, ACTOR_SELF, PRT_MAIN, EVT_FLOAT(2.0))
             EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(7.0))
             EVT_CALL(SetActorYaw, ACTOR_SELF, 180)
-            EVT_CALL(AddActorDecoration, ACTOR_SELF, 1, 0, ACTOR_DECORATION_SWEAT)
-            EVT_EXEC_WAIT(N(8021B354))
-            EVT_CALL(RemoveActorDecoration, ACTOR_SELF, 1, 0)
-            EVT_CALL(SetAnimationRate, ACTOR_SELF, 1, EVT_FLOAT(1.0))
-            EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+            EVT_CALL(AddActorDecoration, ACTOR_SELF, PRT_MAIN, 0, ACTOR_DECORATION_SWEAT)
+            EVT_EXEC_WAIT(N(EVS_ReturnHome))
+            EVT_CALL(RemoveActorDecoration, ACTOR_SELF, PRT_MAIN, 0)
+            EVT_CALL(SetAnimationRate, ACTOR_SELF, PRT_MAIN, EVT_FLOAT(1.0))
+            EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
             EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
             EVT_RETURN
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
     EVT_WAIT(2)
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
-    EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, DMG_STATUS_CHANCE(STATUS_FLAG_POISON, 3, 100), 2, BS_FLAGS1_SP_EVT_ACTIVE)
+    EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, DMG_STATUS_KEY(STATUS_FLAG_POISON, 3, 100), DMG_BREATH, BS_FLAGS1_TRIGGER_EVENTS)
     EVT_SET(LVarF, LVar0)
     EVT_SWITCH(LVarF)
         EVT_CASE_OR_EQ(HIT_RESULT_HIT)
         EVT_CASE_OR_EQ(HIT_RESULT_NO_DAMAGE)
-            EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+            EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
             EVT_WAIT(10)
-            EVT_CALL(SetAnimation, ACTOR_SELF, 1, ANIM_LargePiranha_Putrid_Anim0A)
+            EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LargePiranha_Putrid_Anim0A)
             EVT_WAIT(20)
             EVT_CALL(YieldTurn)
             EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(6.0))
-            EVT_EXEC_WAIT(N(8021B354))
+            EVT_EXEC_WAIT(N(EVS_ReturnHome))
         EVT_END_CASE_GROUP
     EVT_END_SWITCH
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, 1)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
     EVT_END

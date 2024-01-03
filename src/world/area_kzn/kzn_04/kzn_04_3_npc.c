@@ -5,9 +5,9 @@
 #include "world/common/enemy/ai/FireBarAI.inc.c"
 
 s32 N(FireBar_Sounds)[] = {
-    SOUND_FIRE_BAR_0, SOUND_FIRE_BAR_1, SOUND_FIRE_BAR_2, SOUND_FIRE_BAR_3,
-    SOUND_FIRE_BAR_4, SOUND_FIRE_BAR_5, SOUND_FIRE_BAR_6, SOUND_FIRE_BAR_7,
-    SOUND_FIRE_BAR_8, SOUND_FIRE_BAR_9, SOUND_FIRE_BAR_9,
+    SOUND_SEQ_FIRE_BAR_0, SOUND_SEQ_FIRE_BAR_1, SOUND_SEQ_FIRE_BAR_2, SOUND_SEQ_FIRE_BAR_3,
+    SOUND_SEQ_FIRE_BAR_4, SOUND_SEQ_FIRE_BAR_5, SOUND_SEQ_FIRE_BAR_6, SOUND_SEQ_FIRE_BAR_7,
+    SOUND_SEQ_FIRE_BAR_8, SOUND_SEQ_FIRE_BAR_9, SOUND_SEQ_FIRE_BAR_9,
 };
 
 EvtScript N(EVS_FireBar_Defeated) = {
@@ -30,7 +30,7 @@ EvtScript N(EVS_FireBar_Defeated) = {
         EVT_SET(LVar1, LVarB)
     EVT_END_LOOP
     EVT_CALL(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
-    EVT_CALL(PlaySoundAt, SOUND_B000000A, SOUND_SPACE_MODE_0, LVar1, LVar2, LVar3)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_FIRE_BAR_DEAD, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
     EVT_LOOP(10)
         EVT_CALL(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
         EVT_CALL(RandInt, 50, LVar4)
@@ -71,7 +71,7 @@ EvtScript N(EVS_FireBar_Defeated) = {
 
 FireBarAISettings N(AISettings_FireBar_01) = {
     .centerPos = { -280, 500, -30 },
-    .rotationRate = 8,
+    .rotRate = 8,
     .firstNpc = NPC_FireBar_1A,
     .npcCount = 4,
     .callback = N(FireBarAI_Callback),
@@ -79,7 +79,7 @@ FireBarAISettings N(AISettings_FireBar_01) = {
 
 FireBarAISettings N(AISettings_FireBar_02) = {
     .centerPos = { 0, 500, 40 },
-    .rotationRate = -8,
+    .rotRate = -8,
     .firstNpc = NPC_FireBar_2A,
     .npcCount = 4,
     .callback = N(FireBarAI_Callback),
@@ -87,7 +87,7 @@ FireBarAISettings N(AISettings_FireBar_02) = {
 
 FireBarAISettings N(AISettings_FireBar_03) = {
     .centerPos = { 280, 500, -30 },
-    .rotationRate = 8,
+    .rotRate = 8,
     .firstNpc = NPC_FireBar_3A,
     .npcCount = 4,
     .callback = N(FireBarAI_Callback),
@@ -116,7 +116,7 @@ NpcSettings N(NpcSettings_FireBar_01) = {
     .height = 12,
     .radius = 20,
     .ai = &N(EVS_NpcAI_FireBar_01),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
 NpcSettings N(NpcSettings_FireBar_02) = {
@@ -124,7 +124,7 @@ NpcSettings N(NpcSettings_FireBar_02) = {
     .height = 12,
     .radius = 20,
     .ai = &N(EVS_NpcAI_FireBar_02),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
 NpcSettings N(NpcSettings_FireBar_03) = {
@@ -132,14 +132,14 @@ NpcSettings N(NpcSettings_FireBar_03) = {
     .height = 12,
     .radius = 20,
     .ai = &N(EVS_NpcAI_FireBar_03),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
 NpcSettings N(NpcSettings_FireBar_Extra) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 25,
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
 NpcData N(NpcData_FireBar_01)[] = {

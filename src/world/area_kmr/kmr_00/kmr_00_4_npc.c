@@ -75,12 +75,12 @@ EvtScript N(EVS_NpcAux_StarSpirit) = {
     EVT_LABEL(1)
     EVT_LOOP(50)
         EVT_ADDF(LVar0, EVT_FLOAT(0.8))
-        EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_D, 0, ArrayVar(0), MV_Unk_01, LVar0)
+        EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_Unk_01, LVar0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_LOOP(50)
         EVT_ADDF(LVar0, EVT_FLOAT(-0.8))
-        EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_D, 0, ArrayVar(0), MV_Unk_01, LVar0)
+        EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), MV_Unk_01, LVar0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_GOTO(1)
@@ -112,7 +112,7 @@ NpcData N(NpcData_Goombaria) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Goombaria),
     .settings = &N(NpcSettings_Goombaria_Stationary),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = GOOMBARIA_ANIMS,
 };
@@ -124,7 +124,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
     },
@@ -134,7 +134,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
     },
@@ -144,7 +144,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
     },
@@ -154,7 +154,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
     },
@@ -164,7 +164,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
     },
@@ -174,7 +174,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
     },
@@ -184,7 +184,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_StarSpirit),
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
     },

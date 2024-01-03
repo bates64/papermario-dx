@@ -24,7 +24,7 @@ EvtScript N(EVS_RaisePipe_JumpAttack) = {
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(5)
-    EVT_CALL(PlaySoundWithVolume, SOUND_208E, 0)
+    EVT_CALL(PlaySoundWithVolume, SOUND_GROW, 0)
     EVT_CALL(EnableModel, MODEL_o5, TRUE)
     EVT_SET(LVar0, -30)
     EVT_LOOP(30)
@@ -49,7 +49,7 @@ EvtScript N(EVS_RaisePipe_SmashAttack) = {
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(5)
-    EVT_CALL(PlaySoundWithVolume, SOUND_208E, 0)
+    EVT_CALL(PlaySoundWithVolume, SOUND_GROW, 0)
     EVT_CALL(EnableModel, MODEL_o9, TRUE)
     EVT_SET(LVar0, -30)
     EVT_LOOP(30)
@@ -171,7 +171,7 @@ NpcData N(NpcData_RedToad) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_RedToad),
     .settings = &N(NpcSettings_Toad_Stationary),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_PlayroomReceptionist,
@@ -225,7 +225,7 @@ NpcData N(NpcData_GreenToad) = {
     },
     .init = &N(EVS_NpcInit_GreenToad),
     .settings = &N(NpcSettings_Toad_Patrol),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_GREEN_ANIMS,
     .tattle = MSG_NpcTattle_MGM_PlayroomCustomer,
@@ -275,7 +275,7 @@ NpcData N(NpcData_BlueToad) = {
     },
     .init = &N(EVS_NpcInit_BlueToad),
     .settings = &N(NpcSettings_Toad_Patrol),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_BLUE_ANIMS,
     .tattle = MSG_NpcTattle_MGM_BestPlayroomCustomer,

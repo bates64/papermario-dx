@@ -14,18 +14,18 @@ EvtScript N(EVS_OnReadBillboard) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_Sign_EatMushroomsTrap, 160, 40)
     EVT_RESUME_GROUP(EVT_GROUP_01)
-    EVT_SET(LocalFlag(0), FALSE)
+    EVT_SET(LFlag0, FALSE)
     EVT_CALL(N(GetAmbushEnemy))
     EVT_IF_NE(LVar0, NULL)
         EVT_CALL(GetNpcVar, NPC_Goomba_Ambush, 0, LVar0)
         EVT_IF_EQ(LVar0, 0)
             EVT_CALL(SetNpcVar, NPC_Goomba_Ambush, 0, 1)
-            EVT_SET(LocalFlag(0), TRUE)
+            EVT_SET(LFlag0, TRUE)
             EVT_WAIT(10)
         EVT_END_IF
     EVT_END_IF
     EVT_CALL(DisablePlayerInput, FALSE)
-    EVT_IF_EQ(LocalFlag(0), TRUE)
+    EVT_IF_EQ(LFlag0, TRUE)
         EVT_UNBIND
     EVT_END_IF
     EVT_END
@@ -61,16 +61,16 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Goomba_Dizzy)
     EVT_WAIT(20)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Goomba_Idle)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_F8, SOUND_SPACE_MODE_0)
-    EVT_CALL(func_802CFE2C, NPC_SELF, 0x2000)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_5, 6, 1, 1, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FLIP_PAGE, SOUND_SPACE_DEFAULT)
+    EVT_CALL(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_UNFURL, 1, 1, 0)
     EVT_WAIT(12)
     EVT_WAIT(5)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(EnableNpcShadow, NPC_SELF, TRUE)
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.6))
     EVT_CALL(NpcJump0, NPC_SELF, -35, 0, 30, 23)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(InterpNpcYaw, NPC_SELF, 90, 0)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_200000, FALSE)
     EVT_CALL(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, 0)
@@ -105,7 +105,7 @@ NpcData N(NpcData_Goomba) = {
     },
     .init = &N(EVS_NpcInit_Goomba),
     .settings = &N(NpcSettings_Goomba_Wander),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
 };

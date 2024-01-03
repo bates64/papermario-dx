@@ -35,9 +35,7 @@ API_CALLABLE(N(SetStarBeamMasterAlpha)) {
 }
 
 void N(setup_gfx_glowing_star)(void) {
-    gDPSetCombineLERP(gMainGfxPos++,
-        TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0,
-        TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(GlowingStarAlpha));
 }
 
@@ -49,9 +47,7 @@ API_CALLABLE(N(SetGlowingStarAlpha)) {
 }
 
 void N(setup_gfx_giving_power)(void) {
-    gDPSetCombineLERP(gMainGfxPos++,
-        TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0,
-        TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(GivingPowerAlpha));
 }
 
@@ -148,16 +144,16 @@ EvtScript N(EVS_SetupModelFX) = {
     EVT_CALL(SetRenderMode, MODEL_5, RENDER_MODE_SURFACE_XLU_LAYER2)
     EVT_CALL(SetRenderMode, MODEL_6, RENDER_MODE_SURFACE_XLU_LAYER2)
     EVT_CALL(SetRenderMode, MODEL_7, RENDER_MODE_SURFACE_XLU_LAYER2)
-    EVT_CALL(SetModelCustomGfx, MODEL_1, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_2, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_3, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_4, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_5, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_6, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_7, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_1, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_2, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_3, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_4, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_5, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_6, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_7, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(setup_gfx_glowing_star)), NULL)
     EVT_CALL(TranslateModel, MODEL_power, 0, 2, 0)
-    EVT_CALL(SetModelCustomGfx, MODEL_power, CUSTOM_GFX_1, FOG_MODE_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_power, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(setup_gfx_giving_power)), NULL)
     EVT_THREAD
         EVT_LOOP(0)

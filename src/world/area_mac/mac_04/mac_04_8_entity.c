@@ -27,13 +27,13 @@ void N(render_shrunk_player)(void) {
     s32 screenX, screenY, screenZ;
 
     get_screen_coords(gCurrentCamID,
-        gPlayerStatus.position.x, gPlayerStatus.position.y, gPlayerStatus.position.z,
+        gPlayerStatus.pos.x, gPlayerStatus.pos.y, gPlayerStatus.pos.z,
         &screenX, &screenY, &screenZ);
 
     renderTask.appendGfxArg = &gPlayerStatus;
     renderTask.appendGfx = N(appendGfx_shrunk_player);
     renderTask.renderMode = gPlayerStatus.renderMode;
-    renderTask.distance = screenZ;
+    renderTask.dist = screenZ;
 
     queue_render_task(&renderTask);
 }
@@ -47,7 +47,7 @@ void N(appendGfx_shrunk_player)(void* data) {
     guRotateF(transformMtx, playerStatus->spriteFacingAngle, 0.0f, 1.0f, 0.0f);
     guScaleF(tempMtx, shrinkScale * SPRITE_WORLD_SCALE_D, shrinkScale * SPRITE_WORLD_SCALE_D, shrinkScale * SPRITE_WORLD_SCALE_D);
     guMtxCatF(transformMtx, tempMtx, transformMtx);
-    guTranslateF(tempMtx, playerStatus->position.x, playerStatus->position.y, playerStatus->position.z);
+    guTranslateF(tempMtx, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
     guMtxCatF(transformMtx, tempMtx, transformMtx);
     playerStatus->animNotifyValue = spr_update_player_sprite(PLAYER_SPRITE_MAIN, playerStatus->trueAnimation, 1.0f);
     spr_draw_player_sprite(PLAYER_SPRITE_MAIN, 0, 0, NULL, transformMtx);
@@ -119,7 +119,7 @@ EvtScript N(EVS_EnterToybox) = {
     EVT_WAIT(1)
     EVT_EXEC_GET_TID(N(EVS_FocusCameraOnPlayer), LVarA)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_1AA, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, -90, 10, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -135,7 +135,7 @@ EvtScript N(EVS_EnterToybox) = {
         EVT_END_LOOP
     EVT_END_THREAD
     EVT_THREAD
-        EVT_CALL(PlaySoundAtPlayer, SOUND_D9, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_IN, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(0.35))
         EVT_CALL(PlayerJump, -450, 20, -160, 32)
     EVT_END_THREAD
@@ -143,7 +143,7 @@ EvtScript N(EVS_EnterToybox) = {
     EVT_IF_EQ(GF_StartedChapter4, FALSE)
         EVT_SET(GF_StartedChapter4, TRUE)
         EVT_CALL(FadeOutMusic, 0, 1500)
-        EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_4, TRANSITION_6)
+        EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_WAIT(100)
         EVT_RETURN
     EVT_END_IF
@@ -174,10 +174,10 @@ EvtScript N(EVS_ExitToybox) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_1AA, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_EXEC_GET_TID(N(EVS_FocusCameraOnPlayer), LVarA)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_DA, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_OUT, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(0.7))
     EVT_CALL(PlayerJump, -480, 45, -90, 25)
     EVT_EXEC_WAIT(N(EVS_FinishUnshrinking))
@@ -240,7 +240,7 @@ EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
         EVT_CALL(CloseChoicePopup)
         EVT_RETURN
     EVT_END_IF
-    EVT_CALL(PlaySoundAt, SOUND_269, SOUND_SPACE_MODE_0, 155, 48, -480)
+    EVT_CALL(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 155, 48, -480)
     EVT_SET(LVar0, MV_StoreroomLockEntityID)
     EVT_CALL(N(RemovePadlock))
     EVT_WAIT(5)

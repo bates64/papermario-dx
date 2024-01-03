@@ -14,8 +14,8 @@ EvtScript N(EVS_OpenChest_StoreroomKey) = {
     EVT_END
 };
 
-#include "world/common/todo/UnsetCamera0MoveFlag1.inc.c"
-#include "world/common/todo/SetCamera0MoveFlag1.inc.c"
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
+#include "world/common/DisableCameraFollowPlayerY.inc.c"
 
 EvtScript N(EVS_TetherCamToPlayer) = {
     EVT_LABEL(0)
@@ -35,7 +35,7 @@ Vec3i N(StarBoxLaunchTargets)[] = {
     { -647,  80,  132 },
     { -507,  80,  132 },
     {  672, 105,  132 },
-    {  927,  80,  -87 }, 
+    {  927,  80,  -87 },
 };
 
 EvtScript N(EVS_StarBoxLaunch_Impl) = {
@@ -49,12 +49,12 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     EVT_WAIT(1)
     EVT_CALL(SetPlayerActionState, ACTION_STATE_LAUNCH)
     EVT_WAIT(1)
-    EVT_CALL(N(UnsetCamera0MoveFlag1))
+    EVT_CALL(N(EnableCameraFollowPlayerY))
     EVT_EXEC_GET_TID(N(EVS_TetherCamToPlayer), LVarA)
     EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(0.7))
     EVT_CALL(PlayerJump, LVar7, LVar8, LVar9, 40)
     EVT_KILL_THREAD(LVarA)
-    EVT_CALL(N(SetCamera0MoveFlag1))
+    EVT_CALL(N(DisableCameraFollowPlayerY))
     EVT_WAIT(1)
     EVT_CALL(SetPlayerActionState, ACTION_STATE_IDLE)
     EVT_CALL(DisablePlayerPhysics, FALSE)
@@ -113,11 +113,11 @@ EvtScript N(EVS_StarBoxLaunch7) = {
 };
 
 API_CALLABLE(N(func_802402F4_DAD6F4)) {
-    f32 playerVx = gPlayerStatus.currentSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
-    f32 playerVz = gPlayerStatus.currentSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
-    script->varTable[0] = (gPlayerStatus.position.x + playerVx);
-    script->varTable[1] = (gPlayerStatus.position.z + playerVz);
-    
+    f32 playerVx = gPlayerStatus.curSpeed * 5.0f * sin_deg(gPlayerStatus.targetYaw);
+    f32 playerVz = gPlayerStatus.curSpeed * 5.0f * -cos_deg(gPlayerStatus.targetYaw);
+    script->varTable[0] = (gPlayerStatus.pos.x + playerVx);
+    script->varTable[1] = (gPlayerStatus.pos.z + playerVz);
+
     return ApiStatus_DONE2;
 }
 

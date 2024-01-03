@@ -25,7 +25,7 @@ void spawn_drops(Enemy* enemy) {
     s32 spawnCounter;
     s32 dropCount;
     s32 totalWeight;
-    s32 facingAngleSign;
+    s32 angle;
     s32 angleMult;
     s32 i, j;
     s32 flags;
@@ -39,7 +39,7 @@ void spawn_drops(Enemy* enemy) {
 
     spawnCounter = 0;
     availableRenderTasks = 256 - 10 - gLastRenderTaskCount;
-    facingAngleSign = clamp_angle(camera->currentYaw + 90.0f);
+    angle = clamp_angle(camera->curYaw + 90.0f);
     x = npc->pos.x;
     y = npc->pos.y + (npc->collisionHeight / 2);
     z = npc->pos.z;
@@ -70,14 +70,14 @@ void spawn_drops(Enemy* enemy) {
 
             totalWeight += drops->itemDrops[3 * i + 1];
             if (drops->itemDrops[3 * i + 2] > 0) {
-                if (get_global_flag(drops->itemDrops[3 * i + 2] + 0x714) != 0) {
+                if (get_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_Unused_NPC_6C) + drops->itemDrops[3 * i + 2])) {
                     continue;
                 }
             }
 
             if (totalWeight >= dropCount) {
                 itemToDrop = drops->itemDrops[3 * i];
-                do { } while (0); // TODO required to match
+                do {} while (0); // TODO required to match
                 break;
             }
         }
@@ -89,33 +89,31 @@ void spawn_drops(Enemy* enemy) {
         }
 
         if (itemToDrop != ITEM_NONE) {
-            make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD,
-                pickupDelay, facingAngleSign + angleMult * 360, 0);
+            make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0);
             spawnCounter++;
             pickupDelay += 2;
-            facingAngleSign += 30.0;
+            angle += 30.0;
             if (spawnCounter >= 12) {
                 angleMult++;
-                facingAngleSign = angleMult * 8;
+                angle = angleMult * 8;
                 spawnCounter = 0;
             }
 
             if (drops->itemDrops[3 * i + 2] >= 0) {
-                set_global_flag(drops->itemDrops[3 * i + 2] + 0x715);
+                set_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_SpawnedItemDrop_00) + drops->itemDrops[3 * i + 2]);
             }
         }
     }
 
     if (encounter->dropWhackaBump) {
         encounter->dropWhackaBump = FALSE;
-        make_item_entity(ITEM_WHACKAS_BUMP, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD,
-            pickupDelay, facingAngleSign + angleMult * 360, 0);
+        make_item_entity(ITEM_WHACKAS_BUMP, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0);
         spawnCounter++;
         pickupDelay += 2;
-        facingAngleSign += 30.0;
+        angle += 30.0;
         if (spawnCounter >= 12) {
             angleMult++;
-            facingAngleSign = angleMult * 8;
+            angle = angleMult * 8;
             spawnCounter = 0;
         }
     }
@@ -143,7 +141,7 @@ void spawn_drops(Enemy* enemy) {
         }
     }
 
-    if (is_ability_active(ABILITY_HEART_FINDER) != 0) {
+    if (is_ability_active(ABILITY_HEART_FINDER)) {
         dropCount += 1 + rand_int(2);
     }
     if (enemy->flags & ENEMY_FLAG_NO_DROPS) {
@@ -163,15 +161,14 @@ void spawn_drops(Enemy* enemy) {
     availableShadows -= dropCount;
 
     for (i = 0; i < dropCount; i++) {
-        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD,
-            pickupDelay, facingAngleSign + (angleMult * 360), 0);
+        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + (angleMult * 360), 0);
         spawnCounter++;
         pickupDelay += 2;
-        facingAngleSign += 30.0;
+        angle += 30.0;
         if (spawnCounter >= 12) {
             spawnCounter = 0;
             angleMult++;
-            facingAngleSign = angleMult * 8;
+            angle = angleMult * 8;
         }
     }
 
@@ -198,7 +195,7 @@ void spawn_drops(Enemy* enemy) {
         }
     }
 
-    if (is_ability_active(ABILITY_FLOWER_FINDER) != 0) {
+    if (is_ability_active(ABILITY_FLOWER_FINDER)) {
         dropCount += 1 + rand_int(2);
     }
     if (enemy->flags & ENEMY_FLAG_NO_DROPS) {
@@ -218,15 +215,14 @@ void spawn_drops(Enemy* enemy) {
     availableShadows -= dropCount;
 
     for (i = 0; i < dropCount; i++) {
-        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD,
-            pickupDelay, facingAngleSign + (angleMult * 360), 0);
+        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + (angleMult * 360), 0);
         spawnCounter++;
         pickupDelay += 2;
-        facingAngleSign += 30.0;
+        angle += 30.0;
         if (spawnCounter >= 12) {
             spawnCounter = 0;
             angleMult++;
-            facingAngleSign = angleMult * 8;
+            angle = angleMult * 8;
         }
     }
 
@@ -257,7 +253,7 @@ void spawn_drops(Enemy* enemy) {
     }
     dropCount = dropCount + encounter->coinsEarned;
 
-    if (is_ability_active(ABILITY_PAY_OFF) != 0) {
+    if (is_ability_active(ABILITY_PAY_OFF)) {
         dropCount += encounter->damageTaken / 2;
         encounter->damageTaken = 0;
     }
@@ -265,7 +261,7 @@ void spawn_drops(Enemy* enemy) {
         encounter->hasMerleeCoinBonus = FALSE;
         dropCount *= 3;
     }
-    if (is_ability_active(ABILITY_MONEY_MONEY) != 0) {
+    if (is_ability_active(ABILITY_MONEY_MONEY)) {
         dropCount *= 2;
     }
     if (dropCount > 20) {
@@ -284,15 +280,14 @@ void spawn_drops(Enemy* enemy) {
     }
 
     for (i = 0; i < dropCount; i++) {
-        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD,
-            pickupDelay, facingAngleSign + (angleMult * 360), 0);
+        make_item_entity(itemToDrop, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + (angleMult * 360), 0);
         spawnCounter++;
         pickupDelay += 2;
-        facingAngleSign = facingAngleSign + 30.0;
+        angle = angle + 30.0;
         if (spawnCounter >= 12) {
             spawnCounter = 0;
             angleMult++;
-            facingAngleSign = angleMult * 8;
+            angle = angleMult * 8;
         }
     }
 }
@@ -441,14 +436,14 @@ s32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
         return FALSE;
     }
 
-    if (territory->halfHeight <= fabsf(npc->pos.y - playerStatus->position.y)
+    if (territory->halfHeight <= fabsf(npc->pos.y - playerStatus->pos.y)
             && !(territory->detectFlags & AI_TERRITORY_IGNORE_ELEVATION)) {
         return FALSE;
     }
 
     if (territory->sizeX | territory->sizeZ && is_point_within_region(territory->shape,
             territory->pointX, territory->pointZ,
-            playerStatus->position.x, playerStatus->position.z,
+            playerStatus->pos.x, playerStatus->pos.z,
             territory->sizeX, territory->sizeZ)) {
         return FALSE;
     }
@@ -462,10 +457,10 @@ s32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
         x = npc->pos.x;
         y = npc->pos.y + npc->collisionHeight * 0.5;
         z = npc->pos.z;
-        dist = dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
-        if (npc_test_move_simple_with_slipping(COLLISION_CHANNEL_10000 | COLLISION_IGNORE_ENTITIES,
+        dist = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+        if (npc_test_move_simple_with_slipping(COLLIDER_FLAG_IGNORE_PLAYER | COLLISION_IGNORE_ENTITIES,
                 &x, &y, &z,
-                dist, atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z),
+                dist, atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
                 0.1f, 0.1f)) {
             return FALSE;
         }
@@ -492,7 +487,7 @@ s32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
         } else {
             add_vec2D_polar(&x, &z, fwdPosOffset, 270.0f - npc->renderYaw);
         }
-        if (dist2D(x, z, playerStatus->position.x, playerStatus->position.z) <= radius) {
+        if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= radius) {
             return TRUE;
         }
     }
@@ -519,7 +514,7 @@ s32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed) {
             posZ = npc->pos.z;
             add_vec2D_polar(&posX, &posZ, moveSpeed, 270.0f - npc->renderYaw);
 
-            if (dist2D(posX, posZ, playerStatus->position.x, playerStatus->position.z) <= radius) {
+            if (dist2D(posX, posZ, playerStatus->pos.x, playerStatus->pos.z) <= radius) {
                 return TRUE;
             }
         }
@@ -559,7 +554,7 @@ void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDet
     // chose a random direction and move time
     npc->duration = (npcAISettings->moveTime / 2) + rand_int((npcAISettings->moveTime / 2) + 1);
     npc->yaw = clamp_angle(npc->yaw + rand_int(60) - 30.0f);
-    npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_WALK];
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_WALK];
     script->functionTemp[1] = 0;
 
     if (enemy->territory->wander.moveSpeedOverride < 0) {
@@ -578,7 +573,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 stillWithinTerritory = FALSE;
     f32 x, y, z;
-    s32 sp34;
+    EffectInstance* sp34;
     f32 yaw;
 
     if (aiSettings->playerSearchInterval >= 0) {
@@ -588,10 +583,10 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
-                yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
-                if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionRadius)) {
+                yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+                if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
                     npc->yaw = yaw;
-                    ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
+                    ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                     fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &sp34);
                     enemy->aiFlags &= ~ENEMY_AI_FLAG_40;
                     enemy->aiFlags &= ~ENEMY_AI_FLAG_20;
@@ -629,7 +624,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
         x = npc->pos.x;
         y = npc->pos.y;
         z = npc->pos.z;
-        if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 2.0 * npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionRadius)) {
+        if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 2.0 * npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
             yaw = clamp_angle(atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z));
             enemy->aiFlags &= ~ENEMY_AI_FLAG_40;
             ai_check_fwd_collisions(npc, 5.0f, &yaw, NULL, NULL, NULL);
@@ -669,7 +664,7 @@ void basic_ai_loiter_init(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
     npc->duration = (aiSettings->waitTime / 2) + rand_int((aiSettings->waitTime / 2) + 1);
     npc->yaw = clamp_angle(npc->yaw + rand_int(180) - 90.0f);
-    npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
@@ -678,17 +673,17 @@ void basic_ai_loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z;
     f32 yaw;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
 
     if (aiSettings->playerSearchInterval >= 0) {
         if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 0)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
-            yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
-            if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionRadius)) {
+            yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+            if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
                 npc->yaw = yaw;
-                ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
+                ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
                 if (enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER) {
                     script->AI_TEMP_STATE = AI_STATE_ALERT_INIT;
@@ -721,9 +716,9 @@ void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISetting
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    ai_enemy_play_sound(npc, SOUND_3E1, 0);
-    npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_JUMP];
-    npc->jumpVelocity = 10.0f;
+    ai_enemy_play_sound(npc, SOUND_AI_FOUND_PLAYER_JUMP, 0);
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_JUMP];
+    npc->jumpVel = 10.0f;
     npc->jumpScale = 2.5f;
     npc->moveToPos.y = npc->pos.y;
     npc->flags |= NPC_FLAG_JUMPING;
@@ -734,7 +729,7 @@ void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, En
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     s32 done = FALSE;
 
-    if (npc->jumpVelocity <= 0.0) {
+    if (npc->jumpVel <= 0.0) {
         if (npc->pos.y <= npc->moveToPos.y) {
             npc->pos.y = npc->moveToPos.y;
             done = TRUE;
@@ -742,10 +737,10 @@ void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, En
     }
 
     if (!done) {
-        npc->pos.y += npc->jumpVelocity;
-        npc->jumpVelocity -= npc->jumpScale;
+        npc->pos.y += npc->jumpVel;
+        npc->jumpVel -= npc->jumpScale;
     } else {
-        npc->jumpVelocity = 0.0f;
+        npc->jumpVel = 0.0f;
         npc->flags &= ~NPC_FLAG_JUMPING;
         script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
     }
@@ -758,13 +753,13 @@ void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDete
 
     if ((gPlayerStatusPtr->actionState == ACTION_STATE_JUMP || gPlayerStatusPtr->actionState == ACTION_STATE_BOUNCE ||
         gPlayerStatusPtr->actionState == ACTION_STATE_HOP || gPlayerStatusPtr->actionState == ACTION_STATE_FALLING) &&
-        (f64)dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z) < npc->collisionRadius)
+        (f64)dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) < npc->collisionDiameter)
     {
         skipTurnAround = TRUE;
     }
 
     if (!skipTurnAround) {
-        f32 angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
+        f32 angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         f32 deltaAngleToPlayer = get_clamped_angle_diff(npc->yaw, angle);
 
         if (npcAISettings->chaseTurnRate < fabsf(deltaAngleToPlayer)) {
@@ -781,7 +776,7 @@ void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDete
         npc->duration = 0;
     }
 
-    npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
     npc->moveSpeed = npcAISettings->chaseSpeed;
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
@@ -789,25 +784,25 @@ void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDete
 void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 sp28;
+    EffectInstance* sp28;
     f32 x, y, z;
 
     if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1)) {
         fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &sp28);
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
         script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
         return;
     }
 
     if (enemy->npcSettings->actionFlags & AI_ACTION_04) {
-        if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z) > (npc->moveSpeed * 5.0)) {
+        if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > (npc->moveSpeed * 5.0)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
-            if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 1.0f, npc->yaw, npc->collisionHeight, npc->collisionRadius)) {
+            if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
                 fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xC, &sp28);
-                npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+                npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
                 npc->duration = 15;
                 script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
                 return;
@@ -819,7 +814,7 @@ void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume
     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
 
     if (npc->moveSpeed > 8.0 && !(gGameStatusPtr->frameCounter % 5)) {
-        ai_enemy_play_sound(npc, SOUND_20C1, 0);
+        ai_enemy_play_sound(npc, SOUND_SMALL_NPC_STEP, 0);
     }
 
     if (npc->duration > 0) {
@@ -862,15 +857,15 @@ ApiStatus BasicAI_Main(Evt* script, s32 isInitialCall) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
 
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
         if (!enemy->territory->wander.isFlying) {
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_8;
+            npc->flags &= ~NPC_FLAG_FLYING;
         } else {
             npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_8;
+            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {

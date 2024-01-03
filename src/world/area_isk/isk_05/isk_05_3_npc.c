@@ -4,7 +4,7 @@
 #include "world/common/enemy/StoneChomp.inc.c"
 
 typedef struct StoneChompAmbushIsk05 {
-    /* 0x00 */ s32 foldID;
+    /* 0x00 */ s32 imgfxIdx;
     /* 0x04 */ s32 workerID;
     /* 0x08 */ s32 spriteIndex;
     /* 0x0C */ s32 rasterIndex;
@@ -22,7 +22,7 @@ StoneChompAmbushIsk05 N(ChompAmbush) = {};
 void N(func_80241610_97F0E0)(void) {
     StoneChompAmbushIsk05* ambush = &N(ChompAmbush);
     Camera* cam = &gCameras[gCurrentCameraID];
-    FoldImageRecPart foldImg;
+    ImgFXTexture ifxImg;
     SpriteRasterInfo spriteRaster;
     Matrix4f transformMtx, tempMtx;
 
@@ -50,7 +50,7 @@ void N(func_80241610_97F0E0)(void) {
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
 
     guTranslateF(transformMtx, ambush->pos.x, ambush->pos.y, ambush->pos.z);
-    guRotateF(tempMtx, ambush->rot.y + gCameras[gCurrentCameraID].currentYaw + ambush->renderYaw, 0.0f, 1.0f, 0.0f);
+    guRotateF(tempMtx, ambush->rot.y + gCameras[gCurrentCameraID].curYaw + ambush->renderYaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guRotateF(tempMtx, ambush->rot.z, 0.0f, 0.0f, 1.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
@@ -63,16 +63,16 @@ void N(func_80241610_97F0E0)(void) {
         G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     spr_get_npc_raster_info(&spriteRaster, ambush->spriteIndex, ambush->rasterIndex);
-    foldImg.raster  = spriteRaster.raster;
-    foldImg.palette = spriteRaster.defaultPal;
-    ambush->width  = foldImg.width  = spriteRaster.width;
-    ambush->height = foldImg.height = spriteRaster.height;
-    foldImg.xOffset = -(spriteRaster.width / 2);
-    foldImg.yOffset = (spriteRaster.height / 2);
-    foldImg.opacity = 255;
+    ifxImg.raster  = spriteRaster.raster;
+    ifxImg.palette = spriteRaster.defaultPal;
+    ambush->width  = ifxImg.width  = spriteRaster.width;
+    ambush->height = ifxImg.height = spriteRaster.height;
+    ifxImg.xOffset = -(spriteRaster.width / 2);
+    ifxImg.yOffset = (spriteRaster.height / 2);
+    ifxImg.alpha = 255;
 
-    fold_update(ambush->foldID, FOLD_TYPE_7, 255, 255, 255, ambush->alpha, 0);
-    fold_appendGfx_component(ambush->foldID, &foldImg, 0, transformMtx);
+    imgfx_update(ambush->imgfxIdx, IMGFX_SET_ALPHA, 255, 255, 255, ambush->alpha, 0);
+    imgfx_appendGfx_component(ambush->imgfxIdx, &ifxImg, 0, transformMtx);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
@@ -99,7 +99,7 @@ API_CALLABLE(N(func_80241B28_97F5F8)) {
     ambush->renderYaw = 85.0f;
     ambush->alpha = 0.0f;
 
-    ambush->foldID = 0;
+    ambush->imgfxIdx = 0;
     ambush->workerID = create_worker_frontUI(NULL, N(func_80241610_97F0E0));
     return ApiStatus_DONE2;
 }
@@ -161,11 +161,11 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
         EVT_WAIT(1)
         EVT_GOTO(100)
     EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_A)
+    EVT_CALL(PlaySound, SOUND_CHIME_BEGIN_AMBUSH)
     EVT_CALL(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, 0)
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_266, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_ISK_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 65, 0, 15, EASING_QUADRATIC_IN)
         EVT_LABEL(101)
         EVT_CALL(UpdateLerp)
@@ -174,7 +174,7 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(101)
         EVT_END_IF
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_267, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_ISK_DOOR_SLAM, SOUND_SPACE_DEFAULT)
         EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
     EVT_END_THREAD
     EVT_CALL(DisablePlayerInput, TRUE)
@@ -218,7 +218,7 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
     EVT_CALL(EnableNpcShadow, NPC_SELF, TRUE)
     EVT_WAIT(1)
     EVT_CALL(N(DestroyAmbushWorker))
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(BindNpcAI, NPC_SELF, EVT_PTR(N(EVS_NpcAI_StoneChomp)))
     EVT_RETURN
@@ -232,7 +232,7 @@ EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
         EVT_CASE_EQ(OUTCOME_PLAYER_WON)
             EVT_SET(GF_ISK05_Defeated_StoneChomp, TRUE)
             EVT_SET(AF_ISK05_StoneChompDefeated, TRUE)
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_265, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_deilittw, SOUND_ISK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
             EVT_THREAD
                 EVT_WAIT(5)
                 EVT_CALL(MakeLerp, 0, 65, 65, EASING_LINEAR)
@@ -287,7 +287,7 @@ NpcData N(NpcData_StoneChomp) = {
     .initVarCount = 1,
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_StoneChomp),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,
 };

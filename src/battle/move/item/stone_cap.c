@@ -1,6 +1,7 @@
 #include "common.h"
 #include "script_api/battle.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_stone_cap
 
@@ -17,7 +18,7 @@ API_CALLABLE(N(func_802A123C_7217DC)) {
 
     switch (script->functionTemp[0]) {
         case 0:
-            inflict_status(player, STATUS_STONE, script->varTable[0]);
+            inflict_status(player, STATUS_KEY_STONE, script->varTable[0]);
             player->statusAfflicted = 0;
             script->functionTemp[1] = 3;
             script->functionTemp[0] = 1;
@@ -25,9 +26,9 @@ API_CALLABLE(N(func_802A123C_7217DC)) {
 
         case 1:
             for (i = 0; i < 10; i++) {
-                f32 x = player->currentPos.x + ((rand_int(20) - 10) * player->scalingFactor);
-                f32 y = player->currentPos.y + ((rand_int(20) + 10) * player->scalingFactor);
-                f32 z = player->currentPos.z + 5.0f;
+                f32 x = player->curPos.x + ((rand_int(20) - 10) * player->scalingFactor);
+                f32 y = player->curPos.y + ((rand_int(20) + 10) * player->scalingFactor);
+                f32 z = player->curPos.z + 5.0f;
                 fx_floating_cloud_puff(0, x, y, z, 1.0f, 25);
             }
 
@@ -53,12 +54,12 @@ API_CALLABLE(N(func_802A123C_7217DC)) {
 EvtScript N(EVS_UseItem) = {
     EVT_SET_CONST(LVarA, ITEM_STONE_CAP)
     EVT_EXEC_WAIT(N(UseItemWithEffect))
-    EVT_CALL(PlaySound, SOUND_361)
+    EVT_CALL(PlaySound, SOUND_PUT_ON_CAP)
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_AdjustCap)
     EVT_WAIT(30)
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Crouch)
     EVT_CALL(GetItemPower, ITEM_STONE_CAP, LVar0, LVar1)
-    EVT_CALL(PlaySound, SOUND_362)
+    EVT_CALL(PlaySound, SOUND_BECOME_STONE)
     EVT_CALL(N(func_802A123C_7217DC))
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_WAIT(20)

@@ -94,7 +94,7 @@ EvtScript N(EVS_TouchFloor_IngredientStation) = {
 WindowStyleCustom N(IngredientNameWS) = {
     .background = {},
     .corners = {
-        .imgData = ui_box_corners5_png, 
+        .imgData = ui_box_corners5_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
         .size1 = { 16, 8},
@@ -103,12 +103,8 @@ WindowStyleCustom N(IngredientNameWS) = {
         .size4 = { 16, 8},
         .unk_0D = { 0, 0, 0}
     },
-    .opaqueCombineMode = gsDPSetCombineLERP(
-        1, 0, TEXEL1, 0, 0, 0, 0, TEXEL1,
-        PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, 0, 0, 0, COMBINED), 
-    .transparentCombineMode = gsDPSetCombineLERP(
-        1, 0, TEXEL1, 0, TEXEL1, 0, PRIMITIVE, 0,
-        PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, 0, 0, 0, COMBINED),
+    .opaqueCombineMode = gsDPSetCombineMode(PM_CC_30, PM_CC_BOX2_CYC2),
+    .transparentCombineMode = gsDPSetCombineMode(PM_CC_31, PM_CC_BOX2_CYC2),
     .color1 = { 255, 183, 181, 255 },
     .color2 = { 122,  89,  63, 255 },
 };

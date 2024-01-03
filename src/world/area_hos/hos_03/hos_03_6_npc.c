@@ -1,4 +1,5 @@
 #include "hos_03.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/StarSpirit_Wander.inc.c"
@@ -90,8 +91,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 204, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_WAIT(61)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     EVT_THREAD
@@ -108,7 +109,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_EXEC(N(EVS_SetupMusic))
     EVT_CALL(N(ToadHouse_CamSetFOV), 0, 25)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, 445, 25, 185)
     EVT_CALL(PlayerMoveTo, 440, 215, 20)
     EVT_RETURN
@@ -132,7 +133,7 @@ EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
 };
 
 EvtScript N(EVS_NpcInteract_ShopOwner) = {
-    EVT_EXEC_WAIT(ItemShopInteract)
+    EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
     EVT_RETURN
     EVT_END
 };

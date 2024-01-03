@@ -1,4 +1,3 @@
-#include "common.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
@@ -18,7 +17,7 @@ API_CALLABLE(N(init)) {
 
     battleStatus->unk_82 = 100;
     battleStatus->actionCmdDifficultyTable = actionCmdTableFireShell;
-    battleStatus->unk_86 = 127;
+    battleStatus->actionResult = ACTION_RESULT_NONE;
 
     if (battleStatus->actionCommandMode == ACTION_COMMAND_MODE_NOT_LEARNED) {
         battleStatus->actionSuccess = 0;
@@ -107,7 +106,7 @@ void N(update)(void) {
             battleStatus->unk_85 = 0;
             actionCommandStatus->unk_5C = 0;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
         case 11:
             btl_set_popup_duration(99);
@@ -119,16 +118,16 @@ void N(update)(void) {
                     actionCommandStatus->barFillLevel = 0;
                 }
                 if (!actionCommandStatus->isBarFilled) {
-                    if (battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) {
+                    if (battleStatus->curButtonsDown & BUTTON_STICK_LEFT) {
                         actionCommandStatus->unk_5C = 1;
                     }
 
-                    if (!(battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) && (actionCommandStatus->unk_5C != 0)) {
+                    if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && (actionCommandStatus->unk_5C != 0)) {
                         actionCommandStatus->barFillLevel += (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 950) / 100;
                         actionCommandStatus->unk_5C = 0;
                     }
 
-                    if (battleStatus->currentButtonsPressed & BUTTON_STICK_RIGHT) {
+                    if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
                         actionCommandStatus->barFillLevel -= (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 950) / 100;
                     }
                 }
@@ -146,30 +145,30 @@ void N(update)(void) {
                 hud_element_clear_flags(id, 2);
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, battleStatus->actionResult * 12);
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
             switch (partner->actorBlueprint->level) {
                 case 0:
-                    if (battleStatus->actionResult >= D_802A9964_427334[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A9964_427334[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
-                    if (battleStatus->unk_85 > 0 && (battleStatus->actionResult < D_802A9964_427334[battleStatus->unk_85 - 1])) {
+                    if (battleStatus->unk_85 > 0 && (battleStatus->actionQuality < D_802A9964_427334[battleStatus->unk_85 - 1])) {
                         battleStatus->unk_85--;
                     }
                     break;
                 case 1:
-                    if (battleStatus->actionResult >= D_802A9974_427344[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A9974_427344[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
-                    if (battleStatus->unk_85 > 0 && (battleStatus->actionResult < D_802A9974_427344[battleStatus->unk_85 - 1])) {
+                    if (battleStatus->unk_85 > 0 && (battleStatus->actionQuality < D_802A9974_427344[battleStatus->unk_85 - 1])) {
                         battleStatus->unk_85--;
                     }
                     break;
                 case 2:
-                    if (battleStatus->actionResult >= D_802A9988_427358[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A9988_427358[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
-                    if (battleStatus->unk_85 > 0 && (battleStatus->actionResult < D_802A9988_427358[battleStatus->unk_85 - 1])) {
+                    if (battleStatus->unk_85 > 0 && (battleStatus->actionQuality < D_802A9988_427358[battleStatus->unk_85 - 1])) {
                         battleStatus->unk_85--;
                     }
                     break;
@@ -188,15 +187,15 @@ void N(update)(void) {
 
             cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
             if (cutoff >= battleStatus->actionSuccess) {
-                battleStatus->unk_86 = -2;
+                battleStatus->actionResult = ACTION_RESULT_MINUS_2;
             } else {
-                battleStatus->unk_86 = 1;
+                battleStatus->actionResult = ACTION_RESULT_SUCCESS;
             }
 
             if (battleStatus->actionSuccess == 100) {
                 func_80269160();
             }
-            sfx_stop_sound(SOUND_80000041);
+            sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
             btl_set_popup_duration(0);
             actionCommandStatus->frameCounter = 5;
             actionCommandStatus->state = 12;

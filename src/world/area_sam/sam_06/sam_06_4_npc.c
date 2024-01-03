@@ -1,5 +1,6 @@
 #include "sam_06.h"
 #include "model.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Toad_Wander.inc.c"
 
@@ -20,7 +21,7 @@ EvtScript N(EVS_NpcAI_Ninji_Wander) = {
 NpcSettings N(NpcSettings_Ninji_Wander) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .ai = &N(EVS_NpcAI_Ninji_Wander),
 };
 
@@ -41,7 +42,7 @@ EvtScript N(EVS_NpcAI_ShiverToad_Wander) = {
 NpcSettings N(NpcSettings_ShiverToad_Wander) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .ai = &N(EVS_NpcAI_ShiverToad_Wander),
 };
 
@@ -53,13 +54,13 @@ NpcSettings N(NpcSettings_ShiverToad_Wander) = {
 NpcSettings N(NpcSettings_Ninji_Stationary) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 #include "world/common/complete/GiveReward.inc.c"
@@ -285,7 +286,7 @@ API_CALLABLE(N(func_80242538_D223C8)) {
 
     if (isInitialCall) {
         if (script->varTable[0] == 0) {
-            func_8011B950(script->varTable[15], -1, FOG_MODE_1, 1);
+            mdl_group_set_custom_gfx(script->varTable[15], CUSTOM_GFX_NONE, ENV_TINT_SHROUD, TRUE);
         }
         script->functionTemp[0] = 0;
     }
@@ -301,14 +302,14 @@ API_CALLABLE(N(func_80242538_D223C8)) {
         alpha = 255 - script->functionTemp[0];
     }
 
-    set_background_color_blend(0, 0, 0, alpha);
+    mdl_set_shroud_tint_params(0, 0, 0, alpha);
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
     gCameras[CAM_DEFAULT].bgColor[1] = 0;
     gCameras[CAM_DEFAULT].bgColor[2] = 0;
 
     if (script->functionTemp[0] >= 255) {
         if (script->varTable[0] == 3) {
-            func_8011B950(script->varTable[15], -1, FOG_MODE_0, 1);
+            mdl_group_set_custom_gfx(script->varTable[15], CUSTOM_GFX_NONE, ENV_TINT_NONE, TRUE);
         }
         return ApiStatus_DONE2;
     }
@@ -340,7 +341,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(3.0 / DT))
     EVT_CALL(PlayerMoveTo, 15, -90, 0)
     EVT_CALL(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_OUT)
     EVT_LABEL(70)
         EVT_CALL(UpdateLerp)
@@ -382,7 +383,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
                 EVT_GOTO(71)
             EVT_END_IF
         EVT_CALL(SetGroupVisibility, MODEL_km_sita, MODEL_GROUP_HIDDEN)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(PlayerMoveTo, 0, -240, 0)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_k_d1, COLLIDER_FLAGS_UPPER_MASK)
@@ -497,7 +498,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     EVT_CALL(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
     EVT_CALL(SetGroupVisibility, MODEL_km_sita, MODEL_GROUP_VISIBLE)
     EVT_CALL(SetNpcPos, NPC_Merle, 0, 90, -180)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
@@ -518,7 +519,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(1)
         EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_HIDDEN)
     EVT_CALL(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
     EVT_CALL(PlayerFaceNpc, NPC_Merle, FALSE)
@@ -533,7 +534,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_CALL(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F3)
     EVT_CALL(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_VISIBLE)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     EVT_LABEL(2)
         EVT_CALL(UpdateLerp)
@@ -557,7 +558,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(3)
         EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_k_d1, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_HIDDEN)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -762,8 +763,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 229, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(60)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -784,7 +785,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_EXEC(N(EVS_SetupMusic))
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(PlayerMoveTo, -347, -114, 0)
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(3.0))
     EVT_CALL(PlayerMoveTo, -309, -16, 0)

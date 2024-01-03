@@ -35,9 +35,39 @@ static f32 gPausePartnersRotAngle;
 static s32 gPausePartnersLevel;
 static s32 gPausePartnersNumPartners;
 
-HudScript* gPausePartnersIconScripts[] = {
-    &HES_FPCost, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
-    &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+#if VERSION_PAL
+extern HudScript HES_FPCost_de;
+extern HudScript HES_FPCost_fr;
+extern HudScript HES_FPCost_es;
+
+extern u8 D_PAL_80271B38[];
+extern u8 D_PAL_80271B3C[];
+extern u8 D_PAL_80271B40[];
+extern u8 D_PAL_80271B44[];
+extern u8 D_PAL_80271B48[];
+extern u8 D_PAL_80271B4C[];
+extern u8 D_PAL_80271B50[];
+#endif
+
+HudScript* gPausePartnersIconScripts[][8] = {
+    [LANGUAGE_DEFAULT] = {
+        &HES_FPCost, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
+        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+    },
+#if VERSION_PAL
+    [LANGUAGE_DE] = {
+        &HES_FPCost_de, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
+        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+    },
+    [LANGUAGE_FR] = {
+        &HES_FPCost_fr, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
+        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+    },
+    [LANGUAGE_ES] = {
+        &HES_FPCost_es, &HES_StatFp_1, &HES_PartnerRank, &HES_PartnerRank,
+        &HES_MoveDiamond, &HES_MoveBlueOrb, &HES_MoveGreenOrb, &HES_MoveRedOrb
+    },
+#endif
 };
 
 Vp gPausePartnersViewport = {
@@ -162,7 +192,7 @@ Gfx gPausePartnersDL[] = {
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetTextureConvert(G_TC_FILT),
     gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
-    gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, 1, 0, 0, 0, TEXEL0, 0, 0, 0, 1),
+    gsDPSetCombineMode(PM_CC_0F, PM_CC_0F),
     gsSPClearGeometryMode(G_LIGHTING),
     gsSPSetGeometryMode(G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH),
     gsSPEndDisplayList()
@@ -341,7 +371,7 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         } else {
             color = 255.0f - offsetZ * 95.0f * 0.125f;
         }
-        func_802DE894(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], FOLD_TYPE_6, color, color, color, 255, 0x40);
+        set_npc_imgfx_all(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], IMGFX_SET_COLOR, color, color, color, 255, 64);
         spr_draw_npc_sprite(gPausePartnersSpriteIDs[gPausePartnersPartnerIdx[index]], 0, 0, NULL, matrix);
     }
 
@@ -444,13 +474,14 @@ void pause_partners_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     s32 msgID = gPartnerPopupProperties[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].nameMsg;
     s32 level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
     s32 msgWidth = get_msg_width(msgID, 0);
-    s32 offset = 16;
+    s32 offset;
 
-    if (level != 1) {
+    if (level == PARTNER_RANK_SUPER) {
+        offset = 16;
+    } else  if (level == PARTNER_RANK_ULTRA) {
+        offset = 20;
+    } else {
         offset = 0;
-        if (level == 2) {
-            offset = 20;
-        }
     }
 
     if (offset != 0) {
@@ -479,11 +510,11 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     s32 level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
 
 
-    if (level == 2) {
+    if (level == PARTNER_RANK_ULTRA) {
         level = 4;
-    } else if (level == 1) {
+    } else if (level == PARTNER_RANK_SUPER) {
         level = 3;
-    } else if (level == 0) {
+    } else if (level == PARTNER_RANK_NORMAL) {
         level = 2;
     }
     for (i = 0; i < 4; i++) {
@@ -515,9 +546,19 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
         hud_element_draw_without_clipping(gPausePartnersIconIDs[i + 4]);
 
         if (costFP != 0) {
-            draw_number(costFP, baseX + 125, baseY + 22 + i * 13, style, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            s32 xOffset = 125;
+
+#if VERSION_PAL
+            xOffset = D_PAL_80271B44[gCurrentLanguage];
+#endif
+
+            draw_number(costFP, baseX + xOffset, baseY + 22 + i * 13, style, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
             if (costFP > 0) {
+#if VERSION_PAL
+                hud_element_set_render_pos(gPausePartnersIconIDs[0], baseX + D_PAL_80271B44[gCurrentLanguage] + 9, baseY + 29 + i * 13);
+#else
                 hud_element_set_render_pos(gPausePartnersIconIDs[0], baseX + 134, baseY + 29 + i * 13);
+#endif
                 hud_element_draw_without_clipping(gPausePartnersIconIDs[0]);
             }
         }
@@ -529,7 +570,16 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
 }
 
 void pause_partners_draw_movelist_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
-    draw_msg(pause_get_menu_msg(PAUSE_MSG_PARTNER_ABILITIES), baseX + 12, baseY + 1, 255, -1, DRAW_MSG_STYLE_MENU);
+    s32 msgID = pause_get_menu_msg(PAUSE_MSG_PARTNER_ABILITIES);
+    s32 xOffset;
+
+#if VERSION_PAL
+    xOffset = D_PAL_80271B38[gCurrentLanguage];
+#else
+    xOffset = 12;
+#endif
+
+    draw_msg(msgID, baseX + xOffset, baseY + 1, 255, -1, DRAW_MSG_STYLE_MENU);
 }
 
 void pause_partners_draw_movelist_flower(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
@@ -559,8 +609,8 @@ void pause_partners_init(MenuPanel* panel) {
         gPausePartnersSpriteIDs[i] = spr_load_npc_sprite(gPausePartnersSpriteAnims[i][0], gPausePartnersSpriteAnims[i]);
     }
 
-    for (i = 0; i < ARRAY_COUNT(gPausePartnersIconScripts); i++) {
-        gPausePartnersIconIDs[i] = hud_element_create(gPausePartnersIconScripts[i]);
+    for (i = 0; i < ARRAY_COUNT(gPausePartnersIconScripts[0]); i++) {
+        gPausePartnersIconIDs[i] = hud_element_create(gPausePartnersIconScripts[gCurrentLanguage][i]);
         hud_element_set_flags(gPausePartnersIconIDs[i], HUD_ELEMENT_FLAG_80);
     }
 
@@ -569,9 +619,17 @@ void pause_partners_init(MenuPanel* panel) {
     }
     setup_pause_menu_tab(gPausePartnersWindowBPs, ARRAY_COUNT(gPausePartnersWindowBPs));
 
+#if VERSION_PAL
+    gWindows[WINDOW_ID_PAUSE_PARTNERS_MOVELIST_TITLE].width = D_PAL_80271B50[gCurrentLanguage];
+    gWindows[WINDOW_ID_PAUSE_PARTNERS_MOVELIST_TITLE].pos.x = D_PAL_80271B4C[gCurrentLanguage];
+    gWindows[WINDOW_ID_PAUSE_PARTNERS_MOVELIST].width = D_PAL_80271B40[gCurrentLanguage];
+    gWindows[WINDOW_ID_PAUSE_PARTNERS_MOVELIST].pos.x = D_PAL_80271B3C[gCurrentLanguage];
+    gWindows[WINDOW_ID_PAUSE_PARTNERS_MOVELIST_FLOWER].pos.x = D_PAL_80271B48[gCurrentLanguage];
+#endif
+
     gPausePartnersCurrentPartnerIdx = 0;
     for (i = 0; i < gPausePartnersNumPartners; i++) {
-        if (playerData->currentPartner == gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[i]]) {
+        if (playerData->curPartner == gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[i]]) {
             gPausePartnersCurrentPartnerIdx = i;
             break;
         }
@@ -630,11 +688,11 @@ void pause_partners_handle_input(MenuPanel* panel) {
     }
 
     level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
-    if (level == 2) {
+    if (level == PARTNER_RANK_ULTRA) {
         level = 4;
-    } else if (level == 1) {
+    } else if (level == PARTNER_RANK_SUPER) {
         level = 3;
-    } else if (level == 0) {
+    } else if (level == PARTNER_RANK_NORMAL) {
         level = 2;
     }
 

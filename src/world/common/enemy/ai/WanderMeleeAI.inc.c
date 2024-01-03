@@ -41,17 +41,17 @@ ApiStatus N(WanderMeleeAI_Main)(Evt* script, s32 isInitialCall) {
     if (isInitialCall || (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
         if (!enemy->territory->wander.isFlying) {
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_8;
+            npc->flags &= ~NPC_FLAG_FLYING;
         } else {
             npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_8;
+            npc->flags |= NPC_FLAG_FLYING;
         }
-        
+
         if (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
             script->functionTemp[1] = AI_STATE_WANDER_INIT;

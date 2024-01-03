@@ -1,4 +1,5 @@
 #include "common.h"
+#include "game_modes.h"
 
 // args: start, end, duration, EasingType
 ApiStatus MakeLerp(Evt* script, s32 isInitialCall) {
@@ -65,7 +66,7 @@ ApiStatus GetAngleToNPC(Evt* script, s32 isInitialCall) {
     Bytecode outVar = *args++;
 
     Npc* npc = resolve_npc(script, npcID);
-    evt_set_variable(script, outVar, atan2(playerStatus->position.x, playerStatus->position.z, npc->pos.x, npc->pos.z));
+    evt_set_variable(script, outVar, atan2(playerStatus->pos.x, playerStatus->pos.z, npc->pos.x, npc->pos.z));
 
     return ApiStatus_DONE2;
 }
@@ -78,7 +79,7 @@ ApiStatus GetAngleToPlayer(Evt* script, s32 isInitialCall) {
     Bytecode outVar = *args++;
 
     Npc* npc = resolve_npc(script, npcID);
-    evt_set_variable(script, outVar, atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z));
+    evt_set_variable(script, outVar, atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z));
 
     return ApiStatus_DONE2;
 }
@@ -100,7 +101,7 @@ ApiStatus AwaitPlayerApproach(Evt* script, s32 isInitialCall) {
     }
 
     distance = dist2D(
-                   playerStatus->position.x, playerStatus->position.z,
+                   playerStatus->pos.x, playerStatus->pos.z,
                    *targetX, *targetZ
                );
 
@@ -130,7 +131,7 @@ ApiStatus IsPlayerWithin(Evt* script, s32 isInitialCall) {
     }
 
     distance = dist2D(
-                   playerStatus->position.x, playerStatus->position.z,
+                   playerStatus->pos.x, playerStatus->pos.z,
                    *targetX, *targetZ
                );
 
@@ -159,7 +160,7 @@ ApiStatus AwaitPlayerLeave(Evt* script, s32 isInitialCall) {
     }
 
     distance = dist2D(
-                   playerStatus->position.x, playerStatus->position.z,
+                   playerStatus->pos.x, playerStatus->pos.z,
                    *targetX, *targetZ
                );
 
@@ -189,87 +190,89 @@ ApiStatus AddVectorPolar(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D4BDC(Evt* script, s32 initialCall) {
-    s32* t0 = &script->functionTemp[0];
-    s32* t1 = &script->functionTemp[1];
+ApiStatus func_802D4BDC(Evt* script, s32 isInitialCall) {
+    s32* ready = &script->functionTemp[0];
+    s32* progress = &script->functionTemp[1];
     s32 t1v;
 
-    if (initialCall) {
-        *t0 = 0;
-        *t1 = 0;
+    if (isInitialCall) {
+        *ready = 0;
+        *progress = 0;
     }
 
-    if (*t0 == 0) {
-        t1v = *t1;
+    // always zero?
+    if (*ready == 0) {
+        t1v = *progress;
         if (t1v == 255) {
             return ApiStatus_DONE2;
         }
 
         t1v += 10;
-        *t1 = t1v;
+        *progress = t1v;
         if (t1v > 255) {
-            *t1 = 255;
+            *progress = 255;
         }
 
-        set_screen_overlay_params_back(10, *t1);
+        set_screen_overlay_params_back(OVERLAY_START_BATTLE, *progress);
     }
 
     return ApiStatus_BLOCK;
 }
 
-ApiStatus func_802D4C4C(Evt* script, s32 initialCall) {
-    s32* t0 = &script->functionTemp[0];
-    s32* t1 = &script->functionTemp[1];
+ApiStatus func_802D4C4C(Evt* script, s32 isInitialCall) {
+    s32* ready = &script->functionTemp[0];
+    s32* progress = &script->functionTemp[1];
     s32 t1v;
 
-    if (initialCall) {
-        *t0 = 0;
-        *t1 = 255;
+    if (isInitialCall) {
+        *ready = 0;
+        *progress = 255;
     }
 
-    if (*t0 == 0) {
-        t1v = *t1;
+    // always zero?
+    if (*ready == 0) {
+        t1v = *progress;
         if (t1v == 0) {
-            set_screen_overlay_params_back(255, -1.0f);
+            set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
             return ApiStatus_DONE2;
         }
         t1v -= 10;
-        *t1 = t1v;
+        *progress = t1v;
         if (t1v < 0) {
-            *t1 = 0;
+            *progress = 0;
         }
-        set_screen_overlay_params_back(10, *t1);
+        set_screen_overlay_params_back(OVERLAY_START_BATTLE, *progress);
     }
 
     return ApiStatus_BLOCK;
 }
 
-ApiStatus func_802D4CC4(Evt* script, s32 initialCall) {
+ApiStatus func_802D4CC4(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
     s32 value = evt_get_variable(script, *args++);
 
     if (value < 0) {
-        set_screen_overlay_params_back(255, -1.0f);
+        set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
     } else {
-        set_screen_overlay_params_back(10, value);
+        set_screen_overlay_params_back(OVERLAY_START_BATTLE, value);
     }
 
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D4D14(Evt* script, s32 initialCall) {
+ApiStatus func_802D4D14(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
     s32 value = evt_get_float_variable(script, *args++);
 
-    set_screen_overlay_center(0, 0, 0xC, 0x14);
-    set_screen_overlay_center(0, 1, 0x134, 0xDC);
-    set_screen_overlay_params_front(0xC, value);
+    set_screen_overlay_center(SCREEN_LAYER_FRONT, 0, 12, 20);
+    set_screen_overlay_center(SCREEN_LAYER_FRONT, 1, 308, 220);
+    set_screen_overlay_params_front(OVERLAY_BLUR, value);
 
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D4D88(Evt* script, s32 initialCall) {
-    set_screen_overlay_params_front(0xC, 0);
+ApiStatus func_802D4D88(Evt* script, s32 isInitialCall) {
+    set_screen_overlay_params_front(OVERLAY_BLUR, 0);
     return ApiStatus_DONE2;
 }
 
@@ -460,6 +463,8 @@ ApiStatus GetDist2D(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
+//TODO code split? math_api from ???
+
 ApiStatus SetTimeFreezeMode(Evt* script, s32 initialCall) {
     Bytecode* args = script->ptrReadPos;
 
@@ -501,25 +506,28 @@ ApiStatus GetValueByRef(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus EnableStatusMenu(Evt* script, s32 isInitialCall) {
+ApiStatus EnableWorldStatusBar(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
-    if (evt_get_variable(script, *args++) != 0) {
-        decrement_status_menu_disabled();
+    b32 shouldEnable = evt_get_variable(script, *args++);
+
+    if (shouldEnable) {
+        decrement_status_bar_disabled();
     } else {
-        increment_status_menu_disabled();
+        increment_status_bar_disabled();
     }
 
     return ApiStatus_DONE2;
 }
 
-ApiStatus ShowStatusMenu(Evt* script, s32 isInitialCall) {
+ApiStatus ShowWorldStatusBar(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
+    b32 shouldShow = evt_get_variable(script, *args++);
 
-    if (evt_get_variable(script, *args++) != 0) {
-        status_menu_ignore_changes();
-        close_status_menu();
+    if (shouldShow) {
+        status_bar_ignore_changes();
+        close_status_bar();
     } else {
-        status_menu_respond_to_changes();
+        status_bar_respond_to_changes();
     }
 
     return ApiStatus_DONE2;
@@ -551,3 +559,12 @@ ApiStatus ClampAngleFloat(Evt* script, s32 isInitialCall) {
 
     return ApiStatus_DONE2;
 }
+
+#if VERSION_PAL
+ApiStatus GetLanguage(Evt* script, s32 isInitialCall) {
+    Bytecode* args = script->ptrReadPos;
+
+    evt_set_variable(script, *args++, gCurrentLanguage);
+    return ApiStatus_DONE2;
+}
+#endif

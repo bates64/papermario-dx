@@ -16,13 +16,19 @@ BSS s32 SaveBlockResultPrinterClosed;
 BSS MessagePrintState* SaveBlockTutorialPrinter;
 BSS MessagePrintState* SaveBlockResultPrinter;
 
+#if VERSION_PAL
+extern Gfx Entity_SaveBlock_RenderBlock_es[];
+extern s32 gCurrentLanguage;
+#endif
+
 void entity_SaveBlock_setupGfx(s32 index) {
     Gfx* gfxPos = gMainGfxPos;
+    Gfx* dlist = Entity_SaveBlock_RenderContent;
     Entity* entity = get_entity_by_index(index);
     SaveBlockData* blockData = entity->dataBuf.saveBlock;
+    s32 alpha = 128;
     Matrix4f sp18;
     Matrix4f sp58;
-    Gfx* dlist;
 
     guMtxL2F(sp18, ENTITY_ADDR(entity, Mtx*, &Entity_SaveBlock_Mtx));
     sp18[3][1] += 12.5f;
@@ -32,12 +38,24 @@ void entity_SaveBlock_setupGfx(s32 index) {
 
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetRenderMode(gfxPos++, G_RM_ZB_CLD_SURF, G_RM_ZB_CLD_SURF2);
-    gDPSetCombineLERP(gfxPos++, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, 128);
-    gSPDisplayList(gfxPos++, Entity_SaveBlock_RenderContent);
+    gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
+    gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, alpha);
+    gSPDisplayList(gfxPos++, dlist);
     gSPPopMatrix(gfxPos++, G_MTX_MODELVIEW);
 
+#if VERSION_PAL
+    switch (gCurrentLanguage) {
+        default:
+            dlist = ENTITY_ADDR(entity, Gfx*, Entity_SaveBlock_RenderBlock);
+            break;
+
+        case LANGUAGE_ES:
+            dlist = ENTITY_ADDR(entity, Gfx*, Entity_SaveBlock_RenderBlock_es);
+            break;
+    }
+#else
     dlist = ENTITY_ADDR(entity, Gfx*, Entity_SaveBlock_RenderBlock);
+#endif
     guMtxL2F(sp58, ENTITY_ADDR(entity, Mtx*, &Entity_SaveBlock_Mtx));
     sp58[3][1] += 12.5f;
     gDPPipeSync(gfxPos++);
@@ -45,8 +63,8 @@ void entity_SaveBlock_setupGfx(s32 index) {
 
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetRenderMode(gfxPos++, G_RM_AA_XLU_SURF | Z_CMP, G_RM_AA_XLU_SURF2 | Z_CMP);
-    gDPSetCombineLERP(gfxPos++, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, 128);
+    gDPSetCombineMode(gfxPos++, PM_CC_01, PM_CC_02);
+    gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, alpha);
     gSPDisplayList(gfxPos++, dlist);
     gSPPopMatrix(gfxPos++, G_MTX_MODELVIEW);
 
@@ -64,7 +82,7 @@ void entity_SaveBlock_idle(Entity* entity) {
 void entity_SaveBlock_pause_game(void) {
     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
     disable_player_input();
-    gPlayerStatusPtr->currentSpeed = 0.0f;
+    gPlayerStatusPtr->curSpeed = 0.0f;
 }
 
 void entity_SaveBlock_resume_game(void) {
@@ -73,9 +91,9 @@ void entity_SaveBlock_resume_game(void) {
 }
 
 void entity_SaveBlock_save_data(void) {
-    gGameStatusPtr->savedPos.x = gPlayerStatusPtr->position.x;
-    gGameStatusPtr->savedPos.y = gPlayerStatusPtr->position.y;
-    gGameStatusPtr->savedPos.z = gPlayerStatusPtr->position.z;
+    gGameStatusPtr->savedPos.x = gPlayerStatusPtr->pos.x;
+    gGameStatusPtr->savedPos.y = gPlayerStatusPtr->pos.y;
+    gGameStatusPtr->savedPos.z = gPlayerStatusPtr->pos.z;
     fio_save_game(gGameStatusPtr->saveSlot);
 }
 
@@ -106,7 +124,7 @@ void entity_SaveBlock_show_choice_message(void) {
 
 void entity_SaveBlock_show_result_message(void) {
     msg_printer_load_msg(MSG_Menus_SaveComplete, SaveBlockResultPrinter);
-    sfx_play_sound(SOUND_10);
+    sfx_play_sound(SOUND_SAVE_CONFIRM);
 }
 
 void entity_SaveBlock_wait_for_close_result(Entity* entity) {
@@ -117,7 +135,7 @@ void entity_SaveBlock_wait_for_close_result(Entity* entity) {
 
 void entity_SaveBlock_wait_for_close_choice(Entity* entity) {
     if (SaveBlockTutorialPrinterClosed) {
-        if (SaveBlockTutorialPrinter->currentOption == 1) {
+        if (SaveBlockTutorialPrinter->curOption == 1) {
             set_entity_commandlist(entity, Entity_SaveBlock_ScriptResume);
         } else {
             exec_entity_commandlist(entity);

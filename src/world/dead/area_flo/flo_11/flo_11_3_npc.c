@@ -66,7 +66,7 @@ Vec3f N(FlightPath_Lakitu_02_Flee)[] = {
 
 EvtScript N(EVS_PlayFlightSounds) = {
     EVT_LOOP(0)
-        EVT_CALL(PlaySound, SOUND_295)
+        EVT_CALL(PlaySound, SOUND_FLIGHT)
         EVT_WAIT(LVar0)
     EVT_END_LOOP
     EVT_RETURN
@@ -375,7 +375,7 @@ NpcData N(NpcData_Lakitus)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Lakitu_01),
         .settings = &N(NpcSettings_Lakitu),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
     },
@@ -385,7 +385,7 @@ NpcData N(NpcData_Lakitus)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Lakitu_02),
         .settings = &N(NpcSettings_Lakitu),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = LAKITU_DROPS,
         .animations = LAKITU_ANIMS,
     },

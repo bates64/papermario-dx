@@ -70,9 +70,9 @@ void pulse_stone_notification_setup(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     mem_clear(PulseStonePtr, sizeof(*PulseStonePtr));
-    PulseStonePtr->pos.x = playerStatus->position.x;
-    PulseStonePtr->pos.y = playerStatus->position.y + playerStatus->colliderHeight + 8.0f;
-    PulseStonePtr->pos.z = playerStatus->position.z;
+    PulseStonePtr->pos.x = playerStatus->pos.x;
+    PulseStonePtr->pos.y = playerStatus->pos.y + playerStatus->colliderHeight + 8.0f;
+    PulseStonePtr->pos.z = playerStatus->pos.z;
     playerStatus->animFlags |= PA_FLAG_PULSE_STONE_VISIBLE;
     PulseStoneNotificationCallback = pulse_stone_notification_update;
 }
@@ -80,13 +80,13 @@ void pulse_stone_notification_setup(void) {
 void appendGfx_pulse_stone_icon(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Matrix4f sp18, sp58;
-    FoldImageRecPart part;
+    ImgFXTexture ifxImg;
     s32 pingDelay;
     s32 dx, dy;
 
     if (playerStatus->animFlags & PA_FLAG_PULSE_STONE_VISIBLE) {
         guScaleF(sp18, PulseStonePtr->scale, PulseStonePtr->scale, PulseStonePtr->scale);
-        guRotateF(sp58, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
+        guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(sp18, sp58, sp18);
         guTranslateF(sp58, PulseStonePtr->pos.x, PulseStonePtr->pos.y, PulseStonePtr->pos.z);
         guMtxCatF(sp18, sp58, sp58);
@@ -124,27 +124,27 @@ void appendGfx_pulse_stone_icon(void) {
                 break;
         }
 
-        part.palette = pulse_stone_icon_1_pal;
+        ifxImg.palette = pulse_stone_icon_1_pal;
         if (pingDelay >= 0) {
             PulseStonePtr->pingTime++;
             if (PulseStonePtr->pingTime >= pingDelay + 2) {
                 PulseStonePtr->pingTime = 0;
-                sfx_play_sound_at_player(SOUND_7D, SOUND_SPACE_MODE_0);
+                sfx_play_sound_at_player(SOUND_PULSE_STONE, SOUND_SPACE_DEFAULT);
             }
             if (PulseStonePtr->pingTime < 2) {
-                part.palette = pulse_stone_icon_2_pal;
+                ifxImg.palette = pulse_stone_icon_2_pal;
             } else {
-                part.palette = pulse_stone_icon_1_pal;
+                ifxImg.palette = pulse_stone_icon_1_pal;
             }
         }
 
-        part.raster  = pulse_stone_icon_img;
-        part.width   = pulse_stone_icon_img_width;
-        part.height  = pulse_stone_icon_img_height;
-        part.xOffset = -28;
-        part.yOffset = 46;
-        part.opacity = 255;
-        fold_appendGfx_component(0, &part, 0, sp58);
+        ifxImg.raster  = pulse_stone_icon_img;
+        ifxImg.width   = pulse_stone_icon_img_width;
+        ifxImg.height  = pulse_stone_icon_img_height;
+        ifxImg.xOffset = -28;
+        ifxImg.yOffset = 46;
+        ifxImg.alpha = 255;
+        imgfx_appendGfx_component(0, &ifxImg, 0, sp58);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
 }
@@ -153,9 +153,9 @@ void pulse_stone_notification_update(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     PulseStonePtr->pos.y +=
-        ((playerStatus->position.y + playerStatus->colliderHeight + 10.0f) - PulseStonePtr->pos.y) / 1.5f;
-    PulseStonePtr->pos.x = playerStatus->position.x;
-    PulseStonePtr->pos.z = playerStatus->position.z;
+        ((playerStatus->pos.y + playerStatus->colliderHeight + 10.0f) - PulseStonePtr->pos.y) / 1.5f;
+    PulseStonePtr->pos.x = playerStatus->pos.x;
+    PulseStonePtr->pos.z = playerStatus->pos.z;
 
     if (!should_continue_pulse_stone()) {
         PulseStoneNotificationCallback = NULL;

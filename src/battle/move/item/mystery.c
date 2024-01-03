@@ -103,7 +103,7 @@ void N(func_802A123C_72C7EC(void)) {
     }
 }
 
-s32 N(func_802A13E4_72C994)(Evt* script, s32 isInitialCall) {
+API_CALLABLE(N(func_802A13E4_72C994)) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 temp_a0_4;
     s32 temp_v1_3;
@@ -127,7 +127,7 @@ s32 N(func_802A13E4_72C994)(Evt* script, s32 isInitialCall) {
                 u8 type;
                 f32 zoom;
 
-                get_screen_overlay_params(1, &type, &zoom);
+                get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &zoom);
                 if (zoom >= 215.0f) {
                     D_802A25FC = N(D_802A229C_72D84C);
                 }
@@ -229,7 +229,7 @@ API_CALLABLE(N(func_802A188C_72CE3C)) {
     s32 b = evt_get_variable(script, *args++);
     s32 c = evt_get_variable(script, *args++);
 
-    fx_damage_stars(2, a, b, c, 0, -1.0f, 0, 5);
+    fx_damage_stars(FX_DAMAGE_STARS_2, a, b, c, 0, -1.0f, 0, 5);
 
     return ApiStatus_DONE2;
 }
@@ -239,13 +239,13 @@ EvtScript N(EVS_UseItem) = {
     EVT_EXEC_WAIT(N(UseItemWithEffect))
     EVT_THREAD
         EVT_WAIT(220)
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_3F3)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_DING)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_368)
+    EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_MYSTERY_REEL)
     EVT_CALL(N(func_802A13E4_72C994))
     EVT_WAIT(2)
     EVT_IF_NE(LVar0, 133)
-        EVT_JUMP(EVT_PTR(UseMystery))
+        EVT_JUMP(EVT_PTR(EVS_UseMystery))
         EVT_RETURN
     EVT_END_IF
     EVT_CALL(CreateVirtualEntity, LVarA, EVT_PTR(N(modelCommandList)))
@@ -276,7 +276,7 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
     EVT_CALL(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(N(func_802A188C_72CE3C), LVar0, LVar1, LVar2)
-    EVT_CALL(SetBattleFlagBits, BS_FLAGS1_SP_EVT_ACTIVE, TRUE)
+    EVT_CALL(SetBattleFlagBits, BS_FLAGS1_TRIGGER_EVENTS, TRUE)
     EVT_CALL(DispatchDamagePlayerEvent, 1, EVENT_HIT)
     EVT_RETURN
     EVT_END

@@ -1,4 +1,5 @@
 #include "flo_22.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(UnusedCallback)) {
     return ApiStatus_DONE2;
@@ -44,7 +45,7 @@ EvtScript N(EVS_TossItemIntoWell) = {
         EVT_CALL(RemoveItemEntity, LVar7)
     EVT_END_THREAD
     EVT_WAIT(10)
-    EVT_CALL(PlaySoundAt, SOUND_302, SOUND_SPACE_MODE_0, 35, 0, 0)
+    EVT_CALL(PlaySoundAt, SOUND_FALL_LONG, SOUND_SPACE_DEFAULT, 35, 0, 0)
     EVT_WAIT(5)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
     EVT_WAIT(10)

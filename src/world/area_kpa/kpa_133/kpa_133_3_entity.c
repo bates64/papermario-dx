@@ -1,6 +1,7 @@
 #include "kpa_133.h"
 #include "entity.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 extern EvtScript N(EVS_TriggerSwitch);
 extern EvtScript N(EVS_SetupHiddenSpring);
@@ -9,9 +10,9 @@ API_CALLABLE(N(SetSpringRotation)) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(NULL, MV_SpringEntityID));
 
-    entity->rotation.x = evt_get_variable(script, *args++);
-    entity->rotation.y = evt_get_variable(script, *args++);
-    entity->rotation.z = evt_get_variable(script, *args++);
+    entity->rot.x = evt_get_variable(script, *args++);
+    entity->rot.y = evt_get_variable(script, *args++);
+    entity->rot.z = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -19,9 +20,9 @@ API_CALLABLE(N(SetSpringPosition)) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(NULL, MV_SpringEntityID));
 
-    entity->position.x = evt_get_variable(script, *args++);
-    entity->position.y = evt_get_variable(script, *args++);
-    entity->position.z = evt_get_variable(script, *args++);
+    entity->pos.x = evt_get_variable(script, *args++);
+    entity->pos.y = evt_get_variable(script, *args++);
+    entity->pos.z = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -98,7 +99,7 @@ EvtScript N(EVS_SetupHiddenSpring) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(18)
-        EVT_CALL(PlaySoundAtNpc, NPC_Dummy, SOUND_1EF, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Dummy, SOUND_KPA_DROP_WALL, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(MakeLerp, -90, 0, 15, EASING_QUADRATIC_IN)

@@ -1,16 +1,16 @@
 API_CALLABLE(N(func_802440FC_80497C)) {
     if (isInitialCall) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), -1, FOG_MODE_3);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), -1, FOG_MODE_3);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), -1, FOG_MODE_3);
-        set_model_env_color_parameters(255, 255, 255, 0, 0, 0);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);
+        mdl_set_remap_tint_params(255, 255, 255, 0, 0, 0);
         script->functionTemp[0] = 255;
     }
     script->functionTemp[0] -= 4;
     if (script->functionTemp[0] < 64) {
         script->functionTemp[0] = 64;
     }
-    set_model_env_color_parameters(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
+    mdl_set_remap_tint_params(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
     if (script->functionTemp[0] == 64) {
         return ApiStatus_DONE2;
     }
@@ -45,7 +45,7 @@ API_CALLABLE(N(func_802441EC_804A6C)) {
             script->functionTemp[2] = 0;
         }
     }
-    set_model_env_color_parameters(
+    mdl_set_remap_tint_params(
         script->functionTemp[0], script->functionTemp[0], script->functionTemp[0],
         script->functionTemp[2], script->functionTemp[2], script->functionTemp[2]
     );
@@ -63,11 +63,11 @@ API_CALLABLE(N(func_80244308_804B88)) {
     if (script->functionTemp[0] > 255) {
         script->functionTemp[0] = 255;
     }
-    set_model_env_color_parameters(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
+    mdl_set_remap_tint_params(script->functionTemp[0], script->functionTemp[0], script->functionTemp[0], 0, 0, 0);
     if (script->functionTemp[0] == 255) {
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), -1, FOG_MODE_0);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), -1, FOG_MODE_0);
-        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), -1, FOG_MODE_0);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o279)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
+        set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_dr_yuka)), CUSTOM_GFX_NONE, ENV_TINT_NONE);
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -100,7 +100,7 @@ API_CALLABLE(N(func_802443E0_804C60)) {
     temp_f24 = script->functionTemp[0] * 10;
 
     for (i = 0; i < ARRAY_COUNT(effects); i++) {
-        guRotateF(sp28, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
+        guRotateF(sp28, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guRotateF(sp68, i * 120, 0.0f, 0.0f, 1.0f);
         guMtxCatF(sp68, sp28, sp28);
         tx = temp_f30 * sin_deg(temp_f24);
@@ -206,7 +206,7 @@ EvtScript N(EVS_Merlon_AnimateDiscoBall) = {
 EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     EVT_CALL(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_RaiseArms)
     EVT_CALL(GetModelCenter, MODEL_tama)
-    EVT_CALL(PlaySoundAt, SOUND_207, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 0, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), -1)
     EVT_SET(ArrayVar(1), LVarF)
     EVT_WAIT(30)
@@ -246,26 +246,26 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     EVT_END_THREAD
     EVT_WAIT(50)
     EVT_CALL(GetModelCenter, MODEL_tama)
-    EVT_CALL(PlaySoundAt, SOUND_208, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 3, LVar0, LVar1, LVar2, EVT_FLOAT(0.5), 20)
     EVT_WAIT(30)
     EVT_CALL(GetModelCenter, MODEL_tama)
-    EVT_CALL(PlaySoundAt, SOUND_208, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 3, LVar0, LVar1, LVar2, EVT_FLOAT(0.5), 20)
     EVT_WAIT(30)
     EVT_THREAD
         EVT_CALL(N(func_802441EC_804A6C))
     EVT_END_THREAD
     EVT_CALL(GetModelCenter, MODEL_tama)
-    EVT_CALL(PlaySoundAt, SOUND_208, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_CRYSTAL_BALL_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, EVT_FLOAT(0.5), 20)
     EVT_WAIT(70)
-    EVT_CALL(func_802D7B10, ArrayVar(2))
+    EVT_CALL(DismissEffect, ArrayVar(2))
     EVT_WAIT(40)
-    EVT_CALL(PlaySoundAt, SOUND_207 | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_LRAW_CRYSTAL_BALL_GLOW | SOUND_ID_TRIGGER_CHANGE_SOUND, 0, LVar0, LVar1, LVar2)
     EVT_CALL(N(func_802446AC_804F2C), ArrayVar(1))
     EVT_WAIT(15)
-    EVT_CALL(func_802D7B10, ArrayVar(1))
+    EVT_CALL(DismissEffect, ArrayVar(1))
     EVT_THREAD
         EVT_CALL(N(func_80244308_804B88))
     EVT_END_THREAD
@@ -413,7 +413,7 @@ EvtScript N(EVS_Merlon_GiveHint) = {
             EVT_SET(LVar0, MSG_MerlonHint_002D)
         EVT_CASE_LT(STORY_CH5_MOVED_RAVEN_STATUE)
             EVT_SET(LVar0, MSG_MerlonHint_002E)
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
             EVT_SET(LVar0, MSG_MerlonHint_002F)
         EVT_CASE_LT(STORY_CH5_ENTERED_MT_LAVA_LAVA)
             EVT_SET(LVar0, MSG_MerlonHint_0030)

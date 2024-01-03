@@ -1,6 +1,7 @@
 #include "jan_13.h"
 #include "entity.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 // geyser positions in grid coordinates
 #define POS_0_I 28
@@ -39,7 +40,7 @@ API_CALLABLE(N(AdjustEnvSoundPosition)) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         script->functionTemp[1] = evt_get_variable(script, *args++);
         script->functionTemp[2] = evt_get_variable(script, *args++);
-        sfx_adjust_env_sound_pos(SOUND_4E, SOUND_SPACE_MODE_0, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+        sfx_adjust_env_sound_pos(SOUND_LRAW_JAN_SMALL_GEYSER, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
     }
     return ApiStatus_DONE2;
 }
@@ -220,15 +221,15 @@ Vec3i N(GeyserSoundPositions)[] = {
     { -400 + POS_2_I * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2), 0, -150 + POS_2_J * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2) },
     { -400 + POS_3_I * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2), 0, -150 + POS_3_J * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2) },
     { -400 + POS_4_I * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2), 0, -150 + POS_4_J * BLOCK_GRID_SIZE + (BLOCK_GRID_SIZE / 2) },
-    {   37, 0, -138 }, 
+    {   37, 0, -138 },
 };
 
 EvtScript N(EVS_ManageGeyserSounds) = {
     EVT_IF_NE(AB_JAN13_LastPuzzleProgress, MV_PuzzleProgress)
         EVT_SET(AB_JAN13_LastPuzzleProgress, MV_PuzzleProgress)
         EVT_SET(MF_GeyserSoundPlaying, FALSE)
-        EVT_CALL(StopSound, SOUND_8000001C)
-        EVT_CALL(StopSound, SOUND_8000001D)
+        EVT_CALL(StopSound, SOUND_LOOP_JAN_SMALL_GEYSER)
+        EVT_CALL(StopSound, SOUND_LOOP_JAN_LARGE_GEYSER)
         EVT_IF_EQ(MV_PuzzleProgress, 5)
             EVT_IF_EQ(GF_JAN13_SolvedBlockPuzzle, FALSE)
                 EVT_RETURN
@@ -238,7 +239,7 @@ EvtScript N(EVS_ManageGeyserSounds) = {
                 EVT_RETURN
             EVT_END_IF
         EVT_END_IF
-        EVT_CALL(PlaySound, SOUND_8000001C)
+        EVT_CALL(PlaySound, SOUND_LOOP_JAN_SMALL_GEYSER)
         EVT_SET(MF_GeyserSoundPlaying, TRUE)
         EVT_SET(LVar0, MV_PuzzleProgress)
         EVT_ADD(LVar0, 1)
@@ -253,20 +254,20 @@ EvtScript N(EVS_ManageGeyserSounds) = {
 };
 
 EvtScript N(EVS_BoulderTremble) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o33, SOUND_191, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o33, SOUND_JAN_BOULDER_TREMBLE, 0)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.5))
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(EVS_ManagePuzzle) = {
-    EVT_SET(LocalFlag(0), FALSE)
+    EVT_SET(LFlag0, FALSE)
     EVT_SET(AB_JAN_2, 0)
     EVT_SET(AB_JAN13_LastPuzzleProgress, -1)
     EVT_EXEC(N(EVS_ManageGeyserSounds))
     EVT_LABEL(0)
         EVT_IF_EQ(GF_JAN13_SolvedBlockPuzzle, TRUE)
-            EVT_IF_EQ(LocalFlag(0), FALSE)
+            EVT_IF_EQ(LFlag0, FALSE)
                 EVT_CALL(EnableModel, MODEL_o33, FALSE)
                 EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o33, COLLIDER_FLAGS_UPPER_MASK)
                 EVT_CALL(SetPushBlock, 0, 15, 0, PUSH_GRID_EMPTY)
@@ -284,7 +285,7 @@ EvtScript N(EVS_ManagePuzzle) = {
                 EVT_CALL(SetPushBlock, 0, 17, 2, PUSH_GRID_EMPTY)
                 EVT_CALL(SetPushBlock, 0, 18, 2, PUSH_GRID_EMPTY)
                 EVT_CALL(SetPushBlock, 0, 19, 2, PUSH_GRID_EMPTY)
-                EVT_SET(LocalFlag(0), TRUE)
+                EVT_SET(LFlag0, TRUE)
             EVT_END_IF
         EVT_END_IF
         EVT_CALL(GetPushBlock, 0, POS_0_I, POS_0_J, LVar0)
@@ -339,7 +340,7 @@ EvtScript N(EVS_ManagePuzzle) = {
                 EVT_WAIT(8)
             EVT_END_LOOP
             EVT_THREAD
-                EVT_CALL(PlaySoundAtPlayer, SOUND_262, 0)
+                EVT_CALL(PlaySoundAtPlayer, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
                 EVT_CALL(ShowEmote, 0, EMOTE_EXCLAMATION, 0, 20, EMOTER_PLAYER, 0, 0, 0, 0)
                 EVT_CALL(GetModelCenter, MODEL_o33)
                 EVT_CALL(FacePlayerTowardPoint, LVar0, LVar2, 4)
@@ -392,7 +393,7 @@ EvtScript N(EVS_ManagePuzzle) = {
             EVT_THREAD
                 EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 15, EVT_FLOAT(0.4))
             EVT_END_THREAD
-            EVT_CALL(PlaySoundAt, SOUND_8000001D, 0, 37, 0, -138)
+            EVT_CALL(PlaySoundAt, SOUND_LOOP_JAN_LARGE_GEYSER, SOUND_SPACE_DEFAULT, 37, 0, -138)
             EVT_SET(AB_JAN_2, 1)
             EVT_THREAD
                 EVT_LOOP(200)
@@ -433,7 +434,7 @@ EvtScript N(EVS_ManagePuzzle) = {
             EVT_CALL(EnableModel, MODEL_o33, FALSE)
             EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o33, COLLIDER_FLAGS_UPPER_MASK)
             EVT_SET(GF_JAN13_SolvedBlockPuzzle, TRUE)
-            EVT_SET(LocalFlag(0), TRUE)
+            EVT_SET(LFlag0, TRUE)
             EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(5.0))
             EVT_CALL(DisablePlayerInput, FALSE)
         EVT_ELSE
@@ -445,9 +446,9 @@ EvtScript N(EVS_ManagePuzzle) = {
         EVT_END_IF
         EVT_SET(MV_PuzzleProgress, 6)
         EVT_LABEL(1)
-        EVT_EXEC(N(EVS_ManageGeyserSounds))
-        EVT_WAIT(1)
-        EVT_GOTO(0)
+            EVT_EXEC(N(EVS_ManageGeyserSounds))
+            EVT_WAIT(1)
+            EVT_GOTO(0)
     EVT_RETURN
     EVT_END
 };
@@ -659,12 +660,12 @@ EvtScript N(EVS_SetupPuzzle) = {
     EVT_CALL(EnableTexPanning, MODEL_o75, TRUE)
     EVT_CALL(EnableTexPanning, MODEL_o76, TRUE)
     EVT_CALL(EnableTexPanning, MODEL_o71, TRUE)
-    EVT_CALL(SetModelCustomGfx, MODEL_o72, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_o73, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_o74, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_o75, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_o76, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-    EVT_CALL(SetModelCustomGfx, MODEL_o71, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o72, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o73, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o74, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o75, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o76, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+    EVT_CALL(SetModelCustomGfx, MODEL_o71, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(setup_gfx_geyser)), NULL)
     EVT_SET(LVar0, 0)
     EVT_LOOP(0)

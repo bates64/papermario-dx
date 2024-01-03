@@ -87,7 +87,7 @@ void N(gfx_build_inside_crystal_ball)(void) {
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
     gDPSetRenderMode(gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1));
     gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxZBuffer));
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, 0, 0, 0, 0, 0, 0, 0, PRIMITIVE, 0, 0, 0, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_PRIM_NO_ALPHA, PM_CC_PRIM_NO_ALPHA);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 248, 240, 240, 0);
     gDPPipeSync(gMainGfxPos++);
     gSPDisplayList(gMainGfxPos++, model->modelNode->displayData->displayList);
@@ -110,7 +110,7 @@ void N(gfx_build_inside_crystal_ball)(void) {
         gDPLoadTextureTile(gMainGfxPos++, osVirtualToPhysical(nuGfxCfb_ptr), G_IM_FMT_RGBA, G_IM_SIZ_16b,
                            SCREEN_WIDTH, SCREEN_HEIGHT, ulx, uly, ulx + 31, uly + 31, 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, 0, 0, 0, 0, 0, 0, 0, TEXEL0, 0, 0, 0, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_0E, PM_CC_0E);
         gSPScisTextureRectangle(gMainGfxPos++, (ulx - 8) * 4, (uly - 8) * 4, (ulx + 24) * 4, (uly + 24) * 4,
                                 G_TX_RENDERTILE, (ulx & 0x1F) << 5, (uly & 0x1F) << 5, 700, 700);
     }
@@ -128,7 +128,7 @@ EvtScript N(EVS_SetupCrystalBallGfx) = {
     EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_2, EVT_PTR(N(gfx_build_crystal_ball_pre)), EVT_PTR(N(gfx_build_crystal_ball_post)))
     EVT_CALL(SetModelCustomGfx, MODEL_mirrorball, CUSTOM_GFX_2, -1)
     EVT_CALL(EnableModel, MODEL_mirrorball, FALSE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_3, EVT_PTR(N(gfx_build_inside_crystal_ball)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_3, EVT_PTR(N(gfx_build_inside_crystal_ball)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_tama, CUSTOM_GFX_3, -1)
     EVT_CALL(SetModelFlags, MODEL_tama, MODEL_FLAG_USE_CAMERA_UNK_MATRIX, TRUE)
     EVT_CALL(SetModelFlags, MODEL_ohosi, MODEL_FLAG_USE_CAMERA_UNK_MATRIX, TRUE)

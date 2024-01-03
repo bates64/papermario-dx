@@ -148,13 +148,13 @@ EffectInstance* stat_change_main(s32 arg0, f32 x, f32 y, f32 z, f32 scale, s32 t
     bp.init = stat_change_init;
     bp.update = stat_change_update;
     bp.renderWorld = stat_change_render;
-    bp.unk_14 = func_E00AC288;
+    bp.renderUI = func_E00AC288;
     bp.unk_00 = 0;
     bp.effectID = EFFECT_STAT_CHANGE;
 
-    effect = shim_create_effect_instance(bpPtr);
+    effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
-    part = effect->data.statChange = shim_general_heap_malloc(numParts * sizeof(*part));
+    part = effect->data.statChange = general_heap_malloc(numParts * sizeof(*part));
 
     ASSERT(effect->data.statChange != NULL);
 
@@ -190,7 +190,7 @@ void stat_change_update(EffectInstance* effect) {
     old_unk18 = part->unk_18++;
 
     if (part->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -245,8 +245,8 @@ void func_E00AC2A4(EffectInstance* effect) {
         gDPPipeSync(gMainGfxPos++);
         gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-        shim_guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
-        shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+        guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+        guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
@@ -255,13 +255,13 @@ void func_E00AC2A4(EffectInstance* effect) {
             gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
         } else {
             gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
-            gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, SHADE, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, SHADE, 0, PRIMITIVE, 0, TEXEL0, 0);
+            gDPSetCombineMode(gMainGfxPos++, PM_CC_49, PM_CC_49);
         }
 
-        shim_guTranslateF(sp20, 0.0f, data->unk_40, 0.0f);
-        shim_guScaleF(sp60, data->scaleX, data->scaleY, 1.0f);
-        shim_guMtxCatF(sp60, sp20, sp20);
-        shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+        guTranslateF(sp20, 0.0f, data->unk_40, 0.0f);
+        guScaleF(sp60, data->scaleX, data->scaleY, 1.0f);
+        guMtxCatF(sp60, sp20, sp20);
+        guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(gMainGfxPos++, D_E00AC7B0[arrowType]);
@@ -270,8 +270,8 @@ void func_E00AC2A4(EffectInstance* effect) {
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         gSPDisplayList(gMainGfxPos++, D_090028E0_3B1FE0);
 
-        shim_guTranslateF(sp20, 0.0f, data->unk_3C, 0.0f);
-        shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+        guTranslateF(sp20, 0.0f, data->unk_3C, 0.0f);
+        guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 

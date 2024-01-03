@@ -2,7 +2,7 @@
 #include "effects.h"
 #include "model.h"
 
-#include "world/common/atomic/UnkFunc27.inc.c"
+#include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(HideSun)) {
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Unk_00);
@@ -23,7 +23,7 @@ API_CALLABLE(N(InterpWorldEnvColor)) {
     s32 blendEnvR, blendEnvG, blendEnvB;
 
     if (isInitialCall) {
-        get_model_env_color_parameters(&savedPrimR, &savedPrimG, &savedPrimB, &savedEnvR, &savedEnvG, &savedEnvB);
+        mdl_get_remap_tint_params(&savedPrimR, &savedPrimG, &savedPrimB, &savedEnvR, &savedEnvG, &savedEnvB);
         targetPrimR = evt_get_variable(script, *args++);
         targetPrimG = evt_get_variable(script, *args++);
         targetPrimB = evt_get_variable(script, *args++);
@@ -43,12 +43,12 @@ API_CALLABLE(N(InterpWorldEnvColor)) {
         blendEnvG = savedEnvG + ((targetEnvG - savedEnvG) * elapsed) / duration;
         blendEnvB = savedEnvB + ((targetEnvB - savedEnvB) * elapsed) / duration;
 
-        set_model_env_color_parameters(blendPrimR, blendPrimG, blendPrimB, blendEnvR, blendEnvG, blendEnvB);
+        mdl_set_remap_tint_params(blendPrimR, blendPrimG, blendPrimB, blendEnvR, blendEnvG, blendEnvB);
         if (elapsed >= duration) {
             return ApiStatus_DONE2;
         }
     } else {
-        set_model_env_color_parameters(targetPrimR, targetPrimG, targetPrimB, targetEnvR, targetEnvG, targetEnvB);
+        mdl_set_remap_tint_params(targetPrimR, targetPrimG, targetPrimB, targetEnvR, targetEnvG, targetEnvB);
         return ApiStatus_DONE2;
     }
 
@@ -63,7 +63,7 @@ s32 N(PedestalKeyList)[] = {
 EvtScript N(EVS_Pedestal_Sink) = {
     EVT_PLAY_EFFECT(EFFECT_SMOKE_IMPACT, 0, 0, 0, 0, 20, 10, 0, 60)
     EVT_PLAY_EFFECT(EFFECT_DUST, 2, 0, 0, 0, 60)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_iwa, SOUND_5F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_iwa, SOUND_SBK_RUINS_PEDESTAL_SINK, SOUND_SPACE_DEFAULT)
     EVT_SET(LVar2, 0)
     EVT_CALL(MakeLerp, 0, -50, 50, EASING_LINEAR)
     EVT_LOOP(0)
@@ -79,24 +79,24 @@ EvtScript N(EVS_Pedestal_Sink) = {
     EVT_END_LOOP
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_iwa, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(EnableModel, MODEL_point_iwa, FALSE)
-    EVT_CALL(PlaySound, SOUND_8000005F)
+    EVT_CALL(PlaySound, SOUND_LOOP_SBK_RUINS_WHIRLWIND)
     EVT_RETURN
     EVT_END
 };
 
 s32 N(ModelList_Solid)[] = {
-    MODEL_ruins, MODEL_step, 0x0000FFFF
+    MODEL_ruins, MODEL_step, 0xFFFF
 };
 
 s32 N(ModelList_Translucent)[] = {
-    MODEL_upper_light, MODEL_o225, 0x0000FFFF
+    MODEL_upper_light, MODEL_o225, 0xFFFF
 };
 
 EvtScript N(EVS_DarkenEnvironment) = {
-    EVT_CALL(N(UnkFunc27), 2, 0, FOG_MODE_3)
-    EVT_CALL(N(UnkFunc27), 1, -1, FOG_MODE_3)
-    EVT_CALL(N(UnkFunc27), 1, EVT_PTR(N(ModelList_Solid)), FOG_MODE_0)
-    EVT_CALL(N(UnkFunc27), 0, EVT_PTR(N(ModelList_Translucent)), FOG_MODE_0)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_BG, NULL, ENV_TINT_REMAP)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_GROUPS, EVT_PTR(N(ModelList_Solid)), ENV_TINT_NONE)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_MODELS, EVT_PTR(N(ModelList_Translucent)), ENV_TINT_NONE)
     EVT_CALL(N(InterpWorldEnvColor), 255, 255, 255, 0, 0, 0, 0)
     EVT_WAIT(1)
     EVT_CALL(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 60)
@@ -330,7 +330,7 @@ EvtScript N(EVS_Ruins_Arise) = {
             EVT_WAIT(50)
         EVT_END_LOOP
     EVT_END_THREAD
-    EVT_CALL(PlaySound, SOUND_8000005E)
+    EVT_CALL(PlaySound, SOUND_LOOP_SBK_RUINS_RISING)
     EVT_CALL(MakeLerp, -310, 0, 310, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -553,7 +553,7 @@ EvtScript N(EVS_Steps_FinishRising) = {
 };
 
 EvtScript N(EVS_Steps_Unfold) = {
-    EVT_CALL(PlaySoundAt, SOUND_5E, SOUND_SPACE_MODE_0, 0, 39, -80)
+    EVT_CALL(PlaySoundAt, SOUND_SBK_RUINS_STEPS_UNFOLD, SOUND_SPACE_DEFAULT, 0, 39, -80)
     EVT_THREAD
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(0.2))
     EVT_END_THREAD
@@ -615,10 +615,10 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_IF_LT(LVar0, 0)
         EVT_SET(LVar0, -80)
-        EVT_SET(LocalFlag(0), FALSE)
+        EVT_SET(LFlag0, FALSE)
     EVT_ELSE
         EVT_SET(LVar0, 80)
-        EVT_SET(LocalFlag(0), TRUE)
+        EVT_SET(LFlag0, TRUE)
     EVT_END_IF
     EVT_THREAD
         EVT_WAIT(10)
@@ -645,7 +645,7 @@ EvtScript N(EVS_OnInteract_Pedestal) = {
     EVT_EXEC(N(EVS_InterpChompStatueRotation))
     EVT_WAIT(60)
     EVT_WAIT(50)
-    EVT_IF_EQ(LocalFlag(0), FALSE)
+    EVT_IF_EQ(LFlag0, FALSE)
         EVT_CALL(GotoMap, EVT_PTR("sbk_30"), sbk_30_ENTRY_4)
     EVT_ELSE
         EVT_CALL(GotoMap, EVT_PTR("sbk_30"), sbk_30_ENTRY_5)
@@ -677,7 +677,7 @@ EvtScript N(EVS_SetupRuins) = {
 };
 
 EvtScript N(EVS_Ruins_Arise_Continued) = {
-    EVT_CALL(PlaySound, SOUND_5C)
+    EVT_CALL(PlaySound, SOUND_SBK_RUINS_FINISH_RISING)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(func_802CF56C, 1)
     EVT_CALL(FacePlayerTowardPoint, 0, 0, 0)
@@ -695,10 +695,10 @@ EvtScript N(EVS_Ruins_Arise_Continued) = {
     EVT_CALL(SetCamDistance, CAM_DEFAULT, EVT_FLOAT(500.0))
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
-    EVT_CALL(N(UnkFunc27), 2, 0, FOG_MODE_3)
-    EVT_CALL(N(UnkFunc27), 1, -1, FOG_MODE_3)
-    EVT_CALL(N(UnkFunc27), 1, EVT_PTR(N(ModelList_Solid)), FOG_MODE_0)
-    EVT_CALL(N(UnkFunc27), 0, EVT_PTR(N(ModelList_Translucent)), FOG_MODE_0)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_BG, NULL, ENV_TINT_REMAP)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_GROUPS, -1, ENV_TINT_REMAP)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_GROUPS, EVT_PTR(N(ModelList_Solid)), ENV_TINT_NONE)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_MODELS, EVT_PTR(N(ModelList_Translucent)), ENV_TINT_NONE)
     EVT_CALL(N(InterpWorldEnvColor), 44, 32, 177, 0, 0, 0, 0)
     EVT_EXEC(N(EVS_Ruins_FinishRising))
     EVT_EXEC(N(EVS_Steps_FinishRising))

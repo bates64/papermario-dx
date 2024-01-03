@@ -3,21 +3,8 @@
 #include "message_ids.h"
 #include "sprite.h"
 
-#if !VERSION_IQUE
-// TODO: remove if assets are dumped in iQue release
 #include "charset/postcard.png.h"
 #include "charset/letter_content_1.png.h"
-#endif
-
-#if VERSION_IQUE
-// TODO: remove if section is split in iQue release
-extern Addr charset_ROM_START;
-extern Addr charset_standard_OFFSET;
-extern Addr charset_standard_pal_OFFSET;
-extern Addr charset_title_OFFSET;
-extern Addr charset_credits_pal_OFFSET;
-extern Addr charset_subtitle_OFFSET;
-#endif
 
 enum RewindArrowStates {
     REWIND_ARROW_STATE_INIT = 0,
@@ -33,18 +20,39 @@ enum RewindArrowStates {
 #define MSG_ROM_START 0x1B83000
 #endif
 
+#if VERSION_PAL
+#define CHOICE_POINTER_MOVE_RATE 5.0
+#else
+#define CHOICE_POINTER_MOVE_RATE 6.0
+#endif
+
 typedef MessageImageData* MessageImageDataList[1];
 
-s32 D_8014C280[] = { 0x028001E0, 0x01FF0000, 0x028001E0, 0x01FF0000, };
+s32 D_8014C280[] = { 0x028001E0, 0x01FF0000, 0x028001E0, 0x01FF0000 };
 
 u8 MessagePlural[] = { MSG_CHAR_LOWER_S, MSG_CHAR_READ_END };
 
+#if VERSION_PAL
+u8 MessagePlural_de[] = { MSG_CHAR_LOWER_N, MSG_CHAR_READ_END };
+#endif
+
 u8 MessageSingular[] = { MSG_CHAR_READ_ENDL, MSG_CHAR_READ_END };
+
+#if VERSION_PAL
+s32 gCurrentLanguage = 0;
+
+void* D_PAL_8014AE50[] = {
+    [LANGUAGE_EN] = msg_pal_en_ROM_START,
+    [LANGUAGE_DE] = msg_pal_de_ROM_START,
+    [LANGUAGE_FR] = msg_pal_fr_ROM_START,
+    [LANGUAGE_ES] = msg_pal_es_ROM_START,
+};
+#endif
 
 s16 gNextMessageBuffer = 0;
 
 //TODO Vtx
-s32 gRewindArrowQuad[] = {
+ALIGNED(8) s32 gRewindArrowQuad[] = {
     0xFFF00009, 0x00000000, 0x00000000, 0xFFFFFFFF,
     0x00100009, 0x00000000, 0x04000000, 0xFFFFFFFF,
     0xFFF0FFF7, 0x00000000, 0x00000240, 0xFFFFFFFF,
@@ -64,29 +72,30 @@ Gfx D_8014C2D8[] = {
     gsDPSetTextureFilter(G_TF_AVERAGE),
     gsDPSetRenderMode(IM_RD | CVG_DST_SAVE | ZMODE_XLU | FORCE_BL | G_RM_PASS, IM_RD | CVG_DST_SAVE | ZMODE_XLU |
                       FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
-    gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL1, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
+    gsDPSetCombineMode(PM_CC_13, G_CC_PASS2),
     gsSPEndDisplayList(),
 };
 
-// unsorted
-extern u8* D_8015131C;
-extern MessageDrawState D_80155D20;
-extern IMG_BIN D_80159B50[];
-extern PAL_BIN D_8015C7E0[];
+SHIFT_BSS s32 gMsgBGScrollAmtX;
+SHIFT_BSS u16 gMsgGlobalWaveCounter;
+SHIFT_BSS MessageImageDataList gMsgVarImages;
+SHIFT_BSS s32 gMsgBGScrollAmtY;
+SHIFT_BSS u8* D_8015131C;
+SHIFT_BSS Gfx* D_80151338;
+SHIFT_BSS char gMessageBuffers[2][1024];
+SHIFT_BSS u8 gMessageMsgVars[3][32];
+SHIFT_BSS s16 D_80155C98;
+SHIFT_BSS Mtx gMessageWindowProjMatrix[2];
+SHIFT_BSS MessageDrawState D_80155D20;
+SHIFT_BSS MessageDrawState* msg_drawState;
+SHIFT_BSS IMG_BIN D_80159B50[0x200];
+SHIFT_BSS PAL_BIN D_8015C7E0[0x10];
+SHIFT_BSS MessagePrintState gMessagePrinters[3];
+#if VERSION_IQUE
+SHIFT_BSS IMG_BIN D_801544A0[120][128];
+#endif
 
-// BSS
-extern s32 gMsgBGScrollAmtX;
-extern u16 gMsgGlobalWaveCounter;
-extern MessageImageDataList gMsgVarImages;
-extern s32 gMsgBGScrollAmtY;
-extern Gfx* D_80151338;
-extern char gMessageBuffers[2][1024];
-extern u8 gMessageMsgVars[3][32];
-extern s16 D_80155C98;
-extern Mtx gMessageWindowProjMatrix[2];
-extern MessageDrawState* msg_drawState;
-
-extern s16 D_802EB644[22];
+extern s16 MsgStyleVerticalLineOffsets[];
 
 extern IMG_BIN ui_msg_bubble_left_png[];
 extern IMG_BIN ui_msg_bubble_mid_png[];
@@ -113,10 +122,10 @@ extern IMG_BIN ui_msg_star_silhouette_png[];
 
 extern IMG_BIN D_802ED550[];
 extern PAL_BIN D_802ED670[];
-extern IMG_BIN D_802ED970[];
-extern IMG_BIN D_802EE8D0[];
-extern MessageCharset* gMsgCharsets[5];
-extern IMG_BIN D_802F39D0[];
+extern IMG_BIN MsgCharImgTitle[];
+extern IMG_BIN MsgCharImgNormal[];
+extern MessageCharset* MsgCharsets[5];
+extern IMG_BIN MsgCharImgSubtitle[];
 extern PAL_BIN D_802F4560[80][8];
 
 extern s32 gMessageBoxFrameParts[2][16];
@@ -126,14 +135,14 @@ extern PAL_BIN ui_point_right_pal[];
 
 MessageNumber gMsgNumbers[] = {
     {
-        .rasters = &D_802EE8D0[0x800],
+        .rasters = &MsgCharImgNormal[0x800],
         .texSize = 128,
         .texWidth = 16,
         .texHeight = 16,
         .digitWidth = {11, 8, 11, 11, 11, 11, 11, 11, 11, 11},
         .fixedWidth = 11
     }, {
-        .rasters = &D_802EE8D0[0x800],
+        .rasters = &MsgCharImgNormal[0x800],
         .texSize = 128,
         .texWidth = 16,
         .texHeight = 16,
@@ -276,11 +285,11 @@ void load_font_data(Addr offset, u16 size, void* dest) {
 void load_font(s32 font) {
     if (font != D_80155C98) {
         if (font == 0) {
-            load_font_data(charset_standard_OFFSET, 0x5100, D_802EE8D0);
+            load_font_data(charset_standard_OFFSET, 0x5100, MsgCharImgNormal);
             load_font_data(charset_standard_pal_OFFSET, 0x500, D_802F4560);
         } else if (font == 1) {
-            load_font_data(charset_title_OFFSET, 0xF60, D_802ED970);
-            load_font_data(charset_subtitle_OFFSET, 0xB88, D_802F39D0);
+            load_font_data(charset_title_OFFSET, 0xF60, MsgCharImgTitle);
+            load_font_data(charset_subtitle_OFFSET, 0xB88, MsgCharImgSubtitle);
             load_font_data(charset_credits_pal_OFFSET, 0x80, D_802F4560);
         }
     }
@@ -342,9 +351,9 @@ s32 _update_message(MessagePrintState* printer) {
                     if (printer->stateFlags & MSG_STATE_FLAG_80000) {
                         buttons = BUTTON_A | BUTTON_C_DOWN;
                     }
-                    if ((buttons & gGameStatusPtr->pressedButtons[0]) || (gGameStatusPtr->currentButtons[0] & BUTTON_B)) {
+                    if ((buttons & gGameStatusPtr->pressedButtons[0]) || (gGameStatusPtr->curButtons[0] & BUTTON_B)) {
                         printer->windowState = MSG_WINDOW_STATE_PRINTING;
-                        printer->currentPrintDelay = 0;
+                        printer->curPrintDelay = 0;
                         printer->stateFlags |= MSG_STATE_FLAG_4;
                         if (gGameStatusPtr->pressedButtons[0] & (BUTTON_A | BUTTON_C_DOWN)) {
                             cond = TRUE;
@@ -352,9 +361,9 @@ s32 _update_message(MessagePrintState* printer) {
                         } else if (printer->srcBuffer[printer->srcBufferPos] != MSG_CHAR_READ_END) {
                             printer->stateFlags |= MSG_STATE_FLAG_PRINT_QUICKLY | MSG_STATE_FLAG_4;
                             if (printer->fontVariant != 0 || printer->srcBuffer[printer->srcBufferPos] != MSG_CHAR_UNK_C3) {
-                                printer->stateFlags |= MSG_STATE_FLAG_PRINT_QUICKLY | MSG_STATE_FLAG_80 | MSG_STATE_FLAG_4;
+                                printer->stateFlags |= MSG_STATE_FLAG_PRINT_QUICKLY | MSG_STATE_FLAG_SPEAKING | MSG_STATE_FLAG_4;
                             }
-                            sfx_play_sound_with_params(SOUND_CC, 0, 0, 0);
+                            sfx_play_sound_with_params(SOUND_MSG_SKIP, 0, 0, 0);
                         } else if (printer->style == MSG_STYLE_RIGHT ||
                                    printer->style == MSG_STYLE_LEFT ||
                                    printer->style == MSG_STYLE_CENTER ||
@@ -364,29 +373,29 @@ s32 _update_message(MessagePrintState* printer) {
                         }
                     } else if ((gGameStatusPtr->pressedButtons[0] & BUTTON_Z) &&
                                !(printer->stateFlags & MSG_STATE_FLAG_40000) &&
-                               (printer->currentLine != 0))
+                               (printer->curLine != 0))
                     {
                         printer->windowState = MSG_WINDOW_STATE_B;
                         printer->unk_4CC = 0;
-                        printer->unkArraySize = printer->currentLine - 1;
+                        printer->unkArraySize = printer->curLine - 1;
                         printer->unk_4C8 = abs(printer->curLinePos - printer->lineEndPos[printer->unkArraySize]);
-                        sfx_play_sound_with_params(SOUND_CD, 0, 0, 0);
+                        sfx_play_sound_with_params(SOUND_MSG_REWIND, 0, 0, 0);
                     }
                     break;
                 case MSG_WINDOW_STATE_C:
                     if (gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
                         printer->windowState = MSG_WINDOW_STATE_B;
                         printer->unk_4CC = 0;
-                        printer->unkArraySize = printer->currentLine;
+                        printer->unkArraySize = printer->curLine;
                         printer->unk_4C8 = abs(printer->curLinePos - printer->lineEndPos[printer->unkArraySize]);
-                        sfx_play_sound_with_params(SOUND_CC, 0, 0, 0);
+                        sfx_play_sound_with_params(SOUND_MSG_SKIP, 0, 0, 0);
                     } else if (gGameStatusPtr->pressedButtons[0] & BUTTON_Z) {
                         if (printer->unkArraySize > 0) {
                             printer->windowState = MSG_WINDOW_STATE_B;
                             printer->unk_4CC = 0;
                             printer->unkArraySize--;
                             printer->unk_4C8 = abs(printer->curLinePos - printer->lineEndPos[printer->unkArraySize]);
-                            sfx_play_sound_with_params(SOUND_CD, 0, 0, 0);
+                            sfx_play_sound_with_params(SOUND_MSG_REWIND, 0, 0, 0);
                         }
                     } else {
                         if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
@@ -394,7 +403,7 @@ s32 _update_message(MessagePrintState* printer) {
                             printer->unk_4CC = 0;
                             printer->unkArraySize++;
                             printer->unk_4C8 = abs(printer->curLinePos - printer->lineEndPos[printer->unkArraySize]);
-                            sfx_play_sound_with_params(SOUND_CE, 0, 0, 0);
+                            sfx_play_sound_with_params(SOUND_MSG_UNREWIND, 0, 0, 0);
                         }
                     }
                     break;
@@ -407,26 +416,26 @@ s32 _update_message(MessagePrintState* printer) {
                         sfx_play_sound_with_params(SOUND_MENU_NEXT, 0, 0, 0);
                     } else if (printer->cancelOption != 0xFF && (gGameStatusPtr->pressedButtons[0] & BUTTON_B)) {
                         if (printer->cancelOption >= printer->maxOption) {
-                            printer->selectedOption = printer->currentOption;
+                            printer->selectedOption = printer->curOption;
                         } else {
                             printer->selectedOption = printer->cancelOption;
                         }
                         printer->madeChoice = 1;
                         printer->windowState = MSG_WINDOW_STATE_PRINTING;
                         printer->scrollingTime = 0;
-                        printer->currentOption = printer->cancelOption;
+                        printer->curOption = printer->cancelOption;
                         printer->stateFlags |= MSG_STATE_FLAG_20000;
                         sfx_play_sound_with_params(SOUND_MENU_BACK, 0, 0, 0);
                     } else if (gGameStatusPtr->heldButtons[0] & BUTTON_STICK_DOWN) {
-                        if (printer->currentOption != printer->maxOption - 1) {
-                            printer->targetOption = printer->currentOption + 1;
+                        if (printer->curOption != printer->maxOption - 1) {
+                            printer->targetOption = printer->curOption + 1;
                             printer->windowState = MSG_WINDOW_STATE_SCROLLING_BACK;
                             printer->scrollingTime = 1;
                             sfx_play_sound_with_params(SOUND_MENU_CHANGE_SELECTION, 0, 0, 0);
                         }
                     } else if (gGameStatusPtr->heldButtons[0] & BUTTON_STICK_UP) {
-                        if (printer->currentOption != 0) {
-                            printer->targetOption = printer->currentOption - 1;
+                        if (printer->curOption != 0) {
+                            printer->targetOption = printer->curOption - 1;
                             printer->windowState = MSG_WINDOW_STATE_SCROLLING_BACK;
                             printer->scrollingTime = 1;
                             sfx_play_sound_with_params(SOUND_MENU_CHANGE_SELECTION, 0, 0, 0);
@@ -438,10 +447,10 @@ s32 _update_message(MessagePrintState* printer) {
                     }
                 case MSG_WINDOW_STATE_SCROLLING_BACK:
                     printer->scrollingTime++;
-                    if (printer->scrollingTime >= 5) {
+                    if (printer->scrollingTime >= (s32)(5 * DT)) {
                         printer->windowState = MSG_WINDOW_STATE_WAITING_FOR_CHOICE;
-                        printer->currentOption = printer->targetOption;
-                        printer->selectedOption = printer->currentOption;
+                        printer->curOption = printer->targetOption;
+                        printer->selectedOption = printer->curOption;
                     }
                     break;
             }
@@ -450,11 +459,11 @@ s32 _update_message(MessagePrintState* printer) {
                     (gGameStatusPtr->pressedButtons[0] & BUTTON_A))
         {
             printer->windowState = MSG_WINDOW_STATE_PRINTING;
-            printer->currentPrintDelay = 0;
+            printer->curPrintDelay = 0;
             printer->stateFlags |= MSG_STATE_FLAG_4;
         }
 
-        if (printer->stateFlags & MSG_STATE_FLAG_4 && !(gGameStatusPtr->currentButtons[0] & BUTTON_A)) {
+        if (printer->stateFlags & MSG_STATE_FLAG_4 && !(gGameStatusPtr->curButtons[0] & BUTTON_A)) {
             printer->stateFlags &= ~MSG_STATE_FLAG_4;
         }
 
@@ -466,7 +475,7 @@ s32 _update_message(MessagePrintState* printer) {
 
         switch (printer->windowState) {
             case MSG_WINDOW_STATE_PRINTING:
-                if ((gGameStatusPtr->pressedButtons[0] & BUTTON_A) | (gGameStatusPtr->currentButtons[0] & BUTTON_B)) {
+                if ((gGameStatusPtr->pressedButtons[0] & BUTTON_A) | (gGameStatusPtr->curButtons[0] & BUTTON_B)) {
                     if (!(printer->stateFlags & (MSG_STATE_FLAG_20 | MSG_STATE_FLAG_10)) && !cond) {
                         printer->stateFlags |= MSG_STATE_FLAG_PRINT_QUICKLY;
 
@@ -477,19 +486,19 @@ s32 _update_message(MessagePrintState* printer) {
                 charsToPrint = printer->charsPerChunk;
                 if (printer->windowState == MSG_WINDOW_STATE_INIT) {
                     printer->windowState = MSG_WINDOW_STATE_PRINTING;
-                    printer->currentPrintDelay = 0;
+                    printer->curPrintDelay = 0;
                 } else if (printer->stateFlags & MSG_STATE_FLAG_PRINT_QUICKLY) {
                     charsToPrint = 12;
-                    printer->currentPrintDelay = 0;
+                    printer->curPrintDelay = 0;
                 } else if (!(printer->stateFlags & MSG_STATE_FLAG_4)) {
                     if (!(printer->stateFlags & (MSG_STATE_FLAG_20 | MSG_STATE_FLAG_10)) &&
-                        (gGameStatusPtr->currentButtons[0] & BUTTON_A))
+                        (gGameStatusPtr->curButtons[0] & BUTTON_A))
                     {
                         charsToPrint = 6;
-                        printer->currentPrintDelay = 0;
+                        printer->curPrintDelay = 0;
                     }
                 }
-                if ((printer->currentPrintDelay == 0) || --printer->currentPrintDelay == 0) {
+                if ((printer->curPrintDelay == 0) || --printer->curPrintDelay == 0) {
                     msg_copy_to_print_buffer(printer, charsToPrint, 0);
                 }
                 break;
@@ -499,12 +508,12 @@ s32 _update_message(MessagePrintState* printer) {
                         printer->stateFlags |= MSG_STATE_FLAG_PRINT_QUICKLY;
                     }
                 }
-                printer->curLinePos += printer->unk_464;
+                printer->curLinePos += printer->windowScrollRate;
                 if ((printer->stateFlags & MSG_STATE_FLAG_PRINT_QUICKLY) ||
                     (!(printer->stateFlags & (MSG_STATE_FLAG_10 | MSG_STATE_FLAG_4)) &&
-                    (gGameStatusPtr->currentButtons[0] & BUTTON_A)))
+                    (gGameStatusPtr->curButtons[0] & BUTTON_A)))
                 {
-                    printer->curLinePos += 6;
+                    printer->curLinePos += (s32)(6 / DT);
                 }
 
                 if (printer->curLinePos >= printer->nextLinePos) {
@@ -516,11 +525,11 @@ s32 _update_message(MessagePrintState* printer) {
                         printer->style == MSG_STYLE_LAMPPOST ||
                         printer->srcBuffer[printer->srcBufferPos] == MSG_CHAR_READ_WAIT)
                     {
-                        printer->currentPrintDelay = 0;
+                        printer->curPrintDelay = 0;
                     } else {
-                        printer->currentPrintDelay = 5;
+                        printer->curPrintDelay = 5;
                     }
-                    printer->lineEndPos[printer->currentLine] = printer->curLinePos;
+                    printer->lineEndPos[printer->curLine] = printer->curLinePos;
                 }
                 break;
             case MSG_WINDOW_STATE_B:
@@ -561,7 +570,7 @@ s32 _update_message(MessagePrintState* printer) {
                     if (printer->curLinePos >= printer->lineEndPos[printer->unkArraySize]) {
                         printer->curLinePos = printer->lineEndPos[printer->unkArraySize];
                         printer->windowState = MSG_WINDOW_STATE_C;
-                        if (printer->unkArraySize == printer->currentLine) {
+                        if (printer->unkArraySize == printer->curLine) {
                             printer->windowState = MSG_WINDOW_STATE_WAITING;
                             printer->rewindArrowAnimState = REWIND_ARROW_STATE_INIT;
                             printer->rewindArrowCounter = 0;
@@ -657,7 +666,7 @@ void msg_play_speech_sound(MessagePrintState* printer, u8 character) {
 
     if (printer->stateFlags & MSG_STATE_FLAG_800000 && !(printer->delayFlags & (MSG_DELAY_FLAG_2 | MSG_DELAY_FLAG_4)) && printer->volume != 0) {
         volTemp = (f32)printer->volume / 100.0;
-        pitchShift = ((character % 20) * 10) + (printer->speechVolumePitch - baseShift);
+        pitchShift = ((character % 20) * 10) + (printer->speechPitchShift - baseShift);
         volume = ((rand_int(15) + 78) * volTemp);
 
         if (volume > 255) {
@@ -665,20 +674,20 @@ void msg_play_speech_sound(MessagePrintState* printer, u8 character) {
         }
 
         if (character & flag) {
-            sfx_play_sound_with_params(printer->speedSoundIDA, volume, printer->speechPan, pitchShift);
+            sfx_play_sound_with_params(printer->speechSoundIDA, volume, printer->speechPan, pitchShift);
         } else {
-            sfx_play_sound_with_params(printer->speedSoundIDB, volume, printer->speechPan, pitchShift);
+            sfx_play_sound_with_params(printer->speechSoundIDB, volume, printer->speechPan, pitchShift);
         }
     }
 }
 
 extern s32 gItemIconRasterOffsets[];
 extern s32 gItemIconPaletteOffsets[];
-extern s32 D_802EB5C0[];
-extern s32 D_802EB5F0[];
-extern struct_D_802EB620 D_802EB620[];
+extern s32 MsgLetterRasterOffsets[];
+extern s32 MsgLetterPaletteOffsets[];
+extern MsgVoice MsgVoices[];
 
-#if VERSION_IQUE
+#if VERSION_PAL
 INCLUDE_ASM(s32, "msg", msg_copy_to_print_buffer);
 #else
 void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
@@ -709,19 +718,19 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
             case MSG_CHAR_READ_WAIT:
                 printer->windowState = MSG_WINDOW_STATE_WAITING;
                 printer->delayFlags |= MSG_DELAY_FLAG_1;
-                printer->delayFlags &= ~2;
+                printer->delayFlags &= ~MSG_DELAY_FLAG_2;
                 printer->rewindArrowAnimState = REWIND_ARROW_STATE_INIT;
                 printer->rewindArrowCounter = 0;
-                printer->stateFlags &= ~MSG_STATE_FLAG_80;
+                printer->stateFlags &= ~MSG_STATE_FLAG_SPEAKING;
                 printer->stateFlags &= ~MSG_STATE_FLAG_PRINT_QUICKLY;
                 if (printer->style != MSG_STYLE_F) {
-                    sfx_play_sound_with_params(SOUND_CB, 0, 0, 0);
+                    sfx_play_sound_with_params(SOUND_MSG_WAIT, 0, 0, 0);
                 }
                 break;
             case MSG_CHAR_READ_PAUSE:
-                printer->currentPrintDelay = *srcBuf++;
+                printer->curPrintDelay = *srcBuf++;
                 printer->delayFlags |= MSG_DELAY_FLAG_1;
-                printer->stateFlags &= ~MSG_STATE_FLAG_80;
+                printer->stateFlags &= ~MSG_STATE_FLAG_SPEAKING;
                 break;
             case MSG_CHAR_READ_VARIANT0:
             case MSG_CHAR_READ_VARIANT1:
@@ -745,10 +754,10 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                 break;
             case MSG_CHAR_READ_NEXT:
                 if (printer->lineCount != 0) {
-                    printer->lineEndPos[printer->currentLine] = printer->curLinePos;
-                    printer->currentLine++;
+                    printer->lineEndPos[printer->curLine] = printer->curLinePos;
+                    printer->curLine++;
                     *printBuf++ = MSG_CHAR_PRINT_NEXT;
-                    printer->nextLinePos = printer->curLinePos + (gMsgCharsets[printer->font]->newLineY + D_802EB644[printer->style]) * printer->lineCount;
+                    printer->nextLinePos = printer->curLinePos + (MsgCharsets[printer->font]->newLineY + MsgStyleVerticalLineOffsets[printer->style]) * printer->lineCount;
                     printer->windowState = MSG_WINDOW_STATE_SCROLLING;
                     printer->delayFlags |= MSG_DELAY_FLAG_1;
                 }
@@ -771,10 +780,10 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
                         printer->stateFlags |= MSG_STATE_FLAG_800000 | MSG_STATE_FLAG_800;
                         if (nextArg != MSG_CHAR_UNK_C3) {
-                            printer->stateFlags |= MSG_STATE_FLAG_80;
+                            printer->stateFlags |= MSG_STATE_FLAG_SPEAKING;
                         }
-                        printer->speedSoundIDA = SOUND_11;
-                        printer->speedSoundIDB = SOUND_12;
+                        printer->speechSoundIDA = SOUND_MSG_VOICE_1A;
+                        printer->speechSoundIDB = SOUND_MSG_VOICE_1B;
                         printer->windowState = MSG_WINDOW_STATE_OPENING;
                         break;
                     case MSG_STYLE_CHOICE:
@@ -799,7 +808,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                             printer->stateFlags |= MSG_STATE_FLAG_800;
                             printer->delayFlags |= MSG_DELAY_FLAG_1;
                             if (arg == MSG_STYLE_INSPECT) {
-                                sfx_play_sound_with_params(SOUND_21C, 0, 0, 0);
+                                sfx_play_sound_with_params(SOUND_APPROVE, 0, 0, 0);
                             }
                         }
                         break;
@@ -808,7 +817,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowBasePos.y = *srcBuf++;
                         printer->windowSize.x = *srcBuf++;
                         printer->windowSize.y = *srcBuf++;
-                        sfx_play_sound_with_params(SOUND_21C, 0, 0, 0);
+                        sfx_play_sound_with_params(SOUND_APPROVE, 0, 0, 0);
                         printer->windowState = MSG_WINDOW_STATE_OPENING;
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
                         printer->stateFlags |= MSG_STATE_FLAG_800;
@@ -837,10 +846,10 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         romAddr = charset_ROM_START + ((s32)charset_postcard_pal_OFFSET + 5);
                         dma_copy(romAddr, romAddr + 0x20, printer->letterBackgroundPal);
                         printer->letterContentImg = heap_malloc(charset_letter_content_1_png_width * charset_letter_content_1_png_height);
-                        romAddr = charset_ROM_START + D_802EB5C0[arg];
+                        romAddr = charset_ROM_START + MsgLetterRasterOffsets[arg];
                         dma_copy(romAddr, romAddr + (charset_letter_content_1_png_width * charset_letter_content_1_png_height), printer->letterContentImg);
                         printer->letterContentPal = heap_malloc(0x200);
-                        romAddr = charset_ROM_START + D_802EB5F0[arg];
+                        romAddr = charset_ROM_START + MsgLetterPaletteOffsets[arg];
                         dma_copy(romAddr, romAddr + 0x200, printer->letterContentPal);
                         break;
                     case MSG_STYLE_POPUP:
@@ -924,15 +933,16 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
                         break;
                     case MSG_READ_FUNC_SCROLL:
-                        printer->lineEndPos[printer->currentLine] = printer->curLinePos;
-                        printer->currentLine++;
+                        printer->lineEndPos[printer->curLine] = printer->curLinePos;
+                        printer->curLine++;
                         *printBuf++ = MSG_CHAR_PRINT_NEXT;
                         arg = *srcBuf++;
-                        printer->nextLinePos = printer->curLinePos + (gMsgCharsets[printer->font]->newLineY + D_802EB644[printer->style]) * arg;
+                        printer->nextLinePos = printer->curLinePos + (MsgCharsets[printer->font]->newLineY + MsgStyleVerticalLineOffsets[printer->style]) * arg;
                         printer->windowState = MSG_WINDOW_STATE_SCROLLING;
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
                         printer->lineCount = 0;
                         break;
+#if !VERSION_IQUE
                     case MSG_READ_FUNC_SIZE:
                         *printBuf++ = MSG_CHAR_PRINT_FUNCTION;
                         *printBuf++ = MSG_PRINT_FUNC_SIZE;
@@ -945,6 +955,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         *printBuf++ = MSG_PRINT_FUNC_SIZE_RESET;
                         printer->sizeScale = 1.0f;
                         break;
+#endif
                     case MSG_READ_FUNC_SPEED:
                         printer->printDelayTime = *srcBuf++;
                         printer->charsPerChunk = *srcBuf++;
@@ -980,7 +991,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         *printBuf++ = MSG_PRINT_FUNC_INLINE_IMAGE;
                         *printBuf++ = *srcBuf++;
                         arg1--;
-                        printer->currentPrintDelay = printer->printDelayTime;
+                        printer->curPrintDelay = printer->printDelayTime;
                         if (arg1 <= 0) {
                             printer->delayFlags |= MSG_DELAY_FLAG_1;
                         }
@@ -994,7 +1005,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         *printBuf++ = *srcBuf++;
                         *printBuf++ = *srcBuf++;
                         *printBuf++ = *srcBuf++;
-                        printer->currentPrintDelay = printer->printDelayTime;
+                        printer->curPrintDelay = printer->printDelayTime;
                         if (--arg1 <= 0) {
                             printer->delayFlags |= MSG_DELAY_FLAG_1;
                         }
@@ -1013,11 +1024,12 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         offset = arg << 8 | argQ;
 
                         D_8015131C = D_80159B50;
-                        dma_copy(icon_present_ROM_START + gItemIconRasterOffsets[offset], icon_present_ROM_START + gItemIconRasterOffsets[offset] + 0x200, a2);
-                        romEnd = icon_present_ROM_START + gItemIconPaletteOffsets[offset] + 0x20;
-                        dma_copy(icon_present_ROM_START + gItemIconPaletteOffsets[offset],
+                        dma_copy(icon_ROM_START + gItemIconRasterOffsets[offset],
+                                icon_ROM_START + gItemIconRasterOffsets[offset] + 0x200, a2);
+                        romEnd = icon_ROM_START + gItemIconPaletteOffsets[offset] + 0x20;
+                        dma_copy(icon_ROM_START + gItemIconPaletteOffsets[offset],
                                  romEnd, D_8015C7E0);
-                        printer->currentPrintDelay = printer->printDelayTime;
+                        printer->curPrintDelay = printer->printDelayTime;
                         if (--arg1 <= 0) {
                             printer->delayFlags |= MSG_DELAY_FLAG_1;
                         }
@@ -1026,7 +1038,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         }
                         break;
                     case MSG_READ_FUNC_IMAGE:
-                        printer->currentImageIndex = *srcBuf++;
+                        printer->curImageIndex = *srcBuf++;
                         arg = *srcBuf++;
                         argQ = *srcBuf++;
                         printer->varImageScreenPos.x = arg << 8 | argQ;
@@ -1090,10 +1102,10 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         *printBuf++ = *srcBuf++;
                         break;
                     case MSG_READ_FUNC_END_CHOICE:
-                        sfx_play_sound_with_params(SOUND_MENU_START_TUTORIAL, 0, 0, 0);
+                        sfx_play_sound_with_params(SOUND_MENU_SHOW_CHOICE, 0, 0, 0);
                         printer->maxOption = *srcBuf++;
                         printer->madeChoice = 0;
-                        printer->currentOption = 0;
+                        printer->curOption = 0;
                         printer->selectedOption = 0;
                         printer->windowState = MSG_WINDOW_STATE_WAITING_FOR_CHOICE;
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
@@ -1113,7 +1125,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                     case MSG_READ_FUNC_YIELD:
                         printer->stateFlags |= MSG_STATE_FLAG_100000 | MSG_STATE_FLAG_40;
                         printer->delayFlags |= MSG_DELAY_FLAG_1;
-                        printer->stateFlags &= ~MSG_STATE_FLAG_80;
+                        printer->stateFlags &= ~MSG_STATE_FLAG_SPEAKING;
                         printer->stateFlags &= ~MSG_STATE_FLAG_PRINT_QUICKLY;
                         break;
                     case MSG_READ_FUNC_SAVE_POS:
@@ -1234,19 +1246,19 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
 
                         if (!(printer->delayFlags & (MSG_DELAY_FLAG_4 | MSG_DELAY_FLAG_2)) && arg1 <= 0) {
                             printer->delayFlags |= MSG_DELAY_FLAG_1;
-                            printer->currentPrintDelay = printer->printDelayTime;
+                            printer->curPrintDelay = printer->printDelayTime;
                         }
                         msg_play_speech_sound(printer, argQ);
                         if (printer->stateFlags & MSG_STATE_FLAG_800000) {
-                            printer->stateFlags |= MSG_STATE_FLAG_80;
+                            printer->stateFlags |= MSG_STATE_FLAG_SPEAKING;
                         }
                         break;
                     case MSG_READ_FUNC_VOICE:
                         arg = *srcBuf++;
                         printer->speechSoundType = arg;
-                        printer->speedSoundIDA = D_802EB620[arg].unk_00;
-                        printer->speedSoundIDB = D_802EB620[arg].unk_04;
-                        printer->speechVolumePitch = D_802EB620[arg].unk_08;
+                        printer->speechSoundIDA = MsgVoices[arg].voiceA;
+                        printer->speechSoundIDB = MsgVoices[arg].voiceB;
+                        printer->speechPitchShift = MsgVoices[arg].pitchShift;
                         break;
                     case MSG_READ_FUNC_VOLUME:
                         printer->volume = *srcBuf++;
@@ -1256,12 +1268,12 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         argQ = *srcBuf++;
                         argW = *srcBuf++;
                         argE = *srcBuf++;
-                        printer->speedSoundIDA = (arg << 0x18) + (argQ << 0x10) + (argW << 0x8) + (argE);
+                        printer->speechSoundIDA = (arg << 0x18) + (argQ << 0x10) + (argW << 0x8) + (argE);
                         arg = *srcBuf++;
                         argQ = *srcBuf++;
                         argW = *srcBuf++;
                         argE = *srcBuf++;
-                        printer->speedSoundIDB = (arg << 0x18) + (argQ << 0x10) + (argW << 0x8) + (argE);
+                        printer->speechSoundIDB = (arg << 0x18) + (argQ << 0x10) + (argW << 0x8) + (argE);
                         break;
                     case MSG_READ_FUNC_CENTER_X:
                         *printBuf++ = MSG_CHAR_PRINT_FUNCTION;
@@ -1283,12 +1295,19 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
             default:
                 *printBuf++ = c;
                 arg1--;
+#if VERSION_IQUE
+                if (c >= MSG_CHAR_MULTIBYTE_FIRST && c <= MSG_CHAR_MULTIBYTE_LAST) {
+                    *printBuf++ = nextArg;
+                    srcBuf++;
+                    arg1--;
+                }
+#endif
                 if (printer->fontVariant == 0 && c == MSG_CHAR_UNK_C3) {
-                    printer->stateFlags &= ~MSG_STATE_FLAG_80;
+                    printer->stateFlags &= ~MSG_STATE_FLAG_SPEAKING;
                 } else {
                     msg_play_speech_sound(printer, c);
                     if (printer->stateFlags & MSG_STATE_FLAG_800000) {
-                        printer->stateFlags |= MSG_STATE_FLAG_80;
+                        printer->stateFlags |= MSG_STATE_FLAG_SPEAKING;
                     }
                 }
                 break;
@@ -1296,7 +1315,7 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
 
         if (!(printer->delayFlags & (MSG_DELAY_FLAG_4 | MSG_DELAY_FLAG_2)) && arg1 <= 0) {
             printer->delayFlags |= MSG_DELAY_FLAG_1;
-            printer->currentPrintDelay = printer->printDelayTime;
+            printer->curPrintDelay = printer->printDelayTime;
         }
         if (!(printer->delayFlags & MSG_DELAY_FLAG_1)) {
             continue;
@@ -1324,10 +1343,10 @@ void initialize_printer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     printer->printBuffer[0] = MSG_CHAR_PRINT_END;
     printer->printDelayTime = 1;
     printer->charsPerChunk = 1;
-    printer->unk_464 = 6;
+    printer->windowScrollRate = (s32)(6 / DT);
     printer->srcBuffer = NULL;
     printer->msgID = 0;
-    printer->currentPrintDelay = 0;
+    printer->curPrintDelay = 0;
     printer->windowOffsetPos.x = 0;
     printer->windowOffsetPos.y = 0;
     printer->windowBasePos.x = 0;
@@ -1336,11 +1355,11 @@ void initialize_printer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     printer->rewindArrowCounter = 0;
     printer->rewindArrowPos.x = 0;
     printer->rewindArrowPos.y = 0;
-    printer->currentLine = 0;
+    printer->curLine = 0;
     printer->unkArraySize = 0;
     printer->maxOption = 0;
     printer->madeChoice = 0;
-    printer->currentOption = 0;
+    printer->curOption = 0;
     printer->selectedOption = 0;
     printer->cancelOption = -1;
     printer->windowState = MSG_WINDOW_STATE_DONE;
@@ -1357,7 +1376,7 @@ void initialize_printer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     printer->lineCount = 0;
 
     for (i = 0; i < ARRAY_COUNT(printer->animTimers); i++) {
-        printer->currentAnimFrame[i] = 0;
+        printer->curAnimFrame[i] = 0;
         printer->animTimers[i] = -1;
     }
 
@@ -1374,11 +1393,11 @@ void initialize_printer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     printer->fadeOutCounter = 0;
     printer->windowSize.y = 0;
     printer->windowSize.x = 0;
-    printer->speechVolumePitch = 0;
-    printer->speedSoundIDA = 0;
-    printer->speedSoundIDB = 0;
+    printer->speechPitchShift = 0;
+    printer->speechSoundIDA = 0;
+    printer->speechSoundIDB = 0;
     printer->varBufferReadPos = 0;
-    printer->currentImageIndex = 0;
+    printer->curImageIndex = 0;
     printer->varImageScreenPos.x = 0;
     printer->varImageScreenPos.y = 0;
     printer->varImgHasBorder = 0;
@@ -1392,6 +1411,10 @@ void initialize_printer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     printer->sizeScale = 1.0f;
 }
 
+#if VERSION_PAL
+void dma_load_msg(u32 msgID, void* dest);
+INCLUDE_ASM(s32, "msg", dma_load_msg);
+#else
 void dma_load_msg(u32 msgID, void* dest) {
     u8* addr = (u8*) MSG_ROM_START + (msgID >> 14); // (msgID >> 16) * 4
     u8* offset[2]; // start, end
@@ -1404,6 +1427,7 @@ void dma_load_msg(u32 msgID, void* dest) {
     // Load the msg data
     dma_copy(MSG_ROM_START + offset[0], MSG_ROM_START + offset[1], dest);
 }
+#endif
 
 s8* load_message_to_buffer(s32 msgID) {
     s8* prevBufferPos;
@@ -1515,7 +1539,7 @@ void set_message_images(MessageImageData* images) {
     *gMsgVarImages = images;
 }
 
-void set_message_msg(s32 msgID, s32 index) {
+void set_message_text_var(s32 msgID, s32 index) {
     u8* mallocSpace = NULL;
     s32 i;
     u8* msgVars;
@@ -1545,7 +1569,7 @@ void set_message_msg(s32 msgID, s32 index) {
     }
 }
 
-void set_message_value(s32 value, s32 index) {
+void set_message_int_var(s32 value, s32 index) {
     s8 strBuffer[ARRAY_COUNT(gMessageMsgVars[index])];
     s8* bufferIt;
     s32 i;
@@ -1578,7 +1602,7 @@ s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgS
     }
 
 #if VERSION_IQUE
-    if (character >= 0x5F && character<=0x8F) {
+    if (character >= MSG_CHAR_MULTIBYTE_FIRST && character <= MSG_CHAR_MULTIBYTE_LAST) {
         charWidth = 16.0;
         return charWidth * msgScale;
     }
@@ -1587,7 +1611,7 @@ s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgS
     if (overrideCharWidth != 0) {
         charWidth = overrideCharWidth;
     } else if (flags != 0) {
-        u8* charWidthTable = gMsgCharsets[charset]->rasters[variation].charWidthTable;
+        u8* charWidthTable = MsgCharsets[charset]->rasters[variation].charWidthTable;
 
         if (charWidthTable != NULL
                 && character != MSG_CHAR_READ_SPACE
@@ -1595,10 +1619,10 @@ s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgS
                 && character != MSG_CHAR_READ_HALF_SPACE) {
             charWidth = charWidthTable[character];
         } else {
-            charWidth = gMsgCharsets[charset]->rasters[variation].monospaceWidth;
+            charWidth = MsgCharsets[charset]->rasters[variation].monospaceWidth;
         }
     } else {
-        charWidth = gMsgCharsets[charset]->rasters[variation].monospaceWidth;
+        charWidth = MsgCharsets[charset]->rasters[variation].monospaceWidth;
     }
 
     if (character == MSG_CHAR_READ_SPACE) {
@@ -1630,7 +1654,7 @@ s32 msg_get_draw_char_width(s32 character, s32 charset, s32 variation, f32 msgSc
     if (overrideCharWidth != 0) {
         baseWidth = overrideCharWidth;
     } else if (flags & MSG_PRINT_FLAG_100) {
-        u8* charWidthTable = gMsgCharsets[charset]->rasters[variation].charWidthTable;
+        u8* charWidthTable = MsgCharsets[charset]->rasters[variation].charWidthTable;
 
         if (charWidthTable != NULL
                 && character != MSG_CHAR_PRINT_SPACE
@@ -1638,10 +1662,10 @@ s32 msg_get_draw_char_width(s32 character, s32 charset, s32 variation, f32 msgSc
                 && character != MSG_CHAR_PRINT_HALF_SPACE) {
             baseWidth = charWidthTable[character];
         } else {
-            baseWidth = gMsgCharsets[charset]->rasters[variation].monospaceWidth;
+            baseWidth = MsgCharsets[charset]->rasters[variation].monospaceWidth;
         }
     } else {
-        baseWidth = gMsgCharsets[charset]->rasters[variation].monospaceWidth;
+        baseWidth = MsgCharsets[charset]->rasters[variation].monospaceWidth;
     }
 
     if (character == MSG_CHAR_PRINT_SPACE) {
@@ -1906,7 +1930,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
                 }
 
 #if VERSION_IQUE
-                if (prevChar >= 0x5f && prevChar <= 0x8F) {
+                if (prevChar >= MSG_CHAR_MULTIBYTE_FIRST && prevChar <= MSG_CHAR_MULTIBYTE_LAST) {
                     break;
                 }
 #endif
@@ -1944,7 +1968,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
         *width = maxLineWidth;
     }
     if (height != NULL) {
-        *height = lineCount * gMsgCharsets[font]->newLineY;
+        *height = lineCount * MsgCharsets[font]->newLineY;
     }
     if (maxLineChars != NULL) {
         *maxLineChars = maxCharsPerLine;
@@ -2159,7 +2183,7 @@ void msg_draw_choice_pointer(MessagePrintState* printer) {
         posY = printer->windowOffsetPos.y + printer->windowBasePos.y + printer->cursorPosY[printer->selectedOption];
     } else {
         s32 baseX, baseY, targetX, targetY;
-        f32 moveToTargetAlpha = (f32)(printer->scrollingTime + 1.0) / 6.0;
+        f32 moveToTargetAlpha = (f32)(printer->scrollingTime + 1.0) / CHOICE_POINTER_MOVE_RATE;
 
         baseX = printer->windowOffsetPos.x + printer->windowBasePos.x + printer->cursorPosX[printer->selectedOption];
         targetX = printer->windowOffsetPos.x + printer->windowBasePos.x + printer->cursorPosX[printer->targetOption];
@@ -2186,7 +2210,7 @@ void msg_draw_choice_pointer(MessagePrintState* printer) {
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, ui_point_right_pal);
     gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_07, PM_CC_07);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, shadowAlpha);
     draw_image_with_clipping(ui_point_right_png, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, posX + 2, posY + 2, 10, 10, 300, 220);
     draw_ci_image_with_clipping(ui_point_right_png, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, ui_point_right_pal, posX, posY, 20, 20, 300, 200, pointerAlpha);
@@ -2269,7 +2293,7 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
         for (i = 0; i < count; i++) {
             gDPPipeSync(gMainGfxPos++);
             gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-            gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+            gDPSetCombineMode(gMainGfxPos++, PM_CC_07, PM_CC_07);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, 72);
             draw_digit(raster + digits[i] * texSize, charset, digitPosX[i] + 2, y + 2);
             gDPPipeSync(gMainGfxPos++);
@@ -2281,7 +2305,7 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_01, PM_CC_01);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, opacity);
     }
 
@@ -2340,7 +2364,7 @@ void draw_message_window(MessagePrintState* printer) {
     }
 }
 
-#if VERSION_IQUE
+#if VERSION_IQUE || VERSION_PAL
 INCLUDE_ASM(s32, "msg", appendGfx_message);
 #else
 void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 additionalOffsetX, u16 additionalOffsetY,
@@ -2451,7 +2475,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
     msg_drawState->visiblePrintedCount = 0;
     msg_drawState->centerPos = 0;
     msg_drawState->fontVariant = 0;
-    msg_drawState->currentPosX = 0;
+    msg_drawState->curPosX = 0;
     msg_drawState->nextPos[0] = 0;
     msg_drawState->nextPos[1] = 0;
     msg_drawState->font = 0;
@@ -2479,8 +2503,8 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         switch (msg_drawState->printBuffer[msg_drawState->drawBufferPos]) {
             case MSG_CHAR_PRINT_ENDL:
                 msg_drawState->nextPos[0] = 0;
-                msg_drawState->nextPos[1] += (s32)((msg_drawState->msgScale.y * gMsgCharsets[msg_drawState->font]->newLineY) +
-                                                   D_802EB644[printer->style]);
+                msg_drawState->nextPos[1] += (s32)((msg_drawState->msgScale.y * MsgCharsets[msg_drawState->font]->newLineY) +
+                                                   MsgStyleVerticalLineOffsets[printer->style]);
                 if (msg_drawState->printModeFlags & MSG_PRINT_FLAG_40) {
                     msg_drawState->printModeFlags |= MSG_PRINT_FLAG_80;
                 }
@@ -2500,7 +2524,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case MSG_CHAR_PRINT_FULL_SPACE:
             case MSG_CHAR_PRINT_HALF_SPACE:
                 msg_drawState->nextPos[0] += msg_get_draw_char_width(msg_drawState->printBuffer[msg_drawState->drawBufferPos],
-                                             msg_drawState->font, msg_drawState->fontVariant, msg_drawState->msgScale.x, msg_drawState->currentPosX,
+                                             msg_drawState->font, msg_drawState->fontVariant, msg_drawState->msgScale.x, msg_drawState->curPosX,
                                              msg_drawState->printModeFlags);
                 msg_drawState->drawBufferPos++;
                 break;
@@ -2984,7 +3008,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         msg_drawState->drawBufferPos += 2;
                         break;
                     case MSG_PRINT_FUNC_SPACING:
-                        msg_drawState->currentPosX = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1];
+                        msg_drawState->curPosX = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1];
                         msg_drawState->drawBufferPos += 2;
                         break;
                     case MSG_PRINT_FUNC_SIZE:
@@ -3088,7 +3112,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             printer->animTimers[animIdx] = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 3];
                         }
                         if (printer->animTimers[animIdx] == 0) {
-                            printer->currentAnimFrame[animIdx]++;
+                            printer->curAnimFrame[animIdx]++;
                         }
 
                         dbPos = msg_drawState->drawBufferPos;
@@ -3096,7 +3120,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             if ((msg_drawState->printBuffer[dbPos - 1] == MSG_CHAR_PRINT_FUNCTION) &&
                                 (msg_drawState->printBuffer[dbPos] == MSG_PRINT_FUNC_ANIM_DELAY) &&
                                 (msg_drawState->printBuffer[dbPos + 1] == animIdx)) {
-                                if (msg_drawState->printBuffer[dbPos + 2] != printer->currentAnimFrame[animIdx]) {
+                                if (msg_drawState->printBuffer[dbPos + 2] != printer->curAnimFrame[animIdx]) {
                                     dbPos += 4;
                                 } else {
                                     break;
@@ -3107,7 +3131,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                     (msg_drawState->printBuffer[dbPos + 2] == animIdx)) {
 
                                     if (printer->animTimers[animIdx] == 0) {
-                                        printer->currentAnimFrame[animIdx] = msg_drawState->printBuffer[dbPos + 3];
+                                        printer->curAnimFrame[animIdx] = msg_drawState->printBuffer[dbPos + 3];
                                         dbPos = msg_drawState->drawBufferPos;
                                         continue;
                                     } else {
@@ -3208,7 +3232,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                 break;
                             case MSG_FX_NOISE_OUTLINE:
                                 msg_drawState->effectFlags |= MSG_FX_FLAG_NOISE_OUTLINE;
-                                gDPSetCombineLERP(gMainGfxPos++, NOISE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, NOISE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0);
+                                gDPSetCombineMode(gMainGfxPos++, PM_CC_MSG_NOISE_OUTLINE, PM_CC_MSG_NOISE_OUTLINE);
                                 msg_drawState->drawBufferPos += 2;
                                 break;
                             case MSG_FX_STATIC:
@@ -3218,8 +3242,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                                msg_drawState->printBuffer[msg_drawState->drawBufferPos + 2],
                                                msg_drawState->printBuffer[msg_drawState->drawBufferPos + 2],
                                                0);
-                                gDPSetCombineLERP(gMainGfxPos++, NOISE, TEXEL0, ENVIRONMENT, TEXEL0, 0, 0, 0, TEXEL0, NOISE, TEXEL0, ENVIRONMENT,
-                                                  TEXEL0, 0, 0, 0, TEXEL0);
+                                gDPSetCombineMode(gMainGfxPos++, PM_CC_MSG_STATIC, PM_CC_MSG_STATIC);
                                 msg_drawState->drawBufferPos += 3;
                                 break;
                             case MSG_FX_BLUR:
@@ -3349,7 +3372,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                (u16) posX));
                 }
 
-                msgCharset = gMsgCharsets[msg_drawState->font];
+                msgCharset = MsgCharsets[msg_drawState->font];
                 charPosY = (s8) msgCharset->rasters[msg_drawState->fontVariant].baseHeightOffset + (msg_drawState->nextPos[1] +
                            (msg_drawState->textStartPos[1] + (printer->windowBasePos.y + posY)) - additionalOffsetY);
 
@@ -3359,14 +3382,14 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                     (msg_drawState->clipX[0] < charPosX + (s32)(msg_drawState->msgScale.x *
                             msgCharset->rasters[msg_drawState->fontVariant].monospaceWidth)) &&
                     (msg_drawState->clipY[0] < charPosY + (s32)(msg_drawState->msgScale.y * msgCharset->newLineY +
-                            D_802EB644[printer->style]))) {
+                            MsgStyleVerticalLineOffsets[printer->style]))) {
                     palette = msg_drawState->textColor;
                     phi_s2_5 = sp8E;
                     if (msg_drawState->effectFlags & MSG_FX_FLAG_BLUR) {
                         phi_s2_5 = (f32) phi_s2_5 * 0.35;
                     }
                     if ((printer->windowState == MSG_WINDOW_STATE_WAITING_FOR_CHOICE) && (msg_drawState->printModeFlags & MSG_PRINT_FLAG_20)) {
-                        if (msg_drawState->unk_2D == printer->currentOption) {
+                        if (msg_drawState->unk_2D == printer->curOption) {
                             msg_drawState->effectFlags |= MSG_FX_FLAG_DROP_SHADOW | MSG_FX_FLAG_GLOBAL_RAINBOW | MSG_FX_FLAG_GLOBAL_WAVE;
                         } else {
                             msg_drawState->effectFlags &= ~MSG_FX_FLAG_GLOBAL_RAINBOW;
@@ -3420,7 +3443,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                                          G_BL_1MA));
 
                             }
-                            gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+                            gDPSetCombineMode(gMainGfxPos++, PM_CC_02, PM_CC_02);
                             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, phi_s2_5);
                         } else if ((sp96 < 0xFF) && (phi_s2_5 == 0xFF)) {
                             gDPPipeSync(gMainGfxPos++);
@@ -3562,8 +3585,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         if ((msg_drawState->effectFlags & MSG_FX_FLAG_DROP_SHADOW) && (phi_s2_5 == 0xFF)) {
                             gDPPipeSync(gMainGfxPos++);
                             gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-                            gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0,
-                                              PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+                            gDPSetCombineMode(gMainGfxPos++, PM_CC_07, PM_CC_07);
                             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, 72);
                             msg_draw_char(printer, msg_drawState,
                                           msg_drawState->printBuffer[msg_drawState->drawBufferPos],
@@ -3601,7 +3623,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                 msg_drawState->nextPos[0] +=
                     msg_get_draw_char_width(msg_drawState->printBuffer[msg_drawState->drawBufferPos],
                                             msg_drawState->font, msg_drawState->fontVariant, msg_drawState->msgScale.x,
-                                            msg_drawState->currentPosX, msg_drawState->printModeFlags);
+                                            msg_drawState->curPosX, msg_drawState->printModeFlags);
                 msg_drawState->drawBufferPos++;
                 break;
         }
@@ -3612,7 +3634,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         s16 varImgFinalAlpha;
 
         varImgFinalAlpha = printer->varImgFinalAlpha;
-        msgVarImage = &(*gMsgVarImages)[printer->currentImageIndex];
+        msgVarImage = &(*gMsgVarImages)[printer->curImageIndex];
 
         switch (printer->varImgHasBorder) {
             case 0:
@@ -3670,52 +3692,74 @@ void msg_reset_gfx_state(void) {
     gSPDisplayList(gMainGfxPos++, D_8014C500);
 }
 
-#if VERSION_IQUE
-INCLUDE_ASM(s32, "msg", msg_draw_char);
-#else
 void msg_draw_char(MessagePrintState* printer, MessageDrawState* drawState, s32 charIndex, s32 palette, s32 posX, s32 posY) {
-    MessageCharset* messageCharset = gMsgCharsets[drawState->font];
-    s32 fontVariant = drawState->fontVariant;
+    MessageCharset* messageCharset;
+    s32 fontVariant;
 
-    s32 clipUly = drawState->clipY[0];
-    s32 clipLry = drawState->clipY[1];
-    s32 clipUlx = drawState->clipX[0];
-    s32 clipLrx = drawState->clipX[1];
+    s32 clipUly;
+    s32 clipLry;
+    s32 clipUlx;
+    s32 clipLrx;
 
-    s32 rightPosX = posX + (s32)(drawState->charScale.x * messageCharset->texSize.x);
-    s32 rightPosY = posY + (s32)(drawState->charScale.y * messageCharset->texSize.y);
+    s32 rightPosX;
+    s32 rightPosY;
 
     f32 clipOffset;
-    s32 texOffsetX;
-    s32 texOffsetY;
-    s32 ulx, uly, lrx, lry;
+    s32 ulx, texOffsetX;
+    s32 uly, texOffsetY;
+    s32 lrx, lry;
     s32 dsdx, dtdy;
+    s32 posX2, posY2;
 
-    if (posX >= clipLrx || posY >= clipLry || rightPosX <= clipUlx || rightPosY <= clipUly) {
+#if VERSION_IQUE
+    if (charIndex == MSG_CHAR_ZH_RANK) {
+        load_font_data(((u8 (*)[128])charset_standard_OFFSET)[charIndex], sizeof(D_801544A0[0]), D_801544A0[0]);
+    } else if (charIndex == MSG_CHAR_ZH_CHAPTER) {
+        load_font_data(((u8 (*)[128])charset_standard_OFFSET)[charIndex], sizeof(D_801544A0[0]), D_801544A0[1]);
+    } else if (charIndex >= MSG_CHAR_ZH_START) {
+        load_font_data(((u8 (*)[128])charset_standard_OFFSET)[charIndex], sizeof(D_801544A0[0]), D_801544A0[D_8014AD24]);
+    }
+#endif
+
+    messageCharset = MsgCharsets[drawState->font];
+    fontVariant = drawState->fontVariant;
+
+    clipUly = drawState->clipY[0];
+    clipLry = drawState->clipY[1];
+    clipUlx = drawState->clipX[0];
+    clipLrx = drawState->clipX[1];
+
+    posX2 = posX;
+    posY2 = posY;
+
+    rightPosX = posX2 + (s32)(drawState->charScale.x * messageCharset->texSize.x);
+    rightPosY = posY2 + (s32)(drawState->charScale.y * messageCharset->texSize.y);
+
+    if (posX2 >= clipLrx || posY2 >= clipLry || rightPosX <= clipUlx || rightPosY <= clipUly) {
         return;
     }
 
-    if (posX < clipUlx) {
-        clipOffset = abs(posX - clipUlx) / drawState->charScale.x;
+    if (posX2 < clipUlx) {
+        clipOffset = abs(posX2 - clipUlx) / drawState->charScale.x;
         texOffsetX = (f32)((clipOffset + 0.5) * 32.0);
         ulx = clipUlx;
     } else {
         texOffsetX = 0;
-        ulx = posX;
+        ulx = posX2;
     }
 
-    if (posY < clipUly) {
-        if (!(printer->stateFlags & MSG_STATE_FLAG_400) || posY < 0) {
-            clipOffset = abs(posY - clipUly) / drawState->charScale.y;
+    if (posY2 < clipUly) {
+        if (!(printer->stateFlags & MSG_STATE_FLAG_400) || posY2 < 0) {
+            clipOffset = abs(posY2 - clipUly) / drawState->charScale.y;
             texOffsetY = clipOffset * 32.0f;
             uly = clipUly;
         } else {
             texOffsetY = 0;
-            uly = posY;
+            uly = posY2;
         }
     } else {
         texOffsetY = 0;
-        uly = posY;
+        uly = posY2;
     }
 
     lrx = rightPosX;
@@ -3737,19 +3781,57 @@ void msg_draw_char(MessagePrintState* printer, MessageDrawState* drawState, s32 
     }
 
     if (messageCharset->texSize.x >= 16 && messageCharset->texSize.x % 16 == 0) {
-        gDPLoadTextureBlock_4b(gMainGfxPos++, messageCharset->rasters[fontVariant].raster + messageCharset->charRasterSize * charIndex, G_IM_FMT_CI,
-                               messageCharset->texSize.x, messageCharset->texSize.y, 0,
-                               G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+#if VERSION_IQUE
+        if (charIndex == MSG_CHAR_ZH_RANK || charIndex == MSG_CHAR_ZH_CHAPTER) {
+            gDPLoadTextureBlock_4b(gMainGfxPos++, D_801544A0[charIndex - MSG_CHAR_ZH_RANK], G_IM_FMT_CI,
+                                   messageCharset->texSize.x, messageCharset->texSize.y, 0,
+                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        } else if (charIndex >= MSG_CHAR_ZH_START) {
+            gDPLoadTextureBlock_4b(gMainGfxPos++, D_801544A0[D_8014AD24], G_IM_FMT_CI,
+                                   messageCharset->texSize.x, messageCharset->texSize.y, 0,
+                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        } else {
+#endif
+            gDPLoadTextureBlock_4b(gMainGfxPos++, messageCharset->rasters[fontVariant].raster + messageCharset->charRasterSize * charIndex, G_IM_FMT_CI,
+                                   messageCharset->texSize.x, messageCharset->texSize.y, 0,
+                                   G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+#if VERSION_IQUE
+        }
+#endif
     } else {
-        gDPLoadTextureTile_4b(gMainGfxPos++, messageCharset->rasters[fontVariant].raster + messageCharset->charRasterSize * charIndex, G_IM_FMT_CI,
-                              messageCharset->texSize.x, messageCharset->texSize.y,
-                              0, 0, messageCharset->texSize.x - 1, messageCharset->texSize.y - 1, 0,
-                              G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+#if VERSION_IQUE
+        if (charIndex == MSG_CHAR_ZH_RANK || charIndex == MSG_CHAR_ZH_CHAPTER) {
+            gDPLoadTextureTile_4b(gMainGfxPos++,  D_801544A0[charIndex - MSG_CHAR_ZH_RANK], G_IM_FMT_CI,
+                                  messageCharset->texSize.x, messageCharset->texSize.y,
+                                  0, 0, messageCharset->texSize.x - 1, messageCharset->texSize.y - 1, 0,
+                                  G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        } else if (charIndex >= MSG_CHAR_ZH_START) {
+            gDPLoadTextureTile_4b(gMainGfxPos++,  D_801544A0[D_8014AD24], G_IM_FMT_CI,
+                                  messageCharset->texSize.x, messageCharset->texSize.y,
+                                  0, 0, messageCharset->texSize.x - 1, messageCharset->texSize.y - 1, 0,
+                                  G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        } else {
+#endif
+            gDPLoadTextureTile_4b(gMainGfxPos++, messageCharset->rasters[fontVariant].raster + messageCharset->charRasterSize * charIndex, G_IM_FMT_CI,
+                                  messageCharset->texSize.x, messageCharset->texSize.y,
+                                  0, 0, messageCharset->texSize.x - 1, messageCharset->texSize.y - 1, 0,
+                                  G_TX_WRAP, G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+#if VERSION_IQUE
+        }
+#endif
     }
     gSPTextureRectangle(gMainGfxPos++, ulx * 4, uly * 4, lrx * 4, lry * 4, G_TX_RENDERTILE, texOffsetX, texOffsetY,
                         dsdx, dtdy);
-}
+
+#if VERSION_IQUE
+    if (charIndex >= MSG_CHAR_ZH_START) {
+        D_8014AD24 = (D_8014AD24 + 1) % 120;
+        if (D_8014AD24 == 0) {
+            D_8014AD24 = 2;
+        }
+    }
 #endif
+}
 
 void msg_draw_prim_rect(u8 r, u8 g, u8 b, u8 a, u16 posX, u16 posY, u16 sizeX, u16 sizeY) {
     u16 lrX = posX + sizeX;
@@ -3762,7 +3844,7 @@ void appendGfx_msg_prim_rect(u8 r, u8 g, u8 b, u8 a, u16 ulX, u16 ulY, u16 lrX, 
     gDPPipeSync(gMainGfxPos++);
 
     if (a == 255) {
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, 0, 0, 0, 1, 0, 0, 0, PRIMITIVE, 0, 0, 0, 1);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_PRIM_FULL_ALPHA, PM_CC_PRIM_FULL_ALPHA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
         gDPSetCombineMode(gMainGfxPos++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -3863,8 +3945,7 @@ void msg_draw_speech_bubble(
                          GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA),
                          IM_RD | CVG_DST_SAVE | ZMODE_XLU | FORCE_BL |
                          GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0,
-                          TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_02, PM_CC_02);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 32, 32, 32, opacity);
     }
 
@@ -3996,7 +4077,7 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, 0, 0, 0, 1, 0, 0, 0, TEXEL0, 0, 0, 0, 1);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_0F, PM_CC_0F);
     gDPSetTextureFilter(gMainGfxPos++, G_TF_BILERP);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 32, 32, 32, 255);
     gDPLoadTextureTile_4b(gMainGfxPos++, ui_msg_arrow_png, G_IM_FMT_CI, 16, 0, 0, 0, 15, 15, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
@@ -4011,7 +4092,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
     s32 i;
     s32 frameType;
     s32 textures[16];
-    s32 r, g, b;
+    u8 r, g, b;
     Rect quads[16];
 
     if (sizeX < 16 || sizeY < 16) {
@@ -4035,9 +4116,9 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
         do {} while (0);
         switch (style) {
             case MSG_STYLE_CHOICE:
-                r = ((((u16*)(ui_msg_palettes[0]))[4] >> 11) & 0x1F) * 8;
-                g = ((((u16*)(ui_msg_palettes[0]))[4] >> 6) & 0x1F) * 8;
-                b = ((((u16*)(ui_msg_palettes[0]))[4] >> 1) & 0x1F) * 8;
+                r = UNPACK_PAL_R(((u16*)ui_msg_palettes)[4]) * 8;
+                g = UNPACK_PAL_G(((u16*)ui_msg_palettes)[4]) * 8;
+                b = UNPACK_PAL_B(((u16*)ui_msg_palettes)[4]) * 8;
                 gDPPipeSync(gMainGfxPos++);
                 if (fading != 0 && bgAlpha < 255) {
                     gDPSetRenderMode(gMainGfxPos++, IM_RD | CVG_DST_SAVE | ZMODE_XLU | FORCE_BL | GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), IM_RD | CVG_DST_SAVE | ZMODE_XLU | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA));
@@ -4054,7 +4135,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
                 gDPPipeSync(gMainGfxPos++);
                 gDPSetTextureFilter(gMainGfxPos++, G_TF_AVERAGE);
                 gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-                gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE);
+                gDPSetCombineMode(gMainGfxPos++, PM_CC_10, PM_CC_10);
                 if (fading == 0 || bgAlpha == 255) {
                     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 216);
                 } else {
@@ -4222,7 +4303,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_02, PM_CC_02);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, frameAlpha);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, ui_msg_palettes[palette]);
@@ -4240,10 +4321,10 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
 }
 
 void msg_get_glyph(s32 font, s32 variation, s32 charIndex, s32 palette, MesasgeFontGlyphData* out) {
-    out->raster = &gMsgCharsets[font]->rasters[variation].raster[(u16)gMsgCharsets[font]->charRasterSize * charIndex];
+    out->raster = &MsgCharsets[font]->rasters[variation].raster[(u16)MsgCharsets[font]->charRasterSize * charIndex];
     out->palette = D_802F4560[palette];
-    out->texSize.x = gMsgCharsets[font]->texSize.x;
-    out->texSize.y = gMsgCharsets[font]->texSize.y;
+    out->texSize.x = MsgCharsets[font]->texSize.x;
+    out->texSize.y = MsgCharsets[font]->texSize.y;
     out->charWidth = msg_get_draw_char_width(charIndex, font, variation, 1.0f, 0, 0);
     out->charHeight = out->texSize.y;
 }

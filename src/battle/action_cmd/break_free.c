@@ -12,7 +12,7 @@ API_CALLABLE(N(init)) {
 
     battleStatus->unk_82 = 0;
     battleStatus->actionCmdDifficultyTable = actionCmdTableBreakFree;
-    battleStatus->unk_86 = 127;
+    battleStatus->actionResult = ACTION_RESULT_NONE;
 
     if (battleStatus->actionCommandMode == ACTION_COMMAND_MODE_NOT_LEARNED) {
         battleStatus->actionSuccess = 0;
@@ -82,13 +82,13 @@ API_CALLABLE(N(start)) {
     actionCommandStatus->barFillWidth = 0;
 
     battleStatus->actionSuccess = 0;
-    battleStatus->unk_86 = 127;
+    battleStatus->actionResult = ACTION_RESULT_NONE;
     battleStatus->unk_82 = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
 
     actionCommandStatus->thresholdLevel = rand_int(actionCommandStatus->unk_5A);
     actionCommandStatus->unk_5C = 0;
     actionCommandStatus->state = 10;
-    battleStatus->flags1 &= ~BS_FLAGS1_8000;
+    battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
 
     return ApiStatus_DONE2;
 }
@@ -196,10 +196,10 @@ void N(update)(void) {
             }
 
             if (battleStatus->actionSuccess >= actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals] - actionCommandStatus->thresholdLevel) {
-                battleStatus->unk_86 = 1;
+                battleStatus->actionResult = ACTION_RESULT_SUCCESS;
                 battleStatus->actionSuccess = 1;
             } else {
-                battleStatus->unk_86 = -2;
+                battleStatus->actionResult = ACTION_RESULT_MINUS_2;
                 battleStatus->actionSuccess = -1;
             }
 

@@ -41,14 +41,8 @@ API_CALLABLE(N(SetCamVfov)) {
 }
 
 API_CALLABLE(N(ResumeIntroState)) {
-    if (
-        gGameStatusPtr->creditsViewportMode == 0 ||
-        gGameStatusPtr->creditsViewportMode == 1 ||
-        gGameStatusPtr->creditsViewportMode == 2 ||
-        gGameStatusPtr->creditsViewportMode == 3 ||
-        gGameStatusPtr->creditsViewportMode == 4)
-    {
-        gGameStatusPtr->creditsViewportMode++;
+    if (gGameStatusPtr->introPart > INTRO_PART_NONE && gGameStatusPtr->introPart < INTRO_PART_5) {
+        gGameStatusPtr->introPart++;
         state_init_intro();
     }
     return ApiStatus_DONE1;
@@ -209,7 +203,7 @@ NpcData N(NpcData_Twink) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Twink),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
 };

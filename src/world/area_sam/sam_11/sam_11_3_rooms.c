@@ -48,7 +48,7 @@ EvtScript N(EVS_RoomListener_LeftHouse) = {
                         EVT_CALL(MakeLerp, 0, 255, 20, EASING_LINEAR)
                         EVT_LOOP(0)
                             EVT_CALL(UpdateLerp)
-                            EVT_CALL(func_802CFD30, NPC_Herringway, FOLD_TYPE_7, LVar0, 0, 0, 0)
+                            EVT_CALL(SetNpcImgFXParams, NPC_Herringway, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
                             EVT_WAIT(1)
                             EVT_IF_EQ(LVar1, 0)
                                 EVT_BREAK_LOOP
@@ -134,7 +134,7 @@ EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     EVT_CALL(CloseChoicePopup)
     EVT_SET(GF_SAM11_UnlockedDoor, TRUE)
     EVT_CALL(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
-    EVT_CALL(PlaySoundAt, SOUND_269, 0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_SET(LVar0, MV_PadlockEntityID)
     EVT_CALL(N(RemovePadlock))
     EVT_RESUME_GROUP(EVT_GROUP_01)

@@ -21,7 +21,7 @@ NpcData N(NpcData_Goomba_01) = {
         }
     },
     .settings = &N(NpcSettings_Goomba_Wander),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
 };
@@ -43,7 +43,7 @@ NpcData N(NpcData_Goomba_02) = {
         }
     },
     .settings = &N(NpcSettings_Goomba_Wander),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
 };
@@ -59,18 +59,18 @@ EvtScript N(EVS_OnReadBillboard) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_Sign_BewareOfGoombas, 160, 40)
     EVT_RESUME_GROUP(EVT_GROUP_01)
-    EVT_SET(LocalFlag(0), FALSE)
+    EVT_SET(LFlag0, FALSE)
     EVT_CALL(N(GetAmbushEnemy))
     EVT_IF_NE(LVar0, NULL)
         EVT_CALL(GetNpcVar, NPC_Goomba_Ambush, 0, LVar0)
         EVT_IF_EQ(LVar0, 0)
             EVT_CALL(SetNpcVar, NPC_Goomba_Ambush, 0, 1)
-            EVT_SET(LocalFlag(0), TRUE)
+            EVT_SET(LFlag0, TRUE)
             EVT_WAIT(10)
         EVT_END_IF
     EVT_END_IF
     EVT_CALL(DisablePlayerInput, FALSE)
-    EVT_IF_EQ(LocalFlag(0), TRUE)
+    EVT_IF_EQ(LFlag0, TRUE)
         EVT_UNBIND
     EVT_END_IF
     EVT_END
@@ -87,12 +87,12 @@ EvtScript N(EVS_NpcIdle_Goomba_Ambush) = {
         EVT_WAIT(1)
         EVT_GOTO(0)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_F8, SOUND_SPACE_MODE_0)
-    EVT_CALL(func_802CFE2C, NPC_SELF, 0x2000)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_5, 6, 1, 1, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FLIP_PAGE, SOUND_SPACE_DEFAULT)
+    EVT_CALL(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_UNFURL, 1, 1, 0)
     EVT_WAIT(15)
-    EVT_CALL(func_802CFE2C, NPC_SELF, 0x2000)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_3, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_RESET, 0, 0, 0, 0)
     EVT_THREAD
         EVT_WAIT(2)
         EVT_SETF(LVar0, EVT_FLOAT(0.0))
@@ -103,11 +103,11 @@ EvtScript N(EVS_NpcIdle_Goomba_Ambush) = {
         EVT_END_LOOP
         EVT_CALL(SetNpcRotation, NPC_SELF, 0, 0, 0)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(EnableNpcShadow, NPC_SELF, TRUE)
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.6))
     EVT_CALL(NpcJump0, NPC_SELF, -35, 0, 25, 23)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(InterpNpcYaw, NPC_SELF, 90, 0)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_NO_SHADOW_RAYCAST, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
@@ -145,7 +145,7 @@ NpcData N(NpcData_Goomba_Ambush) = {
     },
     .init = &N(EVS_NpcInit_Goomba_Ambush),
     .settings = &N(NpcSettings_Goomba_Wander),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GOOMBA_DROPS,
     .animations = GOOMBA_ANIMS,
 };
@@ -167,7 +167,7 @@ NpcData N(NpcData_Paragoomba) = {
         }
     },
     .settings = &N(NpcSettings_Paragoomba_Wander),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = PARAGOOMBA_DROPS,
     .animations = PARAGOOMBA_ANIMS,
 };

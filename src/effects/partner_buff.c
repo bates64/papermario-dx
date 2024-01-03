@@ -46,12 +46,12 @@ EffectInstance* partner_buff_main(s32 useRandomValues, f32 arg1, f32 arg2, f32 a
     bp.init = partner_buff_init;
     bp.update = partner_buff_update;
     bp.renderWorld = partner_buff_render;
-    bp.unk_14 = func_E011A3A0;
+    bp.renderUI = func_E011A3A0;
     bp.effectID = EFFECT_PARTNER_BUFF;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    part = effect->data.partnerBuff = shim_general_heap_malloc(numParts * sizeof(*part));
+    part = effect->data.partnerBuff = general_heap_malloc(numParts * sizeof(*part));
     ASSERT(effect->data.partnerBuff != NULL);
 
     part->useRandomValues = useRandomValues;
@@ -70,9 +70,9 @@ EffectInstance* partner_buff_main(s32 useRandomValues, f32 arg1, f32 arg2, f32 a
         part->unk_0C[i].stateTimer = 0;
     }
 
-    part->unk_02 = 0;
+    part->visible = FALSE;
     if (useRandomValues == 1) {
-        part->unk_02 = 1;
+        part->visible = TRUE;
     }
 
     return effect;
@@ -87,8 +87,8 @@ void partner_buff_update(EffectInstance* effect) {
     s32 time;
     s32 i;
 
-    if (effect->flags & EFFECT_INSTANCE_FLAG_10) {
-        effect->flags &= ~EFFECT_INSTANCE_FLAG_10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->timeLeft = 16;
     }
     if (data->timeLeft < 1000) {
@@ -97,7 +97,7 @@ void partner_buff_update(EffectInstance* effect) {
 
     data->lifeTime++;
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -111,7 +111,7 @@ void partner_buff_update(EffectInstance* effect) {
         }
         // possibly a leftover debug option
         if (useRandomValues == 1 && time % 30 == 0) {
-            buff->turnsLeft = shim_rand_int(4);
+            buff->turnsLeft = rand_int(4);
         }
 
         switch (buff->state) {
@@ -189,8 +189,7 @@ void func_E011A3BC(s16 alpha) {
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, PRIMITIVE, 0,
-                          TEXEL0, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_01, PM_CC_01);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
     }
 }
@@ -221,7 +220,7 @@ void func_E011A700(EffectInstance* effect) {
     f32 x, y;
     s32 i;
 
-    if (data->unk_02 != 0) {
+    if (data->visible) {
         gDPPipeSync(gMainGfxPos++);
         gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 

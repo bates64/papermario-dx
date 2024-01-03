@@ -1,6 +1,7 @@
 #include "kmr_20.h"
 #include "effects.h"
 #include "animation_script.h"
+#include "sprite/player.h"
 
 extern AnimScript Entity_SimpleSpring_AnimLaunch;
 
@@ -48,7 +49,7 @@ EvtScript N(EVS_KootFavorCheck_Luigi) = {
     EVT_WAIT(10)
     EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 0, MSG_CH0_0105)
     EVT_WAIT(10)
-    EVT_SET(LVar0, ITEM_KOOT_LUIGIS_AUTOGRAPH)
+    EVT_SET(LVar0, ITEM_KOOT_LUIGI_AUTOGRAPH)
     EVT_SET(LVar1, 1)
     EVT_EXEC_WAIT(N(GiveItemReward))
     EVT_CALL(AddKeyItem, LVar0)
@@ -109,7 +110,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     EVT_WAIT(80)
     EVT_CALL(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_TalkSit, ANIM_Luigi_IdleSit, 5, MSG_CH0_00DB)
     EVT_WAIT(20)
-    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_263, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Luigi_1, EMOTE_QUESTION, -30, 40, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(25)
     EVT_THREAD
@@ -123,8 +124,8 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     EVT_SET(MF_ReadyForPlayerEntry, TRUE)
     EVT_WAIT(15)
     EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_GRAVITY, TRUE)
-    EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_8, FALSE)
-    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_262, SOUND_SPACE_MODE_0)
+    EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_FLYING, FALSE)
+    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Luigi_1, EMOTE_EXCLAMATION, -30, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_CALL(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Jump)
     EVT_CALL(GetNpcPos, NPC_Luigi_1, LVar0, LVar1, LVar2)
@@ -174,7 +175,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     EVT_WAIT(10)
     EVT_CALL(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_StillBack)
     EVT_WAIT(30)
-    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_263, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_1, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Luigi_1, EMOTE_QUESTION, -30, 30, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(30)
     EVT_CALL(SetNpcAnimation, NPC_Luigi_1, ANIM_Luigi_Idle)
@@ -190,7 +191,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     EVT_END_THREAD
     EVT_CALL(ShowEmote, NPC_Luigi_1, EMOTE_ELLIPSIS, 20, 85, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(15)
-    EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_263, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_PARTNER, EMOTE_QUESTION, -20, 70, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(110)
     EVT_CALL(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 5, MSG_CH0_00DE)
@@ -209,7 +210,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
     EVT_END_SWITCH
     EVT_CALL(SpeakToPlayer, NPC_Luigi_1, ANIM_Luigi_Talk, ANIM_Luigi_Idle, 5, MSG_CH0_00E3)
     EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_8, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_Luigi_1, NPC_FLAG_FLYING, TRUE)
     EVT_CALL(EnablePartnerAI)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(3.5))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
@@ -366,7 +367,7 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     EVT_CALL(SetNpcAnimation, NPC_Luigi_0, ANIM_Luigi_Run)
     EVT_CALL(NpcMoveTo, NPC_Luigi_0, -130, -17, 15)
     EVT_CALL(NpcJump0, NPC_Luigi_0, -145, -54, -45, 10)
-    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_0, SOUND_2086, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Luigi_0, SOUND_SPRING, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(PlaySpringLaunchAnimation))
     EVT_THREAD
         EVT_WAIT(3)
@@ -409,7 +410,7 @@ EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_SET(GF_KMR20_CaughtLuigiReadingLetter, TRUE)
     EVT_WAIT(20)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, -30, 15, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(15)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
@@ -607,7 +608,7 @@ NpcData N(NpcData_Luigi_0) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_Luigi_0),
     .settings = &N(NpcSettings_Luigi),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
     .tattle = MSG_NpcTattle_Luigi,
@@ -619,7 +620,7 @@ NpcData N(NpcData_Luigi_1) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_Luigi_1),
     .settings = &N(NpcSettings_Luigi),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
     .tattle = MSG_NpcTattle_Luigi,
@@ -630,31 +631,31 @@ EvtScript N(EVS_NpcIdle_ShyGuy) = {
     EVT_CALL(InterpNpcYaw, NPC_SELF, 270, 1)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
     EVT_LOOP(0)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 482, 0, -286, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 726, 0, -153, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 603, 0, 0, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 557, 0, 130, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 357, 0, 87, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 344, 30, -8, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 276, 138, 22, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 360, 61, -117, 15)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, 427, 55, -182, 15)
         EVT_WAIT(5)
     EVT_END_LOOP
@@ -667,16 +668,16 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim0C)
     EVT_WAIT(10)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_ShyGuy_Red_Anim03)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_203F, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_SELF, 495, 0, -108, 15)
     EVT_WAIT(3)
     EVT_CALL(NpcMoveTo, NPC_SELF, 550, -170, 15)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_SELF, 594, 30, -220, 15)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_ENTER_PIPE, SOUND_SPACE_MODE_0)
-    EVT_CALL(func_802CFE2C, NPC_SELF, 0x00000800)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_5, 2, 1, 1, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
+    EVT_CALL(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_800)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     EVT_SUB(LVar1, 10)
     EVT_LOOP(30)
@@ -691,7 +692,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
 };
 
 EvtScript N(EVS_NpcHit_ShyGuy) = {
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_203E, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     EVT_SET(GF_KMR20_ChasedOffShyGuy, TRUE)
     EVT_CALL(SetNpcVar, NPC_Luigi_1, 0, 1)
     EVT_WAIT(2)
@@ -726,7 +727,7 @@ NpcData N(NpcData_ShyGuy) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_ShyGuy),
     .settings = &N(NpcSettings_ShyGuy_Stationary),
-    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
+    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
 };

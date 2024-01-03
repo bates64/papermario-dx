@@ -1,4 +1,5 @@
 #include "kmr_02.h"
+#include "sprite/player.h"
 
 #define NAME_SUFFIX _Rooms1
 #include "world/common/npc/GoombaFamily_Wander.inc.c"
@@ -164,7 +165,7 @@ EvtScript N(EVS_RoomListener_Verdana) = {
                     EVT_CALL(GetCamPosition, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     EVT_SUB(LVar1, 150)
                     EVT_CALL(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-                    EVT_CALL(PlaySoundAtPlayer, SOUND_161, SOUND_SPACE_MODE_0)
+                    EVT_CALL(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
                     EVT_CALL(DisablePlayerPhysics, TRUE)
                     EVT_CALL(DisablePartnerAI, 0)
                     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_Panic)
@@ -276,8 +277,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 114, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x00000800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_WAIT(61)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     EVT_THREAD
@@ -295,7 +296,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_EXEC(N(EVS_SetupMusic))
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, -183, 19, -341)
     EVT_CALL(PlayerMoveTo, -132, -325, 20)
     EVT_RETURN

@@ -1,4 +1,5 @@
 #include "jan_03.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
@@ -31,7 +32,7 @@ MAP_STATIC_PAD(1,key_item);
 
 s32 N(RedYoshiKidLetters)[] = {
     ITEM_LETTER_CHAIN_YOSHI_KID,
-    ITEM_NONE 
+    ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
@@ -47,7 +48,7 @@ EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
 
 s32 N(KoloradoLetters)[] = {
     ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE 
+    ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
@@ -175,8 +176,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 229, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(60)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -196,7 +197,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
 
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, 345, 0, -186)
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(3.0))
     EVT_CALL(PlayerMoveTo, 291, -100, 0)
@@ -212,7 +213,7 @@ EvtScript N(EVS_NpcInit_Toad) = {
 };
 
 EvtScript N(EVS_NpcInteract_Yoshi_01) = {
-    EVT_EXEC_WAIT(ItemShopInteract)
+    EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
     EVT_RETURN
     EVT_END
 };
@@ -572,26 +573,26 @@ EvtScript N(EVS_NpcInit_YoshiKid_05) = {
 EvtScript N(EVS_NpcInteract_Raven) = {
     EVT_CALL(GetSelfNpcID, LVar0)
     EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(10)
-            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_EQ(NPC_Raven_01)
+            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_008C)
             EVT_ELSE
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_008D)
             EVT_END_IF
-        EVT_CASE_EQ(12)
-            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_EQ(NPC_Raven_03)
+            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_008E)
             EVT_ELSE
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_008F)
             EVT_END_IF
-        EVT_CASE_EQ(13)
-            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_EQ(NPC_Raven_04)
+            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_0090)
             EVT_ELSE
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_0091)
             EVT_END_IF
-        EVT_CASE_EQ(14)
-            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_EQ(NPC_Raven_05)
+            EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_0092)
             EVT_ELSE
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Raven_Talk, ANIM_Raven_Idle, 0, MSG_CH5_0093)
@@ -604,7 +605,7 @@ EvtScript N(EVS_NpcInteract_Raven) = {
 EvtScript N(EVS_NpcInit_Raven) = {
     EVT_CALL(BindNpcInteract, NPC_SELF, EVT_PTR(N(EVS_NpcInteract_Raven)))
     EVT_SWITCH(GB_StoryProgress)
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
         EVT_CASE_RANGE(STORY_CH5_ZIP_LINE_READY, STORY_CH5_OPENED_ESCAPE_ROUTE)
             EVT_CALL(GetSelfNpcID, LVar0)
             EVT_IF_EQ(LVar0, 14)
@@ -620,7 +621,7 @@ EvtScript N(EVS_NpcInit_Raven) = {
 
 s32 N(VolcanoVaseList)[] = {
     ITEM_VOLCANO_VASE,
-    -1 
+    -1
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado) = {
@@ -667,7 +668,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                         EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_IdleSad)
                         EVT_WAIT(15)
                         EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
-                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, 0)
+                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
                         EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
                         EVT_WAIT(25)
                         EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001A)

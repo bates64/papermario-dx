@@ -1,4 +1,5 @@
 #include "kkj_25.h"
+#include "sprite/player.h"
 
 #define NAME_SUFFIX _Npc2
 
@@ -50,7 +51,7 @@ EvtScript N(EVS_NpcDefeat_Bowser) = {
 };
 
 s32 N(FlyingKammyHoverOffsets)[] = {
-    1, 2, 3, 2, 1, -1, -2, -3, -2, -1, 
+    1, 2, 3, 2, 1, -1, -2, -3, -2, -1,
 };
 
 EvtScript N(EVS_NpcAux_Kammy_Broom) = {
@@ -109,7 +110,7 @@ EvtScript N(EVS_NpcInit_Twink) = {
 };
 
 EvtScript N(EVS_NpcInit_Eldstar) = {
-    EVT_CALL(func_802CFD30, NPC_Eldstar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Eldstar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Eldstar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Eldstar, 100, 45, 0)
     EVT_RETURN
@@ -117,7 +118,7 @@ EvtScript N(EVS_NpcInit_Eldstar) = {
 };
 
 EvtScript N(EVS_NpcInit_Mamar) = {
-    EVT_CALL(func_802CFD30, NPC_Mamar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Mamar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Mamar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Mamar, 46, 45, -27)
     EVT_RETURN
@@ -125,7 +126,7 @@ EvtScript N(EVS_NpcInit_Mamar) = {
 };
 
 EvtScript N(EVS_NpcInit_Skolar) = {
-    EVT_CALL(func_802CFD30, NPC_Skolar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Skolar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Skolar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Skolar, 33, 45, -95)
     EVT_RETURN
@@ -133,7 +134,7 @@ EvtScript N(EVS_NpcInit_Skolar) = {
 };
 
 EvtScript N(EVS_NpcInit_Muskular) = {
-    EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Muskular, FALSE)
     EVT_CALL(SetNpcPos, NPC_Muskular, 71, 45, -132)
     EVT_RETURN
@@ -141,7 +142,7 @@ EvtScript N(EVS_NpcInit_Muskular) = {
 };
 
 EvtScript N(EVS_NpcInit_Misstar) = {
-    EVT_CALL(func_802CFD30, NPC_Misstar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Misstar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Misstar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Misstar, 131, 45, -132)
     EVT_RETURN
@@ -149,7 +150,7 @@ EvtScript N(EVS_NpcInit_Misstar) = {
 };
 
 EvtScript N(EVS_NpcInit_Klevar) = {
-    EVT_CALL(func_802CFD30, NPC_Klevar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Klevar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Klevar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Klevar, 169, 45, -95)
     EVT_RETURN
@@ -157,7 +158,7 @@ EvtScript N(EVS_NpcInit_Klevar) = {
 };
 
 EvtScript N(EVS_NpcInit_Kalmar) = {
-    EVT_CALL(func_802CFD30, NPC_Kalmar, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Kalmar, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(EnableNpcShadow, NPC_Kalmar, FALSE)
     EVT_CALL(SetNpcPos, NPC_Kalmar, 156, 45, -27)
     EVT_RETURN
@@ -241,7 +242,7 @@ NpcData N(NpcData_Bowser) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Bowser),
     .settings = &N(NpcSettings_Bowser),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
     .extraAnimations = N(ExtraAnims_Bowser),
@@ -253,7 +254,7 @@ NpcData N(NpcData_Peach) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Peach),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_USE_PLAYER_SPRITE,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
     .extraAnimations = N(ExtraAnims_Peach),
@@ -266,7 +267,7 @@ NpcData N(NpcData_Kammy)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Kammy_Broom),
         .settings = &N(NpcSettings_Kammy_Flying),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_BattleKammy_Anim00,
@@ -294,7 +295,7 @@ NpcData N(NpcData_Kammy)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Kammy),
         .settings = &N(NpcSettings_Kammy_Flying),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_BattleKammy_Anim00,
@@ -324,7 +325,7 @@ NpcData N(NpcData_Twink) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Twink),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
     .extraAnimations = N(ExtraAnims_Twink),
@@ -336,7 +337,7 @@ NpcData N(NpcData_Eldstar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Eldstar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Eldstar),
@@ -348,7 +349,7 @@ NpcData N(NpcData_Mamar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Mamar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MAMAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Mamar),
@@ -360,7 +361,7 @@ NpcData N(NpcData_Skolar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Skolar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SKOLAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Skolar),
@@ -372,7 +373,7 @@ NpcData N(NpcData_Muskular) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Muskular),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MUSKULAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Muskular),
@@ -384,7 +385,7 @@ NpcData N(NpcData_Misstar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Misstar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Misstar),
@@ -396,7 +397,7 @@ NpcData N(NpcData_Klevar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Klevar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KLEVAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Klevar),
@@ -408,7 +409,7 @@ NpcData N(NpcData_Kalmar) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Kalmar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KALMAR_ANIMS,
     .extraAnimations = N(ExtraAnims_Kalmar),

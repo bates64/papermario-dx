@@ -70,7 +70,7 @@ API_CALLABLE(N(func_80241300_BD4B70)) {
 API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc npc;
-    f32 dist = dist2D(playerStatus->position.x, playerStatus->position.z, 0.0f, 0.0f);
+    f32 dist = dist2D(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f);
     f32 yaw;
     s32 gt;
     s32 lt;
@@ -88,7 +88,7 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     }
 
     if ((gt | lt) != 0) {
-        yaw = atan2(playerStatus->position.x, playerStatus->position.z, 0.0f, 0.0f) + 180.0f;
+        yaw = atan2(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f) + 180.0f;
         npc.pos.x = 0.0f;
         npc.pos.y = 0.0f;
         npc.pos.z = 0.0f;
@@ -98,9 +98,9 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
         script->varTable[2] = npc.pos.z;
         script->varTable[3] = 1;
     } else {
-        script->varTable[0] = playerStatus->position.x;
-        script->varTable[1] = playerStatus->position.y;
-        script->varTable[2] = playerStatus->position.z;
+        script->varTable[0] = playerStatus->pos.x;
+        script->varTable[1] = playerStatus->pos.y;
+        script->varTable[2] = playerStatus->pos.z;
         script->varTable[3] = 0;
     }
     return ApiStatus_DONE2;
@@ -153,7 +153,7 @@ EvtScript N(EVS_BooSpookAndVanish) = {
     EVT_CALL(MakeLerp, 255, 0, 60, EASING_LINEAR)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, LVarA, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, LVarA, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)
@@ -182,7 +182,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     EVT_CALL(MakeLerp, 0, 255, 30, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_CALL(SetItemAlpha, MV_KeepAwayItem, LVar0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 0)
@@ -196,7 +196,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EVT_CALL(MakeLerp, 255, 0, 30, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_CALL(SetItemAlpha, MV_KeepAwayItem, LVar0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
@@ -216,7 +216,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EVT_CALL(MakeLerp, 0, 255, 30, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_CALL(GetNpcPos, NPC_LeaderBoo, LVar3, LVar4, LVar5)
             EVT_ADD(LVar4, 20)
             EVT_CALL(SetItemPos, MV_KeepAwayItem, LVar3, LVar4, LVar5)
@@ -271,7 +271,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_END_IF
         EVT_END_LOOP
         EVT_THREAD
-            EVT_CALL(PlaySoundAtNpc, NPC_LeaderBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_LeaderBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
             EVT_CALL(GetNpcPos, NPC_LeaderBoo, LVar3, LVar4, LVar5)
             EVT_ADD(LVar5, 20)
             EVT_SET(LVar6, LVar4)
@@ -316,7 +316,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_SET(LVar0, NPC_DummyBoo)
             EVT_VEC3I_SET(LVar3, 0, 0, -20)
             EVT_EXEC(N(EVS_TetherItemToNpcWithOffset))
-            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcJumpscale, NPC_DummyBoo, EVT_FLOAT(2.0))
             EVT_CALL(NpcJump0, NPC_DummyBoo, 0, 0, 0, 20)
             EVT_CALL(SetNpcPos, NPC_DummyBoo, NPC_DISPOSE_LOCATION)
@@ -409,7 +409,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_CALL(MakeLerp, 255, 0, 20, EASING_LINEAR)
             EVT_LOOP(0)
                 EVT_CALL(UpdateLerp)
-                EVT_CALL(func_802CFD30, MV_ItemCarrierNpc, FOLD_TYPE_7, LVar0, 0, 0, 0)
+                EVT_CALL(SetNpcImgFXParams, MV_ItemCarrierNpc, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
                 EVT_WAIT(1)
                 EVT_IF_EQ(LVar1, 0)
                     EVT_BREAK_LOOP
@@ -421,7 +421,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_CALL(MakeLerp, 0, 255, 20, EASING_LINEAR)
             EVT_LOOP(0)
                 EVT_CALL(UpdateLerp)
-                EVT_CALL(func_802CFD30, MV_ItemCarrierNpc, FOLD_TYPE_7, LVar0, 0, 0, 0)
+                EVT_CALL(SetNpcImgFXParams, MV_ItemCarrierNpc, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
                 EVT_WAIT(1)
                 EVT_IF_EQ(LVar1, 0)
                     EVT_BREAK_LOOP

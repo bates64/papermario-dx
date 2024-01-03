@@ -1,6 +1,7 @@
 #include "obk_07.h"
 #include "hud_element.h"
 #include "battle/action_cmd.h"
+#include "sprite/player.h"
 
 extern HudScript HES_SlowlyMashAButton;
 
@@ -256,9 +257,9 @@ void N(worker_update_phonograph_hud)(void) {
             id = data->barFillWidth / 60; // TODO use of id required to match - weird
             if (id <= 50) {
                 temp = 50.0f;
-                temp *= sin_rad((((id * 90) / 50) * TAU) / 360.0f);
+                temp *= sin_rad(DEG_TO_RAD((id * 90) / 50));
             } else {
-                temp = ((1.0 - sin_rad((((((id - 50) * 90) / 50) + 90) * TAU) / 360.0f)) * 50.0) + 50.0;
+                temp = ((1.0 - sin_rad(DEG_TO_RAD((((id - 50) * 90) / 50) + 90))) * 50.0) + 50.0;
             }
             data->timeScale = (((100 - temp) * 0.25) / 100.0) + ((2.0 * temp) / 100.0);
             snd_song_set_playback_rate(data->songName, data->timeScale);
@@ -326,7 +327,7 @@ API_CALLABLE(N(CreatePhonographHudData)) {
     s32 id;
     s32 i;
 
-    gOverrideFlags |= GLOBAL_OVERRIDES_10;
+    gOverrideFlags |= GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
     data->hudWorker = create_worker_frontUI(N(worker_update_phonograph_hud), N(worker_draw_phonograph_hud));
     data->state = PHONOGRAPH_HUD_STATE_INIT;
     data->fillValue = 0;
@@ -388,7 +389,7 @@ API_CALLABLE(N(DestroyPhonographHudData)) {
     PhonographData* data = N(GetPhonographData)();
 
     data->state = PHONOGRAPH_HUD_STATE_DESTROYED;
-    gOverrideFlags &= ~GLOBAL_OVERRIDES_10;
+    gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
     hud_element_free(data->hudElemAButton);
     hud_element_free(data->hudElemBlueMeter);
     hud_element_free(data->hudElemOK);
@@ -546,7 +547,7 @@ API_CALLABLE(N(UpdateGuardBooPos)) {
     if (data->state == PHONOGRAPH_HUD_STATE_DESTROYED) {
         // return to guard position
         speed = 2.0f;
-        npc->currentAnim = ANIM_Boo_Run;
+        npc->curAnim = ANIM_Boo_Run;
         if (dist2D(x, z, guardPosX, booPosZ) < speed) {
             npc->pos.x = guardPosX;
             npc->pos.z = booPosZ;
@@ -589,13 +590,13 @@ API_CALLABLE(N(UpdateGuardBooPos)) {
     }
 
     if (data->meterFillAmount > 7000) {
-        npc->currentAnim = ANIM_Boo_Wave;
+        npc->curAnim = ANIM_Boo_Wave;
     } else if (data->meterFillAmount > 5000) {
-        npc->currentAnim = ANIM_Boo_Run;
+        npc->curAnim = ANIM_Boo_Run;
     } else if (data->meterFillAmount > 3000) {
-        npc->currentAnim = ANIM_Boo_Walk;
+        npc->curAnim = ANIM_Boo_Walk;
     } else {
-        npc->currentAnim = ANIM_Boo_Idle;
+        npc->curAnim = ANIM_Boo_Idle;
     }
 
     return ApiStatus_DONE2;
@@ -982,7 +983,7 @@ EvtScript N(EVS_GuardBoo_ReturnToPost) = {
     EVT_CALL(MakeLerp, 180, 0, 10, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_GuardBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GuardBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
@@ -992,7 +993,7 @@ EvtScript N(EVS_GuardBoo_ReturnToPost) = {
     EVT_CALL(MakeLerp, 0, 180, 10, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_GuardBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GuardBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
@@ -1079,14 +1080,14 @@ EvtScript N(EVS_DummyUpdateGuardBoo) = {
 EvtScript N(EVS_GuardBooVanish) = {
     EVT_THREAD
         EVT_WAIT(25)
-        EVT_CALL(PlaySoundAtNpc, NPC_GuardBoo, SOUND_BOO_SPOOK, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_GuardBoo, SOUND_BOO_SPOOK, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(SetNpcAnimation, NPC_GuardBoo, ANIM_Boo_Spook)
     EVT_WAIT(10)
     EVT_CALL(MakeLerp, 255, 0, 60, EASING_LINEAR)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_GuardBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GuardBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)

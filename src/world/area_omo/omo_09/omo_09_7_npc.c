@@ -26,7 +26,7 @@ EvtScript N(EVS_NpcAI_ShyGuy_Wander_NoReaction) = {
 NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
     .height = 23,
     .radius = 22,
-    .level = 14,
+    .level = ACTOR_LEVEL_SHY_GUY,
     .ai = &N(EVS_NpcAI_ShyGuy_Wander_NoReaction),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
@@ -39,8 +39,8 @@ NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
 #include "world/common/enemy/Pokey.inc.c"
 #include "world/common/enemy/Kammy_Flying.inc.c"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 EvtScript N(EVS_ShyGuy_CarryItem) = {
     EVT_SET(LVarA, LVar0) // npcID
@@ -104,16 +104,16 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
             EVT_GOTO(0)
         EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(SetCamProperties, CAM_DEFAULT, EVT_FLOAT(5.0), LVar0, LVar1, LVar2, 300, EVT_FLOAT(13.0), EVT_FLOAT(-9.5))
     EVT_IF_EQ(GB_OMO_PeachChoice3, 0)
-        EVT_CALL(SpeakToPlayer, NPC_Pokey, ANIM_Pokey_Anim04, ANIM_Pokey_Anim04, 0, MSG_CH4_003E)
+        EVT_CALL(SpeakToPlayer, NPC_Pokey, ANIM_Pokey_Idle4, ANIM_Pokey_Idle4, 0, MSG_CH4_003E)
     EVT_ELSE
         EVT_CALL(SpeakToPlayer, NPC_Koopatrol, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_CH4_003F)
     EVT_END_IF
     EVT_THREAD
-        EVT_CALL(N(UnsetCamera0Flag1000))
+        EVT_CALL(N(EnableCameraLeadingPlayer))
         EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(4.0))
     EVT_END_THREAD
     EVT_CALL(DisablePlayerInput, FALSE)
@@ -215,7 +215,7 @@ NpcData N(NpcData_Pokey) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Pokey),
     .settings = &N(NpcSettings_Pokey),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = POKEY_ANIMS,
 };
@@ -226,7 +226,7 @@ NpcData N(NpcData_Koopatrol) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Koopatrol),
     .settings = &N(NpcSettings_Koopatrol_Stationary),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = KOOPATROL_ANIMS,
 };
@@ -362,7 +362,7 @@ NpcData N(NpcData_Kammy) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_Kammy),
     .settings = &N(NpcSettings_Kammy_Flying),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
     .extraAnimations = N(ExtraAnims_Kammy),
@@ -403,7 +403,7 @@ NpcData N(NpcData_ShyGuy_Thief) = {
     },
     .init = &N(EVS_ShyGuy_Thief),
     .settings = &N(NpcSettings_ShyGuy_Patrol),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_SHY_GUY_ANIMS,
     .aiFlags = ENEMY_AI_FLAG_1,
@@ -428,7 +428,7 @@ NpcData N(NpcData_SpyGuy)[] = {
             }
         },
         .settings = &N(NpcSettings_SpyGuy),
-        .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = SPY_GUY_DROPS,
         .animations = SPY_GUY_ANIMS,
         .aiDetectFlags = AI_DETECT_SIGHT,

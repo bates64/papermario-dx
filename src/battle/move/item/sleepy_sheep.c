@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "ld_addrs.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_sleepy_sheep
 
@@ -294,9 +295,9 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(SetBattleCamZoom, 169)
     EVT_CALL(MoveBattleCamOver, 50)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_364)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SHEEP_STAMPEDE)
         EVT_LOOP(7)
-            EVT_CALL(StartRumble, 2)
+            EVT_CALL(StartRumble, BTL_RUMBLE_HIT_MIN)
             EVT_CALL(ShakeCam, CAM_BATTLE, 0, 2, EVT_FLOAT(0.5))
             EVT_CALL(ShakeCam, CAM_BATTLE, 0, 2, EVT_FLOAT(1.5))
             EVT_CALL(ShakeCam, CAM_BATTLE, 0, 2, EVT_FLOAT(0.5))
@@ -318,7 +319,7 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 32)
-    EVT_CALL(ShowEmote, 0x00000000, EMOTE_QUESTION, -45, 20, EMOTER_POS, LVar0, LVar1, LVar2, 10)
+    EVT_CALL(ShowEmote, 0, EMOTE_QUESTION, -45, 20, EMOTER_POS, LVar0, LVar1, LVar2, 10)
     EVT_WAIT(30)
     EVT_CALL(SetActorYaw, ACTOR_PLAYER, 30)
     EVT_WAIT(1)
@@ -340,7 +341,7 @@ EvtScript N(EVS_UseItem) = {
         EVT_CALL(N(func_802A1740_71ED90))
         EVT_CALL(N(func_802A1848_71EE98))
     EVT_END_THREAD
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
     EVT_CALL(MoveBattleCamOver, 20)
     EVT_WAIT(8)
     EVT_CALL(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Flail, ANIM_Mario1_Flail, ANIM_Mario1_Fall)
@@ -411,24 +412,24 @@ EvtScript N(EVS_UseItem) = {
         EVT_CALL(DeleteVirtualEntity, LVarA)
     EVT_END_THREAD
     EVT_WAIT(30)
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_D)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_03)
     EVT_CALL(MoveBattleCamOver, 20)
     EVT_CALL(InitTargetIterator)
     EVT_LABEL(0)
-    EVT_CALL(SetGoalToTarget, ACTOR_SELF)
-    EVT_CALL(ItemCheckHit, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, LVar0, 0)
-    EVT_IF_EQ(LVar0, 6)
-        EVT_GOTO(1)
-    EVT_END_IF
-    EVT_CALL(GetItemPower, ITEM_SLEEPY_SHEEP, LVar0, LVar1)
-    EVT_CALL(MakeStatusField, LVar0, STATUS_FLAG_SLEEP, 100, LVar0)
-    EVT_CALL(ItemAfflictEnemy, LVar0, DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_STATUS_ALWAYS_HITS, LVar0, 0, BS_FLAGS1_SP_EVT_ACTIVE)
-    EVT_LABEL(1)
-    EVT_WAIT(5)
-    EVT_CALL(ChooseNextTarget, ITER_NEXT, LVar0)
-    EVT_IF_NE(LVar0, -1)
-        EVT_GOTO(0)
-    EVT_END_IF
+        EVT_CALL(SetGoalToTarget, ACTOR_SELF)
+        EVT_CALL(ItemCheckHit, LVar0, DAMAGE_TYPE_NO_CONTACT, 0, LVar0, 0)
+        EVT_IF_EQ(LVar0, HIT_RESULT_MISS)
+            EVT_GOTO(1)
+        EVT_END_IF
+        EVT_CALL(GetItemPower, ITEM_SLEEPY_SHEEP, LVar0, LVar1)
+        EVT_CALL(MakeStatusField, LVar0, STATUS_FLAG_SLEEP, 100, LVar0)
+        EVT_CALL(ItemAfflictEnemy, LVar0, DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_STATUS_ALWAYS_HITS, LVar0, 0, BS_FLAGS1_TRIGGER_EVENTS)
+        EVT_LABEL(1)
+        EVT_WAIT(5)
+        EVT_CALL(ChooseNextTarget, ITER_NEXT, LVar0)
+        EVT_IF_NE(LVar0, ITER_NO_MORE)
+            EVT_GOTO(0)
+        EVT_END_IF
     EVT_WAIT(30)
     EVT_EXEC_WAIT(N(PlayerGoHome))
     EVT_RETURN

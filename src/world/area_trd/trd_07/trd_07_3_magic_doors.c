@@ -6,11 +6,11 @@ API_CALLABLE(N(GetPointsWithCamRelativeOffset)) {
     f32 posX = evt_get_float_variable(script, *args++);
     f32 posZ = evt_get_float_variable(script, *args++);
     f32 angle = evt_get_float_variable(script, *args++);
-    
-    script->varTable[0] = EVT_FLOAT_TO_FIXED(posX + (sin_deg(clamp_angle(gCameras[CAM_DEFAULT].currentYaw + angle + 270.0f)) * 1000.0f));
-    script->varTable[1] = EVT_FLOAT_TO_FIXED(posZ - (cos_deg(clamp_angle(gCameras[CAM_DEFAULT].currentYaw + angle + 270.0f)) * 1000.0f));
-    script->varTable[2] = EVT_FLOAT_TO_FIXED(posX + (sin_deg(clamp_angle(gCameras[CAM_DEFAULT].currentYaw + angle + 90.0f)) * 1000.0f));
-    script->varTable[3] = EVT_FLOAT_TO_FIXED(posZ - (cos_deg(clamp_angle(gCameras[CAM_DEFAULT].currentYaw + angle + 90.0f)) * 1000.0f));
+
+    script->varTable[0] = EVT_FLOAT_TO_FIXED(posX + (sin_deg(clamp_angle(gCameras[CAM_DEFAULT].curYaw + angle + 270.0f)) * 1000.0f));
+    script->varTable[1] = EVT_FLOAT_TO_FIXED(posZ - (cos_deg(clamp_angle(gCameras[CAM_DEFAULT].curYaw + angle + 270.0f)) * 1000.0f));
+    script->varTable[2] = EVT_FLOAT_TO_FIXED(posX + (sin_deg(clamp_angle(gCameras[CAM_DEFAULT].curYaw + angle + 90.0f)) * 1000.0f));
+    script->varTable[3] = EVT_FLOAT_TO_FIXED(posZ - (cos_deg(clamp_angle(gCameras[CAM_DEFAULT].curYaw + angle + 90.0f)) * 1000.0f));
     return ApiStatus_DONE2;
 }
 
@@ -29,7 +29,7 @@ API_CALLABLE(N(SpawnMovingDoorDust)) {
 EvtScript N(EVS_AnimateDoorRaising) = {
     EVT_THREAD
         EVT_WAIT(20)
-        EVT_CALL(PlaySound, SOUND_2B)
+        EVT_CALL(PlaySound, SOUND_TRD_MAGIC_DOOR_JUMP)
     EVT_END_THREAD
     EVT_THREAD
         // input LVar0 ignored in this thread
@@ -135,7 +135,7 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)
         EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_2C)
+    EVT_CALL(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     EVT_IF_EQ(LVar9, MODEL_migi)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, 40, 270)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, -40, 270)
@@ -159,7 +159,7 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(2)
         EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_2C)
+    EVT_CALL(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     EVT_IF_EQ(LVar9, MODEL_migi)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, 40, 270)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, -40, 270)
@@ -183,7 +183,7 @@ EvtScript N(EVS_AnimateDoorLowering) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(4)
         EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_2C)
+    EVT_CALL(PlaySound, SOUND_TRD_MAGIC_DOOR_LAND)
     EVT_IF_EQ(LVar9, MODEL_migi)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, 40, 270)
         EVT_CALL(N(SpawnMovingDoorDust), 270, 0, -40, 270)
@@ -209,7 +209,7 @@ EvtScript N(EVS_RaiseMagicDoors) = {
     EVT_SUSPEND_GROUP(EVT_GROUP_01)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    EVT_CALL(PlaySound, SOUND_A)
+    EVT_CALL(PlaySound, SOUND_CHIME_BEGIN_AMBUSH)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -252,7 +252,7 @@ EvtScript N(EVS_RaiseMagicDoors) = {
 EvtScript N(EVS_LowerMagicDoors) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(15)
-    EVT_CALL(PlaySound, SOUND_B)
+    EVT_CALL(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
     EVT_WAIT(15)
     EVT_SET_GROUP(EVT_GROUP_00)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)

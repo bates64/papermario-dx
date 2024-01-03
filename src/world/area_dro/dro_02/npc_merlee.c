@@ -1,5 +1,6 @@
 #include "dro_02.h"
 #include "model.h"
+#include "sprite/player.h"
 
 // cards used during Merlee's ritual
 typedef struct RitualCard {
@@ -19,16 +20,16 @@ BSS Evt* N(CreatorScript);
 BSS s32 N(RitualBuffer)[16];
 
 enum {
-    RITUAL_VAR_FOLDER_1     = ArrayVar(0),
-    RITUAL_VAR_FOLDER_2     = ArrayVar(1),
-    RITUAL_VAR_FOLDER_3     = ArrayVar(2),
-    RITUAL_VAR_FOLDER_4     = ArrayVar(3),
-    RITUAL_VAR_POS_X        = ArrayVar(4),
-    RITUAL_VAR_POS_Y        = ArrayVar(5),
-    RITUAL_VAR_POS_Z        = ArrayVar(6),
-    RITUAL_VAR_WORKER       = ArrayVar(7),
-    RITUAL_VAR_ORB_EFFECT   = ArrayVar(8),
-    RITUAL_VAR_STATE        = ArrayVar(9),
+    RITUAL_VAR_SHUFFLE_IMGFX    = ArrayVar(0),
+    RITUAL_VAR_FILP1_IMGFX      = ArrayVar(1),
+    RITUAL_VAR_FILP2_IMGFX      = ArrayVar(2),
+    RITUAL_VAR_FILP3_IMGFX      = ArrayVar(3),
+    RITUAL_VAR_POS_X            = ArrayVar(4),
+    RITUAL_VAR_POS_Y            = ArrayVar(5),
+    RITUAL_VAR_POS_Z            = ArrayVar(6),
+    RITUAL_VAR_WORKER           = ArrayVar(7),
+    RITUAL_VAR_ORB_EFFECT       = ArrayVar(8),
+    RITUAL_VAR_STATE            = ArrayVar(9),
 };
 
 enum {
@@ -92,10 +93,10 @@ API_CALLABLE(N(TryEnchantPlayer)) {
         playerData->merleeTurnCount = rand_int(2) + 1;
         switch (rand_int(3)) {
             case 0:
-                playerData->merleeSpellType = MERLEE_SPELL_1;
+                playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
                 break;
             case 1:
-                playerData->merleeSpellType = MERLEE_SPELL_2;
+                playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
                 break;
             case 2:
                 playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
@@ -114,9 +115,9 @@ API_CALLABLE(N(DarkenWorld)) {
     s32 i;
 
     if (isInitialCall) {
-        mdl_set_all_fog_mode(FOG_MODE_1);
-        *gBackgroundFogModePtr = FOG_MODE_1;
-        set_background_color_blend(0, 0, 0, 0);
+        mdl_set_all_tint_type(ENV_TINT_SHROUD);
+        *gBackgroundTintModePtr = ENV_TINT_SHROUD;
+        mdl_set_shroud_tint_params(0, 0, 0, 0);
 
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
@@ -131,7 +132,7 @@ API_CALLABLE(N(DarkenWorld)) {
     if (script->functionTemp[0] > 255) {
         script->functionTemp[0] = 255;
     }
-    set_background_color_blend(0, 0, 0, script->functionTemp[0]);
+    mdl_set_shroud_tint_params(0, 0, 0, script->functionTemp[0]);
 
     return (script->functionTemp[0] == 255) * ApiStatus_DONE2;
 }
@@ -140,7 +141,7 @@ API_CALLABLE(N(UndarkenWorld)) {
     s32 i;
 
     if (isInitialCall) {
-        set_background_color_blend(0, 0, 0, 255);
+        mdl_set_shroud_tint_params(0, 0, 0, 255);
         script->functionTemp[0] = 255;
         script->functionTemp[1] = 0;
     }
@@ -148,13 +149,13 @@ API_CALLABLE(N(UndarkenWorld)) {
     if (script->functionTemp[0] < 0) {
         script->functionTemp[0] = 0;
     }
-    set_background_color_blend(0, 0, 0, script->functionTemp[0]);
+    mdl_set_shroud_tint_params(0, 0, 0, script->functionTemp[0]);
 
     if (script->functionTemp[0] == 0 && script->functionTemp[1] == 0) {
         script->functionTemp[1] = 1;
     } else if (script->functionTemp[1] == 1) {
-        mdl_set_all_fog_mode(FOG_MODE_0);
-        *gBackgroundFogModePtr = FOG_MODE_0;
+        mdl_set_all_tint_type(ENV_TINT_NONE);
+        *gBackgroundTintModePtr = ENV_TINT_NONE;
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
 
@@ -168,22 +169,22 @@ API_CALLABLE(N(UndarkenWorld)) {
 }
 
 API_CALLABLE(N(CreateRitualCards)) {
-    s32 ret;
+    s32 imgfxIdx;
 
     N(CreatorScript) = script;
 
-    ret = func_8013A704(1);
-    fold_update(ret, FOLD_TYPE_5, 0xF, 1, 1, 0, 0x800);
-    evt_set_variable(script, RITUAL_VAR_FOLDER_1, ret);
-    ret = func_8013A704(1);
-    fold_update(ret, FOLD_TYPE_5, 0x10, 1, 1, 0, 0x800);
-    evt_set_variable(script, RITUAL_VAR_FOLDER_2, ret);
-    ret = func_8013A704(1);
-    fold_update(ret, FOLD_TYPE_5, 0x11, 1, 1, 0, 0x800);
-    evt_set_variable(script, RITUAL_VAR_FOLDER_3, ret);
-    ret = func_8013A704(1);
-    fold_update(ret, FOLD_TYPE_5, 0x12, 1, 1, 0, 0x800);
-    evt_set_variable(script, RITUAL_VAR_FOLDER_4, ret);
+    imgfxIdx = imgfx_get_free_instances(1);
+    imgfx_update(imgfxIdx, IMGFX_SET_ANIM, IMGFX_ANIM_SHUFFLE_CARDS, 1, 1, 0, IMGFX_FLAG_800);
+    evt_set_variable(script, RITUAL_VAR_SHUFFLE_IMGFX, imgfxIdx);
+    imgfxIdx = imgfx_get_free_instances(1);
+    imgfx_update(imgfxIdx, IMGFX_SET_ANIM, IMGFX_ANIM_FLIP_CARD_1, 1, 1, 0, IMGFX_FLAG_800);
+    evt_set_variable(script, RITUAL_VAR_FILP1_IMGFX, imgfxIdx);
+    imgfxIdx = imgfx_get_free_instances(1);
+    imgfx_update(imgfxIdx, IMGFX_SET_ANIM, IMGFX_ANIM_FLIP_CARD_2, 1, 1, 0, IMGFX_FLAG_800);
+    evt_set_variable(script, RITUAL_VAR_FILP2_IMGFX, imgfxIdx);
+    imgfxIdx = imgfx_get_free_instances(1);
+    imgfx_update(imgfxIdx, IMGFX_SET_ANIM, IMGFX_ANIM_FLIP_CARD_3, 1, 1, 0, IMGFX_FLAG_800);
+    evt_set_variable(script, RITUAL_VAR_FILP3_IMGFX, imgfxIdx);
 
     evt_set_variable(script, RITUAL_VAR_WORKER, create_worker_world(
         N(card_worker_update),
@@ -192,10 +193,10 @@ API_CALLABLE(N(CreateRitualCards)) {
 }
 
 API_CALLABLE(N(DestroyRitualCards)) {
-    func_8013A854(evt_get_variable(script, RITUAL_VAR_FOLDER_1));
-    func_8013A854(evt_get_variable(script, RITUAL_VAR_FOLDER_2));
-    func_8013A854(evt_get_variable(script, RITUAL_VAR_FOLDER_3));
-    func_8013A854(evt_get_variable(script, RITUAL_VAR_FOLDER_4));
+    imgfx_release_instance(evt_get_variable(script, RITUAL_VAR_SHUFFLE_IMGFX));
+    imgfx_release_instance(evt_get_variable(script, RITUAL_VAR_FILP1_IMGFX));
+    imgfx_release_instance(evt_get_variable(script, RITUAL_VAR_FILP2_IMGFX));
+    imgfx_release_instance(evt_get_variable(script, RITUAL_VAR_FILP3_IMGFX));
     free_worker(evt_get_variable(script, RITUAL_VAR_WORKER));
     return ApiStatus_DONE2;
 }
@@ -203,7 +204,7 @@ API_CALLABLE(N(DestroyRitualCards)) {
 u32 N(appendGfx_ritual_card)(RitualCard* card, Matrix4f mtxParent) {
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
-    FoldImageRecPart foldImage;
+    ImgFXTexture ifxImg;
     SpriteRasterInfo rasterInfo;
     s32 ret;
 
@@ -250,7 +251,7 @@ u32 N(appendGfx_ritual_card)(RitualCard* card, Matrix4f mtxParent) {
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        ret = fold_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FOLDER_1), &foldImage, FOLD_STATE_FLAG_10 | FOLD_STATE_FLAG_20, mtxTransform);
+        ret = imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_SHUFFLE_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         return ret;
     }
@@ -261,22 +262,22 @@ u32 N(appendGfx_ritual_card)(RitualCard* card, Matrix4f mtxParent) {
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        fold_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FOLDER_2), &foldImage, FOLD_STATE_FLAG_10 | FOLD_STATE_FLAG_20, mtxTransform);
-        fold_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FOLDER_3), &foldImage, FOLD_STATE_FLAG_10 | FOLD_STATE_FLAG_20, mtxTransform);
+        imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FILP1_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
+        imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FILP2_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP | IMGFX_FLAG_SKIP_TEX_SETUP, mtxTransform);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         guTranslateF(mtxTemp, N(RitualCards)[0].pos.x, N(RitualCards)[0].pos.y, N(RitualCards)[0].pos.z);
         guMtxCatF(mtxTemp, mtxParent, mtxTransform);
         guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
         gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         spr_get_player_raster_info(&rasterInfo, card->spriteID, card->rasterIndex);
-        foldImage.raster = rasterInfo.raster;
-        foldImage.palette = rasterInfo.defaultPal;
-        foldImage.width = rasterInfo.width;
-        foldImage.height = rasterInfo.height;
-        foldImage.xOffset = -(rasterInfo.width / 2);
-        foldImage.yOffset = rasterInfo.height / 2;
-        foldImage.opacity = 255;
-        ret = fold_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FOLDER_4), &foldImage, FOLD_STATE_FLAG_10, mtxTransform);
+        ifxImg.raster = rasterInfo.raster;
+        ifxImg.palette = rasterInfo.defaultPal;
+        ifxImg.width = rasterInfo.width;
+        ifxImg.height = rasterInfo.height;
+        ifxImg.xOffset = -(rasterInfo.width / 2);
+        ifxImg.yOffset = rasterInfo.height / 2;
+        ifxImg.alpha = 255;
+        ret = imgfx_appendGfx_component(evt_get_variable(N(CreatorScript), RITUAL_VAR_FILP3_IMGFX), &ifxImg, IMGFX_FLAG_SKIP_GFX_SETUP, mtxTransform);
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
         return ret;
     }
@@ -290,7 +291,7 @@ void N(GetCardOrientation)(s32 index, f32* outX, f32* outY, f32* outZ, f32* outA
     Matrix4f mtxTemp;
     Matrix4f mtxParent;
 
-    guPositionF(mtxParent, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, SPRITE_WORLD_SCALE_F,
+    guPositionF(mtxParent, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X),
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z));
@@ -360,7 +361,7 @@ void N(card_worker_update)(void) {
             N(RitualCards)[1].pos.x += -10.0f;
             N(RitualCards)[2].pos.y += -10.0f;
             if (N(RitualStateTime) == 18) {
-                gPlayerStatus.position.y = NPC_DISPOSE_POS_Y;
+                gPlayerStatus.pos.y = NPC_DISPOSE_POS_Y;
             }
             if (N(RitualStateTime) == 20) {
                 evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_2);
@@ -401,7 +402,7 @@ void N(card_worker_update)(void) {
             if (N(RitualStateTime) == 20) {
                 N(RitualStateTime) = 0;
                 evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_FLIP_LEFT);
-                sfx_play_sound_with_params(SOUND_203, 0, 24, 0);
+                sfx_play_sound_with_params(SOUND_MERLEE_SHOW_CARD, 0, 24, 0);
             }
             break;
         case RITUAL_STATE_FLIP_LEFT:
@@ -416,7 +417,7 @@ void N(card_worker_update)(void) {
             if (N(RitualStateTime) == 10) {
                 N(RitualStateTime) = 0;
                 evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_FLIP_MIDDLE);
-                sfx_play_sound_with_params(SOUND_203, 0, 64, 0);
+                sfx_play_sound_with_params(SOUND_MERLEE_SHOW_CARD, 0, 64, 0);
             }
             break;
         case RITUAL_STATE_FLIP_MIDDLE:
@@ -431,7 +432,7 @@ void N(card_worker_update)(void) {
             if (N(RitualStateTime) == 10) {
                 N(RitualStateTime) = 0;
                 evt_set_variable(N(CreatorScript), RITUAL_VAR_STATE, RITUAL_STATE_FLIP_RIGHT);
-                sfx_play_sound_with_params(SOUND_203, 0, 104, 0);
+                sfx_play_sound_with_params(SOUND_MERLEE_SHOW_CARD, 0, 104, 0);
             }
             break;
         case RITUAL_STATE_FLIP_RIGHT:
@@ -550,14 +551,14 @@ void N(card_worker_update)(void) {
                 N(RitualCards)[1].unk_00 = 0;
                 N(GetCardOrientation)(1, &sp68, &sp6C, &sp70, &sp74);
                 fx_sparkles(0, sp68, sp6C + 20.0f, sp70, 30.0f);
-                sfx_play_sound(SOUND_206);
+                sfx_play_sound(SOUND_MERLEE_COMPLETE_SPELL);
 
                 for (j = 0; j < ARRAY_COUNT(N(D_8024EF90)); j++) {
-                    N(D_8024EF90)[j]->flags |= EFFECT_INSTANCE_FLAG_10;
+                    N(D_8024EF90)[j]->flags |= FX_INSTANCE_FLAG_DISMISS;
                 }
             }
             break;
-        case 13:
+        case RITUAL_STATE_D:
             break;
     }
 }
@@ -566,7 +567,7 @@ void N(card_worker_render)(void) {
     Matrix4f mtx;
     u32 temp_s1;
 
-    guPositionF(mtx, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, SPRITE_WORLD_SCALE_F,
+    guPositionF(mtx, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, SPRITE_WORLD_SCALE_F,
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_X),
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Y),
                 evt_get_variable(N(CreatorScript), RITUAL_VAR_POS_Z));
@@ -583,12 +584,12 @@ void N(card_worker_render)(void) {
 }
 
 API_CALLABLE(N(func_8024303C_96C1FC)) {
-    sfx_play_sound_with_params(SOUND_202A, 0, 24, 0);
+    sfx_play_sound_with_params(SOUND_SHUFFLE_CARD_A, 0, 24, 0);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(func_80243068_96C228)) {
-    sfx_play_sound_with_params(SOUND_202B, 0, 104, 0);
+    sfx_play_sound_with_params(SOUND_SHUFFLE_CARD_B, 0, 104, 0);
     return ApiStatus_DONE2;
 }
 
@@ -608,7 +609,7 @@ EvtScript N(EVS_PerformRitual) = {
     EVT_CALL(GetNpcPos, NPC_Merlee, RITUAL_VAR_POS_X, RITUAL_VAR_POS_Y, RITUAL_VAR_POS_Z)
     EVT_ADD(RITUAL_VAR_POS_X, 60)
     EVT_ADD(RITUAL_VAR_POS_Z, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Merlee, SOUND_201, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Merlee, SOUND_MERLEE_TWIRL, SOUND_SPACE_DEFAULT)
     EVT_THREAD
         EVT_CALL(MakeLerp, 720, 0, 60, EASING_LINEAR)
         EVT_LOOP(0)
@@ -639,14 +640,14 @@ EvtScript N(EVS_PerformRitual) = {
         EVT_CALL(SetNpcAnimation, NPC_Merlee, ANIM_WorldMerlee_Release)
     EVT_END_THREAD
     EVT_WAIT(60)
-    EVT_CALL(PlaySoundAtNpc, NPC_Merlee, SOUND_202, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Merlee, SOUND_MERLEE_GATHER_ENERGY, SOUND_SPACE_DEFAULT)
     EVT_SET(LVar0, RITUAL_VAR_POS_Y)
     EVT_ADD(LVar0, 25)
     EVT_PLAY_EFFECT(EFFECT_RADIATING_ENERGY_ORB, 0, RITUAL_VAR_POS_X, LVar0, RITUAL_VAR_POS_Z, 1, -1)
     EVT_SET(RITUAL_VAR_ORB_EFFECT, LVarF)
     EVT_THREAD
         EVT_WAIT(30)
-        EVT_CALL(func_802D7B10, RITUAL_VAR_ORB_EFFECT)
+        EVT_CALL(DismissEffect, RITUAL_VAR_ORB_EFFECT)
     EVT_END_THREAD
     EVT_CALL(N(DarkenWorld))
     EVT_CALL(DisablePlayerPhysics, TRUE)
@@ -659,37 +660,37 @@ EvtScript N(EVS_PerformRitual) = {
             EVT_END_IF
             EVT_WAIT(1)
         EVT_END_LOOP
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(10)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(9)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(4)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(4)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(2)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(2)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(2)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(2)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(6)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_B000001D)
+        EVT_CALL(PlaySound, SOUND_SEQ_SHUFFLE_CARD)
     EVT_END_THREAD
     EVT_THREAD
         EVT_LOOP(0)
@@ -709,7 +710,7 @@ EvtScript N(EVS_PerformRitual) = {
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_WAIT(3)
-        EVT_CALL(PlaySound, SOUND_204)
+        EVT_CALL(PlaySound, SOUND_MERLEE_GATHER_CARDS)
         EVT_LOOP(0)
             EVT_IF_GE(RITUAL_VAR_STATE, RITUAL_STATE_B)
                 EVT_BREAK_LOOP
@@ -717,7 +718,7 @@ EvtScript N(EVS_PerformRitual) = {
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_WAIT(15)
-        EVT_CALL(PlaySound, SOUND_205)
+        EVT_CALL(PlaySound, SOUND_MERLEE_RELEASE_PLAYER)
     EVT_END_THREAD
     EVT_LOOP(0)
         EVT_IF_EQ(RITUAL_VAR_STATE, RITUAL_STATE_D)
@@ -841,5 +842,5 @@ NpcSettings N(NpcSettings_Merlee) = {
     .otherAI = &N(EVS_NpcAuxAI_Merlee),
     .onInteract = &N(EVS_NpcInteract_Merlee),
     .ai = &N(EVS_NpcAI_Merlee),
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };

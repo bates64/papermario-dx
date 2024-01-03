@@ -2,20 +2,21 @@
 #include "world/actions.h"
 #include "world/partner/sushie.h"
 #include "world/partner/lakilester.h"
+#include "sprite/player.h"
 
 BSS f32 D_802B6770_E27C80;
 
 void action_update_ride(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
-    
+
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
         playerStatus->actionSubstate = 0;
-        playerStatus->currentStateTime = 0;
+        playerStatus->curStateTime = 0;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->pitch = 0.0f;
     }
 
@@ -49,12 +50,12 @@ void action_update_state_23(void) {
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
         playerStatus->actionSubstate = 0;
-        playerStatus->currentStateTime = 0;
+        playerStatus->curStateTime = 0;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->pitch = 0.0f;
-        D_802B6770_E27C80 = D_8010C938;
+        D_802B6770_E27C80 = PlayerNormalYaw;
     }
 
     switch (playerStatus->actionSubstate) {
@@ -66,7 +67,7 @@ void action_update_state_23(void) {
             return;
     }
 
-    sin_cos_rad(DEG_TO_RAD(D_8010C990), &sinTheta, &cosTheta);
+    sin_cos_rad(DEG_TO_RAD(PlayerNormalPitch), &sinTheta, &cosTheta);
 
     miscTempVariable = 3.0f;
     miscTempVariable = sinTheta * miscTempVariable;
@@ -92,14 +93,14 @@ void action_update_state_23(void) {
         playerZOffset = playerOffsetTempVar;
     }
 
-    playerStatus->position.x += playerXOffset;
-    playerStatus->position.z -= playerZOffset;
-    outX = playerStatus->position.x;
-    outY = playerStatus->position.y;
-    outZ = playerStatus->position.z;
+    playerStatus->pos.x += playerXOffset;
+    playerStatus->pos.z -= playerZOffset;
+    outX = playerStatus->pos.x;
+    outY = playerStatus->pos.y;
+    outZ = playerStatus->pos.z;
     outLength = 5.0f;
     if (player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz, &hitDirX, &hitDirZ) >= 0) {
-        playerStatus->position.y = outY;
+        playerStatus->pos.y = outY;
     }
 
     if (gGameStatusPtr->areaID == AREA_SBK) {
@@ -108,7 +109,7 @@ void action_update_state_23(void) {
         miscTempVariable = 60.0f;
     }
 
-    if (D_8010C990 < miscTempVariable) {
+    if (PlayerNormalPitch < miscTempVariable) {
         set_action_state(ACTION_STATE_FALLING);
         gravity_use_fall_parms();
     }
@@ -120,20 +121,20 @@ void action_update_launch(void) {
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
         playerStatus->actionSubstate = 0;
-        playerStatus->currentStateTime = 0;
+        playerStatus->curStateTime = 0;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->pitch = 0.0f;
 
         if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
             return;
         }
-        playerStatus->currentStateTime = 5;
+        playerStatus->curStateTime = 5;
     }
 
-    playerStatus->currentStateTime--;
-    if (playerStatus->currentStateTime == 0) {
+    playerStatus->curStateTime--;
+    if (playerStatus->curStateTime == 0) {
         set_action_state(ACTION_STATE_IDLE);
     }
 }
@@ -146,14 +147,14 @@ void action_update_first_strike(void) {
         playerStatus->actionSubstate = 0;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->pitch = 0.0f;
         suggest_player_anim_always_forward(ANIM_Mario1_Hurt);
-        playerStatus->currentStateTime = 30;
+        playerStatus->curStateTime = 30;
     }
 
-    if (playerStatus->currentStateTime != 0) {
-        playerStatus->currentStateTime--;
+    if (playerStatus->curStateTime != 0) {
+        playerStatus->curStateTime--;
     } else if (!gGameStatusPtr->isBattle) {
         set_action_state(ACTION_STATE_IDLE);
     }
@@ -165,9 +166,9 @@ void action_update_raise_arms(void) {
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         playerStatus->flags |= PS_FLAG_ARMS_RAISED;
-        playerStatus->currentStateTime = 0;
+        playerStatus->curStateTime = 0;
         playerStatus->actionSubstate = 0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->pitch = 0.0f;
         suggest_player_anim_always_forward(ANIM_Mario1_UsePower);
     }
@@ -186,9 +187,9 @@ void action_update_pushing_block(void) {
         f32 magnitude;
 
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->unk_60 = 0;
-        playerStatus->currentStateTime = 5;
+        playerStatus->curStateTime = 5;
         player_input_to_move_vector(&angle, &magnitude);
 
         if (((angle >= 45.0f) && (angle <= 135.0f)) || ((angle >= 225.0f) && (angle <= 315.0f))) {
@@ -201,9 +202,9 @@ void action_update_pushing_block(void) {
     check_input_jump();
 
     if (playerStatus->animFlags & PA_FLAG_ABORT_PUSHING_BLOCK) {
-        if (playerStatus->currentStateTime != 0) {
-            playerStatus->currentStateTime--;
-            if (playerStatus->currentStateTime == 0) {
+        if (playerStatus->curStateTime != 0) {
+            playerStatus->curStateTime--;
+            if (playerStatus->curStateTime == 0) {
                 set_action_state(ACTION_STATE_IDLE);
             }
         }
@@ -215,25 +216,25 @@ void action_update_talk(void) {
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->unk_60 = 0;
 
         if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
             suggest_player_anim_always_forward(ANIM_MarioW2_SpeakUp);
-        } else if (playerStatus->peachItemHeld == 0) {
+        } else if (playerStatus->peachItemHeld == PEACH_BAKING_NONE) {
             if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
                 suggest_player_anim_always_forward(ANIM_Peach2_RaiseArms);
             } else {
                 peach_set_disguise_anim(BasicPeachDisguiseAnims[playerStatus->peachDisguise].talk);
             }
         }
-        playerStatus->currentStateTime = 30;
+        playerStatus->curStateTime = 30;
     }
 
     if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
-        if (playerStatus->currentStateTime != 0) {
-            playerStatus->currentStateTime--;
-        } else if (playerStatus->peachItemHeld == 0) {
+        if (playerStatus->curStateTime != 0) {
+            playerStatus->curStateTime--;
+        } else if (playerStatus->peachItemHeld == PEACH_BAKING_NONE) {
             if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
                 suggest_player_anim_always_forward(ANIM_Peach1_Idle);
             } else {

@@ -3,8 +3,8 @@
 #include "world/common/npc/Kolorado.inc.c"
 #include "world/common/enemy/PutridPiranhaSentinel.inc.c"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 #include "world/common/todo/GetFloorCollider.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
@@ -57,7 +57,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     EVT_THREAD
         EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(2.0))
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10)
         EVT_CALL(SetNpcYaw, NPC_SELF, 90)
         EVT_SET(MV_KoloradoJumpDone, TRUE)
@@ -106,7 +106,7 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
             EVT_GOTO(0)
         EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 285, 25, 35)
     EVT_CALL(SetCamDistance, CAM_DEFAULT, 400)
@@ -115,17 +115,17 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_CALL(SetNpcPos, NPC_SELF, 285, 25, 35)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim17)
     EVT_WAIT(30)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim01)
     EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_LargePiranha_Putrid_Anim04, ANIM_LargePiranha_Putrid_Anim01, 0, MSG_CH5_00FF)
     EVT_WAIT(10)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_DIG, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_DIG, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim18)
     EVT_WAIT(25)
     EVT_CALL(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    EVT_CALL(N(UnsetCamera0Flag1000))
+    EVT_CALL(N(EnableCameraLeadingPlayer))
     EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(3.0))
     EVT_SET(GF_KZN18_IntruderAlert, TRUE)
     EVT_CALL(DisablePlayerInput, FALSE)

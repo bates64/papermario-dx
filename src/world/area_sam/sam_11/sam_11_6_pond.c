@@ -1,5 +1,6 @@
 #include "sam_11.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "world/common/atomic/TexturePan.inc.c"
 
@@ -28,7 +29,7 @@ API_CALLABLE(N(SpawnIceShards)) {
         a5 = 4.0f;
         effect->data.iceShard->animFrame = 0.0f;
         effect->data.iceShard->animRate = (rand_int(10) * 0.2) + 0.1;
-        effect->data.iceShard->rotation = i * 35;
+        effect->data.iceShard->rot = i * 35;
         effect->data.iceShard->angularVel = rand_int(10) - 5;
         effect->data.iceShard->vel.x = t1;
         effect->data.iceShard->vel.y = a5;
@@ -40,7 +41,7 @@ API_CALLABLE(N(SpawnIceShards)) {
 
 API_CALLABLE(N(func_80241FB0_D3C580)) {
     script->varTable[10] = 0;
-    if (gCollisionStatus.currentFloor == COLLIDER_suimen) {
+    if (gCollisionStatus.curFloor == COLLIDER_suimen) {
         script->varTable[10] = 1;
     }
     if (gCollisionStatus.lastTouchedFloor == COLLIDER_suimen) {
@@ -51,15 +52,15 @@ API_CALLABLE(N(func_80241FB0_D3C580)) {
 
 API_CALLABLE(N(SetDraggingPlayerPosY)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 x = playerStatus->position.x;
-    f32 y = playerStatus->position.y + 10.0f;
-    f32 z = playerStatus->position.z;
+    f32 x = playerStatus->pos.x;
+    f32 y = playerStatus->pos.y + 10.0f;
+    f32 z = playerStatus->pos.z;
     f32 hitDepth = 40.0f;
 
     npc_raycast_down_sides(0, &x, &y, &z, &hitDepth);
-    playerStatus->position.x = x;
-    playerStatus->position.y = y;
-    playerStatus->position.z = z;
+    playerStatus->pos.x = x;
+    playerStatus->pos.y = y;
+    playerStatus->pos.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -76,7 +77,7 @@ API_CALLABLE(N(GetBombetteExplodeGround)) {
 
         depth = 12.0f;
         if (npc_raycast_down_around(partner->collisionChannel, &x, &y, &z, &depth,
-            partner->yaw, partner->collisionRadius) && depth <= 12.0f)
+            partner->yaw, partner->collisionDiameter) && depth <= 12.0f)
         {
             colliderID = NpcHitQueryColliderID;
         }
@@ -136,7 +137,7 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
     EVT_SWITCH(GB_SAM11_FrozenPondDamage)
         EVT_CASE_EQ(1)
             EVT_CALL(DisablePlayerInput, TRUE)
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_389, 0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_SAM_POND_CRACK_1, 0)
             EVT_CALL(EnableModel, MODEL_ice01, FALSE)
             EVT_CALL(EnableModel, MODEL_ice02, TRUE)
             EVT_CALL(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, TRUE)
@@ -158,12 +159,12 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
         EVT_CASE_EQ(2)
             EVT_CALL(DisablePlayerInput, TRUE)
             EVT_CALL(InterruptUsePartner)
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_38A, 0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_SAM_POND_CRACK_2, 0)
             EVT_CALL(EnableModel, MODEL_ice02, FALSE)
             EVT_CALL(EnableModel, MODEL_ice03, TRUE)
             EVT_THREAD
                 EVT_WAIT(10)
-                EVT_CALL(PlaySoundAtNpc, NPC_PenguinPatrol, SOUND_397, 0)
+                EVT_CALL(PlaySoundAtNpc, NPC_PenguinPatrol, SOUND_PENGUIN_WHISTLE, SOUND_SPACE_DEFAULT)
             EVT_END_THREAD
             EVT_CALL(SetNpcFlagBits, NPC_PenguinPatrol, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, TRUE)
             EVT_CALL(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Run)
@@ -184,7 +185,7 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
             EVT_CALL(NpcMoveTo, NPC_PenguinPatrol, LVar0, LVar2, 0)
             EVT_THREAD
                 EVT_CALL(DisablePlayerPhysics, TRUE)
-                EVT_CALL(PlaySoundAtPlayer, SOUND_398, 0)
+                EVT_CALL(PlaySoundAtPlayer, SOUND_DRAG_PLAYER, SOUND_SPACE_DEFAULT)
                 EVT_CALL(InterpPlayerYaw, 90, 0)
                 EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_Thrown)
                 EVT_SET(MF_Unk_01, FALSE)
@@ -206,7 +207,7 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
             EVT_CALL(NpcMoveTo, NPC_PenguinPatrol, -207, 110, 0)
             EVT_CALL(NpcMoveTo, NPC_PenguinPatrol, -450, 0, 0)
             EVT_SET(MF_Unk_01, TRUE)
-            EVT_CALL(StopSound, SOUND_398)
+            EVT_CALL(StopSound, SOUND_DRAG_PLAYER)
             EVT_CALL(SetNpcAnimation, NPC_PenguinPatrol, ANIM_PenguinPatrol_Idle)
             EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_Surprise)
             EVT_CALL(SpeakToPlayer, NPC_PenguinPatrol, ANIM_PenguinPatrol_Talk, ANIM_PenguinPatrol_Idle, 0, MSG_CH7_00B8)
@@ -219,7 +220,7 @@ EvtScript N(EVS_DamageFrozenPond_Before) = {
             EVT_ADD(LVar0, -20)
             EVT_CALL(NpcMoveTo, NPC_PenguinPatrol, LVar0, LVar2, 0)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundAtNpc, NPC_PenguinPatrol, SOUND_390, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_PenguinPatrol, SOUND_TOSS_PLAYER, SOUND_SPACE_DEFAULT)
             EVT_THREAD
                 EVT_SET(MV_ThrownOut, 1)
                 EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(1.0))
@@ -289,11 +290,11 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     EVT_IF_NE(GB_SAM11_FrozenPondDamage, 3)
         EVT_SWITCH(GB_SAM11_FrozenPondDamage)
             EVT_CASE_EQ(1)
-                EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_389, 0)
+                EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_SAM_POND_CRACK_1, 0)
                 EVT_CALL(EnableModel, MODEL_ice01, FALSE)
                 EVT_CALL(EnableModel, MODEL_ice02, TRUE)
             EVT_CASE_EQ(2)
-                EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_38A, 0)
+                EVT_CALL(PlaySoundAtCollider, COLLIDER_suimen, SOUND_SAM_POND_CRACK_2, 0)
                 EVT_CALL(EnableModel, MODEL_ice02, FALSE)
                 EVT_CALL(EnableModel, MODEL_ice03, TRUE)
         EVT_END_SWITCH
@@ -313,10 +314,10 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
         EVT_THREAD
             EVT_CALL(DisablePartnerAI, 0)
             EVT_WAIT(1)
-            EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_302, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_FALL_LONG, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcJumpscale, NPC_PARTNER, EVT_FLOAT(1.5))
             EVT_CALL(NpcJump1, NPC_PARTNER, 265, 0, 225, 30)
-            EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_162, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_TRIP, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump1, NPC_PARTNER, 275, 0, 225, 8)
             EVT_CALL(EnablePartnerAI)
         EVT_END_THREAD
@@ -337,7 +338,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
             EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
         EVT_END_THREAD
     EVT_END_IF
-    EVT_CALL(PlaySoundAt, SOUND_38B, 0, 0, 60, 220)
+    EVT_CALL(PlaySoundAt, SOUND_SAM_POND_SHATTER, SOUND_SPACE_DEFAULT, 0, 60, 220)
     EVT_CALL(N(SpawnIceShards))
     EVT_CALL(EnableModel, MODEL_ice03, FALSE)
     EVT_CALL(SetGroupVisibility, MODEL_ice04, MODEL_GROUP_VISIBLE)
@@ -364,8 +365,8 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o663, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o356, SURFACE_TYPE_DOCK_WALL)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilitp, SURFACE_TYPE_DOCK_WALL)
-    EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o356, COLLIDER_FLAG_80000)
-    EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_80000)
+    EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o356, COLLIDER_FLAG_DOCK_WALL)
+    EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_DOCK_WALL)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_suimen, SURFACE_TYPE_WATER)
     EVT_EXEC(N(EVS_SetupIcebergs))
     EVT_SET(GB_SAM11_FrozenPondDamage, 4)
@@ -373,9 +374,9 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     EVT_IF_EQ(LVarA, 1)
         EVT_CALL(SetPlayerAnimation, ANIM_Mario1_DustOff)
         EVT_WAIT(7)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, 0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_DEFAULT)
         EVT_WAIT(8)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, 0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_DEFAULT)
         EVT_WAIT(15)
         EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
         EVT_WAIT(1)
@@ -516,8 +517,8 @@ EvtScript N(EVS_SetupPond) = {
     EVT_ELSE
         EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o356, SURFACE_TYPE_DOCK_WALL)
         EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_deilitp, SURFACE_TYPE_DOCK_WALL)
-        EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o356, COLLIDER_FLAG_80000)
-        EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_80000)
+        EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o356, COLLIDER_FLAG_DOCK_WALL)
+        EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitp, COLLIDER_FLAG_IGNORE_SHELL | COLLIDER_FLAG_DOCK_WALL)
     EVT_END_IF
     EVT_RETURN
     EVT_END

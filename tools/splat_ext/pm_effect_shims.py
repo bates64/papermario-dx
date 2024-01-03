@@ -1,10 +1,12 @@
+from typing import List
 from yaml.loader import Loader
-from segtypes.n64.segment import N64Segment
-from util import options
+from splat.segtypes.n64.segment import N64Segment
+from splat.util import options
 import yaml as yaml_loader
 
+
 class N64SegPm_effect_shims(N64Segment):
-    shims = []
+    shims: List[str] = []
 
     @staticmethod
     def get_shim_asm(index, name):
@@ -24,7 +26,7 @@ glabel {name}
 /* C 00000000 */   nop
 """
 
-    def shim_path(self, shim):
+    def shim_path(self, shim: str):
         return options.opts.build_path / "asm" / "effect_shims" / f"{shim}.s"
 
     def __init__(
@@ -47,7 +49,7 @@ glabel {name}
             yaml=yaml,
         )
 
-        with open(options.opts.asm_path / ".." / "effect_shims.yaml") as f:
+        with open(options.opts.src_path / "effect_shims.yaml") as f:
             self.shims = yaml_loader.load(f.read(), Loader=yaml_loader.SafeLoader)
 
     def split(self, rom_bytes):
@@ -60,16 +62,11 @@ glabel {name}
                 f.write(shim_asm)
 
     def get_linker_entries(self):
-        from segtypes.linker_entry import LinkerEntry
+        from splat.segtypes.linker_entry import LinkerEntry
 
         ret = []
 
         for shim in self.shims:
-            ret.append(LinkerEntry(
-                self,
-                [self.shim_path(shim)],
-                self.shim_path(shim),
-                ".text"
-            ))
+            ret.append(LinkerEntry(self, [self.shim_path(shim)], self.shim_path(shim), ".text", ".text"))
 
         return ret

@@ -50,7 +50,7 @@ void N(BooPatrolAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
             npc->duration = aiSettings->waitTime / 2 + rand_int(aiSettings->waitTime / 2 + 1);
         } else {
             script->functionTemp[0] = 4;
-            npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         }
     }
 }
@@ -118,6 +118,6 @@ EvtScript N(EVS_NpcAI_Boo_Patrol) = {
 NpcSettings N(NpcSettings_Boo_Patrol) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .ai = &N(EVS_NpcAI_Boo_Patrol),
 };

@@ -78,7 +78,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     EVT_CALL(SetNpcJumpscale, NPC_Eldstar, 0)
     EVT_CALL(NpcJump0, NPC_Eldstar, 21, 260, -277, 30 * DT)
     EVT_CALL(EnableModel, MODEL_1, TRUE)
-    EVT_CALL(PlaySound, SOUND_64)
+    EVT_CALL(PlaySound, SOUND_MULTIPLE_STAR_SPIRITS_APPEAR)
     EVT_CALL(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 15)
     EVT_CALL(N(DrawAppearSparkles), 0, LVar0, LVar1, LVar2, 10)
@@ -386,13 +386,13 @@ EvtScript N(EVS_NpcAux_Eldstar) = {
             EVT_IF_LT(LVar3, 0)
                 EVT_SETF(LVar3, EVT_FLOAT(0.0))
             EVT_END_IF
-            EVT_CALL(func_802CFD30, NPC_Eldstar,  FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Eldstar,  1, LVar2)
-            EVT_CALL(func_802CFD30, NPC_Mamar,    FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Mamar,    1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Skolar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Skolar,   1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Muskular, 1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Misstar,  FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Misstar,  1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Klevar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Klevar,   1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Kalmar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Kalmar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Eldstar,  IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Eldstar,  1, LVar2)
+            EVT_CALL(SetNpcImgFXParams, NPC_Mamar,    IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Mamar,    1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Skolar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Skolar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Muskular, 1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Misstar,  IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Misstar,  1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Klevar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Klevar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Kalmar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Kalmar,   1, LVar3)
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_LOOP(20)
@@ -408,13 +408,13 @@ EvtScript N(EVS_NpcAux_Eldstar) = {
             EVT_IF_LT(LVar3, 0)
                 EVT_SETF(LVar3, EVT_FLOAT(0.0))
             EVT_END_IF
-            EVT_CALL(func_802CFD30, NPC_Eldstar,  FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Eldstar,  1, LVar2)
-            EVT_CALL(func_802CFD30, NPC_Mamar,    FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Mamar,    1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Skolar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Skolar,   1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Muskular, 1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Misstar,  FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Misstar,  1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Klevar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Klevar,   1, LVar3)
-            EVT_CALL(func_802CFD30, NPC_Kalmar,   FOLD_TYPE_D, 0, AB_HOS_StatcAmt_Kalmar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Eldstar,  IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Eldstar,  1, LVar2)
+            EVT_CALL(SetNpcImgFXParams, NPC_Mamar,    IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Mamar,    1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Skolar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Skolar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Muskular, 1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Misstar,  IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Misstar,  1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Klevar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Klevar,   1, LVar3)
+            EVT_CALL(SetNpcImgFXParams, NPC_Kalmar,   IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, AB_HOS_StatcAmt_Kalmar,   1, LVar3)
             EVT_WAIT(1)
         EVT_END_LOOP
     EVT_END_LOOP
@@ -467,7 +467,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { 100.0f, 260.0f, -215.0f },
         .yaw = 270,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MAMAR_ANIMS,
     },
@@ -476,7 +476,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { -145.0f, 260.0f, -225.0f },
         .yaw = 90,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
     },
@@ -485,7 +485,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { 20.0f, 260.0f, -45.0f },
         .yaw = 270,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MUSKULAR_ANIMS,
     },
@@ -494,7 +494,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { -155.0f, 260.0f, -125.0f },
         .yaw = 90,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = MISSTAR_ANIMS,
     },
@@ -503,7 +503,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { 90.0f, 260.0f, -110.0f },
         .yaw = 270,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KLEVAR_ANIMS,
     },
@@ -512,7 +512,7 @@ NpcData N(NpcData_StarSpirits)[] = {
         .pos = { -75.0f, 260.0f, -290.0f },
         .yaw = 90,
         .settings = &N(NpcSettings_StarSpirit),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KALMAR_ANIMS,
     },

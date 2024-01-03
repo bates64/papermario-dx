@@ -1,4 +1,5 @@
 #include "kkj_15.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(UpdateRotatingPartyPositions)) {
     Npc* partner = get_npc_safe(NPC_PARTNER);
@@ -9,8 +10,8 @@ API_CALLABLE(N(UpdateRotatingPartyPositions)) {
     mag = dist2D(50.0f, -200.0f, script->varTable[7], script->varTable[8]);
     angle = atan2(50.0f, -200.0f, script->varTable[7], script->varTable[8]);
     angle = clamp_angle(angle - var);
-    gPlayerStatus.position.x = 50.0f + mag * sin_deg(angle);
-    gPlayerStatus.position.z = -200.0f - mag * cos_deg(angle);
+    gPlayerStatus.pos.x = 50.0f + mag * sin_deg(angle);
+    gPlayerStatus.pos.z = -200.0f - mag * cos_deg(angle);
 
     mag = dist2D(50.0f, -200.0f, script->varTable[9], script->varTable[10]);
     angle = atan2(50.0f, -200.0f, script->varTable[9], script->varTable[10]);
@@ -31,7 +32,7 @@ EvtScript N(EVS_AnimateRotatingWall_AlmostCaught) = {
         EVT_WAIT(180 * DT)
         EVT_CALL(SetPlayerAnimation, ANIM_Peach2_LookAround)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAt, SOUND_93, 0, 50, 5, -200)
+    EVT_CALL(PlaySoundAt, SOUND_KKJ_ROTATING_WALL, SOUND_SPACE_DEFAULT, 50, 5, -200)
     EVT_CALL(MakeLerp, 0, -1800, 360 * DT, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -44,7 +45,7 @@ EvtScript N(EVS_AnimateRotatingWall_AlmostCaught) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_93)
+    EVT_CALL(StopSound, SOUND_KKJ_ROTATING_WALL)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_g25, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o1, COLLIDER_FLAGS_UPPER_MASK)
     EVT_RETURN
@@ -69,7 +70,7 @@ EvtScript N(EVS_AnimateRotatingWall_Default) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_93)
+    EVT_CALL(StopSound, SOUND_KKJ_ROTATING_WALL)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_g25, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o1, COLLIDER_FLAGS_UPPER_MASK)
     EVT_RETURN

@@ -1,5 +1,6 @@
 #include "kkj_25.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/WorldKooper.h"
@@ -38,8 +39,8 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
 
     switch (script->FT_state) {
         case TEMP_FADE_TO_RED:
-            set_screen_overlay_color(0, 208, 0, 0);
-            set_screen_overlay_params_front(1, script->FT_alpha);
+            set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 0, 0);
+            set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->FT_alpha);
             if (script->FT_alpha == 255) {
                 script->FT_alpha = 0;
                 script->FT_state = TEMP_FADE_TO_WHITE;
@@ -57,7 +58,7 @@ API_CALLABLE(N(FadeScreenToRedAndWhite)) {
                 (script->FT_alpha * 208) / 255,
                 (script->FT_alpha * 208) / 255
             );
-            set_screen_overlay_params_front(1, 255.0f);
+            set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, 255.0f);
             if (script->FT_alpha == 255) {
                 script->FT_state = TEMP_FADE_COMPLETE;
             }
@@ -82,7 +83,7 @@ API_CALLABLE(N(FadeScreenFromWhite)) {
         script->functionTemp[1] = 255;
     }
 
-    set_screen_overlay_params_front(1, script->functionTemp[1]);
+    set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
 
     if (script->functionTemp[1] == 0) {
         return ApiStatus_DONE2;
@@ -142,7 +143,7 @@ EvtScript N(EVS_ManageShaking) = {
                 EVT_LOOP(1 + ARRAY_COUNT(N(ArenaExplosions))) //@bug extra iteration reads garbage
                     EVT_BUF_READ4(LVar0, LVar1, LVar2, LVar3)
                     EVT_FBUF_READ2(LVar4, LVar5)
-                    EVT_CALL(PlaySoundAt, SOUND_B000001C, 0, LVar0, LVar1, LVar2)
+                    EVT_CALL(PlaySoundAt, SOUND_SEQ_FINALE_EXPLOSION, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
                     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, LVar4, LVar3)
                     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, LVar5)
                 EVT_END_LOOP
@@ -181,16 +182,16 @@ EvtScript N(EVS_ManageShaking) = {
 // x, y, z, delay
 s32 N(ChainExplosionLocations)[][4] = {
     { 400,  -10, 400, 20 },
-    { 350,  -50, 370, 25 }, 
+    { 350,  -50, 370, 25 },
     { 300,  -30, 340, 25 },
-    { 350,  -40, 310, 20 }, 
+    { 350,  -40, 310, 20 },
     { 300,  -80, 280, 20 },
-    { 280,  -60, 250, 20 }, 
+    { 280,  -60, 250, 20 },
     { 300,  -50, 220, 20 },
-    { 250, -100, 190, 20 }, 
+    { 250, -100, 190, 20 },
     { 280,  -70, 160, 20 },
-    { 250,  -50, 130, 20 }, 
-    { 230, -100, 100, 20 }, 
+    { 250,  -50, 130, 20 },
+    { 230, -100, 100, 20 },
 };
 
 EvtScript N(EVS_BowserAndKammyBlownAway) = {
@@ -246,7 +247,7 @@ EvtScript N(EVS_BowserAndKammyBlownAway) = {
         EVT_USE_BUF(EVT_PTR(N(ChainExplosionLocations)))
         EVT_LOOP(ARRAY_COUNT(N(ChainExplosionLocations)))
             EVT_BUF_READ4(LVar0, LVar1, LVar2, LVar3)
-            EVT_CALL(PlaySoundAt, SOUND_B000001C, 0, LVar0, LVar1, LVar2)
+            EVT_CALL(PlaySoundAt, SOUND_SEQ_FINALE_EXPLOSION, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
             EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, EVT_FLOAT(2.0), 30)
             EVT_WAIT(LVar3)
         EVT_END_LOOP
@@ -311,7 +312,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_PLAY_EFFECT(EFFECT_RADIAL_SHIMMER, 14, 150, 60, 0, 1, 330)
     EVT_WAIT(310 * DT)
     EVT_CALL(ShowMessageAtScreenPos, MSG_CH8_00AA, 160, 40)
-    EVT_CALL(PlaySound, SOUND_22D)
+    EVT_CALL(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE)
     EVT_CALL(RemoveNpc, NPC_StarRod)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_ThumbsUp)
     EVT_CALL(GetCurrentPartnerID, LVar0)
@@ -369,11 +370,11 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_WAIT(10)
     EVT_CALL(SpeakToPlayer, NPC_Peach_02, ANIM_Peach2_RaiseArms, ANIM_Peach1_Idle, 0, MSG_CH8_00AC)
     EVT_WAIT(20)
-    EVT_CALL(PlaySound, SOUND_8000006B)
+    EVT_CALL(PlaySound, SOUND_LOOP_RUMBLE)
     EVT_SET(MV_DestructState, DESTRUCT_STATE_1)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_262, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, 0, EMOTE_EXCLAMATION, 0, 20, EMOTER_PLAYER, 0, 0, 0, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Peach_02, SOUND_262, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Peach_02, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Peach_02, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(20)
     EVT_CALL(InterpPlayerYaw, 270, 0)
@@ -390,7 +391,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_CALL(SetCamDistance, CAM_DEFAULT, 750)
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_WAIT(40)
-    EVT_CALL(PlaySoundAt, SOUND_203C, 0, 220, -43, 350)
+    EVT_CALL(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 220, -43, 350)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, 220, -43, 350, EVT_FLOAT(8.0), 40)
     EVT_SET(MV_DestructState, DESTRUCT_STATE_2)
     EVT_WAIT(50)
@@ -417,7 +418,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_CALL(InterpNpcYaw, NPC_Bowser_03, 90, 0)
     EVT_WAIT(20)
     EVT_CALL(SpeakToPlayer, NPC_Bowser_03, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 512, MSG_CH8_00AD)
-    EVT_CALL(PlaySoundAt, SOUND_203C, 0, 370, -10, 180)
+    EVT_CALL(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 370, -10, 180)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, 370, -10, 180, EVT_FLOAT(6.0), 40)
     EVT_SET(MV_DestructState, DESTRUCT_STATE_3)
     EVT_WAIT(20)
@@ -450,7 +451,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_CALL(SpeakToNpc, NPC_Bowser_03, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 512, NPC_Kammy_05, MSG_CH8_00AE)
     EVT_WAIT(5)
-    EVT_CALL(PlaySoundAt, SOUND_203C, 0, 350, 50, -100)
+    EVT_CALL(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 350, 50, -100)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, 350, 50, -100, EVT_FLOAT(4.0), 20)
     EVT_SET(MV_DestructState, DESTRUCT_STATE_5)
     EVT_WAIT(25)
@@ -462,7 +463,7 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
         EVT_CALL(SetNpcAnimation, NPC_Bowser_03, ANIM_WorldBowser_Idle)
     EVT_END_THREAD
     EVT_THREAD
-        EVT_CALL(PlaySoundAt, SOUND_203C, 0, 570, 0, 100)
+        EVT_CALL(PlaySoundAt, SOUND_KPA_ARENA_EXPLODING, SOUND_SPACE_DEFAULT, 570, 0, 100)
         EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, 570, 0, 100, EVT_FLOAT(4.0), 20)
         EVT_SET(MV_DestructState, DESTRUCT_STATE_6)
     EVT_END_THREAD
@@ -470,8 +471,8 @@ EvtScript N(EVS_Scene_BowserDefeated) = {
     EVT_CALL(SpeakToNpc, NPC_Bowser_03, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 512, NPC_Kammy_05, MSG_CH8_00B0)
     EVT_SET(MV_ArenaState, ARENA_STATE_BROKEN)
     EVT_WAIT(20)
-    EVT_CALL(StopSound, SOUND_3BC)
-    EVT_CALL(PlaySoundAt, SOUND_230, 0, 500, 0, 100)
+    EVT_CALL(StopSound, SOUND_LRAW_RUMBLE)
+    EVT_CALL(PlaySoundAt, SOUND_KPA_EXPLOSION_CLUSTER, SOUND_SPACE_DEFAULT, 500, 0, 100)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, 500, 0, 100, EVT_FLOAT(8.0), 90)
     EVT_SET(MV_DestructState, DESTRUCT_STATE_7)
     EVT_CALL(SetNpcAnimation, NPC_Bowser_03, ANIM_WorldBowser_Shock)

@@ -1,6 +1,7 @@
 #include "kkj_13.h"
 #include "effects.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(UpdatePropellerSoundPos_Intro)) {
     Npc* npc = get_npc_safe(NPC_Bowser_Prop);
@@ -8,14 +9,14 @@ API_CALLABLE(N(UpdatePropellerSoundPos_Intro)) {
     f32 y = npc->pos.y;
     f32 z = npc->pos.z;
 
-    sfx_adjust_env_sound_pos(SOUND_23D, SOUND_SPACE_MODE_0, x, y, z);
+    sfx_adjust_env_sound_pos(SOUND_LRAW_BOWSER_PROPELLER, SOUND_SPACE_DEFAULT, x, y, z);
     script->varTable[0] = y;
 
     return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_UpdatePropellerSounds_Intro) = {
-    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Prop, SOUND_80000066, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Prop, SOUND_LOOP_BOWSER_PROPELLER, SOUND_SPACE_DEFAULT)
     EVT_LOOP(0)
         EVT_CALL(N(UpdatePropellerSoundPos_Intro))
         EVT_IF_LT(LVar0, 0)
@@ -23,7 +24,7 @@ EvtScript N(EVS_UpdatePropellerSounds_Intro) = {
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_80000066)
+    EVT_CALL(StopSound, SOUND_LOOP_BOWSER_PROPELLER)
     EVT_RETURN
     EVT_END
 };
@@ -39,8 +40,8 @@ API_CALLABLE(N(ScreenWhiteFlashOn)) {
         script->functionTemp[1] = 255;
     }
 
-    set_screen_overlay_color(0, 160, 160, 160);
-    set_screen_overlay_params_front(1, script->functionTemp[1]);
+    set_screen_overlay_color(SCREEN_LAYER_FRONT, 160, 160, 160);
+    set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
 
     if (script->functionTemp[1] == 255) {
         return ApiStatus_DONE2;
@@ -60,8 +61,8 @@ API_CALLABLE(N(ScreenWhiteFlashOff)) {
         script->functionTemp[1] = 0;
     }
 
-    set_screen_overlay_color(0, 160, 160, 160);
-    set_screen_overlay_params_front(1, script->functionTemp[1]);
+    set_screen_overlay_color(SCREEN_LAYER_FRONT, 160, 160, 160);
+    set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
 
     if (script->functionTemp[1] == 0) {
         return ApiStatus_DONE2;
@@ -128,7 +129,7 @@ API_CALLABLE(N(ShatterWindow)) {
         effect = fx_ice_shard(type, posX, posY, -150.0f, ((i & 3) * 0.4) + 1.0, ((i & 3) * 4) + 30);
         effect->data.iceShard->animFrame = 0;
         effect->data.iceShard->animRate = (rand_int(10) * 0.2) + 0.1;
-        effect->data.iceShard->rotation = 35 * i;
+        effect->data.iceShard->rot = 35 * i;
         effect->data.iceShard->angularVel = rand_int(10) - 5;
         effect->data.iceShard->vel.x = x;
         effect->data.iceShard->vel.y = y;
@@ -200,15 +201,15 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_THREAD
-        EVT_CALL(PlaySound, SOUND_80000056)
+        EVT_CALL(PlaySound, SOUND_LOOP_KKJ_RUMBLING)
 #if VERSION_PAL
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 60 * DT, EVT_FLOAT(0.5))
 #else
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 30, EVT_FLOAT(1.0))
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 30, EVT_FLOAT(0.5))
 #endif
-        EVT_CALL(PlaySound, SOUND_33 | SOUND_ID_TRIGGER_CHANGE_SOUND)
-        EVT_CALL(func_802D62E4, SOUND_33)
+        EVT_CALL(PlaySound, SOUND_LRAW_KKJ_RUMBLING | SOUND_ID_TRIGGER_CHANGE_SOUND)
+        EVT_CALL(StopTrackingSoundPos, SOUND_LRAW_KKJ_RUMBLING)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetPlayerJumpscale, 0)
@@ -308,7 +309,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
         EVT_CALL(EnableGroup, MODEL_g147, FALSE)
         EVT_CALL(EnableGroup, MODEL_g152, TRUE)
         EVT_CALL(EnableGroup, MODEL_g154, TRUE)
-        EVT_CALL(PlaySoundAt, SOUND_2097, 0, 600, 60, -150)
+        EVT_CALL(PlaySoundAt, SOUND_GLASS_SHATTER, SOUND_SPACE_DEFAULT, 600, 60, -150)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 600, 60, -150, 120)
         EVT_CALL(N(ShatterWindow))
         EVT_WAIT(1)
@@ -331,7 +332,7 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
         EVT_WAIT(5)
         EVT_CALL(SetNpcJumpscale, NPC_Bowser_Body, EVT_FLOAT(0.0))
         EVT_CALL(NpcJump0, NPC_Bowser_Body, 810, 0, 0, 5)
-        EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Body, SOUND_20A0, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Body, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_PostJump)
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20 * DT, EVT_FLOAT(2.0))
         EVT_CALL(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_Idle)
@@ -432,18 +433,18 @@ EvtScript N(EVS_Scene_BowserAttacks) = {
     EVT_CALL(SetNpcAnimation, NPC_Bowser_Body, ANIM_WorldBowser_Brandish)
     EVT_WAIT(10 * DT)
     EVT_CALL(FadeOutMusic, 0, 500)
-    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Body, SOUND_2121, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_Body, SOUND_BOWSER_STAR_ROD_USE, SOUND_SPACE_DEFAULT)
     EVT_PLAY_EFFECT(EFFECT_GATHER_ENERGY_PINK, 0, 780, 95, 27, 1, 30)
     EVT_WAIT(40 * DT)
     EVT_THREAD
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 10 * DT, EVT_FLOAT(4.0))
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtPlayer, SOUND_2127, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_BOWSER_LIGHTNING, SOUND_SPACE_DEFAULT)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_ADD(LVar2, 5)
     EVT_PLAY_EFFECT(EFFECT_LIGHTNING, 4, LVar0, LVar1, LVar2, 0, 0)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtPlayer, SOUND_390, 0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_TOSS_PLAYER, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Hurt)
         EVT_CALL(LoadPath, 30 * DT, EVT_PTR(N(PlayerThrownPath)), ARRAY_COUNT(N(PlayerThrownPath)), EASING_LINEAR)
         EVT_SET(LVar4, 0)

@@ -42,9 +42,9 @@ s32 gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s3
     s32 pixel = SCREEN_WIDTH * y + x;
 
     out->a = (frameBuffer1[pixel] >> 2) & 0xF;
-    out->r = (frameBuffer0[pixel] >> 11);
-    out->g = (frameBuffer0[pixel] >> 6) & 0x1F;
-    out->b = (frameBuffer0[pixel] >> 1) & 0x1F;
+    out->r = UNPACK_PAL_R(frameBuffer0[pixel]);
+    out->g = UNPACK_PAL_G(frameBuffer0[pixel]);
+    out->b = UNPACK_PAL_B(frameBuffer0[pixel]);
 }
 
 void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u16* out) {
@@ -305,7 +305,7 @@ void func_80027BAC(s32 arg0, s32 arg1) {
 //  * Draws the saved framebuffer to the current framebuffer while the pause screen is opened, fading it in over time.
 void gfx_draw_background(void) {
     Camera* camera;
-    s32 bgFlags;
+    s32 bgRenderState;
     s32 backgroundMinX;
     s32 backgroundMaxX;
     s32 backgroundMinY;
@@ -317,10 +317,10 @@ void gfx_draw_background(void) {
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     camera = &gCameras[gCurrentCameraID];
-    bgFlags = gGameStatusPtr->backgroundFlags & BACKGROUND_RENDER_STATE_MASK;
+    bgRenderState = gGameStatusPtr->backgroundFlags & BACKGROUND_RENDER_STATE_MASK;
 
-    switch (bgFlags) {
-        case BACKGROUND_RENDER_STATE_1:
+    switch (bgRenderState) {
+        case BACKGROUND_RENDER_STATE_BEGIN_PAUSED:
             // Save coverage to nunGfxCfb[1] using the VISCVG render mode
             gDPPipeSync(gMainGfxPos++);
             gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, nuGfxCfb[1]);
@@ -333,16 +333,16 @@ void gfx_draw_background(void) {
             gDPPipeSync(gMainGfxPos++);
             gDPSetDepthSource(gMainGfxPos++, G_ZS_PIXEL);
             gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
-            gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_2;
+            gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_FILTER_PAUSED;
             break;
-        case BACKGROUND_RENDER_STATE_2:
+        case BACKGROUND_RENDER_STATE_FILTER_PAUSED:
             // Save the framebuffer into the depth buffer and run a filter on it based on the saved coverage values
             gfx_transfer_frame_to_depth(nuGfxCfb[0], nuGfxCfb[1], nuGfxZBuffer); // applies filters to the framebuffer
             gPauseBackgroundFade = 0;
             gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
-            gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_3;
+            gGameStatusPtr->backgroundFlags |= BACKGROUND_RENDER_STATE_SHOW_PAUSED;
             // fallthrough
-        case BACKGROUND_RENDER_STATE_3:
+        case BACKGROUND_RENDER_STATE_SHOW_PAUSED:
             // Draw the saved framebuffer to the background, fading in at a rate of 16 opacity per frame until reaching 128 opacity
             gPauseBackgroundFade += 16;
             if (gPauseBackgroundFade > 128) {
@@ -363,8 +363,7 @@ void gfx_draw_background(void) {
             // @bug In 1-cycle mode, the two combiner cycles should be identical. Using Texel1 here in the second cycle,
             // which is the actual cycle of the combiner used on hardware in 1-cycle mode, actually samples the next
             // pixel's texel value instead of the current pixel's. This results in a one-pixel offset.
-            gDPSetCombineLERP(gMainGfxPos++, PRIMITIVE, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, 0, 0, 0, 1, PRIMITIVE,
-                              TEXEL1, PRIMITIVE_ALPHA, TEXEL1, 0, 0, 0, 1);
+            gDPSetCombineMode(gMainGfxPos++, PM_CC_43, PM_CC_44);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, gPauseBackgroundFade);
             gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
 
@@ -386,7 +385,7 @@ void gfx_draw_background(void) {
             break;
         default:
             // Draw the scene's background as normal
-            if (gOverrideFlags & GLOBAL_OVERRIDES_8) {
+            if (gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME) {
                 gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
                 return;
             }

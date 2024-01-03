@@ -1,7 +1,7 @@
 #include "nok_12.h"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_CALL(DisablePlayerInput, TRUE)
@@ -9,10 +9,10 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_SET_GROUP(EVT_GROUP_00)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(InterpCamTargetPos, CAM_DEFAULT, 1, -272, 0, -56, 20)
     EVT_WAIT(15)
-    EVT_CALL(PlaySoundAt, SOUND_71, 0, -275, 0, -39)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_THUD_1, SOUND_SPACE_DEFAULT, -275, 0, -39)
     EVT_CALL(MakeLerp, -320, 0, 15, EASING_QUADRATIC_IN)
     EVT_LABEL(10)
     EVT_CALL(UpdateLerp)
@@ -28,7 +28,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(15)
-    EVT_CALL(PlaySoundAt, SOUND_72, 0, -275, 0, -39)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_THUD_2, SOUND_SPACE_DEFAULT, -275, 0, -39)
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     EVT_LABEL(20)
     EVT_CALL(UpdateLerp)
@@ -57,7 +57,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
         EVT_GOTO(20)
     EVT_END_IF
     EVT_WAIT(10)
-    EVT_CALL(PlaySoundAt, SOUND_73, 0, -275, 0, -39)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_THUD_3, SOUND_SPACE_DEFAULT, -275, 0, -39)
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     EVT_LABEL(30)
     EVT_CALL(UpdateLerp)
@@ -90,7 +90,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_WAIT(10)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(InterpCamTargetPos, CAM_DEFAULT, 1, LVar0, LVar1, LVar2, 10)
-    EVT_CALL(N(UnsetCamera0Flag1000))
+    EVT_CALL(N(EnableCameraLeadingPlayer))
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
     EVT_CALL(DisablePlayerPhysics, FALSE)
     EVT_CALL(DisablePlayerInput, FALSE)

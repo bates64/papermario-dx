@@ -68,10 +68,15 @@ HudScript* gStatsMenuElements[] = {
     [STAT_ICON_TIMES]       &HES_StatTimes,
 };
 
+#if VERSION_PAL
+#define PAUSE_MSG_3B PAUSE_MSG_NO_BADGE
+#define PAUSE_MSG_3F PAUSE_MSG_NO_BADGE
+#endif
+
 HudScript* gStatsBootsElements[] = { &HES_StatBoots0, &HES_StatBoots1, &HES_StatBoots2, &HES_StatBoots3 };
 HudScript* gStatsHammerElements[] = { &HES_StatHammer0, &HES_StatHammer1, &HES_StatHammer2, &HES_StatHammer3 };
-s32 gPauseStatsBootsMessages[] = { 59, 60, 61, 62 };
-s32 gPauseStatsHammerMessages[] = { 63, 64, 65, 66 };
+s32 gPauseStatsBootsMessages[] = { PAUSE_MSG_3B, PAUSE_MSG_3C, PAUSE_MSG_3D, PAUSE_MSG_3E };
+s32 gPauseStatsHammerMessages[] = { PAUSE_MSG_3F, PAUSE_MSG_40, PAUSE_MSG_41, PAUSE_MSG_42 };
 s8 gPauseStatsGridData[] = {
     0, 4,
     1, 5,
@@ -81,6 +86,16 @@ s8 gPauseStatsGridData[] = {
     3, 9,
     3, 10
 };
+
+#if VERSION_PAL
+#define STAR_POWER_X 122
+#define COLLECTABLES_X 127
+#else
+#define STAR_POWER_X 132
+#define COLLECTABLES_X 125
+#endif
+
+
 StatsEntryData gStatsMenuEntries[] = {
     { .cursorX =   9, .cursorY =  20, .baseMsgID = PAUSE_MSG_TIP_CONTROLS },
     { .cursorX =  17, .cursorY =  55, .baseMsgID = PAUSE_MSG_TIP_HP },
@@ -88,12 +103,17 @@ StatsEntryData gStatsMenuEntries[] = {
     { .cursorX =  17, .cursorY = 124, .baseMsgID = PAUSE_MSG_TIP_BP },
     { .cursorX = 138, .cursorY =  28, .baseMsgID = PAUSE_MSG_TIP_BOOTS_1 },
     { .cursorX = 138, .cursorY =  53, .baseMsgID = PAUSE_MSG_TIP_HAMMER_0 },
-    { .cursorX = 132, .cursorY =  76, .baseMsgID = PAUSE_MSG_TIP_STAR_POWER },
-    { .cursorX = 125, .cursorY =  91, .baseMsgID = PAUSE_MSG_TIP_STAR_POINTS },
-    { .cursorX = 125, .cursorY = 106, .baseMsgID = PAUSE_MSG_TIP_COINS },
-    { .cursorX = 125, .cursorY = 121, .baseMsgID = PAUSE_MSG_TIP_SECRETS },
-    { .cursorX = 125, .cursorY = 138, .baseMsgID = PAUSE_MSG_TIP_TIME },
-}; 
+    { .cursorX = STAR_POWER_X, .cursorY =  76, .baseMsgID = PAUSE_MSG_TIP_STAR_POWER },
+    { .cursorX = COLLECTABLES_X, .cursorY =  91, .baseMsgID = PAUSE_MSG_TIP_STAR_POINTS },
+    { .cursorX = COLLECTABLES_X, .cursorY = 106, .baseMsgID = PAUSE_MSG_TIP_COINS },
+    { .cursorX = COLLECTABLES_X, .cursorY = 121, .baseMsgID = PAUSE_MSG_TIP_SECRETS },
+    { .cursorX = COLLECTABLES_X, .cursorY = 138, .baseMsgID = PAUSE_MSG_TIP_TIME },
+};
+
+#if VERSION_PAL
+s32 D_pause_80253814[] = { 0, -16, -7, -19 };
+#endif
+
 HudScript* gPauseStatsSPIncElements[] = { &HES_StatusSPIncrement1, &HES_StatusSPIncrement3,
                                           &HES_StatusSPIncrement2, &HES_StatusSPIncrement4,
                                           &HES_StatusSPIncrement5, &HES_StatusSPIncrement6,
@@ -143,6 +163,9 @@ MenuPanel gPausePanelStats = {
 };
 
 
+#if VERSION_PAL
+INCLUDE_ASM(void, "pause/pause_stats", pause_stats_draw_contents);
+#else
 void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     StatsEntryData* statsEntryData;
     PlayerData* playerData;
@@ -285,9 +308,9 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
 
     // get number of full power increments
     playerData = &gPlayerData;
-    powFullBars = playerData->specialBarsFilled / 256;
-    powIncrements = playerData->specialBarsFilled % 256; // get remainder in unfilled bar
-    powIncrements /= 32; // subdivide unfilled bar into 8 segments (8 = 256/32)
+    powFullBars = playerData->starPower / SP_PER_BAR;
+    powIncrements = playerData->starPower % SP_PER_BAR; // get remainder in unfilled bar
+    powIncrements /= SP_PER_SEG; // subdivide unfilled bar into 8 segments (8 = 256/32)
     powIncrements += powFullBars * 8; // add 8 increments per full bar
 
     // draw filled bars
@@ -418,7 +441,7 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
             break;
         }
     }
-    
+
     // get number of total power increments
     powFullBars = playerData->maxStarPower;
     powIncrements = 8 * powFullBars;
@@ -507,7 +530,7 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
                 hud_element_draw_next(powHudElemID);
             }
             powIncIdx++;
-            
+
             if (curIncrement >= powIncrements) {
                 break;
             }
@@ -573,6 +596,7 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
         pause_set_cursor_pos(WINDOW_ID_PAUSE_STATS, baseX + entry->cursorX, baseY + entry->cursorY);
     }
 }
+#endif
 
 void pause_stats_init(MenuPanel* panel) {
     s32 i;
@@ -594,12 +618,12 @@ void pause_stats_init(MenuPanel* panel) {
 
 void pause_stats_handle_input(MenuPanel* panel) {
     s32 initialSelection = panel->selected;
-    s16 adjustedBootsLevel;
-    s16 adjustedHammerLevel;
+    s16 bootsMsgIdx;
+    s16 hammerMsgIdx;
     s32 msgOffset;
 
     if (gPauseHeldButtons & BUTTON_STICK_LEFT) {
-        while (1) {
+        while (TRUE) {
             panel->col--;
             if (panel->col < 0) {
                 panel->col = 0;
@@ -611,7 +635,7 @@ void pause_stats_handle_input(MenuPanel* panel) {
     }
 
     if (gPauseHeldButtons & BUTTON_STICK_RIGHT) {
-        while (1) {
+        while (TRUE) {
             panel->col++;
             if (panel->col >= panel->numCols) {
                 panel->col = panel->numCols - 1;
@@ -623,7 +647,7 @@ void pause_stats_handle_input(MenuPanel* panel) {
     }
 
     if (gPauseHeldButtons & BUTTON_STICK_UP) {
-        while (1) {
+        while (TRUE) {
             panel->row--;
             if (panel->row < 0) {
                 panel->row = 0;
@@ -635,7 +659,7 @@ void pause_stats_handle_input(MenuPanel* panel) {
     }
 
     if (gPauseHeldButtons & BUTTON_STICK_DOWN) {
-        while (1) {
+        while (TRUE) {
             panel->row++;
             if (panel->row >= panel->numRows) {
                 panel->row = panel->numRows - 1;
@@ -652,33 +676,33 @@ void pause_stats_handle_input(MenuPanel* panel) {
     }
 
     msgOffset = 0;
-    adjustedBootsLevel = gPlayerData.bootsLevel;
-    adjustedHammerLevel = gPlayerData.hammerLevel;
+    bootsMsgIdx = gPlayerData.bootsLevel;
+    hammerMsgIdx = gPlayerData.hammerLevel;
 
-    adjustedBootsLevel++;
-    if (adjustedBootsLevel < 0) {
-        adjustedBootsLevel = 0;
+    bootsMsgIdx++;
+    if (bootsMsgIdx < 0) {
+        bootsMsgIdx = 0;
     }
-    if (adjustedBootsLevel > 3) {
-        adjustedBootsLevel = 3;
+    if (bootsMsgIdx > 3) {
+        bootsMsgIdx = 3;
     }
 
-    adjustedHammerLevel++;
-    if (adjustedHammerLevel < 0) {
-        adjustedHammerLevel = 0;
+    hammerMsgIdx++;
+    if (hammerMsgIdx < 0) {
+        hammerMsgIdx = 0;
     }
-    if (adjustedHammerLevel > 3) {
-        adjustedHammerLevel = 3;
+    if (hammerMsgIdx > 3) {
+        hammerMsgIdx = 3;
     }
 
     switch (gStatsMenuEntries[panel->selected].baseMsgID) {
         case PAUSE_MSG_TIP_BOOTS_1:
-            if (adjustedBootsLevel > 1) {
-                msgOffset = adjustedBootsLevel - 1;
+            if (bootsMsgIdx > 1) {
+                msgOffset = bootsMsgIdx - 1;
             }
             break;
         case PAUSE_MSG_TIP_HAMMER_0:
-            msgOffset = adjustedHammerLevel;
+            msgOffset = hammerMsgIdx;
             break;
         case PAUSE_MSG_TIP_SECRETS:
             if (evt_get_variable(NULL, GF_Tutorial_GotStarPiece)) {

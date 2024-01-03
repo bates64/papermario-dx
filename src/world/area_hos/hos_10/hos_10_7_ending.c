@@ -17,9 +17,9 @@ API_CALLABLE(N(NpcOrbitPlayerPos)) {
     npc = get_npc_unsafe(script->functionTemp[1]);
     switch (script->functionTemp[0]) {
         case 0:
-            npc->pos.x = playerStatus->position.x;
-            npc->pos.y = playerStatus->position.y;
-            npc->pos.z = playerStatus->position.z;
+            npc->pos.x = playerStatus->pos.x;
+            npc->pos.y = playerStatus->pos.y;
+            npc->pos.z = playerStatus->pos.z;
             npc->moveToPos.x =  script->functionTemp[3] * 3;
             npc->moveToPos.y = 3.0f;
             add_vec2D_polar(&npc->pos.x, &npc->pos.z, 70.0f, npc->moveToPos.x + (script->functionTemp[2] * 51) + 153.0f);
@@ -32,9 +32,9 @@ API_CALLABLE(N(NpcOrbitPlayerPos)) {
             }
             break;
         case 1:
-            npc->pos.x = playerStatus->position.x;
-            npc->pos.y = playerStatus->position.y;
-            npc->pos.z = playerStatus->position.z;
+            npc->pos.x = playerStatus->pos.x;
+            npc->pos.y = playerStatus->pos.y;
+            npc->pos.z = playerStatus->pos.z;
             npc->moveToPos.x = script->functionTemp[3] * 3;
             npc->moveToPos.y = 3.0f;
             add_vec2D_polar(
@@ -88,7 +88,7 @@ API_CALLABLE(N(SetHaloAlpha)) {
 }
 
 API_CALLABLE(N(ClearCurrentPartner)) {
-    gPlayerData.currentPartner = PARTNER_NONE;
+    gPlayerData.curPartner = PARTNER_NONE;
     return ApiStatus_DONE2;
 }
 
@@ -97,8 +97,8 @@ API_CALLABLE(N(FadeScreenToWhite)) {
         script->functionTemp[1] = 0;
     }
 
-    set_screen_overlay_color(0, 208, 208, 208);
-    set_screen_overlay_params_front(1, script->functionTemp[1]);
+    set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
+    set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
 
     if (script->functionTemp[1] == 255) {
         return ApiStatus_DONE2;
@@ -184,7 +184,7 @@ EvtScript N(EVS_Scene_CastleDescending) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(DisablePartnerAI, 0)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(PlaySound, SOUND_A4 | SOUND_ID_TRIGGER_CHANGE_SOUND)
+    EVT_CALL(PlaySound, SOUND_KPA_LIGHT_RAYS | SOUND_ID_TRIGGER_CHANGE_SOUND)
     EVT_CALL(SetPlayerPos, -130, 200, 1300)
     EVT_CALL(InterpPlayerYaw, 90, 0)
     EVT_CALL(SetNpcPos, NPC_PARTNER, -150, 200, 1300)
@@ -549,7 +549,7 @@ EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     EVT_CALL(N(FadeScreenToWhite))
     EVT_WAIT(90)
     EVT_CALL(N(ClearCurrentPartner))
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_20"), kmr_20_ENTRY_2, TRANSITION_5)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_20"), kmr_20_ENTRY_2, TRANSITION_OUTRO_END_SCENE)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END

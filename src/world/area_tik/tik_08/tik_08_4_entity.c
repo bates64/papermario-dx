@@ -4,7 +4,7 @@
 #include "world/common/todo/SetEntityPosition.inc.c"
 
 EvtScript N(EVS_SpawnSwitch) = {
-    EVT_CALL(PlaySoundAt, SOUND_301, SOUND_SPACE_MODE_0, 90, 200, 100)
+    EVT_CALL(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, 90, 200, 100)
     EVT_CALL(MakeLerp, 200, -10, 25, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -14,7 +14,7 @@ EvtScript N(EVS_SpawnSwitch) = {
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAt, SOUND_48, SOUND_SPACE_MODE_0, 90, LVar0, 100)
+    EVT_CALL(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, 90, LVar0, 100)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_RETURN
@@ -30,7 +30,7 @@ EvtScript N(EVS_GotoMap_jan_03_3) = {
 
 EvtScript N(EVS_OnSwitchActivate) = {
     EVT_WAIT(10)
-    EVT_CALL(PlaySound, SOUND_208E)
+    EVT_CALL(PlaySound, SOUND_GROW)
     EVT_SET(GF_TIK08_WarpPipe, TRUE)
     EVT_UNBIND
     EVT_RETURN

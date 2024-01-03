@@ -78,7 +78,7 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
         script->functionTempPtr[0] = shadowIDs = heap_malloc(sizeof(*shadowIDs));
         for (i = 0; i < ARRAY_COUNT(N(PlatformFloorModels)); i++) {
             model = get_model_from_list_index(get_model_list_index_from_tree_index(N(PlatformFloorModels)[i]));
-            (*shadowIDs)[i] = create_shadow_type(0, model->center.x, model->center.y - 100.0f, model->center.z);
+            (*shadowIDs)[i] = create_shadow_type(SHADOW_VARYING_CIRCLE, model->center.x, model->center.y - 100.0f, model->center.z);
         }
     }
 
@@ -92,12 +92,12 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
         scale = 1000.0f;
         entity_raycast_down(&x, &y, &z, &rotX, &rotZ, &scale);
         set_standard_shadow_scale(shadow, scale);
-        shadow->rotation.y = 0.0f;
-        shadow->position.x = x;
-        shadow->position.y = y;
-        shadow->position.z = z;
-        shadow->rotation.x = rotX;
-        shadow->rotation.z = rotZ;
+        shadow->rot.y = 0.0f;
+        shadow->pos.x = x;
+        shadow->pos.y = y;
+        shadow->pos.z = z;
+        shadow->rot.x = rotX;
+        shadow->rot.z = rotZ;
         shadow->scale.x *= 3.0f;
         shadow->scale.z *= 3.0f;
     }
@@ -125,7 +125,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
     s32 j, k;
 
     if (isInitialCall) {
-        sfx_play_sound_at_position(SOUND_80000016, SOUND_SPACE_MODE_0, 315.0f, 125.0f, -100.0f);
+        sfx_play_sound_at_position(SOUND_LOOP_OMO_ROTATING_WHEEL, SOUND_SPACE_DEFAULT, 315.0f, 125.0f, -100.0f);
         script->functionTempPtr[0] = it = heap_malloc(sizeof(*it) * ARRAY_COUNT(N(RotatingPlatformModels)));
         script->functionTemp[1] = 0;
 
@@ -142,7 +142,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
 
             for (j = 0; j < 4; j++) {
                 for (k = 0; k < 4; k++) {
-                    it->transformMatrix[j][k] = loopModel->transformMatrix[j][k];
+                    it->transformMatrix[j][k] = loopModel->userTransformMtx[j][k];
                 }
             }
 
@@ -155,7 +155,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
 
             for (j = 0; j < 4; j++) {
                 for (k = 0; k < 4; k++) {
-                    it->transformMatrix[j][k] = loopModel->transformMatrix[j][k];
+                    it->transformMatrix[j][k] = loopModel->userTransformMtx[j][k];
                 }
             }
         }
@@ -167,11 +167,11 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
 
         for (j = 0; j < 4; j++) {
             for (k = 0; k < 4; k++) {
-                loopModel->transformMatrix[j][k] = it->transformMatrix[j][k];
+                loopModel->userTransformMtx[j][k] = it->transformMatrix[j][k];
             }
         }
 
-        loopModel->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+        loopModel->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
         guTranslateF(sp20, it->relativePos.x, it->relativePos.y, it->relativePos.z);
         guRotateF(spA0, script->functionTemp[1], 0.0f, 0.0f, 1.0f);
         guTranslateF(sp60, -it->relativePos.x, -it->relativePos.y, -it->relativePos.z);
@@ -179,17 +179,17 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
         guMtxCatF(sp20, spA0, spA0);
         guMtxCatF(spA0, sp60, sp60);
         guMtxCatF(spE0, sp60, sp60);
-        guMtxCatF(loopModel->transformMatrix, sp60, loopModel->transformMatrix);
+        guMtxCatF(loopModel->userTransformMtx, sp60, loopModel->userTransformMtx);
         update_collider_transform(N(RotatingPlatformColliders)[i]);
-        guMtxXFMF(loopModel->transformMatrix, 0.0f, 0.0f, 0.0f, &ox, &oy, &oz);
-        if (gCollisionStatus.currentFloor == N(RotatingPlatformColliders)[i] ||
+        guMtxXFMF(loopModel->userTransformMtx, 0.0f, 0.0f, 0.0f, &ox, &oy, &oz);
+        if (gCollisionStatus.curFloor == N(RotatingPlatformColliders)[i] ||
             gCollisionStatus.lastTouchedFloor == N(RotatingPlatformColliders)[i])
         {
-            playerStatus->pushVelocity.x = ox - it->lastRelativePos.x;
-            playerStatus->pushVelocity.y = oy - it->lastRelativePos.y;
-            playerStatus->pushVelocity.z = oz - it->lastRelativePos.z;
+            playerStatus->pushVel.x = ox - it->lastRelativePos.x;
+            playerStatus->pushVel.y = oy - it->lastRelativePos.y;
+            playerStatus->pushVel.z = oz - it->lastRelativePos.z;
         }
-        if (partner->currentFloor == N(RotatingPlatformColliders)[i]) {
+        if (partner->curFloor == N(RotatingPlatformColliders)[i]) {
             partner->pos.x += ox - it->lastRelativePos.x;
             partner->pos.y += oy - it->lastRelativePos.y;
             partner->pos.z += oz - it->lastRelativePos.z;
@@ -199,21 +199,21 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
         it->lastRelativePos.z = oz;
     }
 
-    guRotateF(axisModel->transformMatrix, script->functionTemp[1], 0.0f, 0.0f, 1.0f);
-    axisModel->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+    guRotateF(axisModel->userTransformMtx, script->functionTemp[1], 0.0f, 0.0f, 1.0f);
+    axisModel->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
     update_collider_transform(COLLIDER_fl);
 
-    guRotateF(ringModel->transformMatrix, script->functionTemp[1], 0.0f, 0.0f, 1.0f);
-    ringModel->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+    guRotateF(ringModel->userTransformMtx, script->functionTemp[1], 0.0f, 0.0f, 1.0f);
+    ringModel->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
     update_collider_transform(COLLIDER_1_0);
 
     isPounding = FALSE;
     for (i = 0; i < ARRAY_COUNT(N(RotatingPlatformColliders)); i++) {
-        if (gCollisionStatus.currentFloor == N(RotatingPlatformColliders)[i]) {
+        if (gCollisionStatus.curFloor == N(RotatingPlatformColliders)[i]) {
             if (playerStatus->flags & PS_FLAG_NO_STATIC_COLLISION) {
-                gCameras[CAM_DEFAULT].targetPos.x = playerStatus->position.x;
-                gCameras[CAM_DEFAULT].targetPos.y = playerStatus->position.y;
-                gCameras[CAM_DEFAULT].targetPos.z = playerStatus->position.z;
+                gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
+                gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
+                gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
             }
             if (playerStatus->actionState == ACTION_STATE_SPIN_POUND ||
                 playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
@@ -229,7 +229,7 @@ API_CALLABLE(N(UpdateRotatingPlatforms)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_UpdateBasicPlatformA) = {
+EvtScript N(EVS_UpdateBasicPlatform_Silent) = {
     EVT_CALL(RandInt, 20, LVarA)
     EVT_WAIT(LVarA)
     EVT_USE_BUF(LVar0)
@@ -264,13 +264,13 @@ EvtScript N(EVS_UpdateBasicPlatformA) = {
     EVT_END
 };
 
-EvtScript N(EVS_UpdateBasicPlatformB) = {
+EvtScript N(EVS_UpdateBasicPlatform_Audible) = {
     EVT_CALL(RandInt, 20, LVarA)
     EVT_WAIT(LVarA)
     EVT_USE_BUF(LVar0)
     EVT_BUF_READ4(LVar6, LVar7, LVar8, LVar9)
     EVT_LABEL(0)
-        EVT_CALL(PlaySound, SOUND_85)
+        EVT_CALL(PlaySound, SOUND_OMO_PLATFORM_ASCEND)
         EVT_CALL(MakeLerp, 0, 70, 51, EASING_COS_IN_OUT)
         EVT_LABEL(1)
             EVT_CALL(UpdateLerp)
@@ -283,7 +283,7 @@ EvtScript N(EVS_UpdateBasicPlatformB) = {
                 EVT_GOTO(1)
             EVT_END_IF
         EVT_WAIT(20)
-        EVT_CALL(PlaySound, SOUND_87)
+        EVT_CALL(PlaySound, SOUND_OMO_PLATFORM_DESCEND)
         EVT_CALL(MakeLerp, 70, 0, 51, EASING_COS_IN_OUT)
         EVT_LABEL(2)
             EVT_CALL(UpdateLerp)
@@ -325,15 +325,15 @@ EvtScript N(EVS_SetupGizmos) = {
     EVT_CALL(ParentColliderToModel, COLLIDER_2_5, MODEL_2_5)
     EVT_CALL(ParentColliderToModel, COLLIDER_f2_5, MODEL_f2_5)
     EVT_SET(LVar0, EVT_PTR(N(BasicPlatform1)))
-    EVT_EXEC(N(EVS_UpdateBasicPlatformA))
+    EVT_EXEC(N(EVS_UpdateBasicPlatform_Silent))
     EVT_SET(LVar0, EVT_PTR(N(BasicPlatform2)))
-    EVT_EXEC(N(EVS_UpdateBasicPlatformA))
+    EVT_EXEC(N(EVS_UpdateBasicPlatform_Silent))
     EVT_SET(LVar0, EVT_PTR(N(BasicPlatform3)))
-    EVT_EXEC(N(EVS_UpdateBasicPlatformA))
+    EVT_EXEC(N(EVS_UpdateBasicPlatform_Silent))
     EVT_SET(LVar0, EVT_PTR(N(BasicPlatform4)))
-    EVT_EXEC(N(EVS_UpdateBasicPlatformB))
+    EVT_EXEC(N(EVS_UpdateBasicPlatform_Audible))
     EVT_SET(LVar0, EVT_PTR(N(BasicPlatform5)))
-    EVT_EXEC(N(EVS_UpdateBasicPlatformA))
+    EVT_EXEC(N(EVS_UpdateBasicPlatform_Silent))
     EVT_THREAD
         EVT_CALL(N(UpdatePlatformShadows))
     EVT_END_THREAD

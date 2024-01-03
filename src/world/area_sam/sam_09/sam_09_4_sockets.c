@@ -81,7 +81,7 @@ API_CALLABLE(N(CreateConsumableItemList)) {
 }
 
 EvtScript N(EVS_PlaceItemInSocket) = {
-    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_1DD, 0)
+    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_SAM_RAISE_BARRIER, 0)
     EVT_CALL(MakeLerp, 0, 130, 30 * DT, EASING_LINEAR)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
@@ -96,7 +96,7 @@ EvtScript N(EVS_PlaceItemInSocket) = {
 };
 
 EvtScript N(EVS_TakeItemFromSocket) = {
-    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_1DE, 0)
+    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_SAM_LOWER_BARRIER, 0)
     EVT_CALL(MakeLerp, 130, 0, 30 * DT, EASING_CUBIC_IN)
     EVT_LABEL(0)
     EVT_CALL(UpdateLerp)
@@ -106,7 +106,7 @@ EvtScript N(EVS_TakeItemFromSocket) = {
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(0)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_1EA, 0)
+    EVT_CALL(PlaySoundAtCollider, LVar4, SOUND_SAM_BARRIER_THUD, 0)
     EVT_CALL(GetModelCenter, LVar2)
     EVT_SET(LVar3, LVar2)
     EVT_SET(LVar4, LVar2)
@@ -158,7 +158,7 @@ EvtScript N(EVS_UseSocket1) = {
             EVT_CALL(RemoveItemEntity, MV_Socket1_ItemEntityID)
             EVT_SET(MV_Socket1_ItemID, -1)
             EVT_CALL(N(SerializeItemIDs))
-            EVT_CALL(ShowGotItem, LVar0, FALSE, 0x40)
+            EVT_CALL(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
             EVT_SET(LVar2, MODEL_m1_kabe)
             EVT_SET(LVar4, COLLIDER_o55)
             EVT_EXEC_WAIT(N(EVS_TakeItemFromSocket))
@@ -207,7 +207,7 @@ EvtScript N(EVS_UseSocket2) = {
             EVT_CALL(RemoveItemEntity, MV_Socket2_ItemEntityID)
             EVT_SET(MV_Socket2_ItemID, -1)
             EVT_CALL(N(SerializeItemIDs))
-            EVT_CALL(ShowGotItem, LVar0, FALSE, 0x40)
+            EVT_CALL(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
             EVT_SET(LVar2, MODEL_m2_kabe)
             EVT_SET(LVar4, COLLIDER_o54)
             EVT_EXEC_WAIT(N(EVS_TakeItemFromSocket))
@@ -256,7 +256,7 @@ EvtScript N(EVS_UseSocket3) = {
             EVT_CALL(RemoveItemEntity, MV_Socket3_ItemEntityID)
             EVT_SET(MV_Socket3_ItemID, -1)
             EVT_CALL(N(SerializeItemIDs))
-            EVT_CALL(ShowGotItem, LVar0, FALSE, 0x40)
+            EVT_CALL(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
             EVT_SET(LVar2, MODEL_m3_kabe)
             EVT_SET(LVar4, COLLIDER_o53)
             EVT_EXEC_WAIT(N(EVS_TakeItemFromSocket))

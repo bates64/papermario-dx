@@ -1,5 +1,6 @@
 #include "obk_09.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 typedef struct ImprisonedCard {
     /* 0x00 */ Vec3f pos;
@@ -19,7 +20,7 @@ API_CALLABLE(N(ImprisonedCardSetup)) {
     card->rot.y = 0.0f;
     card->effect = fx_spirit_card(1, card->pos.x, card->pos.y, card->pos.z, 1.0f, 0);
     card->effect->data.spiritCard->chapter = 2;
-    card->shadowID = create_shadow_type(0, card->pos.x, card->pos.y, card->pos.z);
+    card->shadowID = create_shadow_type(SHADOW_VARYING_CIRCLE, card->pos.x, card->pos.y, card->pos.z);
     return ApiStatus_DONE2;
 }
 
@@ -37,13 +38,13 @@ API_CALLABLE(N(ImprisonedCardUpdate)) {
     effect->data.spiritCard->pos.x = card->pos.x;
     effect->data.spiritCard->pos.y = card->pos.y;
     effect->data.spiritCard->pos.z = card->pos.z;
-    
+
     card->rot.y = clamp_angle(card->rot.y + 6.6f);
     effect->data.spiritCard->yaw = card->rot.y;
 
-    shadow->position.x = card->pos.x;
-    shadow->position.y = card->pos.y - 40.0f;
-    shadow->position.z = card->pos.z;
+    shadow->pos.x = card->pos.x;
+    shadow->pos.y = card->pos.y - 40.0f;
+    shadow->pos.z = card->pos.z;
     return ApiStatus_BLOCK;
 }
 
@@ -108,7 +109,7 @@ EvtScript N(EVS_NpcInit_Skolar) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldSkolar_IdleSad)
     EVT_CALL(SetNpcPos, NPC_SELF, 0, NPC_DISPOSE_POS_Y, -100)
     EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, 170, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, 170, 0, 0, 0)
     EVT_IF_GE(GB_StoryProgress, STORY_CH3_BOW_JOINED_PARTY)
         EVT_CALL(RemoveNpc, NPC_SELF)
     EVT_END_IF
@@ -137,7 +138,7 @@ NpcData N(NpcData_Default)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bow),
         .settings = &N(NpcSettings_Dummy),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOW_ANIMS,
     },
@@ -147,7 +148,7 @@ NpcData N(NpcData_Default)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bootler),
         .settings = &N(NpcSettings_Dummy),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOOTLER_ANIMS,
         .tattle = MSG_NpcTattle_Bootler,
@@ -158,7 +159,7 @@ NpcData N(NpcData_Default)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Skolar),
         .settings = &N(NpcSettings_Dummy),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = SKOLAR_ANIMS,
     },
@@ -171,7 +172,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bow_Epilogue),
         .settings = &N(NpcSettings_Dummy),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOW_ANIMS,
     },
@@ -181,7 +182,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bootler_Epilogue),
         .settings = &N(NpcSettings_Dummy),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOOTLER_ANIMS,
         .tattle = MSG_NpcTattle_Bootler,

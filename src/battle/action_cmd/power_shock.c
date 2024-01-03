@@ -88,9 +88,9 @@ API_CALLABLE(N(start)) {
     actionCommandStatus->barFillLevel = 0;
     actionCommandStatus->barFillWidth = 0;
     battleStatus->actionSuccess = 0;
-    battleStatus->unk_86 = 0;
+    battleStatus->actionResult = ACTION_RESULT_FAIL;
     actionCommandStatus->state = 10;
-    battleStatus->flags1 &= ~BS_FLAGS1_8000;
+    battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
     func_80269118();
     return ApiStatus_DONE2;
 }
@@ -160,7 +160,7 @@ void N(update)(void) {
             actionCommandStatus->unk_5C = 0;
             D_802A9B00 = TRUE;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
             // fallthrough
         case 11:
@@ -181,7 +181,7 @@ void N(update)(void) {
                 }
             }
 
-            if (battleStatus->currentButtonsPressed & BUTTON_A) {
+            if (battleStatus->curButtonsPressed & BUTTON_A) {
                 phi_a1 = actionCommandStatus->targetWeakness;
                 if (phi_a1 != 0) {
                     s32 a = battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty];
@@ -207,8 +207,8 @@ void N(update)(void) {
                 hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, battleStatus->actionResult * 12);
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
 
             if (actionCommandStatus->frameCounter == 0) {
                 phi_a1 = actionCommandStatus->barFillLevel;
@@ -216,27 +216,27 @@ void N(update)(void) {
                     phi_a1 = 0;
                 }
 
-                battleStatus->actionResult = phi_a1 / 100;
+                battleStatus->actionQuality = phi_a1 / 100;
                 if (phi_a1 == 0) {
                     battleStatus->actionSuccess = -1;
-                } else if (battleStatus->actionResult >= actionCommandStatus->thresholdLevel) {
+                } else if (battleStatus->actionQuality >= actionCommandStatus->thresholdLevel) {
                     battleStatus->actionSuccess = 1;
                 } else {
                     battleStatus->actionSuccess = 0;
                 }
 
                 cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
-                if (cutoff / 2 < battleStatus->actionResult) {
-                    battleStatus->unk_86 = 1;
+                if (cutoff / 2 < battleStatus->actionQuality) {
+                    battleStatus->actionResult = ACTION_RESULT_SUCCESS;
                 } else {
-                    battleStatus->unk_86 = -4;
+                    battleStatus->actionResult = ACTION_RESULT_MINUS_4;
                 }
 
                 if (battleStatus->actionSuccess == 1) {
                     func_80269160();
                 }
 
-                sfx_stop_sound(SOUND_80000041);
+                sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
                 btl_set_popup_duration(0);
                 actionCommandStatus->frameCounter = 5;
                 actionCommandStatus->state = 12;

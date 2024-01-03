@@ -1,11 +1,12 @@
 #include "omo_12.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/BigLanternGhost.inc.c"
 
 NpcSettings N(NpcSettings_Watt) = {
     .height = 23,
     .radius = 22,
-    .level = 14,
+    .level = ACTOR_LEVEL_SHY_GUY,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -15,8 +16,8 @@ NpcSettings N(NpcSettings_Watt) = {
 
 #include "world/common/atomic/CreateDarkness.inc.c"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 API_CALLABLE(N(SetLightOriginAndPower)) {
     Bytecode* args = script->ptrReadPos;
@@ -25,15 +26,15 @@ API_CALLABLE(N(SetLightOriginAndPower)) {
     s32 z = evt_get_variable(script, *args++);
     s32 alpha = evt_get_variable(script, *args++);
 
-    set_screen_overlay_center_worldpos(1, 1, x, y, z);
-    set_screen_overlay_alpha(1, alpha);
-    set_screen_overlay_params_back(0xB, 255.0f);
+    set_screen_overlay_center_worldpos(SCREEN_LAYER_BACK, 1, x, y, z);
+    set_screen_overlay_alpha(SCREEN_LAYER_BACK, alpha);
+    set_screen_overlay_params_back(OVERLAY_WORLD_DARKNESS, 255.0f);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(SetLightOff)) {
-    set_screen_overlay_alpha(1, 0.0f);
-    set_screen_overlay_params_back(0xB, 0.0f);
+    set_screen_overlay_alpha(SCREEN_LAYER_BACK, 0.0f);
+    set_screen_overlay_params_back(OVERLAY_WORLD_DARKNESS, 0.0f);
     return ApiStatus_DONE2;
 }
 
@@ -192,7 +193,7 @@ BombTrigger N(BombPos_Lantern_Unused) = {
 
 EvtScript N(EVS_Scene_ReleaseWatt) = {
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
     EVT_CALL(SetCamProperties, CAM_DEFAULT, EVT_FLOAT(2.0 / DT), LVar0, LVar1, LVar2, EVT_FLOAT(450.0), EVT_FLOAT(15.0), EVT_FLOAT(-6.0))
     EVT_SET(LVarA, 0)
@@ -219,7 +220,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
                 EVT_END_IF
         EVT_END_SWITCH
     EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_1F5)
+    EVT_CALL(PlaySound, SOUND_OMO_LANTERN_BREAK)
     EVT_SET(AF_OMO_10, FALSE)
     EVT_LOOP(8)
         EVT_CALL(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, TRUE)
@@ -305,7 +306,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     EVT_CALL(func_802D2C14, 0)
     EVT_WAIT(20 * DT)
     EVT_CALL(SetNpcAnimation, NPC_Watt, ANIM_WorldWatt_Idle)
-    EVT_CALL(PlaySoundAtNpc, NPC_Watt, SOUND_262, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Watt, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Watt, EMOTE_EXCLAMATION, 0, 30, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(40 * DT)
     EVT_CALL(SpeakToPlayer, NPC_Watt, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0, MSG_CH4_0059)
@@ -397,7 +398,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     EVT_CALL(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0, MSG_CH4_005B)
     EVT_CALL(EnablePartnerAI)
     EVT_EXEC(N(EVS_UseWattTutorial))
-    EVT_CALL(N(UnsetCamera0Flag1000))
+    EVT_CALL(N(EnableCameraLeadingPlayer))
     EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(5.0 / DT))
     EVT_SET(GB_StoryProgress, STORY_CH4_WATT_JOINED_PARTY)
     EVT_CALL(DisablePlayerInput, FALSE)
@@ -628,7 +629,7 @@ NpcData N(NpcData_BigLanternGhost) = {
     .initVarCount = 1,
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_BigLanternGhost),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
     .extraAnimations = N(ExtraAnims_LanternGhost),
@@ -689,7 +690,7 @@ NpcData N(NpcData_LanternBottom) = {
     .initVarCount = 1,
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_Watt),
-    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_100000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT,
+    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
     .extraAnimations = N(ExtraAnims_LanternGhost),

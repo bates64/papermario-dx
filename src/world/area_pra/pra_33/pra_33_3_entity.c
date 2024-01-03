@@ -3,7 +3,7 @@
 
 API_CALLABLE(N(CheckPlayerOnDais)) {
     script->varTable[10] = 0;
-    if (gCollisionStatus.currentFloor == COLLIDER_o1045) {
+    if (gCollisionStatus.curFloor == COLLIDER_o1045) {
         script->varTable[10] = 1;
     }
     if (gCollisionStatus.lastTouchedFloor == COLLIDER_o1045) {
@@ -13,8 +13,8 @@ API_CALLABLE(N(CheckPlayerOnDais)) {
 }
 
 API_CALLABLE(N(GetDaisRelativePlayerPos)) {
-    script->varTable[6] = dist2D(200.0f, 0.0f, gPlayerStatus.position.x, gPlayerStatus.position.z);
-    script->varTable[7] = atan2(200.0f, 0.0f, gPlayerStatus.position.x, gPlayerStatus.position.z);
+    script->varTable[6] = dist2D(200.0f, 0.0f, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
+    script->varTable[7] = atan2(200.0f, 0.0f, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
     script->varTable[7] = clamp_angle(script->varTable[7]);
     return ApiStatus_DONE2;
 }
@@ -23,8 +23,8 @@ API_CALLABLE(N(UpdateDaisPlayerPos)) {
     f32 sinTheta, cosTheta;
 
     sin_cos_deg(script->varTable[7], &sinTheta, &cosTheta);
-    gPlayerStatus.position.x = (script->varTable[6] * sinTheta) + 200.0f;
-    gPlayerStatus.position.z = (script->varTable[6] * -cosTheta) + 0.0f;
+    gPlayerStatus.pos.x = (script->varTable[6] * sinTheta) + 200.0f;
+    gPlayerStatus.pos.z = (script->varTable[6] * -cosTheta) + 0.0f;
     return ApiStatus_DONE2;
 }
 
@@ -39,7 +39,7 @@ EvtScript N(EVS_ActivateSwitch) = {
     EVT_ELSE
         EVT_SET(MV_WallFlipped, FALSE)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o1063, SOUND_2E, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o1063, SOUND_PRA_FLIP_WALL, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(CheckPlayerOnDais))
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o1063, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(N(GetDaisRelativePlayerPos))

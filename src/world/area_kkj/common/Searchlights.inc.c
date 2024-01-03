@@ -19,8 +19,8 @@ API_CALLABLE(N(UnkPhysicsFunc)) {
     s32 channel;
 
     add_vec2D_polar(&x, &z, r, npc->yaw);
-    xDist = dist2D(x, 0.0f, playerStatus->position.x, 0.0f);
-    zDist = dist2D(0.0f, z, 0.0f, playerStatus->position.z);
+    xDist = dist2D(x, 0.0f, playerStatus->pos.x, 0.0f);
+    zDist = dist2D(0.0f, z, 0.0f, playerStatus->pos.z);
 
     if (npc->yaw == 90.0 || npc->yaw == 270.0) {
         if (xDist <= inDist1 && zDist <= inDist2) {
@@ -41,12 +41,12 @@ API_CALLABLE(N(UnkPhysicsFunc)) {
         y = npc->pos.y;
         z = npc->pos.z;
         // required to match, has to be r
-        r = dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+        r = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
 
-        channel = COLLISION_IGNORE_ENTITIES | COLLISION_CHANNEL_20000 | COLLISION_CHANNEL_10000 | COLLISION_CHANNEL_8000;
+        channel = COLLISION_IGNORE_ENTITIES | COLLIDER_FLAG_IGNORE_NPC | COLLIDER_FLAG_IGNORE_PLAYER | COLLIDER_FLAG_IGNORE_SHELL;
         if (npc_test_move_taller_with_slipping(channel, &x, &y, &z, r,
-                    atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z),
-                    npc->collisionRadius, npc->collisionHeight))
+                    atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
+                    npc->collisionDiameter, npc->collisionHeight))
         {
             outVal = FALSE;
         }
@@ -59,10 +59,10 @@ void N(set_spotlight_pos_scale)(s32 modelID, f32 x, f32 y, f32 z, f32 scale) {
     Matrix4f mtxTemp;
     Model* model = get_model_from_list_index(get_model_list_index_from_tree_index(modelID));
 
-    guTranslateF(model->transformMatrix, x, y, z);
+    guTranslateF(model->userTransformMtx, x, y, z);
     guScaleF(mtxTemp, scale, 1.0f, scale);
-    guMtxCatF(mtxTemp, model->transformMatrix, model->transformMatrix);
-    model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+    guMtxCatF(mtxTemp, model->userTransformMtx, model->userTransformMtx);
+    model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
 }
 
 API_CALLABLE(N(UpdateSearchlight)) {
@@ -101,7 +101,7 @@ API_CALLABLE(N(UpdateSearchlight)) {
     z = npc->pos.z;
     add_vec2D_polar(&x, &z, radius, npc->yaw);
 
-    if (dist2D(x, z, playerStatus->position.x, playerStatus->position.z) <= offsetDist) {
+    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= offsetDist) {
         outVal |= 1;
     }
 
@@ -112,7 +112,7 @@ API_CALLABLE(N(UpdateSearchlight)) {
     z = npc->pos.z;
     add_vec2D_polar(&x, &z, extraRadius, npc->yaw);
 
-    if (dist2D(x, z, playerStatus->position.x, playerStatus->position.z) <= extraOffsetDist) {
+    if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= extraOffsetDist) {
         outVal |= 0x10;
     }
 
@@ -122,10 +122,10 @@ API_CALLABLE(N(UpdateSearchlight)) {
         y = npc->pos.y;
         z = npc->pos.z;
 
-        dist = dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+        dist = dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
         if (npc_test_move_taller_with_slipping(0, &x, &y, &z, dist,
-                atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z),
-                npc->collisionRadius, npc->collisionHeight)) {
+                atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
+                npc->collisionDiameter, npc->collisionHeight)) {
             outVal = 0;
         }
     }

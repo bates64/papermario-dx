@@ -287,7 +287,7 @@ void N(build_gfx_floor)(void) {
     f32 x, y, z;
 
     N(BuildGfxCallCount)++;
-    guTranslateF(sp10, gPlayerStatus.position.x, 0.0f, gPlayerStatus.position.z);
+    guTranslateF(sp10, gPlayerStatus.pos.x, 0.0f, gPlayerStatus.pos.z);
 
     x = (sin_rad(N(BuildGfxCallCount) / 50.0f) * 0.5) + 0.5;
     y = SQ(cos_rad(N(BuildGfxCallCount) / 50.0f)) + 0.1;
@@ -296,7 +296,7 @@ void N(build_gfx_floor)(void) {
     guScaleF(sp50, x, y, z);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
-    mdl_project_tex_coords(1, N(shockwave_gfx), sp10, NULL);
+    mdl_project_tex_coords(MODEL_o152, N(shockwave_gfx), sp10, NULL);
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
@@ -315,7 +315,7 @@ s32 N(BetaPanelData)[] = {
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_TESTING)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)
     EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNPCs)))

@@ -1,4 +1,5 @@
 #include "kkj_16.h"
+#include "sprite/player.h"
 
 #define NAME_SUFFIX _Early
 
@@ -12,7 +13,7 @@ EvtScript N(EVS_CapturePeach) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_SET_GROUP(EVT_GROUP_00)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_CALL(NpcFacePlayer, NPC_SELF, 0)
     EVT_WAIT(20)
@@ -30,7 +31,7 @@ EvtScript N(EVS_CapturePeach) = {
     EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_Peach_0175)
     EVT_CALL(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     EVT_WAIT(20)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kkj_14"), kkj_14_ENTRY_B, TRANSITION_13)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     EVT_WAIT(100)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_RETURN
@@ -152,7 +153,7 @@ EvtScript N(EVS_NpcInit_Koopatrol_02) = {
 };
 
 EvtScript N(EVS_NpcInit_Koopatrol_03) = {
-    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_8, FALSE)
+    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, FALSE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, TRUE)
     EVT_CALL(SetNpcPos, NPC_SELF, -250, 0, -15)
     EVT_CALL(BindNpcIdle, NPC_SELF, EVT_PTR(N(EVS_NpcIdle_Koopatrol_03)))
@@ -195,7 +196,7 @@ NpcData N(NpcData_Minions)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_HammerBros),
         .settings = &N(NpcSettings_HammerBros),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
         .extraAnimations = N(ExtraAnims_HammerBros),
@@ -206,7 +207,7 @@ NpcData N(NpcData_Minions)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_01),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),
@@ -217,7 +218,7 @@ NpcData N(NpcData_Minions)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_02),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),
@@ -228,7 +229,7 @@ NpcData N(NpcData_Minions)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_03),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),
@@ -239,7 +240,7 @@ NpcData N(NpcData_Minions)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_04),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),

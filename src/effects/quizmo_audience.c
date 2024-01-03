@@ -86,13 +86,13 @@ EffectInstance* quizmo_audience_main(s32 arg0, f32 posX, f32 posY, f32 posZ) {
     effectBp.update = quizmo_audience_update;
     effectBp.renderWorld = quizmo_audience_render;
     effectBp.unk_00 = 0;
-    effectBp.unk_14 = 0;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_QUIZMO_AUDIENCE;
 
-    effect = shim_create_effect_instance(&effectBp);
+    effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
 
-    data = effect->data.quizmoAudience = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.quizmoAudience = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(data != NULL);
 
     data->timeLeft = 100;
@@ -120,8 +120,8 @@ void quizmo_audience_update(EffectInstance* effect) {
     s32 posIdx;
     s32 i;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->timeLeft = 30;
     }
 
@@ -131,7 +131,7 @@ void quizmo_audience_update(EffectInstance* effect) {
 
     data->lifeTime++;
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -142,11 +142,11 @@ void quizmo_audience_update(EffectInstance* effect) {
     for (i = 0; i < MAX_QUIZMO_AUDIENCE; i++) {
         switch (data->compState[i]) {
             case 0:
-                if (shim_rand_int(10) == 10) {
+                if (rand_int(10) == 10) {
                     data->compState[i] = 1;
-                    data->compType[i] = shim_rand_int(1);
+                    data->compType[i] = rand_int(1);
                     data->compPosIdx[i] = 0;
-                    data->compMoveMagnitude[i] = (shim_rand_int(50) * 0.01) + 0.5;
+                    data->compMoveMagnitude[i] = (rand_int(50) * 0.01) + 0.5;
                 }
                 break;
             case 1:
@@ -170,10 +170,10 @@ void quizmo_audience_render(EffectInstance* effect) {
 
     renderTask.appendGfx = quizmo_audience_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -190,10 +190,10 @@ void quizmo_audience_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
-    shim_guRotateF(sp58, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
+    guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(sp58, sp18, sp18);
+    guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -201,8 +201,8 @@ void quizmo_audience_appendGfx(void* effect) {
     gSPDisplayList(gMainGfxPos++, D_09003110_3AA8B0);
 
     for (i = 0; i < MAX_QUIZMO_AUDIENCE; i++) {
-        shim_guTranslateF(sp18, data->compX[i], data->compY[i], 0.0f);
-        shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+        guTranslateF(sp18, data->compX[i], data->compY[i], 0.0f);
+        guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
                   G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);

@@ -21,7 +21,7 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
     s32 outVal = FALSE;
     f32 xDiff, zDiff;
 
-    if (playerStatus->currentSpeed >= 4.0f) {
+    if (playerStatus->curSpeed >= 4.0f) {
         script->varTable[2]++;
         if (script->varTable[2] > 2) {
             script->varTable[2] = 2;
@@ -31,8 +31,8 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
     }
 
     do {
-        xDiff = fuzzyNpc->pos.x - playerStatus->position.x;
-        zDiff = fuzzyNpc->pos.z - playerStatus->position.z;
+        xDiff = fuzzyNpc->pos.x - playerStatus->pos.x;
+        zDiff = fuzzyNpc->pos.z - playerStatus->pos.z;
         if ((SQ(xDiff) + SQ(zDiff) < SQ(80.0f)) && (script->varTable[2] >= 2)) {
             do {
                 outVal = TRUE;
@@ -53,7 +53,7 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
 API_CALLABLE(N(IsPlayerWalking)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (playerStatus->currentSpeed >= 4.0f) {
+    if (playerStatus->curSpeed >= 4.0f) {
         script->varTable[2]++;
         if (script->varTable[2] > 2) {
             script->varTable[2] = 2;
@@ -66,7 +66,7 @@ API_CALLABLE(N(IsPlayerWalking)) {
     if (script->varTable[2] >= 2) {
         script->varTable[0] = FALSE;
     }
-    if (playerStatus->currentSpeed == 0.0f) {
+    if (playerStatus->curSpeed == 0.0f) {
         script->varTable[0] = FALSE;
     }
 
@@ -93,8 +93,8 @@ API_CALLABLE(N(ChooseSafeJumpLocation)) {
         xDiff = x - -150.0f;
         zDiff = z - 250.0f;
         if (SQ(xDiff) + SQ(zDiff) < SQ(150.0f)) {
-            xDiff = x - playerStatus->position.x;
-            zDiff = z - playerStatus->position.z;
+            xDiff = x - playerStatus->pos.x;
+            zDiff = z - playerStatus->pos.z;
             if (SQ(xDiff) + SQ(zDiff) > SQ(80.0f)) {
                 xDiff = x - koopaNpc->pos.x;
                 zDiff = z - koopaNpc->pos.z;
@@ -140,8 +140,8 @@ API_CALLABLE(N(ChooseLocationNotNearPlayer)) {
         xDiff = x - -150.0f;
         zDiff = z - 250.0f;
         if (SQ(xDiff) + SQ(zDiff) < SQ(150.0f)) {
-            xDiff = x - playerStatus->position.x;
-            zDiff = z - playerStatus->position.z;
+            xDiff = x - playerStatus->pos.x;
+            zDiff = z - playerStatus->pos.z;
             if (SQ(xDiff) + SQ(zDiff) > SQ(80.0f)) {
                 break;
             }
@@ -228,7 +228,7 @@ EvtScript N(EVS_FuzzyThief_AvoidCapture) = {
             EVT_LABEL(1)
             EVT_CALL(N(ChooseSafeJumpLocation), LVarF, LVarE)
             EVT_CALL(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVarA, 0, LVarB, LVarC)
             EVT_CALL(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             EVT_CALL(N(IsPlayerOrKoopaNearby), LVarF, LVarE)
@@ -341,27 +341,27 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
             EVT_CALL(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
             EVT_CALL(GetNpcPos, NPC_KoopaShell_01, LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcAnimation, NPC_FuzzyThief, ANIM_Fuzzy_Hurt)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 25)
             EVT_ADD(LVar0, 40)
             EVT_ADD(LVar2, -40)
             EVT_CALL(SetNpcAnimation, NPC_FuzzyThief, ANIM_Fuzzy_Hurt)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 15)
             EVT_ADD(LVar0, 30)
             EVT_CALL(SetNpcAnimation, NPC_FuzzyThief, ANIM_Fuzzy_Anim09)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 13)
             EVT_ADD(LVar0, 20)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 11)
             EVT_ADD(LVar0, 10)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 9)
             EVT_ADD(LVar0, 160)
             EVT_CALL(SetNpcAnimation, NPC_FuzzyThief, ANIM_Fuzzy_Run)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_331, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_A, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_FuzzyThief, LVar0, 0, LVar2, 15)
             EVT_CALL(SetNpcFlagBits, NPC_FuzzyThief, NPC_FLAG_GRAVITY, FALSE)
             EVT_CALL(SetNpcPos, NPC_FuzzyThief, NPC_DISPOSE_LOCATION)

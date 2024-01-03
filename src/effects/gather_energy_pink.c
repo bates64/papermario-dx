@@ -29,14 +29,14 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
     bp.init = gather_energy_pink_init;
     bp.update = gather_energy_pink_update;
     bp.renderWorld = gather_energy_pink_render;
-    bp.unk_14 = 0;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_GATHER_ENERGY_PINK;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.gatherEnergyPink = shim_general_heap_malloc(sizeof(*data));
+    data = effect->data.gatherEnergyPink = general_heap_malloc(sizeof(*data));
     ASSERT (data != NULL);
-    
+
     data->unk_00 = type;
     data->unk_28 = duration;
     data->unk_2C = 0;
@@ -58,12 +58,12 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
 
     data->unk_1C = 10.0f;
 
-    data->unk_58 = func_E0200000(360);
+    data->unk_58 = effect_rand_int(360);
     data->unk_5C = 4.0f;
 
     data->unk_50 = 0;
     data->unk_54 = 0;
-    
+
     if (type == 1) {
         data->unk_3C = 96;
         data->unk_20 = scale;
@@ -92,7 +92,7 @@ void gather_energy_pink_update(EffectInstance* effect) {
     part->unk_2C++;
 
     if (part->unk_28 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -112,12 +112,12 @@ void gather_energy_pink_update(EffectInstance* effect) {
     }
 
     if (part->unk_00 == 1) {
-        part->unk_1C += (part->unk_20 + shim_sin_deg(unk_28 * 10) * 0.1 * part->unk_20 - part->unk_1C) * 0.4;
+        part->unk_1C += (part->unk_20 + sin_deg(unk_28 * 10) * 0.1 * part->unk_20 - part->unk_1C) * 0.4;
     } else {
-        part->unk_1C += (part->unk_20 + shim_sin_deg(unk_28 * 10) * 0.1 * part->unk_20 - part->unk_1C) * 0.3;
+        part->unk_1C += (part->unk_20 + sin_deg(unk_28 * 10) * 0.1 * part->unk_20 - part->unk_1C) * 0.3;
     }
 
-    shim_transform_point(&gCameras[gCurrentCameraID].perspectiveMatrix[0], part->posA.x, part->posA.y, part->posA.z, 1.0f, &sp28, &sp2C, &sp30, &sp34);
+    transform_point(&gCameras[gCurrentCameraID].perspectiveMatrix[0], part->posA.x, part->posA.y, part->posA.z, 1.0f, &sp28, &sp2C, &sp30, &sp34);
 
     sp34 = 1.0f / sp34;
     sp28 *= sp34;
@@ -150,10 +150,10 @@ void gather_energy_pink_render(EffectInstance* effect) {
 
     renderTask.appendGfx = gather_energy_pink_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -175,25 +175,25 @@ void gather_energy_pink_appendGfx(void* effect) {
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
     gSPDisplayList(gMainGfxPos++, dlist);
 
-    shim_guTranslateF(sp20, part->posB.x, part->posB.y, part->posB.z);
-    shim_guScaleF(sp60, part->unk_1C, part->unk_1C, 1.0f);
-    shim_guMtxCatF(sp60, sp20, sp20);
-    shim_guPerspectiveF(sp60, &perspNorm, unk_00 == 1 ? 130.0f : 30.0f, (f32) camera->viewportW / camera->viewportH, 4.0f, 16384.0f, 1.0f);
-    shim_guMtxCatF(sp60, sp20, sp20);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp20, part->posB.x, part->posB.y, part->posB.z);
+    guScaleF(sp60, part->unk_1C, part->unk_1C, 1.0f);
+    guMtxCatF(sp60, sp20, sp20);
+    guPerspectiveF(sp60, &perspNorm, unk_00 == 1 ? 130.0f : 30.0f, (f32) camera->viewportW / camera->viewportH, 4.0f, 16384.0f, 1.0f);
+    guMtxCatF(sp60, sp20, sp20);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     switch (unk_00) {
         case 1:
-            shim_guTranslateF(sp20, 0.0f, 0.0f, -70.0f);
+            guTranslateF(sp20, 0.0f, 0.0f, -70.0f);
             break;
         case 0:
-            shim_guTranslateF(sp20, 0.0f, 0.0f, -80.0f);
+            guTranslateF(sp20, 0.0f, 0.0f, -80.0f);
             break;
     }
 
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

@@ -1,5 +1,6 @@
 #include "obk_09.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
@@ -44,12 +45,12 @@ EvtScript N(EVS_Scene_MeetBow) = {
     EVT_CALL(SetNpcPos, NPC_Bootler, 30, 70, -75)
     EVT_CALL(SetNpcYaw, NPC_Bow, 270)
     EVT_CALL(SetNpcYaw, NPC_Bootler, 270)
-    EVT_CALL(PlaySoundAtNpc, NPC_Bow, SOUND_BOO_VANISH, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bow, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
     EVT_SETF(LVar0, EVT_FLOAT(0.0))
     EVT_LOOP(20 * DT)
         EVT_ADDF(LVar0, EVT_FLOAT(240.0 / (s32)(20 * DT)))
-        EVT_CALL(func_802CFD30, NPC_Bow, FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Bootler, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Bow, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(40 * DT)
@@ -102,7 +103,7 @@ EvtScript N(EVS_Scene_MeetBow) = {
     EVT_CALL(EnableGroup, MODEL_ori, TRUE)
     EVT_CALL(SetNpcPos, NPC_Skolar, 1, 650, 80)
     EVT_CALL(EnableNpcShadow, NPC_Skolar, FALSE)
-    EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_8000000F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_LOOP_OBK_LOWER_CHAIN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, -280, -480, 100 * DT, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -114,8 +115,8 @@ EvtScript N(EVS_Scene_MeetBow) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_8000000F)
-    EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_9B, SOUND_SPACE_MODE_0)
+    EVT_CALL(StopSound, SOUND_LOOP_OBK_LOWER_CHAIN)
+    EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_OBK_CAGE_SLAM, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 15, EVT_FLOAT(0.2))
     EVT_WAIT(40 * DT)
     EVT_CALL(SetCamType, CAM_DEFAULT, 4, TRUE)
@@ -138,7 +139,7 @@ EvtScript N(EVS_Scene_MeetBow) = {
         EVT_WAIT(30 * DT)
         EVT_CALL(SetNpcPos, NPC_Skolar, 1, 620, 80)
         EVT_CALL(EnableNpcShadow, NPC_Skolar, FALSE)
-        EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_8000000F, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_LOOP_OBK_LOWER_CHAIN, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, -480, -280, 100 * DT, EASING_QUADRATIC_IN)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -150,7 +151,7 @@ EvtScript N(EVS_Scene_MeetBow) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(StopSound, SOUND_8000000F)
+        EVT_CALL(StopSound, SOUND_LOOP_OBK_LOWER_CHAIN)
         EVT_CALL(EnableGroup, MODEL_ori, FALSE)
     EVT_END_THREAD
     EVT_CALL(SpeakToPlayer, NPC_Bow, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_004D)

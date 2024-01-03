@@ -23,8 +23,8 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
         // base y-offset goes from 0-5 based on radial distance to player,
         // with 0 at the closest and 5 when distance squared > 1000.
         // this creates the depression of the tongue where the player is standing.
-        dx = vd->ob[0] - player->position.x;
-        dz = vd->ob[2] - player->position.z;
+        dx = vd->ob[0] - player->pos.x;
+        dz = vd->ob[2] - player->pos.z;
         offset = ((dx * dx) + (dz * dz)) / 100;
         if (offset > 10) {
           offset = 10;
@@ -107,7 +107,7 @@ EvtScript N(EVS_StartTongueWiggle) = {
     EVT_CALL(EnableModel, TONGUE_COPY_MODEL_ID, FALSE)
     EVT_EXEC(N(EVS_WiggleTongue))
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_1, MODEL_sita, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(make_tongue_gfx)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(make_tongue_gfx)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_sita, CUSTOM_GFX_1, -1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_RETURN

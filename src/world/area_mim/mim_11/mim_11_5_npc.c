@@ -1,33 +1,33 @@
 #include "mim_11.h"
 
-void increment_max_SP(void);
+void increment_max_star_power(void);
 
 NpcSettings N(NpcSettings_Bootler) = {
     .height = 24,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 NpcSettings N(NpcSettings_Skolar) = {
     .height = 26,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 NpcSettings N(NpcSettings_Unused1) = {
     .height = 20,
     .radius = 20,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 NpcSettings N(NpcSettings_Unused2) = {
     .height = 22,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 API_CALLABLE(N(IncreaseMaxSP)) {
-    increment_max_SP();
+    increment_max_star_power();
     return ApiStatus_DONE2;
 }
 
@@ -66,7 +66,7 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     EVT_SWITCH(GB_StoryProgress)
         EVT_CASE_LT(STORY_CH3_OPENED_BOOS_MANSION_GATE)
             EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, 0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, 0, 0, 0, 0)
         EVT_CASE_DEFAULT
             EVT_CALL(RemoveNpc, NPC_SELF)
     EVT_END_SWITCH
@@ -81,7 +81,7 @@ NpcData N(NpcData_Bootler)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bootler),
         .settings = &N(NpcSettings_Bootler),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_Bootler_Idle,
@@ -108,7 +108,7 @@ NpcData N(NpcData_Bootler)[] = {
         .yaw = 135,
         .init = &N(EVS_NpcInit_Skolar),
         .settings = &N(NpcSettings_Skolar),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_WorldSkolar_Idle,

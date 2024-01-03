@@ -11,7 +11,7 @@ EvtScript N(EVS_Scene_JumpScareBoo) = {
         EVT_SUB(LVar3, 10)
         EVT_PLAY_EFFECT(EFFECT_RADIAL_SHIMMER, 0, LVar3, LVar4, LVar5, EVT_FLOAT(2.8), 50)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtNpc, NPC_JumpScareBoo, SOUND_2094, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_JumpScareBoo, SOUND_JUMP_SCARE, SOUND_SPACE_DEFAULT)
     EVT_SUB(LVar4, 12)
     EVT_CALL(MakeLerp, 10, 450, 8 * DT, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
@@ -32,7 +32,7 @@ EvtScript N(EVS_Scene_JumpScareBoo) = {
     EVT_SETF(LVar0, EVT_FLOAT(240.0))
     EVT_LOOP(20 * DT)
         EVT_SUBF(LVar0, EVT_FLOAT(240.0 / (s32)(20 * DT)))
-        EVT_CALL(func_802CFD30, NPC_JumpScareBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_JumpScareBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(RemoveNpc, NPC_JumpScareBoo)

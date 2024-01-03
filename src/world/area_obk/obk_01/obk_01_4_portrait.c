@@ -1,5 +1,6 @@
 #include "obk_01.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SetPortraitItemAlpha)) {
     ItemEntity* item = get_item_entity(script->varTable[0]);
@@ -104,7 +105,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
             EVT_WAIT(1)
             EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(1.0))
             EVT_CALL(PlayerJump, 812, -170, -2, 20 * DT)
-            EVT_CALL(PlaySoundAtPlayer, SOUND_D9, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_IN, SOUND_SPACE_DEFAULT)
             EVT_WAIT(10 * DT)
             EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 812, 0, 28)
             EVT_CALL(SetPanTarget, CAM_DEFAULT, 812, 0, 28)
@@ -114,7 +115,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
             EVT_WAIT(10 * DT)
             EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Jump)
             EVT_WAIT(1)
-            EVT_CALL(PlaySoundAtPlayer, SOUND_DA, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_OUT, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetPlayerPos, 812, 61, -2)
             EVT_CALL(PlayerJump, 812, 0, 28, 8 * DT)
             EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
@@ -147,7 +148,7 @@ EvtScript N(EVS_Interact_UpperPortrait) = {
     EVT_WAIT(1)
     EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(1.0))
     EVT_CALL(PlayerJump, 812, 40, -2, 20)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_D9, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_IN, SOUND_SPACE_DEFAULT)
     EVT_WAIT(10 * DT)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 812, -210, 28)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 812, -210, 28)
@@ -157,7 +158,7 @@ EvtScript N(EVS_Interact_UpperPortrait) = {
     EVT_WAIT(10 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Jump)
     EVT_WAIT(1)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_DA, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_TRANSPORTER_OUT, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerPos, 812, -146, -2)
     EVT_CALL(PlayerJump, 812, -210, 28, 8 * DT)
     EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)

@@ -74,13 +74,13 @@
 #define spawn_surface_effects dead_spawn_surface_effects
 #define get_item_entity dead_get_item_entity
 #define gOverrideFlags dead_gOverrideFlags
-#define set_message_msg dead_set_message_msg
+#define set_message_text_var dead_set_message_text_var
 #define gPlayerData dead_gPlayerData
 #define gPartnerPopupProperties dead_gPartnerPopupProperties
-#define increment_status_menu_disabled dead_increment_status_menu_disabled
-#define decrement_status_menu_disabled dead_decrement_status_menu_disabled
-#define sync_status_menu dead_sync_status_menu
-#define set_max_SP dead_set_max_SP
+#define increment_status_bar_disabled dead_increment_status_bar_disabled
+#define decrement_status_bar_disabled dead_decrement_status_bar_disabled
+#define sync_status_bar dead_sync_status_bar
+#define set_max_star_power dead_set_max_star_power
 #define get_current_map_settings dead_get_current_map_settings
 #define gGameStatusPtr dead_gGameStatusPtr
 #define guTranslateF dead_guTranslateF
@@ -252,7 +252,7 @@
 #define AssignPanelFlag dead_AssignPanelFlag
 #define Entity_HiddenPanel dead_Entity_HiddenPanel
 #define ShakeCam dead_ShakeCam
-#define func_802D62E4 dead_func_802D62E4
+#define StopTrackingSoundPos dead_StopTrackingSoundPos
 #define IsStartingConversation dead_IsStartingConversation
 #define ModifyGlobalOverrideFlags dead_ModifyGlobalOverrideFlags
 #define FindKeyItem dead_FindKeyItem
@@ -275,8 +275,8 @@
 #define GetSelfVar dead_GetSelfVar
 #define GetPlayerTargetYaw dead_GetPlayerTargetYaw
 #define HidePlayerShadow dead_HidePlayerShadow
-#define func_802D286C dead_func_802D286C
-#define func_802D2520 dead_func_802D2520
+#define SetPlayerImgFXFlags dead_SetPlayerImgFXFlags
+#define UpdatePlayerImgFX dead_UpdatePlayerImgFX
 #define SetPlayerFlagBits dead_SetPlayerFlagBits
 #define func_80044238 dead_func_80044238
 #define SetCamType dead_SetCamType
@@ -307,7 +307,7 @@
 #define GetNpcYaw dead_GetNpcYaw
 #define PlayAmbientSounds dead_PlayAmbientSounds
 #define SetTexPanner dead_SetTexPanner
-#define func_802D7B10 dead_func_802D7B10
+#define DismissEffect dead_DismissEffect
 #define Entity_Chest dead_Entity_Chest
 #define snd_ambient_mute dead_snd_ambient_mute
 #define GetPlayerAnimation dead_GetPlayerAnimation
@@ -322,7 +322,7 @@
 #define GetSelfAnimationFromTable dead_GetSelfAnimationFromTable
 #define EVS_NpcHitRecoil dead_EVS_NpcHitRecoil
 #define SelfEnemyOverrideSyncPos dead_SelfEnemyOverrideSyncPos
-#define func_802CFD30 dead_func_802CFD30
+#define SetNpcImgFXParams dead_SetNpcImgFXParams
 #define SetGroupVisibility dead_SetGroupVisibility
 #define Entity_HeartBlock dead_Entity_HeartBlock
 #define GetCamDistance dead_GetCamDistance

@@ -66,7 +66,7 @@ API_CALLABLE(N(SetupChapter0)) {
 API_CALLABLE(N(SetupStarRodPaletteCycling)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
-    npc_set_palswap_mode_A(npc, 3);
+    npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS);
     npc_set_palswap_1(npc, 0, 1, 30, 10);
     npc_set_palswap_2(npc, 60, 20, 0, 0);
     return ApiStatus_DONE2;
@@ -249,7 +249,7 @@ NpcSettings N(NpcSettings_Goompa) = {
     .otherAI = &N(EVS_NpcAuxAI_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
     .onHit = &N(EVS_NpcHit_Goompa),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_100000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000,
 };
 
 NpcData N(NpcData_05)[] = {

@@ -20,7 +20,7 @@ void shiny_flare_update(EffectInstance* effect);
 void shiny_flare_render(EffectInstance* effect);
 void shiny_flare_appendGfx(void* effect);
 
-EffectInstance* shiny_flare_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+EffectInstance* shiny_flare_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectBlueprint effectBp;
     EffectInstance* effect;
     ShinyFlareFXData* data;
@@ -30,12 +30,12 @@ EffectInstance* shiny_flare_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     effectBp.update = shiny_flare_update;
     effectBp.renderWorld = shiny_flare_render;
     effectBp.unk_00 = 0;
-    effectBp.unk_14 = 0;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_SHINY_FLARE;
-    effect = shim_create_effect_instance(&effectBp);
+    effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
 
-    data = effect->data.shinyFlare = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.shinyFlare = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(data != NULL);
 
     data->unk_00 = arg0;
@@ -60,8 +60,8 @@ void shiny_flare_init(EffectInstance* effect) {
 void shiny_flare_update(EffectInstance *effect) {
     ShinyFlareFXData *data = effect->data.shinyFlare;
 
-    if (effect->flags & 16) {
-        effect->flags &= ~16;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->timeLeft = 10;
     }
     if (data->timeLeft < 1000) {
@@ -70,7 +70,7 @@ void shiny_flare_update(EffectInstance *effect) {
 
     data->lifeTime++;
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
     if (data->timeLeft < 4) {
@@ -87,10 +87,10 @@ void shiny_flare_render(EffectInstance* effect) {
 
     renderTask.appendGfx = shiny_flare_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 10;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -109,10 +109,10 @@ void shiny_flare_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(sp10, data->pos.x, data->pos.y, data->pos.z);
-    shim_guScaleF(sp50, scale, scale, scale);
-    shim_guMtxCatF(sp50, sp10, sp10);
-    shim_guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp10, data->pos.x, data->pos.y, data->pos.z);
+    guScaleF(sp50, scale, scale, scale);
+    guMtxCatF(sp50, sp10, sp10);
+    guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gMainGfxPos++, camera->unkMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);

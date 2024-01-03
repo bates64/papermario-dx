@@ -85,8 +85,8 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
         }
 
         if (speakerNpcID == NPC_PLAYER) {
-            get_screen_coords(gCurrentCameraID, playerStatus->position.x,
-                              playerStatus->position.y + playerStatus->colliderHeight, playerStatus->position.z,
+            get_screen_coords(gCurrentCameraID, playerStatus->pos.x,
+                              playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z,
                               &screenX, &screenY, &screenZ);
             script->functionTemp[3] = playerStatus->anim;
             speakerNpc = (Npc*) NPC_PLAYER;
@@ -95,7 +95,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
             speakerNpc = resolve_npc(script, speakerNpcID);
             get_screen_coords(gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z,
                               &screenX, &screenY, &screenZ);
-            script->functionTemp[3] = speakerNpc->currentAnim;
+            script->functionTemp[3] = speakerNpc->curAnim;
             script->varTable[15] = speakerNpc->yaw;
         }
 
@@ -110,7 +110,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
                 angle = atan2(speakerNpc->pos.x, speakerNpc->pos.z, targetNpc->pos.x, targetNpc->pos.z);
             } else {
                 listenerYaw = &playerStatus->targetYaw;
-                angle = atan2(speakerNpc->pos.x, speakerNpc->pos.z, playerStatus->position.x, playerStatus->position.z);
+                angle = atan2(speakerNpc->pos.x, speakerNpc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
             }
 
             reverseAngle = clamp_angle(angle + 180.0f);
@@ -145,15 +145,15 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
         get_screen_coords(gCurrentCameraID, speakerNpc->pos.x, speakerNpc->pos.y + speakerNpc->collisionHeight, speakerNpc->pos.z, &screenX, &screenY, &screenZ);
         animID = script->varTable[13];
         if (animID != -1) {
-            if (!(gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_80)) {
+            if (!(gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_SPEAKING)) {
                 animID = script->varTable[14];
             }
             set_npc_animation(speakerNpc, animID);
         }
     } else {
-        get_screen_coords(gCurrentCameraID, playerStatus->position.x, playerStatus->position.y + playerStatus->colliderHeight, playerStatus->position.z, &screenX, &screenY, &screenZ);
+        get_screen_coords(gCurrentCameraID, playerStatus->pos.x, playerStatus->pos.y + playerStatus->colliderHeight, playerStatus->pos.z, &screenX, &screenY, &screenZ);
         if (script->varTable[13] != -1) {
-            if (gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_80) {
+            if (gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_SPEAKING) {
                 playerStatus->anim = script->varTable[13];
             } else {
                 playerStatus->anim = script->varTable[14];
@@ -208,7 +208,7 @@ ApiStatus ShowMessageAtScreenPos(Evt* script, s32 isInitialCall) {
         return ApiStatus_BLOCK;
     }
 
-    script->varTable[0] = gCurrentPrintContext->currentOption;
+    script->varTable[0] = gCurrentPrintContext->curOption;
     return ApiStatus_DONE1;
 }
 
@@ -242,7 +242,7 @@ ApiStatus ShowMessageAtWorldPos(Evt* script, s32 isInitialCall) {
         return ApiStatus_BLOCK;
     }
 
-    script->varTable[0] = gCurrentPrintContext->currentOption;
+    script->varTable[0] = gCurrentPrintContext->curOption;
     return ApiStatus_DONE1;
 }
 
@@ -256,7 +256,7 @@ ApiStatus CloseMessage(Evt* script, s32 isInitialCall) {
     } else if (D_802DB264 != 1) {
         return ApiStatus_BLOCK;
     } else {
-        script->varTable[0] = gCurrentPrintContext->currentOption;
+        script->varTable[0] = gCurrentPrintContext->curOption;
         return ApiStatus_DONE1;
     }
 }
@@ -273,7 +273,7 @@ ApiStatus SwitchMessage(Evt* script, s32 isInitialCall) {
     } else if (D_802DB264 != 1) {
         return ApiStatus_BLOCK;
     } else {
-        script->varTable[0] = gCurrentPrintContext->currentOption;
+        script->varTable[0] = gCurrentPrintContext->curOption;
         return ApiStatus_DONE1;
     }
 }
@@ -290,7 +290,7 @@ ApiStatus ShowChoice(Evt* script, s32 isInitialCall) {
     }
 
     temp802DB268 = &D_802DB268;
-    script->varTable[0] = gCurrentPrintContext->currentOption = (*temp802DB268)->currentOption;
+    script->varTable[0] = gCurrentPrintContext->curOption = (*temp802DB268)->curOption;
 
     if ((*temp802DB268)->stateFlags & MSG_STATE_FLAG_40) {
         return ApiStatus_DONE1;
@@ -325,9 +325,9 @@ ApiStatus func_802D0C94(Evt* script, s32 initialCall) {
     Bytecode* args = script->ptrReadPos;
 
     if (evt_get_variable(script, *args++) == 0) {
-        gOverrideFlags |= GLOBAL_OVERRIDES_10;
+        gOverrideFlags |= GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
     } else {
-        gOverrideFlags &= ~GLOBAL_OVERRIDES_10;
+        gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
     }
     return ApiStatus_DONE2;
 }
@@ -337,7 +337,7 @@ ApiStatus SetMessageText(Evt* script, s32 isInitialCall) {
     s32 msg = evt_get_variable(script, *args++);
     s32 index = evt_get_variable(script, *args++);
 
-    set_message_msg(msg, index);
+    set_message_text_var(msg, index);
     return ApiStatus_DONE2;
 }
 
@@ -346,6 +346,6 @@ ApiStatus SetMessageValue(Evt* script, s32 initialCall) {
     s32 value = evt_get_variable(script, *ptrReadPos++);
     s32 index = evt_get_variable(script, *ptrReadPos);
 
-    set_message_value(value, index);
+    set_message_int_var(value, index);
     return ApiStatus_DONE2;
 }

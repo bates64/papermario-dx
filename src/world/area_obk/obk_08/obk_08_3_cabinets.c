@@ -1,5 +1,6 @@
 #include "obk_08.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/WorldKooper.h"
@@ -72,20 +73,20 @@ EvtScript N(EVS_CrushPlayer) = {
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Flail)
     EVT_WAIT(13)
     EVT_CALL(GetPlayerPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
-    EVT_CALL(N(KnockDownPlayerB), 1, 37)
-    EVT_CALL(N(KnockDownPlayerD), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    EVT_CALL(N(KnockdownCreate), SPR_Mario1, 37) //TODO hardcoded player raster ID
+    EVT_CALL(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     EVT_WAIT(1)
     EVT_CALL(SetPlayerPos, 0, 1000, 0) // unusual dispose location
     EVT_CALL(MakeLerp, 0, 90, 10, EASING_QUADRATIC_IN)
     EVT_LABEL(0)
     EVT_CALL(UpdateLerp)
-    EVT_CALL(N(KnockDownPlayerE), LVar0, 0, 0)
+    EVT_CALL(N(KnockdownSetRot), LVar0, 0, 0)
     EVT_WAIT(1)
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(0)
     EVT_END_IF
     EVT_ADD(MV_KnockdownPosY, 3)
-    EVT_CALL(N(KnockDownPlayerD), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    EVT_CALL(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     EVT_CALL(N(DamagePlayer1HP))
     EVT_RETURN
     EVT_END
@@ -96,16 +97,16 @@ EvtScript N(EVS_RestorePlayer) = {
     EVT_CALL(InterpPlayerYaw, 270, 0)
     EVT_WAIT(15)
     EVT_SUB(MV_KnockdownPosY, 3)
-    EVT_CALL(N(KnockDownPlayerD), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
+    EVT_CALL(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     EVT_CALL(MakeLerp, 90, 0, 15, EASING_QUADRATIC_OUT)
     EVT_LABEL(1)
     EVT_CALL(UpdateLerp)
-    EVT_CALL(N(KnockDownPlayerE), LVar0, 0, 0)
+    EVT_CALL(N(KnockdownSetRot), LVar0, 0, 0)
     EVT_WAIT(1)
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(1)
     EVT_END_IF
-    EVT_CALL(N(KnockDownPlayerC))
+    EVT_CALL(N(KnockdownDestroy))
     EVT_CALL(SetPlayerPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     EVT_WAIT(10)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW3_ShakeHeadHard)
@@ -156,7 +157,7 @@ Vec2i N(DustEmitters_NearCabinet)[] = {
 };
 
 EvtScript N(EVS_MiddleCabinet_OpenDoors) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu2, SOUND_F6, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu2, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 120, 15, EASING_QUARTIC_IN)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -182,7 +183,7 @@ EvtScript N(EVS_MiddleCabinet_CloseDoors) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu2, SOUND_F6, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu2, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
     EVT_RETURN
     EVT_END
 };
@@ -214,12 +215,12 @@ EvtScript N(EVS_Interact_NearCabinet) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(InterruptUsePartner)
     EVT_LOOP(3)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_F6, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
         EVT_CALL(RotateModel, MODEL_tansu1, -1, 1, 0, 0)
         EVT_WAIT(2)
         EVT_CALL(RotateModel, MODEL_tansu1, 0, 1, 0, 0)
         EVT_WAIT(1)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_F6, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
         EVT_CALL(TranslateModel, MODEL_tansu1, 0, 0, 100)
         EVT_CALL(RotateModel, MODEL_tansu1, 1, 1, 0, 0)
         EVT_CALL(TranslateModel, MODEL_tansu1, 0, 0, -100)
@@ -238,7 +239,7 @@ EvtScript N(EVS_Interact_NearCabinet) = {
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(10)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_F7, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu1, SOUND_OBK_CABINET_CRASH, SOUND_SPACE_DEFAULT)
     EVT_THREAD
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 30, EVT_FLOAT(1.5))
     EVT_END_THREAD
@@ -269,12 +270,12 @@ EvtScript N(EVS_Interact_FarCabinet) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(InterruptUsePartner)
     EVT_LOOP(5)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_F6, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
         EVT_CALL(RotateModel, MODEL_tansu3, -1, 1, 0, 0)
         EVT_WAIT(2)
         EVT_CALL(RotateModel, MODEL_tansu3, 0, 1, 0, 0)
         EVT_WAIT(1)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_F6, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_OBK_CHECK_CABINET, SOUND_SPACE_DEFAULT)
         EVT_CALL(TranslateModel, MODEL_tansu3, 0, 0, 100)
         EVT_CALL(RotateModel, MODEL_tansu3, 1, 1, 0, 0)
         EVT_CALL(TranslateModel, MODEL_tansu3, 0, 0, -100)
@@ -293,7 +294,7 @@ EvtScript N(EVS_Interact_FarCabinet) = {
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(20)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_F7, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tansu3, SOUND_OBK_CABINET_CRASH, SOUND_SPACE_DEFAULT)
     EVT_THREAD
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 30, EVT_FLOAT(1.5))
     EVT_END_THREAD

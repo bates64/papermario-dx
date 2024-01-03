@@ -2,6 +2,7 @@
 #include "script_api/battle.h"
 #include "battle/action_cmd/jump.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_move_jump_charge_2
 
@@ -57,12 +58,12 @@ EvtScript N(EVS_UseMove1) = {
 };
 
 EvtScript N(EVS_UseMove0) = {
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_32)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_PLAYER_CHARGE_UP)
     EVT_WAIT(10)
     EVT_CHILD_THREAD
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_156)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_PLAYER_CHARGE)
         EVT_WAIT(8)
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_156)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_PLAYER_CHARGE)
         EVT_WAIT(8)
     EVT_END_CHILD_THREAD
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_FightingStance)
@@ -71,7 +72,7 @@ EvtScript N(EVS_UseMove0) = {
     EVT_WAIT(3)
     EVT_CALL(N(UnkMoveFunc3), LVar0, LVar1, LVar2, EVT_FLOAT(0.8))
     EVT_WAIT(30)
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_C)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_DEFAULT)
     EVT_CALL(MoveBattleCamOver, 5)
     EVT_CALL(N(IsJumpMaxCharged))
     EVT_IF_EQ(LVar0, 0)
@@ -80,9 +81,9 @@ EvtScript N(EVS_UseMove0) = {
         EVT_ADD(LVar1, 25)
         EVT_ADD(LVar2, 5)
         EVT_CALL(N(func_802A1108_74D678), LVar0, LVar1, LVar2)
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_208F)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_CHARGE_UP)
         EVT_WAIT(4)
-        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_160)
+        EVT_CALL(PlaySoundAtActor, ACTOR_PLAYER, SOUND_LONG_PLAYER_JUMP)
         EVT_CALL(SetActorJumpGravity, ACTOR_PLAYER, EVT_FLOAT(1.0))
         EVT_CALL(SetActorSpeed, ACTOR_PLAYER, EVT_FLOAT(1.0))
         EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
@@ -95,7 +96,7 @@ EvtScript N(EVS_UseMove0) = {
         EVT_CALL(N(func_802A133C_761C5C))
         EVT_CALL(ShowVariableMessageBox, LVar0, 60, 3)
     EVT_ELSE
-        EVT_CALL(ShowMessageBox, BTL_MSG_08, 60)
+        EVT_CALL(ShowMessageBox, BTL_MSG_CANT_CHARGE, 60)
     EVT_END_IF
     EVT_LABEL(0)
     EVT_WAIT(1)

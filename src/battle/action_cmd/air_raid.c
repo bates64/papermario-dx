@@ -1,13 +1,12 @@
-#include "common.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
 #define NAMESPACE action_command_air_raid
 
-s32 D_802A9970_429C90[] = { 0, 25, 50, 75, 75, };
-s32 D_802A9984_429CA4[] = { 40, 70, 99, 200, };
-s32 D_802A9994_429CB4[] = { 35, 60, 80, 99, 200, };
-s32 D_802A99A8_429CC8[] = { 35, 35, 60, 80, 99, 200, };
+s32 D_802A9970_429C90[] = { 0, 25, 50, 75, 75 };
+s32 D_802A9984_429CA4[] = { 40, 70, 99, 200 };
+s32 D_802A9994_429CB4[] = { 35, 60, 80, 99, 200 };
+s32 D_802A99A8_429CC8[] = { 35, 35, 60, 80, 99, 200 };
 
 extern s32 actionCmdTableAirRaid[];
 
@@ -18,7 +17,7 @@ API_CALLABLE(N(init)) {
 
     battleStatus->unk_82 = 100;
     battleStatus->actionCmdDifficultyTable = actionCmdTableAirRaid;
-    battleStatus->unk_86 = 127;
+    battleStatus->actionResult = ACTION_RESULT_NONE;
 
     if (battleStatus->actionCommandMode == ACTION_COMMAND_MODE_NOT_LEARNED) {
         battleStatus->actionSuccess = 0;
@@ -116,7 +115,7 @@ void N(update)(void) {
             battleStatus->unk_85 = 0;
             actionCommandStatus->unk_5C = 0;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
             // fallthrough
         case 11:
@@ -130,15 +129,18 @@ void N(update)(void) {
                 }
 
                 if (!actionCommandStatus->isBarFilled) {
-                    if ( // todo remove assignment from conditional
-                        (!(battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) || (actionCommandStatus->unk_5C = 1, !(battleStatus->currentButtonsDown & BUTTON_STICK_LEFT))) &&
-                        (actionCommandStatus->unk_5C != 0))
-                    {
-                        actionCommandStatus->barFillLevel += (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 850) / 100;
-                        actionCommandStatus->unk_5C = 0;
+                    if (battleStatus->curButtonsDown & BUTTON_STICK_LEFT) {
+                        actionCommandStatus->unk_5C = 1;
                     }
 
-                    if (battleStatus->currentButtonsPressed & BUTTON_STICK_RIGHT) {
+                    if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT)) {
+                        if (actionCommandStatus->unk_5C != 0) {
+                            actionCommandStatus->barFillLevel += (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 850) / 100;
+                            actionCommandStatus->unk_5C = 0;
+                        }
+                    }
+
+                    if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
                         actionCommandStatus->barFillLevel -= (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 850) / 100;
                     }
                 }
@@ -156,32 +158,32 @@ void N(update)(void) {
                 hud_element_clear_flags(id, 2);
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, battleStatus->actionResult * 12);
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
 
             switch (partner->actorBlueprint->level) {
                 case 0:
-                    if (battleStatus->actionResult >= D_802A9984_429CA4[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A9984_429CA4[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
 
-                    if (battleStatus->unk_85 > 0 && battleStatus->actionResult < D_802A9984_429CA4[battleStatus->unk_85 - 1]) {
+                    if (battleStatus->unk_85 > 0 && battleStatus->actionQuality < D_802A9984_429CA4[battleStatus->unk_85 - 1]) {
                         battleStatus->unk_85--;
                     }
                     break;
                 case 1:
-                    if (battleStatus->actionResult >= D_802A9994_429CB4[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A9994_429CB4[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
-                    if (battleStatus->unk_85 > 0 && battleStatus->actionResult < D_802A9994_429CB4[battleStatus->unk_85 - 1]) {
+                    if (battleStatus->unk_85 > 0 && battleStatus->actionQuality < D_802A9994_429CB4[battleStatus->unk_85 - 1]) {
                         battleStatus->unk_85--;
                     }
                     break;
                 case 2:
-                    if (battleStatus->actionResult >= D_802A99A8_429CC8[battleStatus->unk_85]) {
+                    if (battleStatus->actionQuality >= D_802A99A8_429CC8[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
-                    if (battleStatus->unk_85 > 0 && battleStatus->actionResult < D_802A99A8_429CC8[battleStatus->unk_85 - 1]) {
+                    if (battleStatus->unk_85 > 0 && battleStatus->actionQuality < D_802A99A8_429CC8[battleStatus->unk_85 - 1]) {
                         battleStatus->unk_85--;
                     }
                     break;
@@ -200,9 +202,9 @@ void N(update)(void) {
 
             cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
             if (battleStatus->actionSuccess <= cutoff) {
-                battleStatus->unk_86 = -2;
+                battleStatus->actionResult = ACTION_RESULT_MINUS_2;
             } else {
-                battleStatus->unk_86 = 1;
+                battleStatus->actionResult = ACTION_RESULT_SUCCESS;
             }
 
             if (battleStatus->actionSuccess == 100) {
@@ -210,7 +212,7 @@ void N(update)(void) {
             }
 
             btl_set_popup_duration(0);
-            sfx_stop_sound(SOUND_80000041);
+            sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
             actionCommandStatus->frameCounter = 5;
             actionCommandStatus->state = 12;
             break;

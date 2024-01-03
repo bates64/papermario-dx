@@ -1,5 +1,6 @@
 #include "kkj_25.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SpawnStarsOrbitingKammy2)) {
     EffectInstance* effect;
@@ -21,9 +22,9 @@ API_CALLABLE(N(UpgradeStarBeam)) {
     gPlayerData.starBeamLevel = 2;
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
-    gPlayerData.specialBarsFilled = gPlayerData.maxStarPower * 256;
+    gPlayerData.starPower = gPlayerData.maxStarPower * SP_PER_BAR;
 
-    sync_status_menu();
+    sync_status_bar();
     return ApiStatus_DONE2;
 }
 
@@ -92,7 +93,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_CALL(InterpNpcYaw, NPC_Peach_01, 90, 0)
     EVT_CALL(SpeakToPlayer, NPC_Twink_01, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_CH8_009D)
     EVT_WAIT(10)
-    EVT_CALL(StopSound, SOUND_22D)
+    EVT_CALL(StopSound, SOUND_LRAW_KPA_ARENA_ACTIVE)
     EVT_CALL(SetMusicTrack, 0, SONG_PEACH_WISHES, 0, 8)
     EVT_CALL(InterpNpcYaw, NPC_Peach_01, 270, 0)
     EVT_WAIT(10)
@@ -124,7 +125,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_CALL(GetNpcPos, NPC_Peach_01, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 10)
-    EVT_CALL(PlaySoundAt, SOUND_2051, 0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_WISH_ASCENDING, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_STARS_SHIMMER, 5, LVar0, LVar1, LVar2, 40, 120, 45, 150)
     EVT_WAIT(150)
     EVT_CALL(SetNpcAnimation, NPC_Bowser_02, ANIM_WorldBowser_RearUpLaugh)
@@ -149,9 +150,9 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_CALL(SetNpcPos, NPC_Twink_01, 500, 200, 0)
     EVT_CALL(SetNpcJumpscale, NPC_Twink_01, EVT_FLOAT(0.0))
     EVT_CALL(NpcJump0, NPC_Twink_01, 205, 90, 0, 20)
-    EVT_CALL(PlaySoundAtNpc, NPC_Twink_01, SOUND_HIT_NORMAL, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Twink_01, SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_Bowser_02, ANIM_WorldBowser_Shock)
-    EVT_PLAY_EFFECT(EFFECT_DAMAGE_STARS, 3, 205, 90, 0, -1, -1, 0, 3)
+    EVT_PLAY_EFFECT(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, 205, 90, 0, -1, -1, 0, 3)
     EVT_THREAD
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 8, EVT_FLOAT(1.5))
     EVT_END_THREAD
@@ -177,7 +178,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_WAIT(15)
     EVT_CALL(AdjustCam, CAM_DEFAULT, EVT_FLOAT(2.0), 0, 300, EVT_FLOAT(17.0), EVT_FLOAT(-13.0))
     EVT_PLAY_EFFECT(EFFECT_STARS_SHIMMER, 5, 100, 45, -66, 40, 50, 45, 80)
-    EVT_CALL(PlaySound, SOUND_2051)
+    EVT_CALL(PlaySound, SOUND_WISH_ASCENDING)
     EVT_WAIT(30)
     EVT_SET(LVar0, NPC_Eldstar)
     EVT_EXEC(N(AddStarSpiritHovering))
@@ -195,12 +196,12 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_EXEC(N(AddStarSpiritHovering))
     EVT_CALL(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 15)
-    EVT_CALL(PlaySoundAt, SOUND_B000001E, 0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_APPEAR, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 10)
     EVT_SETF(LVar0, 0)
     EVT_LOOP(20)
         EVT_ADDF(LVar0, EVT_FLOAT(12.0))
-        EVT_CALL(func_802CFD30, NPC_Eldstar, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Eldstar, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(10)
@@ -214,7 +215,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_END_THREAD
     EVT_CALL(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle, 512, MSG_CH8_00A1)
     EVT_WAIT(10)
-    EVT_CALL(PlaySoundAt, SOUND_64, 0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_MULTIPLE_STAR_SPIRITS_APPEAR, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 15)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 10)
@@ -236,21 +237,21 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_SETF(LVar0, 0)
     EVT_LOOP(20)
         EVT_ADDF(LVar0, EVT_FLOAT(12.0))
-        EVT_CALL(func_802CFD30, NPC_Mamar,    FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Skolar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Misstar,  FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Klevar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Kalmar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Mamar,    IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Skolar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Misstar,  IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Klevar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Kalmar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(func_802CFD30, NPC_Eldstar,  FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Mamar,    FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Skolar,   FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Misstar,  FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Klevar,   FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Kalmar,   FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Eldstar,  IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Mamar,    IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Skolar,   IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Misstar,  IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Klevar,   IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Kalmar,   IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetNpcJumpscale, NPC_Twink_01, EVT_FLOAT(0.0))
     EVT_CALL(NpcJump0, NPC_Twink_01, 140, 65, 30, 20)
     EVT_CALL(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
@@ -286,7 +287,7 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
         EVT_CALL(NpcJump0, NPC_Eldstar, LVar6, LVar7, LVar8, 5)
         EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
         EVT_ADD(LVar1, 20)
-        EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, LVar0, LVar1, LVar2)
+        EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, LVar0, LVar1, LVar2, 10)
     EVT_END_THREAD
     EVT_THREAD
@@ -340,34 +341,34 @@ EvtScript N(EVS_Scene_KammyDefeated) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_PLAY_EFFECT(EFFECT_RADIAL_SHIMMER, 2, 100, 28, 10, EVT_FLOAT(2.8), 100)
-        EVT_CALL(PlaySound, SOUND_212D)
+        EVT_CALL(PlaySound, SOUND_RELEASE_ENERGY)
         EVT_WAIT(115)
         EVT_ADD(LVar1, 20)
-        EVT_CALL(PlaySoundAt, SOUND_188, 0, LVar0, LVar1, LVar2)
+        EVT_CALL(PlaySoundAt, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
         EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, EVT_FLOAT(0.3), 30)
     EVT_END_THREAD
     EVT_WAIT(40)
-    EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 110, 20, 3)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 110, 20, 3)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 110, 20, 3, 10)
     EVT_WAIT(6)
-    EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 100, 20, 3)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 100, 20, 3)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 100, 20, 3, 15)
     EVT_WAIT(6)
-    EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 90, 20, 3)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 90, 20, 3)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 90, 20, 3, 20)
     EVT_WAIT(6)
-    EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 110, 20, 3)
+    EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 110, 20, 3)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 110, 20, 3, 25)
     EVT_WAIT(6)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_UsePower)
     EVT_LOOP(3)
-        EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 100, 20, 3)
+        EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 100, 20, 3)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 100, 20, 3, 30)
         EVT_WAIT(6)
-        EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 90, 20, 3)
+        EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 90, 20, 3)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 90, 20, 3, 30)
         EVT_WAIT(6)
-        EVT_CALL(PlaySoundAt, SOUND_B000001F, 0, 110, 20, 3)
+        EVT_CALL(PlaySoundAt, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT, 110, 20, 3)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 0, 110, 20, 3, 30)
         EVT_WAIT(6)
     EVT_END_LOOP

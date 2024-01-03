@@ -1,4 +1,5 @@
 #include "sam_11.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Penguin_Wander.inc.c"
 #include "world/common/npc/Penguin.inc.c"
@@ -8,7 +9,7 @@
 NpcSettings N(NpcSettings_Kooper) = {
     .height = 35,
     .radius = 24,
-    .level = 6,
+    .level = ACTOR_LEVEL_KOOPA_TROOPA,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -34,23 +35,23 @@ API_CALLABLE(N(UpdateSentryPosition)) {
     f32 var_f2;
 
     if (*posZ == npc->pos.z) {
-        if(npc->currentAnim != ANIM_Penguin_Idle) {
-            npc->currentAnim = ANIM_Penguin_Idle;
+        if(npc->curAnim != ANIM_Penguin_Idle) {
+            npc->curAnim = ANIM_Penguin_Idle;
         }
     }
 
     if (*posZ != npc->pos.z) {
-        if (npc->currentAnim != ANIM_Penguin_Walk) {
-            npc->currentAnim = ANIM_Penguin_Walk;
+        if (npc->curAnim != ANIM_Penguin_Walk) {
+            npc->curAnim = ANIM_Penguin_Walk;
         }
     }
 
     *posZ = npc->pos.z;
 
-    if (!(dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z) < 30.0f) &&
-        !(dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z) > 130.0f))
+    if (!(dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z) < 30.0f) &&
+        !(dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z) > 130.0f))
     {
-        playerX = var_f2 = playerStatus->position.z;
+        playerX = var_f2 = playerStatus->pos.z;
         if (playerX > 50.0f) {
             var_f2 = 50.0f;
         }
@@ -206,7 +207,7 @@ EvtScript N(EVS_NpcInteract_Herringway) = {
                 EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Herringway_Idle)
                 EVT_CALL(SetNpcPos, NPC_SELF, -217, 0, -38)
             EVT_END_THREAD
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, 0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, 0, 0, 0, 0)
             EVT_SET(GB_StoryProgress, STORY_CH7_SPOKE_WITH_HERRINGWAY)
         EVT_CASE_LT(STORY_CH7_MAYOR_MURDER_SOLVED)
             EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D3)
@@ -592,7 +593,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Penguin_05),
         .settings = &N(NpcSettings_Penguin),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_HerringwayLoiterer,
@@ -615,7 +616,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_06),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_TimidPenguin,
@@ -641,7 +642,7 @@ NpcData N(NpcData_PondPenginsBefore)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_02),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_SnowMaster,
@@ -664,7 +665,7 @@ NpcData N(NpcData_PondPenginsBefore)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_03),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_Skater,
@@ -690,7 +691,7 @@ NpcData N(NpcData_PondPenginsAfter)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_02),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_SnowMaster,
@@ -713,7 +714,7 @@ NpcData N(NpcData_PondPenginsAfter)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_03),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_Skater,

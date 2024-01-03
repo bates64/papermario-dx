@@ -1,5 +1,6 @@
 #include "common.h"
 #include "world/area_kzn/kzn.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SpinyTrompHit)) {
     subtract_hp(1);
@@ -62,14 +63,14 @@ EvtScript N(D_80240D10_C7EE90) = {
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Fallen)
     EVT_WAIT(1)
     EVT_CALL(N(SpinyTrompHit))
-    EVT_CALL(func_802D2520, ANIM_Mario1_Fallen, 4, EVT_FLOAT(3.0), EVT_FLOAT(3.0), 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_SET_WAVY, EVT_FLOAT(3.0), EVT_FLOAT(3.0), 0, 0)
     EVT_LABEL(1)
         EVT_WAIT(1)
         EVT_IF_EQ(AF_KZN_TrompRollingDone, FALSE)
             EVT_GOTO(1)
         EVT_END_IF
     EVT_WAIT(30)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Fallen, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_GetUp)
     EVT_CALL(N(UnkFunc48), 0)
     EVT_LABEL(2)

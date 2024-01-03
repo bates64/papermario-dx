@@ -1,4 +1,5 @@
 #include "kkj_25.h"
+#include "sprite/player.h"
 
 #define NAME_SUFFIX _Npc1
 
@@ -28,8 +29,8 @@ EvtScript N(EVS_NpcIdle_Bowser) = {
         EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(4.0))
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_END_THREAD
-    EVT_CALL(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_20000)
-    EVT_CALL(StopSound, SOUND_22C)
+    EVT_CALL(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)
+    EVT_CALL(StopSound, SOUND_LRAW_KPA_ARENA_TURN_ON)
     EVT_CALL(StartBossBattle, SONG_BOWSER_BATTLE)
     EVT_RETURN
     EVT_END
@@ -37,7 +38,7 @@ EvtScript N(EVS_NpcIdle_Bowser) = {
 
 EvtScript N(EVS_NpcDefeat_Bowser) = {
     #define NAME_SUFFIX
-    EVT_CALL(PlaySound, SOUND_22D)
+    EVT_CALL(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE)
     EVT_EXEC(N(EVS_Scene_PeachBreaksFree))
     EVT_RETURN
     EVT_END
@@ -61,15 +62,15 @@ EvtScript N(EVS_NpcIdle_Kammy_Broom) = {
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(func_802D286C, 0x2000)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 8, 0, 0, 0, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_2000)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_TINT, 0, 0, 0, 0)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(DisablePartnerAI, 0)
     EVT_WAIT(1)
     EVT_CALL(GetNpcPos, NPC_Peach_01, LVar0, LVar1, LVar2)
     EVT_CALL(SetPlayerPos, LVar0, LVar1, LVar2)
-    EVT_CALL(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_20000)
-    EVT_CALL(StopSound, SOUND_22D)
+    EVT_CALL(ModifyGlobalOverrideFlags, 1, GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)
+    EVT_CALL(StopSound, SOUND_LRAW_KPA_ARENA_ACTIVE)
     EVT_CALL(StartBossBattle, SONG_BOWSER_BATTLE)
     EVT_CALL(EnablePartnerAI)
     EVT_RETURN
@@ -77,8 +78,8 @@ EvtScript N(EVS_NpcIdle_Kammy_Broom) = {
 };
 
 API_CALLABLE(N(func_80240020_B06A20)) {
-    increment_status_menu_disabled();
-    set_screen_overlay_params_back(0, 255.0f);
+    increment_status_bar_disabled();
+    set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 255.0f);
 
     return ApiStatus_DONE2;
 }
@@ -198,7 +199,7 @@ NpcData N(NpcData_Bowser) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Bowser),
     .settings = &N(NpcSettings_Bowser),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
     .extraAnimations = N(ExtraAnims_Bowser),
@@ -210,7 +211,7 @@ NpcData N(NpcData_Peach) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_BattleKooper_01),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_USE_PLAYER_SPRITE,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
     .extraAnimations = N(ExtraAnims_Peach),
@@ -223,7 +224,7 @@ NpcData N(NpcData_Kammy)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Kammy_Broom),
         .settings = &N(NpcSettings_Kammy_Flying),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_BattleKammy_Anim00,
@@ -251,7 +252,7 @@ NpcData N(NpcData_Kammy)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Kammy),
         .settings = &N(NpcSettings_Kammy_Flying),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_BattleKammy_Anim00,
@@ -281,7 +282,7 @@ NpcData N(NpcData_Twink) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Twink),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
     .extraAnimations = N(ExtraAnims_Twink),

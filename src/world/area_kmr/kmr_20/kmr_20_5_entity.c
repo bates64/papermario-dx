@@ -6,11 +6,11 @@ API_CALLABLE(N(SetAmbienceVolumeHalf_Entity)){
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnsetCamera0MoveFlag1.inc.c"
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
 
 EvtScript N(EVS_SecretPanel_FlipBack) = {
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o252, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o252, SOUND_20AB, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o252, SOUND_FLIP_PANEL, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(SetAmbienceVolumeHalf_Entity))
     EVT_CALL(MakeLerp, 0, -2160, 60, EASING_QUADRATIC_OUT)
     EVT_LOOP(0)
@@ -21,7 +21,7 @@ EvtScript N(EVS_SecretPanel_FlipBack) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o252, SOUND_20AC, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o252, SOUND_CLOSE_PANEL, SOUND_SPACE_DEFAULT)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o252, COLLIDER_FLAGS_UPPER_MASK)
     EVT_RETURN
     EVT_END
@@ -48,7 +48,7 @@ EvtScript N(EVS_UseSpring_Basement) = {
         EVT_CALL(PlayerJump, -110, -80, -35, 20)
         EVT_SET(AF_KMR_0B, TRUE)
     EVT_ELSE
-        EVT_CALL(N(UnsetCamera0MoveFlag1))
+        EVT_CALL(N(EnableCameraFollowPlayerY))
         EVT_EXEC(N(EVS_SecretPanel_FlipBack))
         EVT_CALL(PlayerJump, -150, 30, -90, 30)
         EVT_CALL(InterpPlayerYaw, 180, 0)

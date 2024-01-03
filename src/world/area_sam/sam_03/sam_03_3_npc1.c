@@ -4,8 +4,8 @@
 
 API_CALLABLE(N(GetAngleToPlayer)) {
     Npc* npc = get_npc_unsafe(NPC_JrTroopa);
-    
-    script->varTable[0] = atan2(npc->pos.x, npc->pos.z, gPlayerStatus.position.x, gPlayerStatus.position.z);
+
+    script->varTable[0] = atan2(npc->pos.x, npc->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
     return ApiStatus_DONE2;
 }
 
@@ -151,7 +151,7 @@ NpcData N(NpcData_JrTroopa)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopa),
         .settings = &N(NpcSettings_JrTroopa),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
         .tattle = MSG_NpcTattle_JrTroopa,
@@ -162,7 +162,7 @@ NpcData N(NpcData_JrTroopa)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopaHitbox),
         .settings = &N(NpcSettings_JrTroopa),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
         .tattle = MSG_NpcTattle_JrTroopa,

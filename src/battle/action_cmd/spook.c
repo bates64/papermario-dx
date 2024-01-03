@@ -15,7 +15,7 @@ API_CALLABLE(N(init)) {
 
     battleStatus->unk_82 = 100;
     battleStatus->actionCmdDifficultyTable = actionCmdTableSpook;
-    battleStatus->unk_86 = 127;
+    battleStatus->actionResult = ACTION_RESULT_NONE;
     if (battleStatus->actionCommandMode == ACTION_COMMAND_MODE_NOT_LEARNED) {
         battleStatus->actionSuccess = 0;
         return ApiStatus_DONE2;
@@ -30,7 +30,7 @@ API_CALLABLE(N(init)) {
     actionCommandStatus->barFillWidth = 0;
     actionCommandStatus->isBarFilled = FALSE;
     battleStatus->actionSuccess = 0;
-    battleStatus->actionResult = 0;
+    battleStatus->actionQuality = 0;
     actionCommandStatus->hudPosX = -48;
     actionCommandStatus->hudPosY = 80;
 
@@ -99,10 +99,10 @@ void N(update)(void) {
             }
             hud_element_set_script(actionCommandStatus->hudElements[0], &HES_StickMashLeft);
             actionCommandStatus->barFillLevel = 0;
-            battleStatus->actionResult = 0;
+            battleStatus->actionQuality = 0;
             actionCommandStatus->unk_5C = 0;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
         case 11:
             btl_set_popup_duration(99);
@@ -124,11 +124,11 @@ void N(update)(void) {
                  if (!actionCommandStatus->isBarFilled) {
                     if (actionCommandStatus->targetWeakness != 0) {
 
-                        if (battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) {
+                        if (battleStatus->curButtonsDown & BUTTON_STICK_LEFT) {
                             actionCommandStatus->unk_5C = TRUE;
                         }
 
-                        if (!(battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) && actionCommandStatus->unk_5C) {
+                        if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && actionCommandStatus->unk_5C) {
                             s32 a = battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty];
                             s32 b = actionCommandStatus->targetWeakness * 850;
 
@@ -136,18 +136,18 @@ void N(update)(void) {
                             actionCommandStatus->unk_5C = 0;
                         }
 
-                        if (battleStatus->currentButtonsPressed & BUTTON_STICK_RIGHT) {
+                        if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
                             s32 a = battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty];
                             s32 b = actionCommandStatus->targetWeakness * 850;
 
                             actionCommandStatus->barFillLevel -= (a * b) / 10000;
                         }
                     } else {
-                        if (battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) {
+                        if (battleStatus->curButtonsDown & BUTTON_STICK_LEFT) {
                             actionCommandStatus->unk_5C = TRUE;
                         }
 
-                        if (!(battleStatus->currentButtonsDown & BUTTON_STICK_LEFT) && actionCommandStatus->unk_5C) {
+                        if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && actionCommandStatus->unk_5C) {
                             actionCommandStatus->barFillLevel += 100;
                             if (actionCommandStatus->barFillLevel >= 500) {
                                 actionCommandStatus->barFillLevel = 500;
@@ -155,7 +155,7 @@ void N(update)(void) {
                             actionCommandStatus->unk_5C = 0;
                         }
 
-                        if (battleStatus->currentButtonsPressed & BUTTON_STICK_RIGHT) {
+                        if (battleStatus->curButtonsPressed & BUTTON_STICK_RIGHT) {
                             actionCommandStatus->barFillLevel -= 100;
                         }
                     }
@@ -173,8 +173,8 @@ void N(update)(void) {
                 hud_element_clear_flags(id, 2);
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, battleStatus->actionResult * 12);
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
 
             if (actionCommandStatus->frameCounter != 0) {
                 actionCommandStatus->frameCounter--;
@@ -195,16 +195,16 @@ void N(update)(void) {
 
             cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
             if (battleStatus->actionSuccess > cutoff) {
-                battleStatus->unk_86 = 1;
+                battleStatus->actionResult = ACTION_RESULT_SUCCESS;
             } else {
-                battleStatus->unk_86 = -2;
+                battleStatus->actionResult = ACTION_RESULT_MINUS_2;
             }
 
             if (battleStatus->actionSuccess == 100) {
                 func_80269160();
             }
             btl_set_popup_duration(0);
-            sfx_stop_sound(SOUND_80000041);
+            sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
             actionCommandStatus->frameCounter = 5;
             actionCommandStatus->state = 12;
             break;

@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "model.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 void delete_entity(s32);
 void partner_enable_input(void);
@@ -105,7 +106,7 @@ typedef struct SmashGameData {
     /* 0x014 */ s32 windowA_posX;
     /* 0x018 */ s32 windowB_posX;
     /* 0x01C */ s32 signpostEntity;
-    /* 0x020 */ s32 currentScore;
+    /* 0x020 */ s32 curScore;
     /* 0x024 */ s32 mashProgress;
     /* 0x028 */ SmashGameStunFlags stunFlags;
     /* 0x02C */ SmashGameBoxData box[NUM_BOXES];
@@ -193,10 +194,10 @@ void N(appendGfx_score_display)(void* renderData) {
 void N(worker_draw_score)(void) {
     RenderTask task;
 
-    task.renderMode = RENDER_MODE_2D;
+    task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
     task.appendGfx = &N(appendGfx_score_display);
-    task.distance = 0;
+    task.dist = 0;
 
     queue_render_task(&task);
 }
@@ -226,8 +227,8 @@ API_CALLABLE(N(CreateScoreDisplay)) {
 
 API_CALLABLE(N(DisableMenus)) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_MENUS;
-    status_menu_ignore_changes();
-    close_status_menu();
+    status_bar_ignore_changes();
+    close_status_bar();
     return ApiStatus_DONE2;
 }
 
@@ -303,7 +304,7 @@ API_CALLABLE(N(SetBoxContents)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     data->found = 0;
     data->timeLeft = PLAY_TIME + 10;
-    data->currentScore = 0;
+    data->curScore = 0;
     data->mashProgress = 0;
     data->stunFlags = 0;
 
@@ -424,7 +425,7 @@ API_CALLABLE(N(RunMinigame)) {
     Enemy* enemy;
 
     Npc* npc;
-    s32 writeback;
+    EffectInstance* writeback;
 
     Model* model;
     Matrix4f mtx;
@@ -437,7 +438,7 @@ API_CALLABLE(N(RunMinigame)) {
 
     gameFinished = FALSE;
     hittingPeachBlock = FALSE;
-    data = get_enemy(0)->varTablePtr[0];
+    data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
 
     for (i = 0; i < NUM_BOXES; i++) {
         if (data->box[i].npcID != -1) {
@@ -454,11 +455,11 @@ API_CALLABLE(N(RunMinigame)) {
                 case BOX_STATE_FUZZY_IDLE:
                     data->box[i].stateTimer--;
                     if (data->box[i].stateTimer <= 0) {
-                        npc->currentAnim = ANIM_Fuzzy_Walk;
+                        npc->curAnim = ANIM_Fuzzy_Walk;
                         data->box[i].state = BOX_STATE_FUZZY_POPUP;
-                        sfx_play_sound_at_position(enemy->varTable[8], SOUND_SPACE_MODE_0 | SOUND_PARAM_MOST_QUIET, npc->pos.x, npc->pos.y, npc->pos.z);
+                        sfx_play_sound_at_position(enemy->varTable[8], SOUND_SPACE_DEFAULT | SOUND_PARAM_MOST_QUIET, npc->pos.x, npc->pos.y, npc->pos.z);
                         get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
-                        npc->jumpVelocity = 10.5f;
+                        npc->jumpVel = 10.5f;
                         npc->pos.x = centerX;
                         npc->jumpScale = 1.5f;
                         npc->pos.y = centerY - 12.5;
@@ -469,14 +470,14 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_FUZZY_POPUP:
                     data->box[i].stateTimer++;
-                    npc->pos.y += npc->jumpVelocity;
-                    npc->jumpVelocity -= npc->jumpScale;
+                    npc->pos.y += npc->jumpVel;
+                    npc->jumpVel -= npc->jumpScale;
                     if ((npc->moveToPos.y + 20.0f) < npc->pos.y) {
                         enable_npc_shadow(npc);
                     } else {
                         disable_npc_shadow(npc);
                     }
-                    if ((npc->jumpVelocity < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
+                    if ((npc->jumpVel < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
                         data->box[i].state = BOX_STATE_FUZZY_IDLE;
                         data->box[i].stateTimer = rand_int(330) + 90;
                         npc->pos.y = NPC_DISPOSE_POS_Y;
@@ -500,13 +501,13 @@ API_CALLABLE(N(RunMinigame)) {
                     sfx_play_sound(enemy->varTable[8]);
                     data->box[i].state = BOX_STATE_FUZZY_ATTACH;
                     gPlayerStatusPtr->anim = ANIM_Mario1_TiredStill;
-                    npc->currentAnim = ANIM_Fuzzy_Run;
+                    npc->curAnim = ANIM_Fuzzy_Run;
                     get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
                     npc->pos.x = centerX;
                     npc->pos.y = centerY;
                     npc->pos.z = centerZ + 2.0;
-                    npc->moveToPos.y = gPlayerStatusPtr->position.y + 35.0f;
-                    npc->jumpVelocity = 10.5f;
+                    npc->moveToPos.y = gPlayerStatusPtr->pos.y + 35.0f;
+                    npc->jumpVel = 10.5f;
                     npc->jumpScale = 1.5f;
 
                     data->box[i].stateTimer = 0;
@@ -514,9 +515,9 @@ API_CALLABLE(N(RunMinigame)) {
                     enemy->varTable[1] = npc->pos.x * 10.0f;
                     enemy->varTable[2] = npc->pos.y * 10.0f;
                     enemy->varTable[3] = npc->pos.z * 10.0f;
-                    enemy->varTable[4] = gPlayerStatusPtr->position.x * 10.0f;
-                    enemy->varTable[5] = (gPlayerStatusPtr->position.y + 28.0f) * 10.0f;
-                    enemy->varTable[6] = (gPlayerStatusPtr->position.z + 2.0f) * 10.0f;
+                    enemy->varTable[4] = gPlayerStatusPtr->pos.x * 10.0f;
+                    enemy->varTable[5] = (gPlayerStatusPtr->pos.y + 28.0f) * 10.0f;
+                    enemy->varTable[6] = (gPlayerStatusPtr->pos.z + 2.0f) * 10.0f;
                     enemy->varTable[7] = 0;
                     break;
                 case BOX_STATE_FUZZY_ATTACH:
@@ -527,12 +528,12 @@ API_CALLABLE(N(RunMinigame)) {
                     gPlayerStatusPtr->anim = ANIM_Mario1_TiredStill;
                     npc->duration--;
                     if (npc->duration <= 0) {
-                        npc->currentAnim = ANIM_Fuzzy_Stunned;
+                        npc->curAnim = ANIM_Fuzzy_Stunned;
                         gPlayerStatusPtr->anim = ANIM_Mario1_PanicRun;
                         data->mashProgress = 0;
-                        npc->pos.x = gPlayerStatusPtr->position.x;
-                        npc->pos.y = gPlayerStatusPtr->position.y + 28.0;
-                        npc->pos.z = gPlayerStatusPtr->position.z + 2.0;
+                        npc->pos.x = gPlayerStatusPtr->pos.x;
+                        npc->pos.y = gPlayerStatusPtr->pos.y + 28.0;
+                        npc->pos.z = gPlayerStatusPtr->pos.z + 2.0;
                         hud_element_set_script(data->hudElemID_AButton, &HES_MashAButton);
                         hud_element_set_alpha(data->hudElemID_AButton, 255);
                         hud_element_set_alpha(data->hudElemID_Meter, 255);
@@ -553,7 +554,7 @@ API_CALLABLE(N(RunMinigame)) {
                         hud_element_set_script(data->hudElemID_AButton, &HES_AButton);
                         hud_element_set_alpha(data->hudElemID_AButton, 160);
                         hud_element_set_alpha(data->hudElemID_Meter, 160);
-                        npc->currentAnim = ANIM_Fuzzy_Hurt;
+                        npc->curAnim = ANIM_Fuzzy_Hurt;
                         npc->pos.y += 3.0;
                     }
                     break;
@@ -585,7 +586,7 @@ API_CALLABLE(N(RunMinigame)) {
                         data->box[i].state = BOX_STATE_BOMB_POPUP;
                         sfx_play_sound_at_position(enemy->varTable[8], 0x100000, npc->pos.x, npc->pos.y, npc->pos.z);
                         get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
-                        npc->jumpVelocity = 10.5f;
+                        npc->jumpVel = 10.5f;
                         npc->pos.x = centerX;
                         npc->jumpScale = 1.5f;
                         npc->pos.y = centerY - 12.5;
@@ -596,14 +597,14 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_BOMB_POPUP:
                     data->box[i].stateTimer++;
-                    npc->pos.y += npc->jumpVelocity;
-                    npc->jumpVelocity -= npc->jumpScale;
+                    npc->pos.y += npc->jumpVel;
+                    npc->jumpVel -= npc->jumpScale;
                     if ((npc->moveToPos.y + 20.0f) < npc->pos.y) {
                         enable_npc_shadow(npc);
                     } else {
                         disable_npc_shadow(npc);
                     }
-                    if ((npc->jumpVelocity < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
+                    if ((npc->jumpVel < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
                         data->box[i].state = BOX_STATE_BOMB_IDLE;
                         data->box[i].stateTimer = rand_int(330) + 90;
                         npc->pos.y = NPC_DISPOSE_POS_Y;
@@ -618,7 +619,7 @@ API_CALLABLE(N(RunMinigame)) {
                 case BOX_STATE_BOMB_HIT:
                     enable_npc_shadow(npc);
                     npc->duration = 15;
-                    npc->currentAnim = ANIM_Bobomb_Anim05;
+                    npc->curAnim = ANIM_Bobomb_WalkLit;
                     data->stunFlags |= (STUN_FLAG_STUNNED | STUN_FLAG_CHANGED);
                     data->box[i].state = BOX_STATE_BOMB_ATTACK;
                     get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
@@ -626,7 +627,7 @@ API_CALLABLE(N(RunMinigame)) {
                     npc->pos.y = centerY - 10.0f;
                     npc->pos.z = centerZ + 8.0;
                     fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 10, &writeback);
-                    if (npc->pos.x > gPlayerStatusPtr->position.x) {
+                    if (npc->pos.x > gPlayerStatusPtr->pos.x) {
                         npc->yaw = 270.0f;
                         gPlayerStatusPtr->targetYaw = 95.0f;
                     } else {
@@ -687,42 +688,42 @@ API_CALLABLE(N(RunMinigame)) {
                     if (data->box[i].stateTimer <= 0) {
                         get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
                         data->box[i].state = BOX_STATE_PEACH_POPUP;
-                        sfx_play_sound_at_position(SOUND_214, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_MODE_0, npc->pos.x, npc->pos.y, npc->pos.z);
+                        sfx_play_sound_at_position(SOUND_HEART_BOUNCE, SOUND_PARAM_MORE_QUIET | SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
                         get_model_center_and_size(data->box[i].modelID, &centerX, &centerY, &centerZ, &sizeX, &sizeY, &sizeZ);
-                        npc->jumpVelocity = 10.0f;
+                        npc->jumpVel = 10.0f;
                         npc->pos.y = npc->moveToPos.y;
                         npc->jumpScale = 1.1f;
                         data->box[i].stateTimer = 0;
                         model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                         model->flags &= ~MODEL_FLAG_HIDDEN;
-                        if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM_APPLIED)) {
-                            guTranslateF(model->transformMatrix, npc->pos.x, npc->pos.y, npc->pos.z);
-                            model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+                        if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
+                            guTranslateF(model->userTransformMtx, npc->pos.x, npc->pos.y, npc->pos.z);
+                            model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
                         }
                         else {
                             guTranslateF(mtx, npc->pos.x, npc->pos.y, npc->pos.z);
-                            guMtxCatF(mtx, model->transformMatrix, model->transformMatrix);
+                            guMtxCatF(mtx, model->userTransformMtx, model->userTransformMtx);
                         }
                     }
                     break;
                 case BOX_STATE_PEACH_POPUP:
                     data->box[i].stateTimer++;
-                    npc->pos.y += npc->jumpVelocity;
-                    npc->jumpVelocity -= npc->jumpScale;
+                    npc->pos.y += npc->jumpVel;
+                    npc->jumpVel -= npc->jumpScale;
                     model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
-                    if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM_APPLIED)) {
-                        guTranslateF(model->transformMatrix, npc->pos.x, npc->pos.y, npc->pos.z);
-                        model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+                    if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
+                        guTranslateF(model->userTransformMtx, npc->pos.x, npc->pos.y, npc->pos.z);
+                        model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
                     } else {
                         guTranslateF(mtx, npc->pos.x, npc->pos.y, npc->pos.z);
-                        guMtxCatF(mtx, model->transformMatrix, model->transformMatrix);
+                        guMtxCatF(mtx, model->userTransformMtx, model->userTransformMtx);
                     }
                     if ((npc->moveToPos.y + 20.0f) < npc->pos.y) {
                         enable_npc_shadow(npc);
                     } else {
                         disable_npc_shadow(npc);
                     }
-                    if ((npc->jumpVelocity < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
+                    if ((npc->jumpVel < 0.0) && (npc->pos.y <= npc->moveToPos.y)) {
                         data->box[i].state = BOX_STATE_PEACH_IDLE;
                         data->box[i].stateTimer = rand_int(330) + 90;
                         disable_npc_shadow(npc);
@@ -730,7 +731,7 @@ API_CALLABLE(N(RunMinigame)) {
                     }
                     break;
                 case BOX_STATE_PEACH_HIT:
-                    sfx_play_sound(SOUND_21C);
+                    sfx_play_sound(SOUND_APPROVE);
                     model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                     enable_npc_shadow(npc);
                     npc->duration = 0;
@@ -741,12 +742,12 @@ API_CALLABLE(N(RunMinigame)) {
                     hittingPeachBlock = TRUE;
                     model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                     centerY = update_lerp(EASING_QUADRATIC_OUT, npc->moveToPos.y, npc->moveToPos.y + 30.0, npc->duration, 30);
-                    if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM_APPLIED)) {
-                        guTranslateF(model->transformMatrix, npc->pos.x, centerY, npc->pos.z);
-                        model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+                    if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
+                        guTranslateF(model->userTransformMtx, npc->pos.x, centerY, npc->pos.z);
+                        model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
                     } else {
                         guTranslateF(mtx, npc->pos.x, centerY, npc->pos.z);
-                        guMtxCatF(mtx, model->transformMatrix, model->transformMatrix);
+                        guMtxCatF(mtx, model->userTransformMtx, model->userTransformMtx);
                     }
                     npc->duration++;
                     if (npc->duration >= 30) {
@@ -770,31 +771,31 @@ API_CALLABLE(N(RunMinigame)) {
         if (data->found < NUM_PANELS) {
             data->timeLeft--;
             if (data->timeLeft == 750) {
-                sfx_play_sound(SOUND_1A5);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
             } else if (data->timeLeft == 600) {
-                sfx_play_sound(SOUND_1A5);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
             } else if (data->timeLeft == 450) {
-                sfx_play_sound(SOUND_1A5);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
             } else if (data->timeLeft == 300) {
-                sfx_play_sound(SOUND_1A6);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
             } else if (data->timeLeft == 270) {
-                sfx_play_sound(SOUND_1A6);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
             } else if (data->timeLeft == 240) {
-                sfx_play_sound(SOUND_1A6);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
             } else if (data->timeLeft == 210) {
-                sfx_play_sound(SOUND_1A6);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
             } else if (data->timeLeft == 180) {
-                sfx_play_sound(SOUND_1A6);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
             } else if (data->timeLeft == 150) {
-                sfx_play_sound(SOUND_1A7);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             } else if (data->timeLeft == 120) {
-                sfx_play_sound(SOUND_1A7);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             } else if (data->timeLeft == 90) {
-                sfx_play_sound(SOUND_1A7);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             } else if (data->timeLeft == 60) {
-                sfx_play_sound(SOUND_1A7);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             } else if (data->timeLeft == 30) {
-                sfx_play_sound(SOUND_1A7);
+                sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             }
         }
         if ((data->timeLeft > 0) && (data->found == NUM_PANELS)) {
@@ -834,7 +835,7 @@ API_CALLABLE(N(RunMinigame)) {
             sfx_play_sound(SOUND_MENU_ERROR);
             gPlayerStatusPtr->anim = ANIM_Mario1_Idle;
         } else {
-            sfx_play_sound(SOUND_D4);
+            sfx_play_sound(SOUND_JINGLE_WON_BATTLE);
             gPlayerStatusPtr->anim = ANIM_Mario1_Idle;
         }
 
@@ -854,22 +855,22 @@ API_CALLABLE(N(UpdateRecords)) {
     seconds = data->timeLeft  / FRAME_RATE;
     deciseconds = ((f32)(data->timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
 
-    data->currentScore = (seconds * 10) + deciseconds;
-    playerData->smashGameTotal += data->currentScore;
+    data->curScore = (seconds * 10) + deciseconds;
+    playerData->smashGameTotal += data->curScore;
 
     if (playerData->smashGameTotal > 99999) {
         playerData->smashGameTotal = 99999;
     }
-    if (playerData->smashGameRecord < data->currentScore) {
-        playerData->smashGameRecord = data->currentScore;
+    if (playerData->smashGameRecord < data->curScore) {
+        playerData->smashGameRecord = data->curScore;
     }
 
-    set_message_value(seconds, 0);
-    set_message_value(deciseconds, 1);
-    set_message_value(data->currentScore, 2);
+    set_message_int_var(seconds, 0);
+    set_message_int_var(deciseconds, 1);
+    set_message_int_var(data->curScore, 2);
 
-    outScore = data->currentScore;
-    if (data->currentScore == 0 && data->found == NUM_PANELS) {
+    outScore = data->curScore;
+    if (data->curScore == 0 && data->found == NUM_PANELS) {
         outScore = -1;
     }
     evt_set_variable(script, LVar0, outScore);
@@ -879,7 +880,7 @@ API_CALLABLE(N(UpdateRecords)) {
 
 API_CALLABLE(N(GiveCoinReward)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
-    s32 coinsLeft = data->currentScore;
+    s32 coinsLeft = data->curScore;
     s32 increment;
 
     if (coinsLeft > 100) {
@@ -898,11 +899,11 @@ API_CALLABLE(N(GiveCoinReward)) {
         increment = 1;
     }
 
-    data->currentScore -= increment;
+    data->curScore -= increment;
     add_coins(increment);
-    sfx_play_sound(SOUND_211);
+    sfx_play_sound(SOUND_COIN_PICKUP);
 
-    return (data->currentScore > 0) ? ApiStatus_BLOCK : ApiStatus_DONE2;
+    return (data->curScore > 0) ? ApiStatus_BLOCK : ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(CleanupGame)) {
@@ -910,7 +911,7 @@ API_CALLABLE(N(CleanupGame)) {
     SmashGameData* data = enemy->varTablePtr[SMASH_DATA_VAR_IDX];
     Npc* npc;
     u32 screenX, screenY,screenZ;
-    s32 writeback;
+    EffectInstance* writeback;
     s32 i;
 
     if (enemy->varTable[3] == 4) {
@@ -924,10 +925,10 @@ API_CALLABLE(N(CleanupGame)) {
                 continue;
             }
 
-            get_screen_coords(0, npc->pos.x, npc->pos.y, npc->pos.z, &screenX, &screenY, &screenZ);
+            get_screen_coords(CAM_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z, &screenX, &screenY, &screenZ);
             if (screenX - 1 < SCREEN_WIDTH - 1) {
                 fx_walking_dust(1, npc->pos.x, npc->pos.y, npc->pos.z, 0, 0);
-                sfx_play_sound(SOUND_283);
+                sfx_play_sound(SOUND_KOOPER_SHELL_KICK);
             }
             npc->flags |= NPC_FLAG_INVISIBLE;
             disable_npc_shadow(npc);
@@ -950,7 +951,7 @@ API_CALLABLE(N(CleanupGame)) {
                     if (data->box[i].state != BOX_STATE_FUZZY_END) {
                         data->box[i].state = BOX_STATE_FUZZY_END;
                         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, &writeback);
-                        npc->currentAnim = ANIM_Fuzzy_Sleep;
+                        npc->curAnim = ANIM_Fuzzy_Sleep;
                         enable_npc_shadow(npc);
                     }
                     break;
@@ -959,7 +960,7 @@ API_CALLABLE(N(CleanupGame)) {
                     if (data->box[i].state != BOX_STATE_BOMB_END) {
                         data->box[i].state = BOX_STATE_BOMB_END;
                         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, 0.0f, 30, &writeback);
-                        npc->currentAnim = ANIM_Bobomb_Anim1C;
+                        npc->curAnim = ANIM_Bobomb_Dizzy;
                         enable_npc_shadow(npc);
                     }
                     break;
@@ -978,8 +979,8 @@ API_CALLABLE(N(CreateMinigame)) {
     data->windowB_posX = SCREEN_WIDTH;
     data->timeLeft = PLAY_TIME;
 
-    status_menu_ignore_changes();
-    close_status_menu();
+    status_bar_ignore_changes();
+    close_status_bar();
 
     return ApiStatus_DONE2;
 }
@@ -1007,7 +1008,7 @@ API_CALLABLE(N(TakeCoinCost)) {
         script->functionTemp[0] = 0;
     }
     add_coins(-1);
-    sfx_play_sound(SOUND_211);
+    sfx_play_sound(SOUND_COIN_PICKUP);
 
     script->functionTemp[0]++;
     return (script->functionTemp[0] == PLAY_COST) ? ApiStatus_DONE2 : ApiStatus_BLOCK;
@@ -1767,7 +1768,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     EVT_END_THREAD
     EVT_CALL(EndSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 5)
     EVT_CALL(SetSelfVar, 3, 1)
-    EVT_CALL(PlaySoundWithVolume, SOUND_2108, 80)
+    EVT_CALL(PlaySoundWithVolume, SOUND_SPAWN_BLOCK, 80)
     EVT_EXEC(N(EVS_MakeAllBoxesAppear))
     EVT_EXEC(N(EVS_SetBoxContents))
     EVT_WAIT(25)
@@ -1805,7 +1806,7 @@ NpcData N(NpcData_GuideToad) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Toad),
     .settings = &N(NpcSettings_Toad_Stationary),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1816,18 +1817,18 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
     EVT_CALL(SetSelfVar, 0, 0)
     EVT_CALL(GetSelfNpcID, LVar0)
     EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(10)
-            EVT_CALL(SetSelfVar, 8, 817)
-        EVT_CASE_EQ(11)
-            EVT_CALL(SetSelfVar, 8, 818)
-        EVT_CASE_EQ(12)
-            EVT_CALL(SetSelfVar, 8, 819)
-        EVT_CASE_EQ(13)
-            EVT_CALL(SetSelfVar, 8, 817)
+        EVT_CASE_EQ(NPC_Fuzzy_01)
+            EVT_CALL(SetSelfVar, 8, SOUND_FUZZY_HOP_A)
+        EVT_CASE_EQ(NPC_Fuzzy_02)
+            EVT_CALL(SetSelfVar, 8, SOUND_FUZZY_HOP_B)
+        EVT_CASE_EQ(NPC_Fuzzy_03)
+            EVT_CALL(SetSelfVar, 8, SOUND_FUZZY_HOP_C)
+        EVT_CASE_EQ(NPC_Fuzzy_04)
+            EVT_CALL(SetSelfVar, 8, SOUND_FUZZY_HOP_A)
         EVT_CASE_DEFAULT
-            EVT_CALL(SetSelfVar, 8, 818)
+            EVT_CALL(SetSelfVar, 8, SOUND_FUZZY_HOP_B)
     EVT_END_SWITCH
-    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_8 | NPC_FLAG_JUMPING, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(RandInt, 100, LVar0)
@@ -1841,21 +1842,21 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
 };
 
 EvtScript N(EVS_NpcInit_Bobomb) = {
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Bobomb_Anim0B)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Bobomb_AngryIdle)
     EVT_CALL(SetSelfVar, 0, 0)
-    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_8 | NPC_FLAG_JUMPING, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(GetSelfNpcID, LVar0)
     EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(30)
-            EVT_CALL(SetSelfVar, 8, 812)
-        EVT_CASE_EQ(31)
-            EVT_CALL(SetSelfVar, 8, 813)
-        EVT_CASE_EQ(32)
-            EVT_CALL(SetSelfVar, 8, 812)
+        EVT_CASE_EQ(NPC_Bobomb_01)
+            EVT_CALL(SetSelfVar, 8, SOUND_NPC_JUMP)
+        EVT_CASE_EQ(NPC_Bobomb_02)
+            EVT_CALL(SetSelfVar, 8, SOUND_LOWER_NPC_JUMP)
+        EVT_CASE_EQ(NPC_Bobomb_03)
+            EVT_CALL(SetSelfVar, 8, SOUND_NPC_JUMP)
         EVT_CASE_DEFAULT
-            EVT_CALL(SetSelfVar, 8, 813)
+            EVT_CALL(SetSelfVar, 8, SOUND_LOWER_NPC_JUMP)
     EVT_END_SWITCH
     EVT_CALL(RandInt, 100, LVar0)
     EVT_IF_LT(LVar0, 50)
@@ -1870,7 +1871,7 @@ EvtScript N(EVS_NpcInit_Bobomb) = {
 EvtScript N(EVS_NpcInit_Luigi) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Jump)
     EVT_CALL(SetSelfVar, 0, 0)
-    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_8 | NPC_FLAG_JUMPING, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(EnableNpcShadow, NPC_SELF, FALSE)
     EVT_CALL(RandInt, 100, LVar0)
@@ -1889,7 +1890,7 @@ NpcData N(NpcData_Fuzzy_01) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Fuzzy),
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1901,7 +1902,7 @@ NpcData N(NpcData_Fuzzy_02) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Fuzzy),
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1913,7 +1914,7 @@ NpcData N(NpcData_Fuzzy_03) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Fuzzy),
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1925,7 +1926,7 @@ NpcData N(NpcData_Fuzzy_04) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Fuzzy),
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1937,7 +1938,7 @@ NpcData N(NpcData_Fuzzy_05) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Fuzzy),
     .settings = &N(NpcSettings_Fuzzy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = FUZZY_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1949,7 +1950,7 @@ NpcData N(NpcData_Bobomb_01) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bobomb),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1961,7 +1962,7 @@ NpcData N(NpcData_Bobomb_02) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bobomb),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1973,7 +1974,7 @@ NpcData N(NpcData_Bobomb_03) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bobomb),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1985,7 +1986,7 @@ NpcData N(NpcData_Bobomb_04) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bobomb),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -1997,7 +1998,7 @@ NpcData N(NpcData_Bobomb_05) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bobomb),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
     .drops = NO_DROPS,
     .animations = BOBOMB_ANIMS,
     .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2010,7 +2011,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2021,7 +2022,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2032,7 +2033,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2043,7 +2044,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2054,7 +2055,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2065,7 +2066,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2076,7 +2077,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2087,7 +2088,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2098,7 +2099,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,
@@ -2109,7 +2110,7 @@ NpcData N(NpcData_Luigis)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Luigi),
         .settings = &N(NpcSettings_Luigi),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
         .tattle = MSG_NpcTattle_MGM_SmashAttackGuide,

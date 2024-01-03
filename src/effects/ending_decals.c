@@ -38,12 +38,12 @@ void ending_decals_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 arg4, Effect
     bp.update = ending_decals_update;
     bp.renderWorld = ending_decals_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_ENDING_DECALS;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.endingDecals = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.endingDecals = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.endingDecals != NULL);
 
     data->type = type;
@@ -86,8 +86,8 @@ void ending_decals_init(EffectInstance* effect) {
 void ending_decals_update(EffectInstance* effect) {
     EndingDecalsFXData* data = effect->data.endingDecals;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_1C = 10;
     }
 
@@ -98,7 +98,7 @@ void ending_decals_update(EffectInstance* effect) {
     data->unk_20++;
 
     if (data->unk_1C < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -118,14 +118,14 @@ void ending_decals_render(EffectInstance* effect) {
 
     renderTask.appendGfxArg = effect;
     renderTask.appendGfx = ending_decals_appendGfx;
-    renderTask.distance = 10;
+    renderTask.dist = 10;
     if (data->type == 0) {
         renderTaskPtr->renderMode = RENDER_MODE_SURFACE_OPA;
     } else {
-        renderTaskPtr->renderMode = RENDER_MODE_2D;
+        renderTaskPtr->renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     }
 
-    retTask = shim_queue_render_task(renderTaskPtr);
+    retTask = queue_render_task(renderTaskPtr);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -145,8 +145,8 @@ void ending_decals_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 

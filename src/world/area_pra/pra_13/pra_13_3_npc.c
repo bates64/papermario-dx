@@ -1,5 +1,6 @@
 #include "pra_13.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/Bombette.h"
 #include "world/common/enemy/Duplighost.h"
@@ -7,7 +8,7 @@
 NpcSettings N(NpcSettings_Player) = {
     .height = 30,
     .radius = 45,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 #include "world/common/complete/KeyItemChoice.inc.c"
@@ -42,7 +43,7 @@ void N(worker_draw_fake_player)(void) {
 
         get_screen_coords(gCurrentCamID, npc->pos.x, npc->pos.y, -npc->pos.z, &x, &y, &z);
         rtPtr->renderMode = npc->renderMode;
-        rtPtr->distance = -z;
+        rtPtr->dist = -z;
         rtPtr->appendGfxArg = npc;
         rtPtr->appendGfx = N(appendGfx_fake_player);
         queue_render_task(rtPtr);
@@ -54,12 +55,12 @@ void N(appendGfx_fake_player)(void* data) {
     Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
 
     npc_get_render_yaw(npc);
-    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].currentYaw, 0.0f, 1.0f, 0.0f);
+    guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);
     guScaleF(mtxScale, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F, SPRITE_WORLD_SCALE_F);
     guMtxCatF(mtxTransform, mtxScale, mtxTransform);
     guTranslateF(mtxTranslate, npc->pos.x, npc->pos.y, npc->pos.z);
     guMtxCatF(mtxTransform, mtxTranslate, mtxTransform);
-    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->currentAnim, 1.0f);
+    spr_update_player_sprite(PLAYER_SPRITE_AUX2, npc->curAnim, 1.0f);
     spr_draw_player_sprite(PLAYER_SPRITE_AUX2, 0, 0, 0, mtxTransform);
 }
 
@@ -99,7 +100,7 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
                 EVT_CALL(SetNpcPos, NPC_FakeMario, NPC_DISPOSE_LOCATION)
                 EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
                 EVT_CALL(SetNpcPos, NPC_Duplighost_01, LVar0, LVar1, LVar2)
-                EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, 0)
+                EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
                 EVT_CALL(SetNpcFlagBits, NPC_Duplighost_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 EVT_SET(LVar4, 2)
                 EVT_CALL(SetNpcYaw, NPC_Duplighost_01, 90)
@@ -113,7 +114,7 @@ EvtScript N(EVS_Scene_ImpostersCaught) = {
                 EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
                 EVT_CALL(SetNpcPos, NPC_FakeBombette, 389, 0, -61)
                 EVT_CALL(SetNpcPos, NPC_Duplighost_02, LVar0, LVar1, LVar2)
-                EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, 0)
+                EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
                 EVT_CALL(SetNpcFlagBits, NPC_FakeBombette, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_HAS_NO_SPRITE, TRUE)
                 EVT_CALL(SetNpcFlagBits, NPC_Duplighost_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 EVT_SET(LVar4, 3)
@@ -146,12 +147,12 @@ EvtScript N(EVS_Scene_DefeatImposters) = {
     EVT_CALL(InterpNpcYaw, NPC_Duplighost_02, 270, 0)
     EVT_WAIT(15)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_2CB, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Anim04)
         EVT_CALL(NpcMoveTo, NPC_Duplighost_01, 0, -70, 45)
         EVT_CALL(SetNpcPos, NPC_Duplighost_01, NPC_DISPOSE_LOCATION)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_2CB, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Anim04)
     EVT_CALL(NpcMoveTo, NPC_Duplighost_02, -30, -70, 45)
     EVT_CALL(SetNpcPos, NPC_Duplighost_02, -30, -1000, 0)
@@ -225,7 +226,7 @@ NpcData N(NpcData_FakeMario) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_FakeMario),
     .settings = &N(NpcSettings_Player),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = BOMBETTE_ANIMS,
 };
@@ -237,7 +238,7 @@ NpcData N(NpcData_Imposters)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_FakeBombette),
         .settings = &N(NpcSettings_Player),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },

@@ -3,11 +3,6 @@
 #include "nu/nusys.h"
 #include "ld_addrs.h"
 
-#if VERSION_IQUE
-// TODO: remove if section is split in iQue release
-extern Addr icon_present_ROM_START;
-#endif
-
 #define MAX_HUD_CACHE_ENTRIES 192
 
 typedef struct HudElementSize {
@@ -103,25 +98,25 @@ Vtx D_8014F0C8[] = {
     }
 };
 
-Lights1 D_8014F108 = gdSPDefLights1(255, 255, 255, 0, 0, 0, 0, 0, 0);
+Lights1 HudElementLights = gdSPDefLights1(255, 255, 255, 0, 0, 0, 0, 0, 0);
 
-extern s32 gHudElementsNumber;
-extern s32 D_80159180;
-extern HudElementList* gHudElements;
-extern HudElementList gHudElementsWorld;
-extern HudElementList gHudElementsBattle;
-extern s32* gHudElementCacheSize;
-extern s32 gHudElementCacheSizeWorld;
-extern s32 gHudElementCacheSizeBattle;
-extern HudCacheEntry* gHudElementCacheTableRaster;
-extern HudCacheEntry* gHudElementCacheTablePalette;
-extern HudCacheEntry gHudElementCacheTableRasterWorld[];
-extern HudCacheEntry gHudElementCacheTablePaletteWorld[];
-extern HudCacheEntry gHudElementCacheTableRasterBattle[];
-extern HudCacheEntry gHudElementCacheTablePaletteBattle[];
-extern u8* gHudElementCacheBufferWorld;
-extern u8* gHudElementCacheBufferBattle;
-extern u8* gHudElementCacheBuffer;
+SHIFT_BSS s32 gHudElementsNumber;
+SHIFT_BSS s32 D_80159180;
+SHIFT_BSS HudElementList* gHudElements;
+SHIFT_BSS HudElementList gHudElementsWorld;
+SHIFT_BSS HudElementList gHudElementsBattle;
+SHIFT_BSS s32* gHudElementCacheSize;
+SHIFT_BSS s32 gHudElementCacheSizeWorld;
+SHIFT_BSS s32 gHudElementCacheSizeBattle;
+SHIFT_BSS HudCacheEntry* gHudElementCacheTableRaster;
+SHIFT_BSS HudCacheEntry* gHudElementCacheTablePalette;
+SHIFT_BSS HudCacheEntry gHudElementCacheTableRasterWorld[192];
+SHIFT_BSS HudCacheEntry gHudElementCacheTablePaletteWorld[192];
+SHIFT_BSS HudCacheEntry gHudElementCacheTableRasterBattle[192];
+SHIFT_BSS HudCacheEntry gHudElementCacheTablePaletteBattle[192];
+SHIFT_BSS u8* gHudElementCacheBufferWorld;
+SHIFT_BSS u8* gHudElementCacheBufferBattle;
+SHIFT_BSS u8* gHudElementCacheBuffer;
 
 void func_801413F8(void);
 
@@ -198,7 +193,7 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
                             capacity = gHudElementCacheCapacity / 2;
                         }
                         ASSERT(capacity > *gHudElementCacheSize + gHudElementSizes[preset].size);
-                        nuPiReadRom((s32)icon_present_ROM_START + raster, entry->data, gHudElementSizes[preset].size);
+                        nuPiReadRom((s32)icon_ROM_START + raster, entry->data, gHudElementSizes[preset].size);
                         *gHudElementCacheSize += gHudElementSizes[preset].size;
                         if (!gGameStatusPtr->isBattle) {
                             *pos = i;
@@ -234,7 +229,7 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
                             capacity = gHudElementCacheCapacity / 2;
                         }
                         ASSERT(capacity > *gHudElementCacheSize + 32);
-                        nuPiReadRom((s32)icon_present_ROM_START + palette, entry->data, 32);
+                        nuPiReadRom((s32)icon_ROM_START + palette, entry->data, 32);
                         *gHudElementCacheSize += 32;
                         if (!gGameStatusPtr->isBattle) {
                             *pos = i;
@@ -486,7 +481,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                     if (!(hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT)) {
                         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
                     } else {
-                        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0);
+                        gDPSetCombineMode(gMainGfxPos++, PM_CC_01, PM_CC_02);
                     }
 
                     if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
@@ -504,9 +499,9 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                 case 1:
                     if (!dropShadow) {
                         if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
-                            gDPSetCombineLERP(gMainGfxPos++, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, PRIMITIVE, 0);
+                            gDPSetCombineMode(gMainGfxPos++, PM_CC_2F, PM_CC_32);
                         } else {
-                            gDPSetCombineLERP(gMainGfxPos++, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, PRIMITIVE, 0);
+                            gDPSetCombineMode(gMainGfxPos++, PM_CC_2F, PM_CC_32);
                         }
 
                         if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
@@ -516,7 +511,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                         }
                     } else {
                         gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-                        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
+                        gDPSetCombineMode(gMainGfxPos++, PM_CC_07, PM_CC_07);
                         gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, 72);
                     }
 
@@ -550,7 +545,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                     }
                     break;
                 case 2:
-                    gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, 0, TEXEL0, 0);
+                    gDPSetCombineMode(gMainGfxPos++, PM_CC_47, PM_CC_47);
                     gDPSetPrimColor(gMainGfxPos++, 0, 0, hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, hudElement->opacity);
 
                     if (!flipX && !flipY) {
@@ -661,10 +656,20 @@ void hud_element_clear_cache(void) {
     func_801413F8();
 }
 
+#if VERSION_PAL
+extern Addr D_80200000;
+#endif
+
 void init_hud_element_list(void) {
     if (!gGameStatusPtr->isBattle) {
         if (gHudElementCacheBufferBattle != NULL) {
+#if VERSION_PAL
+            if (gHudElementCacheBufferBattle != D_80200000) {
+                general_heap_free(gHudElementCacheBufferBattle);
+            }
+#else
             general_heap_free(gHudElementCacheBufferBattle);
+#endif
             gHudElementCacheBufferBattle = NULL;
         }
 
@@ -688,7 +693,7 @@ void init_hud_element_list(void) {
 void func_801413F8(void) {
     set_cam_viewport(CAM_3, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
     gCameras[CAM_3].updateMode = CAM_UPDATE_MODE_2;
-    gCameras[CAM_3].unk_06 = TRUE;
+    gCameras[CAM_3].needsInit = TRUE;
     gCameras[CAM_3].lookAt_dist = 15551;
     gCameras[CAM_3].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_3].auxPitch = 0;
@@ -702,7 +707,7 @@ void func_801413F8(void) {
     gCameras[CAM_3].lookAt_obj_target.x = 160.0f;
     gCameras[CAM_3].lookAt_obj_target.y = -120.0f;
     gCameras[CAM_3].vfov = 1.0f;
-    gCameras[CAM_3].flags &= ~0x6;
+    gCameras[CAM_3].flags &= ~(CAMERA_FLAG_DISABLED | CAMERA_FLAG_LEAD_PLAYER);
 }
 
 s32 hud_element_create(HudScript* anim) {
@@ -1417,7 +1422,7 @@ void render_hud_element(HudElement* hudElement) {
     Matrix4f sp1E0;
     Matrix4f sp220;
     Matrix4f sp260;
-    FoldImageRecPart sp2A0;
+    ImgFXTexture ifxImg;
     f32 xScaleFactor, yScaleFactor;
     s32 height, width;
     HudTransform* transform;
@@ -1467,16 +1472,16 @@ void render_hud_element(HudElement* hudElement) {
     guTranslateF(sp220, -transform->pivot.x, transform->pivot.y, 0.0f);
     guTranslateF(
         sp1A0,
-        hudElement->renderPosX + hudElement->screenPosOffset.x + hudElement->worldPosOffset.x + transform->position.x,
-        -hudElement->renderPosY - hudElement->screenPosOffset.y + hudElement->worldPosOffset.y + transform->position.y,
-        - (hudElement->worldPosOffset.z / 10.0) + transform->position.z
+        hudElement->renderPosX + hudElement->screenPosOffset.x + hudElement->worldPosOffset.x + transform->pos.x,
+        -hudElement->renderPosY - hudElement->screenPosOffset.y + hudElement->worldPosOffset.y + transform->pos.y,
+        - (hudElement->worldPosOffset.z / 10.0) + transform->pos.z
     );
     guScaleF(sp260, hudElement->uniformScale * xScaleFactor * transform->scale.x,
                     hudElement->uniformScale * yScaleFactor * transform->scale.y,
                     transform->scale.z);
-    guRotateF(sp120, transform->rotation.y, 0.0f, 1.0f, 0.0f);
-    guRotateF(sp160, transform->rotation.z, 0.0f, 0.0f, 1.0f);
-    guRotateF(spE0, transform->rotation.x, 1.0f, 0.0f, 0.0f);
+    guRotateF(sp120, transform->rot.y, 0.0f, 1.0f, 0.0f);
+    guRotateF(sp160, transform->rot.z, 0.0f, 0.0f, 1.0f);
+    guRotateF(spE0, transform->rot.x, 1.0f, 0.0f, 0.0f);
     guMtxCatF(sp160, spE0, sp20);
     guMtxCatF(sp20, sp120, spA0);
     guMtxCatF(sp260, sp1E0, sp20);
@@ -1511,35 +1516,35 @@ void render_hud_element(HudElement* hudElement) {
         case 1:
             if (hudElement->flags & HUD_ELEMENT_FLAG_NO_FOLD) {
                 if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
-                    fold_update(0, FOLD_TYPE_7, 255, 255, 255, hudElement->opacity, 0);
+                    imgfx_update(0, IMGFX_SET_ALPHA, 255, 255, 255, hudElement->opacity, 0);
                 } else {
-                    fold_update(0, FOLD_TYPE_NONE, 0, 0, 0, 0, 0);
+                    imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, 0);
                 }
             } else {
                 if (hudElement->flags & HUD_ELEMENT_FLAG_TRANSPARENT) {
-                    fold_update(transform->foldIdx, FOLD_TYPE_7, 255, 255, 255, hudElement->opacity, 0);
+                    imgfx_update(transform->imgfxIdx, IMGFX_SET_ALPHA, 255, 255, 255, hudElement->opacity, 0);
                 } else {
-                    fold_update(transform->foldIdx, FOLD_TYPE_NONE, 0, 0, 0, 0, 0);
+                    imgfx_update(transform->imgfxIdx, IMGFX_CLEAR, 0, 0, 0, 0, 0);
                 }
             }
 
-            sp2A0.raster = hudElement->imageAddr;
+            ifxImg.raster = hudElement->imageAddr;
             palette = (u16*) hudElement->paletteAddr;
-            sp2A0.width = width;
-            sp2A0.height = height;
-            sp2A0.xOffset = -width / 2;
-            sp2A0.yOffset = height / 2;
-            sp2A0.opacity = 255;
-            sp2A0.palette = palette;
+            ifxImg.width = width;
+            ifxImg.height = height;
+            ifxImg.xOffset = -width / 2;
+            ifxImg.yOffset = height / 2;
+            ifxImg.alpha = 255;
+            ifxImg.palette = palette;
 
             if (hudElement->flags & HUD_ELEMENT_FLAG_NO_FOLD) {
                 if (hudElement->flags & HUD_ELEMENT_FLAG_ANTIALIASING) {
-                    fold_appendGfx_component(0, &sp2A0, 0x40, sp60);
+                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, sp60);
                 } else {
-                    fold_appendGfx_component(0, &sp2A0, 0x40, sp60);
+                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, sp60);
                 }
             } else {
-                fold_appendGfx_component(transform->foldIdx, &sp2A0, 0x40, sp60);
+                imgfx_appendGfx_component(transform->imgfxIdx, &ifxImg, IMGFX_FLAG_40, sp60);
             }
             break;
         case 2:
@@ -1574,8 +1579,7 @@ void render_hud_element(HudElement* hudElement) {
             vtx[3].v.tc[1] = 0;
 
             gDPPipeSync(gMainGfxPos++);
-            gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, PRIMITIVE, 0,
-                              PRIMITIVE, 0, TEXEL0, 0);
+            gDPSetCombineMode(gMainGfxPos++, PM_CC_47, PM_CC_47);
             gDPSetPrimColor(gMainGfxPos++, 0, 0,
                             hudElement->tint.r, hudElement->tint.g, hudElement->tint.b, hudElement->opacity);
 
@@ -1608,12 +1612,14 @@ void render_hud_element(HudElement* hudElement) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-void render_hud_elements_world(void) {
+void render_transformed_hud_elements(void) {
     s32 i, count, j;
     s32 sortedElements[ARRAY_COUNT(*gHudElements)];
     s32 el1, el2;
     HudElement* hudElement;
     s16 tempOffsetZ;
+    s32 flags;
+    s32 z1, z2;
 
     // TODO fix this terrible match
     do {
@@ -1622,20 +1628,33 @@ void render_hud_elements_world(void) {
             if (gCurrentCamID == CAM_3) {
                 for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
                     hudElement = (*gHudElements)[i];
-                    if (hudElement != NULL) {
-                        s32 flags = hudElement->flags;
-                        if (flags && !(flags & HUD_ELEMENT_FLAG_DISABLED)) {
-                            if (!(flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000))) {
-                                if (flags & HUD_ELEMENT_FLAG_TRANSFORM) {
-                                    if (!(flags & HUD_ELEMENT_FLAG_40000000)) {
-                                        if (!(flags & HUD_ELEMENT_FLAG_FRONTUI) && hudElement->drawSizePreset >= 0 && !(flags & HUD_ELEMENT_FLAG_80)) {
-                                            sortedElements[count++] = i;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (hudElement == NULL) {
+                        continue;
                     }
+
+                    flags = hudElement->flags;
+                    if (flags == 0 || flags & HUD_ELEMENT_FLAG_DISABLED) {
+                        continue;
+                    }
+
+                    if (flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000)) {
+                        continue;
+                    }
+
+                    if (!(flags & HUD_ELEMENT_FLAG_TRANSFORM)) {
+                        continue;
+                    }
+
+                    if (flags & HUD_ELEMENT_FLAG_40000000) {
+                        continue;
+                    }
+
+                    if (flags & HUD_ELEMENT_FLAG_FRONTUI || hudElement->drawSizePreset < 0 || flags & HUD_ELEMENT_FLAG_80) {
+                        continue;
+                    }
+
+                    // add element to list
+                    sortedElements[count++] = i;
                 }
 
                 if (count != 0) {
@@ -1656,7 +1675,7 @@ void render_hud_elements_world(void) {
                     gDPPipeSync(gMainGfxPos++);
                     gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
                     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
-                    gSPSetLights1(gMainGfxPos++, D_8014F108);
+                    gSPSetLights1(gMainGfxPos++, HudElementLights);
                     gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
                     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
                     gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
@@ -1666,24 +1685,39 @@ void render_hud_elements_world(void) {
                     }
                 }
             }
+
             count = 0;
             if (gCurrentCamID == CAM_BATTLE) {
                 for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
                     hudElement = (*gHudElements)[i];
-                    if (hudElement != NULL) {
-                        s32 flags = hudElement->flags;
-                        if (flags && !(flags & HUD_ELEMENT_FLAG_DISABLED)) {
-                            if (!(flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000))) {
-                                if (flags & HUD_ELEMENT_FLAG_TRANSFORM) {
-                                    if (flags & HUD_ELEMENT_FLAG_40000000) {
-                                        if (!(flags & HUD_ELEMENT_FLAG_FRONTUI) && hudElement->drawSizePreset >= 0 && !(flags & HUD_ELEMENT_FLAG_80)) {
-                                            sortedElements[count++] = i;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (hudElement == NULL) {
+                        continue;
                     }
+
+                    flags = hudElement->flags;
+                    if (flags == 0 || flags & HUD_ELEMENT_FLAG_DISABLED) {
+                        continue;
+                    }
+
+                    if (flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000)) {
+                        continue;
+                    }
+
+                    if (!(flags & HUD_ELEMENT_FLAG_TRANSFORM)) {
+                        continue;
+                    }
+
+                    // different from CAM_3 pass
+                    if (!(flags & HUD_ELEMENT_FLAG_40000000)) {
+                        continue;
+                    }
+
+                    if (flags & HUD_ELEMENT_FLAG_FRONTUI || hudElement->drawSizePreset < 0 || flags & HUD_ELEMENT_FLAG_80) {
+                        continue;
+                    }
+
+                    // add element to list
+                    sortedElements[count++] = i;
                 }
 
                 if (count != 0) {
@@ -1704,7 +1738,7 @@ void render_hud_elements_world(void) {
                     gDPPipeSync(gMainGfxPos++);
                     gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
                     gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
-                    gSPSetLights1(gMainGfxPos++, D_8014F108);
+                    gSPSetLights1(gMainGfxPos++, HudElementLights);
                     gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
                     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
                     gSPSetOtherMode(gMainGfxPos++, G_SETOTHERMODE_H, G_MDSFT_ALPHADITHER, 18, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE | G_TD_CLAMP | G_TP_PERSP | G_CYC_1CYCLE);
@@ -1722,7 +1756,7 @@ void func_80143C48(s32 elemID, s32 arg1, s32 camID) {
     Camera* camera = &gCameras[camID];
 
     if (arg1 > 0) {
-        if (!camera->flags || (camera->flags & CAMERA_FLAG_ENABLED)) {
+        if (camera->flags == 0 || (camera->flags & CAMERA_FLAG_DISABLED)) {
             return;
         }
 
@@ -1762,7 +1796,7 @@ void func_80143C48(s32 elemID, s32 arg1, s32 camID) {
         gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING |
                                                 G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
         gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER | G_SHADE | G_LIGHTING | G_SHADING_SMOOTH);
-        gSPSetLights1(gMainGfxPos++, D_8014F108);
+        gSPSetLights1(gMainGfxPos++, HudElementLights);
         gSPTexture(gMainGfxPos++, -1, -1, 0, G_TX_RENDERTILE, G_ON);
         gDPSetTextureLOD(gMainGfxPos++, G_TL_TILE);
         gDPSetTexturePersp(gMainGfxPos++, G_TP_PERSP);
@@ -1779,34 +1813,44 @@ void func_80143C48(s32 elemID, s32 arg1, s32 camID) {
         elemID &= ~HUD_ELEMENT_BATTLE_ID_MASK;
         elem = (*gHudElements)[elemID];
 
-        if (elem != NULL) {
-            if (elem->flags && !(elem->flags & HUD_ELEMENT_FLAG_DISABLED)) {
-                if (!(elem->flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000))) {
-                    if (elem->flags & HUD_ELEMENT_FLAG_TRANSFORM) {
-                        if (!(elem->flags & HUD_ELEMENT_FLAG_FRONTUI) && (elem->drawSizePreset >= 0) && (elem->flags & HUD_ELEMENT_FLAG_80)) {
-                            render_hud_element(elem);
-                        }
-                    }
-                }
-            }
+        if (elem == NULL) {
+            return;
         }
+
+        if (elem->flags == 0 || elem->flags & HUD_ELEMENT_FLAG_DISABLED) {
+            return;
+        }
+
+        if (elem->flags & (HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_10000000)) {
+            return;
+        }
+
+        if (!(elem->flags & HUD_ELEMENT_FLAG_TRANSFORM)) {
+            return;
+        }
+
+        if (elem->flags & HUD_ELEMENT_FLAG_FRONTUI || elem->drawSizePreset < 0 || !(elem->flags & HUD_ELEMENT_FLAG_80)) {
+            return;
+        }
+
+        render_hud_element(elem);
     }
 }
 
-void func_80144218(s32 arg0) {
-    func_80143C48(arg0, 1, CAM_3);
+void func_80144218(s32 id) {
+    func_80143C48(id, 1, CAM_3);
 }
 
-void func_80144238(s32 arg0) {
-    func_80143C48(arg0, 0, CAM_3);
+void func_80144238(s32 id) {
+    func_80143C48(id, 0, CAM_3);
 }
 
-void func_80144258(s32 arg0) {
-    func_80143C48(arg0, 1, CAM_BATTLE);
+void func_80144258(s32 id) {
+    func_80143C48(id, 1, CAM_BATTLE);
 }
 
-void func_80144278(s32 arg0) {
-    func_80143C48(arg0, 0, CAM_BATTLE);
+void func_80144278(s32 id) {
+    func_80143C48(id, 0, CAM_BATTLE);
 }
 
 void draw_hud_element_internal(s32 id, s32 clipMode) {
@@ -2116,13 +2160,13 @@ void hud_element_create_transform_A(s32 id) {
     element->hudTransform = transform;
     ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_TRANSFORM;
-    transform->foldIdx = func_8013A704(1);
-    transform->position.x = 0.0f;
-    transform->position.y = 0.0f;
-    transform->position.z = 0.0f;
-    transform->rotation.x = 0.0f;
-    transform->rotation.y = 0.0f;
-    transform->rotation.z = 0.0f;
+    transform->imgfxIdx = imgfx_get_free_instances(1);
+    transform->pos.x = 0.0f;
+    transform->pos.y = 0.0f;
+    transform->pos.z = 0.0f;
+    transform->rot.x = 0.0f;
+    transform->rot.y = 0.0f;
+    transform->rot.z = 0.0f;
     transform->scale.x = 1.0f;
     transform->scale.y = 1.0f;
     transform->scale.z = 1.0f;
@@ -2138,13 +2182,13 @@ void hud_element_create_transform_B(s32 id) {
     element->hudTransform = transform;
     ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_TRANSFORM | HUD_ELEMENT_FLAG_NO_FOLD;
-    transform->foldIdx = 0;
-    transform->position.x = 0.0f;
-    transform->position.y = 0.0f;
-    transform->position.z = 0.0f;
-    transform->rotation.x = 0.0f;
-    transform->rotation.y = 0.0f;
-    transform->rotation.z = 0.0f;
+    transform->imgfxIdx = 0;
+    transform->pos.x = 0.0f;
+    transform->pos.y = 0.0f;
+    transform->pos.z = 0.0f;
+    transform->rot.x = 0.0f;
+    transform->rot.y = 0.0f;
+    transform->rot.z = 0.0f;
     transform->scale.x = 1.0f;
     transform->scale.y = 1.0f;
     transform->scale.z = 1.0f;
@@ -2158,13 +2202,13 @@ void hud_element_create_transform_C(s32 id) {
     element->hudTransform = transform;
     ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_40000000 | HUD_ELEMENT_FLAG_NO_FOLD | HUD_ELEMENT_FLAG_TRANSFORM;
-    transform->foldIdx = 0;
-    transform->position.x = 0.0f;
-    transform->position.y = 0.0f;
-    transform->position.z = 0.0f;
-    transform->rotation.x = 0.0f;
-    transform->rotation.y = 0.0f;
-    transform->rotation.z = 0.0f;
+    transform->imgfxIdx = 0;
+    transform->pos.x = 0.0f;
+    transform->pos.y = 0.0f;
+    transform->pos.z = 0.0f;
+    transform->rot.x = 0.0f;
+    transform->rot.y = 0.0f;
+    transform->rot.z = 0.0f;
     transform->scale.x = 1.0f;
     transform->scale.y = 1.0f;
     transform->scale.z = 1.0f;
@@ -2176,7 +2220,7 @@ void hud_element_free_transform(s32 id) {
     HudTransform* hudTransform = hudElement->hudTransform;
 
     if (!(hudElement->flags & HUD_ELEMENT_FLAG_NO_FOLD)) {
-        func_8013A854(hudTransform->foldIdx);
+        imgfx_release_instance(hudTransform->imgfxIdx);
     }
 
     heap_free(hudElement->hudTransform);
@@ -2189,9 +2233,9 @@ void hud_element_set_transform_pos(s32 id, f32 x, f32 y, f32 z) {
     HudTransform* transform = element->hudTransform;
 
     if (element->flags & HUD_ELEMENT_FLAG_TRANSFORM) {
-        transform->position.x = x;
-        transform->position.y = y;
-        transform->position.z = z;
+        transform->pos.x = x;
+        transform->pos.y = y;
+        transform->pos.z = z;
     }
 }
 
@@ -2211,9 +2255,9 @@ void hud_element_set_transform_rotation(s32 id, f32 x, f32 y, f32 z) {
     HudTransform* transform = element->hudTransform;
 
     if (element->flags & HUD_ELEMENT_FLAG_TRANSFORM) {
-        transform->rotation.x = x;
-        transform->rotation.y = y;
-        transform->rotation.z = z;
+        transform->rot.x = x;
+        transform->rot.y = y;
+        transform->rot.z = z;
     }
 }
 

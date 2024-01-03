@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "effects.h"
 #include "model.h"
+#include "sprite/player.h"
 
 s32 N(TargetBackgroundColR) = 0;
 s32 N(TargetBackgroundColG) = 0;
@@ -13,9 +14,9 @@ API_CALLABLE(N(UpdateHouseShowHide)) {
     s32 temp_a2;
 
     if (isInitialCall) {
-        func_8011B950(script->varTable[1], CUSTOM_GFX_NONE, FOG_MODE_1, 1);
+        mdl_group_set_custom_gfx(script->varTable[1], CUSTOM_GFX_NONE, ENV_TINT_SHROUD, TRUE);
         script->functionTemp[0] = 0;
-        get_background_color_blend(&r, &g, &b, &a);
+        mdl_get_shroud_tint_params(&r, &g, &b, &a);
         if ((script->varTable[0] == 0 && a == 255) || (script->varTable[0] == 1 && a == 0)) {
             return ApiStatus_DONE2;
         }
@@ -31,7 +32,7 @@ API_CALLABLE(N(UpdateHouseShowHide)) {
         alpha = ~script->functionTemp[0];
     }
     a = alpha;
-    set_background_color_blend(0, 0, 0, a);
+    mdl_set_shroud_tint_params(0, 0, 0, a);
     r = (N(TargetBackgroundColR) * (255 - a)) / 255;
     g = (N(TargetBackgroundColG) * (255 - a)) / 255;
     b = (N(TargetBackgroundColB) * (255 - a)) / 255;
@@ -40,7 +41,7 @@ API_CALLABLE(N(UpdateHouseShowHide)) {
     gCameras[CAM_DEFAULT].bgColor[2] = b;
     if (script->functionTemp[0] >= 255) {
         if (script->varTable[0] == 1) {
-            func_8011B950(script->varTable[1], CUSTOM_GFX_NONE, FOG_MODE_0, 1);
+            mdl_group_set_custom_gfx(script->varTable[1], CUSTOM_GFX_NONE, ENV_TINT_NONE, TRUE);
         }
 
         return ApiStatus_DONE2;
@@ -63,8 +64,8 @@ API_CALLABLE(N(SetEntityHideMode0)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnsetCamera0MoveFlag1.inc.c"
-#include "world/common/todo/SetCamera0MoveFlag1.inc.c"
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
+#include "world/common/DisableCameraFollowPlayerY.inc.c"
 
 API_CALLABLE(N(MovePlayerAlongRoofSlide)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -79,16 +80,16 @@ API_CALLABLE(N(MovePlayerAlongRoofSlide)) {
     script->functionTemp[1] += 4;
     xComp = (script->functionTemp[1] / 10) * sin_deg(playerStatus->targetYaw);
     zComp = (script->functionTemp[1] / 10) * -cos_deg(playerStatus->targetYaw);
-    x = playerStatus->position.x + xComp;
-    y = playerStatus->position.y + playerStatus->colliderHeight * 0.5f;
-    z = playerStatus->position.z + zComp;
+    x = playerStatus->pos.x + xComp;
+    y = playerStatus->pos.y + playerStatus->colliderHeight * 0.5f;
+    z = playerStatus->pos.z + zComp;
     hitDepth = 500.0f;
 
     if (npc_raycast_down_sides(0, &x, &y, &z, &hitDepth)) {
         if (hitDepth < 100.0f) {
-            playerStatus->position.x = x;
-            playerStatus->position.y = y;
-            playerStatus->position.z = z;
+            playerStatus->pos.x = x;
+            playerStatus->pos.y = y;
+            playerStatus->pos.z = z;
             return ApiStatus_BLOCK;
         }
     }
@@ -107,10 +108,10 @@ API_CALLABLE(N(IsPlayerInputDisabled)) {
 API_CALLABLE(N(MonitorCurrenFloor)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    if (playerStatus->lastGoodPosition.y == 385) {
+    if (playerStatus->lastGoodPos.y == 385) {
         evt_set_variable(script, MV_CurrentFloor, 0);
     }
-    if (playerStatus->lastGoodPosition.y == 150) {
+    if (playerStatus->lastGoodPos.y == 150) {
         evt_set_variable(script, MV_CurrentFloor, 1);
     }
     return ApiStatus_BLOCK;
@@ -193,19 +194,19 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
     EVT_WAIT(1)
     EVT_CALL(SetZoneEnabled, ZONE_gon, FALSE)
     EVT_CALL(SetZoneEnabled, ZONE_sou, FALSE)
-    EVT_CALL(N(UnsetCamera0MoveFlag1))
+    EVT_CALL(N(EnableCameraFollowPlayerY))
     EVT_SET(LVar3, 500)
     EVT_EXEC_GET_TID(N(EVS_TetherCamToPlayerCappedY), LVarA)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_167, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SLIDE, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(MovePlayerAlongRoofSlide))
-    EVT_CALL(StopSound, SOUND_167)
+    EVT_CALL(StopSound, SOUND_SLIDE)
     EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(0.5))
     EVT_CALL(PlayerJump, -150, 325, -300, 40)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 1, 5, EVT_FLOAT(1.0))
     EVT_CALL(SetZoneEnabled, ZONE_s, TRUE)
     EVT_CALL(SetZoneEnabled, ZONE_gon, TRUE)
     EVT_CALL(SetZoneEnabled, ZONE_sou, TRUE)
-    EVT_CALL(N(SetCamera0MoveFlag1))
+    EVT_CALL(N(DisableCameraFollowPlayerY))
     EVT_KILL_THREAD(LVarA)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(DisablePlayerPhysics, FALSE)
@@ -215,7 +216,7 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
 };
 
 EvtScript N(EVS_SpawnChimneySmokeAtPlayer) = {
-    EVT_CALL(PlaySoundAtPlayer, SOUND_F5, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_FIREPLACE_BURST, SOUND_SPACE_DEFAULT)
     EVT_THREAD
         EVT_CALL(GetPlayerPos, LVar1, LVar2, LVar3)
         EVT_PLAY_EFFECT(EFFECT_LANDING_DUST, 4, LVar1, LVar2, LVar3, 0)
@@ -281,7 +282,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     EVT_CALL(SetPlayerPos, NPC_DISPOSE_LOCATION)
     EVT_CALL(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EVT_WAIT(20)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_162, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_TRIP, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 1, 10, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_CALL(SetNpcPos, NPC_PARTNER, -214, 150, -375)

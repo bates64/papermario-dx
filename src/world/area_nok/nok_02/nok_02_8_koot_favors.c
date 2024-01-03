@@ -61,7 +61,7 @@ KootFavor N(KootFavorData)[] = {
         .unlockedFlag = GF_NOK02_KootFavor04_Unlocked,
         .gaveUpFlag   = GF_NOK02_KootFavor04_GaveUp,
         .completeFlag = GF_NOK02_KootFavor04_Complete,
-        .requiredItem = ITEM_KOOT_LUIGIS_AUTOGRAPH,
+        .requiredItem = ITEM_KOOT_LUIGI_AUTOGRAPH,
     },
     [KOOT_FAVOR_CH3_1] {
         .requestMsg = MSG_KootFavor_000F,
@@ -88,7 +88,7 @@ KootFavor N(KootFavorData)[] = {
         .unlockedFlag = GF_NOK02_KootFavor07_Unlocked,
         .gaveUpFlag   = GF_NOK02_KootFavor07_GaveUp,
         .completeFlag = GF_NOK02_KootFavor07_Complete,
-        .requiredItem = ITEM_KOOT_MERLUVLEES_AUTOGRAPH,
+        .requiredItem = ITEM_KOOT_MERLUVLEE_AUTOGRAPH,
     },
     [KOOT_FAVOR_CH4_1] {
         .requestMsg = MSG_KootFavor_0018,
@@ -396,7 +396,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 EVT_CALL(N(GetFavorMessages), GB_KootFavor_Current)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar2)
                 EVT_CALL(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
-                EVT_CALL(ShowGotItem, ITEM_STAR_PIECE, TRUE, 32)
+                EVT_CALL(ShowGotItem, ITEM_STAR_PIECE, TRUE, ITEM_PICKUP_FLAG_3_STAR_PIECES)
                 EVT_CALL(AddStarPieces, 3)
             EVT_END_IF
             EVT_SWITCH(GB_KootFavor_Completed)

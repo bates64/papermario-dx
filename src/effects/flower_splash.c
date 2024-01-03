@@ -12,26 +12,26 @@ void flower_splash_update_part_transform(FlowerFXData* effect) {
     Matrix4f transformMtx;
     Matrix4f tempMtx;
 
-    shim_guRotateF(transformMtx, effect->rot.x, 1.0f, 0.0f, 0.0f);
-    shim_guRotateF(tempMtx, effect->rot.z, 0.0f, 0.0f, 1.0f);
-    shim_guMtxCatF(tempMtx, transformMtx, transformMtx);
-    shim_guRotateF(tempMtx, effect->rot.y, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(transformMtx, tempMtx, transformMtx);
-    shim_guScaleF(tempMtx, effect->scale.x, effect->scale.y, effect->scale.z);
-    shim_guMtxCatF(tempMtx, transformMtx, transformMtx);
-    shim_guTranslateF(tempMtx, effect->pos.x, effect->pos.y, effect->pos.z);
-    shim_guMtxCatF(transformMtx, tempMtx, transformMtx);
-    shim_guMtxF2L(transformMtx, &effect->transformMtx);
+    guRotateF(transformMtx, effect->rot.x, 1.0f, 0.0f, 0.0f);
+    guRotateF(tempMtx, effect->rot.z, 0.0f, 0.0f, 1.0f);
+    guMtxCatF(tempMtx, transformMtx, transformMtx);
+    guRotateF(tempMtx, effect->rot.y, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(transformMtx, tempMtx, transformMtx);
+    guScaleF(tempMtx, effect->scale.x, effect->scale.y, effect->scale.z);
+    guMtxCatF(tempMtx, transformMtx, transformMtx);
+    guTranslateF(tempMtx, effect->pos.x, effect->pos.y, effect->pos.z);
+    guMtxCatF(transformMtx, tempMtx, transformMtx);
+    guMtxF2L(transformMtx, &effect->transformMtx);
 }
 
 void flower_splash_update_part(FlowerFXData* effect) {
-    effect->velocityScaleA *= 0.85;
-    effect->pos.x += effect->velocityScaleA * effect->velocity.x;
+    effect->velScaleA *= 0.85;
+    effect->pos.x += effect->velScaleA * effect->vel.x;
     effect->integrator[2] += effect->integrator[3];
     effect->integrator[1] += effect->integrator[2];
     effect->integrator[0] += effect->integrator[1];
     effect->pos.y += effect->integrator[0];
-    effect->pos.z += effect->velocityScaleA * effect->velocity.z;
+    effect->pos.z += effect->velScaleA * effect->vel.z;
 
     if (effect->integrator[0] < 0.0f) {
         effect->integrator[2] = 0.004f;
@@ -55,21 +55,21 @@ void flower_splash_main(f32 posX, f32 posY, f32 posZ, f32 angle) {
     bp.update = flower_splash_update;
     bp.renderWorld = flower_splash_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_FLOWER_SPLASH;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
 
-    part = effect->data.flowerSplash = shim_general_heap_malloc(numParts * sizeof(*part));
+    part = effect->data.flowerSplash = general_heap_malloc(numParts * sizeof(*part));
     ASSERT(effect->data.flowerSplash != NULL);
 
-    shim_mem_clear(part, numParts * sizeof(*part));
+    mem_clear(part, numParts * sizeof(*part));
 
     for (i = 0; i < numParts; i++, part++) {
         part->alive = TRUE;
         part->rot.y = angle + (i * 72);
-        part->velocityScaleB = 0.29999998f;
+        part->velScaleB = 0.29999998f;
         part->visibilityAmt = 0.0f;
         part->unk_7C = 0.0f;
 
@@ -80,7 +80,7 @@ void flower_splash_main(f32 posX, f32 posY, f32 posZ, f32 angle) {
         part->scale.x = 1.0f;
         part->scale.y = 1.0f;
         part->scale.z = 1.0f;
-        
+
         part->primAlpha = 255;
         part->timeLeft = 60;
 
@@ -92,10 +92,10 @@ void flower_splash_main(f32 posX, f32 posY, f32 posZ, f32 angle) {
         part->integrator[2] = 0.0f;
         part->integrator[3] = 0.0f;
 
-        part->velocityScaleA = -3.9f;
-        partAngle = shim_clamp_angle(part->rot.y);
-        part->velocity.x = shim_sin_deg(partAngle);
-        part->velocity.z = shim_cos_deg(partAngle);
+        part->velScaleA = -3.9f;
+        partAngle = clamp_angle(part->rot.y);
+        part->vel.x = sin_deg(partAngle);
+        part->vel.z = cos_deg(partAngle);
     }
 }
 
@@ -121,7 +121,7 @@ void flower_splash_update(EffectInstance* effect) {
     }
 
     if (!anyAlive) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
     }
 }
 
@@ -131,15 +131,15 @@ void flower_splash_render(EffectInstance* effect) {
 
     renderTask.appendGfx = flower_splash_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_28;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_PASS_THROUGH;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
 void flower_splash_dispose(EffectInstance* effect) {
-    shim_remove_effect(effect);
+    remove_effect(effect);
 }
 
 void flower_splash_appendGfx(void* effect) {

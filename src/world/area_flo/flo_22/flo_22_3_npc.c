@@ -1,4 +1,5 @@
 #include "flo_22.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Dummy.inc.c"
 #include "world/common/enemy/Bzzap.h"
@@ -109,7 +110,7 @@ NpcData N(NpcData_Bzzap) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Bzzap),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = BZZAP_ANIMS,
 };
@@ -120,7 +121,7 @@ NpcData N(NpcData_Dayzee) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Dayzee),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CRAZY_DAYZEE_DROPS,
     .animations = CRAZY_DAYZEE_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,

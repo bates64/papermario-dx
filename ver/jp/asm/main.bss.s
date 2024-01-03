@@ -109,7 +109,7 @@ dlabel nuGfxCfb_ptr
 dlabel gOverrideFlags
 .space 4
 
-dlabel D_8009A654
+dlabel HasPreBattleSongPushed
 .space 4
 
 dlabel nuGfxCfb
@@ -136,10 +136,10 @@ dlabel gDisplayContext
 dlabel D_8009A678
 .space 8
 
-dlabel D_8009A680
+dlabel ResetFrameBufferArray
 .space 0x00000010
 
-dlabel D_8009A690
+dlabel SoftResetDelay
 .space 0x00000010
 
 dlabel D_8009A6A0
@@ -154,16 +154,16 @@ dlabel D_8009A6A4
 dlabel D_8009A6A6
 .space 10
 
-dlabel D_8009A6B0
+dlabel FetchSaveBuffer
 .space 0x00001380
 
-dlabel logicalSaveInfo
+dlabel LogicalSaveInfo
 .space 0x00000020
 
-dlabel physicalSaveInfo
+dlabel PhysicalSaveInfo
 .space 0x00000030
 
-dlabel nextAvailableSavePage
+dlabel NextAvailablePhysicalSave
 .space 0x00000010
 
 dlabel gCurtainScale
@@ -223,7 +223,7 @@ dlabel D_800A08E8
 dlabel D_800A08EC
 .space 4
 
-dlabel gameMode
+dlabel CurGameMode
 .space 0x00000010
 
 dlabel D_800A0900
@@ -247,13 +247,13 @@ dlabel gLogosImage1
 dlabel gLogosImage2
 .space 4
 
-dlabel D_800A0920
+dlabel StepPauseDelay
 .space 1
 
-dlabel D_800A0921
+dlabel StepPauseState
 .space 1
 
-dlabel D_800A0922
+dlabel StepPauseAlpha
 .space 2
 
 dlabel SavedReverbMode
@@ -280,49 +280,37 @@ dlabel gMapTransitionState
 dlabel gMapTransitionStateTime
 .space 2
 
-dlabel D_800A0948
+dlabel gLoadedFromFileSelect
 .space 8
 
-dlabel D_800A0950
+dlabel IntroEnableDrawFrameDelay
 .space 4
 
-dlabel D_800A0954
+dlabel IntroOverlayAlpha
 .space 2
 
-dlabel D_800A0956
+dlabel IntroFrontFadeAlpha
 .space 2
 
-dlabel D_800A0958
+dlabel IntroOverlayDelta
 .space 2
 
-dlabel D_800A095A
-.space 1
+dlabel IntroFadeColorR
+.space 2
 
-dlabel D_800A095B
-.space 1
+dlabel IntroFadeColorG
+.space 2
 
-dlabel D_800A095C
-.space 1
+dlabel IntroFadeColorB
+.space 2
 
-dlabel D_800A095D
-.space 1
-
-dlabel D_800A095E
-.space 1
-
-dlabel D_800A095F
-.space 1
-
-dlabel D_800A0960
-.space 3
-
-dlabel D_800A0963
-.space 1
+dlabel IntroOverlayType
+.space 4
 
 dlabel D_800A0964
 .space 12
 
-dlabel D_800A0970
+dlabel TitleScreen_AppearDelay
 .space 4
 
 dlabel TitleScreen_ImgList
@@ -340,7 +328,7 @@ dlabel TitleScreen_ImgList_PressStart
 dlabel TitleScreen_ImgList_CopyrightPalette
 .space 4
 
-dlabel D_800A0988
+dlabel TitleScreen_TimeLeft
 .space 8
 
 dlabel gWorldNpcList
@@ -694,7 +682,7 @@ dlabel nuAuHeap
 dlabel nuGfxTask
 .space 0x00000370
 
-dlabel D_800D95E8
+dlabel gSaveGlobals
 .space 0x00000080
 
 dlabel wMapBgName

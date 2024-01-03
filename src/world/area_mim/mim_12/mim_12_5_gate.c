@@ -1,4 +1,5 @@
 #include "mim_12.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(InitializeGustyFogProperties)) {
     enable_world_fog();
@@ -160,7 +161,7 @@ EvtScript N(EVS_FadeToGustyShading) = {
 };
 
 EvtScript N(EVS_OpenGate) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o67, SOUND_METAL_GATE_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o67, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
     EVT_SET(LVar3, 0)
     EVT_SUB(LVar3, LVar2)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o67, COLLIDER_FLAGS_UPPER_MASK)
@@ -189,7 +190,7 @@ EvtScript N(EVS_CloseGate) = {
     EVT_IF_NE(LVar1, 0)
         EVT_GOTO(10)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o67, SOUND_METAL_GATE_CLOSE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o67, SOUND_METAL_GATE_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o67, COLLIDER_FLAGS_UPPER_MASK)
     EVT_RETURN
     EVT_END
@@ -325,12 +326,12 @@ EvtScript N(EVS_Scene_UnlockGate) = {
     EVT_CALL(EnablePartnerAI)
     EVT_CALL(SetNpcPos, NPC_GateBoo_01, -103, 65, 64)
     EVT_CALL(SetNpcPos, NPC_GateBoo_02, -45, 65, -66)
-    EVT_CALL(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_VANISH, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
     EVT_SETF(LVar0, EVT_FLOAT(0.0))
     EVT_LOOP(20 * DT)
         EVT_ADDF(LVar0, EVT_FLOAT(240.0 / (s32)(20 * DT)))
-        EVT_CALL(func_802CFD30, NPC_GateBoo_01, FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_GateBoo_02, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GateBoo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GateBoo_02, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(10 * DT)
@@ -355,12 +356,12 @@ EvtScript N(EVS_Scene_UnlockGate) = {
     EVT_EXEC_WAIT(N(EVS_StartGustyMusic))
     EVT_EXEC_WAIT(N(EVS_HaveBoosCloseGate))
     EVT_WAIT(10 * DT)
-    EVT_CALL(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_APPEAR, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_GateBoo_01, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
     EVT_SETF(LVar0, EVT_FLOAT(240.0))
     EVT_LOOP(20 * DT)
         EVT_SUBF(LVar0, EVT_FLOAT(240.0 / (s32)(20 * DT)))
-        EVT_CALL(func_802CFD30, NPC_GateBoo_01, FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_GateBoo_02, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GateBoo_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_GateBoo_02, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(SetNpcPos, NPC_GateBoo_01, NPC_DISPOSE_LOCATION)

@@ -3,196 +3,200 @@
 
 #define MAX_SOUND_INSTANCES 10
 
-// sound IDs
+SHIFT_BSS u16 gCurrentDoorSounds;
+SHIFT_BSS u16 gCurrentRoomDoorSounds;
+
+#define SOUND_LOOP_IDX(soundID) (soundID & 0xFFFF)
+
+// map logical looping soundIDs to raw ones
 s32 LoopingSounds[] = {
-    SOUND_287, SOUND_2A8, SOUND_54, SOUND_56, SOUND_24, SOUND_27, SOUND_21, SOUND_22, SOUND_349,
-    SOUND_273, SOUND_275, SOUND_275, SOUND_274, SOUND_273, SOUND_274, SOUND_99, SOUND_9E, SOUND_32E,
-    SOUND_8E, SOUND_89, SOUND_83, SOUND_388, SOUND_A0, SOUND_4A, SOUND_9F, SOUND_168, SOUND_185,
-    SOUND_52, SOUND_4E, SOUND_4F, SOUND_189, 0, 0, SOUND_198, SOUND_199, SOUND_194,
-    SOUND_19A, SOUND_91, SOUND_164, SOUND_271, SOUND_271, SOUND_274, SOUND_275, SOUND_271, SOUND_273,
-    SOUND_271, SOUND_273, SOUND_271, SOUND_274, SOUND_275, SOUND_276, SOUND_271, SOUND_273, SOUND_271,
-    SOUND_274, SOUND_276, SOUND_275, SOUND_271, SOUND_271, SOUND_271, SOUND_271, SOUND_276, SOUND_275,
-    SOUND_274, SOUND_39E, SOUND_341, SOUND_207, SOUND_271, SOUND_271, SOUND_275, SOUND_276, SOUND_271,
-    SOUND_271, SOUND_271, SOUND_50, SOUND_70, SOUND_36C, SOUND_36D, SOUND_295, SOUND_43, SOUND_197,
-    SOUND_221, SOUND_22A, SOUND_22B, SOUND_2040, SOUND_JR_TROOPA_SWIM, SOUND_33, SOUND_34, SOUND_39, SOUND_4C,
-    SOUND_4D, SOUND_1B1, SOUND_1B2, SOUND_94, SOUND_5D, SOUND_5B, SOUND_60, SOUND_1B3, 0,
-    SOUND_AD, SOUND_AE, SOUND_AF, SOUND_23D, SOUND_A2, SOUND_248, SOUND_249, SOUND_391, SOUND_3BC,
-    SOUND_3AD, SOUND_22C, SOUND_22D,
+    [SOUND_LOOP_IDX(SOUND_LOOP_BOMBETTE_FUSE)] SOUND_LRAW_BOMBETTE_FUSE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_BOBOMB_FUSE)] SOUND_LRAW_BOBOMB_FUSE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_ISK_FLIP_STAIRS)] SOUND_ISK_FLIP_STAIRS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_ISK_LOWER_STAIRS)] SOUND_LRAW_ISK_LOWER_STAIRS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TRD_02_LOWER_STAIRS)] SOUND_LRAW_TRD_02_LOWER_STAIRS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TRD_04_LOWER_STAIRS)] SOUND_LRAW_TRD_04_LOWER_STAIRS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TRD_FLOWING_WATER)] SOUND_LRAW_TRD_FLOWING_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TRD_RAISE_STAIRS)] SOUND_LRAW_TRD_RAISE_STAIRS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_CHEERING)] SOUND_LRAW_CHEERING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA10_FLOW1)] SOUND_LRAW_WATER_FLOWING_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA_UNUSED_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA00_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA00_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA01_FLOW1)] SOUND_LRAW_WATER_FLOWING_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_IWA01_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OBK_LOWER_CHAIN)] SOUND_LRAW_OBK_LOWER_CHAIN,
+    [SOUND_LOOP_IDX(SOUND_LOOP_MOVE_STATUE)] SOUND_LRAW_MOVE_STATUE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SENTINEL_ALARM)] SOUND_LRAW_SENTINEL_ALARM,
+    [SOUND_LOOP_IDX(SOUND_LOOP_QUIZ_TICKING)] SOUND_LRAW_QUIZ_TICKING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_AUDIENCE_MURMUR)] SOUND_LRAW_AUDIENCE_MURMUR,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TOYBOX_TRAIN_GEAR)] SOUND_LRAW_TOYBOX_TRAIN_GEAR,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OMO_SLOT_MACHINE)] SOUND_LRAW_OMO_SLOT_MACHINE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OMO_ROTATING_WHEEL)] SOUND_LRAW_OMO_ROTATING_WHEEL,
+    [SOUND_LOOP_IDX(SOUND_LOOP_JAN_BEACH_WAVES)] SOUND_LRAW_JAN_BEACH_WAVES,
+    [SOUND_LOOP_IDX(SOUND_LOOP_MOVE_LARGE_STATUE)] SOUND_LRAW_MOVE_LARGE_STATUE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_ZIPLINE_RIDE)] SOUND_LRAW_ZIPLINE_RIDE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_ZIPLINE_RETURN)] SOUND_LRAW_ZIPLINE_RETURN,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TROMP_ROLL)] SOUND_LRAW_TROMP_ROLL,
+    [SOUND_LOOP_IDX(SOUND_LOOP_JAN_SMALL_GEYSER)] SOUND_LRAW_JAN_SMALL_GEYSER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_JAN_LARGE_GEYSER)] SOUND_LRAW_JAN_LARGE_GEYSER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_JAN_CONSTRUCTION)] SOUND_LRAW_JAN_CONSTRUCTION,
+    [SOUND_LOOP_IDX(SOUND_LOOP_NOTHING_1F)] SOUND_NONE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_NOTHING_20)] SOUND_NONE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FLO_WATER_FLOW_1)] SOUND_LRAW_FLO_WATER_FLOW_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FLO_WATER_FLOW_2)] SOUND_LRAW_FLO_WATER_FLOW_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_BUBBLE_DRIFT)] SOUND_LRAW_BUBBLE_DRIFT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FLO_RELEASE_FOUNTAIN)] SOUND_LRAW_FLO_RELEASE_FOUNTAIN,
+    [SOUND_LOOP_IDX(SOUND_LOOP_PUFF_PUFF_MACHINE)] SOUND_LRAW_PUFF_PUFF_MACHINE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_NOTHING_26)] SOUND_LRAW_NOTHING_26,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK01_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK02_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK02_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK02_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK03_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK03_FLOW1)] SOUND_LRAW_WATER_FLOWING_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK05_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK05_FLOW1)] SOUND_LRAW_WATER_FLOWING_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK06_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK06_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK06_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK06_FLOW4)] SOUND_LRAW_WATER_FLOWING_4,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK08_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK08_FLOW1)] SOUND_LRAW_WATER_FLOWING_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK09_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK09_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK09_FLOW4)] SOUND_LRAW_WATER_FLOWING_4,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK09_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK10_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED1_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED2_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED3_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED3_FLOW4)] SOUND_LRAW_WATER_FLOWING_4,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED3_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK_UNUSED3_FLOW2)] SOUND_LRAW_WATER_FLOWING_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SAM_STAIRS_RISE)] SOUND_LRAW_SAM_STAIRS_RISE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_CHARGE_BAR)] SOUND_LRAW_CHARGE_BAR,
+    [SOUND_LOOP_IDX(SOUND_LOOP_CRYSTAL_BALL_GLOW)] SOUND_LRAW_CRYSTAL_BALL_GLOW,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK18_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK19_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK19_FLOW3)] SOUND_LRAW_WATER_FLOWING_3,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK19_FLOW4)] SOUND_LRAW_WATER_FLOWING_4,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK20_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK23_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TIK24_WATER)] SOUND_LRAW_TIK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_WINDMILL_EXT)] SOUND_LRAW_WINDMILL_EXT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_WINDMILL_GEARS)] SOUND_LRAW_WINDMILL_GEARS,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SHY_GUY_CROWD_1)] SOUND_LRAW_SHY_GUY_CROWD_1,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SHY_GUY_CROWD_2)] SOUND_LRAW_SHY_GUY_CROWD_2,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FLIGHT)] SOUND_FLIGHT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_WHALE_GEYSER)] SOUND_LRAW_WHALE_GEYSER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FLO_FILL_WATER_POOL)] SOUND_LRAW_FLO_FILL_WATER_POOL,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_CHAIN_DRIVE)] SOUND_LRAW_KPA_CHAIN_DRIVE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_FILL_WATER)] SOUND_LRAW_KPA_FILL_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_DRAIN_WATER)] SOUND_LRAW_KPA_DRAIN_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_FLIP_BRIDGE_PANEL)] SOUND_KPA_FLIP_BRIDGE_PANEL,
+    [SOUND_LOOP_IDX(SOUND_LOOP_JR_TROOPA_SWIM)] SOUND_LRAW_JR_TROOPA_SWIM,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KKJ_RUMBLING)] SOUND_LRAW_KKJ_RUMBLING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OSR_RUMBLING)] SOUND_LRAW_OSR_RUMBLING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_MAC_HARBOR_WATER)] SOUND_LRAW_MAC_HARBOR_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OSR_FOUNTAIN_INTACT)] SOUND_LRAW_OSR_FOUNTAIN_INTACT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_OSR_FOUNTAIN_BROKEN)] SOUND_LRAW_OSR_FOUNTAIN_BROKEN,
+    [SOUND_LOOP_IDX(SOUND_LOOP_NOK_WATER)] SOUND_LRAW_NOK_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_TRD_WATER_EXT)] SOUND_LRAW_TRD_WATER_EXT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_DGB_COLLAPSE)] SOUND_LRAW_DGB_COLLAPSE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SBK_RUINS_RISING)] SOUND_LRAW_SBK_RUINS_RISING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SBK_RUINS_WHIRLWIND)] SOUND_LRAW_SBK_RUINS_WHIRLWIND,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SBK_RUINS_RISING_DISTANT)] SOUND_LRAW_SBK_RUINS_RISING_DISTANT,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SBK_OASIS_WATER)] SOUND_LRAW_SBK_OASIS_WATER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_62)] SOUND_NONE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_STAR_SANCTUARY_FAR)] SOUND_LRAW_STAR_SANCTUARY_FAR,
+    [SOUND_LOOP_IDX(SOUND_LOOP_STAR_SANCTUARY_NEAR)] SOUND_LRAW_STAR_SANCTUARY_NEAR,
+    [SOUND_LOOP_IDX(SOUND_LOOP_STAR_SANCTUARY_INSIDE)] SOUND_LRAW_STAR_SANCTUARY_INSIDE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_BOWSER_PROPELLER)] SOUND_LRAW_BOWSER_PROPELLER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_STAR_ORB_RISING)] SOUND_LRAW_STAR_ORB_RISING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_USE_STAR_BEAM)] SOUND_LRAW_USE_STAR_BEAM,
+    [SOUND_LOOP_IDX(SOUND_LOOP_USE_PEACH_BEAM)] SOUND_LRAW_USE_PEACH_BEAM,
+    [SOUND_LOOP_IDX(SOUND_LOOP_SPINNING_FLOWER)] SOUND_LRAW_SPINNING_FLOWER,
+    [SOUND_LOOP_IDX(SOUND_LOOP_RUMBLE)] SOUND_LRAW_RUMBLE,
+    [SOUND_LOOP_IDX(SOUND_LOOP_FIGHTING)] SOUND_LRAW_FIGHTING,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_ARENA_TURN_ON)] SOUND_LRAW_KPA_ARENA_TURN_ON,
+    [SOUND_LOOP_IDX(SOUND_LOOP_KPA_ARENA_ACTIVE)] SOUND_LRAW_KPA_ARENA_ACTIVE,
 };
 
 // all sound IDs for alternating sounds
-s32 D_8014F48C[] = { SOUND_336, SOUND_316 };
-s32 D_8014F494[] = { SOUND_337, SOUND_317 };
-s32 D_8014F49C[] = { SOUND_338, SOUND_318 };
-s32 D_8014F4A4[] = { SOUND_339, SOUND_319 };
-s32 D_8014F4AC[] = { SOUND_33A, SOUND_31A };
-s32 D_8014F4B4[] = { SOUND_33B, SOUND_31B };
-s32 D_8014F4BC[] = { SOUND_33C, SOUND_31C };
-s32 D_8014F4C4[] = { SOUND_33D, SOUND_31D };
-s32 D_8014F4CC[] = { SOUND_33E, SOUND_31E };
-s32 D_8014F4D4[] = { SOUND_33F, SOUND_31F };
-s32 D_8014F4DC[] = { SOUND_340, SOUND_340 };
-s32 D_8014F4E4[] = { SOUND_2F4, SOUND_2F5 };
-s32 D_8014F4EC[] = { SOUND_32F, SOUND_330 };
-s32 D_8014F4F4[] = { SOUND_334, SOUND_335 };
-s32 D_8014F4FC[] = { SOUND_2F1, SOUND_2F2 };
-s32 D_8014F504[] = { SOUND_BOO_VANISH, SOUND_C2 };
-s32 D_8014F50C[] = { SOUND_BOO_APPEAR, SOUND_C4 };
-s32 D_8014F514[] = { SOUND_1CB, SOUND_1CD };
-s32 D_8014F51C[] = { SOUND_1CC, SOUND_1CE };
-s32 D_8014F524[] = { SOUND_2A6, SOUND_2A7 };
-s32 D_8014F52C[] = { SOUND_20C, SOUND_20D, SOUND_20E };
-s32 D_8014F538[] = { SOUND_259, SOUND_25A };
-s32 D_8014F540[] = { SOUND_25C, SOUND_25D };
-s32 D_8014F548[] = { SOUND_331, SOUND_332, SOUND_333 };
-s32 D_8014F554[] = { SOUND_2078, SOUND_2079 };
-s32 D_8014F55C[] = { SOUND_179, SOUND_17A };
-s32 D_8014F564[] = { SOUND_1FB, SOUND_1FC };
-s32 D_8014F56C[] = { SOUND_203A, SOUND_203B };
-s32 D_8014F574[] = { SOUND_22E, SOUND_22F };
-s32 D_8014F57C[] = { SOUND_202A, SOUND_202B };
-s32 D_8014F584[] = { SOUND_2041, SOUND_2042 };
-s32 D_8014F58C[] = { SOUND_2043, SOUND_2044 };
-s32 D_8014F594[] = { SOUND_2078, SOUND_2079 };
-s32 D_8014F59C[] = { SOUND_3B6, SOUND_3B7 };
+s32 FireBar0Sounds[] = { SOUND_FIRE_BAR_0_A, SOUND_FIRE_BAR_0_B };
+s32 FireBar1Sounds[] = { SOUND_FIRE_BAR_1_A, SOUND_FIRE_BAR_1_B };
+s32 FireBar2Sounds[] = { SOUND_FIRE_BAR_2_A, SOUND_FIRE_BAR_2_B };
+s32 FireBar3Sounds[] = { SOUND_FIRE_BAR_3_A, SOUND_FIRE_BAR_3_B };
+s32 FireBar4Sounds[] = { SOUND_FIRE_BAR_4_A, SOUND_FIRE_BAR_4_B };
+s32 FireBar5Sounds[] = { SOUND_FIRE_BAR_5_A, SOUND_FIRE_BAR_5_B };
+s32 FireBar6Sounds[] = { SOUND_FIRE_BAR_6_A, SOUND_FIRE_BAR_6_B };
+s32 FireBar7Sounds[] = { SOUND_FIRE_BAR_7_A, SOUND_FIRE_BAR_7_B };
+s32 FireBar8Sounds[] = { SOUND_FIRE_BAR_8_A, SOUND_FIRE_BAR_8_B };
+s32 FireBar9Sounds[] = { SOUND_FIRE_BAR_9_A, SOUND_FIRE_BAR_9_B };
+s32 FireBarDeadSounds[] = { SOUND_FIRE_BAR_DEAD, SOUND_FIRE_BAR_DEAD };
+s32 AlertSounds[] = { SOUND_AI_ALERT_A, SOUND_AI_ALERT_B };
+s32 SnoreInhaleSounds[] = { SOUND_SNORE_INHALE_A, SOUND_SNORE_INHALE_B };
+s32 SnoreExhaleSounds[] = { SOUND_SNORE_EXHALE_A, SOUND_SNORE_EXHALE_B };
+s32 SnapAwakeSounds[] = { SOUND_SNAP_AWAKE_A, SOUND_SNAP_AWAKE_B };
+s32 BooVanishSounds[] = { SOUND_BOO_VANISH_A, SOUND_BOO_VANISH_B };
+s32 BooAppearSounds[] = { SOUND_BOO_APPEAR_A, SOUND_BOO_APPEAR_B };
+s32 WindowOpenSounds[] = { SOUND_WINDOW_OPEN_A, SOUND_WINDOW_OPEN_B };
+s32 WindowCloseSounds[] = { SOUND_WINDOW_CLOSE_A, SOUND_WINDOW_CLOSE_B };
+s32 RavenLeapSounds[] = { SOUND_RAVEN_LEAP_A, SOUND_RAVEN_LEAP_B };
+s32 RavenFallSounds[] = { SOUND_RAVEN_FALL_A, SOUND_RAVEN_FALL_B, SOUND_RAVEN_FALL_C };
+s32 ShootingStarFallSounds[] = { SOUND_SHOOTING_STAR_FALL_A, SOUND_SHOOTING_STAR_FALL_B };
+s32 ShootingStarBounceSounds[] = { SOUND_STAR_BOUNCE_A, SOUND_STAR_BOUNCE_B };
+s32 FuzzyHopSounds[] = { SOUND_FUZZY_HOP_A, SOUND_FUZZY_HOP_B, SOUND_FUZZY_HOP_C };
+s32 BulletBillExplodeSounds[] = { SOUND_BULLET_BILL_EXPLODE_A, SOUND_BULLET_BILL_EXPLODE_B };
+s32 LuigiStepSounds[] = { SOUND_LUIGI_STEP_A, SOUND_LUIGI_STEP_B };
+s32 TrainChugSounds[] = { SOUND_TRAIN_CHUG_A, SOUND_TRAIN_CHUG_B };
+s32 FinaleBridgeCollapseSounds[] = { SOUND_KPA_BRIDGE_COLLAPSE_A, SOUND_KPA_BRIDGE_COLLAPSE_B };
+s32 FinaleExplosionSounds[] = { SOUND_KPA_EXPLOSION_A, SOUND_KPA_EXPLOSION_B };
+s32 CardShuffleSounds[] = { SOUND_SHUFFLE_CARD_A, SOUND_SHUFFLE_CARD_B };
+s32 StarSpiritAppearSounds[] = { SOUND_STAR_SPIRIT_APPEAR_A, SOUND_STAR_SPIRIT_APPEAR_B };
+s32 StarSpiritCastSounds[] = { SOUND_STAR_SPIRIT_CAST_A, SOUND_STAR_SPIRIT_CAST_B };
+s32 UnusedExplodeSounds[] = { SOUND_BULLET_BILL_EXPLODE_A, SOUND_BULLET_BILL_EXPLODE_B };
+s32 ShyGuyStepSounds[] = { SOUND_SHY_GUY_STEP_A, SOUND_SHY_GUY_STEP_B };
 
+#define SEQ_SOUND_ENTRY(soundID, sym) [soundID & 0xFFFF] { .sounds = sym, .soundCount = ARRAY_COUNT(sym) }
+
+// map logical alternating soundIDs to lists of raw ones
 AlternatingSoundSet AlternatingSounds[] = {
-    {
-        .sounds = D_8014F48C,
-        .soundCount = ARRAY_COUNT(D_8014F48C),
-    },
-    {
-        .sounds = D_8014F494,
-        .soundCount = ARRAY_COUNT(D_8014F494),
-    },
-    {
-        .sounds = D_8014F49C,
-        .soundCount = ARRAY_COUNT(D_8014F494),
-    },
-    {
-        .sounds = D_8014F4A4,
-        .soundCount = ARRAY_COUNT(D_8014F4A4),
-    },
-    {
-        .sounds = D_8014F4AC,
-        .soundCount = ARRAY_COUNT(D_8014F4AC),
-    },
-    {
-        .sounds = D_8014F4B4,
-        .soundCount = ARRAY_COUNT(D_8014F4B4),
-    },
-    {
-        .sounds = D_8014F4BC,
-        .soundCount = ARRAY_COUNT(D_8014F4BC),
-    },
-    {
-        .sounds = D_8014F4C4,
-        .soundCount = ARRAY_COUNT(D_8014F4C4),
-    },
-    {
-        .sounds = D_8014F4CC,
-        .soundCount = ARRAY_COUNT(D_8014F4CC),
-    },
-    {
-        .sounds = D_8014F4D4,
-        .soundCount = ARRAY_COUNT(D_8014F4D4),
-    },
-    {
-        .sounds = D_8014F4DC,
-        .soundCount = ARRAY_COUNT(D_8014F4DC),
-    },
-    {
-        .sounds = D_8014F4E4,
-        .soundCount = ARRAY_COUNT(D_8014F4E4),
-    },
-    {
-        .sounds = D_8014F4EC,
-        .soundCount = ARRAY_COUNT(D_8014F4EC),
-    },
-    {
-        .sounds = D_8014F4F4,
-        .soundCount = ARRAY_COUNT(D_8014F4F4),
-    },
-    {
-        .sounds = D_8014F4FC,
-        .soundCount = ARRAY_COUNT(D_8014F4FC),
-    },
-    {
-        .sounds = D_8014F504,
-        .soundCount = ARRAY_COUNT(D_8014F504),
-    },
-    {
-        .sounds = D_8014F50C,
-        .soundCount = ARRAY_COUNT(D_8014F50C),
-    },
-    {
-        .sounds = D_8014F514,
-        .soundCount = ARRAY_COUNT(D_8014F514),
-    },
-    {
-        .sounds = D_8014F51C,
-        .soundCount = ARRAY_COUNT(D_8014F51C),
-    },
-    {
-        .sounds = D_8014F524,
-        .soundCount = ARRAY_COUNT(D_8014F524),
-    },
-    {
-        .sounds = D_8014F52C,
-        .soundCount = ARRAY_COUNT(D_8014F52C),
-    },
-    {
-        .sounds = D_8014F538,
-        .soundCount = ARRAY_COUNT(D_8014F538),
-    },
-    {
-        .sounds = D_8014F540,
-        .soundCount = ARRAY_COUNT(D_8014F540),
-    },
-    {
-        .sounds = D_8014F548,
-        .soundCount = ARRAY_COUNT(D_8014F548),
-    },
-    {
-        .sounds = D_8014F554,
-        .soundCount = ARRAY_COUNT(D_8014F554),
-    },
-    {
-        .sounds = D_8014F55C,
-        .soundCount = ARRAY_COUNT(D_8014F55C),
-    },
-    {
-        .sounds = D_8014F564,
-        .soundCount = ARRAY_COUNT(D_8014F564),
-    },
-    {
-        .sounds = D_8014F56C,
-        .soundCount = ARRAY_COUNT(D_8014F56C),
-    },
-    {
-        .sounds = D_8014F574,
-        .soundCount = ARRAY_COUNT(D_8014F574),
-    },
-    {
-        .sounds = D_8014F57C,
-        .soundCount = ARRAY_COUNT(D_8014F57C),
-    },
-    {
-        .sounds = D_8014F584,
-        .soundCount = ARRAY_COUNT(D_8014F584),
-    },
-    {
-        .sounds = D_8014F58C,
-        .soundCount = ARRAY_COUNT(D_8014F58C),
-    },
-    {
-        .sounds = D_8014F594,
-        .soundCount = ARRAY_COUNT(D_8014F594),
-    },
-    {
-        .sounds = D_8014F59C,
-        .soundCount = ARRAY_COUNT(D_8014F59C),
-    }
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_0, FireBar0Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_1, FireBar1Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_2, FireBar2Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_3, FireBar3Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_4, FireBar4Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_5, FireBar5Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_6, FireBar6Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_7, FireBar7Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_8, FireBar8Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_9, FireBar9Sounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FIRE_BAR_DEAD, FireBarDeadSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_AI_ALERT, AlertSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SNORE_INHALE, SnoreInhaleSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SNORE_EXHALE, SnoreExhaleSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SNAP_AWAKE, SnapAwakeSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_BOO_VANISH, BooVanishSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_BOO_APPEAR, BooAppearSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_WINDOW_OPEN, WindowOpenSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_WINDOW_CLOSE, WindowCloseSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_RAVEN_LEAP, RavenLeapSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_RAVEN_FALL, RavenFallSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SHOOTING_STAR_FALL, ShootingStarFallSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SHOOTING_STAR_BOUNCE, ShootingStarBounceSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FUZZY_HOP, FuzzyHopSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_BULLET_BILL_EXPLODE, BulletBillExplodeSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_LUIGI_STEP, LuigiStepSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_TRAIN_CHUG, TrainChugSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FINALE_BRIDGE_COLLAPSE, FinaleBridgeCollapseSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_FINALE_EXPLOSION, FinaleExplosionSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SHUFFLE_CARD, CardShuffleSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_STAR_SPIRIT_APPEAR, StarSpiritAppearSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_STAR_SPIRIT_CAST, StarSpiritCastSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_UNUSED_EXPLODE, UnusedExplodeSounds),
+    SEQ_SOUND_ENTRY(SOUND_SEQ_SHY_GUY_STEP, ShyGuyStepSounds),
 };
 
 s32 OpenCloseSounds[][2] = {
@@ -201,14 +205,14 @@ s32 OpenCloseSounds[][2] = {
     { SOUND_LARGE_DOOR_OPEN, SOUND_LARGE_DOOR_CLOSE },
     { SOUND_CREAKY_DOOR_OPEN, SOUND_CREAKY_DOOR_CLOSE },
     { SOUND_METAL_GATE_OPEN, SOUND_METAL_GATE_CLOSE },
-    { SOUND_1CB, SOUND_1CC },
-    { SOUND_20A3, SOUND_20A4 },
+    { SOUND_WINDOW_OPEN_A, SOUND_WINDOW_CLOSE_A },
+    { SOUND_CREAKY_WINDOW_OPEN, SOUND_CREAKY_WINDOW_CLOSE },
 };
 
-extern SoundInstance wEnvSounds[MAX_SOUND_INSTANCES];
-extern SoundInstance bEnvSounds[MAX_SOUND_INSTANCES];
-extern SoundInstance* gCurrentEnvSounds;
-extern s32 SfxReverbMode;
+SHIFT_BSS SoundInstance wEnvSounds[MAX_SOUND_INSTANCES];
+SHIFT_BSS SoundInstance bEnvSounds[MAX_SOUND_INSTANCES];
+SHIFT_BSS SoundInstance* gCurrentEnvSounds;
+SHIFT_BSS s32 SfxReverbMode;
 
 void sfx_compute_spatialized_sound_params_full(f32 x, f32 y, f32 z, s16* volume, s16* pan, s32 flags) {
     s32 screenX, screenY, screenZ;
@@ -293,8 +297,8 @@ void sfx_compute_spatialized_sound_params_full(f32 x, f32 y, f32 z, s16* volume,
 }
 
 void sfx_reset_door_sounds(void) {
-    gCurrentDoorSounds = 0;
-    gCurrentRoomDoorSounds = 0;
+    gCurrentDoorSounds = DOOR_SOUNDS_BASIC;
+    gCurrentRoomDoorSounds = DOOR_SOUNDS_BASIC;
 }
 
 void sfx_clear_sounds(void) {
@@ -336,7 +340,7 @@ void sfx_update_env_sound_params(void) {
     for (i = 0; i < MAX_SOUND_INSTANCES; i++, sound++) {
         if (sound->flags & SOUND_INSTANCE_FLAG_ACTIVE) {
             if (sound->flags & SOUND_INSTANCE_FLAG_POSITION_CHANGED) {
-                sfx_get_spatialized_sound_params(sound->position.x, sound->position.y, sound->position.z, &volume, &pan, sound->sourceFlags);
+                sfx_get_spatialized_sound_params(sound->pos.x, sound->pos.y, sound->pos.z, &volume, &pan, sound->sourceFlags);
                 sound->volume = volume;
                 sound->pan = pan;
             }
@@ -385,7 +389,7 @@ SoundInstance* sfx_get_env_sound_instance(s32 soundID) {
     return NULL;
 }
 
-void sfx_play_sound_looping(s32 soundId, u8 volume, u8 pan, s16 pitchShift) {
+void sfx_play_sound_looping(s32 soundID, u8 volume, u8 pan, s16 pitchShift) {
     SoundInstance* sound = gCurrentEnvSounds;
     s32 i;
 
@@ -396,12 +400,12 @@ void sfx_play_sound_looping(s32 soundId, u8 volume, u8 pan, s16 pitchShift) {
     }
 
     sound->pan = pan;
-    sound->soundID = soundId;
+    sound->soundID = soundID;
     sound->volume = volume;
     sound->pitchShift = pitchShift;
     sound->flags |= SOUND_INSTANCE_FLAG_ACTIVE;
 
-    snd_start_sound_with_shift(soundId, volume, pan, pitchShift);
+    snd_start_sound_with_shift(soundID, volume, pan, pitchShift);
 }
 
 void sfx_register_looping_sound_at_position(s32 soundID, s32 flags, f32 x, f32 y, f32 z) {
@@ -415,9 +419,9 @@ void sfx_register_looping_sound_at_position(s32 soundID, s32 flags, f32 x, f32 y
     }
 
     sound->sourceFlags = flags;
-    sound->position.x = x;
-    sound->position.y = y;
-    sound->position.z = z;
+    sound->pos.x = x;
+    sound->pos.y = y;
+    sound->pos.z = z;
     sound->soundID = soundID;
     sound->flags |= SOUND_INSTANCE_FLAG_ACTIVE | SOUND_INSTANCE_FLAG_POSITION_CHANGED;
 
@@ -432,9 +436,9 @@ s32 sfx_adjust_env_sound_pos(s32 soundID, s32 sourceFlags, f32 x, f32 y, f32 z) 
     }
 
     sound->sourceFlags = sourceFlags;
-    sound->position.x = x;
-    sound->position.y = y;
-    sound->position.z = z;
+    sound->pos.x = x;
+    sound->pos.y = y;
+    sound->pos.z = z;
     sound->soundID = soundID;
     sound->flags |= SOUND_INSTANCE_FLAG_ACTIVE | SOUND_INSTANCE_FLAG_POSITION_CHANGED;
     return TRUE;
@@ -475,10 +479,10 @@ void sfx_play_sound_with_params(s32 soundID, u8 volume, u8 pan, s16 pitchShift) 
             case SOUND_TYPE_ALTERNATING:
                 // 0xBxxxxxxx
                 alternatingSet = &AlternatingSounds[soundIndex];
-                if (alternatingSet->currentIndex >= alternatingSet->soundCount) {
-                    alternatingSet->currentIndex = 0;
+                if (alternatingSet->curIndex >= alternatingSet->soundCount) {
+                    alternatingSet->curIndex = 0;
                 }
-                soundID = alternatingSet->sounds[alternatingSet->currentIndex++];
+                soundID = alternatingSet->sounds[alternatingSet->curIndex++];
                 break;
         }
     }
@@ -517,7 +521,7 @@ void sfx_play_sound(s32 soundID) {
 void sfx_play_sound_at_player(s32 soundID, s32 flags) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    sfx_play_sound_at_position(soundID, flags, playerStatus->position.x, playerStatus->position.y, playerStatus->position.z);
+    sfx_play_sound_at_position(soundID, flags, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
 }
 
 void sfx_play_sound_at_npc(s32 soundID, s32 flags, s32 npcID) {
@@ -555,11 +559,11 @@ void sfx_get_spatialized_sound_params(f32 x, f32 y, f32 z, s16* volume, s16* pan
     } while (0); // required to match
 
     switch (spaceMode) {
-        case SOUND_SPACE_MODE_0:
-            sfx_compute_spatialized_sound_params_0(x, y, z, volume, pan);
+        case SOUND_SPACE_DEFAULT:
+            sfx_compute_spatialized_sound_params_ignore_depth(x, y, z, volume, pan);
             break;
-        case SOUND_SPACE_MODE_1:
-            sfx_compute_spatialized_sound_params_1(x, y, z, volume, pan);
+        case SOUND_SPACE_WITH_DEPTH:
+            sfx_compute_spatialized_sound_params_with_depth(x, y, z, volume, pan);
             break;
         case SOUND_SPACE_FULL:
             sfx_compute_spatialized_sound_params_full(x, y, z, volume, pan, paramFlags);
@@ -590,7 +594,7 @@ void sfx_get_spatialized_sound_params(f32 x, f32 y, f32 z, s16* volume, s16* pan
     }
 }
 
-void sfx_compute_spatialized_sound_params_0(f32 x, f32 y, f32 z, s16* volume, s16* pan) {
+void sfx_compute_spatialized_sound_params_ignore_depth(f32 x, f32 y, f32 z, s16* volume, s16* pan) {
     s32 screenX, screenY, screenZ;
 
     get_screen_coords(gCurrentCameraID, x, y, z, &screenX, &screenY, &screenZ);
@@ -624,7 +628,7 @@ void sfx_compute_spatialized_sound_params_0(f32 x, f32 y, f32 z, s16* volume, s1
     }
 }
 
-void sfx_compute_spatialized_sound_params_1(f32 x, f32 y, f32 z, s16* volume, s16* pan) {
+void sfx_compute_spatialized_sound_params_with_depth(f32 x, f32 y, f32 z, s16* volume, s16* pan) {
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 screenX, screenY, screenZ;
     f32 depth;
@@ -642,7 +646,6 @@ void sfx_compute_spatialized_sound_params_1(f32 x, f32 y, f32 z, s16* volume, s1
         *volume = (screenX * 0.3f) + 127.0f;
         screenX = 0;
     }
-
     if (camera->viewportW < screenX) {
         *volume = 127.0f - ((screenX - camera->viewportW) * 0.3f);
         screenX = camera->viewportW;

@@ -2,19 +2,20 @@
 #include "hud_element.h"
 #include "fio.h"
 #include "sprite.h"
+#include "game_modes.h"
 #include "dx/config.h"
 
 void state_init_startup(void) {
-    gOverrideFlags |= GLOBAL_OVERRIDES_8;
-    gGameStatusPtr->introState = INTRO_STATE_3;
+    gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
+    gGameStatusPtr->startupState = 3;
 }
 
 void state_step_startup(void) {
     GameStatus* gameStatus = gGameStatusPtr;
     s32 i;
 
-    if (gameStatus->introState != INTRO_STATE_0) {
-        gameStatus->introState--;
+    if (gameStatus->startupState != 0) {
+        gameStatus->startupState--;
         return;
     }
 
@@ -24,13 +25,13 @@ void state_step_startup(void) {
     gameStatus->prevArea = -1;
     gameStatus->mapID = 0;
     gameStatus->entryID = 0;
-    gGameStatusPtr->unk_76 = 0;
-    gGameStatusPtr->disableScripts = 0;
+    gGameStatusPtr->debugUnused1 = FALSE;
+    gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
     gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
-    gGameStatusPtr->creditsViewportMode = -1;
-    gGameStatusPtr->demoFlags = 0;
+    gGameStatusPtr->introPart = INTRO_PART_NONE;
+    gGameStatusPtr->demoBattleFlags = 0;
     gGameStatusPtr->unk_A9 = -1;
-    gGameStatusPtr->demoState = 0;
+    gGameStatusPtr->demoState = DEMO_STATE_NONE;
 
     general_heap_create();
     clear_render_tasks();
@@ -47,7 +48,7 @@ void state_step_startup(void) {
     hud_element_clear_cache();
     clear_trigger_data();
     clear_printers();
-    clear_entity_data(0);
+    clear_entity_data(FALSE);
     clear_screen_overlays();
     clear_player_status();
     clear_npcs();
@@ -65,14 +66,14 @@ void state_step_startup(void) {
     bgm_reset_volume();
     initialize_curtains();
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(gGameStatusPtr->unk_50); i++) {
         gGameStatusPtr->unk_50[i] = 4;
-        gGameStatusPtr->unk_48[i] = 0xF;
+        gGameStatusPtr->unk_48[i] = 15;
     }
 
-    fio_has_valid_backup();
+    fio_load_globals();
 
-    if (D_800D95E8.saveSlot == 0) {
+    if (gSaveGlobals.useMonoSound == 0) {
         gGameStatusPtr->soundOutputMode = SOUND_OUT_STEREO;
         audio_set_stereo();
     } else {
@@ -80,14 +81,14 @@ void state_step_startup(void) {
         audio_set_mono();
     }
 
-    gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
+    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
 #if DX_SKIP_LOGOS
-#if DX_SKIP_TITLE
+# if DX_SKIP_TITLE
     if (fio_load_game(0)) {
         set_game_mode(GAME_MODE_WORLD);
         return;
     }
-#endif
+# endif
     set_game_mode(GAME_MODE_TITLE_SCREEN);
 #else
     set_game_mode(GAME_MODE_LOGOS);
@@ -95,5 +96,5 @@ void state_step_startup(void) {
 }
 
 void state_drawUI_startup(void) {
-    startup_draw_prim_rect(0, 0, 0x13F, 0xEF, 0, 0, 0, 0xFF);
+    startup_draw_prim_rect(0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1, 0, 0, 0, 255);
 }

@@ -4,9 +4,9 @@
 API_CALLABLE(N(UnusedSetEntityPosition)) {
     Entity* entity = get_entity_by_index(script->varTable[10]);
 
-    entity->position.x = script->varTable[0];
-    entity->position.y = script->varTable[1];
-    entity->position.z = script->varTable[2];
+    entity->pos.x = script->varTable[0];
+    entity->pos.y = script->varTable[1];
+    entity->pos.z = script->varTable[2];
     return ApiStatus_DONE2;
 }
 
@@ -64,7 +64,7 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
     EVT_CALL(RemoveKeyItemAt, LVar1)
     EVT_SET(GF_KPA134_UnlockedDoor, TRUE)
     EVT_CALL(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
-    EVT_CALL(PlaySoundAt, SOUND_269, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_SET(LVar0, MV_PadlockEntityID)
     EVT_CALL(N(RemovePadlock))
     EVT_SET(LVar1, 0)

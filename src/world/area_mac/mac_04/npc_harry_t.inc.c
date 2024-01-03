@@ -1,6 +1,6 @@
 s32 N(ItemList_StoreroomKey)[] = {
     ITEM_STOREROOM_KEY,
-    ITEM_NONE 
+    ITEM_NONE
 };
 
 EvtScript N(EVS_NpcInteract_HarryT) = {
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
                 EVT_SET(GB_StoryProgress, STORY_CH4_RETURNED_STOREROOM_KEY)
         EVT_END_SWITCH
     EVT_ELSE
-        EVT_EXEC_WAIT(ItemShopInteract)
+        EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
     EVT_END_IF
     EVT_RETURN
     EVT_END

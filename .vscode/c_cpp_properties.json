@@ -12,16 +12,16 @@
             },
             "includePath": [
                 "${workspaceFolder}/include",
-                "${workspaceFolder}/ver/us/build/include",
+                "${workspaceFolder}/ver/pal/build/include",
                 "${workspaceFolder}/src",
-                "${workspaceFolder}/assets/us"
+                "${workspaceFolder}/assets/pal"
             ],
             "defines": [
                 "F3DEX_GBI_2",
                 "_LANGUAGE_C",
                 "_MIPS_SZLONG=32",
-                "VERSION=us",
-                "VERSION_US"
+                "VERSION=pal",
+                "VERSION_PAL"
             ],
             "cStandard": "c89",
             "cppStandard": "c++17",

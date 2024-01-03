@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "entity.h"
 #include "ld_addrs.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_egg_missile
 
@@ -10,12 +11,12 @@
 
 API_CALLABLE(N(func_802A123C_71CF1C)) {
     Bytecode* args = script->ptrReadPos;
-    s32 a = evt_get_variable(script, *args++);
-    s32 b = evt_get_variable(script, *args++);
-    s32 c = evt_get_variable(script, *args++);
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
 
-    fx_smoke_ring(0, a, b, c);
-    fx_explosion(0, a, b + 20, c);
+    fx_smoke_ring(0, x, y, z);
+    fx_explosion(0, x, y + 20, z);
 
     return ApiStatus_DONE2;
 }
@@ -144,13 +145,12 @@ EntityModelScript N(EMS_EggMissile) = {
     ems_End
 };
 
-EntityModelScript unusedModelScript = STANDARD_ENTITY_MODEL_SCRIPT(
-    N(Frame4Gfx), RENDER_MODE_ALPHATEST);
+EntityModelScript unusedModelScript = STANDARD_ENTITY_MODEL_SCRIPT(N(Frame4Gfx), RENDER_MODE_ALPHATEST);
 
 EvtScript N(EVS_UseItem) = {
     EVT_SET_CONST(LVarA, ITEM_EGG_MISSILE)
     EVT_EXEC_WAIT(N(UseItemWithEffect))
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_D)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_03)
     EVT_CALL(MoveBattleCamOver, 15)
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     EVT_CALL(PlaySound, SOUND_THROW)
@@ -176,17 +176,17 @@ EvtScript N(EVS_UseItem) = {
     EVT_ADD(LVar2, 5)
     EVT_CALL(VirtualEntityJumpTo, LVarA, LVar0, LVar1, LVar2, 18)
     EVT_CALL(DeleteVirtualEntity, LVarA)
-    EVT_CALL(PlaySound, SOUND_2010)
+    EVT_CALL(PlaySound, SOUND_EGG_MISSILE_BLAST)
     EVT_CALL(N(func_802A123C_71CF1C), LVar0, LVar1, LVar2)
     EVT_THREAD
-        EVT_CALL(StartRumble, 5)
+        EVT_CALL(StartRumble, BTL_RUMBLE_HIT_EXTREME)
         EVT_CALL(ShakeCam, CAM_BATTLE, 0, 2, EVT_FLOAT(0.75))
         EVT_CALL(ShakeCam, CAM_BATTLE, 0, 5, EVT_FLOAT(1.5))
         EVT_CALL(ShakeCam, CAM_BATTLE, 0, 4, EVT_FLOAT(1.2))
         EVT_CALL(ShakeCam, CAM_BATTLE, 0, 2, EVT_FLOAT(0.45))
     EVT_END_THREAD
     EVT_CALL(GetItemPower, ITEM_EGG_MISSILE, LVar0, LVar1)
-    EVT_CALL(ItemDamageEnemy, LVar0, DAMAGE_TYPE_FIRE | DAMAGE_TYPE_BLAST | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT, 0, LVar0, BS_FLAGS1_SP_EVT_ACTIVE)
+    EVT_CALL(ItemDamageEnemy, LVar0, DAMAGE_TYPE_FIRE | DAMAGE_TYPE_BLAST | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
     EVT_EXEC_WAIT(N(PlayerGoHome))
     EVT_RETURN
     EVT_END

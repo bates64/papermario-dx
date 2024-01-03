@@ -1,15 +1,22 @@
 #include "audio.h"
 #include "ld_addrs.h"
 
+SHIFT_BSS AuCallback BeginSoundUpdateCallback;
+SHIFT_BSS BGMPlayer* gBGMPlayerA;
+SHIFT_BSS BGMPlayer* gBGMPlayerB;
+SHIFT_BSS BGMPlayer* gBGMPlayerC;
+SHIFT_BSS SoundManager* gSoundManager;
+SHIFT_BSS AuGlobals* gSoundGlobals;
+SHIFT_BSS AmbienceManager* gAuAmbienceManager;
+
 // data
 extern u16 D_80078530[9];
 extern u8 EnvelopePressDefault[];
 extern u8 EnvelopeReleaseDefault[];
 extern f32 AlTuneScaling[];
 
-
 #ifdef SHIFT
-#define SBN_ROM_OFFSET SBN_ROM_START
+#define SBN_ROM_OFFSET (s32) audio_ROM_START
 #elif VERSION_JP
 #define SBN_ROM_OFFSET 0xFC0000
 #else
@@ -205,7 +212,7 @@ void au_update_clients_2(void) {
 
     if (sfxManager->fadeInfo.fadeTime != 0) {
         au_fade_update(&sfxManager->fadeInfo);
-        au_fade_set_volume(sfxManager->busId, sfxManager->fadeInfo.currentVolume.u16, sfxManager->busVolume);
+        au_fade_set_volume(sfxManager->busId, sfxManager->fadeInfo.curVolume.u16, sfxManager->busVolume);
     }
 
     sfxManager->nextUpdateCounter -= sfxManager->nextUpdateStep;
@@ -391,12 +398,12 @@ f32 au_compute_pitch_ratio(s32 pitch) {
 }
 
 void au_fade_init(Fade* fade, s32 time, s32 startValue, s32 endValue) {
-    fade->currentVolume.s32 = startValue * 0x10000;
+    fade->curVolume.s32 = startValue * 0x10000;
     fade->targetVolume = endValue;
 
     if (time != 0) {
         fade->fadeTime = (time * 1000) / AU_5750;
-        fade->fadeStep = (endValue * 0x10000 - fade->currentVolume.s32) / fade->fadeTime;
+        fade->fadeStep = (endValue * 0x10000 - fade->curVolume.s32) / fade->fadeTime;
     } else {
         fade->fadeTime = 1;
         fade->fadeStep = 0;
@@ -415,9 +422,9 @@ void au_fade_update(Fade* fade) {
     fade->fadeTime--;
 
     if ((fade->fadeTime << 0x10) != 0) {
-        fade->currentVolume.s32 += fade->fadeStep;
+        fade->curVolume.s32 += fade->fadeStep;
     } else {
-        fade->currentVolume.s32 = fade->targetVolume << 0x10;
+        fade->curVolume.s32 = fade->targetVolume << 0x10;
         if (fade->onCompleteCallback != NULL) {
             fade->onCompleteCallback();
             fade->fadeStep = 0;
@@ -434,7 +441,7 @@ void func_80053AC8(Fade* fade) {
     if (fade->fadeTime == 0) {
         fade->fadeTime = 1;
         fade->fadeStep = 0;
-        fade->targetVolume = fade->currentVolume.u16;
+        fade->targetVolume = fade->curVolume.u16;
     }
 }
 
@@ -599,8 +606,6 @@ AuResult func_80053E58(s32 songID, BGMHeader* bgmFile) {
     AuGlobals* soundData;
     InitSongEntry* songInfo;
     s32 i;
-    u32 data;
-    u32 offset;
     u16 bkFileIndex;
 
     soundData = gSoundGlobals;
@@ -614,14 +619,11 @@ AuResult func_80053E58(s32 songID, BGMHeader* bgmFile) {
             if (bkFileIndex != 0) {
                 bkFileEntry = &soundData->sbnFileList[bkFileIndex];
 
-                offset = (bkFileEntry->offset & 0xFFFFFF) + soundData->baseRomOffset;
-                fileEntry.offset = offset;
+                fileEntry.offset = (bkFileEntry->offset & 0xFFFFFF) + soundData->baseRomOffset;
+                fileEntry.data = bkFileEntry->data;
 
-                data = bkFileEntry->data;
-                fileEntry.data = data;
-
-                if ((data >> 0x18) == AU_FMT_BK) {
-                    snd_load_BK(offset, i);
+                if ((fileEntry.data >> 0x18) == AU_FMT_BK) {
+                    snd_load_BK(fileEntry.offset, i);
                 } else {
                     status = AU_ERROR_SBN_FORMAT_MISMATCH;
                 }
@@ -796,7 +798,7 @@ void au_load_PER(AuGlobals* globals, s32 romAddr) {
     void* end;
 
     au_read_rom(romAddr, &header, sizeof(header));
-    size = header.size - sizeof(header);
+    size = header.mdata.size - sizeof(header);
     au_read_rom(romAddr + sizeof(header), globals->dataPER, size);
     numItems = size / sizeof(PEREntry);
     numItemsLeft = 6 - numItems;
@@ -817,7 +819,7 @@ void au_load_PRG(AuGlobals* arg0, s32 romAddr) {
 
     au_read_rom(romAddr, &header, sizeof(header));
     dataRomAddr = romAddr + sizeof(header);
-    size = header.size - sizeof(header);
+    size = header.mdata.size - sizeof(header);
     if (size > 0x200) {
         size = 0x200;
     }

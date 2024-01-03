@@ -6,6 +6,7 @@
 #include "rumble.h"
 #include "sprite.h"
 #include "model.h"
+#include "gcc/string.h"
 #include "dx/config.h"
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
@@ -34,7 +35,7 @@ Vec3f gEntityColliderNormals[] = {
 s32 pad_map_table[] = { 0, 0 };
 
 #ifdef SHIFT
-#define ASSET_TABLE_ROM_START mapfs_ROM_START
+#define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
 #elif VERSION_JP
 #define ASSET_TABLE_ROM_START 0x1E00000
 #else
@@ -44,9 +45,12 @@ s32 pad_map_table[] = { 0, 0 };
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-// bss
-extern MapSettings gMapSettings;
-extern MapConfig* gMapConfig;
+SHIFT_BSS MapSettings gMapSettings;
+SHIFT_BSS MapConfig* gMapConfig;
+SHIFT_BSS char wMapHitName[0x18];
+SHIFT_BSS char wMapShapeName[0x18];
+SHIFT_BSS char wMapTexName[0x18];
+SHIFT_BSS char wMapBgName[0x18];
 
 typedef struct {
     /* 0x00 */ char name[16];
@@ -58,14 +62,14 @@ typedef struct {
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
 
-#ifdef SHIFT
+#if defined(SHIFT) || VERSION_IQUE
 #define shim_general_heap_create_obfuscated general_heap_create
 #endif
 
 extern ShapeFile gMapShapeData;
 
 void load_map_script_lib(void) {
-    dma_copy(world_script_api_ROM_START, world_script_api_ROM_END, world_script_api_VRAM);
+    DMA_COPY_SEGMENT(world_script_api);
 }
 
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
@@ -81,12 +85,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_WORLD;
 
-#if VERSION_IQUE
-    general_heap_create();
-#else
+#if !VERSION_IQUE
     load_obfuscation_shims();
-    shim_general_heap_create_obfuscated();
 #endif
+    shim_general_heap_create_obfuscated();
 
 #if VERSION_JP
     reset_max_rumble_duration();
@@ -153,12 +155,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
         load_map_bg(wMapBgName);
     }
 
-#if VERSION_IQUE
-    general_heap_create();
-#else
+#if !VERSION_IQUE
     load_obfuscation_shims();
-    shim_general_heap_create_obfuscated();
 #endif
+    shim_general_heap_create_obfuscated();
 
     sfx_clear_env_sounds(0);
     clear_worker_list();
@@ -174,7 +174,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     clear_sprite_shading_data();
     reset_background_settings();
 
-    if (gGameStatusPtr->creditsViewportMode == -1) {
+    if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
         func_80138188();
     }
 
@@ -185,7 +185,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     reset_battle_status();
     clear_encounter_status();
-    clear_entity_data(1);
+    clear_entity_data(TRUE);
     clear_effect_data();
     clear_player_status();
     player_reset_data();
@@ -193,42 +193,42 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     clear_printers();
     clear_item_entity_data();
 
-    gPlayerStatus.targetYaw = gPlayerStatus.currentYaw;
+    gPlayerStatus.targetYaw = gPlayerStatus.curYaw;
 
     sfx_set_reverb_mode(WorldReverbModeMapping[*(s32*)mapConfig->unk_1C & 0x3]);
     sfx_reset_door_sounds();
 
     if (!skipLoadingAssets) {
-        s32 thing = get_asset_offset(wMapTexName, &decompressedSize);
+        s32 texturesOffset = get_asset_offset(wMapTexName, &decompressedSize);
 
         if (mapSettings->modelTreeRoot != NULL) {
-            load_data_for_models(mapSettings->modelTreeRoot, thing, decompressedSize);
+            load_data_for_models(mapSettings->modelTreeRoot, texturesOffset, decompressedSize);
         }
     }
 
     if (mapSettings->background != NULL) {
-        read_background_size(mapSettings->background);
+        set_background(mapSettings->background);
     } else {
         set_background_size(296, 200, 12, 20);
     }
 
     gCurrentCameraID = CAM_DEFAULT;
-    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_ENABLED;
-    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_ENABLED;
-    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_ENABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_ENABLED;
+    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
 
-    if (gGameStatusPtr->creditsViewportMode == -1) {
+    if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
 #if DX_FULL_VIEWPORT
-        set_cam_viewport(0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        set_cam_viewport(CAM_DEFAULT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 #else
-        set_cam_viewport(0, 12, 20, 296, 200);
+        set_cam_viewport(CAM_DEFAULT, 12, 20, 296, 200);
 #endif
     } else {
-        set_cam_viewport(0, 29, 28, 262, 162);
+        set_cam_viewport(CAM_DEFAULT, 29, 28, 262, 162);
     }
 
-    initialize_status_menu();
+    initialize_status_bar();
     gGameStatusPtr->unk_90 = 1000;
     gGameStatusPtr->unk_92 = 1000;
     gGameStatusPtr->mainScriptID = start_script_in_group(mapSettings->main, EVT_PRIORITY_0, 0, 0)->id;

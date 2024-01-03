@@ -33,12 +33,12 @@ void ispy_notification_update(void);
 void appendGfx_ispy_icon(void) {
     Matrix4f matrix1;
     Matrix4f matrix2;
-    FoldImageRecPart foldImage;
+    ImgFXTexture ifxImg;
     s32 flashPhase;
 
     if (gPlayerStatus.animFlags & PA_FLAG_ISPY_VISIBLE) {
         guScaleF(matrix1, ISpyPtr->scale, ISpyPtr->scale, ISpyPtr->scale);
-        guRotateF(matrix2, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
+        guRotateF(matrix2, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(matrix1, matrix2, matrix1);
         guTranslateF(matrix2, ISpyPtr->pos.x, ISpyPtr->pos.y, ISpyPtr->pos.z);
         guMtxCatF(matrix1, matrix2, matrix2);
@@ -58,31 +58,31 @@ void appendGfx_ispy_icon(void) {
             case 1:
             case 2:
             case 3:
-                foldImage.palette = ispy_icon_1_pal;
+                ifxImg.palette = ispy_icon_1_pal;
                 break;
             case 4:
             case 5:
             case 6:
             case 7:
-                foldImage.palette = ispy_icon_2_pal;
+                ifxImg.palette = ispy_icon_2_pal;
                 break;
             case 8:
             case 9:
             case 10:
             case 11:
-                foldImage.palette = ispy_icon_3_pal;
+                ifxImg.palette = ispy_icon_3_pal;
                 break;
         }
-        fold_update(0, FOLD_TYPE_7, 255, 255, 255, ISpyPtr->alpha, 0);
+        imgfx_update(0, IMGFX_SET_ALPHA, 255, 255, 255, ISpyPtr->alpha, 0);
 
-        foldImage.raster = ispy_icon_img;
-        foldImage.width  = ispy_icon_img_width;
-        foldImage.height = ispy_icon_img_height;
-        foldImage.xOffset = -28;
-        foldImage.yOffset = 46;
-        foldImage.opacity = 255;
+        ifxImg.raster = ispy_icon_img;
+        ifxImg.width  = ispy_icon_img_width;
+        ifxImg.height = ispy_icon_img_height;
+        ifxImg.xOffset = -28;
+        ifxImg.yOffset = 46;
+        ifxImg.alpha = 255;
 
-        fold_appendGfx_component(0, &foldImage, 0, matrix2);
+        imgfx_appendGfx_component(0, &ifxImg, 0, matrix2);
         gSPPopMatrix(gMainGfxPos++, 0);
     }
 }
@@ -90,9 +90,9 @@ void appendGfx_ispy_icon(void) {
 void ispy_notification_setup(void) {
     mem_clear(ISpyPtr, sizeof(*ISpyPtr));
 
-    ISpyPtr->pos.x = gPlayerStatus.position.x;
-    ISpyPtr->pos.y = gPlayerStatus.position.y + gPlayerStatus.colliderHeight + 8.0f;
-    ISpyPtr->pos.z = gPlayerStatus.position.z;
+    ISpyPtr->pos.x = gPlayerStatus.pos.x;
+    ISpyPtr->pos.y = gPlayerStatus.pos.y + gPlayerStatus.colliderHeight + 8.0f;
+    ISpyPtr->pos.z = gPlayerStatus.pos.z;
 
     ISpyPtr->alpha = 255;
 
@@ -106,9 +106,9 @@ void ispy_notification_update(void) {
     s32 cond;
 
     ISpyPtr->pos.y +=
-        (playerStatus->position.y + playerStatus->colliderHeight + 10.0f - ISpyPtr->pos.y) / 1.5f;
-    ISpyPtr->pos.x = playerStatus->position.x;
-    ISpyPtr->pos.z = playerStatus->position.z;
+        (playerStatus->pos.y + playerStatus->colliderHeight + 10.0f - ISpyPtr->pos.y) / 1.5f;
+    ISpyPtr->pos.x = playerStatus->pos.x;
+    ISpyPtr->pos.z = playerStatus->pos.z;
 
     switch (ISpyPtr->state) {
         case I_SPY_DELAY:
@@ -138,7 +138,7 @@ void ispy_notification_update(void) {
         case I_SPY_OVERSHOOT:
             ISpyPtr->scale = 0.57f;
             ISpyPtr->state++;
-            sfx_play_sound_at_player(SOUND_17B, SOUND_SPACE_MODE_0);
+            sfx_play_sound_at_player(SOUND_ISPY, SOUND_SPACE_DEFAULT);
             break;
         case I_SPY_ANIMATE:
             ISpyPtr->scale = 0.53f;

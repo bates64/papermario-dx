@@ -13,14 +13,15 @@
 #define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
 #endif
 
-extern void* D_8010C924;
-extern s32 D_8010C964;
-extern s32 gSpinHistoryBufferPos;
-extern s16 D_8010C9B0;
-extern s32 gSpinHistoryPosY[5];
-extern s32 gSpinHistoryPosX[5];
-extern s32 gSpinHistoryPosZ[5];
-extern s16 gSpinHistoryPosAngle[5];
+SHIFT_BSS void* D_8010C924;
+SHIFT_BSS s32 D_8010C92C;
+SHIFT_BSS s32 D_8010C964;
+SHIFT_BSS s32 gSpinHistoryBufferPos;
+SHIFT_BSS s16 D_8010C9B0;
+SHIFT_BSS s32 gSpinHistoryPosY[5];
+SHIFT_BSS s32 gSpinHistoryPosX[5];
+SHIFT_BSS s32 gSpinHistoryPosZ[5];
+SHIFT_BSS s16 gSpinHistoryPosAngle[5];
 
 void func_800E5520(void) {
     D_8010C9B0 = 0;
@@ -32,6 +33,7 @@ s32 phys_adjust_cam_on_landing(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 ret = 1;
 
+    //TODO hardcoded map IDs
     switch (gameStatus->areaID) {
         case AREA_OBK:
             ret = gameStatus->mapID != 4;
@@ -43,42 +45,42 @@ s32 phys_adjust_cam_on_landing(void) {
                     break;
                 case 1:
                     if (D_8010C9B0 == 0) {
-                        if (playerStatus->position.y <= 0.0f) {
+                        if (playerStatus->pos.y <= 0.0f) {
                             D_8010C9B0 = 1;
                         }
                         ret = 2;
-                    } else if (playerStatus->position.y > 0.0f) {
+                    } else if (playerStatus->pos.y > 0.0f) {
                         ret = 0;
                     }
                     break;
                 case 3:
-                    if (playerStatus->position.y > 25.0f) {
+                    if (playerStatus->pos.y > 25.0f) {
                         ret = 0;
                     }
                     break;
                 case 4:
-                    if (playerStatus->position.y > 50.0f) {
+                    if (playerStatus->pos.y > 50.0f) {
                         ret = 0;
                     }
                     break;
                 case 7:
-                    if (playerStatus->position.y > -390.0f) {
+                    if (playerStatus->pos.y > -390.0f) {
                         ret = 0;
-                    } else if (playerStatus->position.y < -495.0f) {
+                    } else if (playerStatus->pos.y < -495.0f) {
                         ret = 0;
                     }
                     break;
                 case 8:
-                    if (playerStatus->position.y > -90.0f) {
+                    if (playerStatus->pos.y > -90.0f) {
                         ret = 0;
-                    } else if (playerStatus->position.y < -370.0f) {
+                    } else if (playerStatus->pos.y < -370.0f) {
                         ret = 0;
                     }
                     break;
                 case 2:
                     if (gGameStatusPtr->entryID == 0) {
                         if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->position.y > 0.0f)) {
+                            if (!(playerStatus->pos.y > 0.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
                                 ret = 2;
@@ -86,7 +88,7 @@ s32 phys_adjust_cam_on_landing(void) {
                             }
                         }
 
-                        if (playerStatus->position.y > 0.0f) {
+                        if (playerStatus->pos.y > 0.0f) {
                             ret = 0;
                         }
                     } else {
@@ -96,7 +98,7 @@ s32 phys_adjust_cam_on_landing(void) {
                 case 5:
                     if (gGameStatusPtr->entryID == 0) {
                         if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->position.y > -130.0f)) {
+                            if (!(playerStatus->pos.y > -130.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
                                 ret = 2;
@@ -105,7 +107,7 @@ s32 phys_adjust_cam_on_landing(void) {
 
                         }
 
-                        if (playerStatus->position.y > -130.0f) {
+                        if (playerStatus->pos.y > -130.0f) {
                             ret = 0;
                         }
                     } else {
@@ -114,7 +116,7 @@ s32 phys_adjust_cam_on_landing(void) {
                     break;
                 case 10:
                     if (D_8010C9B0 == 0) {
-                        if (!(playerStatus->position.y > -520.0f)) {
+                        if (!(playerStatus->pos.y > -520.0f)) {
                             D_8010C9B0 = 1;
                         } else {
                             ret = 2;
@@ -122,14 +124,14 @@ s32 phys_adjust_cam_on_landing(void) {
                         }
                     }
 
-                    if (playerStatus->position.y > -520.0f) {
+                    if (playerStatus->pos.y > -520.0f) {
                         ret = 0;
                     }
                     break;
                 case 11:
                     if (gGameStatusPtr->entryID == 0) {
                         if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->position.y > -520.0f)) {
+                            if (!(playerStatus->pos.y > -520.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
                                 ret = 2;
@@ -138,7 +140,7 @@ s32 phys_adjust_cam_on_landing(void) {
 
                         }
 
-                        if (playerStatus->position.y > -520.0f) {
+                        if (playerStatus->pos.y > -520.0f) {
                             ret = 0;
                         }
                     }
@@ -152,7 +154,7 @@ s32 phys_adjust_cam_on_landing(void) {
     }
 
     if (ret == 1) {
-        s32 surfaceType = get_collider_flags(gCollisionStatus.currentFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+        s32 surfaceType = get_collider_flags(gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
         if (surfaceType == SURFACE_TYPE_LAVA) {
             gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
@@ -161,9 +163,9 @@ s32 phys_adjust_cam_on_landing(void) {
             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
         }
     } else if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE && partnerStatus->actingPartner == PARTNER_PARAKARRY) {
-        gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_FLAG_2;
+        gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_NO_INTERP_Y;
     } else {
-        gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_FLAG_2;
+        gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
     }
 
     return ret;
@@ -231,7 +233,7 @@ void phys_update_action_state(void) {
     if (playerStatus->camResetDelay != 0) {
         playerStatus->camResetDelay--;
         if (playerStatus->camResetDelay == 0) {
-            gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_FLAG_4;
+            gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_ACCEL_INTERP_Y;
         }
     }
 
@@ -243,7 +245,7 @@ void phys_update_action_state(void) {
         LastMidairPlayerVelY = playerStatus->gravityIntegrator[0];
     }
 
-    func_800E24F8();
+    calculate_camera_yinterp_rate();
     if (playerSpinState->stopSoundTimer != 0) {
         playerSpinState->stopSoundTimer--;
         if (playerSpinState->stopSoundTimer == 0) {
@@ -287,7 +289,7 @@ void phys_update_action_state(void) {
 void phys_peach_update(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
-    func_800E24F8();
+    calculate_camera_yinterp_rate();
 
     do {
         if (!(playerStatus->flags & PS_FLAG_PAUSED) && check_conversation_trigger()) {
@@ -361,7 +363,7 @@ void set_action_state(s32 actionState) {
         }
 
         // Whilst Sushie, Lakilester, or Parakarry's ability is active, hazards have no effect.
-        partner = playerData->currentPartner;
+        partner = playerData->curPartner;
 
         if (partner == PARTNER_SUSHIE || partner == PARTNER_LAKILESTER || partner == PARTNER_PARAKARRY) {
             if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
@@ -401,7 +403,7 @@ void set_action_state(s32 actionState) {
     }
 
     if (playerStatus->specialDecorationEffect != NULL) {
-        playerStatus->specialDecorationEffect->data.unk_46->unk_24 = 10;
+        playerStatus->specialDecorationEffect->data.spin->timeLeft = 10;
         playerStatus->specialDecorationEffect = NULL;
     }
 }
@@ -446,7 +448,7 @@ void start_bounce_b(void) {
     playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
 }
 
-s32 check_input_hammer(void) {
+b32 check_input_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
@@ -455,7 +457,7 @@ s32 check_input_hammer(void) {
             return FALSE;
         }
 
-        if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && playerData->currentPartner == PARTNER_WATT) {
+        if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && playerData->curPartner == PARTNER_WATT) {
             return FALSE;
         }
 
@@ -469,7 +471,7 @@ s32 check_input_hammer(void) {
     return FALSE;
 }
 
-s32 check_input_jump(void) {
+b32 check_input_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 surfaceType;
@@ -479,7 +481,7 @@ s32 check_input_jump(void) {
     }
 
     // @bug? collider flags not properly masked with COLLIDER_FLAG_SURFACE_TYPE
-    surfaceType = get_collider_flags((u16)gCollisionStatus.currentFloor);
+    surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor);
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
         return FALSE;
     }
@@ -491,8 +493,8 @@ s32 check_input_jump(void) {
         return FALSE;
     }
 
-    if ((collisionStatus->currentInspect != -1) && (collisionStatus->currentInspect & COLLISION_WITH_ENTITY_BIT)) {
-        Entity* entity = get_entity_by_index(collisionStatus->currentInspect);
+    if ((collisionStatus->curInspect != -1) && (collisionStatus->curInspect & COLLISION_WITH_ENTITY_BIT)) {
+        Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             if ((entity->boundScriptBytecode == 0) || (entity->flags & ENTITY_FLAG_4000)) {
@@ -519,7 +521,7 @@ void check_input_spin(void) {
 
     if (!((playerStatus->flags & (PS_FLAG_NO_STATIC_COLLISION | PS_FLAG_CUTSCENE_MOVEMENT)) ||
           (playerStatus->animFlags & PA_FLAG_USING_WATT) ||
-          (playerStatus->currentButtons & BUTTON_C_DOWN) ||
+          (playerStatus->curButtons & BUTTON_C_DOWN) ||
           is_ability_active(ABILITY_SLOW_GO))) {
 
         s32 actionState = playerStatus->actionState;
@@ -551,7 +553,7 @@ void peach_set_disguise_anim(AnimID anim) {
     s32 listIndex = PeachDisguiseNpcIndex;
 
     if (listIndex >= 0) {
-        get_npc_by_index(listIndex)->currentAnim = anim;
+        get_npc_by_index(listIndex)->curAnim = anim;
     }
 }
 
@@ -562,7 +564,7 @@ void peach_force_disguise_action(s32 useParasol) {
         set_action_state(ACTION_STATE_USE_SNEAKY_PARASOL);
     } else {
         playerStatus->animFlags &= ~PA_FLAG_INVISIBLE;
-        gGameStatusPtr->peachFlags &= ~PEACH_STATUS_FLAG_DISGUISED;
+        gGameStatusPtr->peachFlags &= ~PEACH_FLAG_DISGUISED;
         playerStatus->peachDisguise = PEACH_DISGUISE_NONE;
         free_npc_by_index(PeachDisguiseNpcIndex);
         set_action_state(ACTION_STATE_IDLE);
@@ -580,9 +582,9 @@ void peach_check_for_parasol_input(void) {
         if (D_8010C92C != 0) {
             D_8010C92C--;
             if (D_8010C92C == 0) {
-                if (gGameStatusPtr->peachFlags & PEACH_STATUS_FLAG_DISGUISED) {
+                if (gGameStatusPtr->peachFlags & PEACH_FLAG_DISGUISED) {
                     playerStatus->animFlags |= PA_FLAG_INVISIBLE;
-                    gGameStatusPtr->peachFlags |= PEACH_STATUS_FLAG_DISGUISED;
+                    gGameStatusPtr->peachFlags |= PEACH_FLAG_DISGUISED;
 
                     disguiseNpc = peach_make_disguise_npc(gGameStatusPtr->peachDisguise);
                     if (disguiseNpc != NULL) {
@@ -590,7 +592,7 @@ void peach_check_for_parasol_input(void) {
                     }
                 }
             }
-        } else if (gGameStatusPtr->peachFlags & PEACH_STATUS_FLAG_HAS_PARASOL && playerStatus->pressedButtons & BUTTON_B) {
+        } else if (gGameStatusPtr->peachFlags & PEACH_FLAG_HAS_PARASOL && playerStatus->pressedButtons & BUTTON_B) {
             set_action_state(ACTION_STATE_USE_SNEAKY_PARASOL);
         }
     }
@@ -608,9 +610,9 @@ void peach_sync_disguise_npc(void) {
             npc->yaw = playerStatus->targetYaw;
         }
 
-        npc->pos.x = playerStatus->position.x;
-        npc->pos.y = playerStatus->position.y;
-        npc->pos.z = playerStatus->position.z;
+        npc->pos.x = playerStatus->pos.x;
+        npc->pos.y = playerStatus->pos.y;
+        npc->pos.z = playerStatus->pos.z;
     }
 }
 
@@ -630,7 +632,7 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
     playerStatus->peachDisguise = peachDisguise;
     gGameStatusPtr->peachDisguise = peachDisguise;
 
-    bpPtr->flags = NPC_FLAG_8 | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
+    bpPtr->flags = NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
     bpPtr->initialAnim = BasicPeachDisguiseAnims[playerStatus->peachDisguise].idle;
     bpPtr->onUpdate = NULL;
     bpPtr->onRender = NULL;
@@ -648,9 +650,9 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
 
     set_npc_yaw(npc, yaw);
 
-    npc->pos.x = playerStatus->position.x;
-    npc->pos.y = playerStatus->position.y;
-    npc->pos.z = playerStatus->position.z;
+    npc->pos.x = playerStatus->pos.x;
+    npc->pos.y = playerStatus->pos.y;
+    npc->pos.z = playerStatus->pos.z;
 
     return npc;
 }
@@ -664,17 +666,17 @@ s32 peach_disguise_check_overlaps(void) {
     s32 i;
 
     if (playerStatus->spriteFacingAngle >= 90.0f && playerStatus->spriteFacingAngle < 270.0f) {
-        yaw = camera->currentYaw - 270.0f;
+        yaw = camera->curYaw - 270.0f;
     } else {
-        yaw = camera->currentYaw - 90.0f;
+        yaw = camera->curYaw - 90.0f;
     }
     sin_cos_rad(DEG_TO_RAD(clamp_angle(yaw)), &dx, &dy);
 
     for (radius = 2, i = 2; i > 0; radius += 18, i--) {
-        f32 x = playerStatus->position.x + (dx * radius);
-        f32 y = playerStatus->position.y + 4.0f;
-        f32 z = playerStatus->position.z - (dy * radius);
-        hitID = player_test_lateral_overlap(3, playerStatus, &x, &y, &z, 4.0f, yaw);
+        f32 x = playerStatus->pos.x + (dx * radius);
+        f32 y = playerStatus->pos.y + 4.0f;
+        f32 z = playerStatus->pos.z - (dy * radius);
+        hitID = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
         if (hitID >= 0) {
             break;
         }

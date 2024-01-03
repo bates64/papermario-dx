@@ -1,9 +1,10 @@
 #include "iwa_04.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/Cleft.inc.c"
 
 API_CALLABLE(N(func_80241060_91C940)) {
-    gCameras[CAM_DEFAULT].unk_498 = 1.0f;
+    gCameras[CAM_DEFAULT].yinterpAlpha = 1.0f;
     return ApiStatus_BLOCK;
 }
 
@@ -16,7 +17,7 @@ API_CALLABLE(N(func_8024107C_91C95C)) {
 
 EvtScript N(EVS_FlapWingSounds) = {
     EVT_LOOP(0)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_20EF, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BUZZAR_FLAP, SOUND_SPACE_DEFAULT)
         EVT_WAIT(16)
     EVT_END_LOOP
     EVT_RETURN
@@ -294,7 +295,7 @@ NpcData N(NpcData_Cleft) = {
         }
     },
     .settings = &N(NpcSettings_Cleft),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
     .drops = CLEFT_DROPS,
     .animations = CLEFT_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -305,7 +306,7 @@ NpcData N(NpcData_Buzzar) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
     .settings = &N(NpcSettings_Buzzar),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = {
         .dropFlags = NPC_DROP_FLAG_80,
         .heartDrops  = STANDARD_HEART_DROPS(3),

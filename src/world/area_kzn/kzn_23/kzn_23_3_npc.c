@@ -1,6 +1,7 @@
 #include "kzn_23.h"
 #include "entity.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SetChestPosition)) {
     Bytecode* args = script->ptrReadPos;
@@ -10,9 +11,9 @@ API_CALLABLE(N(SetChestPosition)) {
     f32 z = evt_get_variable(script, *args++);
     Entity* entity = get_entity_by_index(entityIndex);
 
-    entity->position.x = x;
-    entity->position.y = y;
-    entity->position.z = z;
+    entity->pos.x = x;
+    entity->pos.y = y;
+    entity->pos.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -20,9 +21,9 @@ API_CALLABLE(N(GetChestPosition)) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
-    evt_set_variable(script, *args++, entity->position.x);
-    evt_set_variable(script, *args++, entity->position.y);
-    evt_set_variable(script, *args++, entity->position.z);
+    evt_set_variable(script, *args++, entity->pos.x);
+    evt_set_variable(script, *args++, entity->pos.y);
+    evt_set_variable(script, *args++, entity->pos.z);
     return ApiStatus_DONE2;
 }
 
@@ -58,7 +59,7 @@ API_CALLABLE(N(AnimateChestSize)) {
     entity->scale.y = script->functionTemp[1] / 60.0f;
     entity->scale.z = script->functionTemp[1] / 60.0f;
 
-    entity->rotation.y = (1.0f - cos_rad(entity->scale.y * PI)) * 990.0 / 2.0;
+    entity->rot.y = (1.0f - cos_rad(entity->scale.y * PI)) * 990.0 / 2.0;
 
     script->functionTemp[1]--;
     if (~script->functionTemp[1] == 0) { //TODO remove ~ optimization
@@ -144,10 +145,10 @@ EvtScript N(EVS_PlayPyroclastSounds) = {
         EVT_BUF_READ1(LVar1)
     EVT_END_LOOP
     EVT_IF_EQ(AF_KZN23_UseAlternateSound, FALSE)
-        EVT_CALL(PlaySoundAt, SOUND_1AD, SOUND_SPACE_MODE_0, LVar1, 2800, 0)
+        EVT_CALL(PlaySoundAt, SOUND_FLYING_PYROCLAST_1, SOUND_SPACE_DEFAULT, LVar1, 2800, 0)
         EVT_SET(AF_KZN23_UseAlternateSound, TRUE)
     EVT_ELSE
-        EVT_CALL(PlaySoundAt, SOUND_1AE, SOUND_SPACE_MODE_0, LVar1, 2800, 0)
+        EVT_CALL(PlaySoundAt, SOUND_FLYING_PYROCLAST_2, SOUND_SPACE_DEFAULT, LVar1, 2800, 0)
         EVT_SET(AF_KZN23_UseAlternateSound, FALSE)
     EVT_END_IF
     EVT_RETURN
@@ -190,7 +191,7 @@ EvtScript N(EVS_SpawnPyroclasts) = {
                     EVT_BREAK_LOOP
                 EVT_END_IF
             EVT_END_LOOP
-            EVT_CALL(func_802D7B10, LVarE)
+            EVT_CALL(DismissEffect, LVarE)
         EVT_END_THREAD
         EVT_WAIT(8)
     EVT_END_LOOP

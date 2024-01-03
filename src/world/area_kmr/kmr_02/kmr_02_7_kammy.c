@@ -1,4 +1,5 @@
 #include "kmr_02.h"
+#include "sprite/player.h"
 
 #include "world/common/todo/CheckPartnerFlags1000.inc.c"
 
@@ -44,7 +45,7 @@ Vec3f N(FlightPath_KammyDepart)[] = {
 
 EvtScript N(EVS_PlayKammyFlightSounds) = {
     EVT_LOOP(0)
-        EVT_CALL(PlaySoundAtNpc, NPC_Kammy, SOUND_295, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Kammy, SOUND_FLIGHT, SOUND_SPACE_DEFAULT)
         EVT_WAIT(4 * DT)
     EVT_END_LOOP
     EVT_RETURN
@@ -148,7 +149,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         EVT_END_IF
     EVT_KILL_THREAD(MV_Unk_04)
     EVT_KILL_THREAD(MV_Unk_05)
-    EVT_CALL(PlaySoundAtNpc, NPC_Kammy, SOUND_32B, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Kammy, SOUND_SKID, SOUND_SPACE_DEFAULT)
     EVT_THREAD
         EVT_CALL(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim10)
         EVT_WAIT(1)
@@ -216,15 +217,15 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     EVT_EXEC_WAIT(N(EVS_SummonGateBlock))
     EVT_THREAD
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_PanicHoverStill)
-        EVT_CALL(func_802D286C, 256)
-        EVT_CALL(func_802D2520, ANIM_MarioW2_PanicHoverStill, 5, 0, 1, 1, 0)
+        EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM)
+        EVT_CALL(UpdatePlayerImgFX, ANIM_MarioW2_PanicHoverStill, IMGFX_SET_ANIM, IMGFX_ANIM_SHOCK, 1, 1, 0)
         EVT_WAIT(13 * DT)
-        EVT_CALL(func_802D2520, ANIM_MarioW2_PanicHoverStill, 0, 0, 0, 0, 0)
+        EVT_CALL(UpdatePlayerImgFX, ANIM_MarioW2_PanicHoverStill, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_PanicHover)
-        EVT_CALL(func_802D286C, 256)
-        EVT_CALL(func_802D2520, ANIM_MarioW2_PanicHover, 5, 0, 1, 1, 0)
+        EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM)
+        EVT_CALL(UpdatePlayerImgFX, ANIM_MarioW2_PanicHover, IMGFX_SET_ANIM, IMGFX_ANIM_SHOCK, 1, 1, 0)
         EVT_WAIT(13 * DT)
-        EVT_CALL(func_802D2520, ANIM_MarioW2_PanicHover, 0, 0, 0, 0, 0)
+        EVT_CALL(UpdatePlayerImgFX, ANIM_MarioW2_PanicHover, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(0.8))
@@ -234,22 +235,22 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_Shock)
-        EVT_CALL(func_802CFE2C, NPC_Goombaria, 0x100)
-        EVT_CALL(func_802CFD30, NPC_Goombaria, FOLD_TYPE_5, 0, 1, 1, 0)
+        EVT_CALL(SetNpcImgFXFlags, NPC_Goombaria, IMGFX_FLAG_REVERSE_ANIM)
+        EVT_CALL(SetNpcImgFXParams, NPC_Goombaria, IMGFX_SET_ANIM, IMGFX_ANIM_SHOCK, 1, 1, 0)
         EVT_CALL(SetNpcJumpscale, NPC_Goombaria, EVT_FLOAT(1.5))
         EVT_CALL(GetNpcPos, NPC_Goombaria, LVar0, LVar1, LVar2)
         EVT_CALL(NpcJump0, NPC_Goombaria, LVar0, LVar1, LVar2, 25 * DT)
         EVT_CALL(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_LookUp)
-        EVT_CALL(func_802CFD30, NPC_Goombaria, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Goombaria, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_END_THREAD
-    EVT_CALL(func_802CFE2C, NPC_Goompapa, 0x100)
-    EVT_CALL(func_802CFD30, NPC_Goompapa, FOLD_TYPE_5, 0, 1, 1, 0)
+    EVT_CALL(SetNpcImgFXFlags, NPC_Goompapa, IMGFX_FLAG_REVERSE_ANIM)
+    EVT_CALL(SetNpcImgFXParams, NPC_Goompapa, IMGFX_SET_ANIM, IMGFX_ANIM_SHOCK, 1, 1, 0)
     EVT_CALL(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Shock)
     EVT_CALL(SetNpcJumpscale, NPC_Goompapa, EVT_FLOAT(1.2))
     EVT_CALL(GetNpcPos, NPC_Goompapa, LVar0, LVar1, LVar2)
     EVT_CALL(NpcJump0, NPC_Goompapa, LVar0, LVar1, LVar2, 25 * DT)
     EVT_CALL(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_LookUp)
-    EVT_CALL(func_802CFD30, NPC_Goompapa, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Goompapa, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_WAIT(10 * DT)
     EVT_CALL(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim13)
     EVT_CALL(SetCamType, CAM_DEFAULT, 4, FALSE)
@@ -328,7 +329,7 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     EVT_CALL(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_GRAVITY, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     EVT_CALL(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_8, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_FLYING, TRUE)
     EVT_CALL(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
     EVT_CALL(EnableNpcShadow, NPC_Goompa, FALSE)
     EVT_SET(GB_StoryProgress, STORY_CH0_GATE_CRUSHED)

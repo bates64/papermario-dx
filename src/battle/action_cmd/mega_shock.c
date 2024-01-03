@@ -81,9 +81,9 @@ API_CALLABLE(N(start)) {
         actionCommandStatus->barFillWidth = 0;
 
         battleStatus->actionSuccess = 0;
-        battleStatus->unk_86 = 0;
+        battleStatus->actionResult = ACTION_RESULT_FAIL;
         actionCommandStatus->state = 10;
-        battleStatus->flags1 &= ~BS_FLAGS1_8000;
+        battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
 
         func_80269118();
         result = ApiStatus_DONE2;
@@ -162,7 +162,7 @@ void N(update)(void) {
             actionCommandStatus->barFillLevel = 0;
             actionCommandStatus->unk_5C = 0;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
         case 11:
             btl_set_popup_duration(99);
@@ -256,8 +256,8 @@ void N(update)(void) {
 
             adjustedFillLevel = actionCommandStatus->barFillLevel / 100;
 
-            battleStatus->actionResult = adjustedFillLevel;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, adjustedFillLevel * 12);
+            battleStatus->actionQuality = adjustedFillLevel;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, adjustedFillLevel * 12);
 
             if (actionCommandStatus->frameCounter == 0) {
                 s16 threshold;
@@ -280,17 +280,17 @@ void N(update)(void) {
                 mashMeterCutoff = actionCommandStatus->mashMeterCutoffs[mashMeterIndex];
                 threshold = mashMeterCutoff / 2;
 
-                if (battleStatus->actionResult <= threshold) {
-                    battleStatus->unk_86 = -4;
+                if (battleStatus->actionQuality <= threshold) {
+                    battleStatus->actionResult = ACTION_RESULT_MINUS_4;
                 } else {
-                    battleStatus->unk_86 = 1;
+                    battleStatus->actionResult = ACTION_RESULT_SUCCESS;
                 }
 
                 if (battleStatus->actionSuccess == 100) {
                     func_80269160();
                 }
 
-                sfx_stop_sound(SOUND_80000041);
+                sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
                 btl_set_popup_duration(0);
                 actionCommandStatus->frameCounter = 5;
                 actionCommandStatus->state = 12;

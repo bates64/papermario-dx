@@ -9,10 +9,10 @@ API_CALLABLE(N(GetLeftRightPoints)) {
     s32 switchPosZ = evt_get_variable(script, *args++);
     f32 dist = evt_get_variable(script, *args++);
 
-    script->varTable[0] = switchPosX + (sin_deg(gCameras[CAM_DEFAULT].currentYaw + 270.0f + dist) * 100.0f);
-    script->varTable[1] = switchPosZ - (cos_deg(gCameras[CAM_DEFAULT].currentYaw + 270.0f + dist) * 100.0f);
-    script->varTable[2] = switchPosX + (sin_deg(gCameras[CAM_DEFAULT].currentYaw + 90.0f + dist) * 100.0f);
-    script->varTable[3] = switchPosZ - (cos_deg(gCameras[CAM_DEFAULT].currentYaw + 90.0f + dist) * 100.0f);
+    script->varTable[0] = switchPosX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[1] = switchPosZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[2] = switchPosX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
+    script->varTable[3] = switchPosZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
     return ApiStatus_DONE2;
 }
 
@@ -46,7 +46,7 @@ EvtScript N(EVS_RetractPlatform) = {
             EVT_GOTO(0)
         EVT_END_IF
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar7, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_CALL(PlaySound, SOUND_26)
+    EVT_CALL(PlaySound, SOUND_TRD_PUZZLE_PLATFORM_THUD)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 2, EVT_FLOAT(0.3))
     EVT_RETURN
     EVT_END
@@ -62,7 +62,7 @@ EvtScript N(EVS_ExtendPlatform) = {
             EVT_GOTO(0)
         EVT_END_IF
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, LVar7, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_CALL(PlaySound, SOUND_26)
+    EVT_CALL(PlaySound, SOUND_TRD_PUZZLE_PLATFORM_THUD)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 2, EVT_FLOAT(0.3))
     EVT_RETURN
     EVT_END

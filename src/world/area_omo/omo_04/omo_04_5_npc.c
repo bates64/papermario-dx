@@ -9,7 +9,7 @@
 NpcSettings N(NpcSettings_Goomba) = {
     .height = 23,
     .radius = 22,
-    .level = 14,
+    .level = ACTOR_LEVEL_SHY_GUY,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -18,8 +18,8 @@ NpcSettings N(NpcSettings_Goomba) = {
 #include "world/common/enemy/Clubba.inc.c"
 #include "world/common/enemy/Kammy_Flying.inc.c"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 EvtScript N(EVS_NpcIdle_Goomba) = {
     EVT_LABEL(0)
@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         EVT_GOTO(0)
     EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(SetCamProperties, CAM_DEFAULT, EVT_FLOAT(5.0), LVar0, LVar1, LVar2, 300, EVT_FLOAT(13.0), EVT_FLOAT(-9.5))
     EVT_IF_EQ(GB_OMO_PeachChoice1, 0)
@@ -38,7 +38,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         EVT_CALL(SpeakToPlayer, NPC_Clubba, ANIM_WorldClubba_Anim05, ANIM_WorldClubba_Anim02, 0, MSG_CH4_003B)
     EVT_END_IF
     EVT_THREAD
-        EVT_CALL(N(UnsetCamera0Flag1000))
+        EVT_CALL(N(EnableCameraLeadingPlayer))
         EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(4.0))
     EVT_END_THREAD
     EVT_CALL(DisablePlayerInput, FALSE)
@@ -95,7 +95,7 @@ NpcData N(NpcData_Goomba) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Goomba),
     .settings = &N(NpcSettings_Goomba),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = GOOMBA_ANIMS,
 };
@@ -106,7 +106,7 @@ NpcData N(NpcData_Clubba) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Clubba),
     .settings = &N(NpcSettings_Clubba),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS_ALT,
 };
@@ -128,7 +128,7 @@ NpcData N(NpcData_ShyGuy) = {
         }
     },
     .settings = &N(NpcSettings_ShyGuy_Wander),
-    .flags = ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = PINK_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -151,7 +151,7 @@ NpcData N(NpcData_SkyGuy) = {
         }
     },
     .settings = &N(NpcSettings_SkyGuy),
-    .flags = ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_FLYING,
     .drops = SKY_GUY_DROPS,
     .animations = SKY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -173,7 +173,7 @@ NpcData N(NpcData_Kammy) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_Kammy),
     .settings = &N(NpcSettings_Kammy_Flying),
-    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
     .extraAnimations = N(ExtraAnims_Kammy),

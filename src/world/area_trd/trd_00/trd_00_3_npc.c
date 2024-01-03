@@ -1,22 +1,23 @@
 #include "trd_00.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 extern EvtScript N(EVS_SetupMusic);
 
 API_CALLABLE(N(UpgradeStarPowerCh1)) {
-    set_max_SP(1);
+    set_max_star_power(1);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
-    sync_status_menu();
+    sync_status_bar();
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SyncStatusMenu.inc.c"
+#include "world/common/todo/SyncStatusBar.inc.c"
 
 NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 34,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -28,7 +29,7 @@ EvtScript N(EVS_NpcIdle_KoopaBros) = {
     EVT_CALL(AwaitPlayerApproach, -580, 276, 50)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, FALSE)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_METAL_DOOR_OPEN, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_METAL_DOOR_OPEN, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, 100, 10, EASING_COS_IN_OUT)
         EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
@@ -48,29 +49,29 @@ EvtScript N(EVS_NpcIdle_KoopaBros) = {
         EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(3.0 / DT))
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_END_THREAD
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Anim03)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Run)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
     EVT_CALL(SetNpcSpeed, NPC_SELF, EVT_FLOAT(4.5 / DT))
     EVT_CALL(NpcMoveTo, NPC_SELF, -556, 180, 0)
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_5, 4, 2, 1, 0)
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Anim1E)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_STARTLE, 2, 1, 0)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Shock)
     EVT_WAIT(12 * DT)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_NONE, 0, 0, 0, 0)
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Anim04)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Idle)
     EVT_WAIT(10 * DT)
-    EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_KoopaBros_Black_Anim14, ANIM_KoopaBros_Black_Anim04, 0, MSG_CH1_00D2)
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Anim02)
+    EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_KoopaBros_Black_Talk, ANIM_KoopaBros_Black_Idle, 0, MSG_CH1_00D2)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Walk)
     EVT_CALL(InterpNpcYaw, NPC_SELF, 45, 2)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_173, SOUND_SPACE_MODE_0)
-    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Anim03)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_RUN_AWAY_BUILDUP, SOUND_SPACE_DEFAULT)
+    EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_KoopaBros_Black_Run)
     EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(0.8))
     EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     EVT_CALL(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 8 * DT)
     EVT_WAIT(8 * DT)
     EVT_WAIT(12 * DT)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_174, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_RUN_AWAY, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcSpeed, NPC_SELF, EVT_FLOAT(8.0 / DT))
         EVT_CALL(NpcMoveTo, NPC_SELF, -496, 101, 0)
     EVT_END_THREAD
@@ -88,7 +89,7 @@ EvtScript N(EVS_NpcIdle_KoopaBros) = {
     EVT_IF_NE(LVar1, 0)
         EVT_GOTO(1)
     EVT_END_IF
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_WAIT(10 * DT)
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(3.5 / DT))
@@ -167,7 +168,7 @@ EvtScript N(D_80241DA4_99BA14) = {
     EVT_CALL(EnableNpcAI, NPC_Eldstar, FALSE)
     EVT_CALL(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Leap)
     EVT_WAIT(20 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_139, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_RECEIVE_STAR_POWER, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_UsePower)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_SET(LVar3, LVar1)
@@ -184,7 +185,7 @@ EvtScript N(D_80241DA4_99BA14) = {
     EVT_WAIT(20 * DT)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 20)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_188, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
     EVT_WAIT(40 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -214,7 +215,7 @@ EvtScript N(D_80241DA4_99BA14) = {
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(FullyRestoreSP)
-    EVT_CALL(N(SyncStatusMenu))
+    EVT_CALL(N(SyncStatusBar))
     EVT_LABEL(10)
     EVT_WAIT(30 * DT)
     EVT_CALL(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
@@ -270,7 +271,7 @@ EvtScript N(D_80241DA4_99BA14) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(15 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Eldstar, SOUND_2045, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Eldstar, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_WAIT(10 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_LookUp)
@@ -310,25 +311,25 @@ NpcData N(NpcData_KoopaBros) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_KoopaBros),
     .settings = &N(NpcSettings_KoopaBros),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = {
-        .idle   = ANIM_KoopaBros_Green_Anim04,
-        .walk   = ANIM_KoopaBros_Green_Anim02,
-        .run    = ANIM_KoopaBros_Green_Anim03,
-        .chase  = ANIM_KoopaBros_Green_Anim03,
-        .anim_4 = ANIM_KoopaBros_Green_Anim04,
-        .anim_5 = ANIM_KoopaBros_Green_Anim04,
-        .death  = ANIM_KoopaBros_Green_Anim0A,
-        .hit    = ANIM_KoopaBros_Green_Anim0A,
-        .anim_8 = ANIM_KoopaBros_Green_Anim03,
-        .anim_9 = ANIM_KoopaBros_Green_Anim03,
-        .anim_A = ANIM_KoopaBros_Green_Anim03,
-        .anim_B = ANIM_KoopaBros_Green_Anim03,
-        .anim_C = ANIM_KoopaBros_Green_Anim03,
-        .anim_D = ANIM_KoopaBros_Green_Anim03,
-        .anim_E = ANIM_KoopaBros_Green_Anim03,
-        .anim_F = ANIM_KoopaBros_Green_Anim03,
+        .idle   = ANIM_KoopaBros_Green_Idle,
+        .walk   = ANIM_KoopaBros_Green_Walk,
+        .run    = ANIM_KoopaBros_Green_Run,
+        .chase  = ANIM_KoopaBros_Green_Run,
+        .anim_4 = ANIM_KoopaBros_Green_Idle,
+        .anim_5 = ANIM_KoopaBros_Green_Idle,
+        .death  = ANIM_KoopaBros_Green_HurtStill,
+        .hit    = ANIM_KoopaBros_Green_HurtStill,
+        .anim_8 = ANIM_KoopaBros_Green_Run,
+        .anim_9 = ANIM_KoopaBros_Green_Run,
+        .anim_A = ANIM_KoopaBros_Green_Run,
+        .anim_B = ANIM_KoopaBros_Green_Run,
+        .anim_C = ANIM_KoopaBros_Green_Run,
+        .anim_D = ANIM_KoopaBros_Green_Run,
+        .anim_E = ANIM_KoopaBros_Green_Run,
+        .anim_F = ANIM_KoopaBros_Green_Run,
     },
 };
 
@@ -350,7 +351,7 @@ NpcData N(NpcData_Eldstar) = {
     },
     .init = &N(EVS_NpcInit_Eldstar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,
 };

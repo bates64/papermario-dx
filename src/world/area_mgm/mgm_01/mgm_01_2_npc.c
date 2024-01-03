@@ -56,7 +56,7 @@ typedef struct JumpGameData {
     /* 0x000 */ s32 workerID;
     /* 0x004 */ s32 hudElemID;
     /* 0x008 */ s32 unk_08; // unused -- likely hudElemID for an unused/removed hud element
-    /* 0x00C */ s32 currentScore;
+    /* 0x00C */ s32 curScore;
     /* 0x010 */ s32 targetScore;
     /* 0x014 */ s32 scoreWindowPosX;
     /* 0x018 */ s32 scoreWindowPosY; // unused -- posY is hard-coded while drawing the box
@@ -122,49 +122,49 @@ void N(appendGfx_score_display) (void* renderData) {
         hudElemID = data->hudElemID;
         hud_element_set_render_pos(hudElemID, data->scoreWindowPosX + 15, 39);
         hud_element_draw_clipped(hudElemID);
-        if (data->currentScore > data->targetScore) {
-            data->currentScore = data->targetScore;
-        } else if (data->currentScore < data->targetScore) {
-            diff = data->targetScore - data->currentScore;
+        if (data->curScore > data->targetScore) {
+            data->curScore = data->targetScore;
+        } else if (data->curScore < data->targetScore) {
+            diff = data->targetScore - data->curScore;
             if (diff > 100) {
-                data->currentScore += 40;
+                data->curScore += 40;
             } else if (diff > 75) {
-                data->currentScore += 35;
+                data->curScore += 35;
             } else if (diff > 50) {
-                data->currentScore += 30;
+                data->curScore += 30;
             } else if (diff > 30) {
-                data->currentScore += 20;
+                data->curScore += 20;
             } else if (diff > 20) {
-                data->currentScore += 10;
+                data->curScore += 10;
             } else if (diff > 10) {
-                data->currentScore += 5;
+                data->curScore += 5;
             } else if (diff > 5) {
-                data->currentScore += 2;
+                data->curScore += 2;
             } else {
-                data->currentScore++;
+                data->curScore++;
             }
-            sfx_play_sound_with_params(SOUND_211, 0, 0x40, 0x32);
+            sfx_play_sound_with_params(SOUND_COIN_PICKUP, 0, 0x40, 0x32);
 
         }
-        draw_number(data->currentScore, data->scoreWindowPosX + 63, 32, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+        draw_number(data->curScore, data->scoreWindowPosX + 63, 32, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
     }
 }
 
 void N(worker_draw_score)(void) {
     RenderTask task;
 
-    task.renderMode = RENDER_MODE_2D;
+    task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
     task.appendGfx = &mgm_01_appendGfx_score_display;
-    task.distance = 0;
+    task.dist = 0;
 
     queue_render_task(&task);
 }
 
 API_CALLABLE(N(DisableMenus)) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_MENUS;
-    status_menu_ignore_changes();
-    close_status_menu();
+    status_bar_ignore_changes();
+    close_status_bar();
     return ApiStatus_DONE2;
 }
 
@@ -377,21 +377,21 @@ API_CALLABLE(N(UpdateRecords)) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     PlayerData* player = &gPlayerData;
 
-    player->jumpGameTotal += data->currentScore;
+    player->jumpGameTotal += data->curScore;
     if (player->jumpGameTotal > 99999) {
         player->jumpGameTotal = 99999;
     }
-    if (player->jumpGameRecord < data->currentScore) {
-        player->jumpGameRecord = data->currentScore;
+    if (player->jumpGameRecord < data->curScore) {
+        player->jumpGameRecord = data->curScore;
     }
-    set_message_value(data->currentScore, 0);
+    set_message_int_var(data->curScore, 0);
 
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(GiveCoinReward)) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
-    s32 coinsLeft = data->currentScore;
+    s32 coinsLeft = data->curScore;
     s32 increment;
 
     if (coinsLeft > 100) {
@@ -410,12 +410,12 @@ API_CALLABLE(N(GiveCoinReward)) {
         increment = 1;
     }
 
-    data->currentScore -= increment;
+    data->curScore -= increment;
     add_coins(increment);
-    data->targetScore = data->currentScore;
-    sfx_play_sound(SOUND_211);
+    data->targetScore = data->curScore;
+    sfx_play_sound(SOUND_COIN_PICKUP);
 
-    if (data->currentScore > 0) {
+    if (data->curScore > 0) {
         return ApiStatus_BLOCK;
     } else {
         return ApiStatus_DONE2;
@@ -424,8 +424,8 @@ API_CALLABLE(N(GiveCoinReward)) {
 
 API_CALLABLE(N(DoubleScore)) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
-    s32 score = 2 * data->currentScore;
-    data->currentScore = score;
+    s32 score = 2 * data->curScore;
+    data->curScore = score;
     data->targetScore = score;
 
     return ApiStatus_DONE2;
@@ -477,7 +477,7 @@ API_CALLABLE(N(DestroyBlockEntities)) {
         }
     }
 
-    sfx_play_sound_with_params(SOUND_283, 0x50, 0, 0);
+    sfx_play_sound_with_params(SOUND_KOOPER_SHELL_KICK, 0x50, 0, 0);
 
     return ApiStatus_DONE2;
 }
@@ -573,7 +573,7 @@ API_CALLABLE(N(CreateBlockEntities)) {
             N(BlockPosY)[curBlockIdx] + 13,
             N(BlockPosZ)[curBlockIdx] + 5,
             23.0f);
-        sfx_play_sound(SOUND_213);
+        sfx_play_sound(SOUND_HEART_PICKUP);
         script->functionTemp[0] = 3;
         script->functionTemp[1]++;
     }
@@ -593,7 +593,7 @@ API_CALLABLE(N(TakeCoinCost)) {
         script->functionTemp[0] = 0;
     }
     add_coins(-1);
-    sfx_play_sound(SOUND_211);
+    sfx_play_sound(SOUND_COIN_PICKUP);
 
     script->functionTemp[0]++;
 
@@ -608,7 +608,7 @@ API_CALLABLE(N(InitializePanels)) {
     JumpGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[JUMP_DATA_VAR_IDX];
     s32 i;
 
-    data->currentScore = 0;
+    data->curScore = 0;
     data->targetScore = 0;
 
     for (i = 0; i < ARRAY_COUNT(data->panels); i++) {
@@ -636,8 +636,8 @@ API_CALLABLE(N(CreateMinigame)) {
 
     data->scoreWindowPosX = SCREEN_WIDTH + 1;
     data->scoreWindowPosY = 28;
-    status_menu_ignore_changes();
-    close_status_menu();
+    status_bar_ignore_changes();
+    close_status_bar();
 
     return ApiStatus_DONE2;
 }
@@ -656,20 +656,19 @@ API_CALLABLE(N(GetCoinCount)) {
     return ApiStatus_DONE2;
 }
 
-#if VERSION_PAL
-API_CALLABLE(N(SetMsgVars_BlocksRemaining));
-INCLUDE_ASM(ApiStatus, "world/area_mgm/mgm_01/mgm_01_2_npc", mgm_01_SetMsgVars_BlocksRemaining)
-#else
 API_CALLABLE(N(SetMsgVars_BlocksRemaining)) {
     Enemy* scorekeeper = get_enemy(SCOREKEEPER_ENEMY_IDX);
     s32 remaining = (scorekeeper->varTable[TOTAL_BLOCKS_VAR_IDX] - scorekeeper->varTable[BROKEN_BLOCKS_VAR_IDX]) + 1;
 
-    set_message_value(remaining, 0);
-    set_message_msg((remaining == 1) ? (s32)&MessageSingular : (s32)&MessagePlural, 1);
+    set_message_int_var(remaining, 0);
+#if VERSION_PAL
+    evt_set_variable(script, LVarD, remaining);
+#else
+    set_message_text_var((remaining == 1) ? (s32)&MessageSingular : (s32)&MessagePlural, 1);
+#endif
 
     return ApiStatus_DONE2;
 }
-#endif
 
 API_CALLABLE(N(HideCoinCounter)) {
     hide_coin_counter_immediately();
@@ -796,9 +795,9 @@ EvtScript N(EVS_ManageMinigame) = {
     EVT_END_THREAD
     EVT_SWITCH(LVarB)
         EVT_CASE_EQ(1)
-            EVT_CALL(PlaySoundWithVolume, SOUND_CANNON2, 0)
+            EVT_CALL(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV2, 0)
             EVT_WAIT(10)
-            EVT_CALL(PlaySoundWithVolume, SOUND_CANNON2, 0)
+            EVT_CALL(PlaySoundWithVolume, SOUND_BOMBETTE_BLAST_LV2, 0)
             EVT_WAIT(10)
             EVT_CALL(N(EndBowserPanelAnimation))
             EVT_CALL(TranslateModel, LVar1, LVar5, LVar6, LVar7)
@@ -815,7 +814,7 @@ EvtScript N(EVS_ManageMinigame) = {
                 EVT_CASE_EQ(8)
                     EVT_CALL(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0037)
                     EVT_CALL(N(DoubleScore))
-                    EVT_CALL(PlaySoundWithVolume, SOUND_3FC, 0)
+                    EVT_CALL(PlaySoundWithVolume, SOUND_LUCKY, 0)
                     EVT_WAIT(30)
                     EVT_CALL(N(UpdateRecords))
                     EVT_CALL(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0038)
@@ -1026,7 +1025,7 @@ NpcData N(NpcData_Toad) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Toad),
     .settings = &N(NpcSettings_Toad_Stationary),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_MGM_JumpAttackGuide,

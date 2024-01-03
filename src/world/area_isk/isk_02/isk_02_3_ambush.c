@@ -9,7 +9,7 @@ API_CALLABLE(N(AwaitPlayerMummyAmbush)) {
     f32 x = evt_get_variable(script, *args++);
     f32 y = evt_get_variable(script, *args++);
 
-    if (dist2D(x, y, gPlayerStatus.position.x, gPlayerStatus.position.z) > 250.0f) {
+    if (dist2D(x, y, gPlayerStatus.pos.x, gPlayerStatus.pos.z) > 250.0f) {
         script->varTable[0] = FALSE;
     } else {
         script->varTable[0] = TRUE;
@@ -33,7 +33,7 @@ EvtScript N(EVS_SetupSarcophagi) = {
 
 EvtScript N(EVS_OpenSarcophagus) = {
     EVT_IF_EQ(LVar0, 0)
-        EVT_CALL(PlaySoundAtModel, LVar3, SOUND_1D1, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtModel, LVar3, SOUND_SARCOPHAGUS_OPEN, SOUND_SPACE_DEFAULT)
         EVT_CALL(TranslateModel, LVar3, 0, 0, 13)
         EVT_WAIT(3)
         EVT_CALL(MakeLerp, 0, 35, 9, EASING_COS_IN_OUT)

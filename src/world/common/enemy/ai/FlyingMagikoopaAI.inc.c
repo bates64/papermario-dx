@@ -15,14 +15,14 @@ void N(FlyingMagikoopaAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 basePosY = (f32)enemy->varTable[1] / 100.0;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
 
     npc->pos.y = basePosY + sin_deg(enemy->varTable[0]) * 6.0;
     enemy->varTable[0] = clamp_angle(enemy->varTable[0] + 10);
 
     if (N(MagikoopaAI_CanShootSpell)(script, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, volume) == 1) {
         fx_emote(0, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
-        ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
+        ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         npc->duration = 50;
         script->AI_TEMP_STATE = 20;
     } else {
@@ -67,7 +67,7 @@ void N(FlyingMagikoopaAI_15)(Evt* arg0, MobileAISettings* arg1, EnemyDetectVolum
                 randomDist = moveDist;
             }
         } else {
-            npc->yaw  = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
+            npc->yaw  = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
             if (npc->yaw  < 180.0) {
                 baseYaw = (rand_int(10) + 90.0) - 5.0;
             } else {
@@ -84,7 +84,7 @@ void N(FlyingMagikoopaAI_15)(Evt* arg0, MobileAISettings* arg1, EnemyDetectVolum
                 posY = npc->pos.y;
                 posZ = npc->pos.z;
                 if (npc_test_move_taller_with_slipping(0, &posX, &posY, &posZ,
-                        randomDist, npc->yaw, npc->collisionHeight, npc->collisionRadius)) {
+                        randomDist, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
                     moveDist = dist2D(npc->pos.x, npc->pos.z, posX, posZ);
                     distToHit = moveDist;
                     if (distToHit > 160.0) {
@@ -125,7 +125,7 @@ void N(FlyingMagikoopaAI_15)(Evt* arg0, MobileAISettings* arg1, EnemyDetectVolum
         enemy->varTable[3] = rand_int(10) + 35;
         npc->duration = 0;
         npc->moveSpeed = 3.0f;
-        npc->jumpVelocity = 1.4f;
+        npc->jumpVel = 1.4f;
         npc->jumpScale = 0.2f;
         arg0->functionTemp[0] = 0x10;
     }
@@ -161,7 +161,7 @@ void N(FlyingMagikoopaAI_17)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 
     npc->duration++;
     if (npc->duration == (enemy->varTable[3] - 8)) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
+        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
     }
     if (limitY <= npc->pos.y) {
         npc->pos.y = limitY;
@@ -189,18 +189,18 @@ void N(FlyingMagikoopaAI_21)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
 
     npc->duration--;
     if (npc->duration == 0) {
-        npc->currentAnim = enemy->animList[0];
+        npc->curAnim = enemy->animList[0];
         fx_emote(2, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
-        npc->currentAnim = enemy->animList[0];
+        npc->curAnim = enemy->animList[0];
         npc->duration = 15;
         script->functionTemp[0] = 50;
     } else if ((N(MagikoopaAI_CanShootSpell)(script, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, territory) == 1) && (npc->turnAroundYawAdjustment == 0)) {
         ai_enemy_play_sound(npc, 0x20D4, 0);
-        npc->currentAnim = enemy->animList[8];
+        npc->curAnim = enemy->animList[8];
         posX = npc->pos.x;
         posY = npc->pos.y + 29.0f;
         posZ = npc->pos.z + 1.0f;
@@ -217,7 +217,7 @@ void N(FlyingMagikoopaAI_22)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 
     npc->duration--;
     if (npc->duration <= 0) {
-        npc->currentAnim = enemy->animList[9];
+        npc->curAnim = enemy->animList[9];
         npc->duration = 7;
         script->functionTemp[0] = 0x17;
     }
@@ -227,14 +227,14 @@ void N(FlyingMagikoopaAI_23)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 temp_s1;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
 
     npc->duration--;
     if (npc->duration <= 0) {
         temp_s1 = N(MagikoopaAI_CanShootSpell)(script, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, territory);
         if (temp_s1 != 1) {
             fx_emote(2, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
-            npc->currentAnim = enemy->animList[0];
+            npc->curAnim = enemy->animList[0];
             npc->duration = 15;
             script->functionTemp[0] =  50;
         } else {
@@ -256,7 +256,7 @@ void N(FlyingMagikoopaAI_24)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 
     npc->duration--;
     if (npc->duration <= 0) {
-        npc->currentAnim = enemy->animList[0];
+        npc->curAnim = enemy->animList[0];
         npc->duration = 3;
         script->AI_TEMP_STATE = 50;
     }
@@ -295,7 +295,7 @@ API_CALLABLE(N(FlyingMagikoopaAI_Main)) {
 
     if (isInitialCall) {
         npc->flags &= ~NPC_FLAG_GRAVITY;
-        npc->flags |= NPC_FLAG_8;
+        npc->flags |= NPC_FLAG_FLYING;
         npc->flags |= NPC_FLAG_200000;
         enemy->flags |= ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN;
         enemy->varTable[1] = npc->pos.y * 100.0;
@@ -361,7 +361,7 @@ API_CALLABLE(N(FlyingMagikoopaAI_Main)) {
 API_CALLABLE(N(FlyingMagikoopaAI_OnHitInit)) {
     Enemy* enemy = script->owner1.enemy;
 
-    evt_set_variable(script, LVar0, gCurrentEncounter.currentEnemy == enemy);
+    evt_set_variable(script, LVar0, gCurrentEncounter.curEnemy == enemy);
     return ApiStatus_DONE2;
 }
 
@@ -370,7 +370,7 @@ API_CALLABLE(N(FlyingMagikoopaAI_OnHit)) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     if (enemy->varTable[0] == 2) {
-        npc->jumpVelocity = 0.0f;
+        npc->jumpVel = 0.0f;
         npc->moveSpeed = 0.0f;
     }
     return ApiStatus_DONE2;

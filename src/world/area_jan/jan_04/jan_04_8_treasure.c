@@ -16,7 +16,7 @@ API_CALLABLE(N(AnimateFlyingChestRotScale)) {
     entity->scale.x = (60 - script->functionTemp[1]) / 60.0f;
     entity->scale.y = (60 - script->functionTemp[1]) / 60.0f;
     entity->scale.z = (60 - script->functionTemp[1]) / 60.0f;
-    entity->rotation.y = (1.0f - cos_rad(entity->scale.y * PI)) * 990.0 * 0.25f;
+    entity->rot.y = (1.0f - cos_rad(entity->scale.y * PI)) * 990.0 * 0.25f;
     script->functionTemp[1]--;
 
     if (script->functionTemp[1] == -1) {
@@ -31,8 +31,8 @@ API_CALLABLE(N(AnimateFallingChestRot)) {
     if (isInitialCall) {
         script->functionTemp[0] = -30;
     }
-    entity->rotation.x = script->functionTemp[0];
-    entity->rotation.z = script->functionTemp[0];
+    entity->rot.x = script->functionTemp[0];
+    entity->rot.z = script->functionTemp[0];
     script->functionTemp[0]++;
 
     if (script->functionTemp[0] == 1) {
@@ -69,7 +69,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(GetEntryID, LVar0)
     EVT_IF_EQ(LVar0, jan_04_ENTRY_1)
-        EVT_CALL(PlaySound, SOUND_302)
+        EVT_CALL(PlaySound, SOUND_FALL_LONG)
         EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -350, 300, 0)
         EVT_CALL(SetPanTarget, CAM_DEFAULT, -350, 300, 0)
         EVT_CALL(SetCamPitch, CAM_DEFAULT, 10, EVT_FLOAT(-7.0))
@@ -124,7 +124,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAt, SOUND_1AF, 0, LVar1, LVar2, LVar3)
+        EVT_CALL(PlaySoundAt, SOUND_JAN_CHEST_IMPACT, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
         EVT_THREAD
             EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, -15, 0, 0, 10, 10)
             EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, 0, 0, 0, 0, 0)
@@ -140,7 +140,7 @@ EvtScript N(EVS_Scene_TreasureChest) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAt, SOUND_1AF, 0, LVar1, LVar2, LVar3)
+        EVT_CALL(PlaySoundAt, SOUND_JAN_CHEST_IMPACT, SOUND_SPACE_DEFAULT, LVar1, LVar2, LVar3)
         EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
         EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, -10, 0, 15, 0, 0)
         EVT_WAIT(60)

@@ -98,11 +98,7 @@ API_CALLABLE(N(UpdateTheEndAlpha)) {
     return ApiStatus_DONE2;
 }
 void N(gfx_build_the_end)(void) {
-    gDPSetCombineLERP(gMainGfxPos++,
-        TEXEL0, 0, SHADE, 0,
-        TEXEL0, 0, PRIMITIVE, 0,
-        TEXEL0, 0, SHADE, 0,
-        TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_05);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, TheEndModelAlpha);
 }
 
@@ -125,7 +121,7 @@ EvtScript N(EVS_Scene_TheEnd) = {
     EVT_THREAD
         EVT_CALL(SetNpcSpeed, NPC_ParadePeach, EVT_FLOAT(2.0))
         EVT_CALL(SetNpcFlagBits, NPC_ParadePeach, NPC_FLAG_GRAVITY, TRUE)
-        EVT_CALL(SetNpcFlagBits, NPC_ParadePeach, NPC_FLAG_8, FALSE)
+        EVT_CALL(SetNpcFlagBits, NPC_ParadePeach, NPC_FLAG_FLYING, FALSE)
         EVT_CALL(SetNpcAnimation, NPC_ParadePeach, ANIM_ParadePeach_ShadeWalk)
         EVT_CALL(NpcMoveTo, NPC_ParadePeach, 450, -60, 0)
         EVT_CALL(SetNpcAnimation, NPC_ParadePeach, ANIM_ParadePeach_ShadeWalkBack)
@@ -201,7 +197,7 @@ EvtScript N(EVS_Scene_TheEnd) = {
     EVT_CALL(SetModelCustomGfx, MODEL_e, CUSTOM_GFX_1, -1)
     EVT_CALL(SetModelCustomGfx, MODEL_d, CUSTOM_GFX_1, -1)
     EVT_CALL(SetModelCustomGfx, MODEL_n, CUSTOM_GFX_1, -1)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_the_end)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_the_end)), NULL)
     EVT_CALL(MakeLerp, 0, 255, 90, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)

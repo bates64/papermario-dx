@@ -33,7 +33,7 @@ s8 D_E004C67C[] = {
     254, 213, 172,
 };
 
-void music_note_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+void music_note_main(s32 type, f32 posX, f32 posY, f32 posZ) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -45,45 +45,45 @@ void music_note_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     bp.init = music_note_init;
     bp.update = music_note_update;
     bp.renderWorld = music_note_render;
-    bp.unk_14 = 0;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_MUSIC_NOTE;
 
-    effect = shim_create_effect_instance(bpPtr);
+    effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
 
-    part = effect->data.musicNote = shim_general_heap_malloc(numParts * sizeof(*part));
+    part = effect->data.musicNote = general_heap_malloc(numParts * sizeof(*part));
 
     ASSERT(effect->data.musicNote != NULL);
 
-    part->unk_00 = arg0;
-    part->pos.x = arg1;
-    part->pos.y = arg2;
-    part->pos.z = arg3;
-    part->unk_10 = 0;
-    part->timeLeft = 0x40;
-    part->unk_14 = 0;
-    part->unk_1C = 0;
-    part->unk_20 = shim_rand_int(6);
-    switch (arg0) {
+    part->type = type;
+    part->pos.x = posX;
+    part->pos.y = posY;
+    part->pos.z = posZ;
+    part->scale = 0;
+    part->timeLeft = 64;
+    part->alpha = 0;
+    part->lifetime = 0;
+    part->noteType = rand_int(6);
+    switch (type) {
         case 0:
-            part->unk_24 = 0.0f;
-            part->unk_28 = 1.0f;
-            part->unk_2C = 0;
-            part->unk_30 = 1.0f;
+            part->velX = 0.0f;
+            part->velY = 1.0f;
+            part->finalVelX = 0.0f;
+            part->finalVelY = 1.0f;
             break;
         case 1:
-            randInt = shim_rand_int(10);
-            part->unk_24 = (randInt * 0.1) + -5.0;
-            part->unk_28 = (shim_rand_int(10) * 0.1) + 0.5;
-            part->unk_2C = 0;
-            part->unk_30 = 0.0f;
+            randInt = rand_int(10);
+            part->velX = (randInt * 0.1) + -5.0;
+            part->velY = (rand_int(10) * 0.1) + 0.5;
+            part->finalVelX = 0.0f;
+            part->finalVelY = 0.0f;
             break;
         default:
-            randInt = shim_rand_int(10);
-            part->unk_24 = 5.0 - (randInt * 0.1);
-            part->unk_28 = (shim_rand_int(10) * 0.1) + 1.0;
-            part->unk_2C = 0;
-            part->unk_30 = 0.0f;
+            randInt = rand_int(10);
+            part->velX = 5.0 - (randInt * 0.1);
+            part->velY = (rand_int(10) * 0.1) + 1.0;
+            part->finalVelX = 0.0f;
+            part->finalVelY = 0.0f;
             break;
     }
 }
@@ -96,23 +96,23 @@ void music_note_update(EffectInstance* effect) {
     s32 timeLeft;
 
     part->timeLeft--;
-    part->unk_1C++;
+    part->lifetime++;
     timeLeft = part->timeLeft;
     if (timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
     if (timeLeft >= 6) {
-        part->unk_14 += (255 - part->unk_14) * 0.3;
-        part->unk_10 += (1.0f - part->unk_10) * 0.3;
+        part->alpha += (255 - part->alpha) * 0.3;
+        part->scale += (1.0f - part->scale) * 0.3;
     }
     if (timeLeft < 10) {
-        part->unk_14 = timeLeft * 25;
+        part->alpha = timeLeft * 25;
     }
-    part->pos.x += part->unk_24;
-    part->pos.y += part->unk_28;
-    part->unk_24 += (part->unk_2C - part->unk_24) * 0.04;
-    part->unk_28 += (part->unk_30 - part->unk_28) * 0.04;
+    part->pos.x += part->velX;
+    part->pos.y += part->velY;
+    part->velX += (part->finalVelX - part->velX) * 0.04;
+    part->velY += (part->finalVelY - part->velY) * 0.04;
 }
 
 void music_note_render(EffectInstance* effect) {
@@ -121,19 +121,19 @@ void music_note_render(EffectInstance* effect) {
 
     renderTask.appendGfx = music_note_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
 void music_note_appendGfx(void* data) {
     EffectInstance* effect = data;
     MusicNoteFXData* fxData = effect->data.musicNote;
-    Matrix4f sp18, sp58;
-    s32 colorIdx = fxData->unk_1C;
-    s32 dlistIdx = fxData->unk_20;
+    Matrix4f mtxTransform, mtxTemp;
+    s32 colorIdx = fxData->lifetime;
+    s32 dlistIdx = fxData->noteType;
     s32 rgbOffset;
 
     // TODO required to match - need to initialize define twice for some reason
@@ -144,14 +144,14 @@ void music_note_appendGfx(void* data) {
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
     gSPDisplayList(gMainGfxPos++, D_09000FC0_35B5A0);
     gDPSetPrimColor(gMainGfxPos++, 0, 0,
-        D_E004C67C[rgbOffset], D_E004C67C[rgbOffset + 1], D_E004C67C[rgbOffset + 2], fxData->unk_14
+        D_E004C67C[rgbOffset], D_E004C67C[rgbOffset + 1], D_E004C67C[rgbOffset + 2], fxData->alpha
     );
-    shim_guTranslateF(sp18, fxData->pos.x, fxData->pos.y, fxData->pos.z);
-    shim_guRotateF(sp58, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guScaleF(sp58, fxData->unk_10, fxData->unk_10, 0.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(mtxTransform, fxData->pos.x, fxData->pos.y, fxData->pos.z);
+    guRotateF(mtxTemp, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
+    guScaleF(mtxTemp, fxData->scale, fxData->scale, 0.0f);
+    guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
+    guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_E004C660[dlistIdx]);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);

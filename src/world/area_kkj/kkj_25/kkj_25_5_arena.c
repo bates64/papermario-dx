@@ -1,5 +1,6 @@
 #include "kkj_25.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "world/common/todo/GetFloorCollider.inc.c"
 
@@ -30,7 +31,7 @@ API_CALLABLE(N(SpawnLensFlare)) {
 #define NAME_SUFFIX
 
 EvtScript N(EVS_ArenaEyesFlash) = {
-    EVT_CALL(PlaySoundAt, SOUND_5A, 0, 300, -70, 280)
+    EVT_CALL(PlaySoundAt, SOUND_KKJ_ARENA_LENS_FLARE, SOUND_SPACE_DEFAULT, 300, -70, 280)
     EVT_CALL(N(SpawnLensFlare), 225, -70, 280, 240)
     EVT_CALL(N(SpawnLensFlare), 380, -70, 280, 240)
     EVT_RETURN
@@ -59,7 +60,7 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
         EVT_CALL(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Land)
         EVT_WAIT(10)
         EVT_CALL(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_RearUpLaugh)
-        EVT_CALL(PlaySound, SOUND_3BC)
+        EVT_CALL(PlaySound, SOUND_LRAW_RUMBLE)
         EVT_LOOP(0)
             EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 1, EVT_FLOAT(2.0))
             EVT_WAIT(1)
@@ -67,12 +68,12 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySound, SOUND_3BC | SOUND_ID_TRIGGER_CHANGE_SOUND)
+        EVT_CALL(PlaySound, SOUND_LRAW_RUMBLE | SOUND_ID_TRIGGER_CHANGE_SOUND)
     EVT_END_THREAD
     EVT_CALL(SetNpcJumpscale, NPC_Bowser_01, EVT_FLOAT(1.0))
     EVT_CALL(NpcJump0, NPC_Bowser_01, 300, 0, 0, 20)
-    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_208B, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_20A0, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
     EVT_SET(AF_KKJ_1A, TRUE)
     EVT_RETURN
     EVT_END
@@ -103,7 +104,7 @@ s32 N(BridgeModels)[] = {
     MODEL_g45,
     MODEL_g44,
     MODEL_g43,
-    MODEL_g42, 
+    MODEL_g42,
     MODEL_g41,
     MODEL_g40,
     MODEL_g39,
@@ -111,7 +112,7 @@ s32 N(BridgeModels)[] = {
     MODEL_g37,
     MODEL_g36,
     MODEL_g35,
-    MODEL_g34, 
+    MODEL_g34,
 };
 
 EvtScript N(EVS_Scene_BowserTrapsMario) = {
@@ -240,7 +241,7 @@ EvtScript N(EVS_AnimateBridgeCollapsing) = {
     EVT_SET(LVar2, 35)
     EVT_SET(LVar5, -15)
     EVT_LOOP(ARRAY_COUNT(N(BridgeModels)))
-        EVT_CALL(PlaySoundAt, SOUND_B000001B, 0, LVar5, 0, 0)
+        EVT_CALL(PlaySoundAt, SOUND_SEQ_FINALE_BRIDGE_COLLAPSE, SOUND_SPACE_DEFAULT, LVar5, 0, 0)
         EVT_ADD(LVar5, -30)
         EVT_BUF_READ1(LVar3)
         EVT_THREAD
@@ -285,7 +286,7 @@ Vec3i N(PowerUpBoltOrigins2)[] = {
     { 330, 160,  50 },
     { 360, 160, -50 },
     { 370, 160,  50 },
-    { 330, 160, -50 }, 
+    { 330, 160, -50 },
 };
 
 EvtScript N(EVS_Scene_ActivateMachine) = {
@@ -363,7 +364,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
     EVT_CALL(SetNpcAnimation, NPC_Kammy_01, ANIM_BattleKammy_Anim08)
     EVT_CALL(GetNpcPos, NPC_Kammy_01, LVar0, LVar1, LVar2)
     EVT_ADD(LVar0, -30)
-    EVT_CALL(PlaySoundAt, SOUND_207A, 0, LVar0, 22, 0)
+    EVT_CALL(PlaySoundAt, SOUND_KAMMY_SUMMON_MAGIC, SOUND_SPACE_DEFAULT, LVar0, 22, 0)
     EVT_PLAY_EFFECT(EFFECT_GATHER_ENERGY_PINK, 0, LVar0, 22, 0, 1, 80)
     EVT_THREAD
         EVT_WAIT(80)
@@ -410,7 +411,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
         EVT_CALL(SetNpcDecoration, NPC_Bowser_01, 0, NPC_DECORATION_BOWSER_AURA)
     EVT_END_THREAD
     EVT_WAIT(15)
-    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_223, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Bowser_01, SOUND_KPA_BOWSER_POWER_UP, SOUND_SPACE_DEFAULT)
     EVT_SETF(LVar0, EVT_FLOAT(1.0))
     EVT_LOOP(50)
         EVT_ADDF(LVar0, EVT_FLOAT(0.01))
@@ -480,7 +481,7 @@ EvtScript N(EVS_ManageArenaEffects) = {
         EVT_IF_EQ(GF_KKJ25_Defeated_Kammy, FALSE)
             EVT_THREAD
                 EVT_WAIT(50)
-                EVT_CALL(PlaySound, SOUND_22C)
+                EVT_CALL(PlaySound, SOUND_LRAW_KPA_ARENA_TURN_ON)
             EVT_END_THREAD
             EVT_CALL(MakeLerp, 0, 50, 120, EASING_QUADRATIC_IN)
             EVT_LOOP(0)
@@ -497,7 +498,7 @@ EvtScript N(EVS_ManageArenaEffects) = {
             EVT_END_LOOP
         EVT_ELSE
             EVT_IF_EQ(GF_KKJ25_Defeated_Bowser, FALSE)
-                EVT_CALL(PlaySound, SOUND_22D)
+                EVT_CALL(PlaySound, SOUND_LRAW_KPA_ARENA_ACTIVE)
             EVT_END_IF
             EVT_SET(LVar0, 5)
         EVT_END_IF
@@ -610,7 +611,7 @@ EvtScript N(EVS_ManageArenaEffects) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_22D)
+    EVT_CALL(StopSound, SOUND_LRAW_KPA_ARENA_ACTIVE)
     EVT_RETURN
     EVT_END
 };

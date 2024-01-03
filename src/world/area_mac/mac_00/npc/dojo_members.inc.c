@@ -1,3 +1,5 @@
+#include "sprite/player.h"
+
 s32 N(DojoBattleIDs)[] = {
     BTL_MAC_FORMATION_00,
     BTL_MAC_FORMATION_01,
@@ -15,8 +17,8 @@ API_CALLABLE(N(SetDojoBattle)) {
 }
 
 API_CALLABLE(N(ResetBackgroundPostBattle)) {
-    func_8011B950(MODEL_minka_1, -1, FOG_MODE_1, 1);
-    set_background_color_blend(0, 0, 0, 255);
+    mdl_group_set_custom_gfx(MODEL_minka_1, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, TRUE);
+    mdl_set_shroud_tint_params(0, 0, 0, 255);
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
     gCameras[CAM_DEFAULT].bgColor[1] = 0;
     gCameras[CAM_DEFAULT].bgColor[2] = 0;
@@ -159,7 +161,7 @@ EvtScript N(EVS_NpcInit_Lee) = {
 
 API_CALLABLE(N(SetPlayer1HP)) {
     gPlayerData.curHP = 1;
-    sync_status_menu();
+    sync_status_bar();
     return ApiStatus_DONE2;
 }
 

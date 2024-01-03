@@ -41,12 +41,12 @@ EffectInstance* motion_blur_flame_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f
     bp.update = motion_blur_flame_update;
     bp.renderWorld = motion_blur_flame_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_MOTION_BLUR_FLAME;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.motionBlurFlame = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.motionBlurFlame = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.motionBlurFlame != NULL);
 
     data->unk_00 = arg0;
@@ -80,8 +80,8 @@ void motion_blur_flame_update(EffectInstance* effect) {
     MotionBlurFlameFXData* data = effect->data.motionBlurFlame;
     s32 temp;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_50 = 30;
     }
     data->unk_54++;
@@ -90,7 +90,7 @@ void motion_blur_flame_update(EffectInstance* effect) {
     }
 
     if (data->unk_50 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
     temp = data->unk_50;
@@ -113,10 +113,10 @@ void motion_blur_flame_render(EffectInstance* effect) {
 
     renderTask.appendGfx = motion_blur_flame_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 100;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 100;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -165,7 +165,7 @@ void motion_blur_flame_appendGfx(void* effect) {
         s32 height = temp_s1->unk_14;
 
         if (i == 0) {
-            var_a2 = shim_is_point_visible(temp_f12, temp_f14, temp_f0, -1, &sp48, &sp4C);
+            var_a2 = is_point_visible(temp_f12, temp_f14, temp_f0, -1, &sp48, &sp4C);
         } else {
             var_a2 = temp_f0;
             sp48 = temp_f12;

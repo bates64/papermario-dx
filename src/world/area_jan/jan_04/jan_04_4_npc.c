@@ -1,4 +1,5 @@
 #include "jan_04.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Sushie.inc.c"
 #include "world/common/npc/Bubulb.inc.c"
@@ -18,7 +19,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
     EVT_IF_EQ(GF_JAN04_SushieTreeHitCounterB, FALSE)
         EVT_IF_EQ(GF_JAN04_SushieTreeHitCounterA, FALSE)
             EVT_CALL(SetNpcJumpscale, NPC_Sushie, EVT_FLOAT(1.0))
-            EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_2A0, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_Sushie, 90, 140, -85, 20 * DT)
             EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 90, 140, -85)
             EVT_CALL(SetPanTarget, CAM_DEFAULT, 90, 140, -85)
@@ -38,7 +39,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
             EVT_SET(AF_JAN_08, FALSE)
         EVT_ELSE
             EVT_CALL(SetNpcJumpscale, NPC_Sushie, EVT_FLOAT(1.0))
-            EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_2A0, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_Sushie, -10, 112, -80, 15 * DT)
             EVT_SET(GF_JAN04_SushieTreeHitCounterA, FALSE)
             EVT_SET(GF_JAN04_SushieTreeHitCounterB, TRUE)
@@ -47,7 +48,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
         EVT_END_IF
     EVT_ELSE
         EVT_CALL(SetNpcJumpscale, NPC_Sushie, EVT_FLOAT(1.0))
-        EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_2A0, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_Sushie, 50, 0, 0, 20 * DT)
         EVT_SET(GF_JAN04_SushieTreeHitCounterA, TRUE)
         EVT_CALL(EnableNpcShadow, NPC_Sushie, TRUE)
@@ -217,13 +218,13 @@ EvtScript N(EVS_NpcInit_Sushie) = {
 
 EvtScript N(EVS_NpcInteract_Bubulb) = {
     EVT_SWITCH(GB_StoryProgress)
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
             EVT_IF_EQ(GF_JAN04_Met_Bubulb, FALSE)
                 EVT_WAIT(30)
                 EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Yellow_PopUp)
                 EVT_WAIT(10)
-                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, 0)
-                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, 0)
+                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)
+                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
                 EVT_WAIT(35)
                 EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Yellow_Idle)
                 EVT_CALL(SetNpcCollisionSize, NPC_SELF, 45, 26)
@@ -247,7 +248,7 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
 
 EvtScript N(EVS_NpcInit_Bubulb) = {
     EVT_CALL(BindNpcInteract, NPC_SELF, EVT_PTR(N(EVS_NpcInteract_Bubulb)))
-    EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+    EVT_IF_LT(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         EVT_IF_EQ(GF_JAN04_Met_Bubulb, FALSE)
             EVT_CALL(SetNpcCollisionSize, NPC_SELF, 25, 25)
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Yellow_BuriedIdle)
@@ -265,7 +266,7 @@ NpcData N(NpcData_Characters)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Sushie),
         .settings = &N(NpcSettings_Sushie),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = SUSHIE_ANIMS,
     },

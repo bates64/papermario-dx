@@ -1,6 +1,7 @@
 #include "kmr_00.h"
 #include "effects.h"
 #include "model.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(func_80240000_8ABF90)) {
     Bytecode* args;
@@ -12,7 +13,7 @@ API_CALLABLE(N(func_80240000_8ABF90)) {
 
     args = script->ptrReadPos;
     if (isInitialCall) {
-        get_model_env_color_parameters(&oldPrimR, &oldPrimG, &oldPrimB, &oldEnvR, &oldEnvG, &oldEnvB);
+        mdl_get_remap_tint_params(&oldPrimR, &oldPrimG, &oldPrimB, &oldEnvR, &oldEnvG, &oldEnvB);
         newPrimR = evt_get_variable(script, *args++);
         newPrimG = evt_get_variable(script, *args++);
         newPrimB = evt_get_variable(script, *args++);
@@ -25,7 +26,7 @@ API_CALLABLE(N(func_80240000_8ABF90)) {
 
     if (duration > 0) {
         time++;
-        set_model_env_color_parameters(
+        mdl_set_remap_tint_params(
             (oldPrimR + ((newPrimR - oldPrimR) * time) / duration),
             (oldPrimG + ((newPrimG - oldPrimG) * time) / duration),
             (oldPrimB + ((newPrimB - oldPrimB) * time) / duration),
@@ -36,15 +37,15 @@ API_CALLABLE(N(func_80240000_8ABF90)) {
             return ApiStatus_DONE2;
         }
     } else {
-        set_model_env_color_parameters(newPrimR, newPrimG, newPrimB, newEnvR, newEnvG, newEnvB);
+        mdl_set_remap_tint_params(newPrimR, newPrimG, newPrimB, newEnvR, newEnvG, newEnvB);
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
 }
 
 API_CALLABLE(N(func_80240388_8AC318)) {
-    mdl_set_all_fog_mode(FOG_MODE_3);
-    *gBackgroundFogModePtr = FOG_MODE_3;
+    mdl_set_all_tint_type(ENV_TINT_REMAP);
+    *gBackgroundTintModePtr = ENV_TINT_REMAP;
     return ApiStatus_DONE2;
 }
 
@@ -141,7 +142,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
                 npc->pos.y = 100.0f;
                 add_vec2D_polar(&npc->pos.x, &npc->pos.z, 70.0f / DT, npc->moveToPos.x + (script->functionTemp[2] * 51) + 153.0f);
                 npc->pos.y += (-npc->pos.z + -50.0f + 70.0f / DT) * 0.15f;
-                sfx_play_sound_at_position(SOUND_B000001E, SOUND_SPACE_MODE_0, npc->pos.x, npc->pos.y, npc->pos.z);
+                sfx_play_sound_at_position(SOUND_SEQ_STAR_SPIRIT_APPEAR, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
                 fx_sparkles(FX_SPARKLES_0, npc->pos.x, npc->pos.y + 20.0f, npc->pos.z, 20.0f);
                 script->functionTemp[0] = FUNC_STATE_1;
             }
@@ -217,7 +218,7 @@ API_CALLABLE(N(func_80240BD8_8ACB68)) {
     if (isInitialCall) {
         script->functionTemp[1] = evt_get_variable(script, *args);
         npc = get_npc_unsafe(script->functionTemp[1]);
-        sfx_play_sound_at_position(SOUND_B000001E, SOUND_SPACE_MODE_0, npc->pos.x, npc->pos.y, npc->pos.z);
+        sfx_play_sound_at_position(SOUND_SEQ_STAR_SPIRIT_APPEAR, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
         fx_sparkles(FX_SPARKLES_0, npc->pos.x, npc->pos.y + 20.0f, npc->pos.z, 10.0f);
         script->functionTemp[0] = 3;
     }
@@ -463,7 +464,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         EVT_CALL(GetNpcPos, NPC_Eldstar, LVar6, LVar7, LVar8)
         EVT_CALL(NpcJump0, NPC_Eldstar, LVar6, LVar7, LVar8, 5 * DT)
         EVT_CALL(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Idle)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
         EVT_CALL(N(func_802403B8_8AC348), 0, 0, 0, 3, 10)
     EVT_END_THREAD
     EVT_THREAD
@@ -523,29 +524,29 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EVT_WAIT(30 * DT)
     EVT_THREAD
         EVT_WAIT(45 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_188, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
         EVT_CALL(N(func_802404A0_8AC430))
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(func_802403B8_8AC348), 0, 10, 10, 3, 10)
     EVT_WAIT(6 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(func_802403B8_8AC348), 0, 0, 10, 3, 15)
     EVT_WAIT(6 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(func_802403B8_8AC348), 0, -10, 10, 3, 20)
     EVT_WAIT(6 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
     EVT_CALL(N(func_802403B8_8AC348), 0, 10, 10, 3, 25)
     EVT_WAIT(6 * DT)
     EVT_LOOP(3)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
         EVT_CALL(N(func_802403B8_8AC348), 0, 0, 10, 3, 30)
         EVT_WAIT(6 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
         EVT_CALL(N(func_802403B8_8AC348), 0, -10, 10, 3, 30)
         EVT_WAIT(6 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_B000001F, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SEQ_STAR_SPIRIT_CAST, SOUND_SPACE_DEFAULT)
         EVT_CALL(N(func_802403B8_8AC348), 0, 10, 10, 3, 30)
         EVT_WAIT(6 * DT)
     EVT_END_LOOP
@@ -553,19 +554,19 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EVT_CALL(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Wave, 5, MSG_CH0_0003)
     EVT_THREAD
         EVT_WAIT(15 * DT)
-        EVT_CALL(N(func_80240BD8_8ACB68), 5)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Misstar)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 2)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Mamar)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 6)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Klevar)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 3)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Skolar)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 7)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Kalmar)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 4)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Muskular)
         EVT_WAIT(2)
-        EVT_CALL(N(func_80240BD8_8ACB68), 1)
+        EVT_CALL(N(func_80240BD8_8ACB68), NPC_Eldstar)
     EVT_END_THREAD
     EVT_CALL(FadeOutMusic, 0, 5000 * DT)
     EVT_THREAD
@@ -576,7 +577,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EVT_CALL(N(func_80240000_8ABF90), 255, 255, 255, 0, 0, 0, 50 * DT)
     EVT_CALL(SetNpcSpeed, NPC_Goombaria, EVT_FLOAT(3.0 / DT))
     EVT_CALL(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, TRUE)
-    EVT_CALL(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_8 | NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
+    EVT_CALL(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     EVT_CALL(EnableNpcShadow, NPC_Goombaria, TRUE)
     EVT_CALL(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_Walk)
     EVT_CALL(SetNpcPos, NPC_Goombaria, 300, 0, 0)
@@ -599,7 +600,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EVT_CALL(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
     EVT_WAIT(25 * DT)
     EVT_CALL(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_LeanOver)
-    EVT_CALL(PlaySoundAtNpc, NPC_Goombaria, SOUND_263, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Goombaria, SOUND_EMOTE_QUESTION, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Goombaria, EMOTE_QUESTION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(25 * DT)
     EVT_CALL(SetNpcAnimation, NPC_Goombaria, ANIM_Goombaria_Stand)
@@ -657,7 +658,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     EVT_SET(GB_StoryProgress, STORY_CH0_WAKE_UP)
     EVT_CALL(DisablePlayerPhysics, FALSE)
     EVT_CALL(N(func_802405CC_8AC55C))
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_02"), kmr_02_ENTRY_5, TRANSITION_10)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_02"), kmr_02_ENTRY_5, TRANSITION_MARIO_BLACK)
     EVT_RETURN
     EVT_END
 };

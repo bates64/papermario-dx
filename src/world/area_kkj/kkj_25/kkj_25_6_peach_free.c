@@ -1,5 +1,6 @@
 #include "kkj_25.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #define KNOCK_DOWN_MAP_VAR MV_Unk_0A
 #include "world/common/complete/KnockDownPlayer.inc.c"
@@ -123,8 +124,8 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
     EVT_CALL(SetNpcPos, NPC_Twink_01, 850, 400, 0)
     EVT_CALL(SetNpcJumpscale, NPC_Twink_01, EVT_FLOAT(0.0))
     EVT_CALL(NpcJump0, NPC_Twink_01, 530, 45, -50, 30)
-    EVT_CALL(PlaySoundAtNpc, NPC_Kammy_01, SOUND_HIT_NORMAL, 0)
-    EVT_PLAY_EFFECT(EFFECT_DAMAGE_STARS, 3, 530, 45, -50, -1, -1, 0, 3)
+    EVT_CALL(PlaySoundAtNpc, NPC_Kammy_01, SOUND_HIT_NORMAL, SOUND_SPACE_DEFAULT)
+    EVT_PLAY_EFFECT(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_3, 530, 45, -50, -1, -1, 0, 3)
     EVT_THREAD
         EVT_CALL(SetNpcAnimation, NPC_Kammy_01, ANIM_BattleKammy_Anim0C)
         EVT_CALL(SetNpcPos, NPC_Kammy_02, 530, 15, -50)
@@ -140,7 +141,7 @@ EvtScript N(EVS_Scene_PeachBreaksFree) = {
         EVT_SET(LVar4, 3)
         EVT_CALL(N(SpawnStarsOrbitingKammy1))
         EVT_SET(MV_OrbitingEffectAIdx, LVar0)
-        EVT_CALL(PlaySound, SOUND_20E5)
+        EVT_CALL(PlaySound, SOUND_KNOCKOUT_CHIRPING)
         EVT_WAIT(5)
         EVT_CALL(SetNpcAnimation, NPC_Kammy_02, ANIM_BattleKammy_Anim03)
     EVT_END_THREAD

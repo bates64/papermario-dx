@@ -1,10 +1,11 @@
 #include "kzn_22.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(GetFloorCollider2)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
-    evt_set_variable(script, outVar, gCollisionStatus.currentFloor);
+    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
     return ApiStatus_DONE2;
 }
 
@@ -49,7 +50,7 @@ EVT_END_IF //@bug unmatched endif
         // repeatedly jump for the treasure chest
         EVT_LABEL(1)
             EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(2.0))
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_32C, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 15)
             EVT_IF_EQ(AF_KZN23_GrabbedKolorado, FALSE)
                 EVT_WAIT(1)

@@ -14,12 +14,12 @@ Gfx* D_E008AA50[] = { D_09000D50_38DDC0, D_09000D50_38DDC0 };
 void func_E008A000(SnowfallFXData* data) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
-    data->unk_08 = (camera->lookAt_eye.x + func_E0200000(2000)) - 1000.0f;
-    data->unk_0C = (camera->lookAt_eye.y + func_E0200000(2000)) - 1000.0f;
-    data->unk_10 = (camera->lookAt_eye.z + func_E0200000(2000)) - 1000.0f;
-    data->unk_14 = (func_E0200000(20) - 10.0f) * 0.05;
-    data->unk_18 = -1.2 - (func_E0200000(80) * 0.01);
-    data->unk_1C = (func_E0200000(20) - 10.0f) * 0.05;
+    data->unk_08 = (camera->lookAt_eye.x + effect_rand_int(2000)) - 1000.0f;
+    data->unk_0C = (camera->lookAt_eye.y + effect_rand_int(2000)) - 1000.0f;
+    data->unk_10 = (camera->lookAt_eye.z + effect_rand_int(2000)) - 1000.0f;
+    data->unk_14 = (effect_rand_int(20) - 10.0f) * 0.05;
+    data->unk_18 = -1.2 - (effect_rand_int(80) * 0.01);
+    data->unk_1C = (effect_rand_int(20) - 10.0f) * 0.05;
     data->unk_28 = 255;
 }
 
@@ -34,13 +34,13 @@ EffectInstance* snowfall_main(s32 arg0, s32 arg1) {
     effectBp.update = snowfall_update;
     effectBp.renderWorld = snowfall_render;
     effectBp.unk_00 = 0;
-    effectBp.unk_14 = 0;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_SNOWFALL;
 
-    effect = shim_create_effect_instance(&effectBp);
+    effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
 
-    data = effect->data.snowfall = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.snowfall = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(data != NULL);
 
     data->timeLeft = 100;
@@ -123,7 +123,7 @@ void snowfall_update(EffectInstance* effect) {
         data->timeLeft--;
     }
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -133,7 +133,7 @@ void snowfall_update(EffectInstance* effect) {
     if (timeLeft < 10) {
         data->unk_28 = timeLeft * 25;
     }
-    boomLength = camera->currentBoomLength;
+    boomLength = camera->curBoomLength;
     temp_s6 = (boomLength * 0.3) + 1.0;
 
     data++;
@@ -153,10 +153,10 @@ void snowfall_render(EffectInstance* effect) {
 
     renderTask.appendGfx = snowfall_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -177,8 +177,8 @@ void snowfall_appendGfx(void* effect) {
         bgAlpha = 255;
         unk_2C = data->unk_2C;
         dlist = D_E008AA50[data->unk_04];
-        if (*gBackgroundFogModePtr == 1) {
-            shim_get_background_color_blend(&bgRGB, &bgRGB, &bgRGB, &bgAlpha);
+        if (*gBackgroundTintModePtr == ENV_TINT_SHROUD) {
+            mdl_get_shroud_tint_params(&bgRGB, &bgRGB, &bgRGB, &bgAlpha);
             unk_28 = 255 - bgAlpha;
         }
 
@@ -189,16 +189,16 @@ void snowfall_appendGfx(void* effect) {
             gSPDisplayList(gMainGfxPos++, D_09000C00_38DC70);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, unk_28);
 
-            shim_guRotateF(sp18, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-            shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+            guRotateF(sp18, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+            guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
             mtx = &gDisplayContext->matrixStack[gMatrixListPos++];
 
             data++;
             for (i = 0; i < unk_2C; i++, data++) {
                 if (data->unk_30 <= 0 && data->unk_28 != 0) {
-                    shim_guTranslateF(sp18, data->unk_08, data->unk_0C, data->unk_10);
-                    shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+                    guTranslateF(sp18, data->unk_08, data->unk_0C, data->unk_10);
+                    guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
                     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
                               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

@@ -54,7 +54,7 @@ s32 N(RecipeFoundVars)[] = {
     GF_MAC02_DiscoveredRecipe_2D, GF_MAC02_DiscoveredRecipe_2F,
     GF_MAC02_DiscoveredRecipe_30, GF_MAC02_DiscoveredRecipe_31,
     GF_MAC02_DiscoveredRecipe_32, GF_MAC02_DiscoveredRecipe_33,
-    0 
+    0
 };
 
 void N(appendGfx_records_impl)(GameRecords* records, s32 alpha) {
@@ -142,7 +142,7 @@ void N(appendGfx_records)(void* data) {
             records->unk_0A = 0;
             records->lerpTime = 0;
             records->state = RECORDS_STATE_FADING_IN;
-            snd_start_sound(SOUND_21C, 0, 0);
+            snd_start_sound(SOUND_APPROVE, 0, 0);
             // fallthrough
         case RECORDS_STATE_FADING_IN:
             records->lerpTime++;
@@ -157,7 +157,7 @@ void N(appendGfx_records)(void* data) {
         case RECORDS_STATE_IDLE:
             records->alpha = 255;
             records->lastAlpha = records->alpha;
-            if (gGameStatusPtr->currentButtons[0] & (BUTTON_A | BUTTON_B)) {
+            if (gGameStatusPtr->curButtons[0] & (BUTTON_A | BUTTON_B)) {
                 records->state = RECORDS_STATE_BEGIN_FADE_OUT;
             }
             if (records->state != RECORDS_STATE_BEGIN_FADE_OUT) {
@@ -182,10 +182,10 @@ void N(appendGfx_records)(void* data) {
 void N(worker_draw_game_records)(void) {
     RenderTask rt;
 
-    rt.renderMode = RENDER_MODE_2D;
+    rt.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     rt.appendGfxArg = NULL;
     rt.appendGfx = N(appendGfx_records);
-    rt.distance = 0;
+    rt.dist = 0;
     queue_render_task(&rt);
 }
 

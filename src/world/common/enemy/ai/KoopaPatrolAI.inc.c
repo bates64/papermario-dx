@@ -32,7 +32,7 @@ API_CALLABLE(N(KoopaPatrolAI_Main)) {
         npc->duration = 0;
         script->functionTemp[0] = 0;
         enemy->hitboxIsActive = FALSE;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
         npc->collisionHeight = enemy->varTable[6];
         enemy->instigatorValue = 0;
@@ -40,14 +40,14 @@ API_CALLABLE(N(KoopaPatrolAI_Main)) {
 
         if (!enemy->territory->patrol.isFlying) {
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_8;
+            npc->flags &= ~NPC_FLAG_FLYING;
         } else {
             npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_8;
+            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {
-            s32 emoteTemp;
+            EffectInstance* emoteTemp;
 
             script->functionTemp[0] = 99;
             script->functionTemp[1] = 0;

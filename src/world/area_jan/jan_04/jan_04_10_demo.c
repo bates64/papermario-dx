@@ -72,7 +72,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("jan_04"), jan_04_ENTRY_2, TRANSITION_2)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("jan_04"), jan_04_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     EVT_WAIT(110)
     EVT_RETURN
     EVT_END
@@ -91,7 +91,7 @@ EvtScript N(EVS_MonitorDemoState) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("jan_04"), jan_04_ENTRY_2, TRANSITION_3)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("jan_04"), jan_04_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -111,9 +111,9 @@ API_CALLABLE(N(SetupDemoScene)) {
 
                 N(DemoInitState)++;
                 newScript = start_script(rideScriptSrc, EVT_PRIORITY_0, EVT_FLAG_RUN_IMMEDIATELY);
-                newScript->varTable[1] = playerStatus->position.x - 10.0f;
-                newScript->varTable[2] = playerStatus->position.y;
-                newScript->varTable[3] = playerStatus->position.z;
+                newScript->varTable[1] = playerStatus->pos.x - 10.0f;
+                newScript->varTable[2] = playerStatus->pos.y;
+                newScript->varTable[3] = playerStatus->pos.z;
                 newScript->varTable[12] = 1;
                 D_8024A290 = newScript;
             }
@@ -125,7 +125,7 @@ API_CALLABLE(N(SetupDemoScene)) {
         case 3:
             wPartnerNpc->yaw = 270.0f;
             playerStatus->targetYaw = 270.0f;
-            playerStatus->currentYaw = 270.0f;
+            playerStatus->curYaw = 270.0f;
             playerStatus->spriteFacingAngle = 180.0f;
             D_8024A290->functionTemp[1] = 1;
             return ApiStatus_DONE2;

@@ -51,7 +51,7 @@ EvtScript N(EVS_UnlockUpperLeftDoors) = {
     EVT_CALL(CloseChoicePopup)
     EVT_SET(GF_TRD04_UnlockedUpperDoor, TRUE)
     EVT_CALL(N(GetEntityPosition), MV_Unk_00, LVar0, LVar1, LVar2)
-    EVT_CALL(PlaySoundAt, SOUND_269, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_SET(LVar0, MV_Unk_00)
     EVT_CALL(N(RemovePadlock))
     EVT_RESUME_GROUP(EVT_GROUP_01)
@@ -79,7 +79,7 @@ EvtScript N(EVS_UnlockLowerRightDoors) = {
     EVT_CALL(CloseChoicePopup)
     EVT_SET(GF_TRD04_UnlockedLowerDoor, TRUE)
     EVT_CALL(N(GetEntityPosition), MV_Unk_01, LVar0, LVar1, LVar2)
-    EVT_CALL(PlaySoundAt, SOUND_269, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_SET(LVar0, MV_Unk_01)
     EVT_CALL(N(RemovePadlock))
     EVT_RESUME_GROUP(EVT_GROUP_01)
@@ -100,7 +100,7 @@ EvtScript N(EVS_Padlock_UpperDoors) = {
     EVT_END
 };
 
-EvtScript N(EVS_80245198) = {
+EvtScript N(EVS_DropSwitch) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(40 * DT)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -188, 0, -43)
@@ -109,17 +109,17 @@ EvtScript N(EVS_80245198) = {
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_WAIT(3 * DT)
-    EVT_CALL(PlaySoundAt, SOUND_301, SOUND_SPACE_MODE_0, -180, 175, -35)
+    EVT_CALL(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, -180, 175, -35)
     EVT_CALL(MakeLerp, 175, 0, 20 * DT, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(N(SetEntityPosition), MV_Unk_02, -180, LVar0, -35)
+        EVT_CALL(N(SetEntityPosition), MV_EntityID_Switch, -180, LVar0, -35)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAt, SOUND_48, SOUND_SPACE_MODE_0, -180, 0, -35)
+    EVT_CALL(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, -180, 0, -35)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
     EVT_WAIT(20 * DT)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -150,9 +150,9 @@ EvtScript N(EVS_MakeEntities) = {
     EVT_IF_LE(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)
         EVT_CALL(MakeEntity, EVT_PTR(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         EVT_CALL(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TRD04_LowerStairs))
-        EVT_SET(MV_Unk_02, LVar0)
+        EVT_SET(MV_EntityID_Switch, LVar0)
         EVT_IF_EQ(GB_StoryProgress, STORY_CH1_DEFEATED_BASEMENT_GUARD)
-            EVT_CALL(N(SetEntityPosition), MV_Unk_02, -180, 0, -35)
+            EVT_CALL(N(SetEntityPosition), MV_EntityID_Switch, -180, 0, -35)
         EVT_END_IF
     EVT_END_IF
     EVT_RETURN

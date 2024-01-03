@@ -87,7 +87,7 @@ EvtScript N(D_80245E6C_B263AC) = {
     EVT_MOD(LVar1, 4)
     EVT_IF_EQ(LVar1, 0)
         EVT_CALL(N(UnkPlayerPosFunc))
-        EVT_CALL(PlayEffect, EFFECT_DAMAGE_STARS, 2, LVar0, LVar1, LVar2, 0, -1, 0, 5, 0, 0, 0, 0, 0)
+        EVT_PLAY_EFFECT(EFFECT_DAMAGE_STARS, FX_DAMAGE_STARS_2, LVar0, LVar1, LVar2, 0, -1, 0, 5)
     EVT_END_IF
     EVT_CALL(N(UnkFloatFunc001), LVarC, LVar0, 30, 60, 30, 0, 0)
     EVT_CALL(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
@@ -218,10 +218,10 @@ EvtScript N(D_8024652C_B26A6C) = {
 EvtScript N(EVS_802467AC) = {
     EVT_SET_GROUP(EVT_GROUP_00)
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_1, MODEL_karada, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(unkAngleFunc002)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(unkAngleFunc002)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_karada, CUSTOM_GFX_1, -1)
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_2, MODEL_onaka, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_2, EVT_PTR(N(unkAngleFunc003)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_2, EVT_PTR(N(unkAngleFunc003)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_onaka, CUSTOM_GFX_2, -1)
     EVT_THREAD
         EVT_LABEL(0)

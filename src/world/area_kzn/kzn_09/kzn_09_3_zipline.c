@@ -1,4 +1,5 @@
 #include "kzn_09.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(Zipline_AdjustMoveDownSound)) {
     Bytecode* args = script->ptrReadPos;
@@ -7,7 +8,7 @@ API_CALLABLE(N(Zipline_AdjustMoveDownSound)) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         script->functionTemp[1] = evt_get_variable(script, *args++);
         script->functionTemp[2] = evt_get_variable(script, *args++);
-        sfx_adjust_env_sound_pos(SOUND_168, SOUND_SPACE_MODE_0, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+        sfx_adjust_env_sound_pos(SOUND_LRAW_ZIPLINE_RIDE, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
     }
     return ApiStatus_DONE2;
 }
@@ -19,7 +20,7 @@ API_CALLABLE(N(Zipline_AdjustMoveUpSound)) {
         script->functionTemp[0] = evt_get_variable(script, *args++);
         script->functionTemp[1] = evt_get_variable(script, *args++);
         script->functionTemp[2] = evt_get_variable(script, *args++);
-        sfx_adjust_env_sound_pos(SOUND_185, SOUND_SPACE_MODE_0, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+        sfx_adjust_env_sound_pos(SOUND_LRAW_ZIPLINE_RETURN, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
     }
     return ApiStatus_DONE2;
 }
@@ -37,13 +38,13 @@ API_CALLABLE(N(Zipline_UpdatePlayerPos)) {
     script->varTable[7] = (dz / 1000.0f) * script->varTable[0];
     if (temp_v0 == 0) {
         Npc* partner = get_npc_safe(NPC_PARTNER);
-        gPlayerStatus.position.x = script->varTable[2] + script->varTable[5];
-        gPlayerStatus.position.y = script->varTable[3] + script->varTable[6];
-        gPlayerStatus.position.z = script->varTable[4] + script->varTable[7];
+        gPlayerStatus.pos.x = script->varTable[2] + script->varTable[5];
+        gPlayerStatus.pos.y = script->varTable[3] + script->varTable[6];
+        gPlayerStatus.pos.z = script->varTable[4] + script->varTable[7];
         gPlayerStatus.targetYaw = atan2(array[0], array[2], array[3], array[5]);
-        partner->pos.x = gPlayerStatus.position.x;
-        partner->pos.y = gPlayerStatus.position.y - 10.0f;
-        partner->pos.z = gPlayerStatus.position.z - 5.0f;
+        partner->pos.x = gPlayerStatus.pos.x;
+        partner->pos.y = gPlayerStatus.pos.y - 10.0f;
+        partner->pos.z = gPlayerStatus.pos.z - 5.0f;
     }
     return ApiStatus_DONE2;
 }
@@ -102,7 +103,7 @@ EvtScript N(EVS_RideZipline) = {
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_HoldOnto)
     EVT_WAIT(10)
     EVT_CALL(GetPlayerPos, LVar2, LVar3, LVar4)
-    EVT_CALL(PlaySound, SOUND_80000019)
+    EVT_CALL(PlaySound, SOUND_LOOP_ZIPLINE_RIDE)
     EVT_CHILD_THREAD
         EVT_SET(MF_Zipline_GoingDown, TRUE)
         EVT_SET(LVar0, ArrayVar(6))
@@ -130,18 +131,18 @@ EvtScript N(EVS_RideZipline) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)
         EVT_END_IF
-    EVT_CALL(PlaySound, SOUND_2087)
+    EVT_CALL(PlaySound, SOUND_ZIPLINE_FINISH)
     EVT_LABEL(10)
     EVT_CALL(SetPlayerFlagBits, PS_FLAG_SCRIPTED_FALL, TRUE)
     EVT_SET(MF_Zipline_GoingDown, FALSE)
-    EVT_CALL(StopSound, SOUND_80000019)
+    EVT_CALL(StopSound, SOUND_LOOP_ZIPLINE_RIDE)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     EVT_CALL(EnablePartnerAI)
     EVT_CALL(DisablePlayerPhysics, FALSE)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_KILL_THREAD(LVar9)
     EVT_WAIT(20)
-    EVT_CALL(PlaySound, SOUND_8000001A)
+    EVT_CALL(PlaySound, SOUND_LOOP_ZIPLINE_RETURN)
     EVT_CHILD_THREAD
         EVT_SET(MF_Zipline_GoingUp, TRUE)
         EVT_SET(LVar0, ArrayVar(6))
@@ -168,7 +169,7 @@ EvtScript N(EVS_RideZipline) = {
             EVT_GOTO(1)
         EVT_END_IF
     EVT_SET(MF_Zipline_GoingUp, FALSE)
-    EVT_CALL(StopSound, SOUND_8000001A)
+    EVT_CALL(StopSound, SOUND_LOOP_ZIPLINE_RETURN)
     EVT_RETURN
     EVT_END
 };

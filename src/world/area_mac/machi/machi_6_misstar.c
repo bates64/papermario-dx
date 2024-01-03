@@ -49,12 +49,12 @@ EvtScript N(EVS_NpcAux_Misstar) = {
         EVT_SETF(LVar0, EVT_FLOAT(40.0))
         EVT_LOOP(20)
             EVT_ADDF(LVar0, EVT_FLOAT(4.0))
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_LOOP(20)
             EVT_ADDF(LVar0, EVT_FLOAT(-4.0))
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_GOTO(0)
@@ -102,7 +102,7 @@ NpcSettings N(NpcSettings_Misstar) = {
     .otherAI = &N(EVS_NpcAuxAI_Misstar),
     .ai = &N(EVS_NpcAI_Misstar),
     .aux = &N(EVS_NpcAux_Misstar),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
 NpcData N(NpcData_Misstar) = {

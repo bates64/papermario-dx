@@ -5,6 +5,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "model.h"
+#include "game_modes.h"
 
 #if VERSION_JP
 // TODO: split the filemenu segment
@@ -36,17 +37,21 @@ NUPiOverlaySegment D_8007798C = {
     .bssEnd = filemenu_BSS_END,
 };
 
-u8 D_800779B0 = 0;
+u8 IntroMessageIdx = 0;
 
 extern s32 D_80200000;
 extern ShapeFile gMapShapeData;
+
+SHIFT_BSS s8 D_800A0930;
+SHIFT_BSS s8 D_800A0931;
+SHIFT_BSS s16 D_800A0932[1];
 
 void state_init_language_select(void) {
     D_800A0931 = 0;
     D_800A0932[0] = 0;
     disable_player_input();
     set_time_freeze_mode(TIME_FREEZE_FULL);
-    set_screen_overlay_params_front(0, D_800A0932[0]);
+    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
 }
 
 void state_init_file_select(void) {
@@ -57,18 +62,18 @@ void state_init_file_select(void) {
     general_heap_create();
     hud_element_set_aux_cache(0, 0);
     hud_element_clear_cache();
-    load_model_textures(0, 0, 0);
+    mdl_load_all_textures(NULL, 0, 0);
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_MODE_6;
-    gCameras[CAM_DEFAULT].unk_06 = 1;
+    gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = 16;
     gCameras[CAM_DEFAULT].farClip = 4096;
-    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_ENABLED;
+    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
     gCurrentCameraID = CAM_DEFAULT;
-    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_ENABLED;
-    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_ENABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_ENABLED;
+    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
-    set_cam_viewport(0, 12, 28, 296, 184);
+    set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
     gCameras[CAM_DEFAULT].auxBoomLength = 40;
     gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
@@ -82,7 +87,7 @@ void state_init_file_select(void) {
     gCameras[CAM_DEFAULT].auxPitch = 0;
     gCameras[CAM_DEFAULT].lookAt_dist = 100;
     gCameras[CAM_DEFAULT].auxBoomPitch = 0;
-    gOverrideFlags |= GLOBAL_OVERRIDES_WINDOWS_IN_FRONT_OF_CURTAINS;
+    gOverrideFlags |= GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS;
 }
 
 void state_step_language_select(void) {
@@ -99,7 +104,7 @@ void state_step_language_select(void) {
                 if (D_800A0932[0] > 255) {
                     D_800A0932[0] = 255;
                 }
-                set_screen_overlay_params_front(0, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
                 if (D_800A0932[0] == 255) {
 
                     D_800A0931 = 1;
@@ -111,16 +116,16 @@ void state_step_language_select(void) {
         case 1:
             D_800A0930 = 5;
             D_800A0931 = 2;
-            gOverrideFlags |= GLOBAL_OVERRIDES_8;
+            gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
             break;
         case 2:
             D_800A0930--;
             if (D_800A0930 == 0) {
                 nuGfxSetCfb(fsFrameBuffers, 2);
                 if (nuGfxCfb[2] == nuGfxCfb_ptr) {
-                    gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
+                    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 } else {
-                    gOverrideFlags |= GLOBAL_OVERRIDES_8;
+                    gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                     set_windows_visible(WINDOW_GROUP_FILE_MENU);
                     D_800A0930 = 1;
                     D_800A0931 = 3;
@@ -147,16 +152,16 @@ void state_step_language_select(void) {
                     clear_worker_list();
                     hud_element_set_aux_cache(&D_80200000, 0x20000);
                     hud_element_clear_cache();
-                    reset_status_menu();
+                    reset_status_bar();
                     clear_item_entity_data();
                     clear_script_list();
                     clear_npcs();
-                    clear_entity_data(0);
+                    clear_entity_data(FALSE);
                     clear_trigger_data();
                     nuPiReadRomOverlay(&D_8007798C);
-                    filemenu_init(TRUE);
-                    gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
-                    set_screen_overlay_params_front(255, 255.0f);
+                    filemenu_init(1);
+                    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
+                    set_screen_overlay_params_front(OVERLAY_NONE, 255.0f);
                 }
                 if (D_800A0930 >= 0) {
                     break;
@@ -168,7 +173,7 @@ void state_step_language_select(void) {
             if (D_800A0932[0] < 0) {
                 D_800A0932[0] = 0;
             }
-            set_screen_overlay_params_front(0, D_800A0932[0]);
+            set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
             break;
     }
 }
@@ -193,7 +198,7 @@ void state_step_file_select(void) {
                     D_800A0930 = -1;
                     battle_heap_create();
                     nuPiReadRomOverlay(&D_8007798C);
-                    filemenu_init(FALSE);
+                    filemenu_init(0);
                 }
             }
 
@@ -213,10 +218,10 @@ void state_drawUI_file_select(void) {
 void state_init_exit_language_select(void) {
     if (D_800A0932[0] > 0) {
         D_800A0931 = 0;
-        set_screen_overlay_params_front(0, D_800A0932[0]);
+        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
     } else {
         D_800A0931 = 1;
-        set_screen_overlay_params_front(0, D_800A0932[0]);
+        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
     }
     D_800A0930 = 1;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
@@ -228,10 +233,10 @@ void state_init_exit_file_select(void) {
     D_800A0930 = 0;
 
     if (func_80244BC4() == 0) {
-        set_map_transition_effect(7);
+        set_map_transition_effect(TRANSITION_SLOW_FADE_TO_WHITE);
     } else {
-        set_map_transition_effect(8);
-        gOverrideFlags &= ~GLOBAL_OVERRIDES_WINDOWS_IN_FRONT_OF_CURTAINS;
+        set_map_transition_effect(TRANSITION_ENTER_WORLD);
+        gOverrideFlags &= ~GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS;
         bgm_set_song(0, -1, 0, 1000, 8);
     }
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
@@ -245,7 +250,7 @@ void state_step_exit_language_select(void) {
                 if (D_800A0932[0] < 0) {
                     D_800A0932[0] = 0;
                 }
-                set_screen_overlay_params_front(0, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
                 if (D_800A0932[0] == 0) {
                     D_800A0931 = 1;
                 }
@@ -259,7 +264,7 @@ void state_step_exit_language_select(void) {
                 if (D_800A0932[0] > 255) {
                     D_800A0932[0] = 255;
                 }
-                set_screen_overlay_params_front(0U, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
                 if (D_800A0932[0] == 255) {
                     D_800A0931 = 2;
                 }
@@ -269,7 +274,7 @@ void state_step_exit_language_select(void) {
             break;
         case 2:
             if (D_800A0930 == 3) {
-                gOverrideFlags |= GLOBAL_OVERRIDES_8;
+                gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
             }
 
             if (D_800A0930 >= 0) {
@@ -284,7 +289,7 @@ void state_step_exit_language_select(void) {
                     D_800A0930 = -1;
                     nuGfxSetCfb(fsFrameBuffers, ARRAY_COUNT(fsFrameBuffers));
                     filemenu_cleanup();
-                    gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
+                    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                     mapSettings = get_current_map_settings();
                     mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
                     gGameStatusPtr->isBattle = FALSE;
@@ -318,14 +323,14 @@ void state_step_exit_language_select(void) {
 
                     bgHeader = mapSettings->background;
                     if (bgHeader != NULL) {
-                        read_background_size(bgHeader);
+                        set_background(bgHeader);
                     } else {
                         set_background_size(296, 200, 12, 20);
                     }
 
-                    calculate_model_sizes();
+                    mdl_calculate_model_sizes();
                     npc_reload_all();
-                    status_menu_respond_to_changes();
+                    status_bar_respond_to_changes();
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                 }
                 set_windows_visible(WINDOW_GROUP_ALL);
@@ -339,7 +344,7 @@ void state_step_exit_language_select(void) {
                 if (D_800A0932[0] < 0) {
                     D_800A0932[0] = 0;
                 }
-                set_screen_overlay_params_front(0, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
             }
             break;
         case 3:
@@ -355,7 +360,7 @@ void state_step_exit_language_select(void) {
                 if (D_800A0932[0] < 0) {
                     D_800A0932[0] = 0;
                 }
-                set_screen_overlay_params_front(0, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
             }
             break;
         case 4:
@@ -365,8 +370,8 @@ void state_step_exit_language_select(void) {
             update_encounters();
             update_effects();
             enable_player_input();
-            set_game_mode(GAME_MODE_CHANGE_MAP);
-            set_screen_overlay_params_front(255, -1.0f);
+            set_game_mode(GAME_MODE_WORLD);
+            set_screen_overlay_params_front(OVERLAY_NONE, -1.0f);
             break;
         }
 }
@@ -405,7 +410,7 @@ void state_step_exit_file_select(void) {
             set_time_freeze_mode(TIME_FREEZE_NORMAL);
             if (temp_s0 == 0) {
                 set_game_mode(GAME_MODE_TITLE_SCREEN);
-                gOverrideFlags &= ~GLOBAL_OVERRIDES_WINDOWS_IN_FRONT_OF_CURTAINS;
+                gOverrideFlags &= ~GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS;
             } else {
                 D_800A0930 = 10;
                 D_800A0931 = 4;
@@ -428,7 +433,7 @@ void state_step_exit_file_select(void) {
             }
             break;
         case 6:
-            set_game_mode(GAME_MODE_WORLD);
+            set_game_mode(GAME_MODE_ENTER_WORLD);
             break;
     }
 }

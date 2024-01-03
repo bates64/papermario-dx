@@ -6,8 +6,8 @@ extern Gfx Entity_Signpost_Render[];
 
 void entity_Signpost_idle(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 val = fabsf(clamp_angle(180.0f - entity->rotation.y) - clamp_angle(atan2(entity->position.x, entity->position.z,
-                    playerStatus->position.x, playerStatus->position.z)));
+    f32 val = fabsf(clamp_angle(180.0f - entity->rot.y) - clamp_angle(atan2(entity->pos.x, entity->pos.z,
+                    playerStatus->pos.x, playerStatus->pos.z)));
 
     if (!(playerStatus->animFlags & PA_FLAG_USING_WATT) && !(entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) && (val <= 40.0f || val >= 320.0f)) {
         entity->flags |= ENTITY_FLAG_SHOWS_INSPECT_PROMPT;
@@ -28,7 +28,7 @@ EntityScript Entity_Signpost_Script = {
 EntityModelScript Entity_Signpost_RenderScript = STANDARD_ENTITY_MODEL_SCRIPT(Entity_Signpost_Render, RENDER_MODE_SURFACE_OPA);
 
 EntityBlueprint Entity_Signpost = {
-    .flags = ENTITY_FLAG_SQUARE_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
+    .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(SignpostData),
     .renderCommandList = Entity_Signpost_RenderScript,
     .modelAnimationNodes = NULL,

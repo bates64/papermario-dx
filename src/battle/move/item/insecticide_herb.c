@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "entity.h"
 #include "ld_addrs.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_insecticide_herb
 
@@ -22,7 +23,7 @@ API_CALLABLE(N(func_802A1280_72A9D0)) {
     Actor* enemy = get_actor(script->owner1.enemyID);
     Actor* target;
 
-    sfx_play_sound_at_position(SOUND_231, SOUND_SPACE_MODE_0, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z);
+    sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, enemy->state.goalPos.x, enemy->state.goalPos.y, enemy->state.goalPos.z);
     target = get_actor(enemy->targetActorID);
     dispatch_event_actor(target, EVENT_SCARE_AWAY);
 
@@ -41,12 +42,12 @@ API_CALLABLE(N(func_802A12E0_72AA30)) {
 
     effect = fx_cold_breath(0, a, b, c, 1.0f, 30);
 
-    effect->data.coldBreath->unk_18 = 244;
-    effect->data.coldBreath->unk_1C = 244;
-    effect->data.coldBreath->unk_20 = 220;
-    effect->data.coldBreath->unk_28 = 210;
-    effect->data.coldBreath->unk_2C = 210;
-    effect->data.coldBreath->unk_30 = 190;
+    effect->data.coldBreath->primCol.r = 244;
+    effect->data.coldBreath->primCol.g = 244;
+    effect->data.coldBreath->primCol.b = 220;
+    effect->data.coldBreath->envCol.r = 210;
+    effect->data.coldBreath->envCol.g = 210;
+    effect->data.coldBreath->envCol.b = 190;
 
     return ApiStatus_DONE2;
 }
@@ -94,7 +95,7 @@ EntityModelScript N(modelCommandList) = STANDARD_ENTITY_MODEL_SCRIPT(N(displayLi
 EvtScript N(EVS_UseItem) = {
     EVT_SET_CONST(LVarA, ITEM_INSECTICIDE_HERB)
     EVT_EXEC_WAIT(N(UseItemWithEffect))
-    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_D)
+    EVT_CALL(UseBattleCamPreset, BTL_CAM_PRESET_03)
     EVT_CALL(MoveBattleCamOver, 15)
     EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Throw)
     EVT_CALL(PlaySound, SOUND_THROW)
@@ -143,7 +144,7 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(N(func_802A123C_72A98C))
     EVT_CALL(DeleteVirtualEntity, LVarA)
     EVT_IF_EQ(LVar9, 0)
-        EVT_CALL(ItemDamageEnemy, LVar0, 0, 0, 0, BS_FLAGS1_SP_EVT_ACTIVE)
+        EVT_CALL(ItemDamageEnemy, LVar0, 0, 0, 0, BS_FLAGS1_TRIGGER_EVENTS)
     EVT_ELSE
         EVT_CALL(InitTargetIterator)
         EVT_CALL(SetGoalToTarget, ACTOR_SELF)

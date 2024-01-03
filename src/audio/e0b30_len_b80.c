@@ -4,11 +4,11 @@
 void bgm_update_volume(void);
 void bgm_set_target_volume(s16 volume);
 
-// these are BSS
-extern s16 MusicDefaultVolume;
-extern s16 MusicMaxVolume;
-extern s16 MusicCurrentVolume;
-extern s16 MusicTargetVolume;
+SHIFT_BSS s16 MusicDefaultVolume;
+SHIFT_BSS s16 MusicMaxVolume;
+SHIFT_BSS s16 MusicCurrentVolume;
+SHIFT_BSS s16 MusicTargetVolume;
+SHIFT_BSS MusicSettings gMusicSettings[2];
 
 MusicSettings BlankMusicSettings = {
     .flags = 0,
@@ -62,7 +62,7 @@ s32 bgm_get_map_default_variation(s32 songID) {
 void bgm_reset_sequence_players(void) {
     s32 i;
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < ARRAY_COUNT(gMusicSettings); i++) {
         gMusicSettings[i] = BlankMusicSettings;
     }
 
@@ -79,7 +79,7 @@ void bgm_reset_volume(void) {
 
 //TODO refactor out constants
 void bgm_update_music_settings(void) {
-    MusicSettings* music = gMusicSettings;
+    MusicSettings* music = &gMusicSettings[0];
     s32 i = 0;
     s16 state2 = 2;
     s16 flag4 = MUSIC_SETTINGS_FLAG_4;
@@ -121,7 +121,7 @@ void bgm_update_music_settings(void) {
         case 2:
             flags = music->flags;
             music->flags &= ~flag4;
-            if (flags & 1) {
+            if (flags & MUSIC_SETTINGS_FLAG_1) {
                 if (au_song_is_playing(music->songName) == AU_RESULT_OK) {
                     music->flags &= ~MUSIC_SETTINGS_FLAG_1;
                     music->state = 3;
@@ -179,7 +179,7 @@ s32 _bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s
     MusicSettings* musicSetting;
     s32 mapSongVariation;
 
-    if (gGameStatusPtr->demoState != 0) {
+    if (gGameStatusPtr->demoState != DEMO_STATE_NONE) {
         return 1;
     }
 
@@ -374,7 +374,7 @@ s32 func_8014AD40(void) {
 void bgm_pop_song(void) {
     MusicSettings* musicSetting = gMusicSettings;
 
-    if (gGameStatusPtr->demoState == 0) {
+    if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         musicSetting->flags |= MUSIC_SETTINGS_FLAG_8;
         _bgm_set_song(0, musicSetting->savedSongID, musicSetting->savedVariation, 0, 8);
     }
@@ -383,7 +383,7 @@ void bgm_pop_song(void) {
 void bgm_push_song(s32 songID, s32 variation) {
     MusicSettings* musicSetting = gMusicSettings;
 
-    if (gGameStatusPtr->demoState == 0) {
+    if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         musicSetting->savedSongID = musicSetting->songID;
         musicSetting->savedVariation = musicSetting->variation;
         musicSetting->savedSongName = musicSetting->songName;
@@ -395,9 +395,9 @@ void bgm_push_song(s32 songID, s32 variation) {
 void bgm_pop_battle_song(void) {
     MusicSettings* musicSetting = gMusicSettings;
 
-    if (gGameStatusPtr->demoState == 0) {
-        if (gOverrideFlags & GLOBAL_OVERRIDES_20000) {
-            gOverrideFlags &= ~GLOBAL_OVERRIDES_20000;
+    if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
+        if (gOverrideFlags & GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE) {
+            gOverrideFlags &= ~GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE;
         } else {
             musicSetting->flags |= MUSIC_SETTINGS_FLAG_8;
             _bgm_set_song(0, musicSetting->savedSongID, musicSetting->savedVariation, 0, 8);
@@ -409,13 +409,15 @@ void bgm_pop_battle_song(void) {
 void bgm_push_battle_song(void) {
     MusicSettings* musicSetting = gMusicSettings;
 
-    if (gGameStatusPtr->demoState == 0 && !(gOverrideFlags & GLOBAL_OVERRIDES_20000)) {
-        snd_ambient_pause(0, 250);
-        musicSetting->savedSongID = musicSetting->songID;
-        musicSetting->savedVariation = musicSetting->variation;
-        musicSetting->savedSongName = musicSetting->songName;
-        musicSetting->flags |= MUSIC_SETTINGS_FLAG_4;
-        bgm_set_song(0, musicSetting->battleSongID, musicSetting->battleVariation, 500, 8);
+    if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
+        if (!(gOverrideFlags & GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)) {
+            snd_ambient_pause(0, 250);
+            musicSetting->savedSongID = musicSetting->songID;
+            musicSetting->savedVariation = musicSetting->variation;
+            musicSetting->savedSongName = musicSetting->songName;
+            musicSetting->flags |= MUSIC_SETTINGS_FLAG_4;
+            bgm_set_song(0, musicSetting->battleSongID, musicSetting->battleVariation, 500, 8);
+        }
     }
 }
 

@@ -19,17 +19,17 @@ EffectInstance* merlin_house_stars_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) 
     bp.update = merlin_house_stars_update;
     bp.renderWorld = merlin_house_stars_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_MERLIN_HOUSE_STARS;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.merlinHouseStars = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.merlinHouseStars = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.merlinHouseStars != NULL);
 
     data->unk_04 = 100;
     data->unk_00 = arg0;
-    data->unk_18 = 255;
+    data->alpha = 255;
     data->unk_0C = arg1;
     data->unk_10 = arg2;
     data->unk_14 = arg3;
@@ -51,8 +51,8 @@ void merlin_house_stars_update(EffectInstance* effect) {
     MerlinHouseStarsFXData* data = effect->data.merlinHouseStars;
     s32 unk_04;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_04 = 30;
     }
 
@@ -63,7 +63,7 @@ void merlin_house_stars_update(EffectInstance* effect) {
     data->unk_08++;
 
     if (data->unk_04 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -75,11 +75,11 @@ void merlin_house_stars_update(EffectInstance* effect) {
     unk_04 = data->unk_04;
 
     if (data->unk_08 < 17) {
-        data->unk_18 = data->unk_08 * 16 - 1;
+        data->alpha = data->unk_08 * 16 - 1;
     }
 
     if (unk_04 < 16) {
-        data->unk_18 = unk_04 * 16;
+        data->alpha = unk_04 * 16;
     }
 
     if (data->unk_1C < 0.0f) {
@@ -116,19 +116,22 @@ void merlin_house_stars_render(EffectInstance* effect) {
 
     renderTask.appendGfx = merlin_house_stars_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
 void func_E00A639C(void) {
 }
 
+#define PM_CC1_MERLIN_STARS     0, 0, 0, 1, TEXEL1, 0, PRIMITIVE, TEXEL0
+#define PM_CC2_MERLIN_STARS     0, 0, 0, COMBINED, COMBINED, 0, ENVIRONMENT, 0
+
 void merlin_house_stars_appendGfx(void* effect) {
     MerlinHouseStarsFXData* data = ((EffectInstance*)effect)->data.merlinHouseStars;
-    s32 unk_18 = data->unk_18;
+    s32 envAlpha = data->alpha;
     Matrix4f sp10;
     Matrix4f sp50;
     s32 uls;
@@ -137,15 +140,15 @@ void merlin_house_stars_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(sp10, data->unk_0C, data->unk_10, data->unk_14);
-    shim_guScaleF(sp50, 0.96f, 0.96f, 0.96f);
-    shim_guMtxCatF(sp50, sp10, sp10);
-    shim_guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp10, data->unk_0C, data->unk_10, data->unk_14);
+    guScaleF(sp50, 0.96f, 0.96f, 0.96f);
+    guMtxCatF(sp50, sp10, sp10);
+    guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 127);
-    gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, unk_18);
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, 1, TEXEL1, 0, PRIMITIVE, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, ENVIRONMENT, 0);
+    gDPSetEnvColor(gMainGfxPos++, 0, 0, 0, envAlpha);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC1_MERLIN_STARS, PM_CC2_MERLIN_STARS);
     gSPDisplayList(gMainGfxPos++, D_09001000_3A6BE0);
 
     uls = data->unk_1C * 4.0f;

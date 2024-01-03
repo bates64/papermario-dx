@@ -1,7 +1,7 @@
 #include "nok_14.h"
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
-#include "world/common/todo/UnsetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
+#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_SET_GROUP(EVT_GROUP_00)
@@ -9,11 +9,11 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(10)
     EVT_CALL(DisablePlayerPhysics, TRUE)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(InterpCamTargetPos, CAM_DEFAULT, TRUE, 3, 0, -60, 20)
     EVT_WAIT(10)
     EVT_SET(GB_StoryProgress, STORY_CH1_MADE_SECOND_BRIDGE)
-    EVT_CALL(PlaySoundAt, SOUND_71, SOUND_SPACE_MODE_0, 0, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_THUD_1, SOUND_SPACE_DEFAULT, 0, 0, -60)
     EVT_CALL(MakeLerp, -200, 0, 15, EASING_COS_IN)
     EVT_LABEL(10)
         EVT_CALL(UpdateLerp)
@@ -29,7 +29,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(15)
-    EVT_CALL(PlaySoundAt, SOUND_67, SOUND_SPACE_MODE_0, -84, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_1, SOUND_SPACE_DEFAULT, -84, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_COS_IN_OUT)
         EVT_LABEL(20)
@@ -41,7 +41,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_68, SOUND_SPACE_MODE_0, -56, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_2, SOUND_SPACE_DEFAULT, -56, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(24)
@@ -53,7 +53,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_69, SOUND_SPACE_MODE_0, -28, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_3, SOUND_SPACE_DEFAULT, -28, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(21)
@@ -65,7 +65,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_6A, SOUND_SPACE_MODE_0, 0, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_4, SOUND_SPACE_DEFAULT, 0, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(25)
@@ -77,7 +77,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_6B, SOUND_SPACE_MODE_0, 28, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_5, SOUND_SPACE_DEFAULT, 28, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(22)
@@ -89,7 +89,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_6C, SOUND_SPACE_MODE_0, 56, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_6, SOUND_SPACE_DEFAULT, 56, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(26)
@@ -101,7 +101,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
             EVT_END_IF
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(PlaySoundAt, SOUND_6D, SOUND_SPACE_MODE_0, 84, 0, -60)
+    EVT_CALL(PlaySoundAt, SOUND_NOK_BRIDGE_XYLOPHONE_7, SOUND_SPACE_DEFAULT, 84, 0, -60)
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 90, 8, EASING_LINEAR)
         EVT_LABEL(23)
@@ -117,7 +117,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     EVT_WAIT(20)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(InterpCamTargetPos, CAM_DEFAULT, TRUE, LVar0, LVar1, LVar2, 10)
-    EVT_CALL(N(UnsetCamera0Flag1000))
+    EVT_CALL(N(EnableCameraLeadingPlayer))
     EVT_CALL(DisablePlayerPhysics, FALSE)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_NORMAL)

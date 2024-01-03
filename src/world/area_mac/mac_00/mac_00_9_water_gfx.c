@@ -10,7 +10,7 @@ void N(gfx_build_water)(void) {
     gDPSetPrimDepth(gMainGfxPos++, 0x7FF0, 0);
     gDPSetRenderMode(gMainGfxPos++, Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | G_RM_PASS,
             Z_CMP | CVG_DST_CLAMP | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1));
-    gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, 0, 0, 0, 0, 0, 0, 0, PRIMITIVE, 0, 0, 0, 0);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_PRIM_NO_ALPHA, PM_CC_PRIM_NO_ALPHA);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 128, 0);
     gDPPipeSync(gMainGfxPos++);
 
@@ -27,7 +27,7 @@ void N(gfx_build_water)(void) {
 
 EvtScript N(EVS_SetupWaterCustomGfx) = {
     EVT_WAIT(1)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(gfx_build_water)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(gfx_build_water)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_water, CUSTOM_GFX_0, -1)
     EVT_RETURN
     EVT_END

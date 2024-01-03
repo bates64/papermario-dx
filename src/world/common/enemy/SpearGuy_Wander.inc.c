@@ -10,14 +10,14 @@ AnimID N(ExtraAnims_SpearGuy)[] = {
     ANIM_SpearGuy_Anim07,
     ANIM_SpearGuy_Anim0F,
     ANIM_SpearGuy_Anim10,
-    ANIM_SpearGuy_Anim1A, 
+    ANIM_SpearGuy_Anim1A,
     ANIM_SpearGuy_Anim1B,
     ANIM_LIST_END
 };
 
 AnimID N(ExtraAnims_SpearGuy_Hitbox)[] = {
     ANIM_SpearGuy_Anim00,
-    ANIM_LIST_END, 
+    ANIM_LIST_END,
 };
 
 EvtScript N(EVS_NpcDefeat_SpearGuy_Hitbox) = {
@@ -63,7 +63,7 @@ EvtScript N(EVS_NpcAI_SpearGuy_Wander) = {
 NpcSettings N(NpcSettings_SpearGuy_Wander) = {
     .height = 23,
     .radius = 22,
-    .level = 16,
+    .level = ACTOR_LEVEL_SPEAR_GUY,
     .ai = &N(EVS_NpcAI_SpearGuy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
@@ -85,7 +85,7 @@ EvtScript N(EVS_NpcAI_SpearGuy_Hitbox) = {
 NpcSettings N(NpcSettings_SpearGuy_Hitbox) = {
     .height = 8,
     .radius = 20,
-    .level = 16,
+    .level = ACTOR_LEVEL_SPEAR_GUY,
     .ai = &N(EVS_NpcAI_SpearGuy_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_SpearGuy_Hitbox),
     .actionFlags = AI_ACTION_08,

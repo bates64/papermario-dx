@@ -8,7 +8,7 @@
 NpcSettings N(NpcSettings_Yakkey) = {
     .height = 24,
     .radius = 24,
-    .level = 13,
+    .level = ACTOR_LEVEL_CLUBBA,
 };
 
 extern EvtScript N(EVS_NpcAI_Tubba);
@@ -77,7 +77,7 @@ EvtScript N(EVS_PlayFootstepFX) = {
         EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
         EVT_CALL(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
         EVT_IF_NE(LVar3, LVar6)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_20F6, SOUND_PARAM_MUTE | SOUND_SPACE_FULL)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_HEAVY_NPC_STEP_C, SOUND_PARAM_MUTE | SOUND_SPACE_FULL)
             EVT_CALL(GetDist2D, LVarA, LVar0, LVar2, LVar3, LVar5)
             EVT_SWITCH(LVarA)
                 EVT_CASE_LT(200)
@@ -187,7 +187,7 @@ NpcData N(NpcData_Tubba) = {
     },
     .init = &N(EVS_NpcInit_Tubba),
     .settings = &N(NpcSettings_TubbaBlubba),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,

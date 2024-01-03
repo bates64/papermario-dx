@@ -1,5 +1,6 @@
 #include "obk_03.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 extern EvtScript N(EVS_HitSwitch_Second);
 extern EvtScript N(EVS_HitSwitch_Third);
@@ -12,7 +13,7 @@ EvtScript N(EVS_SecondSwitch_Drop) = {
     EVT_THREAD
         EVT_WAIT(10)
         EVT_CALL(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
-        EVT_CALL(PlaySoundAt, SOUND_301, SOUND_SPACE_MODE_0, LVarA, LVarB, LVarC)
+        EVT_CALL(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EVT_END_THREAD
     EVT_CALL(MakeLerp, LVar3, LVar5, LVar6, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
@@ -24,7 +25,7 @@ EvtScript N(EVS_SecondSwitch_Drop) = {
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
-    EVT_CALL(PlaySoundAt, SOUND_48, SOUND_SPACE_MODE_0, LVarA, LVarB, LVarC)
+    EVT_CALL(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, LVar8, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_CALL(DisablePlayerInput, FALSE)
@@ -37,7 +38,7 @@ EvtScript N(EVS_ThirdSwitch_Drop) = {
     EVT_THREAD
         EVT_WAIT(10)
         EVT_CALL(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
-        EVT_CALL(PlaySoundAt, SOUND_303, SOUND_SPACE_MODE_0, LVarA, LVarB, LVarC)
+        EVT_CALL(PlaySoundAt, SOUND_LARGE_FALL_QUICK, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EVT_END_THREAD
     EVT_CALL(MakeLerp, LVar3, LVar5, LVar6, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
@@ -49,7 +50,7 @@ EvtScript N(EVS_ThirdSwitch_Drop) = {
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
-    EVT_CALL(PlaySoundAt, SOUND_DD, SOUND_SPACE_MODE_0, LVarA, LVarB, LVarC)
+    EVT_CALL(PlaySoundAt, SOUND_HEAVY_OBJECT_DROP, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, LVar8, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_CALL(DisablePlayerInput, FALSE)

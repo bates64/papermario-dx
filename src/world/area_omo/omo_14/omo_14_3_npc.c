@@ -1,13 +1,14 @@
 #include "omo_14.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SurroundPlayer)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
-    f32 goalPosX = playerStatus->position.x +
-        ((playerStatus->colliderDiameter + npc->collisionRadius) * 0.5f * sin_deg((npc->npcID * 360.0f) / 10.0f));
-    f32 goalPosZ = playerStatus->position.z -
-        ((playerStatus->colliderDiameter + npc->collisionRadius) * 0.5f * cos_deg((npc->npcID * 360.0f) / 10.0f));
+    f32 goalPosX = playerStatus->pos.x +
+        ((playerStatus->colliderDiameter + npc->collisionDiameter) * 0.5f * sin_deg((npc->npcID * 360.0f) / 10.0f));
+    f32 goalPosZ = playerStatus->pos.z -
+        ((playerStatus->colliderDiameter + npc->collisionDiameter) * 0.5f * cos_deg((npc->npcID * 360.0f) / 10.0f));
     f32 dist = dist2D(npc->pos.x, npc->pos.z, goalPosX, goalPosZ);
 
     if (npc->moveSpeed < dist) {
@@ -22,19 +23,19 @@ API_CALLABLE(N(SurroundPlayer)) {
         }
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     } else {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+        npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
     }
 
-    if (script->varTableF[11] == playerStatus->position.x && script->varTableF[13] == playerStatus->position.z) {
+    if (script->varTableF[11] == playerStatus->pos.x && script->varTableF[13] == playerStatus->pos.z) {
         if (dist < 20.0f) {
             script->varTable[14]++;
         } else {
             script->varTable[14] = 0;
         }
     }
-    script->varTableF[11] = playerStatus->position.x;
-    script->varTableF[12] = playerStatus->position.y;
-    script->varTableF[13] = playerStatus->position.z;
+    script->varTableF[11] = playerStatus->pos.x;
+    script->varTableF[12] = playerStatus->pos.y;
+    script->varTableF[13] = playerStatus->pos.z;
     return ApiStatus_DONE2;
 }
 
@@ -113,7 +114,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                             EVT_CALL(SetNpcJumpscale, NPC_SELF, EVT_FLOAT(1.0))
                             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
                             EVT_IF_EQ(LVar1, 0)
-                                EVT_CALL(PlaySound, SOUND_3ED)
+                                EVT_CALL(PlaySound, SOUND_MASTER_SMACK)
                                 EVT_CALL(NpcJump0, NPC_SELF, LVar0, LVar1, LVar2, 10 * DT)
                                 EVT_THREAD
                                     EVT_CALL(ShakeCam, CAM_DEFAULT, 1, 4, EVT_FLOAT(1.0))
@@ -121,7 +122,7 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                                 EVT_WAIT(3 * DT)
                                 EVT_CALL(SetPlayerAnimation, ANIM_Mario1_PanicRun)
                                 EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(1.0))
-                                EVT_CALL(PlaySound, SOUND_3EE)
+                                EVT_CALL(PlaySound, SOUND_MASTER_PUNCH)
                                 EVT_CALL(PlayerJump1, LVar0, LVar1, LVar2, 15 * DT)
                                 EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
                             EVT_ELSE
@@ -198,12 +199,12 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                     EVT_ADD(LVar0, 1)
                 EVT_END_LOOP
                 EVT_WAIT(45 * DT)
-                EVT_CALL(StopSound, SOUND_8000004C)
+                EVT_CALL(StopSound, SOUND_LOOP_SHY_GUY_CROWD_1)
                 EVT_CALL(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH4_005E)
                 EVT_THREAD
                     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 10, EVT_FLOAT(1.0))
                 EVT_END_THREAD
-                EVT_CALL(PlaySoundAtCollider, COLLIDER_tt1, SOUND_1E4, SOUND_SPACE_MODE_0)
+                EVT_CALL(PlaySoundAtCollider, COLLIDER_tt1, SOUND_TROMP_CRASH, SOUND_SPACE_DEFAULT)
                 EVT_PLAY_EFFECT(EFFECT_BOMBETTE_BREAKING, 0, 37, 37, 1, 10, 30)
                 EVT_CALL(EnableModel, MODEL_o821, TRUE)
                 EVT_LOOP(10)

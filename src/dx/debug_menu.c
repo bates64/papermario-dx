@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "gcc/string.h"
+#include "game_modes.h"
 
 void dx_debug_menu_cb_gotomap(void* arg);
 void dx_debug_menu_cb_fullrestore(void* arg);
@@ -217,8 +218,8 @@ void dx_debug_menu_cb_gotomap_execute(void* arg) {
     gGameStatusPtr->areaID = areaID;
     gGameStatusPtr->mapID = mapID;
     gGameStatusPtr->entryID = 0;
-    set_map_transition_effect(0);
-    set_game_mode(GAME_MODE_UNUSED);
+    set_map_transition_effect(TRANSITION_STANDARD);
+    set_game_mode(GAME_MODE_CHANGE_MAP);
 
     // Stop ambient sounds
     play_ambient_sounds(AMBIENT_SILENCE, 1);

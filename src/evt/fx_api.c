@@ -16,7 +16,7 @@ ApiStatus ShowStartRecoveryShimmer(Evt* script, s32 isInitialCall) {
     f32 z = evt_get_float_variable(script, *args++);
 
     show_start_recovery_shimmer(x, y, z, evt_get_variable(script, *args++));
-    sfx_play_sound_at_position(SOUND_2055, SOUND_SPACE_MODE_0, x, y, z);
+    sfx_play_sound_at_position(SOUND_START_RECOVERY, SOUND_SPACE_DEFAULT, x, y, z);
     return ApiStatus_DONE2;
 }
 
@@ -27,7 +27,7 @@ ApiStatus ShowRecoveryShimmer(Evt* script, s32 isInitialCall) {
     f32 z = evt_get_float_variable(script, *args++);
 
     show_recovery_shimmer(x, y, z, evt_get_variable(script, *args++));
-    sfx_play_sound_at_position(SOUND_378, SOUND_SPACE_MODE_0, x, y, z);
+    sfx_play_sound_at_position(SOUND_RECOVERY_SHMMER, SOUND_SPACE_DEFAULT, x, y, z);
     return ApiStatus_DONE2;
 }
 
@@ -79,7 +79,7 @@ ApiStatus ShowEmote(Evt* script, s32 isInitialCall) {
     f32 radius = evt_get_float_variable(script, *args++);
 
     Npc* npc;
-    s32 emoteHandle;
+    EffectInstance* emoteHandle;
     f32 x, y, z, r;
 
     switch (emoterType) {
@@ -123,19 +123,19 @@ ApiStatus RemoveEffect(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D7B10(Evt* script, s32 isInitialCall) {
+ApiStatus DismissEffect(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
 
-    effect->flags |= EFFECT_INSTANCE_FLAG_10;
+    effect->flags |= FX_INSTANCE_FLAG_DISMISS;
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D7B44(Evt* script, s32 isInitialCall) {
+ApiStatus DismissItemOutline(Evt* script, s32 isInitialCall) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*)evt_get_variable(script, *args++);
 
-    effect->data.gotItemOutline->unk_14 = 10;
+    effect->data.gotItemOutline->timeLeft = 10;
     return ApiStatus_DONE2;
 }
 
@@ -161,20 +161,20 @@ ApiStatus InterpMotionBlurParams(Evt* script, s32 isInitialCall) {
 
     if (isInitialCall) {
         script->functionTemp[0] = duration;
-        get_screen_overlay_params(1, &overlayType, &initialAmt);
+        get_screen_overlay_params(SCREEN_LAYER_BACK, &overlayType, &initialAmt);
         script->functionTemp[1] = initialAmt;
-        set_screen_overlay_center(1, 0, centerX0, centerY0);
-        set_screen_overlay_center(1, 1, centerX1, centerY1);
+        set_screen_overlay_center(SCREEN_LAYER_BACK, 0, centerX0, centerY0);
+        set_screen_overlay_center(SCREEN_LAYER_BACK, 1, centerX1, centerY1);
     }
 
-    get_screen_overlay_params(1, &overlayType, &initialAmt);
+    get_screen_overlay_params(SCREEN_LAYER_BACK, &overlayType, &initialAmt);
     // lerp from initialAmt (stored in functionTemp[1]) to finalAmt (stored in varTable[5])
     delta = (script->functionTemp[1] - finalAmt);
-    set_screen_overlay_params_back(12, (delta * script->functionTemp[0] / duration) + finalAmt);
+    set_screen_overlay_params_back(OVERLAY_BLUR, (delta * script->functionTemp[0] / duration) + finalAmt);
 
     script->functionTemp[0]--;
     if (script->functionTemp[0] < 0) {
-        set_screen_overlay_params_back(12, finalAmt);
+        set_screen_overlay_params_back(OVERLAY_BLUR, finalAmt);
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -225,9 +225,9 @@ ApiStatus ShowSweat(Evt* script, s32 isInitialCall) {
 
     switch (emoterType) {
         case EMOTER_PLAYER:
-            x = gPlayerStatus.position.x;
-            y = gPlayerStatus.position.y + (gPlayerStatus.colliderHeight * 2) / 3;
-            z = gPlayerStatus.position.z;
+            x = gPlayerStatus.pos.x;
+            y = gPlayerStatus.pos.y + (gPlayerStatus.colliderHeight * 2) / 3;
+            z = gPlayerStatus.pos.z;
             r = gPlayerStatus.colliderHeight / 3;
             break;
         case EMOTER_NPC:
@@ -270,9 +270,9 @@ ApiStatus ShowSleepBubble(Evt* script, s32 isInitialCall) {
 
     switch (emoterType) {
         case EMOTER_PLAYER:
-            x = gPlayerStatus.position.x;
-            y = gPlayerStatus.position.y + (gPlayerStatus.colliderHeight * 2) / 3;
-            z = gPlayerStatus.position.z;
+            x = gPlayerStatus.pos.x;
+            y = gPlayerStatus.pos.y + (gPlayerStatus.colliderHeight * 2) / 3;
+            z = gPlayerStatus.pos.z;
             r = gPlayerStatus.colliderHeight / 3;
             break;
         case EMOTER_NPC:
@@ -322,7 +322,10 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
     f32 fVar1, fVar2, fVar3, fVar4, fVar5, fVar6;
     f32 fVar7, fVar8, fVar9, fVar10, fVar11;
 
-    s32 sp30, sp34, sp38, sp3C;
+    EffectInstance* sp30;
+    EffectInstance* sp34;
+    EffectInstance* sp38;
+    EffectInstance* sp3C;
 
     s32 a2, a6, a7, a8, a9;
 
@@ -407,8 +410,8 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_star(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8);
             break;
         case EFFECT_EMOTE:
-            fx_emote(iVar1, (Npc*)a2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp30);
-            evt_set_variable(script, a8, sp30);
+            fx_emote(iVar1, (Npc*) a2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp30);
+            evt_set_variable(script, a8, (s32) sp30);
             break;
         case EFFECT_SPARKLES:
             fx_sparkles(iVar1, fVar2, fVar3, fVar4, fVar5);
@@ -441,8 +444,8 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_lens_flare(iVar1, fVar2, fVar3, fVar4, iVar5);
             break;
         case EFFECT_GOT_ITEM_OUTLINE:
-            fx_got_item_outline(iVar1, fVar2, fVar3, fVar4, fVar5, (EffectInstance**) &sp34);
-            evt_set_variable(script, a6, sp34);
+            fx_got_item_outline(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_SPIKY_WHITE_AURA:
             fx_spiky_white_aura(iVar1, fVar2, fVar3, fVar4, iVar5);
@@ -451,8 +454,8 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_smoke_impact(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, fVar7, iVar8);
             break;
         case EFFECT_DAMAGE_INDICATOR:
-            fx_damage_indicator(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, (EffectInstance**) &sp30);
-            evt_set_variable(script, a8, sp30);
+            fx_damage_indicator(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, &sp30);
+            evt_set_variable(script, a8, (s32) sp30);
             break;
         case EFFECT_PURPLE_RING:
             fx_purple_ring(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8);
@@ -482,15 +485,15 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_sweat(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7);
             break;
         case EFFECT_SLEEP_BUBBLE:
-            fx_sleep_bubble(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, (EffectInstance**)&sp38);
-            evt_set_variable(script, a7, sp38);
+            fx_sleep_bubble(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, &sp38);
+            evt_set_variable(script, a7, (s32) sp38);
             break;
         case EFFECT_WINDY_LEAVES:
             fx_windy_leaves(iVar1, fVar2, fVar3, fVar4);
             break;
         case EFFECT_FLAME:
-            fx_flame(iVar1, fVar2, fVar3, fVar4, fVar5, (EffectInstance**)&sp34);
-            evt_set_variable(script, a6, sp34);
+            fx_flame(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_FALLING_LEAVES:
             fx_falling_leaves(iVar1, fVar2, fVar3, fVar4);
@@ -502,8 +505,8 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_steam_burst(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_STARS_ORBITING:
-            fx_stars_orbiting(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, (EffectInstance**)&sp38);
-            evt_set_variable(script, a7, sp38);
+            fx_stars_orbiting(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6, &sp38);
+            evt_set_variable(script, a7, (s32) sp38);
             break;
         case EFFECT_BIG_SNOWFLAKES:
             fx_big_snowflakes(iVar1, fVar2, fVar3, fVar4);
@@ -518,12 +521,12 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_radial_shimmer(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_ENDING_DECALS:
-            fx_ending_decals(iVar1, fVar2, fVar3, fVar4, fVar5, (EffectInstance**)&sp34);
-            evt_set_variable(script, a6, sp34);
+            fx_ending_decals(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_LIGHT_RAYS:
             fx_light_rays(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
-            evt_set_variable(script, a6, sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_LIGHTNING:
             effectRet = fx_lightning(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6);
@@ -541,16 +544,16 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             fx_shimmer_wave(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, iVar7, iVar8);
             break;
         case EFFECT_AURA:
-            fx_aura(iVar1, fVar2, fVar3, fVar4, fVar5, (EffectInstance**)&sp34);
-            evt_set_variable(script, a6, sp34);
+            fx_aura(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_BULB_GLOW:
-            fx_bulb_glow(iVar1, fVar2, fVar3, fVar4, fVar5, (EffectInstance**)&sp34);
-            evt_set_variable(script, a6, sp34);
+            fx_bulb_glow(iVar1, fVar2, fVar3, fVar4, fVar5, &sp34);
+            evt_set_variable(script, a6, (s32) sp34);
             break;
         case EFFECT_3D:
-            fx_3D(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp3C);
-            evt_set_variable(script, a9, sp3C);
+            fx_effect_3D(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, iVar8, &sp3C);
+            evt_set_variable(script, a9, (s32) sp3C);
             break;
         case EFFECT_BLAST:
             fx_blast(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
@@ -562,7 +565,7 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             effectRet = fx_recover(iVar1, fVar2, fVar3, fVar4, iVar5);
             break;
         case EFFECT_DISABLE_X:
-            effectRet = (EffectInstance*)fx_disable_x(iVar1, fVar2, fVar3, fVar4, iVar5);
+            effectRet = fx_disable_x(iVar1, fVar2, fVar3, fVar4, iVar5);
             break;
         case EFFECT_BOMBETTE_BREAKING:
             effectRet = fx_bombette_breaking(iVar1, iVar2, iVar3, fVar4, iVar5, iVar6);
@@ -577,7 +580,7 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             effectRet = fx_snowfall(iVar1, iVar2);
             break;
         case EFFECT_46:
-            effectRet = fx_46(iVar1, (PlayerStatus*)a2, fVar3, iVar4);
+            effectRet = fx_effect_46(iVar1, (PlayerStatus*) a2, fVar3, iVar4);
             break;
         case EFFECT_GATHER_MAGIC:
             effectRet = fx_gather_magic(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
@@ -655,13 +658,13 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             effectRet = fx_stop_watch(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_63:
-            effectRet = fx_63(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9, iVar10);
+            effectRet = fx_effect_63(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9, iVar10);
             break;
         case EFFECT_THROW_SPINY:
             effectRet = fx_throw_spiny(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
             break;
         case EFFECT_65:
-            effectRet = fx_65(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_65(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_TUBBA_HEART_ATTACK:
             effectRet = fx_tubba_heart_attack(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
@@ -706,7 +709,7 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             effectRet = fx_moving_cloud(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, fVar9);
             break;
         case EFFECT_75:
-            effectRet = fx_75(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_75(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_FIREWORK_ROCKET:
             effectRet = fx_firework_rocket(iVar1, fVar2, fVar3, fVar4, fVar5, fVar6, fVar7, fVar8, iVar9);
@@ -757,14 +760,14 @@ ApiStatus PlayEffect(Evt* script, s32 isInitialCall) {
             effectRet = fx_star_outline(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         case EFFECT_86:
-            effectRet = fx_86(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
+            effectRet = fx_effect_86(iVar1, fVar2, fVar3, fVar4, fVar5, iVar6);
             break;
         default:
             PANIC();
     }
 
     if (effectRet != NULL) {
-        evt_set_variable(script, LVarF, (s32)effectRet);
+        evt_set_variable(script, LVarF, (s32) effectRet);
     }
 
     return ApiStatus_DONE2;

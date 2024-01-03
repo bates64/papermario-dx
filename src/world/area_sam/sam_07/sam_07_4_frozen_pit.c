@@ -21,7 +21,7 @@ typedef struct IceShard {
     /* 0x10 */ Vec3f initialPos;
     /* 0x1C */ Vec3f rot;
     /* 0x28 */ Vec3f rotVel;
-    /* 0x34 */ f32 velocityY;
+    /* 0x34 */ f32 velY;
     /* 0x38 */ f32 moveSpeed;
     /* 0x3C */ f32 moveAngle;
     /* 0x40 */ Matrix4f transformMatrix;
@@ -57,13 +57,13 @@ API_CALLABLE(N(AnimateIceShattering)) {
             it->rotVel.x = rand_int(20) - 10;
             it->rotVel.y = rand_int(20) - 10;
             it->rotVel.z = rand_int(20) - 10;
-            it->velocityY = rand_int(5) + 5.0f;
+            it->velY = rand_int(5) + 5.0f;
             it->moveSpeed = rand_int(3) + 1.0f;
             it->moveAngle = rand_int(360);
 
             for (j = 0; j < 4; j++) {
                 for (k = 0; k < 4; k++) {
-                    it->transformMatrix[j][k] = model->transformMatrix[j][k];
+                    it->transformMatrix[j][k] = model->userTransformMtx[j][k];
                 }
             }
         }
@@ -74,10 +74,10 @@ API_CALLABLE(N(AnimateIceShattering)) {
         model = get_model_from_list_index(get_model_list_index_from_tree_index(N(IceShardModels)[i]));
         if (it->state == 0) {
             add_vec2D_polar(&it->pos.x, &it->pos.z, it->moveSpeed, it->moveAngle);
-            it->velocityY -= 1.0f;
-            it->pos.y += it->velocityY;
-            if (it->velocityY < 0.0f) {
-                if (it->pos.y < playerStatus->position.y - 150.0f) {
+            it->velY -= 1.0f;
+            it->pos.y += it->velY;
+            if (it->velY < 0.0f) {
+                if (it->pos.y < playerStatus->pos.y - 150.0f) {
                     // this shard is done, stop moving and increment the 'done' counter
                     script->functionTemp[1]++;
                     it->state = 101;
@@ -87,11 +87,11 @@ API_CALLABLE(N(AnimateIceShattering)) {
 
         for (j = 0; j < 4; j++) {
             for (k = 0; k < 4; k++) {
-                model->transformMatrix[j][k] = it->transformMatrix[j][k];
+                model->userTransformMtx[j][k] = it->transformMatrix[j][k];
             }
         }
 
-        model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+        model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
         guTranslateF(mtxTransform, it->pos.x - it->initialPos.x, it->pos.y - it->initialPos.y, it->pos.z - it->initialPos.z);
         it->rot.x += it->rotVel.x;
         it->rot.y += it->rotVel.y;
@@ -105,7 +105,7 @@ API_CALLABLE(N(AnimateIceShattering)) {
         guMtxCatF(mtxRotZ, mtxRotX, mtxRotX);
         guMtxCatF(mtxRotX, mtxRotY, mtxRotY);
         guMtxCatF(mtxRotY, mtxTransform, mtxTransform);
-        guMtxCatF(mtxTransform, model->transformMatrix, model->transformMatrix);
+        guMtxCatF(mtxTransform, model->userTransformMtx, model->userTransformMtx);
     }
 
     if ((u32) script->functionTemp[1] >= ARRAY_COUNT(N(IceShardModels))) {
@@ -125,7 +125,7 @@ API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     s32 floor1 = evt_get_variable(script, *args++);
     s32 floor2 = evt_get_variable(script, *args++);
 
-    if (gCollisionStatus.currentFloor == floor1 || gCollisionStatus.currentFloor == floor2) {
+    if (gCollisionStatus.curFloor == floor1 || gCollisionStatus.curFloor == floor2) {
         if (playerStatus->actionState == ACTION_STATE_SPIN_POUND ||
             playerStatus->actionState == ACTION_STATE_TORNADO_POUND)
         {
@@ -135,10 +135,10 @@ API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnsetCamera0MoveFlag1.inc.c"
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
 
 EvtScript N(EVS_BreakIce) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o116, SOUND_396, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o116, SOUND_ICE_SHATTER, 0)
     EVT_CALL(N(AnimateIceShattering))
     EVT_LOOP(10)
         EVT_CALL(SetGroupVisibility, MODEL_move1, MODEL_GROUP_VISIBLE)
@@ -188,7 +188,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(N(GetEntityPosition), MV_SwitchEntityID, LVar7, LVar8, LVar9)
     EVT_IF_EQ(GF_SAM07_FloorRaised, FALSE)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_m1_yuka, SOUND_399, 0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_m1_yuka, SOUND_SAM07_RAISE_FLOOR, 0)
         EVT_SUB(LVar8, -180)
         EVT_CALL(MakeLerp, -180, 0, 120, EASING_COS_IN_OUT)
         EVT_LABEL(0)
@@ -198,7 +198,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             EVT_CALL(UpdateColliderTransform, COLLIDER_m1_yuka)
             EVT_ADD(LVar0, LVar8)
             EVT_CALL(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
-            EVT_CALL(N(UnsetCamera0MoveFlag1))
+            EVT_CALL(N(EnableCameraFollowPlayerY))
             EVT_WAIT(1)
             EVT_CALL(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             EVT_IF_EQ(LVar1, 1)
@@ -210,7 +210,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
     EVT_ELSE
         EVT_CALL(EnableModel, MODEL_o137, TRUE)
         EVT_CALL(EnableModel, MODEL_o135, FALSE)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_m1_yuka, SOUND_39A, 0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_m1_yuka, SOUND_SAM07_LOWER_FLOOR, 0)
         EVT_CALL(MakeLerp, 0, -180, 120, EASING_COS_IN_OUT)
         EVT_LABEL(1)
             EVT_CALL(UpdateLerp)
@@ -219,7 +219,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             EVT_CALL(UpdateColliderTransform, COLLIDER_m1_yuka)
             EVT_ADD(LVar0, LVar8)
             EVT_CALL(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
-            EVT_CALL(N(UnsetCamera0MoveFlag1))
+            EVT_CALL(N(EnableCameraFollowPlayerY))
             EVT_WAIT(1)
             EVT_CALL(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             EVT_IF_EQ(LVar1, 1)

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 enum {
     SUBSTATE_HAMMER_0   = 0,
@@ -55,17 +56,17 @@ void action_hammer_play_hit_fx(s32 hitID) {
         shakeAmt = 1.2f;
         time = 1;
         radius = 28;
-        soundID = SOUND_211A;
+        soundID = SOUND_HAMMER_STRIKE_3;
     } else if (gPlayerData.hammerLevel == 1) {
         shakeAmt = 0.8f;
         time = 1;
         radius = 16;
-        soundID = SOUND_2119;
+        soundID = SOUND_HAMMER_STRIKE_2;
     } else {
         shakeAmt = 0.4f;
         time = 1;
         radius = 4;
-        soundID = SOUND_2118;
+        soundID = SOUND_HAMMER_STRIKE_1;
     }
 
     theta = DEG_TO_RAD(func_800E5348());
@@ -74,9 +75,9 @@ void action_hammer_play_hit_fx(s32 hitID) {
 
     if (hitID < 0) {
         numParticles = 6;
-        x = playerStatus->position.x + sinTheta;
-        y = playerStatus->position.y;
-        z = playerStatus->position.z + cosTheta;
+        x = playerStatus->pos.x + sinTheta;
+        y = playerStatus->pos.y;
+        z = playerStatus->pos.z + cosTheta;
     } else {
         numParticles = 3;
         x = HammerHit->hitPos.x + sinTheta;
@@ -90,26 +91,26 @@ void action_hammer_play_hit_fx(s32 hitID) {
 
     switch (is_ability_active(ABILITY_ATTACK_FX)) {
         case 1:
-            soundID = SOUND_372;
+            soundID = SOUND_LIFE_SHROOM_CHIME;
             break;
         case 2:
-            soundID = SOUND_F1;
+            soundID = SOUND_PLANTS_BELL;
             break;
         case 3:
-            soundID = SOUND_DC;
+            soundID = SOUND_SLIDE_WHISTLE_OUT;
             break;
         case 4:
-            soundID = SOUND_2072;
+            soundID = SOUND_YOSHI;
             break;
         case 5:
-            soundID = SOUND_2073;
+            soundID = SOUND_HIT_WHACKA;
             break;
         case 6:
-            soundID = SOUND_205B;
+            soundID = SOUND_FLOWERS_LAUGH;
             break;
     }
 
-    sfx_play_sound_at_player(soundID, SOUND_SPACE_MODE_0);
+    sfx_play_sound_at_player(soundID, SOUND_SPACE_DEFAULT);
     start_rumble(256, 50);
 }
 
@@ -127,7 +128,7 @@ s32 func_802B62A4_E25174(void) {
     // first attempt
     yaw = func_800E5348();
     if (action_hammer_is_swinging_away(playerStatus->trueAnimation)) {
-        angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].currentYaw);
+        angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].curYaw);
         if (angle >= 90.0f && angle < 270.0f) {
             yaw += -30.0f;
         } else {
@@ -136,15 +137,15 @@ s32 func_802B62A4_E25174(void) {
     }
 
     sin_cos_rad(DEG_TO_RAD(yaw), &outSinTheta, &outCosTheta);
-    playerX = playerStatus->position.x;
-    playerY = playerStatus->position.y;
-    playerZ = playerStatus->position.z;
+    playerX = playerStatus->pos.x;
+    playerY = playerStatus->pos.y;
+    playerZ = playerStatus->pos.z;
 
     for (i = 1; i < 16; i++) {
         x = playerX + (outSinTheta * i);
         y = playerY;
         z = playerZ - (outCosTheta * i);
-        ret = player_test_lateral_overlap(3, playerStatus, &x, &y, &z, 4.0f, yaw);
+        ret = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
         if (ret >= 0) {
             HammerHit->hitPos.x = x;
             HammerHit->hitPos.y = y;
@@ -157,7 +158,7 @@ s32 func_802B62A4_E25174(void) {
     if (i >= 16) {
         yaw = func_800E5348();
         if (!action_hammer_is_swinging_away(playerStatus->trueAnimation)) {
-            angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].currentYaw);
+            angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].curYaw);
             if (angle >= 90.0f && angle < 270.0f) {
                 yaw += 15.0f;
             } else {
@@ -171,7 +172,7 @@ s32 func_802B62A4_E25174(void) {
             y = playerY;
             z = playerZ - (outCosTheta * i);
 
-            ret = player_test_lateral_overlap(3, playerStatus, &x, &y, &z, 4.0f, yaw);
+            ret = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
             if (ret >= 0) {
                 HammerHit->hitPos.x = x;
                 HammerHit->hitPos.y = y;
@@ -237,35 +238,35 @@ void action_update_hammer(void) {
         playerStatus->flags |= PS_FLAG_NO_FLIPPING;
         HammerHit->timer = 0;
         playerStatus->actionSubstate = SUBSTATE_HAMMER_0;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->animNotifyValue = 0;
         HammerHit->hitID = func_802B62A4_E25174();
 
         if (gPlayerData.hammerLevel == 2) {
-            soundID = SOUND_2117;
+            soundID = SOUND_HAMMER_SWING_3;
             anim = ANIM_MarioW1_Smash3_Hit;
             if (HammerHit->hitID < 0) {
-                soundID = SOUND_2117;
+                soundID = SOUND_HAMMER_SWING_3;
                 anim = ANIM_MarioW1_Smash3_Miss;
             }
         } else if (gPlayerData.hammerLevel == 1) {
-            soundID = SOUND_2116;
+            soundID = SOUND_HAMMER_SWING_2;
             anim = ANIM_MarioW1_Smash2_Hit;
             if (HammerHit->hitID < 0) {
-                soundID = SOUND_2116;
+                soundID = SOUND_HAMMER_SWING_2;
                 anim = ANIM_MarioW1_Smash2_Miss;
             }
         } else {
-            soundID = SOUND_2115;
+            soundID = SOUND_HAMMER_SWING_1;
             anim = ANIM_MarioW1_Smash1_Hit;
             if (HammerHit->hitID < 0) {
-                soundID = SOUND_2115;
+                soundID = SOUND_HAMMER_SWING_1;
                 anim = ANIM_MarioW1_Smash1_Miss;
             }
         }
 
         suggest_player_anim_allow_backward(anim);
-        sfx_play_sound_at_player(soundID, SOUND_SPACE_MODE_0);
+        sfx_play_sound_at_player(soundID, SOUND_SPACE_DEFAULT);
         HammerHit->unk_0C = 0;
         HammerHit->unk_14 = 0;
     }
@@ -304,7 +305,7 @@ void func_802B6820_E256F0(void) {
 
     yaw = func_800E5348();
     if (action_hammer_is_swinging_away(playerStatus->trueAnimation)) {
-        angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].currentYaw);
+        angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].curYaw);
         if (angle >= 90.0f && angle < 270.0f) {
             yaw += -30.0f;
         } else {
@@ -313,16 +314,16 @@ void func_802B6820_E256F0(void) {
     }
 
     sin_cos_rad(DEG_TO_RAD(yaw), &outSinTheta, &outCosTheta);
-    playerX = playerStatus->position.x;
-    playerY = playerStatus->position.y;
-    playerZ = playerStatus->position.z;
+    playerX = playerStatus->pos.x;
+    playerY = playerStatus->pos.y;
+    playerZ = playerStatus->pos.z;
 
     // check collision allong 16 points in a line away from the player
     for (i = 1; i < 16; i++) {
         x = playerX + (outSinTheta * i);
         y = playerY;
         z = playerZ - (outCosTheta * i);
-        result = player_test_lateral_overlap(3, playerStatus, &x, &y, &z, 4.0f, yaw);
+        result = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
         if (HammerHit->unk_14 == 0) {
             collisionStatus->lastWallHammered = result;
             if (result >= 0) {
@@ -340,7 +341,7 @@ void func_802B6820_E256F0(void) {
     if (i >= 16) {
         yaw = func_800E5348();
         if (action_hammer_is_swinging_away(playerStatus->trueAnimation) == 0) {
-            angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].currentYaw);
+            angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].curYaw);
             if (angle >= 90.0f && angle < 270.0f) {
                 yaw += 15.0f;
             } else {
@@ -353,7 +354,7 @@ void func_802B6820_E256F0(void) {
             x = playerX + (outSinTheta * i);
             y = playerY;
             z = playerZ - (outCosTheta * i);
-            result = player_test_lateral_overlap(3, playerStatus, &x, &y, &z, 4.0f, yaw);
+            result = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
             if (HammerHit->unk_14 == 0) {
                 collisionStatus->lastWallHammered = result;
                 if (result >= 0) {
@@ -372,13 +373,13 @@ void func_802B6820_E256F0(void) {
     if (HammerHit->timer == 2) {
         hammerLevel = gPlayerData.hammerLevel;
         if (hammerLevel == 2) {
-            soundID = SOUND_2117;
+            soundID = SOUND_HAMMER_SWING_3;
         } else if (hammerLevel == 1) {
-            soundID = SOUND_2116;
+            soundID = SOUND_HAMMER_SWING_2;
         } else {
-            soundID = SOUND_2115;
+            soundID = SOUND_HAMMER_SWING_1;
         }
-        sfx_play_sound_at_player(soundID, SOUND_SPACE_MODE_0);
+        sfx_play_sound_at_player(soundID, SOUND_SPACE_DEFAULT);
 
         action_hammer_play_hit_fx(HammerHit->hitID);
 
@@ -391,7 +392,7 @@ void func_802B6820_E256F0(void) {
 
         if (HammerHit->hitID < 0 && gPlayerData.hammerLevel >= 2) {
             gCurrentHiddenPanels.tryFlipTrigger = TRUE;
-            gCurrentHiddenPanels.flipTriggerPosY = playerStatus->position.y;
+            gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
         }
     }
 

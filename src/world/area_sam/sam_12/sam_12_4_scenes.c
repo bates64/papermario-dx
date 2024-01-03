@@ -1,10 +1,11 @@
 #include "sam_12.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(SetScreenFadeAmount)) {
     Bytecode* args = script->ptrReadPos;
 
-    set_screen_overlay_params_front(0, evt_get_float_variable(script, *args++));
+    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, evt_get_float_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
@@ -16,9 +17,9 @@ API_CALLABLE(N(SetItemPositionF)) {
     s32 z = evt_get_float_variable(script, *args++);
     ItemEntity* item = get_item_entity(idx);
 
-    item->position.x = x;
-    item->position.y = y;
-    item->position.z = z;
+    item->pos.x = x;
+    item->pos.y = y;
+    item->pos.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -36,9 +37,9 @@ API_CALLABLE(N(SpawnSleepBubble)) {
 
     fx_sleep_bubble(
         0,
-        gPlayerStatus.position.x + x,
-        gPlayerStatus.position.y + ((gPlayerStatus.colliderHeight * 2) / 3) + y,
-        gPlayerStatus.position.z + z,
+        gPlayerStatus.pos.x + x,
+        gPlayerStatus.pos.y + ((gPlayerStatus.colliderHeight * 2) / 3) + y,
+        gPlayerStatus.pos.z + z,
         (gPlayerStatus.colliderHeight / 3) + t,
         temp_f26,
         &effect
@@ -52,7 +53,7 @@ s32 N(FlickeringStaticAmts)[] = {
     EVT_FLOAT(80.0),
     EVT_FLOAT(70.0),
     EVT_FLOAT(60.0),
-    EVT_FLOAT(50.0), 
+    EVT_FLOAT(50.0),
 };
 
 EvtScript N(EVS_MerlarFlickering) = {
@@ -70,10 +71,10 @@ EvtScript N(EVS_MerlarFlickering) = {
             EVT_USE_BUF(EVT_PTR(N(FlickeringStaticAmts)))
             EVT_LOOP(5)
                 EVT_BUF_READ1(LVar0)
-                EVT_CALL(func_802CFD30, NPC_Merlar, FOLD_TYPE_D, EVT_FLOAT(0.0), LVar0, EVT_FLOAT(200.0), EVT_FLOAT(100.0))
+                EVT_CALL(SetNpcImgFXParams, NPC_Merlar, IMGFX_HOLOGRAM, EVT_FLOAT(0.0), LVar0, EVT_FLOAT(200.0), EVT_FLOAT(100.0))
                 EVT_WAIT(1)
             EVT_END_LOOP
-            EVT_CALL(func_802CFD30, NPC_Merlar, FOLD_TYPE_D, EVT_FLOAT(0.0), EVT_FLOAT(0.0), EVT_FLOAT(0.0), EVT_FLOAT(100.0))
+            EVT_CALL(SetNpcImgFXParams, NPC_Merlar, IMGFX_HOLOGRAM, EVT_FLOAT(0.0), EVT_FLOAT(0.0), EVT_FLOAT(0.0), EVT_FLOAT(100.0))
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_GOTO(0)
@@ -82,7 +83,7 @@ EvtScript N(EVS_MerlarFlickering) = {
 };
 
 EvtScript N(EVS_SpawnStarStoneSparkles) = {
-    EVT_CALL(PlaySoundAt, SOUND_2045, 0, 230, 30, 0)
+    EVT_CALL(PlaySoundAt, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT, 230, 30, 0)
     EVT_LABEL(0)
         EVT_PLAY_EFFECT(EFFECT_SPARKLES, 2, 230, 30, 0, 30)
         EVT_WAIT(20)
@@ -92,7 +93,7 @@ EvtScript N(EVS_SpawnStarStoneSparkles) = {
 };
 
 EvtScript N(EVS_SpawnMerlarSparkles) = {
-    EVT_CALL(PlaySoundAtNpc, NPC_Merlar, SOUND_B1, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Merlar, SOUND_MERLAR_APPEARS, SOUND_SPACE_DEFAULT)
     EVT_CALL(GetNpcPos, NPC_Merlar, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 30)
     EVT_LOOP(8)
@@ -106,7 +107,7 @@ EvtScript N(EVS_SpawnMerlarSparkles) = {
 EvtScript N(EVS_MarioSleeping) = {
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     EVT_LOOP(0)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_32F, 0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SNORE_INHALE_A, SOUND_SPACE_DEFAULT)
         EVT_WAIT(60)
     EVT_END_LOOP
     EVT_RETURN
@@ -140,11 +141,11 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     EVT_WAIT(100 * DT)
     EVT_CALL(SetNpcPos, NPC_Merlar, 200, 50, 0)
     EVT_EXEC(N(EVS_SpawnMerlarSparkles))
-    EVT_CALL(PlaySoundAtNpc, NPC_Merlar, SOUND_139, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Merlar, SOUND_RECEIVE_STAR_POWER, SOUND_SPACE_DEFAULT)
     EVT_SETF(LVar0, EVT_FLOAT(0.0))
     EVT_LOOP(LOOPCOUNT_2)
         EVT_ADDF(LVar0, EVT_FLOAT(1.0))
-        EVT_CALL(func_802CFD30, NPC_Merlar, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Merlar, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_EXEC_GET_TID(N(EVS_MerlarFlickering), LVar8)
@@ -193,7 +194,7 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     EVT_WAIT(30 * DT)
     EVT_CALL(RemoveEffect, LVar7)
     EVT_KILL_THREAD(LVarA)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_2F1, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_SNAP_AWAKE_A, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_JoltAwake)
     EVT_WAIT(30 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_NodYes)
@@ -248,7 +249,7 @@ EvtScript N(EVS_Scene_MeetMerlar) = {
     EVT_SETF(LVar0, EVT_FLOAT(100.0))
     EVT_LOOP(LOOPCOUNT_2)
         EVT_ADDF(LVar0, EVT_FLOAT(-100.0 / LOOPCOUNT_2))
-        EVT_CALL(func_802CFD30, NPC_Merlar, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Merlar, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_CALL(SetNpcPos, NPC_Merlar, NPC_DISPOSE_LOCATION)

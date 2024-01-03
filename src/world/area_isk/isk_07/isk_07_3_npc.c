@@ -23,7 +23,7 @@ API_CALLABLE(N(IsLastEnemy)) {
             }
         }
     }
-    
+
     if (livingEncounters != 1) {
         return ApiStatus_DONE2;
     } else {
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcDefeat_Pokey_01) = {
                     EVT_CALL(N(IsLastEnemy))
                     EVT_IF_EQ(LVar1, TRUE)
                         EVT_CALL(DisablePlayerInput, TRUE)
-                        EVT_CALL(PlaySound, SOUND_B)
+                        EVT_CALL(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
                         EVT_WAIT(30)
                         EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
                         EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(2.0))
@@ -190,7 +190,7 @@ NpcData N(NpcData_Pokey_01) = {
     },
     .init = &N(EVS_NpcInit_Pokey_01),
     .settings = &N(NpcSettings_PokeyMummy),
-    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };
@@ -213,7 +213,7 @@ NpcData N(NpcData_Pokey_02) = {
     },
     .init = &N(EVS_NpcInit_Pokey_02),
     .settings = &N(NpcSettings_PokeyMummy),
-    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };
@@ -236,7 +236,7 @@ NpcData N(NpcData_Pokey_03) = {
     },
     .init = &N(EVS_NpcInit_Pokey_03),
     .settings = &N(NpcSettings_PokeyMummy),
-    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = POKEY_MUMMY_DROPS,
     .animations = POKEY_MUMMY_ANIMS,
 };

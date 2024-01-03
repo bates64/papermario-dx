@@ -19,9 +19,9 @@ typedef struct BarricadePart {
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ Vec3f origin;
     /* 0x1C */ Vec3f rot;
-    /* 0x28 */ Vec3f angularVelocity;
-    /* 0x34 */ f32 verticalVelocity;
-    /* 0x38 */ f32 planarVelocity;
+    /* 0x28 */ Vec3f angularVel;
+    /* 0x34 */ f32 verticalVel;
+    /* 0x38 */ f32 planarVel;
     /* 0x3C */ f32 velocityAngle;
     /* 0x40 */ s32 modelID;
     /* 0x44 */ s32 colliderID;
@@ -101,17 +101,17 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
             part->origin.x = part->pos.x;
             part->origin.y = part->pos.y;
             part->origin.z = part->pos.z;
-            part->angularVelocity.x = rand_int(20) - 10;
-            part->angularVelocity.y = rand_int(20) - 10;
-            part->angularVelocity.z = rand_int(20) - 10;
-            part->verticalVelocity = (rand_int(40) + 100.0f) / 10.0f;
-            part->planarVelocity = (rand_int(30) + 60.0f) / 10.0f;
+            part->angularVel.x = rand_int(20) - 10;
+            part->angularVel.y = rand_int(20) - 10;
+            part->angularVel.z = rand_int(20) - 10;
+            part->verticalVel = (rand_int(40) + 100.0f) / 10.0f;
+            part->planarVel = (rand_int(30) + 60.0f) / 10.0f;
             part->velocityAngle = ((rand_int(100) % 2) * 180.0f) + 90.0f;
             N(DetermineSphericalSize)(model->modelNode->displayData->displayList, &part->radius);
 
             for (j = 0; j < 4; j++) {
                 for (k = 0; k < 4; k++) {
-                    part->transformMatrix[j][k] = model->transformMatrix[j][k];
+                    part->transformMatrix[j][k] = model->userTransformMtx[j][k];
                 }
             }
         }
@@ -122,17 +122,17 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
         model = get_model_from_list_index(get_model_list_index_from_tree_index(part->modelID));
         switch (part->state) {
             case BARRICADE_STATE_FLYING:
-                    add_vec2D_polar(&part->pos.x, &part->pos.z, part->planarVelocity, part->velocityAngle);
-                    part->verticalVelocity -= 0.8f;
-                    part->pos.y += part->verticalVelocity;
-                    if (part->verticalVelocity <= 0.0f && part->pos.y < part->radius) {
+                    add_vec2D_polar(&part->pos.x, &part->pos.z, part->planarVel, part->velocityAngle);
+                    part->verticalVel -= 0.8f;
+                    part->pos.y += part->verticalVel;
+                    if (part->verticalVel <= 0.0f && part->pos.y < part->radius) {
                         part->pos.y = part->radius;
-                        part->verticalVelocity *= -0.7f;
-                        if (part->verticalVelocity < 1.0f) {
+                        part->verticalVel *= -0.7f;
+                        if (part->verticalVel < 1.0f) {
                             part->state = BARRICADE_STATE_CLEANUP;
-                            part->angularVelocity.x = 0.0f;
-                            part->angularVelocity.y = 0.0f;
-                            part->angularVelocity.z = 0.0f;
+                            part->angularVel.x = 0.0f;
+                            part->angularVel.y = 0.0f;
+                            part->angularVel.z = 0.0f;
                         }
                         if (i & 1) {
                             exec_ShakeCam1(0, 0, 1);
@@ -150,15 +150,15 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
 
         for (j = 0; j < 4; j++) {
             for (k = 0; k < 4; k++) {
-                model->transformMatrix[j][k] = part->transformMatrix[j][k];
+                model->userTransformMtx[j][k] = part->transformMatrix[j][k];
             }
         }
 
-        model->flags |= MODEL_FLAG_USES_TRANSFORM_MATRIX | MODEL_FLAG_HAS_TRANSFORM_APPLIED;
+        model->flags |= MODEL_FLAG_MATRIX_DIRTY | MODEL_FLAG_HAS_TRANSFORM;
         guTranslateF(mtxTransform, part->pos.x - part->origin.x, part->pos.y - part->origin.y, part->pos.z - part->origin.z);
-        part->rot.x += part->angularVelocity.x;
-        part->rot.y += part->angularVelocity.y;
-        part->rot.z += part->angularVelocity.z;
+        part->rot.x += part->angularVel.x;
+        part->rot.y += part->angularVel.y;
+        part->rot.z += part->angularVel.z;
         part->rot.x = clamp_angle(part->rot.x);
         part->rot.y = clamp_angle(part->rot.y);
         part->rot.z = clamp_angle(part->rot.z);
@@ -168,7 +168,7 @@ API_CALLABLE(N(AnimateBarricadeParts)) {
         guMtxCatF(mtxRotZ, mtxRotX, mtxRotX);
         guMtxCatF(mtxRotX, mtxRotY, mtxRotY);
         guMtxCatF(mtxRotY, mtxTransform, mtxTransform);
-        guMtxCatF(model->transformMatrix, mtxTransform, model->transformMatrix);
+        guMtxCatF(model->userTransformMtx, mtxTransform, model->userTransformMtx);
     }
 
     if ((u32) script->functionTemp[1] >= ARRAY_COUNT(N(BarricadeModels))) {
@@ -250,7 +250,7 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAtModel, MODEL_t1, SOUND_1F4, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtModel, MODEL_t1, SOUND_OMO_BARRICADE_DROP, SOUND_SPACE_DEFAULT)
         EVT_CALL(GetModelCenter, MODEL_t1)
         EVT_PLAY_EFFECT(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
@@ -287,7 +287,7 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAtModel, MODEL_t2_1, SOUND_1F4, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtModel, MODEL_t2_1, SOUND_OMO_BARRICADE_DROP, SOUND_SPACE_DEFAULT)
         EVT_CALL(GetModelCenter, MODEL_t2_1)
         EVT_PLAY_EFFECT(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
@@ -334,13 +334,13 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtModel, MODEL_t3_2, SOUND_1F4, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtModel, MODEL_t3_2, SOUND_OMO_BARRICADE_DROP, SOUND_SPACE_DEFAULT)
     EVT_CALL(GetModelCenter, MODEL_t3_2)
     EVT_PLAY_EFFECT(EFFECT_LANDING_DUST, 4, LVar0, LVar1, LVar2, 0)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
     EVT_THREAD
         EVT_WAIT(35)
-        EVT_CALL(PlaySound, SOUND_8000004D)
+        EVT_CALL(PlaySound, SOUND_LOOP_SHY_GUY_CROWD_2)
     EVT_END_THREAD
     EVT_SET(LVar0, 1)
     EVT_SET(LVar5, 1)
@@ -366,8 +366,8 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_WAIT(165)
-    EVT_CALL(PlaySound, SOUND_36D | SOUND_ID_TRIGGER_CHANGE_SOUND)
-    EVT_CALL(func_802D62E4, SOUND_36D)
+    EVT_CALL(PlaySound, SOUND_LRAW_SHY_GUY_CROWD_2 | SOUND_ID_TRIGGER_CHANGE_SOUND)
+    EVT_CALL(StopTrackingSoundPos, SOUND_LRAW_SHY_GUY_CROWD_2)
     EVT_CALL(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Red_Anim04)
     EVT_CALL(SetNpcPos, NPC_ShyGuy_01, -285, 0, 35)
     EVT_CALL(SetNpcSpeed, NPC_ShyGuy_01, EVT_FLOAT(8.0))
@@ -389,11 +389,11 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
         EVT_CALL(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Red_Anim10)
     EVT_END_THREAD
     EVT_CALL(NpcJump0, NPC_ShyGuy_01, -45, 0, -8, 10)
-    EVT_CALL(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_MISS_JUMP, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_ACTOR_TRIP, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
     EVT_WAIT(50)
     EVT_LOOP(2)
-        EVT_CALL(PlaySoundAtNpc, LVar9, SOUND_3E4, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, LVar9, SOUND_ACTOR_TWITCH, SOUND_SPACE_DEFAULT)
         EVT_WAIT(7)
     EVT_END_LOOP
     EVT_CALL(SetNpcRotationPivot, NPC_ShyGuy_01, 0)
@@ -401,13 +401,13 @@ EvtScript N(EVS_Scene_BreakBarricade) = {
     EVT_CALL(NpcJump0, NPC_ShyGuy_01, -50, 0, -8, 10)
     EVT_CALL(InterpNpcYaw, NPC_ShyGuy_01, 270, 0)
     EVT_WAIT(20)
-    EVT_CALL(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_3A2, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_SHY_GUY_FLEE_LOOP, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Red_Anim04)
     EVT_CALL(SetNpcSpeed, NPC_ShyGuy_01, EVT_FLOAT(6.0))
     EVT_CALL(NpcMoveTo, NPC_ShyGuy_01, 100, 50, 0)
     EVT_CALL(RemoveNpc, NPC_ShyGuy_01)
     EVT_WAIT(30)
-    EVT_CALL(StopSound, SOUND_3A2)
+    EVT_CALL(StopSound, SOUND_SHY_GUY_FLEE_LOOP)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)

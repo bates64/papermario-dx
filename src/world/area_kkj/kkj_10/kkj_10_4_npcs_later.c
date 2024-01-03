@@ -1,4 +1,5 @@
 #include "kkj_10.h"
+#include "sprite/player.h"
 
 #define NAME_SUFFIX _Later
 #include "world/common/enemy/Koopatrol_Stationary.inc.c"
@@ -21,15 +22,15 @@ AnimID N(ExtraAnims_Koopatrol)[] = {
 
 #include "../common/Searchlights.inc.c"
 #include "world/common/todo/GetPeachDisguise.inc.c"
-#include "../common/SetPeachFlag8.inc.c"
+#include "../common/PreventNextPeachDisguise.inc.c"
 #include "../common/ApproachPlayer100Units.inc.c"
 
 EvtScript N(EVS_CapturePeach) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_SET_GROUP(EVT_GROUP_00)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    EVT_CALL(N(SetPeachFlag8))
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, 0)
+    EVT_CALL(N(PreventNextPeachDisguise))
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_CALL(NpcFacePlayer, NPC_SELF, 5)
     EVT_WAIT(20)
@@ -47,7 +48,7 @@ EvtScript N(EVS_CapturePeach) = {
     EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim09, ANIM_WorldKoopatrol_Anim02, 0, MSG_Peach_0175)
     EVT_CALL(SetPlayerAnimation, ANIM_Peach2_ForwardSad)
     EVT_WAIT(20)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kkj_14"), kkj_14_ENTRY_B, TRANSITION_13)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     EVT_WAIT(100)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
@@ -194,7 +195,7 @@ NpcData N(NpcData_Koopatrol)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_01),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),
@@ -205,7 +206,7 @@ NpcData N(NpcData_Koopatrol)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Koopatrol_02),
         .settings = &N(NpcSettings_Koopatrol_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
         .extraAnimations = N(ExtraAnims_Koopatrol),

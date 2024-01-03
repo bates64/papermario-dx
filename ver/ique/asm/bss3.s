@@ -38,10 +38,7 @@ dlabel gAnimCount
 .space 4
 
 dlabel gMsgBGScrollAmtX
-.space 2
-
-dlabel D_801512DA
-.space 2
+.space 4
 
 dlabel D_801512DC
 .space 4
@@ -58,7 +55,7 @@ dlabel gCurrentCustomModelGfxPtr
 dlabel gLastCreatedEntityIndex
 .space 4
 
-dlabel gBackgroundFogModePtr
+dlabel gBackgroundTintModePtr
 .space 4
 
 dlabel gMsgVarImages
@@ -106,7 +103,7 @@ dlabel entity_numShadows
 dlabel gSpriteShadingProfile
 .space 4
 
-dlabel entity_area_specific_data_is_loaded
+dlabel isAreaSpecificEntityDataLoaded
 .space 4
 
 dlabel entity_updateCounter
@@ -161,12 +158,8 @@ dlabel D_80151664
 .space 4
 
 dlabel wEntityBlueprint
-.space 0x00000074
+.space 0x00000078
 
-dlabel D_801516DC
-.space 4
-
-dlabel D_8015DCE0
 .space 8
 
 dlabel bEntityBlueprint
@@ -175,10 +168,10 @@ dlabel bEntityBlueprint
 dlabel D_801516FC
 .space 4
 
-dlabel gMainGameState
+dlabel gMainGameMode
 .space 0x00000040
 
-dlabel gCurrentTileDescriptor
+dlabel gCurrentTextureHeader
 .space 0x00000030
 
 dlabel wModelList
@@ -193,10 +186,10 @@ dlabel wTransformGroups
 dlabel bTransformGroups
 .space 0x00000010
 
-dlabel wModelSpecialDls
+dlabel wCustomModelGfx
 .space 0x00000080
 
-dlabel bModelSpecialDls
+dlabel bCustomModelGfx
 .space 0x00000080
 
 dlabel wCustomModelGfxBuilders
@@ -214,25 +207,25 @@ dlabel bModelLocalVtxBuffers
 dlabel gCurrentModelLocalVtxBuffers
 .space 4
 
-dlabel D_80152214
+dlabel wModelTreeRoot
 .space 4
 
-dlabel D_80152218
+dlabel bModelTreeRoot
 .space 4
 
 dlabel D_8015221C
 .space 4
 
-dlabel D_80152220
+dlabel wModelTreeNodeInfo
 .space 0x00000800
 
-dlabel D_80152A20
+dlabel bModelTreeNodeInfo
 .space 0x00000800
 
-dlabel wBackgroundFogMode
+dlabel wBackgroundTintMode
 .space 1
 
-dlabel bBackgroundFogMode
+dlabel bBackgroundTintMode
 .space 1
 
 dlabel D_80153222
@@ -241,11 +234,8 @@ dlabel D_80153222
 dlabel D_80153223
 .space 1
 
-dlabel mdl_treeIterPos
-.space 2
-
-dlabel D_80153226
-.space 2
+dlabel TreeIterPos
+.space 4
 
 dlabel wFogSettings
 .space 0x00000020
@@ -253,7 +243,7 @@ dlabel wFogSettings
 dlabel bFogSettings
 .space 0x0000001c
 
-dlabel gCurrentFogSettings
+dlabel gFogSettings
 .space 4
 
 dlabel texPannerMainU
@@ -268,37 +258,37 @@ dlabel texPannerAuxU
 dlabel texPannerAuxV
 .space 0x00000040
 
-dlabel mdl_nextTextureAddress
+dlabel TextureHeapPos
 .space 4
 
-dlabel mdl_currentTransformGroupChildIndex
+dlabel mtg_IterIdx
 .space 2
 
-dlabel D_8015336E
+dlabel mtg_SearchModelID
 .space 2
 
-dlabel D_80153370
+dlabel mtg_FoundModelNode
 .space 4
 
-dlabel D_80153374
+dlabel mtg_MinChild
 .space 2
 
-dlabel D_80153376
+dlabel mtg_MaxChild
 .space 2
 
 dlabel D_80153378
 .space 8
 
-dlabel depthCopyBuffer
+dlabel DepthCopyBuffer
 .space 0x00000020
 
-dlabel mdl_renderTaskLists
+dlabel RenderTaskLists
 .space 0x0000000c
 
-dlabel mdl_renderTaskQueueIdx
+dlabel RenderTaskListIdx
 .space 4
 
-dlabel mdl_renderTaskCount
+dlabel RenderTaskCount
 .space 0x00000010
 
 dlabel D_801533C0
@@ -374,52 +364,16 @@ dlabel entity_fog_enabled
 .space 4
 
 dlabel entity_fog_red
-.space 1
-
-dlabel D_8015437D
-.space 1
-
-dlabel D_8015437E
-.space 1
-
-dlabel D_8015437F
-.space 1
+.space 4
 
 dlabel entity_fog_green
-.space 1
-
-dlabel D_80154381
-.space 1
-
-dlabel D_80154382
-.space 1
-
-dlabel D_80154383
-.space 1
+.space 4
 
 dlabel entity_fog_blue
-.space 1
-
-dlabel D_80154385
-.space 1
-
-dlabel D_80154386
-.space 1
-
-dlabel D_80154387
-.space 1
+.space 4
 
 dlabel entity_fog_alpha
-.space 1
-
-dlabel D_80154389
-.space 1
-
-dlabel D_8015438A
-.space 1
-
-dlabel D_8015438B
-.space 1
+.space 4
 
 dlabel entity_fog_dist_min
 .space 4
@@ -474,7 +428,7 @@ dlabel msg_drawState
 dlabel D_8015DD78
 .space 8
 
-dlabel D_80155D80
+dlabel UnusedItemPhysicsScriptID
 .space 4
 
 dlabel ItemEntityAlternatingSpawn
@@ -483,14 +437,17 @@ dlabel ItemEntityAlternatingSpawn
 dlabel ItemEntityRenderGroup
 .space 4
 
-dlabel D_80155D8C
+dlabel CoinSparkleCenterX
 .space 2
 
-dlabel D_80155D8E
+dlabel CoinSparkleCenterY
 .space 2
 
-dlabel D_80155D90
-.space 0x00000010
+dlabel CoinSparkleCenterZ
+.space 2
+
+dlabel pad_ItemEntity
+.space 0x000000E
 
 dlabel WorldItemEntities
 .space 0x00000400
@@ -504,7 +461,7 @@ dlabel gCurrentItemEntities
 dlabel isPickingUpItem
 .space 2
 
-dlabel D_801565A6
+dlabel ItemSpawnWithinPlayerPickupDelay
 .space 2
 
 dlabel D_801565A8
@@ -513,28 +470,28 @@ dlabel D_801565A8
 dlabel D_801565AC
 .space 4
 
-dlabel D_801565B0
+dlabel ItemPickupMenu
 .space 0x00000330
 
-dlabel D_801568E0
+dlabel ItemPickupIconID
 .space 4
 
-dlabel D_801568E4
+dlabel ItemPickupStateDelay
 .space 4
 
-dlabel D_801568E8
+dlabel ThrowAwayMenuIdx
 .space 4
 
-dlabel D_801568EC
+dlabel ThrowAwayItemID
 .space 4
 
-dlabel D_801568F0
+dlabel ItemPickupGotOutline
 .space 4
 
-dlabel D_801568F4
+dlabel GotItemTutorialPrinter
 .space 4
 
-dlabel D_801568F8
+dlabel GotItemTutorialClosed
 .space 4
 
 dlabel D_801568FC
@@ -555,16 +512,16 @@ dlabel screen_overlay_backZoom
 dlabel D_80156910
 .space 0x00000010
 
-dlabel D_80156920
+dlabel ImgFXCurrentTexture
 .space 0x00000028
 
-dlabel D_80156948
+dlabel ImgFXVtxBuffers
 .space 8
 
-dlabel fold_vtxBuf
+dlabel imgfx_vtxBuf
 .space 4
 
-dlabel D_80156954
+dlabel ImgFXInstances
 .space 4
 
 dlabel D_80156958
@@ -579,10 +536,10 @@ dlabel D_80156968
 dlabel D_80156970
 .space 0x00000010
 
-dlabel fold_groupDescriptors
+dlabel ImgFXAnimHeaders
 .space 0x000005a0
 
-dlabel fold_gfxDataCache
+dlabel ImgFXDataCache
 .space 0x00000040
 
 dlabel gHudElementsWorld
@@ -640,10 +597,7 @@ dlabel D_80159394
 .space 0x0000000c
 
 dlabel gBackgroundPalette
-.space 0x000001fe
-
-dlabel D_8015959E
-.space 2
+.space 0x00000200
 
 dlabel gBackroundLastScrollValue
 .space 0x00000020
@@ -660,7 +614,7 @@ dlabel wSpriteShadingProfileAux
 dlabel bSpriteShadingProfileAux
 .space 0x000000b0
 
-dlabel D_80159880
+dlabel SpriteShadingPalette
 .space 0x00000020
 
 dlabel wEnvSounds
@@ -706,18 +660,14 @@ dlabel gCollisionStatus
 .space 0x00000028
 
 dlabel gCurrentHiddenPanels
-.space 2
+.space 0x10
 
-dlabel D_8015A57A
-.space 2
+.space 8
 
-dlabel D_8015A57C
-.space 0x00000014
-
-dlabel mdl_textureHandles
+dlabel TextureHandles
 .space 0x00002200
 
-dlabel D_8015C790
+dlabel ScreenOverlays
 .space 0x00000030
 
 dlabel AmbientSoundData

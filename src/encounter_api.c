@@ -182,8 +182,8 @@ ApiStatus DoNpcDefeat(Evt* script, s32 isInitialCall) {
     Evt* newScript;
 
     kill_script(script);
-    npc->currentAnim = owner->animList[6];
-    newScript = start_script(&SCRIPT_NpcDefeat, EVT_PRIORITY_A, 0);
+    npc->curAnim = owner->animList[6];
+    newScript = start_script(&EVS_NpcDefeat, EVT_PRIORITY_A, 0);
     owner->defeatScript = newScript;
     owner->defeatScriptID = newScript->id;
     newScript->owner1.enemy = owner;
@@ -203,8 +203,8 @@ void start_battle(Evt* script, s32 songID) {
 
     currentEncounter->hitType = ENCOUNTER_TRIGGER_NONE;
     enemy->encountered = TRUE;
-    currentEncounter->currentEnemy = enemy;
-    currentEncounter->currentEncounter = currentEncounter->encounterList[enemy->encounterIndex];
+    currentEncounter->curEnemy = enemy;
+    currentEncounter->curEncounter = currentEncounter->encounterList[enemy->encounterIndex];
     currentEncounter->firstStrikeType = FIRST_STRIKE_NONE;
     currentEncounter->allowFleeing = FALSE;
     currentEncounter->songID = songID;
@@ -221,10 +221,10 @@ void start_battle(Evt* script, s32 songID) {
     disable_player_input();
     partner_disable_input();
 
-    encounter = currentEncounter->currentEncounter;
+    encounter = currentEncounter->curEncounter;
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
-        if (enemy != NULL && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->currentEnemy)) {
+        if (enemy != NULL && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)) {
             if (enemy->hitBytecode != NULL) {
                 Evt* hitEvtInstance;
                 enemy->encountered = TRUE;
@@ -274,8 +274,8 @@ ApiStatus StartBossBattle(Evt* script, s32 isInitialCall) {
 
     currentEncounter->hitType = ENCOUNTER_TRIGGER_NONE;
     enemy->encountered = TRUE;
-    currentEncounter->currentEnemy = enemy;
-    currentEncounter->currentEncounter = currentEncounter->encounterList[enemy->encounterIndex];
+    currentEncounter->curEnemy = enemy;
+    currentEncounter->curEncounter = currentEncounter->encounterList[enemy->encounterIndex];
     currentEncounter->firstStrikeType = FIRST_STRIKE_NONE;
     currentEncounter->allowFleeing = TRUE;
     currentEncounter->songID = songID;
@@ -292,11 +292,11 @@ ApiStatus StartBossBattle(Evt* script, s32 isInitialCall) {
     disable_player_input();
     partner_disable_input();
 
-    encounter = currentEncounter->currentEncounter;
+    encounter = currentEncounter->curEncounter;
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
         if ((enemy != NULL && (
-            !(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->currentEnemy)
+            !(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)
             ) && enemy->hitBytecode != NULL) {
             enemy->encountered = TRUE;
 
@@ -698,9 +698,9 @@ ApiStatus SetSelfRotation(Evt* script, s32 isInitialCall) {
     s32 rotY = evt_get_variable(script, *args++);
     s32 rotZ = evt_get_variable(script, *args++);
 
-    self->rotation.x = rotX;
-    self->rotation.y = rotY;
-    self->rotation.z = rotZ;
+    self->rot.x = rotX;
+    self->rot.y = rotY;
+    self->rot.z = rotZ;
 
     return ApiStatus_DONE2;
 }
@@ -851,17 +851,17 @@ ApiStatus OnPlayerFled(Evt* script, s32 isInitialCall) {
     enemy->aiFlags |= ENEMY_AI_FLAG_SUSPEND;
 
     if (!skipReaction) {
-        s32 unk;
+        EffectInstance* emoteEffect;
 
         if (!(enemy->aiFlags & ENEMY_AI_FLAG_10)) {
-            npc->currentAnim = *enemy->animList;
+            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         }
 
         if (!(enemy->aiFlags & ENEMY_AI_FLAG_8)) {
-            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 0.0f, -20.0f, 40, &unk);
+            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 0.0f, -20.0f, 40, &emoteEffect);
         }
 
-        if ((npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_8)) == (NPC_FLAG_JUMPING | NPC_FLAG_8)) {
+        if ((npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) == (NPC_FLAG_JUMPING | NPC_FLAG_FLYING)) {
             f32 x = npc->pos.x;
             f32 y = npc->pos.y + npc->collisionHeight;
             f32 z = npc->pos.z;

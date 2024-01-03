@@ -22,6 +22,7 @@ ctx.c.m2c
 build.ninja
 .ninja*
 *.ld
+!src/map_shape.ld
 *.elf
 *.z64
 *.v64
@@ -48,6 +49,7 @@ build/
 /assets/jp
 /assets/pal
 /assets/ique
+*.sbn
 
 # Star Rod
 /sprite/SpriteTable.xml

@@ -9,7 +9,7 @@
 #include "sprite/npc/WorldKlevar.h"
 #include "sprite/npc/WorldKalmar.h"
 
-extern Gfx gPauseDLSpiritsBg[];
+extern Gfx PauseGfxSpiritsBg[];
 extern s8 pause_spirits_bg_png[];
 
 void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
@@ -159,7 +159,7 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
 
     gDPPipeSync(gMainGfxPos++);
     gSPViewport(gMainGfxPos++, &gPauseSpiritsViewport);
-    gSPDisplayList(gMainGfxPos++, gPauseDLSpiritsBg);
+    gSPDisplayList(gMainGfxPos++, PauseGfxSpiritsBg);
 
     for (i = 0; i < 5; i++) {
         gDPLoadTextureTile_4b(gMainGfxPos++, pause_spirits_bg_png, G_IM_FMT_CI, 128, 110,
@@ -196,7 +196,7 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
 
         }
 
-        func_802DE894(gPauseSpiritsSpriteIDs[gPauseSpiritsIndexes[index]], FOLD_TYPE_8, color, color, color, alpha, 0x40);
+        set_npc_imgfx_all(gPauseSpiritsSpriteIDs[gPauseSpiritsIndexes[index]], IMGFX_SET_TINT, color, color, color, alpha, 64);
         guTranslateF(matrix1, baseX + 22 + x, baseY + 77 + y + offsetY, 0.0f);
         guRotateF(matrix2, 180.0f, 0.0f, 0.0f, 1.0f);
         guMtxCatF(matrix2, matrix1, matrix1);

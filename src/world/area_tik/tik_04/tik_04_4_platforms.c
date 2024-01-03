@@ -5,9 +5,9 @@ API_CALLABLE(N(CreatePlatformShadows)) {
     Model* model;
 
     model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_erb1));
-    script->array[0] = create_shadow_type(1, model->center.x, model->center.y - 100.0f, model->center.z);
+    script->array[0] = create_shadow_type(SHADOW_VARYING_SQUARE, model->center.x, model->center.y - 100.0f, model->center.z);
     model = get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_erb2));
-    script->array[1] = create_shadow_type(1, model->center.x, model->center.y - 100.0f, model->center.z);
+    script->array[1] = create_shadow_type(SHADOW_VARYING_SQUARE, model->center.x, model->center.y - 100.0f, model->center.z);
 
     return ApiStatus_DONE2;
 }
@@ -26,12 +26,12 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
     hitLength = 1000.0f;
     entity_raycast_down(&x, &y, &z, &hitYaw, &hitPitch, &hitLength);
     set_standard_shadow_scale(shadow, hitLength);
-    shadow->position.x = x;
-    shadow->position.y = y;
-    shadow->position.z = z;
-    shadow->rotation.x = hitYaw;
-    shadow->rotation.y = 0.0f;
-    shadow->rotation.z = hitPitch;
+    shadow->pos.x = x;
+    shadow->pos.y = y;
+    shadow->pos.z = z;
+    shadow->rot.x = hitYaw;
+    shadow->rot.y = 0.0f;
+    shadow->rot.z = hitPitch;
     shadow->scale.x *= 4.5f;
     shadow->scale.z *= 4.5f;
 
@@ -43,12 +43,12 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
     hitLength = 1000.0f;
     entity_raycast_down(&x, &y, &z, &hitYaw, &hitPitch, &hitLength);
     set_standard_shadow_scale(shadow, hitLength);
-    shadow->position.x = x;
-    shadow->position.y = y;
-    shadow->position.z = z;
-    shadow->rotation.x = hitYaw;
-    shadow->rotation.y = 0.0f;
-    shadow->rotation.z = hitPitch;
+    shadow->pos.x = x;
+    shadow->pos.y = y;
+    shadow->pos.z = z;
+    shadow->rot.x = hitYaw;
+    shadow->rot.y = 0.0f;
+    shadow->rot.z = hitPitch;
     shadow->scale.x *= 4.5f;
     shadow->scale.z *= 4.5f;
 
@@ -59,14 +59,14 @@ API_CALLABLE(N(GetFloorCollider)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
-    evt_set_variable(script, outVar, gCollisionStatus.currentFloor);
+    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(PausePlatformsDuringPound)) {
     PlayerStatus* player = &gPlayerStatus;
 
-    if (gCollisionStatus.currentFloor == COLLIDER_erb1 || gCollisionStatus.currentFloor == COLLIDER_erb2) {
+    if (gCollisionStatus.curFloor == COLLIDER_erb1 || gCollisionStatus.curFloor == COLLIDER_erb2) {
         if (player->actionState == ACTION_STATE_SPIN_POUND || player->actionState == ACTION_STATE_TORNADO_POUND) {
             return ApiStatus_BLOCK;
         }

@@ -1,4 +1,5 @@
 #include "kkj_20.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
@@ -9,7 +10,7 @@
 #include "world/common/todo/GetPeachDisguise.inc.c"
 
 EvtScript N(EVS_OpenDresserDoors) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o80, SOUND_1CF, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o80, SOUND_WOODEN_DOOR_OPEN, 0)
     EVT_CALL(MakeLerp, 0, 80, 14, EASING_QUADRATIC_OUT)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -35,7 +36,7 @@ EvtScript N(EVS_CloseDresserDoors) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o80, SOUND_1D0, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o80, SOUND_WOODEN_DOOR_CLOSE, 0)
     EVT_RETURN
     EVT_END
 };
@@ -150,8 +151,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 229, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, FOLD_TYPE_5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(60)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -172,7 +173,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
 
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, 85, 0, -85)
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(3.0))
     EVT_CALL(PlayerMoveTo, 60, -50, 0)
@@ -202,7 +203,7 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     EVT_CALL(SetPlayerJumpscale, 1)
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    EVT_CALL(N(ToadHouse_DisableStatusMenu))
+    EVT_CALL(N(ToadHouse_DisableStatusBar))
     EVT_IF_NE(LVar4, 0)
         EVT_EXEC(N(EVS_ToadHouse_Unk2))
     EVT_END_IF
@@ -243,7 +244,7 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     EVT_CALL(DisablePlayerPhysics, FALSE)
     EVT_CALL(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EVT_CALL(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVarB)
-    EVT_CALL(N(ToadHouse_ShowStatusMenu))
+    EVT_CALL(N(ToadHouse_ShowWorldStatusBar))
     EVT_RETURN
     EVT_END
 };
@@ -343,7 +344,7 @@ NpcData N(NpcData_Toad) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Toad),
     .settings = &N(NpcSettings_Toad_Stationary),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TOAD_RED_ANIMS,
     .tattle = MSG_NpcTattle_KKJ_ToadHouseToad,

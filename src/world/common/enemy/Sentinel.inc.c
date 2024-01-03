@@ -1,5 +1,6 @@
 #include "Sentinel.h"
 #include "world/partners.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/ai/SentinelAI.inc.c"
 
@@ -49,12 +50,12 @@ EvtScript N(EVS_NpcAI_Sentinel) = {
     EVT_ADD(LVar1, 20)
     EVT_ADD(LVar2, 2)
     EVT_CALL(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    EVT_CALL(func_80045838, -1, SOUND_2F7, 0)
+    EVT_CALL(func_80045838, -1, SOUND_SENTINEL_PICKUP, 0)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim08)
     EVT_WAIT(10)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_Flail)
     EVT_WAIT(10)
-    EVT_CALL(func_80045838, -1, SOUND_32E | SOUND_ID_TRIGGER_CHANGE_SOUND, 0)
+    EVT_CALL(func_80045838, -1, SOUND_LRAW_SENTINEL_ALARM | SOUND_ID_TRIGGER_CHANGE_SOUND, 0)
     EVT_THREAD
         EVT_LOOP(100)
             EVT_CALL(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -114,7 +115,7 @@ EvtScript N(EVS_UnusedSentinelDefeat) = {
 NpcSettings N(NpcSettings_Sentinel) = {
     .height = 38,
     .radius = 32,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .otherAI = &N(EVS_NpcAuxAI_Sentinel),
     .ai = &N(EVS_NpcAI_Sentinel),
 };

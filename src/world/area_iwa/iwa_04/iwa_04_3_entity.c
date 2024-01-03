@@ -3,17 +3,17 @@
 
 API_CALLABLE(N(MonitorPlayerAltitude)) {
     s32 status = -1;
-    
-    if (gPlayerStatus.lastGoodPosition.y > -100.0) {
+
+    if (gPlayerStatus.lastGoodPos.y > -100.0) {
         status = 0;
     }
-    if (gPlayerStatus.lastGoodPosition.y < -240.0) {
+    if (gPlayerStatus.lastGoodPos.y < -240.0) {
         status = 1;
     }
     if (status >= 0) {
         evt_set_variable(script, MV_PlayerCliffLevel, status);
     }
-    
+
     return ApiStatus_BLOCK;
 }
 

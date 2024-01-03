@@ -92,7 +92,7 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         numEntries = 0;
 
         for (i = 1; i < 12; i++) {
-            partnerID = D_8008EEC0[i];
+            partnerID = PartnerIDFromMenuIndex[i];
             if (playerData->partners[partnerID].enabled && partnerID != PARTNER_GOOMPA) {
                 temp_s2 = &gPartnerPopupProperties[partnerID];
                 cond = func_80244F5C_8057DC(partnerID);
@@ -115,8 +115,8 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         menu->numEntries = numEntries;
         menu->initialPos = D_80262F68;
         create_standard_popup_menu(menu);
-        status_menu_respond_to_changes();
-        close_status_menu();
+        status_bar_respond_to_changes();
+        close_status_bar();
         script->functionTemp[0] = 0;
     }
 
@@ -181,8 +181,8 @@ API_CALLABLE(N(func_8024522C_805AAC)) {
         menu->numEntries = numEntries;
         menu->initialPos = 0;
         create_standard_popup_menu(menu);
-        status_menu_respond_to_changes();
-        close_status_menu();
+        status_bar_respond_to_changes();
+        close_status_bar();
         script->functionTemp[0] = 0;
     }
 
@@ -213,7 +213,7 @@ API_CALLABLE(N(func_8024522C_805AAC)) {
 }
 
 API_CALLABLE(N(func_80245440_805CC0)) {
-    if (gPlayerData.currentPartner == script->varTable[10]) {
+    if (gPlayerData.curPartner == script->varTable[10]) {
         script->varTable[1] = 0;
         return ApiStatus_DONE2;
     }
@@ -443,10 +443,10 @@ EvtScript N(EVS_PostOfficeShyGuy_Escape) = {
     EVT_EXEC(N(EVS_CarryItem_PostOfficeShyGuy))
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(60)
-    EVT_CALL(PlaySoundAtNpc, NPC_PostOfficeShyGuy, SOUND_32C, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_PostOfficeShyGuy, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_PostOfficeShyGuy, 247, 20, -440, 20)
     EVT_SET(LVar0, 6)
-    EVT_CALL(PlaySoundAtNpc, LVar0, SOUND_203F, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, LVar0, SOUND_SHY_GUY_RUN_AWAY, SOUND_SPACE_DEFAULT)
     EVT_EXEC_GET_TID(N(D_8024E6F8_80EF78), LVarA)
     EVT_CALL(NpcMoveTo, NPC_PostOfficeShyGuy, 180, -410, 20)
     EVT_CALL(NpcMoveTo, NPC_PostOfficeShyGuy, 150, -333, 8)

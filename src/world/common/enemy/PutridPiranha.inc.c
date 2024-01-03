@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcAI_PutridPiranha) = {
 NpcSettings N(NpcSettings_PutridPiranha) = {
     .height = 50,
     .radius = 36,
-    .level = 17,
+    .level = ACTOR_LEVEL_PUTRID_PIRANHA,
     .ai = &N(EVS_NpcAI_PutridPiranha),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcAI_PutridPiranha_Hitbox) = {
     EVT_CALL(SetSelfVar, 0, 14)
     EVT_CALL(SetSelfVar, 1, 28)
     EVT_CALL(SetSelfVar, 4, 3)
-    EVT_CALL(SetSelfVar, 15, SOUND_20DE)
+    EVT_CALL(SetSelfVar, 15, SOUND_PIRANHA_BITE)
     EVT_CALL(N(MeleeHitbox_Main))
     EVT_RETURN
     EVT_END
@@ -64,7 +64,7 @@ EvtScript N(EVS_80244090) = {
 NpcSettings N(NpcSettings_PutridPiranha_Hitbox) = {
     .height = 20,
     .radius = 28,
-    .level = 17,
+    .level = ACTOR_LEVEL_PUTRID_PIRANHA,
     .ai = &N(EVS_NpcAI_PutridPiranha_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
 };

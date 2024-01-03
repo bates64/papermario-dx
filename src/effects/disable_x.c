@@ -44,12 +44,12 @@ EffectInstance* disable_x_main(s32 type, f32 x, f32 y, f32 z, s32 arg4) {
     bp.init = disable_x_init;
     bp.update = disable_x_update;
     bp.renderWorld = disable_x_render;
-    bp.unk_14 = func_E0082528;
+    bp.renderUI = func_E0082528;
     bp.effectID = EFFECT_DISABLE_X;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = general_heap_malloc(numParts * sizeof(*data));
     effect->data.disableX = data;
     ASSERT(effect->data.disableX != NULL);
 
@@ -111,8 +111,8 @@ void disable_x_update(EffectInstance* effect) {
     u32 type;
     s32 i;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_28 = 21;
     }
 
@@ -121,7 +121,7 @@ void disable_x_update(EffectInstance* effect) {
     }
 
     if (data->unk_28 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -151,10 +151,10 @@ void disable_x_update(EffectInstance* effect) {
                     data[1].unk_28 = 0;
                     data->unk_38++;
                     if (data->pos.y > -500.0f) {
-                        shim_sfx_play_sound_at_position(SOUND_2107, SOUND_SPACE_MODE_0, data->pos.x, data->pos.y, data->pos.z);
+                        sfx_play_sound_at_position(SOUND_INFLICT_KO, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z);
                     }
                 } else if (unk_3C < unk_38) {
-                    shim_load_effect(EFFECT_DISABLE_X);
+                    load_effect(EFFECT_DISABLE_X);
                     disable_x_main(10, data->pos.x, data->pos.y + data[1].unk_20, data->pos.z, 0);
                     data->unk_38--;
                 }
@@ -173,7 +173,7 @@ void disable_x_update(EffectInstance* effect) {
 
         data->unk_30 *= unk_34;
         if (type < 2) {
-            data->unk_20 = shim_cos_deg(unk_2C * 12) * 4.0f;
+            data->unk_20 = cos_deg(unk_2C * 12) * 4.0f;
         } else {
             data->unk_20 = 0.0f;
         }
@@ -215,11 +215,11 @@ void func_E0082528(EffectInstance* effect) {
 void func_E0082580(DisableXFXData* data) {
     Matrix4f sp18, sp58;
 
-    shim_guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
-    shim_guScaleF(sp58, data->scale, data->scale, 1.0f);
-    shim_guRotateF(sp58, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
+    guScaleF(sp58, data->scale, data->scale, 1.0f);
+    guRotateF(sp58, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(sp58, sp18, sp18);
+    guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 }
@@ -227,14 +227,14 @@ void func_E0082580(DisableXFXData* data) {
 void func_E00826C4(DisableXFXData* data) {
     Matrix4f sp18, sp58;
 
-    shim_guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
-    shim_guScaleF(sp58, data->unk_30, data->unk_30, 1.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guRotateF(sp58, data->unk_40, 0.0f, 0.0f, 1.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guTranslateF(sp58, 0.0f, data->unk_20, 0.0f);
-    shim_guMtxCatF(sp58, sp18, sp18);
-    shim_guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
+    guScaleF(sp58, data->unk_30, data->unk_30, 1.0f);
+    guMtxCatF(sp58, sp18, sp18);
+    guRotateF(sp58, data->unk_40, 0.0f, 0.0f, 1.0f);
+    guMtxCatF(sp58, sp18, sp18);
+    guTranslateF(sp58, 0.0f, data->unk_20, 0.0f);
+    guMtxCatF(sp58, sp18, sp18);
+    guMtxF2L(sp18, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++],
               G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
@@ -248,8 +248,7 @@ void func_E00826C4(DisableXFXData* data) {
         gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
     } else {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
-        gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, SHADE, 0, PRIMITIVE, 0, TEXEL0, 0, TEXEL0, 0, SHADE, 0,
-                          PRIMITIVE, 0, TEXEL0, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_49, PM_CC_49);
     }
 }
 

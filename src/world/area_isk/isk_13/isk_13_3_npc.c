@@ -1,11 +1,12 @@
 #include "isk_13.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/StoneChomp.inc.c"
 
 typedef struct StoneChompAmbushIsk13 {
     /* 0x00 */ s32 useBitingAnim;
-    /* 0x04 */ s32 foldID;
+    /* 0x04 */ s32 imgfxIdx;
     /* 0x08 */ s32 workerID;
     /* 0x0C */ s32 spriteIndex;
     /* 0x10 */ s32 rasterIndex;
@@ -21,16 +22,16 @@ typedef struct StoneChompAmbushIsk13 {
 void N(func_80241610_990DF0)(void) {
     StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(NULL, MV_AmbushPtr);
     Camera* cam = &gCameras[gCurrentCameraID];
-    FoldImageRecPart foldImg;
+    ImgFXTexture ifxImg;
     SpriteRasterInfo spriteRaster;
     Matrix4f transformMtx, tempMtx;
-    
+
     gSPViewport(gMainGfxPos++, &cam->vp);
     if (!(cam->flags & CAMERA_FLAG_ORTHO)) {
         gSPPerspNormalize(gMainGfxPos++, cam->perspNorm);
     }
     guMtxF2L(cam->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCameraID]);
-    
+
     gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
         G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gDPPipeSync(gMainGfxPos++);
@@ -47,9 +48,9 @@ void N(func_80241610_990DF0)(void) {
     gDPSetTextureConvert(gMainGfxPos++, G_TC_FILT);
     gDPSetCombineKey(gMainGfxPos++, G_CK_NONE);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-    
+
     guTranslateF(transformMtx, ambush->pos.x, ambush->pos.y, ambush->pos.z);
-    guRotateF(tempMtx, ambush->rot.y + gCameras[gCurrentCameraID].currentYaw + ambush->renderYaw, 0.0f, 1.0f, 0.0f);
+    guRotateF(tempMtx, ambush->rot.y + gCameras[gCurrentCameraID].curYaw + ambush->renderYaw, 0.0f, 1.0f, 0.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
     guRotateF(tempMtx, ambush->rot.z, 0.0f, 0.0f, 1.0f);
     guMtxCatF(tempMtx, transformMtx, transformMtx);
@@ -60,7 +61,7 @@ void N(func_80241610_990DF0)(void) {
     guMtxF2L(transformMtx, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gMainGfxPos++, OS_PHYSICAL_TO_K0(&gDisplayContext->matrixStack[gMatrixListPos++]),
         G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    
+
     if (ambush->useBitingAnim) {
         if ((gGameStatusPtr->frameCounter % 10) < 5) {
             ambush->rasterIndex = 0;
@@ -69,16 +70,16 @@ void N(func_80241610_990DF0)(void) {
         }
     }
     spr_get_npc_raster_info(&spriteRaster, ambush->spriteIndex, ambush->rasterIndex);
-    foldImg.raster  = spriteRaster.raster;
-    foldImg.palette = spriteRaster.defaultPal;
-    ambush->width = foldImg.width  = spriteRaster.width;
-    ambush->height = foldImg.height = spriteRaster.height;
-    foldImg.xOffset = -(spriteRaster.width / 2);
-    foldImg.yOffset = (spriteRaster.height / 2);
-    foldImg.opacity = 255;
-    
-    fold_update(ambush->foldID, FOLD_TYPE_8, ambush->color.r, ambush->color.g, ambush->color.b, ambush->color.a, 0);
-    fold_appendGfx_component(ambush->foldID, &foldImg, 0, transformMtx);
+    ifxImg.raster  = spriteRaster.raster;
+    ifxImg.palette = spriteRaster.defaultPal;
+    ambush->width = ifxImg.width  = spriteRaster.width;
+    ambush->height = ifxImg.height = spriteRaster.height;
+    ifxImg.xOffset = -(spriteRaster.width / 2);
+    ifxImg.yOffset = (spriteRaster.height / 2);
+    ifxImg.alpha = 255;
+
+    imgfx_update(ambush->imgfxIdx, IMGFX_SET_TINT, ambush->color.r, ambush->color.g, ambush->color.b, ambush->color.a, 0);
+    imgfx_appendGfx_component(ambush->imgfxIdx, &ifxImg, 0, transformMtx);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
@@ -86,7 +87,7 @@ API_CALLABLE(N(func_80241BA8_991388)) {
     StoneChompAmbushIsk13* ambush;
     SpriteRasterInfo rasterInfo;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
-    
+
     ambush = heap_malloc(sizeof(*ambush));
     ambush->useBitingAnim = FALSE;
     ambush->spriteIndex = SPR_StoneChomp;
@@ -109,8 +110,8 @@ API_CALLABLE(N(func_80241BA8_991388)) {
     ambush->color.g = 128.0f;
     ambush->color.b = 255.0f;
     ambush->color.a = 0.0f;
-    ambush->foldID = 0;
-    
+    ambush->imgfxIdx = 0;
+
     ambush->workerID = create_worker_frontUI(NULL, N(func_80241610_990DF0));
     evt_set_variable(script, MV_AmbushPtr, (s32) ambush);
     return ApiStatus_DONE2;
@@ -128,7 +129,7 @@ API_CALLABLE(N(func_80241D38_991518)) {
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
     StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(script, MV_AmbushPtr);
-    
+
     ambush->pos.x = x;
     ambush->pos.y = y + ambush->height * SPRITE_WORLD_SCALE_D * 0.5;
     ambush->pos.z = z;
@@ -141,7 +142,7 @@ API_CALLABLE(N(func_80241E34_991614)) {
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
     StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(script, MV_AmbushPtr);
-    
+
     ambush->rot.x = x;
     ambush->rot.y = y;
     ambush->rot.z = z;
@@ -155,7 +156,7 @@ API_CALLABLE(N(func_80241EF8_9916D8)) {
     f32 g = evt_get_float_variable(script, *args++);
     f32 b = evt_get_float_variable(script, *args++);
     f32 a = evt_get_float_variable(script, *args++);
-    
+
     if (r < 0.0f) {
         r = 0.0f;
     }
@@ -268,7 +269,7 @@ EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
     EVT_SET(GF_ISK13_Defeated_StoneChomp, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, FALSE)
     EVT_CALL(EnableNpcShadow, NPC_SELF, TRUE)
-    EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(N(DestroyAmbushWorker))
     EVT_CALL(GetBattleOutcome, LVar0)
     EVT_SWITCH(LVar0)
@@ -315,7 +316,7 @@ NpcData N(NpcData_StoneChomp) = {
     .initVarCount = 1,
     .initVar = { .value = -650 },
     .settings = &N(NpcSettings_StoneChomp),
-    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_100000,
+    .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_100000,
     .drops = STONE_CHOMP_DROPS,
     .animations = STONE_CHOMP_ANIMS,
 };

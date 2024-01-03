@@ -26,7 +26,7 @@ EvtScript N(EVS_ProvideDemoInputs1) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_2)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -45,7 +45,7 @@ EvtScript N(EVS_MonitorDemoState1) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_3)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -105,7 +105,7 @@ EvtScript N(EVS_ProvideDemoInputs2) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_2)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -124,7 +124,7 @@ EvtScript N(EVS_MonitorDemoState2) = {
         EVT_RETURN
     EVT_END_IF
     EVT_SET(GF_DemoSceneDone, TRUE)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_3)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("nok_12"), nok_12_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     EVT_WAIT(216)
     EVT_RETURN
     EVT_END
@@ -145,11 +145,11 @@ API_CALLABLE(N(SetupDemoScene1)) {
             break;
         case 3:
             partner_clear_player_tracking(wPartnerNpc);
-            partner_set_goal_pos(playerStatus->position.x, playerStatus->position.z);
+            partner_set_goal_pos(playerStatus->pos.x, playerStatus->pos.z);
             func_800EF3D4(0);
             set_npc_yaw(wPartnerNpc, 90.0f);
             playerStatus->targetYaw = 90.0f;
-            playerStatus->currentYaw = 90.0f;
+            playerStatus->curYaw = 90.0f;
             playerStatus->spriteFacingAngle = 0.0f;
             return ApiStatus_DONE2;
     }
@@ -182,11 +182,11 @@ API_CALLABLE(N(SetupDemoScene2)) {
             break;
         case 3:
             partner_clear_player_tracking(wPartnerNpc);
-            partner_set_goal_pos(playerStatus->position.x, playerStatus->position.z);
+            partner_set_goal_pos(playerStatus->pos.x, playerStatus->pos.z);
             func_800EF3D4(0);
             set_npc_yaw(wPartnerNpc, 90.0f);
             playerStatus->targetYaw = 90.0f;
-            playerStatus->currentYaw = 90.0f;
+            playerStatus->curYaw = 90.0f;
             playerStatus->spriteFacingAngle = 0.0f;
             return ApiStatus_DONE2;
     }

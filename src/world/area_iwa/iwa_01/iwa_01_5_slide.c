@@ -9,16 +9,16 @@ API_CALLABLE(N(SetPlayerSliding)) {
 SlideParams N(SlideData1) = {
     .heading = 90.0f,
     .maxDescendAccel = 0.5f,
-    .launchVelocity = -0.5f,
-    .maxDescendVelocity = 16.0f,
+    .launchVel = -0.5f,
+    .maxDescendVel = 16.0f,
     .integrator = { 0.0, 0.0, 0.0, 0.0 },
 };
 
 SlideParams N(SlideData2) = {
     .heading = 270.0f,
     .maxDescendAccel = 0.5f,
-    .launchVelocity = -0.18f,
-    .maxDescendVelocity = 18.0f,
+    .launchVel = -0.18f,
+    .maxDescendVel = 18.0f,
     .integrator = { 10.9716, -0.34, 0.003, -0.012 },
 };
 
@@ -40,7 +40,7 @@ EvtScript N(EVS_UseSlide1) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(10)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_st1, SOUND_20A2, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_st1, SOUND_IWA_SLIDE_GATE, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, -80, 10, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -57,7 +57,7 @@ EvtScript N(EVS_UseSlide1) = {
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_WAIT(100)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_st1, SOUND_20A2, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_st1, SOUND_IWA_SLIDE_GATE, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, -80, 0, 30, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -77,7 +77,7 @@ EvtScript N(EVS_UseSlide2) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_WAIT(10)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_st2, SOUND_20A2, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_st2, SOUND_IWA_SLIDE_GATE, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, 80, 10, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -94,7 +94,7 @@ EvtScript N(EVS_UseSlide2) = {
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_WAIT(100)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_st2, SOUND_20A2, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_st2, SOUND_IWA_SLIDE_GATE, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 80, 0, 30, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)

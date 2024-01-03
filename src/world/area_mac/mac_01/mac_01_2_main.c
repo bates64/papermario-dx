@@ -9,7 +9,7 @@ EvtScript N(EVS_ExitWalk_nok_11_0) = {
     EVT_IF_EQ(GF_StartedChapter1, FALSE)
         EVT_SET(GF_StartedChapter1, TRUE)
         EVT_CALL(FadeOutMusic, 0, 1500)
-        EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_1, TRANSITION_6)
+        EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_WAIT(100)
         EVT_RETURN
     EVT_END_IF
@@ -94,7 +94,7 @@ EvtScript N(EVS_EnterMap) = {
                     EVT_BREAK_LOOP
                 EVT_END_IF
             EVT_END_LOOP
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_deilitn, SOUND_LARGE_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_deilitn, SOUND_LARGE_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
             EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deilitn, COLLIDER_FLAGS_UPPER_MASK)
             EVT_CALL(DisablePlayerInput, FALSE)
         EVT_CASE_EQ(mac_01_ENTRY_4)
@@ -113,7 +113,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_TOAD_TOWN)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 90, 4096) // note: unusually large near clip dist: 90 vs 16
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 90, 4096) // note: unusually large near clip dist: 90 vs 16
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)

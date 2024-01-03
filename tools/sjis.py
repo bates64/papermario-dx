@@ -1,4 +1,5 @@
-#! /usr/bin/python3
+#!/usr/bin/env python3
+
 
 def decode(data):
     length = 0
@@ -20,7 +21,8 @@ def decode(data):
 
         length += 1
 
-    return data[:length].decode('shift-jis')
+    return data[:length].decode("shift-jis")
+
 
 if __name__ == "__main__":
     import sys

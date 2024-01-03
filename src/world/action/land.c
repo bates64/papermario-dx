@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sprite/player.h"
 
 enum {
     SUBSTATE_INIT   = 0,
@@ -32,8 +33,8 @@ void action_update_land(void) {
         playerStatus->actionSubstate = SUBSTATE_INIT;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->landPos.x = playerStatus->position.x;
-        playerStatus->landPos.z = playerStatus->position.z;
+        playerStatus->landPos.x = playerStatus->pos.x;
+        playerStatus->landPos.z = playerStatus->pos.z;
 
         if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
             anim = ANIM_MarioW3_8bit_Still;
@@ -44,19 +45,19 @@ void action_update_land(void) {
         }
 
         suggest_player_anim_allow_backward(anim);
-        sfx_play_sound_at_player(SOUND_161 | SOUND_ID_STOP, SOUND_SPACE_MODE_0);
-        sfx_play_sound_at_player(SOUND_SOFT_LAND, SOUND_SPACE_MODE_0);
+        sfx_play_sound_at_player(SOUND_PLAYER_LONG_FALL | SOUND_ID_STOP, SOUND_SPACE_DEFAULT);
+        sfx_play_sound_at_player(SOUND_LAND_SOFTLY, SOUND_SPACE_DEFAULT);
 
-        if (!(collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT)) {
+        if (!(collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT)) {
             phys_adjust_cam_on_landing();
         }
 
         collisionStatus->lastTouchedFloor = -1;
         playerStatus->animFlags &= ~PA_FLAG_INTERRUPT_SPIN;
-        camera->moveFlags &= ~CAMERA_MOVE_FLAG_4;
+        camera->moveFlags &= ~CAMERA_MOVE_ACCEL_INTERP_Y;
     }
     playerStatus->actionSubstate++; // SUBSTATE_DONE
-    playerStatus->currentSpeed *= 0.6f;
+    playerStatus->curSpeed *= 0.6f;
 
     player_input_to_move_vector(&inputMoveAngle, &inputMoveMagnitude);
     jumpInputCheck = check_input_jump();
@@ -94,10 +95,10 @@ void action_update_step_down_land(void) {
         playerStatus->actionSubstate = SUBSTATE_INIT;
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
-        playerStatus->landPos.x = playerStatus->position.x;
-        playerStatus->landPos.z = playerStatus->position.z;
+        playerStatus->landPos.x = playerStatus->pos.x;
+        playerStatus->landPos.z = playerStatus->pos.z;
 
-        if (!(collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT)) {
+        if (!(collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT)) {
             phys_adjust_cam_on_landing();
         }
 
@@ -105,7 +106,7 @@ void action_update_step_down_land(void) {
     }
 
     playerStatus->actionSubstate++; // SUBSTATE_DONE
-    playerStatus->currentSpeed *= 0.6f;
+    playerStatus->curSpeed *= 0.6f;
 
     player_input_to_move_vector(&inputMoveAngle, &inputMoveMagnitude);
     check_input_jump();
@@ -129,12 +130,12 @@ void action_update_peach_land(void) {
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
         playerStatus->flags &= ~PS_FLAG_AIRBORNE;
-        playerStatus->landPos.x = playerStatus->position.x;
-        playerStatus->landPos.z = playerStatus->position.z;
+        playerStatus->landPos.x = playerStatus->pos.x;
+        playerStatus->landPos.z = playerStatus->pos.z;
 
-        sfx_play_sound_at_player(SOUND_SOFT_LAND, SOUND_SPACE_MODE_0);
+        sfx_play_sound_at_player(SOUND_LAND_SOFTLY, SOUND_SPACE_DEFAULT);
 
-        if (!(collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT)) {
+        if (!(collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT)) {
             phys_adjust_cam_on_landing();
         }
 
@@ -142,7 +143,7 @@ void action_update_peach_land(void) {
     }
 
     playerStatus->actionSubstate++; // SUBSTATE_DONE
-    playerStatus->currentSpeed *= 0.6f;
+    playerStatus->curSpeed *= 0.6f;
 
     player_input_to_move_vector(&inputMoveAngle, &inputMoveMagnitude);
 
@@ -173,17 +174,17 @@ void action_update_peach_step_down_land(void) {
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
         playerStatus->flags &= ~PS_FLAG_AIRBORNE;
-        playerStatus->landPos.x = playerStatus->position.x;
-        playerStatus->landPos.z = playerStatus->position.z;
+        playerStatus->landPos.x = playerStatus->pos.x;
+        playerStatus->landPos.z = playerStatus->pos.z;
 
-        if (!(collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT)) {
+        if (!(collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT)) {
             phys_adjust_cam_on_landing();
         }
         collisionStatus->lastTouchedFloor = -1;
     }
 
     playerStatus->actionSubstate++; // SUBSTATE_DONE
-    playerStatus->currentSpeed *= 0.6f;
+    playerStatus->curSpeed *= 0.6f;
     player_input_to_move_vector(&inputMoveAngle, &inputMoveMagnitude);
 
     if (inputMoveMagnitude != 0.0f) {

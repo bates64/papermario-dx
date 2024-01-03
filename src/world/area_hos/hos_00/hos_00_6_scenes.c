@@ -1,4 +1,5 @@
 #include "hos_00.h"
+#include "sprite/player.h"
 
 #include "world/common/complete/GiveReward.inc.c"
 
@@ -77,7 +78,7 @@ API_CALLABLE(N(HavePartyFaceTwink)) {
     Npc* npc = get_npc_unsafe(NPC_Twink);
 
     partner->yaw = atan2(partner->pos.x, partner->pos.z, npc->pos.x, npc->pos.z);
-    gPlayerStatus.targetYaw = atan2(gPlayerStatus.position.x, gPlayerStatus.position.z, npc->pos.x, npc->pos.z);
+    gPlayerStatus.targetYaw = atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, npc->pos.x, npc->pos.z);
     npc->yaw = atan2(N(LastTwinkPosX), N(LastTwinkPosZ), npc->pos.x, npc->pos.z);
     N(LastTwinkPosX) = npc->pos.x;
     N(LastTwinkPosZ) = npc->pos.z;
@@ -100,7 +101,7 @@ API_CALLABLE(N(UpdateMagikoopaAngles)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SetCamera0Flag1000.inc.c"
+#include "world/common/DisableCameraLeadingPlayer.inc.c"
 
 API_CALLABLE(N(AddOffsetForCamPos)) {
     s32 baseX = script->varTable[0];
@@ -201,7 +202,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     EVT_CALL(SetNpcJumpscale, NPC_Twink, 0)
     EVT_ADD(LVar0, -10)
     EVT_CALL(NpcJump0, NPC_Twink, LVar0, 20, LVar2, 15 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_HIT_PLAYER_NORMAL, 0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_VacantStare)
     EVT_CALL(SetNpcAnimation, NPC_Twink, ANIM_Twink_Cringe)
     EVT_THREAD
@@ -240,7 +241,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     EVT_CALL(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     EVT_CALL(NpcFacePlayer, NPC_Twink, 0)
     EVT_CALL(SpeakToPlayer, NPC_Twink, ANIM_Twink_Shout, ANIM_Twink_Idle, 0, MSG_HOS_000E)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_ADD(LVar0, -20)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

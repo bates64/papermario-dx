@@ -15,7 +15,10 @@ pipeline {
                 sh 'curl -L "https://github.com/decompals/ido-static-recomp/releases/download/v0.2/ido-5.3-recomp-ubuntu-latest.tar.gz" | tar zx -C tools/build/cc/ido5.3'
                 sh 'curl -L "https://github.com/decompals/mips-gcc-2.7.2/releases/download/main/gcc-2.7.2-linux.tar.gz" | tar zx -C tools/build/cc/gcc2.7.2'
                 sh 'curl -L "https://github.com/decompals/mips-binutils-2.6/releases/download/main/binutils-2.6-linux.tar.gz" | tar zx -C tools/build/cc/gcc2.7.2'
+                sh 'curl -L "https://github.com/decompals/mips-binutils-egcs-2.9.5/releases/latest/download/mips-binutils-egcs-2.9.5-linux.tar.gz" | tar zx -C tools/build/cc/egcs'
+                sh 'curl -L "https://github.com/decompals/mips-gcc-egcs-2.91.66/releases/latest/download/mips-gcc-egcs-2.91.66-linux.tar.gz" | tar zx -C tools/build/cc/egcs'
                 sh 'pip install -U -r requirements.txt'
+                sh 'cargo install pigment64'
                 sh './configure'
             }
         }
@@ -37,7 +40,7 @@ pipeline {
                         def jp_progress = sh(returnStdout: true, script: "python3 progress.py jp --pr-comment").trim()
                         def ique_progress = sh(returnStdout: true, script: "python3 progress.py ique --pr-comment").trim()
                         def pal_progress = sh(returnStdout: true, script: "python3 progress.py pal --pr-comment").trim()
-                        def warnings = sh(returnStdout: true, script: "./tools/warnings_count/check_new_warnings.sh --jenkins").trim()
+                        def warnings = sh(returnStdout: true, script: "./tools/warnings_count/compare_warnings.py --pr-message").trim()
                         def comment_id = -1
 
                         for (comment in pullRequest.comments) {
@@ -107,6 +110,12 @@ pipeline {
                 sh 'cat reports/progress_pal_shield.json > /var/www/papermar.io/html/reports/progress_pal_shield.json'
 
                 sh 'cat reports/warnings.txt > /var/www/papermar.io/html/reports/warnings.txt'
+            }
+        }
+        stage('Build (shift US)') {
+            steps {
+                sh './configure --shift us'
+                sh 'ninja'
             }
         }
     }

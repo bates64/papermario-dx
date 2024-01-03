@@ -1,5 +1,6 @@
 #include "arn_07.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/HyperParagoomba.inc.c"
 #include "world/common/npc/TubbasHeart.inc.c"
@@ -8,16 +9,16 @@
 #include "world/common/npc/StarSpirit.inc.c"
 
 API_CALLABLE(N(UpgradeStarPowerCh3)) {
-    set_max_SP(3);
+    set_max_star_power(3);
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
-    sync_status_menu();
+    sync_status_bar();
     return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_TubbaWalking) = {
     EVT_LOOP(0)
-        EVT_CALL(PlaySoundAtNpc, NPC_Tubba, SOUND_20F6, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Tubba, SOUND_HEAVY_NPC_STEP_C, SOUND_SPACE_DEFAULT)
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 3, EVT_FLOAT(0.8))
     EVT_END_LOOP
     EVT_RETURN
@@ -54,22 +55,22 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim22)
     EVT_WAIT(15 * DT)
     EVT_LOOP(4)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_02, 0, 1)
         EVT_WAIT(4 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_05, 0, 1)
         EVT_WAIT(4 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_01, 0, 1)
         EVT_WAIT(6 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_03, 0, 1)
         EVT_WAIT(8 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_04, 0, 1)
         EVT_WAIT(6 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcVar, NPC_Boo_06, 0, 1)
         EVT_WAIT(6 * DT)
     EVT_END_LOOP
@@ -78,7 +79,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EVT_WAIT(30 * DT)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim22)
     EVT_WAIT(10 * DT)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_B0000010, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SEQ_BOO_APPEAR, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcVar, NPC_Boo_02, 0, 1)
     EVT_WAIT(15 * DT)
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_WorldTubba_Anim21)
@@ -133,12 +134,12 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EVT_IF_NE(LVar6, PARTNER_BOW)
         EVT_SET(LVar5, 8)
         EVT_CALL(SetNpcPos, NPC_Bow, 257, 25, 0)
-        EVT_CALL(func_802CFD30, NPC_Bow, FOLD_TYPE_7, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Bow, IMGFX_SET_ALPHA, 0, 0, 0, 0)
         EVT_CALL(NpcFacePlayer, NPC_Bow, 0)
         EVT_CALL(MakeLerp, 0, 240, 20 * DT, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(func_802CFD30, NPC_Bow, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_Bow, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
                 EVT_BREAK_LOOP
@@ -217,7 +218,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
             EVT_CALL(MakeLerp, 240, 0, 20 * DT, EASING_LINEAR)
             EVT_LOOP(0)
                 EVT_CALL(UpdateLerp)
-                EVT_CALL(func_802CFD30, NPC_Bow, FOLD_TYPE_7, LVar0, 0, 0, 0)
+                EVT_CALL(SetNpcImgFXParams, NPC_Bow, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
                 EVT_WAIT(1)
                 EVT_IF_EQ(LVar1, 0)
                     EVT_BREAK_LOOP
@@ -282,7 +283,7 @@ EvtScript N(EVS_NpcIdle_Boo) = {
         EVT_CALL(MakeLerp, LVar2, 240, LVar3, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
                 EVT_BREAK_LOOP
@@ -451,7 +452,7 @@ EvtScript N(EVS_Scene_SkolarRescued) = {
     EVT_CALL(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_Leap)
     EVT_WAIT(20 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_UsePower)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_139, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_RECEIVE_STAR_POWER, SOUND_SPACE_DEFAULT)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_SET(LVar3, LVar1)
     EVT_ADD(LVar1, 50)
@@ -464,7 +465,7 @@ EvtScript N(EVS_Scene_SkolarRescued) = {
         EVT_WAIT(6 * DT)
     EVT_END_LOOP
     EVT_WAIT(20 * DT)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_188, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_GET_STAR_POWER_WAVE, SOUND_SPACE_DEFAULT)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 20)
     EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, 1, 30)
@@ -530,7 +531,7 @@ EvtScript N(EVS_Scene_SkolarRescued) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(15 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_2045, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Skolar, SOUND_STAR_SPIRIT_DEPART_1, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_WAIT(10 * DT)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_LookUp)
@@ -565,7 +566,7 @@ NpcData N(NpcData_Tubba)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Tubba),
         .settings = &N(NpcSettings_TubbaBlubba),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = TUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Tubba),
@@ -576,7 +577,7 @@ NpcData N(NpcData_Tubba)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TubbasHeart),
         .settings = &N(NpcSettings_TubbasHeart),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = TUBBAS_HEART_ANIMS,
     },
@@ -589,7 +590,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_GustyBoo),
@@ -600,7 +601,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_GustyBoo),
@@ -611,7 +612,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_GustyBoo),
@@ -622,7 +623,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_GustyBoo),
@@ -633,7 +634,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_Boo),
@@ -644,7 +645,7 @@ NpcData N(NpcData_Boos)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Boo),
         .settings = &N(NpcSettings_Boo),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
         .extraAnimations = N(ExtraAnims_Boo),
@@ -657,7 +658,7 @@ NpcData N(NpcData_Bow) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bow),
     .settings = &N(NpcSettings_Boo),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_WorldBow_Idle,
@@ -685,7 +686,7 @@ NpcData N(NpcData_Bootler) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bootler),
     .settings = &N(NpcSettings_Boo),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_Bootler_Idle,
@@ -736,7 +737,7 @@ NpcData N(NpcData_HyperParagoomba_01) = {
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
     .settings = &N(NpcSettings_HyperParagoomba),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -760,7 +761,7 @@ NpcData N(NpcData_HyperParagoomba_02) = {
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
     .settings = &N(NpcSettings_HyperParagoomba),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -784,7 +785,7 @@ NpcData N(NpcData_HyperParagoomba_03) = {
     },
     .init = &N(EVS_NpcInit_HyperParagoomba),
     .settings = &N(NpcSettings_HyperParagoomba),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = HYPER_PARAGOOMBA_DROPS,
     .animations = HYPER_PARAGOOMBA_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -796,7 +797,7 @@ NpcData N(NpcData_Skolar) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Skolar),
     .settings = &N(NpcSettings_StarSpirit),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SKOLAR_ANIMS,
 };

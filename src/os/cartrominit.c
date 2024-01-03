@@ -18,22 +18,20 @@ OSPiHandle *osCartRomInit(void)
 
     __osPiGetAccess();
 
-	if (!first) {
+    if (!first) {
         __osPiRelAccess();
-		return &__CartRomHandle;
+        return &__CartRomHandle;
     }
 
     first = 0;
-	__CartRomHandle.type = DEVICE_TYPE_CART;
-	__CartRomHandle.baseAddress = PHYS_TO_K1(PI_DOM1_ADDR2);
-	__CartRomHandle.domain = PI_DOMAIN1;
-	__CartRomHandle.speed = 0;
+    __CartRomHandle.type = DEVICE_TYPE_CART;
+    __CartRomHandle.baseAddress = PHYS_TO_K1(PI_DOM1_ADDR2);
+    __CartRomHandle.domain = PI_DOMAIN1;
+    __CartRomHandle.speed = 0;
 
-	bzero(&__CartRomHandle.transferInfo, sizeof(__OSTranxInfo));
+    bzero(&__CartRomHandle.transferInfo, sizeof(__OSTranxInfo));
 
-    while (stat = IO_READ(PI_STATUS_REG), stat & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY)) {
-        ;
-    }
+    WAIT_ON_IOBUSY(stat);
 
     latency = IO_READ(PI_BSD_DOM1_LAT_REG);
     pageSize = IO_READ(PI_BSD_DOM1_PGS_REG);
@@ -56,11 +54,11 @@ OSPiHandle *osCartRomInit(void)
     IO_WRITE(PI_BSD_DOM1_RLS_REG, relDuration);
     IO_WRITE(PI_BSD_DOM1_PWD_REG, pulse);
 
-	saveMask = __osDisableInt();
-	__CartRomHandle.next = __osPiTable;
-	__osPiTable = &__CartRomHandle;
-	__osRestoreInt(saveMask);
+    saveMask = __osDisableInt();
+    __CartRomHandle.next = __osPiTable;
+    __osPiTable = &__CartRomHandle;
+    __osRestoreInt(saveMask);
     __osPiRelAccess();
 
-	return &__CartRomHandle;
+    return &__CartRomHandle;
 }

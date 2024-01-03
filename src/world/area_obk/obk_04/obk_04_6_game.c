@@ -1,5 +1,6 @@
 #include "obk_04.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 // redundant, but useful for documentation
 enum {
@@ -95,7 +96,7 @@ API_CALLABLE(N(UpgradeBootsToSuper)) {
 API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc npc;
-    f32 dist = dist2D(playerStatus->position.x, playerStatus->position.z, 0.0f, 0.0f);
+    f32 dist = dist2D(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f);
     f32 yaw;
     s32 gt, lt;
 
@@ -112,7 +113,7 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     }
 
     if (gt | lt) {
-        yaw = atan2(playerStatus->position.x, playerStatus->position.z, 0.0f, 0.0f) + 180.0f;
+        yaw = atan2(playerStatus->pos.x, playerStatus->pos.z, 0.0f, 0.0f) + 180.0f;
         npc.pos.x = 0.0f;
         npc.pos.y = 0.0f;
         npc.pos.z = 0.0f;
@@ -122,9 +123,9 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
         script->varTable[2] = npc.pos.z;
         script->varTable[3] = 1;
     } else {
-        script->varTable[0] = playerStatus->position.x;
-        script->varTable[1] = playerStatus->position.y;
-        script->varTable[2] = playerStatus->position.z;
+        script->varTable[0] = playerStatus->pos.x;
+        script->varTable[1] = playerStatus->pos.y;
+        script->varTable[2] = playerStatus->pos.z;
         script->varTable[3] = 0;
     }
     return ApiStatus_DONE2;
@@ -203,7 +204,7 @@ EvtScript N(EVS_BooAppear) = {
     EVT_CALL(MakeLerp, 0, 255, 60, EASING_LINEAR)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, LVarA, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, LVarA, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)
@@ -221,7 +222,7 @@ EvtScript N(EVS_BooSpookAndVanish) = {
     EVT_CALL(MakeLerp, 255, 0, 60, EASING_LINEAR)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, LVarA, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, LVarA, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(0)
@@ -231,7 +232,7 @@ EvtScript N(EVS_BooSpookAndVanish) = {
     EVT_END
 };
 
-EvtScript N(EVS_ShowGotSuperBootsFX) = {
+EvtScript N(EVS_SpawnGotSuperBootsFX) = {
     EVT_THREAD
         EVT_CALL(AdjustCam, CAM_DEFAULT, EVT_FLOAT(8.0), 0, EVT_FLOAT(300.0), EVT_FLOAT(17.5), EVT_FLOAT(-9.5))
     EVT_END_THREAD
@@ -259,7 +260,7 @@ EvtScript N(EVS_ShowGotSuperBootsFX) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(func_802D7B44, LVar8)
+    EVT_CALL(DismissItemOutline, LVar8)
     EVT_CALL(RemoveItemEntity, LVarC)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
     EVT_THREAD
@@ -290,7 +291,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     EVT_CALL(MakeLerp, 0, 255, 30, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_CALL(SetItemAlpha, MV_KeepAwayItem, LVar0)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 0)
@@ -323,7 +324,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EVT_SET(LVar1, 30)
         EVT_CALL(N(GetKeepAwayCarrierYaw))
         EVT_CALL(N(GetItemJumpDest))
-        EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetNpcJumpscale, NPC_DummyBoo, EVT_FLOAT(1.0))
         EVT_CALL(NpcJump0, NPC_DummyBoo, LVar0, LVar1, LVar2, 14 * DT)
         EVT_CALL(SetNpcPos, NPC_DummyBoo, NPC_DISPOSE_LOCATION)
@@ -332,7 +333,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_CALL(MakeLerp, 255, 0, 10, EASING_LINEAR)
             EVT_LOOP(0)
                 EVT_CALL(UpdateLerp)
-                EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+                EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
                 EVT_WAIT(1)
                 EVT_IF_EQ(LVar1, 0)
                     EVT_BREAK_LOOP
@@ -358,7 +359,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EVT_SET(LVar1, 30)
             EVT_CALL(N(GetKeepAwayCarrierYaw))
             EVT_CALL(N(GetItemJumpDest))
-            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcJumpscale, NPC_DummyBoo, EVT_FLOAT(1.5))
             EVT_CALL(NpcJump0, NPC_DummyBoo, LVar0, LVar1, LVar2, 14 * DT)
             EVT_CALL(SetNpcPos, NPC_DummyBoo, NPC_DISPOSE_LOCATION)
@@ -377,7 +378,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EVT_CALL(MakeLerp, 0, 255, 10, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
-            EVT_CALL(func_802CFD30, NPC_LeaderBoo, FOLD_TYPE_7, LVar0, 0, 0, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_LeaderBoo, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             EVT_WAIT(1)
             EVT_IF_EQ(LVar1, 0)
                 EVT_BREAK_LOOP
@@ -415,7 +416,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
                 EVT_END_IF
             EVT_END_LOOP
             EVT_CALL(SpeakToPlayer, MV_ItemCarrierNpc, ANIM_Boo_Talk, ANIM_Boo_Idle, 5, MSG_CH3_003E)
-            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcJumpscale, NPC_DummyBoo, EVT_FLOAT(2.0))
             EVT_CALL(NpcJump0, NPC_DummyBoo, 0, 65, 0, 10)
             EVT_CALL(SpeakToPlayer, NPC_LeaderBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 5, MSG_CH3_003B)
@@ -442,7 +443,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     EVT_WAIT(1)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 30)
-    EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_DummyBoo, SOUND_THROW, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcJumpscale, NPC_DummyBoo, EVT_FLOAT(2.0))
     EVT_CALL(NpcJump0, NPC_DummyBoo, LVar0, LVar1, LVar2, 10)
     EVT_WAIT(10)
@@ -450,7 +451,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     EVT_WAIT(1)
     EVT_SET(MF_WaitForUpgradeDone, FALSE)
     EVT_EXEC(N(EVS_PlayUpgradeSong))
-    EVT_EXEC(N(EVS_ShowGotSuperBootsFX))
+    EVT_EXEC(N(EVS_SpawnGotSuperBootsFX))
     EVT_CALL(N(UpgradeBootsToSuper))
     EVT_WAIT(30)
     EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_0180, 160, 40)
@@ -499,7 +500,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     EVT_EXEC(N(EVS_BooSpookAndVanish))
     EVT_WAIT(60)
     EVT_CALL(SetNpcPos, NPC_TutorialBoo, -160, 10, -175)
-    EVT_CALL(func_802CFD30, NPC_TutorialBoo, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_TutorialBoo, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_SET(LVarA, NPC_TutorialBoo)
     EVT_EXEC(N(EVS_BooAppear))
     EVT_WAIT(60)

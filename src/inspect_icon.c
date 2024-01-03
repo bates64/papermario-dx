@@ -44,13 +44,13 @@ void interact_inspect_setup(void) {
     if (playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) {
         mem_clear(InspectIconPtr, sizeof(*InspectIconPtr));
         D_8010C950 = -1;
-        InspectIconPtr->pos.x = playerStatus->position.x;
-        InspectIconPtr->pos.y = playerStatus->position.y + playerStatus->colliderHeight +
+        InspectIconPtr->pos.x = playerStatus->pos.x;
+        InspectIconPtr->pos.y = playerStatus->pos.y + playerStatus->colliderHeight +
                                    (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) ? 8.0f : 2.0f);
-        InspectIconPtr->pos.z = playerStatus->position.z;
+        InspectIconPtr->pos.z = playerStatus->pos.z;
         InspectIconPtr->scale = 0.4f;
         InspectIconPtr->state = INSPECT_ICON_APPEAR;
-        InspectIconPtr->yaw = -gCameras[gCurrentCameraID].currentYaw;
+        InspectIconPtr->yaw = -gCameras[gCurrentCameraID].curYaw;
         InteractNotificationCallback = interact_inspect_update;
         InspectIconPtr->brightness = 255;
         InspectIconPtr->alpha = 255;
@@ -58,12 +58,12 @@ void interact_inspect_setup(void) {
 }
 
 void appendGfx_interact_prompt(void) {
-    FoldImageRecPart sp20;
+    ImgFXTexture ifxImg;
     Matrix4f sp38, sp78;
 
     if (gPlayerStatus.animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) {
         guScaleF(sp38, InspectIconPtr->scale, InspectIconPtr->scale, InspectIconPtr->scale);
-        guRotateF(sp78, InspectIconPtr->yaw - gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
+        guRotateF(sp78, InspectIconPtr->yaw - gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
         guMtxCatF(sp38, sp78, sp38);
         guTranslateF(sp78, InspectIconPtr->pos.x, InspectIconPtr->pos.y, InspectIconPtr->pos.z);
         guMtxCatF(sp38, sp78, sp78);
@@ -73,17 +73,18 @@ void appendGfx_interact_prompt(void) {
                   G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gMainGfxPos++, &inspect_icon_gfx);
 
-        sp20.raster  = inspect_icon_img;
-        sp20.palette = inspect_icon_pal;
-        sp20.width   = inspect_icon_img_width;
-        sp20.height  = inspect_icon_img_height;
-        sp20.xOffset = -16;
-        sp20.yOffset = 26;
-        sp20.opacity = 255;
-        fold_update(0, FOLD_TYPE_NONE, 0, 0, 0, 0, 0x440);
-        fold_update(0, FOLD_TYPE_6,
-                    InspectIconPtr->brightness, InspectIconPtr->brightness, InspectIconPtr->brightness, 255, 0x448);
-        fold_appendGfx_component(0, &sp20, 0, sp78);
+        ifxImg.raster  = inspect_icon_img;
+        ifxImg.palette = inspect_icon_pal;
+        ifxImg.width   = inspect_icon_img_width;
+        ifxImg.height  = inspect_icon_img_height;
+        ifxImg.xOffset = -16;
+        ifxImg.yOffset = 26;
+        ifxImg.alpha = 255;
+        imgfx_update(0, IMGFX_CLEAR, 0, 0, 0, 0, IMGFX_FLAG_400 | IMGFX_FLAG_40);
+        imgfx_update(0, IMGFX_SET_COLOR,
+                    InspectIconPtr->brightness, InspectIconPtr->brightness, InspectIconPtr->brightness, 255,
+                    IMGFX_FLAG_400 | IMGFX_FLAG_40 | IMGFX_FLAG_8);
+        imgfx_appendGfx_component(0, &ifxImg, 0, sp78);
 
         gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     }
@@ -93,11 +94,11 @@ void appendGfx_interact_prompt(void) {
 s32 should_continue_inspect(void) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 curInteraction = collisionStatus->currentWall;
+    s32 curInteraction = collisionStatus->curWall;
     Npc* npc = playerStatus->encounteredNPC;
 
     if (curInteraction == NO_COLLIDER) {
-        s32 floor = gCollisionStatus.currentFloor;
+        s32 floor = gCollisionStatus.curFloor;
 
         if (floor >= 0 && (floor & COLLISION_WITH_ENTITY_BIT)) {
             curInteraction = floor;
@@ -112,8 +113,8 @@ s32 should_continue_inspect(void) {
                     curInteraction = NO_COLLIDER;
                     break;
             }
-        } else if (
-            ((playerStatus->flags & (PS_FLAG_HAS_CONVERSATION_NPC | PS_FLAG_INPUT_DISABLED)) == PS_FLAG_HAS_CONVERSATION_NPC)
+        } else if (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
+            && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC)
             && (npc != NULL)
             && (npc->flags & NPC_FLAG_10000000)
         ) {
@@ -174,12 +175,12 @@ void update_inspect_icon_pos(void) {
         InspectIconPtr->iconBounceVel = -4;
     }
 
-    delta = (playerStatus->position.x - InspectIconPtr->pos.x) * 0.666f;
+    delta = (playerStatus->pos.x - InspectIconPtr->pos.x) * 0.666f;
     InspectIconPtr->pos.x += delta;
-    delta = (playerStatus->position.z - InspectIconPtr->pos.z) * 0.666f;
+    delta = (playerStatus->pos.z - InspectIconPtr->pos.z) * 0.666f;
     InspectIconPtr->pos.z += delta;
 
-    playerHeadY = playerStatus->position.y + playerStatus->colliderHeight;
+    playerHeadY = playerStatus->pos.y + playerStatus->colliderHeight;
     bounceDeltaY = InspectIconPtr->iconBounceVel;
     lastPosY = InspectIconPtr->pos.y;
     if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {

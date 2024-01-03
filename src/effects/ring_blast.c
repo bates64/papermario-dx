@@ -22,15 +22,15 @@ void ring_blast_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, s32 arg5)
     effectBp.update = ring_blast_update;
     effectBp.renderWorld = ring_blast_render;
     effectBp.unk_00 = 0;
-    effectBp.unk_14 = 0;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_RING_BLAST;
 
-    effect = shim_create_effect_instance(&effectBp);
+    effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
-    data = effect->data.ringBlast = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.ringBlast = general_heap_malloc(numParts * sizeof(*data));
 
     ASSERT(data != NULL);
-    shim_mem_clear(data, numParts * sizeof(*data));
+    mem_clear(data, numParts * sizeof(*data));
 
     data->timeLeft = arg5;
     data->lifeTime = 0;
@@ -61,7 +61,7 @@ void ring_blast_update(EffectInstance* effect) {
     data->timeLeft--;
 
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
     data->unk_24 += data->unk_28;
@@ -76,10 +76,10 @@ void ring_blast_render(EffectInstance* effect) {
 
     renderTask.appendGfx = ring_blast_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 0;
-    renderTask.renderMode = RENDER_MODE_28;
+    renderTask.dist = 0;
+    renderTask.renderMode = RENDER_MODE_PASS_THROUGH;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -98,10 +98,10 @@ void ring_blast_appendGfx(void* effect) {
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
     gSPDisplayList(gMainGfxPos++, dlist2);
 
-    shim_guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z);
-    shim_guRotateF(sp60, data->unk_24, 0.0f, 0.0f, 1.0f);
-    shim_guMtxCatF(sp60, sp20, sp20);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->unk_10, data->pos.x, data->pos.y, data->pos.z);
+    guRotateF(sp60, data->unk_24, 0.0f, 0.0f, 1.0f);
+    guMtxCatF(sp60, sp20, sp20);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
@@ -119,9 +119,9 @@ void ring_blast_appendGfx(void* effect) {
         gDPSetEnvColor(gMainGfxPos++, var_f4 * 255.0f, var_f4 * 53.0f, var_f4 * 24.0f, envAlpha);
         gDPSetKeyR(gMainGfxPos++, var_f4 * 211.0f, 0, 0);
         gDPSetKeyGB(gMainGfxPos++, var_f4 * 255.0f, 0, 0, var_f4 * 216.0f, 0, 0);
-        gDPSetCombineLERP(gMainGfxPos++, TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, PRIMITIVE, CENTER, COMBINED, ENVIRONMENT, 0, 0, 0, COMBINED);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_4A, PM_CC_4B);
     } else {
-        gDPSetCombineLERP(gMainGfxPos++, TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, 1, COMBINED, PRIMITIVE, COMBINED, 0, 0, 0, COMBINED);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_4A, PM_CC_4C);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 40, 127);
         gDPSetEnvColor(gMainGfxPos++, 255, 255, 139, envAlpha);
     }

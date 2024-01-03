@@ -2,10 +2,11 @@
 #include "script_api/battle.h"
 #include "effects.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 #define NAMESPACE battle_item_life_shroom
 
-extern EntityModelScript D_80283EE8;
+extern EntityModelScript EMS_StarIcon;
 
 #include "battle/common/move/ItemRefund.inc.c"
 
@@ -16,9 +17,9 @@ API_CALLABLE(N(func_802A123C_72E76C)) {
     s32 c = evt_get_variable(script, *args++);
     ItemEntity* item = get_item_entity(script->varTable[14]);
 
-    item->position.x = a;
-    item->position.y = b;
-    item->position.z = c;
+    item->pos.x = a;
+    item->pos.y = b;
+    item->pos.z = c;
 
     return ApiStatus_DONE2;
 }
@@ -47,7 +48,7 @@ API_CALLABLE(N(func_802A12EC_72E81C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ShowHeartRecoveryFX)) {
+API_CALLABLE(N(SpawnHeartRecoveryFX)) {
     Bytecode* args = script->ptrReadPos;
     s32 a = evt_get_variable(script, *args++);
     s32 b = evt_get_variable(script, *args++);
@@ -90,7 +91,7 @@ API_CALLABLE(N(func_802A1484_72E9B4)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-EvtScript N(script6) = {
+EvtScript N(EVS_UseOnPartner) = {
     EVT_CALL(SetActorYaw, ACTOR_PLAYER, 30)
     EVT_WAIT(1)
     EVT_CALL(SetActorYaw, ACTOR_PLAYER, 60)
@@ -111,7 +112,7 @@ EvtScript N(script6) = {
         EVT_WAIT(20)
         EVT_CALL(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     EVT_END_THREAD
-    EVT_CALL(CreateVirtualEntity, LVarA, EVT_PTR(D_80283EE8))
+    EVT_CALL(CreateVirtualEntity, LVarA, EVT_PTR(EMS_StarIcon))
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_ADD(LVar0, 0)
     EVT_ADD(LVar1, 30)
@@ -175,8 +176,8 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(N(func_802A1484_72E9B4), LVarA)
     EVT_CALL(InitTargetIterator)
     EVT_CALL(GetOwnerTarget, LVar0, LVar1)
-    EVT_IF_EQ(LVar0, 256)
-        EVT_EXEC_WAIT(N(script6))
+    EVT_IF_EQ(LVar0, ACTOR_PARTNER)
+        EVT_EXEC_WAIT(N(EVS_UseOnPartner))
         EVT_RETURN
     EVT_END_IF
     EVT_SET_CONST(LVarA, ITEM_LIFE_SHROOM)
@@ -187,7 +188,7 @@ EvtScript N(EVS_UseItem) = {
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_ADD(LVar0, 0)
     EVT_ADD(LVar1, 35)
-    EVT_CALL(N(ShowHeartRecoveryFX), LVar0, LVar1, LVar2, LVar3)
+    EVT_CALL(N(SpawnHeartRecoveryFX), LVar0, LVar1, LVar2, LVar3)
     EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 25)
     EVT_CALL(ShowStartRecoveryShimmer, LVar0, LVar1, LVar2, LVar3)

@@ -1,10 +1,10 @@
 #include "mac_04.h"
 
-s32 set_background_color_blend(s32, s32, s32, s32);
+s32 mdl_set_shroud_tint_params(s32, s32, s32, s32);
 
 API_CALLABLE(N(InitEntryFromToybox)) {
-    func_8011B950(MODEL_heiho_house, -1, FOG_MODE_1, 1);
-    set_background_color_blend(0, 0, 0, 255);
+    mdl_group_set_custom_gfx(MODEL_heiho_house, CUSTOM_GFX_NONE, ENV_TINT_SHROUD, TRUE);
+    mdl_set_shroud_tint_params(0, 0, 0, 255);
     gCameras[CAM_DEFAULT].bgColor[0] = 0;
     gCameras[CAM_DEFAULT].bgColor[1] = 0;
     gCameras[CAM_DEFAULT].bgColor[2] = 0;
@@ -35,7 +35,7 @@ EvtScript N(EVS_RoomListener_Shop) = {
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(ROOM_UPDATE_ENTER_BEGIN)
             EVT_CALL(EnableGroup, MODEL_mise_in, TRUE)
-            EVT_EXEC(N(EVS_80248B08))
+            EVT_EXEC(N(EVS_OnEnterShop))
         EVT_CASE_EQ(ROOM_UPDATE_EXIT_END)
             EVT_CALL(EnableGroup, MODEL_mise_in, FALSE)
     EVT_END_SWITCH
@@ -134,7 +134,7 @@ EvtScript N(EVS_RoomListener_Warehouse) = {
             EVT_CALL(EnableGroup, MODEL_heiho_in, TRUE)
             EVT_SET(MF_MusicMixTrigger, TRUE)
         EVT_CASE_EQ(ROOM_UPDATE_ENTER_DONE)
-            EVT_EXEC(N(D_80248798_84B368))
+            EVT_EXEC(N(EVS_HiddenRoom_WaitForOuttaSight))
         EVT_CASE_EQ(ROOM_UPDATE_EXIT_END)
             EVT_CALL(EnableGroup, MODEL_heiho_in, FALSE)
             EVT_CALL(EnableGroup, MODEL_hi_soto, TRUE)

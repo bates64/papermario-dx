@@ -2,6 +2,7 @@
 #include "hud_element.h"
 #include "battle/battle.h"
 #include "sprite.h"
+#include "game_modes.h"
 
 typedef struct DemoSceneData {
     /* 0x0 */ s16 sceneType;
@@ -133,27 +134,17 @@ DemoSceneData DemoScenes[] = {
         .partnerID = PARTNER_NONE,
         .storyProgress = STORY_CH1_KNOCKED_SWITCH_FROM_TREE
     },
-    {
+    [LAST_DEMO_SCENE_IDX] {
         .sceneType = DEMO_SCENE_DONE,
         .mapName = "end"
     },
     {} // final entry blank
 };
 
-#if VERSION_JP
-char versionString[] = "Prg Ver.00/07/06 22:22";
-#elif VERSION_US
-char versionString[] = "Prg Ver.00/12/05 16:54";
-#elif VERSION_IQUE
-char versionString[] = "Prg Ver.04/05/18 10:52";
-#else
-char versionString[] = "Prg Ver.??/??/?? ??:??";
-#endif
-
 void state_init_demo(void) {
-    if (gGameStatusPtr->demoState == 0) {
+    if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         gGameStatusPtr->nextDemoScene = 0;
-        gGameStatusPtr->demoState = 1;
+        gGameStatusPtr->demoState = DEMO_STATE_ACTIVE;
     }
 
     gGameStatusPtr->demoButtonInput = 0;
@@ -161,8 +152,8 @@ void state_init_demo(void) {
     gGameStatusPtr->demoStickY = 0;
 
     disable_sounds();
-    set_map_transition_effect(2);
-    set_screen_overlay_params_front(0, 255.0f);
+    set_map_transition_effect(TRANSITION_END_DEMO_SCENE_BLACK);
+    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 255.0f);
     clear_saved_variables();
     clear_script_list();
 }
@@ -174,37 +165,37 @@ void state_step_demo(void) {
     s16 mapID;
     s16 areaID;
 
-    if (gGameStatusPtr->demoState == 4) {
+    if (gGameStatusPtr->demoState == DEMO_STATE_4) {
         mode = DEMO_SCENE_DONE;
     }
-    if (gGameStatusPtr->demoState == 5) {
+    if (gGameStatusPtr->demoState == DEMO_STATE_DONE) {
         mode = DEMO_SCENE_EXIT;
     }
 
     switch (mode) {
         case DEMO_SCENE_DONE:
-            intro_logos_set_fade_alpha(255);
-            intro_logos_set_fade_color(224);
-            gGameStatusPtr->introState = INTRO_STATE_3;
-            gOverrideFlags |= GLOBAL_OVERRIDES_8;
-            intro_logos_update_fade();
-            gGameStatusPtr->demoState = 5;
+            startup_set_fade_screen_alpha(255);
+            startup_set_fade_screen_color(224);
+            gGameStatusPtr->startupState = 3;
+            gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
+            startup_fade_screen_update();
+            gGameStatusPtr->demoState = DEMO_STATE_DONE;
             break;
         case DEMO_SCENE_EXIT:
-            if (gGameStatusPtr->introState != INTRO_STATE_0) {
-                gGameStatusPtr->introState--;
+            if (gGameStatusPtr->startupState != 0) {
+                gGameStatusPtr->startupState--;
             }
 
-            if (gGameStatusPtr->introState == INTRO_STATE_0) {
+            if (gGameStatusPtr->startupState == 0) {
                 gGameStatusPtr->nextDemoScene = 0;
-                gGameStatusPtr->demoState = 0;
+                gGameStatusPtr->demoState = DEMO_STATE_NONE;
                 gGameStatusPtr->peachFlags = 0;
                 enable_sounds();
                 gGameStatusPtr->isBattle = FALSE;
-                gGameStatusPtr->unk_76 = 0;
-                gGameStatusPtr->disableScripts = FALSE;
+                gGameStatusPtr->debugUnused1 = FALSE;
+                gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
                 gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
-                gOverrideFlags &= ~GLOBAL_OVERRIDES_8;
+                gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 general_heap_create();
                 clear_render_tasks();
                 clear_worker_list();
@@ -219,7 +210,7 @@ void state_step_demo(void) {
                 hud_element_clear_cache();
                 clear_trigger_data();
                 clear_printers();
-                clear_entity_data(0);
+                clear_entity_data(FALSE);
                 clear_screen_overlays();
                 clear_player_status();
                 clear_npcs();
@@ -239,14 +230,14 @@ void state_step_demo(void) {
             gGameStatusPtr->mapID = mapID;
             gGameStatusPtr->entryID = demoSceneData->index;
             gGameStatusPtr->peachFlags = 0;
-            playerData->currentPartner = demoSceneData->partnerID;
-            set_cam_viewport(0, 29, 20, -262, 177);
+            playerData->curPartner = demoSceneData->partnerID;
+            set_cam_viewport(CAM_DEFAULT, 29, 20, -262, 177);
             evt_set_variable(NULL, GB_StoryProgress, demoSceneData->storyProgress);
 
             if (gGameStatusPtr->nextDemoScene == 0) {
-                set_map_transition_effect(3);
+                set_map_transition_effect(TRANSITION_END_DEMO_SCENE_WHITE);
             } else {
-                set_map_transition_effect(2);
+                set_map_transition_effect(TRANSITION_END_DEMO_SCENE_BLACK);
             }
 
             set_game_mode(GAME_MODE_ENTER_DEMO_WORLD);
@@ -256,15 +247,15 @@ void state_step_demo(void) {
             gGameStatusPtr->areaID = areaID;
             gGameStatusPtr->mapID = mapID;
             gGameStatusPtr->entryID = demoSceneData->index;
-            gGameStatusPtr->peachFlags = PEACH_STATUS_FLAG_IS_PEACH;
-            playerData->currentPartner = demoSceneData->partnerID;
-            set_cam_viewport(0, 29, 20, -262, 177);
+            gGameStatusPtr->peachFlags = PEACH_FLAG_IS_PEACH;
+            playerData->curPartner = demoSceneData->partnerID;
+            set_cam_viewport(CAM_DEFAULT, 29, 20, -262, 177);
             evt_set_variable(NULL, GB_StoryProgress, demoSceneData->storyProgress);
 
             if (gGameStatusPtr->nextDemoScene == 0) {
-                set_map_transition_effect(3);
+                set_map_transition_effect(TRANSITION_END_DEMO_SCENE_WHITE);
             } else {
-                set_map_transition_effect(2);
+                set_map_transition_effect(TRANSITION_END_DEMO_SCENE_BLACK);
             }
 
             set_game_mode(GAME_MODE_ENTER_DEMO_WORLD);
@@ -275,13 +266,23 @@ void state_step_demo(void) {
     }
 
     gGameStatusPtr->nextDemoScene++;
-    if (gGameStatusPtr->nextDemoScene > ARRAY_COUNT(DemoScenes) - 2) {
-        gGameStatusPtr->nextDemoScene = ARRAY_COUNT(DemoScenes) - 2;
+    if (gGameStatusPtr->nextDemoScene > LAST_DEMO_SCENE_IDX) {
+        gGameStatusPtr->nextDemoScene = LAST_DEMO_SCENE_IDX;
     }
 }
 
 void state_drawUI_demo(void) {
 
 }
+
+#if VERSION_JP
+char versionString[] = "Prg Ver.00/07/06 22:22";
+#elif VERSION_US
+char versionString[] = "Prg Ver.00/12/05 16:54";
+#elif VERSION_IQUE
+char versionString[] = "Prg Ver.04/05/18 10:52";
+#else
+char versionString[] = "Prg Ver.??/??/?? ??:??";
+#endif
 
 static const f32 pad[] = {0.0f, 0.0f};

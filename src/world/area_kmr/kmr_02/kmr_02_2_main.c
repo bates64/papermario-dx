@@ -65,7 +65,7 @@ EvtScript N(EVS_EnterMap) = {
                 EVT_CALL(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                 EVT_CALL(SetPlayerPos, LVar0, NPC_DISPOSE_POS_Y, LVar2)
                 EVT_WAIT(30)
-                EVT_CALL(PlaySound, SOUND_208E)
+                EVT_CALL(PlaySound, SOUND_GROW)
                 EVT_SET(GF_KMR02_WarpPipe, TRUE)
                 EVT_WAIT(30)
                 EVT_CALL(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -101,7 +101,7 @@ EvtScript N(EVS_ShowMessage_ItsLocked) = {
 
 EvtScript N(EVS_OpenGoombaRoadGate) = {
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_1D2, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_tt2, SOUND_GOOMBA_GATE_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 120, 20, EASING_COS_IN_OUT)
     EVT_LABEL(0)
         EVT_CALL(UpdateLerp)

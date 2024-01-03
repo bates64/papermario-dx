@@ -1,5 +1,6 @@
 #include "kmr_22.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 BSS EffectInstance* N(ChapterEffect);
 BSS s32 N(ChapterEffectTime);
@@ -19,7 +20,7 @@ s16 N(AnimTextOffsets)[CHUNK_SIZE * 2] = {
       5,   3,   2,   1,
 #else
     310, 290, 270, 250, 230,
-    210, 190, 170, 150, 130, 
+    210, 190, 170, 150, 130,
     110,  90,  70,  50,  32,
      16,   8,   4,   2,   1,
 #endif
@@ -113,23 +114,23 @@ EvtScript N(EVS_EnterMap) = {
     EVT_CALL(GetEntryID, LVar0)
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(kmr_22_ENTRY_0)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_00"), kmr_00_ENTRY_0, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_00"), kmr_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_1)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("nok_11"), nok_11_ENTRY_0, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("nok_11"), nok_11_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_2)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("iwa_10"), iwa_10_ENTRY_0, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("iwa_10"), iwa_10_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_3)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("mim_01"), mim_01_ENTRY_1, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("mim_01"), mim_01_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_4)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_4, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_4, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_5)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("jan_00"), jan_00_ENTRY_0, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("jan_00"), jan_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_6)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("flo_00"), flo_00_ENTRY_0, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("flo_00"), flo_00_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_7)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("sam_02"), sam_02_ENTRY_2, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("sam_02"), sam_02_ENTRY_2, TRANSITION_BEGIN_OR_END_CHAPTER)
         EVT_CASE_EQ(kmr_22_ENTRY_8)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("kpa_63"), kpa_63_ENTRY_1, TRANSITION_6)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("kpa_63"), kpa_63_ENTRY_1, TRANSITION_BEGIN_OR_END_CHAPTER)
     EVT_END_SWITCH
     EVT_CALL(N(DismissCurtains))
     EVT_WAIT(100)
@@ -157,7 +158,7 @@ EvtScript N(EVS_Main) = {
         EVT_CALL(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EVT_END_IF
     EVT_CALL(SetSpriteShading, SHADING_NONE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 208, 208, 208)
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)

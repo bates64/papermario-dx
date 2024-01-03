@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "model.h"
 #include "sprite/npc/ChuckQuizmo.h"
+#include "sprite/player.h"
 
 #ifndef CHUCK_QUIZMO_NPC_ID
     #error CHUCK_QUIZMO_NPC_ID must be defined for Quizmo.inc.c
@@ -224,7 +225,7 @@ void N(Quizmo_NPC_OnRender)(Npc* npc) {
     Camera* camera = &gCameras[gCurrentCamID];
 
     if (npc->blur.quizmo->flags & 1) {
-        clamp_angle(-camera->currentYaw);
+        clamp_angle(-camera->curYaw);
     }
 }
 
@@ -232,23 +233,23 @@ API_CALLABLE(N(Quizmo_HideWorld)) {
     if (isInitialCall) {
         s32 i;
 
-        mdl_set_all_fog_mode(FOG_MODE_1);
-        *gBackgroundFogModePtr = FOG_MODE_1;
-        set_background_color_blend(0, 0, 0, 0);
+        mdl_set_all_tint_type(ENV_TINT_SHROUD);
+        *gBackgroundTintModePtr = ENV_TINT_SHROUD;
+        mdl_set_shroud_tint_params(0, 0, 0, 0);
 
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
-
-            if (npc != NULL && npc->flags != 0 && npc->npcID != NPC_PARTNER && npc->npcID != CHUCK_QUIZMO_NPC_ID) {
-                npc->flags |= NPC_FLAG_HIDING;
+            if (npc != NULL && npc->flags != 0) {
+                if (npc->npcID != NPC_PARTNER && npc->npcID != CHUCK_QUIZMO_NPC_ID) {
+                    npc->flags |= NPC_FLAG_HIDING;
+                }
             }
         }
 
         for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
             ItemEntity* itemEntity = get_item_entity(i);
-
             if (itemEntity != NULL && itemEntity->flags & ITEM_ENTITY_FLAG_10) {
-                itemEntity->flags |= ITEM_ENTITY_FLAG_8000000;
+                itemEntity->flags |= ITEM_ENTITY_FLAG_HIDING;
             }
         }
 
@@ -260,7 +261,7 @@ API_CALLABLE(N(Quizmo_HideWorld)) {
         script->functionTemp[0] = 255;
     }
 
-    set_background_color_blend(0, 0, 0, script->functionTemp[0]);
+    mdl_set_shroud_tint_params(0, 0, 0, script->functionTemp[0]);
 
     if (script->functionTemp[0] == 255) {
         return ApiStatus_DONE2;
@@ -273,7 +274,7 @@ API_CALLABLE(N(Quizmo_FadeInWorld)) {
     s32 i;
 
     if (isInitialCall) {
-        set_background_color_blend(0, 0, 0, 255);
+        mdl_set_shroud_tint_params(0, 0, 0, 255);
         script->functionTemp[0] = 255;
         script->functionTemp[1] = 0;
     }
@@ -283,12 +284,12 @@ API_CALLABLE(N(Quizmo_FadeInWorld)) {
         script->functionTemp[0] = 0;
     }
 
-    set_background_color_blend(0, 0, 0, script->functionTemp[0]);
+    mdl_set_shroud_tint_params(0, 0, 0, script->functionTemp[0]);
     if (script->functionTemp[0] == 0 && script->functionTemp[1] == 0) {
         script->functionTemp[1] = 1;
     } else if (script->functionTemp[1] == 1) {
-        mdl_set_all_fog_mode(FOG_MODE_0);
-        *gBackgroundFogModePtr = FOG_MODE_0;
+        mdl_set_all_tint_type(ENV_TINT_NONE);
+        *gBackgroundTintModePtr = ENV_TINT_NONE;
 
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
@@ -302,7 +303,7 @@ API_CALLABLE(N(Quizmo_FadeInWorld)) {
         for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
             ItemEntity* entity = get_item_entity(i);
             if (entity != NULL && entity->flags & ITEM_ENTITY_FLAG_10) {
-                entity->flags &= ~ITEM_ENTITY_FLAG_8000000;
+                entity->flags &= ~ITEM_ENTITY_FLAG_HIDING;
             }
         }
 
@@ -374,8 +375,8 @@ API_CALLABLE(N(Quizmo_DestroyEffects)) {
     QuizmoStageFXData* stageData;
 
     if (isInitialCall) {
-        N(Quizmo_AudienceEffect)->flags |= EFFECT_INSTANCE_FLAG_10;
-        N(Quizmo_VannaTEffect)->flags |= EFFECT_INSTANCE_FLAG_10;
+        N(Quizmo_AudienceEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
+        N(Quizmo_VannaTEffect)->flags |= FX_INSTANCE_FLAG_DISMISS;
     }
 
     stageData = N(Quizmo_StageEffect)->data.quizmoStage;
@@ -466,7 +467,7 @@ API_CALLABLE(N(Quizmo_AddViewRelativeOffset)) {
     Bytecode ourVarX = *args++;
     Bytecode outVarZ = *args++;
 
-    s32 cameraYaw = gCameras[gCurrentCameraID].currentYaw;
+    s32 cameraYaw = gCameras[gCurrentCameraID].curYaw;
     s32 outX = evt_get_variable(script, QUIZ_ARRAY_ORIGIN_X) - (z * cos_deg(cameraYaw));
     s32 outZ = evt_get_variable(script, QUIZ_ARRAY_ORIGIN_Z) - (z * sin_deg(cameraYaw));
 
@@ -990,12 +991,12 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     EVT_CALL(DisablePartnerAI, 0)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
     EVT_CALL(SetNpcFlagBits, CHUCK_QUIZMO_NPC_ID, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_8 | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+    EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcFlagBits, CHUCK_QUIZMO_NPC_ID, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     EVT_EXEC_GET_TID(N(EVS_Quizmo_SetCharacterPositons), LVar1)
     EVT_CALL(ContinueSpeech, -1, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000B)
-    EVT_CALL(PlaySound, 137)
+    EVT_CALL(PlaySound, SOUND_LRAW_AUDIENCE_MURMUR)
     EVT_LOOP(0)
         EVT_IS_THREAD_RUNNING(LVar1, LVar0)
         EVT_IF_EQ(LVar0, 0)
@@ -1016,13 +1017,13 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Question)
     EVT_SET(LVar0, MSG_QuizChoice_01)
     EVT_ADD(LVar0, GB_CompletedQuizzes)
-    EVT_CALL(PlaySound, 142)
+    EVT_CALL(PlaySound, SOUND_LRAW_QUIZ_TICKING)
     EVT_CALL(ShowChoice, LVar0)
     EVT_KILL_THREAD(LVar1)
-    EVT_CALL(StopSound, 142)
+    EVT_CALL(StopSound, SOUND_LRAW_QUIZ_TICKING)
     EVT_EXEC(N(EVS_Quizmo_PlayerHitBuzzer))
     EVT_WAIT(15)
-    EVT_CALL(PlaySound, 141)
+    EVT_CALL(PlaySound, SOUND_QUIZ_BUZZER)
     EVT_CALL(N(Quizmo_UnkStageEffectMode), LVar0)
     EVT_SET(QUIZ_ARRAY_ANSWER_RESULT, 0)
     EVT_CALL(N(Quizmo_CreateWorker))
@@ -1044,33 +1045,33 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             EVT_CALL(N(Quizmo_SetStageLightsDelay), 2)
         EVT_END_THREAD
         EVT_THREAD
-            EVT_CALL(PlaySound, SOUND_21C)
+            EVT_CALL(PlaySound, SOUND_APPROVE)
             EVT_WAIT(6)
-            EVT_CALL(PlaySound, SOUND_21C)
+            EVT_CALL(PlaySound, SOUND_APPROVE)
             EVT_WAIT(6)
-            EVT_CALL(PlaySound, SOUND_21C)
+            EVT_CALL(PlaySound, SOUND_APPROVE)
             EVT_WAIT(6)
-            EVT_CALL(PlaySound, SOUND_21C)
+            EVT_CALL(PlaySound, SOUND_APPROVE)
         EVT_END_THREAD
-        EVT_CALL(PlaySound, SOUND_8A)
+        EVT_CALL(PlaySound, SOUND_AUDIENCE_CHEER)
         EVT_CALL(N(Quizmo_SetVannaAnim_Clap))
         EVT_THREAD
             EVT_WAIT(15)
             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
             EVT_ADD(LVar1, 50)
             EVT_CALL(N(Quizmo_AddViewRelativeOffset), 0, 0, 83, LVar0, LVar2)
-            EVT_CALL(PlayEffect, 0x7, 2, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            EVT_CALL(PlayEffect, 0x44, 4, LVar0, LVar1, LVar2, 1, 60, 0, 0, 0, 0, 0, 0, 0)
+            EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2)
+            EVT_PLAY_EFFECT(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             EVT_WAIT(15)
             EVT_ADD(LVar1, -3)
             EVT_CALL(N(Quizmo_AddViewRelativeOffset), 0, 0, 58, LVar0, LVar2)
-            EVT_CALL(PlayEffect, 0x7, 2, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            EVT_CALL(PlayEffect, 0x44, 4, LVar0, LVar1, LVar2, 1, 60, 0, 0, 0, 0, 0, 0, 0)
+            EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2)
+            EVT_PLAY_EFFECT(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             EVT_WAIT(15)
             EVT_ADD(LVar1, 30)
             EVT_CALL(N(Quizmo_AddViewRelativeOffset), 0, 0, 93, LVar0, LVar2)
-            EVT_CALL(PlayEffect, 0x7, 2, LVar0, LVar1, LVar2, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-            EVT_CALL(PlayEffect, 0x44, 4, LVar0, LVar1, LVar2, 1, 60, 0, 0, 0, 0, 0, 0, 0)
+            EVT_PLAY_EFFECT(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2)
+            EVT_PLAY_EFFECT(EFFECT_CONFETTI, 4, LVar0, LVar1, LVar2, 1, 60)
             EVT_WAIT(15)
         EVT_END_THREAD
         EVT_WAIT(20)
@@ -1134,10 +1135,10 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
         EVT_CALL(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenWrong)
         EVT_SET(QUIZ_ARRAY_ANSWER_RESULT, 2)
         EVT_CALL(PlaySound, SOUND_MENU_ERROR)
-        EVT_CALL(PlaySound, SOUND_8B)
+        EVT_CALL(PlaySound, SOUND_AUDIENCE_BOO)
         EVT_EXEC_GET_TID(N(EVS_Quizmo_WrongAnswer), LVar1)
         EVT_CALL(GetPlayerPos, LVar2, LVar3, LVar4)
-        EVT_CALL(PlayEffect, 0x2B, 0, LVar2, LVar3, LVar4, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        EVT_PLAY_EFFECT(EFFECT_WINDY_LEAVES, 0, LVar2, LVar3, LVar4)
         EVT_CALL(ContinueSpeech, -1, -1, -1, 0, MSG_MGM_000D)
         EVT_CALL(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_CloseWrong)
         EVT_LOOP(0)
@@ -1153,11 +1154,11 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     EVT_CALL(EnablePartnerAI)
     EVT_THREAD
         EVT_WAIT(30)
-        EVT_CALL(PlaySound, SOUND_8F)
+        EVT_CALL(PlaySound, SOUND_QUIZMO_VANISH)
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(45)
-        EVT_CALL(StopSound, SOUND_89)
+        EVT_CALL(StopSound, SOUND_LRAW_AUDIENCE_MURMUR)
     EVT_END_THREAD
     EVT_CALL(N(Quizmo_SetVannaAnim_Wave))
     EVT_CALL(N(Quizmo_DestroyEffects))
@@ -1222,8 +1223,8 @@ NpcSettings N(NpcSettings_ChuckQuizmo) = {
     .otherAI = &N(EVS_Quizmo_NPC_OtherAI),
     .onInteract = &N(EVS_Quizmo_NPC_Interact),
     .aux = &N(EVS_Quizmo_NPC_Aux),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
-    .level = 99,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 // alternate (unused?) variant of quizmo with AI and ENEMY_FLAG_IGNORE_WORLD_COLLISION unset
@@ -1235,7 +1236,7 @@ NpcSettings N(Quizmo_AltNpcSettings) = {
     .onInteract = &N(EVS_Quizmo_NPC_Interact),
     .ai = &N(EVS_Quizmo_Npc_AI),
     .aux = &N(EVS_Quizmo_NPC_Aux),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
-    .level = 99,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
+    .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

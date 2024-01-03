@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 import re
@@ -26,6 +26,7 @@ ignores = set()
 
 verbose = False
 
+
 def read_ignores():
     with open(ignores_path) as f:
         lines = f.readlines()
@@ -34,6 +35,7 @@ def read_ignores():
         name = line.split(" = ")[0].strip()
         if name != "":
             ignores.add(name)
+
 
 def scan_map():
     ram_offset = None
@@ -49,12 +51,7 @@ def scan_map():
 
             prev_line = line
 
-            if (
-                ram_offset is None
-                or "=" in line
-                or "*fill*" in line
-                or " 0x" not in line
-            ):
+            if ram_offset is None or "=" in line or "*fill*" in line or " 0x" not in line:
                 continue
 
             ram = int(line[16 : 16 + 18], 0)
@@ -70,35 +67,41 @@ def scan_map():
 
             map_symbols[sym] = (rom, cur_file, ram)
 
+
 def read_symbol_addrs():
     unique_lines = set()
 
     with open(symbol_addrs_path, "r") as f:
         for line in f.readlines():
-                unique_lines.add(line)
+            unique_lines.add(line)
 
         for line in unique_lines:
             if "_ROM_START" in line or "_ROM_END" in line:
                 continue
 
-            main, ext = line.rstrip().split(";")
-            opt = ext.split("//")[-1].strip().split(" ")
+            main_split = line.rstrip().split(";")
+            main = main_split[0]
 
             dead = False
+            opts = []
             type = ""
             rom = -1
 
-            for thing in list(opt):
-                if thing.strip() == "":
-                    opt.remove(thing)
-                if "type:" in thing:
-                    type = thing.split(":")[1]
-                    opt.remove(thing)
-                elif "rom:" in thing:
-                    rom = int(thing.split(":")[1], 16)
-                    opt.remove(thing)
-                elif "dead:" in thing:
-                    dead = True
+            if len(main_split) > 1:
+                ext = main_split[1]
+                opts = ext.split("//")[-1].strip().split(" ")
+
+                for opt in list(opts):
+                    if opt.strip() == "":
+                        opts.remove(opt)
+                    if "type:" in opt:
+                        type = opt.split(":")[1]
+                        opts.remove(opt)
+                    elif "rom:" in opt:
+                        rom = int(opt.split(":")[1], 16)
+                        opts.remove(opt)
+                    elif "dead:" in opt:
+                        dead = True
 
             eqsplit = main.split(" = ")
             if len(eqsplit) != 2:
@@ -108,13 +111,14 @@ def read_symbol_addrs():
             name, addr = main.split(" = ")
 
             if not dead:
-                symbol_addrs.append([name, int(addr, 0), type, rom, opt])
+                symbol_addrs.append([name, int(addr, 0), type, rom, opts])
             else:
-                dead_symbols.append([name, int(addr, 0), type, rom, opt])
+                dead_symbols.append([name, int(addr, 0), type, rom, opts])
+
 
 def read_elf():
     try:
-        result = subprocess.run(['mips-linux-gnu-objdump', '-x', elf_path], stdout=subprocess.PIPE)
+        result = subprocess.run(["mips-linux-gnu-objdump", "-x", elf_path], stdout=subprocess.PIPE)
         objdump_lines = result.stdout.decode().split("\n")
     except:
         print(f"Error: Could not run objdump on {elf_path} - make sure that the project is built")
@@ -128,13 +132,15 @@ def read_elf():
             if "_ROM_START" in name or "_ROM_END" in name:
                 continue
 
-            if "/" in name or \
-               "." in name or \
-               name in ignores or \
-               name.startswith("_") or \
-               name.startswith("jtbl_") or \
-               name.endswith(".o") or \
-               re.match(r"L[0-9A-F]{8}", name):
+            if (
+                "/" in name
+                or "." in name
+                or name in ignores
+                or name.startswith("_")
+                or name.startswith("jtbl_")
+                or name.endswith(".o")
+                or re.match(r"L[0-9A-F]{8}", name)
+            ):
                 continue
 
             addr = int(components[0], 16)
@@ -148,13 +154,15 @@ def read_elf():
             if name in map_symbols:
                 rom = map_symbols[name][0]
             elif re.match(".*_[0-9A-F]{8}_[0-9A-F]{6}", name):
-                rom = int(name.split('_')[-1], 16)
+                rom = int(name.split("_")[-1], 16)
 
             elf_symbols.append((name, addr, type, rom))
+
 
 def log(s):
     if verbose:
         print(s)
+
 
 def reconcile_symbols():
     print(f"Processing {str(len(elf_symbols))} elf symbols...")
@@ -170,7 +178,9 @@ def reconcile_symbols():
                     name_match = known_sym
 
                     if elf_sym[1] != known_sym[1]:
-                        log(f"Ram mismatch! {elf_sym[0]} is 0x{elf_sym[1]:X} in the elf and 0x{known_sym[1]} in symbol_addrs")
+                        log(
+                            f"Ram mismatch! {elf_sym[0]} is 0x{elf_sym[1]:X} in the elf and 0x{known_sym[1]} in symbol_addrs"
+                        )
 
             # Rom
             if not rom_match:
@@ -181,7 +191,15 @@ def reconcile_symbols():
 
         if not name_match and not rom_match:
             log(f"Creating new symbol {elf_sym[0]}")
-            symbol_addrs.append([elf_sym[0], elf_sym[1], elf_sym[2], elf_sym[3] if elf_sym[3] else -1, []])
+            symbol_addrs.append(
+                [
+                    elf_sym[0],
+                    elf_sym[1],
+                    elf_sym[2],
+                    elf_sym[3] if elf_sym[3] else -1,
+                    [],
+                ]
+            )
         elif not name_match:
             log(f"Renaming identical rom address symbol {rom_match[0]} to {elf_sym[0]}")
             rom_match[0] = elf_sym[0]
@@ -191,6 +209,7 @@ def reconcile_symbols():
             else:
                 log(f"Adding rom address {elf_sym[3]} to symbol {name_match[0]}")
             name_match[3] = elf_sym[3]
+
 
 def write_new_symbol_addrs():
     with open(symbol_addrs_path, "w", newline="\n") as f:
@@ -214,6 +233,7 @@ def write_new_symbol_addrs():
                 for thing in symbol[4]:
                     line += f" {thing}"
             f.write(line + "\n")
+
 
 read_ignores()
 scan_map()

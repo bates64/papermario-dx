@@ -3,6 +3,7 @@
 #include "sprite.h"
 #include "ld_addrs.h"
 #include "entity.h"
+#include "sprite/player.h"
 
 extern Gfx Entity_BlueWarpPipe_RenderPipe[];
 extern Gfx Entity_BlueWarpPipe_RenderBase[];
@@ -23,8 +24,8 @@ void entity_BlueWarpPipe_rise_up(Entity* entity) {
     BlueWarpPipeData* pipeData = entity->dataBuf.bluePipe;
 
     pipeData->timer--;
-    if ((pipeData->timer != -1) && (pipeData->isRaised == 0)) {
-        entity->position.y += 2.3125;
+    if ((pipeData->timer != -1) && !pipeData->isRaised) {
+        entity->pos.y += 2.3125;
     } else {
         pipeData->timer = 0;
         exec_entity_commandlist(entity);
@@ -37,12 +38,12 @@ void entity_BlueWarpPipe_wait_for_player_to_get_off(Entity* entity) {
     if (pipeData->entryID == gGameStatusPtr->entryID) {
         switch (pipeData->timer) {
             case 0:
-                if (gCollisionStatus.currentFloor > 0) {
+                if (gCollisionStatus.curFloor > 0) {
                     pipeData->timer = 1;
                 }
                 break;
             case 1:
-                if (gCollisionStatus.currentFloor <= NO_COLLIDER) {
+                if (gCollisionStatus.curFloor <= NO_COLLIDER) {
                     pipeData->timer = 2;
                 }
                 break;
@@ -93,7 +94,7 @@ void entity_BlueWarpPipe_set_player_move_to_center(Entity* entity) {
 
     entryX = (*mapSettings->entryList)[pipeData->entryID].x;
     entryZ = (*mapSettings->entryList)[pipeData->entryID].z;
-    angle = atan2(playerStatus->position.x, playerStatus->position.z, entryX, entryZ);
+    angle = atan2(playerStatus->pos.x, playerStatus->pos.z, entryX, entryZ);
     disable_player_input();
     disable_player_static_collisions();
     move_player(pipeData->timer, angle, playerStatus->runSpeed);
@@ -111,11 +112,11 @@ void entity_BlueWarpPipe_enter_pipe_init(Entity* bluePipe) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     BlueWarpPipeData* pipeData = bluePipe->dataBuf.bluePipe;
 
-    playerStatus->targetYaw = gCameras[gCurrentCameraID].currentYaw + 180.0f;
+    playerStatus->targetYaw = gCameras[gCurrentCameraID].curYaw + 180.0f;
     pipeData->timer = 25;
     playerStatus->renderMode = RENDER_MODE_ALPHATEST;
 
-    func_802DDFF8(ANIM_Mario1_Idle, FOLD_TYPE_5, 2, 1, 1, 0, 0);
+    set_player_imgfx_all(ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0, 0);
     sfx_play_sound(SOUND_ENTER_PIPE);
     disable_player_shadow();
 }
@@ -124,13 +125,13 @@ void entity_BlueWarpPipe_enter_pipe_update(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     BlueWarpPipeData* pipeData = entity->dataBuf.bluePipe;
 
-    playerStatus->position.y--;
+    playerStatus->pos.y--;
     pipeData->timer--;
 
     if (pipeData->timer == -1) {
         playerStatus->renderMode = RENDER_MODE_ALPHATEST;
-        playerStatus->position.y -= 50.0f;
-        func_802DDFF8(ANIM_Mario1_Idle, 0, 0, 0, 0, 0, 0);
+        playerStatus->pos.y -= 50.0f;
+        set_player_imgfx_all(ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0, 0);
         exec_entity_commandlist(entity);
     }
 }
@@ -151,7 +152,7 @@ void entity_BlueWarpPipe_setupGfx(s32 entityIndex) {
     Matrix4f sp50;
 
     guScaleF(sp10, entity->scale.x, entity->scale.y, entity->scale.z);
-    guTranslateF(sp50, entity->position.x, data->finalPosY + 1.0f, entity->position.z);
+    guTranslateF(sp50, entity->pos.x, data->finalPosY + 1.0f, entity->pos.z);
     guMtxCatF(sp10, sp50, sp50);
     guMtxF2L(sp50, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -172,10 +173,10 @@ void entity_init_BlueWarpPipe(Entity* entity) {
     data->entryID = entryID;
     data->onEnterPipeEvt = enterPipeEvt;
     data->flagIndex = flagIndex;
-    data->finalPosY = entity->position.y;
+    data->finalPosY = entity->pos.y;
     data->isRaised = get_global_flag(data->flagIndex);
 
-    entity->position.y -= (data->isRaised ? 15.0 : 52.0);
+    entity->pos.y -= (data->isRaised ? 15.0 : 52.0);
 }
 
 EntityScript Entity_BlueWarpPipe_Script = {

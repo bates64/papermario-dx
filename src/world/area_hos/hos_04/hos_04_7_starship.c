@@ -11,7 +11,7 @@ API_CALLABLE(N(ScreenOverlayFadeIn)) {
         script->functionTemp[1] = 255;
     }
 
-    set_screen_overlay_params_front(0, script->functionTemp[1]);
+    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, script->functionTemp[1]);
 
     if (script->functionTemp[1] == 255) {
         return ApiStatus_DONE2;
@@ -26,7 +26,7 @@ EvtScript N(EVS_Starship_FlyingAway) = {
     EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
     EVT_CALL(DisablePartnerAI, 0)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 45, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 45, 16, 4096)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -280, 0, 0)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, -280, 0, 0)
     EVT_CALL(SetCamType, CAM_DEFAULT, 0, FALSE)
@@ -39,7 +39,7 @@ EvtScript N(EVS_Starship_FlyingAway) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(10)
     EVT_THREAD
-        EVT_CALL(PlaySound, SOUND_181)
+        EVT_CALL(PlaySound, SOUND_STARSHIP_ASCEND)
         EVT_CALL(MakeLerp, 0, 900, 45, EASING_QUADRATIC_IN)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)

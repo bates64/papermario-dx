@@ -1,4 +1,5 @@
 #include "jan_02.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Yoshi.inc.c"
 #include "world/common/npc/Yoshi_Patrol.inc.c"
@@ -122,7 +123,7 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
         EVT_CASE_LT(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
         EVT_CASE_LT(STORY_CH5_GOT_JADE_RAVEN)
             EVT_EXEC_WAIT(N(EVS_Scene_GetJadeRaven))
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
             EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_002D)
         EVT_CASE_LT(STORY_CH5_ZIP_LINE_READY)
             EVT_IF_EQ(AF_JAN02_RaphaelComment, FALSE)
@@ -157,7 +158,7 @@ EvtScript N(EVS_NpcInit_VillageLeader) = {
             EVT_CALL(InterpNpcYaw, NPC_SELF, 90, 1)
             EVT_CALL(SetNpcPos, NPC_SELF, 0, 15, -50)
             EVT_CALL(BindNpcInteract, NPC_SELF, EVT_PTR(N(EVS_NpcInteract_VillageLeader)))
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
             EVT_CALL(InterpNpcYaw, NPC_SELF, 90, 1)
             EVT_CALL(SetNpcPos, NPC_SELF, 30, 15, -30)

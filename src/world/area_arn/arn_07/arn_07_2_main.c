@@ -1,4 +1,5 @@
 #include "arn_07.h"
+#include "sprite/player.h"
 
 #define STAR_SPIRIT_DATA_VAR MV_Unk_01
 #include "world/common/todo/StarSpiritEffectFunc.inc.c"
@@ -24,10 +25,10 @@ EvtScript N(EVS_SpawnStarCard) = {
         EVT_END_THREAD
         EVT_THREAD
             EVT_WAIT(1)
-            EVT_CALL(PlaySound, SOUND_80000067)
+            EVT_CALL(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
             EVT_CALL(N(StarSpiritEffectFunc1))
-            EVT_CALL(StopSound, SOUND_80000067)
-            EVT_CALL(PlaySoundAt, SOUND_B2, SOUND_SPACE_MODE_0, 145, 65, 0)
+            EVT_CALL(StopSound, SOUND_LOOP_STAR_ORB_RISING)
+            EVT_CALL(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EVT_END_THREAD
         EVT_THREAD
             EVT_WAIT(12)
@@ -36,7 +37,7 @@ EvtScript N(EVS_SpawnStarCard) = {
         EVT_THREAD
             EVT_WAIT(50)
             EVT_WAIT(115)
-            EVT_CALL(PlaySoundAt, SOUND_137, SOUND_SPACE_MODE_0, 145, 65, 0)
+            EVT_CALL(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EVT_END_THREAD
         EVT_CALL(N(StarSpiritEffectFunc4), 1)
         EVT_THREAD
@@ -62,10 +63,10 @@ EvtScript N(EVS_SpawnStarCard) = {
         EVT_WAIT(1)
     EVT_END_IF
     EVT_CALL(N(StarSpiritEffectFunc4), 3)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_138, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_SET(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_23"), kmr_23_ENTRY_2, TRANSITION_14)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_23"), kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -86,10 +87,10 @@ EvtScript N(EVS_RespawnStarCard) = {
         EVT_END_THREAD
         EVT_THREAD
             EVT_WAIT(1)
-            EVT_CALL(PlaySound, SOUND_80000067)
+            EVT_CALL(PlaySound, SOUND_LOOP_STAR_ORB_RISING)
             EVT_CALL(N(StarSpiritEffectFunc1))
-            EVT_CALL(StopSound, SOUND_80000067)
-            EVT_CALL(PlaySoundAt, SOUND_B2, SOUND_SPACE_MODE_0, 145, 65, 0)
+            EVT_CALL(StopSound, SOUND_LOOP_STAR_ORB_RISING)
+            EVT_CALL(PlaySoundAt, SOUND_STAR_ORB_BURST, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EVT_END_THREAD
         EVT_THREAD
             EVT_WAIT(12)
@@ -98,7 +99,7 @@ EvtScript N(EVS_RespawnStarCard) = {
         EVT_THREAD
             EVT_WAIT(50)
             EVT_WAIT(115)
-            EVT_CALL(PlaySoundAt, SOUND_137, SOUND_SPACE_MODE_0, 145, 65, 0)
+            EVT_CALL(PlaySoundAt, SOUND_STAR_CARD_APPEARS, SOUND_SPACE_DEFAULT, 145, 65, 0)
         EVT_END_THREAD
         EVT_CALL(N(StarSpiritEffectFunc4), 1)
         EVT_THREAD
@@ -124,10 +125,10 @@ EvtScript N(EVS_RespawnStarCard) = {
         EVT_WAIT(1)
     EVT_END_IF
     EVT_CALL(N(StarSpiritEffectFunc4), 3)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_138, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_SET(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_23"), kmr_23_ENTRY_2, TRANSITION_14)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_23"), kmr_23_ENTRY_2, TRANSITION_GET_STAR_CARD)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END
@@ -153,20 +154,20 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 5, 0, -147)
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_CALL(RotateModel, MODEL_o39, 80, 0, -1, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcJumpscale, NPC_TubbasHeart, EVT_FLOAT(2.5))
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 0, 20, -120, 8 * DT)
     EVT_WAIT(1)
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 0, 10, -60, 12 * DT)
     EVT_WAIT(1)
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 0, 0, 0, 12 * DT)
     EVT_WAIT(1)
     EVT_CALL(SetNpcVar, NPC_TubbasHeart, 0, 0)
     EVT_THREAD
         EVT_LOOP(0)
-            EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcJump0, NPC_TubbasHeart, 0, 0, 0, 10 * DT)
             EVT_WAIT(1)
             EVT_CALL(GetNpcVar, NPC_TubbasHeart, 0, LVar0)
@@ -186,7 +187,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(NpcFaceNpc, NPC_TubbasHeart, NPC_Tubba, 0)
     EVT_CALL(SpeakToPlayer, NPC_TubbasHeart, ANIM_TubbasHeart_Anim0A, ANIM_TubbasHeart_Anim01, 5, MSG_CH3_00C7)
@@ -198,10 +199,10 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 75, 0, 10, 12)
     EVT_WAIT(1)
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 150, 0, 20, 12)
     EVT_WAIT(1)
     EVT_THREAD
@@ -216,7 +217,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
         EVT_CALL(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim22)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_20C8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_TubbasHeart, SOUND_TUBBA_HEART_JUMP, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_TubbasHeart, 298, 56, 31, 18)
     EVT_CALL(SetNpcPos, NPC_TubbasHeart, NPC_DISPOSE_LOCATION)
     EVT_CALL(EnableNpcShadow, NPC_TubbasHeart, FALSE)
@@ -227,7 +228,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_OPEN, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, 80, 10, EASING_LINEAR)
         EVT_LOOP(0)
             EVT_CALL(UpdateLerp)
@@ -263,7 +264,7 @@ EvtScript N(EVS_Scene_TubbaReunion) = {
                 EVT_BREAK_LOOP
             EVT_END_IF
         EVT_END_LOOP
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_tt3, SOUND_BASIC_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(PlayerMoveTo, 200, 0, 35 * DT)
     EVT_WAIT(5 * DT)

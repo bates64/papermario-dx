@@ -14,7 +14,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_SpawnButterflies) = {
-    EVT_IF_NE(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+    EVT_IF_NE(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
         EVT_PLAY_EFFECT(EFFECT_BUTTERFLIES, 5, -310, 10, 0)
         EVT_PLAY_EFFECT(EFFECT_BUTTERFLIES, 5, -210, 10, 240)
         EVT_PLAY_EFFECT(EFFECT_BUTTERFLIES, 5, 330, 10, 260)
@@ -94,7 +94,7 @@ EvtScript N(EVS_EnterFalling) = {
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_THREAD
         EVT_CALL(SetPlayerJumpscale, EVT_FLOAT(2.0))
-        EVT_CALL(PlaySoundAtPlayer, SOUND_SHAKE_TREE, 0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_SHAKE_TREE_LEAVES, SOUND_SPACE_DEFAULT)
         EVT_CALL(PlayerJump, -35, 0, 385, 30)
         EVT_CALL(SetPlayerActionState, ACTION_STATE_LAND)
     EVT_END_THREAD
@@ -120,7 +120,7 @@ EvtScript N(EVS_EnterFalling) = {
     EVT_END
 };
 
-#include "world/common/atomic/UnkFunc27.inc.c"
+#include "world/common/atomic/ApplyTint.inc.c"
 
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_JADE_JUNGLE)
@@ -142,9 +142,9 @@ EvtScript N(EVS_Main) = {
     EVT_EXEC_WAIT(N(EVS_SetupMusic))
     EVT_EXEC(N(EVS_SetupBushes))
     EVT_EXEC(N(EVS_SpawnButterflies))
-    EVT_CALL(N(UnkFunc27), 0, -1, 3)
-    EVT_CALL(N(UnkFunc27), 2, 0, 3)
-    EVT_CALL(N(UnkFunc26), 3, 255, 255, 255, 0, 0, 25, 0, 0, 0)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_MODELS, -1, 3)
+    EVT_CALL(N(SetModelTintMode), APPLY_TINT_BG, NULL, 3)
+    EVT_CALL(N(SetModelTintParams), ENV_TINT_REMAP, 255, 255, 255, 0, 0, 25, 0, 0, 0)
     EVT_RETURN
     EVT_END
 };

@@ -104,6 +104,9 @@ s32 pause_items_scroll_offset_x(s32 beforeX) {
     return beforeX;
 }
 
+#if VERSION_PAL
+INCLUDE_ASM(void, "pause/pause_items", pause_items_draw_contents);
+#else
 void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 i, pageIndex, itemIndex;
     s32 totalItemIndex;
@@ -347,6 +350,7 @@ void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
          }
     }
 }
+#endif
 
 void pause_items_load_items(s32 invItems) {
     PlayerData* playerData = &gPlayerData;
@@ -362,14 +366,14 @@ void pause_items_load_items(s32 invItems) {
     D_802705D0 = 0;
     if (invItems == TRUE) {
         for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-            if (playerData->invItems[i] != 0) {
+            if (playerData->invItems[i] != ITEM_NONE) {
                 gPauseItemsItemIDs[totalItems] = playerData->invItems[i];
                 totalItems++;
             }
         }
     } else {
         for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-            if (playerData->keyItems[i] != 0) {
+            if (playerData->keyItems[i] != ITEM_NONE) {
                 gPauseItemsItemIDs[totalItems] = playerData->keyItems[i];
                 totalItems++;
             }

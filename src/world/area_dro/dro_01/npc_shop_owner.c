@@ -9,7 +9,7 @@ API_CALLABLE(N(AwaitPlayerApproachShop)) {
     f32 var4 = evt_get_variable(script, *args++);
     f32 temp_f0 = (var4 - var2) / (var3 - var1);
 
-    if (playerStatus->position.z < ((temp_f0 * playerStatus->position.x) + (var2 - (temp_f0 * var1)))) {
+    if (playerStatus->pos.z < ((temp_f0 * playerStatus->pos.x) + (var2 - (temp_f0 * var1)))) {
         script->varTable[0] = 0;
         return ApiStatus_DONE2;
     }
@@ -58,7 +58,7 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
             EVT_CALL(NpcMoveTo, NPC_SELF, 103, 11, 20 * DT)
             EVT_CALL(NpcMoveTo, NPC_SELF, 150, 18, 20 * DT)
             EVT_CALL(EnableNpcBlur, NPC_SELF, TRUE)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_174, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_RUN_AWAY, SOUND_SPACE_DEFAULT)
             EVT_CALL(NpcMoveTo, NPC_SELF, 554, -12, 20 * DT)
             EVT_CALL(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             EVT_WAIT(30 * DT)
@@ -75,7 +75,7 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
         EVT_CASE_LT(STORY_CH2_SHADY_MOUSE_ENTERED_SHOP)
             EVT_CALL(EnableNpcBlur, NPC_SELF, TRUE)
             EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Mouser_Purple_Run)
-            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_174, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_RUN_AWAY, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcPos, NPC_SELF, 470, 0, 18)
             EVT_CALL(NpcMoveTo, NPC_SELF, 287, 9, 20 * DT)
             EVT_CALL(NpcMoveTo, NPC_SELF, 102, -14, 20 * DT)
@@ -107,7 +107,7 @@ EvtScript N(EVS_NpcInteract_ShopOwner) = {
             EVT_RETURN
         EVT_END_IF
     EVT_END_IF
-    EVT_EXEC_WAIT(ItemShopInteract)
+    EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
     EVT_EXEC_WAIT(N(EVS_LetterPrompt_ShopOwner))
     EVT_IF_NE(LVarC, DELIVERY_NOT_POSSIBLE)
         EVT_RETURN

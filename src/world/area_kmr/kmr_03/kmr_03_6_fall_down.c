@@ -1,4 +1,5 @@
 #include "kmr_03.h"
+#include "sprite/player.h"
 
 EvtScript N(EVS_Scene_FallingDown) = {
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, -270, 20, -80)
@@ -33,11 +34,11 @@ EvtScript N(EVS_Scene_FallingDown) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_THREAD
         EVT_WAIT(18 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_175, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_PAPER_GLIDE_1, SOUND_SPACE_DEFAULT)
         EVT_WAIT(30 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_176, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_PAPER_GLIDE_2, SOUND_SPACE_DEFAULT)
         EVT_WAIT(28 * DT)
-        EVT_CALL(PlaySoundAtPlayer, SOUND_175, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtPlayer, SOUND_PAPER_GLIDE_1, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -62,11 +63,11 @@ EvtScript N(EVS_Scene_FallingDown) = {
         EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(0.2 / DT))
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_END_THREAD
-    EVT_CALL(func_802D286C, 0x00002800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 5, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_2000 | IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_FLUTTER_DOWN, 1, 1, 0)
     EVT_WAIT(100 * DT)
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(HidePlayerShadow, FALSE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
     EVT_WAIT(10 * DT)

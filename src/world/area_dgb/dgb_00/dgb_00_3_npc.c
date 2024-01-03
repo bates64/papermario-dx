@@ -1,10 +1,11 @@
 #include "dgb_00.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(PlaySentinelSounds)) {
     Npc* npc = get_npc_unsafe(get_enemy(NPC_Sentinel)->npcID);
 
-    sfx_adjust_env_sound_pos(SOUND_32E, SOUND_SPACE_MODE_0, npc->pos.x, npc->pos.y, npc->pos.z);
+    sfx_adjust_env_sound_pos(SOUND_LRAW_SENTINEL_ALARM, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
     return ApiStatus_DONE2;
 }
 
@@ -16,7 +17,7 @@ EvtScript N(EVS_SetDoorRots) = {
     EVT_SET(LVar3, 0)
     EVT_SUB(LVar3, LVar2)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deiliwt, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_deiliwt, SOUND_CREAKY_DOOR_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_deiliwt, SOUND_CREAKY_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 80, 30, EASING_LINEAR)
     EVT_LABEL(10)
         EVT_CALL(UpdateLerp)
@@ -43,7 +44,7 @@ EvtScript N(EVS_CloseDoors) = {
             EVT_GOTO(10)
         EVT_END_IF
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deiliwt, COLLIDER_FLAGS_UPPER_MASK)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_deiliwt, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_deiliwt, SOUND_CREAKY_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_RETURN
     EVT_END
 };
@@ -206,7 +207,7 @@ EvtScript N(EVS_TubbaTaunting) = {
         EVT_WAIT(LVar0)
         EVT_IF_EQ(MV_PreventTaunting, FALSE)
             EVT_CALL(DisablePlayerInput, TRUE)
-            EVT_CALL(PlaySoundAt, SOUND_B4, SOUND_SPACE_MODE_0, 240, 10, -125)
+            EVT_CALL(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
             EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, EVT_FLOAT(2.0))
             EVT_CALL(ShowMessageAtScreenPos, MSG_CH3_00EF, 160, 40)
             EVT_CALL(DisablePlayerInput, FALSE)
@@ -246,10 +247,10 @@ EvtScript N(EVS_Scene_BoosApproachManor) = {
     EVT_CALL(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DB)
     EVT_CALL(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DC)
     EVT_CALL(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_00DD)
-    EVT_CALL(PlaySoundAt, SOUND_B4, SOUND_SPACE_MODE_0, 240, 10, -125)
+    EVT_CALL(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, EVT_FLOAT(2.0))
     EVT_WAIT(10 * DT)
-    EVT_CALL(PlaySoundAt, SOUND_B4, SOUND_SPACE_MODE_0, 240, 10, -125)
+    EVT_CALL(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, EVT_FLOAT(2.0))
     EVT_CALL(InterpNpcYaw, NPC_Boo_01, 90, 1)
     EVT_CALL(ShowMessageAtScreenPos, MSG_CH3_00DE, 160, 40)
@@ -265,12 +266,12 @@ EvtScript N(EVS_Scene_BoosApproachManor) = {
 EvtScript N(EVS_Scene_EscapeFromTubba) = {
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(8.0 / DT))
     EVT_CALL(PlayerMoveTo, 184, -44, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_01, SOUND_262, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_02, SOUND_262, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_03, SOUND_262, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_04, SOUND_262, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_05, SOUND_262, SOUND_SPACE_MODE_0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Boo_06, SOUND_262, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_01, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_02, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_03, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_04, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_05, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
+    EVT_CALL(PlaySoundAtNpc, NPC_Boo_06, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_Boo_01, EMOTE_EXCLAMATION, 45, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_CALL(ShowEmote, NPC_Boo_02, EMOTE_EXCLAMATION, 45, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_CALL(ShowEmote, NPC_Boo_03, EMOTE_EXCLAMATION, 45, 20, EMOTER_NPC, 0, 0, 0, 0)
@@ -324,10 +325,10 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
-    EVT_CALL(PlaySoundAt, SOUND_B4, SOUND_SPACE_MODE_0, 240, 10, -125)
+    EVT_CALL(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, EVT_FLOAT(2.0))
     EVT_WAIT(5 * DT)
-    EVT_CALL(PlaySoundAt, SOUND_B4, SOUND_SPACE_MODE_0, 240, 10, -125)
+    EVT_CALL(PlaySoundAt, SOUND_TUBBA_POUNDING, SOUND_SPACE_DEFAULT, 240, 10, -125)
     EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 20, EVT_FLOAT(2.0))
     EVT_CALL(ShowMessageAtScreenPos, MSG_CH3_00E7, 160, 40)
     EVT_EXEC_WAIT(N(EVS_BraceDoor1))
@@ -507,7 +508,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(DisablePartnerAI, 0)
     EVT_CALL(SetNpcPos, NPC_PARTNER, 320, 10, -160)
-    EVT_CALL(PlaySound, SOUND_32E)
+    EVT_CALL(PlaySound, SOUND_LRAW_SENTINEL_ALARM)
     EVT_THREAD
         EVT_LOOP(180)
             EVT_CALL(GetNpcPos, NPC_Sentinel, LVar0, LVar1, LVar2)
@@ -551,14 +552,14 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     EVT_CALL(SetNpcPos, NPC_Sentinel, 175, 85, -33)
     EVT_CALL(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim09)
     EVT_WAIT(20)
-    EVT_CALL(PlaySoundAtNpc, NPC_Sentinel, SOUND_2F7, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Sentinel, SOUND_SENTINEL_PICKUP, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim02)
     EVT_CALL(SetNpcPos, NPC_Sentinel, 175, 70, -33)
     EVT_THREAD
         EVT_WAIT(40)
         EVT_CALL(SetNpcAnimation, NPC_Sentinel, ANIM_Sentinel_Anim03)
         EVT_CALL(NpcMoveTo, NPC_Sentinel, 270, -120, 30)
-        EVT_CALL(StopSound, SOUND_32E)
+        EVT_CALL(StopSound, SOUND_LRAW_SENTINEL_ALARM)
         EVT_CALL(SetNpcPos, NPC_Sentinel, NPC_DISPOSE_LOCATION)
     EVT_END_THREAD
     EVT_THREAD
@@ -568,11 +569,11 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     EVT_END_THREAD
     EVT_CALL(SetPlayerJumpscale, 0)
     EVT_CALL(PlayerJump1, 175, 0, -35, 10)
-    EVT_CALL(PlaySoundAtNpc, NPC_Sentinel, SOUND_162, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Sentinel, SOUND_TRIP, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_Collapse)
     EVT_THREAD
         EVT_WAIT(2)
-        EVT_PLAY_EFFECT(EFFECT_EMOTE, 3, 0, 175, 0, -35, 20, -20, 30, 0)
+        EVT_PLAY_EFFECT(EFFECT_EMOTE, EMOTE_FRUSTRATION, 0, 175, 0, -35, 20, -20, 30, 0)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetCamDistance, CAM_DEFAULT, EVT_FLOAT(320.0))
@@ -612,9 +613,9 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     EVT_WAIT(20)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_DustOff)
     EVT_WAIT(7)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_DEFAULT)
     EVT_WAIT(8)
-    EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtPlayer, SOUND_DUST_OFF, SOUND_SPACE_DEFAULT)
     EVT_WAIT(15)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_DeepExhale)
     EVT_WAIT(25)
@@ -654,7 +655,7 @@ NpcData N(NpcData_Sentinel) = {
     .yaw = 90,
     .init = &N(EVS_NpcInit_Sentinel),
     .settings = &N(NpcSettings_Dummy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = SENTINEL_ANIMS,
 };

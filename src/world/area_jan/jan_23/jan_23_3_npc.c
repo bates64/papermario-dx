@@ -1,4 +1,5 @@
 #include "jan_23.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/RaphaelRaven.inc.c"
 #include "world/common/npc/Raven.inc.c"
@@ -256,11 +257,11 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_CALL(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(12.0))
     EVT_LOOP(5)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_386, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BIG_DRUM_A, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetCamDistance, CAM_DEFAULT, 310)
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
         EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_387, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_BIG_DRUM_B, SOUND_SPACE_DEFAULT)
         EVT_CALL(SetCamDistance, CAM_DEFAULT, 460)
         EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
         EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
@@ -305,7 +306,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         EVT_ADD(LVar0, -120)
         EVT_ADD(LVar1, -250)
         EVT_ADD(LVar2, 63)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_01, SOUND_20C, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_01, SOUND_RAVEN_FALL_A, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_Raven_01, LVar0, LVar1, LVar2, 100)
         EVT_CALL(SetNpcAnimation, NPC_Raven_01, ANIM_Raven_Idle)
         EVT_CALL(EnableNpcShadow, NPC_Raven_01, TRUE)
@@ -319,7 +320,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         EVT_ADD(LVar0, -120)
         EVT_ADD(LVar1, -250)
         EVT_ADD(LVar2, 63)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_02, SOUND_20D, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_02, SOUND_RAVEN_FALL_B, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_Raven_02, LVar0, LVar1, LVar2, 100)
         EVT_CALL(SetNpcAnimation, NPC_Raven_02, ANIM_Raven_Idle)
         EVT_CALL(EnableNpcShadow, NPC_Raven_02, TRUE)
@@ -341,7 +342,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         EVT_ADD(LVar0, -100)
         EVT_ADD(LVar1, -250)
         EVT_ADD(LVar2, 50)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_03, SOUND_20E, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_03, SOUND_RAVEN_FALL_C, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_Raven_03, LVar0, LVar1, LVar2, 90)
         EVT_CALL(SetNpcAnimation, NPC_Raven_03, ANIM_Raven_Idle)
         EVT_CALL(EnableNpcShadow, NPC_Raven_03, TRUE)
@@ -355,7 +356,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         EVT_ADD(LVar0, -100)
         EVT_ADD(LVar1, -250)
         EVT_ADD(LVar2, 60)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_04, SOUND_20C, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_04, SOUND_RAVEN_FALL_A, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcJump0, NPC_Raven_04, LVar0, LVar1, LVar2, 100)
         EVT_CALL(SetNpcAnimation, NPC_Raven_04, ANIM_Raven_Idle)
         EVT_CALL(EnableNpcShadow, NPC_Raven_04, TRUE)
@@ -364,7 +365,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(20)
     EVT_EXEC(N(EVS_Raven5_Descend))
     EVT_CALL(SetNpcJumpscale, NPC_Raven_05, 0)
-    EVT_CALL(PlaySoundAtNpc, NPC_Raven_05, SOUND_20D, 0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Raven_05, SOUND_RAVEN_FALL_B, SOUND_SPACE_DEFAULT)
     EVT_CALL(NpcJump0, NPC_Raven_05, 737, 200, 65, 100)
     EVT_CALL(SetNpcAnimation, NPC_Raven_05, ANIM_Raven_Idle)
     EVT_CALL(EnableNpcShadow, NPC_Raven_05, TRUE)
@@ -386,7 +387,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
         EVT_WAIT(20 * DT)
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, 5, EVT_FLOAT(1.0))
         EVT_WAIT(15 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_20C, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_RAVEN_FALL_A, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, TRUE)
@@ -412,7 +413,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(40 * DT)
     EVT_THREAD
         EVT_WAIT(35 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_01, SOUND_20D, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_01, SOUND_RAVEN_FALL_B, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcFlagBits, NPC_Raven_01, NPC_FLAG_GRAVITY, TRUE)
@@ -436,7 +437,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(20 * DT)
     EVT_THREAD
         EVT_WAIT(35 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_02, SOUND_20E, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_02, SOUND_RAVEN_FALL_C, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcFlagBits, NPC_Raven_02, NPC_FLAG_GRAVITY, TRUE)
@@ -460,7 +461,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(20 * DT)
     EVT_THREAD
         EVT_WAIT(35 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_03, SOUND_20C, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_03, SOUND_RAVEN_FALL_A, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcFlagBits, NPC_Raven_03, NPC_FLAG_GRAVITY, TRUE)
@@ -484,7 +485,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(20 * DT)
     EVT_THREAD
         EVT_WAIT(35 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_04, SOUND_20D, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_04, SOUND_RAVEN_FALL_B, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(SetNpcFlagBits, NPC_Raven_04, NPC_FLAG_GRAVITY, TRUE)
@@ -508,7 +509,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_WAIT(10 * DT)
     EVT_THREAD
         EVT_WAIT(45 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_Raven_05, SOUND_20E, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_Raven_05, SOUND_RAVEN_FALL_C, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_CALL(SetNpcFlagBits, NPC_Raven_05, NPC_FLAG_GRAVITY, TRUE)
     EVT_CALL(SetNpcAnimation, NPC_Raven_05, ANIM_Raven_Walk)
@@ -537,7 +538,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(15 * DT)
     EVT_CALL(ResetCam, CAM_DEFAULT, EVT_FLOAT(2.0 * DT))
-    EVT_SET(GB_StoryProgress, STORY_CH5_RAFAEL_LEFT_NEST)
+    EVT_SET(GB_StoryProgress, STORY_CH5_RAPHAEL_LEFT_NEST)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_RETURN
     EVT_END
@@ -552,7 +553,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_After) = {
 EvtScript N(EVS_NpcInit_RaphaelRaven) = {
     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_IdleNoFeet)
     EVT_SWITCH(GB_StoryProgress)
-        EVT_CASE_LT(STORY_CH5_RAFAEL_LEFT_NEST)
+        EVT_CASE_LT(STORY_CH5_RAPHAEL_LEFT_NEST)
             EVT_CALL(BindNpcInteract, NPC_SELF, EVT_PTR(N(EVS_NpcInteract_RaphaelRaven_Before)))
         EVT_CASE_GE(STORY_CH5_ZIP_LINE_READY)
             EVT_CALL(BindNpcInteract, NPC_SELF, EVT_PTR(N(EVS_NpcInteract_RaphaelRaven_After)))

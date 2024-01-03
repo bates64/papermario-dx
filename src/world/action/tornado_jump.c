@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sprite/player.h"
 
 extern s32 gSpinHistoryBufferPos;
 extern s32 gSpinHistoryPosY[5];
@@ -33,7 +34,7 @@ void action_update_tornado_jump(void) {
         playerStatus->flags |= (PS_FLAG_SPINNING | PS_FLAG_FLYING | PS_FLAG_JUMPING);
         phys_clear_spin_history();
         playerStatus->actionSubstate = SUBSTATE_ASCEND;
-        playerStatus->currentSpeed = 0.0f;
+        playerStatus->curSpeed = 0.0f;
         playerStatus->gravityIntegrator[0] = 16.0f;
         playerStatus->gravityIntegrator[1] = -7.38624f;
         playerStatus->gravityIntegrator[2] = 3.44694f;
@@ -42,7 +43,7 @@ void action_update_tornado_jump(void) {
         disable_player_input();
         playerStatus->flags |= PS_FLAG_SPECIAL_JUMP;
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
-        cameraRelativeYaw = clamp_angle(playerStatus->targetYaw - gCameras[gCurrentCameraID].currentYaw);
+        cameraRelativeYaw = clamp_angle(playerStatus->targetYaw - gCameras[gCurrentCameraID].curYaw);
         if (cameraRelativeYaw <= 180.0f) {
             spinRate = 60.0f;
         } else {
@@ -64,7 +65,7 @@ void action_update_tornado_jump(void) {
         }
     }
     if (playerStatus->gravityIntegrator[0] <= 0.0f) {
-        gSpinHistoryPosY[gSpinHistoryBufferPos] = playerStatus->position.y;
+        gSpinHistoryPosY[gSpinHistoryBufferPos] = playerStatus->pos.y;
     }
 
     gSpinHistoryPosAngle[gSpinHistoryBufferPos++] = playerStatus->spriteFacingAngle;
@@ -76,11 +77,11 @@ void action_update_tornado_jump(void) {
     switch (playerStatus->actionSubstate) {
         case SUBSTATE_ASCEND:
             fallVelocity = integrate_gravity();
-            playerStatus->position.y = player_check_collision_below(fallVelocity, &colliderBelow);
-            if (colliderBelow >= 0 && collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT ) {
-                entityType = get_entity_type(collisionStatus->currentFloor);
+            playerStatus->pos.y = player_check_collision_below(fallVelocity, &colliderBelow);
+            if (colliderBelow >= 0 && collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT ) {
+                entityType = get_entity_type(collisionStatus->curFloor);
                 if (entityType == ENTITY_TYPE_BLUE_SWITCH || entityType == ENTITY_TYPE_RED_SWITCH) {
-                    get_entity_by_index(collisionStatus->currentFloor)->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
+                    get_entity_by_index(collisionStatus->curFloor)->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
                     disable_player_input();
                     playerStatus->actionSubstate = SUBSTATE_HIT_SWITCH;
                     break;
@@ -88,10 +89,10 @@ void action_update_tornado_jump(void) {
             }
             if (fallVelocity <= 0.0f) {
                 record_jump_apex();
-                playerStatus->currentStateTime = 3;
+                playerStatus->curStateTime = 3;
                 playerStatus->flags |= PS_FLAG_FALLING;
                 playerStatus->actionSubstate++;
-                sfx_play_sound_at_player(SOUND_TORNADO_JUMP, SOUND_SPACE_MODE_0);
+                sfx_play_sound_at_player(SOUND_TORNADO_JUMP, SOUND_SPACE_DEFAULT);
             }
             if (colliderBelow >= 0) {
                 playerStatus->flags &= ~(PS_FLAG_SPINNING | PS_FLAG_FLYING);
@@ -99,13 +100,13 @@ void action_update_tornado_jump(void) {
             }
             break;
         case SUBSTATE_HOVER:
-            if (--playerStatus->currentStateTime <= 0) {
+            if (--playerStatus->curStateTime <= 0) {
                 playerStatus->actionSubstate++;
             }
             break;
         case SUBSTATE_DESCEND:
             fallVelocity = integrate_gravity();
-            playerStatus->position.y = player_check_collision_below(fallVelocity, &colliderBelow);
+            playerStatus->pos.y = player_check_collision_below(fallVelocity, &colliderBelow);
             if (fallVelocity < -100.0f) {
                 playerStatus->gravityIntegrator[3] = 0.0f;
                 playerStatus->gravityIntegrator[2] = 0.0f;
@@ -113,8 +114,8 @@ void action_update_tornado_jump(void) {
                 playerStatus->gravityIntegrator[0] = -100.0f;
             }
             if (colliderBelow >= 0) {
-                if (collisionStatus->currentFloor & COLLISION_WITH_ENTITY_BIT) {
-                    entityType = get_entity_type(collisionStatus->currentFloor);
+                if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
+                    entityType = get_entity_type(collisionStatus->curFloor);
                     if (entityType == ENTITY_TYPE_SIMPLE_SPRING || entityType == ENTITY_TYPE_SCRIPT_SPRING) {
                         playerStatus->flags &= ~(PS_FLAG_SPINNING | PS_FLAG_FLYING);
                         set_action_state(ACTION_STATE_LAND);
@@ -123,11 +124,11 @@ void action_update_tornado_jump(void) {
                         playerStatus->flags &= ~(PS_FLAG_SPINNING | PS_FLAG_FLYING);
                         phys_player_land();
                         exec_ShakeCam1(0, 0, 4);
-                        sfx_play_sound_at_player(SOUND_14A, SOUND_SPACE_MODE_0);
+                        sfx_play_sound_at_player(SOUND_LAND_TORANDO_JUMP, SOUND_SPACE_DEFAULT);
                         start_rumble(256, 50);
 
                         gCurrentHiddenPanels.tryFlipTrigger = TRUE;
-                        gCurrentHiddenPanels.flipTriggerPosY = playerStatus->position.y;
+                        gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
                         playerStatus->flags |= PS_FLAG_SPECIAL_LAND;
                         return;
                     }
@@ -145,21 +146,21 @@ void action_update_tornado_jump(void) {
                     playerStatus->flags &= ~(PS_FLAG_SPINNING | PS_FLAG_FLYING);
                     return;
                 }
-                playerStatus->currentStateTime = 8;
+                playerStatus->curStateTime = 8;
                 playerStatus->timeInAir = 0;
                 playerStatus->actionState = ACTION_STATE_TORNADO_POUND;
                 playerStatus->actionSubstate++;
                 exec_ShakeCam1(0, 0, 4);
-                sfx_play_sound_at_player(SOUND_14A, SOUND_SPACE_MODE_0);
+                sfx_play_sound_at_player(SOUND_LAND_TORANDO_JUMP, SOUND_SPACE_DEFAULT);
                 start_rumble(256, 50);
 
                 gCurrentHiddenPanels.tryFlipTrigger = TRUE;
-                gCurrentHiddenPanels.flipTriggerPosY = playerStatus->position.y;
+                gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
                 playerStatus->flags |= PS_FLAG_SPECIAL_LAND;
             }
             break;
         case SUBSTATE_IMPACT:
-            if (--playerStatus->currentStateTime == 0) {
+            if (--playerStatus->curStateTime == 0) {
                 playerStatus->actionSubstate++;
                 playerStatus->flags &= ~(PS_FLAG_SPINNING | PS_FLAG_FLYING);
                 set_action_state(ACTION_STATE_LAND);
@@ -178,7 +179,7 @@ void action_update_tornado_jump(void) {
         colliderBelow = get_collider_below_tornado_jump();
         if (colliderBelow >= 0) {
             collisionStatus->lastTouchedFloor = -1;
-            collisionStatus->currentFloor = colliderBelow;
+            collisionStatus->curFloor = colliderBelow;
         }
     }
 }
@@ -187,9 +188,9 @@ static s32 get_collider_below_tornado_jump(void) {
     f32 posX, posY, posZ, height;
     f32 hitRx, hitRz, hitDirX, hitDirZ;
 
-    posX = gPlayerStatus.position.x;
-    posZ = gPlayerStatus.position.z;
+    posX = gPlayerStatus.pos.x;
+    posZ = gPlayerStatus.pos.z;
     height = gPlayerStatus.colliderHeight;
-    posY = gPlayerStatus.position.y + (height * 0.5f);
+    posY = gPlayerStatus.pos.y + (height * 0.5f);
     return player_raycast_below_cam_relative(&gPlayerStatus, &posX, &posY, &posZ, &height, &hitRx, &hitRz, &hitDirX, &hitDirZ);
 }

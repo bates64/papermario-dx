@@ -56,7 +56,7 @@ void N(gfx_build_evil_rock_face)(s32 index) {
 
     gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(EvilRockAlpha));
-    gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, COMBINED, 0, PRIMITIVE_ALPHA, 0, 0, 0, 0, COMBINED);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_06);
     gDPSetRenderMode(gMainGfxPos++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_DECAL2);
 }
 
@@ -85,7 +85,7 @@ EvtScript N(EVS_OnInspectEvilRock) = {
     EVT_IF_EQ(LVar0, 1)
         EVT_WAIT(10)
         EVT_EXEC_GET_TID(N(EVS_ManageEvilRock), LVar9)
-        EVT_CALL(PlaySoundAt, SOUND_205E, SOUND_SPACE_MODE_0, -34, 0, -300)
+        EVT_CALL(PlaySoundAt, SOUND_ROCK_LAUGHTER, SOUND_SPACE_DEFAULT, -34, 0, -300)
         EVT_LOOP(18)
             EVT_CALL(TranslateModel, MODEL_o289, EVT_FLOAT(1.0), 0, EVT_FLOAT(1.0))
             EVT_CALL(TranslateModel, MODEL_o440, EVT_FLOAT(1.0), 0, EVT_FLOAT(1.0))
@@ -111,7 +111,7 @@ EvtScript N(EVS_OnInspectEvilRock) = {
 };
 
 EvtScript N(EVS_SetupExitHint) = {
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_evil_rock_face)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_evil_rock_face)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_o440, CUSTOM_GFX_1, -1)
     EVT_CALL(SetModelFlags, MODEL_o440, MODEL_FLAG_USES_CUSTOM_GFX, TRUE)
     EVT_BIND_TRIGGER(EVT_PTR(N(EVS_OnInspectEvilRock)), TRIGGER_WALL_PRESS_A, COLLIDER_o491, 1, 0)

@@ -158,6 +158,25 @@
 #define LVarE LocalVar(14)
 #define LVarF LocalVar(15)
 
+// shorthand names for common LocalFlags
+// these actually run all the way up to LocalFlag(96), but nothing past 15 is ever used
+#define LFlag0 LocalFlag(0)
+#define LFlag1 LocalFlag(1)
+#define LFlag2 LocalFlag(2)
+#define LFlag3 LocalFlag(3)
+#define LFlag4 LocalFlag(4)
+#define LFlag5 LocalFlag(5)
+#define LFlag6 LocalFlag(6)
+#define LFlag7 LocalFlag(7)
+#define LFlag8 LocalFlag(8)
+#define LFlag9 LocalFlag(9)
+#define LFlagA LocalFlag(10)
+#define LFlagB LocalFlag(11)
+#define LFlagC LocalFlag(12)
+#define LFlagD LocalFlag(13)
+#define LFlagE LocalFlag(14)
+#define LFlagF LocalFlag(15)
+
 /****** INSTRUCTIONS **************************************************************************************************/
 
 /// On each frame, the EVT manager will continue executing commands in all threads until a blocking command is
@@ -724,22 +743,22 @@
 
 // only set perspective to standard values
 #define EVT_SETUP_CAMERA_MINIMAL() \
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
 
 #define EVT_SETUP_CAMERA_DEFAULT() \
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096) \
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)
 
 #define EVT_SETUP_CAMERA_NO_LEAD() \
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096) \
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE) \
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
 
 // same as EVT_SETUP_CAMERA_NO_LEAD with calls reordered
 #define EVT_SETUP_CAMERA_ALT_NO_LEAD() \
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096) \
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)

@@ -14,7 +14,7 @@ void N(PiranhaPlantAI_00)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
         npc->duration--;
     } else {
         enemy->varTable[0] = 0;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         script->functionTemp[1] = 0;
         script->functionTemp[0] = 1;
     }
@@ -23,13 +23,13 @@ void N(PiranhaPlantAI_00)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_01)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 temp;
+    EffectInstance* temp;
 
     if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0)) {
         ai_enemy_play_sound(npc, SOUND_BURROW_DIG, 0);
         fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, &temp);
-        ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
+        ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
         npc->duration = enemy->varTable[8];
         script->functionTemp[0] = 10;
     }
@@ -63,9 +63,9 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
     if (npc->duration == 0) {
         if (clamp_angle(gPlayerStatusPtr->spriteFacingAngle) < 180.0f) {
-            yaw2 = clamp_angle(gCameras[gCurrentCameraID].currentYaw - 90.0f);
+            yaw2 = clamp_angle(gCameras[gCurrentCameraID].curYaw - 90.0f);
         } else {
-            yaw2 = clamp_angle(gCameras[gCurrentCameraID].currentYaw + 90.0f);
+            yaw2 = clamp_angle(gCameras[gCurrentCameraID].curYaw + 90.0f);
         }
 
         yaw = clamp_angle(yaw2 + 180.0f);
@@ -89,10 +89,10 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
             }
         }
 
-        npc->pos.x = gPlayerStatusPtr->position.x;
-        npc->pos.z = gPlayerStatusPtr->position.z;
-        add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionRadius, yaw);
-        npc_move_heading(npc, moveSpeed + npc->collisionRadius, yaw2);
+        npc->pos.x = gPlayerStatusPtr->pos.x;
+        npc->pos.z = gPlayerStatusPtr->pos.z;
+        add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionDiameter, yaw);
+        npc_move_heading(npc, moveSpeed + npc->collisionDiameter, yaw2);
 
         if (enemy->varTable[7] == 0) {
             if (npc->pos.x > 380.0) {
@@ -122,14 +122,14 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
             }
         } else {
             if (!(npc->flags & NPC_FLAG_IGNORE_WORLD_COLLISION)) {
-                sp20 = gPlayerStatusPtr->position.x;
-                sp24 = gPlayerStatusPtr->position.y + 18.0;
-                sp28 = gPlayerStatusPtr->position.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionRadius)) {
-                    sp20 = gPlayerStatusPtr->position.x;
-                    sp24 = gPlayerStatusPtr->position.y + 45.0;
-                    sp28 = gPlayerStatusPtr->position.z;
-                    cond1 = npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionRadius);
+                sp20 = gPlayerStatusPtr->pos.x;
+                sp24 = gPlayerStatusPtr->pos.y + 18.0;
+                sp28 = gPlayerStatusPtr->pos.z;
+                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionDiameter)) {
+                    sp20 = gPlayerStatusPtr->pos.x;
+                    sp24 = gPlayerStatusPtr->pos.y + 45.0;
+                    sp28 = gPlayerStatusPtr->pos.z;
+                    cond1 = npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionDiameter);
                     sp2C = npc->pos.x;
                     sp30 = npc->pos.y + 100.0;
                     sp34 = npc->pos.z;
@@ -138,28 +138,28 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
                     if (!cond1 && cond2 && sp38 > 80.0 && sp38 < 120.0 && npc->pos.y != sp30) {
                         phi_fp = TRUE;
                     } else {
-                        sp20 = gPlayerStatusPtr->position.x;
-                        sp24 = gPlayerStatusPtr->position.y + 10.0;
-                        sp28 = gPlayerStatusPtr->position.z;
-                        npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionRadius);
-                        posRadius = dist2D(gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z, sp20, sp28);
-                        npc->pos.x = gPlayerStatusPtr->position.x;
-                        npc->pos.z = gPlayerStatusPtr->position.z;
-                        add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionRadius, yaw);
-                        npc_move_heading(npc, posRadius + npc->collisionRadius, yaw2);
+                        sp20 = gPlayerStatusPtr->pos.x;
+                        sp24 = gPlayerStatusPtr->pos.y + 10.0;
+                        sp28 = gPlayerStatusPtr->pos.z;
+                        npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionDiameter);
+                        posRadius = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, sp20, sp28);
+                        npc->pos.x = gPlayerStatusPtr->pos.x;
+                        npc->pos.z = gPlayerStatusPtr->pos.z;
+                        add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionDiameter, yaw);
+                        npc_move_heading(npc, posRadius + npc->collisionDiameter, yaw2);
                         phi_s7 = TRUE;
                     }
                 }
             } else {
-                sp20 = gPlayerStatusPtr->position.x;
-                sp24 = gPlayerStatusPtr->position.y + 18.0;
-                sp28 = gPlayerStatusPtr->position.z;
-                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionRadius)) {
-                    posRadius = dist2D(gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z, sp20, sp28);
-                    npc->pos.x = gPlayerStatusPtr->position.x;
-                    npc->pos.z = gPlayerStatusPtr->position.z;
-                    add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionRadius, yaw);
-                    npc_move_heading(npc, posRadius + npc->collisionRadius, yaw2);
+                sp20 = gPlayerStatusPtr->pos.x;
+                sp24 = gPlayerStatusPtr->pos.y + 18.0;
+                sp28 = gPlayerStatusPtr->pos.z;
+                if (npc_test_move_simple_with_slipping(npc->collisionChannel, &sp20, &sp24, &sp28, moveSpeed, yaw2, npc->collisionHeight, npc->collisionDiameter)) {
+                    posRadius = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, sp20, sp28);
+                    npc->pos.x = gPlayerStatusPtr->pos.x;
+                    npc->pos.z = gPlayerStatusPtr->pos.z;
+                    add_vec2D_polar(&npc->pos.x, &npc->pos.z, npc->collisionDiameter, yaw);
+                    npc_move_heading(npc, posRadius + npc->collisionDiameter, yaw2);
                 }
             }
         }
@@ -200,7 +200,7 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
             }
         }
 
-        if (!phi_s7 && (!(npc->flags & NPC_FLAG_8) || phi_fp)) {
+        if (!phi_s7 && (!(npc->flags & NPC_FLAG_FLYING) || phi_fp)) {
             sp20 = npc->pos.x;
             sp38 = 400.0f;
             sp28 = npc->pos.z;
@@ -211,9 +211,9 @@ void N(PiranhaPlantAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
             }
         }
 
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
+        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         ai_enemy_play_sound(npc, SOUND_BURROW_SURFACE, 0);
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
         npc->duration = enemy->varTable[10];
         script->functionTemp[0] = 11;
     }
@@ -228,7 +228,7 @@ void N(PiranhaPlantAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
         enemy->flags &= ~(ENEMY_FLAG_100000 | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER);
     }
     if (npc->duration == 0) {
-        npc->currentAnim = enemy->animList[10];
+        npc->curAnim = enemy->animList[10];
         npc->duration = 0;
         script->functionTemp[0] = 12;
     }
@@ -237,11 +237,11 @@ void N(PiranhaPlantAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 temp;
+    EffectInstance* temp;
 
     npc->duration++;
     if (npc->duration == enemy->varTable[13]) {
-        npc->currentAnim = enemy->animList[11];
+        npc->curAnim = enemy->animList[11];
     }
     if (npc->duration == enemy->varTable[14]) {
         enemy->varTable[0] = 3;
@@ -249,7 +249,7 @@ void N(PiranhaPlantAI_12)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     if (npc->duration >= enemy->varTable[12]) {
         enemy->varTable[0] = 4;
         npc->duration = 8;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         fx_emote(EMOTE_FRUSTRATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, &temp);
         script->functionTemp[0] = 13;
     }
@@ -269,7 +269,7 @@ void N(PiranhaPlantAI_13)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 retVal;
+    EffectInstance* retVal;
 
     npc->duration--;
     if (npc->duration == 0) {
@@ -322,7 +322,7 @@ s32 N(PiranhaPlantAI_Main)(Evt* script, s32 isInitialCall) {
     if (isInitialCall || (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_PIRANHA_PLANT_00;
         npc->duration = 0;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         enemy->AI_VAR_ATTACK_STATE = MELEE_HITBOX_STATE_NONE;
         if (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {

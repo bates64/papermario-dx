@@ -49,7 +49,11 @@ void osCreateViManager(OSPri pri) {
         __osViDevMgr.acsQueue = NULL;
         __osViDevMgr.dma = NULL;
         __osViDevMgr.edma = NULL;
+#ifdef BBPLAYER
+        osCreateThread(&viThread, 0xD49, viMgrMain, &__osViDevMgr, &viThreadStack[OS_VIM_STACKSIZE], pri);
+#else
         osCreateThread(&viThread, 0, viMgrMain, &__osViDevMgr, &viThreadStack[OS_VIM_STACKSIZE], pri);
+#endif
         __osViInit();
         osStartThread(&viThread);
         __osRestoreInt(savedMask);
@@ -111,7 +115,3 @@ static void viMgrMain(void *arg) {
         }
     }
 }
-
-// INCLUDE_ASM(void, "os/vimgr", osCreateViManager, OSPri pri);
-
-// INCLUDE_ASM(s32, "os/vimgr", viMgrMain);

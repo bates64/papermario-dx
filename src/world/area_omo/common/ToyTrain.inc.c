@@ -1,6 +1,7 @@
 #include "common.h"
+#include "sprite/player.h"
 
-#include "world/common/todo/UnsetCamera0MoveFlag1.inc.c"
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
 
 #include "common/SetAngleClamped.inc.c"
 
@@ -114,7 +115,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     EVT_IF_EQ(ArrayVar(2), -1)
                         EVT_SET(MV_TrainUnk_00, 100)
                         EVT_SET(MF_TrainUnk_00, FALSE)
-                        EVT_SET(LocalFlag(1), TRUE)
+                        EVT_SET(LFlag1, TRUE)
                     EVT_ELSE
                         EVT_CALL(N(SetAngleClamped), LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
                         EVT_CALL(AddVectorPolar, ArrayVar(0), ArrayVar(1), LVar1, LVar0)
@@ -137,14 +138,14 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     EVT_IF_EQ(ArrayVar(7), -1)
                         EVT_SET(MV_TrainUnk_00, 100)
                         EVT_SET(MF_TrainUnk_00, FALSE)
-                        EVT_SET(LocalFlag(1), FALSE)
+                        EVT_SET(LFlag1, FALSE)
                     EVT_ELSE
                         EVT_CALL(N(SetAngleClamped), LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                         EVT_CALL(AddVectorPolar, ArrayVar(5), ArrayVar(6), LVar1, LVar0)
                     EVT_END_IF
                 EVT_END_IF
                 EVT_IF_EQ(MV_TrainUnk_00, 100)
-                    EVT_IF_EQ(LocalFlag(1), TRUE)
+                    EVT_IF_EQ(LFlag1, TRUE)
                         EVT_CALL(N(SetAngleClamped), LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(5), ArrayVar(6))
                         EVT_SETF(ArrayVar(5), ArrayVar(0))
                         EVT_SETF(ArrayVar(6), ArrayVar(1))
@@ -170,7 +171,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 EVT_ADDF(ArrayVar(13), LVar3)
                 EVT_SETF(ArrayVar(14), ArrayVar(13))
                 EVT_MULF(ArrayVar(14), EVT_FLOAT(1.432))
-                EVT_IF_EQ(LocalFlag(0), FALSE)
+                EVT_IF_EQ(LFlag0, FALSE)
                     EVT_SETF(LVar0, ArrayVar(10))
                     EVT_IF_LT(LVar0, 1)
                         EVT_SETF(LVar0, EVT_FLOAT(1.0))
@@ -179,11 +180,11 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     EVT_SUBF(ArrayVar(15), LVar0)
                     EVT_IF_LT(ArrayVar(15), -10)
                         EVT_SETF(ArrayVar(15), EVT_FLOAT(-10.0))
-                        EVT_SET(LocalFlag(0), TRUE)
+                        EVT_SET(LFlag0, TRUE)
                         EVT_IF_EQ(AF_OMO_03, FALSE)
-                            EVT_CALL(PlaySound, SOUND_1FF)
+                            EVT_CALL(PlaySound, SOUND_OMO_TOY_TRAIN_WHISTLE_A)
                         EVT_ELSE
-                            EVT_CALL(PlaySound, SOUND_84)
+                            EVT_CALL(PlaySound, SOUND_OMO_TOY_TRAIN_WHISTLE_B)
                         EVT_END_IF
                     EVT_END_IF
                 EVT_ELSE
@@ -195,12 +196,12 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     EVT_ADDF(ArrayVar(15), LVar0)
                     EVT_IF_GT(ArrayVar(15), 10)
                         EVT_SETF(ArrayVar(15), EVT_FLOAT(10.0))
-                        EVT_SET(LocalFlag(0), FALSE)
+                        EVT_SET(LFlag0, FALSE)
                         EVT_IF_EQ(AF_OMO_03, FALSE)
-                            EVT_CALL(PlaySound, SOUND_1FE)
+                            EVT_CALL(PlaySound, SOUND_OMO_TOY_TRAIN_CLICK)
                             EVT_SET(AF_OMO_03, TRUE)
                         EVT_ELSE
-                            EVT_CALL(PlaySound, SOUND_1FE)
+                            EVT_CALL(PlaySound, SOUND_OMO_TOY_TRAIN_CLICK)
                             EVT_SET(AF_OMO_03, FALSE)
                         EVT_END_IF
                     EVT_END_IF
@@ -376,7 +377,7 @@ EvtScript N(EVS_TrainUnk_D) = {
     EVT_CALL(NpcJump0, NPC_Conductor, LVar4, 50, LVar5, 10)
     EVT_CALL(InterpNpcYaw, NPC_Conductor, LVarA, 0)
     EVT_CALL(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_0009)
-    EVT_CALL(PlaySound, SOUND_83)
+    EVT_CALL(PlaySound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     EVT_CALL(SetMusicTrack, 0, SONG_TOYBOX_TRAIN, 0, 8)
     EVT_WAIT(10)
     EVT_RETURN
@@ -440,7 +441,7 @@ EvtScript N(EVS_TrainUnk_AltD) = {
     EVT_CALL(NpcJump0, NPC_Conductor, LVar4, 50, LVar5, 10)
     EVT_CALL(InterpNpcYaw, NPC_Conductor, LVarA, 0)
     EVT_CALL(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_0009)
-    EVT_CALL(PlaySound, SOUND_83)
+    EVT_CALL(PlaySound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     EVT_CALL(SetMusicTrack, 0, SONG_TOYBOX_TRAIN, 0, 8)
     EVT_WAIT(10)
     EVT_RETURN
@@ -449,7 +450,7 @@ EvtScript N(EVS_TrainUnk_AltD) = {
 #endif
 
 EvtScript N(EVS_TrainUnk_E) = {
-    EVT_CALL(StopSound, SOUND_83)
+    EVT_CALL(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     EVT_CALL(SetMusicTrack, 0, SONG_SHY_GUY_TOYBOX, 0, 8)
     EVT_CALL(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
@@ -496,7 +497,7 @@ EvtScript N(EVS_TrainUnk_E) = {
 
 #ifdef INCLUDE_ALTERNATES
 EvtScript N(EVS_TrainUnk_AltE) = {
-    EVT_CALL(StopSound, SOUND_83)
+    EVT_CALL(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     EVT_CALL(SetMusicTrack, 0, SONG_SHY_GUY_TOYBOX, 0, 8)
     EVT_CALL(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
@@ -539,13 +540,13 @@ EvtScript N(EVS_TrainUnk_AltE) = {
 EvtScript N(EVS_TrainUnk_F) = {
     EVT_SWITCH(AB_OMO_6)
         EVT_CASE_EQ(0)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_3, TRANSITION_1)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_3, TRANSITION_TOY_TRAIN)
         EVT_CASE_EQ(1)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_3, TRANSITION_1)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_3, TRANSITION_TOY_TRAIN)
         EVT_CASE_EQ(2)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_2, TRANSITION_1)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_2, TRANSITION_TOY_TRAIN)
         EVT_CASE_EQ(3)
-            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_3, TRANSITION_1)
+            EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_3, TRANSITION_TOY_TRAIN)
     EVT_END_SWITCH
     EVT_WAIT(100)
     EVT_RETURN
@@ -557,42 +558,42 @@ EvtScript N(EVS_TrainUnk_G) = {
         EVT_CASE_RANGE(0, 1)
             EVT_SWITCH(AB_OMO_6)
                 EVT_CASE_EQ(0)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 EVT_CASE_EQ(1)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
                 EVT_CASE_EQ(2)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_1, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_1, TRANSITION_TOY_TRAIN)
                 EVT_CASE_EQ(3)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
             EVT_END_SWITCH
         EVT_CASE_EQ(2)
             EVT_SWITCH(AB_OMO_6)
                 EVT_CASE_EQ(0)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 EVT_CASE_EQ(1)
                     EVT_IF_EQ(GF_OMO03_BlueSwitchActivated, TRUE)
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
                     EVT_ELSE
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                     EVT_END_IF
                 EVT_CASE_EQ(3)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_10"), omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
             EVT_END_SWITCH
         EVT_CASE_EQ(3)
             EVT_SWITCH(AB_OMO_6)
                 EVT_CASE_EQ(0)
-                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                    EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 EVT_CASE_EQ(1)
                     EVT_IF_EQ(GF_OMO03_BlueSwitchActivated, TRUE)
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_06"), omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
                     EVT_ELSE
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                     EVT_END_IF
                 EVT_CASE_EQ(2)
                     EVT_IF_EQ(GF_OMO03_BlueSwitchActivated, TRUE)
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_1, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_08"), omo_08_ENTRY_1, TRANSITION_TOY_TRAIN)
                     EVT_ELSE
-                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_1)
+                        EVT_CALL(GotoMapSpecial, EVT_PTR("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                     EVT_END_IF
             EVT_END_SWITCH
     EVT_END_SWITCH

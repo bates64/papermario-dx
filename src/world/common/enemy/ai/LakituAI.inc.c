@@ -31,7 +31,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z, w;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
     f32 temp_f20;
     f32 temp_f22;
     f32 temp_f24;
@@ -61,7 +61,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             script->functionTemp[1] = aiSettings->playerSearchInterval;
             if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0) != 0) {
                 fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
-                ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
+                ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
@@ -117,7 +117,7 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
-    s32 emoteTemp;
+    EffectInstance* emoteTemp;
     f32 var1 = enemy->varTable[3];
     f32 var2;
     f32 temp_f20;
@@ -140,7 +140,7 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 12);
     if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1) != 0) {
         fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
-        ai_enemy_play_sound(npc, SOUND_2F4, SOUND_PARAM_MORE_QUIET);
+        ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
         return;
     }
@@ -156,7 +156,7 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     }
 }
 
-s32 N(LakituAI_Main)(Evt* script, s32 isInitialCall) {
+API_CALLABLE(N(LakituAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(enemy->npcID);
@@ -215,14 +215,14 @@ s32 N(LakituAI_Main)(Evt* script, s32 isInitialCall) {
     }
 
     if (script->AI_TEMP_STATE == AI_STATE_CHASE_INIT) {
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
+        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         enemy->varTable[4] = N(LakituAI_GetAvailableSpiny)();
         if (enemy->varTable[4] >= 0) {
             spinyEnemy = get_enemy(enemy->varTable[4]);
             spinyEnemy->varTable[10] = 1;
             spinyEnemy->varTable[11] = enemy->npcID;
             npc->duration = 15;
-            npc->currentAnim = ANIM_Lakitu_Anim14;
+            npc->curAnim = ANIM_Lakitu_Anim14;
             script->AI_TEMP_STATE = 30;
         }
     }
@@ -255,7 +255,7 @@ s32 N(LakituAI_Main)(Evt* script, s32 isInitialCall) {
             if (npc->duration > 0) {
                 break;
             }
-            npc->currentAnim = ANIM_Lakitu_Anim15;
+            npc->curAnim = ANIM_Lakitu_Anim15;
             spinyEnemy = get_enemy(enemy->varTable[4]);
             spinyEnemy->varTable[10] = 3;
             npc->duration = 10;
@@ -281,8 +281,8 @@ s32 N(LakituAI_Main)(Evt* script, s32 isInitialCall) {
         f32 playerDist;
         f32 lerpDist;
 
-        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z);
-        playerDist = dist2D(gPlayerStatusPtr->position.x, gPlayerStatusPtr->position.z, npc->pos.x, npc->pos.z);
+        npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+        playerDist = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, npc->pos.x, npc->pos.z);
         if (!is_point_within_region(territoryPtr->shape,
                 territoryPtr->pointX, territoryPtr->pointZ,
                 npc->pos.x, npc->pos.z,

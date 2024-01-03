@@ -56,7 +56,7 @@ EvtScript N(EVS_ExtendBridgeFromMirror) = {
             EVT_WAIT(10)
         EVT_END_LOOP
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAt, SOUND_2F, 0, 250, 0, 0)
+    EVT_CALL(PlaySoundAt, SOUND_PRA_EXTEND_HIDDEN_BRIDGE, SOUND_SPACE_DEFAULT, 250, 0, 0)
     EVT_CALL(MakeLerp, 0, 511, 80, EASING_LINEAR)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -79,8 +79,8 @@ EvtScript N(EVS_SetupBridge) = {
         EVT_CALL(EnableModel, MODEL_s00, FALSE)
         EVT_SET(MV_BridgeExtendAmt, 0)
         EVT_SET(MV_UnusedBridgeAlpha, 255)
-        EVT_CALL(SetModelCustomGfx, MODEL_u02, CUSTOM_GFX_0, FOG_MODE_UNCHANGED)
-        EVT_CALL(SetModelCustomGfx, MODEL_s02, CUSTOM_GFX_1, FOG_MODE_UNCHANGED)
+        EVT_CALL(SetModelCustomGfx, MODEL_u02, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
+        EVT_CALL(SetModelCustomGfx, MODEL_s02, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
         EVT_CALL(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX, FALSE)
         EVT_CALL(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX, FALSE)
         EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(setup_gfx_bridge)), NULL)

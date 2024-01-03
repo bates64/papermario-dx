@@ -109,7 +109,7 @@ void N(animate_and_draw_record)(void* renderData) {
         case RECORD_START_SHOW:
             data->stateTimer = 0;
             data->state = RECORD_STATE_FADE_IN;
-            snd_start_sound(SOUND_21C, 0, 0);
+            snd_start_sound(SOUND_APPROVE, 0, 0);
             // fallthrough
         case RECORD_STATE_FADE_IN:
             data->stateTimer++;
@@ -124,7 +124,7 @@ void N(animate_and_draw_record)(void* renderData) {
         case RECORD_STATE_VISIBLE:
             data->alpha = 255;
             data->curAlpha = 255;
-            if (gGameStatusPtr->currentButtons[0] & (BUTTON_A | BUTTON_B)) {
+            if (gGameStatusPtr->curButtons[0] & (BUTTON_A | BUTTON_B)) {
                 data->state = RECORD_START_HIDE;
             }
             if (data->state != RECORD_START_HIDE) {
@@ -150,10 +150,10 @@ void N(animate_and_draw_record)(void* renderData) {
 void N(work_draw_record)(void) {
     RenderTask task;
 
-    task.renderMode = RENDER_MODE_2D;
+    task.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
     task.appendGfxArg = 0;
     task.appendGfx = &N(animate_and_draw_record);
-    task.distance = 0;
+    task.dist = 0;
 
     queue_render_task(&task);
 }

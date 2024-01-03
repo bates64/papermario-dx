@@ -9,7 +9,7 @@ MAP_STATIC_PAD(1,key_item);
 API_CALLABLE(N(GetAngleToPlayer)) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
 
-    script->varTable[0] = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatus.position.x, gPlayerStatus.position.z));
+    script->varTable[0] = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatus.pos.x, gPlayerStatus.pos.z));
     return ApiStatus_DONE2;
 }
 
@@ -35,19 +35,19 @@ EvtScript N(EVS_ChangeDinoDirection) = {
     EVT_SWITCH(LVar0)
         EVT_CASE_RANGE(45, 134)
             EVT_SET(LVar5, 90)
-            EVT_SET(LVar6, ANIM_AlbinoDino_Anim00)
+            EVT_SET(LVar6, ANIM_AlbinoDino_Still)
             EVT_SET(LVarA, 90)
         EVT_CASE_RANGE(135, 224)
             EVT_SET(LVar5, 180)
-            EVT_SET(LVar6, ANIM_AlbinoDino_Anim01)
+            EVT_SET(LVar6, ANIM_AlbinoDino_StillFwd)
             EVT_SET(LVarA, 270)
         EVT_CASE_RANGE(225, 314)
             EVT_SET(LVar5, 270)
-            EVT_SET(LVar6, ANIM_AlbinoDino_Anim00)
+            EVT_SET(LVar6, ANIM_AlbinoDino_Still)
             EVT_SET(LVarA, 270)
         EVT_CASE_DEFAULT
             EVT_SET(LVar5, 0)
-            EVT_SET(LVar6, ANIM_AlbinoDino_Anim02)
+            EVT_SET(LVar6, ANIM_AlbinoDino_StillBack)
             EVT_SET(LVarA, 270)
     EVT_END_SWITCH
     EVT_SWITCH(LVar3)
@@ -78,7 +78,7 @@ EvtScript N(EVS_ChangeDinoDirection) = {
                 EVT_END_IF
             EVT_END_LOOP
         EVT_END_THREAD
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_1ED, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_PRA_ROTATE_ALBINO_DINO, SOUND_SPACE_DEFAULT)
         EVT_SWITCH(LVar5)
             EVT_CASE_OR_EQ(90)
             EVT_CASE_OR_EQ(270)

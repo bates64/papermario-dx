@@ -56,12 +56,12 @@ EffectInstance* static_status_main(
     bp.update = static_status_update;
     bp.renderWorld = static_status_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_STATIC_STATUS;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numBolts;
-    part = effect->data.staticStatus = shim_general_heap_malloc(numBolts * sizeof(*part));
+    part = effect->data.staticStatus = general_heap_malloc(numBolts * sizeof(*part));
     ASSERT(effect->data.staticStatus != NULL);
 
     part->type = type;
@@ -100,8 +100,8 @@ void static_status_update(EffectInstance* effect) {
     f32 angle;
     s32 i;
 
-    if (effect->flags & EFFECT_INSTANCE_FLAG_10) {
-        effect->flags &= ~EFFECT_INSTANCE_FLAG_10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         part->timeLeft = 16;
     }
 
@@ -112,7 +112,7 @@ void static_status_update(EffectInstance* effect) {
     part->lifetime++;
 
     if (part->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -140,14 +140,14 @@ void static_status_update(EffectInstance* effect) {
         if (part->frame >= 0) {
             if (part->frame == 0) {
                 angle = (i * 360.0f) / (effect->numParts - 1);
-                part->pos.x = shim_sin_deg(angle) * 16.0f;
-                part->pos.y = shim_cos_deg(angle) * 16.0f;
+                part->pos.x = sin_deg(angle) * 16.0f;
+                part->pos.y = cos_deg(angle) * 16.0f;
                 part->unk_10 = part->pos.x * initialAmt;
                 part->unk_14 = part->pos.y * initialAmt;
                 part->unk_18 = 0.0f;
                 part->unk_1C = 0.0f;
                 part->scale = 1.0f;
-                part->rotation = -angle - 45.0f;
+                part->rot = -angle - 45.0f;
             }
 
             if (type == 0) {
@@ -178,10 +178,10 @@ void static_status_render(EffectInstance* effect) {
 
     renderTask.appendGfx = static_status_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
+    renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_SURFACE_OPA;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -200,10 +200,10 @@ void static_status_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(mtxTransform, part->pos.x, part->pos.y, part->pos.z);
-    shim_guScaleF(mtxTemp, part->scale, part->scale, part->scale);
-    shim_guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
-    shim_guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(mtxTransform, part->pos.x, part->pos.y, part->pos.z);
+    guScaleF(mtxTemp, part->scale, part->scale, part->scale);
+    guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
+    guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gMainGfxPos++, camera->unkMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
@@ -212,8 +212,8 @@ void static_status_appendGfx(void* effect) {
     part++;
     for (i = 1; i < ((EffectInstance*)effect)->numParts; i++, part++) {
         if (part->frame >= 0) {
-            shim_guPositionF(mtxTransform, 0.0f, 0.0f, part->rotation, part->scale, part->pos.x, part->pos.y, 0.0f);
-            shim_guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
+            guPositionF(mtxTransform, 0.0f, 0.0f, part->rot, part->scale, part->pos.x, part->pos.y, 0.0f);
+            guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
 
             gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (unk_30 * part->alpha) >> 8);

@@ -76,7 +76,7 @@ void cold_breath_update(EffectInstance* effect);
 void cold_breath_render(EffectInstance* effect);
 void cold_breath_appendGfx(void* effect);
 
-EffectInstance* cold_breath_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
+EffectInstance* cold_breath_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, s32 duration) {
     EffectBlueprint bp;
     EffectInstance* effect;
     ColdBreathFXData* data;
@@ -86,33 +86,33 @@ EffectInstance* cold_breath_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     bp.update = cold_breath_update;
     bp.renderWorld = cold_breath_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_COLD_BREATH;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.coldBreath = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.coldBreath = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.coldBreath != NULL);
 
-    data->unk_00 = arg0;
-    data->unk_14 = 0;
-    if (arg5 <= 0) {
-        data->unk_10 = 1000;
+    data->type = type;
+    data->lifetime = 0;
+    if (duration <= 0) {
+        data->timeLeft = 1000;
     } else {
-        data->unk_10 = arg5;
+        data->timeLeft = duration;
     }
-    data->unk_24 = 255;
-    data->unk_04 = arg1;
-    data->unk_08 = arg2;
-    data->unk_0C = arg3;
-    data->unk_40 = arg4;
-    data->unk_18 = 255;
-    data->unk_1C = 255;
-    data->unk_20 = 255;
-    data->unk_28 = 255;
-    data->unk_2C = 255;
-    data->unk_30 = 255;
-    data->unk_34 = 255;
+    data->primCol.a = 255;
+    data->pos.x = posX;
+    data->pos.y = posY;
+    data->pos.z = posZ;
+    data->scale = scale;
+    data->primCol.r = 255;
+    data->primCol.g = 255;
+    data->primCol.b = 255;
+    data->envCol.r = 255;
+    data->envCol.g = 255;
+    data->envCol.b = 255;
+    data->envCol.a = 255;
     data->unk_38 = 0;
     data->unk_3C = 0;
 
@@ -124,34 +124,34 @@ void cold_breath_init(EffectInstance* effect) {
 
 void cold_breath_update(EffectInstance* effect) {
     ColdBreathFXData* data = effect->data.coldBreath;
-    s32 unk00 = data->unk_00;
+    s32 type = data->type;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
-        data->unk_10 = 0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
+        data->timeLeft = 16;
     }
 
-    if (data->unk_10 < 1000) {
-        data->unk_10--;
+    if (data->timeLeft < 1000) {
+        data->timeLeft--;
     }
 
-    data->unk_14++;
+    data->lifetime++;
 
-    if (data->unk_10 < 0) {
-        shim_remove_effect(effect);
+    if (data->timeLeft < 0) {
+        remove_effect(effect);
         return;
     }
-    if (data->unk_10 < 16) {
-        data->unk_24 = data->unk_10 * 16;
+    if (data->timeLeft < 16) {
+        data->primCol.a = data->timeLeft * 16;
     }
 
-    if (unk00 < 2) {
-        if (unk00 >= 0) {
+    if (type < 2) {
+        if (type >= 0) {
             data->unk_3C += 0.02;
         }
     }
 
-    data->unk_08 += data->unk_3C;
+    data->pos.y += data->unk_3C;
 
     if (data->unk_3C > 0.5) {
         data->unk_3C = 0.5f;
@@ -169,19 +169,19 @@ void cold_breath_render(EffectInstance* effect) {
 
     renderTask.appendGfx = cold_breath_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 6;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 6;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
 void cold_breath_appendGfx(void* effect) {
     ColdBreathFXData* data = ((EffectInstance*)effect)->data.coldBreath;
     Camera* camera = &gCameras[gCurrentCameraID];
-    s32 unk14 = data->unk_14;
-    s32 unk24 = data->unk_24;
-    s32 unk00 = data->unk_00;
+    s32 unk14 = data->lifetime;
+    s32 unk24 = data->primCol.a;
+    s32 unk00 = data->type;
     Matrix4f sp20;
     Matrix4f sp60;
     s32 unkIndex;
@@ -196,14 +196,14 @@ void cold_breath_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guTranslateF(sp20, data->unk_04, data->unk_08, data->unk_0C);
-    shim_guScaleF(sp60, data->unk_40, data->unk_40, data->unk_40);
-    shim_guMtxCatF(sp60, sp20, sp20);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp20, data->pos.x, data->pos.y, data->pos.z);
+    guScaleF(sp60, data->scale, data->scale, data->scale);
+    guMtxCatF(sp60, sp20, sp20);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(gMainGfxPos++, camera->unkMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gDPSetPrimColor(gMainGfxPos++, 0, 0, data->unk_18, data->unk_1C, data->unk_20, 0.5 * unk24);
+    gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, 0.5 * unk24);
     gDPSetAlphaDither(gMainGfxPos++, G_AD_NOISE);
     gSPDisplayList(gMainGfxPos++, D_E00DE84C[unk00]);
 
@@ -212,8 +212,8 @@ void cold_breath_appendGfx(void* effect) {
     temp2 = D_E00DE8B4[unkIndex];
     temp3 = D_E00DE858[unkIndex];
 
-    shim_guPositionF(sp20, 0.0f, 0.0f, -temp1, temp2 * 0.01f, temp3, 0.0f, 0.0f);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guPositionF(sp20, 0.0f, 0.0f, -temp1, temp2 * 0.01f, temp3, 0.0f, 0.0f);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 
     temp_f32 = D_E00DE910[unkIndex] * 5.0f / 256.0f;
@@ -227,7 +227,7 @@ void cold_breath_appendGfx(void* effect) {
         } else {
             gDPSetTileSize(gMainGfxPos++, 1, 0, 0, 31 << 2, 127 << 2);
         }
-        gDPSetEnvColor(gMainGfxPos++, data->unk_28, data->unk_2C, data->unk_30, envAlpha);
+        gDPSetEnvColor(gMainGfxPos++, data->envCol.r, data->envCol.g, data->envCol.b, envAlpha);
         gSPDisplayList(gMainGfxPos++, D_E00DE810[unk00][temp_s32]);
     }
 

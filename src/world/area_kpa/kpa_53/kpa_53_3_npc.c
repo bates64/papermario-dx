@@ -1,5 +1,6 @@
 #include "kpa_53.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 API_CALLABLE(N(UpdateFollowerPosition)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -13,15 +14,15 @@ API_CALLABLE(N(UpdateFollowerPosition)) {
         return ApiStatus_DONE2;
     }
 
-    npc->pos.x = (s32)(((s32)playerStatus->position.x - 700) * 0.85) + 765;
-    if (playerStatus->currentSpeed == 0.0f) {
+    npc->pos.x = (s32)(((s32)playerStatus->pos.x - 700) * 0.85) + 765;
+    if (playerStatus->curSpeed == 0.0f) {
         animID = ANIM_Peach1_Idle;
-    } else if (playerStatus->currentSpeed < 2.0f) {
+    } else if (playerStatus->curSpeed < 2.0f) {
         animID = ANIM_Peach1_Walk;
     } else {
         animID = ANIM_Peach1_Run;
     }
-    npc->currentAnim = animID;
+    npc->curAnim = animID;
     evt_set_variable(script, outVar, playerStatus->targetYaw);
     return ApiStatus_DONE2;
 }
@@ -31,7 +32,7 @@ API_CALLABLE(N(UpdateFollowerPosition)) {
 NpcSettings N(NpcSettings_Duplighost) = {
     .height = 30,
     .radius = 45,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 EvtScript N(EVS_NpcAI_Duplighost_Flee) = {
@@ -45,7 +46,7 @@ EvtScript N(EVS_NpcAI_Duplighost_Flee) = {
         EVT_END_IF
     EVT_END_LOOP
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
     EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 45, 20, EMOTER_NPC, 0, 0, 0, 0)
     EVT_WAIT(20)
     EVT_CALL(InterpNpcYaw, NPC_SELF, 90, 5)
@@ -70,7 +71,7 @@ EvtScript N(EVS_NpcAI_Duplighost_Caught) = {
             EVT_WAIT(5)
         EVT_END_LOOP
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAtNpc, NPC_Follower, SOUND_20B8, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Follower, SOUND_GHOST_TRANSFORM, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 1440, 20, EASING_QUADRATIC_IN)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -80,7 +81,7 @@ EvtScript N(EVS_NpcAI_Duplighost_Caught) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtNpc, NPC_Follower, SOUND_SMOKE_BURST, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtNpc, NPC_Follower, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
     EVT_CALL(SetNpcPos, NPC_Guardian, NPC_DISPOSE_LOCATION)
     EVT_CALL(SetNpcPos, NPC_Follower, NPC_DISPOSE_LOCATION)
     EVT_CALL(EnableNpcShadow, NPC_Follower, FALSE)
@@ -346,7 +347,7 @@ NpcData N(NpcData_Imposter)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Follower),
         .settings = &N(NpcSettings_Peach),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = PEACH_ANIMS,
         .tattle = MSG_NpcTattle_KPA_FakePrincessPeach,
@@ -357,7 +358,7 @@ NpcData N(NpcData_Imposter)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Guardian),
         .settings = &N(NpcSettings_Peach),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = PEACH_ANIMS,
         .tattle = MSG_NpcTattle_KPA_FakePrincessPeach,

@@ -34,7 +34,7 @@ s32 N(ChestItems)[] = {
     ITEM_SHOOTING_STAR,
     ITEM_DEEP_FOCUS1,
     ITEM_LAST_STAND,
-    ITEM_JAMMIN_JELLY, 
+    ITEM_JAMMIN_JELLY,
 };
 
 // end modified Chest.inc.c
@@ -149,7 +149,7 @@ API_CALLABLE(N(SetItemRetrieved)) {
 #include "world/common/todo/GetItemEmptyCount.inc.c"
 
 EvtScript N(EVS_OpenChest) = {
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o207, SOUND_204A, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o207, SOUND_OPEN_MAGIC_CHEST, 0)
     EVT_CALL(MakeLerp, 0, 80, 20, EASING_QUADRATIC_OUT)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
@@ -173,7 +173,7 @@ EvtScript N(EVS_CloseChest) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o207, SOUND_204B, 0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o207, SOUND_CLOSE_MAGIC_CHEST, 0)
     EVT_RETURN
     EVT_END
 };
@@ -202,7 +202,7 @@ EvtScript N(EVS_Interact_MagicChest_Mario) = {
             EVT_IF_LE(LVar1, 0)
                 EVT_CALL(ShowMessageAtScreenPos, MSG_Menus_00D5, 160, 40)
             EVT_ELSE
-                EVT_CALL(ShowGotItem, LVar0, FALSE, 2)
+                EVT_CALL(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_NO_ANIMS)
                 EVT_CALL(AddItem, LVar0, LVar1)
                 EVT_CALL(N(SetItemRetrieved))
             EVT_END_IF

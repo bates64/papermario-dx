@@ -25,6 +25,11 @@ void lightning_update(EffectInstance* effect);
 void lightning_render(EffectInstance* effect);
 void lightning_appendGfx(void* effect);
 
+EFFECT_DEF_GATHER_MAGIC(gather_magic_main);
+EFFECT_DEF_BULB_GLOW(bulb_glow_main);
+EFFECT_DEF_SNAKING_STATIC(snaking_static_main);
+EFFECT_DEF_FLASHING_BOX_SHOCKWAVE(flashing_box_shockwave_main);
+
 EffectInstance* lightning_main(
     s32 arg0,
     f32 arg1,
@@ -42,12 +47,12 @@ EffectInstance* lightning_main(
     bp.update = lightning_update;
     bp.renderWorld = lightning_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_LIGHTNING;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.lightning = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.lightning = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.lightning != NULL);
 
     data->unk_00 = arg0;
@@ -74,18 +79,18 @@ EffectInstance* lightning_main(
 
     if (arg0 == 1 || arg0 == 2) {
         if (arg0 == 1) {
-            shim_load_effect(EFFECT_GATHER_MAGIC);
+            load_effect(EFFECT_GATHER_MAGIC);
             data->unk_44 = gather_magic_main(0, -118.0f, 184.0f, 79.0f, 1.0f, -1);
 
-            shim_load_effect(EFFECT_BULB_GLOW);
+            load_effect(EFFECT_BULB_GLOW);
             bulb_glow_main(0, -120.0f, 189.0f, 77.0f, 1.0f, &data->unk_48);
         } else {
-            shim_load_effect(EFFECT_SNAKING_STATIC);
+            load_effect(EFFECT_SNAKING_STATIC);
             data->unk_48 = snaking_static_main(0, -120.0f, 189.0f, 72.0f, 1.0f, 0);
 
-            data->unk_48->data.snakingStatic->unk_28 = 255;
-            data->unk_48->data.snakingStatic->unk_2C = 255;
-            data->unk_48->data.snakingStatic->unk_30 = 255;
+            data->unk_48->data.snakingStatic->envCol.r = 255;
+            data->unk_48->data.snakingStatic->envCol.g = 255;
+            data->unk_48->data.snakingStatic->envCol.b = 255;
             data->unk_48->data.snakingStatic->unk_18 = 255;
             data->unk_48->data.snakingStatic->unk_1C = 0;
             data->unk_48->data.snakingStatic->unk_20 = 255;
@@ -95,7 +100,7 @@ EffectInstance* lightning_main(
     if (arg0 >= 3) {
         s32 effectArg0;
 
-        shim_load_effect(EFFECT_FLASHING_BOX_SHOCKWAVE);
+        load_effect(EFFECT_FLASHING_BOX_SHOCKWAVE);
         if (gGameStatusPtr->isBattle == TRUE) {
             effectArg0 = 3;
         } else {
@@ -114,8 +119,8 @@ void lightning_update(EffectInstance* effect) {
     LightningFXData* data = effect->data.lightning;
     s32 unk_00;
 
-    if (effect->flags & 0x10) {
-        effect->flags &= ~0x10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->unk_14 = 0;
     }
 
@@ -128,15 +133,15 @@ void lightning_update(EffectInstance* effect) {
     data->unk_18++;
 
     if (data->unk_14 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
 
         if (data->unk_48 != NULL) {
-            shim_remove_effect(data->unk_48);
+            remove_effect(data->unk_48);
             data->unk_48 = NULL;
         }
 
         if (data->unk_44 != NULL) {
-            shim_remove_effect(data->unk_44);
+            remove_effect(data->unk_44);
             data->unk_44 = NULL;
         }
     } else {
@@ -144,7 +149,7 @@ void lightning_update(EffectInstance* effect) {
         s32 unk_18 = data->unk_18;
 
         if (data->unk_44 != NULL && unk_18 >= 18) {
-            shim_remove_effect(data->unk_44);
+            remove_effect(data->unk_44);
             data->unk_44 = NULL;
         }
 
@@ -205,10 +210,10 @@ void lightning_render(EffectInstance* effect) {
 
     renderTask.appendGfx = lightning_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
+    renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_SURFACE_XLU_LAYER3;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -245,24 +250,24 @@ void lightning_appendGfx(void* effect) {
             case 0:
             case 1:
             case 2:
-                shim_guPerspectiveF(sp20, &perspNorm, 30.0f, (f32) camera->viewportW / (f32) camera->viewportH, 4.0f, 16384.0f, 1.0f);
-                shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+                guPerspectiveF(sp20, &perspNorm, 30.0f, (f32) camera->viewportW / (f32) camera->viewportH, 4.0f, 16384.0f, 1.0f);
+                guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
                 gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-                shim_guTranslateF(sp20, data->unk_04, data->unk_08, -500.0f);
-                shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+                guTranslateF(sp20, data->unk_04, data->unk_08, -500.0f);
+                guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
                 gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 47, 198, 255);
                 break;
             default:
-                shim_guTranslateF(sp20, data->unk_04, data->unk_08, data->unk_0C);
-                shim_guRotateF(sp60, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-                shim_guMtxCatF(sp60, sp20, sp20);
-                shim_guTranslateF(sp60, 0.0f, 0.0f, 1.0f);
-                shim_guMtxCatF(sp60, sp20, sp20);
-                shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+                guTranslateF(sp20, data->unk_04, data->unk_08, data->unk_0C);
+                guRotateF(sp60, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+                guMtxCatF(sp60, sp20, sp20);
+                guTranslateF(sp60, 0.0f, 0.0f, 1.0f);
+                guMtxCatF(sp60, sp20, sp20);
+                guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
                 gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 0, data->unk_10);

@@ -4,14 +4,8 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(ResumeIntroState)) {
-    if (
-        gGameStatusPtr->creditsViewportMode == 0 ||
-        gGameStatusPtr->creditsViewportMode == 1 ||
-        gGameStatusPtr->creditsViewportMode == 2 ||
-        gGameStatusPtr->creditsViewportMode == 3 ||
-        gGameStatusPtr->creditsViewportMode == 4)
-    {
-        gGameStatusPtr->creditsViewportMode++;
+    if (gGameStatusPtr->introPart > INTRO_PART_NONE && gGameStatusPtr->introPart < INTRO_PART_5) {
+        gGameStatusPtr->introPart++;
         state_init_intro();
     }
     return ApiStatus_DONE1;
@@ -38,7 +32,7 @@ void N(lerp_value_with_max_step)(f32 start, f32 end, f32 current, f32 maxStep, f
 }
 
 API_CALLABLE(N(MakeShootingStar)) {
-    fx_star(1, 200.0f, 400.0f, 1200.0f, -300.0f, -100.0f, 0.0f, 30.0f);
+    fx_star(FX_STAR_FOREGROUND, 200.0f, 400.0f, 1200.0f, -300.0f, -100.0f, 0.0f, 30.0f);
     return ApiStatus_DONE2;
 }
 

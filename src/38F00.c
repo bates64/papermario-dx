@@ -64,18 +64,18 @@ EvtScript D_800939B4 = {
         EVT_CALL(SetSelfVar, 0, 1)
         EVT_CALL(BindNpcAI, NPC_SELF, EVT_PTR(D_800939A4))
         EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_CAMERA_FOR_YAW, TRUE)
-        EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_8 | NPC_FLAG_JUMPING, FALSE)
+        EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, FALSE)
         EVT_CALL(SetNpcAnimation, NPC_SELF, LVar2)
         EVT_SET(LVar0, 0)
         EVT_LOOP(30)
             EVT_CALL(SetNpcRotation, NPC_SELF, 0, LVar0, 0)
             EVT_CALL(func_8005DD54)
-            EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_6, LVar2, LVar2, LVar2, 0)
+            EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_COLOR, LVar2, LVar2, LVar2, 0)
             EVT_ADD(LVar0, 30)
             EVT_WAIT(1)
         EVT_END_LOOP
         EVT_CALL(SetNpcRotation, NPC_SELF, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_6, 255, 255, 255, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_COLOR, 255, 255, 255, 0)
         EVT_CALL(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, FALSE)
         EVT_CALL(SetSelfVar, 0, 0)
         EVT_CALL(func_8005DDF0)
@@ -105,7 +105,7 @@ ApiStatus func_8005DB00(Evt* script, s32 isInitialCall) {
             npc->duration = evt_get_variable(script, LVar1);
             script->functionTemp[1] = evt_get_variable(script, LVar2);
             script->functionTemp[2] = evt_get_variable(script, LVar3) / 2;
-            npc->currentAnim = script->varTable[10];
+            npc->curAnim = script->varTable[10];
             script->functionTemp[0] = 1;
             break;
         case 1:
@@ -115,10 +115,10 @@ ApiStatus func_8005DB00(Evt* script, s32 isInitialCall) {
                 }
 
                 if (npc->duration == 0) {
-                    if (sqrtf(SQ((playerStatus->position.x - npc->pos.x)) +
-                            SQ((playerStatus->position.y - npc->pos.y)) +
-                            SQ((playerStatus->position.z - npc->pos.z))) <= npc->planarFlyDist) {
-                        targetDir = atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+                    if (sqrtf(SQ((playerStatus->pos.x - npc->pos.x)) +
+                            SQ((playerStatus->pos.y - npc->pos.y)) +
+                            SQ((playerStatus->pos.z - npc->pos.z))) <= npc->planarFlyDist) {
+                        targetDir = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                         npcYaw = script->functionTemp[1] == -1 ? npc->yaw : script->functionTemp[1];
 
                         if (fabsf(get_clamped_angle_diff(npcYaw, targetDir)) < script->functionTemp[2]) {
@@ -127,8 +127,8 @@ ApiStatus func_8005DB00(Evt* script, s32 isInitialCall) {
                         }
                     }
                 } else {
-                    if (dist2D(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z) <= npc->planarFlyDist) {
-                        targetDir = atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+                    if (dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z) <= npc->planarFlyDist) {
+                        targetDir = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                         npcYaw = script->functionTemp[1] == -1 ? npc->yaw : script->functionTemp[1];
 
                         if (fabsf(get_clamped_angle_diff(npcYaw, targetDir)) < script->functionTemp[2]) {

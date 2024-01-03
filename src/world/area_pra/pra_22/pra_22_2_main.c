@@ -1,4 +1,5 @@
 #include "pra_22.h"
+#include "sprite/player.h"
 
 #include "world/common/todo/UnkFunc11.inc.c"
 
@@ -6,18 +7,18 @@ API_CALLABLE(N(PreventFalling)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x, y, z, hitDepth;
 
-    playerStatus->position.x = script->varTable[0];
-    x = playerStatus->position.x;
-    y = playerStatus->position.y + 10.0f;
-    z = playerStatus->position.z;
+    playerStatus->pos.x = script->varTable[0];
+    x = playerStatus->pos.x;
+    y = playerStatus->pos.y + 10.0f;
+    z = playerStatus->pos.z;
     hitDepth = 300.0f;
     npc_raycast_down_around(0, &x, &y, &z, &hitDepth, 270.0f, playerStatus->colliderDiameter);
 
-    playerStatus->position.x = x;
-    playerStatus->position.z = z;
+    playerStatus->pos.x = x;
+    playerStatus->pos.z = z;
     script->varTable[10] = FALSE;
-    if (playerStatus->position.y != y) {
-        playerStatus->position.y = 0.0f;
+    if (playerStatus->pos.y != y) {
+        playerStatus->pos.y = 0.0f;
         script->varTable[3]++;
         if (script->varTable[3] >= 30) {
             // player may now fall
@@ -157,7 +158,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         EVT_CALL(DisablePlayerInput, FALSE)
     EVT_END_THREAD
     EVT_CALL(MakeLerp, LVar6, LVar7, 100, EASING_LINEAR)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o1064, SOUND_80000010, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o1064, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
         EVT_CALL(TranslateModel, MODEL_o1005, LVar0, 0, 0)
@@ -171,7 +172,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
             EVT_BREAK_LOOP
         EVT_END_IF
     EVT_END_LOOP
-    EVT_CALL(StopSound, SOUND_80000010)
+    EVT_CALL(StopSound, SOUND_LOOP_MOVE_STATUE)
     EVT_RETURN
     EVT_END
 };
@@ -207,7 +208,7 @@ EvtScript N(EVS_PushStatue) = {
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 24, 24, 40)
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)

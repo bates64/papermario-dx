@@ -8,21 +8,21 @@ API_CALLABLE(N(FlashScreenWhite)) {
     }
     switch (script->functionTemp[2]) {
         case 0: // fading in
-            set_screen_overlay_color(0, 208, 208, 208);
-            set_screen_overlay_params_front(1, script->functionTemp[1]);
+            set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
+            set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
             if (script->functionTemp[1] == 255) {
                 script->functionTemp[2] = 1;
                 break;
             }
             script->functionTemp[1] += 64;
-            if (script->functionTemp[1] < 256) {       
+            if (script->functionTemp[1] < 256) {
                 break;
             }
             script->functionTemp[1] = 255;
             break;
         case 1: // fading out
-            set_screen_overlay_color(0, 208, 208, 208);
-            set_screen_overlay_params_front(1, script->functionTemp[1]);
+            set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
+            set_screen_overlay_params_front(OVERLAY_VIEWPORT_COLOR, script->functionTemp[1]);
             if (script->functionTemp[1] == 0) {
                 return ApiStatus_DONE2;
             }
@@ -40,7 +40,7 @@ API_CALLABLE(N(BigExplosionRumble)) {
     Bytecode* args = script->ptrReadPos;
     f32 frequency;
     s32 duration;
-    
+
     if (isInitialCall) {
         duration = evt_get_variable(script, *args++);
         frequency = 2.0f * evt_get_float_variable(script, *args++);
@@ -48,16 +48,16 @@ API_CALLABLE(N(BigExplosionRumble)) {
         if (frequency > 10.0f) {
             frequency = 10.0f;
         }
-        
+
         start_rumble((u8) ((frequency / 10.0f) * 256.0f), (duration & 0xFFFF) * 2);
     }
-    
-    script->functionTemp[0]--;  
+
+    script->functionTemp[0]--;
     if (script->functionTemp[0] == 0)
     {
         return ApiStatus_DONE1;
     }
-    
+
     return ApiStatus_BLOCK;
 }
 
@@ -84,7 +84,7 @@ s32 N(ExplosionPositions)[] = {
     -400,  -400,  450,
        0,  -720,  620,
     -270,  -700,  470,
-     320,  -460,  530, 
+     320,  -460,  530,
 };
 
 EvtScript N(EVS_PlayExplosionFX) = {
@@ -93,7 +93,7 @@ EvtScript N(EVS_PlayExplosionFX) = {
     EVT_LOOP(0)
         EVT_USE_BUF(EVT_PTR(N(ExplosionPositions)))
         EVT_LOOP(8)
-            EVT_CALL(PlaySoundWithVolume, SOUND_B000001C, LVar5)
+            EVT_CALL(PlaySoundWithVolume, SOUND_SEQ_FINALE_EXPLOSION, LVar5)
             EVT_BUF_READ3(LVar0, LVar1, LVar2)
             EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 0, LVar0, LVar1, LVar2, EVT_FLOAT(6.0), 30)
             EVT_WAIT(LVar4)
@@ -123,7 +123,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
     EVT_EXEC(N(EVS_AnimateSpinningRing))
     EVT_EXEC(N(EVS_UpdateCamShaking))
     EVT_EXEC_GET_TID(N(EVS_PlayExplosionFX), LVar9)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 22, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 22, 16, 4096)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     EVT_CALL(SetCamType, CAM_DEFAULT, 1, TRUE)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, -60, 0, 0)
@@ -150,7 +150,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
         EVT_CALL(UpdateLerp)
         EVT_SETF(LVar2, LVar0)
         EVT_DIVF(LVar2, 10)
-        EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, LVar2, 16, 4096)
+        EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, LVar2, 16, 4096)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
@@ -161,7 +161,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
         EVT_CALL(UpdateLerp)
         EVT_SETF(LVar2, LVar0)
         EVT_DIVF(LVar2, 10)
-        EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, LVar2, 1, 4096)
+        EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, LVar2, 1, 4096)
         EVT_WAIT(1)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
@@ -169,7 +169,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
     EVT_END_LOOP
     EVT_KILL_THREAD(LVar9)
     EVT_WAIT(50)
-    EVT_CALL(PlaySound, SOUND_A4)
+    EVT_CALL(PlaySound, SOUND_KPA_LIGHT_RAYS)
     EVT_PLAY_EFFECT(EFFECT_LIGHT_RAYS, 2, 0, -430, 1920, 15, LVar9)
     EVT_WAIT(30)
     EVT_THREAD
@@ -184,7 +184,7 @@ EvtScript N(EVS_Scene_CastleDestruction) = {
             EVT_END_IF
         EVT_END_LOOP
     EVT_END_THREAD
-    EVT_CALL(GotoMapSpecial, EVT_PTR("hos_10"), hos_10_ENTRY_1, TRANSITION_7)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("hos_10"), hos_10_ENTRY_1, TRANSITION_SLOW_FADE_TO_WHITE)
     EVT_WAIT(100)
     EVT_RETURN
     EVT_END

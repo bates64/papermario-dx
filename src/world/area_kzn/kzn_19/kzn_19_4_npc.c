@@ -1,5 +1,6 @@
 #include "kzn_19.h"
 #include "ld_addrs.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Kolorado.h"
 #include "world/common/npc/StarSpirit.h"
@@ -136,7 +137,7 @@ EvtScript N(EVS_Misstar_Escape) = {
     EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
     EVT_WAIT(30)
     EVT_SET(AF_KZN_BossRoomFloorBroken, TRUE)
-    EVT_CALL(PlaySound, SOUND_8000006B)
+    EVT_CALL(PlaySound, SOUND_LOOP_RUMBLE)
     EVT_LOOP(0)
         EVT_WAIT(1)
         EVT_IF_NE(AF_KZN_BossRoomFloorBroken, TRUE)
@@ -302,7 +303,7 @@ EvtScript N(EVS_NpcIdle_LavaPiranha) = {
         EVT_CALL(PlayerMoveTo, 200, -30, 0)
         EVT_CALL(InterpPlayerYaw, 90, 0)
     EVT_END_THREAD
-    EVT_CALL(PlaySoundAt, SOUND_3C5, SOUND_SPACE_MODE_0, 330, 25, -50)
+    EVT_CALL(PlaySoundAt, SOUND_LAVA_PIRANHA_EMERGE, SOUND_SPACE_DEFAULT, 330, 25, -50)
     EVT_EXEC(N(EVS_PlayVinesAnim_Emerge))
     EVT_WAIT(59)
     EVT_THREAD
@@ -557,7 +558,7 @@ EvtScript N(EVS_NpcDefeat_LavaPiranha) = {
             EVT_CALL(EnableGroup, MODEL_mae, FALSE)
             EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_ato, COLLIDER_FLAGS_UPPER_MASK)
             EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mae, COLLIDER_FLAGS_UPPER_MASK)
-            EVT_CALL(PlaySoundAt, SOUND_3C6, SOUND_SPACE_MODE_0, 330, 25, -50)
+            EVT_CALL(PlaySoundAt, SOUND_LAVA_PIRANHA_DEFEAT, SOUND_SPACE_DEFAULT, 330, 25, -50)
             EVT_EXEC(N(EVS_PlayVinesAnim_Defeat))
             EVT_WAIT(1)
             EVT_CALL(SetNpcAux, NPC_SELF, EVT_PTR(N(EVS_NpcAux_LavaPiranha)))
@@ -654,7 +655,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_LavaPiranha),
         .settings = &N(NpcSettings_LavaPiranhaHead),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
         .extraAnimations = N(ExtraAnims_LavaPiranha),

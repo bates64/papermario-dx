@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "battle.h"
+#include "sprite/player.h"
 
 #include "sprite/npc/WorldGoombario.h"
 #include "sprite/npc/BattleGoombario.h"
@@ -23,7 +24,7 @@ extern EvtScript battle_move_up_and_away_EVS_UsePower;
 extern EvtScript battle_move_star_beam_EVS_UsePower;
 extern EvtScript battle_move_peach_beam_EVS_UsePower;
 extern EvtScript battle_move_peach_focus_EVS_UsePower;
-extern EvtScript battle_move_twink_dash_EVS_UsePower;
+extern EvtScript battle_move_peach_focus_alt_EVS_UsePower;
 
 BattleMoveEntry StarPowersTable[] = {
     BTL_MOVE(focus,           EVS_UsePower),
@@ -37,84 +38,84 @@ BattleMoveEntry StarPowersTable[] = {
     BTL_MOVE(star_beam,       EVS_UsePower),
     BTL_MOVE(peach_beam,      EVS_UsePower),
     BTL_MOVE(peach_focus,     EVS_UsePower),
-    BTL_MOVE(twink_dash,      EVS_UsePower),
+    BTL_MOVE(peach_focus_alt, EVS_UsePower),
 };
 
-s32 D_8029C890[][5] = {
+s32 PartnerWishAnims[][5] = {
     [PARTNER_NONE] {
-        ANIM_Mario1_UsePower,
-        ANIM_Mario1_Pray,
-        ANIM_Mario1_LookUp,
-        ANIM_Mario1_Run,
-        0,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_Mario1_UsePower,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_Mario1_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_Mario1_LookUp,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_Mario1_Run,
+        [PARTNER_WISH_ANIM_IDLE]    0,
     },
     [PARTNER_GOOMBARIO] {
-        ANIM_BattleGoombario_Run,
-        ANIM_BattleGoombario_CloseEyes,
-        ANIM_BattleGoombario_CloseEyes,
-        ANIM_BattleGoombario_Run,
-        ANIM_BattleGoombario_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleGoombario_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleGoombario_CloseEyes,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleGoombario_CloseEyes,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleGoombario_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleGoombario_Idle,
     },
     [PARTNER_KOOPER] {
-        ANIM_BattleKooper_Run,
-        ANIM_BattleKooper_Pray,
-        ANIM_BattleKooper_Pray,
-        ANIM_BattleKooper_Run,
-        ANIM_BattleKooper_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleKooper_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleKooper_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleKooper_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleKooper_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleKooper_Idle,
     },
    [PARTNER_BOMBETTE] {
-        ANIM_BattleBombette_Run,
-        ANIM_BattleBombette_Sleep,
-        ANIM_BattleBombette_Sleep,
-        ANIM_BattleBombette_Run,
-        ANIM_BattleBombette_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleBombette_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleBombette_Sleep,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleBombette_Sleep,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleBombette_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleBombette_Idle,
     },
     [PARTNER_PARAKARRY] {
-        ANIM_BattleParakarry_Run,
-        ANIM_BattleParakarry_Pray,
-        ANIM_BattleParakarry_Pray,
-        ANIM_BattleParakarry_Run,
-        ANIM_BattleParakarry_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleParakarry_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleParakarry_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleParakarry_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleParakarry_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleParakarry_Idle,
     },
     [PARTNER_GOOMPA] {
         // no data
     },
     [PARTNER_WATT] {
-        ANIM_BattleWatt_Run,
-        ANIM_BattleWatt_Sleep,
-        ANIM_BattleWatt_Sleep,
-        ANIM_BattleWatt_Run,
-        ANIM_BattleParakarry_Idle, // @bug uses wrong sprite!
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleWatt_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleWatt_Sleep,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleWatt_Sleep,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleWatt_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleParakarry_Idle, // @bug uses wrong sprite!
     },
     [PARTNER_SUSHIE] {
-        ANIM_BattleSushie_Run,
-        ANIM_BattleSushie_Pray,
-        ANIM_BattleSushie_Pray,
-        ANIM_BattleSushie_Run,
-        ANIM_BattleSushie_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleSushie_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleSushie_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleSushie_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleSushie_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleSushie_Idle,
     },
     [PARTNER_LAKILESTER] {
-        ANIM_BattleLakilester_Run,
-        ANIM_BattleLakilester_Pray,
-        ANIM_BattleLakilester_Pray,
-        ANIM_BattleLakilester_Run,
-        ANIM_BattleLakilester_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleLakilester_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleLakilester_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleLakilester_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleLakilester_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleLakilester_Idle,
     },
     [PARTNER_BOW] {
-        ANIM_BattleBow_Run,
-        ANIM_BattleBow_Pray,
-        ANIM_BattleBow_Pray,
-        ANIM_BattleBow_Run,
-        ANIM_BattleBow_Idle,
+        [PARTNER_WISH_ANIM_WALK]    ANIM_BattleBow_Run,
+        [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleBow_Pray,
+        [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleBow_Pray,
+        [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleBow_Run,
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleBow_Idle,
     },
 };
 
-ApiStatus LoadStarPowerScript(Evt* script, s32 isInitialCall) {
+API_CALLABLE(LoadStarPowerScript) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     s16 starPowerIdx;
 
-    playerData->specialBarsFilled -= gMoveTable[battleStatus->selectedMoveID].costFP * 256;
+    playerData->starPower -= gMoveTable[battleStatus->selectedMoveID].costFP * SP_PER_BAR;
     starPowerIdx = battleStatus->moveArgument;
     dma_copy((&StarPowersTable[starPowerIdx])->romStart,
              (&StarPowersTable[starPowerIdx])->romEnd,

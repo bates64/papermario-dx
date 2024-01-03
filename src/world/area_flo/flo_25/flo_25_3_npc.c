@@ -1,7 +1,8 @@
 #include "flo_25.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/GateFlower.inc.c"
-#include "world/common/enemy/TuffPuff.inc.c"
+#include "world/common/enemy/RuffPuff.inc.c"
 #include "world/common/enemy/Bzzap.inc.c"
 
 #include "world/common/complete/NormalItemChoice.inc.c"
@@ -33,17 +34,17 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                 EVT_CALL(N(FlowerGuard_JudgeItemTastiness), LVar0)
                 EVT_CALL(MakeItemEntity, LVar8, 505, 20, -24, ITEM_SPAWN_MODE_DECORATION, 0)
                 EVT_SET(LVar7, LVar0)
-                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_2095, SOUND_SPACE_MODE_0)
+                EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EAT_OR_DRINK, SOUND_SPACE_DEFAULT)
                 EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Red_Eat)
                 EVT_WAIT(20 * DT)
                 EVT_CALL(RemoveItemEntity, LVar7)
                 EVT_SWITCH(LVar8)
                     EVT_CASE_EQ(159)
                         EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Red_Chew, ANIM_GateFlower_Red_Idle, 0, MSG_CH6_003F)
-                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_21C, SOUND_SPACE_MODE_0)
+                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_APPROVE, SOUND_SPACE_DEFAULT)
                         EVT_CALL(EndSpeech, NPC_SELF, ANIM_GateFlower_Red_HappyTalk, ANIM_GateFlower_Red_HappyIdle, 0)
                         EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Red_OpenGate)
-                        EVT_CALL(PlaySoundAtCollider, COLLIDER_o94, SOUND_METAL_GATE_OPEN, SOUND_SPACE_MODE_0)
+                        EVT_CALL(PlaySoundAtCollider, COLLIDER_o94, SOUND_METAL_GATE_OPEN, SOUND_SPACE_DEFAULT)
                         EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o94, COLLIDER_FLAGS_UPPER_MASK)
                         EVT_CALL(MakeLerp, 0, 100, 30, EASING_QUADRATIC_IN)
                         EVT_LOOP(0)
@@ -74,7 +75,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                     EVT_CASE_DEFAULT
                         EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Red_Chew, ANIM_GateFlower_Red_Idle, 0, MSG_CH6_003D)
                         EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Red_Disgust)
-                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_2096, SOUND_SPACE_MODE_0)
+                        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_SPIT_OUT, SOUND_SPACE_DEFAULT)
                         EVT_CALL(MakeItemEntity, LVar8, -125, 20, 0, ITEM_SPAWN_MODE_DECORATION, 0)
                         EVT_SET(LVar7, LVar0)
                         EVT_WAIT(5 * DT)
@@ -169,8 +170,8 @@ NpcData N(NpcData_GateFlower) = {
     .tattle = MSG_NpcTattle_RedGateFlower,
 };
 
-NpcData N(NpcData_TuffPuff) = {
-    .id = NPC_TuffPuff,
+NpcData N(NpcData_RuffPuff) = {
+    .id = NPC_RuffPuff,
     .pos = { -200.0f, 45.0f, 0.0f },
     .yaw = 90,
     .territory = {
@@ -185,10 +186,10 @@ NpcData N(NpcData_TuffPuff) = {
             .detectSize = { 200 },
         }
     },
-    .settings = &N(NpcSettings_TuffPuff),
+    .settings = &N(NpcSettings_RuffPuff),
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
-    .drops = TUFF_PUFF_DROPS,
-    .animations = TUFF_PUFF_ANIMS,
+    .drops = RUFF_PUFF_DROPS,
+    .animations = RUFF_PUFF_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
 };
 
@@ -216,7 +217,7 @@ NpcData N(NpcData_Bzzap) = {
 };
 
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_TuffPuff), BTL_FLO_FORMATION_22, BTL_FLO_STAGE_05),
+    NPC_GROUP(N(NpcData_RuffPuff), BTL_FLO_FORMATION_22, BTL_FLO_STAGE_05),
     NPC_GROUP(N(NpcData_Bzzap), BTL_FLO_FORMATION_1A, BTL_FLO_STAGE_01),
     NPC_GROUP(N(NpcData_GateFlower)),
     {}

@@ -1,4 +1,5 @@
 #include "flo_12.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Rosie.inc.c"
 #include "world/common/npc/Dummy.inc.c"
@@ -80,7 +81,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Rosie_TakeOut)
                     EVT_WAIT(10)
                     EVT_CALL(SetNpcAnimation, NPC_SELF, ANIM_Rosie_IdleHold)
-                    EVT_CALL(MakeItemEntity, ITEM_WATER_STONE, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, 0x00000564)
+                    EVT_CALL(MakeItemEntity, ITEM_WATER_STONE, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
                     EVT_WAIT(10)
                     EVT_SWITCH(GF_FLO10_LilyRequestedWaterStone)
                         EVT_CASE_EQ(0)
@@ -195,7 +196,7 @@ NpcData N(NpcData_Rosie)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Rosie),
         .settings = &N(NpcSettings_Rosie),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = ROSIE_ANIMS,
         .tattle = MSG_NpcTattle_Rosie,

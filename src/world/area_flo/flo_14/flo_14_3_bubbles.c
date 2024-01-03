@@ -42,7 +42,7 @@ EvtScript N(EVS_TetherParterToPlayer) = {
 };
 
 API_CALLABLE(N(SavePartnerFlags)) {
-    if (gPlayerData.currentPartner == PARTNER_NONE) {
+    if (gPlayerData.curPartner == PARTNER_NONE) {
         script->varTable[14] = FALSE;
         return ApiStatus_DONE2;
     }
@@ -63,7 +63,7 @@ API_CALLABLE(N(UpdateBubbleSoundPos)) {
     script->functionTemp[0] = evt_get_variable(script, *args++);
     script->functionTemp[1] = evt_get_variable(script, *args++);
     script->functionTemp[2] = evt_get_variable(script, *args++);
-    sfx_adjust_env_sound_pos(SOUND_194, SOUND_SPACE_MODE_0, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
+    sfx_adjust_env_sound_pos(SOUND_LRAW_BUBBLE_DRIFT, SOUND_SPACE_DEFAULT, script->functionTemp[0], script->functionTemp[1], script->functionTemp[2]);
     return ApiStatus_DONE2;
 }
 
@@ -85,7 +85,7 @@ Vec3f N(BubbleFlightPath)[] = {
 
 EvtScript N(EVS_BubbleFollowPath) = {
     EVT_WAIT(20)
-    EVT_CALL(PlaySound, SOUND_80000023)
+    EVT_CALL(PlaySound, SOUND_LOOP_BUBBLE_DRIFT)
     EVT_CALL(LoadPath, 165, EVT_PTR(N(BubbleFlightPath)), ARRAY_COUNT(N(BubbleFlightPath)), EASING_COS_IN_OUT)
     EVT_LABEL(0)
         EVT_CALL(GetNextPathPos)
@@ -98,7 +98,7 @@ EvtScript N(EVS_BubbleFollowPath) = {
         EVT_IF_EQ(LVar0, 1)
             EVT_GOTO(0)
         EVT_END_IF
-    EVT_CALL(StopSound, SOUND_80000023)
+    EVT_CALL(StopSound, SOUND_LOOP_BUBBLE_DRIFT)
     EVT_RETURN
     EVT_END
 };
@@ -144,7 +144,7 @@ EvtScript N(EVS_RideBigBubble) = {
     EVT_END_IF
     EVT_CALL(GetModelCenter, MODEL_o167)
     EVT_PLAY_EFFECT(EFFECT_FIREWORK, 0, LVar0, LVar1, LVar2, 2, 0)
-    EVT_CALL(PlaySoundAt, SOUND_2F3, SOUND_SPACE_MODE_0, LVar0, LVar1, LVar2)
+    EVT_CALL(PlaySoundAt, SOUND_BUBBLE_BURST, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     EVT_CALL(ClearPartnerMoveHistory, NPC_PARTNER)
     EVT_CALL(EnableModel, MODEL_o167, FALSE)
     EVT_SET(AF_FLO_BigBubbleReady, FALSE)
@@ -159,7 +159,7 @@ EvtScript N(EVS_RideBigBubble) = {
 };
 
 EvtScript N(EVS_BlowBigBubble) = {
-    EVT_CALL(PlaySoundAt, SOUND_193, SOUND_SPACE_MODE_0, 591, 55, 121)
+    EVT_CALL(PlaySoundAt, SOUND_FLO_BLOW_BUBBLE, SOUND_SPACE_DEFAULT, 591, 55, 121)
     EVT_CALL(EnableModel, MODEL_o167, TRUE)
     EVT_SETF(LVar2, EVT_FLOAT(1.0))
     EVT_SETF(LVar4, EVT_FLOAT(0.0))
@@ -387,7 +387,7 @@ EvtScript N(EVS_SetupBubbles) = {
     EVT_SET(LVar0, CLONED_MODEL(5))
     EVT_EXEC(N(EVS_ManageBlownBubble))
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o167, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_big_bubble)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_big_bubble)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_o167, CUSTOM_GFX_1, -1)
     EVT_CALL(SetModelCustomGfx, CLONED_MODEL(1), 1, -1)
     EVT_CALL(SetModelCustomGfx, CLONED_MODEL(2), 1, -1)
@@ -395,7 +395,7 @@ EvtScript N(EVS_SetupBubbles) = {
     EVT_CALL(SetModelCustomGfx, CLONED_MODEL(4), 1, -1)
     EVT_CALL(SetModelCustomGfx, CLONED_MODEL(5), 1, -1)
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_1, MODEL_o57, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_2, EVT_PTR(N(gfx_build_bubble_flower)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_2, EVT_PTR(N(gfx_build_bubble_flower)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_o57, CUSTOM_GFX_2, -1)
     EVT_RETURN
     EVT_END

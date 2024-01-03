@@ -1,5 +1,6 @@
 #include "trd_06.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 extern EvtScript N(EVS_PushSong);
 extern EvtScript N(EVS_PopSong);
@@ -10,7 +11,7 @@ API_CALLABLE(N(LoadPartyImage));
 NpcSettings N(NpcSettings_Bobomb) = {
     .height = 23,
     .radius = 20,
-    .level = 6,
+    .level = ACTOR_LEVEL_BOB_OMB,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -18,7 +19,7 @@ NpcSettings N(NpcSettings_Bobomb) = {
 NpcSettings N(NpcSettings_KoopaTroopa) = {
     .height = 34,
     .radius = 24,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -110,7 +111,7 @@ EvtScript N(EVS_NpcInteract_Bombette) = {
         EVT_WAIT(15 * DT)
         EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
         EVT_WAIT(25 * DT)
-        EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_262, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_PARTNER, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         EVT_CALL(ShowEmote, NPC_PARTNER, EMOTE_EXCLAMATION, -45, 30, EMOTER_NPC, 0, 0, 0, 0)
         EVT_WAIT(40 * DT)
         EVT_CALL(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00E0)
@@ -139,7 +140,7 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
         EVT_GOTO(0)
     EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_ttw, SOUND_METAL_DOOR_OPEN, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_ttw, SOUND_METAL_DOOR_OPEN, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 90, 15, EASING_COS_IN_OUT)
     EVT_LABEL(10)
     EVT_CALL(UpdateLerp)
@@ -156,8 +157,8 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     EVT_CALL(SetNpcSpeed, NPC_Jailer_Bobomb_01, EVT_FLOAT(4.0 / DT))
     EVT_CALL(SetNpcSpeed, NPC_Jailer_Bobomb_02, EVT_FLOAT(4.0 / DT))
     EVT_CALL(SetNpcAnimation, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Anim06)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Anim06)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
     EVT_CALL(SetNpcFlagBits, NPC_Jailer_KoopaTroopa, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_Jailer_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     EVT_CALL(SetNpcFlagBits, NPC_Jailer_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
@@ -175,11 +176,11 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     EVT_CALL(SetCamDistance, CAM_DEFAULT, 300)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 1)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Anim02)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Anim02)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Idle)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Idle)
     EVT_CALL(SpeakToPlayer, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run, ANIM_KoopaTroopa_Idle, 0, MSG_CH1_00F0)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Anim06)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Anim06)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
     EVT_CALL(PanToTarget, CAM_DEFAULT, 0, 0)
     EVT_THREAD
         EVT_WAIT(60)
@@ -192,7 +193,7 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
         EVT_IF_EQ(LVar1, 1)
             EVT_GOTO(20)
         EVT_END_IF
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_ttw, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_ttw, SOUND_METAL_DOOR_CLOSE, SOUND_SPACE_DEFAULT)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(NpcMoveTo, NPC_Jailer_KoopaTroopa, -233, 147, 0)
@@ -209,11 +210,11 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa) = {
     EVT_CALL(SetNpcJumpscale, NPC_Jailer_KoopaTroopa, EVT_FLOAT(1.0))
     EVT_CALL(GetNpcPos, NPC_Jailer_KoopaTroopa, LVar0, LVar1, LVar2)
     EVT_CALL(NpcJump0, NPC_Jailer_KoopaTroopa, LVar0, LVar1, LVar2, 10 * DT)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Anim02)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Anim02)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Idle)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Idle)
     EVT_CALL(SpeakToPlayer, NPC_Jailer_KoopaTroopa, ANIM_KoopaTroopa_Run, ANIM_KoopaTroopa_Idle, 0, MSG_CH1_00F1)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Anim06)
-    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Anim06)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_01, ANIM_Bobomb_Run)
+    EVT_CALL(SetNpcAnimation, NPC_Jailer_Bobomb_02, ANIM_Bobomb_Run)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(StartBossBattle, SONG_SPECIAL_BATTLE)
     EVT_RETURN
@@ -344,7 +345,7 @@ NpcData N(NpcData_Bombette) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Bombette),
     .settings = &N(NpcSettings_Bobomb),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_WorldBombette_Idle,
@@ -374,7 +375,7 @@ NpcData N(NpcData_Jailers)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_KoopaTroopa),
         .settings = &N(NpcSettings_KoopaTroopa),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
             .itemDropChance = 5,
@@ -410,25 +411,25 @@ NpcData N(NpcData_Jailers)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bobomb_Jailer),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = NO_DROPS,
         .animations = {
-            .idle   = ANIM_Bobomb_Anim02,
-            .walk   = ANIM_Bobomb_Anim04,
-            .run    = ANIM_Bobomb_Anim06,
-            .chase  = ANIM_Bobomb_Anim06,
-            .anim_4 = ANIM_Bobomb_Anim02,
-            .anim_5 = ANIM_Bobomb_Anim02,
-            .death  = ANIM_Bobomb_Anim0E,
-            .hit    = ANIM_Bobomb_Anim0E,
-            .anim_8 = ANIM_Bobomb_Anim06,
-            .anim_9 = ANIM_Bobomb_Anim06,
-            .anim_A = ANIM_Bobomb_Anim06,
-            .anim_B = ANIM_Bobomb_Anim06,
-            .anim_C = ANIM_Bobomb_Anim06,
-            .anim_D = ANIM_Bobomb_Anim06,
-            .anim_E = ANIM_Bobomb_Anim06,
-            .anim_F = ANIM_Bobomb_Anim06,
+            .idle   = ANIM_Bobomb_Idle,
+            .walk   = ANIM_Bobomb_Walk,
+            .run    = ANIM_Bobomb_Run,
+            .chase  = ANIM_Bobomb_Run,
+            .anim_4 = ANIM_Bobomb_Idle,
+            .anim_5 = ANIM_Bobomb_Idle,
+            .death  = ANIM_Bobomb_Hurt,
+            .hit    = ANIM_Bobomb_Hurt,
+            .anim_8 = ANIM_Bobomb_Run,
+            .anim_9 = ANIM_Bobomb_Run,
+            .anim_A = ANIM_Bobomb_Run,
+            .anim_B = ANIM_Bobomb_Run,
+            .anim_C = ANIM_Bobomb_Run,
+            .anim_D = ANIM_Bobomb_Run,
+            .anim_E = ANIM_Bobomb_Run,
+            .anim_F = ANIM_Bobomb_Run,
         },
     },
     {
@@ -437,25 +438,25 @@ NpcData N(NpcData_Jailers)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bobomb_Jailer),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800 | ENEMY_FLAG_40000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000,
         .drops = NO_DROPS,
         .animations = {
-            .idle   = ANIM_Bobomb_Anim02,
-            .walk   = ANIM_Bobomb_Anim04,
-            .run    = ANIM_Bobomb_Anim06,
-            .chase  = ANIM_Bobomb_Anim06,
-            .anim_4 = ANIM_Bobomb_Anim02,
-            .anim_5 = ANIM_Bobomb_Anim02,
-            .death  = ANIM_Bobomb_Anim0E,
-            .hit    = ANIM_Bobomb_Anim0E,
-            .anim_8 = ANIM_Bobomb_Anim06,
-            .anim_9 = ANIM_Bobomb_Anim06,
-            .anim_A = ANIM_Bobomb_Anim06,
-            .anim_B = ANIM_Bobomb_Anim06,
-            .anim_C = ANIM_Bobomb_Anim06,
-            .anim_D = ANIM_Bobomb_Anim06,
-            .anim_E = ANIM_Bobomb_Anim06,
-            .anim_F = ANIM_Bobomb_Anim06,
+            .idle   = ANIM_Bobomb_Idle,
+            .walk   = ANIM_Bobomb_Walk,
+            .run    = ANIM_Bobomb_Run,
+            .chase  = ANIM_Bobomb_Run,
+            .anim_4 = ANIM_Bobomb_Idle,
+            .anim_5 = ANIM_Bobomb_Idle,
+            .death  = ANIM_Bobomb_Hurt,
+            .hit    = ANIM_Bobomb_Hurt,
+            .anim_8 = ANIM_Bobomb_Run,
+            .anim_9 = ANIM_Bobomb_Run,
+            .anim_A = ANIM_Bobomb_Run,
+            .anim_B = ANIM_Bobomb_Run,
+            .anim_C = ANIM_Bobomb_Run,
+            .anim_D = ANIM_Bobomb_Run,
+            .anim_E = ANIM_Bobomb_Run,
+            .anim_F = ANIM_Bobomb_Run,
         },
     },
 };
@@ -467,7 +468,7 @@ NpcData N(NpcData_Inmates)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Bobomb_01),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
             .itemDropChance = 5,
@@ -506,7 +507,7 @@ NpcData N(NpcData_Inmates)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Bobomb_02),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
             .itemDropChance = 5,
@@ -545,7 +546,7 @@ NpcData N(NpcData_Inmates)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Bobomb_03),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
             .itemDropChance = 5,
@@ -584,7 +585,7 @@ NpcData N(NpcData_Inmates)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Bobomb_04),
         .settings = &N(NpcSettings_Bobomb),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = {
             .dropFlags = NPC_DROP_FLAG_80,
             .itemDropChance = 5,

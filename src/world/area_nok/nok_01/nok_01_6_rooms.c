@@ -1,16 +1,16 @@
 #include "nok_01.h"
 
 API_CALLABLE(N(OnEnterShop)) {
-    func_800E98EC();
-    status_menu_ignore_changes();
-    open_status_menu_long();
+    status_bar_always_show_on();
+    status_bar_ignore_changes();
+    open_status_bar_slowly();
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(OnExitShop)) {
-    func_800E9900();
-    status_menu_respond_to_changes();
-    close_status_menu();
+    status_bar_always_show_off();
+    status_bar_respond_to_changes();
+    close_status_bar();
     return ApiStatus_DONE2;
 }
 

@@ -1,4 +1,5 @@
 #include "omo_13.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/ShyGuy_Wander.inc.c"
 #include "world/common/enemy/GrooveGuy.inc.c"
@@ -6,7 +7,7 @@
 NpcSettings N(NpcSettings_AntiGuy) = {
     .height = 23,
     .radius = 22,
-    .level = 14,
+    .level = ACTOR_LEVEL_SHY_GUY,
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -51,7 +52,7 @@ EvtScript N(EVS_NpcInteract_AntiGuy) = {
         EVT_END_IF
     EVT_ELSE
         EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH4_004A)
-        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_262, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         EVT_CALL(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 30, EMOTER_NPC, 0, 0, 0, 0)
         EVT_WAIT(30)
         EVT_CALL(EndSpeech, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0)
@@ -99,11 +100,11 @@ API_CALLABLE(N(UpdateAntiGuyPosition)) {
     f32 theta;
     f32 x, y, z;
 
-    dist2D(110.0f, -45.0f, playerStatus->position.x, playerStatus->position.z);
-    theta = clamp_angle(atan2(110.0f, -45.0f, playerStatus->position.x, playerStatus->position.z));
+    dist2D(110.0f, -45.0f, playerStatus->pos.x, playerStatus->pos.z);
+    theta = clamp_angle(atan2(110.0f, -45.0f, playerStatus->pos.x, playerStatus->pos.z));
     x = 110.0f + (sin_deg(theta) * 30.0f);
     if (script->varTable[11] != 0) {
-        y = playerStatus->position.y * 0.7f;
+        y = playerStatus->pos.y * 0.7f;
     } else {
         y = npc->pos.y;
     }
@@ -114,8 +115,8 @@ API_CALLABLE(N(UpdateAntiGuyPosition)) {
     }
 
     if (npc->pos.x != x || npc->pos.y != y || npc->pos.z != z) {
-        if (npc->currentAnim != ANIM_ShyGuy_Black_Anim02 && script->varTable[10]++ >= 6) {
-            npc->currentAnim = ANIM_ShyGuy_Black_Anim02;
+        if (npc->curAnim != ANIM_ShyGuy_Black_Anim02 && script->varTable[10]++ >= 6) {
+            npc->curAnim = ANIM_ShyGuy_Black_Anim02;
             script->varTable[10] = 0;
         }
         npc->pos.x = x;
@@ -124,10 +125,10 @@ API_CALLABLE(N(UpdateAntiGuyPosition)) {
         npc->colliderPos.y = npc->pos.y;
         npc->colliderPos.z = npc->pos.z;
         npc->flags |= NPC_FLAG_DIRTY_SHADOW;
-    } else if (npc->currentAnim != ANIM_ShyGuy_Black_Anim01) {
-        npc->currentAnim = ANIM_ShyGuy_Black_Anim01;
+    } else if (npc->curAnim != ANIM_ShyGuy_Black_Anim01) {
+        npc->curAnim = ANIM_ShyGuy_Black_Anim01;
     }
-    npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->position.x, playerStatus->position.z);
+    npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
     return ApiStatus_DONE2;
 }
 
@@ -214,7 +215,7 @@ NpcData N(NpcData_AntiGuy) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_AntiGuy),
     .settings = &N(NpcSettings_AntiGuy),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_ShyGuy_Black_Anim01,
@@ -254,7 +255,7 @@ NpcData N(NpcData_ShyGuy) = {
         }
     },
     .settings = &N(NpcSettings_ShyGuy_Wander),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = SHY_GUY_DROPS,
     .animations = YELLOW_SHY_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,
@@ -277,7 +278,7 @@ NpcData N(NpcData_GrooveGuy) = {
         }
     },
     .settings = &N(NpcSettings_GrooveGuy),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = GROOVE_GUY_DROPS_B,
     .animations = GROOVE_GUY_ANIMS,
     .aiDetectFlags = AI_DETECT_SIGHT,

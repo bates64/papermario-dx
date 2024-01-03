@@ -12,7 +12,7 @@ typedef struct DefaultWindowStyle {
 } DefaultWindowStyle; // size = 0x0B
 
 #define BOX_QUAD_BUFFER_NUM 21
-extern Vtx gBoxQuadBuffer[BOX_QUAD_BUFFER_NUM][16];
+SHIFT_BSS Vtx gBoxQuadBuffer[BOX_QUAD_BUFFER_NUM][16];
 
 DefaultWindowStyle gBoxDefaultStyles[] = {
     {
@@ -305,12 +305,14 @@ WindowCorners gBoxCorners[] = {
 };
 
 Gfx gBoxCombineModes[] = {
-    gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL1, TEXEL0, ENVIRONMENT, ENV_ALPHA, COMBINED, 0, 0, 0, COMBINED),
-    gsDPSetCombineLERP(TEXEL0, 0, TEXEL1, 0, 0, 0, 0, TEXEL1, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, 0, 0, 0, COMBINED),
-    gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL1, 0, PRIMITIVE, 0, TEXEL0, ENVIRONMENT, ENV_ALPHA, COMBINED, 0, 0, 0, COMBINED),
-    gsDPSetCombineLERP(TEXEL0, 0, TEXEL1, 0, TEXEL1, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, 0, 0, 0, COMBINED)
+    gsDPSetCombineMode(PM_CC_BOX1_OPAQUE, PM_CC_BOX1_CYC2),
+    gsDPSetCombineMode(PM_CC_BOX2_OPAQUE, PM_CC_BOX2_CYC2),
+    gsDPSetCombineMode(PM_CC_BOX1_TRANSPARENT, PM_CC_BOX1_CYC2),
+    gsDPSetCombineMode(PM_CC_BOX2_TRANSPARENT, PM_CC_BOX2_CYC2)
 };
+
 s32 gBoxQuadIndex = 0;
+
 Vp gBoxViewport = {
     .vp = {
         .vscale = { 640, 480, 511, 0 },
@@ -320,30 +322,22 @@ Vp gBoxViewport = {
 
 #include "vtx/drawbox1.vtx.inc.c"
 
-/*
-| 0.0  0.0  0.0  0.0|
-| 0.0  0.0  0.0  0.0|
-| 0.0  0.0  0.0  0.0|
-|-6.0  0.0  0.0  0.0|
-*/
-Mtx gBoxMatrix = {
-    .m = {
-        // integer portion
-        { 0x00000000, 0x00000000,
-          0x00000000, 0x00000000 },
-        { 0x00000000, 0x00000000,
-          0xFFFA0000, 0x00000000 },
-        // fractional portion
-        { 0x00000000, 0x00000000,
-          0x00000000, 0x00000000 },
-        { 0x00000000, 0x00000000,
-          0x00000000, 0x00000000 }
-    }
-};
+Mtx gBoxMatrix = RDP_MATRIX(
+    0.000000, 0.000000, 0.000000, -6.000000,
+    0.000000, 0.000000, 0.000000,  0.000000,
+    0.000000, 0.000000, 0.000000,  0.000000,
+    0.000000, 0.000000, 0.000000,  0.000000
+);
 
+// @bug there's an issue with the way the "quads" temp below is used, sometimes going out of bounds.
+// In vanilla, this results in some data being written to an unused struct field inside gPartnerStatus, which doesn't
+// cause any issues. In shiftable builds, there's no telling where quads might be, so we make some adjustments to
+// prevent the overflow
 s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity,
-              u8 darkening, f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(s32, s32, s32, s32, s32, s32, s32),
-              void* drawContentsArg0, Matrix4f rotScaleMtx, s32 translateX, s32 translateY, Matrix4f outMtx) {
+              u8 darkening, f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ,
+              void (*fpDrawContents)(s32, s32, s32, s32, s32, s32, s32), void* drawContentsArg0, Matrix4f rotScaleMtx,
+              s32 translateX, s32 translateY, Matrix4f outMtx)
+{
     Matrix4f mtx1, mtx2, mtx3;
     u8 primR, primG, primB, primA, envR, envG, envB, envA;
     DefaultWindowStyle* defaultStyle = NULL;
@@ -442,7 +436,7 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
         gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
         gDPSetFogColor(gMainGfxPos++, 0, 0, 0, darkening);
-        gDPSetRenderMode(gMainGfxPos++, GBL_c1(G_BL_CLR_BL, G_BL_A_FOG, G_BL_CLR_IN, G_BL_1MA), G_RM_XLU_SURF2);
+        gDPSetRenderMode(gMainGfxPos++, PM_RM_TILEMODE_B, G_RM_XLU_SURF2);
         if (!(flags & DRAW_FLAG_NO_CLIP)) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
@@ -634,7 +628,9 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
                             quads[7].v.tc[0] = width * 32;
                             quads[7].v.tc[1] = (height / 2) * 32;
 
+#ifndef SHIFT
                             quads += 4;
+#endif
                             break;
                         case 2:
                             quads[8].v.ob[0] = -width / 2;
@@ -665,7 +661,9 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
                             quads[11].v.tc[0] = (width / 2) * 32;
                             quads[11].v.tc[1] = height * 32;
 
+#ifndef SHIFT
                             quads += 8;
+#endif
                             break;
                         case 3:
                             quads[12].v.ob[0] = 0;
@@ -696,10 +694,16 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
                             quads[15].v.tc[0] = width * 32;
                             quads[15].v.tc[1] = height * 32;
 
+#ifndef SHIFT
                             quads += 12;
+#endif
                             break;
                     }
+#ifdef SHIFT
+                    gSPVertex(gMainGfxPos++, &quads[idx*4], 4, 0);
+#else
                     gSPVertex(gMainGfxPos++, quads, 4, 0);
+#endif
                     gSP2Triangles(gMainGfxPos++, 0, 3, 1, 0, 0, 2, 3, 0);
                 } else {
                     switch (idx) {
@@ -827,4 +831,3 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         return FALSE;
     }
 }
-

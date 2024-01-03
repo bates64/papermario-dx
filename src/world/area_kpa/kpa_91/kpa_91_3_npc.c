@@ -1,4 +1,5 @@
 #include "kpa_91.h"
+#include "sprite/player.h"
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 #include "world/common/npc/Dryite_Stationary.inc.c"
@@ -41,8 +42,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 114, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x00002800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_2000 | IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_WAIT(61)
     EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
     EVT_THREAD
@@ -62,7 +63,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(90.0))
     EVT_CALL(SetPanTarget, CAM_DEFAULT, MV_LastPlayerPosX, MV_LastPlayerPosY, MV_LastPlayerPosZ)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(HidePlayerShadow, FALSE)
     EVT_CALL(SetPlayerPos, -139, 0, -90)
     EVT_CALL(PlayerMoveTo, -102, -130, 20)
@@ -159,7 +160,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_01),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_KPA_ToadHouseToadA,
@@ -170,7 +171,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Toad_02),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_KPA_CaptiveToadC,
@@ -181,7 +182,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_ToadGuard),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
         .tattle = MSG_NpcTattle_KPA_CaptiveSoldierB,
@@ -192,7 +193,7 @@ NpcData N(NpcData_Prisoners)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Dryite),
         .settings = &N(NpcSettings_Dryite),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
         .tattle = MSG_NpcTattle_KPA_CaptiveDryite,
@@ -249,7 +250,7 @@ NpcData N(NpcData_Koopatrol) = {
     },
     .init = &N(EVS_NpcInit_Koopatrol),
     .settings = &N(NpcSettings_Koopatrol_Patrol),
-    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_40000 | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = KOOPATROL_ANIMS,
 };

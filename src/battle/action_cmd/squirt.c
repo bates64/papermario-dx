@@ -3,8 +3,8 @@
 
 #define NAMESPACE action_command_squirt
 
-s32 D_802A9760_42A480[] = { 300, 300, 265, 220, 175, 175, };
-s32 D_802A9778_42A498[] = { 300, 300, 265, 220, 175, 175, };
+s32 D_802A9760_42A480[] = { 300, 300, 265, 220, 175, 175 };
+s32 D_802A9778_42A498[] = { 300, 300, 265, 220, 175, 175 };
 
 extern s32 actionCmdTableSquirt[];
 
@@ -26,7 +26,7 @@ API_CALLABLE(N(init)) {
     actionCommandStatus->wrongButtonPressed = FALSE;
     actionCommandStatus->barFillLevel = 0;
     actionCommandStatus->barFillWidth = 0;
-    battleStatus->actionResult = 0;
+    battleStatus->actionQuality = 0;
     actionCommandStatus->hudPosX = -48;
     actionCommandStatus->unk_5C = 0;
     actionCommandStatus->hudPosY = 80;
@@ -65,9 +65,9 @@ API_CALLABLE(N(start)) {
     actionCommandStatus->barFillLevel = 0;
     actionCommandStatus->barFillWidth = 0;
     battleStatus->actionSuccess = 0;
-    battleStatus->unk_86 = 0;
+    battleStatus->actionResult = ACTION_RESULT_FAIL;
     actionCommandStatus->state = 10;
-    battleStatus->flags1 &= ~BS_FLAGS1_8000;
+    battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
     func_80269118();
     return ApiStatus_DONE2;
 }
@@ -123,7 +123,7 @@ void N(update)(void) {
             actionCommandStatus->barFillLevel = 0;
             actionCommandStatus->unk_5C = 0;
             actionCommandStatus->frameCounter = actionCommandStatus->duration;
-            sfx_play_sound_with_params(SOUND_80000041, 0, 0, 0);
+            sfx_play_sound_with_params(SOUND_LOOP_CHARGE_BAR, 0, 0, 0);
             actionCommandStatus->state = 11;
             // fallthrough
         case 11:
@@ -131,7 +131,7 @@ void N(update)(void) {
             cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals];
             temp = actionCommandStatus->barFillLevel / cutoff;
             if (actionCommandStatus->unk_5C == 0) {
-                if (!(battleStatus->currentButtonsDown & BUTTON_A)) {
+                if (!(battleStatus->curButtonsDown & BUTTON_A)) {
                     actionCommandStatus->barFillLevel -= D_802A9760_42A480[temp / 20];
                     if (actionCommandStatus->barFillLevel < 0) {
                         actionCommandStatus->barFillLevel = 0;
@@ -151,8 +151,8 @@ void N(update)(void) {
                 }
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
-            sfx_adjust_env_sound_params(SOUND_80000041, 0, 0, battleStatus->actionResult * 12);
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
+            sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
             id = actionCommandStatus->hudElements[0];
             if (temp < 80) {
                 if (hud_element_get_script(id) != &HES_AButtonDown) {
@@ -172,21 +172,21 @@ void N(update)(void) {
             if (actionCommandStatus->barFillLevel == 0) {
                 battleStatus->actionSuccess = -1;
             } else {
-                battleStatus->actionSuccess = battleStatus->actionResult;
+                battleStatus->actionSuccess = battleStatus->actionQuality;
             }
 
             cutoff = actionCommandStatus->mashMeterCutoffs[actionCommandStatus->mashMeterIntervals - 1];
-            if (cutoff / 2 < battleStatus->actionResult) {
-                battleStatus->unk_86 = 1;
+            if (cutoff / 2 < battleStatus->actionQuality) {
+                battleStatus->actionResult = ACTION_RESULT_SUCCESS;
             } else {
-                battleStatus->unk_86 = -4;
+                battleStatus->actionResult = ACTION_RESULT_MINUS_4;
             }
 
             if (battleStatus->actionSuccess == 100) {
                 func_80269160();
             }
             btl_set_popup_duration(0);
-            sfx_stop_sound(SOUND_80000041);
+            sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
             actionCommandStatus->frameCounter = 5;
             actionCommandStatus->state = 12;
             break;
@@ -217,7 +217,7 @@ void N(draw)(void) {
 }
 
 void N(free)(void) {
-    sfx_stop_sound(SOUND_80000041);
+    sfx_stop_sound(SOUND_LOOP_CHARGE_BAR);
     hud_element_free(gActionCommandStatus.hudElements[0]);
     hud_element_free(gActionCommandStatus.hudElements[1]);
 }

@@ -27,10 +27,10 @@ API_CALLABLE(N(RhuffUnravelUpdate)) {
     script->varTable[5] = script->varTable[3] + (s32) ((initialPosX * sinTheta) + (initialPosY * cosTheta));
 
     if (rugRotAngle == 0) {
-        npc->currentAnim = ANIM_Rowf_Idle;
+        npc->curAnim = ANIM_Rowf_Idle;
         enemy->flags &= ~ENEMY_FLAG_CANT_INTERACT;
     } else {
-        npc->currentAnim = ANIM_Rowf_Walk;
+        npc->curAnim = ANIM_Rowf_Walk;
         enemy->flags |= ENEMY_FLAG_CANT_INTERACT;
     }
 
@@ -41,7 +41,7 @@ API_CALLABLE(N(RhuffUnravelUpdate)) {
     }
 
     if (rugRippleAmt != 0) {
-        npc->currentAnim = ANIM_Rowf_Think;
+        npc->curAnim = ANIM_Rowf_Think;
     }
     return ApiStatus_DONE2;
 }
@@ -413,7 +413,7 @@ EvtScript N(EVS_Rhuff_RevealBadges) = {
     EVT_SET(MF_BadgeShopOpen, TRUE)
     EVT_CALL(SetNpcYaw, NPC_Rowf, 270)
     EVT_THREAD
-        EVT_CALL(PlaySoundAt, SOUND_A9, SOUND_SPACE_MODE_0, -220, 37, 271)
+        EVT_CALL(PlaySoundAt, SOUND_ROWF_OPEN_SHOP, SOUND_SPACE_DEFAULT, -220, 37, 271)
         EVT_CALL(MakeLerp, 0, -220, 30, EASING_COS_BOUNCE)
         EVT_LABEL(0)
         EVT_CALL(UpdateLerp)
@@ -448,7 +448,7 @@ EvtScript N(EVS_Rhuff_RevealBadges) = {
     EVT_END_THREAD
     EVT_CALL(EnableModel, MODEL_ju_1, TRUE)
     EVT_CALL(N(RevealRowfBadges))
-    EVT_CALL(PlaySoundAtCollider, COLLIDER_o295, SOUND_AA, SOUND_SPACE_MODE_0)
+    EVT_CALL(PlaySoundAtCollider, COLLIDER_o295, SOUND_ROWF_PULL_RUG_OUT, SOUND_SPACE_DEFAULT)
     EVT_USE_BUF(EVT_PTR(N(D_802555AC_815E2C)))
     EVT_LOOP(50)
         EVT_BUF_READ2(LVar0, MV_RowfRugRippleAmount)
@@ -488,7 +488,7 @@ EvtScript N(EVS_Rhuff_HideBadges) = {
     EVT_END_IF
     EVT_CALL(NpcJump0, NPC_Rowf, -220, -54, 261, 16)
     EVT_THREAD
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_o295, SOUND_AC, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_o295, SOUND_ROWF_PUSH_RUG_IN, SOUND_SPACE_DEFAULT)
         EVT_CALL(MakeLerp, 0, 600, 50, EASING_LINEAR)
         EVT_LABEL(10)
         EVT_CALL(UpdateLerp)
@@ -516,7 +516,7 @@ EvtScript N(EVS_Rhuff_HideBadges) = {
             EVT_WAIT(1)
             EVT_GOTO(0)
         EVT_END_IF
-        EVT_CALL(PlaySoundAt, SOUND_AB, SOUND_SPACE_MODE_0, -220, 37, 271)
+        EVT_CALL(PlaySoundAt, SOUND_ROWF_CLOSE_SHOP, SOUND_SPACE_DEFAULT, -220, 37, 271)
     EVT_END_THREAD
     EVT_WAIT(15)
     EVT_THREAD
@@ -621,7 +621,7 @@ EvtScript N(EVS_NpcInit_Rowf) = {
             EVT_END_IF
     EVT_END_SWITCH
     EVT_SET(AF_MAC_41, FALSE)
-    EVT_CALL(SetModelFlags, MODEL_ju_2, MODEL_FLAG_FLAG_200, FALSE)
+    EVT_CALL(SetModelFlags, MODEL_ju_2, MODEL_FLAG_DO_BOUNDS_CULLING, FALSE)
     EVT_CALL(EnableGroup, MODEL_jutan1, FALSE)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b1, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b2, COLLIDER_FLAGS_UPPER_MASK)
@@ -631,7 +631,7 @@ EvtScript N(EVS_NpcInit_Rowf) = {
     EVT_CALL(ScaleGroup, MODEL_jutan2, EVT_FLOAT(1.3), 1, EVT_FLOAT(1.3))
     EVT_SET(MV_RowfRugRotateAngle, 60)
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_0, MODEL_ju_1, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(gfx_build_rowf_rug_with_ripples)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_0, EVT_PTR(N(gfx_build_rowf_rug_with_ripples)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_ju_1, CUSTOM_GFX_0, -1)
     EVT_IF_EQ(AF_MAC_40, TRUE)
         EVT_BIND_TRIGGER(EVT_PTR(N(EVS_EnterBadgeShop)), TRIGGER_FLOOR_TOUCH, COLLIDER_roten, 1, 0)
@@ -640,9 +640,9 @@ EvtScript N(EVS_NpcInit_Rowf) = {
     EVT_END_IF
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(SetModelFlags, MODEL_b1, MODEL_FLAG_FLAG_4, FALSE)
-        EVT_CALL(SetModelFlags, MODEL_b2, MODEL_FLAG_FLAG_4, FALSE)
-        EVT_CALL(SetModelFlags, MODEL_b3, MODEL_FLAG_FLAG_4, FALSE)
+        EVT_CALL(SetModelFlags, MODEL_b1, MODEL_FLAG_INACTIVE, FALSE)
+        EVT_CALL(SetModelFlags, MODEL_b2, MODEL_FLAG_INACTIVE, FALSE)
+        EVT_CALL(SetModelFlags, MODEL_b3, MODEL_FLAG_INACTIVE, FALSE)
         EVT_CALL(N(HideRowfBadges))
         EVT_LABEL(0)
         EVT_IF_EQ(GF_MAC01_RowfBadgeAvailableA, FALSE)

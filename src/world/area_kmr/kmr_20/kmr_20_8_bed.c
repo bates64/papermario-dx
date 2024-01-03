@@ -1,4 +1,5 @@
 #include "kmr_20.h"
+#include "sprite/player.h"
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
@@ -64,8 +65,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_END_LOOP
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x00000800)
-    EVT_CALL(func_802D2520, 0x00010002, 5, 7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, 0x00010002, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(60)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -99,7 +100,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
     EVT_CALL(N(SetAmbienceVolumeHalf_Bed))
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, -45, 30, -70)
     EVT_CALL(InterpPlayerYaw, 90, 0)
     EVT_CALL(SetNpcPos, NPC_PARTNER, -75, 30, -70)
@@ -141,7 +142,7 @@ EvtScript N(EVS_UseBed) = {
     EVT_CALL(CloseMessage)
     EVT_CALL(SetPlayerJumpscale, 1)
     EVT_CALL(DisablePlayerPhysics, TRUE)
-    EVT_CALL(N(ToadHouse_DisableStatusMenu))
+    EVT_CALL(N(ToadHouse_DisableStatusBar))
     EVT_IF_NE(LVar4, 0)
         EVT_EXEC(N(EVS_ToadHouse_Unk2))
     EVT_END_IF
@@ -178,7 +179,7 @@ EvtScript N(EVS_UseBed) = {
     EVT_EXEC_GET_TID(N(EVS_ToadHouse_ReturnFromRest), LVar9)
     EVT_CALL(N(ToadHouse_AwaitScriptComplete), LVar9)
     EVT_CALL(DisablePlayerPhysics, FALSE)
-    EVT_CALL(N(ToadHouse_ShowStatusMenu))
+    EVT_CALL(N(ToadHouse_ShowWorldStatusBar))
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_RETURN
     EVT_END

@@ -19,7 +19,7 @@ Gfx N(Gfx_TexSetup_TitleImage)[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF2),
-    gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL1, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL0, TEXEL1, 0, PRIMITIVE, 0),
+    gsDPSetCombineMode(PM_CC_2E, PM_CC_2E),
     gsDPSetTextureFilter(G_TF_POINT),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -123,7 +123,7 @@ EvtScript N(EVS_Scene_ShowTitle) = {
         EVT_END_IF
     EVT_END_LOOP
     EVT_WAIT(15 * DT)
-    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_0, TRANSITION_6)
+    EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_22"), kmr_22_ENTRY_0, TRANSITION_BEGIN_OR_END_CHAPTER)
     EVT_WAIT(100 * DT)
     EVT_RETURN
     EVT_END
@@ -141,7 +141,7 @@ EvtScript N(EVS_Main) = {
         EVT_CALL(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EVT_END_IF
     EVT_CALL(SetSpriteShading, SHADING_NONE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 25, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     EVT_CALL(SetCamBGColor, CAM_DEFAULT, 208, 208, 208)
     EVT_CALL(SetCamEnabled, CAM_DEFAULT, TRUE)
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)

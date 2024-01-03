@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 from tqdm import tqdm
@@ -15,6 +15,7 @@ asm_dir = os.path.join(root_dir, "ver", "us", "asm")
 renames = {}
 patterns = []
 deletes = []
+
 
 def handle_file(f_path, try_rename_file=False):
     with open(f_path) as f:
@@ -35,16 +36,17 @@ def handle_file(f_path, try_rename_file=False):
         # replace all matches
         for match in matches:
             # head part
-            to_join.append(f_text[pos:match[1]])
+            to_join.append(f_text[pos : match[1]])
             to_replace = patterns[match[0]]
             to_join.append(renames[to_replace])
             pos = match[2]
         # tail part
         to_join.append(f_text[pos:])
-        f_text = ''.join(to_join);
+        f_text = "".join(to_join)
         # save changes
         with open(f_path, "w", newline="\n") as f:
             f.write(f_text)
+
 
 # Read input file
 # One valid whitespace-separated find-replace pair is given per line
@@ -59,7 +61,7 @@ for line in renames_text:
             renames[split[0]] = split[1]
             patterns.append(split[0])
     elif len(split) != 0:
-        raise Exception("input contains invalid rename pattern: \n\"" + line.strip() + "\"")
+        raise Exception('input contains invalid rename pattern: \n"' + line.strip() + '"')
 
 ac = ahocorasick_rs.AhoCorasick(patterns, matchkind=MATCHKIND_LEFTMOST_LONGEST)
 

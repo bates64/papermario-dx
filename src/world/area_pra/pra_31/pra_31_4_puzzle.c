@@ -9,8 +9,8 @@
 typedef struct DinoData {
     /* 0x00 */ s16 ci; // cell i index
     /* 0x02 */ s16 cj; // cell j index
-    /* 0x04 */ f32 currentPosX;
-    /* 0x08 */ f32 currentPosZ;
+    /* 0x04 */ f32 corPosX;
+    /* 0x08 */ f32 curPosZ;
     /* 0x0C */ f32 goalPosX;
     /* 0x10 */ f32 goalPosZ;
     /* 0x14 */ f32 angle;
@@ -73,8 +73,8 @@ API_CALLABLE(N(EVS_ManagePuzzle)) {
                 dino->cj = N(InitialConfigurationAfter)[j][1];
                 dino->angle = N(InitialConfigurationAfter)[j][2];
             }
-            dino->currentPosX = dino->goalPosX = (dino->ci * DINO_CELL_SIZE) + DINO_CELL_SIZE;
-            dino->currentPosZ = dino->goalPosZ = (dino->cj * DINO_CELL_SIZE) + DINO_CELL_SIZE + DINO_CELL_SIZE / 2;
+            dino->corPosX = dino->goalPosX = (dino->ci * DINO_CELL_SIZE) + DINO_CELL_SIZE;
+            dino->curPosZ = dino->goalPosZ = (dino->cj * DINO_CELL_SIZE) + DINO_CELL_SIZE + DINO_CELL_SIZE / 2;
             puzzle->cells[dino->cj][dino->ci] = CELL_DINO;
         }
         evt_set_variable(script, MV_DinoYaw_01, 270);
@@ -85,17 +85,17 @@ API_CALLABLE(N(EVS_ManagePuzzle)) {
     puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     dino = &puzzle->dinos[0];
     for (j = 0; j < DINO_COUNT; j++, dino++) {
-        if (dino->currentPosX < dino->goalPosX) {
-            dino->currentPosX += (f32) DINO_CELL_SIZE / PUSH_TIME;
+        if (dino->corPosX < dino->goalPosX) {
+            dino->corPosX += (f32) DINO_CELL_SIZE / PUSH_TIME;
         }
-        if (dino->currentPosX > dino->goalPosX) {
-            dino->currentPosX -= (f32) DINO_CELL_SIZE / PUSH_TIME;
+        if (dino->corPosX > dino->goalPosX) {
+            dino->corPosX -= (f32) DINO_CELL_SIZE / PUSH_TIME;
         }
-        if (dino->currentPosZ < dino->goalPosZ) {
-            dino->currentPosZ += (f32) DINO_CELL_SIZE / PUSH_TIME;
+        if (dino->curPosZ < dino->goalPosZ) {
+            dino->curPosZ += (f32) DINO_CELL_SIZE / PUSH_TIME;
         }
-        if (dino->currentPosZ > dino->goalPosZ) {
-            dino->currentPosZ -= (f32) DINO_CELL_SIZE / PUSH_TIME;
+        if (dino->curPosZ > dino->goalPosZ) {
+            dino->curPosZ -= (f32) DINO_CELL_SIZE / PUSH_TIME;
         }
     }
 
@@ -248,23 +248,23 @@ API_CALLABLE(N(GetPlayerPushLerpValues)) {
 
     switch ((s32)dino->angle) {
         case 0:
-            script->varTable[3] = playerStatus->position.z;
-            script->varTable[4] = playerStatus->position.z + DINO_CELL_SIZE;
+            script->varTable[3] = playerStatus->pos.z;
+            script->varTable[4] = playerStatus->pos.z + DINO_CELL_SIZE;
             script->varTable[5] = 1;
             break;
         case 90:
-            script->varTable[3] = playerStatus->position.x;
-            script->varTable[4] = playerStatus->position.x + DINO_CELL_SIZE;
+            script->varTable[3] = playerStatus->pos.x;
+            script->varTable[4] = playerStatus->pos.x + DINO_CELL_SIZE;
             script->varTable[5] = 0;
             break;
         case 180:
-            script->varTable[3] = playerStatus->position.z;
-            script->varTable[4] = playerStatus->position.z - DINO_CELL_SIZE;
+            script->varTable[3] = playerStatus->pos.z;
+            script->varTable[4] = playerStatus->pos.z - DINO_CELL_SIZE;
             script->varTable[5] = 1;
             break;
         case 270:
-            script->varTable[3] = playerStatus->position.x;
-            script->varTable[4] = playerStatus->position.x - DINO_CELL_SIZE;
+            script->varTable[3] = playerStatus->pos.x;
+            script->varTable[4] = playerStatus->pos.x - DINO_CELL_SIZE;
             script->varTable[5] = 0;
             break;
     }
@@ -279,8 +279,8 @@ API_CALLABLE(N(GetDinoStatuePosRot)) {
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
 
-    evt_set_float_variable(script, LVar0, dino->currentPosX);
-    evt_set_float_variable(script, LVar1, -dino->currentPosZ);
+    evt_set_float_variable(script, LVar0, dino->corPosX);
+    evt_set_float_variable(script, LVar1, -dino->curPosZ);
     evt_set_float_variable(script, LVar2, clamp_angle(dino->angle + 90.0));
     return ApiStatus_DONE2;
 }
@@ -291,8 +291,8 @@ API_CALLABLE(N(GetDinoNpcPosRot)) {
     DinoPuzzleData* puzzle = (DinoPuzzleData*) evt_get_variable(script, MV_PuzzleDataPtr);
     DinoData* dino = &puzzle->dinos[idx];
 
-    evt_set_float_variable(script, LVar0, dino->currentPosX);
-    evt_set_float_variable(script, LVar1, dino->currentPosZ);
+    evt_set_float_variable(script, LVar0, dino->corPosX);
+    evt_set_float_variable(script, LVar1, dino->curPosZ);
     evt_set_float_variable(script, LVar2, clamp_angle(dino->angle));
     return ApiStatus_DONE2;
 }
@@ -318,7 +318,7 @@ EvtScript N(EVS_Scene_PuzzleSolved) = {
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(PlaySound, SOUND_B)
+    EVT_CALL(PlaySound, SOUND_CHIME_SOLVED_PUZZLE)
     EVT_WAIT(40)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 325, 0, 0)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 325, 0, 0)
@@ -339,37 +339,37 @@ EvtScript N(EVS_Scene_PuzzleSolved) = {
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(50)
-        EVT_CALL(PlaySoundAtModel, MODEL_k1, SOUND_30, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k1, SOUND_PRA_UNFOLD_EXIT, 0)
         EVT_WAIT(25)
-        EVT_CALL(PlaySoundAtModel, MODEL_k2, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k2, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
         EVT_WAIT(5)
-        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_1EE, 0)
+        EVT_CALL(PlaySoundAtModel, MODEL_k3, SOUND_PRA_UNFOLD_STEP, 0)
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(50)
@@ -471,7 +471,7 @@ EvtScript N(EVS_PushStatue_Impl) = {
         EVT_CALL(ShakeCam, CAM_DEFAULT, 0, PUSH_TIME, EVT_FLOAT(0.3))
     EVT_END_THREAD
     EVT_SET(MV_PushingStatue, TRUE)
-    EVT_CALL(PlaySoundAtCollider, LVar9, SOUND_2D, 0)
+    EVT_CALL(PlaySoundAtCollider, LVar9, SOUND_PRA_PUSH_STATUE, 0)
     EVT_CALL(N(BeginPushingStatue), LVarA)
     EVT_WAIT(PUSH_TIME)
     EVT_SET(MV_PushingStatue, FALSE)

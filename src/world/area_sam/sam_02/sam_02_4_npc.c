@@ -1,4 +1,5 @@
 #include "sam_02.h"
+#include "sprite/player.h"
 
 #if VERSION_PAL
 #include "sprite/npc/ShiverToad.h"
@@ -21,11 +22,11 @@
 EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
     EVT_SWITCH(GB_StoryProgress)
         EVT_CASE_LT(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            EVT_EXEC_WAIT(ItemShopInteract)
+            EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
         EVT_CASE_LT(STORY_CH7_MAYOR_MURDER_SOLVED)
             EVT_CALL(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH7_006A)
         EVT_CASE_GE(STORY_CH7_MAYOR_MURDER_SOLVED)
-            EVT_EXEC_WAIT(ItemShopInteract)
+            EVT_EXEC_WAIT(EVS_ShopOwnerDialog)
     EVT_END_SWITCH
     EVT_RETURN
     EVT_END
@@ -73,8 +74,8 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     EVT_CALL(InterpPlayerYaw, 229, 1)
     EVT_CALL(HidePlayerShadow, TRUE)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 5, FOLD_TYPE_7, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(60)
         EVT_CALL(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
@@ -110,7 +111,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
         EVT_END_IF
     EVT_END_IF
     EVT_CALL(HidePlayerShadow, FALSE)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, 0, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(SetPlayerPos, 277, 0, -256)
     EVT_CALL(SetPlayerSpeed, EVT_FLOAT(3.0))
     EVT_CALL(PlayerMoveTo, 336, -199, 0)
@@ -416,7 +417,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_04),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_CorroboratesRumors,
@@ -439,7 +440,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_05),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_EasyGoing,
@@ -462,7 +463,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_06),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NeverLeavesTown,
@@ -473,7 +474,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Penguin_07),
         .settings = &N(NpcSettings_Penguin),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_VisitedTheDojo,
@@ -487,7 +488,7 @@ NpcData N(NpcData_MysteryOnly)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Penguin_02),
         .settings = &N(NpcSettings_Penguin),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_RumorLovingPenguins,
@@ -510,7 +511,7 @@ NpcData N(NpcData_MysteryOnly)[] = {
         },
         .init = &N(EVS_NpcInit_Penguin_03),
         .settings = &N(NpcSettings_Penguin_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_SAM_NotAdventurous,

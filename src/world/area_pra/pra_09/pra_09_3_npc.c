@@ -1,12 +1,13 @@
 #include "pra_09.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/Duplighost.h"
 
 NpcSettings N(NpcSettings_Duplighost) = {
     .height = 30,
     .radius = 45,
-    .level = 99,
+    .level = ACTOR_LEVEL_NONE,
 };
 
 #include "world/common/enemy/Bombette.inc.c"
@@ -65,21 +66,21 @@ API_CALLABLE(N(ImposterFallFromCeiling)) {
         npc->pos.x = script->varTable[1];
         npc->pos.y = script->varTable[2];
         npc->pos.z = script->varTable[3];
-        npc->jumpVelocity = 0.0f;
-        npc->currentAnim = ANIM_WorldBombette_Aftermath;
+        npc->jumpVel = 0.0f;
+        npc->curAnim = ANIM_WorldBombette_Aftermath;
         npc->jumpScale = 0.8f;
     }
-    npc->rotation.z -= 39.0f;
-    npc->rotation.x -= 33.0f;
-    npc->pos.y -= npc->jumpVelocity;
-    npc->jumpVelocity += npc->jumpScale;
+    npc->rot.z -= 39.0f;
+    npc->rot.x -= 33.0f;
+    npc->pos.y -= npc->jumpVel;
+    npc->jumpVel += npc->jumpScale;
     if (npc->pos.y <= 0.0f) {
         npc->pos.y = 0.0f;
-        npc->rotation.z = 0.0f;
-        npc->rotation.x = 0.0f;
-        npc->jumpVelocity = 0.0f;
+        npc->rot.z = 0.0f;
+        npc->rot.x = 0.0f;
+        npc->jumpVel = 0.0f;
         npc->jumpScale = 0.0f;
-        npc->currentAnim = ANIM_WorldBombette_Idle;
+        npc->curAnim = ANIM_WorldBombette_Idle;
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -89,7 +90,7 @@ API_CALLABLE(N(ChangeNpcCollisionRadius)) {
     Npc* npc1 = resolve_npc(script, script->varTable[3]);
     Npc* npc2 = resolve_npc(script, script->varTable[4]);
 
-    npc1->collisionRadius = npc2->collisionRadius;
+    npc1->collisionDiameter = npc2->collisionDiameter;
     npc1->collisionHeight = npc2->collisionHeight;
     return ApiStatus_DONE2;
 }
@@ -147,7 +148,7 @@ EvtScript N(EVS_Imposter_Unmask) = {
     EVT_CALL(SetNpcPos, LVar3, NPC_DISPOSE_LOCATION)
     EVT_CALL(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EVT_CALL(SetNpcPos, LVar4, LVar0, LVar1, LVar2)
-    EVT_CALL(PlaySoundAtNpc, LVar4, SOUND_SMOKE_BURST, 0)
+    EVT_CALL(PlaySoundAtNpc, LVar4, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
     EVT_CALL(MakeLerp, 0, 2880, 40, EASING_QUADRATIC_OUT)
     EVT_LABEL(1)
     EVT_CALL(UpdateLerp)
@@ -163,7 +164,7 @@ EvtScript N(EVS_Imposter_Unmask) = {
         EVT_CALL(SetNpcAnimation, LVar4, ANIM_Duplighost_Anim04)
         EVT_CALL(InterpNpcYaw, LVar4, 90, 0)
         EVT_CALL(SetNpcSpeed, LVar4, EVT_FLOAT(6.5))
-        EVT_CALL(PlaySoundAtNpc, LVar4, SOUND_2CB, 0)
+        EVT_CALL(PlaySoundAtNpc, LVar4, SOUND_DUPLIGHOST_LEAP, SOUND_SPACE_DEFAULT)
         EVT_CALL(NpcMoveTo, LVar4, 0, LVar2, 0)
         EVT_CALL(SetNpcPos, LVar4, NPC_DISPOSE_LOCATION)
     EVT_END_THREAD
@@ -189,7 +190,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
             EVT_CALL(SetNpcPos, NPC_Bombette_02, NPC_DISPOSE_LOCATION)
             EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcPos, NPC_Duplighost_01, LVar0, LVar1, LVar2)
-            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_01, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcAnimation, NPC_Duplighost_01, ANIM_Duplighost_Anim04)
             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
             EVT_CALL(NpcMoveTo, NPC_Duplighost_01, LVar0, LVar2, 30)
@@ -201,7 +202,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
             EVT_CALL(SetNpcPos, NPC_Bombette_03, NPC_DISPOSE_LOCATION)
             EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcPos, NPC_Duplighost_02, LVar0, LVar1, LVar2)
-            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_02, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcAnimation, NPC_Duplighost_02, ANIM_Duplighost_Anim04)
             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
             EVT_CALL(NpcMoveTo, NPC_Duplighost_02, LVar0, LVar2, 30)
@@ -213,7 +214,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
             EVT_CALL(SetNpcPos, NPC_Bombette_04, NPC_DISPOSE_LOCATION)
             EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcPos, NPC_Duplighost_03, LVar0, LVar1, LVar2)
-            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_03, SOUND_SMOKE_BURST, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_03, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcAnimation, NPC_Duplighost_03, ANIM_Duplighost_Anim04)
             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
             EVT_CALL(NpcMoveTo, NPC_Duplighost_03, LVar0, LVar2, 30)
@@ -225,7 +226,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
             EVT_CALL(SetNpcPos, NPC_Bombette_05, NPC_DISPOSE_LOCATION)
             EVT_CALL(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
             EVT_CALL(SetNpcPos, NPC_Duplighost_04, LVar0, LVar1, LVar2)
-            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_04, SOUND_SMOKE_BURST, 0)
+            EVT_CALL(PlaySoundAtNpc, NPC_Duplighost_04, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             EVT_CALL(SetNpcAnimation, NPC_Duplighost_04, ANIM_Duplighost_Anim04)
             EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
             EVT_CALL(NpcMoveTo, NPC_Duplighost_04, LVar0, LVar2, 30)
@@ -550,7 +551,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                                 EVT_ADD(LVar0, 20)
                             EVT_END_IF
                             EVT_PLAY_EFFECT(EFFECT_RECOVER, 2, LVar0, LVar1, LVar2, 0)
-                            EVT_CALL(PlaySoundAtPlayer, SOUND_214, 0)
+                            EVT_CALL(PlaySoundAtPlayer, SOUND_HEART_BOUNCE, SOUND_SPACE_DEFAULT)
                         EVT_END_THREAD
                         EVT_CALL(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)
                         EVT_CALL(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Idle)
@@ -816,7 +817,7 @@ NpcData N(NpcData_Duplighosts)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Duplighost_01),
         .settings = &N(NpcSettings_Duplighost),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
@@ -826,7 +827,7 @@ NpcData N(NpcData_Duplighosts)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Duplighost_02),
         .settings = &N(NpcSettings_Duplighost),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
@@ -836,7 +837,7 @@ NpcData N(NpcData_Duplighosts)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Duplighost_03),
         .settings = &N(NpcSettings_Duplighost),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
@@ -846,7 +847,7 @@ NpcData N(NpcData_Duplighosts)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Duplighost_04),
         .settings = &N(NpcSettings_Duplighost),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
@@ -856,7 +857,7 @@ NpcData N(NpcData_Duplighosts)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Duplighost_05),
         .settings = &N(NpcSettings_Duplighost),
-        .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
+        .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS,
         .drops = NO_DROPS,
         .animations = DUPLIGHOST_ANIMS,
     },
@@ -1009,7 +1010,7 @@ NpcData N(NpcData_TargetBombettes)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetBombette_01),
         .settings = &N(NpcSettings_Bombette),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },
@@ -1019,7 +1020,7 @@ NpcData N(NpcData_TargetBombettes)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetBombette_02),
         .settings = &N(NpcSettings_Bombette),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },
@@ -1029,7 +1030,7 @@ NpcData N(NpcData_TargetBombettes)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetBombette_03),
         .settings = &N(NpcSettings_Bombette),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },
@@ -1039,7 +1040,7 @@ NpcData N(NpcData_TargetBombettes)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetBombette_04),
         .settings = &N(NpcSettings_Bombette),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },
@@ -1049,7 +1050,7 @@ NpcData N(NpcData_TargetBombettes)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetBombette_05),
         .settings = &N(NpcSettings_Bombette),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BOMBETTE_ANIMS,
     },

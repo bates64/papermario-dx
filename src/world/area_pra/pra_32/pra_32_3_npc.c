@@ -1,5 +1,6 @@
 #include "pra_32.h"
 #include "effects.h"
+#include "sprite/player.h"
 
 #include "world/common/enemy/CrystalKing.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
@@ -51,7 +52,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     EVT_CALL(SetMusicTrack, 0, SONG_CRYSTAL_KING_THEME, 0, 8)
     EVT_CALL(ShowMessageAtScreenPos, MSG_CH7_016A, 160, 40)
     EVT_CALL(SetNpcPos, NPC_CrystalKing_01, 588, 200, 116)
-    EVT_CALL(func_802CFD30, NPC_CrystalKing_01, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_CrystalKing_01, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, -30)
@@ -95,7 +96,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     EVT_CALL(MakeLerp, 0, 255, 120 * DT, EASING_LINEAR)
     EVT_LABEL(5)
     EVT_CALL(UpdateLerp)
-    EVT_CALL(func_802CFD30, NPC_CrystalKing_01, FOLD_TYPE_7, LVar0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_CrystalKing_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
     EVT_WAIT(1)
     EVT_IF_EQ(LVar1, 1)
         EVT_GOTO(5)
@@ -171,14 +172,14 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EVT_CALL(MakeLerp, 255, 122, 30 * DT, EASING_COS_IN_OUT)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_CrystalKing_01, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_CrystalKing_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_THREAD
-        EVT_CALL(PlaySoundAtNpc, NPC_CrystalKing_01, SOUND_36B, 0)
+        EVT_CALL(PlaySoundAtNpc, NPC_CrystalKing_01, SOUND_CRYSTAL_KING_DISAPPEAR, SOUND_SPACE_DEFAULT)
         EVT_CALL(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
         EVT_PLAY_EFFECT(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, 1, 130)
     EVT_END_THREAD
@@ -186,13 +187,13 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EVT_CALL(MakeLerp, 120, 0, 30 * DT, EASING_COS_IN_OUT)
     EVT_LOOP(0)
         EVT_CALL(UpdateLerp)
-        EVT_CALL(func_802CFD30, NPC_CrystalKing_01, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_CrystalKing_01, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_IF_EQ(LVar1, 0)
             EVT_BREAK_LOOP
         EVT_END_IF
         EVT_WAIT(1)
     EVT_END_LOOP
-    EVT_CALL(func_802CFD30, NPC_CrystalKing_01, FOLD_TYPE_7, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_CrystalKing_01, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     EVT_CALL(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
     EVT_ADD(LVar1, 20)
     EVT_PLAY_EFFECT(EFFECT_SPARKLES, 1, LVar0, LVar1, LVar2, 40)
@@ -243,7 +244,7 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_CrystalKing_Aux),
         .settings = &N(NpcSettings_CrystalKing),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
     },
@@ -252,7 +253,7 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .settings = &N(NpcSettings_CrystalKing),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
     },
@@ -272,7 +273,7 @@ NpcData N(NpcData_CrystalKing_01)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_CrystalKing),
         .settings = &N(NpcSettings_CrystalKing),
-        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_800 | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_4 | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_40000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000,
         .drops = NO_DROPS,
         .animations = CRYSTAL_KING_ANIMS,
     },

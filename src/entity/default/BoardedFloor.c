@@ -18,8 +18,8 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
     data->fragmentsGfx = ENTITY_ADDR(entity, Gfx**, dlists);
     entity->renderSetupFunc = Entity_BoardedFloor_setupGfx;
     entity->alpha = 255;
-    entity->position.y = data->inititalY;
-    guTranslateF(mtxTrans, entity->position.x, entity->position.y, entity->position.z);
+    entity->pos.y = data->inititalY;
+    guTranslateF(mtxTrans, entity->pos.x, entity->pos.y, entity->pos.z);
 
     for (i = 0; i < 12; i++) {
         guMtxL2F(mtxFragment, ENTITY_ADDR(entity, Mtx*, matrices++));
@@ -32,9 +32,9 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 
         rotationSpeed = rand_int(5);
         if (i % 2 != 0) {
-            data->fragmentRotationSpeed[i] = rotationSpeed + 10;
+            data->fragmentRotSpeed[i] = rotationSpeed + 10;
         } else {
-            data->fragmentRotationSpeed[i] = -10 - rotationSpeed;
+            data->fragmentRotSpeed[i] = -10 - rotationSpeed;
         }
 
         data->fragmentFallSpeed[i] = 10.0f;
@@ -45,7 +45,7 @@ void Entity_BoardedFloor_init_fragments(Entity* entity, Gfx** dlists, Mtx* matri
 }
 
 void Entity_BoardedFloor_init(Entity* entity) {
-    entity->dataBuf.boardedFloor->inititalY = entity->position.y;
+    entity->dataBuf.boardedFloor->inititalY = entity->pos.y;
     Entity_BoardedFloor_init_fragments(entity, Entity_BoardedFloor_FragmentsRender, Entity_BoardedFloor_FragmentMatrices);
 }
 
@@ -66,26 +66,26 @@ void Entity_BoardedFloor_update_fragments(Entity* entity) {
         switch (data->fragmentRebounds[i]) {
             case 0:
                 reboundSpeed = 2.0f;
-                rotSpeed = data->fragmentRotationSpeed[i];
+                rotSpeed = data->fragmentRotSpeed[i];
                 lateralSpeed = data->fragmentLateralSpeed[i] / 10.0f;
                 if (rotSpeed >= 0.0f) {
-                    data->fragmentRotationSpeed[i] = rotSpeed - 0.4;
+                    data->fragmentRotSpeed[i] = rotSpeed - 0.4;
                 } else {
-                    data->fragmentRotationSpeed[i] = rotSpeed + 0.5;
+                    data->fragmentRotSpeed[i] = rotSpeed + 0.5;
                 }
                 break;
             case 1:
                 lateralSpeed = 1.0f;
                 reboundSpeed = 0.0f;
-                rotSpeed = data->fragmentRotationSpeed[i] * 0.25f;
+                rotSpeed = data->fragmentRotSpeed[i] * 0.25f;
                 break;
             case 2:
-                data->fragmentRotationSpeed[i] += 1.0f;
-                if (data->fragmentRotationSpeed[i] > 20.0f) {
-                    data->fragmentRotationSpeed[i] = 20.0f;
+                data->fragmentRotSpeed[i] += 1.0f;
+                if (data->fragmentRotSpeed[i] > 20.0f) {
+                    data->fragmentRotSpeed[i] = 20.0f;
                 }
 
-                data->fragmentPosY[i] -= data->fragmentRotationSpeed[i] / 70.0f;
+                data->fragmentPosY[i] -= data->fragmentRotSpeed[i] / 70.0f;
 
                 data->fragmentMoveAngle[i] -= 5;
                 if (data->fragmentMoveAngle[i] <= 5) {
@@ -143,7 +143,7 @@ void Entity_BoardedFloor_update_fragments(Entity* entity) {
                 data->fragmentFallSpeed[i] = reboundSpeed;
                 if (data->fragmentRebounds[i] == 2) {
                     data->fragmentMoveAngle[i] = 254;
-                    data->fragmentRotationSpeed[i] = 0.0f;
+                    data->fragmentRotSpeed[i] = 0.0f;
                 }
             }
 
@@ -172,16 +172,16 @@ void Entity_BoardedFloor_setupGfx(s32 entityIndex) {
     Gfx* fragmentDlist;
     Gfx** gfx = data->fragmentsGfx;
 
-    x_inv = -entity->position.x;
-    y_inv = -entity->position.y;
-    z_inv = -entity->position.z;
+    x_inv = -entity->pos.x;
+    y_inv = -entity->pos.y;
+    z_inv = -entity->pos.z;
 
     for (i = 0; i < 12; i++) {
         if (data->fragmentRebounds[i] < 2) {
             gDPSetRenderMode(gfxPos++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);
             gDPSetCombineMode(gfxPos++, G_CC_MODULATEIA, G_CC_MODULATEIA);
         } else {
-            gDPSetCombineLERP(gfxPos++, 0, 0, 0, TEXEL0, SHADE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, TEXEL0, 0, SHADE, 0);
+            gDPSetCombineMode(gfxPos++, PM_CC_11, PM_CC_12);
             gDPSetPrimColor(gfxPos++, 0, 0, 0, 0, 0, data->fragmentMoveAngle[i]);
         }
 
@@ -232,7 +232,7 @@ void Entity_BoardedFloor_shatter(Entity* entity) {
 EntityModelScript Entity_BoardedFloor_Script = {
     es_ClearFlags(ENTITY_FLAG_DISABLE_COLLISION)
     es_SetCallback(Entity_BoardedFloor_idle, 0)
-    es_PlaySound(SOUND_2092)
+    es_PlaySound(SOUND_BREAK_FLOOR)
     es_SetFlags(ENTITY_FLAG_DISABLE_COLLISION)
     es_Call(Entity_BoardedFloor_shatter)
     es_SetCallback(Entity_BoardedFloor_update_fragments, 0)

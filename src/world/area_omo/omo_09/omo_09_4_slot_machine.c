@@ -22,7 +22,7 @@ enum SlotMachineProgress {
 
 EvtScript N(EVS_SetCam_ViewReels) = {
     EVT_WAIT(8)
-    EVT_CALL(N(SetCamera0Flag1000))
+    EVT_CALL(N(DisableCameraLeadingPlayer))
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 535, 0, 0)
     EVT_CALL(SetCamSpeed, CAM_DEFAULT, EVT_FLOAT(1.5))
@@ -64,7 +64,7 @@ EvtScript N(EVS_HitBlock_SlotStart) = {
     EVT_IF_EQ(MF_HitStartBlock, FALSE)
         EVT_THREAD
             EVT_WAIT(15)
-            EVT_CALL(PlaySoundAtCollider, COLLIDER_s1, SOUND_80000015, SOUND_SPACE_MODE_0)
+            EVT_CALL(PlaySoundAtCollider, COLLIDER_s1, SOUND_LOOP_OMO_SLOT_MACHINE, SOUND_SPACE_DEFAULT)
         EVT_END_THREAD
         EVT_SET(MF_HitStartBlock, TRUE)
         EVT_SET(AF_OMO09_StartBlock_DontBlink, TRUE)
@@ -217,7 +217,7 @@ EvtScript N(EVS_UpdateActiveBlock1) = {
     EVT_SET(MF_Block1_Active, FALSE)
     EVT_SET(MV_SlotWheel1_Angle, LVar4)
     EVT_IF_EQ(AB_OMO09_IsPlayerNearSlotMachine, TRUE)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_h1, SOUND_3F3, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_h1, SOUND_DING, SOUND_SPACE_DEFAULT)
     EVT_END_IF
     EVT_RETURN
     EVT_END
@@ -298,7 +298,7 @@ EvtScript N(EVS_UpdateActiveBlock2) = {
     EVT_SET(MF_Block2_Active, FALSE)
     EVT_SET(MV_SlotWheel2_Angle, LVar4)
     EVT_IF_EQ(AB_OMO09_IsPlayerNearSlotMachine, TRUE)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_h2, SOUND_3F3, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_h2, SOUND_DING, SOUND_SPACE_DEFAULT)
     EVT_END_IF
     EVT_RETURN
     EVT_END
@@ -379,7 +379,7 @@ EvtScript N(EVS_UpdateActiveBlock3) = {
     EVT_SET(MF_Block3_Active, FALSE)
     EVT_SET(MV_SlotWheel3_Angle, LVar4)
     EVT_IF_EQ(AB_OMO09_IsPlayerNearSlotMachine, TRUE)
-        EVT_CALL(PlaySoundAtCollider, COLLIDER_h3, SOUND_3F3, SOUND_SPACE_MODE_0)
+        EVT_CALL(PlaySoundAtCollider, COLLIDER_h3, SOUND_DING, SOUND_SPACE_DEFAULT)
     EVT_END_IF
     EVT_RETURN
     EVT_END
@@ -575,7 +575,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
     EVT_LABEL(2)
         EVT_CALL(IsPlayerWithin, 525, 0, 500, AB_OMO09_IsPlayerNearSlotMachine)
         EVT_IF_EQ(AB_OMO09_IsPlayerNearSlotMachine, FALSE)
-            EVT_CALL(StopSound, SOUND_80000015)
+            EVT_CALL(StopSound, SOUND_LOOP_OMO_SLOT_MACHINE)
             EVT_WAIT(100)
             EVT_GOTO(99)
         EVT_END_IF
@@ -604,7 +604,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
             EVT_IF_NE(LVarA, SLOT_MATCH_NONE)
                 // partial match after two blocks hit
                 EVT_SET(MF_AnimateSlotLights, TRUE)
-                EVT_CALL(PlaySoundAtCollider, COLLIDER_o881, SOUND_388 | SOUND_ID_TRIGGER_CHANGE_VOLUME, SOUND_SPACE_MODE_0)
+                EVT_CALL(PlaySoundAtCollider, COLLIDER_o881, SOUND_LRAW_OMO_SLOT_MACHINE | SOUND_ID_TRIGGER_CHANGE_VOLUME, SOUND_SPACE_DEFAULT)
             EVT_END_IF
         EVT_END_IF
         EVT_WAIT(1)
@@ -613,7 +613,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
             EVT_GOTO(2)
         EVT_END_IF
     EVT_CALL(DisablePlayerInput, TRUE)
-    EVT_CALL(StopSound, SOUND_80000015)
+    EVT_CALL(StopSound, SOUND_LOOP_OMO_SLOT_MACHINE)
     EVT_WAIT(20)
     EVT_CALL(N(CheckSlotsResult), MV_SlotWheel1_Angle, MV_SlotWheel2_Angle, MV_SlotWheel3_Angle)
     EVT_IF_NE(LVarA, 0)
@@ -720,7 +720,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
                     EVT_SET(MV_ResetCamSpeed, EVT_FLOAT(2.0))
             EVT_END_SWITCH
     EVT_END_SWITCH
-    EVT_CALL(N(UnsetCamera0Flag1000))
+    EVT_CALL(N(EnableCameraLeadingPlayer))
     EVT_CALL(ResetCam, CAM_DEFAULT, MV_ResetCamSpeed)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_LOOP(0)
@@ -786,7 +786,7 @@ API_CALLABLE(N(UpdateSlotMachineBlockShadows)) {
         script->functionTempPtr[0] = shadowIDs = heap_malloc(sizeof(*shadowIDs));
         for (i = 0; i < ARRAY_COUNT(N(SlotMachineBlocks)); i++) {
             model = get_model_from_list_index(get_model_list_index_from_tree_index(N(SlotMachineBlocks)[i]));
-            (*shadowIDs)[i] = create_shadow_type(1, model->center.x, model->center.y - 100.0f, model->center.z);
+            (*shadowIDs)[i] = create_shadow_type(SHADOW_VARYING_SQUARE, model->center.x, model->center.y - 100.0f, model->center.z);
         }
     }
 
@@ -800,12 +800,12 @@ API_CALLABLE(N(UpdateSlotMachineBlockShadows)) {
         scale = 1000.0f;
         entity_raycast_down(&x, &y, &z, &rotX, &rotZ, &scale);
         set_standard_shadow_scale(shadow, scale);
-        shadow->position.x = x;
-        shadow->position.y = y;
-        shadow->position.z = z;
-        shadow->rotation.x = rotX;
-        shadow->rotation.y = 0.0f;
-        shadow->rotation.z = rotZ;
+        shadow->pos.x = x;
+        shadow->pos.y = y;
+        shadow->pos.z = z;
+        shadow->rot.x = rotX;
+        shadow->rot.y = 0.0f;
+        shadow->rot.z = rotZ;
         shadow->scale.x *= 1.3f;
         shadow->scale.z *= 1.3f;
     }

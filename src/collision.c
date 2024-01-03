@@ -9,18 +9,18 @@ typedef struct HitFile {
 typedef struct ColliderBackupEntry {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s16 parentModelIndex;
-    /* 0x06 */ s16 unk_06;
+    /* 0x06 */ char pad_06[2];
 } ColliderBackupEntry; // size = 0x08
 
 typedef struct HitFileHeader {
     /* 0x00 */ s16 numColliders;
-    /* 0x02 */ s16 unk_02;
+    /* 0x02 */ char pad_02[2];
     /* 0x04 */ s32 collidersOffset;
     /* 0x08 */ s16 numVertices;
-    /* 0x0A */ s16 unk_0a;
+    /* 0x0A */ char pad_0A[2];
     /* 0x0C */ s32 verticesOffset;
     /* 0x10 */ s16 boundingBoxesDataSize;
-    /* 0x12 */ s16 unk_12;
+    /* 0x12 */ char pad_12[2];
     /* 0x14 */ s32 boundingBoxesOffset;
 } HitFileHeader; // size = 0x18
 
@@ -32,23 +32,26 @@ typedef struct HitAssetCollider {
     /* 0x08 */ s32 trianglesOffset;
 } HitAssetCollider; // size = 0x0C
 
+SHIFT_BSS CollisionData gCollisionData;
+SHIFT_BSS CollisionData gZoneCollisionData;
+SHIFT_BSS f32 gCollisionRayStartX;
+SHIFT_BSS f32 gCollisionRayStartY;
+SHIFT_BSS f32 gCollisionRayStartZ;
+SHIFT_BSS f32 gCollisionRayDirX;
+SHIFT_BSS f32 gCollisionRayDirY;
+SHIFT_BSS f32 gCollisionRayDirZ;
+SHIFT_BSS f32 gCollisionPointX;
+SHIFT_BSS f32 gCollisionPointY;
+SHIFT_BSS f32 gCollisionPointZ;
+SHIFT_BSS f32 gCollisionRayLength;
+SHIFT_BSS f32 gCollisionNormalX;
+SHIFT_BSS f32 gCollisionNormalY;
+SHIFT_BSS f32 gCollisionNormalZ;
+SHIFT_BSS ColliderBackupEntry* gCollisionDataBackup;
+SHIFT_BSS ColliderBackupEntry* gCollisionDataZoneBackup;
+
 extern Vec3s gEntityColliderFaces[];
 extern Vec3f gEntityColliderNormals[];
-extern f32 gCollisionRayStartX;
-extern f32 gCollisionRayStartY;
-extern f32 gCollisionRayStartZ;
-extern f32 gCollisionRayDirX;
-extern f32 gCollisionRayDirY;
-extern f32 gCollisionRayDirZ;
-extern f32 gCollisionPointX;
-extern f32 gCollisionPointY;
-extern f32 gCollisionPointZ;
-extern f32 gCollisionRayLength;
-extern f32 gCollisionNormalX;
-extern f32 gCollisionNormalY;
-extern f32 gCollisionNormalZ;
-extern ColliderBackupEntry* gCollisionDataBackup;
-extern ColliderBackupEntry* gCollisionDataZoneBackup;
 
 s32 collision_heap_create(void);
 void* collision_heap_malloc(s32 size);
@@ -382,11 +385,11 @@ void update_collider_transform(s16 colliderID) {
     collider = &gCollisionData.colliderList[colliderID];
     model = get_model_from_list_index(collider->parentModelIndex);
 
-    if (!model->currentMatrix) {
-        copy_matrix(model->transformMatrix, matrix);
+    if (model->bakedMtx == NULL) {
+        copy_matrix(model->userTransformMtx, matrix);
     } else {
-        guMtxL2F(matrix, (Mtx*)model->currentMatrix);
-        guMtxCatF(model->transformMatrix, matrix, matrix);
+        guMtxL2F(matrix, (Mtx*)model->bakedMtx);
+        guMtxCatF(model->userTransformMtx, matrix, matrix);
     }
 
     triangle = collider->triangleTable;
@@ -970,25 +973,25 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
         }
 
         dist = hitDepthHoriz + entity->effectiveSize;
-        if (startX > entity->position.x + dist || startX < entity->position.x - dist) {
+        if (startX > entity->pos.x + dist || startX < entity->pos.x - dist) {
             continue;
         }
 
-        if (startZ > entity->position.z + dist || startZ < entity->position.z - dist) {
+        if (startZ > entity->pos.z + dist || startZ < entity->pos.z - dist) {
             continue;
         }
 
         switch (type) {
             case ENTITY_TEST_ANY:
             case ENTITY_TEST_DOWN:
-                dist = entity->position.y;
+                dist = entity->pos.y;
                 dist2 = hitDepthDown + entity->effectiveSize * 2;
                 if (dist + dist2 < startY || startY < dist - dist2) {
                     continue;
                 }
                 break;
             case ENTITY_TEST_LATERAL:
-                dist = entity->position.y;
+                dist = entity->pos.y;
                 dist2 = entity->effectiveSize * 2;
                 if (dist + dist2 < startY || startY < dist - dist2) {
                     continue;
@@ -1007,8 +1010,8 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
         boxVertices[2].z = boxVertices[3].z = boxVertices[6].z = boxVertices[7].z = -aabbZ;
 
         guMtxXFMF(entity->inverseTransformMatrix, dirX, dirY, dirZ, &gCollisionRayDirX, &gCollisionRayDirY, &gCollisionRayDirZ);
-        guMtxXFMF(entity->inverseTransformMatrix, startX - entity->position.x, startY - entity->position.y,
-                  startZ - entity->position.z, &gCollisionRayStartX, &gCollisionRayStartY, &gCollisionRayStartZ);
+        guMtxXFMF(entity->inverseTransformMatrix, startX - entity->pos.x, startY - entity->pos.y,
+                  startZ - entity->pos.z, &gCollisionRayStartX, &gCollisionRayStartY, &gCollisionRayStartZ);
 
         for (j = 0; j < 12; j++) {
             Vec3f* v1 = triangle->v1 = &boxVertices[gEntityColliderFaces[j].x];
@@ -1049,12 +1052,12 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
                     break;
             }
 
-            guRotateF(tempMatrix1, entity->rotation.x, 1.0f, 0.0f, 0.0f);
-            guRotateF(tempMatrix2, entity->rotation.z, 0.0f, 0.0f, 1.0f);
+            guRotateF(tempMatrix1, entity->rot.x, 1.0f, 0.0f, 0.0f);
+            guRotateF(tempMatrix2, entity->rot.z, 0.0f, 0.0f, 1.0f);
             guMtxCatF(tempMatrix1, tempMatrix2, tempMatrix1);
-            guRotateF(tempMatrix2, entity->rotation.y, 0.0f, 1.0f, 0.0f);
+            guRotateF(tempMatrix2, entity->rot.y, 0.0f, 1.0f, 0.0f);
             guMtxCatF(tempMatrix1, tempMatrix2, tempMatrix1);
-            guTranslateF(tempMatrix2, entity->position.x, entity->position.y, entity->position.z);
+            guTranslateF(tempMatrix2, entity->pos.x, entity->pos.y, entity->pos.z);
             guMtxCatF(tempMatrix1, tempMatrix2, tempMatrix1);
             guMtxXFMF(tempMatrix1, gCollisionPointX, gCollisionPointY, gCollisionPointZ, hitX, hitY, hitZ);
 

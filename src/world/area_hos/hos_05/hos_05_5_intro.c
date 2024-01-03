@@ -217,7 +217,7 @@ API_CALLABLE(N(SetWorldFogParams)) {
     s32 fogStart = evt_get_variable(script, *args++);
     s32 fogEnd = evt_get_variable(script, *args++);
 
-    set_model_fog_color_parameters(primR, primG, primB, primA, fogR, fogG, fogB, fogStart, fogEnd);
+    mdl_set_depth_tint_params(primR, primG, primB, primA, fogR, fogG, fogB, fogStart, fogEnd);
     return ApiStatus_DONE2;
 }
 
@@ -231,7 +231,7 @@ API_CALLABLE(N(SetWorldColorParams)) {
 
     args = script->ptrReadPos;
     if (isInitialCall) {
-        get_model_env_color_parameters(&oldPrimR, &oldPrimG, &oldPrimB, &oldEnvR, &oldEnvG, &oldEnvB);
+        mdl_get_remap_tint_params(&oldPrimR, &oldPrimG, &oldPrimB, &oldEnvR, &oldEnvG, &oldEnvB);
         newPrimR = evt_get_variable(script, *args++);
         newPrimG = evt_get_variable(script, *args++);
         newPrimB = evt_get_variable(script, *args++);
@@ -247,7 +247,7 @@ API_CALLABLE(N(SetWorldColorParams)) {
             return ApiStatus_DONE2;
         }
         time++;
-        set_model_env_color_parameters(
+        mdl_set_remap_tint_params(
             (oldPrimR + ((newPrimR - oldPrimR) * time) / duration),
             (oldPrimG + ((newPrimG - oldPrimG) * time) / duration),
             (oldPrimB + ((newPrimB - oldPrimB) * time) / duration),
@@ -258,7 +258,7 @@ API_CALLABLE(N(SetWorldColorParams)) {
             return ApiStatus_DONE2;
         }
     } else {
-        set_model_env_color_parameters(newPrimR, newPrimG, newPrimB, newEnvR, newEnvG, newEnvB);
+        mdl_set_remap_tint_params(newPrimR, newPrimG, newPrimB, newEnvR, newEnvG, newEnvB);
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -280,15 +280,15 @@ API_CALLABLE(N(AdjustCamVfov)) {
 
 API_CALLABLE(N(ResumeIntro)) {
     GameStatus* gameStatus = gGameStatusPtr;
-    if (gameStatus->creditsViewportMode < 5U) {
-        gameStatus->creditsViewportMode++;
+    if (gameStatus->introPart > INTRO_PART_NONE && gameStatus->introPart < INTRO_PART_5) {
+        gameStatus->introPart++;
         state_init_intro();
     }
     return ApiStatus_DONE1;
 }
 
-API_CALLABLE(N(InitWorldFogMode)) {
-    mdl_set_all_fog_mode(FOG_MODE_3);
+API_CALLABLE(N(InitWorldTintMode)) {
+    mdl_set_all_tint_type(ENV_TINT_REMAP);
     return ApiStatus_DONE2;
 }
 
@@ -1085,7 +1085,7 @@ EvtScript N(EVS_UpdateWorldFogParams) = {
 };
 
 EvtScript N(EVS_CaptureSpirits) = {
-    EVT_CALL(func_802D7B10, ArrayVar(6))
+    EVT_CALL(DismissEffect, ArrayVar(6))
     EVT_CALL(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1108,12 +1108,12 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Panic)
-        EVT_CALL(func_802CFD30, NPC_Klevar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Klevar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(13))
+        EVT_CALL(DismissEffect, ArrayVar(13))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(3))
+    EVT_CALL(DismissEffect, ArrayVar(3))
     EVT_CALL(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1136,12 +1136,12 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Skolar, ANIM_WorldSkolar_IdleSad)
-        EVT_CALL(func_802CFD30, NPC_Skolar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Skolar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Skolar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(10))
+        EVT_CALL(DismissEffect, ArrayVar(10))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(4))
+    EVT_CALL(DismissEffect, ArrayVar(4))
     EVT_CALL(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1164,12 +1164,12 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Muskular, ANIM_WorldMuskular_Panic)
-        EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Muskular, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(11))
+        EVT_CALL(DismissEffect, ArrayVar(11))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(7))
+    EVT_CALL(DismissEffect, ArrayVar(7))
     EVT_CALL(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1192,12 +1192,12 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
-        EVT_CALL(func_802CFD30, NPC_Kalmar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Kalmar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Kalmar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(14))
+        EVT_CALL(DismissEffect, ArrayVar(14))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(5))
+    EVT_CALL(DismissEffect, ArrayVar(5))
     EVT_CALL(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1220,12 +1220,12 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Misstar, ANIM_WorldMisstar_Panic)
-        EVT_CALL(func_802CFD30, NPC_Misstar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Misstar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Misstar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(12))
+        EVT_CALL(DismissEffect, ArrayVar(12))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(2))
+    EVT_CALL(DismissEffect, ArrayVar(2))
     EVT_CALL(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -1248,9 +1248,9 @@ EvtScript N(EVS_CaptureSpirits) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Mamar, ANIM_WorldMamar_Panic)
-        EVT_CALL(func_802CFD30, NPC_Mamar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Mamar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Mamar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(9))
+        EVT_CALL(DismissEffect, ArrayVar(9))
     EVT_END_THREAD
     EVT_WAIT(20 * DT)
     EVT_RETURN
@@ -1326,7 +1326,7 @@ Gfx N(gfx_setup_story_viewport)[] = {
     gsDPSetTextureConvert(G_TC_FILT),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureLUT(G_TT_RGBA16),
-    gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE),
+    gsDPSetCombineMode(PM_CC_10, PM_CC_10),
     gsDPSetScissor(G_SC_NON_INTERLACE, 29, 28, 291, 190),
     gsDPSetColorDither(G_CD_DISABLE),
     gsDPSetAlphaDither(G_AD_PATTERN),
@@ -1368,13 +1368,11 @@ void N(appendGfx_image_strips)(s32 baseX, s32 baseY, IMG_PTR img, PAL_PTR pal, s
         gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
     }
 
-    get_screen_overlay_params(1, &overlayType, &overlayAlphaBack);
-    get_screen_overlay_params(0, &overlayType, &overlayAlphaFront);
+    get_screen_overlay_params(SCREEN_LAYER_BACK, &overlayType, &overlayAlphaBack);
+    get_screen_overlay_params(SCREEN_LAYER_FRONT, &overlayType, &overlayAlphaFront);
     alpha = alpha * (255.0f - overlayAlphaBack) * (255.0f - overlayAlphaFront) / 255.0f / 255.0f;
     if (alpha != 255) {
-        gDPSetCombineLERP(gMainGfxPos++,
-            0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0,
-            0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_01, PM_CC_01);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
     } else {
         gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -1442,11 +1440,9 @@ void N(worker_draw_story_graphics)(void) {
         gDPSetRenderMode(gMainGfxPos++, G_RM_CLD_SURF, G_RM_CLD_SURF2);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(StoryGraphicsPtr)->storyPageAlpha);
     }
-    get_screen_overlay_params(1, &overlayType, &overlayAlpha);
+    get_screen_overlay_params(SCREEN_LAYER_BACK, &overlayType, &overlayAlpha);
     if (overlayAlpha != 0.0f) {
-        gDPSetCombineLERP(gMainGfxPos++,
-            PRIMITIVE, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, 0, 0, 0, 1,
-            PRIMITIVE, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, 0, 0, 0, 1);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_43, PM_CC_43);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 208, 208, 208, (s32) overlayAlpha);
     }
 
@@ -1712,7 +1708,7 @@ API_CALLABLE(N(AnimateStorybookPages)) {
             } else {
                 N(CurrentStoryPageTime) = ARRAY_COUNT(N(NextPageAnimOffsetsX));
                 N(StoryPageState)++;
-                sfx_play_sound(SOUND_B0);
+                sfx_play_sound(SOUND_INTRO_NEXT_PAGE);
             }
             break;
         case STORY_PAGE_STATE_NEXT:
@@ -1743,7 +1739,7 @@ API_CALLABLE(N(AnimateStorybookPages)) {
                         N(StoryGraphicsPtr)->frontImgPosX = 0;
                         N(StoryGraphicsPtr)->frontImgPosY = 0;
                     }
-                    gCameras[CAM_DEFAULT].flags &= ~CAMERA_FLAG_ENABLED;
+                    gCameras[CAM_DEFAULT].flags &= ~CAMERA_FLAG_DISABLED;
                     N(StoryPageState)++;
                 }
             }
@@ -1778,7 +1774,7 @@ API_CALLABLE(N(AnimateStorybookPages)) {
                 N(CurrentStoryPageTime) = ARRAY_COUNT(N(NextPageAnimOffsetsX));
                 N(StoryPageState)++;
                 N(StoryGraphicsPtr)->tapeAlpha = 255;
-                sfx_play_sound(SOUND_B0);
+                sfx_play_sound(SOUND_INTRO_NEXT_PAGE);
             }
             break;
         case STORY_PAGE_STATE_BOWSER_NEXT:
@@ -1822,7 +1818,7 @@ s32 N(D_8024ACBC_A34EFC) = 0x00010019;
 API_CALLABLE(N(ForceStarRodAlwaysFaceCamera)) {
     Npc* npc = resolve_npc(script, NPC_StarRod);
 
-    npc->yaw = npc->renderYaw = 180.0f - gCameras[gCurrentCameraID].currentYaw;
+    npc->yaw = npc->renderYaw = 180.0f - gCameras[gCurrentCameraID].curYaw;
     return ApiStatus_BLOCK;
 }
 
@@ -1886,7 +1882,7 @@ EvtScript N(EVS_Intro_Main) = {
     EVT_CALL(DisablePlayerInput, TRUE)
     EVT_CALL(DisablePlayerPhysics, TRUE)
     EVT_CALL(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
-    EVT_CALL(N(InitWorldFogMode))
+    EVT_CALL(N(InitWorldTintMode))
     EVT_CALL(N(SetWorldColorParams), 255, 255, 255, 0, 0, 0, 0)
     EVT_CALL(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     EVT_CALL(N(AdjustCamVfov), 0, 62)
@@ -1914,11 +1910,6 @@ EvtScript N(EVS_Intro_Main) = {
 
 f32 N(AnimBowser_FlyOff_Time) = 0.0;
 
-#if VERSION_PAL
-API_CALLABLE(N(AnimBowser_FlyOff));
-INCLUDE_ASM(ApiResult, "world/area_hos/hos_05/hos_05_5_intro", AnimBowser_FlyOff);
-asm(".section .data");
-#else
 API_CALLABLE(N(AnimBowser_FlyOff)) {
     Npc* bowserMain = resolve_npc(script, NPC_Bowser_Body);
     Npc* bowserProp = resolve_npc(script, NPC_Bowser_Prop);
@@ -1935,20 +1926,15 @@ API_CALLABLE(N(AnimBowser_FlyOff)) {
     bowserMain->colliderPos.y = bowserMain->pos.y;
     bowserProp->colliderPos.y = bowserProp->pos.y;
     N(AnimBowser_FlyOff_Time)++;
-    if (N(AnimBowser_FlyOff_Time) > 40.0f) {
+    if (N(AnimBowser_FlyOff_Time) > (int)(40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
     }
 }
-#endif
 
 f32 N(AnimKammy_FlyOff_Time) = 0.0;
 
-#if VERSION_PAL
-API_CALLABLE(N(AnimKammy_FlyOff));
-INCLUDE_ASM(ApiResult, "world/area_hos/hos_05/hos_05_5_intro", AnimKammy_FlyOff);
-#else
 API_CALLABLE(N(AnimKammy_FlyOff)) {
     Npc* kammy = resolve_npc(script, NPC_Kammy);
 
@@ -1962,42 +1948,41 @@ API_CALLABLE(N(AnimKammy_FlyOff)) {
         40.0f, &kammy->pos.y);
     kammy->colliderPos.y = kammy->pos.y;
     N(AnimKammy_FlyOff_Time)++;
-    if (N(AnimKammy_FlyOff_Time) > 40.0f) {
+    if (N(AnimKammy_FlyOff_Time) > (int)(40 * DT)) {
         return ApiStatus_DONE1;
     } else {
         return ApiStatus_BLOCK;
     }
 }
-#endif
 
 API_CALLABLE(N(func_80244934_A2EB74)) {
     if (isInitialCall) {
         script->functionTemp[0] = 0;
-        set_screen_overlay_params_back(1, 255.0f);
-        set_screen_overlay_color(1, 250, 250, 250);
+        set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, 255.0f);
+        set_screen_overlay_color(SCREEN_LAYER_BACK, 250, 250, 250);
         return ApiStatus_BLOCK;
     }
     script->functionTemp[0]++;
     if (script->functionTemp[0] == 10) {
-        set_screen_overlay_params_back(0, 0.0f);
-        set_screen_overlay_color(1, 250, 250, 250);
+        set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 0.0f);
+        set_screen_overlay_color(SCREEN_LAYER_BACK, 250, 250, 250);
         return ApiStatus_DONE2;
     }
-    set_screen_overlay_params_back(1, (10 - script->functionTemp[0]) * 25);
-    set_screen_overlay_color(1, 250, 250, 250);
+    set_screen_overlay_params_back(OVERLAY_VIEWPORT_COLOR, (10 - script->functionTemp[0]) * 25);
+    set_screen_overlay_color(SCREEN_LAYER_BACK, 250, 250, 250);
     return ApiStatus_BLOCK;
 }
 
 EvtScript N(EVS_Scene_IntroStory) = {
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_StarRod, 2)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_StarRod, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
     EVT_CALL(SetNpcPaletteSwapLower, NPC_StarRod, 0, 1, 20, 5)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Eldstar, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Mamar, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Skolar, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Muskular, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Misstar, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Klevar, 2)
-    EVT_CALL(SetNpcPaletteSwapMode, NPC_Kalmar, 2)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Eldstar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Mamar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Skolar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Muskular, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Misstar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Klevar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
+    EVT_CALL(SetNpcPaletteSwapMode, NPC_Kalmar, NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS)
     EVT_CALL(SetNpcPaletteSwapping, NPC_Eldstar, 0, 1, 25, 12, 4, 18, 0, 0)
     EVT_CALL(SetNpcPaletteSwapping, NPC_Mamar, 0, 1, 25, 12, 4, 18, 0, 0)
     EVT_CALL(SetNpcPaletteSwapping, NPC_Skolar, 0, 1, 25, 12, 4, 18, 0, 0)
@@ -2037,8 +2022,8 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EVT_CALL(LoadSettings, CAM_DEFAULT, EVT_PTR(N(IntroCamSettings6)))
     EVT_CALL(N(AnimateStorybookPages))
     EVT_WAIT(50 * DT)
-    EVT_CALL(func_802CFD30, NPC_Bowser_Body, FOLD_TYPE_8, 0, 0, 0, 0)
-    EVT_CALL(func_802CFD30, NPC_Bowser_Prop, FOLD_TYPE_8, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Body, IMGFX_SET_TINT, 0, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Prop, IMGFX_SET_TINT, 0, 0, 0, 0)
     EVT_CALL(SetNpcPos, NPC_Bowser_Body, -64, 135, 85)
     EVT_CALL(SetNpcPos, NPC_Bowser_Prop, -64, 135, 85)
     EVT_THREAD
@@ -2048,8 +2033,8 @@ EvtScript N(EVS_Scene_IntroStory) = {
             EVT_IF_GT(LVar0, 255)
                 EVT_SET(LVar0, 255)
             EVT_END_IF
-            EVT_CALL(func_802CFD30, NPC_Bowser_Body, FOLD_TYPE_8, 0, 0, 0, LVar0)
-            EVT_CALL(func_802CFD30, NPC_Bowser_Prop, FOLD_TYPE_8, 0, 0, 0, LVar0)
+            EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Body, IMGFX_SET_TINT, 0, 0, 0, LVar0)
+            EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Prop, IMGFX_SET_TINT, 0, 0, 0, LVar0)
             EVT_WAIT(1)
         EVT_END_LOOP
     EVT_END_THREAD
@@ -2088,8 +2073,8 @@ EvtScript N(EVS_Scene_IntroStory) = {
         EVT_WAIT(5)
     EVT_END_LOOP
     EVT_WAIT(30 * DT)
-    EVT_CALL(func_802CFD30, NPC_Bowser_Body, FOLD_TYPE_8, 0, 0, 0, 255)
-    EVT_CALL(func_802CFD30, NPC_Bowser_Prop, FOLD_TYPE_8, 0, 0, 0, 255)
+    EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Body, IMGFX_SET_TINT, 0, 0, 0, 255)
+    EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Prop, IMGFX_SET_TINT, 0, 0, 0, 255)
     EVT_THREAD
         EVT_SET(LVar0, 0)
         EVT_LOOP(4)
@@ -2097,13 +2082,13 @@ EvtScript N(EVS_Scene_IntroStory) = {
             EVT_IF_GT(LVar0, 255)
                 EVT_SET(LVar0, 255)
             EVT_END_IF
-            EVT_CALL(func_802CFD30, NPC_Bowser_Body, FOLD_TYPE_8, LVar0, LVar0, LVar0, 255)
-            EVT_CALL(func_802CFD30, NPC_Bowser_Prop, FOLD_TYPE_8, LVar0, LVar0, LVar0, 255)
+            EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Body, IMGFX_SET_TINT, LVar0, LVar0, LVar0, 255)
+            EVT_CALL(SetNpcImgFXParams, NPC_Bowser_Prop, IMGFX_SET_TINT, LVar0, LVar0, LVar0, 255)
             EVT_WAIT(1)
         EVT_END_LOOP
     EVT_END_THREAD
     EVT_WAIT(3)
-    EVT_CALL(func_802D7B10, ArrayVar(17))
+    EVT_CALL(DismissEffect, ArrayVar(17))
     EVT_THREAD
         EVT_CALL(EnableTexPanning, MODEL_o33, TRUE)
         EVT_CALL(EnableTexPanning, MODEL_o34, TRUE)
@@ -2213,7 +2198,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
         EVT_WAIT(5)
     EVT_END_LOOP
     EVT_WAIT(27 * DT)
-    EVT_CALL(func_802D7B10, ArrayVar(17))
+    EVT_CALL(DismissEffect, ArrayVar(17))
     EVT_CALL(N(SetWorldFogParams), 0, 0, 0, 0, 0, 0, 0, 995, 1000)
     EVT_CALL(N(AdjustCamVfov), 0, 25)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, -38, 210, 85)
@@ -2379,8 +2364,8 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EVT_CALL(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Panic)
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(func_802D7B10, ArrayVar(18))
-        EVT_CALL(func_802D7B10, ArrayVar(19))
+        EVT_CALL(DismissEffect, ArrayVar(18))
+        EVT_CALL(DismissEffect, ArrayVar(19))
     EVT_END_THREAD
     EVT_PLAY_EFFECT(EFFECT_ENERGY_SHOCKWAVE, 0, 18, 256, -21, EVT_FLOAT(0.40625), 60)
     EVT_SET(LVar0, 120)
@@ -2402,39 +2387,39 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EVT_CALL(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Hurt)
     EVT_CALL(SetNpcAnimation, NPC_Kalmar, ANIM_WorldKalmar_Hurt)
     EVT_CALL(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(1))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(1))
     EVT_CALL(GetNpcPos, NPC_Mamar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(2))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(2))
     EVT_CALL(GetNpcPos, NPC_Skolar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(3))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(3))
     EVT_CALL(GetNpcPos, NPC_Muskular, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(4))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(4))
     EVT_CALL(GetNpcPos, NPC_Misstar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(5))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(5))
     EVT_CALL(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(6))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(6))
     EVT_CALL(GetNpcPos, NPC_Kalmar, LVar0, LVar1, LVar2)
-    EVT_PLAY_EFFECT(EFFECT_AURA, 0, LVar0, LVar1, LVar2, 1, ArrayVar(7))
+    EVT_PLAY_EFFECT(EFFECT_AURA, FX_AURA_CAPTURE, LVar0, LVar1, LVar2, 1, ArrayVar(7))
     EVT_CALL(N(SetWorldColorParams), 110, 110, 110, 255, 255, 255, 0)
     EVT_THREAD
         EVT_CALL(N(SetWorldColorParams), 230, 230, 230, 0, 0, 0, 30)
     EVT_END_THREAD
     EVT_THREAD
         EVT_WAIT(28)
-        EVT_CALL(func_802CFD30, NPC_Eldstar, FOLD_TYPE_5, 8, 1, 1, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Eldstar, IMGFX_SET_ANIM, IMGFX_ANIM_SPIRIT_CAPTURE, 1, 1, 0)
     EVT_END_THREAD
     EVT_SET(LVar0, 255)
     EVT_LOOP(20)
-        EVT_CALL(func_802CFD30, NPC_Mamar,    FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Skolar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Muskular, FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Misstar,  FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Klevar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
-        EVT_CALL(func_802CFD30, NPC_Kalmar,   FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Mamar,    IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Skolar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Muskular, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Misstar,  IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Klevar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Kalmar,   IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_WAIT(15 * DT)
-    EVT_CALL(func_802CFD30, NPC_Eldstar, FOLD_TYPE_7, 255, 0, 0, 0)
+    EVT_CALL(SetNpcImgFXParams, NPC_Eldstar, IMGFX_SET_ALPHA, 255, 0, 0, 0)
     EVT_PLAY_EFFECT(EFFECT_SOMETHING_ROTATING, 2, -130, 220, 130, 1, 0)
     EVT_SET(ArrayVar(0), LVarF)
     EVT_SET(LVar0, -130)
@@ -2443,7 +2428,7 @@ EvtScript N(EVS_Scene_IntroStory) = {
     EVT_ADDF(LVar1, EVT_FLOAT(-30.0))
     EVT_CALL(SetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     EVT_EXEC(N(EVS_UpdateWorldFogParams))
-    EVT_CALL(func_802D7B10, ArrayVar(1))
+    EVT_CALL(DismissEffect, ArrayVar(1))
     EVT_CALL(GetNpcPos, NPC_Eldstar, LVar0, LVar1, LVar2)
     EVT_PLAY_EFFECT(EFFECT_RING_BLAST, 1, LVar0, LVar1, LVar2, 4, 20)
     EVT_THREAD
@@ -2466,9 +2451,9 @@ EvtScript N(EVS_Scene_IntroStory) = {
         EVT_END_IF
         EVT_CALL(N(SetCardCaptureState1))
         EVT_CALL(SetNpcAnimation, NPC_Eldstar, ANIM_WorldEldstar_Panic)
-        EVT_CALL(func_802CFD30, NPC_Eldstar, FOLD_TYPE_NONE, 0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_Eldstar, IMGFX_CLEAR, 0, 0, 0, 0)
         EVT_CALL(SetNpcFlagBits, NPC_Eldstar, NPC_FLAG_INVISIBLE, TRUE)
-        EVT_CALL(func_802D7B10, ArrayVar(8))
+        EVT_CALL(DismissEffect, ArrayVar(8))
     EVT_END_THREAD
     EVT_WAIT(15 * DT)
     EVT_CALL(N(AdjustCamVfov), 0, 50)

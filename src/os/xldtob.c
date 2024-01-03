@@ -64,46 +64,48 @@ void _Ldtob(_Pft* px, char code) {
         nsig = 0;
         xexp = 0;
     } else {
-        int i;
-        int n;
+        {
+            int i;
+            int n;
 
-        if (ldval < 0) {
-            ldval = -ldval;
-        }
-
-        // what
-        if ((xexp = xexp * 30103 / 100000 - 4) < 0) {
-            n = ALIGN(-xexp, 4), xexp = -n;
-
-            for (i = 0; n > 0; n >>= 1, i++) {
-                if (n & 1) {
-                    ldval *= pows[i];
-                }
-            }
-        } else if (xexp > 0) {
-            f64 factor = 1;
-            
-            xexp &= ~3;
-            
-            for (n = xexp, i = 0; n > 0; n >>= 1, i++) {
-                if (n & 1) {
-                    factor *= pows[i];
-                }
+            if (ldval < 0) {
+                ldval = -ldval;
             }
 
-            ldval /= factor;
+            // what
+            if ((xexp = xexp * 30103 / 100000 - 4) < 0) {
+                n = ALIGN(-xexp, 4), xexp = -n;
+
+                for (i = 0; n > 0; n >>= 1, i++) {
+                    if (n & 1) {
+                        ldval *= pows[i];
+                    }
+                }
+            } else if (xexp > 0) {
+                f64 factor = 1;
+
+                xexp &= ~3;
+
+                for (n = xexp, i = 0; n > 0; n >>= 1, i++) {
+                    if (n & 1) {
+                        factor *= pows[i];
+                    }
+                }
+
+                ldval /= factor;
+            }
         }
         {
             int gen = px->prec + ((code == 'f') ? 10 + xexp : 6);
-            
+
             if (gen > 0x13) {
                 gen = 0x13;
             }
-            
+
             for (*p++ = '0'; gen > 0 && 0 < ldval; p += 8) {
                 int j;
-                int lo = ldval;
-                
+                long lo = ldval;
+
                 if ((gen -= 8) > 0) {
                     ldval = (ldval - lo) * 1e8;
                 }
@@ -112,7 +114,7 @@ void _Ldtob(_Pft* px, char code) {
                     ldiv_t qr = ldiv(lo, 10);
                     *--p = qr.rem + '0', lo = qr.quot;
                 }
-                
+
                 while (--j >= 0) {
                     *--p = '0';
                 }
@@ -125,13 +127,13 @@ void _Ldtob(_Pft* px, char code) {
             }
 
             nsig = px->prec + ((code == 'f') ? xexp + 1 : ((code == 'e' || code == 'E') ? 1 : 0));
-            
+
             if (gen < nsig) {
                 nsig = gen;
             }
 
             if (nsig > 0) {
-                char drop = nsig < gen && '5' <= p[nsig] ? '9' : '0';
+                const char drop = nsig < gen && '5' <= p[nsig] ? '9' : '0';
                 int n;
 
                 for (n = nsig; p[--n] == drop;) {
@@ -141,7 +143,7 @@ void _Ldtob(_Pft* px, char code) {
                 if (drop == '9') {
                     ++p[n];
                 }
-                
+
                 if (n < 0) {
                     --p, ++nsig, ++xexp;
                 }
@@ -177,18 +179,17 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
     const unsigned char point = '.';
 
     if (nsig <= 0) {
-        nsig = 1, p = "0"; // memes
+        nsig = 1, p = "0";
     }
 
     if (code == 'f' || (code == 'g' || code == 'G') && xexp >= -4 && xexp < px->prec) {
-        xexp += 1;
+        xexp++;
         if (code != 'f') {
             if (((px->flags & 8) == 0) && nsig < px->prec) {
                 px->prec = nsig;
             }
 
-            px->prec -= xexp;
-            if (px->prec < 0) {
+            if ((px->prec -= xexp) < 0) {
                 px->prec = 0;
             }
         }
@@ -211,7 +212,7 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
                 nsig = px->prec;
             }
 
-            memcpy(&px->s[px->n1], p, px->n2 = nsig); // , memes (this one is insane)
+            memcpy(&px->s[px->n1], p, px->n2 = nsig);
             px->nz2 = px->prec - nsig;
         } else if (nsig < xexp) {
             memcpy(&px->s[px->n1], p, nsig);
@@ -219,7 +220,7 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
             px->nz1 = xexp - nsig;
             if (px->prec > 0 || (px->flags & 8)) {
                 px->s[px->n1] = point;
-                px->n2 += 1;
+                px->n2++;
             }
 
             px->nz2 = px->prec;
@@ -250,11 +251,7 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
                 px->prec = 0;
             }
 
-            if (code == 'g') {
-                code = 'e';
-            } else {
-                code = 'E';
-            }
+            code = (code == 'g') ? 'e' : 'E';
         }
 
         px->s[px->n1++] = *p++;
@@ -285,11 +282,11 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
 
         if (xexp >= 100) {
             if (xexp >= 1000) {
-                *p++ = (xexp / 1000) + '0', xexp %= 1000; // , memes
+                *p++ = (xexp / 1000) + '0', xexp %= 1000;
             }
-            *p++ = (xexp / 100) + '0', xexp %= 100; // , memes
+            *p++ = (xexp / 100) + '0', xexp %= 100;
         }
-        *p++ = (xexp / 10) + '0', xexp %= 10; // , memes
+        *p++ = (xexp / 10) + '0', xexp %= 10;
 
         *p++ = xexp + '0';
         px->n2 = (size_t)p - ((size_t)px->s + px->n1);
@@ -303,3 +300,4 @@ void _Genld(_Pft* px, char code, u8* p, s16 nsig, s16 xexp) {
         }
     }
 }
+

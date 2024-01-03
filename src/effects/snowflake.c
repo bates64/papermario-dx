@@ -11,7 +11,7 @@ void snowflake_update(EffectInstance* effect);
 void snowflake_render(EffectInstance* effect);
 void snowflake_appendGfx(void* effect);
 
-void snowflake_main(f32 x, f32 y, f32 z, s32 arg3, s32 arg4) {
+void snowflake_main(f32 x, f32 y, f32 z, s32 arg3) {
     EffectBlueprint bp;
     EffectInstance* effect;
     SnowflakeFXData* part;
@@ -22,12 +22,12 @@ void snowflake_main(f32 x, f32 y, f32 z, s32 arg3, s32 arg4) {
     bp.init = snowflake_init;
     bp.update = snowflake_update;
     bp.renderWorld = snowflake_render;
-    bp.unk_14 = 0;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SNOWFLAKE;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = 1;
-    part = effect->data.snowflake = shim_general_heap_malloc(numParts * sizeof(*part));
+    part = effect->data.snowflake = general_heap_malloc(numParts * sizeof(*part));
 
     ASSERT(effect->data.snowflake != NULL);
 
@@ -62,7 +62,7 @@ void snowflake_update(EffectInstance* effect) {
 
     data->unk_28--;
     if (data->unk_28 < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -88,7 +88,7 @@ void snowflake_render(EffectInstance* effect) {
     RenderTask* renderTaskPtr = &renderTask;
     RenderTask* retTask;
     f32 effectPos = data->pos.x;
-    f32 playerPos = playerStatus->position.x;
+    f32 playerPos = playerStatus->pos.x;
 
     if (effectPos - playerPos > 200) {
         data->pos.x = effectPos - 400;
@@ -99,7 +99,7 @@ void snowflake_render(EffectInstance* effect) {
     }
 
     effectPos = data->pos.z;
-    playerPos = playerStatus->position.z;
+    playerPos = playerStatus->pos.z;
     if (effectPos - playerPos > 200) {
         data->pos.z = effectPos - 400;
     } else {
@@ -110,10 +110,10 @@ void snowflake_render(EffectInstance* effect) {
 
     renderTaskPtr->appendGfx = &snowflake_appendGfx;
     renderTaskPtr->appendGfxArg = effect;
-    renderTaskPtr->distance = 0;
-    renderTaskPtr->renderMode = RENDER_MODE_2D;
+    renderTaskPtr->dist = 0;
+    renderTaskPtr->renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(renderTaskPtr);
+    retTask = queue_render_task(renderTaskPtr);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -126,18 +126,18 @@ void snowflake_appendGfx(void* effect) {
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(effectTemp->graphics->data));
     gSPDisplayList(gMainGfxPos++, D_09000900_331800);
 
-    shim_guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
-    shim_guRotateF(spD8, -gCameras[gCurrentCameraID].currentYaw, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(spD8, sp18, sp118);
-    shim_guMtxF2L(sp118, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guTranslateF(sp18, data->pos.x, data->pos.y, data->pos.z);
+    guRotateF(spD8, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(spD8, sp18, sp118);
+    guMtxF2L(sp118, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, 255);
 
-    shim_guRotateF(sp58, data->unk_18, 1.0f, 0.0f, 0.0f);
-    shim_guRotateF(sp98, data->unk_1C, 0.0f, 1.0f, 0.0f);
-    shim_guMtxCatF(sp58, sp98, sp118);
-    shim_guMtxF2L(sp118, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guRotateF(sp58, data->unk_18, 1.0f, 0.0f, 0.0f);
+    guRotateF(sp98, data->unk_1C, 0.0f, 1.0f, 0.0f);
+    guMtxCatF(sp58, sp98, sp118);
+    guMtxF2L(sp118, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_090009E8_3318E8);

@@ -1,27 +1,27 @@
 #include "common.h"
 #include "world/actions.h"
+#include "sprite/player.h"
 
 AnimID StepUpPeachAnims[] = {
-    ANIM_Peach1_Walk, // none
-    ANIM_Peach1_CarryCream, // cream
-    ANIM_Peach1_CarryStrawberry, // strawberry
-    ANIM_Peach1_CarryButter, // butter
-    ANIM_Peach1_CarryCleanser, // cleanser
-    ANIM_Peach1_CarryWater, // water
-    ANIM_Peach1_CarryMilk, // milk
-    ANIM_Peach1_CarryFlour, // flour
-    ANIM_Peach1_CarryEgg, // egg
-    ANIM_Peach1_CarryCompleteCake, // complete cake
-    ANIM_Peach1_CarryCakeBowl, // cake bowl
-    ANIM_Peach1_CarryCakeMixed, // cake mixed
-    ANIM_Peach1_CarryCakePan, // cake pan
-    ANIM_Peach1_CarryCakeBatter, // cake batter
-    ANIM_Peach1_CarryBareCake, // cake bare
-    ANIM_Peach1_CarrySalt, // salt
-    ANIM_Peach1_CarrySugar, // sugar
-    ANIM_Peach1_CarryIcingCake, // cake with icing
-    ANIM_Peach1_CarryBerryCake, // cake with berries
-    0x00000000
+    [PEACH_BAKING_NONE]                 ANIM_Peach1_Walk,
+    [PEACH_BAKING_CREAM]                ANIM_Peach1_CarryCream,
+    [PEACH_BAKING_STRAWBERRY]           ANIM_Peach1_CarryStrawberry,
+    [PEACH_BAKING_BUTTER]               ANIM_Peach1_CarryButter,
+    [PEACH_BAKING_CLEANSER]             ANIM_Peach1_CarryCleanser,
+    [PEACH_BAKING_WATER]                ANIM_Peach1_CarryWater,
+    [PEACH_BAKING_MILK]                 ANIM_Peach1_CarryMilk,
+    [PEACH_BAKING_FLOUR]                ANIM_Peach1_CarryFlour,
+    [PEACH_BAKING_EGG]                  ANIM_Peach1_CarryEgg,
+    [PEACH_BAKING_COMPLETE_CAKE]        ANIM_Peach1_CarryCompleteCake,
+    [PEACH_BAKING_CAKE_BOWL]            ANIM_Peach1_CarryCakeBowl,
+    [PEACH_BAKING_CAKE_MIXED]           ANIM_Peach1_CarryCakeMixed,
+    [PEACH_BAKING_CAKE_PAN]             ANIM_Peach1_CarryCakePan,
+    [PEACH_BAKING_CAKE_BATTER]          ANIM_Peach1_CarryCakeBatter,
+    [PEACH_BAKING_CAKE_BARE]            ANIM_Peach1_CarryBareCake,
+    [PEACH_BAKING_SALT]                 ANIM_Peach1_CarrySalt,
+    [PEACH_BAKING_SUGAR]                ANIM_Peach1_CarrySugar,
+    [PEACH_BAKING_CAKE_WITH_ICING]      ANIM_Peach1_CarryIcingCake,
+    [PEACH_BAKING_CAKE_WITH_BERRIES]    ANIM_Peach1_CarryBerryCake,
 };
 
 void func_802B6198_E24768(void);
@@ -58,13 +58,13 @@ void action_update_step_up(void) {
     integrate_gravity();
     sin_cos_rad(DEG_TO_RAD(playerStatus->targetYaw), &sinTheta, &cosTheta);
     colliderID = NO_COLLIDER;
-    playerStatus->position.x += sinTheta * 3.0f;
-    playerStatus->position.z -= cosTheta * 3.0f;
+    playerStatus->pos.x += sinTheta * 3.0f;
+    playerStatus->pos.z -= cosTheta * 3.0f;
 
     if (playerStatus->gravityIntegrator[0] < 0.0f) {
-        playerStatus->position.y = player_check_collision_below(playerStatus->gravityIntegrator[0], &colliderID);
+        playerStatus->pos.y = player_check_collision_below(playerStatus->gravityIntegrator[0], &colliderID);
     } else {
-        playerStatus->position.y += playerStatus->gravityIntegrator[0];
+        playerStatus->pos.y += playerStatus->gravityIntegrator[0];
     }
 
     if (colliderID >= 0) {
@@ -78,7 +78,7 @@ void action_update_step_up(void) {
 
 void func_802B6198_E24768(void) {
     if (!(gPlayerStatus.animFlags & PA_FLAG_INVISIBLE)) {
-        if (!(gGameStatusPtr->peachFlags & PEACH_STATUS_FLAG_DEPRESSED)) {
+        if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_DEPRESSED)) {
             suggest_player_anim_allow_backward(StepUpPeachAnims[gGameStatusPtr->peachBakingIngredient]);
         } else {
             suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
@@ -94,18 +94,18 @@ void action_update_step_up_peach(void) {
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         suggest_player_anim_allow_backward(ANIM_Peach1_StepUp);
-        playerStatus->currentStateTime = 8;
+        playerStatus->curStateTime = 8;
     }
 
-    if (playerStatus->currentStateTime != 0) {
-        playerStatus->currentStateTime--;
-        if (playerStatus->currentStateTime == 4) {
+    if (playerStatus->curStateTime != 0) {
+        playerStatus->curStateTime--;
+        if (playerStatus->curStateTime == 4) {
             try_player_footstep_sounds(1);
         }
     } else {
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
             set_action_state(ACTION_STATE_IDLE);
-        } else if (playerStatus->currentSpeed >= playerStatus->runSpeed) {
+        } else if (playerStatus->curSpeed >= playerStatus->runSpeed) {
             set_action_state(ACTION_STATE_RUN);
         } else {
             set_action_state(ACTION_STATE_WALK);

@@ -25,23 +25,23 @@ typedef u8* WaveData;
 #define SAMPLE184(delta)      (((delta) + (SAMPLES / 2)) / SAMPLES) * SAMPLES
 #define FIXED_SAMPLE          SAMPLES
 
-#define N_AL_DECODER_IN	        0
-#define	N_AL_RESAMPLER_OUT	    0
-#define N_AL_TEMP_0	            0
-#define	N_AL_DECODER_OUT        0x170
-#define	N_AL_TEMP_1	            0x170
-#define	N_AL_TEMP_2	            0x2E0
-#define	N_AL_MAIN_L_OUT	        0x4E0
-#define	N_AL_MAIN_R_OUT	        0x650
-#define	N_AL_AUX_L_OUT	        0x7C0
-#define	N_AL_AUX_R_OUT	        0x930
+#define N_AL_DECODER_IN         0
+#define N_AL_RESAMPLER_OUT      0
+#define N_AL_TEMP_0             0
+#define N_AL_DECODER_OUT        0x170
+#define N_AL_TEMP_1             0x170
+#define N_AL_TEMP_2             0x2E0
+#define N_AL_MAIN_L_OUT         0x4E0
+#define N_AL_MAIN_R_OUT         0x650
+#define N_AL_AUX_L_OUT          0x7C0
+#define N_AL_AUX_R_OUT          0x930
 
 #define ALIGN16_(val) (((val) + 0xF) & 0xFFF0)
 #define AU_FILE_RELATIVE(base,offset) ((void*)((s32)(offset) + (s32)(base)))
 
 #define AUDIO_HEAP_SIZE 0x56000
  // NU_AU_AUDIO_SAMPLES ?
-#define	AUDIO_SAMPLES	184
+#define AUDIO_SAMPLES   184
 #define AUDIO_COMMAND_LIST_BUFFER_SIZE 0x4000
 
 #define ADPCMFBYTES     9
@@ -60,7 +60,6 @@ typedef u8* WaveData;
 #define BGM_SEGMENT_LABEL 3
 
 typedef u32 SegData;
-
 
 typedef enum AuPriority {
     AU_PRIORITY_FREE            = 0,
@@ -364,7 +363,7 @@ typedef union VolumeField {
 
 // envelope related?
 typedef struct Fade {
-    /* 0x0 */ VolumeField currentVolume;
+    /* 0x0 */ VolumeField curVolume;
     /* 0x4 */ s32 fadeStep;
     /* 0x8 */ s16 targetVolume;
     /* 0xA */ s16 fadeTime;
@@ -439,7 +438,7 @@ typedef struct AuFxBus {
     /* 0x02 */ char unk_02[0x2];
     /* 0x04 */ AuFX* fxL;
     /* 0x08 */ AuFX* fxR;
-    /* 0x0C */ u8 currentEffectType;
+    /* 0x0C */ u8 curEffectType;
     /* 0x0D */ char unk_0D[0x3];
     /* 0x10 */ struct AuPVoice* head;
     /* 0x14 */ struct AuPVoice* tail;
@@ -613,14 +612,14 @@ typedef struct SoundPlayer {
     /* 0x85 */ u8 triggers;
     /* 0x86 */ char unk_86[0x2];
     /* 0x88 */ s8* loopStartPos;
-    /* 0x8C */ u8 loopIterCount;
+    /* 0x8C */ u8 loopIterCount; // loopIterCount = 0 for infinite loop
     /* 0x8D */ char unk_8D;
     /* 0x8E */ u16 delay;
     /* 0x90 */ u16 playLength;
     /* 0x92 */ s16 coarseTune;
     /* 0x94 */ s8 fineTune;
     /* 0x95 */ char unk_05;
-    /* 0x96 */ u16 currentSoundID;
+    /* 0x96 */ u16 curSoundID;
     /* 0x98 */ u8 priority;
     /* 0x99 */ u8 exclusiveID;
     /* 0x9A */ u8 sfxParamsFlags;
@@ -658,7 +657,7 @@ typedef struct SoundManagerCustomCmdList {
 
 typedef struct SoundManager {
     /* 0x000 */ struct AuGlobals* globals;
-    /* 0x004 */ struct AuVoice* currentVoice;
+    /* 0x004 */ struct AuVoice* curVoice;
     /* 0x008 */ u8* sefData;
     /* 0x00C */ s32* normalSounds[8];
     /* 0x02C */ s32* extraSounds;
@@ -681,7 +680,7 @@ typedef struct SoundManager {
     /* 0x0BC */ u8 priority;
     /* 0x0BD */ u8 sfxPlayerSelector;
     /* 0x0BE */ u8 busId;
-    /* 0x0BF */ u8 currentVoiceIndex;
+    /* 0x0BF */ u8 curVoiceIndex;
     /* 0x0C0 */ u8 state;
     /* 0x0C1 */ char unk_C1[0x1];
     /* 0x0C2 */ SoundSFXEntry soundQueue[16];
@@ -701,13 +700,13 @@ typedef struct SoundInstance {
     /* 0x0C */ u8 volume;
     /* 0x0D */ u8 pan;
     /* 0x0E */ s16 pitchShift;
-    /* 0x10 */ Vec3f position;
+    /* 0x10 */ Vec3f pos;
 } SoundInstance; // size = 0x1C
 
 typedef struct AlternatingSoundSet {
     /* 0x00 */ s32* sounds;
     /* 0x04 */ s16 soundCount;
-    /* 0x06 */ s16 currentIndex;
+    /* 0x06 */ s16 curIndex;
 } AlternatingSoundSet; // size = 0x08
 
 typedef struct AuVoice {
@@ -784,28 +783,25 @@ typedef struct BGMInstrumentInfo {
     /* 0x07 */ char pad_7[1];
 } BGMInstrumentInfo; // size = 0x8
 
+typedef struct AUFileMetadata {
+    /* 0x00 */ s32 signature;   // file type identifer: 'SBN ', 'SEF ', etc
+    /* 0x04 */ s32 size;        // full file size, including header and data
+} AUFileMetadata;
+
 typedef struct SBNHeader {
-    /* 0x00 */ s32 signature; // 'SBN '
-    /* 0x04 */ s32 size;
-    /* 0x08 */ s32 unk_08;
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ s32 tableOffset; // = 0x40
-    /* 0x14 */ s32 numEntries;
-    /* 0x18 */ s32 unk_18;
-    /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ s32 unk_20;
+    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SBN '
+    /* 0x08 */ char unused_08[8];
+    /* 0x10 */ s32 tableOffset; // offset in the SBN file of the file table (== sizeof(SBNHeader))
+    /* 0x14 */ s32 numEntries;  // number of entries in the SBN file table
+    /* 0x18 */ s32 fileSize;    // full size of the SBN file (unread)
+    /* 0x1C */ s32 versionOffset;
+    /* 0x20 */ char unused_04[4];
     /* 0x24 */ s32 INIToffset;
-    /* 0x28 */ s32 unk_28;
-    /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ s32 unk_30;
-    /* 0x34 */ s32 unk_34;
-    /* 0x38 */ s32 unk_38;
-    /* 0x3C */ s32 unk_3C;
+    /* 0x28 */ char reserved[24];
 } SBNHeader; // size = 0x40
 
 typedef struct SEFHeader {
-    /* 0x00 */ s32 signature; // 'SEF '
-    /* 0x04 */ s32 size;
+    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'SEF '
     /* 0x08 */ s32 unk8;
     /* 0x0C */ s8 unkC; // 0
     /* 0x0D */ s8 unkD; // 0
@@ -816,8 +812,7 @@ typedef struct SEFHeader {
 } SEFHeader; // size = 0x22
 
 typedef struct INITHeader {
-    /* 0x00 */ s32 signature; // 'INIT'
-    /* 0x04 */ s32 size;
+    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
     /* 0x08 */ u16 entriesOffset;
     /* 0x0A */ u16 entriesSize;
     /* 0x0C */ u16 tblOffset;
@@ -828,8 +823,7 @@ typedef struct INITHeader {
 } INITHeader; // size = 0x20
 
 typedef struct PERHeader {
-    /* 0x00 */ s32 signature; // 'PER ' or 'PRG '
-    /* 0x04 */ s32 size; // including this header
+    /* 0x00 */ AUFileMetadata mdata; // uses identifer 'PER ' or 'PRG '
     /* 0x08 */ char unk_08[8];
 } PERHeader; // size = 0x10
 
@@ -1214,19 +1208,9 @@ extern u8 AuSynStereoDirty;
 extern AuGlobals* gSoundGlobals;
 extern BGMPlayer* gBGMPlayerC;
 extern BGMPlayer* gBGMPlayerB;
-extern AuCallback BeginSoundUpdateCallback;
 extern AmbienceManager* gAuAmbienceManager;
 extern SoundManager* gSoundManager;
 extern BGMPlayer* gBGMPlayerA;
-
-extern u16 AuInitialGlobalVolume;
-
-extern s16* AuDelayBufferMain;
-extern s16* AuDelayBufferAux;
-extern s32 AuDelayCounter;
-extern u8 AuDelayedVoiceGroup;
-extern s16 AuDelayedChannel;
-extern s32 AuDelayCount;
 
 #include "audio/private.h"
 

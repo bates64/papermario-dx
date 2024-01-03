@@ -6,9 +6,9 @@
 void N(ShyGuyPatrolAI_14)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territoryPtr) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    
+
     npc->moveSpeed *= 0.6;
-    npc->currentAnim = enemy->animList[12];
+    npc->curAnim = enemy->animList[12];
     npc->duration = 5;
     script->functionTemp[0] = 0xF;
 }
@@ -17,16 +17,16 @@ void N(ShyGuyPatrolAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe((s32) enemy->npcID);
     f32 yaw = npc->yaw;
-    
+
     if (ai_check_fwd_collisions(npc, npc->moveSpeed, &yaw, NULL, NULL, NULL) == 0) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
-    
+
     npc->duration--;
     if (npc->duration == 0) {
         npc->moveSpeed *= 0.6;
 
-        npc->currentAnim = enemy->animList[11];
+        npc->curAnim = enemy->animList[11];
         npc->duration = 10;
         script->functionTemp[0] = 16;
     }
@@ -36,11 +36,11 @@ void N(ShyGuyPatrolAI_16)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yaw = npc->yaw;
-    
+
     if (ai_check_fwd_collisions(npc, npc->moveSpeed, &yaw, NULL, NULL, NULL) == 0) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
-    
+
     npc->duration--;
     if (npc->duration == 0) {
         npc->duration = 30;
@@ -54,7 +54,7 @@ void N(ShyGuyPatrolAI_17)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
     npc->duration--;
     if (npc->duration == 0) {
-        npc->currentAnim = *enemy->animList;
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         script->functionTemp[0] = 0;
     }
 }
@@ -70,7 +70,7 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
     f32 posY;
     f32 posZ;
     f32 hitDepth;
-    
+
     territory.skipPlayerDetectChance = 0;
     territory.shape = enemy->territory->patrol.detectShape;
     territory.pointX = enemy->territory->patrol.detectPos.x;
@@ -79,21 +79,21 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
     territory.sizeZ = enemy->territory->patrol.detectSize.z;
     territory.halfHeight = 65.0f;
     territory.detectFlags = 0;
-    
+
    if (isInitialCall || enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {
         script->functionTemp[0] = 0;
         npc->duration = 0;
-        npc->currentAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        
+        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
+
         npc->flags &= ~NPC_FLAG_JUMPING;
         if (!enemy->territory->patrol.isFlying) {
             npc->flags |= NPC_FLAG_GRAVITY;
-            npc->flags &= ~NPC_FLAG_8;
+            npc->flags &= ~NPC_FLAG_FLYING;
         } else {
             npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_8;
+            npc->flags |= NPC_FLAG_FLYING;
         }
-       
+
         if (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {
             script->functionTemp[0] = 99;
             script->functionTemp[1] = 0;
@@ -111,7 +111,7 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
             npc->pos.y = posY;
         }
     }
-    
+
     switch (script->functionTemp[0]) {
         case 0x0:
             N(PatrolAI_MoveInit)(script, aiSettings, territoryPtr);

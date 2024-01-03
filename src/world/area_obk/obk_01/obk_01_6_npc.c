@@ -9,7 +9,7 @@
 
 s32 N(LetterList_Franky)[] = {
     ITEM_LETTER_CHAIN_FRANKY,
-    ITEM_NONE 
+    ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_Franky) = {
@@ -109,7 +109,7 @@ EvtScript N(EVS_NpcAux_TrafficBoo) = {
     EVT_SET(LVar1, 0)
     EVT_LOOP(0)
         EVT_CALL(N(UpdateTrafficBooAlpha))
-        EVT_CALL(func_802CFD30, NPC_SELF, FOLD_TYPE_7, LVar0, 0, 0, 0)
+        EVT_CALL(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         EVT_WAIT(1)
     EVT_END_LOOP
     EVT_RETURN
@@ -193,7 +193,7 @@ NpcData N(NpcData_JumpScareBoo) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .settings = &N(NpcSettings_Boo),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
@@ -204,7 +204,7 @@ NpcData N(NpcData_TrafficBoo1) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_TrafficBoo1),
     .settings = &N(NpcSettings_Boo),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
@@ -215,7 +215,7 @@ NpcData N(NpcData_TrafficBoo2) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_TrafficBoo2),
     .settings = &N(NpcSettings_Boo),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_800,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = NORMAL_BOO_ANIMS,
 };
@@ -239,7 +239,7 @@ NpcData N(NpcData_Boos)[] = {
         },
         .init = &N(EVS_NpcInit_UpstairsBoo),
         .settings = &N(NpcSettings_Boo_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
         .tattle = MSG_NpcTattle_OBK_BooA,
@@ -262,7 +262,7 @@ NpcData N(NpcData_Boos)[] = {
         },
         .init = &N(EVS_NpcInit_Franky),
         .settings = &N(NpcSettings_Boo_Wander),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_800,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
         .tattle = MSG_NpcTattle_OBK_BooB,

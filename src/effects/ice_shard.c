@@ -14,7 +14,7 @@ void ice_shard_render(EffectInstance* effect);
 void ice_shard_appendGfx(void* effect);
 
 EffectInstance* ice_shard_main(
-    s32 arg0,
+    s32 type,
     f32 posX,
     f32 posY,
     f32 posZ,
@@ -30,15 +30,15 @@ EffectInstance* ice_shard_main(
     bp.update = ice_shard_update;
     bp.renderWorld = ice_shard_render;
     bp.unk_00 = 0;
-    bp.unk_14 = NULL;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_ICE_SHARD;
 
-    effect = shim_create_effect_instance(&bp);
+    effect = create_effect_instance(&bp);
     effect->numParts = numParts;
-    data = effect->data.iceShard = shim_general_heap_malloc(numParts * sizeof(*data));
+    data = effect->data.iceShard = general_heap_malloc(numParts * sizeof(*data));
     ASSERT(effect->data.iceShard != NULL);
 
-    data->type = arg0;
+    data->type = type;
     data->lifetime = 0;
     if (duration <= 0) {
         data->timeLeft = 1000;
@@ -58,12 +58,12 @@ EffectInstance* ice_shard_main(
     data->envCol.b = 255;
     data->envCol.a = 255;
     data->animFrame = 0;
-    data->animRate = (shim_rand_int(1) * 2 - 1) * 0.25 * (shim_rand_int(4) * 0.1 + 0.1);
-    data->rotation = shim_rand_int(359);
-    data->vel.x = shim_rand_int(10) - 5;
-    data->vel.y = shim_rand_int(10) - 5;
-    data->vel.z = shim_rand_int(10) - 5;
-    data->angularVel = shim_rand_int(40) - 20;
+    data->animRate = (rand_int(1) * 2 - 1) * 0.25 * (rand_int(4) * 0.1 + 0.1);
+    data->rot = rand_int(359);
+    data->vel.x = rand_int(10) - 5;
+    data->vel.y = rand_int(10) - 5;
+    data->vel.z = rand_int(10) - 5;
+    data->angularVel = rand_int(40) - 20;
     data->gravAccel = -0.1f;
 
     return effect;
@@ -74,10 +74,10 @@ void ice_shard_init(EffectInstance* effect) {
 
 void ice_shard_update(EffectInstance* effect) {
     IceShardFXData* data = effect->data.iceShard;
-    s32 unk_00 = data->type;
+    s32 type = data->type;
 
-    if (effect->flags & EFFECT_INSTANCE_FLAG_10) {
-        effect->flags &= ~EFFECT_INSTANCE_FLAG_10;
+    if (effect->flags & FX_INSTANCE_FLAG_DISMISS) {
+        effect->flags &= ~FX_INSTANCE_FLAG_DISMISS;
         data->timeLeft = 16;
     }
 
@@ -88,7 +88,7 @@ void ice_shard_update(EffectInstance* effect) {
     data->lifetime++;
 
     if (data->timeLeft < 0) {
-        shim_remove_effect(effect);
+        remove_effect(effect);
         return;
     }
 
@@ -109,9 +109,9 @@ void ice_shard_update(EffectInstance* effect) {
     data->pos.x += data->vel.x;
     data->pos.y += data->vel.y;
     data->pos.z += data->vel.z;
-    data->rotation += data->angularVel;
+    data->rot += data->angularVel;
 
-    if (unk_00 >= 2 && data->pos.y < 0.0f && data->vel.y < 0.0f) {
+    if (type >= 2 && data->pos.y < 0.0f && data->vel.y < 0.0f) {
         data->pos.y = 0.0f;
         data->vel.y *= -0.7;
     }
@@ -123,10 +123,10 @@ void ice_shard_render(EffectInstance* effect) {
 
     renderTask.appendGfx = ice_shard_appendGfx;
     renderTask.appendGfxArg = effect;
-    renderTask.distance = 10;
-    renderTask.renderMode = RENDER_MODE_2D;
+    renderTask.dist = 10;
+    renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = shim_queue_render_task(&renderTask);
+    retTask = queue_render_task(&renderTask);
     retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
 }
 
@@ -143,13 +143,13 @@ void ice_shard_appendGfx(void* effect) {
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->graphics->data));
 
-    shim_guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].currentYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guPositionF(sp20, 0.0f, -gCameras[gCurrentCameraID].curYaw, 0.0f, data->scale, data->pos.x, data->pos.y, data->pos.z);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    shim_guRotateF(sp20, data->rotation, 0.0f, 0.0f, 1.0f);
-    shim_guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
+    guRotateF(sp20, data->rot, 0.0f, 0.0f, 1.0f);
+    guMtxF2L(sp20, &gDisplayContext->matrixStack[gMatrixListPos]);
 
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPDisplayList(gMainGfxPos++, D_E01108B4[0]);
@@ -172,7 +172,7 @@ void ice_shard_appendGfx(void* effect) {
 
     if (type % 2 == 1 && (s32) (data->animFrame * 4.0f) == 3) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, data->primCol.r, data->primCol.g, data->primCol.b, alpha * envAlpha / 255);
-        gDPSetCombineLERP(gMainGfxPos++, 0, 0, 0, PRIMITIVE, SHADE, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, SHADE, 0, PRIMITIVE, 0);
+        gDPSetCombineMode(gMainGfxPos++, PM_CC_3C, PM_CC_3C);
         gSPDisplayList(gMainGfxPos++, D_09001168_3F9E28);
     }
 

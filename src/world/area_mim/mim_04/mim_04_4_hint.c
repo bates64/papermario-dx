@@ -44,7 +44,7 @@ void N(gfx_build_evil_tree_face)(s32 index) {
 
     gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
     gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, N(EvilTreeFaceAlpha));
-    gDPSetCombineLERP(gMainGfxPos++, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, COMBINED, 0, PRIMITIVE_ALPHA, 0, 0, 0, 0, COMBINED);
+    gDPSetCombineMode(gMainGfxPos++, PM_CC_05, PM_CC_06);
     gDPSetRenderMode(gMainGfxPos++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_DECAL2);
 }
 
@@ -60,14 +60,14 @@ EvtScript N(EVS_ManageEvilTree) = {
         EVT_CALL(AwaitPlayerApproach, 0, -340, 50)
         EVT_CALL(AwaitPlayerLeave, 0, -340, 50)
         EVT_CALL(N(TryEvilTreeLaugh))
-        EVT_CALL(PlaySoundAt, SOUND_205F, SOUND_SPACE_MODE_0, 55, 96, -254)
+        EVT_CALL(PlaySoundAt, SOUND_TREE_LAUGHTER, SOUND_SPACE_DEFAULT, 55, 96, -254)
         EVT_GOTO(0)
     EVT_RETURN
     EVT_END
 };
 
 EvtScript N(EVS_SetupExitHint) = {
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_evil_tree_face)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_1, EVT_PTR(N(gfx_build_evil_tree_face)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_kao, CUSTOM_GFX_1, -1)
     EVT_CALL(SetModelFlags, MODEL_kao, MODEL_FLAG_USES_CUSTOM_GFX, TRUE)
     EVT_WAIT(20)

@@ -2,18 +2,18 @@
 #include "effects.h"
 
 API_CALLABLE(N(SetPlayerAsPeach)) {
-    gGameStatusPtr->peachFlags |= PEACH_STATUS_FLAG_IS_PEACH;
-    script->varTable[0] = gPlayerData.currentPartner;
-    gPlayerData.currentPartner = PARTNER_TWINK;
+    gGameStatusPtr->peachFlags |= PEACH_FLAG_IS_PEACH;
+    script->varTable[0] = gPlayerData.curPartner;
+    gPlayerData.curPartner = PARTNER_TWINK;
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(GetKammyFlightEmitterPos)) {
     Npc* npc = get_npc_unsafe(NPC_Kammy);
 
-    script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].currentYaw + 180.0f) * 20.0f);
+    script->varTable[0] = npc->pos.x + (sin_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 20.0f);
     script->varTable[1] = npc->pos.y + 18.0f;
-    script->varTable[2] = npc->pos.z - (cos_deg(npc->yaw + gCameras[CAM_DEFAULT].currentYaw + 180.0f) * 20.0f);
+    script->varTable[2] = npc->pos.z - (cos_deg(npc->yaw + gCameras[CAM_DEFAULT].curYaw + 180.0f) * 20.0f);
     return ApiStatus_DONE2;
 }
 
@@ -37,7 +37,7 @@ EvtScript N(EVS_PlayKammyFlightFX) = {
     EVT_CHILD_THREAD
         EVT_SET(LVar0, 110)
         EVT_LOOP(0)
-            EVT_CALL(PlaySoundWithVolume, SOUND_295, LVar0)
+            EVT_CALL(PlaySoundWithVolume, SOUND_FLIGHT, LVar0)
             EVT_ADD(LVar0, -2)
             EVT_IF_LT(LVar0, 10)
                 EVT_SET(LVar0, 10)
@@ -118,7 +118,7 @@ EvtScript N(EVS_Scene_BeginInterlude) = {
     EVT_CALL(EnableGroup, MODEL_jimen, FALSE)
     EVT_CALL(EnableGroup, MODEL_kemuri, FALSE)
     EVT_CALL(EnableGroup, MODEL_obj, FALSE)
-    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_MODE_3, 80, 16, 4096)
+    EVT_CALL(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 80, 16, 4096)
     EVT_CALL(UseSettingsFrom, CAM_DEFAULT, 0, -1, 0)
     EVT_CALL(SetPanTarget, CAM_DEFAULT, 0, -1, 0)
     EVT_CALL(SetCamPitch, CAM_DEFAULT, EVT_FLOAT(-13.0), EVT_FLOAT(18.0))

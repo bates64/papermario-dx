@@ -3,7 +3,7 @@
 
 #define NAMESPACE action_command_07
 
-void func_8024FAFC(void);
+void btl_message_unlock_box_pos(void);
 
 BSS s32 D_802A9620;
 
@@ -32,27 +32,24 @@ API_CALLABLE(N(init)) {
     hudElement = hud_element_create(&HES_AButton);
     actionCommandStatus->hudElements[0] = hudElement;
     hud_element_set_flags(hudElement, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
-    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX,
-        actionCommandStatus->hudPosY);
+    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX, actionCommandStatus->hudPosY);
     hud_element_set_render_depth(hudElement, 0);
 
     // Weird use of an extra temp settles regalloc here.
     hudElementTemp = hud_element_create(&HES_BlueMeter);
     hudElement = hudElementTemp;
     actionCommandStatus->hudElements[1] = hudElement;
-    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX,
-        actionCommandStatus->hudPosY + 28);
+    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX, actionCommandStatus->hudPosY + 28);
     hud_element_set_render_depth(hudElement, 0);
     hud_element_set_flags(hudElement, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
 
     hudElement = hud_element_create(&HES_RunAwayOK);
     actionCommandStatus->hudElements[2] = hudElement;
-    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX,
-        actionCommandStatus->hudPosY + 28);
+    hud_element_set_render_pos(hudElement, actionCommandStatus->hudPosX, actionCommandStatus->hudPosY + 28);
     hud_element_set_render_depth(hudElement, 0);
     hud_element_set_flags(hudElement, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
 
-    battleStatus->flags1 &= ~BS_FLAGS1_8000;
+    battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
 
     return ApiStatus_DONE2;
 }
@@ -71,10 +68,10 @@ API_CALLABLE(N(start)) {
 
     actionCommandStatus->wrongButtonPressed = FALSE;
     battleStatus->actionSuccess = 0;
-    battleStatus->unk_86 = 0;
+    battleStatus->actionResult = ACTION_RESULT_FAIL;
 
-    battleStatus->flags1 &= ~BS_FLAGS1_8000;
-    func_8024FAFC();
+    battleStatus->flags1 &= ~BS_FLAGS1_FREE_ACTION_COMMAND;
+    btl_message_unlock_box_pos();
     actionCommandStatus->state = 10;
 
     return ApiStatus_DONE2;
@@ -139,7 +136,7 @@ void N(update)(void) {
         case 11:
             btl_set_popup_duration(99);
 
-            if (battleStatus->currentButtonsPressed & BUTTON_A) {
+            if (battleStatus->curButtonsPressed & BUTTON_A) {
                 s32 fillAmt = battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 6;
 
                 if (actionCommandStatus->unk_5D == 0) {
@@ -160,7 +157,7 @@ void N(update)(void) {
                 }
             }
 
-            battleStatus->actionResult = actionCommandStatus->barFillLevel / 100;
+            battleStatus->actionQuality = actionCommandStatus->barFillLevel / 100;
 
             if (actionCommandStatus->frameCounter != 0) {
                 actionCommandStatus->frameCounter--;

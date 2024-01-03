@@ -1,8 +1,9 @@
 #include "trd_05.h"
 #include "sprite.h"
+#include "sprite/player.h"
 
 typedef struct FallingSprite {
-    /* 0x00 */ s32 foldStateID;
+    /* 0x00 */ s32 imgfxIdx;
     /* 0x04 */ s32 workerID;
     /* 0x08 */ s32 playerSpriteID;
     /* 0x0C */ s32 rasterID;
@@ -15,7 +16,7 @@ BSS FallingSprite N(Falling);
 
 void N(appendGfx_FallingSprite)(void) {
     FallingSprite* falling = &N(Falling);
-    FoldImageRecPart recPart;
+    ImgFXTexture ifxImg;
     SpriteRasterInfo info;
     Matrix4f transformMtx;
     Matrix4f tempMtx;
@@ -63,36 +64,36 @@ void N(appendGfx_FallingSprite)(void) {
     }
 
     spr_get_player_raster_info(&info, falling->playerSpriteID, falling->rasterID);
-    recPart.raster  = info.raster;
-    recPart.palette = info.defaultPal;
-    recPart.width   = info.width;
-    recPart.height  = info.height;
-    recPart.xOffset = -(info.width / 2);
-    recPart.yOffset = (info.height / 2);
-    recPart.opacity = 255;
-    fold_appendGfx_component(falling->foldStateID, &recPart, 0, transformMtx);
+    ifxImg.raster  = info.raster;
+    ifxImg.palette = info.defaultPal;
+    ifxImg.width   = info.width;
+    ifxImg.height  = info.height;
+    ifxImg.xOffset = -(info.width / 2);
+    ifxImg.yOffset = (info.height / 2);
+    ifxImg.alpha = 255;
+    imgfx_appendGfx_component(falling->imgfxIdx, &ifxImg, 0, transformMtx);
 
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
 API_CALLABLE(N(InitializeFallingSprite)) {
     FallingSprite* falling = &N(Falling);
-    falling->pos.x = gPlayerStatus.position.x;
-    falling->pos.y = gPlayerStatus.position.y + (gPlayerStatus.colliderHeight * SPRITE_WORLD_SCALE_D * 0.5);
-    falling->pos.z = gPlayerStatus.position.z;
+    falling->pos.x = gPlayerStatus.pos.x;
+    falling->pos.y = gPlayerStatus.pos.y + (gPlayerStatus.colliderHeight * SPRITE_WORLD_SCALE_D * 0.5);
+    falling->pos.z = gPlayerStatus.pos.z;
     falling->rot.x = 0.0f;
     falling->rot.y = 0.0f;
     falling->rot.z = 0.0f;
     falling->scale.x = SPRITE_WORLD_SCALE_F;
     falling->scale.y = SPRITE_WORLD_SCALE_F;
     falling->scale.z = SPRITE_WORLD_SCALE_F;
-    falling->foldStateID = func_8013A704(1);
+    falling->imgfxIdx = imgfx_get_free_instances(1);
     falling->workerID = create_worker_world(0, &N(appendGfx_FallingSprite));
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(DeleteFallingSprite)) {
-    func_8013A854(N(Falling).foldStateID);
+    imgfx_release_instance(N(Falling).imgfxIdx);
     free_worker(N(Falling).workerID);
     return ApiStatus_DONE2;
 }
@@ -147,7 +148,7 @@ Vec3f N(UnusedPath)[] = {
 EvtScript N(EVS_PlayerFalling) = {
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(PlaySound, SOUND_175)
+        EVT_CALL(PlaySound, SOUND_PAPER_GLIDE_1)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, 150, 45, EASING_COS_IN_OUT)
@@ -178,7 +179,7 @@ EvtScript N(EVS_PlayerFalling) = {
     EVT_SETF(LVar6, LVar3)
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(PlaySound, SOUND_175)
+        EVT_CALL(PlaySound, SOUND_PAPER_GLIDE_1)
     EVT_END_THREAD
     EVT_CALL(MakeLerp, 0, 100, 30, EASING_QUADRATIC_IN)
     EVT_LABEL(1)
@@ -206,7 +207,7 @@ EvtScript N(EVS_PartnerFalling) = {
     EVT_CALL(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(PlaySound, SOUND_176)
+        EVT_CALL(PlaySound, SOUND_PAPER_GLIDE_2)
     EVT_END_THREAD
     EVT_THREAD
         EVT_CALL(MakeLerp, 0, -135, 45, EASING_COS_IN_OUT)
@@ -235,7 +236,7 @@ EvtScript N(EVS_PartnerFalling) = {
     EVT_CALL(SetNpcPos, NPC_PARTNER, LVar1, LVar2, LVar3)
     EVT_THREAD
         EVT_WAIT(5)
-        EVT_CALL(PlaySound, SOUND_176)
+        EVT_CALL(PlaySound, SOUND_PAPER_GLIDE_2)
     EVT_END_THREAD
     EVT_CALL(GetNpcPos, NPC_PARTNER, LVar4, LVar5, LVar6)
     EVT_CALL(MakeLerp, 0, 100, 30, EASING_QUADRATIC_IN)
@@ -292,7 +293,7 @@ EvtScript N(EVS_OnHitTrapTrigger) = {
     EVT_CALL(EnableModel, MODEL_o95, TRUE)
     EVT_CALL(EnableModel, MODEL_o96, TRUE)
     EVT_CALL(SetGroupVisibility, MODEL_kesu, MODEL_GROUP_VISIBLE)
-    EVT_CALL(PlaySound, SOUND_2091)
+    EVT_CALL(PlaySound, SOUND_OPEN_TRAPDOOR)
     EVT_CALL(MakeLerp, 0, 90, 30, EASING_COS_SLOW_OVERSHOOT)
     EVT_LABEL(0)
     EVT_CALL(UpdateLerp)
@@ -342,19 +343,19 @@ EvtScript N(EVS_OnHitTrapTrigger) = {
         EVT_CALL(WaitForCam, CAM_DEFAULT, EVT_FLOAT(1.0))
         EVT_CALL(N(DeleteFallingSprite))
         EVT_CALL(SetNpcPos, NPC_KoopaBros_01, -250, 240, -25)
-        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Anim02)
+        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Walk)
         EVT_CALL(SetNpcSpeed, NPC_KoopaBros_01, EVT_FLOAT(3.0))
         EVT_CALL(NpcMoveTo, NPC_KoopaBros_01, -150, -25, 0)
         EVT_WAIT(5)
-        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Anim1A)
+        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_ThumbsUp)
         EVT_WAIT(20)
-        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Anim04)
+        EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Idle)
         EVT_WAIT(5)
-        EVT_CALL(SpeakToPlayer, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Anim14, ANIM_KoopaBros_Yellow_Anim04, 5, MSG_CH1_00D7)
+        EVT_CALL(SpeakToPlayer, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Talk, ANIM_KoopaBros_Yellow_Idle, 5, MSG_CH1_00D7)
         EVT_THREAD
             EVT_WAIT(10)
             EVT_CALL(SetNpcSpeed, NPC_KoopaBros_01, EVT_FLOAT(2.5))
-            EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Anim02)
+            EVT_CALL(SetNpcAnimation, NPC_KoopaBros_01, ANIM_KoopaBros_Yellow_Walk)
             EVT_CALL(NpcMoveTo, NPC_KoopaBros_01, -200, -25, 0)
         EVT_END_THREAD
         EVT_WAIT(20)

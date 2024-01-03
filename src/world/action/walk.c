@@ -1,27 +1,27 @@
 #include "common.h"
 #include "world/actions.h"
+#include "sprite/player.h"
 
 AnimID WalkPeachAnims[] = {
-    ANIM_Peach1_Walk, // none
-    ANIM_Peach1_CarryCream, // cream
-    ANIM_Peach1_CarryStrawberry, // strawberry
-    ANIM_Peach1_CarryButter, // butter
-    ANIM_Peach1_CarryCleanser, // cleanser
-    ANIM_Peach1_CarryWater, // water
-    ANIM_Peach1_CarryMilk, // milk
-    ANIM_Peach1_CarryFlour, // flour
-    ANIM_Peach1_CarryEgg, // egg
-    ANIM_Peach1_CarryCompleteCake, // complete cake
-    ANIM_Peach1_CarryCakeBowl, // cake bowl
-    ANIM_Peach1_CarryCakeMixed, // cake mixed
-    ANIM_Peach1_CarryCakePan, // cake pan
-    ANIM_Peach1_CarryCakeBatter, // cake batter
-    ANIM_Peach1_CarryBareCake, // cake bare
-    ANIM_Peach1_CarrySalt, // salt
-    ANIM_Peach1_CarrySugar, // sugar
-    ANIM_Peach1_CarryIcingCake, // cake with icing
-    ANIM_Peach1_CarryBerryCake, // cake with berries
-    0x00000000
+    [PEACH_BAKING_NONE]                 ANIM_Peach1_Walk,
+    [PEACH_BAKING_CREAM]                ANIM_Peach1_CarryCream,
+    [PEACH_BAKING_STRAWBERRY]           ANIM_Peach1_CarryStrawberry,
+    [PEACH_BAKING_BUTTER]               ANIM_Peach1_CarryButter,
+    [PEACH_BAKING_CLEANSER]             ANIM_Peach1_CarryCleanser,
+    [PEACH_BAKING_WATER]                ANIM_Peach1_CarryWater,
+    [PEACH_BAKING_MILK]                 ANIM_Peach1_CarryMilk,
+    [PEACH_BAKING_FLOUR]                ANIM_Peach1_CarryFlour,
+    [PEACH_BAKING_EGG]                  ANIM_Peach1_CarryEgg,
+    [PEACH_BAKING_COMPLETE_CAKE]        ANIM_Peach1_CarryCompleteCake,
+    [PEACH_BAKING_CAKE_BOWL]            ANIM_Peach1_CarryCakeBowl,
+    [PEACH_BAKING_CAKE_MIXED]           ANIM_Peach1_CarryCakeMixed,
+    [PEACH_BAKING_CAKE_PAN]             ANIM_Peach1_CarryCakePan,
+    [PEACH_BAKING_CAKE_BATTER]          ANIM_Peach1_CarryCakeBatter,
+    [PEACH_BAKING_CAKE_BARE]            ANIM_Peach1_CarryBareCake,
+    [PEACH_BAKING_SALT]                 ANIM_Peach1_CarrySalt,
+    [PEACH_BAKING_SUGAR]                ANIM_Peach1_CarrySugar,
+    [PEACH_BAKING_CAKE_WITH_ICING]      ANIM_Peach1_CarryIcingCake,
+    [PEACH_BAKING_CAKE_WITH_BERRIES]    ANIM_Peach1_CarryBerryCake,
 };
 
 static void action_update_run_peach(void);
@@ -30,34 +30,30 @@ static void action_update_walk_peach(void);
 void action_update_walk(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    f32 moveVectorMagnitude;
-    f32 moveVectorAngle;
-    s32 stickAxisX;
-    s32 stickAxisY;
+    b32 firstFrame = FALSE;
+    f32 moveMag;
+    f32 moveAngle;
     AnimID anim;
-    s32 changedAnim = FALSE;
+
     if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
         action_update_walk_peach();
         return;
     }
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-        playerStatus->flags &= ~(
-            PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED);
+        playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED);
         playerStatus->unk_60 = 0;
-        changedAnim = TRUE;
+        firstFrame = TRUE;
 
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
-            playerStatus->currentSpeed = playerStatus->walkSpeed;
+            playerStatus->curSpeed = playerStatus->walkSpeed;
         }
 
         if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
             anim = ANIM_MarioW3_8bit_Run;
-        }
-        else if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
+        } else if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
             anim = ANIM_Mario1_Walk;
-        }
-        else {
+        } else {
             anim = ANIM_MarioW1_CarryWalk;
         }
         suggest_player_anim_allow_backward(anim);
@@ -69,81 +65,78 @@ void action_update_walk(void) {
         return;
     }
 
-    player_input_to_move_vector(&moveVectorAngle, &moveVectorMagnitude);
+    player_input_to_move_vector(&moveAngle, &moveMag);
     phys_update_interact_collider();
 
-    if (!check_input_jump()) {
-        if (changedAnim != 0 || !check_input_hammer()) {
-            player_input_to_move_vector(&moveVectorAngle, &moveVectorMagnitude);
-            if (moveVectorMagnitude == 0.0f) {
-                set_action_state(ACTION_STATE_IDLE);
-                return;
-            }
+    if (check_input_jump()) {
+        return;
+    }
 
-            if (fabsf(PrevPlayerCamRelativeYaw - moveVectorAngle) <= 90.0f && abs(moveVectorMagnitude - D_800F7B44) < 20) {
-                if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
-                    if (moveVectorMagnitude >= 20.0f) {
-                        playerStatus->targetYaw = moveVectorAngle;
-                    }
-                }
-                playerStatus->animFlags &= ~PA_FLAG_80000000;
-            } else {
-                if (playerStatus->animFlags & PA_FLAG_80000000) {
-                    playerStatus->targetYaw = moveVectorAngle;
-                } else {
-                    playerStatus->animFlags |= PA_FLAG_80000000;
-                }
-            }
+    if (!firstFrame && check_input_hammer()) {
+        return;
+    }
 
-            if (!is_ability_active(ABILITY_SLOW_GO)) {
-                stickAxisX = playerStatus->stickAxis[0];
-                stickAxisY = playerStatus->stickAxis[1];
-                if (SQ(stickAxisX) + SQ(stickAxisY) > SQ(55)) {
-                    set_action_state(ACTION_STATE_RUN);
-                    return;
-                }
-            }
+    player_input_to_move_vector(&moveAngle, &moveMag);
+    if (moveMag == 0.0f) {
+        set_action_state(ACTION_STATE_IDLE);
+        return;
+    }
 
-            try_player_footstep_sounds(8);
-            playerData->walkingStepsTaken++;
+    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f && abs(moveMag - D_800F7B44) < 20) {
+        if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
+            if (moveMag >= 20.0f) {
+                playerStatus->targetYaw = moveAngle;
+            }
+        }
+        playerStatus->animFlags &= ~PA_FLAG_80000000;
+    } else {
+        if (playerStatus->animFlags & PA_FLAG_80000000) {
+            playerStatus->targetYaw = moveAngle;
+        } else {
+            playerStatus->animFlags |= PA_FLAG_80000000;
         }
     }
+
+    if (!is_ability_active(ABILITY_SLOW_GO)) {
+        if (SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1]) > SQ(55)) {
+            set_action_state(ACTION_STATE_RUN);
+            return;
+        }
+    }
+
+    try_player_footstep_sounds(8);
+    playerData->walkingStepsTaken++;
 }
 
 void action_update_run(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    f32 moveX;
-    f32 moveY;
-    s32 temp_v1;
+    b32 firstFrame = FALSE;
+    f32 moveAngle;
+    f32 moveMag;
     AnimID anim;
     f32 runSpeedModifier;
-    s32 phi_s3;
 
-    phi_s3 = 0;
     if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
         action_update_run_peach();
         return;
     }
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-        playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED |
-            PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED);
-        D_8010C980 = 0;
+        playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_SCRIPTED_FALL | PS_FLAG_ARMS_RAISED);
+        PlayerRunStateTime = 0;
         playerStatus->unk_60 = 0;
-        phi_s3 = 1;
+        firstFrame = TRUE;
 
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
-            playerStatus->currentSpeed = playerStatus->runSpeed;
+            playerStatus->curSpeed = playerStatus->runSpeed;
         }
         if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
             anim = ANIM_MarioW3_8bit_Run;
+        } else if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
+            anim = ANIM_Mario1_Run;
         } else {
-            if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
-                anim = ANIM_Mario1_Run;
-            } else {
-                anim = ANIM_MarioW1_CarryRun;
-            }
+            anim = ANIM_MarioW1_CarryRun;
         }
         suggest_player_anim_allow_backward(anim);
     }
@@ -154,59 +147,60 @@ void action_update_run(void) {
         return;
     }
 
-    D_8010C980++;
+    PlayerRunStateTime++;
     runSpeedModifier = 1.0f;
 
     if (playerStatus->animFlags & PA_FLAG_SPINNING) {
         runSpeedModifier = 1.5f;
     }
 
-    playerStatus->currentSpeed = playerStatus->runSpeed * runSpeedModifier;
-    player_input_to_move_vector(&moveX, &moveY);
+    playerStatus->curSpeed = playerStatus->runSpeed * runSpeedModifier;
+    player_input_to_move_vector(&moveAngle, &moveMag);
     phys_update_interact_collider();
-    if (check_input_jump() == FALSE) {
-        if (phi_s3 == 0) {
-            if (check_input_hammer()) {
-                return;
-            }
-        }
 
-        player_input_to_move_vector(&moveX, &moveY);
-        if (moveY == 0.0f) {
-            set_action_state(ACTION_STATE_IDLE);
-            return;
-        }
+    if (check_input_jump()) {
+        return;
+    }
 
-        if (fabsf(PrevPlayerCamRelativeYaw - moveX) <= 90.0f) {
-            if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
-                playerStatus->targetYaw = moveX;
-            }
-            playerStatus->animFlags &= ~PA_FLAG_80000000;
+    if (!firstFrame && check_input_hammer()) {
+        return;
+    }
+
+    player_input_to_move_vector(&moveAngle, &moveMag);
+    if (moveMag == 0.0f) {
+        set_action_state(ACTION_STATE_IDLE);
+        return;
+    }
+
+    if (fabsf(PrevPlayerCamRelativeYaw - moveAngle) <= 90.0f) {
+        if (!(playerStatus->animFlags & PA_FLAG_80000000)) {
+            playerStatus->targetYaw = moveAngle;
+        }
+        playerStatus->animFlags &= ~PA_FLAG_80000000;
+    } else {
+        if (playerStatus->animFlags & PA_FLAG_80000000) {
+            playerStatus->targetYaw = moveAngle;
         } else {
-            if (playerStatus->animFlags & PA_FLAG_80000000) {
-                playerStatus->targetYaw = moveX;
-            } else {
-                playerStatus->animFlags |= PA_FLAG_80000000;
-            }
+            playerStatus->animFlags |= PA_FLAG_80000000;
         }
+    }
 
-        if (!is_ability_active(ABILITY_SLOW_GO)) {
-            if (sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) <= 55.0f) {
-                set_action_state(ACTION_STATE_WALK);
-                return;
-            }
-        } else {
+    if (!is_ability_active(ABILITY_SLOW_GO)) {
+        if (sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) <= 55.0f) {
             set_action_state(ACTION_STATE_WALK);
             return;
         }
-        try_player_footstep_sounds(4);
-        playerData->runningStepsTaken++;
+    } else {
+        set_action_state(ACTION_STATE_WALK);
+        return;
     }
+    try_player_footstep_sounds(4);
+    playerData->runningStepsTaken++;
 }
 
 void func_802B6550_E23C30(void) {
     if (!(gPlayerStatus.animFlags & PA_FLAG_INVISIBLE)) {
-        if (!(gGameStatusPtr->peachFlags & PEACH_STATUS_FLAG_DEPRESSED)) {
+        if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_DEPRESSED)) {
             suggest_player_anim_allow_backward(WalkPeachAnims[gGameStatusPtr->peachBakingIngredient]);
             return;
         }
@@ -225,7 +219,7 @@ static void action_update_walk_peach(void) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         playerStatus->unk_60 = 0;
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
-            playerStatus->currentSpeed = playerStatus->walkSpeed;
+            playerStatus->curSpeed = playerStatus->walkSpeed;
         }
         func_802B6550_E23C30();
     }
@@ -244,9 +238,11 @@ static void action_update_walk_peach(void) {
     }
 
     playerStatus->targetYaw = angle;
-    if (gGameStatusPtr->peachBakingIngredient == 0 && sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) > 55.0f) {
-        set_action_state(ACTION_STATE_RUN);
-        return;
+    if (gGameStatusPtr->peachBakingIngredient == PEACH_BAKING_NONE) {
+        if (sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) > 55.0f) {
+            set_action_state(ACTION_STATE_RUN);
+            return;
+        }
     }
 
     try_player_footstep_sounds(8);
@@ -262,12 +258,12 @@ static void action_update_run_peach(void) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         playerStatus->unk_60 = 0;
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
-            playerStatus->currentSpeed = playerStatus->runSpeed;
+            playerStatus->curSpeed = playerStatus->runSpeed;
         }
 
         if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
             gameStatus = gGameStatusPtr;
-            if (!(gameStatus->peachFlags & PEACH_STATUS_FLAG_DEPRESSED)) {
+            if (!(gameStatus->peachFlags & PEACH_FLAG_DEPRESSED)) {
                 if (!gameStatus->peachBakingIngredient) {
                     suggest_player_anim_allow_backward(ANIM_Peach1_Run);
                 } else {
@@ -287,7 +283,7 @@ static void action_update_run_peach(void) {
         return;
     }
 
-    playerStatus->currentSpeed = playerStatus->runSpeed;
+    playerStatus->curSpeed = playerStatus->runSpeed;
     player_input_to_move_vector(&moveX, &moveY);
     phys_update_interact_collider();
     if (moveY == 0.0f) {

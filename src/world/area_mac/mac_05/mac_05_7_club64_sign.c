@@ -8,7 +8,7 @@ void N(hsl_to_rgb)(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG,
     f32 hueSector;
     f32 p, q, m;
     f32 s, t;
-    
+
     if (lightness <= 0.5f) {
         q = lightness * (1.0 + saturation);
     } else {
@@ -21,14 +21,14 @@ void N(hsl_to_rgb)(f32 hue, f32 saturation, f32 lightness, f32* outR, f32* outG,
         *outR = 0.0f;
         return;
     }
-    
+
     hue *= 6.0f;
     hueSector = (s32) hue;
     p = (2 * lightness) - q;
     m = q * ((q - p) / q) * (hue - hueSector);
     s = p + m;
     t = q - m;
-    
+
     switch ((s32) hueSector) {
         case 0:
             *outR = q;
@@ -94,7 +94,7 @@ void N(gfx_build_club_64)(s32 index) {
 
 EvtScript N(EVS_AnimateClub64Sign) = {
     EVT_CALL(MakeLocalVertexCopy, VTX_COPY_3, MODEL_o187, TRUE)
-    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_3, EVT_PTR(N(gfx_build_club_64)), 0)
+    EVT_CALL(SetCustomGfxBuilders, CUSTOM_GFX_3, EVT_PTR(N(gfx_build_club_64)), NULL)
     EVT_CALL(SetModelCustomGfx, MODEL_o187, CUSTOM_GFX_3, -1)
     EVT_RETURN
     EVT_END

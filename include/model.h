@@ -35,6 +35,19 @@ typedef struct ModelNodeProperty {
     /* 0x8 */ ModelNodePropertyData data;
 } ModelNodeProperty; // size = 0xC;
 
+typedef struct ModelGroupData {
+    /* 0x00 */ Mtx* transformMatrix;
+    /* 0x04 */ Lightsn* lightingGroup;
+    /* 0x08 */ s32 numLights;
+    /* 0x0C */ s32 numChildren;
+    /* 0x10 */ struct ModelNode** childList;
+} ModelGroupData; // size = 0x14
+
+typedef struct ModelDisplayData {
+    /* 0x0 */ Gfx* displayList;
+    /* 0x4 */ char unk_04[0x4];
+} ModelDisplayData; // size = 0x8
+
 typedef struct ModelNode {
     /* 0x00 */ s32 type; /* 2 = model */
     /* 0x04 */ ModelDisplayData* displayData;
@@ -46,18 +59,18 @@ typedef struct ModelNode {
 typedef struct Model {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 modelID;
-    /* 0x04 */ Mtx* currentMatrix;
+    /* 0x04 */ Mtx* bakedMtx; // pointer to stack-allocated copy of matrix supplied by the shape file for this model
     /* 0x08 */ ModelNode* modelNode;
     /* 0x0C */ ModelGroupData* groupData;
-    /* 0x10 */ Mtx* currentSpecialMatrix;
+    /* 0x10 */ Mtx* finalMtx; // the matrix actually used while building the display list
     /* 0x14 */ char unk_14[4];
-    /* 0x18 */ Mtx specialMatrix;
-    /* 0x58 */ Matrix4f transformMatrix;
+    /* 0x18 */ Mtx savedMtx;
+    /* 0x58 */ Matrix4f userTransformMtx; // provided for user code to apply an additional multiplicative transformation
     /* 0x98 */ Vec3f center;
     /* 0xA4 */ u8 texPannerID;
     /* 0xA5 */ u8 customGfxIndex;
     /* 0xA6 */ s8 renderMode;
-    /* 0xA7 */ u8 matrixMode;
+    /* 0xA7 */ u8 matrixFreshness;
     /* 0xA8 */ u8 textureID;
     /* 0xA9 */ s8 textureVariation;
     /* 0xAA */ char unk_AA[6];
@@ -66,16 +79,16 @@ typedef struct Model {
 typedef struct ModelTransformGroup {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 groupModelID;
-    /* 0x04 */ Mtx* matrixRDP_N;
-    /* 0x08 */ ModelNode* modelNode;
-    /* 0x0C */ Mtx* transformMtx;
-    /* 0x10 */ Mtx matrixA;
-    /* 0x50 */ Matrix4f matrixB;
+    /* 0x04 */ Mtx* bakedMtx; // would point to copy of matrix from shape file, but seems to always be NULL.
+    /* 0x08 */ ModelNode* baseModelNode;
+    /* 0x0C */ Mtx* finalMtx; // the matrix actually used while building the display list
+    /* 0x10 */ Mtx savedMtx;
+    /* 0x50 */ Matrix4f userTransformMtx; // provided for user code to apply an additional multiplicative transformation
     /* 0x90 */ Vec3f center;
     /* 0x9C */ u8 minChildModelIndex;
     /* 0x9D */ u8 maxChildModelIndex;
     /* 0x9E */ u8 renderMode;
-    /* 0x9F */ u8 matrixMode;
+    /* 0x9F */ u8 matrixFreshness;
 } ModelTransformGroup; // size = 0xA0
 
 typedef Model* ModelList[MAX_MODELS];
@@ -126,28 +139,33 @@ typedef Gfx* ModelCustomGfxList[32];
 typedef ModelCustomGfxBuilderFunc ModelCustomGfxBuilderList[32];
 
 typedef enum ModelPropertyKeys {
-    MODEL_PROP_KEY_RENDER_MODE = 0x5C,
-    MODEL_PROP_KEY_CAMERA_DATA = 0x5D,
-    MODEL_PROP_KEY_TEXTURE_NAME = 0x5E,
-    MODEL_PROP_KEY_SPECIAL = 0x5F,
-    MODEL_PROP_KEY_GROUP_TYPE = 0x60,
-    MODEL_PROP_KEY_BOUNDING_BOX = 0x61,
-    MODEL_PROP_KEY_62 = 0x62,
+    MODEL_PROP_KEY_RENDER_MODE      = 0x5C,
+    MODEL_PROP_KEY_CAMERA_DATA      = 0x5D,
+    MODEL_PROP_KEY_TEXTURE_NAME     = 0x5E,
+    MODEL_PROP_KEY_SPECIAL          = 0x5F,
+    MODEL_PROP_KEY_GROUP_INFO       = 0x60,
+    MODEL_PROP_KEY_BOUNDING_BOX     = 0x61,
+    MODEL_PROP_KEY_62               = 0x62,
 } ModelPropertyKeys;
 
 typedef enum ShapeTypes {
-    SHAPE_TYPE_MODEL = 2,
-    SHAPE_TYPE_GROUP = 5,
-    SHAPE_TYPE_ROOT = 7,
-    SHAPE_TYPE_SPECIAL_GROUP = 10,
+    SHAPE_TYPE_MODEL                = 2,
+    SHAPE_TYPE_GROUP                = 5,
+    SHAPE_TYPE_ROOT                 = 7,
+    SHAPE_TYPE_SPECIAL_GROUP        = 10,
 } ShapeTypes;
 
+typedef enum GroupTypes {
+    GROUP_TYPE_0                    = 0,
+    GROUP_TYPE_1                    = 1,
+} GroupTypes;
+
 typedef enum ExtraTileTypes {
-    EXTRA_TILE_NONE = 0,
-    EXTRA_TILE_MIPMAPS = 1,
-    EXTRA_TILE_AUX_SAME_AS_MAIN = 2,
-    EXTRA_TILE_AUX_INDEPENDENT = 3,
-    EXTRA_TILE_4 = 4,
+    EXTRA_TILE_NONE                 = 0, // texture contains only a single tile
+    EXTRA_TILE_MIPMAPS              = 1, // texture contais mipmaps
+    EXTRA_TILE_AUX_SAME_AS_MAIN     = 2, // texture contains main and aux images with identical fmt and size
+    EXTRA_TILE_AUX_INDEPENDENT      = 3, // texture contains main and aux images with independent fmt and size
+    EXTRA_TILE_4                    = 4, // only use-case may be a mistake? unused and mostly unimplemented
 } ExtraTileTypes;
 
 #define SHAPE_SIZE_LIMIT 0x8000
@@ -163,23 +181,23 @@ typedef struct ShapeFileHeader {
 
 typedef struct ShapeFile {
     /* 0x00 */ ShapeFileHeader header;
-    /* 0x20 */ u8 data[SHAPE_SIZE_LIMIT - 0x20];
+    /* 0x20 */ u8 data[SHAPE_SIZE_LIMIT - sizeof(ShapeFileHeader)];
 } ShapeFile; // size = variable
 
 typedef ModelTreeInfo ModelTreeInfoList[0x200];
-extern ModelTreeInfoList* mdl_currentModelTreeNodeInfo;
+extern ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 extern ModelList* gCurrentModels;
 
-void set_model_fog_color_parameters(u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd);
-void set_model_env_color_parameters(u8 primR, u8 primG, u8 primB, u8 envR, u8 envG, u8 envB);
-void get_model_env_color_parameters(u8* primR, u8* primG, u8* primB, u8* envR, u8* envG, u8* envB);
+void mdl_set_depth_tint_params(u8 primR, u8 primG, u8 primB, u8 primA, u8 fogR, u8 fogG, u8 fogB, s32 fogStart, s32 fogEnd);
+void mdl_set_remap_tint_params(u8 primR, u8 primG, u8 primB, u8 envR, u8 envG, u8 envB);
+void mdl_get_remap_tint_params(u8* primR, u8* primG, u8* primB, u8* envR, u8* envG, u8* envB);
 
 void init_model_data(void);
 void update_model_animator(s32);
 void update_model_animator_with_transform(s32 animatorID, Mtx* mtx);
 void set_mdl_custom_gfx_set(Model*, s32, u32);
 ModelNodeProperty* get_model_property(ModelNode* node, ModelPropertyKeys key);
-void func_80115498(u32 romOffset, s32 textureID, s32 baseOffset, s32 size);
+void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 size);
 s32 step_model_animator(ModelAnimator* animator);
 AnimatorNode* get_animator_node_for_tree_index(ModelAnimator* animator, s32 treeIndex);
 AnimatorNode* get_animator_node_with_id(ModelAnimator* animator, s32 id);
@@ -203,6 +221,6 @@ void set_custom_gfx_builders(s32 customGfxIndex, ModelCustomGfxBuilderFunc pre, 
 void mdl_make_local_vertex_copy(s32 arg0, u16 treeIdx, s32);
 void play_model_animation_starting_from(s32 index, s16* animPos, s32 framesToSkip);
 
-void set_background_color_blend(u8 r, u8 g, u8 b, u8 a);
+void mdl_set_shroud_tint_params(u8 r, u8 g, u8 b, u8 a);
 
 #endif

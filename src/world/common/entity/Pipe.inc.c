@@ -1,5 +1,6 @@
 #include "common.h"
 #include "npc.h"
+#include "sprite/player.h"
 
 // ----------------------------------------------------------------
 // User macros
@@ -44,7 +45,7 @@ API_CALLABLE(N(Pipe_SetAnimFlag)) {
 }
 
 API_CALLABLE(N(Pipe_GetCurrentFloor)) {
-    script->varTable[0] = gCollisionStatus.currentFloor;
+    script->varTable[0] = gCollisionStatus.curFloor;
     return ApiStatus_DONE2;
 }
 
@@ -52,7 +53,7 @@ API_CALLABLE(N(Pipe_AwaitDownInput)) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 stickX, stickY;
 
-    if (collisionStatus->currentFloor != script->varTable[11]) {
+    if (collisionStatus->curFloor != script->varTable[11]) {
         script->varTable[0] = FALSE;
         return ApiStatus_DONE2;
     }
@@ -87,16 +88,16 @@ API_CALLABLE(N(Pipe_GetEntryPos)) {
 }
 
 API_CALLABLE(N(Pipe_GetCameraYaw)) {
-    script->varTable[0] = clamp_angle(gCameras[gCurrentCameraID].currentYaw + 180.0f);
+    script->varTable[0] = clamp_angle(gCameras[gCurrentCameraID].curYaw + 180.0f);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(Pipe_GetPointAheadOfPlayer)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 r = evt_get_float_variable(script, *script->ptrReadPos);
-    f32 x = playerStatus->position.x;
-    f32 y = playerStatus->position.y;
-    f32 z = playerStatus->position.z;
+    f32 x = playerStatus->pos.x;
+    f32 y = playerStatus->pos.y;
+    f32 z = playerStatus->pos.z;
 
     add_vec2D_polar(&x, &z, r, playerStatus->targetYaw);
     evt_set_float_variable(script, LVar0, x);
@@ -128,8 +129,8 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
     EVT_CALL(SetPlayerPos, LVar1, LVar2, LVar3)
     EVT_CALL(InterpPlayerYaw, LVar4, 0)
     EVT_CALL(PlaySound, SOUND_ENTER_PIPE)
-    EVT_CALL(func_802D286C, 0x100)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Still, FOLD_TYPE_5, 2, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Still, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_LOOP(40)
         EVT_ADD(LVar1, 1)
@@ -150,7 +151,7 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
         EVT_END_THREAD
     EVT_END_IF
     EVT_WAIT(2)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Still, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Still, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_WAIT(1)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Idle)
     EVT_CALL(DisablePlayerPhysics, FALSE)
@@ -202,8 +203,8 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
         EVT_WAIT(25)
         EVT_CALL(HidePlayerShadow, FALSE)
     EVT_END_THREAD
-    EVT_CALL(func_802D286C, 0x100 | 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, FOLD_TYPE_5, 3, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     EVT_LOOP(40)
         EVT_CALL(N(Pipe_GetPointAheadOfPlayer), EVT_FLOAT(1.0))
         EVT_CALL(SetPlayerPos, LVar0, LVar1, LVar2)
@@ -220,7 +221,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
         EVT_END_THREAD
     EVT_END_IF
     EVT_WAIT(5)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, FOLD_TYPE_NONE, 0, 0, 0, 0)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     EVT_CALL(ModifyColliderFlags, 1, LVarB, COLLIDER_FLAGS_UPPER_MASK)
     EVT_CALL(DisablePlayerInput, FALSE)
     EVT_CALL(DisablePlayerPhysics, FALSE)
@@ -278,8 +279,8 @@ EvtScript N(EVS_Pipe_ExitVertical_Impl) = {
             EVT_WAIT(1)
         EVT_END_LOOP
     EVT_END_THREAD
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Idle, FOLD_TYPE_5, 2, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     EVT_WAIT(25)
     EVT_EXEC_WAIT(LVarC)
     EVT_RETURN
@@ -328,8 +329,8 @@ EvtScript N(EVS_Pipe_ExitHorizontal) = {
     EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
     EVT_CALL(SetPlayerPos, LVar0, LVar6, LVar7)
     EVT_CALL(SetPlayerAnimation, ANIM_Mario1_Still)
-    EVT_CALL(func_802D286C, 0x800)
-    EVT_CALL(func_802D2520, ANIM_Mario1_Still, FOLD_TYPE_5, 3, 1, 1, 0)
+    EVT_CALL(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    EVT_CALL(UpdatePlayerImgFX, ANIM_Mario1_Still, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     EVT_THREAD
         EVT_WAIT(8)
         EVT_CALL(HidePlayerShadow, TRUE)

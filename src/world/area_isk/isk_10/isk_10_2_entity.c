@@ -8,10 +8,10 @@
 API_CALLABLE(N(MonitorPlayerLastFloor)) {
     s32 level = -1;
 
-    if (gPlayerStatus.lastGoodPosition.y > -600.0) {
+    if (gPlayerStatus.lastGoodPos.y > -600.0) {
         level = 0;
     }
-    if (gPlayerStatus.lastGoodPosition.y < -770.0) {
+    if (gPlayerStatus.lastGoodPos.y < -770.0) {
         level = 1;
     }
     if (level >= 0) {
@@ -53,8 +53,8 @@ EvtScript N(EVS_MakeEntities) = {
     EVT_END_THREAD
     EVT_CALL(MakeEntity, EVT_PTR(Entity_ScriptSpring), -516, -780, -71, 0, MAKE_ENTITY_END)
     EVT_CALL(AssignScript, EVT_PTR(N(EVS_UseSpring)))
-    EVT_PLAY_EFFECT(EFFECT_FLAME, 1, -510, -453, 43, EVT_FLOAT(0.3), LVar0)
-    EVT_PLAY_EFFECT(EFFECT_FLAME, 1, -510, -713, 43, EVT_FLOAT(0.3), LVar0)
+    EVT_PLAY_EFFECT(EFFECT_FLAME, FX_FLAME_RED, -510, -453, 43, EVT_FLOAT(0.3), LVar0)
+    EVT_PLAY_EFFECT(EFFECT_FLAME, FX_FLAME_RED, -510, -713, 43, EVT_FLOAT(0.3), LVar0)
     EVT_RETURN
     EVT_END
 };
