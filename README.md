@@ -1,5 +1,3 @@
-> **Warning**: Use of this repository is deprecated in favour of [Merlon](https://github.com/nanaian/merlon). If you want to write decomp mods, use Merlon!
-
 # Paper Mario Deluxe
 
 [![Discord Channel][discord-badge]][discord]
