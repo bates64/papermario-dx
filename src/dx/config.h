@@ -8,7 +8,7 @@
 #define DX_SKIP_LOGOS 1
 
 // Skips the title screen/file select and loads the first savefile directly
-#define DX_SKIP_TITLE 1
+#define DX_SKIP_TITLE 0
 
 // Disables letterboxing of the viewport, making it full screen
 // Also moves around some HUD elements

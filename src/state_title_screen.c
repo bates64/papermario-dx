@@ -57,7 +57,7 @@ s32 PressStart_Alpha = 0; // the opacity of "PRESS START" text
 b32 PressStart_IsVisible = FALSE; // toggles the visibility of "PRESS START"
 s32 PressStart_BlinkCounter = 0; // counts to 16, then toggles PressStart_IsVisible
 
-// controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done 
+// controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done
 // since this state is reached for the first time after the intro has already played once or was skipped,
 // this is initially false and the demo is will play first.
 s32 PlayIntroNext = FALSE;
@@ -114,6 +114,82 @@ void title_screen_draw_images(f32, f32);
 void title_screen_draw_logo(f32);
 void title_screen_draw_press_start(void);
 void title_screen_draw_copyright(f32);
+
+#include "audio.h"
+
+u8 eekPcm[] = {
+#include "eek_pcm.c"
+};
+
+Instrument eekInstrument = {
+    eekPcm,
+    sizeof(eekPcm),
+    NULL,
+    0,
+    0, //4*AU_5750,
+    0,
+    NULL, // PCM, so no predictor
+    0,
+    4800,
+    { .pitchRatio = 11025.0f / 32000.0f },
+    AL_RAW16_WAVE,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    &DummyInstrumentEnvelope,
+};
+extern u8 EnvelopePressDefault[];
+extern u8 EnvelopeReleaseDefault[];
+
+void dx_play_eek_song(void) {
+    SoundManager* manager = gSoundManager;
+    s32 priority = AU_PRIORITY_MSEQ_MANAGER + 1; // really important
+    AuVoice* voice;
+    s32 voiceIdx;
+
+    static s32 done = 0;
+    if (done) {
+        return;
+    }
+    done = 1;
+
+    // Find a free voice
+    for (voiceIdx = 0; voiceIdx < ARRAY_COUNT(gSoundGlobals->voices); voiceIdx++) {
+        voice = &gSoundGlobals->voices[voiceIdx];
+        if (voice->priority == AU_PRIORITY_FREE) {
+            break;
+        }
+    }
+    if (voiceIdx == ARRAY_COUNT(gSynDriverPtr->pvoices)) {
+        osSyncPrintf("dx_play_eek_song: no free voice\n");
+        // Steal a voice
+        voiceIdx = 23;
+        voice = &gSoundGlobals->voices[voiceIdx];
+        if (voice->priority != AU_PRIORITY_FREE) {
+            osSyncPrintf("dx_play_eek_song: stealing voice %d\n", voiceIdx);
+            au_reset_nonfree_voice(voice, voiceIdx);
+        }
+    }
+
+    // Init voice
+    voice->pan = 0x40; // middle
+    voice->reverb = 0;
+    voice->clientVolume = manager->baseVolume;
+    voice->envelope.cmdListPress = EnvelopePressDefault;
+    voice->envelope.cmdListRelease = EnvelopeReleaseDefault;
+    voice->instrument = &eekInstrument;
+    voice->pitchRatio = eekInstrument.pitchRatio;
+    voice->syncFlags = AU_VOICE_SYNC_FLAG_ALL; // load me please
+    voice->priority = manager->priority;
+    voice->clientPriority = priority;
+    voice->busId = manager->busId;
+
+    osSyncPrintf("eek!");
+}
 
 void state_init_title_screen(void) {
     s32 titleDataSize;
@@ -185,7 +261,7 @@ void state_init_title_screen(void) {
     game_mode_set_fpDrawAuxUI(0, appendGfx_title_screen);
     load_map_bg("title_bg");
     set_background(&gBackgroundImage);
-    bgm_set_song(0, SONG_MAIN_THEME, 0, 500, 8);
+    //bgm_set_song(0, SONG_MAIN_THEME, 0, 500, 8);
     TitleScreen_TimeLeft = 480;
 }
 
@@ -223,6 +299,7 @@ void state_step_title_screen(void) {
                 }
             }
             startup_fade_screen_update();
+            dx_play_eek_song();
             break;
         case TITLE_STATE_HOLD:
             if (PlayIntroNext && TitleScreen_TimeLeft == 120) {
