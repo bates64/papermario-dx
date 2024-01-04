@@ -1172,6 +1172,8 @@ class Configure:
                         "iconv": "iconv --from UTF-8 --to CP932",  # similar to SHIFT-JIS, but includes backslash and tilde
                     },
                 )
+            elif seg.type == "staticlib":
+                build(entry.object_path, entry.src_paths, "cp")
             else:
                 raise Exception(f"don't know how to build {seg.__class__.__name__} '{seg.name}'")
 
