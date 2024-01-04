@@ -57,7 +57,7 @@ s32 PressStart_Alpha = 0; // the opacity of "PRESS START" text
 b32 PressStart_IsVisible = FALSE; // toggles the visibility of "PRESS START"
 s32 PressStart_BlinkCounter = 0; // counts to 16, then toggles PressStart_IsVisible
 
-// controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done 
+// controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done
 // since this state is reached for the first time after the intro has already played once or was skipped,
 // this is initially false and the demo is will play first.
 s32 PlayIntroNext = FALSE;
@@ -114,6 +114,9 @@ void title_screen_draw_images(f32, f32);
 void title_screen_draw_logo(f32);
 void title_screen_draw_press_start(void);
 void title_screen_draw_copyright(f32);
+
+// librust
+extern s32 sum(s32 a, s32 b);
 
 void state_init_title_screen(void) {
     s32 titleDataSize;
@@ -187,6 +190,29 @@ void state_init_title_screen(void) {
     set_background(&gBackgroundImage);
     bgm_set_song(0, SONG_MAIN_THEME, 0, 500, 8);
     TitleScreen_TimeLeft = 480;
+
+    // librust test
+    osSyncPrintf("calling into rust!!\n");
+    osSyncPrintf("librust says 42 + 69 = %d\n", sum(42, 69));
+}
+
+void memalign(void** ptr, u32 alignment, u32 size) {
+    /**ptr = general_heap_malloc(size + alignment);
+    *ptr = (void*)(((u32)*ptr + alignment) & ~(alignment - 1));*/
+    // fake lol
+    *ptr = general_heap_malloc(size);
+}
+
+void free(void* ptr) {
+    general_heap_free(ptr);
+}
+
+void rust_eh_personality(void) {
+    osSyncPrintf("Rust panic\n");
+}
+
+void rust_oom(void) {
+    osSyncPrintf("Rust OOM\n");
 }
 
 void state_step_title_screen(void) {

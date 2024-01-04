@@ -383,6 +383,7 @@ segments:
     - [auto, .data, state_pause]
     - [auto, .data, state_file_select]
     - [auto, .data, state_title_screen]
+    - [auto, staticlib, librust]
     - [auto, .data, state_demo]
     - [auto, .data, npc]
     - [auto, .data, encounter]
