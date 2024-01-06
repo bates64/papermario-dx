@@ -2,6 +2,9 @@
 // Heavily based on libdragon: https://github.com/DragonMinded/libdragon/blob/trunk/src/backtrace.c
 
 #include "common.h"
+#include "gcc/string.h"
+#include "nu/nusys.h"
+#include "backtrace.h"
 
 /** @brief Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
@@ -231,13 +234,92 @@ int backtrace(void **buffer, int size) {
     return ctx.i;
 }
 
+/**
+ * @brief Uses the symbol table to look up the symbol corresponding to the given address.
+ *
+ * The address should be inside some function, otherwise an incorrect symbol will be returned.
+ *
+ * @param address Address to look up
+ * @param out Output symbol
+ * @return Offset into out->address, -1 if not found
+ */
+s32 address2symbol(u32 address, Symbol* out) {
+    SymbolTable symt;
+    s32 low, high, mid;
+    u32 symbolTableRomAddr;
+    u32 symbolsRomAddr;
+    s32 i;
+
+    dma_copy((void*)SYMBOL_TABLE_PTR_ROM_ADDR, (void*)(SYMBOL_TABLE_PTR_ROM_ADDR+sizeof(symbolTableRomAddr)), &symbolTableRomAddr);
+    if (symbolTableRomAddr == NULL)
+        return -1;
+
+    symbolsRomAddr = symbolTableRomAddr + sizeof(symt);
+
+    // Read the header
+    dma_copy((void*)symbolTableRomAddr, (void*)symbolsRomAddr, &symt);
+
+    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S')
+        return -1;
+
+    // Linear search for highest symbol with address >= requested address.
+    for (i = 0; i < symt.symbolCount; i++) {
+        Symbol sym;
+
+        dma_copy(
+            (void*)(symbolsRomAddr + i * sizeof(Symbol)),
+            (void*)(symbolsRomAddr + (i + 1) * sizeof(Symbol)),
+            &sym
+        );
+
+        if (address >= sym.address) {
+            *out = sym;
+        } else {
+            break;
+        }
+    }
+
+    return address - out->address;
+}
+
+char* load_symbol_string(char* dest, u32 addr, int n) {
+    u32 aligned = addr & ~3;
+    nuPiReadRom(aligned, dest, n);
+    dest[n-1] = '\0'; // Ensure null-termination
+
+    // Shift to start of string
+    return (char*)((u32)dest + (addr & 3));
+}
+
+void backtrace_address_to_string(u32 address, char* dest) {
+    Symbol sym;
+    s32 offset = address2symbol(address, &sym);
+
+    if (offset >= 0 && offset < 0x1000) { // 0x1000 = arbitrary func size limit
+        char name[32];
+        char file[32];
+        char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
+        char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+
+        if (offset == 0)
+            sprintf(dest, "%s (%s)", namep, filep);
+        else
+            sprintf(dest, "%s+0x%X (%s)", namep, offset, filep);
+    } else {
+        sprintf(dest, "0x%08X", address);
+    }
+}
+
 void debug_backtrace(void) {
     s32 bt[32];
-    s32 i = backtrace((void**)bt, ARRAY_COUNT(bt));
+    s32 max = backtrace((void**)bt, ARRAY_COUNT(bt));
+    s32 i;
+    char buf[128];
 
     osSyncPrintf("Backtrace:\n");
-    while (--i >= 1) { // skip debug_backtrace itself
-        osSyncPrintf("    %08x\n", bt[i]);
+    for (i = 1; i < max; i++) {
+        backtrace_address_to_string(bt[i], buf);
+        osSyncPrintf("    %s\n", buf);
     }
 }
 

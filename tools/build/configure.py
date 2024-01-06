@@ -119,7 +119,8 @@ def write_ninja_rules(
     ninja.rule(
         "z64",
         description="rom $out",
-        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && {BUILD_TOOLS}/rom/n64crc $out",
+        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out && {BUILD_TOOLS}/rom/n64crc $out",
+        pool="console"
     )
 
     ninja.rule(
