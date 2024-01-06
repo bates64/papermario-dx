@@ -276,9 +276,10 @@ struct backtrace_cb_ctx {
 
 static void backtrace_cb(void *arg, void *ptr) {
     struct backtrace_cb_ctx *ctx = arg;
-    if (ctx->i >= 0 && ctx->i < ctx->size)
+    if (ctx->i >= 0 && ctx->i < ctx->size) {
         ctx->buffer[ctx->i] = ptr;
-    ctx->i++;
+        ctx->i++;
+    }
 }
 
 int backtrace(void **buffer, int size) {
