@@ -211,6 +211,63 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
     }
 }
 
+static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *arg, uint32_t *sp, uint32_t *ra, uint32_t *fp) {
+    uint32_t* exception_ra;
+    uint32_t func_start;
+
+    exception_ra = NULL;      // If != NULL,
+    func_start = 0;            // Start of the current function (when known)
+
+    while (1) {
+        // Analyze the function pointed by ra, passing information about the previous exception frame if any.
+        // If the analysis fail (for invalid memory accesses), stop right away.
+        bt_func_t func;
+        if (!__bt_analyze_func(&func, ra, func_start, (bool)exception_ra))
+            return;
+
+        #if BACKTRACE_DEBUG
+        debugf("backtrace: %s, ra=%p, sp=%p, fp=%p ra_offset=%d, fp_offset=%d, stack_size=%d\n",
+            func.type == BT_FUNCTION ? "BT_FUNCTION" : (func.type == BT_EXCEPTION ? "BT_EXCEPTION" : (func.type == BT_FUNCTION_FRAMEPOINTER ? "BT_FRAMEPOINTER" : "BT_LEAF")),
+            ra, sp, fp, func.ra_offset, func.fp_offset, func.stack_size);
+        #endif
+
+        switch (func.type) {
+            case BT_FUNCTION_FRAMEPOINTER:
+                if (!func.fp_offset) {
+                    debugf("backtrace: framepointer used but not saved onto stack at %p\n", ra);
+                } else {
+                    // Use the frame pointer to refer to the current frame.
+                    sp = fp;
+                    if (!is_valid_address((uint32_t)sp)) {
+                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08lx\n", (uint32_t)sp);
+                        return;
+                    }
+                }
+                // FALLTHROUGH!
+            case BT_FUNCTION:
+                if (func.fp_offset)
+                    fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
+                ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
+                sp = (uint32_t*)((uint32_t)sp + func.stack_size);
+                exception_ra = NULL;
+                func_start = 0;
+                break;
+            case BT_LEAF:
+                ra = exception_ra - 2;
+                // A leaf function has no stack. On the other hand, an exception happening at the
+                // beginning of a standard function (before RA is saved), does have a stack but
+                // will be marked as a leaf function. In this case, we mus update the stack pointer.
+                sp = (uint32_t*)((uint32_t)sp + func.stack_size);
+                exception_ra = NULL;
+                func_start = 0;
+                break;
+        }
+
+        // Call the callback with this stack frame
+        cb(arg, ra);
+    }
+}
+
 struct backtrace_cb_ctx {
     void **buffer;
     int size;
@@ -233,6 +290,21 @@ int backtrace(void **buffer, int size) {
     backtrace_foreach(backtrace_cb, &ctx);
     return ctx.i;
 }
+
+int backtrace_thread(void **buffer, int size, OSThread *thread) {
+    struct backtrace_cb_ctx ctx = {
+        buffer,
+        size,
+        0,
+    };
+    u32 sp = (u32)thread->context.sp;
+    u32 pc = (u32)thread->context.pc;
+    u32 fp = (u32)thread->context.gp;
+    backtrace_cb(&ctx, (void*)pc);
+    backtrace_foreach_foreign(backtrace_cb, &ctx, (uint32_t*)sp, (uint32_t*)pc, (uint32_t*)fp);
+    return ctx.i;
+}
+
 
 /**
  * @brief Uses the symbol table to look up the symbol corresponding to the given address.
@@ -302,9 +374,9 @@ void backtrace_address_to_string(u32 address, char* dest) {
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
         if (offset == 0)
-            sprintf(dest, "%s (%s)", namep, filep);
+            sprintf(dest, "%s\n  %s", namep, filep);
         else
-            sprintf(dest, "%s+0x%X (%s)", namep, offset, filep);
+            sprintf(dest, "%s+0x%X\n  %s", namep, offset, filep);
     } else {
         sprintf(dest, "0x%08X", address);
     }
@@ -319,7 +391,7 @@ void debug_backtrace(void) {
     osSyncPrintf("Backtrace:\n");
     for (i = 1; i < max; i++) {
         backtrace_address_to_string(bt[i], buf);
-        osSyncPrintf("    %s\n", buf);
+        osSyncPrintf("%s\n", buf);
     }
 }
 

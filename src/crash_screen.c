@@ -3,6 +3,7 @@
 #include "PR/os_internal_thread.h"
 #include "libc/xstdio.h"
 #include "gcc/string.h"
+#include "dx/backtrace.h"
 
 typedef struct {
     /* 0x000 */ OSThread thread;
@@ -156,6 +157,7 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     s32 size;
     u8 buf[0x100];
     va_list args;
+    s32 ox = x;
 
     va_start(args, fmt);
 
@@ -174,6 +176,12 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
             }
 
             x += 6;
+
+            if (*ptr == '\n') {
+                x = ox;
+                y += 10;
+            }
+
             size--;
             ptr++;
         }
@@ -216,6 +224,11 @@ void crash_screen_draw(OSThread* faultedThread) {
     s16 causeIndex;
     __OSThreadContext* ctx;
 
+    s32 bt[8];
+    s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
+    s32 i;
+    char buf[128];
+
     ctx = &faultedThread->context;
     causeIndex = ((faultedThread->context.cause >> 2) & 0x1F);
 
@@ -233,17 +246,15 @@ void crash_screen_draw(OSThread* faultedThread) {
     crash_screen_printf(30, 25, "THREAD:%d  (%s)", faultedThread->id, gFaultCauses[causeIndex]);
     crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
 
-    crash_screen_sleep(2000);
-
     osViBlack(0);
     osViRepeatLine(0);
     osViSwapBuffer(gCrashScreen.frameBuf);
 
     crash_screen_draw_rect(25, 45, 270, 185);
 
-    crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
-    crash_screen_printf(30, 60, "A0:%08XH   A1:%08XH   A2:%08XH", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
-    crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
+    //crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
+    crash_screen_printf(30, 45, "A0: %08X   A1: %08X   A2: %08X", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
+    /*crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
     crash_screen_printf(30, 80, "T2:%08XH   T3:%08XH   T4:%08XH", (u32)ctx->t2, (u32)ctx->t3, (u32)ctx->t4);
     crash_screen_printf(30, 90, "T5:%08XH   T6:%08XH   T7:%08XH", (u32)ctx->t5, (u32)ctx->t6, (u32)ctx->t7);
     crash_screen_printf(30, 100, "S0:%08XH   S1:%08XH   S2:%08XH", (u32)ctx->s0, (u32)ctx->s1, (u32)ctx->s2);
@@ -270,12 +281,18 @@ void crash_screen_draw(OSThread* faultedThread) {
     crash_screen_print_fpr(120, 210, 26, &ctx->fp26.f.f_even);
     crash_screen_print_fpr(210, 210, 28, &ctx->fp28.f.f_even);
     crash_screen_print_fpr(30, 220, 30, &ctx->fp30.f.f_even);
+    */
+
+    for (i = 0; i < max; i++) {
+        backtrace_address_to_string(bt[i], buf);
+        crash_screen_printf(30, 60 + (i * 20), "%s", buf);
+    }
 
     crash_screen_sleep(500);
 
     // all of these null terminators needed to pad the rodata section for this file
     // can potentially fix this problem in another way?
-    crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
+    //crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
 }
 
 OSThread* crash_screen_get_faulted_thread(void) {

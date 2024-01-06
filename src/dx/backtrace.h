@@ -47,7 +47,12 @@ typedef struct SymbolTable {
  */
 int backtrace(void **buffer, int size);
 
+int backtrace_thread(void **buffer, int size, OSThread *thread);
+
 /** @brief Print a backtrace. */
 void debug_backtrace(void);
+
+/** @brief Converts a function address to a string representation using its name, offset, and file. */
+void backtrace_address_to_string(u32 address, char* dest);
 
 #endif
