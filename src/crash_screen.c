@@ -331,6 +331,22 @@ void crash_screen_init(void) {
     osCreateThread(&gCrashScreen.thread, 2, crash_screen_thread_entry, NULL,
                    gCrashScreen.stack + sizeof(gCrashScreen.stack), 0x80);
     osStartThread(&gCrashScreen.thread);
+
+    // gCrashScreencharToGlyph is hard to modify, so we'll just do it here
+    // The font image is on 5x7 grid
+    #define CELL(x, y) (x + (y * 5))
+    gCrashScreencharToGlyph['_'] = CELL(0, 9);
+    gCrashScreencharToGlyph['['] = CELL(1, 9);
+    gCrashScreencharToGlyph[']'] = CELL(2, 9);
+    gCrashScreencharToGlyph['<'] = CELL(3, 9);
+    gCrashScreencharToGlyph['>'] = CELL(4, 9);
+    gCrashScreencharToGlyph['x'] = CELL(0, 10); // for '0x' in hex
+    gCrashScreencharToGlyph['{'] = CELL(1, 10);
+    gCrashScreencharToGlyph['}'] = CELL(2, 10);
+    gCrashScreencharToGlyph[';'] = CELL(3, 10);
+    gCrashScreencharToGlyph[':'] = CELL(4, 10);
+    gCrashScreencharToGlyph['!'] = CELL(0, 11);
+    #undef CELL
 }
 
 // unused
