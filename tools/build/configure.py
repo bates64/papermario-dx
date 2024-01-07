@@ -1289,6 +1289,7 @@ if __name__ == "__main__":
     args.shift = True
     args.debug = True
     args.modern_gcc = True
+    args.non_matching = True
 
     exec_shell(["make", "-C", str(ROOT / args.splat)])
 
@@ -1361,7 +1362,7 @@ if __name__ == "__main__":
                 pass
 
     extra_cflags = ""
-    extra_cppflags = ""
+    extra_cppflags = "-DAVOID_UB"
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
 

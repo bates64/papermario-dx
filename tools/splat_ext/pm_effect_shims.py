@@ -70,3 +70,6 @@ glabel {name}
             ret.append(LinkerEntry(self, [self.shim_path(shim)], self.shim_path(shim), ".text", ".text"))
 
         return ret
+
+    def cache(self):
+        return (super().cache(), self.shims)

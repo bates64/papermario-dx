@@ -64,15 +64,15 @@
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
 
 #ifdef DEBUG
-#define IS_DEBUG_PANIC(statement, file, line) is_debug_panic(statement, file, line)
+#define IS_DEBUG_PANIC(statement, file, line, func) is_debug_panic(statement, file, line, func)
 #else
-#define IS_DEBUG_PANIC(statement, file, line) do {} while(TRUE)
+#define IS_DEBUG_PANIC(statement, file, line, func) do {} while(TRUE)
 #endif
 
-#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__)
+#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
 #define ASSERT(condition) \
     if (!(condition)) { \
-        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__); \
+        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__, __func__); \
     }
 
 #define BADGE_MENU_PAGE(index) (&gPauseBadgesPages[index])
