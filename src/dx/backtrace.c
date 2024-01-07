@@ -206,8 +206,10 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                 break;
         }
 
-        // Call the callback with this stack frame
-        cb(arg, ra);
+        if (is_valid_address((uint32_t)ra)) {
+            // Call the callback with this stack frame
+            cb(arg, ra);
+        }
     }
 }
 
@@ -263,8 +265,10 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 break;
         }
 
-        // Call the callback with this stack frame
-        cb(arg, ra);
+        if (is_valid_address((uint32_t)ra)) {
+            // Call the callback with this stack frame
+            cb(arg, ra);
+        }
     }
 }
 
@@ -300,7 +304,7 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
     };
     u32 sp = (u32)thread->context.sp;
     u32 pc = (u32)thread->context.pc;
-    u32 fp = (u32)thread->context.gp;
+    u32 fp = (u32)thread->context.s8;
     backtrace_cb(&ctx, (void*)pc);
     backtrace_foreach_foreign(backtrace_cb, &ctx, (uint32_t*)sp, (uint32_t*)pc, (uint32_t*)fp);
     return ctx.i;

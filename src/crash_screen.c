@@ -28,6 +28,9 @@ u8 gCrashScreencharToGlyph[128] = {
 
 #include "crash_screen/font.png.inc.c"
 
+// The font image is on 6x7 grid
+#define GLYPH(x, y) (x + (y * 5))
+
 const char* gFaultCauses[18] = {
     "Interrupt",
     "TLB modification",
@@ -92,12 +95,26 @@ void crash_screen_draw_rect(s32 x, s32 y, s32 width, s32 height) {
     }
 }
 
-void crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
+/** @returns X advance */
+s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     s32 shift = ((glyph % 5) * 6);
     u16 width = gCrashScreen.width;
     const u32* data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
     s32 i;
     s32 j;
+
+    switch (glyph) {
+        case GLYPH(3, 10): // ;
+        case GLYPH(4, 10): // ,
+            y += 1;
+            break;
+        case GLYPH(1, 14): // g
+        case GLYPH(0, 16): // p
+        case GLYPH(1, 16): // q
+        case GLYPH(4, 17): // y
+            y += 2;
+            break;
+    }
 
     if (width == SCREEN_WIDTH) {
         u16* ptr = gCrashScreen.frameBuf + (gCrashScreen.width) * y + x;
@@ -134,6 +151,24 @@ void crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
             ptr += (0x9E8 / 2);
         }
     }
+
+    // Calculate x advance by counting the width of the glyph + 1 pixel of padding
+    if (glyph == GLYPH(2, 15)) return 7; // m - fucked up hack
+    s32 xAdvance = 0;
+    data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
+    for (i = 0; i < 7; i++) { // 7 rows
+        u32 bit = 0x80000000U >> shift;
+        u32 rowMask = *data++;
+        for (j = 1; j < 6; j++) { // 6 columns
+            if (bit & rowMask) {
+                if (xAdvance < j) {
+                    xAdvance = j;
+                }
+            }
+            bit >>= 1;
+        }
+    }
+    return xAdvance + 1;
 }
 
 char* crash_screen_copy_to_buf(char* dest, const char* src, size_t size) {
@@ -166,6 +201,45 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
             }
 
             x += 6;
+
+            if (*ptr == '\n') {
+                x = ox;
+                y += 10;
+            }
+
+            size--;
+            ptr++;
+        }
+    }
+
+    va_end(args);
+}
+
+void crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
+    u8* ptr;
+    u32 glyph;
+    s32 size;
+    u8 buf[0x100];
+    va_list args;
+    s32 ox = x;
+
+    va_start(args, fmt);
+
+    size = _Printf(crash_screen_copy_to_buf, buf, fmt, args);
+
+    if (size > 0) {
+        ptr = buf;
+
+        while (size > 0) {
+            u8* charToGlyph = gCrashScreencharToGlyph;
+
+            glyph = charToGlyph[*ptr & 0x7F];
+
+            if (glyph != 0xFF) {
+                x += crash_screen_draw_glyph(x, y, glyph);
+            } else {
+                x += 4;
+            }
 
             if (*ptr == '\n') {
                 x = ox;
@@ -232,19 +306,27 @@ void crash_screen_draw(OSThread* faultedThread) {
 
     osWritebackDCacheAll();
 
-    crash_screen_draw_rect(25, 20, 270, 25);
-    crash_screen_printf(30, 25, "THREAD:%d  (%s)", faultedThread->id, gFaultCauses[causeIndex]);
-    crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
+    s32 x = 10;
+    s32 y = 0;
+
+    //crash_screen_draw_rect(25, 20, 270, 25);
+    crash_screen_printf_proportional(x, y += 10, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
+    for (i = 0; i < max; i++) {
+        backtrace_address_to_string(bt[i], buf);
+        crash_screen_printf_proportional(x + 10, y += 10, "at %s", buf);
+    }
 
     osViBlack(0);
     osViRepeatLine(0);
     osViSwapBuffer(gCrashScreen.frameBuf);
 
-    crash_screen_draw_rect(25, 45, 270, 185);
+    /*
+    crash_screen_draw_rect(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT - 30);
 
-    //crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
+    crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
+    crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
     crash_screen_printf(30, 45, "A0: %08X   A1: %08X   A2: %08X", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
-    /*crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
+    crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
     crash_screen_printf(30, 80, "T2:%08XH   T3:%08XH   T4:%08XH", (u32)ctx->t2, (u32)ctx->t3, (u32)ctx->t4);
     crash_screen_printf(30, 90, "T5:%08XH   T6:%08XH   T7:%08XH", (u32)ctx->t5, (u32)ctx->t6, (u32)ctx->t7);
     crash_screen_printf(30, 100, "S0:%08XH   S1:%08XH   S2:%08XH", (u32)ctx->s0, (u32)ctx->s1, (u32)ctx->s2);
@@ -271,18 +353,13 @@ void crash_screen_draw(OSThread* faultedThread) {
     crash_screen_print_fpr(120, 210, 26, &ctx->fp26.f.f_even);
     crash_screen_print_fpr(210, 210, 28, &ctx->fp28.f.f_even);
     crash_screen_print_fpr(30, 220, 30, &ctx->fp30.f.f_even);
-    */
-
-    for (i = 0; i < max; i++) {
-        backtrace_address_to_string(bt[i], buf);
-        crash_screen_printf(30, 60 + (i * 20), "%s", buf);
-    }
 
     crash_screen_sleep(500);
 
     // all of these null terminators needed to pad the rodata section for this file
     // can potentially fix this problem in another way?
-    //crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
+    crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
+    */
 }
 
 OSThread* crash_screen_get_faulted_thread(void) {
@@ -333,20 +410,21 @@ void crash_screen_init(void) {
     osStartThread(&gCrashScreen.thread);
 
     // gCrashScreencharToGlyph is hard to modify, so we'll just do it here
-    // The font image is on 5x7 grid
-    #define CELL(x, y) (x + (y * 5))
-    gCrashScreencharToGlyph['_'] = CELL(0, 9);
-    gCrashScreencharToGlyph['['] = CELL(1, 9);
-    gCrashScreencharToGlyph[']'] = CELL(2, 9);
-    gCrashScreencharToGlyph['<'] = CELL(3, 9);
-    gCrashScreencharToGlyph['>'] = CELL(4, 9);
-    gCrashScreencharToGlyph['x'] = CELL(0, 10); // for '0x' in hex
-    gCrashScreencharToGlyph['{'] = CELL(1, 10);
-    gCrashScreencharToGlyph['}'] = CELL(2, 10);
-    gCrashScreencharToGlyph[';'] = CELL(3, 10);
-    gCrashScreencharToGlyph[':'] = CELL(4, 10);
-    gCrashScreencharToGlyph['!'] = CELL(0, 11);
-    #undef CELL
+    char chars[] =
+        "_[]<>"
+        "|{};,"
+        "\"#$&'"
+        "/=@\\`"
+        "abcde"
+        "fghij"
+        "klmno"
+        "pqrst"
+        "uvwxy"
+        "z";
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(chars); i++) {
+        gCrashScreencharToGlyph[chars[i]] = GLYPH(0, 9) + i;
+    }
 }
 
 // unused
