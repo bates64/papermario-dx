@@ -219,11 +219,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
-#if DX_FULL_VIEWPORT
-        set_cam_viewport(CAM_DEFAULT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-#else
         set_cam_viewport(CAM_DEFAULT, 12, 20, 296, 200);
-#endif
     } else {
         set_cam_viewport(CAM_DEFAULT, 29, 28, 262, 162);
     }
