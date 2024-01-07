@@ -1287,6 +1287,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     args.shift = True
+    args.debug = True
+    args.modern_gcc = True
 
     exec_shell(["make", "-C", str(ROOT / args.splat)])
 

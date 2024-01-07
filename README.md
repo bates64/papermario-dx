@@ -15,8 +15,8 @@ Configuration is located in [src/dx/config.h](src/dx/config.h).
 ## List of changes
 
 - US release only (no JP, PAL, or iQue - none of these are near 100% yet).
-- Shiftable builds by default.
-- Backtrace (call stack) on crash screen. `./configure --debug` to include file names and line numbers.
+- Default configure flags: `--shift --debug --modern-gcc`
+- Backtrace (call stack) on crash screen including file names and line numbers.
     - You can call [`debug_backtrace()`](src/dx/backtrace.h) to print a backtrace in any function.
 - `assets/star_rod_build` directory for Star Rod to write assets to.
 - `DX_DEBUG_MENU` - Enables a debug menu. Navigate with the D-pad (D-L for back, D-R for open, D-U/D-D for up/down).
