@@ -1,37 +1,57 @@
 import subprocess
-import tqdm
-from typing import List
+from typing import List, Tuple
 import struct
 import sys
+import io
 
 
 SYMBOL_TABLE_PTR_ROM_ADDR = 0x18
 
 
-def get_func_ram_addresses(elf: str) -> List[int]:
-    p = subprocess.run(["mips-linux-gnu-readelf", "-s", elf], capture_output=True)
-    lines = p.stdout.decode("utf-8").split("\n")
-    addrs = set()
-    for line in lines:
-        if " FUNC " in line:
-            parts = line.split()
+def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
+    addr2name = {} # funcs
+    addr2line = {} # debug info
+
+    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL"], stdout=subprocess.PIPE)
+    for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
+        parts = line.split()
+
+        #  75082: 8048d5bc    44 FUNC    GLOBAL DEFAULT 1845 func_802BC0B8_E2E9E8
+        if len(parts) == 8 and parts[3] == "FUNC":
             addr = int(parts[1], 16)
-            addrs.add(addr)
-    sorted = list(addrs)
-    sorted.sort()
-    return sorted
+            name = parts[-1]
+            addr2name[addr] = name
 
+        # npc.c                                    120          0x8003910c               x
+        elif len(parts) >= 4 and parts[2].startswith("0x"):
+            file_basename = parts[0]
+            if not file_basename.endswith(".c"):
+                continue
+            line_number = int(parts[1])
+            addr = int(parts[2], 0)
+            addr2line[addr] = (file_basename, line_number)
 
-def addr2line(elf: str, addrs: List[int]):
-    with subprocess.Popen(["mips-linux-gnu-addr2line", "-e", elf, "-fC"], stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
-        for addr in addrs:
-            process.stdin.write(f"0x{addr:08X}\n".encode())
-        process.stdin.flush()
+    sorted_addr2name_addrs = sorted(addr2name.keys())
 
-        for addr in tqdm.tqdm(addrs):
-            symbol_name = process.stdout.readline().decode("utf-8").strip()
-            file_line = process.stdout.readline().decode("utf-8").strip()
-            yield addr, symbol_name, file_line
+    symbols = []
+    for addr, (file_basename, line_number) in addr2line.items():
+        if addr in addr2name:
+            symbols.append((addr, addr2name[addr], file_basename, line_number))
+        else:
+            # find closest addr2name < addr
+            closest_addr = None
+            for a in sorted_addr2name_addrs:
+                if a < addr:
+                    closest_addr = a
+                else:
+                    break
+            if closest_addr is not None:
+                symbols.append((addr, addr2name[closest_addr], file_basename, line_number))
+
+    # sort by address
+    symbols.sort(key=lambda x: x[0])
+
+    return symbols
 
 
 if __name__ == '__main__':
@@ -40,7 +60,7 @@ if __name__ == '__main__':
         raise Exception("expected z64 as argument")
     elf = z64.replace(".z64", ".elf")
 
-    addrs = get_func_ram_addresses(elf)
+    symbols = readelf(elf)
     root_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
 
     with open(z64, "r+b") as f:
@@ -59,10 +79,10 @@ if __name__ == '__main__':
         # write header (see backtrace.h)
         f.seek(symbol_table_addr)
         f.write(b"SYMS")
-        f.write(struct.pack(">I", len(addrs)))
+        f.write(struct.pack(">I", len(symbols)))
 
         sizeof_symbol = 4 + 4 + 4 # sizeof(Symbol)
-        strings_begin = f.tell() + sizeof_symbol * len(addrs)
+        strings_begin = f.tell() + sizeof_symbol * len(symbols)
         strings = bytearray()
         string_map = {}
 
@@ -75,12 +95,12 @@ if __name__ == '__main__':
                 strings += b"\0"
             return string_map[s]
 
-        for addr, symbol_name, file_line in addr2line(elf, addrs):
-            file_line = file_line.replace(root_dir + "/", "")
+        for addr, name, file_basename, line_number in symbols:
+            #file_line = file_line.replace(root_dir + "/", "")
 
             f.write(struct.pack(">I", addr))
-            f.write(struct.pack(">I", add_string(symbol_name)))
-            f.write(struct.pack(">I", add_string(file_line)))
+            f.write(struct.pack(">I", add_string(name)))
+            f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}"))) # can make more efficient
 
         f.write(strings)
 

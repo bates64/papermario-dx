@@ -276,10 +276,10 @@ struct backtrace_cb_ctx {
 
 static void backtrace_cb(void *arg, void *ptr) {
     struct backtrace_cb_ctx *ctx = arg;
-    if (ctx->i >= 0 && ctx->i < ctx->size) {
+    if (ctx->i >= 0 && ctx->i < ctx->size)
         ctx->buffer[ctx->i] = ptr;
+    if (ctx->i < ctx->size)
         ctx->i++;
-    }
 }
 
 int backtrace(void **buffer, int size) {
@@ -306,7 +306,6 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
     return ctx.i;
 }
 
-
 /**
  * @brief Uses the symbol table to look up the symbol corresponding to the given address.
  *
@@ -317,45 +316,63 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
  * @return Offset into out->address, -1 if not found
  */
 s32 address2symbol(u32 address, Symbol* out) {
-    SymbolTable symt;
-    s32 low, high, mid;
-    u32 symbolTableRomAddr;
-    u32 symbolsRomAddr;
-    s32 i;
+    #define symbolsPerChunk 0x1000
+    #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
 
-    dma_copy((void*)SYMBOL_TABLE_PTR_ROM_ADDR, (void*)(SYMBOL_TABLE_PTR_ROM_ADDR+sizeof(symbolTableRomAddr)), &symbolTableRomAddr);
-    if (symbolTableRomAddr == NULL)
+    static u32 romHeader[0x10];
+    nuPiReadRom(0, &romHeader, sizeof(romHeader));
+
+    u32 symbolTableRomAddr = romHeader[SYMBOL_TABLE_PTR_ROM_ADDR / sizeof(*romHeader)];
+    if (symbolTableRomAddr == NULL) {
+        osSyncPrintf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is NULL)\n");
         return -1;
-
-    symbolsRomAddr = symbolTableRomAddr + sizeof(symt);
-
-    // Read the header
-    dma_copy((void*)symbolTableRomAddr, (void*)symbolsRomAddr, &symt);
-
-    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S')
-        return -1;
-
-    // Linear search for highest symbol with address >= requested address.
-    for (i = 0; i < symt.symbolCount; i++) {
-        Symbol sym;
-
-        dma_copy(
-            (void*)(symbolsRomAddr + i * sizeof(Symbol)),
-            (void*)(symbolsRomAddr + (i + 1) * sizeof(Symbol)),
-            &sym
-        );
-
-        if (address >= sym.address) {
-            *out = sym;
-        } else {
-            break;
-        }
     }
 
+    // Read the header
+    SymbolTable symt;
+    nuPiReadRom(symbolTableRomAddr, &symt, sizeof(SymbolTable));
+    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
+        osSyncPrintf("address2symbol: no symbols available (invalid magic '%c%c%c%c')\n", symt.magic[0], symt.magic[1], symt.magic[2], symt.magic[3]);
+        return -1;
+    }
+    if (symt.symbolCount <= 0) {
+        osSyncPrintf("address2symbol: no symbols available (symbolCount=%d)\n", symt.symbolCount);
+        return -1;
+    }
+
+    // Read symbols in chunks
+    static Symbol chunk[chunkSize];
+    s32 i;
+    for (i = 0; i < symt.symbolCount; i++) {
+        // Do we need to load the next chunk?
+        if (i % symbolsPerChunk == 0) {
+            u32 chunkAddr = symbolTableRomAddr + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
+            nuPiReadRom(chunkAddr, chunk, chunkSize);
+        }
+
+        Symbol sym = chunk[i % symbolsPerChunk];
+
+        if (sym.address == address) {
+            *out = sym;
+            return 0;
+        } else if (address < sym.address) {
+            // Symbols are sorted by address, so if we passed the address, we can stop
+            break;
+        } else {
+            // Keep searching, but remember this as the last symbol
+            // incase we don't find an exact match
+            *out = sym;
+        }
+    }
     return address - out->address;
 }
 
 char* load_symbol_string(char* dest, u32 addr, int n) {
+    if (addr == 0) {
+        sprintf(dest, "<NULL>");
+        return dest;
+    }
+
     u32 aligned = addr & ~3;
     nuPiReadRom(aligned, dest, n);
     dest[n-1] = '\0'; // Ensure null-termination
@@ -375,9 +392,9 @@ void backtrace_address_to_string(u32 address, char* dest) {
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
         if (offset == 0)
-            sprintf(dest, "%s\n  %s", namep, filep);
+            sprintf(dest, "%s (%s)", namep, filep);
         else
-            sprintf(dest, "%s+0x%X\n  %s", namep, offset, filep);
+            sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
     } else {
         sprintf(dest, "0x%08X", address);
     }
@@ -390,9 +407,9 @@ void debug_backtrace(void) {
     char buf[128];
 
     osSyncPrintf("Backtrace:\n");
-    for (i = 1; i < max; i++) {
+    for (i = 0; i < max; i++) {
         backtrace_address_to_string(bt[i], buf);
-        osSyncPrintf("%s\n", buf);
+        osSyncPrintf("    %s\n", buf);
     }
 }
 
