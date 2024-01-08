@@ -166,7 +166,7 @@ void initialize_battle(void) {
     gBattleStatus.inputBitmask = -1;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < ARRAY_COUNT(battleStatus->pushInputBuffer); i++) {
         battleStatus->pushInputBuffer[i] = 0; // @bug? why just 16
     }
 

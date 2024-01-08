@@ -2020,7 +2020,7 @@ void btl_state_update_end_training_battle(void) {
                 gBattleSubState = BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT;
             }
             break;
-        case BTL_SUBSTATE_END_TRAINING_RESET_CAM: //@bug should be BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT
+        case BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT: //@bug should be BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT
             if (!does_script_exist(partner->handleBatttlePhaseScriptID)) {
                 battleStatus->outtaSightActive = FALSE;
                 gBattleSubState = BTL_SUBSTATE_END_TRAINING_RESET_CAM;

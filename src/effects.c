@@ -221,13 +221,13 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
     if (effectGraphics->instanceCounter == 0) {
         effectGraphics->update = effectBp->update;
         if (effectGraphics->update == NULL) {
-            effectGraphics->renderWorld = stub_effect_delegate;
+            effectGraphics->update = stub_effect_delegate;
         }
 
         effectGraphics->renderWorld = effectBp->renderWorld;
         // @bug? null check for renderUI instead of renderWorld
-        if (effectGraphics->renderUI == NULL) {
-            effectGraphics->renderUI = stub_effect_delegate;
+        if (effectGraphics->renderWorld == NULL) {
+            effectGraphics->renderWorld = stub_effect_delegate;
         }
 
         effectGraphics->renderUI = effectBp->renderUI;
