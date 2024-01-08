@@ -4,6 +4,7 @@
 #include "libc/xstdio.h"
 #include "gcc/string.h"
 #include "dx/backtrace.h"
+#include "include_asset.h"
 
 typedef struct {
     /* 0x000 */ OSThread thread;
@@ -26,7 +27,7 @@ u8 gCrashScreencharToGlyph[128] = {
     23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1,
 };
 
-#include "crash_screen/font.png.inc.c"
+INCLUDE_IMG("crash_screen/font.png", gCrashScreenFont);
 
 // The font image is on 6x7 grid
 #define GLYPH(x, y) (x + (y * 5))
