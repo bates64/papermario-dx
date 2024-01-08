@@ -4,11 +4,12 @@
 
 #include "world/common/todo/GetFloorCollider.inc.c"
 
-//@bug malformed script is missing EVT_RETURN and EVT_END, only works because another EvtScript follows
 EvtScript N(EVS_GotoMap_kmr_24_0) = {
     EVT_CALL(FadeOutMusic, 0, 1500)
     EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_24"), kmr_24_ENTRY_0, TRANSITION_AFTER_SAVE_PROMPT)
     EVT_WAIT(100)
+    EVT_RETURN
+    EVT_END
 };
 
 EvtScript N(EVS_ExitWalk_hos_00_1) = EVT_EXIT_WALK(60, hos_01_ENTRY_0, "hos_00", hos_00_ENTRY_1);

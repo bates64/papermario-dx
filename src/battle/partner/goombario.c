@@ -66,13 +66,17 @@ API_CALLABLE(N(AdjustMultibonkChance)) {
 
     script->varTable[0] = 99;
 
-    // @bug this value is not reset between Multibonk uses
     N(MultibonkChance) *= targetActor->actorBlueprint->powerBounceChance;
     N(MultibonkChance) /= 100;
     if (N(MultibonkChance) < rand_int(100)) {
         script->varTable[0] = 0;
     }
 
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(ResetMultibonkChance)) {
+    N(MultibonkChance) = 200;
     return ApiStatus_DONE2;
 }
 
@@ -1409,6 +1413,7 @@ EvtScript N(EVS_Move_Multibonk) = {
     EVT_END_SWITCH
     EVT_CALL(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
     EVT_CALL(SetActionResult, LVarE)
+    EVT_CALL(N(ResetMultibonkChance))
     EVT_SWITCH(LVar0)
         EVT_CASE_OR_EQ(HIT_RESULT_HIT)
         EVT_CASE_OR_EQ(HIT_RESULT_NO_DAMAGE)

@@ -1390,7 +1390,7 @@ EvtScript N(EVS_HandlePhase) = {
             EVT_END_IF
         EVT_CASE_EQ(PHASE_ENEMY_BEGIN)
         EVT_CASE_EQ(PHASE_ENEMY_END)
-        EVT_CASE_EQ(PHASE_PLAYER_BEGIN) //@bug duplicate case, should be PHASE_PLAYER_END
+        EVT_CASE_EQ(PHASE_PLAYER_END) //@bug duplicate case, should be PHASE_PLAYER_END
     EVT_END_SWITCH
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)

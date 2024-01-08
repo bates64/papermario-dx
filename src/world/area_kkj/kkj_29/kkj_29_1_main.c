@@ -8,7 +8,9 @@ EvtScript N(EVS_EndPeachChapter5) = {
     EVT_CALL(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     EVT_CALL(GotoMapSpecial, EVT_PTR("jan_22"), jan_22_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
     EVT_WAIT(100)
-}; //@bug script not properly terminated
+    EVT_RETURN
+    EVT_END
+};
 
 EvtScript N(EVS_ExitDoor_kkj_10_2) = {
     EVT_SET_GROUP(EVT_GROUP_1B)

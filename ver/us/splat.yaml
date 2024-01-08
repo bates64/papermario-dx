@@ -103,7 +103,7 @@ segments:
     - [auto, c, fio]
     - [auto, c, curtains]
     - [auto, c, crash_screen]
-    - [auto, c, dx/backtrace, gcc_modern]
+    - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, .data, dx/debug_menu]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]

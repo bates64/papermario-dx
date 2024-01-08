@@ -9,8 +9,8 @@ SYMBOL_TABLE_PTR_ROM_ADDR = 0x18
 
 
 def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
-    addr2name = {} # funcs
-    addr2line = {} # debug info
+    addr2name = {}  # funcs
+    addr2line = {}  # debug info
 
     process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL"], stdout=subprocess.PIPE)
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
@@ -54,7 +54,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
     return symbols
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     z64 = sys.argv[1]
     if not z64.endswith(".z64"):
         raise Exception("expected z64 as argument")
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         f.write(b"SYMS")
         f.write(struct.pack(">I", len(symbols)))
 
-        sizeof_symbol = 4 + 4 + 4 # sizeof(Symbol)
+        sizeof_symbol = 4 + 4 + 4  # sizeof(Symbol)
         strings_begin = f.tell() + sizeof_symbol * len(symbols)
         strings = bytearray()
         string_map = {}
@@ -96,11 +96,11 @@ if __name__ == '__main__':
             return string_map[s]
 
         for addr, name, file_basename, line_number in symbols:
-            #file_line = file_line.replace(root_dir + "/", "")
+            # file_line = file_line.replace(root_dir + "/", "")
 
             f.write(struct.pack(">I", addr))
             f.write(struct.pack(">I", add_string(name)))
-            f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}"))) # can make more efficient
+            f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
 
         f.write(strings)
 

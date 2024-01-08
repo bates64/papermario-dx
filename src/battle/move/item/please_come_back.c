@@ -8,7 +8,7 @@
 #include "battle/common/move/UseItem.inc.c"
 
 EvtScript N(EVS_UseItem) = {
-    EVT_SET_CONST(LVarA, ITEM_DIZZY_DIAL) //@bug should be ITEM_PLEASE_COME_BACK
+    EVT_SET_CONST(LVarA, ITEM_PLEASE_COME_BACK) //@bug should be ITEM_PLEASE_COME_BACK
     EVT_EXEC_WAIT(N(UseItemWithEffect))
     EVT_CALL(SetGoalToHome, ACTOR_PLAYER)
     EVT_CALL(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_Mario1_Fall, ANIM_Mario1_Land)
