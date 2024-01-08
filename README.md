@@ -20,7 +20,7 @@ Configuration is located in [src/dx/config.h](src/dx/config.h).
     - You can call [`debug_backtrace()`](src/dx/backtrace.h) to print a backtrace in any function.
     - Failed assertions (`ASSERT`) will trigger the crash screen and print a backtrace instead of hanging.
 - `assets/star_rod_build` directory for Star Rod to write assets to.
-- Fixed many bugs / incorrect behaviour (e.g. ).
+- Fixed many bugs / incorrect behaviour.
 - Additional features configured in [src/dx/config.h](src/dx/config.h):
     - `DX_DEBUG_MENU` - Enables a debug menu. Navigate with the D-pad (D-L for back, D-R for open, D-U/D-D for up/down).
     - `DX_SKIP_LOGOS` - Skips the logos at the start of the game.
