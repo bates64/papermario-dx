@@ -9,7 +9,9 @@ EvtScript N(EVS_EndPeachChapter6) = {
     EVT_CALL(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     EVT_CALL(GotoMapSpecial, EVT_PTR("flo_00"), flo_00_ENTRY_A, TRANSITION_END_PEACH_INTERLUDE)
     EVT_WAIT(100)
-}; //@bug script not properly terminated
+    EVT_RETURN
+    EVT_END
+};
 
 EvtScript N(EVS_ExitDoors_kkj_22_1) = {
     EVT_SET_GROUP(EVT_GROUP_1B)

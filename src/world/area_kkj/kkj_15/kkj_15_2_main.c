@@ -28,7 +28,9 @@ EvtScript N(EVS_EndPeachChapter0) = {
     EVT_CALL(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_10"), kmr_10_ENTRY_0, TRANSITION_END_PEACH_INTERLUDE)
     EVT_WAIT(100)
-}; //@bug script not properly terminated
+    EVT_RETURN
+    EVT_END
+};
 
 EvtScript N(EVS_EndPeachChapter1) = {
     EVT_SET(LVar0, GB_KKJ_LastPartner)
@@ -36,7 +38,9 @@ EvtScript N(EVS_EndPeachChapter1) = {
     EVT_CALL(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     EVT_CALL(GotoMapSpecial, EVT_PTR("trd_00"), trd_00_ENTRY_5, TRANSITION_END_PEACH_INTERLUDE)
     EVT_WAIT(100)
-}; //@bug script not properly terminated
+    EVT_RETURN
+    EVT_END
+};
 
 EvtScript N(EVS_EndPeachChapter3) = {
     EVT_SET(LVar0, GB_KKJ_LastPartner)
@@ -44,7 +48,9 @@ EvtScript N(EVS_EndPeachChapter3) = {
     EVT_CALL(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     EVT_CALL(GotoMapSpecial, EVT_PTR("arn_07"), arn_07_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
     EVT_WAIT(100)
-}; //@bug script not properly terminated
+    EVT_RETURN
+    EVT_END
+};
 
 EvtScript N(EVS_ExitDoor_kkj_11_3) = {
     EVT_SET_GROUP(EVT_GROUP_1B)

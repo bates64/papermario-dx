@@ -140,7 +140,7 @@ EvtScript N(EVS_ManageShaking) = {
                 EVT_SET(MV_DestructState, DESTRUCT_STATE_TREMBLE)
             EVT_CASE_EQ(DESTRUCT_STATE_4)
                 EVT_USE_BUF(EVT_PTR(N(ArenaExplosions)))
-                EVT_LOOP(1 + ARRAY_COUNT(N(ArenaExplosions))) //@bug extra iteration reads garbage
+                EVT_LOOP(ARRAY_COUNT(N(ArenaExplosions)))
                     EVT_BUF_READ4(LVar0, LVar1, LVar2, LVar3)
                     EVT_FBUF_READ2(LVar4, LVar5)
                     EVT_CALL(PlaySoundAt, SOUND_SEQ_FINALE_EXPLOSION, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)

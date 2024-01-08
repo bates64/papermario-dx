@@ -34,11 +34,12 @@ EvtScript N(EVS_PlayBridgeAnimation) = {
     EVT_END
 };
 
-//@bug exit to 'Save and Continue?' map is not properly terminated!
 EvtScript N(EVS_BadExit_kmr_24_0) = {
     EVT_CALL(FadeOutMusic, 0, 1500)
     EVT_CALL(GotoMapSpecial, EVT_PTR("kmr_24"), kmr_24_ENTRY_0, TRANSITION_MARIO_BLACK)
     EVT_WAIT(100)
+    EVT_RETURN
+    EVT_END
 };
 
 EvtScript N(EVS_ExitWalk_kmr_12_1) = {
