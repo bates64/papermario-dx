@@ -143,7 +143,11 @@ s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
             u32 rowMask = *data++;
 
             for (j = 0; j < 6; j++) {
-                *ptr++ = (bit & rowMask) ? 0xFFFF : 1;
+                if (bit & rowMask) {
+                    *ptr++ = 0xFFFF; // white
+                } else {
+                    ptr++; // dont draw
+                }
                 bit >>= 1;
             }
 
@@ -328,7 +332,7 @@ void crash_screen_draw(OSThread* faultedThread) {
     s32 x = 10;
     s32 y = 0;
 
-    //crash_screen_draw_rect(25, 20, 270, 25);
+    crash_screen_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     if (crashScreenAssertMessage[0] == '\0' || crashScreenAssertLocation[0] == '\0') {
         crash_screen_printf_proportional(x, y += 10, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
