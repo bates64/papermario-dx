@@ -17,8 +17,8 @@ BSS s32 spr_playerMaxComponents;
 BSS s32 D_802DF584; // unused?
 BSS PlayerCurrentAnimInfo spr_playerCurrentAnimInfo[3];
 BSS s32 D_802DF5AC; // unused?
-BSS SpriteAnimData* NpcSpriteData[234];
-BSS u8 NpcSpriteInstanceCount[234];
+BSS SpriteAnimData* NpcSpriteData[255];
+BSS u8 NpcSpriteInstanceCount[255];
 BSS s32 D_802DFA44; // unused?
 BSS SpriteInstance SpriteInstances[51];
 BSS Quad* D_802DFE44;
