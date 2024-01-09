@@ -85,8 +85,8 @@ void state_step_startup(void) {
 #if DX_SKIP_LOGOS
 # if DX_SKIP_TITLE
     if (fio_load_game(0)) {
-        set_game_mode(GAME_MODE_WORLD);
-        return;
+        //set_game_mode(GAME_MODE_WORLD);
+        //return;
     }
 # endif
     set_game_mode(GAME_MODE_TITLE_SCREEN);
