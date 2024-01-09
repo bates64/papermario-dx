@@ -332,7 +332,7 @@ Gfx SolidCombineModes[][5] = {
         [TINT_COMBINE_DEPTH]    gsDPSetCombineMode(PM_CC_ALT_INTERFERENCE, G_CC_MODULATEIA2),
         [TINT_COMBINE_REMAP]    gsDPSetCombineMode(PM_CC_ALT_INTERFERENCE, PM_CC_1B),
     },
-    
+
     // shaded color multiplied main/aux textures for alpha
     [TEX_COMBINE_3] {
         [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_26, PM_CC_27),
@@ -1400,7 +1400,7 @@ void appendGfx_model(void* data) {
 
     renderMode = model->renderMode;
     tintCombineType = 0;
-    
+
     if (textureHeader != NULL) {
         switch (extraTileType) {
             case EXTRA_TILE_NONE:
@@ -1418,7 +1418,7 @@ void appendGfx_model(void* data) {
     } else {
         renderClass = RENDER_CLASS_1CYC;
     }
-    
+
     if (textureHeader != NULL || renderMode <= RENDER_MODES_LAST_OPAQUE) {
         if (gFogSettings->enabled && !(flags & MODEL_FLAG_IGNORE_FOG)) {
             renderClass = RENDER_CLASS_FOG;
@@ -2147,6 +2147,7 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
 
     if (romOffset >= startOffset + 0x40000) {
         // did not find the texture with `textureName`
+        osSyncPrintf("could not find texture '%s'\n", textureName);
         (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
         return;
     }
