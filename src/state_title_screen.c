@@ -3,6 +3,8 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "game_modes.h"
+#include "fio.h"
+#include "dx/config.h"
 
 #if VERSION_JP
 #define TITLE_WIDTH 272
@@ -195,6 +197,12 @@ void state_step_title_screen(void) {
 
     set_curtain_scale(1.0f);
     set_curtain_fade(0.0f);
+
+#if DX_SKIP_TITLE
+    gGameStatusPtr->startupState = TITLE_STATE_EXIT;
+    TitleScreenNextState = NEXT_STATE_FILE_SELECT;
+    TitleScreen_TimeLeft = 0;
+#endif
 
     if (TitleScreen_TimeLeft > 0) {
         TitleScreen_TimeLeft--;
