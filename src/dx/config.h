@@ -23,4 +23,7 @@
 /// Story progress when starting a new game.
 #define NEW_GAME_STORY_PROGRESS STORY_INTRO
 
+/// Enables an FPS counter in the corner of the screen.
+#define DX_FPS_COUNTER 1
+
 #endif

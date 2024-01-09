@@ -154,6 +154,38 @@ void step_game_loop(void) {
     rand_int(1);
 }
 
+/// Calculates the average FPS over the last 30 frames and draws it to the screen.
+void fps_tick(void) {
+#if DX_FPS_COUNTER
+    static OSTime ring[30] = {0};
+    static size_t ringPos = 0;
+
+    ring[ringPos] = osGetTime();
+
+    size_t i = ringPos;
+    OSTime deltaSum = 0;
+    while (TRUE) {
+        size_t prev = i == 0 ? ARRAY_COUNT(ring) - 1 : i - 1;
+        if (prev == ringPos) break; // We've looped around the ring
+
+        OSTime delta = ring[i] - ring[prev];
+        deltaSum += delta;
+
+        i = prev;
+    }
+
+    if (++ringPos >= ARRAY_COUNT(ring)) {
+        ringPos = 0;
+    }
+
+    u64 us = OS_CYCLES_TO_USEC(deltaSum / ARRAY_COUNT(ring));
+    u64 ms = us / 1000;
+    u64 fps = 1000000 / us;
+
+    draw_number(fps, 35, 25, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+#endif
+}
+
 void gfx_task_background(void) {
     gDisplayContext = &D_80164000[gCurrentDisplayContextIndex];
     gMainGfxPos = &gDisplayContext->backgroundGfx[0];
@@ -204,6 +236,8 @@ void gfx_draw_frame(void) {
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
         render_frame(TRUE);
     }
+
+    fps_tick(); // must be before render_messages()
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS)
         && !(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI)
