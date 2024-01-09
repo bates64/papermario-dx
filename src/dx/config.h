@@ -14,4 +14,13 @@
 /// If a save file exists, the game will load it automatically, otherwise it will start a new game.
 #define DX_SKIP_FILE_SELECT 1
 
+/// Map to load when starting a new game.
+#define NEW_GAME_MAP_ID "kmr_20"
+
+/// Entry to use when starting a new game.
+#define NEW_GAME_ENTRY_ID kmr_20_ENTRY_0
+
+/// Story progress when starting a new game.
+#define NEW_GAME_STORY_PROGRESS STORY_INTRO
+
 #endif

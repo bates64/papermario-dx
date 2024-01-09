@@ -332,9 +332,8 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                     case 2:
                         clear_player_data();
                         clear_saved_variables();
-                        gGameStatusPtr->areaID = AREA_KMR;
-                        gGameStatusPtr->mapID = 11; //TODO hardcoded area/map IDs
-                        gGameStatusPtr->entryID = 0;
+                        get_map_IDs_by_name(NEW_GAME_MAP_ID, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID);
+                        gGameStatusPtr->entryID = NEW_GAME_ENTRY_ID;
                         evt_set_variable(NULL, GB_StoryProgress, STORY_INTRO);
 
                         slot2 = filemenu_menus[0]->selected;
