@@ -154,10 +154,10 @@ void step_game_loop(void) {
     rand_int(1);
 }
 
-/// Calculates the average FPS over the last 30 frames and draws it to the screen.
+/// Calculates the average FPS over a recent time period and draws it to the screen.
 void fps_tick(void) {
 #if DX_FPS_COUNTER
-    static OSTime ring[30] = {0};
+    static OSTime ring[60] = {0};
     static size_t ringPos = 0;
 
     ring[ringPos] = osGetTime();
@@ -179,10 +179,10 @@ void fps_tick(void) {
     }
 
     u64 us = OS_CYCLES_TO_USEC(deltaSum / ARRAY_COUNT(ring));
-    u64 ms = us / 1000;
     u64 fps = 1000000 / us;
 
-    draw_number(fps, 35, 25, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_number(us, 305, 190, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+    draw_number(fps, 305, 205, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
 #endif
 }
 
