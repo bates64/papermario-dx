@@ -830,6 +830,8 @@ class Configure:
                     },
                 )
                 build(entry.object_path, [bin_path], "bin")
+            elif seg.type == "a":
+                build(entry.object_path, entry.src_paths, "cp")
             elif seg.type == "pm_sprites":
                 assert entry.object_path is not None
 
