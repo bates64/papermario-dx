@@ -202,9 +202,9 @@
 
 #ifndef PERMUTER
 #ifndef M2CTX
+/// packed format, @see evt.c UNPACK_LINE
 #define EVT_CMD(opcode, argv...) \
-    opcode, \
-    (sizeof((Bytecode[]){argv})/sizeof(Bytecode)), \
+    opcode | ((sizeof((Bytecode[]){argv})/sizeof(Bytecode))) << 24, \
     ##argv
 #else
 // This definition that passes in 0 for the number of args is used for pycparser since it can't handle varargs

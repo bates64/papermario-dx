@@ -1,6 +1,13 @@
 #include "common.h"
 #include "hud_element.h"
 
+#define UNPACK_LINE(expr, opcode, nargs) \
+    do { \
+        Bytecode bc = (expr); \
+        (opcode) = bc & 0x000000FF; \
+        (nargs) = (bc & 0xFF000000) >> 24; \
+    } while (0)
+
 s32 gStaticScriptCounter = 1;
 s32 gIsUpdatingScripts = 0;
 f32 gGlobalTimeSpace = 1.0f;
@@ -149,16 +156,15 @@ void find_script_labels(Evt* script) {
     j = 0;
     curLine = script->ptrNextLine;
     while (j < ARRAY_COUNT(script->labelIndices)) {
-        type = *curLine++;
-        numArgs = *curLine++;
+        UNPACK_LINE(*curLine++, type, numArgs);
         label = *curLine;
         curLine += numArgs;
 
-        if (type == 1) {
+        if (type == EVT_OP_END) {
             return;
         }
 
-        if (type == 3) {
+        if (type == EVT_OP_LABEL) {
             script->labelIndices[j] = label;
             script->labelPositions[j] = curLine;
             j++;

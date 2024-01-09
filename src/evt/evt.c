@@ -5,6 +5,13 @@ extern s32* gMapVars;
 
 extern char evtDebugPrintBuffer[0x100];
 
+#define UNPACK_LINE(expr, opcode, nargs) \
+    do { \
+        Bytecode bc = (expr); \
+        (opcode) = bc & 0x000000FF; \
+        (nargs) = (bc & 0xFF000000) >> 24; \
+    } while (0)
+
 Bytecode* evt_find_label(Evt* script, s32 arg1);
 Bytecode* evt_skip_if(Evt* script);
 Bytecode* evt_skip_else(Evt* script);
@@ -1173,8 +1180,7 @@ ApiStatus evt_handle_thread(Evt* script) {
     Bytecode* startLine = script->ptrNextLine;
     Bytecode* endLine = startLine;
     do {
-        opcode = *endLine++;
-        nargs = *endLine++;
+        UNPACK_LINE(*endLine++, opcode, nargs);
         endLine += nargs;
     } while (opcode != EVT_OP_END_THREAD);
 
@@ -1210,8 +1216,7 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     Bytecode* startLine = script->ptrNextLine;
     Bytecode* endLine = startLine;
     do {
-        opcode = *endLine++;
-        nargs = *endLine++;
+        UNPACK_LINE(*endLine++, opcode, nargs);
         endLine += nargs;
     } while (opcode != EVT_OP_END_CHILD_THREAD);
 
@@ -1375,8 +1380,7 @@ s32 evt_execute_next_command(Evt* script) {
             case EVT_OP_INTERNAL_FETCH:
                 script->ptrCurLine = script->ptrNextLine;
                 lines = script->ptrNextLine;
-                script->curOpcode = *lines++;
-                nargs = *lines++;
+                UNPACK_LINE(*lines++, script->curOpcode, nargs);
                 script->ptrReadPos = lines;
                 script->blocked = FALSE;
                 script->curArgc = nargs;
@@ -2058,8 +2062,7 @@ Bytecode* evt_skip_if(Evt* script) {
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = *pos++;
+        UNPACK_LINE(*pos++, opcode, nargs);
         pos += nargs;
 
         switch (opcode) {
@@ -2097,8 +2100,7 @@ Bytecode* evt_skip_else(Evt* script) {
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = *pos++;
+        UNPACK_LINE(*pos++, opcode, nargs);
         pos += nargs;
 
         switch (opcode) {
@@ -2141,15 +2143,15 @@ Bytecode* evt_skip_else(Evt* script) {
 Bytecode* evt_goto_end_case(Evt* script) {
     s32 switchDepth = 1;
     Bytecode* pos = script->ptrNextLine;
-    s32* opcode;
-    s32* nargs;
+    s32 opcode;
+    s32 nargs;
 
     do {
-        opcode = pos++;
-        nargs = pos++;
-        pos += *nargs;
+        Bytecode* bc = pos++;
+        UNPACK_LINE(bc, opcode, nargs);
+        pos += nargs;
 
-        switch (*opcode) {
+        switch (opcode) {
             case EVT_OP_END:
                 PANIC();
                 break;
@@ -2159,7 +2161,7 @@ Bytecode* evt_goto_end_case(Evt* script) {
             case EVT_OP_END_SWITCH:
                 switchDepth--;
                 if (switchDepth == 0) {
-                    return opcode;
+                    return bc;
                 }
                 break;
         }
@@ -2169,15 +2171,15 @@ Bytecode* evt_goto_end_case(Evt* script) {
 Bytecode* evt_goto_next_case(Evt* script) {
     s32 switchDepth = 1;
     Bytecode* pos = script->ptrNextLine;
-    s32* opcode;
-    s32* nargs;
+    s32 opcode;
+    s32 nargs;
 
     do {
-        opcode = pos++;
-        nargs = pos++;
-        pos += *nargs;
+        Bytecode* bc = pos++;
+        UNPACK_LINE(bc, opcode, nargs);
+        pos += nargs;
 
-        switch (*opcode) {
+        switch (opcode) {
             case EVT_OP_END:
                 PANIC();
                 break;
@@ -2187,7 +2189,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
             case EVT_OP_END_SWITCH:
                 switchDepth--;
                 if (switchDepth == 0) {
-                    return opcode;
+                    return bc;
                 }
                 break;
             case EVT_OP_CASE_EQ:
@@ -2202,7 +2204,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
             case EVT_OP_END_CASE_GROUP:
             case EVT_OP_CASE_RANGE:
                 if (switchDepth == 1) {
-                    return opcode;
+                    return bc;
                 }
                 break;
         }
@@ -2216,8 +2218,7 @@ Bytecode* evt_goto_end_loop(Evt* script) {
     s32 nargs;
 
     do {
-        opcode = *pos++;
-        nargs = *pos++;
+        UNPACK_LINE(*pos++, opcode, nargs);
         pos += nargs;
 
         switch (opcode) {
