@@ -494,6 +494,7 @@ class Configure:
         built_objects = set()
         generated_code = []
         inc_img_bins = []
+        precompiled_header_path = self.build_path() / "include" / "precompiled.h.gch"
 
         def build(
             object_paths: Union[Path, List[Path]],
@@ -536,6 +537,8 @@ class Configure:
                 elif task in ["cc", "cxx", "cc_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
+                    if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
+                        implicit.append(str(precompiled_header_path))
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -611,6 +614,8 @@ class Configure:
             ],
             "actor_types",
         )
+
+        build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
 
         import splat
 
@@ -715,6 +720,7 @@ class Configure:
                             "cppflags": f"-DVERSION_{self.version.upper()}",
                             "iconv": iconv,
                         },
+
                     )
 
                 # images embedded inside data aren't linked, but they do need to be built into .bin files
