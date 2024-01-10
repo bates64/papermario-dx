@@ -2,6 +2,7 @@
 #include "nu/nusys.h"
 #include "nu/nualsgi.h"
 #include "audio.h"
+#include "dx/profiling.h"
 
 NOP_FIX
 
@@ -140,7 +141,9 @@ void nuAuMgr(void* arg) {
                     nuAuTasks[cmdListIndex].msgQ = &auRtnMesgQ;
                     nuAuTasks[cmdListIndex].list.t.data_ptr = (u64*)cmdListBuf;
                     nuAuTasks[cmdListIndex].list.t.data_size = (cmdListAfter_ptr - cmdListBuf) * sizeof(Acmd);
+                    profiler_rsp_started(PROFILER_RSP_AUDIO);
                     osSendMesg(&nusched.audioRequestMQ, &nuAuTasks[cmdListIndex], OS_MESG_BLOCK);
+                    profiler_rsp_completed(PROFILER_RSP_AUDIO);
                     nuAuCleanDMABuffers();
                     osRecvMesg(&auRtnMesgQ, NULL, 1);
                     if (++bufferIndex == 3) {
@@ -150,8 +153,10 @@ void nuAuMgr(void* arg) {
                         cmdListIndex = 0;
                     }
                 }
+                profiler_audio_started(); // XXX: is this the right place?
                 if (osAiGetStatus() & AI_STATUS_FIFO_FULL) {
                     cond = FALSE;
+                    profiler_audio_completed();
                     continue;
                 }
                 sampleSize = osAiGetLength() >> 2;
@@ -181,6 +186,7 @@ void nuAuMgr(void* arg) {
                 nuAuPreNMI++;
                 break;
         }
+        profiler_audio_completed();
     }
 }
 

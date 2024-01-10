@@ -87,12 +87,19 @@ void step_game_loop(void) {
     mdl_reset_transform_flags();
     npc_iter_no_op();
     update_workers();
+    profiler_update(PROFILER_TIME_WORKERS, 0);
     update_triggers();
+    profiler_update(PROFILER_TIME_TRIGGERS, 0);
     update_scripts();
+    profiler_update(PROFILER_TIME_EVT, 0);
     update_messages();
+    profiler_update(PROFILER_TIME_MESSAGES, 0);
     update_hud_elements();
+    profiler_update(PROFILER_TIME_HUD_ELEMENTS, 0);
     step_current_game_mode();
+    profiler_update(PROFILER_TIME_STEP_GAME_MODE, 0);
     update_entities();
+    profiler_update(PROFILER_TIME_ENTITIES, 0);
     func_80138198();
     bgm_update_music_settings();
     update_ambient_sounds();
@@ -279,6 +286,7 @@ void gfx_draw_frame(void) {
         }
     }
 
+    profiler_update(PROFILER_TIME_GFX, 0);
     fps_tick();
     profiler_print_times();
 

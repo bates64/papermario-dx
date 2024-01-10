@@ -1,5 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
+#include "dx/profiling.h"
 
 //
 // Start of libultra BSS
@@ -123,6 +124,10 @@ extern IMG_BIN ResetTilesImg[];
 SHIFT_BSS u16* ResetFrameBufferArray;
 SHIFT_BSS u16* nuGfxZBuffer;
 
+void gfx_task_end_callback(void* unk) {
+    profiler_rsp_completed(PROFILER_RSP_GFX);
+}
+
 void boot_main(void* data) {
 #if VERSION_JP
     if (osTvType == OS_TV_NTSC) {
@@ -162,6 +167,7 @@ void boot_main(void* data) {
 
     nuGfxFuncSet((NUGfxFunc) gfxRetrace_Callback);
     nuGfxPreNMIFuncSet(gfxPreNMI_Callback);
+    nuGfxTaskEndFunc = gfx_task_end_callback;
     gRandSeed += osGetCount();
     nuGfxDisplayOn();
 
@@ -169,6 +175,7 @@ void boot_main(void* data) {
 }
 
 void gfxRetrace_Callback(s32 gfxTaskNum) {
+    profiler_rsp_started(PROFILER_RSP_GFX);
     if (ResetGameState != RESET_STATE_NONE) {
         if (ResetGameState == RESET_STATE_INIT) {
             nuGfxTaskAllEndWait();

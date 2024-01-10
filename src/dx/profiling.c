@@ -2,6 +2,7 @@
 
 #include "profiling.h"
 #include "dx/debug_menu.h"
+#include "game_modes.h"
 
 #ifdef USE_PROFILER
 
@@ -235,7 +236,7 @@ void profiler_print_times() {
     update_rdp_timers();
 
 #ifndef PUPPYPRINT_DEBUG
-    static u8 show_profiler = 0;
+    static u8 show_profiler = 1;
     if ((gPlayerStatus.pressedButtons & (L_TRIG | U_JPAD)) && (gPlayerStatus.curButtons & L_TRIG) && (gPlayerStatus.curButtons & U_JPAD)) {
         show_profiler ^= 1;
     }
@@ -259,26 +260,68 @@ void profiler_print_times() {
         u32 total_rsp = microseconds[PROFILER_TIME_RSP_GFX] + microseconds[PROFILER_TIME_RSP_AUDIO] * 2;
         u32 max_rdp = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
 
-        sprintf(text_buffer,
+        s32 text_buffer_len = sprintf(text_buffer,
             "    " // space for prepend
             "FPS: %5.2f\n"
-            "\n"
             "CPU\t\t%d (%d%%)\n"
             " Input\t\t%d\n"
-#ifdef PUPPYPRINT_DEBUG
-            " Collision\t\t%d\n"
-#else
-            " Dynamic\t\t%d\n"
-#endif
-            " Mario\t\t\t%d\n"
-            " Behavior\t\t%d\n"
-            " Graph\t\t%d\n"
-            " Audio\t\t\t%d\n"
-#ifdef PUPPYPRINT_DEBUG
-            " Camera\t\t%d\n"
-#endif
-            "\n"
-            "RDP\t\t%d (%d%%)\n"
+            " Workers\t\t%d\n"
+            " Triggers\t\t\t%d\n"
+            " EVT\t\t%d\n"
+            " Messages\t\t%d\n"
+            " HUD elements\t\t\t%d\n"
+            " Entities\t\t%d\n"
+            " Gfx\t\t\t%d\n"
+            " Audio\t\t\t%d\n",
+            1000000.0f / microseconds[PROFILER_TIME_FPS],
+            total_cpu, total_cpu / 333,
+            microseconds[PROFILER_TIME_CONTROLLERS],
+            microseconds[PROFILER_TIME_WORKERS],
+            microseconds[PROFILER_TIME_TRIGGERS],
+            microseconds[PROFILER_TIME_EVT],
+            microseconds[PROFILER_TIME_MESSAGES],
+            microseconds[PROFILER_TIME_HUD_ELEMENTS],
+            microseconds[PROFILER_TIME_ENTITIES],
+            microseconds[PROFILER_TIME_GFX],
+            microseconds[PROFILER_TIME_AUDIO] * 2 // audio is 60Hz, so double the average
+        );
+
+        switch (get_game_mode()) {
+            case GAME_MODE_WORLD:
+                sprintf(&text_buffer[text_buffer_len],
+                    " Encounters %d\n"
+                    " NPCs %d\n"
+                    " Player %d\n"
+                    " Item entities %d\n"
+                    " Effects %d\n"
+                    " Cameras %d\n",
+                    microseconds[PROFILE_TIME_WORLD_ENCOUNTERS],
+                    microseconds[PROFILE_TIME_WORLD_NPCS],
+                    microseconds[PROFILE_TIME_WORLD_PLAYER],
+                    microseconds[PROFILE_TIME_WORLD_ITEM_ENTITIES],
+                    microseconds[PROFILE_TIME_WORLD_EFFECTS],
+                    microseconds[PROFILE_TIME_WORLD_CAMERAS]
+                );
+                break;
+            default:
+                sprintf(&text_buffer[text_buffer_len],
+                    " Game mode step %d\n",
+                    microseconds[PROFILER_TIME_STEP_GAME_MODE]
+                );
+                break;
+        }
+
+        dx_string_to_msg(&text_buffer, &text_buffer);
+        text_buffer[0] = MSG_CHAR_READ_FUNCTION;
+        text_buffer[1] = MSG_READ_FUNC_SIZE;
+        text_buffer[2] = 14;
+        text_buffer[3] = 14;
+        draw_msg((s32)&text_buffer, 3, 0, 255, 0, 0);
+
+        sprintf(text_buffer,
+            "    " // space for prepend
+            "\n\n"
+            "RDP\t\t\t%d (%d%%)\n"
             " Tmem\t\t\t%d\n"
             " Cmd\t\t\t%d\n"
             " Pipe\t\t\t%d\n"
@@ -286,21 +329,6 @@ void profiler_print_times() {
             "RSP\t\t%d (%d%%)\n"
             " Gfx\t\t\t%d\n"
             " Audio\t\t\t%d\n",
-            1000000.0f / microseconds[PROFILER_TIME_FPS],
-            total_cpu, total_cpu / 333,
-            microseconds[PROFILER_TIME_CONTROLLERS],
-#ifdef PUPPYPRINT_DEBUG
-            microseconds[PROFILER_TIME_COLLISION],
-#else
-            microseconds[PROFILER_TIME_DYNAMIC],
-#endif
-            microseconds[PROFILER_TIME_MARIO],
-            microseconds[PROFILER_TIME_BEHAVIOR_BEFORE_MARIO] + microseconds[PROFILER_TIME_BEHAVIOR_AFTER_MARIO],
-            microseconds[PROFILER_TIME_GFX],
-            microseconds[PROFILER_TIME_AUDIO] * 2, // audio is 60Hz, so double the average
-#ifdef PUPPYPRINT_DEBUG
-            microseconds[PROFILER_TIME_CAMERA],
-#endif
             max_rdp, max_rdp / 333,
             microseconds[PROFILER_TIME_TMEM],
             microseconds[PROFILER_TIME_CMD],
@@ -312,9 +340,9 @@ void profiler_print_times() {
         dx_string_to_msg(&text_buffer, &text_buffer);
         text_buffer[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer[1] = MSG_READ_FUNC_SIZE;
-        text_buffer[2] = 14;
-        text_buffer[3] = 14;
-        draw_msg((s32)&text_buffer, 3, 0, 255, 0, 0);
+        text_buffer[2] = 16;
+        text_buffer[3] = 16;
+        draw_msg((s32)&text_buffer, SCREEN_WIDTH/2, 0, 255, 0, 0);
     }
 }
 
