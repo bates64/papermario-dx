@@ -70,9 +70,14 @@
 #endif
 
 #define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
+#define PANIC_MSG(msg) IS_DEBUG_PANIC("Panic: " msg, __FILE__, __LINE__, __func__)
 #define ASSERT(condition) \
     if (!(condition)) { \
         IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__, __func__); \
+    }
+#define ASSERT_MSG(condition, msg) \
+    if (!(condition)) { \
+        PANIC_MSG(msg); \
     }
 
 #define BADGE_MENU_PAGE(index) (&gPauseBadgesPages[index])
