@@ -23,9 +23,6 @@
 /// Story progress when starting a new game.
 #define NEW_GAME_STORY_PROGRESS STORY_INTRO
 
-/// Enables an FPS counter in the corner of the screen.
-#define DX_FPS_COUNTER 1
-
 /// Enables the profiler, which shows lots of performance info on screen.
 /// Press L + D-Pad Up to show/hide the profiler.
 #define USE_PROFILER 1

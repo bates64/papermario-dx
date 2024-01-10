@@ -166,38 +166,6 @@ void step_game_loop(void) {
     rand_int(1);
 }
 
-/// Calculates the average FPS over a recent time period and draws it to the screen.
-void fps_tick(void) {
-#if DX_FPS_COUNTER
-    static OSTime ring[60] = {0};
-    static size_t ringPos = 0;
-
-    ring[ringPos] = osGetTime();
-
-    size_t i = ringPos;
-    OSTime deltaSum = 0;
-    while (TRUE) {
-        size_t prev = i == 0 ? ARRAY_COUNT(ring) - 1 : i - 1;
-        if (prev == ringPos) break; // We've looped around the ring
-
-        OSTime delta = ring[i] - ring[prev];
-        deltaSum += delta;
-
-        i = prev;
-    }
-
-    if (++ringPos >= ARRAY_COUNT(ring)) {
-        ringPos = 0;
-    }
-
-    u64 us = OS_CYCLES_TO_USEC(deltaSum / ARRAY_COUNT(ring));
-    u64 fps = 1000000 / us;
-
-    draw_number(us, 305, 190, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-    draw_number(fps, 305, 205, 1, MSG_PAL_STANDARD, 150, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-#endif
-}
-
 void gfx_task_background(void) {
     gDisplayContext = &D_80164000[gCurrentDisplayContextIndex];
     gMainGfxPos = &gDisplayContext->backgroundGfx[0];
@@ -287,7 +255,6 @@ void gfx_draw_frame(void) {
     }
 
     profiler_update(PROFILER_TIME_GFX, 0);
-    fps_tick();
     profiler_print_times();
 
 #if DX_DEBUG_MENU
