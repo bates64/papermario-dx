@@ -280,7 +280,7 @@ void profiler_print_times() {
     update_rdp_timers();
 
 #ifndef PUPPYPRINT_DEBUG
-    static u8 show_profiler = 1;
+    static u8 show_profiler = 0;
     if ((gPlayerStatus.pressedButtons & (L_TRIG | U_JPAD)) && (gPlayerStatus.curButtons & L_TRIG) && (gPlayerStatus.curButtons & U_JPAD)) {
         show_profiler ^= 1;
     }
