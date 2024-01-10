@@ -1272,6 +1272,7 @@ if __name__ == "__main__":
     args.debug = True
     args.modern_gcc = True
     args.non_matching = True
+    args.ccache = True
 
     exec_shell(["make", "-C", str(ROOT / args.splat)])
 
