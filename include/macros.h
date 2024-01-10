@@ -70,14 +70,21 @@
 #endif
 
 #define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
-#define PANIC_MSG(msg) IS_DEBUG_PANIC("Panic: " msg, __FILE__, __LINE__, __func__)
+#define PANIC_MSG(msg, args...) \
+    do { \
+        char panicMsg[0x30]; \
+        sprintf(panicMsg, msg, ##args); \
+        IS_DEBUG_PANIC(msg, __FILE__, __LINE__, __func__); \
+    } while (0)
 #define ASSERT(condition) \
     if (!(condition)) { \
         IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__, __func__); \
     }
-#define ASSERT_MSG(condition, msg) \
+#define ASSERT_MSG(condition, msg, args...) \
     if (!(condition)) { \
-        PANIC_MSG(msg); \
+        char assertMsg[0x30]; \
+        sprintf(assertMsg, msg, ##args); \
+        IS_DEBUG_PANIC(assertMsg, __FILE__, __LINE__, __func__); \
     }
 
 #define BADGE_MENU_PAGE(index) (&gPauseBadgesPages[index])
@@ -492,5 +499,11 @@
 #endif
 
 #define DMA_COPY_SEGMENT(segment) dma_copy(segment##_ROM_START, segment##_ROM_END, segment##_VRAM)
+
+#ifdef MODERN_COMPILER
+#define nodiscard __attribute__((warn_unused_result))
+#else
+#define nodiscard
+#endif
 
 #endif

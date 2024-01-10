@@ -225,7 +225,7 @@ void state_step_demo(void) {
             }
             return;
         case DEMO_SCENE_WORLD:
-            get_map_IDs_by_name(demoSceneData->mapName, &areaID, &mapID);
+            get_map_IDs_by_name_checked(demoSceneData->mapName, &areaID, &mapID);
             gGameStatusPtr->areaID = areaID;
             gGameStatusPtr->mapID = mapID;
             gGameStatusPtr->entryID = demoSceneData->index;
@@ -243,7 +243,7 @@ void state_step_demo(void) {
             set_game_mode(GAME_MODE_ENTER_DEMO_WORLD);
             break;
         case DEMO_SCENE_PEACH:
-            get_map_IDs_by_name(demoSceneData->mapName, &areaID, &mapID);
+            get_map_IDs_by_name_checked(demoSceneData->mapName, &areaID, &mapID);
             gGameStatusPtr->areaID = areaID;
             gGameStatusPtr->mapID = mapID;
             gGameStatusPtr->entryID = demoSceneData->index;

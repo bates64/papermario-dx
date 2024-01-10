@@ -212,7 +212,7 @@ void dx_debug_menu_cb_gotomap_execute(void* arg) {
     // Get area/map id pair
     s16 areaID;
     s16 mapID;
-    get_map_IDs_by_name(map->id, &areaID, &mapID);
+    get_map_IDs_by_name_checked(map->id, &areaID, &mapID);
 
     // Go there
     gGameStatusPtr->areaID = areaID;

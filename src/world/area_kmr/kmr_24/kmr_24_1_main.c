@@ -30,7 +30,7 @@ API_CALLABLE(N(SaveAndContinue)) {
     u16 curEntry = gGameStatusPtr->entryID;
     // save with map being osr_03, entry 4
     u16 areaID, mapID;
-    get_map_IDs_by_name("osr_03", &areaID, &mapID);
+    get_map_IDs_by_name_checked("osr_03", &areaID, &mapID);
     gGameStatusPtr->areaID  = areaID;
     gGameStatusPtr->mapID   = mapID;
     gGameStatusPtr->entryID = osr_03_ENTRY_4;

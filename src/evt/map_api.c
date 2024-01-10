@@ -710,7 +710,7 @@ void goto_map(Evt* script, s32 mode) {
         areaID = evt_get_variable(script, *args++);
         mapID = evt_get_variable(script, *args++);
     } else {
-        get_map_IDs_by_name((char*)evt_get_variable(script, *args++), &areaID, &mapID);
+        get_map_IDs_by_name_checked((char*)evt_get_variable(script, *args++), &areaID, &mapID);
     }
 
     gGameStatusPtr->areaID = areaID;

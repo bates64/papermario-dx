@@ -113,6 +113,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     gGameStatusPtr->mapShop = NULL;
 
+    ASSERT_MSG(areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", areaID);
+    ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
     mapConfig = &gAreas[areaID].maps[mapID];
 
     sprintf(wMapShapeName, "%s_shape", mapConfig->id);
@@ -238,7 +240,7 @@ MapSettings* get_current_map_settings(void) {
     return &gMapSettings;
 }
 
-s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
+nodiscard s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     s32 i;
     s32 j;
     MapConfig* maps;
@@ -257,6 +259,10 @@ s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     return FALSE;
 }
 
+void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID) {
+    ASSERT_MSG(get_map_IDs_by_name(mapName, areaID, mapID), "Map not found: %s", mapName);
+}
+
 void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
@@ -268,6 +274,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
+        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *decompressedSize = curAsset->decompressedLength;
@@ -289,6 +296,7 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
+        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;

@@ -24,7 +24,8 @@
                 "VERSION_US",
                 "DEBUG",
                 "AVOID_UB",
-                "SHIFT"
+                "SHIFT",
+                "MODERN_COMPILER"
             ],
             "cStandard": "c23",
             "cppStandard": "c++17",

@@ -2148,7 +2148,7 @@ void btl_state_update_end_battle(void) {
 
                 btl_set_state(BATTLE_STATE_0);
                 gLastDrawBattleState = gBattleState;
-                get_map_IDs_by_name("gv_01", &areaID, &mapID);
+                get_map_IDs_by_name_checked("gv_01", &areaID, &mapID);
                 gGameStatusPtr->areaID = areaID;
                 gGameStatusPtr->mapID = mapID;
                 gGameStatusPtr->entryID = gv_01_ENTRY_0;
