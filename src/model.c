@@ -5,6 +5,7 @@
 #include "hud_element.h"
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
+#include "qsort.h"
 
 // models are rendered in two stages by the RDP:
 // (1) main and aux textures are combined in the color combiner
@@ -88,6 +89,12 @@ enum {
     RENDER_CLASS_FOG_SHROUD     = 6,
     RENDER_CLASS_1CYC_DEPTH     = 10,
     RENDER_CLASS_2CYC_DEPTH     = 11,
+};
+
+enum {
+    RENDER_TASK_LIST_NEAR, // dist < 800K
+    RENDER_TASK_LIST_MID,
+    RENDER_TASK_LIST_FAR, // dist >= 3M
 };
 
 #define WORLD_TEXTURE_MEMORY_SIZE 0x20000
@@ -1337,9 +1344,8 @@ SHIFT_BSS ModelNode* mtg_FoundModelNode;
 SHIFT_BSS u16 mtg_MinChild;
 SHIFT_BSS u16 mtg_MaxChild;
 SHIFT_BSS u16 mtg_SearchModelID;
-SHIFT_BSS RenderTask* RenderTaskLists[3];
-SHIFT_BSS s32 RenderTaskListIdx;
-SHIFT_BSS s32 RenderTaskCount;
+SHIFT_BSS RenderTask* RenderTaskLists[NUM_RENDER_TASK_LISTS];
+SHIFT_BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
 
 SHIFT_BSS TextureHandle TextureHandles[128];
 
@@ -4397,7 +4403,7 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
 // Every nonnegative value of `depthQueryID` must be unique within a frame, otherwise the result will corrupt the data
 //   of the previous query that shared the same ID.
 // Occlusion visibility checks are always one frame out of date, as they reference the previous frame's depth buffer.
-s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
+OPTIMIZE_OFAST s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 outX;
     f32 outY;
@@ -4553,27 +4559,22 @@ void clear_render_tasks(void) {
         RenderTaskLists[i] = ClearRenderTaskLists[i];
     }
 
-    RenderTaskListIdx = 0;
-    RenderTaskCount = 0;
-}
-
-void clear_render_tasks_alt(void) {
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(ClearRenderTaskLists); i++) {
-        RenderTaskLists[i] = ClearRenderTaskLists[i];
+    for (i = 0; i < ARRAY_COUNT(RenderTaskCount); i++) {
+        RenderTaskCount[i] = 0;
     }
-
-    RenderTaskListIdx = 0;
-    RenderTaskCount = 0;
 }
 
 RenderTask* queue_render_task(RenderTask* task) {
-    RenderTask* ret = RenderTaskLists[RenderTaskListIdx];
+    s32 dist = RenderTaskBasePriorities[task->renderMode] - task->dist;
+    s32 listIdx = RENDER_TASK_LIST_MID;
+    if (dist >= 3000000) listIdx = RENDER_TASK_LIST_FAR;
+    else if (dist < 800000) listIdx = RENDER_TASK_LIST_NEAR;
 
-    ASSERT(RenderTaskCount < ARRAY_COUNT(*ClearRenderTaskLists));
+    RenderTask* ret = RenderTaskLists[listIdx];
 
-    ret = &ret[RenderTaskCount++];
+    ASSERT(RenderTaskCount[listIdx] < ARRAY_COUNT(*ClearRenderTaskLists));
+
+    ret = &ret[RenderTaskCount[listIdx]++];
 
     ret->renderMode = RENDER_TASK_FLAG_ENABLED;
     if (task->renderMode == RENDER_MODE_CLOUD_NO_ZCMP) {
@@ -4582,85 +4583,47 @@ RenderTask* queue_render_task(RenderTask* task) {
 
     ret->appendGfxArg = task->appendGfxArg;
     ret->appendGfx = task->appendGfx;
-    ret->dist = RenderTaskBasePriorities[task->renderMode] - task->dist;
+    ret->dist = dist;
 
     return ret;
 }
 
-void execute_render_tasks(void) {
-    s32 i, j, taskCount;
-    s32 sorted[ARRAY_COUNT(*ClearRenderTaskLists)];
+OPTIMIZE_OFAST void execute_render_tasks(void) {
+    s32 i, j;
+    s32 sorteds[NUM_RENDER_TASK_LISTS][ARRAY_COUNT(*ClearRenderTaskLists)];
+    s32* sorted;
     RenderTask* taskList;
     RenderTask* task;
     RenderTask* task2;
     Matrix4f mtxFlipY;
     void (*appendGfx)(void*);
+    s32 tmp;
 
-    if (RenderTaskCount == 0) {
-        return;
-    }
-
-    for (i = taskCount = 0; i < RenderTaskCount; i++) {
-        sorted[taskCount++] = i;
-    }
-
-    // sort in ascending order
-    taskList = RenderTaskLists[RenderTaskListIdx];
-    for (i = 0; i < taskCount - 1; i++) {
-        for (j = i + 1; j < taskCount; j++) {
-            s32 t1 = sorted[i];
-            s32 t2 = sorted[j];
-            task = &taskList[t1];
-            task2 = &taskList[t2];
-            if (task->dist > task2->dist) {
-                sorted[i] = t2;
-                sorted[j] = t1;
-            }
+    for (s32 j = 0; j < ARRAY_COUNT(RenderTaskCount); j++) {
+        for (i = 0; i < RenderTaskCount[j]; i++) {
+            sorteds[j][i] = i;
         }
     }
+
+    // sort in ascending order of dist
+    taskList = RenderTaskLists[RENDER_TASK_LIST_MID];
+    sorted = &sorteds[RENDER_TASK_LIST_MID];
+#define LESS(i, j) taskList[sorted[i]].dist < taskList[sorted[j]].dist
+#define SWAP(i, j) tmp = sorted[i], sorted[i] = sorted[j], sorted[j] = tmp
+    QSORT(RenderTaskCount[RENDER_TASK_LIST_MID], LESS, SWAP);
 
     // tasks with dist >= 3M sort in descending order
-    taskList = RenderTaskLists[RenderTaskListIdx];
-    for (i = 0; i < taskCount - 1; i++) {
-        task = &taskList[sorted[i]];
-        if (task->dist >= 3000000) {
-            for (j = i + 1; j < taskCount; j++) {
-                s32 t1 = sorted[i];
-                s32 t2 = sorted[j];
-                task = &taskList[t1];
-                task2 = &taskList[t2];
-                if (task->dist < task2->dist) {
-                    sorted[i] = t2;
-                    sorted[j] = t1;
-                }
-            }
-        }
-    }
+    taskList = RenderTaskLists[RENDER_TASK_LIST_FAR];
+    sorted = &sorteds[RENDER_TASK_LIST_FAR];
+#define LESS(i, j) taskList[sorted[i]].dist > taskList[sorted[j]].dist
+    QSORT(RenderTaskCount[RENDER_TASK_LIST_FAR], LESS, SWAP);
 
     // tasks with dist <= 800k sort in descending order
-    taskList = RenderTaskLists[RenderTaskListIdx];
-    for (i = 0; i < taskCount - 1; i++) {
-        task = &taskList[sorted[i]];
-        if (task->dist > 800000) {
-            break;
-        }
-        for (j = i + 1; j < taskCount; j++) {
-            s32 t1 = sorted[i];
-            s32 t2 = sorted[j];
-            task = &taskList[t1];
-            task2 = &taskList[t2];
-            if (task2->dist > 800000) {
-                break;
-            }
-            if (task->dist < task2->dist) {
-                sorted[i] = t2;
-                sorted[j] = t1;
-            }
-        }
-    }
+    taskList = RenderTaskLists[RENDER_TASK_LIST_NEAR];
+    sorted = &sorteds[RENDER_TASK_LIST_NEAR];
+    QSORT(RenderTaskCount[RENDER_TASK_LIST_NEAR], LESS, SWAP);
 
-    gLastRenderTaskCount = taskCount;
-    taskList = RenderTaskLists[RenderTaskListIdx];
+    gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];
     if (gOverrideFlags & GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION) {
         Mtx* dispMtx;
         Gfx* savedGfxPos = NULL;
@@ -4668,36 +4631,38 @@ void execute_render_tasks(void) {
         guScaleF(mtxFlipY, 1.0f, -1.0f, 1.0f);
         guMtxF2L(mtxFlipY, &gDisplayContext->matrixStack[gMatrixListPos]);
         dispMtx = &gDisplayContext->matrixStack[gMatrixListPos++];
-        for (i = 0; i < taskCount; i++) {
-            task = &taskList[sorted[i]];
-            appendGfx = task->appendGfx;
+        for (j = 0; j < NUM_RENDER_TASK_LISTS; j++) {
+            for (i = 0; i < RenderTaskCount[j]; i++) {
+                task = &RenderTaskLists[j][sorteds[j][i]];
+                appendGfx = task->appendGfx;
 
-            if (task->renderMode & RENDER_TASK_FLAG_REFLECT_FLOOR) {
-                savedGfxPos = gMainGfxPos++;
-            }
+                if (task->renderMode & RENDER_TASK_FLAG_REFLECT_FLOOR) {
+                    savedGfxPos = gMainGfxPos++;
+                }
 
-            appendGfx(task->appendGfxArg);
+                appendGfx(task->appendGfxArg);
 
-            if (task->renderMode & RENDER_TASK_FLAG_REFLECT_FLOOR) {
-                gSPEndDisplayList(gMainGfxPos++);
-                gSPBranchList(savedGfxPos, gMainGfxPos);
-                gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
-                gSPMatrix(gMainGfxPos++, dispMtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-                gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
-                gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                if (task->renderMode & RENDER_TASK_FLAG_REFLECT_FLOOR) {
+                    gSPEndDisplayList(gMainGfxPos++);
+                    gSPBranchList(savedGfxPos, gMainGfxPos);
+                    gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
+                    gSPMatrix(gMainGfxPos++, dispMtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+                    gSPDisplayList(gMainGfxPos++, savedGfxPos + 1);
+                    gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+                }
             }
         }
     } else {
-        for (i = 0; i < taskCount; i++) {
-            task = &taskList[sorted[i]];
-            appendGfx = task->appendGfx;
-            appendGfx(task->appendGfxArg);
+        for (j = 0; j < NUM_RENDER_TASK_LISTS; j++) {
+            for (i = 0; i < RenderTaskCount[j]; i++) {
+                task = &RenderTaskLists[j][sorteds[j][i]];
+                appendGfx = task->appendGfx;
+                appendGfx(task->appendGfxArg);
+            }
         }
     }
 
-    RenderTaskListIdx++;
-    if (RenderTaskListIdx > ARRAY_COUNT(RenderTaskLists) - 1) {
-        RenderTaskListIdx = 0;
-    }
-    RenderTaskCount = 0;
+    RenderTaskCount[RENDER_TASK_LIST_MID] = 0;
+    RenderTaskCount[RENDER_TASK_LIST_FAR] = 0;
+    RenderTaskCount[RENDER_TASK_LIST_NEAR] = 0;
 }
