@@ -13,6 +13,9 @@
 #define AUDIO_PROFILING
 #endif
 
+/// Toggle this define to enable verbose graphics profiling.
+#define GFX_PROFILING
+
 #define OS_GET_COUNT_INLINE(x) asm volatile("mfc0 %0, $9" : "=r"(x): )
 
 #define PROFILING_BUFFER_SIZE 64
@@ -30,6 +33,22 @@
     PROFILER_TIME_SUB_AUDIO_UPDATE, \
     PROFILER_TIME_SUB_AUDIO_END
 
+#define GFX_SUBSET_ENTRIES \
+    PROFILER_TIME_SUB_GFX_START, \
+    PROFILER_TIME_SUB_GFX_UPDATE, \
+    PROFILER_TIME_SUB_GFX__DUMMY, /* fixes entities for some reason */ \
+    PROFILER_TIME_SUB_GFX_ENTITIES, \
+    PROFILER_TIME_SUB_GFX_MODELS, \
+    PROFILER_TIME_SUB_GFX_PLAYER, \
+    PROFILER_TIME_SUB_GFX_NPCS, \
+    PROFILER_TIME_SUB_GFX_WORKERS, \
+    PROFILER_TIME_SUB_GFX_EFFECTS, \
+    PROFILER_TIME_SUB_GFX_RENDER_TASKS, \
+    PROFILER_TIME_SUB_GFX_HUD_ELEMENTS, \
+    PROFILER_TIME_SUB_GFX_BACK_UI, \
+    PROFILER_TIME_SUB_GFX_FRONT_UI, \
+    PROFILER_TIME_SUB_GFX_END
+
 enum ProfilerTime {
     PROFILER_TIME_FPS,
     PROFILER_TIME_CONTROLLERS,
@@ -40,10 +59,15 @@ enum ProfilerTime {
     PROFILER_TIME_HUD_ELEMENTS,
     PROFILER_TIME_STEP_GAME_MODE,
     PROFILER_TIME_ENTITIES,
-    PROFILER_TIME_GFX,
 #ifdef PUPPYPRINT_DEBUG
     PROFILER_TIME_PUPPYPRINT1,
     PROFILER_TIME_PUPPYPRINT2,
+#endif
+#ifdef GFX_PROFILING
+    GFX_SUBSET_ENTRIES,
+    PROFILER_TIME_GFX = PROFILER_TIME_SUB_GFX_END,
+#else
+    PROFILER_TIME_GFX,
 #endif
 #ifdef AUDIO_PROFILING
     AUDIO_SUBSET_ENTRIES,
@@ -104,6 +128,8 @@ void profiler_frame_setup();
 void profiler_rsp_started(enum ProfilerRSPTime which);
 void profiler_rsp_completed(enum ProfilerRSPTime which);
 void profiler_rsp_resumed();
+void profiler_gfx_started();
+void profiler_gfx_completed();
 void profiler_audio_started();
 void profiler_audio_completed();
 #ifdef PUPPYPRINT_DEBUG
@@ -144,6 +170,60 @@ static ALWAYS_INLINE void profiler_rsp_yielded() {
 #define profiler_get_cpu_microseconds() 0
 #define profiler_get_rsp_microseconds() 0
 #define profiler_get_rdp_microseconds() 0
+#endif
+
+#ifdef GFX_PROFILING
+#define GFX_SUBSET_SIZE PROFILER_TIME_SUB_GFX_END - PROFILER_TIME_SUB_GFX_START
+extern u32 gfx_subset_starts[GFX_SUBSET_SIZE];
+extern u32 gfx_subset_tallies[GFX_SUBSET_SIZE];
+
+static ALWAYS_INLINE void profiler_gfx_subset_switch_func(enum ProfilerTime complete, enum ProfilerTime start) {
+    u32 time;
+    OS_GET_COUNT_INLINE(time);
+
+    gfx_subset_tallies[complete] += time - gfx_subset_starts[complete];
+    gfx_subset_starts[start] = time;
+}
+
+static ALWAYS_INLINE void profiler_gfx_subset_complete_and_switch_func(enum ProfilerTime complete1, enum ProfilerTime complete2, enum ProfilerTime start) {
+    u32 time;
+    OS_GET_COUNT_INLINE(time);
+
+    gfx_subset_tallies[complete1] += time - gfx_subset_starts[complete1];
+    gfx_subset_tallies[complete2] += time - gfx_subset_starts[complete2];
+    gfx_subset_starts[start] = time;
+}
+
+static ALWAYS_INLINE void profiler_gfx_subset_start_shared_func(enum ProfilerTime first, enum ProfilerTime new) {
+    gfx_subset_starts[new] = gfx_subset_starts[first];
+}
+
+static ALWAYS_INLINE void profiler_gfx_subset_start_func(enum ProfilerTime index) {
+    OS_GET_COUNT_INLINE(gfx_subset_starts[index]);
+}
+
+static ALWAYS_INLINE void profiler_gfx_subset_complete_func(enum ProfilerTime index) {
+    u32 time;
+    OS_GET_COUNT_INLINE(time);
+
+    gfx_subset_tallies[index] += time - gfx_subset_starts[index];
+}
+
+#define GFX_PROFILER_SWITCH(complete, begin) profiler_gfx_subset_switch_func(complete - PROFILER_TIME_SUB_GFX_START, begin - PROFILER_TIME_SUB_GFX_START)
+#define GFX_PROFILER_COMPLETE_AND_SWITCH(complete1, complete2, begin) profiler_gfx_subset_complete_and_switch_func(complete1 - PROFILER_TIME_SUB_GFX_START, \
+    complete2 - PROFILER_TIME_SUB_GFX_START, begin - PROFILER_TIME_SUB_GFX_START)
+#define GFX_PROFILER_START_SHARED(first, new) profiler_gfx_subset_start_shared_func(first - PROFILER_TIME_SUB_GFX_START, new - PROFILER_TIME_SUB_GFX_START)
+#define GFX_PROFILER_START(which) profiler_gfx_subset_start_func(which - PROFILER_TIME_SUB_GFX_START)
+#define GFX_PROFILER_COMPLETE(which) profiler_gfx_subset_complete_func(which - PROFILER_TIME_SUB_GFX_START)
+#else
+enum ProfilerTimeGFXUnused {
+    GFX_SUBSET_ENTRIES
+};
+#define GFX_PROFILER_SWITCH(complete, begin)
+#define GFX_PROFILER_COMPLETE_AND_SWITCH(complete1, complete2, begin)
+#define GFX_PROFILER_START_SHARED(first, new)
+#define GFX_PROFILER_START(which)
+#define GFX_PROFILER_COMPLETE(which)
 #endif
 
 #ifdef AUDIO_PROFILING

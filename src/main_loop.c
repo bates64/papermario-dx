@@ -185,6 +185,8 @@ void gfx_task_background(void) {
 }
 
 void gfx_draw_frame(void) {
+    profiler_gfx_started();
+
     gMatrixListPos = 0;
     gMainGfxPos = &gDisplayContext->mainGfx[0];
 
@@ -197,12 +199,16 @@ void gfx_draw_frame(void) {
 
     spr_render_init();
 
+    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_UPDATE); // dummy
+
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD)) {
         render_frame(FALSE);
     }
 
     player_render_interact_prompts();
     func_802C3EE4();
+
+    GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_HUD_ELEMENTS, PROFILER_TIME_SUB_GFX_BACK_UI);
     render_screen_overlay_backUI();
     render_workers_backUI();
     render_hud_elements_backUI();
@@ -212,6 +218,8 @@ void gfx_draw_frame(void) {
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS)) {
         render_window_root();
     }
+
+    GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_BACK_UI, PROFILER_TIME_SUB_GFX_FRONT_UI);
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
         render_frame(TRUE);
@@ -254,7 +262,9 @@ void gfx_draw_frame(void) {
         }
     }
 
-    profiler_update(PROFILER_TIME_GFX, 0);
+    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_FRONT_UI);
+
+    profiler_gfx_completed();
     profiler_print_times();
 
 #if DX_DEBUG_MENU

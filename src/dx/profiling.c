@@ -17,11 +17,17 @@ u32 rsp_pending_times[PROFILER_RSP_COUNT];
 u32 prev_start;
 u32 cur_start;
 u32 prev_time;
+u32 gfx_start;
+u32 gfx_buffer_index;
 u32 audio_start;
 u32 audio_buffer_index;
 u32 preempted_time;
 u32 collision_time = 0;
 
+#ifdef GFX_PROFILING
+u32 gfx_subset_starts[GFX_SUBSET_SIZE];
+u32 gfx_subset_tallies[GFX_SUBSET_SIZE];
+#endif
 #ifdef AUDIO_PROFILING
 u32 audio_subset_starts[AUDIO_SUBSET_SIZE];
 u32 audio_subset_tallies[AUDIO_SUBSET_SIZE];
@@ -81,6 +87,18 @@ void profiler_rsp_resumed() {
 //     rsp_pending_times[PROFILER_RSP_GFX] = osGetCount() - rsp_pending_times[PROFILER_RSP_GFX];
 // }
 
+void profiler_gfx_started() {
+    gfx_start = osGetCount();
+
+#ifdef GFX_PROFILING
+    for (s32 i = 0; i < GFX_SUBSET_SIZE; i++) {
+        gfx_subset_tallies[i] = 0;
+    }
+
+    gfx_subset_starts[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START] = gfx_start;
+#endif
+}
+
 void profiler_audio_started() {
     audio_start = osGetCount();
 
@@ -117,6 +135,32 @@ u32 profiler_get_delta(enum ProfilerDeltaTime which) {
         return 0;
     }
 }
+
+void profiler_gfx_completed() {
+    ProfileTimeData* cur_data = &all_profiling_data[PROFILER_TIME_GFX];
+    u32 time = osGetCount();
+    u32 cur_index = gfx_buffer_index;
+
+    preempted_time = time - gfx_start;
+    buffer_update(cur_data, time - gfx_start, cur_index);
+
+#ifdef GFX_PROFILING
+    gfx_subset_tallies[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START] += time - gfx_subset_starts[PROFILER_TIME_SUB_GFX_UPDATE - PROFILER_TIME_SUB_GFX_START];
+
+    for (s32 i = 0; i < GFX_SUBSET_SIZE; i++) {
+        cur_data = &all_profiling_data[i + PROFILER_TIME_SUB_GFX_START];
+        buffer_update(cur_data, gfx_subset_tallies[i], cur_index);
+    }
+#endif
+
+    cur_index++;
+    if (cur_index >= PROFILING_BUFFER_SIZE) {
+        cur_index = 0;
+    }
+
+    gfx_buffer_index = cur_index;
+}
+
 
 void profiler_audio_completed() {
     ProfileTimeData* cur_data = &all_profiling_data[PROFILER_TIME_AUDIO];
@@ -318,9 +362,36 @@ void profiler_print_times() {
         text_buffer[3] = 14;
         draw_msg((s32)&text_buffer, 3, 0, 255, 0, 0);
 
+#ifdef GFX_PROFILING
         sprintf(text_buffer,
             "    " // space for prepend
-            "\n\n"
+            "\n"
+            "Gfx breakdown\n"
+            " Entities\t\t\t%d\n"
+            " Models\t\t\t%d\n"
+            " Player\t\t\t%d\n"
+            " Workers\t\t\t%d\n"
+            " NPCs\t\t\t%d\n"
+            " Effects\t\t\t%d\n"
+            " Render tasks\t\t\t%d\n"
+            " Hud elements\t\t\t%d\n"
+            " Back UI\t\t\t%d\n"
+            " Front UI\t\t\t%d\n",
+            microseconds[PROFILER_TIME_SUB_GFX_ENTITIES],
+            microseconds[PROFILER_TIME_SUB_GFX_MODELS],
+            microseconds[PROFILER_TIME_SUB_GFX_PLAYER],
+            microseconds[PROFILER_TIME_SUB_GFX_WORKERS],
+            microseconds[PROFILER_TIME_SUB_GFX_NPCS],
+            microseconds[PROFILER_TIME_SUB_GFX_EFFECTS],
+            microseconds[PROFILER_TIME_SUB_GFX_RENDER_TASKS],
+            microseconds[PROFILER_TIME_SUB_GFX_HUD_ELEMENTS],
+            microseconds[PROFILER_TIME_SUB_GFX_BACK_UI],
+            microseconds[PROFILER_TIME_SUB_GFX_FRONT_UI]
+        );
+#else
+        sprintf(text_buffer,
+            "    " // space for prepend
+            "\n"
             "RDP\t\t\t%d (%d%%)\n"
             " Tmem\t\t\t%d\n"
             " Cmd\t\t\t%d\n"
@@ -337,11 +408,12 @@ void profiler_print_times() {
             microseconds[PROFILER_TIME_RSP_GFX],
             microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
+#endif
         dx_string_to_msg(&text_buffer, &text_buffer);
         text_buffer[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer[1] = MSG_READ_FUNC_SIZE;
-        text_buffer[2] = 16;
-        text_buffer[3] = 16;
+        text_buffer[2] = 14;
+        text_buffer[3] = 14;
         draw_msg((s32)&text_buffer, SCREEN_WIDTH/2, 0, 255, 0, 0);
     }
 }
