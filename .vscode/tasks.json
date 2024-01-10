@@ -33,49 +33,16 @@
             },
         },
         {
-            "label": "diff",
+            "label": "run",
             "type": "shell",
-            "command": "./diff.py -mwo ${input:funcName}",
+            "command": "./run",
             "isBackground": true,
-            "problemMatcher": [
-                {
-                    "fileLocation": ["relative", "${workspaceFolder}"],
-                    "background": {
-                        "activeOnStart": true,
-                    },
-                    "pattern": {
-                        "regexp": "^(src\\/.*|include\\/.*):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                        "file": 1,
-                        "line": 2,
-                        "severity": 3,
-                        "message": 4,
-                    },
-                },
-                {
-                    "fileLocation": ["relative", "${workspaceFolder}"],
-                    "background": {
-                        "activeOnStart": true,
-                    },
-                    "severity": "error",
-                    "pattern": {
-                        "regexp": "^(src\\/.*|include\\/.*):(\\d+):\\s+(?!warning|\\()(.*)$",
-                        "file": 1,
-                        "line": 2,
-                        "message": 3,
-                    },
-                },
-            ],
+            "dependsOn": "ninja",
+            "problemMatcher": [],
             "group": {
                 "kind": "test",
                 "isDefault": true,
             },
         },
-    ],
-    "inputs": [
-        {
-            "id": "funcName",
-            "description": "Function name",
-            "type": "promptString",
-        }
     ],
 }
