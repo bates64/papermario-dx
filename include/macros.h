@@ -63,11 +63,11 @@
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
 
-#ifdef DEBUG
+//#ifdef DEBUG
 #define IS_DEBUG_PANIC(statement, file, line, func) is_debug_panic(statement, file, line, func)
-#else
+/*#else
 #define IS_DEBUG_PANIC(statement, file, line, func) do {} while(TRUE)
-#endif
+#endif*/
 
 #define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
 #define PANIC_MSG(msg, args...) \

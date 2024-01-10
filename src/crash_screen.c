@@ -347,6 +347,11 @@ void crash_screen_draw(OSThread* faultedThread) {
         crash_screen_printf_proportional(x + 10, y += 10, "at %s", buf);
     }
 
+    y += 5;
+#ifndef DEBUG
+    crash_screen_printf_proportional(x, y += 15, "Build with `./configure --debug` for file/line numbers", buf);
+#endif
+
     osViBlack(0);
     osViRepeatLine(0);
     osViSwapBuffer(gCrashScreen.frameBuf);

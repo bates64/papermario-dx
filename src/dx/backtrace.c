@@ -372,9 +372,8 @@ s32 address2symbol(u32 address, Symbol* out) {
 }
 
 char* load_symbol_string(char* dest, u32 addr, int n) {
-    if (addr == 0) {
-        sprintf(dest, "<NULL>");
-        return dest;
+    if (addr == NULL) {
+        return NULL;
     }
 
     u32 aligned = addr & ~3;
@@ -395,10 +394,16 @@ void backtrace_address_to_string(u32 address, char* dest) {
         char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
-        if (offset == 0)
-            sprintf(dest, "%s (%s)", namep, filep);
+        if (filep == NULL)
+            if (offset == 0)
+                sprintf(dest, "%s", namep);
+            else
+                sprintf(dest, "%s+0x%X", namep, offset);
         else
-            sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
+            if (offset == 0)
+                sprintf(dest, "%s (%s)", namep, filep);
+            else
+                sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
     } else {
         sprintf(dest, "0x%08X", address);
     }

@@ -1250,7 +1250,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Don't split assets from the baserom(s)",
     )
-    parser.add_argument("-D", "--no-debug", action="store_true", help="Generate debugging information")
+    parser.add_argument("-d", "--debug", action="store_true", help="Generate debugging information")
     parser.add_argument(
         "-N",
         "--no-non-matching",
@@ -1275,7 +1275,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     args.shift = not args.no_shift
-    args.debug = not args.no_debug
     args.modern_gcc = not args.no_modern_gcc
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache

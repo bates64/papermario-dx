@@ -48,6 +48,12 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
             if closest_addr is not None:
                 symbols.append((addr, addr2name[closest_addr], file_basename, line_number))
 
+    # non-debug builds
+    if len(symbols) == 0:
+        print("no debug symbols found, using func names only")
+        for addr, name in addr2name.items():
+            symbols.append((addr, name, "", -1))
+
     # sort by address
     symbols.sort(key=lambda x: x[0])
 
@@ -100,7 +106,11 @@ if __name__ == "__main__":
 
             f.write(struct.pack(">I", addr))
             f.write(struct.pack(">I", add_string(name)))
-            f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
+
+            if file_basename == "":
+                f.write(struct.pack(">I", 0))
+            else:
+                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}"))) # can make more efficient
 
         f.write(strings)
 
