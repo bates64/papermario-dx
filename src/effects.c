@@ -225,7 +225,6 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
         }
 
         effectGraphics->renderWorld = effectBp->renderWorld;
-        // @bug? null check for renderUI instead of renderWorld
         if (effectGraphics->renderWorld == NULL) {
             effectGraphics->renderWorld = stub_effect_delegate;
         }

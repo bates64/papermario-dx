@@ -480,7 +480,6 @@ b32 check_input_jump(void) {
         return FALSE;
     }
 
-    // @bug? collider flags not properly masked with COLLIDER_FLAG_SURFACE_TYPE
     surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
         return FALSE;

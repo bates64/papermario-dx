@@ -75,7 +75,7 @@ def write_ninja_rules(
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -x c -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
-    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch -x c {extra_cflags}"
+    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch -DMODERN_COMPILER -x c {extra_cflags}"
 
     cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
     cflags_272 = cflags_272.replace("-ggdb3", "-g1")
@@ -668,8 +668,11 @@ class Configure:
                     task = "cc_272"
                     cflags = cflags.replace("gcc_272", "")
                 elif "egcs" in cflags:
-                    task = "cc_egcs"
-                    cflags = cflags.replace("egcs", "")
+                    if sys.platform == "darwin" and non_matching:
+                        print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
+                    else:
+                        task = "cc_egcs"
+                        cflags = cflags.replace("egcs", "")
                 elif "gcc_modern" in cflags:
                     task = "cc_modern"
                     cflags = cflags.replace("gcc_modern", "")
@@ -1391,6 +1394,12 @@ if __name__ == "__main__":
     for version in versions:
         print(f"configure: configuring version {version}")
 
+        if version == "ique" and not args.non_matching and sys.platform == "darwin":
+            print(
+                "configure: refusing to build iQue Player version on macOS because EGCS compiler is not available (use --non-matching to use default compiler)"
+            )
+            continue
+
         configure = Configure(version)
 
         if not first_configure:
@@ -1404,7 +1413,7 @@ if __name__ == "__main__":
 
         all_rom_oks.append(str(configure.rom_ok_path()))
 
-    assert first_configure
+    assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
 
     if non_matching:

@@ -62,7 +62,6 @@ API_CALLABLE(N(AddFP)) {
     PlayerData* playerData = &gPlayerData;
     s32 amt = evt_get_variable(script, *script->ptrReadPos);
 
-    // @bug Should be playerData->curFP
     s32 newFP = playerData->curFP + amt;
 
     if (newFP > playerData->curMaxFP) {

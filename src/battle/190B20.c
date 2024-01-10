@@ -252,7 +252,6 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
     } while (0);
     actor->targetListLength = numTargets;
 
-    // @bug this should be % 4
     sampleCol = battleStatus->sampleTargetHomeIndex % 4;
     sampleRow = battleStatus->sampleTargetHomeIndex / 4;
 
@@ -548,7 +547,8 @@ s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
         }
 
         if (!(part->flags & ACTOR_PART_FLAG_PRIMARY_TARGET)) {
-            // @bug part list position is not advanced, all further loop iterations will be stuck here
+            /// @bug part list position is not advanced, all further loop iterations will be stuck here
+            // nanaian: I think this is intended and should probably be a break. this flag makes multi-target attacks select this part only
             continue;
         }
 
