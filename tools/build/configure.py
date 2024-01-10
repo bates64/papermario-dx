@@ -1244,35 +1244,35 @@ if __name__ == "__main__":
         action="store_true",
         help="Don't split assets from the baserom(s)",
     )
-    parser.add_argument("-d", "--debug", action="store_true", help="Generate debugging information")
+    parser.add_argument("-D", "--no-debug", action="store_true", help="Generate debugging information")
     parser.add_argument(
-        "-n",
-        "--non-matching",
+        "-N",
+        "--no-non-matching",
         action="store_true",
         help="Compile nonmatching code. Combine with --debug for more detailed debug info",
     )
     parser.add_argument(
-        "--shift",
+        "--no-shift",
         action="store_true",
         help="Build a shiftable version of the game (non-matching)",
     )
     parser.add_argument(
-        "--modern-gcc",
+        "--no-modern-gcc",
         action="store_true",
         help="Use modern GCC instead of the original compiler",
     )
-    parser.add_argument("--ccache", action="store_true", help="Use ccache")
+    parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
     parser.add_argument(
         "--c-maps",
         action="store_true",
         help="Convert map binaries to C as part of the build process",
     )
     args = parser.parse_args()
-    args.shift = True
-    args.debug = True
-    args.modern_gcc = True
-    args.non_matching = True
-    args.ccache = True
+    args.shift = not args.no_shift
+    args.debug = not args.no_debug
+    args.modern_gcc = not args.no_modern_gcc
+    args.non_matching = not args.no_non_matching
+    args.ccache = not args.no_ccache
 
     exec_shell(["make", "-C", str(ROOT / args.splat)])
 
