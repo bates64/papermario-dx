@@ -148,7 +148,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="gcc_modern $in",
-        command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cc_modern} {cflags_modern} $cflags - -o $out'",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
