@@ -240,7 +240,7 @@ MapSettings* get_current_map_settings(void) {
     return &gMapSettings;
 }
 
-nodiscard s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
+NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     s32 i;
     s32 j;
     MapConfig* maps;

@@ -106,6 +106,8 @@ segments:
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, .data, dx/debug_menu]
+    - [auto, c, dx/profiling]
+    - [auto, .data, dx/profiling]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
     - [auto, c, load_obfuscation_shims]

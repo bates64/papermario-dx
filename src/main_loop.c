@@ -6,6 +6,7 @@
 #include "overlay.h"
 #include "game_modes.h"
 #include "dx/debug_menu.h"
+#include "dx/profiling.h"
 
 SHIFT_BSS s32 gOverrideFlags;
 SHIFT_BSS s32 timeFreezeMode;
@@ -50,11 +51,14 @@ void gfx_init_state(void);
 void gfx_draw_background(void);
 
 void step_game_loop(void) {
+    profiler_frame_setup();
+
     PlayerData* playerData = &gPlayerData;
     const int MAX_GAME_TIME = 1000*60*60*60 - 1; // 1000 hours minus one frame at 60 fps
 
 #if !VERSION_JP
     update_input();
+    profiler_update(PROFILER_TIME_CONTROLLERS, 0);
 #endif
 
     gGameStatusPtr->frameCounter++;
@@ -66,6 +70,7 @@ void step_game_loop(void) {
 
 #if VERSION_JP
     update_input();
+    profiler_update(PROFILER_TIME_CONTROLLERS, 0);
 #endif
 
     update_max_rumble_duration();
@@ -237,8 +242,6 @@ void gfx_draw_frame(void) {
         render_frame(TRUE);
     }
 
-    fps_tick(); // must be before render_messages()
-
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS)
         && !(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI)
     ) {
@@ -275,6 +278,9 @@ void gfx_draw_frame(void) {
                 break;
         }
     }
+
+    fps_tick();
+    profiler_print_times();
 
 #if DX_DEBUG_MENU
     dx_render_debug_menu();

@@ -40,28 +40,6 @@ struct dx_debug_menu {
 
 int dx_debug_menu_isVisible = FALSE;
 
-u8 dx_ascii_char_to_msg(u8 in) {
-    switch (in) {
-        case '\0': return MSG_CHAR_READ_END;
-        case ' ': return MSG_CHAR_READ_SPACE;
-        case '\n': return MSG_CHAR_READ_ENDL;
-        default:
-            if (in < 0x20) {
-                return MSG_CHAR_NOTE;
-            }
-            return in - 0x20;
-    }
-}
-
-u8* dx_string_to_msg(u8* msg, const u8* str) {
-    while (*str) {
-        *msg++ = dx_ascii_char_to_msg(*str++);
-    }
-
-    *msg = MSG_CHAR_READ_END;
-    return msg;
-}
-
 void dx_debug_menu_draw_contents(void* arg0, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     char msgbuf[0x100];
     s32 x = baseX + 6;
@@ -347,3 +325,25 @@ void dx_debug_menu_cb_decreasehammer(void* args){
 }
 
 #endif
+
+u8 dx_ascii_char_to_msg(u8 in) {
+    switch (in) {
+        case '\0': return MSG_CHAR_READ_END;
+        case ' ': case '\t': return MSG_CHAR_READ_SPACE;
+        case '\n': return MSG_CHAR_READ_ENDL;
+        default:
+            if (in < 0x20) {
+                return MSG_CHAR_NOTE;
+            }
+            return in - 0x20;
+    }
+}
+
+u8* dx_string_to_msg(u8* msg, const u8* str) {
+    while (*str) {
+        *msg++ = dx_ascii_char_to_msg(*str++);
+    }
+
+    *msg = MSG_CHAR_READ_END;
+    return msg;
+}
