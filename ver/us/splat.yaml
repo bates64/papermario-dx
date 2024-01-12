@@ -72,7 +72,8 @@ vram_classes:
   - [entity_model_anim, 0x00000000]
   - { name: dgb_01_smash_bridges, vram: 0x80200000, vram_symbol: D_80200000 }
 asset_stack:
-  - star_rod_build
+#  - star_rod_build
+  - boss_mod
   - dx
   - us
 segments:
@@ -6875,6 +6876,13 @@ segments:
     - [auto, c, script/dig_03]
     - [auto, c, script/dig_04]
     - [auto, c, script/dig_05]
+  - [0x6F0B30]
+  - dir: battle/area/mod
+    type: code
+    start: auto
+    vram_class: battle_area
+    subsegments:
+    - [auto, c, area]
 
 #######################
 ### Battle Partners ###

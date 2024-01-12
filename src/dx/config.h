@@ -15,13 +15,13 @@
 #define DX_SKIP_FILE_SELECT 1
 
 /// Map to load when starting a new game.
-#define NEW_GAME_MAP_ID "kmr_20"
+#define NEW_GAME_MAP_ID "nok_11"
 
 /// Entry to use when starting a new game.
-#define NEW_GAME_ENTRY_ID kmr_20_ENTRY_0
+#define NEW_GAME_ENTRY_ID nok_11_ENTRY_0
 
 /// Story progress when starting a new game.
-#define NEW_GAME_STORY_PROGRESS STORY_INTRO
+#define NEW_GAME_STORY_PROGRESS STORY_CH1_MADE_FIRST_BRIDGE
 
 /// Enables the profiler, which shows lots of performance info on screen.
 /// Press L + D-Pad Up to show/hide the profiler.

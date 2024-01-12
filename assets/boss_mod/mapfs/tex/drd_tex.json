@@ -1,0 +1,453 @@
+[
+    {
+        "name": "dgb_berosaide",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Clamp"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_ciock3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_d_ana04",
+        "main": {
+            "format": "IA8",
+            "hwrap": "Clamp",
+            "vwrap": "Clamp"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_d_ana",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Clamp",
+            "vwrap": "Clamp"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_d_chear2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_doa",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_frame",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_hasira1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_hibi1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_hibi3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Clamp"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_hikari",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_hokori1",
+        "main": {
+            "format": "IA8",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_isuasi1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_iwa_4",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_jimen_edge",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_jimenb",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_jimenc",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kabe10",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kabe1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kabe2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kabe3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kabe6",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_katen1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_katen3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Clamp"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_kazari3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_ki5",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_mado1",
+        "main": {
+            "format": "IA8",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_mado2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_moyou1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_moyou2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_moyou3",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_syokudai",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_tenjo2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_tesuri1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_tesuri2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_tesuri3",
+        "main": {
+            "format": "IA8",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_toge",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Clamp",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_yuka1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_zassou",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_zyu1",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Mirror",
+            "vwrap": "Mirror"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    },
+    {
+        "name": "dgb_zyu2",
+        "main": {
+            "format": "CI4",
+            "hwrap": "Repeat",
+            "vwrap": "Repeat"
+        },
+        "filter": true,
+        "combine": "Multiply",
+        "ext": ""
+    }
+]

@@ -605,7 +605,7 @@ NpcData N(NpcData_KentCKoopa)[] = {
 };
 
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_NOK_FORMATION_08, BTL_NOK_STAGE_00),
+    NPC_GROUP(N(NpcData_KoopaTroopa), BTL_MOD_FORMATION_00, BTL_MOD_STAGE_00), // Was BTL_NOK_FORMATION_08, BTL_NOK_STAGE_00
     NPC_GROUP(N(NpcData_Paragoomba), BTL_NOK_FORMATION_02, BTL_NOK_STAGE_00),
     NPC_GROUP(N(NpcData_SpikedGoomba), BTL_NOK_FORMATION_03, BTL_NOK_STAGE_01),
     {}
