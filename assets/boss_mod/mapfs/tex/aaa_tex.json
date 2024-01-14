@@ -7,8 +7,7 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "floor",
@@ -18,8 +17,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "wallback",
@@ -29,8 +27,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "frame",
@@ -50,8 +47,7 @@
             "vwrap": "Clamp"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "wall",
@@ -61,8 +57,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "audiencea",
@@ -72,8 +67,7 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "audienceb",
@@ -83,8 +77,7 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "audiencec",
@@ -94,8 +87,7 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "audienced",
@@ -105,8 +97,7 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "papers",
@@ -116,8 +107,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "miki4",
@@ -147,8 +137,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "yoshisign",
@@ -158,8 +147,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "jar",
@@ -169,8 +157,7 @@
             "vwrap": "Repeat"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     },
     {
         "name": "flag",
@@ -180,7 +167,6 @@
             "vwrap": "Mirror"
         },
         "filter": true,
-        "combine": "Multiply",
-        "ext": ""
+        "combine": "Multiply"
     }
 ]

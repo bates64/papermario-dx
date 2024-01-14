@@ -108,7 +108,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .flags = ACTOR_PART_FLAG_PRIMARY_TARGET,
         .index = PRT_MAIN,
         .posOffset = { 0, 0, 0 },
-        .targetOffset = { 0, 20 },
+        .targetOffset = { 0, 43 },
         .opacity = 255,
         .idleAnimations = N(DefaultAnims),
         .defenseTable = N(DefenseTable),
@@ -116,26 +116,50 @@ ActorPartBlueprint N(ActorParts)[] = {
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, -10 },
     },
+    {
+        .flags = ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_NO_TARGET | ACTOR_PART_FLAG_INVISIBLE,
+        .index = PRT_FIREBALL,
+        .posOffset = { 0, 0, 0 },
+        .targetOffset = { 0, 0 },
+        .opacity = 255,
+        .idleAnimations = N(FireBallAnims),
+        .defenseTable = N(DefenseTable),
+        .eventFlags = ACTOR_EVENT_FLAGS_NONE,
+        .elementImmunityFlags = 0,
+        .projectileTargetOffset = { 0, 0 },
+    },
+    {
+        .flags = ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_NO_TARGET | ACTOR_PART_FLAG_INVISIBLE,
+        .index = PRT_BOO,
+        .posOffset = { 0, 0, 0 },
+        .targetOffset = { 0, 0 },
+        .opacity = 255,
+        .idleAnimations = N(BooAnims),
+        .defenseTable = N(DefenseTable),
+        .eventFlags = ACTOR_EVENT_FLAGS_NONE,
+        .elementImmunityFlags = 0,
+        .projectileTargetOffset = { 0, 0 },
+    },
 };
 
 ActorBlueprint NAMESPACE = {
-    .flags = 0,
-    .type = ACTOR_TYPE_GOOMBA,
-    .level = ACTOR_LEVEL_GOOMBA,
-    .maxHP = 2,
+    .flags = ACTOR_FLAG_FLYING,
+    .type = ACTOR_TYPE_KING_BOO,
+    .level = ACTOR_LEVEL_KING_BOO,
+    .maxHP = 40,
     .partCount = ARRAY_COUNT(N(ActorParts)),
     .partsData = N(ActorParts),
     .initScript = &N(EVS_Init),
     .statusTable = N(StatusTable),
-    .escapeChance = 90,
-    .airLiftChance = 100,
-    .hurricaneChance = 90,
-    .spookChance = 100,
-    .upAndAwayChance = 95,
+    .escapeChance = 100,
+    .airLiftChance = 0,
+    .hurricaneChance = 0,
+    .spookChance = 0,
+    .upAndAwayChance = 0,
     .spinSmashReq = 0,
     .powerBounceChance = 100,
-    .coinReward = 1,
-    .size = { 24, 24 },
+    .coinReward = 0,
+    .size = { 48, 45 },
     .healthBarOffset = { 0, 0 },
     .statusIconOffset = { -10, 20 },
     .statusTextOffset = { 10, 20 },
@@ -673,42 +697,34 @@ EvtScript N(EVS_CrownMagic_Phase1Attacks) = {
     EVT_END
 };
 
+EvtScript N(EVS_Attack_Scare) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+EvtScript N(EVS_Attack_FakeoutScare) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
 
 #include "common/CalculateArcsinDeg.inc.c"
 
-
-
-
-
-
-
-
-
-
-
+EvtScript N(EVS_Attack_Fireball) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
 
 #include "common/UnkBackgroundFunc3.inc.c"
 
@@ -783,4 +799,58 @@ EvtScript N(EVS_Attack_Lightning) = {
 	EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
 	EVT_RETURN
 	EVT_END
+};
+
+EvtScript N(EVS_IllusoryClones) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_BooFlood) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Attack_BoostedLightning) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Move_Heal) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Attack_FakeoutScareA) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Attack_FakeoutScareB) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
 };

@@ -234,7 +234,5 @@
         <Sprite name="ParadeTwink"/>
         <Sprite name="Leaf"/>
         <Sprite name="KingBoo"/>
-        <Sprite name="CrawBones"/>
-        <Sprite name="Reznor"/>
     </Sprites>
 </Names>
