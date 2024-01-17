@@ -334,7 +334,7 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         clear_saved_variables();
                         get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID);
                         gGameStatusPtr->entryID = NEW_GAME_ENTRY_ID;
-                        evt_set_variable(NULL, GB_StoryProgress, STORY_INTRO);
+                        evt_set_variable(NULL, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
 
                         slot2 = filemenu_menus[0]->selected;
                         for (i = 0; i < ARRAY_COUNT(gSaveSlotMetadata->filename); i++) {
