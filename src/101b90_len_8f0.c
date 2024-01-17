@@ -100,6 +100,7 @@ SpriteAnimData* spr_load_sprite(s32 idx, s32 isPlayerSprite, s32 useTailAlloc) {
     } else {
         animData = _heap_malloc(&heap_spriteHead, *ptr1);
     }
+    ASSERT_MSG(animData, "out of sprite memory");
     decode_yay0(data, animData);
     general_heap_free(data);
 
