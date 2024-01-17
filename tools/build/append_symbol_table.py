@@ -20,6 +20,8 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         if len(parts) == 8 and parts[3] == "FUNC":
             addr = int(parts[1], 16)
             name = parts[-1]
+            if name.startswith("dead_"):
+                continue
             addr2name[addr] = name
 
         # npc.c                                    120          0x8003910c               x
