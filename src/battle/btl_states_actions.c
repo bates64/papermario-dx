@@ -587,6 +587,18 @@ void btl_state_update_begin_turn(void) {
 
         btl_merlee_on_start_turn();
 
+        // set rush flags based on danger/peril status
+        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
+            if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
+                gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                battleStatus->rushFlags |= RUSH_FLAG_MEGA;
+            }
+            if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
+                gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                battleStatus->rushFlags |= RUSH_FLAG_POWER;
+            }
+        }
+        /*
         // clear rush flags to initialize
         battleStatus->rushFlags = RUSH_FLAG_NONE;
         gBattleStatus.flags2 &= ~BS_FLAGS2_HAS_RUSH;
@@ -604,6 +616,7 @@ void btl_state_update_begin_turn(void) {
                 }
             }
         }
+        */
 
         if (!(gBattleStatus.flags1 & BS_FLAGS1_JUMP_CHARGED)) {
             battleStatus->jumpCharge = 0;
@@ -854,23 +867,36 @@ back:
             dispatch_damage_tick_event_player(1, EVENT_HIT);
         }
 
-        // clear rush flags to initialize
-        battleStatus->rushFlags = RUSH_FLAG_NONE;
-        gBattleStatus.flags2 &= ~BS_FLAGS2_HAS_RUSH;
-
-        // set rush flags based on danger/peril status
-        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
-            if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
-                gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
-                battleStatus->rushFlags |= RUSH_FLAG_MEGA;
-            }
-            if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
-                if (!(battleStatus->rushFlags & RUSH_FLAG_MEGA)) {
+            // set rush flags based on danger/peril status
+            if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
+                if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
+                    gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                    battleStatus->rushFlags |= RUSH_FLAG_MEGA;
+                }
+                if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
                     gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
                     battleStatus->rushFlags |= RUSH_FLAG_POWER;
                 }
             }
-        }
+            /*
+            // clear rush flags to initialize
+            battleStatus->rushFlags = RUSH_FLAG_NONE;
+            gBattleStatus.flags2 &= ~BS_FLAGS2_HAS_RUSH;
+
+            // set rush flags based on danger/peril status
+            if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
+                if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
+                    gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                    battleStatus->rushFlags |= RUSH_FLAG_MEGA;
+                }
+                if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
+                    if (!(battleStatus->rushFlags & RUSH_FLAG_MEGA)) {
+                        gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                        battleStatus->rushFlags |= RUSH_FLAG_POWER;
+                    }
+                }
+            }
+            */
         gBattleSubState = BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_STATUS_RECOVER;
     }
 
@@ -3830,13 +3856,29 @@ void btl_state_update_first_strike(void) {
                     battleStatus->rushFlags |= RUSH_FLAG_MEGA;
                 }
                 if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
+                    gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                    battleStatus->rushFlags |= RUSH_FLAG_POWER;
+                }
+            }
+            /*
+            // clear rush flags to initialize
+            battleStatus->rushFlags = RUSH_FLAG_NONE;
+            gBattleStatus.flags2 &= ~BS_FLAGS2_HAS_RUSH;
+
+            // set rush flags based on danger/peril status
+            if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
+                if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
+                    gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+                    battleStatus->rushFlags |= RUSH_FLAG_MEGA;
+                }
+                if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
                     if (!(battleStatus->rushFlags & RUSH_FLAG_MEGA)) {
                         gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
                         battleStatus->rushFlags |= RUSH_FLAG_POWER;
                     }
                 }
             }
-
+            */
             // setup dummy 'menu selection' for player move
             switch (encounterStatus->hitType) {
                 case ENCOUNTER_TRIGGER_JUMP:

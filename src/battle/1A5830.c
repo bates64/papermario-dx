@@ -192,7 +192,7 @@ HitResult calc_enemy_test_target(Actor* actor) {
                     }
                 }
                 if (player_team_is_ability_active(target2, ABILITY_CLOSE_CALL) && (target2->curHP < 6)) {
-                    if (rand_int(100) < 30) {
+                    if (rand_int(100) < 90) { // Was 30
                         hitResult = HIT_RESULT_LUCKY;
                         break;
                     }

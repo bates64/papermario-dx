@@ -32,3 +32,4 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(JrTroopaNPCs);
 extern NpcGroupList N(KentCKoopaNPCs);
+extern EvtScript N(EVS_AddBadges);

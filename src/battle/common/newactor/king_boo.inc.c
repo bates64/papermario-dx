@@ -201,19 +201,6 @@ EvtScript N(EVS_Init) = {
     EVT_END
 };
 
-API_CALLABLE(N(SetBoltColors)) {
-    Bytecode* args = script->ptrReadPos;
-    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
-
-    effect->data.lightningBolt->outerColor.r = 255;
-    effect->data.lightningBolt->outerColor.g = 255;
-    effect->data.lightningBolt->outerColor.b = 255;
-    effect->data.lightningBolt->innerColor.r = 128;
-    effect->data.lightningBolt->innerColor.g = 0;
-    effect->data.lightningBolt->innerColor.b = 128;
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_Idle) = {
     EVT_RETURN
     EVT_END
@@ -562,7 +549,7 @@ EvtScript N(EVS_TakeTurn) = {
         EVT_CASE_DEFAULT
             EVT_SET(LVar0, 1)
     EVT_END_SWITCH
-    //EVT_SET(LVar0, 0) // Set Attack
+    EVT_SET(LVar0, 1) // Set Attack
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(0)
             EVT_EXEC_WAIT(N(EVS_Scare_Phase1Attacks))
@@ -681,7 +668,7 @@ EvtScript N(EVS_CrownMagic_Phase1Attacks) = {
         EVT_CASE_DEFAULT
             EVT_SET(LVar0, 1)
     EVT_END_SWITCH
-    //EVT_SET(LVar0, 0) // Set Attack
+    EVT_SET(LVar0, 0) // Set Attack
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(0)
             EVT_EXEC_WAIT(N(EVS_Attack_Fireball))
@@ -717,9 +704,54 @@ EvtScript N(EVS_Attack_FakeoutScare) = {
 
 #include "common/CalculateArcsinDeg.inc.c"
 
+API_CALLABLE(N(SetFireBreathScales)) {
+    Bytecode* args = script->ptrReadPos;
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
+    FireBreathFXData* data = effect->data.fireBreath;
+
+    data->scale = 0.05f; // Was 0.4f
+    data->initialScale = 0.05; // Was 0.4f
+    effect->data.fireBreath->targetScale = 2.0f; // Was 1.875f
+    effect->data.fireBreath->scaleChangeRate = 0.05f;
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(SetShrinkBreathColors)) {
+    Bytecode* args = script->ptrReadPos;
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
+
+    effect->data.fireBreath->primR = 247;
+    effect->data.fireBreath->primG = 116;
+    effect->data.fireBreath->primB = 206;
+    effect->data.fireBreath->envR = 132;
+    effect->data.fireBreath->envG = 0;
+    effect->data.fireBreath->envB = 99;
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_Attack_Fireball) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
+    EVT_CALL(SetGoalToTarget, ACTOR_SELF)
+    EVT_CALL(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
+    EVT_CALL(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
+    EVT_SET(LVar1, 20)
+    EVT_SET(LVar2, 10)
+    EVT_SUB(LVar3, 40)
+    EVT_SET(LVar4, 20)
+    EVT_SET(LVar5, 10)
+    EVT_PLAY_EFFECT(EFFECT_FIRE_BREATH, FIRE_BREATH_TINY, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 50, 1, 24)
+    EVT_CALL(N(SetFireBreathScales), LVarF)
+    EVT_CALL(N(SetShrinkBreathColors), LVarF)
+    EVT_WAIT(26)
+    EVT_WAIT(2)
+    EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVarF, DAMAGE_TYPE_NO_CONTACT, SUPPRESS_EVENT_ALL, DMG_STATUS_IGNORE_RES(STATUS_FLAG_SHRINK, 3), 4, BS_FLAGS1_TRIGGER_EVENTS)
+    EVT_SWITCH(LVarF)
+        EVT_CASE_OR_EQ(HIT_RESULT_HIT)
+        EVT_CASE_OR_EQ(HIT_RESULT_NO_DAMAGE)
+    EVT_END_SWITCH
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN
@@ -729,6 +761,19 @@ EvtScript N(EVS_Attack_Fireball) = {
 #include "common/UnkBackgroundFunc3.inc.c"
 
 #include "common/SetBackgroundAlpha.inc.c"
+
+API_CALLABLE(N(SetBoltColors)) {
+    Bytecode* args = script->ptrReadPos;
+    EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
+
+    effect->data.lightningBolt->outerColor.r = 128;
+    effect->data.lightningBolt->outerColor.g = 0;
+    effect->data.lightningBolt->outerColor.b = 128;
+    effect->data.lightningBolt->innerColor.r = 255;
+    effect->data.lightningBolt->innerColor.g = 255;
+    effect->data.lightningBolt->innerColor.b = 255;
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_Attack_Lightning) = {
 	// Go to player
@@ -763,11 +808,15 @@ EvtScript N(EVS_Attack_Lightning) = {
 				EVT_SUB(LVar0, LVar1)
 				EVT_SET(LVar1, 200)
 				EVT_CALL(GetActorPos, ACTOR_PLAYER, LVar3, LVar4, LVar5)
+				EVT_ADD(LVar3, 30)
 				EVT_SET(LVar4, 0)
-                EVT_PLAY_EFFECT(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, EVT_FLOAT(1.0), 12, 0)
+                EVT_PLAY_EFFECT(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, EVT_FLOAT(0.5), 12, 0)
 				EVT_CALL(N(SetBoltColors), LVarF)
 				EVT_WAIT(12)
 				EVT_CALL(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
+                EVT_WAIT(10)
+                EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_GetAngry)
+                EVT_WAIT(35)
 			EVT_END_IF
 			EVT_GOTO(AVAL_ReturnHome)
 	EVT_END_SWITCH
@@ -780,7 +829,7 @@ EvtScript N(EVS_Attack_Lightning) = {
 	EVT_SET(LVar1, 200)
 	EVT_CALL(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
 	EVT_SET(LVar4, 0)
-    EVT_PLAY_EFFECT(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, EVT_FLOAT(1.0), 12, 0)
+    EVT_PLAY_EFFECT(EFFECT_LIGHTNING_BOLT, 0, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, EVT_FLOAT(1.5), 12, 0)
 	EVT_CALL(N(SetBoltColors), LVarF)
 	EVT_WAIT(12)
 	EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVar0, (DAMAGE_TYPE_MAGIC | DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_NO_CONTACT), 0, SUPPRESS_EVENT_FLAG_10000, DMG_LIGHTNING, BS_FLAGS1_TRIGGER_EVENTS) // 5 Damage

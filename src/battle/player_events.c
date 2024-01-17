@@ -77,7 +77,7 @@ API_CALLABLE(TryPlayerLucky) {
 
     show_action_rating(ACTION_RATING_LUCKY, player, player->curPos.x, player->curPos.y + 20.0f, player->curPos.z);
     sfx_play_sound(SOUND_LUCKY);
-    
+
     script->varTable[0] = FALSE;
     if (player->debuff == STATUS_KEY_FEAR
         || player->debuff == STATUS_KEY_DIZZY
@@ -241,7 +241,7 @@ API_CALLABLE(LifeShroomShroudWorld) {
     if (script->functionTemp[0] == 0) {
         return ApiStatus_DONE2;
     }
-    
+
     return ApiStatus_BLOCK;
 }
 
@@ -258,7 +258,7 @@ API_CALLABLE(LifeShroomRevealWorld) {
         mdl_set_shroud_tint_params(0, 0, 0, 0);
         return ApiStatus_DONE2;
     }
-    
+
     return ApiStatus_BLOCK;
 }
 
@@ -292,6 +292,23 @@ API_CALLABLE(RestorePreDefeatState) {
     // set rush flags based on danger/peril status
     if (!(battleStatus->flags2 & BS_FLAGS2_PEACH_BATTLE)) {
         if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
+        gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+        battleStatus->rushFlags |= RUSH_FLAG_MEGA;
+        }
+
+        if (playerData->curHP <= DANGER_THRESHOLD && is_ability_active(ABILITY_POWER_RUSH)) {
+        gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
+        battleStatus->rushFlags |= RUSH_FLAG_POWER;
+        }
+    }
+    /*
+    // clear rush flags to initialize
+    battleStatus->rushFlags = RUSH_FLAG_NONE;
+    battleStatus->flags2 &= ~BS_FLAGS2_HAS_RUSH;
+
+    // set rush flags based on danger/peril status
+    if (!(battleStatus->flags2 & BS_FLAGS2_PEACH_BATTLE)) {
+        if (playerData->curHP <= PERIL_THRESHOLD && is_ability_active(ABILITY_MEGA_RUSH)) {
             gBattleStatus.flags2 |= BS_FLAGS2_HAS_RUSH;
             battleStatus->rushFlags |= RUSH_FLAG_MEGA;
         }
@@ -303,6 +320,7 @@ API_CALLABLE(RestorePreDefeatState) {
             }
         }
     }
+    */
     return ApiStatus_DONE2;
 }
 

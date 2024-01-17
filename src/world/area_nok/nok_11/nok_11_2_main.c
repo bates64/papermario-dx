@@ -77,6 +77,17 @@ EvtScript N(EVS_BindExitTriggers) = {
     EVT_END
 };
 
+EvtScript N(EVS_AddBadges) = {
+    EVT_CALL(AddBadge, ITEM_POWER_RUSH, LVar0)
+    EVT_CALL(AddBadge, ITEM_MEGA_RUSH, LVar1)
+    EVT_CALL(AddBadge, ITEM_CLOSE_CALL, LVar2)
+    EVT_CALL(AddBadge, ITEM_PRETTY_LUCKY, LVar3)
+    EVT_CALL(AddBadge, ITEM_LUCKY_DAY, LVar4)
+    EVT_WAIT(5)
+    EVT_RETURN
+    EVT_END
+};
+
 EvtScript N(EVS_Main) = {
     EVT_SET(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     EVT_CALL(SetSpriteShading, SHADING_NONE)
@@ -95,6 +106,8 @@ EvtScript N(EVS_Main) = {
             EVT_CALL(MakeNpcs, FALSE, EVT_PTR(N(DefaultNPCs)))
         EVT_END_IF
     EVT_END_IF
+    EVT_SET(GB_StoryProgress, STORY_CH1_MADE_FIRST_BRIDGE)
+    EVT_EXEC_WAIT(N(EVS_AddBadges))
     EVT_EXEC_WAIT(N(EVS_MakeEntities))
     EVT_EXEC(N(EVS_TexPan_Flowers))
     EVT_EXEC(N(EVS_TexPan_Water))
