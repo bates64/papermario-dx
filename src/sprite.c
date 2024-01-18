@@ -1085,6 +1085,8 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     s32 i = spriteInstanceID & 0xFF;
     s32 animIndex = animID & 0xFF;
 
+    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %x", spriteInstanceID);
+
     compList = SpriteInstances[i].componentList;
     spriteData = (u32*)SpriteInstances[i].spriteData;
 
@@ -1095,6 +1097,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     palID = (animID >> 8) & 0xFF;
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || ((SpriteInstances[i].curAnimID & 0xFF) != animIndex)) {
+        ASSERT_MSG(animList != -1, "Anim %x is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;
