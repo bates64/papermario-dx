@@ -1366,10 +1366,15 @@ ApiStatus func_802C73B8(Evt* script) {
 }
 
 s32 evt_execute_next_command(Evt* script) {
+    s32 commandsExecuted = 0;
+
     while (TRUE) {
         s32 status = ApiStatus_DONE2;
         s32* lines;
         s32 nargs;
+
+        commandsExecuted++;
+        ASSERT_MSG(commandsExecuted < 10000, "Script %x is blocking for ages (infinite loop?)", script->ptrFirstLine);
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:
