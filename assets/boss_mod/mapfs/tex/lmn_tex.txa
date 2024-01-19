@@ -1,0 +1,191 @@
+tex: lmn_brick
+{
+	img: lmn_brick.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_candle
+{
+	img: lmn_candle.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: clamp
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_fence
+{
+	img: lmn_fence.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: clamp
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_grass
+{
+	img: lmn_grass.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_grassdark
+{
+	img: lmn_grassdark.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_ladder
+{
+	img: lmn_ladder.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_mist
+{
+	img: lmn_mist.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_post
+{
+	img: lmn_post.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_steps
+{
+	img: lmn_steps.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_stepswall
+{
+	img: lmn_stepswall.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_tree
+{
+	img: lmn_tree.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_trees1
+{
+	img: lmn_trees1.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_trees2
+{
+	img: lmn_trees2.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_wall
+{
+	img: lmn_wall.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_weeds
+{
+	img: lmn_weeds.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: lmn_well
+{
+	img: lmn_well.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}

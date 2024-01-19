@@ -1,0 +1,95 @@
+tex: stz_blockused
+{
+	img: stz_blockused.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_moonzonea
+{
+	img: stz_moonzonea.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_moonzoneb
+{
+	img: stz_moonzoneb.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_moonzonec
+{
+	img: stz_moonzonec.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_moonzoned
+{
+	img: stz_moonzoned.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_shiptube
+{
+	img: stz_shiptube.png
+	{
+		format: CI-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_starsurface1
+{
+	img: stz_starsurface1.png
+	{
+		format: I-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
+
+tex: stz_starblock
+{
+	img: stz_starblock.png
+	{
+		format: I-4
+		hwrap: repeat
+		vwrap: repeat
+	}
+	filter: yes
+	combine: 8
+}
