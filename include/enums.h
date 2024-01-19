@@ -5976,7 +5976,12 @@ enum WindowStyles {
     WINDOW_STYLE_20     = 20,
     WINDOW_STYLE_21     = 21,
     WINDOW_STYLE_22     = 22,
-    WINDOW_STYLE_MAX    = 22,
+    WINDOW_STYLE_23     = 23,
+    WINDOW_STYLE_24     = 24,
+    WINDOW_STYLE_25     = 25,
+    WINDOW_STYLE_26     = 26,
+    WINDOW_STYLE_27     = 27,
+    WINDOW_STYLE_MAX    = 27,
 };
 
 // LANGUAGE_DEFAULT as 0 will be the first index into several arrays containing data based on the current language.

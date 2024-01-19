@@ -176,6 +176,42 @@ DefaultWindowStyle gBoxDefaultStyles[] = {
         .combineModeIndex = 1,
         .color1 = { .r = 126, .g = 125, .b = 216, .a = 255 },
         .color2 = { .r = 217, .g = 108, .b = 201, .a = 255 }
+    },
+    //new window entries
+    { //index 23
+        .bgIndex = 1,
+        .cornersIndex = 8,
+        .combineModeIndex = 1,
+        .color1 = { .r = 0xA6, .g = 0xD7, .b = 0x95, .a = 255 },
+        .color2 = { .r = 0x39, .g = 0x78, .b = 0x21, .a = 255 }
+    },
+    { //index 24
+        .bgIndex = 1,
+        .cornersIndex = 8,
+        .combineModeIndex = 1,
+        .color1 = { .r = 0x9B, .g = 0xC9, .b = 0xEF, .a = 255 },
+        .color2 = { .r = 0x24, .g = 0x62, .b = 0x92, .a = 255 }
+    },
+    { //index 25
+        .bgIndex = 1,
+        .cornersIndex = 8,
+        .combineModeIndex = 1,
+        .color1 = { .r = 0x9B, .g = 0xC9, .b = 0xEF, .a = 255 },
+        .color2 = { .r = 0x24, .g = 0x62, .b = 0x92, .a = 255 }
+    },
+    { //index 26
+        .bgIndex = 1,
+        .cornersIndex = 8,
+        .combineModeIndex = 1,
+        .color1 = { .r = 252, .g = 105, .b = 130, .a = 255 },
+        .color2 = { .r = 0x39, .g = 0x48, .b = 0x21, .a = 255 }
+    },
+    { //index 27
+        .bgIndex = 1,
+        .cornersIndex = 8,
+        .combineModeIndex = 1,
+        .color1 = { .r = 0xEF, .g = 0xFA, .b = 0x0C, .a = 255 },
+        .color2 = { .r = 0x99, .g = 0x68, .b = 0x21, .a = 255 }
     }
 };
 

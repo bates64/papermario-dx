@@ -24,10 +24,12 @@ extern EvtScript N(EVS_Attack_Lightning);
 extern EvtScript N(EVS_IllusoryClones);
 extern EvtScript N(EVS_BooFlood);
 extern EvtScript N(EVS_ClonePosition);
-extern EvtScript N(EVS_Attack_BoostedLightning);
-extern EvtScript N(EVS_Move_Heal);
 extern EvtScript N(EVS_Attack_FakeoutScareA);
 extern EvtScript N(EVS_Attack_FakeoutScareB);
+extern EvtScript N(EVS_Attack_BoostedLightning);
+extern EvtScript N(EVS_Move_Heal);
+extern EvtScript N(EVS_Move_Buff);
+
 
 enum N(ActorPartIDs) {
     PRT_MAIN        = 1,
@@ -668,7 +670,7 @@ EvtScript N(EVS_CrownMagic_Phase1Attacks) = {
         EVT_CASE_DEFAULT
             EVT_SET(LVar0, 1)
     EVT_END_SWITCH
-    EVT_SET(LVar0, 0) // Set Attack
+    EVT_SET(LVar0, 1) // Set Attack
     EVT_SWITCH(LVar0)
         EVT_CASE_EQ(0)
             EVT_EXEC_WAIT(N(EVS_Attack_Fireball))
@@ -704,6 +706,7 @@ EvtScript N(EVS_Attack_FakeoutScare) = {
 
 #include "common/CalculateArcsinDeg.inc.c"
 
+/*
 API_CALLABLE(N(SetFireBreathScales)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
@@ -729,23 +732,13 @@ API_CALLABLE(N(SetShrinkBreathColors)) {
     effect->data.fireBreath->envB = 99;
     return ApiStatus_DONE2;
 }
+*/
 
 EvtScript N(EVS_Attack_Fireball) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     EVT_CALL(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     EVT_CALL(SetGoalToTarget, ACTOR_SELF)
-    EVT_CALL(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    EVT_CALL(GetGoalPos, ACTOR_SELF, LVar3, LVar4, LVar5)
-    EVT_SET(LVar1, 20)
-    EVT_SET(LVar2, 10)
-    EVT_SUB(LVar3, 40)
-    EVT_SET(LVar4, 20)
-    EVT_SET(LVar5, 10)
-    EVT_PLAY_EFFECT(EFFECT_FIRE_BREATH, FIRE_BREATH_TINY, LVar0, LVar1, LVar2, LVar3, LVar4, LVar5, 50, 1, 24)
-    EVT_CALL(N(SetFireBreathScales), LVarF)
-    EVT_CALL(N(SetShrinkBreathColors), LVarF)
-    EVT_WAIT(26)
     EVT_WAIT(2)
     EVT_CALL(EnemyDamageTarget, ACTOR_SELF, LVarF, DAMAGE_TYPE_NO_CONTACT, SUPPRESS_EVENT_ALL, DMG_STATUS_IGNORE_RES(STATUS_FLAG_SHRINK, 3), 4, BS_FLAGS1_TRIGGER_EVENTS)
     EVT_SWITCH(LVarF)
@@ -868,24 +861,6 @@ EvtScript N(EVS_BooFlood) = {
     EVT_END
 };
 
-EvtScript N(EVS_Attack_BoostedLightning) = {
-    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
-    EVT_RETURN
-    EVT_END
-};
-
-EvtScript N(EVS_Move_Heal) = {
-    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
-    EVT_RETURN
-    EVT_END
-};
-
 EvtScript N(EVS_Attack_FakeoutScareA) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
@@ -898,6 +873,112 @@ EvtScript N(EVS_Attack_FakeoutScareA) = {
 EvtScript N(EVS_Attack_FakeoutScareB) = {
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Attack_BoostedLightning) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Move_Heal) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_EXEC_WAIT(N(EVS_Move_Buff))
+	EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_VANISH_A)
+	EVT_SETF(LVar0, 256)
+	EVT_LOOP(16)
+		EVT_SUB(LVar0, 16)
+		EVT_CALL(SetPartAlpha, ACTOR_SELF, PRT_MAIN, LVar0)
+		EVT_WAIT(1)
+	EVT_END_LOOP
+	EVT_WAIT(10)
+	EVT_CALL(UseBattleCamPreset, 2)
+	EVT_CALL(MoveBattleCamOver, 00000014)
+	EVT_CALL(SetActorSpeed, ACTOR_SELF, EVT_FLOAT(10.0))
+	EVT_CALL(SetGoalPos, ACTOR_SELF, 70, 50, 5)
+	EVT_CALL(FlyToGoal, ACTOR_SELF, 30, 0, EASING_COS_IN_OUT)
+	EVT_CALL(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
+	EVT_CALL(ForceHomePos, ACTOR_SELF, LVar0, LVar1, LVar2)
+	EVT_CALL(HPBarToHome, ACTOR_SELF)
+	EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_BOO_APPEAR_A)
+	EVT_SETF(LVar0, 0)
+	EVT_LOOP(16)
+		EVT_ADD(LVar0, 16)
+		EVT_CALL(SetPartAlpha, ACTOR_SELF, PRT_MAIN, LVar0)
+		EVT_WAIT(1)
+	EVT_END_LOOP
+	EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_Idle)
+	EVT_THREAD
+		EVT_WAIT(5)
+		EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_RECOVER_HEART)
+		EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_HEART_BOUNCE)
+		EVT_WAIT(30)
+		EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_STAR_BOUNCE_A)
+	EVT_END_THREAD
+	EVT_THREAD
+		EVT_CALL(FreezeBattleState, TRUE)
+		EVT_CALL(HealActor, ACTOR_SELF, 10, FALSE)
+		EVT_CALL(FreezeBattleState, FALSE)
+	EVT_END_THREAD
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
+    EVT_RETURN
+    EVT_END
+};
+
+EvtScript N(EVS_Move_Buff) = {
+    EVT_CALL(UseIdleAnimation, ACTOR_SELF, FALSE)
+    EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar0)
+	EVT_CALL(UseIdleAnimation, LVar0, FALSE)
+	EVT_CALL(SetAnimation, LVar0, PRT_MAIN, ANIM_KingBoo_CrownAttack)
+	EVT_CALL(PlaySoundAtActor, LVar0, SOUND_SPELL_CAST4)
+	EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar0)
+	EVT_CALL(UseIdleAnimation, LVar0, FALSE)
+	EVT_CALL(SetAnimation, LVar0, PRT_MAIN, ANIM_KingBoo_CrownAttack)
+	EVT_CALL(PlaySoundAtActor, LVar0, SOUND_SPELL_CAST4)
+	EVT_WAIT(80)
+	EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar0)
+	EVT_CALL(UseIdleAnimation, LVar0, TRUE)
+	EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar0)
+	EVT_CALL(UseIdleAnimation, LVar0, TRUE)
+	EVT_CALL(PlaySoundAtActor, ACTOR_SELF, SOUND_POWER_UP)
+	EVT_CALL(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
+	EVT_ADD(LVar1, 20)
+	EVT_PLAY_EFFECT(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), 45, 0)
+	EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_Laugh)
+	EVT_WAIT(30)
+	// Clone 1
+	EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	EVT_CALL(ActorExists, LVar9, LVarA)
+	EVT_IF_EQ(LVarA, TRUE)
+		EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+		EVT_IF_EQ(LVarB, TRUE)
+			EVT_CALL(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+			EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+			EVT_EXEC(N(EVS_RemoveClone))
+		EVT_END_IF
+	EVT_END_IF
+	// Clone 2
+	EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	EVT_CALL(ActorExists, LVar9, LVarA)
+	EVT_IF_EQ(LVarA, TRUE)
+		EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
+		EVT_IF_EQ(LVarB, TRUE)
+			EVT_CALL(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
+			EVT_CALL(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+			EVT_EXEC(N(EVS_RemoveClone))
+		EVT_END_IF
+	EVT_END_IF
+	EVT_CALL(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_Hide)
     EVT_CALL(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     EVT_CALL(UseIdleAnimation, ACTOR_SELF, TRUE)
     EVT_RETURN

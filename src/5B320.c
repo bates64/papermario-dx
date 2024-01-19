@@ -409,7 +409,8 @@ s32 pad8[] = {
 };
 
 extern HudScript HES_Partner0;
-extern HudScript HES_Goombario;
+//extern HudScript HES_Goombario;
+extern HudScript HES_EGadd;
 extern HudScript HES_Kooper;
 extern HudScript HES_Bombette;
 extern HudScript HES_Parakarry;
@@ -421,7 +422,8 @@ extern HudScript HES_Bow;
 extern HudScript HES_PartnerA;
 extern HudScript HES_PartnerB;
 extern HudScript HES_Partner0Disabled;
-extern HudScript HES_GoombarioDisabled;
+//extern HudScript HES_GoombarioDisabled;
+extern HudScript HES_EGaddDisabled;
 extern HudScript HES_KooperDisabled;
 extern HudScript HES_BombetteDisabled;
 extern HudScript HES_ParakarryDisabled;
@@ -435,7 +437,8 @@ extern HudScript HES_PartnerBDisabled;
 
 IconHudScriptPair gPartnerIconHudScripts[] = {
     { .enabled = &HES_Partner0, .disabled = &HES_Partner0Disabled },
-    { .enabled = &HES_Goombario, .disabled = &HES_GoombarioDisabled },
+    //{ .enabled = &HES_Goombario, .disabled = &HES_GoombarioDisabled },
+    { .enabled = &HES_EGadd, .disabled = &HES_EGaddDisabled },
     { .enabled = &HES_Kooper, .disabled = &HES_KooperDisabled },
     { .enabled = &HES_Bombette, .disabled = &HES_BombetteDisabled },
     { .enabled = &HES_Parakarry, .disabled = &HES_ParakarryDisabled },

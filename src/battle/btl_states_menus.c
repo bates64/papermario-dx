@@ -31,8 +31,10 @@ extern HudScript HES_Kooper;
 extern HudScript HES_Bombette;
 extern HudScript HES_Partner0;
 extern HudScript HES_Partner0Disabled;
-extern HudScript HES_Goombario;
-extern HudScript HES_GoombarioDisabled;
+// extern HudScript HES_Goombario;
+// extern HudScript HES_GoombarioDisabled;
+extern HudScript HES_EGadd;
+extern HudScript HES_EGaddDisabled;
 extern HudScript HES_KooperDisabled;
 extern HudScript HES_BombetteDisabled;
 extern HudScript HES_Parakarry;
@@ -160,14 +162,14 @@ HudScript* battle_menu_StarPowerMovesHudScripts[] = {
 };
 
 HudScript* battle_menu_PartnerHudScripts[] = {
-    &HES_Partner0, &HES_Goombario, &HES_Kooper, &HES_Bombette,
+    &HES_Partner0, /*&HES_Goombario,*/ &HES_EGadd, &HES_Kooper, &HES_Bombette,
     &HES_Parakarry, &HES_Partner0, &HES_Watt, &HES_Sushie,
     &HES_Lakilester, &HES_Bow, &HES_PartnerA, &HES_PartnerA,
     &HES_PartnerA, &HES_PartnerA, &HES_PartnerA, &HES_PartnerA
 };
 
 HudScript* battle_menu_DisabledPartnerHudScripts[] = {
-    &HES_Partner0Disabled, &HES_GoombarioDisabled, &HES_KooperDisabled, &HES_BombetteDisabled,
+    &HES_Partner0Disabled, /*&HES_GoombarioDisabled,*/ &HES_EGaddDisabled, &HES_KooperDisabled, &HES_BombetteDisabled,
     &HES_ParakarryDisabled, &HES_Partner0Disabled, &HES_WattDisabled, &HES_SushieDisabled,
     &HES_LakilesterDisabled, &HES_BowDisabled, &HES_PartnerADisabled, &HES_PartnerADisabled,
     &HES_PartnerADisabled, &HES_PartnerADisabled, &HES_PartnerADisabled, &HES_PartnerADisabled
@@ -257,7 +259,7 @@ AnimID BattleMenu_PartnerIdleAnims[] = {
 };
 
 HudScript* battle_menu_PartnerMoveHudScripts[10][10] = {
-    [PARTNER_GOOMBARIO]  { &HES_Goombario, &HES_GoombarioDisabled, &HES_MoveDiamond, &HES_MoveDiamond_disabled, &HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled, &HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled, &HES_MoveRedOrb, &HES_MoveRedOrbDisabled },
+    [PARTNER_GOOMBARIO]  { &HES_EGadd, &HES_EGaddDisabled, /*&HES_Goombario, &HES_GoombarioDisabled,*/ &HES_MoveDiamond, &HES_MoveDiamond_disabled, &HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled, &HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled, &HES_MoveRedOrb, &HES_MoveRedOrbDisabled },
     [PARTNER_KOOPER]     { &HES_Kooper, &HES_KooperDisabled, &HES_MoveDiamond, &HES_MoveDiamond_disabled, &HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled, &HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled, &HES_MoveRedOrb, &HES_MoveRedOrbDisabled },
     [PARTNER_BOMBETTE]   { &HES_Bombette, &HES_BombetteDisabled, &HES_MoveDiamond, &HES_MoveDiamond_disabled, &HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled, &HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled, &HES_MoveRedOrb, &HES_MoveRedOrbDisabled },
     [PARTNER_PARAKARRY]  { &HES_Parakarry, &HES_ParakarryDisabled, &HES_MoveDiamond, &HES_MoveDiamond_disabled, &HES_MoveBlueOrb, &HES_MoveBlueOrbDisabled, &HES_MoveGreenOrb, &HES_MoveGreenOrbDisabled, &HES_MoveRedOrb, &HES_MoveRedOrbDisabled },

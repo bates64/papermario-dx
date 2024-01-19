@@ -27,4 +27,6 @@
 /// Press L + D-Pad Up to show/hide the profiler.
 #define USE_PROFILER 1
 
+#define GIVE_ALL_PARTNERS 1
+
 #endif
