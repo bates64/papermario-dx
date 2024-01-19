@@ -1,0 +1,1949 @@
+% Define King Boo Parts
+#define .Part:KingBoo 1
+#define .Part:FireBall 2
+#define .Part:Boo 3
+
+% King Boo Actor Variables
+#define .AVar:Flags 0`
+#define .AVar:KingBooPhase 1`
+#define .AVar:CloneExists1 2`
+#define .AVar:CloneExists2 3`
+#define .AVar:TurnsUntilClones 4`
+#define .AVar:Clone1_ID 5`
+#define .AVar:Clone2_ID 6`
+
+#new:Actor $KingBoo
+{
+% stats
+[Index]        D4b
+[Level]        40`b % miniboss stats
+[MaxHP]        40`b
+[Coins]         0`b
+[Flags]       00000204
+[StatusTable] $StatusTable_KingBoo
+% ai
+[PartsCount]   3`s
+[PartsTable] $PartsTable_KingBoo
+[Script]      $Script_Init_KingBoo
+% move effectiveness
+[Escape]        0`b %no escape
+[Item]          0`b
+[AirLift]       0`b
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b
+[PowerBounce]   4`b
+[SpinSmash]     4`b % weight (0-4)
+% ui positions
+[Size]        48`b 45`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b 20`b % dx dy (usually top left)
+[StatusIcon]   10`b 20`b % dx dy (usually top right)
+}
+
+#new:StatusTable $StatusTable_KingBoo
+{
+.Status:Normal    0`
+.Status:Default   0`
+.Status:Sleep     100`
+.Status:Poison    100`
+.Status:Frozen    100`
+.Status:Dizzy     100`
+.Status:Fear      100`
+.Status:Static    100`
+.Status:Paralyze  100`
+.Status:Shrink    100`
+.Status:Stop      100`
+.Status:SleepTurnMod      0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod      0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod   0`
+.Status:ShrinkTurnMod     0`
+.Status:StopTurnMod       1`
+.Status:End
+}
+
+#new:PartsTable $PartsTable_KingBoo % ActorPartBlueprint struct in decomp
+{
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:KingBoo
+    /% Vec3b posOffset %/           0`b 0`b 0`b
+    /% Vec2b targetOffset %/        0`b 43`b % For cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_KingBoo
+    /% s32* defenseTable %/         $DefenseTable_KingBoo
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+
+	/% Fire Ball %/
+    /% s32 flags %/                 00120001
+    /% s8 index %/                  ~Byte:.Part:FireBall
+    /% Vec3b posOffset %/           0`b 0`b 0`b
+    /% Vec2b targetOffset %/        0`b 0`b %for cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_FireBall
+    /% s32* defenseTable %/         00000000
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 00b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+
+	/% Boo %/
+    /% s32 flags %/                 00120001
+    /% s8 index %/                  ~Byte:.Part:Boo
+    /% Vec3b posOffset %/           0`b 0`b 0`b
+    /% Vec2b targetOffset %/        0`b 0`b %for cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_Boo
+    /% s32* defenseTable %/         00000000
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 00b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+
+}
+
+#new:IdleAnimations $IdleAnimations_KingBoo
+{
+.Status:Normal    .Anim:KingBoo_Idle
+.Status:Stone     .Anim:KingBoo_Still
+.Status:Sleep     .Anim:KingBoo_Still
+.Status:Poison    .Anim:KingBoo_Idle
+.Status:Stop      .Anim:KingBoo_Still
+.Status:Static    .Anim:KingBoo_Idle
+.Status:Paralyze  .Anim:KingBoo_Still
+.Status:Dizzy     .Anim:KingBoo_Still
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_KingBoo_Laughing
+{
+.Status:Normal    .Anim:KingBoo_Laugh
+.Status:End
+}
+
+
+#new:IdleAnimations $IdleAnimations_FireBall
+{
+.Status:Normal    .Anim:KingBoo_FireBall
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_Boo
+{
+.Status:Normal    .Anim:KingBoo_Boo
+.Status:End
+}
+
+#new:DefenseTable $DefenseTable_KingBoo
+{
+.Element:Normal 0`
+.Element:Jump 0`
+.Element:Hammer 0`
+.Element:Throw -2`
+.Element:Water 3`
+.Element:Fire 3`
+.Element:Ice 3`
+.Element:Blast -4`
+.Element:Magic 100`
+.Element:Cosmic -100`
+.Element:End
+}
+
+#new:Script $Script_Init_KingBoo
+{
+	Call  BindTakeTurn	( .Actor:Self $Script_TakeTurn_KingBoo )
+	Call  BindIdle	( .Actor:Self $Script_Idle_KingBoo )
+	Call  BindHandleEvent  ( .Actor:Self $Script_HandleEvent_KingBoo )
+	Call  SetActorVar   ( .Actor:Self .AVar:Flags 0` )
+	Call  SetActorVar   ( .Actor:Self .AVar:KingBooPhase 0` )
+	Call  SetActorVar   ( .Actor:Self .AVar:CloneExists1 .False )
+	Call  SetActorVar   ( .Actor:Self .AVar:CloneExists2 .False )
+	Call  SetActorVar   ( .Actor:Self .AVar:TurnsUntilClones 0` )
+	Call  SetActorVar   ( .Actor:Self .AVar:Clone1_ID -1` )
+	Call  SetActorVar   ( .Actor:Self .AVar:Clone2_ID -1` )
+	% Boo 1
+	Call  CreateNpc     ( 1` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 1` 0` )
+	Call  SetNpcPos     ( 1` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 1` .True )
+
+	/% Boo 2
+	Call  CreateNpc     ( 2` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 2` 0` )
+	Call  SetNpcPos     ( 2` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 2` .True )
+	% Boo 3
+	Call  CreateNpc     ( 3` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 3` 0` )
+	Call  SetNpcPos     ( 3` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 3` .True )
+	% Boo 4
+	Call  CreateNpc     ( 4` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 4` 0` )
+	Call  SetNpcPos     ( 4` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 4` .True )
+	% Boo 5
+	Call  CreateNpc     ( 5` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 5` 0` )
+	Call  SetNpcPos     ( 5` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 5` .True )
+	% Boo 6
+	Call  CreateNpc     ( 6` .Anim:KingBoo_Boo )
+	Call  SetNpcYaw     ( 6` 0` )
+	Call  SetNpcPos     ( 6` 0` -1000` 0` )
+	Call  EnableNpcShadow  ( 6` .True )
+	%/
+	Return
+	End
+}
+
+
+#new:Script $Script_Idle_KingBoo
+{
+	Return
+	End
+}
+
+#new:Script $Script_HandleEvent_KingBoo
+{
+	Call     UseIdleAnimation 	( .Actor:Self .False )
+	Call     EnableIdleScript 	( .Actor:Self .False )
+	Call     GetLastEvent 	( .Actor:Self *Var0 )
+	Switch  *Var0
+		CaseOR  ==  .Event:HitCombo
+			Call  SetActorVar ( .Actor:Enemy0 .AVar:Flags *Var0 )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_Hurt % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_Hurt % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			ExecWait DoNormalHit
+			ExecWait $Script_OnHit
+		CaseOR  ==  .Event:Hit
+			Call  SetActorVar ( .Actor:Enemy0 .AVar:Flags *Var0 )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			ExecWait DoNormalHit
+			ExecWait $Script_OnHit
+		EndCaseGroup
+		Case  ==  .Event:BurnHit
+			Call  SetActorVar ( .Actor:Enemy0 .AVar:Flags *Var0 )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_Hurt % Clone Hurt
+						SetConst  *Var2  .Anim:KingBoo_CloneReact % Change to Death animation
+						ExecWait DoBurnHit
+					EndThread
+				EndIf
+			EndIf
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_Hurt % Clone Hurt
+						SetConst  *Var2  .Anim:KingBoo_CloneReact % Change to Death animation
+						ExecWait DoBurnHit
+					EndThread
+				EndIf
+			EndIf
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			SetConst  *Var2  .Anim:KingBoo_Hurt % Change to Death animation
+			ExecWait DoBurnHit
+			ExecWait $Script_OnHit
+		Case  ==  .Event:BurnDeath
+			Call  SetActorVar ( .Actor:Enemy0 .AVar:Flags *Var0 )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Change to Death animation
+						ExecWait DoBurnHit
+					EndThread
+				EndIf
+			EndIf
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Change to Death animation
+						ExecWait DoBurnHit
+					EndThread
+				EndIf
+			EndIf
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			SetConst  *Var2  .Anim:KingBoo_Hurt  % Change to Death Animation
+			ExecWait DoBurnHit
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt  % Change to Death Animation
+			ExecWait $Script_OnDeath
+			Return
+		CaseOR  ==  00000017
+		CaseOR  ==  .Event:Immune
+		CaseOR  ==  .Event:AirLiftFailed
+		EndCaseGroup
+		Case  ==  .Event:Death
+			Call  SetActorVar ( .Actor:Enemy0 .AVar:Flags *Var0 )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+			Call  ActorExists ( *Var0 *Var1 )
+			If *Var1 == .True
+				Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+				If *VarB == .True
+					Thread
+						Call  SetOwnerID ( *Var0 )
+						SetConst  *Var0  .Part:KingBoo
+						SetConst  *Var1  .Anim:KingBoo_CloneReact % Clone Hurt
+						ExecWait DoNormalHit
+					EndThread
+				EndIf
+			EndIf
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			ExecWait DoNormalHit
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Hurt
+			ExecWait $Script_OnDeath
+			Return
+		Case  ==  .Event:RecoverStatus
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Idle
+			ExecWait DoRecover
+		Case  ==  .Event:BeginAirLift
+			SetConst  *Var0  .Part:KingBoo
+			SetConst  *Var1  .Anim:KingBoo_Idle
+			ExecWait DoImmune
+		Default
+	EndSwitch
+	Call     EnableIdleScript 	( .Actor:Self .True )
+	Call     UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_OnHit
+{
+	% Clone 1
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists1 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+	% Clone 2
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists2 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+
+	Wait  30`
+	Call  8027D32C ( .Actor:Self )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_MoveFast )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[6.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal ( .Actor:Self 0` 0` .Easing:CosInOut )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Wait  5`
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Return
+	End
+}
+
+#new:Script $Script_OnDeath
+{
+	% Clone 1
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists1 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+	% Clone 2
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists2 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+
+	% King Boo's "Death"
+	Wait 15`
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Wait 30`
+	Call RemoveActor ( .Actor:Self )
+	Return
+	End
+}
+
+#new:Script $Script_RemoveClone
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call  UseIdleAnimation ( *Var9 .False )
+	Call  SetAnimation ( *Var9 .Part:KingBoo .Anim:KingBoo_CloneReact )
+	Wait  20`
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  EnableActorBlur ( *Var9 .True )
+	Call  SetActorFlagBits ( *Var9 00400000 .True )
+	Call  RemoveActor ( *Var9 )
+	Call  SetIdleAnimations ( .Actor:Self .Part:KingBoo $IdleAnimations_KingBoo )
+	Call	UseIdleAnimation	( .Actor:Self .True )
+	Call	EnableIdleScript	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_TakeTurn_KingBoo
+{
+    Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Label CheckPhase
+	%Goto FirstPhase
+	Goto SecondPhase
+	Call  GetActorVar ( .Actor:Self .AVar:KingBooPhase *Var6 )
+	Switch *Var6
+		Case == 0`
+			Call GetActorHP ( .Actor:Self *Var4 )
+			If *Var4 < 21`
+				Call  SetActorVar ( .Actor:Self .AVar:KingBooPhase 1` )
+				Goto SecondPhase
+			Else
+				Goto FirstPhase
+			EndIf
+		Case == 1`
+			Call  SetActorVar ( .Actor:Self .AVar:KingBooPhase 2` )
+			Goto SecondPhase
+		Case == 2`
+			Goto SecondPhase
+	EndSwitch
+	Label FirstPhase
+	Call	RandInt     	( 100` *Var1 ) % Get Attack to use
+	Switch	*Var1
+		Case < 70` % 70% Chance
+			Set	*Var0 0` % Scare
+		Default % 30% Chance
+			Set	*Var0 1` % Crown Magic
+	EndSwitch
+	Set  *Var0 0` % Always use the same attack, testing purposes.
+	% Which Attack?
+	Switch *Var0
+		Case == 0`
+			ExecWait $Scare_Phase1Attacks
+			Goto EndTurn
+		Case == 1`
+			ExecWait $Crown_Magic_Phase1Attacks
+			Goto EndTurn
+	EndSwitch
+
+	Label SecondPhase
+	Goto ScareAttacks
+	Call GetActorVar ( .Actor:Self .AVar:TurnsUntilClones *Var3 )
+	Switch *Var3
+		Case == 0`
+			ExecWait $Script_IllusoryClones
+			Call SetActorVar ( .Actor:Self .AVar:TurnsUntilClones 1` )
+			Goto EndTurn
+		Case == 1`
+			Call GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarA )
+			Call ActorExists ( *VarA *Var4 )
+			If *Var4 == .False
+				Call SetActorVar ( .Actor:Self .AVar:TurnsUntilClones 2` )
+				Goto ScareAttacks
+			Else
+				Call SetActorVar ( .Actor:Self .AVar:TurnsUntilClones 0` )
+				Goto CloneAttacks
+			EndIf
+		Case == 2`
+			Call GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarA )
+			Call ActorExists ( *VarA *Var4 )
+			If *Var4 == .False
+				Call SetActorVar ( .Actor:Self .AVar:TurnsUntilClones 0` )
+				Goto ScareAttacks
+			Else
+				Call SetActorVar ( .Actor:Self .AVar:TurnsUntilClones 0` )
+				Goto CloneAttacks
+			EndIf
+	EndSwitch
+
+	Label CloneAttacks
+	Call  RandInt ( 100` *Var1 )
+	Switch *Var1
+		Case < 80`
+			Set *Var0 0` % Lightning Clone Boost
+		Default
+			Set *Var0 1` % Clone Heal
+	EndSwitch
+	%Set *Var0 1` % Always use the same attack, testing purposes.
+	% Which Attack?
+	Switch *Var0
+		Case == 0`
+			ExecWait $Attack_LightningCloneBoost
+			Goto EndTurn
+		Case == 1`
+			ExecWait $Attack_CloneHeal
+			Goto EndTurn
+	EndSwitch
+
+	Label ScareAttacks
+	Call  RandInt ( 100` *Var1 )
+	Switch *Var1
+		Case < 50` % Normally a 70% Chance
+			Set *Var0 0` % Fakeout Scare B
+		Default
+			Set *Var0 1` % Fakeout Scare A
+	EndSwitch
+	%Set *Var0 1` % Always use the same attack, testing purposes.
+	% Which Attack?
+	Switch *Var0
+	Case == 0`
+		ExecWait $Attack_FakeoutScareB
+		Goto EndTurn
+	Case == 1`
+		ExecWait $Attack_FakeoutScareA
+		Goto EndTurn
+	EndSwitch
+
+
+	Label EndTurn
+    Call	UseIdleAnimation	( .Actor:Self .True )
+	Call	EnableIdleScript	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Scare_Phase1Attacks
+{
+	Call  EnableIdleScript 	( .Actor:Self .False )
+	Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call RandInt (100` *Var1) % Get Combo to use
+	Switch *Var1
+		Case < 70` % 70% Chance
+			Set *Var0 0` % Normal Scare
+		Default % 30% Chance
+			Set *Var0 1` % Fakeout Scare
+	EndSwitch
+	Set  *Var0 1` % Always use the same attack, testing purposes.
+	% Which Attack?
+	Switch *Var0
+		Case == 0`
+			ExecWait $Attack_Scare
+			Goto EndTurn
+		Case == 1`
+			ExecWait $Attack_FakeoutScare
+			Goto EndTurn
+	EndSwitch
+	Label EndTurn
+	Call  EnableIdleScript 	( .Actor:Self .True )
+	Call  UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Crown_Magic_Phase1Attacks
+{
+	Call  EnableIdleScript 	( .Actor:Self .False )
+	Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call RandInt (100` *Var1) % Get Combo to use
+	Switch *Var1
+		Case < 60` % 60% Chance
+			Set *Var0 0` % Fireball
+		Default % 40% Chance
+			Set *Var0 1` % Lightning
+	EndSwitch
+	%Set  *Var0 0` % Always use the same attack, testing purposes.
+	% Which Attack?
+	Switch *Var0
+		Case == 0`
+			ExecWait $Attack_FireBall
+			Goto EndTurn
+		Case == 1`
+			ExecWait $Attack_Lightning
+			Goto EndTurn
+	EndSwitch
+	Label EndTurn
+	Call  EnableIdleScript 	( .Actor:Self .True )
+	Call  UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_Scare
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20`
+	Set  *Var1 0`
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 25`
+	Set  *Var1 10`
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 0` 0` .Easing:CosInOut )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Scare )
+	Wait	30`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0
+		CaseOR   ==  00000006
+		CaseOR   ==  00000005
+			If  *Var0 == 00000005
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	SkipDamage
+		EndCaseGroup
+	EndSwitch
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait  5`
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact 0` 0` 3` 00000020 ) % 3 Damage
+	Label	SkipDamage
+	Wait	30`
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call	SetGoalToHome 	( .Actor:Self )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 30` 00000000 .Easing:CosInOut )
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_FakeoutScare
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20`
+	Set  *Var1 0`
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 25`
+	Set  *Var1 10`
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 0` 0` .Easing:CosInOut )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+
+	/% lunge and attack (4 frame delay)
+	Thread
+		Wait	46`
+		Call	GetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Sub  *Var0 10`
+		Call	SetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+		Call  FlyToGoal     ( .Actor:Self 3` 0` .Easing:CosInOut )
+	EndThread
+	%/
+
+	%wiggle a little bit
+	Thread
+		Wait	15`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+	EndThread
+
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Fakeout )
+	Wait 40`
+
+	% Wiggle a little bit
+	Thread
+		Wait	15`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 1`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 2`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Add  *VarD 3`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+		Wait 	2`
+		Call	GetActorPos  	( .Actor:Self *VarD *VarE *VarF )
+		Sub  *VarD 4`
+		Call	SetActorPos   	( .Actor:Self  *VarD *VarE *VarF )
+	EndThread
+	Wait  30`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0
+		CaseOR   ==  00000006
+		CaseOR   ==  00000005
+			If  *Var0 == 00000005
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	SkipDamage
+		EndCaseGroup
+	EndSwitch
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait  5`
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact 0` 0` 3` 00000020 ) % 3 Damage
+	Label	SkipDamage
+	Wait	30`
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call  SetGoalToHome ( .Actor:Self )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Function $Function_80218000_FireBall
+{
+    0:  ADDIU     SP, SP, FFD8
+    4:  SDC1      F22, 20 (SP)
+    8:  MOV.S     F22, F12
+    C:  SDC1      F20, 18 (SP)
+   10:  SW        RA, 10 (SP)
+   14:  JAL       ~Func:length2D
+   18:  MOV.S     F20, F14
+   1C:  TRUNC.W.S F6, F20
+   20:  MFC1      V0, F6
+   24:  NOP
+   28:  BLTZL     V0, .o30
+   2C:  SUBU      V0, R0, V0
+        .o30
+   30:  MTC1      V0, F2
+   34:  NOP
+   38:  CVT.S.W   F2, F2
+   3C:  DIV.S     F4, F2, F0
+   40:  CLEAR     A0
+   44:  LI        A2, 5A
+   48:  COPY      A1, A0
+   4C:  LA        A3, $FloatTable_FireBall
+   54:  ANDI      V0, A2, FFFF
+        .o58
+   58:  ANDI      V1, A0, FFFF
+   5C:  SUBU      V0, V0, V1
+   60:  SRL       V1, V0, 1F
+   64:  ADDU      V0, V0, V1
+   68:  SRA       V0, V0, 1
+   6C:  ADDU      V1, A0, V0
+   70:  ANDI      V0, V1, FFFF
+   74:  SLL       V0, V0, 2
+   78:  ADDU      V0, V0, A3
+   7C:  LWC1      F0, 0 (V0)
+   80:  C.LT.S    F0, F4
+   84:  NOP
+   88:  BC1FL     .o94
+   8C:  COPY      A2, V1
+   90:  COPY      A0, V1
+        .o94
+   94:  ADDIU     A1, A1, 1
+   98:  ANDI      V0, A1, FFFF
+   9C:  SLTIU     V0, V0, 7
+   A0:  BNE       V0, R0, .o58
+   A4:  ANDI      V0, A2, FFFF
+   A8:  ANDI      V0, A0, FFFF
+   AC:  SLL       V0, V0, 2
+   B0:  ANDI      V1, A2, FFFF
+   B4:  LTF       F2, V0 ($FloatTable_FireBall)
+   C0:  SLL       V1, V1, 2
+   C4:  SUB.S     F2, F2, F4
+   C8:  LTF       F0, V1 ($FloatTable_FireBall)
+   D4:  SUB.S     F0, F0, F4
+   D8:  ABS.S     F2, F2
+   DC:  ABS.S     F0, F0
+   E0:  C.LT.S    F2, F0
+   E4:  NOP
+   E8:  BC1F      .oF4
+   EC:  COPY      V1, A2
+   F0:  COPY      V1, A0
+        .oF4
+   F4:  MTC1      R0, F0
+   F8:  NOP
+   FC:  C.LT.S    F22, F0
+  100:  NOP
+  104:  BC1F      .o130
+  108:  NOP
+  10C:  C.LE.S    F0, F20
+  110:  NOP
+  114:  BC1F      .o128
+  118:  LI        V0, B4
+  11C:  SUBU      V1, V0, V1
+  120:  MTC1      R0, F0
+  124:  NOP
+        .o128
+  128:  C.LT.S    F22, F0
+  12C:  NOP
+        .o130
+  130:  BC1F      .o148
+  134:  NOP
+  138:  C.LT.S    F20, F0
+  13C:  NOP
+  140:  BC1TL     .o148
+  144:  ADDIU     V1, V1, B4
+        .o148
+  148:  MTC1      R0, F0
+  14C:  NOP
+  150:  C.LE.S    F0, F22
+  154:  NOP
+  158:  BC1F      .o174
+  15C:  NOP
+  160:  C.LT.S    F20, F0
+  164:  NOP
+  168:  BC1F      .o174
+  16C:  LI        V0, 168
+  170:  SUBU      V1, V0, V1
+        .o174
+  174:  LW        RA, 10 (SP)
+  178:  LDC1      F22, 20 (SP)
+  17C:  LDC1      F20, 18 (SP)
+  180:  ANDI      V0, V1, FFFF
+  184:  JR        RA
+  188:  ADDIU     SP, SP, 28
+}
+
+#new:Function $Function_8021818C_FireBall
+{
+    0:  ADDIU     SP, SP, FFD8
+    4:  SW        S4, 20 (SP)
+    8:  COPY      S4, A0
+    C:  SW        RA, 24 (SP)
+   10:  SW        S3, 1C (SP)
+   14:  SW        S2, 18 (SP)
+   18:  SW        S1, 14 (SP)
+   1C:  SW        S0, 10 (SP)
+   20:  LW        S2, C (S4)
+   24:  LW        A1, 0 (S2)
+   28:  JAL       ~Func:get_variable
+   2C:  ADDIU     S2, S2, 4
+   30:  LW        A1, 0 (S2)
+   34:  ADDIU     S2, S2, 4
+   38:  COPY      A0, S4
+   3C:  JAL       ~Func:get_variable
+   40:  COPY      S0, V0
+   44:  LW        A1, 0 (S2)
+   48:  ADDIU     S2, S2, 4
+   4C:  COPY      A0, S4
+   50:  JAL       ~Func:get_variable
+   54:  COPY      S1, V0
+   58:  COPY      S3, V0
+   5C:  LW        A1, 0 (S2)
+   60:  ADDIU     S2, S2, 4
+   64:  COPY      A0, S4
+   68:  JAL       ~Func:get_variable
+   6C:  SUBU      S3, S3, S0
+   70:  COPY      S0, V0
+   74:  COPY      A0, S4
+   78:  LW        A1, 0 (S2)
+   7C:  JAL       ~Func:get_variable
+   80:  SUBU      S0, S0, S1
+   84:  BNE       S3, R0, .oA0
+   88:  NOP
+   8C:  BNE       S0, R0, .oA0
+   90:  COPY      A0, S4
+   94:  LW        A1, 0 (S2)
+   98:  BEQ       R0, R0, .oC8
+   9C:  COPY      A2, V0
+        .oA0
+   A0:  MTC1      S3, F12
+   A4:  NOP
+   A8:  CVT.S.W   F12, F12
+   AC:  MTC1      S0, F14
+   B0:  NOP
+   B4:  JAL       $Function_80218000_FireBall
+   B8:  CVT.S.W   F14, F14
+   BC:  COPY      A0, S4
+   C0:  LW        A1, 0 (S2)
+   C4:  ADDIU     A2, V0, FFA6
+        .oC8
+   C8:  JAL       ~Func:set_variable
+   CC:  NOP
+   D0:  LI        V0, 2
+   D4:  LW        RA, 24 (SP)
+   D8:  LW        S4, 20 (SP)
+   DC:  LW        S3, 1C (SP)
+   E0:  LW        S2, 18 (SP)
+   E4:  LW        S1, 14 (SP)
+   E8:  LW        S0, 10 (SP)
+   EC:  JR        RA
+   F0:  ADDIU     SP, SP, 28
+}
+
+#new:FloatTable $FloatTable_FireBall
+{
+0.0      0.017452 0.034899 0.052336 0.069756 0.087156 0.104528 0.121869
+0.139173 0.156434 0.173648 0.190809 0.207912 0.224951 0.241922 0.258819
+0.275637 0.292372 0.309017 0.325568 0.34202  0.358368 0.374607 0.390731
+0.406737 0.422618 0.438371 0.45399  0.469472 0.48481  0.5      0.515038
+0.529919 0.544639 0.559193 0.573576 0.587785 0.601815 0.615661 0.62932
+0.642788 0.656059 0.669131 0.681998 0.694658 0.707107 0.71934  0.731354
+0.743145 0.75471  0.766044 0.777146 0.788011 0.798636 0.809017 0.819152
+0.829038 0.838671 0.848048 0.857167 0.866025 0.87462  0.882948 0.891007
+0.898794 0.906308 0.913545 0.920505 0.927184 0.93358  0.939693 0.945519
+0.951057 0.956305 0.961262 0.965926 0.970296 0.97437  0.978148 0.981627
+0.984808 0.987688 0.990268 0.992546 0.994522 0.996195 0.997564 0.99863
+0.999391 0.999848 1.0
+}
+
+#new:Script $Attack_FireBall
+{
+    Call EnableIdleScript ( .Actor:Self .False )
+    Call UseIdleAnimation ( .Actor:Self .False )
+    Call SetTargetActor    ( .Actor:Self .Actor:Player )
+	Call  $Function_DarkenBackground ( )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:SpellCast4 )
+	Wait  50`
+    Call SetAnimation ( .Actor:Self .Part:FireBall .Anim:KingBoo_FireBall )
+    Wait 15`
+    Call GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add *Var1 30`
+	Add *Var2 2`
+    Call SetPartPos        ( .Actor:Self .Part:FireBall  *Var0  *Var1  *Var2 )
+    Call SetPartScale  ( .Actor:Self .Part:FireBall *Fixed[1.0] *Fixed[1.0] *Fixed[1.0] )
+	Call  SetPartRotation      ( .Actor:Self .Part:FireBall 0` 0` 0` )
+    Call SetPartJumpGravity    ( .Actor:Self .Part:FireBall *Fixed[3.0] )
+    Call SetPartFlagBits   ( .Actor:Self .Part:FireBall 00000001 .False )
+	Call  $Function_BrightenBackground ( )
+    Call SetGoalToTarget   ( .Actor:Self )
+    Call GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call EnemyTestTarget   ( .Actor:Self *Var3 ~Flags:DamageType:0 00000000 1` 00000010 )
+    Switch  *Var3
+        CaseOR  ==  .HitResult:Miss % 6
+        CaseOR  ==  .HitResult:Lucky % 5
+            Add *Var1 -32` %target mario's feet
+            Call PlaySoundAtActor 	( .Actor:Self 000003CB )
+			Thread
+				Call  GetPartPos   ( .Actor:Self .Part:FireBall *Var1 *Var2 *Var0 )
+			   Set   *Var0  0`
+				Loop  16`
+					Call  GetPartPos   ( .Actor:Self .Part:FireBall *Var4 *Var5 *Var6 )
+					Call  $Function_8021818C_FireBall ( *Var1 *Var2 *Var4 *Var5 *Var0 )
+					Call  SetPartRotation      ( .Actor:Self .Part:FireBall 0` 0` *Var0 )
+					Set   *Var1  *Var4
+					Set   *Var2  *Var5
+					Set   *Var3  *Var6
+					Wait  1`
+				EndLoop
+			EndThread
+            Call JumpPartTo        ( .Actor:Self .Part:FireBall *Var0 *Var1 *Var2  15` .True )
+            Call SetPartFlagBits   ( .Actor:Self .Part:FireBall 00000001 .True )
+            Wait  2`
+        EndCaseGroup
+        Default
+            Call PlaySoundAtActor 	( .Actor:Self 000003CB )
+			Thread
+				Call  GetPartPos   ( .Actor:Self .Part:FireBall *Var1 *Var2 *Var0 )
+			   Set   *Var0  0`
+				Loop  16`
+					Call  GetPartPos   ( .Actor:Self .Part:FireBall *Var4 *Var5 *Var6 )
+					Call  $Function_8021818C_FireBall ( *Var1 *Var2 *Var4 *Var5 *Var0 )
+					Call  SetPartRotation      ( .Actor:Self .Part:FireBall 0` 0` *Var0 )
+					Set   *Var1  *Var4
+					Set   *Var2  *Var5
+					Set   *Var3  *Var6
+					Wait  1`
+				EndLoop
+			EndThread
+            Call JumpPartTo        ( .Actor:Self .Part:FireBall *Var0 *Var1 *Var2  15` .True )
+            Call SetPartFlagBits   ( .Actor:Self .Part:FireBall 00000001 .True )
+            Wait  2`
+            Call EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:Magic|Fire|NoContact 0` 0` 4` 00000020 ) % 4 Damage
+    EndSwitch
+    Call EnableIdleScript ( .Actor:Self .True )
+    Call UseIdleAnimation ( .Actor:Self .True )
+    Return
+    End
+}
+
+#new:Function $Function_DarkenBackground
+{
+	ADDIU     SP, SP, FFE8
+	SW        S0, 10 (SP)
+	DADDU     S0, A0, R0
+	BEQ       A1, R0, .o48
+	SW        RA, 14 (SP)
+	JAL       8011D82C
+	ADDIU     A0, R0, 1
+	DADDU     A0, R0, R0
+	DADDU     A1, A0, R0
+	DADDU     A2, A0, R0
+	DADDU     A3, A0, R0
+	LAW       V0, 801512F0
+	ADDIU     V1, R0, 1
+	JAL       8011BE5C
+	SB        V1, 0 (V0)
+	ADDIU     V0, R0, 14
+	SW        V0, 70 (S0)
+       .o48
+	DADDU     A0, R0, R0
+	DADDU     A1, A0, R0
+	DADDU     A2, A0, R0
+	LW        V1, 70 (S0)
+	ADDIU     V0, R0, 14
+	SUBU      V0, V0, V1
+	SLL       A3, V0, 2
+	ADDU      A3, A3, V0
+	SLL       A3, A3, 1
+	JAL       8011BE5C
+	ANDI      A3, A3, FE
+	LW        V0, 70 (S0)
+	ADDIU     V0, V0, FFFF
+	SW        V0, 70 (S0)
+	SLTIU     V0, V0, 1
+	LW        RA, 14 (SP)
+	LW        S0, 10 (SP)
+	SLL       V0, V0, 1
+	JR        RA
+	ADDIU     SP, SP, 18
+}
+
+#new:Function $Function_BrightenBackground
+{
+	ADDIU     SP, SP, FFE8
+	SW        S0, 10 (SP)
+	DADDU     S0, A0, R0
+	BEQ       A1, R0, .o1C
+	SW        RA, 14 (SP)
+	ADDIU     V0, R0, 14
+	SW        V0, 70 (S0)
+	.o1C
+	DADDU     A0, R0, R0
+	DADDU     A1, A0, R0
+	LW        V0, 70 (S0)
+	DADDU     A2, A0, R0
+	SLL       A3, V0, 2
+	ADDU      A3, A3, V0
+	SLL       A3, A3, 1
+	JAL       8011BE5C
+	ANDI      A3, A3, FE
+	LW        V0, 70 (S0)
+	ADDIU     V0, V0, FFFF
+	BEQ       V0, R0, .o58
+	SW        V0, 70 (S0)
+	BEQ       R0, R0, .o70
+	DADDU     V0, R0, R0
+	.o58
+	DADDU     A0, R0, R0
+	DADDU     A1, A0, R0
+	DADDU     A2, A0, R0
+	JAL       8011BE5C
+	DADDU     A3, A0, R0
+	ADDIU     V0, R0, 2
+	.o70
+	LW        RA, 14 (SP)
+	LW        S0, 10 (SP)
+	JR        RA
+	ADDIU     SP, SP, 18
+}
+
+#new:Function $Function_SetLightningPalette
+{
+
+    PUSH		RA, S0
+    LW			V0, C (A0)
+    JAL			~Func:get_variable
+    LW			A1, 0 (V0)
+    LW			V1, C (V0)
+    ADDIU		A1, R0, 80			%R
+    SW			A1, 30 (V1)
+    LW			V1, C (V0)
+    ADDIU		A1, R0, 00			%G
+    SW			A1, 34 (V1)
+    LW			V1, C (V0)
+    ADDIU		A1, R0, 80			%B
+    SW			A1, 38 (V1)
+    LW			A0, C (V0)
+    ADDIU		V1, R0, FF			%R 2
+    SW			V1, 40 (A0)
+    LW			A0, C (V0)
+    ADDIU		V1, R0, FF			%G 2
+    SW			V1, 44 (A0)
+    LW			V1, C (V0)
+    ADDIU		A1, R0, FF			%B 2
+    SW			A1, 48 (V1)
+    ADDIU		V0, R0, 2
+    JPOP		RA, S0
+}
+
+#new:Script $Attack_Lightning
+{
+	% Go to player
+	Call  UseIdleAnimation ( .Actor:Self .False )
+	Call  EnableIdleScript ( .Actor:Self .False )
+	Call  SetTargetActor   ( .Actor:Self .Actor:Player )
+	Call  BattleCamTargetActor   ( .Actor:Self )
+	Call  $Function_DarkenBackground ( )
+	Wait  10`
+	% Animation here
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:SpellCast4 )
+	Wait  55`
+	Call  StartRumble ( 0000000A )
+	Call  ShakeCam ( 00000001 00000000 00000005 *Fixed[1.0] )
+	Call  PlaySoundAtActor  ( .Actor:Self 00000366 )
+	Call  EnemyTestTarget ( .Actor:Self *Var0 0 0 0 0 )
+	Switch  *Var0
+		CaseOR  ==  .HitResult:Miss
+		CaseOR  ==  .HitResult:Lucky
+			If *Var0 == .HitResult:Lucky
+				Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+				Call RandInt ( 40` *Var1 )
+				Sub *Var0 *Var1
+				Set *Var1 200`
+				Call  GetActorPos  	( .Actor:Player *Var3 *Var4 *Var5 )
+				Set *Var4 0`
+				Call  PlayEffect  	( 0000005E 00000000 *Var0 *Var1 *Var2 *Var3 *Var4 *Var5 *Fixed[1.0] 00000012 00000000 00000000 00000000 00000000 )
+				Call  $Function_SetLightningPalette ( *VarF )
+				Wait  12`
+				Call  EnemyTestTarget  ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Goto	ReturnHome
+	EndSwitch
+	% Damage Mario
+	Call  SetGoalToTarget	( .Actor:Self )
+	Call  GetActorPos ( .Actor:Player *Var0 *Var1 *Var2 )
+	Call RandInt ( 40` *Var1 )
+	Add *Var0 *Var1
+	Add *Var0 50`
+	Set *Var1 200`
+	Call  GetGoalPos  	( .Actor:Self *Var3 *Var4 *Var5 )
+	Set *Var4 0`
+	Call  PlayEffect  	( 0000005E 00000000 *Var0 *Var1 *Var2 *Var3 *Var4 *Var5 *Fixed[1.0] 00000012 00000000 00000000 00000000 00000000 )
+	Call  $Function_SetLightningPalette ( *VarF )
+	Wait  12`
+    %Call  $ScrAPI_setBlockWindow ( 6` 8` )
+	Call  EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:Magic|Electric|NoContact 0` 0` 5` 00000020 ) % 5 Damage
+	% Return home
+	Label  ReturnHome
+	Call  $Function_BrightenBackground ( )
+	Call  SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  EnableIdleScript  ( .Actor:Self .True )
+	Call  UseIdleAnimation  ( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Vector3D $Vector3D_KingBooClonePos
+{
+0` -1000` 0`
+}
+
+#new:SpecialFormation $SpecialFormation_KingBooClone
+{
+$KingBooClone $Vector3D_KingBooClonePos 00000000 00000000 00000000 00000000 00000000
+}
+
+#new:Script $Script_BooFlood
+{
+	Call  EnableIdleScript ( .Actor:Self .False )
+    Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call GetActorVar ( .Actor:Self .AVar:KingBooPhase *Var6 )
+	If *Var6 == 1`
+		% Boo 1
+		Call  SetNpcPos ( 1` 0` 0` -125` )
+		Set *Var0 120`
+		Call  802CFD30  ( 1` 7` *Var0 0` 0` 0` )
+		Call  SetNpcRenderMode ( 1` 17` )
+		Call  SetNpcAnimation ( 1` .Anim:KingBoo_BooWellMany )
+
+		/% Boo 2
+		Call  SetNpcPos ( 2` 5` -200` -125` )
+		Call  SetNpcAnimation ( 2` .Anim:KingBoo_BooLaugh )
+		Call  NpcFlyTo ( 2` 5` 300` -125` 20` 0` .Easing:CosInOut )
+		% Boo 3
+		Call  SetNpcPos ( 3` -10` -200` -125` )
+		Call  SetNpcAnimation ( 3` .Anim:KingBoo_BooLaugh )
+		Call  NpcFlyTo ( 3` -10` 300` -125` 20` 0` .Easing:CosInOut )
+		% Boo 4
+		Call  SetNpcPos ( 4` 10` -200` -125` )
+		Call  SetNpcAnimation ( 4` .Anim:KingBoo_BooLaugh )
+		Call  NpcFlyTo ( 4` 10` 300` -125` 20` 0` .Easing:CosInOut )
+		% Boo 5
+		Call  SetNpcPos ( 5` -5` -200` -125` )
+		Call  SetNpcAnimation ( 5` .Anim:KingBoo_BooLaugh )
+		Call  NpcFlyTo ( 5` -5` 300` -125` 20` 0` .Easing:CosInOut )
+		% Boo 6
+		Call  SetNpcPos ( 6` 0` -200` -125` )
+		Call  SetNpcAnimation ( 6` .Anim:KingBoo_BooLaugh )
+		Call  NpcFlyTo ( 6` 0` 300` -125` 20` 0` .Easing:CosInOut )
+		%/
+	EndIf
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_BooAbsorb )
+	Wait  50`
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_BooAbsorbEnd )
+	Wait  20`
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF *Var3 256`
+	Loop  16`
+		Sub *Var3 16`
+		Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var3 )
+		Wait  1`
+	EndLoop
+	Wait 5`
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  SetActorFlagBits 	( .Actor:Self 00000004 .True )
+	%Call  SetNpcAnimation ( 1` .Anim:KingBoo_BooWellSingle )
+	Call  EnableIdleScript ( .Actor:Self .True )
+    Call  UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_IllusoryClones
+{
+	Call  EnableIdleScript ( .Actor:Self .False )
+    Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:SpellCast4 )
+	Wait  70`
+	ExecWait $Script_BooFlood
+	Call  EnableIdleScript ( .Actor:Self .False )
+    Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call  SetActorVar ( .Actor:Self .AVar:CloneExists1 .True )
+	Call  SetActorVar ( .Actor:Self .AVar:CloneExists2 .True )
+	Set *Var0 0`
+	Call  GetActorHP ( .Actor:Self *VarA )
+	Call  SummonEnemy 	( $SpecialFormation_KingBooClone 00000000 )
+	Call  SetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+	Call  SetPartEventBits 	( *Var0 00000001 00000020 .True )
+	Call  SetEnemyHP  	( *Var0 *VarA )
+	Call  SummonEnemy 	( $SpecialFormation_KingBooClone 00000000 )
+	Call  SetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+	Call  SetPartEventBits 	( *Var0 00000001 00000020 .True )
+	Call  SetEnemyHP  	( *Var0 *VarA )
+
+	% King Boo
+	Call  SetActorFlagBits 	( .Actor:Self 00000004 .True )
+
+	% Clone 1 Vanish
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarA )
+	SetF *Var3 0`
+	Call  SetPartAlpha	( *VarA .Part:KingBoo *Var3 )
+	Call  SetActorPos ( *VarA *Var0 *Var1 *Var2 )
+	Call  SetActorFlagBits 	( *VarA 00000004 .True )
+
+	% Clone 2 Vanish
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *VarA )
+	SetF *Var3 0`
+	Call  SetPartAlpha	( *VarA .Part:KingBoo *Var3 )
+	Call  SetActorPos ( *VarA *Var0 *Var1 *Var2 )
+	Wait 1`
+	Call  SetActorFlagBits 	( *VarA 00000004 .True )
+
+	ExecWait $Script_Clone_Position
+
+	% King Boo
+	Call  GetActorPos 	( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos  ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+
+	% Clone 1
+	Call  GetActorVar 	( .Actor:Self .AVar:Clone1_ID *VarA )
+	Call  GetActorPos 	( *VarA *Var0 *Var1 *Var2 )
+	Call  ForceHomePos  ( *VarA *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( *VarA )
+
+	% Clone 2
+	Call  GetActorVar 	( .Actor:Self .AVar:Clone2_ID *VarA )
+	Call  GetActorPos 	( *VarA *Var0 *Var1 *Var2 )
+	Call  ForceHomePos  ( *VarA *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( *VarA )
+
+	% King Boo Appears
+	Call  UseBattleCamPreset 	( 00000002 )
+	Call  MoveBattleCamOver 	( 00000014 )
+	%Call  SetIdleAnimations ( .Actor:Self .Part:KingBoo $IdleAnimations_KingBoo_Laughing )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Laugh )
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	Call  PlaySoundAtActor	( .Actor:Self 00002094 )
+	SetF *Var3 256`
+	Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var3 )
+	Call  SetActorFlagBits 	( .Actor:Self 00000004 .True )
+
+	% Clone 1 Appears
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .False )
+	Call  SetAnimation ( *Var0 .Part:KingBoo .Anim:KingBoo_Laugh )
+	Call  PlaySoundAtActor	( *Var0 .Sound:BooAppear )
+	SetF *Var3 256`
+	Call  SetPartAlpha	( *Var0 .Part:KingBoo *Var3 )
+	Call  SetActorFlagBits 	( *Var0 00000004 .True )
+
+	% Clone 2 Appears
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .False )
+	Call  SetAnimation ( *Var0 .Part:KingBoo .Anim:KingBoo_Laugh )
+	Call  PlaySoundAtActor	( *Var0 .Sound:BooAppear )
+	SetF *Var3 256`
+	Call  SetPartAlpha	( *Var0 .Part:KingBoo *Var3 )
+	Call  SetActorFlagBits 	( *Var0 00000004 .True )
+
+	Wait  15`
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .True )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .True )
+	Call  EnableIdleScript ( .Actor:Self .True )
+    Call  UseIdleAnimation 	( .Actor:Self .True )
+    Return
+    End
+}
+
+#new:Script $Script_Clone_Position
+{
+	Call RandInt ( 1000` *Var0 )
+    Mod *Var0 3`
+	%Set *Var0 0` % To see the Position
+    Switch *Var0
+		Case == 0`
+            Set *VarA .Actor:Self
+            Call GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarB )
+            Call GetActorVar ( .Actor:Self .AVar:Clone2_ID *VarC )
+        Case == 1`
+            Call GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarA )
+            Set *VarB .Actor:Self
+            Call GetActorVar ( .Actor:Self .AVar:Clone2_ID *VarC )
+		Case == 2`
+            Call GetActorVar ( .Actor:Self .AVar:Clone1_ID *VarA )
+            Call GetActorVar ( .Actor:Self .AVar:Clone2_ID *VarB )
+            Set *VarC .Actor:Self
+	EndSwitch
+    Call  UseBattleCamPreset ( 2` )
+    Call  MoveBattleCamOver ( 150` )
+
+	% *VarA
+	Call GetActorPos ( *VarA *Var0 *Var1 *Var2 )
+	Set *Var0 20`
+	Set *Var2 5`
+	Call SetActorPos ( *VarA *Var0 *Var1 *Var2 )
+
+	% *VarB
+	Call GetActorPos ( *VarB *Var0 *Var1 *Var2 )
+	Set *Var0 70`
+	Set *Var2 5`
+	Call SetActorPos ( *VarB *Var0 *Var1 *Var2 )
+
+	% *VarC
+	Call GetActorPos ( *VarC *Var0 *Var1 *Var2 )
+	Set *Var0 120`
+	Set *Var2 5`
+	Call SetActorPos ( *VarC *Var0 *Var1 *Var2 )
+
+    Wait 15`
+	Return
+    End
+}
+
+#new:Script $Attack_FakeoutScareA
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20`
+	Set  *Var1 0`
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 40`
+	Set  *Var1 10`
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 0` 0` .Easing:CosInOut )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	% randomized delay
+	Call	RandInt			( 20` *Var0 )
+	Wait	*Var0
+	Call SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_DoubleScareFakeoutA )
+    Wait 55`
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:BooAppear )
+	Wait  60`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0
+		CaseOR   ==  00000006
+		CaseOR   ==  00000005
+			If  *Var0 == 00000005
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	SkipDamage
+		EndCaseGroup
+	EndSwitch
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait  5`
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact 0` 0` 4` 00000020 ) % 4 Damage
+	%Call	PlaySoundAtPart ( .Actor:Self .Part:Boo .Sound:BooVanish )
+	Label	SkipDamage
+	Wait	45`
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_FakeoutScareB
+{
+	Call	UseIdleAnimation	( .Actor:Self .False )
+	Call	EnableIdleScript	( .Actor:Self .False )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	SetAnimation		( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
+	Wait	20`
+	Call	UseBattleCamPreset 		( 00000013 )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 20`
+	Set  *Var1 0`
+	Call	SetBattleCamTarget 		( *Var0 *Var1 *Var2 )
+	Call	SetBattleCamZoom  		( 0000015E )
+	Call	SetBattleCamOffsetZ 		( 0000002D )
+	Call	8024ECF8 			( FFFFFFFF 00000001 00000000 )
+	Call	MoveBattleCamOver 		( 00000014 )
+	Call	SetGoalToTarget 	( .Actor:Self )
+	Call	GetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Add  *Var0 45`
+	Set  *Var1 10`
+	Call	SetGoalPos  		( .Actor:Self *Var0 *Var1 *Var2 )
+	Call	SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  FlyToGoal     ( .Actor:Self 0` 0` .Easing:CosInOut )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	% randomized delay
+	Call	RandInt			( 20` *Var0 )
+	Wait	*Var0
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_DoubleScareFakeoutB )
+	Wait  50`
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:BooAppear )
+	Wait  30`
+	Call	EnemyTestTarget ( .Actor:Self *Var0 10000000 00000000 *Var1 00000010 )
+	Switch  *Var0
+		CaseOR   ==  00000006
+		CaseOR   ==  00000005
+			If  *Var0 == 00000005
+				Call	EnemyTestTarget ( .Actor:Self *Var0 80000000 00000000 00000000 00000000 )
+			EndIf
+			Goto	SkipDamage
+		EndCaseGroup
+	EndSwitch
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Set *Var0 -130`
+	Set *Var1 -2`
+	Call  SetPartPos ( .Actor:Self .Part:Boo *Var0 *Var1 *Var2 )
+	Call	SetTargetActor		( .Actor:Self .Actor:Player )
+	Call	SetGoalToTarget	( .Actor:Self )
+	Call  GetGoalPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  FlyPartTo  ( .Actor:Self .Part:Boo *Var0 *Var1 *Var2 0` 0` .Easing:CosInOut )
+	Call	PlaySoundAtActor	( .Actor:Self 00000291 )
+	Wait  5`
+	Call	EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact 0` ~DebuffType:Shrink:2:100` 2` 00000020 ) % 2 Damage
+	%Call	PlaySoundAtPart ( .Actor:Self .Part:Boo .Sound:BooVanish )
+	Set *Var0 0`
+	Set *Var1 0`
+	Set *Var2 0`
+	Call  SetPartPos ( .Actor:Self .Part:Boo *Var0 *Var1 *Var2 )
+	Label	SkipDamage
+	Wait	45`
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF  *Var0  256`
+	Loop	16`
+		Sub  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Wait	10`
+	Call	UseBattleCamPreset 	( 00000002 )
+	Call	MoveBattleCamOver 	( 00000014 )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call	SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call	PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF  *Var0  0`
+	Loop	16`
+		Add  *Var0  16`
+		Call	SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait	1`
+	EndLoop
+	Call	EnableIdleScript 	( .Actor:Self .True )
+	Call	UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_LightningCloneBoost
+{
+	% Go to player
+	Call  UseIdleAnimation ( .Actor:Self .False )
+	Call  EnableIdleScript ( .Actor:Self .False )
+	ExecWait $Script_Clone_Buff
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF *Var0 256`
+	Loop  16`
+		Sub *Var0 16`
+		Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait  1`
+	EndLoop
+	Wait  10`
+	Call  UseBattleCamPreset 	( 00000002 )
+	Call  MoveBattleCamOver 	( 00000014 )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF *Var0 0`
+	Loop  16`
+		Add *Var0 16`
+		Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait  1`
+	EndLoop
+	Call  UseIdleAnimation ( .Actor:Self .False )
+	Call  EnableIdleScript ( .Actor:Self .False )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  SetTargetActor   ( .Actor:Self .Actor:Player )
+	Call  BattleCamTargetActor   ( .Actor:Self )
+	Call  $Function_DarkenBackground ( )
+	% Animation here
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( .Actor:Self .Sound:SpellCast4 )
+	Wait  50`
+	Call  StartRumble ( 0000000A )
+	Call  ShakeCam ( 00000001 00000000 00000005 *Fixed[1.0] )
+	Call  PlaySoundAtActor  ( .Actor:Self 00000366 )
+	Call  EnemyTestTarget ( .Actor:Self *Var0 0 0 0 0 )
+	Switch  *Var0
+		CaseOR  ==  .HitResult:Miss
+		CaseOR  ==  .HitResult:Lucky
+			If *Var0 == .HitResult:Lucky
+				Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+				Call RandInt ( 40` *Var1 )
+				Sub *Var0 *Var1
+				Set *Var1 200`
+				Call  GetActorPos  	( .Actor:Player *Var3 *Var4 *Var5 )
+				Set *Var4 0`
+				Call  PlayEffect  	( 0000005E 00000000 *Var0 *Var1 *Var2 *Var3 *Var4 *Var5 *Fixed[1.0] 00000012 00000000 00000000 00000000 00000000 )
+				Call  $Function_SetLightningPalette ( *VarF )
+				Wait  12`
+				Call  EnemyTestTarget  ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Goto	ReturnHome
+	EndSwitch
+	% Damage Mario
+	Call  SetGoalToTarget	( .Actor:Self )
+	Call  GetActorPos ( .Actor:Player *Var0 *Var1 *Var2 )
+	Call RandInt ( 40` *Var1 )
+	Add *Var0 *Var1
+	Add *Var0 50`
+	Set *Var1 200`
+	Call  GetGoalPos  	( .Actor:Self *Var3 *Var4 *Var5 )
+	Set *Var4 0`
+	Call  PlayEffect  	( 0000005E 00000000 *Var0 *Var1 *Var2 *Var3 *Var4 *Var5 *Fixed[1.0] 00000012 00000000 00000000 00000000 00000000 )
+	Call  $Function_SetLightningPalette ( *VarF )
+	Wait  12`
+    %Call  $ScrAPI_setBlockWindow ( 6` 8` )
+	Call  EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:Magic|Electric|NoContact 0` 0` 8` 00000020 ) % 8 Damage
+	% Return home
+	Label  ReturnHome
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call  $Function_BrightenBackground ( )
+	Call  SetAnimation 	( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Call  EnableIdleScript  ( .Actor:Self .True )
+	Call  UseIdleAnimation  ( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_CloneHeal
+{
+	Call  EnableIdleScript  ( .Actor:Self .False )
+	Call  UseIdleAnimation  ( .Actor:Self .False )
+	ExecWait $Script_Clone_Buff
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooVanish )
+	SetF *Var0 256`
+	Loop  16`
+		Sub *Var0 16`
+		Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait  1`
+	EndLoop
+	Wait  10`
+	Call  UseBattleCamPreset 	( 00000002 )
+	Call  MoveBattleCamOver 	( 00000014 )
+	Call  SetActorSpeed 	( .Actor:Self *Fixed[10.0] )
+	Call  SetGoalPos ( .Actor:Self 70` 50` 5` )
+	Call  FlyToGoal     ( .Actor:Self 30` 0` .Easing:CosInOut )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  ForceHomePos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  HPBarToHome   ( .Actor:Self )
+	Call  PlaySoundAtActor	( .Actor:Self .Sound:BooAppear )
+	SetF *Var0 0`
+	Loop  16`
+		Add *Var0 16`
+		Call  SetPartAlpha	( .Actor:Self .Part:KingBoo *Var0 )
+		Wait  1`
+	EndLoop
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Idle )
+	Thread
+		Wait     5`
+		Call     PlaySoundAtActor 	( .Actor:Self 206D )
+		Call     PlaySoundAtActor 	( .Actor:Self 0214 )
+		Wait     30`
+		Call     PlaySoundAtActor 	( .Actor:Self 025C )
+	EndThread
+	Thread
+		Call     8026BF48 	( .True )
+		Call     HealActor  ( .Actor:Self 10` .False )
+		Call     8026BF48 	( .False )
+	EndThread
+	Call  EnableIdleScript  ( .Actor:Self .True )
+	Call  UseIdleAnimation  ( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_Clone_Buff
+{
+	Call  EnableIdleScript  ( .Actor:Self .False )
+	Call  UseIdleAnimation  ( .Actor:Self .False )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .False )
+	Call  SetAnimation ( *Var0 .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( *Var0 .Sound:SpellCast4 )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .False )
+	Call  SetAnimation ( *Var0 .Part:KingBoo .Anim:KingBoo_CrownAttack )
+	Call  PlaySoundAtActor ( *Var0 .Sound:SpellCast4 )
+	Wait  80`
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .True )
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var0 )
+	Call  UseIdleAnimation ( *Var0 .True )
+	Call  PlaySoundAtActor  ( .Actor:Self .Sound:PowerUp )
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Add *Var1 20`
+	Call  PlayEffect ( ~FX:EnergyIn:LongStreaks1 *Var0 *Var1 *Var2 *Fixed[1.0] 45` 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Laugh )
+	Wait  30`
+	% Clone 1
+	Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists1 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists1 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone1_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+	% Clone 2
+	Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+	Call  ActorExists ( *Var9 *VarA )
+	If *VarA == .True
+		Call  GetActorVar ( .Actor:Self .AVar:CloneExists2 *VarB )
+		If *VarB == .True
+			Call  SetActorVar ( .Actor:Self .AVar:CloneExists2 .False )
+			Call  GetActorVar ( .Actor:Self .AVar:Clone2_ID *Var9 )
+			Exec $Script_RemoveClone
+		EndIf
+	EndIf
+	Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
+	Call  EnableIdleScript  ( .Actor:Self .True )
+	Call  UseIdleAnimation  ( .Actor:Self .True )
+	Return
+	End
+}

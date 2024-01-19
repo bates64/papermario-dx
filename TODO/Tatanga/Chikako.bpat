@@ -1,0 +1,307 @@
+% Define Chikako Parts
+#define .Part:Chikako 1
+
+% Chikako Actor Variables
+#define .AVar:TurnCounterChikako 0
+
+#new:Actor $Chikako
+{
+% stats
+[Index]        D6b
+[Level]        0`b
+[MaxHP]        1`b
+[Coins]         0`b
+[Flags]       00000200
+[StatusTable] $StatusTable_Chikako
+% ai
+[PartsCount]   1`s
+[PartsTable] $PartsTable_Chikako
+[Script]      $Script_Init_Chikako
+% move effectiveness
+[Escape]        0`b % no escape
+[Item]          0`b
+[AirLift]       0`b
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b
+[PowerBounce]   8`b
+[SpinSmash]     0`b % weight (0-4)
+% ui positions
+[Size]        32`b 32`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b 20`b % dx dy (usually top left)
+[StatusIcon]   10`b 20`b % dx dy (usually top right)
+}
+
+#new:StatusTable $StatusTable_Chikako
+{
+.Status:Normal    0`
+.Status:Default   0`
+.Status:Sleep     0`
+.Status:Poison    0`
+.Status:Frozen    0`
+.Status:Dizzy     0`
+.Status:Fear      0`
+.Status:Static    0`
+.Status:Paralyze  0`
+.Status:Shrink    0`
+.Status:Stop      0`
+.Status:SleepTurnMod      0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod      0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod   0`
+.Status:ShrinkTurnMod     0`
+.Status:StopTurnMod       0`
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_Chikako
+{
+.Status:Normal    .Anim:Chikako_Idle
+.Status:End
+}
+
+#new:IdleAnimations $IdleAnimations_ChikakoCharged
+{
+.Status:Normal    .Anim:Chikako_IdleCharged
+.Status:End
+}
+
+#new:DefenseTable $DefenseTable_Chikako
+{
+.Element:Normal 0`
+.Element:End
+}
+
+#new:PartsTable $PartsTable_Chikako % ActorPartBlueprint struct in decomp
+{
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:Chikako
+    /% Vec3b posOffset %/           0`b 0`b 0`b
+    /% Vec2b targetOffset %/        0`b 33`b % For cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_Chikako
+    /% s32* defenseTable %/         $DefenseTable_Chikako
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+}
+
+#new:Script $Script_Init_Chikako
+{
+	Call  BindTakeTurn	( .Actor:Self $Script_TakeTurn_Chikako )
+	Call  BindIdle	( .Actor:Self $Script_Idle_Chikako )
+	Call  BindHandleEvent  ( .Actor:Self $Script_HandleEvent_Chikako )
+	Call  SetActorVar   ( .Actor:Self .AVar:TurnCounterChikako 0` )
+	Return
+	End
+}
+
+
+#new:Script $Script_Idle_Chikako
+{
+	Return
+	End
+}
+
+#new:Script $Script_HandleEvent_Chikako
+{
+	Call     UseIdleAnimation 	( .Actor:Self .False )
+	Call     EnableIdleScript 	( .Actor:Self .False )
+	Call     GetLastEvent 	( .Actor:Self *Var0 )
+	Switch  *Var0
+		CaseOR  ==  .Event:HitCombo
+		CaseOR  ==  .Event:Hit
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_PainNormal
+			ExecWait DoNormalHit
+		EndCaseGroup
+		Case  ==  .Event:BurnHit
+			ExecWait $Script_Death_Chikako
+		Case  ==  .Event:BurnDeath
+			ExecWait $Script_Death_Chikako
+		Case  ==  .Event:SpinSmashHit
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_PainNormal
+			ExecWait 8029B998
+		Case  ==  .Event:SpinSmashDeath
+			ExecWait $Script_Death_Chikako
+			Return
+		Case  ==  .Event:ShockHit
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_PainNormal
+			ExecWait DoShockHit
+			ExecWait $Script_Death_Chikako
+		Case  ==  .Event:ShockDeath
+			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_PainNormal
+			ExecWait DoShockHit
+			ExecWait  $Script_Death_Chikako
+			Return
+		CaseOR  ==  00000017
+		CaseOR  ==  .Event:Immune
+		CaseOR  ==  .Event:AirLiftFailed
+		EndCaseGroup
+		Case  ==  .Event:Death
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_PainNormal
+			ExecWait DoNormalHit
+			ExecWait  $Script_Death_Chikako
+			Return
+		Case  ==  .Event:RecoverStatus
+			SetConst  *Var0  .Part:Chikako
+			SetConst  *Var1  .Anim:Chikako_Idle
+			ExecWait DoRecover
+		Default
+	EndSwitch
+	Call     EnableIdleScript 	( .Actor:Self .True )
+	Call     UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_Death_Chikako
+{
+	ExecWait  $Script_Fall_Down_Chikako
+	ExecWait  $Script_Death_Explode_Chikako
+	SetConst  *Var0  .Part:Chikako
+	SetConst  *Var1  .Anim:Chikako_Death
+	Set   *Var2  FFFFCFC7
+	ExecWait  DoDeath
+	Return
+	End
+}
+
+#new:Script $Script_TakeTurn_Chikako
+{
+    Call  EnableIdleScript 	( .Actor:Self .False )
+	Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call  GetActorVar ( .Actor:Self .AVar:TurnCounterChikako *Var0 )
+	If *Var0 == 1`
+		Goto SecondTurn
+	Else
+		Goto FirstTurn
+	EndIf
+	Label FirstTurn
+		ExecWait $Script_Charge
+		Goto EndTurn
+	Label SecondTurn
+		ExecWait $Attack_Slam
+		Goto EndTurn
+	Label EndTurn
+	Call  EnableIdleScript 	( .Actor:Self .True )
+	Call  UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Script_Charge
+{
+    Call  EnableIdleScript 	( .Actor:Self .False )
+	Call  UseIdleAnimation 	( .Actor:Self .False )
+	Call  GetActorPos       ( .Actor:Self *Var0 *Var1 *Var2 )
+	Add *Var1 30`
+	Call  SetBattleCamTarget    ( *Var0 *Var1 *Var2 )
+	Call  UseBattleCamPreset    ( 00000013 )
+	Call  SetBattleCamZoom  ( 320` )
+	Call  MoveBattleCamOver ( 50` )
+	Wait  20`
+	Thread
+		Call  ShakeCam  ( .Cam:Battle 00000000 00000028 *Fixed[0.3] )
+	EndThread
+	Call  SetAnimation 	( .Actor:Self .Part:Chikako .Anim:Chikako_Charging )
+	Call  PlaySoundAtActor 	( .Actor:Self 0000208F )
+	Wait  40`
+  	Call  PlaySoundAtActor  ( .Actor:Self 0000035C )
+	Call  SetPartEventFlags ( .Actor:Self .Part:Chikako 00400080 )
+	Call  SetIdleAnimations ( .Actor:Self .Part:Chikako $IdleAnimations_ChikakoCharged )
+	Call  SetAnimation 	( .Actor:Self .Part:Chikako .Anim:Chikako_IdleCharged )
+	Wait  30`
+	Call  UseBattleCamPreset 	( 00000002 )
+	Call  MoveBattleCamOver ( 30` )
+	Call  SetActorVar ( .Actor:Self .AVar:TurnCounterChikako 1` )
+	Call  EnableIdleScript 	( .Actor:Self .True )
+	Call  UseIdleAnimation 	( .Actor:Self .True )
+	Return
+	End
+}
+
+#new:Script $Attack_Slam
+{
+    Call  EnableIdleScript 	( .Actor:Self .False )
+	Call  UseIdleAnimation 	( .Actor:Self .False )
+    Call  SetTargetActor   ( .Actor:Self .Actor:Player )
+	Call  SetGoalToTarget  ( .Actor:Self )
+	% Animation here
+    Call  SetAnimation ( .Actor:Self .Part:Chikako .Anim:Chikako_Attack )
+	Wait  10`
+	Call    EnemyTestTarget ( .Actor:Self *Var0 0 0 0 0 )
+	Switch  *Var0
+		CaseOR  ==  .HitResult:Miss
+		CaseOR  ==  .HitResult:Lucky
+			Call  GetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+			Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
+			Call  SetActorSpeed ( .Actor:Self *Fixed[9.0] )
+    	    Call  FlyToGoal ( .Actor:Self 0` 0` .Easing:Linear )
+			ExecWait  $Script_Death_Explode_Chikako
+			Call  SetGoalToTarget	( .Actor:Self )
+			If *Var0 == .HitResult:Lucky
+				Call	EnemyTestTarget  ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+			EndIf
+			Goto  Death
+	EndSwitch
+	% Damage Mario
+	Call  GetGoalPos  	( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  SetActorSpeed ( .Actor:Self *Fixed[9.0] )
+    Call  FlyToGoal ( .Actor:Self 0` 0` .Easing:Linear )
+	ExecWait  $Script_Death_Explode_Chikako
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Wait  5`
+	Call  EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Blast 0000FFFF 00000000 6` 00000020 ) % 6 Damage
+	% Return home
+	Label  Death
+    Call  RemoveActor   ( .Actor:Self )
+	Return
+	End
+}
+
+#new:Script $Script_Fall_Down_Chikako
+{
+	Call  PlaySoundAtActor ( .Actor:Self 00000301 ) % Quick Fall
+	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Set *Var1 -15`
+	Call  SetActorJumpGravity ( .Actor:Self *Fixed[1.0] )
+	Call  SetAnimation ( .Actor:Self .Part:Chikako .Anim:Chikako_Death )
+	Call  SetGoalPos ( .Actor:Self *Var0 *Var1 *Var2 )
+	Call  JumpToGoal ( .Actor:Self 15` .False .True .False )
+	Return
+	End
+}
+
+#new:Script $Script_Death_Explode_Chikako
+{
+	Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
+  	Add   *Var1  40`
+  	Add   *Var2  2`
+  	Call  PlayEffect    ( ~FX:RingBlast:Red *Var0 *Var1 *Var2 *Fixed[3.0] 30` 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
+  	% Call  PlayEffect    ( ~FX:SmokeRing:Blast1 *Var0 *Var1 *Var2 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
+  	Add   *Var1  40`
+  	Add   *Var2  2`
+  	Call  PlayEffect    ( ~FX:FaintDustCloud *Var0 *Var1 *Var2 *Fixed[3.0] 30` 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
+	Call  PlaySoundAtActor ( .Actor:Self 0000034E ) % Explosion
+	%Call  PlaySoundAtActor  ( .Actor:Self 00002078 )
+  	Call  StartRumble   ( 0000000B )
+  	Thread
+    	Call  ShakeCam  ( .Cam:Battle 00000000  5` *Fixed[1.0] )
+  	EndThread
+  	Return
+  	End
+}
