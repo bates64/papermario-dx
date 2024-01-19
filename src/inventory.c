@@ -58,7 +58,7 @@ void clear_player_data(void) {
     D_8010CD12 = FALSE;
 
     playerData->hammerLevel = 2;
-    playerData->curHP = 50;
+    playerData->curHP = 5;
     playerData->curMaxHP = 50;
     playerData->hardMaxHP = 50;
     playerData->curFP = 50;
