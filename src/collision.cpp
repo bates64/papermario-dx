@@ -1,36 +1,16 @@
 #include "common.h"
+#include "hit_asset.h"
+#include "dx/module.h"
 #include "model.h"
+#include "map.h"
 
-typedef struct HitFile {
-    /* 0x00 */ u32 collisionOffset;
-    /* 0x04 */ u32 zoneOffset;
-} HitFile; // size = 0x08
+using dx::module::Module;
 
 typedef struct ColliderBackupEntry {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s16 parentModelIndex;
     /* 0x06 */ char pad_06[2];
 } ColliderBackupEntry; // size = 0x08
-
-typedef struct HitFileHeader {
-    /* 0x00 */ s16 numColliders;
-    /* 0x02 */ char pad_02[2];
-    /* 0x04 */ s32 collidersOffset;
-    /* 0x08 */ s16 numVertices;
-    /* 0x0A */ char pad_0A[2];
-    /* 0x0C */ s32 verticesOffset;
-    /* 0x10 */ s16 boundingBoxesDataSize;
-    /* 0x12 */ char pad_12[2];
-    /* 0x14 */ s32 boundingBoxesOffset;
-} HitFileHeader; // size = 0x18
-
-typedef struct HitAssetCollider {
-    /* 0x00 */ s16 boundingBoxOffset;
-    /* 0x02 */ s16 nextSibling;
-    /* 0x04 */ s16 firstChild;
-    /* 0x06 */ s16 numTriangles;
-    /* 0x08 */ s32 trianglesOffset;
-} HitAssetCollider; // size = 0x0C
 
 CollisionData gCollisionData;
 CollisionData gZoneCollisionData;
@@ -69,6 +49,8 @@ Vec3f gEntityColliderNormals[] = {
     {  0.0f, -1.0f,  0.0f }, {  0.0f, -1.0f,  0.0f },
 };
 
+extern "C" {
+
 s32 collision_heap_create(void);
 void* collision_heap_malloc(s32 size);
 void collision_heap_free(void*);
@@ -77,6 +59,10 @@ void load_hit_data(s32 idx, HitFile* hit);
 void _add_hit_vert_to_buffer(Vec3f** buf, Vec3f* vert, s32* bufSize);
 s32 _get_hit_vert_index_from_buffer(Vec3f** buffer, Vec3f* vert, s32* bufferSize);
 
+} // extern "C"
+
+extern "C" {
+
 void backup_map_collision_data(void) {
     CollisionData* collisionData;
     Collider* collider;
@@ -84,7 +70,7 @@ void backup_map_collision_data(void) {
     s32 i;
 
     collisionData = &gCollisionData;
-    gCollisionDataBackup = general_heap_malloc(collisionData->numColliders * sizeof(ColliderBackupEntry));
+    gCollisionDataBackup = (ColliderBackupEntry*)general_heap_malloc(collisionData->numColliders * sizeof(ColliderBackupEntry));
     for (i = 0, backupEntry = gCollisionDataBackup; i < collisionData->numColliders; i++, backupEntry++) {
         collider = &collisionData->colliderList[i];
         backupEntry->flags = collider->flags;
@@ -92,7 +78,7 @@ void backup_map_collision_data(void) {
     }
 
     collisionData = &gZoneCollisionData;
-    gCollisionDataZoneBackup = general_heap_malloc(collisionData->numColliders * sizeof(ColliderBackupEntry));
+    gCollisionDataZoneBackup = (ColliderBackupEntry*)general_heap_malloc(collisionData->numColliders * sizeof(ColliderBackupEntry));
     for (i = 0, backupEntry = gCollisionDataZoneBackup; i < collisionData->numColliders; i++, backupEntry++) {
         collider = &collisionData->colliderList[i];
         backupEntry->flags = collider->flags;
@@ -115,21 +101,11 @@ void initialize_collision(void) {
 }
 
 void load_map_hit_asset(void) {
-    u32 assetSize;
-    MapSettings* map = get_current_map_settings();
-    void* compressedData = load_asset_by_name(wMapHitName, &assetSize);
-    HitFile* uncompressedData = heap_malloc(assetSize);
-
-    decode_yay0(compressedData, uncompressedData);
-    general_heap_free(compressedData);
-
-    map->hitAssetCollisionOffset = uncompressedData->collisionOffset;
-    map->hitAssetZoneOffset = uncompressedData->zoneOffset;
-
-    load_hit_data(0, uncompressedData); // Colliders
-    load_hit_data(1, uncompressedData); // Zones
-
-    heap_free(uncompressedData);
+    Module* mod = get_map_module();
+    HitFile* hit = (HitFile*)mod->sym("hit");
+    ASSERT_MSG(hit != nullptr, "Map missing hit");
+    load_hit_data(0, hit); // Colliders
+    load_hit_data(1, hit); // Zones
 }
 
 void restore_map_collision_data(void) {
@@ -163,29 +139,17 @@ void restore_map_collision_data(void) {
     general_heap_free(gCollisionDataZoneBackup);
 }
 
-void load_battle_hit_asset(const char* hitName) {
-    if (hitName == nullptr) {
+void load_battle_hit_asset(const char* moduleName) {
+    if (moduleName == nullptr) {
         gCollisionData.numColliders = 0;
     } else {
-        u32 assetSize;
-        MapSettings* map = get_current_map_settings();
-        void* compressedData = load_asset_by_name(hitName, &assetSize);
-        HitFile* uncompressedData = heap_malloc(assetSize);
-
-        decode_yay0(compressedData, uncompressedData);
-        general_heap_free(compressedData);
-
-        map->hitAssetCollisionOffset = uncompressedData->collisionOffset;
-
-        load_hit_data(0, uncompressedData);
-
-        heap_free(uncompressedData);
+        Module* mod = get_battle_module();
+        HitFile* hit = (HitFile*)mod->sym("hit");
+        load_hit_data(0, hit);
     }
 }
 
 void load_hit_data(s32 idx, HitFile* hit) {
-    s32 collisionOffset;
-    MapSettings* map;
     CollisionData* collisionData;
     HitFileHeader* assetCollisionData;
     Vec3f* vertices;
@@ -203,38 +167,37 @@ void load_hit_data(s32 idx, HitFile* hit) {
     assetCollisionData = nullptr;
     collisionData = nullptr;
 
-    map = get_current_map_settings();
-
     switch (idx) {
         case 0: // Colliders
-            collisionOffset = map->hitAssetCollisionOffset;
-            if (collisionOffset == 0) {
+            assetCollisionData = hit->collision;
+            if (assetCollisionData == nullptr) {
                 return;
             }
-
-            assetCollisionData = (HitFileHeader*)((void*)hit + collisionOffset);
             collisionData = &gCollisionData;
             break;
         case 1: // Zones
-            collisionOffset = map->hitAssetZoneOffset;
-            if (collisionOffset == 0) {
+            assetCollisionData = hit->zone;
+            if (assetCollisionData == nullptr) {
                 return;
             }
-
-            assetCollisionData = (HitFileHeader*)((void*)hit + collisionOffset);
             collisionData = &gZoneCollisionData;
             break;
     }
 
-    assetBoundingBox = (u32*)((void*)hit + assetCollisionData->boundingBoxesOffset);
-    collisionData->aabbs = collision_heap_malloc(assetCollisionData->boundingBoxesDataSize * 4);
+    if (assetCollisionData->numColliders < 0 || assetCollisionData->numVertices < 0 || assetCollisionData->boundingBoxesDataSize < 0) {
+        printf("Refusing to load invalid collision data\n");
+        return;
+    }
+
+    assetBoundingBox = assetCollisionData->boundingBoxes;
+    collisionData->aabbs = (ColliderBoundingBox*)collision_heap_malloc(assetCollisionData->boundingBoxesDataSize * 4);
     for (i = 0, boundingBox = (u32*)(collisionData->aabbs); i < assetCollisionData->boundingBoxesDataSize;
         assetBoundingBox++, boundingBox++, i++) {
         *boundingBox = *assetBoundingBox;
     }
 
-    assetVertices = (Vec3s*)((void*)hit + assetCollisionData->verticesOffset);
-    collisionData->vertices = collision_heap_malloc(assetCollisionData->numVertices * sizeof(Vec3f));
+    assetVertices = assetCollisionData->vertices;
+    collisionData->vertices = (Vec3f*)collision_heap_malloc(assetCollisionData->numVertices * sizeof(Vec3f));
     for (i = 0, vertices = collisionData->vertices; i < assetCollisionData->numVertices;
         vertices++, assetVertices++, i++) {
         vertices->x = assetVertices->x;
@@ -242,8 +205,8 @@ void load_hit_data(s32 idx, HitFile* hit) {
         vertices->z = assetVertices->z;
     }
 
-    assetCollider = (HitAssetCollider*)((void*)hit + assetCollisionData->collidersOffset);
-    collider = collisionData->colliderList = collision_heap_malloc(assetCollisionData->numColliders * sizeof(Collider));
+    assetCollider = assetCollisionData->colliders;
+    collider = collisionData->colliderList = (Collider*)collision_heap_malloc(assetCollisionData->numColliders * sizeof(Collider));
     collisionData->numColliders = assetCollisionData->numColliders;
     for (i = 0; i < assetCollisionData->numColliders; assetCollider++, collider++, i++) {
         collider->flags = 0;
@@ -254,7 +217,7 @@ void load_hit_data(s32 idx, HitFile* hit) {
         numTriangles = collider->numTriangles;
 
         if (numTriangles) {
-            collider->triangleTable = triangle = collision_heap_malloc(assetCollider->numTriangles * sizeof(ColliderTriangle));
+            collider->triangleTable = triangle = (ColliderTriangle*)collision_heap_malloc(assetCollider->numTriangles * sizeof(ColliderTriangle));
 
             if (assetCollider->boundingBoxOffset < 0) {
                 collider->aabb = nullptr;
@@ -272,7 +235,7 @@ void load_hit_data(s32 idx, HitFile* hit) {
                 }
             }
 
-            trianglePacked = (s32*)((void*)hit + assetCollider->trianglesOffset);
+            trianglePacked = assetCollider->triangles;
 
             for (j = 0; j < assetCollider->numTriangles; trianglePacked++, triangle++, j++) {
                 Vec3f* v1 = triangle->v1 = &collisionData->vertices[(*trianglePacked) & 0x3FF];
@@ -331,7 +294,7 @@ void parent_collider_to_model(s16 colliderID, s16 modelIndex) {
     collider->parentModelIndex = modelIndex;
     collider->flags |= COLLIDER_FLAG_HAS_MODEL_PARENT;
 
-    vertexBuffer = collision_heap_malloc(collider->numTriangles * sizeof(Vec3f));
+    vertexBuffer = (Vec3f**)collision_heap_malloc(collider->numTriangles * sizeof(Vec3f));
     vertexBufferSize = 0;
     vertexPtr = vertexBuffer;
 
@@ -342,7 +305,7 @@ void parent_collider_to_model(s16 colliderID, s16 modelIndex) {
     }
 
     collider->numVertices = vertexBufferSize;
-    collider->vertexTable = collision_heap_malloc(vertexBufferSize * 2 * sizeof(Vec3f));
+    collider->vertexTable = (Vec3f*)collision_heap_malloc(vertexBufferSize * 2 * sizeof(Vec3f));
     for (i = 0, vertexTable = collider->vertexTable; i < vertexBufferSize; vertexPtr++, vertexTable += 2, i++) {
         vertex = *vertexPtr;
         vertexTable[0].x = vertexTable[1].x = vertex->x;
@@ -1086,3 +1049,5 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
 
     return entityIndex;
 }
+
+} // extern "C"

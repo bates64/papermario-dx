@@ -25,8 +25,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "iwa_tex",
-    .shape = "iwa_bt02_shape",
-    .hit = "iwa_bt02_hit",
+    .module = "areas/iwa/iwa_bt02",
     .bg = "iwa_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

@@ -155,8 +155,8 @@ def reorganize_maps(mapfs_dir: Path) -> Dict[str, any]:
 
     # Find all map files (XML, shape, hit)
     xml_files = list(geom_dir.glob("*.xml"))
-    shape_files = list(geom_dir.glob("*_shape.bin"))
-    hit_files = list(geom_dir.glob("*_hit.bin"))
+    shape_files = list(geom_dir.glob("*_shape.c"))
+    hit_files = list(geom_dir.glob("*_hit.c"))
 
     # Group by map name (xml, shape.bin, hit.bin)
     maps: Dict[str, List[Path]] = {}
@@ -206,10 +206,10 @@ def reorganize_maps(mapfs_dir: Path) -> Dict[str, any]:
         for src_file in files:
             if src_file.suffix == ".xml":
                 dst_file = map_dir / "map.xml"
-            elif src_file.name.endswith("_shape.bin"):
-                dst_file = map_dir / "shape.bin"
-            elif src_file.name.endswith("_hit.bin"):
-                dst_file = map_dir / "hit.bin"
+            elif src_file.name.endswith("_shape.c"):
+                dst_file = map_dir / "shape.c"
+            elif src_file.name.endswith("_hit.c"):
+                dst_file = map_dir / "hit.c"
             else:
                 stats["errors"].append(f"Unexpected file: {src_file}")
                 continue

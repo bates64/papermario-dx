@@ -39,7 +39,6 @@ NUPiOverlaySegment D_8007798C = {
 u8 IntroMessageIdx = 0;
 
 extern s32 D_80200000;
-extern ShapeFile gMapShapeData;
 
 BSS s8 D_800A0930;
 BSS s8 D_800A0931;

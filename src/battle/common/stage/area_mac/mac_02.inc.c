@@ -20,8 +20,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "mac_tex",
-    .shape = "mac_bt02_shape",
-    .hit = "mac_bt02_hit",
+    .module = "areas/mac/mac_bt02",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

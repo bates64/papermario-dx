@@ -32,8 +32,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "isk_tex",
-    .shape = "isk_bt07_shape",
-    .hit = "isk_bt07_hit",
+    .module = "areas/isk/isk_bt07",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

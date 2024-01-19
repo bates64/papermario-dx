@@ -30,8 +30,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "kmr_tex",
-    .shape = "kmr_bt04_shape",
-    .hit = "kmr_bt04_hit",
+    .module = "areas/kmr/kmr_bt04",
     .bg = "kmr_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

@@ -94,15 +94,15 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "shape_ld",
-        description="link($version) shape $out",
-        command=f"{ld} -T src/map_shape.ld $in -o $out",
+        "module_ld",
+        description="link($version) module $out",
+        command=f"{ld} -r -nostdlib -T {BUILD_TOOLS}/module.ld $in -o $out",
     )
 
     ninja.rule(
-        "shape_objcopy",
-        description="objcopy($version) shape $out",
-        command=f"{cross}objcopy $in $out -O binary",
+        "module",
+        description="module $out",
+        command=f"$python {BUILD_TOOLS}/module.py $in $out",
     )
 
     Z64_DEBUG = ""
@@ -487,14 +487,6 @@ class Configure:
 
         return path
 
-    def mapfs_uses_new_structure(self, seg_name: str = "mapfs") -> bool:
-        """Check if mapfs has been reorganized to new directory structure."""
-        for asset_dir in self.asset_stack:
-            areas_dir = Path(f"assets/{asset_dir}/{seg_name}/areas")
-            if areas_dir.exists() and any(areas_dir.iterdir()):
-                return True
-        return False
-
     def parse_area_from_map_name(self, map_name: str) -> str:
         """
         Extract area code from map name.
@@ -556,9 +548,9 @@ class Configure:
             map_dir = Path(f"assets/x/{seg_name}/areas/{area}/{map_name}{ext}")
 
             if asset_type == "shape":
-                return map_dir / "shape.bin"  # Files inside .map dirs use generic names
+                return map_dir / "shape.c"
             elif asset_type == "hit":
-                return map_dir / "hit.bin"
+                return map_dir / "hit.c"
             else:  # xml
                 return map_dir / "map.xml"
         else:
@@ -569,7 +561,6 @@ class Configure:
         ninja: ninja_syntax.Writer,
         skip_outputs: Set[str],
         non_matching: bool,
-        c_maps: bool = False,
     ):
         assert self.linker_entries is not None
 
@@ -1145,8 +1136,13 @@ class Configure:
                 src_dir = Path("assets/x") / seg.name
                 compress = False
 
-                # Check if using new reorganized structure
-                new_structure = self.mapfs_uses_new_structure(seg.name)
+                # Pre-pass: collect which maps have _shape entries
+                # so _hit entries can be skipped (they'll be compiled into the shape's module)
+                shape_maps = set()
+                for path in entry.src_paths:
+                    n = path.stem
+                    if n.endswith("_shape"):
+                        shape_maps.add(n[:-6])
 
                 for path in entry.src_paths:
                     name = path.stem
@@ -1155,13 +1151,9 @@ class Configure:
 
                     if name.startswith("party_"):
                         compress = True
-                        # Resolve party icon path (same in both structures)
-                        if new_structure:
-                            img_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, name, "party")
-                            )
-                        else:
-                            img_path = path
+                        img_path = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "party")
+                        )
                         build(
                             bin_path,
                             [img_path],
@@ -1171,12 +1163,10 @@ class Configure:
                                 "img_flags": "",
                             },
                         )
-                        # Generate hierarchical asset name
                         if name in PARTY_NAME_MAP:
                             english_name = PARTY_NAME_MAP[name]
                             asset_name = f"party/{english_name}_art"
                         else:
-                            # Fallback for unknown party members
                             asset_name = f"party/{name}"
                     elif name == "title_data":
                         compress = True
@@ -1186,7 +1176,6 @@ class Configure:
                         copyright_pal_path = out_dir / "title_copyright.pal"  # jp only
                         press_start_path = out_dir / "title_press_start.bin"
 
-                        # Title assets stay in title/ directory in both structures
                         logotype_src = self.resolve_asset_path(
                             src_dir / "title/logotype.png"
                         )
@@ -1257,13 +1246,9 @@ class Configure:
                         asset_name = "title_data"
                     elif name.endswith("_bg"):
                         compress = True
-                        # Resolve background path
-                        if new_structure:
-                            bg_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, name, "bg")
-                            )
-                        else:
-                            bg_path = path
+                        bg_path = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "bg")
+                        )
                         build(
                             bin_path,
                             [bg_path],
@@ -1273,24 +1258,16 @@ class Configure:
                                 "img_flags": "",
                             },
                         )
-                        base_name = name[:-4]
-                        # Generate hierarchical asset name
                         asset_name = f"backgrounds/{name}"
                     elif name.endswith("_tex"):
                         compress = False
-                        # Resolve texture directory and JSON
-                        if new_structure:
-                            tex_dir = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, name, "tex")
-                            )
-                            tex_json = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, name, "tex_json")
-                            )
-                            asset_dep_path = f"mapfs/areas/{name[:-4]}/{name[:-4]}.tex"
-                        else:
-                            tex_dir = path.parent / name
-                            tex_json = path.parent / (name + ".json")
-                            asset_dep_path = f"mapfs/tex/{name}"
+                        tex_dir = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "tex")
+                        )
+                        tex_json = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "tex_json")
+                        )
+                        asset_dep_path = f"mapfs/areas/{name[:-4]}/{name[:-4]}.tex"
                         build(
                             bin_path,
                             [tex_dir, tex_json],
@@ -1301,119 +1278,89 @@ class Configure:
                             },
                             asset_deps=[asset_dep_path],
                         )
-                        base_name = name[:-4]
-                        # Generate hierarchical asset name
-                        area = name[:-4]  # Strip _tex suffix to get area code
+                        area = name[:-4]
                         asset_name = f"areas/{area}/{name}"
-                    elif name.endswith("_shape_built"):
-                        base_name = name[:-6]
-                        map_name = base_name[:-6]
+                    elif name.endswith("_shape"):
+                        # Build a unified module containing shape + hit + any other
+                        # C files for this map
+                        map_name = name[:-6]
+                        area = self.parse_area_from_map_name(map_name)
 
-                        # Resolve shape.bin path
-                        if new_structure:
-                            raw_bin_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, base_name, "shape")
-                            )
-                        else:
-                            raw_bin_path = self.resolve_asset_path(
-                                f"assets/x/{seg.name}/geom/{base_name}.bin"
-                            )
+                        module_dir = out_dir / "module"
+                        elf_path = module_dir / (map_name + ".elf")
+                        bin_path = module_dir / (map_name + ".module")
 
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+                        cc_vars = {
+                            "cflags": "",
+                            "cppflags": f"-DVERSION_{self.version.upper()}",
+                        }
 
-                        if c_maps:
-                            # raw bin -> c -> o -> elf -> objcopy -> final bin file
-                            c_file_path = (
-                                bin_path.parent / "geom" / base_name
-                            ).with_suffix(".c")
-                            o_path = bin_path.parent / "geom" / (base_name + ".o")
-                            elf_path = bin_path.parent / "geom" / (base_name + ".elf")
+                        o_files = []
 
-                            build(c_file_path, [raw_bin_path], "shape")
-                            build(
-                                o_path,
-                                [c_file_path],
-                                "cc_modern",
-                                variables={
-                                    "cflags": "",
-                                    "cppflags": f"-DVERSION_{self.version.upper()}",
-                                    "iconv": "iconv --from UTF-8 --to CP932",  # similar to SHIFT-JIS, but includes backslash and tilde
-                                },
-                            )
-                            build(elf_path, [o_path], "shape_ld")
-                            build(bin_path, [elf_path], "shape_objcopy")
-                        else:
-                            build(bin_path, [raw_bin_path], "cp")
+                        # Compile shape C source
+                        shape_c = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "shape")
+                        )
+                        shape_o = module_dir / (map_name + "_shape.o")
+                        build(shape_o, [shape_c], "cc_modern", variables=cc_vars)
+                        o_files.append(shape_o)
 
-                        # Resolve XML path for header generation
-                        if new_structure:
-                            xml_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, map_name, "xml")
-                            )
-                        else:
-                            xml_path = self.resolve_asset_path(
-                                f"assets/x/{seg.name}/geom/{map_name}.xml"
-                            )
+                        # Compile hit C source if it exists for this map
+                        hit_name = map_name + "_hit"
+                        hit_c = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, hit_name, "hit")
+                        )
+                        if hit_c.exists():
+                            hit_o = module_dir / (map_name + "_hit.o")
+                            build(hit_o, [hit_c], "cc_modern", variables=cc_vars)
+                            o_files.append(hit_o)
 
+                        # Link all .o files into a relocatable ELF, then convert to .module
+                        build(elf_path, o_files, "module_ld")
+                        build(bin_path, [elf_path], "module")
+
+                        # XML header generation
+                        xml_path = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, map_name, "xml")
+                        )
                         if xml_path.exists():
                             build(
                                 self.build_path()
                                 / "include/mapfs"
-                                / (base_name + ".h"),
+                                / (map_name + ".h"),
                                 [xml_path],
                                 "map_header",
                             )
 
                         compress = True
-                        out_dir = out_dir / "geom"
-                        # Generate hierarchical asset name
-                        area = self.parse_area_from_map_name(map_name)
-                        asset_name = f"areas/{area}/{map_name}_shape"
+                        out_dir = module_dir
+                        asset_name = f"areas/{area}/{map_name}"
                     elif name.endswith("_hit"):
-                        base_name = name
-                        map_name = base_name[:-4]
-
-                        # Resolve hit.bin path
-                        if new_structure:
-                            raw_bin_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, name, "hit")
-                            )
-                        else:
-                            raw_bin_path = self.resolve_asset_path(
-                                f"assets/x/{seg.name}/geom/{base_name}.bin"
-                            )
-                            # TEMP: star rod compatibility (old structure only)
-                            old_raw_bin_path = self.resolve_asset_path(
-                                f"assets/x/{seg.name}/{base_name}.bin"
-                            )
-                            if old_raw_bin_path.is_file():
-                                raw_bin_path = old_raw_bin_path
-
-                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
-                        build(bin_path, [raw_bin_path], "cp")
-
-                        # Resolve XML path for header generation
-                        if new_structure:
-                            xml_path = self.resolve_asset_path(
-                                self.resolve_mapfs_asset(seg.name, map_name, "xml")
-                            )
-                        else:
-                            xml_path = self.resolve_asset_path(
-                                f"assets/x/{seg.name}/geom/{map_name}.xml"
-                            )
-
-                        if xml_path.exists():
-                            build(
-                                self.build_path()
-                                / "include/mapfs"
-                                / (base_name + ".h"),
-                                [xml_path],
-                                "map_header",
-                            )
-
-                        # Generate hierarchical asset name
+                        # Hit is compiled into the shape's module
+                        if name[:-4] in shape_maps:
+                            continue
+                        # Standalone hit (no corresponding shape) - build as its own module
+                        map_name = name[:-4]
                         area = self.parse_area_from_map_name(map_name)
-                        asset_name = f"areas/{area}/{map_name}_hit"
+
+                        module_dir = out_dir / "module"
+                        elf_path = module_dir / (map_name + ".elf")
+                        bin_path = module_dir / (map_name + ".module")
+
+                        hit_c = self.resolve_asset_path(
+                            self.resolve_mapfs_asset(seg.name, name, "hit")
+                        )
+                        hit_o = module_dir / (map_name + "_hit.o")
+                        build(hit_o, [hit_c], "cc_modern", variables={
+                            "cflags": "",
+                            "cppflags": f"-DVERSION_{self.version.upper()}",
+                        })
+                        build(elf_path, [hit_o], "module_ld")
+                        build(bin_path, [elf_path], "module")
+
+                        compress = True
+                        out_dir = module_dir
+                        asset_name = f"areas/{area}/{map_name}"
                     else:
                         compress = True
                         bin_path = path
@@ -1643,17 +1590,7 @@ if __name__ == "__main__":
         action="store_true",
         help="Build a shiftable version of the game (non-matching)",
     )
-    parser.add_argument(
-        "--no-modern-gcc",
-        action="store_true",
-        help="Use modern GCC instead of the original compiler",
-    )
     parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
-    parser.add_argument(
-        "--c-maps",
-        action="store_true",
-        help="Convert map binaries to C as part of the build process",
-    )
     args = parser.parse_args()
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
@@ -1787,7 +1724,7 @@ if __name__ == "__main__":
         configure.split(
             not args.no_split_assets, args.split_code, args.shift, args.debug
         )
-        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
+        configure.write_ninja(ninja, skip_files, non_matching)
 
         all.append(str(configure.rom_ok_path()))
         all.append(str(configure.syms_path()))

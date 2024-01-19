@@ -29,8 +29,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "trd_tex",
-    .shape = "trd_bt04_shape",
-    .hit = "trd_bt04_hit",
+    .module = "areas/trd/trd_bt04",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
     .foregroundModelList = N(ForegroundModels),

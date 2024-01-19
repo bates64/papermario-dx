@@ -25,7 +25,6 @@ extern u16 gFrameBuf1[];
 extern u16 gFrameBuf2[];
 u16* pause_frameBuffers[] = { gFrameBuf0, gFrameBuf1, gFrameBuf2 };
 
-extern ShapeFile gMapShapeData;
 
 NUPiOverlaySegment PauseOverlaySegment = {
     .romStart = pause_ROM_START,
@@ -47,6 +46,8 @@ BSS s32 SavedReverbMode;
 // TODO: these should be moved into player status
 u8 ReflectWallPrevAlpha = 254;
 u8 ReflectFloorPrevAlpha = 254;
+
+extern "C" {
 
 void state_init_pause(void) {
     StepPauseState = 0;
@@ -145,7 +146,6 @@ void state_init_unpause(void) {
 void state_step_unpause(void) {
     MapSettings* mapSettings;
     MapConfig* mapConfig;
-    void* mapShape;
     u32 assetSize;
 
     switch (StepPauseState) {
@@ -189,14 +189,12 @@ void state_step_unpause(void) {
                     sfx_set_reverb_mode(SavedReverbMode);
                     bgm_reset_max_volume();
                     load_map_script_lib();
-                    mapShape = load_asset_by_name(wMapShapeName, &assetSize);
-                    decode_yay0(mapShape, &gMapShapeData);
-                    general_heap_free(mapShape);
+                    // World module is still alive — shape data persists through pause
                     initialize_collision();
                     restore_map_collision_data();
 
                     if (mapConfig->dmaStart != nullptr) {
-                        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
+                        dma_copy((u8*)mapConfig->dmaStart, (u8*)mapConfig->dmaEnd, mapConfig->dmaDest);
                     }
 
                     load_map_bg(mapConfig->bgName);
@@ -252,3 +250,5 @@ void state_step_unpause(void) {
 
 void state_drawUI_unpause(void) {
 }
+
+} // extern "C"

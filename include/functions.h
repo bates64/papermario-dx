@@ -321,7 +321,7 @@ void init_model_animators(void);
 void play_model_animation(s32, s16*);
 s32 heap_free(void* ptr);
 
-void load_battle_hit_asset(const char* hitName);
+void load_battle_hit_asset(const char* moduleName);
 void load_data_for_models(struct ModelNode* model, s32 romOffset, s32 size);
 void load_player_actor(void);
 

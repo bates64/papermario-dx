@@ -24,8 +24,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "jan_tex",
-    .shape = "jan_bt02_shape",
-    .hit = "jan_bt02_hit",
+    .module = "areas/jan/jan_bt02",
     .bg = "yos_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

@@ -38,8 +38,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "flo_tex",
-    .shape = "flo_bt01_shape",
-    .hit = "flo_bt01_hit",
+    .module = "areas/flo/flo_bt01",
     .bg = "fla_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

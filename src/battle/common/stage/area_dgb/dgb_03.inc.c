@@ -16,8 +16,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "dgb_tex",
-    .shape = "dgb_bt03_shape",
-    .hit = "dgb_bt03_hit",
+    .module = "areas/dgb/dgb_bt03",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

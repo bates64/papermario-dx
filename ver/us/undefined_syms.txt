@@ -1,7 +1,5 @@
 // hard-coded things
 gBackgroundImage = 0; // hard-coded inside mapfs for now
-// TODO: gMapShapeData needs pointer fixup - shape data has baked-in absolute pointers
-// gMapShapeData = 0x80210000;
 
 heap_battleHead = gFrameBuf2;
 

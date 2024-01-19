@@ -2,8 +2,7 @@
 #include "kpa_51.h"
 
 s32 N(map_init)(void) {
-    sprintf(wMapShapeName, "areas/kpa/kpa_50_shape");
-    sprintf(wMapHitName, "areas/kpa/kpa_50_hit");
+    sprintf(wMapModuleName, "areas/kpa/kpa_50");
     return false;
 }
 

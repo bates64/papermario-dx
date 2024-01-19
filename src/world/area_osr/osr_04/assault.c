@@ -2,8 +2,7 @@
 
 s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
-    sprintf(wMapShapeName, "areas/osr/osr_03_shape");
-    sprintf(wMapHitName, "areas/osr/osr_03_hit");
+    sprintf(wMapModuleName, "areas/osr/osr_03");
     return false;
 }
 

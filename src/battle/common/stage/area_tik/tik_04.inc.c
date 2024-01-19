@@ -44,8 +44,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "tik_tex",
-    .shape = "tik_bt04_shape",
-    .hit = "tik_bt04_hit",
+    .module = "areas/tik/tik_bt04",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

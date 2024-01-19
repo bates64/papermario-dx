@@ -12,6 +12,10 @@ import yaml as yaml_loader
 import n64img.image
 from tex_archives import TexArchive
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "build")) # terrible
+from mapfs.shape import ShapeFile
+from mapfs import hit as hit_module
+
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))
 
 def decode_null_terminated_ascii(data):
@@ -48,16 +52,14 @@ def parse_palette(data):
     return palette
 
 
-def add_file_ext(name: str, linker: bool = False) -> str:
+def add_file_ext(name: str) -> str:
     """Get file path for asset extraction (split phase - uses old flat structure)."""
     if name.startswith("party_"):
         return "party/" + name + ".png"
     elif name.endswith("_hit"):
-        return "geom/" + name + ".bin"
+        return "geom/" + name + ".c"
     elif name.endswith("_shape"):
-        if linker:
-            name += "_built"
-        return "geom/" + name + ".bin"
+        return "geom/" + name + ".c"
     elif name.endswith("_tex"):
         return "tex/" + name + ".bin"
     elif name.endswith("_bg"):
@@ -91,18 +93,19 @@ def get_new_asset_path(name: str, fs_dir: Path) -> Path:
         bg_name = name[:-3]  # Strip _bg
         return fs_dir / "backgrounds" / f"{name}.png"
     elif name.endswith("_hit"):
-        # Hit files: geom/kmr_20_hit.bin -> areas/kmr/kmr_20.map/hit.bin
+        # Hit files: geom/kmr_20_hit.c -> areas/kmr/kmr_20.map/hit.c
+        # Path stem must be "{name}" so configure.py pre-pass can identify it
         map_name = name[:-4]  # Strip _hit
         area = parse_area_from_map_name(map_name)
         ext = ".stage" if "_bt" in map_name else ".map"
-        return fs_dir / "areas" / area / (map_name + ext) / f"{name}.bin"
+        return fs_dir / "areas" / area / (map_name + ext) / f"{name}.c"
     elif name.endswith("_shape"):
-        # Shape files: geom/kmr_20_shape_built.bin -> areas/kmr/kmr_20.map/shape_built.bin
-        # Note: linker adds _built suffix
+        # Shape files: geom/kmr_20_shape.c -> areas/kmr/kmr_20.map/shape.c
+        # Path stem must be "{name}" so configure.py pre-pass can identify it
         map_name = name[:-6]  # Strip _shape
         area = parse_area_from_map_name(map_name)
         ext = ".stage" if "_bt" in map_name else ".map"
-        return fs_dir / "areas" / area / (map_name + ext) / f"{name}_built.bin"
+        return fs_dir / "areas" / area / (map_name + ext) / f"{name}.c"
     else:
         return fs_dir / f"{name}.bin"
 
@@ -268,6 +271,15 @@ class N64SegPm_map_data(Segment):
 
             elif name.endswith("_tex"):
                 TexArchive.extract(bytes, fs_dir / "tex" / name)
+            elif name.endswith("_shape"):
+                map_name = name[:-6]
+                shape = ShapeFile(map_name, bytes)
+                shape.digest()
+                with open(path, "w") as f:
+                    shape.write_to_c(f)
+            elif name.endswith("_hit"):
+                assert path is not None
+                hit_module.convert_bytes(bytes, path)
             else:
                 assert path is not None
                 with open(path, "wb") as f:
@@ -294,7 +306,7 @@ class N64SegPm_map_data(Segment):
                 src_paths.append(get_new_asset_path(name, fs_dir))
             else:
                 # Use old structure paths (before reorganization)
-                src_paths.append(fs_dir / add_file_ext(name, linker=True))
+                src_paths.append(fs_dir / add_file_ext(name))
 
             if file.get("dump_raw", False):
                 src_paths.append(fs_dir / f"{name}.raw.dat")

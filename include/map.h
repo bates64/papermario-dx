@@ -17,8 +17,8 @@ typedef Vec4f EntryList[];
 /// Fields other than main, entryList, entryCount, background, and tattle are initialised when the map loads.
 typedef struct MapSettings {
     /* 0x00 */ struct ModelNode* modelTreeRoot;
-    /* 0x04 */ s32 hitAssetCollisionOffset;
-    /* 0x08 */ s32 hitAssetZoneOffset;
+    /* 0x04 */ s32 _unused_hitAssetCollisionOffset;
+    /* 0x08 */ s32 _unused_hitAssetZoneOffset;
     /* 0x0C */ char unk_0C[4];
     /* 0x10 */ EvtScript* main;
     /* 0x14 */ EntryList* entryList;
@@ -44,8 +44,8 @@ typedef struct MapConfig {
     /* 0x08 */ void* dmaStart;
     /* 0x0C */ void* dmaEnd;
     /* 0x10 */ void* dmaDest;
-    /* 0x14 */ char* bgName;
-    /* 0x18 */ MapInit init; ///< Return true to skip normal asset (shape/hit/bg/tex) loading.
+    /* 0x14 */ MapInit init; ///< Return true to skip normal asset (shape/hit/bg/tex) loading.
+    /* 0x18 */ char* bgName;
     /* 0x1C */ char unk_1C[0x2];
     /* 0x1E */ s8 songVariation; ///< 0 or 1. @see bgm_get_map_default_variation
     /* 0x1F */ s8 sfxReverb;
@@ -58,11 +58,14 @@ typedef struct AreaConfig {
     /* 0x0C */ char* name; ///< JP debug name.
 } AreaConfig; // size = 0x10
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 MapSettings* get_current_map_settings(void);
 
+extern char wMapModuleName[];
 extern char wMapTexName[];
-extern char wMapHitName[];
-extern char wMapShapeName[];
 extern char wMapBgName[];
 
 /// Zero-terminated.
@@ -70,5 +73,16 @@ extern AreaConfig gAreas[29];
 
 extern EvtScript EVS_NpcHitRecoil;
 extern EvtScript EVS_800936C0;
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
+#ifdef __cplusplus
+namespace dx { namespace module { class Module; } }
+using dx::module::Module;
+Module* get_map_module(void);
+Module* get_battle_module(void);
+#endif
 
 #endif

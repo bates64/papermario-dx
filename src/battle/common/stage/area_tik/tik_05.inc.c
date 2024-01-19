@@ -42,8 +42,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "tik_tex",
-    .shape = "tik_bt05_shape",
-    .hit = "tik_bt05_hit",
+    .module = "areas/tik/tik_bt05",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
     .foregroundModelList = N(ForegroundModels),

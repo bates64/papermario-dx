@@ -27,8 +27,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "jan_tex",
-    .shape = "jan_bt00_shape",
-    .hit = "jan_bt00_hit",
+    .module = "areas/jan/jan_bt00",
     .bg = "yos_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

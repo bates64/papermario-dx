@@ -168,8 +168,6 @@ typedef enum ExtraTileTypes {
     EXTRA_TILE_4                    = 4, // only use-case may be a mistake? unused and mostly unimplemented
 } ExtraTileTypes;
 
-#define SHAPE_SIZE_LIMIT 0x8000
-
 typedef struct ShapeFileHeader {
     /* 0x00 */ ModelNode* root;
     /* 0x04 */ Vtx_t* vertexTable;
@@ -178,11 +176,6 @@ typedef struct ShapeFileHeader {
     /* 0x10 */ char** zoneNames;
     /* 0x14 */ unsigned char pad_14[0xC];
 } ShapeFileHeader; // size = 0x20
-
-typedef struct ShapeFile {
-    /* 0x00 */ ShapeFileHeader header;
-    /* 0x20 */ u8 data[SHAPE_SIZE_LIMIT - sizeof(ShapeFileHeader)];
-} ShapeFile; // size = variable
 
 typedef ModelTreeInfo ModelTreeInfoList[0x200];
 

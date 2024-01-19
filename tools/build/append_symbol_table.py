@@ -70,7 +70,10 @@ if __name__ == "__main__":
     z64 = sys.argv[1]
     if not z64.endswith(".z64"):
         raise Exception("expected z64 as argument")
-    elf = z64.replace(".z64", ".elf")
+    if len(sys.argv) > 2:
+        elf = sys.argv[2]
+    else:
+        elf = z64.replace(".z64", ".elf")
 
     symbols = readelf(elf)
     root_dir = (

@@ -189,8 +189,7 @@ s32 N(ForegroundVineModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "flo_tex",
-    .shape = "flo_bt03_shape",
-    .hit = "flo_bt03_hit",
+    .module = "areas/flo/flo_bt03",
     .bg = "fla_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

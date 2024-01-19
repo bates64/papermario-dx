@@ -73,8 +73,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "nok_tex",
-    .shape = "nok_bt02_shape",
-    .hit = "nok_bt02_hit",
+    .module = "areas/nok/nok_bt02",
     .bg = "nok_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

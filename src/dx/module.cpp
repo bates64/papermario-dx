@@ -1,5 +1,8 @@
-#include "module.hpp"
+#include "dx/module.h"
 #include "functions.h"
+
+namespace dx {
+namespace module {
 
 static constexpr u32 MOD_MAGIC = 0x4D4F4400; // "MOD\0"
 static constexpr u32 LINK_ADDR = 0x80000000;
@@ -123,6 +126,7 @@ void Module::run_table(u32 offset, u32 count) {
 }
 
 Module::Module(const char* filename) {
+    // TODO: use Asset::load
     u32 size;
     void* compressedData = load_asset_by_name(filename, &size);
     ASSERT_MSG(compressedData, "Cannot read %s, out of memory", filename);
@@ -135,7 +139,7 @@ Module::Module(const char* filename) {
     blob_ = (u8*)decompressedData;
     hdr_ = (Header *)decompressedData;
 
-    ASSERT_MSG(hdr_->magic == MOD_MAGIC, "Invalid module");
+    ASSERT_MSG(hdr_->magic == MOD_MAGIC, "Invalid module %s", filename);
 
     base_ = blob_ + hdr_->text_offset;
 
@@ -149,7 +153,7 @@ Module::Module(const char* filename) {
     osWritebackDCache(base_, hdr_->text_size + hdr_->data_size);
     osInvalICache(base_, hdr_->text_size);
 
-    printf("Loaded module '%s' to %p\n", filename, base_);
+    printf("Loaded module %s to %p (%lu relocs)\n", filename, base_, hdr_->reloc_count);
 
     run_table(hdr_->ctor_offset, hdr_->ctor_count);
 }
@@ -193,3 +197,6 @@ bool Module::contains(u32 addr) const {
     u32 b = (u32)base_;
     return addr >= b && addr < b + hdr_->text_size;
 }
+
+} // namespace module
+} // namespace dx

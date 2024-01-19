@@ -11,6 +11,7 @@
 #include "dx/cmp.h"
 #include "dx/rc.h"
 #include "dx/asset.h"
+#include "dx/module.h"
 
 using dx::option::Option;
 using dx::collections::Vec;
@@ -22,5 +23,6 @@ using dx::cmp::Eq;
 using dx::rc::Rc;
 using dx::rc::Weak;
 using dx::move;
+using dx::module::Module;
 
 #endif // __cplusplus

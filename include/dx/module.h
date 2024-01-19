@@ -2,6 +2,9 @@
 
 #include "common.h"
 
+namespace dx {
+namespace module {
+
 /** A loaded dynamic library. */
 class Module {
 public:
@@ -45,3 +48,6 @@ private:
     u8 *bss_ = nullptr;
     Header *hdr_ = nullptr;
 };
+
+} // namespace module
+} // namespace dx

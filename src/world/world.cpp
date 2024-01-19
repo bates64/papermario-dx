@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dx/module.h"
 #include "functions.h"
 #include "ld_addrs.h"
 #include "npc.h"
@@ -9,13 +10,9 @@
 #include <string.h>
 #include "world/surfaces.h"
 
-#ifdef SHIFT
+using dx::module::Module;
+
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
-#elif VERSION_JP
-#define ASSET_TABLE_ROM_START 0x1E00000
-#else
-#define ASSET_TABLE_ROM_START 0x1E40000
-#endif
 
 // should match values in tools/build/mapfs/combine.py
 #define ASSET_TABLE_NAME_LEN 64
@@ -23,29 +20,32 @@
 BSS MapConfig* gMapConfig;
 BSS MapSettings gMapSettings;
 
-char wMapHitName[64];
-char wMapShapeName[64];
+char wMapModuleName[64];
 char wMapTexName[64];
 char wMapBgName[64];
+
+static Module* sMapModule = nullptr;
+
+Module* get_map_module() { return sMapModule; }
+
+extern "C" {
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
 
-extern ShapeFile gMapShapeData;
-
 /** Split an asset name into its namespace and name components. */
-void parse_asset_name(char** name, char** namespace) {
+void parse_asset_name(char** name, char** ns) {
     // format: namespace:name
     char* colon = strchr(*name, ':');
     if (colon) {
         *colon = '\0';
-        *namespace = *name;
+        *ns = *name;
         *name = colon + 1;
     } else {
         // just a name
-        *namespace = nullptr;
+        *ns = nullptr;
     }
 }
 
@@ -112,18 +112,19 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     }
 
     // Generate hierarchical asset names
-    sprintf(wMapShapeName, "areas/%s/%s_shape", area, mapConfig->id);
-    sprintf(wMapHitName, "areas/%s/%s_hit", area, mapConfig->id);
+    sprintf(wMapModuleName, "areas/%s/%s", area, mapConfig->id);
     sprintf(wMapTexName, "areas/%s/%s_tex", area, area);
 
     gMapConfig = mapConfig;
     if (mapConfig->bgName != nullptr) {
         sprintf(wMapBgName, "backgrounds/%s", mapConfig->bgName);
+    } else {
+        wMapBgName[0] = '\0';
     }
     load_map_script_lib();
 
     if (mapConfig->dmaStart != nullptr) {
-        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
+        dma_copy((u8*)mapConfig->dmaStart, (u8*)mapConfig->dmaEnd, mapConfig->dmaDest);
     }
 
     gMapSettings = *mapConfig->settings;
@@ -134,16 +135,14 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     }
 
     if (!skipLoadingAssets) {
-        ShapeFile* shapeFile = &gMapShapeData;
-        void* yay0Asset = load_asset_by_name(wMapShapeName, &decompressedSize);
-
-        decode_yay0(yay0Asset, shapeFile);
-        general_heap_free(yay0Asset);
-
-        mapSettings->modelTreeRoot = shapeFile->header.root;
-        mapSettings->modelNameList = shapeFile->header.modelNames;
-        mapSettings->colliderNameList = shapeFile->header.colliderNames;
-        mapSettings->zoneNameList = shapeFile->header.zoneNames;
+        delete sMapModule;
+        sMapModule = new Module(wMapModuleName);
+        ShapeFileHeader* shape = (ShapeFileHeader*)sMapModule->sym("shape");
+        ASSERT_MSG(shape != nullptr, "Map missing shape");
+        mapSettings->modelTreeRoot = shape->root;
+        mapSettings->modelNameList = shape->modelNames;
+        mapSettings->colliderNameList = shape->colliderNames;
+        mapSettings->zoneNameList = shape->zoneNames;
     }
 
     reset_background_settings();
@@ -851,3 +850,5 @@ AreaConfig gAreas[] = {
     AREA(tst, "テストマップ"),  // tesuto mappu [Test map]
     {},
 };
+
+} // extern "C"

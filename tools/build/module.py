@@ -16,6 +16,8 @@ R_MIPS_LO16 = 6
 
 SUPPORTED_RELOCS = {R_MIPS_32, R_MIPS_26, R_MIPS_HI16, R_MIPS_LO16}
 
+STT_SECTION = 3
+
 # ELF constants
 SHT_NULL = 0
 SHT_PROGBITS = 1
@@ -35,9 +37,10 @@ IGNORED_SHNDX = {SHN_UNDEF, SHN_ABS, SHN_COMMON}
 
 
 class ElfSection:
-    def __init__(self, name, sh_type, sh_offset, sh_size, sh_link, data):
+    def __init__(self, name, sh_type, sh_addr, sh_offset, sh_size, sh_link, data):
         self.name = name
         self.type = sh_type
+        self.addr = sh_addr
         self.offset = sh_offset
         self.size = sh_size
         self.link = sh_link
@@ -145,7 +148,7 @@ class Elf32:
             )
 
             self.sections.append(
-                ElfSection(name, sh_type, sh_offset, sh_size, sh_link, sec_data)
+                ElfSection(name, sh_type, sh_addr, sh_offset, sh_size, sh_link, sec_data)
             )
 
         # Parse symbol table
@@ -211,6 +214,11 @@ def collect_relocs(elf):
         ):
             continue
 
+        # With -r, reloc offsets are section-relative. Add the target
+        # section's VMA so they become virtual addresses like --emit-relocs.
+        target_sec = elf.get_section(target_name)
+        base_addr = target_sec.addr if target_sec else 0
+
         data = sec.content
         # MIPS32 REL entries: 8 bytes each (u32 offset, u32 info)
         for i in range(0, len(data), 8):
@@ -227,7 +235,7 @@ def collect_relocs(elf):
                 continue
 
             if r_type in SUPPORTED_RELOCS:
-                relocs.append((r_type, r_offset))
+                relocs.append((r_type, base_addr + r_offset))
             else:
                 print(
                     f"warning: unsupported reloc type {r_type} at {r_offset:#x}",
@@ -239,6 +247,10 @@ def collect_relocs(elf):
 
 def collect_exports(elf):
     """Collect all global symbols as (offset, name) sorted by offset."""
+    # Build section index -> sh_addr map for converting section-relative
+    # symbol values (ET_REL from -r) to virtual addresses.
+    sec_addrs = {i: sec.addr for i, sec in enumerate(elf.sections)}
+
     exports = []
     for sym in elf.symbols:
         # Skip local, undefined, and section symbols
@@ -254,7 +266,8 @@ def collect_exports(elf):
         if not sym.name:
             continue
 
-        exports.append((sym.value, sym.name))
+        value = sym.value + sec_addrs.get(sym.shndx, 0)
+        exports.append((value, sym.name))
 
     exports.sort(key=lambda e: e[0])
     return exports
@@ -267,6 +280,47 @@ def read_section_data(elf, names):
         if sec is not None:
             return data, size
     return b"", 0
+
+
+def resolve_addends(elf, buffers):
+    """Resolve section-relative addends to absolute VAs for -r linked ELFs.
+
+    With -r, R_MIPS_32 in-place addends are section-relative offsets. The module
+    loader expects absolute VAs (based on LINK_ADDR). Patch them in-place.
+
+    buffers: dict mapping section name -> bytearray of that section's content
+    """
+    syms = elf.symbols
+
+    for sec in elf.sections:
+        if not sec.name.startswith(".rel."):
+            continue
+        target_name = sec.name[4:]
+        buf = buffers.get(target_name)
+        if buf is None:
+            continue
+
+        data = sec.content
+        for i in range(0, len(data), 8):
+            r_offset, r_info = struct.unpack(">II", data[i : i + 8])
+            r_type = r_info & 0xFF
+            r_sym = r_info >> 8
+
+            if r_type != R_MIPS_32:
+                continue
+
+            sym = syms[r_sym] if r_sym < len(syms) else None
+            if sym is None or sym.shndx in IGNORED_SHNDX:
+                continue
+
+            # S = symbol's effective address (section base + symbol offset)
+            S = sym.value
+            if sym.shndx < len(elf.sections):
+                S += elf.sections[sym.shndx].addr
+
+            # A = in-place addend; write back S + A
+            A = struct.unpack(">I", buf[r_offset : r_offset + 4])[0]
+            struct.pack_into(">I", buf, r_offset, (S + A) & 0xFFFFFFFF)
 
 
 def build_module(input_path, output_path):
@@ -290,6 +344,30 @@ def build_module(input_path, output_path):
     _, data_data, data_size = get_section(elf, ".data")
     bss_sec = elf.get_section(".bss")
     bss_size = bss_sec.size if bss_sec else 0
+
+    # With -r, in-place R_MIPS_32 addends are section-relative. Resolve them
+    # to absolute VAs so the module loader's delta-based relocation works.
+    text_buf = bytearray(text_data)
+    data_buf = bytearray(data_data)
+    resolve_addends(elf, {".text": text_buf, ".data": data_buf})
+    text_data = bytes(text_buf)
+    data_data = bytes(data_buf)
+
+    # Pad text to fill alignment gap between .text and .data so that
+    # relocation offsets (which are ELF virtual addresses) correctly index
+    # into the contiguous text+data blob.
+    data_sec = elf.get_section(".data")
+    if data_sec and data_size > 0:
+        text_end_va = LINK_ADDR + text_size
+        gap = data_sec.addr - text_end_va
+        if gap > 0:
+            text_data += b"\x00" * gap
+            text_size += gap
+        elif gap < 0:
+            print(
+                f"warning: .data overlaps .text by {-gap} bytes",
+                file=sys.stderr,
+            )
 
     ctors_data, ctors_size = read_section_data(elf, [".ctors", ".init_array"])
     dtors_data, dtors_size = read_section_data(elf, [".dtors", ".fini_array"])
@@ -316,7 +394,8 @@ def build_module(input_path, output_path):
     # Build header
     HEADER_SIZE = 68
 
-    off = HEADER_SIZE
+    # Align text start to 16 bytes for N64 RSP DMA (vertex/matrix loads)
+    off = (HEADER_SIZE + 15) & ~15
     text_off = off
     off += len(text_data)
     data_off = off
@@ -348,6 +427,7 @@ def build_module(input_path, output_path):
 
     with open(output_path, "wb") as f:
         f.write(header)
+        f.write(b"\x00" * (text_off - HEADER_SIZE))
         f.write(text_data)
         f.write(data_data)
         f.write(reloc_blob)

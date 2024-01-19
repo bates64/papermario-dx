@@ -96,8 +96,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "kzn_tex",
-    .shape = "kzn_bt05_shape",
-    .hit = "kzn_bt05_hit",
+    .module = "areas/kzn/kzn_bt05",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

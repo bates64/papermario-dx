@@ -71,8 +71,8 @@ s32 HighlightColor;
 
 // data grabbed during map or battle load
 
-char LastMapName[16];
-char LastStageName[16];
+char LastMapName[64];
+char LastStageName[64];
 s32 LastMapEntry;
 s32 LastBattleID;
 
@@ -82,13 +82,7 @@ void dx_debug_set_map_info(char* mapName, s32 entryID) {
 }
 
 void dx_debug_set_battle_info(s32 battleID, char* stageName) {
-    s32 len = strlen(stageName);
-
     strcpy(LastStageName, stageName);
-    if (len > 6) {
-        // trim "_shape" from name
-        LastStageName[len - 6] = '\0';
-    }
     LastBattleID = battleID;
 }
 

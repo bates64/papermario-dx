@@ -12,6 +12,10 @@ enum BattleSubStates {
     BTL_SUBSTATE_PLAYER_CONTINUE_DIP                        = 70,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern s16 EndDemoWhiteOut;
 extern b32 BattleSkipActorTurn;
 extern b32 BattleCanShowFirstStrike;
@@ -85,5 +89,9 @@ void btl_state_draw_select_target(void);
 
 void btl_state_update_celebration(void);
 void btl_state_draw_celebration(void);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

@@ -38,8 +38,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "omo_tex",
-    .shape = "omo_bt04_shape",
-    .hit = "omo_bt04_hit",
+    .module = "areas/omo/omo_bt04",
     .bg = "omo_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

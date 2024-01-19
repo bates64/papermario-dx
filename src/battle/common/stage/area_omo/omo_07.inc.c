@@ -16,8 +16,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "omo_tex",
-    .shape = "omo_bt07_shape",
-    .hit = "omo_bt07_hit",
+    .module = "areas/omo/omo_bt07",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };

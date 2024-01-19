@@ -1,8 +1,11 @@
 #include "states.h"
+#include "dx/module.h"
 #include "model.h"
+#include "map.h"
 #include "script_api/battle.h"
 
-extern ShapeFile gMapShapeData;
+using dx::module::Module;
+
 extern StageListRow* gCurrentStagePtr;
 extern s32 bActorsIgnoreDuringCount[];
 
@@ -22,24 +25,27 @@ enum {
 
 BSS s32 BattleEnemiesCreated;
 
+static Module* sBattleModule = nullptr;
+
+Module* get_battle_module() { return sBattleModule; }
+
+extern "C" {
+
 void load_stage_assets(Stage* stage) {
-    void* compressedAsset;
     ModelNode* rootModel;
     s32 texturesOffset;
     s32 size;
 
-    compressedAsset = load_asset_by_name(stage->shape, &size);
-    decode_yay0(compressedAsset, &gMapShapeData);
-    general_heap_free(compressedAsset);
+    delete sBattleModule;
+    sBattleModule = new Module(stage->module);
 
-    ASSERT(size <= 0x8000);
-
-    rootModel = gMapShapeData.header.root;
+    ShapeFileHeader* shape = (ShapeFileHeader*)sBattleModule->sym("shape");
+    rootModel = shape->root;
     texturesOffset = get_asset_offset(stage->texture, &size);
     if (rootModel != nullptr) {
         load_data_for_models(rootModel, texturesOffset, size);
     }
-    load_battle_hit_asset(stage->hit);
+    load_battle_hit_asset(stage->module);
 
     load_map_bg(stage->bg);
 }
@@ -73,7 +79,7 @@ void btl_state_update_normal_start(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
             #if DX_DEBUG_MENU
-            dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), stage->shape);
+            dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), (char*)stage->module);
             #endif
 
             BattleEnemiesCreated = battle->formationSize;
@@ -357,3 +363,5 @@ void btl_state_draw_normal_start(void) {
         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, BattleScreenFadeAmt);
     }
 }
+
+} // extern "C"

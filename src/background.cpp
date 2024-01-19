@@ -26,7 +26,7 @@ void hot_accept_new_background_asset() {
 }
 
 void load_map_bg(char* optAssetName) {
-    if (optAssetName != nullptr) {
+    if (optAssetName != nullptr && optAssetName[0] != '\0') {
         char* assetName = optAssetName;
 
         if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE) {

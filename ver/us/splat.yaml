@@ -127,9 +127,9 @@ segments:
     - [auto, c, game_modes]
     - [auto, c, state_startup]
     - [auto, c, startup_screen_fading]
-    - [auto, c, state_battle]
+    - [auto, cpp, state_battle]
     - [auto, c, state_logos]
-    - [auto, c, state_pause]
+    - [auto, cpp, state_pause]
     - [auto, c, state_file_select]
     - [auto, c, state_world]
     - [auto, c, state_map_transitions] # possibly still state_world
@@ -156,8 +156,8 @@ segments:
     - [auto, c, audio/core/reverb]
     - [auto, c, effects]
     - [auto, c, 5B320]
-    - [auto, c, world/world]
-    - [auto, c, collision]
+    - [auto, cpp, world/world]
+    - [auto, cpp, collision]
     - [auto, c, 38F00]
     - [auto, c, npc_follow]
     - [auto, c, os/nusys/nuboot]
@@ -1295,7 +1295,7 @@ segments:
     subsegments:
     - [auto, c, battle/16C8E0]
     - [auto, c, battle/btl_states_actions]
-    - [auto, c, battle/states/start_battle]
+    - [auto, cpp, battle/states/start_battle]
     - [auto, c, battle/states/player_first_strike]
     - [auto, c, battle/states/partner_first_strike]
     - [auto, c, battle/states/enemy_first_strike]
@@ -2040,7 +2040,7 @@ segments:
     vram: 0xE0024000
     max_size: 0x1000
     subsegments:
-    - [auto, c, shape_spell]
+    - [auto, c, shape_spell, -Os]
   - name: effect_gfx_shape_spell
     dir: effects/gfx
     type: code

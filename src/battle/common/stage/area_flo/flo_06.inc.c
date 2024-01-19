@@ -20,8 +20,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "flo_tex",
-    .shape = "flo_bt06_shape",
-    .hit = "flo_bt06_hit",
+    .module = "areas/flo/flo_bt06",
     .bg = "fla_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

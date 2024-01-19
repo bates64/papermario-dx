@@ -3,6 +3,10 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum SurfaceWalkEffect {
     SURFACE_WALK_FX_STANDARD,   // puffs of dust follow the player
     SURFACE_WALK_FX_SPARKLE,    // trail of sparkles follow the player, only used in hos_02 in vanilla
@@ -20,5 +24,9 @@ void surface_set_walk_effect(s32 effect);
 /// @param type enum value from SurfaceWalkEffect
 /// @evtapi
 API_CALLABLE(SetSurfaceWalkEffect);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

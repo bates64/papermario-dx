@@ -23,7 +23,7 @@ BSS s8 BattleTransitionDelay;
 BSS s32 SavedWorldAnimFlags;
 BSS s32 SavedWorldFreezeMode;
 
-extern ShapeFile gMapShapeData;
+extern "C" {
 
 void state_init_battle(void) {
     BattleTransitionDelay = 5;
@@ -163,19 +163,16 @@ void state_step_end_battle(void) {
                 playerStatus->animFlags = SavedWorldAnimFlags;
                 set_game_mode(GAME_MODE_DEMO);
             } else {
-                void* mapShape;
-                u32 sizeTemp;
+                s32 sizeTemp;
 
                 partner_init_after_battle(playerData->curPartner);
                 load_map_script_lib();
-                mapShape = load_asset_by_name(wMapShapeName, &sizeTemp);
-                decode_yay0(mapShape, &gMapShapeData);
-                general_heap_free(mapShape);
+                // World module is still alive — shape data persists through battle
                 initialize_collision();
                 restore_map_collision_data();
 
                 if (mapConfig->dmaStart != nullptr) {
-                    dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
+                    dma_copy((u8*)mapConfig->dmaStart, (u8*)mapConfig->dmaEnd, mapConfig->dmaDest);
                 }
 
                 load_map_bg(mapConfig->bgName);
@@ -196,3 +193,5 @@ void state_step_end_battle(void) {
 
 void state_drawUI_end_battle(void) {
 }
+
+} // extern "C"

@@ -15,7 +15,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "kmr_tex",
-    .shape = "kmr_bt02_shape", //@bug does not exist
+    .module = "areas/kmr/kmr_bt02", //@bug does not exist
     .bg = "kmr_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

@@ -1,8 +1,7 @@
 #include "tik_24.h"
 
 s32 N(map_init)(void) {
-    sprintf((s8*) &wMapShapeName, "areas/tik/tik_18_shape");
-    sprintf((s8*) &wMapHitName, "areas/tik/tik_18_hit");
+    sprintf(wMapModuleName, "areas/tik/tik_18");
     return false;
 }
 

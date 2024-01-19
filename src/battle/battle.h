@@ -180,16 +180,15 @@ typedef struct StaticFormationEntry {
 
 typedef struct Stage {
     /* 0x00 */ char* texture;
-    /* 0x04 */ const char* shape;
-    /* 0x08 */ const char* hit;
-    /* 0x0C */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
-    /* 0x10 */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
-    /* 0x14 */ char* bg;
-    /* 0x18 */ s32* foregroundModelList;
-    /* 0x1C */ s32 stageEnemyCount;         // number of enemies in the stageFormation
-    /* 0x20 */ Formation* stageFormation;   // extra enemies native to this stage
-    /* 0x24 */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
-} Stage; // size = 0x28
+    /* 0x04 */ const char* module;          // unified module name (e.g. "areas/kkj/kkj_bt02")
+    /* 0x08 */ EvtScript* preBattle;        // sets BattleStatus::controlScript on battle start
+    /* 0x0C */ EvtScript* postBattle;       // sets BattleStatus::controlScript on battle end
+    /* 0x10 */ char* bg;
+    /* 0x14 */ s32* foregroundModelList;
+    /* 0x18 */ s32 stageEnemyCount;         // number of enemies in the stageFormation
+    /* 0x1C */ Formation* stageFormation;   // extra enemies native to this stage
+    /* 0x20 */ s32 stageEnemyChance;        // 1/(N+1) chance for stageFormation enemies to spawn
+} Stage; // size = 0x24
 
 /// Zero-terminated.
 typedef struct Battle {

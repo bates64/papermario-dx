@@ -3,8 +3,7 @@
 
 s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
-    sprintf(wMapShapeName, "areas/kpa/kpa_50_shape");
-    sprintf(wMapHitName, "areas/kpa/kpa_50_hit");
+    sprintf(wMapModuleName, "areas/kpa/kpa_50");
     return false;
 }
 

@@ -37,10 +37,11 @@ if __name__ == "__main__":
 
     is_shape = out_path.stem.endswith("_shape")
     is_hit = out_path.stem.endswith("_hit")
+    is_combined = not is_shape and not is_hit
 
     map_name = path.basename(xml_path)[:-4]
 
-    if is_shape:
+    if is_shape or is_combined:
         for model in xml.getElementsByTagName("Model"):
             map_object = model.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
@@ -48,7 +49,11 @@ if __name__ == "__main__":
                 continue
             idx = "0x" + map_object.getAttribute("id")
             write_if_unique(f, f"MODEL_{name}", idx)
-    elif is_hit:
+
+    if is_hit or is_combined:
+        if is_combined:
+            f.write("\n")
+
         for collider in xml.getElementsByTagName("Collider"):
             map_object = collider.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
@@ -66,7 +71,5 @@ if __name__ == "__main__":
                 continue
             idx = "0x" + map_object.getAttribute("id")
             write_if_unique(f, f"ZONE_{name}", idx)
-    else:
-        raise ValueError("Invalid output file name")
 
     f.close()

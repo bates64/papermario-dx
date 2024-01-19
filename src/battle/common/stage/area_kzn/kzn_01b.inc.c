@@ -26,8 +26,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "kzn_tex",
-    .shape = "kzn_bt01_shape",
-    .hit = "kzn_bt01_hit",
+    .module = "areas/kzn/kzn_bt01",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
     .foregroundModelList = N(ForegroundModels),

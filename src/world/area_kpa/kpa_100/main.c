@@ -2,8 +2,7 @@
 #include "sprite.h"
 
 s32 N(map_init)(void) {
-    sprintf(wMapShapeName, "areas/kpa/kpa_117_shape");
-    sprintf(wMapHitName, "areas/kpa/kpa_117_hit");
+    sprintf(wMapModuleName, "areas/kpa/kpa_117");
     return false;
 }
 

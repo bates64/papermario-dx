@@ -23,8 +23,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "kkj_tex",
-    .shape = "kkj_bt01_shape",
-    .hit = "kkj_bt01_hit",
+    .module = "areas/kkj/kkj_bt01",
     .bg = "kpa_bg",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),

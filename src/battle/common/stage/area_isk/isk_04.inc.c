@@ -41,8 +41,7 @@ s32 N(ForegroundModels)[] = {
 
 Stage NAMESPACE = {
     .texture = "isk_tex",
-    .shape = "isk_bt04_shape",
-    .hit = "isk_bt04_hit",
+    .module = "areas/isk/isk_bt04",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
     .foregroundModelList = N(ForegroundModels),

@@ -46,8 +46,7 @@ EvtScript N(EVS_PostBattle) = {
 
 Stage NAMESPACE = {
     .texture = "kpa_tex",
-    .shape = "kpa_bt04_shape",
-    .hit = "kpa_bt04_hit",
+    .module = "areas/kpa/kpa_bt04",
     .preBattle = &N(EVS_PreBattle),
     .postBattle = &N(EVS_PostBattle),
 };
