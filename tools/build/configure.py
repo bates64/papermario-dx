@@ -631,7 +631,9 @@ class Configure:
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
                 build(entry.object_path, entry.src_paths, "as")
             elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData) and not seg.type[0] == "."
+                isinstance(seg, splat.segtypes.common.data.CommonSegData)
+                and not seg.type[0] == "."
+                or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
             ):
                 build(entry.object_path, entry.src_paths, "as")
             elif seg.type in ["pm_effect_loads", "pm_effect_shims"]:
@@ -662,7 +664,9 @@ class Configure:
                 if modern_gcc:
                     task = "cc_modern"
 
-                if seg.name.endswith("osFlash"):
+                if entry.src_paths[0].suffixes[-1] == ".s":
+                    task = "as"
+                elif seg.name.endswith("osFlash"):
                     task = "cc_ido"
                 elif "gcc_272" in cflags:
                     task = "cc_272"
@@ -790,11 +794,7 @@ class Configure:
                                 type="data",
                                 define=True,
                             )
-            elif (
-                isinstance(seg, splat.segtypes.common.bin.CommonSegBin)
-                or isinstance(seg, splat.segtypes.common.textbin.CommonSegTextbin)
-                or isinstance(seg, splat.segtypes.common.rodatabin.CommonSegRodatabin)
-            ):
+            elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
                 build(entry.object_path, entry.src_paths, "bin")
             elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
                 compressed_path = entry.object_path.with_suffix("")  # remove .o
