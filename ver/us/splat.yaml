@@ -6887,6 +6887,7 @@ segments:
     vram_class: battle_area
     subsegments:
     - [auto, c, area]
+    - [auto, c, actor/king_boo]
 
 #######################
 ### Battle Partners ###

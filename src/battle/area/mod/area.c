@@ -1,9 +1,8 @@
 #include "area.h"
 
 #include "battle/common/stage/area_mod/mod_00.inc.c"
-#include "battle/common/newactor/king_boo.inc.c"
 
-extern ActorBlueprint A(reznor);
+extern ActorBlueprint A(king_boo);
 
 extern Stage A(mod_00);
 

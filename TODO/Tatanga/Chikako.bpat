@@ -297,7 +297,7 @@
   	Add   *Var2  2`
   	Call  PlayEffect    ( ~FX:FaintDustCloud *Var0 *Var1 *Var2 *Fixed[3.0] 30` 00000000 00000000 00000000 00000000 00000000 00000000 00000000 )
 	Call  PlaySoundAtActor ( .Actor:Self 0000034E ) % Explosion
-	%Call  PlaySoundAtActor  ( .Actor:Self 00002078 )
+	% Call  PlaySoundAtActor  ( .Actor:Self 00002078 )
   	Call  StartRumble   ( 0000000B )
   	Thread
     	Call  ShakeCam  ( .Cam:Battle 00000000  5` *Fixed[1.0] )

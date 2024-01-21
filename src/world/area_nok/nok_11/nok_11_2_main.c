@@ -83,6 +83,7 @@ EvtScript N(EVS_AddBadges) = {
     EVT_CALL(AddBadge, ITEM_CLOSE_CALL, LVar2)
     EVT_CALL(AddBadge, ITEM_PRETTY_LUCKY, LVar3)
     EVT_CALL(AddBadge, ITEM_LUCKY_DAY, LVar4)
+    EVT_CALL(AddBadge, ITEM_PEEKABOO, LVar5)
     EVT_WAIT(5)
     EVT_RETURN
     EVT_END
