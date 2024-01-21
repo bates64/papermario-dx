@@ -20,6 +20,15 @@ extern Addr WorldEntityHeapBase;
 #define entity_default_VRAM (void*) 0x802BAE00
 #endif
 
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_default_ROM_END;
+extern Addr entity_default_ROM_START;
+extern Addr entity_jan_iwa_ROM_END;
+extern Addr entity_jan_iwa_ROM_START;
+extern Addr entity_sbk_omo_ROM_END;
+extern Addr entity_sbk_omo_ROM_START;
+#endif
+
 s32 D_8014AFB0 = 255;
 
 SHIFT_BSS s32 CreateEntityVarArgBuffer[4];
@@ -1346,7 +1355,7 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
     return shadow->listIndex;
 }
 
-ApiStatus MakeEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(MakeEntity) {
     Bytecode* args = script->ptrReadPos;
     EntityBlueprint* entityData;
     s32 x, y, z;
@@ -1386,7 +1395,7 @@ ApiStatus MakeEntity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetEntityCullMode(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetEntityCullMode) {
     Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
     Bytecode* args = script->ptrReadPos;
     s32 mode = evt_get_variable(script, *args++);
@@ -1404,7 +1413,7 @@ ApiStatus SetEntityCullMode(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus UseDynamicShadow(Evt* script, s32 isInitialCall) {
+API_CALLABLE(UseDynamicShadow) {
     Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
     Bytecode* args = script->ptrReadPos;
 
@@ -1421,7 +1430,7 @@ ApiStatus UseDynamicShadow(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus AssignScript(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignScript) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1434,7 +1443,7 @@ ApiStatus AssignScript(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignSwitchFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1452,7 +1461,7 @@ ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignBlockFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignBlockFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1467,7 +1476,7 @@ ApiStatus AssignBlockFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignChestFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignChestFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1480,7 +1489,7 @@ ApiStatus AssignChestFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignPanelFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignPanelFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1493,7 +1502,7 @@ ApiStatus AssignPanelFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignCrateFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignCrateFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
