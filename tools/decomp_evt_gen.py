@@ -92,7 +92,7 @@ def convert_script_line(line: str) -> str:
 
 #['Call', 'SetAnimation', '(', '.Actor:Self', '.Part:KingBoo', '.Anim:KingBoo_Hide', ')']
 #        Call  SetAnimation ( .Actor:Self .Part:KingBoo .Anim:KingBoo_Hide )
-text = Path("TODO/KingBoo/KingBoo.bpat").read_text()
+text = Path("TODO/Tatanga/Chikako.bpat").read_text()
 
 # Collect all scripts
 scripts = {} # name -> script

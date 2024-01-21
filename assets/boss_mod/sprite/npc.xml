@@ -234,5 +234,7 @@
         <Sprite name="ParadeTwink"/>
         <Sprite name="Leaf"/>
         <Sprite name="KingBoo"/>
+        <Sprite name="Tatanga"/>
+        <Sprite name="StarZoneStar"/>
     </Sprites>
 </Names>

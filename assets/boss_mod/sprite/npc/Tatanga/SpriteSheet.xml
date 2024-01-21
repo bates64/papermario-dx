@@ -1,0 +1,1296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpriteSheet maxComponents="1" paletteGroups="2">
+	<PaletteList>
+		<Palette id="0" name="Default" src="PaletteTatangaShip.png"/>
+		<Palette id="1" name="TatangaBody" src="PaletteTatangaBody.png"/>
+		<Palette id="2" name="Smoke" src="PaletteSmoke.png"/>
+		<Palette id="3" name="Biff" src="PaletteBiff.png"/>
+		<Palette id="4" name="Energy" src="PaletteEnergy.png"/>
+		<Palette id="5" name="Chikako" src="PaletteChikako.png"/>
+	</PaletteList>
+	<RasterList>
+		<Raster id="0" name="BodyIdle1" palette="1" src="BodyIdle1.png"/>
+		<Raster id="1" name="BodyIdle2" palette="1" src="BodyIdle2.png"/>
+		<Raster id="2" name="BodyTalk" palette="1" src="BodyTalk.png"/>
+		<Raster id="3" name="BodyPointTalk1" palette="1" src="BodyPointTalk1.png"/>
+		<Raster id="4" name="BodyPointTalk2" palette="1" src="BodyPointTalk2.png"/>
+		<Raster id="5" name="BodyWalk1" palette="1" src="BodyWalk1.png"/>
+		<Raster id="6" name="BodyWalk2" palette="1" src="BodyWalk2.png"/>
+		<Raster id="7" name="BodyWalk3" palette="1" src="BodyWalk3.png"/>
+		<Raster id="8" name="Ship" palette="0" src="Ship.png"/>
+		<Raster id="9" name="Normal" palette="0" src="Normal.png"/>
+		<Raster id="A" name="Blink1" palette="0" src="Blink1.png"/>
+		<Raster id="B" name="Blink2" palette="0" src="Blink2.png"/>
+		<Raster id="C" name="NormalTalk" palette="0" src="NormalTalk.png"/>
+		<Raster id="D" name="LookDown" palette="0" src="LookDown.png"/>
+		<Raster id="E" name="Unamused1" palette="0" src="Unamused1.png"/>
+		<Raster id="F" name="Unamused2" palette="0" src="Unamused2.png"/>
+		<Raster id="10" name="Smug1" palette="0" src="Smug1.png"/>
+		<Raster id="11" name="Smug2" palette="0" src="Smug2.png"/>
+		<Raster id="12" name="SmugPoint" palette="0" src="SmugPoint.png"/>
+		<Raster id="13" name="Mock1" palette="0" src="Mock1.png"/>
+		<Raster id="14" name="Mock2" palette="0" src="Mock2.png"/>
+		<Raster id="15" name="Mock3" palette="0" src="Mock3.png"/>
+		<Raster id="16" name="Angry1" palette="0" src="Angry1.png"/>
+		<Raster id="17" name="Angry2" palette="0" src="Angry2.png"/>
+		<Raster id="18" name="Shock1" palette="0" src="Shock1.png"/>
+		<Raster id="19" name="Shock2" palette="0" src="Shock2.png"/>
+		<Raster id="1A" name="Pain1" palette="0" src="Pain1.png"/>
+		<Raster id="1B" name="Pain2" palette="0" src="Pain2.png"/>
+		<Raster id="1C" name="Dizzy1" palette="0" src="Dizzy1.png"/>
+		<Raster id="1D" name="Dizzy2" palette="0" src="Dizzy2.png"/>
+		<Raster id="1E" name="NormalDark" palette="0" src="NormalDark.png"/>
+		<Raster id="1F" name="HatchClose2" palette="0" src="HatchClose2.png"/>
+		<Raster id="20" name="HatchClose1" palette="0" src="HatchClose1.png"/>
+		<Raster id="21" name="ForwardShot1" palette="0" src="ForwardShot1.png"/>
+		<Raster id="22" name="ForwardShot2" palette="0" src="ForwardShot2.png"/>
+		<Raster id="23" name="ForwardShot3" palette="0" src="ForwardShot3.png"/>
+		<Raster id="24" name="Smoke1" palette="2" src="Smoke1.png"/>
+		<Raster id="25" name="Smoke2" palette="2" src="Smoke2.png"/>
+		<Raster id="26" name="Smoke3" palette="2" src="Smoke3.png"/>
+		<Raster id="27" name="Smoke4" palette="2" src="Smoke4.png"/>
+		<Raster id="28" name="Smoke5" palette="2" src="Smoke5.png"/>
+		<Raster id="29" name="Smoke6" palette="2" src="Smoke6.png"/>
+		<Raster id="2A" name="ShotBall1" palette="4" src="ShotBall1.png"/>
+		<Raster id="2B" name="ShotBall2" palette="4" src="ShotBall2.png"/>
+		<Raster id="2C" name="ShotBallHalf1" palette="4" src="ShotBallHalf1.png"/>
+		<Raster id="2D" name="ShotBallHalf2" palette="4" src="ShotBallHalf2.png"/>
+		<Raster id="2E" name="ShotFirework1" palette="4" src="ShotFirework1.png"/>
+		<Raster id="2F" name="ShotFirework2" palette="4" src="ShotFirework2.png"/>
+		<Raster id="30" name="ShotFirework3" palette="4" src="ShotFirework3.png"/>
+		<Raster id="31" name="ShotMoon1" palette="4" src="ShotMoon1.png"/>
+		<Raster id="32" name="ShotMoon2" palette="4" src="ShotMoon2.png"/>
+		<Raster id="33" name="ShotMoon3" palette="4" src="ShotMoon3.png"/>
+		<Raster id="34" name="ShotStar1" palette="4" src="ShotStar1.png"/>
+		<Raster id="35" name="ShotStar2" palette="4" src="ShotStar2.png"/>
+		<Raster id="36" name="BulletBiff1" palette="3" src="BulletBiff1.png"/>
+		<Raster id="37" name="BulletBiff2" palette="3" src="BulletBiff2.png"/>
+		<Raster id="38" name="ChikakoIdle1" palette="5" src="ChikakoIdle1.png"/>
+		<Raster id="39" name="ChikakoIdle2" palette="5" src="ChikakoIdle2.png"/>
+		<Raster id="3A" name="ChikakoIdle3" palette="5" src="ChikakoIdle3.png"/>
+		<Raster id="3B" name="ChikakoCharging1" palette="5" src="ChikakoCharging1.png"/>
+		<Raster id="3C" name="ChikakoCharging2" palette="5" src="ChikakoCharging2.png"/>
+		<Raster id="3D" name="ChikakoCharging3" palette="5" src="ChikakoCharging3.png"/>
+		<Raster id="3E" name="ChikakoIdleCharge1" palette="5" src="ChikakoIdleCharge1.png"/>
+		<Raster id="3F" name="ChikakoIdleCharge2" palette="5" src="ChikakoIdleCharge2.png"/>
+		<Raster id="40" name="ChikakoIdleCharge3" palette="5" src="ChikakoIdleCharge3.png"/>
+		<Raster id="41" name="ChikakoHurt1" palette="5" src="ChikakoHurt1.png"/>
+		<Raster id="42" name="ChikakoHurt2" palette="5" src="ChikakoHurt2.png"/>
+		<Raster id="43" name="ChikakoHurtCharge1" palette="5" src="ChikakoHurtCharge1.png"/>
+		<Raster id="44" name="ChikakoHurtCharge2" palette="5" src="ChikakoHurtCharge2.png"/>
+		<Raster id="45" name="ChikakoDeath1" palette="5" src="ChikakoDeath1.png"/>
+		<Raster id="46" name="ChikakoDeath2" palette="5" src="ChikakoDeath2.png"/>
+		<Raster id="47" name="Spark1" palette="4" src="Spark1.png"/>
+		<Raster id="48" name="Spark2" palette="4" src="Spark2.png"/>
+		<Raster id="49" name="Spark3" palette="4" src="Spark3.png"/>
+		<Raster id="4A" name="Spark4" palette="4" src="Spark4.png"/>
+	</RasterList>
+	<AnimationList>
+		<Animation name="BodyStill">
+			<Component name="Body" xyz="0,-9,0">
+				<Command val="1000"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="BodyIdle">
+			<Component name="Body" xyz="0,-9,0">
+				<Command val="1000"/>
+				<Command val="10"/>
+				<Command val="1001"/>
+				<Command val="10"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="BodyTalk">
+			<Component name="Body" xyz="0,-9,0">
+				<Command val="1000"/>
+				<Command val="6"/>
+				<Command val="1002"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="BodyPointTalk">
+			<Component name="Body" xyz="0,-9,0">
+				<Command val="1003"/>
+				<Command val="6"/>
+				<Command val="1004"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="BodyJump">
+			<Component name="Body" xyz="0,-9,0">
+				<Command val="1005"/>
+				<Command val="4"/>
+				<Command val="1006"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1007"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="2008"/>
+			</Component>
+		</Animation>
+		<Animation name="Ship">
+			<Component name="Ship" xyz="0,10,0">
+				<Command val="1008"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Still">
+			<Component name="Ship" xyz="0,10,0">
+				<Command val="1009"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Idle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1009"/>
+				<Command val="40"/>
+				<Command val="7000"/>
+				<Command val="3"/>
+				<Command val="100A"/>
+				<Command val="4"/>
+				<Command val="100B"/>
+				<Command val="4"/>
+				<Command val="100A"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Talk">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1009"/>
+				<Command val="6"/>
+				<Command val="100C"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="UnamusedIdle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="100E"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="UnamusedTalk">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="100E"/>
+				<Command val="6"/>
+				<Command val="100F"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="SmugIdle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1010"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="SmugTalk">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1010"/>
+				<Command val="6"/>
+				<Command val="1011"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShockIdle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1018"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShockTalk">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1018"/>
+				<Command val="6"/>
+				<Command val="1019"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="AngryIdle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1016"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="AngryTalk">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1016"/>
+				<Command val="6"/>
+				<Command val="1017"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="MockStart">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1009"/>
+				<Command val="4"/>
+				<Command val="100C"/>
+				<Command val="4"/>
+				<Command val="1014"/>
+				<Command val="8"/>
+				<Command val="1013"/>
+				<Command val="8"/>
+				<Command val="1014"/>
+				<Command val="8"/>
+				<Command val="1015"/>
+				<Command val="8"/>
+				<Command val="2004"/>
+			</Component>
+		</Animation>
+		<Animation name="MockEnd">
+			<Component name="Float" xyz="0,0,0">
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="E"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="12"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1014"/>
+				<Command val="8"/>
+				<Command val="1015"/>
+				<Command val="8"/>
+				<Command val="1014"/>
+				<Command val="8"/>
+				<Command val="1013"/>
+				<Command val="8"/>
+				<Command val="100C"/>
+				<Command val="4"/>
+				<Command val="1009"/>
+				<Command val="4"/>
+				<Command val="200A"/>
+			</Component>
+		</Animation>
+		<Animation name="Pain">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="101A"/>
+				<Command val="4"/>
+				<Command val="101B"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="Dizzy">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="101C"/>
+				<Command val="10"/>
+				<Command val="101D"/>
+				<Command val="14"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="HatchClose">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="1009"/>
+				<Command val="4"/>
+				<Command val="1020"/>
+				<Command val="4"/>
+				<Command val="101F"/>
+				<Command val="4"/>
+				<Command val="101E"/>
+				<Command val="4"/>
+				<Command val="2006"/>
+			</Component>
+		</Animation>
+		<Animation name="DarkIdle">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="101E"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="HatchOpen">
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="101E"/>
+				<Command val="4"/>
+				<Command val="101F"/>
+				<Command val="4"/>
+				<Command val="1020"/>
+				<Command val="4"/>
+				<Command val="1009"/>
+				<Command val="4"/>
+				<Command val="2006"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotForwardStart">
+			<Component name="Ship" xyz="0,10,0">
+				<Command val="1009"/>
+				<Command val="2"/>
+				<Command val="1009"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="4"/>
+				<Command val="100A"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="6"/>
+				<Command val="100A"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="10"/>
+				<Command val="1021"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="6"/>
+				<Command val="1022"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="6"/>
+				<Command val="1023"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="12"/>
+				<Command val="1023"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="10"/>
+				<Command val="2034"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotForwardEnd">
+			<Component name="Ship" xyz="0,10,0">
+				<Command val="1023"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="10"/>
+				<Command val="100B"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="1009"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="4"/>
+				<Command val="1009"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="40"/>
+				<Command val="2023"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotMoon">
+			<Component name="Shot" xyz="0,0,0">
+				<Command val="1031"/>
+				<Command val="2"/>
+				<Command val="1032"/>
+				<Command val="2"/>
+				<Command val="1033"/>
+				<Command val="2"/>
+				<Command val="1032"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotBiff">
+			<Component name="Biff" xyz="0,0,0">
+				<Command val="1036"/>
+				<Command val="5000"/>
+				<Command val="46"/>
+				<Command val="4"/>
+				<Command val="1037"/>
+				<Command val="5000"/>
+				<Command val="44"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Fire" xyz="37,11,-1">
+				<Command val="102E"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="3000"/>
+				<Command val="FFFA"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="5A"/>
+				<Command val="6"/>
+				<Command val="102F"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="5A"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotBottom">
+			<Component name="Float" xyz="0,0,0">
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="7000"/>
+				<Command val="7"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="6"/>
+			</Component>
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="8100"/>
+				<Command val="100D"/>
+				<Command val="46"/>
+				<Command val="1009"/>
+				<Command val="6"/>
+			</Component>
+			<Component name="Smoke" xyz="0,22,0">
+				<Command val="1FFF"/>
+				<Command val="30"/>
+				<Command val="6FFF"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1024"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1025"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1026"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1027"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1028"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="1FFF"/>
+				<Command val="6"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotBall">
+			<Component name="Shot" xyz="0,0,0">
+				<Command val="102A"/>
+				<Command val="4"/>
+				<Command val="102B"/>
+				<Command val="5000"/>
+				<Command val="5F"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotBallOpen">
+			<Component name="BallLeft" xyz="-2,0,0">
+				<Command val="102C"/>
+				<Command val="2"/>
+				<Command val="102C"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="F"/>
+				<Command val="2"/>
+				<Command val="102C"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="19"/>
+				<Command val="2"/>
+				<Command val="102C"/>
+				<Command val="3000"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="23"/>
+				<Command val="2"/>
+				<Command val="102C"/>
+				<Command val="3000"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="28"/>
+				<Command val="2"/>
+				<Command val="2019"/>
+			</Component>
+			<Component name="BallRight" xyz="1,0,0">
+				<Command val="102D"/>
+				<Command val="2"/>
+				<Command val="102D"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFF1"/>
+				<Command val="2"/>
+				<Command val="102D"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFE7"/>
+				<Command val="2"/>
+				<Command val="102D"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFDD"/>
+				<Command val="2"/>
+				<Command val="102D"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFD8"/>
+				<Command val="2"/>
+				<Command val="2019"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotFireworks">
+			<Component name="Fire" xyz="0,0,0">
+				<Command val="102F"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="4"/>
+				<Command val="102E"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="5A"/>
+				<Command val="4"/>
+				<Command val="1030"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ShotStarExplosion">
+			<Component name="Star" xyz="0,0,0">
+				<Command val="1034"/>
+				<Command val="5000"/>
+				<Command val="5F"/>
+				<Command val="6"/>
+				<Command val="1035"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1034"/>
+				<Command val="5000"/>
+				<Command val="5F"/>
+				<Command val="6"/>
+				<Command val="1035"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="55"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoStill">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="1038"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoIdle">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="1038"/>
+				<Command val="6"/>
+				<Command val="1039"/>
+				<Command val="4"/>
+				<Command val="103A"/>
+				<Command val="6"/>
+				<Command val="1039"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoCharging">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="1038"/>
+				<Command val="6"/>
+				<Command val="103B"/>
+				<Command val="24"/>
+				<Command val="103B"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="1"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="103C"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="62"/>
+				<Command val="2"/>
+				<Command val="103D"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="103C"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="62"/>
+				<Command val="2"/>
+				<Command val="2004"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoIdleCharged">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="103E"/>
+				<Command val="4"/>
+				<Command val="103F"/>
+				<Command val="2"/>
+				<Command val="1040"/>
+				<Command val="4"/>
+				<Command val="103F"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="ULSpark" xyz="0,17,0">
+				<Command val="3001"/>
+				<Command val="FFEF"/>
+				<Command val="17"/>
+				<Command val="0"/>
+				<Command val="1047"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="FFED"/>
+				<Command val="1A"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="1047"/>
+				<Command val="4"/>
+				<Command val="3001"/>
+				<Command val="FFE9"/>
+				<Command val="1E"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="1047"/>
+				<Command val="2"/>
+				<Command val="3001"/>
+				<Command val="FFE6"/>
+				<Command val="23"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="1047"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="14"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="BLSpark" xyz="-3,16,0">
+				<Command val="1FFF"/>
+				<Command val="E"/>
+				<Command val="3001"/>
+				<Command val="FFF0"/>
+				<Command val="FFFB"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="FFED"/>
+				<Command val="FFF9"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="1049"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="46"/>
+				<Command val="3001"/>
+				<Command val="FFEA"/>
+				<Command val="FFF5"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="FFE9"/>
+				<Command val="FFF7"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="URSpark" xyz="5,15,0">
+				<Command val="1FFF"/>
+				<Command val="14"/>
+				<Command val="3001"/>
+				<Command val="C"/>
+				<Command val="18"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="6"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="3001"/>
+				<Command val="12"/>
+				<Command val="1E"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="3001"/>
+				<Command val="13"/>
+				<Command val="21"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="15"/>
+				<Command val="24"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="BRSpark" xyz="1,10,0">
+				<Command val="1FFF"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="11"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="6"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="3001"/>
+				<Command val="15"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="3001"/>
+				<Command val="18"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="19"/>
+				<Command val="4"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="C"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoAttack">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="103C"/>
+				<Command val="2"/>
+				<Command val="103D"/>
+				<Command val="5000"/>
+				<Command val="62"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="ULSpark" xyz="0,17,0">
+				<Command val="3001"/>
+				<Command val="FFEF"/>
+				<Command val="17"/>
+				<Command val="0"/>
+				<Command val="1047"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="FFED"/>
+				<Command val="1A"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="1047"/>
+				<Command val="4"/>
+				<Command val="3001"/>
+				<Command val="FFE9"/>
+				<Command val="1E"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="1047"/>
+				<Command val="2"/>
+				<Command val="3001"/>
+				<Command val="FFE6"/>
+				<Command val="23"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="1047"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="14"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="BLSpark" xyz="-3,16,0">
+				<Command val="1FFF"/>
+				<Command val="E"/>
+				<Command val="3001"/>
+				<Command val="FFF0"/>
+				<Command val="FFFB"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="6"/>
+				<Command val="3001"/>
+				<Command val="FFED"/>
+				<Command val="FFF9"/>
+				<Command val="0"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="1049"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="46"/>
+				<Command val="3001"/>
+				<Command val="FFEA"/>
+				<Command val="FFF5"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="FFE9"/>
+				<Command val="FFF7"/>
+				<Command val="0"/>
+				<Command val="1049"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="URSpark" xyz="5,15,0">
+				<Command val="1FFF"/>
+				<Command val="14"/>
+				<Command val="3001"/>
+				<Command val="C"/>
+				<Command val="18"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="6"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="3001"/>
+				<Command val="12"/>
+				<Command val="1E"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="3001"/>
+				<Command val="13"/>
+				<Command val="21"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="15"/>
+				<Command val="24"/>
+				<Command val="0"/>
+				<Command val="1048"/>
+				<Command val="2"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="BRSpark" xyz="1,10,0">
+				<Command val="1FFF"/>
+				<Command val="8"/>
+				<Command val="3001"/>
+				<Command val="11"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="6"/>
+				<Command val="5000"/>
+				<Command val="50"/>
+				<Command val="3001"/>
+				<Command val="15"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="4"/>
+				<Command val="5000"/>
+				<Command val="3C"/>
+				<Command val="3001"/>
+				<Command val="18"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="2"/>
+				<Command val="5000"/>
+				<Command val="28"/>
+				<Command val="3001"/>
+				<Command val="19"/>
+				<Command val="4"/>
+				<Command val="0"/>
+				<Command val="104A"/>
+				<Command val="2"/>
+				<Command val="1FFF"/>
+				<Command val="C"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoPainNormal">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="1041"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1042"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="103C"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="1044"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFD"/>
+				<Command val="3000"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="ChikakoDeath">
+			<Component name="Body" xyz="0,10,0">
+				<Command val="1045"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="1046"/>
+				<Command val="4000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="3000"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="UnusedIdle">
+			<Component name="Float" xyz="0,0,0">
+				<Command val="2"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="3"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="1"/>
+				<Command val="0"/>
+				<Command val="E"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="12"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Ship" xyz="0,10,1">
+				<Command val="8100"/>
+				<Command val="1009"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Smoke" xyz="0,25,0">
+				<Command val="6FFF"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1024"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="A"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1025"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFF"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1026"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1027"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFE"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="40B4"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="1028"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="FFFB"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="14"/>
+				<Command val="0"/>
+				<Command val="22"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+	</AnimationList>
+</SpriteSheet>

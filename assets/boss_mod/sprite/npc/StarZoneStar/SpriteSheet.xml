@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpriteSheet maxComponents="1" paletteGroups="1">
+	<PaletteList>
+		<Palette id="0" name="Default" src="StarPalette.png"/>
+	</PaletteList>
+	<RasterList>
+		<Raster id="0" name="StarMazeStar1" palette="0" src="StarMazeStar1.png"/>
+		<Raster id="1" name="StarMazeStar2" palette="0" src="StarMazeStar2.png"/>
+		<Raster id="2" name="StarMazeStar3" palette="0" src="StarMazeStar3.png"/>
+	</RasterList>
+	<AnimationList>
+		<Animation name="100_Idle">
+			<Component name="Body" xyz="0,0,0">
+				<Command val="1000"/>
+				<Command val="8"/>
+				<Command val="1001"/>
+				<Command val="4"/>
+				<Command val="1002"/>
+				<Command val="6"/>
+				<Command val="1001"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="100_Move">
+			<Component name="Move" xyz="0,0,0">
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,0,0">
+				<Command val="8100"/>
+				<Command val="1000"/>
+				<Command val="8"/>
+				<Command val="1001"/>
+				<Command val="4"/>
+				<Command val="1002"/>
+				<Command val="6"/>
+				<Command val="1001"/>
+				<Command val="4"/>
+				<Command val="2001"/>
+			</Component>
+		</Animation>
+		<Animation name="75_Idle">
+			<Component name="Body" xyz="0,0,0">
+				<Command val="1000"/>
+				<Command val="5000"/>
+				<Command val="4B"/>
+				<Command val="8"/>
+				<Command val="1001"/>
+				<Command val="5000"/>
+				<Command val="4B"/>
+				<Command val="4"/>
+				<Command val="1002"/>
+				<Command val="5000"/>
+				<Command val="4B"/>
+				<Command val="6"/>
+				<Command val="1001"/>
+				<Command val="5000"/>
+				<Command val="4B"/>
+				<Command val="4"/>
+				<Command val="2000"/>
+			</Component>
+		</Animation>
+		<Animation name="50_Move">
+			<Component name="Move" xyz="0,0,0">
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="0"/>
+				<Command val="4"/>
+				<Command val="3000"/>
+				<Command val="0"/>
+				<Command val="2"/>
+				<Command val="0"/>
+				<Command val="6"/>
+				<Command val="2000"/>
+			</Component>
+			<Component name="Body" xyz="0,0,0">
+				<Command val="8100"/>
+				<Command val="1000"/>
+				<Command val="5000"/>
+				<Command val="32"/>
+				<Command val="8"/>
+				<Command val="1001"/>
+				<Command val="5000"/>
+				<Command val="32"/>
+				<Command val="4"/>
+				<Command val="1002"/>
+				<Command val="5000"/>
+				<Command val="32"/>
+				<Command val="6"/>
+				<Command val="1001"/>
+				<Command val="5000"/>
+				<Command val="32"/>
+				<Command val="4"/>
+				<Command val="2001"/>
+			</Component>
+		</Animation>
+	</AnimationList>
+</SpriteSheet>

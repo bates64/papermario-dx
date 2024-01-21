@@ -122,28 +122,28 @@
 			ExecWait DoNormalHit
 		EndCaseGroup
 		Case  ==  .Event:BurnHit
-			ExecWait $Script_Death_Chikako
+			ExecWait $Script_OnDeath
 		Case  ==  .Event:BurnDeath
-			ExecWait $Script_Death_Chikako
+			ExecWait $Script_OnDeath
 		Case  ==  .Event:SpinSmashHit
 			SetConst  *Var0  .Part:Chikako
 			SetConst  *Var1  .Anim:Chikako_PainNormal
 			ExecWait 8029B998
 		Case  ==  .Event:SpinSmashDeath
-			ExecWait $Script_Death_Chikako
+			ExecWait $Script_OnDeath
 			Return
 		Case  ==  .Event:ShockHit
 			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
 			SetConst  *Var0  .Part:Chikako
 			SetConst  *Var1  .Anim:Chikako_PainNormal
 			ExecWait DoShockHit
-			ExecWait $Script_Death_Chikako
+			ExecWait $Script_OnDeath
 		Case  ==  .Event:ShockDeath
 			Call     PlaySoundAtActor 	( .Actor:Self 00000759 )
 			SetConst  *Var0  .Part:Chikako
 			SetConst  *Var1  .Anim:Chikako_PainNormal
 			ExecWait DoShockHit
-			ExecWait  $Script_Death_Chikako
+			ExecWait  $Script_OnDeath
 			Return
 		CaseOR  ==  00000017
 		CaseOR  ==  .Event:Immune
@@ -153,7 +153,7 @@
 			SetConst  *Var0  .Part:Chikako
 			SetConst  *Var1  .Anim:Chikako_PainNormal
 			ExecWait DoNormalHit
-			ExecWait  $Script_Death_Chikako
+			ExecWait  $Script_OnDeath
 			Return
 		Case  ==  .Event:RecoverStatus
 			SetConst  *Var0  .Part:Chikako
@@ -167,10 +167,10 @@
 	End
 }
 
-#new:Script $Script_Death_Chikako
+#new:Script $Script_OnDeath
 {
-	ExecWait  $Script_Fall_Down_Chikako
-	ExecWait  $Script_Death_Explode_Chikako
+	ExecWait  $Script_KnockDown
+	ExecWait  $Script_DeathExplode
 	SetConst  *Var0  .Part:Chikako
 	SetConst  *Var1  .Anim:Chikako_Death
 	Set   *Var2  FFFFCFC7
@@ -190,7 +190,7 @@
 		Goto FirstTurn
 	EndIf
 	Label FirstTurn
-		ExecWait $Script_Charge
+		ExecWait $Move_Charge
 		Goto EndTurn
 	Label SecondTurn
 		ExecWait $Attack_Slam
@@ -202,7 +202,7 @@
 	End
 }
 
-#new:Script $Script_Charge
+#new:Script $Move_Charge
 {
     Call  EnableIdleScript 	( .Actor:Self .False )
 	Call  UseIdleAnimation 	( .Actor:Self .False )
@@ -250,7 +250,7 @@
 			Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
 			Call  SetActorSpeed ( .Actor:Self *Fixed[9.0] )
     	    Call  FlyToGoal ( .Actor:Self 0` 0` .Easing:Linear )
-			ExecWait  $Script_Death_Explode_Chikako
+			ExecWait  $Script_DeathExplode
 			Call  SetGoalToTarget	( .Actor:Self )
 			If *Var0 == .HitResult:Lucky
 				Call	EnemyTestTarget  ( .Actor:Self *Var0 ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
@@ -262,7 +262,7 @@
     Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
 	Call  SetActorSpeed ( .Actor:Self *Fixed[9.0] )
     Call  FlyToGoal ( .Actor:Self 0` 0` .Easing:Linear )
-	ExecWait  $Script_Death_Explode_Chikako
+	ExecWait  $Script_DeathExplode
     Call  SetGoalToTarget   ( .Actor:Self )
     Wait  5`
 	Call  EnemyDamageTarget 	( .Actor:Self *Var0 ~Flags:DamageType:NoContact|Blast 0000FFFF 00000000 6` 00000020 ) % 6 Damage
@@ -273,7 +273,7 @@
 	End
 }
 
-#new:Script $Script_Fall_Down_Chikako
+#new:Script $Script_KnockDown
 {
 	Call  PlaySoundAtActor ( .Actor:Self 00000301 ) % Quick Fall
 	Call  GetActorPos ( .Actor:Self *Var0 *Var1 *Var2 )
@@ -286,7 +286,7 @@
 	End
 }
 
-#new:Script $Script_Death_Explode_Chikako
+#new:Script $Script_DeathExplode
 {
 	Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
   	Add   *Var1  40`

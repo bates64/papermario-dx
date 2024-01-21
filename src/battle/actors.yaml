@@ -2337,7 +2337,29 @@
 - KingBoo:
     level: 40
     nameMsg: MSG_Misc_KingBoo
-    tattleMsg: MSG_Misc_KingBoo # TODO
+    tattleMsg: MSG_Misc_KingBooTattle # TODO
+    walkSound: [ SOUND_NONE, SOUND_NONE ]
+    flySound: [ SOUND_NONE, SOUND_NONE ]
+    jumpSound: SOUND_ACTOR_JUMP
+    hurtSound: SOUND_ACTOR_HURT
+    stepDelay: [ 30, 30 ]
+    tattleCamOffset: [ 0, 0, 0 ]
+    shadowOffset: 0
+- Tatanga:
+    level: 40
+    nameMsg: MSG_Misc_Tatanga
+    tattleMsg: MSG_Misc_TatangaTattle # TODO
+    walkSound: [ SOUND_NONE, SOUND_NONE ]
+    flySound: [ SOUND_NONE, SOUND_NONE ]
+    jumpSound: SOUND_ACTOR_JUMP
+    hurtSound: SOUND_ACTOR_HURT
+    stepDelay: [ 30, 30 ]
+    tattleCamOffset: [ 0, 0, 0 ]
+    shadowOffset: 0
+- Chikako:
+    level: 0
+    nameMsg: MSG_Misc_Chikako
+    tattleMsg: MSG_Misc_ChikakoTattle # TODO
     walkSound: [ SOUND_NONE, SOUND_NONE ]
     flySound: [ SOUND_NONE, SOUND_NONE ]
     jumpSound: SOUND_ACTOR_JUMP
