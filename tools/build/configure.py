@@ -664,7 +664,9 @@ class Configure:
                 if modern_gcc:
                     task = "cc_modern"
 
-                if seg.name.endswith("osFlash"):
+                if entry.src_paths[0].suffixes[-1] == ".s":
+                    task = "as"
+                elif seg.name.endswith("osFlash"):
                     task = "cc_ido"
                 elif "gcc_272" in cflags:
                     task = "cc_272"
