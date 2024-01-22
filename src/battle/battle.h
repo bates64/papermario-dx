@@ -129,10 +129,9 @@ typedef struct BattleMoveEntry {
 
 typedef struct ActorBlueprint {
     /* 0x00 */ s32 flags;
-    /* 0x04 */ char unk_04;
-    /* 0x05 */ u8 type;
-    /* 0x06 */ u8 level;
-    /* 0x07 */ s16 maxHP;
+    /* 0x04 */ s16 maxHP;
+    /* 0x06 */ u8 type;
+    /* 0x07 */ u8 level;
     /* 0x08 */ s16 partCount;
     /* 0x0A */ char unk_0A[2];
     /* 0x0C */ struct ActorPartBlueprint* partsData;

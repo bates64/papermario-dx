@@ -923,7 +923,6 @@ void btl_draw_enemy_health_bars(void) {
                             hud_element_draw_next(id);
 
                             if (currentHP < 10) {
-                                // we just drew the ones digit, we're done now
                                 break;
                             }
 
