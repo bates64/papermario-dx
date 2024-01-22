@@ -899,6 +899,7 @@ void btl_draw_enemy_health_bars(void) {
                     if (enemy->healthBarPos.y >= -500) {
                         s32 screenX, screenY, screenZ;
                         s32 id;
+                        s32 nextDigitXOffset;
 
                         get_screen_coords(CAM_BATTLE, x, y, z, &screenX, &screenY, &screenZ);
                         screenY += 16;
@@ -908,26 +909,28 @@ void btl_draw_enemy_health_bars(void) {
                         hud_element_set_render_pos(id, screenX, screenY);
                         hud_element_draw_clipped(id);
 
-                        temp = currentHP / 10;
-                        ones = currentHP % 10;
-
-                        // tens digit
-                        if (temp > 0) {
-                            id = D_8029EFBC;
-                            hud_element_set_render_depth(id, 10);
-                            hud_element_set_script(id, bHPDigitHudScripts[temp]);
-                            btl_draw_prim_quad(0, 0, 0, 0, screenX, screenY + 2, 8, 8);
-                            hud_element_set_render_pos(id, screenX + 4, screenY + 6);
-                            hud_element_draw_next(id);
-                        }
-
-                        // ones digit
+                        #define DIGIT_WIDTH 6
+                        nextDigitXOffset = DIGIT_WIDTH;
                         id = D_8029EFBC;
-                        hud_element_set_render_depth(id, 10);
-                        hud_element_set_script(id, bHPDigitHudScripts[ones]);
-                        btl_draw_prim_quad(0, 0, 0, 0, screenX + 6, screenY + 2, 8, 8);
-                        hud_element_set_render_pos(id, screenX + 10, screenY + 6);
-                        hud_element_draw_next(id);
+                        // draw all digits
+                        while (TRUE) {
+                            s32 digit = currentHP % 10;
+
+                            hud_element_set_render_depth(id, 10);
+                            hud_element_set_script(id, bHPDigitHudScripts[digit]);
+                            btl_draw_prim_quad(0, 0, 0, 0, screenX + nextDigitXOffset, screenY + 2, 8, 8);
+                            hud_element_set_render_pos(id, screenX + nextDigitXOffset + 4, screenY + 6);
+                            hud_element_draw_next(id);
+
+                            if (currentHP < 10) {
+                                // we just drew the ones digit, we're done now
+                                break;
+                            }
+
+                            currentHP /= 10;
+                            nextDigitXOffset -= DIGIT_WIDTH;
+                        }
+                        #undef DIGIT_WIDTH
 
                         temp = enemy->healthFraction;
                         temp = 25 - temp;
