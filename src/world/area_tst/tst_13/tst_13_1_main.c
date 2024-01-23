@@ -1,4 +1,6 @@
 #include "tst_13.h"
+#include "world/common/npc/KingBoo.h"
+#include "world/common/npc/KingBoo.inc.c"
 
 void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* destVertices);
 
@@ -24,246 +26,419 @@ EvtScript N(EVS_NpcAuxAI_00) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_00) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldBombette_Idle)
+// EvtScript N(EVS_NpcInteract_00) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldBombette_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_01) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldParakarry_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_02) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldBow_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_03) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldWatt_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_04) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldSushie_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_05) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_06) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_07) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_08) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldGoombario_Idle)
+//     Return
+//     End
+// };
+
+// EvtScript N(EVS_NpcInteract_09) = {
+//     Call(SetNpcSprite, NPC_SELF, ANIM_WorldKooper_Idle)
+//     Return
+//     End
+// };
+
+// NpcSettings N(NpcSettings_00) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_00),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_01) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_01),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_02) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_02),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_03) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_03),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_04) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_04),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_05) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_05),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_06) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_06),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_07) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_07),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_08) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_08),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcSettings N(NpcSettings_09) = {
+//     .defaultAnim = ANIM_Koopa_Idle,
+//     .height = 24,
+//     .radius = 24,
+//     .otherAI = &N(EVS_NpcAuxAI_00),
+//     .onInteract = &N(EVS_NpcInteract_09),
+//     .flags = ENEMY_FLAG_PASSIVE,
+// };
+
+// NpcData N(NpcData_Testing)[] = {
+//     {
+//         .id = NPC_00,
+//         .pos = { 0.0f, 0.0f, 0.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_00),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_01,
+//         .pos = { 20.0f, 0.0f, 20.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_01),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_02,
+//         .pos = { 40.0f, 0.0f, 40.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_02),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_03,
+//         .pos = { 60.0f, 0.0f, 60.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_03),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_04,
+//         .pos = { 80.0f, 0.0f, 80.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_04),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_05,
+//         .pos = { 100.0f, 0.0f, 100.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_05),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_06,
+//         .pos = { 120.0f, 0.0f, 120.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_06),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_07,
+//         .pos = { 140.0f, 0.0f, 140.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_07),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_08,
+//         .pos = { 160.0f, 0.0f, 160.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_08),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+//     {
+//         .id = NPC_09,
+//         .pos = { 180.0f, 0.0f, 180.0f },
+//         .yaw = 0,
+//         .settings = &N(NpcSettings_09),
+//         .flags = COMMON_PASSIVE_FLAGS,
+//         .animations = {
+//         },
+//     },
+// };
+
+EvtScript N(EVS_NpcInit_KingBoo_00) = {
+    Call(SetNpcPos, NPC_SELF, 0, 50, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_01) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldParakarry_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_01) = {
+    Call(SetNpcPos, NPC_SELF, 25, 50, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_02) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldBow_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_02) = {
+    Call(SetNpcPos, NPC_SELF, 50, 50, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_03) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldWatt_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_03) = {
+    Call(SetNpcPos, NPC_SELF, 75, 50, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_04) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldSushie_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_04) = {
+    Call(SetNpcPos, NPC_SELF, 100, 50, 0)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_05) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_05) = {
+    Call(SetNpcPos, NPC_SELF, 0, 50, 25)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_06) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_06) = {
+    Call(SetNpcPos, NPC_SELF, 0, 50, 50)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_07) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldLakilester_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_07) = {
+    Call(SetNpcPos, NPC_SELF, 0, 50, 75)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_08) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldGoombario_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_08) = {
+    Call(SetNpcPos, NPC_SELF, 0, 50, 100)
     Return
     End
 };
 
-EvtScript N(EVS_NpcInteract_09) = {
-    Call(SetNpcSprite, NPC_SELF, ANIM_WorldKooper_Idle)
+EvtScript N(EVS_NpcInit_KingBoo_09) = {
+    Call(SetNpcPos, NPC_SELF, 0, 100, 0)
     Return
     End
-};
-
-NpcSettings N(NpcSettings_00) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_00),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_01) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_01),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_02) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_02),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_03) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_03),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_04) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_04),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_05) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_05),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_06) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_06),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_07) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_07),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_08) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_08),
-    .flags = ENEMY_FLAG_PASSIVE,
-};
-
-NpcSettings N(NpcSettings_09) = {
-    .defaultAnim = ANIM_Koopa_Idle,
-    .height = 24,
-    .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
-    .onInteract = &N(EVS_NpcInteract_09),
-    .flags = ENEMY_FLAG_PASSIVE,
 };
 
 NpcData N(NpcData_Testing)[] = {
     {
         .id = NPC_00,
-        .pos = { 0.0f, 0.0f, 0.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_00),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_00),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_01,
-        .pos = { 20.0f, 0.0f, 20.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_01),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_01),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_02,
-        .pos = { 40.0f, 0.0f, 40.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_02),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_02),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_03,
-        .pos = { 60.0f, 0.0f, 60.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_03),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_03),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_04,
-        .pos = { 80.0f, 0.0f, 80.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_04),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_04),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_05,
-        .pos = { 100.0f, 0.0f, 100.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_05),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_05),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_06,
-        .pos = { 120.0f, 0.0f, 120.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_06),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_06),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_07,
-        .pos = { 140.0f, 0.0f, 140.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_07),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_07),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_08,
-        .pos = { 160.0f, 0.0f, 160.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_08),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_08),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
     {
         .id = NPC_09,
-        .pos = { 180.0f, 0.0f, 180.0f },
+        .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 0,
-        .settings = &N(NpcSettings_09),
-        .flags = COMMON_PASSIVE_FLAGS,
-        .animations = {
-        },
+        .init = &N(EVS_NpcInit_KingBoo_09),
+        .settings = &N(NpcSettings_KingBoo),
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
+        .drops = NO_DROPS,
+        .animations = KINGBOO_ANIMS,
+        .tattle = MSG_NONE,
     },
 };
 
