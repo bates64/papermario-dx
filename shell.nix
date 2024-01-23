@@ -60,6 +60,8 @@ in pkgsCross.mkShell {
     python3Packages.virtualenv
     cargo
     rustc
+    ccache
+    gdb
   ]);
   buildInputs = (with pkgsCross; [
     gcc
