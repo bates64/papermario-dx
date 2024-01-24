@@ -258,6 +258,9 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
               . x .
                . .
             */
+            //BUGFIX skip laggy blur operations when opening the pause menu on emulator
+            //TODO emulator test -- find which ones have bad performance here
+            #ifndef OPT_DISABLE_PAUSE_LAG_FIX
             if (((frameBuffer1[pixel] >> 2) & 0xF) < 8) {
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[1]);
@@ -271,6 +274,9 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
                 // Don't apply any filters to the edges of the screen
                 zBuffer[pixel] = frameBuffer0[pixel] | 1;
             }
+            #else
+            zBuffer[pixel] = frameBuffer0[pixel] | 1;
+            #endif
         }
     }
 }
