@@ -36,6 +36,9 @@ static s32 gPauseBadgesIconIDs[22];
 // Invalid badge ID filled in unused slots of gPauseBadgesItemIds
 #define BADGE_INVALID 0x7FFF
 
+// return value of pause_badges_try_remove if the player tried to remove a negative bp badge while not having enough remaining bp
+#define TRY_REMOVE_NOT_ENOUGH_BP_RESULT -1
+
 #if VERSION_IQUE
 #define OFFSET_1_X 47
 #define OFFSET_1_Y 82
@@ -216,9 +219,16 @@ s32 pause_badges_try_remove(s16 badgeID) {
     s16 *slotToRemove = currentSlot;
     s32 result = 0;
     s32 i;
+    s32 bpCost;
 
     if (badgeID == BADGE_INVALID) {
         return 0;
+    }
+
+    // handle negative bp cost badges
+    bpCost = gMoveTable[gItemTable[badgeID].moveID].costBP;
+    if (bpCost < 0 && gPlayerData.maxBP < pause_get_total_equipped_bp_cost() - bpCost) {
+        return TRY_REMOVE_NOT_ENOUGH_BP_RESULT;
     }
 
     for (i = 0; i < ARRAY_COUNT(gPlayerData.equippedBadges); i++, currentSlot++) {
@@ -953,8 +963,15 @@ void pause_badges_handle_input(MenuPanel* panel) {
             badgeID = gPauseBadgesItemIds[selectedIndex];
             switch (pause_badges_try_equip(badgeID)) {
                 case EQUIP_RESULT_ALREADY_EQUIPPED:
-                    sfx_play_sound(SOUND_MENU_BADGE_UNEQUIP);
-                    pause_badges_try_remove(badgeID);
+                    switch (pause_badges_try_remove(badgeID)) {
+                        case TRY_REMOVE_NOT_ENOUGH_BP_RESULT:
+                            sfx_play_sound(SOUND_MENU_ERROR);
+                            gPauseBadgesShowNotEnoughBP = 1;
+                            break;
+                        default:
+                            sfx_play_sound(SOUND_MENU_BADGE_UNEQUIP);
+                            break;
+                    }
                     break;
                 case EQUIP_RESULT_NOT_ENOUGH_BP:
                     sfx_play_sound(SOUND_MENU_ERROR);
