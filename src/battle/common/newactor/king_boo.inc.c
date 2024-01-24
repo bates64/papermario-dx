@@ -438,27 +438,45 @@ EvtScript N(EVS_HandleEvent) = {
 
 EvtScript N(EVS_OnHit) = {
 	// Clone 1
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9 )
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+    Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+    Call(ActorExists, LVar9, LVarA)
+    IfEq(LVarA, TRUE)
+        Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+        IfEq(LVarB, TRUE)
+            Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+            Exec(N(EVS_RemoveClone))
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+            ExecGetTID(N(EVS_RemoveClone), LVar0)
+            Label(1)
+            IsThreadRunning(LVar0, LVar1)
+            IfEq(LVar1, TRUE)
+                Wait(1)
+                Goto(1)
+            EndIf
+    EndIf
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9 )
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
+
 	// Clone 2
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
 
 	Wait(30)
 	Call(HideHealthBar, ACTOR_SELF)
@@ -476,28 +494,46 @@ EvtScript N(EVS_OnHit) = {
 };
 
 EvtScript N(EVS_OnDeath) = {
-	// Clone 1
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+    Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+    Call(ActorExists, LVar9, LVarA)
+    IfEq(LVarA, TRUE)
+        Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+        IfEq(LVarB, TRUE)
+            Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+            Exec(N(EVS_RemoveClone))
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+            ExecGetTID(N(EVS_RemoveClone), LVar0)
+            Label(1)
+            IsThreadRunning(LVar0, LVar1)
+            IfEq(LVar1, TRUE)
+                Wait(1)
+                Goto(1)
+            EndIf
+    EndIf
+    // Clone 1
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
+
 	// Clone 2
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
 
     // Boo Flood Disappears
     Call(PlaySoundAtNpc, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
@@ -554,7 +590,7 @@ EvtScript N(EVS_TakeTurn) = {
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Label(AVAL_CheckPhase)
     //Goto(AVAL_FirstPhase)
-    //Goto(AVAL_SecondPhase)
+    Goto(AVAL_SecondPhase)
     Call(GetActorVar, ACTOR_SELF, AVAR_Phase, LVar6)
     Switch(LVar6)
         CaseEq(0)
@@ -958,10 +994,11 @@ EvtScript N(EVS_Attack_Fireball) = {
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
+    Wait(5)
 	Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_CrownAttack)
 	Call(PlaySoundAtActor, ACTOR_SELF, SOUND_SPELL_CAST4)
 	Wait(50)
-    Call( SetAnimation, ACTOR_SELF, PRT_FIREBALL, ANIM_KingBoo_FireBall)
+    Call(SetAnimation, ACTOR_SELF, PRT_FIREBALL, ANIM_KingBoo_FireBall)
     Wait(15)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 30)
@@ -1354,7 +1391,7 @@ EvtScript N(EVS_IllusoryClones) = {
 EvtScript N(EVS_ClonePosition) = {
 	Call(RandInt, 1000, LVar0)
     Mod(LVar0, 3)
-	//Set(LVar0, 0) // To see the Position
+	Set(LVar0, 1) // To see the Position
     Switch(LVar0)
 		CaseEq(0)
             Set(LVarA, ACTOR_SELF)
@@ -1766,28 +1803,47 @@ EvtScript N(EVS_Move_Buff) = {
 	PlayEffect(EFFECT_ENERGY_IN_OUT, 6, LVar0, LVar1, LVar2, Float(1.0), 45, 0)
 	Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_Laugh)
 	Wait(30)
+    Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+    Call(ActorExists, LVar9, LVarA)
+    IfEq(LVarA, TRUE)
+        Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+        IfEq(LVarB, TRUE)
+            Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+            Exec(N(EVS_RemoveClone))
+            Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+            ExecGetTID(N(EVS_RemoveClone), LVar0)
+            Label(1)
+            IsThreadRunning(LVar0, LVar1)
+            IfEq(LVar1, TRUE)
+                Wait(1)
+                Goto(1)
+            EndIf
+    EndIf
+
 	// Clone 1
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone1Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone1Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
+
 	// Clone 2
-	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-	Call(ActorExists, LVar9, LVarA)
-	IfEq(LVarA, TRUE)
-		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
-		IfEq(LVarB, TRUE)
-			Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
-			Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
-			Exec(N(EVS_RemoveClone))
-		EndIf
-	EndIf
+	// Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// Call(ActorExists, LVar9, LVarA)
+	// IfEq(LVarA, TRUE)
+	// 	Call(GetActorVar, ACTOR_SELF, AVAR_Clone2Exists, LVarB)
+	// 	IfEq(LVarB, TRUE)
+	// 		Call(SetActorVar, ACTOR_SELF, AVAR_Clone2Exists, FALSE)
+	// 		Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar9)
+	// 		Exec(N(EVS_RemoveClone))
+	// 	EndIf
+	// EndIf
 	Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_KingBoo_Hide)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, TRUE)

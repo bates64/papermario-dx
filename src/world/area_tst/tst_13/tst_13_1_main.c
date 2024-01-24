@@ -2,10 +2,10 @@
 #include "world/common/npc/KingBoo.h"
 #include "world/common/npc/KingBoo.inc.c"
 
-void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* destVertices);
+// void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* destVertices);
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(D_80240510_B1DC70);
+// extern EvtScript N(D_80240510_B1DC70);
 extern NpcGroupList N(DefaultNPCs);
 
 EntryList N(Entrances) = {
@@ -447,40 +447,40 @@ NpcGroupList N(DefaultNPCs) = {
     {}
 };
 
-#include "world/area_tst/tst_13/shockwave.vtx.inc.c"
-#include "world/area_tst/tst_13/shockwave.gfx.inc.c"
+// #include "world/area_tst/tst_13/shockwave.vtx.inc.c"
+// #include "world/area_tst/tst_13/shockwave.gfx.inc.c"
 
-Gfx N(dummy_gfx)[] = {
-    gsSPEndDisplayList()
-};
+// Gfx N(dummy_gfx)[] = {
+//     gsSPEndDisplayList()
+// };
 
-s32 N(BuildGfxCallCount) = 0;
+// s32 N(BuildGfxCallCount) = 0;
 
-void N(build_gfx_floor)(void) {
-    Matrix4f sp10;
-    Matrix4f sp50;
-    f32 x, y, z;
+// void N(build_gfx_floor)(void) {
+//     Matrix4f sp10;
+//     Matrix4f sp50;
+//     f32 x, y, z;
 
-    N(BuildGfxCallCount)++;
-    guTranslateF(sp10, gPlayerStatus.pos.x, 0.0f, gPlayerStatus.pos.z);
+//     N(BuildGfxCallCount)++;
+//     guTranslateF(sp10, gPlayerStatus.pos.x, 0.0f, gPlayerStatus.pos.z);
 
-    x = (sin_rad(N(BuildGfxCallCount) / 50.0f) * 0.5) + 0.5;
-    y = SQ(cos_rad(N(BuildGfxCallCount) / 50.0f)) + 0.1;
-    z = (sin_rad(N(BuildGfxCallCount) / 50.0f) * 0.5) + 0.5;
+//     x = (sin_rad(N(BuildGfxCallCount) / 50.0f) * 0.5) + 0.5;
+//     y = SQ(cos_rad(N(BuildGfxCallCount) / 50.0f)) + 0.1;
+//     z = (sin_rad(N(BuildGfxCallCount) / 50.0f) * 0.5) + 0.5;
 
-    guScaleF(sp50, x, y, z);
-    guMtxCatF(sp50, sp10, sp10);
-    guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
-    mdl_project_tex_coords(MODEL_o152, N(shockwave_gfx), sp10, NULL);
+//     guScaleF(sp50, x, y, z);
+//     guMtxCatF(sp50, sp10, sp10);
+//     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
+//     mdl_project_tex_coords(MODEL_o152, N(shockwave_gfx), sp10, NULL);
 
-    gDPPipeSync(gMainGfxPos++);
-    gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
-    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);
-    mdl_draw_hidden_panel_surface(&gMainGfxPos, 1);
-    gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(gMainGfxPos++, N(shockwave_gfx));
-    gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
-}
+//     gDPPipeSync(gMainGfxPos++);
+//     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
+//     gDPSetRenderMode(gMainGfxPos++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);
+//     mdl_draw_hidden_panel_surface(&gMainGfxPos, 1);
+//     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+//     gSPDisplayList(gMainGfxPos++, N(shockwave_gfx));
+//     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
+// }
 
 
 s32 N(BetaPanelData)[] = {
@@ -496,8 +496,8 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Set(LVar0, Ref(N(BetaPanelData)))
     Exec(N(EVS_BetaPanel_Setup))
-    Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, -1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, Ref(N(build_gfx_floor)))
+    // Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, -1)
+    // Call(SetCustomGfxBuilders, CUSTOM_GFX_0, 0, Ref(N(build_gfx_floor)))
     Return
     End
 };
