@@ -159,7 +159,6 @@ s32 N(CrowdFleeScriptD)[] = {
     CS_MOVE(  25,   0)
     CS_MOVE( -31, -23)
     CS_MOVE( -97,   0)
-    -50, //@bug -- ignored by event running this script; previous op should probably be CS_JUMP with this as third arg
     CS_MOVE(-150, -75)
     CS_MOVE(-230, -90)
     CS_MOVE(-309, -55)

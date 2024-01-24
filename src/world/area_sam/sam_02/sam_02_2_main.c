@@ -20,9 +20,7 @@ BombTrigger N(BombPos_Tree1) = {
     .radius = 0.0f
 };
 
-//@bug model count is 2, but only one is supplied. the extra comma is needed.
-// incidentally, the following word is 80243478, which is not a valid modelID.
-FoliageModelList N(Tree2_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o186,);
+FoliageModelList N(Tree2_LeafModels) = FOLIAGE_MODEL_LIST(MODEL_o186);
 
 ShakeTreeConfig N(ShakeTree_Tree2) = {
     .leaves = &N(Tree2_LeafModels),
