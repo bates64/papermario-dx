@@ -2539,10 +2539,15 @@ void btl_state_update_player_menu(void) {
                             s32 moveID = gItemTable[playerData->equippedBadges[i]].moveID;
                             moveData = &gMoveTable[moveID];
                             if (moveData->category == BattleMenu_CategoryForSubmenu[battleStatus->curSubmenu]) {
+                                s32 cost = moveData->costFP;
                                 battleStatus->submenuMoves[entryIdx] = moveID;
                                 battleStatus->submenuIcons[entryIdx] = playerData->equippedBadges[i];
                                 battleStatus->submenuStatus[entryIdx] = 1;
-                                if (playerData->curFP < moveData->costFP) {
+
+                                cost -= player_team_is_ability_active(playerActor, ABILITY_FLOWER_SAVER);
+                                cost -= 2 * player_team_is_ability_active(playerActor, ABILITY_FLOWER_FANATIC);
+
+                                if (playerData->curFP < cost) {
                                     battleStatus->submenuStatus[entryIdx] = 0;
                                 }
                                 entryIdx++;
