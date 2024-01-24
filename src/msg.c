@@ -2270,7 +2270,7 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
 
         // handle negative numbers
         if (valueStr[i] == '-') {
-            digits[i] = 0xD - 0x10; // the "0" char has an id of 0x10, while "-" has an id of 0xD in the pm font format
+            digits[i] = MSG_CHAR_MINUS - MSG_CHAR_DIGIT_0;
             continue;
         }
 
