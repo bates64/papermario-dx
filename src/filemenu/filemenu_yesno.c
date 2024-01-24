@@ -218,21 +218,6 @@ INCLUDE_ASM(void, "filemenu/filemenu_yesno", filemenu_yesno_handle_input);
 void filemenu_yesno_handle_input(MenuPanel* menu) {
     s32 oldSelected = menu->selected;
 
-#if DX_SKIP_FILE_SELECT
-    s32 i;
-    for (i = 0; i < ARRAY_COUNT(gSaveSlotHasData); i++) {
-        if (gSaveSlotHasData[i]) {
-            filemenu_menus[0]->selected = i;
-            break;
-        }
-    }
-    if (i == ARRAY_COUNT(gSaveSlotHasData)) {
-        menu->page = 2; // create new save
-    } else {
-        menu->page = 4; // load save
-    }
-#endif
-
     if (filemenu_heldButtons & BUTTON_STICK_UP) {
         menu->row--;
         if (menu->row < 0) {
