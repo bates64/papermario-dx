@@ -30,6 +30,6 @@
 #define USE_PROFILER 1
 
 /// Skip laggy blur operations when opening the pause menu on emulator
-#define DX_DISABLE_PAUSE_LAG_FIX 0
+#define DX_PAUSE_LAG_FIX 1
 
 #endif
