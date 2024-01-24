@@ -2245,7 +2245,7 @@ void draw_digit(IMG_PTR img, s32 charset, s32 posX, s32 posY) {
 
 void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity, u16 style) {
     u8 valueStr[24];
-    u8 digits[24];
+    s8 digits[24];
     s32 digitPosX[24];
     s32 i;
     s32 count;
@@ -2268,6 +2268,12 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
             break;
         }
 
+        // handle negative numbers
+        if (valueStr[i] == '-') {
+            digits[i] = MSG_CHAR_MINUS - MSG_CHAR_DIGIT_0;
+            continue;
+        }
+
         digit = valueStr[i] - '0';
         if (digit < 10){
             digits[i] = digit;
@@ -2280,7 +2286,7 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
 
     if (style & DRAW_NUMBER_STYLE_ALIGN_RIGHT) {
         for (i = count - 1; i >= 0; i--) {
-            if (style & DRAW_NUMBER_STYLE_MONOSPACE) {
+            if ((style & DRAW_NUMBER_STYLE_MONOSPACE) || digits[i] < 0) {
                 posX -= gMsgNumbers[charset].fixedWidth;
             } else {
                 posX -= gMsgNumbers[charset].digitWidth[digits[i]];
@@ -2290,7 +2296,7 @@ void draw_number(s32 value, s32 x, s32 y, s32 charset, s32 palette, s32 opacity,
     } else {
         for (i = 0; i < count; i++) {
             digitPosX[i] = posX;
-            if (style & DRAW_NUMBER_STYLE_MONOSPACE) {
+            if ((style & DRAW_NUMBER_STYLE_MONOSPACE) || digits[i] < 0) {
                 posX += gMsgNumbers[charset].fixedWidth;
             } else {
                 posX += gMsgNumbers[charset].digitWidth[digits[i]];

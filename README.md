@@ -22,6 +22,8 @@ To get started, see [docs.starhaven.dev](https://docs.starhaven.dev/tools/decomp
 - Fixed many bugs / incorrect behaviour.
 - Skip compiling or linking dead code.
 - Link with [libgcc_vr4300] to provide compiler intrinsics.
+- Enemy HP is now a `s16`, increasing the cap to 32767.
+- Added support for badges with negative BP costs.
 - Additional features can be configured in [src/dx/config.h](src/dx/config.h).
 
 [libgcc_vr4300]: https://github.com/Decompollaborate/libgcc_vr4300
