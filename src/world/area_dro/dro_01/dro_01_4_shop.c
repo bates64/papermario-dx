@@ -85,7 +85,6 @@ EvtScript N(EVS_SecretPurcahseOrder_Moustafa) = {
     Set(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
     Call(func_802D2C14, 0)
     ExecWait(N(EVS_JumpAway))
-    EndIf /// @bug unmatched endif in script
     Return
     End
 };

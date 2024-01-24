@@ -118,7 +118,6 @@ EvtScript N(EVS_ExitDoors_trd_09_1) = {
     Exec(ExitDoubleDoor)
     Wait(17)
     Call(GotoMap, Ref("trd_09"), trd_09_ENTRY_1)
-    EndIf //@bug unmatched endif
     Wait(100)
     Return
     End

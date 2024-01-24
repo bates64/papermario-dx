@@ -9,7 +9,6 @@ EvtScript N(EVS_SetupMusic) = {
                 Call(PlayAmbientSounds, AMBIENT_LAVA_1)
                 Return
             EndIf
-            EndIf //@bug extra endif
         CaseGe(STORY_CH5_MT_LAVA_LAVA_ERUPTING)
             Call(PlaySound, SOUND_LOOP_RUMBLE)
     EndSwitch
