@@ -14,7 +14,6 @@ EvtScript N(EVS_Scene_FillWithWater) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, 1)
     Call(PlaySound, SOUND_LOOP_FLO_FILL_WATER_POOL)
-    //@bug thread is never terminated
     Thread
         Call(MakeLerp, 80, 90, 10, EASING_LINEAR)
         Label(0)
@@ -25,8 +24,7 @@ EvtScript N(EVS_Scene_FillWithWater) = {
             Wait(1)
             Goto(0)
         EndIf
-        // should end thread here
-    //@bug thread is never terminated
+    EndThread
     Thread
         Call(MakeLerp, 45, 100, 150, EASING_LINEAR)
         Loop(0)
@@ -37,7 +35,7 @@ EvtScript N(EVS_Scene_FillWithWater) = {
                 BreakLoop
             EndIf
         EndLoop
-        // should end thread here
+    EndThread
     Wait(30)
     Set(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
     Call(GotoMap, Ref("flo_10"), flo_10_ENTRY_2)

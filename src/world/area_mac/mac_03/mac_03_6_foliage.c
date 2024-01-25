@@ -103,9 +103,8 @@ ShakeTreeConfig N(ShakeTree_Tree3) = {
     .callback = &N(EVS_OnShakeTree3),
 };
 
-//@bug x-position should be -265
 BombTrigger N(BombPos_Tree3) = {
-    .pos = { 265.0f, 20.0f, -535.0f },
+    .pos = { -265.0f, 20.0f, -535.0f },
     .radius = 0.0f
 };
 

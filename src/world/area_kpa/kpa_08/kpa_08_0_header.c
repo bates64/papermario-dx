@@ -8,6 +8,6 @@ EntryList N(Entrances) = {
 MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
-    .entryCount = 11, //@bug -- should be 2
+    .entryCount = 2,
     .tattle = { MSG_MapTattle_kpa_08 },
 };

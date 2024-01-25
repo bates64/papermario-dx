@@ -53,7 +53,6 @@ EvtScript N(EVS_OnBuy) = {
         CaseEq(SHOP_BUY_RESULT_CANCEL)
         CaseEq(SHOP_BUY_RESULT_4)
         CaseEq(SHOP_BUY_RESULT_OK)
-        CaseEq(SHOP_BUY_RESULT_OK) //@bug duplicate case
     EndSwitch
     Return
     End

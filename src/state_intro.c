@@ -2,6 +2,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "game_modes.h"
+#include "dx/config.h"
 
 enum IntroStates {
     INTRO_INIT                  = 0x00000000,
@@ -9,7 +10,7 @@ enum IntroStates {
     INTRO_LOAD_MAP              = 0x00000002,
     INTRO_AWAIT_MAIN            = 0x00000003,
     INTRO_FADE_IN               = 0x00000004,
-    INTRO_ENABLE_DRAW_FRAME      = 0x00000015, // unused
+    INTRO_ENABLE_DRAW_FRAME     = 0x00000015, // unused
 };
 
 SHIFT_BSS s32 IntroEnableDrawFrameDelay;
@@ -23,16 +24,13 @@ SHIFT_BSS s32 IntroOverlayType;
 SHIFT_BSS s32 D_800A0964; // related to skipping the intro
 
 void state_init_intro(void) {
-    s8 viewportMode;
-
     gGameStatusPtr->startupState = INTRO_INIT;
 
     set_curtain_scale_goal(1.0f);
     set_curtain_fade_goal(0.3f);
 
-    viewportMode = gGameStatusPtr->introPart;
-    switch (viewportMode) {
-        case 0:
+    switch (gGameStatusPtr->introPart) {
+        case INTRO_PART_0:
             startup_set_fade_screen_alpha(0);
 
             IntroOverlayAlpha = 255;
@@ -49,7 +47,7 @@ void state_init_intro(void) {
             gGameStatusPtr->mapID = 5; //TODO hard-coded map ID
             gGameStatusPtr->entryID = 3;
             break;
-        case 1:
+        case INTRO_PART_1:
             startup_set_fade_screen_alpha(0);
 
             IntroOverlayAlpha = 0;
@@ -95,6 +93,11 @@ void state_step_intro(void) {
     PlayerData* playerData = &gPlayerData;
     u32 pressedButtons = gGameStatusPtr->pressedButtons[0];
     s32 i;
+
+    #if DX_SKIP_STORY
+    // immediately quit out of the state when skipping story
+    pressedButtons = BUTTON_START;
+    #endif
 
     if (gGameStatusPtr->introPart != INTRO_PART_NONE) {
         if (D_800A0964 == 0 && pressedButtons & (BUTTON_A | BUTTON_B | BUTTON_START | BUTTON_Z)) {

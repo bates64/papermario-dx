@@ -4,15 +4,17 @@
 /// Enables the debug menu.
 #define DX_DEBUG_MENU 1
 
+/// Loads last used save file
+#define DX_QUICK_LAUNCH 0
+
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1
 
-/// Skips the title screen.
-#define DX_SKIP_TITLE 1
+/// Skips the introductory storybook.
+#define DX_SKIP_STORY 1
 
-/// Skips the file select.
-/// If a save file exists, the game will load it automatically, otherwise it will start a new game.
-#define DX_SKIP_FILE_SELECT 1
+/// Skips the demo reel playing while waiting for the player to 'Press Start'.
+#define DX_SKIP_DEMO 1
 
 /// Map to load when starting a new game.
 #define NEW_GAME_MAP_ID "kmr_20"
@@ -26,5 +28,8 @@
 /// Enables the profiler, which shows lots of performance info on screen.
 /// Press L + D-Pad Up to show/hide the profiler.
 #define USE_PROFILER 1
+
+/// Skip laggy blur operations when opening the pause menu on emulator
+#define DX_PAUSE_LAG_FIX 1
 
 #endif

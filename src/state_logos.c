@@ -6,7 +6,6 @@
 #include "nu/nusys.h"
 #include "fio.h"
 #include "game_modes.h"
-#include "dx/config.h"
 
 void appendGfx_intro_logos(void);
 
@@ -127,10 +126,7 @@ void state_init_logos(void) {
 }
 
 void state_step_logos(void) {
-#if VERSION_JP
     int pressedButtons = gGameStatusPtr->pressedButtons[0];
-#endif
-
     if (gGameStatusPtr->skipLogos) {
         if (startup_fade_screen_out(10)) {
             set_curtain_scale(1.0f);
@@ -138,7 +134,6 @@ void state_step_logos(void) {
             set_game_mode(GAME_MODE_TITLE_SCREEN);
         }
     } else {
-#if VERSION_JP
         if ((gGameStatusPtr->startupState == LOGOS_STATE_N64_HOLD
             || gGameStatusPtr->startupState == LOGOS_STATE_N64_FADE_OUT
             || gGameStatusPtr->startupState == LOGOS_STATE_NINTENDO_FADE_IN
@@ -154,7 +149,6 @@ void state_step_logos(void) {
             startup_set_fade_screen_color(208);
             gGameStatusPtr->skipLogos = TRUE;
         }
-#endif
 
         switch (gGameStatusPtr->startupState) {
             case LOGOS_STATE_N64_FADE_IN:
@@ -241,14 +235,6 @@ void state_step_logos(void) {
                 heap_free(gLogosImages);
                 gLogosImages = NULL;
                 startup_set_fade_screen_alpha(255);
-#if DX_SKIP_TITLE
-                if (fio_load_game(0)) {
-                    initialize_curtains();
-                    gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
-                    set_game_mode(GAME_MODE_WORLD);
-                    break;
-                }
-#endif
                 gGameStatusPtr->introPart = INTRO_PART_0;
                 set_game_mode(GAME_MODE_INTRO);
                 break;

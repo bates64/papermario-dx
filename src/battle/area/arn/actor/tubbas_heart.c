@@ -333,8 +333,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(GetCurrentPartnerID, LVar0)
             IfEq(LVar0, PARTNER_BOW)
                 Call(EnableBattleStatusBar, FALSE)
-                //@bug -- meant to OR 3 with value of AVAR_Flags, not PARTNER_BOW
-                Call(GetActorVar, ACTOR_SELF, AVAR_Flags, LVar0) // fix bug
+                Call(GetActorVar, ACTOR_SELF, AVAR_Flags, LVar0)
                 BitwiseOrConst(LVar0, AVAL_Flag_TauntBow | AVAL_Flag_HidStatusBar)
                 Call(SetActorVar, ACTOR_SELF, AVAR_Flags, LVar0)
                 Call(UseBattleCamPreset, BTL_CAM_PRESET_14)

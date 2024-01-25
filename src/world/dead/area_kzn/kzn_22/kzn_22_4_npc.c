@@ -41,7 +41,6 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
         Wait(35)
     EndIf
     Wait(10)
-EndIf //@bug unmatched endif
     Call(PlayerFaceNpc, NPC_Kolorado, FALSE)
     Set(AF_KZN23_SceneStarted, TRUE)
     Thread

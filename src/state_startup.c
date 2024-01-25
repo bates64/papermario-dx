@@ -82,11 +82,29 @@ void state_step_startup(void) {
     }
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
-#if DX_SKIP_LOGOS
-    set_game_mode(GAME_MODE_TITLE_SCREEN);
-#else
-    set_game_mode(GAME_MODE_LOGOS);
-#endif
+
+    #if DX_QUICK_LAUNCH
+        // immediately jump into the world using last-used save file
+        gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
+        fio_load_game(gGameStatusPtr->saveSlot);
+        set_game_mode(GAME_MODE_ENTER_WORLD);
+        gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+    #elif DX_SKIP_LOGOS
+        // go right to the story book or file select
+        #if DX_SKIP_STORY
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.0f);
+            set_game_mode(GAME_MODE_TITLE_SCREEN);
+        #else
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.3f);
+            gGameStatusPtr->introPart = INTRO_PART_0;
+            set_game_mode(GAME_MODE_INTRO);
+        #endif
+    #else
+        // use vanilla startup process
+        set_game_mode(GAME_MODE_LOGOS);
+    #endif
 }
 
 void state_drawUI_startup(void) {

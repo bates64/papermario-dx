@@ -198,12 +198,6 @@ void state_step_title_screen(void) {
     set_curtain_scale(1.0f);
     set_curtain_fade(0.0f);
 
-#if DX_SKIP_TITLE
-    gGameStatusPtr->startupState = TITLE_STATE_EXIT;
-    TitleScreenNextState = NEXT_STATE_FILE_SELECT;
-    TitleScreen_TimeLeft = 0;
-#endif
-
     if (TitleScreen_TimeLeft > 0) {
         TitleScreen_TimeLeft--;
     }
@@ -233,6 +227,29 @@ void state_step_title_screen(void) {
             startup_fade_screen_update();
             break;
         case TITLE_STATE_HOLD:
+
+            #if DX_SKIP_DEMO && DX_SKIP_STORY
+            // play neither demo nor story
+            TitleScreen_TimeLeft = 200;
+            #elif DX_SKIP_DEMO
+            // only the story may play
+            if (TitleScreen_TimeLeft == 120) {
+                bgm_set_song(0, -1, 0, 3900, 8);
+            }
+            if (TitleScreen_TimeLeft == 0) {
+                gGameStatusPtr->startupState = TITLE_STATE_BEGIN_DISMISS;
+                TitleScreenNextState = NEXT_STATE_INTRO;
+                return;
+            }
+            #elif DX_SKIP_STORY
+            // only the demo may play
+            if (TitleScreen_TimeLeft == 0) {
+                gGameStatusPtr->startupState = TITLE_STATE_BEGIN_DISMISS;
+                TitleScreenNextState = NEXT_STATE_DEMO;
+                return;
+            }
+            #else
+            // allow either demo or story to play
             if (PlayIntroNext && TitleScreen_TimeLeft == 120) {
                 bgm_set_song(0, -1, 0, 3900, 8);
             }
@@ -246,6 +263,7 @@ void state_step_title_screen(void) {
                 PlayIntroNext ^= 1;
                 return;
             }
+            #endif
             if (pressedButtons & (BUTTON_A | BUTTON_START)) {
                 gGameStatusPtr->startupState = TITLE_STATE_BEGIN_DISMISS;
                 TitleScreenNextState = NEXT_STATE_FILE_SELECT;
