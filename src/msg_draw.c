@@ -2,14 +2,10 @@
 #include "ld_addrs.h"
 #include "message_ids.h"
 #include "sprite.h"
+#include "math_util.h"
 
 #include "charset/postcard.png.h"
 #include "charset/letter_content_1.png.h"
-
-//TODO get a real ceil
-s32 my_ceil(f32 f) {
-    return (s32)(f + 0.999f);
-}
 
 extern IMG_BIN ui_msg_bubble_left_png[];
 extern IMG_BIN ui_msg_bubble_mid_png[];
@@ -736,7 +732,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                                     28, 10, 10, 310, 230, temp_s1_5);
                         draw_ci_image_with_clipping(ui_msg_sign_corner_topright_png, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, signPalette, 284 - MSG_SIGN_OFFSET_X,
                                                     28, 10, 10, 310, 230, temp_s1_5);
-                        draw_ci_image_with_clipping(ui_msg_sign_corner_bottomleft_png, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, signPalette, 20 + MSG_SIGN_OFFSET_X, 
+                        draw_ci_image_with_clipping(ui_msg_sign_corner_bottomleft_png, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, signPalette, 20 + MSG_SIGN_OFFSET_X,
                                                     printer->windowSize.y + 12, 10, 10, 310, 230, temp_s1_5);
                         draw_ci_image_with_clipping(signRaster, 16, 16, G_IM_FMT_CI, G_IM_SIZ_4b, signPalette, 284 - MSG_SIGN_OFFSET_X, printer->windowSize.y + 12,
                                                     10, 10, 310, 230, temp_s1_5);
@@ -2020,9 +2016,9 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
                 g = UNPACK_PAL_G(((u16*)ui_msg_palettes)[4]);
                 b = UNPACK_PAL_B(((u16*)ui_msg_palettes)[4]);
                 // BUGFIX: properly remap colors to full range [0, 255]
-                r = my_ceil(255 * r / 31.0);
-                g = my_ceil(255 * g / 31.0);
-                b = my_ceil(255 * b / 31.0);
+                r = ceilf(255 * r / 31.0f);
+                g = ceilf(255 * g / 31.0f);
+                b = ceilf(255 * b / 31.0f);
 
                 gDPPipeSync(gMainGfxPos++);
                 if (fading != 0 && bgAlpha < 255) {

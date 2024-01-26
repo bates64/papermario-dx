@@ -1,5 +1,6 @@
 #include "common.h"
 #include "camera.h"
+#include "math_util.h"
 
 EvtScript ShakeCam1 = {
     SetGroup(EVT_GROUP_00)
@@ -82,14 +83,14 @@ API_CALLABLE(func_802CA988) {
 
     gCameras[id].updateMode = CAM_UPDATE_MODE_2;
     gCameras[id].needsInit = FALSE;
-    gCameras[id].auxPitch = -round(gCameras[id].curPitch);
+    gCameras[id].auxPitch = -roundf(gCameras[id].curPitch);
     gCameras[id].auxBoomLength = -gCameras[id].curBlendedYawNegated;
 
     dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
     dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
     dz = gCameras[id].lookAt_obj.z - gCameras[id].lookAt_eye.z;
 
-    gCameras[id].lookAt_dist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
+    gCameras[id].lookAt_dist = roundf(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
     gCameras[id].auxBoomPitch = 0;
     gCameras[id].lookAt_obj_target.x = gCameras[id].lookAt_obj.x;
     gCameras[id].lookAt_obj_target.y = gCameras[id].lookAt_obj.y;

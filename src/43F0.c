@@ -1,6 +1,7 @@
 #include "common.h"
 #include "nu/nusys.h"
 #include "gcc/string.h"
+#include "math_util.h"
 
 u16 heap_nextMallocID = 0;
 
@@ -565,14 +566,6 @@ f32 signF(f32 val) {
     return sign;
 }
 
-s32 round(f32 x) {
-    if (!(x >= 0.0f)) {
-        return -(s32)(0.5 - x);
-    } else {
-        return (s32)(0.5 + x);
-    }
-}
-
 f32 clamp_angle(f32 theta) {
     if (fabsf(theta) > 3600.0f) {
         s32 thetaInt = theta;
@@ -619,7 +612,7 @@ f32 atan2(f32 startX, f32 startZ, f32 endX, f32 endZ) {
 
     if (absZDiff < absXDiff) {
         ret = (absZDiff / absXDiff) * 45.0f;
-        ret *= sAtanFactors[round(2.0f * ret)];
+        ret *= sAtanFactors[roundf(2.0f * ret)];
         if (xDiff >= 0.0f) {
             if (zDiff >= 0.0f) {
                 return ret + 90.0f;
@@ -637,7 +630,7 @@ f32 atan2(f32 startX, f32 startZ, f32 endX, f32 endZ) {
             return 0.0f;
         }
         ret = (absXDiff / absZDiff) * 45.0f;
-        ret *= sAtanFactors[round(2.0f * ret)];
+        ret *= sAtanFactors[roundf(2.0f * ret)];
         if (zDiff >= 0.0f) {
             if (xDiff >= 0.0f) {
                 return 180.0f - ret;
