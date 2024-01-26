@@ -731,6 +731,7 @@ EvtScript N(EVS_RunAwayFail) = {
 };
 
 EvtScript N(EVS_HandlePhase) = {
+    /*
     Call(GetBattlePhase, LVar0)
     Switch(LVar0)
         CaseEq(PHASE_PLAYER_BEGIN)
@@ -769,6 +770,7 @@ EvtScript N(EVS_HandlePhase) = {
                 Call(UseIdleAnimation, ACTOR_PARTNER, TRUE)
             EndIf
     EndSwitch
+    */
     Return
     End
 };
