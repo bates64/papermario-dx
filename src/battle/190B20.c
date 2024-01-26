@@ -1260,6 +1260,9 @@ ActorPart* get_actor_part(Actor* actor, s32 partID) {
     return NULL;
 }
 
+/// For swarm battles
+f32 partyXOffset = 100.0f + 35.0f/2.0f;
+
 void load_player_actor(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player;
@@ -1280,11 +1283,11 @@ void load_player_actor(void) {
     player->actorType = bPlayerActorBlueprint.type;
 
     if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
-        player->homePos.x = player->curPos.x = -130.0f;
+        player->homePos.x = player->curPos.x = -130.0f + partyXOffset;
         player->homePos.y = player->curPos.y = 0.0f;
         player->homePos.z = player->curPos.z = -10.0f;
     } else {
-        player->homePos.x = player->curPos.x = -95.0f;
+        player->homePos.x = player->curPos.x = -95.0f + partyXOffset;
         player->homePos.y = player->curPos.y = 0.0f;
         player->homePos.z = player->curPos.z = 0.0f;
     }
@@ -1501,12 +1504,12 @@ void load_partner_actor(void) {
 
         nuPiReadRom(partnerData->dmaStart, partnerData->dmaDest, partnerData->dmaEnd - partnerData->dmaStart);
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
-            x = -95.0f;
+            x = -95.0f + partyXOffset;
             y = partnerData->y;
             z = 0.0f;
             gBattleStatus.flags1 |= BS_FLAGS1_PLAYER_IN_BACK;
         } else {
-            x = -130.0f;
+            x = -130.0f + partyXOffset;
             y = partnerData->y;
             z = -10.0f;
         }
