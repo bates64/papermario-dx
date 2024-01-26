@@ -1,0 +1,438 @@
+%Tweeter Animations
+#define .Anim:TweeterStatic    00350000
+#define .Anim:TweeterIdle      00350001
+#define .Anim:TweeterWalk    00350002
+#define .Anim:TweeterDash  00350003
+#define .Anim:TweeterFall  00350004
+#define .Anim:TweeterDashFall  00350005
+#define .Anim:TweeterHurt  00350006
+#define .Anim:TweeterDeath  00350007
+%#define .Anim:TweeterTalk  00450000
+
+
+%Tweeter Parts
+#define .Part:Tweeter 1
+%#define .Part:Seed 2
+
+%Tweeter Stats
+#define .HP:Tweeter 2`b
+#define .Damage:Tackle 1`
+#define .Damage:FakeTackle 2`
+
+#new:Actor $Tweeter 
+{
+    % stats
+    [Index]        18b
+    [Level]        5`b
+    [MaxHP]         .HP:Tweeter
+    [Coins]         1`b
+    [Flags]       00000000
+    [StatusTable] $StatusTable_Tweeter
+    % ai
+    [PartsCount]    1`s
+    [PartsTable]  $PartsTable_Tweeter
+    [Script]      $Script_Init_Tweeter
+    % move effectiveness
+    [Escape]       95`b
+    [Item]         100`b
+    [AirLift]      100`b
+    [Hurricane]    100`b % Bow's "Spook" as well
+    [UpAndAway]    100`b
+    [PowerBounce] 100`b
+    [SpinSmash]     0`b % weight (0-4)
+    % ui positions
+    [Size]         28`b  24`b % width height
+    [HealthBar]     0`b   0`b % dx dy
+    [StatusTurn]  -10`b  20`b % dx dy
+    [StatusIcon]   10`b  20`b % dx dy
+}
+
+#new:DefenseTable $DefenseTable_Tweeter 
+{
+    .Element:Normal 0`
+    .Element:End
+}
+
+#new:StatusTable $StatusTable_Tweeter 
+{
+    .Status:Normal      0`
+    .Status:Default     0`
+    .Status:Sleep      100`
+    .Status:Poison     100`
+    .Status:Frozen      0`
+    .Status:Dizzy      100`
+    .Status:Fear      100`
+    .Status:Static     100`
+    .Status:Paralyze   100`
+    .Status:Shrink     100`
+    .Status:Stop       100`
+    .Status:DefaultTurnMod    0`
+    .Status:SleepTurnMod      0`
+    .Status:PoisonTurnMod     0`
+    .Status:FrozenTurnMod     0`
+    .Status:DizzyTurnMod      0`
+    .Status:FearTurnMod       0`
+    .Status:StaticTurnMod     0`
+    .Status:ParalyzeTurnMod   0`
+    .Status:ShrinkTurnMod     0`
+    .Status:StopTurnMod       0`
+    .Status:End
+}
+
+#new:PartsTable $PartsTable_Tweeter { %ActorPartBlueprint struct in decomp
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:Tweeter
+    /% Vec3b posOffset %/           00b 00b 00b
+    /% Vec2b targetOffset %/        00b 18b %for cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_Tweeter
+    /% s32* defenseTable %/         $DefenseTable_Tweeter
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 FFb
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+}
+
+#new:IdleAnimations $IdleAnimations_Tweeter 
+{
+    .Status:Normal    .Anim:TweeterIdle
+    .Status:Stone     .Anim:TweeterStatic
+    .Status:Sleep     .Anim:TweeterIdle
+    .Status:Poison    .Anim:TweeterIdle
+    .Status:Stop      .Anim:TweeterStatic
+    .Status:Static    .Anim:TweeterIdle
+    .Status:Paralyze  .Anim:TweeterStatic
+    .Status:Dizzy     .Anim:TweeterIdle
+    .Status:Fear      .Anim:TweeterIdle
+    .Status:End
+}
+
+#new:Script $Script_Init_Tweeter 
+{
+    Call  BindTakeTurn      ( .Actor:Self $Script_TakeTurn_Tweeter )
+    Call  BindIdle  ( .Actor:Self $Script_Idle_Tweeter )
+    Call  BindHandleEvent   ( .Actor:Self $Script_HandleEvent_Tweeter )
+    Return
+    End
+}
+
+#new:Script $Script_Idle_Tweeter
+{
+    Return
+    End
+}
+
+#new:Script $Script_ReturnHome_Tweeter
+{
+    Call  ResetAllActorSounds   ( .Actor:Self )
+    SetConst  *Var0  .Part:Tweeter
+    SetConst  *Var1  .Anim:TweeterWalk
+    ExecWait  DoReturnHome
+    Call  SetAnimation  ( .Actor:Self .Part:Tweeter .Anim:TweeterIdle )
+    Return
+    End
+}
+
+#new:Script $Script_HandleEvent_Tweeter
+{
+    Call EnableIdleScript ( .Actor:Self .False )
+    Call UseIdleAnimation ( .Actor:Self .False )
+    Call  GetLastEvent      ( .Actor:Self *Var0 )
+    Switch  *Var0
+        CaseOR  ==  .Event:HitCombo % 9
+        CaseOR  ==  .Event:Hit % A
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoNormalHit
+        EndCaseGroup
+        Case  ==  .Event:BurnHit % E
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            SetConst  *Var2  .Anim:TweeterHurt
+            ExecWait  DoBurnHit
+        Case  ==  .Event:BurnDeath % 24
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            SetConst  *Var2  .Anim:TweeterHurt
+            ExecWait  DoBurnHit
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoDeath
+            Return
+        Case  ==  .Event:SpinSmashHit % B
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoSpinSmashHit
+        Case  ==  .Event:SpinSmashDeath % 21
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoSpinSmashHit
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterDeath %Death
+            ExecWait  DoDeath
+            Return
+        Case  ==  .Event:ShockHit % 2F
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoShockHit
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoJumpBack
+            Call  SetActorSpeed ( .Actor:Self *Fixed[4.0] )
+            ExecWait  $Script_ReturnHome_Tweeter
+        Case  ==  .Event:ShockDeath % 26
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoShockHit
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterDeath %Death
+            ExecWait  DoDeath
+            Return
+        CaseOR  ==  00000017 % 17
+        CaseOR  ==  .Event:Immune % 19
+        CaseOR  ==  .Event:AirLiftFailed % 1F
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterIdle
+            ExecWait  DoImmune
+        EndCaseGroup
+        Case  ==  .Event:Death % 20
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoNormalHit
+            Wait  10`
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterDeath %Death
+            ExecWait  DoDeath
+            Return
+        Case  ==  .Event:RecoverStatus % 31
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterIdle
+            ExecWait  DoRecover
+        Case  ==  .Event:ScareAway % 39
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterIdle %Run 
+            SetConst  *Var2  .Anim:TweeterIdle %Scared
+            ExecWait  DoScareAway
+            Return
+        Case  ==  .Event:BeginAirLift % 3A
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoAirLift
+        Case  ==  .Event:BlowAway % 16
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterHurt
+            ExecWait  DoBlowAway
+            Return
+        Default
+    EndSwitch
+    Call EnableIdleScript ( .Actor:Self .True )
+    Call UseIdleAnimation ( .Actor:Self .True )
+    Return
+    End
+}
+
+#new:Script $Script_TakeTurn_Tweeter
+{
+    Call EnableIdleScript ( .Actor:Self .False )
+    Call UseIdleAnimation ( .Actor:Self .False )
+    Call  RandInt   ( 00000001 *Var0 )
+    If  *Var0  ==  00000000
+        ExecWait  $Script_Tweeter_Tackle
+    Else
+        ExecWait  $Script_Tweeter_Tackle_Fakeout
+    EndIf
+    Call EnableIdleScript ( .Actor:Self .True )
+    Call UseIdleAnimation ( .Actor:Self .True )
+    Return
+    End
+}
+
+
+#new:Script $Script_Tweeter_Tackle
+{
+    Call EnableIdleScript ( .Actor:Self .False )
+    Call UseIdleAnimation ( .Actor:Self .False )
+    Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+    Call  UseBattleCamPreset    ( 0000003F )
+    Call  BattleCamTargetActor  ( .Actor:Self )
+    Call  MoveBattleCamOver (  20` )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add   *Var0  50`
+    Set   *Var1  0`
+    Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  RunToGoal ( .Actor:Self  0` .False )
+    Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+    Switch  *Var0
+        CaseOR  ==  .HitResult:Miss % 6
+        CaseOR  ==  .HitResult:Lucky % 5
+            Set   *VarA  *Var0
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:Jump 000002EF 00000000 )
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:Walk 000020BA 000003B4 )
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:WalkIncrement 0000000A 00000000 )
+            Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+            Call  SetAnimation  ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+            Call  SetGoalToTarget   ( .Actor:Self )
+            Call  RunToGoal     ( .Actor:Self  0` .False )
+            Call  SetActorSpeed ( .Actor:Self *Fixed[5.0] )
+            Call  SetActorJumpGravity   ( .Actor:Self *Fixed[0.5] )
+            Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
+            Sub   *Var0  30`
+            Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
+            Call  JumpToGoal    ( .Actor:Self  8` .False .True .False )
+            If  *VarA  ==  .HitResult:Lucky % 5
+                Call  EnemyTestTarget   ( .Actor:Self *VarA ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+            EndIf
+            Call  ResetAllActorSounds   ( .Actor:Self )
+            Sub   *Var0  20`
+            Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+            Call  JumpToGoal        ( .Actor:Self  8` .False .True .False )
+            Wait  15`
+            Call  UseBattleCamPreset    ( 00000002 )
+            Call  SetActorYaw       ( .Actor:Self  180` )
+            Call  AddActorDecoration    ( .Actor:Self .Part:Tweeter 00000000 .Decoration:Sweat )
+            Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterDash
+            ExecWait  DoReturnHome
+            Call  RemoveActorDecoration ( .Actor:Self .Part:Tweeter 00000000 )
+            Call  SetActorYaw       ( .Actor:Self  0` )
+            Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterIdle )
+            Call EnableIdleScript ( .Actor:Self .True )
+            Call UseIdleAnimation ( .Actor:Self .True )
+            Return
+        EndCaseGroup
+    EndSwitch
+    Thread
+        Wait  3`
+        Call  PlaySoundAtActor  ( .Actor:Self 000002EF )
+    EndThread
+    Call  SetActorSounds    ( .Actor:Self .ActorSound:Walk 000020BA 000003B4 )
+    Call  SetActorSounds    ( .Actor:Self .ActorSound:WalkIncrement 0000000A 00000000 )
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[10.0] )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add   *Var0  10`
+    Set   *Var1  0`
+    Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  RunToGoal ( .Actor:Self  0` .False )
+    Wait  2`
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000000 .Damage:Tackle 00000020 )
+    Call  ResetAllActorSounds   ( .Actor:Self )
+    Call  UseBattleCamPreset    ( 00000002 )
+    Call  MoveBattleCamOver (  15` )
+    Call  GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add   *Var0  30`
+    Set   *Var1  0`
+    Call  SetActorJumpGravity   ( .Actor:Self *Fixed[1.8] )
+    Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  JumpToGoal        ( .Actor:Self  10` .False .True .False )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterIdle )
+    Wait  15`
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+    ExecWait  $Script_ReturnHome_Tweeter
+    Call EnableIdleScript ( .Actor:Self .True )
+    Call UseIdleAnimation ( .Actor:Self .True )
+    Return
+    End
+}
+
+#new:Script $Script_Tweeter_Tackle_Fakeout
+{
+    Call EnableIdleScript ( .Actor:Self .False )
+    Call UseIdleAnimation ( .Actor:Self .False )
+    Call  SetTargetActor    ( .Actor:Self .Actor:Player )
+    Call  UseBattleCamPreset    ( 0000003F )
+    Call  BattleCamTargetActor  ( .Actor:Self )
+    Call  MoveBattleCamOver (  20` )
+    Call  8024ECF8  ( FFFFFFFF 00000001 00000000 )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add   *Var0  50`
+    Set   *Var1  0`
+    Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  RunToGoal ( .Actor:Self  0` .False )
+    Call  EnemyTestTarget   ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000001 00000010 )
+    Switch  *Var0
+        CaseOR  ==  .HitResult:Miss % 6
+        CaseOR  ==  .HitResult:Lucky % 5
+            Set   *VarA  *Var0
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:Jump 000002EF 00000000 )
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:Walk 000020BA 000003B4 )
+            Call  SetActorSounds    ( .Actor:Self .ActorSound:WalkIncrement 0000000A 00000000 )
+            Call  SetActorSpeed ( .Actor:Self *Fixed[3.0] )
+            Call  SetAnimation  ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+            Call  SetGoalToTarget   ( .Actor:Self )
+            Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterFall )
+            Wait  15`
+            Call  RunToGoal     ( .Actor:Self  0` .False )
+            Call  SetActorSpeed ( .Actor:Self *Fixed[6.0] )
+            Call  SetActorJumpGravity   ( .Actor:Self *Fixed[0.5] )
+            Call  GetActorPos   ( .Actor:Self *Var0 *Var1 *Var2 )
+            Sub   *Var0  30`
+            Call  SetGoalPos    ( .Actor:Self *Var0 *Var1 *Var2 )
+            Call  JumpToGoal    ( .Actor:Self  8` .False .True .False )
+            If  *VarA  ==  .HitResult:Lucky % 5
+                Call  EnemyTestTarget   ( .Actor:Self *VarA ~Flags:DamageType:TriggerLucky 00000000 00000000 00000000 )
+            EndIf
+            Call  ResetAllActorSounds   ( .Actor:Self )
+            Sub   *Var0  20`
+            Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+            Call  JumpToGoal        ( .Actor:Self  8` .False .True .False )
+            Wait  5`
+            Call  UseBattleCamPreset    ( 00000002 )
+            Call  SetActorYaw       ( .Actor:Self  180` )
+            Call  AddActorDecoration    ( .Actor:Self .Part:Tweeter 00000000 .Decoration:Sweat )
+            Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+            SetConst  *Var0  .Part:Tweeter
+            SetConst  *Var1  .Anim:TweeterWalk
+            ExecWait  DoReturnHome
+            Call  RemoveActorDecoration ( .Actor:Self .Part:Tweeter 00000000 )
+            Call  SetActorYaw       ( .Actor:Self  0` )
+            Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterIdle )
+            Call EnableIdleScript ( .Actor:Self .True )
+            Call UseIdleAnimation ( .Actor:Self .True )
+            Return
+        EndCaseGroup
+    EndSwitch
+    Thread
+        Wait  3`
+        Call  PlaySoundAtActor  ( .Actor:Self 000002EF )
+    EndThread
+    Call  SetActorSounds    ( .Actor:Self .ActorSound:Walk 000020BA 000003B4 )
+    Call  SetActorSounds    ( .Actor:Self .ActorSound:WalkIncrement 0000000A 00000000 )
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[3.0] )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterDash )
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[6.0] )
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  GetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Add   *Var0  10`
+    Set   *Var1  0`
+    Call  SetGoalPos        ( .Actor:Self *Var0 *Var1 *Var2 )
+    Call  RunToGoal ( .Actor:Self  0` .False )
+    Call  SetGoalToTarget   ( .Actor:Self )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterFall )
+    Wait  5`
+    Call  EnemyDamageTarget ( .Actor:Self *Var0 ~Flags:DamageType:0 00000000 00000000 .Damage:FakeTackle 00000020 )
+    Wait  10`
+    Call  ResetAllActorSounds   ( .Actor:Self )
+    Call  UseBattleCamPreset    ( 00000002 )
+    Call  MoveBattleCamOver (  15` )
+    Call  SetAnimation      ( .Actor:Self .Part:Tweeter .Anim:TweeterIdle )
+    Wait  15`
+    Call  SetActorSpeed     ( .Actor:Self *Fixed[5.0] )
+    ExecWait  $Script_ReturnHome_Tweeter
+    Call EnableIdleScript ( .Actor:Self .True )
+    Call UseIdleAnimation ( .Actor:Self .True )
+    Return
+    End
+}

@@ -29,7 +29,7 @@
 - { priority: 60, name: GearHammer2, template: STANDARD_ITEM, icon: gear/hammer_2 }
 - { priority: 61, name: GearHammer3, template: STANDARD_ITEM, icon: gear/hammer_3 }
 - { priority: 62, name: LuckyStar, template: STANDARD_ITEM, icon: gear/lucky_star }
-- { priority: 63, name: Map, template: STANDARD_ITEM, icon: key/map }
+- { priority: 63, name: BadgeEmblem, template: STANDARD_ITEM, icon: key/badge_emblem }
 - { priority: 64, name: KoopaFortressKey, template: STANDARD_ITEM, icon: key/key_koopa_fortress }
 - { priority: 65, name: RuinsKey, template: STANDARD_ITEM, icon: key/key_ruins }
 - { priority: 66, name: TubbaCastleKey, template: STANDARD_ITEM, icon: key/key_tubba_castle }

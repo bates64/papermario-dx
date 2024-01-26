@@ -15,10 +15,10 @@
 #define DX_SKIP_FILE_SELECT 1
 
 /// Map to load when starting a new game.
-#define NEW_GAME_MAP_ID "nok_11"
+#define NEW_GAME_MAP_ID "tst_13"
 
 /// Entry to use when starting a new game.
-#define NEW_GAME_ENTRY_ID nok_11_ENTRY_0
+#define NEW_GAME_ENTRY_ID nok_13_ENTRY_0
 
 /// Story progress when starting a new game.
 #define NEW_GAME_STORY_PROGRESS STORY_CH1_MADE_FIRST_BRIDGE

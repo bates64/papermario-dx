@@ -32,4 +32,5 @@ enum {
     NPC_07                      = 7, // King Boo 8
     NPC_08                      = 8, // King Boo 9
     NPC_09                      = 9, // King Boo 10
+    NPC_ShyGuy                  = 10, // Shy Guy 1
 };

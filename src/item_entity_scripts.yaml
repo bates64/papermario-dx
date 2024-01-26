@@ -30,7 +30,7 @@
 - { name: GearHammer2, template: STANDARD, icon: gear/hammer_2 }
 - { name: GearHammer3, template: STANDARD, icon: gear/hammer_3 }
 - { name: LuckyStar, template: STANDARD, icon: gear/lucky_star }
-- { name: Map, template: STANDARD, icon: key/map }
+- { name: BadgeEmblem, template: STANDARD, icon: key/badge_emblem }
 - { name: KoopaFortressKey, template: STANDARD, icon: key/key_koopa_fortress }
 - { name: RuinsKey, template: STANDARD, icon: key/key_ruins }
 - { name: TubbaCastleKey, template: STANDARD, icon: key/key_tubba_castle }

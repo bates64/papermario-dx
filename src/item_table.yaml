@@ -118,18 +118,78 @@
     moveID: MOVE_NONE
     potencyA: 0
     potencyB: 0
-- Map:
-    category: QUEST
-    nameMsg: MSG_ItemName_Map
-    fullDescMsg: MSG_NONE
-    shortDescMsg: MSG_NONE
-    hudElement: Present
-    itemEntity: Placeholder
-    icon: key/Gift
+- BadgeEmblemA:
+    category: KEY
+    nameMsg: MSG_Misc_BadgeEmblemName
+    fullDescMsg: MSG_Misc_BadgeEmblemFullDesc
+    shortDescMsg: MSG_Misc_BadgeEmblemShortDesc
+    hudElement: BadgeEmblem
+    itemEntity: BadgeEmblem
+    icon: key/badge_emblem
     sellValue: -1
     sortValue: 0
-    targetFlags: [ TARGET_FLAG_2 ]
-    typeFlags: [ ITEM_TYPE_FLAG_GEAR, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+    targetFlags: [ TARGET_FLAG_PLAYER ]
+    typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_KEY, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+    moveID: MOVE_NONE
+    potencyA: 0
+    potencyB: 0
+- BadgeEmblemB:
+    category: KEY
+    nameMsg: MSG_Misc_BadgeEmblemName
+    fullDescMsg: MSG_Misc_BadgeEmblemFullDesc
+    shortDescMsg: MSG_Misc_BadgeEmblemShortDesc
+    hudElement: BadgeEmblem
+    itemEntity: BadgeEmblem
+    icon: key/badge_emblem
+    sellValue: -1
+    sortValue: 0
+    targetFlags: [ TARGET_FLAG_PLAYER ]
+    typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_KEY, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+    moveID: MOVE_NONE
+    potencyA: 0
+    potencyB: 0
+- BadgeEmblemC:
+    category: KEY
+    nameMsg: MSG_Misc_BadgeEmblemName
+    fullDescMsg: MSG_Misc_BadgeEmblemFullDesc
+    shortDescMsg: MSG_Misc_BadgeEmblemShortDesc
+    hudElement: BadgeEmblem
+    itemEntity: BadgeEmblem
+    icon: key/badge_emblem
+    sellValue: -1
+    sortValue: 0
+    targetFlags: [ TARGET_FLAG_PLAYER ]
+    typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_KEY, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+    moveID: MOVE_NONE
+    potencyA: 0
+    potencyB: 0
+- BadgeEmblemX:
+    category: KEY
+    nameMsg: MSG_Misc_BadgeEmblemName
+    fullDescMsg: MSG_Misc_BadgeEmblemFullDesc
+    shortDescMsg: MSG_Misc_BadgeEmblemShortDesc
+    hudElement: BadgeEmblem
+    itemEntity: BadgeEmblem
+    icon: key/badge_emblem
+    sellValue: -1
+    sortValue: 0
+    targetFlags: [ TARGET_FLAG_PLAYER ]
+    typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_KEY, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
+    moveID: MOVE_NONE
+    potencyA: 0
+    potencyB: 0
+- BadgeEmblemY:
+    category: KEY
+    nameMsg: MSG_Misc_BadgeEmblemName
+    fullDescMsg: MSG_Misc_BadgeEmblemFullDesc
+    shortDescMsg: MSG_Misc_BadgeEmblemShortDesc
+    hudElement: BadgeEmblem
+    itemEntity: BadgeEmblem
+    icon: key/badge_emblem
+    sellValue: -1
+    sortValue: 0
+    targetFlags: [ TARGET_FLAG_PLAYER ]
+    typeFlags: [ ITEM_TYPE_FLAG_WORLD_USABLE, ITEM_TYPE_FLAG_KEY, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
     moveID: MOVE_NONE
     potencyA: 0
     potencyB: 0
@@ -3397,7 +3457,7 @@
     itemEntity: PowerPlus
     icon: badge/PowerPlus
     sellValue: 250
-    sortValue: 67
+    sortValue: 68
     targetFlags: []
     typeFlags: [ ITEM_TYPE_FLAG_BADGE, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
     moveID: MOVE_POWER_PLUS
@@ -4747,7 +4807,7 @@
     itemEntity: PowerPlus
     icon: badge/PowerPlus
     sellValue: 250
-    sortValue: 67
+    sortValue: 68
     targetFlags: []
     typeFlags: [ ITEM_TYPE_FLAG_BADGE, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
     moveID: MOVE_POWER_PLUS
@@ -4762,7 +4822,7 @@
     itemEntity: PowerPlus
     icon: badge/PowerPlus
     sellValue: 250
-    sortValue: 67
+    sortValue: 68
     targetFlags: []
     typeFlags: [ ITEM_TYPE_FLAG_BADGE, ITEM_TYPE_FLAG_ENTITY_FULLSIZE ]
     moveID: MOVE_POWER_PLUS

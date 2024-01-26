@@ -2211,6 +2211,16 @@ void update_item_entity_pickup(ItemEntity* item) {
                     playerData->hasActionCommands = TRUE;
                 }
 
+                switch (item->itemID) {
+                    case ITEM_BADGE_EMBLEM_A:
+                    case ITEM_BADGE_EMBLEM_B:
+                    case ITEM_BADGE_EMBLEM_C:
+                    case ITEM_BADGE_EMBLEM_X:
+                    case ITEM_BADGE_EMBLEM_Y:
+                        playerData->maxBP += 3;
+                        break;
+                }
+
                 if (item->itemID >= ITEM_HAMMER && item->itemID <= ITEM_ULTRA_HAMMER) {
                     playerData->hammerLevel = item->itemID - ITEM_HAMMER;
                 }

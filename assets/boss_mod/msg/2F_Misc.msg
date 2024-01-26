@@ -1,3 +1,15 @@
+#message:2F:(Misc_BadgeEmblemName) {
+	Badge Emblem[End]
+}
+
+#message:2F:(Misc_BadgeEmblemFullDesc) {
+	Increases maximum BP by 3.[End]
+}
+
+#message:2F:(Misc_BadgeEmblemShortDesc) {
+	Increases maximum BP by 3.[End]
+}
+
 #message:2F:(Misc_KingBoo) {
 	King Boo[End]
 }

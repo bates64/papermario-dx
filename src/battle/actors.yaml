@@ -2334,6 +2334,17 @@
     stepDelay: [ 30, 30 ]
     tattleCamOffset: [ 0, 0, 0 ]
     shadowOffset: 0
+- PinkShyGuy:
+    level: 5
+    nameMsg: MSG_EnemyName_ShyGuy
+    tattleMsg: MSG_EnemyTattle_ShyGuy
+    walkSound: [ SOUND_ACTOR_STEP_A, SOUND_ACTOR_STEP_B ]
+    flySound: [ SOUND_NONE, SOUND_NONE ]
+    jumpSound: SOUND_ACTOR_JUMP
+    hurtSound: SOUND_ACTOR_HURT
+    stepDelay: [ 30, 30 ]
+    tattleCamOffset: [ 0, 5, 0 ]
+    shadowOffset: 0
 - KingBoo:
     level: 40
     nameMsg: MSG_Misc_KingBoo

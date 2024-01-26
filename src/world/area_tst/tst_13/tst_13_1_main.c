@@ -1,6 +1,7 @@
 #include "tst_13.h"
 #include "world/common/npc/KingBoo.h"
 #include "world/common/npc/KingBoo.inc.c"
+#include "world/common/enemy/ShyGuy_Wander.inc.c"
 
 // void mdl_project_tex_coords(s32 modelID, Gfx* destGfx, Matrix4f destMtx, void* destVertices);
 
@@ -442,8 +443,39 @@ NpcData N(NpcData_Testing)[] = {
     },
 };
 
+EvtScript N(EVS_NpcInit_ShyGuy) = {
+    Call(SetNpcPos, NPC_SELF, 0, 0, 0)
+    Return
+    End
+};
+
+NpcData N(NpcData_ShyGuy) = {
+    .id = NPC_ShyGuy,
+    .pos = { NPC_DISPOSE_LOCATION },
+    .yaw = 270,
+    .territory = {
+        .wander = {
+            .isFlying = FALSE,
+            .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
+            .wanderShape = SHAPE_CYLINDER,
+            .centerPos  = { 0, 0, 0 },
+            .wanderSize = { 30 },
+            .detectShape = SHAPE_CYLINDER,
+            .detectPos  = { 0, 0, 0 },
+            .detectSize = { 200 },
+        }
+    },
+    .init = &N(EVS_NpcInit_ShyGuy),
+    .settings = &N(NpcSettings_ShyGuy_Wander),
+    .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
+    .drops = SHY_GUY_DROPS,
+    .animations = PINK_SHY_GUY_ANIMS,
+    .aiDetectFlags = AI_DETECT_SIGHT,
+};
+
 NpcGroupList N(DefaultNPCs) = {
-    NPC_GROUP(N(NpcData_Testing)),
+    //NPC_GROUP(N(NpcData_Testing)),
+    NPC_GROUP(N(NpcData_ShyGuy), BTL_MOD_FORMATION_01, BTL_MOD_STAGE_00),
     {}
 };
 

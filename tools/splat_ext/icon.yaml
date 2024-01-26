@@ -1,6 +1,6 @@
   # valid icon types are:
   #   solo      ci4 image followed by one palette
-  #   pair      ci4 image followed by two palettes; the second will be called .disabled 
+  #   pair      ci4 image followed by two palettes; the second will be called .disabled
   #   rgba16    rgba image; used by one strange entry
 
   - [solo, key/Gift, 32, 32]
@@ -19,7 +19,7 @@
   - [solo, gear/hammer_2, 32, 32]
   - [solo, gear/hammer_3, 32, 32]
   - [solo, gear/lucky_star, 32, 32]
-  - [solo, key/map, 32, 32]
+  - [solo, key/badge_emblem, 32, 32]
   - [pair, food/SpicySoup, 32, 32]
   - [pair, food/ApplePie, 32, 32]
   - [pair, food/HoneyUltra, 32, 32]

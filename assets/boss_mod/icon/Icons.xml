@@ -15,7 +15,7 @@
     <Icon type="solo" name="gear/hammer_2"/>
     <Icon type="solo" name="gear/hammer_3"/>
     <Icon type="solo" name="gear/lucky_star"/>
-    <Icon type="solo" name="key/map"/>
+    <Icon type="solo" name="key/badge_emblem"/>
     <Icon type="pair" name="food/SpicySoup"/>
     <Icon type="pair" name="food/ApplePie"/>
     <Icon type="pair" name="food/HoneyUltra"/>
@@ -387,4 +387,5 @@
     <Icon type="solo" name="anim/sp_small_5"/>
     <Icon type="solo" name="anim/sp_small_6"/>
     <Icon type="solo" name="anim/sp_small_7"/>
+    <!-- <Icon type="pair" name="badge/BPPlus"/> -->
 </Icons>
