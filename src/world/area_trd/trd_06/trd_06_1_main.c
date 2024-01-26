@@ -153,7 +153,6 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     BindTrigger(Ref(N(EVS_ExitDoors_trd_04_5)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Call(GetEntryID, LVar0)
-    Switch(LVar0) //@bug unterminated switch
     IfLe(LVar0, trd_06_ENTRY_1)
         IfEq(GF_TRD06_BombedWall, FALSE)
             BindTrigger(Ref(N(EVS_BombWall_Cell)), TRIGGER_POINT_BOMB, Ref(N(BombPos_CellWall)), 1, 0)

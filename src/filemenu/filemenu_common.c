@@ -4,7 +4,6 @@
 #include "fio.h"
 #include "ld_addrs.h"
 #include "game_modes.h"
-#include "dx/config.h"
 
 extern HudScript HES_AnimatedCursorHand;
 
@@ -331,10 +330,6 @@ void filemenu_update(void) {
     if (filemenu_heldButtons & BUTTON_B) {
         filemenu_heldButtons &= ~BUTTON_A;
     }
-
-#if DX_SKIP_FILE_SELECT
-    filemenu_pressedButtons = BUTTON_A;
-#endif
 
     if (menu->initialized) {
         if (menu->fpHandleInput != NULL) {

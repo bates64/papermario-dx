@@ -357,7 +357,18 @@ s32 entity_block_handle_collision(Entity* entity) {
         }
         return TRUE;
     }
+
     if (entity->collisionFlags & ENTITY_COLLISION_PARTNER) {
+        // partner collision means either kooper shell toss or bombette explosion
+        if (gPlayerData.curPartner == PARTNER_BOMBETTE) {
+            switch (get_entity_type(entity->listIndex)) {
+                case ENTITY_TYPE_HAMMER1_BLOCK:
+                case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
+                    set_entity_commandlist(entity, Entity_BreakingBlock_Script);
+                    sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+                    return TRUE;
+            }
+        }
         exec_entity_commandlist(entity);
         return TRUE;
     }

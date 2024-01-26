@@ -32,7 +32,7 @@ EvtScript N(EVS_DropLetter) = {
         Wait(1)
     EndLoop
     Return
-    //@bug not terminated!
+    End
 };
 
 EvtScript N(EVS_DropLastLetter) = {
@@ -43,7 +43,7 @@ EvtScript N(EVS_DropLastLetter) = {
         Wait(1)
     EndLoop
     Return
-    //@bug not terminated!
+    End
 };
 
 #if VERSION_PAL

@@ -1390,7 +1390,6 @@ EvtScript N(EVS_HandlePhase) = {
             EndIf
         CaseEq(PHASE_ENEMY_BEGIN)
         CaseEq(PHASE_ENEMY_END)
-        CaseEq(PHASE_PLAYER_BEGIN) //@bug duplicate case, should be PHASE_PLAYER_END
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
     Call(UseIdleAnimation, ACTOR_SELF, TRUE)

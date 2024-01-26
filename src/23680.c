@@ -174,7 +174,12 @@ void spawn_drops(Enemy* enemy) {
 
     dropCount = 0;
     itemToDrop = ITEM_NONE;
-    fraction = playerData->curFP / (f32) playerData->curMaxFP;
+
+    if (playerData->curMaxFP > 0) {
+        fraction = playerData->curFP / (f32) playerData->curMaxFP;
+    } else {
+        fraction = 0.0;
+    }
 
     for (i = 0; i < 8; i++) {
         attempts  = drops->flowerDrops[4 * i + 0];
