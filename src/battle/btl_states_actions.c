@@ -1429,6 +1429,9 @@ void btl_state_update_9(void) {
             gBattleSubState = BTL_SUBSTATE_9_4;
         } else if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
             gBattleSubState = BTL_SUBSTATE_9_4;
+        } else if (TRUE) {
+            // Party only swaps when Z is pressed
+            gBattleSubState = BTL_SUBSTATE_9_4;
         } else {
             player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
@@ -1633,6 +1636,9 @@ void btl_state_update_end_turn(void) {
         if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
             gBattleSubState = BTL_SUBSTATE_END_TURN_START_SCRIPTS;
         } else if (!(gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {
+            gBattleSubState = BTL_SUBSTATE_END_TURN_START_SCRIPTS;
+        } else if (TRUE) {
+            // Party only swaps when Z is pressed
             gBattleSubState = BTL_SUBSTATE_END_TURN_START_SCRIPTS;
         } else {
             player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
@@ -3065,6 +3071,9 @@ void btl_state_update_end_player_turn(void) {
             player->takeTurnScript = NULL;
 
             if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {
+                gBattleSubState = BTL_SUBSTATE_END_PLAYER_TURN_DONE;
+            } else if (TRUE) {
+                // Party only swaps when Z is pressed
                 gBattleSubState = BTL_SUBSTATE_END_PLAYER_TURN_DONE;
             } else {
                 player->state.curPos.x = player->homePos.x;

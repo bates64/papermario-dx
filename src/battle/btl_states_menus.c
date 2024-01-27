@@ -443,6 +443,11 @@ BSS s32 D_802AD6A8[TABMAX];
 BSS s32 D_802AD6C0[5];
 BSS s32 D_802AD6D4;
 
+/// Player and partner will only swap positions if this flag is set.
+/// This is an incredibly hacky way of doing the TTYD 'swap positions only when Z is pressed' behaviour,
+/// so if you can think of a better way, please do it!!
+BSS b32 temporarilyEnablePartySwap;
+
 void create_battle_popup_menu(PopupMenu* popup);
 
 s32 get_player_anim_for_status(s32 animID);
@@ -2279,9 +2284,10 @@ void btl_state_update_player_menu(void) {
             }
             btl_cam_use_preset(BTL_CAM_DEFAULT);
             btl_cam_move(10);
-            if (!(battleStatus->flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {
+            if (!temporarilyEnablePartySwap) {
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_CREATE_MAIN_MENU;
             } else {
+                temporarilyEnablePartySwap = FALSE;
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_PERFORM_SWAP;
                 partnerActor->state.curPos.x = partnerActor->homePos.x;
                 partnerActor->state.curPos.z = partnerActor->homePos.z;
@@ -2495,6 +2501,7 @@ void btl_state_update_player_menu(void) {
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = battle_menu_submenuIDs[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
+                    temporarilyEnablePartySwap = TRUE;
                 } else if (partnerActor != NULL && !(partnerActor->flags & BS_FLAGS1_YIELD_TURN) && battleStatus->hustleTurns != 1) {
                     sfx_play_sound(SOUND_MENU_ERROR);
                     gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_MAIN_SHOW_CANT_SWAP;
@@ -3688,9 +3695,10 @@ void btl_state_update_partner_menu(void) {
             battleStatus->flags1 |= BS_FLAGS1_MENU_OPEN;
             playerActor->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
             partnerActor->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
-            if (battleStatus->flags1 & BS_FLAGS1_PLAYER_IN_BACK) {
+            if (!temporarilyEnablePartySwap) {
                 gBattleSubState = BTL_SUBSTATE_PARTNER_MENU_INIT_MENU;
             } else {
+                temporarilyEnablePartySwap = FALSE;
                 gBattleSubState = BTL_SUBSTATE_PARTNER_MENU_12D;
                 partnerActor->state.curPos.x = partnerActor->homePos.x;
                 partnerActor->state.curPos.z = partnerActor->homePos.z;
@@ -3826,6 +3834,7 @@ void btl_state_update_partner_menu(void) {
                     battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] = battle_menu_submenuIDs[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
+                    temporarilyEnablePartySwap = TRUE;
                 } else {
                     sfx_play_sound(SOUND_MENU_ERROR);
                     gBattleSubState = BTL_SUBSTATE_PARTNER_MENU_MAIN_SHOW_CANT_SWAP;
