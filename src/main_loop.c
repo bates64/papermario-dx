@@ -5,7 +5,6 @@
 #include "sprite.h"
 #include "overlay.h"
 #include "game_modes.h"
-#include "dx/debug_menu.h"
 #include "dx/profiling.h"
 
 SHIFT_BSS s32 gOverrideFlags;
@@ -266,10 +265,6 @@ void gfx_draw_frame(void) {
 
     profiler_gfx_completed();
     profiler_print_times();
-
-#if DX_DEBUG_MENU
-    dx_render_debug_menu();
-#endif
 
     ASSERT((s32)(((u32)(gMainGfxPos - gDisplayContext->mainGfx) << 3) >> 3) < ARRAY_COUNT(gDisplayContext->mainGfx));
 

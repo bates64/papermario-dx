@@ -5,7 +5,7 @@
 #define DX_DEBUG_MENU 1
 
 /// Loads last used save file
-#define DX_QUICK_LAUNCH 0
+#define DX_QUICK_LAUNCH 1
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1

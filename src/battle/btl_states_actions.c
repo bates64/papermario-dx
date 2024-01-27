@@ -6,6 +6,7 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
+#include "dx/debug_menu.h"
 
 extern StageListRow* gCurrentStagePtr;
 
@@ -219,6 +220,10 @@ void btl_state_update_normal_start(void) {
     battleStatus->curStage = stage;
     switch (gBattleSubState) {
         case BTL_SUBSTATE_NORMAL_START_INIT:
+            #if DX_DEBUG_MENU
+            dx_debug_set_battle_info(gCurrentBattleID, stage->shape);
+            #endif
+
             BattleEnemiesCreated = battle->formationSize;
             set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
             compressedAsset = load_asset_by_name(stage->shape, &size);
