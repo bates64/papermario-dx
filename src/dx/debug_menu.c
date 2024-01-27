@@ -3,6 +3,7 @@
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "hud_element.h"
+#include "qsort.h"
 
 // layout
 
@@ -188,14 +189,14 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
     draw_msg((s32)buf, posX, posY, alpha, color, 0);
 }
 
-void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 posX, s32 posY) {
+void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[16];
     char buf[16] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, number);
     dx_string_to_msg(&buf[4], fmtBuf);
-    draw_msg((s32)buf, posX, posY, 255, color, 0);
+    draw_msg((s32)buf, posX, posY, alpha, color, 0);
 }
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
@@ -369,7 +370,7 @@ void dx_debug_draw_editable_num(DebugEditableNumber* num, s32 posX, s32 posY) {
 
     for (idx = 0; idx < num->size; idx++) {
         s32 color = (num->pos == idx) ? HighlightColor : DefaultColor;
-        dx_debug_draw_number(num->digits[idx], fmt, color, posX + (7 * idx), posY);
+        dx_debug_draw_number(num->digits[idx], fmt, color, 255, posX + (7 * idx), posY);
     }
 }
 
@@ -453,7 +454,7 @@ f32 ArrowAnimOffset = 0;
 f32 DebugArrowPhase = 0.0f;
 #define DEBUG_ARROW_ANIM_RATE 6
 
-void dx_debug_main() {
+void dx_debug_menu_main() {
     s32 initialMenuState = DebugMenuState;
 
     dx_debug_update_buttons();
@@ -951,7 +952,7 @@ void dx_debug_update_select_battle() {
         s32 offset = BattleDigitOffsets[idx];
         char* fmt = (idx == 4) ? "%02X" : "%X";
 
-        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
+        dx_debug_draw_number(DebugBattleNum[idx] & 0xFF, fmt, color, 255, SubmenuPosX + offset, SubmenuPosY + 2 * RowHeight);
     }
 }
 
@@ -1090,15 +1091,16 @@ void dx_debug_update_edit_partners() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 120, 14 * 11 + 8, WINDOW_STYLE_20, 192);
 
     for (idx = 1; idx < ARRAY_COUNT(gPlayerData.partners); idx++) {
-        s32 color = (SelectPartnerMenuPos == idx) ? HighlightColor : DefaultColor;
+        b32 isSelected = (SelectPartnerMenuPos == idx);
+        s32 color = isSelected ? HighlightColor : DefaultColor;
         s32 posY = SubmenuPosY + (idx - 1) * 14;
         s32 level = DebugPartnerLevels[idx];
-        s32 alpha = 255; //TODO engine bug with alpha and draw_msg  = (level < 0) ? 180 : 255;
+        s32 alpha = (isSelected || level >= 0) ? 254 : 120;
 
         if (level < 0) {
-            dx_debug_draw_number(level, "%d", color, SubmenuPosX - 3, posY);
+            dx_debug_draw_number(level, "%d", color, alpha, SubmenuPosX - 3, posY);
         } else {
-            dx_debug_draw_number(level, "%d", color, SubmenuPosX + 3, posY);
+            dx_debug_draw_number(level, "%d", color, alpha, SubmenuPosX + 3, posY);
         }
 
         dx_debug_draw_msg(gPartnerPopupProperties[idx].nameMsg, color, alpha, SubmenuPosX + 15, posY);
@@ -1415,7 +1417,7 @@ void dx_debug_update_edit_gear() {
 
     for (idx = 0; idx < ARRAY_COUNT(DebugGearValues); idx++) {
         s32 color = (DebugGearPos == idx) ? HighlightColor : DefaultColor;
-        dx_debug_draw_number(DebugGearValues[idx], "%2d", color, SubmenuPosX + 63, SubmenuPosY + (idx + 2) * RowHeight);
+        dx_debug_draw_number(DebugGearValues[idx], "%2d", color, 255, SubmenuPosX + 63, SubmenuPosY + (idx + 2) * RowHeight);
     }
 }
 
@@ -1505,7 +1507,7 @@ void dx_debug_update_edit_stats() {
 
     for (idx = 0; idx < ARRAY_COUNT(DebugStatValues); idx++) {
         s32 color = (DebugStatPos == idx) ? HighlightColor : DefaultColor;
-        dx_debug_draw_number(DebugStatValues[idx], "%2d", color, SubmenuPosX + 55, SubmenuPosY + (idx + 2) * RowHeight);
+        dx_debug_draw_number(DebugStatValues[idx], "%2d", color, 255, SubmenuPosX + 55, SubmenuPosY + (idx + 2) * RowHeight);
     }
 }
 
@@ -1596,6 +1598,196 @@ void dx_debug_update_edit_star_pieces() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 86, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Star Pieces:", DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
     dx_debug_draw_editable_num(&DebugStarPieces, SubmenuPosX, SubmenuPosY + 2 * RowHeight);
+}
+
+// ----------------------------------------------------------------------------
+// console printing
+
+#define DEBUG_CONSOLE_DEFAULT_TIMELEFT 60
+#define DEBUG_CONSOLE_MSG_BUF_SIZE 85
+
+typedef struct DebugConsoleLine {
+    u32 hash;
+    s32 timeLeft;
+    u8 buf[DEBUG_CONSOLE_MSG_BUF_SIZE];
+} DebugConsoleLine;
+
+DebugConsoleLine DebugConsoleLine0 = { 0 };
+DebugConsoleLine DebugConsoleLine1 = { 0 };
+DebugConsoleLine DebugConsoleLine2 = { 0 };
+DebugConsoleLine DebugConsoleLine3 = { 0 };
+DebugConsoleLine DebugConsoleLine4 = { 0 };
+DebugConsoleLine DebugConsoleLine5 = { 0 };
+DebugConsoleLine DebugConsoleLine6 = { 0 };
+DebugConsoleLine DebugConsoleLine7 = { 0 };
+
+DebugConsoleLine *DebugConsole[8] = {
+    &DebugConsoleLine0,
+    &DebugConsoleLine1,
+    &DebugConsoleLine2,
+    &DebugConsoleLine3,
+    &DebugConsoleLine4,
+    &DebugConsoleLine5,
+    &DebugConsoleLine6,
+    &DebugConsoleLine7,
+};
+
+u32 dx_debug_hash_location(char* filename, s32 line) {
+    u32 hash = 5381;
+    s32 c;
+
+    while (c = *filename++) {
+        hash = ((hash << 5) + hash) + c;
+    }
+
+    hash = ((hash << 5) + hash) + line;
+
+    return hash;
+}
+
+static char *proutSprintf(char *dst, const char *src, size_t count) {
+    return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
+}
+
+void dx_hashed_debug_printf(char* filename, s32 line, char* fmt, ...) {
+    char fmtBuf[128];
+    va_list args;
+    va_start(args, fmt);
+    s32 len = _Printf(&proutSprintf, fmtBuf, fmt, args);
+    if (len >= 0) {
+        fmtBuf[len] = 0;
+    }
+    ASSERT(len < 85);
+
+    u32 hash = dx_debug_hash_location(filename, line);
+    s32 matchedLine = -1;
+    s32 idx;
+
+    // find a line with the matching hash
+    for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
+        if (DebugConsole[idx]->hash == hash) {
+            matchedLine = idx;
+            break;
+        }
+    }
+
+    // find the oldest line
+    if (matchedLine == -1) {
+        s32 minTimeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+
+        for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
+            if (DebugConsole[idx]->timeLeft == 0) {
+                matchedLine = idx;
+                break;
+            }
+            if (DebugConsole[idx]->timeLeft < minTimeLeft) {
+                minTimeLeft = DebugConsole[idx]->timeLeft;
+                matchedLine = idx;
+            }
+        }
+    }
+
+    // update the ConsoleLine entry
+    if (matchedLine != -1) {
+        DebugConsole[matchedLine]->buf[0] = MSG_CHAR_READ_FUNCTION;
+        DebugConsole[matchedLine]->buf[1] = MSG_READ_FUNC_SIZE;
+        DebugConsole[matchedLine]->buf[2] = 12;
+        DebugConsole[matchedLine]->buf[3] = 12;
+
+        dx_string_to_msg(&DebugConsole[matchedLine]->buf[4], fmtBuf);
+
+        DebugConsole[matchedLine]->hash = hash;
+        DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+    }
+}
+
+API_CALLABLE(_dxDebugIntPrintf) {
+    Bytecode* args = script->ptrReadPos;
+    s32 i[8];
+    s32 nargs = 0;
+    s32 idx;
+
+    char* filename = *args++;
+    s32 line = *args++;
+    char* fmt = *args++;
+
+    for (idx = 0; idx < 8; idx++) {
+        s32 var = *args++;
+        if (var == 0) {
+            break;
+        }
+        i[idx] = evt_get_variable(script, var);
+        nargs++;
+    }
+
+    switch (nargs) {
+        case 0: dx_hashed_debug_printf(filename, line, fmt); break;
+        case 1: dx_hashed_debug_printf(filename, line, fmt, i[0]); break;
+        case 2: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1]); break;
+        case 3: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2]); break;
+        case 4: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3]); break;
+        case 5: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4]); break;
+        case 6: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5]); break;
+        case 7: dx_hashed_debug_printf(filename, line, fmt, i[0], i[1], i[2], i[3], i[4], i[5], i[6]); break;
+    }
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(_dxDebugFloatPrintf) {
+    Bytecode* args = script->ptrReadPos;
+    f32 f[8];
+    s32 nargs = 0;
+    s32 idx;
+
+    char* filename = *args++;
+    s32 line = *args++;
+    char* fmt = *args++;
+
+    for (idx = 0; idx < 8; idx++) {
+        s32 var = *args++;
+        if (var == 0) {
+            break;
+        }
+        f[idx] = evt_get_float_variable(script, var);
+        nargs++;
+    }
+
+    switch (nargs) {
+        case 0: dx_hashed_debug_printf(filename, line, fmt); break;
+        case 1: dx_hashed_debug_printf(filename, line, fmt, f[0]); break;
+        case 2: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1]); break;
+        case 3: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2]); break;
+        case 4: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3]); break;
+        case 5: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4]); break;
+        case 6: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5]); break;
+        case 7: dx_hashed_debug_printf(filename, line, fmt, f[0], f[1], f[2], f[3], f[4], f[5], f[6]); break;
+    }
+
+    return ApiStatus_DONE2;
+}
+
+void dx_debug_console_main() {
+    DebugConsoleLine* temp;
+    s32 idx;
+
+#define LESS(i, j) DebugConsole[i]->timeLeft > DebugConsole[j]->timeLeft
+#define SWAP(i, j) temp = DebugConsole[i], DebugConsole[i] = DebugConsole[j], DebugConsole[j] = temp
+    QSORT(ARRAY_COUNT(DebugConsole), LESS, SWAP);
+
+    for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
+        s32 timeLeft = DebugConsole[idx]->timeLeft;
+
+        if (timeLeft > 0) {
+            s32 alpha = 254;
+            if (timeLeft < 20) {
+                alpha = round(254 * (timeLeft / 20.0f));
+            }
+
+            draw_msg(DebugConsole[idx]->buf, 32, 200 - 15 * idx, alpha, DefaultColor, 0);
+            DebugConsole[idx]->timeLeft--;
+        }
+    }
 }
 
 #endif

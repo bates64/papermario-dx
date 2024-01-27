@@ -1266,7 +1266,7 @@ void draw_status_ui(void) {
     update_coin_counter();
 
     #if DX_DEBUG_MENU
-    dx_debug_main();
+    dx_debug_menu_main();
     #endif
 }
 
