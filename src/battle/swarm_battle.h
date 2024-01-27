@@ -9,6 +9,3 @@
 extern b32 isSwarmBattle;
 
 f32 swarm_battle_party_x_offset(void);
-
-/// Checks a battle's formation for actors with isBehind=TRUE.
-b32 is_battle_swarm_battle(Battle* battle);

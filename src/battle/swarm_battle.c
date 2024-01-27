@@ -9,12 +9,3 @@ f32 swarm_battle_party_x_offset(void) {
         return 0.0f;
     }
 }
-
-b32 is_battle_swarm_battle(Battle* battle) {
-    for (s32 i = 0; i < battle->formationSize; i++) {
-        if (&(*battle->formation)[i].isBehind) {
-            return TRUE;
-        }
-    }
-    return FALSE;
-}

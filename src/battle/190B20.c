@@ -1733,7 +1733,7 @@ void load_partner_actor(void) {
         takeTurnScript->owner1.actorID = ACTOR_PARTNER;
     }
 
-    partnerActor->isBehind = TRUE;
+    partnerActor->isBehind = isSwarmBattle;
 }
 
 Actor* create_actor(Formation formation) {
@@ -2006,6 +2006,7 @@ Actor* create_actor(Formation formation) {
     actor->icePillarEffect = NULL;
     actor->hudElementDataIndex = create_status_icon_set();
     actor->isBehind = formation->isBehind;
+    if (actor->isBehind) isSwarmBattle = TRUE;
     return actor;
 }
 

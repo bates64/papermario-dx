@@ -312,7 +312,7 @@ void btl_state_update_normal_start(void) {
                 battleStatus->varTable[i] = 0;
             }
 
-            isSwarmBattle = is_battle_swarm_battle(battle);
+            isSwarmBattle = FALSE; // Set by create_actor if any actor is created behind
 
             BattleScreenFadeAmt = 255;
             battleStatus->inputBitmask = 0xFFFFF & ~(BUTTON_START | 0xC0);
