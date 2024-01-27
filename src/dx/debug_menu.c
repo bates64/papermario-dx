@@ -467,6 +467,8 @@ void dx_debug_menu_main() {
     }
     ArrowAnimOffset = cos_deg(DebugArrowPhase);
 
+    dx_debug_update_banner();
+
     // check input for menu open/close
     if (DebugMenuState == DBM_NONE) {
         if (PRESSED(BUTTON_D_LEFT)) {
@@ -888,7 +890,7 @@ void dx_debug_begin_battle() {
     es->curEnemy = &DebugDummyEnemy;
     es->hitType = ENCOUNTER_TRIGGER_NONE;
     es->firstStrikeType = FIRST_STRIKE_NONE;
-    es->allowFleeing = TRUE;
+    es->forbidFleeing = FALSE;
     es->scriptedBattle = TRUE;
     es->songID = -1;
     es->unk_18 = -1;
@@ -1598,6 +1600,39 @@ void dx_debug_update_edit_star_pieces() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 86, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Star Pieces:", DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
     dx_debug_draw_editable_num(&DebugStarPieces, SubmenuPosX, SubmenuPosY + 2 * RowHeight);
+}
+
+// ----------------------------------------------------------------------------
+// banner info
+
+void dx_debug_update_banner() {
+    char fmtBuf[128];
+
+    if (gGameStatus.isBattle == 0) {
+        sprintf(fmtBuf, "Map: %7s (%X)", LastMapName, LastMapEntry);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 220, BottomRowY);
+
+        dx_debug_draw_ascii("Pos:", DefaultColor, 20, BottomRowY);
+
+        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.x));
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 48, BottomRowY);
+
+        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.y));
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 80, BottomRowY);
+
+        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.z));
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 112, BottomRowY);
+    } else {
+        s32 areaID = (LastBattleID >> 24) & 0xFF;
+        s32 battleID = (LastBattleID >> 16) & 0xFF;
+        s32 stageID = LastBattleID & 0xFFFF;
+
+        sprintf(fmtBuf, "Battle:  %02X-%02X (%X)", areaID, battleID, stageID);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 200, BottomRowY);
+
+        sprintf(fmtBuf, "Stage:  %-15s", LastStageName);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 20, BottomRowY);
+    }
 }
 
 // ----------------------------------------------------------------------------
