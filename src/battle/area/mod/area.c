@@ -15,8 +15,8 @@ Formation A(Formation_00) = {
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_B, 9, .isBehind = TRUE),
+    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_C, 10),
+    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_C, 9, .isBehind = TRUE),
 };
 
 BattleList A(Formations) = {
