@@ -2321,6 +2321,11 @@ void btl_state_update_player_menu(void) {
                 partnerActor->homePos.z = partnerActor->curPos.z;
                 playerActor->homePos.x = playerActor->curPos.x;
                 playerActor->homePos.z = playerActor->curPos.z;
+
+                b32 temp = partnerActor->isBehind;
+                partnerActor->isBehind = playerActor->isBehind;
+                playerActor->isBehind = temp;
+
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_CREATE_MAIN_MENU;
                 battleStatus->flags1 &= ~BS_FLAGS1_PLAYER_IN_BACK;
                 if (isSwarmBattle) partnerActor->yaw = 180.0f;
@@ -3735,6 +3740,11 @@ void btl_state_update_partner_menu(void) {
             partnerActor->homePos.z = partnerActor->curPos.z;
             playerActor->homePos.x = playerActor->curPos.x;
             playerActor->homePos.z = playerActor->curPos.z;
+
+            b32 temp = partnerActor->isBehind;
+            partnerActor->isBehind = playerActor->isBehind;
+            playerActor->isBehind = temp;
+
             gBattleStatus.flags1 |= BS_FLAGS1_PLAYER_IN_BACK;
             if (isSwarmBattle) playerActor->yaw = 180.0f;
         }

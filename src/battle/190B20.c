@@ -146,6 +146,9 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             // skip adding enemies if either player or partner targeting is set
             break;
         }
+        if (targetActor->isBehind != actor->isBehind) {
+            continue;
+        }
         // check each part of the current enemy
         targetPart = targetActor->partsTable;
         numParts = targetActor->numParts;
@@ -1473,6 +1476,8 @@ void load_player_actor(void) {
         player->staticStatus = STATUS_KEY_STATIC;
         player->staticDuration = 127;
     }
+
+    player->isBehind = FALSE;
 }
 
 void load_partner_actor(void) {
@@ -1727,6 +1732,8 @@ void load_partner_actor(void) {
         partnerActor->takeTurnScriptID = takeTurnScript->id;
         takeTurnScript->owner1.actorID = ACTOR_PARTNER;
     }
+
+    partnerActor->isBehind = TRUE;
 }
 
 Actor* create_actor(Formation formation) {
@@ -1998,6 +2005,7 @@ Actor* create_actor(Formation formation) {
     actor->disableEffect = fx_disable_x(0, -142.0f, 34.0f, 1.0f, 0);
     actor->icePillarEffect = NULL;
     actor->hudElementDataIndex = create_status_icon_set();
+    actor->isBehind = formation->isBehind;
     return actor;
 }
 
