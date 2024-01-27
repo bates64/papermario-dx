@@ -312,8 +312,7 @@ void btl_state_update_normal_start(void) {
                 battleStatus->varTable[i] = 0;
             }
 
-            // TODO: check to see if the formation has actors in swarm locations
-            isSwarmBattle = TRUE;
+            isSwarmBattle = is_battle_swarm_battle(battle);
 
             BattleScreenFadeAmt = 255;
             battleStatus->inputBitmask = 0xFFFFF & ~(BUTTON_START | 0xC0);

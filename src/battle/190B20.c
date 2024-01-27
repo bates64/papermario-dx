@@ -1745,6 +1745,10 @@ Actor* create_actor(Formation formation) {
         x = StandardActorHomePositions[formation->home.index].x;
         y = StandardActorHomePositions[formation->home.index].y;
         z = StandardActorHomePositions[formation->home.index].z;
+
+        if (formation->isBehind) {
+            x = -x;
+        }
     } else {
         x = formation->home.vec->x;
         y = formation->home.vec->y;
@@ -1786,7 +1790,7 @@ Actor* create_actor(Formation formation) {
     actor->handleEventScript = NULL;
     actor->turnPriority = formation->priority;
     actor->enemyIndex = i;
-    actor->yaw = 0.0f;
+    actor->yaw = formation->isBehind ? 180.0f : 0.0f;
     actor->rot.x = 0.0f;
     actor->rot.y = 0.0f;
     actor->rot.z = 0.0f;
