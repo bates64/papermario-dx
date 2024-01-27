@@ -1,6 +1,9 @@
 #ifndef DX
 #define DX
 
+/// Set the version string that appears on the file select menu.
+#define DX_MOD_VERSION_STRING "??? ?.?.?"
+
 /// Enables the debug menu.
 #define DX_DEBUG_MENU 1
 
