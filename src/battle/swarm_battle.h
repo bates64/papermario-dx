@@ -6,3 +6,5 @@
 #include "common.h"
 
 extern b32 isSwarmBattle;
+
+f32 swarm_battle_party_x_offset(void);
