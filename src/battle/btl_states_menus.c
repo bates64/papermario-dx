@@ -534,7 +534,7 @@ s32 btl_main_menu_update(void) {
 
     switch (BattleMenuState) {
         case BTL_MENU_STATE_CREATE:
-            BattleMenu_BasePosX = 54;
+            BattleMenu_BasePosX = isSwarmBattle ? (SCREEN_WIDTH / 2) : 54;
             BattleMenu_BasePosY = 173;
             D_802AD070 = 0.3f;
             D_802AD004 = 0;
@@ -576,6 +576,9 @@ s32 btl_main_menu_update(void) {
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(id, 240);
+            if (isSwarmBattle) {
+                hud_element_set_flags(id, HUD_ELEMENT_FLAG_DISABLED);
+            }
 
             D_802AD048 = id = hud_element_create(&HES_ProjectorReel);
             hud_element_create_transform_B(id);
@@ -586,6 +589,9 @@ s32 btl_main_menu_update(void) {
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(id, 240);
+            if (isSwarmBattle) {
+                hud_element_set_flags(id, HUD_ELEMENT_FLAG_DISABLED);
+            }
 
             D_802AD04C = id = hud_element_create(&HES_ProjectorBeam);
             hud_element_create_transform_B(id);
@@ -599,9 +605,11 @@ s32 btl_main_menu_update(void) {
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_DISABLED);
 
+            s32 swapXOffset = isSwarmBattle ? 70 : 0;
+
             D_802AD05C = id = hud_element_create(&HES_SwapBackground);
             hud_element_set_render_depth(id, 0);
-            hud_element_set_render_pos(id, 97, 208);
+            hud_element_set_render_pos(id, 97 + swapXOffset, 208);
             hud_element_set_tint(id, 255, 255, 255);
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
@@ -611,19 +619,19 @@ s32 btl_main_menu_update(void) {
             hud_element_set_render_depth(id, 5);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
-            hud_element_set_render_pos(id, 94, 209);
+            hud_element_set_render_pos(id, 94 + swapXOffset, 209);
 
             D_802AD054 = id = hud_element_create(&HES_SwapArrowLeft);
             hud_element_set_render_depth(id, 5);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
-            hud_element_set_render_pos(id, 81, 210);
+            hud_element_set_render_pos(id, 81 + swapXOffset, 210);
 
             D_802AD058 = id = hud_element_create(&HES_SwapArrowRight);
             hud_element_set_render_depth(id, 5);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(id, HUD_ELEMENT_FLAG_80);
-            hud_element_set_render_pos(id, 102, 210);
+            hud_element_set_render_pos(id, 102 + swapXOffset, 210);
             D_802AD00A = 100;
             D_802AD001 = 3;
             BattleMenuState = BTL_MENU_STATE_UNK_1;
@@ -812,7 +820,7 @@ void btl_main_menu_draw(void) {
                 hud_element_set_render_pos(id, 0, 0);
                 hud_element_set_alpha(id, (opacity * 150) / 255);
 
-                if (theta == 56.0f && cond == TRUE) {
+                if (theta == (isSwarmBattle ? 0.0f : 56.0f) && cond == TRUE) {
                     hud_element_set_scale(id, 1.6f);
                 } else {
                     hud_element_set_scale(id, 1.0f);
@@ -822,7 +830,7 @@ void btl_main_menu_draw(void) {
                 if (i == BattleMenu_HomePos + BattleMenu_CurPos) {
                     x = 0.0f;
                     y = 0.0f;
-                    add_vec2D_polar(&x, &y, 87.0f, 56.0f);
+                    add_vec2D_polar(&x, &y, 87.0f, isSwarmBattle ? 0.0f : 56.0f);
                     x = BattleMenu_BasePosX + x;
                     y = BattleMenu_BasePosY + y;
                     id = D_802AD040;
@@ -851,6 +859,10 @@ void btl_main_menu_draw(void) {
             hud_element_set_transform_scale(id, 1.0f, 1.8f, 1.0f);
             hud_element_set_alpha(id, (opacity * 200) / 255);
             hud_element_set_render_pos(id, 79, 176);
+            if (isSwarmBattle) {
+                hud_element_set_render_pos(id, 158, 50);
+                hud_element_set_transform_rotation(id, 0.0f, 0.0f, -180.0f);
+            }
             func_80144238(id);
 
             id = D_802AD048;
@@ -889,6 +901,10 @@ void btl_main_menu_draw(void) {
             if (cond) {
                 l = BattleMenu_BasePosX + 20;
                 t = BattleMenu_BasePosY - 34;
+                if (isSwarmBattle) {
+                    l = 108;
+                    t = 100;
+                }
                 btl_draw_prim_quad(0, 0, 0, 0, l + 26, t, 48, 16);
                 draw_msg(BattleMenu_TitleMessages[BattleMenu_CurPos + BattleMenu_HomePos], l, t, opacity, MSG_PAL_35, 0);
             }
@@ -2482,7 +2498,7 @@ void btl_state_update_player_menu(void) {
             BattleMenu_NumOptions = entryIdx;
             D_802AD0A8 = 0;
             D_802AD0B0 = initialPos;
-            D_802AD100 = 2 - initialPos;
+            D_802AD100 = (isSwarmBattle ? 0 : 2) - initialPos;
             if (can_switch_to_partner()) {
                 BattleMenu_ShowSwapIcons = TRUE;
             } else {
@@ -3822,7 +3838,7 @@ void btl_state_update_partner_menu(void) {
             BattleMenu_NumOptions = entryIdx;
             D_802AD0A8 = 1;
             D_802AD0B0 = initialPos;
-            D_802AD100 = 2 - initialPos;
+            D_802AD100 = (isSwarmBattle ? 0 : 2) - initialPos;
             if (can_switch_to_player()) {
                 BattleMenu_ShowSwapIcons = TRUE;
             } else {
