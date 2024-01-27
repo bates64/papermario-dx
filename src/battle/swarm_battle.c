@@ -4,7 +4,7 @@ BSS b32 isSwarmBattle;
 
 f32 swarm_battle_party_x_offset(void) {
     if (isSwarmBattle) {
-        return 100.0f + 35.0f / 2.0f;
+        return 116.0f; // TODO: is this actually the middle of the stage?
     } else {
         return 0.0f;
     }
