@@ -1,6 +1,7 @@
 #include "battle/battle.h"
 #include "hud_element.h"
 #include "battle/action_cmd.h"
+#include "swarm_battle.h"
 #include "sprite/player.h"
 
 #include "sprite/npc/Goompa.h"
@@ -2322,6 +2323,7 @@ void btl_state_update_player_menu(void) {
                 playerActor->homePos.z = playerActor->curPos.z;
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_CREATE_MAIN_MENU;
                 battleStatus->flags1 &= ~BS_FLAGS1_PLAYER_IN_BACK;
+                if (isSwarmBattle) partnerActor->yaw = 180.0f;
             }
             break;
     }
@@ -3734,6 +3736,7 @@ void btl_state_update_partner_menu(void) {
             playerActor->homePos.x = playerActor->curPos.x;
             playerActor->homePos.z = playerActor->curPos.z;
             gBattleStatus.flags1 |= BS_FLAGS1_PLAYER_IN_BACK;
+            if (isSwarmBattle) playerActor->yaw = 180.0f;
         }
     }
     switch (gBattleSubState) {

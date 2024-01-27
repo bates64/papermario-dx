@@ -6,6 +6,7 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
+#include "swarm_battle.h"
 
 extern StageListRow* gCurrentStagePtr;
 
@@ -310,6 +311,9 @@ void btl_state_update_normal_start(void) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->varTable); i++) {
                 battleStatus->varTable[i] = 0;
             }
+
+            // TODO: check to see if the formation has actors in swarm locations
+            isSwarmBattle = TRUE;
 
             BattleScreenFadeAmt = 255;
             battleStatus->inputBitmask = 0xFFFFF & ~(BUTTON_START | 0xC0);

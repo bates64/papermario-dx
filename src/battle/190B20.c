@@ -5,6 +5,7 @@
 #include "script_api/battle.h"
 #include "model.h"
 #include "sprite.h"
+#include "swarm_battle.h"
 
 EvtScript D_80293820 = {
     Wait(LVar0)
@@ -1543,7 +1544,7 @@ void load_partner_actor(void) {
         partnerActor->handlePhaseScript = NULL;
         partnerActor->turnPriority = 0;
         partnerActor->enemyIndex = 0;
-        partnerActor->yaw = 0.0f;
+        partnerActor->yaw = isSwarmBattle ? 180.0f : 0.0f;
         partnerActor->rot.x = 0.0f;
         partnerActor->rot.y = 0.0f;
         partnerActor->rot.z = 0.0f;
