@@ -387,8 +387,8 @@ void filemenu_draw_contents_title(
     filemenu_draw_message(filemenu_get_menu_message(msgIdx), baseX + xOffset, baseY + yOffset, 255, 0, 0);
 
     #ifdef DX_MOD_VERSION_STRING
-    msgWidth = get_msg_width(msgBuf, 0);
     dx_string_to_msg(msgBuf, DX_MOD_VERSION_STRING);
+    msgWidth = get_msg_width(msgBuf, 0);
     filemenu_draw_message(msgBuf, (SCREEN_WIDTH - msgWidth) / 2, 245 - baseY, 255, 0, 0);
     #endif
 }

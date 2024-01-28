@@ -1,8 +1,9 @@
 #ifndef DX
 #define DX
 
-/// Set the version string that appears on the file select menu.
-#define DX_MOD_VERSION_STRING "??? ?.?.?"
+/// Version string that appears on the file select menu.
+/// Comment out this definition to prevent it from being shown.
+#define DX_MOD_VERSION_STRING "New Mod 1.0.0"
 
 /// Enables the debug menu.
 #define DX_DEBUG_MENU 1
