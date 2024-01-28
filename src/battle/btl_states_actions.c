@@ -221,7 +221,7 @@ void btl_state_update_normal_start(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_NORMAL_START_INIT:
             #if DX_DEBUG_MENU
-            dx_debug_set_battle_info(gCurrentBattleID, stage->shape);
+            dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), stage->shape);
             #endif
 
             BattleEnemiesCreated = battle->formationSize;
