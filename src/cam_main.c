@@ -4,6 +4,7 @@
 #include "hud_element.h"
 #include "camera.h"
 #include "dx/profiling.h"
+#include "dx/debug_menu.h"
 
 void render_models(void);
 void execute_render_tasks(void);
@@ -205,7 +206,9 @@ void render_frame(s32 isSecondPass) {
                 }
                 if (!(camera->flags & CAMERA_FLAG_RENDER_MODELS)) {
                     GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_MODELS);
-                    render_models();
+                    if (!dx_debug_should_hide_models()) {
+                        render_models();
+                    }
                     GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_MODELS);
                 }
                 GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_PLAYER);
@@ -218,6 +221,7 @@ void render_frame(s32 isSecondPass) {
                 render_effects_world();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_EFFECTS, PROFILER_TIME_SUB_GFX_RENDER_TASKS);
                 execute_render_tasks();
+                dx_debug_draw_collision();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {

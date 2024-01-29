@@ -413,6 +413,10 @@ void dx_debug_set_editable_num(DebugEditableNumber* num, s32 in) {
 
 void dx_debug_draw_main_menu();
 
+b32 dx_debug_menu_is_open() {
+    return DebugMenuState != DBM_NONE;
+}
+
 void dx_debug_exec_under_construction() {
     sfx_play_sound(SOUND_MENU_ERROR);
 }
@@ -440,7 +444,7 @@ DebugMenuEntry DebugMainMenu[] = {
     { "Edit Partners",  NULL, DBM_EDIT_PARTNERS },
     { "Edit Inventory", NULL, DBM_EDIT_INVENTORY },
 //    { "Edit Memory",    dx_debug_exec_under_construction, DBM_EDIT_MEMORY },
-//    { "View Collision", dx_debug_exec_under_construction, DBM_VIEW_COLLISION },
+    { "View Collision", NULL, DBM_VIEW_COLLISION },
 };
 s32 MainMenuPos = 0;
 
@@ -545,6 +549,7 @@ void dx_debug_menu_main() {
             case DBM_EDIT_MEMORY:
                 break;
             case DBM_VIEW_COLLISION:
+                dx_debug_update_view_collision();
                 break;
         }
     } else {
@@ -1600,6 +1605,253 @@ void dx_debug_update_edit_star_pieces() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 86, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Star Pieces:", DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
     dx_debug_draw_editable_num(&DebugStarPieces, SubmenuPosX, SubmenuPosY + 2 * RowHeight);
+}
+
+// ----------------------------------------------------------------------------
+// view collision
+
+typedef struct DebugCollisionEntry {
+    char* text;
+    s32 state;
+} DebugCollisionEntry;
+
+enum {
+    DBC_SHOW_COLLISION,
+    DBC_CULL_BACK,
+    DBC_SHOW_DISABLED,
+    DBC_HIDE_MODELS,
+    DBC_EXTRUDE_FACES,
+    DBC_HIGHLIGHT_FLOOR,
+    DBC_HIGHLIGHT_WALL,
+    DBC_FADE_DIST,
+};
+
+DebugCollisionEntry DebugCollisionMenu[] = {
+    [DBC_SHOW_COLLISION]  { "Show Collision",  FALSE },
+    [DBC_CULL_BACK]       { "Cull Back",       TRUE },
+    [DBC_SHOW_DISABLED]   { "Show Disabled",   TRUE },
+    [DBC_HIDE_MODELS]     { "Hide Models",     FALSE },
+    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   FALSE },
+    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", FALSE },
+    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  FALSE },
+    [DBC_FADE_DIST]       { "Near Fade Dist",  1 },
+};
+
+s32 DebugCollisionPos = 0;
+
+void dx_debug_update_view_collision() {
+    s32 idx;
+
+    // handle input
+    if (RELEASED(BUTTON_L)) {
+        DebugMenuState = DBM_MAIN_MENU;
+    }
+
+    if (DebugCollisionPos != DBC_FADE_DIST) {
+        if (NAV_LEFT || NAV_RIGHT) {
+            DebugCollisionMenu[DebugCollisionPos].state = !DebugCollisionMenu[DebugCollisionPos].state;
+        }
+    } else {
+        s32 fadeDist = DebugCollisionMenu[DebugCollisionPos].state;
+        fadeDist = dx_debug_menu_nav_1D_horizontal(fadeDist, 0, 9, FALSE);
+        DebugCollisionMenu[DebugCollisionPos].state = fadeDist;
+    }
+    DebugCollisionPos = dx_debug_menu_nav_1D_vertical(DebugCollisionPos, 0, ARRAY_COUNT(DebugCollisionMenu) - 1, FALSE);
+
+    // draw
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, 8 * RowHeight + 8, WINDOW_STYLE_20, 192);
+
+    for (idx = 0; idx < ARRAY_COUNT(DebugCollisionMenu); idx++) {
+        s32 color = (DebugCollisionPos == idx) ? HighlightColor : DefaultColor;
+        if (idx != DBC_FADE_DIST) {
+            char* onoff = DebugCollisionMenu[idx].state ? "On" : "Off";
+            dx_debug_draw_ascii(onoff, color, SubmenuPosX, SubmenuPosY + (idx + 1) * RowHeight);
+        } else {
+            s32 fadeDist = DebugCollisionMenu[idx].state;
+            dx_debug_draw_number(fadeDist, "%d", color, 255, SubmenuPosX, SubmenuPosY + (idx + 1) * RowHeight);
+        }
+        dx_debug_draw_ascii(DebugCollisionMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight);
+    }
+}
+
+void dx_debug_add_collision_vtx(Vtx_t* vtxBuffer, Vec3f* vert, Vec3f* normal, s32 r, s32 g, s32 b, s32 a) {
+    if (DebugCollisionMenu[DBC_EXTRUDE_FACES].state) {
+        vtxBuffer->ob[0] = vert->x + normal->x;
+        vtxBuffer->ob[1] = vert->y + normal->y;
+        vtxBuffer->ob[2] = vert->z + normal->z;
+    } else {
+        vtxBuffer->ob[0] = vert->x;
+        vtxBuffer->ob[1] = vert->y;
+        vtxBuffer->ob[2] = vert->z;
+    }
+    vtxBuffer->tc[0] = 0;
+    vtxBuffer->tc[1] = 0;
+    vtxBuffer->cn[0] = r;
+    vtxBuffer->cn[1] = g;
+    vtxBuffer->cn[2] = b;
+    vtxBuffer->cn[3] = a;
+}
+
+#define MAX_DEBUG_TRIS 1024
+
+typedef struct DebugTriangle {
+    ColliderTriangle* tri;
+    s16 depth;
+    s16 colliderID;
+} DebugTriangle;
+
+DebugTriangle DebugTris[MAX_DEBUG_TRIS];
+s32 DebugTriPos;
+
+Vtx_t DebugVtxBuf[3 * MAX_DEBUG_TRIS];
+s32 DebugVtxPos;
+
+void dx_debug_draw_collision() {
+    DebugTriangle temp;
+    s32 rdpBufPos;
+    b32 culling;
+    s32 fadeDist;
+    s32 i, j;
+    s32 dist;
+
+    Camera* camera = &gCameras[gCurrentCameraID];
+
+    if (!DebugCollisionMenu[DBC_SHOW_COLLISION].state) {
+        return;
+    }
+
+    // find all collider trianges
+    DebugTriPos = 0;
+    for (i = 0; i < gCollisionData.numColliders; i++) {
+        Collider* collider = &gCollisionData.colliderList[i];
+
+        if (collider->flags & COLLIDER_FLAG_IGNORE_PLAYER && !DebugCollisionMenu[DBC_SHOW_DISABLED].state) {
+            continue;
+        }
+
+        for (j = 0; j < collider->numTriangles; j++) {
+            if (DebugTriPos < MAX_DEBUG_TRIS) {
+                ColliderTriangle* tri = &collider->triangleTable[j];
+                f32 outX, outY, outZ, outW;
+                f32 cX = (tri->v1->x + tri->v2->x + tri->v3->x) / 3;
+                f32 cY = (tri->v1->y + tri->v2->y + tri->v3->y) / 3;
+                f32 cZ = (tri->v1->z + tri->v2->z + tri->v3->z) / 3;
+
+                transform_point(camera->perspectiveMatrix, cX, cY, cZ, 1.0f, &outX, &outY, &outZ, &outW);
+
+                if (outZ < -100) {
+                    // dont draw triangles sufficiently far behind the camera
+                    DebugTriPos--;
+                } else {
+                    DebugTris[DebugTriPos].tri = tri;
+                    DebugTris[DebugTriPos].depth = outZ;
+                    DebugTris[DebugTriPos].colliderID = i;
+                }
+            }
+            DebugTriPos++;
+        }
+    }
+
+    ASSERT(DebugTriPos < MAX_DEBUG_TRIS)
+
+    // sort triangles by depth
+#define LESS(i, j) DebugTris[i].depth > DebugTris[j].depth
+#define SWAP(i, j) temp = DebugTris[i], DebugTris[i] = DebugTris[j], DebugTris[j] = temp
+    QSORT(DebugTriPos, LESS, SWAP);
+
+    gDPPipeSync(gMainGfxPos++);
+    gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
+    gDPSetRenderMode(gMainGfxPos++, G_RM_AA_ZB_XLU_SURF, G_RM_AA_ZB_XLU_SURF2);
+    gDPSetCombineMode(gMainGfxPos++, G_CC_SHADE, G_CC_SHADE);
+    gSPTexture(gMainGfxPos++, 0x0080, 0x0080, 0, G_TX_RENDERTILE, G_OFF);
+    gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING | G_CULL_BACK);
+
+    if (DebugCollisionMenu[DBC_CULL_BACK].state) {
+        gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK | G_SHADING_SMOOTH);
+        culling = TRUE;
+    } else {
+        gSPSetGeometryMode(gMainGfxPos++, G_SHADING_SMOOTH);
+        culling = FALSE;
+    }
+
+    DebugVtxPos = 0;
+    rdpBufPos = 0;
+
+    // build the display list and fill DebugVtxBuf at the same time
+    for (i = 0; i < DebugTriPos; i++) {
+        DebugTriangle* debugTri = &DebugTris[i];
+        ColliderTriangle* tri = debugTri->tri;
+        s32 r, g, b, a;
+
+        b32 highlight = FALSE;
+        if (DebugCollisionMenu[DBC_HIGHLIGHT_FLOOR].state && debugTri->colliderID == gCollisionStatus.curFloor) {
+            highlight = TRUE;
+        }
+        if (DebugCollisionMenu[DBC_HIGHLIGHT_WALL].state && debugTri->colliderID == gCollisionStatus.curWall) {
+            highlight = TRUE;
+        }
+
+        if (rdpBufPos == 0) {
+            // always load vertices 30 at a time
+            gSPVertex(gMainGfxPos++, &DebugVtxBuf[DebugVtxPos], 30, 0);
+        }
+
+        // manage culling state for two-sided triangles
+        if (DebugCollisionMenu[DBC_CULL_BACK].state) {
+            if (!tri->oneSided && culling) {
+                gDPPipeSync(gMainGfxPos++);
+                gSPClearGeometryMode(gMainGfxPos++, G_CULL_BACK);
+                culling = FALSE;
+            } else if (tri->oneSided && !culling) {
+                gDPPipeSync(gMainGfxPos++);
+                gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK);
+                culling = TRUE;
+            }
+        }
+
+        // would be more efficient to pack these into gSP2Triangles ad hoc
+        // but it becomes difficult to manage once RDP state changes enter the mix due to two-sided triangles
+        gSP1Triangle(gMainGfxPos++, rdpBufPos, rdpBufPos + 1, rdpBufPos + 2, 0);
+
+        // update rdp buffer pos for next triangle draw
+        rdpBufPos += 3;
+        if (rdpBufPos == 30) {
+            rdpBufPos = 0;
+        }
+
+        if (highlight) {
+            r = g = b = 196;
+        } else {
+            r = round(fabs(tri->normal.x) * 245.0);
+            g = round(fabs(tri->normal.y) * 245.0);
+            b = round(fabs(tri->normal.z) * 245.0);
+        }
+        a = 180;
+
+        // fade triangles too close to the camera
+        fadeDist = DebugCollisionMenu[DBC_FADE_DIST].state;
+        if(fadeDist > 0) {
+            dist = debugTri->depth - (fadeDist - 1) * 25;
+            if (dist < 20) {
+                // from a=20 at d=40 to a=0 at d=-100
+                a = dx_debug_clamp((dist + 100) / 6, 0, 20);
+            } else {
+                a = dx_debug_clamp(dist, 20, 180);
+            }
+        }
+
+        // build vertices for this triangle
+        dx_debug_add_collision_vtx(&DebugVtxBuf[DebugVtxPos++], tri->v1, &tri->normal, r, g, b, a);
+        dx_debug_add_collision_vtx(&DebugVtxBuf[DebugVtxPos++], tri->v2, &tri->normal, r, g, b, a);
+        dx_debug_add_collision_vtx(&DebugVtxBuf[DebugVtxPos++], tri->v3, &tri->normal, r, g, b, a);
+    }
+
+    // done
+    gDPPipeSync(gMainGfxPos++);
+}
+
+b32 dx_debug_should_hide_models() {
+    return DebugCollisionMenu[DBC_HIDE_MODELS].state;
 }
 
 // ----------------------------------------------------------------------------
