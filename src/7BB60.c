@@ -1,6 +1,7 @@
 #include "common.h"
 #include "world/partners.h"
 #include "sprite/player.h"
+#include "dx/debug_menu.h"
 
 SHIFT_BSS CollisionStatus gCollisionStatus;
 SHIFT_BSS f32 D_8010C928;
@@ -453,10 +454,20 @@ f32 integrate_gravity(void) {
         playerStatus->gravityIntegrator[1] += playerStatus->gravityIntegrator[2] / 1.7f;
         playerStatus->gravityIntegrator[0] += playerStatus->gravityIntegrator[1] / 1.7f;
     } else {
+        #if DX_DEBUG_MENU
+        if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_HIGH_JUMP)) {
+            playerStatus->gravityIntegrator[2] += playerStatus->gravityIntegrator[3];
+            playerStatus->gravityIntegrator[1] += playerStatus->gravityIntegrator[2] * 1.5;
+            playerStatus->gravityIntegrator[0] += playerStatus->gravityIntegrator[1] * 1.5;
+            return playerStatus->gravityIntegrator[0];
+        }
+        #endif
+
         playerStatus->gravityIntegrator[2] += playerStatus->gravityIntegrator[3];
         playerStatus->gravityIntegrator[1] += playerStatus->gravityIntegrator[2];
         playerStatus->gravityIntegrator[0] += playerStatus->gravityIntegrator[1];
     }
+
     return playerStatus->gravityIntegrator[0];
 }
 
@@ -1074,16 +1085,16 @@ void collision_lateral_peach(void) {
     f32 x = playerStatus->pos.x;
     f32 y = playerStatus->pos.y;
     f32 z = playerStatus->pos.z;
-    s32 wall = player_test_move_without_slipping(&gPlayerStatus, &x, &y, &z, 0, yaw, &climbableStep);
+    HitID wall = player_test_move_without_slipping(&gPlayerStatus, &x, &y, &z, 0, yaw, &climbableStep);
 
     playerStatus->pos.x = x;
     playerStatus->pos.z = z;
 
     // If there was a climbable step in this direction, but no wall, we can climb up it
     if (climbableStep
-        && wall < 0
+        && wall <= NO_COLLIDER
         && playerStatus->actionState != ACTION_STATE_STEP_UP_PEACH
-        &&  playerStatus->curSpeed != 0.0f
+        && playerStatus->curSpeed != 0.0f
     ) {
         set_action_state(ACTION_STATE_STEP_UP_PEACH);
     }
