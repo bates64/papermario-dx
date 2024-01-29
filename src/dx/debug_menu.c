@@ -151,28 +151,6 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
         0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 }
 
-u8 dx_ascii_char_to_msg(u8 in) {
-    switch (in) {
-        case '\0': return MSG_CHAR_READ_END;
-        case ' ': case '\t': return MSG_CHAR_READ_SPACE;
-        case '\n': return MSG_CHAR_READ_ENDL;
-        default:
-            if (in < 0x20) {
-                return MSG_CHAR_NOTE;
-            }
-            return in - 0x20;
-    }
-}
-
-u8* dx_string_to_msg(u8* msg, const u8* str) {
-    while (*str) {
-        *msg++ = dx_ascii_char_to_msg(*str++);
-    }
-
-    *msg = MSG_CHAR_READ_END;
-    return msg;
-}
-
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
     char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12

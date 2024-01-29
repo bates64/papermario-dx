@@ -5,7 +5,7 @@
 #include "fio.h"
 #include "game_modes.h"
 #include "dx/config.h"
-#include "dx/debug_menu.h"
+#include "dx/utils.h"
 
 extern HudScript HES_Spirit1;
 extern HudScript HES_Spirit2;

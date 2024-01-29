@@ -206,9 +206,13 @@ void render_frame(s32 isSecondPass) {
                 }
                 if (!(camera->flags & CAMERA_FLAG_RENDER_MODELS)) {
                     GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_MODELS);
+                    #if DX_DEBUG_MENU
                     if (!dx_debug_should_hide_models()) {
                         render_models();
                     }
+                    #else
+                    render_models();
+                    #endif
                     GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_MODELS);
                 }
                 GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_PLAYER);
@@ -221,7 +225,9 @@ void render_frame(s32 isSecondPass) {
                 render_effects_world();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_EFFECTS, PROFILER_TIME_SUB_GFX_RENDER_TASKS);
                 execute_render_tasks();
+                #if DX_DEBUG_MENU
                 dx_debug_draw_collision();
+                #endif
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {

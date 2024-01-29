@@ -103,6 +103,7 @@ segments:
     - [auto, c, fio]
     - [auto, c, curtains]
     - [auto, c, crash_screen]
+    - [auto, c, dx/utils]
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, c, dx/profiling]
