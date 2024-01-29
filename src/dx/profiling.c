@@ -1,7 +1,7 @@
 // Stolen from HackerSM64
 
 #include "profiling.h"
-#include "dx/debug_menu.h"
+#include "dx/utils.h"
 #include "game_modes.h"
 
 #ifdef USE_PROFILER

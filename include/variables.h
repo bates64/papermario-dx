@@ -22,6 +22,7 @@ extern s32 gDefeatedBattleSubstate;
 extern s32 gBattleSubState;
 extern s32 gDefeatedBattleState;
 extern s32 gCurrentBattleID;
+extern s32 gCurrentStageID;
 extern s32 D_800DC4E0;
 extern struct Battle* gOverrideBattlePtr;
 
