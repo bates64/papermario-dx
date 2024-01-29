@@ -7,6 +7,7 @@ extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
 extern EvtScript N(EVS_HandleEvent);
+extern EvtScript N(EVS_HandlePhase);
 extern EvtScript N(EVS_Attack_Tackle);
 extern EvtScript N(EVS_Attack_Vault);
 
@@ -109,6 +110,7 @@ EvtScript N(EVS_Init) = {
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
     Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
+    Call(BindHandlePhase, ACTOR_SELF, Ref(N(EVS_HandlePhase)))
     Return
     End
 };
@@ -509,6 +511,25 @@ EvtScript N(EVS_TakeTurn) = {
         CaseEq(AVAL_AttackVault)
             ExecWait(N(EVS_Attack_Vault))
     EndSwitch
+    Return
+    End
+};
+
+EvtScript N(EVS_HandlePhase) = {
+    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
+    Call(GetBattlePhase, LVar0)
+    Switch(LVar0)
+        CaseEq(PHASE_PLAYER_END)
+            Call(GetActorHP, ACTOR_SELF, LVar0)
+            IfEq(LVar0, 1)
+                Call(FreezeBattleState, TRUE)
+                Call(HealActor, ACTOR_SELF, 1)
+                Call(FreezeBattleState, FALSE)
+            EndIf
+    EndSwitch
+    Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
+    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
     Return
     End
 };
