@@ -1,0 +1,89 @@
+#define .Part:KingBooClone 1
+
+#new:Actor $KingBooClone
+{
+% stats
+[Index]        D4b
+[Level]        40`b % miniboss stats
+[MaxHP]        40`b
+[Coins]         0`b
+[Flags]       00200204
+[StatusTable] $StatusTable_KingBooClone
+% ai
+[PartsCount]   1`s
+[PartsTable] $PartsTable_KingBooClone
+[Script]      $Script_Init_KingBooClone
+% move effectiveness
+[Escape]        0`b %no escape
+[Item]          0`b
+[AirLift]       0`b
+[Hurricane]     0`b % Bow's "Spook" as well
+[UpAndAway]     0`b
+[PowerBounce]   4`b
+[SpinSmash]     4`b % weight (0-4)
+% ui positions
+[Size]        48`b 45`b % width height
+[HealthBar]     0`b   0`b % dx dy
+[StatusTurn]  -10`b 20`b % dx dy (usually top left)
+[StatusIcon]   10`b 20`b % dx dy (usually top right)
+}
+
+#new:PartsTable $PartsTable_KingBooClone % ActorPartBlueprint struct in decomp
+{
+    /% s32 flags %/                 00800000
+    /% s8 index %/                  ~Byte:.Part:KingBooClone
+    /% Vec3b posOffset %/           0`b 0`b 0`b
+    /% Vec2b targetOffset %/        0`b 43`b % For cursor when selecting to attack in battle
+    /% s16 opacity %/               00FFs
+    /% s32* IdleAnimations %/       $IdleAnimations_KingBoo
+    /% s32* defenseTable %/         $DefenseTable_KingBoo
+    /% s32 eventFlags %/            00000000
+    /% s32 elementImmunityFlags %/  00000000
+    /% s8 unk_1C %/                 00b
+    /% s8 unk_1D %/                 F6b
+    /% s8 unk_1E %/                 00b
+    /% s8 unk_1F %/                 00b
+    /% s8 unk_20 %/                 00000000
+
+}
+
+#new:StatusTable $StatusTable_KingBooClone
+{
+.Status:Normal      0`
+.Status:Default     0`
+.Status:Sleep      0`
+.Status:Poison      0`
+.Status:Frozen      0`
+.Status:Dizzy      0`
+.Status:Fear        0`
+.Status:Static      0`
+.Status:Paralyze   0`
+.Status:Shrink      0`
+.Status:Stop       0`
+.Status:DefaultTurnMod    0`
+.Status:SleepTurnMod     0`
+.Status:PoisonTurnMod     0`
+.Status:FrozenTurnMod     0`
+.Status:DizzyTurnMod     0`
+.Status:FearTurnMod       0`
+.Status:StaticTurnMod     0`
+.Status:ParalyzeTurnMod  0`
+.Status:ShrinkTurnMod    0`
+.Status:StopTurnMod      0`
+.Status:End
+}
+
+#new:Script $Script_Init_KingBooClone
+{
+    Call  BindTakeTurn      ( .Actor:Self $Script_Dummy_KingBooClone )
+    Call  BindIdle  ( .Actor:Self $Script_Dummy_KingBooClone )
+    Call  BindHandleEvent   ( .Actor:Self $Script_Dummy_KingBooClone )
+    Return
+    End
+}
+
+#new:Script $Script_Dummy_KingBooClone
+{
+    Return
+    End
+}

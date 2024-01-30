@@ -57,7 +57,7 @@ void clear_player_data(void) {
     D_8010CD10 = FALSE;
     D_8010CD12 = FALSE;
 
-    playerData->hammerLevel = 0;
+    playerData->hammerLevel = 2;
     playerData->curHP = 50;
     playerData->curMaxHP = 50;
     playerData->hardMaxHP = 50;
@@ -66,7 +66,7 @@ void clear_player_data(void) {
     playerData->hardMaxFP = 50;
     playerData->maxBP = 30;
     playerData->level = 27;
-    playerData->bootsLevel = 0;
+    playerData->bootsLevel = 2;
     playerData->hasActionCommands = TRUE;
     playerData->coins = 0;
     playerData->fortressKeyCount = 0;
@@ -795,66 +795,64 @@ void update_status_bar(void) {
         statusBar->hpBlinkCounter++;
     }
 
-    // Vanilla HP bar
-    if (showStat) {
-        id = statusBar->hpIconHIDs[0];
-        x = statusBar->drawPosX + 22;
-        y = statusBar->drawPosY + 13;
-        hud_element_set_render_pos(id, x, y);
-        hud_element_draw_next(id);
-
-        id = statusBar->hpIconHIDs[1];
-        x = statusBar->drawPosX + 37;
-        y = statusBar->drawPosY + 13;
-        hud_element_set_render_pos(id, x, y);
-        hud_element_draw_next(id);
-
-        x = statusBar->drawPosX + 48;
-        y = statusBar->drawPosY + 8;
-        status_bar_draw_stat(statusBar->hpTimesHID, x, y, statusBar->displayHP, playerData->curMaxHP);
-    }
-
-    // Custom HP bar
-    // if (showStat) { //draw new HP icon
-    //     s32 hpXPosBase = x + 18;
-    //     s32 hpYPosBase = y + 13;
-
-    //     //ReplaceHeartIconPalette(HeartCI4PaletteBlue); //make blue always currently
-    //     //draw player heart icon
-    //     id = statusBar->hpIconHIDs[1];
-    //     hud_element_set_render_pos(id, hpXPosBase + 8, hpYPosBase - 2);
-    //     hud_element_draw_next(id);
-
-    //     //draw partner heart icon
-    //     id = statusBar->hpIconHIDs[1];
-    //     hud_element_set_render_pos(id, hpXPosBase + 8, hpYPosBase + 19);
-    //     hud_element_draw_next(id);
-
-    //     //draw player icon
+    // if (showStat) {
     //     id = statusBar->hpIconHIDs[0];
-    //     hud_element_set_render_pos(id, hpXPosBase, hpYPosBase);
+    //     x = statusBar->drawPosX + 22;
+    //     y = statusBar->drawPosY + 13;
+    //     hud_element_set_render_pos(id, x, y);
     //     hud_element_draw_next(id);
 
-    //     //draw partner icon icon
-    //     id = statusBar->fpIconHIDs[1];
-    //     hud_element_set_script(id, gPartnerIconHudScripts[gPlayerData.curPartner].enabled);
-    //     hud_element_set_scale(id, 0.5f);
-    //     hud_element_set_render_pos(id, hpXPosBase - 1, hpYPosBase + 21);
+    //     id = statusBar->hpIconHIDs[1];
+    //     x = statusBar->drawPosX + 37;
+    //     y = statusBar->drawPosY + 13;
+    //     hud_element_set_render_pos(id, x, y);
     //     hud_element_draw_next(id);
 
-    //     //draw player curHp / maxHp
-    //     x = statusBar->drawPosX + 42;
-    //     y = statusBar->drawPosY + 7;
+    //     x = statusBar->drawPosX + 48;
+    //     y = statusBar->drawPosY + 8;
     //     status_bar_draw_stat(statusBar->hpTimesHID, x, y, statusBar->displayHP, playerData->curMaxHP);
-
-    //     //draw partner curHp / maxHp
-    //     x = statusBar->drawPosX + 42;
-    //     y = statusBar->drawPosY + 28;
-    //     {
-    //         s32 curPartner = playerData->curPartner;
-    //         status_bar_draw_stat(statusBar->hpTimesHID, x, y, playerData->partners[curPartner].curHp, playerData->partners[curPartner].maxHp);
-    //     }
     // }
+
+    if (showStat) { //draw new HP icon
+        s32 hpXPosBase = x + 18;
+        s32 hpYPosBase = y + 13;
+
+        //ReplaceHeartIconPalette(HeartCI4PaletteBlue); //make blue always currently
+        //draw player heart icon
+        id = statusBar->hpIconHIDs[1];
+        hud_element_set_render_pos(id, hpXPosBase + 8, hpYPosBase - 2);
+        hud_element_draw_next(id);
+
+        //draw partner heart icon
+        id = statusBar->hpIconHIDs[1];
+        hud_element_set_render_pos(id, hpXPosBase + 8, hpYPosBase + 19);
+        hud_element_draw_next(id);
+
+        //draw player icon
+        id = statusBar->hpIconHIDs[0];
+        hud_element_set_render_pos(id, hpXPosBase, hpYPosBase);
+        hud_element_draw_next(id);
+
+        //draw partner icon icon
+        id = statusBar->fpIconHIDs[1];
+        hud_element_set_script(id, gPartnerIconHudScripts[gPlayerData.curPartner].enabled);
+        hud_element_set_scale(id, 0.5f);
+        hud_element_set_render_pos(id, hpXPosBase - 1, hpYPosBase + 21);
+        hud_element_draw_next(id);
+
+        //draw player curHp / maxHp
+        x = statusBar->drawPosX + 42;
+        y = statusBar->drawPosY + 7;
+        status_bar_draw_stat(statusBar->hpTimesHID, x, y, statusBar->displayHP, playerData->curMaxHP);
+
+        //draw partner curHp / maxHp
+        x = statusBar->drawPosX + 42;
+        y = statusBar->drawPosY + 28;
+        {
+            s32 curPartner = playerData->curPartner;
+            status_bar_draw_stat(statusBar->hpTimesHID, x, y, playerData->partners[curPartner].curHp, playerData->partners[curPartner].maxHp);
+        }
+    }
 
     if (statusBar->fpBlinkTimer > 0) {
         statusBar->fpBlinkTimer--;
@@ -875,26 +873,6 @@ void update_status_bar(void) {
         statusBar->fpBlinkCounter++;
     }
 
-    // Vanilla FP bar
-    if (showStat) {
-        id = statusBar->fpIconHIDs[0];
-        x = statusBar->drawPosX + 110;
-        y = statusBar->drawPosY + 13;
-        hud_element_set_render_pos(id, x, y);
-        hud_element_draw_next(id);
-
-        id = statusBar->fpIconHIDs[1];
-        x = statusBar->drawPosX + 125;
-        y = statusBar->drawPosY + 13;
-        hud_element_set_render_pos(id, x, y);
-        hud_element_draw_next(id);
-
-        x = statusBar->drawPosX + 136;
-        y = statusBar->drawPosY + 8;
-        status_bar_draw_stat(statusBar->fpTimesHID, x, y, statusBar->displayFP, playerData->curMaxFP);
-    }
-
-    // Custom FP bar
     // if (showStat) {
     //     id = statusBar->fpIconHIDs[0];
     //     x = statusBar->drawPosX + 110;
@@ -902,26 +880,44 @@ void update_status_bar(void) {
     //     hud_element_set_render_pos(id, x, y);
     //     hud_element_draw_next(id);
 
+    //     id = statusBar->fpIconHIDs[1];
     //     x = statusBar->drawPosX + 125;
+    //     y = statusBar->drawPosY + 13;
+    //     hud_element_set_render_pos(id, x, y);
+    //     hud_element_draw_next(id);
+
+    //     x = statusBar->drawPosX + 136;
     //     y = statusBar->drawPosY + 8;
     //     status_bar_draw_stat(statusBar->fpTimesHID, x, y, statusBar->displayFP, playerData->curMaxFP);
     // }
 
-    // if (playerData->level >= 27) {
-    //     playerData->starPoints = 0;
-    // }
+    if (showStat) {
+        id = statusBar->fpIconHIDs[0];
+        x = statusBar->drawPosX + 110;
+        y = statusBar->drawPosY + 13;
+        hud_element_set_render_pos(id, x, y);
+        hud_element_draw_next(id);
 
-    // showStat = TRUE;
-    // if (statusBar->starpointsBlinking != BLINK_OFF) {
-    //     if (statusBar->starpointsBlinkCounter > 8) {
-    //         if (statusBar->starpointsBlinkCounter <= 12) {
-    //             showStat = FALSE;
-    //         } else {
-    //             statusBar->starpointsBlinkCounter = 0;
-    //         }
-    //     }
-    //     statusBar->starpointsBlinkCounter++;
-    // }
+        x = statusBar->drawPosX + 125;
+        y = statusBar->drawPosY + 8;
+        status_bar_draw_stat(statusBar->fpTimesHID, x, y, statusBar->displayFP, playerData->curMaxFP);
+    }
+
+    if (playerData->level >= 27) {
+        playerData->starPoints = 0;
+    }
+
+    showStat = TRUE;
+    if (statusBar->starpointsBlinking != BLINK_OFF) {
+        if (statusBar->starpointsBlinkCounter > 8) {
+            if (statusBar->starpointsBlinkCounter <= 12) {
+                showStat = FALSE;
+            } else {
+                statusBar->starpointsBlinkCounter = 0;
+            }
+        }
+        statusBar->starpointsBlinkCounter++;
+    }
 
     if (showStat) {
         id = statusBar->spIconHID;
