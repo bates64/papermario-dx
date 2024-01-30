@@ -2,6 +2,7 @@
 #include "hud_element.h"
 #include "dx/config.h"
 #include "inventory_data.c"
+#include "dx/debug_menu.h"
 
 #define FULLY_EXTENDED_Y  18
 #define FULLY_RETRACTED_Y -100
@@ -1348,6 +1349,10 @@ API_CALLABLE(ShowCoinCounter) {
 void draw_status_ui(void) {
     update_status_bar();
     update_coin_counter();
+
+    #if DX_DEBUG_MENU
+    dx_debug_menu_main();
+    #endif
 }
 
 void open_status_bar_slowly(void) {

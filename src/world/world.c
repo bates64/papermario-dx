@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "model.h"
 #include "gcc/string.h"
+#include "dx/debug_menu.h"
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
@@ -115,6 +116,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     ASSERT_MSG(areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", areaID);
     ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
     mapConfig = &gAreas[areaID].maps[mapID];
+
+    #if DX_DEBUG_MENU
+    dx_debug_set_map_info(mapConfig->id, gGameStatus.entryID);
+    #endif
 
     sprintf(wMapShapeName, "%s_shape", mapConfig->id);
     sprintf(wMapHitName, "%s_hit", mapConfig->id);

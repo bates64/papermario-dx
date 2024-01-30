@@ -8,6 +8,7 @@
 #include "sprite/npc/BattleMerlee.h"
 #include "sprite/player.h"
 #include "model.h"
+#include "dx/debug_menu.h"
 
 API_CALLABLE(ShowMerleeCoinMessage);
 API_CALLABLE(ShowMerleeRanOutMessage);
@@ -513,7 +514,7 @@ void update_encounters_neutral(void) {
     currentEncounter->songID = -1;
     currentEncounter->unk_18 = -1;
     currentEncounter->hitType = 0;
-    currentEncounter->allowFleeing = FALSE;
+    currentEncounter->forbidFleeing = FALSE;
     currentEncounter->dropWhackaBump = FALSE;
     currentEncounter->flags &= ~ENCOUNTER_STATUS_FLAG_1;
     currentEncounter->flags &= ~ENCOUNTER_STATUS_FLAG_2;
@@ -1455,8 +1456,16 @@ void update_encounters_pre_battle(void) {
 
 void draw_encounters_pre_battle(void) {
     EncounterStatus* encounter = &gCurrentEncounter;
-    Npc* npc = get_npc_unsafe(encounter->curEnemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
+
+#if DX_DEBUG_MENU
+    Npc* npc = NULL;
+    if (encounter->curEnemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
+        npc = get_npc_unsafe(encounter->curEnemy->npcID);
+    }
+#else
+    Npc* npc = get_npc_unsafe(encounter->curEnemy->npcID);
+#endif
 
     if (encounter->unk_94 != 0) {
         f32 playerX, playerY, playerZ;
@@ -1479,9 +1488,21 @@ void draw_encounters_pre_battle(void) {
             playerY = playerStatus->pos.y;
             playerZ = playerStatus->pos.z;
 
+        #if DX_DEBUG_MENU
+        if (npc != NULL) {
             otherX = npc->pos.x;
             otherY = npc->pos.y;
             otherZ = npc->pos.z;
+        } else {
+            otherX = playerX;
+            otherY = playerY;
+            otherZ = playerZ;
+        }
+        #else
+            otherX = npc->pos.x;
+            otherY = npc->pos.y;
+            otherZ = npc->pos.z;
+        #endif
             if (otherY < -990.0f) {
                 otherX = playerX;
                 otherY = playerY;

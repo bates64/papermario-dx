@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dx/debug_menu.h"
 
 SHIFT_BSS s32 PeachDisguiseNpcIndex;
 SHIFT_BSS Entity* TweesterTouchingPartner;

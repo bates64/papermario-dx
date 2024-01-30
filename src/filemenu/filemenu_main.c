@@ -4,6 +4,8 @@
 #include "audio/public.h"
 #include "fio.h"
 #include "game_modes.h"
+#include "dx/config.h"
+#include "dx/utils.h"
 
 extern HudScript HES_Spirit1;
 extern HudScript HES_Spirit2;
@@ -345,6 +347,8 @@ void filemenu_draw_contents_title(
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
+    u8 msgBuf[64];
+    s32 msgWidth;
     s32 msgIdx;
     s32 xOffset;
     s32 yOffset;
@@ -381,6 +385,12 @@ void filemenu_draw_contents_title(
     }
 
     filemenu_draw_message(filemenu_get_menu_message(msgIdx), baseX + xOffset, baseY + yOffset, 255, 0, 0);
+
+    #ifdef DX_MOD_VERSION_STRING
+    dx_string_to_msg(msgBuf, DX_MOD_VERSION_STRING);
+    msgWidth = get_msg_width(msgBuf, 0);
+    filemenu_draw_message(msgBuf, (SCREEN_WIDTH - msgWidth) / 2, 245 - baseY, 255, 0, 0);
+    #endif
 }
 
 void filemenu_draw_contents_stereo(

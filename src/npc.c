@@ -5,6 +5,7 @@
 #include "sprite.h"
 #include "world/partners.h"
 #include "sprite/npc/WorldWatt.h"
+#include "dx/debug_menu.h"
 
 SHIFT_BSS s16 gNpcCount;
 SHIFT_BSS NpcList gWorldNpcList;
@@ -2656,7 +2657,13 @@ void kill_enemy(Enemy* enemy) {
     enemy->auxBytecode = NULL;
     enemy->defeatBytecode = NULL;
 
+    #if DX_DEBUG_MENU
+    if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
+        free_npc(get_npc_unsafe(enemy->npcID));
+    }
+    #else
     free_npc(get_npc_unsafe(enemy->npcID));
+    #endif
 
     if (enemy->unk_64 != NULL) {
         heap_free(enemy->unk_64);
