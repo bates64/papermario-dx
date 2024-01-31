@@ -14,12 +14,6 @@ NpcSettings N(NpcSettings_RipCheato) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-NpcSettings N(NpcSettings_Unused1) = {
-    .height = 23,
-    .radius = 19,
-    .level = ACTOR_LEVEL_NONE,
-};
-
 #include "world/common/complete/GiveReward.inc.c"
 
 s32 N(CheatoItems)[][2] = {

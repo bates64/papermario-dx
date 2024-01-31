@@ -15,7 +15,6 @@ BSS u8 N(savedColA); // a
 BSS u8 oldPrimR, oldPrimG, oldPrimB;
 BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
-#define QUIZMO_PRE_STATIC_PAD TRUE
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
@@ -36,16 +35,14 @@ API_CALLABLE(N(func_80242014_8B2084)) {
 #include "world/common/enemy/Kammy_Guard.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
 
-MAP_STATIC_PAD(1,key_choice);
 #include "world/common/complete/KeyItemChoice.inc.c"
+#include "world/common/complete/LetterDelivery.inc.c"
+
+#include "world/common/atomic/MarioSalute.inc.c"
 
 #define NAME_SUFFIX _Npc
 #include "wander_territories.inc.c"
 #define NAME_SUFFIX
-
-#include "world/common/atomic/MarioSalute.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList_GoompapaTrade)[] = {
     ITEM_LETTER_CHAIN_GOOMPAPA_1,

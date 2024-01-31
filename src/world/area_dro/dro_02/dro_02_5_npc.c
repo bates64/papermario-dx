@@ -53,14 +53,12 @@ NpcSettings N(NpcSettings_Archeologist) = {
 #include "npc_merlee.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
+#include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {
     ITEM_LETTER_CHAIN_MR_E,

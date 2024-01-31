@@ -10,7 +10,6 @@ NpcSettings N(NpcSettings_Snowman) = {
 };
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
 s32 N(BucketList)[] = {

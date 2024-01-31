@@ -64,16 +64,10 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 };
 
 #include "world/common/complete/GiveReward.inc.c"
-
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
-#if VERSION_PAL
 #include "sprite/npc/ShiverToad.h"
-#define TOADHOUSE_ANIM_TALK ANIM_ShiverToad_Red_Talk
-#define TOADHOUSE_ANIM_IDLE ANIM_ShiverToad_Red_Idle
-#endif
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"

@@ -2,29 +2,8 @@
 
 void increment_max_star_power(void);
 
-NpcSettings N(NpcSettings_Bootler) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_Skolar) = {
-    .height = 26,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_Unused1) = {
-    .height = 20,
-    .radius = 20,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_Unused2) = {
-    .height = 22,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/Boo.inc.c"
+#include "world/common/npc/StarSpirit.inc.c"
 
 API_CALLABLE(N(IncreaseMaxSP)) {
     increment_max_star_power();
@@ -80,7 +59,7 @@ NpcData N(NpcData_Bootler)[] = {
         .pos = { 68.0f, 60.0f, -145.0f },
         .yaw = 0,
         .init = &N(EVS_NpcInit_Bootler),
-        .settings = &N(NpcSettings_Bootler),
+        .settings = &N(NpcSettings_Boo),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = {
@@ -107,7 +86,7 @@ NpcData N(NpcData_Bootler)[] = {
         .pos = { 68.0f, 60.0f, -145.0f },
         .yaw = 135,
         .init = &N(EVS_NpcInit_Skolar),
-        .settings = &N(NpcSettings_Skolar),
+        .settings = &N(NpcSettings_StarSpirit),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = {

@@ -12453,8 +12453,7 @@ segments:
     - [auto, c, pra_02_0_header]
     - [auto, c, pra_02_1_music]
     - [auto, c, pra_02_2_main]
-    - [auto, c, pra_02_3_npc]
-    - [auto, c, pra_02_4_entity]
+    - [auto, c, pra_02_3_entity]
   - name: pra_03
     dir: world/area_pra/pra_03
     type: code

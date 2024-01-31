@@ -7,7 +7,6 @@
 #include "world/common/complete/KeyItemChoice.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#define QUIZMO_PRE_STATIC_PAD
 #include "world/common/complete/Quizmo.inc.c"
 
 #include "world/common/todo/SwitchToPartner.inc.c"

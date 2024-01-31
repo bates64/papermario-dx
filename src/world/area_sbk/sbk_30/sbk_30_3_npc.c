@@ -1,15 +1,7 @@
 
 #include "sbk_30.h"
 
-#include "world/common/enemy/ai/GuardAI.inc.c"
-
 #include "world/common/npc/Kolorado.inc.c"
-
-NpcSettings N(NpcSettings_Unused) = {
-    .height = 35,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
 
 NpcSettings N(NpcSettings_Archeologist_01) = {
     .height = 42,
@@ -19,9 +11,7 @@ NpcSettings N(NpcSettings_Archeologist_01) = {
 
 #include "world/common/complete/GiveReward.inc.c"
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,normal_item);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {

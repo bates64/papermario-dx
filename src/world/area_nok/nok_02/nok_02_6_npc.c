@@ -13,11 +13,9 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 #include "world/common/atomic/MarioSalute.inc.c"
 
+#include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList_Kolorado)[] = {

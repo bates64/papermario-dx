@@ -2,7 +2,6 @@
 
 #define NAME_SUFFIX _Koot
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/GiveReward.inc.c"
 #define NAME_SUFFIX

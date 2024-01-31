@@ -38,8 +38,6 @@ API_CALLABLE(N(SetLightOff)) {
     return ApiStatus_DONE2;
 }
 
-MAP_STATIC_PAD(1, unk);
-
 enum {
     LIGHT_FROM_DEFAULT      = 0,
     LIGHT_FROM_GHOST        = 1,
@@ -184,11 +182,6 @@ Vec3f N(WattLeftFlightPath)[] = {
     {    0.0,     0.0,    0.0 },
     {  -25.0,    -5.0,    0.0 },
     {  -60.0,    30.0,    0.0 },
-};
-
-BombTrigger N(BombPos_Lantern_Unused) = {
-    .pos = { 0.0f, 0.0f, 20.0f },
-    .radius = 0.0f
 };
 
 EvtScript N(EVS_Scene_ReleaseWatt) = {

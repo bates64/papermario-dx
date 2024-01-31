@@ -2,11 +2,6 @@
 #include "entity.h"
 #include "effects.h"
 
-#define NAME_SUFFIX _Unused
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-#define NAME_SUFFIX
-
 s32 N(RedKeyList)[] = {
     ITEM_RED_KEY,
     ITEM_NONE

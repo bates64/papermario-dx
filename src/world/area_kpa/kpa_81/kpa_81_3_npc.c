@@ -4,7 +4,6 @@
 #include "world/common/npc/Toad_Stationary.inc.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,choice);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
 EvtScript N(EVS_EnsurePartnerNeutral) = {

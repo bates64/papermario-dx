@@ -2,7 +2,6 @@
 #include "sprite/player.h"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
 API_CALLABLE(N(SetHeldBakingItem)) {

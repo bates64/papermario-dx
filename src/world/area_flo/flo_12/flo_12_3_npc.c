@@ -165,7 +165,7 @@ EvtScript N(EVS_NpcInit_Rosie) = {
     Add(LVar0, 35)
     Call(SetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
     Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_INVISIBLE, TRUE)
-    Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_HAS_SHADOW, TRUE)
+    Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_HAS_SHADOW, FALSE)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_CRYSTAL_BERRY)
             IfEq(GF_FLO12_Met_Rosie, TRUE)

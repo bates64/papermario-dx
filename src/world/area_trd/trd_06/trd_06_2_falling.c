@@ -239,48 +239,6 @@ EvtScript N(EVS_PartnerFalling) = {
     End
 };
 
-EvtScript N(EVS_Unused_GetUp) = {
-    Call(N(InitializeGetUp))
-    Thread
-        Loop(11)
-            Call(GetPlayerPos, LVar0, LVar1, LVar2)
-            Add(LVar1, 1000)
-            Call(N(SetFallingSpritePos), LVar0, LVar1, LVar2)
-            Wait(1)
-        EndLoop
-    EndThread
-    Thread
-        Call(MakeLerp, 210, 360, 10, EASING_COS_IN_OUT)
-        Label(0)
-        Call(UpdateLerp)
-        Call(N(SetFallingSpriteRot), 0, Float(0.0), Float(0.0), LVar0)
-        Wait(1)
-        IfEq(LVar1, 1)
-            Goto(0)
-        EndIf
-    EndThread
-    Wait(1)
-    Call(SetPlayerJumpscale, Float(1.0))
-    Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(PlayerJump, LVar0, -1000, LVar2, 10)
-    Thread
-        Call(MakeLerp, 150, 0, 10, EASING_COS_IN_OUT)
-        Label(1)
-        Call(UpdateLerp)
-        Call(SetNpcRotation, NPC_PARTNER, 0, 0, LVar0)
-        Wait(1)
-        IfEq(LVar1, 1)
-            Goto(1)
-        EndIf
-    EndThread
-    Wait(1)
-    Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
-    Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-    Call(NpcJump0, NPC_PARTNER, LVar0, 0, LVar2, 10)
-    Return
-    End
-};
-
 EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)

@@ -1,11 +1,7 @@
 #include "sam_02.h"
 #include "sprite/player.h"
 
-#if VERSION_PAL
 #include "sprite/npc/ShiverToad.h"
-#define TOADHOUSE_ANIM_TALK ANIM_ShiverToad_Red_Talk
-#define TOADHOUSE_ANIM_IDLE ANIM_ShiverToad_Red_Idle
-#endif
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"

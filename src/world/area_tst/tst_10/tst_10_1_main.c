@@ -103,22 +103,6 @@ EvtScript N(EVS_Main) = {
     End
 };
 
-TweesterPath N(DefaultTweesterPath) = {
-    -65, 0, 217,
-    -262, 0, -64,
-    57, 0, -286,
-    327, 0, 8,
-    TWEESTER_PATH_LOOP
- };
-
- TweesterPath* N(UnusedTweesterPaths)[] = {
-    &N(DefaultTweesterPath),
-    &N(DefaultTweesterPath),
-    &N(DefaultTweesterPath),
-    &N(DefaultTweesterPath),
-    PTR_LIST_END
-};
-
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_HeartBlock), -13, 60, -50, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_HiddenPanel), -111, 0, -55, 0, MODEL_o137, MAKE_ENTITY_END)

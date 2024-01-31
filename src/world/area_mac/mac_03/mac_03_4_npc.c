@@ -18,7 +18,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
-MAP_STATIC_PAD(1,post_quizmo);
 
 #include "world/common/complete/LetterDelivery.inc.c"
 

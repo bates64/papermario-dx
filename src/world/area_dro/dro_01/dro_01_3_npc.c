@@ -11,13 +11,11 @@
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
-MAP_STATIC_PAD(1,post_quizmo); // or pre_key_item?
 
 #include "world/common/complete/KeyItemChoice.inc.c"
+#include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"
-
-#include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {
     ITEM_LETTER_CHAIN_LITTLE_MOUSER,

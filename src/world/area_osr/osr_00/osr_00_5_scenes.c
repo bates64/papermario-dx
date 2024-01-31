@@ -20,7 +20,7 @@ API_CALLABLE(N(func_80240678_AACEA8)) {
 
 BSS IMG_BIN N(PeachLetterImg)[charset_peach_letter_png_width * charset_peach_letter_png_height];
 BSS PAL_BIN N(PeachLetterPal)[0x100];
-MAP_STATIC_PAD(2, letter);
+
 BSS MessageImageData N(MsgImage);
 
 // TODO look into + 1 here...

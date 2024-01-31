@@ -9,10 +9,7 @@
 #include "world/common/npc/YoshiKid.inc.c"
 #include "world/common/npc/YoshiKid_Patrol.inc.c"
 
-#define NAME_SUFFIX _Unused
-// included again later in this file; this copy is not used
 #include "world/common/npc/Raven.inc.c"
-#define NAME_SUFFIX
 
 #include "world/common/npc/Sushie.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
@@ -22,7 +19,6 @@
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
@@ -739,8 +735,6 @@ EvtScript N(EVS_NpcInit_Sushie) = {
     Return
     End
 };
-
-#include "world/common/npc/Raven.inc.c"
 
 AnimID N(ExtraAnims_VillageLeader)[] = {
     ANIM_VillageLeader_Idle,
