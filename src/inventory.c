@@ -13,9 +13,7 @@ enum BlinkModes {
 
 BSS b16 D_8010CD10;
 BSS b16 D_8010CD12;
-BSS char D_8010CD14[0xA];
 BSS s32 D_8010CD20;
-BSS char D_8010CD24[0xC];
 
 SHIFT_BSS StatusBar gStatusBar;
 

@@ -173,7 +173,7 @@ EvtScript N(EVS_NpcInteract_Rowf_C) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0009)
             Wait(10)
-            EVT_GIVE_BADGE_REWARD(ITEM_I_SPY)
+            EVT_GIVE_REWARD(ITEM_I_SPY)
             Set(GF_MAC01_CalculatorReturned, TRUE)
             Wait(10)
             Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0011)

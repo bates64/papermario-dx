@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
             KillThread(LVarA)
             ExecWait(N(EVS_Mayor_HandOverBucket))
             Call(SetNpcAnimation, NPC_SELF, ANIM_MayorPenguin_Idle)
-            EVT_GIVE_KEY_REWARD(ITEM_SNOWMAN_BUCKET)
+            EVT_GIVE_REWARD(ITEM_SNOWMAN_BUCKET)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003C)
             Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

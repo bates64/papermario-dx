@@ -65,7 +65,7 @@ BSS s32 RunningMusicEventIDs[10];
 BSS s32 D_802DB828[2]; // unused?
 
 // item_api
-BSS PopupMenu D_802DB830;
+BSS PopupMenu gItemChoicePopupMenu;
 
 #if VERSION_PAL
 BSS s32 D_PAL_BSS_802E1E34[0x3]; // TODO: probably just alignment

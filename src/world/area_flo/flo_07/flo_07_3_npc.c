@@ -92,7 +92,7 @@ EvtScript N(EVS_NpcInteract_Posie) = {
             Call(SetNpcAnimation, NPC_SELF, ANIM_Posie_GiveItem)
             Wait(20 * DT)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Posie_Still)
-            EVT_GIVE_KEY_REWARD(ITEM_FERTILE_SOIL)
+            EVT_GIVE_REWARD(ITEM_FERTILE_SOIL)
             Set(GB_StoryProgress, STORY_CH6_GOT_FERTILE_SOIL)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Posie_Talk, ANIM_Posie_Idle, 0, MSG_CH6_0066)
             IfEq(GF_FLO12_RosieRequestedSomethingBeautiful, TRUE)

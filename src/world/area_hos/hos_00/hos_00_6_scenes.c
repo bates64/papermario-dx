@@ -325,7 +325,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_TossItem)
     Wait(11)
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Pleased)
-    EVT_GIVE_KEY_REWARD(ITEM_LUCKY_STAR)
+    EVT_GIVE_REWARD(ITEM_LUCKY_STAR)
     Call(N(EnableActionCommands))
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Wait(20 * DT)

@@ -2,25 +2,6 @@
 #include "kpa_14.h"
 #include "entity.h"
 
-// similar to Chest.inc.c, except a script is missing...
-#include "world/common/todo/StashVars.inc.c"
-#include "world/common/todo/GetItemName.inc.c"
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-
-s32** N(varStash) = NULL;
-
-EvtScript N(EVS_Chest_ShowGotItem) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
-    Wait(40)
-    Call(ShowGotItem, LVar0, FALSE, 0)
-    Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
-    Return
-    Return
-    End
-};
-
 #include "world/common/todo/RemovePadlock.inc.c"
 #include "world/common/todo/GetEntityPosition.inc.c"
 

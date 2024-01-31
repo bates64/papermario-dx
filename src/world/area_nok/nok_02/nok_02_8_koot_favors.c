@@ -404,10 +404,10 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 #define NAME_SUFFIX _Koot
                 CaseEq(1 + KOOT_FAVOR_CH1_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B2)
-                    EVT_GIVE_KEY_REWARD(ITEM_SILVER_CREDIT)
+                    EVT_GIVE_REWARD(ITEM_SILVER_CREDIT)
                 CaseEq(1 + KOOT_FAVOR_CH4_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B3)
-                    EVT_GIVE_KEY_REWARD(ITEM_GOLD_CREDIT)
+                    EVT_GIVE_REWARD(ITEM_GOLD_CREDIT)
                     Call(RemoveItem, ITEM_SILVER_CREDIT)
                 #define NAME_SUFFIX
             EndSwitch

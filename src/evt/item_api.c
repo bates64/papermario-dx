@@ -3,22 +3,20 @@
 #include "hud_element.h"
 #include "world/partners.h"
 
-extern PopupMenu D_802DB830;
+extern PopupMenu gItemChoicePopupMenu;
 
 API_CALLABLE(ShowKeyChoicePopup) {
     PlayerData* playerData = &gPlayerData;
-    PopupMenu* menu = &D_802DB830;
+    PopupMenu* menu = &gItemChoicePopupMenu;
     Trigger* trigger = script->owner2.trigger;
     s32 numEntries;
-    s32 t; // TODO required in both places to match
     s32 i;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
     }
 
-    t = script->functionTemp[0];
-    switch (t) {
+    switch (script->functionTemp[0]) {
         case 0:
             disable_player_input();
             disable_player_static_collisions();
@@ -82,14 +80,12 @@ API_CALLABLE(ShowKeyChoicePopup) {
 
                 if (script->functionTemp[2] == 0xFF) {
                     script->varTable[0] = -1;
-                    return ApiStatus_DONE1;
                 } else {
-                    t = menu->userIndex[script->functionTemp[2] - 1];
-
-                    script->varTable[1] = t;
-                    script->varTable[0] = playerData->keyItems[t];
-                    return ApiStatus_DONE1;
+                    s32 invIndex = menu->userIndex[script->functionTemp[2] - 1];
+                    script->varTable[1] = invIndex;
+                    script->varTable[0] = playerData->keyItems[invIndex];
                 }
+                return ApiStatus_DONE1;
             }
             break;
     }
@@ -98,18 +94,16 @@ API_CALLABLE(ShowKeyChoicePopup) {
 
 API_CALLABLE(ShowConsumableChoicePopup) {
     PlayerData* playerData = &gPlayerData;
-    PopupMenu* menu = &D_802DB830;
+    PopupMenu* menu = &gItemChoicePopupMenu;
     Trigger* trigger = script->owner2.trigger;
     s32 numEntries;
-    s32 t; // TODO required in both places to match
     s32 i;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
     }
 
-    t = script->functionTemp[0];
-    switch (t) {
+    switch (script->functionTemp[0]) {
         case 0:
             disable_player_input();
             disable_player_static_collisions();
@@ -173,14 +167,12 @@ API_CALLABLE(ShowConsumableChoicePopup) {
 
                 if (script->functionTemp[2] == 0xFF) {
                     script->varTable[0] = -1;
-                    return ApiStatus_DONE1;
                 } else {
-                    t = menu->userIndex[script->functionTemp[2] - 1];
-
-                    script->varTable[1] = t;
-                    script->varTable[0] = playerData->invItems[t];
-                    return ApiStatus_DONE1;
+                    s32 invIdx = menu->userIndex[script->functionTemp[2] - 1];
+                    script->varTable[1] = invIdx;
+                    script->varTable[0] = playerData->invItems[invIdx];
                 }
+                return ApiStatus_DONE1;
             }
             break;
     }

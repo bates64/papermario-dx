@@ -34,7 +34,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
             Return
         CaseEq(ITEM_KOOPA_LEAF)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011C)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_MAPLE_SYRUP)
+            EVT_GIVE_REWARD(ITEM_MAPLE_SYRUP)
             Wait(10)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011D)
             Wait(10)

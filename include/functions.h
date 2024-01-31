@@ -36,6 +36,10 @@ void copy_matrix(Matrix4f src, Matrix4f dest);
 
 s8 set_global_byte(s32 index, s32 value);
 s32 get_global_byte(s32 index);
+s16 set_global_short(s32 index, s32 value);
+s16 get_global_short(s32 index);
+s32 set_global_word(s32 index, s32 value);
+s32 get_global_word(s32 index);
 s32 set_global_flag(s32 index);
 s32 clear_global_flag(s32 index);
 s32 get_global_flag(s32 index);

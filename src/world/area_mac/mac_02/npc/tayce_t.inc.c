@@ -4,6 +4,8 @@
 #include "common.h"
 #include "gcc/string.h"
 
+#include "world/common/todo/GetItemName.inc.c"
+
 typedef struct CookingResult {
     /* 00 */ s32 quality;
     /* 04 */ s32 itemID;
@@ -205,7 +207,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
         Call(N(CheckItemsHasRoom), LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_CAKE)
+            EVT_GIVE_REWARD(ITEM_CAKE)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001B)
             Set(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
         Else
@@ -226,7 +228,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
             Call(N(CheckItemsHasRoom), LVar0)
             IfNe(LVar0, 0)
                 Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
-                EVT_GIVE_CONSUMABLE_REWARD(ITEM_CAKE)
+                EVT_GIVE_REWARD(ITEM_CAKE)
                 Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001B)
                 Set(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
             Else
@@ -420,7 +422,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     EndSwitch
     Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0014)
     Call(N(SetRecipeDiscovered), LVar6)
-    EVT_GIVE_CONSUMABLE_REWARD(LVar6)
+    EVT_GIVE_REWARD(LVar6)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0015)
 
     // end the script

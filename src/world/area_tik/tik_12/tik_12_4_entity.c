@@ -1,31 +1,6 @@
 #include "tik_12.h"
 #include "entity.h"
 
-// begin incomplete Chest include
-//#include "world/common/entity/Chest.inc.c"
-
-#include "world/common/todo/StashVars.inc.c"
-#include "world/common/todo/GetItemName.inc.c"
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-
-s32** N(varStash) = NULL;
-
-EvtScript N(EVS_Chest_ShowGotItem) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
-    Wait(40)
-    Call(ShowGotItem, LVar0, FALSE, 0)
-    Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
-    Return
-    Return
-    End
-};
-
-MAP_RODATA_PAD(1,unk);
-
-// end incomplete Chest include
-
 #define SUPER_BLOCK_MAPVAR MV_SuperBlock
 #define SUPER_BLOCK_GAMEFLAG GF_TIK02_SuperBlock
 #include "world/common/entity/SuperBlock.inc.c"

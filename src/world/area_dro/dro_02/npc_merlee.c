@@ -777,7 +777,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     EndIf
     IfEq(LVar0, 3)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00DC)
-        EVT_GIVE_KEY_REWARD(ITEM_CRYSTAL_BALL)
+        EVT_GIVE_REWARD(ITEM_CRYSTAL_BALL)
         Set(GF_DRO01_Gift_CrystalBall, 1)
         Wait(20)
         Call(func_802D2C14, 0)

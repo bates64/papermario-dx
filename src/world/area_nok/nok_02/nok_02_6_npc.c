@@ -549,7 +549,7 @@ EvtScript N(EVS_KoloradoWife_FetchKoopaLegends) = {
         EndIf
     EndIf
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0091)
-    EVT_GIVE_KEY_REWARD(ITEM_KOOT_KOOPA_LEGENDS)
+    EVT_GIVE_REWARD(ITEM_KOOT_KOOPA_LEGENDS)
     Call(SpeakToPlayer, NPC_KoloradoWife, ANIM_KoloradoWife_Talk, ANIM_KoloradoWife_Idle, 0, MSG_CH1_0092)
     Call(SetNpcFlagBits, NPC_KoloradoWife, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return

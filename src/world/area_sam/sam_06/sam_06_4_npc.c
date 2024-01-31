@@ -423,7 +423,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(SetItemPos, MV_ScarfItemID, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    EVT_GIVE_KEY_REWARD(ITEM_SNOWMAN_SCARF)
+    EVT_GIVE_REWARD(ITEM_SNOWMAN_SCARF)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F1)
     Wait(10 * DT)
     Call(SetCamPosA, CAM_DEFAULT, Float(200.7), Float(-321.0))

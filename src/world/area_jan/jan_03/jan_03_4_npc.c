@@ -332,7 +332,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006D)
-                EVT_GIVE_CONSUMABLE_REWARD(ITEM_MELON)
+                EVT_GIVE_REWARD(ITEM_MELON)
             EndIf
             Return
         EndIf
@@ -665,7 +665,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                         Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
                         Wait(25)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001A)
-                        EVT_GIVE_KEY_REWARD(ITEM_MAGICAL_SEED4)
+                        EVT_GIVE_REWARD(ITEM_MAGICAL_SEED4)
                         Set(GF_JAN03_Gift_MagicalSeed4, TRUE)
                         Wait(20)
                         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)

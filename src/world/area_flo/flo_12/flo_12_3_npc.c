@@ -135,7 +135,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0095)
                     Call(RemoveItemEntity, LVar7)
                     Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
-                    EVT_GIVE_KEY_REWARD(ITEM_WATER_STONE)
+                    EVT_GIVE_REWARD(ITEM_WATER_STONE)
                     Wait(10)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0096)
                     Set(AF_FLO_GivenCrystalBerry, TRUE)

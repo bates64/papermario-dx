@@ -68,7 +68,7 @@ EvtScript N(EVS_LetterPrompt_ToadKid1A) = {
 EvtScript N(EVS_LetterReward_ToadKid1A) = {
     IfEq(LVarC, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
-        EVT_GIVE_KEY_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
+        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
     EndIf
     Return
     End
@@ -94,7 +94,7 @@ EvtScript N(EVS_LetterPrompt_ToadKid1B) = {
 EvtScript N(EVS_LetterReward_ToadKid1B) = {
     IfEq(LVarC, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
-        EVT_GIVE_KEY_REWARD(ITEM_LETTER_CHAIN_FROST_T)
+        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_FROST_T)
     EndIf
     Return
     End

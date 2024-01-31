@@ -225,7 +225,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
             Return
         CaseEq(ITEM_NUTTY_CAKE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F1)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_MAPLE_SUPER)
+            EVT_GIVE_REWARD(ITEM_MAPLE_SUPER)
             Wait(10)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F2)
             Wait(10)

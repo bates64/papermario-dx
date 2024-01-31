@@ -78,7 +78,7 @@ EvtScript N(EVS_LetterPrompt_Goompapa) = {
 
 EvtScript N(EVS_LetterReward_Goompapa) = {
     IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_BADGE_REWARD(ITEM_LUCKY_DAY)
+        EVT_GIVE_REWARD(ITEM_LUCKY_DAY)
     EndIf
     Return
     End
@@ -634,7 +634,7 @@ EvtScript N(EVS_ReturnToVillage) = {
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     Wait(10 * DT)
-    EVT_GIVE_BADGE_REWARD(ITEM_POWER_JUMP)
+    EVT_GIVE_REWARD(ITEM_POWER_JUMP)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Walk)
     Call(NpcMoveTo, NPC_PARTNER, 3, 9, 0)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
@@ -795,7 +795,7 @@ EvtScript N(EVS_KootFavorCheck_Goompa) = {
             Call(SetNpcPos, NPC_Goompa, LVar0, LVar1, LVar2)
             Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_004B)
-            EVT_GIVE_KEY_REWARD(ITEM_KOOT_THE_TAPE)
+            EVT_GIVE_REWARD(ITEM_KOOT_THE_TAPE)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_004C)
         EndIf
     EndIf

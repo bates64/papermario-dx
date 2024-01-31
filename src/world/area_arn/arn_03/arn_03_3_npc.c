@@ -121,7 +121,7 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
     IfNe(MV_Unk_00, 0)
         IfGe(MV_Unk_00, MV_Unk_01)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0081)
-            EVT_GIVE_KEY_REWARD(ITEM_KOOT_PACKAGE)
+            EVT_GIVE_REWARD(ITEM_KOOT_PACKAGE)
             Set(MV_Unk_00, 0)
             Set(GF_ARN03_RecievedPackage, TRUE)
             Set(GF_ARN03_WaitingForPackage, FALSE)

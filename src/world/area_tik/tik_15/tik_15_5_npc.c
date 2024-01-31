@@ -91,7 +91,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, FALSE)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_BADGE_REWARD(ITEM_BUMP_ATTACK)
+            EVT_GIVE_REWARD(ITEM_BUMP_ATTACK)
         CaseEq(CHEATO_TYPE_CONSUMABLE)
             Call(N(CheckPlayerHasEnoughRoom))
             IfLe(LVar0, 0)
@@ -102,7 +102,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, FALSE)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_CONSUMABLE_REWARD(LVarB)
+            EVT_GIVE_REWARD(LVarB)
     EndSwitch
     IfLt(GB_TIK15_RipCheato_PurchaseCount, 10)
         Add(GB_TIK15_RipCheato_PurchaseCount, 1)

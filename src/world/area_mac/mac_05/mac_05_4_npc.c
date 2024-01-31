@@ -1767,7 +1767,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0073)
         Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0074)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0075)
-        EVT_GIVE_KEY_REWARD(ITEM_LYRICS)
+        EVT_GIVE_REWARD(ITEM_LYRICS)
         Set(GF_MAC05_SimonGaveLyrics, TRUE)
         Call(EnablePartnerAI)
         Return
@@ -1886,7 +1886,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007F)
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0080)
                 Wait(10)
-                EVT_GIVE_BADGE_REWARD(ITEM_ATTACK_FX_D)
+                EVT_GIVE_REWARD(ITEM_ATTACK_FX_D)
                 Call(SetTattleMessage, NPC_Chanterelle, MSG_NpcTattle_PopDiva_CanSing)
         EndSwitch
     EndIf
@@ -2027,7 +2027,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
             Return
         CaseEq(ITEM_COCONUT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C2)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_YUMMY_MEAL)
+            EVT_GIVE_REWARD(ITEM_YUMMY_MEAL)
             Wait(10)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C3)
             Wait(10)

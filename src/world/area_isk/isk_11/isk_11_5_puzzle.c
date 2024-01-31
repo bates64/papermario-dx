@@ -10,7 +10,7 @@ API_CALLABLE(N(GetItemNameInSocket)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
 
-    evt_set_variable(script, *args++, gItemTable[itemID & 0xFFF0FFFF].nameMsg);
+    evt_set_variable(script, *args++, gItemTable[itemID & ~0xF0000].nameMsg);
     return ApiStatus_DONE2;
 }
 
