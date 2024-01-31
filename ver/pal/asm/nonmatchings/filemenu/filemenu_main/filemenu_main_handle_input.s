@@ -806,8 +806,8 @@ glabel filemenu_main_handle_input
 /* 17319C 8024A77C 00000000 */   nop
 /* 1731A0 8024A780 3C108025 */  lui        $s0, 0x8025
 /* 1731A4 8024A784 26101740 */  addiu      $s0, $s0, (0x80251740 & 0xFFFF)
-/* 1731A8 8024A788 3C068007 */  lui        $a2, %hi(gSaveSlotMetadata)
-/* 1731AC 8024A78C 24C63D14 */  addiu      $a2, $a2, %lo(gSaveSlotMetadata)
+/* 1731A8 8024A788 3C068007 */  lui        $a2, %hi(gFilesDisplayData)
+/* 1731AC 8024A78C 24C63D14 */  addiu      $a2, $a2, %lo(gFilesDisplayData)
 /* 1731B0 8024A790 8E040000 */  lw         $a0, 0x0($s0)
 /* 1731B4 8024A794 8E250000 */  lw         $a1, 0x0($s1)
 /* 1731B8 8024A798 0080102D */  daddu      $v0, $a0, $zero

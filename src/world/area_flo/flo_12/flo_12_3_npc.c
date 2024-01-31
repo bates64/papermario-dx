@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     EndSwitch
             EndSwitch
         CaseLt(STORY_CH6_GOT_WATER_STONE)
-            Call(FindKeyItem, ITEM_CRYSTAL_BERRY, LVar0)
+            Call(FindItem, ITEM_CRYSTAL_BERRY, LVar0)
             IfNe(LVar0, -1)
                 Exec(N(EVS_PlayerApproachRosieAndItem))
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)

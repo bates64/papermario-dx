@@ -4,7 +4,7 @@ API_CALLABLE(N(CheckTradeEventTime)) {
 }
 
 API_CALLABLE(N(GetTradeEventItemCount)) {
-    script->varTable[0] = get_item_count();
+    script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 

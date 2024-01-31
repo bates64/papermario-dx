@@ -5,7 +5,6 @@
 
 EvtScript N(EVS_OpenChest_FryingPan) = {
     Set(LVarA, ITEM_FRYING_PAN)
-    Set(LVarB, ITEM_TYPE_KEY)
     Set(GF_OMO07_Chest_FryingPan, TRUE)
     Set(GB_StoryProgress, STORY_CH4_GOT_FRYING_PAN)
     ExecWait(N(EVS_Chest_GetItem))
@@ -13,9 +12,9 @@ EvtScript N(EVS_OpenChest_FryingPan) = {
     End
 };
 
-EvtScript N(EVS_OpenChest_DefendPlus) = EVT_OPEN_CHEST_BADGE(ITEM_DEFEND_PLUS_A, GF_OMO07_Chest_DefendPlusA);
+EvtScript N(EVS_OpenChest_DefendPlus) = EVT_OPEN_CHEST(ITEM_DEFEND_PLUS_A, GF_OMO07_Chest_DefendPlusA);
 
-EvtScript N(EVS_OpenChest_IcePower) = EVT_OPEN_CHEST_BADGE(ITEM_ICE_POWER, GF_OMO07_Chest_IcePower);
+EvtScript N(EVS_OpenChest_IcePower) = EVT_OPEN_CHEST(ITEM_ICE_POWER, GF_OMO07_Chest_IcePower);
 
 #include "world/common/EnableCameraFollowPlayerY.inc.c"
 #include "world/common/DisableCameraFollowPlayerY.inc.c"

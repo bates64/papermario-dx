@@ -187,8 +187,8 @@ glabel filemenu_yesno_handle_input
 /* 174048 8024B628 0000202D */  daddu      $a0, $zero, $zero
 /* 17404C 8024B62C 3C028025 */  lui        $v0, %hi(filemenu_menus)
 /* 174050 8024B630 8C42E984 */  lw         $v0, %lo(filemenu_menus)($v0)
-/* 174054 8024B634 3C068007 */  lui        $a2, %hi(gSaveSlotMetadata)
-/* 174058 8024B638 24C63D14 */  addiu      $a2, $a2, %lo(gSaveSlotMetadata)
+/* 174054 8024B634 3C068007 */  lui        $a2, %hi(gFilesDisplayData)
+/* 174058 8024B638 24C63D14 */  addiu      $a2, $a2, %lo(gFilesDisplayData)
 /* 17405C 8024B63C 90500003 */  lbu        $s0, 0x3($v0)
 /* 174060 8024B640 240500F7 */  addiu      $a1, $zero, 0xF7
 /* 174064 8024B644 00101040 */  sll        $v0, $s0, 1
@@ -203,8 +203,8 @@ glabel filemenu_yesno_handle_input
 /* 174084 8024B664 1440FFFB */  bnez       $v0, .Lfilemenu_8024B654
 /* 174088 8024B668 00831021 */   addu      $v0, $a0, $v1
 /* 17408C 8024B66C 0200202D */  daddu      $a0, $s0, $zero
-/* 174090 8024B670 3C038007 */  lui        $v1, %hi(gSaveSlotMetadata)
-/* 174094 8024B674 24633D14 */  addiu      $v1, $v1, %lo(gSaveSlotMetadata)
+/* 174090 8024B670 3C038007 */  lui        $v1, %hi(gFilesDisplayData)
+/* 174094 8024B674 24633D14 */  addiu      $v1, $v1, %lo(gFilesDisplayData)
 /* 174098 8024B678 00101040 */  sll        $v0, $s0, 1
 /* 17409C 8024B67C 00501021 */  addu       $v0, $v0, $s0
 /* 1740A0 8024B680 000210C0 */  sll        $v0, $v0, 3
@@ -296,8 +296,8 @@ glabel filemenu_yesno_handle_input
 /* 1741E4 8024B7C4 00000000 */   nop
 /* 1741E8 8024B7C8 3C108025 */  lui        $s0, 0x8025
 /* 1741EC 8024B7CC 26101740 */  addiu      $s0, $s0, (0x80251740 & 0xFFFF)
-/* 1741F0 8024B7D0 3C068007 */  lui        $a2, %hi(gSaveSlotMetadata)
-/* 1741F4 8024B7D4 24C63D14 */  addiu      $a2, $a2, %lo(gSaveSlotMetadata)
+/* 1741F0 8024B7D0 3C068007 */  lui        $a2, %hi(gFilesDisplayData)
+/* 1741F4 8024B7D4 24C63D14 */  addiu      $a2, $a2, %lo(gFilesDisplayData)
 /* 1741F8 8024B7D8 8E040000 */  lw         $a0, 0x0($s0)
 /* 1741FC 8024B7DC 8E250000 */  lw         $a1, 0x0($s1)
 /* 174200 8024B7E0 0080102D */  daddu      $v0, $a0, $zero
@@ -348,8 +348,8 @@ glabel filemenu_yesno_handle_input
 /* 1742B0 8024B890 0000202D */  daddu      $a0, $zero, $zero
 /* 1742B4 8024B894 3C028025 */  lui        $v0, %hi(filemenu_menus)
 /* 1742B8 8024B898 8C42E984 */  lw         $v0, %lo(filemenu_menus)($v0)
-/* 1742BC 8024B89C 3C078007 */  lui        $a3, %hi(gSaveSlotMetadata)
-/* 1742C0 8024B8A0 24E73D14 */  addiu      $a3, $a3, %lo(gSaveSlotMetadata)
+/* 1742BC 8024B89C 3C078007 */  lui        $a3, %hi(gFilesDisplayData)
+/* 1742C0 8024B8A0 24E73D14 */  addiu      $a3, $a3, %lo(gFilesDisplayData)
 /* 1742C4 8024B8A4 90510003 */  lbu        $s1, 0x3($v0)
 /* 1742C8 8024B8A8 3C068025 */  lui        $a2, %hi(filemenu_filename)
 /* 1742CC 8024B8AC 24C627E0 */  addiu      $a2, $a2, %lo(filemenu_filename)

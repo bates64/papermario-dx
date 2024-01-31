@@ -33,7 +33,6 @@ void N(ClubbaNappingAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    PlayerData* playerData = get_player_data();
     s32 shouldWakeUp = FALSE;
     EffectInstance* emoteTemp;
     f32 posX, posZ;
@@ -52,15 +51,15 @@ void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* aiSettings, EnemyDe
             shouldWakeUp = TRUE;
         }
 
-        if (playerData->curPartner == PARTNER_KOOPER) {
-            if (gPartnerStatus.partnerActionState == playerData->curPartner) {
+        if (gPlayerData.curPartner == PARTNER_KOOPER) {
+            if (gPartnerStatus.partnerActionState == gPlayerData.curPartner) {
                 shouldWakeUp = TRUE;
             }
         }
     }
 
-    if (((playerData->curPartner == PARTNER_GOOMBARIO) && (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)) ||
-        ((playerData->curPartner == PARTNER_BOMBETTE) && (gPartnerStatus.partnerActionState == PARTNER_ACTION_BOMBETTE_2))) {
+    if (((gPlayerData.curPartner == PARTNER_GOOMBARIO) && (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE)) ||
+        ((gPlayerData.curPartner == PARTNER_BOMBETTE) && (gPartnerStatus.partnerActionState == PARTNER_ACTION_BOMBETTE_2))) {
         posX = npc->pos.x;
         posZ = npc->pos.z;
         add_vec2D_polar(&posX, &posZ, 0.0f, npc->yaw);

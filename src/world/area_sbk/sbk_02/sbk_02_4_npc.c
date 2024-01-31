@@ -5,7 +5,7 @@
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #include "world/common/complete/GiveReward.inc.c"
 
@@ -195,7 +195,7 @@ API_CALLABLE(N(CheckTradeEventTime)) {
 }
 
 API_CALLABLE(N(GetTradeEventItemCount)) {
-    script->varTable[0] = get_item_count();
+    script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 

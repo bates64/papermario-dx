@@ -207,7 +207,7 @@ int main(int argc, char **argv) {
 			Write32(buffer, N64_CRC1, crc[0]);
 			fseek(fin, N64_CRC1, SEEK_SET);
 			fwrite(&buffer[N64_CRC1], 1, 4, fin);
-			printf("(Bad, fixed)\n");
+			printf("(Fixed)\n");
 		}
 
 		printf("CRC 2: 0x%08X  ", BYTES2LONG(&buffer[N64_CRC2]));
@@ -218,7 +218,7 @@ int main(int argc, char **argv) {
 			Write32(buffer, N64_CRC2, crc[1]);
 			fseek(fin, N64_CRC2, SEEK_SET);
 			fwrite(&buffer[N64_CRC2], 1, 4, fin);
-			printf("(Bad, fixed)\n");
+			printf("(Fixed)\n");
 		}
 	}
 

@@ -4,7 +4,7 @@
 #define NAME_SUFFIX _Entity
 #include "world/common/entity/Chest.inc.c"
 
-EvtScript N(EVS_OpenChest_AttackFXE) = EVT_OPEN_CHEST_BADGE(ITEM_ATTACK_FX_E, GF_SAM01_Chest_AttackFXE);
+EvtScript N(EVS_OpenChest_AttackFXE) = EVT_OPEN_CHEST(ITEM_ATTACK_FX_E, GF_SAM01_Chest_AttackFXE);
 #define NAME_SUFFIX
 
 EvtScript N(EVS_MakeEntities) = {

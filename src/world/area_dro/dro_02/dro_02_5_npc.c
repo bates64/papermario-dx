@@ -54,7 +54,7 @@ NpcSettings N(NpcSettings_Archeologist) = {
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"

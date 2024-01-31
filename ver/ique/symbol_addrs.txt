@@ -516,7 +516,7 @@ filemenu_filename = 0x8024ced0; // segment:filemenu
 filemenu_set_cursor_alpha = 0x80242dec; // segment:filemenu
 
 gSaveSlotHasData = 0x80076684;
-gSaveSlotMetadata = 0x80076624;
+gFilesDisplayData = 0x80076624;
 MsgCharsets = 0x802eb5a8;
 load_font_data = 0x80121ae8;
 D_802F4560 = 0x802f4558;
@@ -4320,7 +4320,7 @@ fx_ice_pillar = 0x80071490;
 npc_raycast_down_around = 0x800DAB58;
 npc_raycast_down_sides = 0x800DAF5C;
 find_item = 0x800E5A24;
-sort_items = 0x800E5AAC;
+sort_consumables = 0x800E5AAC;
 draw_status_ui = 0x800E7B1C;
 setup_status_bar_for_battle = 0x800E7BF0;
 status_bar_start_blinking_starpoints = 0x800E7EC4;

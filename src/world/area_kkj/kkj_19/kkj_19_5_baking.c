@@ -6,7 +6,7 @@
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #define MIXING_TIME_IN_FRAMES   10 * 30 * DT
 #define MIXING_REQUIRED_INPUTS  27
@@ -376,8 +376,7 @@ EvtScript N(EVS_UpdatePeachMixingAnimations) = {
 
 EvtScript N(EVS_ReturnHeldIngredient) = {
     IfNe(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
-        Call(FindKeyItem, AB_KKJ19_HeldIngredient, LVar0)
-        Call(RemoveKeyItemAt, LVar0)
+        Call(RemoveItem, AB_KKJ19_HeldIngredient)
         Set(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
         Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
@@ -451,11 +450,11 @@ EvtScript N(EVS_TakeIngredient) = {
         Call(N(SetHeldBakingItem), LVar0)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
         Set(AB_KKJ19_HeldIngredient, LVarB)
-        Call(AddKeyItem, LVarB)
+        Call(AddItem, LVarB, EVT_IGNORE_ARG)
         Call(ShowMessageAtScreenPos, MSG_Peach_00E7, 160, 40)
     Else
         // exchanging held ingredient for current station
-        Call(FindKeyItem, LVar0, LVar1)
+        Call(FindItem, LVar0, LVar1)
         IfEq(LVar1, -1)
             Set(LVar9, AB_KKJ19_HeldIngredient)
             Call(N(GetItemNameRaw), LVar9)
@@ -492,7 +491,7 @@ EvtScript N(EVS_TakeIngredient) = {
                 Call(N(SetHeldBakingItem), LVar0)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
                 Set(AB_KKJ19_HeldIngredient, LVarB)
-                Call(AddKeyItem, LVarB)
+                Call(AddItem, LVarB, EVT_IGNORE_ARG)
                 Call(SwitchMessage, MSG_Peach_00EA)
             Else
                 Call(CloseMessage)

@@ -59,7 +59,7 @@ EvtScript N(EVS_SetupGiantChest_SuperHammer) = {
     End
 };
 
-EvtScript N(EVS_OpenChest_SlowGo) = EVT_OPEN_CHEST_BADGE(ITEM_SLOW_GO, GF_ISK09_Chest_SlowGo);
+EvtScript N(EVS_OpenChest_SlowGo) = EVT_OPEN_CHEST(ITEM_SLOW_GO, GF_ISK09_Chest_SlowGo);
 
 EvtScript N(EVS_SmashBlock_Stone) = {
     Set(GF_ISK09_Hammer2Block, TRUE)

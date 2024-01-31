@@ -11,7 +11,7 @@ NpcSettings N(NpcSettings_Snowman) = {
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 s32 N(BucketList)[] = {
     ITEM_SNOWMAN_BUCKET,
@@ -49,7 +49,7 @@ EvtScript N(EVS_NpcInteract_Snowman_05) = {
 
 EvtScript N(EVS_ItemPrompt_Scarf) = {
     Call(DisablePlayerInput, TRUE)
-    Call(FindKeyItem, ITEM_SNOWMAN_SCARF, LVar0)
+    Call(FindItem, ITEM_SNOWMAN_SCARF, LVar0)
     IfNe(LVar0, -1)
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
@@ -89,7 +89,7 @@ EvtScript N(EVS_NpcInteract_Snowman_03) = {
 
 EvtScript N(EVS_ItemPrompt_Bucket) = {
     Call(DisablePlayerInput, TRUE)
-    Call(FindKeyItem, ITEM_SNOWMAN_BUCKET, LVar0)
+    Call(FindItem, ITEM_SNOWMAN_BUCKET, LVar0)
     IfNe(LVar0, -1)
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)

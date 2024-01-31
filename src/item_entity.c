@@ -1629,7 +1629,7 @@ void update_item_entity_collectable(ItemEntity* item) {
             physData->collisionRadius = 24.0f;
             physData->constVel = 24.0f;
             if (item->spawnAngle < 0) {
-                if (IS_ITEM(item->itemID)) {
+                if (item_is_consumable(item->itemID) || item_is_key(item->itemID)) {
                     if (rand_int(10000) < 5000) {
                         physData->moveAngle = clamp_angle(gCameras[camID].curYaw + 105.0f + rand_int(30) - 15.0f);
                     } else {
@@ -1899,9 +1899,9 @@ void update_item_entity_collectable(ItemEntity* item) {
                         physData->velZ = 0.0f;
                         item->flags |= ITEM_ENTITY_FLAG_DONE_FALLING;
                     } else {
-                        if (IS_BADGE(item->itemID)) {
+                        if (item_is_badge(item->itemID)) {
                             sfx_play_sound_at_position(SOUND_BADGE_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
-                        } else if (IS_ITEM(item->itemID)) {
+                        } else if (item_is_consumable(item->itemID) || item_is_key(item->itemID)) {
                             sfx_play_sound_at_position(SOUND_ITEM_BOUNCE, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
                         } else {
                             switch (item->itemID) {
@@ -1952,9 +1952,7 @@ void update_item_entity_collectable(ItemEntity* item) {
 
         fx_small_gold_sparkle(0, item->pos.x, item->pos.y + 16.0f, item->pos.z, 1.0f, 0);
 
-        if (IS_ITEM(item->itemID)) {
-            item->state = ITEM_PHYSICS_STATE_PICKUP;
-        } else if (IS_BADGE(item->itemID)) {
+        if (item_is_consumable(item->itemID) || item_is_key(item->itemID) || item_is_badge(item->itemID)) {
             item->state = ITEM_PHYSICS_STATE_PICKUP;
         } else if (item->itemID == ITEM_STAR_PIECE) {
             playerData->starPiecesCollected++;
@@ -2001,7 +1999,6 @@ void update_item_entity_collectable(ItemEntity* item) {
                     }
                     break;
                 case ITEM_KOOPA_FORTRESS_KEY:
-                    playerData->fortressKeyCount = playerData->fortressKeyCount + 1;
                     sfx_play_sound_at_position(SOUND_COIN_PICKUP, SOUND_SPACE_DEFAULT, item->pos.x, item->pos.y, item->pos.z);
                     break;
                 case ITEM_STAR_POINT:
@@ -2368,7 +2365,7 @@ block_47: // TODO required to match
             }
             hud_element_free(ItemPickupIconID);
             remove_item_entity_by_reference(item);
-            sort_items();
+            sort_consumables();
             decrement_status_bar_disabled();
             isPickingUpItem = FALSE;
             break;
@@ -2441,7 +2438,7 @@ block_47: // TODO required to match
 
                 if (ThrowAwayMenuIdx >= 2) {
                     playerData->invItems[ThrowAwayMenuIdx - 2] = ITEM_NONE;
-                    sort_items();
+                    sort_consumables();
                     add_item(item->itemID);
                 }
                 suggest_player_anim_always_forward(ANIM_MarioW1_Lift);
@@ -2473,7 +2470,7 @@ block_47: // TODO required to match
             gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
             hud_element_free(ItemPickupIconID);
             remove_item_entity_by_reference(item);
-            sort_items();
+            sort_consumables();
             decrement_status_bar_disabled();
             isPickingUpItem = FALSE;
             break;

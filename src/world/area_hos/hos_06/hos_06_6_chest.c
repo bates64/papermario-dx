@@ -9,15 +9,6 @@ extern IconHudScriptPair gItemHudScripts[];
 // - inclusion of N(ChestItems)
 // - removal of N(EVS_Chest_GetItem)
 
-#define NAME_SUFFIX _MagicChest
-#include "world/common/todo/StashVars.inc.c"
-#include "world/common/todo/GetItemName.inc.c"
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-
-s32** N(varStash) = NULL;
-#define NAME_SUFFIX
-
 EvtScript N(EVS_Chest_ShowGotItem) = {
     SetGroup(EVT_GROUP_00)
     Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
@@ -194,7 +185,7 @@ EvtScript N(EVS_Interact_MagicChest_Mario) = {
             Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
             Call(ShowGotItem, LVar0, FALSE, 0)
             Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
-            Call(AddBadge, LVar0, LVar1)
+            Call(AddItem, LVar0, LVar1)
             Call(N(SetItemRetrieved))
         EndCaseGroup
         CaseDefault

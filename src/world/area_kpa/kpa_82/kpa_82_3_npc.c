@@ -90,7 +90,7 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 EvtScript N(EVS_SetCam_MeetingDoor) = {
     Call(SetCamType, CAM_DEFAULT, 4, FALSE)

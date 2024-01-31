@@ -255,9 +255,9 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
         Exec(N(EVS_PopSong))
         Wait(10 * DT)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001E)
-        Call(AddKeyItem, ITEM_LETTER_TO_MERLON)
-        Call(AddKeyItem, ITEM_LETTER_TO_KOLORADO)
-        Call(AddKeyItem, ITEM_LETTER_CHAIN_GOOMPAPA_1)
+        Call(AddItem, ITEM_LETTER_TO_MERLON, EVT_IGNORE_ARG)
+        Call(AddItem, ITEM_LETTER_TO_KOLORADO, EVT_IGNORE_ARG)
+        Call(AddItem, ITEM_LETTER_CHAIN_GOOMPAPA_1, EVT_IGNORE_ARG)
     EndIf
     Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
     Call(EnablePartnerAI)

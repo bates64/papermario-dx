@@ -5,7 +5,7 @@
 
 EvtScript N(EVS_OpenChest_MysticalKey) = {
     Set(GF_DGB18_Chest_MysticalKey, TRUE)
-    Call(AddKeyItem, ITEM_MYSTICAL_KEY)
+    Call(AddItem, ITEM_MYSTICAL_KEY, EVT_IGNORE_ARG)
     Call(SetNpcVar, NPC_Yakkey, 0, 1)
     Return
     End

@@ -141,11 +141,11 @@ EvtScript N(EVS_NpcInit_Toadette) = {
 };
 
 EvtScript N(EVS_NpcInteract_DojoGrad) = {
-    Call(FindKeyItem, ITEM_FIRST_DEGREE_CARD, LVar1)
-    Call(FindKeyItem, ITEM_SECOND_DEGREE_CARD, LVar2)
-    Call(FindKeyItem, ITEM_THIRD_DEGREE_CARD, LVar3)
-    Call(FindKeyItem, ITEM_FOURTH_DEGREE_CARD, LVar4)
-    Call(FindKeyItem, ITEM_DIPLOMA, LVar5)
+    Call(FindItem, ITEM_FIRST_DEGREE_CARD, LVar1)
+    Call(FindItem, ITEM_SECOND_DEGREE_CARD, LVar2)
+    Call(FindItem, ITEM_THIRD_DEGREE_CARD, LVar3)
+    Call(FindItem, ITEM_FOURTH_DEGREE_CARD, LVar4)
+    Call(FindItem, ITEM_DIPLOMA, LVar5)
     IfNe(LVar1, -1)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Brown_Talk, ANIM_Dryite_Brown_Idle, 0, MSG_CH2_009A)
         Return

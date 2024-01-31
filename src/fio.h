@@ -9,7 +9,7 @@ b32 fio_load_game(s32 saveSlot);
 void fio_save_game(s32 saveSlot);
 void fio_erase_game(s32 saveSlot);
 
-extern SaveMetadata gSaveSlotMetadata[4];
+extern FileDisplayData gFilesDisplayData[4];
 extern u8 gSaveSlotHasData[4];
 extern SaveGlobals gSaveGlobals;
 

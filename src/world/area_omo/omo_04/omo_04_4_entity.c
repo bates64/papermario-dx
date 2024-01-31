@@ -5,7 +5,6 @@
 
 EvtScript N(EVS_OpenChest_StoreroomKey) = {
     Set(LVarA, ITEM_STOREROOM_KEY)
-    Set(LVarB, ITEM_TYPE_KEY)
     Set(GF_OMO04_Chest_StoreroomKey, TRUE)
     ExecWait(N(EVS_Chest_GetItem))
     Set(GF_MAC04_StoreroomKeyStolen, TRUE)

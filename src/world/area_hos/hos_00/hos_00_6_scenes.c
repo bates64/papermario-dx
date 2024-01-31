@@ -337,7 +337,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Set(LVar0, 7)
     Set(LVar1, 4)
     Call(ShowGotItem, LVar0, TRUE, 0)
-    Call(AddKeyItem, LVar0)
+    Call(AddItem, LVar0, EVT_IGNORE_ARG)
     Call(N(EnableActionCommands))
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Wait(20 * DT)

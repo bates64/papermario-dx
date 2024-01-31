@@ -682,7 +682,7 @@ EvtScript N(EVS_KootCheckBall_Merluvlee) = {
     IfEq(GF_HOS06_Gift_MerluvleesAutograph, TRUE)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_CRYSTAL_BALL, LVar0)
+    Call(FindItem, ITEM_CRYSTAL_BALL, LVar0)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Merluvlee, ANIM_Merluvlee_Talk, ANIM_Merluvlee_Idle, 0, MSG_HOS_0048)
     Else

@@ -219,8 +219,7 @@ EvtScript N(EVS_Goombaria_RequestDolly) = {
     Call(ShowChoice, MSG_Choice_0011)
     Wait(10)
     IfEq(LVar0, 0)
-        Call(FindKeyItem, ITEM_DOLLY, LVar0)
-        Call(RemoveKeyItemAt, LVar0)
+        Call(RemoveItem, ITEM_DOLLY)
         ExecWait(N(EVS_HandOverDolly))
         Call(ContinueSpeech, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_009A)
         Wait(10)
@@ -249,7 +248,7 @@ EvtScript N(EVS_Goombaria_RequestDolly) = {
 };
 
 EvtScript N(EVS_NpcInteract_Goombaria) = {
-    Call(HasKeyItem, ITEM_DOLLY, LVar0)
+    Call(HasItem, ITEM_DOLLY, LVar0)
     IfNe(LVar0, 0)
         ExecWait(N(EVS_Goombaria_RequestDolly))
         Return
@@ -537,8 +536,7 @@ EvtScript N(EVS_ReturnToVillage) = {
         Switch(LVar0)
             CaseEq(0)
                 Call(CloseMessage)
-                Call(FindKeyItem, ITEM_DOLLY, LVar0)
-                Call(RemoveKeyItemAt, LVar0)
+                Call(RemoveItem, ITEM_DOLLY)
                 Call(PlayerFaceNpc, NPC_Goombaria, TRUE)
                 Call(PlayerMoveTo, -50, -24, 0)
                 Call(InterpPlayerYaw, 94, 0)

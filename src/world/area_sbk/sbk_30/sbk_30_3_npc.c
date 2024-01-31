@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_Archeologist_01) = {
 #include "world/common/complete/GiveReward.inc.c"
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,normal_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #include "world/common/complete/LetterDelivery.inc.c"
 
@@ -76,7 +76,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0046)
         Goto(50)
     EndIf
-    Call(HasKeyItem, ITEM_ARTIFACT, LVar0)
+    Call(HasItem, ITEM_ARTIFACT, LVar0)
     IfEq(LVar0, 1)
         IfEq(GF_SBK_KeptArtifactFromKolorado, TRUE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0043)

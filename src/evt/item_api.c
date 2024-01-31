@@ -187,46 +187,20 @@ API_CALLABLE(ShowConsumableChoicePopup) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(RemoveKeyItemAt) {
-    Bytecode* args = script->ptrReadPos;
-    s32 index = evt_get_variable(script, *args++);
-    s16* ptrKeyItems = gPlayerData.keyItems;
-
-    ptrKeyItems[index] = ITEM_NONE;
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(RemoveItemAt) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* ptrInvItems = gPlayerData.invItems;
 
-    ptrInvItems[index] = ITEM_NONE;
-    sort_items();
+    gPlayerData.invItems[index] = ITEM_NONE;
+    sort_consumables();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(AddKeyItem) {
+API_CALLABLE(RemoveKeyItemAt) {
     Bytecode* args = script->ptrReadPos;
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 itemID = evt_get_variable(script, value);
-    s32 i;
+    s32 index = evt_get_variable(script, *args++);
 
-    if (itemID == ITEM_KOOPA_FORTRESS_KEY) {
-        playerData->fortressKeyCount++;
-        return ApiStatus_DONE2;
-    }
-
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == ITEM_NONE) {
-            break;
-        }
-    }
-
-    if (i < ARRAY_COUNT(playerData->keyItems)) {
-        playerData->keyItems[i] = itemID;
-    }
+    gPlayerData.keyItems[index] = ITEM_NONE;
     return ApiStatus_DONE2;
 }
 
@@ -238,123 +212,58 @@ API_CALLABLE(CloseChoicePopup) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(HasKeyItem) {
-    Bytecode* args = script->ptrReadPos;
-    s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == itemID) {
-            break;
-        }
-    }
-    evt_set_variable(script, value, i < ARRAY_COUNT(playerData->keyItems));
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(FindKeyItem) {
-    Bytecode* args = script->ptrReadPos;
-    s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
-
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == itemID) {
-            break;
-        }
-    }
-
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->keyItems)) {
-        itemIndex = i;
-    }
-
-    evt_set_variable(script, value, itemIndex);
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(AddItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    Bytecode outItemIdx = *args++;
+    Bytecode outVar = *args++;
 
-    evt_set_variable(script, outItemIdx, add_item(itemID));
-    return ApiStatus_DONE2;
-}
+    s32 addedIdx = add_item(itemID);
 
-API_CALLABLE(ClearVariable) {
-    evt_set_variable(script, *script->ptrReadPos, 0);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(FindItem) {
-    Bytecode* args = script->ptrReadPos;
-    s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
-
-    for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        if (playerData->invItems[i] == itemID) {
-            break;
-        }
-    }
-
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->invItems)) {
-        itemIndex = i;
-    }
-
-    evt_set_variable(script, value, itemIndex);
+    evt_set_variable(script, outVar, addedIdx);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(RemoveItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
+    Bytecode outVar = *args++;
 
-    for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        if (playerData->invItems[i] == itemID) {
-            break;
-        }
-    }
+    s32 removedIdx = remove_item(itemID);
 
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->invItems)) {
-        itemIndex = i;
-    }
-
-    if (itemIndex >= 0) {
-        // This is `playerData->invItems[i]`, but we have to do weird
-        // pointer math to get the output asm to exactly match :/
-        *(playerData->invItems + i) = ITEM_NONE;
-    }
-    sort_items();
-
-    evt_set_variable(script, value, itemIndex);
+    evt_set_variable(script, outVar, removedIdx);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(CountFortessKeys) {
-    s32 outVar = *script->ptrReadPos;
+API_CALLABLE(FindItem) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemID = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
 
-    evt_set_variable(script, outVar, get_fortress_key_count());
+    s32 foundIdx = find_item(itemID);
+
+    evt_set_variable(script, outVar, foundIdx);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(RemoveFortressKeys) {
-    s32 num = evt_get_variable(script, *script->ptrReadPos);
+API_CALLABLE(CountItem) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemID = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
 
-    subtract_fortress_keys(num);
+    b32 count = count_item(itemID);
+
+    evt_set_variable(script, outVar, count);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(HasItem) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemID = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+
+    b32 hasItem = has_item(itemID);
+
+    evt_set_variable(script, outVar, hasItem);
     return ApiStatus_DONE2;
 }
 
@@ -406,35 +315,6 @@ API_CALLABLE(RemoveItemEntity) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(AddBadge) {
-    Bytecode* args = script->ptrReadPos;
-    s32 badgeID = evt_get_variable(script, *args++);
-    Bytecode outBadgeIdx = *args++;
-
-    evt_set_variable(script, outBadgeIdx, add_badge(badgeID));
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(RemoveBadge) {
-    Bytecode* args = script->ptrReadPos;
-    PlayerData* playerData = &gPlayerData;
-    s32 badge = evt_get_variable(script, *args++);
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
-        if (playerData->badges[i] == badge) {
-            playerData->badges[i] = ITEM_NONE;
-        }
-    }
-
-    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        if (playerData->equippedBadges[i] == badge) {
-            playerData->equippedBadges[i] = ITEM_NONE;
-        }
-    }
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(SetItemPos) {
     Bytecode* args = script->ptrReadPos;
     ItemEntity* ptrItemEntity;
@@ -457,10 +337,10 @@ API_CALLABLE(SetItemFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIndex = evt_get_variable(script, *args++);
     s32 flagBits = *args++;
-    s32 var2 = evt_get_variable(script, *args++);
+    s32 mode = evt_get_variable(script, *args++);
     ItemEntity* itemEntity = get_item_entity(itemEntityIndex);
 
-    if (var2 != 0) {
+    if (mode != 0) {
         itemEntity->flags |= flagBits;
     } else {
         itemEntity->flags &= ~flagBits;
@@ -506,25 +386,22 @@ API_CALLABLE(GetItemPower) {
 
 API_CALLABLE(ShowGotItem) {
     Bytecode* args = script->ptrReadPos;
-    s32 itemID, category, pickupMsgFlags;
+    s32 itemID, unkCond, pickupMsgFlags;
 
     if (isInitialCall) {
-        script->functionTemp[0] = 0;
+        script->functionTemp[0] = FALSE;
     }
 
-    switch (script->functionTemp[0]) {
-        case 0:
-            itemID = evt_get_variable(script, *args++);
-            category = evt_get_variable(script, *args++);
-            pickupMsgFlags = *args++;
-            script->functionTemp[1] = make_item_entity_at_player(itemID, category, pickupMsgFlags);
-            script->functionTemp[0] = 1;
-            break;
-        case 1:
-            if (get_item_entity(script->functionTemp[1]) == NULL) {
-                return ApiStatus_DONE2;
-            }
-            break;
+    if (script->functionTemp[0]) {
+        if (get_item_entity(script->functionTemp[1]) == NULL) {
+            return ApiStatus_DONE2;
+         }
+    } else {
+        itemID = evt_get_variable(script, *args++);
+        unkCond = evt_get_variable(script, *args++);
+        pickupMsgFlags = *args++;
+        script->functionTemp[1] = make_item_entity_at_player(itemID, unkCond, pickupMsgFlags);
+        script->functionTemp[0] = TRUE;
     }
     return ApiStatus_BLOCK;
 }

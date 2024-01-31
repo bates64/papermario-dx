@@ -1,13 +1,10 @@
 #include "flo_23.h"
 #include "sprite/player.h"
 
-#include "world/common/npc/GateFlower.inc.c"
-
-#include "world/common/complete/NormalItemChoice.inc.c"
-
 #include "world/common/enemy/Spiny.inc.c"
 
-BSS s32 N(FlowerGuard_ItemChoiceList)[ITEM_NUM_CONSUMABLES + 1];
+#include "world/common/npc/GateFlower.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "../common/ItemChoice_FlowerGuard.inc.c"
 
 EvtScript N(EVS_NpcInteract_GateFlower) = {

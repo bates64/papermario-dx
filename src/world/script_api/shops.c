@@ -293,13 +293,13 @@ API_CALLABLE(ShowShopPurchaseDialog) {
                     if (playerData->coins < shopInventory->price) {
                         script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NOT_ENOUGH_COINS);
                         script->functionTemp[0] = PURCHASE_DIALOG_STATE_NOT_ENOUGH_COINS;
-                    } else if (!IS_BADGE(shopInventory->itemID) && add_item(ITEM_NONE) == -1) {
+                    } else if (!item_is_badge(shopInventory->itemID) && get_consumables_empty() < 1) {
                         script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NOT_ENOUGH_ROOM);
                         script->functionTemp[0] = PURCHASE_DIALOG_STATE_NOT_ENOUGH_ROOM;
                     } else {
                         playerData->coins -= shopInventory->price;
-                        if (IS_BADGE(shopInventory->itemID)) {
-                            add_badge(shopInventory->itemID);
+                        if (item_is_badge(shopInventory->itemID)) {
+                            add_item(shopInventory->itemID);
                             evt_set_variable(NULL, GF_MAC01_BoughtBadgeFromRowf, TRUE);
                         } else {
                             add_item(shopInventory->itemID);
@@ -533,7 +533,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
                         script->functionTemp[0] = DIALOG_STATE_DONE_INSTRUCTIONS;
                         break;
                     case 1:
-                        if (get_item_count() == 0) {
+                        if (get_consumables_count() == 0) {
                             script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NOTHING_TO_SELL);
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                         } else {
@@ -542,17 +542,17 @@ API_CALLABLE(ShowShopOwnerDialog) {
                         }
                         break;
                     case 2:
-                        if (get_item_count() == 0) {
+                        if (get_consumables_count() == 0) {
                             script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NOTHING_TO_CHECK);
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                             break;
                         }
-                        if (get_stored_empty_count() == 0) {
+                        if (get_stored_empty() == 0) {
                             script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NO_CHECK_ROOM);
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                             break;
                         }
-                        script->functionTemp[1] = shop_owner_continue_speech_with_quantity(SHOP_MSG_CHECK_WHICH, get_stored_empty_count());
+                        script->functionTemp[1] = shop_owner_continue_speech_with_quantity(SHOP_MSG_CHECK_WHICH, get_stored_empty());
                         script->functionTemp[0] = DIALOG_STATE_INIT_CHECK_CHOICE;
                         break;
                     case 3:
@@ -561,7 +561,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                             break;
                         }
-                        if (get_item_empty_count() == 0) {
+                        if (get_consumables_empty() == 0) {
                             script->functionTemp[1] = shop_owner_continue_speech(SHOP_MSG_NO_CLAIM_ROOM);
                             script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                             break;
@@ -616,7 +616,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
                 if (ShopOwnerPrintState->curOption == 0) {
                     add_coins(shop_get_sell_price(playerData->invItems[shop->selectedStoreItemSlot]));
                     playerData->invItems[shop->selectedStoreItemSlot] = ITEM_NONE;
-                    if (get_item_count() == 0) {
+                    if (get_consumables_count() == 0) {
                         script->functionTemp[1] = shop_owner_reset_speech(SHOP_MSG_SELL_THANKS);
                         script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                         hide_coin_counter();
@@ -674,7 +674,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
                     playerData->invItems[shop->selectedStoreItemSlot] = ITEM_NONE;
                 }
 
-                if ((get_item_count() == 0) || (get_stored_empty_count() == 0)) {
+                if ((get_consumables_count() == 0) || (get_stored_empty() == 0)) {
                     script->functionTemp[1] = shop_owner_begin_speech(SHOP_MSG_CHECK_ACCEPTED);
                     script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                 } else {
@@ -724,10 +724,10 @@ API_CALLABLE(ShowShopOwnerDialog) {
             shop_close_item_select_popup();
             if (shop->selectedStoreItemSlot >= 0) {
                 if (add_item(playerData->storedItems[shop->selectedStoreItemSlot]) >= 0) {
-                    playerData->storedItems[shop->selectedStoreItemSlot] = 0;
+                    playerData->storedItems[shop->selectedStoreItemSlot] = ITEM_NONE;
                 }
 
-                if (get_item_empty_count() == 0 || get_stored_count() == 0) {
+                if (get_consumables_empty() == 0 || get_stored_count() == 0) {
                     script->functionTemp[1] = shop_owner_begin_speech(SHOP_MSG_CLAIM_ACCEPTED);
                     script->functionTemp[0] = DIALOG_STATE_CLOSED_SUBMENU;
                 } else {

@@ -68,15 +68,19 @@ API_CALLABLE(N(DeserializeItemIDs)) {
 }
 
 API_CALLABLE(N(CreateConsumableItemList)) {
+    s32 itemID;
     s32* array;
-    s32 len = ITEM_NUM_CONSUMABLES;
-    s32 i;
+    s32 pos = 0;
 
     script->varTablePtr[0] = array = heap_malloc((ITEM_NUM_CONSUMABLES + 1) * sizeof(*array));
-    for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-        array[i] = ITEM_FIRST_CONSUMABLE + i;
+
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+           array[pos++] = itemID;
+        }
     }
-    array[i] = ITEM_NONE;
+    array[pos] = ITEM_NONE;
+
     return ApiStatus_DONE2;
 }
 

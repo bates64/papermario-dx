@@ -176,8 +176,7 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
         Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_RED_KEY, LVar0)
-    Call(RemoveKeyItemAt, LVar0)
+    Call(RemoveItem, ITEM_RED_KEY)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedRedDoor, TRUE)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_16_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
@@ -213,8 +212,7 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
         Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_BLUE_KEY, LVar0)
-    Call(RemoveKeyItemAt, LVar0)
+    Call(RemoveItem, ITEM_BLUE_KEY)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedBlueDoor, TRUE)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_13_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse2, 1, 0)

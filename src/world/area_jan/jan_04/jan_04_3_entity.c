@@ -3,7 +3,7 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-EvtScript N(EVS_OpenChest_VolcanoVase) = EVT_OPEN_CHEST_KEY(ITEM_VOLCANO_VASE, GF_JAN04_Chest_VolcanoVase);
+EvtScript N(EVS_OpenChest_VolcanoVase) = EVT_OPEN_CHEST(ITEM_VOLCANO_VASE, GF_JAN04_Chest_VolcanoVase);
 
 EvtScript N(EVS_MakeEntities) = {
     Switch(GB_StoryProgress)

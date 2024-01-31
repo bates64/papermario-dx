@@ -565,7 +565,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
         return;
     }
 
-    if (gSaveSlotMetadata[fileIdx].timePlayed == 0) {
+    if (gFilesDisplayData[fileIdx].timePlayed == 0) {
 #if VERSION_PAL
         xOffset = D_filemenu_802508E4[gCurrentLanguage];
 #else
@@ -581,7 +581,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
     xOffset = 34;
 #endif
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_LEVEL), baseX + xOffset, baseY + 10, 255, 0xA, 1);
-    temp_s3_2 = gSaveSlotMetadata[fileIdx].level;
+    temp_s3_2 = gFilesDisplayData[fileIdx].level;
     temp_s3 = temp_s3_2;
     draw_number(temp_s3 / 10, baseX + 79, baseY + 10 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE);
     draw_number(temp_s3 % 10, baseX + 88, baseY + 10 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE);
@@ -592,7 +592,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
 #endif
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PLAY_TIME), baseX + xOffset, baseY + 24, 255, 0xA, 1);
 
-    temp_s3_2 = gSaveSlotMetadata[fileIdx].timePlayed;
+    temp_s3_2 = gFilesDisplayData[fileIdx].timePlayed;
     if (temp_s3_2 > MAX_DISPLAYED_TIME) {
         temp_s3_2 = MAX_DISPLAYED_TIME;
     }
@@ -607,7 +607,7 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
     draw_number((temp_s3_2 / 3600) - (temp_s0_3 * 10), baseX + 109, baseY + 24 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_STANDARD, 255, DRAW_NUMBER_STYLE_MONOSPACE);
 
     for (i = 0; i < 7; i++) {
-        if (i < gSaveSlotMetadata[fileIdx].spiritsRescued) {
+        if (i < gFilesDisplayData[fileIdx].spiritsRescued) {
             id = filemenu_hudElemIDs[i];
         } else {
             id = filemenu_hudElemIDs[i + 7];
@@ -647,8 +647,8 @@ void filemenu_draw_contents_file_title(
         tmp += D_filemenu_802508D4[gCurrentLanguage];
         tmp += 6;
         filemenu_draw_file_name(
-            gSaveSlotMetadata[fileIdx].filename,
-            ARRAY_COUNT(gSaveSlotMetadata[fileIdx].filename),
+            gFilesDisplayData[fileIdx].filename,
+            ARRAY_COUNT(gFilesDisplayData[fileIdx].filename),
             baseX + tmp,
             baseY + 1, 255, 0, 1, 9);
         }
@@ -672,8 +672,8 @@ void filemenu_draw_contents_file_title(
     } else {
         draw_number(fileIdx + 1, baseX + FILE_NUMBER_X, baseY + 1 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE);
         filemenu_draw_file_name(
-            gSaveSlotMetadata[fileIdx].filename,
-            ARRAY_COUNT(gSaveSlotMetadata[fileIdx].filename),
+            gFilesDisplayData[fileIdx].filename,
+            ARRAY_COUNT(gFilesDisplayData[fileIdx].filename),
             baseX + FILE_NAME_X, baseY + 1, 255, 0, 1, 9);
     }
 }
@@ -1159,7 +1159,7 @@ void filemenu_main_handle_input(MenuPanel* menu) {
                             set_window_update(WINDOW_ID_FILEMENU_INFO, WINDOW_UPDATE_SHOW);
                             set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, WINDOW_UPDATE_HIDE);
                             fio_load_game(filemenu_loadedFileIdx);
-                            gSaveSlotMetadata[filemenu_iterFileIdx] = gSaveSlotMetadata[filemenu_loadedFileIdx];
+                            gFilesDisplayData[filemenu_iterFileIdx] = gFilesDisplayData[filemenu_loadedFileIdx];
                             fio_save_game(filemenu_iterFileIdx);
                             gSaveSlotHasData[filemenu_iterFileIdx] = TRUE;
                         } else {

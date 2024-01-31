@@ -1492,7 +1492,7 @@ EvtScript N(EVS_OnHitBox) = {
     End
 };
 
-EvtScript N(D_802441E4_E19F64) = {
+EvtScript N(EVS_BindHammerTriggers) = {
     Set(LVar0, MODEL_a1)
     Set(LVar1, MODEL_a1)
     BindTrigger(Ref(N(EVS_OnHitBox)), TRIGGER_WALL_HAMMER, LVar1, 1, 0)
@@ -1707,7 +1707,7 @@ EvtScript N(EVS_InitializeMinigame) = {
     Exec(N(EVS_HideAllBoxes))
     Call(N(CreateSignpost))
     Exec(N(EVS_CreateScoreDisplay))
-    Exec(N(D_802441E4_E19F64))
+    Exec(N(EVS_BindHammerTriggers))
     Exec(N(EVS_HidePeachPanels))
     Return
     End

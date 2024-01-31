@@ -444,7 +444,7 @@ replace_funcs = {
         5: "BattleStatusFlags1",
     },
     "FallToGoal": {0: "ActorIDs"},
-    "FindKeyItem": {0: "ItemIDs"},
+    "FindItem": {0: "ItemIDs"},
     "FlyPartTo": {0: "ActorIDs"},
     "FlyToGoal": {0: "ActorIDs"},
     "ForceHomePos": {0: "ActorIDs"},

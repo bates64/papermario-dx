@@ -143,7 +143,7 @@ EvtScript N(EVS_DoLetterDelivery) = {
     EndIf
     Call(N(LetterDelivery_SaveNpcAnim))
     Call(GetCurrentPartnerID, LVar0)
-    Call(FindKeyItem, LVar5, LVar1)
+    Call(FindItem, LVar5, LVar1)
     IfEq(LVar0, PARTNER_PARAKARRY)
         IfNe(LVar1, -1)
             Call(DisablePartnerAI, 0)

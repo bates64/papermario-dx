@@ -3,7 +3,7 @@
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
@@ -449,7 +449,7 @@ EvtScript N(EVS_Scene_GiveKitchenKey) = {
     Wait(30 * DT)
     Set(LVar0, ITEM_PEACH_KEY1)
     Call(ShowGotItem, LVar0, TRUE, 0)
-    Call(AddKeyItem, LVar0)
+    Call(AddItem, LVar0, EVT_IGNORE_ARG)
     Set(GF_KKJ18_GourmetGuy_GaveKey, TRUE)
     Call(SetNpcAnimation, NPC_GourmetGuy, ANIM_GourmetGuy_Walk)
     Call(SetNpcJumpscale, NPC_GourmetGuy, 0)

@@ -44,6 +44,7 @@ API_CALLABLE(N(ItemChoice_SaveSelected)) {
 API_CALLABLE(N(BuildItemChoiceList)) {
     Bytecode* args = script->ptrReadPos;
     s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
+    s32 pos;
     s32 i;
 
     if (allowedItemList != NULL) {
@@ -52,10 +53,13 @@ API_CALLABLE(N(BuildItemChoiceList)) {
         }
         N(ItemChoice_List)[i] = ITEM_NONE;
     } else {
-        for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-            N(ItemChoice_List)[i] = ITEM_FIRST_CONSUMABLE + i;
-            N(ItemChoice_List)[ITEM_NUM_CONSUMABLES] = ITEM_NONE; // oddity -- should be after the loop!
+        s32 pos = 0;
+        for (i = 0; i < NUM_ITEMS; i++) {
+            if (item_is_key(i)) {
+                N(ItemChoice_List)[pos++] = i;
+            }
         }
+        N(ItemChoice_List)[pos] = ITEM_NONE;
     }
     return ApiStatus_DONE2;
 }

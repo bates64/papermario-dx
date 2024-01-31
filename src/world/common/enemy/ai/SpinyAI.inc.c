@@ -28,14 +28,6 @@ API_CALLABLE(N(SpinyAI_Main)) {
     territory.halfHeight = 65.0f;
     territory.detectFlags = 0;
 
-    #ifdef _DEAD_H_
-    enemy->unk_108.x = npc->pos.x;
-    enemy->unk_108.y = npc->pos.y;
-    enemy->unk_108.z = npc->pos.z;
-    enemy->unk_114 = 0.0001f;
-    enemy->unk_118 = 0.0001f;
-    #endif
-
     if (isInitialCall) {
         enemy->varTable[6] = npc->collisionHeight;
         enemy->aiFlags |= ENEMY_AI_FLAG_8;

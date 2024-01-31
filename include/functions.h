@@ -400,7 +400,6 @@ s32 resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
 s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
-PlayerData* get_player_data(void);
 
 b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
@@ -458,7 +457,7 @@ void get_screen_overlay_params(s32, u8* type, f32* zoom);
 void set_screen_overlay_color(s32, u8, u8, u8);
 void set_screen_overlay_center(s32, s32, s32, s32);
 s32 rand_int(s32);
-void sort_items(void);
+void sort_consumables(void);
 s32 is_ability_active(s32 arg0);
 s32 is_starting_conversation(void);
 f32 update_lerp(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration);
@@ -916,11 +915,24 @@ void check_input_status_bar(void);
 
 void update_player(void);
 
+b32 has_item(s32 itemID);
+s32 add_item(s32 itemID);
+s32 find_item(s32 itemID);
+s32 count_item(s32 itemID);
+s32 remove_item(s32 itemID);
+s32 count_equipped_badges(s32 itemID);
+s32 get_consumables_count(void);
+s32 get_consumables_empty(void);
+s32 store_item(s32 itemID);
+s32 get_stored_empty(void);
+s32 get_stored_count(void);
+b32 item_is_consumable(s32 itemID);
+b32 item_is_badge(s32 itemID);
+b32 item_is_key(s32 itemID);
+
 void enforce_hpfp_limits(void);
 s32 should_collider_allow_interact(s32);
 void show_coin_counter(void);
-s32 add_item(s32 itemID);
-s32 add_badge(s32 itemID);
 void hide_coin_counter_immediately(void);
 void hide_popup_menu(void);
 void destroy_popup_menu(void);
@@ -945,15 +957,12 @@ void func_800F0CB0(s32, f32, f32, f32);
 void func_800F0D5C(void);
 void func_800F0D80(void);
 void func_800F102C(void);
-s32 get_item_count(void);
-s32 get_stored_empty_count(void);
-s32 get_stored_count(void);
-s32 get_item_empty_count(void);
+
+
 void shop_open_item_select_popup(s32 mode);
 void hide_coin_counter(void);
 void set_message_text_var(s32 msgID, s32 index);
 void set_message_int_var(s32 value, s32 index);
-s32 store_item(s32 itemID);
 void open_status_bar_quickly(void);
 void show_immune_bonk(f32 x, f32 y, f32 z, s32, s32, s32);
 void show_primary_damage_popup(f32 x, f32 y, f32 z, s32 attack, s32 a);

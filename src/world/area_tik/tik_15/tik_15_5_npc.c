@@ -47,7 +47,7 @@ API_CALLABLE(N(GetNextCheatoItem)) {
 }
 
 API_CALLABLE(N(CheckPlayerHasEnoughRoom)) {
-    script->varTable[0] = get_item_empty_count();
+    script->varTable[0] = get_consumables_empty();
     return ApiStatus_DONE2;
 }
 
@@ -108,7 +108,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, FALSE)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_CONSUMABLE_REWARD_ALT(LVarB)
+            EVT_GIVE_CONSUMABLE_REWARD(LVarB)
     EndSwitch
     IfLt(GB_TIK15_RipCheato_PurchaseCount, 10)
         Add(GB_TIK15_RipCheato_PurchaseCount, 1)

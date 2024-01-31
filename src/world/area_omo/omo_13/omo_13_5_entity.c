@@ -3,7 +3,7 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-EvtScript N(EVS_OpenChest_PowerPlus) = EVT_OPEN_CHEST_BADGE(ITEM_POWER_PLUS_B, GF_OMO13_Chest_PowerPlusB);
+EvtScript N(EVS_OpenChest_PowerPlus) = EVT_OPEN_CHEST(ITEM_POWER_PLUS_B, GF_OMO13_Chest_PowerPlusB);
 
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_Chest), 110, 0, -60, 0, 0, MAKE_ENTITY_END)

@@ -135,7 +135,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(GF_SBK_GaveArtifactToKolorado, TRUE)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_ARTIFACT, LVar0)
+    Call(FindItem, ITEM_ARTIFACT, LVar0)
     IfEq(LVar0, -1)
         Return
     EndIf

@@ -23,7 +23,7 @@
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
@@ -336,10 +336,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006D)
-                Set(LVar0, ITEM_MELON)
-                Set(LVar1, ITEM_TYPE_CONSUMABLE)
-                ExecWait(N(GiveItemReward)) // misuse?
-                Call(AddItem, ITEM_MELON, LVar0)
+                EVT_GIVE_CONSUMABLE_REWARD(ITEM_MELON)
             EndIf
             Return
         EndIf
@@ -644,7 +641,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             ExecWait(N(EVS_LetterPrompt_Kolorado))
             ExecWait(N(EVS_LetterReward_Kolorado))
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
-            Call(FindKeyItem, ITEM_VOLCANO_VASE, LVar0)
+            Call(FindItem, ITEM_VOLCANO_VASE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0016)
                 ExecWait(N(EVS_LetterPrompt_Kolorado))

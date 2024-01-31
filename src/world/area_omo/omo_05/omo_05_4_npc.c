@@ -7,7 +7,7 @@
 
 #include "world/common/npc/GourmetGuy.inc.c"
 
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 API_CALLABLE(N(JudgeFoodQuality)) {
     Bytecode* args = script->ptrReadPos;
@@ -44,15 +44,19 @@ API_CALLABLE(N(SpinCameraAround)) {
 BSS s32 N(AllConsumables)[ITEM_NUM_CONSUMABLES + 1];
 
 API_CALLABLE(N(MakeAllConsumablesItemList)) {
-    s32 i;
+    s32 pos = 0;
+    s32 itemID;
 
-    for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-        N(AllConsumables)[i] = ITEM_FIRST_CONSUMABLE + i;
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+           N(AllConsumables)[pos++] = itemID;
+        }
     }
-    N(AllConsumables)[i] = ITEM_NONE;
+    N(AllConsumables)[pos] = ITEM_NONE;
 
     return ApiStatus_DONE2;
 }
+
 
 EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Call(DisablePlayerInput, TRUE)
