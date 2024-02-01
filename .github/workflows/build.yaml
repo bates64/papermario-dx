@@ -18,23 +18,27 @@ jobs:
         run: ./install_compilers.sh
       - name: Install Flips
         run: |
-          sudo apt install -y flatpak
-          flatpak install com.github.Alcaro.Flips -y
+          curl -L https://dl.smwcentral.net/11474/floating.zip -o floating.zip
+          unzip floating.zip
+          rm floating.zip
+          chmod +x flips-linux
       - name: Download baserom
         run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
         env:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
       - name: Configure
         run: ./configure.sh
       - name: Build
         run: ninja
       - name: Create patch file
-        run: flips ver/us/baserom.z64 ver/us/build/papermario.z64 ver/us/build/papermario.bps
+        run: ./flips-linux ver/us/baserom.z64 ver/us/build/papermario.z64 papermario.bps
       - name: Upload patch as artifact
         uses: actions/upload-artifact@v2
         with:
           name: papermario.bps
-          path: ver/us/build/papermario.bps
+          path: papermario.bps
   prerelease:
     name: Prerelease
     runs-on: ubuntu-latest
