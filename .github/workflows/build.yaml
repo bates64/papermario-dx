@@ -19,7 +19,7 @@ jobs:
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@main
       - name: Install pigment64
-        run: cargo binstall pigment64
+        run: cargo binstall pigment64 -y
       - name: Setup Flips
         run: |
           curl -L https://dl.smwcentral.net/11474/floating.zip -o floating.zip
