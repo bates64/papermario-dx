@@ -17,7 +17,9 @@ jobs:
       - name: Install compilers
         run: ./install_compilers.sh
       - name: Install Flips
-        run: flatpak install com.github.Alcaro.Flips -y
+        run: |
+          sudo apt install -y flatpak
+          flatpak install com.github.Alcaro.Flips -y
       - name: Download baserom
         run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
         env:
