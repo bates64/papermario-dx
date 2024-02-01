@@ -1,0 +1,79 @@
+name: Build
+on:
+  push:
+  pull_request:
+
+jobs:
+  game:
+    name: Game
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: ./install_deps.sh
+      - name: Install compilers
+        run: ./install_compilers.sh
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+      - name: Install pigment64
+        run: cargo binstall pigment64 -y
+      - name: Setup Flips
+        run: |
+          curl -L https://dl.smwcentral.net/11474/floating.zip -o floating.zip
+          unzip floating.zip
+          rm floating.zip
+          chmod +x flips-linux
+      - name: Download baserom
+        run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+      - name: Configure
+        run: ./configure
+      - name: Build
+        run: ninja
+      - name: Create patch file
+        run: ./flips-linux ver/us/baserom.z64 ver/us/build/papermario.z64 papermario.bps
+      - name: Upload patch as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: papermario.bps
+          path: papermario.bps
+  prerelease:
+    name: Prerelease
+    runs-on: ubuntu-latest
+    needs: game
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: papermario.bps
+          path: papermario.bps
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: Development build
+          files: papermario.bps
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: game
+    if: github.ref == 'refs/tags/v*'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: papermario.bps
+          path: papermario.bps
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          files: papermario.bps
