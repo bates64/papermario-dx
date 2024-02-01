@@ -29,7 +29,7 @@ jobs:
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
       - name: Configure
-        run: ./configure.sh
+        run: ./configure
       - name: Build
         run: ninja
       - name: Create patch file
