@@ -1,14 +1,19 @@
 # Paper Mario DX
 
+[![Release](https://img.shields.io/github/v/release/star-haven/papermario-dx)][releases]
+[![Download](https://img.shields.io/github/downloads/star-haven/papermario-dx/total)][download]
+![Build Status](https://img.shields.io/github/actions/workflow/status/star-haven/papermario-dx/build.yaml)
 [![Discord Channel][discord-badge]][discord]
 
-This is a fork of the [Paper Mario decompilation](papermario-repo) which provides a nice base for modding.
+This is a fork of the [Paper Mario decompilation][papermario-repo] which provides a flexible, easy-to-use base for creating romhacks.
 
 To get started, see [docs.starhaven.dev](https://docs.starhaven.dev/tools/decomp/setup.html).
 
-[discord]: https://discord.gg/urUm3VG
+[discord]: https://discord.gg/star-haven
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff
 [papermario-repo]: https://github.com/pmret/papermario
+[releases]: https://github.com/star-haven/papermario-dx/releases
+[download]: https://github.com/star-haven/papermario-dx/releases/latest/download/papermario.bps
 
 ## List of changes
 
