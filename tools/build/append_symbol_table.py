@@ -112,7 +112,7 @@ if __name__ == "__main__":
             if file_basename == "":
                 f.write(struct.pack(">I", 0))
             else:
-                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}"))) # can make more efficient
+                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
 
         f.write(strings)
 
