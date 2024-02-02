@@ -18,6 +18,7 @@ void boot_main(void* data);
 
 void is_debug_init(void);
 void is_debug_panic(const char* message, const char* file, u32 line, const char* func);
+char* is_debug_print(char* arg0, const char* str, size_t count);
 
 f32 signF(f32 val);
 

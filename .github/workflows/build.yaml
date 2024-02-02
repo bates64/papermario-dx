@@ -37,7 +37,8 @@ jobs:
       - name: Build
         run: ninja
       - name: Create patch file
-        run: ./flips-linux ver/us/baserom.z64 ver/us/build/papermario.z64 papermario.bps
+        # flips works but returns a non-zero exit code if the rom shrunk
+        run: ./flips-linux ver/us/baserom.z64 ver/us/build/papermario.z64 papermario.bps || true
       - name: Upload patch as artifact
         uses: actions/upload-artifact@v2
         with:
