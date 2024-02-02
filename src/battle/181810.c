@@ -375,8 +375,7 @@ API_CALLABLE(GetDarknessStatus) {
     f32 amt;
     s32 isLight;
 
-    //TODO While loop may not be necessary in the future
-    do { get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &amt); } while (0);
+    get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &amt);
 
     if (amt < 128.0f) {
         isLight = FALSE;

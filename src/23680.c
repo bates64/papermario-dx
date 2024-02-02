@@ -240,13 +240,15 @@ void spawn_drops(Enemy* enemy) {
     // determine number of coins to drop
 
     itemToDrop = ITEM_COIN;
-    minCoinBonus = drops->minCoinBonus;
-    maxCoinBonus = drops->maxCoinBonus;
 
+    //TODO maybe use an ASSERT here and forgo the odd support for reversing min/max
     if (drops->maxCoinBonus < drops->minCoinBonus) {
-        dropCount = minCoinBonus;
-        minCoinBonus = maxCoinBonus;
-        maxCoinBonus = dropCount;
+        // swap if max < min
+        maxCoinBonus = drops->minCoinBonus;
+        minCoinBonus = drops->maxCoinBonus;
+    } else {
+        minCoinBonus = drops->minCoinBonus;
+        maxCoinBonus = drops->maxCoinBonus;
     }
 
     if (minCoinBonus < 0) {

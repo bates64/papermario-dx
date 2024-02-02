@@ -553,10 +553,7 @@ void sfx_get_spatialized_sound_params(f32 x, f32 y, f32 z, s16* volume, s16* pan
     u32 spaceMode;
 
     paramFlags = flags & SOUND_SPACE_PARAMS_MASK;
-
-    do {
-        spaceMode = flags & SOUND_SPACE_MODE_MASK;
-    } while (0); // required to match
+    spaceMode = flags & SOUND_SPACE_MODE_MASK;
 
     switch (spaceMode) {
         case SOUND_SPACE_DEFAULT:
