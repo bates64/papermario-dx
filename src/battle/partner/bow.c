@@ -81,25 +81,6 @@ API_CALLABLE(N(ModifyBowPos)) {
     return ApiStatus_DONE2;
 }
 
-/// Duplicate of IsPartnerImmobile
-API_CALLABLE(N(IsPartnerImmobile)) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    Actor* playerActor = battleStatus->playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_FEAR
-                     || playerActor->debuff == STATUS_KEY_DIZZY
-                     || playerActor->debuff == STATUS_KEY_PARALYZE
-                     || playerActor->debuff == STATUS_KEY_SLEEP
-                     || playerActor->debuff == STATUS_KEY_FROZEN
-                     || playerActor->debuff == STATUS_KEY_STOP;
-
-    if (playerActor->stoneStatus == STATUS_KEY_STONE) {
-        isImmobile = TRUE;
-    }
-
-    script->varTable[0] = isImmobile;
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(N(RestorePlayerIdleAnimations)) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
@@ -699,7 +680,7 @@ EvtScript N(outtaSight) = {
     Add(LVar2, 5)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(FlyToGoal, ACTOR_PARTNER, 20, 0, EASING_LINEAR)
-    Call(N(IsPartnerImmobile))
+    Call(IsPartnerImmobile)
     IfEq(LVar0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Crouch)
     EndIf

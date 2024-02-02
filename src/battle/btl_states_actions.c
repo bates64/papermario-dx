@@ -7,6 +7,7 @@
 #include "model.h"
 #include "game_modes.h"
 #include "dx/debug_menu.h"
+#include "status_conditions.h"
 
 extern StageListRow* gCurrentStagePtr;
 
@@ -3491,28 +3492,7 @@ void btl_state_update_next_enemy(void) {
 
             skipEnemy = FALSE;
 
-            if (enemy->debuff == STATUS_KEY_SLEEP) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->debuff == STATUS_KEY_FEAR) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->debuff == STATUS_KEY_DIZZY) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->debuff == STATUS_KEY_PARALYZE) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->debuff == STATUS_KEY_FROZEN) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->debuff == STATUS_KEY_STOP) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->stoneStatus == STATUS_KEY_STONE) {
-                skipEnemy = TRUE;
-            }
-            if (enemy->flags & ACTOR_FLAG_SKIP_TURN) {
+            if (has_condition(enemy->conditions, condition, condition->makesEnemySkipTurn)) {
                 skipEnemy = TRUE;
             }
 

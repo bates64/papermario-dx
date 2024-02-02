@@ -363,6 +363,7 @@ void update_all_status_icons(void* data) {
         }
 
         if (icon->status1.activeTask == STATUS_ICON_TASK_LOAD) {
+            // TODO: use conditions
             switch (icon->status1.active) {
                 case STATUS_KEY_SLEEP:
                     elementID = icon->status1.activeElementID = hud_element_create(&HES_AsleepBegin);
@@ -401,6 +402,7 @@ void update_all_status_icons(void* data) {
             case STATUS_ICON_TASK_NONE:
                 break;
             case STATUS_ICON_TASK_LOAD:
+                // TODO: use conditions
                 switch (icon->status1.removing) {
                     case STATUS_KEY_SLEEP:
                         hud_element_set_script(icon->status1.removingElementID, &HES_AsleepEnd);

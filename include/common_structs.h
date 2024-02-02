@@ -1913,17 +1913,10 @@ typedef struct Actor {
     /* 0x207 */ s8 extraCoinBonus;
     /* 0x208 */ s8 instigatorValue; // from the enemy which initiated the encounter if this actor is first in the formation. allows that enemy to pass information to its actor.
     /* 0x209 */ char unk_209[3];
-    /* 0x20C */ s32* statusTable;
-    /* 0x210 */ s8 debuff;
-    /* 0x211 */ s8 debuffDuration;
-    /* 0x212 */ s8 staticStatus; /* 0B = yes */
-    /* 0x213 */ s8 staticDuration;
-    /* 0x214 */ s8 stoneStatus; /* 0C = yes */
-    /* 0x215 */ s8 stoneDuration;
-    /* 0x216 */ s8 koStatus; /* 0D = yes */
-    /* 0x217 */ s8 koDuration;
-    /* 0x218 */ s8 transparentStatus; /* 0E = yes */
-    /* 0x219 */ s8 transparentDuration;
+    /* 0x20C */ s32* statusTable; // TODO: look at this
+    /* 0x210 */ struct Conditions* conditions;
+    /// awful vanilla status effect data used to be here
+    /* 0x214 */ char padding[5];
     /* 0x21A */ char unk_21A[2];
     /* 0x21C */ s8 statusAfflicted;
     /* 0x21D */ s8 disableDismissTimer;

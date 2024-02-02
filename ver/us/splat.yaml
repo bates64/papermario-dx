@@ -1342,6 +1342,7 @@ segments:
     - [auto, c, battle/dmg_partner]
     - [auto, c, battle/standard_events]
     - [auto, c, battle/use_star_powers]
+    - [auto, c, battle/status_conditions]
     - start: 0x1B2050
       type: .data
       name: battle/popup_messages
