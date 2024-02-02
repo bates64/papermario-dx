@@ -1382,7 +1382,7 @@ if __name__ == "__main__":
                 pass
 
     extra_cflags = ""
-    extra_cppflags = "-DAVOID_UB"
+    extra_cppflags = ""
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
 

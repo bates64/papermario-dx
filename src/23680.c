@@ -232,7 +232,6 @@ void spawn_drops(Enemy* enemy) {
     }
 
     itemToDrop = ITEM_COIN;
-    do {} while (0);
     minCoinBonus = drops->minCoinBonus;
     tempMax = drops->maxCoinBonus;
 

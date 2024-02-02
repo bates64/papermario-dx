@@ -51,7 +51,6 @@ enum {
 };
 
 BSS RitualCard N(RitualCards)[3];
-MAP_STATIC_PAD(1,merlee);
 
 s8 N(MerleeSpellCasts)[] = {
     20, 10, 5, 0,
@@ -778,10 +777,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     EndIf
     IfEq(LVar0, 3)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00DC)
-        Set(LVar0, ITEM_CRYSTAL_BALL)
-        Set(LVar1, 1)
-        ExecWait(N(GiveItemReward))
-        Call(AddKeyItem, ITEM_CRYSTAL_BALL)
+        EVT_GIVE_REWARD(ITEM_CRYSTAL_BALL)
         Set(GF_DRO01_Gift_CrystalBall, 1)
         Wait(20)
         Call(func_802D2C14, 0)

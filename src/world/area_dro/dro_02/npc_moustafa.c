@@ -218,7 +218,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Call(SetNpcJumpscale, NPC_Moustafa, Float(1.0))
             Call(NpcJump0, NPC_Moustafa, -335, 163, -260, 20 * DT)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00C9)
-            EVT_GIVE_KEY_REWARD(ITEM_PULSE_STONE)
+            EVT_GIVE_REWARD(ITEM_PULSE_STONE)
             Set(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
             Call(SpeakToPlayer, NPC_Moustafa, ANIM_Moustafa_Shout, ANIM_Moustafa_Idle, 0, MSG_CH2_00CA)
             KillThread(LVarA)

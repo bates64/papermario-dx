@@ -12,7 +12,7 @@ NpcSettings N(NpcSettings_BubbleFlower) = {
 
 #include "world/common/npc/Dummy.inc.c"
 
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 s32 N(KeyList)[] = {
     ITEM_BUBBLE_BERRY,

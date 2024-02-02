@@ -6,22 +6,15 @@
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
 
-BSS s32 D_802DF520; // unused?
 BSS s32 spr_allocateBtlComponentsOnWorldHeap;
-BSS s32 D_802DF528[2]; // unused?
 BSS s32 MaxLoadedSpriteInstanceID;
-BSS s32 D_802DF534[3]; // unused?
 BSS s32 D_802DF540;
-BSS s32 D_802DF544; // unused?
 BSS SpriteAnimData* spr_playerSprites[13];
 BSS s32 D_802DF57C;
 BSS s32 spr_playerMaxComponents;
-BSS s32 D_802DF584; // unused?
 BSS PlayerCurrentAnimInfo spr_playerCurrentAnimInfo[3];
-BSS s32 D_802DF5AC; // unused?
 BSS SpriteAnimData* NpcSpriteData[MAX_SPRITE_ID];
 BSS u8 NpcSpriteInstanceCount[MAX_SPRITE_ID];
-BSS s32 D_802DFA44; // unused?
 BSS SpriteInstance SpriteInstances[51];
 BSS Quad* D_802DFE44;
 BSS s32 D_802DFE48[22];
@@ -147,28 +140,27 @@ Quad* spr_get_cached_quad(s32 quadIndex) {
 
 void spr_make_quad_for_size(Quad* quad, s32 width, s32 height) {
     Vtx* vtx = &quad->v[0];
-    s32 w = width; // required to match
 
     *quad = spr_defaultQuad;
 
-    vtx->v.ob[0] = -w / 2;
+    vtx->v.ob[0] = -width / 2;
     vtx->v.ob[1] = height;
     vtx->v.tc[0] = 0x2000;
     vtx->v.tc[1] = 0x2000;
 
     vtx++;
-    vtx->v.ob[0] = w / 2;
+    vtx->v.ob[0] = width / 2;
     vtx->v.ob[1] = height;
-    vtx->v.tc[0] = (w + 256) * 32;
+    vtx->v.tc[0] = (width + 256) * 32;
     vtx->v.tc[1] = 0x2000;
 
     vtx++;
-    vtx->v.tc[0] = (w + 256) * 32;
-    vtx->v.ob[0] = w / 2;
+    vtx->v.tc[0] = (width + 256) * 32;
+    vtx->v.ob[0] = width / 2;
     vtx->v.tc[1] = (height + 256) * 32;
 
     vtx++;
-    vtx->v.ob[0] = -w / 2;
+    vtx->v.ob[0] = -width / 2;
     vtx->v.tc[0] = 0x2000;
     vtx->v.tc[1] = (height + 256) * 32;
 }

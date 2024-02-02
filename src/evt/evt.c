@@ -1243,8 +1243,6 @@ s32 evt_handle_print_debug_var(Evt* script) {
     s32 var = *args++;
     s32 flagBitPos;
 
-    do {} while (0);
-
     if (var <= EVT_LIMIT) {
         sprintf(evtDebugPrintBuffer, "ADDR     [%08X]", var);
     } else if (var <= EVT_FIXED_CUTOFF) {
@@ -1328,8 +1326,6 @@ s32 evt_handle_print_debug_var(Evt* script) {
 
         var = EVT_INDEX_OF_LOCAL_VAR(var);
         tableVar = script->varTable[var];
-
-        do {} while (0);
 
         if (tableVar <= EVT_LIMIT) {
             sprintf(evtDebugPrintBuffer, "LW(%3d)  [%08X]", tableVar);

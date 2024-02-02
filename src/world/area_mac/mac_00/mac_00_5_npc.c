@@ -8,11 +8,8 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-MAP_STATIC_PAD(1,key_choice);
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
-
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "npc/russ_and_thief.inc.c"

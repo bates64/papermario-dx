@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     EndSwitch
             EndSwitch
         CaseLt(STORY_CH6_GOT_WATER_STONE)
-            Call(FindKeyItem, ITEM_CRYSTAL_BERRY, LVar0)
+            Call(FindItem, ITEM_CRYSTAL_BERRY, LVar0)
             IfNe(LVar0, -1)
                 Exec(N(EVS_PlayerApproachRosieAndItem))
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -135,7 +135,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0095)
                     Call(RemoveItemEntity, LVar7)
                     Call(MakeItemEntity, ITEM_CRYSTAL_BERRY, -33, 14, 19, ITEM_SPAWN_MODE_DECORATION, EVT_INDEX_OF_GAME_FLAG(GF_FLO12_HeldItemPickup))
-                    EVT_GIVE_KEY_REWARD(ITEM_WATER_STONE)
+                    EVT_GIVE_REWARD(ITEM_WATER_STONE)
                     Wait(10)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0096)
                     Set(AF_FLO_GivenCrystalBerry, TRUE)
@@ -165,7 +165,7 @@ EvtScript N(EVS_NpcInit_Rosie) = {
     Add(LVar0, 35)
     Call(SetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
     Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_INVISIBLE, TRUE)
-    Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_HAS_SHADOW, TRUE)
+    Call(SetNpcFlagBits, NPC_Dummy, NPC_FLAG_HAS_SHADOW, FALSE)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_CRYSTAL_BERRY)
             IfEq(GF_FLO12_Met_Rosie, TRUE)

@@ -524,7 +524,7 @@ EvtScript N(EVS_ManageRavens) = {
                     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
                     Call(SetCamSpeed, CAM_DEFAULT, Float(10.0 / DT))
                     Call(PanToTarget, CAM_DEFAULT, 0, 1)
-                    EVT_GIVE_KEY_REWARD(ITEM_ULTRA_STONE)
+                    EVT_GIVE_REWARD(ITEM_ULTRA_STONE)
                     Wait(20 * DT)
                     Call(SetCamDistance, CAM_DEFAULT, 400)
                     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-11.5))

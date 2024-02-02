@@ -203,7 +203,6 @@ void state_step_intro(void) {
             playerData->maxBP = 2;
             playerData->bootsLevel = 0;
             playerData->hammerLevel = -1;
-            playerData->fortressKeyCount = 0;
             playerData->level = 0;
 
             for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {

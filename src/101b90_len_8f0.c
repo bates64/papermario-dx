@@ -22,16 +22,13 @@ BSS s32 spr_asset_entry[2];
 BSS s32 PlayerRasterLoadDescBuffer[101]; //NOTE: maximum rasters supported for a single player sprite is 101
 BSS s32 PlayerRasterLoadDescNumLoaded;
 BSS s32 PlayerRasterLoadDescBeginSpriteIndex[SPR_Peach3]; //TODO size linked to number of player sprites
-BSS s32 D_802D0084[3]; // unused?
 BSS s32 PlayerRasterLoadDesc[0x2E0]; // correct length?
 
 BSS PlayerRastersHeader PlayerRasterHeader;
-BSS s32 D_802E0C1C; // unused
 BSS s32 PlayerSpriteRasterSets[SPR_Peach3 + 1]; //TODO size linked to number of player sprites
 BSS s32 PlayerRasterCacheSize;
 BSS s32 PlayerRasterMaxSize;
 BSS s32 SpriteDataHeader[3];
-BSS s32 D_802E0C6C; // unused?
 BSS PlayerSpriteCacheEntry PlayerRasterCache[18];
 
 #define ALIGN4(v) (((u32)(v) >> 2) << 2)

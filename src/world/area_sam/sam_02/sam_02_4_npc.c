@@ -1,11 +1,7 @@
 #include "sam_02.h"
 #include "sprite/player.h"
 
-#if VERSION_PAL
 #include "sprite/npc/ShiverToad.h"
-#define TOADHOUSE_ANIM_TALK ANIM_ShiverToad_Red_Talk
-#define TOADHOUSE_ANIM_IDLE ANIM_ShiverToad_Red_Idle
-#endif
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
@@ -290,11 +286,11 @@ EvtScript N(EVS_NpcInteract_Penguin_06) = {
 };
 
 EvtScript N(EVS_NpcInteract_Penguin_07) = {
-    Call(FindKeyItem, ITEM_FIRST_DEGREE_CARD, LVar1)
-    Call(FindKeyItem, ITEM_SECOND_DEGREE_CARD, LVar2)
-    Call(FindKeyItem, ITEM_THIRD_DEGREE_CARD, LVar3)
-    Call(FindKeyItem, ITEM_FOURTH_DEGREE_CARD, LVar4)
-    Call(FindKeyItem, ITEM_DIPLOMA, LVar5)
+    Call(FindItem, ITEM_FIRST_DEGREE_CARD, LVar1)
+    Call(FindItem, ITEM_SECOND_DEGREE_CARD, LVar2)
+    Call(FindItem, ITEM_THIRD_DEGREE_CARD, LVar3)
+    Call(FindItem, ITEM_FOURTH_DEGREE_CARD, LVar4)
+    Call(FindItem, ITEM_DIPLOMA, LVar5)
     IfNe(LVar1, -1)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH7_0091)
         Return

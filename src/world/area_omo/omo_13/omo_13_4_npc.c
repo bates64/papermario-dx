@@ -13,7 +13,7 @@ NpcSettings N(NpcSettings_AntiGuy) = {
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
 
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 s32 N(BribeItemList)[] = {
     ITEM_LEMON_CANDY,

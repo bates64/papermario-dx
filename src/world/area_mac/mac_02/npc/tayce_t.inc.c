@@ -4,6 +4,8 @@
 #include "common.h"
 #include "gcc/string.h"
 
+#include "world/common/todo/GetItemName.inc.c"
+
 typedef struct CookingResult {
     /* 00 */ s32 quality;
     /* 04 */ s32 itemID;
@@ -147,26 +149,29 @@ API_CALLABLE(N(SetRecipeDiscovered)) {
 API_CALLABLE(N(GetItemCount)) {
     Bytecode args = *script->ptrReadPos;
 
-    evt_set_variable(script, args++, get_item_count());
+    evt_set_variable(script, args++, get_consumables_count());
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(CheckItemsHasRoom)) {
     Bytecode args = *script->ptrReadPos;
 
-    evt_set_variable(script, args++, get_item_empty_count());
+    evt_set_variable(script, args++, get_consumables_empty());
     return ApiStatus_DONE2;
 }
 
 static s32 N(TayceT_ItemChoiceList)[ITEM_NUM_CONSUMABLES + 1];
 
 API_CALLABLE(N(TayceT_MakeItemList)) {
-    s32 i;
+    s32 pos = 0;
+    s32 itemID;
 
-    for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-        N(TayceT_ItemChoiceList)[i] = i + ITEM_FIRST_CONSUMABLE;
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+            N(TayceT_ItemChoiceList)[pos++] = itemID;
+        }
     }
-    N(TayceT_ItemChoiceList)[i] = ITEM_NONE;
+    N(TayceT_ItemChoiceList)[pos] = ITEM_NONE;
 
     return ApiStatus_DONE2;
 }
@@ -202,7 +207,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
         Call(N(CheckItemsHasRoom), LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
-            EVT_GIVE_CONSUMABLE_REWARD_ALT(ITEM_CAKE)
+            EVT_GIVE_REWARD(ITEM_CAKE)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001B)
             Set(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
         Else
@@ -223,7 +228,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
             Call(N(CheckItemsHasRoom), LVar0)
             IfNe(LVar0, 0)
                 Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001A)
-                EVT_GIVE_CONSUMABLE_REWARD_ALT(ITEM_CAKE)
+                EVT_GIVE_REWARD(ITEM_CAKE)
                 Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001B)
                 Set(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
             Else
@@ -417,7 +422,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     EndSwitch
     Call(ContinueSpeech, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0014)
     Call(N(SetRecipeDiscovered), LVar6)
-    EVT_GIVE_CONSUMABLE_REWARD_ALT(LVar6)
+    EVT_GIVE_REWARD(LVar6)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0015)
 
     // end the script
@@ -434,7 +439,7 @@ EvtScript N(EVS_NpcInteract_TayceT) = {
             Return
         EndIf
     EndIf
-    Call(FindKeyItem, ITEM_COOKBOOK, LVar0)
+    Call(FindItem, ITEM_COOKBOOK, LVar0)
     IfEq(LVar0, -1)
         ExecWait(N(EVS_TayceT_Cook))
     Else

@@ -8,7 +8,7 @@ s32 N(LyricsList)[] = {
 
 EvtScript N(EVS_NpcInteract_Composer) = {
     IfEq(GF_DRO01_Gift_Melody, TRUE)
-        Call(FindKeyItem, ITEM_MELODY, LVar0)
+        Call(FindItem, ITEM_MELODY, LVar0)
         IfNe(LVar0, -1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_0084)
             Return
@@ -64,7 +64,7 @@ EvtScript N(EVS_NpcInteract_Composer) = {
             Wait(60)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Musician_Composer_Idle)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_0083)
-            EVT_GIVE_KEY_REWARD(ITEM_MELODY)
+            EVT_GIVE_REWARD(ITEM_MELODY)
             Set(GF_DRO01_Gift_Melody, TRUE)
             Return
     EndSwitch

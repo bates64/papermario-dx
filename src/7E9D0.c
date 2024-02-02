@@ -29,17 +29,16 @@ void func_800E5520(void) {
 
 s32 phys_adjust_cam_on_landing(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
-    GameStatus* gameStatus = gGameStatusPtr;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 ret = 1;
 
     //TODO hardcoded map IDs
-    switch (gameStatus->areaID) {
+    switch (gGameStatus.areaID) {
         case AREA_OBK:
-            ret = gameStatus->mapID != 4;
+            ret = gGameStatus.mapID != 4;
             break;
         case AREA_ISK:
-            switch (gameStatus->mapID) {
+            switch (gGameStatus.mapID) {
                 case 0:
                     ret = 2;
                     break;

@@ -10,7 +10,7 @@ EvtScript N(EVS_AutoRemovePowerRush) = {
         Wait(1)
     EndLoop
     Wait(10)
-    Call(RemoveBadge, ITEM_POWER_RUSH)
+    Call(RemoveItem, ITEM_POWER_RUSH)
     Return
     End
 };

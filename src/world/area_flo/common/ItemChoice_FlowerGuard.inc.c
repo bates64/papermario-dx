@@ -1,5 +1,7 @@
 #include "common.h"
 
+BSS s32 N(FlowerGuard_ItemChoiceList)[ITEM_NUM_CONSUMABLES + 1];
+
 API_CALLABLE(N(FlowerGuard_SetItemEntityPosition)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemIdx = evt_get_variable(script, *args++);
@@ -31,12 +33,15 @@ API_CALLABLE(N(FlowerGuard_JudgeItemTastiness)) {
 }
 
 API_CALLABLE(N(FlowerGuard_MakeItemList)) {
-    s32 i;
+    s32 pos = 0;
+    s32 itemID;
 
-    for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-        N(FlowerGuard_ItemChoiceList)[i] = ITEM_FIRST_CONSUMABLE + i;
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+            N(FlowerGuard_ItemChoiceList)[pos++] = itemID;
+        }
     }
+    N(FlowerGuard_ItemChoiceList)[pos] = ITEM_NONE;
 
-    N(FlowerGuard_ItemChoiceList)[ITEM_NUM_CONSUMABLES] = ITEM_NONE;
     return ApiStatus_DONE2;
 }

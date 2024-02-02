@@ -249,41 +249,33 @@ static void action_update_walk_peach(void) {
 }
 
 static void action_update_run_peach(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    GameStatus* gameStatus;
-    f32 moveX;
-    f32 moveY;
+    f32 moveX, moveY;
 
-    if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-        playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
-        playerStatus->unk_60 = 0;
-        if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
-            playerStatus->curSpeed = playerStatus->runSpeed;
+    if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
+        gPlayerStatus.flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
+        gPlayerStatus.unk_60 = 0;
+        if (!(gPlayerStatus.flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
+            gPlayerStatus.curSpeed = gPlayerStatus.runSpeed;
         }
 
-        if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
-            gameStatus = gGameStatusPtr;
-            if (!(gameStatus->peachFlags & PEACH_FLAG_DEPRESSED)) {
-                if (!gameStatus->peachBakingIngredient) {
-                    suggest_player_anim_allow_backward(ANIM_Peach1_Run);
-                } else {
-                    suggest_player_anim_allow_backward(WalkPeachAnims[gameStatus->peachBakingIngredient]);
-                }
-            } else {
-                suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
-            }
+        if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
+            peach_set_disguise_anim(BasicPeachDisguiseAnims[gPlayerStatus.peachDisguise].run);
+        } else if (gGameStatus.peachFlags & PEACH_FLAG_DEPRESSED) {
+            suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
+        } else if (gGameStatus.peachBakingIngredient) {
+            suggest_player_anim_allow_backward(WalkPeachAnims[gGameStatus.peachBakingIngredient]);
         } else {
-            peach_set_disguise_anim(BasicPeachDisguiseAnims[playerStatus->peachDisguise].run);
+            suggest_player_anim_allow_backward(ANIM_Peach1_Run);
         }
     }
 
-    if (playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT) {
-        playerStatus->targetYaw = playerStatus->heading;
+    if (gPlayerStatus.flags & PS_FLAG_CUTSCENE_MOVEMENT) {
+        gPlayerStatus.targetYaw = gPlayerStatus.heading;
         try_player_footstep_sounds(4);
         return;
     }
 
-    playerStatus->curSpeed = playerStatus->runSpeed;
+    gPlayerStatus.curSpeed = gPlayerStatus.runSpeed;
     player_input_to_move_vector(&moveX, &moveY);
     phys_update_interact_collider();
     if (moveY == 0.0f) {
@@ -291,8 +283,8 @@ static void action_update_run_peach(void) {
         return;
     }
 
-    playerStatus->targetYaw = moveX;
-    if (sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) < 55.0f) {
+    gPlayerStatus.targetYaw = moveX;
+    if (sqrtf(SQ(gPlayerStatus.stickAxis[0]) + SQ(gPlayerStatus.stickAxis[1])) < 55.0f) {
         set_action_state(ACTION_STATE_WALK);
         return;
     } else {

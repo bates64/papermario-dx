@@ -313,6 +313,3 @@ void enable_background_wave(void) {
 void disable_background_wave(void) {
     gBackroundWaveEnabled = FALSE;
 }
-
-// TODO figure out why it is needed
-static const f32 rodata_padding[] = { 0.0f, 0.0f };

@@ -27,11 +27,8 @@ NpcSettings N(NpcSettings_Unused1) = {
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-MAP_STATIC_PAD(1,key_choice);
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
-
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(Fishmael_LetterList)[] = {
@@ -92,7 +89,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(GF_SBK_GaveArtifactToKolorado, TRUE)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_ARTIFACT, LVar0)
+    Call(FindItem, ITEM_ARTIFACT, LVar0)
     IfEq(LVar0, -1)
         Return
     EndIf
@@ -1770,7 +1767,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0073)
         Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0074)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0075)
-        EVT_GIVE_KEY_REWARD(ITEM_LYRICS)
+        EVT_GIVE_REWARD(ITEM_LYRICS)
         Set(GF_MAC05_SimonGaveLyrics, TRUE)
         Call(EnablePartnerAI)
         Return
@@ -1785,7 +1782,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         EndIf
         Return
     EndIf
-    Call(FindKeyItem, ITEM_MELODY, LVar0)
+    Call(FindItem, ITEM_MELODY, LVar0)
     IfEq(LVar0, -1)
         IfEq(AF_MAC_3D, FALSE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0076)
@@ -1889,10 +1886,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007F)
                 Call(SpeakToPlayer, NPC_Chanterelle, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_0080)
                 Wait(10)
-                Set(LVar0, ITEM_ATTACK_FX_D)
-                Set(LVar3, ITEM_TYPE_BADGE)
-                ExecWait(N(GiveItemReward))
-                Call(AddBadge, LVar0, LVar1)
+                EVT_GIVE_REWARD(ITEM_ATTACK_FX_D)
                 Call(SetTattleMessage, NPC_Chanterelle, MSG_NpcTattle_PopDiva_CanSing)
         EndSwitch
     EndIf
@@ -2001,7 +1995,7 @@ API_CALLABLE(N(CheckTradeEventTime)) {
 }
 
 API_CALLABLE(N(GetTradeEventItemCount)) {
-    script->varTable[0] = get_item_count();
+    script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 
@@ -2033,7 +2027,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
             Return
         CaseEq(ITEM_COCONUT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C2)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_YUMMY_MEAL)
+            EVT_GIVE_REWARD(ITEM_YUMMY_MEAL)
             Wait(10)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C3)
             Wait(10)

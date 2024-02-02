@@ -44,7 +44,7 @@ API_CALLABLE(N(GetCamPointsNearPlayer)) {
 
 EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
     Call(DisablePlayerInput, TRUE)
-    Call(FindKeyItem, ITEM_STAR_STONE, LVar0)
+    Call(FindItem, ITEM_STAR_STONE, LVar0)
     IfNe(LVar0, -1)
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)

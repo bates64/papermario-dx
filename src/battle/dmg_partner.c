@@ -1,6 +1,7 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
 #include "effects.h"
+#include "dx/debug_menu.h"
 
 s32 dispatch_damage_event_partner_1(s32, s32);
 
@@ -249,7 +250,7 @@ HitResult calc_partner_damage_enemy(void) {
             }
 
             sfx_play_sound_at_position(SOUND_HIT_FIRE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-            
+
             if (gBattleStatus.flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) {
                 return HIT_RESULT_NICE;
             } else {
@@ -1064,6 +1065,12 @@ API_CALLABLE(PartnerDamageEnemy) {
     gBattleStatus.curAttackDamage = evt_get_variable(script, *args++);
     gBattleStatus.powerBounceCounter = 0;
     flags = *args++;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+        battleStatus->curAttackDamage = 99;
+    }
+    #endif
 
     if ((flags & BS_FLAGS1_INCLUDE_POWER_UPS) && (flags & BS_FLAGS1_TRIGGER_EVENTS)) {
         battleStatus->flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;

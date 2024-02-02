@@ -14,12 +14,6 @@ NpcSettings N(NpcSettings_RipCheato) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-NpcSettings N(NpcSettings_Unused1) = {
-    .height = 23,
-    .radius = 19,
-    .level = ACTOR_LEVEL_NONE,
-};
-
 #include "world/common/complete/GiveReward.inc.c"
 
 s32 N(CheatoItems)[][2] = {
@@ -47,7 +41,7 @@ API_CALLABLE(N(GetNextCheatoItem)) {
 }
 
 API_CALLABLE(N(CheckPlayerHasEnoughRoom)) {
-    script->varTable[0] = get_item_empty_count();
+    script->varTable[0] = get_consumables_empty();
     return ApiStatus_DONE2;
 }
 
@@ -97,7 +91,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, FALSE)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_BADGE_REWARD(ITEM_BUMP_ATTACK)
+            EVT_GIVE_REWARD(ITEM_BUMP_ATTACK)
         CaseEq(CHEATO_TYPE_CONSUMABLE)
             Call(N(CheckPlayerHasEnoughRoom))
             IfLe(LVar0, 0)
@@ -108,7 +102,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
             Call(AddCoin, -RIP_CHEATO_COST)
             Call(ShowCoinCounter, FALSE)
             Call(EndSpeech, NPC_RipCheato, ANIM_RipCheato_Talk, ANIM_RipCheato_Idle, 0)
-            EVT_GIVE_CONSUMABLE_REWARD_ALT(LVarB)
+            EVT_GIVE_REWARD(LVarB)
     EndSwitch
     IfLt(GB_TIK15_RipCheato_PurchaseCount, 10)
         Add(GB_TIK15_RipCheato_PurchaseCount, 1)

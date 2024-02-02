@@ -99,7 +99,7 @@ EvtScript N(EVS_NpcInteract_Koopatrol_02) = {
         Wait(10 * DT)
         Set(LVar0, ITEM_PEACH_KEY1)
         Call(ShowGotItem, LVar0, TRUE, 0)
-        Call(AddKeyItem, LVar0)
+        Call(AddItem, LVar0, EVT_IGNORE_ARG)
         Set(GF_KKJ11_TrickedGuard, TRUE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKoopatrol_Anim09, ANIM_WorldKoopatrol_Anim02, 0, MSG_Peach_0145)
         Call(InterpNpcYaw, NPC_SELF, 270, 0)

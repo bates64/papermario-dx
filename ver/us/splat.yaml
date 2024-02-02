@@ -12453,8 +12453,7 @@ segments:
     - [auto, c, pra_02_0_header]
     - [auto, c, pra_02_1_music]
     - [auto, c, pra_02_2_main]
-    - [auto, c, pra_02_3_npc]
-    - [auto, c, pra_02_4_entity]
+    - [auto, c, pra_02_3_entity]
   - name: pra_03
     dir: world/area_pra/pra_03
     type: code
@@ -14501,7 +14500,6 @@ segments:
       - [0xE9DE90, ci4, BombableRock, 64, 64]
       - [0xE9E690, palette, BombableRock]
       - [0xE9E6B0]
-
   - [0xF00000, pm_sbn, audio]
   - [0x1942C40, bin, copy_1942C40] # copy of 0x1642C40 - 0x1643000
   - { start: 0x1943000, align: 8, type: pm_sprites, name: sprites }

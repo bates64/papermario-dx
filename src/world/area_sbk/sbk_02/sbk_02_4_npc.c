@@ -5,7 +5,7 @@
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #include "world/common/complete/GiveReward.inc.c"
 
@@ -195,7 +195,7 @@ API_CALLABLE(N(CheckTradeEventTime)) {
 }
 
 API_CALLABLE(N(GetTradeEventItemCount)) {
-    script->varTable[0] = get_item_count();
+    script->varTable[0] = get_consumables_count();
     return ApiStatus_DONE2;
 }
 
@@ -225,7 +225,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
             Return
         CaseEq(ITEM_NUTTY_CAKE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F1)
-            EVT_GIVE_CONSUMABLE_REWARD(ITEM_MAPLE_SUPER)
+            EVT_GIVE_REWARD(ITEM_MAPLE_SUPER)
             Wait(10)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F2)
             Wait(10)

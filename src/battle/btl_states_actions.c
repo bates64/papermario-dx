@@ -841,12 +841,6 @@ void btl_state_update_begin_player_turn(void) {
             }
             break;
         case BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_TURBO_CHARGE:
-            if (0) { // TODO relocated block - required to match
-back:
-                player->koStatus = STATUS_KEY_DAZE;
-                player->disableEffect->data.disableX->koDuration = player->koDuration;
-                goto later;
-            }
             if (!btl_is_popup_displayed()) {
                 gBattleSubState = BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_STATUS_DAMAGE;
             }
@@ -959,14 +953,14 @@ back:
                 temp = player->koDuration;
                 player->koDuration = debuffDuration;
                 if (debuffDuration > 0) {
-                    goto back;
+                    player->koStatus = STATUS_KEY_DAZE;
+                    player->disableEffect->data.disableX->koDuration = player->koDuration;
                 } else if (temp != debuffDuration) {
                     player->koStatus = 0;
                     player->koDuration = 0;
                     player->disableEffect->data.disableX->koDuration = 0;
                 }
             }
-    later:
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 Actor* enemy = battleStatus->enemyActors[i];

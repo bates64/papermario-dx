@@ -837,10 +837,8 @@ void pause_badges_load_badges(s32 onlyEquipped) {
         for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
             s16 badgeItemID = playerData->badges[i];
 
-            if (badgeItemID == 0) {
+            if (badgeItemID == ITEM_NONE) {
                 continue;
-            } else if (badgeItemID > ITEM_LAST_BADGE) {
-                break;
             } else {
                 gPauseBadgesItemIds[numItems] = badgeItemID;
                 numItems += 1;

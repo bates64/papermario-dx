@@ -21,8 +21,7 @@ EvtScript N(EVS_UnlockDoor) = {
         Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_MYSTICAL_KEY, LVar0)
-    Call(RemoveKeyItemAt, LVar0)
+    Call(RemoveItem, ITEM_MYSTICAL_KEY)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
     Call(N(GetEntityPosition), MV_Unk_00, LVar0, LVar1, LVar2)

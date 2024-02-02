@@ -510,8 +510,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     EndThread
     Return
     Label(40)
-    Call(FindKeyItem, ITEM_BOO_WEIGHT, LVar1)
-    Call(RemoveKeyItemAt, LVar1)
+    Call(RemoveItem, ITEM_BOO_WEIGHT)
     Call(MakeItemEntity, LVar0, 447, -350, 278, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
     Call(CloseChoicePopup)

@@ -115,6 +115,46 @@ s32 get_global_byte(s32 index) {
     return gCurrentSaveFile.globalBytes[index];
 }
 
+s16 set_global_short(s32 index, s32 value) {
+    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
+    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s16 ret = (b2 << 8) | b1;
+
+    gCurrentSaveFile.globalBytes[index] = value & 0xFF;
+    gCurrentSaveFile.globalBytes[index + 1] = (value >> 8) & 0xFF;
+    return ret;
+}
+
+s16 get_global_short(s32 index) {
+    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
+    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+
+    return (b2 << 8) | b1;
+}
+
+s32 set_global_word(s32 index, s32 value) {
+    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
+    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s32 b4 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s16 ret = (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
+
+    gCurrentSaveFile.globalBytes[index] = value & 0xFF;
+    gCurrentSaveFile.globalBytes[index + 1] = (value >> 8) & 0xFF;
+    gCurrentSaveFile.globalBytes[index + 2] = (value >> 16) & 0xFF;
+    gCurrentSaveFile.globalBytes[index + 3] = (value >> 24) & 0xFF;
+    return ret;
+}
+
+s32 get_global_word(s32 index) {
+    s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
+    s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+    s32 b4 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
+
+    return (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
+}
+
 s32 clear_area_flag(s32 index) {
     s32 wordIdx = index / 32;
     s32 bitIdx = index % 32;

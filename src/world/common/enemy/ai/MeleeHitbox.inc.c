@@ -104,14 +104,6 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
     Npc* baseNpc;
     f32 posX, posZ;
 
-    #ifdef _DEAD_H_
-    hitboxEnemy->unk_108.x = hitboxNpc->pos.x;
-    hitboxEnemy->unk_108.y = hitboxNpc->pos.y;
-    hitboxEnemy->unk_108.z = hitboxNpc->pos.z;
-    hitboxEnemy->unk_114 = 0.0001f;
-    hitboxEnemy->unk_118 = 0.0001f;
-    #endif
-
     if (isInitialCall || (hitboxEnemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->functionTemp[0] = 0;
         hitboxNpc->duration = 0;
@@ -170,13 +162,6 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
             }
             break;
     }
-
-    #ifdef _DEAD_H_
-    if (hitboxEnemy->hitboxIsActive != 0) {
-        hitboxEnemy->unk_114 = 7.0f;
-        hitboxEnemy->unk_118 = 1.0f;
-    }
-    #endif
 
     return ApiStatus_BLOCK;
 }

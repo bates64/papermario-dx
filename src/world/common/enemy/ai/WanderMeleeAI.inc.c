@@ -30,14 +30,6 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
     territory.halfHeight = 65.0f;
     territory.detectFlags = 0;
 
-    #ifdef _DEAD_H_
-    enemy->unk_108.x = npc->pos.x;
-    enemy->unk_108.y = npc->pos.y;
-    enemy->unk_108.z = npc->pos.z;
-    enemy->unk_114 = 0.0001f;
-    enemy->unk_118 = 0.0001f;
-    #endif
-
     if (isInitialCall || (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;

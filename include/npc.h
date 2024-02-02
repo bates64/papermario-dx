@@ -354,13 +354,7 @@ typedef struct Enemy {
     /* 0xDC */ s32 unk_DC;
     /* 0xE0 */ s16 savedNpcYaw;
     /* 0xE2 */ char unk_E2[6];
-    #ifdef _DEAD_H_
-    /* 0x0DC */ char unk_E8[32];
-    /* 0x108 */ Vec3f unk_108; // Associated NPC Pos?
-    /* 0x114 */ f32 unk_114;
-    /* 0x118 */ f32 unk_118;
-    #endif
-} Enemy; // size = 0xE8, dead size = 0x11C
+} Enemy; // size = 0xE8
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;

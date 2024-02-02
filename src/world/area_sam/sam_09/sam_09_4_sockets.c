@@ -2,6 +2,7 @@
 #include "effects.h"
 
 #include "world/common/complete/GiveReward.inc.c"
+#include "world/common/todo/GetItemName.inc.c"
 
 API_CALLABLE(N(GetItemIDFromItemEntity)) {
     Bytecode* args = script->ptrReadPos;
@@ -15,68 +16,46 @@ API_CALLABLE(N(SerializeItemIDs)) {
     s32 itemID;
 
     itemID = evt_get_variable(script, MV_Socket1_ItemID);
-    if (itemID == -1) {
-        itemID = 0xFF;
-    }
-    evt_set_variable(script, GB_SAM09_ItemSocket1_LowerByte, itemID & 0xFF);
-    evt_set_variable(script, GB_SAM09_ItemSocket1_UpperByte, (itemID >> 8) & 0xFF);
+    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket1_LowerByte), itemID);
 
     itemID = evt_get_variable(script, MV_Socket2_ItemID);
-    if (itemID == -1) {
-        itemID = 0xFF;
-    }
-    evt_set_variable(script, GB_SAM09_ItemSocket2_LowerByte, itemID & 0xFF);
-    evt_set_variable(script, GB_SAM09_ItemSocket2_UpperByte, (itemID >> 8) & 0xFF);
+    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket2_LowerByte), itemID);
 
     itemID = evt_get_variable(script, MV_Socket3_ItemID);
-    if (itemID == -1) {
-        itemID = 0xFF;
-    }
-    evt_set_variable(script, GB_SAM09_ItemSocket3_LowerByte, itemID & 0xFF);
-    evt_set_variable(script, GB_SAM09_ItemSocket3_UpperByte, (itemID >> 8) & 0xFF);
+    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket3_LowerByte), itemID);
+
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(DeserializeItemIDs)) {
-    s32 upper;
-    s32 lower;
+    s32 itemID;
 
-    lower = evt_get_variable(script, GB_SAM09_ItemSocket1_LowerByte) & 0xFF;
-    upper = evt_get_variable(script, GB_SAM09_ItemSocket1_UpperByte) & 0xFF;
-    if (lower != 0xFF) {
-        evt_set_variable(script, MV_Socket1_ItemID, (upper << 8) | lower);
-    } else {
-        evt_set_variable(script, MV_Socket1_ItemID, -1);
-    }
+    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket1_LowerByte));
+    evt_set_variable(script, MV_Socket1_ItemID, itemID);
 
-    lower = evt_get_variable(script, GB_SAM09_ItemSocket2_LowerByte) & 0xFF;
-    upper = evt_get_variable(script, GB_SAM09_ItemSocket2_UpperByte) & 0xFF;
-    if (lower != 0xFF) {
-        evt_set_variable(script, MV_Socket2_ItemID, (upper << 8) | lower);
-    } else {
-        evt_set_variable(script, MV_Socket2_ItemID, -1);
-    }
+    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket2_LowerByte));
+    evt_set_variable(script, MV_Socket2_ItemID, itemID);
 
-    lower = evt_get_variable(script, GB_SAM09_ItemSocket3_LowerByte) & 0xFF;
-    upper = evt_get_variable(script, GB_SAM09_ItemSocket3_UpperByte) & 0xFF;
-    if (lower != 0xFF) {
-        evt_set_variable(script, MV_Socket3_ItemID, (upper << 8) | lower);
-    } else {
-        evt_set_variable(script, MV_Socket3_ItemID, -1);
-    }
+    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket3_LowerByte));
+    evt_set_variable(script, MV_Socket3_ItemID, itemID);
+
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(CreateConsumableItemList)) {
+    s32 itemID;
     s32* array;
-    s32 len = ITEM_NUM_CONSUMABLES;
-    s32 i;
+    s32 pos = 0;
 
     script->varTablePtr[0] = array = heap_malloc((ITEM_NUM_CONSUMABLES + 1) * sizeof(*array));
-    for (i = 0; i < ITEM_NUM_CONSUMABLES; i++) {
-        array[i] = ITEM_FIRST_CONSUMABLE + i;
+
+    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
+        if (item_is_consumable(itemID)) {
+           array[pos++] = itemID;
+        }
     }
-    array[i] = ITEM_NONE;
+    array[pos] = ITEM_NONE;
+
     return ApiStatus_DONE2;
 }
 
@@ -270,20 +249,20 @@ EvtScript N(EVS_UseSocket3) = {
 EvtScript N(EVS_Interact_ItemSockets) = {
     Call(DisablePlayerInput, TRUE)
     Label(0)
-    Call(GetPlayerActionState, LVar0)
-    Wait(1)
-    IfNe(LVar0, ACTION_STATE_IDLE)
-        Goto(0)
-    EndIf
-    Call(GetPlayerPos, LVar1, LVar2, LVar3)
-    IfLt(LVar1, -150)
-        ExecWait(N(EVS_UseSocket1))
-    Else
-        IfLt(LVar1, 100)
-            ExecWait(N(EVS_UseSocket2))
-        Else
-            ExecWait(N(EVS_UseSocket3))
+        Call(GetPlayerActionState, LVar0)
+        Wait(1)
+        IfNe(LVar0, ACTION_STATE_IDLE)
+            Goto(0)
         EndIf
+    Call(GetPlayerPos, LVar1, LVar2, LVar3)
+    Switch(LVar1)
+        CaseLt(-150)
+            ExecWait(N(EVS_UseSocket1))
+        CaseLt(100)
+            ExecWait(N(EVS_UseSocket2))
+        CaseDefault
+            ExecWait(N(EVS_UseSocket3))
+    EndSwitch
     EndIf
     Call(DisablePlayerInput, FALSE)
     Return

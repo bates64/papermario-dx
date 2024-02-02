@@ -18,7 +18,6 @@ void boot_main(void* data);
 
 void is_debug_init(void);
 void is_debug_panic(const char* message, const char* file, u32 line, const char* func);
-char* is_debug_print(char* arg0, const char* str, size_t count);
 
 f32 signF(f32 val);
 
@@ -37,6 +36,10 @@ void copy_matrix(Matrix4f src, Matrix4f dest);
 
 s8 set_global_byte(s32 index, s32 value);
 s32 get_global_byte(s32 index);
+s16 set_global_short(s32 index, s32 value);
+s16 get_global_short(s32 index);
+s32 set_global_word(s32 index, s32 value);
+s32 get_global_word(s32 index);
 s32 set_global_flag(s32 index);
 s32 clear_global_flag(s32 index);
 s32 get_global_flag(s32 index);
@@ -252,8 +255,8 @@ s32 phys_can_player_interact(void);
 
 void ai_enemy_play_sound(Npc* npc, s32 arg1, s32 arg2);
 
-s32 player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
-s32 player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
+HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
+HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
 s32 evt_get_variable(Evt* script, Bytecode var);
 s32 evt_set_variable(Evt* script, Bytecode var, s32 value);
@@ -401,7 +404,6 @@ s32 resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
 s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
-PlayerData* get_player_data(void);
 
 b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
@@ -459,7 +461,7 @@ void get_screen_overlay_params(s32, u8* type, f32* zoom);
 void set_screen_overlay_color(s32, u8, u8, u8);
 void set_screen_overlay_center(s32, s32, s32, s32);
 s32 rand_int(s32);
-void sort_items(void);
+void sort_consumables(void);
 s32 is_ability_active(s32 arg0);
 s32 is_starting_conversation(void);
 f32 update_lerp(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration);
@@ -920,8 +922,6 @@ void update_player(void);
 void enforce_hpfp_limits(void);
 s32 should_collider_allow_interact(s32);
 void show_coin_counter(void);
-s32 add_item(s32 itemID);
-s32 add_badge(s32 itemID);
 void hide_coin_counter_immediately(void);
 void hide_popup_menu(void);
 void destroy_popup_menu(void);
@@ -946,15 +946,12 @@ void func_800F0CB0(s32, f32, f32, f32);
 void func_800F0D5C(void);
 void func_800F0D80(void);
 void func_800F102C(void);
-s32 get_item_count(void);
-s32 get_stored_empty_count(void);
-s32 get_stored_count(void);
-s32 get_item_empty_count(void);
+
+
 void shop_open_item_select_popup(s32 mode);
 void hide_coin_counter(void);
 void set_message_text_var(s32 msgID, s32 index);
 void set_message_int_var(s32 value, s32 index);
-s32 store_item(s32 itemID);
 void open_status_bar_quickly(void);
 void show_immune_bonk(f32 x, f32 y, f32 z, s32, s32, s32);
 void show_primary_damage_popup(f32 x, f32 y, f32 z, s32 attack, s32 a);

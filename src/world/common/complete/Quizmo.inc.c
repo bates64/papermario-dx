@@ -37,12 +37,7 @@ extern u8 MessagePlural_de[];
 #endif
 
 BSS s32 N(Quizmo_Worker);
-// needed for kmr_02
-#ifndef QUIZMO_PRE_STATIC_PAD
-MAP_STATIC_PAD(1,quizmo_pre_array);
-#endif
 BSS s32 N(Quizmo_ScriptArray)[5];
-MAP_STATIC_PAD(1,quizmo_post_array);
 BSS EffectInstance* N(Quizmo_StageEffect);
 BSS EffectInstance* N(Quizmo_AudienceEffect);
 BSS EffectInstance* N(Quizmo_VannaTEffect);

@@ -247,9 +247,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
     // ------------------------------------------------------------------------
     // remove targets based on simple criteria (coarse pass)
 
-    do {
-        actor->selectedTargetIndex = 0;
-    } while (0);
+    actor->selectedTargetIndex = 0;
     actor->targetListLength = numTargets;
 
     sampleCol = battleStatus->sampleTargetHomeIndex % 4;

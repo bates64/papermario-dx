@@ -1,8 +1,7 @@
 #include "sam_01.h"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/GiveReward.inc.c"
 
 #include "world/common/npc/Penguin_Wander.inc.c"
@@ -147,7 +146,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
             KillThread(LVarA)
             ExecWait(N(EVS_Mayor_HandOverBucket))
             Call(SetNpcAnimation, NPC_SELF, ANIM_MayorPenguin_Idle)
-            EVT_GIVE_KEY_REWARD(ITEM_SNOWMAN_BUCKET)
+            EVT_GIVE_REWARD(ITEM_SNOWMAN_BUCKET)
             Call(SpeakToPlayer, NPC_SELF, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle, 0, MSG_CH7_003C)
             Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

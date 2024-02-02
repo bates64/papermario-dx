@@ -155,7 +155,6 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
     s32 x1, y1, x2, y2;
     f32 frameCounter;
     f32 scale;
-    PlayerData* playerData = get_player_data();
 
     gDPPipeSync(gMainGfxPos++);
     gSPViewport(gMainGfxPos++, &gPauseSpiritsViewport);
@@ -183,7 +182,7 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
         x = gPauseSpiritsPositions[index].x;
         y = gPauseSpiritsPositions[index].y;
 
-        if (playerData->maxStarPower < index + 1) {
+        if (gPlayerData.maxStarPower < index + 1) {
             color = 0;
             alpha = 128;
             offsetY = 0.0f;
@@ -246,10 +245,9 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
 
 void pause_spirits_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 msgID;
-    PlayerData* playerData = get_player_data();
 
     if (gPauseMenuCurrentTab == 5) {
-        if (playerData->maxStarPower > gPauseSpiritsIndexes[menu->selected]) {
+        if (gPlayerData.maxStarPower > gPauseSpiritsIndexes[menu->selected]) {
             msgID = gPauseSpiritsIndexes[menu->selected] + MSG_Menus_SpiritName_Eldstar;
         } else {
             msgID = pause_get_menu_msg(PAUSE_MSG_UNKNOWN_SPIRIT);
@@ -261,7 +259,6 @@ void pause_spirits_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, 
 void pause_spirits_init(MenuPanel* panel) {
     s32 i;
 
-    get_player_data();
     gPauseSpiritsNumSpirits = 0;
 
     for (i = 0; i < ARRAY_COUNT(gPauseSpiritsIndexes); i++) {
@@ -372,7 +369,7 @@ void pause_spirits_handle_input(MenuPanel* panel) {
 
     gPauseCurrentDescIconScript = 0;
 
-    if (get_player_data()->maxStarPower <= gPauseSpiritsIndexes[panel->selected]) {
+    if (gPlayerData.maxStarPower <= gPauseSpiritsIndexes[panel->selected]) {
         gPauseCurrentDescMsg = pause_get_menu_msg(PAUSE_MSG_UNKNOWN_SPIRIT);
     } else {
         gPauseCurrentDescMsg = MSG_Menus_SpiritDesc_Eldstar + gPauseSpiritsIndexes[panel->selected];
@@ -380,15 +377,13 @@ void pause_spirits_handle_input(MenuPanel* panel) {
 }
 
 void pause_spirits_update(MenuPanel* panel) {
-    PlayerData* playerData = get_player_data();
     s32 i;
 
     for (i = 0; i < gPauseSpiritsNumSpirits; i++) {
-        if (i < playerData->maxStarPower && gPauseMenuCurrentTab == 5 && i == panel->selected) {
+        if (i < gPlayerData.maxStarPower && gPauseMenuCurrentTab == 5 && i == panel->selected) {
             spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][1], 1.0f);
         } else {
-            //TODO find better match
-            do { spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][0], 1.0f); } while (0);
+            spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][0], 1.0f);
         }
     }
 }

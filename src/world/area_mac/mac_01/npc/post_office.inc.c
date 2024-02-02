@@ -228,7 +228,7 @@ s32 N(ItemList_Mailbag)[] = {
 };
 
 EvtScript N(EVS_ItemPrompt_Mailbag) = {
-    Call(FindKeyItem, ITEM_MAILBAG, LVar0)
+    Call(FindItem, ITEM_MAILBAG, LVar0)
     IfEq(LVar0, -1)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0060)
     Else

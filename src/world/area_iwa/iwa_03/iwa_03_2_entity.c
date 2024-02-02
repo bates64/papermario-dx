@@ -51,7 +51,7 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_OpenChest) = EVT_OPEN_CHEST_BADGE(ITEM_DAMAGE_DODGE_B, GF_IWA03_Chest_DamageDodgeB);
+EvtScript N(EVS_OpenChest) = EVT_OPEN_CHEST(ITEM_DAMAGE_DODGE_B, GF_IWA03_Chest_DamageDodgeB);
 
 EvtScript N(EVS_MakeEntities) = {
     Thread

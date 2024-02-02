@@ -154,7 +154,6 @@ void entity_base_block_update_slow_sinking(Entity* entity) {
                 data->sinkingTimer = 1;
                 return;
             }
-            do {} while (0); // needed to match
         } else {
             Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
             if (shadow != NULL) {
