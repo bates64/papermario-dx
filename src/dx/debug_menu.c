@@ -151,9 +151,11 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
         0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 }
 
+#define FONT_SIZE 16
+
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
     char buf[128] = {
-        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, FONT_SIZE, FONT_SIZE
     };
     dx_string_to_msg(&buf[4], text);
     draw_msg((s32)buf, posX, posY, 255, color, 0);
@@ -161,7 +163,7 @@ void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
     char buf[128] = {
-        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, FONT_SIZE, FONT_SIZE
     };
     dma_load_msg(msgID, &buf[4]);
     draw_msg((s32)buf, posX, posY, alpha, color, 0);
@@ -170,7 +172,7 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
 void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[16];
     char buf[16] = {
-        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, FONT_SIZE, FONT_SIZE
     };
     sprintf(fmtBuf, fmt, number);
     dx_string_to_msg(&buf[4], fmtBuf);
@@ -180,7 +182,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
 void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
     char msgBuf[32] = {
-        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, FONT_SIZE, FONT_SIZE,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
     };
     s32 pos = 7; // writePos to msgBuf
