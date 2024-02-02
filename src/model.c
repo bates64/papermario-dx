@@ -2157,6 +2157,11 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
             break;
         }
 
+        // try without the area prefix
+        if (strcmp(textureName, &header->name[4]) == 0) {
+            break;
+        }
+
         textureIdx++;
         mainSize = rasterSize + paletteSize + sizeof(*header);
         romOffset += mainSize;
