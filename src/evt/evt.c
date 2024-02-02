@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 
 extern u32* gMapFlags;
 extern s32* gMapVars;

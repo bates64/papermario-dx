@@ -1,5 +1,6 @@
 #include "common.h"
 #include "inventory.h"
+#include "vars_access.h"
 #include "effects.h"
 #include "hud_element.h"
 #include "pause/pause_common.h"

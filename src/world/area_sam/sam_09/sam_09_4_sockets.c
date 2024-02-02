@@ -16,13 +16,13 @@ API_CALLABLE(N(SerializeItemIDs)) {
     s32 itemID;
 
     itemID = evt_get_variable(script, MV_Socket1_ItemID);
-    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket1_LowerByte), itemID);
+    set_global_short(GB_SAM09_ItemSocket1_LowerByte, itemID);
 
     itemID = evt_get_variable(script, MV_Socket2_ItemID);
-    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket2_LowerByte), itemID);
+    set_global_short(GB_SAM09_ItemSocket2_LowerByte, itemID);
 
     itemID = evt_get_variable(script, MV_Socket3_ItemID);
-    set_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket3_LowerByte), itemID);
+    set_global_short(GB_SAM09_ItemSocket3_LowerByte, itemID);
 
     return ApiStatus_DONE2;
 }
@@ -30,13 +30,13 @@ API_CALLABLE(N(SerializeItemIDs)) {
 API_CALLABLE(N(DeserializeItemIDs)) {
     s32 itemID;
 
-    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket1_LowerByte));
+    itemID = get_global_short(GB_SAM09_ItemSocket1_LowerByte);
     evt_set_variable(script, MV_Socket1_ItemID, itemID);
 
-    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket2_LowerByte));
+    itemID = get_global_short(GB_SAM09_ItemSocket2_LowerByte);
     evt_set_variable(script, MV_Socket2_ItemID, itemID);
 
-    itemID = get_global_short(EVT_INDEX_OF_GAME_BYTE(GB_SAM09_ItemSocket3_LowerByte));
+    itemID = get_global_short(GB_SAM09_ItemSocket3_LowerByte);
     evt_set_variable(script, MV_Socket3_ItemID, itemID);
 
     return ApiStatus_DONE2;

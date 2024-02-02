@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 
 void clear_saved_variables(void) {
     SaveData* saveFile = &gCurrentSaveFile;
@@ -104,18 +105,28 @@ s32 get_global_flag(s32 index) {
 }
 
 s8 set_global_byte(s32 index, s32 value) {
-    SaveData* saveFile = &gCurrentSaveFile;
-    s32 ret = saveFile->globalBytes[index];
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
 
-    saveFile->globalBytes[index] = value;
+    s32 ret = gCurrentSaveFile.globalBytes[index];
+    gCurrentSaveFile.globalBytes[index] = value;
     return ret;
 }
 
 s32 get_global_byte(s32 index) {
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
+
     return gCurrentSaveFile.globalBytes[index];
 }
 
 s16 set_global_short(s32 index, s32 value) {
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
+
     s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
     s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
     s16 ret = (b2 << 8) | b1;
@@ -126,6 +137,10 @@ s16 set_global_short(s32 index, s32 value) {
 }
 
 s16 get_global_short(s32 index) {
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
+
     s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
     s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
 
@@ -133,6 +148,10 @@ s16 get_global_short(s32 index) {
 }
 
 s32 set_global_word(s32 index, s32 value) {
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
+
     s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
     s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
     s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
@@ -147,6 +166,10 @@ s32 set_global_word(s32 index, s32 value) {
 }
 
 s32 get_global_word(s32 index) {
+    if (index <= EVT_GAME_BYTE_CUTOFF) {
+        index = EVT_INDEX_OF_GAME_BYTE(index);
+    }
+
     s32 b1 = gCurrentSaveFile.globalBytes[index] & 0xFF;
     s32 b2 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;
     s32 b3 = gCurrentSaveFile.globalBytes[index + 1] & 0xFF;

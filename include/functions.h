@@ -34,21 +34,6 @@ u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest);
 f32 rand_float(void);
 void copy_matrix(Matrix4f src, Matrix4f dest);
 
-s8 set_global_byte(s32 index, s32 value);
-s32 get_global_byte(s32 index);
-s16 set_global_short(s32 index, s32 value);
-s16 get_global_short(s32 index);
-s32 set_global_word(s32 index, s32 value);
-s32 get_global_word(s32 index);
-s32 set_global_flag(s32 index);
-s32 clear_global_flag(s32 index);
-s32 get_global_flag(s32 index);
-s8 set_area_byte(s32 index, s32 value);
-s32 get_area_byte(s32 index);
-s32 set_area_flag(s32 index);
-s32 clear_area_flag(s32 index);
-s32 get_area_flag(s32 index);
-
 Shadow* get_shadow_by_index(s32 index);
 s32 get_time_freeze_mode(void);
 void render_player_model(void);

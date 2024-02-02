@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 
 SHIFT_BSS s16 gTriggerCount;
 SHIFT_BSS TriggerList wTriggerList;

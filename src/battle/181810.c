@@ -1,4 +1,5 @@
 #include "battle/battle.h"
+#include "vars_access.h"
 
 BSS char D_8029F660[0x400]; // unused?
 
@@ -214,14 +215,14 @@ API_CALLABLE(EndActorSpeech) {
     if (isInitialCall) {
         s32 actorID = evt_get_variable(script, *args++);
         s32 partID = evt_get_variable(script, *args++);
-        
+
         gSpeakingActorTalkAnim = evt_get_variable(script, *args++);
         gSpeakingActorIdleAnim = evt_get_variable(script, *args++);
 
         if (actorID == ACTOR_SELF) {
             actorID = script->owner1.actorID;
         }
-        
+
         actor = get_actor(actorID);
         actorPart = get_actor_part(actor, partID);
         gSpeakingActor = actor;

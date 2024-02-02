@@ -155,7 +155,7 @@ typedef struct NpcSettings {
 typedef struct ItemDrop {
     /* 0x00 */ s16 item;
     /* 0x02 */ s16 weight;
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 flagIdx;
 } ItemDrop; // size = 0x06
 
 /// @brief Describes heart/flower drop chances after defeating an Npc in the overworld.
@@ -189,18 +189,6 @@ typedef struct EnemyDrops {
     /* 0xB4 */ s16 maxCoinBonus;
     /* 0xB6 */ char unk_DE[2];
 } EnemyDrops; // size = 0xB8
-
-// TODO unify this with EnemyDrops (union? requires changing tons of data)
-typedef struct EnemyDropsFlat {
-    /* 0x00 */ u8 dropFlags;
-    /* 0x01 */ u8 itemDropChance;
-    /* 0x02 */ s16 itemDrops[8 * 3];
-    /* 0x32 */ s16 heartDrops[8 * 4];
-    /* 0x72 */ s16 flowerDrops[8 * 4];
-    /* 0xB2 */ s16 minCoinBonus;
-    /* 0xB4 */ s16 maxCoinBonus;
-    /* 0xB6 */ char unk_DE[2];
-} EnemyDropsFlat; // size = 0xB8
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
 

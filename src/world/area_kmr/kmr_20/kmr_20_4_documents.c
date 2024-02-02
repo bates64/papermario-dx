@@ -1,5 +1,6 @@
 #include "kmr_20.h"
 #include "hud_element.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 
 #define PACKED_BYTE(base, i) \
@@ -19,7 +20,6 @@ extern HudScript HES_Item_Unused_08C_disabled;
 BSS PopupMenu N(ChooseDocumentPopupMenu);
 BSS IMG_BIN N(LetterBackgroundImg)[0x3D86] ALIGNED(16);
 BSS PAL_BIN N(LetterBackgroundPal)[0x100];
-BSS char N(static_pad)[0x8]; // padding
 BSS IMG_BIN N(LetterPhotoImg)[0x3D86];
 BSS PAL_BIN N(N(LetterPhotoPal))[0x100];
 BSS s32 N(LetterWorkerID);
