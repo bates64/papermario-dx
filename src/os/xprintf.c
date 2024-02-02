@@ -212,7 +212,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
 
             break;
         case 'p':
-            x->v.ll = (long)va_arg(*args, void *);
+            x->v.ll = (unsigned int)va_arg(*args, void *);
             x->s = (char *)&buff[x->n0];
             _Litob(x, 'x');
             break;
