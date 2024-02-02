@@ -1,5 +1,5 @@
 #include "dx/debug_menu.h"
-#if DX_DEBUG_MENU
+#if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "hud_element.h"
@@ -859,15 +859,11 @@ Encounter DebugDummyEncounter = {
     .stage = 0,
 };
 
-void dx_debug_begin_battle() {
+void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     EncounterStatus* es = &gCurrentEncounter;
 
-    DebugDummyEncounter.battle =
-            (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
-    DebugDummyEncounter.stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
+    DebugDummyEncounter.battle = battle;
+    DebugDummyEncounter.stage = stage;
 
     es->curEncounter = &DebugDummyEncounter;
     es->curEnemy = &DebugDummyEnemy;
@@ -886,6 +882,16 @@ void dx_debug_begin_battle() {
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
     D_8009A678 = 1;
+}
+
+void dx_debug_begin_battle() {
+    s16 battle = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
+        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    s16 stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
+
+    dx_debug_begin_battle_with_IDs(battle, stage);
 }
 
 void dx_debug_update_select_battle() {
