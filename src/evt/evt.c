@@ -1704,6 +1704,9 @@ s32 evt_execute_next_command(Evt* script) {
     }
 }
 
+/// Don't call this or move this, it's just so \ref backtrace_foreach can find \ref evt_execute_next_command
+void evt_execute_next_command_end_marker_for_backtrace(void) {}
+
 s32 evt_get_variable(Evt* script, Bytecode var) {
     s32 wordIdx;
     s32 bitIdx;

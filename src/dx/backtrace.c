@@ -6,8 +6,11 @@
 #include "nu/nusys.h"
 #include "backtrace.h"
 
+s32 evt_execute_next_command(Evt* script); // TODO: put in a header
+void evt_execute_next_command_end_marker_for_backtrace(void);
+
 /** @brief Enable to debug why a backtrace is wrong */
-#define BACKTRACE_DEBUG 0
+#define BACKTRACE_DEBUG 1
 
 /** @brief Function alignment enfored by the compiler (-falign-functions). */
 #define FUNCTION_ALIGNMENT      32
@@ -39,6 +42,7 @@ typedef struct {
     int stack_size;          ///< Size of the stack frame
     int ra_offset;           ///< Offset of the return address from the top of the stack frame
     int fp_offset;           ///< Offset of the saved fp from the top of the stack frame; this is != 0 only if the function modifies fp (maybe as a frame pointer, but not necessarily)
+    int a0_offset;           ///< Offset of the saved a0 from the top of the stack frame; this is != 0 only if the function modifies a0
 } bt_func_t;
 
 #define MIPS_OP_ADDIU_SP(op)   (((op) & 0xFFFF0000) == 0x27BD0000)   ///< Matches: addiu $sp, $sp, imm
@@ -48,11 +52,16 @@ typedef struct {
 #define MIPS_OP_SW_RA_SP(op)   (((op) & 0xFFFF0000) == 0xAFBF0000)   ///< Matches: sw $ra, imm($sp)
 #define MIPS_OP_SD_FP_SP(op)   (((op) & 0xFFFF0000) == 0xFFBE0000)   ///< Matches: sd $fp, imm($sp)
 #define MIPS_OP_SW_FP_SP(op)   (((op) & 0xFFFF0000) == 0xAFBE0000)   ///< Matches: sw $fp, imm($sp)
+#define MIPS_OP_SW_A0_SP(op)   (((op) & 0xFFFF0000) == 0xAFBC0000)   ///< Matches: sw $a0, imm($sp) // TODO check correct
 #define MIPS_OP_LUI_GP(op)     (((op) & 0xFFFF0000) == 0x3C1C0000)   ///< Matches: lui $gp, imm
 #define MIPS_OP_NOP(op)        ((op) == 0x00000000)                  ///< Matches: nop
 #define MIPS_OP_MOVE_FP_SP(op) ((op) == 0x03A0F025)                  ///< Matches: move $fp, $sp
 
+#if BACKTRACE_DEBUG
 #define debugf osSyncPrintf
+#else
+#define debugf(...)
+#endif
 
 bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool from_exception);
 
@@ -62,6 +71,8 @@ static bool is_valid_address(uint32_t addr) {
     // TLB-mapped addresses for instance.
     return addr >= 0x80000400 && addr < 0x80800000 && (addr & 3) == 0;
 }
+
+static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *arg, uint32_t *sp, uint32_t *ra, uint32_t *fp, uint32_t *a0);
 
 static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
     /*
@@ -79,25 +90,28 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
     uint32_t* exception_ra;
     uint32_t func_start;
 
-    // Current value of SP/RA/FP registers.
-    uint32_t *sp, *ra, *fp;
+    // Current value of registers.
+    uint32_t *sp, *ra, *fp, *a0;
     asm volatile (
         "move %0, $ra\n"
         "move %1, $sp\n"
         "move %2, $fp\n"
-        : "=r"(ra), "=r"(sp), "=r"(fp)
+        "move %3, $a0\n"
+        : "=r"(ra), "=r"(sp), "=r"(fp), "=r"(a0)
     );
 
-    #if BACKTRACE_DEBUG
-    debugf("backtrace: start\n");
-    #endif
+    backtrace_foreach_foreign(cb, arg, sp, ra, fp, a0); // XXX: call might include backtrace_foreach in backtrace
+}
 
-    exception_ra = NULL;      // If != NULL,
-    func_start = 0;            // Start of the current function (when known)
+static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *arg, uint32_t *sp, uint32_t *ra, uint32_t *fp, uint32_t *a0) {
+    debugf("backtrace: start\n");
+
+    uint32_t* exception_ra = NULL;      // If != NULL,
+    uint32_t* func_start = 0;            // Start of the current function (when known)
 
     // Start from the backtrace function itself. Put the start pointer somewhere after the initial
     // prolog (eg: 64 instructions after start), so that we parse the prolog itself to find sp/fp/ra offsets.
-    ra = (uint32_t*)backtrace_foreach + 64;
+    ra = (uint32_t*)backtrace_foreach_foreign + 64; // FIXME
 
     while (1) {
         // Analyze the function pointed by ra, passing information about the previous exception frame if any.
@@ -106,11 +120,9 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
         if (!__bt_analyze_func(&func, ra, func_start, (bool)exception_ra))
             return;
 
-        #if BACKTRACE_DEBUG
-        debugf("backtrace: %s, ra=%p, sp=%p, fp=%p ra_offset=%d, fp_offset=%d, stack_size=%d\n",
+        debugf("backtrace: %s, ra=%p, sp=%p, fp=%p, a0=%p, ra_offset=%d, fp_offset=%d, a0_offset=%d, stack_size=%d\n",
             func.type == BT_FUNCTION ? "BT_FUNCTION" : (func.type == BT_EXCEPTION ? "BT_EXCEPTION" : (func.type == BT_FUNCTION_FRAMEPOINTER ? "BT_FRAMEPOINTER" : "BT_LEAF")),
-            ra, sp, fp, func.ra_offset, func.fp_offset, func.stack_size);
-        #endif
+            ra, sp, fp, a0, func.ra_offset, func.fp_offset, func.a0_offset, func.stack_size);
 
         switch (func.type) {
             case BT_FUNCTION_FRAMEPOINTER:
@@ -128,127 +140,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
             case BT_FUNCTION:
                 if (func.fp_offset)
                     fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
-                ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
-                sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = NULL;
-                func_start = 0;
-                break;
-            /*
-            case BT_EXCEPTION: {
-                // Exception frame. We must return back to EPC, but let's keep the
-                // RA value. If the interrupted function is a leaf function, we
-                // will need it to further walk back.
-                // Notice that FP is a callee-saved register so we don't need to
-                // recover it from the exception frame (also, it isn't saved there
-                // during interrupts).
-                exception_ra = *(uint32_t**)((uint32_t)sp + func.ra_offset);
-
-                // reg_block_t = __OSThreadContext ?
-
-                // Read EPC from exception frame and adjust it with CAUSE BD bit
-                ra = *(uint32_t**)((uint32_t)sp + offsetof(reg_block_t, epc) + 32);
-                uint32_t cause = *(uint32_t*)((uint32_t)sp + offsetof(reg_block_t, cr) + 32);
-                if (cause & C0_CAUSE_BD) ra++;
-
-                sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-
-                // Special case: if the exception is due to an invalid EPC
-                // (eg: a null function pointer call), we can rely on RA to get
-                // back to the caller. This assumes that we got there via a function call
-                // rather than a raw jump, but that's a reasonable assumption. It's anyway
-                // the best we can do.
-                if ((C0_GET_CAUSE_EXC_CODE(cause) == EXCEPTION_CODE_TLB_LOAD_I_MISS ||
-                    C0_GET_CAUSE_EXC_CODE(cause) == EXCEPTION_CODE_LOAD_I_ADDRESS_ERROR) &&
-                    !is_valid_address((uint32_t)ra)) {
-
-                    // Store the invalid address in the backtrace, so that it will appear in dumps.
-                    // This makes it easier for the user to understand the reason for the exception.
-                    cb(arg, ra);
-                    #if BACKTRACE_DEBUG
-                    debugf("backtrace: %s, ra=%p, sp=%p, fp=%p ra_offset=%d, fp_offset=%d, stack_size=%d\n",
-                        "BT_INVALID", ra, sp, fp, func.ra_offset, func.fp_offset, func.stack_size);
-                    #endif
-
-                    ra = exception_ra - 2;
-
-                    // The function that jumped into an invalid PC was not interrupted by the exception: it
-                    // is a regular function
-                    // call now.
-                    exception_ra = NULL;
-                    break;
-                }
-
-                // The next frame might be a leaf function, for which we will not be able
-                // to find a stack frame. It is useful to try finding the function start.
-                // Try to open the symbol table: if we find it, we can search for the start
-                // address of the function.
-                symtable_header_t symt = symt_open();
-                if (symt.head[0]) {
-                    int idx;
-                    addrtable_entry_t entry = symt_addrtab_search(&symt, (uint32_t)ra, &idx);
-                    while (!ADDRENTRY_IS_FUNC(entry))
-                        entry = symt_addrtab_entry(&symt, --idx);
-                    func_start = ADDRENTRY_ADDR(entry);
-                    #if BACKTRACE_DEBUG
-                    debugf("Found interrupted function start address: %08lx\n", func_start);
-                    #endif
-                }
-            }   break;
-            */
-            case BT_LEAF:
-                ra = exception_ra - 2;
-                // A leaf function has no stack. On the other hand, an exception happening at the
-                // beginning of a standard function (before RA is saved), does have a stack but
-                // will be marked as a leaf function. In this case, we mus update the stack pointer.
-                sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = NULL;
-                func_start = 0;
-                break;
-        }
-
-        if (is_valid_address((uint32_t)ra)) {
-            // Call the callback with this stack frame
-            cb(arg, ra);
-        }
-    }
-}
-
-static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *arg, uint32_t *sp, uint32_t *ra, uint32_t *fp) {
-    uint32_t* exception_ra;
-    uint32_t func_start;
-
-    exception_ra = NULL;      // If != NULL,
-    func_start = 0;            // Start of the current function (when known)
-
-    while (1) {
-        // Analyze the function pointed by ra, passing information about the previous exception frame if any.
-        // If the analysis fail (for invalid memory accesses), stop right away.
-        bt_func_t func;
-        if (!__bt_analyze_func(&func, ra, func_start, (bool)exception_ra))
-            return;
-
-        #if BACKTRACE_DEBUG
-        debugf("backtrace: %s, ra=%p, sp=%p, fp=%p ra_offset=%d, fp_offset=%d, stack_size=%d\n",
-            func.type == BT_FUNCTION ? "BT_FUNCTION" : (func.type == BT_EXCEPTION ? "BT_EXCEPTION" : (func.type == BT_FUNCTION_FRAMEPOINTER ? "BT_FRAMEPOINTER" : "BT_LEAF")),
-            ra, sp, fp, func.ra_offset, func.fp_offset, func.stack_size);
-        #endif
-
-        switch (func.type) {
-            case BT_FUNCTION_FRAMEPOINTER:
-                if (!func.fp_offset) {
-                    debugf("backtrace: framepointer used but not saved onto stack at %p\n", ra);
-                } else {
-                    // Use the frame pointer to refer to the current frame.
-                    sp = fp;
-                    if (!is_valid_address((uint32_t)sp)) {
-                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08lx\n", (uint32_t)sp);
-                        return;
-                    }
-                }
-                // FALLTHROUGH!
-            case BT_FUNCTION:
-                if (func.fp_offset)
-                    fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
+                if (func.a0_offset)
+                    a0 = *(uint32_t**)((uint32_t)sp + func.a0_offset);
                 ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
                 exception_ra = NULL;
@@ -263,6 +156,15 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 exception_ra = NULL;
                 func_start = 0;
                 break;
+        }
+
+        debugf("backtrace: ra=%p\n", ra);
+        debugf("evt_execute_next_command=%p\n", evt_execute_next_command);
+        debugf("evt_execute_next_command_end_marker_for_backtrace=%p\n", evt_execute_next_command_end_marker_for_backtrace);
+
+        if (ra >= evt_execute_next_command && ra <= evt_execute_next_command_end_marker_for_backtrace) { // TODO: can we sizeof(func)?
+            // a0 holds script*
+            debugf("script: %p\n", a0);
         }
 
         if (is_valid_address((uint32_t)ra)) {
@@ -305,8 +207,9 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
     u32 sp = (u32)thread->context.sp;
     u32 pc = (u32)thread->context.pc;
     u32 fp = (u32)thread->context.s8;
+    u32 a0 = (u32)thread->context.a0;
     backtrace_cb(&ctx, (void*)pc);
-    backtrace_foreach_foreign(backtrace_cb, &ctx, (uint32_t*)sp, (uint32_t*)pc, (uint32_t*)fp);
+    backtrace_foreach_foreign(backtrace_cb, &ctx, (uint32_t*)sp, (uint32_t*)pc, (uint32_t*)fp, (uint32_t*)a0);
     return ctx.i;
 }
 
@@ -531,6 +434,8 @@ bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool
             // still emits a framepointer for functions using a variable stack size
             // (eg: using alloca() or VLAs).
             func->type = BT_FUNCTION_FRAMEPOINTER;
+        } else if (MIPS_OP_SW_A0_SP(op)) {
+            func->a0_offset = (int16_t)(op & 0xFFFF);
         }
         // We found the stack frame size and the offset of the return address in the stack frame
         // We can stop looking and process the frame
