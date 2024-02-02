@@ -2145,8 +2145,8 @@ typedef struct FileDisplayData {
 } FileDisplayData; // size = 0x18
 
 typedef struct VanillaSaveData {
-    /* 0x0000 */ char magicString[16]; /// "Mario Story 006" string
-    /* 0x0010 */ char version[32]; /// always zero for vanilla saves
+    /* 0x0000 */ char magicString[16]; /* "Mario Story 006" string */
+    /* 0x0010 */ char version[32]; /* always zero for vanilla saves */
     /* 0x0030 */ s32 crc1;
     /* 0x0034 */ s32 crc2;
     /* 0x0038 */ s32 saveSlot;
@@ -2172,8 +2172,8 @@ typedef struct VanillaSaveData {
 } VanillaSaveData; // size = 0x1380
 
 typedef struct SaveData {
-    /* 0x0000 */ char magicString[16]; /// "Mario Story 006" string
-    /* 0x0010 */ char version[32]; /// always non-null for DX saves
+    /* 0x0000 */ char magicString[16]; /* "Mario Story 006" string */
+    /* 0x0010 */ char version[32]; /* always non-null for DX saves */
     /* 0x0030 */ s32 crc1;
     /* 0x0034 */ s32 crc2;
     /* 0x0038 */ s32 saveSlot;
