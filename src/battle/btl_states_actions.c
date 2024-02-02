@@ -29,6 +29,8 @@ BSS s32 RunAwayRewardTotal;
 BSS s32 RunAwayRewardIncrement;
 BSS s32 D_8029F264;
 
+s32 gEnemyAttackTimescale = 100;
+
 b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
 
 extern ShapeFile gMapShapeData;
@@ -3458,6 +3460,7 @@ void btl_state_update_next_enemy(void) {
             if (i >= battleStatus->numEnemyActors) {
                 // all enemies have been exhausted
                 battleStatus->nextEnemyIndex = 0;
+                gEnemyAttackTimescale += 5;
                 btl_set_state(BATTLE_STATE_END_TURN);
                 return;
             }
@@ -3480,6 +3483,7 @@ void btl_state_update_next_enemy(void) {
                 }
                 if (i == 0) {
                     battleStatus->nextEnemyIndex = 0;
+                    gEnemyAttackTimescale += 5;
                     btl_set_state(BATTLE_STATE_END_TURN);
                     return;
                 }
