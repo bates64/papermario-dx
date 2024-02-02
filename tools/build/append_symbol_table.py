@@ -20,8 +20,15 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         if len(parts) == 8 and parts[3] == "FUNC":
             addr = int(parts[1], 16)
             name = parts[-1]
+
             if name.startswith("dead_"):
                 continue
+
+            # Ignore functions in overlays
+            # TODO: handle overlays properly by tracking which are loaded
+            if name.startswith("b_area_") or name.startswith("mac_"): # TODO etc
+                continue
+
             addr2name[addr] = name
 
         # npc.c                                    120          0x8003910c               x
