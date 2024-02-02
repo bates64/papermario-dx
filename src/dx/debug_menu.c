@@ -1924,6 +1924,9 @@ void dx_hashed_debug_printf(char* filename, s32 line, char* fmt, ...) {
     }
     ASSERT(len < 85);
 
+    // Also print to serial
+    _Printf(is_debug_print, NULL, fmt, args);
+
     u32 hash = dx_debug_hash_location(filename, line);
     s32 matchedLine = -1;
     s32 idx;
