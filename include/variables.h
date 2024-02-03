@@ -31,18 +31,12 @@ extern s32 gCurrentCameraID;
 
 extern CollisionData gCollisionData;
 
-extern f32 GravityParamsStartFall[];
-extern s16 FootstepSoundSelector;
 extern u8* gBackgroundTintModePtr;
 extern s32 gEntityHideMode;
 
-extern s32 D_8010C92C;
-extern s32 D_8010C950;
 extern HiddenPanelsData gCurrentHiddenPanels;
 
 extern BackgroundHeader gBackgroundImage;
-
-extern f32 D_800F7B74;
 
 extern CollisionData gZoneCollisionData;
 

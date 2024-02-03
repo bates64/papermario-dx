@@ -396,7 +396,7 @@ segments:
     - [auto, c, 7E9D0]
     - [auto, c, world/menus]
     - [auto, c, inventory]
-    - [auto, c, world/actions] # DUMMY ROM
+    - [auto, c, world/actions]
     - [auto, c, world/partners]
     - [auto, c, global_hud_scripts]
     - [auto, hasm, bss2_2]

@@ -4,12 +4,12 @@
 #include "dx/debug_menu.h"
 
 SHIFT_BSS CollisionStatus gCollisionStatus;
-SHIFT_BSS f32 D_8010C928;
 SHIFT_BSS f32 JumpedOnSwitchX;
 SHIFT_BSS f32 JumpedOnSwitchZ;
-SHIFT_BSS f32 D_8010C984;
+SHIFT_BSS f32 StepUpLastY; // never read, remove?
+SHIFT_BSS f32 StepUpLastYaw; // never read, remove?
 
-extern f32 GravityParamsStartJump[];
+s16 FootstepSoundSelector = 0;
 
 s32 collision_check_player_intersecting_world(s32 mode, s32 arg1, f32 yaw);
 s32 phys_check_interactable_collision(void);
@@ -65,40 +65,38 @@ void move_player(s32 duration, f32 heading, f32 speed) {
     }
 }
 
-s32 collision_main_above(void) {
+HitID collision_main_above(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     f32 x, y, z;
-    f32 new_var;
+    f32 halfHeight;
     f32 moveAngle;
     f32 moveMagnitude;
-    f32 sp2C;
+    f32 outDepth;
     s32 hitResult;
-    f32 phi_f2;
 
-    new_var = sp2C = playerStatus->colliderHeight * 0.5f;
+    outDepth = halfHeight = playerStatus->colliderHeight * 0.5f;
     x = playerStatus->pos.x;
-    y = playerStatus->pos.y + new_var;
+    y = playerStatus->pos.y + halfHeight;
     z = playerStatus->pos.z;
 
     player_input_to_move_vector(&moveAngle, &moveMagnitude);
 
     if (moveMagnitude != 0.0f) {
-        phi_f2 = playerStatus->targetYaw;
+        moveAngle = playerStatus->targetYaw;
     } else {
-        phi_f2 = playerStatus->spriteFacingAngle - 90.0f + gCameras[gCurrentCameraID].curYaw;
+        moveAngle = playerStatus->spriteFacingAngle - 90.0f + gCameras[gCurrentCameraID].curYaw;
     }
 
-    moveAngle = phi_f2;
-    hitResult = player_raycast_up_corners(playerStatus, &x, &y, &z, &sp2C, moveAngle);
+    hitResult = player_raycast_up_corners(playerStatus, &x, &y, &z, &outDepth, moveAngle);
     collisionStatus->curCeiling = hitResult;
 
-    if (hitResult >= 0) {
+    if (hitResult > NO_COLLIDER) {
         if (playerStatus->actionState != ACTION_STATE_FALLING
             && playerStatus->actionState != ACTION_STATE_STEP_DOWN
             && collisionStatus->curFloor <= NO_COLLIDER
         ) {
-            if (sp2C <= fabsf(new_var + playerStatus->gravityIntegrator[0])) {
+            if (outDepth <= fabsf(halfHeight + playerStatus->gravityIntegrator[0])) {
                 if ((hitResult & COLLISION_WITH_ENTITY_BIT) && get_entity_type(hitResult) == ENTITY_TYPE_BRICK_BLOCK) {
                     return hitResult;
                 }
@@ -268,6 +266,9 @@ void phys_update_jump(void) {
     playerStatus->pos.y += playerStatus->gravityIntegrator[0];
 }
 
+f32 GravityParamsStartJump[] = { 15.7566404343f, -7.38624f, 3.44693994522f, -0.75f };
+f32 GravityParamsStartFall[] = { 0.154342994094f, -0.350080013275f, -0.182262003422f, 0.0115200001746f };
+
 void phys_init_integrator_for_current_state(void) {
     switch (gPlayerStatus.actionState) {
         case ACTION_STATE_LANDING_ON_SWITCH:
@@ -284,15 +285,15 @@ void phys_init_integrator_for_current_state(void) {
         case ACTION_STATE_HIT_FIRE:
         case ACTION_STATE_HIT_LAVA:
             if (!(gPlayerStatus.flags & PS_FLAG_ENTERING_BATTLE)) {
-                gPlayerStatus.gravityIntegrator[0] = GravityParamsStartFall[0];
-                gPlayerStatus.gravityIntegrator[1] = GravityParamsStartFall[1];
-                gPlayerStatus.gravityIntegrator[2] = GravityParamsStartFall[2];
-                gPlayerStatus.gravityIntegrator[3] = GravityParamsStartFall[3];
+                gPlayerStatus.gravityIntegrator[0] = GravityParamsStartJump[0];
+                gPlayerStatus.gravityIntegrator[1] = GravityParamsStartJump[1];
+                gPlayerStatus.gravityIntegrator[2] = GravityParamsStartJump[2];
+                gPlayerStatus.gravityIntegrator[3] = GravityParamsStartJump[3];
             } else {
-                gPlayerStatus.gravityIntegrator[0] = GravityParamsStartFall[0] * 0.5f;
-                gPlayerStatus.gravityIntegrator[1] = GravityParamsStartFall[1] * 0.5f;
-                gPlayerStatus.gravityIntegrator[2] = GravityParamsStartFall[2] * 0.5f;
-                gPlayerStatus.gravityIntegrator[3] = GravityParamsStartFall[3] * 0.5f;
+                gPlayerStatus.gravityIntegrator[0] = GravityParamsStartJump[0] * 0.5f;
+                gPlayerStatus.gravityIntegrator[1] = GravityParamsStartJump[1] * 0.5f;
+                gPlayerStatus.gravityIntegrator[2] = GravityParamsStartJump[2] * 0.5f;
+                gPlayerStatus.gravityIntegrator[3] = GravityParamsStartJump[3] * 0.5f;
             }
             break;
     }
@@ -960,8 +961,8 @@ void phys_main_collision_below(void) {
                                 playerStatus->pos.y = playerY;
                             } else {
                                 set_action_state(ACTION_STATE_STEP_UP);
-                                D_8010C928 = playerY;
-                                D_8010C984 = playerStatus->targetYaw;
+                                StepUpLastY = playerY;
+                                StepUpLastYaw = playerStatus->targetYaw;
                             }
                         } else {
                             playerStatus->pos.y = playerY;

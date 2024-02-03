@@ -1,5 +1,5 @@
 #include "common.h"
-#include "world/actions.h"
+#include "world/disguise.h"
 #include "sprite/player.h"
 
 AnimID WalkPeachAnims[] = {

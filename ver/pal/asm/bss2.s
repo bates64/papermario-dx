@@ -15,7 +15,7 @@ dlabel PulseStoneNotificationCallback
 dlabel D_8010C924
 .space 4
 
-dlabel D_8010C928
+dlabel StepUpLastY
 .space 4
 
 dlabel D_8010C92C
@@ -84,7 +84,7 @@ dlabel JumpedOnSwitchZ
 dlabel PlayerRunStateTime
 .space 4
 
-dlabel D_8010C984
+dlabel StepUpLastYaw
 .space 4
 
 dlabel D_8010C988

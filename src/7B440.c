@@ -11,6 +11,13 @@ SHIFT_BSS f32 PlayerNormalPitch;
 SHIFT_BSS PlayerSpinState gPlayerSpinState;
 SHIFT_BSS s32 PlayerYInterpUpdateDelay;
 
+ // default move speeds
+f32 DefaultWalkSpeed = 2.0f;
+f32 DefaultRunSpeed = 4.0f;
+f32 DefaultJumpSpeed = 32.0f;
+
+extern s32 D_8010C92C;
+
 void update_player_input(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 inputBufPos = playerStatus->inputBufPos;
@@ -50,8 +57,6 @@ void update_player_input(void) {
 void reset_player_status(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     MapSettings* mapSettings;
-    f32 one;
-    f32* floatsTemp;
 
     PeachDisguiseNpcIndex = -1;
     TweesterTouchingPartner = NULL;
@@ -73,8 +78,6 @@ void reset_player_status(void) {
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_BLOCK_NEXT_DISGUISE;
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_DEPRESSED;
 
-    one = 1.0f;
-
     if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH) {
         playerStatus->colliderHeight = 55;
         playerStatus->colliderDiameter = 38;
@@ -90,11 +93,9 @@ void reset_player_status(void) {
         gGameStatusPtr->peachBakingIngredient = PEACH_BAKING_NONE;
     }
 
-    // TODO required to match
-    floatsTemp = &(&D_800F7B74)[-1]; // index of 0 does not work
-    playerStatus->walkSpeed = *floatsTemp++ * one;
-    playerStatus->runSpeed = *floatsTemp++ * one;
-    playerStatus->maxJumpSpeed = *floatsTemp++ * one;
+    playerStatus->walkSpeed = DefaultWalkSpeed;
+    playerStatus->runSpeed = DefaultRunSpeed;
+    playerStatus->maxJumpSpeed = DefaultJumpSpeed;
 
     set_action_state(ACTION_STATE_IDLE);
 
@@ -135,12 +136,6 @@ void reset_player_status(void) {
     mem_clear(&gPlayerSpinState, sizeof(gPlayerSpinState));
 }
 
-void get_packed_buttons(s32* out) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    *out = (playerStatus->curButtons & 0xFFFF) | (playerStatus->pressedButtons << 16);
-}
-
 void player_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 stickAxisX = playerStatus->stickAxis[0];
@@ -164,7 +159,6 @@ void player_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
 }
 
 void game_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     f32 stickX = gGameStatusPtr->stickX[0];
     f32 stickY = -gGameStatusPtr->stickY[0];
     f32 maxRadius = 70.0f;
@@ -178,7 +172,7 @@ void game_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
 
     angle = clamp_angle(atan2(0.0f, 0.0f, stickX, stickY) + gCameras[CAM_DEFAULT].curYaw);
     if (magnitude == 0.0f) {
-        angle = playerStatus->targetYaw;
+        angle = gPlayerStatus.targetYaw;
     }
 
     *outAngle = angle;

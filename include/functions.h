@@ -186,7 +186,7 @@ s32 get_model_list_index_from_tree_index(s32 treeIndex);
 s32 get_transform_group_index(s32);
 void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY,
                                f32* sizeZ);
-s32 collision_main_above(void);
+HitID collision_main_above(void);
 void collision_lava_reset_check_additional_overlaps(void);
 s32 player_test_lateral_overlap(s32, PlayerStatus*, f32*, f32*, f32*, f32, f32);
 Npc* peach_make_disguise_npc(s32 peachDisguise);

@@ -1,6 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "world/actions.h"
+#include "world/disguise.h"
 #include "sprite.h"
 #include "world/partner/watt.h"
 #include "sprite/player.h"
@@ -29,14 +29,12 @@ extern Addr inspect_icon_ROM_START;
 extern Addr inspect_icon_ROM_END;
 #endif
 
-SHIFT_BSS UNK_FUN_PTR(ISpyNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(PulseStoneNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(TalkNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(InteractNotificationCallback);
+SHIFT_BSS void (*ISpyNotificationCallback)(void);
+SHIFT_BSS void (*PulseStoneNotificationCallback)(void);
+SHIFT_BSS void (*TalkNotificationCallback)(void);
+SHIFT_BSS void (*InteractNotificationCallback)(void);
 SHIFT_BSS s32 D_8010C950;
 
-extern f32 D_800F7B48;
-extern s32 D_800F7B4C;
 extern s32 WorldTattleInteractionID;
 
 HitID player_raycast_down(f32*, f32*, f32*, f32*);
@@ -757,13 +755,16 @@ void phys_update_standard(void) {
         collision_main_lateral();
         collision_check_player_overlaps();
 
-        if (collision_main_above() < 0 && playerStatus->timeInAir == 0 &&
-            playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
+        if (collision_main_above() <= NO_COLLIDER
+            && playerStatus->timeInAir == 0
+            && playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS
+        ) {
             collision_lateral_peach();
         }
 
-        if ((playerStatus->actionState != ACTION_STATE_ENEMY_FIRST_STRIKE)
-            && (playerStatus->actionState != ACTION_STATE_STEP_UP)) {
+        if (playerStatus->actionState != ACTION_STATE_ENEMY_FIRST_STRIKE
+            && playerStatus->actionState != ACTION_STATE_STEP_UP
+        ) {
             phys_main_collision_below();
         }
     }
@@ -1019,6 +1020,8 @@ b32 check_player_action_debug(void) {
     return ret;
 }
 
+//BEGIN player/prompts.c
+
 void player_render_interact_prompts(void) {
     render_conversation_prompt();
     render_interact_prompt();
@@ -1157,8 +1160,6 @@ void func_800E06C0(s32 arg0) {
 
 s32 func_800E06D8(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    Npc* npc = playerStatus->encounteredNPC;
-    s32 interactingID = playerStatus->interactingWithID;
     s32 currentWall;
 
     if (playerStatus->timeInAir != 0 || playerStatus->inputDisabledCount != 0) {
@@ -1169,8 +1170,8 @@ s32 func_800E06D8(void) {
     }
     if (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC
         && !(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
-        && npc != NULL
-        && npc->flags & NPC_FLAG_10000000
+        && playerStatus->encounteredNPC != NULL
+        && playerStatus->encounteredNPC->flags & NPC_FLAG_10000000
     ) {
         playerStatus->interactingWithID = NO_COLLIDER;
         return TRUE;
@@ -1188,7 +1189,7 @@ s32 func_800E06D8(void) {
         return FALSE;
     }
 
-    if (interactingID == currentWall) {
+    if (playerStatus->interactingWithID == currentWall) {
         if (playerStatus->flags & PS_FLAG_INTERACTED) {
             return FALSE;
         }
@@ -1199,8 +1200,6 @@ s32 func_800E06D8(void) {
 
     return TRUE;
 }
-
-static const f32 padding = 0.0f;
 
 void check_for_interactables(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -1325,6 +1324,8 @@ void clear_interact_prompt(void) {
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_INTERACT_PROMPT_AVAILABLE;
 }
 
+//END player/prompts.c
+
 void update_partner_timers(void) {
     PlayerData* playerData = &gPlayerData;
 
@@ -1338,6 +1339,10 @@ void update_partner_timers(void) {
         }
     }
 }
+
+//BEGIN player/render.c
+
+f32 D_800F7B48 = 0.0f; // always zero, remove?
 
 void player_update_sprite(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -1549,6 +1554,8 @@ void render_player_model(void) {
     }
 }
 
+s32 D_800F7B4C = 0;
+
 void appendGfx_player(void* data) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Matrix4f sp20, sp60, spA0, spE0;
@@ -1749,3 +1756,5 @@ void update_player_shadow(void) {
         set_peach_shadow_scale(shadow, shadowScale);
     }
 }
+
+//END player/render.c
