@@ -25,15 +25,23 @@ for command in EMULATOR_PATHS:
         emulator = command
         break
 
+def windows_path(path):
+    return subprocess.check_output(["wslpath", "-w", path]).decode().strip()
+
 def main():
     if os.system(f"ninja {ROM}") != 0:
-        print("Build failed")
+        print("error: build failed")
         return
 
+    wsl = os.name == "posix"
+    rom = windows_path(ROM) if wsl else ROM
+
     if emulator is not None:
-        subprocess.run([emulator, ROM])
+        subprocess.run([emulator, rom])
     else:
-        print("No emulator found")
+        print("error: no emulator found")
+        if wsl:
+            print("  hint: add an emulator to your PATH")
 
 if __name__ == "__main__":
     main()
