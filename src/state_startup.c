@@ -85,11 +85,15 @@ void state_step_startup(void) {
 
     #if DX_QUICK_LAUNCH
         // immediately jump into the world using last-used save file
-        gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
-        fio_load_game(gGameStatusPtr->saveSlot);
-        set_game_mode(GAME_MODE_ENTER_WORLD);
-        gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
-    #elif DX_SKIP_LOGOS
+        gGameStatus.saveSlot = gSaveGlobals.lastFileSelected;
+        if (fio_load_game(gGameStatusPtr->saveSlot)) {
+            set_game_mode(GAME_MODE_ENTER_WORLD);
+            gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+            return;
+        }
+    #endif
+
+    #if DX_SKIP_LOGOS
         // go right to the story book or file select
         #if DX_SKIP_STORY
             set_curtain_scale(1.0f);
