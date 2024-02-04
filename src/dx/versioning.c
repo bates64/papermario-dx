@@ -11,12 +11,12 @@ void fio_serialize_state() {
 
     saveData->player = gPlayerData;
 
-    saveData->areaID = gGameStatusPtr->areaID;
-    saveData->mapID = gGameStatusPtr->mapID;
-    saveData->entryID = gGameStatusPtr->entryID;
-    saveData->savePos.x = gGameStatusPtr->savedPos.x;
-    saveData->savePos.y = gGameStatusPtr->savedPos.y;
-    saveData->savePos.z = gGameStatusPtr->savedPos.z;
+    saveData->areaID = gGameStatus.areaID;
+    saveData->mapID = gGameStatus.mapID;
+    saveData->entryID = gGameStatus.entryID;
+    saveData->savePos.x = gGameStatus.savedPos.x;
+    saveData->savePos.y = gGameStatus.savedPos.y;
+    saveData->savePos.z = gGameStatus.savedPos.z;
 
     for (i = 0; i < ARRAY_COUNT(gCurrentEncounter.defeatFlags[0]); i++) {
         for (j = 0; j < ARRAY_COUNT(gCurrentEncounter.defeatFlags); j++) {
@@ -24,10 +24,10 @@ void fio_serialize_state() {
         }
     }
 
-    saveData->debugEnemyContact = gGameStatusPtr->debugEnemyContact;
-    saveData->debugUnused1 = gGameStatusPtr->debugUnused1;
-    saveData->debugUnused2 = gGameStatusPtr->debugUnused2;
-    saveData->musicEnabled = gGameStatusPtr->musicEnabled;
+    saveData->debugEnemyContact = gGameStatus.debugEnemyContact;
+    saveData->debugUnused1 = gGameStatus.debugUnused1;
+    saveData->debugUnused2 = gGameStatus.debugUnused2;
+    saveData->musicEnabled = gGameStatus.musicEnabled;
 }
 
 /// Load game data from gCurrentSaveFile
@@ -52,10 +52,10 @@ void fio_deserialize_state() {
         ver_deserialize_standard(saveData);
     }
 
-    gGameStatusPtr->debugEnemyContact = DEBUG_CONTACT_NONE;
-    gGameStatusPtr->debugUnused1 = FALSE;
-    gGameStatusPtr->debugUnused2 = FALSE;
-    gGameStatusPtr->musicEnabled = TRUE;
+    gGameStatus.debugEnemyContact = DEBUG_CONTACT_NONE;
+    gGameStatus.debugUnused1 = FALSE;
+    gGameStatus.debugUnused2 = FALSE;
+    gGameStatus.musicEnabled = TRUE;
 }
 
 /// Load save file data from a supported save version
@@ -68,12 +68,12 @@ void ver_deserialize_standard() {
     gPlayerData = saveData->player;
 
     // copy saved game status fields to GameStatus
-    gGameStatusPtr->areaID = saveData->areaID;
-    gGameStatusPtr->mapID = saveData->mapID;
-    gGameStatusPtr->entryID = saveData->entryID;
-    gGameStatusPtr->savedPos.x = saveData->savePos.x;
-    gGameStatusPtr->savedPos.y = saveData->savePos.y;
-    gGameStatusPtr->savedPos.z = saveData->savePos.z;
+    gGameStatus.areaID = saveData->areaID;
+    gGameStatus.mapID = saveData->mapID;
+    gGameStatus.entryID = saveData->entryID;
+    gGameStatus.savedPos.x = saveData->savePos.x;
+    gGameStatus.savedPos.y = saveData->savePos.y;
+    gGameStatus.savedPos.z = saveData->savePos.z;
 
     // copy saved enemy defeat flags
     for (i = 0; i < ARRAY_COUNT(gCurrentEncounter.defeatFlags[0]); i++) {
