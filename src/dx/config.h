@@ -1,6 +1,10 @@
 #ifndef DX
 #define DX
 
+#include "world/entrances.h"
+#include "battle/formation_names.h"
+#include "battle/stage_names.h"
+
 /// Version string that appears on the file select menu.
 /// Comment out this definition to prevent it from being shown.
 #define DX_MOD_VERSION_STRING "New Mod 1.0.0"
@@ -8,8 +12,12 @@
 /// Enables the debug menu.
 #define DX_DEBUG_MENU 1
 
-/// Loads last used save file
+/// Loads last used save file.
 #define DX_QUICK_LAUNCH 1
+
+/// Quick launch into this battle.
+/// Comment out to disable,
+//#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1

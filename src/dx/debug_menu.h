@@ -1,6 +1,6 @@
 #include "common.h"
 #include "dx/config.h"
-#if DX_DEBUG_MENU
+#if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 
 #define DX_DEBUG_DUMMY_ID 0xDEAD
 
@@ -23,8 +23,10 @@ b32 dx_debug_is_cheat_enabled(DebugCheat cheat);
 void dx_debug_set_map_info(char* mapName, s32 entryID);
 void dx_debug_set_battle_info(s32 battleID, char* stageName);
 
+void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
+
 #define debug_print(text) dx_hashed_debug_printf(__FILE__,__LINE__,text)
-#define debug_printf(fmt, args...) dx_hashed_debug_printf(__FILE__,__LINE__,fmt,args)
+#define debug_printf(fmt, args...) dx_hashed_debug_printf(__FILE__,__LINE__,fmt,##args)
 
 #define DebugPrint(text) Call(_dxDebugIntPrintf, Ref(__FILE__), __LINE__, Ref(text), 0)
 #define DebugPrintf(args...) VFUNC(DebugPrintf, args)
