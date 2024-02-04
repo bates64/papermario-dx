@@ -71,7 +71,7 @@
 #define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
 #define PANIC_MSG(msg, args...) \
     do { \
-        char panicMsg[0x30]; \
+        char panicMsg[0x40]; \
         sprintf(panicMsg, msg, ##args); \
         IS_DEBUG_PANIC(msg, __FILE__, __LINE__, __func__); \
     } while (0)
@@ -81,7 +81,7 @@
     }
 #define ASSERT_MSG(condition, msg, args...) \
     if (!(condition)) { \
-        char assertMsg[0x30]; \
+        char assertMsg[0x40]; \
         sprintf(assertMsg, msg, ##args); \
         IS_DEBUG_PANIC(assertMsg, __FILE__, __LINE__, __func__); \
     }

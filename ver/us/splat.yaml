@@ -101,6 +101,7 @@ segments:
     - [auto, c, 43F0]
     - [auto, c, heap]
     - [auto, c, fio]
+    - [auto, c, dx/versioning]
     - [auto, c, curtains]
     - [auto, c, crash_screen]
     - [auto, c, dx/utils]
