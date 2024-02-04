@@ -3,9 +3,14 @@
 #include "common.h"
 #include "world/partners.h"
 #include "world/actions.h"
+#include "world/disguise.h"
 #include "npc.h"
 #include "effects.h"
 #include "ld_addrs.h"
+
+#include "sprite/npc/WorldClubba.h"
+#include "sprite/npc/WorldKoopatrol.h"
+#include "sprite/npc/HammerBros.h"
 
 #ifdef SHIFT
 #define PLAYER_ACTION_VRAM_DEF texture_memory_VRAM_END
@@ -18,10 +23,15 @@ SHIFT_BSS s32 D_8010C92C;
 SHIFT_BSS s32 D_8010C964;
 SHIFT_BSS s32 gSpinHistoryBufferPos;
 SHIFT_BSS s16 D_8010C9B0;
-SHIFT_BSS s32 gSpinHistoryPosY[5];
 SHIFT_BSS s32 gSpinHistoryPosX[5];
+SHIFT_BSS s32 gSpinHistoryPosY[5];
 SHIFT_BSS s32 gSpinHistoryPosZ[5];
 SHIFT_BSS s16 gSpinHistoryPosAngle[5];
+
+s32 PrevPlayerCamRelativeYaw = 0;
+s32 D_800F7B44 = 0; // always zero, remove?
+
+f32 LastMidairPlayerVelY = 0.0;
 
 void func_800E5520(void) {
     D_8010C9B0 = 0;
@@ -29,17 +39,16 @@ void func_800E5520(void) {
 
 s32 phys_adjust_cam_on_landing(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
-    GameStatus* gameStatus = gGameStatusPtr;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 ret = 1;
 
     //TODO hardcoded map IDs
-    switch (gameStatus->areaID) {
+    switch (gGameStatus.areaID) {
         case AREA_OBK:
-            ret = gameStatus->mapID != 4;
+            ret = gGameStatus.mapID != 4;
             break;
         case AREA_ISK:
-            switch (gameStatus->mapID) {
+            switch (gGameStatus.mapID) {
                 case 0:
                     ret = 2;
                     break;
@@ -334,20 +343,7 @@ void set_action_state(s32 actionState) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
-        // TODO figure this out
-#ifdef NON_EQUIVALENT
-        if (
-            actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK ||
-            actionState == ACTION_STATE_RUN || actionState == ACTION_STATE_JUMP ||
-            actionState == ACTION_STATE_BOUNCE || actionState == ACTION_STATE_HOP ||
-            actionState == ACTION_STATE_LAUNCH || actionState == ACTION_STATE_LANDING_ON_SWITCH ||
-            actionState == ACTION_STATE_FALLING || actionState == ACTION_STATE_STEP_DOWN ||
-            actionState == ACTION_STATE_LAND || actionState == ACTION_STATE_STEP_DOWN_LAND
-        ) {
-#else
-        if (actionState < ACTION_STATE_TALK)
-            if (actionState >= 0) {
-#endif
+        if (actionState <= ACTION_STATE_IDLE && actionState < ACTION_STATE_TALK) {
             playerStatus->prevActionState = playerStatus->actionState;
             playerStatus->actionState = actionState;
             playerStatus->flags |= PS_FLAG_ACTION_STATE_CHANGED;
@@ -547,6 +543,91 @@ void check_input_spin(void) {
         }
     }
 }
+
+AnimID ClubbaDisguiseExtraAnims[] = {
+    ANIM_WorldClubba_Anim00,
+    ANIM_WorldClubba_Anim02,
+    ANIM_WorldClubba_Anim03,
+    ANIM_WorldClubba_Anim04,
+    ANIM_WorldClubba_Anim05,
+    ANIM_WorldClubba_Anim08,
+    ANIM_WorldClubba_Anim07,
+    ANIM_WorldClubba_Anim13,
+    ANIM_WorldClubba_Anim14,
+    ANIM_LIST_END
+};
+
+AnimID HammerBroDisguiseExtraAnims[] = {
+    ANIM_HammerBros_Anim00,
+    ANIM_HammerBros_Anim02,
+    ANIM_HammerBros_Anim03,
+    ANIM_HammerBros_Anim04,
+    ANIM_HammerBros_Anim06,
+    ANIM_HammerBros_Anim07,
+    ANIM_HammerBros_Anim09,
+    ANIM_HammerBros_Anim0A,
+    ANIM_HammerBros_Anim0B,
+    ANIM_HammerBros_Anim1A,
+    ANIM_LIST_END
+};
+
+AnimID KoopatrolDisguiseExtraAnims[] = {
+    ANIM_WorldKoopatrol_Anim00,
+    ANIM_WorldKoopatrol_Anim01,
+    ANIM_WorldKoopatrol_Anim02,
+    ANIM_WorldKoopatrol_Anim04,
+    ANIM_WorldKoopatrol_Anim05,
+    ANIM_WorldKoopatrol_Anim06,
+    ANIM_WorldKoopatrol_Anim07,
+    ANIM_WorldKoopatrol_Anim08,
+    ANIM_WorldKoopatrol_Anim09,
+    ANIM_WorldKoopatrol_Anim12,
+    ANIM_WorldKoopatrol_Anim14,
+    ANIM_WorldKoopatrol_Anim1B,
+    ANIM_LIST_END
+};
+
+DisguiseAnims BasicPeachDisguiseAnims[] = {
+    [PEACH_DISGUISE_NONE] {
+        ANIM_WorldKoopatrol_Anim01,
+        ANIM_WorldKoopatrol_Anim04,
+        ANIM_WorldKoopatrol_Anim06,
+        ANIM_WorldKoopatrol_Anim08,
+        ANIM_WorldKoopatrol_Anim00,
+        ANIM_WorldKoopatrol_Anim1B
+    },
+    [PEACH_DISGUISE_KOOPATROL] {
+        ANIM_WorldKoopatrol_Anim01,
+        ANIM_WorldKoopatrol_Anim04,
+        ANIM_WorldKoopatrol_Anim06,
+        ANIM_WorldKoopatrol_Anim08,
+        ANIM_WorldKoopatrol_Anim00,
+        ANIM_WorldKoopatrol_Anim1B
+    },
+    [PEACH_DISGUISE_HAMMER_BROS] {
+        ANIM_HammerBros_Anim03,
+        ANIM_HammerBros_Anim06,
+        ANIM_HammerBros_Anim09,
+        ANIM_HammerBros_Anim0B,
+        ANIM_HammerBros_Anim00,
+        ANIM_HammerBros_Anim1A
+    },
+    [PEACH_DISGUISE_CLUBBA] {
+        ANIM_WorldClubba_Anim02,
+        ANIM_WorldClubba_Anim03,
+        ANIM_WorldClubba_Anim04,
+        ANIM_WorldClubba_Anim05,
+        ANIM_WorldClubba_Anim00,
+        ANIM_WorldClubba_Anim14
+    },
+};
+
+AnimID* PeachDisguiseExtraAnims[] = {
+    [PEACH_DISGUISE_NONE] KoopatrolDisguiseExtraAnims,
+    [PEACH_DISGUISE_KOOPATROL] KoopatrolDisguiseExtraAnims,
+    [PEACH_DISGUISE_HAMMER_BROS] HammerBroDisguiseExtraAnims,
+    [PEACH_DISGUISE_CLUBBA] ClubbaDisguiseExtraAnims
+};
 
 void peach_set_disguise_anim(AnimID anim) {
     s32 listIndex = PeachDisguiseNpcIndex;

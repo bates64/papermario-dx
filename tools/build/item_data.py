@@ -103,30 +103,22 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     fout.write("};\n")
     fout.write("\n")
 
-    # determine itemID ranges for each category
-    min_cat: Dict[str, int] = {}
-    max_cat: Dict[str, int] = {}
+    nconsumables = 0
+    nbadges = 0
+    nkeys = 0
 
     for idx, item in enumerate(items):
-        cat = item.category
-        if cat not in min_cat:
-            min_cat[cat] = idx
-        max_cat[cat] = idx
+        if ("ITEM_TYPE_FLAG_CONSUMABLE") in item.typeFlags:
+            nconsumables += 1
+        if ("ITEM_TYPE_FLAG_BADGE") in item.typeFlags:
+            nbadges += 1
+        if ("ITEM_TYPE_FLAG_KEY") in item.typeFlags:
+            nkeys += 1
 
-    fout.write(f"#define ITEM_FIRST_KEY              {item_enum[min_cat['KEY']]}\n")
-    fout.write(f"#define ITEM_LAST_KEY               {item_enum[max_cat['KEY']]}\n")
-    fout.write(f"#define ITEM_FIRST_CONSUMABLE       {item_enum[min_cat['CONSUMABLE']]}\n")
-    fout.write(f"#define ITEM_LAST_CONSUMABLE        {item_enum[max_cat['CONSUMABLE']]}\n")
-    fout.write(f"#define ITEM_FIRST_BADGE            {item_enum[min_cat['BADGE']]}\n")
-    fout.write(f"#define ITEM_LAST_BADGE             {item_enum[max_cat['BADGE']]}\n")
-    fout.write("\n")
-
-    fout.write("#define ITEM_NUM_KEYS (ITEM_LAST_KEY - ITEM_FIRST_KEY + 1)\n")
-    fout.write("#define ITEM_NUM_CONSUMABLES (ITEM_LAST_CONSUMABLE - ITEM_FIRST_CONSUMABLE + 1)\n")
-    fout.write("\n")
-
-    fout.write("#define IS_ITEM(itemID) (itemID >= ITEM_FIRST_KEY && itemID <= ITEM_LAST_CONSUMABLE)\n")
-    fout.write("#define IS_BADGE(itemID) (itemID >= ITEM_FIRST_BADGE && itemID <= ITEM_LAST_BADGE)\n")
+    fout.write(f"#define NUM_ITEMS {len(items)}\n")
+    fout.write(f"#define ITEM_NUM_CONSUMABLES {nconsumables}\n")
+    fout.write(f"#define ITEM_NUM_BADGES {nbadges}\n")
+    fout.write(f"#define ITEM_NUM_KEYS {nkeys}\n")
     fout.write("\n")
 
     fout.write("#endif // ITEM_ENUM_H\n")
@@ -294,20 +286,6 @@ if __name__ == "__main__":
 
     items = read_items_yaml(args.items_yaml)
     hud_scripts = read_hud_scripts_yaml(args.hes_yaml)
-
-    # sort items by category
-    CATEGORY_ORDER = {
-        "NONE": 0,
-        "GEAR": 1,
-        "QUEST": 2,
-        "KEY": 3,
-        "CONSUMABLE": 4,
-        "UNUSED": 5,
-        "BADGE": 6,
-        "UTILITY": 7,
-        "DUMMY": 1000,  # must always be at the end of the item table
-    }
-    items.sort(key=lambda x: CATEGORY_ORDER.get(x.category, 999))
 
     with open(args.out_data, "w") as fout:
         fout.write("/* This file is auto-generated. Do not edit. */\n")

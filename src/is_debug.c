@@ -14,6 +14,8 @@ typedef struct {
 
 #define gISVDbgPrnAdrs ((ISVDbg*) 0xb3ff0000)
 
+char* is_debug_print(char* arg0, const char* str, size_t count);
+
 void is_debug_init(void) {
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->put, 0);
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->get, 0);

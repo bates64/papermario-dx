@@ -125,7 +125,7 @@ API_CALLABLE(LoadItemScript) {
         }
         i++;
     }
-    sort_items();
+    sort_consumables();
 
     if (battleStatus->selectedMoveID == MOVE_DOUBLE_DIP) {
         if (battleStatus->itemUsesLeft == 2) {

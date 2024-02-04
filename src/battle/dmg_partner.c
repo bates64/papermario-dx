@@ -1,6 +1,7 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
 #include "effects.h"
+#include "dx/debug_menu.h"
 
 s32 dispatch_damage_event_partner_1(s32, s32);
 
@@ -249,7 +250,7 @@ HitResult calc_partner_damage_enemy(void) {
             }
 
             sfx_play_sound_at_position(SOUND_HIT_FIRE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-            
+
             if (gBattleStatus.flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) {
                 return HIT_RESULT_NICE;
             } else {
@@ -644,82 +645,80 @@ HitResult calc_partner_damage_enemy(void) {
             isFireDamage = TRUE;
         }
 
-        do {    // TODO remove this do while
-            if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
-                && battleStatus->lastAttackDamage >= 0
-                && dispatchEvent != EVENT_DEATH
-                && dispatchEvent != EVENT_SPIN_SMASH_DEATH
-                && dispatchEvent != EVENT_EXPLODE_TRIGGER
-                && !(targetPart->targetFlags & ACTOR_PART_TARGET_NO_DAMAGE)
-            ) {
-                #define INFLICT_STATUS(STATUS_TYPE) \
-                    if ((battleStatus->curAttackStatus & STATUS_FLAG_##STATUS_TYPE) && \
-                        try_inflict_status(target, STATUS_KEY_##STATUS_TYPE, STATUS_TURN_MOD_##STATUS_TYPE)) { \
-                        wasSpecialHit = TRUE; \
-                        wasStatusInflicted = TRUE; \
-                    } \
+        if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
+            && battleStatus->lastAttackDamage >= 0
+            && dispatchEvent != EVENT_DEATH
+            && dispatchEvent != EVENT_SPIN_SMASH_DEATH
+            && dispatchEvent != EVENT_EXPLODE_TRIGGER
+            && !(targetPart->targetFlags & ACTOR_PART_TARGET_NO_DAMAGE)
+        ) {
+            #define INFLICT_STATUS(STATUS_TYPE) \
+                if ((battleStatus->curAttackStatus & STATUS_FLAG_##STATUS_TYPE) && \
+                    try_inflict_status(target, STATUS_KEY_##STATUS_TYPE, STATUS_TURN_MOD_##STATUS_TYPE)) { \
+                    wasSpecialHit = TRUE; \
+                    wasStatusInflicted = TRUE; \
+                } \
 
-                INFLICT_STATUS(SHRINK);
-                INFLICT_STATUS(POISON);
-                INFLICT_STATUS(STONE);
-                INFLICT_STATUS(SLEEP);
-                INFLICT_STATUS(STOP);
-                INFLICT_STATUS(STATIC);
-                INFLICT_STATUS(FEAR);
-                INFLICT_STATUS(PARALYZE);
-                INFLICT_STATUS(DIZZY);
+            INFLICT_STATUS(SHRINK);
+            INFLICT_STATUS(POISON);
+            INFLICT_STATUS(STONE);
+            INFLICT_STATUS(SLEEP);
+            INFLICT_STATUS(STOP);
+            INFLICT_STATUS(STATIC);
+            INFLICT_STATUS(FEAR);
+            INFLICT_STATUS(PARALYZE);
+            INFLICT_STATUS(DIZZY);
 
-                #undef INFLICT_STATUS
+            #undef INFLICT_STATUS
 
-                statusChanceOrDefense = target->actorBlueprint->spookChance;
+            statusChanceOrDefense = target->actorBlueprint->spookChance;
 
-                if (statusChanceOrDefense > 0) {
-                    statusChanceOrDefense = 100;
-                }
+            if (statusChanceOrDefense > 0) {
+                statusChanceOrDefense = 100;
+            }
 
-                statusChanceOrDefense = (battleStatus->statusChance * statusChanceOrDefense) / 100;
+            statusChanceOrDefense = (battleStatus->statusChance * statusChanceOrDefense) / 100;
 
-                if (battleStatus->curAttackStatus & STATUS_FLAG_400000) {
-                    if (rand_int(99) < statusChanceOrDefense) {
-                        if (!(target->debuff == STATUS_KEY_FEAR
-                            || target->debuff == STATUS_KEY_DIZZY
-                            || target->debuff == STATUS_KEY_PARALYZE
-                            || target->debuff == STATUS_KEY_SLEEP
-                            || target->debuff == STATUS_KEY_FROZEN
-                            || target->debuff == STATUS_KEY_STOP)
-                            && !(target->flags & ACTOR_FLAG_FLIPPED)
-                        ) {
-                            dispatchEvent = EVENT_SCARE_AWAY;
-                            wasStatusInflicted = TRUE;
-                            hitResult = HIT_RESULT_HIT;
-                            wasSpecialHit = TRUE;
-                            gBattleStatus.flags1 |= BS_FLAGS1_NICE_HIT;
-                            gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
-                            gBattleStatus.flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;
-                            gBattleStatus.flags1 |= BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
-                            gBattleStatus.flags1 |= BS_FLAGS1_ACTORS_VISIBLE;
-                            sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
-                        } else {
-                            dispatchEvent = EVENT_IMMUNE;
-                            hitResult = HIT_RESULT_NO_DAMAGE;
-                        }
+            if (battleStatus->curAttackStatus & STATUS_FLAG_400000) {
+                if (rand_int(99) < statusChanceOrDefense) {
+                    if (!(target->debuff == STATUS_KEY_FEAR
+                        || target->debuff == STATUS_KEY_DIZZY
+                        || target->debuff == STATUS_KEY_PARALYZE
+                        || target->debuff == STATUS_KEY_SLEEP
+                        || target->debuff == STATUS_KEY_FROZEN
+                        || target->debuff == STATUS_KEY_STOP)
+                        && !(target->flags & ACTOR_FLAG_FLIPPED)
+                    ) {
+                        dispatchEvent = EVENT_SCARE_AWAY;
+                        wasStatusInflicted = TRUE;
+                        hitResult = HIT_RESULT_HIT;
+                        wasSpecialHit = TRUE;
+                        gBattleStatus.flags1 |= BS_FLAGS1_NICE_HIT;
+                        gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
+                        gBattleStatus.flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;
+                        gBattleStatus.flags1 |= BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
+                        gBattleStatus.flags1 |= BS_FLAGS1_ACTORS_VISIBLE;
+                        sfx_play_sound_at_position(SOUND_DAMAGE_STARS, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
                     } else {
                         dispatchEvent = EVENT_IMMUNE;
                         hitResult = HIT_RESULT_NO_DAMAGE;
                     }
-                }
-
-                if (wasStatusInflicted) {
-                    if (dispatchEvent == EVENT_ZERO_DAMAGE) {
-                        dispatchEvent = EVENT_HIT_COMBO;
-                    }
-
-                    if (dispatchEvent == EVENT_IMMUNE) {
-                        dispatchEvent = EVENT_HIT;
-                    }
+                } else {
+                    dispatchEvent = EVENT_IMMUNE;
+                    hitResult = HIT_RESULT_NO_DAMAGE;
                 }
             }
-        } while (0);
+
+            if (wasStatusInflicted) {
+                if (dispatchEvent == EVENT_ZERO_DAMAGE) {
+                    dispatchEvent = EVENT_HIT_COMBO;
+                }
+
+                if (dispatchEvent == EVENT_IMMUNE) {
+                    dispatchEvent = EVENT_HIT;
+                }
+            }
+        }
     }
 
     statusChanceOrDefense = target->actorBlueprint->spookChance;
@@ -1064,6 +1063,12 @@ API_CALLABLE(PartnerDamageEnemy) {
     gBattleStatus.curAttackDamage = evt_get_variable(script, *args++);
     gBattleStatus.powerBounceCounter = 0;
     flags = *args++;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+        battleStatus->curAttackDamage = 99;
+    }
+    #endif
 
     if ((flags & BS_FLAGS1_INCLUDE_POWER_UPS) && (flags & BS_FLAGS1_TRIGGER_EVENTS)) {
         battleStatus->flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;

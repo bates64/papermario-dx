@@ -146,7 +146,7 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
         Call(SetNpcCollisionSize, NPC_SELF, 45, 26)
         Call(AdjustCam, CAM_DEFAULT, Float(10.0), 0, 350, Float(15.0), Float(-6.5))
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH2_001F)
-        EVT_GIVE_KEY_REWARD(ITEM_MAGICAL_SEED2)
+        EVT_GIVE_REWARD(ITEM_MAGICAL_SEED2)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH2_0020)
         Call(ResetCam, CAM_DEFAULT, Float(10.0))
         Set(GF_IWA02_Gift_MagicalSeed2, TRUE)

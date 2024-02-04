@@ -1,13 +1,13 @@
 #include "common.h"
+#include "vars_access.h"
 #include "npc.h"
 #include "effects.h"
 
 extern s32 gLastRenderTaskCount;
 
 void spawn_drops(Enemy* enemy) {
-    PlayerData* playerData = &gPlayerData;
     EncounterStatus* encounter = &gCurrentEncounter;
-    EnemyDropsFlat* drops = (EnemyDropsFlat*) enemy->drops; // TODO: unify EnemyDrops / EnemyDropsFlat
+    EnemyDrops* drops = enemy->drops;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 pickupDelay;
@@ -19,16 +19,15 @@ void spawn_drops(Enemy* enemy) {
     f32 chance;
     f32 attempts;
     f32 fraction;
-    s32 maxCoinBonus;
     s32 minCoinBonus;
-    s32 tempMax;
+    s32 maxCoinBonus;
     s32 spawnCounter;
     s32 dropCount;
     s32 totalWeight;
+    s32 curWeight;
     s32 angle;
     s32 angleMult;
     s32 i, j;
-    s32 flags;
 
     availableShadows = 0;
     for (i = 0; i < MAX_SHADOWS; i++) {
@@ -47,45 +46,40 @@ void spawn_drops(Enemy* enemy) {
     angleMult = 0;
     pickupDelay = 0;
 
+    // try dropping items
+
     dropCount = drops->itemDropChance;
     if (drops->itemDropChance > rand_int(100)) {
-        tempMax = 0;
+        totalWeight = 0;
 
-        for (i = 0; i < 8; i++) {
-            if (drops->itemDrops[3 * i] != 0) {
-                tempMax += drops->itemDrops[3 * i + 1];
+        for (i = 0; i < ARRAY_COUNT(drops->itemDrops); i++) {
+            if (drops->itemDrops[i].item != ITEM_NONE) {
+                totalWeight += drops->itemDrops[i].weight;
             } else {
                 break;
             }
         }
 
-        totalWeight = 0;
-        dropCount = rand_int(tempMax);
+        curWeight = 0;
+        dropCount = rand_int(totalWeight);
         itemToDrop = ITEM_NONE;
 
-        for (i = 0; i < 8; i++) {
-            if (drops->itemDrops[3 * i] == 0) {
+        for (i = 0; i < ARRAY_COUNT(drops->itemDrops); i++) {
+            if (drops->itemDrops[i].item == ITEM_NONE) {
                 break;
             }
 
-            totalWeight += drops->itemDrops[3 * i + 1];
-            if (drops->itemDrops[3 * i + 2] > 0) {
-                if (get_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_Unused_NPC_6C) + drops->itemDrops[3 * i + 2])) {
+            curWeight += drops->itemDrops[i].weight;
+            if (drops->itemDrops[i].flagIdx > 0) {
+                if (get_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_SpawnedItemDrop_00) + drops->itemDrops[i].flagIdx)) {
                     continue;
                 }
             }
 
-            if (totalWeight >= dropCount) {
-                itemToDrop = drops->itemDrops[3 * i];
-                do {} while (0); // TODO required to match
+            if (curWeight >= dropCount) {
+                itemToDrop = drops->itemDrops[i].weight;
                 break;
             }
-        }
-
-        // TODO this bullshit is required to match
-        flags = enemy->flags;
-        if (flags) {
-            flags = 0;
         }
 
         if (itemToDrop != ITEM_NONE) {
@@ -99,8 +93,8 @@ void spawn_drops(Enemy* enemy) {
                 spawnCounter = 0;
             }
 
-            if (drops->itemDrops[3 * i + 2] >= 0) {
-                set_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_SpawnedItemDrop_00) + drops->itemDrops[3 * i + 2]);
+            if (drops->itemDrops[i].flagIdx >= 0) {
+                set_global_flag(EVT_INDEX_OF_GAME_FLAG(GF_SpawnedItemDrop_00) + drops->itemDrops[i].flagIdx);
             }
         }
     }
@@ -118,19 +112,21 @@ void spawn_drops(Enemy* enemy) {
         }
     }
 
+    // determine number of hearts to drop
+
     dropCount = 0;
     itemToDrop = ITEM_NONE;
-    fraction = playerData->curHP / (f32) playerData->curMaxHP;
+    fraction = gPlayerData.curHP / (f32) gPlayerData.curMaxHP;
 
-    for (i = 0; i < 8; i++) {
-        attempts  = drops->heartDrops[4 * i];
-        threshold = drops->heartDrops[4 * i + 1];
+    for (i = 0; i <  ARRAY_COUNT(drops->heartDrops); i++) {
+        attempts  = drops->heartDrops[i].cutoff;
+        threshold = drops->heartDrops[i].generalChance;
         attempts  /= 32767.0f;
         threshold /= 32767.0f;
 
         if (fraction <= attempts && rand_int(100) <= threshold * 100.0f) {
-            attempts = drops->heartDrops[4 * i + 2];
-            chance = drops->heartDrops[4 * i + 3];
+            attempts = drops->heartDrops[i].attempts;
+            chance = drops->heartDrops[i].chancePerAttempt;
             chance /= 32767.0f;
             for (j = 0; j < attempts; j++) {
                 if (rand_int(100) <= chance * 100.0f) {
@@ -147,9 +143,13 @@ void spawn_drops(Enemy* enemy) {
     if (enemy->flags & ENEMY_FLAG_NO_DROPS) {
         dropCount = 0;
     }
+
+    // spawn as many of the heart drops as possible
+
     if (dropCount != 0) {
         itemToDrop = ITEM_HEART;
     }
+
     if (dropCount * 2 > availableRenderTasks) {
         dropCount = availableRenderTasks / 2;
     }
@@ -172,24 +172,26 @@ void spawn_drops(Enemy* enemy) {
         }
     }
 
+    // determine number of flowers to drop
+
     dropCount = 0;
     itemToDrop = ITEM_NONE;
 
-    if (playerData->curMaxFP > 0) {
-        fraction = playerData->curFP / (f32) playerData->curMaxFP;
+    if (gPlayerData.curMaxFP > 0) {
+        fraction = gPlayerData.curFP / (f32) gPlayerData.curMaxFP;
     } else {
         fraction = 0.0;
     }
 
-    for (i = 0; i < 8; i++) {
-        attempts  = drops->flowerDrops[4 * i + 0];
-        threshold = drops->flowerDrops[4 * i + 1];
+    for (i = 0; i <  ARRAY_COUNT(drops->flowerDrops); i++) {
+        attempts  = drops->flowerDrops[i].cutoff;
+        threshold = drops->flowerDrops[i].generalChance;
         attempts  /= 32767.0f;
         threshold /= 32767.0f;
 
         if (fraction <= attempts && rand_int(100) <= threshold * 100.0f) {
-            attempts = drops->flowerDrops[4 * i + 2];
-            chance = drops->flowerDrops[4 * i + 3];
+            attempts = drops->flowerDrops[i].attempts;
+            chance = drops->flowerDrops[i].chancePerAttempt;
             chance /= 32767.0f;
             for (j = 0; j < attempts; j++) {
                 if (rand_int(100) <= chance * 100.0f) {
@@ -206,9 +208,13 @@ void spawn_drops(Enemy* enemy) {
     if (enemy->flags & ENEMY_FLAG_NO_DROPS) {
         dropCount = 0;
     }
+
+    // spawn as many of the flower drops as possible
+
     if (dropCount != 0) {
         itemToDrop = ITEM_FLOWER_POINT;
     }
+
     if (dropCount * 2 > availableRenderTasks) {
         dropCount = availableRenderTasks / 2;
     }
@@ -231,21 +237,24 @@ void spawn_drops(Enemy* enemy) {
         }
     }
 
-    itemToDrop = ITEM_COIN;
-    do {} while (0);
-    minCoinBonus = drops->minCoinBonus;
-    tempMax = drops->maxCoinBonus;
+    // determine number of coins to drop
 
+    itemToDrop = ITEM_COIN;
+
+    //TODO maybe use an ASSERT here and forgo the odd support for reversing min/max
     if (drops->maxCoinBonus < drops->minCoinBonus) {
-        dropCount = minCoinBonus;
-        minCoinBonus = tempMax;
-        tempMax = dropCount;
+        // swap if max < min
+        maxCoinBonus = drops->minCoinBonus;
+        minCoinBonus = drops->maxCoinBonus;
+    } else {
+        minCoinBonus = drops->minCoinBonus;
+        maxCoinBonus = drops->maxCoinBonus;
     }
 
     if (minCoinBonus < 0) {
-        dropCount = rand_int(tempMax - minCoinBonus) + minCoinBonus;
+        dropCount = rand_int(maxCoinBonus - minCoinBonus) + minCoinBonus;
     } else {
-        dropCount = tempMax - minCoinBonus;
+        dropCount = maxCoinBonus - minCoinBonus;
         if (dropCount != 0) {
             dropCount = rand_int(dropCount) + minCoinBonus;
         } else {
@@ -278,6 +287,9 @@ void spawn_drops(Enemy* enemy) {
     if (dropCount * 2 > availableRenderTasks) {
         dropCount = availableRenderTasks / 2;
     }
+
+    // spawn as many of the coin drops as possible
+
     availableRenderTasks -= 2 * dropCount;
 
     if (dropCount > availableShadows) {

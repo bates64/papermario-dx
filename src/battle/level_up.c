@@ -47,15 +47,12 @@ enum {
 
 BSS HudElemID LevelUpStatEmblemIDs[4];
 BSS HudElemID LevelUpStatTextIDs[3][7];
-BSS s32 D_8029FAE4; // unused?
 BSS HudElemID LevelUpSpotlightID;
-BSS s32 D_8029FAEC[23]; // unused?
-
 BSS HudElemID LevelUpSelectTextID;
+
 BSS s32 CelebrateSubstateTime;
 BSS s32 D_8029FB50;
 BSS s32 EndBattleRewardStep;
-BSS s32 D_8029FB58[2]; // unused?
 BSS s32 CantLevelUpStat[3];
 BSS s32 EndBattleRewardTotal;
 BSS s32 EndBattleRewardIncrement;

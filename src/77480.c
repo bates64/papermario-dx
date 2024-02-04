@@ -1,9 +1,10 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "world/actions.h"
+#include "world/disguise.h"
 #include "sprite.h"
 #include "world/partner/watt.h"
 #include "sprite/player.h"
+#include "dx/debug_menu.h"
 
 #ifdef SHIFT
 #define inspect_icon_VRAM inspect_icon_VRAM
@@ -28,19 +29,17 @@ extern Addr inspect_icon_ROM_START;
 extern Addr inspect_icon_ROM_END;
 #endif
 
-SHIFT_BSS UNK_FUN_PTR(ISpyNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(PulseStoneNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(TalkNotificationCallback);
-SHIFT_BSS UNK_FUN_PTR(InteractNotificationCallback);
+SHIFT_BSS void (*ISpyNotificationCallback)(void);
+SHIFT_BSS void (*PulseStoneNotificationCallback)(void);
+SHIFT_BSS void (*TalkNotificationCallback)(void);
+SHIFT_BSS void (*InteractNotificationCallback)(void);
 SHIFT_BSS s32 D_8010C950;
 
-extern f32 D_800F7B48;
-extern s32 D_800F7B4C;
 extern s32 WorldTattleInteractionID;
 
-s32 player_raycast_down(f32*, f32*, f32*, f32*);
-s32 player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length);
-s32 player_raycast_general(s32, f32, f32, f32, f32, f32, f32, f32*, f32*, f32*, f32*, f32*, f32*, f32*);
+HitID player_raycast_down(f32*, f32*, f32*, f32*);
+HitID player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length);
+HitID player_raycast_general(s32, f32, f32, f32, f32, f32, f32, f32*, f32*, f32*, f32*, f32*, f32*, f32*);
 void player_get_slip_vector(f32* outX, f32* outY, f32 x, f32 y, f32 nX, f32 nY);
 void phys_update_standard(void);
 void phys_update_lava_reset(void);
@@ -65,7 +64,7 @@ void appendGfx_player_spin(void* data);
 void update_player_shadow(void);
 s32 partner_use_ability(void);
 
-s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ, f32* outLength, f32* hitRx, f32* hitRz,
+HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ, f32* outLength, f32* hitRx, f32* hitRz,
                          f32* hitDirX, f32* hitDirZ) {
     f32 x, y, z, length;
     f32 inputX, inputY, inputZ, inputLength;
@@ -74,7 +73,7 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
     f32 temp_f20;
     f32 cosTemp;
     f32 sinTemp;
-    s32 hitObjectID;
+    s32 hitID;
     s32 ret;
 
     *hitRx = 0.0f;
@@ -94,9 +93,9 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
     y = inputY;
     z = inputZ + cosTemp;
     length = inputLength;
-    hitObjectID = player_raycast_down(&x, &y, &z, &length);
+    hitID = player_raycast_down(&x, &y, &z, &length);
     ret = NO_COLLIDER;
-    if (hitObjectID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID >= 0 && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -105,15 +104,15 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
         *outLength = length;
         *hitDirX = sinTemp;
         *hitDirZ = cosTemp;
-        ret = hitObjectID;
+        ret = hitID;
     }
 
     x = inputX - sinTemp;
     y = inputY;
     z = inputZ - cosTemp;
     length = inputLength;
-    hitObjectID = player_raycast_down(&x, &y, &z, &length);
-    if (hitObjectID >= 0 && length <= fabsf(*outLength)) {
+    hitID = player_raycast_down(&x, &y, &z, &length);
+    if (hitID >= 0 && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -122,15 +121,15 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
         *outLength = length;
         *hitDirX = -sinTemp;
         *hitDirZ = -cosTemp;
-        ret = hitObjectID;
+        ret = hitID;
     }
 
     x = inputX + cosTemp;
     y = inputY;
     z = inputZ + sinTemp;
     length = inputLength;
-    hitObjectID = player_raycast_down(&x, &y, &z, &length);
-    if (hitObjectID >= 0 && length <= fabsf(*outLength)) {
+    hitID = player_raycast_down(&x, &y, &z, &length);
+    if (hitID >= 0 && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -139,15 +138,15 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
         *outLength = length;
         *hitDirX = sinTemp;
         *hitDirZ = cosTemp;
-        ret = hitObjectID;
+        ret = hitID;
     }
 
     x = inputX - cosTemp;
     y = inputY;
     z = inputZ - sinTemp;
     length = inputLength;
-    hitObjectID = player_raycast_down(&x, &y, &z, &length);
-    if (hitObjectID >= 0 && length <= fabsf(*outLength)) {
+    hitID = player_raycast_down(&x, &y, &z, &length);
+    if (hitID >= 0 && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -156,15 +155,15 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
         *outLength = length;
         *hitDirX = -sinTemp;
         *hitDirZ = -cosTemp;
-        ret = hitObjectID;
+        ret = hitID;
     }
 
     x = inputX;
     y = inputY;
     z = inputZ;
     length = inputLength;
-    hitObjectID = player_raycast_down(&x, &y, &z, &length);
-    if (hitObjectID >= 0 && length <= fabsf(*outLength)) {
+    hitID = player_raycast_down(&x, &y, &z, &length);
+    if (hitID >= 0 && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -173,7 +172,7 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
         *outLength = length;
         *hitDirX = 0.0f;
         *hitDirZ = 0.0f;
-        ret = hitObjectID;
+        ret = hitID;
     }
 
     if (ret < 0) {
@@ -185,7 +184,7 @@ s32 player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* outZ,
     return ret;
 }
 
-s32 player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
+HitID player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
                                       f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ) {
     f32 yaw = 0.0f;
 
@@ -197,7 +196,7 @@ s32 player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32
                                 outX, outY, outZ, outLength, hitRx, hitRz, hitDirX, hitDirZ);
 }
 
-s32 player_raycast_down(f32* x, f32* y, f32* z, f32* length) {
+HitID player_raycast_down(f32* x, f32* y, f32* z, f32* length) {
     f32 hitX;
     f32 hitY;
     f32 hitZ;
@@ -247,7 +246,7 @@ s32 player_raycast_down(f32* x, f32* y, f32* z, f32* length) {
     return ret;
 }
 
-s32 player_raycast_up_corners(PlayerStatus* player, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw) {
+HitID player_raycast_up_corners(PlayerStatus* player, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw) {
     f32 startX;
     f32 startY;
     f32 startZ;
@@ -316,7 +315,7 @@ s32 player_raycast_up_corners(PlayerStatus* player, f32* posX, f32* posY, f32* p
     return ret;
 }
 
-s32 player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
+HitID player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
     f32 hitX;
     f32 hitY;
     f32 hitZ;
@@ -364,7 +363,7 @@ s32 player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
     return ret;
 }
 
-s32 player_test_lateral_overlap(s32 mode, PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw) {
+HitID player_test_lateral_overlap(s32 mode, PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw) {
     f32 sinTheta;
     f32 cosTheta;
     f32 hitX;
@@ -428,7 +427,7 @@ s32 player_test_lateral_overlap(s32 mode, PlayerStatus* playerStatus, f32* x, f3
     return ret;
 }
 
-s32 player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
+HitID player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
                             f32* hitY, f32* hitZ, f32* hitDepth, f32*hitNx, f32* hitNy, f32* hitNz) {
     f32 nAngleX;
     f32 nAngleZ;
@@ -437,6 +436,12 @@ s32 player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 dir
     Entity* entity;
     s32 ignoreFlags;
     s32 ret;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_IGNORE_WALLS)) {
+        return NO_COLLIDER;
+    }
+    #endif
 
     entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, hitDepth, hitNx, hitNy,
                                 hitNz);
@@ -483,7 +488,8 @@ s32 player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 dir
     return ret;
 }
 
-s32 player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw, s32* hasClimbableStep) {
+/// Only used for Peach physics
+HitID player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw, s32* hasClimbableStep) {
     f32 sinTheta;
     f32 cosTheta;
     f32 hitX;
@@ -516,7 +522,7 @@ s32 player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32* y
     ret = NO_COLLIDER;
 
     raycastID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + 0.1, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (raycastID >= 0 && hitDepth <= depth) {
+    if (raycastID > NO_COLLIDER && hitDepth <= depth) {
         *hasClimbableStep = TRUE;
     }
 
@@ -529,7 +535,7 @@ s32 player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32* y
     targetDx = 0.0f;
     targetDz = 0.0f;
 
-    if ((raycastID >= 0) && (hitDepth <= depth)) {
+    if (raycastID > NO_COLLIDER && hitDepth <= depth) {
         depthDiff = hitDepth - depth;
         dx = depthDiff * sinTheta;
         dz = depthDiff * cosTheta;
@@ -550,7 +556,7 @@ void player_get_slip_vector(f32* outX, f32* outY, f32 x, f32 y, f32 nX, f32 nY) 
     *outY = (y - projectionLength * nY) * 0.5f;
 }
 
-s32 player_test_move_with_slipping(PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw) {
+HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* x, f32* y, f32* z, f32 length, f32 yaw) {
     f32 sinTheta;
     f32 cosTheta;
     f32 hitX;
@@ -615,7 +621,13 @@ s32 player_test_move_with_slipping(PlayerStatus* playerStatus, f32* x, f32* y, f
 void update_player(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
-    GameStatus* gameStatus;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_SPEED_MODE)) {
+        gPlayerStatus.walkSpeed = 6.0f;
+        gPlayerStatus.runSpeed = 12.0f;
+    }
+    #endif
 
     update_partner_timers();
 
@@ -675,11 +687,10 @@ void update_player(void) {
 
     player_update_sprite();
 
-    gameStatus = gGameStatusPtr;
-    gameStatus->playerPos.x = playerStatus->pos.x;
-    gameStatus->playerPos.y = playerStatus->pos.y;
-    gameStatus->playerPos.z = playerStatus->pos.z;
-    gameStatus->playerYaw = playerStatus->curYaw;
+    gGameStatus.playerPos.x = playerStatus->pos.x;
+    gGameStatus.playerPos.y = playerStatus->pos.y;
+    gGameStatus.playerPos.z = playerStatus->pos.z;
+    gGameStatus.playerYaw = playerStatus->curYaw;
 
     check_input_open_menus();
     if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
@@ -744,13 +755,16 @@ void phys_update_standard(void) {
         collision_main_lateral();
         collision_check_player_overlaps();
 
-        if (collision_main_above() < 0 && playerStatus->timeInAir == 0 &&
-            playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
+        if (collision_main_above() <= NO_COLLIDER
+            && playerStatus->timeInAir == 0
+            && playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS
+        ) {
             collision_lateral_peach();
         }
 
-        if ((playerStatus->actionState != ACTION_STATE_ENEMY_FIRST_STRIKE)
-            && (playerStatus->actionState != ACTION_STATE_STEP_UP)) {
+        if (playerStatus->actionState != ACTION_STATE_ENEMY_FIRST_STRIKE
+            && playerStatus->actionState != ACTION_STATE_STEP_UP
+        ) {
             phys_main_collision_below();
         }
     }
@@ -900,8 +914,6 @@ void suggest_player_anim_always_forward(AnimID anim) {
 void update_player_blink(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 outtaSight = FALSE;
-    u8 phi_v1;
-    u8* alpha;
 
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
         outtaSight = gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE;
@@ -909,17 +921,16 @@ void update_player_blink(void) {
 
     if (playerStatus->blinkTimer > 0) {
         playerStatus->blinkTimer--;
-        alpha = &playerStatus->curAlpha;
+
         if (!(gGameStatusPtr->frameCounter & 1)) {
             if (outtaSight) {
-                phi_v1 = 192;
+                playerStatus->curAlpha = 192;
             } else {
-                phi_v1 = 255;
+                playerStatus->curAlpha = 255;
             }
         } else {
-            phi_v1 = 96;
+            playerStatus->curAlpha = 96;
         }
-        *alpha = phi_v1;
 
         if (!playerStatus->blinkTimer) {
             if (outtaSight) {
@@ -937,9 +948,7 @@ void update_player_blink(void) {
 
 // dist_to_player2D
 f32 get_xz_dist_to_player(f32 x, f32 z) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    return dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z);
+    return dist2D(x, z, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
 }
 
 void enable_player_shadow(void) {
@@ -995,16 +1004,16 @@ void func_800E01DC(void) {
 }
 
 b32 check_player_action_debug(void) {
-    b32 ret = FALSE;
-
     if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE && (gGameStatusPtr->curButtons[0] & BUTTON_R)) {
         if (gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) {
             set_action_state(ACTION_STATE_IDLE);
         }
-        ret = TRUE;
+        return TRUE;
     }
-    return ret;
+    return FALSE;
 }
+
+//BEGIN player/prompts.c
 
 void player_render_interact_prompts(void) {
     render_conversation_prompt();
@@ -1144,8 +1153,6 @@ void func_800E06C0(s32 arg0) {
 
 s32 func_800E06D8(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    Npc* npc = playerStatus->encounteredNPC;
-    s32 interactingID = playerStatus->interactingWithID;
     s32 currentWall;
 
     if (playerStatus->timeInAir != 0 || playerStatus->inputDisabledCount != 0) {
@@ -1156,8 +1163,8 @@ s32 func_800E06D8(void) {
     }
     if (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC
         && !(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
-        && npc != NULL
-        && npc->flags & NPC_FLAG_10000000
+        && playerStatus->encounteredNPC != NULL
+        && playerStatus->encounteredNPC->flags & NPC_FLAG_10000000
     ) {
         playerStatus->interactingWithID = NO_COLLIDER;
         return TRUE;
@@ -1175,7 +1182,7 @@ s32 func_800E06D8(void) {
         return FALSE;
     }
 
-    if (interactingID == currentWall) {
+    if (playerStatus->interactingWithID == currentWall) {
         if (playerStatus->flags & PS_FLAG_INTERACTED) {
             return FALSE;
         }
@@ -1186,8 +1193,6 @@ s32 func_800E06D8(void) {
 
     return TRUE;
 }
-
-static const f32 padding = 0.0f;
 
 void check_for_interactables(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -1312,6 +1317,8 @@ void clear_interact_prompt(void) {
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_INTERACT_PROMPT_AVAILABLE;
 }
 
+//END player/prompts.c
+
 void update_partner_timers(void) {
     PlayerData* playerData = &gPlayerData;
 
@@ -1325,6 +1332,10 @@ void update_partner_timers(void) {
         }
     }
 }
+
+//BEGIN player/render.c
+
+f32 D_800F7B48 = 0.0f; // always zero, remove?
 
 void player_update_sprite(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -1536,6 +1547,8 @@ void render_player_model(void) {
     }
 }
 
+s32 D_800F7B4C = 0;
+
 void appendGfx_player(void* data) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Matrix4f sp20, sp60, spA0, spE0;
@@ -1736,3 +1749,5 @@ void update_player_shadow(void) {
         set_peach_shadow_scale(shadow, shadowScale);
     }
 }
+
+//END player/render.c

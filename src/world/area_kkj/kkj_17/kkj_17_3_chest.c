@@ -4,29 +4,7 @@
 
 extern IconHudScriptPair gItemHudScripts[];
 
-// ------------------------------------------------------
-// begin modified Chest.inc.c
-// differences are:
-// - inclusion of N(ChestItems)
-// - removal of N(EVS_Chest_GetItem)
-
-#include "world/common/todo/StashVars.inc.c"
 #include "world/common/todo/GetItemName.inc.c"
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-
-s32** N(varStash) = NULL;
-
-EvtScript N(EVS_Chest_ShowGotItem) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
-    Wait(40)
-    Call(ShowGotItem, LVar0, FALSE, 0)
-    Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
-    Return
-    Return
-    End
-};
 
 s32 N(ChestItems)[] = {
     ITEM_POWER_RUSH,
@@ -36,10 +14,7 @@ s32 N(ChestItems)[] = {
     ITEM_JAMMIN_JELLY,
 };
 
-// end modified Chest.inc.c
-// ------------------------------------------------------
-
-//TODO this whole file is probably an include shared with kkj_17, but the temp required in this function prevents deduplication
+// this file is mostly the same as in hos_06
 API_CALLABLE(N(ChestItemPrompt)) {
     PopupMenu *menu;
     s32 menuIdx;
@@ -53,8 +28,7 @@ API_CALLABLE(N(ChestItemPrompt)) {
         script->functionTempPtr[2] = menu;
         script->varTable[10] = script->varTable[0];
 
-        // NOTE: identical to ChestItemPrompt in hos_06 EXCEPT here, where varTable[0] is required instead of varTable[10]
-        if (script->varTable[0] == 0) {
+        if (script->varTable[10] == 0) {
             // storing items
             script->varTable[1] = GF_KKJ16_Item_PowerRush;
             script->varTable[2] = GF_KKJ_Stored_PowerRush;
@@ -145,7 +119,10 @@ API_CALLABLE(N(SetItemRetrieved)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/GetItemEmptyCount.inc.c"
+API_CALLABLE(N(GetItemEmptyCount)) {
+    script->varTable[1] = get_consumables_empty();
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_OpenChest) = {
     Call(PlaySoundAtCollider, COLLIDER_o89, SOUND_OPEN_MAGIC_CHEST, 0)
@@ -231,16 +208,16 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
     Call(N(ChestItemPrompt))
     Switch(LVar0)
         CaseEq(-1)
-        CaseEq(0)
+        CaseEq(ITEM_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_00D4, 160, 40)
-        CaseOrEq(269)
-        CaseOrEq(297)
-        CaseOrEq(273)
+        CaseOrEq(ITEM_POWER_RUSH)
+        CaseOrEq(ITEM_DEEP_FOCUS1)
+        CaseOrEq(ITEM_LAST_STAND)
             SetGroup(EVT_GROUP_00)
             Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
             Call(ShowGotItem, LVar0, FALSE, 0)
             Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
-            Call(AddBadge, LVar0, LVar1)
+            Call(AddItem, LVar0, LVar1)
             Call(N(SetItemRetrieved))
         EndCaseGroup
         CaseDefault

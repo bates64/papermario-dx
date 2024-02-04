@@ -23,7 +23,6 @@
                 "VERSION=us",
                 "VERSION_US",
                 "DEBUG",
-                "AVOID_UB",
                 "SHIFT",
                 "MODERN_COMPILER"
             ],

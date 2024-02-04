@@ -7,7 +7,6 @@
 #include "world/common/complete/KeyItemChoice.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#define QUIZMO_PRE_STATIC_PAD
 #include "world/common/complete/Quizmo.inc.c"
 
 #include "world/common/todo/SwitchToPartner.inc.c"
@@ -55,7 +54,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Wait(60 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0026)
-    EVT_GIVE_KEY_REWARD(ITEM_JADE_RAVEN)
+    EVT_GIVE_REWARD(ITEM_JADE_RAVEN)
     Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0027)
     Set(GB_StoryProgress, STORY_CH5_GOT_JADE_RAVEN)
     Wait(15 * DT)

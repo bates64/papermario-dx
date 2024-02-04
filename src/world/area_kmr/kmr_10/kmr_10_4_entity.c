@@ -72,7 +72,7 @@ EvtScript N(EVS_UseSpring) = {
     End
 };
 
-EvtScript N(EVS_OpenChest_HammerThrow) = EVT_OPEN_CHEST_BADGE(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
+EvtScript N(EVS_OpenChest_HammerThrow) = EVT_OPEN_CHEST(ITEM_HAMMER_THROW, GF_KMR10_Chest_HammerThrow);
 
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_YellowBlock), -190, 75, 220, 0, ITEM_SLEEPY_SHEEP, MAKE_ENTITY_END)

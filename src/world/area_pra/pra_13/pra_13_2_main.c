@@ -37,18 +37,7 @@ EvtScript N(EVS_ExitDoors_pra_02_2) = {
 };
 
 EvtScript N(EVS_ExitWalk_pra_14_0) = EVT_EXIT_WALK(60, pra_13_ENTRY_1, "pra_14", pra_14_ENTRY_0);
-
-EvtScript N(EVS_Unused_1) = {
-    Return
-    End
-};
-
 EvtScript N(EVS_ExitWalk_pra_14_1) = EVT_EXIT_WALK(60, pra_13_ENTRY_2, "pra_14", pra_14_ENTRY_1);
-
-EvtScript N(EVS_Unused_2) = {
-    Return
-    End
-};
 
 EvtScript N(EVS_ExitDoors_pra_02_3) = {
     SetGroup(EVT_GROUP_1B)

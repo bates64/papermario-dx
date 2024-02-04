@@ -1611,13 +1611,6 @@ void appendGfx_player_actor(void* arg0) {
 
     if (player->transparentStatus == STATUS_KEY_TRANSPARENT) {
         playerParts->flags |= ACTOR_PART_FLAG_TRANSPARENT;
-
-        if (FALSE) { // TODO required to match - also whyyyyyy compiler, whyyyyy
-    back:
-            playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_STOP);
-            create_status_debuff(player->hudElementDataIndex, STATUS_KEY_STOP);
-            goto end;
-        }
     } else {
         playerParts->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
     }
@@ -1853,7 +1846,8 @@ void appendGfx_player_actor(void* arg0) {
             }
         }
     } else {
-        goto back;
+        playerParts->curAnimation = get_player_anim_for_status(STATUS_KEY_STOP);
+        create_status_debuff(player->hudElementDataIndex, STATUS_KEY_STOP);
     }
 
 end:

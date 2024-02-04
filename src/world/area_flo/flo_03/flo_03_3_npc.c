@@ -254,7 +254,7 @@ EvtScript N(EVS_NpcInteract_Petunia) = {
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Petunia_GiveItem)
                 Wait(20 * DT)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Petunia_Idle)
-                EVT_GIVE_KEY_REWARD(ITEM_MAGICAL_BEAN)
+                EVT_GIVE_REWARD(ITEM_MAGICAL_BEAN)
                 Wait(20 * DT)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Petunia_Talk, ANIM_Petunia_Idle, 0, MSG_CH6_005A)
                 Call(EndSpeech, NPC_SELF, ANIM_Petunia_AngryTalk, ANIM_Petunia_Angry, 0)

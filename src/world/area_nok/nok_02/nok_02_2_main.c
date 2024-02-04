@@ -2,12 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#define NAME_SUFFIX _Unused
-#include "world/common/complete/GiveReward.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_ExitWalk_nok_01_1) = {
     Call(UseExitHeading, 60, nok_02_ENTRY_0)
     Exec(ExitWalk)

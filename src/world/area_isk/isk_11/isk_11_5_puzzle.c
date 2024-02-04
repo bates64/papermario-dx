@@ -10,7 +10,7 @@ API_CALLABLE(N(GetItemNameInSocket)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
 
-    evt_set_variable(script, *args++, gItemTable[itemID & 0xFFF0FFFF].nameMsg);
+    evt_set_variable(script, *args++, gItemTable[itemID & ~0xF0000].nameMsg);
     return ApiStatus_DONE2;
 }
 
@@ -74,7 +74,7 @@ EvtScript N(EVS_ItemPrompt_Socket1) = {
         Call(CloseMessage)
         IfEq(LVar0, 0)
             Call(PlaySoundAtCollider, COLLIDER_o2087, SOUND_ISK_PLACE_IN_SOCKET, SOUND_SPACE_DEFAULT)
-            Call(AddKeyItem, GB_ISK11_ItemSocket1)
+            Call(AddItem, GB_ISK11_ItemSocket1, EVT_IGNORE_ARG)
             Set(LVar0, GB_ISK11_ItemSocket1)
             Set(GB_ISK11_ItemSocket1, 0)
             Call(RemoveItemEntity, MV_Socket1_ItemEntity)
@@ -125,7 +125,7 @@ EvtScript N(EVS_ItemPrompt_Socket2) = {
         Call(CloseMessage)
         IfEq(LVar0, 0)
             Call(PlaySoundAtCollider, COLLIDER_o2091, SOUND_ISK_PLACE_IN_SOCKET, SOUND_SPACE_DEFAULT)
-            Call(AddKeyItem, GB_ISK11_ItemSocket2)
+            Call(AddItem, GB_ISK11_ItemSocket2, EVT_IGNORE_ARG)
             Set(LVar0, GB_ISK11_ItemSocket2)
             Set(GB_ISK11_ItemSocket2, 0)
             Call(RemoveItemEntity, MV_Socket2_ItemEntity)
@@ -176,7 +176,7 @@ EvtScript N(EVS_ItemPrompt_Socket3) = {
         Call(CloseMessage)
         IfEq(LVar0, 0)
             Call(PlaySoundAtCollider, COLLIDER_o2090, SOUND_ISK_PLACE_IN_SOCKET, SOUND_SPACE_DEFAULT)
-            Call(AddKeyItem, GB_ISK11_ItemSocket3)
+            Call(AddItem, GB_ISK11_ItemSocket3, EVT_IGNORE_ARG)
             Set(LVar0, GB_ISK11_ItemSocket3)
             Set(GB_ISK11_ItemSocket3, 0)
             Call(RemoveItemEntity, MV_Socket3_ItemEntity)
@@ -227,7 +227,7 @@ EvtScript N(EVS_ItemPrompt_Socket4) = {
         Call(CloseMessage)
         IfEq(LVar0, 0)
             Call(PlaySoundAtCollider, COLLIDER_o2089, SOUND_ISK_PLACE_IN_SOCKET, SOUND_SPACE_DEFAULT)
-            Call(AddKeyItem, GB_ISK11_ItemSocket4)
+            Call(AddItem, GB_ISK11_ItemSocket4, EVT_IGNORE_ARG)
             Set(LVar0, GB_ISK11_ItemSocket4)
             Set(GB_ISK11_ItemSocket4, 0)
             Call(RemoveItemEntity, MV_Socket4_ItemEntity)
@@ -278,7 +278,7 @@ EvtScript N(EVS_ItemPrompt_Socket5) = {
         Call(CloseMessage)
         IfEq(LVar0, 0)
             Call(PlaySoundAtCollider, COLLIDER_o2088, SOUND_ISK_PLACE_IN_SOCKET, SOUND_SPACE_DEFAULT)
-            Call(AddKeyItem, GB_ISK11_ItemSocket5)
+            Call(AddItem, GB_ISK11_ItemSocket5, EVT_IGNORE_ARG)
             Set(LVar0, GB_ISK11_ItemSocket5)
             Set(GB_ISK11_ItemSocket5, 0)
             Call(RemoveItemEntity, MV_Socket5_ItemEntity)

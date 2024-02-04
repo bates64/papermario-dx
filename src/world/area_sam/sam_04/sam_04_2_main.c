@@ -40,10 +40,24 @@ EvtScript N(EVS_KnockAwayTreePart) = {
     End
 };
 
-// script causes a crash if player picks up the item before it is killed
+API_CALLABLE(N(CheckItemExists)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemIdx = evt_get_variable(script, *args++);
+    s32 outVar = *args++;
+    ItemEntity* itemEntity = get_item_entity(itemIdx);
+
+    evt_set_variable(script, outVar, itemEntity);
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_TetherItemToDummyNpc) = {
     Loop(0)
         Call(GetNpcPos, NPC_LetterDummy, LVar0, LVar1, LVar2)
+        Call(N(CheckItemExists), MV_LetterItemID, LVarA)
+        IfEq(LVarA, 0)
+            // prevent crash from player picking up the item before it is killed
+            BreakLoop
+        EndIf
         Call(SetItemPos, MV_LetterItemID, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop

@@ -18,7 +18,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
-MAP_STATIC_PAD(1,post_quizmo);
 
 #include "world/common/complete/LetterDelivery.inc.c"
 
@@ -69,7 +68,7 @@ EvtScript N(EVS_LetterPrompt_ToadKid1A) = {
 EvtScript N(EVS_LetterReward_ToadKid1A) = {
     IfEq(LVarC, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_004D)
-        EVT_GIVE_KEY_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
+        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_YOSHI_KID)
     EndIf
     Return
     End
@@ -95,11 +94,7 @@ EvtScript N(EVS_LetterPrompt_ToadKid1B) = {
 EvtScript N(EVS_LetterReward_ToadKid1B) = {
     IfEq(LVarC, DELIVERY_ACCEPTED)
         Call(SpeakToPlayer, NPC_ToadKid_02, ANIM_ToadKid_Yellow_Talk, ANIM_ToadKid_Yellow_Idle, 0, MSG_MAC_Station_0052)
-        // EVT_GIVE_KEY_REWARD(ITEM_LETTER_CHAIN_FROST_T), but LVar1/LVar0 are set in wrong order
-        Set(LVar1, 1)
-        Set(LVar0, ITEM_LETTER_CHAIN_FROST_T)
-        ExecWait(N(GiveItemReward))
-        Call(AddKeyItem, ITEM_LETTER_CHAIN_FROST_T)
+        EVT_GIVE_REWARD(ITEM_LETTER_CHAIN_FROST_T)
     EndIf
     Return
     End

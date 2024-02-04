@@ -150,12 +150,6 @@ typedef struct DmaTable {
     /* 0x08 */ u8* dest;
 } DmaTable;
 
-typedef struct PartnerData {
-    /* 0x00 */ u8 enabled;
-    /* 0x01 */ s8 level;
-    /* 0x02 */ s16 unk_02[3];
-} PartnerData; // size = 0x08
-
 typedef struct HeapNode {
     /* 0x00 */ struct HeapNode* next;
     /* 0x04 */ u32 length;
@@ -305,6 +299,12 @@ typedef struct Npc {
 
 typedef Npc* NpcList[MAX_NPCS];
 
+typedef struct PartnerData {
+    /* 0x00 */ u8 enabled;
+    /* 0x01 */ s8 level;
+    /* 0x02 */ s16 unk_02[3];
+} PartnerData; // size = 0x08
+
 typedef struct PlayerData {
     /* 0x000 */ s8 bootsLevel;
     /* 0x001 */ s8 hammerLevel;
@@ -319,13 +319,13 @@ typedef struct PlayerData {
     /* 0x00A */ b8 hasActionCommands;
     /* 0x00B */ char pad_00B;
     /* 0x00C */ s16 coins;
-    /* 0x00E */ s8 fortressKeyCount;
+    /* 0x00E */ char unused_00E;
     /* 0x00F */ u8 starPieces;
     /* 0x010 */ s8 starPoints;
     /* 0x011 */ s8 unused_011;
     /* 0x012 */ s8 curPartner;
     /* 0x013 */ char pad_013;
-    /* 0x014 */ struct PartnerData partners[12];
+    /* 0x014 */ PartnerData partners[12];
     /* 0x074 */ s16 keyItems[32];
     /* 0x0B4 */ s16 badges[128];
     /* 0x1B4 */ s16 invItems[10];
@@ -674,7 +674,7 @@ typedef struct StatusBar {
     /* 0x40 */ s16 displayCoins;
     /* 0x42 */ s16 displayStarpoints;
     /* 0x44 */ s8 ignoreChanges; /* set != 0 to prevent automatic opening from HP/FP changes */
-    /* 0x45 */ s8 openInputDisabled;
+    /* 0x45 */ b8 openInputDisabled;
     /* 0x45 */ s8 alwaysShown; // when set, the status bar will always be shown. used while browsing a shop.
     /* 0x47 */ s8 disabled; /* set != 0 for menu to be disabled completely */
     /* 0x48 */ s16 displayStarPower;
@@ -2059,18 +2059,22 @@ typedef struct SaveGlobals {
     /* 0x40 */ s8 reserved[64]; // unused
 } SaveGlobals; // size = 0x80
 
-typedef struct SaveMetadata {
+typedef struct FileDisplayData {
     /* 0x00 */ s32 timePlayed;
     /* 0x04 */ u8 spiritsRescued;
     /* 0x05 */ char unk_05[1];
     /* 0x06 */ s8 level;
     /* 0x07 */ unsigned char filename[8];
     /* 0x0F */ char unk_0F[9];
-} SaveMetadata; // size = 0x18
+} FileDisplayData; // size = 0x18
 
 typedef struct SaveData {
     /* 0x0000 */ char magicString[16]; /* "Mario Story 006" string */
-    /* 0x0010 */ s8 pad[32]; /* always zero */
+    /* 0x0010 */ char modName[28]; /* always non-null for DX saves */
+    /* 0x002C */ s8 majorVersion;
+    /* 0x002D */ s8 minorVersion;
+    /* 0x002E */ s8 patchVersion;
+    /* 0x002F */ char reserved;
     /* 0x0030 */ s32 crc1;
     /* 0x0034 */ s32 crc2;
     /* 0x0038 */ s32 saveSlot;
@@ -2091,7 +2095,7 @@ typedef struct SaveData {
     /* 0x12E0 */ b8 musicEnabled;
     /* 0x12E4 */ char unk_12E4[0x2];
     /* 0x12E6 */ Vec3s savePos;
-    /* 0x12EC */ SaveMetadata metadata;
+    /* 0x12EC */ FileDisplayData metadata;
     /* 0x1304 */ char unk_1304[0x7C];
 } SaveData; // size = 0x1380
 

@@ -343,12 +343,10 @@ HitResult calc_item_damage_enemy(void) {
         // Using this macro because it's nicer to look at, and it also is necessary to wrap the first 5 of these in a
         // do-while-0 OR to wrap each one individually. It's more likely that it's a macro instead, and much cleaner
         #define INFLICT_STATUS(STATUS_TYPE) \
-            do { \
-                if ((battleStatus->curAttackStatus & STATUS_FLAG_##STATUS_TYPE) && \
-                    try_inflict_status(target, STATUS_KEY_##STATUS_TYPE, STATUS_TURN_MOD_##STATUS_TYPE)) { \
-                    wasStatusInflicted = TRUE; \
-                } \
-            } while (0);
+            if ((battleStatus->curAttackStatus & STATUS_FLAG_##STATUS_TYPE) && \
+                try_inflict_status(target, STATUS_KEY_##STATUS_TYPE, STATUS_TURN_MOD_##STATUS_TYPE)) { \
+                wasStatusInflicted = TRUE; \
+            } \
 
         INFLICT_STATUS(SHRINK);
         INFLICT_STATUS(POISON);

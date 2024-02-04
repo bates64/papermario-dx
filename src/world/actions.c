@@ -1,10 +1,6 @@
 #include "common.h"
-#include "ld_addrs.h"
 #include "actions.h"
-
-#include "sprite/npc/WorldClubba.h"
-#include "sprite/npc/WorldKoopatrol.h"
-#include "sprite/npc/HammerBros.h"
+#include "ld_addrs.h"
 
 void action_update_idle(void);
 void action_update_walk(void);
@@ -75,109 +71,6 @@ extern Addr world_action_use_munchlesia_ROM_END;
 extern Addr world_action_use_tweester_ROM_START;
 extern Addr world_action_use_tweester_ROM_END;
 #endif
-
-s32 PrevPlayerCamRelativeYaw = 0;
-s32 D_800F7B44 = 0;
-f32 D_800F7B48 = 0.0f;
-s32 D_800F7B4C = 0;
-
-f32 GravityParamsStartJump[] = { 15.7566404343f, -7.38624f, 3.44693994522f, -0.75f };
-f32 GravityParamsStartFall[] = { 0.154342994094f, -0.350080013275f, -0.182262003422f, 0.0115200001746f };
-
- // default move speeds
-f32 D_800F7B70 = 2.0f; // walk
-f32 D_800F7B74 = 4.0f; // run
-f32 D_800F7B78 = 32.0f; // max jump
-f32 D_800F7B7C = -32.0f; // ???
-
-s16 FootstepSoundSelector = 0;
-s32 D_800F7B84[] = { 0, 0, 0};
-f32 LastMidairPlayerVelY = 0.0;
-
-AnimID ClubbaDisguiseExtraAnims[] = {
-    ANIM_WorldClubba_Anim00,
-    ANIM_WorldClubba_Anim02,
-    ANIM_WorldClubba_Anim03,
-    ANIM_WorldClubba_Anim04,
-    ANIM_WorldClubba_Anim05,
-    ANIM_WorldClubba_Anim08,
-    ANIM_WorldClubba_Anim07,
-    ANIM_WorldClubba_Anim13,
-    ANIM_WorldClubba_Anim14,
-    ANIM_LIST_END
-};
-
-AnimID HammerBroDisguiseExtraAnims[] = {
-    ANIM_HammerBros_Anim00,
-    ANIM_HammerBros_Anim02,
-    ANIM_HammerBros_Anim03,
-    ANIM_HammerBros_Anim04,
-    ANIM_HammerBros_Anim06,
-    ANIM_HammerBros_Anim07,
-    ANIM_HammerBros_Anim09,
-    ANIM_HammerBros_Anim0A,
-    ANIM_HammerBros_Anim0B,
-    ANIM_HammerBros_Anim1A,
-    ANIM_LIST_END
-};
-
-AnimID KoopatrolDisguiseExtraAnims[] = {
-    ANIM_WorldKoopatrol_Anim00,
-    ANIM_WorldKoopatrol_Anim01,
-    ANIM_WorldKoopatrol_Anim02,
-    ANIM_WorldKoopatrol_Anim04,
-    ANIM_WorldKoopatrol_Anim05,
-    ANIM_WorldKoopatrol_Anim06,
-    ANIM_WorldKoopatrol_Anim07,
-    ANIM_WorldKoopatrol_Anim08,
-    ANIM_WorldKoopatrol_Anim09,
-    ANIM_WorldKoopatrol_Anim12,
-    ANIM_WorldKoopatrol_Anim14,
-    ANIM_WorldKoopatrol_Anim1B,
-    ANIM_LIST_END
-};
-
-DisguiseAnims BasicPeachDisguiseAnims[] = {
-    [PEACH_DISGUISE_NONE] {
-        ANIM_WorldKoopatrol_Anim01,
-        ANIM_WorldKoopatrol_Anim04,
-        ANIM_WorldKoopatrol_Anim06,
-        ANIM_WorldKoopatrol_Anim08,
-        ANIM_WorldKoopatrol_Anim00,
-        ANIM_WorldKoopatrol_Anim1B
-    },
-    [PEACH_DISGUISE_KOOPATROL] {
-        ANIM_WorldKoopatrol_Anim01,
-        ANIM_WorldKoopatrol_Anim04,
-        ANIM_WorldKoopatrol_Anim06,
-        ANIM_WorldKoopatrol_Anim08,
-        ANIM_WorldKoopatrol_Anim00,
-        ANIM_WorldKoopatrol_Anim1B
-    },
-    [PEACH_DISGUISE_HAMMER_BROS] {
-        ANIM_HammerBros_Anim03,
-        ANIM_HammerBros_Anim06,
-        ANIM_HammerBros_Anim09,
-        ANIM_HammerBros_Anim0B,
-        ANIM_HammerBros_Anim00,
-        ANIM_HammerBros_Anim1A
-    },
-    [PEACH_DISGUISE_CLUBBA] {
-        ANIM_WorldClubba_Anim02,
-        ANIM_WorldClubba_Anim03,
-        ANIM_WorldClubba_Anim04,
-        ANIM_WorldClubba_Anim05,
-        ANIM_WorldClubba_Anim00,
-        ANIM_WorldClubba_Anim14
-    },
-};
-
-AnimID* PeachDisguiseExtraAnims[] = {
-    [PEACH_DISGUISE_NONE] KoopatrolDisguiseExtraAnims,
-    [PEACH_DISGUISE_KOOPATROL] KoopatrolDisguiseExtraAnims,
-    [PEACH_DISGUISE_HAMMER_BROS] HammerBroDisguiseExtraAnims,
-    [PEACH_DISGUISE_CLUBBA] ClubbaDisguiseExtraAnims
-};
 
 #define ACTION_FILE(name) world_action_##name##_ROM_START, world_action_##name##_ROM_END
 

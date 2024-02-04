@@ -20,7 +20,7 @@ EvtScript N(EVS_NpcInit_Conductor) = {
 EvtScript N(EVS_NpcInteract_TrainToad) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_SOLVED_COLOR_PUZZLE)
-            Call(FindKeyItem, ITEM_MYSTERY_NOTE, LVar0)
+            Call(FindItem, ITEM_MYSTERY_NOTE, LVar0)
             IfEq(LVar0, -1)
                 IfEq(GF_OMO09_SpawnedPeachChoice3, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_Green_Talk, ANIM_TrainToad_Green_Idle, 0, MSG_CH4_002B)

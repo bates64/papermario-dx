@@ -6,18 +6,6 @@
 #include "world/common/npc/KoopaWithoutShell_Wander.inc.c"
 #include "world/common/npc/Koopa_Wander.inc.c"
 
-NpcSettings N(NpcSettings_Unused2) = {
-    .height = 35,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
-NpcSettings N(NpcSettings_Unused3) = {
-    .height = 42,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
 #include "world/common/npc/Koopa.inc.c"
 #include "world/common/enemy/Fuzzy.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
@@ -30,9 +18,7 @@ NpcSettings N(NpcSettings_Unused3) = {
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-MAP_STATIC_PAD(1,key_item);
 #include "world/common/complete/KeyItemChoice.inc.c"
-
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LettersKoover1)[] = {

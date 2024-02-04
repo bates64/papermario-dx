@@ -15,8 +15,6 @@ u16 gTattleBgTextureYOffset = 0;
 
 BSS s32 bSavedPartner;
 BSS s32 bSavedOverrideFlags;
-BSS s32 D_8029DA38; // unused?
-BSS s32 D_8029DA3C; // unused?
 BSS s32 StarPointsBasePosX;
 BSS s32 StarPointsBasePosY;
 BSS s32 StarPointsMoveInterpAmt;
@@ -481,9 +479,6 @@ void btl_draw_ui(void) {
     s32 changed = FALSE;
     s32 state;
 
-    do {} while (0); // TODO required to match (probably can be removed with some sort of control flow inversion)
-
-    // do not draw UI during the frame of a state change
     state = gBattleState;
     if (gBattleState != gLastDrawBattleState) {
         state = gLastDrawBattleState;

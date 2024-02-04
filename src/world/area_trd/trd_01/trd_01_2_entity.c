@@ -41,8 +41,7 @@ EvtScript N(EVS_UnlockDoors) = {
         ResumeGroup(EVT_GROUP_01)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_KOOPA_FORTRESS_KEY, LVar0)
-    Call(RemoveKeyItemAt, LVar0)
+    Call(RemoveItem, ITEM_KOOPA_FORTRESS_KEY)
     Call(CloseChoicePopup)
     Set(GF_TRD01_UnlockedDoor, TRUE)
     Call(N(GetEntityPosition), MV_Padlock_EntityIndex, LVar0, LVar1, LVar2)

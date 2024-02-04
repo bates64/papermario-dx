@@ -472,7 +472,7 @@ void pause_partners_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
 
 void pause_partners_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 msgID = gPartnerPopupProperties[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].nameMsg;
-    s32 level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+    s32 level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
     s32 msgWidth = get_msg_width(msgID, 0);
     s32 offset;
 
@@ -507,7 +507,7 @@ void pause_partners_draw_movelist(MenuPanel* menu, s32 baseX, s32 baseY, s32 wid
     s32 costFP;
     s32 msgX, msgY;
     s32 style;
-    s32 level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+    s32 level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
 
 
     if (level == PARTNER_RANK_ULTRA) {
@@ -589,11 +589,10 @@ void pause_partners_draw_movelist_flower(MenuPanel* menu, s32 baseX, s32 baseY, 
 
 void pause_partners_init(MenuPanel* panel) {
     s32 i;
-    PlayerData* playerData = get_player_data();
 
     gPausePartnersNumPartners = 0;
     for (i = 0; i < ARRAY_COUNT(gPausePartnersPartnerIDs); i++) {
-        if (playerData->partners[gPausePartnersPartnerIDs[i]].enabled) {
+        if (gPlayerData.partners[gPausePartnersPartnerIDs[i]].enabled) {
             gPausePartnersPartnerIdx[gPausePartnersNumPartners] = i;
             gPausePartnersNumPartners++;
         }
@@ -629,7 +628,7 @@ void pause_partners_init(MenuPanel* panel) {
 
     gPausePartnersCurrentPartnerIdx = 0;
     for (i = 0; i < gPausePartnersNumPartners; i++) {
-        if (playerData->curPartner == gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[i]]) {
+        if (gPlayerData.curPartner == gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[i]]) {
             gPausePartnersCurrentPartnerIdx = i;
             break;
         }
@@ -687,7 +686,7 @@ void pause_partners_handle_input(MenuPanel* panel) {
         }
     }
 
-    level = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+    level = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
     if (level == PARTNER_RANK_ULTRA) {
         level = 4;
     } else if (level == PARTNER_RANK_SUPER) {
@@ -701,7 +700,7 @@ void pause_partners_handle_input(MenuPanel* panel) {
     if (gPausePartnersLevel == 1) {
         oldPos = gPausePartnersSelectedMove;
 
-        level2 = get_player_data()->partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
+        level2 = gPlayerData.partners[gPausePartnersPartnerIDs[gPausePartnersPartnerIdx[gPausePartnersCurrentPartnerIdx]]].level;
         if (level2 == 2) {
             level2 = 4;
         } else if (level2 == 1) {

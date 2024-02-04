@@ -98,7 +98,7 @@ EvtScript N(EVS_NpcInteract_TrainToad) = {
         CaseLt(STORY_CH4_PULLED_SWITCH_SWITCH)
             Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_Blue_Talk, ANIM_TrainToad_Blue_Idle, 0, MSG_CH4_001D)
         CaseLt(STORY_CH4_SOLVED_COLOR_PUZZLE)
-            Call(FindKeyItem, ITEM_MYSTERY_NOTE, LVar0)
+            Call(FindItem, ITEM_MYSTERY_NOTE, LVar0)
             IfEq(LVar0, -1)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_TrainToad_Blue_Talk, ANIM_TrainToad_Blue_Idle, 0, MSG_CH4_001E)
             Else

@@ -24,7 +24,7 @@ EvtScript N(EVS_NpcAux_Goompa) = {
 #include "world/common/todo/CheckPartnerFlags1000.inc.c"
 
 API_CALLABLE(N(GetPlayerHP)) {
-    script->varTable[0] = get_player_data()->curHP;
+    script->varTable[0] = gPlayerData.curHP;
 
     return ApiStatus_DONE2;
 }

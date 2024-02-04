@@ -77,7 +77,7 @@ API_CALLABLE(TryPlayerLucky) {
 
     show_action_rating(ACTION_RATING_LUCKY, player, player->curPos.x, player->curPos.y + 20.0f, player->curPos.z);
     sfx_play_sound(SOUND_LUCKY);
-    
+
     script->varTable[0] = FALSE;
     if (player->debuff == STATUS_KEY_FEAR
         || player->debuff == STATUS_KEY_DIZZY
@@ -241,7 +241,7 @@ API_CALLABLE(LifeShroomShroudWorld) {
     if (script->functionTemp[0] == 0) {
         return ApiStatus_DONE2;
     }
-    
+
     return ApiStatus_BLOCK;
 }
 
@@ -258,7 +258,7 @@ API_CALLABLE(LifeShroomRevealWorld) {
         mdl_set_shroud_tint_params(0, 0, 0, 0);
         return ApiStatus_DONE2;
     }
-    
+
     return ApiStatus_BLOCK;
 }
 
@@ -271,7 +271,7 @@ API_CALLABLE(ConsumeLifeShroom) {
         playerData->curHP = playerData->curMaxHP;
     }
     playerData->invItems[find_item(ITEM_LIFE_SHROOM)] = ITEM_NONE;
-    sort_items();
+    sort_consumables();
     script->varTable[3] = item->potencyA;
 
     return ApiStatus_DONE2;

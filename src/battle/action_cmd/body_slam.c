@@ -144,15 +144,13 @@ void N(update)(void) {
                 return;
             }
 
-            do {
-                if (actionCommandStatus->thresholdLevel < 10000) {
-                    battleStatus->actionSuccess = -1;
-                } else if (actionCommandStatus->thresholdLevel - (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 154) >= 10309) {
-                    battleStatus->actionSuccess = -1;
-                } else {
-                    battleStatus->actionSuccess = 1;
-                }
-            } while (0); // required to match
+            if (actionCommandStatus->thresholdLevel < 10000) {
+                battleStatus->actionSuccess = -1;
+            } else if (actionCommandStatus->thresholdLevel - (battleStatus->actionCmdDifficultyTable[actionCommandStatus->difficulty] * 154) >= 10309) {
+                battleStatus->actionSuccess = -1;
+            } else {
+                battleStatus->actionSuccess = 1;
+            }
 
             battleStatus->actionResult = ACTION_RESULT_FAIL;
             if (battleStatus->actionSuccess == 1) {

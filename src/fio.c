@@ -1,6 +1,8 @@
 #include "fio.h"
 #include "PR/os_flash.h"
 #include "gcc/string.h"
+#include "dx/versioning.h"
+#include "dx/config.h"
 
 typedef struct SaveInfo {
     /* 0x08 */ s32 slot;
@@ -19,8 +21,6 @@ SHIFT_BSS SaveData gCurrentSaveFile;
 
 char MagicSaveString[] = "Mario Story 006";
 
-void fio_deserialize_state(void);
-void fio_serialize_state(void);
 b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
 b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
 void fio_erase_flash(s32 pageNum);
@@ -49,12 +49,12 @@ s32 get_spirits_rescued(void) {
 }
 
 s32 fio_calc_globals_checksum(void) {
-    u32 sum = 0;
     s32* it = (s32*)&gSaveGlobals;
+    u32 sum = 0;
     u32 i;
 
-    for (i = 0; i < sizeof(gSaveGlobals) / sizeof(*it); i++, it++) {
-        sum += *it;
+    for (i = 0; i < sizeof(gSaveGlobals) / sizeof(*it); i++) {
+        sum += *it++;
     }
     return sum;
 }
@@ -103,12 +103,12 @@ b32 fio_save_globals(void) {
 }
 
 s32 fio_calc_file_checksum(SaveData* saveData) {
-    u32 sum = 0;
     s32* it = (s32*)saveData;
+    u32 sum = 0;
     u32 i;
 
-    for (i = 0; i < sizeof(*saveData) / sizeof(*it); i++, it++) {
-        sum += *it;
+    for (i = 0; i < sizeof(*saveData) / sizeof(*it); i++) {
+        sum += *it++;
     }
     return sum;
 }
@@ -167,13 +167,14 @@ b32 fio_load_game(s32 saveSlot) {
     gGameStatusPtr->saveSlot = saveSlot;
 
     fio_fetch_saved_file_info();
-    fio_read_flash(LogicalSaveInfo[saveSlot].slot, &gCurrentSaveFile, sizeof(SaveData));
+    fio_read_flash(LogicalSaveInfo[saveSlot].slot, &gCurrentSaveFile, MAX(sizeof(VanillaSaveData), sizeof(SaveData)));
 
     if (strcmp(gCurrentSaveFile.magicString, MagicSaveString) == 0) {
         if (gGameStatusPtr->saveCount < gCurrentSaveFile.saveCount) {
             gGameStatusPtr->saveCount = gCurrentSaveFile.saveCount;
         }
         fio_deserialize_state();
+        gFilesDisplayData[gGameStatusPtr->saveSlot] = gCurrentSaveFile.metadata;
         return TRUE;
     }
     return FALSE;
@@ -186,7 +187,21 @@ void fio_save_game(s32 saveSlot) {
 
     fio_serialize_state();
 
+    gFilesDisplayData[gGameStatusPtr->saveSlot].level = gPlayerData.level;
+    gFilesDisplayData[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
+    gFilesDisplayData[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
+
+    gCurrentSaveFile.metadata = gFilesDisplayData[gGameStatusPtr->saveSlot];
+
     strcpy(gCurrentSaveFile.magicString, MagicSaveString);
+
+    // adding 1 accounts for null terminator
+    ASSERT(1 + strlen(DX_MOD_NAME) < ARRAY_COUNT(gCurrentSaveFile.modName));
+
+    strcpy(gCurrentSaveFile.modName, DX_MOD_NAME);
+    gCurrentSaveFile.majorVersion = DX_MOD_VER_MAJOR;
+    gCurrentSaveFile.minorVersion = DX_MOD_VER_MINOR;
+    gCurrentSaveFile.patchVersion = DX_MOD_VER_PATCH;
 
     gCurrentSaveFile.saveSlot = saveSlot;
     gGameStatusPtr->saveCount++;
@@ -211,69 +226,6 @@ void fio_erase_game(s32 saveSlot) {
             fio_erase_flash(i);
         }
     }
-}
-
-void fio_deserialize_state(void) {
-    SaveData* saveData = &gCurrentSaveFile;
-    s32 i, j;
-
-    gPlayerData = saveData->player;
-
-    gGameStatusPtr->areaID = saveData->areaID;
-    gGameStatusPtr->mapID = saveData->mapID;
-    gGameStatusPtr->entryID = saveData->entryID;
-    gGameStatusPtr->savedPos.x = saveData->savePos.x;
-    gGameStatusPtr->savedPos.y = saveData->savePos.y;
-    gGameStatusPtr->savedPos.z = saveData->savePos.z;
-
-    for (i = 0; i < ARRAY_COUNT(gCurrentEncounter.defeatFlags[0]); i++) {
-        for (j = 0; j < ARRAY_COUNT(gCurrentEncounter.defeatFlags); j++) {
-            gCurrentEncounter.defeatFlags[j][i] = saveData->enemyDefeatFlags[j][i];
-        }
-    }
-
-    gGameStatusPtr->debugEnemyContact = DEBUG_CONTACT_NONE;
-    gGameStatusPtr->debugUnused1 = FALSE;
-    gGameStatusPtr->debugUnused2 = FALSE;
-    gGameStatusPtr->musicEnabled = TRUE;
-
-    gSaveSlotMetadata[gGameStatusPtr->saveSlot] = saveData->metadata;
-}
-
-void func_8002B608(void) {
-    gGameStatusPtr->entryID = 10;
-    fio_serialize_state();
-}
-
-void fio_serialize_state(void) {
-    SaveData* saveData = &gCurrentSaveFile;
-    s32 i, j;
-
-    saveData->player = gPlayerData;
-
-    saveData->areaID = gGameStatusPtr->areaID;
-    saveData->mapID = gGameStatusPtr->mapID;
-    saveData->entryID = gGameStatusPtr->entryID;
-    saveData->savePos.x = gGameStatusPtr->savedPos.x;
-    saveData->savePos.y = gGameStatusPtr->savedPos.y;
-    saveData->savePos.z = gGameStatusPtr->savedPos.z;
-
-    for (i = 0; i < ARRAY_COUNT(gCurrentEncounter.defeatFlags[0]); i++) {
-        for (j = 0; j < ARRAY_COUNT(gCurrentEncounter.defeatFlags); j++) {
-            saveData->enemyDefeatFlags[j][i] = gCurrentEncounter.defeatFlags[j][i];
-        }
-    }
-
-    saveData->debugEnemyContact = gGameStatusPtr->debugEnemyContact;
-    saveData->debugUnused1 = gGameStatusPtr->debugUnused1;
-    saveData->debugUnused2 = gGameStatusPtr->debugUnused2;
-    saveData->musicEnabled = gGameStatusPtr->musicEnabled;
-
-    gSaveSlotMetadata[gGameStatusPtr->saveSlot].level = gPlayerData.level;
-    gSaveSlotMetadata[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
-    gSaveSlotMetadata[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
-
-    saveData->metadata = gSaveSlotMetadata[gGameStatusPtr->saveSlot];
 }
 
 void fio_init_flash(void) {

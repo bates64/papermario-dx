@@ -46,7 +46,7 @@ enum {
 
 s16 TitleScreenNextState = NEXT_STATE_NONE;
 
-SaveMetadata gSaveSlotMetadata[4] = {
+FileDisplayData gFilesDisplayData[4] = {
     { .filename = { FILENAME_ERROR } },
     { .filename = { FILENAME_ERROR } },
     { .filename = { FILENAME_ERROR } },

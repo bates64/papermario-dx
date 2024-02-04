@@ -108,21 +108,8 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
     territory.halfHeight = 120.0f;
     territory.detectFlags = 0;
 
-    #ifdef _DEAD_H_
-    enemy->unk_108.x = npc->pos.x;
-    enemy->unk_108.y = npc->pos.y;
-    enemy->unk_108.z = npc->pos.z;
-    enemy->unk_114 = 0.0001f;
-    enemy->unk_118 = 0.0001f;
-    #endif
-
     if (isInitialCall) {
-        #ifdef _DEAD_H_
-        N(FlyingAI_Init)(npc, (Enemy*)enemy, script, aiSettings);
-        #else
         N(FlyingAI_Init)(npc, enemy, script, aiSettings);
-        #endif
-
         script->functionTemp[0] = 0;
     }
     npc->verticalRenderOffset = -2;

@@ -43,41 +43,41 @@ TransformationData* D_802B6D80_E2B430 = &ParasolTransformation;
 void parasol_update_spin(void);
 
 Npc* parasol_get_npc(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
+    Npc* npc = NULL;
     f32 angle;
-    Npc* ret = NULL;
-    do {                // TODO fix this do...while
-        if (playerStatus->availableDisguiseType != PEACH_DISGUISE_NONE) {
-            if (gGameStatusPtr->peachFlags & PEACH_FLAG_BLOCK_NEXT_DISGUISE) {
-                gGameStatusPtr->peachFlags &= ~PEACH_FLAG_BLOCK_NEXT_DISGUISE;
-            } else {
-                ret = npc_find_closest(playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, 100.0f);
-                if (ret != 0) {
-                    if (fabs(ret->pos.y - playerStatus->pos.y) - 1.0 > 0.0) {
-                        ret = NULL;
-                    } else {
-                        angle = clamp_angle(atan2(playerStatus->pos.x, playerStatus->pos.z, ret->pos.x, ret->pos.z));
-                        if (fabs(angle - func_800E5348()) > 30.0) {
-                            ret = NULL;
-                        }
-                    }
-                }
-            }
-        }
-        return ret;
-    } while (0);
+
+    if (gPlayerStatus.availableDisguiseType == PEACH_DISGUISE_NONE) {
+        return NULL;
+    }
+
+    if (gGameStatusPtr->peachFlags & PEACH_FLAG_BLOCK_NEXT_DISGUISE) {
+        gGameStatusPtr->peachFlags &= ~PEACH_FLAG_BLOCK_NEXT_DISGUISE;
+        return NULL;
+    }
+
+    npc = npc_find_closest(gPlayerStatus.pos.x, gPlayerStatus.pos.y, gPlayerStatus.pos.z, 100.0f);
+    if (npc == NULL) {
+        return NULL;
+    }
+
+    if (fabs(npc->pos.y - gPlayerStatus.pos.y) > 1.0) {
+        return NULL;
+    }
+
+    angle = clamp_angle(atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, npc->pos.x, npc->pos.z));
+    if (fabs(angle - func_800E5348()) > 30.0) {
+        return NULL;
+    }
+
+    return npc;
 }
 
 void action_update_parasol(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     TransformationData* transformation = &ParasolTransformation;
     Camera* cam = &gCameras[gCurrentCameraID];
-    GameStatus* gameStatus;
-    GameStatus* gameStatus2;
     Npc* disguiseNpc;
-    f32* tempUnk_1C;
     f32 prevFacingAngle;
-    f32 phi_f4;
     s32 reachedTangentAngle;
     f32 angle;
     f32 radius;
@@ -86,18 +86,17 @@ void action_update_parasol(void) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         mem_clear(&ParasolTransformation, sizeof(ParasolTransformation));
         disable_player_static_collisions();
-        tempUnk_1C = &transformation->playerRotationRate;
+
         playerStatus->timeInAir = 0;
         playerStatus->peakJumpTime = 0;
         playerStatus->curSpeed = 0;
         playerStatus->pitch = 0;
 
         if (playerStatus->spriteFacingAngle >= 90 && playerStatus->spriteFacingAngle < 270) {
-            phi_f4 = 2;
+            transformation->playerRotationRate = 2;
         } else {
-            phi_f4 = -2;
+            transformation->playerRotationRate = -2;
         }
-        *tempUnk_1C = phi_f4;
 
         if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
             playerStatus->curStateTime = 20;
@@ -187,9 +186,8 @@ void action_update_parasol(void) {
             }
             break;
         case SUBSTATE_DISGUISE_MAKE_NPC:
-            gameStatus = gGameStatusPtr;
             playerStatus->animFlags |= PA_FLAG_INVISIBLE;
-            gameStatus->peachFlags |= PEACH_FLAG_DISGUISED;
+            gGameStatus.peachFlags |= PEACH_FLAG_DISGUISED;
             playerStatus->actionSubstate++; // SUBSTATE_DISGUISE_SPIN_DOWN
         case SUBSTATE_DISGUISE_SPIN_DOWN:
             if (--playerStatus->curStateTime == 0) {
@@ -263,9 +261,8 @@ void action_update_parasol(void) {
                 if (reachedTangentAngle) {
                     playerStatus->curStateTime = 2;
                     playerStatus->actionSubstate++; // SUBSTATE_SPIN_DOWN
-                    gameStatus2 = gGameStatusPtr;
                     playerStatus->animFlags &= ~PA_FLAG_INVISIBLE;
-                    gameStatus2->peachFlags &= ~PEACH_FLAG_DISGUISED;
+                    gGameStatus.peachFlags &= ~PEACH_FLAG_DISGUISED;
                     playerStatus->peachDisguise = 0;
                     free_npc_by_index(PeachDisguiseNpcIndex);
                     playerStatus->colliderHeight = 55;
@@ -348,29 +345,15 @@ void action_update_parasol(void) {
             transformation->pos.y = playerStatus->pos.y - 20;
         }
         if (transformation->disguiseTime <= 10 && transformation->disguiseTime & 1) {
-            f64 tempX, tempZ;
-
             fx_sparkles(FX_SPARKLES_3,
                 transformation->pos.x - 8,
                 transformation->pos.y + 50,
                 transformation->pos.z,
                 2);
 
-            /*
-            TODO something like:
             angle = DEG_TO_RAD((cam->curYaw + playerStatus->spriteFacingAngle) - 90);
             transformation->pos.x += (10.0 * sin_rad(angle));
             transformation->pos.z -= (10.0 * cos_rad(angle));
-            */
-
-            angle = DEG_TO_RAD((cam->curYaw + playerStatus->spriteFacingAngle) - 90);
-
-            tempX = transformation->pos.x;
-            tempX += 10.0 * sin_rad(angle);
-            transformation->pos.x = tempX;
-
-            tempZ = transformation->pos.z;
-            transformation->pos.z = tempZ - (10.0 * cos_rad(angle));
         }
     } else if (transformation->disguiseTime == 0) {
         transformation->disguiseTime = -1;

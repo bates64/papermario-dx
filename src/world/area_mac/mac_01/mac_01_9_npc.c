@@ -37,9 +37,7 @@ NpcSettings N(NpcSettings_Parakarry) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-MAP_STATIC_PAD(1,key_choice);
 #include "world/common/complete/KeyItemChoice.inc.c"
-
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/todo/GetPlayerCoins.inc.c"
@@ -135,7 +133,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(GF_SBK_GaveArtifactToKolorado, TRUE)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_ARTIFACT, LVar0)
+    Call(FindItem, ITEM_ARTIFACT, LVar0)
     IfEq(LVar0, -1)
         Return
     EndIf

@@ -265,8 +265,7 @@ API_CALLABLE(N(SetWorldColorParams)) {
 }
 
 void N(adjust_cam_vfov)(s32 camID, f32 fov) {
-    Camera* camera = &gCameras[camID];
-    camera->vfov = fov * 1.1;
+    gCameras[camID].vfov = fov * 1.1;
 }
 
 API_CALLABLE(N(AdjustCamVfov)) {
@@ -279,9 +278,8 @@ API_CALLABLE(N(AdjustCamVfov)) {
 }
 
 API_CALLABLE(N(ResumeIntro)) {
-    GameStatus* gameStatus = gGameStatusPtr;
-    if (gameStatus->introPart > INTRO_PART_NONE && gameStatus->introPart < INTRO_PART_5) {
-        gameStatus->introPart++;
+    if (gGameStatus.introPart > INTRO_PART_NONE && gGameStatus.introPart < INTRO_PART_5) {
+        gGameStatus.introPart++;
         state_init_intro();
     }
     return ApiStatus_DONE1;

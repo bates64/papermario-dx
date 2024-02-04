@@ -101,6 +101,7 @@ segments:
     - [auto, c, 43F0]
     - [auto, c, heap]
     - [auto, c, fio]
+    - [auto, c, dx/versioning]
     - [auto, c, curtains]
     - [auto, c, crash_screen]
     - [auto, c, dx/utils]
@@ -396,7 +397,7 @@ segments:
     - [auto, c, 7E9D0]
     - [auto, c, world/menus]
     - [auto, c, inventory]
-    - [auto, c, world/actions] # DUMMY ROM
+    - [auto, c, world/actions]
     - [auto, c, world/partners]
     - [auto, c, global_hud_scripts]
     - [auto, hasm, bss2_2]
@@ -12453,8 +12454,7 @@ segments:
     - [auto, c, pra_02_0_header]
     - [auto, c, pra_02_1_music]
     - [auto, c, pra_02_2_main]
-    - [auto, c, pra_02_3_npc]
-    - [auto, c, pra_02_4_entity]
+    - [auto, c, pra_02_3_entity]
   - name: pra_03
     dir: world/area_pra/pra_03
     type: code
@@ -14501,7 +14501,6 @@ segments:
       - [0xE9DE90, ci4, BombableRock, 64, 64]
       - [0xE9E690, palette, BombableRock]
       - [0xE9E6B0]
-
   - [0xF00000, pm_sbn, audio]
   - [0x1942C40, bin, copy_1942C40] # copy of 0x1642C40 - 0x1643000
   - { start: 0x1943000, align: 8, type: pm_sprites, name: sprites }

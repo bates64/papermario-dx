@@ -75,11 +75,6 @@ EvtScript N(EVS_NpcAI_MontyMole_WallAmbush) = {
     End
 };
 
-EvtScript N(EVS_NpcAI_MontyMole_WallAmbush_Hole_Unused) = {
-    Return
-    End
-};
-
 NpcSettings N(NpcSettings_MontyMole_WallAmbush) = {
     .height = 24,
     .radius = 22,

@@ -54,7 +54,6 @@ API_CALLABLE(N(SetupChapter0)) {
     playerData->curMaxHP = 5;
     playerData->bootsLevel = 0;
     playerData->hammerLevel = -1;
-    playerData->fortressKeyCount = 0;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = FALSE;
@@ -80,7 +79,6 @@ API_CALLABLE(N(SetupChapter1)) {
     playerData->curMaxHP = 8;
     playerData->bootsLevel = 0;
     playerData->hammerLevel = 0;
-    playerData->fortressKeyCount = 0;
     playerData->partners[PARTNER_NONE].enabled = TRUE;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
@@ -97,7 +95,6 @@ API_CALLABLE(N(SetupChapter2)) {
     playerData->curMaxHP = 11;
     playerData->bootsLevel = 0;
     playerData->hammerLevel = 0;
-    playerData->fortressKeyCount = 0;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
         playerData->partners[i].enabled = FALSE;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 #include "npc.h"
 #include "ld_addrs.h"
 #include "entity.h"

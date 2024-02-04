@@ -58,7 +58,6 @@
 
 // standardized padding macros for map overlays
 #define MAP_RODATA_PAD(n,name) const s32 N(rodata_pad_##name)[n] = {};
-#define MAP_STATIC_PAD(n,name) BSS s32 N(static_pad_##name)[n];
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
@@ -72,7 +71,7 @@
 #define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
 #define PANIC_MSG(msg, args...) \
     do { \
-        char panicMsg[0x30]; \
+        char panicMsg[0x40]; \
         sprintf(panicMsg, msg, ##args); \
         IS_DEBUG_PANIC(msg, __FILE__, __LINE__, __func__); \
     } while (0)
@@ -82,7 +81,7 @@
     }
 #define ASSERT_MSG(condition, msg, args...) \
     if (!(condition)) { \
-        char assertMsg[0x30]; \
+        char assertMsg[0x40]; \
         sprintf(assertMsg, msg, ##args); \
         IS_DEBUG_PANIC(assertMsg, __FILE__, __LINE__, __func__); \
     }

@@ -18,7 +18,6 @@ void boot_main(void* data);
 
 void is_debug_init(void);
 void is_debug_panic(const char* message, const char* file, u32 line, const char* func);
-char* is_debug_print(char* arg0, const char* str, size_t count);
 
 f32 signF(f32 val);
 
@@ -34,17 +33,6 @@ HeapNode* _heap_create(HeapNode* addr, u32 size);
 u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest);
 f32 rand_float(void);
 void copy_matrix(Matrix4f src, Matrix4f dest);
-
-s8 set_global_byte(s32 index, s32 value);
-s32 get_global_byte(s32 index);
-s32 set_global_flag(s32 index);
-s32 clear_global_flag(s32 index);
-s32 get_global_flag(s32 index);
-s8 set_area_byte(s32 index, s32 value);
-s32 get_area_byte(s32 index);
-s32 set_area_flag(s32 index);
-s32 clear_area_flag(s32 index);
-s32 get_area_flag(s32 index);
 
 Shadow* get_shadow_by_index(s32 index);
 s32 get_time_freeze_mode(void);
@@ -198,7 +186,7 @@ s32 get_model_list_index_from_tree_index(s32 treeIndex);
 s32 get_transform_group_index(s32);
 void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* centerZ, f32* sizeX, f32* sizeY,
                                f32* sizeZ);
-s32 collision_main_above(void);
+HitID collision_main_above(void);
 void collision_lava_reset_check_additional_overlaps(void);
 s32 player_test_lateral_overlap(s32, PlayerStatus*, f32*, f32*, f32*, f32, f32);
 Npc* peach_make_disguise_npc(s32 peachDisguise);
@@ -252,8 +240,8 @@ s32 phys_can_player_interact(void);
 
 void ai_enemy_play_sound(Npc* npc, s32 arg1, s32 arg2);
 
-s32 player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
-s32 player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
+HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
+HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
 s32 evt_get_variable(Evt* script, Bytecode var);
 s32 evt_set_variable(Evt* script, Bytecode var, s32 value);
@@ -401,14 +389,13 @@ s32 resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
 s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
-PlayerData* get_player_data(void);
 
 b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
 s32 npc_raycast_up(s32, f32*, f32*, f32*, f32*);
 s32 npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
-s32 player_raycast_up_corners(PlayerStatus*, f32*, f32*, f32*, f32*, f32);
-s32 player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
+HitID player_raycast_up_corners(PlayerStatus*, f32*, f32*, f32*, f32*, f32);
+HitID player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
                                       f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ);
 b32 npc_test_move_taller_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
 b32 npc_test_move_simple_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
@@ -459,7 +446,7 @@ void get_screen_overlay_params(s32, u8* type, f32* zoom);
 void set_screen_overlay_color(s32, u8, u8, u8);
 void set_screen_overlay_center(s32, s32, s32, s32);
 s32 rand_int(s32);
-void sort_items(void);
+void sort_consumables(void);
 s32 is_ability_active(s32 arg0);
 s32 is_starting_conversation(void);
 f32 update_lerp(s32 easing, f32 start, f32 end, s32 elapsed, s32 duration);
@@ -828,8 +815,7 @@ void mdl_get_shroud_tint_params(u8* r, u8* g, u8* b, u8* a);
 
 s32 entity_base_block_idle(Entity* entity);
 void add_star_power(s32 amt);
-s32 recover_hp(s32 amt);
-s32 recover_fp(s32 amt);
+
 s32 entity_can_collide_with_jumping_player(Entity* entity);
 void entity_base_block_init(Entity* entity);
 s32 entity_start_script(Entity* entity);
@@ -920,8 +906,6 @@ void update_player(void);
 void enforce_hpfp_limits(void);
 s32 should_collider_allow_interact(s32);
 void show_coin_counter(void);
-s32 add_item(s32 itemID);
-s32 add_badge(s32 itemID);
 void hide_coin_counter_immediately(void);
 void hide_popup_menu(void);
 void destroy_popup_menu(void);
@@ -946,15 +930,12 @@ void func_800F0CB0(s32, f32, f32, f32);
 void func_800F0D5C(void);
 void func_800F0D80(void);
 void func_800F102C(void);
-s32 get_item_count(void);
-s32 get_stored_empty_count(void);
-s32 get_stored_count(void);
-s32 get_item_empty_count(void);
+
+
 void shop_open_item_select_popup(s32 mode);
 void hide_coin_counter(void);
 void set_message_text_var(s32 msgID, s32 index);
 void set_message_int_var(s32 value, s32 index);
-s32 store_item(s32 itemID);
 void open_status_bar_quickly(void);
 void show_immune_bonk(f32 x, f32 y, f32 z, s32, s32, s32);
 void show_primary_damage_popup(f32 x, f32 y, f32 z, s32 attack, s32 a);

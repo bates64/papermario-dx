@@ -953,18 +953,14 @@ s32 popup_menu_update(void) {
                 if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_UP | BUTTON_Z) &&
                     (PopupMenu_SelectedIndex > 0 || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_UP | BUTTON_Z))))
                 {
-                    do {
-                        PopupMenu_SelectedIndex--;
-                    } while (0); // required to match
+                    PopupMenu_SelectedIndex--;
                 }
 
                 // change selection on down input
                 if (gGameStatusPtr->heldButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R) &&
                     ((PopupMenu_SelectedIndex < gPopupMenu->numEntries - 1) || (gGameStatusPtr->pressedButtons[0] & (BUTTON_STICK_DOWN | BUTTON_R))))
                 {
-                    do {
-                        PopupMenu_SelectedIndex++;
-                    } while (0); // required to match
+                    PopupMenu_SelectedIndex++;
                 }
 
                 // wrap selected index

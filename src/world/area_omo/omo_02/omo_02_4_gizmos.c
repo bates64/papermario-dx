@@ -65,11 +65,6 @@ EvtScript N(EVS_Gizmos_Empty2) = {
     End
 };
 
-EvtScript N(EVS_Gizmos_Unused) = {
-    Return
-    End
-};
-
 s32 N(RockingHorseModels)[] = {
     MODEL_o568,
     MODEL_o569,

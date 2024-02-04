@@ -226,13 +226,12 @@ EvtScript N(EVS_NpcIdle_TheMaster) = {
                 EndSwitch
                 Add(GB_MAC00_DojoRank, 1)
                 Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, LVar1)
-                Call(FindKeyItem, LVar2, LVar1)
+                Call(FindItem, LVar2, LVar1)
                 IfNe(LVar1, -1)
                     Call(RemoveKeyItemAt, LVar1)
                 EndIf
-                Set(LVar1, 1)
                 ExecWait(N(GiveItemReward))
-                Call(AddKeyItem, LVar0)
+                Call(AddItem, LVar0, EVT_IGNORE_ARG)
                 IfLt(GB_MAC00_DojoRank, 5)
                     Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0041)
                 EndIf

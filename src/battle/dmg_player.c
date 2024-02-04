@@ -3,6 +3,7 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
 #include "sprite/player.h"
+#include "dx/debug_menu.h"
 
 b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound);
 b32 dispatch_hazard_event_player(s32 damageAmount, s32 event);
@@ -1546,6 +1547,12 @@ API_CALLABLE(PlayerDamageEnemy) {
     battleStatus->curAttackDamage = evt_get_variable(script, *args++);
     battleStatus->powerBounceCounter = 0;
     flags = *args++;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+        battleStatus->curAttackDamage = 99;
+    }
+    #endif
 
     if ((flags & BS_FLAGS1_INCLUDE_POWER_UPS) && (flags & BS_FLAGS1_TRIGGER_EVENTS)) {
         gBattleStatus.flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;

@@ -9,7 +9,7 @@ EvtScript N(EVS_OpenChest_LastStand) = {
     Set(LVar0, LVarA)
     ExecWait(N(EVS_Chest_ShowGotItem))
     IfGe(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
-        Call(AddBadge, LVarA, LVar0)
+        Call(AddItem, LVarA, LVar0)
     EndIf
     Set(GF_KKJ20_Chest_LastStand, TRUE)
     Wait(15)

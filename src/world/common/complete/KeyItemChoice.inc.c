@@ -41,7 +41,27 @@ API_CALLABLE(N(ItemChoice_SaveSelected)) {
 
 #endif
 
-#include "world/common/atomic/MakeKeyChoice.inc.c"
+API_CALLABLE(N(BuildKeyItemChoiceList)) {
+    Bytecode* args = script->ptrReadPos;
+    s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
+    s32 i;
+
+    if (allowedItemList != NULL) {
+        for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
+            N(KeyItemChoiceList)[i] = allowedItemList[i];
+        }
+        N(KeyItemChoiceList)[i] = ITEM_NONE;
+    } else {
+        s32 pos = 0;
+        for (i = 0; i < NUM_ITEMS; i++) {
+            if (item_is_key(i)) {
+                N(KeyItemChoiceList)[pos++] = i;
+            }
+        }
+        N(KeyItemChoiceList)[pos] = ITEM_NONE;
+    }
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_KeyItemChoicePopup) = {
     Set(LVar9, LVar1)

@@ -1348,7 +1348,7 @@ EvtScript N(EVS_HitTree_Correct) = {
             Call(ShowMessageAtScreenPos, MSG_Menus_GotKooperShell, 160, 40)
             Call(SetNpcPos, NPC_KoopersShell, NPC_DISPOSE_LOCATION)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-            Call(AddKeyItem, ITEM_KOOPER_SHELL)
+            Call(AddItem, ITEM_KOOPER_SHELL, EVT_IGNORE_ARG)
             Wait(10 * DT)
             Call(SpeakToPlayer, NPC_BossFuzzy, ANIM_Fuzzy_Anim0C, ANIM_Fuzzy_Idle, 5, MSG_CH1_00C2)
             Call(SetNpcAnimation, NPC_BossFuzzy, ANIM_Fuzzy_Anim0B)

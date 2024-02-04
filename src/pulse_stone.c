@@ -33,15 +33,17 @@ s32 should_cancel_pulse_stone(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     s8 actionState = playerStatus->actionState;
 
-    // could be written more clearly if these two condtions were inverted
-    if (actionState != ACTION_STATE_USE_TWEESTER) {
-        if (!(partnerStatus->partnerActionState == PARTNER_ACTION_USE
-            && (partnerStatus->actingPartner == PARTNER_BOW || partnerStatus->actingPartner == PARTNER_PARAKARRY))
-        ) {
-            return FALSE;
-        }
+    if (actionState == ACTION_STATE_USE_TWEESTER) {
+        return TRUE;
     }
-    return TRUE;
+
+    if (partnerStatus->partnerActionState == PARTNER_ACTION_USE
+        && (partnerStatus->actingPartner == PARTNER_BOW || partnerStatus->actingPartner == PARTNER_PARAKARRY)
+    ) {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 s32 should_continue_pulse_stone(void) {
@@ -53,13 +55,12 @@ s32 should_continue_pulse_stone(void) {
         && !has_valid_conversation_npc()
         && !func_800E06D8()
     ) {
+        // hardcoded map IDs assuming first 49 maps (in sbk) are a 7x7 grid
         s32 dx = abs((gGameStatusPtr->mapID % 7) - 2);
         s32 dy = gGameStatusPtr->mapID / 7;
 
         if ((dx + dy) < 6) {
             if (!should_cancel_pulse_stone()) {
-                dy = TRUE; // TODO required to set dy to 1 and return that
-
                 return TRUE;
             }
         }

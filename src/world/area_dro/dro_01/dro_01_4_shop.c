@@ -95,7 +95,7 @@ EvtScript N(EVS_SecretPurcahseOrder_RedJar) = {
         Call(func_802D2C14, 1)
         ExecWait(N(EVS_JumpToPlayer))
         Call(SpeakToPlayer, NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle, 0, MSG_CH2_008D)
-        EVT_GIVE_KEY_REWARD(ITEM_KOOT_RED_JAR)
+        EVT_GIVE_REWARD(ITEM_KOOT_RED_JAR)
         Set(GF_DRO01_Gift_RedJar, TRUE)
         Wait(20)
         Call(func_802D2C14, 0)

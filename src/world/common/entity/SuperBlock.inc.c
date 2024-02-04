@@ -485,7 +485,7 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(DisablePartnerAI, 0)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(N(SuperBlock_StartGlowEffect), SUPER_BLOCK_MAPVAR, LVar9)
-    Call(FindKeyItem, ITEM_ULTRA_STONE, LVarC)
+    Call(FindItem, ITEM_ULTRA_STONE, LVarC)
     Call(N(SuperBlock_CountEligiblePartners))
     IfEq(LVar0, -1)
         Call(ShowMessageAtScreenPos, MSG_Menus_00DC, 160, 40)
