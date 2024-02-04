@@ -2,7 +2,7 @@
 #include "hud_element.h"
 
 s32 UniqueScriptCounter = 1;
-s32 IsUpdatingScripts = 0;
+s32 IsUpdatingScripts = FALSE;
 f32 GlobalTimeRate = 1.0f;
 
 // script_list
@@ -169,7 +169,7 @@ void clear_script_list(void) {
 
     gNumScripts = 0;
     gScriptListCount = 0;
-    IsUpdatingScripts = 0;
+    IsUpdatingScripts = FALSE;
 
     for (i = 0; i < MAX_MAPVARS; i++) {
         gMapVars[i] = 0;
@@ -195,7 +195,7 @@ void init_script_list(void) {
     }
 
     gNumScripts = 0;
-    IsUpdatingScripts = 0;
+    IsUpdatingScripts = FALSE;
 
     init_virtual_entity_list();
     init_model_animators();

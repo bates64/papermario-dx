@@ -914,8 +914,6 @@ void suggest_player_anim_always_forward(AnimID anim) {
 void update_player_blink(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 outtaSight = FALSE;
-    u8 phi_v1;
-    u8* alpha;
 
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
         outtaSight = gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE;
@@ -923,17 +921,16 @@ void update_player_blink(void) {
 
     if (playerStatus->blinkTimer > 0) {
         playerStatus->blinkTimer--;
-        alpha = &playerStatus->curAlpha;
+
         if (!(gGameStatusPtr->frameCounter & 1)) {
             if (outtaSight) {
-                phi_v1 = 192;
+                playerStatus->curAlpha = 192;
             } else {
-                phi_v1 = 255;
+                playerStatus->curAlpha = 255;
             }
         } else {
-            phi_v1 = 96;
+            playerStatus->curAlpha = 96;
         }
-        *alpha = phi_v1;
 
         if (!playerStatus->blinkTimer) {
             if (outtaSight) {
@@ -951,9 +948,7 @@ void update_player_blink(void) {
 
 // dist_to_player2D
 f32 get_xz_dist_to_player(f32 x, f32 z) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    return dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z);
+    return dist2D(x, z, gPlayerStatus.pos.x, gPlayerStatus.pos.z);
 }
 
 void enable_player_shadow(void) {
@@ -1009,15 +1004,13 @@ void func_800E01DC(void) {
 }
 
 b32 check_player_action_debug(void) {
-    b32 ret = FALSE;
-
     if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE && (gGameStatusPtr->curButtons[0] & BUTTON_R)) {
         if (gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) {
             set_action_state(ACTION_STATE_IDLE);
         }
-        ret = TRUE;
+        return TRUE;
     }
-    return ret;
+    return FALSE;
 }
 
 //BEGIN player/prompts.c

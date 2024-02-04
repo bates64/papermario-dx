@@ -51,4 +51,14 @@ b32 item_is_badge(s32 itemID);
 /// @returns whether `itemID` is a Key Item
 b32 item_is_key(s32 itemID);
 
+/// Recover player HP
+/// @param amt the amount to recover, -1 for full, -2 for full and increase max by 1 (unused)
+/// @return the new HP value, after recovery has been applied
+s32 recover_hp(s32 amt);
+
+/// Recover player FP
+/// @param amt the amount to recover, -1 for full, -2 for full and increase max by 1 (unused)
+/// @return the new FP value, after recovery has been applied
+s32 recover_fp(s32 amt);
+
 #endif

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "effects.h"
+#include "inventory.h"
 #include "vars_access.h"
 #include "message_ids.h"
 #include "ld_addrs.h"

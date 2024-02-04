@@ -2147,20 +2147,18 @@ void set_max_star_power(s8 newMax) {
 }
 
 void add_star_power(s32 amt) {
-    // TODO cleanup
     PlayerData* playerData = &gPlayerData;
     StatusBar* statusBar = &gStatusBar;
-    s32 phi_v1;
     s32 maxPower;
 
     statusBar->unk_57 = 1;
     statusBar->unk_58 = 60;
 
-    phi_v1 = playerData->starPower;
     if (playerData->starPower < 0) {
-        phi_v1 = playerData->starPower + 31;
+        statusBar->unk_59 = (playerData->starPower + 31) / SP_PER_SEG;
+    } else {
+        statusBar->unk_59 = playerData->starPower / SP_PER_SEG;
     }
-    statusBar->unk_59 = phi_v1 >> 5; // same as / SP_PER_SEG
 
     playerData->starPower += amt;
 
@@ -2173,47 +2171,37 @@ void add_star_power(s32 amt) {
 }
 
 s32 recover_fp(s32 amt) {
-    PlayerData* playerData = &gPlayerData;
-    s32 newFP = playerData->curFP;
-    s32 ret;
-
     if (amt == -2) {
-        playerData->curMaxFP++;
-        playerData->curFP = playerData->curMaxFP;
-        return playerData->curMaxFP;
+        gPlayerData.curMaxFP++;
+        gPlayerData.curFP = gPlayerData.curMaxFP;
+    } else if (amt == -1) {
+        gPlayerData.curFP = gPlayerData.curMaxFP;
+    } else {
+        if (amt > 0) {
+            gPlayerData.curFP += amt;
+        }
+        if (gPlayerData.curMaxFP < gPlayerData.curFP) {
+            gPlayerData.curFP = gPlayerData.curMaxFP;
+        }
     }
-
-    if (amt > 0) {
-        newFP += amt;
-    }
-    if ((amt == -1) || (ret = newFP, (playerData->curMaxFP < newFP))) {
-        ret = playerData->curMaxFP;
-    }
-
-    playerData->curFP = ret;
-    return ret;
+    return gPlayerData.curFP;
 }
 
 s32 recover_hp(s32 amt) {
-    PlayerData* playerData = &gPlayerData;
-    s32 newHP = playerData->curHP;
-    s32 ret;
-
     if (amt == -2) {
-        playerData->curMaxHP++;
-        playerData->curHP = playerData->curMaxHP;
-        return playerData->curMaxHP;
+        gPlayerData.curMaxHP++;
+        gPlayerData.curHP = gPlayerData.curMaxHP;
+    } else if (amt == -1) {
+        gPlayerData.curHP = gPlayerData.curMaxHP;
+    } else {
+        if (amt > 0) {
+            gPlayerData.curHP += amt;
+        }
+        if (gPlayerData.curMaxHP < gPlayerData.curHP) {
+            gPlayerData.curHP = gPlayerData.curMaxHP;
+        }
     }
-
-    if (amt > 0) {
-        newHP += amt;
-    }
-    if ((amt == -1) || (ret = newHP, (playerData->curMaxHP < newHP))) {
-        ret = playerData->curMaxHP;
-    }
-
-    playerData->curHP = ret;
-    return ret;
+    return gPlayerData.curHP;
 }
 
 void subtract_hp(s32 amt) {
