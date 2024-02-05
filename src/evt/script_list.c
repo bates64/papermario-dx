@@ -54,10 +54,6 @@ BSS s32 RunningMusicEventIDs[10];
 // item_api
 BSS PopupMenu gItemChoicePopupMenu;
 
-// demo_api
-BSS s32 gSpriteShadingHeader;
-BSS s32 gSpriteShadingData;
-
 // why is this at the end? com section vs bss?
 BSS u32 gWorldMapFlags[MAX_MAPFLAGS];
 BSS u32 gBattleMapFlags[MAX_MAPFLAGS];

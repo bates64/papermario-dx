@@ -2,9 +2,7 @@
 #include "effects.h"
 #include "model.h"
 
-extern u16 StarShrineLightBeamAlpha;
-
-MAP_RODATA_PAD(1,unk);
+u16 StarShrineLightBeamAlpha = 255;
 
 #define NAME_SUFFIX _Starship
 #include "world/common/atomic/ApplyTint.inc.c"
