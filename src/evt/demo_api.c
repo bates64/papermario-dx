@@ -1,6 +1,5 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "dx/debug_menu.h"
 
 extern Addr sprite_shading_profiles_data_ROM_START;
 
