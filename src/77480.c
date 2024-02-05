@@ -1398,33 +1398,28 @@ void player_update_sprite(void) {
     }
 
     trueAnim = playerStatus->anim;
-    if (playerStatus->flags & PS_FLAG_SPINNING) {
-        playerStatus->trueAnimation = trueAnim;
-    } else {
-        sprIndex = (trueAnim >> 0x10) & 0xFF;
+    if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
+        sprIndex = (playerStatus->anim >> 0x10) & 0xFF;
 
-        if (playerStatus->actionState != ACTION_STATE_TORNADO_JUMP && !(playerStatus->flags & PS_FLAG_ROTATION_LOCKED)) {
-            playerStatus->spriteFacingAngle = angle + D_800F7B48;
-            trueAnim = playerStatus->anim;
-            if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
-                && (sprIndex == SPR_Mario1 || sprIndex == SPR_MarioW1 || sprIndex == SPR_Peach1)
-                && fabsf(get_clamped_angle_diff(cameraYaw, playerStatus->curYaw)) < 60.0f
-            ) {
-                trueAnim = get_player_back_anim(trueAnim);
-            }
-            playerStatus->trueAnimation = trueAnim;
-            playerStatus->curYaw = playerStatus->targetYaw;
-        } else {
-            trueAnim = playerStatus->anim;
+        if (playerStatus->actionState == ACTION_STATE_TORNADO_JUMP || playerStatus->flags & PS_FLAG_ROTATION_LOCKED) {
             if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
                 && (sprIndex == SPR_Mario1 || sprIndex == SPR_MarioW1 || sprIndex == SPR_Peach1)
                 && playerStatus->spriteFacingAngle < 350.0f && playerStatus->spriteFacingAngle > 190.0f
             ) {
                 trueAnim = get_player_back_anim(trueAnim);
             }
-            playerStatus->trueAnimation = trueAnim;
+        } else {
+            playerStatus->spriteFacingAngle = angle + D_800F7B48;
+            if (!(playerStatus->flags & PS_FLAG_FACE_FORWARD)
+                && (sprIndex == SPR_Mario1 || sprIndex == SPR_MarioW1 || sprIndex == SPR_Peach1)
+                && fabsf(get_clamped_angle_diff(cameraYaw, playerStatus->curYaw)) < 60.0f
+            ) {
+                trueAnim = get_player_back_anim(trueAnim);
+            }
+            playerStatus->curYaw = playerStatus->targetYaw;
         }
     }
+    playerStatus->trueAnimation = trueAnim;
 
     timescale = 1.0f;
     if (playerStatus->flags & PS_FLAG_ENTERING_BATTLE) {

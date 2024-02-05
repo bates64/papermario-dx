@@ -15,6 +15,9 @@ enum ReflectMode {
     REFLECTION_WALL_ONLY    = 2,
 };
 
+extern u8 ReflectWallPrevAlpha; // player alpha1 copy?
+extern u8 ReflectFloorPrevAlpha; // player alpha2 copy?
+
 void N(worker_reflect_player_wall)(void);
 void N(worker_reflect_player_floor)(void);
 void N(appendGfx_reflect_player_wall)(PlayerStatus* playerStatus);
@@ -95,7 +98,7 @@ void N(worker_reflect_player_wall)(void) {
         spr_update_player_sprite(PLAYER_SPRITE_AUX2, anim, 1.0f);
 
         if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
-            if (playerStatus->curAlpha != D_802D9D70) {
+            if (playerStatus->curAlpha != ReflectWallPrevAlpha) {
                 if (playerStatus->curAlpha < 254) {
                     renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
                     set_player_imgfx_comp(PLAYER_SPRITE_AUX2, -1, IMGFX_SET_ALPHA, 0, 0, 0, playerStatus->curAlpha, 0);
@@ -104,10 +107,10 @@ void N(worker_reflect_player_wall)(void) {
                     set_player_imgfx_comp(PLAYER_SPRITE_AUX2, -1, IMGFX_CLEAR, 0, 0, 0, 0, 0);
                 }
             }
-            D_802D9D70 = playerStatus->curAlpha;
+            ReflectWallPrevAlpha = playerStatus->curAlpha;
         } else {
             renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
-            D_802D9D70 = 0;
+            ReflectWallPrevAlpha = 0;
         }
 
         renderTaskPtr->renderMode = renderMode;
@@ -170,7 +173,7 @@ void N(worker_reflect_player_floor)(void) {
         spr_update_player_sprite(PLAYER_SPRITE_AUX1, playerStatus->trueAnimation, 1.0f);
 
         if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
-            if (playerStatus->curAlpha != D_802D9D71) {
+            if (playerStatus->curAlpha != ReflectFloorPrevAlpha) {
                 if (playerStatus->curAlpha < 254) {
                     renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
                     set_player_imgfx_comp(PLAYER_SPRITE_AUX1, -1, IMGFX_SET_ALPHA, 0, 0, 0, playerStatus->curAlpha, 0);
@@ -179,10 +182,10 @@ void N(worker_reflect_player_floor)(void) {
                     set_player_imgfx_comp(PLAYER_SPRITE_AUX1, -1, IMGFX_CLEAR, 0, 0, 0, 0, 0);
                 }
             }
-            D_802D9D71 = playerStatus->curAlpha;
+            ReflectFloorPrevAlpha = playerStatus->curAlpha;
         } else {
             renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
-            D_802D9D71 = 0;
+            ReflectFloorPrevAlpha = 0;
         }
 
         renderTaskPtr->renderMode = renderMode;
