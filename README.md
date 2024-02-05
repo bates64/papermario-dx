@@ -13,7 +13,7 @@ To get started, see [docs.starhaven.dev](https://docs.starhaven.dev/tools/decomp
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff
 [papermario-repo]: https://github.com/pmret/papermario
 [releases]: https://github.com/star-haven/papermario-dx/releases
-[download]: https://github.com/star-haven/papermario-dx/releases/latest/download/papermario.bps
+[download]: https://github.com/star-haven/papermario-dx/releases/download/latest/papermario.bps
 
 ## List of changes
 
