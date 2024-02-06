@@ -1164,34 +1164,19 @@ API_CALLABLE(RemoveKeyItemAt);
 API_CALLABLE(RemoveItemAt);
 
 /// @evtapi
-API_CALLABLE(AddKeyItem);
-
-/// @evtapi
 API_CALLABLE(CloseChoicePopup);
 
 /// @evtapi
-API_CALLABLE(HasKeyItem);
-
-/// @evtapi
-API_CALLABLE(FindKeyItem);
-
-/// @evtapi
-API_CALLABLE(AddItem);
-
-/// @evtapi
-API_CALLABLE(ClearVariable);
+API_CALLABLE(HasItem);
 
 /// @evtapi
 API_CALLABLE(FindItem);
 
 /// @evtapi
+API_CALLABLE(AddItem);
+
+/// @evtapi
 API_CALLABLE(RemoveItem);
-
-/// @evtapi
-API_CALLABLE(CountFortessKeys);
-
-/// @evtapi
-API_CALLABLE(RemoveFortressKeys);
 
 /// @evtapi
 API_CALLABLE(MakeItemEntity);
@@ -1204,12 +1189,6 @@ API_CALLABLE(DropResizableItemEntity);
 
 /// @evtapi
 API_CALLABLE(RemoveItemEntity);
-
-/// @evtapi
-API_CALLABLE(AddBadge);
-
-/// @evtapi
-API_CALLABLE(RemoveBadge);
 
 /// @evtapi
 API_CALLABLE(SetItemPos);

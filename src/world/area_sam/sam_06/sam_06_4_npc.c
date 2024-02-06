@@ -64,16 +64,10 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 };
 
 #include "world/common/complete/GiveReward.inc.c"
-
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
-#if VERSION_PAL
 #include "sprite/npc/ShiverToad.h"
-#define TOADHOUSE_ANIM_TALK ANIM_ShiverToad_Red_Talk
-#define TOADHOUSE_ANIM_IDLE ANIM_ShiverToad_Red_Idle
-#endif
 
 #include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
@@ -429,7 +423,7 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(SetItemPos, MV_ScarfItemID, NPC_DISPOSE_LOCATION)
     Call(SetNpcAnimation, NPC_Merle, ANIM_Merle_Idle)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    EVT_GIVE_KEY_REWARD(ITEM_SNOWMAN_SCARF)
+    EVT_GIVE_REWARD(ITEM_SNOWMAN_SCARF)
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00F1)
     Wait(10 * DT)
     Call(SetCamPosA, CAM_DEFAULT, Float(200.7), Float(-321.0))

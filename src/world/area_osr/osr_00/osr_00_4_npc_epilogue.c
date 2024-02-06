@@ -1,11 +1,5 @@
 #include "osr_00.h"
 
-NpcSettings N(NpcSettings_Unused) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
 #include "world/common/npc/Yoshi.inc.c"
 #include "world/common/npc/YoshiKid.inc.c"
 #include "world/common/npc/Penguin.inc.c"

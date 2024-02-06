@@ -233,7 +233,7 @@ EvtScript N(EVS_Scene_PostReleaseFountain) = {
     Call(SetNpcAnimation, NPC_Lily, ANIM_Lily_GiveItem)
     Wait(20 * DT)
     Call(SetNpcAnimation, NPC_Lily, ANIM_Lily_Idle)
-    EVT_GIVE_KEY_REWARD(ITEM_MIRACLE_WATER)
+    EVT_GIVE_REWARD(ITEM_MIRACLE_WATER)
     Call(SpeakToPlayer, NPC_Lily, ANIM_Lily_TalkHappy, ANIM_Lily_IdleHappy, 0, MSG_CH6_0084)
     Call(EndSpeech, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 0)
     Call(SetNpcAnimation, NPC_Lily, ANIM_Lily_Idle)

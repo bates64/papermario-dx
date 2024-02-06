@@ -61,15 +61,6 @@ API_CALLABLE(N(EnableActionCommands)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnusedTrigFunc)) {
-    Bytecode* args = script->ptrReadPos;
-    f32 magnitude = evt_get_float_variable(script, *args++);
-    f32 angle = evt_get_float_variable(script, *args++);
-
-    evt_set_float_variable(script, *args++, magnitude * sin_deg(angle));
-    return ApiStatus_DONE2;
-}
-
 f32 N(LastTwinkPosX) = 0;
 f32 N(LastTwinkPosZ) = 0;
 
@@ -334,10 +325,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_TossItem)
     Wait(11)
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Pleased)
-    Set(LVar0, 7)
-    Set(LVar1, 4)
-    Call(ShowGotItem, LVar0, TRUE, 0)
-    Call(AddKeyItem, LVar0)
+    EVT_GIVE_REWARD(ITEM_LUCKY_STAR)
     Call(N(EnableActionCommands))
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Wait(20 * DT)

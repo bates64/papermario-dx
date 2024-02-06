@@ -27,7 +27,7 @@ u16* pause_frameBuffers[] = { gFrameBuf0, gFrameBuf1, gFrameBuf2 };
 
 extern ShapeFile gMapShapeData;
 
-NUPiOverlaySegment D_8007795C = {
+NUPiOverlaySegment PauseOverlaySegment = {
     .romStart = pause_ROM_START,
     .romEnd = pause_ROM_END,
     .ramStart = pause_VRAM,
@@ -43,6 +43,10 @@ SHIFT_BSS s8 StepPauseDelay;
 SHIFT_BSS s8 StepPauseState;
 SHIFT_BSS s16 StepPauseAlpha; // effectively unused, always zero
 SHIFT_BSS s32 SavedReverbMode;
+
+// TODO: these should be moved into player status
+u8 ReflectWallPrevAlpha = 254;
+u8 ReflectFloorPrevAlpha = 254;
 
 void state_init_pause(void) {
     StepPauseState = 0;
@@ -105,7 +109,7 @@ void state_step_pause(void) {
                     SavedReverbMode = sfx_get_reverb_mode();
                     sfx_set_reverb_mode(0);
                     bgm_quiet_max_volume();
-                    nuPiReadRomOverlay(&D_8007795C);
+                    nuPiReadRomOverlay(&PauseOverlaySegment);
                     pause_init();
                     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 }
@@ -143,7 +147,7 @@ void state_step_unpause(void) {
     MapConfig* mapConfig;
     void* mapShape;
     s32 assetSize;
-    
+
     switch (StepPauseState) {
         case 0:
         case 1:
@@ -210,7 +214,7 @@ void state_step_unpause(void) {
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                     StepPauseState = 3;
                     gPlayerStatus.prevAlpha = gPlayerStatus.curAlpha - 1;
-                    D_802D9D71 = D_802D9D70 + 1;
+                    ReflectFloorPrevAlpha = ReflectWallPrevAlpha + 1; // ???
 
                     update_encounters();
                     update_npcs();

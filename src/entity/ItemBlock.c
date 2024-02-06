@@ -1,5 +1,6 @@
 #include "common.h"
 #include "effects.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 #include "animation_script.h"
 #include "entity.h"

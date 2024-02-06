@@ -526,12 +526,11 @@ void update_camera_from_controller(
                 configuration->targetPos.z = z;
                 break;
             case CAM_CONTROL_FIXED_POS_AND_ORIENTATION:
-                do {
                 dx = controller->points.two.Bx - controller->points.two.Ax;
                 dz = controller->points.two.Bz - controller->points.two.Az;
 
                 configuration->boomYaw = atan2(0.0f, 0.0f, dx, dz);
-                } while (0);
+
                 boomLength = controller->boomLength;
                 if (boomLength < 0.0f) {
                     boomLength = -boomLength;

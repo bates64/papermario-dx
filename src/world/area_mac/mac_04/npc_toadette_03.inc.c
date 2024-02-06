@@ -19,7 +19,7 @@ EvtScript N(EVS_NpcInteract_Toadette_03) = {
         CaseLt(STORY_CH4_GOT_TAYCE_TS_CAKE)
             Set(LVar0, MSG_MAC_Housing_0068)
         CaseLt(STORY_CH4_SOLVED_COLOR_PUZZLE)
-            Call(FindKeyItem, ITEM_MYSTERY_NOTE, LVar0)
+            Call(FindItem, ITEM_MYSTERY_NOTE, LVar0)
             IfEq(LVar0, -1)
                 IfEq(GF_MAC00_DictionaryReturned, FALSE)
                     Set(LVar0, MSG_MAC_Housing_0069)

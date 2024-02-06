@@ -5,7 +5,6 @@
 
 EvtScript N(EVS_OpenChest_Dictionary) = {
     Set(LVarA, ITEM_DICTIONARY)
-    Set(LVarB, ITEM_TYPE_KEY)
     Set(GF_OMO09_Chest_Dictionary, TRUE)
     ExecWait(N(EVS_Chest_GetItem))
     Set(GF_MAC00_DictionaryStolen, TRUE)

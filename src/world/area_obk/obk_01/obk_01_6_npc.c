@@ -163,7 +163,7 @@ EvtScript N(EVS_NpcInteract_Franky) = {
             Set(GF_OBK01_Gift_OldPhoto, TRUE)
             ExecWait(N(EVS_MarioSalute))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_006B)
-            EVT_GIVE_KEY_REWARD(ITEM_KOOT_OLD_PHOTO)
+            EVT_GIVE_REWARD(ITEM_KOOT_OLD_PHOTO)
         EndIf
     EndIf
     Return

@@ -9,7 +9,7 @@ EvtScript N(EVS_AutoRemoveDeepFocus) = {
         Wait(1)
     EndLoop
     Wait(10)
-    Call(RemoveBadge, ITEM_DEEP_FOCUS1)
+    Call(RemoveItem, ITEM_DEEP_FOCUS1)
     Return
     End
 };

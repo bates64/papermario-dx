@@ -7,7 +7,7 @@ SHIFT_BSS s32 NpcHitQueryAheadY;
 SHIFT_BSS s32 NpcHitQueryBehindLeftY;
 SHIFT_BSS s32 NpcHitQueryColliderID;
 
-PlayerStatus* gPlayerStatusPtr = &gPlayerStatus; // maybe wPlayerStatus
+PlayerStatus* gPlayerStatusPtr = &gPlayerStatus;
 
 s32 npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth) {
     f32 cHitX;

@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "hud_element.h"
 #include "sprite.h"
+#include "dx/debug_menu.h"
 
 s32 D_802946E0[] = { 100, 100, 100, 110, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130 };
 
@@ -2844,6 +2845,13 @@ API_CALLABLE(EnemyDamageTarget) {
     battleStatus->curAttackStatus = *args++;
     battleStatus->curAttackDamage = evt_get_variable(script, *args++);
     battleFlagsModifier = *args++;
+
+    #if DX_DEBUG_MENU
+    if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+        battleStatus->curAttackDamage = 0;
+        battleStatus->curAttackStatus = 0;
+    }
+    #endif
 
     // BS_FLAGS1_INCLUDE_POWER_UPS and BS_FLAGS1_TRIGGER_EVENTS are mutually exclusive
     if (battleFlagsModifier & BS_FLAGS1_INCLUDE_POWER_UPS) {

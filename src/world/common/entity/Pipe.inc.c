@@ -79,11 +79,7 @@ API_CALLABLE(N(Pipe_GetEntryPos)) {
     evt_set_variable(script, LVar2, ((Vec4f*)*mapSettings->entryList)[index].y);
     evt_set_variable(script, LVar3, ((Vec4f*)*mapSettings->entryList)[index].z);
     evt_set_variable(script, LVar4, ((Vec4f*)*mapSettings->entryList)[index].yaw);
-    #ifdef _DEAD_H_
-    osSyncPrintf("[%d] dokan get pos  (no=%d)  pos=%d, %d, %d,  dir=%d\n",
-                 gGameStatusPtr->frameCounter, script->varTable[0], script->varTable[1], script->varTable[2],
-                 script->varTable[3], script->varTable[4]);
-    #endif
+
     return ApiStatus_DONE2;
 }
 

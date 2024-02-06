@@ -13,8 +13,7 @@ NpcSettings N(NpcSettings_Duplighost) = {
 #include "world/common/enemy/Bombette.inc.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,key_item);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 

@@ -424,11 +424,6 @@ NpcData N(NpcData_SpyGuy)[] = {
     SPY_GUY_ROCK_HITBOX(NPC_SpyGuy_Rock2),
 };
 
-// separated into its own NPC to make the group count match in DefaultNPCs
-NpcData N(NpcData_SpyGuy_UnusedRock)[] = {
-    SPY_GUY_ROCK_HITBOX(NPC_SpyGuy_Rock3),
-};
-
 NpcGroupList N(DefaultNPCs) = {
     NPC_GROUP(N(NpcData_ShyGuy_Loner)),
     NPC_GROUP(N(NpcData_ShyGuy_Crowd)),

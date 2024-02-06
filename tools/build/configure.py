@@ -85,7 +85,7 @@ def write_ninja_rules(
     ninja.variable("python", sys.executable)
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections -T $in -o $out"
-    ld = f"{cross}ld" if not 'PAPERMARIO_LD' in os.environ else os.environ['PAPERMARIO_LD']
+    ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     if shift:
         # For the shiftable build, we link twice to resolve some addresses that gnu ld can't figure out all in one go.
@@ -754,7 +754,6 @@ class Configure:
                             "cppflags": cppflags,
                             "iconv": iconv,
                         },
-
                     )
 
                 # images embedded inside data aren't linked, but they do need to be built into .bin files
@@ -1383,7 +1382,7 @@ if __name__ == "__main__":
                 pass
 
     extra_cflags = ""
-    extra_cppflags = "-DAVOID_UB"
+    extra_cppflags = ""
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
 

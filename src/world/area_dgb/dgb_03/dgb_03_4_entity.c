@@ -19,8 +19,7 @@ EvtScript N(EVS_UnlockPrompt_UpperDoor) = {
         ResumeGroup(EVT_GROUP_01)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_TUBBA_CASTLE_KEY, LVar0)
-    Call(RemoveKeyItemAt, LVar0)
+    Call(RemoveItem, ITEM_TUBBA_CASTLE_KEY)
     Call(CloseChoicePopup)
     Set(GF_DGB03_UnlockedThirdFloor, TRUE)
     Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)

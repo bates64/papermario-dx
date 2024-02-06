@@ -435,8 +435,6 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         bgFmt = background->fmt;
         cornersImage = corners->imgData;
 
-        do {} while (0);
-
         bgWidth = background->width;
         bgImage = background->imgData;
         bgHeight = background->height;

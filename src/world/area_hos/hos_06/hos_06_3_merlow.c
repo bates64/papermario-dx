@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
     Call(N(Merlow_SetBadgePurchased), LVar2)
     // awkward
     #define NAME_SUFFIX _Merlow
-    EVT_GIVE_BADGE_REWARD_ALT(LVar3, LVar1)
+    EVT_GIVE_REWARD(LVar3)
     #define NAME_SUFFIX
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_0055)

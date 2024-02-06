@@ -1,6 +1,8 @@
 #include "common.h"
 #include "include_asset.h"
 
+extern s32 D_8010C950; //TODO never read, consider removing
+
 #define NAMESPACE inspect_icon
 
 typedef struct InspectIconData {

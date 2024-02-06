@@ -24,13 +24,6 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 
-NpcSettings N(NpcSettings_Unused) = {
-    .height = 42,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_KoopaBros),
-};
-
 EvtScript N(EVS_Scene_ImprisonedKoopaBros) = {
     Wait(60)
     Call(EnableNpcAI, NPC_KoopaBros_Red, FALSE)

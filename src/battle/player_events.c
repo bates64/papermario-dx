@@ -271,7 +271,7 @@ API_CALLABLE(ConsumeLifeShroom) {
         playerData->curHP = playerData->curMaxHP;
     }
     playerData->invItems[find_item(ITEM_LIFE_SHROOM)] = ITEM_NONE;
-    sort_items();
+    sort_consumables();
     script->varTable[3] = item->potencyA;
 
     return ApiStatus_DONE2;

@@ -255,21 +255,6 @@ ActorBlueprint NAMESPACE = {
 };
 
 #include "common/StartRumbleWithParams.inc.c"
-
-API_CALLABLE(N(unused_func)) {
-    Bytecode* args = script->ptrReadPos;
-    Bytecode arg0 = *args++;
-    f32 var0, var1;
-
-    var1 = evt_get_float_variable(script, *args++);
-    do {} while (0); //TODO required to match
-    var0 = evt_get_float_variable(script, arg0);
-
-    evt_set_float_variable(script, arg0, var1 * sin_rad(DEG_TO_RAD(var0)));
-
-    return ApiStatus_DONE2;
-}
-
 #include "common/FadeBackgroundDarken.inc.c"
 #include "common/FadeBackgroundLighten.inc.c"
 #include "common/SpitInk.inc.c"

@@ -1087,7 +1087,7 @@ void filemenu_init(s32 arg0) {
             if (!fio_load_game(i)) {
                 gSaveSlotHasData[i] = FALSE;
             } else {
-                gSaveSlotMetadata[i] = gCurrentSaveFile.metadata;
+                gFilesDisplayData[i] = gCurrentSaveFile.metadata;
                 gSaveSlotHasData[i] = TRUE;
             }
         }

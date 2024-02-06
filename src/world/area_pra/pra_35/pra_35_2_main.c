@@ -43,11 +43,6 @@ EvtScript N(EVS_ExitWalk_pra_19_0) = {
 
 EvtScript N(EVS_ExitWalk_pra_33_2) = EVT_EXIT_WALK(60, pra_35_ENTRY_2, "pra_33", pra_33_ENTRY_2);
 
-EvtScript N(EVS_Unused) = {
-    Return
-    End
-};
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_pra_33_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittsw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_pra_19_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)

@@ -3,6 +3,7 @@
 import os
 import subprocess
 import shutil
+import platform
 
 ROM = "ver/current/build/papermario.z64"
 EMULATOR_PATHS = [
@@ -25,15 +26,35 @@ for command in EMULATOR_PATHS:
         emulator = command
         break
 
+def is_wsl(v: str = platform.uname().release) -> int:
+    """
+    detects if Python is running in WSL
+    """
+
+    if v.endswith("-Microsoft"):
+        return 1
+    elif v.endswith("microsoft-standard-WSL2"):
+        return 2
+
+    return 0
+
+def windows_path(path):
+    return subprocess.check_output(["wslpath", "-w", path]).decode().strip()
+
 def main():
     if os.system(f"ninja {ROM}") != 0:
-        print("Build failed")
+        print("error: build failed")
         return
 
+    wsl = is_wsl() != 0
+    rom = windows_path(ROM) if wsl else ROM
+
     if emulator is not None:
-        subprocess.run([emulator, ROM])
+        subprocess.run([emulator, rom])
     else:
-        print("No emulator found")
+        print("error: no emulator found")
+        if wsl:
+            print("  hint: add an emulator to your PATH")
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,5 @@
+#pragma once
+
 #define BTL_STAGE_DEFAULT -1
 
 enum StageNames {

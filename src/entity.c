@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 #include "entity.h"
 #include "model.h"
@@ -1452,7 +1453,7 @@ API_CALLABLE(AssignSwitchFlag) {
         SwitchData* data = entity->dataBuf.swtch;
 
         data->areaFlagIndex = areaFlag;
-        if (get_area_flag(areaFlag) != 0) {
+        if (get_area_flag(areaFlag)) {
             entity->flags |= ENTITY_FLAG_PENDING_INSTANCE_DELETE;
         }
         return ApiStatus_DONE2;

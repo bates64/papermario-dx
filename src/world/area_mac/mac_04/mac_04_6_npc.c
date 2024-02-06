@@ -16,7 +16,6 @@ NpcSettings N(NpcSettings_ChetRippo) = {
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-MAP_STATIC_PAD(1,key_choice);
 #include "world/common/complete/KeyItemChoice.inc.c"
 
 EvtScript N(EVS_TossTrainInToybox) = {

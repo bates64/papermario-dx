@@ -138,13 +138,6 @@ Vec3f N(FallPath)[] = {
     {   80.0,  -160.0,    0.0 },
 };
 
-Vec3f N(UnusedPath)[] = {
-    {    0.0,     0.0,    0.0 },
-    {   25.0,   -80.0,    0.0 },
-    {   50.0,  -100.0,    0.0 },
-    {   70.0,  -100.0,    0.0 },
-};
-
 EvtScript N(EVS_PlayerFalling) = {
     Thread
         Wait(5)

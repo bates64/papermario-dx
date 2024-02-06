@@ -2,8 +2,7 @@
 
 #define NAME_SUFFIX _Koot
 #include "world/common/complete/KeyItemChoice.inc.c"
-MAP_STATIC_PAD(1,item_choice);
-#include "world/common/complete/NormalItemChoice.inc.c"
+#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/GiveReward.inc.c"
 #define NAME_SUFFIX
 
@@ -390,7 +389,9 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar1)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
                 #define NAME_SUFFIX _Koot
-                EVT_GIVE_COIN()
+                Set(LVar0, ITEM_COIN)
+                ExecWait(N(GiveCoinReward))
+                Call(AddCoin, 1)
                 #define NAME_SUFFIX
             Else
                 Call(N(GetFavorMessages), GB_KootFavor_Current)
@@ -403,12 +404,11 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 #define NAME_SUFFIX _Koot
                 CaseEq(1 + KOOT_FAVOR_CH1_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B2)
-                    EVT_GIVE_KEY_REWARD(ITEM_SILVER_CREDIT)
+                    EVT_GIVE_REWARD(ITEM_SILVER_CREDIT)
                 CaseEq(1 + KOOT_FAVOR_CH4_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B3)
-                    EVT_GIVE_KEY_REWARD(ITEM_GOLD_CREDIT)
-                    Call(FindKeyItem, ITEM_SILVER_CREDIT, LVar1)
-                    Call(RemoveKeyItemAt, LVar1)
+                    EVT_GIVE_REWARD(ITEM_GOLD_CREDIT)
+                    Call(RemoveItem, ITEM_SILVER_CREDIT)
                 #define NAME_SUFFIX
             EndSwitch
             Set(GB_KootFavor_State, KOOT_FAVOR_STATE_0)

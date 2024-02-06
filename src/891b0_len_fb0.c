@@ -8,10 +8,9 @@ void surface_snow_behavior(void);
 void surface_hedges_behavior(void);
 void surface_water_behavior(void);
 
-s32 D_80109480 = 0;
+s32 PrevSurfaceType = 0;
 f32 D_80109484 = 0.0f;
 s16 D_80109488 = 4;
-s16 D_8010948A = 0; // unused?
 f32 D_8010948C = 0.0f;
 s16 D_80109490 = 4;
 s16 D_80109492 = 5;
@@ -26,34 +25,30 @@ s32 D_801094A8 = 0;
 s16 D_801094AC = 4;
 s16 D_801094AE = 4;
 
-SHIFT_BSS s32 D_8010CFF0;
-SHIFT_BSS s32 D_8010CFF4;
-
-void func_800EFD00(void) {
-}
+SHIFT_BSS s32 PrevTimeInAir;
+SHIFT_BSS s32 LandedTimeInAir;
 
 // Particles (dust, flowers, snow) and etc
 void handle_floor_behavior(void) {
-    s32 colliderType = 0;
-    PlayerStatus* playerStatus = &gPlayerStatus;
+    s32 surfaceType = SURFACE_TYPE_DEFAULT;
 
-    if (playerStatus->actionState == ACTION_STATE_JUMP) {
-        colliderType = D_80109480;
+    if (gPlayerStatus.actionState == ACTION_STATE_JUMP) {
+        surfaceType = PrevSurfaceType;
     }
 
-    D_80109480 = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    PrevSurfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
-    if (playerStatus->actionState != ACTION_STATE_JUMP) {
-        colliderType = D_80109480;
+    if (gPlayerStatus.actionState != ACTION_STATE_JUMP) {
+        surfaceType = PrevSurfaceType;
     }
 
-    if (playerStatus->actionState == ACTION_STATE_LAND && playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-        D_8010CFF4 = D_8010CFF0;
+    if (gPlayerStatus.actionState == ACTION_STATE_LAND && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
+        LandedTimeInAir = PrevTimeInAir;
     }
 
-    D_8010CFF0 = playerStatus->timeInAir;
+    PrevTimeInAir = gPlayerStatus.timeInAir;
 
-    switch (colliderType) {
+    switch (surfaceType) {
         case SURFACE_TYPE_FLOWERS:
             surface_flowers_behavior();
             break;
@@ -79,21 +74,22 @@ void surface_standard_behavior(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 sinTheta, cosTheta;
     f32 x, y, z;
-    s32 cond;
+    b32 isStarPath;
 
-    cond = FALSE;
-    if (gGameStatusPtr->areaID == AREA_HOS) {
-        cond = gGameStatusPtr->mapID == 2;
+    isStarPath = FALSE;
+    //TODO hardcoded map ID
+    if (gGameStatusPtr->areaID == AREA_HOS && gGameStatusPtr->mapID == 2) {
+        isStarPath = TRUE;
     }
 
     if (playerStatus->actionState == ACTION_STATE_LAND &&
         (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) &&
-        D_8010CFF4 >= 10)
+        LandedTimeInAir >= 10)
     {
         x = playerStatus->pos.x;
         y = playerStatus->pos.y + 0.0f;
         z = playerStatus->pos.z;
-        if (!cond) {
+        if (!isStarPath) {
             fx_landing_dust(0, x, y, z, D_80109484);
         } else {
             fx_misc_particles(3, x, y, z, 13.0f, 10.0f, 1.0f, 5, 30);
@@ -105,7 +101,7 @@ void surface_standard_behavior(void) {
         x = playerStatus->pos.x;
         y = playerStatus->pos.y + 0.0f;
         z = playerStatus->pos.z;
-        if (!cond) {
+        if (!isStarPath) {
             fx_landing_dust(0, x, y, z, D_80109484);
         } else {
             fx_misc_particles(3, x, y, z, playerStatus->colliderDiameter, 10.0f, 1.0f, 5, 40);
@@ -113,7 +109,7 @@ void surface_standard_behavior(void) {
     } else if (playerStatus->actionState == ACTION_STATE_SPIN && playerStatus->curSpeed != 0.0f) {
         if (D_80109488++ >= 4) {
             D_80109488 = 2;
-            if (cond) {
+            if (isStarPath) {
                 sin_cos_rad(DEG_TO_RAD(clamp_angle(playerStatus->targetYaw)), &sinTheta, &cosTheta);
                 fx_misc_particles(
                     3,
@@ -143,7 +139,7 @@ void surface_standard_behavior(void) {
 
         if (D_80109488++ >= 4) {
             D_80109488 = 0;
-            if (!cond) {
+            if (!isStarPath) {
                 sin_cos_rad(DEG_TO_RAD(clamp_angle(-playerStatus->curYaw)), &sinTheta, &cosTheta);
                 fx_walking_dust(
                     0,
@@ -172,10 +168,11 @@ void surface_flowers_behavior(void) {
     f32 t1;
 
     if (playerStatus->actionState == ACTION_STATE_JUMP && playerStatus->timeInAir == 1 && D_80109492 == 5) {
-        z = playerStatus->pos.z; // TODO weird use of temps required to match
-        x = playerStatus->pos.y + 14.0f;
-        y = D_8010948C;
-        fx_flower_splash(playerStatus->pos.x, x, z, y);
+        x = playerStatus->pos.x;
+        z = playerStatus->pos.z;
+        y = playerStatus->pos.y + 14.0f;
+
+        fx_flower_splash(x, y, z, D_8010948C);
         D_8010948C = clamp_angle(D_8010948C + 35.0f);
         D_80109492 = 0;
         return;
@@ -186,23 +183,20 @@ void surface_flowers_behavior(void) {
         D_80109492 = 5;
     }
 
-    if (
-        playerStatus->actionState != ACTION_STATE_WALK && playerStatus->actionState != ACTION_STATE_RUN &&
-        !(playerStatus->actionState == ACTION_STATE_SPIN && playerStatus->actionSubstate == 0)
+    if (!(playerStatus->actionState == ACTION_STATE_WALK
+        || playerStatus->actionState == ACTION_STATE_RUN
+        || (playerStatus->actionState == ACTION_STATE_SPIN && playerStatus->actionSubstate == 0))
     ) {
         D_80109490 = 0;
         return;
     }
 
     if (D_80109490++ > 0) {
-        f32 colliderDiameter;
         D_80109490 = 0;
         sin_cos_rad(DEG_TO_RAD(clamp_angle(-playerStatus->curYaw)), &sin, &cos);
 
-        colliderDiameter = playerStatus->colliderDiameter;
-
-        x = playerStatus->pos.x + (colliderDiameter * sin * -0.4f);
-        z = playerStatus->pos.z + (colliderDiameter * cos * -0.4f);
+        x = playerStatus->pos.x + (playerStatus->colliderDiameter * sin * -0.4f);
+        z = playerStatus->pos.z + (playerStatus->colliderDiameter * cos * -0.4f);
         y = playerStatus->pos.y + 15.5f;
 
         fx_flower_trail(0, x, y, z, -playerStatus->curYaw + rand_int(10) - 5.0f, D_80109494);
@@ -222,7 +216,7 @@ void surface_cloud_behavior(void) {
 
     if (((playerStatus->actionState == ACTION_STATE_LAND && (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED)) ||
         ((playerStatus->actionState == ACTION_STATE_SPIN_POUND || playerStatus->actionState == ACTION_STATE_TORNADO_POUND) && (playerStatus->flags & PS_FLAG_SPECIAL_LAND))) &&
-        D_8010CFF4 >= 10)
+        LandedTimeInAir >= 10)
     {
         fx_cloud_puff(
             playerStatus->pos.x,

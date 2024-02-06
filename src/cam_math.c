@@ -466,15 +466,13 @@ void func_80032C64(Camera* camera) {
                 ) {
                     minDistSq = intDistSq;
                 }
-                do {
-                    if (calculate_line_segment_intersection(settings2->points.two.Bx, settings2->points.two.Bz,
-                            settings2->points.two.Bx - deltaPosZ, settings2->points.two.Bz + deltaPosX,
-                            camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                        && intDistSq < minDistSq
-                    ) {
-                        minDistSq = intDistSq;
-                    }
-                } while (0); // TODO find better match
+                if (calculate_line_segment_intersection(settings2->points.two.Bx, settings2->points.two.Bz,
+                        settings2->points.two.Bx - deltaPosZ, settings2->points.two.Bz + deltaPosX,
+                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                    && intDistSq < minDistSq
+                ) {
+                    minDistSq = intDistSq;
+                }
             }
             if (constrainToZoneTriangles) {
                 for (i = 0; i < zone->numTriangles; i++) {

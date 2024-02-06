@@ -660,6 +660,7 @@
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
         SetGroup(EVT_GROUP_1B) \
+        Call(DisablePlayerInput, TRUE) \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
         Call(GotoMap, Ref(map), entryIdx) \
@@ -671,19 +672,6 @@
 // alternate version of EVT_EXIT_WALK used on Pleasant Path which does not join EVT_GROUP_1B
 #define EVT_EXIT_WALK_NOK(walkDistance, exitIdx, map, entryIdx) \
     { \
-        Call(UseExitHeading, walkDistance, exitIdx) \
-        Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
-        Wait(100) \
-        Return \
-        End \
-    }
-
-// alternate version of EVT_EXIT_WALK which includes a call to DisablePlayerInput
-#define EVT_EXIT_WALK_FIXED(walkDistance, exitIdx, map, entryIdx) \
-    { \
-        SetGroup(EVT_GROUP_1B) \
-        Call(DisablePlayerInput, TRUE) \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
         Call(GotoMap, Ref(map), entryIdx) \

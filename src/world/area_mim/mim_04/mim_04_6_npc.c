@@ -15,7 +15,7 @@ EvtScript N(EVS_NpcInteract_Bubulb) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_Bubulb_Green_Idle)
         Call(SetNpcCollisionSize, NPC_SELF, 45, 26)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, MSG_CH3_000F)
-        EVT_GIVE_KEY_REWARD(ITEM_MAGICAL_SEED3)
+        EVT_GIVE_REWARD(ITEM_MAGICAL_SEED3)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, MSG_CH3_0010)
         Set(GF_MIM04_Gift_MagicalSeed3, TRUE)
         Call(SetTattleMessage, NPC_Bubulb, MSG_NpcTattle_MIM_Bubulb_Revealed)

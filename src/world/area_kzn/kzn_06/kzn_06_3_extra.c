@@ -66,23 +66,6 @@ ModelIDList N(LavaModels) = {
     .list = { MODEL_g41 }
 };
 
- //@bug modelID 0x12 when it should be 12
-ModelIDList N(InvalidLavaModels) = {
-    .count = 1,
-    .list = { MODEL_o238 }
-};
-
-EvtScript N(EVS_8024137C) = {
-    Label(0)
-        Call(N(AdjustFog), Ref(N(InvalidLavaModels)), 0, 0, 255, 60, 1)
-        Wait(30)
-        Call(N(AdjustFog), Ref(N(InvalidLavaModels)), 0, 0, 255, 60, 0)
-        Wait(30)
-        Goto(0)
-    Return
-    End
-};
-
 EvtScript N(EVS_LowerMainLavaLevel) = {
     Call(DisablePlayerInput, TRUE)
     Wait(3)

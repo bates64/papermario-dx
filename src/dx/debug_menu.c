@@ -1,5 +1,5 @@
 #include "dx/debug_menu.h"
-#if DX_DEBUG_MENU
+#if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "hud_element.h"
@@ -44,6 +44,7 @@ enum DebugMenuStates {
         DBM_INV_EDIT_STAR_PIECES,
     DBM_EDIT_MEMORY,
     DBM_VIEW_COLLISION,
+    DBM_CHEAT_MENU,
 };
 
 s32 DebugMenuState = DBM_NONE;
@@ -157,6 +158,14 @@ void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
     };
     dx_string_to_msg(&buf[4], text);
     draw_msg((s32)buf, posX, posY, 255, color, 0);
+}
+
+void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, s32 effect) {
+    char buf[128] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    dx_string_to_msg(&buf[4], text);
+    draw_msg((s32)buf, posX, posY, 255, color, effect);
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
@@ -395,10 +404,6 @@ b32 dx_debug_menu_is_open() {
     return DebugMenuState != DBM_NONE;
 }
 
-void dx_debug_exec_under_construction() {
-    sfx_play_sound(SOUND_MENU_ERROR);
-}
-
 void dx_debug_exec_full_restore() {
     gPlayerData.curHP = gPlayerData.curMaxHP;
     gPlayerData.curFP = gPlayerData.curMaxFP;
@@ -421,8 +426,9 @@ DebugMenuEntry DebugMainMenu[] = {
     { "Sound Player",   NULL, DBM_SOUND_PLAYER },
     { "Edit Partners",  NULL, DBM_EDIT_PARTNERS },
     { "Edit Inventory", NULL, DBM_EDIT_INVENTORY },
-//    { "Edit Memory",    dx_debug_exec_under_construction, DBM_EDIT_MEMORY },
+//  { "Edit Memory",    NULL, DBM_EDIT_MEMORY },
     { "View Collision", NULL, DBM_VIEW_COLLISION },
+    { "Cheats",         NULL, DBM_CHEAT_MENU },
 };
 s32 MainMenuPos = 0;
 
@@ -529,9 +535,10 @@ void dx_debug_menu_main() {
             case DBM_VIEW_COLLISION:
                 dx_debug_update_view_collision();
                 break;
+            case DBM_CHEAT_MENU:
+                dx_debug_update_cheat_menu();
+                break;
         }
-    } else {
-        //TODO BUTTON_D_DOWN = god mode and BUTTON_D_RIGHT = speed mode
     }
 
     DebugStateChanged = (initialMenuState != DebugMenuState);
@@ -859,15 +866,11 @@ Encounter DebugDummyEncounter = {
     .stage = 0,
 };
 
-void dx_debug_begin_battle() {
+void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     EncounterStatus* es = &gCurrentEncounter;
 
-    DebugDummyEncounter.battle =
-            (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
-        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
-        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
-    DebugDummyEncounter.stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
+    DebugDummyEncounter.battle = battle;
+    DebugDummyEncounter.stage = stage;
 
     es->curEncounter = &DebugDummyEncounter;
     es->curEnemy = &DebugDummyEnemy;
@@ -886,6 +889,16 @@ void dx_debug_begin_battle() {
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
     D_8009A678 = 1;
+}
+
+void dx_debug_begin_battle() {
+    s16 battle = (DebugBattleNum[DEBUG_BATTLE_AREA_TENS] & 0xF) << 12
+        | (DebugBattleNum[DEBUG_BATTLE_AREA_ONES] & 0xF) << 8
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_TENS] & 0xF) << 4
+        | (DebugBattleNum[DEBUG_BATTLE_FORMATION_ONES] & 0xF);
+    s16 stage = DebugBattleNum[DEBUG_BATTLE_STAGE] & 0xFFFF;
+
+    dx_debug_begin_battle_with_IDs(battle, stage);
 }
 
 void dx_debug_update_select_battle() {
@@ -1279,7 +1292,7 @@ void dx_debug_update_edit_items() {
         }
 
         s32 itemMsg = MSG_NONE;
-        if (itemID > 0 && itemID < ARRAY_COUNT(gItemTable)) {
+        if (itemID > 0 && itemID < NUM_ITEMS) {
             itemMsg = gItemTable[itemID].nameMsg;
         }
         if (itemMsg != MSG_NONE) {
@@ -1833,10 +1846,78 @@ b32 dx_debug_should_hide_models() {
 }
 
 // ----------------------------------------------------------------------------
+// cheat menu
+
+typedef struct DebugCheatEntry {
+    char* text;
+    b32 enabled;
+} DebugCheatEntry;
+
+DebugCheatEntry DebugCheatMenu[] = {
+    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   FALSE },
+    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", FALSE },
+//  [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
+    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", FALSE },
+    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", FALSE },
+};
+
+s32 DebugCheatPos = 0;
+
+void dx_debug_update_cheat_menu() {
+    s32 idx;
+
+    // handle input
+    if (RELEASED(BUTTON_L)) {
+        DebugMenuState = DBM_MAIN_MENU;
+    }
+     if (NAV_LEFT || NAV_RIGHT) {
+        DebugCheatMenu[DebugCheatPos].enabled = !DebugCheatMenu[DebugCheatPos].enabled;
+
+        // actions to execute on state change
+        switch (DebugCheatPos) {
+            case DEBUG_CHEAT_GOD_MODE:
+        //  case DEBUG_CHEAT_FLY:
+            case DEBUG_CHEAT_HIGH_JUMP:
+            case DEBUG_CHEAT_IGNORE_WALLS:
+                break;
+            case DEBUG_CHEAT_SPEED_MODE:
+                if (!DebugCheatMenu[DebugCheatPos].enabled) {
+                    gPlayerStatus.walkSpeed = 2.0f;
+                    gPlayerStatus.runSpeed = 4.0f;
+                    gGameStatusPtr->debugEnemyContact = DEBUG_CONTACT_NONE;
+                } else {
+                    gPlayerStatus.walkSpeed = 6.0f;
+                    gPlayerStatus.runSpeed = 12.0f;
+                    gGameStatusPtr->debugEnemyContact = DEBUG_CONTACT_CANT_TOUCH;
+                }
+                break;
+        }
+
+    }
+    DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, FALSE);
+
+    // draw
+    dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, ARRAY_COUNT(DebugCheatMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
+
+    for (idx = 0; idx < ARRAY_COUNT(DebugCheatMenu); idx++) {
+        s32 color = (DebugCheatPos == idx) ? HighlightColor : DefaultColor;
+        char* onoff = DebugCheatMenu[idx].enabled ? "On" : "Off";
+
+        dx_debug_draw_ascii(onoff, color, SubmenuPosX, SubmenuPosY + (idx + 1) * RowHeight);
+        dx_debug_draw_ascii(DebugCheatMenu[idx].text, DefaultColor, SubmenuPosX + 28, SubmenuPosY + (idx + 1) * RowHeight);
+    }
+}
+
+b32 dx_debug_is_cheat_enabled(DebugCheat cheat) {
+    return DebugCheatMenu[cheat].enabled;
+}
+
+// ----------------------------------------------------------------------------
 // banner info
 
 void dx_debug_update_banner() {
     char fmtBuf[128];
+    s32 effect;
 
     if (gGameStatus.isBattle == 0) {
         sprintf(fmtBuf, "Map: %7s (%X)", LastMapName, LastMapEntry);
@@ -1844,14 +1925,20 @@ void dx_debug_update_banner() {
 
         dx_debug_draw_ascii("Pos:", DefaultColor, 20, BottomRowY);
 
+        effect = dx_debug_is_cheat_enabled(DEBUG_CHEAT_SPEED_MODE) ? DRAW_MSG_STYLE_RAINBOW : 0;
+
         sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.x));
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 48, BottomRowY);
+        dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 48, BottomRowY, effect);
 
         sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.y));
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 80, BottomRowY);
+        dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 80, BottomRowY, effect);
 
         sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.z));
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 112, BottomRowY);
+        dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 112, BottomRowY, effect);
+
+        if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+            dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 151, BottomRowY);
+        }
     } else {
         s32 areaID = (LastBattleID >> 24) & 0xFF;
         s32 battleID = (LastBattleID >> 16) & 0xFF;
@@ -1862,6 +1949,10 @@ void dx_debug_update_banner() {
 
         sprintf(fmtBuf, "Stage:  %-15s", LastStageName);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 20, BottomRowY);
+
+        if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
+            dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 128, BottomRowY);
+        }
     }
 }
 

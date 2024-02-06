@@ -112,9 +112,14 @@ if __name__ == "__main__":
             if file_basename == "":
                 f.write(struct.pack(">I", 0))
             else:
-                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}"))) # can make more efficient
+                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
 
         f.write(strings)
+
+        # Pad to the nearest 16-byte alignment
+        padding_size = (f.tell() + 15) & ~15
+        padding_bytes = b"\x00" * (padding_size - f.tell())
+        f.write(padding_bytes)
 
         print("symbol table size: {} kib".format((f.tell() - symbol_table_addr) / 1024))
 

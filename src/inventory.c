@@ -1,4 +1,4 @@
-#include "common.h"
+#include "inventory.h"
 #include "hud_element.h"
 #include "dx/config.h"
 #include "inventory_data.c"
@@ -14,9 +14,7 @@ enum BlinkModes {
 
 BSS b16 D_8010CD10;
 BSS b16 D_8010CD12;
-BSS char D_8010CD14[0xA];
 BSS s32 D_8010CD20;
-BSS char D_8010CD24[0xC];
 
 SHIFT_BSS StatusBar gStatusBar;
 
@@ -70,14 +68,15 @@ void clear_player_data(void) {
     playerData->bootsLevel = 2;
     playerData->hasActionCommands = TRUE;
     playerData->coins = 0;
-    playerData->fortressKeyCount = 0;
     playerData->starPieces = 0;
     playerData->starPoints = 0;
     playerData->unused_011 = 0;
     playerData->unused_288 = 0;
+
     playerData->merleeSpellType = MERLEE_SPELL_NONE;
     playerData->merleeCastsLeft = 0;
     playerData->merleeTurnCount = -1;
+
     playerData->maxStarPower = 0;
     playerData->starPower = 0;
     playerData->starBeamLevel = 0;
@@ -161,154 +160,289 @@ void clear_player_data(void) {
     playerData->smashGameRecord = 0;
 }
 
-PlayerData* get_player_data(void) {
-    return &gPlayerData;
-}
-
 s32 add_item(s32 itemID) {
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
+    s32 idx;
 
-    sort_items();
+    // handle key items
+    if (item_is_key(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
+            if (gPlayerData.keyItems[idx] == ITEM_NONE) {
+                break;
+            }
+        }
 
-    for (i = 0; i < ARRAY_COUNT(gPlayerData.invItems); i++) {
-        if (playerData->invItems[i] == ITEM_NONE) {
+        if (idx >= ARRAY_COUNT(gPlayerData.keyItems)) {
+            return -1;
+        }
+
+        gPlayerData.keyItems[idx] = itemID;
+        return idx;
+    }
+
+    // handle badges
+    if (item_is_badge(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
+            if (gPlayerData.badges[idx] == ITEM_NONE) {
+                break;
+            }
+        }
+
+        if (idx >= ARRAY_COUNT(gPlayerData.badges)) {
+            return -1;
+        }
+
+        gPlayerData.badges[idx] = itemID;
+        return idx;
+    }
+
+    // handle consumables
+    sort_consumables();
+
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] == ITEM_NONE) {
             break;
         }
     }
 
-    if (i == ARRAY_COUNT(gPlayerData.invItems)) {
+    if (idx == ARRAY_COUNT(gPlayerData.invItems)) {
         return -1;
     }
 
-    playerData->invItems[i] = itemID;
-    return i;
+    gPlayerData.invItems[idx] = itemID;
+    return idx;
 }
 
-s32 get_item_count(void) {
-    PlayerData* playerData = &gPlayerData;
-    s32 i = 0;
-    s32 sum = 0;
+s32 remove_item(s32 itemID) {
+    s32 idx;
 
-    for (i; i < ARRAY_COUNT(gPlayerData.invItems); i++) {
-        if (playerData->invItems[i] != ITEM_NONE) {
-            sum++;
-        }
-    }
-
-    return sum;
-}
-
-s32 get_item_empty_count(void) {
-    return ARRAY_COUNT(gPlayerData.invItems) - get_item_count();
-}
-
-/// @returns the index of the given item in the player's inventory, or -1 if not found
-s32 find_item(s32 itemID) {
-    PlayerData* playerData = &gPlayerData;
-    ItemData* item = &gItemTable[itemID];
-    s32 i;
-
-    if (item->typeFlags & ITEM_TYPE_FLAG_KEY) {
-        // check key items
-        for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-            if (playerData->keyItems[i] == itemID) {
+    // handle key items
+    if (item_is_key(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
+            if (gPlayerData.keyItems[idx] == itemID) {
                 break;
             }
         }
 
-        if (i >= ARRAY_COUNT(playerData->keyItems)) {
+        if (idx >= ARRAY_COUNT(gPlayerData.keyItems)) {
             return -1;
         }
 
-        return i;
-    } else {
-        // check consumable items
-        for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-            if (playerData->invItems[i] == itemID) {
+        gPlayerData.keyItems[idx] = ITEM_NONE;
+        return idx;
+    }
+
+    // handle badges
+    if (item_is_badge(itemID)) {
+        // unequip
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.equippedBadges); idx++) {
+            if (gPlayerData.equippedBadges[idx] == itemID) {
+                gPlayerData.equippedBadges[idx] = ITEM_NONE;
+            }
+        }
+
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
+            if (gPlayerData.badges[idx] == itemID) {
                 break;
             }
         }
 
-        if (i == ARRAY_COUNT(playerData->invItems)) {
+        if (idx >= ARRAY_COUNT(gPlayerData.badges)) {
             return -1;
         }
 
-        return i;
-    }
-}
-
-/// Bubbles up player inventory items such that all ITEM_NONE values are at the bottom.
-void sort_items(void) {
-    PlayerData* playerData = &gPlayerData;
-    s32 j;
-    s32 i;
-
-    for (i = ARRAY_COUNT(playerData->invItems) - 2; i >= 0; i--) {
-        // leave ITEM_NONE at the end of the list alone
-        if (playerData->invItems[i] == ITEM_NONE) {
-            continue;
-        }
-        // swap any other ITEM_NONE to the end of the list
-        for (j = ARRAY_COUNT(playerData->invItems) - 1; i < j; j--) {
-            if (playerData->invItems[j] == ITEM_NONE) {
-                playerData->invItems[j] = playerData->invItems[i];
-                playerData->invItems[i] = ITEM_NONE;
-                break;
-            }
-        }
-    }
-}
-
-s32 add_badge(s32 itemID) {
-    PlayerData* playerData = &gPlayerData;
-    ItemData* item = &gItemTable[itemID];
-    s32 i;
-
-    if ((item->typeFlags & ITEM_TYPE_FLAG_BADGE) == 0) {
-        return add_item(itemID);
+        gPlayerData.badges[idx] = ITEM_NONE;
+        return idx;
     }
 
-    for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
-        if (playerData->badges[i] == ITEM_NONE) {
+    // handle consumables
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] == itemID) {
             break;
         }
     }
 
-    if (i >= ARRAY_COUNT(playerData->badges)) {
-        return 0;
+    if (idx == ARRAY_COUNT(gPlayerData.invItems)) {
+        return -1;
     }
 
-    playerData->badges[i] = itemID;
-    return i;
+    gPlayerData.invItems[idx] = ITEM_NONE;
+    sort_consumables();
+    return idx;
+}
+
+/// Search player inventory for `itemID` and return first matching array index.
+/// @returns the index of the given item in the player's inventory, or -1 if not found
+s32 find_item(s32 itemID) {
+    s32 idx;
+
+    // handle key items
+    if (item_is_key(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
+            if (gPlayerData.keyItems[idx] == itemID) {
+                break;
+            }
+        }
+
+        if (idx >= ARRAY_COUNT(gPlayerData.keyItems)) {
+            return -1;
+        }
+        return idx;
+    }
+
+    // handle badges
+    if (item_is_badge(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
+            if (gPlayerData.badges[idx] == itemID) {
+                break;
+            }
+        }
+
+        if (idx >= ARRAY_COUNT(gPlayerData.badges)) {
+            return -1;
+        }
+        return idx;
+    }
+
+    // handle consumables
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] == itemID) {
+            break;
+        }
+    }
+
+    if (idx == ARRAY_COUNT(gPlayerData.invItems)) {
+        return -1;
+    }
+    return idx;
+}
+
+/// Search player inventory for `itemID` and count the number matches.
+/// @returns the number of items matching `itemID`
+s32 count_item(s32 itemID) {
+    s32 idx;
+    s32 sum = 0;
+
+    // handle key items
+    if (item_is_key(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
+            if (gPlayerData.keyItems[idx] == itemID) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    // handle badges
+    if (item_is_badge(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
+            if (gPlayerData.badges[idx] == itemID) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    // handle consumables
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] == itemID) {
+            sum++;
+        }
+    }
+    return sum;
+}
+
+b32 has_item(s32 itemID) {
+    s32 idx;
+
+    // handle key items
+    if (item_is_key(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
+            if (gPlayerData.keyItems[idx] == itemID) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
+    // handle badges
+    if (item_is_badge(itemID)) {
+        for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
+            if (gPlayerData.badges[idx] == itemID) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
+    // handle consumables
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] == itemID) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 s32 store_item(s32 itemID) {
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
+    s32 idx;
 
-    for (i = 0; i < ARRAY_COUNT(gPlayerData.storedItems); i++) {
-        if (playerData->storedItems[i] == ITEM_NONE) {
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.storedItems); idx++) {
+        if (gPlayerData.storedItems[idx] == ITEM_NONE) {
             break;
         }
     }
 
-    if (i == ARRAY_COUNT(gPlayerData.storedItems)) {
+    if (idx == ARRAY_COUNT(gPlayerData.storedItems)) {
         return -1;
     } else {
-        playerData->storedItems[i] = itemID;
+        gPlayerData.storedItems[idx] = itemID;
     }
 
-    return i;
+    return idx;
 }
 
-s32 get_stored_count(void) {
-    PlayerData* playerData = &gPlayerData;
-    s32 i = 0;
+b32 is_badge_equipped(s32 itemID) {
+    s32 idx;
+
+    if (!item_is_badge(itemID)) {
+        return FALSE;
+    }
+
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.equippedBadges); idx++) {
+        if (gPlayerData.equippedBadges[idx] == itemID) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+/// Bubbles up player inventory items such that all ITEM_NONE values are at the bottom.
+void sort_consumables(void) {
+    s32 i, j;
+
+    for (i = ARRAY_COUNT(gPlayerData.invItems) - 2; i >= 0; i--) {
+        // leave ITEM_NONE at the end of the list alone
+        if (gPlayerData.invItems[i] == ITEM_NONE) {
+            continue;
+        }
+        // swap any other ITEM_NONE to the end of the list
+        for (j = ARRAY_COUNT(gPlayerData.invItems) - 1; i < j; j--) {
+            if (gPlayerData.invItems[j] == ITEM_NONE) {
+                gPlayerData.invItems[j] = gPlayerData.invItems[i];
+                gPlayerData.invItems[i] = ITEM_NONE;
+                break;
+            }
+        }
+    }
+}
+
+s32 get_consumables_count(void) {
+    s32 idx;
     s32 sum = 0;
 
-    for (; i < ARRAY_COUNT(gPlayerData.storedItems); i++) {
-        if (playerData->storedItems[i] != ITEM_NONE) {
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
+        if (gPlayerData.invItems[idx] != ITEM_NONE) {
             sum++;
         }
     }
@@ -316,8 +450,37 @@ s32 get_stored_count(void) {
     return sum;
 }
 
-s32 get_stored_empty_count(void) {
+s32 get_consumables_empty(void) {
+    return ARRAY_COUNT(gPlayerData.invItems) - get_consumables_count();
+}
+
+s32 get_stored_count(void) {
+    s32 idx;
+    s32 sum = 0;
+
+    for (idx = 0; idx < ARRAY_COUNT(gPlayerData.storedItems); idx++) {
+        if (gPlayerData.storedItems[idx] != ITEM_NONE) {
+            sum++;
+        }
+    }
+
+    return sum;
+}
+
+s32 get_stored_empty(void) {
     return ARRAY_COUNT(gPlayerData.storedItems) - get_stored_count();
+}
+
+ALWAYS_INLINE b32 item_is_consumable(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE;
+}
+
+ALWAYS_INLINE b32 item_is_badge(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_BADGE;
+}
+
+ALWAYS_INLINE b32 item_is_key(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_KEY;
 }
 
 void enforce_hpfp_limits(void) {
@@ -1243,9 +1406,6 @@ void coin_counter_draw_content(UNK_TYPE arg0, s32 posX, s32 posY) {
 
 void update_coin_counter(void) {
     StatusBar* statusBar = &gStatusBar;
-    PlayerData* playerData = &gPlayerData;
-
-    do {} while (0); // Needed to match
 
     if (statusBar->unk_6D != 0) {
         statusBar->unk_6D--;
@@ -1261,11 +1421,11 @@ void update_coin_counter(void) {
         return;
     }
 
-    if ((statusBar->displayCoins == playerData->coins) && (statusBar->coinCounterHideTime > 30)) {
+    if ((statusBar->displayCoins == gPlayerData.coins) && (statusBar->coinCounterHideTime > 30)) {
         statusBar->coinCounterHideTime = 30;
     }
 
-    if ((statusBar->displayCoins == playerData->coins) || (statusBar->coinCounterHideTime <= 30)) {
+    if ((statusBar->displayCoins == gPlayerData.coins) || (statusBar->coinCounterHideTime <= 30)) {
         statusBar->coinCounterHideTime--;
         if (statusBar->coinCounterHideTime == 0) {
             set_window_update(WINDOW_ID_CURRENCY_COUNTER, (s32)basic_hidden_window_update);
@@ -1274,7 +1434,7 @@ void update_coin_counter(void) {
             D_8010CD12 = TRUE;
             statusBar->iconIndex12 = statusBar->coinCountTimesHID;
             statusBar->iconIndex13 = statusBar->coinCountIconHID;
-            statusBar->displayCoins = playerData->coins;
+            statusBar->displayCoins = gPlayerData.coins;
             if (statusBar->unk_6E > -1) {
                 statusBar->ignoreChanges = statusBar->unk_6E;
                 statusBar->unk_6E = -1;
@@ -1417,17 +1577,19 @@ void disable_status_bar_input(void) {
 
 // determine whether the player can open or close the status bar via button press
 b32 can_control_status_bar(void) {
-    StatusBar* statusBar = &gStatusBar;
-
-    s32 ret = 1 - statusBar->openInputDisabled;
-
-    if (statusBar->alwaysShown) {
-        ret = FALSE;
+    if (gStatusBar.openInputDisabled) {
+        return FALSE;
     }
-    if (statusBar->ignoreChanges) {
-        ret = FALSE;
+
+    if (gStatusBar.alwaysShown) {
+        return FALSE;
     }
-    return ret;
+
+    if (gStatusBar.ignoreChanges) {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 void status_bar_ignore_changes(void) {
@@ -2069,20 +2231,18 @@ void set_max_star_power(s8 newMax) {
 }
 
 void add_star_power(s32 amt) {
-    // TODO cleanup
     PlayerData* playerData = &gPlayerData;
     StatusBar* statusBar = &gStatusBar;
-    s32 phi_v1;
     s32 maxPower;
 
     statusBar->unk_57 = 1;
     statusBar->unk_58 = 60;
 
-    phi_v1 = playerData->starPower;
     if (playerData->starPower < 0) {
-        phi_v1 = playerData->starPower + 31;
+        statusBar->unk_59 = (playerData->starPower + 31) / SP_PER_SEG;
+    } else {
+        statusBar->unk_59 = playerData->starPower / SP_PER_SEG;
     }
-    statusBar->unk_59 = phi_v1 >> 5; // same as / SP_PER_SEG
 
     playerData->starPower += amt;
 
@@ -2095,47 +2255,37 @@ void add_star_power(s32 amt) {
 }
 
 s32 recover_fp(s32 amt) {
-    PlayerData* playerData = &gPlayerData;
-    s32 newFP = playerData->curFP;
-    s32 ret;
-
     if (amt == -2) {
-        playerData->curMaxFP++;
-        playerData->curFP = playerData->curMaxFP;
-        return playerData->curMaxFP;
+        gPlayerData.curMaxFP++;
+        gPlayerData.curFP = gPlayerData.curMaxFP;
+    } else if (amt == -1) {
+        gPlayerData.curFP = gPlayerData.curMaxFP;
+    } else {
+        if (amt > 0) {
+            gPlayerData.curFP += amt;
+        }
+        if (gPlayerData.curMaxFP < gPlayerData.curFP) {
+            gPlayerData.curFP = gPlayerData.curMaxFP;
+        }
     }
-
-    if (amt > 0) {
-        newFP += amt;
-    }
-    if ((amt == -1) || (ret = newFP, (playerData->curMaxFP < newFP))) {
-        ret = playerData->curMaxFP;
-    }
-
-    playerData->curFP = ret;
-    return ret;
+    return gPlayerData.curFP;
 }
 
 s32 recover_hp(s32 amt) {
-    PlayerData* playerData = &gPlayerData;
-    s32 newHP = playerData->curHP;
-    s32 ret;
-
     if (amt == -2) {
-        playerData->curMaxHP++;
-        playerData->curHP = playerData->curMaxHP;
-        return playerData->curMaxHP;
+        gPlayerData.curMaxHP++;
+        gPlayerData.curHP = gPlayerData.curMaxHP;
+    } else if (amt == -1) {
+        gPlayerData.curHP = gPlayerData.curMaxHP;
+    } else {
+        if (amt > 0) {
+            gPlayerData.curHP += amt;
+        }
+        if (gPlayerData.curMaxHP < gPlayerData.curHP) {
+            gPlayerData.curHP = gPlayerData.curMaxHP;
+        }
     }
-
-    if (amt > 0) {
-        newHP += amt;
-    }
-    if ((amt == -1) || (ret = newHP, (playerData->curMaxHP < newHP))) {
-        ret = playerData->curMaxHP;
-    }
-
-    playerData->curHP = ret;
-    return ret;
+    return gPlayerData.curHP;
 }
 
 void subtract_hp(s32 amt) {
@@ -2157,24 +2307,4 @@ s8 has_full_hp(void) {
 
 s8 has_full_fp(void) {
     return gPlayerData.curMaxFP == gPlayerData.curFP;
-}
-
-s8 add_fortress_keys(s32 amt) {
-    gPlayerData.fortressKeyCount += amt;
-    return gPlayerData.fortressKeyCount;
-}
-
-s32 subtract_fortress_keys(s32 amt) {
-    PlayerData* playerData = &gPlayerData;
-
-    playerData->fortressKeyCount -= amt;
-    if (playerData->fortressKeyCount < 0) {
-        playerData->fortressKeyCount = 0;
-    }
-
-    return playerData->fortressKeyCount;
-}
-
-s32 get_fortress_key_count(void) {
-    return gPlayerData.fortressKeyCount;
 }
