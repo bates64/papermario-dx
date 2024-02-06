@@ -1,4 +1,5 @@
 #include "hos_02.h"
+#include "world/surfaces.h"
 
 EvtScript N(EVS_ExitStarBeam) = {
     SetGroup(EVT_GROUP_1B)
@@ -95,6 +96,7 @@ EvtScript N(EVS_EnterStarBeam) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STAR_WAY)
     Call(SetSpriteShading, SHADING_NONE)
+    Call(SetSurfaceWalkEffect, SURFACE_WALK_FX_SPARKLE)
     SetUP_CAMERA_DEFAULT()
     Set(GF_MAP_StarWay, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

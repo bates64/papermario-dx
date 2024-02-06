@@ -16,8 +16,6 @@ EvtScript N(EVS_ExitDoors_dgb_01_6) = {
     End
 };
 
-MAP_RODATA_PAD(1, strings);
-
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
     Call(GetEntryID, LVar0)

@@ -8,8 +8,6 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)

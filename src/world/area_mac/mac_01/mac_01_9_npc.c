@@ -415,7 +415,7 @@ EvtScript N(EVS_MerlonBargeOut) = {
         Call(PlayerJump1, -222, 20, -158, 8 * DT)
         Wait(5 * DT)
         Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, FALSE)
-        Call(N(KnockdownCreate), SPR_Mario1, 37) //TODO hardcoded player raster ID
+        Call(N(KnockdownCreate), SPR_Mario1, SPR_IMG_Mario1_25)
         Call(N(KnockdownSetPos), -215, 20, -158)
         Wait(1)
         Call(SetPlayerPos, -215, 1000, -158)

@@ -3,8 +3,6 @@
 
 #include "world/common/entity/Chest.inc.c"
 
-MAP_RODATA_PAD(1,entity);
-
 API_CALLABLE(N(MonitorPlayerAltitude)) {
     s32 result = -1;
 

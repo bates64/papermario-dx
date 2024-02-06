@@ -18,8 +18,8 @@
 #define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
 #endif
 
-SHIFT_BSS void* D_8010C924;
-SHIFT_BSS s32 D_8010C92C;
+SHIFT_BSS void* LastLoadedActionOffset;
+SHIFT_BSS s32 PeachDisguiseReapplyDelay;
 SHIFT_BSS s32 D_8010C964;
 SHIFT_BSS s32 gSpinHistoryBufferPos;
 SHIFT_BSS s16 D_8010C9B0;
@@ -221,12 +221,10 @@ void phys_reset_spin_history(void) {
     }
 
     D_8010C964 = 0;
-    D_8010C924 = NULL;
+    LastLoadedActionOffset = NULL;
 }
 
 void phys_update_action_state(void) {
-    Camera* cameras = gCameras;
-    PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerSpinState* playerSpinState = &gPlayerSpinState;
 
@@ -255,6 +253,7 @@ void phys_update_action_state(void) {
     }
 
     calculate_camera_yinterp_rate();
+
     if (playerSpinState->stopSoundTimer != 0) {
         playerSpinState->stopSoundTimer--;
         if (playerSpinState->stopSoundTimer == 0) {
@@ -277,57 +276,47 @@ void phys_update_action_state(void) {
                 cond = FALSE;
             }
 
-            if ((partnerStatus->partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
+            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
                 set_action_state(ACTION_STATE_TALK);
             }
             check_input_spin();
         }
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            void* dmaStart = PlayerActionsTable[playerStatus->actionState].dmaStart;
+        Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-            if (dmaStart != NULL && dmaStart != D_8010C924) {
-                D_8010C924 = dmaStart;
-                dma_copy(dmaStart, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
+        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
+            if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
+                LastLoadedActionOffset = action->dmaStart;
+                dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
             }
         }
-        PlayerActionsTable[playerStatus->actionState].update();
+        action->update();
     } while (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED);
 }
 
 void phys_peach_update(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
     calculate_camera_yinterp_rate();
 
     do {
-        if (!(playerStatus->flags & PS_FLAG_PAUSED) && check_conversation_trigger()) {
+        if (!(gPlayerStatus.flags & PS_FLAG_PAUSED) && check_conversation_trigger()) {
             set_action_state(ACTION_STATE_TALK);
         }
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            Action* action = &PlayerActionsTable[playerStatus->actionState];
+        Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-            if (action->flag) {
-                if (action->dmaStart != NULL && action->dmaStart != D_8010C924) {
-                    D_8010C924 = action->dmaStart;
-
-                    dma_copy(D_8010C924, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
-                }
-
-                if (PlayerActionsTable[playerStatus->actionState].flag) {
-                    PlayerActionsTable[playerStatus->actionState].update();
+        if (action->flag) {
+            if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
+                if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
+                    LastLoadedActionOffset = action->dmaStart;
+                    dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
                 }
             }
-        } else {
-            if (PlayerActionsTable[playerStatus->actionState].flag) {
-                PlayerActionsTable[playerStatus->actionState].update();
-            }
+            action->update();
         }
-    } while (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED);
+    } while (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED);
 
     peach_check_for_parasol_input();
-    if (playerStatus->animFlags & PA_FLAG_INVISIBLE) {
+    if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
         peach_sync_disguise_npc();
     }
 }
@@ -492,7 +481,7 @@ b32 check_input_jump(void) {
         Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
-            if ((entity->boundScriptBytecode == 0) || (entity->flags & ENTITY_FLAG_4000)) {
+            if ((entity->boundScriptBytecode == NULL) || (entity->flags & ENTITY_FLAG_4000)) {
                 if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
                     entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
                     entity->type == ENTITY_TYPE_TRUMPET_PLANT)
@@ -659,9 +648,9 @@ void peach_check_for_parasol_input(void) {
     Npc* disguiseNpc;
 
     if (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN) {
-        if (D_8010C92C != 0) {
-            D_8010C92C--;
-            if (D_8010C92C == 0) {
+        if (PeachDisguiseReapplyDelay != 0) {
+            PeachDisguiseReapplyDelay--;
+            if (PeachDisguiseReapplyDelay == 0) {
                 if (gGameStatusPtr->peachFlags & PEACH_FLAG_DISGUISED) {
                     playerStatus->animFlags |= PA_FLAG_INVISIBLE;
                     gGameStatusPtr->peachFlags |= PEACH_FLAG_DISGUISED;
@@ -757,7 +746,7 @@ s32 peach_disguise_check_overlaps(void) {
         f32 y = playerStatus->pos.y + 4.0f;
         f32 z = playerStatus->pos.z - (dy * radius);
         hitID = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
-        if (hitID >= 0) {
+        if (hitID > NO_COLLIDER) {
             break;
         }
     }

@@ -27,8 +27,6 @@ EvtScript N(EVS_ExitWalk_nok_14_0) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_TexPan_Flowers) = {
     Call(SetTexPanner, MODEL_hana1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana2, TEX_PANNER_0)

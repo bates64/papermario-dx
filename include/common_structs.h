@@ -841,7 +841,7 @@ typedef struct Camera {
     /* 0x514 */ f32 leadInterpAlpha;
     /* 0x518 */ f32 accumulatedStickLead;
     /* 0x51C */ s32 increasingLeadInterp;
-    /* 0x520 */ f32 unk_520;
+    /* 0x520 */ f32 leadAmtScale;
     /* 0x524 */ f32 leadUnkX;
     /* 0x528 */ f32 leadUnkZ;
     /* 0x52C */ s32 unk_52C;

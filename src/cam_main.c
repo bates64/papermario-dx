@@ -428,7 +428,7 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->panActive = FALSE;
     camera->followPlayer = FALSE;
     camera->unk_C4 = 1000.0f;
-    camera->unk_520 = 0.2f;
+    camera->leadAmtScale = 0.2f;
     camera->moveSpeed = 1.0f;
     return camera;
 }

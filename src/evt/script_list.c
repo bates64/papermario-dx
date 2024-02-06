@@ -218,8 +218,8 @@ void suspend_frozen_scripts(Evt* script) {
 
 Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     Evt* newScript;
-    s32 curScriptIndex;
     s32 scriptListCount;
+    s32 curScriptIndex;
     s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
@@ -238,6 +238,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
     newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
     newScript->priority = priority;
+    newScript->id = UniqueScriptCounter++;
     newScript->ptrNextLine = (Bytecode*)source;
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
@@ -245,7 +246,6 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->blockingParent = NULL;
     newScript->childScript = NULL;
     newScript->parentScript = NULL;
-    newScript->id = UniqueScriptCounter++;
     newScript->owner1.actorID = -1;
     newScript->owner2.npcID = -1;
     newScript->loopDepth = -1;
@@ -286,10 +286,8 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
 Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFlags) {
     Evt* newScript;
     s32 scriptListCount;
-    s32 i;
     s32 curScriptIndex;
-    s32* tempCounter;
-    s32* numScripts;
+    s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if ((*gCurrentScriptListPtr)[i] == NULL) {
@@ -301,55 +299,51 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     curScriptIndex = i;
 
     (*gCurrentScriptListPtr)[curScriptIndex] = newScript = heap_malloc(sizeof(*newScript));
-    numScripts = &gNumScripts;
-    (*numScripts)++;
+    gNumScripts++;
     ASSERT(newScript != NULL);
 
-    // Some of this function is surely macros. I think we'll learn more as we do others in this file. -Ethan
-    do {
-        newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
-        newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
-        newScript->priority = priority;
-        newScript->id = UniqueScriptCounter++;
-        newScript->ptrNextLine = (Bytecode*)source;
-        newScript->ptrFirstLine = (Bytecode*)source;
-        newScript->ptrCurLine = (Bytecode*)source;
-        newScript->userData = 0;
-        newScript->blockingParent = 0;
-        newScript->childScript = 0;
-        newScript->parentScript = 0;
-        newScript->owner1.actorID = -1;
-        newScript->owner2.npcID = -1;
-        newScript->loopDepth = -1;
-        newScript->switchDepth = -1;
-        newScript->groupFlags = groupFlags;
-        newScript->ptrSavedPos = 0;
-        newScript->frameCounter = 0.0f;
-        newScript->unk_158 = 0;
-        newScript->timeScale = GlobalTimeRate;
-        scriptListCount = 0;
+    newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
+    newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
+    newScript->priority = priority;
+    newScript->id = UniqueScriptCounter++;
+    newScript->ptrNextLine = (Bytecode*)source;
+    newScript->ptrFirstLine = (Bytecode*)source;
+    newScript->ptrCurLine = (Bytecode*)source;
+    newScript->userData = NULL;
+    newScript->blockingParent = NULL;
+    newScript->childScript = NULL;
+    newScript->parentScript = NULL;
+    newScript->owner1.actorID = -1;
+    newScript->owner2.npcID = -1;
+    newScript->loopDepth = -1;
+    newScript->switchDepth = -1;
+    newScript->groupFlags = groupFlags;
+    newScript->ptrSavedPos = NULL;
+    newScript->frameCounter = 0.0f;
+    newScript->unk_158 = 0;
+    newScript->timeScale = GlobalTimeRate;
 
-        for (i = 0; i < ARRAY_COUNT(newScript->varTable); i++) {
-            newScript->varTable[i] = 0;
-        }
-        for (i = 0; i < ARRAY_COUNT(newScript->varFlags); i++) {
-            newScript->varFlags[i] = 0;
-        }
+    scriptListCount = 0;
 
-        find_script_labels(newScript);
+    for (i = 0; i < ARRAY_COUNT(newScript->varTable); i++) {
+        newScript->varTable[i] = 0;
+    }
+    for (i = 0; i < ARRAY_COUNT(newScript->varFlags); i++) {
+        newScript->varFlags[i] = 0;
+    }
 
-        if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
-            scriptListCount = gScriptListCount++;
-            gScriptIndexList[scriptListCount] = curScriptIndex;
-            gScriptIdList[scriptListCount] = newScript->id;
-        }
-    } while (0);
+    find_script_labels(newScript);
+
+    if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
+        scriptListCount = gScriptListCount++;
+        gScriptIndexList[scriptListCount] = curScriptIndex;
+        gScriptIdList[scriptListCount] = newScript->id;
+    }
 
     suspend_frozen_scripts(newScript);
 
-    tempCounter = &UniqueScriptCounter;
-    if (*tempCounter == 0) {
-        *tempCounter = 1;
+    if (UniqueScriptCounter == 0) {
+        UniqueScriptCounter = 1;
     }
 
     return newScript;
@@ -378,7 +372,6 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     parentScript->stateFlags |= EVT_FLAG_BLOCKED_BY_CHILD;
     child->stateFlags = flags | EVT_FLAG_ACTIVE;
     child->ptrCurLine = child->ptrFirstLine = child->ptrNextLine = (Bytecode*)source;
-
 
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = NULL;

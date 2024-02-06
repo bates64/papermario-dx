@@ -53,7 +53,8 @@ s32 create_entity(EntityBlueprint* bp, ...);
 void entity_shattering_idle(Entity* entity);
 void show_damage_fx(Actor* actor, f32 x, f32 y, f32 z, s32 damage);
 
-s32 entity_raycast_down(f32*, f32*, f32*, f32*, f32*, f32*);
+/// Mostly used for shadows
+b32 entity_raycast_down(f32*, f32*, f32*, f32*, f32*, f32*);
 
 void step_game_loop(void);
 s32 resume_all_group(s32 groupFlags);
@@ -219,6 +220,8 @@ void phys_player_land(void);
 void phys_main_collision_below(void);
 void phys_peach_update(void);
 void check_input_spin(void);
+
+void phys_set_player_sliding_check(b32 (*funcPtr)(void));
 
 b32 npc_test_move_simple_without_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
 
@@ -897,7 +900,7 @@ void collision_check_player_overlaps(void);
 void update_player_input(void);
 void phys_update_action_state(void);
 void collision_main_lateral(void);
-void handle_floor_behavior(void);
+void player_surface_spawn_fx(void);
 void check_input_open_menus(void);
 void check_input_status_bar(void);
 
@@ -925,7 +928,6 @@ b32 can_control_status_bar(void);
 void status_bar_respond_to_changes(void);
 void status_bar_always_show_on(void);
 void status_bar_always_show_off(void);
-void func_800F0C9C(void);
 void func_800F0CB0(s32, f32, f32, f32);
 void func_800F0D5C(void);
 void func_800F0D80(void);

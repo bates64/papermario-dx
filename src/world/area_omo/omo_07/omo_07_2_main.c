@@ -2,8 +2,6 @@
 
 EvtScript N(EVS_ExitWalk_omo_06_4) = EVT_EXIT_WALK(60, omo_07_ENTRY_0, "omo_06", omo_06_ENTRY_4);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_omo_06_4)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return

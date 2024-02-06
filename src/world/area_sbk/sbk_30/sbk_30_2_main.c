@@ -65,8 +65,6 @@ EvtScript N(EVS_Scene_RuinsRising) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits); // can be fixed with subalign 16 for this map
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)

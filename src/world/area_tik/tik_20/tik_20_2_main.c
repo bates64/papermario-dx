@@ -62,8 +62,6 @@ EvtScript N(EVS_SetupDrips) = {
     End
 };
 
-MAP_RODATA_PAD(1,unk);
-
 #include "../common/Flotsam.inc.c"
 
 EvtScript N(EVS_Main) = {

@@ -42,8 +42,6 @@ EvtScript N(EVS_GotoMap_SmashAttack) = {
     End
 };
 
-MAP_RODATA_PAD(1, unk);
-
 EvtScript N(EVS_OnEnterPipe_SmashAttack) = {
     SetGroup(EVT_GROUP_1B)
     Set(LVarA, mgm_00_ENTRY_2)

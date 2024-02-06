@@ -30,8 +30,6 @@ EvtScript N(EVS_ExitDoors_kkj_22_1) = {
 
 EvtScript N(EVS_ExitDoors_kkj_24_0) = EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_1, "kkj_24", kkj_24_ENTRY_0, COLLIDER_ttw, MODEL_o9, MODEL_o10);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)

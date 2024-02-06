@@ -73,7 +73,7 @@ EvtScript N(EVS_CrushPlayer) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
     Wait(13)
     Call(GetPlayerPos, MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
-    Call(N(KnockdownCreate), SPR_Mario1, 37) //TODO hardcoded player raster ID
+    Call(N(KnockdownCreate), SPR_Mario1, SPR_IMG_Mario1_25)
     Call(N(KnockdownSetPos), MV_KnockdownPosX, MV_KnockdownPosY, MV_KnockdownPosZ)
     Wait(1)
     Call(SetPlayerPos, 0, 1000, 0) // unusual dispose location

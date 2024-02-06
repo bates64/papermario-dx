@@ -416,10 +416,6 @@ void clear_npcs(void);
 /// Points the current NPC list to the world or battle lists depending on game state.
 void init_npc_list(void);
 
-/// Iterates over the NPC list, doing absolutely nothing.
-/// Presumably did something once upon a time but got commented out.
-void npc_iter_no_op(void);
-
 s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 skipLoadingAnims);
 
 s32 create_basic_npc(NpcBlueprint* blueprint);
@@ -576,7 +572,7 @@ void npc_imgfx_update(Npc* npc);
 
 void npc_set_imgfx_params(Npc* npc, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
 
-void spawn_surface_effects(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_fx(Npc* npc, SurfaceInteractMode mode);
 
 void spawn_default_surface_effects(Npc* npc, SurfaceInteractMode mode);
 

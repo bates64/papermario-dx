@@ -257,7 +257,6 @@ extern Battle* gCurrentBattlePtr;
 
 extern ActorOffsets bActorOffsets[];
 
-void func_80072BCC(s32 arg0);
 void load_demo_battle(u32 index);
 Actor* create_actor(Formation formation);
 

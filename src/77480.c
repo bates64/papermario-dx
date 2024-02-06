@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "world/disguise.h"
+#include "world/surfaces.h"
 #include "sprite.h"
 #include "world/partner/watt.h"
 #include "sprite/player.h"
@@ -95,7 +96,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
     length = inputLength;
     hitID = player_raycast_down(&x, &y, &z, &length);
     ret = NO_COLLIDER;
-    if (hitID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID > NO_COLLIDER && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -112,7 +113,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
     z = inputZ - cosTemp;
     length = inputLength;
     hitID = player_raycast_down(&x, &y, &z, &length);
-    if (hitID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID > NO_COLLIDER && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -338,7 +339,7 @@ HitID player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
     sz2 = sz = *z;
     hitDepth = *length;
     hitID = test_ray_colliders(COLLIDER_FLAG_IGNORE_PLAYER, sx, sy, sz, 0.0f, 1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (hitID >= 0 && *length > hitDepth) {
+    if (hitID > NO_COLLIDER && *length > hitDepth) {
         *length = hitDepth;
         ret = hitID;
         *x = sx = sx2;
@@ -351,7 +352,7 @@ HitID player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
     sx = sx2;
     sy = sy2;
     sz = sz2;
-    if (hitID >= 0 && *length > hitDepth) {
+    if (hitID > NO_COLLIDER && *length > hitDepth) {
         get_entity_by_index(hitID);
         ret = hitID | COLLISION_WITH_ENTITY_BIT;
         *length = hitDepth;
@@ -682,7 +683,7 @@ void update_player(void) {
     }
 
     if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
-        handle_floor_behavior();
+        player_surface_spawn_fx();
     }
 
     player_update_sprite();
@@ -1197,7 +1198,7 @@ s32 func_800E06D8(void) {
 void check_for_interactables(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = gPlayerStatus.encounteredNPC;
-    s32 phi_s2;
+    b32 collidingWithEntity = FALSE;
 
     if ((playerStatus->animFlags & PA_FLAG_ISPY_VISIBLE) || TalkNotificationCallback || PulseStoneNotificationCallback != NULL) {
         return;
@@ -1220,8 +1221,8 @@ void check_for_interactables(void) {
         if (curInteraction == NO_COLLIDER) {
             s32 floor = gCollisionStatus.curFloor;
 
-            if ((floor >= 0) && (floor & COLLISION_WITH_ENTITY_BIT)) {
-                phi_s2 = 1;
+            if ((floor > NO_COLLIDER) && (floor & COLLISION_WITH_ENTITY_BIT)) {
+                collidingWithEntity = TRUE;
                 curInteraction = floor;
                 switch (get_entity_type(floor)) {
                     case ENTITY_TYPE_PADLOCK:
@@ -1244,15 +1245,20 @@ void check_for_interactables(void) {
                 if (playerStatus->interactingWithID == curInteraction) {
                     return;
                 }
-                phi_s2 = 0;
             } else {
                 playerStatus->interactingWithID = NO_COLLIDER;
                 playerStatus->flags &= ~PS_FLAG_INTERACTED;
                 return;
             }
         } else {
-            if (!(curInteraction & COLLISION_WITH_ENTITY_BIT)) {
-                phi_s2 = 0;
+            if (curInteraction & COLLISION_WITH_ENTITY_BIT) {
+                collidingWithEntity = TRUE;
+                if (!phys_can_player_interact()) {
+                    playerStatus->interactingWithID = NO_COLLIDER;
+                    playerStatus->flags &= ~PS_FLAG_INTERACTED;
+                    return;
+                }
+            } else {
                 if (!(curInteraction & COLLISION_WITH_NPC_BIT)) {
                     if (!should_collider_allow_interact(curInteraction)) {
                         playerStatus->interactingWithID = NO_COLLIDER;
@@ -1260,14 +1266,6 @@ void check_for_interactables(void) {
                         return;
                     }
                 }
-            } else {
-                if (!phys_can_player_interact()) {
-                    phi_s2 = 1;
-                    playerStatus->interactingWithID = NO_COLLIDER;
-                    playerStatus->flags &= ~PS_FLAG_INTERACTED;
-                    return;
-                }
-                phi_s2 = 1;
             }
         }
         if (playerStatus->interactingWithID == curInteraction) {
@@ -1279,7 +1277,7 @@ void check_for_interactables(void) {
         }
 
         playerStatus->interactingWithID = curInteraction;
-        if ((phi_s2 == 0) || curInteraction >= 0 && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
+        if (!collidingWithEntity || curInteraction >= 0 && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK || playerStatus->actionState == ACTION_STATE_RUN) {
                 playerStatus->animFlags |= PA_FLAG_INTERACT_PROMPT_AVAILABLE;
                 func_800EF3D4(2);
@@ -1490,8 +1488,6 @@ void render_player_model(void) {
     RenderTask* rtPtr = &task;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 x, y, z;
-    s8 renderModeTemp;
-    void (*appendGfx)(void*);
 
     if (playerStatus->flags & PS_FLAG_SPRITE_REDRAW) {
         playerStatus->flags &= ~PS_FLAG_SPRITE_REDRAW;
@@ -1500,13 +1496,11 @@ void render_player_model(void) {
         if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
             if (playerStatus->curAlpha != playerStatus->prevAlpha) {
                 if (playerStatus->curAlpha < 254) {
-                    if (!(playerStatus->animFlags & PA_FLAG_MAP_HAS_SWITCH)) {
-                        renderModeTemp = RENDER_MODE_SURFACE_XLU_LAYER1;
+                    if (playerStatus->animFlags & PA_FLAG_MAP_HAS_SWITCH) {
+                        playerStatus->renderMode = RENDER_MODE_SURFACE_XLU_LAYER2;
                     } else {
-                        renderModeTemp = RENDER_MODE_SURFACE_XLU_LAYER2;
+                        playerStatus->renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
                     }
-
-                    playerStatus->renderMode = renderModeTemp;
                     set_player_imgfx_comp(PLAYER_SPRITE_MAIN, -1, IMGFX_SET_ALPHA, 0, 0, 0, playerStatus->curAlpha, 0);
 
                 } else {
@@ -1527,22 +1521,16 @@ void render_player_model(void) {
             rtPtr->dist = -z;
             rtPtr->renderMode = playerStatus->renderMode;
 
-
-            if (!(playerStatus->flags & PS_FLAG_SPINNING)) {
-                appendGfx = appendGfx_player;
+            if (playerStatus->flags & PS_FLAG_SPINNING) {
+                rtPtr->appendGfx = appendGfx_player_spin;
             } else {
-                appendGfx = appendGfx_player_spin;
+                rtPtr->appendGfx = appendGfx_player;
             }
 
-            rtPtr->appendGfx = appendGfx;
             queue_render_task(rtPtr);
         }
-
-        func_800F0C9C();
     }
 }
-
-s32 D_800F7B4C = 0;
 
 void appendGfx_player(void* data) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -1597,12 +1585,6 @@ void appendGfx_player(void* data) {
         }
 
         spr_draw_player_sprite(spriteIdx, 0, 0, 0, sp20);
-    }
-
-    D_800F7B4C++;
-
-    if (D_800F7B4C >= 3) {
-        D_800F7B4C = 0;
     }
 }
 
@@ -1738,10 +1720,10 @@ void update_player_shadow(void) {
     shadow->pos.y = y;
     shadow->alpha = (f64)playerStatus->curAlpha / 2;
 
-    if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)) {
-        set_standard_shadow_scale(shadow, shadowScale);
-    } else {
+    if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH) {
         set_peach_shadow_scale(shadow, shadowScale);
+    } else {
+        set_standard_shadow_scale(shadow, shadowScale);
     }
 }
 

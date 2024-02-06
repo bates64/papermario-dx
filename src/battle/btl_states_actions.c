@@ -164,7 +164,6 @@ void btl_merlee_on_first_strike(void) {
 void btl_set_state(s32 battleState) {
     s32 flags = gBattleStatus.flags2;
     gBattleState = battleState;
-    D_800DC4E0 = 1;
     gBattleSubState = BTL_SUBSTATE_INIT;
 
     flags &= BS_FLAGS2_PEACH_BATTLE;

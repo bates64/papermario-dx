@@ -68,8 +68,6 @@ EvtScript N(EVS_GotoMap_nok_15_3) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_ExitPipe) = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)

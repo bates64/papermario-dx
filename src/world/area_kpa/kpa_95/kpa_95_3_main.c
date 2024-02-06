@@ -24,8 +24,6 @@ EvtScript N(EVS_OpenCellDoor) = {
 
 EvtScript N(EVS_ExitWalk_kpa_94_0) = EVT_EXIT_WALK(60, kpa_95_ENTRY_0, "kpa_94", kpa_94_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_94_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return

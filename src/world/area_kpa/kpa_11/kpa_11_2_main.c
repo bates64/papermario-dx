@@ -8,8 +8,6 @@ EvtScript N(EVS_ExitWalk_kpa_17_1) = EVT_EXIT_WALK(60, kpa_11_ENTRY_2, "kpa_17",
 EvtScript N(EVS_ExitWalk_kpa_62_2) = EVT_EXIT_WALK(60, kpa_11_ENTRY_3, "kpa_62", kpa_62_ENTRY_2);
 EvtScript N(EVS_ExitWalk_kpa_12_2) = EVT_EXIT_WALK(60, kpa_11_ENTRY_4, "kpa_12", kpa_12_ENTRY_2);
 
-MAP_RODATA_PAD(1, strings);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_62_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_12_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)

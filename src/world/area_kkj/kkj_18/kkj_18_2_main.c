@@ -128,5 +128,3 @@ EvtScript N(EVS_Main) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(1, exits);

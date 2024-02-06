@@ -11,9 +11,6 @@ SHIFT_BSS ScreenOverlay ScreenOverlays[2];
 
 ScreenTransition CurrentScreenTransition = TRANSITION_END_DEMO_SCENE_BLACK;
 
-// padding?
-s32 D_8014C6F4[] = { 0x00000000, 0x00000000, 0x00000000 };
-
 INCLUDE_IMG("ui/stencil/star.png", ui_stencil_star_png);
 
 INCLUDE_IMG("ui/stencil/mario.png", ui_stencil_mario_png);

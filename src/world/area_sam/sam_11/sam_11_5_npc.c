@@ -951,8 +951,6 @@ EvtScript N(EVS_Scene_EpilogueDelivery) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_NpcInit_Kolorado) = {
     Call(SetNpcPos, NPC_Parakarry, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Kooper, 120, 0, 70)

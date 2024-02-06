@@ -74,7 +74,6 @@ void update_shadow_transform_matrix(Shadow* shadow);
 void update_entity_inverse_rotation_matrix(Entity* entity);
 void delete_entity(s32 entityIndex);
 void delete_entity_and_unload_data(s32 entityIndex);
-void _delete_shadow(s32 shadowIndex);
 void reload_world_entity_data(void);
 s32 entity_get_collision_flags(Entity* entity);
 void entity_free_static_data(EntityBlueprint* data);
@@ -227,7 +226,7 @@ void update_shadows(void) {
                 }
 
                 if (shadow->flags & ENTITY_FLAG_PENDING_INSTANCE_DELETE) {
-                    _delete_shadow(shadow->listIndex);
+                    delete_shadow(shadow->listIndex);
                 }
             }
         }
@@ -625,7 +624,7 @@ void delete_entity_and_unload_data(s32 entityIndex) {
     (*gCurrentEntityListPtr)[entityIndex] = NULL;
 }
 
-void _delete_shadow(s32 shadowIndex) {
+void delete_shadow(s32 shadowIndex) {
     Shadow* shadow = get_shadow_by_index(shadowIndex);
 
     free_entity_model_by_index(shadow->entityModelID);
@@ -1567,10 +1566,6 @@ s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z) {
     return shadowIndex;
 }
 
-void delete_shadow(s32 shadowIndex) {
-    _delete_shadow(shadowIndex);
-}
-
 void update_entity_shadow_position(Entity* entity) {
     Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
 
@@ -1648,42 +1643,41 @@ void update_entity_shadow_position(Entity* entity) {
     }
 }
 
-s32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
+b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
     f32 hitX, hitY, hitZ;
     f32 hitDepth;
     f32 hitNx, hitNy, hitNz;
     s32 entityID;
     s32 colliderID;
     s32 hitID;
-    s32 ret;
 
     hitDepth = 32767.0f;
-    *hitLength = 32767.0f;
-    entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    hitID = -1;
-    ret = FALSE;
+    hitID = NO_COLLIDER;
 
-    if ((entityID >= 0) && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0))) {
+    entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
+
+    if ((entityID > NO_COLLIDER) && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0))) {
         hitID = entityID | COLLISION_WITH_ENTITY_BIT;
     }
 
     colliderID = test_ray_colliders(COLLIDER_FLAG_IGNORE_PLAYER, *x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx,
                                     &hitNy, &hitNz);
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         hitID = colliderID;
     }
 
-    if (hitID >= 0) {
-        *hitLength = hitDepth;
+    if (hitID > NO_COLLIDER) {
         *y = hitY;
+        *hitLength = hitDepth;
         *hitYaw = -atan2(0.0f, 0.0f, hitNz * 100.0f, hitNy * 100.0f);
         *hitPitch = -atan2(0.0f, 0.0f, hitNx * 100.0f, hitNy * 100.0f);
-        ret = TRUE;
+        return TRUE;
     } else {
+        *hitLength = 32767.0f;
         *hitYaw = 0.0f;
         *hitPitch = 0.0f;
+        return FALSE;
     }
-    return ret;
 }
 
 void set_standard_shadow_scale(Shadow* shadow, f32 height) {

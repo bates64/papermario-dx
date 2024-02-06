@@ -21,8 +21,6 @@ API_CALLABLE(N(UnkPlayerPosFunc)) {
 
 #include "world/common/atomic/WhaleGeyser.inc.c"
 
-MAP_RODATA_PAD(2, unk);
-
 EvtScript N(EVS_WhaleState_Still) = {
     Call(N(UnkFloatFunc001), LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
