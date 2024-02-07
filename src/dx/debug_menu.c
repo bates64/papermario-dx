@@ -1252,7 +1252,7 @@ void dx_debug_update_edit_items() {
         s32 digit;
         menu->col = dx_debug_menu_nav_1D_horizontal(menu->col, 0, 2, FALSE);
         digit = DebugItemDigits[menu->pos][menu->col];
-        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 9, TRUE);
+        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 0xF, TRUE);
         DebugItemDigits[menu->pos][menu->col] = digit;
     } else {
         if (NAV_UP) {

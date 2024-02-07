@@ -51,127 +51,6 @@ s32 phys_adjust_cam_on_landing(void) {
         ret = LandingAdjustCamCallback();
     }
 
-    //TODO hardcoded map IDs
-    switch (gGameStatus.areaID) {
-        case AREA_ISK:
-            switch (gGameStatus.mapID) {
-                /*
-                case 0:
-                    ret = LANDING_CAM_ALWAYS_ADJUST;
-                    break;
-                case 1:
-                    if (D_8010C9B0 == 0) {
-                        if (playerStatus->pos.y <= 0.0f) {
-                            D_8010C9B0 = 1;
-                        }
-                        ret = LANDING_CAM_ALWAYS_ADJUST;
-                    } else if (playerStatus->pos.y > 0.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                */
-                case 3:
-                    if (playerStatus->pos.y > 25.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                case 4:
-                    if (playerStatus->pos.y > 50.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                case 7:
-                    if (playerStatus->pos.y > -390.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    } else if (playerStatus->pos.y < -495.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                case 8:
-                    if (playerStatus->pos.y > -90.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    } else if (playerStatus->pos.y < -370.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                    /*
-                case 2:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > 0.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = LANDING_CAM_ALWAYS_ADJUST;
-                                break;
-                            }
-                        }
-
-                        if (playerStatus->pos.y > 0.0f) {
-                            ret = LANDING_CAM_NEVER_ADJUST;
-                        }
-                    } else {
-                        ret = LANDING_CAM_ALWAYS_ADJUST;
-                    }
-                    break;
-                    */
-                case 5:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > -130.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = LANDING_CAM_ALWAYS_ADJUST;
-                                break;
-                            }
-
-                        }
-
-                        if (playerStatus->pos.y > -130.0f) {
-                            ret = LANDING_CAM_NEVER_ADJUST;
-                        }
-                    } else {
-                        ret = LANDING_CAM_ALWAYS_ADJUST;
-                    }
-                    break;
-                case 10:
-                    if (D_8010C9B0 == 0) {
-                        if (!(playerStatus->pos.y > -520.0f)) {
-                            D_8010C9B0 = 1;
-                        } else {
-                            ret = LANDING_CAM_ALWAYS_ADJUST;
-                            break;
-                        }
-                    }
-
-                    if (playerStatus->pos.y > -520.0f) {
-                        ret = LANDING_CAM_NEVER_ADJUST;
-                    }
-                    break;
-                case 11:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > -520.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = LANDING_CAM_ALWAYS_ADJUST;
-                                break;
-                            }
-
-                        }
-
-                        if (playerStatus->pos.y > -520.0f) {
-                            ret = LANDING_CAM_NEVER_ADJUST;
-                        }
-                    }
-
-                    if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
-                        ret = LANDING_CAM_ALWAYS_ADJUST;
-                    }
-                    break;
-            }
-            break;
-    }
-
     if (ret == LANDING_CAM_CHECK_SURFACE) {
         s32 surfaceType = get_collider_flags(gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
@@ -195,20 +74,17 @@ void phys_clear_spin_history(void) {
 
     gSpinHistoryBufferPos = 0;
 
-    for (i = 0; i < ARRAY_COUNT(gSpinHistoryPosY); i++) {
+    for (i = 0; i < ARRAY_COUNT(gSpinHistoryPosAngle); i++) {
         gSpinHistoryPosAngle[i] = 180;
         gSpinHistoryPosY[i] = 0x80000000;
     }
 }
 
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z) {
-    s32 idx = gSpinHistoryBufferPos;
+    s32 idx = gSpinHistoryBufferPos - lag;
 
-    // Can't get this if/else to match otherwise...
-    if (idx - lag >= 0) {
-        idx -= lag;
-    } else {
-        idx = gSpinHistoryBufferPos - lag + 5;
+    if (idx < 0) {
+        idx += ARRAY_COUNT(gSpinHistoryPosAngle);
     }
 
     *x = gSpinHistoryPosX[idx];

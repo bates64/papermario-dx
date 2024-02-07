@@ -1,5 +1,36 @@
 #include "isk_12.h"
 
+b32 N(CamAdjustReady) = FALSE;
+
+s32 N(adjust_cam_on_landing)(void) {
+    s32 ret = LANDING_CAM_CHECK_SURFACE;
+
+    if (gGameStatusPtr->entryID == isk_12_ENTRY_0) {
+        if (!N(CamAdjustReady)) {
+            if (!(gPlayerStatus.pos.y > -520.0f)) {
+                N(CamAdjustReady) = TRUE;
+            } else {
+                return LANDING_CAM_ALWAYS_ADJUST;
+            }
+        }
+
+        if (gPlayerStatus.pos.y > -520.0f) {
+            ret = LANDING_CAM_NEVER_ADJUST;
+        }
+    }
+
+    if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
+        ret = LANDING_CAM_ALWAYS_ADJUST;
+    }
+
+    return ret;
+}
+
+API_CALLABLE(N(SetupLandingCamAdjust)) {
+    phys_set_landing_adjust_cam_check(N(adjust_cam_on_landing));
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_ExitWalk_isk_11_1) = EVT_EXIT_WALK(40, isk_12_ENTRY_0, "isk_11", isk_11_ENTRY_1);
 EvtScript N(EVS_ExitWalk_isk_11_2) = EVT_EXIT_WALK(40, isk_12_ENTRY_1, "isk_11", isk_11_ENTRY_2);
 EvtScript N(EVS_ExitWalk_isk_18_1) = EVT_EXIT_WALK(40, isk_12_ENTRY_2, "isk_18", isk_18_ENTRY_1);
@@ -17,6 +48,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_12)
+    Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_THIRD_SAND_ROOM)
         Call(SetZoneEnabled, ZONE_deiliw, FALSE)

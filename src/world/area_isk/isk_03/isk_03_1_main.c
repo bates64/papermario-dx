@@ -5,16 +5,20 @@ b32 N(CamAdjustReady) = FALSE;
 s32 N(adjust_cam_on_landing)(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (!N(CamAdjustReady)) {
-        if (gPlayerStatus.pos.y <= 0.0f) {
-            N(CamAdjustReady) = TRUE;
-        } else {
-            ret = LANDING_CAM_ALWAYS_ADJUST;
+    if (gGameStatusPtr->entryID == isk_03_ENTRY_0) {
+        if (!N(CamAdjustReady)) {
+            if (!(gPlayerStatus.pos.y > 0.0f)) {
+                N(CamAdjustReady) = TRUE;
+            } else {
+                return LANDING_CAM_ALWAYS_ADJUST;
+            }
         }
-    }
 
-    if (gPlayerStatus.pos.y > 0.0f) {
-        ret = LANDING_CAM_NEVER_ADJUST;
+        if (gPlayerStatus.pos.y > 0.0f) {
+            ret = LANDING_CAM_NEVER_ADJUST;
+        }
+    } else {
+        ret = LANDING_CAM_ALWAYS_ADJUST;
     }
 
     return ret;

@@ -1,5 +1,30 @@
 #include "isk_11.h"
 
+b32 N(CamAdjustReady) = FALSE;
+
+s32 N(adjust_cam_on_landing)(void) {
+    s32 ret = LANDING_CAM_CHECK_SURFACE;
+
+    if (!N(CamAdjustReady)) {
+        if (!(gPlayerStatus.pos.y > -520.0f)) {
+            N(CamAdjustReady) = TRUE;
+        } else {
+            return LANDING_CAM_ALWAYS_ADJUST;
+        }
+    }
+
+    if (gPlayerStatus.pos.y > -520.0f) {
+        ret = LANDING_CAM_NEVER_ADJUST;
+    }
+
+    return ret;
+}
+
+API_CALLABLE(N(SetupLandingCamAdjust)) {
+    phys_set_landing_adjust_cam_check(N(adjust_cam_on_landing));
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_ExitWalk_isk_08_3) = EVT_EXIT_WALK(40, isk_11_ENTRY_0, "isk_08", isk_08_ENTRY_3);
 EvtScript N(EVS_ExitWalk_isk_12_0) = EVT_EXIT_WALK(40, isk_11_ENTRY_1, "isk_12", isk_12_ENTRY_0);
 EvtScript N(EVS_ExitWalk_isk_12_1) = EVT_EXIT_WALK(40, isk_11_ENTRY_2, "isk_12", isk_12_ENTRY_1);
@@ -17,6 +42,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_11)
+    Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
     ExecWait(N(EVS_MakeEntities))
