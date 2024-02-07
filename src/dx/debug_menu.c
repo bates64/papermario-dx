@@ -733,13 +733,13 @@ void dx_debug_update_select_map() {
     curCol = SelectMapMenuPos / numRows;
     maxCol = numMaps / numRows;
 
-    if (maxCol > 3) {
+    if (maxCol > 2) {
         dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * (numRows + 1) + 8, WINDOW_STYLE_20, 192);
     } else {
         dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, MapSizeX * numCols + 8, RowHeight * numRows + 8, WINDOW_STYLE_20, 192);
     }
 
-    if (maxCol <= 3) {
+    if (maxCol < 3) {
         startCol = 0;
     } else if (curCol == 0) {
         startCol = 0;
@@ -761,7 +761,7 @@ void dx_debug_update_select_map() {
         }
     }
 
-    if (maxCol > 3) {
+    if (maxCol > 2) {
         // left arrow
         if (curCol > 1) {
             char msgLeftArrow[] = {
