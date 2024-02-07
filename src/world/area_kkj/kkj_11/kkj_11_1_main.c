@@ -12,117 +12,26 @@ API_CALLABLE(N(DisableAllLightSources)) {
 
 #include "../common/SetAvailableDisguise.inc.c"
 
-EvtScript N(EVS_ExitDoors_kkj_10_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, kkj_11_ENTRY_0)
-    Set(LVar1, COLLIDER_tts)
-    Set(LVar2, MODEL_door2)
-    Set(LVar3, MODEL_door1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_10"), kkj_10_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_10_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_0, "kkj_10", kkj_10_ENTRY_1,
+    COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoors_kkj_12_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, kkj_11_ENTRY_1)
-    Set(LVar1, COLLIDER_ttn)
-    Set(LVar2, MODEL_door3)
-    Set(LVar3, MODEL_door4)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_12"), kkj_12_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_12_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_1, "kkj_12", kkj_12_ENTRY_0,
+    COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoor_kkj_14_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_11_ENTRY_4)
-    Set(LVar1, COLLIDER_ttn2)
-    Set(LVar2, MODEL_door7)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_4, "kkj_14", kkj_14_ENTRY_0,
+    COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ExitDoor_kkj_16_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_11_ENTRY_2)
-    Set(LVar1, COLLIDER_ttsw)
-    Set(LVar2, MODEL_door5)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_16"), kkj_16_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_16_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_2, "kkj_16", kkj_16_ENTRY_0,
+    COLLIDER_ttsw, MODEL_door5, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ExitDoor_kkj_15_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_11_ENTRY_3)
-    Set(LVar1, COLLIDER_ttw)
-    Set(LVar2, MODEL_door6)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_15"), kkj_15_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_15_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_3, "kkj_15", kkj_15_ENTRY_0,
+    COLLIDER_ttw, MODEL_door6, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ExitDoor_kkj_17_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_11_ENTRY_5)
-    Set(LVar1, COLLIDER_tte)
-    Set(LVar2, MODEL_door8)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_17"), kkj_17_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_17_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_5, "kkj_17", kkj_17_ENTRY_0,
+    COLLIDER_tte, MODEL_door8, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
-EvtScript N(EVS_ExitDoor_kkj_18_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_11_ENTRY_6)
-    Set(LVar1, COLLIDER_ttse)
-    Set(LVar2, MODEL_door9)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_18"), kkj_18_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_18_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_11_ENTRY_6, "kkj_18", kkj_18_ENTRY_0,
+    COLLIDER_ttse, MODEL_door9, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_BindExitTriggers) = {
     IfGt(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
@@ -184,7 +93,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_11)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH1_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH2_BEGAN_PEACH_MISSION)

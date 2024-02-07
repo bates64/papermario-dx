@@ -125,7 +125,7 @@ EvtScript N(EVS_EnterFalling) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(D_802412D4_B812D4))

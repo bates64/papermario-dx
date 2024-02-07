@@ -19,10 +19,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_FOREVER_FOREST)
     Call(SetSpriteShading, SHADING_MIM_01)
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650)
-    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
+    EVT_SETUP_CAMERA_MIM()
     Set(GF_MAP_ForeverForest, TRUE)
     Set(AB_MIM_2, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)

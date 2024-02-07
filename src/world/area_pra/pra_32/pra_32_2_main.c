@@ -174,7 +174,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1309, SURFACE_TYPE_SNOW)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1293, SURFACE_TYPE_SNOW)

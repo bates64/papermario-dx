@@ -13,7 +13,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_06)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_SECOND_SAND_ROOM)
         Call(SetZoneEnabled, ZONE_o2016, FALSE)
     Else

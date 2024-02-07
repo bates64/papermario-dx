@@ -39,7 +39,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_14)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupDrips))
     ExecWait(N(EVS_MakeEntities))

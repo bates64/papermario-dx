@@ -65,7 +65,7 @@ EvtScript N(EVS_TexPan_Fountain) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseEq(STORY_INTRO)
             Call(N(CreateSunshine))

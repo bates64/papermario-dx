@@ -842,6 +842,7 @@ s32 phys_should_player_be_sliding(void) {
     if (PlayerSlidingCallback != NULL) {
         return PlayerSlidingCallback();
     }
+    return FALSE;
 }
 
 void phys_set_player_sliding_check(b32 (*funcPtr)(void)) {

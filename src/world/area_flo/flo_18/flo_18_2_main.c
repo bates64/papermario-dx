@@ -26,8 +26,7 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupFoliage))
     Exec(N(EVS_SetupMachine))

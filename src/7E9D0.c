@@ -37,90 +37,100 @@ void func_800E5520(void) {
     D_8010C9B0 = 0;
 }
 
+s32 (*LandingAdjustCamCallback)(void) = NULL;
+
+void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
+    LandingAdjustCamCallback = funcPtr;
+}
+
 s32 phys_adjust_cam_on_landing(void) {
-    PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 ret = 1;
+    s32 ret = LANDING_CAM_CHECK_SURFACE;
+
+    if (LandingAdjustCamCallback != NULL) {
+        ret = LandingAdjustCamCallback();
+    }
 
     //TODO hardcoded map IDs
     switch (gGameStatus.areaID) {
-        case AREA_OBK:
-            ret = gGameStatus.mapID != 4;
-            break;
         case AREA_ISK:
             switch (gGameStatus.mapID) {
+                /*
                 case 0:
-                    ret = 2;
+                    ret = LANDING_CAM_ALWAYS_ADJUST;
                     break;
                 case 1:
                     if (D_8010C9B0 == 0) {
                         if (playerStatus->pos.y <= 0.0f) {
                             D_8010C9B0 = 1;
                         }
-                        ret = 2;
+                        ret = LANDING_CAM_ALWAYS_ADJUST;
                     } else if (playerStatus->pos.y > 0.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
+                */
                 case 3:
                     if (playerStatus->pos.y > 25.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
                 case 4:
                     if (playerStatus->pos.y > 50.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
                 case 7:
                     if (playerStatus->pos.y > -390.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     } else if (playerStatus->pos.y < -495.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
                 case 8:
                     if (playerStatus->pos.y > -90.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     } else if (playerStatus->pos.y < -370.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
+                    /*
                 case 2:
                     if (gGameStatusPtr->entryID == 0) {
                         if (D_8010C9B0 == 0) {
                             if (!(playerStatus->pos.y > 0.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
-                                ret = 2;
+                                ret = LANDING_CAM_ALWAYS_ADJUST;
                                 break;
                             }
                         }
 
                         if (playerStatus->pos.y > 0.0f) {
-                            ret = 0;
+                            ret = LANDING_CAM_NEVER_ADJUST;
                         }
                     } else {
-                        ret = 2;
+                        ret = LANDING_CAM_ALWAYS_ADJUST;
                     }
                     break;
+                    */
                 case 5:
                     if (gGameStatusPtr->entryID == 0) {
                         if (D_8010C9B0 == 0) {
                             if (!(playerStatus->pos.y > -130.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
-                                ret = 2;
+                                ret = LANDING_CAM_ALWAYS_ADJUST;
                                 break;
                             }
 
                         }
 
                         if (playerStatus->pos.y > -130.0f) {
-                            ret = 0;
+                            ret = LANDING_CAM_NEVER_ADJUST;
                         }
                     } else {
-                        ret = 2;
+                        ret = LANDING_CAM_ALWAYS_ADJUST;
                     }
                     break;
                 case 10:
@@ -128,13 +138,13 @@ s32 phys_adjust_cam_on_landing(void) {
                         if (!(playerStatus->pos.y > -520.0f)) {
                             D_8010C9B0 = 1;
                         } else {
-                            ret = 2;
+                            ret = LANDING_CAM_ALWAYS_ADJUST;
                             break;
                         }
                     }
 
                     if (playerStatus->pos.y > -520.0f) {
-                        ret = 0;
+                        ret = LANDING_CAM_NEVER_ADJUST;
                     }
                     break;
                 case 11:
@@ -143,35 +153,35 @@ s32 phys_adjust_cam_on_landing(void) {
                             if (!(playerStatus->pos.y > -520.0f)) {
                                 D_8010C9B0 = 1;
                             } else {
-                                ret = 2;
+                                ret = LANDING_CAM_ALWAYS_ADJUST;
                                 break;
                             }
 
                         }
 
                         if (playerStatus->pos.y > -520.0f) {
-                            ret = 0;
+                            ret = LANDING_CAM_NEVER_ADJUST;
                         }
                     }
 
                     if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
-                        ret = 2;
+                        ret = LANDING_CAM_ALWAYS_ADJUST;
                     }
                     break;
             }
             break;
     }
 
-    if (ret == 1) {
+    if (ret == LANDING_CAM_CHECK_SURFACE) {
         s32 surfaceType = get_collider_flags(gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
         if (surfaceType == SURFACE_TYPE_LAVA) {
             gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
-            ret = 0;
+            ret = LANDING_CAM_NEVER_ADJUST;
         } else {
             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
         }
-    } else if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE && partnerStatus->actingPartner == PARTNER_PARAKARRY) {
+    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_NO_INTERP_Y;
     } else {
         gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
@@ -332,7 +342,7 @@ void set_action_state(s32 actionState) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
-        if (actionState <= ACTION_STATE_IDLE && actionState < ACTION_STATE_TALK) {
+        if (actionState >= ACTION_STATE_IDLE && actionState < ACTION_STATE_TALK) {
             playerStatus->prevActionState = playerStatus->actionState;
             playerStatus->actionState = actionState;
             playerStatus->flags |= PS_FLAG_ACTION_STATE_CHANGED;

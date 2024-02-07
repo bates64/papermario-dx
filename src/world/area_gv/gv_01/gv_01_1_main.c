@@ -158,7 +158,7 @@ EvtScript N(EVS_E8CA04) = {
 EvtScript N(EVS_Main) = {
     Call(DisablePlayerInput, TRUE)
     Call(ModifyGlobalOverrideFlags, 0, GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Thread
         Call(GetCurrentPartnerID, LVar0)
         IfNe(LVar0, PARTNER_NONE)

@@ -544,7 +544,7 @@ API_CALLABLE(N(UseAbility)) {
                             }
                         }
 
-                        if (phys_adjust_cam_on_landing() == 0) {
+                        if (phys_adjust_cam_on_landing() == LANDING_CAM_NEVER_ADJUST) {
                             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
                         }
                         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;

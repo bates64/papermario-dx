@@ -1,52 +1,13 @@
 #include "dgb_09.h"
 
-EvtScript N(exitDoubleDoor_80243920) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_09_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittw)
-    Set(LVar2, MODEL_o30)
-    Set(LVar3, MODEL_o31)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_03"), dgb_03_ENTRY_4)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(exitDoubleDoor_80243920) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_09_ENTRY_0, "dgb_03", dgb_03_ENTRY_4,
+    COLLIDER_deilittw, MODEL_o30, MODEL_o31, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(exitDoubleDoor_802439D4) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_09_ENTRY_1)
-    Set(LVar1, COLLIDER_deilitte)
-    Set(LVar2, MODEL_o102)
-    Set(LVar3, MODEL_o101)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_3)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(exitDoubleDoor_802439D4) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_09_ENTRY_1, "dgb_01", dgb_01_ENTRY_3,
+    COLLIDER_deilitte, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(exitSingleDoor_80243A88) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, dgb_09_ENTRY_2)
-    Set(LVar1, COLLIDER_deilittnw)
-    Set(LVar2, MODEL_o76)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_12"), dgb_12_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(exitSingleDoor_80243A88) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_09_ENTRY_2, "dgb_12", dgb_12_ENTRY_0,
+    COLLIDER_deilittnw, MODEL_o76, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
 EvtScript N(exitWalk_80243B3C) = EVT_EXIT_WALK(40, dgb_09_ENTRY_3, "dgb_10", dgb_10_ENTRY_0);
 
@@ -89,7 +50,7 @@ EvtScript N(enterWalk_80243BC4) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
         Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     EndIf

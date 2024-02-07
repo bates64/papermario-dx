@@ -1735,14 +1735,37 @@ s32 npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
 }
 
 void npc_set_decoration(Npc* npc, s32 idx, s32 decorationType) {
-    npc_remove_decoration_impl(npc, idx);
+    npc_remove_decoration(npc, idx);
     npc->decorationType[idx] = decorationType;
     npc->changedDecoration[idx] = 1;
     npc->decorationInitialized[idx] = 0;
 }
 
 void npc_remove_decoration(Npc* npc, s32 idx) {
-    npc_remove_decoration_impl(npc, idx);
+    switch (npc->decorationType[idx]) {
+        case NPC_DECORATION_NONE:
+            npc_remove_decoration_none(npc, idx);
+            break;
+        case NPC_DECORATION_BOWSER_AURA:
+            npc_remove_decoration_bowser_aura(npc, idx);
+            break;
+        case NPC_DECORATION_SWEAT:
+            npc_remove_decoration_sweat(npc, idx);
+            break;
+        case NPC_DECORATION_SEEING_STARS:
+            npc_remove_decoration_seeing_stars(npc, idx);
+            break;
+        case NPC_DECORATION_WHITE_GLOW_FRONT:
+            npc_remove_decoration_glow_in_front(npc, idx);
+            break;
+        case NPC_DECORATION_WHITE_GLOW_BEHIND:
+            npc_remove_decoration_glow_behind(npc, idx);
+            break;
+        case NPC_DECORATION_CHARGED:
+            npc_remove_decoration_charged(npc, idx);
+            break;
+    }
+    npc->decorationType[idx] = NPC_DECORATION_NONE;
 }
 
 s32 npc_update_decorations(Npc* npc) {
@@ -1775,33 +1798,6 @@ s32 npc_update_decorations(Npc* npc) {
     }
 }
 
-void npc_remove_decoration_impl(Npc* npc, s32 idx) {
-    switch (npc->decorationType[idx]) {
-        case NPC_DECORATION_NONE:
-            npc_remove_decoration_none(npc, idx);
-            break;
-        case NPC_DECORATION_BOWSER_AURA:
-            npc_remove_decoration_bowser_aura(npc, idx);
-            break;
-        case NPC_DECORATION_SWEAT:
-            npc_remove_decoration_sweat(npc, idx);
-            break;
-        case NPC_DECORATION_SEEING_STARS:
-            npc_remove_decoration_seeing_stars(npc, idx);
-            break;
-        case NPC_DECORATION_WHITE_GLOW_FRONT:
-            npc_remove_decoration_glow_in_front(npc, idx);
-            break;
-        case NPC_DECORATION_WHITE_GLOW_BEHIND:
-            npc_remove_decoration_glow_behind(npc, idx);
-            break;
-        case NPC_DECORATION_CHARGED:
-            npc_remove_decoration_charged(npc, idx);
-            break;
-    }
-    npc->decorationType[idx] = NPC_DECORATION_NONE;
-}
-
 void npc_reset_current_decoration(Npc* npc, s32 idx) {
     switch (npc->decorationType[idx]) {
         case NPC_DECORATION_NONE:
@@ -1812,7 +1808,7 @@ void npc_reset_current_decoration(Npc* npc, s32 idx) {
         case NPC_DECORATION_WHITE_GLOW_BEHIND:
             break;
         case NPC_DECORATION_CHARGED:
-            npc__reset_current_decoration(npc, idx);
+            npc->decorationInitialized[idx] = 0;
             break;
     }
 }
@@ -1969,10 +1965,6 @@ void npc_update_decoration_charged(Npc* npc, s32 idx) {
 }
 
 void npc_remove_decoration_charged(Npc* npc, s32 idx) {
-}
-
-void npc__reset_current_decoration(Npc* npc, s32 idx) {
-    npc->decorationInitialized[idx] = 0;
 }
 
 Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius) {

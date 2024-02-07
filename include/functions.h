@@ -222,6 +222,7 @@ void phys_peach_update(void);
 void check_input_spin(void);
 
 void phys_set_player_sliding_check(b32 (*funcPtr)(void));
+void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void));
 
 b32 npc_test_move_simple_without_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
 

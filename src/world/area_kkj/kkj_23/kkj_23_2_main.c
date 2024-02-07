@@ -13,20 +13,8 @@ EvtScript N(EVS_EndPeachChapter6) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_kkj_22_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, kkj_23_ENTRY_0)
-    Set(LVar1, COLLIDER_tte)
-    Set(LVar2, MODEL_o5)
-    Set(LVar3, MODEL_o4)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_22"), kkj_22_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_22_1) = EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_0, "kkj_22", kkj_22_ENTRY_1,
+    COLLIDER_tte, MODEL_o5, MODEL_o4);
 
 EvtScript N(EVS_ExitDoors_kkj_24_0) = EVT_EXIT_DOUBLE_DOOR(kkj_23_ENTRY_1, "kkj_24", kkj_24_ENTRY_0, COLLIDER_ttw, MODEL_o9, MODEL_o10);
 
@@ -54,7 +42,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_23)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
         Call(MakeNpcs, FALSE, Ref(N(PeachNPCs)))

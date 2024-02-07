@@ -1,36 +1,10 @@
 #include "kkj_00.h"
 
-EvtScript N(D_80241140_ABC3D0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, kkj_00_ENTRY_1)
-    Set(LVar1, COLLIDER_ttn)
-    Set(LVar2, MODEL_door3)
-    Set(LVar3, MODEL_door4)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_01"), kkj_01_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(D_80241140_ABC3D0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_1, "kkj_01", kkj_01_ENTRY_0,
+    COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(D_802411F4_ABC484) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_00_ENTRY_3)
-    Set(LVar1, COLLIDER_ttne)
-    Set(LVar2, MODEL_door8)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_19"), kkj_19_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(D_802411F4_ABC484) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_00_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
+    COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
     Call(DisablePlayerInput, TRUE)
@@ -145,7 +119,7 @@ EvtScript N(EVS_8024166C) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
         Call(MakeNpcs, FALSE, Ref(N(IntroNPCs)))
     Else

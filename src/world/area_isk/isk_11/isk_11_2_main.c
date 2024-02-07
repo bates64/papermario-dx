@@ -17,7 +17,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_11)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

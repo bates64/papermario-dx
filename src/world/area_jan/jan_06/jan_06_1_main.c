@@ -57,7 +57,7 @@ EvtScript N(EVS_InitRavenStatueObjects) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetZoneEnabled, ZONE_o59, FALSE)
     Exec(N(EVS_InitRavenStatueObjects))
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

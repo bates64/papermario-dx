@@ -39,7 +39,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(SetupSlidingCheck))
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_TexPan_Water))

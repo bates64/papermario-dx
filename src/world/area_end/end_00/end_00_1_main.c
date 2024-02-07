@@ -1,7 +1,7 @@
 #include "end_00.h"
 
 EvtScript N(EVS_Main) = {
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 35, 16, 4096)
+    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 35, 16, 4096) // uses fov 35 instead of 30
     Call(SetCamViewport, CAM_DEFAULT, 15, 28, 290, 128)
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamEnabled, CAM_DEFAULT, TRUE)

@@ -1,5 +1,6 @@
 #include "arn_08.h"
 
+// equivalent to EVT_EXIT_SPLIT_SINGLE_DOOR but with a call to ClearDefeatedEnemies
 EvtScript N(EVS_ExitDoor_arn_07_0) = {
     SetGroup(EVT_GROUP_1B)
     Call(DisablePlayerInput, TRUE)
@@ -92,7 +93,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_WindyMill, TRUE)
     IfGe(GB_StoryProgress, STORY_CH4_FRYING_PAN_STOLEN)
         Set(GF_ARN10_Defeated_Goomba, FALSE)

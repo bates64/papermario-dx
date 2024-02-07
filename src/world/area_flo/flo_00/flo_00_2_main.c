@@ -143,8 +143,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_FlowerFields, TRUE)
     IfLt(GB_StoryProgress, STORY_CH6_GREW_MAGIC_BEANSTALK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)

@@ -71,7 +71,7 @@ EvtScript N(EVS_Main) = {
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
         Call(DisablePulseStone, FALSE)
     EndIf
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_UNUSED_FFFFFFCC)
         Call(EnableGroup, MODEL_g28, FALSE)
         Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

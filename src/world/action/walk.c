@@ -131,6 +131,7 @@ void action_update_run(void) {
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
             playerStatus->curSpeed = playerStatus->runSpeed;
         }
+
         if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
             anim = ANIM_MarioW3_8bit_Run;
         } else if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {

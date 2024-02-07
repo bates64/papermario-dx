@@ -11,7 +11,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupTrees))
     Exec(N(EVS_SetupBushes))

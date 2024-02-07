@@ -301,7 +301,7 @@ s32 N(KeyList)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_TexPan_Water))

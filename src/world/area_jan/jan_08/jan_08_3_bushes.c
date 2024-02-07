@@ -85,7 +85,7 @@ EvtScript N(EVS_Inspect_FlipBush) = {
     End
 };
 
-FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o59);;
+FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o59);
 
 FoliageDropList N(Bush1_Drops) = {
     .count = 1,
@@ -112,7 +112,7 @@ SearchBushConfig N(SearchBush_Bush1) = {
     .vectors = &N(Bush1_Effects),
 };
 
-FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o164);;
+FoliageModelList N(Bush2_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o164);
 
 FoliageDropList N(Bush2_Drops) = {
     .count = 1,
@@ -139,7 +139,7 @@ SearchBushConfig N(SearchBush_Bush2) = {
     .vectors = &N(Bush2_Effects),
 };
 
-FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o123);;
+FoliageModelList N(Bush3_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o123);
 
 FoliageVectorList N(Bush3_Effects) = {
     .count = 1,
@@ -153,7 +153,7 @@ SearchBushConfig N(SearchBush_Bush3) = {
     .vectors = &N(Bush3_Effects),
 };
 
-FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o114);;
+FoliageModelList N(Bush4_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o114);
 
 FoliageVectorList N(Bush4_Effects) = {
     .count = 1,
@@ -167,7 +167,7 @@ SearchBushConfig N(SearchBush_Bush4) = {
     .vectors = &N(Bush4_Effects),
 };
 
-FoliageModelList N(Bush5_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o156);;
+FoliageModelList N(Bush5_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o156);
 
 FoliageVectorList N(Bush5_Effects) = {
     .count = 1,
@@ -181,7 +181,7 @@ SearchBushConfig N(SearchBush_Bush5) = {
     .vectors = &N(Bush5_Effects),
 };
 
-FoliageModelList N(Bush6_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o115);;
+FoliageModelList N(Bush6_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o115);
 
 FoliageVectorList N(Bush6_Effects) = {
     .count = 1,
@@ -195,7 +195,7 @@ SearchBushConfig N(SearchBush_Bush6) = {
     .vectors = &N(Bush6_Effects),
 };
 
-FoliageModelList N(Bush7_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o113);;
+FoliageModelList N(Bush7_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o113);
 
 FoliageVectorList N(Bush7_Effects) = {
     .count = 1,
@@ -209,7 +209,7 @@ SearchBushConfig N(SearchBush_Bush7) = {
     .vectors = &N(Bush7_Effects),
 };
 
-FoliageModelList N(Bush8_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o158);;
+FoliageModelList N(Bush8_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o158);
 
 FoliageVectorList N(Bush8_Effects) = {
     .count = 1,
@@ -223,7 +223,7 @@ SearchBushConfig N(SearchBush_Bush8) = {
     .vectors = &N(Bush8_Effects),
 };
 
-FoliageModelList N(Bush9_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o159);;
+FoliageModelList N(Bush9_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o159);
 
 FoliageVectorList N(Bush9_Effects) = {
     .count = 1,
@@ -237,7 +237,7 @@ SearchBushConfig N(SearchBush_Bush9) = {
     .vectors = &N(Bush9_Effects),
 };
 
-FoliageModelList N(Bush10_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o160);;
+FoliageModelList N(Bush10_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o160);
 
 FoliageVectorList N(Bush10_Effects) = {
     .count = 1,
@@ -251,7 +251,7 @@ SearchBushConfig N(SearchBush_Bush10) = {
     .vectors = &N(Bush10_Effects),
 };
 
-FoliageModelList N(Bush11_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o163);;
+FoliageModelList N(Bush11_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o163);
 
 FoliageVectorList N(Bush11_Effects) = {
     .count = 1,
@@ -265,7 +265,7 @@ SearchBushConfig N(SearchBush_Bush11) = {
     .vectors = &N(Bush11_Effects),
 };
 
-FoliageModelList N(Bush12_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o161);;
+FoliageModelList N(Bush12_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o161);
 
 FoliageVectorList N(Bush12_Effects) = {
     .count = 1,

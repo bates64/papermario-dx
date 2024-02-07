@@ -26,7 +26,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_19)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))

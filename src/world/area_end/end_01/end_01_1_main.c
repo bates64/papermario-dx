@@ -6,11 +6,8 @@ API_CALLABLE(N(WidenCameraFOV)) {
 }
 
 EvtScript N(EVS_Main) = {
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamViewport, CAM_DEFAULT, 15, 28, 290, 128)
-    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     Call(N(WidenCameraFOV))
     Call(EnableWorldStatusBar, FALSE)
     Exec(N(EVS_ManageParade))

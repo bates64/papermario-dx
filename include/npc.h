@@ -504,8 +504,6 @@ void npc_remove_decoration(Npc* npc, s32 idx);
 
 s32 npc_update_decorations(Npc* npc);
 
-void npc_remove_decoration_impl(Npc* npc, s32 idx);
-
 void npc_reset_current_decoration(Npc* npc, s32 idx);
 
 void npc_update_decoration_none(Npc* npc, s32 idx);
@@ -535,8 +533,6 @@ void npc_remove_decoration_glow_behind(Npc* npc, s32 idx);
 void npc_update_decoration_charged(Npc* npc, s32 idx);
 
 void npc_remove_decoration_charged(Npc* npc, s32 idx);
-
-void npc__reset_current_decoration(Npc* npc, s32 idx);
 
 /// Finds the closest NPC to a given point within a radius. Ignores Y position.
 ///

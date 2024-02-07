@@ -1,5 +1,14 @@
 #include "isk_01.h"
 
+s32 N(adjust_cam_on_landing)(void) {
+    return LANDING_CAM_ALWAYS_ADJUST;
+}
+
+API_CALLABLE(N(SetupLandingCamAdjust)) {
+    phys_set_landing_adjust_cam_check(N(adjust_cam_on_landing));
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(D_80240220_978360) = EVT_EXIT_WALK(40, isk_01_ENTRY_0, "sbk_02", sbk_02_ENTRY_4);
 EvtScript N(D_8024027C_9783BC) = EVT_EXIT_WALK(40, isk_01_ENTRY_1, "isk_02", isk_02_ENTRY_0);
 
@@ -26,7 +35,8 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    Call(N(SetupLandingCamAdjust))
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_DryDryRuins, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

@@ -63,6 +63,7 @@ EvtScript Entity_Chest_ResetCam_Default = {
     End
 };
 
+//TODO hardcoded area IDs
 void entity_Chest_adjust_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -81,6 +82,7 @@ void entity_Chest_adjust_camera(Entity* entity) {
     }
 }
 
+//TODO hardcoded area IDs
 void entity_Chest_reset_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -317,6 +319,7 @@ void entity_GiantChest_open(Entity* entity) {
             giveItemLerpAlpha = sin_rad(DEG_TO_RAD(chest->giveItemRadiusInterpPhase));
             theta = intermediateTheta = clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z));
 
+            // hardcoded areaID
             if (gGameStatusPtr->areaID == AREA_KZN) {
                 radius = 3.0f;
             } else {

@@ -36,7 +36,7 @@ EvtScript N(EVS_Main) = {
     Set(AB_KPA91_Dryite_Dialogue, 0)
     Set(AB_KPA91_Toad3_Dialogue, 0)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

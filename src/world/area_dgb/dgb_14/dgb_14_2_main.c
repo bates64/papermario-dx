@@ -1,37 +1,11 @@
 #include "dgb_14.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_ExitDoors_dgb_03_3) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_14_ENTRY_1)
-    Set(LVar1, COLLIDER_deilittse)
-    Set(LVar2, MODEL_o102)
-    Set(LVar3, MODEL_o101)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_03"), dgb_03_ENTRY_3)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_03_3) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_1, "dgb_03", dgb_03_ENTRY_3,
+    COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_15_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_14_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittne)
-    Set(LVar2, MODEL_o31)
-    Set(LVar3, MODEL_o30)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_15"), dgb_15_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_15_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_0, "dgb_15", dgb_15_ENTRY_0,
+    COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
@@ -61,7 +35,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     BindTrigger(Ref(N(EVS_ExitDoors_dgb_03_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)

@@ -235,7 +235,7 @@ EvtScript N(EVS_TexPan_Water) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetRenderMode, MODEL_suimen, RENDER_MODE_SURFACE_XLU_LAYER2)
     IfLt(GB_StoryProgress, STORY_CH1_LOWERED_FIRST_STAIRS)
         Call(MakeNpcs, TRUE, Ref(N(NpcGroupBefore)))

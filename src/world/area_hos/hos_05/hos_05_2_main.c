@@ -12,7 +12,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_05_ENTRY_3)
         Call(MakeNpcs, FALSE, Ref(N(IntroNPCs)))

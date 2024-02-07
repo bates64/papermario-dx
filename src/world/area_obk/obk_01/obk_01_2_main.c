@@ -1,20 +1,7 @@
 #include "obk_01.h"
 
-EvtScript N(EVS_ExitDoors_mim_11_2) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, obk_01_ENTRY_0)
-    Set(LVar1, COLLIDER_tt1)
-    Set(LVar2, MODEL_door1_2)
-    Set(LVar3, MODEL_door1_1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("mim_11"), mim_11_ENTRY_2)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_mim_11_2) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_0, "mim_11", mim_11_ENTRY_2,
+    COLLIDER_tt1, MODEL_door1_2, MODEL_door1_1, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_ExitDoor_obk_02_0) = {
     IfLt(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
@@ -95,37 +82,11 @@ EvtScript N(EVS_ExitDoor_obk_08_0) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_obk_09_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, obk_01_ENTRY_5)
-    Set(LVar1, COLLIDER_tt6)
-    Set(LVar2, MODEL_door6_1)
-    Set(LVar3, MODEL_door6_2)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_09"), obk_09_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_obk_09_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_5, "obk_09", obk_09_ENTRY_0,
+    COLLIDER_tt6, MODEL_door6_1, MODEL_door6_2, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoor_obk_09_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, obk_01_ENTRY_6)
-    Set(LVar1, COLLIDER_tt6_1)
-    Set(LVar2, MODEL_door7_1)
-    Set(LVar3, MODEL_door7_2)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_09"), obk_09_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_obk_09_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_01_ENTRY_6, "obk_09", obk_09_ENTRY_1,
+    COLLIDER_tt6_1, MODEL_door7_1, MODEL_door7_2, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_mim_11_2)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
@@ -193,7 +154,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_BoosMansion, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))

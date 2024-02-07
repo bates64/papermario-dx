@@ -64,6 +64,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_WORLD;
     surface_set_walk_effect(SURFACE_WALK_FX_STANDARD);
     phys_set_player_sliding_check(NULL);
+    phys_set_landing_adjust_cam_check(NULL);
 
 #if !VERSION_IQUE
     load_obfuscation_shims();

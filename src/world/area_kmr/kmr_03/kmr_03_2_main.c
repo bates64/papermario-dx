@@ -13,7 +13,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_KMR_08, FALSE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Call(ClearDefeatedEnemies)

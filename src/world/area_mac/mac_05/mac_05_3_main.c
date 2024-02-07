@@ -131,7 +131,7 @@ EvtScript N(D_802448C4_856A34) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
             Set(LVar0, Ref(N(NpcSetA)))

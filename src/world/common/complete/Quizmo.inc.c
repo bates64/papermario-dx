@@ -591,7 +591,7 @@ EvtScript N(EVS_Quizmo_SetQuizCamera) = {
     SetF(LVar1, Float(-10.0))
     Call(SetCamPitch, 0, LVar0, LVar1)
     Call(PanToTarget, 0, 0, 1)
-    Call(SetCamLeadPlayer, 0, 0)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     Return
     End
 };

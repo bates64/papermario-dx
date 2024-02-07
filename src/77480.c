@@ -1050,6 +1050,7 @@ void clear_ispy_icon(void) {
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_ISPY_VISIBLE;
 }
 
+/// unavoidable use of hardcoded map and area IDs
 void check_for_pulse_stone(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 dx, dy;

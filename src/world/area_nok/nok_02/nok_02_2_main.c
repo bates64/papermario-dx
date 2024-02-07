@@ -91,7 +91,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, nok_02_ENTRY_3)
         Call(MakeNpcs, FALSE, Ref(N(EpilogueNPCs)))

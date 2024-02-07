@@ -87,7 +87,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_TexPan_Flowers))

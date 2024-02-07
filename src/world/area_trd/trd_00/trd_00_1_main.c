@@ -121,7 +121,7 @@ EvtScript N(EVS_TexPan_WaterEdge) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_KoopaBrosFortress, TRUE)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Call(GetEntryID, LVar0)

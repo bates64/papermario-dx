@@ -1,5 +1,14 @@
 #include "obk_05.h"
 
+s32 N(adjust_cam_on_landing)(void) {
+    return LANDING_CAM_NEVER_ADJUST;
+}
+
+API_CALLABLE(N(SetupLandingCamAdjust)) {
+    phys_set_landing_adjust_cam_check(N(adjust_cam_on_landing));
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_EnterDoor_obk_05_0) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -13,21 +22,8 @@ EvtScript N(EVS_EnterDoor_obk_05_0) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_obk_01_2) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, obk_05_ENTRY_0)
-    Set(LVar1, COLLIDER_tt1)
-    Set(LVar2, MODEL_door1)
-    Set(LVar4, MODEL_door1b)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSplitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_01"), obk_01_ENTRY_2)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_obk_01_2) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_05_ENTRY_0, "obk_01", obk_01_ENTRY_2,
+    COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
 
 EvtScript N(EVS_TexPan_Fog) = {
     Call(SetTexPanner, MODEL_m1, 0)
@@ -85,7 +81,8 @@ EvtScript N(EVS_ManageRetroJar) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    Call(N(SetupLandingCamAdjust))
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupRockingChairs))

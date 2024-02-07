@@ -38,7 +38,7 @@ EvtScript N(EVS_TexPan_Fountain) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_OSR_01, FALSE)
     Set(GF_MAP_PeachCastleGrounds, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

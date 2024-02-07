@@ -82,10 +82,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(SetCamBGColor, CAM_DEFAULT, 24, 24, 40)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
+    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_SetupPuzzle))
     Exec(N(EVS_SetupMusic))

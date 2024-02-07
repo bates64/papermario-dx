@@ -97,7 +97,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STAR_WAY)
     Call(SetSpriteShading, SHADING_NONE)
     Call(SetSurfaceWalkEffect, SURFACE_WALK_FX_SPARKLE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_MAP_StarWay, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Call(GetEntryID, LVar0)

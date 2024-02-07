@@ -124,7 +124,7 @@ API_CALLABLE(N(SetMapChangeFadeSlowest)) {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetLoadType, LVar0)
     IfEq(LVar0, LOAD_FROM_FILE_SELECT)
         Goto(10)

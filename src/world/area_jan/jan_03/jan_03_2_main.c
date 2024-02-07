@@ -61,7 +61,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_YOSHIS_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(MakeNpcs, FALSE, Ref(N(CrisisNPCs)))
