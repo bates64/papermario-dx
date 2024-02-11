@@ -19,8 +19,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CLOUDY_CLIMB)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_CloudyClimb, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Call(ParentColliderToModel, COLLIDER_o117, MODEL_o142)

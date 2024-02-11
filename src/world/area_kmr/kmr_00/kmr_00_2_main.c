@@ -11,7 +11,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_GoombaVillage, TRUE)
     IfLt(GB_StoryProgress, STORY_CH0_MET_INNKEEPER)
         Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

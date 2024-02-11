@@ -10,8 +10,6 @@ s32 N(KeyList_BowsersCastle)[] = {
 
 EvtScript N(EVS_ExitDoors_kpa_82_0) = EVT_EXIT_DOUBLE_DOOR(kpa_113_ENTRY_1, "kpa_82", kpa_82_ENTRY_0, COLLIDER_deiliett, MODEL_o136, MODEL_o137);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_UnlockPrompt_LockedDoor) = {
     Call(ShowKeyChoicePopup)
     IfEq(LVar0, 0)

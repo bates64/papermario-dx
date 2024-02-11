@@ -274,7 +274,7 @@ API_CALLABLE(ShakeCam) {
                 break;
         }
 
-        *(f32*)&script->functionTemp[3] = 1.0f; //TODO functionTempF ?
+        script->functionTempF[3] = 1.0f;
         script->functionTemp[1] = duration;
 
         if (!gGameStatusPtr->isBattle) {
@@ -359,13 +359,13 @@ API_CALLABLE(SetCamLeadPlayer) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CB710) {
+API_CALLABLE(SetCamLeadScale) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
     f32 value = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->unk_520 = (value / 100.0f);
+    camera->leadAmtScale = (value / 100.0f);
     return ApiStatus_DONE2;
 }
 

@@ -535,7 +535,7 @@ API_CALLABLE(N(UseAbility)) {
                             parakarry->pos.y = playerStatus->pos.y + 32.0f;
                             y = parakarry->pos.y;
                             parakarry->pos.y = playerStatus->pos.y;
-                            spawn_surface_effects(parakarry, SURFACE_INTERACT_WALK);
+                            npc_surface_spawn_fx(parakarry, SURFACE_INTERACT_WALK);
                             parakarry->pos.y = y;
 
                             if (hitAbove) {
@@ -544,7 +544,7 @@ API_CALLABLE(N(UseAbility)) {
                             }
                         }
 
-                        if (!phys_adjust_cam_on_landing()) {
+                        if (phys_adjust_cam_on_landing() == LANDING_CAM_NEVER_ADJUST) {
                             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
                         }
                         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;

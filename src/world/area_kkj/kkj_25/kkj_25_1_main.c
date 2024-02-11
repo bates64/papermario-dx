@@ -95,8 +95,7 @@ EvtScript N(EVS_Main) = {
     EndSwitch
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_25)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.75))
     IfEq(GF_KKJ25_Defeated_Bowser, FALSE)
         IfEq(GF_KKJ25_Defeated_Kammy, FALSE)

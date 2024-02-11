@@ -13,20 +13,8 @@ EvtScript N(EVS_EndPeachChapter2) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kkj_11_2) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, kkj_16_ENTRY_0)
-    Set(LVar1, COLLIDER_tte)
-    Set(LVar2, MODEL_o43)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_2)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_11_2) = EVT_EXIT_SINGLE_DOOR(kkj_16_ENTRY_0, "kkj_11", kkj_11_ENTRY_2,
+    COLLIDER_tte, MODEL_o43, DOOR_SWING_IN);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
@@ -46,7 +34,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH2_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)

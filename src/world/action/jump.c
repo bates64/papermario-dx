@@ -55,8 +55,7 @@ void action_update_jump(void) {
         if (playerStatus->actionState == ACTION_STATE_JUMP) {
             if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
                 sfx_play_sound_at_player(SOUND_JUMP_8BIT_MARIO, SOUND_SPACE_DEFAULT);
-            }
-            else {
+            } else {
                 sfx_play_sound_at_player(SOUND_QUICK_PLAYER_JUMP, SOUND_SPACE_DEFAULT);
             }
         }
@@ -128,7 +127,7 @@ void action_update_falling(void) {
 
         if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
             anim = ANIM_MarioW3_8bit_Jump;
-        } else  if (!(playerStatus->animFlags & (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS))) {
+        } else if (!(playerStatus->animFlags & (PA_FLAG_USING_WATT | PA_FLAG_WATT_IN_HANDS))) {
             anim = ANIM_Mario1_Fall;
         } else {
             anim = ANIM_MarioW1_FallWatt;

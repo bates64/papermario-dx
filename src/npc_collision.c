@@ -383,12 +383,10 @@ s32 npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
     f32 x,y,z;
     s32 ret;
     s32 hitID;
-    f32 temp;
 
     theta = DEG_TO_RAD(yaw);
     deltaX = radius * sin_rad(theta);
-    temp = -radius; // needed to match
-    deltaZ = temp * cos_rad(theta);
+    deltaZ = -radius * cos_rad(theta);
 
     x = *posX;
     y = *posY;
@@ -441,34 +439,32 @@ s32 npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
     return ret;
 }
 
-s32 npc_raycast_general(s32 flags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
+HitID npc_raycast_general(s32 flags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
                         f32* hitY, f32* hitZ, f32* outDepth, f32* hitNx, f32* hitNy, f32* hitNz) {
-    s32 ret;
+    s32 colliderID;
     s32 entityID;
+    HitID ret = NO_COLLIDER;
 
-    ret = NO_COLLIDER;
     if (flags & COLLISION_ONLY_ENTITIES) {
-        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx, hitNy,
-                                     hitNz);
-        if (entityID >= 0) {
+        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ,
+                                      hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
+        if (entityID > NO_COLLIDER) {
             ret = entityID | COLLISION_WITH_ENTITY_BIT;
         }
     } else {
-        ret = test_ray_colliders(flags, startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx,
-                                 hitNy, hitNz);
+        ret = test_ray_colliders(flags, startX, startY, startZ, dirX, dirY, dirZ,
+                                  hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
         if (flags & COLLISION_IGNORE_ENTITIES) {
             return ret;
         }
 
-        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, outDepth, hitNx,
-                                        hitNy, hitNz);
-        if (entityID >= 0) {
+        entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ,
+                                      hitX, hitY, hitZ, outDepth, hitNx, hitNy, hitNz);
+        if (entityID > NO_COLLIDER) {
             ret = entityID | COLLISION_WITH_ENTITY_BIT;
         }
-
-        // TODO required to match
-        if ((s32)startY && startY && startY);
     }
+
     return ret;
 }
 

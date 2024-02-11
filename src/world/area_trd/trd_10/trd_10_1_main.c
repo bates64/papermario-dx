@@ -108,20 +108,8 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_trd_09_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, trd_10_ENTRY_0)
-    Set(LVar1, COLLIDER_ttw)
-    Set(LVar2, MODEL_o192)
-    Set(LVar3, MODEL_o191)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("trd_09"), trd_09_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_trd_09_1) = EVT_EXIT_DOUBLE_DOOR(trd_10_ENTRY_0, "trd_09", trd_09_ENTRY_1,
+    COLLIDER_ttw, MODEL_o192, MODEL_o191);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_09_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -133,7 +121,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(SetMapChangeFadeRate))
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_InitFakeBowser))
     Exec(N(EVS_SetupFakeBowser))

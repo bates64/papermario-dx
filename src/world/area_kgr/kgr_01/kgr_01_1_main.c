@@ -31,7 +31,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(HidePlayerShadow, TRUE)
     Call(EnableNpcShadow, NPC_PARTNER, FALSE)
     Exec(N(EVS_StartTongueWiggle))

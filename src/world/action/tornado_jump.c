@@ -113,7 +113,7 @@ void action_update_tornado_jump(void) {
                 playerStatus->gravityIntegrator[1] = 0.0f;
                 playerStatus->gravityIntegrator[0] = -100.0f;
             }
-            if (colliderBelow >= 0) {
+            if (colliderBelow > NO_COLLIDER) {
                 if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
                     entityType = get_entity_type(collisionStatus->curFloor);
                     if (entityType == ENTITY_TYPE_SIMPLE_SPRING || entityType == ENTITY_TYPE_SCRIPT_SPRING) {

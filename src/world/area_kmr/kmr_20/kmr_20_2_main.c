@@ -49,7 +49,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     Set(MF_Unk_0C, FALSE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(N(EVS_SetupMusic))
     Call(GetEntryID, LVar0)
     IfLt(LVar0, kmr_20_ENTRY_4)

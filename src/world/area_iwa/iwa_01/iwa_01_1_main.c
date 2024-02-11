@@ -1,5 +1,17 @@
 #include "iwa_01.h"
 
+b32 N(should_player_be_sliding)(void) {
+    Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
+    f32 angle = shadow->rot.z + 180.0;
+
+    return (angle != 0.0f) && (gPlayerStatus.pos.x < -300.0f || gPlayerStatus.pos.x > -140.0f);
+}
+
+API_CALLABLE(N(SetupSlidingCheck)) {
+    phys_set_player_sliding_check(N(should_player_be_sliding));
+    return ApiStatus_DONE2;
+}
+
 EvtScript N(EVS_ExitWalk_iwa_00_1) = EVT_EXIT_WALK(60, iwa_01_ENTRY_0, "iwa_00", iwa_00_ENTRY_1);
 EvtScript N(EVS_ExitWalk_iwa_03_0) = EVT_EXIT_WALK(60, iwa_01_ENTRY_1, "iwa_03", iwa_03_ENTRY_0);
 EvtScript N(EVS_ExitWalk_iwa_02_0) = EVT_EXIT_WALK(60, iwa_01_ENTRY_2, "iwa_02", iwa_02_ENTRY_0);
@@ -50,7 +62,8 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    Call(N(SetupSlidingCheck))
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_TexPan_Water))
@@ -73,5 +86,3 @@ EvtScript N(EVS_Main) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(1, pad);

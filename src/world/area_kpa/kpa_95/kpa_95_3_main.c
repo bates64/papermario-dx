@@ -24,8 +24,6 @@ EvtScript N(EVS_OpenCellDoor) = {
 
 EvtScript N(EVS_ExitWalk_kpa_94_0) = EVT_EXIT_WALK(60, kpa_95_ENTRY_0, "kpa_94", kpa_94_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_94_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
     Return
@@ -35,7 +33,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

@@ -1,20 +1,7 @@
 #include "dgb_11.h"
 
-EvtScript N(EVS_ExitDoor_dgb_02_3) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, dgb_11_ENTRY_0)
-    Set(LVar1, COLLIDER_deilits)
-    Set(LVar2, MODEL_o109)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_02"), dgb_02_ENTRY_3)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_dgb_02_3) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_11_ENTRY_0, "dgb_02", dgb_02_ENTRY_3,
+    COLLIDER_deilits, MODEL_o109, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
@@ -60,7 +47,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     BindTrigger(Ref(N(EVS_ExitDoor_dgb_02_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilits, 1, 0)

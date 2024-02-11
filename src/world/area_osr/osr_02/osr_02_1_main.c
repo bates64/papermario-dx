@@ -8,37 +8,11 @@ API_CALLABLE(N(SetAvailableDisguise)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_ExitDoor_kpa_121_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_METAL)
-    Set(LVar0, osr_02_ENTRY_0)
-    Set(LVar1, COLLIDER_tt1)
-    Set(LVar2, MODEL_o570)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kpa_121"), kpa_121_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kpa_121_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(osr_02_ENTRY_0, "kpa_121", kpa_121_ENTRY_1,
+    COLLIDER_tt1, MODEL_o570, DOOR_SWING_IN, DOOR_SOUNDS_METAL);
 
-EvtScript N(EVS_ExitDoor_kkj_10_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, osr_02_ENTRY_1)
-    Set(LVar1, COLLIDER_tt2)
-    Set(LVar2, MODEL_d2)
-    Set(LVar3, MODEL_d1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_10"), kkj_10_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTRY_1, "kkj_10", kkj_10_ENTRY_0,
+    COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE);
 
 EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
     Call(DisablePlayerInput, TRUE)
@@ -94,7 +68,7 @@ EvtScript N(EVS_Main) = {
         Set(GF_MAP_PeachsCastle, TRUE)
     EndIf
     Call(SetSpriteShading, SHADING_OSR_02)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(N(SetAvailableDisguise), PEACH_DISGUISE_CLUBBA)
         Call(MakeNpcs, FALSE, Ref(N(PeachNPCs)))

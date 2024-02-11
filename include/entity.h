@@ -360,9 +360,7 @@ typedef struct SpinningFlowerData {
     /* 0x14 */ f32 spinSpeed;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ char unk_1C[0x0C];
-    /* 0x28 */ s16 unk_28;
-    /* 0x2A */ s16 unk_2A;
-    /* 0x2C */ s16 unk_2C;
+    /* 0x28 */ Vec3s pos;
     /* 0x30 */ Mtx unk_30;
 } SpinningFlowerData; // size = 0x70
 

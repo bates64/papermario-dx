@@ -2,8 +2,6 @@
 
 EvtScript N(EVS_ExitWalk_kpa_90_1) = EVT_EXIT_WALK(60, kpa_91_ENTRY_0, "kpa_90", kpa_90_ENTRY_1);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_90_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     Return
@@ -38,7 +36,7 @@ EvtScript N(EVS_Main) = {
     Set(AB_KPA91_Dryite_Dialogue, 0)
     Set(AB_KPA91_Toad3_Dialogue, 0)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

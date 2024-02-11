@@ -105,5 +105,3 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(2, epilogue);

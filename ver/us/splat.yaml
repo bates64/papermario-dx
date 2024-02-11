@@ -401,7 +401,7 @@ segments:
     - [auto, c, world/partners]
     - [auto, c, global_hud_scripts]
     - [auto, hasm, bss2_2]
-    - [auto, c, 891b0_len_fb0]
+    - [auto, c, world/surfaces]
     - [auto, c, 8a160_len_700]
     - [auto, c, 8a860_len_3f30]
     - [auto, c, draw_box]

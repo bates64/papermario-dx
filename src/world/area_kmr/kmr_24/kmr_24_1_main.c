@@ -65,7 +65,7 @@ EvtScript N(EVS_SaveAndContinue_Prompt) = {
 EvtScript N(EVS_Main) = {
     Call(DisablePlayerInput, TRUE)
     Call(DisablePlayerPhysics, TRUE)
-    Call(SetPlayerPos, -1000, 0, 0) //@bug? improper dispose location for player
+    Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
     Wait(1)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
@@ -74,10 +74,7 @@ EvtScript N(EVS_Main) = {
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(SetCamBGColor, CAM_DEFAULT, 208, 208, 208)
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
+    EVT_SETUP_CAMERA_NO_LEAD(208, 208, 208)
     Call(SetCamType, CAM_DEFAULT, 4, FALSE)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 440)

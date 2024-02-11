@@ -1,52 +1,13 @@
 #include "kkj_01.h"
 
-EvtScript N(EVS_ExitDoors_kkj_00_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, kkj_01_ENTRY_0)
-    Set(LVar1, COLLIDER_tts)
-    Set(LVar2, MODEL_door2)
-    Set(LVar3, MODEL_door1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_00"), kkj_00_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_00_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_0, "kkj_00", kkj_00_ENTRY_1,
+    COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoors_kkj_02_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
-    Set(LVar0, kkj_01_ENTRY_1)
-    Set(LVar1, COLLIDER_ttn)
-    Set(LVar2, MODEL_door3)
-    Set(LVar3, MODEL_door4)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_02"), kkj_02_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_02_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_1, "kkj_02", kkj_02_ENTRY_0,
+    COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
 
-EvtScript N(EVS_ExitDoors_kkj_14_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, kkj_01_ENTRY_4)
-    Set(LVar1, COLLIDER_ttn2)
-    Set(LVar2, MODEL_door7)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kkj_14"), kkj_14_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_01_ENTRY_4, "kkj_14", kkj_14_ENTRY_0,
+    COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
     Call(DisablePlayerInput, TRUE)
@@ -112,7 +73,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     IfNe(GB_StoryProgress, STORY_INTRO)
         Call(EnableModel, MODEL_g74, FALSE)
@@ -129,5 +90,3 @@ EvtScript N(EVS_Main) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(1, exits);

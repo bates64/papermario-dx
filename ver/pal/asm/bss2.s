@@ -12,13 +12,13 @@
 dlabel PulseStoneNotificationCallback
 .space 4
 
-dlabel D_8010C924
+dlabel LastLoadedActionOffset
 .space 4
 
 dlabel StepUpLastY
 .space 4
 
-dlabel D_8010C92C
+dlabel PeachDisguiseReapplyDelay
 .space 4
 
 dlabel wPartnerNpc

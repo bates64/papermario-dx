@@ -7,8 +7,6 @@ s32 N(map_init)(void) {
     return FALSE;
 }
 
-MAP_RODATA_PAD(1, init);
-
 EntryList N(Entrances) = {
     [hos_00_ENTRY_0]    { -610.0,    0.0,  -45.0,   90.0 },
     [hos_00_ENTRY_1]    {  870.0,   60.0, -130.0,  270.0 },

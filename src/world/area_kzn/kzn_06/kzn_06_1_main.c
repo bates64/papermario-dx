@@ -14,8 +14,6 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-MAP_RODATA_PAD(1, unk); // can be fixed with subalign 16 for this map
-
 EvtScript N(EVS_StartTexPanners) = {
     SetGroup(EVT_GROUP_00)
     Call(SetTexPanner, MODEL_yo1, TEX_PANNER_0)
@@ -52,7 +50,7 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_06)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Set(GF_KZN06_Visited, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)

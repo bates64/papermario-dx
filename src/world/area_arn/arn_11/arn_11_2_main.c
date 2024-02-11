@@ -51,20 +51,8 @@ EvtScript N(EVS_Scene_MeetHeart) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_arn_13_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, arn_11_ENTRY_0)
-    Set(LVar1, COLLIDER_ttw)
-    Set(LVar2, MODEL_o37)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("arn_13"), arn_13_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_arn_13_1) = EVT_EXIT_SINGLE_DOOR(arn_11_ENTRY_0, "arn_13", arn_13_ENTRY_1,
+    COLLIDER_ttw, MODEL_o37, DOOR_SWING_IN);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoor_arn_13_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
@@ -92,7 +80,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_WINDY_MILL)
     Call(SetSpriteShading, SHADING_ARN_11)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))

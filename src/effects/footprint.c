@@ -13,13 +13,13 @@ void func_E0018000(FootprintFXData* part) {
     Matrix4f sp18;
     Matrix4f sp58;
 
-    guTranslateF(sp18, part->unk_0C, part->unk_10, part->unk_14);
-    guRotateF(sp58, part->unk_28, 0.0f, 1.0f, 0.0f);
+    guTranslateF(sp18, part->pos.x, part->pos.y, part->pos.z);
+    guRotateF(sp58, part->rot.y, 0.0f, 1.0f, 0.0f);
     guMtxCatF(sp58, sp18, sp18);
     guMtxF2L(sp18, &part->mtx);
 }
 
-void footprint_main(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+void footprint_main(f32 x, f32 y, f32 z, f32 angle, b32 isLeft) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FootprintFXData* part;
@@ -27,6 +27,7 @@ void footprint_main(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     s32 i;
     f32 temp_f20;
     f32 temp_f20_2;
+    f32 sense = isLeft ? 1.0 : -1.0;
 
     bp.unk_00 = 0;
     bp.init = footprint_init;
@@ -47,26 +48,26 @@ void footprint_main(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     for (i = 0; i < numParts; i++, part++) {
         part->alive = TRUE;
         part->unk_7C = 0;
-        part->unk_0C = arg0;
-        part->unk_10 = arg1;
-        part->unk_14 = arg2;
+        part->pos.x = x;
+        part->pos.y = y;
+        part->pos.z = z;
         part->alpha = 255;
-        part->unk_18 = 1.0f;
-        part->unk_1C = 1.0f;
-        part->unk_20 = 1.0f;
+        part->scale.x = 1.0f;
+        part->scale.y = 1.0f;
+        part->scale.z = 1.0f;
         part->unk_70 = 0;
         part->unk_80 = 0;
         part->unk_84 = 0;
         part->lifetime = 100;
-        part->unk_24 = 0.0f;
-        part->unk_28 = (arg3 + (arg4 * 30.0f)) - 15.0f;
-        part->unk_2C = 0.0f;
-        temp_f20 = clamp_angle(arg3);
+        part->rot.x = 0.0f;
+        part->rot.y = angle + (sense * 30.0f) - 15.0f;
+        part->rot.z = 0.0f;
+        temp_f20 = clamp_angle(angle);
         part->unk_90 = sin_deg(temp_f20);
         part->unk_94 = cos_deg(temp_f20);
-        temp_f20_2 = (temp_f20 + 45.0f) - (arg4 * 180.0f);
-        part->unk_0C += sin_deg(temp_f20_2) * 5.0f;
-        part->unk_14 += cos_deg(temp_f20_2) * 5.0f;
+        temp_f20_2 = (temp_f20 + 45.0f) - (sense * 180.0f);
+        part->pos.x += sin_deg(temp_f20_2) * 5.0f;
+        part->pos.z += cos_deg(temp_f20_2) * 5.0f;
         part->alpha = 200;
     }
 }

@@ -115,6 +115,7 @@ extern u16* ResetSavedFrameImg;
 extern s16 D_80073E08;
 extern s16 D_80073E0A;
 extern IMG_BIN ResetTilesImg[];
+extern DisplayContext DisplayContexts[2];
 
 #if defined(SHIFT) || VERSION_IQUE
 #define shim_create_audio_system_obfuscated create_audio_system
@@ -218,7 +219,7 @@ void appendGfx_reset_tile_pattern(void) {
     u16* frozenFrame;
 
     gMatrixListPos = 0;
-    gDisplayContext = &D_80164000[gCurrentDisplayContextIndex];
+    gDisplayContext = &DisplayContexts[gCurrentDisplayContextIndex];
     gMainGfxPos = gDisplayContext->mainGfx;
     frozenFrame = ResetSavedFrameImg;
     gfx_init_state();

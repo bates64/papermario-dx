@@ -6,8 +6,6 @@ EvtScript N(EVS_ExitWalk_jan_00_2) = EVT_EXIT_WALK(60, jan_08_ENTRY_0, "jan_00",
 EvtScript N(EVS_ExitWalk_jan_05_1) = EVT_EXIT_WALK(60, jan_08_ENTRY_1, "jan_05", jan_05_ENTRY_1);
 EvtScript N(EVS_ExitWalk_jan_09_0) = EVT_EXIT_WALK(60, jan_08_ENTRY_2, "jan_09", jan_09_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_jan_00_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_jan_05_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_o221, 1, 0)
@@ -19,7 +17,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o79, SURFACE_TYPE_DOCK_WALL)

@@ -69,7 +69,7 @@ void func_E000C0C8(LandingDustFXData* part) {
     part->unk_20 *= part->unk_2C;
 }
 
-void landing_dust_main(s32 type, f32 x, f32 y, f32 z, f32 arg4) {
+void landing_dust_main(s32 type, f32 x, f32 y, f32 z, f32 angle) {
     EffectBlueprint bp;
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
@@ -198,7 +198,7 @@ void landing_dust_main(s32 type, f32 x, f32 y, f32 z, f32 arg4) {
                 data->unk_24 = 0.099999994f;
                 data->unk_28 = 0.94f;
                 data->unk_2C = 0.94f;
-                theta = arg4 + ((i - 1) * 360 / (numParts - 1));
+                theta = angle + ((i - 1) * 360 / (numParts - 1));
                 data->x = -sin_deg(theta) * 10.0f;
                 data->y = 0.0f;
                 data->z = -cos_deg(theta) * 10.0f;

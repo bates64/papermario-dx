@@ -681,5 +681,5 @@ dlabel D_8015C7E0
 
 .space 0x3C80
 
-dlabel D_80164000
+dlabel DisplayContexts
 .space 0x1a230 * 2

@@ -8,12 +8,10 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_NOK04_PlayingGame, FALSE)
     Set(AF_NOK04_BattleStarted, FALSE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o147, COLLIDER_FLAGS_UPPER_MASK)

@@ -68,8 +68,6 @@ EvtScript N(EVS_GotoMap_nok_15_3) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_ExitPipe) = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
@@ -98,7 +96,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupFoliage))

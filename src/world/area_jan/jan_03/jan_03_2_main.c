@@ -14,8 +14,6 @@ EvtScript N(EVS_ExitWalk_jan_02_1) = EVT_EXIT_WALK(60, jan_03_ENTRY_0, "jan_02",
 EvtScript N(EVS_ExitWalk_jan_05_0) = EVT_EXIT_WALK(60, jan_03_ENTRY_1, "jan_05", jan_05_ENTRY_0);
 EvtScript N(EVS_ExitWalk_jan_22_0) = EVT_EXIT_WALK(60, jan_03_ENTRY_2, "jan_22", jan_22_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_jan_02_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_jan_05_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilinw, 1, 0)
@@ -63,7 +61,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_YOSHIS_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
             Call(MakeNpcs, FALSE, Ref(N(CrisisNPCs)))

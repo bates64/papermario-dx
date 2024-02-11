@@ -2,8 +2,6 @@
 
 EvtScript N(EVS_ExitWalk_omo_03_1) = EVT_EXIT_WALK(60, omo_04_ENTRY_0, "omo_03", omo_03_ENTRY_1);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_omo_03_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
@@ -13,7 +11,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GF_OMO04_SpawnedPeachChoice1, FALSE)
         Call(MakeNpcs, TRUE, Ref(N(KammySceneNPCs)))
     Else

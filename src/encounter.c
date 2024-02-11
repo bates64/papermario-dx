@@ -1557,15 +1557,15 @@ void show_first_strike_message(void) {
     switch (currentEncounter->firstStrikeType) {
         case FIRST_STRIKE_PLAYER:
             switch (currentEncounter->hitType) {
-                case 2:
-                case 4:
+                case ENCOUNTER_TRIGGER_JUMP:
+                case ENCOUNTER_TRIGGER_HAMMER:
                     width = get_msg_width(MSG_Menus_PlayerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
                     draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
                              SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
                     draw_msg(MSG_Menus_PlayerFirstStrike, posX + 11, 75, 0xFF, MSG_PAL_STANDARD, 0);
                     break;
-                case 6:
+                case ENCOUNTER_TRIGGER_PARTNER:
                     width = get_msg_width(MSG_Menus_PartnerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
                     draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,

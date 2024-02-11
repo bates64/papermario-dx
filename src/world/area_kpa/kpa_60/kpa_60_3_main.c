@@ -52,21 +52,8 @@ EvtScript N(EVS_CloseAirshipDockDoor) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_kpa_70_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_METAL)
-    Set(LVar0, kpa_60_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittn)
-    Set(LVar2, MODEL_o1647)
-    Set(LVar3, MODEL_o1646)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kpa_70"), kpa_70_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kpa_70_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kpa_60_ENTRY_0, "kpa_70", kpa_70_ENTRY_0,
+    COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL);
 
 EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
     SetGroup(EVT_GROUP_1B)
@@ -201,7 +188,7 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_BowsersCastle, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_EnterMap))

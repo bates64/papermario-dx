@@ -2,8 +2,6 @@
 
 EvtScript N(EVS_ExitWalk_hos_04_1) = EVT_EXIT_WALK(60, hos_05_ENTRY_0, "hos_04", hos_04_ENTRY_1);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_hos_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     BindTrigger(Ref(N(EVS_Starship_Depart)), TRIGGER_FLOOR_TOUCH, COLLIDER_o630, 1, 0)
@@ -14,7 +12,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STAR_HAVEN)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, hos_05_ENTRY_3)
         Call(MakeNpcs, FALSE, Ref(N(IntroNPCs)))

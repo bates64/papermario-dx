@@ -15,7 +15,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)

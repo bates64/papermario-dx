@@ -4,8 +4,6 @@
 
 EvtScript N(EVS_ExitWalk_jan_09_2) = EVT_EXIT_WALK(60, jan_10_ENTRY_0, "jan_09", jan_09_ENTRY_2);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_jan_09_2)), TRIGGER_FLOOR_ABOVE, COLLIDER_o100, 1, 0)
     Return
@@ -15,7 +13,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupLogs))

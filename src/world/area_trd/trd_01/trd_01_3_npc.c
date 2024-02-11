@@ -1,7 +1,5 @@
 #include "trd_01.h"
 
-MAP_RODATA_PAD(1, pad);
-
 extern EvtScript N(EVS_FocusCamOnLock);
 
 #include "world/common/enemy/KoopaTroopa_Wander.inc.c"

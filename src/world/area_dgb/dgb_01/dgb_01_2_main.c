@@ -1,116 +1,25 @@
 #include "dgb_01.h"
 
-EvtScript N(EVS_ExitDoors_dgb_00_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_0)
-    Set(LVar1, COLLIDER_deilitts)
-    Set(LVar2, MODEL_o380)
-    Set(LVar3, MODEL_o381)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_00"), dgb_00_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_00_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_0, "dgb_00", dgb_00_ENTRY_1,
+    COLLIDER_deilitts, MODEL_o380, MODEL_o381, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_02_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_1)
-    Set(LVar1, COLLIDER_deilittsw)
-    Set(LVar2, MODEL_o163)
-    Set(LVar3, MODEL_o164)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_02"), dgb_02_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_02_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_1, "dgb_02", dgb_02_ENTRY_1,
+    COLLIDER_deilittsw, MODEL_o163, MODEL_o164, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_08_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_2)
-    Set(LVar1, COLLIDER_deilittse)
-    Set(LVar2, MODEL_o168)
-    Set(LVar3, MODEL_o167)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_08_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_2, "dgb_08", dgb_08_ENTRY_0,
+    COLLIDER_deilittse, MODEL_o168, MODEL_o167, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_09_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_3)
-    Set(LVar1, COLLIDER_deilittw)
-    Set(LVar2, MODEL_o165)
-    Set(LVar3, MODEL_o166)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_09"), dgb_09_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_09_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_3, "dgb_09", dgb_09_ENTRY_1,
+    COLLIDER_deilittw, MODEL_o165, MODEL_o166, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_08_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_4)
-    Set(LVar1, COLLIDER_deilitte)
-    Set(LVar2, MODEL_o299)
-    Set(LVar3, MODEL_o298)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_08"), dgb_08_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_08_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_4, "dgb_08", dgb_08_ENTRY_1,
+    COLLIDER_deilitte, MODEL_o299, MODEL_o298, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_17_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_5)
-    Set(LVar1, COLLIDER_deilittnw)
-    Set(LVar2, MODEL_o161)
-    Set(LVar3, MODEL_o162)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_17"), dgb_17_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_17_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_5, "dgb_17", dgb_17_ENTRY_1,
+    COLLIDER_deilittnw, MODEL_o161, MODEL_o162, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_18_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_01_ENTRY_6)
-    Set(LVar1, COLLIDER_deilittne)
-    Set(LVar2, MODEL_o301)
-    Set(LVar3, MODEL_o300)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_18"), dgb_18_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_18_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_01_ENTRY_6, "dgb_18", dgb_18_ENTRY_0,
+    COLLIDER_deilittne, MODEL_o301, MODEL_o300, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
@@ -161,7 +70,7 @@ s32 N(KeyList)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_TubbasManor, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupBridges))

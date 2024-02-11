@@ -1,10 +1,6 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(UnusedCallback)) {
-    return ApiStatus_DONE2;
-}
-
 s32 N(BerryList)[] = {
     ITEM_RED_BERRY,
     ITEM_BLUE_BERRY,

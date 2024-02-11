@@ -43,7 +43,7 @@ EvtScript N(EVS_Main) = {
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(SetCamType, CAM_DEFAULT, 4, FALSE)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 440)

@@ -23,7 +23,6 @@ extern s32 gBattleSubState;
 extern s32 gDefeatedBattleState;
 extern s32 gCurrentBattleID;
 extern s32 gCurrentStageID;
-extern s32 D_800DC4E0;
 extern struct Battle* gOverrideBattlePtr;
 
 extern Camera gCameras[4];
@@ -50,13 +49,6 @@ extern Window gWindows[64];
 
 extern s32 gEncounterState;
 extern s32 gOverrideFlags;
-
-extern char wMapTexName[];
-extern char wMapHitName[];
-extern char wMapShapeName[];
-extern char wMapBgName[];
-
-extern DisplayContext D_80164000[2];
 
 extern WindowStyle gWindowStyles[];
 

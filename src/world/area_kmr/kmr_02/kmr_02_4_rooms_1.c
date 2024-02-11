@@ -197,8 +197,6 @@ EvtScript N(EVS_RoomListener_Verdana) = {
     End
 };
 
-MAP_RODATA_PAD(1,unk);
-
 s32 N(InsideNPCs_House)[] = {
     NPC_Gooma,
     NPC_Goompa,

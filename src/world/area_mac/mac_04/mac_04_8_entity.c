@@ -5,8 +5,6 @@
 void N(render_shrunk_player)(void);
 void N(appendGfx_shrunk_player)(void*);
 
-MAP_RODATA_PAD(2,unk);
-
 API_CALLABLE(N(CreateShrinkingWorker)) {
     gPlayerStatus.animFlags |= PA_FLAG_INVISIBLE;
     evt_set_variable(script, MV_DrawShinkingPlayerWorker, create_worker_world(NULL, N(render_shrunk_player)));
