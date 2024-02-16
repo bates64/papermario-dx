@@ -231,7 +231,7 @@ void draw_message_window(MessagePrintState* printer) {
 #define MSG_EPILOGUE_TEXT_Y     -2
 #endif
 
-#if VERSION_IQUE || VERSION_PAL
+#if VERSION_PAL
 INCLUDE_ASM(s32, "msg_draw", appendGfx_message);
 #else
 void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 additionalOffsetX, u16 additionalOffsetY,
@@ -245,6 +245,9 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
     s16 spAE;
     u16 spB6;
     u8 spB8;
+#if VERSION_IQUE
+    u16 byte = 0;
+#endif
     f32 windowScaleX;
     MessageCharset* msgCharset;
     f32 temp_f10;
@@ -373,7 +376,18 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
     msg_drawState->drawBufferPos = 0;
 
     while (!sp80bool) {
-        switch (msg_drawState->printBuffer[msg_drawState->drawBufferPos]) {
+#if VERSION_IQUE
+        u16 lastbyte, glyph_index, byte2;
+
+        lastbyte = byte;
+        byte = msg_drawState->printBuffer[msg_drawState->drawBufferPos];
+        byte2 = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1];
+
+        switch (byte)
+#else
+        switch (msg_drawState->printBuffer[msg_drawState->drawBufferPos])
+#endif
+        {
             case MSG_CHAR_PRINT_ENDL:
                 msg_drawState->nextPos[0] = 0;
                 msg_drawState->nextPos[1] += (s32)((msg_drawState->msgScale.y * MsgCharsets[msg_drawState->font]->newLineY)
@@ -407,6 +421,9 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case MSG_CHAR_PRINT_STYLE:
                 switch (msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1]) {
                     case MSG_STYLE_RIGHT:
+#if VERSION_IQUE
+                        msg_drawState->nextPos[1] += 5;
+#endif
                     case MSG_STYLE_LEFT:
                     case MSG_STYLE_CENTER:
                     case MSG_STYLE_TATTLE:
@@ -696,6 +713,9 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         printer->windowBasePos.y = 28;
                         printer->windowSize.x = MSG_SIGN_WIDTH;
                         msg_drawState->framePalette = 15;
+#if VERSION_IQUE
+                        msg_drawState->nextPos[1] -= 2;
+#endif
                         temp_s1_5 = 0xFF;
                         if (printer->style == MSG_STYLE_SIGN) {
                             signRaster = ui_msg_sign_corner_bottomright_png;
@@ -704,8 +724,8 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             signPalette = ui_msg_sign_pal;
                         } else {
                             signRaster = ui_msg_lamppost_corner_bottomright_png;
-                            msg_drawState->textColor = MSG_PAL_1C;
                             signPalette = ui_msg_lamppost_pal;
+                            msg_drawState->textColor = MSG_PAL_1C;
                         }
                         msg_drawState->clipX[0] = 20 + MSG_SIGN_OFFSET_X + 14;
                         msg_drawState->clipY[0] = 40;
@@ -907,6 +927,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         msg_drawState->curPosX = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1];
                         msg_drawState->drawBufferPos += 2;
                         break;
+#if !VERSION_IQUE
                     case MSG_PRINT_FUNC_SIZE:
                         packedScaleX = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1];
                         msg_drawState->msgScale.x = (f32)(packedScaleX >> 4) + ((packedScaleX & 0xF) * 0.0625f);
@@ -925,6 +946,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         msg_drawState->drawBufferPos++;
                         gDPSetTextureFilter(gMainGfxPos++, G_TF_AVERAGE);
                         break;
+#endif
                     case MSG_PRINT_FUNC_SET_X:
                         msg_drawState->nextPos[0] = msg_drawState->printBuffer[msg_drawState->drawBufferPos + 1] * 256 +
                                                     (msg_drawState->printBuffer[msg_drawState->drawBufferPos + 2]);
@@ -1250,6 +1272,13 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                 }
                 break;
             default:
+#if VERSION_IQUE
+                if (lastbyte >= 0x5f && lastbyte <= 0x8f) {
+                    msg_drawState->drawBufferPos++;
+                    break;
+                }
+#endif
+
                 if (msg_drawState->printModeFlags & MSG_PRINT_FLAG_2) {
                     sp96 = 0xFF;
                     gDPPipeSync(gMainGfxPos++);
@@ -1458,9 +1487,11 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                 case MSG_PAL_13:
                                 case MSG_PAL_14:
                                     break;
+#if !VERSION_IQUE
                                 case MSG_PAL_STANDARD:
                                     palette = MSG_PAL_40;
                                     break;
+#endif
                                 case MSG_PAL_20:
                                     palette = MSG_PAL_41;
                                     break;
@@ -1487,12 +1518,29 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
                             gDPSetCombineMode(gMainGfxPos++, PM_CC_07, PM_CC_07);
                             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, 72);
+#if VERSION_IQUE
+                            if (byte >= MSG_CHAR_MULTIBYTE_FIRST && byte <= MSG_CHAR_MULTIBYTE_LAST) {
+                                glyph_index = (MSG_CHAR_ZH_START - MSG_CHAR_MULTIBYTE_FIRST) + byte + (byte2 - 1)
+                                    * (MSG_CHAR_MULTIBYTE_LAST - MSG_CHAR_MULTIBYTE_FIRST + 1);
+                                msg_draw_char(printer, msg_drawState, glyph_index,
+                                              palette, charPosX + 2, charPosY + 2);
+                            } else {
+                                msg_draw_char(printer, msg_drawState, byte,
+                                              palette, charPosX + 2, charPosY + 2);
+                            }
+#else
                             msg_draw_char(printer, msg_drawState,
                                           msg_drawState->printBuffer[msg_drawState->drawBufferPos],
                                           palette, charPosX + 2, charPosY + 2);
+#endif
                             gDPPipeSync(gMainGfxPos++);
-                            gDPSetRenderMode(gMainGfxPos++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
-                            gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+                            if (phi_s2_5 < 0xFF) {
+                                gDPSetRenderMode(gMainGfxPos++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+                                gDPSetCombineMode(gMainGfxPos++, PM_CC_02, PM_CC_02);
+                            } else {
+                                gDPSetRenderMode(gMainGfxPos++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
+                                gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
+                            }
                         }
 
                         if (msg_drawState->effectFlags & MSG_FX_FLAG_BLUR) {
@@ -1505,14 +1553,38 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                                 if (spB8 != 1) {
                                     phi_s1_8 += (rand_int(10000) % 3) - 1;
                                 }
+#if VERSION_IQUE
+                                if (byte >= MSG_CHAR_MULTIBYTE_FIRST && byte <= MSG_CHAR_MULTIBYTE_LAST) {
+                                    glyph_index = (MSG_CHAR_ZH_START - MSG_CHAR_MULTIBYTE_FIRST) + byte + (byte2 - 1)
+                                        * (MSG_CHAR_MULTIBYTE_LAST - MSG_CHAR_MULTIBYTE_FIRST + 1);
+                                    msg_draw_char(printer, msg_drawState, glyph_index,
+                                                  palette, charPosX + 2, charPosY + 2);
+                                } else {
+                                    msg_draw_char(printer, msg_drawState, byte,
+                                                  palette, charPosX + 2, charPosY + 2);
+                                }
+#else
                                 msg_draw_char(printer, msg_drawState,
                                               msg_drawState->printBuffer[msg_drawState->drawBufferPos], palette,
                                               phi_s0_7, phi_s1_8);
+#endif
                             }
                         } else {
+#if VERSION_IQUE
+                            if (byte >= MSG_CHAR_MULTIBYTE_FIRST && byte <= MSG_CHAR_MULTIBYTE_LAST) {
+                                glyph_index = (MSG_CHAR_ZH_START - MSG_CHAR_MULTIBYTE_FIRST) + byte + (byte2 - 1)
+                                    * (MSG_CHAR_MULTIBYTE_LAST - MSG_CHAR_MULTIBYTE_FIRST + 1);
+                                msg_draw_char(printer, msg_drawState, glyph_index,
+                                              palette, charPosX + 2, charPosY + 2);
+                            } else {
+                                msg_draw_char(printer, msg_drawState, byte,
+                                              palette, charPosX + 2, charPosY + 2);
+                            }
+#else
                             msg_draw_char(printer, msg_drawState,
                                           msg_drawState->printBuffer[msg_drawState->drawBufferPos], palette, charPosX,
                                           charPosY);
+#endif
                         }
                     }
                 }
@@ -1521,9 +1593,13 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                 }
                 msg_drawState->visiblePrintedCount += 1;
                 msg_drawState->nextPos[0] +=
+#if VERSION_IQUE
+                    msg_drawState->msgScale.x * 14.0f;
+#else
                     msg_get_draw_char_width(msg_drawState->printBuffer[msg_drawState->drawBufferPos],
                                             msg_drawState->font, msg_drawState->fontVariant, msg_drawState->msgScale.x,
                                             msg_drawState->curPosX, msg_drawState->printModeFlags);
+#endif
                 msg_drawState->drawBufferPos++;
                 break;
         }
