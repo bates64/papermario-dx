@@ -57,7 +57,7 @@ s32 N(PrevPalmTreeVisibility) = TRUE;
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_YOSHIS_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     Call(SetModelTexVariant, MODEL_o120, LVar0)

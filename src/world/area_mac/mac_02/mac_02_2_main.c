@@ -56,7 +56,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_MAC_16, FALSE)
     Set(AF_MAC_17, FALSE)
     Set(AF_MAC_18, FALSE)

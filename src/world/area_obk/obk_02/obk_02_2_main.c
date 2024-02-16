@@ -8,35 +8,11 @@ enum {
     REGION_LOWER_FLOOR  = 2,
 };
 
-EvtScript N(EVS_ExitDoor_obk_01_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, obk_02_ENTRY_0)
-    Set(LVar1, COLLIDER_tt1)
-    Set(LVar2, MODEL_door1b)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_01"), obk_01_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_obk_01_1) = EVT_EXIT_SINGLE_DOOR(obk_02_ENTRY_0, "obk_01", obk_01_ENTRY_1,
+    COLLIDER_tt1, MODEL_door1b, DOOR_SWING_OUT);
 
-EvtScript N(EVS_ExitDoor_obk_03_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, obk_02_ENTRY_1)
-    Set(LVar1, COLLIDER_tt2)
-    Set(LVar2, MODEL_door2)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_03"), obk_03_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_obk_03_0) = EVT_EXIT_SINGLE_DOOR(obk_02_ENTRY_1, "obk_03", obk_03_ENTRY_0,
+    COLLIDER_tt2, MODEL_door2, DOOR_SWING_OUT);
 
 EvtScript N(EVS_ExitWalk_obk_06_1) = EVT_EXIT_WALK(60, obk_02_ENTRY_2, "obk_06", obk_06_ENTRY_1);
 
@@ -185,7 +161,7 @@ EvtScript N(EVS_ManageRegionVisibility) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_TexPan_Fog))

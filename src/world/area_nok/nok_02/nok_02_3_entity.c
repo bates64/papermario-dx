@@ -16,8 +16,6 @@ EvtScript N(EVS_GotoMap_tik_01_3) = {
     End
 };
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_BrickBlock), 151, 81, 251, 0, MAKE_ENTITY_END)
     Switch(GB_StoryProgress)

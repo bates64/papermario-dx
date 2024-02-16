@@ -14,8 +14,6 @@ extern EvtScript N(EVS_Scene_ImprisonedKoopaBros);
 EvtScript N(EVS_ExitDoors_trd_04_5) = EVT_EXIT_DOUBLE_DOOR(trd_06_ENTRY_1, "trd_04", trd_04_ENTRY_5,
     COLLIDER_ttw, MODEL_o93, MODEL_o94);
 
-MAP_RODATA_PAD(1,unk); // fixed if map uses subalign 16
-
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -132,7 +130,7 @@ EvtScript N(EVS_TexPan_Water) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
             Call(EnableModel, MODEL_o97, FALSE)

@@ -6367,4 +6367,10 @@ enum BlurState {
     ACTOR_BLUR_RESET    = -1,
 };
 
+enum LandingCamAdjustMode {
+    LANDING_CAM_NEVER_ADJUST  = 0,
+    LANDING_CAM_CHECK_SURFACE = 1,  // allow landing cam unless the surface is lava
+    LANDING_CAM_ALWAYS_ADJUST = 2,
+};
+
 #endif

@@ -1,7 +1,5 @@
 #include "arn_07.h"
 
-MAP_RODATA_PAD(1,windmill);
-
 API_CALLABLE(N(WrapWindmillAngle)) {
     f32 angle = evt_get_float_variable(script, LVar0);
 

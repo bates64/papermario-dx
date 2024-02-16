@@ -1,8 +1,6 @@
 #include "arn_07.h"
 #include "entity.h"
 
-MAP_RODATA_PAD(1,entity);
-
 #include "world/common/todo/RemovePadlock.inc.c"
 #include "world/common/todo/GetEntityPosition.inc.c"
 

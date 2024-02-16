@@ -1,4 +1,3 @@
-MAP_RODATA_PAD(1,pre_hop_ai);
 #include "world/common/enemy/ai/HoppingAI.inc.c"
 
 void N(StoneChompAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {

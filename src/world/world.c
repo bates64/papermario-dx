@@ -8,31 +8,7 @@
 #include "model.h"
 #include "gcc/string.h"
 #include "dx/debug_menu.h"
-
-s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
-
-//TODO possible data split here
-
-Vec3s gEntityColliderFaces[] = {
-    { 4, 6, 5 }, { 4, 7, 6 },
-    { 0, 3, 4 }, { 3, 7, 4 },
-    { 3, 2, 7 }, { 2, 6, 7 },
-    { 2, 1, 6 }, { 1, 5, 6 },
-    { 1, 0, 5 }, { 0, 4, 5 },
-    { 0, 1, 2 }, { 0, 2, 3 },
-};
-
-Vec3f gEntityColliderNormals[] = {
-    {  0.0f,  1.0f,  0.0f }, {  0.0f,  1.0f,  0.0f },
-    {  1.0f,  0.0f,  0.0f }, {  1.0f,  0.0f,  0.0f },
-    {  0.0f,  0.0f, -1.0f }, {  0.0f,  0.0f, -1.0f },
-    { -1.0f,  0.0f,  0.0f }, { -1.0f,  0.0f,  0.0f },
-    {  0.0f,  0.0f,  1.0f }, {  0.0f,  0.0f,  1.0f },
-    {  0.0f, -1.0f,  0.0f }, {  0.0f, -1.0f,  0.0f },
-};
-
-//TODO data split here!
-s32 pad_map_table[] = { 0, 0 };
+#include "world/surfaces.h"
 
 #ifdef SHIFT
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
@@ -51,6 +27,8 @@ SHIFT_BSS char wMapHitName[0x18];
 SHIFT_BSS char wMapShapeName[0x18];
 SHIFT_BSS char wMapTexName[0x18];
 SHIFT_BSS char wMapBgName[0x18];
+
+s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
     /* 0x00 */ char name[16];
@@ -84,6 +62,9 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
 
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_WORLD;
+    surface_set_walk_effect(SURFACE_WALK_FX_STANDARD);
+    phys_set_player_sliding_check(NULL);
+    phys_set_landing_adjust_cam_check(NULL);
 
 #if !VERSION_IQUE
     load_obfuscation_shims();

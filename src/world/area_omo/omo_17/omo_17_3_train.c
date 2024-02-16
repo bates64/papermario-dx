@@ -73,5 +73,3 @@ EvtScript N(EVS_EnterTrain) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(1, strings);

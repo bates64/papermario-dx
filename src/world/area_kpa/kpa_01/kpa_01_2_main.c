@@ -2,20 +2,8 @@
 
 #include "world/common/atomic/CreateDarkness.inc.c"
 
-EvtScript N(EVS_ExitDoor_kpa_14_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, kpa_01_ENTRY_0)
-    Set(LVar1, COLLIDER_tte)
-    Set(LVar2, MODEL_o205)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("kpa_14"), kpa_14_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_kpa_14_1) = EVT_EXIT_SINGLE_DOOR(kpa_01_ENTRY_0, "kpa_14", kpa_14_ENTRY_1,
+    COLLIDER_tte, MODEL_o205, DOOR_SWING_IN);
 
 EvtScript N(EVS_ExitWalk_kpa_03_0) = EVT_EXIT_WALK(60, kpa_01_ENTRY_1, "kpa_03", kpa_03_ENTRY_0);
 
@@ -47,7 +35,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_CreateDarkness))

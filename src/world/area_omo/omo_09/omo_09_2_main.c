@@ -2,8 +2,6 @@
 
 EvtScript N(EVS_ExitWalk_omo_08_0) = EVT_EXIT_WALK(60, omo_09_ENTRY_0, "omo_08", omo_08_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_omo_08_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deili1, 1, 0)
     Return
@@ -16,7 +14,7 @@ EvtScript N(EVS_Main) = {
         Set(GF_OMO09_SpawnedPeachChoice3, TRUE)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
 #if VERSION_PAL
     Call(GetLanguage, LVar0)
     IfEq(LVar0, LANGUAGE_ES)

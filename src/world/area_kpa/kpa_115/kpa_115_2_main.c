@@ -15,7 +15,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupStatues))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
@@ -25,5 +25,3 @@ EvtScript N(EVS_Main) = {
     Return
     End
 };
-
-MAP_RODATA_PAD(1, exits);

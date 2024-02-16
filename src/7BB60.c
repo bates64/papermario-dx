@@ -800,7 +800,7 @@ s32 func_800E4404(s32 mode, s32 arg1, f32 arg2, f32* outX, f32* outY, f32* outZ)
         f32 z = *outZ;
         s32 hitID = player_test_lateral_overlap(mode, gPlayerStatusPtr, &x, &y, &z, 0, angle);
 
-        if (hitID >= 0) {
+        if (hitID > NO_COLLIDER) {
             ret = hitID;
         }
 
@@ -836,31 +836,17 @@ void collision_check_player_overlaps(void) {
     }
 }
 
+b32 (*PlayerSlidingCallback)(void) = NULL;
+
 s32 phys_should_player_be_sliding(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    Shadow* shadow = get_shadow_by_index(playerStatus->shadowID);
-    s32 ret = FALSE;
-
-    if (gGameStatusPtr->areaID == AREA_IWA) {
-        f32 temp_f0 = shadow->rot.z + 180.0;
-
-        if (temp_f0 != 0.0f) {
-            ret = TRUE;
-            switch (gGameStatusPtr->mapID) {
-                case 0:
-                    if (fabsf(temp_f0) < 20.0f) {
-                        ret = FALSE;
-                    }
-                    break;
-                case 1:
-                    if (playerStatus->pos.x >= -300.0f && playerStatus->pos.x <= -140.0f) {
-                        ret = FALSE;
-                    }
-                    break;
-            }
-        }
+    if (PlayerSlidingCallback != NULL) {
+        return PlayerSlidingCallback();
     }
-    return ret;
+    return FALSE;
+}
+
+void phys_set_player_sliding_check(b32 (*funcPtr)(void)) {
+    PlayerSlidingCallback = funcPtr;
 }
 
 s32 phys_is_on_sloped_ground(void) {
@@ -918,84 +904,89 @@ void phys_main_collision_below(void) {
         return;
     }
 
-    if ((!(playerStatus->flags & PS_FLAG_SLIDING) ||
-        (phys_adjust_cam_on_landing(), !phys_should_player_be_sliding()) ||
-        (set_action_state(ACTION_STATE_SLIDING), (playerStatus->actionState != ACTION_STATE_SLIDING))))
-    {
-        if (colliderID >= 0) {
-            s32 surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
-            switch (surfaceType) {
-                case SURFACE_TYPE_SPIKES:
-                    if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE || partnerStatus->actingPartner != PARTNER_BOW) {
-                        if (playerStatus->blinkTimer == 0) {
-                            if (playerStatus->actionState != ACTION_STATE_HIT_LAVA) {
-                                playerStatus->hazardType = HAZARD_TYPE_SPIKES;
-                                set_action_state(ACTION_STATE_HIT_LAVA);
-                            }
-                        } else {
-                            set_action_state(ACTION_STATE_KNOCKBACK);
-                        }
-                    }
-                    break;
-                case SURFACE_TYPE_LAVA:
-                    if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE || partnerStatus->actingPartner != PARTNER_BOW) {
-                        if (playerStatus->blinkTimer == 0) {
-                            if (playerStatus->actionState != ACTION_STATE_HIT_LAVA) {
-                                playerStatus->hazardType = HAZARD_TYPE_LAVA;
-                                set_action_state(ACTION_STATE_HIT_LAVA);
-                            }
-                        } else {
-                            set_action_state(ACTION_STATE_KNOCKBACK);
-                        }
-                    }
-                    break;
-                default:
-                    cond = FALSE;
-                    if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
-                        cond = get_entity_type(collisionStatus->curFloor) == ENTITY_TYPE_HIDDEN_PANEL;
-                    }
+    if (playerStatus->flags & PS_FLAG_SLIDING) {
+        phys_adjust_cam_on_landing();
+    }
 
-                    if (playerStatus->actionState != ACTION_STATE_STEP_UP && !cond) {
-                        if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
-                            if (playerY - playerStatus->pos.y < 6.0f) {
-                                playerStatus->pos.y = playerY;
-                            } else {
-                                set_action_state(ACTION_STATE_STEP_UP);
-                                StepUpLastY = playerY;
-                                StepUpLastYaw = playerStatus->targetYaw;
-                            }
-                        } else {
-                            playerStatus->pos.y = playerY;
+    if (playerStatus->flags & PS_FLAG_SLIDING && phys_should_player_be_sliding()) {
+        set_action_state(ACTION_STATE_SLIDING);
+    }
+
+    if (playerStatus->actionState == ACTION_STATE_SLIDING) {
+        return;
+    }
+
+    if (colliderID > NO_COLLIDER) {
+        s32 surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+        switch (surfaceType) {
+            case SURFACE_TYPE_SPIKES:
+                if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE || partnerStatus->actingPartner != PARTNER_BOW) {
+                    if (playerStatus->blinkTimer == 0) {
+                        if (playerStatus->actionState != ACTION_STATE_HIT_LAVA) {
+                            playerStatus->hazardType = HAZARD_TYPE_SPIKES;
+                            set_action_state(ACTION_STATE_HIT_LAVA);
                         }
-                        phys_save_ground_pos();
+                    } else {
+                        set_action_state(ACTION_STATE_KNOCKBACK);
                     }
-                    break;
-            }
-        } else if (!(playerStatus->flags & PS_FLAG_FLYING)
-#ifndef VERSION_JP
-             && playerStatus->actionState != ACTION_STATE_USE_SPINNING_FLOWER
-#endif
-        ) {
-            if (outLength <= collHeightHalf + temp_f24 && hitDirX == 0.0f && hitDirZ == 0.0f) {
-                set_action_state(ACTION_STATE_STEP_DOWN);
-            } else {
-                set_action_state(ACTION_STATE_FALLING);
-            }
-            gravity_use_fall_parms();
+                }
+                break;
+            case SURFACE_TYPE_LAVA:
+                if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE || partnerStatus->actingPartner != PARTNER_BOW) {
+                    if (playerStatus->blinkTimer == 0) {
+                        if (playerStatus->actionState != ACTION_STATE_HIT_LAVA) {
+                            playerStatus->hazardType = HAZARD_TYPE_LAVA;
+                            set_action_state(ACTION_STATE_HIT_LAVA);
+                        }
+                    } else {
+                        set_action_state(ACTION_STATE_KNOCKBACK);
+                    }
+                }
+                break;
+            default:
+                cond = FALSE;
+                if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
+                    cond = get_entity_type(collisionStatus->curFloor) == ENTITY_TYPE_HIDDEN_PANEL;
+                }
+
+                if (playerStatus->actionState != ACTION_STATE_STEP_UP && !cond) {
+                    if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
+                        if (playerY - playerStatus->pos.y < 6.0f) {
+                            playerStatus->pos.y = playerY;
+                        } else {
+                            set_action_state(ACTION_STATE_STEP_UP);
+                            StepUpLastY = playerY;
+                            StepUpLastYaw = playerStatus->targetYaw;
+                        }
+                    } else {
+                        playerStatus->pos.y = playerY;
+                    }
+                    phys_save_ground_pos();
+                }
+                break;
         }
+    } else if (!(playerStatus->flags & PS_FLAG_FLYING)
+        && playerStatus->actionState != ACTION_STATE_USE_SPINNING_FLOWER
+    ) {
+        if (outLength <= collHeightHalf + temp_f24 && hitDirX == 0.0f && hitDirZ == 0.0f) {
+            set_action_state(ACTION_STATE_STEP_DOWN);
+        } else {
+            set_action_state(ACTION_STATE_FALLING);
+        }
+        gravity_use_fall_parms();
     }
 }
 
 void func_800E4AD8(s32 mode) {
-    Camera* currentCamera = &gCameras[gCurrentCameraID];
+    Camera* cam = &gCameras[gCurrentCameraID];
 
-    collision_check_player_intersecting_world(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + currentCamera->curYaw);
+    collision_check_player_intersecting_world(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + cam->curYaw);
 }
 
 void func_800E4B40(s32 mode, f32* arg1, f32* arg2, f32* arg3) {
-    Camera* currentCamera = &gCameras[gCurrentCameraID];
+    Camera* cam = &gCameras[gCurrentCameraID];
 
-    func_800E4404(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + currentCamera->curYaw, arg1, arg2, arg3);
+    func_800E4404(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + cam->curYaw, arg1, arg2, arg3);
 }
 
 void collision_lava_reset_check_additional_overlaps(void) {

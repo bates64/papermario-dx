@@ -117,7 +117,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
     Set(AF_NOK12_HitSwitch, FALSE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
         Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))

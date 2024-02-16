@@ -42,8 +42,6 @@ EvtScript N(EVS_GotoMap_SmashAttack) = {
     End
 };
 
-MAP_RODATA_PAD(1, unk);
-
 EvtScript N(EVS_OnEnterPipe_SmashAttack) = {
     SetGroup(EVT_GROUP_1B)
     Set(LVarA, mgm_00_ENTRY_2)
@@ -95,7 +93,7 @@ EvtScript N(EVS_EnterMap) = {
 };
 
 EvtScript N(EVS_Main) = {
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(D_80243C40_E123E0))
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(D_80241850_E0FFF0))

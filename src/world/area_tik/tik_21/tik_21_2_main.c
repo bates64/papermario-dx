@@ -6,21 +6,8 @@
 
 EvtScript N(EVS_ExitWalk_tik_20_1) = EVT_EXIT_WALK(60, tik_21_ENTRY_0, "tik_20", tik_20_ENTRY_1);
 
-EvtScript N(EVS_ExitDoors_tik_22_0) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, tik_21_ENTRY_1)
-    Set(LVar1, COLLIDER_tte)
-    Set(LVar2, MODEL_o46)
-    Set(LVar3, MODEL_o47)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("tik_22"), tik_22_ENTRY_0)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_tik_22_0) = EVT_EXIT_DOUBLE_DOOR(tik_21_ENTRY_1, "tik_22", tik_22_ENTRY_0,
+    COLLIDER_tte, MODEL_o46, MODEL_o47);
 
 EvtScript N(EVS_GotoMap_tik_14_0) = {
     Call(GotoMap, Ref("tik_14"), tik_14_ENTRY_0)
@@ -105,7 +92,7 @@ EvtScript N(EVS_SetupDrips) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_21)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)

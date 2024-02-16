@@ -35,7 +35,7 @@ EvtScript N(D_80240800_A59B90) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     IfEq(GF_KPA16_ShutOffLava, FALSE)
         Call(EnableGroup, MODEL_after, FALSE)

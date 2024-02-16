@@ -1,38 +1,10 @@
 #include "dgb_08.h"
 
-EvtScript N(EVS_ExitDoors_dgb_01_2) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_08_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittse)
-    Set(LVar2, MODEL_o142)
-    Set(LVar3, MODEL_o143)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_2)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_dgb_01_2) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_08_ENTRY_0, "dgb_01", dgb_01_ENTRY_2,
+    COLLIDER_deilittse, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_dgb_01_4) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, dgb_08_ENTRY_1)
-    Set(LVar1, COLLIDER_deilittne)
-    Set(LVar2, MODEL_o140)
-    Set(LVar3, MODEL_o141)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_4)
-    Wait(100)
-    Return
-    End
-};
-
-MAP_RODATA_PAD(1, strings);
+EvtScript N(EVS_ExitDoors_dgb_01_4) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_08_ENTRY_1, "dgb_01", dgb_01_ENTRY_4,
+    COLLIDER_deilittne, MODEL_o140, MODEL_o141, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
@@ -54,7 +26,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_SMASHED_THE_BRIDGES)
             Call(MakeNpcs, TRUE, Ref(N(BeforeNPCs)))

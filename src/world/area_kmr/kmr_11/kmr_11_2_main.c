@@ -69,8 +69,6 @@ EvtScript N(EVS_ExitWalk_kmr_10_0) = {
     End
 };
 
-MAP_RODATA_PAD(1,exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_kmr_12_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_kmr_10_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiline, 1, 0)
@@ -97,7 +95,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_ROAD)
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(UseSlowerFadeOnMapChange))
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Call(ClearDefeatedEnemies)
     ExecWait(N(EVS_MakeEntities))

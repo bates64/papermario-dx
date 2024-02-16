@@ -12,7 +12,7 @@ SHIFT_BSS s32 gOverrideFlags;
 SHIFT_BSS s32 timeFreezeMode;
 SHIFT_BSS u16** nuGfxCfb;
 SHIFT_BSS s16 SoftResetDelay;
-SHIFT_BSS DisplayContext D_80164000[2];
+SHIFT_BSS DisplayContext DisplayContexts[2];
 
 s8 gGameStepDelayAmount = 1;
 s8 gGameStepDelayCount = 5;
@@ -85,7 +85,6 @@ void step_game_loop(void) {
     }
 
     mdl_reset_transform_flags();
-    npc_iter_no_op();
     update_workers();
     profiler_update(PROFILER_TIME_WORKERS, 0);
     update_triggers();
@@ -167,7 +166,7 @@ void step_game_loop(void) {
 }
 
 void gfx_task_background(void) {
-    gDisplayContext = &D_80164000[gCurrentDisplayContextIndex];
+    gDisplayContext = &DisplayContexts[gCurrentDisplayContextIndex];
     gMainGfxPos = &gDisplayContext->backgroundGfx[0];
 
     gfx_init_state();

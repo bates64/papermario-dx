@@ -31,20 +31,8 @@ API_CALLABLE(N(PreventFalling)) {
 s32 N(DoorModelsL)[] = { MODEL_o1001, -1 };
 s32 N(DoorModelsR)[] = { MODEL_o1002, -1 };
 
-EvtScript N(EVS_ExitDoors_pra_20_4) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Set(LVar0, pra_22_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittssw)
-    Set(LVar2, MODEL_o1085)
-    Set(LVar3, DOOR_SWING_OUT)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("pra_20"), pra_20_ENTRY_4)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_pra_20_4) = EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_20", pra_20_ENTRY_4,
+    COLLIDER_deilittssw, MODEL_o1085, DOOR_SWING_OUT);
 
 EvtScript N(EVS_ExitDoors_pra_37_0) = {
     SetGroup(EVT_GROUP_1B)
@@ -208,10 +196,7 @@ EvtScript N(EVS_PushStatue) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
-    Call(SetCamBGColor, CAM_DEFAULT, 24, 24, 40)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
+    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     IfLt(GB_StoryProgress, STORY_CH7_FOUND_HIDDEN_ROOM_UNDER_STATUE)

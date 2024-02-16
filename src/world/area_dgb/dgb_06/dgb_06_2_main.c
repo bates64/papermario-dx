@@ -1,20 +1,7 @@
 #include "dgb_06.h"
 
-EvtScript N(EVS_ExitDoor_dgb_04_1) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, dgb_06_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittw)
-    Set(LVar2, MODEL_o161)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_04"), dgb_04_ENTRY_1)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_dgb_04_1) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_06_ENTRY_0, "dgb_04", dgb_04_ENTRY_1,
+    COLLIDER_deilittw, MODEL_o161, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
@@ -32,7 +19,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_DGB_06)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     IfEq(GF_DGB05_BoardedFloor, FALSE)

@@ -519,7 +519,7 @@ void create_camera_leadplayer_matrix(Camera* camera) {
     f32 distTanTheta = dist * sin_rad(theta);
     distTanTheta /= cos_rad(theta);
 
-    update_camera_lead_amount(camera, (distTanTheta * camera->viewportW / camera->viewportH) * camera->unk_520);
+    update_camera_lead_amount(camera, (distTanTheta * camera->viewportW / camera->viewportH) * camera->leadAmtScale);
     func_80032C64(camera);
     guTranslateF(camera->viewMtxLeading, -camera->leadAmount, 0.0f, 0.0f);
 }

@@ -1,20 +1,7 @@
 #include "dgb_05.h"
 
-EvtScript N(EVS_ExitDoor_dgb_03_2) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
-    Set(LVar0, dgb_05_ENTRY_0)
-    Set(LVar1, COLLIDER_deilittn)
-    Set(LVar2, MODEL_o158)
-    Set(LVar3, DOOR_SWING_IN)
-    Exec(ExitSingleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("dgb_03"), dgb_03_ENTRY_2)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoor_dgb_03_2) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_05_ENTRY_0, "dgb_03", dgb_03_ENTRY_2,
+    COLLIDER_deilittn, MODEL_o158, DOOR_SWING_IN, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
@@ -32,7 +19,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
         Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     EndIf

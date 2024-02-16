@@ -16,7 +16,7 @@ MapSettings N(settings) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Exec(N(EVS_SetupReflections))
     Return
     End

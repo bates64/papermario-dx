@@ -330,8 +330,6 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                 newScript->varTable[2] = playerState->curPos.z;
                 newScript->varTable[10] = script->functionTemp[FT_IS_PEACH_BEAM];
 
-                do {} while (0); // required to match
-
                 sfx_play_sound(SOUND_STAR_BEAM_FIRE);
                 script->functionTemp[FT_DELAY] = 45;
                 script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_MAKE_BEAM;

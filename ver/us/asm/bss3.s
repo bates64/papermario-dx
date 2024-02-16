@@ -679,7 +679,7 @@ dlabel D_8015C7E0
 dlabel D_8015C800
 .space 0x7800
 
-dlabel D_80164000
+dlabel DisplayContexts
 .space 0x32C60
 
 #endif

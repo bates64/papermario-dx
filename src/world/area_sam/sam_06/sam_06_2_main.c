@@ -72,8 +72,6 @@ BombTrigger N(BombPos_Tree5) = {
 
 EvtScript N(EVS_ExitWalk_sam_05_1) = EVT_EXIT_WALK(60, sam_06_ENTRY_0, "sam_05", sam_05_ENTRY_1);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_sam_05_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilisw, 1, 0)
     Return
@@ -100,7 +98,7 @@ EvtScript N(EVS_TexPan_Fire) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STARBORN_VALLEY)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_StarbornValley, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Call(ClearDefeatedEnemies)

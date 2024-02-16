@@ -16,7 +16,7 @@ f32 DefaultWalkSpeed = 2.0f;
 f32 DefaultRunSpeed = 4.0f;
 f32 DefaultJumpSpeed = 32.0f;
 
-extern s32 D_8010C92C;
+extern s32 PeachDisguiseReapplyDelay;
 
 void update_player_input(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -63,7 +63,7 @@ void reset_player_status(void) {
     PulseStoneNotificationCallback = NULL;
     TalkNotificationCallback = NULL;
     InteractNotificationCallback = NULL;
-    D_8010C92C = 0;
+    PeachDisguiseReapplyDelay = 0;
     PrevPlayerDirection = 0;
     PlayerRunStateTime = 0;
     PrevPlayerCamRelativeYaw = 0;
@@ -84,7 +84,7 @@ void reset_player_status(void) {
         playerStatus->animFlags |= PA_FLAG_USING_PEACH_PHYSICS;
 
         if (gGameStatusPtr->peachFlags & PEACH_FLAG_DISGUISED) {
-            D_8010C92C = 2;
+            PeachDisguiseReapplyDelay = 2;
             playerStatus->peachDisguise = gGameStatusPtr->peachDisguise;
         }
     } else {

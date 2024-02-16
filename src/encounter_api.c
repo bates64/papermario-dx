@@ -25,13 +25,6 @@ API_CALLABLE(IsStartingConversation) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80044238) {
-    Bytecode* args = script->ptrReadPos;
-
-    func_80072BCC(evt_get_variable(script, *args++));
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(LoadDemoBattle) {
     Bytecode* args = script->ptrReadPos;
 

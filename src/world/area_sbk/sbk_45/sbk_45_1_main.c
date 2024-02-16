@@ -54,7 +54,7 @@ EvtScript N(EVS_Main) = {
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
         Call(DisablePulseStone, FALSE)
     EndIf
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Call(N(SpawnSunEffect))
     Call(SetMusicTrack, 0, SONG_DRY_DRY_DESERT, 0, 8)

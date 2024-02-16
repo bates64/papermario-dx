@@ -2,6 +2,7 @@
 #include "npc.h"
 #include "sprite.h"
 #include "world/partners.h"
+#include "world/surfaces.h"
 #include "sprite/player.h"
 
 SHIFT_BSS PlayerStatus gPlayerStatus;
@@ -318,7 +319,7 @@ ApiStatus player_jump(Evt* script, s32 isInitialCall, s32 mode) {
                 anim = ANIM_Mario1_TiredIdle;
             }
             suggest_player_anim_allow_backward(anim);
-            spawn_surface_effects(playerNpc, SURFACE_INTERACT_LAND);
+            npc_surface_spawn_fx(playerNpc, SURFACE_INTERACT_LAND);
         }
 
         if (mode == 0 || mode == 2) {
@@ -329,7 +330,7 @@ ApiStatus player_jump(Evt* script, s32 isInitialCall, s32 mode) {
             if (colliderID >= 0) {
                 playerStatus->pos.y = yTemp;
                 player_handle_floor_collider_type(colliderID);
-                handle_floor_behavior();
+                player_surface_spawn_fx();
             }
         }
         return ApiStatus_DONE1;

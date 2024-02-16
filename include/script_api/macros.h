@@ -696,6 +696,23 @@
         End \
     }
 
+#define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, modelID, swingDir, sounds) \
+    { \
+        SetGroup(EVT_GROUP_1B) \
+        Call(DisablePlayerInput, TRUE) \
+        Call(UseDoorSounds, sounds) \
+        Set(LVar0, exitIdx) \
+        Set(LVar1, colliderID) \
+        Set(LVar2, modelID) \
+        Set(LVar3, swingDir) \
+        Exec(ExitSingleDoor) \
+        Wait(17) \
+        Call(GotoMap, Ref(map), entryIdx) \
+        Wait(100) \
+        Return \
+        End \
+    }
+
 #define EVT_EXIT_SPLIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, topModelID, bottomModelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_1B) \
@@ -729,24 +746,45 @@
         End \
     }
 
-// only set perspective to standard values
-#define SetUP_CAMERA_MINIMAL() \
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
+#define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
+    { \
+        SetGroup(EVT_GROUP_1B) \
+        Call(DisablePlayerInput, TRUE) \
+        Call(UseDoorSounds, sounds) \
+        Set(LVar0, exitIdx) \
+        Set(LVar1, colliderID) \
+        Set(LVar2, leftDoorModelID) \
+        Set(LVar3, rightDoorModelID) \
+        Exec(ExitDoubleDoor) \
+        Wait(17) \
+        Call(GotoMap, Ref(map), entryIdx) \
+        Wait(100) \
+        Return \
+        End \
+    }
 
-#define EVT_SETUP_CAMERA_DEFAULT() \
+/// Enable camera using standard parameters for clip distances and FOV
+/// @param r background red color
+/// @param g background green color
+/// @param b background blue color
+#define EVT_SETUP_CAMERA_DEFAULT(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
-    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
+    Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
     Call(SetCamEnabled, CAM_DEFAULT, TRUE)
 
-#define SetUP_CAMERA_NO_LEAD() \
+/// Enable camera using standard parameters for clip distances and FOV with LeadPlayer disabled
+/// @param r background red color
+/// @param g background green color
+/// @param b background blue color
+#define EVT_SETUP_CAMERA_NO_LEAD(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
-    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE) \
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
+    Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
+    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
+    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
 
-// same as SetUP_CAMERA_NO_LEAD with calls reordered
-#define SetUP_CAMERA_ALT_NO_LEAD() \
-    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
+/// Enable camera for `AREA_MIM` using a closer far clip distance and appropriate background color
+#define EVT_SETUP_CAMERA_MIM() \
+    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650) \
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
     Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
     Call(SetCamEnabled, CAM_DEFAULT, TRUE)

@@ -24,42 +24,16 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_ExitDoors_obk_01_5) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, obk_09_ENTRY_0)
-    Set(LVar1, COLLIDER_tt1)
-    Set(LVar2, MODEL_d1_2)
-    Set(LVar3, MODEL_d1_1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_01"), obk_01_ENTRY_5)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_obk_01_5) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_09_ENTRY_0, "obk_01", obk_01_ENTRY_5,
+    COLLIDER_tt1, MODEL_d1_2, MODEL_d1_1, DOOR_SOUNDS_CREAKY);
 
-EvtScript N(EVS_ExitDoors_obk_01_6) = {
-    SetGroup(EVT_GROUP_1B)
-    Call(DisablePlayerInput, TRUE)
-    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
-    Set(LVar0, obk_09_ENTRY_1)
-    Set(LVar1, COLLIDER_tt2)
-    Set(LVar2, MODEL_d2_2)
-    Set(LVar3, MODEL_d2_1)
-    Exec(ExitDoubleDoor)
-    Wait(17)
-    Call(GotoMap, Ref("obk_01"), obk_01_ENTRY_6)
-    Wait(100)
-    Return
-    End
-};
+EvtScript N(EVS_ExitDoors_obk_01_6) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(obk_09_ENTRY_1, "obk_01", obk_01_ENTRY_6,
+    COLLIDER_tt2, MODEL_d2_2, MODEL_d2_1, DOOR_SOUNDS_CREAKY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, obk_09_ENTRY_2)
         Call(MakeNpcs, FALSE, Ref(N(EpilogueNPCs)))

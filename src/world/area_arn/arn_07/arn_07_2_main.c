@@ -136,6 +136,7 @@ EvtScript N(EVS_RespawnStarCard) = {
 
 EvtScript N(EVS_ExitDoor_arn_08_0) = EVT_EXIT_SINGLE_DOOR(arn_07_ENTRY_0, "arn_08", arn_08_ENTRY_0,
     COLLIDER_tt3, MODEL_o39, DOOR_SWING_OUT);
+
 EvtScript N(EVS_ExitWalk_arn_03_0) = EVT_EXIT_WALK(60, arn_07_ENTRY_1, "arn_03", arn_03_ENTRY_0);
 EvtScript N(EVS_ExitWalk_mim_12_1) = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12", mim_12_ENTRY_1);
 
@@ -320,7 +321,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GUSTY_GULCH)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_ALT_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_GustyGulch, TRUE)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)

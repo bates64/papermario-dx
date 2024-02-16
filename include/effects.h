@@ -84,22 +84,18 @@ typedef struct CloudPuffFXData {
     /* 0x06 */ s16 timeLeft;
     /* 0x08 */ u8 alpha;
     /* 0x09 */ char unk_09[0x3];
-    /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-    /* 0x24 */ f32 unk_24;
-    /* 0x28 */ f32 unk_28;
-    /* 0x2C */ f32 unk_2C;
-    /* 0x30 */ f32 unk_30;
-    /* 0x34 */ f32 unk_34;
-    /* 0x38 */ f32 unk_38;
-    /* 0x3C */ f32 unk_3C;
+    /* 0x0C */ Vec3f pos;
+    /* 0x18 */ Vec3f scale;
+    /* 0x24 */ f32 rescaleX;
+    /* 0x28 */ f32 rescaleY;
+    /* 0x2C */ f32 rescalePhase;
+    /* 0x30 */ f32 radialVel;
+    /* 0x34 */ f32 velY;
+    /* 0x38 */ f32 accelY;
+    /* 0x3C */ f32 jerkY;
     /* 0x40 */ s32 unk_40;
-    /* 0x44 */ f32 unk_44;
-    /* 0x48 */ f32 unk_48;
+    /* 0x44 */ f32 dirX;
+    /* 0x48 */ f32 dirZ;
 } CloudPuffFXData; // size = 0x4C
 
 typedef struct CloudTrailFXData {
@@ -132,15 +128,9 @@ typedef struct FootprintFXData {
     /* 0x06 */ s16 lifetime;
     /* 0x08 */ u8 alpha;
     /* 0x09 */ char unk_09[0x3];
-    /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ f32 unk_10;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
-    /* 0x24 */ f32 unk_24;
-    /* 0x28 */ f32 unk_28;
-    /* 0x2C */ f32 unk_2C;
+    /* 0x0C */ Vec3f pos;
+    /* 0x18 */ Vec3f scale; /* unused */
+    /* 0x24 */ Vec3f rot;
     /* 0x30 */ Mtx mtx;
     /* 0x70 */ s32 unk_70;
     /* 0x74 */ char unk_74[0x8];

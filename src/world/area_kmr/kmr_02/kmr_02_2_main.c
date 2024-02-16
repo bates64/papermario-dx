@@ -11,8 +11,6 @@ EvtScript N(EVS_ExitWalk_kmr_05_1) = EVT_EXIT_WALK(60, kmr_02_ENTRY_2, "kmr_05",
 EvtScript N(EVS_ExitWalk_kmr_00_0) = EVT_EXIT_WALK(60, kmr_02_ENTRY_1, "kmr_00", kmr_00_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kmr_09_0) = EVT_EXIT_WALK(60, kmr_02_ENTRY_0, "kmr_09", kmr_09_ENTRY_0);
 
-MAP_RODATA_PAD(1, exits);
-
 EvtScript N(EVS_SetupGoombaRoadGate) = {
     IfGe(GB_StoryProgress, STORY_CH0_TWINK_GAVE_LUCKY_STAR)
         Call(RotateGroup, MODEL_g197, 120, 0, -1, 0)
@@ -126,7 +124,7 @@ API_CALLABLE(N(SetMapChangeFadeSlowest)) {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_GOOMBA_VILLAGE)
     Call(SetSpriteShading, SHADING_NONE)
-    SetUP_CAMERA_NO_LEAD()
+    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetLoadType, LVar0)
     IfEq(LVar0, LOAD_FROM_FILE_SELECT)
         Goto(10)
