@@ -768,6 +768,22 @@ HudScript HES_StatusSPShine = {
     hs_End
 };
 
+HudScript HES_SmallStarPoint = {
+    hs_SetVisible
+    hs_SetTileSize(HUD_ELEMENT_SIZE_8x8)
+    hs_Loop
+        hs_SetIcon(2, anim_sp_small_0)
+        hs_SetIcon(2, anim_sp_small_1)
+        hs_SetIcon(2, anim_sp_small_2)
+        hs_SetIcon(2, anim_sp_small_3)
+        hs_SetIcon(2, anim_sp_small_4)
+        hs_SetIcon(2, anim_sp_small_5)
+        hs_SetIcon(2, anim_sp_small_6)
+        hs_SetIcon(2, anim_sp_small_7)
+    hs_Restart
+    hs_End
+};
+
 HudScript HES_StatusStarPiece = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_16x16)
@@ -2085,6 +2101,24 @@ HudScript HES_StatusCoin = {
         hs_SetCI(3, ui_status_coin_9)
     hs_Restart
     hs_End
+};
+
+HudScript HES_CoinSparkleA = HES_COIN_SPARKLE(-8,  0);
+HudScript HES_CoinSparkleB = HES_COIN_SPARKLE( 8,  8);
+HudScript HES_CoinSparkleC = HES_COIN_SPARKLE(-4,  8);
+HudScript HES_CoinSparkleD = HES_COIN_SPARKLE( 6, -6);
+HudScript HES_CoinSparkleE = HES_COIN_SPARKLE( 1, -8);
+
+HudScript HES_StatusCoinSparkle = {
+        hs_SetVisible
+        hs_SetTileSize(HUD_ELEMENT_SIZE_8x8)
+        hs_RandomBranch(
+            HS_PTR(HES_CoinSparkleA),
+            HS_PTR(HES_CoinSparkleB),
+            HS_PTR(HES_CoinSparkleC),
+            HS_PTR(HES_CoinSparkleD),
+            HS_PTR(HES_CoinSparkleE))
+        hs_End
 };
 
 HudScript HES_StatusStarPoint = {

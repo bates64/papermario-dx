@@ -327,7 +327,7 @@ ApiStatus player_jump(Evt* script, s32 isInitialCall, s32 mode) {
 
             yTemp = player_check_collision_below(playerNpc->jumpVel, &colliderID);
 
-            if (colliderID >= 0) {
+            if (colliderID > NO_COLLIDER) {
                 playerStatus->pos.y = yTemp;
                 player_handle_floor_collider_type(colliderID);
                 player_surface_spawn_fx();

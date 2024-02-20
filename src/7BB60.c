@@ -150,7 +150,7 @@ void handle_jumping_land_on_switch(void) {
         groundPosY = player_check_collision_below(player_fall_distance(), &colliderID);
         player_handle_floor_collider_type(colliderID);
         playerStatus->pos.y = groundPosY;
-        if (colliderID >= 0) {
+        if (colliderID > NO_COLLIDER) {
             if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
                 anim = ANIM_Mario1_Land;
             } else {
@@ -327,7 +327,7 @@ void player_handle_floor_collider_type(s32 colliderID) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         s32 surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
         switch (surfaceType) {
             case SURFACE_TYPE_WATER:
@@ -887,7 +887,7 @@ void phys_main_collision_below(void) {
     if (playerStatus->timeInAir == 0) {
         collisionStatus->curFloor = colliderID;
     }
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         playerStatus->groundAnglesXZ.x = hitDirX;
         playerStatus->groundAnglesXZ.y = hitDirZ;
     }

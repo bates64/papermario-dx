@@ -17,7 +17,7 @@ EvtScript N(EVS_Chest_ShowGotItem) = {
 s32 N(ChestItems)[] = {
     ITEM_POWER_RUSH,
     ITEM_SHOOTING_STAR,
-    ITEM_DEEP_FOCUS1,
+    ITEM_DEEP_FOCUS_A,
     ITEM_LAST_STAND,
     ITEM_JAMMIN_JELLY,
 };
@@ -172,7 +172,7 @@ EvtScript N(EVS_Interact_MagicChest_Mario) = {
         CaseEq(ITEM_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_00D4, 160, 40)
         CaseOrEq(ITEM_POWER_RUSH)
-        CaseOrEq(ITEM_DEEP_FOCUS1)
+        CaseOrEq(ITEM_DEEP_FOCUS_A)
         CaseOrEq(ITEM_LAST_STAND)
             SetGroup(EVT_GROUP_00)
             Call(SetTimeFreezeMode, TIME_FREEZE_FULL)

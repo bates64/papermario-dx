@@ -264,7 +264,7 @@ def write_ninja_rules(
 
     ninja.rule(
         "item_data",
-        command=f"$python {BUILD_TOOLS}/item_data.py $out $in",
+        command=f"$python {BUILD_TOOLS}/item_data.py $out $in $asset_stack",
     )
 
     ninja.rule(
@@ -615,12 +615,11 @@ class Configure:
                 self.build_path() / "include/item_data.inc.c",
                 self.build_path() / "include/item_enum.h",
             ],
-            [
-                Path("src/item_table.yaml"),
-                Path("src/item_entity_scripts.yaml"),
-                Path("src/item_hud_scripts.yaml"),
-            ],
+            [Path("src/item_table.yaml")],
             "item_data",
+            variables={
+                "asset_stack": ",".join(self.asset_stack),
+            },
         )
 
         build(

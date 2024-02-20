@@ -24,6 +24,7 @@ extern s32 StatusBarSPIncrementOffsets[];
 
 extern HudScript* DigitHudScripts[10];
 
+extern HudScript HES_StatusCoinSparkle;
 extern HudScript HES_StatusHP;
 extern HudScript HES_StatusHP_de;
 extern HudScript HES_StatusHP_fr;
@@ -34,7 +35,6 @@ extern HudScript HES_StatusFP_de;
 extern HudScript HES_StatusFP_fr;
 extern HudScript HES_StatusFP_es;
 extern HudScript HES_StatusFlower;
-extern HudScript HES_Item_CoinSparkleRandom;
 extern HudScript HES_StatusStarPoint;
 extern HudScript HES_StatusStar1;
 extern HudScript HES_StatusTimes;
@@ -593,7 +593,7 @@ void initialize_status_bar(void) {
     hud_element_set_flags(iconIndex, HUD_ELEMENT_FLAG_80);
     hud_element_clear_flags(iconIndex, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->coinSparkleHID = iconIndex = hud_element_create(&HES_Item_CoinSparkleRandom);
+    statusBar->coinSparkleHID = iconIndex = hud_element_create(&HES_StatusCoinSparkle);
     hud_element_set_flags(iconIndex, HUD_ELEMENT_FLAG_80);
     hud_element_clear_flags(iconIndex, HUD_ELEMENT_FLAG_FILTER_TEX);
 

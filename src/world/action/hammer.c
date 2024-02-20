@@ -73,7 +73,7 @@ void action_hammer_play_hit_fx(s32 hitID) {
     sinTheta = sin_rad(theta) * 25.0f;
     cosTheta = cos_rad(theta) * -25.0f;
 
-    if (hitID < 0) {
+    if (hitID <= NO_COLLIDER) {
         numParticles = 6;
         x = playerStatus->pos.x + sinTheta;
         y = playerStatus->pos.y;
@@ -245,21 +245,21 @@ void action_update_hammer(void) {
         if (gPlayerData.hammerLevel == 2) {
             soundID = SOUND_HAMMER_SWING_3;
             anim = ANIM_MarioW1_Smash3_Hit;
-            if (HammerHit->hitID < 0) {
+            if (HammerHit->hitID <= NO_COLLIDER) {
                 soundID = SOUND_HAMMER_SWING_3;
                 anim = ANIM_MarioW1_Smash3_Miss;
             }
         } else if (gPlayerData.hammerLevel == 1) {
             soundID = SOUND_HAMMER_SWING_2;
             anim = ANIM_MarioW1_Smash2_Hit;
-            if (HammerHit->hitID < 0) {
+            if (HammerHit->hitID <= NO_COLLIDER) {
                 soundID = SOUND_HAMMER_SWING_2;
                 anim = ANIM_MarioW1_Smash2_Miss;
             }
         } else {
             soundID = SOUND_HAMMER_SWING_1;
             anim = ANIM_MarioW1_Smash1_Hit;
-            if (HammerHit->hitID < 0) {
+            if (HammerHit->hitID <= NO_COLLIDER) {
                 soundID = SOUND_HAMMER_SWING_1;
                 anim = ANIM_MarioW1_Smash1_Miss;
             }
@@ -386,11 +386,11 @@ void func_802B6820_E256F0(void) {
         if (collisionStatus->lastWallHammered >= 0 && (collisionStatus->lastWallHammered & COLLISION_WITH_ENTITY_BIT)) {
             get_entity_by_index(collisionStatus->lastWallHammered)->collisionTimer = 0;
             playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
-        } else if (HammerHit->hitID < 0) {
+        } else if (HammerHit->hitID <= NO_COLLIDER) {
             playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
         }
 
-        if (HammerHit->hitID < 0 && gPlayerData.hammerLevel >= 2) {
+        if (HammerHit->hitID <= NO_COLLIDER && gPlayerData.hammerLevel >= 2) {
             gCurrentHiddenPanels.tryFlipTrigger = TRUE;
             gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
         }

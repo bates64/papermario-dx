@@ -130,7 +130,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
     z = inputZ + sinTemp;
     length = inputLength;
     hitID = player_raycast_down(&x, &y, &z, &length);
-    if (hitID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID > NO_COLLIDER && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -147,7 +147,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
     z = inputZ - sinTemp;
     length = inputLength;
     hitID = player_raycast_down(&x, &y, &z, &length);
-    if (hitID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID > NO_COLLIDER && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -164,7 +164,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
     z = inputZ;
     length = inputLength;
     hitID = player_raycast_down(&x, &y, &z, &length);
-    if (hitID >= 0 && length <= fabsf(*outLength)) {
+    if (hitID > NO_COLLIDER && length <= fabsf(*outLength)) {
         *hitRx = -gGameStatusPtr->playerGroundTraceAngles.x;
         *hitRz = -gGameStatusPtr->playerGroundTraceAngles.z;
         *outX = x;
@@ -176,7 +176,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
         ret = hitID;
     }
 
-    if (ret < 0) {
+    if (ret <= NO_COLLIDER) {
         *outX = x;
         *outY = y;
         *outZ = z;
@@ -222,11 +222,11 @@ HitID player_raycast_down(f32* x, f32* y, f32* z, f32* length) {
     }
 
     colliderID = test_ray_colliders(COLLIDER_FLAG_IGNORE_PLAYER, *x, *y, *z, 0, -1.0f, 0, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         ret = colliderID;
     }
 
-    if (ret >= 0) {
+    if (ret > NO_COLLIDER) {
         *length = hitDepth;
         *x = hitX;
         *y = hitY;
@@ -277,28 +277,28 @@ HitID player_raycast_up_corners(PlayerStatus* player, f32* posX, f32* posY, f32*
     ret = NO_COLLIDER;
     hitID = player_raycast_up_corner(&startX, &startY, &startZ, &depth);
 
-    if (hitID < 0) {
+    if (hitID <= NO_COLLIDER) {
         startX = x - deltaX;
         startY = y;
         startZ = z - deltaZ;
         hitID = player_raycast_up_corner(&startX, &startY, &startZ, &depth);
     }
 
-    if (hitID < 0) {
+    if (hitID <= NO_COLLIDER) {
         startX = x + deltaZ;
         startY = y;
         startZ = z + deltaX;
         hitID = player_raycast_up_corner(&startX, &startY, &startZ, &depth);
     }
 
-    if (hitID < 0) {
+    if (hitID <= NO_COLLIDER) {
         startX = x - deltaZ;
         startY = y;
         startZ = z - deltaX;
         hitID = player_raycast_up_corner(&startX, &startY, &startZ, &depth);
     }
 
-    if (hitID >= 0) {
+    if (hitID > NO_COLLIDER) {
         *posX = startX;
         *posY = startY;
         *posZ = startZ;
@@ -306,7 +306,7 @@ HitID player_raycast_up_corners(PlayerStatus* player, f32* posX, f32* posY, f32*
         ret = hitID;
     }
 
-    if (ret < 0) {
+    if (ret <= NO_COLLIDER) {
         *posX = startX;
         *posY = startY;
         *posZ = startZ;
@@ -409,7 +409,7 @@ HitID player_test_lateral_overlap(s32 mode, PlayerStatus* playerStatus, f32* x, 
         targetDz = length * cosTheta;
     }
 
-    if (hitID >= 0) {
+    if (hitID > NO_COLLIDER) {
         originalDepth = length + radius;
         if (hitDepth <= originalDepth) {
             depthDiff = hitDepth - originalDepth;
@@ -591,7 +591,7 @@ HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* x, f32* y,
     targetDz = length * cosTheta;
 
     hitID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + height, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (hitID >= 0 && (depthDiff = hitDepth, depthDiff <= length + radius)) {
+    if (hitID > NO_COLLIDER && (depthDiff = hitDepth, depthDiff <= length + radius)) {
         depthDiff -= (length + radius);
         dx = depthDiff * sinTheta;
         dz = depthDiff * cosTheta;
@@ -602,7 +602,7 @@ HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* x, f32* y,
     } else {
         height = playerStatus->colliderHeight * 0.75;
         hitID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + height, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-        if (hitID >= 0 && (depthDiff = hitDepth, depthDiff <= length + radius)) {
+        if (hitID > NO_COLLIDER && (depthDiff = hitDepth, depthDiff <= length + radius)) {
             depthDiff -= (length + radius);
             dx = depthDiff * sinTheta;
             dz = depthDiff * cosTheta;

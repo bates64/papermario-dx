@@ -19,7 +19,7 @@ enum {
 #define is_Loop ITEM_SCRIPT_OP_Loop,
 #define is_RandomRestart(max, cutoff) ITEM_SCRIPT_OP_RandomRestart, max, cutoff,
 
-// item entity script templates used to generate scripts via src/item_entity_scripts.yaml
+// item entity script templates used to generate scripts
 
 #define IES_TEMPLATE_STANDARD(icon) \
     { \
@@ -28,16 +28,17 @@ enum {
         is_End \
     }
 
-#define IES_TEMPLATE_BASIC(icon) \
-    { \
-        is_SetIcon(255, icon) \
-        is_End \
-    }
-
 #define IES_TEMPLATE_HEART() \
     { \
         is_SetIcon(10, anim_heart_0) \
         is_SetIcon(6, anim_heart_1) \
+        is_Restart \
+        is_End \
+    }
+
+#define IES_TEMPLATE_HEART_PIECE() \
+    { \
+        is_SetIcon(60, anim_heart_piece) \
         is_Restart \
         is_End \
     }
@@ -68,7 +69,7 @@ enum {
         is_End \
     }
 
-#define IES_TEMPLATE_SP() \
+#define IES_TEMPLATE_STAR_POINT() \
     { \
         is_SetIcon(2, anim_sp_0) \
         is_SetIcon(2, anim_sp_1) \
@@ -82,7 +83,7 @@ enum {
         is_End \
     }
 
-#define IES_TEMPLATE_HP() \
+#define IES_TEMPLATE_HEART_POINT() \
     { \
         is_SetIcon(8, anim_hp_0) \
         is_SetIcon(5, anim_hp_1) \
@@ -91,7 +92,7 @@ enum {
         is_End \
     }
 
-#define IES_TEMPLATE_FP() \
+#define IES_TEMPLATE_FLOWER_POINT() \
     { \
         is_SetIcon(8, anim_fp_0) \
         is_SetIcon(5, anim_fp_1) \
