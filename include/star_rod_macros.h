@@ -43,10 +43,16 @@
     EVT_MAKE_SIGNPOST(args)
 
 #define EVT_MAKE_HIDDEN_PANEL(x, y, z, a, model, flag) \
-    Call(MakeEntity, Ref(Entity_HiddenPanel), -650, 75, -50, 0, model, MAKE_ENTITY_END) \
+    Call(MakeEntity, Ref(Entity_HiddenPanel), x, y, z, a, model, MAKE_ENTITY_END) \
     Call(AssignPanelFlag, flag)
 
 #define EVT_GEN_HIDDEN_PANEL(args) \
     EVT_MAKE_HIDDEN_PANEL(args)
+
+#define EVT_MAKE_ARROW_SIGN(x, y, z, a, pitch) \
+    Call(MakeEntity, Ref(Entity_ArrowSign), x, y, z, a, pitch, MAKE_ENTITY_END) \
+
+#define EVT_GEN_ARROW_SIGN(args) \
+    EVT_MAKE_ARROW_SIGN(args)
 
 #endif
