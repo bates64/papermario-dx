@@ -431,7 +431,7 @@ extern EntityBlueprint Entity_PadlockRedFace;
 extern EntityBlueprint Entity_PadlockBlueFace;
 extern EntityBlueprint Entity_BoardedFloor;
 extern EntityBlueprint Entity_BombableRock;
-extern EntityBlueprint Entity_BombableRock2;
+extern EntityBlueprint Entity_BombableRockWide;
 extern EntityBlueprint Entity_Tweester;
 extern EntityBlueprint Entity_StarBoxLauncher;
 extern EntityBlueprint Entity_CymbalPlant;
