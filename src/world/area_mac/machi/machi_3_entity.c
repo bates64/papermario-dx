@@ -80,7 +80,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_YellowBlock), 200, 110, -326, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_YellowBlock), 240, 100, -326, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_GiantChest), -206, 0, -373, 0, ITEM_SUPER_HAMMER, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_Chest), -131, 0, -359, 0, 6, MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_Chest), -131, 0, -359, 0, ITEM_ULTRA_HAMMER, MAKE_ENTITY_END)
     Call(MakeItemEntity, ITEM_MUSHROOM, 70, 0, 0, ITEM_SPAWN_MODE_KEY, 1)
     Call(MakeItemEntity, ITEM_MUSHROOM, 94, 0, 0, ITEM_SPAWN_MODE_KEY, 1)
     Call(MakeItemEntity, ITEM_MUSHROOM, 118, 0, 0, ITEM_SPAWN_MODE_KEY, 1)
