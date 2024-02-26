@@ -21,9 +21,7 @@ extern Gfx D_0A000D18_E9D618[];
 extern Gfx Entity_SpinningFlower_Render[];
 
 BSS f32 D_802BCE20;
-BSS u16 D_802BCE30;
-BSS u16 D_802BCE32;
-BSS u16 D_802BCE34;
+BSS Vec3s FlowerGoalPosition;
 
 void entity_SpinningFlower_setupGfx(s32 entityIndex) {
     Entity* entity = get_entity_by_index(entityIndex);
@@ -58,9 +56,9 @@ void func_802BB000_E2D930(Entity* entity) {
         if (playerStatus->actionState == ACTION_STATE_RIDE) {
             playerStatus->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
         } else if (playerStatus->actionState != ACTION_STATE_USE_SPINNING_FLOWER) {
-            D_802BCE34 = data->pos.x;
-            D_802BCE30 = data->pos.y;
-            D_802BCE32 = data->pos.z;
+            FlowerGoalPosition.x = data->goalPos.x;
+            FlowerGoalPosition.y = data->goalPos.y;
+            FlowerGoalPosition.z = data->goalPos.z;
             set_action_state(ACTION_STATE_USE_SPINNING_FLOWER);
         }
     }
@@ -130,9 +128,9 @@ void entity_SpinningFlower_init(Entity* entity) {
         z = entity->pos.z;
     }
 
-    data->pos.x = x;
-    data->pos.y = y;
-    data->pos.z = z;
+    data->goalPos.x = x;
+    data->goalPos.y = y;
+    data->goalPos.z = z;
     data->state = 0;
     entity->renderSetupFunc = entity_SpinningFlower_setupGfx;
 }
