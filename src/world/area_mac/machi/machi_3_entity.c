@@ -72,7 +72,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_GreenStompSwitch), 68, 0, -92, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BlueSwitch), 119, 0, -166, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_RedSwitch), 169, 0, -166, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 0, 60, -326, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 0, 60, -326, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_MulticoinBlock), 40, 60, -326, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BrickBlock), 80, 100, -326, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BrickBlock), 120, 104, -326, 0, MAKE_ENTITY_END)
