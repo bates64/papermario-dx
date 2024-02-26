@@ -20,9 +20,9 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_Hammer3BlockTiny), 520, 0, 50, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_PowBlock), 644, 60, 118, 0, MAKE_ENTITY_END)
     Call(MakeEntity, Ref(Entity_BoardedFloor), 416, 0, 232, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), 336, 0, 232, 0, -1, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), 270, 0, 232, 0, ITEM_MUSHROOM, 0, MAKE_ENTITY_END)
-    Call(MakeEntity, Ref(Entity_WoodenCrate), 270, 30, 232, 0, ITEM_MUSHROOM, 0, MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_WoodenCrate), 336, 0, 232, 0, -1, MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_WoodenCrate), 270, 0, 232, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
+    Call(MakeEntity, Ref(Entity_WoodenCrate), 270, 30, 232, 0, ITEM_MUSHROOM, MAKE_ENTITY_END)
     Return
     End
 };
