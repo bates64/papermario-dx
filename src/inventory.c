@@ -1739,10 +1739,10 @@ void reset_status_bar(void) {
 s32 is_ability_active(s32 ability) {
     PlayerData* playerData = &gPlayerData;
     s32 attackFXArray[6];
-    s32 ret;
     s32 attackFXIndex;
+    s32 badgeItemID;
     s32 badgeMoveID;
-    u8* moveID;
+    s32 ret;
     s32 i;
 
     ret = 0;
@@ -1757,11 +1757,10 @@ s32 is_ability_active(s32 ability) {
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        badgeMoveID = playerData->equippedBadges[i];
+        badgeItemID = playerData->equippedBadges[i];
 
-        if (badgeMoveID != 0) {
-            moveID = &gItemTable[badgeMoveID].moveID;
-            badgeMoveID = *moveID;
+        if (badgeItemID != ITEM_NONE) {
+            badgeMoveID = gItemTable[badgeItemID].moveID;
         }
 
         switch (ability) {
