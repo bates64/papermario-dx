@@ -168,14 +168,23 @@ NpcData N(NpcData_HurtPlant) = {
     .id = NPC_HurtPlant,
     .pos = { 400.0f, 0.0f, 235.0f },
     .yaw = 270,
-    HURT_PLANT_NPC_DATA
+    .settings = &N(NpcSettings_HurtPlant),
+    .flags = HURT_PLANT_FLAGS,
+    .drops = HURT_PLANT_DROPS,
+    .animations = HURT_PLANT_ANIMS,
+    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .tattle = MSG_NpcTattle_HeartPlant,
 };
 
 NpcData N(NpcData_MBush_01) = {
     .id = NPC_MBush_01,
     .pos = { -407.0f, 0.0f, -42.0f },
     .yaw = 90,
-    MBUSH_NPC_DATA
+    .settings = &N(NpcSettings_MBush),
+    .flags = MBUSH_FLAGS,
+    .drops = MBUSH_DROPS,
+    .animations = MBUSH_ANIMS,
+    .tattle = MSG_NpcTattle_MBush,
     .init = &N(EVS_NpcInit_MBush_01),
 };
 
@@ -183,21 +192,33 @@ NpcData N(NpcData_MBush_02) = {
     .id = NPC_MBush_02,
     .pos = { -120.0f, 0.0f, -395.0f },
     .yaw = 90,
-    MBUSH_NPC_DATA
+    .settings = &N(NpcSettings_MBush),
+    .flags = MBUSH_FLAGS,
+    .drops = MBUSH_DROPS,
+    .animations = MBUSH_ANIMS,
+    .tattle = MSG_NpcTattle_MBush,
 };
 
 NpcData N(NpcData_HeartPlant_01) = {
     .id = NPC_HeartPlant_01,
     .pos = { -219.0f, 0.0f, 420.0f },
     .yaw = 270,
-    HEART_PLANT_NPC_DATA
+    .settings = &N(NpcSettings_HeartPlant),
+    .flags = HEART_PLANT_FLAGS,
+    .drops = NO_DROPS,
+    .animations = HEART_PLANT_ANIMS,
+    .tattle = MSG_NpcTattle_HeartPlant,
 };
 
 NpcData N(NpcData_HeartPlant_02) = {
     .id = NPC_HeartPlant_02,
     .pos = { -157.0f, 0.0f, 452.0f },
     .yaw = 270,
-    HEART_PLANT_NPC_DATA
+    .settings = &N(NpcSettings_HeartPlant),
+    .flags = HEART_PLANT_FLAGS,
+    .drops = NO_DROPS,
+    .animations = HEART_PLANT_ANIMS,
+    .tattle = MSG_NpcTattle_HeartPlant,
 };
 
 NpcData N(NpcData_YoshiKid) = {

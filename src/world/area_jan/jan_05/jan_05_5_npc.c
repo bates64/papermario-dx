@@ -303,7 +303,12 @@ NpcData N(NpcData_HurtPlant) = {
     .id = NPC_HurtPlant,
     .pos = { 375.0f, 0.0f, 260.0f },
     .yaw = 270,
-    HURT_PLANT_NPC_DATA
+    .settings = &N(NpcSettings_HurtPlant),
+    .flags = HURT_PLANT_FLAGS,
+    .drops = HURT_PLANT_DROPS,
+    .animations = HURT_PLANT_ANIMS,
+    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .tattle = MSG_NpcTattle_HeartPlant,
 };
 
 NpcData N(NpcData_MBush) = {
