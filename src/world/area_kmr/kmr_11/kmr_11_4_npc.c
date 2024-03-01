@@ -420,7 +420,7 @@ NpcData N(NpcData_Kammy) = {
     .settings = &N(NpcSettings_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {
-        .idle = ANIM_WorldKammy_Anim0A
+        .idle = ANIM_WorldKammy_Anim0A,
     },
 };
 
