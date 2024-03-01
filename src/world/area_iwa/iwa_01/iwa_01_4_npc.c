@@ -143,7 +143,7 @@ NpcData N(NpcData_Cleft) = {
             .wanderSize = { 0 },
             .detectShape = SHAPE_CYLINDER,
             .detectPos  = { -655, 0, 125 },
-            .detectSize = { 125, 125 },
+            .detectSize = { 125 },
         }
     },
     .settings = &N(NpcSettings_Cleft),

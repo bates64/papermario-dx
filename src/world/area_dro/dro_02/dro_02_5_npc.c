@@ -367,7 +367,7 @@ NpcData N(PassiveNPCs)[] = {
                 .wanderSize = { 146, 38 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0, 0 },
+                .detectSize = { 0 },
             }
         },
         .init = &N(EVS_NpcInit_Archeologist),
@@ -404,10 +404,10 @@ NpcData N(PassiveNPCs)[] = {
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -20, 0, 40 },
-                .wanderSize = { 60, 0 },
+                .wanderSize = { 60 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 0, 0, 0 },
-                .detectSize = { 0, 0 },
+                .detectSize = { 0 },
             }
         },
         .init = &N(EVS_NpcInit_MrE),

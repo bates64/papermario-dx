@@ -9,6 +9,7 @@ SHIFT_BSS s32 NpcHitQueryColliderID;
 
 PlayerStatus* gPlayerStatusPtr = &gPlayerStatus;
 
+// not used outside this file
 HitID npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth) {
     f32 cHitX;
     f32 cHitY;
@@ -71,6 +72,7 @@ HitID npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f
     return colliderID;
 }
 
+// used specifically for partners
 b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius) {
     f32 startX;
     f32 startY;
@@ -180,6 +182,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
     return FALSE;
 }
 
+// used for non-partner NPCs
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth) {
     f32 startX;
     f32 startY;
@@ -612,6 +615,7 @@ b32 npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* 
 
 // traces lateral collision at position +10, +15, +20, and one unit below height
 // returns number of traces that hit
+// used for partner NPCs
 s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
                                         f32 radius) {
     f32 startX;

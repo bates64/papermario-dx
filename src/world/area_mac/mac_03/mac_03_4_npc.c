@@ -792,7 +792,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -814,7 +814,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -836,7 +836,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -858,7 +858,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -880,7 +880,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -902,7 +902,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -924,7 +924,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -946,7 +946,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -968,7 +968,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -990,7 +990,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_04),
@@ -1012,7 +1012,7 @@ NpcData N(NpcData_LilOinks)[] = {
                 .wanderSize = { 150, 70 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 430, 20, -180 },
-                .detectSize = { 150, 70 },
+                .detectSize = { 150 },
             }
         },
         .init = &N(EVS_NpcInit_Toad_14),

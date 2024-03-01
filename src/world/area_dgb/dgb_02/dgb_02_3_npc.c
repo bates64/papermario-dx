@@ -45,7 +45,7 @@ NpcData N(NpcData_Clubba_02)[] = {
                 .wanderSize = { 40 },
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 320, 0, 175 },
-                .detectSize = { 250, 90 },
+                .detectSize = { 250 },
             }
         },
         .settings = &N(NpcSettings_Clubba_Napping),
