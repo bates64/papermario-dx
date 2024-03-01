@@ -368,7 +368,7 @@ NpcData N(PassiveNPCs)[] = {
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 0, 0, 0 },
                 .detectSize = { 0, 0 },
-            },
+            }
         },
         .init = &N(EVS_NpcInit_Archeologist),
         .settings = &N(NpcSettings_Archeologist),
@@ -408,7 +408,7 @@ NpcData N(PassiveNPCs)[] = {
                 .detectShape = SHAPE_CYLINDER,
                 .detectPos  = { 0, 0, 0 },
                 .detectSize = { 0, 0 },
-            },
+            }
         },
         .init = &N(EVS_NpcInit_MrE),
         .settings = &N(NpcSettings_Dryite_Wander),
