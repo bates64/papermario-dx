@@ -8,4 +8,7 @@
 #define EVT_MAKE_ENTITY(type, args...) \
     Call(MakeEntity, Ref(Entity_##type), args, MAKE_ENTITY_END)
 
+#define GEN_FLOWER_SPAWN_REGION(args...) \
+    EVT_FLOWER_SPAWN_REGION(args)
+
 #endif
