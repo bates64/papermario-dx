@@ -435,7 +435,7 @@ EvtScript N(EVS_TouchPond_After) = {
 
 BombTrigger N(BombTrigger_Pond) = {
     .pos = { 0.0f, -10.0f, 220.0f },
-    .radius = 300
+    .diameter = 300
 };
 
 EvtScript N(EVS_SetupPond) = {

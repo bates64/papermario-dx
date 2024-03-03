@@ -149,7 +149,7 @@ EvtScript N(EVS_UpdateLavaWaves) = {
 
 BombTrigger N(WeakWallBombTrigger) = {
     .pos = { 175.0, 150.0, 15.0 },
-    .radius = 0.0
+    .diameter = 0.0
 };
 
 EvtScript N(EVS_OnBreakWall) = {
