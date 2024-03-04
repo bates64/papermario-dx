@@ -211,7 +211,7 @@ HitID player_raycast_down(f32* x, f32* y, f32* z, f32* length) {
 
     hitDepth = *length;
     entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (entityID >= 0) {
+    if (entityID > NO_COLLIDER) {
         entity = get_entity_by_index(entityID);
         if (entity->alpha < 255) {
             entity->collisionTimer = 4;
@@ -447,7 +447,7 @@ HitID player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 d
     entityID = test_ray_entities(startX, startY, startZ, dirX, dirY, dirZ, hitX, hitY, hitZ, hitDepth, hitNx, hitNy,
                                 hitNz);
     ret = NO_COLLIDER;
-    if (entityID >= 0) {
+    if (entityID > NO_COLLIDER) {
         entity = get_entity_by_index(entityID);
         if (entity->alpha < 255) {
             entity->collisionTimer = 0;
@@ -473,11 +473,11 @@ HitID player_raycast_general(s32 mode, f32 startX, f32 startY, f32 startZ, f32 d
     colliderID = test_ray_colliders(ignoreFlags, startX, startY, startZ, dirX, dirY, dirZ,
         hitX, hitY, hitZ, hitDepth, hitNx, hitNy, hitNz);
 
-    if (ret < 0) {
+    if (ret <= NO_COLLIDER) {
         ret = colliderID;
     }
 
-    if (ret >= 0) {
+    if (ret > NO_COLLIDER) {
         nAngleZ = 180.0f - atan2(0, 0, *hitNz * 100.0, *hitNy * 100.0);
         nAngleX = 180.0f - atan2(0, 0, *hitNx * 100.0, *hitNy * 100.0);
 
@@ -1278,7 +1278,7 @@ void check_for_interactables(void) {
         }
 
         playerStatus->interactingWithID = curInteraction;
-        if (!collidingWithEntity || curInteraction >= 0 && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
+        if (!collidingWithEntity || curInteraction > NO_COLLIDER && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
             if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK || playerStatus->actionState == ACTION_STATE_RUN) {
                 playerStatus->animFlags |= PA_FLAG_INTERACT_PROMPT_AVAILABLE;
                 func_800EF3D4(2);

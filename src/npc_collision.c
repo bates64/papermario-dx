@@ -36,7 +36,7 @@ HitID npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f
     colliderID = test_ray_colliders(ignoreFlags, sx, sy, sz, 0.0f, -1.0f, 0.0f, &cHitX, &cHitY, &cHitZ, &cHitDepth, &cHitNx, &cHitNy, &cHitNz);
     if (!(ignoreFlags & COLLISION_IGNORE_ENTITIES))  {
         entityID = test_ray_entities(*startX, *startY, *startZ, 0.0f, -1.0f, 0.0f, &eHitX, &eHitY, &eHitZ, &eHitDepth, &eHitNx, &eHitNy, &eHitNz);
-        if (entityID >= 0) {
+        if (entityID > NO_COLLIDER) {
             colliderID = entityID | COLLISION_WITH_ENTITY_BIT;
             if (eHitDepth < cHitDepth) {
                 cHitDepth = eHitDepth;
@@ -362,7 +362,7 @@ HitID npc_raycast_up_corner(s32 ignoreFlags, f32* x, f32* y, f32* z, f32* length
     sx = sx2;
     sy = sy2;
     sz = sz2;
-    if (entityID >= 0 && *length > hitDepth) {
+    if (entityID > NO_COLLIDER && *length > hitDepth) {
         ret = entityID | COLLISION_WITH_ENTITY_BIT;
         *length = hitDepth;
         *x = sx;
@@ -476,7 +476,7 @@ void npc_get_slip_vector(f32* outX, f32* outZ, f32 aX, f32 aZ, f32 bX, f32 bZ) {
     *outZ = (aZ - (dotProduct * bZ)) * 0.5f;
 }
 
-s32 npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 radius) {
+HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 radius) {
     f32 outX, outY;
     f32 bX, bZ;
     f32 hitNy;
@@ -503,7 +503,7 @@ s32 npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 len
                                         0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ);
     phi_s5 = FALSE;
 
-    if (raycastHitID >= 0 && hitDepth <= temp_f22) {
+    if (raycastHitID > NO_COLLIDER && hitDepth <= temp_f22) {
         temp_f0 = atan2(0.0f, 0.0f, sqrtf(SQ(bX) + SQ(bZ)), -hitNy);
         if (temp_f0 > 60.0f && temp_f0 < 90.0f) {
             phi_s5 = TRUE;
@@ -572,11 +572,11 @@ b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, 
     s32 ret;
 
     radius *= 0.5f;
-    if (npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) < 0) {
+    if (npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) <= NO_COLLIDER) {
         xTemp = *x;
         yTemp = *y + 10.01f;
         zTemp = *z;
-        ret = npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) >= 0;
+        ret = npc_test_move_with_slipping(ignoreFlags, &xTemp, &yTemp, &zTemp, fabsf(length), yaw, radius) > NO_COLLIDER;
         *x = xTemp;
         *z = zTemp;
     } else {
@@ -628,7 +628,7 @@ s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z,
     startX = *x;
     startY = *y + height - 1.0f;
     startZ = *z;
-    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) >= 0) {
+    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) > NO_COLLIDER) {
         *x = startX;
         *z = startZ;
         ret = 4;
@@ -637,7 +637,7 @@ s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z,
     startX = *x;
     startY = *y + 20.0f;
     startZ = *z;
-    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) >= 0) {
+    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) > NO_COLLIDER) {
         *x = startX;
         *z = startZ;
         ret = 3;
@@ -646,7 +646,7 @@ s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z,
     startX = *x;
     startY = *y + 15.01f;
     startZ = *z;
-    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) >= 0) {
+    if (npc_test_move_with_slipping(ignoreFlags, &startX, &startY, &startZ, fabsf(length), yaw, radius) > NO_COLLIDER) {
         *x = startX;
         *z = startZ;
         ret = 2;

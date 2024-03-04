@@ -146,7 +146,7 @@ s32 func_802B62A4_E25174(void) {
         y = playerY;
         z = playerZ - (outCosTheta * i);
         ret = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
-        if (ret >= 0) {
+        if (ret > NO_COLLIDER) {
             HammerHit->hitPos.x = x;
             HammerHit->hitPos.y = y;
             HammerHit->hitPos.z = z;
@@ -173,7 +173,7 @@ s32 func_802B62A4_E25174(void) {
             z = playerZ - (outCosTheta * i);
 
             ret = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
-            if (ret >= 0) {
+            if (ret > NO_COLLIDER) {
                 HammerHit->hitPos.x = x;
                 HammerHit->hitPos.y = y;
                 HammerHit->hitPos.z = z;
@@ -182,7 +182,7 @@ s32 func_802B62A4_E25174(void) {
         }
     }
 
-    if (ret >= 0 && (ret & COLLISION_WITH_ENTITY_BIT)) {
+    if (ret > NO_COLLIDER && (ret & COLLISION_WITH_ENTITY_BIT)) {
         s32 hammerLevel = gPlayerData.hammerLevel;
 
         switch (get_entity_type(ret)) {
@@ -326,14 +326,14 @@ void func_802B6820_E256F0(void) {
         result = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
         if (HammerHit->unk_14 == 0) {
             collisionStatus->lastWallHammered = result;
-            if (result >= 0) {
+            if (result > NO_COLLIDER) {
                 if (result & COLLISION_WITH_ENTITY_BIT) {
                     get_entity_by_index(result)->collisionTimer = 0;
                 }
             }
         }
 
-        if (result >= 0) {
+        if (result > NO_COLLIDER) {
             break;
         }
     }
@@ -357,14 +357,14 @@ void func_802B6820_E256F0(void) {
             result = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
             if (HammerHit->unk_14 == 0) {
                 collisionStatus->lastWallHammered = result;
-                if (result >= 0) {
+                if (result > NO_COLLIDER) {
                     if (result & COLLISION_WITH_ENTITY_BIT) {
                         get_entity_by_index(result)->collisionTimer = 0;
                     }
                 }
             }
 
-            if (result >= 0) {
+            if (result > NO_COLLIDER) {
                 break;
             }
         }
@@ -383,7 +383,7 @@ void func_802B6820_E256F0(void) {
 
         action_hammer_play_hit_fx(HammerHit->hitID);
 
-        if (collisionStatus->lastWallHammered >= 0 && (collisionStatus->lastWallHammered & COLLISION_WITH_ENTITY_BIT)) {
+        if (collisionStatus->lastWallHammered > NO_COLLIDER && (collisionStatus->lastWallHammered & COLLISION_WITH_ENTITY_BIT)) {
             get_entity_by_index(collisionStatus->lastWallHammered)->collisionTimer = 0;
             playerStatus->flags |= PS_FLAG_HAMMER_CHECK;
         } else if (HammerHit->hitID <= NO_COLLIDER) {
@@ -396,14 +396,14 @@ void func_802B6820_E256F0(void) {
         }
     }
 
-    if (playerStatus->actionSubstate == SUBSTATE_HAMMER_0 && result >= 0 && HammerHit->unk_14 == 0) {
+    if (playerStatus->actionSubstate == SUBSTATE_HAMMER_0 && result > NO_COLLIDER && HammerHit->unk_14 == 0) {
         playerStatus->actionSubstate++;
     }
     if (playerStatus->actionSubstate == SUBSTATE_HAMMER_1 && result < 0) {
         playerStatus->actionSubstate = SUBSTATE_HAMMER_2;
     }
     HammerHit->timer++;
-    if (result >= 0) {
+    if (result > NO_COLLIDER) {
         HammerHit->unk_14 = 1;
     }
     if (HammerHit->timer == 6) {

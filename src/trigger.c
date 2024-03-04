@@ -198,7 +198,7 @@ void update_triggers(void) {
                 continue;
             }
 
-            bombPos = listTrigger->location.pos;
+            bombPos = listTrigger->location.blast;
             dist = dist3D(bombPos->pos.x, bombPos->pos.y, bombPos->pos.z,
                                 collisionStatus->bombetteExplosionPos.x, collisionStatus->bombetteExplosionPos.y,
                                 collisionStatus->bombetteExplosionPos.z);

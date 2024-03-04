@@ -381,7 +381,7 @@ typedef struct Trigger {
     /* 0x04 */ s32 varIndex;
     /* 0x08 */ union {
     /*      */     s32 colliderID;
-    /*      */     Vec4f* pos;
+    /*      */     struct BombTrigger* blast;
     /*      */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
     /* 0x10 */ EvtScript* onTriggerEvt;
