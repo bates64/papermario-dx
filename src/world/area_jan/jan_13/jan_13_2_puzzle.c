@@ -559,69 +559,17 @@ EvtScript N(EVS_SetupPuzzle) = {
     Call(SetPushBlock, 0, 22, 4, PUSH_GRID_BLOCK)
     Call(SetPushBlock, 0, 26, 6, PUSH_GRID_BLOCK)
     Call(SetPushBlock, 0, 27, 7, PUSH_GRID_BLOCK)
-    Call(SetPushBlock, 0, 15, 0, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 16, 0, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 17, 0, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 18, 0, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 19, 0, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 15, 1, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 16, 1, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 17, 1, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 18, 1, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 19, 1, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 15, 2, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 16, 2, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 17, 2, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 18, 2, PUSH_GRID_OBSTRUCTION)
-    Call(SetPushBlock, 0, 19, 2, PUSH_GRID_OBSTRUCTION)
-    // obstruct row 0
-    Set(LVar0, 0)
-    Loop(32)
-        Call(SetPushBlock, 0, LVar0, 0, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 1 from 0 to 15
-    Set(LVar0, 0)
-    Loop(15)
-        Call(SetPushBlock, 0, LVar0, 1, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 1 from 0 to 32
-    Set(LVar0, 20)
-    Loop(12)
-        Call(SetPushBlock, 0, LVar0, 1, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 2 from 0 to 3
-    Set(LVar0, 0)
-    Loop(3)
-        Call(SetPushBlock, 0, LVar0, 2, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 2 from 10 to 14
-    Set(LVar0, 10)
-    Loop(4)
-        Call(SetPushBlock, 0, LVar0, 2, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 2 from 26 to 32
-    Set(LVar0, 26)
-    Loop(6)
-        Call(SetPushBlock, 0, LVar0, 2, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 3 from 0 to 2
-    Set(LVar0, 0)
-    Loop(2)
-        Call(SetPushBlock, 0, LVar0, 3, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
-    // obstruct row 3 from 10 to 14
-    Set(LVar0, 10)
-    Loop(4)
-        Call(SetPushBlock, 0, LVar0, 3, PUSH_GRID_OBSTRUCTION)
-        Add(LVar0, 1)
-    EndLoop
+    Call(FillPushBlockZ, 0, 0, 15, 19, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 1, 15, 19, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 2, 15, 19, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 0, 0, 31, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 1, 0, 14, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 1, 20, 31, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 2, 0, 2, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 2, 10, 13, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 2, 26, 31, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 3, 0, 1, PUSH_GRID_OBSTRUCTION)
+    Call(FillPushBlockZ, 0, 3, 10, 13, PUSH_GRID_OBSTRUCTION)
     Exec(N(EVS_ManagePuzzle))
     Set(LVar0, MODEL_o72)
     Set(LVar1, 0)
