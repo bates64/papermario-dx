@@ -418,7 +418,6 @@ API_CALLABLE(SetPushBlock) {
     return ApiStatus_DONE2;
 }
 
-// fill a row of the grid from startZ to endZ with constant X
 API_CALLABLE(FillPushBlockX) {
     Bytecode* args = script->ptrReadPos;
     s32 blockSystemID = evt_get_variable(script, *args++);
