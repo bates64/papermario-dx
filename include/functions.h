@@ -270,6 +270,24 @@ s32 test_ray_zones(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 d
                    f32* hitDepth, f32* nx, f32* ny, f32* nz);
 s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
                        f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
+
+/// Test a general ray from a given starting position and direction against all entities.
+/// If one is hit, returns the position and normal of the hit and the length along the ray on the output params.
+/// All output params are invalid when a value of `NO_COLLIDER` is returned.
+/// @param startX origin x position of the ray
+/// @param startY origin y position of the ray
+/// @param startZ origin z position of the ray
+/// @param dirX normalized x direction of the ray
+/// @param dirY normalized y direction of the ray
+/// @param dirZ normalized z direction of the ray
+/// @param[out] hitX normalized x position of the hit
+/// @param[out] hitY normalized y position of the hit
+/// @param[out] hitZ normalized z position of the hit
+/// @param[in,out] hitDepth as input, maximum length of the ray; as output, distance along the ray of the hit
+/// @param[out] hitNx x normal direction of the hit
+/// @param[out] hitNy y normal direction of the hit
+/// @param[out] hitNz z normal direction of the hit
+/// @returns entity index or `NO_COLLIDER` is none is hit
 s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
                       f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
 
@@ -396,8 +414,8 @@ s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 c
 
 b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
-s32 npc_raycast_up(s32, f32*, f32*, f32*, f32*);
-s32 npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
+b32 npc_raycast_up(s32, f32*, f32*, f32*, f32*);
+HitID npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
 HitID player_raycast_up_corners(PlayerStatus*, f32*, f32*, f32*, f32*, f32);
 HitID player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
                                       f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ);

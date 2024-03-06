@@ -24,6 +24,7 @@ extern s32 StatusBarSPIncrementOffsets[];
 
 extern HudScript* DigitHudScripts[10];
 
+extern HudScript HES_StatusCoinSparkle;
 extern HudScript HES_StatusHP;
 extern HudScript HES_StatusHP_de;
 extern HudScript HES_StatusHP_fr;
@@ -34,7 +35,6 @@ extern HudScript HES_StatusFP_de;
 extern HudScript HES_StatusFP_fr;
 extern HudScript HES_StatusFP_es;
 extern HudScript HES_StatusFlower;
-extern HudScript HES_Item_CoinSparkleRandom;
 extern HudScript HES_StatusStarPoint;
 extern HudScript HES_StatusStar1;
 extern HudScript HES_StatusTimes;
@@ -593,7 +593,7 @@ void initialize_status_bar(void) {
     hud_element_set_flags(iconIndex, HUD_ELEMENT_FLAG_80);
     hud_element_clear_flags(iconIndex, HUD_ELEMENT_FLAG_FILTER_TEX);
 
-    statusBar->coinSparkleHID = iconIndex = hud_element_create(&HES_Item_CoinSparkleRandom);
+    statusBar->coinSparkleHID = iconIndex = hud_element_create(&HES_StatusCoinSparkle);
     hud_element_set_flags(iconIndex, HUD_ELEMENT_FLAG_80);
     hud_element_clear_flags(iconIndex, HUD_ELEMENT_FLAG_FILTER_TEX);
 
@@ -1739,10 +1739,10 @@ void reset_status_bar(void) {
 s32 is_ability_active(s32 ability) {
     PlayerData* playerData = &gPlayerData;
     s32 attackFXArray[6];
-    s32 ret;
     s32 attackFXIndex;
+    s32 badgeItemID;
     s32 badgeMoveID;
-    u8* moveID;
+    s32 ret;
     s32 i;
 
     ret = 0;
@@ -1757,11 +1757,10 @@ s32 is_ability_active(s32 ability) {
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        badgeMoveID = playerData->equippedBadges[i];
+        badgeItemID = playerData->equippedBadges[i];
 
-        if (badgeMoveID != 0) {
-            moveID = &gItemTable[badgeMoveID].moveID;
-            badgeMoveID = *moveID;
+        if (badgeItemID != ITEM_NONE) {
+            badgeMoveID = gItemTable[badgeItemID].moveID;
         }
 
         switch (ability) {

@@ -111,5 +111,7 @@ NpcData N(NpcData_Misstar) = {
     .yaw = 100,
     .settings = &N(NpcSettings_Misstar),
     .flags = ENEMY_FLAG_PASSIVE,
-    .animations = {},
+    .animations = {
+        .idle = ANIM_WorldMisstar_Idle,
+    },
 };

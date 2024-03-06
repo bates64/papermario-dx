@@ -257,7 +257,9 @@ NpcData N(NpcData_05)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_StarRod),
         .flags = 0,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_StarRod_Still,
+        },
     },
     {
         .id = NPC_06,
@@ -266,7 +268,9 @@ NpcData N(NpcData_05)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Koopa),
         .flags = 0,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Koopa_Walk,
+        },
     },
     {
         .id = NPC_07,
@@ -275,7 +279,9 @@ NpcData N(NpcData_05)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Kolorado),
         .flags = 0,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Kolorado_Walk,
+        },
     },
 };
 
@@ -287,6 +293,7 @@ NpcData N(NpcData_GoombaFamily) = {
     .settings = &N(NpcSettings_Goompa),
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
     .animations = {
+        .idle = ANIM_Goompa_Walk,
     },
 };
 
@@ -298,7 +305,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_0C,
@@ -307,7 +316,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_0D,
@@ -316,7 +327,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_0E,
@@ -325,7 +338,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_0F,
@@ -334,7 +349,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_10,
@@ -343,7 +360,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_11,
@@ -352,7 +371,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_12,
@@ -361,7 +382,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
     {
         .id = NPC_13,
@@ -370,7 +393,9 @@ NpcData N(NpcData_0B)[] = {
         .init = (void*) 0x1F64,
         .settings = &N(NpcSettings_Goompa),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT,
-        .animations = {},
+        .animations = {
+            .idle = ANIM_Goompa_Walk,
+        },
     },
 };
 
@@ -381,7 +406,9 @@ NpcData N(NpcData_GoombaKing) = {
     .init = (void*) 0x4003,
     .settings = &N(NpcSettings_GoombaKing),
     .flags = 0,
-    .animations = {}
+    .animations = {
+        .idle = ANIM_GoombaKing_Idle,
+    }
 };
 
 NpcGroupList N(DefaultNPCs) = {

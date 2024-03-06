@@ -381,7 +381,7 @@ typedef struct Trigger {
     /* 0x04 */ s32 varIndex;
     /* 0x08 */ union {
     /*      */     s32 colliderID;
-    /*      */     Vec4f* pos;
+    /*      */     struct BombTrigger* blast;
     /*      */ } location;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
     /* 0x10 */ EvtScript* onTriggerEvt;
@@ -1758,7 +1758,7 @@ typedef struct LavaReset {
 
 typedef struct BombTrigger {
     /* 0x00 */ Vec3f pos;
-    /* 0x0C */ s32 radius; // effective 'size' of the object, usually set to zero because bombettes explosion radius is large enough
+    /* 0x0C */ s32 diameter; // effective 'size' of the object, usually set to zero because bombettes explosion radius is large enough
 } BombTrigger; // size = 0x10;
 
 typedef struct AnimatedModel {

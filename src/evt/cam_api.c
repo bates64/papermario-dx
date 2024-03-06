@@ -401,7 +401,7 @@ API_CALLABLE(UseSettingsFrom) {
     s32 hitID = test_ray_zones(startX, startY + 10.0f, startZ, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth,
                                &nx, &ny, &nz);
 
-    if (hitID >= 0) {
+    if (hitID > NO_COLLIDER) {
         camera->controlSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
     }
     return ApiStatus_DONE2;
@@ -710,7 +710,7 @@ API_CALLABLE(ResetCam) {
         hitID = test_ray_zones(x, y + 10.0f, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth,
                                &nx, &ny, &nz);
 
-        if (hitID >= 0) {
+        if (hitID > NO_COLLIDER) {
             camera->controlSettings = *gZoneCollisionData.colliderList[hitID].camSettings;
         }
 

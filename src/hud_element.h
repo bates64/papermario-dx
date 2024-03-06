@@ -288,9 +288,9 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-// hud script templates used to generate scripts via src/item_hud_scripts.yaml
+// hud script templates used to generate item scripts
 
-#define HES_TEMPLATE_STANDARD_ITEM(icon) \
+#define HES_TEMPLATE_ITEM(icon) \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_32x32) \
@@ -300,7 +300,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_HEART_PIECE() \
+#define HES_TEMPLATE_ITEM_HEART_PIECE() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_24x24) \
@@ -310,7 +310,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_HEART() \
+#define HES_TEMPLATE_ITEM_HEART() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_24x24) \
@@ -321,7 +321,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_STAR_POINT() \
+#define HES_TEMPLATE_ITEM_STAR_POINT() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_24x24) \
@@ -338,24 +338,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_SMALL_STAR_POINT() \
-    { \
-        hs_SetVisible \
-        hs_SetTileSize(HUD_ELEMENT_SIZE_8x8) \
-        hs_Loop \
-            hs_SetIcon(2, anim_sp_small_0) \
-            hs_SetIcon(2, anim_sp_small_1) \
-            hs_SetIcon(2, anim_sp_small_2) \
-            hs_SetIcon(2, anim_sp_small_3) \
-            hs_SetIcon(2, anim_sp_small_4) \
-            hs_SetIcon(2, anim_sp_small_5) \
-            hs_SetIcon(2, anim_sp_small_6) \
-            hs_SetIcon(2, anim_sp_small_7) \
-        hs_Restart \
-        hs_End \
-    }
-
-#define HES_TEMPLATE_HEART_POINT() \
+#define HES_TEMPLATE_ITEM_HEART_POINT() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_32x32) \
@@ -367,7 +350,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_FLOWER_POINT() \
+#define HES_TEMPLATE_ITEM_FLOWER_POINT() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_32x32) \
@@ -379,7 +362,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_STAR_PIECE() \
+#define HES_TEMPLATE_ITEM_STAR_PIECE() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_32x32) \
@@ -392,7 +375,7 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
-#define HES_TEMPLATE_COIN() \
+#define HES_TEMPLATE_ITEM_COIN() \
     { \
         hs_SetVisible \
         hs_SetTileSize(HUD_ELEMENT_SIZE_24x24) \
@@ -436,19 +419,6 @@ extern HudScript* wPartnerHudScripts[];
         hs_SetIcon(1, anim_shimmer_6) \
         hs_SetIcon(1, anim_shimmer_5) \
         hs_SetIcon(16, anim_shimmer_6) \
-        hs_End \
-    }
-
-#define HES_TEMPLATE_COIN_SPARKLE() \
-    { \
-        hs_SetVisible \
-        hs_SetTileSize(HUD_ELEMENT_SIZE_8x8) \
-        hs_RandomBranch( \
-            HS_PTR(HES_Item_CoinSparkleA), \
-            HS_PTR(HES_Item_CoinSparkleB), \
-            HS_PTR(HES_Item_CoinSparkleC), \
-            HS_PTR(HES_Item_CoinSparkleD), \
-            HS_PTR(HES_Item_CoinSparkleE)) \
         hs_End \
     }
 

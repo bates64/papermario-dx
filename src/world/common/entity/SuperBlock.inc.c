@@ -21,8 +21,9 @@
 
 // use this in an EvtScript calling MakeEntity for this super block
 // expects SUPER_BLOCK_GAMEFLAG and SUPER_BLOCK_MAPVAR to be valid
-#define EVT_MAKE_SUPER_BLOCK(x, y, z, angle) \
-    Call(MakeEntity, Ref(Entity_SuperBlock), x, y, z, angle, MAKE_ENTITY_END)\
+// expected args are: x, y, z, angle
+#define EVT_MAKE_SUPER_BLOCK(args...) \
+    Call(MakeEntity, Ref(Entity_SuperBlock), args, MAKE_ENTITY_END)\
     Set(SUPER_BLOCK_MAPVAR, LVar0)\
     Call(AssignBlockFlag, SUPER_BLOCK_GAMEFLAG)\
     Call(AssignScript, Ref(N(SuperBlock_OnHit)))

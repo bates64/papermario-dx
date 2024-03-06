@@ -346,20 +346,20 @@ API_CALLABLE(MakeTransformGroup) {
 
 API_CALLABLE(SetTransformGroupEnabled) {
     Bytecode* args = script->ptrReadPos;
-    u16 var1 = evt_get_variable(script, *args++);
-    s32 var2 = evt_get_variable(script, *args++);
+    u16 modelID = evt_get_variable(script, *args++);
+    s32 enable = evt_get_variable(script, *args++);
 
-    if (var2 != 0) {
-        enable_transform_group(var1);
+    if (enable) {
+        enable_transform_group(modelID);
     } else {
-        disable_transform_group(var1);
+        disable_transform_group(modelID);
     }
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(TranslateGroup) {
     Bytecode* args = script->ptrReadPos;
-    s32 modelID = evt_get_variable(script, *args);
+    s32 modelID = evt_get_variable(script, *args++);
     s32 index = get_transform_group_index(modelID);
     ModelTransformGroup* transformGroup;
     Matrix4f mtx;
@@ -370,22 +370,19 @@ API_CALLABLE(TranslateGroup) {
         return ApiStatus_DONE2;
     }
 
-    args++;
-
     x = evt_get_float_variable(script, *args++);
     y = evt_get_float_variable(script, *args++);
     z = evt_get_float_variable(script, *args++);
 
     transformGroup = get_transform_group(index);
 
-    index = transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM; // TODO fix weird match
-    if (!index) {
+    if (transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM) {
+        guTranslateF(mtx, x, y, z);
+        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
+    } else {
         guTranslateF(transformGroup->userTransformMtx, x, y, z);
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_HAS_TRANSFORM;
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_MATRIX_DIRTY;
-    } else {
-        guTranslateF(mtx, x, y, z);
-        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
     }
 
     return ApiStatus_DONE2;
@@ -393,7 +390,7 @@ API_CALLABLE(TranslateGroup) {
 
 API_CALLABLE(RotateGroup) {
     Bytecode* args = script->ptrReadPos;
-    s32 modelID = evt_get_variable(script, *args);
+    s32 modelID = evt_get_variable(script, *args++);
     s32 index = get_transform_group_index(modelID);
     ModelTransformGroup* transformGroup;
     Matrix4f mtx;
@@ -404,8 +401,6 @@ API_CALLABLE(RotateGroup) {
         return ApiStatus_DONE2;
     }
 
-    args++;
-
     a = evt_get_float_variable(script, *args++);
     x = evt_get_float_variable(script, *args++);
     y = evt_get_float_variable(script, *args++);
@@ -413,13 +408,13 @@ API_CALLABLE(RotateGroup) {
 
     transformGroup = get_transform_group(index);
 
-    if (!(transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM)) {
+    if (transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM) {
+        guRotateF(mtx, a, x, y, z);
+        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
+    } else {
         guRotateF(transformGroup->userTransformMtx, a, x, y, z);
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_HAS_TRANSFORM;
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_MATRIX_DIRTY;
-    } else {
-        guRotateF(mtx, a, x, y, z);
-        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
     }
 
     return ApiStatus_DONE2;
@@ -427,7 +422,7 @@ API_CALLABLE(RotateGroup) {
 
 API_CALLABLE(ScaleGroup) {
     Bytecode* args = script->ptrReadPos;
-    s32 modelID = evt_get_variable(script, *args);
+    s32 modelID = evt_get_variable(script, *args++);
     s32 transformIndex = get_transform_group_index(modelID);
     ModelTransformGroup* transformGroup;
     Matrix4f mtx;
@@ -438,22 +433,19 @@ API_CALLABLE(ScaleGroup) {
         return ApiStatus_DONE2;
     }
 
-    args++;
-
     x = evt_get_float_variable(script, *args++);
     y = evt_get_float_variable(script, *args++);
     z = evt_get_float_variable(script, *args++);
 
     transformGroup = get_transform_group(transformIndex);
 
-    transformIndex = transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM; // TODO fix weird match
-    if (!(transformIndex)) {
+    if (transformGroup->flags & TRANSFORM_GROUP_FLAG_HAS_TRANSFORM) {
+        guScaleF(mtx, x, y, z);
+        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
+    } else {
         guScaleF(transformGroup->userTransformMtx, x, y, z);
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_HAS_TRANSFORM;
         transformGroup->flags |= TRANSFORM_GROUP_FLAG_MATRIX_DIRTY;
-    } else {
-        guScaleF(mtx, x, y, z);
-        guMtxCatF(mtx, transformGroup->userTransformMtx, transformGroup->userTransformMtx);
     }
 
     return ApiStatus_DONE2;

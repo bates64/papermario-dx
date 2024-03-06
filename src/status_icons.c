@@ -84,7 +84,7 @@ SHIFT_BSS PopupMessage D_800A0BC0[32];
 SHIFT_BSS s32 D_800A0F40;
 SHIFT_BSS HudStatusIcon* D_800A0F44;
 
-extern HudScript HES_Item_Present;
+extern HudScript HES_Item_KeyGift;
 extern HudScript HES_AsleepBegin;
 extern HudScript HES_AsleepEnd;
 extern HudScript HES_ElectrifiedBegin;
@@ -389,7 +389,7 @@ void update_all_status_icons(void* data) {
                     elementID = icon->status1.activeElementID = hud_element_create(&HES_FrozenBegin);
                     break;
                 default:
-                    elementID = icon->status1.activeElementID = hud_element_create(&HES_Item_Present);
+                    elementID = icon->status1.activeElementID = hud_element_create(&HES_Item_KeyGift);
                     break;
             }
             hud_element_set_flags(elementID, HUD_ELEMENT_FLAG_DISABLED);
@@ -427,7 +427,7 @@ void update_all_status_icons(void* data) {
                         hud_element_set_script(icon->status1.removingElementID, &HES_FrozenEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status1.removingElementID, &HES_Item_Present);
+                        hud_element_set_script(icon->status1.removingElementID, &HES_Item_KeyGift);
                         break;
                 }
 
@@ -452,7 +452,7 @@ void update_all_status_icons(void* data) {
                     elementID = icon->status2.activeElementID = hud_element_create(&HES_ElectrifiedBegin);
                     break;
                 default:
-                    elementID = icon->status2.activeElementID = hud_element_create(&HES_Item_Present);
+                    elementID = icon->status2.activeElementID = hud_element_create(&HES_Item_KeyGift);
                     break;
             }
 
@@ -470,7 +470,7 @@ void update_all_status_icons(void* data) {
                         hud_element_set_script(icon->status2.removingElementID, &HES_ElectrifiedEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status2.removingElementID, &HES_Item_Present);
+                        hud_element_set_script(icon->status2.removingElementID, &HES_Item_KeyGift);
                         break;
                 }
 
@@ -494,7 +494,7 @@ void update_all_status_icons(void* data) {
                     elementID = icon->status3.activeElementID = hud_element_create(&HES_TransparentBegin);
                     break;
                 default:
-                    elementID = icon->status3.activeElementID = hud_element_create(&HES_Item_Present);
+                    elementID = icon->status3.activeElementID = hud_element_create(&HES_Item_KeyGift);
                     break;
             }
 
@@ -512,7 +512,7 @@ void update_all_status_icons(void* data) {
                         hud_element_set_script(icon->status3.removingElementID, &HES_TransparentEnd);
                         break;
                     default:
-                        hud_element_set_script(icon->status3.removingElementID, &HES_Item_Present);
+                        hud_element_set_script(icon->status3.removingElementID, &HES_Item_KeyGift);
                         break;
                 }
 

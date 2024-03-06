@@ -32,7 +32,7 @@ extern Addr entity_sbk_omo_ROM_START;
 
 s32 D_8014AFB0 = 255;
 
-SHIFT_BSS s32 CreateEntityVarArgBuffer[4];
+SHIFT_BSS s32 CreateEntityVarArgBuffer[3];
 SHIFT_BSS HiddenPanelsData gCurrentHiddenPanels;
 SHIFT_BSS s32 gEntityHideMode;
 
@@ -1196,17 +1196,13 @@ void entity_free_static_data(EntityBlueprint* data) {
 
 s32 create_entity(EntityBlueprint* bp, ...) {
     va_list ap;
-    EntityBlueprint** bpPtr;
     f32 x, y, z;
     f32 rotY;
     s32 listIndex;
     Entity* entity;
-    s32* args;
+    s32 idx;
 
     va_start(ap, bp);
-    // needed to match
-    bpPtr = &bp;
-    *bpPtr = bp;
 
     load_area_specific_entity_data();
 
@@ -1215,19 +1211,17 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     z = va_arg(ap, s32);
     rotY = va_arg(ap, s32);
 
-    args = &CreateEntityVarArgBuffer[2];
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
+        CreateEntityVarArgBuffer[idx] = 0;
+    }
 
-    *args-- = 0;
-    *args-- = 0;
-    *args = 0;
-
-    for (listIndex = 3; listIndex > 0; listIndex--) {
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
         s32 arg = va_arg(ap, s32);
 
         if (arg == MAKE_ENTITY_END) {
             break;
         }
-        *args++ = arg;
+        CreateEntityVarArgBuffer[idx] = arg;
     }
 
     va_end(ap);
@@ -1363,34 +1357,32 @@ API_CALLABLE(MakeEntity) {
     s32 flags;
     s32 nextArg;
     s32 entityIndex;
-    s32 endOfArgs;
-    s32* varArgBufPos;
+    s32 idx;
 
     if (isInitialCall != TRUE) {
         return ApiStatus_DONE2;
     }
 
     entityData = (EntityBlueprint*)evt_get_variable(script, *args++);
-    varArgBufPos = &CreateEntityVarArgBuffer[2];
-    endOfArgs = MAKE_ENTITY_END;
     x = evt_get_variable(script, *args++);
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
     flags = evt_get_variable(script, *args++);
 
-    *varArgBufPos-- = 0;
-    *varArgBufPos-- = 0;
-    *varArgBufPos = 0;
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
+        CreateEntityVarArgBuffer[idx] = 0;
+    }
 
-    do {
+    for (idx = 0;; idx++) {
         nextArg = evt_get_variable(script, *args++);
-
-        if (nextArg != endOfArgs) {
-            *varArgBufPos++ = nextArg;
+        if (nextArg == MAKE_ENTITY_END) {
+            break;
         }
-    } while (nextArg != endOfArgs);
+        CreateEntityVarArgBuffer[idx] = nextArg;
+    }
 
-    entityIndex = create_entity(entityData, x, y, z, flags, CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1], CreateEntityVarArgBuffer[2], endOfArgs);
+    entityIndex = create_entity(entityData, x, y, z, flags,
+        CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1], CreateEntityVarArgBuffer[2], MAKE_ENTITY_END);
     gLastCreatedEntityIndex = entityIndex;
     script->varTable[0] = entityIndex;
     return ApiStatus_DONE2;

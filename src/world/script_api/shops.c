@@ -6,7 +6,7 @@
 
 extern u8 MessagePlural[];
 extern u8 MessageSingular[];
-extern HudScript HES_Item_Coin;
+extern HudScript HES_ItemCoin;
 
 s32 shop_get_sell_price(s32 itemID);
 
@@ -933,7 +933,7 @@ API_CALLABLE(MakeShop) {
         numShopItems++;
     }
 
-    shop->costIconID = hud_element_create(&HES_Item_Coin);
+    shop->costIconID = hud_element_create(&HES_ItemCoin);
     hud_element_set_flags(shop->costIconID, HUD_ELEMENT_FLAG_80);
     hud_element_clear_flags(shop->costIconID, HUD_ELEMENT_FLAG_FILTER_TEX);
     get_worker(create_worker_frontUI(NULL, draw_shop_items));

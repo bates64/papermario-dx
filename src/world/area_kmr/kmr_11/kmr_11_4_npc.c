@@ -419,7 +419,9 @@ NpcData N(NpcData_Kammy) = {
     .initVar = { .value = 0 },
     .settings = &N(NpcSettings_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
-    .animations = {},
+    .animations = {
+        .idle = ANIM_WorldKammy_Anim0A,
+    },
 };
 
 NpcGroupList N(DefaultNPCs) = {

@@ -182,6 +182,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_00),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -191,6 +192,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_01),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -200,6 +202,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_02),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -209,6 +212,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_03),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -218,6 +222,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_04),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -227,6 +232,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_05),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -236,6 +242,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_06),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -245,6 +252,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_07),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -254,6 +262,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_08),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
     {
@@ -263,6 +272,7 @@ NpcData N(NpcData_Testing)[] = {
         .settings = &N(NpcSettings_09),
         .flags = COMMON_PASSIVE_FLAGS,
         .animations = {
+            .idle = ANIM_Koopa_Idle,
         },
     },
 };

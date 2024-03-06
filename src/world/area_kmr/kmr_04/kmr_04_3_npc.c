@@ -297,6 +297,7 @@ NpcData N(NpcData_GoombaFamily) = {
     .settings = &N(NpcSettings_Goompa),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .animations = {
+        .idle = ANIM_Goompa_Idle,
     },
 };
 

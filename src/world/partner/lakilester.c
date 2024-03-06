@@ -238,7 +238,7 @@ s32 N(can_dismount)(void) {
     f32 outX, outY, outZ, outLength;
     Npc* lakilester = get_npc_unsafe(NPC_PARTNER);
     s32 temp;
-    s32 hitResult;
+    HitID hitID;
     s32 canDismount;
     s32 entityType;
 
@@ -254,12 +254,12 @@ s32 N(can_dismount)(void) {
     outZ = playerStatus->pos.z;
     currentCamera = &gCameras[gCurrentCameraID];
     add_vec2D_polar(&outX, &outZ, 2.0f, currentCamera->curYaw);
-    hitResult = player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz,
+    hitID = player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz,
                                                       &hitDirX, &hitDirZ);
-    temp = hitResult;
+    temp = hitID;
 
     //TODO find better match
-    if (outLength <= 16.0f && temp >= 0) {
+    if (outLength <= 16.0f && temp > NO_COLLIDER) {
         if (!(temp & COLLISION_WITH_ENTITY_BIT) ||
             (entityType = get_entity_type(temp),
             !(entityType == ENTITY_TYPE_SIMPLE_SPRING || entityType == ENTITY_TYPE_SCRIPT_SPRING))

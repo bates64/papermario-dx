@@ -150,7 +150,7 @@ void handle_jumping_land_on_switch(void) {
         groundPosY = player_check_collision_below(player_fall_distance(), &colliderID);
         player_handle_floor_collider_type(colliderID);
         playerStatus->pos.y = groundPosY;
-        if (colliderID >= 0) {
+        if (colliderID > NO_COLLIDER) {
             if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
                 anim = ANIM_Mario1_Land;
             } else {
@@ -327,7 +327,7 @@ void player_handle_floor_collider_type(s32 colliderID) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         s32 surfaceType = get_collider_flags(colliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
         switch (surfaceType) {
             case SURFACE_TYPE_WATER:
@@ -479,8 +479,8 @@ f32 player_check_collision_below(f32 offset, s32* colliderID) {
     s32 hit = *colliderID = player_raycast_below_cam_relative(&gPlayerStatus, &x, &y, &z, &outLength,
                                                               &sp38, &sp3C, &sp40, &sp44);
 
-    if (hit < 0) {
-        if (offset >= 0.0f && collisionStatus->curCeiling >= 0) {
+    if (hit <= NO_COLLIDER) {
+        if (offset >= 0.0f && collisionStatus->curCeiling > NO_COLLIDER) {
             return playerStatus->pos.y;
         }
         y = playerStatus->pos.y + offset;
@@ -671,7 +671,7 @@ void collision_main_lateral(void) {
                 playerZ = playerStatus->pos.z;
                 result = player_test_move_with_slipping(playerStatus, &playerX, &playerY, &playerZ,
                                                         playerStatus->colliderDiameter * 0.5f, playerStatus->targetYaw);
-                if (speed == 0.0f && result < 0) {
+                if (speed == 0.0f && result <= NO_COLLIDER) {
                     yaw2 = playerStatus->spriteFacingAngle - 90.0f + gCameras[gCurrentCameraID].curYaw;
                     sin_cos_rad(DEG_TO_RAD(yaw2 + 180.0f), &sinTheta, &cosTheta);
                     playerX = playerStatus->pos.x + (sinTheta * playerStatus->colliderDiameter * 0.5f);
@@ -695,7 +695,7 @@ void collision_main_lateral(void) {
 
                     if (speed > 4.0f) {
                         result = player_test_move_with_slipping(playerStatus, &playerX, &playerY, &playerZ, 4.0f, yaw2);
-                        if (result < 0) {
+                        if (result <= NO_COLLIDER) {
                             result = player_test_move_with_slipping(playerStatus, &playerX, &playerY, &playerZ, speed - 4.0f, yaw2);
                         }
                         collisionStatus->pushingAgainstWall = result;
@@ -715,15 +715,15 @@ void collision_main_lateral(void) {
                     yaw = clamp_angle(yaw2 + 35.0);
                     test2 = player_test_lateral_overlap(PLAYER_COLLISION_0, playerStatus, &test2X, &test2Z, &test2Y, 0.0f, yaw);
 
-                    if (test1 < 0) {
-                        if (test2 < 0) {
+                    if (test1 <= NO_COLLIDER) {
+                        if (test2 <= NO_COLLIDER) {
                             playerStatus->pos.x = playerX;
                             playerStatus->pos.z = playerZ;
                         } else {
                             playerStatus->pos.x = test1X;
                             playerStatus->pos.z = test1Z;
                         }
-                    } else if (test2 < 0) {
+                    } else if (test2 <= NO_COLLIDER) {
                         playerStatus->pos.x = test2X;
                         playerStatus->pos.z = test2Y;
                     }
@@ -734,7 +734,7 @@ void collision_main_lateral(void) {
                         } else {
                             yaw2 = playerStatus->spriteFacingAngle - 90.0f + gCameras[gCurrentCameraID].curYaw;
                         }
-                        if (collision_check_player_intersecting_world(0, 0, yaw2) < 0) {
+                        if (collision_check_player_intersecting_world(0, 0, yaw2) <= NO_COLLIDER) {
                             collision_check_player_intersecting_world(1, playerStatus->colliderHeight * 0.75f, yaw2);
                         }
                     }
@@ -776,7 +776,7 @@ s32 collision_check_player_intersecting_world(s32 mode, s32 arg1, f32 yaw) {
             hitID2 = hitID;
         }
 
-        if (hitID2 >= 0) {
+        if (hitID2 > NO_COLLIDER) {
             ret = hitID2;
         }
         gPlayerStatusPtr = gPlayerStatusPtr;
@@ -887,7 +887,7 @@ void phys_main_collision_below(void) {
     if (playerStatus->timeInAir == 0) {
         collisionStatus->curFloor = colliderID;
     }
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         playerStatus->groundAnglesXZ.x = hitDirX;
         playerStatus->groundAnglesXZ.y = hitDirZ;
     }
@@ -1146,7 +1146,7 @@ s32 phys_check_interactable_collision(void) {
         z = playerStatus->pos.z;
         ret = player_test_move_with_slipping(playerStatus, &x, &y, &z, playerStatus->colliderDiameter * 0.5f, yaw);
 
-        if (ret < 0 && playerStatus->curSpeed == 0.0f) {
+        if (ret <= NO_COLLIDER && playerStatus->curSpeed == 0.0f) {
             yaw = playerStatus->spriteFacingAngle - 90.0f + gCameras[gCurrentCameraID].curYaw;
             x = playerStatus->pos.x;
             y = playerStatus->pos.y;
