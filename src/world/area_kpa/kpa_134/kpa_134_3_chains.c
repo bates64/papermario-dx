@@ -459,8 +459,8 @@ EvtScript N(EVS_RaiseWaterLevel2) = {
     Call(PlaySoundAt, SOUND_LOOP_KPA_FILL_WATER, SOUND_SPACE_DEFAULT, 500, 240, -25)
     Wait(20)
     Thread
-        Call(SetTexPanner, MODEL_o388, 2)
-        Call(SetTexPanner, MODEL_o389, 3)
+        Call(SetTexPanner, MODEL_o388, TEX_PANNER_2)
+        Call(SetTexPanner, MODEL_o389, TEX_PANNER_3)
         Set(LVar0, 0)
         Set(LVar1, 0)
         Set(LVar2, 0)

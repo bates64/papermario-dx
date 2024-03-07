@@ -198,7 +198,7 @@ EvtScript N(EVS_Starship_Summon) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan_Starship))
     EndThread
-    Call(SetTexPanner, MODEL_o646, 9)
+    Call(SetTexPanner, MODEL_o646, TEX_PANNER_9)
     Call(PlaySoundAt, SOUND_STARSHIP_APPEARS, SOUND_SPACE_DEFAULT, 0, 250, 0)
     PlayEffect(EFFECT_LIGHT_RAYS, 2, 0, 250, 0, 10, LVar9)
     Wait(20)

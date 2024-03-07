@@ -25,9 +25,9 @@ EvtScript N(D_80240800_A59B90) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(SetTexPanner, MODEL_o811, 0)
-    Call(SetTexPanner, MODEL_o813, 0)
-    Call(SetTexPanner, MODEL_o814, 0)
+    Call(SetTexPanner, MODEL_o811, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_o813, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_o814, TEX_PANNER_0)
     Return
     End
 };

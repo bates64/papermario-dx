@@ -22,10 +22,10 @@ EvtScript N(EVS_TexPan_Lava) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(SetTexPanner, MODEL_o926, 0)
-    Call(SetTexPanner, MODEL_o927, 0)
-    Call(SetTexPanner, MODEL_o928, 0)
-    Call(SetTexPanner, MODEL_o925, 0)
+    Call(SetTexPanner, MODEL_o926, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_o927, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_o928, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_o925, TEX_PANNER_0)
     Return
     End
 };
