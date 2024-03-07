@@ -28,7 +28,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupDrips))
-    Call(EnableTexPanning, MODEL_mizu, TRUE)
+    Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)

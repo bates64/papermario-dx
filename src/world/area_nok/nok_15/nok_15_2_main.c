@@ -1,6 +1,7 @@
 #include "nok_15.h"
 #include "effects.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript N(EVS_ExitWalk_nok_14_1) = EVT_EXIT_WALK_NOK(60, nok_15_ENTRY_0, "nok_14", nok_14_ENTRY_1);
@@ -23,33 +24,25 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Water) = {
+EvtScript N(EVS_SetupTexPan) = {
+    // flowers
+    Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
     Thread
-        Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Set(LVar2, 0)
-        Label(10)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, LVar2)
-            Sub(LVar0, 100)
-            Sub(LVar1, 400)
-            Add(LVar1, 1000)
-            Wait(1)
-            Goto(10)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP( -100,    0,  600,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water
     Call(SetTexPanner, MODEL_kabemizu1, TEX_PANNER_2)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Label(20)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_AUX, LVar1, LVar2)
-        Sub(LVar0, 100)
-        Add(LVar1, 800)
-        Sub(LVar2, 400)
-        Wait(1)
-        Goto(20)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -100,    0,  400,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };
@@ -100,7 +93,7 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupFoliage))
-    Exec(N(EVS_TexPan_Water))
+    Exec(N(EVS_SetupTexPan))
     IfEq(GF_NOK15_BombedWall, FALSE)
         Call(EnableModel, MODEL_bomb_ato, FALSE)
         BindTrigger(Ref(N(EVS_BlastWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)

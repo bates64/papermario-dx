@@ -4,6 +4,8 @@
 
 #include "world/common/todo/GetPeachDisguise.inc.c"
 
+#include "world/common/atomic/TexturePan.h"
+
 EvtScript N(EVS_Inspect_Fireplace) = {
     Call(DisablePlayerInput, TRUE)
     Switch(GB_StoryProgress)
@@ -217,21 +219,24 @@ void N(setup_gfx_fireplace)(void) {
 }
 
 EvtScript N(EVS_TexPan_Fireplace) = {
-    Call(EnableTexPanning, MODEL_o42, TRUE)
-    Call(EnableTexPanning, MODEL_o157, TRUE)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Set(LVar3, 0)
-    Loop(0)
-        Add(LVar0, -110)
-        Add(LVar1, 50)
-        Call(SetTexPanOffset, TEX_PANNER_5, TEX_PANNER_MAIN, LVar0, LVar1)
-        Add(LVar2, 40)
-        Add(LVar3, 130)
-        Call(SetTexPanOffset, TEX_PANNER_A, TEX_PANNER_AUX, LVar2, LVar3)
-        Wait(1)
-    EndLoop
+    // embers
+    Call(SetTexPanner, MODEL_o42, TEX_PANNER_5)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_5)
+        TEX_PAN_PARAMS_STEP(-110,   50,    0,    0)
+        TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // fire glow
+    Call(SetTexPanner, MODEL_o157, TEX_PANNER_A)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_A)
+        TEX_PAN_PARAMS_STEP(   0,    0,   40,  130)
+        TEX_PAN_PARAMS_FREQ(   0,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

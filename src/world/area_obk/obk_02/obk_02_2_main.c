@@ -1,5 +1,7 @@
 #include "obk_02.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 enum {
     REGION_INIT_LAST    = -2,
     REGION_INIT         = -1,
@@ -41,35 +43,6 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar0, Ref(N(EVS_BindExitTriggers)))
             Exec(EnterWalk)
     EndSwitch
-    Return
-    End
-};
-
-EvtScript N(EVS_TexPan_Fog) = {
-    Thread
-        Call(SetTexPanner, MODEL_r1, TEX_PANNER_1)
-        Call(SetTexPanner, MODEL_r2, TEX_PANNER_1)
-        Call(SetTexPanner, MODEL_r3, TEX_PANNER_1)
-        Call(SetTexPanner, MODEL_r4, TEX_PANNER_1)
-        Call(SetTexPanner, MODEL_r5, TEX_PANNER_1)
-        Call(SetTexPanner, MODEL_r6, TEX_PANNER_1)
-        Loop(0)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0, 0)
-            Wait(2)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0x8000, 0)
-            Wait(2)
-        EndLoop
-    EndThread
-    Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
-    Call(SetTexPanner, MODEL_m3, TEX_PANNER_0)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Loop(0)
-        Add(LVar0, 300)
-        Add(LVar1, 100)
-        Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, LVar0, LVar1)
-        Wait(1)
-    EndLoop
     Return
     End
 };
@@ -158,13 +131,28 @@ EvtScript N(EVS_ManageRegionVisibility) = {
     End
 };
 
+EvtScript N(EVS_SetupTexPan) = {
+    // spooky fog
+    Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_m3, TEX_PANNER_0)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Return
+    End
+};
+
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_TexPan_Fog))
+    Exec(N(EVS_SetupTexPan))
     Exec(N(EVS_SetupBombableWall))
     Exec(N(EVS_ClockDoNothing))
     Exec(N(EVS_UpdateClock))

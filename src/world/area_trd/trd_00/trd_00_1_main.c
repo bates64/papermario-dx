@@ -102,22 +102,6 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_TexPan_WaterEdge) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_ue, TEX_PANNER_1)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, 0)
-        Add(LVar0, 100)
-        Sub(LVar1, 100)
-        Wait(1)
-        Goto(10)
-    Return
-    End
-};
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
@@ -131,7 +115,6 @@ EvtScript N(EVS_Main) = {
         CaseOrEq(trd_00_ENTRY_4)
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_TexPan_WaterEdge))
     Exec(N(EVS_SetupMusic))
     Wait(1)
     IfEq(GF_TRD05_BombedWall, FALSE)
@@ -147,7 +130,15 @@ EvtScript N(EVS_Main) = {
     Else
         Wait(1)
     EndIf
-    Call(EnableTexPanning, MODEL_o125, TRUE)
+    Call(SetTexPanner, MODEL_ue, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_o125, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0,   90,  -60,  -70)

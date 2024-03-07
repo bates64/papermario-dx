@@ -61,44 +61,30 @@ EvtScript N(EVS_Scene_RaiseStairs) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o162, COLLIDER_FLAGS_UPPER_MASK)
     Call(SetGroupVisibility, MODEL_move_saku, MODEL_GROUP_HIDDEN)
     Call(PlaySound, SOUND_LOOP_TRD_FLOWING_WATER)
-    ChildThread
+    Thread
         SetGroup(EVT_GROUP_00)
         Wait(4 * DT)
         Call(EnableModel, MODEL_sui1, TRUE)
         Call(EnableModel, MODEL_sui2, TRUE)
-        Call(EnableTexPanning, MODEL_sui1, TRUE)
-        Call(EnableTexPanning, MODEL_sui2, TRUE)
-        Call(EnableTexPanning, MODEL_o145, TRUE)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Set(LVar2, 0)
-        Set(LVar3, 0)
-        Set(LVar4, 0)
-        Set(LVar5, 0)
-        Set(LVar6, 0)
-        Set(LVar7, 0)
-        Loop(0)
-            Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, LVar1)
-            Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_AUX,  LVar2, LVar3)
-            Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, LVar4, LVar5)
-            Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_AUX,  LVar6, LVar7)
-            Call(SetTexPanOffset, TEX_PANNER_4, TEX_PANNER_MAIN, LVar8, LVar9)
-            Call(SetTexPanOffset, TEX_PANNER_4, TEX_PANNER_AUX,  LVarA, LVarB)
-            Add(LVar0, -600)
-            Add(LVar1, -600)
-            Add(LVar2, -300)
-            Add(LVar3, -300)
-            Add(LVar4, 140)
-            Add(LVar5, -600)
-            Add(LVar6, -30)
-            Add(LVar7, -600)
-            Add(LVar8, 100)
-            Add(LVar9, -600)
-            Add(LVarA, -100)
-            Add(LVarB, -300)
-            Wait(1)
-        EndLoop
-    EndChildThread
+        Call(SetTexPanner, MODEL_sui1, TEX_PANNER_2)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -600, -600, -300, -300)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+        Call(SetTexPanner, MODEL_sui2, TEX_PANNER_3)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP(  140, -600,  -30, -600)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+        Call(SetTexPanner, MODEL_o145, TEX_PANNER_4)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_4)
+        TEX_PAN_PARAMS_STEP(  100, -600, -100, -300)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Thread
         Call(PlaySound, SOUND_LOOP_TRD_RAISE_STAIRS)
         Call(ShakeCam, CAM_DEFAULT, 0, 10 * DT, Float(4.0))
@@ -277,22 +263,6 @@ EvtScript N(EVS_Scene_RaiseStairs) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Water) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_suimenn, TEX_PANNER_1)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, 0)
-        Add(LVar0, 100)
-        Sub(LVar1, 100)
-        Wait(1)
-        Goto(10)
-    Return
-    End
-};
-
 s32 N(KeyList)[] = {
     ITEM_KOOPA_FORTRESS_KEY,
     ITEM_NONE
@@ -304,7 +274,6 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(EVS_TexPan_Water))
     BindTrigger(Ref(N(EVS_ExitDoors_trd_00_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     IfEq(GF_TRD01_UnlockedDoor, FALSE)
         BindPadlock(Ref(N(EVS_UnlockDoors)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
@@ -332,7 +301,8 @@ EvtScript N(EVS_Main) = {
     Call(EnableModel, MODEL_o145, FALSE)
     Exec(N(EVS_EnterMap))
     Wait(1)
-    Call(EnableTexPanning, MODEL_suimenn, TRUE)
+    // water
+    Call(SetTexPanner, MODEL_suimenn, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0,   90,  -60,  -70)

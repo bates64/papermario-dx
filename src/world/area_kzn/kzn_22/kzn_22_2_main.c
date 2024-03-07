@@ -1,6 +1,6 @@
 #include "kzn_22.h"
 
-#include "../common/SmokeTexPanners.inc.c"
+#include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_ExitWalk_kzn_20_1) = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
 
@@ -10,35 +10,60 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(EVS_UpdateTexPan_LavaRiver) = {
-    SetGroup(EVT_GROUP_00)
-    Call(EnableTexPanning, MODEL_yougan1_1, TRUE)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_6, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_6, TEX_PANNER_AUX, LVar1, LVar2)
-        Add(LVar0, -1100)
-        Add(LVar1, 300)
-        Add(LVar2, -500)
-        Wait(1)
-        Goto(10)
-    Return
-    End
-};
-
-EvtScript N(EVS_UpdateTexPan_LavaFall) = {
-    SetGroup(EVT_GROUP_00)
-    Call(EnableTexPanning, MODEL_yougan2_2, TRUE)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, LVar1)
-        Add(LVar0, 300)
-        Add(LVar1, -500)
-        Wait(1)
-        Goto(10)
+EvtScript N(EVS_StartTexPanners) = {
+    // lava surface #1
+    Call(SetTexPanner, MODEL_yu, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_yu1, TEX_PANNER_0)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP(   0,  700,  200, -300)
+        TEX_PAN_PARAMS_FREQ(   1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // lava surface #2
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // lava river
+    Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_6)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_6)
+        TEX_PAN_PARAMS_STEP( -1100,    0,  300,  500)
+        TEX_PAN_PARAMS_FREQ(     1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // lava fall
+    Call(SetTexPanner, MODEL_yougan2_2, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP( 300, -500,    0,    0)
+        TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // smoke
+    Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_4)
+        TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
+        TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };
@@ -74,27 +99,13 @@ API_CALLABLE(N(GetFloorCollider1)) {
 
 EvtScript N(EVS_UpdateLavaLevel) = {
     SetGroup(EVT_GROUP_EF)
-    Call(SetTexPanner, MODEL_yu1, TEX_PANNER_2)
-    Call(SetTexPanner, MODEL_yu, TEX_PANNER_2)
     Call(EnableModel, MODEL_yu, FALSE)
     Call(ParentColliderToModel, COLLIDER_o591, MODEL_yu)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Set(LVar3, 0)
     SetF(LVar4, Float(0.0))
     SetF(LVar5, Float(0.0))
     Set(LVarA, 0)
     Label(10)
-        // update lava texture panning
         Call(UpdateColliderTransform, COLLIDER_o591)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, LVar1)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_AUX, LVar2, LVar3)
-        Sub(LVar0, 700)
-        Add(LVar1, 700)
-        Add(LVar2, 200)
-        Sub(LVar3, 300)
-        // update lava level
         Switch(LVarA)
             CaseEq(0)
                 // state 0: wait for player to stand on one of the steps
@@ -103,6 +114,9 @@ EvtScript N(EVS_UpdateLavaLevel) = {
                     Exec(N(EVS_InterruptPartnersInLava))
                     Call(EnableModel, MODEL_yu, TRUE)
                     Call(EnableModel, MODEL_yu1, FALSE)
+                    // start lava flowing toward the left
+                    Call(SetTexPanner, MODEL_yu1, TEX_PANNER_2)
+                    Call(SetTexPanner, MODEL_yu, TEX_PANNER_2)
                     Set(LVarA, 10) // set state to 10
                 EndIf
             CaseEq(10)
@@ -150,13 +164,8 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))
     EndThread
-    Exec(N(EVS_UpdateTexPan_LavaRiver))
-    Exec(N(EVS_UpdateTexPan_LavaFall))
+    Exec(N(EVS_StartTexPanners))
     Exec(N(EVS_UpdateLavaLevel))
-    Set(LVar0, MODEL_kem1)
-    Exec(N(EVS_StartTexPanner_SmokeLeft))
-    Set(LVar0, MODEL_kem2)
-    Exec(N(EVS_StartTexPanner_SmokeRight))
     Return
     End
 };

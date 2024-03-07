@@ -6,30 +6,30 @@
 API_CALLABLE(N(UpdateTexturePanSmooth)) {
     script->varTable[9] += script->varTable[1];
     if (script->varTable[9] < 0) {
-        script->varTable[9] += 0x20000;
-    } else if (script->varTable[9] > 0x20000) {
-        script->varTable[9] -= 0x20000;
+        script->varTable[9] += script->varTable[13];
+    } else if (script->varTable[9] > script->varTable[13]) {
+        script->varTable[9] -= script->varTable[13];
     }
 
     script->varTable[10] += script->varTable[2];
     if (script->varTable[10] < 0) {
-        script->varTable[10] += 0x20000;
-    } else if (script->varTable[10] > 0x20000) {
-        script->varTable[10] -= 0x20000;
+        script->varTable[10] += script->varTable[13];
+    } else if (script->varTable[10] > script->varTable[13]) {
+        script->varTable[10] -= script->varTable[13];
     }
 
     script->varTable[11] += script->varTable[3];
     if (script->varTable[11] < 0) {
-        script->varTable[11] += 0x20000;
-    } else if (script->varTable[11] > 0x20000) {
-        script->varTable[11] -= 0x20000;
+        script->varTable[11] += script->varTable[13];
+    } else if (script->varTable[11] > script->varTable[13]) {
+        script->varTable[11] -= script->varTable[13];
     }
 
     script->varTable[12] += script->varTable[4];
     if (script->varTable[12] < 0) {
-        script->varTable[12] += 0x20000;
-    } else if (script->varTable[12] > 0x20000) {
-        script->varTable[12] -= 0x20000;
+        script->varTable[12] += script->varTable[13];
+    } else if (script->varTable[12] > script->varTable[13]) {
+        script->varTable[12] -= script->varTable[13];
     }
 
     set_main_pan_u(script->varTable[0], script->varTable[9]);
@@ -50,36 +50,36 @@ API_CALLABLE(N(UpdateTexturePanStepped)) {
     if (script->functionTemp[0] == 0) {
         script->varTable[9] += script->varTable[1];
         if (script->varTable[9] < 0) {
-            script->varTable[9] += 0x20000;
-        } else if (script->varTable[9] > 0x20000) {
-            script->varTable[9] -= 0x20000;
+            script->varTable[9] += script->varTable[13];
+        } else if (script->varTable[9] > script->varTable[13]) {
+            script->varTable[9] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[1] == 0) {
         script->varTable[10] += script->varTable[2];
         if (script->varTable[10] < 0) {
-            script->varTable[10] += 0x20000;
-        } else if (script->varTable[10] > 0x20000) {
-            script->varTable[10] -= 0x20000;
+            script->varTable[10] += script->varTable[13];
+        } else if (script->varTable[10] > script->varTable[13]) {
+            script->varTable[10] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[2] == 0) {
         script->varTable[11] += script->varTable[3];
         if (script->varTable[11] < 0) {
-            script->varTable[11] += 0x20000;
-        } else if (script->varTable[11] > 0x20000) {
-            script->varTable[11] -= 0x20000;
+            script->varTable[11] += script->varTable[13];
+        } else if (script->varTable[11] > script->varTable[13]) {
+            script->varTable[11] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[3] == 0) {
         script->varTable[12] += script->varTable[4];
         if (script->varTable[12] < 0) {
-            script->varTable[12] += 0x20000;
-        } else if (script->varTable[12] > 0x20000) {
-            script->varTable[12] -= 0x20000;
+            script->varTable[12] += script->varTable[13];
+        } else if (script->varTable[12] > script->varTable[13]) {
+            script->varTable[12] -= script->varTable[13];
         }
     }
 

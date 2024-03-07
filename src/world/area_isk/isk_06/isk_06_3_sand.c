@@ -96,7 +96,7 @@ EvtScript N(EVS_TexPan_LowerSand) = {
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_SECOND_SAND_ROOM)
         Goto(10)
     EndIf
-    Set(LVar5, 0x00001800)
+    Set(LVar5, 0x1800)
     Set(LVar6, -500)
     Set(LVar7, -100)
     Loop(10)

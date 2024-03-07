@@ -1,5 +1,9 @@
 #define TEX_PAN_PARAMS_ID(panID) \
-        Set(LVar0, (panID))
+        Set(LVar0, (panID)) \
+        Set(LVarD, 0x20000)
+
+#define TEX_PAN_PARAMS_MAX(max) \
+        Set(LVarD, (max))
 
 #define TEX_PAN_PARAMS_STEP(main_step_du, main_step_dv, aux_step_du, aux_step_dv) \
         Set(LVar1, (main_step_du)) \

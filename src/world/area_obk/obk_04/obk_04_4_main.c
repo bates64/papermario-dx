@@ -1,6 +1,8 @@
 #include "obk_04.h"
 #include "effects.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -51,18 +53,16 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Fog) = {
+EvtScript N(EVS_SetupTexPan) = {
+    // spooky fog
+    Call(SetTexPanner, MODEL_m1, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
     Thread
-        Call(SetTexPanner, MODEL_m1, TEX_PANNER_0)
-        Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Label(20)
-        Add(LVar0, 300)
-        Add(LVar1, 100)
-        Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, LVar0, LVar1)
-        Wait(1)
-        Goto(20)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     Return
     End
@@ -75,7 +75,7 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_ManageHole))
-    Exec(N(EVS_TexPan_Fog))
+    Exec(N(EVS_SetupTexPan))
     Exec(N(EVS_EnterMap))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_hip1, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_SetupMusic))

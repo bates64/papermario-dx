@@ -1,5 +1,7 @@
 #include "iwa_10.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 EvtScript N(EVS_ExitWalk_iwa_00_0) = EVT_EXIT_WALK(60, iwa_10_ENTRY_1, "iwa_00", iwa_00_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -64,17 +66,14 @@ EvtScript N(EVS_Main) = {
             Wait(10)
             Goto(10)
     EndThread
+    Call(SetTexPanner, MODEL_o256, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o266, TEX_PANNER_2)
     Thread
-        Call(SetTexPanner, MODEL_o256, TEX_PANNER_2)
-        Call(SetTexPanner, MODEL_o266, TEX_PANNER_2)
-        Call(EnableTexPanning, MODEL_o256, TRUE)
-        Call(EnableTexPanning, MODEL_o266, TRUE)
-        Set(LVar0, 0)
-        Label(20)
-        Sub(LVar0, 3000)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, 0, LVar0)
-        Wait(1)
-        Goto(20)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP(   0, -3000,    0,    0)
+        TEX_PAN_PARAMS_FREQ(   0,     1,    0,    0)
+        TEX_PAN_PARAMS_INIT(   0,     0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     IfLt(GB_StoryProgress, STORY_CH2_SPOKE_WITH_PARAKARRY)
         Exec(N(EVS_Scene_MeetParakarry))

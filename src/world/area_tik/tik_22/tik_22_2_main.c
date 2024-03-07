@@ -96,7 +96,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(N(EVS_SetupDrips))
-    Call(SetTexPanner, MODEL_mizu, 0)
+    Call(SetTexPanner, MODEL_mizu, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)

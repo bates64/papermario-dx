@@ -5,26 +5,28 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
-// can't use kzn_SmokeTexPanners include in this file because of this function
-API_CALLABLE(func_80240718_C71B98) {
-    Bytecode* args = script->ptrReadPos;
-    s32 dist = evt_get_variable(script, *args++);
-
-    if (dist != 0) {
-        enable_world_fog();
-        set_world_fog_dist(995 - dist, 1000);
-    } else {
-        disable_world_fog();
-        set_world_fog_dist(995, 1000);
-    }
-    set_world_fog_color(0, 0, 0, 0);
-
-    return ApiStatus_DONE2;
-}
-
-EvtScript N(EVS_StartTexPanner_SmokeLeft) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, LVar0, TEX_PANNER_3)
+EvtScript N(EVS_StartTexPanners) = {
+    // background lava fall
+    Call(SetTexPanner, MODEL_yougan1, TEX_PANNER_0)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP(   0, -800,   0,   0)
+        TEX_PAN_PARAMS_FREQ(   0,    1,   0,   0)
+        TEX_PAN_PARAMS_INIT(   0,    0,   0,   0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // lava channel
+    Call(SetTexPanner, MODEL_yougan, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o640, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP( 800,   0, 1600,   0)
+        TEX_PAN_PARAMS_FREQ(   1,   0,    1,   0)
+        TEX_PAN_PARAMS_INIT(   0,   0,    0,   0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // smoke
+    Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
@@ -32,13 +34,7 @@ EvtScript N(EVS_StartTexPanner_SmokeLeft) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Return
-    End
-};
-
-EvtScript N(EVS_StartTexPanner_SmokeRight) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, LVar0, TEX_PANNER_4)
+    Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
@@ -59,35 +55,6 @@ EvtScript N(EVS_ExitWalk_kzn_06) = EVT_EXIT_WALK(60, kzn_08_ENTRY_0, "kzn_06", k
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(N(EVS_ExitWalk_kzn_06), TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
-    Return
-    End
-};
-
-EvtScript N(EVS_StartTexPanner0) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_yougan1, TEX_PANNER_0)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
-        TEX_PAN_PARAMS_STEP(   0, -800,   0,   0)
-        TEX_PAN_PARAMS_FREQ(   0,    1,   0,   0)
-        TEX_PAN_PARAMS_INIT(   0,    0,   0,   0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
-    Return
-    End
-};
-
-EvtScript N(EVS_StartTexPanner1) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_yougan, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o640, TEX_PANNER_1)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP( 800,   0, 1600,   0)
-        TEX_PAN_PARAMS_FREQ(   1,   0,    1,   0)
-        TEX_PAN_PARAMS_INIT(   0,   0,    0,   0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
     Return
     End
 };
@@ -164,12 +131,7 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(N(ClearLavaGlowLighting), Ref(N(LavaModelIDs)))
     EndThread
-    Exec(N(EVS_StartTexPanner0))
-    Exec(N(EVS_StartTexPanner1))
-    Set(LVar0, MODEL_kem1)
-    Exec(N(EVS_StartTexPanner_SmokeLeft))
-    Set(LVar0, MODEL_kem2)
-    Exec(N(EVS_StartTexPanner_SmokeRight))
+    Exec(N(EVS_StartTexPanners))
     Return
     End
 };

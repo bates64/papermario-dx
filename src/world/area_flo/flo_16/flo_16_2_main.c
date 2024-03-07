@@ -1,6 +1,8 @@
 #include "flo_16.h"
 #include "effects.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 API_CALLABLE(N(SpawnSunEffect)) {
     fx_sun_undeclared(FX_SUN_FROM_RIGHT, 0, 0, 0, 0, 0);
     return ApiStatus_DONE2;
@@ -44,21 +46,16 @@ EvtScript N(EVS_Main) = {
     Call(EnableTexPanning, MODEL_o139, TRUE)
     Call(EnableTexPanning, MODEL_o140, TRUE)
     Thread
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Label(0)
-        Add(LVar0, 140)
-        IfGt(LVar0, 0x10000)
-            Add(LVar0, -0x10000)
-        EndIf
-        Call(SetTexPanOffset, 1, 0, LVar0, 0)
-        Add(LVar1, -200)
-        IfLt(LVar1, 0)
-            Add(LVar1, 0x10000)
-        EndIf
-        Call(SetTexPanOffset, 2, 0, LVar1, 0)
-        Wait(1)
-        Goto(0)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(  140,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     Exec(N(EVS_SetupPillarPuzzle))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
