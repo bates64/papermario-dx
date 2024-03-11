@@ -74,7 +74,7 @@ EvtScript N(EVS_Main) = {
             Call(RotateGroup, MODEL_g153, -60, 0, 1, 0)
         EndIf
     EndIf
-    Call(SetTexPanner, MODEL_o685, 0)
+    Call(SetTexPanner, MODEL_o685, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(    0,    0,   40,  900)

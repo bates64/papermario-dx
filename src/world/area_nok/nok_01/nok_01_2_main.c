@@ -1,5 +1,7 @@
 #include "nok_01.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 EvtScript N(EVS_ExitWalk_nok_13_1) = {
     IfEq(GB_KootFavor_State, KOOT_FAVOR_STATE_2)
         Set(GF_KootFavor_LeftKoopaVillage, TRUE)
@@ -69,16 +71,14 @@ EvtScript N(EVS_TexPan_Flowers) = {
     Call(SetTexPanner, MODEL_o399, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o400, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o401, TEX_PANNER_0)
-    Label(10)
-        Loop(12)
-            Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, 0)
-            Wait(1)
-        EndLoop
-        Loop(12)
-            Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0x4000, 0)
-            Wait(1)
-        EndLoop
-        Goto(10)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_MAX(0x8000)
+        TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

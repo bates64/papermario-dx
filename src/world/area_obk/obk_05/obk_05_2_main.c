@@ -1,5 +1,7 @@
 #include "obk_05.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 s32 N(adjust_cam_on_landing)(void) {
     return LANDING_CAM_NEVER_ADJUST;
 }
@@ -24,21 +26,6 @@ EvtScript N(EVS_EnterDoor_obk_05_0) = {
 
 EvtScript N(EVS_ExitDoor_obk_01_2) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_05_ENTRY_0, "obk_01", obk_01_ENTRY_2,
     COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
-
-EvtScript N(EVS_TexPan_Fog) = {
-    Call(SetTexPanner, MODEL_m1, 0)
-    Call(SetTexPanner, MODEL_m2, 0)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Loop(0)
-        Add(LVar0, 300)
-        Add(LVar1, 100)
-        Call(SetTexPanOffset, 0, 0, LVar0, LVar1)
-        Wait(1)
-    EndLoop
-    Return
-    End
-};
 
 #include "world/common/EnableCameraFollowPlayerY.inc.c"
 #include "world/common/DisableCameraFollowPlayerY.inc.c"
@@ -87,12 +74,20 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupRockingChairs))
     Exec(N(EVS_ManageHole))
-    Exec(N(EVS_TexPan_Fog))
     BindTrigger(Ref(N(EVS_ExitDoor_obk_01_2)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     Exec(N(EVS_EnterDoor_obk_05_0))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_hip1, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_ManageRetroJar))
+    Call(SetTexPanner, MODEL_m1, TEX_PANNER_0)
+    Call(SetTexPanner, MODEL_m2, TEX_PANNER_0)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

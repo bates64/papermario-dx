@@ -3,6 +3,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 // geyser positions in grid coordinates
 #define POS_0_I 28
 #define POS_0_J 6
@@ -602,12 +604,6 @@ EvtScript N(EVS_SetupPuzzle) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar2, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_ManageLargeGeyser))
     Exec(N(EVS_ManageGeyserPlayerPhysics))
-    Call(EnableTexPanning, MODEL_o72, TRUE)
-    Call(EnableTexPanning, MODEL_o73, TRUE)
-    Call(EnableTexPanning, MODEL_o74, TRUE)
-    Call(EnableTexPanning, MODEL_o75, TRUE)
-    Call(EnableTexPanning, MODEL_o76, TRUE)
-    Call(EnableTexPanning, MODEL_o71, TRUE)
     Call(SetModelCustomGfx, MODEL_o72, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o73, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o74, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
@@ -615,15 +611,19 @@ EvtScript N(EVS_SetupPuzzle) = {
     Call(SetModelCustomGfx, MODEL_o76, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o71, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_geyser)), NULL)
-    Set(LVar0, 0)
-    Loop(0)
-        Sub(LVar0, 2000)
-        IfLt(LVar0, -0x10000)
-            Add(LVar0, 0x10000)
-        EndIf
-        Call(SetTexPanOffset, TEX_PANNER_1, 0, 0, LVar0)
-        Wait(1)
-    EndLoop
+    Call(SetTexPanner, MODEL_o72, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o73, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o74, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o75, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o76, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o71, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(    0, -2000,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

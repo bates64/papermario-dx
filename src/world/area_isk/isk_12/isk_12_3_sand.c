@@ -106,9 +106,9 @@ EvtScript N(EVS_TexPan_LowerSand) = {
         Add(LVar2, LVar5)
         Add(LVar3, LVar6)
         Add(LVar4, LVar7)
-        Call(SetTexPanOffset, 1, 0, 0, LVar2)
-        Call(SetTexPanOffset, 2, 0, 0, LVar3)
-        Call(SetTexPanOffset, 3, 0, 0, LVar4)
+        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0, LVar2)
+        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, 0, LVar3)
+        Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, 0, LVar4)
         Wait(1)
     EndLoop
     Return

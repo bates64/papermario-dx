@@ -2,20 +2,15 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
-EvtScript N(EVS_TexPan_MysticPyramid) = {
-    Call(EnableTexPanning, MODEL_o185, TRUE)
-    Set(LVar0, 0)
-    Loop(0)
-        Add(LVar0, 0x4000)
-        Call(SetTexPanOffset, TEX_PANNER_C, TEX_PANNER_MAIN, LVar0, 0)
-        Wait(3)
-    EndLoop
-    Return
-    End
-};
-
 EvtScript N(EVS_Animate_MysticPyramid) = {
-    Exec(N(EVS_TexPan_MysticPyramid))
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_C)
+        TEX_PAN_PARAMS_STEP( 0x4000,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(      3,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(      0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_o185, TEX_PANNER_C)
     Set(LVar0, 0)
     Loop(0)
         Call(RotateGroup, MODEL_g87, LVar0, 0, 1, 0)

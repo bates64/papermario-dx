@@ -5,6 +5,8 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_SetupFoliage);
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 EntryList N(Entrances) = {
     [sbk_56_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
     [sbk_56_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
@@ -73,21 +75,6 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Water) = {
-    Call(EnableTexPanning, MODEL_o49, TRUE)
-    Set(LVar0, 0)
-    Label(10)
-        Set(LVar1, 0)
-        Sub(LVar1, LVar0)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, LVar0)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, LVar1)
-        Add(LVar0, 80)
-        Wait(1)
-        Goto(10)
-    Return
-    End
-};
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)
@@ -97,7 +84,6 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Call(N(SpawnSunEffect))
-    Exec(N(EVS_TexPan_Water))
     Call(MakeTransformGroup, MODEL_sui)
     Call(SetMusicTrack, 0, SONG_DRY_DRY_DESERT, 0, 8)
     Call(N(StartOasisSongVariation))
@@ -105,6 +91,14 @@ EvtScript N(EVS_Main) = {
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Exec(N(EVS_SetupFoliage))
+    Call(SetTexPanner, MODEL_o49, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(   80,   80,  -80,  -80)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

@@ -1,6 +1,6 @@
 #include "kzn_10.h"
 
-#include "../common/SmokeTexPanners.inc.c"
+#include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_ExitWalk_kzn_09_1) = EVT_EXIT_WALK(60, kzn_10_ENTRY_0, "kzn_09", kzn_09_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kzn_11_0) = EVT_EXIT_WALK(60, kzn_10_ENTRY_1, "kzn_11", kzn_11_ENTRY_0);
@@ -19,6 +19,20 @@ API_CALLABLE(N(func_8024030C_C7E48C)) {
         return ApiStatus_DONE2;
     }
 }
+
+EvtScript N(EVS_StartTexPanners) = {
+    // smoke
+    Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Return
+    End
+};
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
@@ -45,8 +59,7 @@ EvtScript N(EVS_Main) = {
     Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Exec(N(EVS_SetupSpinyTromp))
-    Set(LVar0, MODEL_kem1)
-    Exec(N(EVS_StartTexPanner_SmokeLeft))
+    Exec(N(EVS_StartTexPanners))
     Return
     End
 };

@@ -39,9 +39,8 @@ EvtScript N(EVS_Main) = {
     EVT_FLOWER_SPAWN_REGION(   21, -346,  147, -242,   20 )
     EVT_FLOWER_SPAWN_REGION( -350, -190,  -81, -106,    0 )
     EVT_FLOWER_SPAWN_REGION( -380,   85,  -95,  150,    0 )
-    Call(EnableTexPanning, MODEL_o51, TRUE)
-    Call(EnableTexPanning, MODEL_o36, TRUE)
-    Call(EnableTexPanning, MODEL_o37, TRUE)
+    // waters edge
+    Call(SetTexPanner, MODEL_o51, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -100,  100,    0,    0)
@@ -49,6 +48,9 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water fall
+    Call(SetTexPanner, MODEL_o36, TEX_PANNER_3)
+    Call(SetTexPanner, MODEL_o37, TEX_PANNER_3)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(    0,-1200,    0,    0)

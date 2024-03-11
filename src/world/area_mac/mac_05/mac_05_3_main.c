@@ -163,7 +163,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(D_802448C4_856A34))
     Wait(1)
     Exec(N(D_8024457C_8566EC))
-    Call(SetTexPanner, MODEL_kaimen, 1)
+    Call(SetTexPanner, MODEL_kaimen, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  100,  100,  -70,  -50)

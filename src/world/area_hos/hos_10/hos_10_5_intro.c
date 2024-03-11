@@ -100,7 +100,7 @@ EvtScript N(EVS_Scene_Rising_Impl) = {
         Call(N(MakeShootingStar))
     EndThread
     Call(EnableModel, MODEL_nagare, FALSE)
-    Call(SetTexPanner, MODEL_nagare, 1)
+    Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
     Thread
         Set(LVar0, 0)
         Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)

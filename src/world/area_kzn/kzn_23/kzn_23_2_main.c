@@ -1,6 +1,6 @@
 #include "kzn_23.h"
 
-#include "../common/SmokeTexPanners.inc.c"
+#include "world/common/atomic/TexturePan.inc.c"
 
 // should add to zero over a full cycle
 s32 N(LavaFluctuationOffsets)[] = {
@@ -22,25 +22,45 @@ EvtScript N(EVS_ModulateLavaLevel) = {
     End
 };
 
+EvtScript N(EVS_StartTexPanners) = {
+    // lava surface
+    Call(SetTexPanner, MODEL_yu, TEX_PANNER_0)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // smoke
+    Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_4)
+        TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
+        TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Return
+    End
+};
+
 EvtScript N(EVS_RaiseLava) = {
     Exec(N(EVS_ModulateLavaLevel))
     SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_yu, TEX_PANNER_0)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Set(LVar3, 0)
     Set(MV_LavaLevel, -105)
     Set(LVar5, 40)
     Call(TranslateModel, MODEL_yu, 0, MV_LavaLevel, 0)
     Wait(6)
     Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, LVar0, LVar1)
-        Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_AUX, LVar2, LVar3)
-        Sub(LVar0, 700)
-        Add(LVar1, 700)
-        Add(LVar2, 200)
-        Sub(LVar3, 300)
         IfEq(LVar5, 40)
             IfLt(MV_LavaLevel, 2700)
                 Add(MV_LavaLevel, 20)
@@ -67,10 +87,7 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_RaiseLava))
-    Set(LVar0, MODEL_kem1)
-    Exec(N(EVS_StartTexPanner_SmokeLeft))
-    Set(LVar0, MODEL_kem2)
-    Exec(N(EVS_StartTexPanner_SmokeRight))
+    Exec(N(EVS_StartTexPanners))
     Return
     End
 };

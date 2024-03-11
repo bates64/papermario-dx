@@ -1,5 +1,7 @@
 #include "nok_12.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 API_CALLABLE(N(UpdateEnounterStages)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     EncounterStatus* encounterStatus = &gCurrentEncounter;
@@ -39,8 +41,8 @@ EvtScript N(EVS_UpdateEnounterStages) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Flowers) = {
-    SetGroup(EVT_GROUP_00)
+EvtScript N(EVS_SetupTexPan) = {
+    // flowers
     Call(SetTexPanner, MODEL_hana1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana2, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana3, TEX_PANNER_0)
@@ -49,52 +51,35 @@ EvtScript N(EVS_TexPan_Flowers) = {
     Call(SetTexPanner, MODEL_hana6, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hana7, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_hanahna, TEX_PANNER_0)
-    Label(10)
-        Loop(12)
-            Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0, 0)
-            Wait(1)
-        EndLoop
-        Loop(12)
-            Call(SetTexPanOffset, TEX_PANNER_0, TEX_PANNER_MAIN, 0x4000, 0)
-            Wait(1)
-        EndLoop
-        Goto(10)
-    Return
-    End
-};
-
-EvtScript N(EVS_TexPan_Water) = {
-    SetGroup(EVT_GROUP_00)
     Thread
-        Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Set(LVar2, 0)
-        Label(10)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)
-            Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX,  LVar1, LVar2)
-            Sub(LVar0, 100)
-            Sub(LVar1, 400)
-            Add(LVar1, 1000)
-            Wait(1)
-            Goto(10)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_0)
+        TEX_PAN_PARAMS_MAX(0x8000)
+        TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // water
+    Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP( -100,    0,  600,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetTexPanner, MODEL_kabemizu1, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_kabemizu2, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_kabemizu3, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_kabemizu4, TEX_PANNER_2)
     Call(SetTexPanner, MODEL_kabemizu5, TEX_PANNER_2)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-    Set(LVar2, 0)
-    Label(20)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_AUX,  LVar1, LVar2)
-        Sub(LVar0, 100)
-        Add(LVar1, 800)
-        Sub(LVar1, 400)
-        Wait(1)
-        Goto(20)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -100,    0,  400,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };
@@ -129,8 +114,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupFoliage))
-    Exec(N(EVS_TexPan_Flowers))
-    Exec(N(EVS_TexPan_Water))
+    Exec(N(EVS_SetupTexPan))
     Exec(N(EVS_SetupBridge))
     Call(GetDemoState, LVar0)
     IfNe(LVar0, DEMO_STATE_NONE)

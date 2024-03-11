@@ -77,6 +77,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_TIK20_WATER)
     Exec(N(EVS_SetupDrips))
+    Call(SetTexPanner, MODEL_nagare, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
@@ -84,7 +85,6 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(SetTexPanner, MODEL_nagare, 0)
     Thread
         Set(LVar2, MODEL_bin)
         Exec(N(EVS_Flotsam_Bobbing))

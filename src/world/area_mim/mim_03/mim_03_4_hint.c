@@ -126,7 +126,7 @@ EvtScript N(EVS_FlowersReact_Correct) = {
 EvtScript N(EVS_CheckFlowers_North) = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, -300)
     Set(LVar8, Ref(N(FlowerModels_North)))
-    Set(LVar9, 0)
+    Set(LVar9, TEX_PANNER_0)
     ExecWait(N(EVS_FlowersReact_Wrong))
     Return
     End
@@ -135,7 +135,7 @@ EvtScript N(EVS_CheckFlowers_North) = {
 EvtScript N(EVS_CheckFlowers_West) = {
     Call(PlaySoundAt, SOUND_FLOWERS_SAD_GIGGLE, SOUND_SPACE_DEFAULT, -300, 0, 0)
     Set(LVar8, Ref(N(FlowerModels_West)))
-    Set(LVar9, 1)
+    Set(LVar9, TEX_PANNER_1)
     ExecWait(N(EVS_FlowersReact_Correct))
     Return
     End
@@ -144,7 +144,7 @@ EvtScript N(EVS_CheckFlowers_West) = {
 EvtScript N(EVS_CheckFlowers_South) = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 300)
     Set(LVar8, Ref(N(FlowerModels_South)))
-    Set(LVar9, 2)
+    Set(LVar9, TEX_PANNER_2)
     ExecWait(N(EVS_FlowersReact_Wrong))
     Return
     End
@@ -153,7 +153,7 @@ EvtScript N(EVS_CheckFlowers_South) = {
 EvtScript N(EVS_CheckFlowers_East) = {
     Call(PlaySoundAt, SOUND_FLOWERS_LIGHT_GIGGLE, SOUND_SPACE_DEFAULT, 300, 0, 0)
     Set(LVar8, Ref(N(FlowerModels_East)))
-    Set(LVar9, 3)
+    Set(LVar9, TEX_PANNER_3)
     ExecWait(N(EVS_FlowersReact_Wrong))
     Return
     End

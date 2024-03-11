@@ -2,6 +2,7 @@
 #include "effects.h"
 
 #include "../common/FlowerSpawnRegion.inc.c"
+#include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(SpawnSunEffect)) {
     fx_sun_undeclared(FX_SUN_FROM_RIGHT, 0, 0, 0, 0, 0);
@@ -36,34 +37,31 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))
     EndThread
-    Call(EnableTexPanning, MODEL_o25, TRUE)
-    Call(EnableTexPanning, MODEL_o27, TRUE)
-    Call(EnableTexPanning, MODEL_o31, TRUE)
-    Call(EnableTexPanning, MODEL_o33, TRUE)
-    Call(EnableTexPanning, MODEL_o35, TRUE)
-    Call(EnableTexPanning, MODEL_o37, TRUE)
-    Call(EnableTexPanning, MODEL_o55, TRUE)
-    Call(EnableTexPanning, MODEL_o28, TRUE)
-    Call(EnableTexPanning, MODEL_o32, TRUE)
-    Call(EnableTexPanning, MODEL_o34, TRUE)
-    Call(EnableTexPanning, MODEL_o36, TRUE)
-    Call(EnableTexPanning, MODEL_o38, TRUE)
+    // vines
+    Call(SetTexPanner, MODEL_o25, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o27, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o31, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o33, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o35, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o37, TEX_PANNER_1)
     Thread
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Label(0)
-        Add(LVar0, 140)
-        IfGt(LVar0, 0x10000)
-            Add(LVar0, -0x10000)
-        EndIf
-        Call(SetTexPanOffset, 1, 0, LVar0, 0)
-        Add(LVar1, -200)
-        IfLt(LVar1, 0)
-            Add(LVar1, 0x10000)
-        EndIf
-        Call(SetTexPanOffset, 2, 0, LVar1, 0)
-        Wait(1)
-        Goto(0)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(  140,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_o28, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o32, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o34, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o36, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o38, TEX_PANNER_2)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o129, SURFACE_TYPE_FLOWERS)
     EVT_FLOWER_SPAWN_REGION(140, -137, 340, -60, 0)

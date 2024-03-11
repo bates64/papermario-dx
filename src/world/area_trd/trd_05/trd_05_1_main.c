@@ -6,6 +6,8 @@ extern EvtScript N(EVS_KoopaBros_SetTrap);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 API_CALLABLE(N(SetMapChangeFadeRate)) {
     set_map_change_fade_rate(5);
     return ApiStatus_DONE2;
@@ -78,22 +80,6 @@ EvtScript N(EVS_BombWall) = {
     End
 };
 
-EvtScript N(EVS_TexPan_Water) = {
-    SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_suimen, TEX_PANNER_1)
-    Set(LVar0, 0)
-    Set(LVar1, 0)
-        Label(10)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, 0)
-        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, 0)
-        Add(LVar0, 100)
-        Sub(LVar1, 100)
-        Wait(1)
-        Goto(10)
-    Return
-    End
-};
-
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
@@ -108,7 +94,6 @@ EvtScript N(EVS_Main) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tte, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Exec(N(EVS_SetupMusic))
-    Exec(N(EVS_TexPan_Water))
     Call(EnableModel, MODEL_o95, FALSE)
     Call(EnableModel, MODEL_o96, FALSE)
     Call(SetGroupVisibility, MODEL_kesu, MODEL_GROUP_HIDDEN)
@@ -121,6 +106,14 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_EnterMap))
     EndIf
     Wait(1)
+    Call(SetTexPanner, MODEL_suimen, TEX_PANNER_1)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+        TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
     Return
     End
 };

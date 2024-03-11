@@ -1,5 +1,7 @@
 #include "mac_01.h"
 
+#include "world/common/atomic/TexturePan.inc.c"
+
 EvtScript N(EVS_ExitWalk_mac_00_1) = EVT_EXIT_WALK(60, mac_01_ENTRY_0, "mac_00", mac_00_ENTRY_1);
 
 EvtScript N(EVS_ExitWalk_nok_11_0) = {
@@ -166,23 +168,14 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_EnterMap))
     Wait(1)
     Call(EnableTexPanning, MODEL_hikari, TRUE)
+    // merlon light shafts
+    Call(SetTexPanner, MODEL_hikari, TEX_PANNER_3)
     Thread
-        SetGroup(EVT_GROUP_00)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Label(0)
-            Add(LVar0, -100)
-            Add(LVar1, -200)
-            IfLt(LVar0, 0)
-                Add(LVar0, 0x10000)
-            EndIf
-            IfLt(LVar1, 0)
-                Add(LVar0, 0x10000)
-            EndIf
-            Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, LVar0, 0)
-            Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_AUX, LVar1, LVar1)
-            Wait(1)
-            Goto(0)
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP(-100,    0, -200, -200)
+        TEX_PAN_PARAMS_FREQ(   1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     BindTrigger(Ref(N(EVS_Merlon_GiveHint)), TRIGGER_WALL_PRESS_A, COLLIDER_o335, 1, 0)
     Exec(N(EVS_SetupQuickChangeTrigger))

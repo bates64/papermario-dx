@@ -47,7 +47,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupRotatingWall))
     Exec(N(EVS_SetupMusic))
     Exec(N(D_80240778_B144E8))
-    Call(SetTexPanner, MODEL_o207, 0)
+    Call(SetTexPanner, MODEL_o207, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(    0,    0,   40,  900)
@@ -57,7 +57,7 @@ EvtScript N(EVS_Main) = {
     EndThread
     Call(SetModelCustomGfx, MODEL_o207, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
-    Call(SetTexPanner, MODEL_o209, 0)
+    Call(SetTexPanner, MODEL_o209, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
         TEX_PAN_PARAMS_STEP(    0,    0,   40,  900)

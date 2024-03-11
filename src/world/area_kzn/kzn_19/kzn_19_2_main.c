@@ -1,7 +1,7 @@
 #include "kzn_19.h"
 #include "sprite/player.h"
 
-#include "../common/SmokeTexPanners.inc.c"
+#include "world/common/atomic/TexturePan.inc.c"
 
 #define STAR_SPIRIT_DATA_VAR MV_Unk_01
 #include "world/common/todo/StarSpiritEffectFunc.inc.c"
@@ -98,12 +98,9 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(EVS_StartTexPanners_Lava) = {
-    SetGroup(EVT_GROUP_00)
+EvtScript N(EVS_SetupTexPan) = {
+    // lava surfaces
     Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_2)
-    Call(EnableTexPanning, MODEL_toro, TRUE)
-    Call(EnableTexPanning, MODEL_poko, TRUE)
-    Call(SetTexPanner, MODEL_poko1, TEX_PANNER_E)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(  200,    0,  400, -100)
@@ -111,6 +108,8 @@ EvtScript N(EVS_StartTexPanners_Lava) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // leaking lava
+    Call(SetTexPanner, MODEL_toro, TEX_PANNER_5)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(  300, -500,    0,    0)
@@ -118,21 +117,41 @@ EvtScript N(EVS_StartTexPanners_Lava) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // lava bubbles
+    Call(SetTexPanner, MODEL_poko, TEX_PANNER_D)
     Thread
-        Set(LVar0, 0)
-        Loop(0)
-            Call(SetTexPanOffset, TEX_PANNER_D, TEX_PANNER_MAIN, LVar0, 0)
-            Add(LVar0, 0x8000)
-            Wait(6)
-        EndLoop
+        TEX_PAN_PARAMS_ID(TEX_PANNER_D)
+        TEX_PAN_PARAMS_MAX(0x80000000)
+        TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(   6,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_poko1, TEX_PANNER_E)
     Thread
-        Set(LVar0, 0)
-        Loop(0)
-            Call(SetTexPanOffset, TEX_PANNER_E, TEX_PANNER_MAIN, LVar0, 0)
-            Add(LVar0, 0x8000)
-            Wait(4)
-        EndLoop
+        TEX_PAN_PARAMS_ID(TEX_PANNER_E)
+        TEX_PAN_PARAMS_MAX(0x80000000)
+        TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
+        TEX_PAN_PARAMS_FREQ(   4,    0,    0,    0)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // smoke
+    Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
+        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_4)
+        TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
+        TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
+        TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
     EndThread
     Return
     End
@@ -207,11 +226,7 @@ EvtScript N(EVS_Main) = {
             Call(EnableGroup, MODEL_naka, FALSE)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mae, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Exec(N(EVS_StartTexPanners_Lava))
-    Set(LVar0, MODEL_kem1)
-    Exec(N(EVS_StartTexPanner_SmokeLeft))
-    Set(LVar0, MODEL_kem2)
-    Exec(N(EVS_StartTexPanner_SmokeRight))
+    Exec(N(EVS_SetupTexPan))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_UpdateLavaWaves))
     Exec(N(EVS_UpdateEruption))
