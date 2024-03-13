@@ -2678,8 +2678,6 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp);
 void remove_effect(EffectInstance*);
 s32 load_effect(s32 effectIndex);
 
-void fx_sun_undeclared(s32, s32, s32, s32, s32, s32);
-
 #include "effects/effect_defs.h"
 
 #endif

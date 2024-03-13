@@ -41,7 +41,7 @@ EvtScript N(EVS_SetupTexPan) = {
     Call(SetTexPanner, MODEL_poko, TEX_PANNER_D)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_D)
-        TEX_PAN_PARAMS_MAX(0x80000000)
+        TEX_PAN_PARAMS_MAX(0x40000)
         TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
         TEX_PAN_PARAMS_FREQ(   6,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)

@@ -35,8 +35,9 @@ EvtScript N(EVS_Main) = {
     Call(PlaySound, SOUND_LOOP_TIK08_WATER)
     Call(PlaySoundAtF, SOUND_LOOP_TIK08_FLOW1, SOUND_SPACE_WITH_DEPTH, -30, -30, -85)
     Exec(N(EVS_SetupDrips))
-    Call(EnableTexPanning, MODEL_nagare1, TRUE)
-    Call(EnableTexPanning, MODEL_o92, TRUE)
+    // water surface
+    Call(SetTexPanner, MODEL_nagare1, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o92, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
@@ -44,7 +45,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_taki, TRUE)
+    // waterfalls
+    Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
@@ -52,7 +54,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_takib, TRUE)
+    // water spreading
+    Call(SetTexPanner, MODEL_takib, TEX_PANNER_5)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(    0,-1400,-2600,  -60)

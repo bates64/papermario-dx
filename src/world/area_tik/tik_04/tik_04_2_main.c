@@ -41,7 +41,8 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupDrips))
-    Call(EnableTexPanning, MODEL_mizu, TRUE)
+    // water leaking
+    Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
