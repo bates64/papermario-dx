@@ -35,22 +35,26 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))
     EndThread
-    Call(EnableTexPanning, MODEL_o59, TRUE)
-    Call(EnableTexPanning, MODEL_o142, TRUE)
-    Call(EnableTexPanning, MODEL_o58, TRUE)
-    Call(EnableTexPanning, MODEL_o136, TRUE)
-    Call(EnableTexPanning, MODEL_o146, TRUE)
-    Call(EnableTexPanning, MODEL_o143, TRUE)
-    Call(EnableTexPanning, MODEL_o135, TRUE)
-    Call(EnableTexPanning, MODEL_o138, TRUE)
-    Call(EnableTexPanning, MODEL_o139, TRUE)
-    Call(EnableTexPanning, MODEL_o140, TRUE)
+    // vines scrolling left
+    Call(SetTexPanner, MODEL_o59, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o142, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o58, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o136, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o146, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o139, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o143, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  140,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // vines scrolling right
+    Call(SetTexPanner, MODEL_o135, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o138, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o140, TEX_PANNER_2)
+    Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
