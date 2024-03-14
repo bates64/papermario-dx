@@ -146,10 +146,11 @@ EvtScript N(EVS_SetupModelFX) = {
         CaseEq(hos_02_ENTRY_1)
             Call(N(func_80240EF4_A17114), MV_StarBeamEffect)
     EndSwitch
-    Call(EnableTexPanning, MODEL_o380, TRUE)
-    Call(EnableTexPanning, MODEL_o395, TRUE)
-    Call(EnableTexPanning, MODEL_o549, TRUE)
-    Call(EnableTexPanning, MODEL_o552, TRUE)
+    // star shimmer floor
+    Call(SetTexPanner, MODEL_o380, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o395, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o549, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o552, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   80, -200,  -50,  100)

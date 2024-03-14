@@ -66,7 +66,8 @@ EvtScript N(EVS_Main) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o54, COLLIDER_FLAG_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1, SURFACE_TYPE_WATER)
     Call(MakeTransformGroup, MODEL_g12)
-    Call(EnableTexPanning, MODEL_o61, TRUE)
+    // water surface
+    Call(SetTexPanner, MODEL_o61, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)

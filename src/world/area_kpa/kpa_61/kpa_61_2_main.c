@@ -33,10 +33,7 @@ EvtScript N(EVS_EnterMap) = {
 };
 
 EvtScript N(EVS_TexPan_Clouds) = {
-    Call(EnableTexPanning, MODEL_kumo1, TRUE)
-    Call(EnableTexPanning, MODEL_kumo2, TRUE)
-    Call(EnableTexPanning, MODEL_kumo3, TRUE)
-    Call(EnableTexPanning, MODEL_kumo4, TRUE)
+    Call(SetTexPanner, MODEL_kumo1, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  -90,    0,    0,    0)
@@ -44,6 +41,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_kumo2, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -130,    0,    0,    0)
@@ -51,6 +49,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_kumo3, TEX_PANNER_3)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP( -120,    0,    0,    0)
@@ -58,6 +57,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_kumo4, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  -70,    0,    0,    0)

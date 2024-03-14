@@ -32,9 +32,9 @@ EvtScript N(EVS_Main) = {
     Wait(1)
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_JAN_BEACH_WAVES)
-    Call(EnableTexPanning, MODEL_o75, TRUE)
-    Call(EnableTexPanning, MODEL_o7, TRUE)
-    Call(EnableTexPanning, MODEL_o6, TRUE)
+    // waves
+    Call(SetTexPanner, MODEL_o75, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o7, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -100,  350,    0,    0)
@@ -42,6 +42,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water surface
+    Call(SetTexPanner, MODEL_o6, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(  100,  200,    0,    0)
