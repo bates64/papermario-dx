@@ -21,7 +21,6 @@ EvtScript N(EVS_AnimateVines) = {
     Set(LVar0, 0)
     Set(LVar1, 0)
     Label(0)
-    Label(0)
         Add(LVar0, -140)
         IfLt(LVar0, 0)
             Add(LVar0, 0x10000)
