@@ -1758,10 +1758,10 @@ s32 is_ability_active(s32 ability) {
 
     for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
         badgeItemID = playerData->equippedBadges[i];
+        if (badgeItemID == ITEM_NONE)
+            continue;
 
-        if (badgeItemID != ITEM_NONE) {
-            badgeMoveID = gItemTable[badgeItemID].moveID;
-        }
+        badgeMoveID = gItemTable[badgeItemID].moveID;
 
         switch (ability) {
             case ABILITY_DODGE_MASTER:
