@@ -259,13 +259,6 @@ EvtScript N(EVS_SetupFountain) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o86, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o87, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-
-
-
-
-
-
-
     // fountain
     Call(SetTexPanner, MODEL_o25, TEX_PANNER_1)
     Thread
