@@ -259,6 +259,8 @@ extern Battle* gCurrentBattlePtr;
 
 extern ActorOffsets bActorOffsets[];
 
+#endif
+
 void load_demo_battle(u32 index);
 Actor* create_actor(Formation formation);
 

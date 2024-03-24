@@ -4,7 +4,7 @@
 #include "dx/debug_menu.h"
 
 CollisionStatus gCollisionStatus;
-f32 D_8010C928;
+f32 StepUpLastY;
 f32 JumpedOnSwitchX;
 f32 JumpedOnSwitchZ;
 f32 StepUpLastYaw;

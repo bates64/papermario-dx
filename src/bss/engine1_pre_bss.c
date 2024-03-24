@@ -31,7 +31,7 @@ BSS s32 NpcHitQueryColliderID;
 BSS f32 JumpedOnSwitchZ;
 BSS s32 PlayerRunStateTime;
 BSS f32 StepUpLastYaw;
-BSS s32 D_8010C988;
+BSS s32 StepUpLastY;
 BSS s32 NpcHitQueryAheadCollider;
 BSS f32 PlayerNormalPitch;
 
