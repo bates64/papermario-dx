@@ -399,7 +399,7 @@ void func_802B6820_E256F0(void) {
     if (playerStatus->actionSubstate == SUBSTATE_HAMMER_0 && result > NO_COLLIDER && HammerHit->unk_14 == 0) {
         playerStatus->actionSubstate++;
     }
-    if (playerStatus->actionSubstate == SUBSTATE_HAMMER_1 && result < 0) {
+    if (playerStatus->actionSubstate == SUBSTATE_HAMMER_1 && result <= NO_COLLIDER) {
         playerStatus->actionSubstate = SUBSTATE_HAMMER_2;
     }
     HammerHit->timer++;

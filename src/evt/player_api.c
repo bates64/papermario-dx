@@ -5,8 +5,8 @@
 #include "world/surfaces.h"
 #include "sprite/player.h"
 
-SHIFT_BSS PlayerStatus gPlayerStatus;
-SHIFT_BSS PlayerData gPlayerData;
+extern PlayerStatus gPlayerStatus;
+extern PlayerData gPlayerData;
 
 extern Npc playerNpcData;
 extern u16 PlayerImgFXFlags;

@@ -1485,6 +1485,7 @@
     potencyA: 0
     potencyB: 0
 - PeachKey:
+    category: KEY
     nameMsg: MSG_ItemName_PeachKey
     fullDescMsg: MSG_ItemFullDesc_PeachKey
     shortDescMsg: MSG_ItemShortDesc_PeachKey

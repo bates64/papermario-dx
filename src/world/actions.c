@@ -34,6 +34,7 @@ void action_update_use_tweester(void);
 void action_update_state_23(void);
 
 #if VERSION_JP // TODO remove once segments are split
+extern Addr world_use_item_VRAM;
 extern Addr world_action_idle_ROM_START;
 extern Addr world_action_idle_ROM_END;
 extern Addr world_action_walk_ROM_START;
@@ -116,3 +117,23 @@ Action PlayerActionsTable[] = {
     [ACTION_STATE_INVALID_25]           { action_update_launch, ACTION_FILE(walk), FALSE },
     [ACTION_STATE_USE_SPRING]           { action_update_launch, ACTION_FILE(misc), TRUE },
 };
+
+extern UseItemStruct UseItemDmaArgs;
+
+BSS s32 D_8010CD20;
+
+s32 use_consumable(s32 invSlot) {
+    Evt* script;
+
+    D_8010CD20 = invSlot;
+    invSlot = gPlayerData.invItems[invSlot];
+    dma_copy(UseItemDmaArgs.dmaStart, UseItemDmaArgs.dmaEnd, world_use_item_VRAM);
+    script = start_script(UseItemDmaArgs.main, EVT_PRIORITY_1, 0);
+    script->varTable[10] = invSlot;
+    return script->id;
+}
+
+void remove_consumable(void) {
+    gPlayerData.invItems[D_8010CD20] = ITEM_NONE;
+    sort_items();
+}

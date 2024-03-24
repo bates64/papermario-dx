@@ -1758,7 +1758,7 @@ typedef struct LavaReset {
 
 typedef struct BombTrigger {
     /* 0x00 */ Vec3f pos;
-    /* 0x0C */ s32 diameter; // effective 'size' of the object, usually set to zero because bombettes explosion radius is large enough
+    /* 0x0C */ f32 diameter; // effective 'size' of the object, usually set to zero because bombettes explosion radius is large enough
 } BombTrigger; // size = 0x10;
 
 typedef struct AnimatedModel {
@@ -2510,6 +2510,13 @@ typedef struct PartnerDMAData {
     /* 0x0C */ struct ActorBlueprint* ActorBlueprint;
     /* 0x10 */ s32 y;
 } PartnerDMAData; // size = 0x14
+
+typedef struct UseItemStruct {
+    /* 0x00 */ u8* dmaStart;
+    /* 0x04 */ u8* dmaEnd;
+    /* 0x08 */ EvtScript* main;
+    /* 0x0C */ s32 unk_0C;
+} UseItemStruct;
 
 typedef struct MsgVoice {
     /* 0x00 */ s32 voiceA;

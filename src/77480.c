@@ -30,11 +30,14 @@ extern Addr inspect_icon_ROM_START;
 extern Addr inspect_icon_ROM_END;
 #endif
 
-SHIFT_BSS void (*ISpyNotificationCallback)(void);
-SHIFT_BSS void (*PulseStoneNotificationCallback)(void);
-SHIFT_BSS void (*TalkNotificationCallback)(void);
-SHIFT_BSS void (*InteractNotificationCallback)(void);
-SHIFT_BSS s32 D_8010C950;
+void (*ISpyNotificationCallback)(void);
+void (*PulseStoneNotificationCallback)(void);
+void (*TalkNotificationCallback)(void);
+void (*InteractNotificationCallback)(void);
+s32 D_8010C950;
+
+PlayerStatus gPlayerStatus;
+PlayerData gPlayerData;
 
 extern s32 WorldTattleInteractionID;
 
@@ -507,7 +510,7 @@ HitID player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32*
     f32 depthDiff;
     f32 height;
     s32 ret;
-    s32 raycastID;
+    s32 hitID;
     f32 targetDx;
     f32 targetDz;
     f32 dx, dz;
@@ -522,8 +525,8 @@ HitID player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32*
     dx = radius * sinTheta;
     ret = NO_COLLIDER;
 
-    raycastID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + 0.1, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    if (raycastID > NO_COLLIDER && hitDepth <= depth) {
+    hitID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + 0.1, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
+    if (hitID > NO_COLLIDER && hitDepth <= depth) {
         *hasClimbableStep = TRUE;
     }
 
@@ -531,19 +534,19 @@ HitID player_test_move_without_slipping(PlayerStatus* playerStatus, f32* x, f32*
     hitDepth = depth;
     dz = radius * cosTheta;
 
-    raycastID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + height, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
+    hitID = player_raycast_general(PLAYER_COLLISION_0, *x, *y + height, *z, sinTheta, 0, cosTheta, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
 
     targetDx = 0.0f;
     targetDz = 0.0f;
 
-    if (raycastID > NO_COLLIDER && hitDepth <= depth) {
+    if (hitID > NO_COLLIDER && hitDepth <= depth) {
         depthDiff = hitDepth - depth;
         dx = depthDiff * sinTheta;
         dz = depthDiff * cosTheta;
         player_get_slip_vector(&slipDx, &slipDz, 0.0f, 0.0f, hitNx, hitNz);
         *x += dx + slipDx;
         *z += dz + slipDz;
-        ret = raycastID;
+        ret = hitID;
     }
     *x += targetDx;
     *z += targetDz;
