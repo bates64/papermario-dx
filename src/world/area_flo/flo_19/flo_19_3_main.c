@@ -4,7 +4,7 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun_undeclared(FX_SUN_FROM_RIGHT, 0, 0, 0, 0, 0);
+    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
 }
 
@@ -27,8 +27,8 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupBeanstalk))
     Exec(N(EVS_SetupClouds))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o122, SURFACE_TYPE_CLOUD)
-    Call(EnableTexPanning, MODEL_o59, TRUE)
-    Call(EnableTexPanning, MODEL_o60, TRUE)
+    Call(SetTexPanner, MODEL_o59, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o60, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -120,    0,    0,    0)

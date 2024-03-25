@@ -13,7 +13,7 @@ extern EvtScript N(EVS_80247A2C);
 #include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(func_8024030C_B2084C) {
-    fx_sun_undeclared(FX_SUN_FROM_LEFT, 0, 0, 0, 0, 0);
+    fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
 }
 
@@ -34,9 +34,9 @@ EvtScript N(EVS_Main) = {
     Set(GF_MAP_JadeJungle, TRUE)
     Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Call(EnableTexPanning, MODEL_o135, TRUE)
-    Call(EnableTexPanning, MODEL_o142, TRUE)
-    Call(EnableTexPanning, MODEL_o52, TRUE)
+    // waves
+    Call(SetTexPanner, MODEL_o135, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o142, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
@@ -44,6 +44,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water surface
+    Call(SetTexPanner, MODEL_o52, TEX_PANNER_3)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP( -100,  200,    0,    0)

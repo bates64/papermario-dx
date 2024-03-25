@@ -75,9 +75,9 @@ EvtScript N(EVS_Main) = {
     Else
         Call(EnableModel, MODEL_o400, FALSE)
     EndIf
-    Call(EnableTexPanning, MODEL_move, TRUE)
-    Call(EnableTexPanning, MODEL_s_sui, TRUE)
-    Call(EnableTexPanning, MODEL_o385, TRUE)
+    // water edge
+    Call(SetTexPanner, MODEL_s_sui, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o385, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -100,  100,   70,  -70)
@@ -85,6 +85,26 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water falling
+    Call(SetTexPanner, MODEL_o388, TEX_PANNER_2)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
+        TEX_PAN_PARAMS_STEP( 1000, 4000,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // water spreading
+    Call(SetTexPanner, MODEL_o389, TEX_PANNER_3)
+    Thread
+        TEX_PAN_PARAMS_ID(TEX_PANNER_3)
+        TEX_PAN_PARAMS_STEP(    0, -1500,    0,    0)
+        TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
+        TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
+        Exec(N(EVS_UpdateTexturePan))
+    EndThread
+    // water surface
+    Call(SetTexPanner, MODEL_move, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  200, -100,   20,  -20)

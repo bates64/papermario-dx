@@ -92,7 +92,7 @@ EvtScript N(EVS_Main) = {
             Call(EnableGroup, MODEL_st2, FALSE)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g47, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
-    Call(EnableTexPanning, MODEL_hori, TRUE)
+    Call(SetTexPanner, MODEL_hori, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  100,   40,  200,  -40)

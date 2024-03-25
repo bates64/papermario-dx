@@ -1298,7 +1298,7 @@ void N(appendGfx_image_strips)(
     s32 alpha, s32 width, s32 height, s32 lineHeight
 );
 
-// when the spirits leap back in shock, their radial position is multuplied by these; xz by the first, y by the second
+// when the spirits leap back in shock, their radial position is multiplied by these; xz by the first, y by the second
 s32 N(StarSpiritLeapBackScalars)[] = {
     Float(0.93),  Float(0.9),
     Float(0.938), Float(0.91),

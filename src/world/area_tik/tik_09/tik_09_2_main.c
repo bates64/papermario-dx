@@ -72,10 +72,11 @@ EvtScript N(EVS_Main) = {
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW4, SOUND_SPACE_WITH_DEPTH, 50, -20, -120)
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW3, SOUND_SPACE_WITH_DEPTH, 290, -20, -120)
     Exec(N(EVS_SetupDrips))
-    Call(EnableTexPanning, MODEL_nagare, TRUE)
-    Call(EnableTexPanning, MODEL_o84, TRUE)
-    Call(EnableTexPanning, MODEL_o85, TRUE)
-    Call(EnableTexPanning, MODEL_o86, TRUE)
+    // water surface
+    Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o84, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o85, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o86, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
@@ -83,7 +84,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_taki, TRUE)
+    // waterfalls
+    Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
@@ -91,7 +93,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_takib, TRUE)
+    // water spreading
+    Call(SetTexPanner, MODEL_takib, TEX_PANNER_5)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(    0,-1400,-2600,  -60)
@@ -99,10 +102,11 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_nagare2, TRUE)
-    Call(EnableTexPanning, MODEL_o87, TRUE)
-    Call(EnableTexPanning, MODEL_o88, TRUE)
-    Call(EnableTexPanning, MODEL_o89, TRUE)
+    // water merging and draining
+    Call(SetTexPanner, MODEL_nagare2, TEX_PANNER_6)
+    Call(SetTexPanner, MODEL_o87, TEX_PANNER_6)
+    Call(SetTexPanner, MODEL_o88, TEX_PANNER_6)
+    Call(SetTexPanner, MODEL_o89, TEX_PANNER_6)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_6)
         TEX_PAN_PARAMS_STEP(  200,  400,  250,    0)

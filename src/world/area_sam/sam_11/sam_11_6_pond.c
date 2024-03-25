@@ -344,7 +344,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
     Call(SetGroupVisibility, MODEL_ice04, MODEL_GROUP_VISIBLE)
     Call(EnableGroup, MODEL_sui, TRUE)
     Call(EnableGroup, MODEL_g279, TRUE)
-    Call(EnableTexPanning, MODEL_o583, TRUE)
+    Call(SetTexPanner, MODEL_o583, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
@@ -469,12 +469,12 @@ EvtScript N(EVS_SetupPond) = {
             CaseEq(4)
                 Call(EnableGroup, MODEL_sui, TRUE)
                 Call(EnableGroup, MODEL_g279, TRUE)
-                Call(EnableTexPanning, MODEL_o583, TRUE)
+                Call(SetTexPanner, MODEL_o583, TEX_PANNER_1)
                 Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
-        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+                    TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+                    TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
+                    TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+                    TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
                     Exec(N(EVS_UpdateTexturePan))
                 EndThread
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o657, COLLIDER_FLAGS_UPPER_MASK)
@@ -488,12 +488,12 @@ EvtScript N(EVS_SetupPond) = {
     Else
         Call(EnableGroup, MODEL_sui, TRUE)
         Call(EnableGroup, MODEL_g279, TRUE)
-        Call(EnableTexPanning, MODEL_o583, TRUE)
+        Call(SetTexPanner, MODEL_o583, TEX_PANNER_1)
         Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
-        TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
+            TEX_PAN_PARAMS_ID(TEX_PANNER_1)
+            TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
+            TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
+            TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
             Exec(N(EVS_UpdateTexturePan))
         EndThread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o657, COLLIDER_FLAGS_UPPER_MASK)

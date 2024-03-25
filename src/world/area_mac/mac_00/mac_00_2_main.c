@@ -94,7 +94,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupShop))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_water, SURFACE_TYPE_WATER)
     Exec(N(EVS_SetupWaterCustomGfx))
-    Call(EnableTexPanning, MODEL_water, TRUE)
+    Call(SetTexPanner, MODEL_water, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0,    0,    0,  120)

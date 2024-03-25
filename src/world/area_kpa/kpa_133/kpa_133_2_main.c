@@ -82,9 +82,9 @@ EvtScript N(EVS_Main) = {
     EndIf
     Exec(N(EVS_SetWaterLevel))
     BindTrigger(Ref(N(D_80241A90_AA8F10)), TRIGGER_AREA_FLAG_SET, AF_KPA133_HitWaterSwitch, 1, 0)
-    Call(EnableTexPanning, MODEL_move, TRUE)
-    Call(EnableTexPanning, MODEL_s_sui, TRUE)
-    Call(EnableTexPanning, MODEL_sui, TRUE)
+    // water edge
+    Call(SetTexPanner, MODEL_s_sui, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_sui, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -100,  100,   70,  -70)
@@ -92,6 +92,8 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water surface
+    Call(SetTexPanner, MODEL_move, TEX_PANNER_4)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  200, -100,   20,  -20)

@@ -4,7 +4,7 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun_undeclared(FX_SUN_FROM_RIGHT, 0, 0, 0, 0, 0);
+    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
 }
 
@@ -35,17 +35,12 @@ EvtScript N(EVS_Main) = {
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))
     EndThread
-    Call(EnableTexPanning, MODEL_o48, TRUE)
-    Call(EnableTexPanning, MODEL_o50, TRUE)
-    Call(EnableTexPanning, MODEL_o52, TRUE)
-    Call(EnableTexPanning, MODEL_o54, TRUE)
-    Call(EnableTexPanning, MODEL_o58, TRUE)
-    Call(EnableTexPanning, MODEL_o60, TRUE)
-    Call(EnableTexPanning, MODEL_o49, TRUE)
-    Call(EnableTexPanning, MODEL_o51, TRUE)
-    Call(EnableTexPanning, MODEL_o53, TRUE)
-    Call(EnableTexPanning, MODEL_o57, TRUE)
-    Call(EnableTexPanning, MODEL_o59, TRUE)
+    Call(SetTexPanner, MODEL_o48, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o50, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o52, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o54, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o58, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_o60, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -140,    0,    0,    0)
@@ -53,6 +48,11 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_o49, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o51, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o53, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o57, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o59, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)

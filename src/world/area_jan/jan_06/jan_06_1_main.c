@@ -85,7 +85,8 @@ EvtScript N(EVS_Main) = {
     Call(SetMusicTrack, 0, SONG_JADE_JUNGLE, 0, 8)
     Call(ClearAmbientSounds, 250)
     Call(MakeTransformGroup, MODEL_g14)
-    Call(EnableTexPanning, MODEL_o61, TRUE)
+    // water surface
+    Call(SetTexPanner, MODEL_o61, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)

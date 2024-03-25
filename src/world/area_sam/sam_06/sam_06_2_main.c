@@ -81,9 +81,9 @@ EvtScript N(EVS_BindExitTriggers) = {
 #include "../common/ManageSnowfall.inc.c"
 
 EvtScript N(EVS_TexPan_Fire) = {
-    Call(EnableTexPanning, MODEL_hi1, TRUE)
-    Call(EnableTexPanning, MODEL_hi2, TRUE)
-    Call(EnableTexPanning, MODEL_hi3, TRUE)
+    Call(SetTexPanner, MODEL_hi1, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_hi2, TEX_PANNER_1)
+    Call(SetTexPanner, MODEL_hi3, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   50,   50,  -70,  300)

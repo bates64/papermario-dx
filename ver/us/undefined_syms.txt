@@ -6,8 +6,6 @@ heap_battleHead = gFrameBuf2;
 
 overlays_start = 0x802DC500;
 
-fx_sun_undeclared = fx_sun;
-
 sprite_shading_profiles_data_ROM_START = sprite_shading_profiles_ROM_START + 0x1D0;
 
 // boot
