@@ -3,7 +3,7 @@
 # If the tests pass then the PR is automatically merged by GitHub.
 name: Sync upstream
 env:
-  UPSTREAM: pmret/papermario # If you forked dx, change this to star-haven/papermario-dx!
+  UPSTREAM: pmret/papermario # If you forked dx, change this to star-haven/papermario-dx! (TODO: do this automatically)
   UPSTREAM_BRANCH: main
   BASE_BRANCH: main
 on:
@@ -23,6 +23,11 @@ jobs:
           ref: ${{ env.BASE_BRANCH }}
       - name: Fetch upstream
         run: git fetch https://github.com/${{ env.UPSTREAM }}.git ${UPSTREAM_BRANCH}
+      - name: Set git user
+        # https://github.com/orgs/community/discussions/26560
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
       - name: Merge upstream
         run: |
           git checkout ${BASE_BRANCH}
