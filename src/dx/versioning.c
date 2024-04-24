@@ -35,23 +35,6 @@ void fio_serialize_state() {
 void fio_deserialize_state() {
     SaveData* saveData = &gCurrentSaveFile;
 
-    if (saveData->modName[0] == '\0') {
-        // normally a mod should not be able to load a normal Paper Mario save
-        // however, if you would like your mod to support this, remove this PANIC
-        PANIC_MSG("Cannot load unmodded save");
-        ver_deserialize_vanilla_save(saveData);
-    } else if (strcmp(saveData->modName, DX_MOD_NAME) != 0) {
-        // always prevent loading data from other mods
-        char error[0x40] = "Cannot load save from: ";
-        strcat(error, saveData->modName);
-        PANIC_MSG(error);
-    } else if (saveData->majorVersion != DX_MOD_VER_MAJOR) {
-        // handle breaking changes between major versions here
-        ver_deserialize_standard(saveData);
-    } else {
-        ver_deserialize_standard(saveData);
-    }
-
     gGameStatus.debugEnemyContact = DEBUG_CONTACT_NONE;
     gGameStatus.debugUnused1 = FALSE;
     gGameStatus.debugUnused2 = FALSE;
