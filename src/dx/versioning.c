@@ -47,6 +47,13 @@ void ver_deserialize_standard() {
     SaveData* saveData = &gCurrentSaveFile;
     s32 i, j;
 
+    if (saveData->majorVersion != DX_MOD_VER_MAJOR) {
+        // handle breaking changes between major versions here
+        ver_deserialize_standard(saveData);
+    } else {
+        ver_deserialize_standard(saveData);
+    }
+
     // simply copy the saved player data
     gPlayerData = saveData->player;
 
