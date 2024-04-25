@@ -115,6 +115,14 @@ typedef struct FogSettings {
     /* 0x18 */ s32 endDistance;
 } FogSettings; // size = 0x1C
 
+// used in this file to resolve internal file offsets while loading textures
+typedef struct TextureLayout {
+    /* 0x00 */ u32 mainImgSize;
+    /* 0x04 */ u32 mainPalSize;
+    /* 0x08 */ u32 auxImgSize;
+    /* 0x0C */ u32 auxPalSize;
+} TextureLayout; // size = 0x10
+
 extern Gfx Gfx_RM1_SURFACE_OPA[];
 extern Gfx Gfx_RM1_DECAL_OPA[];
 extern Gfx Gfx_RM1_INTERSECTING_OPA[];
@@ -2010,14 +2018,9 @@ void appendGfx_model(void* data) {
     gDPPipeSync((*gfxPos)++);
 }
 
-typedef struct TextureLayout {
-    u32 mainImgSize;
-    u32 mainPalSize;
-    u32 auxImgSize;
-    u32 auxPalSize;
-} TextureLayout;
+void load_texture_impl(u32 readPos, TextureHandle* handle, TextureHeader* header, TextureLayout* layout) {
+    s32 chunkSize;
 
-void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* header, TextureLayout* layout) {
     // load main img + palette to texture heap
     handle->mainImg = (IMG_PTR) TextureHeapPos;
     if (layout->mainPalSize != 0) {
@@ -2025,9 +2028,11 @@ void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* head
     } else {
         handle->mainPal = NULL;
     }
-    dma_copy((u8*) romOffset, (u8*) (romOffset + layout->mainImgSize + layout->mainPalSize), TextureHeapPos);
-    romOffset += layout->mainImgSize + layout->mainPalSize;
-    TextureHeapPos += layout->mainImgSize + layout->mainPalSize;
+
+    chunkSize = layout->mainImgSize + layout->mainPalSize;
+    dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
+    readPos += chunkSize;
+    TextureHeapPos += chunkSize;
 
     // load aux img + palette to texture heap
     if (layout->auxImgSize != 0) {
@@ -2037,8 +2042,11 @@ void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* head
         } else {
             handle->auxPal = NULL;
         }
-        dma_copy((u8*) romOffset, (u8*) (romOffset + layout->auxImgSize + layout->auxPalSize), TextureHeapPos);
-        TextureHeapPos += layout->auxImgSize + layout->auxPalSize;
+
+        chunkSize = layout->auxImgSize + layout->auxPalSize;
+        dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
+        readPos += chunkSize;
+        TextureHeapPos += chunkSize;
     } else {
         handle->auxImg = NULL;
         handle->auxPal = NULL;
@@ -2051,6 +2059,93 @@ void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* head
 
     Gfx** gfxTextureHeap = (Gfx**) &TextureHeapPos;
     gSPEndDisplayList((*gfxTextureHeap)++);
+}
+
+// loads variations for current texture by looping through the following textures until a non-variant is found
+void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 size) {
+    TextureHeader iterTextureHeader;
+    TextureHandle* textureHandle;
+    TextureLayout layout;
+    s32 currentTextureID = textureID;
+    u32 curOffset = romOffset;
+
+    while (curOffset < baseOffset + size) {
+        dma_copy((u8*)curOffset, (u8*)curOffset + sizeof(iterTextureHeader), &iterTextureHeader);
+
+        if (!iterTextureHeader.isVariant) {
+            return; // done reading variants
+        }
+
+        tex_get_layout(&iterTextureHeader, &layout);
+
+        textureID++;
+        currentTextureID = textureID;
+        textureHandle = &TextureHandles[currentTextureID];
+
+        curOffset += sizeof(iterTextureHeader);
+        load_texture_impl(curOffset, textureHandle, &iterTextureHeader, &layout);
+
+        curOffset += layout.mainImgSize + layout.mainPalSize;
+        curOffset += layout.auxImgSize +layout. auxPalSize;
+    }
+}
+
+// old function for loading textures from a _tex file
+void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 texFileSize) {
+    ModelTreeInfo* curModelInfo = &(*gCurrentModelTreeNodeInfo)[TreeIterPos];
+    TextureHandle* textureHandle;
+    TextureLayout layout;
+    char* textureName = (char*)propertyName->data.p;
+    u32 startOffset = romOffset;
+    s32 textureIdx = 0;
+
+    if (textureName == NULL) {
+        curModelInfo->textureID = TEX_ID_NONE;
+        return;
+    }
+
+    while (romOffset < startOffset + texFileSize) {
+        dma_copy((u8*)romOffset, (u8*)romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
+
+        tex_get_layout(&gCurrentTextureHeader, &layout);
+
+        if (strcmp(textureName, gCurrentTextureHeader.name) == 0) {
+            // found the texture with `textureName`
+            break;
+        }
+
+        // try appending "tif" - this is a common issue with textures ported from Star Rod mods
+        char tifName[32];
+        strcpy(tifName, textureName);
+        strcat(tifName, "tif");
+        if (strcmp(tifName, gCurrentTextureHeader.name) == 0) {
+            break;
+        }
+
+        textureIdx++;
+        romOffset += sizeof(gCurrentTextureHeader);
+        romOffset += layout.mainImgSize + layout.mainPalSize;
+        romOffset += layout.auxImgSize + layout.auxPalSize;
+    }
+
+    if (romOffset >= startOffset + 0x40000) {
+        // did not find the texture with `textureName`
+        osSyncPrintf("could not find texture '%s'\n", textureName);
+        curModelInfo->textureID = TEX_ID_NONE;
+        return;
+    }
+
+    curModelInfo->textureID = textureIdx;
+    textureHandle = &TextureHandles[curModelInfo->textureID];
+
+    if (textureHandle->gfx == NULL) {
+        romOffset += sizeof(gCurrentTextureHeader);
+        load_texture_impl(romOffset, textureHandle, &gCurrentTextureHeader, &layout);
+
+        romOffset += layout.mainImgSize + layout.mainPalSize;
+        romOffset += layout.auxImgSize + layout.auxPalSize;
+        load_texture_variants(romOffset, curModelInfo->textureID, startOffset, texFileSize);
+    }
 }
 
 void tex_get_layout(TextureHeader* header, TextureLayout* layout) {
@@ -2132,7 +2227,7 @@ void tex_get_layout(TextureHeader* header, TextureLayout* layout) {
 }
 
 void tex_pool_load_texture(ModelNodeProperty* propertyName) {
-    ModelTreeInfo* curModelInfo = gCurrentModelTreeNodeInfo[TreeIterPos];
+    ModelTreeInfo* curModelInfo = &(*gCurrentModelTreeNodeInfo)[TreeIterPos];
     TexPoolEntry* result = tex_pool_lookup(propertyName->data.p);
     TextureHandle* texHandle;
     TextureLayout layout;
@@ -2144,13 +2239,13 @@ void tex_pool_load_texture(ModelNodeProperty* propertyName) {
     }
 
     if (result->assignedHandleIdx != TXP_UNASSIGNED) {
-        curModelInfo->textureID = result->assignedHandleIdx + 1;
+        curModelInfo->textureID = result->assignedHandleIdx;
         return;
     }
 
     result->assignedHandleIdx = CurHandleIdx;
     texHandle = &TextureHandles[CurHandleIdx];
-    curModelInfo->textureID = CurHandleIdx + 1;
+    curModelInfo->textureID = CurHandleIdx;
     CurHandleIdx++;
 
     s32 readPos = tex_pool_data_ROM_START + result->romStart;
@@ -2200,94 +2295,6 @@ void tex_pool_load_texture(ModelNodeProperty* propertyName) {
 
     Gfx** gfxTextureHeap = (Gfx**) &TextureHeapPos;
     gSPEndDisplayList((*gfxTextureHeap)++);
-
-    return;
-}
-
-void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 texFileSize) {
-    ModelTreeInfo* curModelInfo = &(*gCurrentModelTreeNodeInfo)[TreeIterPos];
-    TextureHandle* textureHandle;
-    TextureLayout layout;
-    char* textureName = (char*)propertyName->data.p;
-    u32 startOffset = romOffset;
-    s32 textureIdx = 0;
-
-    if (textureName == NULL) {
-        curModelInfo->textureID = TEX_ID_NONE;
-        return;
-    }
-
-    while (romOffset < startOffset + texFileSize) {
-        dma_copy((u8*)romOffset, (u8*)romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
-
-        tex_get_layout(&gCurrentTextureHeader, &layout);
-
-        if (strcmp(textureName, gCurrentTextureHeader.name) == 0) {
-            // found the texture with `textureName`
-            break;
-        }
-
-        // try appending "tif" - this is a common issue with textures ported from Star Rod mods
-        char tifName[32];
-        strcpy(tifName, textureName);
-        strcat(tifName, "tif");
-        if (strcmp(tifName, gCurrentTextureHeader.name) == 0) {
-            break;
-        }
-
-        textureIdx++;
-        romOffset += sizeof(gCurrentTextureHeader);
-        romOffset += layout.mainImgSize + layout.mainPalSize;
-        romOffset += layout.auxImgSize + layout.auxPalSize;
-    }
-
-    if (romOffset >= startOffset + 0x40000) {
-        // did not find the texture with `textureName`
-        osSyncPrintf("could not find texture '%s'\n", textureName);
-        curModelInfo->textureID = TEX_ID_NONE;
-        return;
-    }
-
-    curModelInfo->textureID = textureIdx + 1;
-    textureHandle = &TextureHandles[curModelInfo->textureID];
-
-    if (textureHandle->gfx == NULL) {
-        romOffset += sizeof(gCurrentTextureHeader);
-        load_texture_impl(romOffset, textureHandle, &gCurrentTextureHeader, &layout);
-
-        romOffset += layout.mainImgSize + layout.mainPalSize;
-        romOffset += layout.auxImgSize + layout.auxPalSize;
-        load_texture_variants(romOffset, curModelInfo->textureID, startOffset, texFileSize);
-    }
-}
-
-// loads variations for current texture by looping through the following textures until a non-variant is found
-void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 size) {
-    TextureHeader iterTextureHeader;
-    TextureHandle* textureHandle;
-    TextureLayout layout;
-    s32 currentTextureID = textureID;
-    u32 curOffset = romOffset;
-
-    while (curOffset < baseOffset + size) {
-        dma_copy((u8*)curOffset, (u8*)curOffset + sizeof(iterTextureHeader), &iterTextureHeader);
-
-        if (!iterTextureHeader.isVariant) {
-            return; // done reading variants
-        }
-
-        tex_get_layout(&iterTextureHeader, &layout);
-
-        textureID++;
-        currentTextureID = textureID;
-        textureHandle = &TextureHandles[currentTextureID];
-
-        curOffset += sizeof(iterTextureHeader);
-        load_texture_impl(curOffset, textureHandle, &iterTextureHeader, &layout);
-
-        curOffset += layout.mainImgSize + layout.mainPalSize;
-        curOffset += layout.auxImgSize +layout. auxPalSize;
-    }
 }
 
 ModelNodeProperty* get_model_property(ModelNode* node, ModelPropertyKeys key) {

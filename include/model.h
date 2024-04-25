@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#define TEX_ID_NONE 0
+#define TEX_ID_NONE -1
 
 typedef union ModelNodePropertyData {
     s32 s;
