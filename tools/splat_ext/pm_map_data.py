@@ -217,7 +217,8 @@ class N64SegPm_map_data(N64Segment):
                         w.write_array(f, bytes[raster_offset:])
 
             elif name.endswith("_tex"):
-                TexArchive.extract(bytes, fs_dir / "tex" / name)
+                TexArchive.extract(bytes, fs_dir / "tex" / name, False)  # TODO-TEX remove this
+                TexArchive.extract(bytes, options.opts.asset_path / "tex_pool", True)  # dump outside mapfs
             else:
                 assert path is not None
                 with open(path, "wb") as f:

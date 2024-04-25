@@ -253,6 +253,11 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "tex_pool",
+        command=f"$python {BUILD_TOOLS}/tex_pool.py $out $header_path $asset_stack",
+    )
+
+    ninja.rule(
         "icons",
         command=f"$python {BUILD_TOOLS}/icons.py $out $header_path $asset_stack",
     )
@@ -400,6 +405,7 @@ class Configure:
                     "gfx",
                     "gfx_common",
                     "pm_map_data",
+                    "pm_tex_pool",
                     "pm_icons",
                     "pm_msg",
                     "pm_sprites",
@@ -941,6 +947,23 @@ class Configure:
                     "msg_combine",
                 )
                 build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
+
+            elif seg.type == "pm_tex_pool":
+                # make tex_pool.bin
+                header_path = str(self.build_path() / "include" / "tex_pool_table.h")
+                build(
+                    entry.object_path.with_suffix(""),
+                    entry.src_paths,
+                    "tex_pool",
+                    variables={
+                        "header_path": header_path,
+                        "asset_stack": ",".join(self.asset_stack),
+                    },
+                    implicit_outputs=[header_path],
+                    asset_deps=["tex_pool"],
+                )
+                # make icons.bin.o
+                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
 
             elif seg.type == "pm_icons":
                 # make icons.bin

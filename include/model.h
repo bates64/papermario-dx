@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define TEX_ID_NONE 0
+
 typedef union ModelNodePropertyData {
     s32 s;
     f32 f;
@@ -119,10 +121,10 @@ typedef struct ModelTreeInfo {
 typedef struct TextureHandle {
     /* 0x00 */ Gfx* gfx;
     /* 0x04 */ TextureHeader header;
-    /* 0x34 */ IMG_PTR raster;
-    /* 0x38 */ PAL_PTR palette;
-    /* 0x3C */ IMG_PTR auxRaster;
-    /* 0x40 */ PAL_PTR auxPalette;
+    /* 0x34 */ IMG_PTR mainImg;
+    /* 0x38 */ PAL_PTR mainPal;
+    /* 0x3C */ IMG_PTR auxImg;
+    /* 0x40 */ PAL_PTR auxPal;
 } TextureHandle; // size = 0x44
 
 typedef struct ModelBlueprint {

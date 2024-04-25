@@ -5,6 +5,7 @@
 #include "hud_element.h"
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
+#include "dx/texture_pool.h"
 #include "qsort.h"
 
 // models are rendered in two stages by the RDP:
@@ -1353,6 +1354,8 @@ SHIFT_BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
 
 SHIFT_BSS TextureHandle TextureHandles[128];
 
+s32 CurHandleIdx;
+
 SHIFT_BSS u16 DepthCopyBuffer[16];
 
 extern Addr BattleEntityHeapBottom; // todo ???
@@ -1361,7 +1364,7 @@ void func_80117D00(Model* model);
 void appendGfx_model_group(void* model);
 void render_transform_group_node(ModelNode* node);
 void render_transform_group(void* group);
-void make_texture_gfx(TextureHeader*, Gfx**, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8, u8, u16, u16);
+void make_texture_gfx(TextureHandle* handle, Gfx**, u8, u8, u16, u16);
 void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTxMtx, s32 treeDepth);
 s32 is_identity_fixed_mtx(Mtx* mtx);
 void build_custom_gfx(void);
@@ -1394,7 +1397,7 @@ void appendGfx_model(void* data) {
     mtxLoadMode = G_MTX_LOAD;
     modelNode = model->modelNode;
 
-    if (model->textureID != 0) {
+    if (model->textureID != TEX_ID_NONE) {
         textureHandle = &TextureHandles[model->textureID + model->textureVariation];
         textureHeader = &textureHandle->header;
 
@@ -1502,9 +1505,7 @@ void appendGfx_model(void* data) {
                     s32 shift = prop->data.s;
                     u16 offsetS = prop->dataType;
                     s32 offsetT = prop->dataType;
-                    make_texture_gfx(textureHeader, gfxPos,
-                        textureHandle->raster, textureHandle->palette,
-                        textureHandle->auxRaster, textureHandle->auxPalette,
+                    make_texture_gfx(textureHandle, gfxPos,
                         (shift >> 12) & 0xF, (shift >> 16) & 0xF,
                         offsetS & 0xFFF, (offsetT >> 12) & 0xFFF);
 
@@ -2009,142 +2010,219 @@ void appendGfx_model(void* data) {
     gDPPipeSync((*gfxPos)++);
 }
 
-void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* header, s32 mainSize, s32 mainPalSize, s32 auxSize, s32 auxPalSize) {
-    Gfx** temp;
+typedef struct TextureLayout {
+    u32 mainImgSize;
+    u32 mainPalSize;
+    u32 auxImgSize;
+    u32 auxPalSize;
+} TextureLayout;
 
+void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* header, TextureLayout* layout) {
     // load main img + palette to texture heap
-    handle->raster = (IMG_PTR) TextureHeapPos;
-    if (mainPalSize != 0) {
-        handle->palette = (PAL_PTR) (TextureHeapPos + mainSize);
+    handle->mainImg = (IMG_PTR) TextureHeapPos;
+    if (layout->mainPalSize != 0) {
+        handle->mainPal = (PAL_PTR) (TextureHeapPos + layout->mainImgSize);
     } else {
-        handle->palette = NULL;
+        handle->mainPal = NULL;
     }
-    dma_copy((u8*) romOffset, (u8*) (romOffset + mainSize + mainPalSize), TextureHeapPos);
-    romOffset += mainSize + mainPalSize;
-    TextureHeapPos += mainSize + mainPalSize;
+    dma_copy((u8*) romOffset, (u8*) (romOffset + layout->mainImgSize + layout->mainPalSize), TextureHeapPos);
+    romOffset += layout->mainImgSize + layout->mainPalSize;
+    TextureHeapPos += layout->mainImgSize + layout->mainPalSize;
 
     // load aux img + palette to texture heap
-    if (auxSize != 0) {
-        handle->auxRaster = (IMG_PTR) TextureHeapPos;
-        if (auxPalSize != 0) {
-            handle->auxPalette = (PAL_PTR) (TextureHeapPos + auxSize);
+    if (layout->auxImgSize != 0) {
+        handle->auxImg = (IMG_PTR) TextureHeapPos;
+        if (layout->auxPalSize != 0) {
+            handle->auxPal = (PAL_PTR) (TextureHeapPos + layout->auxImgSize);
         } else {
-            handle->auxPalette = NULL;
+            handle->auxPal = NULL;
         }
-        dma_copy((u8*) romOffset, (u8*) (romOffset + auxSize + auxPalSize), TextureHeapPos);
-        TextureHeapPos += auxSize + auxPalSize;
+        dma_copy((u8*) romOffset, (u8*) (romOffset + layout->auxImgSize + layout->auxPalSize), TextureHeapPos);
+        TextureHeapPos += layout->auxImgSize + layout->auxPalSize;
     } else {
-        handle->auxPalette = NULL;
-        handle->auxRaster = NULL;
+        handle->auxImg = NULL;
+        handle->auxPal = NULL;
     }
 
     // copy header data and create a display list for the texture
     handle->gfx = (Gfx*) TextureHeapPos;
     memcpy(&handle->header, header, sizeof(*header));
-    make_texture_gfx(header, (Gfx**) &TextureHeapPos, handle->raster, handle->palette, handle->auxRaster, handle->auxPalette, 0, 0, 0, 0);
+    make_texture_gfx(handle, (Gfx**) &TextureHeapPos, 0, 0, 0, 0);
 
-    temp = (Gfx**) &TextureHeapPos;
-    gSPEndDisplayList((*temp)++);
+    Gfx** gfxTextureHeap = (Gfx**) &TextureHeapPos;
+    gSPEndDisplayList((*gfxTextureHeap)++);
 }
 
-void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 size) {
-    char* textureName = (char*)propertyName->data.p;
-    u32 startOffset = romOffset;
-    s32 textureIdx = 0;
-    u32 paletteSize;
-    u32 rasterSize;
-    u32 auxPaletteSize;
-    u32 auxRasterSize;
-    TextureHeader* header;
-    TextureHandle* textureHandle;
-    s32 mainSize;
+void tex_get_layout(TextureHeader* header, TextureLayout* layout) {
+    layout->mainImgSize = header->mainW * header->mainH;
 
-    if (textureName == NULL) {
-        (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
+    // compute mipmaps size
+    if (header->mainBitDepth == G_IM_SIZ_4b) {
+        if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
+            s32 d = 2;
+            while (header->mainW / d >= 16 && header->mainH / d > 0) {
+                layout->mainImgSize += header->mainW / d * header->mainH / d;
+                d *= 2;
+            }
+        }
+        layout->mainImgSize /= 2;
+    } else if (header->mainBitDepth == G_IM_SIZ_8b) {
+        if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
+            s32 d = 2;
+            while (header->mainW / d >= 8 && header->mainH / d > 0) {
+                layout->mainImgSize += header->mainW / d * header->mainH / d;
+                d *= 2;
+            }
+        }
+    } else if (header->mainBitDepth == G_IM_SIZ_16b) {
+        if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
+            s32 d = 2;
+            while (header->mainW / d >= 4 && header->mainH / d > 0) {
+                layout->mainImgSize += header->mainW / d * header->mainH / d;
+                d *= 2;
+            }
+        }
+        layout->mainImgSize *= 2;
+    } else if (header->mainBitDepth == G_IM_SIZ_32b) {
+        if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
+            s32 d = 2;
+            while (header->mainW / d >= 2 && header->mainH / d > 0) {
+                layout->mainImgSize += header->mainW / d * header->mainH / d;
+                d *= 2;
+            }
+        }
+        layout->mainImgSize *= 4;
+    }
+
+    // compute palette size
+    if (header->mainFmt == G_IM_FMT_CI) {
+        layout->mainPalSize = 0x20;
+        if (header->mainBitDepth == G_IM_SIZ_8b) {
+            layout->mainPalSize = 0x200;
+        }
+    } else {
+        layout->mainPalSize = 0;
+    }
+
+    // compute aux tile size
+    if (header->extraTiles == EXTRA_TILE_AUX_INDEPENDENT) {
+        layout->auxImgSize = header->auxW * header->auxH;
+        if (header->auxBitDepth == G_IM_SIZ_4b) {
+            layout->auxImgSize /= 2;
+        } else if (header->auxBitDepth == G_IM_SIZ_8b) {
+        } else if (header->auxBitDepth == G_IM_SIZ_16b) {
+            layout->auxImgSize *= 2;
+        } else {
+            if (header->auxBitDepth == G_IM_SIZ_32b) {
+                layout->auxImgSize *= 4;
+            }
+        }
+        if (header->auxFmt == G_IM_FMT_CI) {
+            layout->auxPalSize = 0x20;
+            if (header->auxBitDepth == G_IM_SIZ_8b) {
+                layout->auxPalSize = 0x200;
+            }
+        } else {
+            layout->auxPalSize = 0;
+        }
+    } else {
+        layout->auxImgSize = 0;
+        layout->auxPalSize = 0;
+    }
+}
+
+void tex_pool_load_texture(ModelNodeProperty* propertyName) {
+    ModelTreeInfo* curModelInfo = gCurrentModelTreeNodeInfo[TreeIterPos];
+    TexPoolEntry* result = tex_pool_lookup(propertyName->data.p);
+    TextureHandle* texHandle;
+    TextureLayout layout;
+    s32 chunkSize;
+
+    if (result == NULL) {
+        curModelInfo->textureID = TEX_ID_NONE;
         return;
     }
 
-    while (romOffset < startOffset + size) {
+    if (result->assignedHandleIdx != TXP_UNASSIGNED) {
+        curModelInfo->textureID = result->assignedHandleIdx + 1;
+        return;
+    }
+
+    result->assignedHandleIdx = CurHandleIdx;
+    texHandle = &TextureHandles[CurHandleIdx];
+    curModelInfo->textureID = CurHandleIdx + 1;
+    CurHandleIdx++;
+
+    s32 readPos = tex_pool_data_ROM_START + result->romStart;
+
+    //TODO check this!
+    //ASSERT_MSG(TexPoolPos + size <= POOL_HEAP_SIZE, "Ran out of texture pool memory.");
+
+    dma_copy(readPos, readPos + sizeof(TextureHeader), &texHandle->header);
+    readPos += sizeof(TextureHeader);
+
+    tex_get_layout(&texHandle->header, &layout);
+
+    // load main img + palette to texture heap
+    texHandle->mainImg = (IMG_PTR) TextureHeapPos;
+    if (layout.mainPalSize != 0) {
+        texHandle->mainPal = (PAL_PTR) (TextureHeapPos + layout.mainImgSize);
+    } else {
+        texHandle->mainPal = NULL;
+    }
+
+    chunkSize = layout.mainImgSize + layout.mainPalSize;
+    dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
+    readPos += chunkSize;
+    TextureHeapPos += chunkSize;
+
+    // load aux img + palette to texture heap
+    if (layout.auxImgSize != 0) {
+        texHandle->auxImg = (IMG_PTR) TextureHeapPos;
+        if (layout.auxPalSize != 0) {
+            texHandle->auxPal = (PAL_PTR) (TextureHeapPos + layout.auxImgSize);
+        } else {
+            texHandle->auxPal = NULL;
+        }
+
+        chunkSize = layout.auxImgSize + layout.auxPalSize;
+        dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
+        readPos += chunkSize;
+        TextureHeapPos += chunkSize;
+    } else {
+        texHandle->auxImg = NULL;
+        texHandle->auxPal = NULL;
+    }
+
+    // copy header data and create a display list for the texture
+    texHandle->gfx = (Gfx*) TextureHeapPos;
+    make_texture_gfx(texHandle, (Gfx**) &TextureHeapPos, 0, 0, 0, 0);
+
+    Gfx** gfxTextureHeap = (Gfx**) &TextureHeapPos;
+    gSPEndDisplayList((*gfxTextureHeap)++);
+
+    return;
+}
+
+void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 texFileSize) {
+    ModelTreeInfo* curModelInfo = &(*gCurrentModelTreeNodeInfo)[TreeIterPos];
+    TextureHandle* textureHandle;
+    TextureLayout layout;
+    char* textureName = (char*)propertyName->data.p;
+    u32 startOffset = romOffset;
+    s32 textureIdx = 0;
+
+    if (textureName == NULL) {
+        curModelInfo->textureID = TEX_ID_NONE;
+        return;
+    }
+
+    while (romOffset < startOffset + texFileSize) {
         dma_copy((u8*)romOffset, (u8*)romOffset + sizeof(gCurrentTextureHeader), &gCurrentTextureHeader);
-        header = &gCurrentTextureHeader;
 
-        rasterSize = header->mainW * header->mainH;
+        tex_get_layout(&gCurrentTextureHeader, &layout);
 
-        // compute mipmaps size
-        if (header->mainBitDepth == G_IM_SIZ_4b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 16 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize /= 2;
-        } else if (header->mainBitDepth == G_IM_SIZ_8b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 8 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-        } else if (header->mainBitDepth == G_IM_SIZ_16b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 4 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize *= 2;
-        } else if (header->mainBitDepth == G_IM_SIZ_32b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 2 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize *= 4;
-        }
-
-        // compute palette size
-        if (header->mainFmt == G_IM_FMT_CI) {
-            paletteSize = 0x20;
-            if (header->mainBitDepth == G_IM_SIZ_8b) {
-                paletteSize = 0x200;
-            }
-        } else {
-            paletteSize = 0;
-        }
-
-        // compute aux tile size
-        if (header->extraTiles == EXTRA_TILE_AUX_INDEPENDENT) {
-            auxRasterSize = header->auxW * header->auxH;
-            if (header->auxBitDepth == G_IM_SIZ_4b) {
-                auxRasterSize /= 2;
-            } else if (header->auxBitDepth == G_IM_SIZ_8b) {
-            } else if (header->auxBitDepth == G_IM_SIZ_16b) {
-                auxRasterSize *= 2;
-            } else {
-                if (header->auxBitDepth == G_IM_SIZ_32b) {
-                    auxRasterSize *= 4;
-                }
-            }
-            if (header->auxFmt == G_IM_FMT_CI) {
-                auxPaletteSize = 0x20;
-                if (header->auxBitDepth == G_IM_SIZ_8b) {
-                    auxPaletteSize = 0x200;
-                }
-            } else {
-                auxPaletteSize = 0;
-            }
-        } else {
-            auxPaletteSize = 0;
-            auxRasterSize = 0;
-        }
-
-        if (strcmp(textureName, header->name) == 0) {
+        if (strcmp(textureName, gCurrentTextureHeader.name) == 0) {
             // found the texture with `textureName`
             break;
         }
@@ -2153,140 +2231,62 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
         char tifName[32];
         strcpy(tifName, textureName);
         strcat(tifName, "tif");
-        if (strcmp(tifName, header->name) == 0) {
+        if (strcmp(tifName, gCurrentTextureHeader.name) == 0) {
             break;
         }
 
         textureIdx++;
-        mainSize = rasterSize + paletteSize + sizeof(*header);
-        romOffset += mainSize;
-        romOffset += auxRasterSize + auxPaletteSize;
+        romOffset += sizeof(gCurrentTextureHeader);
+        romOffset += layout.mainImgSize + layout.mainPalSize;
+        romOffset += layout.auxImgSize + layout.auxPalSize;
     }
 
     if (romOffset >= startOffset + 0x40000) {
         // did not find the texture with `textureName`
         osSyncPrintf("could not find texture '%s'\n", textureName);
-        (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
+        curModelInfo->textureID = TEX_ID_NONE;
         return;
     }
 
-    (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = textureIdx + 1;
-    textureHandle = &TextureHandles[(*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID];
-    romOffset += sizeof(*header);
+    curModelInfo->textureID = textureIdx + 1;
+    textureHandle = &TextureHandles[curModelInfo->textureID];
 
     if (textureHandle->gfx == NULL) {
-        load_texture_impl(romOffset, textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
-        load_texture_variants(romOffset + rasterSize + paletteSize + auxRasterSize + auxPaletteSize, (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID, startOffset, size);
+        romOffset += sizeof(gCurrentTextureHeader);
+        load_texture_impl(romOffset, textureHandle, &gCurrentTextureHeader, &layout);
+
+        romOffset += layout.mainImgSize + layout.mainPalSize;
+        romOffset += layout.auxImgSize + layout.auxPalSize;
+        load_texture_variants(romOffset, curModelInfo->textureID, startOffset, texFileSize);
     }
 }
 
 // loads variations for current texture by looping through the following textures until a non-variant is found
 void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 size) {
-    u32 offset;
     TextureHeader iterTextureHeader;
-    TextureHeader* header;
     TextureHandle* textureHandle;
-    u32 rasterSize;
-    s32 paletteSize;
-    u32 auxRasterSize;
-    u32 auxPaletteSize;
-    s32 bitDepth;
-    s32 mainSize;
+    TextureLayout layout;
     s32 currentTextureID = textureID;
+    u32 curOffset = romOffset;
 
-    for (offset = romOffset; offset < baseOffset + size;) {
-        dma_copy((u8*)offset, (u8*)offset + sizeof(iterTextureHeader), &iterTextureHeader);
-        header = &iterTextureHeader;
+    while (curOffset < baseOffset + size) {
+        dma_copy((u8*)curOffset, (u8*)curOffset + sizeof(iterTextureHeader), &iterTextureHeader);
 
-        if (!header->isVariant) {
-            // done reading variants
-            break;
+        if (!iterTextureHeader.isVariant) {
+            return; // done reading variants
         }
 
-        rasterSize = header->mainW * header->mainH;
-
-        // compute mipmaps size
-        if (header->mainBitDepth == G_IM_SIZ_4b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 16 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize /= 2;
-        } else if (header->mainBitDepth == G_IM_SIZ_8b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 8 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-        } else if (header->mainBitDepth == G_IM_SIZ_16b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 4 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize *= 2;
-        } else if (header->mainBitDepth == G_IM_SIZ_32b) {
-            if (header->extraTiles == EXTRA_TILE_MIPMAPS) {
-                s32 d = 2;
-                while (header->mainW / d >= 2 && header->mainH / d > 0) {
-                    rasterSize += header->mainW / d * header->mainH / d;
-                    d *= 2;
-                }
-            }
-            rasterSize *= 4;
-        }
-
-        // compute palette size
-        if (header->mainFmt == G_IM_FMT_CI) {
-            paletteSize = 0x20;
-            if (header->mainBitDepth == G_IM_SIZ_8b) {
-                paletteSize = 0x200;
-            }
-        } else {
-            paletteSize = 0;
-        }
-
-        // compute aux tile size
-        if (header->extraTiles == EXTRA_TILE_AUX_INDEPENDENT) {
-            auxRasterSize = header->auxW * header->auxH;
-            if (header->auxBitDepth == G_IM_SIZ_4b) {
-                auxRasterSize /= 2;
-            } else if (header->auxBitDepth == G_IM_SIZ_8b) {
-            } else if (header->auxBitDepth == G_IM_SIZ_16b) {
-                auxRasterSize *= 2;
-            } else {
-                if (header->auxBitDepth == G_IM_SIZ_32b) {
-                    auxRasterSize *= 4;
-                }
-            }
-            if (header->auxFmt == G_IM_FMT_CI) {
-                auxPaletteSize = 0x20;
-                if (header->auxBitDepth == G_IM_SIZ_8b) {
-                    auxPaletteSize = 0x200;
-                }
-            } else {
-                auxPaletteSize = 0;
-            }
-        } else {
-            auxPaletteSize = 0;
-            auxRasterSize = 0;
-        }
+        tex_get_layout(&iterTextureHeader, &layout);
 
         textureID++;
         currentTextureID = textureID;
         textureHandle = &TextureHandles[currentTextureID];
-        load_texture_impl(offset + sizeof(*header), textureHandle, header, rasterSize, paletteSize, auxRasterSize, auxPaletteSize);
 
-        mainSize = rasterSize + paletteSize + sizeof(*header);
-        offset += mainSize;
-        offset += auxRasterSize + auxPaletteSize;
+        curOffset += sizeof(iterTextureHeader);
+        load_texture_impl(curOffset, textureHandle, &iterTextureHeader, &layout);
+
+        curOffset += layout.mainImgSize + layout.mainPalSize;
+        curOffset += layout.auxImgSize +layout. auxPalSize;
     }
 }
 
@@ -2304,49 +2304,41 @@ ModelNodeProperty* get_model_property(ModelNode* node, ModelPropertyKeys key) {
 }
 
 // load textures used by models, starting from current model
-void load_next_model_textures(ModelNode* model, s32 romOffset, s32 texSize) {
-    if (model->type != SHAPE_TYPE_MODEL) {
-        if (model->groupData != NULL) {
-            s32 numChildren = model->groupData->numChildren;
-
-            if (numChildren != 0) {
-                s32 i;
-
-                for (i = 0; i < numChildren; i++) {
-                    load_next_model_textures(model->groupData->childList[i], romOffset, texSize);
-                }
-            }
-        }
-    } else {
+void load_next_model_textures(ModelNode* model, s32 romOffset, const s32 texFileSize) {
+    if (model->type == SHAPE_TYPE_MODEL) {
         ModelNodeProperty* propTextureName = get_model_property(model, MODEL_PROP_KEY_TEXTURE_NAME);
         if (propTextureName != NULL) {
-            load_texture_by_name(propTextureName, romOffset, texSize);
+            tex_pool_load_texture(propTextureName);
+//            load_texture_by_name(propTextureName, romOffset, texFileSize);
+        }
+    } else if (model->groupData != NULL) {
+        for (s32 childIdx = 0; childIdx < model->groupData->numChildren; childIdx++) {
+            load_next_model_textures(model->groupData->childList[childIdx], romOffset, texFileSize);
         }
     }
     TreeIterPos++;
 }
 
 // load all textures used by models, starting from the root
-void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 size) {
-    s32 baseOffset = 0;
+void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 texFileSize) {
 
+    TextureHeapPos = TextureHeapBase;
     // textures are loaded to the upper half of the texture heap when not in the world
     if (gGameStatusPtr->isBattle != 0) {
-        baseOffset = WORLD_TEXTURE_MEMORY_SIZE;
+        TextureHeapPos += WORLD_TEXTURE_MEMORY_SIZE;
     }
 
-    TextureHeapPos = TextureHeapBase + baseOffset;
-
-    if (rootModel != NULL && romOffset != 0 && size != 0) {
-        s32 i;
-
-        for (i = 0; i < ARRAY_COUNT(TextureHandles); i++) {
+    if (rootModel != NULL && romOffset != 0 && texFileSize != 0) {
+        for (s32 i = 0; i < ARRAY_COUNT(TextureHandles); i++) {
             TextureHandles[i].gfx = NULL;
         }
+        CurHandleIdx = 0;
+
+        tex_pool_clear_assignments();
 
         TreeIterPos = 0;
         if (rootModel != NULL) {
-            load_next_model_textures(rootModel, romOffset, size);
+            load_next_model_textures(rootModel, romOffset, texFileSize);
         }
     }
 }
@@ -2416,7 +2408,7 @@ void clear_model_data(void) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentModelTreeNodeInfo); i++) {
         (*gCurrentModelTreeNodeInfo)[i].modelIndex = -1;
         (*gCurrentModelTreeNodeInfo)[i].treeDepth = 0;
-        (*gCurrentModelTreeNodeInfo)[i].textureID = 0;
+        (*gCurrentModelTreeNodeInfo)[i].textureID = TEX_ID_NONE;
     }
 
     *gBackgroundTintModePtr = ENV_TINT_NONE;
@@ -3073,7 +3065,8 @@ void render_transform_group(void* data) {
     }
 }
 
-void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_PTR palette, IMG_PTR auxRaster, PAL_PTR auxPalette, u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT) {
+void make_texture_gfx(TextureHandle* handle, Gfx** gfxPos, u8 auxShiftS, u8 auxShiftT, u16 auxOffsetS, u16 auxOffsetT) {
+    TextureHeader* header = &handle->header;
     s32 mainWidth, mainHeight;
     s32 auxWidth, auxHeight;
     s32 mainFmt;
@@ -3126,27 +3119,27 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
 
 
     if (extraTileType == EXTRA_TILE_AUX_INDEPENDENT) {
-        if (palette != NULL) {
+        if (handle->mainPal != NULL) {
             auxPaletteIndex = 1;
         } else {
             auxPaletteIndex = 0;
         }
     }
 
-    if (palette != NULL || auxPalette != NULL) {
+    if (handle->mainPal != NULL || handle->auxPal != NULL) {
         lutMode = G_TT_RGBA16;
-        if (palette != NULL) {
+        if (handle->mainPal != NULL) {
             if (mainBitDepth == G_IM_SIZ_4b) {
-                gDPLoadTLUT_pal16((*gfxPos)++, 0, palette);
+                gDPLoadTLUT_pal16((*gfxPos)++, 0, handle->mainPal);
             } else if (mainBitDepth == G_IM_SIZ_8b) {
-                gDPLoadTLUT_pal256((*gfxPos)++, palette);
+                gDPLoadTLUT_pal256((*gfxPos)++, handle->mainPal);
             }
         }
-        if (auxPalette != NULL) {
+        if (handle->auxPal != NULL) {
             if (auxBitDepth == G_IM_SIZ_4b) {
-                gDPLoadTLUT_pal16((*gfxPos)++, auxPaletteIndex, auxPalette);
+                gDPLoadTLUT_pal16((*gfxPos)++, auxPaletteIndex, handle->auxPal);
             } else if (auxBitDepth == G_IM_SIZ_8b) {
-                gDPLoadTLUT_pal256((*gfxPos)++, auxPalette);
+                gDPLoadTLUT_pal256((*gfxPos)++, handle->auxPal);
             }
         }
     } else {
@@ -3177,22 +3170,22 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             gSPTexture((*gfxPos)++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPLoadTextureBlock_4b((*gfxPos)++, raster, mainFmt,
+                    gDPLoadTextureBlock_4b((*gfxPos)++, handle->mainImg, mainFmt,
                                            mainWidth, mainHeight, 0,
                                            mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     break;
                 case G_IM_SIZ_8b:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b,
+                    gDPLoadTextureBlock((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_8b,
                                         mainWidth, mainHeight, 0,
                                         mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     break;
                 case G_IM_SIZ_16b:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b,
+                    gDPLoadTextureBlock((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_16b,
                                         mainWidth, mainHeight, 0,
                                         mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     break;
                 case 3:
-                    gDPLoadTextureBlock((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b,
+                    gDPLoadTextureBlock((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_32b,
                                         mainWidth, mainHeight, 0,
                                         mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     break;
@@ -3202,44 +3195,44 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             lodMode = G_TL_LOD;
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    for (rasterPtr = raster, lod = 0, lodDivisor = 1;
+                    for (rasterPtr = handle->mainImg, lod = 0, lodDivisor = 1;
                          mainWidth / lodDivisor * 4 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor / 2, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile_4b((*gfxPos)++, rasterPtr, (u32)(rasterPtr - raster) >> 3, lod, mainFmt,
+                        gDPLoadMultiTile_4b((*gfxPos)++, rasterPtr, (u32)(rasterPtr - handle->mainImg) >> 3, lod, mainFmt,
                                             mainWidth / lodDivisor, mainHeight / lodDivisor,
                                             0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
                                             mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
                     }
                     break;
                 case G_IM_SIZ_8b:
-                    for (rasterPtr = raster, lod = 0, lodDivisor = 1;
+                    for (rasterPtr = handle->mainImg, lod = 0, lodDivisor = 1;
                          mainWidth / lodDivisor * 8 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_8b,
+                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - handle->mainImg)) >> 3, lod, mainFmt, G_IM_SIZ_8b,
                                          mainWidth / lodDivisor, mainHeight / lodDivisor,
                                          0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
                                          mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
                     }
                     break;
                 case G_IM_SIZ_16b:
-                    for (rasterPtr = raster, lod = 0, lodDivisor = 1;
+                    for (rasterPtr = handle->mainImg, lod = 0, lodDivisor = 1;
                          mainWidth / lodDivisor * 16 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor * 2, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 3, lod, mainFmt, G_IM_SIZ_16b,
+                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - handle->mainImg)) >> 3, lod, mainFmt, G_IM_SIZ_16b,
                                          mainWidth / lodDivisor, mainHeight / lodDivisor,
                                          0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
                                          mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
                     }
                     break;
                 case G_IM_SIZ_32b:
-                    for (rasterPtr = raster, lod = 0, lodDivisor = 1;
+                    for (rasterPtr = handle->mainImg, lod = 0, lodDivisor = 1;
                          mainWidth / lodDivisor * 32 >= 64 && mainHeight / lodDivisor != 0;
                          rasterPtr += mainWidth / lodDivisor * mainHeight / lodDivisor * 4, lodDivisor *= 2, lod++)
                     {
-                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - raster)) >> 4, lod, mainFmt, G_IM_SIZ_32b,
+                        gDPLoadMultiTile((*gfxPos)++, rasterPtr, ((u32)(rasterPtr - handle->mainImg)) >> 4, lod, mainFmt, G_IM_SIZ_32b,
                                          mainWidth / lodDivisor, mainHeight / lodDivisor,
                                          0, 0, mainWidth / lodDivisor - 1, mainHeight / lodDivisor - 1, 0,
                                          mainWrapW, mainWrapH, mainMasks - lod, mainMaskt - lod, lod, lod);
@@ -3254,22 +3247,22 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             lodMode = G_TL_TILE;
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPScrollTextureBlockHalfHeight_4b((*gfxPos)++, raster, mainFmt, mainWidth, mainHeight, 0,
+                    gDPScrollTextureBlockHalfHeight_4b((*gfxPos)++, handle->mainImg, mainFmt, mainWidth, mainHeight, 0,
                                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
                                                        auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
                     break;
                 case G_IM_SIZ_8b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0,
+                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight, 0,
                                                     mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
                                                     auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
                     break;
                 case G_IM_SIZ_16b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0,
+                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight, 0,
                                                     mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
                                                     auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
                     break;
                 case G_IM_SIZ_32b:
-                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0,
+                    gDPScrollTextureBlockHalfHeight((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight, 0,
                                                     mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD,
                                                     auxOffsetS, auxOffsetT, auxShiftS, auxShiftT);
                     break;
@@ -3280,25 +3273,25 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
             lodMode = G_TL_TILE;
             switch (mainBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPLoadTextureTile_4b((*gfxPos)++, raster, mainFmt, mainWidth, mainHeight,
+                    gDPLoadTextureTile_4b((*gfxPos)++, handle->mainImg, mainFmt, mainWidth, mainHeight,
                                           0, 0, mainWidth - 1, mainHeight - 1, 0,
                                           mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     lodDivisor = (((mainWidth * mainHeight) >> 1) + 7)>>3; // required to use lodDivisor here
                     break;
                 case G_IM_SIZ_8b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight,
+                    gDPLoadTextureTile((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_8b, mainWidth, mainHeight,
                                        0, 0, mainWidth - 1, mainHeight - 1, 0,
                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     lodDivisor = ((mainWidth * mainHeight) + 7)>>3;
                     break;
                 case G_IM_SIZ_16b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight,
+                    gDPLoadTextureTile((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_16b, mainWidth, mainHeight,
                                        0, 0, mainWidth - 1, mainHeight - 1, 0,
                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     lodDivisor = ((mainWidth * mainHeight) * 2 + 7)>>3;
                     break;
                 case G_IM_SIZ_32b:
-                    gDPLoadTextureTile((*gfxPos)++, raster, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight,
+                    gDPLoadTextureTile((*gfxPos)++, handle->mainImg, mainFmt, G_IM_SIZ_32b, mainWidth, mainHeight,
                                        0, 0, mainWidth - 1, mainHeight - 1, 0,
                                        mainWrapW, mainWrapH, mainMasks, mainMaskt, G_TX_NOLOD, G_TX_NOLOD);
                     lodDivisor = ((mainWidth * mainHeight / 2) * 2 + 7)>>3;
@@ -3307,25 +3300,25 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
 
             switch (auxBitDepth) {
                 case G_IM_SIZ_4b:
-                    gDPScrollMultiTile_4b((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, auxWidth, auxHeight,
+                    gDPScrollMultiTile_4b((*gfxPos)++, handle->auxImg, lodDivisor, 1, auxFmt, auxWidth, auxHeight,
                                           0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
                                           auxWrapW, auxWrapH, auxMasks, auxMaskt,
                                           auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
                     break;
                 case G_IM_SIZ_8b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_8b, auxWidth, auxHeight,
+                    gDPScrollMultiTile((*gfxPos)++, handle->auxImg, lodDivisor, 1, auxFmt, G_IM_SIZ_8b, auxWidth, auxHeight,
                                        0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
                                        auxWrapW, auxWrapH, auxMasks, auxMaskt,
                                        auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
                     break;
                 case G_IM_SIZ_16b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_16b, auxWidth, auxHeight,
+                    gDPScrollMultiTile((*gfxPos)++, handle->auxImg, lodDivisor, 1, auxFmt, G_IM_SIZ_16b, auxWidth, auxHeight,
                                        0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
                                        auxWrapW, auxWrapH, auxMasks, auxMaskt,
                                        auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
                     break;
                 case G_IM_SIZ_32b:
-                    gDPScrollMultiTile((*gfxPos)++, auxRaster, lodDivisor, 1, auxFmt, G_IM_SIZ_32b, auxWidth, auxHeight,
+                    gDPScrollMultiTile((*gfxPos)++, handle->auxImg, lodDivisor, 1, auxFmt, G_IM_SIZ_32b, auxWidth, auxHeight,
                                        0, 0, auxWidth - 1, auxHeight - 1, auxPaletteIndex,
                                        auxWrapW, auxWrapH, auxMasks, auxMaskt,
                                        auxShiftS, auxShiftT, auxOffsetS, auxOffsetT);
@@ -3339,13 +3332,13 @@ Model* get_model_from_list_index(s32 listIndex) {
     return (*gCurrentModels)[listIndex];
 }
 
-void load_data_for_models(ModelNode* rootModel, s32 texturesOffset, s32 size) {
+void load_data_for_models(ModelNode* rootModel, s32 texturesOffset, s32 texFileSize) {
     Matrix4f mtx;
 
     guMtxIdentF(mtx);
 
     if (texturesOffset != 0) {
-        mdl_load_all_textures(rootModel, texturesOffset, size);
+        mdl_load_all_textures(rootModel, texturesOffset, texFileSize);
     }
 
     *gCurrentModelTreeRoot = rootModel;

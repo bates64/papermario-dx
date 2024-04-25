@@ -15,10 +15,6 @@ u16* bFrameBuffers[] = {
     gFrameBuf0, gFrameBuf1, gFrameBuf2
 };
 
-s32 D_800778AC[] = {
-    0x00000000, 0xFFFFFF00, 0xFFFFFF00, 0x00000000, 0x00000000
-};
-
 SHIFT_BSS s8 D_800A0900;
 SHIFT_BSS s32 D_800A0904;
 SHIFT_BSS s32 D_800A0908;
@@ -171,14 +167,14 @@ void state_step_end_battle(void) {
                 playerStatus->animFlags = D_800A0904;
                 set_game_mode(GAME_MODE_DEMO);
             } else {
-                void* mapShape;
-                u32 sizeTemp;
+                void* shapeTemp;
+                u32 assetSize;
 
                 partner_init_after_battle(playerData->curPartner);
                 load_map_script_lib();
-                mapShape = load_asset_by_name(wMapShapeName, &sizeTemp);
-                decode_yay0(mapShape, &gMapShapeData);
-                general_heap_free(mapShape);
+                shapeTemp = load_asset_by_name(wMapShapeName, &assetSize);
+                decode_yay0(shapeTemp, &gMapShapeData);
+                general_heap_free(shapeTemp);
                 initialize_collision();
                 restore_map_collision_data();
 
@@ -193,7 +189,7 @@ void state_step_end_battle(void) {
                     set_background_size(296, 200, 12, 20);
                 }
 
-                mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &sizeTemp), sizeTemp);
+                mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &assetSize), assetSize);
                 mdl_calculate_model_sizes();
                 npc_reload_all();
 

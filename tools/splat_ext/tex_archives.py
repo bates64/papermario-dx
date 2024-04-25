@@ -222,9 +222,9 @@ class TexImage:
     # extract texture properties and rasters from buffer
     def from_bytes(self, texbuf: TexBuffer):
         # strip area prefix and original extension suffix
-        raw_name = decode_null_terminated_ascii(texbuf.get(32))
-        self.img_name = raw_name[4:-3]
-        self.raw_ext = raw_name[-3:]
+        self.raw_name = decode_null_terminated_ascii(texbuf.get(32))
+        self.img_name = self.raw_name[4:-3]
+        self.raw_ext = self.raw_name[-3:]
 
         (
             self.aux_width,
@@ -335,9 +335,12 @@ class TexImage:
                 self.aux_img.palette = self.get_n64_pal(texbuf, self.aux_fmt, self.aux_depth)
 
     # constructs a dictionary entry for the tex archive for this texture
-    def get_json_entry(self):
+    def get_json_entry(self, is_pool: bool):
         out = {}
-        out["name"] = self.img_name
+        if is_pool:
+            out["name"] = self.raw_name
+        else:
+            out["name"] = self.img_name
 
         # only a single texture in 'tst_tex' has 'rgb', otherwise this is always 'tif'
         if self.raw_ext != "tif":
@@ -376,6 +379,7 @@ class TexImage:
 
         return out
 
+    # TODO-TEX remove
     def save_images(self, tex_path):
         self.main_img.write(tex_path / f"{self.img_name}.png")
         if self.has_aux:
@@ -383,6 +387,21 @@ class TexImage:
         if self.has_mipmaps:
             for idx, mipmap in enumerate(self.mipmaps):
                 mipmap.write(tex_path / f"{self.img_name}_MM{idx + 1}.png")
+
+    def save_to_pool(self, tex_path):
+        # write images
+        self.main_img.write(tex_path / f"{self.raw_name}.png")
+        if self.has_aux:
+            self.aux_img.write(tex_path / f"{self.raw_name}_AUX.png")
+        if self.has_mipmaps:
+            for idx, mipmap in enumerate(self.mipmaps):
+                mipmap.write(tex_path / f"{self.raw_name}_MM{idx + 1}.png")
+
+        # write json file
+        json_out = json.dumps(self.get_json_entry(True), sort_keys=False, indent=4)
+        json_fn = tex_path / f"{self.raw_name}.json"
+        with open(json_fn, "w") as f:
+            f.write(json_out)
 
     def read_json_img(self, img_data, tile_name, img_name):
         fmt_str = img_data.get("format")
@@ -436,12 +455,16 @@ class TexImage:
         return (out_img, out_pal, out_w, out_h)
 
     # write texture header and image raster/palettes to byte array
-    def add_bytes(self, tex_name: str, bytes: bytearray):
+    def add_bytes(self, tex_name: str, bytes: bytearray, is_pool: bool):
         pos = len(bytes)
 
-        # form raw name and write to header
-        raw_name = tex_name[:4] + self.img_name + self.raw_ext
-        name_bytes = raw_name.encode("ascii")
+        if is_pool:
+            name_bytes = self.img_name.encode("ascii")
+        else:
+            # form raw name and write to header
+            raw_name = tex_name[:4] + self.img_name + self.raw_ext
+            name_bytes = raw_name.encode("ascii")
+
         bytes += name_bytes
 
         # pad name out to 32 bytes
@@ -562,7 +585,7 @@ class TexImage:
 
 class TexArchive:
     @staticmethod
-    def extract(bytes, tex_path: Path):
+    def extract(bytes, tex_path: Path, is_pool: bool):
         textures = []
         texbuf = TexBuffer(bytes)
 
@@ -573,13 +596,17 @@ class TexArchive:
 
         tex_path.mkdir(parents=True, exist_ok=True)
 
-        out = []
-        for texture in textures:
-            texture.save_images(tex_path)
-            out.append(texture.get_json_entry())
+        if is_pool:
+            for texture in textures:
+                texture.save_to_pool(tex_path)
+        else:
+            out = []
+            for texture in textures:
+                texture.save_images(tex_path)
+                out.append(texture.get_json_entry(False))
 
-        json_out = json.dumps(out, sort_keys=False, indent=4)
+            json_out = json.dumps(out, sort_keys=False, indent=4)
 
-        json_fn = str(tex_path) + ".json"
-        with open(json_fn, "w") as f:
-            f.write(json_out)
+            json_fn = str(tex_path) + ".json"
+            with open(json_fn, "w") as f:
+                f.write(json_out)
