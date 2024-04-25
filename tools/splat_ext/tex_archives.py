@@ -222,9 +222,7 @@ class TexImage:
     # extract texture properties and rasters from buffer
     def from_bytes(self, texbuf: TexBuffer):
         # strip area prefix and original extension suffix
-        self.raw_name = decode_null_terminated_ascii(texbuf.get(32))
-        self.img_name = self.raw_name[4:-3]
-        self.raw_ext = self.raw_name[-3:]
+        self.img_name = decode_null_terminated_ascii(texbuf.get(32))
 
         (
             self.aux_width,
@@ -335,16 +333,10 @@ class TexImage:
                 self.aux_img.palette = self.get_n64_pal(texbuf, self.aux_fmt, self.aux_depth)
 
     # constructs a dictionary entry for the tex archive for this texture
-    def get_json_entry(self, is_pool: bool):
+    def get_json_entry(self):
         out = {}
-        if is_pool:
-            out["name"] = self.raw_name
-        else:
-            out["name"] = self.img_name
 
-        # only a single texture in 'tst_tex' has 'rgb', otherwise this is always 'tif'
-        if self.raw_ext != "tif":
-            out["ext"] = self.raw_ext
+        out["name"] = self.img_name
 
         out["main"] = {
             "format": get_format_name(self.main_fmt, self.main_depth),
@@ -390,16 +382,16 @@ class TexImage:
 
     def save_to_pool(self, tex_path):
         # write images
-        self.main_img.write(tex_path / f"{self.raw_name}.png")
+        self.main_img.write(tex_path / f"{self.img_name}.png")
         if self.has_aux:
-            self.aux_img.write(tex_path / f"{self.raw_name}_AUX.png")
+            self.aux_img.write(tex_path / f"{self.img_name}_AUX.png")
         if self.has_mipmaps:
             for idx, mipmap in enumerate(self.mipmaps):
-                mipmap.write(tex_path / f"{self.raw_name}_MM{idx + 1}.png")
+                mipmap.write(tex_path / f"{self.img_name}_MM{idx + 1}.png")
 
         # write json file
-        json_out = json.dumps(self.get_json_entry(True), sort_keys=False, indent=4)
-        json_fn = tex_path / f"{self.raw_name}.json"
+        json_out = json.dumps(self.get_json_entry(), sort_keys=False, indent=4)
+        json_fn = tex_path / f"{self.img_name}.json"
         with open(json_fn, "w") as f:
             f.write(json_out)
 
@@ -455,16 +447,10 @@ class TexImage:
         return (out_img, out_pal, out_w, out_h)
 
     # write texture header and image raster/palettes to byte array
-    def add_bytes(self, tex_name: str, bytes: bytearray, is_pool: bool):
+    def add_bytes(self, bytes: bytearray):
         pos = len(bytes)
 
-        if is_pool:
-            name_bytes = self.img_name.encode("ascii")
-        else:
-            # form raw name and write to header
-            raw_name = tex_name[:4] + self.img_name + self.raw_ext
-            name_bytes = raw_name.encode("ascii")
-
+        name_bytes = self.img_name.encode("ascii")
         bytes += name_bytes
 
         # pad name out to 32 bytes
@@ -514,7 +500,7 @@ class TexImage:
                 bytes += self.aux_pal
 
         size = len(bytes) - pos
-        assert size == self.expected_size(), f"{raw_name}: size mismatch: {size} != {self.expected_size()}"
+        assert size == self.expected_size(), f"{self.img_name}: size mismatch: {size} != {self.expected_size()}"
 
     def expected_size(self) -> int:
         """
@@ -585,7 +571,7 @@ class TexImage:
 
 class TexArchive:
     @staticmethod
-    def extract(bytes, tex_path: Path, is_pool: bool):
+    def extract_tex(bytes, tex_path: Path):
         textures = []
         texbuf = TexBuffer(bytes)
 
@@ -596,17 +582,28 @@ class TexArchive:
 
         tex_path.mkdir(parents=True, exist_ok=True)
 
-        if is_pool:
-            for texture in textures:
-                texture.save_to_pool(tex_path)
-        else:
-            out = []
-            for texture in textures:
-                texture.save_images(tex_path)
-                out.append(texture.get_json_entry(False))
+        out = []
+        for texture in textures:
+            texture.save_images(tex_path)
+            out.append(texture.get_json_entry())
 
-            json_out = json.dumps(out, sort_keys=False, indent=4)
+        json_out = json.dumps(out, sort_keys=False, indent=4)
 
-            json_fn = str(tex_path) + ".json"
-            with open(json_fn, "w") as f:
-                f.write(json_out)
+        json_fn = str(tex_path) + ".json"
+        with open(json_fn, "w") as f:
+            f.write(json_out)
+
+    @staticmethod
+    def extract_pool(bytes, pool_path: Path):
+        textures = []
+        texbuf = TexBuffer(bytes)
+
+        while texbuf.remaining() > 0:
+            img = TexImage()
+            img.from_bytes(texbuf)
+            textures.append(img)
+
+        pool_path.mkdir(parents=True, exist_ok=True)
+
+        for texture in textures:
+            texture.save_to_pool(pool_path)

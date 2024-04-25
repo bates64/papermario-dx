@@ -30,11 +30,6 @@ def img_from_json(json_data, tex_name: str, asset_stack: Tuple[Path, ...]) -> Te
 
     ret.img_name = json_data["name"]
 
-    if "ext" in json_data:
-        ret.raw_ext = json_data["ext"]
-    else:
-        ret.raw_ext = "tif"
-
     # read data for main tile
     main_data = json_data.get("main")
     if main_data == None:
@@ -164,7 +159,7 @@ def build(out_path: Path, tex_name: str, asset_stack: Tuple[Path, ...], endian: 
 
         for img_data in json_data:
             img = img_from_json(img_data, tex_name, asset_stack)
-            img.add_bytes(tex_name, out_bytes, False)
+            img.add_bytes(out_bytes)
 
     with open(out_path, "wb") as out_bin:
         out_bin.write(out_bytes)

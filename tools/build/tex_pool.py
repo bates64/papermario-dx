@@ -190,7 +190,7 @@ def build(out_path: Path, out_header: Path, asset_stack: Tuple[Path, ...]):
             json_str = json_file.read()
             json_data = json.loads(json_str)
             tex = img_from_json(json_data, asset_stack)
-            tex.add_bytes(tex_name, out_bytes, True)
+            tex.add_bytes(out_bytes)
 
         end = len(out_bytes)
         entries.append(TexPoolEntry(tex_name, start, end))
