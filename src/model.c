@@ -6,6 +6,7 @@
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
 #include "dx/texture_pool.h"
+#include "dx/debug_menu.h"
 #include "qsort.h"
 
 // models are rendered in two stages by the RDP:
@@ -1364,6 +1365,10 @@ SHIFT_BSS TextureHandle TextureHandles[128];
 
 s32 CurHandleIdx;
 
+// current texture heap bounds
+void* TextureHeapMin;
+void* TextureHeapMax;
+
 SHIFT_BSS u16 DepthCopyBuffer[16];
 
 extern Addr BattleEntityHeapBottom; // todo ???
@@ -2250,9 +2255,6 @@ void tex_pool_load_texture(ModelNodeProperty* propertyName) {
 
     s32 readPos = tex_pool_data_ROM_START + result->romStart;
 
-    //TODO check this!
-    //ASSERT_MSG(TexPoolPos + size <= POOL_HEAP_SIZE, "Ran out of texture pool memory.");
-
     dma_copy(readPos, readPos + sizeof(TextureHeader), &texHandle->header);
     readPos += sizeof(TextureHeader);
 
@@ -2267,6 +2269,8 @@ void tex_pool_load_texture(ModelNodeProperty* propertyName) {
     }
 
     chunkSize = layout.mainImgSize + layout.mainPalSize;
+    ASSERT_MSG(TextureHeapPos + chunkSize <= TextureHeapMax, "Ran out of texture heap memory!");
+
     dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
     readPos += chunkSize;
     TextureHeapPos += chunkSize;
@@ -2281,6 +2285,8 @@ void tex_pool_load_texture(ModelNodeProperty* propertyName) {
         }
 
         chunkSize = layout.auxImgSize + layout.auxPalSize;
+        ASSERT_MSG(TextureHeapPos + chunkSize <= TextureHeapMax, "Ran out of texture heap memory!");
+
         dma_copy((u8*) readPos, (u8*) (readPos + chunkSize), TextureHeapPos);
         readPos += chunkSize;
         TextureHeapPos += chunkSize;
@@ -2328,12 +2334,15 @@ void load_next_model_textures(ModelNode* model, s32 romOffset, const s32 texFile
 
 // load all textures used by models, starting from the root
 void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 texFileSize) {
-
-    TextureHeapPos = TextureHeapBase;
     // textures are loaded to the upper half of the texture heap when not in the world
-    if (gGameStatusPtr->isBattle != 0) {
-        TextureHeapPos += WORLD_TEXTURE_MEMORY_SIZE;
+    if (gGameStatusPtr->isBattle == 0) {
+        TextureHeapMin = TextureHeapBase;
+        TextureHeapMax = TextureHeapMin + WORLD_TEXTURE_MEMORY_SIZE;
+    } else {
+        TextureHeapMin = TextureHeapBase + WORLD_TEXTURE_MEMORY_SIZE;
+        TextureHeapMax = TextureHeapMin + BATTLE_TEXTURE_MEMORY_SIZE;
     }
+    TextureHeapPos = TextureHeapMin;
 
     if (rootModel != NULL && romOffset != 0 && texFileSize != 0) {
         for (s32 i = 0; i < ARRAY_COUNT(TextureHandles); i++) {
@@ -2347,6 +2356,8 @@ void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 texFileSize)
         if (rootModel != NULL) {
             load_next_model_textures(rootModel, romOffset, texFileSize);
         }
+
+        debug_printf("%.2f%% utilized", 100.0f * (float)(TextureHeapPos - TextureHeapMin) / (float)(TextureHeapMax - TextureHeapMin));
     }
 }
 
