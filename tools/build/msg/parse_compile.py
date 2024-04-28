@@ -3177,6 +3177,9 @@ if __name__ == "__main__":
         source = strip_c_comments(f.read())
         lineno = 1
 
+        # ignore all carriage returns
+        source = source.replace("\r", "")
+
         directive = ""
         indent_level = 0
 
@@ -3195,7 +3198,7 @@ if __name__ == "__main__":
         choiceindex = -1
 
         while len(source) > 0:
-            if source[0] == "\r" or source[0] == "\t":
+            if source[0] == "\t":
                 source = source[1:]
                 continue
 
@@ -3212,11 +3215,12 @@ if __name__ == "__main__":
                 continue
 
             if message is None:
+                # non-whitespace character while not reading a message --> start of new message
                 directive = ""
-                while source[0] != " ":
+                while source[0] != "{":
                     if source[0] == "\n":
                         lineno += 1
-                    elif source[0] == "\r":
+                    elif source[0] == " ":
                         pass
                     else:
                         directive += source[0]
