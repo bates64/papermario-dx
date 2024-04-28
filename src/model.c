@@ -2119,14 +2119,6 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 te
             break;
         }
 
-        // try appending "tif" - this is a common issue with textures ported from Star Rod mods
-        char tifName[32];
-        strcpy(tifName, textureName);
-        strcat(tifName, "tif");
-        if (strcmp(tifName, gCurrentTextureHeader.name) == 0) {
-            break;
-        }
-
         textureIdx++;
         romOffset += sizeof(gCurrentTextureHeader);
         romOffset += layout.mainImgSize + layout.mainPalSize;
