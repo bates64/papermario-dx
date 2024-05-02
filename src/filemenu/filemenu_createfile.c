@@ -64,7 +64,7 @@ MenuPanel filemenu_createfile_menuBP = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols = 13,
     .numRows = ROWS,
     .numPages = 0,
@@ -118,7 +118,7 @@ void filemenu_draw_contents_file_create_header(
         }
     }
 
-    if (filemenu_currentMenu == 3) {
+    if (filemenu_currentMenu == FILE_MENU_INPUT_NAME) {
         if (filemenu_filename_pos == 8) {
             xOffset = temp_s2 + 86;
         } else {
@@ -148,7 +148,7 @@ void filemenu_draw_contents_file_create_header(
     }
 
     tempAmt = 8;
-    if (filemenu_currentMenu == 3) {
+    if (filemenu_currentMenu == FILE_MENU_INPUT_NAME) {
         s32 phi_v0 = 122;
 
         if (filemenu_filename_pos != tempAmt) {
@@ -194,8 +194,8 @@ void filemenu_draw_contents_choose_name(
 
     if ((window->flags & WINDOW_FLAG_INITIAL_ANIMATION) && window->fpUpdate.func == filemenu_update_change_layout) {
         changeLayoutOffset = window->updateCounter * 2;
-        currentPage = menu->page;
-        previousPage = menu->page != 1;
+        currentPage = menu->state;
+        previousPage = menu->state != 1;
         if (changeLayoutOffset > 16) {
             changeLayoutOffset = 16;
         }
@@ -221,7 +221,7 @@ void filemenu_draw_contents_choose_name(
 
                 for (col = 0; col < menu->numCols; col++) {
                     c = menu->gridData[page * menu->numCols * menu->numRows + menu->numCols * row + col];
-                    if (c != 0xF7) {
+                    if (c != MSG_CHAR_MENU_SPACE) {
                         if (col == menu->col && row == menu->row) {
                             flags = 8;
                             color = 0;
@@ -236,23 +236,23 @@ void filemenu_draw_contents_choose_name(
 #endif
                         specialChar = c;
                         if (c >= 0xA2 && c < 0xF0) {
-                            if (c >= 0xC6) {
+                            if (c >= MSG_CHAR_MENU_SPACE) {
                                 hud_element_set_render_pos(filemenu_createfile_hudElems[2], baseX + xOffset + 22, baseY + yOffset + 8);
                                 hud_element_draw_without_clipping(filemenu_createfile_hudElems[2]);
                                 flags = 0;
                             }
                         }
-                        if (specialChar == 0xC6) {
+                        if (specialChar == MSG_CHAR_MENU_SPACE) {
                             xOffset -= 1;
                         }
-                        if (specialChar == 0xC9) {
+                        if (specialChar == MSG_CHAR_MENU_BACK) {
 #if VERSION_PAL
                             xOffset += 16;
 #else
                             xOffset += 5;
 #endif
                         }
-                        if (specialChar == 0xCA) {
+                        if (specialChar == MSG_CHAR_MENU_END) {
 #if VERSION_PAL
                             if (gCurrentLanguage == LANGUAGE_DE) {
                                 xOffset += 4;
@@ -263,7 +263,7 @@ void filemenu_draw_contents_choose_name(
                             xOffset += 8;
 #endif
                         }
-                        if (specialChar == 0xC6 || specialChar == 0xCA || specialChar == 0xC9) {
+                        if (specialChar == MSG_CHAR_MENU_SPACE || specialChar == MSG_CHAR_MENU_BACK || specialChar == MSG_CHAR_MENU_END) {
                             yOffset -= 1;
                             xNudge = 9;
                         }
@@ -280,8 +280,8 @@ void filemenu_draw_contents_choose_name(
     } else {
         for (col = 0; col < menu->numCols; col++) {
             for (row = 0; row < menu->numRows; row++) {
-                c = menu->gridData[menu->page * menu->numCols * menu->numRows + menu->numCols * row + col];
-                if (c != 0xF7) {
+                c = menu->gridData[menu->state * menu->numCols * menu->numRows + menu->numCols * row + col];
+                if (c != MSG_CHAR_MENU_SPACE) {
                     if (col == menu->col && row == menu->row) {
                         flags = 8;
                         color = 0;
@@ -296,19 +296,19 @@ void filemenu_draw_contents_choose_name(
 #endif
                     specialChar = c;
                     if (c >= 0xA2 && c < 0xF0) {
-                        if (c >= 0xC6) {
+                        if (c >= MSG_CHAR_MENU_SPACE) {
                             hud_element_set_render_pos(filemenu_createfile_hudElems[2], baseX + xOffset + 22, baseY + yOffset + 8);
                             hud_element_draw_without_clipping(filemenu_createfile_hudElems[2]);
                             flags = 0;
                         }
                     }
-                    if (specialChar == 0xC6) {
+                    if (specialChar == MSG_CHAR_MENU_SPACE) {
                         xOffset -= 1;
                     }
-                    if (specialChar == 0xC9) {
+                    if (specialChar == MSG_CHAR_MENU_BACK) {
                         xOffset += FILEMENU_C9_OFFSET;
                     }
-                    if (specialChar == 0xCA) {
+                    if (specialChar == MSG_CHAR_MENU_END) {
 #if VERSION_PAL
                         if (gCurrentLanguage == LANGUAGE_DE) {
                             xOffset += 4;
@@ -319,7 +319,7 @@ void filemenu_draw_contents_choose_name(
                         xOffset += 8;
 #endif
                     }
-                    if (specialChar == 0xC6 || specialChar == 0xCA || specialChar == 0xC9) {
+                    if (specialChar == MSG_CHAR_MENU_SPACE || specialChar == MSG_CHAR_MENU_BACK || specialChar == MSG_CHAR_MENU_END) {
                         yOffset -= 1;
                         xNudge = 9;
                     }
@@ -333,7 +333,7 @@ void filemenu_draw_contents_choose_name(
         }
     }
 
-    if (filemenu_currentMenu == 3) {
+    if (filemenu_currentMenu == FILE_MENU_INPUT_NAME) {
         if (filemenu_heldButtons & (BUTTON_STICK_RIGHT | BUTTON_STICK_LEFT | BUTTON_STICK_DOWN | BUTTON_STICK_UP)) {
             D_8024A18C = -4;
         }
@@ -372,8 +372,6 @@ void filemenu_choose_name_init(MenuPanel* menu) {
 
 void filemenu_choose_name_handle_input(MenuPanel* menu) {
     s32 oldSelected = menu->selected;
-    MenuPanel* newMenu;
-    MenuPanel* newMenu2;
     s32 i;
 
 #if VERSION_PAL
@@ -442,38 +440,38 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
 
     if (filemenu_pressedButtons & BUTTON_A) {
         switch (menu->selected) {
-            case 0xC6:
+            case MSG_CHAR_MENU_SPACE: // SPACE
                 sfx_play_sound(SOUND_CREATE_FILE_SET_CHARACTER);
                 if (filemenu_filename_pos == ARRAY_COUNT(filemenu_filename)) {
                     filemenu_filename_pos = ARRAY_COUNT(filemenu_filename) - 1;
                 }
-                filemenu_filename[filemenu_filename_pos] = 0xF7;
+                filemenu_filename[filemenu_filename_pos] = MSG_CHAR_READ_SPACE;
                 filemenu_filename_pos++;
                 if (filemenu_filename_pos > ARRAY_COUNT(filemenu_filename)) {
                     filemenu_filename_pos = ARRAY_COUNT(filemenu_filename);
                 }
                 break;
-            case 0xC9:
-                break;
-            case 0xC7:
-                if (menu->page != 1) {
+            case MSG_CHAR_MENU_USE_CHARSET_B:
+                if (menu->state != 1) {
                     sfx_play_sound(SOUND_CREATE_FILE_CHANGE_CHARSET);
-                    menu->page = 1;
+                    menu->state = 1;
                     filemenu_set_selected(menu, menu->col, menu->row);
                     set_window_update(WINDOW_ID_FILEMENU_KEYBOARD, (s32)filemenu_update_change_layout);
                 }
                 break;
-            case 0xC8:
-                if (menu->page != 0) {
+            case MSG_CHAR_MENU_USE_CHARSET_A:
+                if (menu->state != 0) {
                     sfx_play_sound(SOUND_CREATE_FILE_CHANGE_CHARSET);
-                    menu->page = 0;
+                    menu->state = 0;
                     filemenu_set_selected(menu, menu->col, menu->row);
                     set_window_update(WINDOW_ID_FILEMENU_KEYBOARD, (s32)filemenu_update_change_layout);
                 }
                 break;
-            case 0xCA:
+            case MSG_CHAR_MENU_BACK: // BACK (handled later to allow B inputs regardless of selected letter)
+                break;
+            case MSG_CHAR_MENU_END: // END
                 for (i = 0; i < ARRAY_COUNT(filemenu_filename); i++) {
-                    if (filemenu_filename[i] != 0xF7) {
+                    if (filemenu_filename[i] != MSG_CHAR_READ_SPACE) {
                         break;
                     }
                 }
@@ -507,10 +505,9 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
                     : SCREEN_WIDTH / 2) - gWindows[WINDOW_ID_FILEMENU_YESNO_PROMPT].width / 2;
 #endif
 
-                filemenu_currentMenu = 1;
-                newMenu = filemenu_menus[filemenu_currentMenu];
-                newMenu->page = INPUT_FINAL_PAGE;
-                filemenu_set_selected(newMenu, 0, 0);
+                filemenu_currentMenu = FILE_MENU_CONFIRM;
+                filemenu_menus[filemenu_currentMenu]->state = INPUT_FINAL_PAGE;
+                filemenu_set_selected(filemenu_menus[filemenu_currentMenu], 0, 0);
                 return;
             default:
                 sfx_play_sound(SOUND_CREATE_FILE_SET_CHARACTER);
@@ -526,14 +523,16 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
                 break;
         }
 
-        if (menu->selected != 0xC7 && menu->selected != 0xC8 && menu->selected != 0xC9 &&
-            filemenu_filename_pos == ARRAY_COUNT(filemenu_filename)) {
+        if (menu->selected != MSG_CHAR_MENU_USE_CHARSET_A
+            && menu->selected != MSG_CHAR_MENU_USE_CHARSET_B
+            && menu->selected != MSG_CHAR_MENU_BACK
+            && filemenu_filename_pos == ARRAY_COUNT(filemenu_filename)
+        ) {
             filemenu_set_selected(menu, menu->numCols - 3, menu->numRows - 1);
         }
     }
 
-
-    if ((filemenu_pressedButtons & BUTTON_B) || ((filemenu_pressedButtons & BUTTON_A) && menu->selected == 0xC9)) {
+    if ((filemenu_pressedButtons & BUTTON_B) || ((filemenu_pressedButtons & BUTTON_A) && menu->selected == MSG_CHAR_MENU_BACK)) {
         sfx_play_sound(SOUND_CREATE_FILE_BACKSPACE);
         filemenu_filename_pos--;
         if (filemenu_filename_pos < 0) {
@@ -551,18 +550,18 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
             set_window_update(WINDOW_ID_FILEMENU_FILE1_INFO, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WINDOW_ID_FILEMENU_FILE2_INFO, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WINDOW_ID_FILEMENU_FILE3_INFO, (s32) &filemenu_update_show_with_rotation);
-            filemenu_currentMenu = 0;
+            filemenu_currentMenu = FILE_MENU_MAIN;
             return;
         }
 
         for (i = filemenu_filename_pos; i < ARRAY_COUNT(filemenu_filename); i++) {
-            filemenu_filename[i] = 0xF7;
+            filemenu_filename[i] = MSG_CHAR_READ_SPACE;
         }
     }
 
     if (filemenu_pressedButtons & BUTTON_START) {
         for (i = 0; i < ARRAY_COUNT(filemenu_filename); i++) {
-            if (filemenu_filename[i] != 0xF7) {
+            if (filemenu_filename[i] != MSG_CHAR_READ_SPACE) {
                 break;
             }
         }
@@ -599,14 +598,11 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
             : SCREEN_WIDTH / 2) - gWindows[WINDOW_ID_FILEMENU_YESNO_PROMPT].width / 2;
 #endif
 
-        filemenu_currentMenu = 1;
-        newMenu2 = filemenu_menus[filemenu_currentMenu];
-        newMenu2->page = INPUT_FINAL_PAGE;
-        filemenu_set_selected(newMenu2, 0, 0);
+        filemenu_currentMenu = FILE_MENU_CONFIRM;
+        filemenu_menus[FILE_MENU_CONFIRM]->state = INPUT_FINAL_PAGE;
+        filemenu_set_selected(filemenu_menus[FILE_MENU_CONFIRM], 0, 0);
     }
 }
-
-static const f32 padding[2] = { 0.0f, 0.0f }; // not sure why this is needed
 
 void filemenu_choose_name_update(MenuPanel* menu) {
 }

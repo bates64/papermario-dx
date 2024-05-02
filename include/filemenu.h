@@ -4,23 +4,49 @@
 #include "common.h"
 
 enum {
-  PAGE_0,
-  PAGE_1,
-#if !VERSION_PAL
-  PAGE_2,
-#endif
-  PAGE_3,
-  PAGE_4,
+    FILE_MENU_MAIN          = 0, // file selection
+    FILE_MENU_CONFIRM       = 1, // confirmation prompt is open
+    FILE_MENU_MESSAGE       = 2, // message is displayed, e.g. "File X has been deleted."
+    FILE_MENU_INPUT_NAME    = 3, // "Enter a file name!" screen
+    FILE_MENU_LANGUAGES     = 4,
+};
+
+enum {
+    FM_MAIN_SELECT_LOAD         = 0, // choose which file to load
+    FM_MAIN_SELECT_DELETE       = 1, // choose which file to delete
+    #if !VERSION_PAL
+    FM_MAIN_SELECT_LANGUAGE     = 2,
+    #endif
+    FM_MAIN_SELECT_COPY_FROM,
+    FM_MAIN_SELECT_COPY_TO,
+    FM_CONFIRM_DELETE           = 0,
+    FM_CONFIRM_LANGUAGE         = 1,
+    FM_CONFIRM_CREATE           = 2,
+    FM_CONFIRM_COPY             = 3, // unused
+    FM_CONFIRM_START            = 4,
+    FM_MESSAGE_DELETED          = 0,
+    #if !VERSION_PAL
+    FM_MESSAGE_LANGUAGE         = 1,
+    #endif
+    FM_MESSAGE_COPIED,
+    FM_MESSAGE_CREATED,
+    FM_INPUT_NAME_STATE_0       = 0,
+};
+
+enum {
+    FM_MAIN_OPT_DELETE          = 4,
+    FM_MAIN_OPT_COPY            = 5,
+    FM_MAIN_OPT_CANCEL          = 6,
 };
 
 extern MenuPanel* filemenu_menus[];
 
-extern s32 filemenu_iterFileIdx;
+extern s32 filemenu_CopyToFileIdx;
 extern s32 filemenu_pressedButtons;
 extern s32 filemenu_cursorHudElem;
 extern s32 filemenu_heldButtons;
 extern s8 filemenu_filename_pos;
-extern s32 filemenu_loadedFileIdx;
+extern s32 filemenu_CopyFromFileIdx;
 extern s8 filemenu_currentMenu;
 extern s32 filemenu_8024C09C;
 extern s32 filemenu_cursorHudElemID[1];

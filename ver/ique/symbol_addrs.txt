@@ -510,13 +510,13 @@ filemenu_char_color = 0x8024bbbc; // segment:filemenu
 filemenu_savedGfxPos = 0x8024bbb0; // segment:filemenu
 filemenu_dl_draw_char_init = 0x8024bb48; // segment:filemenu
 filemenu_glyphBuffer = 0x8024c4d0; // segment:filemenu
-filemenu_iterFileIdx = 0x8024c440; // segment:filemenu
-filemenu_loadedFileIdx = 0x8024c454; // segment:filemenu
+filemenu_CopyToFileIdx = 0x8024c440; // segment:filemenu
+filemenu_CopyFromFileIdx = 0x8024c454; // segment:filemenu
 filemenu_filename = 0x8024ced0; // segment:filemenu
 filemenu_set_cursor_alpha = 0x80242dec; // segment:filemenu
 
 gSaveSlotHasData = 0x80076684;
-gSaveSlotMetadata = 0x80076624;
+gSaveSlotSummary = 0x80076624;
 MsgCharsets = 0x802eb5a8;
 load_font_data = 0x80121ae8;
 D_802F4560 = 0x802f4558;

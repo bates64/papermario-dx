@@ -74,7 +74,7 @@ MenuPanel filemenu_yesno_menuBP = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols = 1,
     .numRows = 2,
     .numPages = 0,
@@ -98,33 +98,33 @@ void filemenu_yesno_draw_options_contents(
     s32 cursorGoalXOffset;
     s32 cursorGoalYOffset;
 
-    switch (menu->page) {
-        case 0:
+    switch (menu->state) {
+        case FM_CONFIRM_DELETE:
             xOffset1 = 28;
             yOffset1 = 4;
             xOffset2 = 28;
             yOffset2 = 21;
             break;
-        case 1:
+        case FM_CONFIRM_LANGUAGE:
             xOffset1 = 28;
             yOffset1 = 4;
             xOffset2 = 28;
             yOffset2 = 21;
             break;
-        case 2:
+        case FM_CONFIRM_CREATE:
             xOffset1 = 28;
             yOffset1 = 4;
             xOffset2 = 28;
             yOffset2 = 21;
             break;
-        case 3:
+        case FM_CONFIRM_COPY:
             xOffset1 = 28;
             yOffset1 = 4;
             xOffset2 = 28;
             yOffset2 = 21;
             break;
 #if !VERSION_PAL
-        case 4:
+        case FM_CONFIRM_START:
             xOffset1 = 28;
             yOffset1 = 4;
             xOffset2 = 28;
@@ -133,10 +133,10 @@ void filemenu_yesno_draw_options_contents(
 #endif
     }
 
-    filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_YES), baseX + xOffset1, baseY + yOffset1, 0xFF, 0, 0);
-    filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_NO), baseX + xOffset2, baseY + yOffset2, 0xFF, 0, 0);
+    filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_YES), baseX + xOffset1, baseY + yOffset1, 255, MSG_PAL_WHITE, 0);
+    filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_NO), baseX + xOffset2, baseY + yOffset2, 255, MSG_PAL_WHITE, 0);
 
-    if (filemenu_currentMenu == 1) {
+    if (filemenu_currentMenu == FILE_MENU_CONFIRM) {
         if (menu->selected == 0) {
             cursorGoalXOffset = xOffset1 - 10;
             cursorGoalYOffset = yOffset1 + 8;
@@ -157,30 +157,32 @@ void filemenu_yesno_draw_prompt_contents(
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
+    s32 selectedFile;
+    s32 msgColor;
     s32 xOffset;
     s32 i;
 
-    switch (menu->page) {
-        case 0:
+    switch (menu->state) {
+        case FM_CONFIRM_DELETE:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_DELETE), baseX + DELETE_FILE_DELETE_X, baseY + 4, 0xFF, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_22), baseX + DELETE_FILE_FILE_X, baseY + 4, 0xFF, 0, 0);
-            draw_number(filemenu_menus[0]->selected + 1, baseX + DELETE_FILE_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 0xFF, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + DELETE_FILE_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 0xFF, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_QUESTION), baseX + DELETE_FILE_QMARK_X, baseY + 4, 0xFF, 0, 0);            break;
-        case 3:
+        case FM_CONFIRM_COPY:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_22), baseX + 10, baseY + 4, 0xFF, 0, 0);
-            draw_number(filemenu_menus[0]->selected + 1, baseX + COPY_FILE_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 0xFF, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + COPY_FILE_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 0xFF, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_WILL_BE_DELETED), baseX + 49, baseY + 4, 0xFF, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_OK_TO_COPY_TO_THIS_FILE), baseX + 10, baseY + 18, 0xFF, 0, 0);
             break;
-        case 1:
+        case FM_CONFIRM_LANGUAGE:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_OVERRIDE_TO_NEW_DATA), baseX + 10, baseY + 4, 0xFF, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_SAVE_OK), baseX + 10, baseY + 18, 0xFF, 0, 0);
             break;
-        case 2:
+        case FM_CONFIRM_CREATE:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_NAME_IS), baseX + 10, baseY + 6, 0xFF, 0, 0);
 
             for (i = ARRAY_COUNT(filemenu_filename) - 1; i >= 0; i--) {
-                if (filemenu_filename[i] != 0xF7) {
+                if (filemenu_filename[i] != MSG_CHAR_READ_SPACE) {
                     break;
                 }
             }
@@ -191,11 +193,17 @@ void filemenu_yesno_draw_prompt_contents(
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PERIOD_20), baseX + xOffset, baseY + 22, 0xFF, 0, 0);
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_OK), baseX + 70, baseY + 38, 0xFF, 0, 0);
             break;
-        case 4:
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_START_GAME_WITH), baseX + START_GAME_START_WITH_X, baseY + 4, 0xFF, 0, 0);
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_22), baseX + START_GAME_FILE_X, baseY + 4, 0xFF, 0, 0);
-            draw_number(filemenu_menus[0]->selected + 1, baseX + START_GAME_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 0xFF, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_QUESTION), baseX + START_GAME_QMARK_X, baseY + 4, 0xFF, 0, 0);
+        case FM_CONFIRM_START:
+            selectedFile = filemenu_menus[FILE_MENU_MAIN]->selected;
+            if (gSaveSlotMetadata[selectedFile].validData) {
+                msgColor = MSG_PAL_WHITE;
+            } else {
+                msgColor = MSG_PAL_RED;
+            }
+            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_START_GAME_WITH), baseX + START_GAME_START_WITH_X, baseY + 4, 255, msgColor, 0);
+            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_22), baseX + START_GAME_FILE_X, baseY + 4, 255, msgColor, 0);
+            draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + START_GAME_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, msgColor, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
+            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_QUESTION), baseX + START_GAME_QMARK_X, baseY + 4, 255, msgColor, 0);
             break;
     }
 }
@@ -217,6 +225,7 @@ INCLUDE_ASM(void, "filemenu/filemenu_yesno", filemenu_yesno_handle_input);
 #else
 void filemenu_yesno_handle_input(MenuPanel* menu) {
     s32 oldSelected = menu->selected;
+    s32 selected;
 
     if (filemenu_heldButtons & BUTTON_STICK_UP) {
         menu->row--;
@@ -238,26 +247,22 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
         sfx_play_sound(SOUND_MENU_CHANGE_SELECTION);
     }
 
-    if ((filemenu_pressedButtons & BUTTON_START) && menu->page == 4) {
+    if ((filemenu_pressedButtons & BUTTON_START) && menu->state == FM_CONFIRM_START) {
         filemenu_set_selected(menu, 0, 0);
         filemenu_pressedButtons = BUTTON_A;
     }
 
     if (filemenu_pressedButtons & BUTTON_A) {
-        u32 slot;
-        u32 slot2;
-        u32 slot3;
-        u32 slot4;
         s32 i;
 
         sfx_play_sound(SOUND_MENU_NEXT);
 
         switch (menu->selected) {
-            case 0:
-                switch (menu->page) {
-                    case 0:
-                        filemenu_currentMenu = 2;
-                        filemenu_menus[filemenu_currentMenu]->page = 0;
+            case 0: // YES
+                switch (menu->state) {
+                    case FM_CONFIRM_DELETE:
+                        filemenu_currentMenu = FILE_MENU_MESSAGE;
+                        filemenu_menus[FILE_MENU_MESSAGE]->state = FM_MESSAGE_DELETED;
                         gWindows[WINDOW_ID_FILEMENU_INFO].width = 182;
                         gWindows[WINDOW_ID_FILEMENU_INFO].height = 25;
                         gWindows[WINDOW_ID_FILEMENU_INFO].pos.x = ((gWindows[WINDOW_ID_FILEMENU_INFO].parent != -1)
@@ -269,19 +274,20 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         set_window_update(WINDOW_ID_FILEMENU_INFO, WINDOW_UPDATE_SHOW);
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
 
-                        slot = filemenu_menus[0]->selected;
-                        for (i = 0; i < ARRAY_COUNT(gFilesDisplayData->filename); i++) {
-                            gFilesDisplayData[slot].filename[i] = 0xF7;
+                        selected = filemenu_menus[FILE_MENU_MAIN]->selected;
+                        for (i = 0; i < ARRAY_COUNT(gSaveSlotSummary->filename); i++) {
+                            gSaveSlotSummary[selected].filename[i] = MSG_CHAR_READ_SPACE;
                         }
-                        gFilesDisplayData[slot].level = 0;
-                        gFilesDisplayData[slot].timePlayed = 0;
-                        gFilesDisplayData[slot].spiritsRescued = 0;
-                        fio_erase_game(slot);
-                        gSaveSlotHasData[slot] = FALSE;
+                        gSaveSlotSummary[selected].level = 0;
+                        gSaveSlotSummary[selected].timePlayed = 0;
+                        gSaveSlotSummary[selected].spiritsRescued = 0;
+                        fio_erase_game(selected);
+                        gSaveSlotMetadata[selected].hasData = FALSE;
+                        gSaveSlotMetadata[selected].validData = FALSE;
                         break;
-                    case 3:
-                        filemenu_currentMenu = 2;
-                        filemenu_menus[filemenu_currentMenu]->page = 2;
+                    case FM_CONFIRM_COPY:
+                        filemenu_currentMenu = FILE_MENU_MESSAGE;
+                        filemenu_menus[FILE_MENU_MESSAGE]->state = FM_MESSAGE_COPIED;
                         gWindows[WINDOW_ID_FILEMENU_INFO].width = 154;
                         gWindows[WINDOW_ID_FILEMENU_INFO].height = 39;
                         gWindows[WINDOW_ID_FILEMENU_INFO].pos.x = ((gWindows[WINDOW_ID_FILEMENU_INFO].parent != -1)
@@ -292,14 +298,14 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                                              : SCREEN_HEIGHT / 2) - gWindows[WINDOW_ID_FILEMENU_INFO].height / 2;
                         set_window_update(WINDOW_ID_FILEMENU_INFO, WINDOW_UPDATE_SHOW);
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
-                        fio_load_game(filemenu_loadedFileIdx);
-                        gFilesDisplayData[filemenu_iterFileIdx] = gFilesDisplayData[filemenu_loadedFileIdx];
-                        fio_save_game(filemenu_iterFileIdx);
-                        gSaveSlotHasData[filemenu_iterFileIdx] = TRUE;
+                        fio_load_game(filemenu_CopyFromFileIdx);
+                        gSaveSlotSummary[filemenu_CopyToFileIdx] = gSaveSlotSummary[filemenu_CopyFromFileIdx];
+                        gSaveSlotMetadata[filemenu_CopyToFileIdx] = gSaveSlotMetadata[filemenu_CopyFromFileIdx];
+                        fio_save_game(filemenu_CopyToFileIdx);
                         break;
-                    case 1:
-                        filemenu_currentMenu = 2;
-                        filemenu_menus[filemenu_currentMenu]->page = 1;
+                    case FM_CONFIRM_LANGUAGE:
+                        filemenu_currentMenu = FILE_MENU_MESSAGE;
+                        filemenu_menus[FILE_MENU_MESSAGE]->state = FM_MESSAGE_LANGUAGE;
                         gWindows[WINDOW_ID_FILEMENU_INFO].width = 153;
                         gWindows[WINDOW_ID_FILEMENU_INFO].height = 25;
                         gWindows[WINDOW_ID_FILEMENU_INFO].pos.x = ((gWindows[WINDOW_ID_FILEMENU_INFO].parent != -1)
@@ -310,23 +316,26 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                                              : SCREEN_HEIGHT / 2) - gWindows[WINDOW_ID_FILEMENU_INFO].height / 2;
                         set_window_update(WINDOW_ID_FILEMENU_INFO, WINDOW_UPDATE_SHOW);
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
-                        gFilesDisplayData[filemenu_menus[0]->selected] = gFilesDisplayData[gGameStatusPtr->saveSlot];
-                        fio_save_game(filemenu_menus[0]->selected);
-                        gSaveSlotHasData[filemenu_menus[0]->selected] = TRUE;
+                        gSaveSlotSummary[filemenu_menus[FILE_MENU_MAIN]->selected] = gSaveSlotSummary[gGameStatusPtr->saveSlot];
+                        fio_save_game(filemenu_menus[FILE_MENU_MAIN]->selected);
+                        gSaveSlotMetadata[filemenu_menus[FILE_MENU_MAIN]->selected].hasData = TRUE;
                         break;
-                    case 2:
+                    case FM_CONFIRM_CREATE:
                         clear_player_data();
                         clear_saved_variables();
                         get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID);
                         gGameStatusPtr->entryID = NEW_GAME_ENTRY_ID;
                         evt_set_variable(NULL, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
 
-                        slot2 = filemenu_menus[0]->selected;
-                        for (i = 0; i < ARRAY_COUNT(gFilesDisplayData->filename); i++) {
-                            gFilesDisplayData[slot2].filename[i] = filemenu_filename[i];
+                        selected = filemenu_menus[FILE_MENU_MAIN]->selected;
+                        for (i = 0; i < ARRAY_COUNT(gSaveSlotSummary->filename); i++) {
+                            gSaveSlotSummary[selected].filename[i] = filemenu_filename[i];
                         }
-                        fio_save_game(slot2);
-                        gSaveSlotHasData[slot2] = TRUE;
+                        fio_save_game(selected);
+                        gSaveSlotMetadata[selected].hasData = TRUE;
+                        gSaveSlotMetadata[selected].validData = TRUE;
+                        strcpy(gSaveSlotMetadata[selected].modName, DX_MOD_NAME);
+
                         set_window_update(WINDOW_ID_FILEMENU_CREATEFILE_HEADER, (s32)filemenu_update_hidden_name_input);
                         set_window_update(WINDOW_ID_FILEMENU_KEYBOARD, (s32)filemenu_update_hidden_name_input);
                         set_window_update(WINDOW_ID_FILEMENU_TITLE, (s32)filemenu_update_show_with_rotation);
@@ -341,8 +350,8 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         set_window_update(WINDOW_ID_FILEMENU_FILE2_INFO, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_FILE3_INFO, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
-                        filemenu_currentMenu = 2;
-                        filemenu_menus[2]->page = 3;
+                        filemenu_currentMenu = FILE_MENU_MESSAGE;
+                        filemenu_menus[FILE_MENU_MESSAGE]->state = FM_MESSAGE_CREATED;
                         gWindows[WINDOW_ID_FILEMENU_INFO].width = 184;
                         gWindows[WINDOW_ID_FILEMENU_INFO].height = 25;
                         gWindows[WINDOW_ID_FILEMENU_INFO].pos.x = ((gWindows[WINDOW_ID_FILEMENU_INFO].parent != -1)
@@ -353,35 +362,35 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                                              : SCREEN_HEIGHT / 2) - gWindows[WINDOW_ID_FILEMENU_INFO].height / 2;
                         set_window_update(WINDOW_ID_FILEMENU_INFO, WINDOW_UPDATE_SHOW);
                         break;
-                    case 4:
-                        slot3 = filemenu_menus[0]->selected;
+                    case FM_CONFIRM_START:
+                        selected = filemenu_menus[FILE_MENU_MAIN]->selected;
                         if (gGameStatusPtr->soundOutputMode != 1 - gSaveGlobals.useMonoSound ||
-                            slot3 != (u8)gSaveGlobals.lastFileSelected)
+                            selected != (u8)gSaveGlobals.lastFileSelected)
                         {
                             gSaveGlobals.useMonoSound = 1 - gGameStatusPtr->soundOutputMode;
-                            gSaveGlobals.lastFileSelected = slot3;
+                            gSaveGlobals.lastFileSelected = selected;
                             fio_save_globals();
                         }
-                        fio_load_game(slot3);
+                        fio_load_game(selected);
                         set_game_mode(GAME_MODE_END_FILE_SELECT);
                         break;
                 }
                 break;
-            case 1:
-                switch (menu->page) {
-                    case 0:
-                    case 1:
-                    case 3:
-                        filemenu_currentMenu = 0;
+            case 1: // NO
+                switch (menu->state) {
+                    case FM_CONFIRM_DELETE:
+                    case FM_CONFIRM_LANGUAGE:
+                    case FM_CONFIRM_COPY:
+                        filemenu_currentMenu = FILE_MENU_MAIN;
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
                         break;
-                    case 2:
-                        filemenu_currentMenu = 3;
+                    case FM_CONFIRM_CREATE:
+                        filemenu_currentMenu = FILE_MENU_INPUT_NAME;
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
                         break;
-                    case 4:
-                        filemenu_currentMenu = 0;
-                        slot4 = filemenu_menus[0]->selected;
+                    case FM_CONFIRM_START:
+                        filemenu_currentMenu = FILE_MENU_MAIN;
+                        selected = filemenu_menus[FILE_MENU_MAIN]->selected;
                         set_window_update(WINDOW_ID_FILEMENU_TITLE, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_STEREO, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_MONO, (s32)filemenu_update_show_with_rotation);
@@ -393,7 +402,7 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         set_window_update(WINDOW_ID_FILEMENU_FILE1_INFO, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_FILE2_INFO, (s32)filemenu_update_show_with_rotation);
                         set_window_update(WINDOW_ID_FILEMENU_FILE3_INFO, (s32)filemenu_update_show_with_rotation);
-                        set_window_update(slot4 + WINDOW_ID_FILEMENU_FILE0_INFO, (s32)filemenu_update_deselect_file);
+                        set_window_update(selected + WINDOW_ID_FILEMENU_FILE0_INFO, (s32)filemenu_update_deselect_file);
                         set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, WINDOW_UPDATE_HIDE);
                         break;
                 }
@@ -402,25 +411,23 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
     }
 
     if (filemenu_pressedButtons & BUTTON_B) {
-        u32 slot;
-
         sfx_play_sound(SOUND_MENU_BACK);
         filemenu_set_selected(menu, 0, 1);
 
-        switch (menu->page) {
-            case 0:
-            case 1:
-            case 3:
-                filemenu_currentMenu = 0;
+        switch (menu->state) {
+            case FM_CONFIRM_DELETE:
+            case FM_CONFIRM_LANGUAGE:
+            case FM_CONFIRM_COPY:
+                filemenu_currentMenu = FILE_MENU_MAIN;
                 set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
                 break;
-            case 2:
-                filemenu_currentMenu = 3;
+            case FM_CONFIRM_CREATE:
+                filemenu_currentMenu = FILE_MENU_INPUT_NAME;
                 set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, (s32)filemenu_update_hidden_name_confirm);
                 break;
-            case 4:
-                filemenu_currentMenu = 0;
-                slot = filemenu_menus[0]->selected;
+            case FM_CONFIRM_START:
+                filemenu_currentMenu = FILE_MENU_MAIN;
+                selected = filemenu_menus[FILE_MENU_MAIN]->selected;
                 set_window_update(WINDOW_ID_FILEMENU_TITLE, (s32)filemenu_update_show_with_rotation);
                 set_window_update(WINDOW_ID_FILEMENU_STEREO, (s32)filemenu_update_show_with_rotation);
                 set_window_update(WINDOW_ID_FILEMENU_MONO, (s32)filemenu_update_show_with_rotation);
@@ -432,7 +439,7 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                 set_window_update(WINDOW_ID_FILEMENU_FILE1_INFO, (s32)filemenu_update_show_with_rotation);
                 set_window_update(WINDOW_ID_FILEMENU_FILE2_INFO, (s32)filemenu_update_show_with_rotation);
                 set_window_update(WINDOW_ID_FILEMENU_FILE3_INFO, (s32)filemenu_update_show_with_rotation);
-                set_window_update(slot + WINDOW_ID_FILEMENU_FILE0_INFO, (s32)filemenu_update_deselect_file);
+                set_window_update(selected + WINDOW_ID_FILEMENU_FILE0_INFO, (s32)filemenu_update_deselect_file);
                 set_window_update(WINDOW_ID_FILEMENU_YESNO_OPTIONS, WINDOW_UPDATE_HIDE);
                 break;
         }

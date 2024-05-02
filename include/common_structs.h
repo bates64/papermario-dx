@@ -2049,56 +2049,6 @@ typedef struct PlayerStatus {
     /* 0x281 */ char unk_281[7];
 } PlayerStatus; // size = 0x288
 
-typedef struct SaveGlobals {
-    /* 0x00 */ char magicString[16]; /* "Mario Story 006" string */
-    /* 0x10 */ s8 pad[32]; /* always zero */
-    /* 0x30 */ s32 crc1;
-    /* 0x34 */ s32 crc2;
-    /* 0x38 */ s32 useMonoSound;
-    /* 0x3C */ u32 lastFileSelected;
-    /* 0x40 */ s8 reserved[64]; // unused
-} SaveGlobals; // size = 0x80
-
-typedef struct FileDisplayData {
-    /* 0x00 */ s32 timePlayed;
-    /* 0x04 */ u8 spiritsRescued;
-    /* 0x05 */ char unk_05[1];
-    /* 0x06 */ s8 level;
-    /* 0x07 */ unsigned char filename[8];
-    /* 0x0F */ char unk_0F[9];
-} FileDisplayData; // size = 0x18
-
-typedef struct SaveData {
-    /* 0x0000 */ char magicString[16]; /* "Mario Story 006" string */
-    /* 0x0010 */ char modName[28]; /* always non-null for DX saves */
-    /* 0x002C */ s8 majorVersion;
-    /* 0x002D */ s8 minorVersion;
-    /* 0x002E */ s8 patchVersion;
-    /* 0x002F */ char reserved;
-    /* 0x0030 */ s32 crc1;
-    /* 0x0034 */ s32 crc2;
-    /* 0x0038 */ s32 saveSlot;
-    /* 0x003C */ s32 saveCount;
-    /* 0x0040 */ PlayerData player;
-    /* 0x0468 */ s16 areaID;
-    /* 0x046A */ s16 mapID;
-    /* 0x046C */ s16 entryID;
-    /* 0x046E */ char unk_46E[2];
-    /* 0x0470 */ s32 enemyDefeatFlags[60][12];
-    /* 0x0FB0 */ s32 globalFlags[64];
-    /* 0x10B0 */ s8 globalBytes[512];
-    /* 0x12B0 */ s32 areaFlags[8];
-    /* 0x12D0 */ s8 areaBytes[16];
-    /* 0x12E0 */ s8 debugEnemyContact;
-    /* 0x12E0 */ b8 debugUnused1;
-    /* 0x12E0 */ b8 debugUnused2;
-    /* 0x12E0 */ b8 musicEnabled;
-    /* 0x12E4 */ char unk_12E4[0x2];
-    /* 0x12E6 */ Vec3s savePos;
-    /* 0x12EC */ FileDisplayData metadata;
-    /* 0x1304 */ char unk_1304[0x7C];
-} SaveData; // size = 0x1380
-
 typedef struct Path {
     /* 0x00 */ s32 numVectors;
     /* 0x04 */ f32* lengths;
@@ -2132,7 +2082,7 @@ typedef struct MenuPanel {
     /* 0x01 */ s8 col;
     /* 0x02 */ s8 row;
     /* 0x03 */ u8 selected; // usually set to the current value from gridData
-    /* 0x04 */ s8 page; // filemenu: 0 = select, 1 = delete, 3 = copy from, 4 = copy to, all else = save
+    /* 0x04 */ s8 state; // filemenu: 0 = select, 1 = delete, 3 = copy from, 4 = copy to, all else = save
     /* 0x05 */ s8 numCols;
     /* 0x06 */ s8 numRows;
     /* 0x07 */ s8 numPages; // unsure

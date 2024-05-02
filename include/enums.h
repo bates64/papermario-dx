@@ -5991,6 +5991,12 @@ enum MsgChars {
 
     MSG_CHAR_UNK_C3                 = 0xC3,
 
+    MSG_CHAR_MENU_SPACE             = 0xC6,
+    MSG_CHAR_MENU_USE_CHARSET_B     = 0xC7,
+    MSG_CHAR_MENU_USE_CHARSET_A     = 0xC8,
+    MSG_CHAR_MENU_BACK              = 0xC9,
+    MSG_CHAR_MENU_END               = 0xCA,
+
     // special character codes used when reading from the source buffer
     MSG_CHAR_READ_ENDL              = 0xF0,
     MSG_CHAR_READ_WAIT              = 0xF1,

@@ -140,7 +140,7 @@ MenuPanel filemenu_selectlanguage_menuBP = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols =1,
     .numRows = 4,
     .numPages = 0,
@@ -155,19 +155,19 @@ void filemenu_draw_pal_8024d6a0(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
     draw_msg(MSG_PAL_Menu_0055, baseX + (192 - get_msg_width(MSG_PAL_Menu_0055, 0)) / 2, baseY + 4, 255, 0, 0);
 }
 
-void func_filemenu_8024D710(s32 arg0, MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void func_filemenu_8024D710(s32 language, MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 var_a1;
 
-    if (filemenu_currentMenu == 4 && menu->selected == arg0) {
-        filemenu_set_cursor_goal_pos(arg0 + 60, baseX + 4, baseY + 10);
+    if (filemenu_currentMenu == FILE_MENU_LANGUAGES && menu->selected == language) {
+        filemenu_set_cursor_goal_pos(language + 60, baseX + 4, baseY + 10);
     }
 
-    var_a1 = D_filemenu_8024F130[arg0];
+    var_a1 = D_filemenu_8024F130[language];
     draw_msg(var_a1, baseX + 36, baseY + 2, 255, 10, 0);
 
     gSPDisplayList(gMainGfxPos++, D_filemenu_8024F140);
 
-    if (arg0 != gCurrentLanguage) {
+    if (language != gCurrentLanguage) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, 128);
         gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     } else {
@@ -175,7 +175,7 @@ void func_filemenu_8024D710(s32 arg0, MenuPanel* menu, s32 baseX, s32 baseY, s32
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, &D_802517E0[D_filemenu_8024F124][D_filemenu_8024F1C8[arg0]]);
+    gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, &D_802517E0[D_filemenu_8024F124][D_filemenu_8024F1C8[language]]);
 
     gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
     gDPLoadSync(gMainGfxPos++);
