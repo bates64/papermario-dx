@@ -440,7 +440,7 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
 
     if (filemenu_pressedButtons & BUTTON_A) {
         switch (menu->selected) {
-            case MSG_CHAR_MENU_SPACE: // SPACE
+            case MSG_CHAR_MENU_SPACE:
                 sfx_play_sound(SOUND_CREATE_FILE_SET_CHARACTER);
                 if (filemenu_filename_pos == ARRAY_COUNT(filemenu_filename)) {
                     filemenu_filename_pos = ARRAY_COUNT(filemenu_filename) - 1;
