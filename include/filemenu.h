@@ -3,6 +3,16 @@
 
 #include "common.h"
 
+#define CENTER_WINDOW_X(id) (((gWindows[id].parent != WIN_NONE) \
+    ? (gWindows[gWindows[id].parent].width / 2) \
+    : (SCREEN_WIDTH / 2)) \
+    - (gWindows[id].width / 2))
+
+#define CENTER_WINDOW_Y(id) (((gWindows[id].parent != WIN_NONE) \
+    ? (gWindows[gWindows[id].parent].height  / 2) \
+    : (SCREEN_HEIGHT / 2)) \
+    - (gWindows[id].height  / 2))
+
 enum {
     FILE_MENU_MAIN          = 0, // file selection
     FILE_MENU_CONFIRM       = 1, // confirmation prompt is open
@@ -12,7 +22,7 @@ enum {
 };
 
 enum {
-    FM_MAIN_SELECT_LOAD         = 0, // choose which file to load
+    FM_MAIN_SELECT_FILE         = 0, // choose which file to load
     FM_MAIN_SELECT_DELETE       = 1, // choose which file to delete
     #if !VERSION_PAL
     FM_MAIN_SELECT_LANGUAGE     = 2,
@@ -30,7 +40,8 @@ enum {
     #endif
     FM_MESSAGE_COPIED,
     FM_MESSAGE_CREATED,
-    FM_INPUT_NAME_STATE_0       = 0,
+    FM_INPUT_CHARSET_A          = 0,
+    FM_INPUT_CHARSET_B          = 1,
 };
 
 enum {
@@ -90,7 +101,7 @@ WINDOW_UPDATE_FUNC(filemenu_update_deselect_file);
 WINDOW_UPDATE_FUNC(filemenu_update_show_name_confirm);
 WINDOW_UPDATE_FUNC(filemenu_update_hidden_name_confirm);
 
-WINDOW_UPDATE_FUNC(main_menu_window_update);
+WINDOW_UPDATE_FUNC(unused_main_menu_window_darkening);
 
 WINDOW_UPDATE_FUNC(filemenu_update_show_title);
 

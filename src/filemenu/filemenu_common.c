@@ -109,9 +109,9 @@ f32 CopyArrowAnimOffsets[] = {
      3.5f,  2.0f,  1.0f,  0.5f,  0.0f
 };
 
-MenuWindowBP filemenu_common_windowBPs[3] = {
+MenuWindowBP filemenu_common_windowBPs[] = {
     {
-        .windowID = WINDOW_ID_FILEMENU_MAIN,
+        .windowID = WIN_FILES_MAIN,
         .pos = {
             .x = 16,
             .y = 24,
@@ -127,7 +127,7 @@ MenuWindowBP filemenu_common_windowBPs[3] = {
         .style = { .customStyle = &filemenu_windowStyles[0] },
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_COPYARROW,
+        .windowID = WIN_FILES_COPYARROW,
         .pos = {
             .x = 0,
             .y = 0,
@@ -137,13 +137,13 @@ MenuWindowBP filemenu_common_windowBPs[3] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = filemenu_draw_contents_copy_arrow,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { WINDOW_UPDATE_SHOW } ,
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[1] },
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_CURSOR,
+        .windowID = WIN_FILES_CURSOR,
         .pos = {
             .x = 0,
             .y = 0,
@@ -218,11 +218,11 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
         if (D_80249BB0) {
             s32 i;
 
-            for (i = WINDOW_ID_FILEMENU_MAIN; i < ARRAY_COUNT(gWindows); i++) {
+            for (i = WIN_FILES_MAIN; i < ARRAY_COUNT(gWindows); i++) {
                 Window* window = &gWindows[i];
                 s8 parent = window->parent;
 
-                if ((parent == -1 || parent == WINDOW_ID_FILEMENU_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION)) {
+                if ((parent == WIN_NONE || parent == WIN_FILES_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION)) {
                     break;
                 }
             }
@@ -235,7 +235,7 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
         filemenu_cursor_targetY = posY;
         filemenu_cursor_posY = posY;
     } else if (!(window->flags & WINDOW_FLAG_INITIAL_ANIMATION) &&
-                (window->parent == -1 || !(gWindows[window->parent].flags & WINDOW_FLAG_INITIAL_ANIMATION))) {
+                (window->parent == WIN_NONE || !(gWindows[window->parent].flags & WINDOW_FLAG_INITIAL_ANIMATION))) {
         filemenu_cursor_targetX = posX;
         filemenu_cursor_targetY = posY;
     }
@@ -273,11 +273,11 @@ void filemenu_update_cursor(void) {
         }
     }
 
-    for (i = WINDOW_ID_FILEMENU_MAIN; i < ARRAY_COUNT(gWindows); i++) {
+    for (i = WIN_FILES_MAIN; i < ARRAY_COUNT(gWindows); i++) {
         Window* window = &gWindows[i];
         s8 parent = window->parent;
 
-        if ((parent == -1 || parent == WINDOW_ID_FILEMENU_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION)) {
+        if ((parent == WIN_NONE || parent == WIN_FILES_MAIN) && (window->flags & WINDOW_FLAG_INITIAL_ANIMATION)) {
             break;
         }
     }
@@ -312,8 +312,8 @@ void filemenu_update(void) {
     MenuPanel* menu;
     s32 i;
 
-    for (i = WINDOW_ID_FILEMENU_MAIN; i < ARRAY_COUNT(gWindows); i++) {
-        if ((gWindows[i].parent == -1 || gWindows[i].parent == WINDOW_ID_FILEMENU_MAIN) &&
+    for (i = WIN_FILES_MAIN; i < ARRAY_COUNT(gWindows); i++) {
+        if ((gWindows[i].parent == WIN_NONE || gWindows[i].parent == WIN_FILES_MAIN) &&
             (gWindows[i].flags & WINDOW_FLAG_INITIAL_ANIMATION))
         {
             break;
@@ -801,16 +801,16 @@ void filemenu_update_pal_80247f40(
     s32 var_v1;
 
     switch (windowIndex) {
-        case WINDOW_ID_FILEMENU_FILE0_INFO:
+        case WIN_FILES_SLOT0_BODY:
             var_a3 = 0;
             break;
-        case WINDOW_ID_FILEMENU_FILE1_INFO:
+        case WIN_FILES_SLOT1_BODY:
             var_a3 = 1;
             break;
-        case WINDOW_ID_FILEMENU_FILE2_INFO:
+        case WIN_FILES_SLOT2_BODY:
             var_a3 = 2;
             break;
-        case WINDOW_ID_FILEMENU_FILE3_INFO:
+        case WIN_FILES_SLOT3_BODY:
             var_a3 = 3;
             break;
     }
@@ -848,16 +848,16 @@ void filemenu_selectlanguage_80248018(
     s32 var_v1;
 
     switch (windowIndex) {
-        case WINDOW_ID_FILEMENU_FILE0_INFO:
+        case WIN_FILES_SLOT0_BODY:
             var_a3 = 0;
             break;
-        case WINDOW_ID_FILEMENU_FILE1_INFO:
+        case WIN_FILES_SLOT1_BODY:
             var_a3 = 1;
             break;
-        case WINDOW_ID_FILEMENU_FILE2_INFO:
+        case WIN_FILES_SLOT2_BODY:
             var_a3 = 2;
             break;
-        case WINDOW_ID_FILEMENU_FILE3_INFO:
+        case WIN_FILES_SLOT3_BODY:
             var_a3 = 3;
             break;
     }
@@ -1070,7 +1070,7 @@ void filemenu_init(s32 arg0) {
                 (*panelIt)->fpInit((*panelIt));
             }
         }
-        update_window_hierarchy(WINDOW_ID_PAUSE_DECRIPTION, 64);
+        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
     } else {
         filemenu_currentMenu = FILE_MENU_LANGUAGES;
         filemenu_set_selected(filemenu_menus[FILE_MENU_LANGUAGES], 0, gCurrentLanguage);
@@ -1083,19 +1083,19 @@ void filemenu_init(s32 arg0) {
                 }
             }
         }
-        update_window_hierarchy(WINDOW_ID_PAUSE_DECRIPTION, 64);
+        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
     }
 #else
     filemenu_currentMenu = FILE_MENU_MAIN;
     menu = filemenu_menus[FILE_MENU_MAIN];
 
     if (arg0 == 0) {
-        menu->state = FM_MAIN_SELECT_LOAD;
+        menu->state = FM_MAIN_SELECT_FILE;
     } else {
         menu->state = FM_MAIN_SELECT_LANGUAGE;
     }
 
-    if (menu->state == FM_MAIN_SELECT_LOAD) {
+    if (menu->state == FM_MAIN_SELECT_FILE) {
         for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
             if (fio_load_game(i)) {
                 gSaveSlotSummary[i] = gCurrentSaveFile.summary;
@@ -1109,7 +1109,7 @@ void filemenu_init(s32 arg0) {
             }
         }
 
-        if (menu->state == FM_MAIN_SELECT_LOAD) { // always the case?
+        if (menu->state == FM_MAIN_SELECT_FILE) { // always the case?
             fio_load_globals();
             if (gSaveGlobals.lastFileSelected >= 4) {
                 gSaveGlobals.lastFileSelected = 0;
@@ -1126,7 +1126,7 @@ void filemenu_init(s32 arg0) {
             menu->fpInit(menu);
         }
     }
-    update_window_hierarchy(WINDOW_ID_PAUSE_DECRIPTION, 64);
+    update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
 #endif
 }
 
@@ -1147,22 +1147,22 @@ void filemenu_cleanup(void) {
         }
     }
 
-    for (i = WINDOW_ID_FILEMENU_MAIN; i < ARRAY_COUNT(gWindows); i++) {
+    for (i = WIN_FILES_MAIN; i < ARRAY_COUNT(gWindows); i++) {
         set_window_update(i, WINDOW_UPDATE_HIDE);
     }
 
-    set_window_update(WINDOW_ID_PAUSE_TUTORIAL, WINDOW_UPDATE_HIDE);
-    set_window_update(WINDOW_ID_PAUSE_DECRIPTION, WINDOW_UPDATE_HIDE);
+    set_window_update(WIN_PAUSE_TUTORIAL, WINDOW_UPDATE_HIDE);
+    set_window_update(WIN_PAUSE_DECRIPTION, WINDOW_UPDATE_HIDE);
     func_80244BC4();
 }
 
 s32 func_80244BC4() {
-    if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_LOAD
+    if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE
         && filemenu_currentMenu == FILE_MENU_CONFIRM
         && filemenu_menus[FILE_MENU_CONFIRM]->selected == 0)
      {
         return 2;
-    } else if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_LOAD && filemenu_menus[FILE_MENU_MAIN]->selected < 4) {
+    } else if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE && filemenu_menus[FILE_MENU_MAIN]->selected < 4) {
         return 1;
     } else {
         return 0;
