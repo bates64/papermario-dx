@@ -5948,7 +5948,7 @@ segments:
     type: code
     start: 0x4309A0
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/goomba]
@@ -5963,7 +5963,7 @@ segments:
     type: code
     start: 0x439A90
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/blue_goomba_1]
@@ -5981,7 +5981,7 @@ segments:
     type: code
     start: 0x447440
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/tutorial_spiked_goomba]
@@ -6007,6 +6007,7 @@ segments:
     type: code
     start: 0x464490
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/chan]
     - [auto, c, actor/lee]
@@ -6020,6 +6021,7 @@ segments:
     type: code
     start: 0x47F0B0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/goombario_tutor]
     - [auto, c, actor/ember]
@@ -6032,7 +6034,7 @@ segments:
     type: code
     start: 0x48D1A0
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/goomba]
@@ -6050,6 +6052,7 @@ segments:
     type: code
     start: 0x4A10A0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/bullet_bill]
@@ -6075,7 +6078,7 @@ segments:
     type: code
     start: 0x4B11F0
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/fake_bowser]
@@ -6099,6 +6102,7 @@ segments:
     type: code
     start: 0x4CF1B0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/eldstar]
@@ -6107,7 +6111,7 @@ segments:
     type: code
     start: 0x4D01F0
     vram_class: battle_area
-    subalign: 4
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/cleft]
@@ -6131,6 +6135,7 @@ segments:
     type: code
     start: 0x4E2740
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/pokey_mummy]
     - [auto, c, actor/swooper]
@@ -6155,6 +6160,7 @@ segments:
     type: code
     start: 0x4EF4A0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/chain_chomp]
     - [auto, c, actor/tutankoopa]
@@ -6175,6 +6181,7 @@ segments:
     type: code
     start: 0x4F7BE0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/forest_fuzzy]
     - [auto, c, actor/bzzap]
@@ -6185,6 +6192,7 @@ segments:
     type: code
     start: 0x4FEA50
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/hyper_goomba]
     - [auto, c, actor/hyper_paragoomba]
@@ -6202,6 +6210,7 @@ segments:
     type: code
     start: 0x50F020
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/clubba]
     - [auto, c, actor/tubba_blubba]
@@ -6215,6 +6224,7 @@ segments:
     type: code
     start: 0x5125D0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/red_shy_guy]
     - [auto, c, actor/blue_shy_guy]
@@ -6241,6 +6251,7 @@ segments:
     type: code
     start: 0x52B6A0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/general_guy]
     - [auto, c, actor/toy_tank]
@@ -6251,42 +6262,49 @@ segments:
     type: code
     start: 0x543570
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/shy_squad]
   - dir: battle/area/omo2_2
     type: code
     start: 0x5483E0
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/stilt_guy]
   - dir: battle/area/omo2_3
     type: code
     start: 0x54CC70
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/shy_stack]
   - dir: battle/area/omo2_4
     type: code
     start: 0x552440
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/signal_guy]
   - dir: battle/area/omo2_5
     type: code
     start: 0x552BB0
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/shy_squad_redux]
   - dir: battle/area/omo2_6
     type: code
     start: 0x556C90
     vram_class: battle_area2
+    subalign: 8
     subsegments:
     - [auto, c, actor/shy_squad_stub]
   - dir: battle/area/omo3
     type: code
     start: 0x5573E0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/big_lantern_ghost]
     - [auto, c, stage/omo_01]
@@ -6310,6 +6328,7 @@ segments:
     type: code
     start: 0x56E2A0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/fuzzipede]
     - [auto, c, stage/kgr_01]
@@ -6318,6 +6337,7 @@ segments:
     type: code
     start: 0x573920
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/spear_guy]
     - [auto, c, actor/hurt_plant]
@@ -6338,6 +6358,7 @@ segments:
     type: code
     start: 0x584940
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/putrid_piranha]
     - [auto, c, actor/white_magikoopa]
@@ -6354,6 +6375,7 @@ segments:
     type: code
     start: 0x58C2F0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/lava_bubble]
     - [auto, c, actor/putrid_piranha]
@@ -6373,6 +6395,7 @@ segments:
     type: code
     start: 0x59E6E0
     vram_class: battle_area
+    subalign: 8
     symbol_name_format: $VRAM_$ROM
     subsegments:
     - [auto, c, anim/unused_gfx]
@@ -6392,6 +6415,7 @@ segments:
     - start: 0x59F530
       type: .data
       name: anim/unused_gfx
+      subalign: 8
       subsegments:
       - [0x59F530, vtx, vtx1]
       - [0x59F6B0, vtx, vtx2]
@@ -6426,6 +6450,7 @@ segments:
     - start: 0x5A2E80
       type: .data
       name: actor/lava_piranha
+      subalign: 8
       subsegments:
       - [0x5A2E80]
       - [0x5A3020, ci4, lava_piranha_vine, 64, 32]
@@ -6437,6 +6462,7 @@ segments:
     type: code
     start: 0x5B14B0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/lakitu]
     - [auto, c, actor/spiny]
@@ -6464,6 +6490,7 @@ segments:
     type: code
     start: 0x5CE690
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/huff_n_puff]
     - [auto, c, actor/tuff_puff]
@@ -6484,6 +6511,7 @@ segments:
     type: code
     start: 0x5EC490
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/dark_koopa]
     - [auto, c, actor/dark_paratroopa]
@@ -6503,6 +6531,7 @@ segments:
     type: code
     start: 0x608AB0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/blooper]
     - [auto, c, actor/electro_blooper]
@@ -6518,6 +6547,7 @@ segments:
     type: code
     start: 0x6186F0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/swooper]
     - [auto, c, actor/swoopula]
@@ -6531,6 +6561,7 @@ segments:
     type: code
     start: 0x623BA0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/duplighost]
     - [auto, c, actor/gulpit]
@@ -6549,6 +6580,7 @@ segments:
     type: code
     start: 0x63D1E0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/monstar]
     - [auto, c, actor/paragoomba]
@@ -6564,6 +6596,7 @@ segments:
     - start: 0x63F040
       type: .data
       name: actor/monstar
+      subalign: 8
       subsegments:
       - [0x63F040]
       - [0x63F278, ci4, actor/img, 32, 32]
@@ -6572,6 +6605,7 @@ segments:
     - start: 0x648860
       type: .data
       name: vtx
+      subalign: 8
       subsegments:
       - [0x648860, vtx, monstar_bubbles]
     - [0x648C80]
@@ -6579,6 +6613,7 @@ segments:
     type: code
     start: 0x648E10
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/swoopula]
     - [auto, c, actor/albino_dino]
@@ -6609,6 +6644,7 @@ segments:
     type: code
     start: 0x669D80
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/duplighost]
     - [auto, c, actor/swoopula]
@@ -6626,6 +6662,7 @@ segments:
     type: code
     start: 0x684A30
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/bony_beetle]
     - [auto, c, actor/dry_bones]
@@ -6652,6 +6689,7 @@ segments:
     type: code
     start: 0x69F200
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/unused_bowser]
     - [auto, c, actor/intro_bowser]
@@ -6666,6 +6704,7 @@ segments:
     type: code
     start: 0x6BBB90
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/anti_guy]
     - [auto, c, actor/duplighost]
@@ -6675,6 +6714,7 @@ segments:
     type: code
     start: 0x6CC070
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/bombshell_blaster]
     - [auto, c, actor/bombshell_bill]
@@ -6699,6 +6739,7 @@ segments:
     type: code
     start: 0x6DBDA0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, area]
     - [auto, c, actor/kammy_koopa]
@@ -6707,6 +6748,7 @@ segments:
     type: code
     start: 0x6DDDC0
     vram_class: battle_area
+    subalign: 8
     subsegments:
     - [auto, c, actor/koopa_troopa]
     - [auto, c, actor/fuzzy]
@@ -8386,6 +8428,7 @@ segments:
     dir: world/area_kmr/kmr_04
     type: code
     start: 0x8CA900
+    subalign: 8
     vram_class: map
     subsegments:
     - [auto, c, kmr_04_0_header]
@@ -8397,6 +8440,7 @@ segments:
     - start: 0x8CC4F0
       type: .data
       name: kmr_04_5_foliage
+      subalign: 8
       subsegments:
       - [0x8CC4F0, ci4, hammer_block_message, 48, 48]
       - [0x8CC970, palette, hammer_block_message]
@@ -10202,6 +10246,7 @@ segments:
     dir: world/area_osr/osr_00
     type: code
     start: 0xAAC830
+    subalign: 16
     vram_class: map
     subsegments:
     - [auto, c, osr_00_0_header]
@@ -10214,6 +10259,7 @@ segments:
     dir: world/area_osr/osr_01
     type: code
     start: 0xAAFFF0
+    subalign: 16
     vram_class: map
     subsegments:
     - [auto, c, osr_01_0_header]
