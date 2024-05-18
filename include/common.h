@@ -6,9 +6,7 @@
 #include "types.h"
 #include "common_structs.h"
 #include "functions.h"
-#ifndef NO_EXTERN_VARIABLES
 #include "variables.h"
-#endif
 #include "macros.h"
 #include "enums.h"
 #include "evt.h"

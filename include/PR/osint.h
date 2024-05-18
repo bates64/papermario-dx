@@ -26,8 +26,6 @@ extern void __osTimerInterrupt(void);
 extern u32 __osProbeTLB(void *);
 extern int     __osSpDeviceBusy(void);
 
-#ifndef NO_EXTERN_VARIABLES
-
 extern OSThread *__osRunningThread;
 extern OSThread *__osActiveQueue;
 extern OSThread *__osFaultedThread;
@@ -42,8 +40,6 @@ extern u32 __osTimerCounter;
 extern u32 __osShutdown;
 
 extern __OSEventState __osEventStateTab[OS_NUM_EVENTS];
-
-#endif
 
 //not sure if this should be here
 extern s32 osViClock;

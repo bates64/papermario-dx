@@ -186,8 +186,6 @@ typedef struct st_SndState {
 typedef void (*NUAuPreNMIFunc)(NUScMsg,u32);	/* PRENMI callback function */
 typedef void (*NUAuMgrFunc)(void);		/* Acmd callback function */
 
-#ifndef NO_EXTERN_VARIABLES
-
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
 /* extern variables 							*/
@@ -245,8 +243,6 @@ extern u32		nuAuDebAcmdLenMax;	/* Maximum length of the audio command list */
 
 extern s16		nuAuFrameSampleSize;	/* Number of samples created at one time */
 extern s16		nuAuExtraSampleSize;	/* Number of extra samples */
-
-#endif
 
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
