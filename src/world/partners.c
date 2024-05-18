@@ -504,6 +504,26 @@ PartnerAnimations gPartnerAnimations[] = {
     }},
 };
 
+extern UseItemStruct UseItemDmaArgs;
+
+BSS s32 D_8010CD20;
+
+s32 use_consumable(s32 invSlot) {
+    Evt* script;
+
+    D_8010CD20 = invSlot;
+    invSlot = gPlayerData.invItems[invSlot];
+    dma_copy(UseItemDmaArgs.dmaStart, UseItemDmaArgs.dmaEnd, world_use_item_VRAM);
+    script = start_script(UseItemDmaArgs.main, EVT_PRIORITY_1, 0);
+    script->varTable[10] = invSlot;
+    return script->id;
+}
+
+void remove_consumable(void) {
+    gPlayerData.invItems[D_8010CD20] = ITEM_NONE;
+    sort_consumables();
+}
+
 f32 D_800F84F8 = 0.0f;
 
 s32 func_800EA4B0(s32 collisionID) {
