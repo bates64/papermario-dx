@@ -4,33 +4,46 @@
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
-extern EntityModelScript EMS_BonkIcon;
+typedef struct BonkData {
+    /* 0x00 */ b32 alive;
+    /* 0x04 */ s32 entityModelIndex;
+    /* 0x08 */ Vec3f accel;
+    /* 0x14 */ Vec3f vel;
+    /* 0x20 */ s32 moveTime;
+    /* 0x24 */ s32 startupTime;
+    /* 0x28 */ f32 rotZ;
+    /* 0x2C */ f32 rotVelZ;
+    /* 0x30 */ f32 rotY;
+    /* 0x34 */ f32 scale;
+    /* 0x38 */ Vec3f pos;
+    /* 0x44 */ s32 holdTime;
+    /* 0x48 */ f32 alpha; // unused
+} BonkData; // size = 0x4C
 
  // all keyed by number of lines in the message (1 or 2)
 s16 BattleMessage_BoxSizesY[] = { 28, 40 };
 s16 BattleMessage_TextOffsetsY[] = { 0, -2 };
 s16 BattleMessage_BoxOffsetsY[] = { 0, -12 };
 
-//TODO Vec3f[]
-f32 D_802835DC[] = {
-    0.0f, 4.5f, 0.0f,
-    1.0f, 4.0f, 0.0f,
-    2.0f, 3.0f, 0.0f,
-    3.0f, 2.0f, 0.0f,
-    3.5f, 1.0f, 0.0f,
-    4.0f, 0.0f, 0.0f,
-    4.5f, 0.0f, 0.0f,
-    5.0f, 0.0f, 0.0f,
-    4.5f, 0.0f, 0.0f,
-    4.0f, 0.0f, 0.0f,
-    3.5f, -1.0f, 0.0f,
-    3.0f, -2.0f, 0.0f,
-    2.0f, -3.0f, 0.0f,
-    1.0f, -4.0f, 0.0f,
-    0.0f, -4.5f, 0.0f,
+Vec3f BonkAnimAccel[] = {
+    { 0.0f,  4.5f, 0.0f },
+    { 1.0f,  4.0f, 0.0f },
+    { 2.0f,  3.0f, 0.0f },
+    { 3.0f,  2.0f, 0.0f },
+    { 3.5f,  1.0f, 0.0f },
+    { 4.0f,  0.0f, 0.0f },
+    { 4.5f,  0.0f, 0.0f },
+    { 5.0f,  0.0f, 0.0f },
+    { 4.5f,  0.0f, 0.0f },
+    { 4.0f,  0.0f, 0.0f },
+    { 3.5f, -1.0f, 0.0f },
+    { 3.0f, -2.0f, 0.0f },
+    { 2.0f, -3.0f, 0.0f },
+    { 1.0f, -4.0f, 0.0f },
+    { 0.0f, -4.5f, 0.0f },
 };
 
-Vec3f D_80283690[] = {
+Vec3f BonkAnimScale[] = {
     { 1.0f, 1.0f, 1.0f },
     { 0.8f, 0.8f, 0.8f },
     { 0.9f, 0.9f, 0.9f },
@@ -47,6 +60,8 @@ Vec3f D_80283690[] = {
     { 0.8f, 0.8f, 0.8f },
     { 0.9f, 0.9f, 0.9f },
 };
+
+extern EntityModelScript EMS_BonkIcon;
 
 EntityModelScript* BonkModelScripts[] = {
     NULL,
@@ -219,7 +234,7 @@ void btl_popup_messages_init(void) {
     for (i = 0; i < ARRAY_COUNT(popupMessages); i++) {
         PopupMessage* popup = &popupMessages[i];
         popup->active = FALSE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
     }
 }
 
@@ -228,9 +243,9 @@ void btl_popup_messages_delete(void) {
 
     for (i = 0; i < ARRAY_COUNT(popupMessages); i++) {
         PopupMessage* popup = &popupMessages[i];
-        if (popup->message != NULL) {
-            heap_free(popup->message);
-            popup->message = NULL;
+        if (popup->data.bonk != NULL) {
+            heap_free(popup->data.bonk);
+            popup->data.bonk = NULL;
         }
         popup->active = FALSE;
     }
@@ -284,126 +299,112 @@ PopupMessage* btl_create_popup(void) {
 }
 
 void free_popup(PopupMessage* popup) {
-    if (popup->message != NULL) {
-        heap_free(popup->message);
-        popup->message = NULL;
+    if (popup->data.bonk != NULL) {
+        heap_free(popup->data.bonk);
+        popup->data.bonk = NULL;
     }
     popup->active = FALSE;
 }
 
-void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 arg4, s32 arg5) {
+void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 startupTime, s32 animDir) {
     BattleStatus* battleStatus = &gBattleStatus;
     PopupMessage* popup;
-    Message* message;
-    EntityModelScript** modelScript;
-    f32 var_f20;
+    BonkData* bonkData;
+    f32 timescale;
     f32 baseScale;
-    f32* f1;
-    f32* f2;
-    f32* f3;
-    s32 arg5mod8;
-    s32 iMod8;
+    s32 bonkPosIdx;
+    b32 hasShortLifetime;
     s32 sign;
-    s32 cond;
-    s32 one;
-    s32 two;
     s32 i;
 
-    baseScale = 1.0f;
-    cond = FALSE;
-    var_f20 = 1.0f;
+    popup = btl_create_popup();
+    if (popup == NULL) {
+        // unable to create popup
+        return;
+    }
+
     if (numStars < 1) {
         numStars = 1;
-        cond = TRUE;
         baseScale = 0.4f;
-        var_f20 = 0.7f;
+        timescale = 0.7f;
+        hasShortLifetime = TRUE;
+    } else {
+        baseScale = 1.0f;
+        timescale = 1.0f;
+        hasShortLifetime = FALSE;
     }
 
     if (battleStatus->flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) {
         baseScale *= 2.0;
     }
 
-    popup = btl_create_popup();
-    if (popup != NULL) {
+    if (animDir < 0) {
+        sign = -1;
+    } else {
         sign = 1;
-        if (arg5 < 0) {
-            arg5 = -arg5;
-            sign = -1;
+    }
+
+    animDir = abs(animDir) % 5;
+
+    battleStatus->unk_90 = 0;
+    popup->updateFunc = btl_bonk_update;
+    popup->renderWorldFunc = btl_bonk_render;
+    popup->unk_00 = FALSE;
+    popup->renderUIFunc = NULL;
+    popup->messageIndex = 1;
+    popup->active |= 0x10;
+    bonkData = popup->data.bonk = heap_malloc(numStars * sizeof(*popup->data.bonk));
+    ASSERT (popup->data.bonk != NULL);
+
+    for (i = 0; i < numStars; i++) {
+        bonkData->alive = TRUE;
+        bonkData->entityModelIndex = load_entity_model(BonkModelScripts[numStars]);
+        set_entity_model_flags(bonkData->entityModelIndex, ENTITY_MODEL_FLAG_HIDDEN);
+        bind_entity_model_setupGfx(bonkData->entityModelIndex, bonkData, btl_bonk_setup_gfx);
+        bonkData->pos.x = x;
+        bonkData->pos.y = y;
+        bonkData->pos.z = z;
+        bonkPosIdx = animDir % 8;
+        animDir++;
+
+        bonkData->accel.x = BonkAnimAccel[bonkPosIdx].x * timescale * sign ;
+        bonkData->accel.y = BonkAnimAccel[bonkPosIdx].y * timescale;
+        bonkData->accel.z = BonkAnimAccel[bonkPosIdx].z * timescale;
+        bonkData->vel.x = 2.0 * bonkData->accel.x;
+        bonkData->vel.y = 2.0 * bonkData->accel.y;
+        bonkData->vel.z = 2.0 * bonkData->accel.z;
+
+        bonkData->scale = BonkAnimScale[i % 8].x * baseScale;
+        bonkData->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
+        bonkData->rotZ = 0;
+        bonkData->rotVelZ = sign * 107;
+
+        bonkData->startupTime = startupTime;
+        bonkData->moveTime = 14;
+        bonkData->holdTime = 240;
+        if (hasShortLifetime) {
+            bonkData->holdTime = 10;
         }
 
-        while (TRUE) {
-            if (arg5 > 5) {
-                arg5 -= 5;
-            } else {
-                break;
-            }
-        }
-
-        battleStatus->unk_90 = 0;
-        popup->updateFunc = btl_bonk_update;
-        popup->renderWorldFunc = btl_bonk_render;
-        popup->unk_00 = FALSE;
-        popup->renderUIFunc = NULL;
-        popup->messageIndex = 1;
-        popup->active |= 0x10;
-        message = popup->message = heap_malloc(numStars * sizeof(*popup->message));
-        ASSERT (popup->message != NULL);
-
-        for (i = 0; i < numStars; i++, message++) {
-            modelScript = &BonkModelScripts[numStars];
-            message->unk_00 = TRUE;
-            message->entityModelIndex = load_entity_model(*modelScript);
-            set_entity_model_flags(message->entityModelIndex, ENTITY_MODEL_FLAG_HIDDEN);
-            bind_entity_model_setupGfx(message->entityModelIndex, message, btl_bonk_setup_gfx);
-            message->pos.x = x;
-            message->pos.y = y;
-            message->pos.z = z;
-            arg5mod8 = arg5 % 8;
-            arg5++;
-
-            one = 1;
-            two = 2;
-
-            f1 = &D_802835DC[arg5mod8 * 3];
-            f2 = &D_802835DC[arg5mod8 * 3 + one];
-            f3 = &D_802835DC[arg5mod8 * 3 + two];
-            message->vel.x = 2.0 * *f1 * sign * var_f20;
-            message->vel.y = 2.0 * *f2 * var_f20;
-            message->vel.z = 2.0 * *f3 * var_f20;
-            message->accel.x = *f1 * sign * var_f20;
-            message->accel.y = *f2 * var_f20;
-            message->accel.z = *f3 * var_f20;
-
-            iMod8 = (i % 8);
-            message->scale = D_80283690[iMod8].x * baseScale;
-            message->rotZ = 0;
-            message->rotVelZ = sign * 107;
-            message->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
-            message->appearTime = 14;
-            message->unk_24 = arg4;
-            message->deleteTime = 240;
-            if (cond) {
-                message->deleteTime = 10;
-            }
-            message->unk_48 = 255.0f;
-        }
+        bonkData->alpha = 255.0f;
+        bonkData++;
     }
 }
 
 void btl_bonk_update(void* data) {
     PopupMessage* popup = data;
-    Message* message = popup->message;
-    s32 found = FALSE;
+    BonkData* bonkData = popup->data.bonk;
+    s32 allDone = TRUE;
     s32 i;
 
-    for (i = 0; i < popup->messageIndex; i++, message++) {
-        if (message->unk_00) {
-            s32 modelIdx = message->entityModelIndex;
+    for (i = 0; i < popup->messageIndex; i++, bonkData++) {
+        if (bonkData->alive) {
+            s32 modelIdx = bonkData->entityModelIndex;
 
-            found = TRUE;
-            if (message->unk_24 != 0) {
-                message->unk_24--;
-                if (message->unk_24 == 0) {
+            allDone = FALSE;
+            if (bonkData->startupTime != 0) {
+                bonkData->startupTime--;
+                if (bonkData->startupTime == 0) {
                     clear_entity_model_flags(modelIdx, ENTITY_MODEL_FLAG_HIDDEN);
                 }
                 exec_entity_model_commandlist(modelIdx);
@@ -411,45 +412,45 @@ void btl_bonk_update(void* data) {
             }
 
             exec_entity_model_commandlist(modelIdx);
-            if (message->appearTime >= 0) {
-                message->pos.x += message->vel.x;
-                message->pos.y += message->vel.y;
-                message->pos.z += message->vel.z;
+            if (bonkData->moveTime >= 0) {
+                bonkData->pos.x += bonkData->vel.x;
+                bonkData->pos.y += bonkData->vel.y;
+                bonkData->pos.z += bonkData->vel.z;
             }
-            message->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
-            message->rotZ += message->rotVelZ;
-            message->rotZ = clamp_angle(message->rotZ);
-            message->rotVelZ *= 0.8;
-            if (message->appearTime < 10) {
-                message->accel.x *= 0.5;
-                message->accel.y *= 0.5;
-                message->accel.z *= 0.5;
-                message->vel.x = message->accel.x;
-                message->vel.y = message->accel.y;
-                message->vel.z = message->accel.z;
+            bonkData->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
+            bonkData->rotZ += bonkData->rotVelZ;
+            bonkData->rotZ = clamp_angle(bonkData->rotZ);
+            bonkData->rotVelZ *= 0.8;
+            if (bonkData->moveTime < 10) {
+                bonkData->accel.x *= 0.5;
+                bonkData->accel.y *= 0.5;
+                bonkData->accel.z *= 0.5;
+                bonkData->vel.x = bonkData->accel.x;
+                bonkData->vel.y = bonkData->accel.y;
+                bonkData->vel.z = bonkData->accel.z;
             }
 
-            message->appearTime--;
-            if (message->appearTime < 0) {
-                message->deleteTime--;
-                if (message->deleteTime < 0) {
+            bonkData->moveTime--;
+            if (bonkData->moveTime < 0) {
+                bonkData->holdTime--;
+                if (bonkData->holdTime < 0) {
                     free_entity_model_by_index(modelIdx);
-                    message->unk_00 = FALSE;
+                    bonkData->alive = FALSE;
                 }
             }
         }
     }
 
-    if (!found) {
-        heap_free(popup->message);
-        popup->message = NULL;
+    if (allDone) {
+        heap_free(popup->data.bonk);
+        popup->data.bonk = NULL;
         free_popup(popup);
     }
 }
 
 void btl_bonk_render(void* data) {
     PopupMessage* popup = data;
-    Message* message = popup->message;
+    BonkData* bonkData = popup->data.bonk;
     Matrix4f sp18;
     Matrix4f mtxRotX;
     Matrix4f mtxRotY;
@@ -461,32 +462,30 @@ void btl_bonk_render(void* data) {
     Mtx sp218;
     s32 i;
 
-    for (i = 0; i < popup->messageIndex; i++, message++) {
-        if (message->unk_00) {
-            if (message->unk_24 != 0) {
+    for (i = 0; i < popup->messageIndex; i++, bonkData++) {
+        if (bonkData->alive) {
+            if (bonkData->startupTime != 0) {
                 break;
             } else {
-                s32 modelIdx = message->entityModelIndex;
-
-                guTranslateF(sp18, message->pos.x, message->pos.y, message->pos.z);
+                guTranslateF(sp18, bonkData->pos.x, bonkData->pos.y, bonkData->pos.z);
                 guRotateF(mtxRotX, 0.0f, 1.0f, 0.0f, 0.0f);
-                guRotateF(mtxRotY, message->rotY, 0.0f, 1.0f, 0.0f);
-                guRotateF(mtxRotZ, message->rotZ, 0.0f, 0.0f, 1.0f);
-                guScaleF(mtxScale, message->scale, message->scale, message->scale);
+                guRotateF(mtxRotY, bonkData->rotY, 0.0f, 1.0f, 0.0f);
+                guRotateF(mtxRotZ, bonkData->rotZ, 0.0f, 0.0f, 1.0f);
+                guScaleF(mtxScale, bonkData->scale, bonkData->scale, bonkData->scale);
                 guMtxCatF(mtxRotZ, mtxRotX, sp158);
                 guMtxCatF(sp158, mtxRotY, sp118);
                 guMtxCatF(mtxScale, sp118, sp158);
                 guMtxCatF(sp158, sp18, sp198);
                 guMtxF2L(sp198, &sp218);
-                draw_entity_model_A(modelIdx, &sp218);
+                draw_entity_model_A(bonkData->entityModelIndex, &sp218);
             }
         }
     }
 }
 
 void btl_bonk_setup_gfx(void* data) {
-    Message* message = data;
-    s32 alphaAmt = message->deleteTime;
+    BonkData* bonkData = data;
+    s32 alphaAmt = bonkData->holdTime;
 
     if (alphaAmt > 10) {
         alphaAmt = 10;
@@ -501,14 +500,14 @@ void btl_bonk_cleanup(void) {
         PopupMessage* popup = &popupMessages[i];
 
         if (popup->active != 0 && (popup->active & 0x10)) {
-            Message* message = popup->message;
+            BonkData* bonkData = popup->data.bonk;
             s32 j;
 
-            for (j = 0; j < popup->messageIndex; j++, message++) {
-                if (message->unk_00) {
-                    message->unk_24 = 0;
-                    message->appearTime = 1;
-                    message->deleteTime = 20;
+            for (j = 0; j < popup->messageIndex; j++, bonkData++) {
+                if (bonkData->alive) {
+                    bonkData->startupTime = 0;
+                    bonkData->moveTime = 1;
+                    bonkData->holdTime = 20;
                 }
             }
         }
@@ -520,11 +519,11 @@ API_CALLABLE(ShowImmuneBonk) {
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
-    s32 arg4 = evt_get_variable(script, *args++);
-    s32 arg5 = evt_get_variable(script, *args++);
+    s32 numStars = evt_get_variable(script, *args++);
+    s32 startupTime = evt_get_variable(script, *args++);
     s32 arg6 = evt_get_variable(script, *args++);
 
-    show_immune_bonk(x, y, z, arg4, arg5, arg6);
+    show_immune_bonk(x, y, z, numStars, startupTime, arg6);
     return ApiStatus_DONE2;
 }
 
@@ -546,7 +545,7 @@ void btl_show_battle_message(s32 messageIndex, s32 duration) {
         popup->duration = duration;
         popup->showMsgState = BTL_MSG_STATE_INIT;
         popup->needsInit = TRUE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
         BattlePopupMessageVar = 0;
         bPopupMessage = popup;
         ActionCommandTipVisible = FALSE;
@@ -569,7 +568,7 @@ void btl_show_variable_battle_message(s32 messageIndex, s32 duration, s32 varVal
         popup->duration = duration;
         popup->showMsgState = BTL_MSG_STATE_INIT;
         popup->needsInit = TRUE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
         BattlePopupMessageVar = varValue;
         bPopupMessage = popup;
         ActionCommandTipVisible = FALSE;
