@@ -346,11 +346,11 @@ Gfx SolidCombineModes[][5] = {
 
     // shaded color multiplied main/aux textures for alpha
     [TEX_COMBINE_3] {
-        [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_FOG]      gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_SHROUD]   gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_DEPTH]    gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_REMAP]    gsDPSetCombineMode(PM_CC_26, PM_CC_28),
+        [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_FOG]      gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_SHROUD]   gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_DEPTH]    gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_REMAP]    gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3C),
     },
     // lerp between main/aux textures with shade alpha
     [TEX_COMBINE_4] {
@@ -505,11 +505,11 @@ Gfx AlphaTestCombineModes[][5] = {
     },
 
     [TEX_COMBINE_3] {
-        [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_FOG]      gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_SHROUD]   gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_DEPTH]    gsDPSetCombineMode(PM_CC_26, PM_CC_27),
-        [TINT_COMBINE_REMAP]    gsDPSetCombineMode(PM_CC_26, PM_CC_28),
+        [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_FOG]      gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_SHROUD]   gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_DEPTH]    gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3B),
+        [TINT_COMBINE_REMAP]    gsDPSetCombineMode(PM_CC_TEX_COMBINE_3A, PM_CC_TEX_COMBINE_3C),
     },
     [TEX_COMBINE_4] {
         [TINT_COMBINE_NONE]     gsDPSetCombineMode(PM_CC_22, G_CC_PASS2),
@@ -2149,14 +2149,6 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
 
         if (strcmp(textureName, header->name) == 0) {
             // found the texture with `textureName`
-            break;
-        }
-
-        // try appending "tif" - this is a common issue with textures ported from Star Rod mods
-        char tifName[32];
-        strcpy(tifName, textureName);
-        strcat(tifName, "tif");
-        if (strcmp(tifName, header->name) == 0) {
             break;
         }
 

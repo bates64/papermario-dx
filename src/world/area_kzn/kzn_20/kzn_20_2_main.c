@@ -15,7 +15,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 
 EvtScript N(EVS_UpdateTexPan_Lava) = {
     SetGroup(EVT_GROUP_00)
-    Call(EnableTexPanning, MODEL_yu, TRUE)
+    Call(SetTexPanner, MODEL_yu, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)

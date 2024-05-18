@@ -38,7 +38,7 @@ EvtScript N(EVS_GrowFountain) = {
 };
 
 EvtScript N(EVS_TexPan_Rainbow) = {
-    Call(EnableTexPanning, MODEL_o73, TRUE)
+    Call(SetTexPanner, MODEL_o73, TEX_PANNER_A)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_A)
         TEX_PAN_PARAMS_STEP( -150,    0,    0,    0)
@@ -259,12 +259,8 @@ EvtScript N(EVS_SetupFountain) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o86, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o87, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
-    Call(EnableTexPanning, MODEL_o25, TRUE)
-    Call(EnableTexPanning, MODEL_o40, TRUE)
-    Call(EnableTexPanning, MODEL_o78, TRUE)
-    Call(EnableTexPanning, MODEL_o77, TRUE)
-    Call(EnableTexPanning, MODEL_o118, TRUE)
-    Call(EnableTexPanning, MODEL_o119, TRUE)
+    // fountain
+    Call(SetTexPanner, MODEL_o25, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0,-2000,    0,    0)
@@ -272,6 +268,8 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // water edge
+    Call(SetTexPanner, MODEL_o40, TEX_PANNER_3)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP( -100,   80,    0,    0)
@@ -279,6 +277,8 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // fountain mist
+    Call(SetTexPanner, MODEL_o78, TEX_PANNER_5)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(-1000, 2000,    0,    0)
@@ -286,6 +286,8 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // surface spread
+    Call(SetTexPanner, MODEL_o77, TEX_PANNER_6)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_6)
         TEX_PAN_PARAMS_STEP(    0,-2000,    0,    0)
@@ -293,6 +295,8 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // small fountain
+    Call(SetTexPanner, MODEL_o118, TEX_PANNER_8)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_8)
         TEX_PAN_PARAMS_STEP(    0,-1500,    0,    0)
@@ -300,6 +304,8 @@ EvtScript N(EVS_SetupFountain) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    // surface spread
+    Call(SetTexPanner, MODEL_o119, TEX_PANNER_9)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_9)
         TEX_PAN_PARAMS_STEP(    0,-1000,    0,    0)

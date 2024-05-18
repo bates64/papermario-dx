@@ -215,21 +215,6 @@ EvtScript N(EVS_RaiseWaterLevel1) = {
     Call(PlaySoundAt, SOUND_LOOP_KPA_FILL_WATER, SOUND_SPACE_DEFAULT, 118, 115, -11)
     Wait(20)
     Thread
-        Call(SetTexPanner, MODEL_o388, TEX_PANNER_2)
-        Call(SetTexPanner, MODEL_o389, TEX_PANNER_3)
-        Set(LVar0, 0)
-        Set(LVar1, 0)
-        Set(LVar2, 0)
-        Loop(1000)
-            Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, LVar1)
-            Call(SetTexPanOffset, TEX_PANNER_3, TEX_PANNER_MAIN, 0, LVar2)
-            Add(LVar0, 1000)
-            Add(LVar1, 4000)
-            Add(LVar2, -1500)
-            Wait(1)
-        EndLoop
-    EndThread
-    Thread
         Call(EnableModel, MODEL_o388, TRUE)
         Call(MakeLerp, 400, 0, 20, EASING_LINEAR)
         Label(20)
@@ -465,8 +450,8 @@ EvtScript N(EVS_RaiseWaterLevel2) = {
         Set(LVar1, 0)
         Set(LVar2, 0)
         Loop(1000)
-            Call(SetTexPanOffset, 2, 0, LVar0, LVar1)
-            Call(SetTexPanOffset, 3, 0, 0, LVar2)
+            Call(SetTexPanOffset, TEX_PANNER_2, 0, LVar0, LVar1)
+            Call(SetTexPanOffset, TEX_PANNER_3, 0, 0, LVar2)
             Add(LVar0, 1000)
             Add(LVar1, 4000)
             Add(LVar2, -1500)

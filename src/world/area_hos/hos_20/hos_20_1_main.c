@@ -11,10 +11,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         Call(RotateModel, MODEL_h3, 180, 0, 0, 1)
         Call(RotateModel, MODEL_h4, 180, 0, 0, 1)
     EndIf
-    Call(EnableTexPanning, MODEL_h1, TRUE)
-    Call(EnableTexPanning, MODEL_h2, TRUE)
-    Call(EnableTexPanning, MODEL_h3, TRUE)
-    Call(EnableTexPanning, MODEL_h4, TRUE)
+    Call(SetTexPanner, MODEL_h1, TEX_PANNER_C)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_C)
         TEX_PAN_PARAMS_STEP(-2048,-2048,    0,    0)
@@ -22,6 +19,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_h2, TEX_PANNER_B)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_B)
         TEX_PAN_PARAMS_STEP(-6144,    0,    0,    0)
@@ -29,6 +27,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_h3, TEX_PANNER_D)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_D)
         TEX_PAN_PARAMS_STEP(    0,-5120,    0,    0)
@@ -36,6 +35,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_h4, TEX_PANNER_A)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_A)
         TEX_PAN_PARAMS_STEP( 1024,-3072,    0,    0)

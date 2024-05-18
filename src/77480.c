@@ -128,6 +128,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
         ret = hitID;
     }
 
+    // @bug duplicate test -- same as first one. should be +/-?
     x = inputX + cosTemp;
     y = inputY;
     z = inputZ + sinTemp;
@@ -145,6 +146,7 @@ HitID player_raycast_below(f32 yaw, f32 diameter, f32* outX, f32* outY, f32* out
         ret = hitID;
     }
 
+    // @bug duplicate test -- same as second one. should be -/+?
     x = inputX - cosTemp;
     y = inputY;
     z = inputZ - sinTemp;

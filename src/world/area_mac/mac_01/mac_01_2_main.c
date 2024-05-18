@@ -167,7 +167,6 @@ EvtScript N(EVS_Main) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(N(EVS_EnterMap))
     Wait(1)
-    Call(EnableTexPanning, MODEL_hikari, TRUE)
     // merlon light shafts
     Call(SetTexPanner, MODEL_hikari, TEX_PANNER_3)
     Thread

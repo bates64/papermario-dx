@@ -257,7 +257,7 @@ s32 N(ForegroundModels)[] = {
 };
 
 Stage NAMESPACE = {
-    .texture = "hos_tex\0",
+    .texture = "hos_tex",
     .shape = "hos_bt01_shape",
     .hit = "hos_bt01_hit",
     .bg = "hos_bg",

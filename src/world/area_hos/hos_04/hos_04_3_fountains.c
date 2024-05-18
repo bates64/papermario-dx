@@ -23,6 +23,7 @@ void N(setup_gfx_fountain_stars)(void) {
 #include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_SetupFountains) = {
+    Call(SetTexPanner, MODEL_o438, TEX_PANNER_1)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  100,  -80,  -50,  120)
@@ -30,6 +31,8 @@ EvtScript N(EVS_SetupFountains) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(SetTexPanner, MODEL_o462, TEX_PANNER_2)
+    Call(SetTexPanner, MODEL_o469, TEX_PANNER_2)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0,-2000,    0,    0)
@@ -37,9 +40,6 @@ EvtScript N(EVS_SetupFountains) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_o438, TRUE)
-    Call(EnableTexPanning, MODEL_o462, TRUE)
-    Call(EnableTexPanning, MODEL_o469, TRUE)
     Call(SetModelCustomGfx, MODEL_o469, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o462, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o465, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)

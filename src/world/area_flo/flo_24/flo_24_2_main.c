@@ -4,7 +4,7 @@
 #include "../common/FlowerSpawnRegion.inc.c"
 
 API_CALLABLE(N(SpawnSunEffect)) {
-    fx_sun_undeclared(FX_SUN_FROM_RIGHT, 0, 0, 0, 0, 0);
+    fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
 }
 
