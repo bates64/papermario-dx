@@ -1356,7 +1356,7 @@ BSS s32 D_80153378[2];
 BSS u16 DepthCopyBuffer[16];
 BSS RenderTask* RenderTaskLists[3];
 BSS s32 RenderTaskListIdx;
-BSS s32 RenderTaskCount;
+BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
 
 TextureHandle TextureHandles[128];
 
