@@ -1324,7 +1324,6 @@ EvtScript N(EVS_NpcInteract_Toad) = {
 
 #include "world/common/todo/SyncStatusBar.inc.c"
 
-NOP_FIX // TODO figure out BSS nop issue
 API_CALLABLE(N(func_8024295C_8B29CC)) {
     Bytecode* args = script->ptrReadPos;
     s32 targetColR = evt_get_variable(script, *args++);
@@ -1356,7 +1355,6 @@ API_CALLABLE(N(func_8024295C_8B29CC)) {
     }
     return ApiStatus_BLOCK;
 }
-NOP_UNFIX
 
 API_CALLABLE(N(func_80242BA8_8B2C18)) {
     *gBackgroundTintModePtr = ENV_TINT_SHROUD;

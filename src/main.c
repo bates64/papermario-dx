@@ -203,10 +203,6 @@ void appendGfx_reset_tile_pattern(void) {
     gCurrentDisplayContextIndex ^= 1;
 }
 
-#if VERSION_IQUE
-NOP_FIX
-#endif
-
 void gfxPreNMI_Callback(void) {
     ResetGameState = RESET_STATE_INIT;
     nuContRmbForceStop();

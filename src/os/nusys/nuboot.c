@@ -3,8 +3,6 @@
 #include "functions.h"
 #include "variables.h"
 
-NOP_FIX
-
 u64 nuMainStack[NU_SC_STACK_SIZE / sizeof(u64)];
 static OSThread IdleThread; // idle thread, id 1
 static OSThread MainThread; // id 3

@@ -1,8 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
 
-NOP_FIX
-
 NUSched nusched;
 NUScPreNMIFunc nuScPreNMIFunc = NULL;
 u8 nuScPreNMIFlag;

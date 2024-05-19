@@ -4,8 +4,6 @@
 #include "audio.h"
 #include "dx/profiling.h"
 
-NOP_FIX
-
 u8 nuAuPreNMI = 0;
 NUAuPreNMIFunc nuAuPreNMIFunc = NULL;
 s32 nuAuDmaNext = 0;

@@ -32,10 +32,10 @@ s32 func_8002ACDC(void) {
 }
 
 void* heap_malloc(s32 size) {
-    if (!gGameStatusPtr->isBattle) {
-        return general_heap_malloc(size);
-    } else {
+    if (gGameStatusPtr->isBattle) {
         return _heap_malloc(&heap_battleHead, size);
+    } else {
+        return general_heap_malloc(size);
     }
 }
 

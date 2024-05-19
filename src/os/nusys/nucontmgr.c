@@ -1,8 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
 
-NOP_FIX
-
 OSMesgQueue    nuContWaitMesgQ;
 static OSMesg  nuContWaitMesgBuf;
 OSMesgQueue    nuContDataMutexQ;
@@ -84,8 +82,6 @@ static inline void nuContDataOpen_inline(void) {
     osRecvMesg(&nuContDataMutexQ, NULL, OS_MESG_BLOCK);
 }
 
-NOP_UNFIX
-
 static inline s32 contReadData(OSContPad* pad, u32 lockflag) {
     s32 rtn;
 
@@ -101,9 +97,7 @@ static inline s32 contReadData(OSContPad* pad, u32 lockflag) {
     }
 
     nuContDataClose_inline();
-    NOP_FIX
     osContGetReadData(pad);
-    NOP_UNFIX
     nuContDataOpen_inline();
 
     return rtn;
@@ -147,8 +141,6 @@ static s32 contReadNW(NUSiCommonMesg* mesg) {
 
     return rtn;
 }
-
-NOP_FIX
 
 static s32 contQuery(NUSiCommonMesg* mesg) {
     s32 ret = osContStartQuery(&nuSiMesgQ);

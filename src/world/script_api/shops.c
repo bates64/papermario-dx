@@ -8,6 +8,8 @@ extern u8 MessagePlural[];
 extern u8 MessageSingular[];
 extern HudScript HES_ItemCoin;
 
+void create_shop_popup_menu(PopupMenu* popup);
+
 s32 shop_get_sell_price(s32 itemID);
 
 API_CALLABLE(CanInteractWithShopItem);
@@ -364,53 +366,47 @@ API_CALLABLE(ShowShopPurchaseDialog) {
     return ApiStatus_BLOCK;
 }
 
-void create_shop_popup_menu(PopupMenu* popup);
+enum {
+    ITEM_POPUP_SELL     = 0,
+    ITEM_POPUP_CHECK    = 1,
+    ITEM_POPUP_CLAIM    = 2,
+};
 
 void shop_open_item_select_popup(s32 mode) {
     PopupMenu* menu = &gGameStatusPtr->mapShop->itemSelectMenu;
+    s16* itemArray;
     s32 numItemSlots;
     s32 popupType;
     s32 numEntries;
-    s32 itemID;
     s32 i;
 
     switch (mode) {
-        case 0:
+        case ITEM_POPUP_SELL:
             popupType = POPUP_MENU_SELL_ITEM;
             numItemSlots = ARRAY_COUNT(gPlayerData.invItems);
+            itemArray = gPlayerData.invItems;
             break;
-        case 1:
+        case ITEM_POPUP_CHECK:
             popupType = POPUP_MENU_CHECK_ITEM;
             numItemSlots = ARRAY_COUNT(gPlayerData.invItems);
+            itemArray = gPlayerData.invItems;
             break;
+        case ITEM_POPUP_CLAIM:
         default:
             popupType = POPUP_MENU_CLAIM_ITEM;
             numItemSlots = ARRAY_COUNT(gPlayerData.storedItems);
+            itemArray = gPlayerData.storedItems;
             break;
     }
 
     numEntries = 0;
 
     for (i = 0; i < numItemSlots; i++) {
-        ItemData* itemData;
-
-        switch (mode) {
-            case 0:
-            case 1:
-                itemID = gPlayerData.invItems[i];
-                if (itemID == ITEM_NONE) {
-                    continue;
-                }
-                itemData = &gItemTable[itemID];
-                break;
-            default:
-                itemID = gPlayerData.storedItems[i];
-                if (itemID == ITEM_NONE) {
-                    continue;
-                }
-                itemData = &gItemTable[itemID];
-                break;
+        s32 itemID = itemArray[i];
+        if (itemID == ITEM_NONE) {
+            continue;
         }
+        ItemData* itemData = &gItemTable[itemID];
 
         menu->ptrIcon[numEntries] = gItemHudScripts[itemData->hudElemID].enabled;
         menu->userIndex[numEntries] = i;
@@ -572,7 +568,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
             break;
         case DIALOG_STATE_INIT_SELL_CHOICE:
             if (!does_script_exist(script->functionTemp[1])) {
-                shop_open_item_select_popup(0);
+                shop_open_item_select_popup(ITEM_POPUP_SELL);
                 script->functionTemp[0] = DIALOG_STATE_AWAIT_SELL_CHOICE;
             }
             break;
@@ -647,7 +643,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
             break;
         case DIALOG_STATE_INIT_CHECK_CHOICE:
             if (does_script_exist(script->functionTemp[1]) == 0) {
-                shop_open_item_select_popup(1);
+                shop_open_item_select_popup(ITEM_POPUP_CHECK);
                 script->functionTemp[0] = DIALOG_STATE_AWAIT_CHECK_CHOICE;
             }
             break;
@@ -700,7 +696,7 @@ API_CALLABLE(ShowShopOwnerDialog) {
             break;
         case DIALOG_STATE_INIT_CLAIM_CHOICE:
             if (!does_script_exist(script->functionTemp[1])) {
-                shop_open_item_select_popup(2);
+                shop_open_item_select_popup(ITEM_POPUP_CLAIM);
                 script->functionTemp[0] = DIALOG_STATE_AWAIT_CLAIM_CHOICE;
             }
             break;
