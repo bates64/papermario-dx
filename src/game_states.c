@@ -2,7 +2,6 @@
 #include "game_modes.h"
 
 BSS GameMode gMainGameMode[2];
-BSS s32 D_80151730[4]; // unused? or probably a part of GameMode?
 
 void mode_default_nop(void) {
 }

@@ -50,14 +50,10 @@ extern Window gWindows[64];
 extern s32 gEncounterState;
 extern s32 gOverrideFlags;
 
-extern DisplayContext D_80164000[2];
-
 extern WindowStyle gWindowStyles[];
 
 extern u16 gCurrentDoorSounds;
 extern u16 gCurrentRoomDoorSounds;
-
-extern b8 D_8014C248;
 
 extern UNK_FUN_PTR(TalkNotificationCallback);
 extern UNK_FUN_PTR(InteractNotificationCallback);

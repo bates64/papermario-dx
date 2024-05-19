@@ -43,7 +43,6 @@ BSS s16 isPickingUpItem;
 BSS s16 ItemSpawnWithinPlayerPickupDelay;
 #if !VERSION_JP
 BSS s16 D_801565A8;
-BSS s32 D_801565AC;
 #endif
 BSS PopupMenu ItemPickupMenu;
 BSS s32 ItemPickupIconID;

@@ -22,14 +22,9 @@
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
 BSS MapConfig* gMapConfig;
-BSS s32 D_800A41E4;
 BSS MapSettings gMapSettings;
 
-#if VERSION_JP || VERSION_IQUE
-char wMapHitName[0x14];
-#else
 char wMapHitName[0x18];
-#endif
 char wMapShapeName[0x18];
 char wMapTexName[0x18];
 char wMapBgName[0x14];

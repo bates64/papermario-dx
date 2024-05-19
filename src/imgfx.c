@@ -117,12 +117,6 @@ BSS ImgFXWorkingTexture ImgFXCurrentTexture;
 BSS Vtx* ImgFXVtxBuffers[2];
 BSS Vtx* imgfx_vtxBuf;
 BSS ImgFXInstanceList* ImgFXInstances;
-BSS s8 D_80156958[2];
-BSS s32 D_8015695C;
-BSS s32 D_80156960[2];
-BSS s32 D_80156968[2];
-BSS s8 D_80156970;
-BSS s32 D_80156974[3];
 BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
 BSS ImgFXCacheEntry ImgFXDataCache[8];
 
@@ -258,13 +252,6 @@ void imgfx_init(void) {
     for (i = 0; i < ARRAY_COUNT(*ImgFXInstances); i++) {
         imgfx_init_instance(&(*ImgFXInstances)[i]);
         imgfx_clear_instance_data(&(*ImgFXInstances)[i]);
-    }
-
-    for (i = 0; i < ARRAY_COUNT(D_80156958); i++) {
-        D_80156958[i] = -1;
-        D_80156960[i] = 0;
-        D_80156968[i] = 0;
-        D_80156970 = 0;
     }
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {

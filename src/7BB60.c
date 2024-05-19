@@ -4,10 +4,10 @@
 #include "dx/debug_menu.h"
 
 CollisionStatus gCollisionStatus;
-f32 StepUpLastY;
 f32 JumpedOnSwitchX;
 f32 JumpedOnSwitchZ;
-f32 StepUpLastYaw;
+f32 StepUpLastYaw; // never read, remove?
+f32 StepUpLastY; // never read, remove?
 
 s16 FootstepSoundSelector = 0;
 

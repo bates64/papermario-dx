@@ -5,9 +5,6 @@
 #include "world/surfaces.h"
 #include "sprite/player.h"
 
-extern PlayerStatus gPlayerStatus;
-extern PlayerData gPlayerData;
-
 extern Npc playerNpcData;
 extern u16 PlayerImgFXFlags;
 extern s32 D_802DB5B4[3]; // unused

@@ -51,18 +51,15 @@ s32 entity_updateCounter;
 BSS EntityList gWorldEntityList;
 BSS EntityList gBattleEntityList;
 BSS EntityList* gCurrentEntityListPtr;
-BSS s32 D_80151474;
 BSS ShadowList gWorldShadowList;
 BSS ShadowList gBattleShadowList;
 BSS ShadowList* gCurrentShadowListPtr;
 
 BSS s32 wEntityDataLoadedSize;
 BSS s32 bEntityDataLoadedSize;
-BSS s32 D_80151664;
 
 BSS EntityBlueprint* wEntityBlueprint[MAX_ENTITIES + 2];
 BSS EntityBlueprint* bEntityBlueprint[4];
-BSS s32 D_801516F8;
 BSS s32 D_801516FC;
 
 extern Addr BattleEntityHeapBottom; // todo ???

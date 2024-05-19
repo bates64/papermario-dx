@@ -184,11 +184,6 @@ Vec3f N(WattLeftFlightPath)[] = {
     {  -60.0,    30.0,    0.0 },
 };
 
-BombTrigger N(BombPos_Lantern_Unused) = {
-    .pos = { 0.0f, 0.0f, 20.0f },
-    .diameter = 0.0f
-};
-
 EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(DisablePlayerInput, TRUE)
     Call(N(DisableCameraLeadingPlayer))

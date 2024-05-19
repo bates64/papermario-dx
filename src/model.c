@@ -1303,8 +1303,6 @@ s32 RenderTaskBasePriorities[] = {
     [RENDER_MODE_CLOUD_NO_ZB]               =  700000,
 };
 
-b8 D_8014C248 = FALSE; // possibly a 'warm-up done' flag for boot. never read.
-
 ModelCustomGfxBuilderList* gCurrentCustomModelGfxBuildersPtr;
 ModelNode** gCurrentModelTreeRoot;
 ModelTransformGroupList* gCurrentTransformGroups;
@@ -1329,17 +1327,13 @@ BSS ModelLocalVertexCopyList* gCurrentModelLocalVtxBuffers;
 
 BSS ModelNode* wModelTreeRoot;
 BSS ModelNode* bModelTreeRoot;
-BSS s32 D_8015221C;
 BSS ModelTreeInfoList wModelTreeNodeInfo;
 BSS ModelTreeInfoList bModelTreeNodeInfo;
 
 BSS s8 wBackgroundTintMode;
 BSS s8 bBackgroundTintMode;
-BSS s8 D_80153222;
-BSS s8 D_80153223;
 BSS s32 TreeIterPos;
 BSS FogSettings wFogSettings;
-BSS s32 D_80153244;
 BSS FogSettings bFogSettings;
 BSS FogSettings* gFogSettings;
 BSS s32 texPannerMainU[MAX_TEX_PANNERS];
@@ -1352,7 +1346,6 @@ BSS u16 mtg_SearchModelID;
 BSS ModelNode* mtg_FoundModelNode;
 BSS u16 mtg_MinChild;
 BSS u16 mtg_MaxChild;
-BSS s32 D_80153378[2];
 BSS u16 DepthCopyBuffer[16];
 BSS RenderTask* RenderTaskLists[3];
 BSS s32 RenderTaskListIdx;

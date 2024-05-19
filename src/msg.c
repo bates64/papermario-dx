@@ -56,10 +56,10 @@ void* D_PAL_8014AE50[] = {
 s16 gNextMessageBuffer = 0;
 
 Vtx gRewindArrowQuad[] = {
-    { .v = { .ob = { 0xFFF0, 0x0009, 0x0000 }, .tc = { 0x0000, 0x0000 }, .cn = { 0xFF, 0xFF, 0xFF, 0xFF }}},
-    { .v = { .ob = { 0x0010, 0x0009, 0x0000 }, .tc = { 0x0400, 0x0000 }, .cn = { 0xFF, 0xFF, 0xFF, 0xFF }}},
-    { .v = { .ob = { 0xFFF0, 0xFFF7, 0x0000 }, .tc = { 0x0000, 0x0240 }, .cn = { 0xFF, 0xFF, 0xFF, 0xFF }}},
-    { .v = { .ob = { 0x0010, 0xFFF7, 0x0000 }, .tc = { 0x0400, 0x0240 }, .cn = { 0xFF, 0xFF, 0xFF, 0xFF }}},
+    {{{ -16,   9,   0 }, 0, { 0x000, 0x000 }, { 255, 255, 255, 255 }}},
+    {{{  16,   9,   0 }, 0, { 0x400, 0x000 }, { 255, 255, 255, 255 }}},
+    {{{ -16,  -9,   0 }, 0, { 0x000, 0x240 }, { 255, 255, 255, 255 }}},
+    {{{  16,  -9,   0 }, 0, { 0x400, 0x240 }, { 255, 255, 255, 255 }}},
 };
 
 Gfx D_8014C2D8[] = {
@@ -88,9 +88,6 @@ Gfx* D_80151338;
 
 static char gMessageBuffers[2][1024];
 static MessagePrintState gMessagePrinters[3];
-#if VERSION_JP
-static s32 D_80155C38; 
-#endif
 static u8 gMessageMsgVars[3][32];
 static s16 D_80155C98;
 static Mtx gMessageWindowProjMatrix[2];

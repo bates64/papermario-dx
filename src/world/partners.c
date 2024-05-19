@@ -158,6 +158,13 @@ void _use_partner_ability(void);
 void partner_flying_follow_player(Npc*);
 void partner_move_to_goal(Npc*, s32);
 
+typedef struct UseItemStruct {
+    /* 0x00 */ u8* dmaStart;
+    /* 0x04 */ u8* dmaEnd;
+    /* 0x08 */ EvtScript* main;
+    /* 0x0C */ s32 unk_0C;
+} UseItemStruct;
+
 // Partner icons
 HudScript* wPartnerHudScripts[] = {
     &HES_Partner0, &HES_Goombario, &HES_Kooper, &HES_Bombette,
@@ -186,12 +193,7 @@ HudScript* SPStarHudScripts[] = { &HES_StatusStar1, &HES_StatusStar3, &HES_Statu
 };
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };
-UseItemStruct UseItemDmaArgs = {
-    world_use_item_ROM_START,
-    world_use_item_ROM_END,
-    &EVS_World_UseItem,
-    0
-};
+
 s32 D_800F8020 = 0;
 s32 wPartnerMoveGoalX = 0;
 s32 wPartnerMoveGoalZ = 0;
@@ -504,7 +506,12 @@ PartnerAnimations gPartnerAnimations[] = {
     }},
 };
 
-extern UseItemStruct UseItemDmaArgs;
+UseItemStruct UseItemDmaArgs = {
+    world_use_item_ROM_START,
+    world_use_item_ROM_END,
+    &EVS_World_UseItem,
+    0
+};
 
 BSS s32 D_8010CD20;
 

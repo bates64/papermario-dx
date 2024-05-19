@@ -752,6 +752,7 @@ extern u32		nuDebTaskPerfInterval;
 extern volatile u32	nuDebTaskPerfCnt;
 extern volatile u32	nuDebTaskPerfEnd;
 
+
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
 /* Global Function 							*/

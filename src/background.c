@@ -10,10 +10,6 @@ f32 gBackroundWavePhase = 0.0f;
 
 BSS PAL_BIN gBackgroundPalette[256];
 BSS f32 gBackroundLastScrollValue;
-BSS s32 D_801595A4[3];
-#if !VERSION_PAL
-BSS s32 D_801595AC;
-#endif
 
 void load_map_bg(char* optAssetName) {
     if (optAssetName != NULL) {
