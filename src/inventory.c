@@ -1107,7 +1107,6 @@ void update_status_bar(void) {
     if (statusBar->spBlinking != BLINK_OFF) {
         if (!showStat) {
             s32 limit = statusBar->spBarsToBlink * 8;
-            do {} while (0);
             if (sp50 < limit) {
                 while (TRUE) {
                     i++; s1++; if (i >= limit) { break; }

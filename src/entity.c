@@ -976,7 +976,6 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
             break;
         } else {
             DmaEntry* bpDmaList = bp->dmaList;
-            do {} while (0); // TODO find better match
             entDmaList = blueprint->dmaList;
             if (bpDmaList == entDmaList) {
                 if (blueprint->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {

@@ -526,7 +526,7 @@ API_CALLABLE(N(FlyAround)) {
                     } else if (state->angle >= 90.0f && state->angle < 180.0f) {
                         state->angle = 270.0f - (clamp_angle(state->angle + 180.0f) - 270.0f);
                     }
-                } while (0);
+                } while (0); // TODO macro?
 
                 if (script->functionTemp[3] != 0) {
                     sfx_play_sound_at_position(SOUND_PARAKARRY_AIR_RAID_1, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);

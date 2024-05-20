@@ -731,14 +731,12 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowState = MSG_WINDOW_STATE_OPENING;
                         break;
                     case MSG_STYLE_CHOICE:
-                        do {
-                            printer->windowBasePos.x = *srcBuf++;
-                            printer->windowBasePos.y = *srcBuf++;
-                            printer->windowSize.x = *srcBuf++;
-                            printer->windowSize.y = *srcBuf++;
-                            printer->windowState = MSG_WINDOW_STATE_OPENING;
-                            printer->stateFlags |= MSG_STATE_FLAG_800;
-                        } while (0);
+                        printer->windowBasePos.x = *srcBuf++;
+                        printer->windowBasePos.y = *srcBuf++;
+                        printer->windowSize.x = *srcBuf++;
+                        printer->windowSize.y = *srcBuf++;
+                        printer->windowState = MSG_WINDOW_STATE_OPENING;
+                        printer->stateFlags |= MSG_STATE_FLAG_800;
                         break;
                     case MSG_STYLE_INSPECT:
                     case MSG_STYLE_NARRATE:
@@ -778,13 +776,11 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowSize.y = *srcBuf++;
                         // fallthrough
                     case MSG_STYLE_SIGN:
-                        do {
-                            if (!s8) {
-                                printer->windowState = MSG_WINDOW_STATE_OPENING;
-                                printer->stateFlags |= MSG_STATE_FLAG_800;
-                                printer->delayFlags |= MSG_DELAY_FLAG_1;
-                            }
-                        } while (0);
+                        if (!s8) {
+                            printer->windowState = MSG_WINDOW_STATE_OPENING;
+                            printer->stateFlags |= MSG_STATE_FLAG_800;
+                            printer->delayFlags |= MSG_DELAY_FLAG_1;
+                        }
                         break;
                     case MSG_STYLE_POSTCARD:
                         arg = *srcBuf++;
@@ -813,13 +809,11 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowSize.y = 40;
 #endif
                         printer->stateFlags |= MSG_STATE_FLAG_8000;
-                        do {
-                            if (!s8) {
-                                printer->stateFlags |= MSG_STATE_FLAG_8000 | MSG_STATE_FLAG_800;
-                                printer->windowState = MSG_WINDOW_STATE_D;
-                                printer->delayFlags |= MSG_DELAY_FLAG_1;
-                            }
-                        } while (0);
+                        if (!s8) {
+                            printer->stateFlags |= MSG_STATE_FLAG_8000 | MSG_STATE_FLAG_800;
+                            printer->windowState = MSG_WINDOW_STATE_D;
+                            printer->delayFlags |= MSG_DELAY_FLAG_1;
+                        }
                         break;
                     case MSG_STYLE_EPILOGUE:
                         printer->windowState = MSG_WINDOW_STATE_PRINTING;

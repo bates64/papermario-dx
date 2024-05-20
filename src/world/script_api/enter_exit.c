@@ -77,14 +77,12 @@ API_CALLABLE(EnterPlayerPostPipe) {
         playerStatus->pos.y = script->varTable[2] - 40;
         playerStatus->flags |= PS_FLAG_CAMERA_DOESNT_FOLLOW;
     } else {
-        do {
-            playerStatus->pos.y += 1.0f;
-            if (!(playerStatus->pos.y < script->varTable[2])) {
-                playerStatus->pos.y = script->varTable[2];
-                playerStatus->flags &= ~PS_FLAG_CAMERA_DOESNT_FOLLOW;
-                ret = ApiStatus_DONE2;
-            }
-        } while (0); // todo required to match
+        playerStatus->pos.y += 1.0f;
+        if (!(playerStatus->pos.y < script->varTable[2])) {
+            playerStatus->pos.y = script->varTable[2];
+            playerStatus->flags &= ~PS_FLAG_CAMERA_DOESNT_FOLLOW;
+            ret = ApiStatus_DONE2;
+        }
     }
     gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
     gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
@@ -468,5 +466,3 @@ EvtScript BaseEnterDoor = {
     Return
     End
 };
-
-MATCHING_BSS(0x7AB0);

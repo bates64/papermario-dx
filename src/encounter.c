@@ -506,11 +506,9 @@ void update_encounters_neutral(void) {
     f32 dx, dz;
     f32 angle1, angle2;
 
-    do {
-        if (currentEncounter->hitType == ENCOUNTER_TRIGGER_CONVERSATION) {
-            goto START_BATTLE;
-        }
-    } while (0);
+    if (currentEncounter->hitType == ENCOUNTER_TRIGGER_CONVERSATION) {
+        goto START_BATTLE;
+    }
 
     currentEncounter->songID = -1;
     currentEncounter->unk_18 = -1;
@@ -668,16 +666,15 @@ void update_encounters_neutral(void) {
             ) {
                 continue;
             }
-            do {
-                if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && partner_test_enemy_collision(npc)) {
-                    currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
-                    enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
-                    currentEncounter->curEncounter = encounter;
-                    currentEncounter->curEnemy = enemy;
-                    currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
-                    goto START_BATTLE;
-                }
-            } while (0);
+
+            if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && partner_test_enemy_collision(npc)) {
+                currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
+                enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
+                currentEncounter->curEncounter = encounter;
+                currentEncounter->curEnemy = enemy;
+                currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
+                goto START_BATTLE;
+            }
 
             npcX = npc->pos.x;
             npcY = npc->pos.y;

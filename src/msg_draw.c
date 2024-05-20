@@ -2064,7 +2064,6 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
     gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
 
     if (fading == 0 || bgAlpha != 0) {
-        do {} while (0);
         switch (style) {
             case MSG_STYLE_CHOICE:
                 r = UNPACK_PAL_R(((u16*)ui_msg_palettes)[4]);

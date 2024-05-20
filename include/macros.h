@@ -4,27 +4,8 @@
 #include "types.h"
 #include "include_asm.h"
 
-#ifndef M2CTX
-
-#ifdef SHIFT
-#define SHIFT_BSS __attribute__ ((section (".bss")))
-#else
-#define SHIFT_BSS extern
-#endif
-
-#ifdef SHIFT
-#define MATCHING_BSS(size)
-#else
-#define MATCHING_BSS(size) static BSS u8 padding_bss[size];
-#endif
-
 #define BSS __attribute__ ((nocommon, section (".bss")))
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
-#else
-#define SHIFT_BSS static
-#define BSS static
-#define TRANSPARENT_UNION
-#endif
 
 #define ALIGNED(x) __attribute__((aligned(x)))
 
@@ -521,10 +502,6 @@
 #define VLA 0
 #else
 #define VLA
-#endif
-
-#ifdef M2CTX
-#define VLA 0
 #endif
 
 #if VERSION_PAL

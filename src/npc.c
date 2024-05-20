@@ -882,11 +882,10 @@ void appendGfx_npc(void* data) {
             || (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D != 1.0f
             || npc->scale.z * SPRITE_WORLD_SCALE_D != 1.0f
         ) {
-            do {
-                guScaleF(mtx2, npc->scale.x * SPRITE_WORLD_SCALE_D,
-                               (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D,
-                               npc->scale.z * SPRITE_WORLD_SCALE_D);
-            } while (0); // required to match (macro?)
+            guScaleF(mtx2,
+                SPRITE_WORLD_SCALE_D * npc->scale.x,
+                SPRITE_WORLD_SCALE_D * npc->scale.y * npc->verticalStretch,
+                SPRITE_WORLD_SCALE_D * npc->scale.z);
             guMtxCatF(mtx2, mtx1, mtx1);
 
         }
@@ -914,12 +913,10 @@ void appendGfx_npc(void* data) {
             || (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D != 1.0f
             || npc->scale.z * SPRITE_WORLD_SCALE_D != 1.0f
         ) {
-            do {
-                guScaleF(mtx2, npc->scale.x * SPRITE_WORLD_SCALE_D,
-                               (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D,
-                               npc->scale.z * SPRITE_WORLD_SCALE_D);
-            } while (0); // required to match (macro?)
-
+            guScaleF(mtx2,
+                SPRITE_WORLD_SCALE_D * npc->scale.x,
+                SPRITE_WORLD_SCALE_D * npc->scale.y * npc->verticalStretch,
+                SPRITE_WORLD_SCALE_D * npc->scale.z);
             guMtxCatF(mtx2, mtx1, mtx1);
         }
         if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -2430,16 +2427,13 @@ void kill_enemy(Enemy* enemy) {
         }
     }
 
-    do {
-        if (!(enemy->flags & ENEMY_FLAG_4)
-            && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || (enemy == encounterStatus->curEnemy))
-            && !(enemy->flags & ENEMY_FLAG_PASSIVE)
-        ) {
-            if (!(enemy->flags & ENEMY_FLAG_FLED)) {
-                COPY_set_defeated(encounterStatus->mapID, encounter->encounterID + i);
-            }
-        }
-    } while (0); // required to match
+    if (!(enemy->flags & ENEMY_FLAG_4)
+        && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || (enemy == encounterStatus->curEnemy))
+        && !(enemy->flags & ENEMY_FLAG_PASSIVE)
+        && !(enemy->flags & ENEMY_FLAG_FLED)
+    ) {
+        COPY_set_defeated(encounterStatus->mapID, encounter->encounterID + i);
+    }
 
     heap_free(enemy);
 }

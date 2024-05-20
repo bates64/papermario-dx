@@ -1092,26 +1092,24 @@ s32 btl_submenu_moves_update(void) {
             if (!BattleMenu_UsingSpiritsSubmenu) {
                 for (i = 0; i < (BattleMenu_Moves_OptionCount - 1); i++) {
                     for (j = i + 1; j < BattleMenu_Moves_OptionCount; j++) {
-                        do {
-                            s32 temp1 = BattleMenu_Moves_OptionIndexMap[i];
-                            s32 temp2 = BattleMenu_Moves_OptionIndexMap[j];
+                        s32 temp1 = BattleMenu_Moves_OptionIndexMap[i];
+                        s32 temp2 = BattleMenu_Moves_OptionIndexMap[j];
 
-                            if (BattleMenu_Moves_OptionSortPriority[temp1] < BattleMenu_Moves_OptionSortPriority[temp2]) {
-                                continue;
-                            }
+                        if (BattleMenu_Moves_OptionSortPriority[temp1] < BattleMenu_Moves_OptionSortPriority[temp2]) {
+                            continue;
+                        }
 
-                            if (
-                                BattleMenu_Moves_OptionSortPriority[temp1] != BattleMenu_Moves_OptionSortPriority[temp2] ||
-                                (battle_menu_moveOptionDisplayCosts[temp1] >= battle_menu_moveOptionDisplayCosts[temp2]) &&
-                                (battle_menu_moveOptionDisplayCosts[temp1] != battle_menu_moveOptionDisplayCosts[temp2] ||
-                                    battle_menu_moveOptionBPCosts[temp1] >= battle_menu_moveOptionBPCosts[temp2])
-                            )
-                            {
-                                s32 swapTmp = BattleMenu_Moves_OptionIndexMap[i];
-                                BattleMenu_Moves_OptionIndexMap[i] = BattleMenu_Moves_OptionIndexMap[j];
-                                BattleMenu_Moves_OptionIndexMap[j] = swapTmp;
-                            }
-                        } while (0);
+                        if (
+                            BattleMenu_Moves_OptionSortPriority[temp1] != BattleMenu_Moves_OptionSortPriority[temp2] ||
+                            (battle_menu_moveOptionDisplayCosts[temp1] >= battle_menu_moveOptionDisplayCosts[temp2]) &&
+                            (battle_menu_moveOptionDisplayCosts[temp1] != battle_menu_moveOptionDisplayCosts[temp2] ||
+                                battle_menu_moveOptionBPCosts[temp1] >= battle_menu_moveOptionBPCosts[temp2])
+                        )
+                        {
+                            s32 swapTmp = BattleMenu_Moves_OptionIndexMap[i];
+                            BattleMenu_Moves_OptionIndexMap[i] = BattleMenu_Moves_OptionIndexMap[j];
+                            BattleMenu_Moves_OptionIndexMap[j] = swapTmp;
+                        }
                     }
                 }
             }
@@ -2557,7 +2555,6 @@ void btl_state_update_player_menu(void) {
                         battleStatus->submenuMoveCount = 0;
                     }
                     break;
-                    do { // required to match
                 case BTL_MENU_TYPE_SMASH:
                     btl_init_menu_hammer();
                     if (battleStatus->submenuMoveCount == 1) {
@@ -2604,54 +2601,47 @@ void btl_state_update_player_menu(void) {
                     }
                     starBeamLevel = playerData->starBeamLevel;
                     if (starBeamLevel == 1) {
-                        do {
-                            moveData = &gMoveTable[MOVE_STAR_BEAM];
-                            battleStatus->submenuMoves[entryIdx] = MOVE_STAR_BEAM;
-                            battleStatus->submenuIcons[entryIdx] = 0;
-                            battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
-                            battleStatus->moveArgument = MOVE_REFRESH + i;
-                            battleStatus->curTargetListFlags = moveData->flags;
-                            create_current_pos_target_list(playerActor);
-                            battleStatus->submenuStatus[entryIdx] = starBeamLevel;
-                            if (playerActor->targetListLength == 0) {
-                                battleStatus->submenuStatus[entryIdx] = -2;
-                            }
-                            if (playerData->starPower / SP_PER_BAR < moveData->costFP) {
-                                battleStatus->submenuStatus[entryIdx] = 0;
-                            }
-                            if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
-                                battleStatus->submenuStatus[entryIdx] = -1;
-                            }
-                            entryIdx++;
-                        } while (0);
+                        moveData = &gMoveTable[MOVE_STAR_BEAM];
+                        battleStatus->submenuMoves[entryIdx] = MOVE_STAR_BEAM;
+                        battleStatus->submenuIcons[entryIdx] = 0;
+                        battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
+                        battleStatus->moveArgument = MOVE_REFRESH + i;
+                        battleStatus->curTargetListFlags = moveData->flags;
+                        create_current_pos_target_list(playerActor);
+                        battleStatus->submenuStatus[entryIdx] = starBeamLevel;
+                        if (playerActor->targetListLength == 0) {
+                            battleStatus->submenuStatus[entryIdx] = -2;
+                        }
+                        if (playerData->starPower / SP_PER_BAR < moveData->costFP) {
+                            battleStatus->submenuStatus[entryIdx] = 0;
+                        }
+                        if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
+                            battleStatus->submenuStatus[entryIdx] = -1;
+                        }
+                        entryIdx++;
                     }
                     if (playerData->starBeamLevel == 2) {
-                        do {
-                            do {
-                                moveData = &gMoveTable[MOVE_PEACH_BEAM];
-                                battleStatus->submenuMoves[entryIdx] = MOVE_PEACH_BEAM;
-                                battleStatus->submenuIcons[entryIdx] = 0;
-                                battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
-                                battleStatus->moveArgument = MOVE_REFRESH + i;
-                                battleStatus->curTargetListFlags = moveData->flags;
-                                create_current_pos_target_list(playerActor);
-                                battleStatus->submenuStatus[entryIdx] = 1;
-                                if (playerActor->targetListLength == 0) {
-                                    battleStatus->submenuStatus[entryIdx] = -2;
-                                }
-                                if (playerData->starPower / SP_PER_BAR < moveData->costFP) {
-                                    battleStatus->submenuStatus[entryIdx] = 0;
-                                }
-                                if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
-                                    battleStatus->submenuStatus[entryIdx] = -1;
-                                }
-                                entryIdx++;
-                            } while (0); // TODO required to match
-                        } while (0); // TODO required to match
+                        moveData = &gMoveTable[MOVE_PEACH_BEAM];
+                        battleStatus->submenuMoves[entryIdx] = MOVE_PEACH_BEAM;
+                        battleStatus->submenuIcons[entryIdx] = 0;
+                        battleStatus->moveCategory = BTL_MENU_TYPE_STAR_POWERS;
+                        battleStatus->moveArgument = MOVE_REFRESH + i;
+                        battleStatus->curTargetListFlags = moveData->flags;
+                        create_current_pos_target_list(playerActor);
+                        battleStatus->submenuStatus[entryIdx] = 1;
+                        if (playerActor->targetListLength == 0) {
+                            battleStatus->submenuStatus[entryIdx] = -2;
+                        }
+                        if (playerData->starPower / SP_PER_BAR < moveData->costFP) {
+                            battleStatus->submenuStatus[entryIdx] = 0;
+                        }
+                        if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
+                            battleStatus->submenuStatus[entryIdx] = -1;
+                        }
+                        entryIdx++;
                     }
                     battleStatus->submenuMoveCount = entryIdx;
                     break;
-                } while (0); // TODO required to match
             }
 
             currentSubmenu = battleStatus->curSubmenu;

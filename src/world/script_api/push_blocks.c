@@ -203,9 +203,7 @@ API_CALLABLE(FetchPushedBlockProperties) {
     cellZ = z2 + deltaZ;
 
     if (deltaX == 0 && deltaZ == 0) {
-        do {
-            script->varTable[9] = 2;
-        } while (0);
+        script->varTable[9] = 2;
         return ApiStatus_DONE2;
     }
 

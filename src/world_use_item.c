@@ -204,5 +204,3 @@ EvtScript EVS_World_UseItem = {
     Return
     End
 };
-
-MATCHING_BSS(0x2700);

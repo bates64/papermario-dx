@@ -275,39 +275,34 @@ ALDMAproc nuAuDmaNew(NUDMAState** state) {
 void nuAuCleanDMABuffers(void) {
     NUDMAState* state = &nuAuDmaState;
     NUDMABuffer* dmaPtr = state->firstUsed;
+    NUDMABuffer* nextPtr;
+    u32* frameCounter;
 
-    // A bit odd, this
-    do {
-        NUDMAState* state = &nuAuDmaState;
-        NUDMABuffer* nextPtr;
-        u32* frameCounter;
+    while (dmaPtr != NULL) {
+        nextPtr = (NUDMABuffer*)dmaPtr->node.next;
 
-        while (dmaPtr != NULL) {
-            nextPtr = (NUDMABuffer*)dmaPtr->node.next;
-
-            if (dmaPtr->frameCnt + 1 < nuAuFrameCounter) {
-                if (state->firstUsed == dmaPtr) {
-                    state->firstUsed = nextPtr;
-                }
-
-                alUnlink(&dmaPtr->node);
-
-                if (state->firstFree != 0) {
-                    alLink(&dmaPtr->node, &state->firstFree->node);
-                } else {
-                    state->firstFree = dmaPtr;
-                    dmaPtr->node.next = 0;
-                    dmaPtr->node.prev = 0;
-                }
+        if (dmaPtr->frameCnt + 1 < nuAuFrameCounter) {
+            if (state->firstUsed == dmaPtr) {
+                state->firstUsed = nextPtr;
             }
 
-            dmaPtr = nextPtr;
+            alUnlink(&dmaPtr->node);
+
+            if (state->firstFree != 0) {
+                alLink(&dmaPtr->node, &state->firstFree->node);
+            } else {
+                state->firstFree = dmaPtr;
+                dmaPtr->node.next = 0;
+                dmaPtr->node.prev = 0;
+            }
         }
 
-        nuAuDmaNext = 0;
-        frameCounter = &nuAuFrameCounter;
-        *frameCounter += 1;
-    } while (0);
+        dmaPtr = nextPtr;
+    }
+
+    nuAuDmaNext = 0;
+    frameCounter = &nuAuFrameCounter;
+    *frameCounter += 1;
 }
 
 void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter) {

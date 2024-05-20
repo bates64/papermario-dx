@@ -15,8 +15,4 @@
 #include "battle/stage_names.h"
 #include "battle/actor_types.h"
 
-#ifdef PERMUTER
-extern int TEXEL0, TEXEL1, PRIMITIVE, PRIMITIVE_ALPHA;
-#endif
-
 #endif

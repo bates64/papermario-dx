@@ -38,33 +38,23 @@ void btl_merlee_on_start_turn(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    do {
-        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-            && playerData->merleeCastsLeft > 0
-        ) {
-            if (playerData->merleeTurnCount <= 0) {
-                s32 temp = rand_int(100);
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
+        && playerData->merleeCastsLeft > 0
+    ) {
+        if (playerData->merleeTurnCount <= 0) {
+            s32 temp = rand_int(100);
 
-                if (currentEncounter->curEnemy != NULL) {
-                    if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
-                        // 46/101 ≈ 45.5%
-                        if (temp <= 45) {
-                            playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                        } else if (temp <= 90) { // 45/101 ≈ 44.6%
-                            playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                        } else { // 10/101 ≈ 9.9%
-                            playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                        }
-                    } else if (temp <= 30) { // 31/101 ≈ 30.7%
+            if (currentEncounter->curEnemy != NULL) {
+                if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
+                    // 46/101 ≈ 45.5%
+                    if (temp <= 45) {
                         playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                    } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                    } else if (temp <= 90) { // 45/101 ≈ 44.6%
                         playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                    } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                    } else { // 10/101 ≈ 9.9%
                         playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                    } else { // 20/101 ≈ 19.8%
-                        playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                     }
                 } else if (temp <= 30) { // 31/101 ≈ 30.7%
                     playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
@@ -75,20 +65,28 @@ void btl_merlee_on_start_turn(void) {
                 } else { // 20/101 ≈ 19.8%
                     playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                 }
-
-                temp = rand_int(10) + 6;
-                playerData->merleeTurnCount = temp;
+            } else if (temp <= 30) { // 31/101 ≈ 30.7%
+                playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
+            } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
+            } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
+            } else { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
             }
 
-            if (playerData->merleeTurnCount >= 2) {
-                playerData->merleeTurnCount--;
-            } else {
-                playerData->merleeTurnCount = 0;
-                battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
-                playerData->merleeCastsLeft--;
-            }
+            temp = rand_int(10) + 6;
+            playerData->merleeTurnCount = temp;
         }
-    } while (0); // TODO: required to match
+
+        if (playerData->merleeTurnCount >= 2) {
+            playerData->merleeTurnCount--;
+        } else {
+            playerData->merleeTurnCount = 0;
+            battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
+            playerData->merleeCastsLeft--;
+        }
+    }
 }
 
 void btl_merlee_on_first_strike(void) {
@@ -96,33 +94,23 @@ void btl_merlee_on_first_strike(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    do {
-        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-            && playerData->merleeCastsLeft > 0)
-        {
-            if (playerData->merleeTurnCount <= 0) {
-                s32 temp = rand_int(100);
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
+        && playerData->merleeCastsLeft > 0)
+    {
+        if (playerData->merleeTurnCount <= 0) {
+            s32 temp = rand_int(100);
 
-                if (currentEncounter->curEnemy != NULL) {
-                    if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
-                        // 46/101 ≈ 45.5%
-                        if (temp <= 45) {
-                            playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                        } else if (temp <= 90) { // 45/101 ≈ 44.6%
-                            playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                        } else { // 10/101 ≈ 9.9%
-                            playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                        }
-                    } else if (temp <= 30) { // 31/101 ≈ 30.7%
+            if (currentEncounter->curEnemy != NULL) {
+                if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
+                    // 46/101 ≈ 45.5%
+                    if (temp <= 45) {
                         playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                    } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                    } else if (temp <= 90) { // 45/101 ≈ 44.6%
                         playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                    } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                    } else { // 10/101 ≈ 9.9%
                         playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                    } else { // 20/101 ≈ 19.8%
-                        playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                     }
                 } else if (temp <= 30) { // 31/101 ≈ 30.7%
                     playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
@@ -133,32 +121,40 @@ void btl_merlee_on_first_strike(void) {
                 } else { // 20/101 ≈ 19.8%
                     playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                 }
-
-                if (playerData->merleeSpellType != MERLEE_SPELL_COIN_BOOST) {
-                    // same outcome either way. has to be written like this, and the check does exist in the code. bug?
-                    if (playerData->merleeTurnCount == -1) {
-                        temp = rand_int(5) + 5;
-                    } else {
-                        temp = rand_int(5) + 5;
-
-                    }
-                } else {
-                    temp = rand_int(8) + 5;
-                }
-                playerData->merleeTurnCount = temp;
+            } else if (temp <= 30) { // 31/101 ≈ 30.7%
+                playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
+            } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
+            } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
+            } else { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
             }
 
-            if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST) {
-                if (playerData->merleeTurnCount >= 2) {
-                    playerData->merleeTurnCount--;
+            if (playerData->merleeSpellType != MERLEE_SPELL_COIN_BOOST) {
+                // same outcome either way. has to be written like this, and the check does exist in the code. bug?
+                if (playerData->merleeTurnCount == -1) {
+                    temp = rand_int(5) + 5;
                 } else {
-                    battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
-                    playerData->merleeTurnCount = 0;
-                    playerData->merleeCastsLeft--;
+                    temp = rand_int(5) + 5;
+
                 }
+            } else {
+                temp = rand_int(8) + 5;
+            }
+            playerData->merleeTurnCount = temp;
+        }
+
+        if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST) {
+            if (playerData->merleeTurnCount >= 2) {
+                playerData->merleeTurnCount--;
+            } else {
+                battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
+                playerData->merleeTurnCount = 0;
+                playerData->merleeCastsLeft--;
             }
         }
-    } while (0); // TODO: required to match
+    }
 }
 
 void btl_set_state(s32 battleState) {
@@ -918,13 +914,11 @@ void btl_state_update_begin_player_turn(void) {
                 if (player->transparentStatus != 0) {
                     player->transparentDuration--;
                     part->flags |= ACTOR_PART_FLAG_TRANSPARENT;
-                    do {
-                        if (player->transparentDuration <= 0) {
-                            player->transparentStatus = 0;
-                            part->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
-                            remove_status_transparent(player->hudElementDataIndex);
-                        }
-                    } while (0); // TODO required to match
+                    if (player->transparentDuration <= 0) {
+                        player->transparentStatus = 0;
+                        part->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
+                        remove_status_transparent(player->hudElementDataIndex);
+                    }
                 }
 
                 if (player->debuff != 0) {
@@ -1573,9 +1567,7 @@ void btl_state_update_end_turn(void) {
             actor = battleStatus->enemyActors[i];
             if (actor != NULL && actor->handleEventScript != NULL) {
                 if (does_script_exist(actor->handleEventScriptID)) {
-                    do {
-                        cond = TRUE;
-                    } while (0); // TODO required to match
+                    cond = TRUE;
                 } else {
                     actor->handleEventScript = NULL;
                 }

@@ -30,21 +30,17 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
         script->varTable[2] = 0;
     }
 
-    do {
-        xDiff = fuzzyNpc->pos.x - playerStatus->pos.x;
-        zDiff = fuzzyNpc->pos.z - playerStatus->pos.z;
-        if ((SQ(xDiff) + SQ(zDiff) < SQ(80.0f)) && (script->varTable[2] >= 2)) {
-            do {
-                outVal = TRUE;
-            } while (0); // TODO required to match
-        }
+    xDiff = fuzzyNpc->pos.x - playerStatus->pos.x;
+    zDiff = fuzzyNpc->pos.z - playerStatus->pos.z;
+    if ((SQ(xDiff) + SQ(zDiff) < SQ(80.0f)) && (script->varTable[2] >= 2)) {
+        outVal = TRUE;
+    }
 
-        xDiff = fuzzyNpc->pos.x - koopaNpc->pos.x;
-        zDiff = fuzzyNpc->pos.z - koopaNpc->pos.z;
-        if (SQ(xDiff) + SQ(zDiff) < SQ(40.0f)) {
-            outVal = TRUE;
-        }
-    } while (0); // TODO required to match
+    xDiff = fuzzyNpc->pos.x - koopaNpc->pos.x;
+    zDiff = fuzzyNpc->pos.z - koopaNpc->pos.z;
+    if (SQ(xDiff) + SQ(zDiff) < SQ(40.0f)) {
+        outVal = TRUE;
+    }
 
     script->varTable[0] = outVal;
     return ApiStatus_DONE2;

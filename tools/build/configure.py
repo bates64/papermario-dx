@@ -328,25 +328,6 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    with Path("tools/permuter_settings.toml").open("w") as f:
-        f.write(f"compiler_command = \"{cc} {CPPFLAGS.replace('$version', 'pal')} {cflags} -DPERMUTER -fforce-addr\"\n")
-        f.write(f'assembler_command = "{cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude"\n')
-        f.write(f'compiler_type = "gcc"\n')
-        f.write(
-            """
-[preserve_macros]
-"gs?[DS]P.*" = "void"
-OVERRIDE_FLAG_CHECK = "int"
-OS_K0_TO_PHYSICAL = "int"
-"G_.*" = "int"
-"TEXEL.*" = "int"
-PRIMITIVE = "int"
-
-[decompme.compilers]
-"tools/build/cc/gcc/gcc" = "gcc2.8.1"
-"""
-        )
-
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
     ninja.rule(

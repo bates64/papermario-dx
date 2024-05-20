@@ -362,9 +362,7 @@ block_17:
                         switch_to_partner(popup->userIndex[WorldPopupResult - 1]);
                         break;
                     case WORLD_MENU_USE_ITEM:
-                        do {
-                            use_consumable(popup->userIndex[WorldPopupResult - 1]);
-                        } while (0); // todo required to match
+                        use_consumable(popup->userIndex[WorldPopupResult - 1]);
 #ifndef VERSION_JP
                         gOverrideFlags |= GLOBAL_OVERRIDES_CANT_PICK_UP_ITEMS;
 #endif

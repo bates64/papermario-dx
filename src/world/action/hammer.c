@@ -284,7 +284,7 @@ void action_update_hammer(void) {
 
 void func_802B6820_E256F0(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    CollisionStatus* collisionStatus;
+    CollisionStatus* collisionStatus = &gCollisionStatus;
     f32 yaw;
     f32 angle;
     f32 outSinTheta;
@@ -298,10 +298,6 @@ void func_802B6820_E256F0(void) {
     s32 ten;
     s32 ret;
     s32 i;
-
-    do {
-        collisionStatus = &gCollisionStatus;
-    } while (0); // required to match;
 
     yaw = func_800E5348();
     if (action_hammer_is_swinging_away(playerStatus->trueAnimation)) {

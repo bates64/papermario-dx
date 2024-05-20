@@ -307,9 +307,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         if (!(battleStatus->curAttackElement & DAMAGE_TYPE_NO_CONTACT)
             && (targetPart->eventFlags & ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION)
         ) {
-            do {
-                play_hit_sound(attacker, state->goalPos.x, state->goalPos.y, state->goalPos.z, 3);
-            } while (0); // TODO required to match
+            play_hit_sound(attacker, state->goalPos.x, state->goalPos.y, state->goalPos.z, 3);
             dispatch_event_general(target, EVENT_EXPLODE_TRIGGER);
             return HIT_RESULT_BACKFIRE;
         }

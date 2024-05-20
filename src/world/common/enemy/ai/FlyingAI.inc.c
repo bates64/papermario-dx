@@ -75,32 +75,28 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
         f64 test;
         f32 yTemp;
 
-        do {
-            if (npc->flags & NPC_FLAG_FLYING) {
-                yTemp = temp_f24;
-                test = vt4 + ((temp_f24 - vt4) * 0.09);
-                npc->pos.y = test;
-            } else {
-                posX = npc->pos.x;
-                posY = vt4;
-                posZ = npc->pos.z;
-                posW = 1000.0f;
-                npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
+        if (npc->flags & NPC_FLAG_FLYING) {
+            yTemp = temp_f24;
+            test = vt4 + ((temp_f24 - vt4) * 0.09);
+            npc->pos.y = test;
+        } else {
+            posX = npc->pos.x;
+            posY = vt4;
+            posZ = npc->pos.z;
+            posW = 1000.0f;
+            npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
 
-                yTemp = posY;
-                yTemp += vt3;
-                test = vt4 + ((yTemp - vt4) * 0.09);
-                npc->pos.y = test;
-            }
+            yTemp = posY;
+            yTemp += vt3;
+            test = vt4 + ((yTemp - vt4) * 0.09);
+            npc->pos.y = test;
+        }
 
-            if (fabsf(yTemp - npc->pos.y) < 1.0) {
-                npc->pos.y = yTemp;
-                enemy->varTable[0] &= ~0x10;
-            }
-        } while (0); // required to match
+        if (fabsf(yTemp - npc->pos.y) < 1.0) {
+            npc->pos.y = yTemp;
+            enemy->varTable[0] &= ~0x10;
+        }
     } else {
-        f32 vt1temp = vt1; // required to match
-
         if (enemy->varTable[1] > 0) {
             f32 sinTemp = sin_deg(enemy->varTable[2]);
             s32 hit;
@@ -116,9 +112,9 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             }
 
             if (hit) {
-                npc->pos.y = posY + vt3 + (sinTemp * vt1temp);
+                npc->pos.y = posY + vt3 + (sinTemp * vt1);
             } else {
-                npc->pos.y = temp_f24 + (sinTemp * vt1temp);
+                npc->pos.y = temp_f24 + (sinTemp * vt1);
             }
 
             enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 10);
