@@ -608,7 +608,7 @@ s32 func_8026324C(Actor* actor, Actor* targetActor) {
     return func_80263064(actor, targetActor, TRUE);
 }
 
-void func_80263268(void) {
+void btl_check_can_change_partner(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     Actor* partner = battleStatus->partnerActor;
@@ -643,20 +643,20 @@ void func_80263268(void) {
     }
 }
 
-void func_80263300(void) {
+void btl_init_menu_items(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     PlayerData* playerData = &gPlayerData;
-    s32 cond;
+    s32 hasValidItem;
     s32 i;
 
     battleStatus->menuStatus[0] = 0;
-    cond = FALSE;
+    hasValidItem = FALSE;
 
     for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
         s16 itemID = playerData->invItems[i];
 
-        if (itemID != 0) {
+        if (itemID != ITEM_NONE) {
             ItemData* itemData = &gItemTable[itemID];
 
             if (itemData->typeFlags & ITEM_TYPE_FLAG_BATTLE_USABLE) {
@@ -667,13 +667,13 @@ void func_80263300(void) {
 
                 if (player->targetListLength != 0) {
                     battleStatus->menuStatus[0]++;
-                    cond = TRUE;
+                    hasValidItem = TRUE;
                 }
             }
         }
     }
 
-    if (!cond) {
+    if (!hasValidItem) {
         battleStatus->menuStatus[0] = 0;
     }
 }

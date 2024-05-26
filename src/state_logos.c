@@ -6,6 +6,7 @@
 #include "nu/nusys.h"
 #include "fio.h"
 #include "game_modes.h"
+#include "dx/versioning.h"
 
 void appendGfx_intro_logos(void);
 
@@ -20,18 +21,18 @@ void appendGfx_intro_logos(void);
 #endif
 
 enum LogoStates {
-    LOGOS_STATE_N64_FADE_IN         = 0x00000000,
-    LOGOS_STATE_N64_HOLD            = 0x00000001,
-    LOGOS_STATE_N64_FADE_OUT        = 0x00000002,
-    LOGOS_STATE_NINTENDO_FADE_IN    = 0x00000003,
-    LOGOS_STATE_NINTENDO_HOLD       = 0x00000004,
-    LOGOS_STATE_NINTENDO_FADE_OUT   = 0x00000005,
-    LOGOS_STATE_IS_FADE_IN          = 0x00000006,
-    LOGOS_STATE_IS_HOLD_1           = 0x00000007,
-    LOGOS_STATE_IS_HOLD_2           = 0x00000008,
-    LOGOS_STATE_IS_FADE_OUT         = 0x00000009,
-    LOGOS_STATE_CURTAINS_APPEAR     = 0x0000000A,
-    LOGOS_STATE_CLEANUP             = 0x0000000B,
+    LOGOS_STATE_N64_FADE_IN         = 0x0,
+    LOGOS_STATE_N64_HOLD            = 0x1,
+    LOGOS_STATE_N64_FADE_OUT        = 0x2,
+    LOGOS_STATE_NINTENDO_FADE_IN    = 0x3,
+    LOGOS_STATE_NINTENDO_HOLD       = 0x4,
+    LOGOS_STATE_NINTENDO_FADE_OUT   = 0x5,
+    LOGOS_STATE_IS_FADE_IN          = 0x6,
+    LOGOS_STATE_IS_HOLD_1           = 0x7,
+    LOGOS_STATE_IS_HOLD_2           = 0x8,
+    LOGOS_STATE_IS_FADE_OUT         = 0x9,
+    LOGOS_STATE_CURTAINS_APPEAR     = 0xA,
+    LOGOS_STATE_CLEANUP             = 0xB,
 };
 
 s32 D_800778C0[] = { 0, 0 };
