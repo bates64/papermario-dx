@@ -3,7 +3,6 @@
 [![Release](https://img.shields.io/github/v/release/star-haven/papermario-dx)][releases]
 [![Download](https://img.shields.io/github/downloads/star-haven/papermario-dx/total)][download]
 ![Build Status](https://img.shields.io/github/actions/workflow/status/star-haven/papermario-dx/build.yaml)
-[![Discord Channel][discord-badge]][discord]
 
 This is a fork of the [Paper Mario decompilation][papermario-repo] which provides a flexible, easy-to-use base for creating romhacks.
 
