@@ -9,25 +9,26 @@ typedef struct DisplayListBufferHandle {
 
 typedef DisplayListBufferHandle AnimatedMeshVertexCopyList[0x60];
 
-SHIFT_BSS AnimatedMeshList* gCurrentAnimMeshListPtr;
-SHIFT_BSS s32 gAnimCount;
-SHIFT_BSS AnimatedMeshVertexCopyList D_801533C0;
-SHIFT_BSS AnimatedMeshVertexCopyList D_801536C0;
-SHIFT_BSS AnimatedMeshList D_801539C0;
-SHIFT_BSS AnimatedMeshList D_80153A00;
-SHIFT_BSS s32 gAnimModelFogEnabled;
-SHIFT_BSS s32 gAnimModelFogR;
-SHIFT_BSS s32 gAnimModelFogG;
-SHIFT_BSS s32 gAnimModelFogB;
-SHIFT_BSS s32 gAnimModelFogA;
-SHIFT_BSS s32 gAnimModelFogStart;
-SHIFT_BSS s32 gAnimModelFogEnd;
-SHIFT_BSS s32 gAnimVtxSegment;
-SHIFT_BSS Matrix4f gAnimRotMtx;
-SHIFT_BSS Matrix4f gAnimScaleMtx;
-SHIFT_BSS Matrix4f gAnimTranslateMtx;
-SHIFT_BSS Matrix4f gAnimRotScaleMtx;
-SHIFT_BSS StaticAnimatorNode** gAnimTreeRoot;
+s32 gAnimCount;
+
+BSS AnimatedMeshVertexCopyList D_801533C0;
+BSS AnimatedMeshVertexCopyList D_801536C0;
+BSS AnimatedMeshList D_801539C0;
+BSS AnimatedMeshList D_80153A00;
+BSS AnimatedMeshList* gCurrentAnimMeshListPtr;
+BSS s32 gAnimModelFogEnabled;
+BSS s32 gAnimModelFogR;
+BSS s32 gAnimModelFogG;
+BSS s32 gAnimModelFogB;
+BSS s32 gAnimModelFogA;
+BSS s32 gAnimModelFogStart;
+BSS s32 gAnimModelFogEnd;
+BSS s32 gAnimVtxSegment;
+BSS Matrix4f gAnimRotMtx;
+BSS Matrix4f gAnimScaleMtx;
+BSS Matrix4f gAnimTranslateMtx;
+BSS Matrix4f gAnimRotScaleMtx;
+BSS StaticAnimatorNode** gAnimTreeRoot;
 
 extern Gfx Gfx_RM1_SURFACE_OPA[];
 extern Gfx Gfx_RM1_DECAL_OPA[];
@@ -446,7 +447,7 @@ void update_model_animator(s32 animatorID) {
     if (animator->flags & MODEL_ANIMATOR_FLAG_FREEZE_ANIMATION) {
         return;
     }
-    
+
     animator->flags &= ~MODEL_ANIMATOR_FLAG_UPDATE_PENDING;
     animator->nextUpdateTime -= animator->timeScale;
 
@@ -718,7 +719,7 @@ void render_animated_model(s32 animatorID, Mtx* rootTransform) {
     if (gGameStatusPtr->isBattle && !(animatorID & BATTLE_ID_BIT)) {
         return;
     }
-    
+
     animatorID &= ~BATTLE_ID_BIT;
     animator = (*gCurrentAnimMeshListPtr)[animatorID];
 
@@ -1123,7 +1124,7 @@ void load_model_animator_tree(s32 index, StaticAnimatorNode** tree) {
     if (animator == NULL || animator->flags == 0) {
         return;
     }
-    
+
     gAnimTreeRoot = tree;
     load_model_animator_node(*tree, animator, 0, nodeIDs);
     set_animator_tree_to_node_map(animator, nodeIDs, ARRAY_COUNT(animator->staticNodeIDs));

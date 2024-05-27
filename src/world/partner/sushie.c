@@ -328,7 +328,7 @@ void N(update_riding_physics)(Npc* sushie) {
     }
 }
 
-s32 N(test_ray_to_wall_center)(s32 unused, f32* x, f32* y, f32* z, f32 length, f32 radius, f32* yaw) {
+HitID N(test_ray_to_wall_center)(s32 unused, f32* x, f32* y, f32* z, f32 length, f32 radius, f32* yaw) {
     f32 sinAngle, cosAngle, totalLength;
     f32 hitX, hitY, hitZ;
     f32 hitNx, hitNy, hitNz;

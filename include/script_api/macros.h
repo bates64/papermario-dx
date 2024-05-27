@@ -200,26 +200,10 @@
 ///     }
 /// This macro expands to the given opcode and argv, with argc calculated automatically.
 
-#ifndef PERMUTER
-#ifndef M2CTX
 #define EVT_CMD(opcode, argv...) \
     opcode, \
     (sizeof((Bytecode[]){argv})/sizeof(Bytecode)), \
     ##argv
-#else
-// This definition that passes in 0 for the number of args is used for pycparser since it can't handle varargs
-#define EVT_CMD(opcode, argv...) \
-    opcode, \
-    0, \
-    ##argv
-#endif
-#else
-// This definition that passes in 0 for the number of args is used for pycparser since it can't handle varargs
-#define EVT_CMD(opcode, argv...) \
-    opcode, \
-    0, \
-    ##argv
-#endif
 
 /// Signals the end of EVT script data. A script missing this will likely crash on load.
 #define End                                 EVT_CMD(EVT_OP_END),

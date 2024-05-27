@@ -13,9 +13,8 @@ enum BlinkModes {
 
 BSS b16 D_8010CD10;
 BSS b16 D_8010CD12;
-BSS s32 D_8010CD20;
 
-SHIFT_BSS StatusBar gStatusBar;
+StatusBar gStatusBar;
 
 extern HudScript* TimesHudScript;
 extern HudScript* SPIncrementHudScripts[];
@@ -1108,7 +1107,6 @@ void update_status_bar(void) {
     if (statusBar->spBlinking != BLINK_OFF) {
         if (!showStat) {
             s32 limit = statusBar->spBarsToBlink * 8;
-            do {} while (0);
             if (sp50 < limit) {
                 while (TRUE) {
                     i++; s1++; if (i >= limit) { break; }

@@ -211,11 +211,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 } else if (targetDataList->sortPos.y < 100) {
                     targetDataList->row = 2;
                 } else {
-                    do {
-                        do {
-                            targetDataList->row = 3;
-                        } while (0);
-                    } while (0);
+                    targetDataList->row = 3;
                 }
 
                 // determine nearest target column
@@ -226,9 +222,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 } else if (targetDataList->sortPos.x < 105) {
                     targetDataList->column = 2;
                 } else {
-                    do {
-                        targetDataList->column = 3;
-                    } while (0);
+                    targetDataList->column = 3;
                 }
 
                 // determine nearest target layer
@@ -319,24 +313,18 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         if (target->actorID == ACTOR_PLAYER || target->actorID == ACTOR_PARTNER) {
             continue;
         }
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE) && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE))) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE) && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE))) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
         if ((battleStatus->curTargetListFlags & TARGET_FLAG_AIRLIFT) && (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
             removeTarget = TRUE;
             goto SECOND_PASS_REMOVE;
@@ -369,20 +357,18 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             // skip the current target if any are found
             s32 foundAbove = FALSE;
 
-            do {
-                for (j = 0; j < numTargets; j++) {
-                    otherTarget = &targetDataList[j];
-                    if (target != otherTarget) {
-                        if (target->layer == otherTarget->layer
-                            && target->column == otherTarget->column
-                            && target->row < otherTarget->row
-                        ) {
-                            foundAbove = TRUE;
-                            break;
-                        }
+            for (j = 0; j < numTargets; j++) {
+                otherTarget = &targetDataList[j];
+                if (target != otherTarget) {
+                    if (target->layer == otherTarget->layer
+                        && target->column == otherTarget->column
+                        && target->row < otherTarget->row
+                    ) {
+                        foundAbove = TRUE;
+                        break;
                     }
                 }
-            } while (0);
+            }
 
             if (foundAbove) {
                 removeTarget = TRUE;
@@ -414,60 +400,42 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             }
         }
 
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_NOT_FLYING) && (targetActor->flags & ACTOR_FLAG_FLYING)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row == sampleRow + 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row == sampleRow - 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column == sampleCol - 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column == sampleCol + 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row < sampleRow) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row > sampleRow) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column > sampleCol) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column < sampleCol) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_NOT_FLYING) && (targetActor->flags & ACTOR_FLAG_FLYING)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row == sampleRow + 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row == sampleRow - 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column == sampleCol - 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column == sampleCol + 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row < sampleRow) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row > sampleRow) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column > sampleCol) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column < sampleCol) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
 
         // target passed all checks, do not remove
         removeTarget = FALSE;
@@ -739,23 +707,21 @@ void btl_init_menu_boots(void) {
     battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
 
     // Jump badges
-    do {
-        for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-            s16 badge = playerData->equippedBadges[i];
+    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
+        s16 badge = playerData->equippedBadges[i];
 
-            if (badge != ITEM_NONE) {
-                MoveData* moveTable = gMoveTable;
-                u8 moveID = gItemTable[badge].moveID;
+        if (badge != ITEM_NONE) {
+            MoveData* moveTable = gMoveTable;
+            u8 moveID = gItemTable[badge].moveID;
 
-                move = &moveTable[moveID];
-                if (move->category == MOVE_TYPE_JUMP) {
-                    battleStatus->submenuMoves[moveCount] = moveID;
-                    battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                    moveCount++;
-                }
+            move = &moveTable[moveID];
+            if (move->category == MOVE_TYPE_JUMP) {
+                battleStatus->submenuMoves[moveCount] = moveID;
+                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
+                moveCount++;
             }
         }
-    } while (0);
+    }
 
     battleStatus->submenuMoveCount = moveCount;
 
@@ -835,21 +801,19 @@ void btl_init_menu_hammer(void) {
     battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
 
     // Hammer badges
-    do {
-        for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-            s16 badge = playerData->equippedBadges[i];
-            if (badge != MOVE_NONE) {
-                MoveData* moveTable = gMoveTable;
-                u8 moveID = gItemTable[badge].moveID;
-                move = &moveTable[moveID];
-                if (move->category == MOVE_TYPE_HAMMER) {
-                    battleStatus->submenuMoves[moveCount] = moveID;
-                    battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                    moveCount++;
-                }
+    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
+        s16 badge = playerData->equippedBadges[i];
+        if (badge != MOVE_NONE) {
+            MoveData* moveTable = gMoveTable;
+            u8 moveID = gItemTable[badge].moveID;
+            move = &moveTable[moveID];
+            if (move->category == MOVE_TYPE_HAMMER) {
+                battleStatus->submenuMoves[moveCount] = moveID;
+                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
+                moveCount++;
             }
         }
-    } while (0);
+    }
 
     battleStatus->submenuMoveCount = moveCount;
 
@@ -2398,17 +2362,15 @@ void show_damage_fx(Actor* actor, f32 x, f32 y, f32 z, s32 damage) {
         intensity = DAMAGE_INTENSITY_EXTREME;
     }
 
-    do {
-        if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
-            fx_ring_blast(0, x, y, z, 1.0f, 24);
-        } else if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
-            apply_shock_effect(actor);
-        } else if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
-            fx_water_splash(0, x, y, z, 1.0f, 24);
-        } else {
-            fx_firework(0, x, y, z, 1.0, intensity);
-        }
-    } while (0); // required to match
+    if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
+        fx_ring_blast(0, x, y, z, 1.0f, 24);
+    } else if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
+        apply_shock_effect(actor);
+    } else if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
+        fx_water_splash(0, x, y, z, 1.0f, 24);
+    } else {
+        fx_firework(0, x, y, z, 1.0, intensity);
+    }
 }
 
 // grossness
@@ -2634,20 +2596,17 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
 }
 
 s32 inflict_status_set_duration(Actor* actor, s32 statusTypeKey, s32 statusDurationKey, s32 duration) {
-    s32 var0 = duration; // TODO required to match, look into
     s32 statusDuration = 0;
 
     if (actor->statusTable == NULL || lookup_status_chance(actor->statusTable, statusTypeKey) > 0) {
-        statusDuration = var0;
+        statusDuration = duration;
     }
 
     if (statusDuration > 0) {
         return inflict_status(actor, statusTypeKey, statusDuration);
     } else {
-        var0 = 0;
+        return 0;
     }
-
-    return 0;
 }
 
 void set_part_pal_adjustment(ActorPart* part, s32 palAdjust) {
@@ -2663,16 +2622,13 @@ void set_part_pal_adjustment(ActorPart* part, s32 palAdjust) {
 }
 
 void set_actor_pal_adjustment(Actor* actor, s32 palAdjust) {
-    ActorPart* partIt = &actor->partsTable[0];
-
-    while (partIt != NULL) {
-        if (!(partIt->flags & ACTOR_PART_FLAG_INVISIBLE)
-            && (partIt->idleAnimations != NULL)
-            && !(partIt->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
+        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE)
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
         ) {
-            set_part_pal_adjustment(partIt, palAdjust);
+            set_part_pal_adjustment(part, palAdjust);
         }
-        partIt = partIt->nextPart;
     }
 }
 
@@ -2682,27 +2638,21 @@ void clear_part_pal_adjustment(ActorPart* part) {
     }
 }
 
-// TODO: improve match
 void clear_actor_static_pal_adjustments(Actor* actor) {
-    ActorPart* part = actor->partsTable;
-    s8 e = ACTOR_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS;
-    s8 f = ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS;
-
-    while (part != NULL) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
-                && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
-                && (part->idleAnimations != NULL)
-                && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
+            && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            if (decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS
+             && decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS
             ) {
-                if (decorations->paletteAdjustment != e && decorations->paletteAdjustment != f) {
-                    decorations->paletteAdjustment = ACTOR_PAL_ADJUST_NONE;
-                }
+                decorations->paletteAdjustment = ACTOR_PAL_ADJUST_NONE;
             }
-        } while (0); // required to match
-        part = part->nextPart;
+        }
     }
 }
 
@@ -2719,9 +2669,7 @@ void set_part_glow_pal(ActorPart* part, s32 glowState) {
 }
 
 void set_actor_glow_pal(Actor* actor, s32 glowState) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
             && (part->idleAnimations != NULL)
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2738,19 +2686,15 @@ void clear_part_glow_pal(ActorPart* part) {
 }
 
 void clear_actor_glow_pal(Actor* actor) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
-                && part->idleAnimations != NULL
-                && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-            ) {
-                decorations->glowState = GLOW_PAL_OFF;
-            }
-        } while (0); // required to match
+        if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
+            && part->idleAnimations != NULL
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            decorations->glowState = GLOW_PAL_OFF;
+        }
     }
 }
 
@@ -2767,9 +2711,7 @@ void set_part_flash_mode(ActorPart* part, s32 flashState) {
 }
 
 void set_actor_flash_mode(Actor* actor, s32 flashState) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
             && part->decorationTable != NULL
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2787,19 +2729,15 @@ void clear_part_flash_mode(ActorPart* part) {
 }
 
 void clear_actor_flash_mode(Actor* actor) {
-    ActorPart* part;
-
-   for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+   for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE)) &&
-                (part->idleAnimations != NULL) &&
-                !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
-            {
-                decorations->flashState = 0;
-            }
-        } while (0); // TODO make match better
+        if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            decorations->flashState = 0;
+        }
     }
 }
 
@@ -2816,8 +2754,7 @@ void add_part_decoration(ActorPart* part, s32 decorationIndex, s32 decorationTyp
 }
 
 void add_actor_decoration(Actor* actor, s32 decorationIndex, s32 decorationType) {
-    ActorPart* part;
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
             && part->idleAnimations
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2832,11 +2769,9 @@ void remove_part_decoration(ActorPart* part, s32 decorationIndex) {
 }
 
 void remove_actor_decoration(Actor* actor, s32 decorationIndex) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
-            && part->idleAnimations
+            && part->idleAnimations != NULL
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
         ) {
             remove_part_decoration(part, decorationIndex);

@@ -39,29 +39,27 @@
 #include "partner/twink.h"
 #include "sprite/npc/Twink.h"
 
-extern s32 D_8010CD20;
-
-SHIFT_BSS PartnerStatus gPartnerStatus;
-SHIFT_BSS Npc* wPartnerNpc;
+PartnerStatus gPartnerStatus;
+Npc* wPartnerNpc;
 
 BSS s32 PartnerCommandState;
 BSS PlayerPathElement gPlayerMoveHistory[40];
 BSS s32 gPlayerMoveHistoryIndex;
 BSS s32 D_8010CFBC;
-SHIFT_BSS f32 wPartnerTetherDistance;
-SHIFT_BSS s32 D_8010CFC4;
-SHIFT_BSS s16 wPartnerFollowState;
-SHIFT_BSS s16 D_8010CFCA;
-SHIFT_BSS s16 D_8010CFCC;
-SHIFT_BSS s16 D_8010CFCE;
-SHIFT_BSS s32 wPartnerNpcIndex;
-SHIFT_BSS Evt* wPartnerCurrentScript;
-SHIFT_BSS s32 wCurrentPartnerId;
-SHIFT_BSS s32 wPartnerCurrentScriptID;
-SHIFT_BSS s32 D_8010CFE0;
-SHIFT_BSS s32 NextPartnerID;
-SHIFT_BSS s32 NextPartnerCommand;
-SHIFT_BSS WorldPartner* wPartner;
+BSS f32 wPartnerTetherDistance;
+BSS s32 D_8010CFC4;
+BSS s16 wPartnerFollowState;
+BSS s16 D_8010CFCA;
+BSS s16 D_8010CFCC;
+BSS s16 D_8010CFCE;
+BSS s32 wPartnerNpcIndex;
+BSS Evt* wPartnerCurrentScript;
+BSS s32 wCurrentPartnerId;
+BSS s32 wPartnerCurrentScriptID;
+BSS s32 D_8010CFE0;
+BSS s32 NextPartnerID;
+BSS s32 NextPartnerCommand;
+BSS WorldPartner* wPartner;
 
 extern HudScript HES_Partner0;
 extern HudScript HES_Goombario;
@@ -195,12 +193,7 @@ HudScript* SPStarHudScripts[] = { &HES_StatusStar1, &HES_StatusStar3, &HES_Statu
 };
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };
-UseItemStruct UseItemDmaArgs = {
-    world_use_item_ROM_START,
-    world_use_item_ROM_END,
-    &EVS_World_UseItem,
-    0
-};
+
 s32 D_800F8020 = 0;
 s32 wPartnerMoveGoalX = 0;
 s32 wPartnerMoveGoalZ = 0;
@@ -513,7 +506,14 @@ PartnerAnimations gPartnerAnimations[] = {
     }},
 };
 
-f32 D_800F84F8 = 0.0f;
+UseItemStruct UseItemDmaArgs = {
+    world_use_item_ROM_START,
+    world_use_item_ROM_END,
+    &EVS_World_UseItem,
+    0
+};
+
+BSS s32 D_8010CD20;
 
 s32 use_consumable(s32 invSlot) {
     Evt* script;
@@ -530,6 +530,8 @@ void remove_consumable(void) {
     gPlayerData.invItems[D_8010CD20] = ITEM_NONE;
     sort_consumables();
 }
+
+f32 D_800F84F8 = 0.0f;
 
 s32 func_800EA4B0(s32 collisionID) {
     s32 ret = TRUE;

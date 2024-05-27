@@ -101,9 +101,9 @@ enum {
 #define WORLD_TEXTURE_MEMORY_SIZE 0x20000
 #define BATTLE_TEXTURE_MEMORY_SIZE 0x8000
 
-SHIFT_BSS u8* gBackgroundTintModePtr; // NOTE: the type for this u8 is TintMode, as shown in SetModelTintMode
-SHIFT_BSS ModelList* gCurrentModels;
-SHIFT_BSS ModelTreeInfoList* gCurrentModelTreeNodeInfo;
+u8* gBackgroundTintModePtr; // NOTE: the type for this u8 is TintMode, as shown in SetModelTintMode
+ModelList* gCurrentModels;
+ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 
 extern Addr TextureHeap;
 
@@ -1303,57 +1303,55 @@ s32 RenderTaskBasePriorities[] = {
     [RENDER_MODE_CLOUD_NO_ZB]               =  700000,
 };
 
-b8 D_8014C248 = FALSE; // possibly a 'warm-up done' flag for boot. never read.
+ModelCustomGfxBuilderList* gCurrentCustomModelGfxBuildersPtr;
+ModelNode** gCurrentModelTreeRoot;
+ModelTransformGroupList* gCurrentTransformGroups;
+ModelCustomGfxList* gCurrentCustomModelGfxPtr;
 
-SHIFT_BSS ModelCustomGfxBuilderList* gCurrentCustomModelGfxBuildersPtr;
-SHIFT_BSS ModelNode** gCurrentModelTreeRoot;
-SHIFT_BSS ModelTransformGroupList* gCurrentTransformGroups;
-SHIFT_BSS ModelCustomGfxList* gCurrentCustomModelGfxPtr;
+BSS TextureHeader gCurrentTextureHeader ALIGNED(16);
 
-SHIFT_BSS TextureHeader gCurrentTextureHeader ALIGNED(16);
+BSS ModelList wModelList;
+BSS ModelList bModelList;
 
-SHIFT_BSS ModelList wModelList;
-SHIFT_BSS ModelList bModelList;
+BSS ModelTransformGroupList wTransformGroups;
+BSS ModelTransformGroupList bTransformGroups;
 
-SHIFT_BSS ModelTransformGroupList wTransformGroups;
-SHIFT_BSS ModelTransformGroupList bTransformGroups;
+BSS ModelCustomGfxList wCustomModelGfx;
+BSS ModelCustomGfxList bCustomModelGfx;
 
-SHIFT_BSS ModelCustomGfxList wCustomModelGfx;
-SHIFT_BSS ModelCustomGfxList bCustomModelGfx;
+BSS ModelCustomGfxBuilderList wCustomModelGfxBuilders;
+BSS ModelCustomGfxBuilderList bCustomModelGfxBuilders;
+BSS ModelLocalVertexCopyList wModelLocalVtxBuffers;
+BSS ModelLocalVertexCopyList bModelLocalVtxBuffers;
+BSS ModelLocalVertexCopyList* gCurrentModelLocalVtxBuffers;
 
-SHIFT_BSS ModelCustomGfxBuilderList wCustomModelGfxBuilders;
-SHIFT_BSS ModelCustomGfxBuilderList bCustomModelGfxBuilders;
-SHIFT_BSS ModelLocalVertexCopyList wModelLocalVtxBuffers;
-SHIFT_BSS ModelLocalVertexCopyList bModelLocalVtxBuffers;
-SHIFT_BSS ModelLocalVertexCopyList* gCurrentModelLocalVtxBuffers;
+BSS ModelNode* wModelTreeRoot;
+BSS ModelNode* bModelTreeRoot;
+BSS ModelTreeInfoList wModelTreeNodeInfo;
+BSS ModelTreeInfoList bModelTreeNodeInfo;
 
-SHIFT_BSS ModelNode* wModelTreeRoot;
-SHIFT_BSS ModelNode* bModelTreeRoot;
-SHIFT_BSS ModelTreeInfoList wModelTreeNodeInfo;
-SHIFT_BSS ModelTreeInfoList bModelTreeNodeInfo;
+BSS s8 wBackgroundTintMode;
+BSS s8 bBackgroundTintMode;
+BSS s32 TreeIterPos;
+BSS FogSettings wFogSettings;
+BSS FogSettings bFogSettings;
+BSS FogSettings* gFogSettings;
+BSS s32 texPannerMainU[MAX_TEX_PANNERS];
+BSS s32 texPannerMainV[MAX_TEX_PANNERS];
+BSS s32 texPannerAuxU[MAX_TEX_PANNERS];
+BSS s32 texPannerAuxV[MAX_TEX_PANNERS];
+BSS void* TextureHeapPos;
+BSS u16 mtg_IterIdx;
+BSS u16 mtg_SearchModelID;
+BSS ModelNode* mtg_FoundModelNode;
+BSS u16 mtg_MinChild;
+BSS u16 mtg_MaxChild;
+BSS u16 DepthCopyBuffer[16];
+BSS RenderTask* RenderTaskLists[3];
+BSS s32 RenderTaskListIdx;
+BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
 
-SHIFT_BSS s8 wBackgroundTintMode;
-SHIFT_BSS s8 bBackgroundTintMode;
-SHIFT_BSS s32 TreeIterPos;
-SHIFT_BSS FogSettings wFogSettings;
-SHIFT_BSS FogSettings bFogSettings;
-SHIFT_BSS FogSettings* gFogSettings;
-SHIFT_BSS s32 texPannerMainU[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerMainV[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerAuxU[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerAuxV[MAX_TEX_PANNERS];
-SHIFT_BSS void* TextureHeapPos;
-SHIFT_BSS u16 mtg_IterIdx;
-SHIFT_BSS ModelNode* mtg_FoundModelNode;
-SHIFT_BSS u16 mtg_MinChild;
-SHIFT_BSS u16 mtg_MaxChild;
-SHIFT_BSS u16 mtg_SearchModelID;
-SHIFT_BSS RenderTask* RenderTaskLists[NUM_RENDER_TASK_LISTS];
-SHIFT_BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
-
-SHIFT_BSS TextureHandle TextureHandles[128];
-
-SHIFT_BSS u16 DepthCopyBuffer[16];
+TextureHandle TextureHandles[128];
 
 extern Addr BattleEntityHeapBottom; // todo ???
 
@@ -1365,8 +1363,6 @@ void make_texture_gfx(TextureHeader*, Gfx**, IMG_PTR raster, PAL_PTR palette, IM
 void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTxMtx, s32 treeDepth);
 s32 is_identity_fixed_mtx(Mtx* mtx);
 void build_custom_gfx(void);
-
-MATCHING_BSS(0x3A0);
 
 void appendGfx_model(void* data) {
     Model* model = data;

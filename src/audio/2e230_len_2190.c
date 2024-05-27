@@ -1,27 +1,19 @@
 #include "audio.h"
 #include "ld_addrs.h"
 
-SHIFT_BSS AuCallback BeginSoundUpdateCallback;
-SHIFT_BSS BGMPlayer* gBGMPlayerA;
-SHIFT_BSS BGMPlayer* gBGMPlayerB;
-SHIFT_BSS BGMPlayer* gBGMPlayerC;
-SHIFT_BSS SoundManager* gSoundManager;
-SHIFT_BSS AuGlobals* gSoundGlobals;
-SHIFT_BSS AmbienceManager* gAuAmbienceManager;
+AuCallback BeginSoundUpdateCallback;
+BGMPlayer* gBGMPlayerA;
+BGMPlayer* gBGMPlayerB;
+BGMPlayer* gBGMPlayerC;
+SoundManager* gSoundManager;
+AuGlobals* gSoundGlobals;
+AmbienceManager* gAuAmbienceManager;
 
 // data
 extern u16 D_80078530[9];
 extern u8 EnvelopePressDefault[];
 extern u8 EnvelopeReleaseDefault[];
 extern f32 AlTuneScaling[];
-
-#ifdef SHIFT
-#define SBN_ROM_OFFSET (s32) audio_ROM_START
-#elif VERSION_JP
-#define SBN_ROM_OFFSET 0xFC0000
-#else
-#define SBN_ROM_OFFSET 0xF00000
-#endif
 
 void func_80052E30(u8 index) {
     AuVoice* voice = &gSoundGlobals->voices[index];
@@ -79,7 +71,7 @@ void au_engine_init(s32 outputRate) {
         globals->unk_globals_6C[i].unk_5 = 0;
     }
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(globals->effectChanges); i++) {
         globals->effectChanges[i].type = AU_FX_NONE;
         globals->effectChanges[i].changed = FALSE;
     }
@@ -101,7 +93,7 @@ void au_engine_init(s32 outputRate) {
         voice->priority = AU_PRIORITY_FREE;
     }
 
-    au_load_INIT(globals, SBN_ROM_OFFSET, alHeap);
+    au_load_INIT(globals, audio_ROM_START, alHeap);
 
     for (i = 0; i < ARRAY_COUNT(globals->banks); i++) {
         globals->banks[i] = alHeapAlloc(alHeap, 1, 0x840);

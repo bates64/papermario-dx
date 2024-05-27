@@ -5,8 +5,6 @@
 #include "sprite.h"
 #include "dx/debug_menu.h"
 
-s32 D_802946E0[] = { 100, 100, 100, 110, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130 };
-
 s32 has_enchanted_part(Actor* actor) {
     ActorPart* partIt = actor->partsTable;
     s32 ret = FALSE;
@@ -309,9 +307,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         if (!(battleStatus->curAttackElement & DAMAGE_TYPE_NO_CONTACT)
             && (targetPart->eventFlags & ACTOR_EVENT_FLAG_EXPLODE_ON_IGNITION)
         ) {
-            do {
-                play_hit_sound(attacker, state->goalPos.x, state->goalPos.y, state->goalPos.z, 3);
-            } while (0); // TODO required to match
+            play_hit_sound(attacker, state->goalPos.x, state->goalPos.y, state->goalPos.z, 3);
             dispatch_event_general(target, EVENT_EXPLODE_TRIGGER);
             return HIT_RESULT_BACKFIRE;
         }
@@ -2702,6 +2698,15 @@ API_CALLABLE(RemoveActor) {
     return ApiStatus_DONE2;
 }
 
+/// Star Point multiplier, indexed by actor count.
+/// +10% multiplier for three actors
+/// +30% multiplier for four or more actors
+s32 StarPointMultiplier[] = {
+    100, 100, 100,
+    110,
+    130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130,
+};
+
 API_CALLABLE(DropStarPoints) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
@@ -2731,7 +2736,7 @@ API_CALLABLE(DropStarPoints) {
 
     ntd = 0.0f;
     if (!(enemyLevel < playerLevel)) {
-        ntd = ((enemyLevel - playerLevel) * 0.5f) * D_802946E0[battleStatus->initialEnemyCount];
+        ntd = ((enemyLevel - playerLevel) * 0.5f) * StarPointMultiplier[battleStatus->initialEnemyCount];
         ntd = (ntd + 50.0f) / 100.0f;
     }
     numToDrop = ntd;

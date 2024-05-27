@@ -42,8 +42,6 @@ enum N(ActorParams) {
 
 static s32 N(unusedArray)[64];
 
-MATCHING_BSS(0x8A0);
-
 BSS u8 Vine3Base[0x2000];
 BSS u8 Vine2Base[0x3000];
 BSS u8 Vine1Base[0x3000];

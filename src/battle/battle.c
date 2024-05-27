@@ -6,17 +6,17 @@
 #include "sprite.h"
 #include "game_modes.h"
 
-SHIFT_BSS StageListRow* gCurrentStagePtr;
-SHIFT_BSS s32 gBattleState;
-SHIFT_BSS BattleStatus gBattleStatus;
-SHIFT_BSS s32 gLastDrawBattleState;
-SHIFT_BSS s32 gDefeatedBattleSubstate;
-SHIFT_BSS s32 gBattleSubState;
-SHIFT_BSS s32 gDefeatedBattleState;
-SHIFT_BSS s32 gCurrentBattleID;
-SHIFT_BSS s32 gCurrentStageID;
-SHIFT_BSS Battle* gOverrideBattlePtr;
-SHIFT_BSS Battle* gCurrentBattlePtr;
+BSS StageListRow* gCurrentStagePtr;
+BSS s32 gBattleState;
+BSS BattleStatus gBattleStatus;
+BSS s32 gLastDrawBattleState;
+BSS s32 gDefeatedBattleSubstate;
+BSS s32 gBattleSubState;
+BSS s32 gDefeatedBattleState;
+BSS s32 gCurrentBattleID;
+BSS s32 gCurrentStageID;
+BSS Battle* gOverrideBattlePtr;
+BSS Battle* gCurrentBattlePtr;
 
 // standard battle area table entry
 #define BTL_AREA(id, jpName) { \

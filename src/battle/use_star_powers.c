@@ -123,5 +123,3 @@ API_CALLABLE(LoadStarPowerScript) {
     script->varTable[0] = (s32) (&StarPowersTable[starPowerIdx])->mainScript;
     return ApiStatus_DONE2;
 }
-
-MATCHING_BSS(0x1390);

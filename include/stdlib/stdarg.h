@@ -90,9 +90,7 @@ typedef void *__gnuc_va_list;
  (AP = ((__gnuc_va_list) __builtin_next_arg (LASTARG)))
 
 #undef va_end
-#ifndef M2CTX
 void va_end (__gnuc_va_list);		/* Defined in libgcc.a */
-#endif
 #define va_end(AP)	((void)0)
 
 /* We cast to void * and then to TYPE * because this avoids

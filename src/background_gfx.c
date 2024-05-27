@@ -31,8 +31,6 @@ Gfx D_80074230[] = {
     gsSPEndDisplayList(),
 };
 
-//extern s32 timeFreezeMode; // TODO bss
-
 void gfx_init_state(void) {
     gSPSegment(gMainGfxPos++, 0x00, 0x0);
     gSPDisplayList(gMainGfxPos++, OS_K0_TO_PHYSICAL(D_80074230));
@@ -49,18 +47,19 @@ s32 gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s3
 }
 
 void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u16* out) {
+    #define RGBA_BUF_SIZE 32
     Color_RGBA8 sp0;
     Color_RGBA8 sp8;
     Color_RGBA8 final;
-    u8 rs[0x20];
-    u8 gs[0x20];
-    u8 bs[0x20];
+    u8 rs[RGBA_BUF_SIZE];
+    u8 gs[RGBA_BUF_SIZE];
+    u8 bs[RGBA_BUF_SIZE];
     s32 i;
 
     sp8 = filterBuf1;
     sp0 = filterBuf1;
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         rs[i] = 0;
         gs[i] = 0;
         bs[i] = 0;
@@ -74,13 +73,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         }
     }
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (rs[i] != 0) {
             rs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(rs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (rs[i] != 0) {
             break;
         }
@@ -89,13 +88,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.r = i;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (gs[i] != 0) {
             gs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(gs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (gs[i] != 0) {
             break;
         }
@@ -104,13 +103,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.g = i;
     }
 
-    for (i = 0; i < ARRAY_COUNT(bs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (bs[i] != 0) {
             bs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(bs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (bs[i] != 0) {
             break;
         }
@@ -119,7 +118,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.b = i;
     }
 
-    for (i = ARRAY_COUNT(rs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (rs[i] != 0) {
             break;
         }
@@ -128,7 +127,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp8.r = i;
     }
 
-    for (i = ARRAY_COUNT(gs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (gs[i] != 0) {
             break;
         }
@@ -137,7 +136,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp8.g = i;
     }
 
-    for (i = ARRAY_COUNT(bs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (bs[i] != 0) {
             break;
         }
@@ -155,17 +154,19 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
     final.b = ((filterBuf1.b * filterBuf1.a) + (final.b * (8 - filterBuf1.a))) >> 3;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
+    #undef RGBA_BUF_SIZE
 }
 
 void func_80027600(Color_RGBA8* arg0, s16* out) {
+    #define RGBA_BUF_SIZE 32
     Color_RGBA8 final;
-    u8 rs[0x20];
-    u8 gs[0x20];
-    u8 bs[0x20];
+    u8 rs[RGBA_BUF_SIZE];
+    u8 gs[RGBA_BUF_SIZE];
+    u8 bs[RGBA_BUF_SIZE];
     s32 i;
     s32 sum;
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         rs[i] = 0;
         gs[i] = 0;
         bs[i] = 0;
@@ -178,7 +179,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     }
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += rs[i];
         if (sum >= 5) {
             break;
@@ -187,7 +188,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.r = i;
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(gs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += gs[i];
         if (sum >= 5) {
             break;
@@ -196,7 +197,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.g = i;
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(bs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += bs[i];
         if (sum >= 5) {
             break;
@@ -205,6 +206,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.b = i;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
+    #undef RGBA_BUF_SIZE
 }
 
 void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {

@@ -603,7 +603,7 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
             break;
     }
 
-    // show aim dot hud element in center of 
+    // show aim dot hud element in center of
     switch (script->functionTemp[0]) {
         case SPINY_FLIP_DELAY:
         case SPINY_FLIP_AIMING:
@@ -1795,5 +1795,3 @@ EvtScript N(EVS_Move_Hurricane) = {
     Return
     End
 };
-
-MATCHING_BSS(0xCC0);

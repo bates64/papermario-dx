@@ -113,16 +113,12 @@ typedef ImgFXState ImgFXInstanceList[MAX_IMGFX_INSTANCES];
 
 extern HeapNode heap_spriteHead;
 
-SHIFT_BSS ImgFXWorkingTexture ImgFXCurrentTexture;
-SHIFT_BSS Vtx* ImgFXVtxBuffers[2];
-SHIFT_BSS Vtx* imgfx_vtxBuf;
-SHIFT_BSS ImgFXInstanceList* ImgFXInstances;
-SHIFT_BSS s8 D_80156958[2];
-SHIFT_BSS s32 D_80156960[2];
-SHIFT_BSS s32 D_80156968[2];
-SHIFT_BSS s8 D_80156970;
-SHIFT_BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
-SHIFT_BSS ImgFXCacheEntry ImgFXDataCache[8];
+BSS ImgFXWorkingTexture ImgFXCurrentTexture;
+BSS Vtx* ImgFXVtxBuffers[2];
+BSS Vtx* imgfx_vtxBuf;
+BSS ImgFXInstanceList* ImgFXInstances;
+BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
+BSS ImgFXCacheEntry ImgFXDataCache[8];
 
 // Data
 ImgFXWorkingTexture* ImgFXCurrentTexturePtr = &ImgFXCurrentTexture;
@@ -256,13 +252,6 @@ void imgfx_init(void) {
     for (i = 0; i < ARRAY_COUNT(*ImgFXInstances); i++) {
         imgfx_init_instance(&(*ImgFXInstances)[i]);
         imgfx_clear_instance_data(&(*ImgFXInstances)[i]);
-    }
-
-    for (i = 0; i < ARRAY_COUNT(D_80156958); i++) {
-        D_80156958[i] = -1;
-        D_80156960[i] = 0;
-        D_80156968[i] = 0;
-        D_80156970 = 0;
     }
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {

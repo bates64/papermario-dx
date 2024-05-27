@@ -256,7 +256,7 @@ API_CALLABLE(N(ProcessTidalWave)) {
                         state->angle = 270.0f - (clamp_angle(state->angle + 180.0f) - 270.0f);
                         state->bounceDivisor = rand_int(4) - 2;
                     }
-                } while (0);
+                } while (0); // TODO macro?
 
                 if (script->functionTemp[2] != 0) {
                     sfx_play_sound_at_position(SOUND_TIDAL_WAVE_LEAP_A, SOUND_SPACE_DEFAULT, state->curPos.x, state->curPos.y, state->curPos.z);

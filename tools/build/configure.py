@@ -69,7 +69,7 @@ def write_ninja_rules(
 
     CPPFLAGS_272 = CPPFLAGS_COMMON + " -nostdinc"
 
-    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -DBBPLAYER -nostdinc"
+    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -nostdinc"
 
     CPPFLAGS = "-w " + CPPFLAGS_COMMON + " -nostdinc"
 
@@ -327,25 +327,6 @@ def write_ninja_rules(
     ninja.rule("effect_data", command=f"$python {BUILD_TOOLS}/effects.py $in_yaml $out_dir")
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
-
-    with Path("tools/permuter_settings.toml").open("w") as f:
-        f.write(f"compiler_command = \"{cc} {CPPFLAGS.replace('$version', 'pal')} {cflags} -DPERMUTER -fforce-addr\"\n")
-        f.write(f'assembler_command = "{cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude"\n')
-        f.write(f'compiler_type = "gcc"\n')
-        f.write(
-            """
-[preserve_macros]
-"gs?[DS]P.*" = "void"
-OVERRIDE_FLAG_CHECK = "int"
-OS_K0_TO_PHYSICAL = "int"
-"G_.*" = "int"
-"TEXEL.*" = "int"
-PRIMITIVE = "int"
-
-[decompme.compilers]
-"tools/build/cc/gcc/gcc" = "gcc2.8.1"
-"""
-        )
 
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
@@ -648,6 +629,13 @@ class Configure:
 
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
                 build(entry.object_path, entry.src_paths, "as")
+            elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
+                cppflags = f"-DVERSION_{self.version.upper()}"
+
+                if version == "ique" and seg.name.startswith("os/"):
+                    cppflags += " -DBBPLAYER"
+
+                build(entry.object_path, entry.src_paths, "as", variables={"cppflags": cppflags})
             elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
                 and not seg.type[0] == "."
@@ -703,6 +691,14 @@ class Configure:
 
                 if task == "cc_modern":
                     cppflags += " -DMODERN_COMPILER"
+
+                if version == "ique":
+                    if "nusys" in entry.src_paths[0].parts:
+                        pass
+                    elif "os" in entry.src_paths[0].parts:
+                        cppflags += " -DBBPLAYER"
+                    elif entry.src_paths[0].parts[-2] == "bss":
+                        cppflags += " -DBBPLAYER"
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
                 if version == "ique":

@@ -21,12 +21,13 @@
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-SHIFT_BSS MapSettings gMapSettings;
-SHIFT_BSS MapConfig* gMapConfig;
-SHIFT_BSS char wMapHitName[0x18];
-SHIFT_BSS char wMapShapeName[0x18];
-SHIFT_BSS char wMapTexName[0x18];
-SHIFT_BSS char wMapBgName[0x18];
+BSS MapConfig* gMapConfig;
+BSS MapSettings gMapSettings;
+
+char wMapHitName[0x18];
+char wMapShapeName[0x18];
+char wMapTexName[0x18];
+char wMapBgName[0x14];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 

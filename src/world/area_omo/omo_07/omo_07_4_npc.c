@@ -41,15 +41,10 @@ enum {
 
 API_CALLABLE(N(SetShyGuyPoolState)) {
     Bytecode* args = script->ptrReadPos;
-    s32 base;
     s32 npcID;
     s32 value;
 
-    base = AF_OMO07_NpcPool0;
-    do {
-        npcID = evt_get_variable(script, *(args++));
-    } while (0); // TODO required to match
-    npcID += base;
+    npcID = AF_OMO07_NpcPool0 + evt_get_variable(script, *args++);
     value = evt_get_variable(script, *args++);
 
     evt_set_variable(script, npcID, value);

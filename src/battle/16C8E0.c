@@ -937,8 +937,6 @@ void btl_draw_enemy_health_bars(void) {
     }
 }
 
-NOP_FIX
-
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 cond;

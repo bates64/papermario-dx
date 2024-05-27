@@ -8,8 +8,8 @@ void player_surface_spawn_snow_fx(void);
 void player_surface_spawn_hedges_fx(void);
 void player_surface_spawn_water_fx(void);
 
-SHIFT_BSS s32 PrevTimeInAir;
-SHIFT_BSS s32 LandedTimeInAir;
+BSS s32 PrevTimeInAir;
+BSS s32 LandedTimeInAir;
 
 s32 PrevSurfaceType = SURFACE_TYPE_DEFAULT;
 

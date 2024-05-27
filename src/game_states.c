@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game_modes.h"
 
-SHIFT_BSS GameMode gMainGameMode[2];
+BSS GameMode gMainGameMode[2];
 
 void mode_default_nop(void) {
 }

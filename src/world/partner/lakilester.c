@@ -1211,5 +1211,3 @@ EvtScript EVS_WorldLakilester_EnterMap = {
     Return
     End
 };
-
-MATCHING_BSS(0xB0);

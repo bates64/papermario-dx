@@ -1296,15 +1296,11 @@ s32 evt_handle_print_debug_var(Evt* script) {
         sprintf(evtDebugPrintBuffer, "LF(%3d)  [%d]", var, script->varFlags[var / 32] & (1 << flagBitPos));
     } else if (var <= EVT_MAP_VAR_CUTOFF) {
         s32 mapVar;
-        s32 temp;
 
-        do {
-            var = EVT_INDEX_OF_MAP_VAR(var);
-            mapVar = gMapVars[var];
-            temp = EVT_LIMIT;
-        } while (0);
+        var = EVT_INDEX_OF_MAP_VAR(var);
+        mapVar = gMapVars[var];
 
-        if (mapVar <= temp) {
+        if (mapVar <= EVT_LIMIT) {
             sprintf(evtDebugPrintBuffer, "GW(%3d)  [%08X]", mapVar);
         } else if (mapVar <= EVT_FIXED_CUTOFF) {
             sprintf(evtDebugPrintBuffer, "GW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(mapVar));
@@ -2031,14 +2027,14 @@ Bytecode* evt_find_label(Evt* script, s32 arg1) {
         return (Bytecode*) arg1;
     }
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
         if (script->labelIndices[i] == arg1) {
             ret = script->labelPositions[i];
             break;
         }
     }
 
-    ASSERT(i < 16);
+    ASSERT(i < ARRAY_COUNT(script->labelIndices));
     return ret;
 }
 

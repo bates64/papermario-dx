@@ -42,21 +42,21 @@ u8 IntroMessageIdx = 0;
 extern s32 D_80200000;
 extern ShapeFile gMapShapeData;
 
-SHIFT_BSS s8 D_800A0930;
-SHIFT_BSS s8 D_800A0931;
-SHIFT_BSS s16 D_800A0932[1];
+BSS s8 D_800A0930;
+BSS s8 D_800A0931;
+static s16 D_800A0932;
 
 void state_init_language_select(void) {
     D_800A0931 = 0;
-    D_800A0932[0] = 0;
+    D_800A0932 = 0;
     disable_player_input();
     set_time_freeze_mode(TIME_FREEZE_FULL);
-    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+    set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
 }
 
 void state_init_file_select(void) {
     D_800A0931 = 0;
-    D_800A0932[0] = 0;
+    D_800A0932 = 0;
     disable_player_input();
     set_time_freeze_mode(TIME_FREEZE_FULL);
     general_heap_create();
@@ -98,15 +98,14 @@ void state_step_language_select(void) {
             update_encounters();
             update_effects();
 
-            if (D_800A0932[0] < 255) {
-                D_800A0932[0] += 20;
+            if (D_800A0932 < 255) {
+                D_800A0932 += 20;
 
-                if (D_800A0932[0] > 255) {
-                    D_800A0932[0] = 255;
+                if (D_800A0932 > 255) {
+                    D_800A0932 = 255;
                 }
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
-                if (D_800A0932[0] == 255) {
-
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
+                if (D_800A0932 == 255) {
                     D_800A0931 = 1;
                 }
             } else {
@@ -169,32 +168,29 @@ void state_step_language_select(void) {
             }
 
             filemenu_update();
-            D_800A0932[0] -= 20;
-            if (D_800A0932[0] < 0) {
-                D_800A0932[0] = 0;
+            D_800A0932 -= 20;
+            if (D_800A0932 < 0) {
+                D_800A0932 = 0;
             }
-            set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+            set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
             break;
     }
 }
 
 void state_step_file_select(void) {
-    s32 temp = D_800A0931; // needed to match
-
     switch (D_800A0931) {
-        case 1:
-            set_windows_visible(WINDOW_GROUP_FILES);
-            D_800A0930 = temp;
-            D_800A0931 = 2;
-            break;
         case 0:
             D_800A0931 = 1;
+            break;
+        case 1:
+            set_windows_visible(WINDOW_GROUP_FILES);
+            D_800A0930 = 1;
+            D_800A0931 = 2;
             break;
         case 2:
             if (D_800A0930 >= 0) {
                 D_800A0930--;
-                temp = D_800A0930;
-                if (temp == 0) {
+                if (D_800A0930 == 0) {
                     D_800A0930 = -1;
                     battle_heap_create();
                     nuPiReadRomOverlay(&D_8007798C);
@@ -216,12 +212,12 @@ void state_drawUI_file_select(void) {
 }
 
 void state_init_exit_language_select(void) {
-    if (D_800A0932[0] > 0) {
+    if (D_800A0932 > 0) {
         D_800A0931 = 0;
-        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
     } else {
         D_800A0931 = 1;
-        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+        set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
     }
     D_800A0930 = 1;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
@@ -229,7 +225,7 @@ void state_init_exit_language_select(void) {
 
 void state_init_exit_file_select(void) {
     D_800A0931 = 0;
-    D_800A0932[0] = 0;
+    D_800A0932 = 0;
     D_800A0930 = 0;
 
     if (func_80244BC4() == 0) {
@@ -245,13 +241,13 @@ void state_init_exit_file_select(void) {
 void state_step_exit_language_select(void) {
     switch (D_800A0931) {
         case 0:
-            if (D_800A0932[0] != 0) {
-                D_800A0932[0] -= 20;
-                if (D_800A0932[0] < 0) {
-                    D_800A0932[0] = 0;
+            if (D_800A0932 != 0) {
+                D_800A0932 -= 20;
+                if (D_800A0932 < 0) {
+                    D_800A0932 = 0;
                 }
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
-                if (D_800A0932[0] == 0) {
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
+                if (D_800A0932 == 0) {
                     D_800A0931 = 1;
                 }
             } else {
@@ -259,13 +255,13 @@ void state_step_exit_language_select(void) {
             }
             break;
         case 1:
-            if (D_800A0932[0] != 255) {
-                D_800A0932[0] += 20;
-                if (D_800A0932[0] > 255) {
-                    D_800A0932[0] = 255;
+            if (D_800A0932 != 255) {
+                D_800A0932 += 20;
+                if (D_800A0932 > 255) {
+                    D_800A0932 = 255;
                 }
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
-                if (D_800A0932[0] == 255) {
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
+                if (D_800A0932 == 255) {
                     D_800A0931 = 2;
                 }
             } else {
@@ -340,11 +336,11 @@ void state_step_exit_language_select(void) {
                 update_encounters();
                 update_effects();
 
-                D_800A0932[0] -= 20;
-                if (D_800A0932[0] < 0) {
-                    D_800A0932[0] = 0;
+                D_800A0932 -= 20;
+                if (D_800A0932 < 0) {
+                    D_800A0932 = 0;
                 }
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
             }
             break;
         case 3:
@@ -353,14 +349,14 @@ void state_step_exit_language_select(void) {
             update_encounters();
             update_effects();
 
-            if (D_800A0932[0] == 0) {
+            if (D_800A0932 == 0) {
                 D_800A0931 = 4;
             } else {
-                D_800A0932[0] -= 20;
-                if (D_800A0932[0] < 0) {
-                    D_800A0932[0] = 0;
+                D_800A0932 -= 20;
+                if (D_800A0932 < 0) {
+                    D_800A0932 = 0;
                 }
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932[0]);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_800A0932);
             }
             break;
         case 4:
@@ -398,7 +394,7 @@ void state_step_exit_file_select(void) {
             }
             break;
         case 1:
-            if (temp_s0 == 0 || update_exit_map_screen_overlay(D_800A0932) != 0) {
+            if (temp_s0 == 0 || update_exit_map_screen_overlay(&D_800A0932) != 0) {
                 D_800A0931 = 2;
             }
             break;

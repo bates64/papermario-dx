@@ -55,8 +55,6 @@ extern WindowStyle gWindowStyles[];
 extern u16 gCurrentDoorSounds;
 extern u16 gCurrentRoomDoorSounds;
 
-extern b8 D_8014C248;
-
 extern UNK_FUN_PTR(TalkNotificationCallback);
 extern UNK_FUN_PTR(InteractNotificationCallback);
 extern UNK_FUN_PTR(ISpyNotificationCallback);

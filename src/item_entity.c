@@ -27,29 +27,31 @@ extern HudCacheEntry* gHudElementCacheTablePalette;
 extern u8* gHudElementCacheBuffer;
 extern s32* gHudElementCacheSize;
 
-SHIFT_BSS s32 ItemEntitiesCreated;
-SHIFT_BSS s32 UnusedItemPhysicsScriptID;
-SHIFT_BSS s32 ItemEntityAlternatingSpawn;
-SHIFT_BSS s32 ItemEntityRenderGroup;
-SHIFT_BSS s16 CoinSparkleCenterX;
-SHIFT_BSS s16 CoinSparkleCenterY;
-SHIFT_BSS s16 CoinSparkleCenterZ;
-SHIFT_BSS ItemEntity* WorldItemEntities[MAX_ITEM_ENTITIES];
-SHIFT_BSS ItemEntity* BattleItemEntities[MAX_ITEM_ENTITIES];
-SHIFT_BSS ItemEntity** gCurrentItemEntities;
-SHIFT_BSS s16 isPickingUpItem;
-SHIFT_BSS s16 ItemSpawnWithinPlayerPickupDelay;
+s32 ItemEntitiesCreated;
+
+BSS s32 UnusedItemPhysicsScriptID;
+BSS s32 ItemEntityAlternatingSpawn;
+BSS s32 ItemEntityRenderGroup;
+BSS s16 CoinSparkleCenterX;
+BSS s16 CoinSparkleCenterY;
+BSS s16 CoinSparkleCenterZ;
+BSS s32 pad_ItemEntity[3];
+BSS ItemEntity* WorldItemEntities[MAX_ITEM_ENTITIES];
+BSS ItemEntity* BattleItemEntities[MAX_ITEM_ENTITIES];
+BSS ItemEntity** gCurrentItemEntities;
+BSS s16 isPickingUpItem;
+BSS s16 ItemSpawnWithinPlayerPickupDelay;
 #if !VERSION_JP
-SHIFT_BSS s16 D_801565A8;
+BSS s16 D_801565A8;
 #endif
-SHIFT_BSS PopupMenu ItemPickupMenu;
-SHIFT_BSS s32 ItemPickupIconID;
-SHIFT_BSS s32 ItemPickupStateDelay;
-SHIFT_BSS s32 ThrowAwayMenuIdx;
-SHIFT_BSS s32 ThrowAwayItemID;
-SHIFT_BSS EffectInstance* ItemPickupGotOutline;
-SHIFT_BSS MessagePrintState* GotItemTutorialPrinter;
-SHIFT_BSS b32 GotItemTutorialClosed;
+BSS PopupMenu ItemPickupMenu;
+BSS s32 ItemPickupIconID;
+BSS s32 ItemPickupStateDelay;
+BSS s32 ThrowAwayMenuIdx;
+BSS s32 ThrowAwayItemID;
+BSS EffectInstance* ItemPickupGotOutline;
+BSS MessagePrintState* GotItemTutorialPrinter;
+BSS b32 GotItemTutorialClosed;
 
 void item_entity_update(ItemEntity*);
 void appendGfx_item_entity(void*);
@@ -824,82 +826,83 @@ void update_item_entities(void) {
     f32 x, y, z, hitDepth;
     s32 i;
 
-    if (!(gOverrideFlags & (GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_800))) {
-        for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
-            item = gCurrentItemEntities[i];
+    if (gOverrideFlags & (GLOBAL_OVERRIDES_400 | GLOBAL_OVERRIDES_800)) {
+        return;
+    }
 
-            if (item != NULL && item->flags != 0) {
-                if (item->itemID == ITEM_COIN) {
-                    if (rand_int(100) > 90) {
-                        sparkle_script_init(item, &SparkleScript_Coin);
-                        CoinSparkleCenterX = rand_int(16) - 8;
-                        CoinSparkleCenterY = rand_int(16) - 8;
-                        CoinSparkleCenterZ = 5;
-                    }
-                    sparkle_script_update(item);
+    for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
+        item = gCurrentItemEntities[i];
+
+        if (item != NULL && item->flags != 0) {
+            if (item->itemID == ITEM_COIN) {
+                if (rand_int(100) > 90) {
+                    sparkle_script_init(item, &SparkleScript_Coin);
+                    CoinSparkleCenterX = rand_int(16) - 8;
+                    CoinSparkleCenterY = rand_int(16) - 8;
+                    CoinSparkleCenterZ = 5;
                 }
+                sparkle_script_update(item);
+            }
 
-                item_entity_update(item);
+            item_entity_update(item);
+
+            switch (item->spawnType) {
+                case ITEM_SPAWN_MODE_KEY:
+                    update_item_entity_stationary(item);
+                    break;
+                case ITEM_SPAWN_MODE_DECORATION:
+                case ITEM_SPAWN_MODE_INVISIBLE:
+                    update_item_entity_no_pickup(item);
+                    break;
+                case ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_TOSS_FADE1:
+                    update_item_entity_collectable(item);
+                    break;
+                case ITEM_SPAWN_AT_PLAYER:
+                    update_item_entity_pickup(item);
+                    break;
+            }
+
+            item = gCurrentItemEntities[i];
+            if (item != NULL) {
+                s32 xs, ys, zs;
 
                 switch (item->spawnType) {
                     case ITEM_SPAWN_MODE_KEY:
-                        update_item_entity_stationary(item);
-                        break;
-                    case ITEM_SPAWN_MODE_DECORATION:
-                    case ITEM_SPAWN_MODE_INVISIBLE:
-                        update_item_entity_no_pickup(item);
-                        break;
                     case ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS:
                     case ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS:
                     case ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_TOSS_FADE1:
-                        update_item_entity_collectable(item);
-                        break;
                     case ITEM_SPAWN_AT_PLAYER:
-                        update_item_entity_pickup(item);
+                        xs = item->pos.x;
+                        ys = item->pos.y;
+                        zs = item->pos.z;
+
+                        if (xs != item->lastPos.x || ys != item->lastPos.y || zs != item->lastPos.z) {
+                            Shadow* shadow = get_shadow_by_index(item->shadowIndex);
+
+                            x = item->pos.x;
+                            y = item->pos.y + 12.0f;
+                            z = item->pos.z;
+                            hitDepth = 1000.0f;
+                            npc_raycast_down_sides(COLLIDER_FLAG_IGNORE_NPC, &x, &y, &z, &hitDepth);
+
+                            shadow->pos.x = x;
+                            shadow->pos.y = y;
+                            shadow->pos.z = z;
+                            shadow->rot.x = gGameStatusPtr->playerGroundTraceAngles.x;
+                            shadow->rot.y = 0.0f;
+                            shadow->rot.z = gGameStatusPtr->playerGroundTraceAngles.z;
+                            set_standard_shadow_scale(shadow, hitDepth * 0.5f);
+                        }
                         break;
                 }
-
-                item = gCurrentItemEntities[i];
-                if (item != NULL) {
-                    s32 xs, ys, zs;
-
-                    switch (item->spawnType) {
-                        case ITEM_SPAWN_MODE_KEY:
-                        case ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS:
-                        case ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS:
-                        case ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS:
-                        case ITEM_SPAWN_AT_PLAYER:
-                            xs = item->pos.x;
-                            ys = item->pos.y;
-                            zs = item->pos.z;
-
-                            if (xs != item->lastPos.x || ys != item->lastPos.y || zs != item->lastPos.z) {
-                                Shadow* shadow = get_shadow_by_index(item->shadowIndex);
-
-                                x = item->pos.x;
-                                y = item->pos.y + 12.0f;
-                                z = item->pos.z;
-                                hitDepth = 1000.0f;
-                                npc_raycast_down_sides(COLLIDER_FLAG_IGNORE_NPC, &x, &y, &z, &hitDepth);
-
-                                shadow->pos.x = x;
-                                shadow->pos.y = y;
-                                shadow->pos.z = z;
-                                shadow->rot.x = gGameStatusPtr->playerGroundTraceAngles.x;
-                                shadow->rot.y = 0.0f;
-                                shadow->rot.z = gGameStatusPtr->playerGroundTraceAngles.z;
-                                set_standard_shadow_scale(shadow, hitDepth * 0.5f);
-                            }
-                            break;
-                    }
-                    item->lastPos.x = item->pos.x;
-                    item->lastPos.y = item->pos.y;
-                    item->lastPos.z = item->pos.z;
-                }
+                item->lastPos.x = item->pos.x;
+                item->lastPos.y = item->pos.y;
+                item->lastPos.z = item->pos.z;
             }
-            do {} while (0); // required to match
         }
     }
 }
@@ -1080,38 +1083,34 @@ void draw_item_entities(void) {
             retTask = queue_render_task(rtPtr);
             retTask->renderMode |= RENDER_TASK_FLAG_REFLECT_FLOOR;
         }
-
-        do {} while (0); // required to match
     }
 }
 
 void draw_ui_item_entities(void) {
-    if (!(gOverrideFlags & (GLOBAL_OVERRIDES_PREV_400 | GLOBAL_OVERRIDES_PREV_800))) {
-        s32 i;
+    if (gOverrideFlags & (GLOBAL_OVERRIDES_PREV_400 | GLOBAL_OVERRIDES_PREV_800)) {
+        return;
+    }
 
-        for (i = 0; i < MAX_ITEM_ENTITIES; i++) {
-            ItemEntity* item = gCurrentItemEntities[i];
+    for (s32 i = 0; i < MAX_ITEM_ENTITIES; i++) {
+        ItemEntity* item = gCurrentItemEntities[i];
 
-            if (item != NULL && item->flags != 0) {
-                switch (item->spawnType) {
-                    case ITEM_SPAWN_MODE_KEY:
-                        draw_ui_item_entity_stationary(item);
-                        break;
-                    case ITEM_SPAWN_MODE_DECORATION:
-                    case ITEM_SPAWN_MODE_INVISIBLE:
-                        draw_ui_item_entity_no_pickup(item);
-                        break;
-                    case ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS:
-                    case ITEM_SPAWN_MODE_TOSS_FADE1:
-                        draw_ui_item_entity_collectable(item);
-                        break;
-                }
+        if (item != NULL && item->flags != 0) {
+            switch (item->spawnType) {
+                case ITEM_SPAWN_MODE_KEY:
+                    draw_ui_item_entity_stationary(item);
+                    break;
+                case ITEM_SPAWN_MODE_DECORATION:
+                case ITEM_SPAWN_MODE_INVISIBLE:
+                    draw_ui_item_entity_no_pickup(item);
+                    break;
+                case ITEM_SPAWN_MODE_TOSS_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_FALL_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_FIXED_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_ITEM_BLOCK_SPAWN_ALWAYS:
+                case ITEM_SPAWN_MODE_TOSS_FADE1:
+                    draw_ui_item_entity_collectable(item);
+                    break;
             }
-
-            do {} while (0); // required to match
         }
     }
 }
@@ -1433,23 +1432,19 @@ b32 test_item_player_collision(ItemEntity* item) {
     itemY = item->pos.y;
     itemZ = item->pos.z;
 
+     itemPickupRadius = 13.5f;
+
     // check for player collision
-    do {
-        do {
-            itemPickupRadius = 13.5f;
-        } while (0); // required to match
+    dx = itemX - playerX;
+    dz = itemZ - playerZ;
+    dist = sqrtf(SQ(dx) + SQ(dz));
 
-        dx = itemX - playerX;
-        dz = itemZ - playerZ;
-        dist = sqrtf(SQ(dx) + SQ(dz));
-
-        if (!(playerHalfRadius + itemPickupRadius <= dist) // XZ distance is close enough
-            && !(itemY + itemHitboxHeight < playerY) // item is not below player
-            && !(playerY + playerHalfHeight < itemY)) // player is not below item
-        {
-            hitDetected = TRUE;
-        }
-    } while (0); // required to match
+    if (!(playerHalfRadius + itemPickupRadius <= dist) // XZ distance is close enough
+        && !(itemY + itemHitboxHeight < playerY) // item is not below player
+        && !(playerY + playerHalfHeight < itemY)) // player is not below item
+    {
+        hitDetected = TRUE;
+    }
 
     // check for hammer collision
     if (playerStatus->actionState == ACTION_STATE_HAMMER && (playerStatus->flags & PS_FLAG_HAMMER_CHECK)) {

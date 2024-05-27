@@ -4,7 +4,7 @@
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
 
-#if !defined(SPLAT) && !defined(__CTX__) && !defined(PERMUTER)
+#if !defined(SPLAT) && !defined(__CTX__)
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM_INTERNAL(TYPE, BASE_FOLDER, FOLDER, NAME, ARGS...) \
    __asm__( \
