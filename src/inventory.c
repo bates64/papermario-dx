@@ -1342,7 +1342,7 @@ void update_coin_counter(void) {
     if ((statusBar->displayCoins == gPlayerData.coins) || (statusBar->coinCounterHideTime <= 30)) {
         statusBar->coinCounterHideTime--;
         if (statusBar->coinCounterHideTime == 0) {
-            set_window_update(WINDOW_ID_CURRENCY_COUNTER, (s32)basic_hidden_window_update);
+            set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_hidden_window_update);
             statusBar->unk_6D = 15;
             D_8010CD10 = FALSE;
             D_8010CD12 = TRUE;
@@ -1362,7 +1362,7 @@ void show_coin_counter(void) {
     s32 index;
 
     if (D_8010CD10 || D_8010CD12) {
-        set_window_update(WINDOW_ID_CURRENCY_COUNTER, WINDOW_UPDATE_HIDE);
+        set_window_update(WIN_CURRENCY_COUNTER, WINDOW_UPDATE_HIDE);
         if (statusBar->iconIndex12 > -1) {
             hud_element_free(statusBar->coinCountTimesHID);
             hud_element_free(statusBar->coinCountIconHID);
@@ -1375,8 +1375,8 @@ void show_coin_counter(void) {
     }
 
     if (statusBar->coinCounterHideTime == 0) {
-        set_window_properties(WINDOW_ID_CURRENCY_COUNTER, 32, 164, 64, 20, WINDOW_PRIORITY_21, coin_counter_draw_content, 0, -1);
-        set_window_update(WINDOW_ID_CURRENCY_COUNTER, (s32)basic_window_update);
+        set_window_properties(WIN_CURRENCY_COUNTER, 32, 164, 64, 20, WINDOW_PRIORITY_21, coin_counter_draw_content, 0, -1);
+        set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_window_update);
         statusBar->coinCountTimesHID = index = hud_element_create(&HES_MenuTimes);
         hud_element_set_flags(index, HUD_ELEMENT_FLAG_80);
         hud_element_set_tint(index, 255, 255, 255);

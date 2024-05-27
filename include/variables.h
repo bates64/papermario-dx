@@ -73,8 +73,6 @@ extern f32 PlayerNormalPitch;
 extern s32 NpcHitQueryColliderID;
 extern Vec3s StandardActorHomePositions[];
 
-extern SaveData gCurrentSaveFile;
-
 extern s32 gEncounterSubState;
 extern s32 timeFreezeMode;
 extern s32 D_8009A678;

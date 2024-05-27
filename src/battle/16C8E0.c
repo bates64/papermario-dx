@@ -198,7 +198,7 @@ void initialize_battle(void) {
     create_worker_world(NULL, btl_render_actors);
     btl_popup_messages_init();
     func_80268E88();
-    set_windows_visible(WINDOW_GROUP_1);
+    set_windows_visible(WINDOW_GROUP_BATTLE);
     D_8029EFBC = hud_element_create(&HES_HPBar);
     hud_element_set_flags(D_8029EFBC, HUD_ELEMENT_FLAG_80);
 

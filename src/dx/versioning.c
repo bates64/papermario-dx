@@ -35,20 +35,14 @@ void fio_serialize_state() {
 void fio_deserialize_state() {
     SaveData* saveData = &gCurrentSaveFile;
 
-    /*
     if (saveData->modName[0] == '\0') {
-        // normally a mod should not be able to load a normal Paper Mario save
-        // however, if you would like your mod to support this, remove this PANIC
-        PANIC_MSG("Cannot load unmodded save");
+        // handle loading vanilla saves here
         ver_deserialize_vanilla_save(saveData);
     } else if (strcmp(saveData->modName, DX_MOD_NAME) != 0) {
-        // always prevent loading data from other mods
-        char error[0x40] = "Cannot load save from: ";
-        strcat(error, saveData->modName);
-        PANIC_MSG(error);
-    } else */
-
-    if (saveData->majorVersion != DX_MOD_VER_MAJOR) {
+        // handle loading saves from other mods here
+        // by default, dx assumes other mod save data format is vanilla
+        ver_deserialize_vanilla_save(saveData);
+    } else if (saveData->majorVersion != DX_MOD_VER_MAJOR) {
         // handle breaking changes between major versions here
         ver_deserialize_standard(saveData);
     } else {
@@ -513,11 +507,15 @@ void ver_deserialize_vanilla_save(SaveData* newSave) {
     memset(newSave, 0, sizeof(SaveData));
 
     strcpy(newSave->magicString, oldSave.magicString);
+    memcpy(newSave->modName, oldSave.version, ARRAY_COUNT(oldSave.version));
 
     // copy metadata
     newSave->saveSlot = oldSave.saveSlot;
     newSave->saveCount = oldSave.saveCount;
-    newSave->metadata = oldSave.metadata;
+    memcpy(newSave->summary.filename, oldSave.summary.filename, ARRAY_COUNT(newSave->summary.filename));
+    newSave->summary.level = oldSave.summary.level;
+    newSave->summary.timePlayed = oldSave.summary.timePlayed;
+    newSave->summary.spiritsRescued = oldSave.summary.spiritsRescued;
 
     // copy world location
     newSave->areaID = oldSave.areaID;

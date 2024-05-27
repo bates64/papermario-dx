@@ -175,7 +175,7 @@ b32 fio_load_game(s32 saveSlot) {
             gGameStatusPtr->saveCount = gCurrentSaveFile.saveCount;
         }
         fio_deserialize_state();
-        gFilesDisplayData[gGameStatusPtr->saveSlot] = gCurrentSaveFile.metadata;
+        gSaveSlotSummary[gGameStatusPtr->saveSlot] = gCurrentSaveFile.summary;
         return TRUE;
     }
     return FALSE;
@@ -188,11 +188,11 @@ void fio_save_game(s32 saveSlot) {
 
     fio_serialize_state();
 
-    gFilesDisplayData[gGameStatusPtr->saveSlot].level = gPlayerData.level;
-    gFilesDisplayData[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
-    gFilesDisplayData[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].level = gPlayerData.level;
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
 
-    gCurrentSaveFile.metadata = gFilesDisplayData[gGameStatusPtr->saveSlot];
+    gCurrentSaveFile.summary = gSaveSlotSummary[gGameStatusPtr->saveSlot];
 
     strcpy(gCurrentSaveFile.magicString, MagicSaveString);
 

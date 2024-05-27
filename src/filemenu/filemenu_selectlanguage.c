@@ -64,7 +64,7 @@ void filemenu_selectlanguage_update(MenuPanel*);
 
 MenuWindowBP D_filemenu_8024F1D8[] = {
     {
-        .windowID = WINDOW_ID_FILEMENU_TITLE,
+        .windowID = WIN_FILES_TITLE,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = 0,
@@ -72,13 +72,13 @@ MenuWindowBP D_filemenu_8024F1D8[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_pal_8024d6a0,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func=&filemenu_update_show_title },
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[3] }
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_FILE2_INFO,
+        .windowID = WIN_FILES_SLOT2_BODY,
         .unk_01 = 0,
         .pos = { .x = 89, .y = 98 },
         .width = 110,
@@ -86,13 +86,13 @@ MenuWindowBP D_filemenu_8024F1D8[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_pal_8024DA50,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func=&filemenu_update_pal_80247f40 },
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[9] }
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_FILE3_INFO,
+        .windowID = WIN_FILES_SLOT3_BODY,
         .unk_01 = 0,
         .pos = { .x = 89, .y = 124 },
         .width = 110,
@@ -100,13 +100,13 @@ MenuWindowBP D_filemenu_8024F1D8[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_pal_8024DAA0,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func=&filemenu_update_pal_80247f40 },
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[10] }
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_FILE0_INFO,
+        .windowID = WIN_FILES_SLOT0_BODY,
         .unk_01 = 0,
         .pos = { .x = 89, .y = 46 },
         .width = 110,
@@ -114,13 +114,13 @@ MenuWindowBP D_filemenu_8024F1D8[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_pal_8024D9B0,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func=&filemenu_update_pal_80247f40 },
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[7] }
     },
     {
-        .windowID = WINDOW_ID_FILEMENU_FILE1_INFO,
+        .windowID = WIN_FILES_SLOT1_BODY,
         .unk_01 = 0,
         .pos = { .x = 89, .y = 72 },
         .width = 110,
@@ -128,7 +128,7 @@ MenuWindowBP D_filemenu_8024F1D8[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_pal_8024DA00,
         .tab = NULL,
-        .parentID = WINDOW_ID_FILEMENU_MAIN,
+        .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func=&filemenu_update_pal_80247f40 },
         .extraFlags = 0,
         .style = { .customStyle = &filemenu_windowStyles[8] }
@@ -140,7 +140,7 @@ MenuPanel filemenu_selectlanguage_menuBP = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols =1,
     .numRows = 4,
     .numPages = 0,
@@ -155,19 +155,19 @@ void filemenu_draw_pal_8024d6a0(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
     draw_msg(MSG_PAL_Menu_0055, baseX + (192 - get_msg_width(MSG_PAL_Menu_0055, 0)) / 2, baseY + 4, 255, 0, 0);
 }
 
-void func_filemenu_8024D710(s32 arg0, MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+void func_filemenu_8024D710(s32 language, MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 var_a1;
 
-    if (filemenu_currentMenu == 4 && menu->selected == arg0) {
-        filemenu_set_cursor_goal_pos(arg0 + 60, baseX + 4, baseY + 10);
+    if (filemenu_currentMenu == FILE_MENU_LANGUAGES && menu->selected == language) {
+        filemenu_set_cursor_goal_pos(language + 60, baseX + 4, baseY + 10);
     }
 
-    var_a1 = D_filemenu_8024F130[arg0];
+    var_a1 = D_filemenu_8024F130[language];
     draw_msg(var_a1, baseX + 36, baseY + 2, 255, 10, 0);
 
     gSPDisplayList(gMainGfxPos++, D_filemenu_8024F140);
 
-    if (arg0 != gCurrentLanguage) {
+    if (language != gCurrentLanguage) {
         gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 255, 255, 128);
         gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     } else {
@@ -175,7 +175,7 @@ void func_filemenu_8024D710(s32 arg0, MenuPanel* menu, s32 baseX, s32 baseY, s32
     }
 
     gDPPipeSync(gMainGfxPos++);
-    gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, &D_802517E0[D_filemenu_8024F124][D_filemenu_8024F1C8[arg0]]);
+    gDPSetTextureImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, &D_802517E0[D_filemenu_8024F124][D_filemenu_8024F1C8[language]]);
 
     gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
     gDPLoadSync(gMainGfxPos++);
@@ -221,13 +221,13 @@ void filemenu_selectlanguage_init(MenuPanel* menu) {
     menu->selected = MENU_PANEL_SELECTED_GRID_DATA(menu);
     D_802517D4[0] = (s32) menu->row;
 
-    gWindows[WINDOW_ID_FILEMENU_TITLE].pos.y = 1;
-    gWindows[WINDOW_ID_FILEMENU_TITLE].width = 192;
-    gWindows[WINDOW_ID_FILEMENU_TITLE].height = 25;
+    gWindows[WIN_FILES_TITLE].pos.y = 1;
+    gWindows[WIN_FILES_TITLE].width = 192;
+    gWindows[WIN_FILES_TITLE].height = 25;
 
-    posXPtr = &gWindows[WINDOW_ID_FILEMENU_TITLE].pos.x;
-    if (gWindows[WINDOW_ID_FILEMENU_TITLE].parent != -1) {
-        x = (gWindows[gWindows[WINDOW_ID_FILEMENU_TITLE].parent].width / 2) - (gWindows[WINDOW_ID_FILEMENU_TITLE].width / 2);
+    posXPtr = &gWindows[WIN_FILES_TITLE].pos.x;
+    if (gWindows[WIN_FILES_TITLE].parent != WIN_NONE) {
+        x = (gWindows[gWindows[WIN_FILES_TITLE].parent].width / 2) - (gWindows[WIN_FILES_TITLE].width / 2);
     } else {
         x = 64;
     }
@@ -319,11 +319,11 @@ void filemenu_selectlanguage_handle_input(MenuPanel* menu) {
     }
 
     if ((filemenu_pressedButtons & (BUTTON_A | BUTTON_START)) || (var_s1 != 0)) {
-        set_window_update(WINDOW_ID_FILEMENU_FILE0_INFO, (s32) &filemenu_selectlanguage_80248018);
-        set_window_update(WINDOW_ID_FILEMENU_FILE1_INFO, (s32) &filemenu_selectlanguage_80248018);
-        set_window_update(WINDOW_ID_FILEMENU_FILE2_INFO, (s32) &filemenu_selectlanguage_80248018);
-        set_window_update(WINDOW_ID_FILEMENU_FILE3_INFO, (s32) &filemenu_selectlanguage_80248018);
-        set_window_update(WINDOW_ID_FILEMENU_TITLE, (s32) filemenu_update_hidden_title);
+        set_window_update(WIN_FILES_SLOT0_BODY, (s32) &filemenu_selectlanguage_80248018);
+        set_window_update(WIN_FILES_SLOT1_BODY, (s32) &filemenu_selectlanguage_80248018);
+        set_window_update(WIN_FILES_SLOT2_BODY, (s32) &filemenu_selectlanguage_80248018);
+        set_window_update(WIN_FILES_SLOT3_BODY, (s32) &filemenu_selectlanguage_80248018);
+        set_window_update(WIN_FILES_TITLE, (s32) filemenu_update_hidden_title);
         if (var_s1 == 0) {
             sfx_play_sound(SOUND_PLANTS_BELL);
         } else {
@@ -334,23 +334,23 @@ void filemenu_selectlanguage_handle_input(MenuPanel* menu) {
 }
 
 void filemenu_selectlanguage_update(MenuPanel* menu) {
-    gWindowStyles[WINDOW_ID_FILEMENU_FILE0_INFO].customStyle = &filemenu_windowStyles[15];
-    gWindowStyles[WINDOW_ID_FILEMENU_FILE1_INFO].customStyle = &filemenu_windowStyles[15];
-    gWindowStyles[WINDOW_ID_FILEMENU_FILE2_INFO].customStyle = &filemenu_windowStyles[15];
-    gWindowStyles[WINDOW_ID_FILEMENU_FILE3_INFO].customStyle = &filemenu_windowStyles[15];
+    gWindowStyles[WIN_FILES_SLOT0_BODY].customStyle = &filemenu_windowStyles[15];
+    gWindowStyles[WIN_FILES_SLOT1_BODY].customStyle = &filemenu_windowStyles[15];
+    gWindowStyles[WIN_FILES_SLOT2_BODY].customStyle = &filemenu_windowStyles[15];
+    gWindowStyles[WIN_FILES_SLOT3_BODY].customStyle = &filemenu_windowStyles[15];
 
     switch (menu->selected) {
         case 0:
-            gWindowStyles[WINDOW_ID_FILEMENU_FILE0_INFO].customStyle = &filemenu_windowStyles[16];
+            gWindowStyles[WIN_FILES_SLOT0_BODY].customStyle = &filemenu_windowStyles[16];
             break;
         case 1:
-            gWindowStyles[WINDOW_ID_FILEMENU_FILE1_INFO].customStyle = &filemenu_windowStyles[16];
+            gWindowStyles[WIN_FILES_SLOT1_BODY].customStyle = &filemenu_windowStyles[16];
             break;
         case 2:
-            gWindowStyles[WINDOW_ID_FILEMENU_FILE2_INFO].customStyle = &filemenu_windowStyles[16];
+            gWindowStyles[WIN_FILES_SLOT2_BODY].customStyle = &filemenu_windowStyles[16];
             break;
         case 3:
-            gWindowStyles[WINDOW_ID_FILEMENU_FILE3_INFO].customStyle = &filemenu_windowStyles[16];
+            gWindowStyles[WIN_FILES_SLOT3_BODY].customStyle = &filemenu_windowStyles[16];
             break;
     }
 

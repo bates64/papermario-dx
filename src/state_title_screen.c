@@ -5,6 +5,7 @@
 #include "game_modes.h"
 #include "fio.h"
 #include "dx/config.h"
+#include "dx/versioning.h"
 
 #if VERSION_JP
 #define TITLE_WIDTH 272
@@ -28,13 +29,13 @@
 
 
 enum TitleScreenStates {
-    TITLE_STATE_INIT            = 0x00000000,
-    TITLE_STATE_APPEAR          = 0x00000001,
-    TITLE_STATE_HOLD            = 0x00000002,   // show the title screen with PRESS START blinking
-    TITLE_STATE_UNUSED          = 0x00000003,
-    TITLE_STATE_BEGIN_DISMISS   = 0x00000004,
-    TITLE_STATE_DISMISS         = 0x00000005,
-    TITLE_STATE_EXIT            = 0x00000006,
+    TITLE_STATE_INIT            = 0,
+    TITLE_STATE_APPEAR          = 1,
+    TITLE_STATE_HOLD            = 2,   // show the title screen with PRESS START blinking
+    TITLE_STATE_UNUSED          = 3,
+    TITLE_STATE_BEGIN_DISMISS   = 4,
+    TITLE_STATE_DISMISS         = 5,
+    TITLE_STATE_EXIT            = 6,
 };
 
 enum {
@@ -46,14 +47,19 @@ enum {
 
 s16 TitleScreenNextState = NEXT_STATE_NONE;
 
-FileDisplayData gFilesDisplayData[4] = {
+SaveFileSummary gSaveSlotSummary[4] = {
     { .filename = { FILENAME_ERROR } },
     { .filename = { FILENAME_ERROR } },
     { .filename = { FILENAME_ERROR } },
     { .filename = { FILENAME_ERROR } },
 };
 
-u8 gSaveSlotHasData[4] = { TRUE, TRUE, TRUE, TRUE };
+SaveSlotMetadata gSaveSlotMetadata[4] = {
+    { .hasData = TRUE },
+    { .hasData = TRUE },
+    { .hasData = TRUE },
+    { .hasData = TRUE },
+};
 
 s32 PressStart_Alpha = 0; // the opacity of "PRESS START" text
 b32 PressStart_IsVisible = FALSE; // toggles the visibility of "PRESS START"

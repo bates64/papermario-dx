@@ -69,11 +69,11 @@ HudScript* gPauseTabsHudScripts[][6] = {
 
 s8 gPauseTabsGridData[] = { 0, 1, 2, 3, 4, 5 };
 u8 gPauseTabsPanelIDs[] = { 1, 2, 3, 4, 5, 6 };
-u8 gPauseTabsWindowIDs[] = { WINDOW_ID_PAUSE_TAB_STATS, WINDOW_ID_PAUSE_TAB_BADGES, WINDOW_ID_PAUSE_TAB_ITEMS, WINDOW_ID_PAUSE_TAB_PARTY, WINDOW_ID_PAUSE_TAB_SPIRITS, WINDOW_ID_PAUSE_TAB_MAP };
-u8 gPauseTabsPageWindowIDs[] = { WINDOW_ID_PAUSE_STATS, WINDOW_ID_PAUSE_BADGES, WINDOW_ID_PAUSE_ITEMS, WINDOW_ID_PAUSE_PARTNERS, WINDOW_ID_PAUSE_SPIRITS, WINDOW_ID_PAUSE_MAP };
+u8 gPauseTabsWindowIDs[] = { WIN_PAUSE_TAB_STATS, WIN_PAUSE_TAB_BADGES, WIN_PAUSE_TAB_ITEMS, WIN_PAUSE_TAB_PARTY, WIN_PAUSE_TAB_SPIRITS, WIN_PAUSE_TAB_MAP };
+u8 gPauseTabsPageWindowIDs[] = { WIN_PAUSE_STATS, WIN_PAUSE_BADGES, WIN_PAUSE_ITEMS, WIN_PAUSE_PARTNERS, WIN_PAUSE_SPIRITS, WIN_PAUSE_MAP };
 MenuWindowBP gPauseTabsWindowBPs[] = {
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_STATS,
+        .windowID = WIN_PAUSE_TAB_STATS,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -81,13 +81,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = pause_tabs_draw_stats,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_3 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_BADGES,
+        .windowID = WIN_PAUSE_TAB_BADGES,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -95,13 +95,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_badges,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_4 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_ITEMS,
+        .windowID = WIN_PAUSE_TAB_ITEMS,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -109,13 +109,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_items,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_5 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_PARTY,
+        .windowID = WIN_PAUSE_TAB_PARTY,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -123,13 +123,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_party,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_6 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_SPIRITS,
+        .windowID = WIN_PAUSE_TAB_SPIRITS,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -137,13 +137,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_spirits,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_7 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_MAP,
+        .windowID = WIN_PAUSE_TAB_MAP,
         .unk_01 = 0,
         .pos = { .x = 0, .y = 7 },
         .width = 43,
@@ -151,13 +151,13 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_map,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_8 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_TAB_INVIS,
+        .windowID = WIN_PAUSE_TAB_INVIS,
         .unk_01 = 0,
         .pos = { .x = 8, .y = 8 },
         .width = 16,
@@ -165,7 +165,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = pause_tabs_draw_invis,
         .tab = NULL,
-        .parentID = WINDOW_ID_NONE,
+        .parentID = WIN_NONE,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_9 }
@@ -187,7 +187,7 @@ MenuPanel gPausePanelTabs = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols = 6,
     .numRows = 1,
     .numPages = 0,
@@ -327,7 +327,7 @@ void pause_tabs_init(MenuPanel* tab) {
     }
 
     setup_pause_menu_tab(gPauseTabsWindowBPs, ARRAY_COUNT(gPauseTabsWindowBPs));
-    gWindows[WINDOW_ID_PAUSE_TAB_INVIS].pos.y = 25;
+    gWindows[WIN_PAUSE_TAB_INVIS].pos.y = 25;
     gPauseTabsHorizScrollPos = 0;
     tab->initialized = TRUE;
     gPauseTabsPreviousTab = 5;
@@ -363,10 +363,10 @@ void pause_tabs_handle_input(MenuPanel* tab) {
         replace_window_update(gPauseTabsWindowIDs[tab->col], 0x40, pause_update_tab_active);
         replace_window_update(gPauseTabsWindowIDs[gPauseTabsCurrentTab], 0x40, pause_update_tab_inactive);
 
-        pauseWindows = &gWindows[WINDOW_ID_PAUSE_TAB_STATS];
+        pauseWindows = &gWindows[WIN_PAUSE_TAB_STATS];
         x = pauseWindows[tab->col].pos.x;
-        gWindows[WINDOW_ID_PAUSE_TAB_INVIS].pos.x = x + 6;
-        gWindows[WINDOW_ID_PAUSE_TAB_INVIS].pos.y = 25;
+        gWindows[WIN_PAUSE_TAB_INVIS].pos.x = x + 6;
+        gWindows[WIN_PAUSE_TAB_INVIS].pos.y = 25;
         gPauseTabsPreviousTab = gPauseTabsCurrentTab;
         gPauseTabsCurrentTab = tab->col;
         sfx_play_sound(SOUND_MENU_CHANGE_TAB);
