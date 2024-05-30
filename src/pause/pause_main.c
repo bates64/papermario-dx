@@ -196,9 +196,7 @@ void pause_set_cursor_opacity(s32 val) {
 void pause_set_cursor_pos_immediate(s32 windowID, s32 posX, s32 posY) {
     Window* window = &gWindows[windowID];
 
-    if (D_8024EFB4 != 0
-            || get_game_mode() == GAME_MODE_END_FILE_SELECT
-            || get_game_mode() == GAME_MODE_END_LANGUAGE_SELECT) {
+    if (D_8024EFB4 != 0 || get_game_mode() == GAME_MODE_END_FILE_SELECT) {
         if (D_8024EFB4 != 0) {
             s32 i;
 
@@ -230,9 +228,7 @@ void pause_set_cursor_pos_immediate(s32 windowID, s32 posX, s32 posY) {
 void pause_set_cursor_pos(s32 windowID, s32 posX, s32 posY) {
     Window* window = &gWindows[windowID];
 
-    if (D_8024EFB4 != 0
-            || get_game_mode() == GAME_MODE_END_FILE_SELECT
-            || get_game_mode() == GAME_MODE_END_LANGUAGE_SELECT) {
+    if (D_8024EFB4 != 0 || get_game_mode() == GAME_MODE_END_FILE_SELECT) {
         if (D_8024EFB4 != 0) {
             s32 i;
 

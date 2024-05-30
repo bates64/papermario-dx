@@ -8,7 +8,7 @@
 void state_world_draw_aux_ui(void);
 
 void state_init_world(void) {
-    game_mode_set_fpDrawAuxUI(0, state_world_draw_aux_ui);
+    set_game_mode_render_frontUI(state_world_draw_aux_ui);
 
 #ifdef DX_QUICK_LAUNCH_BATTLE
     if (gGameStatus.loadType == LOAD_FROM_FILE_SELECT) {
@@ -28,7 +28,6 @@ void state_step_world(void) {
     profiler_update(PROFILE_TIME_WORLD_ITEM_ENTITIES, 0);
     update_effects();
     profiler_update(PROFILE_TIME_WORLD_EFFECTS, 0);
-    iterate_models(); // no-op
     update_cameras();
     profiler_update(PROFILE_TIME_WORLD_CAMERAS, 0);
 }

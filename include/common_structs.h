@@ -1425,7 +1425,7 @@ typedef struct GameStatus {
     /* 0x098 */ Vec3f playerPos;
     /* 0x0A4 */ f32 playerYaw;
     /* 0x0A8 */ s8 introPart;
-    /* 0x0A9 */ s8 unk_A9; // selected language?
+    /* 0x0A9 */ s8 unk_A9;
     /* 0x0AA */ s8 demoBattleFlags;
     /* 0x0AB */ u8 soundOutputMode;
     /* 0x0AC */ s8 startupState; // used for various startup states like logos, title screen, intro, and demo

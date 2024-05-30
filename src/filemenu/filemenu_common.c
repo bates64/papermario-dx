@@ -12,7 +12,6 @@ extern MenuPanel filemenu_main_menuBP;
 extern MenuPanel filemenu_yesno_menuBP;
 extern MenuPanel filemenu_info_menuBP;
 extern MenuPanel filemenu_createfile_menuBP;
-extern MenuPanel filemenu_selectlanguage_menuBP;
 
 HudScript* filemenu_cursor_hudElemScripts[] = { &HES_AnimatedCursorHand };
 MenuPanel* filemenu_menus[] = {
@@ -20,9 +19,6 @@ MenuPanel* filemenu_menus[] = {
     &filemenu_yesno_menuBP,
     &filemenu_info_menuBP,
     &filemenu_createfile_menuBP,
-#if VERSION_PAL
-    &filemenu_selectlanguage_menuBP,
-#endif
 };
 s32 filemenu_cursor_posX = SCREEN_WIDTH / 2;
 s32 filemenu_cursor_posY = -SCREEN_HEIGHT / 2;
@@ -32,9 +28,6 @@ s32 filemenu_cursor_targetY = -SCREEN_HEIGHT / 2;
 s32 filemenu_cursorGoalAlpha = 0;
 s32 filemenu_cursorGoalAlpha2 = 0;
 s32 D_80249BB0 = TRUE;
-#if !VERSION_PAL
-s32 D_80249BB4 = 0;
-#endif
 s32 D_80249BB8 = 0;
 s16 D_80249BBC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
 s16 D_80249BDC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
@@ -53,50 +46,6 @@ s16 D_80249D14[16] = { 0, 2, 9, 21, 34, 48, 62, 77, 91, 105, 120, 134, 148, 161,
 s16 D_80249D34[10] = { 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
 s16 D_80249D48[10] = { 0, 5, 17, 37, 60, 85, 110, 135, 160, 185};
 
-#if VERSION_PAL
-s16 D_filemenu_8024EB5C[] = {
-    210,
-    182,
-    162,
-    145,
-    130,
-    117,
-    105,
-    92,
-    80,
-    67,
-    55,
-    42,
-    30,
-    18,
-    8,
-    2,
-    0,
-};
-
-s16 D_filemenu_8024EB80[] = {
-    -2,
-    -8,
-    -18,
-    -30,
-    -42,
-    -55,
-    -67,
-    -80,
-    -92,
-    -105,
-    -117,
-    -130,
-    -142,
-    -155,
-    -167,
-    -180,
-    -192,
-    -205,
-};
-#endif
-
-s32 D_80249D4C = 0; // padding?
 Vp D_80249D60 = {
     .vp = {
         .vscale = { 640, 480, 511, 0},
@@ -212,9 +161,7 @@ void filemenu_set_cursor_alpha(s32 alpha) {
 void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
     Window* window = &gWindows[windowID];
 
-    if (D_80249BB0
-            || get_game_mode() == GAME_MODE_END_FILE_SELECT
-            || get_game_mode() == GAME_MODE_END_LANGUAGE_SELECT) {
+    if (D_80249BB0 || get_game_mode() == GAME_MODE_END_FILE_SELECT) {
         if (D_80249BB0) {
             s32 i;
 
@@ -785,106 +732,6 @@ void filemenu_update_hidden_name_confirm(
     }
 }
 
-#if VERSION_PAL
-void filemenu_update_pal_80247f40(
-    s32 windowIndex,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
-) {
-    Window* window = &gWindows[windowIndex];
-    s32 var_a1 = window->updateCounter;
-    s32 var_a3 = 0;
-    s32 var_v1;
-
-    switch (windowIndex) {
-        case WIN_FILES_SLOT0_BODY:
-            var_a3 = 0;
-            break;
-        case WIN_FILES_SLOT1_BODY:
-            var_a3 = 1;
-            break;
-        case WIN_FILES_SLOT2_BODY:
-            var_a3 = 2;
-            break;
-        case WIN_FILES_SLOT3_BODY:
-            var_a3 = 3;
-            break;
-    }
-    var_v1 = gCurrentLanguage;
-    var_v1 -= var_a3;
-    var_v1 = abs(var_v1);
-
-    var_a1 -= (var_v1 * 3);
-    if (var_a1 < 0) {
-        var_a1 = 0;
-    }
-    if (var_a1 == 0) {
-        window->flags &= ~WINDOW_FLAG_HIDDEN;
-    }
-    if (var_a1 < ARRAY_COUNT(D_filemenu_8024EB5C)) {
-        *posX -= D_filemenu_8024EB5C[var_a1];
-    } else {
-        *posX -= D_filemenu_8024EB5C[ARRAY_COUNT(D_filemenu_8024EB5C) - 1];
-        window->flags &= ~WINDOW_FLAG_INITIAL_ANIMATION;
-    }
-}
-
-void filemenu_selectlanguage_80248018(
-    s32 windowIndex,
-    s32* flags,
-    s32* posX, s32* posY, s32* posZ,
-    f32* scaleX, f32* scaleY,
-    f32* rotX, f32* rotY, f32* rotZ,
-    s32* darkening,
-    s32* opacity
-) {
-    Window* window = &gWindows[windowIndex];
-    s32 var_a1 = window->updateCounter;
-    s32 var_a3 = 0;
-    s32 var_v1;
-
-    switch (windowIndex) {
-        case WIN_FILES_SLOT0_BODY:
-            var_a3 = 0;
-            break;
-        case WIN_FILES_SLOT1_BODY:
-            var_a3 = 1;
-            break;
-        case WIN_FILES_SLOT2_BODY:
-            var_a3 = 2;
-            break;
-        case WIN_FILES_SLOT3_BODY:
-            var_a3 = 3;
-            break;
-    }
-    var_v1 = gCurrentLanguage;
-    var_v1 -= var_a3;
-    if (var_v1 < 0) {
-        var_v1 = -var_v1;
-    }
-    var_a1 -= (var_v1 * 3);
-    if (var_a1 < 0) {
-        var_a1 = 0;
-    }
-    if (var_a1 < ARRAY_COUNT(D_filemenu_8024EB80)) {
-        *posX -= D_filemenu_8024EB80[var_a1];
-    } else {
-        *posX -= D_filemenu_8024EB80[ARRAY_COUNT(D_filemenu_8024EB80) - 1];
-        window->flags &= ~WINDOW_FLAG_INITIAL_ANIMATION;
-        window->flags |= WINDOW_FLAG_HIDDEN;
-    }
-
-    // TODO: ARRAY_COUNT?
-    if (var_a1 >= 0x10) {
-        filemenu_cursor_alpha = 0;
-    }
-}
-#endif
-
 void filemenu_draw_cursor(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 temp_a1;
 
@@ -1047,53 +894,10 @@ void filemenu_init(s32 arg0) {
     }
     setup_pause_menu_tab(filemenu_common_windowBPs, ARRAY_COUNT(filemenu_common_windowBPs));
 
-#if VERSION_PAL
-    if (arg0 != 2) {
-        filemenu_currentMenu = FILE_MENU_MAIN;
-        menu = filemenu_menus[FILE_MENU_MAIN];
-        menu->page = filemenu_currentMenu;
-        func_PAL_8002B574();
-
-        if (menu->page == 0) {
-            fio_load_globals();
-            if (gSaveGlobals.lastFileSelected >= 4) {
-                gSaveGlobals.lastFileSelected = 0;
-            }
-            gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
-        }
-
-        filemenu_set_selected(menu, (gGameStatusPtr->saveSlot & 1) * 2, gGameStatusPtr->saveSlot >> 1);
-
-        panelIt = filemenu_menus;
-        for (i = 0; i < ARRAY_COUNT(filemenu_menus) - 1; i++, panelIt++) {
-            if ((*panelIt)->fpInit != NULL) {
-                (*panelIt)->fpInit((*panelIt));
-            }
-        }
-        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
-    } else {
-        filemenu_currentMenu = FILE_MENU_LANGUAGES;
-        filemenu_set_selected(filemenu_menus[FILE_MENU_LANGUAGES], 0, gCurrentLanguage);
-
-        panelIt = filemenu_menus;
-        for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++, panelIt++) {
-            if (i == 4) {
-                if ((*panelIt)->fpInit != NULL) {
-                    (*panelIt)->fpInit((*panelIt));
-                }
-            }
-        }
-        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
-    }
-#else
     filemenu_currentMenu = FILE_MENU_MAIN;
     menu = filemenu_menus[FILE_MENU_MAIN];
 
-    if (arg0 == 0) {
-        menu->state = FM_MAIN_SELECT_FILE;
-    } else {
-        menu->state = FM_MAIN_SELECT_LANGUAGE;
-    }
+    menu->state = FM_MAIN_SELECT_FILE;
 
     if (menu->state == FM_MAIN_SELECT_FILE) {
         for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
@@ -1109,13 +913,11 @@ void filemenu_init(s32 arg0) {
             }
         }
 
-        if (menu->state == FM_MAIN_SELECT_FILE) { // always the case?
-            fio_load_globals();
-            if (gSaveGlobals.lastFileSelected >= 4) {
-                gSaveGlobals.lastFileSelected = 0;
-            }
-            gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
+        fio_load_globals();
+        if (gSaveGlobals.lastFileSelected >= 4) {
+            gSaveGlobals.lastFileSelected = 0;
         }
+        gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
     }
 
     filemenu_set_selected(menu, (gGameStatusPtr->saveSlot & 1) * 2, gGameStatusPtr->saveSlot >> 1);
@@ -1127,7 +929,6 @@ void filemenu_init(s32 arg0) {
         }
     }
     update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
-#endif
 }
 
 void filemenu_cleanup(void) {

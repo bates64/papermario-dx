@@ -125,9 +125,6 @@ void filemenu_info_draw_message_contents(
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PERIOD_34), baseX + 65, baseY + 18, 255, 0, 0);
 #endif
             break;
-        case FM_MESSAGE_LANGUAGE:
-            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_28), baseX + 10, baseY + 4, 255, 0, 0);
-            break;
         case FM_MESSAGE_CREATED:
             filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_FILE_26), baseX + 10, baseY + 4, 255, 0, 0);
             draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + CREATE_SUCCESS_NUMBER_X, baseY + 6 + NUMBER_OFFSET_Y, DRAW_NUMBER_CHARSET_NORMAL, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
@@ -164,20 +161,10 @@ void filemenu_info_handle_input(MenuPanel* menu) {
                 set_window_update(WIN_FILES_OPTION_RIGHT, (s32)filemenu_update_show_options_bottom);
                 filemenu_set_selected(menu, 0, 2);
                 break;
-            case FILE_MENU_LANGUAGES:
-                menu->state = FILE_MENU_MAIN;
-                set_window_update(WIN_FILES_STEREO, (s32)filemenu_update_show_options_left);
-                set_window_update(WIN_FILES_MONO, (s32)filemenu_update_show_options_right);
-                set_window_update(WIN_FILES_OPTION_LEFT, (s32)filemenu_update_show_options_bottom);
-                set_window_update(WIN_FILES_OPTION_RIGHT, (s32)filemenu_update_show_options_bottom);
-                filemenu_set_selected(menu, 1, 2);
-                break;
-#if !VERSION_PAL
             case FILE_MENU_MESSAGE:
                 menu->state = FILE_MENU_MESSAGE;
                 filemenu_set_selected(menu, 1, 2);
                 break;
-#endif
         }
         set_window_update(WIN_FILES_MESSAGE, WINDOW_UPDATE_HIDE);
     }
