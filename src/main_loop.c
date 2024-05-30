@@ -322,7 +322,7 @@ void load_engine_data(void) {
     reset_background_settings();
     clear_character_set();
     clear_printers();
-    init_game_mode();
+    clear_game_mode();
     clear_npcs();
     hud_element_clear_cache();
     clear_trigger_data();

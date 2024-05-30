@@ -26,7 +26,7 @@ void set_game_mode(s32 mode);
 s32 get_game_mode(void);
 void set_game_mode_render_frontUI(void (*fn)(void));
 
-void init_game_mode(void);
+void clear_game_mode(void);
 void step_game_mode(void);
 void render_game_mode_backUI(void);
 void render_game_mode_frontUI(void);

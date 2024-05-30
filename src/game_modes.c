@@ -147,7 +147,7 @@ void set_game_mode(s32 modeID) {
     CurGameMode.init();
 }
 
-void init_game_mode(void) {
+void clear_game_mode(void) {
     CurGameMode.flags = MODE_FLAG_NONE;
 }
 
