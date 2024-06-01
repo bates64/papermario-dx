@@ -2582,21 +2582,6 @@ void mdl_create_model(ModelBlueprint* bp, s32 unused) {
     (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = modelIdx;
 }
 
-// Mysterious no-op
-void iterate_models(void) {
-    Model* last = NULL;
-    Model* mdl;
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(*gCurrentModels); i++) {
-        mdl = (*gCurrentModels)[i];
-        if (mdl != NULL) {
-            last = mdl;
-        }
-    }
-    mdl = last;
-}
-
 void mdl_update_transform_matrices(void) {
     Matrix4f tempModelMtx;
     Matrix4f tempGroupMtx;

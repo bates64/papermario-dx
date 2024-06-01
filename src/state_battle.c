@@ -112,7 +112,6 @@ void state_step_battle(void) {
     update_npcs();
     update_item_entities();
     update_effects();
-    iterate_models();
     update_cameras();
 }
 

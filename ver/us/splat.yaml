@@ -821,7 +821,6 @@ segments:
     vram_class: engine2
     subsegments:
     - [auto, c, entity]
-    - [auto, c, game_states]
     - [auto, c, model]
     - [auto, c, animator]
     - [auto, c, entity_model]
