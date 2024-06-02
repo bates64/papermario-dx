@@ -1,7 +1,6 @@
 #include "ultra64.h"
 #include "PR/os_flash.h"
 
-// BSS
 u32 __osFlashID[4];
 OSIoMesg __osFlashMsg;
 OSMesgQueue __osFlashMessageQ;
