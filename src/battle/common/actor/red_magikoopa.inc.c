@@ -746,7 +746,7 @@ EvtScript N(EVS_Flee) = {
         Call(BattleCamTargetActor, ACTOR_SELF)
         Call(MoveBattleCamOver, 15)
         Wait(15)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+        Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     EndIf
     Call(SetActorSpeed, ACTOR_SELF, Float(1.0))
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)

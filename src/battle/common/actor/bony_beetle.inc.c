@@ -704,7 +704,7 @@ EvtScript N(EVS_Attack_SpikeBounce) = {
             Call(AddGoalPos, ACTOR_SELF, 50, 0, 0)
             Call(SetActorSpeed, ACTOR_SELF, Float(24.0))
             Call(RunToGoal, ACTOR_SELF, 0, FALSE)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+            Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
             Thread
                 Call(SetActorRotationOffset, ACTOR_SELF, 0, 16, 0)
                 Set(LVar0, 0)

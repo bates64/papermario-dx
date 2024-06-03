@@ -1392,7 +1392,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+            Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_HuffNPuff_Anim0B)
             Call(SetAnimation, ACTOR_SELF, PRT_FACE, ANIM_HuffNPuff_Anim0C)
             Call(SetAnimation, ACTOR_SELF, PRT_ARMS, ANIM_HuffNPuff_Anim0D)
@@ -1541,7 +1541,7 @@ EvtScript N(EVS_RuffPuff_Inhale) = {
         #define HNP_LOAD_SUCTION_PATH(idx) \
             CaseEq(idx) \
                 Call(LoadPath, 40, Ref(N(SuctionPaths)[idx]), 3, EASING_QUADRATIC_IN)
-        
+
         // select the suction path for this Tuff Puff
         FOR_CHILDREN_ORDERED(HNP_LOAD_SUCTION_PATH)
 
@@ -2631,7 +2631,7 @@ EvtScript N(EVS_Attack_GroupSlam) = {
 
             // have each Tuff Puff return to their home position
             FOR_CHILDREN_SCATTERED(HNP_RETURN_HOME)
-            
+
             Call(SetGoalToHome, ACTOR_SELF)
             Call(FlyToGoal, ACTOR_SELF, 20, -10, EASING_SIN_OUT)
             Wait(15)
@@ -2646,7 +2646,7 @@ EvtScript N(EVS_Attack_GroupSlam) = {
         IfFlag(LVar0, 1 << idx) \
             Add(LVarA, 1) \
         EndIf
-    
+
     // add 1 damage for each Tuff Puff
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
 
@@ -2758,7 +2758,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
-    
+
     #define HNP_SWARM_MOVE_UP(idx) \
         IfFlag(LVar0, 1 << idx) \
             Thread \
@@ -2781,7 +2781,7 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
         IfFlag(LVar0, 1 << idx) \
             Add(LVarA, 1) \
         EndIf
-    
+
     // count the number of Tuff Puffs to compute radial spacing around the player
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
 
@@ -2838,17 +2838,17 @@ EvtScript N(EVS_Attack_TuffPuffSwarm) = {
 
     // move each Tuff Puff to a position surrounding the player
     FOR_CHILDREN_SCATTERED(HNP_SWARM_SURROUND_PLAYER)
-    
+
     Wait(30)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Set(LVar9, 0)
     Call(GetActorVar, ACTOR_SELF, AVAR_ChildBits, LVar0)
-    
+
     #define HNP_ADD_CHILD(idx) \
         IfFlag(LVar0, 1 << idx) \
             Add(LVar9, 1) \
         EndIf
-    
+
     // count the number of Tuff Puffs
     FOR_CHILDREN_ORDERED(HNP_ADD_CHILD)
 

@@ -1268,7 +1268,7 @@ EvtScript N(EVS_Move_MakeClones) = {
         ExecGetTID(N(EVS_UpdateHovering), LVar0)
         Call(SetActorVar, ACTOR_SELF, AVAR_HoveringScriptID, LVar0)
     EndIf
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(GetActorVar, ACTOR_SELF, AVAR_Clone1_ID, LVarA)
     Call(SetActorPos, LVarA, LVar0, LVar1, LVar2)

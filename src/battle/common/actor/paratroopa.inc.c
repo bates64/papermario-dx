@@ -452,7 +452,7 @@ EvtScript N(EVS_Flying_TakeTurn) = {
     Call(AddGoalPos, ACTOR_SELF, 40, 30, 0)
     Call(SetActorSpeed, ACTOR_SELF, Float(7.0))
     Call(FlyToGoal, ACTOR_SELF, 0, -16, EASING_LINEAR)
-    Call(UseBattleCamPresetImmediately, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPresetImmediately, BTL_CAM_INTERRUPT)
     Wait(5)
     Call(EnemyTestTarget, ACTOR_SELF, LVar0, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS)
     Switch(LVar0)

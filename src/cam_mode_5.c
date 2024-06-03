@@ -15,7 +15,7 @@ void update_camera_mode_5(Camera* camera) {
     if (camera->needsInit) {
         camera->unk_550 = 0.0f;
         camera->unk_70 = 0.0f;
-        camera->trueRot.x = 0.0f;
+        camera->trueYaw = 0.0f;
         camera->needsInit = FALSE;
         camera->unk_554 = 0;
         camera->lookAt_obj.x = camera->targetPos.x;

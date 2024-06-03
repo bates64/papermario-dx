@@ -27,13 +27,10 @@ void update_camera_mode_1(Camera* camera) {
         camera->curYOffset = camera->auxBoomPitch * 20 / D_8009A5EC;
 
         f20 = atan2(deltaX, deltaZ2, deltaX2, deltaZ);
-        if ((dist2D(deltaX, deltaZ2, deltaX2, deltaZ) < camera->auxBoomLength * 100 / D_8009A5EC)) {
-            f20 = camera->trueRot.x;
-            camera->trueRot.x = f20;
-        } else {
-            camera->trueRot.x = f20;
+        if ((dist2D(deltaX, deltaZ2, deltaX2, deltaZ) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
+            camera->trueYaw = f20;
         }
-        camera->trueRot.y = f20;
+        camera->unk_88 = camera->trueYaw;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->curYOffset;
@@ -100,12 +97,12 @@ void update_camera_mode_1(Camera* camera) {
 
     f20 = atan2(deltaX, deltaZ2, deltaX2, deltaZ);
     if ((dist2D(deltaX, deltaZ2, deltaX2, deltaZ) < camera->auxBoomLength * 100 / D_8009A5EC)) {
-        f20 = camera->trueRot.x;
+        f20 = camera->trueYaw;
     } else {
-        camera->trueRot.x = f20;
+        camera->trueYaw = f20;
     }
-    camera->trueRot.y -= get_clamped_angle_diff(f20, camera->trueRot.y) / 10.0f;
-    f20 = camera->trueRot.y;
+    camera->unk_88 -= get_clamped_angle_diff(f20, camera->unk_88) / 10.0f;
+    f20 = camera->unk_88;
 
     boomYaw = DEG_TO_RAD(camera->curBoomYaw);
     sinBoom = sin_rad(boomYaw);

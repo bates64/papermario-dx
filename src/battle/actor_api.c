@@ -2065,7 +2065,7 @@ API_CALLABLE(SummonEnemy) {
             if (does_script_exist(actor2->takeTurnScriptID)) {
                 break;
             }
-            
+
             enemyIDs = battleStatus->enemyIDs;
             if (battleStatus->nextEnemyIndex == 0) {
                 numEnemies = 0;
@@ -2168,7 +2168,7 @@ API_CALLABLE(GetPartAnimInstanceID) {
     s32 outVar = *args++;
     Actor* actor;
     ActorPart* part;
-    
+
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
@@ -2436,7 +2436,7 @@ API_CALLABLE(ChooseNextTarget) {
     return ApiStatus_DONE2;
 }
 
-s32 func_8026E558(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_8026E558) {
     Bytecode* args = script->ptrReadPos;
     SelectableTarget* target;
     s32 mode;
@@ -3015,7 +3015,7 @@ API_CALLABLE(ResetAllActorSounds) {
     return ApiStatus_DONE2;
 }
 
-s32 SetActorSounds(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetActorSounds) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     Actor* actor;

@@ -791,7 +791,9 @@ typedef struct Camera {
     /* 0x078 */ f32 curBoomLength;
     /* 0x07C */ f32 curYOffset;
     /* 0x080 */ char unk_80[4];
-    /* 0x084 */ Vec3f trueRot;
+    /* 0x084 */ f32 trueYaw;
+    /* 0x088 */ f32 unk_88;
+    /* 0x08c */ f32 unk_8C;
     /* 0x090 */ f32 curBlendedYawNegated;
     /* 0x094 */ f32 curPitch;
     /* 0x098 */ f32 unk_98;
@@ -808,7 +810,7 @@ typedef struct Camera {
     /* 0x1D4 */ char unk_1D4[0x28];
     /* 0x1FC */ void (*fpDoPreRender)(struct Camera*);
     /* 0x200 */ void (*fpDoPostRender)(struct Camera*);
-    /* 0x204 */ Mtx* unkMatrix;
+    /* 0x204 */ Mtx* mtxTrueYaw;
     /* 0x208 */ s32 unk_208;
     /* 0x20C */ Matrix4s* unkEffectMatrix;
     /* 0x210 */ char unk_210[0x2];

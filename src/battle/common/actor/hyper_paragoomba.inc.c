@@ -288,7 +288,7 @@ EvtScript N(EVS_Attack_ChargedDive) = {
             Call(SetActorJumpGravity, ACTOR_SELF, Float(0.01))
             Call(SetActorSpeed, ACTOR_SELF, Float(15.0))
             Call(JumpToGoal, ACTOR_SELF, 0, FALSE, FALSE, FALSE)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+            Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
             Call(ResetAllActorSounds, ACTOR_SELF)
             Call(AddGoalPos, ACTOR_SELF, -60, 0, 0)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(1.3))
@@ -970,7 +970,7 @@ EvtScript N(EVS_Downed_Move_Charge) = {
                     EndIf
                     Wait(1)
                 EndLoop
-                Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+                Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
                 IfEq(LVarA, HIT_RESULT_LUCKY)
                     Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
                 EndIf

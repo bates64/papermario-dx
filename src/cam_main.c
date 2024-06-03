@@ -18,19 +18,17 @@ DisplayContext* gDisplayContext;
 Camera gCameras[4];
 
 void update_cameras(void) {
-    s32 i;
+    s32 sx, sy, sz;
+    s32 camID;
 
-    for (i = 0; i < ARRAY_COUNT(gCameras); i++) {
-        Camera* cam = &gCameras[i];
-        s32 sx;
-        s32 sy;
-        s32 sz;
+    for (camID = 0; camID < ARRAY_COUNT(gCameras); camID++) {
+        Camera* cam = &gCameras[camID];
 
         if (cam->flags == 0 || cam->flags & CAMERA_FLAG_DISABLED) {
             continue;
         }
 
-        gCurrentCamID = i;
+        gCurrentCamID = camID;
 
         switch (cam->updateMode) {
             case CAM_UPDATE_FROM_ZONE:
@@ -92,6 +90,8 @@ void update_cameras(void) {
 }
 
 void render_frame(s32 isSecondPass) {
+    s32 firstCamID;
+    s32 lastCamID;
     s32 camID;
 
     if (!isSecondPass) {
@@ -99,19 +99,18 @@ void render_frame(s32 isSecondPass) {
         mdl_update_transform_matrices();
     }
 
+    // first pass:  loop uses camIDs from CAM_DEFAULT to CAM_HUD - 1
+    // second pass: loop only uses CAM_HUD
     if (isSecondPass) {
-        camID = CAM_3;
+        firstCamID = CAM_HUD;
+        lastCamID = ARRAY_COUNT(gCameras);
     } else {
-        camID = CAM_DEFAULT;
+        firstCamID = CAM_DEFAULT;
+        lastCamID = CAM_HUD;
     }
 
-    // first pass:  loop uses camIDs from CAM_DEFAULT to CAM_3 - 1
-    // second pass: loop only uses CAM_3
-    isSecondPass = 1 - isSecondPass;
-
-    for (; camID < ARRAY_COUNT(gCameras) - isSecondPass; camID++) {
+    for (camID = firstCamID; camID < lastCamID; camID++) {
         Camera* camera = &gCameras[camID];
-        u16 matrixListPos;
 
         if (camera->flags == 0 || (camera->flags & (CAMERA_FLAG_NO_DRAW | CAMERA_FLAG_DISABLED))) {
             continue;
@@ -191,14 +190,14 @@ void render_frame(s32 isSecondPass) {
                         G_MTX_PROJECTION);
         }
 
-        camera->unkMatrix = &gDisplayContext->matrixStack[gMatrixListPos];
-        matrixListPos = gMatrixListPos++;
-        guRotate(&gDisplayContext->matrixStack[matrixListPos], -camera->trueRot.x, 0.0f, 1.0f, 0.0f);
+        camera->mtxTrueYaw = &gDisplayContext->matrixStack[gMatrixListPos++];
+        guRotate(camera->mtxTrueYaw, -camera->trueYaw, 0.0f, 1.0f, 0.0f);
+
         camera->vpAlt.vp.vtrans[0] = camera->vp.vp.vtrans[0] + gGameStatusPtr->altViewportOffset.x;
         camera->vpAlt.vp.vtrans[1] = camera->vp.vp.vtrans[1] + gGameStatusPtr->altViewportOffset.y;
 
         if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
-            if (gCurrentCamID != CAM_3) {
+            if (gCurrentCamID != CAM_HUD) {
                 if (!(camera->flags & CAMERA_FLAG_RENDER_ENTITIES)) {
                     GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_ENTITIES);
                     render_entities();
@@ -255,66 +254,12 @@ void render_frame(s32 isSecondPass) {
     }
 }
 
-void create_cameras_a(void) {
+void create_cameras(void) {
     CameraInitData camData;
     CameraInitData* camDataPtr = &camData;
     s32 i;
 
     D_8009A5EC = 1.0f;
-
-    for (i = 0; i < ARRAY_COUNT(gCameras); i++) {
-        gCameras[i].flags = 0;
-    }
-
-    camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
-    camDataPtr->viewWidth = 160;
-    camDataPtr->viewHeight = 120;
-    camDataPtr->viewStartX = 0;
-    camDataPtr->viewStartY = 0;
-    camDataPtr->nearClip = 8;
-    camDataPtr->farClip = 16384;
-    camDataPtr->vfov = 50;
-    initialize_next_camera(camDataPtr);
-
-    camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
-    camDataPtr->viewWidth = 160;
-    camDataPtr->viewHeight = 120;
-    camDataPtr->viewStartX = 160;
-    camDataPtr->viewStartY = 0;
-    camDataPtr->nearClip = 8;
-    camDataPtr->farClip = 16384;
-    camDataPtr->vfov = 50;
-    initialize_next_camera(camDataPtr);
-
-    camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
-    camDataPtr->viewWidth = 160;
-    camDataPtr->viewHeight = 120;
-    camDataPtr->viewStartX = 0;
-    camDataPtr->viewStartY = 120;
-    camDataPtr->nearClip = 8;
-    camDataPtr->farClip = 16384;
-    camDataPtr->vfov = 50;
-    initialize_next_camera(camDataPtr);
-
-    camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
-    camDataPtr->viewWidth = 160;
-    camDataPtr->viewHeight = 120;
-    camDataPtr->viewStartX = 160;
-    camDataPtr->viewStartY = 120;
-    camDataPtr->nearClip = 8;
-    camDataPtr->farClip = 16384;
-    camDataPtr->vfov = 50;
-    initialize_next_camera(camDataPtr);
-}
-
-void create_cameras_b(void) {
-    CameraInitData camData;
-    CameraInitData* camDataPtr = &camData;
-    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gCameras); i++) {
         gCameras[i].flags = 0;
@@ -390,9 +335,9 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->curYaw = 0;
     camera->curBoomLength = 0;
     camera->curYOffset = 0;
-    camera->trueRot.x = 0.0f;
-    camera->trueRot.y = 0.0f;
-    camera->trueRot.z = 0.0f;
+    camera->trueYaw = 0.0f;
+    camera->unk_88 = 0.0f;
+    camera->unk_8C = 0.0f;
     camera->updateMode = initData->updateMode;
     camera->needsInit = TRUE;
     camera->nearClip = initData->nearClip;

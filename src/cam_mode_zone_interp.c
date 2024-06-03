@@ -926,7 +926,7 @@ void update_camera_zone_interp(Camera* camera) {
     camera->lookAt_obj.x = camera->lookAt_eye.x + (temp_f26 * temp_f4_4);
     camera->lookAt_obj.z = camera->lookAt_eye.z + (temp_f24_2 * temp_f4_4);
     camera->curYaw = gCurrentCamConfiguration.boomYaw + D_800A08E0;
-    camera->trueRot.x = camera->curYaw;
+    camera->trueYaw = camera->curYaw;
     camera->curBoomLength = gCurrentCamConfiguration.boomLength;
     camera->curBlendedYawNegated = -gCurrentCamConfiguration.boomYaw;
     camera->curPitch = -gCurrentCamConfiguration.boomPitch - gCurrentCamConfiguration.viewPitch;

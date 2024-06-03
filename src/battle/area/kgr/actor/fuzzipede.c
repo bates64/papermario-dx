@@ -412,7 +412,7 @@ EvtScript N(EVS_Floor_HandleEvent) = {
             ExecWait(EVS_Enemy_Recover)
         CaseEq(EVENT_RECEIVE_BUFF)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Fuzzipede_Anim19)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+            Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
             Call(SetActorJumpGravity, ACTOR_SELF, Float(1.0))
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)

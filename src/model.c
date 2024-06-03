@@ -1976,7 +1976,7 @@ void appendGfx_model(void* data) {
     }
 
     if (flags & MODEL_FLAG_USE_CAMERA_UNK_MATRIX) {
-        gSPMatrix((*gfxPos)++, gCameras[gCurrentCamID].unkMatrix, mtxLoadMode | mtxPushMode | G_MTX_MODELVIEW);
+        gSPMatrix((*gfxPos)++, gCameras[gCurrentCamID].mtxTrueYaw, mtxLoadMode | mtxPushMode | G_MTX_MODELVIEW);
         if (mtxPushMode != G_MTX_NOPUSH) {
             mtxPushMode = G_MTX_NOPUSH;
         }

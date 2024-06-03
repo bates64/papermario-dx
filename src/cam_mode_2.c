@@ -37,7 +37,7 @@ void update_camera_mode_4(Camera* camera) {
     camera->lookAt_obj_target.z = f4;
     camera->unk_70 = 0.0f;
     camera->curBoomYaw = 0.0f;
-    camera->trueRot.x = camera->unk_70;
+    camera->trueYaw = camera->unk_70;
     camera->curBoomLength = camera->lookAt_dist * D_8009A5EC;
     camera->curYOffset = camera->auxBoomPitch * D_8009A5EC;
     if (camera->needsInit) {
@@ -119,13 +119,12 @@ void update_camera_mode_2(Camera *camera) {
     f32 deltaX3;
     f32 deltaY3;
     f32 deltaZ3;
-    f32 tmp;
 
     camera->unk_70 = camera->auxBoomLength;
     camera->curBoomLength = camera->lookAt_dist * D_8009A5EC;
     camera->curYOffset = camera->auxBoomPitch * D_8009A5EC;
     camera->curBoomYaw = camera->auxPitch;
-    camera->trueRot.x = camera->unk_70;
+    camera->trueYaw = camera->unk_70;
     if (camera->needsInit) {
         camera->needsInit = FALSE;
         camera->unk_98 = 0.0f;
@@ -145,7 +144,6 @@ void update_camera_mode_2(Camera *camera) {
 
         deltaX3 = deltaX;
         deltaY3 = -deltaY;
-        tmp = -0.0f; //required to match
         deltaZ3 = deltaZ;
 
         deltaX = deltaX3;
@@ -230,8 +228,6 @@ void update_camera_mode_2(Camera *camera) {
     deltaX2 = (deltaX2 - camera->lookAt_eye.x) * 0.5f;
     deltaY2 = (deltaY2 - camera->lookAt_eye.y) * 0.5f;
     deltaZ2 = (deltaZ2 - camera->lookAt_eye.z) * 0.5f;
-
-    tmp = 0.0f; //required to match
 
     if (fabsf(deltaX2) > 16.0f) {
         if (deltaX2 < 0.0f) {

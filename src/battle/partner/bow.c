@@ -869,7 +869,7 @@ EvtScript N(spook) = {
         Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
         Call(MoveBattleCamOver, 5)
         Wait(5)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+        Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
         Loop(5)
             Call(SetBattleCamParam, 3, 110)
             Wait(2)

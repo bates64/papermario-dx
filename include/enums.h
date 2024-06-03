@@ -1800,7 +1800,7 @@ enum Cams {
     CAM_DEFAULT      = 0,
     CAM_BATTLE       = 1,
     CAM_TATTLE       = 2,
-    CAM_3            = 3,
+    CAM_HUD          = 3,
 };
 
 enum CamShakeModes {
@@ -4748,21 +4748,21 @@ enum CameraControlType {
 };
 
 enum BtlCameraPreset {
-    BTL_CAM_PRESET_00               = 0,    // unused?
-    BTL_CAM_PRESET_01               = 1,    // STOP
+    BTL_CAM_RESET                   = 0,    // unused?
+    BTL_CAM_INTERRUPT               = 1,    // forces camera motion to end
     BTL_CAM_DEFAULT                 = 2,
     BTL_CAM_PRESET_03               = 3,
     BTL_CAM_PRESET_04               = 4,
     BTL_CAM_PRESET_05               = 5,
-    BTL_CAM_PRESET_06               = 6,   // unused?
+    BTL_CAM_PRESET_06               = 6,    // unused?
     BTL_CAM_PRESET_07               = 7,
     BTL_CAM_PRESET_08               = 8,
-    BTL_CAM_PRESET_09               = 9,    // unused?
+    BTL_CAM_SLOW_DEFAULT            = 9,    // unused, same as BTL_CAM_DEFAULT but takes 4x as long
     BTL_CAM_PRESET_10               = 10,
     BTL_CAM_PRESET_11               = 11,
     BTL_CAM_PRESET_12               = 12,   // unused?
     BTL_CAM_PRESET_13               = 13,
-    BTL_CAM_PRESET_14               = 14,  // FOCUS_ON_TARGET?
+    BTL_CAM_PRESET_14               = 14,   // FOCUS_ON_TARGET?
     BTL_CAM_PRESET_15               = 15,
     BTL_CAM_PRESET_16               = 16,   // unused?
     BTL_CAM_PRESET_17               = 17,   // unused?
@@ -4813,7 +4813,7 @@ enum BtlCameraPreset {
     BTL_CAM_PRESET_62               = 62,
     BTL_CAM_ENEMY_APPROACH          = 63,   // (very common)
     BTL_CAM_PRESET_64               = 64,   // unused?
-    BTL_CAM_PRESET_65               = 65,   // unused?
+    BTL_CAM_DEFAULT_UNUSED          = 65,   // unused, same as BTL_CAM_DEFAULT but takes slightly longer
     BTL_CAM_PRESET_66               = 66,
     BTL_CAM_PRESET_67               = 67,   // unused?
     BTL_CAM_PRESET_68               = 68,   // unused?
@@ -4830,10 +4830,10 @@ enum BattleCamXModes {
 };
 
 enum BattleCamYModes {
-    BTL_CAM_MODEY_MINUS_2   = -2,
-    BTL_CAM_MODEY_MINUS_1   = -1,
-    BTL_CAM_MODEY_0         = 0,
-    BTL_CAM_MODEY_1         = 1,
+    BTL_CAM_MODEY_MINUS_2   = -2, // below actor
+    BTL_CAM_MODEY_MINUS_1   = -1, // use target Y?
+    BTL_CAM_MODEY_0         = 0, // use actor Y?
+    BTL_CAM_MODEY_1         = 1, // use average
 };
 
 enum ModelAnimatorFlags {

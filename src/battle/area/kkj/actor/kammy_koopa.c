@@ -517,7 +517,7 @@ EvtScript N(EVS_Death) = {
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 15, FALSE, TRUE, FALSE)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_ACTOR_COLLAPSE)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(JumpToGoal, ACTOR_SELF, 10, FALSE, TRUE, FALSE)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)

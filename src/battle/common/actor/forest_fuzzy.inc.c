@@ -255,7 +255,7 @@ EvtScript N(EVS_Move_Clone) = {
     Call(MoveBattleCamOver, 20)
     Wait(20)
     Call(SetActorDispOffset, ACTOR_SELF, 0, 0, 0)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Thread
         Wait(30)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_FUZZY_RUMBLE)

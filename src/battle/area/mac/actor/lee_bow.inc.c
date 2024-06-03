@@ -250,7 +250,7 @@ EvtScript N(EVS_TakeTurn) = {
         EndLoop
     EndThread
     Wait(10)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Thread

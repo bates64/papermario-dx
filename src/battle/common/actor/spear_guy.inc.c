@@ -615,7 +615,7 @@ EvtScript N(EVS_Move_SummonBackup) = {
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 15)
     Wait(15)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_01)
+    Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
     Call(SetAnimation, ACTOR_SELF, PRT_SPEAR_GUY, ANIM_SpearGuy_Anim05)
     Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
     Thread
