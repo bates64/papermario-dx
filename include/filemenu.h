@@ -25,18 +25,25 @@ enum {
     FM_MAIN_SELECT_DELETE       = 1, // choose which file to delete
     FM_MAIN_SELECT_COPY_FROM    = 2,
     FM_MAIN_SELECT_COPY_TO      = 3,
+
     FM_CONFIRM_DELETE           = 0,
     FM_CONFIRM_CREATE           = 1,
     FM_CONFIRM_COPY             = 2, // unused
     FM_CONFIRM_START            = 3,
+
     FM_MESSAGE_DELETED          = 0,
     FM_MESSAGE_COPIED           = 1,
     FM_MESSAGE_CREATED          = 2,
+
     FM_INPUT_CHARSET_A          = 0,
     FM_INPUT_CHARSET_B          = 1,
 };
 
 enum {
+    FM_MAIN_OPT_FILE_1          = 0,
+    FM_MAIN_OPT_FILE_2          = 1,
+    FM_MAIN_OPT_FILE_3          = 2,
+    FM_MAIN_OPT_FILE_4          = 3,
     FM_MAIN_OPT_DELETE          = 4,
     FM_MAIN_OPT_COPY            = 5,
     FM_MAIN_OPT_CANCEL          = 6,

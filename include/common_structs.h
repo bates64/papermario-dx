@@ -2078,7 +2078,7 @@ typedef struct PauseMapSpace {
 } PauseMapSpace; // size = 0x14
 
 typedef struct MenuPanel {
-    /* 0x00 */ u8 initialized;
+    /* 0x00 */ b8 initialized;
     /* 0x01 */ s8 col;
     /* 0x02 */ s8 row;
     /* 0x03 */ u8 selected; // usually set to the current value from gridData
