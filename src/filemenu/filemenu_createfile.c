@@ -17,7 +17,6 @@ s32 D_8024A18C = -4;
 #define WINDOW_2_Y (55)
 #define WINDOW_2_HEIGHT (133)
 #define ROWS (8)
-#define INPUT_FINAL_PAGE (1)
 extern u8 D_filemenu_80250958[];
 extern u8 D_filemenu_80250960[];
 #else
@@ -25,7 +24,6 @@ extern u8 D_filemenu_80250960[];
 #define WINDOW_2_Y (67)
 #define WINDOW_2_HEIGHT (113)
 #define ROWS (6)
-#define INPUT_FINAL_PAGE (2)
 #endif
 
 MenuWindowBP filemenu_createfile_windowBPs[] = {
@@ -488,7 +486,7 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
                 gWindows[WIN_FILES_CONFIRM_PROMPT].pos.y = -70;
 
                 filemenu_currentMenu = FILE_MENU_CONFIRM;
-                filemenu_menus[filemenu_currentMenu]->state = INPUT_FINAL_PAGE;
+                filemenu_menus[filemenu_currentMenu]->state = FM_CONFIRM_CREATE;
                 filemenu_set_selected(filemenu_menus[filemenu_currentMenu], 0, 0);
                 return;
             default:
@@ -528,10 +526,10 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
             set_window_update(WIN_FILES_OPTION_CENTER, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WIN_FILES_OPTION_RIGHT, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WIN_FILES_OPTION_LEFT, (s32) &filemenu_update_show_with_rotation);
-            set_window_update(WIN_FILES_SLOT0_BODY, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WIN_FILES_SLOT1_BODY, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WIN_FILES_SLOT2_BODY, (s32) &filemenu_update_show_with_rotation);
             set_window_update(WIN_FILES_SLOT3_BODY, (s32) &filemenu_update_show_with_rotation);
+            set_window_update(WIN_FILES_SLOT4_BODY, (s32) &filemenu_update_show_with_rotation);
             filemenu_currentMenu = FILE_MENU_MAIN;
             return;
         }
@@ -571,7 +569,7 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
         gWindows[WIN_FILES_CONFIRM_PROMPT].pos.y = -70;
 
         filemenu_currentMenu = FILE_MENU_CONFIRM;
-        filemenu_menus[FILE_MENU_CONFIRM]->state = INPUT_FINAL_PAGE;
+        filemenu_menus[FILE_MENU_CONFIRM]->state = FM_CONFIRM_CREATE;
         filemenu_set_selected(filemenu_menus[FILE_MENU_CONFIRM], 0, 0);
     }
 }
