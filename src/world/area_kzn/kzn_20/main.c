@@ -15,7 +15,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 
 EvtScript N(EVS_UpdateTexPan_Lava) = {
     SetGroup(EVT_GROUP_00)
-    Call(SetTexPanner, MODEL_yu, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_yu, TRUE)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)
@@ -166,7 +166,7 @@ EvtScript N(EVS_OnBreakWall) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_20)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
+    SetUP_CAMERA_NO_LEAD()
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)

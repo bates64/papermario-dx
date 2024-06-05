@@ -1,23 +1,24 @@
 #include "isk_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 Gfx N(HazePreGfx)[] = {
     gsDPSetAlphaDither(G_AD_NOISE),
     gsSPEndDisplayList(),
 };
 
 EvtScript N(EVS_SetupHaze) = {
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(HazePreGfx)), NULL)
-    Call(SetModelFlags, MODEL_o99, MODEL_FLAG_USES_CUSTOM_GFX, TRUE)
     Call(SetTexPanner, MODEL_o99, TEX_PANNER_2)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_2)
-        TEX_PAN_PARAMS_STEP(   70,    0,    0,    0)
-        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
+    Call(EnableTexPanning, MODEL_o99, TRUE)
+    Set(LVar0, 0)
+    Call(SetCustomGfx, 0, Ref(N(HazePreGfx)), NULL)
+    Call(SetModelFlags, MODEL_o99, MODEL_FLAG_USES_CUSTOM_GFX, TRUE)
+    Label(0)
+        Add(LVar0, 70)
+        Call(SetTexPanOffset, TEX_PANNER_2, TEX_PANNER_MAIN, LVar0, 0)
+        IfGt(LVar0, 0x4000)
+            Add(LVar0, -0x4000)
+        EndIf
+        Wait(1)
+        Goto(0)
     Return
     End
 };
