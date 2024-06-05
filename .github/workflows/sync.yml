@@ -3,7 +3,6 @@
 # If the tests pass then the PR is automatically merged by GitHub.
 name: Sync upstream
 env:
-  UPSTREAM: pmret/papermario # If you forked dx, change this to star-haven/papermario-dx! (TODO: do this automatically)
   UPSTREAM_BRANCH: main
   BASE_BRANCH: main
 on:
@@ -21,8 +20,15 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ env.BASE_BRANCH }}
+      - name: Determine upstream
+        run: |
+          if [[ "${{ github.repository }}" == "bates64/papermario-dx" ]]; then
+            echo "UPSTREAM=pmret/papermario" >> $GITHUB_ENV
+          else
+            echo "UPSTREAM=bates64/papermario-dx" >> $GITHUB_ENV
+          fi
       - name: Fetch upstream
-        run: git fetch https://github.com/${{ env.UPSTREAM }}.git ${UPSTREAM_BRANCH}
+        run: git fetch https://github.com/$UPSTREAM.git $UPSTREAM_BRANCH
       - name: Set git user
         # https://github.com/orgs/community/discussions/26560
         run: |
@@ -38,7 +44,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Pull Request
         run: |
-          gh pr create --title "Sync with ${{ env.UPSTREAM }}" --body "Automated PR to keep this repository in sync with upstream. Beep boop." --base ${BASE_BRANCH}
+          gh pr create --title "Sync with $UPSTREAM" --body "Automated PR to keep this repository in sync with upstream. Beep boop." --base ${BASE_BRANCH}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
