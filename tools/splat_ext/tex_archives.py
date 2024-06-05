@@ -433,7 +433,7 @@ class TexImage:
     def add_bytes(self, tex_name: str, bytes: bytearray):
         pos = len(bytes)
 
-        # write name to header
+        #  write name to header
         name_bytes = self.img_name.encode("ascii")
         bytes += name_bytes
 
