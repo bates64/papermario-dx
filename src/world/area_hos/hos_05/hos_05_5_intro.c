@@ -417,7 +417,7 @@ API_CALLABLE(N(StoryCameraShake1)) {
     if (isInitialCall) {
         camera->flags |= CAMERA_FLAG_SHAKING;
     }
-    guTranslateF(camera->viewMtxShaking,
+    guTranslateF(camera->mtxViewShaking,
         N(StoryCameraShake1Scale) * sin_deg(N(StoryCameraShake1Angle) * 486),
         N(StoryCameraShake1Scale) * cos_deg(N(StoryCameraShake1Angle) * 254),
         0.0f
@@ -425,7 +425,7 @@ API_CALLABLE(N(StoryCameraShake1)) {
     N(StoryCameraShake1Angle)++;
     N(StoryCameraShake1Scale) += (12.0f - N(StoryCameraShake1Scale)) * 0.2;
     if (N(StoryCameraShake1Angle) > 20) {
-        guTranslateF(camera->viewMtxShaking, 0.0f, 0.0f, 0.0f);
+        guTranslateF(camera->mtxViewShaking, 0.0f, 0.0f, 0.0f);
         camera->flags &= ~CAMERA_FLAG_SHAKING;
         return ApiStatus_DONE1;
     }
@@ -446,13 +446,13 @@ API_CALLABLE(N(StoryCameraShake2)) {
     }
     x = N(StoryCameraShake2Scale) * sin_deg(N(StoryCameraShake2Angle) * 486);
     y = N(StoryCameraShake2Scale) * cos_deg(N(StoryCameraShake2Angle) * 254);
-    guTranslateF(camera->viewMtxShaking, x, y, 0.0f);
-    guTranslateF(camera->viewMtxShaking, x, y, 0.0f);
+    guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
+    guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
     guRotateF(sp18, 20.0f, 0.0f, 0.0f, 1.0f);
-    guMtxCatF(sp18, camera->viewMtxShaking, camera->viewMtxShaking);
+    guMtxCatF(sp18, camera->mtxViewShaking, camera->mtxViewShaking);
     camera->panActive = TRUE;
     if (N(StoryCameraShake2Angle) >= 10) {
-        guRotateF(camera->viewMtxShaking, 20.0f, 0.0f, 0.0f, 1.0f);
+        guRotateF(camera->mtxViewShaking, 20.0f, 0.0f, 0.0f, 1.0f);
         return ApiStatus_DONE1;
     }
     N(StoryCameraShake2Angle)++;
@@ -566,7 +566,7 @@ API_CALLABLE(N(StoryCameraShakeEnd)) {
     if (isInitialCall) {
         camera->flags &= ~CAMERA_FLAG_SHAKING;
     }
-    guTranslateF(camera->viewMtxShaking, 0.0f, 0.0f, 0.0f);
+    guTranslateF(camera->mtxViewShaking, 0.0f, 0.0f, 0.0f);
     return ApiStatus_DONE2;
 }
 

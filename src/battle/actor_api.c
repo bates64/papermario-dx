@@ -3235,7 +3235,7 @@ API_CALLABLE(BoostAttack) {
         btl_cam_target_actor(actor->actorID);
         btl_cam_set_zoom(250);
         btl_cam_move(10);
-        func_8024E60C();
+        btl_cam_disable_clamp_x();
         if (actor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             btl_cam_set_zoffset(0);
         }
@@ -3358,7 +3358,7 @@ API_CALLABLE(BoostDefense) {
         btl_cam_target_actor(actor->actorID);
         btl_cam_set_zoom(250);
         btl_cam_move(10);
-        func_8024E60C();
+        btl_cam_disable_clamp_x();
         if (actor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             btl_cam_set_zoffset(0);
         }
@@ -3480,7 +3480,7 @@ API_CALLABLE(VanishActor) {
         btl_cam_target_actor(actor->actorID);
         btl_cam_set_zoom(250);
         btl_cam_move(10);
-        func_8024E60C();
+        btl_cam_disable_clamp_x();
         if (actor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             btl_cam_set_zoffset(0);
         }
@@ -3586,7 +3586,7 @@ API_CALLABLE(ElectrifyActor) {
         btl_cam_target_actor(actor->actorID);
         btl_cam_set_zoom(250);
         btl_cam_move(10);
-        func_8024E60C();
+        btl_cam_disable_clamp_x();
         if (actor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             btl_cam_set_zoffset(0);
         }
@@ -3695,7 +3695,7 @@ API_CALLABLE(HealActor) {
         btl_cam_set_zoffset(12);
         btl_cam_target_actor(actor->actorID);
         btl_cam_move(10);
-        func_8024E60C();
+        btl_cam_disable_clamp_x();
 
         ApplyingBuff = TRUE;
         script->functionTemp[3] = 5;

@@ -4315,7 +4315,7 @@ enum GlobalOverrides {
     | MODEL_FLAG_20 \
     | MODEL_FLAG_IGNORE_FOG \
     | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY \
-    | MODEL_FLAG_USE_CAMERA_UNK_MATRIX \
+    | MODEL_FLAG_BILLBOARD \
     | MODEL_FLAG_DO_BOUNDS_CULLING \
     | MODEL_FLAG_HAS_TRANSFORM \
     | MODEL_FLAG_HAS_TEX_PANNER \
@@ -4333,7 +4333,7 @@ enum ModelFlags {
     MODEL_FLAG_20                       = 0x0020,
     MODEL_FLAG_IGNORE_FOG               = 0x0040,
     MODEL_FLAG_HAS_LOCAL_VERTEX_COPY    = 0x0080,
-    MODEL_FLAG_USE_CAMERA_UNK_MATRIX    = 0x0100,
+    MODEL_FLAG_BILLBOARD                = 0x0100, // rotate to face the camera
     MODEL_FLAG_DO_BOUNDS_CULLING        = 0x0200,
     MODEL_FLAG_HAS_TRANSFORM            = 0x0400,
     MODEL_FLAG_HAS_TEX_PANNER           = 0x0800,
@@ -4701,13 +4701,13 @@ enum CameraMoveFlags {
 };
 
 enum CameraUpdateType {
-    CAM_UPDATE_MODE_INIT            = 0,
+    CAM_UPDATE_MINIMAL            = 0,
     CAM_UPDATE_UNUSED_1             = 1,
-    CAM_UPDATE_MODE_2               = 2,
+    CAM_UPDATE_HUD_ELEM             = 2,
     CAM_UPDATE_FROM_ZONE            = 3,
     CAM_UPDATE_UNUSED_4             = 4,
     CAM_UPDATE_UNUSED_5             = 5,
-    CAM_UPDATE_MODE_6               = 6,
+    CAM_UPDATE_BTL_CAM              = 6,
 };
 
 enum CameraControlType {
@@ -4755,7 +4755,7 @@ enum BtlCameraPreset {
     BTL_CAM_PRESET_04               = 4,
     BTL_CAM_PRESET_05               = 5,
     BTL_CAM_PRESET_06               = 6,    // unused?
-    BTL_CAM_PRESET_07               = 7,
+    BTL_CAM_ACTOR_GOAL              = 7,
     BTL_CAM_PRESET_08               = 8,
     BTL_CAM_SLOW_DEFAULT            = 9,    // unused, same as BTL_CAM_DEFAULT but takes 4x as long
     BTL_CAM_PRESET_10               = 10,

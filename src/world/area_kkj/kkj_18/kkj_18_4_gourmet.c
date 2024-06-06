@@ -23,7 +23,7 @@ API_CALLABLE(N(SpinCameraAround)) {
     }
 
     script->functionTempF[0] += 10.0f;
-    guRotateF(camera->viewMtxShaking, script->functionTempF[0], 0.0f, 0.0f, -1.0f);
+    guRotateF(camera->mtxViewShaking, script->functionTempF[0], 0.0f, 0.0f, -1.0f);
 
     if (script->functionTempF[0] >= 360.0) {
         return ApiStatus_DONE2;

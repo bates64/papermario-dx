@@ -114,7 +114,7 @@ ActorBlueprint NAMESPACE = {
 EvtScript N(EVS_Cam_FocusOnJrTroopa) = {
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_07)
+    Call(UseBattleCamPreset, BTL_CAM_ACTOR_GOAL)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamOffsetZ, 38)
     Call(SetBattleCamZoom, 256)

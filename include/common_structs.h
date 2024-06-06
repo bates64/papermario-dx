@@ -719,16 +719,6 @@ typedef struct CameraInitData {
     /* 0x10 */ s16 vfov;
 } CameraInitData; // size = 0x12;
 
-typedef struct CameraUnk {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ char unk_04[0x8];
-    /* 0x0C */ s32 unk_0C;
-    /* 0x10 */ char unk_10[0x54];
-    /* 0x64 */ s32 unk_64;
-    /* 0x68 */ char unk_68[0x24];
-} CameraUnk; // size = 0x8C
-
 typedef struct CameraControlSettings {
     /* 0x00 */ s32 type;
     /* 0x04 */ f32 boomLength;
@@ -752,7 +742,7 @@ typedef struct CameraControlSettings {
         } three;
     } points;
     /* 0x24 */ f32 viewPitch;
-    /* 0x28 */ s32 flag;
+    /* 0x28 */ b32 flag;
 } CameraControlSettings; // size = 0x2C
 
 typedef struct Camera {
@@ -778,23 +768,23 @@ typedef struct Camera {
     /* 0x028 */ s16 unk_28;
     /* 0x02A */ s16 zoomPercent;
     /* 0x02C */ s16 bgColor[3];
-    /* 0x032 */ Vec3s targetScreenCoords;
+    /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
     /* 0x03A */ char unk_3A[2];
-    /* 0x03C */ Vec3f lookAt_eye;
-    /* 0x048 */ Vec3f lookAt_obj;
+    /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
+    /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
     /* 0x054 */ Vec3f lookAt_obj_target;
     /* 0x060 */ Vec3f targetPos;
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 unk_70;
-    /* 0x074 */ f32 curBoomYaw;
+    /* 0x074 */ f32 curBoomPitch;
     /* 0x078 */ f32 curBoomLength;
     /* 0x07C */ f32 curYOffset;
     /* 0x080 */ char unk_80[4];
-    /* 0x084 */ f32 trueYaw;
+    /* 0x084 */ f32 curBoomYaw;
     /* 0x088 */ f32 unk_88;
     /* 0x08c */ f32 unk_8C;
-    /* 0x090 */ f32 curBlendedYawNegated;
+    /* 0x090 */ f32 lookAt_yaw;
     /* 0x094 */ f32 curPitch;
     /* 0x098 */ f32 unk_98;
     /* 0x09C */ f32 unk_9C;
@@ -803,19 +793,17 @@ typedef struct Camera {
     /* 0x0C0 */ s32 unk_C0;
     /* 0x0C4 */ f32 unk_C4;
     /* 0x0C8 */ char unk_C8[0xC];
-    /* 0x0D4 */ Matrix4f perspectiveMatrix;
-    /* 0x114 */ Matrix4f viewMtxPlayer; /* centers on player */
-    /* 0x154 */ Matrix4f viewMtxLeading; /* leads player slightly */
-    /* 0x194 */ Matrix4f viewMtxShaking; /* used while ShakeCam is active */
+    /* 0x0D4 */ Matrix4f mtxPerspective;
+    /* 0x114 */ Matrix4f mtxViewPlayer; // centers on player
+    /* 0x154 */ Matrix4f mtxViewLeading; // leads player slightly
+    /* 0x194 */ Matrix4f mtxViewShaking; // used while ShakeCam is active
     /* 0x1D4 */ char unk_1D4[0x28];
     /* 0x1FC */ void (*fpDoPreRender)(struct Camera*);
     /* 0x200 */ void (*fpDoPostRender)(struct Camera*);
-    /* 0x204 */ Mtx* mtxTrueYaw;
+    /* 0x204 */ Mtx* mtxBillboard; // rotation matrix created from -curBoomYaw
     /* 0x208 */ s32 unk_208;
     /* 0x20C */ Matrix4s* unkEffectMatrix;
     /* 0x210 */ char unk_210[0x2];
-    /* 0x212 */ s16 unk_212;
-    /* 0x214 */ CameraUnk unk_214[4];
     /* 0x444 */ CameraControlSettings* prevController;
     /* 0x448 */ CameraControlSettings* curController;
     /* 0x44C */ CamConfiguration prevConfiguration;

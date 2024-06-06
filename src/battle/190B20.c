@@ -9,12 +9,12 @@
 EvtScript D_80293820 = {
     Wait(LVar0)
     Loop(4)
-        Call(SetBattleCamParam, 4, 11)
+        Call(SetBattleCamParam, AUX_CAM_BOOM_PITCH, 11)
         Wait(1)
-        Call(SetBattleCamParam, 4, 5)
+        Call(SetBattleCamParam, AUX_CAM_BOOM_PITCH, 5)
         Wait(1)
     EndLoop
-    Call(SetBattleCamParam, 4, 8)
+    Call(SetBattleCamParam, AUX_CAM_BOOM_PITCH, 8)
     Return
     End
 };

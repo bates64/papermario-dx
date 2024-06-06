@@ -357,7 +357,7 @@ EvtScript N(EVS_Attack_StrikeTwice) = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_TheMaster_AscendedDownwardStance)
     Wait(40)
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_07)
+    Call(UseBattleCamPreset, BTL_CAM_ACTOR_GOAL)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 1)
     Wait(10)

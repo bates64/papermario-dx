@@ -55,7 +55,7 @@ void state_init_file_select(void) {
     hud_element_set_aux_cache(0, 0);
     hud_element_clear_cache();
     mdl_load_all_textures(NULL, 0, 0);
-    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_MODE_6;
+    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_BTL_CAM;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = 16;
     gCameras[CAM_DEFAULT].farClip = 4096;

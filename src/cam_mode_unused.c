@@ -35,11 +35,11 @@ void update_camera_mode_unused(Camera* camera) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
-        camera->trueYaw = camera->auxBoomYaw;
-        camera->curBoomYaw = camera->auxBoomPitch;
+        camera->curBoomYaw = camera->auxBoomYaw;
+        camera->curBoomPitch = camera->auxBoomPitch;
         camera->curBoomLength = camera->auxBoomLength;
         camera->vfov = (10000 / camera->lookAt_dist) / 4;
-        boomYaw = DEG_TO_RAD(camera->curBoomYaw);
+        boomYaw = DEG_TO_RAD(camera->curBoomPitch);
         sinBoom = sin_rad(boomYaw);
         cosBoom = cos_rad(boomYaw);
         deltaX = 0.0f;
@@ -52,7 +52,7 @@ void update_camera_mode_unused(Camera* camera) {
         deltaX = deltaX2;
         deltaY = cosBoom * deltaY2 + deltaZ2 * sinBoom;
         deltaZ = sinBoom * boomYaw + deltaZ2 * cosBoom;
-        boomYaw = DEG_TO_RAD(camera->trueYaw);
+        boomYaw = DEG_TO_RAD(camera->curBoomYaw);
         sinBoom = sin_rad(boomYaw);
         cosBoom = cos_rad(boomYaw);
         deltaZ2 = cosBoom * deltaX - deltaZ * sinBoom;
@@ -67,6 +67,6 @@ void update_camera_mode_unused(Camera* camera) {
     deltaX = camera->lookAt_obj.x - camera->lookAt_eye.x;
     deltaY = camera->lookAt_obj.y - camera->lookAt_eye.y;
     deltaZ = camera->lookAt_obj.z - camera->lookAt_eye.z;
-    camera->curBlendedYawNegated = -atan2(0.0f, 0.0f, deltaX, deltaZ);
+    camera->lookAt_yaw = -atan2(0.0f, 0.0f, deltaX, deltaZ);
     camera->curPitch = atan2(0.0f, 0.0f, deltaY, -sqrtf(SQ(deltaX) + SQ(deltaZ)));
 }

@@ -60,7 +60,7 @@ API_CALLABLE(SetCamPerspective) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CA90C) {
+API_CALLABLE(SetCamUpdateMode) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
     s16 mode = evt_get_variable(script, *args++);
@@ -80,10 +80,10 @@ API_CALLABLE(func_802CA988) {
     Bytecode outVar4 = *args++;
     f32 dx, dy, dz;
 
-    gCameras[id].updateMode = CAM_UPDATE_MODE_2;
+    gCameras[id].updateMode = CAM_UPDATE_HUD_ELEM;
     gCameras[id].needsInit = FALSE;
     gCameras[id].auxPitch = -round(gCameras[id].curPitch);
-    gCameras[id].auxBoomLength = -gCameras[id].curBlendedYawNegated;
+    gCameras[id].auxBoomLength = -gCameras[id].lookAt_yaw;
 
     dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
     dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
@@ -301,15 +301,15 @@ API_CALLABLE(ShakeCam) {
     scale = script->functionTempF[3];
     switch (shakeMode) {
         case CAM_SHAKE_CONSTANT_VERTICAL:
-            guTranslateF(camera->viewMtxShaking, 0.0f, -scale * magnitude, 0.0f);
+            guTranslateF(camera->mtxViewShaking, 0.0f, -scale * magnitude, 0.0f);
             script->functionTempF[3] = -script->functionTempF[3];
             break;
         case CAM_SHAKE_ANGULAR_HORIZONTAL:
-            guRotateF(camera->viewMtxShaking, scale * magnitude, 0.0f, 0.0f, 1.0f);
+            guRotateF(camera->mtxViewShaking, scale * magnitude, 0.0f, 0.0f, 1.0f);
             script->functionTempF[3] = -script->functionTempF[3];
             break;
         case CAM_SHAKE_DECAYING_VERTICAL:
-            guTranslateF(camera->viewMtxShaking, 0.0f, -scale * magnitude, 0.0f);
+            guTranslateF(camera->mtxViewShaking, 0.0f, -scale * magnitude, 0.0f);
             if ((script->functionTemp[1] < (duration * 2)) && (duration < script->functionTemp[1])) {
                 script->functionTempF[3] = script->functionTempF[3] * -0.8;
             } else {

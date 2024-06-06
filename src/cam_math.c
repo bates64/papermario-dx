@@ -20,38 +20,25 @@ CameraControlSettings* test_ray_zone(f32 posX, f32 posY, f32 posZ, Collider** zo
 }
 
 s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squared_dist) {
-    f32 dx14;
-    f32 dx13;
-    f32 dz;
-    f32 dz12;
-    f32 dx34;
-    f32 dx12;
-    f32 dx;
-    f32 alpha;
-    f32 minus_dz12;
-    f32 B2_side;
-    f32 x;
     f32 B1_side;
-    f32 z;
-    f32 dx12_copy;
-    f32 dz13;
-    f32 dz14;
-    f32 dz34;
-    f32 B1_side_;
+    f32 B2_side;
+    f32 disc;
 
-    dx12_copy = A2x - A1x;
-    dx12 = dx12_copy;
-    dz12 = A2z - A1z;
-    dx13 = B1x - A1x;
-    dz13 = B1z - A1z;
-    dx14 = B2x - A1x;
-    dz14 = B2z - A1z;
-    minus_dz12 = -dz12;
-    dx34 = B2x - B1x;
-    dz34 = B2z - B1z;
+    f32 alpha;
+    f32 Px;
+    f32 Pz;
+
+    f32 dx12 = A2x - A1x;
+    f32 dz12 = A2z - A1z;
+    f32 dx13 = B1x - A1x;
+    f32 dz13 = B1z - A1z;
+    f32 dx14 = B2x - A1x;
+    f32 dz14 = B2z - A1z;
+    f32 dx34 = B2x - B1x;
+    f32 dz34 = B2z - B1z;
 
     // if distance between points on the line is 0
-    if (dx12_copy == 0.0f && dz12 == 0.0f) {
+    if (dx12 == 0.0f && dz12 == 0.0f) {
         return FALSE;
     }
     // if length of second segment is 0
@@ -59,27 +46,26 @@ s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, 
         return FALSE;
     }
 
-    B1_side_ = minus_dz12 * dx13 + dx12_copy * dz13;
-    if (B1_side_ < 0.0f) {
+    disc = -dz12 * dx13 + dx12 * dz13;
+    if (disc < 0.0f) {
         B1_side = -1.0f;
-    } else if (B1_side_ > 0.0f) {
+    } else if (disc > 0.0f) {
         B1_side = 1.0f;
     } else {
         B1_side = 0.0f;
     }
-    B1_side_ = B1_side;
 
-    dx = minus_dz12 * dx14 + dx12_copy * dz14;
-    if (dx < 0.0f) {
+    disc = -dz12 * dx14 + dx12 * dz14;
+    if (disc < 0.0f) {
         B2_side = -1.0f;
-    } else if (dx > 0.0f) {
+    } else if (disc > 0.0f) {
         B2_side = 1.0f;
     } else {
         B2_side = 0.0f;
     }
 
     // B1 and B2 are on the same side relative to the line: no intersection
-    if (B1_side_ == B2_side) {
+    if (B1_side == B2_side) {
         return FALSE;
     }
 
@@ -105,8 +91,8 @@ s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, 
             Don't know why it's done this way.
         */
         alpha = (B1x + dx34 * alpha - A1x) / dx12;
-        x = A1x + dx12 * alpha;
-        z = A1z + dz12 * alpha;
+        Px = A1x + dx12 * alpha;
+        Pz = A1z + dz12 * alpha;
     } else {
         /*
         We represent intersection point P as P = A1 + alpha * (A2 - A1)
@@ -118,81 +104,65 @@ s32 calculate_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, 
         alpha /= dz12 * dx34 - dx12 * dz34;
         // Now we represent P as P = B1 + beta * (B2 - B1) and find beta
         alpha = (A1x + dx12 * alpha - B1x) / dx34;
-        x = B1x + dx34 * alpha;
-        z = B1z + dz34 * alpha;
+        Px = B1x + dx34 * alpha;
+        Pz = B1z + dz34 * alpha;
     }
     // (P - A1) * (P - A2) > 0 when P is outside of segment A1-A2
-    if ((x - A1x) * (x - A2x) + (z - A1z) * (z - A2z) > 0.0f) {
+    if ((Px - A1x) * (Px - A2x) + (Pz - A1z) * (Pz - A2z) > 0.0f) {
         return FALSE;
     }
 
-    dx = x - B1x;
-    dz = z - B1z;
-    *interX = x;
-    *interZ = z;
+    *interX = Px;
+    *interZ = Pz;
     // distance between P and B1
-    *squared_dist = SQ(dx) + SQ(dz);
+    *squared_dist = SQ(Px - B1x) + SQ(Pz - B1z);
     return TRUE;
 }
 
 s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 B1x, f32 B1z, f32 B2x, f32 B2z, f32* interX, f32* interZ, f32* squared_dist) {
-    f32 dx14;
-    f32 dx13;
-    f32 dz;
-    f32 dz12;
-    f32 dx34;
-    f32 dx12;
-    f32 dx;
-    f32 alpha;
-    f32 minus_dz12;
-    f32 B2_side;
-    f32 x;
     f32 B1_side;
-    f32 z;
-    f32 dx12_copy;
-    f32 dz13;
-    f32 dz14;
-    f32 dz34;
-    f32 B1_side_;
+    f32 B2_side;
+    f32 disc;
 
-    dx12_copy = A2x - A1x;
-    dx12 = dx12_copy;
-    dz12 = A2z - A1z;
-    dx13 = B1x - A1x;
-    dz13 = B1z - A1z;
-    dx14 = B2x - A1x;
-    dz14 = B2z - A1z;
-    minus_dz12 = -dz12;
-    dx34 = B2x - B1x;
-    dz34 = B2z - B1z;
+    f32 alpha;
+    f32 Px;
+    f32 Pz;
 
-    if (dx12_copy == 0.0f && dz12 == 0.0f) {
+    f32 dx12 = A2x - A1x;
+    f32 dz12 = A2z - A1z;
+    f32 dx13 = B1x - A1x;
+    f32 dz13 = B1z - A1z;
+    f32 dx14 = B2x - A1x;
+    f32 dz14 = B2z - A1z;
+    f32 dx34 = B2x - B1x;
+    f32 dz34 = B2z - B1z;
+
+    if (dx12 == 0.0f && dz12 == 0.0f) {
         return FALSE;
     }
     if (dx34 == 0.0f && dz34 == 0.0f) {
         return FALSE;
     }
 
-    B1_side_ = minus_dz12 * dx13 + dx12_copy * dz13;
-    if (B1_side_ < 0.0f) {
+    disc = -dz12 * dx13 + dx12 * dz13;
+    if (disc < 0.0f) {
         B1_side = -1.0f;
-    } else if (B1_side_ > 0.0f) {
+    } else if (disc > 0.0f) {
         B1_side = 1.0f;
     } else {
         B1_side = 0.0f;
     }
-    B1_side_ = B1_side;
 
-    dx = minus_dz12 * dx14 + dx12_copy * dz14;
-    if (dx < 0.0f) {
+    disc = -dz12 * dx14 + dx12 * dz14;
+    if (disc < 0.0f) {
         B2_side = -1.0f;
-    } else if (dx > 0.0f) {
+    } else if (disc > 0.0f) {
         B2_side = 1.0f;
     } else {
         B2_side = 0.0f;
     }
 
-    if (B1_side_ == B2_side) {
+    if (B1_side == B2_side) {
         return FALSE;
     }
 
@@ -200,21 +170,19 @@ s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 
         alpha = A1x * dz12 - A1z * dx12 + dx12 * B1z - dz12 * B1x;
         alpha /= dz12 * dx34 - dx12 * dz34;
         alpha = (B1x + dx34 * alpha - A1x) / dx12;
-        x = A1x + dx12 * alpha;
-        z = A1z + dz12 * alpha;
+        Px = A1x + dx12 * alpha;
+        Pz = A1z + dz12 * alpha;
     } else {
         alpha = B1z * dx34 + A1x * dz34 - B1z * dz34 - A1z * dx34;
         alpha /= dz12 * dx34 - dx12 * dz34;
         alpha = (A1x + dx12 * alpha - B1x) / dx34;
-        x = B1x + dx34 * alpha;
-        z = B1z + dz34 * alpha;
+        Px = B1x + dx34 * alpha;
+        Pz = B1z + dz34 * alpha;
     }
 
-    dx = x - B1x;
-    dz = z - B1z;
-    *interX = x;
-    *interZ = z;
-    *squared_dist = SQ(dx) + SQ(dz);
+    *interX = Px;
+    *interZ = Pz;
+    *squared_dist = SQ(Px - B1x) + SQ(Pz - B1z);
     return TRUE;
 }
 
@@ -377,7 +345,7 @@ void func_80032C64(Camera* camera) {
     f32 deltaPosX, deltaPosZ;
     f32 f24, f22, cosYaw, sinYaw;
 
-    rotationRad = DEG_TO_RAD(camera->trueYaw);
+    rotationRad = DEG_TO_RAD(camera->curBoomYaw);
     leadAmount = camera->leadAmount;
 
     newPosX = camera->targetPos.x + leadAmount * cos_rad(rotationRad);
@@ -392,10 +360,10 @@ void func_80032C64(Camera* camera) {
             || (s2 = func_800328A4(settings, camera->targetPos.x, camera->targetPos.z)) != 0
         ) {
             if (camera->unk_530) {
-                guPerspectiveF(camera->perspectiveMatrix, &camera->perspNorm, camera->vfov,
+                guPerspectiveF(camera->mtxPerspective, &camera->perspNorm, camera->vfov,
                     (f32)camera->viewportW / (f32)camera->viewportH, camera->nearClip, camera->farClip, 1.0f);
-                guMtxCatF(camera->viewMtxPlayer, camera->perspectiveMatrix, camera->perspectiveMatrix);
-                transform_point(camera->perspectiveMatrix, camera->targetPos.x, camera->targetPos.y, camera->targetPos.z,
+                guMtxCatF(camera->mtxViewPlayer, camera->mtxPerspective, camera->mtxPerspective);
+                transform_point(camera->mtxPerspective, camera->targetPos.x, camera->targetPos.y, camera->targetPos.z,
                     1.0f, &X, &Y, &Z, &W);
                 if (W == 0.0f) {
                     W = 1.0f;
@@ -443,70 +411,72 @@ void func_80032C64(Camera* camera) {
     newPosZ = camera->targetPos.z + leadAmount * sin_rad(rotationRad);
     newPosY = camera->targetPos.y + 10.0f;
     settings = test_ray_zone(newPosX, newPosY, newPosZ, &zone);
-    if (settings != NULL) {
-        if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
-            || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
-            || func_800328A4(camera->leadControlSettings, newPosX, newPosZ) != 0
-        ) {
-            constrainToZoneTriangles = TRUE;
-            minDistSq = SQ(1000.0f);
+    if (settings == NULL) {
+        return;
+    }
 
-            // clamp lead amount to the points when using CAM_CONTROL_CONSTAIN_BETWEEN_POINTS
-            if (camera->leadControlSettings != NULL && camera->leadControlSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {
-                settings2 = camera->leadControlSettings;
-                constrainToZoneTriangles = FALSE;
+    if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
+        || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
+        || func_800328A4(camera->leadControlSettings, newPosX, newPosZ) != 0
+    ) {
+        constrainToZoneTriangles = TRUE;
+        minDistSq = SQ(1000.0f);
 
-                deltaPosX = settings2->points.two.Bx - settings2->points.two.Ax;
-                deltaPosZ = settings2->points.two.Bz - settings2->points.two.Az;
+        // clamp lead amount to the points when using CAM_CONTROL_CONSTAIN_BETWEEN_POINTS
+        if (camera->leadControlSettings != NULL && camera->leadControlSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {
+            settings2 = camera->leadControlSettings;
+            constrainToZoneTriangles = FALSE;
 
-                if (calculate_line_segment_intersection(settings2->points.two.Ax, settings2->points.two.Az,
-                        settings2->points.two.Ax - deltaPosZ, settings2->points.two.Az + deltaPosX,
-                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                    && intDistSq < minDistSq
-                ) {
-                    minDistSq = intDistSq;
-                }
-                if (calculate_line_segment_intersection(settings2->points.two.Bx, settings2->points.two.Bz,
-                        settings2->points.two.Bx - deltaPosZ, settings2->points.two.Bz + deltaPosX,
-                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                    && intDistSq < minDistSq
-                ) {
-                    minDistSq = intDistSq;
-                }
+            deltaPosX = settings2->points.two.Bx - settings2->points.two.Ax;
+            deltaPosZ = settings2->points.two.Bz - settings2->points.two.Az;
+
+            if (calculate_line_segment_intersection(settings2->points.two.Ax, settings2->points.two.Az,
+                    settings2->points.two.Ax - deltaPosZ, settings2->points.two.Az + deltaPosX,
+                    camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                && intDistSq < minDistSq
+            ) {
+                minDistSq = intDistSq;
             }
-            if (constrainToZoneTriangles) {
-                for (i = 0; i < zone->numTriangles; i++) {
-                    if (calculate_segment_intersection(zone->triangleTable[i].v1->x, zone->triangleTable[i].v1->z,
-                            zone->triangleTable[i].v2->x, zone->triangleTable[i].v2->z,
-                            camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                        && intDistSq < minDistSq
-                    ) {
-                        minDistSq = intDistSq;
-                    }
-                    if (calculate_segment_intersection(zone->triangleTable[i].v2->x, zone->triangleTable[i].v2->z,
-                            zone->triangleTable[i].v3->x, zone->triangleTable[i].v3->z,
-                            camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                        && intDistSq < minDistSq
-                    ) {
-                        minDistSq = intDistSq;
-                    }
-                    if (calculate_segment_intersection(zone->triangleTable[i].v3->x, zone->triangleTable[i].v3->z,
-                            zone->triangleTable[i].v1->x, zone->triangleTable[i].v1->z,
-                            camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
-                        && intDistSq < minDistSq
-                    ) {
-                        minDistSq = intDistSq;
-                    }
-                }
+            if (calculate_line_segment_intersection(settings2->points.two.Bx, settings2->points.two.Bz,
+                    settings2->points.two.Bx - deltaPosZ, settings2->points.two.Bz + deltaPosX,
+                    camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                && intDistSq < minDistSq
+            ) {
+                minDistSq = intDistSq;
             }
-
-            if (minDistSq == SQ(1000.0f) || minDistSq == 0.0f) {
-                camera->leadAmount = 0.0f;
-            } else {
-                camera->leadAmount = abs(camera->leadAmount > 0.0f) ? sqrtf(minDistSq) : -sqrtf(minDistSq);
-            }
-            camera->leadInterpAlpha = 0.0f;
         }
+        if (constrainToZoneTriangles) {
+            for (i = 0; i < zone->numTriangles; i++) {
+                if (calculate_segment_intersection(zone->triangleTable[i].v1->x, zone->triangleTable[i].v1->z,
+                        zone->triangleTable[i].v2->x, zone->triangleTable[i].v2->z,
+                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                    && intDistSq < minDistSq
+                ) {
+                    minDistSq = intDistSq;
+                }
+                if (calculate_segment_intersection(zone->triangleTable[i].v2->x, zone->triangleTable[i].v2->z,
+                        zone->triangleTable[i].v3->x, zone->triangleTable[i].v3->z,
+                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                    && intDistSq < minDistSq
+                ) {
+                    minDistSq = intDistSq;
+                }
+                if (calculate_segment_intersection(zone->triangleTable[i].v3->x, zone->triangleTable[i].v3->z,
+                        zone->triangleTable[i].v1->x, zone->triangleTable[i].v1->z,
+                        camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
+                    && intDistSq < minDistSq
+                ) {
+                    minDistSq = intDistSq;
+                }
+            }
+        }
+
+        if (minDistSq == SQ(1000.0f) || minDistSq == 0.0f) {
+            camera->leadAmount = 0.0f;
+        } else {
+            camera->leadAmount = abs(camera->leadAmount > 0.0f) ? sqrtf(minDistSq) : -sqrtf(minDistSq);
+        }
+        camera->leadInterpAlpha = 0.0f;
     }
 }
 
@@ -516,13 +486,9 @@ void create_camera_leadplayer_matrix(Camera* camera) {
     f32 dz = camera->lookAt_eye.z - camera->lookAt_obj.z;
     f32 dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
     f32 theta = ((camera->vfov * 0.5f) / 180.0f) * PI;
-    f32 distTanTheta = dist * sin_rad(theta);
-    distTanTheta /= cos_rad(theta);
+    f32 distTanTheta = dist * (sin_rad(theta) / cos_rad(theta));
 
     update_camera_lead_amount(camera, (distTanTheta * camera->viewportW / camera->viewportH) * camera->leadAmtScale);
     func_80032C64(camera);
-    guTranslateF(camera->viewMtxLeading, -camera->leadAmount, 0.0f, 0.0f);
-}
-
-void func_800334E8(void) {
+    guTranslateF(camera->mtxViewLeading, -camera->leadAmount, 0.0f, 0.0f);
 }

@@ -19,14 +19,14 @@ static f32 BattleCam_InitialBoomLength;
 static f32 BattleCam_InitialBoomYaw;
 static f32 BattleCam_InitialBoomPitch;
 static f32 BattleCam_InitialBoomZOffset;
-static s8 BattleCam_DoneMoving;
+static b8 BattleCam_DoneMoving;
 static s16 BattleCam_MoveTimeLeft;
 static s16 BattleCam_MoveTimeTotal;
-static s8 BattleCam_ModeY;
 static s8 BattleCam_ModeX;
-static s8 BattleCam_SetImmediately;
-static s8 BattleCam_UseLinearInterp;
-static s8 BattleCam_ClampPosX;
+static s8 BattleCam_ModeY;
+static b8 BattleCam_SetImmediately;
+static b8 BattleCam_UseLinearInterp;
+static b8 BattleCam_ClampPosX;
 static s8 BattleCam_SpecialOffsetX;
 static f32 BattleCam_InitialPosX;
 static f32 BattleCam_InitialPosY;
@@ -46,9 +46,25 @@ typedef struct CamSubjects {
     Vec3f avgPos;
 } CamSubjects;
 
-b32 get_cam_subject_properties(CamSubjects* subjects) {
+f32 clamp_edge_pos_x(f32 x) {
+    if (BattleCam_ClampPosX) {
+        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
+        f32 lowerBound = -upperBound;
+
+        if (x < lowerBound) {
+            x += (lowerBound - x) / 2;
+        }
+        if (x > upperBound) {
+            x += (upperBound - x) / 2;
+        }
+    }
+    return x;
+}
+
+b32 get_cam_subject_properties(CamSubjects* subjects, b32 usePart) {
     s32 actorClass = BattleCam_SubjectActor & ACTOR_CLASS_MASK;
     s32 actorID = BattleCam_SubjectActor & 0xFF;
+    ActorPart* part = NULL;
     Actor* actor;
     Actor* targetActor;
     f32 deltaY;
@@ -62,6 +78,9 @@ b32 get_cam_subject_properties(CamSubjects* subjects) {
             break;
         case ACTOR_CLASS_ENEMY:
             actor = gBattleStatus.enemyActors[actorID];
+            if (usePart && actor != NULL) {
+                part = get_actor_part(actor, BattleCam_SubjectActorPart);
+            }
             break;
         default:
             return FALSE;
@@ -71,12 +90,21 @@ b32 get_cam_subject_properties(CamSubjects* subjects) {
         return FALSE;
     }
 
-    subjects->actorPos.x = actor->curPos.x;
-    subjects->actorPos.y = actor->curPos.y + actor->size.y / 2 + actor->size.y / 4;
-    subjects->actorPos.z = actor->curPos.z;
+    if (part != NULL) {
+        subjects->actorPos.x = part->absolutePos.x;
+        subjects->actorPos.y = part->absolutePos.y + part->size.y / 2 + part->size.y / 4;
+        subjects->actorPos.z = part->absolutePos.z;
 
-    subjects->actorSize.x = actor->size.x;
-    subjects->actorSize.y = actor->size.y;
+        subjects->actorSize.x = part->size.x;
+        subjects->actorSize.y = part->size.y;
+    } else {
+        subjects->actorPos.x = actor->curPos.x;
+        subjects->actorPos.y = actor->curPos.y + actor->size.y / 2 + actor->size.y / 4;
+        subjects->actorPos.z = actor->curPos.z;
+
+        subjects->actorSize.x = actor->size.x;
+        subjects->actorSize.y = actor->size.y;
+    }
     subjects->actorSizeAvg = (subjects->actorSize.x + subjects->actorSize.y) / 2;
 
     targetActor = get_actor(actor->targetActorID);
@@ -98,49 +126,54 @@ b32 get_cam_subject_properties(CamSubjects* subjects) {
 
     switch (actorClass) {
         case ACTOR_CLASS_PLAYER:
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
-                } else {
-                    subjects->avgPos.y = subjects->actorPos.y;
-                }
-            } else {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_MINUS_1) {
+            switch (BattleCam_ModeY) {
+                case BTL_CAM_MODEY_MINUS_2:
                     subjects->avgPos.y = subjects->actorPos.y - deltaY / 4;
-                } else {
+                    break;
+                case BTL_CAM_MODEY_MINUS_1:
                     subjects->avgPos.y = subjects->targetPos.y;
-                }
+                    break;
+                case BTL_CAM_MODEY_0:
+                    subjects->avgPos.y = subjects->actorPos.y;
+                    break;
+                case BTL_CAM_MODEY_1:
+                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
+                    break;
             }
             break;
         case ACTOR_CLASS_PARTNER:
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
-                } else {
+            switch (BattleCam_ModeY) {
+                case BTL_CAM_MODEY_MINUS_1:
+                    subjects->avgPos.y = subjects->targetPos.y;
+                    break;
+                case BTL_CAM_MODEY_0:
                     subjects->avgPos.y = subjects->actorPos.y;
-                }
-            } else {
-                subjects->avgPos.y = subjects->targetPos.y;
+                    break;
+                case BTL_CAM_MODEY_1:
+                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
+                    break;
             }
             break;
         case ACTOR_CLASS_ENEMY:
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
-                } else {
+            switch (BattleCam_ModeY) {
+                case BTL_CAM_MODEY_MINUS_2:
                     subjects->avgPos.y = subjects->actorPos.y;
-                }
-            } else {
-                if (BattleCam_ModeY == BTL_CAM_MODEY_MINUS_1) {
+                    break;
+                case BTL_CAM_MODEY_MINUS_1:
                     subjects->avgPos.y = subjects->targetPos.y;
-                } else {
+                    break;
+                case BTL_CAM_MODEY_0:
                     subjects->avgPos.y = subjects->actorPos.y;
-                }
+                    break;
+                case BTL_CAM_MODEY_1:
+                    subjects->avgPos.y = subjects->targetPos.y + deltaY / 2 + deltaY / 6;
+                    break;
             }
             break;
         default:
             return FALSE;
     }
+
     return TRUE;
 }
 
@@ -160,21 +193,11 @@ API_CALLABLE(CamPresetUpdate_F) {
     f32 extraLength;
     f32 dist;
 
-    if (!get_cam_subject_properties(&subjects)) {
+    if (!get_cam_subject_properties(&subjects, FALSE)) {
         return ApiStatus_BLOCK;
     }
 
-    if (BattleCam_ClampPosX) {
-        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
-        f32 lowerBound = -upperBound;
-
-        if (subjects.avgPos.x < lowerBound) {
-            subjects.avgPos.x += (lowerBound - subjects.avgPos.x) / 2;
-        }
-        if (subjects.avgPos.x > upperBound) {
-            subjects.avgPos.x += (upperBound - subjects.avgPos.x) / 2;
-        }
-    }
+    subjects.avgPos.x = clamp_edge_pos_x(subjects.avgPos.x);
 
     if (isInitialCall) {
         BattleCam_BoomLength += MAX(0, subjects.actorSize.x - 24.0);
@@ -186,8 +209,8 @@ API_CALLABLE(CamPresetUpdate_F) {
             camera->lookAt_obj_target.z = subjects.avgPos.z;
 
             camera->auxBoomLength = BattleCam_BoomLength;
-            camera->auxBoomYaw = BattleCam_BoomYaw;
             camera->auxBoomPitch = BattleCam_BoomPitch;
+            camera->auxBoomYaw = BattleCam_BoomYaw;
             camera->auxBoomZOffset = BattleCam_BoomZOffset * 256;
         }
 
@@ -247,21 +270,11 @@ API_CALLABLE(CamPresetUpdate_M) {
     f32 extraLength;
     f32 dist;
 
-    if (!get_cam_subject_properties(&subjects)) {
+    if (!get_cam_subject_properties(&subjects, FALSE)) {
         return ApiStatus_BLOCK;
     }
 
-    if (BattleCam_ClampPosX) {
-        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
-        f32 lowerBound = -upperBound;
-
-        if (subjects.avgPos.x < lowerBound) {
-            subjects.avgPos.x += (lowerBound - subjects.avgPos.x) / 2;
-        }
-        if (subjects.avgPos.x > upperBound) {
-            subjects.avgPos.x += (upperBound - subjects.avgPos.x) / 2;
-        }
-    }
+    subjects.avgPos.x = clamp_edge_pos_x(subjects.avgPos.x);
 
     if (isInitialCall) {
         BattleCam_BoomLength += MAX(0, subjects.actorSize.x - 24.0);
@@ -273,8 +286,8 @@ API_CALLABLE(CamPresetUpdate_M) {
             camera->lookAt_obj_target.z = subjects.avgPos.z;
 
             camera->auxBoomLength = BattleCam_BoomLength;
-            camera->auxBoomYaw = BattleCam_BoomYaw;
             camera->auxBoomPitch = BattleCam_BoomPitch;
+            camera->auxBoomYaw = BattleCam_BoomYaw;
             camera->auxBoomZOffset = BattleCam_BoomZOffset * 256;
         }
 
@@ -323,166 +336,41 @@ API_CALLABLE(CamPresetUpdate_M) {
 }
 
 API_CALLABLE(CamPresetUpdate_G) {
-    Actor* actor;
-    Actor* targetActor;
-    Actor* enemyActor;
-    ActorPart* actorPart;
     Camera* camera = &gCameras[CAM_BATTLE];
-    f32 actorX, actorY, actorZ;
-    f32 middlePosX, middlePosY, middlePosZ;
-    f32 targetX, targetY, targetZ;
-    f32 sizeX, sizeY;
-    f32 targetAverageSize;
+    CamSubjects subjects;
+    ActorPart* actorPart;
     f32 alpha;
-    s32 actorClass = BattleCam_SubjectActor & ACTOR_CLASS_MASK;
-    s32 actorID = BattleCam_SubjectActor & 0xFF;
 
-    switch (actorClass) {
-        case ACTOR_CLASS_PLAYER:
-            actor = gBattleStatus.playerActor;
-            if (actor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-            actorX = actor->curPos.x;
-            actorY = actor->curPos.y + actor->size.y / 2 + actor->size.y / 4;
-            actorZ = actor->curPos.z;
-
-            sizeY = actor->size.y;
-            sizeX = actor->size.x;
-
-            targetActor = get_actor(actor->targetActorID);
-            if (targetActor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-
-            targetX = targetActor->curPos.x;
-            targetY = targetActor->curPos.y + targetActor->size.y / 2 + targetActor->size.y / 4;
-            targetZ = targetActor->curPos.z;
-            targetAverageSize = (targetActor->size.y + targetActor->size.x) / 2;
-
-            middlePosX = actorX + (targetX - actorX) / 2;
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    middlePosY = targetY + (actorY - targetY) * 0.5f + (actorY - targetY) / 6.0f;
-                } else {
-                    middlePosY = actorY;
-                }
-            } else {
-                middlePosY = camera->lookAt_obj_target.y;
-            }
-            middlePosZ = actorZ + (targetZ - actorZ) / 2;
-            break;
-        case ACTOR_CLASS_PARTNER:
-            actor = gBattleStatus.partnerActor;
-            if (actor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-            actorX = actor->curPos.x;
-            actorY = actor->curPos.y + actor->size.y / 2 + actor->size.y / 4;
-            actorZ = actor->curPos.z;
-
-            sizeY = actor->size.y;
-            sizeX = actor->size.x;
-
-            targetActor = get_actor(actor->targetActorID);
-            if (targetActor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-
-            targetX = targetActor->curPos.x;
-            targetY = targetActor->curPos.y + targetActor->size.y / 2 + targetActor->size.y / 4;
-            targetZ = targetActor->curPos.z;
-            targetAverageSize = (targetActor->size.y + targetActor->size.x) / 2;
-
-            middlePosX = actorX + (targetX - actorX) / 2;
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    middlePosY = targetY + (actorY - targetY) * 0.5f + (actorY - targetY) / 6.0f;
-                } else {
-                    middlePosY = actorY;
-                }
-            } else {
-                middlePosY = camera->lookAt_obj_target.y;
-            }
-            middlePosZ = actorZ + (targetZ - actorZ) / 2;
-            break;
-        case ACTOR_CLASS_ENEMY:
-            targetActor = gBattleStatus.enemyActors[actorID];
-            if (targetActor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-            actorPart = get_actor_part(targetActor, BattleCam_SubjectActorPart);
-            actorX = actorPart->absolutePos.x;
-            actorY = actorPart->absolutePos.y + actorPart->size.y / 2 + actorPart->size.y / 4;
-            actorZ = actorPart->absolutePos.z;
-
-            sizeY = actorPart->size.y;
-            sizeX = actorPart->size.x;
-
-            targetActor = get_actor(targetActor->targetActorID);
-            if (targetActor == NULL) {
-                return ApiStatus_BLOCK;
-            }
-
-            targetX = targetActor->curPos.x;
-            targetY = targetActor->curPos.y + targetActor->size.y / 2 + targetActor->size.y / 4;
-            targetZ = targetActor->curPos.z;
-            targetAverageSize = (targetActor->size.y + targetActor->size.x) / 2;
-
-            middlePosX = actorX + (targetX - actorX) / 2;
-            if (BattleCam_ModeY > BTL_CAM_MODEY_MINUS_1) {
-                if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-                    middlePosY = targetY + (actorY - targetY) * 0.5f + (actorY - targetY) / 6.0f;
-                } else {
-                    middlePosY = actorY;
-                }
-            } else {
-                middlePosY = camera->lookAt_obj_target.y;
-            }
-            middlePosZ = actorZ + (targetZ - actorZ) / 2;
-            break;
-        default:
-            return ApiStatus_DONE2;
+    if (!get_cam_subject_properties(&subjects, TRUE)) {
+        return ApiStatus_BLOCK;
     }
 
-    if (BattleCam_ClampPosX) {
-        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
-        f32 lowerBound = -upperBound;
+    subjects.avgPos.x = clamp_edge_pos_x(subjects.avgPos.x);
 
-        if (middlePosX < lowerBound) {
-            middlePosX += (lowerBound - middlePosX) / 2;
-        }
-        if (middlePosX > upperBound) {
-            middlePosX += (upperBound - middlePosX) / 2;
-        }
-    }
     if (isInitialCall) {
-        sizeX -= 24.0f;
-        sizeY -= 24.0f;
-        if (sizeX < 0.0f) {
-            sizeX = 0.0f;
-        }
-        if (sizeY < 0.0f) {
-            sizeY = 0.0f;
-        }
-        BattleCam_BoomLength += sizeX + sizeY;
+        BattleCam_BoomLength += MAX(0, subjects.actorSize.x - 24.0);
+        BattleCam_BoomLength += MAX(0, subjects.actorSize.y - 24.0);
+
         if (BattleCam_SetImmediately) {
-            camera->lookAt_obj_target.x = middlePosX;
-            camera->lookAt_obj_target.y = middlePosY;
-            camera->lookAt_obj_target.z = middlePosZ;
+            camera->lookAt_obj_target.x = subjects.avgPos.x;
+            camera->lookAt_obj_target.y = subjects.avgPos.y;
+            camera->lookAt_obj_target.z = subjects.avgPos.z;
+
             camera->auxBoomLength = BattleCam_BoomLength;
-            camera->auxBoomZOffset = BattleCam_BoomZOffset * 256;
-            camera->auxBoomYaw = BattleCam_BoomYaw;
             camera->auxBoomPitch = BattleCam_BoomPitch;
+            camera->auxBoomYaw = BattleCam_BoomYaw;
+            camera->auxBoomZOffset = BattleCam_BoomZOffset * 256;
         }
+
+        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
+        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
+        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
 
         BattleCam_InitialBoomLength = camera->auxBoomLength;
         BattleCam_InitialBoomPitch = camera->auxBoomPitch;
         BattleCam_InitialBoomYaw = camera->auxBoomYaw;
         BattleCam_InitialBoomZOffset = camera->auxBoomZOffset / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
 
@@ -491,18 +379,14 @@ API_CALLABLE(CamPresetUpdate_G) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    actorX = camera->lookAt_obj_target.x;
-    actorY = camera->lookAt_obj_target.y;
-    actorZ = camera->lookAt_obj_target.z;
-
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, middlePosX, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, middlePosY, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, middlePosZ, alpha);
-    camera->auxBoomZOffset = LERP(BattleCam_InitialBoomZOffset, BattleCam_BoomZOffset, alpha) * 256.0f;
+    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, subjects.avgPos.x, alpha);
+    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, subjects.avgPos.y, alpha);
+    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, subjects.avgPos.z, alpha);
 
     camera->auxBoomLength = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength, alpha);
-    camera->auxBoomYaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
     camera->auxBoomPitch = LERP(BattleCam_InitialBoomPitch, BattleCam_BoomPitch, alpha);
+    camera->auxBoomYaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
+    camera->auxBoomZOffset = LERP(BattleCam_InitialBoomZOffset, BattleCam_BoomZOffset, alpha) * 256.0f;
 
     if (BattleCam_MoveTimeLeft == 0) {
         BattleCam_DoneMoving = TRUE;
@@ -565,17 +449,7 @@ API_CALLABLE(BattleCam_Update_FocusActor) {
             return ApiStatus_DONE2;
     }
 
-    if (BattleCam_ClampPosX) {
-        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
-        f32 lowerBound = -upperBound;
-
-        if (actorX < lowerBound) {
-            actorX += (lowerBound - actorX) / 2;
-        }
-        if (actorX > upperBound) {
-            actorX += (upperBound - actorX) / 2;
-        }
-    }
+    actorX = clamp_edge_pos_x(actorX);
 
     if (isInitialCall) {
         BattleCam_BoomLength += MAX(0, actor->size.x - 24.0);
@@ -621,15 +495,17 @@ API_CALLABLE(BattleCam_Update_FocusActor) {
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(CamPresetUpdate_H) {
-    Actor* actor;
+/// Updates the battle camera to focus on midpoint between BattleCam_SubjectActor and its goal position.
+API_CALLABLE(BattleCam_Update_FocusGoal) {
     Camera* camera = &gCameras[CAM_BATTLE];
-    f32 x, y, z;
-    f32 currentX, currentY;
-    f32 averageSize;
-    f32 alpha;
     s32 actorClass = BattleCam_SubjectActor & ACTOR_CLASS_MASK;
     s32 actorID = BattleCam_SubjectActor & 0xFF;
+    Actor* actor;
+    f32 goalX, goalY, goalZ;
+    f32 averageX;
+    f32 actorX, actorY;
+    f32 actorSizeAvg;
+    f32 alpha;
 
     switch (actorClass) {
         case ACTOR_CLASS_PLAYER:
@@ -637,72 +513,65 @@ API_CALLABLE(CamPresetUpdate_H) {
             if (actor == NULL) {
                 return ApiStatus_BLOCK;
             }
-            currentX = actor->curPos.x;
-            x = actor->state.goalPos.x;
-            y = actor->state.goalPos.y;
-            z = actor->state.goalPos.z;
-            averageSize = (actor->size.y + actor->size.x) / 2;
-            currentY = actor->curPos.y + gPlayerStatus.colliderHeight / 2;
+            goalX = actor->state.goalPos.x;
+            goalY = actor->state.goalPos.y;
+            goalZ = actor->state.goalPos.z;
+            actorX = actor->curPos.x;
+            actorY = actor->curPos.y + gPlayerStatus.colliderHeight / 2;
+            actorSizeAvg = (actor->size.y + actor->size.x) / 2;
             break;
         case ACTOR_CLASS_PARTNER:
             actor = gBattleStatus.partnerActor;
             if (actor == NULL) {
                 return ApiStatus_BLOCK;
             }
-            currentX = actor->curPos.x;
-            x = actor->state.goalPos.x;
-            y = actor->state.goalPos.y;
-            z = actor->state.goalPos.z;
-            averageSize = (actor->size.y + actor->size.x) / 2;
-            currentY = actor->curPos.y + actor->size.y / 2;
+            goalX = actor->state.goalPos.x;
+            goalY = actor->state.goalPos.y;
+            goalZ = actor->state.goalPos.z;
+            actorX = actor->curPos.x;
+            actorY = actor->curPos.y + actor->size.y / 2;
+            actorSizeAvg = (actor->size.y + actor->size.x) / 2;
             break;
         case ACTOR_CLASS_ENEMY:
             actor = gBattleStatus.enemyActors[actorID];
             if (actor == NULL) {
                 return ApiStatus_BLOCK;
             }
-            currentX = actor->curPos.x;
-            x = actor->state.goalPos.x;
-            y = actor->state.goalPos.y;
-            z = actor->state.goalPos.z;
-            averageSize = (actor->size.y + actor->size.x) / 2;
-            currentY = actor->curPos.y + actor->size.y / 2;
+            goalX = actor->state.goalPos.x;
+            goalY = actor->state.goalPos.y;
+            goalZ = actor->state.goalPos.z;
+            actorX = actor->curPos.x;
+            actorY = actor->curPos.y + actor->size.y / 2;
+            actorSizeAvg = (actor->size.y + actor->size.x) / 2;
             break;
         default:
             return ApiStatus_DONE2;
     }
 
     if (BattleCam_ModeY != BTL_CAM_MODEY_0) {
-        f32 delta = currentY - y;
-        y += delta / 2 + delta / 6.0f;
+        f32 delta = actorY - goalY;
+        goalY += delta / 2 + delta / 6.0f;
     }
 
     if (BattleCam_ModeX != BTL_CAM_MODEX_0) {
-        x += (currentX - x) / 2;
-        if (x > 75.0f) {
-            x -= fabsf(75.0f - x);
+        averageX = (actorX + goalX) / 2;
+        if (averageX > 75.0f) {
+            averageX -= fabsf(75.0f - averageX);
         }
     }
 
-    if (BattleCam_ClampPosX) {
-        f32 upperBound = (500.0f - BattleCam_InitialBoomLength) * 0.4 + 30.0;
-        f32 lowerBound = -upperBound;
+    averageX = clamp_edge_pos_x(averageX);
 
-        if (x < lowerBound) {
-            x += (lowerBound - x) / 2;
-        }
-        if (x > upperBound) {
-            x += (upperBound - x) / 2;
-        }
-    }
     if (isInitialCall) {
+        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
+        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
+        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+
         BattleCam_InitialBoomLength = camera->auxBoomLength;
         BattleCam_InitialBoomPitch = camera->auxBoomPitch;
         BattleCam_InitialBoomYaw = camera->auxBoomYaw;
         BattleCam_InitialBoomZOffset = camera->auxBoomZOffset / 256;
-        BattleCam_InitialPosX = camera->lookAt_obj_target.x;
-        BattleCam_InitialPosY = camera->lookAt_obj_target.y;
-        BattleCam_InitialPosZ = camera->lookAt_obj_target.z;
+
         BattleCam_MoveTimeTotal = BattleCam_MoveTimeLeft;
     }
 
@@ -711,14 +580,14 @@ API_CALLABLE(CamPresetUpdate_H) {
         alpha = CUBIC_SINE_INTERP(alpha);
     }
 
-    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, x, alpha);
-    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, y, alpha);
-    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, z, alpha);
+    camera->lookAt_obj_target.x = LERP(BattleCam_InitialPosX, averageX, alpha);
+    camera->lookAt_obj_target.y = LERP(BattleCam_InitialPosY, goalY, alpha);
+    camera->lookAt_obj_target.z = LERP(BattleCam_InitialPosZ, goalZ, alpha);
 
-    camera->auxBoomZOffset = LERP(BattleCam_InitialBoomZOffset, BattleCam_BoomZOffset, alpha) * 256.0f;
-    camera->auxBoomLength = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength + averageSize - 32, alpha);
-    camera->auxBoomYaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
+    camera->auxBoomLength = LERP(BattleCam_InitialBoomLength, BattleCam_BoomLength + actorSizeAvg - 32, alpha);
     camera->auxBoomPitch = LERP(BattleCam_InitialBoomPitch, BattleCam_BoomPitch, alpha);
+    camera->auxBoomYaw = LERP(BattleCam_InitialBoomYaw, BattleCam_BoomYaw, alpha);
+    camera->auxBoomZOffset = LERP(BattleCam_InitialBoomZOffset, BattleCam_BoomZOffset, alpha) * 256.0f;
 
     if (BattleCam_MoveTimeLeft == 0) {
         BattleCam_DoneMoving = TRUE;
@@ -1174,8 +1043,8 @@ EvtScript EVS_BattleCam_FocusActor = {
     End
 };
 
-EvtScript CamPreset_H = {
-    Call(CamPresetUpdate_H)
+EvtScript EVS_BattleCam_FocusGoal = {
+    Call(BattleCam_Update_FocusGoal)
     Return
     End
 };
@@ -1186,7 +1055,7 @@ EvtScript EVS_BattleCam_SimpleLerp = {
     End
 };
 
-EvtScript EVS_BattleCam_Default = {
+EvtScript EVS_BattleCam_ResetNeutral = {
     Call(BattleCam_Update_ResetToNeutral)
     Return
     End
@@ -1232,7 +1101,7 @@ EvtScript EVS_BattleCam_Reset = {
 };
 
 EvtScript EVS_OnBattleInit = {
-    Call(SetCamPerspective, CAM_BATTLE, CAM_UPDATE_MODE_6, 25, 16, 1024)
+    Call(SetCamPerspective, CAM_BATTLE, CAM_UPDATE_BTL_CAM, 25, 16, 1024)
     Call(SetCamViewport, CAM_BATTLE, 12, 20, 296, 200)
     Call(SetCamBGColor, CAM_BATTLE, 0, 0, 0)
     Call(SetCamEnabled, CAM_BATTLE, TRUE)
@@ -1273,7 +1142,7 @@ void btl_cam_use_preset_impl(s32 id) {
                 }
                 BattleCam_BoomLength = 500;
                 BattleCam_MoveTimeLeft = 30;
-                preset = &EVS_BattleCam_Default;
+                preset = &EVS_BattleCam_ResetNeutral;
                 break;
             case BTL_CAM_PRESET_03:
                 if (BattleCam_CurrentPresetID == id) {
@@ -1307,10 +1176,10 @@ void btl_cam_use_preset_impl(s32 id) {
                 BattleCam_MoveTimeLeft = 20;
                 preset = &CamPreset_G;
                 break;
-            case BTL_CAM_PRESET_07:
+            case BTL_CAM_ACTOR_GOAL:
                 BattleCam_BoomLength = 300;
                 BattleCam_MoveTimeLeft = 20;
-                preset = &CamPreset_H;
+                preset = &EVS_BattleCam_FocusGoal;
                 break;
             case BTL_CAM_PRESET_08:
                 BattleCam_ModeX = BTL_CAM_MODEX_1;
@@ -1320,12 +1189,12 @@ void btl_cam_use_preset_impl(s32 id) {
                 preset = &EVS_BattleCam_FocusActor;
                 break;
             case BTL_CAM_SLOW_DEFAULT:
-                if (BattleCam_ControlScript == &EVS_BattleCam_Default) {
+                if (BattleCam_ControlScript == &EVS_BattleCam_ResetNeutral) {
                     return;
                 }
                 BattleCam_BoomLength = 500;
                 BattleCam_MoveTimeLeft = 120;
-                preset = &EVS_BattleCam_Default;
+                preset = &EVS_BattleCam_ResetNeutral;
                 break;
             case BTL_CAM_PRESET_10:
                 BattleCam_ModeX = BTL_CAM_MODEX_1;
@@ -1390,26 +1259,26 @@ void btl_cam_use_preset_impl(s32 id) {
             case BTL_CAM_PRESET_16:
                 BattleCam_BoomLength = 267;
                 BattleCam_BoomPitch = 8;
-                BattleCam_MoveTimeLeft = 20;
                 BattleCam_BoomYaw = 0;
                 BattleCam_BoomZOffset = 23;
-                preset = &CamPreset_H;
+                BattleCam_MoveTimeLeft = 20;
+                preset = &EVS_BattleCam_FocusGoal;
                 break;
             case BTL_CAM_PRESET_17:
                 BattleCam_BoomLength = 300;
-                BattleCam_BoomYaw = 0;
                 BattleCam_BoomPitch = 8;
-                BattleCam_MoveTimeLeft = 20;
+                BattleCam_BoomYaw = 0;
                 BattleCam_BoomZOffset = 8;
-                preset = &CamPreset_H;
+                BattleCam_MoveTimeLeft = 20;
+                preset = &EVS_BattleCam_FocusGoal;
                 break;
             case BTL_CAM_PRESET_18:
                 BattleCam_BoomLength = 400;
                 BattleCam_BoomPitch = 8;
                 BattleCam_BoomYaw = 0;
-                BattleCam_MoveTimeLeft = 20;
                 BattleCam_BoomZOffset = 0;
-                preset = &CamPreset_H;
+                BattleCam_MoveTimeLeft = 20;
+                preset = &EVS_BattleCam_FocusGoal;
                 break;
             case BTL_CAM_PRESET_19:
                 BattleCam_MoveTimeLeft = 20;
@@ -1935,7 +1804,7 @@ void btl_cam_use_preset_impl(s32 id) {
             case BTL_CAM_DEFAULT_UNUSED:
                 BattleCam_BoomLength = 500;
                 BattleCam_MoveTimeLeft = 50;
-                preset = &EVS_BattleCam_Default;
+                preset = &EVS_BattleCam_ResetNeutral;
                 break;
             case BTL_CAM_PRESET_66:
                 BattleCam_BoomLength = 267;
@@ -2078,7 +1947,7 @@ void btl_cam_unfreeze(void) {
     BattleCam_IsFrozen = FALSE;
 }
 
-void func_8024E60C(void) {
+void btl_cam_disable_clamp_x(void) {
     BattleCam_ClampPosX = FALSE;
 }
 

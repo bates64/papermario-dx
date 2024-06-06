@@ -214,7 +214,7 @@ API_CALLABLE(SetCamNoDraw);
 API_CALLABLE(SetCamPerspective);
 
 /// @evtapi
-API_CALLABLE(func_802CA90C);
+API_CALLABLE(SetCamUpdateMode);
 
 /// @evtapi
 API_CALLABLE(func_802CA988);

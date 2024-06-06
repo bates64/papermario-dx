@@ -693,7 +693,7 @@ void init_hud_element_list(void) {
 
 void hud_element_setup_cam(void) {
     set_cam_viewport(CAM_HUD, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
-    gCameras[CAM_HUD].updateMode = CAM_UPDATE_MODE_2;
+    gCameras[CAM_HUD].updateMode = CAM_UPDATE_HUD_ELEM;
     gCameras[CAM_HUD].needsInit = TRUE;
     gCameras[CAM_HUD].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_HUD].farClip = 0x4000;
@@ -1770,8 +1770,8 @@ void func_80143C48(s32 elemID, s32 arg1, s32 camID) {
         gDPSetColorImage(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, osVirtualToPhysical(nuGfxCfb_ptr));
         gDPPipeSync(gMainGfxPos++);
 
-        guOrthoF(camera->perspectiveMatrix, 0.0f, 320.0f, -240.0f, 0.0f, -1000.0f, 1000.0f, 1.0f);
-        guMtxF2L(camera->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
+        guOrthoF(camera->mtxPerspective, 0.0f, 320.0f, -240.0f, 0.0f, -1000.0f, 1000.0f, 1.0f);
+        guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
 
         gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD |
                                                                                     G_MTX_PROJECTION);

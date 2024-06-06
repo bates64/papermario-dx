@@ -871,9 +871,9 @@ EvtScript N(spook) = {
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
         Loop(5)
-            Call(SetBattleCamParam, 3, 110)
+            Call(SetBattleCamParam, AUX_CAM_PARAM_3, 110)
             Wait(2)
-            Call(SetBattleCamParam, 3, 100)
+            Call(SetBattleCamParam, AUX_CAM_PARAM_3, 100)
             Wait(2)
         EndLoop
     EndThread

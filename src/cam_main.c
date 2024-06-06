@@ -34,14 +34,14 @@ void update_cameras(void) {
             case CAM_UPDATE_FROM_ZONE:
                 update_camera_zone_interp(cam);
                 break;
-            case CAM_UPDATE_MODE_INIT:
-                update_camera_mode_0(cam);
+            case CAM_UPDATE_MINIMAL:
+                update_camera_minimal(cam);
                 break;
             case CAM_UPDATE_UNUSED_1:
                 update_camera_mode_1(cam);
                 break;
-            case CAM_UPDATE_MODE_2:
-                update_camera_mode_2(cam);
+            case CAM_UPDATE_HUD_ELEM:
+                update_camera_hud_elem(cam);
                 break;
             case CAM_UPDATE_UNUSED_4:
                 update_camera_mode_4(cam);
@@ -49,35 +49,35 @@ void update_cameras(void) {
             case CAM_UPDATE_UNUSED_5:
                 update_camera_mode_5(cam);
                 break;
-            case CAM_UPDATE_MODE_6:
+            case CAM_UPDATE_BTL_CAM:
             default:
-                update_camera_mode_6(cam);
+                update_camera_battle(cam);
                 break;
         }
 
-        guLookAtReflectF(cam->viewMtxPlayer, &gDisplayContext->lookAt, cam->lookAt_eye.x, cam->lookAt_eye.y, cam->lookAt_eye.z, cam->lookAt_obj.x, cam->lookAt_obj.y, cam->lookAt_obj.z, 0, 1.0f, 0);
+        guLookAtReflectF(cam->mtxViewPlayer, &gDisplayContext->lookAt, cam->lookAt_eye.x, cam->lookAt_eye.y, cam->lookAt_eye.z, cam->lookAt_obj.x, cam->lookAt_obj.y, cam->lookAt_obj.z, 0, 1.0f, 0);
 
         if (!(cam->flags & CAMERA_FLAG_ORTHO)) {
             if (cam->flags & CAMERA_FLAG_LEAD_PLAYER) {
                 create_camera_leadplayer_matrix(cam);
             }
 
-            guPerspectiveF(cam->perspectiveMatrix, &cam->perspNorm, cam->vfov, (f32) cam->viewportW / (f32) cam->viewportH, (f32) cam->nearClip, (f32) cam->farClip, 1.0f);
+            guPerspectiveF(cam->mtxPerspective, &cam->perspNorm, cam->vfov, (f32) cam->viewportW / (f32) cam->viewportH, (f32) cam->nearClip, (f32) cam->farClip, 1.0f);
 
             if (cam->flags & CAMERA_FLAG_SHAKING) {
-                guMtxCatF(cam->viewMtxShaking, cam->perspectiveMatrix, cam->perspectiveMatrix);
+                guMtxCatF(cam->mtxViewShaking, cam->mtxPerspective, cam->mtxPerspective);
             }
 
             if (cam->flags & CAMERA_FLAG_LEAD_PLAYER) {
-                guMtxCatF(cam->viewMtxLeading, cam->perspectiveMatrix, cam->perspectiveMatrix);
+                guMtxCatF(cam->mtxViewLeading, cam->mtxPerspective, cam->mtxPerspective);
             }
 
-            guMtxCatF(cam->viewMtxPlayer, cam->perspectiveMatrix, cam->perspectiveMatrix);
+            guMtxCatF(cam->mtxViewPlayer, cam->mtxPerspective, cam->mtxPerspective);
         } else {
             f32 w = cam->viewportW;
             f32 h = cam->viewportH;
 
-            guOrthoF(cam->perspectiveMatrix, -w * 0.5, w * 0.5, -h * 0.5, h * 0.5, -1000.0f, 1000.0f, 1.0f);
+            guOrthoF(cam->mtxPerspective, -w * 0.5, w * 0.5, -h * 0.5, h * 0.5, -1000.0f, 1000.0f, 1.0f);
         }
 
         get_screen_coords(CAM_DEFAULT, cam->targetPos.x, cam->targetPos.y, cam->targetPos.z, &sx, &sy, &sz);
@@ -185,13 +185,13 @@ void render_frame(s32 isSecondPass) {
                 gSPPerspNormalize(gMainGfxPos++, camera->perspNorm);
             }
 
-            guMtxF2L(camera->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
+            guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
             gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD |
                         G_MTX_PROJECTION);
         }
 
-        camera->mtxTrueYaw = &gDisplayContext->matrixStack[gMatrixListPos++];
-        guRotate(camera->mtxTrueYaw, -camera->trueYaw, 0.0f, 1.0f, 0.0f);
+        camera->mtxBillboard = &gDisplayContext->matrixStack[gMatrixListPos++];
+        guRotate(camera->mtxBillboard, -camera->curBoomYaw, 0.0f, 1.0f, 0.0f);
 
         camera->vpAlt.vp.vtrans[0] = camera->vp.vp.vtrans[0] + gGameStatusPtr->altViewportOffset.x;
         camera->vpAlt.vp.vtrans[1] = camera->vp.vp.vtrans[1] + gGameStatusPtr->altViewportOffset.y;
@@ -230,9 +230,9 @@ void render_frame(s32 isSecondPass) {
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {
-                guOrthoF(camera->perspectiveMatrix, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f,
+                guOrthoF(camera->mtxPerspective, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f,
                             1.0f);
-                guMtxF2L(camera->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
+                guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
                 gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH |
                             G_MTX_LOAD | G_MTX_PROJECTION);
                 render_transformed_hud_elements();
@@ -266,7 +266,7 @@ void create_cameras(void) {
     }
 
     camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
+    camDataPtr->updateMode = CAM_UPDATE_MINIMAL;
     camDataPtr->viewWidth = 160;
     camDataPtr->viewHeight = 120;
     camDataPtr->viewStartX = 0;
@@ -277,7 +277,7 @@ void create_cameras(void) {
     initialize_next_camera(camDataPtr);
 
     camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
+    camDataPtr->updateMode = CAM_UPDATE_MINIMAL;
     camDataPtr->viewWidth = 160;
     camDataPtr->viewHeight = 120;
     camDataPtr->viewStartX = 160;
@@ -288,7 +288,7 @@ void create_cameras(void) {
     initialize_next_camera(camDataPtr);
 
     camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
+    camDataPtr->updateMode = CAM_UPDATE_MINIMAL;
     camDataPtr->viewWidth = 160;
     camDataPtr->viewHeight = 120;
     camDataPtr->viewStartX = 0;
@@ -299,7 +299,7 @@ void create_cameras(void) {
     initialize_next_camera(camDataPtr);
 
     camDataPtr->flags = CAMERA_FLAG_DISABLED;
-    camDataPtr->updateMode = CAM_UPDATE_MODE_INIT;
+    camDataPtr->updateMode = CAM_UPDATE_MINIMAL;
     camDataPtr->viewWidth = 160;
     camDataPtr->viewHeight = 120;
     camDataPtr->viewStartX = 160;
@@ -335,17 +335,16 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->curYaw = 0;
     camera->curBoomLength = 0;
     camera->curYOffset = 0;
-    camera->trueYaw = 0.0f;
+    camera->curBoomYaw = 0.0f;
     camera->unk_88 = 0.0f;
     camera->unk_8C = 0.0f;
-    camera->updateMode = initData->updateMode;
     camera->needsInit = TRUE;
+    camera->updateMode = initData->updateMode;
     camera->nearClip = initData->nearClip;
     camera->farClip = initData->farClip;
     camera->vfov = initData->vfov;
     camera->zoomPercent = 100;
     set_cam_viewport(camID, initData->viewStartX, initData->viewStartY, initData->viewWidth, initData->viewHeight);
-    camera->unk_212 = -1;
     camera->unk_530 = TRUE;
     camera->bgColor[0] = 0;
     camera->bgColor[1] = 0;
@@ -422,7 +421,7 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
     f32 tY;
     f32 tX;
 
-    transform_point(camera->perspectiveMatrix, x, y, z, 1.0f, &tX, &tY, &tZ, &tW);
+    transform_point(camera->mtxPerspective, x, y, z, 1.0f, &tX, &tY, &tZ, &tW);
 
     *screenZ = tZ + 5000.0f;
     if (*screenZ < 0) {
@@ -436,13 +435,12 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
         *screenY = 0;
         *screenZ = 0;
     } else {
-        tW = 1.0f / tW;
-        *screenX = (s32) ((camera->viewportW / 2) + (tX * tW * camera->viewportW * 0.5f)) + camera->viewportStartX;
-        *screenY = (s32) ((camera->viewportH / 2) - (tY * tW * camera->viewportH * 0.5f)) + camera->viewportStartY;
+        *screenX = camera->viewportStartX + (s32) ((1.0f + tX / tW) * camera->viewportW * 0.5f);
+        *screenY = camera->viewportStartY + (s32) ((1.0f - tY / tW) * camera->viewportH * 0.5f);
     }
 }
 
-s32 func_8002E754(s32 camID, s32 x, s32 y) {
+b32 is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
     s32 startX = gCameras[camID].viewportStartX;
     s32 startY = gCameras[camID].viewportStartY;
     s32 endX = startX + gCameras[camID].viewportW;
@@ -461,21 +459,9 @@ s32 func_8002E754(s32 camID, s32 x, s32 y) {
     }
 }
 
-void func_8002E7CC(s32 camID, s32* x, s32* y, s32* width, s32* height) {
+void get_cam_viewport_bounds(s32 camID, s32* x, s32* y, s32* width, s32* height) {
     *x = gCameras[camID].viewportStartX;
     *y = gCameras[camID].viewportStartY;
     *width = gCameras[camID].viewportStartX + gCameras[camID].viewportW;
     *height = gCameras[camID].viewportStartY + gCameras[camID].viewportH;
-}
-
-void func_8002E82C(s32 camID, s32 arg1) {
-    Camera* camera = &gCameras[camID];
-
-    camera->unk_212++;
-    ASSERT(camera->unk_212 < 4);
-
-    camera->unk_214[camera->unk_212].unk_0C = arg1;
-    camera->unk_214[camera->unk_212].unk_02 = 1;
-    camera->unk_214[camera->unk_212].unk_64 = arg1;
-    camera->unk_214[camera->unk_212].unk_00 = 0;
 }
