@@ -149,30 +149,39 @@ void state_init_title_screen(void) {
 #endif
 
     create_cameras();
+
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_BTL_CAM;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
-    gCurrentCameraID = CAM_DEFAULT;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
+    set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
+
+    gCameras[CAM_DEFAULT].auxPitch = 0;
+    gCameras[CAM_DEFAULT].auxBoomPitch = 0;
+    gCameras[CAM_DEFAULT].auxBoomLength = 40;
+
+    gCameras[CAM_DEFAULT].lookAt_dist = 100;
+
+    gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
+    gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
+    gCameras[CAM_DEFAULT].lookAt_eye.z = 1500.0f;
+
+    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.z = 150.0f;
+
+    gCameras[CAM_DEFAULT].bgColor[0] = 0;
+    gCameras[CAM_DEFAULT].bgColor[1] = 0;
+    gCameras[CAM_DEFAULT].bgColor[2] = 0;
+
+    gCurrentCameraID = CAM_DEFAULT;
+
     gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_HUD].flags |= CAMERA_FLAG_DISABLED;
-    set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
-    gCameras[CAM_DEFAULT].auxBoomLength = 40;
-    gCameras[CAM_DEFAULT].bgColor[0] = 0;
-    gCameras[CAM_DEFAULT].bgColor[1] = 0;
-    gCameras[CAM_DEFAULT].bgColor[2] = 0;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
-    gCameras[CAM_DEFAULT].auxPitch = 0;
-    gCameras[CAM_DEFAULT].lookAt_dist = 100;
-    gCameras[CAM_DEFAULT].auxBoomPitch = 0;
-    gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
-    gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
-    gCameras[CAM_DEFAULT].lookAt_eye.z = 1500.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.z = 150.0f;
+
     clear_script_list();
     clear_worker_list();
     clear_render_tasks();

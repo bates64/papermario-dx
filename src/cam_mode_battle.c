@@ -16,9 +16,11 @@ void update_camera_battle(Camera* camera) {
         camera->auxBoomPitch = 0;
         camera->auxBoomYaw = 0;
         camera->auxBoomZOffset = 0;
+
         camera->targetPos.x = 0.0f;
         camera->targetPos.y = 0.0f;
         camera->targetPos.z = 0.0f;
+
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;

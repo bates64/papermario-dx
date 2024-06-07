@@ -84,13 +84,14 @@ API_CALLABLE(func_802CA988) {
     gCameras[id].needsInit = FALSE;
     gCameras[id].auxPitch = -round(gCameras[id].curPitch);
     gCameras[id].auxBoomLength = -gCameras[id].lookAt_yaw;
+    gCameras[id].auxBoomPitch = 0;
 
     dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
     dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
     dz = gCameras[id].lookAt_obj.z - gCameras[id].lookAt_eye.z;
 
     gCameras[id].lookAt_dist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
-    gCameras[id].auxBoomPitch = 0;
+
     gCameras[id].lookAt_obj_target.x = gCameras[id].lookAt_obj.x;
     gCameras[id].lookAt_obj_target.y = gCameras[id].lookAt_obj.y;
     gCameras[id].lookAt_obj_target.z = gCameras[id].lookAt_obj.z;

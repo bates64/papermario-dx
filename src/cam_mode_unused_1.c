@@ -7,7 +7,7 @@ void update_camera_mode_1(Camera* camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;
     f32 x0, x1, z0, z1;
-    f32 f20;
+    f32 angle;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
@@ -21,9 +21,9 @@ void update_camera_mode_1(Camera* camera) {
         camera->curBoomLength = camera->lookAt_dist * 100 / D_8009A5EC;
         camera->curYOffset = camera->auxBoomPitch * 20 / D_8009A5EC;
 
-        f20 = atan2(x0, z0, x1, z1);
+        angle = atan2(x0, z0, x1, z1);
         if ((dist2D(x0, z0, x1, z1) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
-            camera->curBoomYaw = f20;
+            camera->curBoomYaw = angle;
         }
         camera->unk_88 = camera->curBoomYaw;
 
@@ -35,7 +35,7 @@ void update_camera_mode_1(Camera* camera) {
         sinPitch = sin_rad(pitchAngle);
         cosPitch = cos_rad(pitchAngle);
 
-        yawAngle = DEG_TO_RAD(f20);
+        yawAngle = DEG_TO_RAD(angle);
         sinYaw = sin_rad(yawAngle);
         cosYaw = cos_rad(yawAngle);
 
@@ -65,20 +65,17 @@ void update_camera_mode_1(Camera* camera) {
     x1 = camera->targetPos.x;
     z1 = camera->targetPos.z;
 
-    f20 = atan2(x0, z0, x1, z1);
-    if ((dist2D(x0, z0, x1, z1) < camera->auxBoomLength * 100 / D_8009A5EC)) {
-        f20 = camera->curBoomYaw;
-    } else {
-        camera->curBoomYaw = f20;
+    angle = atan2(x0, z0, x1, z1);
+    if ((dist2D(x0, z0, x1, z1) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
+        camera->curBoomYaw = angle;
     }
-    camera->unk_88 -= get_clamped_angle_diff(f20, camera->unk_88) / 10.0f;
-    f20 = camera->unk_88;
+    camera->unk_88 -= get_clamped_angle_diff(camera->curBoomYaw, camera->unk_88) / 10.0f;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    yawAngle = DEG_TO_RAD((f20));
+    yawAngle = DEG_TO_RAD((camera->unk_88));
     sinYaw = sin_rad(yawAngle);
     cosYaw = cos_rad(yawAngle);
 

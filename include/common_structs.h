@@ -749,7 +749,7 @@ typedef struct Camera {
     /* 0x000 */ u16 flags;
     /* 0x002 */ s16 moveFlags;
     /* 0x004 */ s16 updateMode;
-    /* 0x006 */ s16 needsInit;
+    /* 0x006 */ b16 needsInit;
     /* 0x008 */ b16 isChangingMap;
     /* 0x00A */ s16 viewportW;
     /* 0x00C */ s16 viewportH;
@@ -759,13 +759,13 @@ typedef struct Camera {
     /* 0x014 */ s16 farClip;
     /* 0x016 */ char unk_16[2];
     /* 0x018 */ f32 vfov;
-    /* 0x01C */ s16 auxPitch;
-    /* 0x01E */ s16 auxBoomLength;
-    /* 0x020 */ s16 lookAt_dist;
-    /* 0x022 */ s16 auxBoomPitch;
+    /* 0x01C */ s16 auxPitch; // context-dependent?
+    /* 0x01E */ s16 auxBoomLength; // context-dependent
+    /* 0x020 */ s16 lookAt_dist; // context-dependent?
+    /* 0x022 */ s16 auxBoomPitch; // context-dependent?
     /* 0x024 */ s16 auxBoomYaw;
     /* 0x026 */ s16 auxBoomZOffset;
-    /* 0x028 */ s16 unk_28;
+    /* 0x028 */ s16 unk_28; // UNUSED
     /* 0x02A */ s16 zoomPercent;
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
@@ -774,7 +774,7 @@ typedef struct Camera {
     /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
     /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
     /* 0x054 */ Vec3f lookAt_obj_target;
-    /* 0x060 */ Vec3f targetPos;
+    /* 0x060 */ Vec3f targetPos; // target for camera rig
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 unk_70;
     /* 0x074 */ f32 curBoomPitch;
@@ -792,25 +792,20 @@ typedef struct Camera {
     /* 0x0B0 */ Vp vpAlt;
     /* 0x0C0 */ s32 unk_C0;
     /* 0x0C4 */ f32 unk_C4;
-    /* 0x0C8 */ char unk_C8[0xC];
     /* 0x0D4 */ Matrix4f mtxPerspective;
     /* 0x114 */ Matrix4f mtxViewPlayer; // centers on player
     /* 0x154 */ Matrix4f mtxViewLeading; // leads player slightly
     /* 0x194 */ Matrix4f mtxViewShaking; // used while ShakeCam is active
-    /* 0x1D4 */ char unk_1D4[0x28];
     /* 0x1FC */ void (*fpDoPreRender)(struct Camera*);
     /* 0x200 */ void (*fpDoPostRender)(struct Camera*);
     /* 0x204 */ Mtx* mtxBillboard; // rotation matrix created from -curBoomYaw
-    /* 0x208 */ s32 unk_208;
-    /* 0x20C */ Matrix4s* unkEffectMatrix;
-    /* 0x210 */ char unk_210[0x2];
     /* 0x444 */ CameraControlSettings* prevController;
     /* 0x448 */ CameraControlSettings* curController;
     /* 0x44C */ CamConfiguration prevConfiguration;
     /* 0x468 */ CamConfiguration goalConfiguration;
     /* 0x484 */ f32 interpAlpha;
     /* 0x488 */ f32 linearInterp;
-    /* 0x48C */ f32 linearInterpScale; /* 3.0? */
+    /* 0x48C */ f32 linearInterpScale;
     /* 0x490 */ f32 moveSpeed;
     /* 0x494 */ f32 yinterpGoal;
     /* 0x498 */ f32 yinterpAlpha;
@@ -837,10 +832,9 @@ typedef struct Camera {
     /* 0x52C */ s32 unk_52C;
     /* 0x530 */ s32 unk_530;
     /* 0x534 */ CameraControlSettings* leadControlSettings;
-    /* 0x538 */ char unk_538[0x18];
-    /* 0x550 */ f32 unk_550;
-    /* 0x554 */ s16 unk_554;
-    /* 0x556 */ s16 unk_556;
+    /* 0x550 */ f32 unusedLeadAmt;
+    /* 0x554 */ s16 unusedLeadCounter;
+    /* 0x556 */ s16 unusedLeadDir;
 } Camera; // size = 0x558
 
 typedef struct BattleStatus {

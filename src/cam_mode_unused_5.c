@@ -1,32 +1,32 @@
 #include "common.h"
 
-void func_8003034C(Camera* camera) {
+void update_unused_lead_amt(Camera* camera) {
     if (fabsf(get_clamped_angle_diff(gPlayerStatus.curYaw, 90.0f)) < 45.0f) {
-        if (camera->unk_556 == 0) {
-            if (camera->unk_554 <= 0) {
-                camera->unk_550 = 35.0f;
+        if (camera->unusedLeadDir == 0) {
+            if (camera->unusedLeadCounter <= 0) {
+                camera->unusedLeadAmt = 35.0f;
             } else {
-                camera->unk_554--;
+                camera->unusedLeadCounter--;
             }
         } else {
-            camera->unk_554 = 15;
-            camera->unk_556 = 0;
+            camera->unusedLeadCounter = 15;
+            camera->unusedLeadDir = 0;
         }
     } else if (fabsf(get_clamped_angle_diff(gPlayerStatus.curYaw, 270.0f)) < 45.0f) {
-        if (camera->unk_556 == 1) {
-            if (camera->unk_554 <= 0) {
-                camera->unk_550 = -35.0f;
+        if (camera->unusedLeadDir == 1) {
+            if (camera->unusedLeadCounter <= 0) {
+                camera->unusedLeadAmt = -35.0f;
             } else {
-                camera->unk_554--;
+                camera->unusedLeadCounter--;
             }
         } else {
-            camera->unk_554 = 15;
-            camera->unk_556 = 1;
+            camera->unusedLeadCounter = 15;
+            camera->unusedLeadDir = 1;
         }
     }
 }
 
-void cam_interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lockPosY) {
+void interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lockPosY) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 deltaX, deltaZ;
 
@@ -57,6 +57,7 @@ void cam_interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 
 }
 
 // implementation for CAM_UPDATE_UNUSED_5
+// features basic player position tracking that 'leads' player in the x-direction according to their facing angle
 void update_camera_mode_5(Camera* camera) {
     f32 dx, dy, dz, dr;
 
@@ -65,27 +66,27 @@ void update_camera_mode_5(Camera* camera) {
     camera->curYOffset = 47.0f;
 
     if (camera->needsInit) {
-        camera->unk_550 = 0.0f;
+        camera->needsInit = FALSE;
+        camera->unusedLeadAmt = 0.0f;
+        camera->unusedLeadCounter = 0;
         camera->unk_70 = 0.0f;
         camera->curBoomYaw = 0.0f;
-        camera->needsInit = FALSE;
-        camera->unk_554 = 0;
         camera->lookAt_obj.x = camera->targetPos.x;
         camera->lookAt_obj.y = camera->targetPos.y + camera->curYOffset;
         camera->lookAt_obj.z = camera->targetPos.z;
-        cam_interp_lookat_pos(camera, 0.0f, 0.0f, FALSE);
+        interp_lookat_pos(camera, 0.0f, 0.0f, FALSE);
     } else {
         f32 maxInterpSpeed = (gPlayerStatus.curSpeed * 1.5f) + 1.0f;
         f32 interpRate = (gPlayerStatus.curSpeed * 0.05f) + 0.05f;
 
-        camera->lookAt_obj_target.x = camera->targetPos.x + camera->unk_550;
+        camera->lookAt_obj_target.x = camera->targetPos.x + camera->unusedLeadAmt;
         camera->lookAt_obj_target.y = camera->targetPos.y + camera->curYOffset;
         camera->lookAt_obj_target.z = camera->targetPos.z;
-        func_8003034C(camera);
+        update_unused_lead_amt(camera);
         if (!(camera->moveFlags & CAMERA_MOVE_IGNORE_PLAYER_Y)) {
-            cam_interp_lookat_pos(camera, interpRate, maxInterpSpeed, FALSE);
+            interp_lookat_pos(camera, interpRate, maxInterpSpeed, FALSE);
         } else {
-            cam_interp_lookat_pos(camera, interpRate, maxInterpSpeed, TRUE);
+            interp_lookat_pos(camera, interpRate, maxInterpSpeed, TRUE);
         }
     }
 

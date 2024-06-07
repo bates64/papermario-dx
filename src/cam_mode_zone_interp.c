@@ -845,8 +845,7 @@ void update_camera_zone_interp(Camera* camera) {
     gCurrentCamConfiguration.targetPos.x = (camera->prevConfiguration.targetPos.x * interpAlphaInv) + (camera->goalConfiguration.targetPos.x * interpAlpha);
     gCurrentCamConfiguration.targetPos.y = (camera->prevConfiguration.targetPos.y * interpAlphaInv) + (camera->goalConfiguration.targetPos.y * interpAlpha);
     gCurrentCamConfiguration.targetPos.z = (camera->prevConfiguration.targetPos.z * interpAlphaInv) + (camera->goalConfiguration.targetPos.z * interpAlpha);
-    gCurrentCamConfiguration.boomLength *= camera->zoomPercent;
-    gCurrentCamConfiguration.boomLength *= 0.01;
+    gCurrentCamConfiguration.boomLength *= (camera->zoomPercent / 100.0f);
 
     temp_f20_2 = gCurrentCamConfiguration.boomYaw + D_800A08E0;
     temp_f26 = sin_deg(temp_f20_2);
