@@ -4707,7 +4707,7 @@ enum CameraUpdateType {
     CAM_UPDATE_FROM_ZONE            = 3,
     CAM_UPDATE_UNUSED_4             = 4,
     CAM_UPDATE_UNUSED_5             = 5,
-    CAM_UPDATE_BTL_CAM              = 6,
+    CAM_UPDATE_BATTLE               = 6,
 };
 
 enum CameraControlType {

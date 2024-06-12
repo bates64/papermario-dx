@@ -14,7 +14,7 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
     f32 nx, ny, nz;
     s32 zoneID = test_ray_zones(x, y, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
 
-    if (zoneID < 0) {
+    if (zoneID <= NO_COLLIDER) {
         return NULL;
     }
 

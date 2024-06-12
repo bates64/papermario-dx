@@ -41,7 +41,7 @@ void update_cameras(void) {
             case CAM_UPDATE_FROM_ZONE:
                 update_camera_zone_interp(cam);
                 break;
-            case CAM_UPDATE_BTL_CAM:
+            case CAM_UPDATE_BATTLE:
                 update_camera_battle(cam);
                 break;
             case CAM_UPDATE_UNUSED_1:

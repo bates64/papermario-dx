@@ -1,7 +1,7 @@
 #include "common.h"
 #include "dx/debug_menu.h"
 
-// implementation for CAM_UPDATE_BTL_CAM
+// implementation for CAM_UPDATE_BATTLE
 void update_camera_battle(Camera* camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 yawAngle, sinYaw, cosYaw;
