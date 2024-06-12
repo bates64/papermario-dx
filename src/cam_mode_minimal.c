@@ -24,6 +24,6 @@ void update_camera_minimal(Camera* camera) {
     dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 }

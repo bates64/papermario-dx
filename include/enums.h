@@ -4701,7 +4701,7 @@ enum CameraMoveFlags {
 };
 
 enum CameraUpdateType {
-    CAM_UPDATE_MINIMAL            = 0,
+    CAM_UPDATE_MINIMAL              = 0,
     CAM_UPDATE_UNUSED_1             = 1,
     CAM_UPDATE_HUD_ELEM             = 2,
     CAM_UPDATE_FROM_ZONE            = 3,

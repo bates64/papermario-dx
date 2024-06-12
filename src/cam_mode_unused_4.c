@@ -31,15 +31,13 @@ void update_camera_mode_4(Camera* camera) {
     camera->curBoomPitch = 0.0f;
     camera->curBoomYaw = 0.0f;
     camera->curBoomLength = camera->lookAt_dist * D_8009A5EC;
-    camera->curYOffset = camera->auxBoomPitch * D_8009A5EC;
+    camera->targetOffsetY = camera->auxBoomPitch * D_8009A5EC;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
-        camera->unk_98 = 0.0f;
-        camera->unk_9C = 0.0f;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->curYOffset;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
@@ -60,7 +58,7 @@ void update_camera_mode_4(Camera* camera) {
     }
 
     camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-    camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->curYOffset;
+    camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
     camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
@@ -85,6 +83,6 @@ void update_camera_mode_4(Camera* camera) {
     dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 }

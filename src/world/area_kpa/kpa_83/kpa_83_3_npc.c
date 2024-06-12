@@ -25,14 +25,14 @@ API_CALLABLE(N(SetPlayerSpriteFacingAngle)) {
 }
 
 EvtScript N(EVS_FocusCam_LookAtDoor) = {
-    Call(SetCamType, CAM_DEFAULT, 4, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
     Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
@@ -160,7 +160,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, -150, LVar2, 0)
-    Call(SetCamType, CAM_DEFAULT, 6, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, FALSE)
     Set(LVar6, Float(3.0 / DT))
     ExecWait(N(EVS_FocusCam_LookAtDoor))
     Set(MF_DoneIntroMessage, FALSE)
@@ -453,7 +453,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Set(LVar6, Float(3.0 / DT))
     ExecWait(N(EVS_FocusCam_LookAtDoor))
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0063)
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Set(GB_KPA83_BowserDoorState, 1)
     Call(DisablePlayerInput, FALSE)
     Return

@@ -19,7 +19,7 @@ void update_camera_mode_1(Camera* camera) {
 
         camera->curBoomPitch = camera->auxPitch;
         camera->curBoomLength = camera->lookAt_dist * 100 / D_8009A5EC;
-        camera->curYOffset = camera->auxBoomPitch * 20 / D_8009A5EC;
+        camera->targetOffsetY = camera->auxBoomPitch * 20 / D_8009A5EC;
 
         angle = atan2(x0, z0, x1, z1);
         if ((dist2D(x0, z0, x1, z1) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
@@ -28,7 +28,7 @@ void update_camera_mode_1(Camera* camera) {
         camera->unk_88 = camera->curBoomYaw;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->curYOffset;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
@@ -50,10 +50,10 @@ void update_camera_mode_1(Camera* camera) {
 
     camera->curBoomPitch = camera->auxPitch;
     camera->curBoomLength = camera->lookAt_dist * 100 / D_8009A5EC;
-    camera->curYOffset = camera->auxBoomPitch * 20 / D_8009A5EC;
+    camera->targetOffsetY = camera->auxBoomPitch * 20 / D_8009A5EC;
 
     dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
-    dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->curYOffset;
+    dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
     dz = camera->lookAt_obj_target.z - camera->lookAt_obj.z;
 
     camera->lookAt_obj.x += dx * 0.5f;
@@ -93,6 +93,6 @@ void update_camera_mode_1(Camera* camera) {
     dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 }

@@ -2,13 +2,13 @@
 #include "sprite/player.h"
 
 EvtScript N(EVS_SetupCamera) = {
-    Call(SetCamType, CAM_DEFAULT, 6, TRUE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, TRUE)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(UseSettingsFrom, CAM_DEFAULT, 60, 30, 0)
     Call(SetPanTarget, CAM_DEFAULT, 60, 30, 0)
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-13.0))
     Call(SetCamDistance, CAM_DEFAULT, 275)
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End

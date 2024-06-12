@@ -44,7 +44,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(SetCamType, CAM_DEFAULT, 4, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 440)
     Call(SetCamPosA, CAM_DEFAULT, 0, 100)
@@ -52,7 +52,7 @@ EvtScript N(EVS_Main) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, 65)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_23_ENTRY_0)

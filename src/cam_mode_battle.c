@@ -7,9 +7,9 @@ void update_camera_battle(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 dx, dy, dz, dr;
 
-    if (camera->needsInit || camera->isChangingMap) {
+    if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
-        camera->isChangingMap = FALSE;
+        camera->clearPrevZoneSettings = FALSE;
         camera->auxPitch = 0;
         camera->auxBoomLength = 100;
         camera->lookAt_dist = 100;
@@ -59,7 +59,7 @@ void update_camera_battle(Camera* camera) {
     dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 
     gBattleStatus.camLookatObjPos.x = camera->lookAt_obj.x;

@@ -61,7 +61,7 @@ API_CALLABLE(SetPlayerPositionFromSaveData) {
         enable_partner_ai();
     }
 
-    camera->isChangingMap = TRUE;
+    camera->clearPrevZoneSettings = TRUE;
     return ApiStatus_DONE2;
 }
 

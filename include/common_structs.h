@@ -136,13 +136,13 @@ typedef struct Matrix4s {
     /* 0x20 */ s16 frac[4][4];
 } Matrix4s; // size = 0x40
 
-typedef struct CamConfiguration {
+typedef struct CameraRig {
     /* 0x00 */ f32 boomYaw;
     /* 0x04 */ f32 boomLength;
     /* 0x08 */ f32 boomPitch;
     /* 0x0C */ f32 viewPitch;
     /* 0x10 */ Vec3f targetPos;
-} CamConfiguration; // size = 0x1C
+} CameraRig; // size = 0x1C
 
 typedef struct DmaTable {
     /* 0x00 */ u8* start;
@@ -750,14 +750,13 @@ typedef struct Camera {
     /* 0x002 */ s16 moveFlags;
     /* 0x004 */ s16 updateMode;
     /* 0x006 */ b16 needsInit;
-    /* 0x008 */ b16 isChangingMap;
+    /* 0x008 */ b16 clearPrevZoneSettings;
     /* 0x00A */ s16 viewportW;
     /* 0x00C */ s16 viewportH;
     /* 0x00E */ s16 viewportStartX;
     /* 0x010 */ s16 viewportStartY;
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
-    /* 0x016 */ char unk_16[2];
     /* 0x018 */ f32 vfov;
     /* 0x01C */ s16 auxPitch; // context-dependent?
     /* 0x01E */ s16 auxBoomLength; // context-dependent
@@ -770,28 +769,21 @@ typedef struct Camera {
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
-    /* 0x03A */ char unk_3A[2];
     /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
     /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
     /* 0x054 */ Vec3f lookAt_obj_target;
     /* 0x060 */ Vec3f targetPos; // target for camera rig
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 unk_70;
-    /* 0x074 */ f32 curBoomPitch;
     /* 0x078 */ f32 curBoomLength;
-    /* 0x07C */ f32 curYOffset;
-    /* 0x080 */ char unk_80[4];
+    /* 0x074 */ f32 curBoomPitch;
     /* 0x084 */ f32 curBoomYaw;
+    /* 0x07C */ f32 targetOffsetY;
     /* 0x088 */ f32 unk_88;
-    /* 0x08c */ f32 unk_8C;
     /* 0x090 */ f32 lookAt_yaw;
-    /* 0x094 */ f32 curPitch;
-    /* 0x098 */ f32 unk_98;
-    /* 0x09C */ f32 unk_9C;
+    /* 0x094 */ f32 lookAt_pitch;
     /* 0x0A0 */ Vp vp;
     /* 0x0B0 */ Vp vpAlt;
-    /* 0x0C0 */ s32 unk_C0;
-    /* 0x0C4 */ f32 unk_C4;
     /* 0x0D4 */ Matrix4f mtxPerspective;
     /* 0x114 */ Matrix4f mtxViewPlayer; // centers on player
     /* 0x154 */ Matrix4f mtxViewLeading; // leads player slightly
@@ -799,13 +791,13 @@ typedef struct Camera {
     /* 0x1FC */ void (*fpDoPreRender)(struct Camera*);
     /* 0x200 */ void (*fpDoPostRender)(struct Camera*);
     /* 0x204 */ Mtx* mtxBillboard; // rotation matrix created from -curBoomYaw
-    /* 0x444 */ CameraControlSettings* prevController;
-    /* 0x448 */ CameraControlSettings* curController;
-    /* 0x44C */ CamConfiguration prevConfiguration;
-    /* 0x468 */ CamConfiguration goalConfiguration;
+    /* 0x444 */ CameraControlSettings* prevSettings;
+    /* 0x448 */ CameraControlSettings* curSettings;
+    /* 0x44C */ CameraRig prevRig;
+    /* 0x468 */ CameraRig nextRig;
     /* 0x484 */ f32 interpAlpha;
     /* 0x488 */ f32 linearInterp;
-    /* 0x48C */ f32 linearInterpScale;
+    /* 0x48C */ f32 linearInterpRate;
     /* 0x490 */ f32 moveSpeed;
     /* 0x494 */ f32 yinterpGoal;
     /* 0x498 */ f32 yinterpAlpha;
@@ -813,14 +805,14 @@ typedef struct Camera {
     /* 0x4A0 */ f32 yinterpCur;
     /* 0x4A4 */ Vec3f prevTargetPos;
     /* 0x4B0 */ Vec3f movePos;
-    /* 0x4BC */ Vec3f prevPrevMovePos;
     /* 0x4C8 */ Vec3f prevMovePos;
-    /* 0x4D4 */ u16 prevPrevFollowPlayer;
-    /* 0x4D6 */ u16 prevFollowPlayer;
-    /* 0x4D8 */ CameraControlSettings controlSettings;
-    /* 0x504 */ u16 followPlayer;
-    /* 0x506 */ u16 panActive;
-    /* 0x508 */ f32 panPhase;
+    /* 0x4BC */ Vec3f prevPrevMovePos;
+    /* 0x4D8 */ CameraControlSettings overrideSettings;
+    /* 0x504 */ b16 useOverrideSettings;
+    /* 0x4D6 */ b16 prevUseOverride;
+    /* 0x4D4 */ b16 prevPrevUseOverride;
+    /* 0x506 */ b16 panActive;
+    /* 0x508 */ f32 interpEasingParameter; // controls whether easing for camera rig interpolation is more cosine-like (values near 0) or quadratic (values near 1)
     /* 0x50C */ f32 leadAmount;
     /* 0x510 */ f32 targetLeadAmount;
     /* 0x514 */ f32 leadInterpAlpha;

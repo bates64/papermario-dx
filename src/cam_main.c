@@ -31,27 +31,27 @@ void update_cameras(void) {
         gCurrentCamID = camID;
 
         switch (cam->updateMode) {
-            case CAM_UPDATE_FROM_ZONE:
-                update_camera_zone_interp(cam);
-                break;
+            default:
             case CAM_UPDATE_MINIMAL:
                 update_camera_minimal(cam);
                 break;
-            case CAM_UPDATE_UNUSED_1:
-                update_camera_mode_1(cam);
-                break;
             case CAM_UPDATE_HUD_ELEM:
                 update_camera_hud_elem(cam);
+                break;
+            case CAM_UPDATE_FROM_ZONE:
+                update_camera_zone_interp(cam);
+                break;
+            case CAM_UPDATE_BTL_CAM:
+                update_camera_battle(cam);
+                break;
+            case CAM_UPDATE_UNUSED_1:
+                update_camera_mode_1(cam);
                 break;
             case CAM_UPDATE_UNUSED_4:
                 update_camera_mode_4(cam);
                 break;
             case CAM_UPDATE_UNUSED_5:
                 update_camera_mode_5(cam);
-                break;
-            case CAM_UPDATE_BTL_CAM:
-            default:
-                update_camera_battle(cam);
                 break;
         }
 
@@ -230,8 +230,7 @@ void render_frame(s32 isSecondPass) {
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {
-                guOrthoF(camera->mtxPerspective, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f,
-                            1.0f);
+                guOrthoF(camera->mtxPerspective, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f, 1.0f);
                 guMtxF2L(camera->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
                 gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH |
                             G_MTX_LOAD | G_MTX_PROJECTION);
@@ -334,10 +333,9 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->lookAt_obj.z = -100.0f;
     camera->curYaw = 0;
     camera->curBoomLength = 0;
-    camera->curYOffset = 0;
+    camera->targetOffsetY = 0;
     camera->curBoomYaw = 0.0f;
     camera->unk_88 = 0.0f;
-    camera->unk_8C = 0.0f;
     camera->needsInit = TRUE;
     camera->updateMode = initData->updateMode;
     camera->nearClip = initData->nearClip;
@@ -349,15 +347,12 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->bgColor[0] = 0;
     camera->bgColor[1] = 0;
     camera->bgColor[2] = 0;
-    camera->unk_C0 = 0;
     camera->lookAt_obj_target.x = 0;
     camera->lookAt_obj_target.y = 0;
     camera->lookAt_obj_target.z = 0;
     camera->targetPos.x = 0;
     camera->targetPos.y = 0;
     camera->targetPos.z = 0;
-    camera->unk_98 = 0;
-    camera->unk_9C = 0;
     camera->fpDoPreRender = NULL;
     camera->fpDoPostRender = NULL;
     camera->leadAmount = 0.0f;
@@ -370,8 +365,7 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->unk_52C = 0;
     camera->leadControlSettings = NULL;
     camera->panActive = FALSE;
-    camera->followPlayer = FALSE;
-    camera->unk_C4 = 1000.0f;
+    camera->useOverrideSettings = FALSE;
     camera->leadAmtScale = 0.2f;
     camera->moveSpeed = 1.0f;
     return camera;

@@ -227,7 +227,7 @@ void update_camera_lead_amount(Camera* camera, f32 candidateLeadAmount) {
     s32 flags = camera->flags & CAMERA_FLAG_SUPRESS_LEADING;
     s32 ignoreStickInput = flags != 0;
 
-    if (camera->curController != NULL && camera->curController->type == CAM_CONTROL_FIXED_POS_AND_ORIENTATION) {
+    if (camera->curSettings != NULL && camera->curSettings->type == CAM_CONTROL_FIXED_POS_AND_ORIENTATION) {
         ignoreStickInput = TRUE;
     }
 

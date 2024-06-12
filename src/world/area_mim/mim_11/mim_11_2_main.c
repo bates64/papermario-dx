@@ -44,8 +44,8 @@ API_CALLABLE(N(func_8024066C_BB76DC)) {
             }
             break;
     }
-    cam->controlSettings.boomPitch = (script->functionTemp[2] * 0.0010500001f) + 40.0f;
-    cam->controlSettings.viewPitch = (script->functionTemp[2] * 0.0025833333f) + -63.6f;
+    cam->overrideSettings.boomPitch = (script->functionTemp[2] * 0.0010500001f) + 40.0f;
+    cam->overrideSettings.viewPitch = (script->functionTemp[2] * 0.0025833333f) + -63.6f;
     return retVal;
 }
 
@@ -78,14 +78,14 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
     Call(SetPlayerPos, -800, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -800, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamType, CAM_DEFAULT, 1, TRUE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, TRUE)
     Call(SetCamPitch, CAM_DEFAULT, Float(40.0), Float(-63.59375))
     Call(SetCamDistance, CAM_DEFAULT, 720)
     Call(SetCamPosA, CAM_DEFAULT, 89, 84)
     Call(SetCamPosB, CAM_DEFAULT, 89, 84)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 75, 0, 309)
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(N(func_8024066C_BB76DC))
     Wait(30)
     ChildThread
@@ -181,7 +181,7 @@ EvtScript N(EVS_EnterMap) = {
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-                Call(PanToTarget, CAM_DEFAULT, 0, 0)
+                Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
                 Exec(N(EVS_BindExitTriggers))
             Else
                 Set(LVar0, Ref(N(EVS_BindExitTriggers)))

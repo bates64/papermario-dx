@@ -63,7 +63,7 @@ void update_camera_mode_5(Camera* camera) {
 
     camera->curBoomPitch = 18.0f;
     camera->curBoomLength = 690.0f;
-    camera->curYOffset = 47.0f;
+    camera->targetOffsetY = 47.0f;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
@@ -72,7 +72,7 @@ void update_camera_mode_5(Camera* camera) {
         camera->unk_70 = 0.0f;
         camera->curBoomYaw = 0.0f;
         camera->lookAt_obj.x = camera->targetPos.x;
-        camera->lookAt_obj.y = camera->targetPos.y + camera->curYOffset;
+        camera->lookAt_obj.y = camera->targetPos.y + camera->targetOffsetY;
         camera->lookAt_obj.z = camera->targetPos.z;
         interp_lookat_pos(camera, 0.0f, 0.0f, FALSE);
     } else {
@@ -80,7 +80,7 @@ void update_camera_mode_5(Camera* camera) {
         f32 interpRate = (gPlayerStatus.curSpeed * 0.05f) + 0.05f;
 
         camera->lookAt_obj_target.x = camera->targetPos.x + camera->unusedLeadAmt;
-        camera->lookAt_obj_target.y = camera->targetPos.y + camera->curYOffset;
+        camera->lookAt_obj_target.y = camera->targetPos.y + camera->targetOffsetY;
         camera->lookAt_obj_target.z = camera->targetPos.z;
         update_unused_lead_amt(camera);
         if (!(camera->moveFlags & CAMERA_MOVE_IGNORE_PLAYER_Y)) {
@@ -96,7 +96,7 @@ void update_camera_mode_5(Camera* camera) {
     dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -dr);
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 }
 

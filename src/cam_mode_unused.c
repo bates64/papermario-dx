@@ -3,11 +3,11 @@
 void update_camera_mode_unused(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
-    f32 dx, dy, dz;
+    f32 dx, dy, dz, dr;
 
-    if (camera->needsInit || camera->isChangingMap) {
+    if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
-        camera->isChangingMap = FALSE;
+        camera->clearPrevZoneSettings = FALSE;
         camera->auxPitch = 0;
         camera->auxBoomLength = 100;
         camera->lookAt_dist = 100;
@@ -54,8 +54,9 @@ void update_camera_mode_unused(Camera* camera) {
     dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
     dy = camera->lookAt_obj.y - camera->lookAt_eye.y;
     dz = camera->lookAt_obj.z - camera->lookAt_eye.z;
+    dr = sqrtf(SQ(dx) + SQ(dz));
 
     camera->lookAt_yaw = -atan2(0.0f, 0.0f, dx, dz);
-    camera->curPitch = atan2(0.0f, 0.0f, dy, -sqrtf(SQ(dx) + SQ(dz)));
+    camera->lookAt_pitch = atan2(0.0f, 0.0f, dy, -dr);
     camera->curYaw = atan2(camera->lookAt_eye.x, camera->lookAt_eye.z, camera->lookAt_obj.x, camera->lookAt_obj.z);
 }

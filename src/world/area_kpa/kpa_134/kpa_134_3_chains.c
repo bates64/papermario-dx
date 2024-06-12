@@ -170,7 +170,7 @@ EvtScript N(EVS_LowerWaterLevel0) = {
     Wait(10)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     Thread
@@ -259,7 +259,7 @@ EvtScript N(EVS_RaiseWaterLevel1) = {
     Wait(230)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_hidari, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_migi, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_deiliaw, COLLIDER_FLAGS_UPPER_MASK)
@@ -397,7 +397,7 @@ EvtScript N(EVS_LowerWaterLevel1) = {
     Wait(10)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     Thread
@@ -502,7 +502,7 @@ EvtScript N(EVS_RaiseWaterLevel2) = {
     Wait(230)
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     Thread
