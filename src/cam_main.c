@@ -35,8 +35,8 @@ void update_cameras(void) {
             case CAM_UPDATE_MINIMAL:
                 update_camera_minimal(cam);
                 break;
-            case CAM_UPDATE_HUD_ELEM:
-                update_camera_hud_elem(cam);
+            case CAM_UPDATE_INTERP_POS:
+                update_camera_interp_pos(cam);
                 break;
             case CAM_UPDATE_FROM_ZONE:
                 update_camera_zone_interp(cam);
@@ -335,13 +335,13 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->curBoomLength = 0;
     camera->targetOffsetY = 0;
     camera->curBoomYaw = 0.0f;
-    camera->unk_88 = 0.0f;
+    camera->targetBoomYaw = 0.0f;
     camera->needsInit = TRUE;
     camera->updateMode = initData->updateMode;
     camera->nearClip = initData->nearClip;
     camera->farClip = initData->farClip;
     camera->vfov = initData->vfov;
-    camera->zoomPercent = 100;
+    camera->world.zoomPercent = 100;
     set_cam_viewport(camID, initData->viewStartX, initData->viewStartY, initData->viewWidth, initData->viewHeight);
     camera->unk_530 = TRUE;
     camera->bgColor[0] = 0;

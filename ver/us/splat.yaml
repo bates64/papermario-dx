@@ -111,7 +111,7 @@ segments:
     - [auto, c, os/nusys/nusimgr]
     - [auto, c, load_obfuscation_shims]
     - [auto, c, cam_main]
-    - [auto, c, cam_mode_hud_elem]
+    - [auto, c, cam_mode_interp]
     - [auto, c, cam_mode_unused_1]
     - [auto, c, cam_mode_minimal]
     - [auto, c, cam_mode_battle]

@@ -10,28 +10,28 @@ void update_camera_mode_4(Camera* camera) {
     f32 targetZ;
 
     targetX = camera->targetPos.x;
-    if (targetX > camera->auxPitch) {
-        targetX = camera->auxPitch;
+    if (targetX > camera->confined.xLimit) {
+        targetX = camera->confined.xLimit;
     }
-    if (targetX < -camera->auxPitch) {
-        targetX = -camera->auxPitch;
+    if (targetX < -camera->confined.xLimit) {
+        targetX = -camera->confined.xLimit;
     }
     camera->lookAt_obj_target.x = targetX;
 
     targetZ = camera->targetPos.z;
-    if (targetZ > camera->auxBoomLength) {
-        targetZ = camera->auxBoomLength;
+    if (targetZ > camera->confined.zLimit) {
+        targetZ = camera->confined.zLimit;
     }
-    if (targetZ < -camera->auxBoomLength) {
-        targetZ = -camera->auxBoomLength;
+    if (targetZ < -camera->confined.zLimit) {
+        targetZ = -camera->confined.zLimit;
     }
     camera->lookAt_obj_target.z = targetZ;
 
-    camera->unk_70 = 0.0f;
+    camera->interpYaw = 0.0f;
     camera->curBoomPitch = 0.0f;
     camera->curBoomYaw = 0.0f;
-    camera->curBoomLength = camera->lookAt_dist * D_8009A5EC;
-    camera->targetOffsetY = camera->auxBoomPitch * D_8009A5EC;
+    camera->curBoomLength = camera->confined.auxBoomLength * D_8009A5EC;
+    camera->targetOffsetY = camera->confined.offsetY * D_8009A5EC;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
@@ -44,7 +44,7 @@ void update_camera_mode_4(Camera* camera) {
         sinPitch = sin_rad(pitchAngle);
         cosPitch = cos_rad(pitchAngle);
 
-        yawAngle = DEG_TO_RAD(camera->unk_70);
+        yawAngle = DEG_TO_RAD(camera->interpYaw);
         sinYaw = sin_rad(yawAngle);
         cosYaw = cos_rad(yawAngle);
 
@@ -65,7 +65,7 @@ void update_camera_mode_4(Camera* camera) {
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    yawAngle = DEG_TO_RAD(camera->unk_70);
+    yawAngle = DEG_TO_RAD(camera->interpYaw);
     sinYaw = sin_rad(yawAngle);
     cosYaw = cos_rad(yawAngle);
 

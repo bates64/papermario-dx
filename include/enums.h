@@ -1811,9 +1811,9 @@ enum CamShakeModes {
 
 // for use with SetBattleCamParam
 enum AuxCameraParams {
-    AUX_CAM_PARAM_1             = 1,
+    AUX_CAM_SKIP_RECALC         = 1,
     AUX_CAM_BOOM_LENGTH         = 2,
-    AUX_CAM_PARAM_3             = 3,
+    AUX_CAM_FOV_SCALE           = 3,
     AUX_CAM_BOOM_PITCH          = 4,
     AUX_CAM_BOOM_YAW            = 5,
     AUX_CAM_BOOM_ZOFFSET        = 6,
@@ -4701,13 +4701,22 @@ enum CameraMoveFlags {
 };
 
 enum CameraUpdateType {
+    // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+    // has no other control parameters
     CAM_UPDATE_MINIMAL              = 0,
-    CAM_UPDATE_UNUSED_1             = 1,
-    CAM_UPDATE_HUD_ELEM             = 2,
+
+    // this camera uses a set of control parameters to calculate its target lookAt obj and eye positions,
+    // then interpolates toward those positions, moving up to half the remaining distance each frame
+    // the ultimate target is given by lookAt_obj_target
+    // mostly used for CAM_HUD
+    CAM_UPDATE_INTERP_POS           = 2,
+
     CAM_UPDATE_FROM_ZONE            = 3,
+    CAM_UPDATE_BATTLE               = 6,
+
+    CAM_UPDATE_UNUSED_1             = 1,
     CAM_UPDATE_UNUSED_4             = 4,
     CAM_UPDATE_UNUSED_5             = 5,
-    CAM_UPDATE_BATTLE               = 6,
 };
 
 enum CameraControlType {

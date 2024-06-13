@@ -69,7 +69,7 @@ void update_camera_mode_5(Camera* camera) {
         camera->needsInit = FALSE;
         camera->unusedLeadAmt = 0.0f;
         camera->unusedLeadCounter = 0;
-        camera->unk_70 = 0.0f;
+        camera->interpYaw = 0.0f;
         camera->curBoomYaw = 0.0f;
         camera->lookAt_obj.x = camera->targetPos.x;
         camera->lookAt_obj.y = camera->targetPos.y + camera->targetOffsetY;

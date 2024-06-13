@@ -63,11 +63,10 @@ void state_init_file_select(void) {
     gCameras[CAM_DEFAULT].vfov = 25.0f;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
 
-    gCameras[CAM_DEFAULT].auxPitch = 0;
-    gCameras[CAM_DEFAULT].auxBoomPitch = 0;
-    gCameras[CAM_DEFAULT].auxBoomLength = 40;
-
-    gCameras[CAM_DEFAULT].lookAt_dist = 100;
+    gCameras[CAM_DEFAULT].battle.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].battle.auxBoomPitch = 0;
+    gCameras[CAM_DEFAULT].battle.auxBoomLength = 40;
+    gCameras[CAM_DEFAULT].battle.auxFovScale = 100;
 
     gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;

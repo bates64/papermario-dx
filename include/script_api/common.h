@@ -232,7 +232,7 @@ API_CALLABLE(func_802CACC0);
 API_CALLABLE(SetCamBGColor);
 
 /// @evtapi
-API_CALLABLE(func_802CAE50);
+API_CALLABLE(SetCamLookTarget);
 
 /// @evtapi
 API_CALLABLE(SetCamTarget);

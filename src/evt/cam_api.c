@@ -80,26 +80,26 @@ API_CALLABLE(func_802CA988) {
     Bytecode outVar4 = *args++;
     f32 dx, dy, dz;
 
-    gCameras[id].updateMode = CAM_UPDATE_HUD_ELEM;
+    gCameras[id].updateMode = CAM_UPDATE_INTERP_POS;
     gCameras[id].needsInit = FALSE;
-    gCameras[id].auxPitch = -round(gCameras[id].lookAt_pitch);
-    gCameras[id].auxBoomLength = -gCameras[id].lookAt_yaw;
-    gCameras[id].auxBoomPitch = 0;
+    gCameras[id].interp.auxPitch = -round(gCameras[id].lookAt_pitch);
+    gCameras[id].interp.auxYaw = -gCameras[id].lookAt_yaw;
+    gCameras[id].interp.auxOffsetY = 0;
 
     dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
     dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
     dz = gCameras[id].lookAt_obj.z - gCameras[id].lookAt_eye.z;
 
-    gCameras[id].lookAt_dist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
+    gCameras[id].interp.auxDist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
 
     gCameras[id].lookAt_obj_target.x = gCameras[id].lookAt_obj.x;
     gCameras[id].lookAt_obj_target.y = gCameras[id].lookAt_obj.y;
     gCameras[id].lookAt_obj_target.z = gCameras[id].lookAt_obj.z;
 
-    evt_set_variable(script, outVar1, gCameras[id].auxPitch);
-    evt_set_variable(script, outVar2, gCameras[id].auxBoomLength);
-    evt_set_variable(script, outVar3, gCameras[id].lookAt_dist);
-    evt_set_variable(script, outVar4, gCameras[id].auxBoomPitch);
+    evt_set_variable(script, outVar1, gCameras[id].interp.auxPitch);
+    evt_set_variable(script, outVar2, gCameras[id].interp.auxYaw);
+    evt_set_variable(script, outVar3, gCameras[id].interp.auxDist);
+    evt_set_variable(script, outVar4, gCameras[id].interp.auxOffsetY);
     return ApiStatus_DONE2;
 }
 
@@ -124,10 +124,10 @@ API_CALLABLE(func_802CABE8) {
     s16 boomPitch = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->auxPitch = pitch;
-    camera->auxBoomLength = boomLength;
-    camera->lookAt_dist = dist;
-    camera->auxBoomPitch = boomPitch;
+    camera->raw.v1 = pitch;
+    camera->raw.v2 = boomLength;
+    camera->raw.v3 = dist;
+    camera->raw.v4 = boomPitch;
     return ApiStatus_DONE2;
 }
 
@@ -140,10 +140,10 @@ API_CALLABLE(func_802CACC0) {
     s16 zoomPercent = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->zoomPercent = zoomPercent;
-    camera->auxBoomYaw = value1;
-    camera->auxBoomZOffset = value2;
-    camera->unk_28 = value3;
+    camera->raw.v5 = value1;
+    camera->raw.v6 = value2;
+    camera->raw.v7 = value3;
+    camera->raw.v8 = zoomPercent;
     return ApiStatus_DONE2;
 }
 
@@ -161,7 +161,7 @@ API_CALLABLE(SetCamBGColor) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CAE50) {
+API_CALLABLE(SetCamLookTarget) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
     s32 x = evt_get_variable(script, *args++);

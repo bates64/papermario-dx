@@ -758,14 +758,63 @@ typedef struct Camera {
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
     /* 0x018 */ f32 vfov;
-    /* 0x01C */ s16 auxPitch; // context-dependent?
-    /* 0x01E */ s16 auxBoomLength; // context-dependent
-    /* 0x020 */ s16 lookAt_dist; // context-dependent?
-    /* 0x022 */ s16 auxBoomPitch; // context-dependent?
-    /* 0x024 */ s16 auxBoomYaw;
-    /* 0x026 */ s16 auxBoomZOffset;
-    /* 0x028 */ s16 unk_28; // UNUSED
-    /* 0x02A */ s16 zoomPercent;
+                union {
+                    struct {
+                        s16 auxPitch;
+                        s16 unused2;
+                        s16 unused3;
+                        s16 unused4;
+                        s16 unused5;
+                        s16 unused6;
+                        s16 unused7;
+                        s16 zoomPercent;
+                    } world;
+                    struct {
+                        b16 skipRecalc;
+                        s16 auxBoomLength; // confirmed
+                        s16 auxFovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
+                        s16 auxBoomPitch;
+                        s16 auxBoomYaw;
+                        s16 auxBoomZOffset;
+                        s16 unk_28; // UNUSED
+                        s16 zoomPercent;
+                    } battle;
+                    struct {
+                        s16 auxPitch;
+                        s16 auxYaw;
+                        s16 auxDist;
+                        s16 auxOffsetY;
+                    } interp;
+                    struct {
+                        s16 auxPitch;
+                        s16 auxDistThreshold;
+                        s16 auxBoomLength;
+                        s16 offsetY;
+                    } mode1;
+                    struct {
+                        s16 xLimit;
+                        s16 zLimit;
+                        s16 auxBoomLength;
+                        s16 offsetY;
+                    } confined;
+                    struct {
+                        s16 v1;
+                        s16 v2;
+                        s16 v3;
+                        s16 v4;
+                        s16 v5;
+                        s16 v6;
+                        s16 v7;
+                        s16 v8;
+                    } raw; // unk cases
+                };
+    /// s16 lookAt_dist; // context-dependent?
+    // s16 auxBoomPitch; // context-dependent?
+    // s16 auxBoomYaw;
+    // s16 auxBoomZOffset;
+    // s16 unk_28; // UNUSED
+    // s16 zoomPercent;
+
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
@@ -774,12 +823,12 @@ typedef struct Camera {
     /* 0x054 */ Vec3f lookAt_obj_target;
     /* 0x060 */ Vec3f targetPos; // target for camera rig
     /* 0x06C */ f32 curYaw;
-    /* 0x070 */ f32 unk_70;
+    /* 0x070 */ f32 interpYaw; // no camera mode actually uses this for interpolation
     /* 0x078 */ f32 curBoomLength;
     /* 0x074 */ f32 curBoomPitch;
     /* 0x084 */ f32 curBoomYaw;
     /* 0x07C */ f32 targetOffsetY;
-    /* 0x088 */ f32 unk_88;
+    /* 0x088 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_1
     /* 0x090 */ f32 lookAt_yaw;
     /* 0x094 */ f32 lookAt_pitch;
     /* 0x0A0 */ Vp vp;

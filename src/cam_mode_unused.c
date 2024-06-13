@@ -1,5 +1,6 @@
 #include "common.h"
 
+// unused camera similar to CAM_UPDATE_BATTLE
 void update_camera_mode_unused(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -8,11 +9,12 @@ void update_camera_mode_unused(Camera* camera) {
     if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
-        camera->auxPitch = 0;
-        camera->auxBoomLength = 100;
-        camera->lookAt_dist = 100;
-        camera->auxBoomPitch = 0;
-        camera->auxBoomYaw = 0;
+        camera->battle.skipRecalc = FALSE;
+        camera->battle.auxBoomLength = 100;
+        camera->battle.auxFovScale = 100;
+        camera->battle.auxBoomPitch = 0;
+        camera->battle.auxBoomYaw = 0;
+
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
@@ -24,15 +26,15 @@ void update_camera_mode_unused(Camera* camera) {
     camera->lookAt_obj_target.x = gPlayerStatus.pos.x;
     camera->lookAt_obj_target.z = gPlayerStatus.pos.z + 400.0f;
 
-    if (camera->auxPitch == 0) {
+    if (!camera->battle.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
-        camera->curBoomYaw = camera->auxBoomYaw;
-        camera->curBoomPitch = camera->auxBoomPitch;
-        camera->curBoomLength = camera->auxBoomLength;
-        camera->vfov = (10000 / camera->lookAt_dist) / 4;
+        camera->curBoomYaw = camera->battle.auxBoomYaw;
+        camera->curBoomPitch = camera->battle.auxBoomPitch;
+        camera->curBoomLength = camera->battle.auxBoomLength;
+        camera->vfov = (10000 / camera->battle.auxFovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

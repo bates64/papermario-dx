@@ -1,17 +1,20 @@
 #include "common.h"
 #include "camera.h"
 
-// implementation for CAM_UPDATE_HUD_ELEM
-void update_camera_hud_elem(Camera *camera) {
+// implementation for CAM_UPDATE_INTERP_POS
+// this camera uses a set of control parameters to calculate its target lookAt obj and eye positions,
+// then interpolates toward those positions, moving up to half the remaining distance each frame
+// the ultimate target is given by lookAt_obj_target
+void update_camera_interp_pos(Camera *camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 yawAngle, sinYaw, cosYaw;
     f32 x, y, z, dx, dy, dz, dr;
 
-    camera->unk_70 = camera->auxBoomLength;
-    camera->curBoomLength = camera->lookAt_dist * D_8009A5EC;
-    camera->targetOffsetY = camera->auxBoomPitch * D_8009A5EC;
-    camera->curBoomPitch = camera->auxPitch;
-    camera->curBoomYaw = camera->unk_70;
+    camera->interpYaw = camera->interp.auxYaw;
+    camera->curBoomLength = camera->interp.auxDist * D_8009A5EC;
+    camera->targetOffsetY = camera->interp.auxOffsetY * D_8009A5EC;
+    camera->curBoomPitch = camera->interp.auxPitch;
+    camera->curBoomYaw = camera->interpYaw;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
@@ -24,7 +27,7 @@ void update_camera_hud_elem(Camera *camera) {
         sinPitch = sin_rad(pitchAngle);
         cosPitch = cos_rad(pitchAngle);
 
-        yawAngle = DEG_TO_RAD(camera->unk_70);
+        yawAngle = DEG_TO_RAD(camera->interpYaw);
         sinYaw = sin_rad(yawAngle);
         cosYaw = cos_rad(yawAngle);
 
@@ -36,6 +39,8 @@ void update_camera_hud_elem(Camera *camera) {
         camera->lookAt_eye.y = camera->lookAt_obj.y + dy;
         camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
     }
+
+    // interpolate lookAt_obj toward lookAt_obj_target by stepping half the difference each frame
 
     dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
     dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
@@ -67,11 +72,13 @@ void update_camera_hud_elem(Camera *camera) {
     camera->lookAt_obj.y += dy * 0.5f;
     camera->lookAt_obj.z += dz * 0.5f;
 
+    // calculate new camera eye position from distance and angles
+
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    yawAngle = DEG_TO_RAD(camera->unk_70);
+    yawAngle = DEG_TO_RAD(camera->interpYaw);
     sinYaw = sin_rad(yawAngle);
     cosYaw = cos_rad(yawAngle);
 
@@ -82,6 +89,8 @@ void update_camera_hud_elem(Camera *camera) {
     x = camera->lookAt_obj.x + dx;
     y = camera->lookAt_obj.y + dy;
     z = camera->lookAt_obj.z + dz;
+
+    // interpolate lookAt_eye toward new eye position by stepping half the difference each frame
 
     dx = (x - camera->lookAt_eye.x) * 0.5f;
     dy = (y - camera->lookAt_eye.y) * 0.5f;
@@ -112,6 +121,8 @@ void update_camera_hud_elem(Camera *camera) {
     camera->lookAt_eye.x += dx;
     camera->lookAt_eye.y += dy;
     camera->lookAt_eye.z += dz;
+
+    // calculate final position and orientation for camera
 
     dx = camera->lookAt_obj.x - camera->lookAt_eye.x;
     dy = camera->lookAt_obj.y - camera->lookAt_eye.y;

@@ -1,21 +1,25 @@
 #include "common.h"
-#include "dx/debug_menu.h"
 
 // implementation for CAM_UPDATE_BATTLE
+
+// this camera uses a set of control parameters to calculate its target lookAt obj and eye positions,
+// then interpolates toward those positions, moving up to half the remaining distance each frame
+// the ultimate target is given by lookAt_obj_target
+
 void update_camera_battle(Camera* camera) {
-    f32 pitchAngle, sinPitch, cosPitch;
     f32 yawAngle, sinYaw, cosYaw;
+    f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;
 
     if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
-        camera->auxPitch = 0;
-        camera->auxBoomLength = 100;
-        camera->lookAt_dist = 100;
-        camera->auxBoomPitch = 0;
-        camera->auxBoomYaw = 0;
-        camera->auxBoomZOffset = 0;
+        camera->battle.skipRecalc = FALSE;
+        camera->battle.auxBoomLength = 100;
+        camera->battle.auxFovScale = 100;
+        camera->battle.auxBoomPitch = 0;
+        camera->battle.auxBoomYaw = 0;
+        camera->battle.auxBoomZOffset = 0;
 
         camera->targetPos.x = 0.0f;
         camera->targetPos.y = 0.0f;
@@ -26,15 +30,15 @@ void update_camera_battle(Camera* camera) {
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
     }
 
-    if (camera->auxPitch == 0) {
+    if (!camera->battle.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x + camera->targetPos.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->auxBoomZOffset / 256.0;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->battle.auxBoomZOffset / 256.0;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z + camera->targetPos.z;
 
-        camera->curBoomLength = camera->auxBoomLength;
-        camera->curBoomPitch = camera->auxBoomPitch;
-        camera->curBoomYaw = camera->auxBoomYaw;
-        camera->vfov = (10000 / camera->lookAt_dist) / 4;
+        camera->curBoomLength = camera->battle.auxBoomLength;
+        camera->curBoomPitch = camera->battle.auxBoomPitch;
+        camera->curBoomYaw = camera->battle.auxBoomYaw;
+        camera->vfov = (10000 / camera->battle.auxFovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

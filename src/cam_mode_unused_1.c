@@ -17,15 +17,15 @@ void update_camera_mode_1(Camera* camera) {
         x1 = camera->targetPos.x;
         z1 = camera->targetPos.z;
 
-        camera->curBoomPitch = camera->auxPitch;
-        camera->curBoomLength = camera->lookAt_dist * 100 / D_8009A5EC;
-        camera->targetOffsetY = camera->auxBoomPitch * 20 / D_8009A5EC;
+        camera->curBoomPitch = camera->mode1.auxPitch;
+        camera->curBoomLength = camera->mode1.auxBoomLength * 100 / D_8009A5EC;
+        camera->targetOffsetY = camera->mode1.offsetY * 20 / D_8009A5EC;
 
         angle = atan2(x0, z0, x1, z1);
-        if ((dist2D(x0, z0, x1, z1) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
+        if ((dist2D(x0, z0, x1, z1) >= camera->mode1.auxDistThreshold * 100 / D_8009A5EC)) {
             camera->curBoomYaw = angle;
         }
-        camera->unk_88 = camera->curBoomYaw;
+        camera->targetBoomYaw = camera->curBoomYaw;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
@@ -48,9 +48,9 @@ void update_camera_mode_1(Camera* camera) {
         camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
     }
 
-    camera->curBoomPitch = camera->auxPitch;
-    camera->curBoomLength = camera->lookAt_dist * 100 / D_8009A5EC;
-    camera->targetOffsetY = camera->auxBoomPitch * 20 / D_8009A5EC;
+    camera->curBoomPitch = camera->mode1.auxPitch;
+    camera->curBoomLength = camera->mode1.auxBoomLength * 100 / D_8009A5EC;
+    camera->targetOffsetY = camera->mode1.offsetY * 20 / D_8009A5EC;
 
     dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
     dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
@@ -66,16 +66,16 @@ void update_camera_mode_1(Camera* camera) {
     z1 = camera->targetPos.z;
 
     angle = atan2(x0, z0, x1, z1);
-    if ((dist2D(x0, z0, x1, z1) >= camera->auxBoomLength * 100 / D_8009A5EC)) {
+    if ((dist2D(x0, z0, x1, z1) >= camera->mode1.auxDistThreshold * 100 / D_8009A5EC)) {
         camera->curBoomYaw = angle;
     }
-    camera->unk_88 -= get_clamped_angle_diff(camera->curBoomYaw, camera->unk_88) / 10.0f;
+    camera->targetBoomYaw -= get_clamped_angle_diff(camera->curBoomYaw, camera->targetBoomYaw) / 10.0f;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    yawAngle = DEG_TO_RAD((camera->unk_88));
+    yawAngle = DEG_TO_RAD((camera->targetBoomYaw));
     sinYaw = sin_rad(yawAngle);
     cosYaw = cos_rad(yawAngle);
 
