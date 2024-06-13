@@ -886,7 +886,7 @@ void update_camera_zone_interp(Camera* camera) {
         f32 phi = camera->interpEasingParameter;
         f32 plusCos = (1.0f + cos_rad(PI_D * phi)) * 0.5f;
         f32 minusCos = (1.0f - cos_rad(PI_D * phi)) * 0.5f;
-        s32 alpha = camera->linearInterp;
+        f32 alpha = camera->linearInterp;
         f32 beta = cos_rad(PI_D * (alpha * (1.0f - phi) + phi));
         f32 gamma = (beta + minusCos) / plusCos;
         // the range of gamma is [1,-1] so we must remap it to [0,1] before assigning interpAlpha
