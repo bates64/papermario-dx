@@ -1,8 +1,9 @@
 #include "common.h"
 #include "camera.h"
 
-// implementation for CAM_UPDATE_MINIMAL
+// implements CAM_UPDATE_MINIMAL
 // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+// control this camera by directly setting these positions
 void update_camera_minimal(Camera* camera) {
     f32 dx, dy, dz, dr;
 

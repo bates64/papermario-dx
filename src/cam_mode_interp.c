@@ -2,8 +2,8 @@
 #include "camera.h"
 
 // implementation for CAM_UPDATE_INTERP_POS
-// this camera uses a set of control parameters to calculate its target lookAt obj and eye positions,
-// then interpolates toward those positions, moving up to half the remaining distance each frame
+// this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
+// then interpolates current positions toward those targets, moving up to half the remaining distance each frame
 // the ultimate target is given by lookAt_obj_target
 void update_camera_interp_pos(Camera *camera) {
     f32 pitchAngle, sinPitch, cosPitch;

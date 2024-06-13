@@ -83,10 +83,10 @@ void update_camera_mode_5(Camera* camera) {
         camera->lookAt_obj_target.y = camera->targetPos.y + camera->targetOffsetY;
         camera->lookAt_obj_target.z = camera->targetPos.z;
         update_unused_lead_amt(camera);
-        if (!(camera->moveFlags & CAMERA_MOVE_IGNORE_PLAYER_Y)) {
-            interp_lookat_pos(camera, interpRate, maxInterpSpeed, FALSE);
-        } else {
+        if (camera->moveFlags & CAMERA_MOVE_IGNORE_PLAYER_Y) {
             interp_lookat_pos(camera, interpRate, maxInterpSpeed, TRUE);
+        } else {
+            interp_lookat_pos(camera, interpRate, maxInterpSpeed, FALSE);
         }
     }
 

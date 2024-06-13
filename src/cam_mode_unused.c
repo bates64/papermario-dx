@@ -1,6 +1,6 @@
 #include "common.h"
 
-// unused camera similar to CAM_UPDATE_BATTLE
+// unused camera similar to CAM_UPDATE_NO_INTERP
 void update_camera_mode_unused(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;

@@ -114,7 +114,7 @@ segments:
     - [auto, c, cam_mode_interp]
     - [auto, c, cam_mode_unused_1]
     - [auto, c, cam_mode_minimal]
-    - [auto, c, cam_mode_battle]
+    - [auto, c, cam_mode_no_interp]
     - [auto, c, cam_mode_unused]
     - [auto, c, cam_mode_unused_4]
     - [auto, c, cam_mode_unused_5]

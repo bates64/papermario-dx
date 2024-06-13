@@ -821,7 +821,7 @@ typedef struct Camera {
     /* 0x03C */ Vec3f lookAt_eye; // used to construct the view matrix
     /* 0x048 */ Vec3f lookAt_obj; // used to construct the view matrix
     /* 0x054 */ Vec3f lookAt_obj_target;
-    /* 0x060 */ Vec3f targetPos; // target for camera rig
+    /* 0x060 */ Vec3f targetPos; // target for camera rig, often but not necessarily the player position
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 interpYaw; // no camera mode actually uses this for interpolation
     /* 0x078 */ f32 curBoomLength;

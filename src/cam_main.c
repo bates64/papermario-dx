@@ -41,14 +41,14 @@ void update_cameras(void) {
             case CAM_UPDATE_FROM_ZONE:
                 update_camera_zone_interp(cam);
                 break;
-            case CAM_UPDATE_BATTLE:
-                update_camera_battle(cam);
+            case CAM_UPDATE_NO_INTERP:
+                update_camera_no_interp(cam);
                 break;
             case CAM_UPDATE_UNUSED_1:
                 update_camera_mode_1(cam);
                 break;
-            case CAM_UPDATE_UNUSED_4:
-                update_camera_mode_4(cam);
+            case CAM_UPDATE_UNUSED_CONFINED:
+                update_camera_unused_confined(cam);
                 break;
             case CAM_UPDATE_UNUSED_5:
                 update_camera_mode_5(cam);

@@ -1806,7 +1806,7 @@ enum Cams {
 enum CamShakeModes {
     CAM_SHAKE_CONSTANT_VERTICAL     = 0,
     CAM_SHAKE_ANGULAR_HORIZONTAL    = 1,
-    CAM_SHAKE_DECAYING_VERTICAL     = 2
+    CAM_SHAKE_DECAYING_VERTICAL     = 2,
 };
 
 // for use with SetBattleCamParam
@@ -4702,20 +4702,32 @@ enum CameraMoveFlags {
 
 enum CameraUpdateType {
     // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+    // control this camera by directly setting these positions
     // has no other control parameters
     CAM_UPDATE_MINIMAL              = 0,
 
-    // this camera uses a set of control parameters to calculate its target lookAt obj and eye positions,
-    // then interpolates toward those positions, moving up to half the remaining distance each frame
+    // this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
+    // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
     // the ultimate target is given by lookAt_obj_target
     // mostly used for CAM_HUD
     CAM_UPDATE_INTERP_POS           = 2,
 
+    // this camera samples camera zones below its targetPos and derives control parameters from their settings,
+    // interpolating its control parameters when changing zones. these control parameters determine the camera
+    // position and orientation just like other camera modes.
+    // note that this code does NOT directly reference the player position in any manner, it is only concerned
+    // with the camera's targetPos, which must be assigned elsewhere.
+    // this is the camera used during world gameplay
     CAM_UPDATE_FROM_ZONE            = 3,
-    CAM_UPDATE_BATTLE               = 6,
+
+    // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
+    // which are only updated if skipRecalc = FALSE
+    // the ultimate target is given by lookAt_obj_target
+    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
+    CAM_UPDATE_NO_INTERP            = 6,
 
     CAM_UPDATE_UNUSED_1             = 1,
-    CAM_UPDATE_UNUSED_4             = 4,
+    CAM_UPDATE_UNUSED_CONFINED             = 4,
     CAM_UPDATE_UNUSED_5             = 5,
 };
 

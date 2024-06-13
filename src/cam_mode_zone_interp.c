@@ -676,6 +676,13 @@ void set_camera_from_rig(Camera* camera, CameraRig* rig) {
     camera->lookAt_obj_target.z = camera->lookAt_obj.z;
 }
 
+// implements CAM_UPDATE_FROM_ZONE
+// this camera samples camera zones below its targetPos and derives control parameters from their settings,
+// interpolating its control parameters when changing zones. these control parameters determine the camera
+// position and orientation just like other camera modes.
+// note that this code does NOT directly reference the player position in any manner, it is only concerned
+// with the camera's targetPos, which must be assigned elsewhere.
+// this is the camera used during world gameplay
 void update_camera_zone_interp(Camera* camera) {
     CameraControlSettings* curSettings;
     CameraControlSettings* nextSettings;

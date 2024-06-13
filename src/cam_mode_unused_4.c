@@ -1,8 +1,8 @@
 #include "common.h"
 #include "camera.h"
 
-// implementation for CAM_UPDATE_UNUSED_4
-void update_camera_mode_4(Camera* camera) {
+// implementation for CAM_UPDATE_UNUSED_CONFINED
+void update_camera_unused_confined(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;

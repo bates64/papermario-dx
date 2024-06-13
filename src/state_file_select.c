@@ -56,7 +56,7 @@ void state_init_file_select(void) {
     hud_element_clear_cache();
     mdl_load_all_textures(NULL, 0, 0);
 
-    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_BATTLE;
+    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;

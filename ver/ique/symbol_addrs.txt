@@ -1,4 +1,4 @@
-update_camera_mode_4 = 0x8002dfc0;
+update_camera_unused_confined = 0x8002dfc0;
 update_camera_interp_pos = 0x8002e3a8;
 update_camera_mode_1 = 0x8002e940;
 update_camera_minimal = 0x8002ef00;
