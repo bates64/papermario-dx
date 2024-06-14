@@ -1,5 +1,4 @@
 #include "common.h"
-#include "dx/debug_menu.h"
 
 BSS CameraRig CurrentCamRig;
 BSS f32 D_800A08DC;

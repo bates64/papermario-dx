@@ -1456,7 +1456,7 @@ EvtScript N(EVS_Move_Tattle) = {
     Call(N(GetTattleCamPos))
     Wait(1)
     Call(SetCamLookTarget, CAM_TATTLE, LVar0, LVar1, LVar2)
-    Call(func_802CABE8, CAM_TATTLE, 0, LVar3, 100, 4)
+    Call(SetNoInterpCamParams, CAM_TATTLE, FALSE, LVar3, 100, 4)
     Wait(2)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TATTLE_WINDOW_OPEN)
     Call(SetCamNoDraw, CAM_TATTLE, TRUE)

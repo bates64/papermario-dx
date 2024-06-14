@@ -217,13 +217,16 @@ API_CALLABLE(SetCamPerspective);
 API_CALLABLE(SetCamUpdateMode);
 
 /// @evtapi
-API_CALLABLE(func_802CA988);
+API_CALLABLE(GrabCamera);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamParams);
+
+/// @evtapi
+API_CALLABLE(SetNoInterpCamParams);
 
 /// @evtapi
 API_CALLABLE(SetCamViewport);
-
-/// @evtapi
-API_CALLABLE(func_802CABE8);
 
 /// @evtapi
 API_CALLABLE(func_802CACC0);

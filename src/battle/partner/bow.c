@@ -871,9 +871,9 @@ EvtScript N(spook) = {
         Wait(5)
         Call(UseBattleCamPreset, BTL_CAM_INTERRUPT)
         Loop(5)
-            Call(SetBattleCamParam, AUX_CAM_FOV_SCALE, 110)
+            Call(SetBattleCamParam, CAM_PARAM_FOV_SCALE, 110)
             Wait(2)
-            Call(SetBattleCamParam, AUX_CAM_FOV_SCALE, 100)
+            Call(SetBattleCamParam, CAM_PARAM_FOV_SCALE, 100)
             Wait(2)
         EndLoop
     EndThread

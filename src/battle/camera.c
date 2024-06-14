@@ -1093,9 +1093,9 @@ EvtScript EVS_BattleCam_FollowActorPos = {
 
 EvtScript EVS_BattleCam_Reset = {
     Call(SetBattleCamPos, 0, 15, 0)
-    Call(SetBattleCamParam, AUX_CAM_BOOM_LENGTH, 550)
-    Call(SetBattleCamParam, AUX_CAM_FOV_SCALE, 100)
-    Call(SetBattleCamParam, AUX_CAM_BOOM_PITCH, 8)
+    Call(SetBattleCamParam, CAM_PARAM_BOOM_LENGTH, 550)
+    Call(SetBattleCamParam, CAM_PARAM_FOV_SCALE, 100)
+    Call(SetBattleCamParam, CAM_PARAM_BOOM_PITCH, 8)
     Return
     End
 };
@@ -1108,7 +1108,7 @@ EvtScript EVS_OnBattleInit = {
     Wait(1)
     Call(InitVirtualEntityList)
     Call(InitAnimatedModels)
-    Call(func_802CABE8, CAM_BATTLE, 0, 240, 100, 8)
+    Call(SetNoInterpCamParams, CAM_BATTLE, FALSE, 240, 100, 8)
     Call(SetCamLookTarget, CAM_BATTLE, -75, 35, 0)
     Call(BattleCamTargetActor, 0)
     Call(BattleCam_Init)
@@ -1889,7 +1889,7 @@ void btl_cam_set_params(b16 skipRecalc, s16 boomLength, s16 vfovScale, s16 boomP
         camera->battle.auxBoomPitch = boomPitch;
         camera->battle.auxBoomYaw = boomYaw;
         camera->battle.auxBoomZOffset = boomZOffset * 256;
-        camera->battle.unk_28 = arg6;
+        camera->battle.unused7 = arg6;
         camera->battle.zoomPercent = zoomPercent;
     }
 }
@@ -2020,28 +2020,28 @@ API_CALLABLE(SetBattleCamParam) {
     val = evt_get_variable(script, *args++);
 
     switch (mode) {
-        case AUX_CAM_SKIP_RECALC:
+        case CAM_PARAM_SKIP_RECALC:
             camera->battle.skipRecalc = val;
             break;
-        case AUX_CAM_BOOM_LENGTH:
+        case CAM_PARAM_BOOM_LENGTH:
             camera->battle.auxBoomLength = val;
             break;
-        case AUX_CAM_FOV_SCALE:
+        case CAM_PARAM_FOV_SCALE:
             camera->battle.auxFovScale = val;
             break;
-        case AUX_CAM_BOOM_PITCH:
+        case CAM_PARAM_BOOM_PITCH:
             camera->battle.auxBoomPitch = val;
             break;
-        case AUX_CAM_BOOM_YAW:
+        case CAM_PARAM_BOOM_YAW:
             camera->battle.auxBoomYaw = val;
             break;
-        case AUX_CAM_BOOM_ZOFFSET:
+        case CAM_PARAM_BOOM_ZOFFSET:
             camera->battle.auxBoomZOffset = val * 256;
             break;
-        case AUX_CAM_PARAM_7:
-            camera->battle.unk_28 = val;
+        case CAM_PARAM_PARAM_7:
+            camera->battle.unused7 = val;
             break;
-        case AUX_CAM_ZOOM_PERCENT:
+        case CAM_PARAM_ZOOM_PERCENT:
             camera->battle.zoomPercent = val;
             break;
     }
@@ -2062,7 +2062,7 @@ API_CALLABLE(SetBattleCamParams) {
     camera->battle.auxBoomPitch = evt_get_variable(script, *args++);
     camera->battle.auxBoomYaw = evt_get_variable(script, *args++);
     camera->battle.auxBoomZOffset = evt_get_variable(script, *args++) * 256;
-    camera->battle.unk_28 = evt_get_variable(script, *args++);
+    camera->battle.unused7 = evt_get_variable(script, *args++);
     camera->battle.zoomPercent = evt_get_variable(script, *args++);
 
     return ApiStatus_DONE2;

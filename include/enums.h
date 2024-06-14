@@ -1811,14 +1811,14 @@ enum CamShakeModes {
 
 // for use with SetBattleCamParam
 enum AuxCameraParams {
-    AUX_CAM_SKIP_RECALC         = 1,
-    AUX_CAM_BOOM_LENGTH         = 2,
-    AUX_CAM_FOV_SCALE           = 3,
-    AUX_CAM_BOOM_PITCH          = 4,
-    AUX_CAM_BOOM_YAW            = 5,
-    AUX_CAM_BOOM_ZOFFSET        = 6,
-    AUX_CAM_PARAM_7             = 7,
-    AUX_CAM_ZOOM_PERCENT        = 8
+    CAM_PARAM_SKIP_RECALC           = 1,
+    CAM_PARAM_BOOM_LENGTH           = 2,
+    CAM_PARAM_FOV_SCALE             = 3,
+    CAM_PARAM_BOOM_PITCH            = 4,
+    CAM_PARAM_BOOM_YAW              = 5,
+    CAM_PARAM_BOOM_ZOFFSET          = 6,
+    CAM_PARAM_PARAM_7               = 7,
+    CAM_PARAM_ZOOM_PERCENT          = 8,
 };
 
 #include "item_enum.h"

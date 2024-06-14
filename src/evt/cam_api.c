@@ -70,7 +70,7 @@ API_CALLABLE(SetCamUpdateMode) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_802CA988) {
+API_CALLABLE(GrabCamera) {
     Bytecode* args = script->ptrReadPos;
     Bytecode id = evt_get_variable(script, *args++);
     Bytecode outVar1 = *args++;
@@ -102,6 +102,38 @@ API_CALLABLE(func_802CA988) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(SetInterpCamParams) {
+    Bytecode* args = script->ptrReadPos;
+    s32 id = evt_get_variable(script, *args++);
+    s32 pitch = evt_get_variable(script, *args++);
+    s32 yaw = evt_get_variable(script, *args++);
+    s32 dist = evt_get_variable(script, *args++);
+    s32 offsetY = evt_get_variable(script, *args++);
+    Camera* camera = &gCameras[id];
+
+    camera->interp.auxPitch = pitch;
+    camera->interp.auxYaw = yaw;
+    camera->interp.auxDist = dist;
+    camera->interp.auxOffsetY = offsetY;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetNoInterpCamParams) {
+    Bytecode* args = script->ptrReadPos;
+    s32 id = evt_get_variable(script, *args++);
+    b32 skipRecalc = evt_get_variable(script, *args++);
+    s32 auxBoomLength = evt_get_variable(script, *args++);
+    s32 auxFovScale = evt_get_variable(script, *args++);
+    s32 auxBoomPitch = evt_get_variable(script, *args++);
+    Camera* camera = &gCameras[id];
+
+    camera->battle.skipRecalc = skipRecalc;
+    camera->battle.auxBoomLength = auxBoomLength;
+    camera->battle.auxFovScale = auxFovScale;
+    camera->battle.auxBoomPitch = auxBoomPitch;
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(SetCamViewport) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
@@ -111,38 +143,6 @@ API_CALLABLE(SetCamViewport) {
     s16 height = evt_get_variable(script, *args++);
 
     set_cam_viewport(id, x, y, width, height);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_802CABE8) {
-    Bytecode* args = script->ptrReadPos;
-    s32 id = evt_get_variable(script, *args++);
-    s16 pitch = evt_get_variable(script, *args++);
-    s32 boomLength = evt_get_variable(script, *args++);
-    s32 dist = evt_get_variable(script, *args++);
-    s16 boomPitch = evt_get_variable(script, *args++);
-    Camera* camera = &gCameras[id];
-
-    camera->raw.v1 = pitch;
-    camera->raw.v2 = boomLength;
-    camera->raw.v3 = dist;
-    camera->raw.v4 = boomPitch;
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_802CACC0) {
-    Bytecode* args = script->ptrReadPos;
-    s32 id = evt_get_variable(script, *args++);
-    s16 value1 = evt_get_variable(script, *args++);
-    s32 value2 = evt_get_variable(script, *args++);
-    s32 value3 = evt_get_variable(script, *args++);
-    s16 zoomPercent = evt_get_variable(script, *args++);
-    Camera* camera = &gCameras[id];
-
-    camera->raw.v5 = value1;
-    camera->raw.v6 = value2;
-    camera->raw.v7 = value3;
-    camera->raw.v8 = zoomPercent;
     return ApiStatus_DONE2;
 }
 

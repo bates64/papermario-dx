@@ -20,13 +20,13 @@
 //#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
-#define DX_SKIP_LOGOS 0
+#define DX_SKIP_LOGOS 1
 
 /// Skips the introductory storybook.
-#define DX_SKIP_STORY 0
+#define DX_SKIP_STORY 1
 
 /// Skips the demo reel playing while waiting for the player to 'Press Start'.
-#define DX_SKIP_DEMO 0
+#define DX_SKIP_DEMO 1
 
 /// Map to load when starting a new game.
 #define NEW_GAME_MAP_ID "kmr_20"

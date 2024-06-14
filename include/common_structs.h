@@ -771,12 +771,12 @@ typedef struct Camera {
                     } world;
                     struct {
                         b16 skipRecalc;
-                        s16 auxBoomLength; // confirmed
+                        s16 auxBoomLength;
                         s16 auxFovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
                         s16 auxBoomPitch;
                         s16 auxBoomYaw;
                         s16 auxBoomZOffset;
-                        s16 unk_28; // UNUSED
+                        s16 unused7;
                         s16 zoomPercent;
                     } battle;
                     struct {
@@ -797,16 +797,6 @@ typedef struct Camera {
                         s16 auxBoomLength;
                         s16 offsetY;
                     } confined;
-                    struct {
-                        s16 v1;
-                        s16 v2;
-                        s16 v3;
-                        s16 v4;
-                        s16 v5;
-                        s16 v6;
-                        s16 v7;
-                        s16 v8;
-                    } raw; // unk cases
                 };
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
