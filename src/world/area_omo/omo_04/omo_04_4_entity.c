@@ -13,9 +13,6 @@ EvtScript N(EVS_OpenChest_StoreroomKey) = {
     End
 };
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 EvtScript N(EVS_TetherCamToPlayer) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -48,12 +45,12 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, LVar7, LVar8, LVar9, 40)
     KillThread(LVarA)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(DisablePlayerPhysics, FALSE)

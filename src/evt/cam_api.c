@@ -1,5 +1,4 @@
 #include "common.h"
-#include "camera.h"
 
 EvtScript ShakeCam1 = {
     SetGroup(EVT_GROUP_00)
@@ -357,6 +356,34 @@ API_CALLABLE(SetCamLeadPlayer) {
     } else {
         camera->flags &= ~CAMERA_FLAG_LEAD_PLAYER;
     }
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(EnableCameraFollowPlayerY) {
+    Camera* camera = &gCameras[CAM_DEFAULT];
+
+    camera->moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(DisableCameraFollowPlayerY) {
+    Camera* camera = &gCameras[CAM_DEFAULT];
+
+    camera->moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(EnableCameraLeadingPlayer) {
+    Camera* camera = &gCameras[CAM_DEFAULT];
+
+    camera->flags &= ~CAMERA_FLAG_SUPRESS_LEADING;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(DisableCameraLeadingPlayer) {
+    Camera* camera = &gCameras[CAM_DEFAULT];
+
+    camera->flags |= CAMERA_FLAG_SUPRESS_LEADING;
     return ApiStatus_DONE2;
 }
 

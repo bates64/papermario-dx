@@ -92,8 +92,6 @@ API_CALLABLE(N(UpdateMagikoopaAngles)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-
 API_CALLABLE(N(AddOffsetForCamPos)) {
     s32 baseX = script->varTable[0];
     s32 baseZ = script->varTable[2];
@@ -232,7 +230,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
     Call(SetNpcAnimation, NPC_Twink, ANIM_Twink_Idle)
     Call(NpcFacePlayer, NPC_Twink, 0)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Shout, ANIM_Twink_Idle, 0, MSG_HOS_000E)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, -20)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

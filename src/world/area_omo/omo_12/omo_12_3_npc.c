@@ -16,9 +16,6 @@ NpcSettings N(NpcSettings_Watt) = {
 
 #include "world/common/atomic/CreateDarkness.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
-
 API_CALLABLE(N(SetLightOriginAndPower)) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
@@ -186,7 +183,7 @@ Vec3f N(WattLeftFlightPath)[] = {
 
 EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(2.0 / DT), LVar0, LVar1, LVar2, Float(450.0), Float(15.0), Float(-6.0))
     Set(LVarA, 0)
@@ -391,7 +388,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0, MSG_CH4_005B)
     Call(EnablePartnerAI)
     Exec(N(EVS_UseWattTutorial))
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Set(GB_StoryProgress, STORY_CH4_WATT_JOINED_PARTY)
     Call(DisablePlayerInput, FALSE)

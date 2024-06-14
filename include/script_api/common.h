@@ -247,6 +247,18 @@ API_CALLABLE(ShakeCam);
 API_CALLABLE(SetCamLeadPlayer);
 
 /// @evtapi
+API_CALLABLE(EnableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(DisableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(EnableCameraLeadingPlayer);
+
+/// @evtapi
+API_CALLABLE(DisableCameraLeadingPlayer);
+
+/// @evtapi
 API_CALLABLE(SetCamLeadScale);
 
 /// @evtapi

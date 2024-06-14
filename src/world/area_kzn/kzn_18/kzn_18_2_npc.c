@@ -3,8 +3,6 @@
 #include "world/common/npc/Kolorado.inc.c"
 #include "world/common/enemy/PutridPiranhaSentinel.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
 #include "world/common/todo/GetFloorCollider.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
@@ -106,7 +104,7 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
             Goto(0)
         EndIf
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, 285, 25, 35)
     Call(SetCamDistance, CAM_DEFAULT, 400)
@@ -125,7 +123,7 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim18)
     Wait(25 * DT)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
     Set(GF_KZN18_IntruderAlert, TRUE)
     Call(DisablePlayerInput, FALSE)

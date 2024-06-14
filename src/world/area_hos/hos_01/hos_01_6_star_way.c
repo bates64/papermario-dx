@@ -1,8 +1,6 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 #define NAME_SUFFIX _StarWay
 #include "world/common/todo/GetFloorCollider.inc.c"
 #define NAME_SUFFIX
@@ -120,7 +118,7 @@ EvtScript N(EVS_AscendStarBeam) = {
         EndLoop
     EndThread
     Wait(30)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Thread
         Label(10)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

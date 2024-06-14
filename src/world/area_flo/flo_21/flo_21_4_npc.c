@@ -5,8 +5,6 @@
 #include "world/common/enemy/HuffNPuff.h"
 #include "world/common/enemy/RuffPuff.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 NpcSettings N(NpcSettings_RuffPuff) = {
     .height = 24,
     .radius = 28,

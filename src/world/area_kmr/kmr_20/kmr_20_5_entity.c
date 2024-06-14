@@ -6,8 +6,6 @@ API_CALLABLE(N(SetAmbienceVolumeHalf_Entity)){
     return ApiStatus_DONE2;
 }
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 EvtScript N(EVS_SecretPanel_FlipBack) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o252, COLLIDER_FLAGS_UPPER_MASK)
     Call(PlaySoundAtCollider, COLLIDER_o252, SOUND_FLIP_PANEL, SOUND_SPACE_DEFAULT)
@@ -48,7 +46,7 @@ EvtScript N(EVS_UseSpring_Basement) = {
         Call(PlayerJump, -110, -80, -35, 20)
         Set(AF_KMR_0B, TRUE)
     Else
-        Call(N(EnableCameraFollowPlayerY))
+        Call(EnableCameraFollowPlayerY)
         Exec(N(EVS_SecretPanel_FlipBack))
         Call(PlayerJump, -150, 30, -90, 30)
         Call(InterpPlayerYaw, 180, 0)

@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "nu/nusys.h"
-#include "camera.h"
 #include "hud_element.h"
 #include "sprite.h"
 #include "model.h"

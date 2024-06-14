@@ -22,7 +22,7 @@ enum SlotMachineProgress {
 
 EvtScript N(EVS_SetCam_ViewReels) = {
     Wait(8)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(UseSettingsFrom, CAM_DEFAULT, 535, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 535, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
@@ -720,7 +720,7 @@ EvtScript N(EVS_SlotMachine_MainUpdate) = {
                     Set(MV_ResetCamSpeed, Float(2.0))
             EndSwitch
     EndSwitch
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, MV_ResetCamSpeed)
     Call(DisablePlayerInput, FALSE)
     Loop(0)

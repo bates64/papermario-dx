@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "npc.h"
-#include "camera.h"
 #include "hud_element.h"
 #include "rumble.h"
 #include "sprite.h"

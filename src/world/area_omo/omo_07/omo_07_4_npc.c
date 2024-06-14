@@ -20,8 +20,6 @@ NpcSettings N(NpcSettings_HammerBros) = {
 };
 
 #include "world/common/enemy/Kammy_Flying.inc.c"
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 // an 'unlimited' number of shy guys walk along the path and emerge from the playhouse
 // they are drawn from a pool of 4 NPCs, with their lifecycle tracked via these states
@@ -283,7 +281,7 @@ EvtScript N(EVS_NpcIdle_Fuzzy) = {
         Goto(0)
     EndIf
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
     IfEq(GB_OMO_PeachChoice2, 0)
@@ -292,7 +290,7 @@ EvtScript N(EVS_NpcIdle_Fuzzy) = {
         Call(SpeakToPlayer, NPC_HammerBros, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_CH4_003D)
     EndIf
     Thread
-        Call(N(EnableCameraLeadingPlayer))
+        Call(EnableCameraLeadingPlayer)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
     EndThread
     Call(DisablePlayerInput, FALSE)

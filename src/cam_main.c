@@ -2,9 +2,7 @@
 #include "camera.h"
 #include "nu/nusys.h"
 #include "hud_element.h"
-#include "camera.h"
 #include "dx/profiling.h"
-#include "dx/debug_menu.h"
 
 void render_models(void);
 void execute_render_tasks(void);

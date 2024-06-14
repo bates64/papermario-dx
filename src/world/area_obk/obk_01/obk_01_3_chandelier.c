@@ -2,9 +2,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 extern EvtScript N(EVS_LaunchFromCouch_Crash);
 
 s32 N(ItemList_BooWeight)[] = {
@@ -424,7 +421,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Exec(N(EVS_Couch_AnimateSpring))
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Sub(LVar3, 1)
     Call(SetPlayerPos, LVar2, LVar3, LVar4)
