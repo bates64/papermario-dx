@@ -18,7 +18,7 @@ void update_camera_no_interp(Camera* camera) {
         camera->battle.auxFovScale = 100;
         camera->battle.auxBoomPitch = 0;
         camera->battle.auxBoomYaw = 0;
-        camera->battle.auxBoomZOffset = 0;
+        camera->battle.auxOffsetY = 0;
 
         camera->targetPos.x = 0.0f;
         camera->targetPos.y = 0.0f;
@@ -31,7 +31,7 @@ void update_camera_no_interp(Camera* camera) {
 
     if (!camera->battle.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x + camera->targetPos.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->battle.auxBoomZOffset / 256.0;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->battle.auxOffsetY / 256.0;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z + camera->targetPos.z;
 
         camera->curBoomLength = camera->battle.auxBoomLength;

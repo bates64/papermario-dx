@@ -271,12 +271,11 @@ API_CALLABLE(DeletePartner);
 API_CALLABLE(GetDamageIntensity);
 API_CALLABLE(AddEffectOffset);
 API_CALLABLE(LoadStarPowerScript);
-API_CALLABLE(SetBattleCamPos);
+API_CALLABLE(ForceBattleCamTarget);
 API_CALLABLE(SetBattleCamParam);
 API_CALLABLE(GetPartAnimNotify);
 API_CALLABLE(InitAnimatedModels);
 API_CALLABLE(SetCamLookTarget);
-API_CALLABLE(func_802807D0);
 API_CALLABLE(PartnerYieldTurn); ///< YieldTurn copy
 API_CALLABLE(func_8024ECF8);
 API_CALLABLE(UseBattleCamPresetImmediately);

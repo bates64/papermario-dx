@@ -775,7 +775,7 @@ typedef struct Camera {
                         s16 auxFovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
                         s16 auxBoomPitch;
                         s16 auxBoomYaw;
-                        s16 auxBoomZOffset;
+                        s16 auxOffsetY;
                         s16 unused7;
                         s16 zoomPercent;
                     } battle;

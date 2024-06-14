@@ -1611,7 +1611,6 @@ void render_transformed_hud_elements(void) {
     s32 sortedElements[ARRAY_COUNT(*gHudElements)];
     s32 el1, el2;
     HudElement* hudElement;
-    s16 tempOffsetZ;
     s32 flags;
     s32 z1, z2;
 
@@ -1653,9 +1652,8 @@ void render_transformed_hud_elements(void) {
                 for (j = i + 1; j < count; j++) {
                     el1 = sortedElements[i];
                     el2 = sortedElements[j];
-                    tempOffsetZ = (*gHudElements)[el1]->worldPosOffset.z;
 
-                    if (tempOffsetZ < (*gHudElements)[el2]->worldPosOffset.z) {
+                    if ((*gHudElements)[el1]->worldPosOffset.z < (*gHudElements)[el2]->worldPosOffset.z) {
                         sortedElements[i] = el2;
                         sortedElements[j] = el1;
                     }
@@ -1716,7 +1714,6 @@ void render_transformed_hud_elements(void) {
                 for (j = i + 1; j < count; j++) {
                     el1 = sortedElements[i];
                     el2 = sortedElements[j];
-                    tempOffsetZ = (*gHudElements)[el1]->worldPosOffset.z;
 
                     if ((*gHudElements)[el1]->worldPosOffset.z < (*gHudElements)[el2]->worldPosOffset.z) {
                         sortedElements[i] = el2;
