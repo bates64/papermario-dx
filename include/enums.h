@@ -5292,14 +5292,14 @@ enum WindowID {
     WIN_FILES_OPTION_LEFT                   = 53,
     WIN_FILES_OPTION_CENTER                 = 54,
     WIN_FILES_OPTION_RIGHT                  = 55,
-    WIN_FILES_SLOT0_BODY                    = 56,
-    WIN_FILES_SLOT1_BODY                    = 57,
-    WIN_FILES_SLOT2_BODY                    = 58,
-    WIN_FILES_SLOT3_BODY                    = 59,
-    WIN_FILES_SLOT0_TITLE                   = 60,
-    WIN_FILES_SLOT1_TITLE                   = 61,
-    WIN_FILES_SLOT2_TITLE                   = 62,
-    WIN_FILES_SLOT3_TITLE                   = 63,
+    WIN_FILES_SLOT1_BODY                    = 56,
+    WIN_FILES_SLOT2_BODY                    = 57,
+    WIN_FILES_SLOT3_BODY                    = 58,
+    WIN_FILES_SLOT4_BODY                    = 59,
+    WIN_FILES_SLOT1_TITLE                   = 60,
+    WIN_FILES_SLOT2_TITLE                   = 61,
+    WIN_FILES_SLOT3_TITLE                   = 62,
+    WIN_FILES_SLOT4_TITLE                   = 63,
 };
 
 enum SimpleWindowUpdateID {
