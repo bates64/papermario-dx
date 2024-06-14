@@ -698,8 +698,6 @@ void update_player(void) {
     gGameStatus.playerPos.z = playerStatus->pos.z;
     gGameStatus.playerYaw = playerStatus->curYaw;
 
-    debug_printf("YAW: %f", playerStatus->curYaw);
-
     check_input_open_menus();
     if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
         check_input_status_bar();

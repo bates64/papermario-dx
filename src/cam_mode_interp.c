@@ -1,7 +1,7 @@
 #include "common.h"
 #include "camera.h"
 
-// implementation for CAM_UPDATE_INTERP_POS
+// implements CAM_UPDATE_INTERP_POS
 // this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
 // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
 // the ultimate target is given by lookAt_obj_target
@@ -11,8 +11,8 @@ void update_camera_interp_pos(Camera *camera) {
     f32 x, y, z, dx, dy, dz, dr;
 
     camera->interpYaw = camera->interp.auxYaw;
-    camera->curBoomLength = camera->interp.auxDist * D_8009A5EC;
-    camera->targetOffsetY = camera->interp.auxOffsetY * D_8009A5EC;
+    camera->curBoomLength = camera->interp.auxDist * CamLengthScale;
+    camera->targetOffsetY = camera->interp.auxOffsetY * CamLengthScale;
     camera->curBoomPitch = camera->interp.auxPitch;
     camera->curBoomYaw = camera->interpYaw;
 

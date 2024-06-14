@@ -222,10 +222,9 @@ s32 func_800328A4(CameraControlSettings* camSettings, f32 Px, f32 Pz) {
 }
 
 void update_camera_lead_amount(Camera* camera, f32 candidateLeadAmount) {
+    s32 ignoreStickInput = camera->flags & CAMERA_FLAG_SUPRESS_LEADING;
     f32 stickX;
     f32 deltaLeadAmount;
-    s32 flags = camera->flags & CAMERA_FLAG_SUPRESS_LEADING;
-    s32 ignoreStickInput = flags != 0;
 
     if (camera->curSettings != NULL && camera->curSettings->type == CAM_CONTROL_FIXED_POS_AND_ORIENTATION) {
         ignoreStickInput = TRUE;

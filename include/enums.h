@@ -4700,7 +4700,7 @@ enum CameraMoveFlags {
     CAMERA_MOVE_ACCEL_INTERP_Y      = 0x00000004,
 };
 
-enum CameraUpdateType {
+enum CameraUpdateMode {
     // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
     // control this camera by directly setting these positions
     // has no other control parameters
@@ -4722,13 +4722,29 @@ enum CameraUpdateType {
 
     // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
     // which are only updated if skipRecalc = FALSE
-    // the ultimate target is given by lookAt_obj_target
+    // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
     // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
     CAM_UPDATE_NO_INTERP            = 6,
 
-    CAM_UPDATE_UNUSED_1             = 1,
-    CAM_UPDATE_UNUSED_CONFINED             = 4,
-    CAM_UPDATE_UNUSED_5             = 5,
+    // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
+    // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
+    CAM_UPDATE_UNUSED_RADIAL        = 1,
+
+    // this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+    // y-position is drawn from lookAt_obj_target
+    // does not use easing or interpolation
+    CAM_UPDATE_UNUSED_CONFINED      = 4,
+
+    // this camera tracks player position and adds basic 'leading' in the x-direction only
+    // camera yaw is fixed at zero and the lead direction is determined by player world yaw
+    // thus, this only works for '2D' style maps where left is -x and right is +x
+    CAM_UPDATE_UNUSED_LEADING       = 5,
+
+    // this mode is completely unused in vanilla; it doesn't even have a case in update_cameras
+    // seems to be based on CAM_UPDATE_NO_INTERP (the one used for battle cam)
+    // tracks a point 400 units ahead of player position in the z-direction and 60 units above
+    // defaults to a relatively short boom length and no pitch angle, resulting in a head-on direct view
+    // CAM_UPDATE_UNUSED_AHEAD,
 };
 
 enum CameraControlType {

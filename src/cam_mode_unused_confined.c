@@ -1,31 +1,43 @@
 #include "common.h"
 #include "camera.h"
 
-// implementation for CAM_UPDATE_UNUSED_1
-void update_camera_mode_1(Camera* camera) {
+// implements CAM_UPDATE_UNUSED_CONFINED
+// this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+// y-position is drawn from lookAt_obj_target
+// does not use easing or interpolation
+void update_camera_unused_confined(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;
-    f32 x0, x1, z0, z1;
-    f32 angle;
+    f32 targetX;
+    f32 targetZ;
+
+    targetX = camera->targetPos.x;
+    if (targetX > camera->confined.xLimit) {
+        targetX = camera->confined.xLimit;
+    }
+    if (targetX < -camera->confined.xLimit) {
+        targetX = -camera->confined.xLimit;
+    }
+    camera->lookAt_obj_target.x = targetX;
+
+    targetZ = camera->targetPos.z;
+    if (targetZ > camera->confined.zLimit) {
+        targetZ = camera->confined.zLimit;
+    }
+    if (targetZ < -camera->confined.zLimit) {
+        targetZ = -camera->confined.zLimit;
+    }
+    camera->lookAt_obj_target.z = targetZ;
+
+    camera->interpYaw = 0.0f;
+    camera->curBoomPitch = 0.0f;
+    camera->curBoomYaw = 0.0f;
+    camera->curBoomLength = camera->confined.auxBoomLength * CamLengthScale;
+    camera->targetOffsetY = camera->confined.offsetY * CamLengthScale;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;
-
-        x0 = camera->lookAt_obj_target.x;
-        z0 = camera->lookAt_obj_target.z;
-        x1 = camera->targetPos.x;
-        z1 = camera->targetPos.z;
-
-        camera->curBoomPitch = camera->mode1.auxPitch;
-        camera->curBoomLength = camera->mode1.auxBoomLength * 100 / D_8009A5EC;
-        camera->targetOffsetY = camera->mode1.offsetY * 20 / D_8009A5EC;
-
-        angle = atan2(x0, z0, x1, z1);
-        if ((dist2D(x0, z0, x1, z1) >= camera->mode1.auxDistThreshold * 100 / D_8009A5EC)) {
-            camera->curBoomYaw = angle;
-        }
-        camera->targetBoomYaw = camera->curBoomYaw;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
@@ -35,7 +47,7 @@ void update_camera_mode_1(Camera* camera) {
         sinPitch = sin_rad(pitchAngle);
         cosPitch = cos_rad(pitchAngle);
 
-        yawAngle = DEG_TO_RAD(angle);
+        yawAngle = DEG_TO_RAD(camera->interpYaw);
         sinYaw = sin_rad(yawAngle);
         cosYaw = cos_rad(yawAngle);
 
@@ -48,34 +60,15 @@ void update_camera_mode_1(Camera* camera) {
         camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
     }
 
-    camera->curBoomPitch = camera->mode1.auxPitch;
-    camera->curBoomLength = camera->mode1.auxBoomLength * 100 / D_8009A5EC;
-    camera->targetOffsetY = camera->mode1.offsetY * 20 / D_8009A5EC;
-
-    dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
-    dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
-    dz = camera->lookAt_obj_target.z - camera->lookAt_obj.z;
-
-    camera->lookAt_obj.x += dx * 0.5f;
-    camera->lookAt_obj.y += dy / 10.0f;
-    camera->lookAt_obj.z += dz * 0.5f;
-
-    x0 = camera->lookAt_obj_target.x;
-    z0 = camera->lookAt_obj_target.z;
-    x1 = camera->targetPos.x;
-    z1 = camera->targetPos.z;
-
-    angle = atan2(x0, z0, x1, z1);
-    if ((dist2D(x0, z0, x1, z1) >= camera->mode1.auxDistThreshold * 100 / D_8009A5EC)) {
-        camera->curBoomYaw = angle;
-    }
-    camera->targetBoomYaw -= get_clamped_angle_diff(camera->curBoomYaw, camera->targetBoomYaw) / 10.0f;
+    camera->lookAt_obj.x = camera->lookAt_obj_target.x;
+    camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;
+    camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
     pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
     sinPitch = sin_rad(pitchAngle);
     cosPitch = cos_rad(pitchAngle);
 
-    yawAngle = DEG_TO_RAD((camera->targetBoomYaw));
+    yawAngle = DEG_TO_RAD(camera->interpYaw);
     sinYaw = sin_rad(yawAngle);
     cosYaw = cos_rad(yawAngle);
 

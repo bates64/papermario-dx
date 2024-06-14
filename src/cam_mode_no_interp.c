@@ -3,7 +3,7 @@
 // implements CAM_UPDATE_NO_INTERP
 // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
 // which are only updated if skipRecalc = FALSE
-// the ultimate target is given by lookAt_obj_target
+// the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
 // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
 void update_camera_no_interp(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;

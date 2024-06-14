@@ -1,7 +1,11 @@
 #include "common.h"
 
-// unused camera similar to CAM_UPDATE_NO_INTERP
-void update_camera_mode_unused(Camera* camera) {
+// implements CAM_UPDATE_UNUSED_AHEAD
+// this mode is completely unused in vanilla; it doesn't even have a case in update_cameras
+// seems to be based on CAM_UPDATE_NO_INTERP (the one used for battle cam)
+// tracks a point 400 units ahead of player position in the z-direction and 60 units above
+// defaults to a relatively short boom length and no pitch angle, resulting in a head-on direct view
+void update_camera_unused_ahead(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;

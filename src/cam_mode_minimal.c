@@ -16,7 +16,7 @@ void update_camera_minimal(Camera* camera) {
 
         camera->lookAt_eye.x = camera->lookAt_obj.x;
         camera->lookAt_eye.y = camera->lookAt_obj.y;
-        camera->lookAt_eye.z = camera->lookAt_obj.z - (1000.0f / D_8009A5EC);
+        camera->lookAt_eye.z = camera->lookAt_obj.z - (1000.0f / CamLengthScale);
     }
 
     dx = camera->lookAt_obj.x - camera->lookAt_eye.x;

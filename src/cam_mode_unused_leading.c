@@ -1,6 +1,7 @@
 #include "common.h"
 
 void update_unused_lead_amt(Camera* camera) {
+    // moving left? (along +x axis)
     if (fabsf(get_clamped_angle_diff(gPlayerStatus.curYaw, 90.0f)) < 45.0f) {
         if (camera->unusedLeadDir == 0) {
             if (camera->unusedLeadCounter <= 0) {
@@ -12,6 +13,7 @@ void update_unused_lead_amt(Camera* camera) {
             camera->unusedLeadCounter = 15;
             camera->unusedLeadDir = 0;
         }
+    // moving right? (along -x axis)
     } else if (fabsf(get_clamped_angle_diff(gPlayerStatus.curYaw, 270.0f)) < 45.0f) {
         if (camera->unusedLeadDir == 1) {
             if (camera->unusedLeadCounter <= 0) {
@@ -56,9 +58,11 @@ void interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lock
     }
 }
 
-// implementation for CAM_UPDATE_UNUSED_5
-// features basic player position tracking that 'leads' player in the x-direction according to their facing angle
-void update_camera_mode_5(Camera* camera) {
+// implements CAM_UPDATE_UNUSED_LEADING
+// this camera tracks player position and adds basic 'leading' in the x-direction only
+// camera yaw is fixed at zero and the lead direction is determined by player world yaw
+// thus, this only works for '2D' style maps where left is -x and right is +x
+void update_camera_unused_leading(Camera* camera) {
     f32 dx, dy, dz, dr;
 
     camera->curBoomPitch = 18.0f;

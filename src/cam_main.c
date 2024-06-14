@@ -10,7 +10,7 @@ void render_models(void);
 void execute_render_tasks(void);
 void render_item_entities(void);
 
-f32 D_8009A5EC;
+f32 CamLengthScale;
 s16 gCurrentCamID;
 u16* nuGfxCfb_ptr;
 Gfx* gMainGfxPos;
@@ -44,14 +44,14 @@ void update_cameras(void) {
             case CAM_UPDATE_NO_INTERP:
                 update_camera_no_interp(cam);
                 break;
-            case CAM_UPDATE_UNUSED_1:
-                update_camera_mode_1(cam);
+            case CAM_UPDATE_UNUSED_RADIAL:
+                update_camera_unused_radial(cam);
                 break;
             case CAM_UPDATE_UNUSED_CONFINED:
                 update_camera_unused_confined(cam);
                 break;
-            case CAM_UPDATE_UNUSED_5:
-                update_camera_mode_5(cam);
+            case CAM_UPDATE_UNUSED_LEADING:
+                update_camera_unused_leading(cam);
                 break;
         }
 
@@ -258,7 +258,7 @@ void create_cameras(void) {
     CameraInitData* camDataPtr = &camData;
     s32 i;
 
-    D_8009A5EC = 1.0f;
+    CamLengthScale = 1.0f;
 
     for (i = 0; i < ARRAY_COUNT(gCameras); i++) {
         gCameras[i].flags = 0;

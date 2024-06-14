@@ -790,7 +790,7 @@ typedef struct Camera {
                         s16 auxDistThreshold;
                         s16 auxBoomLength;
                         s16 offsetY;
-                    } mode1;
+                    } radial;
                     struct {
                         s16 xLimit;
                         s16 zLimit;
@@ -808,13 +808,6 @@ typedef struct Camera {
                         s16 v8;
                     } raw; // unk cases
                 };
-    /// s16 lookAt_dist; // context-dependent?
-    // s16 auxBoomPitch; // context-dependent?
-    // s16 auxBoomYaw;
-    // s16 auxBoomZOffset;
-    // s16 unk_28; // UNUSED
-    // s16 zoomPercent;
-
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
@@ -828,7 +821,7 @@ typedef struct Camera {
     /* 0x074 */ f32 curBoomPitch;
     /* 0x084 */ f32 curBoomYaw;
     /* 0x07C */ f32 targetOffsetY;
-    /* 0x088 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_1
+    /* 0x088 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_RADIAL
     /* 0x090 */ f32 lookAt_yaw;
     /* 0x094 */ f32 lookAt_pitch;
     /* 0x0A0 */ Vp vp;
@@ -2031,7 +2024,7 @@ typedef struct PlayerStatus {
     /* 0x06C */ f32 maxJumpSpeed;
     /* 0x070 */ f32 gravityIntegrator[4]; // derivatives of y; 0 = velocity, 1 = accel, etc
     /* 0x080 */ f32 targetYaw;
-    /* 0x084 */ f32 curYaw;
+    /* 0x084 */ f32 curYaw; // the direction of player input in world-space (not camera-relative)
     /* 0x088 */ f32 overlapPushYaw;
     /* 0x08C */ f32 pitch;
     /* 0x090 */ f32 flipYaw[4];
