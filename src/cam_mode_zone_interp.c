@@ -682,6 +682,9 @@ void set_camera_from_rig(Camera* camera, CameraRig* rig) {
 // note that this code does NOT directly reference the player position in any manner, it is only concerned
 // with the camera's targetPos, which must be assigned elsewhere.
 // this is the camera used during world gameplay
+//
+// control parameters:
+// zoomPercent -- boom length is adjusted by this factor, with 100 being no change, 50 being half distance, etc
 void update_camera_zone_interp(Camera* camera) {
     CameraControlSettings* curSettings;
     CameraControlSettings* nextSettings;

@@ -5,6 +5,12 @@
 // seems to be based on CAM_UPDATE_NO_INTERP (the one used for battle cam)
 // tracks a point 400 units ahead of player position in the z-direction and 60 units above
 // defaults to a relatively short boom length and no pitch angle, resulting in a head-on direct view
+//
+// control parameters:
+// dist -- length of the camera boom arm
+// pitch -- rising angle of the boom arm, up toward the y-axis
+// yaw -- yaw angle for the boom arm in the xz-plane
+// skipRecalc -- do not calculate lookAt_obj and lookAt_eye from params
 void update_camera_unused_ahead(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -14,10 +20,10 @@ void update_camera_unused_ahead(Camera* camera) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
         camera->params.basic.skipRecalc = FALSE;
-        camera->params.basic.auxBoomLength = 100;
-        camera->params.basic.auxFovScale = 100;
-        camera->params.basic.auxBoomPitch = 0;
-        camera->params.basic.auxBoomYaw = 0;
+        camera->params.basic.dist = 100;
+        camera->params.basic.pitch = 0;
+        camera->params.basic.yaw = 0;
+        camera->params.basic.fovScale = 100;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
@@ -35,10 +41,10 @@ void update_camera_unused_ahead(Camera* camera) {
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
-        camera->curBoomYaw = camera->params.basic.auxBoomYaw;
-        camera->curBoomPitch = camera->params.basic.auxBoomPitch;
-        camera->curBoomLength = camera->params.basic.auxBoomLength;
-        camera->vfov = (10000 / camera->params.basic.auxFovScale) / 4;
+        camera->curBoomYaw = camera->params.basic.yaw;
+        camera->curBoomPitch = camera->params.basic.pitch;
+        camera->curBoomLength = camera->params.basic.dist;
+        camera->vfov = (10000 / camera->params.basic.fovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

@@ -7,6 +7,12 @@
 // implements CAM_UPDATE_UNUSED_RADIAL
 // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
 // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
+//
+// control parameters:
+// dist -- length of the camera boom arm
+// pitch -- rising angle of the boom arm, up toward the y-axis
+// offsetY -- offset of the base of the boom arm above the target point
+// minRadius -- do not update camera if lookAt_obj_target is closer than this distance from targetPos
 void update_camera_unused_radial(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -22,13 +28,13 @@ void update_camera_unused_radial(Camera* camera) {
         x2 = camera->targetPos.x;
         z2 = camera->targetPos.z;
 
-        camera->curBoomPitch = camera->params.radial.auxPitch;
-        camera->curBoomLength = camera->params.radial.auxBoomLength * LEN_SCALE;
+        camera->curBoomPitch = camera->params.radial.pitch;
+        camera->curBoomLength = camera->params.radial.dist * LEN_SCALE;
         camera->targetOffsetY = camera->params.radial.offsetY * YSCALE * LEN_SCALE;
 
         angle = atan2(x1, z1, x2, z2);
         dist = dist2D(x1, z1, x2, z2);
-        if (dist >= camera->params.radial.auxDistThreshold * LEN_SCALE) {
+        if (dist >= camera->params.radial.minRadius * LEN_SCALE) {
             camera->curBoomYaw = angle;
         }
         camera->targetBoomYaw = camera->curBoomYaw;
@@ -54,8 +60,8 @@ void update_camera_unused_radial(Camera* camera) {
         camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
     }
 
-    camera->curBoomPitch = camera->params.radial.auxPitch;
-    camera->curBoomLength = camera->params.radial.auxBoomLength * LEN_SCALE;
+    camera->curBoomPitch = camera->params.radial.pitch;
+    camera->curBoomLength = camera->params.radial.dist * LEN_SCALE;
     camera->targetOffsetY = camera->params.radial.offsetY * YSCALE * LEN_SCALE;
 
     dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
@@ -73,7 +79,7 @@ void update_camera_unused_radial(Camera* camera) {
 
     angle = atan2(x1, z1, x2, z2);
     dist = dist2D(x1, z1, x2, z2);
-    if (dist >= camera->params.radial.auxDistThreshold * LEN_SCALE) {
+    if (dist >= camera->params.radial.minRadius * LEN_SCALE) {
         camera->curBoomYaw = angle;
     }
     camera->targetBoomYaw -= get_clamped_angle_diff(camera->curBoomYaw, camera->targetBoomYaw) / 10.0f;

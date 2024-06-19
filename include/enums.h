@@ -1817,8 +1817,7 @@ enum AuxCameraParams {
     CAM_PARAM_BOOM_PITCH            = 4,
     CAM_PARAM_BOOM_YAW              = 5,
     CAM_PARAM_BOOM_ZOFFSET          = 6,
-    CAM_PARAM_PARAM_7               = 7,
-    CAM_PARAM_ZOOM_PERCENT          = 8,
+    CAM_PARAM_ZOOM_PERCENT          = 7,
 };
 
 #include "item_enum.h"

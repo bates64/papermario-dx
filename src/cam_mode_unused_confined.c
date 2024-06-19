@@ -5,6 +5,13 @@
 // this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
 // y-position is drawn from lookAt_obj_target
 // does not use easing or interpolation
+// uses a boom arm, but pitch and yaw are always zero
+//
+// control parameters:
+// dist -- length of the camera boom arm
+// offsetY -- offset of the base of the boom arm above the target point
+// xLimit -- confine x position of target from -xLimit to +xLimit
+// zLimit -- confine z position of target from -zLimit to +zLimit
 void update_camera_unused_confined(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -33,7 +40,7 @@ void update_camera_unused_confined(Camera* camera) {
     camera->interpYaw = 0.0f;
     camera->curBoomPitch = 0.0f;
     camera->curBoomYaw = 0.0f;
-    camera->curBoomLength = camera->params.confined.auxBoomLength * CamLengthScale;
+    camera->curBoomLength = camera->params.confined.dist * CamLengthScale;
     camera->targetOffsetY = camera->params.confined.offsetY * CamLengthScale;
 
     if (camera->needsInit) {

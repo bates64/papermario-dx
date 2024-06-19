@@ -326,8 +326,6 @@ void update_camera_lead_amount(Camera* camera, f32 candidateLeadAmount) {
     }
 }
 
-#include "dx/debug_menu.h"
-
 void apply_constraints_to_lead_amount(Camera* camera) {
     CameraControlSettings* settings;
     Collider* zone;
@@ -380,8 +378,6 @@ void apply_constraints_to_lead_amount(Camera* camera) {
                     }
                 }
             }
-
-            debug_printf("(%d) %f", camera->leadConstrainDir, leadAmount);
 
             if (leadAmount > 0.0f && camera->leadConstrainDir > 0 || leadAmount < 0.0f && camera->leadConstrainDir < 0) {
                 camera->leadInterpAlpha = 0.0f;

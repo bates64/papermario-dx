@@ -4,16 +4,22 @@
 // implements CAM_UPDATE_INTERP_POS
 // this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
 // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
-// the ultimate target is given by lookAt_obj_target
+// position of the camera is determined with a boom and the ultimate target is given by lookAt_obj_target
+//
+// control parameters:
+// dist -- length of the camera boom arm
+// pitch -- rising angle of the boom arm, up toward the y-axis
+// yaw -- yaw angle for the boom arm in the xz-plane
+// offsetY -- offset of the base of the boom arm above the target point
 void update_camera_interp_pos(Camera *camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 yawAngle, sinYaw, cosYaw;
     f32 x, y, z, dx, dy, dz, dr;
 
-    camera->interpYaw = camera->params.interp.auxYaw;
-    camera->curBoomLength = camera->params.interp.auxDist * CamLengthScale;
-    camera->targetOffsetY = camera->params.interp.auxOffsetY * CamLengthScale;
-    camera->curBoomPitch = camera->params.interp.auxPitch;
+    camera->curBoomLength = camera->params.interp.dist * CamLengthScale;
+    camera->targetOffsetY = camera->params.interp.offsetY * CamLengthScale;
+    camera->curBoomPitch = camera->params.interp.pitch;
+    camera->interpYaw = camera->params.interp.yaw;
     camera->curBoomYaw = camera->interpYaw;
 
     if (camera->needsInit) {

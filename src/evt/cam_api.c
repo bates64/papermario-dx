@@ -81,24 +81,24 @@ API_CALLABLE(GrabCamera) {
 
     gCameras[id].updateMode = CAM_UPDATE_INTERP_POS;
     gCameras[id].needsInit = FALSE;
-    gCameras[id].params.interp.auxPitch = -round(gCameras[id].lookAt_pitch);
-    gCameras[id].params.interp.auxYaw = -gCameras[id].lookAt_yaw;
-    gCameras[id].params.interp.auxOffsetY = 0;
+    gCameras[id].params.interp.pitch = -round(gCameras[id].lookAt_pitch);
+    gCameras[id].params.interp.yaw = -gCameras[id].lookAt_yaw;
+    gCameras[id].params.interp.offsetY = 0;
 
     dx = gCameras[id].lookAt_obj.x - gCameras[id].lookAt_eye.x;
     dy = gCameras[id].lookAt_obj.y - gCameras[id].lookAt_eye.y;
     dz = gCameras[id].lookAt_obj.z - gCameras[id].lookAt_eye.z;
 
-    gCameras[id].params.interp.auxDist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
+    gCameras[id].params.interp.dist = round(sqrtf(SQ(dx) + SQ(dy) + SQ(dz)));
 
     gCameras[id].lookAt_obj_target.x = gCameras[id].lookAt_obj.x;
     gCameras[id].lookAt_obj_target.y = gCameras[id].lookAt_obj.y;
     gCameras[id].lookAt_obj_target.z = gCameras[id].lookAt_obj.z;
 
-    evt_set_variable(script, outVar1, gCameras[id].params.interp.auxPitch);
-    evt_set_variable(script, outVar2, gCameras[id].params.interp.auxYaw);
-    evt_set_variable(script, outVar3, gCameras[id].params.interp.auxDist);
-    evt_set_variable(script, outVar4, gCameras[id].params.interp.auxOffsetY);
+    evt_set_variable(script, outVar1, gCameras[id].params.interp.pitch);
+    evt_set_variable(script, outVar2, gCameras[id].params.interp.yaw);
+    evt_set_variable(script, outVar3, gCameras[id].params.interp.dist);
+    evt_set_variable(script, outVar4, gCameras[id].params.interp.offsetY);
     return ApiStatus_DONE2;
 }
 
@@ -111,10 +111,10 @@ API_CALLABLE(SetInterpCamParams) {
     s32 offsetY = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->params.interp.auxPitch = pitch;
-    camera->params.interp.auxYaw = yaw;
-    camera->params.interp.auxDist = dist;
-    camera->params.interp.auxOffsetY = offsetY;
+    camera->params.interp.pitch = pitch;
+    camera->params.interp.yaw = yaw;
+    camera->params.interp.dist = dist;
+    camera->params.interp.offsetY = offsetY;
     return ApiStatus_DONE2;
 }
 
@@ -122,15 +122,15 @@ API_CALLABLE(SetNoInterpCamParams) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
     b32 skipRecalc = evt_get_variable(script, *args++);
-    s32 auxBoomLength = evt_get_variable(script, *args++);
-    s32 auxFovScale = evt_get_variable(script, *args++);
-    s32 auxBoomPitch = evt_get_variable(script, *args++);
+    s32 dist = evt_get_variable(script, *args++);
+    s32 fovScale = evt_get_variable(script, *args++);
+    s32 pitch = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
     camera->params.basic.skipRecalc = skipRecalc;
-    camera->params.basic.auxBoomLength = auxBoomLength;
-    camera->params.basic.auxFovScale = auxFovScale;
-    camera->params.basic.auxBoomPitch = auxBoomPitch;
+    camera->params.basic.dist = dist;
+    camera->params.basic.fovScale = fovScale;
+    camera->params.basic.pitch = pitch;
     return ApiStatus_DONE2;
 }
 

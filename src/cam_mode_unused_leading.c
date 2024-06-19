@@ -62,6 +62,8 @@ void interp_lookat_pos(Camera* camera, f32 interpAmtXZ, f32 maxDeltaXZ, s16 lock
 // this camera tracks player position and adds basic 'leading' in the x-direction only
 // camera yaw is fixed at zero and the lead direction is determined by player world yaw
 // thus, this only works for '2D' style maps where left is -x and right is +x
+//
+// no control parameters
 void update_camera_unused_leading(Camera* camera) {
     f32 dx, dy, dz, dr;
 

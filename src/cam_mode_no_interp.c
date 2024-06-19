@@ -5,6 +5,14 @@
 // which are only updated if skipRecalc = FALSE
 // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
 // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
+//
+// control parameters:
+// dist -- length of the camera boom arm
+// pitch -- rising angle of the boom arm, up toward the y-axis
+// yaw -- yaw angle for the boom arm in the xz-plane
+// offsetY -- offset of the base of the boom arm above the target point
+// fovScale -- adjusts vertical fov, with 100 being normal (=25). scales as 1/x so larger values mean smaller vfov.
+// skipRecalc -- do not calculate lookAt_obj and lookAt_eye from params
 void update_camera_no_interp(Camera* camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 pitchAngle, sinPitch, cosPitch;
@@ -14,11 +22,11 @@ void update_camera_no_interp(Camera* camera) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
         camera->params.basic.skipRecalc = FALSE;
-        camera->params.basic.auxBoomLength = 100;
-        camera->params.basic.auxFovScale = 100;
-        camera->params.basic.auxBoomPitch = 0;
-        camera->params.basic.auxBoomYaw = 0;
-        camera->params.basic.auxOffsetY = 0;
+        camera->params.basic.dist = 100;
+        camera->params.basic.pitch = 0;
+        camera->params.basic.yaw = 0;
+        camera->params.basic.offsetY = 0;
+        camera->params.basic.fovScale = 100;
 
         camera->targetPos.x = 0.0f;
         camera->targetPos.y = 0.0f;
@@ -31,13 +39,13 @@ void update_camera_no_interp(Camera* camera) {
 
     if (!camera->params.basic.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x + camera->targetPos.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->params.basic.auxOffsetY / 256.0;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->params.basic.offsetY / 256.0;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z + camera->targetPos.z;
 
-        camera->curBoomLength = camera->params.basic.auxBoomLength;
-        camera->curBoomPitch = camera->params.basic.auxBoomPitch;
-        camera->curBoomYaw = camera->params.basic.auxBoomYaw;
-        camera->vfov = (10000 / camera->params.basic.auxFovScale) / 4;
+        camera->curBoomLength = camera->params.basic.dist;
+        camera->curBoomPitch = camera->params.basic.pitch;
+        camera->curBoomYaw = camera->params.basic.yaw;
+        camera->vfov = (10000 / camera->params.basic.fovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

@@ -760,42 +760,34 @@ typedef struct Camera {
     /* 0x018 */ f32 vfov;
                 union {
                     struct {
-                        s16 auxPitch;
-                        s16 unused2;
-                        s16 unused3;
-                        s16 unused4;
-                        s16 unused5;
-                        s16 unused6;
-                        s16 unused7;
                         s16 zoomPercent;
                     } world;
                     struct {
-                        b16 skipRecalc;
-                        s16 auxBoomLength;
-                        s16 auxFovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
-                        s16 auxBoomPitch;
-                        s16 auxBoomYaw;
-                        s16 auxOffsetY;
-                        s16 unused7;
+                        s16 dist;
+                        s16 offsetY;
+                        s16 pitch;
+                        s16 yaw;
+                        s16 fovScale; // 100 --> vfov = 25, scales as 1/x so larger values mean smaller vfov
                         s16 zoomPercent;
+                        b16 skipRecalc;
                     } basic;
                     struct {
-                        s16 auxPitch;
-                        s16 auxYaw;
-                        s16 auxDist;
-                        s16 auxOffsetY;
+                        s16 dist;
+                        s16 offsetY;
+                        s16 pitch;
+                        s16 yaw;
                     } interp;
                     struct {
-                        s16 auxPitch;
-                        s16 auxDistThreshold;
-                        s16 auxBoomLength;
+                        s16 dist;
                         s16 offsetY;
+                        s16 pitch;
+                        s16 minRadius;
                     } radial;
                     struct {
+                        s16 dist;
+                        s16 offsetY;
                         s16 xLimit;
                         s16 zLimit;
-                        s16 auxBoomLength;
-                        s16 offsetY;
                     } confined;
                 } params;
     /* 0x02C */ s16 bgColor[3];
