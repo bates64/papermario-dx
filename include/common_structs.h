@@ -778,7 +778,7 @@ typedef struct Camera {
                         s16 auxOffsetY;
                         s16 unused7;
                         s16 zoomPercent;
-                    } battle;
+                    } basic;
                     struct {
                         s16 auxPitch;
                         s16 auxYaw;
@@ -797,7 +797,7 @@ typedef struct Camera {
                         s16 auxBoomLength;
                         s16 offsetY;
                     } confined;
-                };
+                } params;
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
     /* 0x038 */ u16 perspNorm;
@@ -851,11 +851,11 @@ typedef struct Camera {
     /* 0x518 */ f32 accumulatedStickLead;
     /* 0x51C */ s32 increasingLeadInterp;
     /* 0x520 */ f32 leadAmtScale;
-    /* 0x524 */ f32 leadUnkX;
-    /* 0x528 */ f32 leadUnkZ;
-    /* 0x52C */ s32 unk_52C;
-    /* 0x530 */ s32 unk_530;
-    /* 0x534 */ CameraControlSettings* leadControlSettings;
+    /* 0x524 */ f32 prevLeadPosX;
+    /* 0x528 */ f32 prevLeadPosZ;
+    /* 0x52C */ s32 leadConstrainDir;
+    /* 0x530 */ b32 needsInitialConstrainDir;
+    /* 0x534 */ CameraControlSettings* prevLeadSettings;
     /* 0x550 */ f32 unusedLeadAmt;
     /* 0x554 */ s16 unusedLeadCounter;
     /* 0x556 */ s16 unusedLeadDir;

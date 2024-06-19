@@ -188,7 +188,7 @@ s32 calculate_line_segment_intersection(f32 A1x, f32 A1z, f32 A2x, f32 A2z, f32 
 
 s32 func_800328A4(CameraControlSettings* camSettings, f32 Px, f32 Pz) {
     f32 product1, product2;
-    f32 delta, dot1x, dot1z, dot2x, dot2z;
+    f32 dot1x, dot1z, dot2x, dot2z;
 
     if (camSettings == NULL) {
         return 0;
@@ -197,19 +197,19 @@ s32 func_800328A4(CameraControlSettings* camSettings, f32 Px, f32 Pz) {
         return 0;
     }
 
+    f32 Ax = camSettings->points.two.Ax;
+    f32 Az = camSettings->points.two.Az;
+    f32 Bx = camSettings->points.two.Bx;
+    f32 Bz = camSettings->points.two.Bz;
+
     // dot product of AB and AP
-    delta = Px - camSettings->points.two.Ax;
-    dot1x = (camSettings->points.two.Bx - camSettings->points.two.Ax) * delta;
-    delta = Pz - camSettings->points.two.Az;
-    dot1z = (camSettings->points.two.Bz - camSettings->points.two.Az) * delta;
+    dot1x = (Bx - Ax) * (Px - Ax);
+    dot1z = (Bz - Az) * (Pz - Az);
+    product1 = dot1x + dot1z;
 
     // dot product of AB and BP
-    delta = Px - camSettings->points.two.Bx;
-    dot2x = (camSettings->points.two.Bx - camSettings->points.two.Ax) * delta;
-    delta = Pz - camSettings->points.two.Bz;
-    dot2z = (camSettings->points.two.Bz - camSettings->points.two.Az) * delta;
-
-    product1 = dot1x + dot1z;
+    dot2x = (Bx - Ax) * (Px - Bx);
+    dot2z = (Bz - Az) * (Pz - Bz);
     product2 = dot2x + dot2z;
 
     if (product1 < 0 && product2 < 0) {
@@ -326,39 +326,28 @@ void update_camera_lead_amount(Camera* camera, f32 candidateLeadAmount) {
     }
 }
 
-void func_80032C64(Camera* camera) {
-    s32 i;
-    f32 rotationRad;
-    f32 leadAmount;
+#include "dx/debug_menu.h"
+
+void apply_constraints_to_lead_amount(Camera* camera) {
     CameraControlSettings* settings;
-    CameraControlSettings* settings2;
-    CameraControlSettings* settings3;
-    s32 s2;
-    f32 X, Y, Z, W;
-    f32 product;
-    f32 newPosX, newPosY, newPosZ;
     Collider* zone;
-    s32 constrainToZoneTriangles;
-    f32 minDistSq;
-    f32 intX, intZ, intDistSq;
-    f32 deltaPosX, deltaPosZ;
-    f32 f24, f22, cosYaw, sinYaw;
+    f32 leadAmount;
+    s32 s2;
 
-    rotationRad = DEG_TO_RAD(camera->curBoomYaw);
+    // check settings directly under the target position
+    settings = test_ray_zone(camera->targetPos.x, camera->targetPos.y + 10.0f, camera->targetPos.z, NULL);
+
     leadAmount = camera->leadAmount;
-
-    newPosX = camera->targetPos.x + leadAmount * cos_rad(rotationRad);
-    newPosZ = camera->targetPos.z + leadAmount * sin_rad(rotationRad);
-    newPosY = camera->targetPos.y + 10.0f;
-    settings3 = settings = test_ray_zone(camera->targetPos.x, newPosY, camera->targetPos.z, NULL);
-
     s2 = 0;
+
     if (settings != NULL) {
         if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
             || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
             || (s2 = func_800328A4(settings, camera->targetPos.x, camera->targetPos.z)) != 0
         ) {
-            if (camera->unk_530) {
+            if (camera->needsInitialConstrainDir) {
+                f32 X, Y, Z, W;
+
                 guPerspectiveF(camera->mtxPerspective, &camera->perspNorm, camera->vfov,
                     (f32)camera->viewportW / (f32)camera->viewportH, camera->nearClip, camera->farClip, 1.0f);
                 guMtxCatF(camera->mtxViewPlayer, camera->mtxPerspective, camera->mtxPerspective);
@@ -369,46 +358,53 @@ void func_80032C64(Camera* camera) {
                 }
                 W = 1.0f / W;
                 X *= W;
-                camera->unk_52C = (X > 0.0f) ? 1 : (X < 0.0f) ? -1 : 0;
-                camera->unk_530 = FALSE;
+                camera->leadConstrainDir = (X > 0.0f) ? 1 : (X < 0.0f) ? -1 : 0;
+                camera->needsInitialConstrainDir = FALSE;
             } else {
-                CameraControlSettings* leadSettings = camera->leadControlSettings;
+                CameraControlSettings* leadSettings = camera->prevLeadSettings;
 
                 if (leadSettings == NULL
                     || !(leadSettings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
                         || leadSettings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
-                        || func_800328A4(settings, camera->leadUnkX, camera->leadUnkZ) != 0)) {
+                        || func_800328A4(settings, camera->prevLeadPosX, camera->prevLeadPosZ) != 0)
+                ) {
                     if (leadSettings != NULL && s2 != 0) {
-                        camera->unk_52C = s2;
+                        camera->leadConstrainDir = s2;
                     } else {
-                        f24 = cosYaw = camera->targetPos.x - camera->leadUnkX;
-                        f22 = camera->targetPos.z - camera->leadUnkZ;
-                        cosYaw = -cos_deg(camera->curYaw);
-                        sinYaw = -sin_deg(camera->curYaw);
-                        product = f24 * cosYaw + f22 * sinYaw;
-                        camera->unk_52C = (product > 0) ? -1 : (product < 0) ? 1 : 0;
+                        f32 dx = camera->prevLeadPosX - camera->targetPos.x;
+                        f32 dz = camera->prevLeadPosZ - camera->targetPos.z;
+                        f32 cosYaw = cos_deg(camera->curYaw);
+                        f32 sinYaw = sin_deg(camera->curYaw);
+                        f32 product = dx * cosYaw + dz * sinYaw;
+                        camera->leadConstrainDir = (product > 0) ? -1 : (product < 0) ? 1 : 0;
                     }
                 }
             }
 
-            if (leadAmount > 0.0f && camera->unk_52C > 0 || leadAmount < 0.0f && camera->unk_52C < 0) {
+            debug_printf("(%d) %f", camera->leadConstrainDir, leadAmount);
+
+            if (leadAmount > 0.0f && camera->leadConstrainDir > 0 || leadAmount < 0.0f && camera->leadConstrainDir < 0) {
                 camera->leadInterpAlpha = 0.0f;
                 camera->leadAmount = 0.0f;
             }
-            camera->leadControlSettings = settings3;
-            camera->leadUnkX = camera->targetPos.x;
-            camera->leadUnkZ = camera->targetPos.z;
+            camera->prevLeadSettings = settings;
+            camera->prevLeadPosX = camera->targetPos.x;
+            camera->prevLeadPosZ = camera->targetPos.z;
             return;
         }
     }
 
-    camera->unk_52C = 0;
-    camera->leadControlSettings = settings3;
-    camera->leadUnkX = camera->targetPos.x;
-    camera->leadUnkZ = camera->targetPos.z;
-    newPosX = camera->targetPos.x + leadAmount * cos_rad(rotationRad);
-    newPosZ = camera->targetPos.z + leadAmount * sin_rad(rotationRad);
-    newPosY = camera->targetPos.y + 10.0f;
+    camera->leadConstrainDir = 0;
+    camera->prevLeadSettings = settings;
+    camera->prevLeadPosX = camera->targetPos.x;
+    camera->prevLeadPosZ = camera->targetPos.z;
+
+    // find settings under (target + lead) position
+    f32 yaw = DEG_TO_RAD(camera->curBoomYaw);
+    f32 newPosX = camera->targetPos.x + leadAmount * cos_rad(yaw);
+    f32 newPosZ = camera->targetPos.z + leadAmount * sin_rad(yaw);
+    f32 newPosY = camera->targetPos.y + 10.0f;
+
     settings = test_ray_zone(newPosX, newPosY, newPosZ, &zone);
     if (settings == NULL) {
         return;
@@ -416,36 +412,38 @@ void func_80032C64(Camera* camera) {
 
     if (settings->type == CAM_CONTROL_CONSTRAIN_TO_LINE
         || settings->type == CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE
-        || func_800328A4(camera->leadControlSettings, newPosX, newPosZ) != 0
+        || func_800328A4(camera->prevLeadSettings, newPosX, newPosZ) != 0
     ) {
-        constrainToZoneTriangles = TRUE;
-        minDistSq = SQ(1000.0f);
+        f32 intX, intZ, intDistSq;
+        f32 minDistSq = SQ(1000.0f);
+        b32 constrainToZoneTriangles = TRUE;
 
         // clamp lead amount to the points when using CAM_CONTROL_CONSTAIN_BETWEEN_POINTS
-        if (camera->leadControlSettings != NULL && camera->leadControlSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {
-            settings2 = camera->leadControlSettings;
+        if (camera->prevLeadSettings != NULL && camera->prevLeadSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {
+            settings = camera->prevLeadSettings;
             constrainToZoneTriangles = FALSE;
 
-            deltaPosX = settings2->points.two.Bx - settings2->points.two.Ax;
-            deltaPosZ = settings2->points.two.Bz - settings2->points.two.Az;
+            f32 ABx = settings->points.two.Bx - settings->points.two.Ax;
+            f32 ABz = settings->points.two.Bz - settings->points.two.Az;
 
-            if (calculate_line_segment_intersection(settings2->points.two.Ax, settings2->points.two.Az,
-                    settings2->points.two.Ax - deltaPosZ, settings2->points.two.Az + deltaPosX,
+            if (calculate_line_segment_intersection(settings->points.two.Ax, settings->points.two.Az,
+                    settings->points.two.Ax - ABz, settings->points.two.Az + ABx,
                     camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
                 && intDistSq < minDistSq
             ) {
                 minDistSq = intDistSq;
             }
-            if (calculate_line_segment_intersection(settings2->points.two.Bx, settings2->points.two.Bz,
-                    settings2->points.two.Bx - deltaPosZ, settings2->points.two.Bz + deltaPosX,
+            if (calculate_line_segment_intersection(settings->points.two.Bx, settings->points.two.Bz,
+                    settings->points.two.Bx - ABz, settings->points.two.Bz + ABx,
                     camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
                 && intDistSq < minDistSq
             ) {
                 minDistSq = intDistSq;
             }
         }
+
         if (constrainToZoneTriangles) {
-            for (i = 0; i < zone->numTriangles; i++) {
+            for (s32 i = 0; i < zone->numTriangles; i++) {
                 if (calculate_segment_intersection(zone->triangleTable[i].v1->x, zone->triangleTable[i].v1->z,
                         zone->triangleTable[i].v2->x, zone->triangleTable[i].v2->z,
                         camera->targetPos.x, camera->targetPos.z, newPosX, newPosZ, &intX, &intZ, &intDistSq)
@@ -486,8 +484,9 @@ void create_camera_leadplayer_matrix(Camera* camera) {
     f32 dist = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
     f32 theta = ((camera->vfov * 0.5f) / 180.0f) * PI;
     f32 distTanTheta = dist * (sin_rad(theta) / cos_rad(theta));
+    f32 hfov = distTanTheta * camera->viewportW / camera->viewportH;
 
-    update_camera_lead_amount(camera, (distTanTheta * camera->viewportW / camera->viewportH) * camera->leadAmtScale);
-    func_80032C64(camera);
+    update_camera_lead_amount(camera, hfov * camera->leadAmtScale);
+    apply_constraints_to_lead_amount(camera);
     guTranslateF(camera->mtxViewLeading, -camera->leadAmount, 0.0f, 0.0f);
 }

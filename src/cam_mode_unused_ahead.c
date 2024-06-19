@@ -13,11 +13,11 @@ void update_camera_unused_ahead(Camera* camera) {
     if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
-        camera->battle.skipRecalc = FALSE;
-        camera->battle.auxBoomLength = 100;
-        camera->battle.auxFovScale = 100;
-        camera->battle.auxBoomPitch = 0;
-        camera->battle.auxBoomYaw = 0;
+        camera->params.basic.skipRecalc = FALSE;
+        camera->params.basic.auxBoomLength = 100;
+        camera->params.basic.auxFovScale = 100;
+        camera->params.basic.auxBoomPitch = 0;
+        camera->params.basic.auxBoomYaw = 0;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
@@ -30,15 +30,15 @@ void update_camera_unused_ahead(Camera* camera) {
     camera->lookAt_obj_target.x = gPlayerStatus.pos.x;
     camera->lookAt_obj_target.z = gPlayerStatus.pos.z + 400.0f;
 
-    if (!camera->battle.skipRecalc) {
+    if (!camera->params.basic.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
 
-        camera->curBoomYaw = camera->battle.auxBoomYaw;
-        camera->curBoomPitch = camera->battle.auxBoomPitch;
-        camera->curBoomLength = camera->battle.auxBoomLength;
-        camera->vfov = (10000 / camera->battle.auxFovScale) / 4;
+        camera->curBoomYaw = camera->params.basic.auxBoomYaw;
+        camera->curBoomPitch = camera->params.basic.auxBoomPitch;
+        camera->curBoomLength = camera->params.basic.auxBoomLength;
+        camera->vfov = (10000 / camera->params.basic.auxFovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

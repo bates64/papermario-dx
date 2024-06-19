@@ -13,12 +13,12 @@ void update_camera_no_interp(Camera* camera) {
     if (camera->needsInit || camera->clearPrevZoneSettings) {
         camera->needsInit = FALSE;
         camera->clearPrevZoneSettings = FALSE;
-        camera->battle.skipRecalc = FALSE;
-        camera->battle.auxBoomLength = 100;
-        camera->battle.auxFovScale = 100;
-        camera->battle.auxBoomPitch = 0;
-        camera->battle.auxBoomYaw = 0;
-        camera->battle.auxOffsetY = 0;
+        camera->params.basic.skipRecalc = FALSE;
+        camera->params.basic.auxBoomLength = 100;
+        camera->params.basic.auxFovScale = 100;
+        camera->params.basic.auxBoomPitch = 0;
+        camera->params.basic.auxBoomYaw = 0;
+        camera->params.basic.auxOffsetY = 0;
 
         camera->targetPos.x = 0.0f;
         camera->targetPos.y = 0.0f;
@@ -29,15 +29,15 @@ void update_camera_no_interp(Camera* camera) {
         camera->lookAt_obj.z = camera->lookAt_obj_target.z;
     }
 
-    if (!camera->battle.skipRecalc) {
+    if (!camera->params.basic.skipRecalc) {
         camera->lookAt_obj.x = camera->lookAt_obj_target.x + camera->targetPos.x;
-        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->battle.auxOffsetY / 256.0;
+        camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetPos.y + camera->params.basic.auxOffsetY / 256.0;
         camera->lookAt_obj.z = camera->lookAt_obj_target.z + camera->targetPos.z;
 
-        camera->curBoomLength = camera->battle.auxBoomLength;
-        camera->curBoomPitch = camera->battle.auxBoomPitch;
-        camera->curBoomYaw = camera->battle.auxBoomYaw;
-        camera->vfov = (10000 / camera->battle.auxFovScale) / 4;
+        camera->curBoomLength = camera->params.basic.auxBoomLength;
+        camera->curBoomPitch = camera->params.basic.auxBoomPitch;
+        camera->curBoomYaw = camera->params.basic.auxBoomYaw;
+        camera->vfov = (10000 / camera->params.basic.auxFovScale) / 4;
 
         pitchAngle = DEG_TO_RAD(camera->curBoomPitch);
         sinPitch = sin_rad(pitchAngle);

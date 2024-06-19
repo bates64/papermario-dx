@@ -157,10 +157,10 @@ void state_init_title_screen(void) {
     gCameras[CAM_DEFAULT].vfov = 25.0f;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
 
-    gCameras[CAM_DEFAULT].battle.skipRecalc = FALSE;
-    gCameras[CAM_DEFAULT].battle.auxBoomPitch = 0;
-    gCameras[CAM_DEFAULT].battle.auxBoomLength = 40;
-    gCameras[CAM_DEFAULT].battle.auxFovScale = 100;
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].params.basic.auxBoomPitch = 0;
+    gCameras[CAM_DEFAULT].params.basic.auxBoomLength = 40;
+    gCameras[CAM_DEFAULT].params.basic.auxFovScale = 100;
 
     gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;

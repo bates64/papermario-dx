@@ -912,7 +912,7 @@ void update_camera_zone_interp(Camera* camera) {
 
     #undef CAM_INTERP
 
-    CurrentCamRig.boomLength *= (camera->world.zoomPercent / 100.0f);
+    CurrentCamRig.boomLength *= (camera->params.world.zoomPercent / 100.0f);
 
     // calculate camera position and orientation based on CurrentCamRig
     set_camera_from_rig(camera, &CurrentCamRig);

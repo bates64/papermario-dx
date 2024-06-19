@@ -22,13 +22,13 @@ void update_camera_unused_radial(Camera* camera) {
         x2 = camera->targetPos.x;
         z2 = camera->targetPos.z;
 
-        camera->curBoomPitch = camera->radial.auxPitch;
-        camera->curBoomLength = camera->radial.auxBoomLength * LEN_SCALE;
-        camera->targetOffsetY = camera->radial.offsetY * YSCALE * LEN_SCALE;
+        camera->curBoomPitch = camera->params.radial.auxPitch;
+        camera->curBoomLength = camera->params.radial.auxBoomLength * LEN_SCALE;
+        camera->targetOffsetY = camera->params.radial.offsetY * YSCALE * LEN_SCALE;
 
         angle = atan2(x1, z1, x2, z2);
         dist = dist2D(x1, z1, x2, z2);
-        if (dist >= camera->radial.auxDistThreshold * LEN_SCALE) {
+        if (dist >= camera->params.radial.auxDistThreshold * LEN_SCALE) {
             camera->curBoomYaw = angle;
         }
         camera->targetBoomYaw = camera->curBoomYaw;
@@ -54,9 +54,9 @@ void update_camera_unused_radial(Camera* camera) {
         camera->lookAt_eye.z = camera->lookAt_obj.z + dz;
     }
 
-    camera->curBoomPitch = camera->radial.auxPitch;
-    camera->curBoomLength = camera->radial.auxBoomLength * LEN_SCALE;
-    camera->targetOffsetY = camera->radial.offsetY * YSCALE * LEN_SCALE;
+    camera->curBoomPitch = camera->params.radial.auxPitch;
+    camera->curBoomLength = camera->params.radial.auxBoomLength * LEN_SCALE;
+    camera->targetOffsetY = camera->params.radial.offsetY * YSCALE * LEN_SCALE;
 
     dx = camera->lookAt_obj_target.x - camera->lookAt_obj.x;
     dy = camera->lookAt_obj_target.y - camera->lookAt_obj.y + camera->targetOffsetY;
@@ -73,7 +73,7 @@ void update_camera_unused_radial(Camera* camera) {
 
     angle = atan2(x1, z1, x2, z2);
     dist = dist2D(x1, z1, x2, z2);
-    if (dist >= camera->radial.auxDistThreshold * LEN_SCALE) {
+    if (dist >= camera->params.radial.auxDistThreshold * LEN_SCALE) {
         camera->curBoomYaw = angle;
     }
     camera->targetBoomYaw -= get_clamped_angle_diff(camera->curBoomYaw, camera->targetBoomYaw) / 10.0f;

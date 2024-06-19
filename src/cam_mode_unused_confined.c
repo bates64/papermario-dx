@@ -13,28 +13,28 @@ void update_camera_unused_confined(Camera* camera) {
     f32 targetZ;
 
     targetX = camera->targetPos.x;
-    if (targetX > camera->confined.xLimit) {
-        targetX = camera->confined.xLimit;
+    if (targetX > camera->params.confined.xLimit) {
+        targetX = camera->params.confined.xLimit;
     }
-    if (targetX < -camera->confined.xLimit) {
-        targetX = -camera->confined.xLimit;
+    if (targetX < -camera->params.confined.xLimit) {
+        targetX = -camera->params.confined.xLimit;
     }
     camera->lookAt_obj_target.x = targetX;
 
     targetZ = camera->targetPos.z;
-    if (targetZ > camera->confined.zLimit) {
-        targetZ = camera->confined.zLimit;
+    if (targetZ > camera->params.confined.zLimit) {
+        targetZ = camera->params.confined.zLimit;
     }
-    if (targetZ < -camera->confined.zLimit) {
-        targetZ = -camera->confined.zLimit;
+    if (targetZ < -camera->params.confined.zLimit) {
+        targetZ = -camera->params.confined.zLimit;
     }
     camera->lookAt_obj_target.z = targetZ;
 
     camera->interpYaw = 0.0f;
     camera->curBoomPitch = 0.0f;
     camera->curBoomYaw = 0.0f;
-    camera->curBoomLength = camera->confined.auxBoomLength * CamLengthScale;
-    camera->targetOffsetY = camera->confined.offsetY * CamLengthScale;
+    camera->curBoomLength = camera->params.confined.auxBoomLength * CamLengthScale;
+    camera->targetOffsetY = camera->params.confined.offsetY * CamLengthScale;
 
     if (camera->needsInit) {
         camera->needsInit = FALSE;

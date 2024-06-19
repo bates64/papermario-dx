@@ -339,9 +339,8 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->nearClip = initData->nearClip;
     camera->farClip = initData->farClip;
     camera->vfov = initData->vfov;
-    camera->world.zoomPercent = 100;
+    camera->params.world.zoomPercent = 100;
     set_cam_viewport(camID, initData->viewStartX, initData->viewStartY, initData->viewWidth, initData->viewHeight);
-    camera->unk_530 = TRUE;
     camera->bgColor[0] = 0;
     camera->bgColor[1] = 0;
     camera->bgColor[2] = 0;
@@ -358,10 +357,11 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->leadInterpAlpha = 0.0f;
     camera->accumulatedStickLead = 0.0f;
     camera->increasingLeadInterp = FALSE;
-    camera->leadUnkX = 0.0f;
-    camera->leadUnkZ = 0.0f;
-    camera->unk_52C = 0;
-    camera->leadControlSettings = NULL;
+    camera->prevLeadPosX = 0.0f;
+    camera->prevLeadPosZ = 0.0f;
+    camera->leadConstrainDir = 0;
+    camera->needsInitialConstrainDir = TRUE;
+    camera->prevLeadSettings = NULL;
     camera->panActive = FALSE;
     camera->useOverrideSettings = FALSE;
     camera->leadAmtScale = 0.2f;

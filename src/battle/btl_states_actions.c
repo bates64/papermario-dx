@@ -2157,7 +2157,7 @@ void btl_state_draw_end_battle(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (gCurrentEncounter.battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
-        camera->battle.auxOffsetY += 256;
+        camera->params.basic.auxOffsetY += 256;
         set_screen_overlay_params_front(OVERLAY_SCREEN_MARIO, BattleScreenFadeAmt);
     } else {
         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, BattleScreenFadeAmt);
@@ -2287,18 +2287,18 @@ void btl_state_update_run_away(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS) {
         if (battleStatus->totalStarPoints != 0) {
+            s32 deltaSP;
             s32 prevSP;
 
-            //TODO shouldnt need to reuse enemyCount here, see BTL_SUBSTATE_CELEBRATE_TALLY_STAR_POINTS
             RunAwayRewardTotal -= RunAwayRewardIncrement;
             prevSP = battleStatus->totalStarPoints;
-            battleStatus->totalStarPoints = (s8)(RunAwayRewardTotal / 100);
-            enemyCount = prevSP - battleStatus->totalStarPoints;
+            battleStatus->totalStarPoints = RunAwayRewardTotal / 100;
+            deltaSP = prevSP - battleStatus->totalStarPoints;
 
-            if (enemyCount > 0) {
+            if (deltaSP > 0) {
                 sfx_play_sound(SOUND_COIN_PICKUP);
             }
-            playerData->starPoints += enemyCount;
+            playerData->starPoints += deltaSP;
             BattleScreenFadeAmt++;
             if (RunAwayRewardStep == 0 && battleStatus->totalStarPoints != 0) {
                 playerData->starPoints++;

@@ -10,10 +10,10 @@ void update_camera_interp_pos(Camera *camera) {
     f32 yawAngle, sinYaw, cosYaw;
     f32 x, y, z, dx, dy, dz, dr;
 
-    camera->interpYaw = camera->interp.auxYaw;
-    camera->curBoomLength = camera->interp.auxDist * CamLengthScale;
-    camera->targetOffsetY = camera->interp.auxOffsetY * CamLengthScale;
-    camera->curBoomPitch = camera->interp.auxPitch;
+    camera->interpYaw = camera->params.interp.auxYaw;
+    camera->curBoomLength = camera->params.interp.auxDist * CamLengthScale;
+    camera->targetOffsetY = camera->params.interp.auxOffsetY * CamLengthScale;
+    camera->curBoomPitch = camera->params.interp.auxPitch;
     camera->curBoomYaw = camera->interpYaw;
 
     if (camera->needsInit) {

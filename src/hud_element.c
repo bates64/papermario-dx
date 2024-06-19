@@ -699,10 +699,10 @@ void hud_element_setup_cam(void) {
     gCameras[CAM_HUD].vfov = 1.0f;
     set_cam_viewport(CAM_HUD, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-    gCameras[CAM_HUD].interp.auxPitch = 0;
-    gCameras[CAM_HUD].interp.auxYaw = 0;
-    gCameras[CAM_HUD].interp.auxOffsetY = 0;
-    gCameras[CAM_HUD].interp.auxDist = 15551;
+    gCameras[CAM_HUD].params.interp.auxPitch = 0;
+    gCameras[CAM_HUD].params.interp.auxYaw = 0;
+    gCameras[CAM_HUD].params.interp.auxOffsetY = 0;
+    gCameras[CAM_HUD].params.interp.auxDist = 15551;
 
     gCameras[CAM_HUD].lookAt_obj_target.x = SCREEN_WIDTH / 2.0f;
     gCameras[CAM_HUD].lookAt_obj_target.y = -(SCREEN_HEIGHT / 2.0f);
