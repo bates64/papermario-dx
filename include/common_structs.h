@@ -750,7 +750,7 @@ typedef struct Camera {
     /* 0x002 */ s16 moveFlags;
     /* 0x004 */ s16 updateMode;
     /* 0x006 */ b16 needsInit;
-    /* 0x008 */ b16 clearPrevZoneSettings;
+    /* 0x008 */ b16 needsReinit; // used when loading from a save point or calling SetCamPerspective
     /* 0x00A */ s16 viewportW;
     /* 0x00C */ s16 viewportH;
     /* 0x00E */ s16 viewportStartX;
@@ -758,7 +758,7 @@ typedef struct Camera {
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
     /* 0x018 */ f32 vfov;
-                union {
+                struct {
                     struct {
                         s16 zoomPercent;
                     } world;

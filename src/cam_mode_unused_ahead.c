@@ -16,9 +16,9 @@ void update_camera_unused_ahead(Camera* camera) {
     f32 pitchAngle, sinPitch, cosPitch;
     f32 dx, dy, dz, dr;
 
-    if (camera->needsInit || camera->clearPrevZoneSettings) {
+    if (camera->needsInit || camera->needsReinit) {
         camera->needsInit = FALSE;
-        camera->clearPrevZoneSettings = FALSE;
+        camera->needsReinit = FALSE;
         camera->params.basic.skipRecalc = FALSE;
         camera->params.basic.dist = 100;
         camera->params.basic.pitch = 0;

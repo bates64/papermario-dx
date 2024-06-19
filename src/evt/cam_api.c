@@ -51,7 +51,7 @@ API_CALLABLE(SetCamPerspective) {
 
     camera->updateMode = mode;
     camera->needsInit = TRUE;
-    camera->clearPrevZoneSettings = TRUE;
+    camera->needsReinit = TRUE;
 
     camera->vfov = vfov;
     camera->farClip = farClip;
@@ -99,6 +99,42 @@ API_CALLABLE(GrabCamera) {
     evt_set_variable(script, outVar2, gCameras[id].params.interp.yaw);
     evt_set_variable(script, outVar3, gCameras[id].params.interp.dist);
     evt_set_variable(script, outVar4, gCameras[id].params.interp.offsetY);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetInterpCamDist) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode id = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+
+    evt_set_variable(script, outVar, gCameras[id].params.interp.dist);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetInterpCamOffsetY) {
+    Bytecode* args = script->ptrReadPos;
+    Bytecode id = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+
+    evt_set_variable(script, outVar, gCameras[id].params.interp.offsetY);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetInterpCamDist) {
+    Bytecode* args = script->ptrReadPos;
+    s32 id = evt_get_variable(script, *args++);
+    s32 dist = evt_get_variable(script, *args++);
+
+    gCameras[id].params.interp.dist = dist;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetInterpCamOffsetY) {
+    Bytecode* args = script->ptrReadPos;
+    s32 id = evt_get_variable(script, *args++);
+    s32 offsetY = evt_get_variable(script, *args++);
+
+    gCameras[id].params.interp.offsetY = offsetY;
     return ApiStatus_DONE2;
 }
 

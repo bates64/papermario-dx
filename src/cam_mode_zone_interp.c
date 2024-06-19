@@ -706,7 +706,7 @@ void update_camera_zone_interp(Camera* camera) {
     targetZ = camera->targetPos.z;
     changingZone = FALSE;
 
-    if (camera->clearPrevZoneSettings) {
+    if (camera->needsReinit) {
         camera->curSettings = NULL;
         camera->prevSettings = NULL;
         camera->linearInterp = 0.0f;
@@ -734,7 +734,7 @@ void update_camera_zone_interp(Camera* camera) {
         || camera->prevTargetPos.x != targetX
         || camera->prevTargetPos.y != targetY
         || camera->prevTargetPos.z != targetZ
-        || camera->clearPrevZoneSettings
+        || camera->needsReinit
     ) {
         if (camera->useOverrideSettings) {
             nextSettings = &camera->overrideSettings;
@@ -856,11 +856,11 @@ void update_camera_zone_interp(Camera* camera) {
     update_camera_from_controller(camera,
         &camera->prevRig, &camera->prevSettings, &camera->nextRig, &camera->curSettings,
         posX, posY, posZ, tX, tY, tZ,
-        &camera->interpAlpha, camera->clearPrevZoneSettings, changingZone);
+        &camera->interpAlpha, camera->needsReinit, changingZone);
 
-    if (camera->clearPrevZoneSettings) {
+    if (camera->needsReinit) {
         camera->prevRig = camera->nextRig;
-        camera->clearPrevZoneSettings = FALSE;
+        camera->needsReinit = FALSE;
         camera->interpAlpha = 1.0f;
     }
 

@@ -220,6 +220,18 @@ API_CALLABLE(SetCamUpdateMode);
 API_CALLABLE(GrabCamera);
 
 /// @evtapi
+API_CALLABLE(GetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(GetInterpCamOffsetY);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamOffsetY);
+
+/// @evtapi
 API_CALLABLE(SetInterpCamParams);
 
 /// @evtapi
