@@ -472,9 +472,6 @@ EvtScript N(EVS_Attack_Headbonk) = {
 API_CALLABLE(N(CalculateTattleCamBoomLength)) {
     Actor* actor = get_actor(script->owner1.actorID);
     Actor* targetActor = get_actor(actor->targetActorID);
-    s16 targetActorSizeX;
-    u8 targetActorSizeY;
-    u8 targetActorLargerDimension;
 
     if (!(targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
         script->varTable[1] += targetActor->size.y / 2;
@@ -484,14 +481,7 @@ API_CALLABLE(N(CalculateTattleCamBoomLength)) {
         script->varTable[1] -= targetActor->size.y / 4;
     }
 
-    targetActorSizeY = targetActor->size.y;
-    targetActorSizeX = targetActor->size.x;
-    targetActorLargerDimension = targetActorSizeY;
-    if (targetActorSizeY < targetActorSizeX) {
-        targetActorLargerDimension = targetActorSizeX;
-    }
-
-    script->varTable[3] = targetActorLargerDimension + 126;
+    script->varTable[3] = 126 + MAX(targetActor->size.x, targetActor->size.y);
     return ApiStatus_DONE2;
 }
 
