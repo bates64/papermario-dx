@@ -2,7 +2,7 @@
 
 #include "../common/SmokeTexPanners.inc.c"
 
-EvtScript N(EVS_ExitWalk_kzn_20_1) = EVT_EXIT_WALK_FIXED(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
+EvtScript N(EVS_ExitWalk_kzn_20_1) = EVT_EXIT_WALK(60, kzn_22_ENTRY_0, "kzn_20", kzn_20_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(N(EVS_ExitWalk_kzn_20_1), TRIGGER_FLOOR_TOUCH, COLLIDER_deili1, 1, 0)
@@ -139,7 +139,7 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_22)
-    EVT_SETUP_CAMERA_DEFAULT()
+    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, N(EVS_BindExitTriggers))
