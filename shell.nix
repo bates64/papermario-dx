@@ -39,7 +39,7 @@ let
 
   egcs-gcc = builtins.fetchurl {
     url =
-      "https://github.com/decompals/mips-gcc-egcs-2.91.66/releases/latest/download/mips-gcc-egcs-2.91.66-linux.tar.gz";
+      "https://github.com/decompals/mips-gcc-egcs-2.91.66/releases/download/0.2/mips-gcc-egcs-2.91.66-linux.tar.gz";
     sha256 = "03v1ci7j0hi53z639rwj60xwz0zzi82a9azi0yiw818r754faql0";
   };
 
