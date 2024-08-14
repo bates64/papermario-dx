@@ -306,7 +306,7 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
     )
 
-    ninja.rule("map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in > $out")
+    ninja.rule("map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out")
 
     ninja.rule("charset", command=f"$python {BUILD_TOOLS}/pm_charset.py $out $in")
 
@@ -1068,6 +1068,7 @@ class Configure:
                         )
                     elif name.endswith("_shape_built"):
                         base_name = name[:-6]
+                        map_name = base_name[:-6]
                         raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{base_name}.bin")
                         bin_path = bin_path.parent / "geom" / (base_name + ".bin")
 
@@ -1093,8 +1094,30 @@ class Configure:
                         else:
                             build(bin_path, [raw_bin_path], "cp")
 
+                        try_xml_path = f"assets/x/mapfs/geom/{map_name}.xml"
+                        xml_path = self.resolve_asset_path(try_xml_path)
+                        if xml_path != try_xml_path:
+                            build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
+
                         compress = True
                         out_dir = out_dir / "geom"
+                    elif name.endswith("_hit"):
+                        base_name = name
+                        map_name = base_name[:-4]
+                        raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{base_name}.bin")
+
+                        # TEMP: star rod compatiblity
+                        old_raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/{base_name}.bin")
+                        if old_raw_bin_path.is_file():
+                            raw_bin_path = old_raw_bin_path
+
+                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+                        build(bin_path, [raw_bin_path], "cp")
+
+                        try_xml_path = f"assets/x/mapfs/geom/{map_name}.xml"
+                        xml_path = self.resolve_asset_path(try_xml_path)
+                        if xml_path != try_xml_path:
+                            build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
                     else:
                         compress = True
                         bin_path = path
