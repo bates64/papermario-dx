@@ -328,6 +328,8 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
+    ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
+
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
     ninja.rule(
@@ -426,6 +428,12 @@ class Configure:
 
     def rom_ok_path(self) -> Path:
         return self.elf_path().with_suffix(".ok")
+
+    def patch_path(self) -> Path:
+        return self.elf_path().with_suffix(".bps")
+
+    def baserom_path(self) -> Path:
+        return Path(f"ver/{self.version}/baserom.z64")
 
     def linker_script_path(self) -> Path:
         # TODO: read from splat.yaml
@@ -1252,6 +1260,13 @@ class Configure:
                 f"ver/{self.version}/checksum.sha1",
                 implicit=[str(self.rom_path())],
             )
+
+        ninja.build(
+            str(self.patch_path()),
+            "flips",
+            str(self.rom_path()),
+            variables={"baserom": str(self.baserom_path())},
+        )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
