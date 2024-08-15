@@ -1094,9 +1094,8 @@ class Configure:
                         else:
                             build(bin_path, [raw_bin_path], "cp")
 
-                        try_xml_path = f"assets/x/mapfs/geom/{map_name}.xml"
-                        xml_path = self.resolve_asset_path(try_xml_path)
-                        if xml_path != try_xml_path:
+                        xml_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{map_name}.xml")
+                        if xml_path.exists():
                             build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
 
                         compress = True
@@ -1114,9 +1113,8 @@ class Configure:
                         bin_path = bin_path.parent / "geom" / (base_name + ".bin")
                         build(bin_path, [raw_bin_path], "cp")
 
-                        try_xml_path = f"assets/x/mapfs/geom/{map_name}.xml"
-                        xml_path = self.resolve_asset_path(try_xml_path)
-                        if xml_path != try_xml_path:
+                        xml_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{map_name}.xml")
+                        if xml_path.exists():
                             build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
                     else:
                         compress = True
