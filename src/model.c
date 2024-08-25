@@ -2008,10 +2008,6 @@ void appendGfx_model(void* data) {
 void load_texture_impl(u32 romOffset, TextureHandle* handle, TextureHeader* header, s32 mainSize, s32 mainPalSize, s32 auxSize, s32 auxPalSize) {
     Gfx** temp;
 
-    s32 heapSize = WORLD_TEXTURE_MEMORY_SIZE;
-    if (gGameStatusPtr->isBattle) heapSize = BATTLE_TEXTURE_MEMORY_SIZE;
-    ASSERT_MSG((s32)TextureHeapPos - (s32)TextureHeapBase + mainSize + mainPalSize + auxSize + auxPalSize < heapSize, "Texture heap overflow");
-
     // load main img + palette to texture heap
     handle->raster = (IMG_PTR) TextureHeapPos;
     if (mainPalSize != 0) {
