@@ -6411,7 +6411,6 @@ segments:
     - start: 0x59F530
       type: .data
       name: anim/unused_gfx
-      subalign: 8
       subsegments:
       - [0x59F530, vtx, vtx1]
       - [0x59F6B0, vtx, vtx2]
@@ -6446,7 +6445,6 @@ segments:
     - start: 0x5A2E80
       type: .data
       name: actor/lava_piranha
-      subalign: 8
       subsegments:
       - [0x5A2E80]
       - [0x5A3020, ci4, lava_piranha_vine, 64, 32]
@@ -6592,7 +6590,6 @@ segments:
     - start: 0x63F040
       type: .data
       name: actor/monstar
-      subalign: 8
       subsegments:
       - [0x63F040]
       - [0x63F278, ci4, actor/img, 32, 32]
@@ -6601,7 +6598,6 @@ segments:
     - start: 0x648860
       type: .data
       name: vtx
-      subalign: 8
       subsegments:
       - [0x648860, vtx, monstar_bubbles]
     - [0x648C80]
@@ -8436,7 +8432,6 @@ segments:
     - start: 0x8CC4F0
       type: .data
       name: kmr_04_5_foliage
-      subalign: 8
       subsegments:
       - [0x8CC4F0, ci4, hammer_block_message, 48, 48]
       - [0x8CC970, palette, hammer_block_message]
