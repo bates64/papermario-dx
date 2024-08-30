@@ -22,30 +22,26 @@ if __name__ == "__main__":
 
     map_name = path.basename(xml_path)[:-4]
 
-    seen_names = set()
-
     if is_shape:
         for model in xml.getElementsByTagName("Model"):
             map_object = model.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
             idx = "0x" + map_object.getAttribute("id")
-
-            if name in seen_names or " " in name:
-                continue
-            seen_names.add(name)
-
             f.write(f"#define MODEL_{name} {idx}\n")
     elif is_hit:
         for collider in xml.getElementsByTagName("Collider"):
             map_object = collider.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
             idx = "0x" + map_object.getAttribute("id")
-
-            if name in seen_names or " " in name:
-                continue
-            seen_names.add(name)
-
             f.write(f"#define COLLIDER_{name} {idx}\n")
+
+        f.write("\n")
+
+        for zone in xml.getElementsByTagName("Zone"):
+            map_object = zone.getElementsByTagName("MapObject")[0]
+            name = map_object.getAttribute("name")
+            idx = "0x" + map_object.getAttribute("id")
+            f.write(f"#define ZONE_{name} {idx}\n")
     else:
         raise ValueError("Invalid output file name")
 
