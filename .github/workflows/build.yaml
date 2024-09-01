@@ -18,8 +18,8 @@ jobs:
         run: ./install_compilers.sh
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@main
-      - name: Install pigment64
-        run: cargo binstall pigment64 -y
+      - name: Install pigment64 and crunch64
+        run: cargo binstall pigment64 crunch64-cli -y
       - name: Download baserom
         run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
         env:
