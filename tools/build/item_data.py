@@ -126,9 +126,13 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     nbadges = 0
     nkeys = 0
 
+    first_consumable = -1
+
     for idx, item in enumerate(items):
         if ("ITEM_TYPE_FLAG_CONSUMABLE") in item.typeFlags:
             nconsumables += 1
+            if first_consumable == -1:
+                first_consumable = idx
         if ("ITEM_TYPE_FLAG_BADGE") in item.typeFlags:
             nbadges += 1
         if ("ITEM_TYPE_FLAG_KEY") in item.typeFlags:
@@ -138,6 +142,7 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     fout.write(f"#define ITEM_NUM_CONSUMABLES {nconsumables}\n")
     fout.write(f"#define ITEM_NUM_BADGES {nbadges}\n")
     fout.write(f"#define ITEM_NUM_KEYS {nkeys}\n")
+    fout.write(f"#define ITEM_FIRST_CONSUMABLE {first_consumable}\n")
     fout.write("\n")
 
     fout.write("#endif // ITEM_ENUM_H\n")

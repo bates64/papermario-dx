@@ -176,7 +176,7 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
         Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_RED_KEY, LVar0)
+    Call(FindItem, ITEM_RED_KEY, LVar0)
     Call(RemoveKeyItemAt, LVar0)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedRedDoor, TRUE)
@@ -213,7 +213,7 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
         Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
         Return
     EndIf
-    Call(FindKeyItem, ITEM_BLUE_KEY, LVar0)
+    Call(FindItem, ITEM_BLUE_KEY, LVar0)
     Call(RemoveKeyItemAt, LVar0)
     Call(CloseChoicePopup)
     Set(GF_PRA02_UnlockedBlueDoor, TRUE)

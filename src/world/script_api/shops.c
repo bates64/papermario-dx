@@ -4,10 +4,12 @@
 #include "model.h"
 #include "pause/pause_common.h"
 
+#if !VERSION_JP
 extern u8 MessagePlural[];
 extern u8 MessageSingular[];
-extern HudScript HES_ItemCoin;
+#endif
 
+extern HudScript HES_ItemCoin;
 void create_shop_popup_menu(PopupMenu* popup);
 
 s32 shop_get_sell_price(s32 itemID);
@@ -100,6 +102,7 @@ s32 shop_owner_buy_dialog(s32 messageIndex, s32 itemName, s32 coinCost, s32 bpCo
 
     if (bpCost > 0) {
         set_message_int_var(bpCost, 2);
+#if !VERSION_JP
     } else {
         if (coinCost == 1) {
             suffix = MessageSingular;
@@ -107,6 +110,7 @@ s32 shop_owner_buy_dialog(s32 messageIndex, s32 itemName, s32 coinCost, s32 bpCo
             suffix = MessagePlural;
         }
         set_message_text_var((s32) suffix, 2);
+#endif
     }
 
     script = start_script(&EVS_ShopBeginSpeech, EVT_PRIORITY_1, 0);
@@ -139,6 +143,7 @@ s32 shop_owner_continue_speech_with_quantity(s32 messageIndex, s32 amount) {
 
     set_message_int_var(amount, 0);
 
+#if !VERSION_JP
     if (amount == 1) {
         suffixMsg = MessageSingular;
     } else {
@@ -146,6 +151,7 @@ s32 shop_owner_continue_speech_with_quantity(s32 messageIndex, s32 amount) {
     }
 
     set_message_text_var((s32) suffixMsg, 1);
+#endif
 
     script = start_script(&EVS_ShopContinueSpeech, EVT_PRIORITY_1, 0);
     script->varTable[0] = shopMsgID;
@@ -934,7 +940,11 @@ API_CALLABLE(MakeShop) {
     hud_element_clear_flags(shop->costIconID, HUD_ELEMENT_FLAG_FILTER_TEX);
     get_worker(create_worker_frontUI(NULL, draw_shop_items));
     set_window_properties(WIN_SHOP_ITEM_NAME, 100, 66, 120, 28, WINDOW_PRIORITY_0, shop_draw_item_name, NULL, -1);
+#if VERSION_JP
+    set_window_properties(WIN_SHOP_ITEM_DESC, 39, 184, 242, 32, WINDOW_PRIORITY_1, shop_draw_item_desc, NULL, -1);
+#else
     set_window_properties(WIN_SHOP_ITEM_DESC, 32, 184, 256, 32, WINDOW_PRIORITY_1, shop_draw_item_desc, NULL, -1);
+#endif
     gWindowStyles[10].defaultStyleID = WINDOW_STYLE_9;
     gWindowStyles[11].defaultStyleID = WINDOW_STYLE_3;
     shop->curItemSlot = 0;
