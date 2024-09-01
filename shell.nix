@@ -87,9 +87,9 @@ in pkgsCross.mkShell {
       done
     done
 
-    # Install pigment64
+    # Install Rust deps
     export PATH=$HOME/.cargo/bin:$PATH
-    cargo install pigment64
+    cargo install pigment64 crunch64-cli
 
     # Install python packages
     virtualenv venv
