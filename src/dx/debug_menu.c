@@ -1856,7 +1856,7 @@ typedef struct DebugCheatEntry {
 DebugCheatEntry DebugCheatMenu[] = {
     [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   FALSE },
     [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", FALSE },
-//  [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
+    [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
     [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", FALSE },
     [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", FALSE },
 };
@@ -1876,7 +1876,7 @@ void dx_debug_update_cheat_menu() {
         // actions to execute on state change
         switch (DebugCheatPos) {
             case DEBUG_CHEAT_GOD_MODE:
-        //  case DEBUG_CHEAT_FLY:
+            case DEBUG_CHEAT_FLY:
             case DEBUG_CHEAT_HIGH_JUMP:
             case DEBUG_CHEAT_IGNORE_WALLS:
                 break;
