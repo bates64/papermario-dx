@@ -465,7 +465,7 @@ void action_command_free(void) {
             action_command_whirlwind_free();
             break;
         case ACTION_COMMAND_STOP_LEECH:
-            action_command_jump_draw();
+            action_command_stop_leech_free();
             break;
         case ACTION_COMMAND_07:
             action_command_07_free();
