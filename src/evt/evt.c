@@ -869,7 +869,7 @@ ApiStatus evt_handle_OR(Evt* script) {
     s32 bits = evt_get_variable(script, *args++);
     s32 prev = evt_get_variable(script, var);
 
-    evt_set_variable(script, bits, prev | bits);
+    evt_set_variable(script, var, prev | bits);
     return ApiStatus_DONE2;
 }
 
