@@ -273,7 +273,8 @@ u32 profiler_get_rdp_microseconds() {
 
 void profiler_print_times() {
     u32 microseconds[PROFILER_TIME_COUNT];
-    char text_buffer[196];
+    char text_buffer_labels[196];
+    char text_buffer_time[196];
 
     update_fps_timer();
     update_total_timer();
@@ -304,21 +305,37 @@ void profiler_print_times() {
         u32 total_rsp = microseconds[PROFILER_TIME_RSP_GFX] + microseconds[PROFILER_TIME_RSP_AUDIO] * 2;
         u32 max_rdp = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
 
-        s32 text_buffer_len = sprintf(text_buffer,
+        s32 text_buffer_labels_len = sprintf(
+            text_buffer_labels,
             "    " // space for prepend
             "FPS: %5.2f\n"
             "CPU\t\t%d (%d%%)\n"
-            " Input\t\t%d\n"
-            " Workers\t\t%d\n"
-            " Triggers\t\t\t%d\n"
-            " EVT\t\t%d\n"
-            " Messages\t\t%d\n"
-            " HUD elements\t\t\t%d\n"
-            " Entities\t\t%d\n"
-            " Gfx\t\t\t%d\n"
-            " Audio\t\t\t%d\n",
+            " Input\n"
+            " Workers\n"
+            " Triggers\n"
+            " EVT\n"
+            " Messages\n"
+            " HUD elements\n"
+            " Entities\n"
+            " Gfx\n"
+            " Audio\n",
             1000000.0f / microseconds[PROFILER_TIME_FPS],
-            total_cpu, total_cpu / 333,
+            total_cpu, total_cpu / 333
+        );
+        s32 text_buffer_time_len = sprintf(
+            text_buffer_time,
+            "    " // space for prepend
+            "\n"
+            "\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n",
             microseconds[PROFILER_TIME_CONTROLLERS],
             microseconds[PROFILER_TIME_WORKERS],
             microseconds[PROFILER_TIME_TRIGGERS],
@@ -332,13 +349,21 @@ void profiler_print_times() {
 
         switch (get_game_mode()) {
             case GAME_MODE_WORLD:
-                sprintf(&text_buffer[text_buffer_len],
-                    " Encounters %d\n"
-                    " NPCs %d\n"
-                    " Player %d\n"
-                    " Item entities %d\n"
-                    " Effects %d\n"
-                    " Cameras %d\n",
+                sprintf(&text_buffer_labels[text_buffer_labels_len],
+                    " Encounters\n"
+                    " NPCs\n"
+                    " Player\n"
+                    " Item entities\n"
+                    " Effects\n"
+                    " Cameras\n"
+                );
+                sprintf(&text_buffer_time[text_buffer_time_len],
+                    "%d\n"
+                    "%d\n"
+                    "%d\n"
+                    "%d\n"
+                    "%d\n"
+                    "%d\n",
                     microseconds[PROFILE_TIME_WORLD_ENCOUNTERS],
                     microseconds[PROFILE_TIME_WORLD_NPCS],
                     microseconds[PROFILE_TIME_WORLD_PLAYER],
@@ -348,35 +373,58 @@ void profiler_print_times() {
                 );
                 break;
             default:
-                sprintf(&text_buffer[text_buffer_len],
-                    " Game mode step %d\n",
+                sprintf(&text_buffer_labels[text_buffer_labels_len],
+                    " Game mode step\n"
+                );
+                sprintf(&text_buffer_time[text_buffer_time_len],
+                    "%d\n",
                     microseconds[PROFILER_TIME_STEP_GAME_MODE]
                 );
                 break;
         }
 
-        dx_string_to_msg(&text_buffer, &text_buffer);
-        text_buffer[0] = MSG_CHAR_READ_FUNCTION;
-        text_buffer[1] = MSG_READ_FUNC_SIZE;
-        text_buffer[2] = 14;
-        text_buffer[3] = 14;
-        draw_msg((s32)&text_buffer, 3, 0, 255, 0, 0);
+        dx_string_to_msg(&text_buffer_labels, &text_buffer_labels);
+        dx_string_to_msg(&text_buffer_time, &text_buffer_time);
+        text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
+        text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
+        text_buffer_labels[2] = text_buffer_time[2] = 14;
+        text_buffer_labels[3] = text_buffer_time[3] = 14;
+        draw_msg((s32)&text_buffer_labels, 3, 0, 255, 0, 0);
+        draw_msg((s32)&text_buffer_time, 110, 0, 255, 0, 0);
 
 #ifdef GFX_PROFILING
-        sprintf(text_buffer,
+        s32 time_offset = 100;
+        sprintf(
+            text_buffer_labels,
             "    " // space for prepend
             "\n"
             "Gfx breakdown\n"
-            " Entities\t\t\t%d\n"
-            " Models\t\t\t%d\n"
-            " Player\t\t\t%d\n"
-            " Workers\t\t\t%d\n"
-            " NPCs\t\t\t%d\n"
-            " Effects\t\t\t%d\n"
-            " Render tasks\t\t\t%d\n"
-            " Hud elements\t\t\t%d\n"
-            " Back UI\t\t\t%d\n"
-            " Front UI\t\t\t%d\n",
+            " Entities\n"
+            " Models\n"
+            " Player\n"
+            " Workers\n"
+            " NPCs\n"
+            " Effects\n"
+            " Render tasks\n"
+            " Hud elements\n"
+            " Back UI\n"
+            " Front UI\n"
+        );
+        sprintf(
+            text_buffer_time,
+            "    " // space for prepend
+            "\n"
+            "\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "%d\n",
             microseconds[PROFILER_TIME_SUB_GFX_ENTITIES],
             microseconds[PROFILER_TIME_SUB_GFX_MODELS],
             microseconds[PROFILER_TIME_SUB_GFX_PLAYER],
@@ -389,32 +437,47 @@ void profiler_print_times() {
             microseconds[PROFILER_TIME_SUB_GFX_FRONT_UI]
         );
 #else
-        sprintf(text_buffer,
+        s32 time_offset = 50;
+        sprintf(text_buffer_labels,
             "    " // space for prepend
             "\n"
             "RDP\t\t\t%d (%d%%)\n"
-            " Tmem\t\t\t%d\n"
-            " Cmd\t\t\t%d\n"
-            " Pipe\t\t\t%d\n"
+            " Tmem\n"
+            " Cmd\n"
+            " Pipe\n"
             "\n"
             "RSP\t\t%d (%d%%)\n"
-            " Gfx\t\t\t%d\n"
-            " Audio\t\t\t%d\n",
+            " Gfx\n"
+            " Audio\n",
             max_rdp, max_rdp / 333,
+            total_rsp, total_rsp / 333
+        );
+        sprintf(text_buffer_time,
+            "    " // space for prepend
+            "\n"
+            "\n"
+            "%d\n"
+            "%d\n"
+            "%d\n"
+            "\n"
+            "\n"
+            "%d\n"
+            "%d\n",
             microseconds[PROFILER_TIME_TMEM],
             microseconds[PROFILER_TIME_CMD],
             microseconds[PROFILER_TIME_PIPE],
-            total_rsp, total_rsp / 333,
             microseconds[PROFILER_TIME_RSP_GFX],
             microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
 #endif
-        dx_string_to_msg(&text_buffer, &text_buffer);
-        text_buffer[0] = MSG_CHAR_READ_FUNCTION;
-        text_buffer[1] = MSG_READ_FUNC_SIZE;
-        text_buffer[2] = 14;
-        text_buffer[3] = 14;
-        draw_msg((s32)&text_buffer, SCREEN_WIDTH/2, 0, 255, 0, 0);
+        dx_string_to_msg(&text_buffer_labels, &text_buffer_labels);
+        dx_string_to_msg(&text_buffer_time, &text_buffer_time);
+        text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
+        text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
+        text_buffer_labels[2] = text_buffer_time[2] = 14;
+        text_buffer_labels[3] = text_buffer_time[3] = 14;
+        draw_msg((s32)&text_buffer_labels, SCREEN_WIDTH/2, 0, 255, 0, 0);
+        draw_msg((s32)&text_buffer_time, SCREEN_WIDTH/2 + time_offset, 0, 255, 0, 0);
     }
 }
 
