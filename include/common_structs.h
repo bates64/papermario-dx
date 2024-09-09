@@ -1094,22 +1094,23 @@ typedef struct ModelAnimator {
     /* 0x008 */ s16* animReadPos;
     /* 0x00C */ s16* savedReadPos;
     /* 0x010 */ AnimatorNode* rootNode;
-    /* 0x014 */ u8 nextUniqueID;
-    /* 0x015 */ u8 staticNodeIDs[0x7A]; // ?
-    /* 0x08F */ char unk_08F[0x1];
-    /* 0x090 */ f32 nextUpdateTime;
-    /* 0x094 */ f32 timeScale;
-    /* 0x098 */ Mtx mtx;
-    /* 0x0D8 */ void* baseAddr;
-    /* 0x0DC */ s16* animationBuffer;
-    /* 0x0E0 */ StaticAnimatorNode* staticNodes[0x7A];
-    /* 0x2C8 */ StaticAnimatorNode** staticRoot;
-    /* 0x2CC */ s32 treeIndexPos;
-    /* 0x2D0 */ s32 savedTreePos;
-    /* 0x2D4 */ void (*fpRenderCallback)(void*);
-    /* 0x2D8 */ void* renderCallbackArg;
-    /* 0x2DC */ char unk_2DC[4];
-} ModelAnimator; // size = 0x2E0
+    /* 0x014 */ AnimatorNode* nodeCache[0x7A];
+    /* 0x08E */ u8 nextUniqueID;
+    /* 0x08F */ u8 staticNodeIDs[0x7A]; // ?
+    /* 0x109 */ char unk_08F[0x1];
+    /* 0x10A */ f32 nextUpdateTime;
+    /* 0x10E */ f32 timeScale;
+    /* 0x112 */ Mtx mtx;
+    /* 0x152 */ void* baseAddr;
+    /* 0x156 */ s16* animationBuffer;
+    /* 0x15A */ StaticAnimatorNode* staticNodes[0x7A];
+    /* 0x342 */ StaticAnimatorNode** staticRoot;
+    /* 0x346 */ s32 treeIndexPos;
+    /* 0x34A */ s32 savedTreePos;
+    /* 0x34E */ void (*fpRenderCallback)(void*);
+    /* 0x352 */ void* renderCallbackArg;
+    /* 0x356 */ char unk_2DC[4];
+} ModelAnimator; // size = 0x35A
 
 typedef ModelAnimator* AnimatedMeshList[MAX_ANIMATED_MESHES];
 
