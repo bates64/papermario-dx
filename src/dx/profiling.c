@@ -292,8 +292,6 @@ void profiler_print_times() {
 #else
     if (show_profiler) {
 #endif
-        draw_box(0, (WindowStyle)21, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0x5F, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL,
-                 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
         for (int i = 0; i < PROFILER_TIME_COUNT; i++) {
             if (i < PROFILER_TIME_TMEM) {
                 microseconds[i] = OS_CYCLES_TO_USEC(all_profiling_data[i].total / PROFILING_BUFFER_SIZE);
