@@ -261,7 +261,7 @@ void btl_state_update_normal_start(void) {
             gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-            if (is_ability_active(ABILITY_MYSTERY_SCROLL)) {
+            if (gPlayerData.hasActionCommands) {
                 battleStatus->actionCommandMode = ACTION_COMMAND_MODE_LEARNED;
             }
             battleStatus->actionSuccess = 0;

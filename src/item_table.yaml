@@ -4804,6 +4804,7 @@
     icon: key/Gift
     itemEntityTemplate: STANDARD
     hudElementTemplate: ITEM
+    externHudScript: HES_MoveDiamond
     sellValue: 1
     sortValue: 0
     targetFlags: [ TARGET_FLAG_PLAYER ]

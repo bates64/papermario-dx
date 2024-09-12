@@ -743,6 +743,13 @@ void phys_update_standard(void) {
     check_input_use_partner();
     phys_update_action_state();
 
+    #if DX_DEBUG_MENU
+        if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_FLY) && playerStatus->curButtons & BUTTON_L) {
+            playerStatus->pos.y += 5.0f;
+            playerStatus->flags |= PS_FLAG_JUMPING;
+        }
+    #endif
+
     if (!(playerStatus->flags & PS_FLAG_FLYING)) {
         if (playerStatus->flags & PS_FLAG_JUMPING) {
             phys_update_jump();

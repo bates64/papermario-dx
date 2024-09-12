@@ -2186,6 +2186,10 @@ void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 siz
         dma_copy((u8*)offset, (u8*)offset + sizeof(iterTextureHeader), &iterTextureHeader);
         header = &iterTextureHeader;
 
+        if (strcmp(header->name, "end_of_textures") == 0) {
+            return;
+        }
+
         if (!header->isVariant) {
             // done reading variants
             break;
