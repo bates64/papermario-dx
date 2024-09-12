@@ -342,7 +342,7 @@ EvtScript N(EVS_Idle) = {
     #if !VERSION_PAL
                     Call(FreezeBattleState, TRUE)
     #endif
-                    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+                    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
                     Call(SetBattleCamTarget, 0, 100, 0)
                     Call(SetBattleCamOffsetZ, 0)
                     Call(SetBattleCamZoom, 340)

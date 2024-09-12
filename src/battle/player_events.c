@@ -1293,7 +1293,7 @@ EvtScript EVS_RunAwayFail = {
 EvtScript EVS_PlayerDies = {
     Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Dying)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_24)
+    Call(UseBattleCamPreset, BTL_CAM_PLAYER_DIES)
     Wait(15)
     Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_PLAYER_SPINNING)
@@ -1337,9 +1337,9 @@ EvtScript EVS_PlayerDies = {
     End
 };
 
-EvtScript D_80287404 = {
+EvtScript EVS_Unused_UseItemWithEffect = {
     IfEq(LVar1, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_69)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_45)
         Wait(10)
         Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_USE_ITEM)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_UsePower)
@@ -1379,8 +1379,8 @@ EvtScript D_80287404 = {
     End
 };
 
-EvtScript D_80287708 = {
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+EvtScript EVS_Unused_UseItem = {
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, -85, 1, 0)
     Call(SetBattleCamOffsetZ, 41)
     Call(SetBattleCamZoom, 248)
@@ -1400,7 +1400,7 @@ EvtScript D_80287708 = {
     End
 };
 
-EvtScript D_80287834 = {
+EvtScript EVS_Unused_PlayerGoHome = {
     Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     Call(SetGoalToHome, ACTOR_PLAYER)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(8.0))
@@ -1412,7 +1412,7 @@ EvtScript D_80287834 = {
     End
 };
 
-EvtScript EVS_PlayEatFX = {
+EvtScript EVS_Unused_EatItem = {
     Thread
         Loop(4)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EAT_OR_DRINK)
@@ -1425,7 +1425,7 @@ EvtScript EVS_PlayEatFX = {
     End
 };
 
-EvtScript EVS_PlayDrinkFX = {
+EvtScript EVS_Unused_DrinkItem = {
     Thread
         Loop(4)
             Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_EAT_OR_DRINK)
@@ -1595,7 +1595,7 @@ EvtScript EVS_MerleeAttackBonus = {
     Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     Call(BattleMerleeFadeStageToBlack)
     Wait(10)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, 0, 80, 0)
     Call(SetBattleCamOffsetZ, 0)
     Call(SetBattleCamZoom, 246)
@@ -1644,7 +1644,7 @@ EvtScript EVS_MerleeDefenseBonus = {
     Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     Call(BattleMerleeFadeStageToBlack)
     Wait(10)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, 0, 80, 0)
     Call(SetBattleCamOffsetZ, 0)
     Call(SetBattleCamZoom, 246)
@@ -1698,7 +1698,7 @@ EvtScript EVS_MerleeExpBonus = {
     Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     Call(BattleMerleeFadeStageToBlack)
     Wait(10)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, 0, 80, 0)
     Call(SetBattleCamOffsetZ, 0)
     Call(SetBattleCamZoom, 246)

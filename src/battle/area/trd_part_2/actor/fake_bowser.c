@@ -1542,7 +1542,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
         Return
     EndIf
     Call(EnableBattleStatusBar, FALSE)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, 28, 75, -101)
     Call(SetBattleCamOffsetZ, 0)
     Call(SetBattleCamZoom, 500)
@@ -1558,7 +1558,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_Boss_BowserTaunts, 2)
         CaseEq(2)
             Call(ActorSpeak, MSG_CH1_0100, ACTOR_SELF, PRT_TARGET, -1, -1)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamTarget, 85, 81, 0)
             Call(SetBattleCamOffsetZ, 0)
             Call(SetBattleCamZoom, 249)
@@ -1570,7 +1570,7 @@ EvtScript N(EVS_FakeBowser_TakeTurn) = {
             Call(SetActorVar, ACTOR_SELF, AVAR_Boss_BowserTaunts, 3)
         CaseEq(3)
             Call(ActorSpeak, MSG_CH1_0103, ACTOR_SELF, PRT_TARGET, -1, -1)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamTarget, 85, 81, 0)
             Call(SetBattleCamOffsetZ, 0)
             Call(SetBattleCamZoom, 249)
@@ -1594,7 +1594,7 @@ EvtScript N(EVS_FakeBowser_HandlePhase) = {
         CaseEq(PHASE_PLAYER_BEGIN)
             Call(GetActorVar, BOSS_ACTOR, AVAR_Boss_Flags, LVar0)
             IfNotFlag(LVar0, AFLAG_Boss_Dialogue_BowserReveal)
-                Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+                Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
                 Call(SetBattleCamTarget, -4, 46, -2)
                 Call(SetBattleCamYaw, 24)
                 Call(SetBattleCamOffsetZ, 30)
@@ -1746,7 +1746,7 @@ EvtScript N(EVS_KoopaBrosEnter) = {
         Call(SetAnimation, RED_ACTOR, 1, ANIM_KoopaBros_Red_IdleCrouch)
     EndThread
     Wait(30)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, 70, 46, 0)
     Call(SetBattleCamOffsetZ, 0)
     Call(SetBattleCamZoom, 292)
@@ -1866,7 +1866,7 @@ EvtScript N(EVS_BuildTowerWithKoopa) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_Boss_TopKoopaID, LVar1)
             Call(GetHomePos, LVar1, LVar2, LVar3, LVar4)
             Call(SetBattleCamTarget, LVar2, LVar3, LVar4)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamOffsetZ, 50)
             Call(SetBattleCamZoom, 400)
             Call(MoveBattleCamOver, LVar0)
@@ -2243,7 +2243,7 @@ EvtScript N(EVS_UpdateTowerWithKoopa) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_Boss_TopKoopaID, LVar1)
             Call(GetHomePos, LVar1, LVar2, LVar3, LVar4)
             Call(SetBattleCamTarget, LVar2, LVar3, LVar4)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamOffsetZ, 50)
             Call(SetBattleCamZoom, 400)
             Call(MoveBattleCamOver, 30)
@@ -2498,7 +2498,7 @@ EvtScript N(EVS_TryFormingTower) = {
     Return
     End
     #undef VAR_STANDING_COUNT
-    #undef VAR_CUR_KOOPA_IDX 
+    #undef VAR_CUR_KOOPA_IDX
 };
 
 // count the number of standing koopa bros
@@ -3048,7 +3048,7 @@ EvtScript N(EVS_KoopaBros_TakeTurn) = {
     EndLoop
     // zoom in to show the toppled koopa bros and have them try to get up
     IfEq(LFlag0, TRUE)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
         Call(SetBattleCamTarget, 90, 0, 0)
         Call(SetBattleCamZoom, 350)
         Call(SetBattleCamOffsetZ, 40)

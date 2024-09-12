@@ -64,7 +64,7 @@ EvtScript N(EVS_UseMove_ImplA) = {
     Set(LVarB, LVarA)
     Add(LVarB, 2)
     Call(action_command_jump_start, LVarB, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_34)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_22)
     Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_MarioB1_Stomp, ANIM_MarioB1_Stomp)
     Call(func_80274A18, LVarA, 0)
@@ -121,20 +121,20 @@ EvtScript N(EVS_UseMove_ImplA) = {
         EndCaseGroup
     EndSwitch
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(GetActionResult, LVarE)
     Set(LVarF, 0)
     Set(LFlag0, FALSE)
     Label(10)
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(CloseActionCommandInfo)
     Call(SetActionDifficultyTable, Ref(N(DifficultyTable)))
@@ -284,7 +284,7 @@ EvtScript N(EVS_UseMove_ImplB) = {
     Set(LVarB, LVarA)
     Add(LVarB, 2)
     Call(action_command_jump_start, LVarB, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_34)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_22)
     Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_MarioB1_Stomp, ANIM_MarioB1_Stomp)
     Call(func_80274A18, LVarA, 0)
@@ -341,20 +341,20 @@ EvtScript N(EVS_UseMove_ImplB) = {
         EndCaseGroup
     EndSwitch
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(GetActionResult, LVarE)
     Set(LVarF, 0)
     Set(LFlag0, FALSE)
     Label(10)
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(CloseActionCommandInfo)
     Call(SetActionDifficultyTable, Ref(N(DifficultyTable)))
@@ -510,7 +510,7 @@ EvtScript N(EVS_UseMove_ImplC) = {
     Set(LVarB, LVarA)
     Add(LVarB, 2)
     Call(action_command_jump_start, LVarB, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_34)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_22)
     Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
     Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_Mario1_Jump, ANIM_MarioB1_Stomp, ANIM_MarioB1_Stomp)
     Call(func_80274A18, LVarA, 0)
@@ -567,20 +567,20 @@ EvtScript N(EVS_UseMove_ImplC) = {
         EndCaseGroup
     EndSwitch
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(GetActionResult, LVarE)
     Set(LVarF, 0)
     Set(LFlag0, FALSE)
     Label(10)
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_28)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1C)
         Wait(5)
         Call(SetGoalPos, ACTOR_PLAYER, 30, 0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(CloseActionCommandInfo)
     Call(SetActionDifficultyTable, Ref(N(DifficultyTable)))

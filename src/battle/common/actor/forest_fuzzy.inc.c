@@ -247,7 +247,7 @@ EvtScript N(EVS_HandleEvent) = {
 EvtScript N(EVS_Move_Clone) = {
     Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
     Call(SetBattleCamZoom, 330)
@@ -310,7 +310,7 @@ EvtScript N(EVS_Attack_Leech) = {
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(GetBattlePhase, LVar0)
     IfEq(LVar0, PHASE_FIRST_STRIKE)
         Call(SetGoalToTarget, ACTOR_SELF)

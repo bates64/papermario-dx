@@ -514,7 +514,7 @@ EvtScript N(EVS_TakeTurn) = {
     IfEq(LVar0, 1)
         Call(UseIdleAnimation, ACTOR_SELF, FALSE)
         Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_14)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_0E)
         Call(SetBattleCamZoom, 200)
         Call(SetBattleCamOffsetZ, 20)
         Call(BattleCamTargetActor, ACTOR_SELF)
@@ -613,7 +613,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
     Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_14)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_0E)
     Call(SetBattleCamZoom, 200)
     Call(SetBattleCamOffsetZ, 20)
     Call(BattleCamTargetActor, ACTOR_SELF)
@@ -669,7 +669,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
                         Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
                         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Flail)
                     EndIf
-                    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+                    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
                     Call(SetBattleCamTarget, -25, 60, 0)
                     Call(SetBattleCamZoom, 460)
                     Call(SetBattleCamOffsetZ, 0)
@@ -694,7 +694,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
             EndSwitch
         EndCaseGroup
         CaseDefault
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamTarget, -25, 60, 0)
             Call(SetBattleCamZoom, 460)
             Call(SetBattleCamOffsetZ, 0)
@@ -765,7 +765,7 @@ EvtScript N(EVS_Attack_ShellToss) = {
             Call(UseIdleAnimation, ACTOR_SELF, TRUE)
             Return
         Else
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
             Call(SetBattleCamTarget, -45, 60, 0)
             Call(SetBattleCamZoom, 460)
             Call(SetBattleCamOffsetZ, 0)
@@ -830,7 +830,7 @@ EvtScript N(EVS_Attack_HeavyStomp) = {
     Call(SetBattleCamZoom, 280)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 20)
-    Call(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, 50)

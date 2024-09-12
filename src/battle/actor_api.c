@@ -3273,7 +3273,7 @@ API_CALLABLE(BoostAttack) {
         case 1:
             if (script->functionTemp[3] == 0) {
                 fx_radial_shimmer(2, x1, y1, z1, 1.0f, 30);
-                btl_cam_use_preset_immediately(BTL_CAM_PRESET_19);
+                btl_cam_use_preset_immediately(BTL_CAM_PRESET_13);
                 script->functionTemp[3] = 30;
                 script->functionTemp[0] = 2;
             } else {
@@ -3397,7 +3397,7 @@ API_CALLABLE(BoostDefense) {
         case 1:
             if (script->functionTemp[3] == 0) {
                 fx_radial_shimmer(2, x1, y1, z1, 1.0f, 30);
-                btl_cam_use_preset_immediately(BTL_CAM_PRESET_19);
+                btl_cam_use_preset_immediately(BTL_CAM_PRESET_13);
                 script->functionTemp[3] = 30;
                 script->functionTemp[0] = 2;
             } else {
@@ -3508,7 +3508,7 @@ API_CALLABLE(VanishActor) {
         case 1:
             if (script->functionTemp[3] == 0) {
                 fx_radial_shimmer(3, x, y, z, 1.0f, 30);
-                btl_cam_use_preset_immediately(BTL_CAM_PRESET_19);
+                btl_cam_use_preset_immediately(BTL_CAM_PRESET_13);
                 script->functionTemp[3] = 30;
                 script->functionTemp[0] = 2;
             } else {
@@ -3614,7 +3614,7 @@ API_CALLABLE(ElectrifyActor) {
         case 1:
             if (script->functionTemp[3] == 0) {
                 fx_snaking_static(8, x, y, z, 1.0f, 30);
-                btl_cam_use_preset_immediately(BTL_CAM_PRESET_19);
+                btl_cam_use_preset_immediately(BTL_CAM_PRESET_13);
                 script->functionTemp[3] = 30;
                 script->functionTemp[0] = 2;
             } else {

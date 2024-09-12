@@ -98,15 +98,12 @@ EffectInstance* lightning_main(
     }
 
     if (arg0 >= 3) {
-        s32 effectArg0;
-
         load_effect(EFFECT_FLASHING_BOX_SHOCKWAVE);
         if (gGameStatusPtr->isBattle == TRUE) {
-            effectArg0 = 3;
+            flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_BATTLE, arg1, arg2, arg3, arg4, arg5);
         } else {
-            effectArg0 = 1;
+            flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_WORLD, arg1, arg2, arg3, arg4, arg5);
         }
-        flashing_box_shockwave_main(effectArg0, arg1, arg2, arg3, arg4, arg5);
     }
 
     return effect;

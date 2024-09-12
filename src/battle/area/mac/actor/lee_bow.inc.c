@@ -265,7 +265,7 @@ EvtScript N(EVS_TakeTurn) = {
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleBow_Idle)
     EndThread
     Wait(15)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_15)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_0F)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 30)
     Set(LVar0, 55)

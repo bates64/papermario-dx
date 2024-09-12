@@ -190,7 +190,7 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
     }
 
     return ApiStatus_BLOCK;
-    
+
     #undef RGBA_BUF_SIZE
 }
 
@@ -336,7 +336,7 @@ EvtScript N(EVS_ChargeUp) = {
     Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(SetActorVar, ACTOR_SELF, AVAR_HoverPaused, TRUE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_0D)
     Call(SetBattleCamZoom, 10)
     Call(SetBattleCamOffsetZ, 5)
     Call(BattleCamTargetActor, ACTOR_SELF)
@@ -360,7 +360,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
     Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(SetActorVar, ACTOR_SELF, AVAR_HoverPaused, TRUE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
     Call(SetBattleCamZoom, 250)
@@ -388,7 +388,7 @@ EvtScript N(EVS_Attack_StarStorm) = {
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BIG_POWER_UP)
     Call(N(StartRumbleWithParams), 80, 120)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
     Call(SetBattleCamZoom, 100)
@@ -491,7 +491,7 @@ EvtScript N(EVS_HandlePhase) = {
 
 EvtScript N(EVS_TakeTurn) = {
     ExecWait(N(EVS_Attack_StarStorm))
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar1, 72)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)

@@ -2210,7 +2210,7 @@ void btl_state_update_run_away(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
 
             playerData->fleeAttempts++;
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
 
             // calculate average escape chance
@@ -2389,7 +2389,7 @@ void btl_state_update_defeat(void) {
                 player->disableEffect->data.disableX->koDuration = 0;
             }
 
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
             battleStatus->battlePhase = PHASE_DEATH;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
@@ -2468,7 +2468,7 @@ void btl_state_update_change_partner(void) {
             partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             battleStatus->stateFreezeCount = 0;
             gBattleStatus.flags2 |= BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
-            btl_cam_use_preset(BTL_CAM_PRESET_19);
+            btl_cam_use_preset(BTL_CAM_PRESET_13);
             btl_cam_set_target_pos(-89.0, 40.0, -99.0);
             btl_cam_set_zoom(372);
             btl_cam_set_zoffset(0);
@@ -3874,7 +3874,7 @@ void btl_state_update_first_strike(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_PRESET_0A);
             btl_cam_target_actor(ACTOR_PLAYER);
             reset_actor_turn_info();
             // begin the partner turn script
@@ -4077,7 +4077,7 @@ void btl_state_update_partner_striking_first(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 |= BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_PRESET_0A);
             btl_cam_target_actor(ACTOR_PARTNER);
             reset_actor_turn_info();
             // begin the partner turn script

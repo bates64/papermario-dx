@@ -319,7 +319,7 @@ EvtScript N(EVS_TakeTurn) = {
 EvtScript N(EVS_Attack_WindBlast) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_0D)
     Call(SetBattleCamZoom, 180)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 120)
@@ -396,7 +396,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
                     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BUZZAR_WHIRLWIND)
                     Call(SetBattleFlagBits, BS_FLAGS1_4000, FALSE)
                     Call(action_command_whirlwind_start, 0, 88 * DT, 3)
-                    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+                    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
                     Call(SetBattleCamTarget, -25, 60, 0)
                     Call(SetBattleCamZoom, 460)
                     Call(SetBattleCamOffsetZ, 0)
@@ -461,7 +461,7 @@ EvtScript N(EVS_Attack_WindBlast) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_BUZZAR_WHIRLWIND)
     Call(SetBattleFlagBits, BS_FLAGS1_4000, FALSE)
     Call(action_command_whirlwind_start, 0, 88 * DT, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, -25, 60, 0)
     Call(SetBattleCamZoom, 460)
     Call(SetBattleCamOffsetZ, 0)
@@ -649,7 +649,7 @@ EvtScript N(EVS_Attack_FeatherFling) = {
                 Call(SetPartFlagBits, ACTOR_SELF, PRT_FEATHER_3, ACTOR_PART_FLAG_INVISIBLE, TRUE)
             EndThread
             Wait(10)
-            Call(func_8024ECF8, BTL_CAM_MODEY_0, BTL_CAM_MODEX_1, FALSE)
+            Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_AVG, FALSE)
             Wait(10)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
@@ -661,7 +661,7 @@ EvtScript N(EVS_Attack_FeatherFling) = {
         EndCaseGroup
         CaseDefault
     EndSwitch
-    Call(func_8024ECF8, BTL_CAM_MODEY_0, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetGoalToTarget, ACTOR_SELF)
     Thread
         Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -819,7 +819,7 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
         CaseOrEq(HIT_RESULT_MISS)
         CaseOrEq(HIT_RESULT_LUCKY)
             Wait(10)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_66)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_42)
             Call(SetBattleCamZoom, 240)
             Call(SetBattleCamOffsetZ, -10)
             Call(BattleCamTargetActor, ACTOR_SELF)
@@ -848,7 +848,7 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
             Return
         EndCaseGroup
         CaseEq(HIT_RESULT_IMMUNE)
-            Call(UseBattleCamPreset, BTL_CAM_PRESET_66)
+            Call(UseBattleCamPreset, BTL_CAM_PRESET_42)
             Call(SetBattleCamZoom, 240)
             Call(SetBattleCamOffsetZ, -10)
             Call(BattleCamTargetActor, ACTOR_SELF)
@@ -898,12 +898,12 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
         CaseDefault
     EndSwitch
     Wait(10)
-    Call(UseBattleCamPresetImmediately, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPresetImmediately, BTL_CAM_PRESET_13)
     Call(SetBattleCamZoom, 360)
     Call(MoveBattleCamOver, 30)
     Thread
         Wait(5)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
         Call(SetBattleCamZoom, 360)
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Set(LVar1, 27)
@@ -945,7 +945,7 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
     Call(SetupMashMeter, 1, 30, 0, 0, 0, 0)
     Wait(10)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Buzzar_Anim17)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_66)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_42)
     Call(SetBattleCamZoom, 240)
     Call(SetBattleCamOffsetZ, -10)
     Call(BattleCamTargetActor, ACTOR_SELF)
@@ -977,7 +977,7 @@ EvtScript N(EVS_Attack_GrappleDrop) = {
         Call(UseIdleAnimation, ACTOR_SELF, TRUE)
         Return
     EndIf
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamZoom, 360)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Set(LVar1, 50)
@@ -1042,7 +1042,7 @@ EvtScript N(EVS_Attack_ClawSwipe) = {
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(SetBattleCamZoom, 240)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetActorSpeed, ACTOR_SELF, Float(4.0))
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 60, 15, 0)

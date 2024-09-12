@@ -290,7 +290,7 @@ EntityModelScript N(modelCommandList3) = {
 EvtScript N(EVS_UseItem) = {
     SetConst(LVarA, ITEM_SLEEPY_SHEEP)
     ExecWait(N(UseItemWithEffect))
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_PRESET_13)
     Call(SetBattleCamTarget, -67, -15, -5)
     Call(SetBattleCamOffsetZ, 45)
     Call(SetBattleCamZoom, 169)

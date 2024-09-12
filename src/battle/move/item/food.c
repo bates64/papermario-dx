@@ -186,7 +186,7 @@ EvtScript N(EVS_UseItem) = {
     #define LV_IsDrink LVarD
     #define LV_NoRefund LVarE
     #define LV_IsHarmful LVarF
-    
+
     Set(LV_NoRefund, LVar1)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Set(LV_ItemID, LVar1)

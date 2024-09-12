@@ -54,10 +54,10 @@ EvtScript N(EVS_UseMove_Basic) = {
         EndCaseGroup
     EndSwitch
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PLAYER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(GetActionResult, LVarF)
     Call(CloseActionCommandInfo)
@@ -106,10 +106,10 @@ EvtScript N(EVS_UseMove_Super) = {
     EndSwitch
     Call(GetActionResult, LVarF)
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_27)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1B)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PLAYER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(CloseActionCommandInfo)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
@@ -161,10 +161,10 @@ EvtScript N(EVS_UseMove_Ultra) = {
     EndSwitch
     Call(GetActionResult, LVarF)
     ChildThread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_28)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_1C)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PLAYER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_35)
+        Call(UseBattleCamPreset, BTL_CAM_PRESET_23)
     EndChildThread
     Call(CloseActionCommandInfo)
     Call(LoadActionCommand, ACTION_COMMAND_JUMP)
