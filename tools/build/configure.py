@@ -66,6 +66,8 @@ def write_ninja_rules(
     cc_egcs = f"{cc_egcs_dir}/gcc"
     cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
 
+    BFDNAME = "elf32-tradbigmips"
+
     CPPFLAGS_COMMON = (
         "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_LANGUAGE_C -D_FINALROM "
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
@@ -91,20 +93,11 @@ def write_ninja_rules(
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections -T $in -o $out"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
-    if shift:
-        # For the shiftable build, we link twice to resolve some addresses that gnu ld can't figure out all in one go.
-        ninja.rule(
-            "ld",
-            description="link($version) $out",
-            command=f"{ld} $$(tools/build/ld/multilink_calc.py $version hardcode) {ld_args} && \
-                      {ld} $$(tools/build/ld/multilink_calc.py $version calc) {ld_args}",
-        )
-    else:
-        ninja.rule(
-            "ld",
-            description="link($version) $out",
-            command=f"{ld} {ld_args}",
-        )
+    ninja.rule(
+        "ld",
+        description="link($version) $out",
+        command=f"{ld} {ld_args}",
+    )
 
     ninja.rule(
         "shape_ld",
@@ -167,13 +160,13 @@ def write_ninja_rules(
     ninja.rule(
         "cc_272",
         description="cc_272 $in",
-        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && mips-linux-gnu-objcopy -N $in $out'",
+        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && {cross}objcopy -N $in $out'",
     )
 
     ninja.rule(
         "cc_egcs",
         description="cc_egcs $in",
-        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && mips-linux-gnu-objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
+        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
     )
 
     ninja.rule(
@@ -187,13 +180,13 @@ def write_ninja_rules(
     ninja.rule(
         "dead_cc_fix",
         description="dead_cc_fix $in",
-        command=f"mips-linux-gnu-objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
+        command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
     ninja.rule(
         "bin",
         description="bin $in",
-        command=f"{ld} -r -b binary $in -o $out",
+        command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",
     )
 
     ninja.rule(
@@ -585,11 +578,18 @@ class Configure:
             "world_map",
         )
 
-        build(
-            self.build_path() / "include/recipes.inc.c",
-            [Path("src/recipes.yaml")],
-            "recipes",
-        )
+        if self.version == "jp":
+            build(
+                self.build_path() / "include/recipes.inc.c",
+                [Path("src/recipes_jp.yaml")],
+                "recipes",
+            )
+        else:
+            build(
+                self.build_path() / "include/recipes.inc.c",
+                [Path("src/recipes.yaml")],
+                "recipes",
+            )
 
         build(
             [
@@ -612,16 +612,28 @@ class Configure:
             },
         )
 
-        build(
-            [
-                self.build_path() / "include/battle/actor_types.inc.c",
-                self.build_path() / "include/battle/actor_types.h",
-            ],
-            [
-                Path("src/battle/actors.yaml"),
-            ],
-            "actor_types",
-        )
+        if self.version == "jp":
+            build(
+                [
+                    self.build_path() / "include/battle/actor_types.inc.c",
+                    self.build_path() / "include/battle/actor_types.h",
+                ],
+                [
+                    Path("src/battle/actors_jp.yaml"),
+                ],
+                "actor_types",
+            )
+        else:
+            build(
+                [
+                    self.build_path() / "include/battle/actor_types.inc.c",
+                    self.build_path() / "include/battle/actor_types.h",
+                ],
+                [
+                    Path("src/battle/actors.yaml"),
+                ],
+                "actor_types",
+            )
 
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
 
@@ -822,6 +834,44 @@ class Configure:
                                 type="data",
                                 define=True,
                             )
+                        elif seg.type == "pm_charset":
+                            rasters = []
+                            entry = seg.get_linker_entries()[0]
+
+                            for src_path in entry.src_paths:
+                                out_path = self.build_path() / seg.dir / seg.name / (src_path.stem + ".bin")
+                                build(
+                                    out_path,
+                                    [src_path],
+                                    "pigment",
+                                    variables={
+                                        "img_type": "ci4",
+                                        "img_flags": "",
+                                    },
+                                )
+                                rasters.append(out_path)
+
+                            build(entry.object_path.with_suffix(""), rasters, "charset")
+                            build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
+                        elif seg.type == "pm_charset_palettes":
+                            palettes = []
+                            entry = seg.get_linker_entries()[0]
+
+                            for src_path in entry.src_paths:
+                                out_path = self.build_path() / seg.dir / seg.name / "palette" / (src_path.stem + ".bin")
+                                build(
+                                    out_path,
+                                    [src_path],
+                                    "pigment",
+                                    variables={
+                                        "img_type": "palette",
+                                        "img_flags": "",
+                                    },
+                                )
+                                palettes.append(out_path)
+
+                            build(entry.object_path.with_suffix(""), palettes, "charset_palettes")
+                            build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
                 build(entry.object_path, entry.src_paths, "bin")
             elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
@@ -1140,42 +1190,6 @@ class Configure:
 
                 # combine
                 build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_charset":
-                rasters = []
-
-                for src_path in entry.src_paths:
-                    out_path = self.build_path() / seg.dir / seg.name / (src_path.stem + ".bin")
-                    build(
-                        out_path,
-                        [src_path],
-                        "pigment",
-                        variables={
-                            "img_type": "ci4",
-                            "img_flags": "",
-                        },
-                    )
-                    rasters.append(out_path)
-
-                build(entry.object_path.with_suffix(""), rasters, "charset")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_charset_palettes":
-                palettes = []
-
-                for src_path in entry.src_paths:
-                    out_path = self.build_path() / seg.dir / seg.name / "palette" / (src_path.stem + ".bin")
-                    build(
-                        out_path,
-                        [src_path],
-                        "pigment",
-                        variables={
-                            "img_type": "palette",
-                            "img_flags": "",
-                        },
-                    )
-                    palettes.append(out_path)
-
-                build(entry.object_path.with_suffix(""), palettes, "charset_palettes")
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif seg.type == "pm_sprite_shading_profiles":
                 header_path = str(self.build_path() / "include/sprite/sprite_shading_profiles.h")

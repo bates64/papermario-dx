@@ -11,9 +11,12 @@
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/WorldKoopatrol.h"
 #include "sprite/npc/HammerBros.h"
-
-//TODO memory layout?
-#define PLAYER_ACTION_VRAM_DEF texture_memory_VRAM_END
+#ifdef SHIFT
+extern Addr world_action_CLASS_VRAM;
+#define PLAYER_ACTION_VRAM_DEF world_action_CLASS_VRAM
+#else
+#define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
+#endif
 
 void* LastLoadedActionOffset;
 s32 PeachDisguiseReapplyDelay;
