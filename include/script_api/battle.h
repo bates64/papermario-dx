@@ -377,19 +377,5 @@ extern EvtScript Rumble_Unused_1;
 extern EvtScript Rumble_Unused_2;
 extern EvtScript Rumble_Unused_3;
 extern EvtScript Rumble_Unused_4;
-extern EvtScript EVS_BattleCam_Reset;
-extern EvtScript EVS_BattleCam_Interrupt;
-extern EvtScript EVS_BattleCam_ResetNeutral;
-extern EvtScript EVS_BattleCam_ViewEnemies;
-extern EvtScript EVS_BattleCam_ViewEnemies_MaintainY;
-extern EvtScript EVS_BattleCam_UnkF_Skippable;
-extern EvtScript EVS_BattleCam_UnkG_Skippable;
-extern EvtScript EVS_BattleCam_FocusGoal;
-extern EvtScript EVS_BattleCam_FocusActor;
-extern EvtScript EVS_BattleCam_SimpleLerp_Skippable;
-extern EvtScript EVS_BattleCam_FollowActorY;
-extern EvtScript EVS_BattleCam_FollowActorPos;
-extern EvtScript EVS_BattleCam_UnkM_Skippable;
-extern EvtScript EVS_BattleCam_SimpleLerp_Unskippable;
 
 #endif
