@@ -274,7 +274,7 @@ EvtScript N(EVS_TakeTurn) = {
 EvtScript N(EVS_Attack_SlamFist) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
-    Call(SetBattleCamZoom, 150)
+    Call(SetBattleCamDist, 150)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Set(LVar1, ANIM_BattleTubba_Anim06)
@@ -340,7 +340,7 @@ EvtScript N(EVS_Attack_SlamFist) = {
     EndIf
     Call(EnemyDamageTarget, ACTOR_SELF, LVarF, 0, 0, 0, DMG_FIST_POUND, BS_FLAGS1_TRIGGER_EVENTS)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
-    Call(SetBattleCamZoom, 200)
+    Call(SetBattleCamDist, 200)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(MoveBattleCamOver, 30)
@@ -364,7 +364,7 @@ EvtScript N(EVS_Attack_SlamFist) = {
 EvtScript N(EVS_Attack_BodySlam) = {
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
-    Call(SetBattleCamZoom, 150)
+    Call(SetBattleCamDist, 150)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Set(LVar1, ANIM_BattleTubba_Anim06)
@@ -447,7 +447,7 @@ EvtScript N(EVS_Attack_BodySlam) = {
     EndIf
     Call(EnemyDamageTarget, ACTOR_SELF, LVarF, 0, 0, 0, DMG_BODY_SLAM, BS_FLAGS1_TRIGGER_EVENTS)
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
-    Call(SetBattleCamZoom, 200)
+    Call(SetBattleCamDist, 200)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(MoveBattleCamOver, 30)

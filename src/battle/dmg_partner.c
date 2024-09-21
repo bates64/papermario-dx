@@ -1,7 +1,6 @@
 #include "battle/battle.h"
 #include "script_api/battle.h"
 #include "effects.h"
-#include "dx/debug_menu.h"
 
 s32 dispatch_damage_event_partner_1(s32, s32);
 

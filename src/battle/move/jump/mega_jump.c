@@ -46,7 +46,7 @@ EvtScript N(EVS_PlayQuakeFX) = {
 };
 
 EvtScript N(EVS_UseMove_Basic) = {
-    ExecWait(N(EVS_JumpSupport_InitCommand))
+    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
         ExecWait(N(EVS_JumpSupport_Miss))
@@ -65,16 +65,16 @@ EvtScript N(EVS_UseMove_Basic) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_E))
+            ExecWait(N(EVS_JumpSupport_Rebound))
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_F))
+            ExecWait(N(EVS_JumpSupport_WeakRebound))
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_UseMove_Super) = {
-    ExecWait(N(EVS_JumpSupport_InitCommand))
+    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
         ExecWait(N(EVS_JumpSupport_Miss))
@@ -93,16 +93,16 @@ EvtScript N(EVS_UseMove_Super) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_E))
+            ExecWait(N(EVS_JumpSupport_Rebound))
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_F))
+            ExecWait(N(EVS_JumpSupport_WeakRebound))
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_UseMove_Ultra) = {
-    ExecWait(N(EVS_JumpSupport_InitCommand))
+    ExecWait(N(EVS_JumpSupport_ApproachAndJump))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, 1, 0)
     IfEq(LVar0, HIT_RESULT_MISS)
         ExecWait(N(EVS_JumpSupport_Miss))
@@ -121,9 +121,9 @@ EvtScript N(EVS_UseMove_Ultra) = {
     EndSwitch
     Switch(LVar0)
         CaseGt(HIT_RESULT_HIT)
-            ExecWait(N(EVS_JumpSupport_E))
+            ExecWait(N(EVS_JumpSupport_Rebound))
         CaseDefault
-            ExecWait(N(EVS_JumpSupport_F))
+            ExecWait(N(EVS_JumpSupport_WeakRebound))
     EndSwitch
     Return
     End

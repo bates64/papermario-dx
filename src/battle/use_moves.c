@@ -15,7 +15,7 @@ extern EvtScript battle_move_auto_smash_EVS_UseMove;
 extern EvtScript battle_move_power_smash_EVS_UseMove;
 extern EvtScript battle_move_super_smash_EVS_UseMove;
 extern EvtScript battle_move_mega_smash_EVS_UseMove;
-extern EvtScript battle_move_quake_hammer_EVS_UseMove0;
+extern EvtScript battle_move_quake_hammer_EVS_UseMove;
 extern EvtScript battle_move_power_quake_EVS_UseMove;
 extern EvtScript battle_move_mega_quake_EVS_UseMove;
 extern EvtScript battle_move_hammer_throw_EVS_UseMove;
@@ -56,7 +56,7 @@ BattleMoveEntry gMoveScriptTable[] = {
     [MOVE_FIRST_STRIKE_HAMMER]  BTL_MOVE(hammer_attack, EVS_FirstStrike),
     [MOVE_BERSERKER_HAMMER]     BTL_MOVE(hammer_attack, EVS_UseBerserker),
     [MOVE_SPIN_SMASH]           BTL_MOVE(spin_smash, EVS_UseMove),
-    [MOVE_QUAKE_HAMMER]         BTL_MOVE(quake_hammer, EVS_UseMove0),
+    [MOVE_QUAKE_HAMMER]         BTL_MOVE(quake_hammer, EVS_UseMove),
     [MOVE_D_DOWN_POUND]         BTL_MOVE(d_down_pound, EVS_UseMove),
     [MOVE_SMASH_CHARGE0]        BTL_MOVE(hammer_charge_0, EVS_UseMove0),
     [MOVE_UNUSED_HAMMER_0C]     BTL_MOVE(hammer_charge_0, EVS_UseMove1),

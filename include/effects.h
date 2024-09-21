@@ -2535,7 +2535,7 @@ typedef union {
     struct GatherMagicFXData*           gatherMagic;
     struct AttackResultTextFXData*      attackResultText;
     struct SmallGoldSparkleFXData*      smallGoldSparkle;
-    struct ShockOverlayFXData*  flashingBoxShockwave;
+    struct ShockOverlayFXData*          flashingBoxShockwave;
     struct BalloonFXData*               balloon;
     struct FloatingRockFXData*          floatingRock;
     struct ChompDropFXData*             chompDrop;

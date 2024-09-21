@@ -6,7 +6,7 @@
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-extern EvtScript N(EVS_802A3168);
+extern EvtScript N(EVS_UseMove_Impl);
 
 EvtScript N(EVS_UseMove) = {
     Call(ShowActionHud, TRUE)
@@ -16,23 +16,23 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 80)
             Set(LVarE, 2)
             Set(LVarF, 4)
-            ExecWait(N(EVS_802A3168))
+            ExecWait(N(EVS_UseMove_Impl))
         CaseEq(1)
             Set(LVarD, 80)
             Set(LVarE, 2)
             Set(LVarF, 4)
-            ExecWait(N(EVS_802A3168))
+            ExecWait(N(EVS_UseMove_Impl))
         CaseEq(2)
             Set(LVarD, 80)
             Set(LVarE, 2)
             Set(LVarF, 4)
-            ExecWait(N(EVS_802A3168))
+            ExecWait(N(EVS_UseMove_Impl))
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_802A3168) = {
+EvtScript N(EVS_UseMove_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
@@ -104,10 +104,10 @@ EvtScript N(EVS_802A3168) = {
     EndSwitch
     Call(GetPlayerActionSuccess, LVar0)
     IfGt(LVar0, FALSE)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_2E)
+        Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_QUAKE)
         Call(MoveBattleCamOver, 5)
     Else
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_2E)
+        Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_QUAKE)
         Call(MoveBattleCamOver, 50)
     EndIf
     Call(GetMenuSelection, LVar0, LVar1, LVar2)

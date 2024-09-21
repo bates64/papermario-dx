@@ -146,7 +146,7 @@ EvtScript N(EVS_Move_Charge) = {
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetActorVar, ACTOR_SELF, AVAR_IsCharged, LVar0)
     IfEq(LVar0, 0)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_0E)
+        Call(UseBattleCamPreset, BTL_CAM_ACTOR)
         Call(BattleCamTargetActor, ACTOR_SELF)
         Call(MoveBattleCamOver, 20)
         Wait(20)

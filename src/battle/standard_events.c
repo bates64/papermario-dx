@@ -1848,7 +1848,7 @@ EvtScript EVS_Enemy_SpinSmash_HitNext = {
     Label(10)
     ChildThread
         Wait(20)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_04)
+        Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
     EndChildThread
     Call(SetActorJumpGravity, ACTOR_SELF, Float(0.1))
     Call(SetActorSpeed, ACTOR_SELF, Float(6.0))

@@ -454,7 +454,7 @@ EvtScript N(EVS_TakeTurn_Flying) = {
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_05)
+    Call(UseBattleCamPreset, BTL_CAM_ACTOR_TARGET_MIDPOINT)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetAnimation, ACTOR_SELF, PRT_FLYING, ANIM_ParaTroopa_Dark_Run)

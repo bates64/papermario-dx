@@ -188,39 +188,36 @@ void N(update)(void) {
             sfx_adjust_env_sound_params(SOUND_LOOP_CHARGE_BAR, 0, 0, battleStatus->actionQuality * 12);
 
             switch (partnerActor->actorBlueprint->level) {
-                case 0:
+                case PARTNER_RANK_NORMAL:
                     if (battleStatus->actionQuality >= D_802A99E4_42ED84[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
 
                     if (battleStatus->unk_85 > 0) {
-                        s32 index = battleStatus->unk_85 - 1;
-                        if (battleStatus->actionQuality < D_802A99E4_42ED84[index]) {
+                        if (battleStatus->actionQuality < D_802A99E4_42ED84[battleStatus->unk_85 - 1]) {
                             battleStatus->unk_85--;
                         }
                     }
                     break;
-                case 1:
+                case PARTNER_RANK_SUPER:
                     if (battleStatus->actionQuality >= D_802A99F4_42ED94[battleStatus->unk_85]) {
                         battleStatus->unk_85++;
                     }
 
                     if (battleStatus->unk_85 > 0) {
-                        s32 index = battleStatus->unk_85 - 1;
-                        if (battleStatus->actionQuality < D_802A99F4_42ED94[index]) {
+                        if (battleStatus->actionQuality < D_802A99F4_42ED94[battleStatus->unk_85 - 1]) {
                             battleStatus->unk_85--;
                         }
                     }
                     break;
-                case 2:
+                case PARTNER_RANK_ULTRA:
                     if (actionCommandStatus->targetWeakness == 0) {
                         if (battleStatus->actionQuality >= D_802A9A08_42EDA8[battleStatus->unk_85]) {
                             battleStatus->unk_85++;
                         }
 
                         if (battleStatus->unk_85 > 0) {
-                            s32 index = battleStatus->unk_85 - 1;
-                            if (battleStatus->actionQuality < D_802A9A08_42EDA8[index]) {
+                            if (battleStatus->actionQuality < D_802A9A08_42EDA8[battleStatus->unk_85 - 1]) {
                                 battleStatus->unk_85--;
                             }
                         }
@@ -230,8 +227,7 @@ void N(update)(void) {
                         }
 
                         if (battleStatus->unk_85 > 0) {
-                            s32 index = battleStatus->unk_85 - 1;
-                            if (battleStatus->actionQuality < D_802A9A20_42EDC0[index]) {
+                            if (battleStatus->actionQuality < D_802A9A20_42EDC0[battleStatus->unk_85 - 1]) {
                                 battleStatus->unk_85--;
                             }
                         }

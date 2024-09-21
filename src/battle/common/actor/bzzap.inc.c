@@ -439,9 +439,9 @@ EvtScript N(EVS_SummonSwarmPart) = {
         EndIf
     Call(SetPartYaw, ACTOR_SELF, LVar9, 0)
     IfEq(LVar9, 2)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_08)
-        Call(SetBattleCamZoom, 400)
-        Call(SetBattleCamOffsetZ, 30)
+        Call(UseBattleCamPreset, BTL_CAM_ACTOR_SIMPLE)
+        Call(SetBattleCamDist, 400)
+        Call(SetBattleCamOffsetY, 30)
         Call(BattleCamTargetActor, ACTOR_PLAYER)
         Call(MoveBattleCamOver, 60)
     EndIf

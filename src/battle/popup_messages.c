@@ -957,8 +957,6 @@ void btl_update_message_popup(void* data) {
                     if ((actionCommandMode != ACTION_COMMAND_MODE_TUTORIAL)
                         || (gBattleStatus.flags1 & BS_FLAGS1_10000)
                     ) {
-                        s16* duration;
-
                         if (BattleMessage_CurBoxPosY < 192) {
                             if (!BattleMessage_BoxPosLocked) {
                                 BattleMessage_CurBoxPosY += 10;

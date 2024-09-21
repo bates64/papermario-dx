@@ -31,7 +31,7 @@ API_CALLABLE(N(SpawnChillOutFX)) {
     z = rand_int(50) - 25;
 
     fx_sparkles(FX_SPARKLES_4, x, y, z, 40.0f);
-    
+
     return ApiStatus_DONE2;
 }
 
@@ -121,7 +121,7 @@ EvtScript N(EVS_UsePower) = {
     ExecWait(N(EVS_StarPower_SpiritSummoned))
     Call(SetNpcAnimation, NPC_BTL_SPIRIT, ANIM_BattleMuskular_Shout)
     Wait(16)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_03)
+    Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(PlaySound, SOUND_CHILL_OUT)
     Call(InitTargetIterator)
     Label(10)
