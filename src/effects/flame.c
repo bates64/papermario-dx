@@ -51,7 +51,7 @@ FlamePreset FlamePresets[] = {
     },
 };
 
-s32 LastFlameRenderFrame;
+s32 LastFlameRenderFrame = 0;
 
 void flame_init(EffectInstance* effect);
 void flame_update(EffectInstance* effect);
