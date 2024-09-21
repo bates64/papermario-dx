@@ -758,7 +758,7 @@ typedef struct Camera {
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
     /* 0x018 */ f32 vfov;
-                struct {
+                union {
                     struct {
                         s16 zoomPercent;
                     } world;

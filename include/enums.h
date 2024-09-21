@@ -4793,7 +4793,7 @@ enum CameraControlType {
     CAM_CONTROL_CONSTRAIN_TO_LINE   = 2,
 
     // Follows the player using whatever yaw value the camera initially possessed.
-    CAM_CONTROL_FOLLOW_PLAYER        = 3,
+    CAM_CONTROL_FOLLOW_PLAYER       = 3,
 
     // Both position and yaw are fixed.
     CAM_CONTROL_FIXED_POS_AND_ORIENTATION       = 4,
