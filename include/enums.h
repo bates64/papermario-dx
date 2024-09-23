@@ -1810,7 +1810,7 @@ enum CamShakeModes {
 };
 
 // for use with SetBattleCamParam
-enum AuxCameraParams {
+enum BasicCameraParams {
     CAM_PARAM_SKIP_RECALC           = 1,
     CAM_PARAM_BOOM_LENGTH           = 2,
     CAM_PARAM_FOV_SCALE             = 3,
