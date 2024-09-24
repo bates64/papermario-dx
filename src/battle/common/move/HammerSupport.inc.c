@@ -6,7 +6,7 @@
 #include "world/common/todo/IsBerserkerEquipped.inc.c"
 #include "world/common/todo/ShouldMovesAutoSucceed.inc.c"
 
-EvtScript N(EVS_HammerSupport_A) = {
+EvtScript N(EVS_HammerSupport_SmashApproach) = {
     Call(InitTargetIterator)
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
@@ -21,7 +21,7 @@ EvtScript N(EVS_HammerSupport_A) = {
     End
 };
 
-EvtScript N(EVS_HammerSupport_B) = {
+EvtScript N(EVS_HammerSupport_QuakeApproach) = {
     Call(SetGoalPos, ACTOR_PLAYER, -33, 0, 0)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_ATTACK_APPROACH)
     Call(SetActorSpeed, ACTOR_PLAYER, Float(5.0))
@@ -31,7 +31,9 @@ EvtScript N(EVS_HammerSupport_B) = {
     End
 };
 
-EvtScript N(EVS_HammerSupport_C) = {
+// delay while player holds hammer on the ground before raising it
+// can be sped up by pre-emptively holding left
+EvtScript N(EVS_HammerSupport_BasicRaiseDelay) = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -62,7 +64,9 @@ EvtScript N(EVS_HammerSupport_C) = {
     End
 };
 
-EvtScript N(EVS_HammerSupport_D) = {
+// delay while player holds hammer on the ground before raising it
+// can be sped up by pre-emptively holding left
+EvtScript N(EVS_HammerSupport_SuperRaiseDelay) = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -93,7 +97,9 @@ EvtScript N(EVS_HammerSupport_D) = {
     End
 };
 
-EvtScript N(EVS_HammerSupport_E) = {
+// delay while player holds hammer on the ground before raising it
+// can be sped up by pre-emptively holding left
+EvtScript N(EVS_HammerSupport_UltraRaiseDelay) = {
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
     Set(LVar1, 0)
@@ -126,7 +132,7 @@ EvtScript N(EVS_HammerSupport_E) = {
 
 EvtScript N(EVS_HammerSupport_F) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(SetBattleCamOffsetZ, 8)
+    Call(SetBattleCamOffsetY, 8)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PullBack)
@@ -163,9 +169,9 @@ EvtScript N(EVS_HammerSupport_F) = {
     End
 };
 
-EvtScript N(EVS_Hammer_ReturnHome_A) = {
+EvtScript N(EVS_HammerSupport_ReturnHome_Success) = {
     Call(PlayerYieldTurn)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_04)
+    Call(UseBattleCamPreset, BTL_CAM_RETURN_HOME)
     Call(MoveBattleCamOver, 5)
     Call(func_802693F0)
     Wait(20)
@@ -197,9 +203,9 @@ EvtScript N(EVS_Hammer_ReturnHome_B) = {
     End
 };
 
-EvtScript N(EVS_Hammer_ReturnHome_C) = {
+EvtScript N(EVS_HammerSupport_ReturnHome_Miss) = {
     Call(PlayerYieldTurn)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_29)
+    Call(UseBattleCamPreset, BTL_CAM_PLAYER_MISTAKE)
     Call(func_802693F0)
     Wait(20)
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
@@ -217,13 +223,13 @@ EvtScript N(EVS_Hammer_ReturnHome_C) = {
 EvtScript N(EVS_UseBasicHammer) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_C))
+    ExecWait(N(EVS_HammerSupport_BasicRaiseDelay))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 0, 0, 0, 16)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(SetBattleCamOffsetZ, 8)
+    Call(SetBattleCamOffsetY, 8)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PullBack)
@@ -303,13 +309,13 @@ EvtScript N(EVS_UseBasicHammer) = {
 EvtScript N(EVS_UseSuperHammer) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_D))
+    ExecWait(N(EVS_HammerSupport_SuperRaiseDelay))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 0, 0, 0, BS_FLAGS1_INCLUDE_POWER_UPS)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(SetBattleCamOffsetZ, 8)
+    Call(SetBattleCamOffsetY, 8)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash2_PullBack)
@@ -372,13 +378,13 @@ EvtScript N(EVS_UseSuperHammer) = {
 EvtScript N(EVS_UseUltraHammer) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_E))
+    ExecWait(N(EVS_HammerSupport_UltraRaiseDelay))
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 0, 0, 0, BS_FLAGS1_INCLUDE_POWER_UPS)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(SetBattleCamOffsetZ, 8)
+    Call(SetBattleCamOffsetY, 8)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash3_PullBack)
@@ -442,12 +448,12 @@ EvtScript N(EVS_Hammer_UseBasicQuake) = {
     Call(ChooseNextTarget, ITER_LAST, LVar0)
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_B))
+    ExecWait(N(EVS_HammerSupport_QuakeApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_C))
+    ExecWait(N(EVS_HammerSupport_BasicRaiseDelay))
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(AddBattleCamZoom, 80)
+    Call(AddBattleCamDist, 80)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PullBack)
@@ -500,12 +506,12 @@ EvtScript N(EVS_Hammer_UseSuperQuake) = {
     Call(ChooseNextTarget, ITER_LAST, LVar0)
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_B))
+    ExecWait(N(EVS_HammerSupport_QuakeApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_D))
+    ExecWait(N(EVS_HammerSupport_SuperRaiseDelay))
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(AddBattleCamZoom, 80)
+    Call(AddBattleCamDist, 80)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash2_PullBack)
@@ -549,12 +555,12 @@ EvtScript N(EVS_Hammer_UseUltraQuake) = {
     Call(ChooseNextTarget, ITER_LAST, LVar0)
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
-    ExecWait(N(EVS_HammerSupport_B))
+    ExecWait(N(EVS_HammerSupport_QuakeApproach))
     Call(SetGoalToTarget, ACTOR_PLAYER)
     Call(AddGoalPos, ACTOR_PLAYER, 0, 0, 0)
-    ExecWait(N(EVS_HammerSupport_E))
+    ExecWait(N(EVS_HammerSupport_UltraRaiseDelay))
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_AIM_HAMMER)
-    Call(AddBattleCamZoom, 80)
+    Call(AddBattleCamDist, 80)
     Call(InitTargetIterator)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash3_PullBack)

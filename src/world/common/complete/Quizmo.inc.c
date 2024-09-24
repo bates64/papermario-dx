@@ -590,7 +590,7 @@ EvtScript N(EVS_Quizmo_SetQuizCamera) = {
     SetF(LVar0, Float(13.0))
     SetF(LVar1, Float(-10.0))
     Call(SetCamPitch, 0, LVar0, LVar1)
-    Call(PanToTarget, 0, 0, 1)
+    Call(PanToTarget, 0, 0, TRUE)
     Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     Return
     End
@@ -616,7 +616,7 @@ EvtScript N(EVS_Quizmo_OtherCamScript) = {
 
 EvtScript N(EVS_Quizmo_ResetCamera) = {
     Call(N(Quizmo_SetCamVfov), 0, QUIZ_ARRAY_SAVED_FOV)
-    Call(PanToTarget, 0, 0, 0)
+    Call(PanToTarget, 0, 0, FALSE)
     Return
     End
 };
@@ -1109,20 +1109,24 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
+#if VERSION_US || VERSION_IQUE
             IfEq(GB_CompletedQuizzes, 1)
                 Call(SetMessageText, Ref(MessageSingular), 1)
             Else
-#if VERSION_PAL
+                Call(SetMessageText, Ref(MessagePlural), 1)
+            EndIf
+#elif VERSION_PAL
+            IfEq(GB_CompletedQuizzes, 1)
+                Call(SetMessageText, Ref(MessageSingular), 1)
+            Else
                 Call(GetLanguage, LVar0)
                 IfEq(LVar0, LANGUAGE_DE)
                     Call(SetMessageText, Ref(MessagePlural_de), 1)
                 Else
                     Call(SetMessageText, Ref(MessagePlural), 1)
                 EndIf
-#else
-                Call(SetMessageText, Ref(MessagePlural), 1)
-#endif
             EndIf
+#endif
             Call(SpeakToPlayer, NPC_SELF, ANIM_ChuckQuizmo_Talk, ANIM_ChuckQuizmo_Idle, 0, MSG_MGM_000F)
         EndIf
         Set(LVar0, 1)

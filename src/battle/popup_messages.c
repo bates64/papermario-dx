@@ -4,33 +4,74 @@
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
 
-extern EntityModelScript EMS_BonkIcon;
+typedef struct BonkData {
+    /* 0x00 */ b32 alive;
+    /* 0x04 */ s32 entityModelIndex;
+    /* 0x08 */ Vec3f accel;
+    /* 0x14 */ Vec3f vel;
+    /* 0x20 */ s32 moveTime;
+    /* 0x24 */ s32 startupTime;
+    /* 0x28 */ f32 rotZ;
+    /* 0x2C */ f32 rotVelZ;
+    /* 0x30 */ f32 rotY;
+    /* 0x34 */ f32 scale;
+    /* 0x38 */ Vec3f pos;
+    /* 0x44 */ s32 holdTime;
+    /* 0x48 */ f32 alpha; // unused
+} BonkData; // size = 0x4C
 
+#if VERSION_JP
+extern s32* D_8028358C[];
+
+s32* D_8028358C_2[] = {
+    (s32*)D_8028358C, (s32*)D_8028358C, (s32*)D_8028358C
+};
+
+s8 D_8028374C_1BA13C[][4] = {
+    { 236, 0, 0, 0 }, { 204, 0, 0, 0 }, { 238, 0, 0, 0 }, { 248, 0, 0, 0 }, { 252, 0, 0, 0 },
+    { 252, 0, 0, 0 }, { 252, 0, 0, 0 }, { 252, 0, 0, 0 }, {   0, 0, 0, 0 }, {   0, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+    { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 }, { 248, 0, 0, 0 },
+};
+#else
  // all keyed by number of lines in the message (1 or 2)
 s16 BattleMessage_BoxSizesY[] = { 28, 40 };
 s16 BattleMessage_TextOffsetsY[] = { 0, -2 };
 s16 BattleMessage_BoxOffsetsY[] = { 0, -12 };
+#endif
 
-//TODO Vec3f[]
-f32 D_802835DC[] = {
-    0.0f, 4.5f, 0.0f,
-    1.0f, 4.0f, 0.0f,
-    2.0f, 3.0f, 0.0f,
-    3.0f, 2.0f, 0.0f,
-    3.5f, 1.0f, 0.0f,
-    4.0f, 0.0f, 0.0f,
-    4.5f, 0.0f, 0.0f,
-    5.0f, 0.0f, 0.0f,
-    4.5f, 0.0f, 0.0f,
-    4.0f, 0.0f, 0.0f,
-    3.5f, -1.0f, 0.0f,
-    3.0f, -2.0f, 0.0f,
-    2.0f, -3.0f, 0.0f,
-    1.0f, -4.0f, 0.0f,
-    0.0f, -4.5f, 0.0f,
+Vec3f BonkAnimAccel[] = {
+    { 0.0f,  4.5f, 0.0f },
+    { 1.0f,  4.0f, 0.0f },
+    { 2.0f,  3.0f, 0.0f },
+    { 3.0f,  2.0f, 0.0f },
+    { 3.5f,  1.0f, 0.0f },
+    { 4.0f,  0.0f, 0.0f },
+    { 4.5f,  0.0f, 0.0f },
+    { 5.0f,  0.0f, 0.0f },
+    { 4.5f,  0.0f, 0.0f },
+    { 4.0f,  0.0f, 0.0f },
+    { 3.5f, -1.0f, 0.0f },
+    { 3.0f, -2.0f, 0.0f },
+    { 2.0f, -3.0f, 0.0f },
+    { 1.0f, -4.0f, 0.0f },
+    { 0.0f, -4.5f, 0.0f },
 };
 
-Vec3f D_80283690[] = {
+Vec3f BonkAnimScale[] = {
     { 1.0f, 1.0f, 1.0f },
     { 0.8f, 0.8f, 0.8f },
     { 0.9f, 0.9f, 0.9f },
@@ -47,6 +88,8 @@ Vec3f D_80283690[] = {
     { 0.8f, 0.8f, 0.8f },
     { 0.9f, 0.9f, 0.9f },
 };
+
+extern EntityModelScript EMS_BonkIcon;
 
 EntityModelScript* BonkModelScripts[] = {
     NULL,
@@ -135,8 +178,13 @@ s32 BattleMessages[] = {
     [BTL_MSG_NO_JUMP_TARGET]        MSG_Menus_Battle_NoTarget_Jump,
     [BTL_MSG_NO_HAMMER_TARGET]      MSG_Menus_Battle_NoTarget_Hammer,
     [BTL_MSG_NO_ITEM_TARGET]        MSG_Menus_Battle_NoTarget_Item,
+#if VERSION_JP
+    [BTL_MSG_46]                    MSG_MENUS_00DB,
+    [BTL_MSG_47]                    MSG_MENUS_00DC,
+#else
     [BTL_MSG_46]                    MSG_NONE,
     [BTL_MSG_47]                    MSG_NONE,
+#endif
 
     // errors and warnings
     [BTL_MSG_CANT_SELECT_NOW]       MSG_Menus_Battle_CantSelectNow,
@@ -153,6 +201,11 @@ s32 BattleMessages[] = {
     [BTL_MSG_CANT_MOVE_UNUSED]      MSG_Menus_Battle_CantMove,
     [BTL_MSG_CANT_SELECT_NOW_ALT]   MSG_Menus_Battle_CantSelectNow,
 };
+
+#if VERSION_JP
+s32 D_80283B88_1BA578[] = { 1, 1, 1, 1, 1, 1, 1, 1 };
+s32 D_80283BA8_1BA598[] = { 0, 0, 0, 0, 1, 0, 0, 0 };
+#endif
 
 s32 bActorMessages[] = {
     MSG_Menus_Party_Mario,
@@ -181,7 +234,9 @@ BSS s16 HID_BattleMessage4;
 BSS b16 ActionCommandTipVisible;
 BSS b16 BattleMessage_BoxPosLocked;
 BSS s16 BattleMessage_CurBoxPosY;
+#if !VERSION_JP
 BSS s16 BattleMessage_CurBoxOffsetY;
+#endif
 
 extern HudScript HES_AimReticle;
 extern HudScript HES_AimTarget;
@@ -219,7 +274,7 @@ void btl_popup_messages_init(void) {
     for (i = 0; i < ARRAY_COUNT(popupMessages); i++) {
         PopupMessage* popup = &popupMessages[i];
         popup->active = FALSE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
     }
 }
 
@@ -228,9 +283,9 @@ void btl_popup_messages_delete(void) {
 
     for (i = 0; i < ARRAY_COUNT(popupMessages); i++) {
         PopupMessage* popup = &popupMessages[i];
-        if (popup->message != NULL) {
-            heap_free(popup->message);
-            popup->message = NULL;
+        if (popup->data.bonk != NULL) {
+            heap_free(popup->data.bonk);
+            popup->data.bonk = NULL;
         }
         popup->active = FALSE;
     }
@@ -284,126 +339,112 @@ PopupMessage* btl_create_popup(void) {
 }
 
 void free_popup(PopupMessage* popup) {
-    if (popup->message != NULL) {
-        heap_free(popup->message);
-        popup->message = NULL;
+    if (popup->data.bonk != NULL) {
+        heap_free(popup->data.bonk);
+        popup->data.bonk = NULL;
     }
     popup->active = FALSE;
 }
 
-void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 arg4, s32 arg5) {
+void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 startupTime, s32 animDir) {
     BattleStatus* battleStatus = &gBattleStatus;
     PopupMessage* popup;
-    Message* message;
-    EntityModelScript** modelScript;
-    f32 var_f20;
+    BonkData* bonkData;
+    f32 timescale;
     f32 baseScale;
-    f32* f1;
-    f32* f2;
-    f32* f3;
-    s32 arg5mod8;
-    s32 iMod8;
+    s32 bonkPosIdx;
+    b32 hasShortLifetime;
     s32 sign;
-    s32 cond;
-    s32 one;
-    s32 two;
     s32 i;
 
-    baseScale = 1.0f;
-    cond = FALSE;
-    var_f20 = 1.0f;
+    popup = btl_create_popup();
+    if (popup == NULL) {
+        // unable to create popup
+        return;
+    }
+
     if (numStars < 1) {
         numStars = 1;
-        cond = TRUE;
         baseScale = 0.4f;
-        var_f20 = 0.7f;
+        timescale = 0.7f;
+        hasShortLifetime = TRUE;
+    } else {
+        baseScale = 1.0f;
+        timescale = 1.0f;
+        hasShortLifetime = FALSE;
     }
 
     if (battleStatus->flags1 & (BS_FLAGS1_NICE_HIT | BS_FLAGS1_SUPER_HIT)) {
         baseScale *= 2.0;
     }
 
-    popup = btl_create_popup();
-    if (popup != NULL) {
+    if (animDir < 0) {
+        sign = -1;
+    } else {
         sign = 1;
-        if (arg5 < 0) {
-            arg5 = -arg5;
-            sign = -1;
+    }
+
+    animDir = abs(animDir) % 5;
+
+    battleStatus->unk_90 = 0;
+    popup->updateFunc = btl_bonk_update;
+    popup->renderWorldFunc = btl_bonk_render;
+    popup->unk_00 = FALSE;
+    popup->renderUIFunc = NULL;
+    popup->messageIndex = 1;
+    popup->active |= 0x10;
+    bonkData = popup->data.bonk = heap_malloc(numStars * sizeof(*popup->data.bonk));
+    ASSERT (popup->data.bonk != NULL);
+
+    for (i = 0; i < numStars; i++) {
+        bonkData->alive = TRUE;
+        bonkData->entityModelIndex = load_entity_model(BonkModelScripts[numStars]);
+        set_entity_model_flags(bonkData->entityModelIndex, ENTITY_MODEL_FLAG_HIDDEN);
+        bind_entity_model_setupGfx(bonkData->entityModelIndex, bonkData, btl_bonk_setup_gfx);
+        bonkData->pos.x = x;
+        bonkData->pos.y = y;
+        bonkData->pos.z = z;
+        bonkPosIdx = animDir % 8;
+        animDir++;
+
+        bonkData->accel.x = BonkAnimAccel[bonkPosIdx].x * timescale * sign ;
+        bonkData->accel.y = BonkAnimAccel[bonkPosIdx].y * timescale;
+        bonkData->accel.z = BonkAnimAccel[bonkPosIdx].z * timescale;
+        bonkData->vel.x = 2.0 * bonkData->accel.x;
+        bonkData->vel.y = 2.0 * bonkData->accel.y;
+        bonkData->vel.z = 2.0 * bonkData->accel.z;
+
+        bonkData->scale = BonkAnimScale[i % 8].x * baseScale;
+        bonkData->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
+        bonkData->rotZ = 0;
+        bonkData->rotVelZ = sign * 107;
+
+        bonkData->startupTime = startupTime;
+        bonkData->moveTime = 14;
+        bonkData->holdTime = 240;
+        if (hasShortLifetime) {
+            bonkData->holdTime = 10;
         }
 
-        while (TRUE) {
-            if (arg5 > 5) {
-                arg5 -= 5;
-            } else {
-                break;
-            }
-        }
-
-        battleStatus->unk_90 = 0;
-        popup->updateFunc = btl_bonk_update;
-        popup->renderWorldFunc = btl_bonk_render;
-        popup->unk_00 = FALSE;
-        popup->renderUIFunc = NULL;
-        popup->messageIndex = 1;
-        popup->active |= 0x10;
-        message = popup->message = heap_malloc(numStars * sizeof(*popup->message));
-        ASSERT (popup->message != NULL);
-
-        for (i = 0; i < numStars; i++, message++) {
-            modelScript = &BonkModelScripts[numStars];
-            message->unk_00 = TRUE;
-            message->entityModelIndex = load_entity_model(*modelScript);
-            set_entity_model_flags(message->entityModelIndex, ENTITY_MODEL_FLAG_HIDDEN);
-            bind_entity_model_setupGfx(message->entityModelIndex, message, btl_bonk_setup_gfx);
-            message->pos.x = x;
-            message->pos.y = y;
-            message->pos.z = z;
-            arg5mod8 = arg5 % 8;
-            arg5++;
-
-            one = 1;
-            two = 2;
-
-            f1 = &D_802835DC[arg5mod8 * 3];
-            f2 = &D_802835DC[arg5mod8 * 3 + one];
-            f3 = &D_802835DC[arg5mod8 * 3 + two];
-            message->vel.x = 2.0 * *f1 * sign * var_f20;
-            message->vel.y = 2.0 * *f2 * var_f20;
-            message->vel.z = 2.0 * *f3 * var_f20;
-            message->accel.x = *f1 * sign * var_f20;
-            message->accel.y = *f2 * var_f20;
-            message->accel.z = *f3 * var_f20;
-
-            iMod8 = (i % 8);
-            message->scale = D_80283690[iMod8].x * baseScale;
-            message->rotZ = 0;
-            message->rotVelZ = sign * 107;
-            message->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
-            message->appearTime = 14;
-            message->unk_24 = arg4;
-            message->deleteTime = 240;
-            if (cond) {
-                message->deleteTime = 10;
-            }
-            message->unk_48 = 255.0f;
-        }
+        bonkData->alpha = 255.0f;
+        bonkData++;
     }
 }
 
 void btl_bonk_update(void* data) {
     PopupMessage* popup = data;
-    Message* message = popup->message;
-    s32 found = FALSE;
+    BonkData* bonkData = popup->data.bonk;
+    s32 allDone = TRUE;
     s32 i;
 
-    for (i = 0; i < popup->messageIndex; i++, message++) {
-        if (message->unk_00) {
-            s32 modelIdx = message->entityModelIndex;
+    for (i = 0; i < popup->messageIndex; i++, bonkData++) {
+        if (bonkData->alive) {
+            s32 modelIdx = bonkData->entityModelIndex;
 
-            found = TRUE;
-            if (message->unk_24 != 0) {
-                message->unk_24--;
-                if (message->unk_24 == 0) {
+            allDone = FALSE;
+            if (bonkData->startupTime != 0) {
+                bonkData->startupTime--;
+                if (bonkData->startupTime == 0) {
                     clear_entity_model_flags(modelIdx, ENTITY_MODEL_FLAG_HIDDEN);
                 }
                 exec_entity_model_commandlist(modelIdx);
@@ -411,45 +452,45 @@ void btl_bonk_update(void* data) {
             }
 
             exec_entity_model_commandlist(modelIdx);
-            if (message->appearTime >= 0) {
-                message->pos.x += message->vel.x;
-                message->pos.y += message->vel.y;
-                message->pos.z += message->vel.z;
+            if (bonkData->moveTime >= 0) {
+                bonkData->pos.x += bonkData->vel.x;
+                bonkData->pos.y += bonkData->vel.y;
+                bonkData->pos.z += bonkData->vel.z;
             }
-            message->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
-            message->rotZ += message->rotVelZ;
-            message->rotZ = clamp_angle(message->rotZ);
-            message->rotVelZ *= 0.8;
-            if (message->appearTime < 10) {
-                message->accel.x *= 0.5;
-                message->accel.y *= 0.5;
-                message->accel.z *= 0.5;
-                message->vel.x = message->accel.x;
-                message->vel.y = message->accel.y;
-                message->vel.z = message->accel.z;
+            bonkData->rotY = clamp_angle(180.0f - gCameras[CAM_BATTLE].curYaw);
+            bonkData->rotZ += bonkData->rotVelZ;
+            bonkData->rotZ = clamp_angle(bonkData->rotZ);
+            bonkData->rotVelZ *= 0.8;
+            if (bonkData->moveTime < 10) {
+                bonkData->accel.x *= 0.5;
+                bonkData->accel.y *= 0.5;
+                bonkData->accel.z *= 0.5;
+                bonkData->vel.x = bonkData->accel.x;
+                bonkData->vel.y = bonkData->accel.y;
+                bonkData->vel.z = bonkData->accel.z;
             }
 
-            message->appearTime--;
-            if (message->appearTime < 0) {
-                message->deleteTime--;
-                if (message->deleteTime < 0) {
+            bonkData->moveTime--;
+            if (bonkData->moveTime < 0) {
+                bonkData->holdTime--;
+                if (bonkData->holdTime < 0) {
                     free_entity_model_by_index(modelIdx);
-                    message->unk_00 = FALSE;
+                    bonkData->alive = FALSE;
                 }
             }
         }
     }
 
-    if (!found) {
-        heap_free(popup->message);
-        popup->message = NULL;
+    if (allDone) {
+        heap_free(popup->data.bonk);
+        popup->data.bonk = NULL;
         free_popup(popup);
     }
 }
 
 void btl_bonk_render(void* data) {
     PopupMessage* popup = data;
-    Message* message = popup->message;
+    BonkData* bonkData = popup->data.bonk;
     Matrix4f sp18;
     Matrix4f mtxRotX;
     Matrix4f mtxRotY;
@@ -461,32 +502,30 @@ void btl_bonk_render(void* data) {
     Mtx sp218;
     s32 i;
 
-    for (i = 0; i < popup->messageIndex; i++, message++) {
-        if (message->unk_00) {
-            if (message->unk_24 != 0) {
+    for (i = 0; i < popup->messageIndex; i++, bonkData++) {
+        if (bonkData->alive) {
+            if (bonkData->startupTime != 0) {
                 break;
             } else {
-                s32 modelIdx = message->entityModelIndex;
-
-                guTranslateF(sp18, message->pos.x, message->pos.y, message->pos.z);
+                guTranslateF(sp18, bonkData->pos.x, bonkData->pos.y, bonkData->pos.z);
                 guRotateF(mtxRotX, 0.0f, 1.0f, 0.0f, 0.0f);
-                guRotateF(mtxRotY, message->rotY, 0.0f, 1.0f, 0.0f);
-                guRotateF(mtxRotZ, message->rotZ, 0.0f, 0.0f, 1.0f);
-                guScaleF(mtxScale, message->scale, message->scale, message->scale);
+                guRotateF(mtxRotY, bonkData->rotY, 0.0f, 1.0f, 0.0f);
+                guRotateF(mtxRotZ, bonkData->rotZ, 0.0f, 0.0f, 1.0f);
+                guScaleF(mtxScale, bonkData->scale, bonkData->scale, bonkData->scale);
                 guMtxCatF(mtxRotZ, mtxRotX, sp158);
                 guMtxCatF(sp158, mtxRotY, sp118);
                 guMtxCatF(mtxScale, sp118, sp158);
                 guMtxCatF(sp158, sp18, sp198);
                 guMtxF2L(sp198, &sp218);
-                draw_entity_model_A(modelIdx, &sp218);
+                draw_entity_model_A(bonkData->entityModelIndex, &sp218);
             }
         }
     }
 }
 
 void btl_bonk_setup_gfx(void* data) {
-    Message* message = data;
-    s32 alphaAmt = message->deleteTime;
+    BonkData* bonkData = data;
+    s32 alphaAmt = bonkData->holdTime;
 
     if (alphaAmt > 10) {
         alphaAmt = 10;
@@ -501,14 +540,14 @@ void btl_bonk_cleanup(void) {
         PopupMessage* popup = &popupMessages[i];
 
         if (popup->active != 0 && (popup->active & 0x10)) {
-            Message* message = popup->message;
+            BonkData* bonkData = popup->data.bonk;
             s32 j;
 
-            for (j = 0; j < popup->messageIndex; j++, message++) {
-                if (message->unk_00) {
-                    message->unk_24 = 0;
-                    message->appearTime = 1;
-                    message->deleteTime = 20;
+            for (j = 0; j < popup->messageIndex; j++, bonkData++) {
+                if (bonkData->alive) {
+                    bonkData->startupTime = 0;
+                    bonkData->moveTime = 1;
+                    bonkData->holdTime = 20;
                 }
             }
         }
@@ -520,11 +559,11 @@ API_CALLABLE(ShowImmuneBonk) {
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
-    s32 arg4 = evt_get_variable(script, *args++);
-    s32 arg5 = evt_get_variable(script, *args++);
+    s32 numStars = evt_get_variable(script, *args++);
+    s32 startupTime = evt_get_variable(script, *args++);
     s32 arg6 = evt_get_variable(script, *args++);
 
-    show_immune_bonk(x, y, z, arg4, arg5, arg6);
+    show_immune_bonk(x, y, z, numStars, startupTime, arg6);
     return ApiStatus_DONE2;
 }
 
@@ -546,13 +585,15 @@ void btl_show_battle_message(s32 messageIndex, s32 duration) {
         popup->duration = duration;
         popup->showMsgState = BTL_MSG_STATE_INIT;
         popup->needsInit = TRUE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
         BattlePopupMessageVar = 0;
         bPopupMessage = popup;
         ActionCommandTipVisible = FALSE;
         BattleMessage_BoxPosLocked = FALSE;
         BattleMessage_CurBoxPosY = 0;
+#if !VERSION_JP
         BattleMessage_CurBoxOffsetY = 0;
+#endif
     }
 }
 
@@ -569,13 +610,15 @@ void btl_show_variable_battle_message(s32 messageIndex, s32 duration, s32 varVal
         popup->duration = duration;
         popup->showMsgState = BTL_MSG_STATE_INIT;
         popup->needsInit = TRUE;
-        popup->message = NULL;
+        popup->data.bonk = NULL;
         BattlePopupMessageVar = varValue;
         bPopupMessage = popup;
         ActionCommandTipVisible = FALSE;
         BattleMessage_BoxPosLocked = FALSE;
         BattleMessage_CurBoxPosY = 0;
+#if !VERSION_JP
         BattleMessage_CurBoxOffsetY = 0;
+#endif
     }
 }
 
@@ -869,7 +912,7 @@ void btl_update_message_popup(void* data) {
                 case BTL_MSG_STATE_ACTION_TIP_DELAY:
                     if (gBattleStatus.flags1 & BS_FLAGS1_10000) {
                         gBattleStatus.flags1 &= ~BS_FLAGS1_4000;
-                        set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
+                        set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
                         popup->duration = 0;
                         popup->showMsgState = BTL_MSG_STATE_ACTION_TIP_DISPOSE;
                         break;
@@ -878,7 +921,7 @@ void btl_update_message_popup(void* data) {
                     if (!(gBattleStatus.flags1 & BS_FLAGS1_4000)
                         && (actionCommandMode != ACTION_COMMAND_MODE_TUTORIAL)
                     ) {
-                        set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
+                        set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
                         switch (popup->messageIndex) {
                             case BTL_MSG_ACTION_TIP_MASH_BUTTON:
                                 hud_element_set_script(HID_BattleMessage1, &HES_MashAButton);
@@ -958,8 +1001,6 @@ void btl_update_message_popup(void* data) {
                     if ((actionCommandMode != ACTION_COMMAND_MODE_TUTORIAL)
                         || (gBattleStatus.flags1 & BS_FLAGS1_10000)
                     ) {
-                        s16* duration;
-
                         if (BattleMessage_CurBoxPosY < 192) {
                             if (!BattleMessage_BoxPosLocked) {
                                 BattleMessage_CurBoxPosY += 10;
@@ -971,7 +1012,11 @@ void btl_update_message_popup(void* data) {
                             }
                         }
 
-                        gWindows[WINDOW_ID_BATTLE_POPUP].pos.y = BattleMessage_CurBoxPosY + BattleMessage_CurBoxOffsetY;
+#if VERSION_JP
+                        gWindows[WIN_BTL_POPUP].pos.y = BattleMessage_CurBoxPosY;
+#else
+                        gWindows[WIN_BTL_POPUP].pos.y = BattleMessage_CurBoxPosY + BattleMessage_CurBoxOffsetY;
+#endif
 
                         if (popup->duration == -1) {
                             break;
@@ -1119,7 +1164,7 @@ void btl_update_message_popup(void* data) {
             break;
     }
     if (shouldDisposeWindow) {
-        set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_HIDE);
+        set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_HIDE);
         bPopupMessage = NULL;
         free_popup(popup);
     }
@@ -1148,16 +1193,53 @@ void btl_update_message_popup(void* data) {
 #define TIP_X_MTA2 55
 #define TIP_X_MTA3 108
 #define TIP_X_BF_RD 66
+#define TIP_Y_HLT2 31
 #define TIP_Y_HLA2 17
 #define TIP_Y_PBS1 14
 #define TIP_Y_PBS2 14
 #define TIP_Y_PBS3 14
 #define TIP_Y_PWT1 14
+#define TIP_Y_HTR1 31
 #define TIP_Y_MTA1 14
 #define TIP_Y_MTA2 32
 #define TIP_Y_BF_RD 14
 #define TIP_SCALE1 0.6f
 #define TIP_SCALE2 0.7f
+#elif VERSION_JP
+#define TIP_X_PRL 115
+#define TIP_X_HLT1 29
+#define TIP_X_HLT2 129
+#define TIP_X_PBST 126
+#define TIP_X_MB 28
+#define TIP_X_ML 28
+#define TIP_X_HLA1 29
+#define TIP_X_HLA2 128
+#define TIP_X_PBS1 111
+#define TIP_X_PBS2 88
+#define TIP_X_PBS3 134
+#define TIP_X_PWT1 28
+#define TIP_X_PWT2 160
+#define TIP_X_MB1 20
+#define TIP_X_MB2 43
+#define TIP_X_HTT 29
+#define TIP_X_HTR1 126
+#define TIP_X_HTR2 28
+#define TIP_X_MTA1 29
+#define TIP_X_MTA2 153
+#define TIP_X_MTA3 68
+#define TIP_X_BF_RD 29
+#define TIP_Y_HLT2 13
+#define TIP_Y_HLA2 15
+#define TIP_Y_PBS1 13
+#define TIP_Y_PBS2 13
+#define TIP_Y_PBS3 13
+#define TIP_Y_PWT1 13
+#define TIP_Y_HTR1 13
+#define TIP_Y_MTA1 13
+#define TIP_Y_MTA2 15
+#define TIP_Y_BF_RD 13
+#define TIP_SCALE1 0.8f
+#define TIP_SCALE2 0.8f
 #else
 #define TIP_X_PRL 65
 #define TIP_X_HLT1 55
@@ -1181,11 +1263,13 @@ void btl_update_message_popup(void* data) {
 #define TIP_X_MTA2 210
 #define TIP_X_MTA3 56
 #define TIP_X_BF_RD 64
+#define TIP_Y_HLT2 31
 #define TIP_Y_HLA2 32
 #define TIP_Y_PBS1 13
 #define TIP_Y_PBS2 13
 #define TIP_Y_PBS3 13
 #define TIP_Y_PWT1 13
+#define TIP_Y_HTR1 31
 #define TIP_Y_MTA1 13
 #define TIP_Y_MTA2 15
 #define TIP_Y_BF_RD 13
@@ -1199,8 +1283,13 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
     s32 msgLinesIdx;
     s32 opacity;
 
+#if VERSION_JP
+    x += 11 + D_8028374C_1BA13C[popup->messageIndex][2];
+    y += 6 + D_8028374C_1BA13C[popup->messageIndex][3];
+#else
     x += 15;
     y += 6;
+#endif
 
     switch (popup->messageIndex) {
         case BTL_MSG_MERLEE_ATK_UP:
@@ -1246,12 +1335,17 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
         case BTL_MSG_47:
         case BTL_MSG_CANT_SELECT_NOW:
         case BTL_MSG_CANT_SWITCH:
+#if VERSION_JP
+        case BTL_MSG_CANT_MOVE:
+#endif
         case BTL_MSG_CANT_SWITCH_UNUSED:
         case BTL_MSG_CANT_MOVE_UNUSED:
         case BTL_MSG_CANT_SELECT_NOW_ALT:
             messageID = BattleMessages[popup->messageIndex];
+#if !VERSION_JP
             msgLinesIdx = get_msg_lines(messageID) - 1;
             y += BattleMessage_TextOffsetsY[msgLinesIdx];
+#endif
             draw_msg(messageID, x, y, 255, MSG_PAL_0F, 0);
             break;
         case BTL_MSG_CHARGE_HAMMER:
@@ -1265,11 +1359,14 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
         case BTL_MSG_ENEMY_TRANSPARENT:
         case BTL_MSG_ENEMY_CHARGED:
             messageID = BattleMessages[popup->messageIndex];
+#if !VERSION_JP
             msgLinesIdx = get_msg_lines(messageID) - 1;
             y += BattleMessage_TextOffsetsY[msgLinesIdx];
+#endif
             set_message_int_var(BattlePopupMessageVar, 0);
             draw_msg(messageID, x, y, 255, MSG_PAL_0F, 0);
             break;
+#if !VERSION_JP
         case BTL_MSG_CANT_MOVE:
             messageID = BattleMessages[popup->messageIndex];
             msgLinesIdx = get_msg_lines(messageID) - 1;
@@ -1277,6 +1374,7 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
             set_message_text_var(bActorMessages[BattlePopupMessageVar], 0);
             draw_msg(messageID, x, y, 255, MSG_PAL_0F, 0);
             break;
+#endif
         case BTL_MSG_HAMMER_DISABLED_1:
         case BTL_MSG_HAMMER_DISABLED_2:
         case BTL_MSG_HAMMER_DISABLED_3:
@@ -1321,8 +1419,10 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
             x -= 11;
             y -= 6;
             messageID = BattleMessages[popup->messageIndex];
+#if !VERSION_JP
             msgLinesIdx = get_msg_lines(messageID) - 1;
             y += BattleMessage_TextOffsetsY[msgLinesIdx];
+#endif
             draw_msg(messageID, x + 11, y + 6, opacity, MSG_PAL_0F, 0);
 
             switch (popup->messageIndex) {
@@ -1338,7 +1438,7 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage1, opacity);
                     hud_element_draw_clipped(HID_BattleMessage1);
 
-                    hud_element_set_render_pos(HID_BattleMessage2, x + TIP_X_HLT2, y + 31);
+                    hud_element_set_render_pos(HID_BattleMessage2, x + TIP_X_HLT2, y + TIP_Y_HLT2);
                     hud_element_set_alpha(HID_BattleMessage2, opacity);
                     hud_element_draw_clipped(HID_BattleMessage2);
                     break;
@@ -1371,6 +1471,35 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage2, opacity);
                     func_80144218(HID_BattleMessage2);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_UNUSED_1:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 23, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+
+                    hud_element_set_render_pos(HID_BattleMessage2, x + 46, y + 13);
+                    hud_element_set_scale(HID_BattleMessage2, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage2, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage2);
+
+                    hud_element_set_render_pos(HID_BattleMessage3, x + 69, y + 13);
+                    hud_element_set_scale(HID_BattleMessage3, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage3, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage3);
+
+                    hud_element_set_render_pos(HID_BattleMessage4, x + 92, y + 13);
+                    hud_element_set_scale(HID_BattleMessage4, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage4, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage4);
+                    break;
+                case BTL_MSG_ACTION_TIP_UNUSED_2:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 29, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.6f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+                    break;
+#endif
                 case BTL_MSG_ACTION_TIP_PRESS_BUTTONS_SHOWN:
                     hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_PBS1, y + TIP_Y_PBS1);
                     hud_element_set_scale(HID_BattleMessage1, 0.5f);
@@ -1387,6 +1516,14 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage3, opacity);
                     hud_element_draw_clipped(HID_BattleMessage3);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_NOT_USED_1:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 25, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.6f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+                    break;
+#endif
                 case BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING:
                     hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_PWT1, y + TIP_Y_PWT1);
                     hud_element_set_alpha(HID_BattleMessage1, opacity);
@@ -1397,6 +1534,19 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage2, opacity);
                     hud_element_draw_clipped(HID_BattleMessage2);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_NOT_USED_2:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 32, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+
+                    hud_element_set_render_pos(HID_BattleMessage2, x + 57, y + 13);
+                    hud_element_set_scale(HID_BattleMessage2, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage2, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage2);
+                    break;
+#endif
                 case BTL_MSG_ACTION_TIP_MASH_BOTH:
                     hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_MB1, y + 14);
                     hud_element_set_scale(HID_BattleMessage1, 0.5f);
@@ -1408,6 +1558,14 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage2, opacity);
                     hud_element_draw_clipped(HID_BattleMessage2);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_UNUSED_3:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 27, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+                    break;
+#endif
                 case BTL_MSG_ACTION_TIP_HOLD_THEN_TAP:
                     hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_HTT, y + 14);
                     hud_element_set_scale(HID_BattleMessage1, 0.5f);
@@ -1415,7 +1573,7 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_draw_clipped(HID_BattleMessage1);
                     break;
                 case BTL_MSG_ACTION_TIP_HOLD_THEN_RELEASE:
-                    hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_HTR1, y + 31);
+                    hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_HTR1, y + TIP_Y_HTR1);
                     hud_element_set_alpha(HID_BattleMessage1, opacity);
                     hud_element_draw_clipped(HID_BattleMessage1);
 
@@ -1440,6 +1598,14 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage3, opacity);
                     func_80144218(HID_BattleMessage3);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_UNUSED_4:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 126, y + 13);
+                    hud_element_set_scale(HID_BattleMessage1, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+                    break;
+#endif
                 case BTL_MSG_ACTION_TIP_BREAK_FREE:
                 case BTL_MSG_ACTION_TIP_REDUCE_DAMAGE:
                     hud_element_set_render_pos(HID_BattleMessage1, x + TIP_X_BF_RD, y + TIP_Y_BF_RD);
@@ -1447,6 +1613,14 @@ void btl_message_popup_draw_content(void* data, s32 x, s32 y) {
                     hud_element_set_alpha(HID_BattleMessage1, opacity);
                     hud_element_draw_clipped(HID_BattleMessage1);
                     break;
+#if VERSION_JP
+                case BTL_MSG_ACTION_TIP_NOT_USED_3:
+                    hud_element_set_render_pos(HID_BattleMessage1, x + 123, y + 14);
+                    hud_element_set_scale(HID_BattleMessage1, 0.5f);
+                    hud_element_set_alpha(HID_BattleMessage1, opacity);
+                    hud_element_draw_clipped(HID_BattleMessage1);
+                    break;
+#endif
             }
             break;
     }
@@ -1461,6 +1635,204 @@ void btl_show_message_popup(void* data) {
     s32 msgWidth;
     s32 height;
 
+#if VERSION_JP
+    switch (popup->messageIndex) {
+        case BTL_MSG_MERLEE_DONE:
+        case BTL_MSG_CANT_CHARGE:
+        case BTL_MSG_ENEMY_MISSED:
+        case BTL_MSG_STAR_POWER_RECHARGED:
+        case BTL_MSG_STAR_POWER_MAXED:
+        case BTL_MSG_STAR_POWER_FILLED:
+        case BTL_MSG_PARTNER_INJURED:
+        case BTL_MSG_CHARGE_GOOMBARIO:
+        case BTL_MSG_CHARGE_GOOMBARIO_MORE:
+        case BTL_MSG_WATER_BLOCK_BEGIN:
+        case BTL_MSG_WATER_BLOCK_END:
+        case BTL_MSG_CLOUD_NINE_BEGIN:
+        case BTL_MSG_CLOUD_NINE_END:
+        case BTL_MSG_TURBO_CHARGE_BEGIN:
+        case BTL_MSG_TURBO_CHARGE_END:
+        case BTL_MSG_CHILL_OUT_BEGIN:
+        case BTL_MSG_UNUSED_CLOUD_NINE:
+        case BTL_MSG_NO_JUMP_TARGET:
+        case BTL_MSG_NO_HAMMER_TARGET:
+        case BTL_MSG_NO_ITEM_TARGET:
+        case BTL_MSG_46:
+        case BTL_MSG_47:
+        case BTL_MSG_CANT_SELECT_NOW:
+        case BTL_MSG_CANT_SWITCH_UNUSED:
+        case BTL_MSG_CANT_MOVE_UNUSED:
+        case BTL_MSG_CANT_SELECT_NOW_ALT:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_MERLEE_ATK_UP:
+        case BTL_MSG_MERLEE_DEF_UP:
+        case BTL_MSG_MERLEE_EXP_UP:
+        case BTL_MSG_CANT_SWITCH:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                height = 45 + D_8028374C_1BA13C[popup->messageIndex][1];
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING:
+        case BTL_MSG_ACTION_TIP_HOLD_LEFT_TIMED:
+        case BTL_MSG_ACTION_TIP_PRESS_BEFORE_STRIKE:
+        case BTL_MSG_ACTION_TIP_MASH_BUTTON:
+        case BTL_MSG_ACTION_TIP_MASH_LEFT:
+        case BTL_MSG_ACTION_TIP_HOLD_LEFT_AIM:
+        case BTL_MSG_ACTION_TIP_UNUSED_1:
+        case BTL_MSG_ACTION_TIP_UNUSED_2:
+        case BTL_MSG_ACTION_TIP_PRESS_BUTTONS_SHOWN:
+        case BTL_MSG_ACTION_TIP_NOT_USED_1:
+        case BTL_MSG_ACTION_TIP_PRESS_WITH_TIMING:
+        case BTL_MSG_ACTION_TIP_NOT_USED_2:
+        case BTL_MSG_ACTION_TIP_MASH_BOTH:
+        case BTL_MSG_ACTION_TIP_UNUSED_3:
+        case BTL_MSG_ACTION_TIP_HOLD_THEN_TAP:
+        case BTL_MSG_ACTION_TIP_HOLD_THEN_RELEASE:
+        case BTL_MSG_ACTION_TIP_MOVE_TO_AIM:
+        case BTL_MSG_ACTION_TIP_UNUSED_4:
+        case BTL_MSG_ACTION_TIP_BREAK_FREE:
+        case BTL_MSG_ACTION_TIP_REDUCE_DAMAGE:
+        case BTL_MSG_ACTION_TIP_NOT_USED_3:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                posY = 192;
+                height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
+                    posY = 120;
+                    BattleMessage_BoxPosLocked = TRUE;
+                }
+                BattleMessage_CurBoxPosY = posY;
+
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
+                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                } else {
+                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW_DARKENED);
+                }
+            }
+            break;
+        case BTL_MSG_HAMMER_DISABLED_1:
+        case BTL_MSG_HAMMER_DISABLED_2:
+        case BTL_MSG_HAMMER_DISABLED_3:
+        case BTL_MSG_JUMP_DISABLED_1:
+        case BTL_MSG_JUMP_DISABLED_2:
+        case BTL_MSG_JUMP_DISABLED_3:
+        case BTL_MSG_ITEMS_DISABLED:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (55 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                height = 40 + D_8028374C_1BA13C[popup->messageIndex][1];
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_PLAYER_DAZED:
+        case BTL_MSG_PLAYER_ASLEEP:
+        case BTL_MSG_PLAYER_FROZEN:
+        case BTL_MSG_PLAYER_POISONED:
+        case BTL_MSG_PLAYER_SHRUNK:
+        case BTL_MSG_PLAYER_PARALYZED:
+        case BTL_MSG_PLAYER_CHARGED:
+        case BTL_MSG_PLAYER_TRANSPARENT:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                if (D_80283B88_1BA578[popup->messageIndex - 10] != 0) {
+                    height = 45 + D_8028374C_1BA13C[popup->messageIndex][1];
+                } else {
+                    height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                }
+
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_ENEMY_DAZED:
+        case BTL_MSG_ENEMY_ASLEEP:
+        case BTL_MSG_ENEMY_FROZEN:
+        case BTL_MSG_ENEMY_POISONED:
+        case BTL_MSG_ENEMY_SHRUNK:
+        case BTL_MSG_ENEMY_PARALYZED:
+        case BTL_MSG_ENEMY_ELECTRIFIED:
+        case BTL_MSG_ENEMY_CANT_MOVE:
+            if (popup->needsInit) {
+                popup->needsInit = FALSE;
+                msgWidth = get_msg_width(BattleMessages[popup->messageIndex], 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                if (D_80283BA8_1BA598[popup->messageIndex - 18] != 0) {
+                    height = 45 + D_8028374C_1BA13C[popup->messageIndex][1];
+                } else {
+                    height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                }
+
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_CHARGE_HAMMER:
+        case BTL_MSG_CHARGE_HAMMER_MORE:
+        case BTL_MSG_CHARGE_JUMP:
+        case BTL_MSG_CHARGE_JUMP_MORE:
+        case BTL_MSG_ATTACK_UP:
+        case BTL_MSG_DEFENCE_UP:
+        case BTL_MSG_HEAL_ONE:
+        case BTL_MSG_HEAL_ALL:
+        case BTL_MSG_ENEMY_TRANSPARENT:
+        case BTL_MSG_ENEMY_CHARGED:
+            if (popup->needsInit) {
+                s32 messageID;
+
+                popup->needsInit = FALSE;
+                messageID = BattleMessages[popup->messageIndex];
+                set_message_int_var(BattlePopupMessageVar, 0);
+                msgWidth = get_msg_width(messageID, 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+        case BTL_MSG_CANT_MOVE:
+            if (popup->needsInit) {
+                s32 messageID;
+
+                popup->needsInit = FALSE;
+                messageID = BattleMessages[popup->messageIndex];
+                set_message_text_var(bActorMessages[BattlePopupMessageVar], 0);
+                msgWidth = get_msg_width(messageID, 0) + (31 + D_8028374C_1BA13C[popup->messageIndex][0]);
+                posX = 160 - (msgWidth / 2);
+                width = msgWidth;
+                height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
+                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            }
+            break;
+    }
+#else
     switch (popup->messageIndex) {
         case BTL_MSG_MERLEE_ATK_UP:
         case BTL_MSG_MERLEE_DEF_UP:
@@ -1518,8 +1890,8 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_HAMMER_DISABLED_1:
@@ -1535,8 +1907,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 40;
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_CHARGE_HAMMER:
@@ -1560,8 +1932,8 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_CANT_MOVE:
@@ -1576,8 +1948,8 @@ void btl_show_message_popup(void* data) {
                 width = msgWidth;
                 numLines = get_msg_lines(messageID) - 1;
                 height = BattleMessage_BoxSizesY[numLines];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING:
@@ -1620,15 +1992,16 @@ void btl_show_message_popup(void* data) {
                 BattleMessage_CurBoxOffsetY = BattleMessage_BoxOffsetsY[numLines];
 
                 posY = BattleMessage_CurBoxPosY + BattleMessage_CurBoxOffsetY;
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
                 if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
-                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                    set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
                 } else {
-                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW_DARKENED);
+                    set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_DARKENED);
                 }
             }
             break;
     }
+#endif
 }
 
 API_CALLABLE(ShowMessageBox) {

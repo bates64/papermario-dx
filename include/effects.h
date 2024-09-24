@@ -1259,24 +1259,27 @@ typedef struct SmallGoldSparkleFXData {
     /* 0x20 */ s32 unk_20;
 } SmallGoldSparkleFXData; // size = 0x24
 
-typedef struct FlashingBoxShockwaveFXData {
-    /* 0x00 */ s32 unk_00;
+enum ShockOverlayFXTypes {
+    FX_SHOCK_OVERLAY_SHOCK_HIT          = 0,
+    FX_SHOCK_OVERLAY_LIGHTNING_WORLD    = 1,
+    FX_SHOCK_OVERLAY_MEGA_SHOCK         = 2,
+    FX_SHOCK_OVERLAY_LIGHTNING_BATTLE   = 3,
+};
+
+typedef struct ShockOverlayFXData {
+    /* 0x00 */ s32 type;
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ s32 unk_18;
-    /* 0x1C */ s32 unk_1C;
-    /* 0x20 */ s32 unk_20;
+    /* 0x1C */ s32 timeLeft;
+    /* 0x20 */ s32 lifetime;
     /* 0x24 */ f32 unk_24;
-    /* 0x28 */ f32 unk_28;
-    /* 0x2C */ f32 unk_2C;
-    /* 0x30 */ s32 unk_30;
-    /* 0x34 */ s32 unk_34;
-    /* 0x38 */ s32 unk_38;
-    /* 0x3C */ s32 unk_3C;
-    /* 0x40 */ s32 unk_40;
-    /* 0x44 */ s32 unk_44;
-} FlashingBoxShockwaveFXData; // size = 0x48
+    /* 0x28 */ f32 scaleX;
+    /* 0x2C */ f32 scaleY;
+    /* 0x30 */ Color3i primCol;
+    /* 0x3C */ Color3i envCol;
+} ShockOverlayFXData; // size = 0x48
 
 typedef struct BalloonFXData {
     /* 0x00 */ s32 unk_00;
@@ -1360,15 +1363,17 @@ typedef struct RadiatingEnergyOrbFXData {
     /* 0x30 */ f32 unk_30;
 } RadiatingEnergyOrbFXData; // size = 0x34
 
+#define UNK_ARRAY_SIZE_1 4
+
 typedef struct MotionBlurFlameFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ Vec3f pos;
-    /* 0x1C */ f32 unk_1C[4];
-    /* 0x2C */ f32 unk_2C[4];
-    /* 0x3C */ f32 unk_3C[4];
+    /* 0x1C */ f32 unk_1C[UNK_ARRAY_SIZE_1];
+    /* 0x2C */ f32 unk_2C[UNK_ARRAY_SIZE_1];
+    /* 0x3C */ f32 unk_3C[UNK_ARRAY_SIZE_1];
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ s32 unk_50;
     /* 0x54 */ s32 unk_54;
@@ -2121,6 +2126,8 @@ typedef struct Effect75FXData {
     /* 0x7C */ f32 unk_7C;
 } Effect75FXData; // size = 0x80
 
+#define ROCKET_BUF_SIZE 4
+
 typedef struct FireworkRocketFXData {
     /* 0x00 */ s32 variation;
     /* 0x04 */ Vec3f pos;
@@ -2138,12 +2145,12 @@ typedef struct FireworkRocketFXData {
     /* 0x44 */ f32 radius;
     /* 0x48 */ f32 maxRadius;
     /* 0x4C */ s32 isExploded;
-    /* 0x50 */ f32 rocketX[4];
-    /* 0x60 */ f32 rocketY[4];
-    /* 0x70 */ f32 rocketZ[4];
-    /* 0x80 */ f32 rocketVelX[4];
-    /* 0x90 */ f32 rocketVelY[4];
-    /* 0xA0 */ f32 rocketVelZ[4];
+    /* 0x50 */ f32 rocketX[ROCKET_BUF_SIZE];
+    /* 0x60 */ f32 rocketY[ROCKET_BUF_SIZE];
+    /* 0x70 */ f32 rocketZ[ROCKET_BUF_SIZE];
+    /* 0x80 */ f32 rocketVelX[ROCKET_BUF_SIZE];
+    /* 0x90 */ f32 rocketVelY[ROCKET_BUF_SIZE];
+    /* 0xA0 */ f32 rocketVelZ[ROCKET_BUF_SIZE];
 } FireworkRocketFXData; // size = 0xB0
 
 typedef struct PeachStarBeamSpirit {
@@ -2528,7 +2535,7 @@ typedef union {
     struct GatherMagicFXData*           gatherMagic;
     struct AttackResultTextFXData*      attackResultText;
     struct SmallGoldSparkleFXData*      smallGoldSparkle;
-    struct FlashingBoxShockwaveFXData*  flashingBoxShockwave;
+    struct ShockOverlayFXData*          flashingBoxShockwave;
     struct BalloonFXData*               balloon;
     struct FloatingRockFXData*          floatingRock;
     struct ChompDropFXData*             chompDrop;

@@ -1,15 +1,16 @@
 #include "common.h"
 #include "dx/debug_menu.h"
 
-SHIFT_BSS s32 PeachDisguiseNpcIndex;
-SHIFT_BSS Entity* TweesterTouchingPartner;
-SHIFT_BSS Entity* TweesterTouchingPlayer;
-SHIFT_BSS s32 PrevPlayerDirection;
-SHIFT_BSS s32 PlayerRunStateTime;
-SHIFT_BSS f32 PlayerNormalYaw;
-SHIFT_BSS f32 PlayerNormalPitch;
-SHIFT_BSS PlayerSpinState gPlayerSpinState;
-SHIFT_BSS s32 PlayerYInterpUpdateDelay;
+s32 PeachDisguiseNpcIndex;
+Entity* TweesterTouchingPartner;
+Entity* TweesterTouchingPlayer;
+s32 PrevPlayerDirection;
+s32 PlayerRunStateTime;
+f32 PlayerNormalYaw;
+f32 PlayerNormalPitch;
+PlayerSpinState gPlayerSpinState;
+
+BSS s32 PlayerYInterpUpdateDelay;
 
  // default move speeds
 f32 DefaultWalkSpeed = 2.0f;
@@ -112,7 +113,7 @@ void reset_player_status(void) {
     playerStatus->flipYaw[CAM_DEFAULT] = 0.0f;
     playerStatus->flipYaw[CAM_BATTLE] = 0.0f;
     playerStatus->flipYaw[CAM_TATTLE] = 0.0f;
-    playerStatus->flipYaw[CAM_3] = 0.0f;
+    playerStatus->flipYaw[CAM_HUD] = 0.0f;
 
     ASSERT_MSG(gGameStatusPtr->areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", gGameStatusPtr->areaID);
     AreaConfig* area = &gAreas[gGameStatusPtr->areaID];

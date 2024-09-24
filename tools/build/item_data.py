@@ -5,7 +5,7 @@ import sys
 import yaml
 import argparse
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 from common import get_asset_path
 import xml.etree.ElementTree as ET
 from io import TextIOWrapper
@@ -26,6 +26,7 @@ class ItemEntry:
         self.itemEntityTemplate = data.get("itemEntityTemplate", "MISSING_TEMPLATE")
         self.skipScriptArg = data.get("noArgScripts", False)
         self.icon = data.get("icon", "key/Gift")
+        self.externHudScript = data.get("externHudScript")
         self.sellValue = data.get("sellValue", -1)
         self.sortValue = data.get("sortValue", 0)
         self.targetFlags = data.get("targetFlags", [])
@@ -126,9 +127,13 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     nbadges = 0
     nkeys = 0
 
+    first_consumable = -1
+
     for idx, item in enumerate(items):
         if ("ITEM_TYPE_FLAG_CONSUMABLE") in item.typeFlags:
             nconsumables += 1
+            if first_consumable == -1:
+                first_consumable = idx
         if ("ITEM_TYPE_FLAG_BADGE") in item.typeFlags:
             nbadges += 1
         if ("ITEM_TYPE_FLAG_KEY") in item.typeFlags:
@@ -138,6 +143,7 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     fout.write(f"#define ITEM_NUM_CONSUMABLES {nconsumables}\n")
     fout.write(f"#define ITEM_NUM_BADGES {nbadges}\n")
     fout.write(f"#define ITEM_NUM_KEYS {nkeys}\n")
+    fout.write(f"#define ITEM_FIRST_CONSUMABLE {first_consumable}\n")
     fout.write("\n")
 
     fout.write("#endif // ITEM_ENUM_H\n")
@@ -153,17 +159,35 @@ class HudScriptEntry:
         self.skipArg = skipArg
 
 
+class ExternHudScriptEntry:
+    def __init__(self, full_name: str, index: int):
+        self.full_name = full_name
+        self.index = index
+        self.pair = True
+
+
 def snake_to_pascal(s: str) -> str:
     return s.replace("_", " ").title().replace(" ", "")
 
 
 def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pair_map: Dict[str, bool]):
-    hud_scripts: List[HudScriptEntry] = []
-    hud_script_map: Dict[str, HudScriptEntry] = {}
+    hud_scripts: List[Union[HudScriptEntry, ExternHudScriptEntry]] = []
+    hud_script_map: Dict[str, Union[HudScriptEntry, ExternHudScriptEntry]] = {}
 
     # determine a set of hud scripts to generate consisting of each unique pair of template + icon
     # and then assign the index of the generated scripts to each of the items using that pair
     for item in items:
+        if item.externHudScript:
+            script_name = item.externHudScript
+            if not script_name in hud_script_map:
+                cur_script = ExternHudScriptEntry(script_name, 1 + len(hud_scripts))
+                hud_scripts.append(cur_script)
+                hud_script_map[script_name] = cur_script
+            else:
+                cur_script = hud_script_map[script_name]
+            item.hudElemID = cur_script.index
+            continue
+
         if item.skipScriptArg:
             template_name = snake_to_pascal(item.hudElementTemplate.lower())
             script_name = f"HES_{template_name}"
@@ -193,12 +217,16 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
 
     # write the hud script bodies
     for script in hud_scripts:
-        script_arg = "" if script.skipArg else script.icon
-        fout.write(f"HudScript {script.full_name} = HES_TEMPLATE_{script.template}({script_arg});\n")
+        if isinstance(script, ExternHudScriptEntry):
+            fout.write(f"extern HudScript {script.full_name};\n")
+            fout.write(f"extern HudScript {script.full_name}_disabled;\n")
+        else:
+            script_arg = "" if script.skipArg else script.icon
+            fout.write(f"HudScript {script.full_name} = HES_TEMPLATE_{script.template}({script_arg});\n")
 
-        if script.pair:
-            script_arg = "" if script.skipArg else script.icon + "_disabled"
-            fout.write(f"HudScript {script.full_name}_disabled = HES_TEMPLATE_{script.template}({script_arg});\n")
+            if script.pair:
+                script_arg = "" if script.skipArg else script.icon + "_disabled"
+                fout.write(f"HudScript {script.full_name}_disabled = HES_TEMPLATE_{script.template}({script_arg});\n")
 
     fout.write("\n")
 

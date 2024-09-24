@@ -55,8 +55,6 @@ extern WindowStyle gWindowStyles[];
 extern u16 gCurrentDoorSounds;
 extern u16 gCurrentRoomDoorSounds;
 
-extern b8 D_8014C248;
-
 extern UNK_FUN_PTR(TalkNotificationCallback);
 extern UNK_FUN_PTR(InteractNotificationCallback);
 extern UNK_FUN_PTR(ISpyNotificationCallback);
@@ -74,8 +72,6 @@ extern f32 PlayerNormalYaw;
 extern f32 PlayerNormalPitch;
 extern s32 NpcHitQueryColliderID;
 extern Vec3s StandardActorHomePositions[];
-
-extern SaveData gCurrentSaveFile;
 
 extern s32 gEncounterSubState;
 extern s32 timeFreezeMode;

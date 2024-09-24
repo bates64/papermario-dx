@@ -3,24 +3,60 @@
 
 #include "common.h"
 
+#define CENTER_WINDOW_X(id) (((gWindows[id].parent != WIN_NONE) \
+    ? (gWindows[gWindows[id].parent].width / 2) \
+    : (SCREEN_WIDTH / 2)) \
+    - (gWindows[id].width / 2))
+
+#define CENTER_WINDOW_Y(id) (((gWindows[id].parent != WIN_NONE) \
+    ? (gWindows[gWindows[id].parent].height  / 2) \
+    : (SCREEN_HEIGHT / 2)) \
+    - (gWindows[id].height  / 2))
+
 enum {
-  PAGE_0,
-  PAGE_1,
-#if !VERSION_PAL
-  PAGE_2,
-#endif
-  PAGE_3,
-  PAGE_4,
+    FILE_MENU_MAIN          = 0, // file selection
+    FILE_MENU_CONFIRM       = 1, // confirmation prompt is open
+    FILE_MENU_MESSAGE       = 2, // message is displayed, e.g. "File X has been deleted."
+    FILE_MENU_INPUT_NAME    = 3, // "Enter a file name!" screen
+};
+
+enum {
+    FM_MAIN_SELECT_FILE         = 0, // choose which file to load
+    FM_MAIN_SELECT_DELETE       = 1, // choose which file to delete
+    FM_MAIN_SELECT_COPY_FROM    = 2,
+    FM_MAIN_SELECT_COPY_TO      = 3,
+
+    FM_CONFIRM_DELETE           = 0,
+    FM_CONFIRM_CREATE           = 1,
+    FM_CONFIRM_COPY             = 2, // unused
+    FM_CONFIRM_START            = 3,
+
+    FM_MESSAGE_DELETED          = 0,
+    FM_MESSAGE_COPIED           = 1,
+    FM_MESSAGE_CREATED          = 2,
+
+    FM_INPUT_CHARSET_A          = 0,
+    FM_INPUT_CHARSET_B          = 1,
+};
+
+enum {
+    FM_MAIN_OPT_FILE_1          = 0,
+    FM_MAIN_OPT_FILE_2          = 1,
+    FM_MAIN_OPT_FILE_3          = 2,
+    FM_MAIN_OPT_FILE_4          = 3,
+    FM_MAIN_OPT_DELETE          = 4,
+    FM_MAIN_OPT_COPY            = 5,
+    FM_MAIN_OPT_CANCEL          = 6,
 };
 
 extern MenuPanel* filemenu_menus[];
 
-extern s32 filemenu_iterFileIdx;
+extern s32 filemenu_CopyToFileIdx;
 extern s32 filemenu_pressedButtons;
 extern s32 filemenu_cursorHudElem;
 extern s32 filemenu_heldButtons;
 extern s8 filemenu_filename_pos;
-extern s32 filemenu_loadedFileIdx;
+extern s32 filemenu_CopyFromFileIdx;
 extern s8 filemenu_currentMenu;
 extern s32 filemenu_8024C09C;
 extern s32 filemenu_cursorHudElemID[1];
@@ -64,13 +100,9 @@ WINDOW_UPDATE_FUNC(filemenu_update_deselect_file);
 WINDOW_UPDATE_FUNC(filemenu_update_show_name_confirm);
 WINDOW_UPDATE_FUNC(filemenu_update_hidden_name_confirm);
 
-WINDOW_UPDATE_FUNC(main_menu_window_update);
+WINDOW_UPDATE_FUNC(unused_main_menu_window_darkening);
 
 WINDOW_UPDATE_FUNC(filemenu_update_show_title);
-
-#if VERSION_PAL
-WINDOW_UPDATE_FUNC(filemenu_selectlanguage_80248018);
-#endif
 
 void filemenu_draw_file_name(u8*, s32, s32, s32, s32, s32, s32, s32);
 void filemenu_draw_contents_title(MenuPanel*, s32, s32, s32, s32, s32, s32);

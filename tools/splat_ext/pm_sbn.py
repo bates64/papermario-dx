@@ -8,7 +8,7 @@ from typing import List
 
 # splat imports; will fail if script run directly
 try:
-    from splat.segtypes.n64.segment import N64Segment
+    from splat.segtypes.segment import Segment
     from splat.segtypes.linker_entry import LinkerEntry
     from splat.util import options
 
@@ -275,10 +275,18 @@ class SBN:
             f.write("\n")
 
     def lookup_file_id(self, filename: str) -> int:
+        suggestion = ""
         for id, sbn_file in enumerate(self.files):
             if sbn_file.file_name() == filename:
                 return id
-        raise Exception(f"File not found: {filename} - is it in the file_id_map?")
+            elif sbn_file.file_name().split("_")[0] == filename.split("_")[0]:
+                suggestion = sbn_file.file_name()
+        if suggestion == "":
+            raise Exception(f"File not found: {filename} - is it in the file_id_map?")
+        else:
+            raise Exception(
+                f"File not found: {filename} - is it in the file_id_map? (Did you mean to name the file: {suggestion}?)"
+            )
 
     def __str__(self) -> str:
         s = "SBN(\n"
@@ -534,7 +542,7 @@ class InitSongEntry:
 
 if splat_loaded:
 
-    class N64SegPm_sbn(N64Segment):
+    class N64SegPm_sbn(Segment):
         def split(self, rom_bytes):
             dir = options.opts.asset_path / self.dir / self.name
             data = rom_bytes[self.rom_start : self.rom_end]

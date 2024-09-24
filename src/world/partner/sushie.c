@@ -299,7 +299,11 @@ void N(update_riding_physics)(Npc* sushie) {
     z = sushie->pos.z;
     depth = (sushie->collisionHeight * 0.5f) + playerStatus->colliderHeight;
     if (npc_raycast_up_corners(sushie->collisionChannel, &x, &y, &z, &depth, sushie->yaw, sushie->collisionDiameter * 0.3f) > NO_COLLIDER) {
+#if VERSION_JP
+        sushie->moveToPos.y = y;
+#else
         sushie->moveToPos.y += (((sushie->moveToPos.y - y) + depth) - ((sushie->collisionHeight * 0.5f) + playerStatus->colliderHeight)) * 0.2f;
+#endif
         if (N(DiveTime) % 9 == 0) {
             fx_rising_bubble(0, sushie->pos.x, sushie->moveToPos.y + (sushie->collisionHeight * 0.5f), sushie->pos.z,
                 (N(WaterSurfaceY) - sushie->moveToPos.y) - (sushie->collisionHeight * 0.5f));
@@ -328,7 +332,7 @@ void N(update_riding_physics)(Npc* sushie) {
     }
 }
 
-s32 N(test_ray_to_wall_center)(s32 unused, f32* x, f32* y, f32* z, f32 length, f32 radius, f32* yaw) {
+HitID N(test_ray_to_wall_center)(s32 unused, f32* x, f32* y, f32* z, f32 length, f32 radius, f32* yaw) {
     f32 sinAngle, cosAngle, totalLength;
     f32 hitX, hitY, hitZ;
     f32 hitNx, hitNy, hitNz;

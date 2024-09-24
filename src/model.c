@@ -103,9 +103,9 @@ enum {
 #define WORLD_TEXTURE_MEMORY_SIZE 0x20000
 #define BATTLE_TEXTURE_MEMORY_SIZE 0x8000
 
-SHIFT_BSS u8* gBackgroundTintModePtr; // NOTE: the type for this u8 is TintMode, as shown in SetModelTintMode
-SHIFT_BSS ModelList* gCurrentModels;
-SHIFT_BSS ModelTreeInfoList* gCurrentModelTreeNodeInfo;
+u8* gBackgroundTintModePtr; // NOTE: the type for this u8 is TintMode, as shown in SetModelTintMode
+ModelList* gCurrentModels;
+ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 
 extern Addr TextureHeap;
 
@@ -1313,55 +1313,53 @@ s32 RenderTaskBasePriorities[] = {
     [RENDER_MODE_CLOUD_NO_ZB]               =  700000,
 };
 
-b8 D_8014C248 = FALSE; // possibly a 'warm-up done' flag for boot. never read.
+ModelCustomGfxBuilderList* gCurrentCustomModelGfxBuildersPtr;
+ModelNode** gCurrentModelTreeRoot;
+ModelTransformGroupList* gCurrentTransformGroups;
+ModelCustomGfxList* gCurrentCustomModelGfxPtr;
 
-SHIFT_BSS ModelCustomGfxBuilderList* gCurrentCustomModelGfxBuildersPtr;
-SHIFT_BSS ModelNode** gCurrentModelTreeRoot;
-SHIFT_BSS ModelTransformGroupList* gCurrentTransformGroups;
-SHIFT_BSS ModelCustomGfxList* gCurrentCustomModelGfxPtr;
+BSS TextureHeader gCurrentTextureHeader ALIGNED(16);
 
-SHIFT_BSS TextureHeader gCurrentTextureHeader ALIGNED(16);
+BSS ModelList wModelList;
+BSS ModelList bModelList;
 
-SHIFT_BSS ModelList wModelList;
-SHIFT_BSS ModelList bModelList;
+BSS ModelTransformGroupList wTransformGroups;
+BSS ModelTransformGroupList bTransformGroups;
 
-SHIFT_BSS ModelTransformGroupList wTransformGroups;
-SHIFT_BSS ModelTransformGroupList bTransformGroups;
+BSS ModelCustomGfxList wCustomModelGfx;
+BSS ModelCustomGfxList bCustomModelGfx;
 
-SHIFT_BSS ModelCustomGfxList wCustomModelGfx;
-SHIFT_BSS ModelCustomGfxList bCustomModelGfx;
+BSS ModelCustomGfxBuilderList wCustomModelGfxBuilders;
+BSS ModelCustomGfxBuilderList bCustomModelGfxBuilders;
+BSS ModelLocalVertexCopyList wModelLocalVtxBuffers;
+BSS ModelLocalVertexCopyList bModelLocalVtxBuffers;
+BSS ModelLocalVertexCopyList* gCurrentModelLocalVtxBuffers;
 
-SHIFT_BSS ModelCustomGfxBuilderList wCustomModelGfxBuilders;
-SHIFT_BSS ModelCustomGfxBuilderList bCustomModelGfxBuilders;
-SHIFT_BSS ModelLocalVertexCopyList wModelLocalVtxBuffers;
-SHIFT_BSS ModelLocalVertexCopyList bModelLocalVtxBuffers;
-SHIFT_BSS ModelLocalVertexCopyList* gCurrentModelLocalVtxBuffers;
+BSS ModelNode* wModelTreeRoot;
+BSS ModelNode* bModelTreeRoot;
+BSS ModelTreeInfoList wModelTreeNodeInfo;
+BSS ModelTreeInfoList bModelTreeNodeInfo;
 
-SHIFT_BSS ModelNode* wModelTreeRoot;
-SHIFT_BSS ModelNode* bModelTreeRoot;
-SHIFT_BSS ModelTreeInfoList wModelTreeNodeInfo;
-SHIFT_BSS ModelTreeInfoList bModelTreeNodeInfo;
+BSS s8 wBackgroundTintMode;
+BSS s8 bBackgroundTintMode;
+BSS s32 TreeIterPos;
+BSS FogSettings wFogSettings;
+BSS FogSettings bFogSettings;
+BSS FogSettings* gFogSettings;
+BSS s32 texPannerMainU[MAX_TEX_PANNERS];
+BSS s32 texPannerMainV[MAX_TEX_PANNERS];
+BSS s32 texPannerAuxU[MAX_TEX_PANNERS];
+BSS s32 texPannerAuxV[MAX_TEX_PANNERS];
+BSS void* TextureHeapPos;
+BSS u16 mtg_IterIdx;
+BSS u16 mtg_SearchModelID;
+BSS ModelNode* mtg_FoundModelNode;
+BSS u16 mtg_MinChild;
+BSS u16 mtg_MaxChild;
+BSS RenderTask* RenderTaskLists[NUM_RENDER_TASK_LISTS];
+BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
 
-SHIFT_BSS s8 wBackgroundTintMode;
-SHIFT_BSS s8 bBackgroundTintMode;
-SHIFT_BSS s32 TreeIterPos;
-SHIFT_BSS FogSettings wFogSettings;
-SHIFT_BSS FogSettings bFogSettings;
-SHIFT_BSS FogSettings* gFogSettings;
-SHIFT_BSS s32 texPannerMainU[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerMainV[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerAuxU[MAX_TEX_PANNERS];
-SHIFT_BSS s32 texPannerAuxV[MAX_TEX_PANNERS];
-SHIFT_BSS void* TextureHeapPos;
-SHIFT_BSS u16 mtg_IterIdx;
-SHIFT_BSS ModelNode* mtg_FoundModelNode;
-SHIFT_BSS u16 mtg_MinChild;
-SHIFT_BSS u16 mtg_MaxChild;
-SHIFT_BSS u16 mtg_SearchModelID;
-SHIFT_BSS RenderTask* RenderTaskLists[NUM_RENDER_TASK_LISTS];
-SHIFT_BSS s32 RenderTaskCount[NUM_RENDER_TASK_LISTS];
-
-SHIFT_BSS TextureHandle TextureHandles[128];
+TextureHandle TextureHandles[128];
 
 s32 CurHandleIdx;
 
@@ -1369,9 +1367,7 @@ s32 CurHandleIdx;
 void* TextureHeapMin;
 void* TextureHeapMax;
 
-SHIFT_BSS u16 DepthCopyBuffer[16];
-
-extern Addr BattleEntityHeapBottom; // todo ???
+BSS u16 DepthCopyBuffer[16];
 
 void func_80117D00(Model* model);
 void appendGfx_model_group(void* model);
@@ -1381,8 +1377,6 @@ void make_texture_gfx(TextureHandle* handle, Gfx**, u8, u8, u16, u16);
 void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTxMtx, s32 treeDepth);
 s32 is_identity_fixed_mtx(Mtx* mtx);
 void build_custom_gfx(void);
-
-MATCHING_BSS(0x3A0);
 
 void appendGfx_model(void* data) {
     Model* model = data;
@@ -1993,8 +1987,8 @@ void appendGfx_model(void* data) {
         }
     }
 
-    if (flags & MODEL_FLAG_USE_CAMERA_UNK_MATRIX) {
-        gSPMatrix((*gfxPos)++, gCameras[gCurrentCamID].unkMatrix, mtxLoadMode | mtxPushMode | G_MTX_MODELVIEW);
+    if (flags & MODEL_FLAG_BILLBOARD) {
+        gSPMatrix((*gfxPos)++, gCameras[gCurrentCamID].mtxBillboard, mtxLoadMode | mtxPushMode | G_MTX_MODELVIEW);
         if (mtxPushMode != G_MTX_NOPUSH) {
             mtxPushMode = G_MTX_NOPUSH;
         }
@@ -2596,21 +2590,6 @@ void mdl_create_model(ModelBlueprint* bp, s32 unused) {
     (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = modelIdx;
 }
 
-// Mysterious no-op
-void iterate_models(void) {
-    Model* last = NULL;
-    Model* mdl;
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(*gCurrentModels); i++) {
-        mdl = (*gCurrentModels)[i];
-        if (mdl != NULL) {
-            last = mdl;
-        }
-    }
-    mdl = last;
-}
-
 void mdl_update_transform_matrices(void) {
     Matrix4f tempModelMtx;
     Matrix4f tempGroupMtx;
@@ -2770,22 +2749,22 @@ void render_models(void) {
         break; \
     }
 
-    m00 = camera->perspectiveMatrix[0][0];
-    m01 = camera->perspectiveMatrix[0][1];
-    m02 = camera->perspectiveMatrix[0][2];
-    m03 = camera->perspectiveMatrix[0][3];
-    m10 = camera->perspectiveMatrix[1][0];
-    m11 = camera->perspectiveMatrix[1][1];
-    m12 = camera->perspectiveMatrix[1][2];
-    m13 = camera->perspectiveMatrix[1][3];
-    m20 = camera->perspectiveMatrix[2][0];
-    m21 = camera->perspectiveMatrix[2][1];
-    m22 = camera->perspectiveMatrix[2][2];
-    m23 = camera->perspectiveMatrix[2][3];
-    m30 = camera->perspectiveMatrix[3][0];
-    m31 = camera->perspectiveMatrix[3][1];
-    m32 = camera->perspectiveMatrix[3][2];
-    m33 = camera->perspectiveMatrix[3][3];
+    m00 = camera->mtxPerspective[0][0];
+    m01 = camera->mtxPerspective[0][1];
+    m02 = camera->mtxPerspective[0][2];
+    m03 = camera->mtxPerspective[0][3];
+    m10 = camera->mtxPerspective[1][0];
+    m11 = camera->mtxPerspective[1][1];
+    m12 = camera->mtxPerspective[1][2];
+    m13 = camera->mtxPerspective[1][3];
+    m20 = camera->mtxPerspective[2][0];
+    m21 = camera->mtxPerspective[2][1];
+    m22 = camera->mtxPerspective[2][2];
+    m23 = camera->mtxPerspective[2][3];
+    m30 = camera->mtxPerspective[3][0];
+    m31 = camera->mtxPerspective[3][1];
+    m32 = camera->mtxPerspective[3][2];
+    m33 = camera->mtxPerspective[3][3];
 
     // enqueue all visible models not in transform groups
     for (i = 0; i < ARRAY_COUNT(*gCurrentModels); i++) {
@@ -2888,7 +2867,7 @@ void render_models(void) {
         }
 
         // map all model depths to the interval [0, 10k] and submit render task
-        transform_point(camera->perspectiveMatrix, centerX, centerY, centerZ, 1.0f, &outX, &outY, &outZ, &outW);
+        transform_point(camera->mtxPerspective, centerX, centerY, centerZ, 1.0f, &outX, &outY, &outZ, &outW);
         distance = outZ + 5000.0f;
         if (distance < 0) {
             distance = 0;
@@ -2927,7 +2906,7 @@ void render_models(void) {
         zComp = transformGroup->center.z;
 
         transform_point(
-            camera->perspectiveMatrix,
+            camera->mtxPerspective,
             xComp, yComp, zComp, 1.0f,
             &outX, &outY, &outZ, &outW
         );
@@ -4318,7 +4297,7 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
         return FALSE;
     }
     // Transform the model's center into clip space.
-    transform_point(camera->perspectiveMatrix, model->center.x, model->center.y, model->center.z, 1.0f, &outX, &outY, &outZ, &outW);
+    transform_point(camera->mtxPerspective, model->center.x, model->center.y, model->center.z, 1.0f, &outX, &outY, &outZ, &outW);
     if (outW == 0.0f) {
         *screenX = 0.0f;
         *screenY = 0.0f;
@@ -4428,7 +4407,7 @@ OPTIMIZE_OFAST s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* 
         return FALSE;
     }
     // Transform the point into clip space.
-    transform_point(camera->perspectiveMatrix, x, y, z, 1.0f, &outX, &outY, &outZ, &outW);
+    transform_point(camera->mtxPerspective, x, y, z, 1.0f, &outX, &outY, &outZ, &outW);
     if (outW == 0.0f) {
         *screenX = 0.0f;
         *screenY = 0.0f;

@@ -7,19 +7,20 @@ EntityModelScript D_8014C260 = {
 };
 Lights1 D_8014C268 = gdSPDefLights1(255, 255, 255, 0, 0, 0, 0, 0, 0);
 
-SHIFT_BSS EntityModelList gWorldEntityModelList;
-SHIFT_BSS EntityModelList gBattleEntityModelList;
-SHIFT_BSS EntityModelList* gCurrentEntityModelList;
-SHIFT_BSS s32 gEntityModelCount;
+s32 gEntityModelCount;
 
-SHIFT_BSS s32 D_80154374;
-SHIFT_BSS s32 entity_fog_enabled;
-SHIFT_BSS s32 entity_fog_red;
-SHIFT_BSS s32 entity_fog_green;
-SHIFT_BSS s32 entity_fog_blue;
-SHIFT_BSS s32 entity_fog_alpha;
-SHIFT_BSS s32 entity_fog_dist_min;
-SHIFT_BSS s32 entity_fog_dist_max;
+BSS EntityModelList gWorldEntityModelList;
+BSS EntityModelList gBattleEntityModelList;
+BSS EntityModelList* gCurrentEntityModelList;
+
+BSS s32 D_80154374;
+BSS s32 entity_fog_enabled;
+BSS s32 entity_fog_red;
+BSS s32 entity_fog_green;
+BSS s32 entity_fog_blue;
+BSS s32 entity_fog_alpha;
+BSS s32 entity_fog_dist_min;
+BSS s32 entity_fog_dist_max;
 
 extern Gfx Gfx_RM1_SURFACE_OPA[];
 extern Gfx Gfx_RM1_DECAL_OPA[];
@@ -65,7 +66,7 @@ void clear_entity_models(void) {
     entity_fog_red = 10;
     entity_fog_green = 10;
     entity_fog_blue = 10;
-    entity_fog_alpha = 10; 
+    entity_fog_alpha = 10;
     entity_fog_dist_min = 800;
     entity_fog_dist_max = 1000;
 }
@@ -104,7 +105,7 @@ s32 load_entity_model(EntityModelScript* cmdList) {
     (*gCurrentEntityModelList)[i] = newEntityModel = heap_malloc(sizeof(*newEntityModel));
     entityModelCount = &gEntityModelCount;
     (*entityModelCount)++;
-    
+
     ASSERT(newEntityModel != NULL);
 
     newEntityModel->flags = (ENTITY_MODEL_FLAG_CAM0 | ENTITY_MODEL_FLAG_CAM1 | ENTITY_MODEL_FLAG_CAM2 | ENTITY_MODEL_FLAG_ENABLED);
@@ -426,7 +427,7 @@ void draw_entity_model_A(s32 modelIdx, Mtx* transformMtx) {
                             inX = mtx[3][0];
                             inY = mtx[3][1];
                             inZ = mtx[3][2];
-                            transform_point(camera->perspectiveMatrix, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
+                            transform_point(camera->mtxPerspective, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
                             rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;
@@ -465,7 +466,7 @@ void draw_entity_model_B(s32 modelIdx, Mtx* transformMtx, s32 vertexSegment, Vec
                             inX = mtx[3][0];
                             inY = mtx[3][1];
                             inZ = mtx[3][2];
-                            transform_point(camera->perspectiveMatrix, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
+                            transform_point(camera->mtxPerspective, inX, inY, inZ, 1.0f, &x, &y, &z, &w);
                             rtPtr->renderMode = model->renderMode;
                             rtPtr->appendGfxArg = model;
                             rtPtr->appendGfx = (void(*)(void*))appendGfx_entity_model;

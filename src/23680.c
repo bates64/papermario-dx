@@ -77,7 +77,7 @@ void spawn_drops(Enemy* enemy) {
             }
 
             if (curWeight >= dropCount) {
-                itemToDrop = drops->itemDrops[i].weight;
+                itemToDrop = drops->itemDrops[i].item;
                 break;
             }
         }

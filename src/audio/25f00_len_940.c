@@ -4,8 +4,6 @@
 #include "audio.h"
 #include "dx/profiling.h"
 
-NOP_FIX
-
 u8 nuAuPreNMI = 0;
 NUAuPreNMIFunc nuAuPreNMIFunc = NULL;
 s32 nuAuDmaNext = 0;
@@ -13,22 +11,25 @@ u32 nuAuFrameCounter = 0;
 u8 nuAuTaskStop = NU_AU_TASK_RUN;
 u8 volatile AuSynUseStereo = TRUE;
 
-SHIFT_BSS NUDMAState nuAuDmaState;
-SHIFT_BSS Acmd* AlCmdListBuffers[3];
-SHIFT_BSS NUScTask nuAuTasks[3];
-SHIFT_BSS u8* D_800A3628[3];
-SHIFT_BSS s32 AlFrameSize;
-SHIFT_BSS s32 AlMinFrameSize;
-SHIFT_BSS OSMesgQueue nuAuDmaMesgQ;
-SHIFT_BSS OSMesg nuAuDmaMesgBuf[50];
-SHIFT_BSS OSIoMesg nuAuDmaIOMesgBuf[50];
-SHIFT_BSS NUDMABuffer nuAuDmaBufList[50];
-SHIFT_BSS AuSynDriver auSynDriver;
-SHIFT_BSS u8 rspbootUcodeBuffer[0x100] ALIGNED(16);
-SHIFT_BSS u64 AuStack[NU_AU_STACK_SIZE / sizeof(u64)];
-SHIFT_BSS u16 AuInitialGlobalVolume;
-SHIFT_BSS OSThread nuAuMgrThread;
-SHIFT_BSS ALHeap nuAuHeap;
+BSS u16 AuInitialGlobalVolume;
+BSS OSThread nuAuMgrThread;
+BSS u64 AuStack[NU_AU_STACK_SIZE / sizeof(u64)];
+BSS Acmd* AlCmdListBuffers[3];
+BSS NUScTask nuAuTasks[3];
+BSS u8* D_800A3628[3];
+BSS s32 AlFrameSize;
+BSS s32 AlMinFrameSize;
+BSS OSMesgQueue nuAuDmaMesgQ;
+BSS OSMesg nuAuDmaMesgBuf[50];
+BSS OSIoMesg nuAuDmaIOMesgBuf[50];
+BSS NUDMAState nuAuDmaState;
+BSS NUDMABuffer nuAuDmaBufList[50];
+
+ALHeap nuAuHeap;
+AuSynDriver auSynDriver;
+#if !VERSION_IQUE
+u8 rspbootUcodeBuffer[0x100] ALIGNED(16);
+#endif
 
 extern u64 n_aspMain_text_bin[];
 extern u64 n_aspMain_data_bin[];
@@ -274,39 +275,34 @@ ALDMAproc nuAuDmaNew(NUDMAState** state) {
 void nuAuCleanDMABuffers(void) {
     NUDMAState* state = &nuAuDmaState;
     NUDMABuffer* dmaPtr = state->firstUsed;
+    NUDMABuffer* nextPtr;
+    u32* frameCounter;
 
-    // A bit odd, this
-    do {
-        NUDMAState* state = &nuAuDmaState;
-        NUDMABuffer* nextPtr;
-        u32* frameCounter;
+    while (dmaPtr != NULL) {
+        nextPtr = (NUDMABuffer*)dmaPtr->node.next;
 
-        while (dmaPtr != NULL) {
-            nextPtr = (NUDMABuffer*)dmaPtr->node.next;
-
-            if (dmaPtr->frameCnt + 1 < nuAuFrameCounter) {
-                if (state->firstUsed == dmaPtr) {
-                    state->firstUsed = nextPtr;
-                }
-
-                alUnlink(&dmaPtr->node);
-
-                if (state->firstFree != 0) {
-                    alLink(&dmaPtr->node, &state->firstFree->node);
-                } else {
-                    state->firstFree = dmaPtr;
-                    dmaPtr->node.next = 0;
-                    dmaPtr->node.prev = 0;
-                }
+        if (dmaPtr->frameCnt + 1 < nuAuFrameCounter) {
+            if (state->firstUsed == dmaPtr) {
+                state->firstUsed = nextPtr;
             }
 
-            dmaPtr = nextPtr;
+            alUnlink(&dmaPtr->node);
+
+            if (state->firstFree != 0) {
+                alLink(&dmaPtr->node, &state->firstFree->node);
+            } else {
+                state->firstFree = dmaPtr;
+                dmaPtr->node.next = 0;
+                dmaPtr->node.prev = 0;
+            }
         }
 
-        nuAuDmaNext = 0;
-        frameCounter = &nuAuFrameCounter;
-        *frameCounter += 1;
-    } while (0);
+        dmaPtr = nextPtr;
+    }
+
+    nuAuDmaNext = 0;
+    frameCounter = &nuAuFrameCounter;
+    *frameCounter += 1;
 }
 
 void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter) {

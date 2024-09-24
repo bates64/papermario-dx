@@ -194,6 +194,7 @@ typedef void (*NUAuMgrFunc)(void);		/* Acmd callback function */
 /*--------------------------------------*/
 /*  audio variables 			*/
 /*--------------------------------------*/
+
 extern u64*		nuAuMgrStack;
 extern NUScTask		nuAuTask;		/* Audio task buffer*/
 extern s16*		nuAuBuffer_ptr[];		/* Audio buffer */

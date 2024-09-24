@@ -2,13 +2,14 @@
 #include "sprite.h"
 #include "nu/nusys.h"
 
-SHIFT_BSS SpriteShadingProfile* gSpriteShadingProfile;
-SHIFT_BSS SpriteShadingProfile wSpriteShadingProfile;
-SHIFT_BSS SpriteShadingProfile bSpriteShadingProfile;
-SHIFT_BSS SpriteShadingProfile wSpriteShadingProfileAux;
-SHIFT_BSS SpriteShadingProfile bSpriteShadingProfileAux;
-SHIFT_BSS SpriteShadingProfile* gAuxSpriteShadingProfile;
-SHIFT_BSS PAL_BIN SpriteShadingPalette[16];
+SpriteShadingProfile* gSpriteShadingProfile;
+SpriteShadingProfile* gAuxSpriteShadingProfile;
+
+BSS SpriteShadingProfile wSpriteShadingProfile;
+BSS SpriteShadingProfile bSpriteShadingProfile;
+BSS SpriteShadingProfile wSpriteShadingProfileAux;
+BSS SpriteShadingProfile bSpriteShadingProfileAux;
+BSS PAL_BIN SpriteShadingPalette[16];
 
 void appendGfx_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s32 alpha,
                              f32 shadowX, f32 shadowY, f32 shadowZ,
@@ -116,8 +117,8 @@ void create_shading_palette(Matrix4f mtx, s32 uls, s32 ult, s32 lrs, s32 lrt, s3
     shadowColorG = gSpriteShadingProfile->ambientColor.g;
     shadowColorB = gSpriteShadingProfile->ambientColor.b;
 
-    Pxz = camera->perspectiveMatrix[0][2];
-    Pzz = camera->perspectiveMatrix[2][2];
+    Pxz = camera->mtxPerspective[0][2];
+    Pzz = camera->mtxPerspective[2][2];
 
     if ((-Mxz * Pxz + Mzz * Pzz) < 0.0f) {
         facingDir = 1.0f;
@@ -306,7 +307,7 @@ void appendGfx_shading_palette(
     shadowY *= shadowMag;
     shadowZ *= shadowMag;
 
-    if (((-mtx[0][2] * camera->perspectiveMatrix[0][2]) + (mtx[2][2] * camera->perspectiveMatrix[2][2])) < 0.0f) {
+    if (((-mtx[0][2] * camera->mtxPerspective[0][2]) + (mtx[2][2] * camera->mtxPerspective[2][2])) < 0.0f) {
         facingDir = 1.0f;
     } else {
         facingDir = -1.0f;
@@ -322,9 +323,9 @@ void appendGfx_shading_palette(
         ez = mtx[2][2];
     }
 
-    pm02 = camera->perspectiveMatrix[0][2];
-    pm12 = camera->perspectiveMatrix[1][2];
-    pm22 = camera->perspectiveMatrix[2][2];
+    pm02 = camera->mtxPerspective[0][2];
+    pm12 = camera->mtxPerspective[1][2];
+    pm22 = camera->mtxPerspective[2][2];
 
     offsetX = ambientPower * ((shadowX * -pm22) + (shadowZ * pm02));
 

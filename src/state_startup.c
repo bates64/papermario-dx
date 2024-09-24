@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "game_modes.h"
 #include "dx/config.h"
+#include "dx/versioning.h"
 
 void state_init_startup(void) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
@@ -36,7 +37,7 @@ void state_step_startup(void) {
     clear_render_tasks();
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
     clear_entity_models();
     clear_animator_list();

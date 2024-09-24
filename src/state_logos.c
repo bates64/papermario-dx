@@ -1,11 +1,11 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "camera.h"
 #include "hud_element.h"
 #include "sprite.h"
 #include "nu/nusys.h"
 #include "fio.h"
 #include "game_modes.h"
+#include "dx/versioning.h"
 
 void appendGfx_intro_logos(void);
 
@@ -20,18 +20,18 @@ void appendGfx_intro_logos(void);
 #endif
 
 enum LogoStates {
-    LOGOS_STATE_N64_FADE_IN         = 0x00000000,
-    LOGOS_STATE_N64_HOLD            = 0x00000001,
-    LOGOS_STATE_N64_FADE_OUT        = 0x00000002,
-    LOGOS_STATE_NINTENDO_FADE_IN    = 0x00000003,
-    LOGOS_STATE_NINTENDO_HOLD       = 0x00000004,
-    LOGOS_STATE_NINTENDO_FADE_OUT   = 0x00000005,
-    LOGOS_STATE_IS_FADE_IN          = 0x00000006,
-    LOGOS_STATE_IS_HOLD_1           = 0x00000007,
-    LOGOS_STATE_IS_HOLD_2           = 0x00000008,
-    LOGOS_STATE_IS_FADE_OUT         = 0x00000009,
-    LOGOS_STATE_CURTAINS_APPEAR     = 0x0000000A,
-    LOGOS_STATE_CLEANUP             = 0x0000000B,
+    LOGOS_STATE_N64_FADE_IN         = 0x0,
+    LOGOS_STATE_N64_HOLD            = 0x1,
+    LOGOS_STATE_N64_FADE_OUT        = 0x2,
+    LOGOS_STATE_NINTENDO_FADE_IN    = 0x3,
+    LOGOS_STATE_NINTENDO_HOLD       = 0x4,
+    LOGOS_STATE_NINTENDO_FADE_OUT   = 0x5,
+    LOGOS_STATE_IS_FADE_IN          = 0x6,
+    LOGOS_STATE_IS_HOLD_1           = 0x7,
+    LOGOS_STATE_IS_HOLD_2           = 0x8,
+    LOGOS_STATE_IS_FADE_OUT         = 0x9,
+    LOGOS_STATE_CURTAINS_APPEAR     = 0xA,
+    LOGOS_STATE_CLEANUP             = 0xB,
 };
 
 s32 D_800778C0[] = { 0, 0 };
@@ -58,10 +58,10 @@ Gfx D_80077908[] = {
     gsSPEndDisplayList(),
 };
 
-SHIFT_BSS u8* gLogosImages;
-SHIFT_BSS u8* gLogosImage3;
-SHIFT_BSS u8* gLogosImage1;
-SHIFT_BSS u8* gLogosImage2;
+BSS u8* gLogosImages;
+BSS u8* gLogosImage3;
+BSS u8* gLogosImage1;
+BSS u8* gLogosImage2;
 
 void state_init_logos(void) {
     s8* romStart;
@@ -84,31 +84,38 @@ void state_init_logos(void) {
     gLogosImage2 = gLogosImages + 0x15000;
 
     nuContRmbForceStop();
-    create_cameras_a();
-    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_MODE_6;
+    create_cameras();
+    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
-    gCameras[CAM_DEFAULT].nearClip = 16;
-    gCameras[CAM_DEFAULT].farClip = 4096;
-    gCurrentCameraID = CAM_DEFAULT;
+    gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
+    gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
-    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
-    gCameras[CAM_DEFAULT].auxBoomLength = 40;
-    gCameras[CAM_DEFAULT].bgColor[0] = 0;
-    gCameras[CAM_DEFAULT].bgColor[1] = 0;
-    gCameras[CAM_DEFAULT].bgColor[2] = 0;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
-    gCameras[CAM_DEFAULT].auxPitch = 0;
-    gCameras[CAM_DEFAULT].lookAt_dist = 100;
-    gCameras[CAM_DEFAULT].auxBoomPitch = 0;
+
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].params.basic.pitch = 0;
+    gCameras[CAM_DEFAULT].params.basic.dist = 40;
+    gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
+
     gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.z = 1500.0f;
+
+    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
     gCameras[CAM_DEFAULT].lookAt_obj_target.z = 150.0f;
+
+    gCameras[CAM_DEFAULT].bgColor[0] = 0;
+    gCameras[CAM_DEFAULT].bgColor[1] = 0;
+    gCameras[CAM_DEFAULT].bgColor[2] = 0;
+
+    gCurrentCameraID = CAM_DEFAULT;
+
+    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_HUD].flags |= CAMERA_FLAG_DISABLED;
+
     clear_script_list();
     clear_worker_list();
     clear_render_tasks();

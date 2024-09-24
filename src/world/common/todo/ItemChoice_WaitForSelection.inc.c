@@ -1,6 +1,5 @@
 #include "common.h"
 
-NOP_FIX
 API_CALLABLE(N(ItemChoice_WaitForSelection)) {
     Bytecode* args = script->ptrReadPos;
 
@@ -16,4 +15,3 @@ API_CALLABLE(N(ItemChoice_WaitForSelection)) {
 
     return ApiStatus_BLOCK;
 }
-NOP_UNFIX

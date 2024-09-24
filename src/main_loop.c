@@ -8,11 +8,12 @@
 #include "dx/profiling.h"
 #include "dx/debug_menu.h"
 
-SHIFT_BSS s32 gOverrideFlags;
-SHIFT_BSS s32 timeFreezeMode;
-SHIFT_BSS u16** nuGfxCfb;
-SHIFT_BSS s16 SoftResetDelay;
-SHIFT_BSS DisplayContext DisplayContexts[2];
+s32 gOverrideFlags;
+s32 timeFreezeMode;
+u16** nuGfxCfb;
+BSS s16 SoftResetDelay;
+
+DisplayContext DisplayContexts[2];
 
 s8 gGameStepDelayAmount = 1;
 s8 gGameStepDelayCount = 5;
@@ -95,7 +96,7 @@ void step_game_loop(void) {
     profiler_update(PROFILER_TIME_MESSAGES, 0);
     update_hud_elements();
     profiler_update(PROFILER_TIME_HUD_ELEMENTS, 0);
-    step_current_game_mode();
+    step_game_mode();
     profiler_update(PROFILER_TIME_STEP_GAME_MODE, 0);
     update_entities();
     profiler_update(PROFILER_TIME_ENTITIES, 0);
@@ -212,7 +213,7 @@ void gfx_draw_frame(void) {
     render_workers_backUI();
     render_hud_elements_backUI();
     render_effects_UI();
-    state_render_backUI();
+    render_game_mode_backUI();
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS)) {
         render_window_root();
@@ -250,7 +251,7 @@ void gfx_draw_frame(void) {
         render_window_root();
     }
 
-    state_render_frontUI();
+    render_game_mode_frontUI();
 
     if (gOverrideFlags & GLOBAL_OVERRIDES_SOFT_RESET) {
         switch (SoftResetState) {
@@ -311,7 +312,7 @@ void load_engine_data(void) {
     clear_render_tasks();
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     clear_player_status();
     spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
     clear_entity_models();
@@ -321,7 +322,7 @@ void load_engine_data(void) {
     reset_background_settings();
     clear_character_set();
     clear_printers();
-    clear_game_modes();
+    clear_game_mode();
     clear_npcs();
     hud_element_clear_cache();
     clear_trigger_data();

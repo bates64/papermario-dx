@@ -736,7 +736,7 @@ EvtScript N(EVS_HandlePhase) = {
         CaseEq(PHASE_PLAYER_BEGIN)
             IfFalse(GF_Tutorial_SwapTurnOrder)
                 Call(UseIdleAnimation, ACTOR_PARTNER, FALSE)
-                Call(UseBattleCamPreset, BTL_CAM_PRESET_14)
+                Call(UseBattleCamPreset, BTL_CAM_ACTOR)
                 Call(BattleCamTargetActor, ACTOR_SELF)
                 Call(MoveBattleCamOver, 20)
                 Wait(10)
@@ -773,9 +773,9 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-EvtScript N(EVS_ReturnHome) = {
+EvtScript N(EVS_ReturnHome_Miss) = {
     Call(PartnerYieldTurn)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_51)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MISTAKE)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
     Thread
         Wait(4)
@@ -824,9 +824,9 @@ EvtScript N(EVS_ReturnHome) = {
     End
 };
 
-EvtScript N(returnHome2) = {
+EvtScript N(EVS_ReturnHome_Success) = {
     Call(PartnerYieldTurn)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_03)
+    Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_Idle)
     Call(SetGoalToHome, ACTOR_PARTNER)
     Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -939,9 +939,9 @@ EvtScript N(EVS_Attack_Headbonk1) = {
     Wait(5)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 19, 0)
     Wait(1)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(action_command_jump_start, LVarA, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 9, 0)
     Call(SetGoalToTarget, ACTOR_PARTNER)
@@ -957,7 +957,7 @@ EvtScript N(EVS_Attack_Headbonk1) = {
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
-        ExecWait(N(EVS_ReturnHome))
+        ExecWait(N(EVS_ReturnHome_Miss))
         Return
     EndIf
     ChildThread
@@ -983,7 +983,7 @@ EvtScript N(EVS_Attack_Headbonk1) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(N(EVS_ReturnHome_Miss))
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -991,10 +991,10 @@ EvtScript N(EVS_Attack_Headbonk1) = {
         EndCaseGroup
     EndSwitch
     Thread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_50)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_53)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(GetActionResult, LVarF)
     Call(CloseActionCommandInfo)
@@ -1029,7 +1029,7 @@ EvtScript N(EVS_Attack_Headbonk1) = {
     Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
     Call(SetActionResult, LVarF)
-    ExecWait(N(returnHome2))
+    ExecWait(N(EVS_ReturnHome_Success))
     Return
     End
 };
@@ -1044,9 +1044,9 @@ EvtScript N(EVS_Attack_Headbonk2) = {
     Wait(5)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 19, 0)
     Wait(1)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(action_command_jump_start, LVarA, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 9, 0)
     Call(SetGoalToTarget, ACTOR_PARTNER)
@@ -1062,7 +1062,7 @@ EvtScript N(EVS_Attack_Headbonk2) = {
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
-        ExecWait(N(EVS_ReturnHome))
+        ExecWait(N(EVS_ReturnHome_Miss))
         Return
     EndIf
     ChildThread
@@ -1088,7 +1088,7 @@ EvtScript N(EVS_Attack_Headbonk2) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(N(EVS_ReturnHome_Miss))
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -1096,10 +1096,10 @@ EvtScript N(EVS_Attack_Headbonk2) = {
         EndCaseGroup
     EndSwitch
     Thread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_50)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_53)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(GetActionResult, LVarF)
     Call(CloseActionCommandInfo)
@@ -1136,7 +1136,7 @@ EvtScript N(EVS_Attack_Headbonk2) = {
     Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
     Call(SetActionResult, LVarF)
-    ExecWait(N(returnHome2))
+    ExecWait(N(EVS_ReturnHome_Success))
     Return
     End
 };
@@ -1151,9 +1151,9 @@ EvtScript N(EVS_Attack_Headbonk3) = {
     Wait(5)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 19, 0)
     Wait(1)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(action_command_jump_start, LVarA, 3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 9, 0)
     Call(SetGoalToTarget, ACTOR_PARTNER)
@@ -1169,7 +1169,7 @@ EvtScript N(EVS_Attack_Headbonk3) = {
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
-        ExecWait(N(EVS_ReturnHome))
+        ExecWait(N(EVS_ReturnHome_Miss))
         Return
     EndIf
     ChildThread
@@ -1195,7 +1195,7 @@ EvtScript N(EVS_Attack_Headbonk3) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(N(EVS_ReturnHome_Miss))
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -1203,10 +1203,10 @@ EvtScript N(EVS_Attack_Headbonk3) = {
         EndCaseGroup
     EndSwitch
     Thread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_50)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_53)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(GetActionResult, LVarF)
     Call(CloseActionCommandInfo)
@@ -1252,7 +1252,7 @@ EvtScript N(EVS_Attack_Headbonk3) = {
     Call(PartnerDamageEnemy, LVar0, DAMAGE_TYPE_JUMP, 0, 0, LVar0, BS_FLAGS1_TRIGGER_EVENTS)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_NONE)
     Call(SetActionResult, LVarF)
-    ExecWait(N(returnHome2))
+    ExecWait(N(EVS_ReturnHome_Success))
     Return
     End
 };
@@ -1271,9 +1271,9 @@ EvtScript N(EVS_Move_Multibonk) = {
     Wait(5)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 19, 0)
     Wait(1)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(action_command_jump_start, LVarA, 1)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_52)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_MIDAIR)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleGoombario_Headbonk)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 9, 0)
     Call(SetGoalToTarget, ACTOR_PARTNER)
@@ -1289,7 +1289,7 @@ EvtScript N(EVS_Move_Multibonk) = {
         EndThread
         Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TRIP)
         Wait(20)
-        ExecWait(N(EVS_ReturnHome))
+        ExecWait(N(EVS_ReturnHome_Miss))
         Return
     EndIf
     ChildThread
@@ -1315,7 +1315,7 @@ EvtScript N(EVS_Move_Multibonk) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(N(EVS_ReturnHome_Miss))
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
@@ -1323,10 +1323,10 @@ EvtScript N(EVS_Move_Multibonk) = {
         EndCaseGroup
     EndSwitch
     Thread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_50)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_53)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(GetActionResult, LVarF)
     Set(LVarD, 0)
@@ -1334,10 +1334,10 @@ EvtScript N(EVS_Move_Multibonk) = {
     Set(LFlag0, FALSE)
     Label(10)
     Thread
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_50)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1)
         Wait(5)
         Call(SetGoalToTarget, ACTOR_PARTNER)
-        Call(UseBattleCamPreset, BTL_CAM_PRESET_53)
+        Call(UseBattleCamPreset, BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2)
     EndThread
     Call(CloseActionCommandInfo)
     Call(SetActionDifficultyTable, Ref(N(actionCommandTable)))
@@ -1416,13 +1416,13 @@ EvtScript N(EVS_Move_Multibonk) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_ReturnHome))
+            ExecWait(N(EVS_ReturnHome_Miss))
             Return
         EndCaseGroup
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
             IfEq(LFlag0, TRUE)
-                ExecWait(N(returnHome2))
+                ExecWait(N(EVS_ReturnHome_Success))
                 Return
             EndIf
         EndCaseGroup
@@ -1448,15 +1448,15 @@ EvtScript N(EVS_Move_Tattle) = {
     Wait(12)
     Call(SetCamEnabled, CAM_TATTLE, TRUE)
     Call(SetCamNoDraw, CAM_TATTLE, FALSE)
-    Call(SetCamPerspective, CAM_TATTLE, CAM_UPDATE_MODE_6, 25, 16, 1024)
+    Call(SetCamPerspective, CAM_TATTLE, CAM_UPDATE_NO_INTERP, 25, 16, 1024)
     Call(SetCamViewport, CAM_TATTLE, 137, 95, 138, 99)
     Call(GetOwnerTarget, LVarA, LVarB)
     Call(GetActorPos, LVarA, LVar0, LVar1, LVar2)
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(N(GetTattleCamPos))
     Wait(1)
-    Call(func_802CAE50, CAM_TATTLE, LVar0, LVar1, LVar2)
-    Call(func_802CABE8, CAM_TATTLE, 0, LVar3, 100, 4)
+    Call(SetCamLookTarget, CAM_TATTLE, LVar0, LVar1, LVar2)
+    Call(SetNoInterpCamParams, CAM_TATTLE, FALSE, LVar3, 100, 4)
     Wait(2)
     Call(PlaySoundAtActor, ACTOR_PARTNER, SOUND_TATTLE_WINDOW_OPEN)
     Call(SetCamNoDraw, CAM_TATTLE, TRUE)
@@ -1481,7 +1481,7 @@ EvtScript N(EVS_Move_Tattle) = {
 };
 
 EvtScript N(EVS_Move_Charge) = {
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_55)
+    Call(UseBattleCamPreset, BTL_CAM_PARTNER_GOOMPA)
     Wait(10)
     Call(SetAnimation, ACTOR_PARTNER, -1, ANIM_BattleGoombario_PreHeadbonk)
     Call(SetActorDispOffset, ACTOR_PARTNER, 0, 19, 0)

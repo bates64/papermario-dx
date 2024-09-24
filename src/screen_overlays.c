@@ -2,12 +2,12 @@
 #include "overlay.h"
 #include "include_asset.h"
 
-SHIFT_BSS s32 screen_overlay_frontType;
-SHIFT_BSS f32 screen_overlay_frontZoom;
-SHIFT_BSS s32 screen_overlay_backType;
-SHIFT_BSS f32 screen_overlay_backZoom;
-SHIFT_BSS s32 D_80156910;
-SHIFT_BSS ScreenOverlay ScreenOverlays[2];
+BSS s32 screen_overlay_frontType;
+BSS f32 screen_overlay_frontZoom;
+BSS s32 screen_overlay_backType;
+BSS f32 screen_overlay_backZoom;
+BSS s32 D_80156910;
+ScreenOverlay ScreenOverlays[2];
 
 ScreenTransition CurrentScreenTransition = TRANSITION_END_DEMO_SCENE_BLACK;
 
@@ -414,7 +414,7 @@ void set_screen_overlay_center_worldpos(s32 layer, s32 posIdx, s32 worldPosX, s3
     switch (layer) {
         case SCREEN_LAYER_FRONT:
         case SCREEN_LAYER_BACK:
-            transform_point(camera->perspectiveMatrix, worldPosX, worldPosY, worldPosZ, 1.0f, &tx, &ty, &tz, &tw);
+            transform_point(camera->mtxPerspective, worldPosX, worldPosY, worldPosZ, 1.0f, &tx, &ty, &tz, &tw);
             tw = 1.0f / tw;
             tx *= tw;
             ty *= -tw;

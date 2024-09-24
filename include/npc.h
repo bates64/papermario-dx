@@ -397,9 +397,8 @@ typedef struct EncounterStatus {
     /* 0x0A8 */ FieldStatus unusedAttack2;
     /* 0x0AC */ FieldStatus unusedAttack3;
     /* 0x0B0 */ s32 defeatFlags[60][12];
-    /* 0xFB0 */ s16 recentMaps[2];
-    /* 0xFB4 */ char unk_FB4[4];
-} EncounterStatus; // size = 0xFB8
+    /* 0xBF0 */ s16 recentMaps[2];
+} EncounterStatus; // size = 0xBF4
 
 extern EncounterStatus gCurrentEncounter;
 

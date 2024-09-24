@@ -3,6 +3,7 @@
 #include "message_ids.h"
 #include "sprite.h"
 
+#include "charset/charset.h"
 #include "charset/postcard.png.h"
 #include "charset/letter_content_1.png.h"
 
@@ -30,7 +31,12 @@ enum RewindArrowStates {
 
 typedef MessageImageData* MessageImageDataList[1];
 
-s32 D_8014C280[] = { 0x028001E0, 0x01FF0000, 0x028001E0, 0x01FF0000 };
+Vp D_8014C280 = {
+    .vp = {
+        .vscale = {640, 480, 511, 0},
+        .vtrans = {640, 480, 511, 0},
+    }
+};
 
 #if !VERSION_JP
 u8 MessagePlural[] = { MSG_CHAR_LOWER_S, MSG_CHAR_READ_END };
@@ -55,12 +61,11 @@ void* D_PAL_8014AE50[] = {
 
 s16 gNextMessageBuffer = 0;
 
-//TODO Vtx
-ALIGNED(8) s32 gRewindArrowQuad[] = {
-    0xFFF00009, 0x00000000, 0x00000000, 0xFFFFFFFF,
-    0x00100009, 0x00000000, 0x04000000, 0xFFFFFFFF,
-    0xFFF0FFF7, 0x00000000, 0x00000240, 0xFFFFFFFF,
-    0x0010FFF7, 0x00000000, 0x04000240, 0xFFFFFFFF,
+Vtx gRewindArrowQuad[] = {
+    {{{ -16,   9,   0 }, 0, { 0x000, 0x000 }, { 255, 255, 255, 255 }}},
+    {{{  16,   9,   0 }, 0, { 0x400, 0x000 }, { 255, 255, 255, 255 }}},
+    {{{ -16,  -9,   0 }, 0, { 0x000, 0x240 }, { 255, 255, 255, 255 }}},
+    {{{  16,  -9,   0 }, 0, { 0x400, 0x240 }, { 255, 255, 255, 255 }}},
 };
 
 Gfx D_8014C2D8[] = {
@@ -80,66 +85,43 @@ Gfx D_8014C2D8[] = {
     gsSPEndDisplayList(),
 };
 
-SHIFT_BSS s32 gMsgBGScrollAmtX;
-SHIFT_BSS u16 gMsgGlobalWaveCounter;
-SHIFT_BSS MessageImageDataList gMsgVarImages;
-SHIFT_BSS s32 gMsgBGScrollAmtY;
-SHIFT_BSS u8* D_8015131C;
-SHIFT_BSS Gfx* D_80151338;
-SHIFT_BSS char gMessageBuffers[2][1024];
-SHIFT_BSS u8 gMessageMsgVars[3][32];
-SHIFT_BSS s16 D_80155C98;
-SHIFT_BSS Mtx gMessageWindowProjMatrix[2];
-SHIFT_BSS MessageDrawState D_80155D20;
-SHIFT_BSS MessageDrawState* msg_drawState;
-SHIFT_BSS IMG_BIN D_80159B50[0x200];
-SHIFT_BSS PAL_BIN D_8015C7E0[0x10];
-SHIFT_BSS MessagePrintState gMessagePrinters[3];
-#if VERSION_IQUE
-SHIFT_BSS IMG_BIN D_801544A0[120][128];
+s32 gMsgBGScrollAmtX;
+u16 gMsgGlobalWaveCounter;
+MessageImageDataList gMsgVarImages;
+s32 gMsgBGScrollAmtY;
+u8* D_8015131C;
+Gfx* D_80151338;
+
+static char gMessageBuffers[2][1024];
+static MessagePrintState gMessagePrinters[3];
+#if VERSION_JP
+static s32 D_80155C38;
 #endif
+static u8 gMessageMsgVars[3][32];
+static s16 D_80155C98;
+static Mtx gMessageWindowProjMatrix[2];
+
+IMG_BIN D_80159B50[0x200];
+PAL_BIN D_8015C7E0[0x10];
 
 extern s16 MsgStyleVerticalLineOffsets[];
 
-extern IMG_BIN ui_msg_bubble_left_png[];
-extern IMG_BIN ui_msg_bubble_mid_png[];
-extern IMG_BIN ui_msg_bubble_right_png[];
-extern IMG_BIN ui_msg_arrow_png[];
-extern unsigned char ui_msg_palettes[16][32];
-extern IMG_BIN ui_msg_sign_corner_topleft_png[];
-extern IMG_BIN ui_msg_sign_corner_topright_png[];
-extern IMG_BIN ui_msg_sign_corner_bottomleft_png[];
-extern IMG_BIN ui_msg_sign_corner_bottomright_png[];
-extern IMG_BIN ui_msg_lamppost_corner_bottomright_png[];
-extern IMG_BIN ui_msg_sign_side_top_png[];
-extern IMG_BIN ui_msg_sign_side_left_png[];
-extern IMG_BIN ui_msg_sign_side_right_png[];
-extern IMG_BIN ui_msg_sign_side_bottom_png[];
-extern IMG_BIN ui_msg_sign_fill_png[];
-extern PAL_BIN ui_msg_sign_pal[];
-extern PAL_BIN ui_msg_lamppost_pal[];
-extern IMG_BIN ui_msg_background_png[];
 extern IMG_BIN ui_msg_rewind_arrow_png[];
 extern PAL_BIN ui_msg_rewind_arrow_pal[];
 extern IMG_BIN ui_msg_star_png[];
 extern IMG_BIN ui_msg_star_silhouette_png[];
 
-extern IMG_BIN D_802ED550[];
-extern PAL_BIN D_802ED670[];
 extern IMG_BIN MsgCharImgTitle[];
 extern IMG_BIN MsgCharImgNormal[];
 extern MessageCharset* MsgCharsets[5];
 extern IMG_BIN MsgCharImgSubtitle[];
 extern PAL_BIN D_802F4560[80][8];
-
 #if VERSION_JP
 extern IMG_BIN MsgCharImgKana[];
 extern IMG_BIN MsgCharImgLatin[];
 extern IMG_BIN MsgCharImgMenuKana[];
 extern IMG_BIN MsgCharImgMenuLatin[];
 #endif
-
-extern s32 gMessageBoxFrameParts[2][16];
 
 extern IMG_BIN ui_point_right_png[];
 extern PAL_BIN ui_point_right_pal[];
@@ -206,15 +188,6 @@ void msg_draw_rewind_arrow(s32);
 void msg_draw_choice_pointer(MessagePrintState* printer);
 void draw_message_window(MessagePrintState* printer);
 void appendGfx_message(MessagePrintState*, s16, s16, u16, u16, u16, u8);
-void appendGfx_msg_prim_rect(u8 r, u8 g, u8 b, u8 a, u16 ulX, u16 ulY, u16 lrX, u16 lrY);
-void msg_reset_gfx_state(void);
-void msg_draw_char(MessagePrintState* printer, MessageDrawState* drawState, s32 charIndex, s32 palette, s32 posX,
-                   s32 posY);
-void msg_draw_prim_rect(u8 r, u8 g, u8 b, u8 a, u16 posX, u16 posY, u16 sizeX, u16 sizeY);
-void msg_draw_speech_arrow(MessagePrintState* printer);
-void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha);
-void msg_draw_speech_bubble(MessagePrintState* printer, s16 posX, s16 posY, s16 straightWidth, s16 curveWidth,
-                            s16 height, f32 scaleX, f32 scaleY, u8 opacity, s32 arg9);
 
 void clear_character_set(void) {
     D_80155C98 = -1;
@@ -266,7 +239,7 @@ void load_font(s32 font) {
         } else if (font == 1) {
             load_font_data(charset_title_OFFSET, 0xF60, MsgCharImgTitle);
             load_font_data(charset_subtitle_OFFSET, 0xB88, MsgCharImgSubtitle);
-            load_font_data(charset_credits_pal_OFFSET, 0x80, D_802F4560);
+            load_font_data(charset_subtitle_pal_OFFSET, 0x80, D_802F4560);
         }
     }
 }
@@ -598,7 +571,7 @@ void render_messages(void) {
 
     for (i = 0; i < ARRAY_COUNT(gMessagePrinters); i++) {
         if (gMessagePrinters[i].stateFlags & MSG_STATE_FLAG_2) {
-            gSPViewport(gMainGfxPos++, D_8014C280);
+            gSPViewport(gMainGfxPos++, &D_8014C280);
             guOrtho(matrix, 0.0f, 319.0f, -240.0f, 0.0f, -500.0f, 500.0f, 1.0f);
             gSPMatrix(gMainGfxPos++, OS_K0_TO_PHYSICAL(matrix), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
             gDPPipeSync(gMainGfxPos++);
@@ -659,8 +632,8 @@ void msg_play_speech_sound(MessagePrintState* printer, u8 character) {
 
 extern s32 gItemIconRasterOffsets[];
 extern s32 gItemIconPaletteOffsets[];
-extern s32 MsgLetterRasterOffsets[];
-extern s32 MsgLetterPaletteOffsets[];
+extern IMG_PTR MsgLetterRasterOffsets[];
+extern PAL_PTR MsgLetterPaletteOffsets[];
 extern MsgVoice MsgVoices[];
 
 #if VERSION_PAL
@@ -767,14 +740,12 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowState = MSG_WINDOW_STATE_OPENING;
                         break;
                     case MSG_STYLE_CHOICE:
-                        do {
-                            printer->windowBasePos.x = *srcBuf++;
-                            printer->windowBasePos.y = *srcBuf++;
-                            printer->windowSize.x = *srcBuf++;
-                            printer->windowSize.y = *srcBuf++;
-                            printer->windowState = MSG_WINDOW_STATE_OPENING;
-                            printer->stateFlags |= MSG_STATE_FLAG_800;
-                        } while (0);
+                        printer->windowBasePos.x = *srcBuf++;
+                        printer->windowBasePos.y = *srcBuf++;
+                        printer->windowSize.x = *srcBuf++;
+                        printer->windowSize.y = *srcBuf++;
+                        printer->windowState = MSG_WINDOW_STATE_OPENING;
+                        printer->stateFlags |= MSG_STATE_FLAG_800;
                         break;
                     case MSG_STYLE_INSPECT:
                     case MSG_STYLE_NARRATE:
@@ -814,13 +785,11 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowSize.y = *srcBuf++;
                         // fallthrough
                     case MSG_STYLE_SIGN:
-                        do {
-                            if (!s8) {
-                                printer->windowState = MSG_WINDOW_STATE_OPENING;
-                                printer->stateFlags |= MSG_STATE_FLAG_800;
-                                printer->delayFlags |= MSG_DELAY_FLAG_1;
-                            }
-                        } while (0);
+                        if (!s8) {
+                            printer->windowState = MSG_WINDOW_STATE_OPENING;
+                            printer->stateFlags |= MSG_STATE_FLAG_800;
+                            printer->delayFlags |= MSG_DELAY_FLAG_1;
+                        }
                         break;
                     case MSG_STYLE_POSTCARD:
                         arg = *srcBuf++;
@@ -831,13 +800,13 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         romAddr = charset_ROM_START + (s32)charset_postcard_OFFSET;
                         dma_copy(romAddr, romAddr + ((charset_postcard_png_width * charset_postcard_png_height) / 2), printer->letterBackgroundImg);
                         printer->letterBackgroundPal = heap_malloc(0x20);
-                        romAddr = charset_ROM_START + ((s32)charset_postcard_pal_OFFSET + 5);
+                        romAddr = charset_ROM_START + (s32)charset_postcard_pal_OFFSET;
                         dma_copy(romAddr, romAddr + 0x20, printer->letterBackgroundPal);
                         printer->letterContentImg = heap_malloc(charset_letter_content_1_png_width * charset_letter_content_1_png_height);
-                        romAddr = charset_ROM_START + MsgLetterRasterOffsets[arg];
+                        romAddr = charset_ROM_START + (s32) MsgLetterRasterOffsets[arg];
                         dma_copy(romAddr, romAddr + (charset_letter_content_1_png_width * charset_letter_content_1_png_height), printer->letterContentImg);
                         printer->letterContentPal = heap_malloc(0x200);
-                        romAddr = charset_ROM_START + MsgLetterPaletteOffsets[arg];
+                        romAddr = charset_ROM_START + (s32) MsgLetterPaletteOffsets[arg];
                         dma_copy(romAddr, romAddr + 0x200, printer->letterContentPal);
                         break;
                     case MSG_STYLE_POPUP:
@@ -849,13 +818,11 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                         printer->windowSize.y = 40;
 #endif
                         printer->stateFlags |= MSG_STATE_FLAG_8000;
-                        do {
-                            if (!s8) {
-                                printer->stateFlags |= MSG_STATE_FLAG_8000 | MSG_STATE_FLAG_800;
-                                printer->windowState = MSG_WINDOW_STATE_D;
-                                printer->delayFlags |= MSG_DELAY_FLAG_1;
-                            }
-                        } while (0);
+                        if (!s8) {
+                            printer->stateFlags |= MSG_STATE_FLAG_8000 | MSG_STATE_FLAG_800;
+                            printer->windowState = MSG_WINDOW_STATE_D;
+                            printer->delayFlags |= MSG_DELAY_FLAG_1;
+                        }
                         break;
                     case MSG_STYLE_EPILOGUE:
                         printer->windowState = MSG_WINDOW_STATE_PRINTING;

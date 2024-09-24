@@ -3,11 +3,11 @@
 #include "sprite/player.h"
 #include "dx/debug_menu.h"
 
-SHIFT_BSS CollisionStatus gCollisionStatus;
-SHIFT_BSS f32 JumpedOnSwitchX;
-SHIFT_BSS f32 JumpedOnSwitchZ;
-SHIFT_BSS f32 StepUpLastY; // never read, remove?
-SHIFT_BSS f32 StepUpLastYaw; // never read, remove?
+CollisionStatus gCollisionStatus;
+f32 JumpedOnSwitchX;
+f32 JumpedOnSwitchZ;
+f32 StepUpLastYaw; // never read, remove?
+f32 StepUpLastY; // never read, remove?
 
 s16 FootstepSoundSelector = 0;
 

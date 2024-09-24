@@ -50,7 +50,7 @@ API_CALLABLE(func_802A12FC_75E8CC) {
     return ApiStatus_DONE2;
 }
 
-extern EvtScript N(EVS_UseMove1_Impl);
+extern EvtScript N(EVS_UseMoveBasic_Impl);
 
 EvtScript N(EVS_UseMove1) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
@@ -59,23 +59,23 @@ EvtScript N(EVS_UseMove1) = {
             Set(LVarD, 65)
             Set(LVarE, 1)
             Set(LVarF, 2)
-            ExecWait(N(EVS_UseMove1_Impl))
+            ExecWait(N(EVS_UseMoveBasic_Impl))
         CaseEq(1)
             Set(LVarD, 65)
             Set(LVarE, 2)
             Set(LVarF, 4)
-            ExecWait(N(EVS_UseMove1_Impl))
+            ExecWait(N(EVS_UseMoveBasic_Impl))
         CaseEq(2)
             Set(LVarD, 65)
             Set(LVarE, 4)
             Set(LVarF, 6)
-            ExecWait(N(EVS_UseMove1_Impl))
+            ExecWait(N(EVS_UseMoveBasic_Impl))
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove1_Impl) = {
+EvtScript N(EVS_UseMoveBasic_Impl) = {
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
@@ -130,7 +130,7 @@ EvtScript N(EVS_UseMove1_Impl) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_Hammer_ReturnHome_C))
+        ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         Return
     EndIf
     Set(LFlag0, FALSE)
@@ -164,11 +164,11 @@ EvtScript N(EVS_UseMove1_Impl) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_Hammer_ReturnHome_A))
+            ExecWait(N(EVS_HammerSupport_ReturnHome_Success))
         EndCaseGroup
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_Hammer_ReturnHome_C))
+            ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         EndCaseGroup
     EndSwitch
     Return
@@ -224,7 +224,7 @@ EvtScript N(EVS_802A39C8) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -274,7 +274,7 @@ EvtScript N(EVS_802A3CF4) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -324,7 +324,7 @@ EvtScript N(EVS_802A4020) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)

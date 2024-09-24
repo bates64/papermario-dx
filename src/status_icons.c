@@ -80,9 +80,9 @@ s32 D_80078168[] = {
     MSG_Menus_Merlee_Exhausted,
 };
 
-SHIFT_BSS PopupMessage D_800A0BC0[32];
-SHIFT_BSS s32 D_800A0F40;
-SHIFT_BSS HudStatusIcon* D_800A0F44;
+BSS PopupMessage D_800A0BC0[32];
+BSS s32 D_800A0F40;
+BSS HudStatusIcon* D_800A0F44;
 
 extern HudScript HES_Item_KeyGift;
 extern HudScript HES_AsleepBegin;
@@ -128,7 +128,7 @@ void func_80045AC0(void) {
     for (i = 0; i < ARRAY_COUNT(D_800A0BC0); i++) {
         PopupMessage* popup = &D_800A0BC0[i];
         popup->active = FALSE;
-        popup->message = NULL;
+        popup->data.icons = NULL;
     }
 
     create_worker_world(NULL, func_80045BC8);
@@ -140,8 +140,8 @@ void func_80045B10(void) {
 
     for (i = 0; i < ARRAY_COUNT(D_800A0BC0); i++) {
         PopupMessage* popup = &D_800A0BC0[i];
-        if (popup->message != NULL) {
-            heap_free(popup->message);
+        if (popup->data.icons != NULL) {
+            heap_free(popup->data.icons);
         }
         popup->active = FALSE;
     }
@@ -195,9 +195,9 @@ PopupMessage* get_current_merlee_message(void) {
 }
 
 void dispose_merlee_message(PopupMessage* popup) {
-    if (popup->message != NULL) {
-        heap_free(popup->message);
-        popup->message = NULL;
+    if (popup->data.icons != NULL) {
+        heap_free(popup->data.icons);
+        popup->data.icons = NULL;
     }
     popup->active = FALSE;
 }
@@ -248,7 +248,7 @@ void update_merlee_message(void* data) {
     }
 
     if (closeMessage) {
-        set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_HIDE);
+        set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_HIDE);
         D_800A0F40 = 0;
         dispose_merlee_message(popup);
     }
@@ -294,8 +294,8 @@ void draw_merlee_message(void* data) {
                 width = get_msg_width(messageID, 0) + 23;
                 xPos = 160 - (width / 2);
                 height = 45;
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
 
@@ -306,8 +306,8 @@ void draw_merlee_message(void* data) {
                 width = get_msg_width(messageID, 0) + 23;
                 xPos = 160 - (width / 2);
                 height = 28;
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, xPos, 80, width, height, WINDOW_PRIORITY_0, draw_merlee_message_string, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
     }
@@ -322,8 +322,8 @@ void draw_merlee_message(void* data) {
         messageID = D_80078168[popup->messageIndex];
         width = get_msg_width(messageID, 0) + 30;
         xPos = 160 - (width / 2);
-        set_window_properties(WINDOW_ID_BATTLE_POPUP, xPos, 80, width, D_80078160[get_msg_lines(messageID) - 1], 0, draw_merlee_message_string, popup, -1);
-        set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+        set_window_properties(WIN_BTL_POPUP, xPos, 80, width, D_80078160[get_msg_lines(messageID) - 1], 0, draw_merlee_message_string, popup, -1);
+        set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
     }
 #endif
 }
@@ -342,8 +342,8 @@ void init_all_status_icons(void) {
         popup->unk_00 = 0;
         popup->renderWorldFunc = NULL;
         popup->renderUIFunc = draw_all_status_icons;
-        popup->message = general_heap_malloc(64 * sizeof(HudStatusIcon));
-        icons = D_800A0F44 = (HudStatusIcon*)(popup->message);
+        popup->data.icons = general_heap_malloc(MAX_ICONS * sizeof(HudStatusIcon));
+        icons = D_800A0F44 = popup->data.icons;
         ASSERT(icons != NULL);
 
         for (i = 0; i < MAX_ICONS; i++, icons++)

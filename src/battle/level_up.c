@@ -359,7 +359,11 @@ EvtScript EVS_ShowStarpoints = {
         Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
         Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
     Else
+#if VERSION_JP
+        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoint))
+#else
         Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoints))
+#endif
         Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
         Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
         Set(LFlag0, TRUE)
@@ -397,13 +401,25 @@ EvtScript EVS_ShowStarpoints = {
         Add(LVar1, -78)
         Call(SetVirtualEntityPosition, LVar6, LVar1, 68, 70)
         Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -154)
+#else
         Add(LVar1, -146)
+#endif
         Call(SetVirtualEntityPosition, LVar7, LVar1, 68, 70)
         Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -139)
+#else
         Add(LVar1, -131)
+#endif
         Call(SetVirtualEntityPosition, LVar8, LVar1, 68, 70)
         Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -124)
+#else
         Add(LVar1, -116)
+#endif
         Call(SetVirtualEntityPosition, LVar9, LVar1, 68, 70)
         Wait(1)
     EndLoop
@@ -967,10 +983,16 @@ void btl_state_update_celebration(void) {
             CelebrateSubstateTime--;
             if (CelebrateSubstateTime == 0) {
                 hud_element_set_tint(id, 128, 128, 128);
+#if VERSION_JP
+                x = 32;
+                y = 186;
+                set_window_properties(WIN_BTL_DESC_BOX, 32, 186, 242, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
+#else
                 x = 20;
                 y = 186;
-                set_window_properties(WINDOW_ID_8, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
-                set_window_update(WINDOW_ID_8, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
+#endif
+                set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
                 gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
             }
             break;
@@ -1013,7 +1035,7 @@ void btl_state_update_celebration(void) {
             break;
         case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE:
             hud_element_free(LevelUpSpotlightID);
-            set_window_update(WINDOW_ID_8, WINDOW_UPDATE_HIDE);
+            set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_HIDE);
 
             switch (battleStatus->curSubmenu) {
                 case 0:
@@ -1120,8 +1142,8 @@ void btl_state_update_celebration(void) {
             width = get_msg_width(MSG_Menus_CantIncrease, 0) + 31;
             x = 160 - (width / 2);
             y = 80;
-            set_window_properties(WINDOW_ID_BATTLE_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
-            set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            set_window_properties(WIN_BTL_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
+            set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             CelebrateSubstateTime = 60;
             gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY;
             break;
@@ -1133,19 +1155,22 @@ void btl_state_update_celebration(void) {
                 CelebrateSubstateTime--;
                 break;
             }
-            set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_HIDE);
+            set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_HIDE);
             gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
             break;
         case BTL_SUBSTATE_CELEBRATE_SKIPPABLE_END_DELAY:
             if (battleStatus->curButtonsPressed & (BUTTON_A | BUTTON_B)) {
                 CelebrateStateTime = 99;
+#if VERSION_JP
+                sfx_play_sound(SOUND_MENU_NEXT);
+#endif
             }
             if (CelebrateStateTime >= 99) {
                 if (!(gBattleStatus.flags2 & BS_FLAGS2_DONT_STOP_MUSIC)) {
                     bgm_set_song(0, -1, 0, 1500, 8);
                 }
                 bFadeToBlackAmt = 0;
-                btl_cam_set_params(1, 270, 100, 8, 0, 0x2400, 0, 100);
+                btl_cam_set_params(TRUE, 270, 100, 8, 0, 0x2400, 100);
                 set_actor_anim(0, 0, ANIM_MarioB1_AdjustCap);
                 if (partner != NULL) {
                     set_actor_anim(ACTOR_PARTNER, 0, D_80284154[playerData->curPartner]);

@@ -20,11 +20,15 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
-YAY0_COMPRESS_TOOL = f"{BUILD_TOOLS}/yay0/Yay0compress"
 CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
-PIGMENT = "pigment64"
-PIGMENT_REQ_VERSION = "0.4.2"
+PIGMENT64 = "pigment64"
+CRUNCH64 = "crunch64"
+
+RUST_TOOLS = [
+    (PIGMENT64, "pigment64", "0.4.2"),
+    (CRUNCH64, "crunch64-cli", "0.3.1"),
+]
 
 
 def exec_shell(command: List[str]) -> str:
@@ -62,6 +66,8 @@ def write_ninja_rules(
     cc_egcs = f"{cc_egcs_dir}/gcc"
     cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
 
+    BFDNAME = "elf32-tradbigmips"
+
     CPPFLAGS_COMMON = (
         "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_LANGUAGE_C -D_FINALROM "
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
@@ -69,7 +75,7 @@ def write_ninja_rules(
 
     CPPFLAGS_272 = CPPFLAGS_COMMON + " -nostdinc"
 
-    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -DBBPLAYER -nostdinc"
+    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -nostdinc"
 
     CPPFLAGS = "-w " + CPPFLAGS_COMMON + " -nostdinc"
 
@@ -87,20 +93,11 @@ def write_ninja_rules(
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections -T $in -o $out"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
-    if shift:
-        # For the shiftable build, we link twice to resolve some addresses that gnu ld can't figure out all in one go.
-        ninja.rule(
-            "ld",
-            description="link($version) $out",
-            command=f"{ld} $$(tools/build/ld/multilink_calc.py $version hardcode) {ld_args} && \
-                      {ld} $$(tools/build/ld/multilink_calc.py $version calc) {ld_args}",
-        )
-    else:
-        ninja.rule(
-            "ld",
-            description="link($version) $out",
-            command=f"{ld} {ld_args}",
-        )
+    ninja.rule(
+        "ld",
+        description="link($version) $out",
+        command=f"{ld} {ld_args}",
+    )
 
     ninja.rule(
         "shape_ld",
@@ -163,13 +160,13 @@ def write_ninja_rules(
     ninja.rule(
         "cc_272",
         description="cc_272 $in",
-        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && mips-linux-gnu-objcopy -N $in $out'",
+        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && {cross}objcopy -N $in $out'",
     )
 
     ninja.rule(
         "cc_egcs",
         description="cc_egcs $in",
-        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && mips-linux-gnu-objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
+        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
     )
 
     ninja.rule(
@@ -183,13 +180,13 @@ def write_ninja_rules(
     ninja.rule(
         "dead_cc_fix",
         description="dead_cc_fix $in",
-        command=f"mips-linux-gnu-objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
+        command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
     ninja.rule(
         "bin",
         description="bin $in",
-        command=f"{ld} -r -b binary $in -o $out",
+        command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",
     )
 
     ninja.rule(
@@ -213,7 +210,7 @@ def write_ninja_rules(
     ninja.rule(
         "pigment",
         description="img($img_type) $in",
-        command=f"{PIGMENT} to-bin $img_flags -f $img_type -o $out $in",
+        command=f"{PIGMENT64} to-bin $img_flags -f $img_type -o $out $in",
     )
 
     ninja.rule(
@@ -225,7 +222,7 @@ def write_ninja_rules(
     ninja.rule(
         "yay0",
         description="yay0 $in",
-        command=f"{BUILD_TOOLS}/yay0/Yay0compress $in $out",
+        command=f"crunch64 compress yay0 $in $out",
     )
 
     ninja.rule(
@@ -311,7 +308,7 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
     )
 
-    ninja.rule("map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in > $out")
+    ninja.rule("map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out")
 
     ninja.rule("charset", command=f"$python {BUILD_TOOLS}/pm_charset.py $out $in")
 
@@ -333,24 +330,7 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    with Path("tools/permuter_settings.toml").open("w") as f:
-        f.write(f"compiler_command = \"{cc} {CPPFLAGS.replace('$version', 'pal')} {cflags} -DPERMUTER -fforce-addr\"\n")
-        f.write(f'assembler_command = "{cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude"\n')
-        f.write(f'compiler_type = "gcc"\n')
-        f.write(
-            """
-[preserve_macros]
-"gs?[DS]P.*" = "void"
-OVERRIDE_FLAG_CHECK = "int"
-OS_K0_TO_PHYSICAL = "int"
-"G_.*" = "int"
-"TEXEL.*" = "int"
-PRIMITIVE = "int"
-
-[decompme.compilers]
-"tools/build/cc/gcc/gcc" = "gcc2.8.1"
-"""
-        )
+    ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
 
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
@@ -360,7 +340,6 @@ def write_ninja_for_tools(ninja: ninja_syntax.Writer):
         command=f"cc -w $in -O3 -o $out",
     )
 
-    ninja.build(YAY0_COMPRESS_TOOL, "cc_tool", f"{BUILD_TOOLS}/yay0/Yay0compress.c")
     ninja.build(CRC_TOOL, "cc_tool", f"{BUILD_TOOLS}/rom/n64crc.c")
 
 
@@ -451,6 +430,12 @@ class Configure:
 
     def rom_ok_path(self) -> Path:
         return self.elf_path().with_suffix(".ok")
+
+    def patch_path(self) -> Path:
+        return self.elf_path().with_suffix(".bps")
+
+    def baserom_path(self) -> Path:
+        return Path(f"ver/{self.version}/baserom.z64")
 
     def linker_script_path(self) -> Path:
         # TODO: read from splat.yaml
@@ -557,9 +542,7 @@ class Configure:
                 implicit = []
                 order_only = []
 
-                if task == "yay0":
-                    implicit.append(YAY0_COMPRESS_TOOL)
-                elif task in ["cc", "cxx", "cc_modern"]:
+                if task in ["cc", "cxx", "cc_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
                     if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
@@ -601,11 +584,18 @@ class Configure:
             "world_map",
         )
 
-        build(
-            self.build_path() / "include/recipes.inc.c",
-            [Path("src/recipes.yaml")],
-            "recipes",
-        )
+        if self.version == "jp":
+            build(
+                self.build_path() / "include/recipes.inc.c",
+                [Path("src/recipes_jp.yaml")],
+                "recipes",
+            )
+        else:
+            build(
+                self.build_path() / "include/recipes.inc.c",
+                [Path("src/recipes.yaml")],
+                "recipes",
+            )
 
         build(
             [
@@ -628,16 +618,28 @@ class Configure:
             },
         )
 
-        build(
-            [
-                self.build_path() / "include/battle/actor_types.inc.c",
-                self.build_path() / "include/battle/actor_types.h",
-            ],
-            [
-                Path("src/battle/actors.yaml"),
-            ],
-            "actor_types",
-        )
+        if self.version == "jp":
+            build(
+                [
+                    self.build_path() / "include/battle/actor_types.inc.c",
+                    self.build_path() / "include/battle/actor_types.h",
+                ],
+                [
+                    Path("src/battle/actors_jp.yaml"),
+                ],
+                "actor_types",
+            )
+        else:
+            build(
+                [
+                    self.build_path() / "include/battle/actor_types.inc.c",
+                    self.build_path() / "include/battle/actor_types.h",
+                ],
+                [
+                    Path("src/battle/actors.yaml"),
+                ],
+                "actor_types",
+            )
 
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
 
@@ -654,6 +656,13 @@ class Configure:
 
             if isinstance(seg, splat.segtypes.n64.header.N64SegHeader):
                 build(entry.object_path, entry.src_paths, "as")
+            elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
+                cppflags = f"-DVERSION_{self.version.upper()}"
+
+                if version == "ique" and seg.name.startswith("os/"):
+                    cppflags += " -DBBPLAYER"
+
+                build(entry.object_path, entry.src_paths, "as", variables={"cppflags": cppflags})
             elif isinstance(seg, splat.segtypes.common.asm.CommonSegAsm) or (
                 isinstance(seg, splat.segtypes.common.data.CommonSegData)
                 and not seg.type[0] == "."
@@ -692,8 +701,6 @@ class Configure:
 
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
-                elif seg.name.endswith("osFlash"):
-                    task = "cc_ido"
                 elif "gcc_272" in cflags:
                     task = "cc_272"
                     cflags = cflags.replace("gcc_272", "")
@@ -709,6 +716,14 @@ class Configure:
 
                 if task == "cc_modern":
                     cppflags += " -DMODERN_COMPILER"
+
+                if version == "ique":
+                    if "nusys" in entry.src_paths[0].parts:
+                        pass
+                    elif "os" in entry.src_paths[0].parts:
+                        cppflags += " -DBBPLAYER"
+                    elif entry.src_paths[0].parts[-2] == "bss":
+                        cppflags += " -DBBPLAYER"
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
                 if version == "ique":
@@ -825,6 +840,44 @@ class Configure:
                                 type="data",
                                 define=True,
                             )
+                        elif seg.type == "pm_charset":
+                            rasters = []
+                            entry = seg.get_linker_entries()[0]
+
+                            for src_path in entry.src_paths:
+                                out_path = self.build_path() / seg.dir / seg.name / (src_path.stem + ".bin")
+                                build(
+                                    out_path,
+                                    [src_path],
+                                    "pigment",
+                                    variables={
+                                        "img_type": "ci4",
+                                        "img_flags": "",
+                                    },
+                                )
+                                rasters.append(out_path)
+
+                            build(entry.object_path.with_suffix(""), rasters, "charset")
+                            build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
+                        elif seg.type == "pm_charset_palettes":
+                            palettes = []
+                            entry = seg.get_linker_entries()[0]
+
+                            for src_path in entry.src_paths:
+                                out_path = self.build_path() / seg.dir / seg.name / "palette" / (src_path.stem + ".bin")
+                                build(
+                                    out_path,
+                                    [src_path],
+                                    "pigment",
+                                    variables={
+                                        "img_type": "palette",
+                                        "img_flags": "",
+                                    },
+                                )
+                                palettes.append(out_path)
+
+                            build(entry.object_path.with_suffix(""), palettes, "charset_palettes")
+                            build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif isinstance(seg, splat.segtypes.common.bin.CommonSegBin):
                 build(entry.object_path, entry.src_paths, "bin")
             elif isinstance(seg, splat.segtypes.n64.yay0.N64SegYay0):
@@ -1097,6 +1150,7 @@ class Configure:
                         )
                     elif name.endswith("_shape_built"):
                         base_name = name[:-6]
+                        map_name = base_name[:-6]
                         raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{base_name}.bin")
                         bin_path = bin_path.parent / "geom" / (base_name + ".bin")
 
@@ -1122,8 +1176,28 @@ class Configure:
                         else:
                             build(bin_path, [raw_bin_path], "cp")
 
+                        xml_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{map_name}.xml")
+                        if xml_path.exists():
+                            build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
+
                         compress = True
                         out_dir = out_dir / "geom"
+                    elif name.endswith("_hit"):
+                        base_name = name
+                        map_name = base_name[:-4]
+                        raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{base_name}.bin")
+
+                        # TEMP: star rod compatiblity
+                        old_raw_bin_path = self.resolve_asset_path(f"assets/x/mapfs/{base_name}.bin")
+                        if old_raw_bin_path.is_file():
+                            raw_bin_path = old_raw_bin_path
+
+                        bin_path = bin_path.parent / "geom" / (base_name + ".bin")
+                        build(bin_path, [raw_bin_path], "cp")
+
+                        xml_path = self.resolve_asset_path(f"assets/x/mapfs/geom/{map_name}.xml")
+                        if xml_path.exists():
+                            build(self.build_path() / "include/mapfs" / (base_name + ".h"), [xml_path], "map_header")
                     else:
                         compress = True
                         bin_path = path
@@ -1139,42 +1213,6 @@ class Configure:
 
                 # combine
                 build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_charset":
-                rasters = []
-
-                for src_path in entry.src_paths:
-                    out_path = self.build_path() / seg.dir / seg.name / (src_path.stem + ".bin")
-                    build(
-                        out_path,
-                        [src_path],
-                        "pigment",
-                        variables={
-                            "img_type": "ci4",
-                            "img_flags": "",
-                        },
-                    )
-                    rasters.append(out_path)
-
-                build(entry.object_path.with_suffix(""), rasters, "charset")
-                build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
-            elif seg.type == "pm_charset_palettes":
-                palettes = []
-
-                for src_path in entry.src_paths:
-                    out_path = self.build_path() / seg.dir / seg.name / "palette" / (src_path.stem + ".bin")
-                    build(
-                        out_path,
-                        [src_path],
-                        "pigment",
-                        variables={
-                            "img_type": "palette",
-                            "img_flags": "",
-                        },
-                    )
-                    palettes.append(out_path)
-
-                build(entry.object_path.with_suffix(""), palettes, "charset_palettes")
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif seg.type == "pm_sprite_shading_profiles":
                 header_path = str(self.build_path() / "include/sprite/sprite_shading_profiles.h")
@@ -1260,6 +1298,13 @@ class Configure:
                 f"ver/{self.version}/checksum.sha1",
                 implicit=[str(self.rom_path())],
             )
+
+        ninja.build(
+            str(self.patch_path()),
+            "flips",
+            str(self.rom_path()),
+            variables={"baserom": str(self.baserom_path())},
+        )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
@@ -1355,16 +1400,33 @@ if __name__ == "__main__":
             print(f"    ./configure --cpp {gcc_cpps[0]}")
             exit(1)
 
-    try:
-        version = exec_shell([PIGMENT, "--version"]).split(" ")[1].strip()
+    version_err_msg = ""
+    missing_tools = []
+    version_old_tools = []
+    for tool, crate_name, req_version in RUST_TOOLS:
+        try:
+            version = exec_shell([tool, "--version"]).split(" ")[1].strip()
 
-        if version < PIGMENT_REQ_VERSION:
-            print(f"error: {PIGMENT} version {PIGMENT_REQ_VERSION} or newer is required, system version is {version}\n")
-            exit(1)
-    except (FileNotFoundError, PermissionError):
-        print(f"error: {PIGMENT} is not installed\n")
-        print("To build and install it, obtain cargo:\n\tcurl https://sh.rustup.rs -sSf | sh")
-        print(f"and then run:\n\tcargo install {PIGMENT}")
+            if version < req_version:
+                version_err_msg += (
+                    f"error: {tool} version {req_version} or newer is required, system version is {version}"
+                )
+                version_old_tools.append(crate_name)
+        except (FileNotFoundError, PermissionError):
+            missing_tools.append(crate_name)
+
+    if version_old_tools or missing_tools:
+        if version_err_msg:
+            print(version_err_msg)
+        if missing_tools:
+            print(f"error: cannot find required Rust tool(s): {', '.join(missing_tools)}")
+        print()
+        print("To install/update dependencies, obtain cargo:\n\tcurl https://sh.rustup.rs -sSf | sh")
+        print(f"and then run:")
+        for tool in missing_tools:
+            print(f"\tcargo install {tool}")
+        for tool in version_old_tools:
+            print(f"\tcargo install {tool}")
         exit(1)
 
     # default version behaviour is to only do those that exist

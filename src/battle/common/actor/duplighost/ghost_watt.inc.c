@@ -338,13 +338,13 @@ EvtScript N(EVS_HandleEvent) = {
 
 EvtScript N(EVS_TakeTurn) = {
     Call(UseIdleAnimation, ACTOR_SELF, FALSE)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_19)
+    Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
-    Call(SetBattleCamZoom, 350)
-    Call(SetBattleCamOffsetZ, 40)
+    Call(SetBattleCamDist, 350)
+    Call(SetBattleCamOffsetY, 40)
     Call(MoveBattleCamOver, 80)
-    Call(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Run)
@@ -390,9 +390,9 @@ EvtScript N(EVS_TakeTurn) = {
     EndSwitch
     Call(N(WattFXSetActive), 0)
     Set(LVarA, 40)
-    Call(AddBattleCamZoom, -75)
+    Call(AddBattleCamDist, -75)
     Call(MoveBattleCamOver, LVarA)
-    Call(func_8024ECF8, BTL_CAM_MODEY_0, BTL_CAM_MODEX_0, TRUE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, TRUE)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_WATT_CHARGE)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -417,7 +417,7 @@ EvtScript N(EVS_TakeTurn) = {
     EndLoop
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Idle)
     Call(SetActorPaletteEffect, ACTOR_SELF, PRT_MAIN, ACTOR_PAL_ADJUST_WATT_IDLE)
-    Call(AddBattleCamZoom, 75)
+    Call(AddBattleCamDist, 75)
     Call(MoveBattleCamOver, 5)
     Thread
         Wait(2)
@@ -427,13 +427,25 @@ EvtScript N(EVS_TakeTurn) = {
     Switch(LVar9)
         CaseEq(PARTNER_RANK_NORMAL)
             Wait(2)
+#if VERSION_JP
+            Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+#else
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 3, BS_FLAGS1_TRIGGER_EVENTS)
+#endif
         CaseEq(PARTNER_RANK_SUPER)
             Wait(2)
+#if VERSION_JP
+            Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 3, BS_FLAGS1_TRIGGER_EVENTS)
+#else
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 4, BS_FLAGS1_TRIGGER_EVENTS)
+#endif
         CaseEq(PARTNER_RANK_ULTRA)
             Wait(2)
+#if VERSION_JP
+            Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 4, BS_FLAGS1_TRIGGER_EVENTS)
+#else
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_SHOCK | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENT_ALL, 0, 5, BS_FLAGS1_TRIGGER_EVENTS)
+#endif
     EndSwitch
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)

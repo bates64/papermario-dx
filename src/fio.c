@@ -12,12 +12,13 @@ typedef struct SaveInfo {
 #define GLOBALS_PAGE_1 6
 #define GLOBALS_PAGE_2 7
 
-SHIFT_BSS SaveData FetchSaveBuffer;
-SHIFT_BSS SaveInfo LogicalSaveInfo[4];  // 4 save slots presented to the player
-SHIFT_BSS SaveInfo PhysicalSaveInfo[6]; // 6 saves as represented on the EEPROM
-SHIFT_BSS s32 NextAvailablePhysicalSave;
-SHIFT_BSS SaveGlobals gSaveGlobals;
-SHIFT_BSS SaveData gCurrentSaveFile;
+BSS SaveData FetchSaveBuffer;
+BSS SaveInfo LogicalSaveInfo[4];  // 4 save slots presented to the player
+BSS SaveInfo PhysicalSaveInfo[6]; // 6 saves as represented on the EEPROM
+BSS s32 NextAvailablePhysicalSave;
+
+SaveGlobals gSaveGlobals;
+SaveData gCurrentSaveFile;
 
 char MagicSaveString[] = "Mario Story 006";
 
@@ -174,7 +175,7 @@ b32 fio_load_game(s32 saveSlot) {
             gGameStatusPtr->saveCount = gCurrentSaveFile.saveCount;
         }
         fio_deserialize_state();
-        gFilesDisplayData[gGameStatusPtr->saveSlot] = gCurrentSaveFile.metadata;
+        gSaveSlotSummary[gGameStatusPtr->saveSlot] = gCurrentSaveFile.summary;
         return TRUE;
     }
     return FALSE;
@@ -187,11 +188,11 @@ void fio_save_game(s32 saveSlot) {
 
     fio_serialize_state();
 
-    gFilesDisplayData[gGameStatusPtr->saveSlot].level = gPlayerData.level;
-    gFilesDisplayData[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
-    gFilesDisplayData[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].level = gPlayerData.level;
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].spiritsRescued = get_spirits_rescued();
+    gSaveSlotSummary[gGameStatusPtr->saveSlot].timePlayed = gPlayerData.frameCounter;
 
-    gCurrentSaveFile.metadata = gFilesDisplayData[gGameStatusPtr->saveSlot];
+    gCurrentSaveFile.summary = gSaveSlotSummary[gGameStatusPtr->saveSlot];
 
     strcpy(gCurrentSaveFile.magicString, MagicSaveString);
 

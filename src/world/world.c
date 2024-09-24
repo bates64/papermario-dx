@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "npc.h"
-#include "camera.h"
 #include "hud_element.h"
 #include "rumble.h"
 #include "sprite.h"
@@ -21,12 +20,13 @@
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-SHIFT_BSS MapSettings gMapSettings;
-SHIFT_BSS MapConfig* gMapConfig;
-SHIFT_BSS char wMapHitName[0x18];
-SHIFT_BSS char wMapShapeName[0x18];
-SHIFT_BSS char wMapTexName[0x18];
-SHIFT_BSS char wMapBgName[0x18];
+BSS MapConfig* gMapConfig;
+BSS MapSettings gMapSettings;
+
+char wMapHitName[0x18];
+char wMapShapeName[0x18];
+char wMapTexName[0x18];
+char wMapBgName[0x14];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
@@ -150,7 +150,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     sfx_clear_env_sounds(0);
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     spr_init_sprites(gGameStatusPtr->playerSpriteSet);
     clear_animator_list();
     clear_entity_models();
@@ -203,7 +203,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_HUD].flags |= CAMERA_FLAG_DISABLED;
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
         set_cam_viewport(CAM_DEFAULT, 12, 20, 296, 200);

@@ -358,10 +358,10 @@ EvtScript N(EVS_TakeTurn) = {
     Wait(15)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleKooper_ShellSpinSlowest)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_KOOPER_SHELL_SPINUP)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_14)
+    Call(UseBattleCamPreset, BTL_CAM_ACTOR)
     Call(BattleCamTargetActor, ACTOR_SELF)
     Call(MoveBattleCamOver, 75)
-    Call(func_8024ECF8, BTL_CAM_MODEY_1, BTL_CAM_MODEX_1, TRUE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_AVG, BTL_CAM_XADJ_AVG, TRUE)
     Call(GetActorVar, ACTOR_SELF, AVAR_Copy_PartnerLevel, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_RANK_NORMAL)
@@ -464,13 +464,21 @@ EvtScript N(EVS_TakeTurn) = {
     Switch(LVar9)
         CaseEq(PARTNER_RANK_NORMAL)
             Wait(2)
+#if VERSION_JP
+            Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 1, BS_FLAGS1_TRIGGER_EVENTS)
+#else
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 2, BS_FLAGS1_TRIGGER_EVENTS)
+#endif
         CaseEq(PARTNER_RANK_SUPER)
             Wait(2)
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 3, BS_FLAGS1_TRIGGER_EVENTS)
         CaseEq(PARTNER_RANK_ULTRA)
             Wait(2)
+#if VERSION_JP
+            Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 4, BS_FLAGS1_TRIGGER_EVENTS)
+#else
             Call(EnemyDamageTarget, ACTOR_SELF, LVar0, 0, SUPPRESS_EVENT_ALL, 0, 5, BS_FLAGS1_TRIGGER_EVENTS)
+#endif
     EndSwitch
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_HIT)

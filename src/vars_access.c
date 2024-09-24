@@ -1,5 +1,6 @@
 #include "common.h"
 #include "vars_access.h"
+#include "dx/versioning.h"
 
 void clear_saved_variables(void) {
     SaveData* saveFile = &gCurrentSaveFile;

@@ -64,7 +64,11 @@ EvtScript BtlPutPartnerAway = {
     Add(LVar1, 25)
     Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
     Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+#if VERSION_JP
+    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 1, 1)
+#else
     Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
+#endif
     Call(DisablePartnerBlur)
     Return
     End
@@ -86,7 +90,11 @@ EvtScript BtlBringPartnerOut = {
     IfEq(LVar1, 0)
         Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
     Else
+#if VERSION_JP
+        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 1, 1)
+#else
         Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
+#endif
     EndIf
     Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
     Call(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
@@ -198,7 +206,7 @@ void initialize_battle(void) {
     create_worker_world(NULL, btl_render_actors);
     btl_popup_messages_init();
     func_80268E88();
-    set_windows_visible(WINDOW_GROUP_1);
+    set_windows_visible(WINDOW_GROUP_BATTLE);
     D_8029EFBC = hud_element_create(&HES_HPBar);
     hud_element_set_flags(D_8029EFBC, HUD_ELEMENT_FLAG_80);
 
@@ -840,7 +848,7 @@ void tattle_cam_pre_render(Camera* camera) {
 
     gDPPipeSync(gMainGfxPos++);
     gSPPerspNormalize(gMainGfxPos++, cam->perspNorm);
-    guMtxF2L(cam->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
+    guMtxF2L(cam->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 }
 
@@ -936,8 +944,6 @@ void btl_draw_enemy_health_bars(void) {
         }
     }
 }
-
-NOP_FIX
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;

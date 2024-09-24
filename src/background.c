@@ -8,8 +8,8 @@ s8 gBackroundWaveEnabled = FALSE;
 s16 gBackroundTextureYOffset = 0;
 f32 gBackroundWavePhase = 0.0f;
 
-SHIFT_BSS PAL_BIN gBackgroundPalette[256];
-SHIFT_BSS f32 gBackroundLastScrollValue;
+BSS PAL_BIN gBackgroundPalette[256];
+BSS f32 gBackroundLastScrollValue;
 
 void load_map_bg(char* optAssetName) {
     if (optAssetName != NULL) {
@@ -186,7 +186,7 @@ void appendGfx_background_texture(void) {
         }
     }
 
-    theta = clamp_angle(-cam->trueRot.x);
+    theta = clamp_angle(-cam->curBoomYaw);
     sinTheta = sin_deg(theta);
     cosTheta = cos_deg(theta);
     f5 = cosTheta * cam->lookAt_obj.x - sinTheta * cam->lookAt_obj.z + cam->leadAmount;

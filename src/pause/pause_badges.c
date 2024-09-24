@@ -96,7 +96,7 @@ extern u8 D_PAL_80271B2C[];
 
 MenuWindowBP gPauseBadgesWindowBPs[] = {
     {
-        .windowID = WINDOW_ID_PAUSE_BADGES,
+        .windowID = WIN_PAUSE_BADGES,
         .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
@@ -104,7 +104,7 @@ MenuWindowBP gPauseBadgesWindowBPs[] = {
         .priority = WINDOW_PRIORITY_1,
         .fpDrawContents = &pause_badges_draw_contents,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_16 }
@@ -115,7 +115,7 @@ MenuPanel gPausePanelBadges = {
     .col = 0,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols = 0,
     .numRows = 0,
     .numPages = 0,
@@ -430,7 +430,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
                 posY = pause_badges_get_pos_y(pageIndex, itemIndex);
                 isNone = badgeID == BADGE_NONE_STANDIN;
 
-                for (j = 0; j < 64; equippedBadges++, j++) {
+                for (j = 0; j < ARRAY_COUNT(gPlayerData.equippedBadges); equippedBadges++, j++) {
                     if (badgeID == *equippedBadges) {
                         isEquipped = TRUE;
                         break;
@@ -549,7 +549,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
                             gDPSetPrimColor(gMainGfxPos++, 0, 0, 227, 227, 227, 255);
                             orbX = baseX + 235 + pause_badges_scroll_offset_x(posX) + 1 + (j % 5) * 6;
                             orbY = baseY + 17 + pause_badges_scroll_offset_y(posY) + orbOffsetY;
-                            if (numOrbs >= 5) {
+                            if (numOrbs > 5) {
                                 orbY += j / 5 * 6 - 3;
                             }
                             pause_badges_draw_bp_orbs(0, orbX, orbY);
@@ -563,7 +563,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
                             if (j < bpAvailable) {
                                 orbX = baseX + 235 + pause_badges_scroll_offset_x(posX) + 1 + (j % 5) * 6;
                                 orbY = baseY + 17 + pause_badges_scroll_offset_y(posY) + orbOffsetY;
-                                if (numOrbs >= 5) {
+                                if (numOrbs > 5) {
                                     orbY += j / 5 * 6 - 3;
                                 }
                                 pause_badges_draw_bp_orbs(1, orbX, orbY);
@@ -574,7 +574,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
                         for (j = 0; j < numOrbs; j++) {
                             orbX = baseX + 235 + pause_badges_scroll_offset_x(posX) + 1 + (j % 5) * 6;
                             orbY = baseY + 17 + pause_badges_scroll_offset_y(posY) + orbOffsetY;
-                            if (numOrbs >= 5) {
+                            if (numOrbs > 5) {
                                 orbY += j / 5 * 6 - 3;
                             }
                             pause_badges_draw_bp_orbs(2, orbX, orbY);
@@ -794,9 +794,9 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
              }
 
              if (gPauseBadgesCurrentScrollPos != gPauseBadgesTargetScrollPos) {
-                 pause_set_cursor_pos_immediate(WINDOW_ID_PAUSE_BADGES, baseX + 93 + cursorOffsetX, baseY + 23 + cursorOffsetY);
+                 pause_set_cursor_pos_immediate(WIN_PAUSE_BADGES, baseX + 93 + cursorOffsetX, baseY + 23 + cursorOffsetY);
              } else {
-                 pause_set_cursor_pos(WINDOW_ID_PAUSE_BADGES, baseX + 93 + cursorOffsetX, baseY + 23 + cursorOffsetY);
+                 pause_set_cursor_pos(WIN_PAUSE_BADGES, baseX + 93 + cursorOffsetX, baseY + 23 + cursorOffsetY);
              }
          }
     }

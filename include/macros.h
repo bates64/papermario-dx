@@ -4,35 +4,18 @@
 #include "types.h"
 #include "include_asm.h"
 
-#ifndef M2CTX
-
-#ifdef SHIFT
-#define SHIFT_BSS __attribute__ ((section (".bss")))
-#else
-#define SHIFT_BSS extern
-#endif
-
-#ifdef SHIFT
-#define MATCHING_BSS(size)
-#else
-#define MATCHING_BSS(size) static BSS u8 padding_bss[size];
-#endif
-
-#define BSS __attribute__ ((section (".bss")))
+#define BSS __attribute__ ((nocommon, section (".bss")))
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
-#else
-#define SHIFT_BSS static
-#define BSS static
-#define TRANSPARENT_UNION
-#endif
+
+#define ALIGNED(x) __attribute__((aligned(x)))
 
 #ifndef BBPLAYER
-# define ALIGNED(x) __attribute__((aligned(x)))
+# define OSALIGNED(x) ALIGNED(x)
 #else
-# define ALIGNED(x)
+# define OSALIGNED(x)
 #endif
 
-#define BBALIGNED(x) __attribute__((aligned(x)))
+# define BBALIGNED(x) ALIGNED(x)
 
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
@@ -43,14 +26,6 @@
 #define N(sym) NS(NAMESPACE, NAME_PREFIX, sym, NAME_SUFFIX)
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
-
-#if !defined(PERMUTER) && !defined(M2CTX) && defined(OLD_GCC)
-#define NOP_FIX __asm__(".set nogpopt");
-#define NOP_UNFIX __asm__(".set gpopt");
-#else
-#define NOP_FIX
-#define NOP_UNFIX
-#endif
 
 #define PTR_LIST_END ((void*) -1)
 
@@ -87,7 +62,7 @@
 #define ITEM_MENU_PAGE(index) (&gPauseItemsPages[index])
 
 #define MENU_PANEL_SELECTED_GRID_DATA(panel) \
-    (panel)->gridData[(panel)->page * (panel)->numCols * (panel)->numRows + \
+    (panel)->gridData[(panel)->state * (panel)->numCols * (panel)->numRows + \
                       (panel)->numCols * (panel)->row + \
                       (panel)->col]
 
@@ -527,10 +502,6 @@
 #define VLA 0
 #else
 #define VLA
-#endif
-
-#ifdef M2CTX
-#define VLA 0
 #endif
 
 #if VERSION_PAL

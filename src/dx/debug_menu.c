@@ -1728,7 +1728,7 @@ void dx_debug_draw_collision() {
                 f32 cY = (tri->v1->y + tri->v2->y + tri->v3->y) / 3;
                 f32 cZ = (tri->v1->z + tri->v2->z + tri->v3->z) / 3;
 
-                transform_point(camera->perspectiveMatrix, cX, cY, cZ, 1.0f, &outX, &outY, &outZ, &outW);
+                transform_point(camera->mtxPerspective, cX, cY, cZ, 1.0f, &outX, &outY, &outZ, &outW);
 
                 if (outZ < -100) {
                     // dont draw triangles sufficiently far behind the camera
@@ -1856,7 +1856,7 @@ typedef struct DebugCheatEntry {
 DebugCheatEntry DebugCheatMenu[] = {
     [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   FALSE },
     [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", FALSE },
-//  [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
+    [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
     [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", FALSE },
     [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", FALSE },
 };
@@ -1876,7 +1876,7 @@ void dx_debug_update_cheat_menu() {
         // actions to execute on state change
         switch (DebugCheatPos) {
             case DEBUG_CHEAT_GOD_MODE:
-        //  case DEBUG_CHEAT_FLY:
+            case DEBUG_CHEAT_FLY:
             case DEBUG_CHEAT_HIGH_JUMP:
             case DEBUG_CHEAT_IGNORE_WALLS:
                 break;

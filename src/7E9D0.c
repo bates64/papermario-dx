@@ -11,22 +11,22 @@
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/WorldKoopatrol.h"
 #include "sprite/npc/HammerBros.h"
-
 #ifdef SHIFT
-#define PLAYER_ACTION_VRAM_DEF texture_memory_VRAM_END
+extern Addr world_action_CLASS_VRAM;
+#define PLAYER_ACTION_VRAM_DEF world_action_CLASS_VRAM
 #else
 #define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
 #endif
 
-SHIFT_BSS void* LastLoadedActionOffset;
-SHIFT_BSS s32 PeachDisguiseReapplyDelay;
-SHIFT_BSS s32 D_8010C964;
-SHIFT_BSS s32 gSpinHistoryBufferPos;
-SHIFT_BSS s16 D_8010C9B0;
-SHIFT_BSS s32 gSpinHistoryPosX[5];
-SHIFT_BSS s32 gSpinHistoryPosY[5];
-SHIFT_BSS s32 gSpinHistoryPosZ[5];
-SHIFT_BSS s16 gSpinHistoryPosAngle[5];
+void* LastLoadedActionOffset;
+s32 PeachDisguiseReapplyDelay;
+s32 D_8010C964;
+s32 gSpinHistoryBufferPos;
+s16 D_8010C9B0;
+s32 gSpinHistoryPosX[5];
+s32 gSpinHistoryPosY[5];
+s32 gSpinHistoryPosZ[5];
+s16 gSpinHistoryPosAngle[5];
 
 s32 PrevPlayerCamRelativeYaw = 0;
 s32 D_800F7B44 = 0; // always zero, remove?

@@ -15,9 +15,13 @@ u16* bFrameBuffers[] = {
     gFrameBuf0, gFrameBuf1, gFrameBuf2
 };
 
-SHIFT_BSS s8 D_800A0900;
-SHIFT_BSS s32 D_800A0904;
-SHIFT_BSS s32 D_800A0908;
+s32 D_800778AC[] = {
+    0x00000000, 0xFFFFFF00, 0xFFFFFF00, 0x00000000, 0x00000000
+};
+
+BSS s8 D_800A0900;
+BSS s32 D_800A0904;
+BSS s32 D_800A0908;
 
 #if defined(SHIFT) || VERSION_IQUE
 #define shim_battle_heap_create_obfuscated battle_heap_create
@@ -108,7 +112,6 @@ void state_step_battle(void) {
     update_npcs();
     update_item_entities();
     update_effects();
-    iterate_models();
     update_cameras();
 }
 

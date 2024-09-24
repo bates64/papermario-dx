@@ -214,25 +214,40 @@ API_CALLABLE(SetCamNoDraw);
 API_CALLABLE(SetCamPerspective);
 
 /// @evtapi
-API_CALLABLE(func_802CA90C);
+API_CALLABLE(SetCamUpdateMode);
 
 /// @evtapi
-API_CALLABLE(func_802CA988);
+API_CALLABLE(GrabCamera);
+
+/// @evtapi
+API_CALLABLE(GetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(GetInterpCamOffsetY);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamOffsetY);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamParams);
+
+/// @evtapi
+API_CALLABLE(SetNoInterpCamParams);
 
 /// @evtapi
 API_CALLABLE(SetCamViewport);
 
 /// @evtapi
-API_CALLABLE(func_802CABE8);
-
-/// @evtapi
-API_CALLABLE(func_802CACC0);
+API_CALLABLE(SetNoInterpCamParams);
 
 /// @evtapi
 API_CALLABLE(SetCamBGColor);
 
 /// @evtapi
-API_CALLABLE(func_802CAE50);
+API_CALLABLE(SetCamLookTarget);
 
 /// @evtapi
 API_CALLABLE(SetCamTarget);
@@ -245,6 +260,18 @@ API_CALLABLE(ShakeCam);
 
 /// @evtapi
 API_CALLABLE(SetCamLeadPlayer);
+
+/// @evtapi
+API_CALLABLE(EnableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(DisableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(EnableCameraLeadingPlayer);
+
+/// @evtapi
+API_CALLABLE(DisableCameraLeadingPlayer);
 
 /// @evtapi
 API_CALLABLE(SetCamLeadScale);
