@@ -1795,6 +1795,13 @@ API_CALLABLE(PlayerBasicJumpToGoal) {
         BASIC_STATE_03      = 3,
     };
 
+    enum {
+        BASIC_STATE_00      = 0,
+        BASIC_STATE_01      = 1,
+        BASIC_STATE_02      = 2,
+        BASIC_STATE_03      = 3,
+    };
+
     if (isInitialCall) {
         player->state.moveTime = evt_get_variable(script, *args++);
         player->state.moveArcAmplitude = evt_get_variable(script, *args++);
@@ -2215,6 +2222,17 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
     f64 temp_f22_4;
     f64 temp_f22_5;
     f64 temp_f22_6;
+
+    enum {
+        ULTRA_STATE_00       = 0,
+        ULTRA_STATE_01       = 1,
+        ULTRA_STATE_10       = 10,
+        ULTRA_STATE_11       = 11,
+        ULTRA_STATE_20       = 20,
+        ULTRA_STATE_21       = 21,
+        ULTRA_STATE_30       = 30,
+        ULTRA_STATE_31       = 31,
+    };
 
     enum {
         ULTRA_STATE_00       = 0,

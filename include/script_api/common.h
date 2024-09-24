@@ -241,7 +241,7 @@ API_CALLABLE(SetNoInterpCamParams);
 API_CALLABLE(SetCamViewport);
 
 /// @evtapi
-API_CALLABLE(func_802CACC0);
+API_CALLABLE(SetNoInterpCamParams);
 
 /// @evtapi
 API_CALLABLE(SetCamBGColor);

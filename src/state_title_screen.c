@@ -149,7 +149,6 @@ void state_init_title_screen(void) {
 #endif
 
     create_cameras();
-
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;

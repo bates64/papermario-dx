@@ -85,7 +85,6 @@ void state_init_logos(void) {
 
     nuContRmbForceStop();
     create_cameras();
-
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
