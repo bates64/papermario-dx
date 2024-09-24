@@ -1,8 +1,8 @@
-from splat.segtypes.n64.segment import N64Segment
+from splat.segtypes.segment import Segment
 from splat.util import options
 
 
-class N64SegPm_tex_pool(N64Segment):
+class N64SegPm_tex_pool(Segment):
     def split(self, rom_bytes):
         pass  # textures dumped from pm_map_data
 
