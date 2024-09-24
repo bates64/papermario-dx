@@ -1,10 +1,6 @@
 #include "omo_03.h"
 #include "entity.h"
 
-#define NAME_SUFFIX _Spring
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_TetherCamToPlayer) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -22,7 +18,7 @@ EvtScript N(EVS_UseSpring_Exit) = {
     Wait(1)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
     IfEq(AF_OMO_04, FALSE)
-        Call(N(EnableCameraFollowPlayerY_Spring))
+        Call(EnableCameraFollowPlayerY)
         Thread
             Wait(6)
             Call(GotoMap, Ref("mac_04"), mac_04_ENTRY_2)

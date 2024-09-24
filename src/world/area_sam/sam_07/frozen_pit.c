@@ -135,8 +135,6 @@ API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 EvtScript N(EVS_BreakIce) = {
     Call(PlaySoundAtCollider, COLLIDER_o116, SOUND_ICE_SHATTER, 0)
     Call(N(AnimateIceShattering))
@@ -198,7 +196,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(UpdateColliderTransform, COLLIDER_m1_yuka)
             Add(LVar0, LVar8)
             Call(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
-            Call(N(EnableCameraFollowPlayerY))
+            Call(EnableCameraFollowPlayerY)
             Wait(1)
             Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             IfEq(LVar1, 1)
@@ -219,7 +217,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(UpdateColliderTransform, COLLIDER_m1_yuka)
             Add(LVar0, LVar8)
             Call(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
-            Call(N(EnableCameraFollowPlayerY))
+            Call(EnableCameraFollowPlayerY)
             Wait(1)
             Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
             IfEq(LVar1, 1)

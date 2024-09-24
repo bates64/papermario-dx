@@ -27,9 +27,6 @@ EvtScript N(EVS_EnterDoor_obk_05_0) = {
 EvtScript N(EVS_ExitDoor_obk_01_2) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_05_ENTRY_0, "obk_01", obk_01_ENTRY_2,
     COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 API_CALLABLE(N(RetroJar_AwaitPlayerEntry)) {
     if (gCollisionStatus.curFloor == COLLIDER_o420) {
         return ApiStatus_DONE2;
@@ -54,11 +51,11 @@ EvtScript N(EVS_ManageRetroJar) = {
             Exec(N(EVS_SetupMusic))
             Set(MF_IsRetroMario, FALSE)
         EndIf
-        Call(N(DisableCameraFollowPlayerY))
+        Call(DisableCameraFollowPlayerY)
         Call(SetPlayerJumpscale, Float(1.0))
         Call(PlayerJump, -105, 30, -55, 30)
         Wait(1)
-        Call(N(EnableCameraFollowPlayerY))
+        Call(EnableCameraFollowPlayerY)
         Call(DisablePlayerInput, FALSE)
     EndLoop
     Return

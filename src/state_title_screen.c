@@ -115,7 +115,6 @@ BSS s32* TitleScreen_ImgList_CopyrightPalette;
 BSS s16 TitleScreen_TimeLeft;
 
 void appendGfx_title_screen(void);
-void draw_title_screen_NOP(void);
 void title_screen_draw_images(f32, f32);
 void title_screen_draw_logo(f32);
 void title_screen_draw_press_start(void);
@@ -149,31 +148,38 @@ void state_init_title_screen(void) {
     TitleScreen_ImgList_CopyrightPalette = (s32*)(TitleScreen_ImgList->copyrightPalette + (s32) TitleScreen_ImgList);
 #endif
 
-    create_cameras_a();
-    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_MODE_6;
+    create_cameras();
+    gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
     gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
-    gCurrentCameraID = CAM_DEFAULT;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
-    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
-    gCameras[CAM_DEFAULT].auxBoomLength = 40;
-    gCameras[CAM_DEFAULT].bgColor[0] = 0;
-    gCameras[CAM_DEFAULT].bgColor[1] = 0;
-    gCameras[CAM_DEFAULT].bgColor[2] = 0;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
-    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
-    gCameras[CAM_DEFAULT].auxPitch = 0;
-    gCameras[CAM_DEFAULT].lookAt_dist = 100;
-    gCameras[CAM_DEFAULT].auxBoomPitch = 0;
+
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].params.basic.pitch = 0;
+    gCameras[CAM_DEFAULT].params.basic.dist = 40;
+    gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
+
     gCameras[CAM_DEFAULT].lookAt_eye.x = 500.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.y = 1000.0f;
     gCameras[CAM_DEFAULT].lookAt_eye.z = 1500.0f;
+
+    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
     gCameras[CAM_DEFAULT].lookAt_obj_target.z = 150.0f;
+
+    gCameras[CAM_DEFAULT].bgColor[0] = 0;
+    gCameras[CAM_DEFAULT].bgColor[1] = 0;
+    gCameras[CAM_DEFAULT].bgColor[2] = 0;
+
+    gCurrentCameraID = CAM_DEFAULT;
+
+    gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_HUD].flags |= CAMERA_FLAG_DISABLED;
+
     clear_script_list();
     clear_worker_list();
     clear_render_tasks();
@@ -320,7 +326,7 @@ void state_step_title_screen(void) {
             }
             general_heap_create();
             clear_render_tasks();
-            create_cameras_a();
+            create_cameras();
             clear_entity_models();
             clear_animator_list();
             clear_npcs();
@@ -362,10 +368,8 @@ void state_drawUI_title_screen(void) {
             PressStart_Alpha = 0;
             PressStart_IsVisible = FALSE;
             PressStart_BlinkCounter = 0;
-            draw_title_screen_NOP();
             break;
         case TITLE_STATE_HOLD:
-            draw_title_screen_NOP();
             if (gGameStatusPtr->contBitPattern & 1) {
                 title_screen_draw_press_start();
             }
@@ -374,24 +378,22 @@ void state_drawUI_title_screen(void) {
         case TITLE_STATE_APPEAR:
         case TITLE_STATE_BEGIN_DISMISS:
         case TITLE_STATE_DISMISS:
-            draw_title_screen_NOP();
             break;
     }
 }
 
 void appendGfx_title_screen(void) {
-    f32 phi_f12;
-    s32 temp;
+    f32 alpha;
 
     switch (gGameStatusPtr->startupState) {
         case TITLE_STATE_INIT:
         case TITLE_STATE_UNUSED:
             break;
         case TITLE_STATE_APPEAR:
-            phi_f12 = gGameStatusPtr->titleScreenTimer;
-            phi_f12 /= gGameStatusPtr->titleScreenDismissTime;
-            phi_f12 = SQ(phi_f12);
-            title_screen_draw_images(phi_f12, phi_f12);
+            alpha = gGameStatusPtr->titleScreenTimer;
+            alpha /= gGameStatusPtr->titleScreenDismissTime;
+            alpha = SQ(alpha);
+            title_screen_draw_images(alpha, alpha);
             break;
         case TITLE_STATE_HOLD:
             title_screen_draw_images(0.0f, 0.0f);
@@ -400,11 +402,10 @@ void appendGfx_title_screen(void) {
             title_screen_draw_images(0.0f, 0.0f);
             break;
         case TITLE_STATE_DISMISS:
-            temp = gGameStatusPtr->titleScreenTimer - 1;
-            phi_f12 = gGameStatusPtr->titleScreenDismissTime - temp;
-            phi_f12 /= gGameStatusPtr->titleScreenDismissTime;
-            phi_f12 = SQ(phi_f12);
-            title_screen_draw_images(phi_f12, phi_f12);
+            alpha = gGameStatusPtr->titleScreenDismissTime - gGameStatusPtr->titleScreenTimer + 1;
+            alpha /= gGameStatusPtr->titleScreenDismissTime;
+            alpha = SQ(alpha);
+            title_screen_draw_images(alpha, alpha);
             break;
     }
 
@@ -429,9 +430,6 @@ void appendGfx_title_screen(void) {
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
     render_frame(FALSE);
     render_frame(TRUE);
-}
-
-void draw_title_screen_NOP(void) {
 }
 
 void title_screen_draw_images(f32 logoMoveAlpha, f32 copyrightMoveAlpha) {

@@ -34,7 +34,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Set(GB_KPA81_BowserDoorState, 2)
         Call(DisablePlayerInput, TRUE)
         Wait(35)
-        Call(SetCamType, CAM_DEFAULT, 6, FALSE)
+        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, FALSE)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, 109, 0, 202)
@@ -43,7 +43,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
         Call(SetCamPosA, CAM_DEFAULT, Float(133.0), Float(100.0))
         Call(SetCamPosB, CAM_DEFAULT, Float(216.0), Float(230.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Thread
             Call(SetMusicTrack, 0, SONG_FINAL_BOWSER_BATTLE, 1, 8)
@@ -55,7 +55,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0008)
         Exec(N(EVS_SetupMusic))
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(DisablePlayerInput, FALSE)
         Return
     EndIf
@@ -64,7 +64,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerSpeed, Float(2.0 / DT))
     Call(PlayerMoveTo, -115, LVar2, 0)
-    Call(SetCamType, CAM_DEFAULT, 6, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, FALSE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, 109, 0, 202)
@@ -73,7 +73,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(133.0), Float(100.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(216.0), Float(230.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
         Call(SetMusicTrack, 0, SONG_FINAL_BOWSER_BATTLE, 1, 8)
@@ -87,7 +87,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     IfEq(LVar0, 0)
         Call(ContinueSpeech, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0003)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(DisablePlayerInput, FALSE)
         Label(100)
         Wait(1)
@@ -108,7 +108,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0002)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(DisablePlayerInput, FALSE)
         Call(AwaitPlayerApproach, 120, 150, 30)
     EndIf
@@ -147,7 +147,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     EndThread
     Call(ContinueSpeech, NPC_SELF, ANIM_Toad_Red_Idle, ANIM_Toad_Red_Idle, 0, MSG_CH8_0006)
     Label(5)
-    Call(SetCamType, CAM_DEFAULT, 6, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_CONSTAIN_BETWEEN_POINTS, FALSE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, 163, -71, 108)
@@ -156,7 +156,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(133.0), Float(100.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(216.0), Float(230.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnableModel, MODEL_o166, TRUE)
     Thread

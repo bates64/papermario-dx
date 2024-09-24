@@ -1,9 +1,6 @@
 #include "kzn_03.h"
 #include "entity.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 API_CALLABLE(N(IsPlayerOnFirstCliff)) {
     s32 result = -1;
 
@@ -37,7 +34,7 @@ EvtScript N(EVS_UseSpringA) = {
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, 335, 290, 360, 40)
@@ -45,7 +42,7 @@ EvtScript N(EVS_UseSpringA) = {
     Call(SetPlayerActionState, ACTION_STATE_FALLING)
     Call(DisablePlayerPhysics, FALSE)
     KillThread(LVarA)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Return
     End
 };
@@ -56,7 +53,7 @@ EvtScript N(EVS_UseSpringB) = {
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, 350, 470, 210, 40)
@@ -64,7 +61,7 @@ EvtScript N(EVS_UseSpringB) = {
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     KillThread(LVarA)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Return
     End
 };
@@ -76,7 +73,7 @@ EvtScript N(EVS_UseSpringC) = {
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCameraToPlayer), LVarA)
     IfEq(MV_PlayerCliffState, 0)
         Call(SetPlayerJumpscale, Float(1.4))
@@ -89,7 +86,7 @@ EvtScript N(EVS_UseSpringC) = {
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     KillThread(LVarA)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Return
     End
 };

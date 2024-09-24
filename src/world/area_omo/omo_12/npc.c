@@ -16,9 +16,6 @@ NpcSettings N(NpcSettings_Watt) = {
 
 #include "world/common/atomic/CreateDarkness.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
-
 API_CALLABLE(N(SetLightOriginAndPower)) {
     Bytecode* args = script->ptrReadPos;
     s32 x = evt_get_variable(script, *args++);
@@ -112,7 +109,7 @@ EvtScript N(EVS_EnterScene) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(20 * DT)
     Call(GetNpcPos, NPC_BigLanternGhost, LVar2, LVar3, LVar4)
@@ -130,7 +127,7 @@ EvtScript N(EVS_EnterScene) = {
     Call(SpeakToPlayer, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim05, ANIM_BigLanternGhost_Anim01, 0, MSG_CH4_004F)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, 20)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.7 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Set(AB_OMO12_LightSource, LIGHT_FROM_GHOST)
     Set(AB_OMO12_LightPowerMod, -28)
     Call(SetNpcAnimation, NPC_BigLanternGhost, ANIM_BigLanternGhost_Anim06)
@@ -186,7 +183,7 @@ Vec3f N(WattLeftFlightPath)[] = {
 
 EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_LaternTop, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(2.0 / DT), LVar0, LVar1, LVar2, Float(450.0), Float(15.0), Float(-6.0))
     Set(LVarA, 0)
@@ -281,7 +278,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-8.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     IfEq(LVarA, -1)
         Call(SpeakToPlayer, NPC_Watt, ANIM_WorldWatt_Strain, ANIM_WorldWatt_Hurt, 0, MSG_CH4_0058)
@@ -339,7 +336,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Add(LVar0, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Label(30)
         Call(GetNextPathPos)
         Add(LVar1, LVar7)
@@ -391,7 +388,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Talk, ANIM_WorldWatt_Idle, 0, MSG_CH4_005B)
     Call(EnablePartnerAI)
     Exec(N(EVS_UseWattTutorial))
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Set(GB_StoryProgress, STORY_CH4_WATT_JOINED_PARTY)
     Call(DisablePlayerInput, FALSE)

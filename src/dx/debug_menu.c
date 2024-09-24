@@ -1728,7 +1728,7 @@ void dx_debug_draw_collision() {
                 f32 cY = (tri->v1->y + tri->v2->y + tri->v3->y) / 3;
                 f32 cZ = (tri->v1->z + tri->v2->z + tri->v3->z) / 3;
 
-                transform_point(camera->perspectiveMatrix, cX, cY, cZ, 1.0f, &outX, &outY, &outZ, &outW);
+                transform_point(camera->mtxPerspective, cX, cY, cZ, 1.0f, &outX, &outY, &outZ, &outW);
 
                 if (outZ < -100) {
                     // dont draw triangles sufficiently far behind the camera

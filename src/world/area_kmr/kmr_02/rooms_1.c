@@ -101,7 +101,7 @@ EvtScript N(EVS_SetWallRot_Verdana) = {
 EvtScript N(EVS_RoomListener_Verdana) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Call(PanToTarget, CAM_DEFAULT, 0, 0)
+            Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             Wait(30 * DT)
             Call(SetGroupVisibility, MODEL_monohoshi, MODEL_GROUP_HIDDEN)
@@ -118,7 +118,7 @@ EvtScript N(EVS_RoomListener_Verdana) = {
             Call(SetPanTarget, CAM_DEFAULT, 499, 70, -378)
             Call(SetCamDistance, CAM_DEFAULT, 370)
             Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, 1)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Switch(GB_StoryProgress)
                 CaseLt(STORY_CH0_GATE_CRUSHED)
                 CaseLt(STORY_CH0_FELL_OFF_CLIFF)
@@ -258,14 +258,14 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Thread
         Wait(20)
         Call(N(ToadHouse_CamSetFOV), 0, 40)
-        Call(SetCamType, CAM_DEFAULT, 4, FALSE)
+        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
         Call(SetCamPosA, CAM_DEFAULT, Float(-46.0), Float(-311.0))
         Call(SetCamPosB, CAM_DEFAULT, Float(-262.4), Float(-324.6))
         Call(SetCamPosC, CAM_DEFAULT, 1, 10)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     EndThread
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -212, -376, 0)
@@ -285,7 +285,7 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Return
     End

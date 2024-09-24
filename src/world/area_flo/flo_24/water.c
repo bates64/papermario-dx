@@ -12,7 +12,7 @@ EvtScript N(EVS_Scene_FillWithWater) = {
     Call(SetCamPosA, CAM_DEFAULT, Float(-300.0), Float(200.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(300.0), Float(-150.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(PlaySound, SOUND_LOOP_FLO_FILL_WATER_POOL)
     Thread
         Call(MakeLerp, 80, 90, 10, EASING_LINEAR)

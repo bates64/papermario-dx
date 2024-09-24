@@ -68,7 +68,7 @@ API_CALLABLE(N(AnimateBoomLengthPreHeist)) {
     N(ColorBufferPtr) = nuGfxCfb_ptr;
     N(lerp_value_with_max_step)(700.0f, 300.0f, N(TargetBoomLengthPre), 1.2f, &N(TargetBoomLengthPre));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(TargetBoomLengthPre);
+    camera->overrideSettings.boomLength = N(TargetBoomLengthPre);
     return ApiStatus_BLOCK;
 }
 
@@ -84,7 +84,7 @@ API_CALLABLE(N(AnimateBoomLengthPostHeist)) {
     N(interp_value_with_easing)(INTRO_MATH_EASING_SIN_OUT, N(CamSettings_PostHeist).boomLength, 700.0f,
         N(TargetBoomLengthPost), 70.0f, &N(CurrentBoomLengthPost));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(CurrentBoomLengthPost);
+    camera->overrideSettings.boomLength = N(CurrentBoomLengthPost);
     N(TargetBoomLengthPost)++;
     if (N(TargetBoomLengthPost) < (s32)(70 * DT)) {
         return ApiStatus_BLOCK;
@@ -104,7 +104,7 @@ API_CALLABLE(N(AnimateViewPitchPostHeist)) {
     N(interp_value_with_easing)(INTRO_MATH_EASING_5, N(CamSettings_PostHeist).viewPitch, -80.0f,
         N(TargetViewPitch), 200.0f, &N(CurrentViewPitch));
     camera->panActive = TRUE;
-    camera->controlSettings.viewPitch = N(CurrentViewPitch);
+    camera->overrideSettings.viewPitch = N(CurrentViewPitch);
     N(TargetViewPitch)++;
     if (N(TargetViewPitch) == (s32)(200 * DT)) {
         return ApiStatus_DONE2;
@@ -121,7 +121,7 @@ EvtScript N(EVS_Intro_PostHeist) = {
     Call(N(SetCamVfov), CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
     Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PostHeist)))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Thread
         Exec(N(EVS_ControlTwink))
@@ -176,7 +176,7 @@ EvtScript N(EVS_Intro_PreHeist_Unused) = {
     Call(N(SetCamVfov), CAM_DEFAULT, 75)
     Call(SetPanTarget, CAM_DEFAULT, 0, 30, 0)
     Call(LoadSettings, CAM_DEFAULT, Ref(N(CamSettings_PreHeist)))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Thread
         Call(N(AnimateBoomLengthPreHeist))

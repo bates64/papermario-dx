@@ -16,9 +16,6 @@ EvtScript N(EVS_OpenChest_DefendPlus) = EVT_OPEN_CHEST(ITEM_DEFEND_PLUS_A, GF_OM
 
 EvtScript N(EVS_OpenChest_IcePower) = EVT_OPEN_CHEST(ITEM_ICE_POWER, GF_OMO07_Chest_IcePower);
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 EvtScript N(EVS_TetherCamToPlayer) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -49,14 +46,14 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
         Call(SetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, LVar7, LVar8, LVar9, 40)
     KillThread(LVarA)
     Wait(3)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     Return

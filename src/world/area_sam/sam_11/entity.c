@@ -64,9 +64,6 @@ API_CALLABLE(N(SetEntityHideMode0)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 API_CALLABLE(N(MovePlayerAlongRoofSlide)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 xComp, zComp;
@@ -194,7 +191,7 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
     Wait(1)
     Call(SetZoneEnabled, ZONE_gon, FALSE)
     Call(SetZoneEnabled, ZONE_sou, FALSE)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Set(LVar3, 500)
     ExecGetTID(N(EVS_TetherCamToPlayerCappedY), LVarA)
     Call(PlaySoundAtPlayer, SOUND_SLIDE, SOUND_SPACE_DEFAULT)
@@ -206,7 +203,7 @@ EvtScript N(EVS_TouchFloor_RightRoof) = {
     Call(SetZoneEnabled, ZONE_s, TRUE)
     Call(SetZoneEnabled, ZONE_gon, TRUE)
     Call(SetZoneEnabled, ZONE_sou, TRUE)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     KillThread(LVarA)
     Call(DisablePlayerInput, FALSE)
     Call(DisablePlayerPhysics, FALSE)
@@ -300,12 +297,12 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     Call(SetCamPosA, CAM_DEFAULT, Float(-165.0), Float(-140.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-12.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(40)
     IfGe(GB_StoryProgress, STORY_CH7_SPOKE_WITH_HERRINGWAY)
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(DisablePlayerPhysics, FALSE)
         Call(DisablePlayerInput, FALSE)
         Call(EnablePartnerAI)
@@ -321,7 +318,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Herringway, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_CH7_00CD)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -330,7 +327,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Wait(1)
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(DisablePlayerInput, FALSE)
     Call(DisablePlayerPhysics, FALSE)
     Call(EnablePartnerAI)

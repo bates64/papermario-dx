@@ -104,7 +104,7 @@ EvtScript N(EVS_RoomListener_Hideout) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_ie5_naka, MODEL_GROUP_VISIBLE)
-            Call(SetCamType, CAM_DEFAULT, 0, FALSE)
+            Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, FALSE)
             Call(SetCamDistance, CAM_DEFAULT, 260)
             Call(SetCamPitch, CAM_DEFAULT, 22, -13)
             Call(SetCamPosA, CAM_DEFAULT, 0, 290)
@@ -112,7 +112,7 @@ EvtScript N(EVS_RoomListener_Hideout) = {
             Call(SetCamPosC, CAM_DEFAULT, 0, 0)
             Call(SetPanTarget, CAM_DEFAULT, -395, 140, -150)
             Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, 1)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             Call(SetPanTarget, CAM_DEFAULT, -365, 140, -145)
             Call(SetCamPitch, CAM_DEFAULT, 20, -7)
@@ -121,7 +121,7 @@ EvtScript N(EVS_RoomListener_Hideout) = {
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_ie5_naka, MODEL_GROUP_HIDDEN)
-            Call(PanToTarget, CAM_DEFAULT, 0, 0)
+            Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
             Call(SetCamSpeed, CAM_DEFAULT, Float(1.334))
     EndSwitch
     Return

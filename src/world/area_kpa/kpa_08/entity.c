@@ -1,8 +1,6 @@
 #include "kpa_08.h"
 #include "entity.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 API_CALLABLE(N(ElevatePlayer)) {
     Bytecode* args = script->ptrReadPos;
     s32 floor = evt_get_variable(script, *args++);
@@ -20,7 +18,7 @@ EvtScript N(EVS_ActivateSwitch) = {
         Return
     EndIf
     Set(AF_KPA08_PlatformRaised, TRUE)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Thread
         SetGroup(EVT_GROUP_EF)
         Call(PlaySoundAtCollider, COLLIDER_o19, SOUND_KPA_RAISE_STONE_PLATFORM, SOUND_SPACE_DEFAULT)

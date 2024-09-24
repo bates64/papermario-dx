@@ -1,15 +1,12 @@
 #include "nok_12.h"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
-
 EvtScript N(EVS_Scene_BuildBridge) = {
     Call(DisablePlayerInput, TRUE)
     Wait(20)
     Call(DisablePlayerPhysics, TRUE)
     SetGroup(EVT_GROUP_00)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(InterpCamTargetPos, CAM_DEFAULT, 1, -272, 0, -56, 20)
     Wait(15)
     Call(PlaySoundAt, SOUND_NOK_BRIDGE_THUD_1, SOUND_SPACE_DEFAULT, -275, 0, -39)
@@ -90,7 +87,7 @@ EvtScript N(EVS_Scene_BuildBridge) = {
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(InterpCamTargetPos, CAM_DEFAULT, 1, LVar0, LVar1, LVar2, 10)
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)

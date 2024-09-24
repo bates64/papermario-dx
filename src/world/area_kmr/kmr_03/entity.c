@@ -14,10 +14,6 @@ EvtScript N(EVS_OnSmashBlock2) = {
     End
 };
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 API_CALLABLE(func_80240358_8C82E8) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 

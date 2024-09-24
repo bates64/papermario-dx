@@ -65,7 +65,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
 #else
         Call(SetCamSpeed, CAM_DEFAULT, 4)
 #endif
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_VISIBLE)
         Thread
             Wait(10 * DT)

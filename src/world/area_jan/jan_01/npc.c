@@ -4,8 +4,6 @@
 #include "world/common/enemy/JungleFuzzy_Wander.inc.c"
 #include "world/common/enemy/JungleFuzzy.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
 
 EvtScript N(EVS_PlayerWatchKolorado) = {
     Loop(0)
@@ -27,7 +25,7 @@ EvtScript N(EVS_Kolorado_RunToVillage) = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
     KillThread(LVar9)
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(5.0 / DT))
     Call(SetSelfVar, 0, 3)
     Return
@@ -81,8 +79,8 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                     Call(SetCamDistance, CAM_DEFAULT, 300)
                     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.0))
                     Call(SetCamSpeed, CAM_DEFAULT, Float(5.0 / DT))
-                    Call(PanToTarget, CAM_DEFAULT, 0, 1)
-                    Call(N(DisableCameraLeadingPlayer))
+                    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+                    Call(DisableCameraLeadingPlayer)
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                     Wait(10 * DT)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0011)
@@ -235,8 +233,8 @@ EvtScript N(EVS_NpcDefeat_JungleFuzzyBoss) = {
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetCamDistance, CAM_DEFAULT, 300)
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-                Call(N(DisableCameraLeadingPlayer))
-                Call(PanToTarget, CAM_DEFAULT, 0, 1)
+                Call(DisableCameraLeadingPlayer)
+                Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                 Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Run)
                 Call(SetNpcSpeed, NPC_Kolorado, Float(3.0))

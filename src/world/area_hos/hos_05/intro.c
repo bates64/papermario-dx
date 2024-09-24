@@ -359,11 +359,11 @@ API_CALLABLE(N(InitializeStoryCamera)) {
     N(lerp_value_with_max_step)(-16.8f, N(IntroCamSettings2).viewPitch, IntroCamStateA_ViewPitch, 0.05f, &IntroCamStateA_ViewPitch);
     N(lerp_value_with_max_step)(62.0f, 49.0f, IntroCamStateA_Vfov, 0.1f, &IntroCamStateA_Vfov);
     N(adjust_cam_vfov)(CAM_DEFAULT, IntroCamStateA_Vfov);
-    camera->controlSettings.boomLength = IntroCamStateA_BoomLength;
-    camera->controlSettings.boomPitch = IntroCamStateA_BoomPitch;
-    camera->controlSettings.viewPitch = IntroCamStateA_ViewPitch;
-    camera->controlSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
-    camera->controlSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
+    camera->overrideSettings.boomLength = IntroCamStateA_BoomLength;
+    camera->overrideSettings.boomPitch = IntroCamStateA_BoomPitch;
+    camera->overrideSettings.viewPitch = IntroCamStateA_ViewPitch;
+    camera->overrideSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
     camera->panActive = TRUE;
     return ApiStatus_DONE2;
 }
@@ -390,11 +390,11 @@ API_CALLABLE(N(UnusedInitializeStoryCamera)) {
     N(lerp_value_with_max_step)(-16.8f, N(IntroCamSettings2).viewPitch, IntroCamStateB_ViewPitch, 0.05f, &IntroCamStateB_ViewPitch);
     N(lerp_value_with_max_step)(62.0f, 49.0f, IntroCamStateB_Vfov, 0.1f, &IntroCamStateB_Vfov);
     N(adjust_cam_vfov)(CAM_DEFAULT, IntroCamStateB_Vfov);
-    camera->controlSettings.boomLength = IntroCamStateB_BoomLength;
-    camera->controlSettings.boomPitch = IntroCamStateB_BoomPitch;
-    camera->controlSettings.viewPitch = IntroCamStateB_ViewPitch;
-    camera->controlSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
-    camera->controlSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
+    camera->overrideSettings.boomLength = IntroCamStateB_BoomLength;
+    camera->overrideSettings.boomPitch = IntroCamStateB_BoomPitch;
+    camera->overrideSettings.viewPitch = IntroCamStateB_ViewPitch;
+    camera->overrideSettings.points.two.Bx = sin_deg(N(StoryCameraAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(N(StoryCameraAngle)) * -500.0f;
     camera->panActive = TRUE;
     N(D_802498FC_A33B3C)++;
     if (N(StoryCameraAngle) == 0.0f) {
@@ -417,7 +417,7 @@ API_CALLABLE(N(StoryCameraShake1)) {
     if (isInitialCall) {
         camera->flags |= CAMERA_FLAG_SHAKING;
     }
-    guTranslateF(camera->viewMtxShaking,
+    guTranslateF(camera->mtxViewShaking,
         N(StoryCameraShake1Scale) * sin_deg(N(StoryCameraShake1Angle) * 486),
         N(StoryCameraShake1Scale) * cos_deg(N(StoryCameraShake1Angle) * 254),
         0.0f
@@ -425,7 +425,7 @@ API_CALLABLE(N(StoryCameraShake1)) {
     N(StoryCameraShake1Angle)++;
     N(StoryCameraShake1Scale) += (12.0f - N(StoryCameraShake1Scale)) * 0.2;
     if (N(StoryCameraShake1Angle) > 20) {
-        guTranslateF(camera->viewMtxShaking, 0.0f, 0.0f, 0.0f);
+        guTranslateF(camera->mtxViewShaking, 0.0f, 0.0f, 0.0f);
         camera->flags &= ~CAMERA_FLAG_SHAKING;
         return ApiStatus_DONE1;
     }
@@ -446,13 +446,13 @@ API_CALLABLE(N(StoryCameraShake2)) {
     }
     x = N(StoryCameraShake2Scale) * sin_deg(N(StoryCameraShake2Angle) * 486);
     y = N(StoryCameraShake2Scale) * cos_deg(N(StoryCameraShake2Angle) * 254);
-    guTranslateF(camera->viewMtxShaking, x, y, 0.0f);
-    guTranslateF(camera->viewMtxShaking, x, y, 0.0f);
+    guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
+    guTranslateF(camera->mtxViewShaking, x, y, 0.0f);
     guRotateF(sp18, 20.0f, 0.0f, 0.0f, 1.0f);
-    guMtxCatF(sp18, camera->viewMtxShaking, camera->viewMtxShaking);
+    guMtxCatF(sp18, camera->mtxViewShaking, camera->mtxViewShaking);
     camera->panActive = TRUE;
     if (N(StoryCameraShake2Angle) >= 10) {
-        guRotateF(camera->viewMtxShaking, 20.0f, 0.0f, 0.0f, 1.0f);
+        guRotateF(camera->mtxViewShaking, 20.0f, 0.0f, 0.0f, 1.0f);
         return ApiStatus_DONE1;
     }
     N(StoryCameraShake2Angle)++;
@@ -566,7 +566,7 @@ API_CALLABLE(N(StoryCameraShakeEnd)) {
     if (isInitialCall) {
         camera->flags &= ~CAMERA_FLAG_SHAKING;
     }
-    guTranslateF(camera->viewMtxShaking, 0.0f, 0.0f, 0.0f);
+    guTranslateF(camera->mtxViewShaking, 0.0f, 0.0f, 0.0f);
     return ApiStatus_DONE2;
 }
 
@@ -695,7 +695,7 @@ API_CALLABLE(N(CamPushIn_BowserInhale)) {
 
     N(interp_value_with_easing)(INTRO_MATH_EASING_LINEAR, 121.6f, 90.0f, N(CamMoveInhaleTime), 40.0f, &N(BoomLengthInhale));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(BoomLengthInhale);
+    camera->overrideSettings.boomLength = N(BoomLengthInhale);
     if (N(CamMoveInhaleTime) % 5 == 0 && N(BoomLengthInhale) != 90.0f) {
         f32 temp_f4 = resolve_npc(script, NPC_Bowser_Body)->pos.y - 150.0f;
 
@@ -724,7 +724,7 @@ API_CALLABLE(N(CamPullBack_BowserExhale)) {
 
     N(interp_value_with_easing)(INTRO_MATH_EASING_4, 90.0f, 474.7f, N(CamMoveExhaleTime), 20.0f, &N(BoomLengthExhale));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(BoomLengthExhale);
+    camera->overrideSettings.boomLength = N(BoomLengthExhale);
     N(CamMoveExhaleTime)++;
     if (N(CamMoveExhaleTime) < (s32)(21 * DT)) {
         return ApiStatus_BLOCK;
@@ -815,7 +815,7 @@ API_CALLABLE(N(CamPullBack_BowserHoldingStarRod)) {
     N(interp_value_with_easing)(INTRO_MATH_EASING_4,   0.0f,   0.0f, N(HoldStarRodTime), 80.0f, &N(HoldStarRodCamZ));
     N(adjust_cam_vfov)(CAM_DEFAULT, N(HoldStarRodFov));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(HoldStarRodBoomLength);
+    camera->overrideSettings.boomLength = N(HoldStarRodBoomLength);
     camera->movePos.x = N(HoldStarRodCamX);
     camera->movePos.y = N(HoldStarRodCamY);
     camera->movePos.z = N(HoldStarRodCamZ);
@@ -842,8 +842,8 @@ API_CALLABLE(N(CamPanAcrossRoom)) {
     camera->panActive = TRUE;
     camera->movePos.x = N(PanAcrossRoomCamX);
     camera->movePos.z = N(PanAcrossRoomCamZ);
-    camera->controlSettings.points.two.Bx = sin_deg(N(PanAcrossRoomAngle)) * 500.0f;
-    camera->controlSettings.points.two.Bz = cos_deg(N(PanAcrossRoomAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bx = sin_deg(N(PanAcrossRoomAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(N(PanAcrossRoomAngle)) * 500.0f;
 
     N(PanAcrossRoomTime)++;
     if (N(PanAcrossRoomTime) == (s32)(170 * DT)) {
@@ -865,11 +865,11 @@ API_CALLABLE(N(CamMove_OrbitKammy)) {
     N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT,  50.0f,  35.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyFov));
     N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, 246.1f, 180.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyBoomLength));
     N(interp_value_with_easing)(INTRO_MATH_EASING_COS_IN_OUT, 200.0f, 220.0f, N(OrbitKammyTime), 30.0f, &N(OrbitKammyCamY));
-    camera->controlSettings.points.two.Bx = sin_deg(N(OrbitKammyAngle)) * 500.0f;
-    camera->controlSettings.points.two.Bz = cos_deg(N(OrbitKammyAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bx = sin_deg(N(OrbitKammyAngle)) * 500.0f;
+    camera->overrideSettings.points.two.Bz = cos_deg(N(OrbitKammyAngle)) * 500.0f;
     N(adjust_cam_vfov)(CAM_DEFAULT, N(OrbitKammyFov));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(OrbitKammyBoomLength);
+    camera->overrideSettings.boomLength = N(OrbitKammyBoomLength);
     camera->movePos.y = N(OrbitKammyCamY);
 
     N(OrbitKammyTime)++;
@@ -1263,7 +1263,7 @@ API_CALLABLE(N(CamPullBack_Final)) {
     N(lerp_value_with_max_step)(N(IntroCamSettings15).boomLength, N(IntroCamSettings16).boomLength,
         N(FinalCamMoveBoomLength), 1.0f, &N(FinalCamMoveBoomLength));
     camera->panActive = TRUE;
-    camera->controlSettings.boomLength = N(FinalCamMoveBoomLength);
+    camera->overrideSettings.boomLength = N(FinalCamMoveBoomLength);
     if (N(FinalCamMoveBoomLength) == 700.0f) {
         return ApiStatus_DONE1;
     }
@@ -1886,7 +1886,7 @@ EvtScript N(EVS_Intro_Main) = {
     Call(N(AdjustCamVfov), 0, 62)
     Call(SetPanTarget, CAM_DEFAULT, 0, 157, 0)
     Call(LoadSettings, CAM_DEFAULT, Ref(N(IntroCamSettings1)))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(N(InitializeStoryGraphicsData))
     Thread

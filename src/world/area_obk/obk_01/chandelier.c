@@ -2,9 +2,6 @@
 #include "model.h"
 #include "sprite/player.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 extern EvtScript N(EVS_LaunchFromCouch_Crash);
 
 s32 N(ItemList_BooWeight)[] = {
@@ -424,7 +421,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Exec(N(EVS_Couch_AnimateSpring))
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Sub(LVar3, 1)
     Call(SetPlayerPos, LVar2, LVar3, LVar4)
@@ -437,7 +434,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, -420, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(10.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Wait(1)
         Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
         Call(SetCamDistance, CAM_DEFAULT, 750)
@@ -495,9 +492,9 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
         Call(SetPanTarget, CAM_DEFAULT, LVar0, -420, LVar2)
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 0)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -514,7 +511,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(MakeItemEntity, LVar0, 447, -350, 278, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
     Call(CloseChoicePopup)
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     BindTrigger(Ref(N(EVS_LaunchFromCouch_Crash)), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
@@ -532,7 +529,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, 1)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Wait(1)
     EndLoop
     Return
@@ -583,7 +580,7 @@ EvtScript N(EVS_LaunchFromCouch_Crash) = {
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, FALSE)
-    Call(PanToTarget, CAM_DEFAULT, 0, 0)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Wait(1)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, FALSE)

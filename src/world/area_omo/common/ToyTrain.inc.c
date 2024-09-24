@@ -1,8 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 #include "common/SetAngleClamped.inc.c"
 
 #include "common/CompareFloats.inc.c"

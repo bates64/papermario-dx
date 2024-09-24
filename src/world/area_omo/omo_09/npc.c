@@ -39,9 +39,6 @@ NpcSettings N(NpcSettings_ShyGuy_Wander_NoReaction) = {
 #include "world/common/enemy/Pokey.inc.c"
 #include "world/common/enemy/Kammy_Flying.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
-
 EvtScript N(EVS_ShyGuy_CarryItem) = {
     Set(LVarA, LVar0) // npcID
     Set(LVarB, LVar1) // itemID
@@ -104,7 +101,7 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
             Goto(0)
         EndIf
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
     IfEq(GB_OMO_PeachChoice3, 0)
@@ -113,7 +110,7 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
         Call(SpeakToPlayer, NPC_Koopatrol, ANIM_WorldKoopatrol_Anim08, ANIM_WorldKoopatrol_Anim01, 0, MSG_CH4_003F)
     EndIf
     Thread
-        Call(N(EnableCameraLeadingPlayer))
+        Call(EnableCameraLeadingPlayer)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
     EndThread
     Call(DisablePlayerInput, FALSE)

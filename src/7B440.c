@@ -113,7 +113,7 @@ void reset_player_status(void) {
     playerStatus->flipYaw[CAM_DEFAULT] = 0.0f;
     playerStatus->flipYaw[CAM_BATTLE] = 0.0f;
     playerStatus->flipYaw[CAM_TATTLE] = 0.0f;
-    playerStatus->flipYaw[CAM_3] = 0.0f;
+    playerStatus->flipYaw[CAM_HUD] = 0.0f;
 
     ASSERT_MSG(gGameStatusPtr->areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", gGameStatusPtr->areaID);
     AreaConfig* area = &gAreas[gGameStatusPtr->areaID];

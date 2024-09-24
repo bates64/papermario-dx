@@ -121,7 +121,7 @@ EvtScript N(EVS_802A3348) = {
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
     IfEq(LVar0, HIT_RESULT_MISS)
-        ExecWait(N(EVS_Hammer_ReturnHome_C))
+        ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         Return
     EndIf
     Set(LFlag0, FALSE)
@@ -155,11 +155,11 @@ EvtScript N(EVS_802A3348) = {
     Switch(LVar0)
         CaseOrEq(HIT_RESULT_NICE)
         CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-            ExecWait(N(EVS_Hammer_ReturnHome_A))
+            ExecWait(N(EVS_HammerSupport_ReturnHome_Success))
         EndCaseGroup
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
-            ExecWait(N(EVS_Hammer_ReturnHome_C))
+            ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         EndCaseGroup
     EndSwitch
     Return
@@ -215,7 +215,7 @@ EvtScript N(EVS_802A3948) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged, ANIM_MarioB3_Hammer1_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -266,7 +266,7 @@ EvtScript N(EVS_802A3C90) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged, ANIM_MarioB3_Hammer2_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
@@ -317,7 +317,7 @@ EvtScript N(EVS_802A3FD8) = {
         Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
         Call(SetJumpAnimations, ACTOR_PLAYER, 0, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged, ANIM_MarioB3_Hammer3_Charged)
         Call(SetGoalPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
-        Call(func_80273444, 20, 0, 0)
+        Call(PlayerHopToGoal, 20, 0, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Land)
         Wait(4)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)

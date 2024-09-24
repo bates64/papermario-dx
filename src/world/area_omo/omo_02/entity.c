@@ -1,9 +1,6 @@
 #include "omo_02.h"
 #include "entity.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-#include "world/common/DisableCameraFollowPlayerY.inc.c"
-
 EvtScript N(EVS_TetherCamToPlayer) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -24,15 +21,15 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
         Call(SetPlayerPos, LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -290, 85, -78, 40)
     KillThread(LVarA)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Wait(3)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(N(DisableCameraFollowPlayerY))
+    Call(DisableCameraFollowPlayerY)
     Call(DisablePlayerPhysics, FALSE)
     Call(DisablePlayerInput, FALSE)
     Return

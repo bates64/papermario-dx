@@ -271,7 +271,7 @@ EvtScript N(EVS_HeadbonkFollowthrough) = {
 EvtScript N(EVS_ApproachPlayer) = {
     Call(UseBattleCamPreset, BTL_CAM_ENEMY_APPROACH)
     Call(BattleCamTargetActor, ACTOR_SELF)
-    Call(func_8024ECF8, BTL_CAM_MODEY_MINUS_1, BTL_CAM_MODEX_1, FALSE)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(AddGoalPos, ACTOR_SELF, 70, 0, 0)
@@ -462,9 +462,6 @@ EvtScript N(EVS_Attack_Headbonk) = {
 API_CALLABLE(N(CalculateTattleCamBoomLength)) {
     Actor* actor = get_actor(script->owner1.actorID);
     Actor* targetActor = get_actor(actor->targetActorID);
-    s16 targetActorSizeX;
-    u8 targetActorSizeY;
-    u8 targetActorLargerDimension;
 
     if (!(targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
         script->varTable[1] += targetActor->size.y / 2;
@@ -474,14 +471,7 @@ API_CALLABLE(N(CalculateTattleCamBoomLength)) {
         script->varTable[1] -= targetActor->size.y / 4;
     }
 
-    targetActorSizeY = targetActor->size.y;
-    targetActorSizeX = targetActor->size.x;
-    targetActorLargerDimension = targetActorSizeY;
-    if (targetActorSizeY < targetActorSizeX) {
-        targetActorLargerDimension = targetActorSizeX;
-    }
-
-    script->varTable[3] = targetActorLargerDimension + 126;
+    script->varTable[3] = 126 + MAX(targetActor->size.x, targetActor->size.y);
     return ApiStatus_DONE2;
 }
 
@@ -525,7 +515,7 @@ EvtScript N(EVS_Move_Tattle) = {
     // enable the tattle viewport
     Call(SetCamEnabled, CAM_TATTLE, TRUE)
     Call(SetCamNoDraw, CAM_TATTLE, FALSE)
-    Call(SetCamPerspective, CAM_TATTLE, CAM_UPDATE_MODE_6, 25, 16, 1024)
+    Call(SetCamPerspective, CAM_TATTLE, CAM_UPDATE_NO_INTERP, 25, 16, 1024)
     Call(SetCamViewport, CAM_TATTLE, 37, 95, 138, 99)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(GetGoalPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -533,8 +523,8 @@ EvtScript N(EVS_Move_Tattle) = {
     Set(LVar1, 0)
     Call(N(CalculateTattleCamBoomLength))
     Wait(1)
-    Call(func_802CAE50, CAM_TATTLE, LVar0, LVar1, LVar2)
-    Call(func_802CABE8, CAM_TATTLE, 0, LVar3, 100, 4)
+    Call(SetCamLookTarget, CAM_TATTLE, LVar0, LVar1, LVar2)
+    Call(SetNoInterpCamParams, CAM_TATTLE, FALSE, LVar3, 100, 4)
     Wait(2)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_TATTLE_WINDOW_OPEN)
     Call(SetCamNoDraw, CAM_TATTLE, TRUE)

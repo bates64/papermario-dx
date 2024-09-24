@@ -3,8 +3,6 @@
 #include "world/common/npc/Kolorado.inc.c"
 #include "world/common/enemy/PutridPiranhaSentinel.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
 #include "world/common/todo/GetFloorCollider.inc.c"
 
 EvtScript N(EVS_NpcIdle_Kolorado) = {
@@ -49,7 +47,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00FD)
     Wait(15 * DT)
@@ -72,7 +70,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetPanTarget, CAM_DEFAULT, 420, 250, -350)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Run)
     Call(SetNpcSpeed, NPC_SELF, Float(5.0 / DT))
     Call(NpcMoveTo, NPC_SELF, 530, -360, 0)
@@ -106,12 +104,12 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
             Goto(0)
         EndIf
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, 285, 25, 35)
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(SetNpcPos, NPC_SELF, 285, 25, 35)
@@ -125,7 +123,7 @@ EvtScript N(EVS_NpcIdle_Piranha) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_LargePiranha_Putrid_Anim18)
     Wait(25 * DT)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(N(EnableCameraLeadingPlayer))
+    Call(EnableCameraLeadingPlayer)
     Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
     Set(GF_KZN18_IntruderAlert, TRUE)
     Call(DisablePlayerInput, FALSE)

@@ -18,9 +18,6 @@ NpcSettings N(NpcSettings_Goomba) = {
 #include "world/common/enemy/Clubba.inc.c"
 #include "world/common/enemy/Kammy_Flying.inc.c"
 
-#include "world/common/DisableCameraLeadingPlayer.inc.c"
-#include "world/common/EnableCameraLeadingPlayer.inc.c"
-
 EvtScript N(EVS_NpcIdle_Goomba) = {
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -29,7 +26,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         Goto(0)
     EndIf
     Call(DisablePlayerInput, TRUE)
-    Call(N(DisableCameraLeadingPlayer))
+    Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
     IfEq(GB_OMO_PeachChoice1, 0)
@@ -38,7 +35,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         Call(SpeakToPlayer, NPC_Clubba, ANIM_WorldClubba_Anim05, ANIM_WorldClubba_Anim02, 0, MSG_CH4_003B)
     EndIf
     Thread
-        Call(N(EnableCameraLeadingPlayer))
+        Call(EnableCameraLeadingPlayer)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
     EndThread
     Call(DisablePlayerInput, FALSE)

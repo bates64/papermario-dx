@@ -742,21 +742,21 @@ EvtScript N(EVS_PerformRitual) = {
 
 EvtScript N(EVS_BeginMerleeCamera) = {
     Call(GetNpcPos, NPC_Merlee, LVar0, LVar1, LVar2)
-    Call(UseSettingsFrom, 0, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, 0, 200)
-    Call(SetPanTarget, 0, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, 0, Float(8.0))
-    Call(SetCamPitch, 0, 20, -15)
-    Call(PanToTarget, 0, 0, 1)
-    Call(WaitForCam, 0, Float(1.0))
+    Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(SetCamDistance, CAM_DEFAULT, 200)
+    Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
+    Call(SetCamPitch, CAM_DEFAULT, 20, -15)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_EndMerleeCamera) = {
-    Call(PanToTarget, 0, 0, 0)
-    Call(SetCamSpeed, 0, Float(3.0))
-    Call(WaitForCam, 0, Float(1.0))
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };

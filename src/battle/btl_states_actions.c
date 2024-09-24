@@ -6,7 +6,6 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
-#include "dx/debug_menu.h"
 
 #if VERSION_JP
 extern Addr btl_states_menus_ROM_START;
@@ -2066,7 +2065,7 @@ void btl_state_update_end_battle(void) {
             }
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
                 btl_cam_unfreeze();
-                btl_cam_use_preset(BTL_CAM_PRESET_01);
+                btl_cam_use_preset(BTL_CAM_INTERRUPT);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
                 set_screen_overlay_center(SCREEN_LAYER_FRONT, 0, 160, 120);
             }
@@ -2163,7 +2162,7 @@ void btl_state_draw_end_battle(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (gCurrentEncounter.battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
-        camera->auxBoomZOffset += 256;
+        camera->params.basic.offsetY += 256;
         set_screen_overlay_params_front(OVERLAY_SCREEN_MARIO, BattleScreenFadeAmt);
     } else {
         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, BattleScreenFadeAmt);
@@ -2216,7 +2215,7 @@ void btl_state_update_run_away(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
 
             playerData->fleeAttempts++;
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
 
             // calculate average escape chance
@@ -2293,18 +2292,18 @@ void btl_state_update_run_away(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS) {
         if (battleStatus->totalStarPoints != 0) {
+            s32 deltaSP;
             s32 prevSP;
 
-            //TODO shouldnt need to reuse enemyCount here, see BTL_SUBSTATE_CELEBRATE_TALLY_STAR_POINTS
             RunAwayRewardTotal -= RunAwayRewardIncrement;
             prevSP = battleStatus->totalStarPoints;
-            battleStatus->totalStarPoints = (s8)(RunAwayRewardTotal / 100);
-            enemyCount = prevSP - battleStatus->totalStarPoints;
+            battleStatus->totalStarPoints = RunAwayRewardTotal / 100;
+            deltaSP = prevSP - battleStatus->totalStarPoints;
 
-            if (enemyCount > 0) {
+            if (deltaSP > 0) {
                 sfx_play_sound(SOUND_COIN_PICKUP);
             }
-            playerData->starPoints += enemyCount;
+            playerData->starPoints += deltaSP;
             BattleScreenFadeAmt++;
             if (RunAwayRewardStep == 0 && battleStatus->totalStarPoints != 0) {
                 playerData->starPoints++;
@@ -2395,7 +2394,7 @@ void btl_state_update_defeat(void) {
                 player->disableEffect->data.disableX->koDuration = 0;
             }
 
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
             battleStatus->battlePhase = PHASE_DEATH;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
@@ -2474,7 +2473,7 @@ void btl_state_update_change_partner(void) {
             partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             battleStatus->stateFreezeCount = 0;
             gBattleStatus.flags2 |= BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
-            btl_cam_use_preset(BTL_CAM_PRESET_19);
+            btl_cam_use_preset(BTL_CAM_REPOSITION);
             btl_cam_set_target_pos(-89.0, 40.0, -99.0);
             btl_cam_set_zoom(372);
             btl_cam_set_zoffset(0);
@@ -2829,7 +2828,7 @@ void btl_state_update_player_move(void) {
             if (!enemyNotDone) {
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MOVE_CHECK_PLAYER_STATUS;
             } else {
-                btl_cam_use_preset(BTL_CAM_PRESET_03);
+                btl_cam_use_preset(BTL_CAM_VIEW_ENEMIES);
                 switch (actor->statusAfflicted) {
                     case 4:
                         messageIndex = BTL_MSG_ENEMY_DAZED;
@@ -3337,7 +3336,7 @@ void btl_state_update_partner_move(void) {
             if (!enemyFound) {
                 gBattleSubState = BTL_SUBSTATE_PARTNER_MOVE_DONE;
             } else {
-                btl_cam_use_preset(BTL_CAM_PRESET_03);
+                btl_cam_use_preset(BTL_CAM_VIEW_ENEMIES);
                 switchCondition = enemyActor->statusAfflicted - 4;
                 switch (switchCondition) {
                     case 0:
@@ -3880,7 +3879,7 @@ void btl_state_update_first_strike(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_MIDPOINT_CLOSE);
             btl_cam_target_actor(ACTOR_PLAYER);
             reset_actor_turn_info();
             // begin the partner turn script
@@ -4083,7 +4082,7 @@ void btl_state_update_partner_striking_first(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 |= BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_MIDPOINT_CLOSE);
             btl_cam_target_actor(ACTOR_PARTNER);
             reset_actor_turn_info();
             // begin the partner turn script

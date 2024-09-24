@@ -1,8 +1,6 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#include "world/common/EnableCameraFollowPlayerY.inc.c"
-
 #define NAME_SUFFIX _StarWay
 #include "world/common/todo/GetFloorCollider.inc.c"
 #define NAME_SUFFIX
@@ -27,7 +25,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, 3)
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_HOS_005D, 160, 40)
@@ -49,7 +47,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 600)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
     Set(MV_StarBeamFXPtr, LVarF)
@@ -72,7 +70,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_HOS_005E, 160, 40)
@@ -90,7 +88,7 @@ EvtScript N(EVS_AscendStarBeam) = {
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, 1)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -30, -160, 0)
     Call(InterpPlayerYaw, 90, 0)
@@ -120,7 +118,7 @@ EvtScript N(EVS_AscendStarBeam) = {
         EndLoop
     EndThread
     Wait(30)
-    Call(N(EnableCameraFollowPlayerY))
+    Call(EnableCameraFollowPlayerY)
     Thread
         Label(10)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

@@ -6,19 +6,6 @@
 #include "model.h"
 #include "sprite.h"
 
-EvtScript D_80293820 = {
-    Wait(LVar0)
-    Loop(4)
-        Call(SetBattleCamParam, 4, 11)
-        Wait(1)
-        Call(SetBattleCamParam, 4, 5)
-        Wait(1)
-    EndLoop
-    Call(SetBattleCamParam, 4, 8)
-    Return
-    End
-};
-
 f32 D_802938A4 = 0.0f;
 
 s16 D_802938A8 = 4;
@@ -1013,10 +1000,6 @@ void reset_actor_turn_info(void) {
         actor->damageCounter = 0;
         actor->actionRatingCombo = 0;
     }
-}
-
-void func_80263CC4(s32 arg0) {
-    start_script(&D_80293820, EVT_PRIORITY_A, 0)->varTable[0] = arg0;
 }
 
 void set_actor_anim(s32 actorID, s32 partID, AnimID animID) {

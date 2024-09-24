@@ -30,9 +30,9 @@ API_CALLABLE(func_802A1074_737904) {
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-extern EvtScript N(EVS_UseMove1_Impl);
-extern EvtScript N(EVS_UseMove2_Impl);
-extern EvtScript N(EVS_UseMove3_Impl);
+extern EvtScript N(EVS_UseMoveBasic_Impl);
+extern EvtScript N(EVS_UseMoveSuper_Impl);
+extern EvtScript N(EVS_UseMoveUltra_Impl);
 
 EvtScript N(EVS_UseMove) = {
     Call(ShowActionHud, TRUE)
@@ -43,27 +43,27 @@ EvtScript N(EVS_UseMove) = {
             Set(LVarD, 60)
             Set(LVarE, 1)
             Set(LVarF, 2)
-            ExecWait(N(EVS_UseMove1_Impl))
+            ExecWait(N(EVS_UseMoveBasic_Impl))
         CaseEq(1)
             Set(LVarD, 60)
             Set(LVarE, 2)
             Set(LVarF, 4)
-            ExecWait(N(EVS_UseMove2_Impl))
+            ExecWait(N(EVS_UseMoveSuper_Impl))
         CaseEq(2)
             Set(LVarD, 60)
             Set(LVarE, 3)
             Set(LVarF, 6)
-            ExecWait(N(EVS_UseMove3_Impl))
+            ExecWait(N(EVS_UseMoveUltra_Impl))
     EndSwitch
     Return
     End
 };
 
-EvtScript N(EVS_UseMove1_Impl) = {
+EvtScript N(EVS_UseMoveBasic_Impl) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -134,7 +134,7 @@ EvtScript N(EVS_UseMove1_Impl) = {
     Wait(3)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash1_Swing)
     Wait(3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_46)
+    Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_QUAKE)
     Call(StartRumble, BTL_RUMBLE_PLAYER_MIN)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SPIN_SMASH_1)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
@@ -142,7 +142,7 @@ EvtScript N(EVS_UseMove1_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_Hammer_ReturnHome_C))
+        ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         Return
     EndIf
     Call(GetPlayerActionSuccess, LVar0)
@@ -182,11 +182,11 @@ EvtScript N(EVS_UseMove1_Impl) = {
     End
 };
 
-EvtScript N(EVS_UseMove2_Impl) = {
+EvtScript N(EVS_UseMoveSuper_Impl) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -256,7 +256,7 @@ EvtScript N(EVS_UseMove2_Impl) = {
     Wait(3)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash2_Swing)
     Wait(3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_46)
+    Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_QUAKE)
     Call(StartRumble, BTL_RUMBLE_PLAYER_LIGHT)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SPIN_SMASH_2)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
@@ -264,7 +264,7 @@ EvtScript N(EVS_UseMove2_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_Hammer_ReturnHome_C))
+        ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         Return
     EndIf
     Call(GetPlayerActionSuccess, LVar0)
@@ -304,11 +304,11 @@ EvtScript N(EVS_UseMove2_Impl) = {
     End
 };
 
-EvtScript N(EVS_UseMove3_Impl) = {
+EvtScript N(EVS_UseMoveUltra_Impl) = {
     Call(LoadActionCommand, ACTION_COMMAND_SMASH)
     Call(action_command_hammer_init)
     Call(InitTargetIterator)
-    ExecWait(N(EVS_HammerSupport_A))
+    ExecWait(N(EVS_HammerSupport_SmashApproach))
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
@@ -376,7 +376,7 @@ EvtScript N(EVS_UseMove3_Impl) = {
     Wait(3)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB2_SpinSmash3_Swing)
     Wait(3)
-    Call(UseBattleCamPreset, BTL_CAM_PRESET_46)
+    Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_QUAKE)
     Call(StartRumble, BTL_RUMBLE_PLAYER_HEAVY)
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_SPIN_SMASH_3)
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH, 25, 0, 0, 16)
@@ -384,7 +384,7 @@ EvtScript N(EVS_UseMove3_Impl) = {
         Wait(10)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
         Wait(25)
-        ExecWait(N(EVS_Hammer_ReturnHome_C))
+        ExecWait(N(EVS_HammerSupport_ReturnHome_Miss))
         Return
     EndIf
     Call(GetPlayerActionSuccess, LVar0)

@@ -284,7 +284,7 @@ void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, Ene
 #include "common.h"
 #include "npc.h"
 
-s32 N(PiranhaPlantAI_Main)(Evt* script, s32 isInitialCall) {
+API_CALLABLE(N(PiranhaPlantAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
