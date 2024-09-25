@@ -260,7 +260,7 @@ EntityBlueprint Entity_BombableRock = {
     .aabbSize = { 50, 50, 50 }
 };
 
-EntityBlueprint Entity_BombableRock2 = {
+EntityBlueprint Entity_BombableRockWide = {
     .flags = 0,
     .typeDataSize = sizeof(BombableRockData),
     .renderCommandList = Entity_BombableRock_RenderScript,
@@ -272,5 +272,3 @@ EntityBlueprint Entity_BombableRock2 = {
     .entityType = ENTITY_TYPE_BOMBABLE_ROCK,
     .aabbSize = { 50, 50, 100 }
 };
-
-MATCHING_BSS(0x100);

@@ -1,11 +1,11 @@
 #include "common.h"
 #include "nu/nusys.h"
 
-SHIFT_BSS OSContPad D_8009A5B8;
-SHIFT_BSS s16 D_8009A6A0;
-SHIFT_BSS s16 D_8009A6A2;
-SHIFT_BSS s16 D_8009A6A4;
-SHIFT_BSS s16 D_8009A6A6;
+OSContPad D_8009A5B8;
+BSS s16 D_8009A6A0;
+BSS s16 D_8009A6A2;
+BSS s16 D_8009A6A4;
+BSS s16 D_8009A6A6;
 
 void func_800287F0(void) {
     gGameStatusPtr->curButtons[0] = 0;
@@ -210,35 +210,34 @@ void update_input(void) {
     gGameStatusPtr->curButtons[0] = buttons;
     gGameStatusPtr->pressedButtons[0] = gGameStatusPtr->curButtons[0] ^ gGameStatusPtr->prevButtons[0];
     gGameStatusPtr->pressedButtons[0] &= gGameStatusPtr->curButtons[0];
-    do {
-        if (gGameStatusPtr->curButtons[0] == 0) {
-            gGameStatusPtr->heldButtons[0] = 0;
-        } else if (gGameStatusPtr->prevButtons[0] != gGameStatusPtr->curButtons[0]) {
-            gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-            gGameStatusPtr->unk_60 = -1;
-            gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0] ^ gGameStatusPtr->prevButtons[0];
-            gGameStatusPtr->heldButtons[0] &= gGameStatusPtr->curButtons[0];
-            gGameStatusPtr->unk_58 = gGameStatusPtr->unk_48[0];
-        } else {
-            if (gGameStatusPtr->unk_60 >= 0) {
-                gGameStatusPtr->unk_60--;
-                if (gGameStatusPtr->unk_60 != 0) {
-                    gGameStatusPtr->heldButtons[0] = 0;
-                } else {
-                    gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-                    gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
-                }
+
+    if (gGameStatusPtr->curButtons[0] == 0) {
+        gGameStatusPtr->heldButtons[0] = 0;
+    } else if (gGameStatusPtr->prevButtons[0] != gGameStatusPtr->curButtons[0]) {
+        gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
+        gGameStatusPtr->unk_60 = -1;
+        gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0] ^ gGameStatusPtr->prevButtons[0];
+        gGameStatusPtr->heldButtons[0] &= gGameStatusPtr->curButtons[0];
+        gGameStatusPtr->unk_58 = gGameStatusPtr->unk_48[0];
+    } else {
+        if (gGameStatusPtr->unk_60 >= 0) {
+            gGameStatusPtr->unk_60--;
+            if (gGameStatusPtr->unk_60 != 0) {
+                gGameStatusPtr->heldButtons[0] = 0;
             } else {
-                gGameStatusPtr->unk_58--;
-                if (gGameStatusPtr->unk_58 != 0) {
-                    gGameStatusPtr->heldButtons[0] = 0;
-                } else {
-                    gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-                    gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
-                }
+                gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
+                gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
+            }
+        } else {
+            gGameStatusPtr->unk_58--;
+            if (gGameStatusPtr->unk_58 != 0) {
+                gGameStatusPtr->heldButtons[0] = 0;
+            } else {
+                gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
+                gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
             }
         }
-    } while (0);
+    }
 
     gGameStatusPtr->prevButtons[0] = gGameStatusPtr->curButtons[0];
 }

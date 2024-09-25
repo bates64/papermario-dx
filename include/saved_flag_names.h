@@ -247,7 +247,7 @@ enum GameFlags {
     GF_MAC00_DictionaryStolen                   = GameFlag(0x0F3),
     GF_MAC00_DictionaryReturned                 = GameFlag(0x0F4),
     GF_MAC00_TranslatedMysteryNote              = GameFlag(0x0F5),
-    GF_Unused_MAC_74                            = GameFlag(0x0F6), ///< presumably for translating the unused SuspiciousNote
+    GF_MAC00_TranslatedSuspiciousNote           = GameFlag(0x0F6),
     GF_MAC01_ShyGuyTookOverShop                 = GameFlag(0x0F7),
     GF_MAC00_ShyGuyChasedFromShop               = GameFlag(0x0F8),
     GF_MAC01_Merlon_Shoo1                       = GameFlag(0x0F9),
@@ -404,7 +404,7 @@ enum GameFlags {
     GF_TIK03_ItemBlock_SnowmanDoll              = GameFlag(0x190),
     GF_TIK03_ItemBlock_CoinA                    = GameFlag(0x191),
     GF_TIK03_ItemBlock_CoinB                    = GameFlag(0x192),
-    GF_TIK05_Chest_PowerSmash1                  = GameFlag(0x193),
+    GF_TIK05_Chest_PowerSmash                   = GameFlag(0x193),
     GF_TIK07_Item_StarPiece                     = GameFlag(0x194),
     GF_TIK10_HiddenItem_CoinA                   = GameFlag(0x195),
     GF_TIK10_HiddenItem_CoinB                   = GameFlag(0x196),

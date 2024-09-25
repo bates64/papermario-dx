@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../actions.h"
+#include "world/disguise.h"
 #include "sprite/player.h"
 
 AnimID IdlePeachAnims[] = {
@@ -83,7 +83,7 @@ void action_update_idle(void) {
         }
         return;
     }
-    
+
     if (!firstFrame && check_input_hammer()) {
         return;
     }

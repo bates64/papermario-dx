@@ -2,7 +2,6 @@
 #include "macros.h"
 #include "PR/os_internal.h"
 
-#ifdef BBPLAYER
 u32 __osBbLastRCount;
 u32 __osBbRCountWraps;
 u32 __osBbLastVCount;
@@ -32,4 +31,3 @@ u32 osGetCount(void) {
 
     return count;
 }
-#endif

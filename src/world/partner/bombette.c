@@ -85,9 +85,9 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldBombette_TakeOut = {
-    EVT_CALL(N(TakeOut))
-    EVT_RETURN
-    EVT_END
+    Call(N(TakeOut))
+    Return
+    End
 };
 
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -178,9 +178,9 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldBombette_Update = {
-    EVT_CALL(N(Update))
-    EVT_RETURN
-    EVT_END
+    Call(N(Update))
+    Return
+    End
 };
 
 void N(try_cancel_tweester)(Npc* npc) {
@@ -334,7 +334,7 @@ API_CALLABLE(N(UseAbility)) {
             if (script->functionTemp[1] < 45) {
                 if (!(npc->flags & NPC_FLAG_COLLDING_WITH_WORLD) && !N(MovementBlocked)) {
                     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-                    spawn_surface_effects(npc, SURFACE_INTERACT_WALK);
+                    npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
                 } else {
                     N(MovementBlocked) = TRUE;
                 }
@@ -424,7 +424,7 @@ API_CALLABLE(N(UseAbility)) {
                     break;
             }
             exec_ShakeCam1(0, 0, 20);
-            spawn_surface_effects(npc, SURFACE_INTERACT_LAND);
+            npc_surface_spawn_fx(npc, SURFACE_INTERACT_LAND);
             collisionStatus->bombetteExploded = 0;
             collisionStatus->bombetteExplosionPos.x = npc->pos.x;
             collisionStatus->bombetteExplosionPos.y = npc->pos.y;
@@ -569,9 +569,9 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldBombette_UseAbility = {
-    EVT_CALL(N(UseAbility))
-    EVT_RETURN
-    EVT_END
+    Call(N(UseAbility))
+    Return
+    End
 };
 
 API_CALLABLE(N(PutAway)) {
@@ -589,9 +589,9 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldBombette_PutAway = {
-    EVT_CALL(N(PutAway))
-    EVT_RETURN
-    EVT_END
+    Call(N(PutAway))
+    Return
+    End
 };
 
 s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
@@ -600,7 +600,7 @@ s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
     f32 x, y, z, dist;
     f32 angle, distance;
     f32 enemyRadius, blastRadius;
-    s32 hitResult;
+    b32 hasCollision;
     s32 enemyHit;
 
     if (!N(IsBlasting)) {
@@ -633,9 +633,9 @@ s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
     x = bombette->pos.x;
     y = bombette->pos.y;
     z = bombette->pos.z;
-    hitResult = npc_test_move_taller_with_slipping(0, &x, &y, &z, distance, angle, 35.0f, 2.0f);
+    hasCollision = npc_test_move_taller_with_slipping(0, &x, &y, &z, distance, angle, 35.0f, 2.0f);
 
-    if (hitResult) {
+    if (hasCollision) {
         return FALSE;
     }
 

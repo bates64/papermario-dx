@@ -54,9 +54,9 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldParakarry_TakeOut = {
-    EVT_CALL(N(TakeOut))
-    EVT_RETURN
-    EVT_END
+    Call(N(TakeOut))
+    Return
+    End
 };
 
 TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
@@ -145,9 +145,9 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldParakarry_Update = {
-    EVT_CALL(N(Update))
-    EVT_RETURN
-    EVT_END
+    Call(N(Update))
+    Return
+    End
 };
 
 void N(try_cancel_tweester)(Npc* parakarry) {
@@ -159,10 +159,10 @@ void N(try_cancel_tweester)(Npc* parakarry) {
     }
 }
 
-s32 N(update_current_floor)(void) {
+HitID N(update_current_floor)(void) {
     f32 x, y, z, length, hitRx, hitRz, hitDirX, hitDirZ;
     f32 colliderBaseHeight = gPlayerStatus.colliderHeight;
-    s32 hitResult;
+    HitID hitID;
     s32 surfaceType;
 
     x = gPlayerStatus.pos.x;
@@ -170,17 +170,17 @@ s32 N(update_current_floor)(void) {
     z = gPlayerStatus.pos.z;
     length = colliderBaseHeight / 2.0f;
 
-    hitResult = player_raycast_below_cam_relative(&gPlayerStatus, &x, &y, &z, &length, &hitRx,
+    hitID = player_raycast_below_cam_relative(&gPlayerStatus, &x, &y, &z, &length, &hitRx,
                                                       &hitRz, &hitDirX, &hitDirZ);
 
-    surfaceType = get_collider_flags(hitResult) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+    surfaceType = get_collider_flags(hitID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if (surfaceType == SURFACE_TYPE_SPIKES || surfaceType == SURFACE_TYPE_LAVA) {
         gPlayerStatus.hazardType = HAZARD_TYPE_SPIKES;
         gPlayerStatus.flags |= PS_FLAG_HIT_FIRE;
         N(AbilityState) = AIR_LIFT_DROP;
     }
 
-    return hitResult;
+    return hitID;
 }
 
 API_CALLABLE(N(UseAbility)) {
@@ -535,7 +535,7 @@ API_CALLABLE(N(UseAbility)) {
                             parakarry->pos.y = playerStatus->pos.y + 32.0f;
                             y = parakarry->pos.y;
                             parakarry->pos.y = playerStatus->pos.y;
-                            spawn_surface_effects(parakarry, SURFACE_INTERACT_WALK);
+                            npc_surface_spawn_fx(parakarry, SURFACE_INTERACT_WALK);
                             parakarry->pos.y = y;
 
                             if (hitAbove) {
@@ -544,7 +544,7 @@ API_CALLABLE(N(UseAbility)) {
                             }
                         }
 
-                        if (!phys_adjust_cam_on_landing()) {
+                        if (phys_adjust_cam_on_landing() == LANDING_CAM_NEVER_ADJUST) {
                             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
                         }
                         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;
@@ -611,9 +611,9 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldParakarry_UseAbility = {
-    EVT_CALL(N(UseAbility))
-    EVT_RETURN
-    EVT_END
+    Call(N(UseAbility))
+    Return
+    End
 };
 
 API_CALLABLE(N(PutAway)) {
@@ -631,9 +631,9 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldParakarry_PutAway = {
-    EVT_CALL(N(PutAway))
-    EVT_RETURN
-    EVT_END
+    Call(N(PutAway))
+    Return
+    End
 };
 
 void N(pre_battle)(Npc* parakarry) {

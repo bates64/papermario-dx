@@ -1,9 +1,29 @@
 #include "common.h"
 #include "effects.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 #include "animation_script.h"
 #include "entity.h"
 #include "model.h"
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_END;
+extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_START;
+extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_END;
+extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_START;
+extern Addr entity_model_HitRedBlock_anim_ROM_END;
+extern Addr entity_model_HitRedBlock_anim_ROM_START;
+extern Addr entity_model_HitRedBlock_gfx_ROM_END;
+extern Addr entity_model_HitRedBlock_gfx_ROM_START;
+extern Addr entity_model_HitYellowBlock_anim_ROM_END;
+extern Addr entity_model_HitYellowBlock_anim_ROM_START;
+extern Addr entity_model_HitYellowBlock_gfx_ROM_END;
+extern Addr entity_model_HitYellowBlock_gfx_ROM_START;
+extern Addr entity_model_RedBlock_ROM_END;
+extern Addr entity_model_RedBlock_ROM_START;
+extern Addr entity_model_YellowBlock_ROM_END;
+extern Addr entity_model_YellowBlock_ROM_START;
+#endif
 
 extern Gfx Entity_YellowBlock_Render[];
 extern Gfx Entity_RedBlock_Render[];
@@ -60,12 +80,12 @@ void entity_ItemBlock_spawn_item(Entity* entity) {
     BlockData* data = entity->dataBuf.block;
     s32 angle;
 
-    if (data->item == 0 || (entity->flags & ENTITY_FLAG_100000)) {
+    if (data->item == ITEM_NONE || (entity->flags & ENTITY_FLAG_USED)) {
         return;
     }
 
     angle = player_get_camera_facing_angle();
-    entity->flags |= ENTITY_FLAG_100000;
+    entity->flags |= ENTITY_FLAG_USED;
 
     if (data->item == ITEM_COIN) {
         make_item_entity(ITEM_COIN, entity->pos.x, entity->pos.y + 28.0, entity->pos.z,

@@ -5,8 +5,8 @@
 typedef s32 TlbEntry[0x1000 / 4];
 typedef TlbEntry TlbMappablePage[15];
 
-SHIFT_BSS EffectGraphics gEffectGraphicsData[15];
-SHIFT_BSS EffectInstance* gEffectInstances[96];
+BSS EffectGraphics gEffectGraphicsData[15];
+EffectInstance* gEffectInstances[96];
 
 extern TlbMappablePage D_80197000;
 extern Addr D_801A6000;
@@ -221,13 +221,12 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
     if (effectGraphics->instanceCounter == 0) {
         effectGraphics->update = effectBp->update;
         if (effectGraphics->update == NULL) {
-            effectGraphics->renderWorld = stub_effect_delegate;
+            effectGraphics->update = stub_effect_delegate;
         }
 
         effectGraphics->renderWorld = effectBp->renderWorld;
-        // @bug? null check for renderUI instead of renderWorld
-        if (effectGraphics->renderUI == NULL) {
-            effectGraphics->renderUI = stub_effect_delegate;
+        if (effectGraphics->renderWorld == NULL) {
+            effectGraphics->renderWorld = stub_effect_delegate;
         }
 
         effectGraphics->renderUI = effectBp->renderUI;
@@ -321,7 +320,7 @@ s32 load_effect(s32 effectIndex) {
 
     // Map space for the effect
     tlbMappablePages = &D_80197000;
-    osMapTLB(i, 0, effectEntry->dmaDest, (s32)((*tlbMappablePages)[i]) & 0xFFFFFF, -1, -1);
+    osMapTLB(i, OS_PM_4K, effectEntry->dmaDest, (s32)((*tlbMappablePages)[i]) & 0xFFFFFF, -1, -1);
 
     // Copy the effect into the newly mapped space
     dma_copy(effectEntry->dmaStart, effectEntry->dmaEnd, effectEntry->dmaDest);

@@ -2,15 +2,9 @@
 
 API_CALLABLE(N(UnkFloatFunc005)) {
     Bytecode* args = script->ptrReadPos;
-    #ifdef AVOID_UB
     f32 vt0 = 0.0f;
     f32 vt1 = 0.0f;
     f32 vt2 = 0.0f;
-    #else
-    f32 vt0;
-    f32 vt1;
-    f32 vt2;
-    #endif
     f32 vt3;
     f32 vt4;
     f32 vt5;

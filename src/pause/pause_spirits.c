@@ -99,7 +99,7 @@ Vec2i gPauseSpiritsCursorPositions[] = {
 };
 MenuWindowBP gPauseSpiritsWindowsBPs[] = {
     {
-        .windowID = WINDOW_ID_PAUSE_SPIRITS,
+        .windowID = WIN_PAUSE_SPIRITS,
         .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
@@ -107,13 +107,13 @@ MenuWindowBP gPauseSpiritsWindowsBPs[] = {
         .priority = WINDOW_PRIORITY_1,
         .fpDrawContents = &pause_spirits_draw_contents,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_MAIN,
+        .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_23 }
     },
     {
-        .windowID = WINDOW_ID_PAUSE_SPIRITS_TITLE,
+        .windowID = WIN_PAUSE_SPIRITS_TITLE,
         .unk_01 = 0,
         .pos = { .x = 86, .y = 124 },
         .width = 120,
@@ -121,7 +121,7 @@ MenuWindowBP gPauseSpiritsWindowsBPs[] = {
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &pause_spirits_draw_title,
         .tab = NULL,
-        .parentID = WINDOW_ID_PAUSE_SPIRITS,
+        .parentID = WIN_PAUSE_SPIRITS,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
         .style = { .customStyle = &gPauseWS_24 }
@@ -132,7 +132,7 @@ MenuPanel gPausePanelSpirits = {
     .col = 2,
     .row = 0,
     .selected = 0,
-    .page = 0,
+    .state = 0,
     .numCols = 5,
     .numRows = 2,
     .numPages = 0,
@@ -155,7 +155,6 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
     s32 x1, y1, x2, y2;
     f32 frameCounter;
     f32 scale;
-    PlayerData* playerData = get_player_data();
 
     gDPPipeSync(gMainGfxPos++);
     gSPViewport(gMainGfxPos++, &gPauseSpiritsViewport);
@@ -183,7 +182,7 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
         x = gPauseSpiritsPositions[index].x;
         y = gPauseSpiritsPositions[index].y;
 
-        if (playerData->maxStarPower < index + 1) {
+        if (gPlayerData.maxStarPower < index + 1) {
             color = 0;
             alpha = 128;
             offsetY = 0.0f;
@@ -240,16 +239,15 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
     draw_box(0, &gPauseWS_25, baseX + 7, baseY + 14, 0, 272, 126, opacity, darkening, 1.0f, 1.0f, 0, 0, 0, 0, 0, 0, width, height, 0);
 
     if (gPauseMenuCurrentTab == 5) {
-        pause_set_cursor_pos(WINDOW_ID_PAUSE_SPIRITS, baseX + gPauseSpiritsCursorPositions[menu->selected].x, baseY + gPauseSpiritsCursorPositions[menu->selected].y);
+        pause_set_cursor_pos(WIN_PAUSE_SPIRITS, baseX + gPauseSpiritsCursorPositions[menu->selected].x, baseY + gPauseSpiritsCursorPositions[menu->selected].y);
     }
 }
 
 void pause_spirits_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 msgID;
-    PlayerData* playerData = get_player_data();
 
     if (gPauseMenuCurrentTab == 5) {
-        if (playerData->maxStarPower > gPauseSpiritsIndexes[menu->selected]) {
+        if (gPlayerData.maxStarPower > gPauseSpiritsIndexes[menu->selected]) {
             msgID = gPauseSpiritsIndexes[menu->selected] + MSG_Menus_SpiritName_Eldstar;
         } else {
             msgID = pause_get_menu_msg(PAUSE_MSG_UNKNOWN_SPIRIT);
@@ -261,7 +259,6 @@ void pause_spirits_draw_title(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, 
 void pause_spirits_init(MenuPanel* panel) {
     s32 i;
 
-    get_player_data();
     gPauseSpiritsNumSpirits = 0;
 
     for (i = 0; i < ARRAY_COUNT(gPauseSpiritsIndexes); i++) {
@@ -372,7 +369,7 @@ void pause_spirits_handle_input(MenuPanel* panel) {
 
     gPauseCurrentDescIconScript = 0;
 
-    if (get_player_data()->maxStarPower <= gPauseSpiritsIndexes[panel->selected]) {
+    if (gPlayerData.maxStarPower <= gPauseSpiritsIndexes[panel->selected]) {
         gPauseCurrentDescMsg = pause_get_menu_msg(PAUSE_MSG_UNKNOWN_SPIRIT);
     } else {
         gPauseCurrentDescMsg = MSG_Menus_SpiritDesc_Eldstar + gPauseSpiritsIndexes[panel->selected];
@@ -380,15 +377,13 @@ void pause_spirits_handle_input(MenuPanel* panel) {
 }
 
 void pause_spirits_update(MenuPanel* panel) {
-    PlayerData* playerData = get_player_data();
     s32 i;
 
     for (i = 0; i < gPauseSpiritsNumSpirits; i++) {
-        if (i < playerData->maxStarPower && gPauseMenuCurrentTab == 5 && i == panel->selected) {
+        if (i < gPlayerData.maxStarPower && gPauseMenuCurrentTab == 5 && i == panel->selected) {
             spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][1], 1.0f);
         } else {
-            //TODO find better match
-            do { spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][0], 1.0f); } while (0);
+            spr_update_sprite(gPauseSpiritsSpriteIDs[i], gPauseSpiritsSpriteAnims[i][0], 1.0f);
         }
     }
 }

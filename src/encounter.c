@@ -8,73 +8,74 @@
 #include "sprite/npc/BattleMerlee.h"
 #include "sprite/player.h"
 #include "model.h"
+#include "dx/debug_menu.h"
 
-ApiStatus ShowMerleeCoinMessage(Evt* script, s32 isInitialCall);
-ApiStatus ShowMerleeRanOutMessage(Evt* script, s32 isInitialCall);
-ApiStatus FadeInMerlee(Evt* script, s32 isInitialCall);
-ApiStatus FadeOutMerlee(Evt* script, s32 isInitialCall);
-ApiStatus MerleeUpdateFX(Evt* script, s32 isInitialCall);
-ApiStatus MerleeStopFX(Evt* script, s32 isInitialCall);
-ApiStatus PlayMerleeGatherFX(Evt* script, s32 isInitialCall);
-ApiStatus PlayMerleeOrbFX(Evt* script, s32 isInitialCall);
+API_CALLABLE(ShowMerleeCoinMessage);
+API_CALLABLE(ShowMerleeRanOutMessage);
+API_CALLABLE(FadeInMerlee);
+API_CALLABLE(FadeOutMerlee);
+API_CALLABLE(MerleeUpdateFX);
+API_CALLABLE(MerleeStopFX);
+API_CALLABLE(PlayMerleeGatherFX);
+API_CALLABLE(PlayMerleeOrbFX);
 
 s32 D_80077C40 = 0;
 
 EvtScript EVS_MerleeDropCoins = {
-    EVT_WAIT(10)
-    EVT_CALL(FadeBackgroundDarken)
-    EVT_WAIT(10)
-    EVT_CALL(CreateNpc, NPC_BTL_MERLEE, ANIM_BattleMerlee_Gather)
-    EVT_CALL(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    EVT_CALL(SetNpcYaw, NPC_BTL_MERLEE, 0)
-    EVT_CALL(GetCamLookAtObjVector)
-    EVT_CALL(SetNpcPos, NPC_BTL_MERLEE, LVar0, LVar1, LVar2)
-    EVT_THREAD
-        EVT_CALL(MerleeUpdateFX)
-    EVT_END_THREAD
-    EVT_CALL(FadeInMerlee)
-    EVT_WAIT(30)
-    EVT_CALL(SetNpcAnimation, NPC_BTL_MERLEE, ANIM_BattleMerlee_Release)
-    EVT_CALL(MerleeStopFX)
-    EVT_CALL(FadeBackgroundLighten)
-    EVT_WAIT(20)
-    EVT_THREAD
-        EVT_CALL(FadeOutMerlee)
-        EVT_CALL(DeleteNpc, NPC_BTL_MERLEE)
-    EVT_END_THREAD
-    EVT_CALL(PlaySound, SOUND_MAGIC_DESCENDING)
-    EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
-    EVT_CALL(PlayMerleeGatherFX, LVar0, LVar1, LVar2)
-    EVT_CALL(PlayMerleeOrbFX, LVar0, LVar1, LVar2)
-    EVT_WAIT(15)
-    EVT_CALL(ShowMerleeCoinMessage)
-    EVT_WAIT(15)
-    EVT_CALL(HasMerleeCasts)
-    EVT_IF_EQ(LVar0, 1)
-        EVT_RETURN
-    EVT_END_IF
-    EVT_CALL(ShowMerleeRanOutMessage)
-    EVT_WAIT(15)
-    EVT_RETURN
-    EVT_END
+    Wait(10)
+    Call(FadeBackgroundDarken)
+    Wait(10)
+    Call(CreateNpc, NPC_BTL_MERLEE, ANIM_BattleMerlee_Gather)
+    Call(SetNpcFlagBits, NPC_BTL_MERLEE, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+    Call(SetNpcYaw, NPC_BTL_MERLEE, 0)
+    Call(GetCamLookAtObjVector)
+    Call(SetNpcPos, NPC_BTL_MERLEE, LVar0, LVar1, LVar2)
+    Thread
+        Call(MerleeUpdateFX)
+    EndThread
+    Call(FadeInMerlee)
+    Wait(30)
+    Call(SetNpcAnimation, NPC_BTL_MERLEE, ANIM_BattleMerlee_Release)
+    Call(MerleeStopFX)
+    Call(FadeBackgroundLighten)
+    Wait(20)
+    Thread
+        Call(FadeOutMerlee)
+        Call(DeleteNpc, NPC_BTL_MERLEE)
+    EndThread
+    Call(PlaySound, SOUND_MAGIC_DESCENDING)
+    Call(GetPlayerPos, LVar0, LVar1, LVar2)
+    Call(PlayMerleeGatherFX, LVar0, LVar1, LVar2)
+    Call(PlayMerleeOrbFX, LVar0, LVar1, LVar2)
+    Wait(15)
+    Call(ShowMerleeCoinMessage)
+    Wait(15)
+    Call(HasMerleeCasts)
+    IfEq(LVar0, 1)
+        Return
+    EndIf
+    Call(ShowMerleeRanOutMessage)
+    Wait(15)
+    Return
+    End
 };
 
 EvtScript EVS_NpcDefeat = {
-    EVT_CALL(GetBattleOutcome, LVar0)
-    EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(OUTCOME_PLAYER_WON)
-            EVT_CALL(OnDefeatEnemy)
-        EVT_CASE_EQ(OUTCOME_PLAYER_LOST)
-        EVT_CASE_EQ(OUTCOME_PLAYER_FLED)
-    EVT_END_SWITCH
-    EVT_RETURN
-    EVT_END
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(OnDefeatEnemy)
+        CaseEq(OUTCOME_PLAYER_LOST)
+        CaseEq(OUTCOME_PLAYER_FLED)
+    EndSwitch
+    Return
+    End
 };
 
 EvtScript EVS_FleeBattleDrops = {
-    EVT_CALL(OnFleeBattleDrops)
-    EVT_RETURN
-    EVT_END
+    Call(OnFleeBattleDrops)
+    Return
+    End
 };
 
 EnemyDrops DefaultEnemyDrops = {
@@ -84,7 +85,7 @@ EnemyDrops DefaultEnemyDrops = {
         {
             .item = ITEM_MUSHROOM,
             .weight = 50,
-            .unk_04 = -1,
+            .flagIdx = -1,
         },
     },
     .heartDrops = {
@@ -126,63 +127,64 @@ EnemyDrops DefaultEnemyDrops = {
 };
 
 EvtScript EnemyNpcHit = {
-    EVT_CALL(GetOwnerEncounterTrigger, LVar0)
-    EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(ENCOUNTER_TRIGGER_NONE)
-        EVT_CASE_OR_EQ(ENCOUNTER_TRIGGER_JUMP)
-        EVT_CASE_OR_EQ(ENCOUNTER_TRIGGER_HAMMER)
-        EVT_CASE_OR_EQ(ENCOUNTER_TRIGGER_PARTNER)
-            EVT_CALL(GetSelfAnimationFromTable, ENEMY_ANIM_INDEX_HIT, LVar0)
-            EVT_EXEC_WAIT(EVS_NpcHitRecoil)
-        EVT_CASE_EQ(ENCOUNTER_TRIGGER_SPIN)
-            EVT_THREAD
-                EVT_CALL(func_800458CC, LVar0)
-                EVT_IF_EQ(LVar0, 0)
-                    EVT_SET(LVarA, 0)
-                    EVT_LOOP(30)
-                        EVT_ADD(LVarA, 40)
-                        EVT_CALL(SetNpcRotation, NPC_SELF, 0, LVarA, 0)
-                        EVT_WAIT(1)
-                    EVT_END_LOOP
-                EVT_END_IF
-            EVT_END_THREAD
-        EVT_END_CASE_GROUP
-    EVT_END_SWITCH
-    EVT_RETURN
-    EVT_END
+    Call(GetOwnerEncounterTrigger, LVar0)
+    Switch(LVar0)
+        CaseEq(ENCOUNTER_TRIGGER_NONE)
+        CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
+        CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
+        CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
+            Call(GetSelfAnimationFromTable, ENEMY_ANIM_INDEX_HIT, LVar0)
+            ExecWait(EVS_NpcHitRecoil)
+        CaseEq(ENCOUNTER_TRIGGER_SPIN)
+            Thread
+                Call(func_800458CC, LVar0)
+                IfEq(LVar0, 0)
+                    Set(LVarA, 0)
+                    Loop(30)
+                        Add(LVarA, 40)
+                        Call(SetNpcRotation, NPC_SELF, 0, LVarA, 0)
+                        Wait(1)
+                    EndLoop
+                EndIf
+            EndThread
+        EndCaseGroup
+    EndSwitch
+    Return
+    End
 };
 
 EvtScript EnemyNpcDefeat = {
-    EVT_CALL(SetNpcRotation, NPC_SELF, 0, 0, 0)
-    EVT_CALL(GetBattleOutcome, LVar0)
-    EVT_SWITCH(LVar0)
-        EVT_CASE_EQ(OUTCOME_PLAYER_WON)
-            EVT_CALL(DoNpcDefeat)
-        EVT_CASE_EQ(OUTCOME_PLAYER_FLED)
-            EVT_CALL(OnPlayerFled, 0)
-        EVT_CASE_EQ(OUTCOME_ENEMY_FLED)
-            EVT_CALL(SetEnemyFlagBits, -1, ENEMY_FLAG_FLED, 1)
-            EVT_CALL(RemoveNpc, NPC_SELF)
-    EVT_END_SWITCH
-    EVT_RETURN
-    EVT_END
+    Call(SetNpcRotation, NPC_SELF, 0, 0, 0)
+    Call(GetBattleOutcome, LVar0)
+    Switch(LVar0)
+        CaseEq(OUTCOME_PLAYER_WON)
+            Call(DoNpcDefeat)
+        CaseEq(OUTCOME_PLAYER_FLED)
+            Call(OnPlayerFled, 0)
+        CaseEq(OUTCOME_ENEMY_FLED)
+            Call(SetEnemyFlagBits, -1, ENEMY_FLAG_FLED, 1)
+            Call(RemoveNpc, NPC_SELF)
+    EndSwitch
+    Return
+    End
 };
 
-SHIFT_BSS s32 gEncounterState;
-SHIFT_BSS s32 gEncounterSubState;
-SHIFT_BSS EncounterStatus gCurrentEncounter;
-SHIFT_BSS s8 D_8009A63C;
-SHIFT_BSS s8 HasPreBattleSongPushed;
-SHIFT_BSS s16 gFirstStrikeMessagePos;
-SHIFT_BSS s8 D_8009A670;
-SHIFT_BSS s32 D_8009A678;
-SHIFT_BSS s32 D_800A0BA0;
-SHIFT_BSS f32 D_800A0BA4;
-SHIFT_BSS Evt* D_800A0BB0;
-SHIFT_BSS s32 D_800A0BB4;
-SHIFT_BSS s16 D_800A0BB8;
-SHIFT_BSS EffectInstance* WorldMerleeOrbEffect;
-SHIFT_BSS EffectInstance* WorldMerleeWaveEffect;
+s32 gEncounterState;
+s32 gEncounterSubState;
+EncounterStatus gCurrentEncounter;
+s8 D_8009A63C;
+s8 HasPreBattleSongPushed;
+s16 gFirstStrikeMessagePos;
+s8 D_8009A670;
+s32 D_8009A678;
+
+BSS s32 D_800A0BA0;
+BSS f32 D_800A0BA4;
+BSS EffectInstance* WorldMerleeOrbEffect;
+BSS EffectInstance* WorldMerleeWaveEffect;
+BSS Evt* D_800A0BB0;
+BSS s32 D_800A0BB4;
+BSS s16 D_800A0BB8;
 
 void set_battle_formation(Battle*);
 void setup_status_bar_for_world(void);
@@ -216,7 +218,7 @@ void set_defeated(s32 mapID, s32 encounterID) {
     currentEncounter->defeatFlags[mapID][encounterIdx] |= (1 << encounterShift);*/
 }
 
-ApiStatus ShowMerleeCoinMessage(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ShowMerleeCoinMessage) {
     if (isInitialCall) {
         show_merlee_message(0, 60);
     }
@@ -228,7 +230,7 @@ ApiStatus ShowMerleeCoinMessage(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus ShowMerleeRanOutMessage(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ShowMerleeRanOutMessage) {
     if (isInitialCall) {
         show_merlee_message(1, 60);
     }
@@ -240,7 +242,7 @@ ApiStatus ShowMerleeRanOutMessage(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus FadeBackgroundDarken(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FadeBackgroundDarken) {
     if (isInitialCall) {
         mdl_set_all_tint_type(ENV_TINT_SHROUD);
         *gBackgroundTintModePtr = ENV_TINT_SHROUD;
@@ -258,7 +260,7 @@ ApiStatus FadeBackgroundDarken(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus FadeBackgroundLighten(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FadeBackgroundLighten) {
     if (isInitialCall) {
         script->functionTemp[0] = 25;
     }
@@ -274,7 +276,7 @@ ApiStatus FadeBackgroundLighten(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus FadeInMerlee(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FadeInMerlee) {
     Npc* npc = get_npc_unsafe(NPC_BTL_MERLEE);
 
     if (isInitialCall) {
@@ -292,7 +294,7 @@ ApiStatus FadeInMerlee(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus FadeOutMerlee(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FadeOutMerlee) {
     Npc* npc = get_npc_unsafe(NPC_BTL_MERLEE);
 
     npc->alpha -= 17;
@@ -305,7 +307,7 @@ ApiStatus FadeOutMerlee(Evt* script, s32 isInitialCall) {
 }
 
 // same as BattleMerleeUpdateFX aside from syms
-ApiStatus MerleeUpdateFX(Evt* script, s32 isInitialCall) {
+API_CALLABLE(MerleeUpdateFX) {
     Npc* merlee = get_npc_unsafe(NPC_BTL_MERLEE);
     EnergyOrbWaveFXData* effectData;
 
@@ -362,12 +364,12 @@ ApiStatus MerleeUpdateFX(Evt* script, s32 isInitialCall) {
     return ApiStatus_BLOCK;
 }
 
-ApiStatus MerleeStopFX(Evt* script, s32 isInitialCall) {
+API_CALLABLE(MerleeStopFX) {
     D_800A0BB8 = 1;
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetCamLookAtObjVector(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetCamLookAtObjVector) {
     script->varTable[0] = gCameras[gCurrentCameraID].lookAt_obj.x;
     script->varTable[1] = gCameras[gCurrentCameraID].lookAt_obj.y;
     script->varTable[2] = gCameras[gCurrentCameraID].lookAt_obj.z;
@@ -375,7 +377,7 @@ ApiStatus GetCamLookAtObjVector(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus HasMerleeCasts(Evt* script, s32 isInitialCall) {
+API_CALLABLE(HasMerleeCasts) {
     script->varTable[0] = FALSE;
     if (gPlayerData.merleeCastsLeft > 0) {
         script->varTable[0] = TRUE;
@@ -384,7 +386,7 @@ ApiStatus HasMerleeCasts(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus PlayMerleeGatherFX(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayMerleeGatherFX) {
     Bytecode* args = script->ptrReadPos;
     s32 var0 = evt_get_variable(script, *args++);
     s32 var1 = evt_get_variable(script, *args++);
@@ -394,7 +396,7 @@ ApiStatus PlayMerleeGatherFX(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus PlayMerleeOrbFX(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayMerleeOrbFX) {
     Bytecode* args = script->ptrReadPos;
     s32 var0 = evt_get_variable(script, *args++);
     s32 var1 = evt_get_variable(script, *args++);
@@ -404,7 +406,7 @@ ApiStatus PlayMerleeOrbFX(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus OnDefeatEnemy(Evt* script, s32 isInitialCall) {
+API_CALLABLE(OnDefeatEnemy) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 temp1;
@@ -442,7 +444,7 @@ ApiStatus OnDefeatEnemy(Evt* script, s32 isInitialCall) {
     return ApiStatus_BLOCK;
 }
 
-ApiStatus OnFleeBattleDrops(Evt* script, s32 isInitialCall) {
+API_CALLABLE(OnFleeBattleDrops) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
@@ -504,16 +506,14 @@ void update_encounters_neutral(void) {
     f32 dx, dz;
     f32 angle1, angle2;
 
-    do {
-        if (currentEncounter->hitType == ENCOUNTER_TRIGGER_CONVERSATION) {
-            goto START_BATTLE;
-        }
-    } while (0);
+    if (currentEncounter->hitType == ENCOUNTER_TRIGGER_CONVERSATION) {
+        goto START_BATTLE;
+    }
 
     currentEncounter->songID = -1;
     currentEncounter->unk_18 = -1;
     currentEncounter->hitType = 0;
-    currentEncounter->allowFleeing = FALSE;
+    currentEncounter->forbidFleeing = FALSE;
     currentEncounter->dropWhackaBump = FALSE;
     currentEncounter->flags &= ~ENCOUNTER_STATUS_FLAG_1;
     currentEncounter->flags &= ~ENCOUNTER_STATUS_FLAG_2;
@@ -666,16 +666,15 @@ void update_encounters_neutral(void) {
             ) {
                 continue;
             }
-            do {
-                if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && partner_test_enemy_collision(npc)) {
-                    currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
-                    enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
-                    currentEncounter->curEncounter = encounter;
-                    currentEncounter->curEnemy = enemy;
-                    currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
-                    goto START_BATTLE;
-                }
-            } while (0);
+
+            if (!(enemy->flags & ENEMY_FLAG_IGNORE_PARTNER) && partner_test_enemy_collision(npc)) {
+                currentEncounter->hitType = ENCOUNTER_TRIGGER_PARTNER;
+                enemy->encountered = ENCOUNTER_TRIGGER_PARTNER;
+                currentEncounter->curEncounter = encounter;
+                currentEncounter->curEnemy = enemy;
+                currentEncounter->firstStrikeType = FIRST_STRIKE_PLAYER;
+                goto START_BATTLE;
+            }
 
             npcX = npc->pos.x;
             npcY = npc->pos.y;
@@ -1455,8 +1454,16 @@ void update_encounters_pre_battle(void) {
 
 void draw_encounters_pre_battle(void) {
     EncounterStatus* encounter = &gCurrentEncounter;
-    Npc* npc = get_npc_unsafe(encounter->curEnemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
+
+#if DX_DEBUG_MENU
+    Npc* npc = NULL;
+    if (encounter->curEnemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
+        npc = get_npc_unsafe(encounter->curEnemy->npcID);
+    }
+#else
+    Npc* npc = get_npc_unsafe(encounter->curEnemy->npcID);
+#endif
 
     if (encounter->unk_94 != 0) {
         f32 playerX, playerY, playerZ;
@@ -1479,9 +1486,21 @@ void draw_encounters_pre_battle(void) {
             playerY = playerStatus->pos.y;
             playerZ = playerStatus->pos.z;
 
+        #if DX_DEBUG_MENU
+        if (npc != NULL) {
             otherX = npc->pos.x;
             otherY = npc->pos.y;
             otherZ = npc->pos.z;
+        } else {
+            otherX = playerX;
+            otherY = playerY;
+            otherZ = playerZ;
+        }
+        #else
+            otherX = npc->pos.x;
+            otherY = npc->pos.y;
+            otherZ = npc->pos.z;
+        #endif
             if (otherY < -990.0f) {
                 otherX = playerX;
                 otherY = playerY;
@@ -1536,15 +1555,15 @@ void show_first_strike_message(void) {
     switch (currentEncounter->firstStrikeType) {
         case FIRST_STRIKE_PLAYER:
             switch (currentEncounter->hitType) {
-                case 2:
-                case 4:
+                case ENCOUNTER_TRIGGER_JUMP:
+                case ENCOUNTER_TRIGGER_HAMMER:
                     width = get_msg_width(MSG_Menus_PlayerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
                     draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
                              SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
                     draw_msg(MSG_Menus_PlayerFirstStrike, posX + 11, 75, 0xFF, MSG_PAL_STANDARD, 0);
                     break;
-                case 6:
+                case ENCOUNTER_TRIGGER_PARTNER:
                     width = get_msg_width(MSG_Menus_PartnerFirstStrike, 0) + 24;
                     posX = (xOffset + screenWidthHalf) - (width / 2);
                     draw_box(0, WINDOW_STYLE_20, posX, 69, 0, width, 28, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,

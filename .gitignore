@@ -9,7 +9,6 @@ venv/
 .DS_Store
 ctx.c
 expected/
-.vscode/launch.json
 .vscode/*.log
 /tools/star-rod
 /tools/to_rename.txt
@@ -52,24 +51,9 @@ build/
 *.sbn
 
 # Star Rod
-/sprite/SpriteTable.xml
-/mod.cfg
-/tools/star-rod
-/editor
-/logs
-/out
-dump
+.starrod
+/ver/us/dump
 *.backup
-crash.xml
-/audio/*
-/sprite/*
-/battle/*
-/globals/*
-/map/*
-/world/*
-/image/*
-/strings/*
-/res/*
+*.crash
 
-/tools/Yay0compress
 /tools/n64crc

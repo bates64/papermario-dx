@@ -1,24 +1,23 @@
 #include "common.h"
+#include "inventory.h"
 #include "pause/pause_common.h"
 #include "hud_element.h"
 #include "world/partners.h"
 
-extern PopupMenu D_802DB830;
+extern PopupMenu gItemChoicePopupMenu;
 
-ApiStatus ShowKeyChoicePopup(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ShowKeyChoicePopup) {
     PlayerData* playerData = &gPlayerData;
-    PopupMenu* menu = &D_802DB830;
+    PopupMenu* menu = &gItemChoicePopupMenu;
     Trigger* trigger = script->owner2.trigger;
     s32 numEntries;
-    s32 t; // TODO required in both places to match
     s32 i;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
     }
 
-    t = script->functionTemp[0];
-    switch (t) {
+    switch (script->functionTemp[0]) {
         case 0:
             disable_player_input();
             disable_player_static_collisions();
@@ -82,34 +81,30 @@ ApiStatus ShowKeyChoicePopup(Evt* script, s32 isInitialCall) {
 
                 if (script->functionTemp[2] == 0xFF) {
                     script->varTable[0] = -1;
-                    return ApiStatus_DONE1;
                 } else {
-                    t = menu->userIndex[script->functionTemp[2] - 1];
-
-                    script->varTable[1] = t;
-                    script->varTable[0] = playerData->keyItems[t];
-                    return ApiStatus_DONE1;
+                    s32 invIndex = menu->userIndex[script->functionTemp[2] - 1];
+                    script->varTable[1] = invIndex;
+                    script->varTable[0] = playerData->keyItems[invIndex];
                 }
+                return ApiStatus_DONE1;
             }
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-ApiStatus ShowConsumableChoicePopup(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ShowConsumableChoicePopup) {
     PlayerData* playerData = &gPlayerData;
-    PopupMenu* menu = &D_802DB830;
+    PopupMenu* menu = &gItemChoicePopupMenu;
     Trigger* trigger = script->owner2.trigger;
     s32 numEntries;
-    s32 t; // TODO required in both places to match
     s32 i;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
     }
 
-    t = script->functionTemp[0];
-    switch (t) {
+    switch (script->functionTemp[0]) {
         case 0:
             disable_player_input();
             disable_player_static_collisions();
@@ -173,64 +168,36 @@ ApiStatus ShowConsumableChoicePopup(Evt* script, s32 isInitialCall) {
 
                 if (script->functionTemp[2] == 0xFF) {
                     script->varTable[0] = -1;
-                    return ApiStatus_DONE1;
                 } else {
-                    t = menu->userIndex[script->functionTemp[2] - 1];
-
-                    script->varTable[1] = t;
-                    script->varTable[0] = playerData->invItems[t];
-                    return ApiStatus_DONE1;
+                    s32 invIdx = menu->userIndex[script->functionTemp[2] - 1];
+                    script->varTable[1] = invIdx;
+                    script->varTable[0] = playerData->invItems[invIdx];
                 }
+                return ApiStatus_DONE1;
             }
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-ApiStatus RemoveKeyItemAt(Evt* script, s32 isInitialCall) {
+API_CALLABLE(RemoveItemAt) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* ptrKeyItems = gPlayerData.keyItems;
 
-    ptrKeyItems[index] = ITEM_NONE;
+    gPlayerData.invItems[index] = ITEM_NONE;
+    sort_consumables();
     return ApiStatus_DONE2;
 }
 
-ApiStatus RemoveItemAt(Evt* script, s32 isInitialCall) {
+API_CALLABLE(RemoveKeyItemAt) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
-    s16* ptrInvItems = gPlayerData.invItems;
 
-    ptrInvItems[index] = ITEM_NONE;
-    sort_items();
+    gPlayerData.keyItems[index] = ITEM_NONE;
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddKeyItem(Evt* script, s32 isInitialCall) {
-    Bytecode* args = script->ptrReadPos;
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 itemID = evt_get_variable(script, value);
-    s32 i;
-
-    if (itemID == ITEM_KOOPA_FORTRESS_KEY) {
-        playerData->fortressKeyCount++;
-        return ApiStatus_DONE2;
-    }
-
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == ITEM_NONE) {
-            break;
-        }
-    }
-
-    if (i < ARRAY_COUNT(playerData->keyItems)) {
-        playerData->keyItems[i] = itemID;
-    }
-    return ApiStatus_DONE2;
-}
-
-ApiStatus CloseChoicePopup(Evt* script, s32 isInitialCall) {
+API_CALLABLE(CloseChoicePopup) {
     enable_player_input();
     enable_player_static_collisions();
     partner_enable_input();
@@ -238,127 +205,62 @@ ApiStatus CloseChoicePopup(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus HasKeyItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AddItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
+    Bytecode outVar = *args++;
 
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == itemID) {
-            break;
-        }
-    }
-    evt_set_variable(script, value, i < ARRAY_COUNT(playerData->keyItems));
+    s32 addedIdx = add_item(itemID);
+
+    evt_set_variable(script, outVar, addedIdx);
     return ApiStatus_DONE2;
 }
 
-ApiStatus FindKeyItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(RemoveItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
+    Bytecode outVar = *args++;
 
-    for (i = 0; i < ARRAY_COUNT(playerData->keyItems); i++) {
-        if (playerData->keyItems[i] == itemID) {
-            break;
-        }
-    }
+    s32 removedIdx = remove_item(itemID);
 
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->keyItems)) {
-        itemIndex = i;
-    }
-
-    evt_set_variable(script, value, itemIndex);
+    evt_set_variable(script, outVar, removedIdx);
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FindItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    Bytecode outItemIdx = *args++;
+    Bytecode outVar = *args++;
 
-    evt_set_variable(script, outItemIdx, add_item(itemID));
+    s32 foundIdx = find_item(itemID);
+
+    evt_set_variable(script, outVar, foundIdx);
     return ApiStatus_DONE2;
 }
 
-ApiStatus ClearVariable(Evt* script, s32 isInitialCall) {
-    evt_set_variable(script, *script->ptrReadPos, 0);
-    return ApiStatus_DONE2;
-}
-
-ApiStatus FindItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(CountItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
+    Bytecode outVar = *args++;
 
-    for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        if (playerData->invItems[i] == itemID) {
-            break;
-        }
-    }
+    b32 count = count_item(itemID);
 
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->invItems)) {
-        itemIndex = i;
-    }
-
-    evt_set_variable(script, value, itemIndex);
+    evt_set_variable(script, outVar, count);
     return ApiStatus_DONE2;
 }
 
-ApiStatus RemoveItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(HasItem) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
-    s32 value = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 i;
-    s32 itemIndex;
+    Bytecode outVar = *args++;
 
-    for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        if (playerData->invItems[i] == itemID) {
-            break;
-        }
-    }
+    b32 hasItem = has_item(itemID);
 
-    itemIndex = -1;
-    if (i != ARRAY_COUNT(playerData->invItems)) {
-        itemIndex = i;
-    }
-
-    if (itemIndex >= 0) {
-        // This is `playerData->invItems[i]`, but we have to do weird
-        // pointer math to get the output asm to exactly match :/
-        *(playerData->invItems + i) = ITEM_NONE;
-    }
-    sort_items();
-
-    evt_set_variable(script, value, itemIndex);
+    evt_set_variable(script, outVar, hasItem);
     return ApiStatus_DONE2;
 }
 
-ApiStatus CountFortessKeys(Evt* script, s32 isInitialCall) {
-    s32 outVar = *script->ptrReadPos;
-
-    evt_set_variable(script, outVar, get_fortress_key_count());
-    return ApiStatus_DONE2;
-}
-
-ApiStatus RemoveFortressKeys(Evt* script, s32 isInitialCall) {
-    s32 num = evt_get_variable(script, *script->ptrReadPos);
-
-    subtract_fortress_keys(num);
-    return ApiStatus_DONE2;
-}
-
-ApiStatus MakeItemEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(MakeItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
     s32 x = evt_get_variable(script, *args++);
@@ -371,7 +273,7 @@ ApiStatus MakeItemEntity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DropItemEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DropItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
     s32 x = evt_get_variable(script, *args++);
@@ -384,7 +286,7 @@ ApiStatus DropItemEntity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DropResizableItemEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DropResizableItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
     s32 x = evt_get_variable(script, *args++);
@@ -398,7 +300,7 @@ ApiStatus DropResizableItemEntity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus RemoveItemEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(RemoveItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIndex = evt_get_variable(script, *args++);
 
@@ -406,36 +308,7 @@ ApiStatus RemoveItemEntity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddBadge(Evt* script, s32 isInitialCall) {
-    Bytecode* args = script->ptrReadPos;
-    s32 badgeID = evt_get_variable(script, *args++);
-    Bytecode outBadgeIdx = *args++;
-
-    evt_set_variable(script, outBadgeIdx, add_badge(badgeID));
-    return ApiStatus_DONE2;
-}
-
-ApiStatus RemoveBadge(Evt* script, s32 isInitialCall) {
-    Bytecode* args = script->ptrReadPos;
-    PlayerData* playerData = &gPlayerData;
-    s32 badge = evt_get_variable(script, *args++);
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
-        if (playerData->badges[i] == badge) {
-            playerData->badges[i] = ITEM_NONE;
-        }
-    }
-
-    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        if (playerData->equippedBadges[i] == badge) {
-            playerData->equippedBadges[i] = ITEM_NONE;
-        }
-    }
-    return ApiStatus_DONE2;
-}
-
-ApiStatus SetItemPos(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetItemPos) {
     Bytecode* args = script->ptrReadPos;
     ItemEntity* ptrItemEntity;
     s32 itemEntityIndex;
@@ -453,14 +326,14 @@ ApiStatus SetItemPos(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetItemFlags(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetItemFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIndex = evt_get_variable(script, *args++);
     s32 flagBits = *args++;
-    s32 var2 = evt_get_variable(script, *args++);
+    s32 mode = evt_get_variable(script, *args++);
     ItemEntity* itemEntity = get_item_entity(itemEntityIndex);
 
-    if (var2 != 0) {
+    if (mode != 0) {
         itemEntity->flags |= flagBits;
     } else {
         itemEntity->flags &= ~flagBits;
@@ -468,7 +341,7 @@ ApiStatus SetItemFlags(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetItemAlpha(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetItemAlpha) {
     Bytecode* args = script->ptrReadPos;
     s32 itemEntityIndex = evt_get_variable(script, *args++);
     s32 alpha = evt_get_variable(script, *args++);
@@ -478,22 +351,22 @@ ApiStatus SetItemAlpha(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddCoin(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AddCoin) {
     script->varTable[0] = add_coins(evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddStarPoints(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AddStarPoints) {
     script->varTable[0] = add_star_points(evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 
-ApiStatus AddStarPieces(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AddStarPieces) {
     script->varTable[0] = add_star_pieces(evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetItemPower(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetItemPower) {
     Bytecode* args = script->ptrReadPos;
     s32 itemIdx = evt_get_variable(script, *args++);
     Bytecode out1 = *args++;
@@ -504,27 +377,24 @@ ApiStatus GetItemPower(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus ShowGotItem(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ShowGotItem) {
     Bytecode* args = script->ptrReadPos;
-    s32 itemID, category, pickupMsgFlags;
+    s32 itemID, unkCond, pickupMsgFlags;
 
     if (isInitialCall) {
-        script->functionTemp[0] = 0;
+        script->functionTemp[0] = FALSE;
     }
 
-    switch (script->functionTemp[0]) {
-        case 0:
-            itemID = evt_get_variable(script, *args++);
-            category = evt_get_variable(script, *args++);
-            pickupMsgFlags = *args++;
-            script->functionTemp[1] = make_item_entity_at_player(itemID, category, pickupMsgFlags);
-            script->functionTemp[0] = 1;
-            break;
-        case 1:
-            if (get_item_entity(script->functionTemp[1]) == NULL) {
-                return ApiStatus_DONE2;
-            }
-            break;
+    if (script->functionTemp[0]) {
+        if (get_item_entity(script->functionTemp[1]) == NULL) {
+            return ApiStatus_DONE2;
+         }
+    } else {
+        itemID = evt_get_variable(script, *args++);
+        unkCond = evt_get_variable(script, *args++);
+        pickupMsgFlags = *args++;
+        script->functionTemp[1] = make_item_entity_at_player(itemID, unkCond, pickupMsgFlags);
+        script->functionTemp[0] = TRUE;
     }
     return ApiStatus_BLOCK;
 }

@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "gdb",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/ver/us/build/papermario.elf",
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb-multiarch",
+            "miDebuggerServerAddress": "[::1]:9123",
+            "miDebuggerArgs": "-readnow",
+            "targetArchitecture": "mips",
+        },
+    ],
+}

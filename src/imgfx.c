@@ -3,6 +3,11 @@
 #include "sprite.h"
 #include "imgfx.h"
 
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr imgfx_data_ROM_START;
+#endif
+
 typedef union ImgFXIntVars {
     s32 raw[2][4];
     struct {
@@ -108,16 +113,12 @@ typedef ImgFXState ImgFXInstanceList[MAX_IMGFX_INSTANCES];
 
 extern HeapNode heap_spriteHead;
 
-SHIFT_BSS ImgFXWorkingTexture ImgFXCurrentTexture;
-SHIFT_BSS Vtx* ImgFXVtxBuffers[2];
-SHIFT_BSS Vtx* imgfx_vtxBuf;
-SHIFT_BSS ImgFXInstanceList* ImgFXInstances;
-SHIFT_BSS s8 D_80156958[2];
-SHIFT_BSS s32 D_80156960[2];
-SHIFT_BSS s32 D_80156968[2];
-SHIFT_BSS s8 D_80156970;
-SHIFT_BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
-SHIFT_BSS ImgFXCacheEntry ImgFXDataCache[8];
+BSS ImgFXWorkingTexture ImgFXCurrentTexture;
+BSS Vtx* ImgFXVtxBuffers[2];
+BSS Vtx* imgfx_vtxBuf;
+BSS ImgFXInstanceList* ImgFXInstances;
+BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
+BSS ImgFXCacheEntry ImgFXDataCache[8];
 
 // Data
 ImgFXWorkingTexture* ImgFXCurrentTexturePtr = &ImgFXCurrentTexture;
@@ -251,13 +252,6 @@ void imgfx_init(void) {
     for (i = 0; i < ARRAY_COUNT(*ImgFXInstances); i++) {
         imgfx_init_instance(&(*ImgFXInstances)[i]);
         imgfx_clear_instance_data(&(*ImgFXInstances)[i]);
-    }
-
-    for (i = 0; i < ARRAY_COUNT(D_80156958); i++) {
-        D_80156958[i] = -1;
-        D_80156960[i] = 0;
-        D_80156968[i] = 0;
-        D_80156970 = 0;
     }
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {
@@ -1477,7 +1471,7 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
         s32 alpha2;
 
         if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
-            if ((gSpriteShadingProfile->flags & 1)
+            if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
                 && (state->arrayIdx != 0)
                 && (state->flags & someFlags)
                 && (   state->renderType == IMGFX_RENDER_DEFAULT
@@ -1513,7 +1507,10 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                         break;
                 }
 
-                if ((gSpriteShadingProfile->flags & 2) && ((*ImgFXInstances)[0].arrayIdx != 0) && (state->flags & someFlags)) {
+                if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
+                    && ((*ImgFXInstances)[0].arrayIdx != 0)
+                    && (state->flags & someFlags)
+                ) {
                     cam = &gCameras[gCurrentCamID];
 
                     if (gGameStatusPtr->isBattle == 2) {
@@ -1548,7 +1545,10 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                     G_TX_NOLOD, G_TX_NOLOD, // shift,
                     0x100, 0x100); // scroll
 
-                if ((gSpriteShadingProfile->flags & 2) && state->arrayIdx != 0 && (state->flags & someFlags)) {
+                if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
+                    && state->arrayIdx != 0
+                    && (state->flags & someFlags)
+                ) {
                     alpha2 = 255;
                     cam = &gCameras[gCurrentCamID];
 
@@ -1602,7 +1602,10 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
             }
         }
 
-        if ((gSpriteShadingProfile->flags & 2) && (*ImgFXInstances)[0].arrayIdx != 0 && (state->flags & someFlags)) {
+        if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
+            && (*ImgFXInstances)[0].arrayIdx != 0
+            && (state->flags & someFlags)
+        ) {
             cam = &gCameras[gCurrentCamID];
             if (gGameStatusPtr->isBattle == 2) {
                 gSPViewport(gMainGfxPos++, &D_8014EE40);
@@ -1641,12 +1644,13 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
             s32 llIdx = firstVtxIdx + (i + 1) * (state->subdivX + 1) + j;
             s32 lrIdx = firstVtxIdx + (i + 1) * (state->subdivX + 1) + j + 1;
             if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
-                if ((gSpriteShadingProfile->flags & 1) &&
-                    (*ImgFXInstances)[0].arrayIdx != 0 &&
-                    (state->flags & (IMGFX_FLAG_100000 | IMGFX_FLAG_80000)) &&
-                    (state->renderType == IMGFX_RENDER_DEFAULT
-                    || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
-                    || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA)) {
+                if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
+                    && (*ImgFXInstances)[0].arrayIdx != 0
+                    && (state->flags & (IMGFX_FLAG_100000 | IMGFX_FLAG_80000))
+                    && (state->renderType == IMGFX_RENDER_DEFAULT
+                        || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
+                        || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA)
+                ) {
                     s32 alpha = 255;
                     gDPScrollMultiTile2_4b(gMainGfxPos++,
                         ImgFXCurrentTexturePtr->tex.raster, G_IM_FMT_CI,
@@ -1710,7 +1714,7 @@ void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
     if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
         gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, ImgFXCurrentTexturePtr->tex.palette);
-        if ((gSpriteShadingProfile->flags & 1)
+        if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
             && (state->flags & (IMGFX_FLAG_100000 | IMGFX_FLAG_80000))
             && (state->renderType == IMGFX_RENDER_DEFAULT
                 || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
@@ -1857,15 +1861,15 @@ void imgfx_mesh_make_wavy(ImgFXState* state) {
         //TODO find better match
         v1 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
         vx = v1->v.ob[0];
-        v1->v.ob[0] = (vx + (sin_rad(angle1) * state->ints.wavy.mag.x)); // @bug? should be sin_deg?
+        v1->v.ob[0] = (vx + (sin_deg(angle1) * state->ints.wavy.mag.x));
 
         v2 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
         vy = v2->v.ob[1];
-        v2->v.ob[1] = (vy + (sin_rad(angle2) * state->ints.wavy.mag.y));
+        v2->v.ob[1] = (vy + (sin_deg(angle2) * state->ints.wavy.mag.y));
 
         v3 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
         vz = v3->v.ob[2];
-        v3->v.ob[2] = (vz + (sin_rad(angle3) * state->ints.wavy.mag.z));
+        v3->v.ob[2] = (vz + (sin_deg(angle3) * state->ints.wavy.mag.z));
 
         angleInc++;
         if (i % (state->subdivX + 1) == 0) {

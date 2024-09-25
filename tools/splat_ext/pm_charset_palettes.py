@@ -1,37 +1,30 @@
-from splat.segtypes.n64.segment import N64Segment
-from splat.segtypes.n64.palette import iter_in_groups
-from splat.util.color import unpack_color
+from splat.segtypes.segment import Segment
+from splat.segtypes.n64.palette import N64SegPalette
 from splat.util import options
 import png  # type: ignore
 
 
-def parse_palette(data):
-    palette = []
-
-    for a, b in iter_in_groups(data, 2):
-        palette.append(unpack_color([a, b]))
-
-    return palette
-
-
-class N64SegPm_charset_palettes(N64Segment):
+class N64SegPm_charset_palettes(Segment):
     require_unique_name = False
 
     def scan(self, rom_bytes):
         data = rom_bytes[self.rom_start : self.rom_end]
 
-        # pm_charset sibling
-        self.sibling = next(
-            filter(
-                lambda s: s.type == "pm_charset" and s.name == self.name,
-                self.parent.subsegments,
-            )
-        )
+        # pm_charset siblings
+        self.siblings = []
+        for s in self.parent.subsegments:
+            if s.type == "pm_charset":
+                if len(s.yaml) > 6:
+                    charset_pal = s.yaml[6]
+                else:
+                    charset_pal = s.name
+                if self.name == charset_pal:
+                    self.siblings.append(s)
 
         self.palettes = []
 
         for i in range(0, self.size, 0x10):
-            palette = parse_palette(data[i : i + 0x10])
+            palette = N64SegPalette.parse_palette_bytes(data[i : i + 0x10])
             self.palettes.append(palette)
 
     def split(self, rom_bytes):
@@ -39,9 +32,9 @@ class N64SegPm_charset_palettes(N64Segment):
         fs_dir.mkdir(parents=True, exist_ok=True)
 
         for i, palette in enumerate(self.palettes):
-            raster = self.sibling.rasters[0]
+            raster = self.siblings[0].rasters[0]
 
-            w = png.Writer(self.sibling.width, self.sibling.height, palette=palette)
+            w = png.Writer(self.siblings[0].width, self.siblings[0].height, palette=palette)
             with open(fs_dir / f"{i:02X}.png", "wb") as f:
                 w.write_array(f, raster)
 

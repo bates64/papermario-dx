@@ -4,40 +4,40 @@
 #include "sprite.h"
 #include "game_modes.h"
 #include "dx/config.h"
+#include "dx/versioning.h"
 
 void state_init_startup(void) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
-    gGameStatusPtr->startupState = 3;
+    gGameStatus.startupState = 3;
 }
 
 void state_step_startup(void) {
-    GameStatus* gameStatus = gGameStatusPtr;
     s32 i;
 
-    if (gameStatus->startupState != 0) {
-        gameStatus->startupState--;
+    if (gGameStatus.startupState != 0) {
+        gGameStatus.startupState--;
         return;
     }
 
     gOverrideFlags = 0;
-    gGameStatusPtr->areaID = 0;
-    gGameStatusPtr->isBattle = 0;
-    gameStatus->prevArea = -1;
-    gameStatus->mapID = 0;
-    gameStatus->entryID = 0;
-    gGameStatusPtr->debugUnused1 = FALSE;
-    gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
-    gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
-    gGameStatusPtr->introPart = INTRO_PART_NONE;
-    gGameStatusPtr->demoBattleFlags = 0;
-    gGameStatusPtr->unk_A9 = -1;
-    gGameStatusPtr->demoState = DEMO_STATE_NONE;
+    gGameStatus.areaID = 0;
+    gGameStatus.isBattle = 0;
+    gGameStatus.prevArea = -1;
+    gGameStatus.mapID = 0;
+    gGameStatus.entryID = 0;
+    gGameStatus.debugUnused1 = FALSE;
+    gGameStatus.debugScripts = DEBUG_SCRIPTS_NONE;
+    gGameStatus.keepUsingPartnerOnMapChange = FALSE;
+    gGameStatus.introPart = INTRO_PART_NONE;
+    gGameStatus.demoBattleFlags = 0;
+    gGameStatus.unk_A9 = -1;
+    gGameStatus.demoState = DEMO_STATE_NONE;
 
     general_heap_create();
     clear_render_tasks();
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
     clear_entity_models();
     clear_animator_list();
@@ -66,33 +66,49 @@ void state_step_startup(void) {
     bgm_reset_volume();
     initialize_curtains();
 
-    for (i = 0; i < ARRAY_COUNT(gGameStatusPtr->unk_50); i++) {
-        gGameStatusPtr->unk_50[i] = 4;
-        gGameStatusPtr->unk_48[i] = 15;
+    for (i = 0; i < ARRAY_COUNT(gGameStatus.unk_50); i++) {
+        gGameStatus.unk_50[i] = 4;
+        gGameStatus.unk_48[i] = 15;
     }
 
     fio_load_globals();
 
     if (gSaveGlobals.useMonoSound == 0) {
-        gGameStatusPtr->soundOutputMode = SOUND_OUT_STEREO;
+        gGameStatus.soundOutputMode = SOUND_OUT_STEREO;
         audio_set_stereo();
     } else {
-        gGameStatusPtr->soundOutputMode = SOUND_OUT_MONO;
+        gGameStatus.soundOutputMode = SOUND_OUT_MONO;
         audio_set_mono();
     }
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
-#if DX_SKIP_LOGOS
-# if DX_SKIP_TITLE
-    if (fio_load_game(0)) {
-        set_game_mode(GAME_MODE_WORLD);
-        return;
-    }
-# endif
-    set_game_mode(GAME_MODE_TITLE_SCREEN);
-#else
-    set_game_mode(GAME_MODE_LOGOS);
-#endif
+
+    #if DX_QUICK_LAUNCH
+        // immediately jump into the world using last-used save file
+        gGameStatus.saveSlot = gSaveGlobals.lastFileSelected;
+        if (fio_load_game(gGameStatusPtr->saveSlot)) {
+            set_game_mode(GAME_MODE_ENTER_WORLD);
+            gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
+            return;
+        }
+    #endif
+
+    #if DX_SKIP_LOGOS
+        // go right to the story book or file select
+        #if DX_SKIP_STORY
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.0f);
+            set_game_mode(GAME_MODE_TITLE_SCREEN);
+        #else
+            set_curtain_scale(1.0f);
+            set_curtain_fade(0.3f);
+            gGameStatus.introPart = INTRO_PART_0;
+            set_game_mode(GAME_MODE_INTRO);
+        #endif
+    #else
+        // use vanilla startup process
+        set_game_mode(GAME_MODE_LOGOS);
+    #endif
 }
 
 void state_drawUI_startup(void) {

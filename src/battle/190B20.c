@@ -6,29 +6,16 @@
 #include "model.h"
 #include "sprite.h"
 
-EvtScript D_80293820 = {
-    EVT_WAIT(LVar0)
-    EVT_LOOP(4)
-        EVT_CALL(SetBattleCamParam, 4, 11)
-        EVT_WAIT(1)
-        EVT_CALL(SetBattleCamParam, 4, 5)
-        EVT_WAIT(1)
-    EVT_END_LOOP
-    EVT_CALL(SetBattleCamParam, 4, 8)
-    EVT_RETURN
-    EVT_END
-};
-
 f32 D_802938A4 = 0.0f;
 
 s16 D_802938A8 = 4;
 
 EffectInstance* gDamageCountEffects[] = {
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
-    NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
+    NULL, NULL, NULL, NULL,
     NULL, NULL, NULL, NULL,
 };
 
@@ -151,7 +138,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         for (j = 0; j < numParts; targetPart = targetPart->nextPart, j++) {
             if (!(targetPart->flags & ACTOR_PART_FLAG_NO_TARGET)) {
                 ActorPartBlueprint* partBlueprint = targetPart->staticData;
-                
+
                 if (!(targetPart->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) {
                     sampleRow = !targetHomePos; // required to match
                     if (sampleRow) {
@@ -211,11 +198,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 } else if (targetDataList->sortPos.y < 100) {
                     targetDataList->row = 2;
                 } else {
-                    do {
-                        do {
-                            targetDataList->row = 3;
-                        } while (0);
-                    } while (0);
+                    targetDataList->row = 3;
                 }
 
                 // determine nearest target column
@@ -226,9 +209,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 } else if (targetDataList->sortPos.x < 105) {
                     targetDataList->column = 2;
                 } else {
-                    do {
-                        targetDataList->column = 3;
-                    } while (0);
+                    targetDataList->column = 3;
                 }
 
                 // determine nearest target layer
@@ -237,7 +218,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 } else {
                     targetDataList->layer = 1;
                 }
-                
+
                 numTargets++;
                 targetDataList++;
             }
@@ -247,13 +228,10 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
     // ------------------------------------------------------------------------
     // remove targets based on simple criteria (coarse pass)
 
-    do {
-        actor->selectedTargetIndex = 0;
-    } while (0);
+    actor->selectedTargetIndex = 0;
     actor->targetListLength = numTargets;
 
-    // @bug this should be % 4
-    sampleCol = battleStatus->sampleTargetHomeIndex & 4;
+    sampleCol = battleStatus->sampleTargetHomeIndex % 4;
     sampleRow = battleStatus->sampleTargetHomeIndex / 4;
 
     targetDataList = actor->targetData;
@@ -269,7 +247,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         if (target->actorID == ACTOR_PLAYER || target->actorID == ACTOR_PARTNER) {
             continue;
         }
-        
+
         // sanity check condition -- function should never reach this point with this flag set
         if (battleStatus->curTargetListFlags & TARGET_FLAG_OVERRIDE) {
             removeTarget = TRUE;
@@ -296,7 +274,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
                 goto FIRST_PASS_REMOVE;
             }
         }
-        
+
         // target passed all checks, do not remove
         removeTarget = FALSE;
 
@@ -322,24 +300,18 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
         if (target->actorID == ACTOR_PLAYER || target->actorID == ACTOR_PARTNER) {
             continue;
         }
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE) && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE))) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_JUMP_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_JUMP)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_SMASH_LIKE) && (targetPart->targetFlags & ACTOR_PART_TARGET_NO_SMASH)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_TATTLE) && ((targetActor->flags & ACTOR_FLAG_NO_TATTLE) || (targetPart->flags & ACTOR_PART_FLAG_NO_TATTLE))) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
         if ((battleStatus->curTargetListFlags & TARGET_FLAG_AIRLIFT) && (targetActor->flags & ACTOR_FLAG_UPSIDE_DOWN)) {
             removeTarget = TRUE;
             goto SECOND_PASS_REMOVE;
@@ -371,21 +343,19 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             // search the target list for any targets below the current target (same column, higher row)
             // skip the current target if any are found
             s32 foundAbove = FALSE;
-            
-            do {
-                for (j = 0; j < numTargets; j++) {
-                    otherTarget = &targetDataList[j];
-                    if (target != otherTarget) {
-                        if (target->layer == otherTarget->layer
-                            && target->column == otherTarget->column
-                            && target->row < otherTarget->row
-                        ) {
-                            foundAbove = TRUE;
-                            break;
-                        }
+
+            for (j = 0; j < numTargets; j++) {
+                otherTarget = &targetDataList[j];
+                if (target != otherTarget) {
+                    if (target->layer == otherTarget->layer
+                        && target->column == otherTarget->column
+                        && target->row < otherTarget->row
+                    ) {
+                        foundAbove = TRUE;
+                        break;
                     }
                 }
-            } while (0);
+            }
 
             if (foundAbove) {
                 removeTarget = TRUE;
@@ -397,7 +367,7 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             // search the target list for any targets in front of the current target (same row, lower column)
             // skip the current target if any are found
             s32 foundInFront = FALSE;
-           
+
             for (j = 0; j < numTargets; j++) {
                 otherTarget = &targetDataList[j];
                 if (target != otherTarget) {
@@ -417,60 +387,42 @@ void create_target_list(Actor* actor, b32 targetHomePos) {
             }
         }
 
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_NOT_FLYING) && (targetActor->flags & ACTOR_FLAG_FLYING)) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row == sampleRow + 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row == sampleRow - 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column == sampleCol - 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column == sampleCol + 1) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row < sampleRow) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row > sampleRow) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column > sampleCol) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
-        do {
-            if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column < sampleCol) {
-                removeTarget = TRUE;
-                goto SECOND_PASS_REMOVE;
-            }
-        } while (0);
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_NOT_FLYING) && (targetActor->flags & ACTOR_FLAG_FLYING)) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row == sampleRow + 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row == sampleRow - 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column == sampleCol - 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column == sampleCol + 1) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_RIGHT) && target->row < sampleRow) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_LEFT) && target->row > sampleRow) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_BELOW) && target->column > sampleCol) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
+        if ((battleStatus->curTargetListFlags & TARGET_FLAG_DIR_ABOVE) && target->column < sampleCol) {
+            removeTarget = TRUE;
+            goto SECOND_PASS_REMOVE;
+        }
 
         // target passed all checks, do not remove
         removeTarget = FALSE;
@@ -546,14 +498,15 @@ s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
             part = part->nextPart;
             continue;
         }
-        
+
         if (!(part->flags & ACTOR_PART_FLAG_PRIMARY_TARGET)) {
-            // @bug part list position is not advanced, all further loop iterations will be stuck here
+            /// @bug part list position is not advanced, all further loop iterations will be stuck here
+            // nanaian: I think this is intended and should probably be a break. this flag makes multi-target attacks select this part only
             continue;
         }
 
         partData = part->staticData;
-        
+
         if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)) {
             x = targetActor->curPos.x;
             y = targetActor->curPos.y;
@@ -594,7 +547,7 @@ s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
         target->priorityOffset = 0;
         target++;
         count++;
-        
+
         part = part->nextPart;
     }
 
@@ -610,7 +563,7 @@ s32 func_8026324C(Actor* actor, Actor* targetActor) {
     return func_80263064(actor, targetActor, TRUE);
 }
 
-void func_80263268(void) {
+void btl_check_can_change_partner(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     Actor* partner = battleStatus->partnerActor;
@@ -645,20 +598,20 @@ void func_80263268(void) {
     }
 }
 
-void func_80263300(void) {
+void btl_init_menu_items(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     PlayerData* playerData = &gPlayerData;
-    s32 cond;
+    s32 hasValidItem;
     s32 i;
 
     battleStatus->menuStatus[0] = 0;
-    cond = FALSE;
+    hasValidItem = FALSE;
 
     for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
         s16 itemID = playerData->invItems[i];
 
-        if (itemID != 0) {
+        if (itemID != ITEM_NONE) {
             ItemData* itemData = &gItemTable[itemID];
 
             if (itemData->typeFlags & ITEM_TYPE_FLAG_BATTLE_USABLE) {
@@ -669,13 +622,13 @@ void func_80263300(void) {
 
                 if (player->targetListLength != 0) {
                     battleStatus->menuStatus[0]++;
-                    cond = TRUE;
+                    hasValidItem = TRUE;
                 }
             }
         }
     }
 
-    if (!cond) {
+    if (!hasValidItem) {
         battleStatus->menuStatus[0] = 0;
     }
 }
@@ -741,23 +694,21 @@ void btl_init_menu_boots(void) {
     battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
 
     // Jump badges
-    do {
-        for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-            s16 badge = playerData->equippedBadges[i];
+    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
+        s16 badge = playerData->equippedBadges[i];
 
-            if (badge != ITEM_NONE) {
-                MoveData* moveTable = gMoveTable;
-                u8 moveID = gItemTable[badge].moveID;
+        if (badge != ITEM_NONE) {
+            MoveData* moveTable = gMoveTable;
+            u8 moveID = gItemTable[badge].moveID;
 
-                move = &moveTable[moveID];
-                if (move->category == MOVE_TYPE_JUMP) {
-                    battleStatus->submenuMoves[moveCount] = moveID;
-                    battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                    moveCount++;
-                }
+            move = &moveTable[moveID];
+            if (move->category == MOVE_TYPE_JUMP) {
+                battleStatus->submenuMoves[moveCount] = moveID;
+                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
+                moveCount++;
             }
         }
-    } while (0);
+    }
 
     battleStatus->submenuMoveCount = moveCount;
 
@@ -837,21 +788,19 @@ void btl_init_menu_hammer(void) {
     battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
 
     // Hammer badges
-    do {
-        for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-            s16 badge = playerData->equippedBadges[i];
-            if (badge != MOVE_NONE) {
-                MoveData* moveTable = gMoveTable;
-                u8 moveID = gItemTable[badge].moveID;
-                move = &moveTable[moveID];
-                if (move->category == MOVE_TYPE_HAMMER) {
-                    battleStatus->submenuMoves[moveCount] = moveID;
-                    battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                    moveCount++;
-                }
+    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
+        s16 badge = playerData->equippedBadges[i];
+        if (badge != MOVE_NONE) {
+            MoveData* moveTable = gMoveTable;
+            u8 moveID = gItemTable[badge].moveID;
+            move = &moveTable[moveID];
+            if (move->category == MOVE_TYPE_HAMMER) {
+                battleStatus->submenuMoves[moveCount] = moveID;
+                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
+                moveCount++;
             }
         }
-    } while (0);
+    }
 
     battleStatus->submenuMoveCount = moveCount;
 
@@ -1051,10 +1000,6 @@ void reset_actor_turn_info(void) {
         actor->damageCounter = 0;
         actor->actionRatingCombo = 0;
     }
-}
-
-void func_80263CC4(s32 arg0) {
-    start_script(&D_80293820, EVT_PRIORITY_A, 0)->varTable[0] = arg0;
 }
 
 void set_actor_anim(s32 actorID, s32 partID, AnimID animID) {
@@ -2400,17 +2345,15 @@ void show_damage_fx(Actor* actor, f32 x, f32 y, f32 z, s32 damage) {
         intensity = DAMAGE_INTENSITY_EXTREME;
     }
 
-    do {
-        if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
-            fx_ring_blast(0, x, y, z, 1.0f, 24);
-        } else if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
-            apply_shock_effect(actor);
-        } else if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
-            fx_water_splash(0, x, y, z, 1.0f, 24);
-        } else {
-            fx_firework(0, x, y, z, 1.0, intensity);
-        }
-    } while (0); // required to match
+    if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
+        fx_ring_blast(0, x, y, z, 1.0f, 24);
+    } else if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
+        apply_shock_effect(actor);
+    } else if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
+        fx_water_splash(0, x, y, z, 1.0f, 24);
+    } else {
+        fx_firework(0, x, y, z, 1.0, intensity);
+    }
 }
 
 // grossness
@@ -2636,20 +2579,17 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
 }
 
 s32 inflict_status_set_duration(Actor* actor, s32 statusTypeKey, s32 statusDurationKey, s32 duration) {
-    s32 var0 = duration; // TODO required to match, look into
     s32 statusDuration = 0;
 
     if (actor->statusTable == NULL || lookup_status_chance(actor->statusTable, statusTypeKey) > 0) {
-        statusDuration = var0;
+        statusDuration = duration;
     }
 
     if (statusDuration > 0) {
         return inflict_status(actor, statusTypeKey, statusDuration);
     } else {
-        var0 = 0;
+        return 0;
     }
-
-    return 0;
 }
 
 void set_part_pal_adjustment(ActorPart* part, s32 palAdjust) {
@@ -2665,16 +2605,13 @@ void set_part_pal_adjustment(ActorPart* part, s32 palAdjust) {
 }
 
 void set_actor_pal_adjustment(Actor* actor, s32 palAdjust) {
-    ActorPart* partIt = &actor->partsTable[0];
-
-    while (partIt != NULL) {
-        if (!(partIt->flags & ACTOR_PART_FLAG_INVISIBLE)
-            && (partIt->idleAnimations != NULL)
-            && !(partIt->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
+        if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE)
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
         ) {
-            set_part_pal_adjustment(partIt, palAdjust);
+            set_part_pal_adjustment(part, palAdjust);
         }
-        partIt = partIt->nextPart;
     }
 }
 
@@ -2684,27 +2621,21 @@ void clear_part_pal_adjustment(ActorPart* part) {
     }
 }
 
-// TODO: improve match
 void clear_actor_static_pal_adjustments(Actor* actor) {
-    ActorPart* part = actor->partsTable;
-    s8 e = ACTOR_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS;
-    s8 f = ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS;
-
-    while (part != NULL) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
-                && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
-                && (part->idleAnimations != NULL)
-                && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        if (!(part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION)
+            && !(part->flags & ACTOR_PART_FLAG_INVISIBLE)
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            if (decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS
+             && decorations->paletteAdjustment != ACTOR_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS
             ) {
-                if (decorations->paletteAdjustment != e && decorations->paletteAdjustment != f) {
-                    decorations->paletteAdjustment = ACTOR_PAL_ADJUST_NONE;
-                }
+                decorations->paletteAdjustment = ACTOR_PAL_ADJUST_NONE;
             }
-        } while (0); // required to match
-        part = part->nextPart;
+        }
     }
 }
 
@@ -2721,9 +2652,7 @@ void set_part_glow_pal(ActorPart* part, s32 glowState) {
 }
 
 void set_actor_glow_pal(Actor* actor, s32 glowState) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
             && (part->idleAnimations != NULL)
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2740,19 +2669,15 @@ void clear_part_glow_pal(ActorPart* part) {
 }
 
 void clear_actor_glow_pal(Actor* actor) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
-                && part->idleAnimations != NULL
-                && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
-            ) {
-                decorations->glowState = GLOW_PAL_OFF;
-            }
-        } while (0); // required to match
+        if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
+            && part->idleAnimations != NULL
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            decorations->glowState = GLOW_PAL_OFF;
+        }
     }
 }
 
@@ -2769,9 +2694,7 @@ void set_part_flash_mode(ActorPart* part, s32 flashState) {
 }
 
 void set_actor_flash_mode(Actor* actor, s32 flashState) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
             && part->decorationTable != NULL
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2789,19 +2712,15 @@ void clear_part_flash_mode(ActorPart* part) {
 }
 
 void clear_actor_flash_mode(Actor* actor) {
-    ActorPart* part;
-
-   for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+   for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         DecorationTable* decorations = part->decorationTable;
 
-        do {
-            if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE)) &&
-                (part->idleAnimations != NULL) &&
-                !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS))
-            {
-                decorations->flashState = 0;
-            }
-        } while (0); // TODO make match better
+        if (!(part->flags & (ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION | ACTOR_PART_FLAG_INVISIBLE))
+            && (part->idleAnimations != NULL)
+            && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
+        ) {
+            decorations->flashState = 0;
+        }
     }
 }
 
@@ -2818,8 +2737,7 @@ void add_part_decoration(ActorPart* part, s32 decorationIndex, s32 decorationTyp
 }
 
 void add_actor_decoration(Actor* actor, s32 decorationIndex, s32 decorationType) {
-    ActorPart* part;
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
             && part->idleAnimations
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
@@ -2834,11 +2752,9 @@ void remove_part_decoration(ActorPart* part, s32 decorationIndex) {
 }
 
 void remove_actor_decoration(Actor* actor, s32 decorationIndex) {
-    ActorPart* part;
-
-    for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+    for (ActorPart* part = actor->partsTable; part != NULL; part = part->nextPart) {
         if (!(part->flags & (ACTOR_PART_FLAG_INVISIBLE | ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION))
-            && part->idleAnimations
+            && part->idleAnimations != NULL
             && !(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)
         ) {
             remove_part_decoration(part, decorationIndex);
@@ -3112,71 +3028,71 @@ void show_foreground_models(void) {
 #include "common/StartRumbleWithParams.inc.c"
 
 EvtScript EVS_BattleRumble_Long = {
-    EVT_CALL(N(StartRumbleWithParams), 256, 30)
-    EVT_CALL(N(StartRumbleWithParams), 200, 15)
-    EVT_CALL(N(StartRumbleWithParams), 50, 15)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 256, 30)
+    Call(N(StartRumbleWithParams), 200, 15)
+    Call(N(StartRumbleWithParams), 50, 15)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_HitMin = {
-    EVT_CALL(N(StartRumbleWithParams), 100, 20)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 100, 20)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_HitLight = {
-    EVT_CALL(N(StartRumbleWithParams), 150, 20)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 150, 20)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_HitHeavy = {
-    EVT_CALL(N(StartRumbleWithParams), 200, 30)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 200, 30)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_HitExtreme = {
-    EVT_CALL(N(StartRumbleWithParams), 256, 40)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 256, 40)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_HitMax = {
-    EVT_CALL(N(StartRumbleWithParams), 256, 60)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 256, 60)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_PlayerMin = {
-    EVT_CALL(N(StartRumbleWithParams), 100, 20)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 100, 20)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_PlayerLight = {
-    EVT_CALL(N(StartRumbleWithParams), 150, 20)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 150, 20)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_PlayerHeavy = {
-    EVT_CALL(N(StartRumbleWithParams), 200, 30)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 200, 30)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_PlayerExtreme = {
-    EVT_CALL(N(StartRumbleWithParams), 256, 40)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 256, 40)
+    Return
+    End
 };
 
 EvtScript EVS_BattleRumble_PlayerMax = {
-    EVT_CALL(N(StartRumbleWithParams), 256, 60)
-    EVT_RETURN
-    EVT_END
+    Call(N(StartRumbleWithParams), 256, 60)
+    Return
+    End
 };
 
 void start_rumble_type(u32 type) {

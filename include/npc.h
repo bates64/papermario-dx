@@ -155,7 +155,7 @@ typedef struct NpcSettings {
 typedef struct ItemDrop {
     /* 0x00 */ s16 item;
     /* 0x02 */ s16 weight;
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 flagIdx;
 } ItemDrop; // size = 0x06
 
 /// @brief Describes heart/flower drop chances after defeating an Npc in the overworld.
@@ -189,18 +189,6 @@ typedef struct EnemyDrops {
     /* 0xB4 */ s16 maxCoinBonus;
     /* 0xB6 */ char unk_DE[2];
 } EnemyDrops; // size = 0xB8
-
-// TODO unify this with EnemyDrops (union? requires changing tons of data)
-typedef struct EnemyDropsFlat {
-    /* 0x00 */ u8 dropFlags;
-    /* 0x01 */ u8 itemDropChance;
-    /* 0x02 */ s16 itemDrops[8 * 3];
-    /* 0x32 */ s16 heartDrops[8 * 4];
-    /* 0x72 */ s16 flowerDrops[8 * 4];
-    /* 0xB2 */ s16 minCoinBonus;
-    /* 0xB4 */ s16 maxCoinBonus;
-    /* 0xB6 */ char unk_DE[2];
-} EnemyDropsFlat; // size = 0xB8
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
 
@@ -239,7 +227,6 @@ typedef struct {
 typedef union {
     EnemyTerritoryWander wander;
     EnemyTerritoryPatrol patrol;
-    s32 temp[48]; // TODO: remove when old map data is replaced
     char PADDING[0xC0];
 } EnemyTerritory; // size = 0xC0
 
@@ -354,13 +341,7 @@ typedef struct Enemy {
     /* 0xDC */ s32 unk_DC;
     /* 0xE0 */ s16 savedNpcYaw;
     /* 0xE2 */ char unk_E2[6];
-    #ifdef _DEAD_H_
-    /* 0x0DC */ char unk_E8[32];
-    /* 0x108 */ Vec3f unk_108; // Associated NPC Pos?
-    /* 0x114 */ f32 unk_114;
-    /* 0x118 */ f32 unk_118;
-    #endif
-} Enemy; // size = 0xE8, dead size = 0x11C
+} Enemy; // size = 0xE8
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;
@@ -391,7 +372,7 @@ typedef struct EncounterStatus {
     /* 0x00D */ char unk_0D;
     /* 0x00E */ s16 coinsEarned; /* valid after battle */
     /* 0x010 */ s8 instigatorValue;
-    /* 0x011 */ s8 allowFleeing;
+    /* 0x011 */ s8 forbidFleeing;
     /* 0x012 */ s8 scriptedBattle; ///< battle started by StartBattle but not by encounter
     /* 0x013 */ s8 dropWhackaBump;
     /* 0x014 */ s32 songID;
@@ -416,9 +397,8 @@ typedef struct EncounterStatus {
     /* 0x0A8 */ FieldStatus unusedAttack2;
     /* 0x0AC */ FieldStatus unusedAttack3;
     /* 0x0B0 */ s32 defeatFlags[60][12];
-    /* 0xFB0 */ s16 recentMaps[2];
-    /* 0xFB4 */ char unk_FB4[4];
-} EncounterStatus; // size = 0xFB8
+    /* 0xBF0 */ s16 recentMaps[2];
+} EncounterStatus; // size = 0xBF4
 
 extern EncounterStatus gCurrentEncounter;
 
@@ -433,10 +413,6 @@ void clear_npcs(void);
 
 /// Points the current NPC list to the world or battle lists depending on game state.
 void init_npc_list(void);
-
-/// Iterates over the NPC list, doing absolutely nothing.
-/// Presumably did something once upon a time but got commented out.
-void npc_iter_no_op(void);
 
 s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 skipLoadingAnims);
 
@@ -526,8 +502,6 @@ void npc_remove_decoration(Npc* npc, s32 idx);
 
 s32 npc_update_decorations(Npc* npc);
 
-void npc_remove_decoration_impl(Npc* npc, s32 idx);
-
 void npc_reset_current_decoration(Npc* npc, s32 idx);
 
 void npc_update_decoration_none(Npc* npc, s32 idx);
@@ -557,8 +531,6 @@ void npc_remove_decoration_glow_behind(Npc* npc, s32 idx);
 void npc_update_decoration_charged(Npc* npc, s32 idx);
 
 void npc_remove_decoration_charged(Npc* npc, s32 idx);
-
-void npc__reset_current_decoration(Npc* npc, s32 idx);
 
 /// Finds the closest NPC to a given point within a radius. Ignores Y position.
 ///
@@ -594,7 +566,7 @@ void npc_imgfx_update(Npc* npc);
 
 void npc_set_imgfx_params(Npc* npc, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
 
-void spawn_surface_effects(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_fx(Npc* npc, SurfaceInteractMode mode);
 
 void spawn_default_surface_effects(Npc* npc, SurfaceInteractMode mode);
 

@@ -2,10 +2,8 @@
 #include "npc.h"
 #include "sprite.h"
 #include "world/partners.h"
+#include "world/surfaces.h"
 #include "sprite/player.h"
-
-SHIFT_BSS PlayerStatus gPlayerStatus;
-SHIFT_BSS PlayerData gPlayerData;
 
 extern Npc playerNpcData;
 extern u16 PlayerImgFXFlags;
@@ -13,7 +11,7 @@ extern s32 D_802DB5B4[3]; // unused
 
 Npc* playerNpc = &playerNpcData;
 
-ApiStatus HidePlayerShadow(Evt* script, s32 isInitialCall) {
+API_CALLABLE(HidePlayerShadow) {
     Bytecode* args = script->ptrReadPos;
     s32 hideShadow = evt_get_variable(script, *args++);
 
@@ -25,7 +23,7 @@ ApiStatus HidePlayerShadow(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DisablePlayerPhysics(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DisablePlayerPhysics) {
     Bytecode* args = script->ptrReadPos;
     s32 disable = evt_get_variable(script, *args++);
 
@@ -37,7 +35,7 @@ ApiStatus DisablePlayerPhysics(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DisablePlayerInput(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DisablePlayerInput) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 enable = evt_get_variable(script, *args++);
@@ -61,7 +59,7 @@ ApiStatus DisablePlayerInput(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerPos(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerPos) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_variable(script, *args++);
@@ -79,7 +77,7 @@ ApiStatus SetPlayerPos(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerCollisionSize(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerCollisionSize) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 height = evt_get_variable(script, *args++);
@@ -94,21 +92,21 @@ ApiStatus SetPlayerCollisionSize(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerSpeed(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerSpeed) {
     Bytecode* args = script->ptrReadPos;
 
     playerNpc->moveSpeed = evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerJumpscale(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerJumpscale) {
     Bytecode* args = script->ptrReadPos;
 
     playerNpc->jumpScale = evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerAnimation(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerAnimation) {
     Bytecode* args = script->ptrReadPos;
     AnimID anim = evt_get_variable(script, *args++);
 
@@ -121,21 +119,21 @@ ApiStatus SetPlayerAnimation(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerActionState(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerActionState) {
     Bytecode* args = script->ptrReadPos;
 
     set_action_state(evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerAnimationSpeed(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerAnimationSpeed) {
     Bytecode* args = script->ptrReadPos;
 
     playerNpc->animationSpeed = evt_get_float_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
-ApiStatus PlayerMoveTo(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayerMoveTo) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -162,7 +160,7 @@ ApiStatus PlayerMoveTo(Evt* script, s32 isInitialCall) {
     return script->functionTemp[0] < 0;
 }
 
-ApiStatus func_802D1270(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_802D1270) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -186,7 +184,7 @@ ApiStatus func_802D1270(Evt* script, s32 isInitialCall) {
     return (script->functionTemp[0] < 0) * ApiStatus_DONE2;
 }
 
-ApiStatus func_802D1380(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_802D1380) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -212,7 +210,8 @@ ApiStatus func_802D1380(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-s32 player_jump(Evt* script, s32 isInitialCall, s32 mode) {
+/// Internal function for PlayerJump(), PlayerJump1(), and PlayerJump2().
+ApiStatus player_jump(Evt* script, s32 isInitialCall, s32 mode) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 xTemp;
@@ -317,7 +316,7 @@ s32 player_jump(Evt* script, s32 isInitialCall, s32 mode) {
                 anim = ANIM_Mario1_TiredIdle;
             }
             suggest_player_anim_allow_backward(anim);
-            spawn_surface_effects(playerNpc, SURFACE_INTERACT_LAND);
+            npc_surface_spawn_fx(playerNpc, SURFACE_INTERACT_LAND);
         }
 
         if (mode == 0 || mode == 2) {
@@ -325,30 +324,30 @@ s32 player_jump(Evt* script, s32 isInitialCall, s32 mode) {
 
             yTemp = player_check_collision_below(playerNpc->jumpVel, &colliderID);
 
-            if (colliderID >= 0) {
+            if (colliderID > NO_COLLIDER) {
                 playerStatus->pos.y = yTemp;
                 player_handle_floor_collider_type(colliderID);
-                handle_floor_behavior();
+                player_surface_spawn_fx();
             }
         }
-        return TRUE;
+        return ApiStatus_DONE1;
     }
-    return FALSE;
+    return ApiStatus_BLOCK;
 }
 
-ApiStatus PlayerJump(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayerJump) {
     return player_jump(script, isInitialCall, 0);
 }
 
-ApiStatus PlayerJump1(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayerJump1) {
     return player_jump(script, isInitialCall, 1);
 }
 
-ApiStatus PlayerJump2(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayerJump2) {
     return player_jump(script, isInitialCall, 2);
 }
 
-ApiStatus InterpPlayerYaw(Evt* script, s32 isInitialCall) {
+API_CALLABLE(InterpPlayerYaw) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32* initialYaw = &script->functionTempF[1];
@@ -386,7 +385,7 @@ ApiStatus InterpPlayerYaw(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus PlayerFaceNpc(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlayerFaceNpc) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32* args = script->ptrReadPos;
     f32* playerTargetYaw = &script->functionTempF[1];
@@ -435,12 +434,12 @@ ApiStatus PlayerFaceNpc(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetPlayerTargetYaw(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetPlayerTargetYaw) {
     evt_set_variable(script, *script->ptrReadPos, gPlayerStatus.targetYaw);
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerFlagBits(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerFlagBits) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode bits = *args++;
@@ -455,13 +454,13 @@ ApiStatus SetPlayerFlagBits(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetPlayerActionState(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetPlayerActionState) {
     Bytecode outVar = *script->ptrReadPos;
     evt_set_variable(script, outVar, gPlayerStatus.actionState);
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetPlayerPos(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetPlayerPos) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar1 = *args++;
@@ -474,14 +473,14 @@ ApiStatus GetPlayerPos(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus GetPlayerAnimation(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetPlayerAnimation) {
     Bytecode outVar = *script->ptrReadPos;
 
     evt_set_variable(script, outVar, gPlayerStatus.anim);
     return ApiStatus_DONE2;
 }
 
-ApiStatus FullyRestoreHPandFP(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FullyRestoreHPandFP) {
     PlayerData* playerData = &gPlayerData;
 
     playerData->curHP = playerData->curMaxHP;
@@ -489,14 +488,14 @@ ApiStatus FullyRestoreHPandFP(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus FullyRestoreSP(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FullyRestoreSP) {
     PlayerData* playerData = &gPlayerData;
 
     playerData->starPower = playerData->maxStarPower * SP_PER_BAR;
     return ApiStatus_DONE2;
 }
 
-ApiStatus EnablePartner(Evt* script, s32 isInitialCall) {
+API_CALLABLE(EnablePartner) {
     s32 partnerIdx = evt_get_variable(script, *script->ptrReadPos) - 1;
     PartnerData* partner = &gPlayerData.partners[partnerIdx];
 
@@ -504,7 +503,7 @@ ApiStatus EnablePartner(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DisablePartner(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DisablePartner) {
     s32 partnerIdx = evt_get_variable(script, *script->ptrReadPos) - 1;
     PartnerData* partner = &gPlayerData.partners[partnerIdx];
 
@@ -512,7 +511,7 @@ ApiStatus DisablePartner(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus UseEntryHeading(Evt* script, s32 isInitialCall) {
+API_CALLABLE(UseEntryHeading) {
     Bytecode* args = script->ptrReadPos;
     MapSettings* mapSettings = get_current_map_settings();
     s32 var1 = evt_get_variable(script, *args++);
@@ -536,12 +535,12 @@ ApiStatus UseEntryHeading(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D2148(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_802D2148) {
     gPlayerStatus.flags &= ~PS_FLAG_CAMERA_DOESNT_FOLLOW;
     return ApiStatus_DONE2;
 }
 
-ApiStatus UseExitHeading(Evt* script, s32 isInitialCall) {
+API_CALLABLE(UseExitHeading) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     MapSettings* mapSettings = get_current_map_settings();
@@ -590,7 +589,7 @@ s32 func_802D23F8(void) {
     return FALSE;
 }
 
-ApiStatus WaitForPlayerTouchingFloor(Evt* script, s32 isInitialCall) {
+API_CALLABLE(WaitForPlayerTouchingFloor) {
     if ((gCollisionStatus.curFloor >= 0) && func_802D23F8()) {
         return ApiStatus_DONE2;
     } else {
@@ -598,7 +597,7 @@ ApiStatus WaitForPlayerTouchingFloor(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus func_802D2484(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_802D2484) {
     if (gCollisionStatus.curFloor >= 0) {
         return ApiStatus_DONE2;
     } else {
@@ -606,7 +605,7 @@ ApiStatus func_802D2484(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus IsPlayerOnValidFloor(Evt* script, s32 isInitialCall) {
+API_CALLABLE(IsPlayerOnValidFloor) {
     Bytecode* args = script->ptrReadPos;
     s32 result = FALSE;
 
@@ -618,7 +617,7 @@ ApiStatus IsPlayerOnValidFloor(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus WaitForPlayerMoveToComplete(Evt* script, s32 isInitialCall) {
+API_CALLABLE(WaitForPlayerMoveToComplete) {
     if (gPlayerStatus.moveFrames == 0) {
         return ApiStatus_DONE2;
     } else {
@@ -626,7 +625,7 @@ ApiStatus WaitForPlayerMoveToComplete(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus WaitForPlayerInputEnabled(Evt* script, s32 isInitialCall) {
+API_CALLABLE(WaitForPlayerInputEnabled) {
     if (gPlayerStatus.flags & PS_FLAG_INPUT_DISABLED) {
         return ApiStatus_BLOCK;
     } else {
@@ -634,7 +633,7 @@ ApiStatus WaitForPlayerInputEnabled(Evt* script, s32 isInitialCall) {
     }
 }
 
-ApiStatus UpdatePlayerImgFX(Evt* script, s32 isInitialCall) {
+API_CALLABLE(UpdatePlayerImgFX) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 a0 = *args++;
@@ -702,14 +701,14 @@ ApiStatus UpdatePlayerImgFX(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerImgFXFlags(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerImgFXFlags) {
     s32 imgfxFlags = *script->ptrReadPos;
 
     PlayerImgFXFlags = imgfxFlags;
     return ApiStatus_DONE2;
 }
 
-ApiStatus FacePlayerTowardPoint(Evt* script, s32 isInitialCall) {
+API_CALLABLE(FacePlayerTowardPoint) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32* initialYaw = &script->functionTempF[1];
@@ -757,7 +756,7 @@ ApiStatus FacePlayerTowardPoint(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DisablePulseStone(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DisablePulseStone) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (evt_get_variable(script, *script->ptrReadPos)) {
@@ -770,7 +769,7 @@ ApiStatus DisablePulseStone(Evt* script, s32 isInitialCall) {
 }
 
 // returns partnerID of current partner if using their ability, otherwise PARTNER_NONE
-ApiStatus GetPartnerInUse(Evt* script, s32 isInitialCall) {
+API_CALLABLE(GetPartnerInUse) {
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar = *args++;
     PlayerData* playerData = &gPlayerData;
@@ -784,21 +783,21 @@ ApiStatus GetPartnerInUse(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus ForceUsePartner(Evt* script, s32 isInitialCall) {
+API_CALLABLE(ForceUsePartner) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     playerStatus->animFlags |= PA_FLAG_FORCE_USE_PARTNER;
     return ApiStatus_DONE2;
 }
 
-ApiStatus InterruptUsePartner(Evt* script, s32 isInitialCall) {
+API_CALLABLE(InterruptUsePartner) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     playerStatus->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
     return ApiStatus_DONE2;
 }
 
-ApiStatus Disable8bitMario(Evt* script, s32 isInitialCall) {
+API_CALLABLE(Disable8bitMario) {
     Bytecode* args = script->ptrReadPos;
     PlayerStatus* playerStatus = &gPlayerStatus;
 
@@ -817,14 +816,14 @@ ApiStatus Disable8bitMario(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus func_802D2C14(Evt* script, s32 isInitialCall) {
+API_CALLABLE(func_802D2C14) {
     Bytecode* args = script->ptrReadPos;
 
     func_800EF3D4(evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetPlayerPushVelocity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetPlayerPushVelocity) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_variable(script, *args++);
     f32 y;
@@ -837,7 +836,7 @@ ApiStatus SetPlayerPushVelocity(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus PlaySoundAtPlayer(Evt* script, s32 isInitialCall) {
+API_CALLABLE(PlaySoundAtPlayer) {
     Bytecode* args = script->ptrReadPos;
     s32 soundID = evt_get_variable(script, *args++);
     s32 flags = evt_get_variable(script, *args++);

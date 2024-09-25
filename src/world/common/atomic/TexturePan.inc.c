@@ -6,30 +6,30 @@
 API_CALLABLE(N(UpdateTexturePanSmooth)) {
     script->varTable[9] += script->varTable[1];
     if (script->varTable[9] < 0) {
-        script->varTable[9] += 0x20000;
-    } else if (script->varTable[9] > 0x20000) {
-        script->varTable[9] -= 0x20000;
+        script->varTable[9] += script->varTable[13];
+    } else if (script->varTable[9] > script->varTable[13]) {
+        script->varTable[9] -= script->varTable[13];
     }
 
     script->varTable[10] += script->varTable[2];
     if (script->varTable[10] < 0) {
-        script->varTable[10] += 0x20000;
-    } else if (script->varTable[10] > 0x20000) {
-        script->varTable[10] -= 0x20000;
+        script->varTable[10] += script->varTable[13];
+    } else if (script->varTable[10] > script->varTable[13]) {
+        script->varTable[10] -= script->varTable[13];
     }
 
     script->varTable[11] += script->varTable[3];
     if (script->varTable[11] < 0) {
-        script->varTable[11] += 0x20000;
-    } else if (script->varTable[11] > 0x20000) {
-        script->varTable[11] -= 0x20000;
+        script->varTable[11] += script->varTable[13];
+    } else if (script->varTable[11] > script->varTable[13]) {
+        script->varTable[11] -= script->varTable[13];
     }
 
     script->varTable[12] += script->varTable[4];
     if (script->varTable[12] < 0) {
-        script->varTable[12] += 0x20000;
-    } else if (script->varTable[12] > 0x20000) {
-        script->varTable[12] -= 0x20000;
+        script->varTable[12] += script->varTable[13];
+    } else if (script->varTable[12] > script->varTable[13]) {
+        script->varTable[12] -= script->varTable[13];
     }
 
     set_main_pan_u(script->varTable[0], script->varTable[9]);
@@ -50,36 +50,36 @@ API_CALLABLE(N(UpdateTexturePanStepped)) {
     if (script->functionTemp[0] == 0) {
         script->varTable[9] += script->varTable[1];
         if (script->varTable[9] < 0) {
-            script->varTable[9] += 0x20000;
-        } else if (script->varTable[9] > 0x20000) {
-            script->varTable[9] -= 0x20000;
+            script->varTable[9] += script->varTable[13];
+        } else if (script->varTable[9] > script->varTable[13]) {
+            script->varTable[9] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[1] == 0) {
         script->varTable[10] += script->varTable[2];
         if (script->varTable[10] < 0) {
-            script->varTable[10] += 0x20000;
-        } else if (script->varTable[10] > 0x20000) {
-            script->varTable[10] -= 0x20000;
+            script->varTable[10] += script->varTable[13];
+        } else if (script->varTable[10] > script->varTable[13]) {
+            script->varTable[10] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[2] == 0) {
         script->varTable[11] += script->varTable[3];
         if (script->varTable[11] < 0) {
-            script->varTable[11] += 0x20000;
-        } else if (script->varTable[11] > 0x20000) {
-            script->varTable[11] -= 0x20000;
+            script->varTable[11] += script->varTable[13];
+        } else if (script->varTable[11] > script->varTable[13]) {
+            script->varTable[11] -= script->varTable[13];
         }
     }
 
     if (script->functionTemp[3] == 0) {
         script->varTable[12] += script->varTable[4];
         if (script->varTable[12] < 0) {
-            script->varTable[12] += 0x20000;
-        } else if (script->varTable[12] > 0x20000) {
-            script->varTable[12] -= 0x20000;
+            script->varTable[12] += script->varTable[13];
+        } else if (script->varTable[12] > script->varTable[13]) {
+            script->varTable[12] -= script->varTable[13];
         }
     }
 
@@ -110,19 +110,19 @@ API_CALLABLE(N(UpdateTexturePanStepped)) {
 }
 
 EvtScript N(EVS_UpdateTexturePan) = {
-    EVT_SET_GROUP(EVT_GROUP_00)
-    EVT_IF_EQ(LVar5, 1)
-        EVT_IF_EQ(LVar6, 1)
-            EVT_IF_EQ(LVar7, 1)
-                EVT_IF_EQ(LVar8, 1)
-                    EVT_CALL(N(UpdateTexturePanSmooth))
-                    EVT_RETURN
-                EVT_END_IF
-            EVT_END_IF
-        EVT_END_IF
-    EVT_END_IF
-    EVT_CALL(N(UpdateTexturePanStepped))
-    EVT_RETURN
-    EVT_END
+    SetGroup(EVT_GROUP_00)
+    IfEq(LVar5, 1)
+        IfEq(LVar6, 1)
+            IfEq(LVar7, 1)
+                IfEq(LVar8, 1)
+                    Call(N(UpdateTexturePanSmooth))
+                    Return
+                EndIf
+            EndIf
+        EndIf
+    EndIf
+    Call(N(UpdateTexturePanStepped))
+    Return
+    End
 };
 

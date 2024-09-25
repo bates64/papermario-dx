@@ -20,7 +20,7 @@ if [[ "$uname" == "Darwin" ]]; then
     fi
 
     # Install packages
-    brew install md5sha1sum ninja gcc nanaian/brew/mips-linux-gnu-binutils || exit 1
+    brew install md5sha1sum ninja gcc nanaian/brew/mips-linux-gnu-binutils nanaian/brew/mips-linux-gnu-gcc || exit 1
     python3 -m pip install -U -r requirements.txt || exit 1
     cp tools/precommit_check_no_assets.sh "$(git rev-parse --git-path hooks)/pre-commit" || exit 1
 
@@ -37,7 +37,7 @@ if cat /etc/os-release | grep -E 'ID=debian|ID_LIKE=(.*)debian' &> /dev/null; th
 
     echo "Installing packages for Debian or derivative (apt)"
 
-    ${SUDO} apt install -y curl git python3 python3-pip python3-setuptools build-essential binutils-mips-linux-gnu zlib1g-dev libyaml-dev ninja-build cpp-mips-linux-gnu || exit 1
+    ${SUDO} apt install -y curl git python3 python3-pip python3-setuptools build-essential binutils-mips-linux-gnu zlib1g-dev libyaml-dev ninja-build cpp-mips-linux-gnu gcc-mips-linux-gnu || exit 1
     python3 -m pip install -U -r requirements.txt
     cp tools/precommit_check_no_assets.sh "$(git rev-parse --git-path hooks)/pre-commit" || exit 1
 
@@ -99,7 +99,7 @@ if cat /etc/os-release | grep -E ID=fedora &> /dev/null; then
 fi
 
 # Arch Linux and derivatives (pacman)
-if cat /etc/os-release | grep -E 'ID=arch|ID_LIKE=arch' &> /dev/null; then
+if cat /etc/os-release | grep -E 'ID=arch|ID_LIKE="?arch"?' &> /dev/null; then
     supported=true
 
     echo "Installing packages for Arch Linux or derivative (pacman)"

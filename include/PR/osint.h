@@ -41,7 +41,6 @@ extern u32 __osShutdown;
 
 extern __OSEventState __osEventStateTab[OS_NUM_EVENTS];
 
-
 //not sure if this should be here
 extern s32 osViClock;
 extern void __osTimerServicesInit(void);

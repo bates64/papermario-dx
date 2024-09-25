@@ -107,9 +107,9 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldLakilester_TakeOut = {
-    EVT_CALL(N(TakeOut))
-    EVT_RETURN
-    EVT_END
+    Call(N(TakeOut))
+    Return
+    End
 };
 
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -198,9 +198,9 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldLakilester_Update = {
-    EVT_CALL(N(Update))
-    EVT_RETURN
-    EVT_END
+    Call(N(Update))
+    Return
+    End
 };
 
 void N(try_cancel_tweester)(Npc* lakilester) {
@@ -238,7 +238,7 @@ s32 N(can_dismount)(void) {
     f32 outX, outY, outZ, outLength;
     Npc* lakilester = get_npc_unsafe(NPC_PARTNER);
     s32 temp;
-    s32 hitResult;
+    HitID hitID;
     s32 canDismount;
     s32 entityType;
 
@@ -254,12 +254,12 @@ s32 N(can_dismount)(void) {
     outZ = playerStatus->pos.z;
     currentCamera = &gCameras[gCurrentCameraID];
     add_vec2D_polar(&outX, &outZ, 2.0f, currentCamera->curYaw);
-    hitResult = player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz,
+    hitID = player_raycast_below_cam_relative(playerStatus, &outX, &outY, &outZ, &outLength, &hitRx, &hitRz,
                                                       &hitDirX, &hitDirZ);
-    temp = hitResult;
+    temp = hitID;
 
     //TODO find better match
-    if (outLength <= 16.0f && temp >= 0) {
+    if (outLength <= 16.0f && temp > NO_COLLIDER) {
         if (!(temp & COLLISION_WITH_ENTITY_BIT) ||
             (entityType = get_entity_type(temp),
             !(entityType == ENTITY_TYPE_SIMPLE_SPRING || entityType == ENTITY_TYPE_SCRIPT_SPRING))
@@ -278,6 +278,7 @@ s32 N(can_dismount)(void) {
     return canDismount;
 }
 
+#if !VERSION_JP
 s32 N(test_mounting_height_adjustment)(Npc* lakilester, f32 height, f32 dist) {
     f32 x = gPlayerStatus.pos.x;
     f32 y = gPlayerStatus.pos.y + height;
@@ -306,6 +307,7 @@ s32 N(test_mounting_height_adjustment)(Npc* lakilester, f32 height, f32 dist) {
     }
     return FALSE;
 }
+#endif
 
 void N(apply_riding_static_collisions)(Npc* lakilester) {
     f32 radius = lakilester->collisionDiameter * 0.8f;
@@ -462,7 +464,7 @@ void N(update_riding_physics)(Npc* lakilester) {
             lakilester->pos.z += (z - lakilester->pos.z) / 5.0f;
         }
 
-        spawn_surface_effects(lakilester, SURFACE_INTERACT_RUN);
+        npc_surface_spawn_fx(lakilester, SURFACE_INTERACT_RUN);
 
     } else {
         moveAngle = 90.0f;
@@ -542,6 +544,37 @@ void N(update_riding_physics)(Npc* lakilester) {
         lakilester->jumpScale = 12.0f;
     }
 }
+
+#if VERSION_JP
+s32 N(test_mounting_height_adjustment)(Npc* lakilester, f32 height, f32 dist) {
+    f32 x = gPlayerStatus.pos.x;
+    f32 y = gPlayerStatus.pos.y + height;
+    f32 z = gPlayerStatus.pos.z;
+    f32 depth = dist;
+    f32 hitRx, hitRz;
+    f32 hitDirX, hitDirZ;
+    f32 deltaY;
+
+    N(MountingDeltaY) = 0;
+
+    if (npc_raycast_down_around(0, &x, &y, &z, &depth,
+            lakilester->yaw, lakilester->collisionDiameter))
+    {
+        deltaY = y - lakilester->moveToPos.y;
+        if (deltaY != 0.0f) {
+            if (fabs(deltaY) < 10.0) {
+                N(MountingDeltaY) = deltaY;
+                lakilester->moveToPos.y = y;
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+#endif
 
 s32 N(test_dismount_height)(f32* posY) {
     f32 colliderHeight = gPlayerStatus.colliderHeight;
@@ -643,7 +676,11 @@ API_CALLABLE(N(UseAbility)) {
 
     switch (N(AbilityState)) {
         case RIDE_STATE_BEGIN:
+#if VERSION_JP
+            if (playerStatus->inputDisabledCount != 0) {
+#else
             if (playerStatus->flags & PS_FLAG_HIT_FIRE || playerStatus->inputDisabledCount != 0) {
+#endif
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 return ApiStatus_DONE2;
             }
@@ -653,6 +690,7 @@ API_CALLABLE(N(UseAbility)) {
             N(AbilityState)++; // RIDE_STATE_DELAY
             break;
         case RIDE_STATE_DELAY:
+#if !VERSION_JP
             if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 if (N(LockingPlayerInput)) {
@@ -661,6 +699,7 @@ API_CALLABLE(N(UseAbility)) {
                 }
                 return ApiStatus_DONE2;
             }
+#endif
 
             if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount) {
@@ -733,7 +772,9 @@ API_CALLABLE(N(UseAbility)) {
             N(AbilityState)++;
             // fallthrough
         case RIDE_STATE_MOUNT_4:
+#if !VERSION_JP
             if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
+#endif
                 lakilester->pos.x += (lakilester->moveToPos.x - lakilester->pos.x) / lakilester->duration;
                 lakilester->pos.z += (lakilester->moveToPos.z - lakilester->pos.z) / lakilester->duration;
                 lakilester->pos.y += (lakilester->moveToPos.y - lakilester->pos.y) / lakilester->duration;
@@ -773,17 +814,27 @@ API_CALLABLE(N(UseAbility)) {
                     N(AbilityState) = RIDE_STATE_START_RIDING;
                     playerStatus->animFlags |= PA_FLAG_RIDING_PARTNER;
                 }
+#if !VERSION_JP
             } else {
                 N(AbilityState) = RIDE_STATE_FINISH_1;
             }
+#endif
             break;
         case RIDE_STATE_START_RIDING:
+#if !VERSION_JP
             if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
                 N(AbilityState) = RIDE_STATE_FINISH_1;
                 break;
             }
+#endif
             lakilester->duration--;
             if (lakilester->duration != 0) {
+#if VERSION_JP
+                if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
+                    N(AbilityState) = RIDE_STATE_FINISH_1;
+                    break;
+                }
+#endif
                 if (partnerStatus->pressedButtons & (BUTTON_B | D_CBUTTONS)) {
                     if (N(can_dismount)()) {
                         N(AbilityState) = RIDE_STATE_DISMOUNT_1;
@@ -939,9 +990,9 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldLakilester_UseAbility = {
-    EVT_CALL(N(UseAbility))
-    EVT_RETURN
-    EVT_END
+    Call(N(UseAbility))
+    Return
+    End
 };
 
 API_CALLABLE(N(PutAway)) {
@@ -1077,9 +1128,9 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldLakilester_PutAway = {
-    EVT_CALL(N(PutAway))
-    EVT_RETURN
-    EVT_END
+    Call(N(PutAway))
+    Return
+    End
 };
 
 void N(pre_battle)(Npc* lakilester) {
@@ -1207,9 +1258,7 @@ API_CALLABLE(N(EnterMap)) {
 }
 
 EvtScript EVS_WorldLakilester_EnterMap = {
-    EVT_CALL(N(EnterMap))
-    EVT_RETURN
-    EVT_END
+    Call(N(EnterMap))
+    Return
+    End
 };
-
-MATCHING_BSS(0xB0);

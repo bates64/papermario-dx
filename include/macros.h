@@ -4,35 +4,18 @@
 #include "types.h"
 #include "include_asm.h"
 
-#ifndef M2CTX
-
-#ifdef SHIFT
-#define SHIFT_BSS __attribute__ ((section (".bss")))
-#else
-#define SHIFT_BSS extern
-#endif
-
-#ifdef SHIFT
-#define MATCHING_BSS(size)
-#else
-#define MATCHING_BSS(size) static BSS u8 padding_bss[size];
-#endif
-
-#define BSS __attribute__ ((section (".bss")))
+#define BSS __attribute__ ((nocommon, section (".bss")))
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
-#else
-#define SHIFT_BSS static
-#define BSS static
-#define TRANSPARENT_UNION
-#endif
+
+#define ALIGNED(x) __attribute__((aligned(x)))
 
 #ifndef BBPLAYER
-# define ALIGNED(x) __attribute__((aligned(x)))
+# define OSALIGNED(x) ALIGNED(x)
 #else
-# define ALIGNED(x)
+# define OSALIGNED(x)
 #endif
 
-#define BBALIGNED(x) __attribute__((aligned(x)))
+# define BBALIGNED(x) ALIGNED(x)
 
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
@@ -44,42 +27,42 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
-#if !defined(PERMUTER) && !defined(M2CTX) && defined(OLD_GCC)
-#define NOP_FIX __asm__(".set nogpopt");
-#define NOP_UNFIX __asm__(".set gpopt");
-#else
-#define NOP_FIX
-#define NOP_UNFIX
-#endif
-
 #define PTR_LIST_END ((void*) -1)
 
 #define API_CALLABLE(name) ApiStatus name(Evt* script, b32 isInitialCall)
 
-// standardized padding macros for map overlays
-#define MAP_RODATA_PAD(n,name) const s32 N(rodata_pad_##name)[n] = {};
-#define MAP_STATIC_PAD(n,name) BSS s32 N(static_pad_##name)[n];
-
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
 
-#ifdef DEBUG
-#define IS_DEBUG_PANIC(statement, file, line) is_debug_panic(statement, file, line)
-#else
-#define IS_DEBUG_PANIC(statement, file, line) do {} while(TRUE)
-#endif
+//#ifdef DEBUG
+#define IS_DEBUG_PANIC(statement, file, line, func) is_debug_panic(statement, file, line, func)
+/*#else
+#define IS_DEBUG_PANIC(statement, file, line, func) do {} while(TRUE)
+#endif*/
 
-#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__)
+#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
+#define PANIC_MSG(msg, args...) \
+    do { \
+        char panicMsg[0x40]; \
+        sprintf(panicMsg, msg, ##args); \
+        IS_DEBUG_PANIC(msg, __FILE__, __LINE__, __func__); \
+    } while (0)
 #define ASSERT(condition) \
     if (!(condition)) { \
-        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__); \
+        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__, __func__); \
+    }
+#define ASSERT_MSG(condition, msg, args...) \
+    if (!(condition)) { \
+        char assertMsg[0x40]; \
+        sprintf(assertMsg, msg, ##args); \
+        IS_DEBUG_PANIC(assertMsg, __FILE__, __LINE__, __func__); \
     }
 
 #define BADGE_MENU_PAGE(index) (&gPauseBadgesPages[index])
 #define ITEM_MENU_PAGE(index) (&gPauseItemsPages[index])
 
 #define MENU_PANEL_SELECTED_GRID_DATA(panel) \
-    (panel)->gridData[(panel)->page * (panel)->numCols * (panel)->numRows + \
+    (panel)->gridData[(panel)->state * (panel)->numCols * (panel)->numRows + \
                       (panel)->numCols * (panel)->row + \
                       (panel)->col]
 
@@ -115,7 +98,7 @@
 #define WORLD_ENTITY_HEAP_SIZE 0x17FF0
 #define COLLISION_HEAP_SIZE 0x18000
 #define GENERAL_HEAP_SIZE 0x54000
-#define SPRITE_HEAP_SIZE 0x40000
+#define SPRITE_HEAP_SIZE 0x60000
 #define BATTLE_HEAP_SIZE 0x25800
 #define FRAME_BUFFER_SIZE 0x25800
 
@@ -276,7 +259,7 @@
 
 #define PACK_PAL_RGBA(r, g, b, a) (((r) << 11) | ((g) << 6) | ((b) << 1) | (a));
 
-#define PM_RM_TILEMODE_B    GBL_c1(G_BL_CLR_BL, G_BL_A_FOG, G_BL_CLR_IN, G_BL_1MA)
+#define PM_RM_SHROUD    GBL_c1(G_BL_CLR_BL, G_BL_A_FOG, G_BL_CLR_IN, G_BL_1MA)
 
 #define PM_CC_01        0, 0, 0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0
 #define PM_CC_02        0, 0, 0, TEXEL0, TEXEL0, 0, PRIMITIVE, 0
@@ -288,59 +271,99 @@
 #define PM_CC_PRIM_FULL_ALPHA       0, 0, 0, PRIMITIVE, 0, 0, 0, 1
 #define PM_CC_PRIM_NO_ALPHA         0, 0, 0, PRIMITIVE, 0, 0, 0, 0
 #define PM_CC_0A        0, 0, 0, 0, ENVIRONMENT, 0, TEXEL0, 0
+
 #define PM_CC_0B        0, 0, 0, 0, ENVIRONMENT, 0, TEXEL1, 0
-#define PM_CC_0C        0, 0, 0, 0, 0, 0, 0, COMBINED
 #define PM_CC_0D        0, 0, 0, 0, SHADE, 0, TEXEL1, 0
+#define PM_CC_0C        0, 0, 0, 0, 0, 0, 0, COMBINED
+
 #define PM_CC_0E        0, 0, 0, TEXEL0, 0, 0, 0, 0
 #define PM_CC_0F        0, 0, 0, TEXEL0, 0, 0, 0, 1
 #define PM_CC_10        0, 0, 0, TEXEL0, 0, 0, 0, PRIMITIVE
 #define PM_CC_11        0, 0, 0, TEXEL0, SHADE, 0, TEXEL0, 0
 #define PM_CC_12        0, 0, 0, TEXEL0, TEXEL0, 0, SHADE, 0
-#define PM_CC_13        TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, TEXEL1
+
+#define PM_CC_MSG_UP_ARROW \
+    TEXEL0, 0, PRIMITIVE, 0, \
+    0, 0, 0, TEXEL1
 
 #define PM_CC_14        PRIMITIVE, ENVIRONMENT, TEXEL1, ENVIRONMENT, PRIMITIVE, 0, TEXEL1, 0
 #define PM_CC_15        PRIMITIVE, ENVIRONMENT, TEXEL1, ENVIRONMENT, 0, 0, 0, TEXEL1
 
-#define PM_CC_16        COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED
+// multiply the combined color from cycle1 with PRIMITIVE color; PRIMITIVE alpha is ignored
+#define PM_CC2_MULTIPLY_PRIM    COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED
 
-// (COMB * PRIM) + ENV
-#define PM_CC_17        COMBINED, 0, PRIMITIVE, ENVIRONMENT, 0, 0, 0, COMBINED
-
-#define PM_CC_18        COMBINED, 0, SHADE, 0, 0, 0, 0, COMBINED
-#define PM_CC_19        COMBINED, 0, SHADE, PRIMITIVE, 0, 0, 0, COMBINED
-#define PM_CC_1B        COMBINED, 0, PRIMITIVE, ENVIRONMENT, COMBINED, 0, SHADE, 0
+// multiply the combined color from cycle1 with SHADE color; SHADE alpha is ignored
+#define PM_CC2_MULTIPLY_SHADE   COMBINED, 0, SHADE, 0, 0, 0, 0, COMBINED
 
 #define PM_CC_NOISE     NOISE, 0, SHADE_ALPHA, 0, 0, 0, 0, 1
 
 #define PM_CC_1A        TEXEL0, 0, PRIMITIVE_ALPHA, PRIMITIVE, 0, 0, 0, TEXEL0
 
 // implements ENV_TINT_DEPTH for untextured models
-// applies just the base color; depth-based fog color will be added during RPD blend step
+// applies just the base color; depth-based fog color will be added during RDP blend step
 // color = SHADE * PRIM_ALPHA + PRIM
 // alpha = SHADE
-#define PM_CC_NOTEX_TINT_FOG \
-    SHADE, 0, PRIMITIVE_ALPHA, PRIMITIVE, 0, 0, 0, SHADE
+#define PM_CC_TINT_DEPTH_NOTEX \
+    SHADE, 0, PRIMITIVE_ALPHA, PRIMITIVE, \
+    0, 0, 0, SHADE
+
+// implements ENV_TINT_DEPTH for single-textured or mipmaped models
+// applies just the base color; depth-based fog color will be added during RDP blend step
+// color = COMB * PRIM_ALPHA + PRIM
+// alpha = COMB
+#define PM_CC_TINT_DEPTH_NO_SHADE \
+    COMBINED, 0, PRIMITIVE_ALPHA, PRIMITIVE, \
+    0, 0, 0, COMBINED
+
+// color = (COMB - PRIM) * PRIM_ALPHA + COMB
+// alpha = COMB
+#define PM_CC_20 \
+    COMBINED, PRIMITIVE, PRIMITIVE_ALPHA, COMBINED, \
+    0, 0, 0, COMBINED
+
+#define PM_CC_TINT_DEPTH_MIPMAPS \
+    COMBINED, 0, SHADE, PRIMITIVE, \
+    0, 0, 0, COMBINED
 
 // implements ENV_TINT_REMAP for untextured models
 // color = SHADE * PRIM + ENV
 // alpha = SHADE
-#define PM_CC_NOTEX_TINT_REMAP \
-    SHADE, 0, PRIMITIVE, ENVIRONMENT, 0, 0, 0, SHADE
+#define PM_CC_TINT_REMAP_NOTEX \
+    SHADE, 0, PRIMITIVE, ENVIRONMENT, \
+    0, 0, 0, SHADE
 
-#define PM_CC_20        COMBINED, PRIMITIVE, PRIMITIVE_ALPHA, COMBINED, 0, 0, 0, COMBINED
-#define PM_CC_21        COMBINED, 0, PRIMITIVE_ALPHA, PRIMITIVE, 0, 0, 0, COMBINED
+// implements ENV_TINT_REMAP for single-textured or mipmaped models
+// NOTE: SHADE color is not used
+// color = COMB * PRIM + ENV
+// alpha = COMB
+#define PM_CC_TINT_REMAP_NO_SHADE \
+    COMBINED, 0, PRIMITIVE, ENVIRONMENT, \
+    0, 0, 0, COMBINED
+
+// implements ENV_TINT_REMAP for multi-textured models
+// only SHADE alpha is used
+// color = COMB * PRIM + ENV
+// alpha = COMB * SHADE
+#define PM_CC_TINT_REMAP_SHADE_ALPHA \
+    COMBINED, 0, PRIMITIVE, ENVIRONMENT, \
+    COMBINED, 0, SHADE, 0
+
 #define PM_CC_22        TEXEL0, TEXEL1, SHADE_ALPHA, TEXEL1, 0, 0, 0, TEXEL0
 #define PM_CC_23        1, TEXEL0, PRIMITIVE, TEXEL0, 0, 0, 0, TEXEL0
 #define PM_CC1_24       1, TEXEL0, PRIMITIVE, TEXEL0, 1, TEXEL0, TEXEL1, TEXEL0
 #define PM_CC2_24       1, TEXEL1, TEXEL0, COMBINED, 0, 0, 0, COMBINED
-#define PM_CC_26        0, 0, 0, 0, TEXEL0, TEXEL1, SHADE, 0
-#define PM_CC_27        0, 0, 0, SHADE, 0, 0, 0, COMBINED
-#define PM_CC_28        SHADE, 0, PRIMITIVE, ENVIRONMENT, 0, 0, 0, COMBINED
+
+#define PM_CC_TEX_COMBINE_3A        0, 0, 0, 0, TEXEL0, TEXEL1, SHADE, 0
+#define PM_CC_TEX_COMBINE_3B        0, 0, 0, SHADE, 0, 0, 0, COMBINED
+#define PM_CC_TEX_COMBINE_3C        SHADE, 0, PRIMITIVE, ENVIRONMENT, 0, 0, 0, COMBINED
 
 #define PM_CC1_29        TEXEL0, SHADE,    TEXEL0,       TEXEL0, 1, TEXEL1, TEXEL0, TEXEL1
 #define PM_CC2_29        TEXEL0, COMBINED, TEXEL0_ALPHA, TEXEL0, 1, TEXEL0, TEXEL1, TEXEL0
 
-#define	PM_CC_ALT_INTERFERENCE  TEXEL1, 0, TEXEL0, 0, TEXEL1, 0, TEXEL0, 0
+// same as G_CC_INTERFERENCE, except the roles of TEXEL0 and TEXEL1 are swapped
+#define	PM_CC_ALT_INTERFERENCE  \
+    TEXEL1, 0, TEXEL0, 0, \
+    TEXEL1, 0, TEXEL0, 0
 
 #define PM_CC_2B    PRIMITIVE, 0, TEXEL1, 0, 0, 0, 0, TEXEL1
 #define PM_CC_2C    PRIMITIVE, 0, TEXEL1, 0, TEXEL1, 0, PRIMITIVE, 0
@@ -361,13 +384,14 @@
 #define PM_CC_39    TEXEL1, K4, COMBINED_ALPHA, COMBINED, 0, 0, 0, 1
 
 #define PM_CC_3A    0, 0, 0, PRIMITIVE, 1, TEXEL0, PRIMITIVE, TEXEL0
-#define PM_CC_3B    0, 0, 0, SHADE, 1, 0, PRIMITIVE, 0
+
+#define PM_CC_SCREEN_OVERLAY \
+    0, 0, 0, SHADE, \
+    1, 0, PRIMITIVE, 0
 
 #define PM_CC_3C    0, 0, 0, PRIMITIVE, SHADE, 0, PRIMITIVE, 0
 
 #define PM_CC_3D    SHADE, ENVIRONMENT, TEXEL0, TEXEL0, PRIMITIVE, 0, TEXEL0, 0
-
-#define PM_CC_3E    0, 0, 0, COMBINED, 0, 0, 0, PRIMITIVE
 
 #define PM_CC_3F    TEXEL0, 0, SHADE, 0, SHADE, 0, PRIMITIVE, 0
 
@@ -385,6 +409,10 @@
 // color = TEXEL0 * SHADE
 // alpha = PRIM
 #define PM_CC_KKJ_SPILL_LIGHT   TEXEL0, 0, SHADE, 0, 0, 0, 0, PRIMITIVE
+
+// color = pass from cycle1
+// alpha = PRIM
+#define PM_CC_KKJ14_FIRE    0, 0, 0, COMBINED, 0, 0, 0, PRIMITIVE
 
 // color = SHADE + PRIM
 // alpha = PRIMITIVE * TEXEL0
@@ -476,10 +504,6 @@
 #define VLA
 #endif
 
-#ifdef M2CTX
-#define VLA 0
-#endif
-
 #if VERSION_PAL
 #define DT (50.0f/60.0f)
 #else
@@ -487,5 +511,102 @@
 #endif
 
 #define DMA_COPY_SEGMENT(segment) dma_copy(segment##_ROM_START, segment##_ROM_END, segment##_VRAM)
+
+#ifdef __GNUC__
+#define NODISCARD __attribute__((warn_unused_result))
+#else
+#define NODISCARD
+#endif
+
+// Avoid compiler warnings for unused variables.
+#ifdef __GNUC__
+#define UNUSED __attribute__((unused))
+#else
+#define UNUSED
+#endif
+
+// Avoid undefined behaviour for non-returning functions.
+#ifdef __GNUC__
+#define NORETURN __attribute__((noreturn))
+#else
+#define NORETURN
+#endif
+
+// Always inline a function.
+#ifdef __GNUC__
+#define ALWAYS_INLINE inline __attribute__((always_inline))
+#else
+#define ALWAYS_INLINE inline
+#endif
+
+// Fall through a switch case.
+#ifdef __GNUC__
+#define FALL_THROUGH __attribute__((fallthrough))
+#else
+#define FALL_THROUGH
+#endif
+
+// Use Og when compiling the function.
+#ifdef __GNUC__
+#define OPTIMIZE_OG __attribute__((optimize("Og")))
+#else
+#define OPTIMIZE_OG
+#endif
+
+// Use Os when compiling the function.
+#ifdef __GNUC__
+#define OPTIMIZE_OS __attribute__((optimize("Os")))
+#else
+#define OPTIMIZE_OS
+#endif
+
+// Use Ofast when compiling the function.
+#ifdef __GNUC__
+#define OPTIMIZE_OFAST __attribute__((optimize("Ofast")))
+#else
+#define OPTIMIZE_OFAST
+#endif
+
+// Ignore 4-byte alignment in structs.
+#ifdef __GNUC__
+#define PACKED __attribute__((packed))
+#else
+#define PACKED
+#endif
+
+// Align to 4-byte boundary.
+#ifdef __GNUC__
+#define ALIGNED4 __attribute__((aligned(4)))
+#else
+#define ALIGNED4
+#endif
+
+// Align to 8-byte boundary (for DMA requirements).
+#ifdef __GNUC__
+#define ALIGNED8 __attribute__((aligned(8)))
+#else
+#define ALIGNED8
+#endif
+
+// Align to 16-byte boundary (for audio lib requirements).
+#ifdef __GNUC__
+#define ALIGNED16 __attribute__((aligned(16)))
+#else
+#define ALIGNED16
+#endif
+
+// Align to 32-byte boundary.
+#ifdef __GNUC__
+#define ALIGNED32 __attribute__((aligned(32)))
+#else
+#define ALIGNED32
+#endif
+
+// Align to 64-byte boundary.
+#ifdef __GNUC__
+#define ALIGNED64 __attribute__((aligned(64)))
+#else
+#define ALIGNED64
+#endif
 
 #endif

@@ -39,29 +39,27 @@
 #include "partner/twink.h"
 #include "sprite/npc/Twink.h"
 
-extern s32 D_8010CD20;
-
-SHIFT_BSS PartnerStatus gPartnerStatus;
-SHIFT_BSS Npc* wPartnerNpc;
+PartnerStatus gPartnerStatus;
+Npc* wPartnerNpc;
 
 BSS s32 PartnerCommandState;
 BSS PlayerPathElement gPlayerMoveHistory[40];
 BSS s32 gPlayerMoveHistoryIndex;
 BSS s32 D_8010CFBC;
-SHIFT_BSS f32 wPartnerTetherDistance;
-SHIFT_BSS s32 D_8010CFC4;
-SHIFT_BSS s16 wPartnerFollowState;
-SHIFT_BSS s16 D_8010CFCA;
-SHIFT_BSS s16 D_8010CFCC;
-SHIFT_BSS s16 D_8010CFCE;
-SHIFT_BSS s32 wPartnerNpcIndex;
-SHIFT_BSS Evt* wPartnerCurrentScript;
-SHIFT_BSS s32 wCurrentPartnerId;
-SHIFT_BSS s32 wPartnerCurrentScriptID;
-SHIFT_BSS s32 D_8010CFE0;
-SHIFT_BSS s32 NextPartnerID;
-SHIFT_BSS s32 NextPartnerCommand;
-SHIFT_BSS WorldPartner* wPartner;
+BSS f32 wPartnerTetherDistance;
+BSS s32 D_8010CFC4;
+BSS s16 wPartnerFollowState;
+BSS s16 D_8010CFCA;
+BSS s16 D_8010CFCC;
+BSS s16 D_8010CFCE;
+BSS s32 wPartnerNpcIndex;
+BSS Evt* wPartnerCurrentScript;
+BSS s32 wCurrentPartnerId;
+BSS s32 wPartnerCurrentScriptID;
+BSS s32 D_8010CFE0;
+BSS s32 NextPartnerID;
+BSS s32 NextPartnerCommand;
+BSS WorldPartner* wPartner;
 
 extern HudScript HES_Partner0;
 extern HudScript HES_Goombario;
@@ -115,45 +113,6 @@ extern HudScript HES_StatusSPIncrement7;
 
 extern EvtScript EVS_World_UseItem;
 
-#if VERSION_JP // TODO remove once segments are split
-extern Addr world_use_item_ROM_START;
-extern Addr world_use_item_ROM_END;
-extern Addr world_use_item_VRAM;
-extern Addr world_partner_goombario_ROM_START;
-extern Addr world_partner_goombario_ROM_END;
-extern Addr world_partner_goombario_VRAM;
-extern Addr world_partner_kooper_ROM_START;
-extern Addr world_partner_kooper_ROM_END;
-extern Addr world_partner_kooper_VRAM;
-extern Addr world_partner_bombette_ROM_START;
-extern Addr world_partner_bombette_ROM_END;
-extern Addr world_partner_bombette_VRAM;
-extern Addr world_partner_parakarry_ROM_START;
-extern Addr world_partner_parakarry_ROM_END;
-extern Addr world_partner_parakarry_VRAM;
-extern Addr world_partner_goompa_ROM_START;
-extern Addr world_partner_goompa_ROM_END;
-extern Addr world_partner_goompa_VRAM;
-extern Addr world_partner_watt_ROM_START;
-extern Addr world_partner_watt_ROM_END;
-extern Addr world_partner_watt_VRAM;
-extern Addr world_partner_sushie_ROM_START;
-extern Addr world_partner_sushie_ROM_END;
-extern Addr world_partner_sushie_VRAM;
-extern Addr world_partner_lakilester_ROM_START;
-extern Addr world_partner_lakilester_ROM_END;
-extern Addr world_partner_lakilester_VRAM;
-extern Addr world_partner_bow_ROM_START;
-extern Addr world_partner_bow_ROM_END;
-extern Addr world_partner_bow_VRAM;
-extern Addr world_partner_goombaria_ROM_START;
-extern Addr world_partner_goombaria_ROM_END;
-extern Addr world_partner_goombaria_VRAM;
-extern Addr world_partner_twink_ROM_START;
-extern Addr world_partner_twink_ROM_END;
-extern Addr world_partner_twink_VRAM;
-#endif
-
 s32 partner_is_idle(Npc* partner);
 s32 world_partner_can_open_menus_default(Npc* partner);
 void _use_partner_ability(void);
@@ -195,12 +154,7 @@ HudScript* SPStarHudScripts[] = { &HES_StatusStar1, &HES_StatusStar3, &HES_Statu
 };
 
 s32 StatusBarSPIncrementOffsets[] = { -1, 1, 2, 4, 5, 7, 8, 0, 0, 0 };
-UseItemStruct UseItemDmaArgs = {
-    world_use_item_ROM_START,
-    world_use_item_ROM_END,
-    &EVS_World_UseItem,
-    0
-};
+
 s32 D_800F8020 = 0;
 s32 wPartnerMoveGoalX = 0;
 s32 wPartnerMoveGoalZ = 0;
@@ -513,7 +467,14 @@ PartnerAnimations gPartnerAnimations[] = {
     }},
 };
 
-f32 D_800F84F8 = 0.0f;
+UseItemStruct UseItemDmaArgs = {
+    world_use_item_ROM_START,
+    world_use_item_ROM_END,
+    &EVS_World_UseItem,
+    0
+};
+
+BSS s32 D_8010CD20;
 
 s32 use_consumable(s32 invSlot) {
     Evt* script;
@@ -528,8 +489,10 @@ s32 use_consumable(s32 invSlot) {
 
 void remove_consumable(void) {
     gPlayerData.invItems[D_8010CD20] = ITEM_NONE;
-    sort_items();
+    sort_consumables();
 }
+
+f32 D_800F84F8 = 0.0f;
 
 s32 func_800EA4B0(s32 collisionID) {
     s32 ret = TRUE;
@@ -1046,7 +1009,7 @@ void partner_reset_data(void) {
     wCurrentPartnerId = currentPartner;
 
     if (gGameStatusPtr->keepUsingPartnerOnMapChange) {
-        gPartnerStatus.partnerActionState = 1;
+        gPartnerStatus.partnerActionState = PARTNER_ACTION_USE;
         gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
     }
 
@@ -1356,7 +1319,7 @@ void partner_walking_follow_player(Npc* partner) {
             }
             partner->yaw = yaw;
             npc_move_heading(partner, partner->moveSpeed, partner->yaw);
-            spawn_surface_effects(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
+            npc_surface_spawn_fx(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
             surfaceType = get_collider_flags(partner->curFloor);
             if (surfaceType == SURFACE_TYPE_SPIKES
                 || surfaceType == SURFACE_TYPE_LAVA
@@ -1473,7 +1436,7 @@ void partner_walking_follow_player(Npc* partner) {
                         partner->jumpVel = 0.0f;
                         partner->pos.y = y;
                         partner->yaw = atan2(x, z, playerStatus->pos.x, playerStatus->pos.z);
-                        spawn_surface_effects(partner, SURFACE_INTERACT_LAND);
+                        npc_surface_spawn_fx(partner, SURFACE_INTERACT_LAND);
                         wPartnerFollowState = 0;
                         distance = dist2D(partner->pos.x, partner->pos.z, partner->moveToPos.x, partner->moveToPos.z);
                         if (distance < 5.0) {
@@ -1549,7 +1512,7 @@ void partner_walking_follow_player(Npc* partner) {
                     }
                     partner->yaw = yaw;
                     npc_move_heading(partner, partner->moveSpeed, yaw);
-                    spawn_surface_effects(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
+                    npc_surface_spawn_fx(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
                     distance = 1000.0f;
                     x = partner->pos.x;
                     z = partner->pos.z;
@@ -1668,7 +1631,7 @@ void partner_walking_follow_player(Npc* partner) {
                         partner->moveSpeed = wPartnerMoveSpeed;
                         partner->yaw = D_800F8034;
                         npc_move_heading(partner, partner->moveSpeed, partner->yaw);
-                        spawn_surface_effects(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
+                        npc_surface_spawn_fx(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
                     } else {
                         partner_clear_player_tracking(partner);
                         partner->moveSpeed = 0.0f;
@@ -1729,7 +1692,7 @@ void partner_walking_follow_player(Npc* partner) {
                 partner->jumpVel = 0.0f;
                 partner->pos.y = y;
                 partner->yaw = atan2(x, z, playerStatus->pos.x, playerStatus->pos.z);
-                spawn_surface_effects(partner, SURFACE_INTERACT_LAND);
+                npc_surface_spawn_fx(partner, SURFACE_INTERACT_LAND);
                 wPartnerFollowState = 50;
             }
             break;
@@ -1845,7 +1808,7 @@ void partner_flying_update_motion(Npc* partner) {
     z = partner->pos.z;
 
     hitDepth = partner->collisionHeight * 0.5f;
-    if (npc_raycast_up(0, &x, &y, &z, &hitDepth) != 0) {
+    if (npc_raycast_up(0, &x, &y, &z, &hitDepth)) {
         D_800F8020 = 1;
         wSavedPartnerPosX = partner->pos.x;
         wSavedPartnerPosY = partner->pos.y;
@@ -2325,7 +2288,7 @@ s32 partner_get_out(Npc* partner) {
                 add_vec2D_polar(&x, &z, 2.0f, gCameras[gCurrentCameraID].curYaw);
                 hitDepth = 1000.0f;
                 if (npc_raycast_down_around(COLLIDER_FLAG_IGNORE_PLAYER, &x, &y, &z, &hitDepth, partner->yaw, partner->collisionDiameter)) {
-                    // @bug? collider flags not properly masked with COLLIDER_FLAG_SURFACE_TYPE
+                    /// @bug? collider flags not properly masked with COLLIDER_FLAG_SURFACE_TYPE
                     s32 surfaceType = get_collider_flags(NpcHitQueryColliderID);
 
                     if ((surfaceType == SURFACE_TYPE_SPIKES || surfaceType == SURFACE_TYPE_LAVA) || (hitDepth > 100.0f)) {
@@ -2408,7 +2371,7 @@ s32 partner_get_out(Npc* partner) {
             partner->pos.z = partner->moveToPos.z;
             if (partner->flags & NPC_FLAG_GROUNDED) {
                 if (!wPartner->isFlying) {
-                    spawn_surface_effects(partner, SURFACE_INTERACT_LAND);
+                    npc_surface_spawn_fx(partner, SURFACE_INTERACT_LAND);
                 }
             }
             return TRUE;
@@ -2539,10 +2502,10 @@ void partner_do_player_collision(Npc* partner) {
     f32 partnerScreenZ;
     f32 W;
 
-    transform_point(gCameras[CAM_DEFAULT].perspectiveMatrix,
+    transform_point(gCameras[CAM_DEFAULT].mtxPerspective,
                     playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, 1.0f,
                     &playerScreenX, &playerScreenY, &playerScreenZ, &W);
-    transform_point(gCameras[CAM_DEFAULT].perspectiveMatrix, partner->pos.x, partner->pos.y, partner->pos.z, 1.0f,
+    transform_point(gCameras[CAM_DEFAULT].mtxPerspective, partner->pos.x, partner->pos.y, partner->pos.z, 1.0f,
                     &partnerScreenX, &partnerScreenY, &partnerScreenZ, &W);
     playerScreenX = fabsf(playerScreenX - partnerScreenX);
     playerScreenY = fabsf(playerScreenY - partnerScreenY);
@@ -2623,7 +2586,7 @@ void partner_move_to_goal(Npc* partner, s32 isFlying) {
                     npc_move_heading(partner, partner->moveSpeed, partner->yaw);
                 }
 
-                spawn_surface_effects(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
+                npc_surface_spawn_fx(partner, (partner->moveSpeed < 4.0) ? SURFACE_INTERACT_WALK : SURFACE_INTERACT_RUN);
             } else {
                 partner->flags &= ~NPC_FLAG_IGNORE_WORLD_COLLISION;
                 partner->curAnim = gPartnerAnimations[wCurrentPartnerId].idle;

@@ -1,9 +1,11 @@
 #include "common.h"
+#include "vars_access.h"
 
 extern u32* gMapFlags;
 extern s32* gMapVars;
 
 extern char evtDebugPrintBuffer[0x100];
+Bytecode* EvtCallingLine;
 
 Bytecode* evt_find_label(Evt* script, s32 arg1);
 Bytecode* evt_skip_if(Evt* script);
@@ -21,7 +23,7 @@ f32 evt_fixed_var_to_float(Bytecode scriptVar) {
 }
 
 Bytecode evt_float_to_fixed_var(f32 value) {
-    // not equivalent to hte EVT_FLOAT_TO_FIXED() macro due to the s32 cast
+    // not equivalent to the FLOAT_TO_FIXED() macro due to the s32 cast
     // occuring *before* the add here and *after* the add in the macro
     return (s32)(value * 1024.0f) + -EVT_FIXED_OFFSET;
 }
@@ -698,13 +700,12 @@ ApiStatus evt_handle_get_1_word(Evt* script) {
 ApiStatus evt_handle_get_2_word(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
 
     var = *args++;
     evt_set_variable(script, var, *script->buffer++);
 
-    var2 = *args++;
-    evt_set_variable(script, var2, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
     return ApiStatus_DONE2;
 }
@@ -712,17 +713,15 @@ ApiStatus evt_handle_get_2_word(Evt* script) {
 ApiStatus evt_handle_get_3_word(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
-    Bytecode var3;
 
     var = *args++;
     evt_set_variable(script, var, *script->buffer++);
 
-    var2 = *args++;
-    evt_set_variable(script, var2, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
-    var3 = *args++;
-    evt_set_variable(script, var3, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
     return ApiStatus_DONE2;
 }
@@ -730,21 +729,18 @@ ApiStatus evt_handle_get_3_word(Evt* script) {
 ApiStatus evt_handle_get_4_word(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
-    Bytecode var3;
-    Bytecode var4;
 
     var = *args++;
     evt_set_variable(script, var, *script->buffer++);
 
-    var2 = *args++;
-    evt_set_variable(script, var2, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
-    var3 = *args++;
-    evt_set_variable(script, var3, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
-    var4 = *args++;
-    evt_set_variable(script, var4, *script->buffer++);
+    var = *args++;
+    evt_set_variable(script, var, *script->buffer++);
 
     return ApiStatus_DONE2;
 }
@@ -772,13 +768,12 @@ ApiStatus evt_handle_get_1_float(Evt* script) {
 ApiStatus evt_handle_get_2_float(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
 
     var = *args++;
     evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var2 = *args++;
-    evt_set_float_variable(script, var2, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
     return ApiStatus_DONE2;
 }
@@ -786,17 +781,15 @@ ApiStatus evt_handle_get_2_float(Evt* script) {
 ApiStatus evt_handle_get_3_float(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
-    Bytecode var3;
 
     var = *args++;
     evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var2 = *args++;
-    evt_set_float_variable(script, var2, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var3 = *args++;
-    evt_set_float_variable(script, var3, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
     return ApiStatus_DONE2;
 }
@@ -804,21 +797,18 @@ ApiStatus evt_handle_get_3_float(Evt* script) {
 ApiStatus evt_handle_get_4_float(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Bytecode var;
-    Bytecode var2;
-    Bytecode var3;
-    Bytecode var4;
 
     var = *args++;
     evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var2 = *args++;
-    evt_set_float_variable(script, var2, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var3 = *args++;
-    evt_set_float_variable(script, var3, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
-    var4 = *args++;
-    evt_set_float_variable(script, var4, evt_get_float_variable(script, *script->buffer++));
+    var = *args++;
+    evt_set_float_variable(script, var, evt_get_float_variable(script, *script->buffer++));
 
     return ApiStatus_DONE2;
 }
@@ -854,44 +844,42 @@ ApiStatus evt_handle_allocate_array(Evt* script) {
 }
 
 ApiStatus evt_handle_AND(Evt* script) {
-    Bytecode var = script->ptrReadPos[0];
-    s32 val = evt_get_variable(script, script->ptrReadPos[1]);
+    Bytecode* args = script->ptrReadPos;
+    s32 var = *args++;
+    s32 bits = evt_get_variable(script, *args++);
+    s32 prev = evt_get_variable(script, var);
 
-    val &= evt_get_variable(script, var);
-    evt_set_variable(script, var, val);
+    evt_set_variable(script, var, prev & bits);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_AND_const(Evt* script) {
-    Bytecode* ptrReadPos = script->ptrReadPos;
-    // todo improve
-    s32 constant = ptrReadPos[0]; // NOLINT
-    s32 var = ptrReadPos[0];
+    Bytecode* args = script->ptrReadPos;
+    s32 var = *args++;
+    s32 bits = *args++;
+    s32 prev = evt_get_variable(script, var);
 
-    constant = ptrReadPos[1];
-
-    evt_set_variable(script, var, constant & evt_get_variable(script, var));
+    evt_set_variable(script, var, prev & bits);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_OR(Evt* script) {
-    Bytecode var = script->ptrReadPos[0];
-    s32 val = evt_get_variable(script, script->ptrReadPos[1]);
+    Bytecode* args = script->ptrReadPos;
+    s32 var = *args++;
+    s32 bits = evt_get_variable(script, *args++);
+    s32 prev = evt_get_variable(script, var);
 
-    val |= evt_get_variable(script, var);
-    evt_set_variable(script, var, val);
+    evt_set_variable(script, var, prev | bits);
     return ApiStatus_DONE2;
 }
 
 ApiStatus evt_handle_OR_const(Evt* script) {
-    Bytecode* ptrReadPos = script->ptrReadPos;
-    // todo improve
-    s32 constant = ptrReadPos[0]; // NOLINT
-    s32 var = ptrReadPos[0];
+    Bytecode* args = script->ptrReadPos;
+    s32 var = *args++;
+    s32 bits = *args++;
+    s32 prev = evt_get_variable(script, var);
 
-    constant = ptrReadPos[1];
-
-    evt_set_variable(script, var, constant | evt_get_variable(script, var));
+    evt_set_variable(script, var, prev | bits);
     return ApiStatus_DONE2;
 }
 
@@ -900,6 +888,7 @@ ApiStatus evt_handle_call(Evt* script) {
     s32 isInitialCall;
     ApiFunc func;
     ApiStatus ret;
+    EvtCallingLine = script->ptrCurLine;
 
     if (script->blocked) {
         isInitialCall = FALSE;
@@ -915,6 +904,7 @@ ApiStatus evt_handle_call(Evt* script) {
         ret = func(script, isInitialCall);
     }
 
+    EvtCallingLine = NULL;
     return ret;
 }
 
@@ -1047,7 +1037,7 @@ ApiStatus evt_handle_bind(Evt* script) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus DeleteTrigger(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DeleteTrigger) {
     delete_trigger((Trigger*)evt_get_variable(script, *script->ptrReadPos));
     return ApiStatus_DONE2;
 }
@@ -1243,8 +1233,6 @@ s32 evt_handle_print_debug_var(Evt* script) {
     s32 var = *args++;
     s32 flagBitPos;
 
-    do {} while (0);
-
     if (var <= EVT_LIMIT) {
         sprintf(evtDebugPrintBuffer, "ADDR     [%08X]", var);
     } else if (var <= EVT_FIXED_CUTOFF) {
@@ -1308,15 +1296,11 @@ s32 evt_handle_print_debug_var(Evt* script) {
         sprintf(evtDebugPrintBuffer, "LF(%3d)  [%d]", var, script->varFlags[var / 32] & (1 << flagBitPos));
     } else if (var <= EVT_MAP_VAR_CUTOFF) {
         s32 mapVar;
-        s32 temp;
 
-        do {
-            var = EVT_INDEX_OF_MAP_VAR(var);
-            mapVar = gMapVars[var];
-            temp = EVT_LIMIT;
-        } while (0);
+        var = EVT_INDEX_OF_MAP_VAR(var);
+        mapVar = gMapVars[var];
 
-        if (mapVar <= temp) {
+        if (mapVar <= EVT_LIMIT) {
             sprintf(evtDebugPrintBuffer, "GW(%3d)  [%08X]", mapVar);
         } else if (mapVar <= EVT_FIXED_CUTOFF) {
             sprintf(evtDebugPrintBuffer, "GW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(mapVar));
@@ -1328,8 +1312,6 @@ s32 evt_handle_print_debug_var(Evt* script) {
 
         var = EVT_INDEX_OF_LOCAL_VAR(var);
         tableVar = script->varTable[var];
-
-        do {} while (0);
 
         if (tableVar <= EVT_LIMIT) {
             sprintf(evtDebugPrintBuffer, "LW(%3d)  [%08X]", tableVar);
@@ -1366,10 +1348,15 @@ ApiStatus func_802C73B8(Evt* script) {
 }
 
 s32 evt_execute_next_command(Evt* script) {
+    s32 commandsExecuted = 0;
+
     while (TRUE) {
         s32 status = ApiStatus_DONE2;
         s32* lines;
         s32 nargs;
+
+        commandsExecuted++;
+        ASSERT_MSG(commandsExecuted < 10000, "Script %x is blocking for ages (infinite loop?)", script->ptrFirstLine);
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:
@@ -2040,14 +2027,14 @@ Bytecode* evt_find_label(Evt* script, s32 arg1) {
         return (Bytecode*) arg1;
     }
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
         if (script->labelIndices[i] == arg1) {
             ret = script->labelPositions[i];
             break;
         }
     }
 
-    ASSERT(i < 16);
+    ASSERT(i < ARRAY_COUNT(script->labelIndices));
     return ret;
 }
 

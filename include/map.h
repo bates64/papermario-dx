@@ -68,6 +68,11 @@ typedef struct AreaConfig {
 
 MapSettings* get_current_map_settings(void);
 
+extern char wMapTexName[];
+extern char wMapHitName[];
+extern char wMapShapeName[];
+extern char wMapBgName[];
+
 /// Zero-terminated.
 extern AreaConfig gAreas[29];
 

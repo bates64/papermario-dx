@@ -1,7 +1,27 @@
 #include "common.h"
 #include "effects.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 #include "entity.h"
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_model_BrickBlock_ROM_END;
+extern Addr entity_model_BrickBlock_ROM_START;
+extern Addr entity_model_Hammer1Block_ROM_END;
+extern Addr entity_model_Hammer1Block_ROM_START;
+extern Addr entity_model_Hammer2Block_ROM_END;
+extern Addr entity_model_Hammer2Block_ROM_START;
+extern Addr entity_model_Hammer3Block_ROM_END;
+extern Addr entity_model_Hammer3Block_ROM_START;
+extern Addr entity_model_InertRedBlock_ROM_END;
+extern Addr entity_model_InertRedBlock_ROM_START;
+extern Addr entity_model_InertYellowBlock_ROM_END;
+extern Addr entity_model_InertYellowBlock_ROM_START;
+extern Addr entity_model_PowBlock_ROM_END;
+extern Addr entity_model_PowBlock_ROM_START;
+extern Addr entity_model_PushBlock_ROM_END;
+extern Addr entity_model_PushBlock_ROM_START;
+#endif
 
 extern Gfx Entity_InertYellowBlock_Render[];
 extern Gfx Entity_InertRedBlock_Render[];
@@ -135,7 +155,6 @@ void entity_base_block_update_slow_sinking(Entity* entity) {
                 data->sinkingTimer = 1;
                 return;
             }
-            do {} while (0); // needed to match
         } else {
             Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
             if (shadow != NULL) {
@@ -338,7 +357,18 @@ s32 entity_block_handle_collision(Entity* entity) {
         }
         return TRUE;
     }
+
     if (entity->collisionFlags & ENTITY_COLLISION_PARTNER) {
+        // partner collision means either kooper shell toss or bombette explosion
+        if (gPlayerData.curPartner == PARTNER_BOMBETTE) {
+            switch (get_entity_type(entity->listIndex)) {
+                case ENTITY_TYPE_HAMMER1_BLOCK:
+                case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
+                    set_entity_commandlist(entity, Entity_BreakingBlock_Script);
+                    sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
+                    return TRUE;
+            }
+        }
         exec_entity_commandlist(entity);
         return TRUE;
     }
@@ -610,7 +640,7 @@ EntityBlueprint Entity_Hammer1Block = {
     .aabbSize = { 50, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer1Block_WideX = {
+EntityBlueprint Entity_Hammer1BlockWideX = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -623,7 +653,7 @@ EntityBlueprint Entity_Hammer1Block_WideX = {
     .aabbSize = { 100, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer1Block_WideZ = {
+EntityBlueprint Entity_Hammer1BlockWideZ = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer1Block_RenderScript,
@@ -662,7 +692,7 @@ EntityBlueprint Entity_Hammer2Block = {
     .aabbSize = { 50, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer2Block_WideX = {
+EntityBlueprint Entity_Hammer2BlockWideX = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -675,7 +705,7 @@ EntityBlueprint Entity_Hammer2Block_WideX = {
     .aabbSize = { 100, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer2Block_WideZ = {
+EntityBlueprint Entity_Hammer2BlockWideZ = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer2Block_RenderScript,
@@ -714,7 +744,7 @@ EntityBlueprint Entity_Hammer3Block = {
     .aabbSize = { 50, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer3Block_WideX = {
+EntityBlueprint Entity_Hammer3BlockWideX = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,
@@ -727,7 +757,7 @@ EntityBlueprint Entity_Hammer3Block_WideX = {
     .aabbSize = { 100, 50, 50 }
 };
 
-EntityBlueprint Entity_Hammer3Block_WideZ = {
+EntityBlueprint Entity_Hammer3BlockWideZ = {
     .flags = ENTITY_FLAG_4000 | ENTITY_FLAG_FIXED_SHADOW_SIZE | ENTITY_FLAG_80,
     .typeDataSize = sizeof(BlockData),
     .renderCommandList = Entity_Hammer3Block_RenderScript,

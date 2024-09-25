@@ -88,9 +88,9 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldWatt_TakeOut = {
-    EVT_CALL(N(TakeOut))
-    EVT_RETURN
-    EVT_END
+    Call(N(TakeOut))
+    Return
+    End
 };
 
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -206,9 +206,9 @@ API_CALLABLE(N(Update)) {
 }
 
 EvtScript EVS_WorldWatt_Update = {
-    EVT_CALL(N(Update))
-    EVT_RETURN
-    EVT_END
+    Call(N(Update))
+    Return
+    End
 };
 
 void N(try_cancel_tweester)(Npc* watt) {
@@ -341,6 +341,42 @@ API_CALLABLE(N(UseAbility)) {
             break;
         case SHINING_STATE_HOLDING:
             N(sync_held_position)();
+#if VERSION_JP
+            // wait for begin holding cooldown
+            if (script->functionTemp[1] != 0) {
+                script->functionTemp[1]--;
+                break;
+            }
+            if (playerStatus->actionState == ACTION_STATE_USE_SPINNING_FLOWER) {
+                break;
+            }
+            // allow stop-holding input
+            actionState = playerStatus->actionState;
+            if ((actionState == ACTION_STATE_IDLE
+                    || actionState == ACTION_STATE_WALK
+                    || actionState == ACTION_STATE_RUN
+                    || actionState == ACTION_STATE_LAND)
+                && partnerStatus->pressedButtons & BUTTON_B
+                || playerStatus->flags & PS_FLAG_HIT_FIRE
+            ) {
+        case SHINING_STATE_RELEASE:
+                playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
+                npc->curAnim = ANIM_WorldWatt_Idle;
+                partner_clear_player_tracking(npc);
+                N(IsPlayerHolding) = FALSE;
+                partnerStatus->actingPartner = PARTNER_NONE;
+                partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
+                gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
+                N(AbilityState) = SHINING_STATE_BEGIN;
+                npc_set_palswap_mode_A(npc, NPC_PAL_ADJUST_NONE);
+                if (!(playerStatus->flags & PS_FLAG_HIT_FIRE)) {
+                    set_action_state(ACTION_STATE_IDLE);
+                } else {
+                    set_action_state(ACTION_STATE_HIT_LAVA);
+                }
+                return ApiStatus_DONE1;
+            }
+#else
             // immediately cancel state on touching fire
             if ((playerStatus->flags & PS_FLAG_HIT_FIRE)) {
                 N(AbilityState) = SHINING_STATE_RELEASE;
@@ -364,9 +400,11 @@ API_CALLABLE(N(UseAbility)) {
             ) {
                 N(AbilityState) = SHINING_STATE_RELEASE;
             }
+#endif
             break;
     }
 
+#if !VERSION_JP
     if (N(AbilityState) == SHINING_STATE_RELEASE) {
         playerStatus->animFlags &= ~(PA_FLAG_WATT_IN_HANDS | PA_FLAG_USING_WATT);
         npc->curAnim = ANIM_WorldWatt_Idle;
@@ -382,6 +420,7 @@ API_CALLABLE(N(UseAbility)) {
         }
         return ApiStatus_DONE1;
     }
+#endif
 
     if (N(StaticEffect) != NULL) {
         N(StaticEffect)->data.staticStatus->pos.x = npc->pos.x;
@@ -392,9 +431,9 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldWatt_UseAbility = {
-    EVT_CALL(N(UseAbility))
-    EVT_RETURN
-    EVT_END
+    Call(N(UseAbility))
+    Return
+    End
 };
 
 API_CALLABLE(N(PutAway)) {
@@ -420,9 +459,9 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldWatt_PutAway = {
-    EVT_CALL(N(PutAway))
-    EVT_RETURN
-    EVT_END
+    Call(N(PutAway))
+    Return
+    End
 };
 
 void N(pre_battle)(Npc* watt) {
@@ -556,7 +595,7 @@ void N(sync_held_position)(void) {
 }
 
 EvtScript EVS_WorldWatt_EnterMap = {
-    EVT_CALL(N(EnterMap))
-    EVT_RETURN
-    EVT_END
+    Call(N(EnterMap))
+    Return
+    End
 };

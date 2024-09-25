@@ -2,8 +2,6 @@
 
 BSS s32 N(VineRenderState);
 
-MAP_STATIC_PAD(1, unk_static_pad);
-
 #define PIRANHA_DMA_ENTRY(name) \
     (s32) world_model_anim_kzn_##name##_ROM_START,\
     (s32) world_model_anim_kzn_##name##_ROM_END,\

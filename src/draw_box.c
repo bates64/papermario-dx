@@ -1,5 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
+#include "include_asset.h"
 
 #define INTEGER_LOG2(x) ((x) <= 1 ? 0 : (x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
 
@@ -12,7 +13,7 @@ typedef struct DefaultWindowStyle {
 } DefaultWindowStyle; // size = 0x0B
 
 #define BOX_QUAD_BUFFER_NUM 21
-SHIFT_BSS Vtx gBoxQuadBuffer[BOX_QUAD_BUFFER_NUM][16];
+BSS Vtx gBoxQuadBuffer[BOX_QUAD_BUFFER_NUM][16];
 
 DefaultWindowStyle gBoxDefaultStyles[] = {
     {
@@ -178,17 +179,17 @@ DefaultWindowStyle gBoxDefaultStyles[] = {
     }
 };
 
-#include "ui/box/corners9.png.inc.c"
-#include "ui/box/corners8.png.inc.c"
-#include "ui/box/corners6.png.inc.c"
-#include "ui/box/corners7.png.inc.c"
-#include "ui/box/corners3.png.inc.c"
-#include "ui/box/corners5.png.inc.c"
-#include "ui/box/corners4.png.inc.c"
-#include "ui/box/bg_tile.png.inc.c"
-#include "ui/box/corners1.png.inc.c"
-#include "ui/box/corners2.png.inc.c"
-#include "ui/box/bg_flat.png.inc.c"
+INCLUDE_IMG("ui/box/corners9.png", ui_box_corners9_png);
+INCLUDE_IMG("ui/box/corners8.png", ui_box_corners8_png);
+INCLUDE_IMG("ui/box/corners6.png", ui_box_corners6_png);
+INCLUDE_IMG("ui/box/corners7.png", ui_box_corners7_png);
+INCLUDE_IMG("ui/box/corners3.png", ui_box_corners3_png);
+INCLUDE_IMG("ui/box/corners5.png", ui_box_corners5_png);
+INCLUDE_IMG("ui/box/corners4.png", ui_box_corners4_png);
+INCLUDE_IMG("ui/box/bg_tile.png", ui_box_bg_tile_png);
+INCLUDE_IMG("ui/box/corners1.png", ui_box_corners1_png);
+INCLUDE_IMG("ui/box/corners2.png", ui_box_corners2_png);
+INCLUDE_IMG("ui/box/bg_flat.png", ui_box_bg_flat_png);
 
 WindowBackground gBoxBackground[] = {
     {
@@ -398,8 +399,6 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         bgFmt = background->fmt;
         cornersImage = corners->imgData;
 
-        do {} while (0);
-
         bgWidth = background->width;
         bgImage = background->imgData;
         bgHeight = background->height;
@@ -436,7 +435,7 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
         gDPSetCycleType(gMainGfxPos++, G_CYC_2CYCLE);
         gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 0);
         gDPSetFogColor(gMainGfxPos++, 0, 0, 0, darkening);
-        gDPSetRenderMode(gMainGfxPos++, PM_RM_TILEMODE_B, G_RM_XLU_SURF2);
+        gDPSetRenderMode(gMainGfxPos++, PM_RM_SHROUD, G_RM_XLU_SURF2);
         if (!(flags & DRAW_FLAG_NO_CLIP)) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }

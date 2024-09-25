@@ -1,5 +1,5 @@
 #include "common.h"
-#include "world/actions.h"
+#include "world/disguise.h"
 #include "sprite/player.h"
 
 AnimID StepUpPeachAnims[] = {
@@ -67,7 +67,7 @@ void action_update_step_up(void) {
         playerStatus->pos.y += playerStatus->gravityIntegrator[0];
     }
 
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         if (playerStatus->prevActionState != ACTION_STATE_SPIN) {
             set_action_state(playerStatus->prevActionState);
         } else {
@@ -99,9 +99,11 @@ void action_update_step_up_peach(void) {
 
     if (playerStatus->curStateTime != 0) {
         playerStatus->curStateTime--;
+#if !VERSION_JP
         if (playerStatus->curStateTime == 4) {
             try_player_footstep_sounds(1);
         }
+#endif
     } else {
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
             set_action_state(ACTION_STATE_IDLE);

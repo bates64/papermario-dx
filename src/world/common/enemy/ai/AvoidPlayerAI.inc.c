@@ -132,9 +132,9 @@ void N(AvoidPlayerAI_Chase)(Evt* script, MobileAISettings* npcAISettings, EnemyD
     } else {
         if (npc->curAnim != enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE]) {
             if (npc->moveSpeed < 4.0) {
-                spawn_surface_effects(npc, SURFACE_INTERACT_WALK);
+                npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
             } else {
-                spawn_surface_effects(npc, SURFACE_INTERACT_RUN);
+                npc_surface_spawn_fx(npc, SURFACE_INTERACT_RUN);
             }
             npc_move_heading(npc, npc->moveSpeed, npc->yaw);
         }
@@ -172,14 +172,6 @@ API_CALLABLE(N(AvoidPlayerAI_Main)) {
     territory.sizeZ = enemy->territory->wander.detectSize.z;
     territory.halfHeight = 100.0f;
     territory.detectFlags = 0;
-
-    #ifdef _DEAD_H_
-    enemy->unk_108.x = npc->pos.x;
-    enemy->unk_108.y = npc->pos.y;
-    enemy->unk_108.z = npc->pos.z;
-    enemy->unk_114 = 0.01f;
-    enemy->unk_118 = 0.01f;
-    #endif
 
     if (isInitialCall || (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->functionTemp[0] = AI_STATE_WANDER_INIT;

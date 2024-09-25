@@ -2,6 +2,8 @@
 #include "filemenu.h"
 #include "ld_addrs.h"
 
+#include "charset/charset.h"
+
 s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgScale, s32 overrideCharWidth, u8 flags);
 
 extern MessageCharset* MsgCharsets[5];
@@ -659,13 +661,13 @@ void filemenu_draw_message(u8* message, s32 x, s32 y, s32 alpha, s32 color, u32 
     }
 }
 
-#if VERSION_PAL
-INCLUDE_ASM(void, "filemenu/filemenu_msg", filemenu_get_menu_message);
-#else
 u8* filemenu_get_menu_message(s32 idx) {
+#if VERSION_PAL
+    return gFileMenuMessages_intl[gCurrentLanguage][idx];
+#else
     return (u8*)gFileMenuMessages[idx];
-}
 #endif
+}
 
 void filemenu_draw_file_name(u8* filename, s32 length, s32 x, s32 y, s32 alpha, s32 arg5, s32 arg6, s32 charWidth) {
     s32 i;

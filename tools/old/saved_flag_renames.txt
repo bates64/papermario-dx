@@ -244,7 +244,7 @@ GameFlag(242) GF_MAC00_Met_TheMaster
 GameFlag(243) GF_MAC00_DictionaryStolen
 GameFlag(244) GF_MAC00_DictionaryReturned
 GameFlag(245) GF_MAC00_TranslatedMysteryNote
-GameFlag(246) GF_Unused_MAC_74
+GameFlag(246) GF_MAC00_TranslatedSuspiciousNote
 GameFlag(247) GF_MAC01_ShyGuyTookOverShop
 GameFlag(248) GF_MAC00_ShyGuyChasedFromShop
 GameFlag(249) GF_MAC01_Merlon_Shoo1
@@ -401,7 +401,7 @@ GameFlag(399) GF_TIK02_Chest_ShrinkStomp
 GameFlag(400) GF_TIK03_ItemBlock_SnowmanDoll
 GameFlag(401) GF_TIK03_ItemBlock_CoinA
 GameFlag(402) GF_TIK03_ItemBlock_CoinB
-GameFlag(403) GF_TIK05_Chest_PowerSmash1
+GameFlag(403) GF_TIK05_Chest_PowerSmash
 GameFlag(404) GF_TIK07_Item_StarPiece
 GameFlag(405) GF_TIK10_HiddenItem_CoinA
 GameFlag(406) GF_TIK10_HiddenItem_CoinB

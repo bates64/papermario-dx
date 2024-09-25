@@ -4,6 +4,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "overlay.h"
+#include "dx/config.h"
 
 extern s32 gPauseBackgroundFade;
 
@@ -30,8 +31,6 @@ Gfx D_80074230[] = {
     gsSPEndDisplayList(),
 };
 
-//extern s32 timeFreezeMode; // TODO bss
-
 void gfx_init_state(void) {
     gSPSegment(gMainGfxPos++, 0x00, 0x0);
     gSPDisplayList(gMainGfxPos++, OS_K0_TO_PHYSICAL(D_80074230));
@@ -48,18 +47,19 @@ s32 gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s3
 }
 
 void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u16* out) {
+    #define RGBA_BUF_SIZE 32
     Color_RGBA8 sp0;
     Color_RGBA8 sp8;
     Color_RGBA8 final;
-    u8 rs[0x20];
-    u8 gs[0x20];
-    u8 bs[0x20];
+    u8 rs[RGBA_BUF_SIZE];
+    u8 gs[RGBA_BUF_SIZE];
+    u8 bs[RGBA_BUF_SIZE];
     s32 i;
 
     sp8 = filterBuf1;
     sp0 = filterBuf1;
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         rs[i] = 0;
         gs[i] = 0;
         bs[i] = 0;
@@ -73,13 +73,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         }
     }
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (rs[i] != 0) {
             rs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(rs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (rs[i] != 0) {
             break;
         }
@@ -88,13 +88,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.r = i;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (gs[i] != 0) {
             gs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(gs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (gs[i] != 0) {
             break;
         }
@@ -103,13 +103,13 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.g = i;
     }
 
-    for (i = 0; i < ARRAY_COUNT(bs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         if (bs[i] != 0) {
             bs[i]--;
             break;
         }
     }
-    for (; i < ARRAY_COUNT(bs); i++) {
+    for (; i < RGBA_BUF_SIZE; i++) {
         if (bs[i] != 0) {
             break;
         }
@@ -118,7 +118,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp0.b = i;
     }
 
-    for (i = ARRAY_COUNT(rs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (rs[i] != 0) {
             break;
         }
@@ -127,7 +127,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp8.r = i;
     }
 
-    for (i = ARRAY_COUNT(gs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (gs[i] != 0) {
             break;
         }
@@ -136,7 +136,7 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
         sp8.g = i;
     }
 
-    for (i = ARRAY_COUNT(bs) - 1; i >= 0; i--) {
+    for (i = RGBA_BUF_SIZE - 1; i >= 0; i--) {
         if (bs[i] != 0) {
             break;
         }
@@ -154,17 +154,19 @@ void gfx_frame_filter_pass_1(Color_RGBA8* filterBuf0, Color_RGBA8 filterBuf1, u1
     final.b = ((filterBuf1.b * filterBuf1.a) + (final.b * (8 - filterBuf1.a))) >> 3;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
+    #undef RGBA_BUF_SIZE
 }
 
 void func_80027600(Color_RGBA8* arg0, s16* out) {
+    #define RGBA_BUF_SIZE 32
     Color_RGBA8 final;
-    u8 rs[0x20];
-    u8 gs[0x20];
-    u8 bs[0x20];
+    u8 rs[RGBA_BUF_SIZE];
+    u8 gs[RGBA_BUF_SIZE];
+    u8 bs[RGBA_BUF_SIZE];
     s32 i;
     s32 sum;
 
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         rs[i] = 0;
         gs[i] = 0;
         bs[i] = 0;
@@ -177,7 +179,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     }
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(rs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += rs[i];
         if (sum >= 5) {
             break;
@@ -186,7 +188,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.r = i;
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(gs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += gs[i];
         if (sum >= 5) {
             break;
@@ -195,7 +197,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.g = i;
 
     sum = 0;
-    for (i = 0; i < ARRAY_COUNT(bs); i++) {
+    for (i = 0; i < RGBA_BUF_SIZE; i++) {
         sum += bs[i];
         if (sum >= 5) {
             break;
@@ -204,6 +206,7 @@ void func_80027600(Color_RGBA8* arg0, s16* out) {
     final.b = i;
 
     *out = (final.r << 11) + (final.g << 6) + (final.b << 1) + 1;
+    #undef RGBA_BUF_SIZE
 }
 
 void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
@@ -258,6 +261,8 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
               . x .
                . .
             */
+            //TODO emulator test -- find which ones have bad performance here
+            #if !DX_PAUSE_LAG_FIX
             if (((frameBuffer1[pixel] >> 2) & 0xF) < 8) {
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x - 1, &filterBuf0[0]);
                 gfx_frame_filter_pass_0(frameBuffer0, frameBuffer1, y - 1, x + 1, &filterBuf0[1]);
@@ -271,6 +276,9 @@ void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuf
                 // Don't apply any filters to the edges of the screen
                 zBuffer[pixel] = frameBuffer0[pixel] | 1;
             }
+            #else
+            zBuffer[pixel] = frameBuffer0[pixel] | 1;
+            #endif
         }
     }
 }
@@ -297,12 +305,12 @@ void func_80027BAC(s32 arg0, s32 arg1) {
     }
 }
 
-// Logic for the drawing the scene background. In normal operation, it draws the regular background.
-// While opening pause menu, it does the following:
-//  * Extracts coverage from the current framebuffer and saves it to nuGfxCfb[1] on the first frame.
-//  * Copies the current framebuffer to the depth buffer to save it and applies a filter on the
-//    saved framebuffer based on the saved coverage values one frame later.
-//  * Draws the saved framebuffer to the current framebuffer while the pause screen is opened, fading it in over time.
+/// Logic for the drawing the scene background. In normal operation, it draws the regular background.
+/// While opening pause menu, it does the following:
+///  * Extracts coverage from the current framebuffer and saves it to nuGfxCfb[1] on the first frame.
+///  * Copies the current framebuffer to the depth buffer to save it and applies a filter on the
+///    saved framebuffer based on the saved coverage values one frame later.
+///  * Draws the saved framebuffer to the current framebuffer while the pause screen is opened, fading it in over time.
 void gfx_draw_background(void) {
     Camera* camera;
     s32 bgRenderState;
@@ -360,9 +368,9 @@ void gfx_draw_background(void) {
             gDPSetTexturePersp(gMainGfxPos++, G_TP_NONE);
             gDPSetTextureLUT(gMainGfxPos++, G_TT_NONE);
             gDPSetRenderMode(gMainGfxPos++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-            // @bug In 1-cycle mode, the two combiner cycles should be identical. Using Texel1 here in the second cycle,
-            // which is the actual cycle of the combiner used on hardware in 1-cycle mode, actually samples the next
-            // pixel's texel value instead of the current pixel's. This results in a one-pixel offset.
+            /// @bug In 1-cycle mode, the two combiner cycles should be identical. Using Texel1 here in the second cycle,
+            /// which is the actual cycle of the combiner used on hardware in 1-cycle mode, actually samples the next
+            /// pixel's texel value instead of the current pixel's. This results in a one-pixel offset.
             gDPSetCombineMode(gMainGfxPos++, PM_CC_43, PM_CC_44);
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 40, 40, 40, gPauseBackgroundFade);
             gDPSetTextureFilter(gMainGfxPos++, G_TF_POINT);
@@ -371,8 +379,8 @@ void gfx_draw_background(void) {
                 gDPLoadTextureTile(gMainGfxPos++, nuGfxZBuffer + (i * SCREEN_WIDTH * SCREEN_COPY_TILE_HEIGHT), G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
                                    SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH - 1, SCREEN_COPY_TILE_HEIGHT - 1, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                // @bug Due to the previous issue with the incorrect second cycle combiner, the devs added a 1-pixel offset to texture coordinates
-                // in this texrect to compensate for the combiner error.
+                /// @bug Due to the previous issue with the incorrect second cycle combiner, the devs added a 1-pixel offset to texture coordinates
+                /// in this texrect to compensate for the combiner error.
                 gSPTextureRectangle(gMainGfxPos++,
                                     // ulx, uly, lrx, lry
                                     0 << 2, i * a, SCREEN_WIDTH << 2, a + (i * (SCREEN_COPY_TILE_HEIGHT << 2)),

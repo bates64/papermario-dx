@@ -8,7 +8,6 @@
 
 s32 entity_try_partner_interaction_trigger(s32);
 s32 test_item_entity_position(f32, f32, f32, f32);
-s32 npc_raycast_up_corner(s32 ignoreFlags, f32* x, f32* y, f32* z, f32* length);
 void fx_damage_stars(s32, f32, f32, f32, f32, f32, f32, s32);
 void auto_collect_item_entity(s32);
 
@@ -92,9 +91,9 @@ API_CALLABLE(N(TakeOut)) {
 }
 
 EvtScript EVS_WorldKooper_TakeOut = {
-    EVT_CALL(N(TakeOut))
-    EVT_RETURN
-    EVT_END
+    Call(N(TakeOut))
+    Return
+    End
 };
 
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -193,9 +192,9 @@ void N(try_cancel_tweester)(Npc* kooper) {
 }
 
 EvtScript EVS_WorldKooper_Update = {
-    EVT_CALL(N(Update))
-    EVT_RETURN
-    EVT_END
+    Call(N(Update))
+    Return
+    End
 };
 
 API_CALLABLE(N(UseAbility)) {
@@ -460,7 +459,7 @@ API_CALLABLE(N(UseAbility)) {
             kooper->pos.y = posY;
             kooper->pos.z = posZ;
             kooper->planarFlyDist += kooper->moveSpeed;
-            spawn_surface_effects(kooper, SURFACE_INTERACT_RUN);
+            npc_surface_spawn_fx(kooper, SURFACE_INTERACT_RUN);
 
             kooper->moveSpeed += 2.0;
             if (kooper->moveSpeed > 14.0) {
@@ -527,7 +526,7 @@ API_CALLABLE(N(UseAbility)) {
             kooper->pos.z = posZ;
 
             kooper->planarFlyDist += kooper->moveSpeed;
-            spawn_surface_effects(kooper, SURFACE_INTERACT_RUN);
+            npc_surface_spawn_fx(kooper, SURFACE_INTERACT_RUN);
             kooper->moveSpeed -= 6.0;
 
             if (kooper->moveSpeed < 0.01) {
@@ -561,7 +560,7 @@ API_CALLABLE(N(UseAbility)) {
             kooper->yaw = angleToStartPos + get_clamped_angle_diff(kooper->yaw, angleToStartPos) * 0.125f;
             npc_move_heading(kooper, -kooper->moveSpeed, kooper->yaw);
             kooper->planarFlyDist -= kooper->moveSpeed;
-            spawn_surface_effects(kooper, SURFACE_INTERACT_RUN);
+            npc_surface_spawn_fx(kooper, SURFACE_INTERACT_RUN);
             kooper->moveSpeed += 4.0/3.0;
 
             if (kooper->moveSpeed > 14.0) {
@@ -646,9 +645,9 @@ API_CALLABLE(N(UseAbility)) {
 }
 
 EvtScript EVS_WorldKooper_UseAbility = {
-    EVT_CALL(N(UseAbility))
-    EVT_RETURN
-    EVT_END
+    Call(N(UseAbility))
+    Return
+    End
 };
 
 API_CALLABLE(N(PutAway)) {
@@ -662,9 +661,9 @@ API_CALLABLE(N(PutAway)) {
 }
 
 EvtScript EVS_WorldKooper_PutAway = {
-    EVT_CALL(N(PutAway))
-    EVT_RETURN
-    EVT_END
+    Call(N(PutAway))
+    Return
+    End
 };
 
 s32 N(test_first_strike)(Npc* kooper, Npc* enemy) {

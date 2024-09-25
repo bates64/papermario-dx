@@ -1,23 +1,20 @@
 #include "common.h"
 #include "hud_element.h"
 
-s32 gStaticScriptCounter = 1;
-s32 gIsUpdatingScripts = 0;
-f32 gGlobalTimeSpace = 1.0f;
+s32 UniqueScriptCounter = 1;
+s32 IsUpdatingScripts = FALSE;
+f32 GlobalTimeRate = 1.0f;
 
 // script_list
 BSS u32* gMapFlags;
 BSS s32* gMapVars;
 BSS s32 gNumScripts;
-BSS s32 D_802DA48C; // unused?
 BSS ScriptList gWorldScriptList;
 BSS ScriptList gBattleScriptList;
 BSS ScriptList* gCurrentScriptListPtr;
-BSS s32 D_802DA894; // unused?
 BSS s32 gScriptIndexList[MAX_SCRIPTS];
 BSS s32 gScriptIdList[MAX_SCRIPTS];
 BSS s32 gScriptListCount;
-BSS s32 D_802DAC9C; // unused?
 
 // evt
 BSS char evtDebugPrintBuffer[0x100];
@@ -25,67 +22,49 @@ BSS char evtDebugPrintBuffer[0x100];
 // map_api
 BSS struct LavaReset* gLavaResetList;
 BSS s32 LastSafeFloor;
-BSS s32 D_802DADA8[2]; // unused?
 
 // model_api
 BSS AnimatedModelList gBattleMeshAnimationList;
 BSS AnimatedModelList gWorldMeshAnimationList;
 BSS AnimatedModelList* gCurrentMeshAnimationListPtr;
-BSS s32 D_802DAE34[3]; // unused?
 
 // npc_api
 BSS s32 wExtraPartnerID;
 BSS s32 wExtraPartnerNpcID;
-BSS s32 D_802DAE4C[2]; // unused?
 
 // msg_api
 BSS s32 ShowMessageScreenOffsetX;
 BSS s32 ShowMessageScreenOffsetY;
-BSS s32 D_802DAE58[2]; // unused?
-BSS char D_802DAE60[0x400]; // unused?
 BSS MessagePrintState* gCurrentPrintContext;
-BSS s32 D_802DB264;
 BSS MessagePrintState* D_802DB268;
-BSS s32 D_802DB26C; // unused?
+BSS s32 D_802DB264;
 
 // player_api
 BSS Npc playerNpcData;
 BSS u16 PlayerImgFXFlags;
-BSS s32 D_802DB5B4[3]; // unused
 BSS VirtualEntityList bBattleVirtualEntityList;
 BSS VirtualEntityList wWorldVirtualEntityList;
 BSS VirtualEntityList* gCurrentVirtualEntityListPtr;
-BSS s32 D_802DB7C4[3]; // unused
 
 // audio_api
 BSS MusicEvent* MusicEventList;
-BSS s32 D_802DB7D4; // unused?
 BSS Evt* RunningMusicEvents[10];
 BSS s32 RunningMusicEventIDs[10];
-BSS s32 D_802DB828[2]; // unused?
 
 // item_api
-BSS PopupMenu D_802DB830;
-
-#if VERSION_PAL
-BSS s32 D_PAL_BSS_802E1E34[0x3]; // TODO: probably just alignment
-#endif
-
-// demo_api
-BSS s32 gSpriteShadingHeader;
-BSS s32 D_802DBB64; // unused?
-BSS s32 gSpriteShadingData;
-BSS s32 D_802DB8B6C; // unused?
-BSS char D_802DBB70[0x100];
+BSS PopupMenu gItemChoicePopupMenu;
 
 // why is this at the end? com section vs bss?
 BSS u32 gWorldMapFlags[MAX_MAPFLAGS];
-BSS s32 DoorModelsSwingCW[3];
-BSS PushBlockGrid* wPushBlockGrids[8];
+BSS u32 gBattleMapFlags[MAX_MAPFLAGS];
+
 BSS u32 gWorldMapVars[MAX_MAPVARS];
 BSS u32 gBattleMapVars[MAX_MAPVARS];
+
+BSS PushBlockGrid* wPushBlockGrids[8];
+
+BSS s32 DoorModelsSwingCW[3];
 BSS s32 DoorModelsSwingCCW[3];
-BSS u32 gBattleMapFlags[MAX_MAPFLAGS];
 
 s32 evt_execute_next_command(Evt* script);
 
@@ -186,7 +165,7 @@ void clear_script_list(void) {
 
     gNumScripts = 0;
     gScriptListCount = 0;
-    gIsUpdatingScripts = 0;
+    IsUpdatingScripts = FALSE;
 
     for (i = 0; i < MAX_MAPVARS; i++) {
         gMapVars[i] = 0;
@@ -212,7 +191,7 @@ void init_script_list(void) {
     }
 
     gNumScripts = 0;
-    gIsUpdatingScripts = 0;
+    IsUpdatingScripts = FALSE;
 
     init_virtual_entity_list();
     init_model_animators();
@@ -239,8 +218,8 @@ void suspend_frozen_scripts(Evt* script) {
 
 Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     Evt* newScript;
-    s32 curScriptIndex;
     s32 scriptListCount;
+    s32 curScriptIndex;
     s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
@@ -259,6 +238,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
     newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
     newScript->priority = priority;
+    newScript->id = UniqueScriptCounter++;
     newScript->ptrNextLine = (Bytecode*)source;
     newScript->ptrFirstLine = (Bytecode*)source;
     newScript->ptrCurLine = (Bytecode*)source;
@@ -266,7 +246,6 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->blockingParent = NULL;
     newScript->childScript = NULL;
     newScript->parentScript = NULL;
-    newScript->id = gStaticScriptCounter++;
     newScript->owner1.actorID = -1;
     newScript->owner2.npcID = -1;
     newScript->loopDepth = -1;
@@ -275,7 +254,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->ptrSavedPos = NULL;
     newScript->frameCounter = 0.0f;
     newScript->unk_158 = 0;
-    newScript->timeScale = gGlobalTimeSpace;
+    newScript->timeScale = GlobalTimeRate;
 
     scriptListCount = 0;
 
@@ -289,7 +268,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
 
     find_script_labels(newScript);
 
-    if (gIsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
+    if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
         scriptListCount = gScriptListCount++;
         gScriptIndexList[scriptListCount] = curScriptIndex;
         gScriptIdList[scriptListCount] = newScript->id;
@@ -297,8 +276,8 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
 
     suspend_frozen_scripts(newScript);
 
-    if (gStaticScriptCounter == 0) {
-        gStaticScriptCounter = 1;
+    if (UniqueScriptCounter == 0) {
+        UniqueScriptCounter = 1;
     }
 
     return newScript;
@@ -307,10 +286,8 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
 Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFlags) {
     Evt* newScript;
     s32 scriptListCount;
-    s32 i;
     s32 curScriptIndex;
-    s32* tempCounter;
-    s32* numScripts;
+    s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
         if ((*gCurrentScriptListPtr)[i] == NULL) {
@@ -322,55 +299,51 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     curScriptIndex = i;
 
     (*gCurrentScriptListPtr)[curScriptIndex] = newScript = heap_malloc(sizeof(*newScript));
-    numScripts = &gNumScripts;
-    (*numScripts)++;
+    gNumScripts++;
     ASSERT(newScript != NULL);
 
-    // Some of this function is surely macros. I think we'll learn more as we do others in this file. -Ethan
-    do {
-        newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
-        newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
-        newScript->priority = priority;
-        newScript->id = gStaticScriptCounter++;
-        newScript->ptrNextLine = (Bytecode*)source;
-        newScript->ptrFirstLine = (Bytecode*)source;
-        newScript->ptrCurLine = (Bytecode*)source;
-        newScript->userData = 0;
-        newScript->blockingParent = 0;
-        newScript->childScript = 0;
-        newScript->parentScript = 0;
-        newScript->owner1.actorID = -1;
-        newScript->owner2.npcID = -1;
-        newScript->loopDepth = -1;
-        newScript->switchDepth = -1;
-        newScript->groupFlags = groupFlags;
-        newScript->ptrSavedPos = 0;
-        newScript->frameCounter = 0.0f;
-        newScript->unk_158 = 0;
-        newScript->timeScale = gGlobalTimeSpace;
-        scriptListCount = 0;
+    newScript->stateFlags = flags | EVT_FLAG_ACTIVE;
+    newScript->curOpcode = EVT_OP_INTERNAL_FETCH;
+    newScript->priority = priority;
+    newScript->id = UniqueScriptCounter++;
+    newScript->ptrNextLine = (Bytecode*)source;
+    newScript->ptrFirstLine = (Bytecode*)source;
+    newScript->ptrCurLine = (Bytecode*)source;
+    newScript->userData = NULL;
+    newScript->blockingParent = NULL;
+    newScript->childScript = NULL;
+    newScript->parentScript = NULL;
+    newScript->owner1.actorID = -1;
+    newScript->owner2.npcID = -1;
+    newScript->loopDepth = -1;
+    newScript->switchDepth = -1;
+    newScript->groupFlags = groupFlags;
+    newScript->ptrSavedPos = NULL;
+    newScript->frameCounter = 0.0f;
+    newScript->unk_158 = 0;
+    newScript->timeScale = GlobalTimeRate;
 
-        for (i = 0; i < ARRAY_COUNT(newScript->varTable); i++) {
-            newScript->varTable[i] = 0;
-        }
-        for (i = 0; i < ARRAY_COUNT(newScript->varFlags); i++) {
-            newScript->varFlags[i] = 0;
-        }
+    scriptListCount = 0;
 
-        find_script_labels(newScript);
+    for (i = 0; i < ARRAY_COUNT(newScript->varTable); i++) {
+        newScript->varTable[i] = 0;
+    }
+    for (i = 0; i < ARRAY_COUNT(newScript->varFlags); i++) {
+        newScript->varFlags[i] = 0;
+    }
 
-        if (gIsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
-            scriptListCount = gScriptListCount++;
-            gScriptIndexList[scriptListCount] = curScriptIndex;
-            gScriptIdList[scriptListCount] = newScript->id;
-        }
-    } while (0);
+    find_script_labels(newScript);
+
+    if (IsUpdatingScripts && (newScript->stateFlags & EVT_FLAG_RUN_IMMEDIATELY)) {
+        scriptListCount = gScriptListCount++;
+        gScriptIndexList[scriptListCount] = curScriptIndex;
+        gScriptIdList[scriptListCount] = newScript->id;
+    }
 
     suspend_frozen_scripts(newScript);
 
-    tempCounter = &gStaticScriptCounter;
-    if (*tempCounter == 0) {
-        *tempCounter = 1;
+    if (UniqueScriptCounter == 0) {
+        UniqueScriptCounter = 1;
     }
 
     return newScript;
@@ -400,14 +373,13 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->stateFlags = flags | EVT_FLAG_ACTIVE;
     child->ptrCurLine = child->ptrFirstLine = child->ptrNextLine = (Bytecode*)source;
 
-
     child->curOpcode = EVT_OP_INTERNAL_FETCH;
     child->userData = NULL;
     child->blockingParent = parentScript;
     child->childScript = NULL;
     child->parentScript = NULL;
     child->priority = parentScript->priority + 1;
-    child->id = gStaticScriptCounter++;
+    child->id = UniqueScriptCounter++;
     child->owner1 = parentScript->owner1;
     child->owner2 = parentScript->owner2;
     child->loopDepth = -1;
@@ -416,7 +388,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->ptrSavedPos = NULL;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
-    child->timeScale = gGlobalTimeSpace;
+    child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
     child->unk_158 = 0;
 
@@ -431,7 +403,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     }
 
     find_script_labels(child);
-    if (gIsUpdatingScripts) {
+    if (IsUpdatingScripts) {
         scriptListCount = gScriptListCount++;
         gScriptIndexList[scriptListCount] = curScriptIndex;
         gScriptIdList[scriptListCount] = child->id;
@@ -439,8 +411,8 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
 
     suspend_frozen_scripts(child);
 
-    if (gStaticScriptCounter == 0) {
-        gStaticScriptCounter = 1;
+    if (UniqueScriptCounter == 0) {
+        UniqueScriptCounter = 1;
     }
 
     return child;
@@ -475,7 +447,7 @@ Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->parentScript = parentScript;
     child->childScript = NULL;
     child->priority = parentScript->priority;
-    child->id = gStaticScriptCounter++;
+    child->id = UniqueScriptCounter++;
     child->owner1.actorID = parentScript->owner1.actorID;
     child->owner2.npcID = parentScript->owner2.npcID;
     child->loopDepth = -1;
@@ -484,7 +456,7 @@ Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->ptrSavedPos = NULL;
     child->array = parentScript->array;
     child->flagArray = parentScript->flagArray;
-    child->timeScale = gGlobalTimeSpace;
+    child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
     child->unk_158 = 0;
 
@@ -499,14 +471,14 @@ Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     }
 
     find_script_labels(child);
-    if (gIsUpdatingScripts) {
+    if (IsUpdatingScripts) {
         scriptListCount = gScriptListCount++;
         gScriptIndexList[scriptListCount] = curScriptIndex;
         gScriptIdList[scriptListCount] = child->id;
     }
 
-    if (gStaticScriptCounter == 0) {
-        gStaticScriptCounter = 1;
+    if (UniqueScriptCounter == 0) {
+        UniqueScriptCounter = 1;
     }
 
     suspend_frozen_scripts(child);
@@ -547,7 +519,7 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
     script->childScript = NULL;
     script->frameCounter = 0.0f;
     script->unk_158 = 0;
-    script->timeScale = gGlobalTimeSpace;
+    script->timeScale = GlobalTimeRate;
     find_script_labels(script);
     suspend_frozen_scripts(script);
 
@@ -569,7 +541,7 @@ Evt* restart_script(Evt* script) {
     script->frameCounter = 0;
     script->unk_158 = 0;
 
-    script->timeScale = gGlobalTimeSpace;
+    script->timeScale = GlobalTimeRate;
 
     find_script_labels(script);
     suspend_frozen_scripts(script);
@@ -584,7 +556,7 @@ void update_scripts(void) {
         return;
     }
 
-    gIsUpdatingScripts = TRUE;
+    IsUpdatingScripts = TRUE;
     sort_scripts();
 
     for (i = 0; i < gScriptListCount; i++) {
@@ -603,7 +575,6 @@ void update_scripts(void) {
             do {
                 if (script->frameCounter < 1.0) {
                     // Continue to next script
-                    do {} while (0); // TODO required to match
                     break;
                 };
 
@@ -620,7 +591,7 @@ void update_scripts(void) {
             }
         }
     }
-    gIsUpdatingScripts = FALSE;
+    IsUpdatingScripts = FALSE;
 }
 
 // Does nothing, is cursed
@@ -744,15 +715,15 @@ void set_script_priority(Evt* script, s32 priority) {
 }
 
 void set_script_timescale(Evt* script, f32 timescale) {
-    script->timeScale = timescale * gGlobalTimeSpace;
+    script->timeScale = timescale * GlobalTimeRate;
 }
 
 void set_global_timespace(f32 timeScale) {
-    gGlobalTimeSpace = timeScale;
+    GlobalTimeRate = timeScale;
 }
 
 f32 get_global_timespace(void) {
-    return gGlobalTimeSpace;
+    return GlobalTimeRate;
 }
 
 void set_script_group(Evt* script, s32 groupFlags) {

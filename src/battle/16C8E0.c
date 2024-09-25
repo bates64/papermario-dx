@@ -15,8 +15,6 @@ u16 gTattleBgTextureYOffset = 0;
 
 BSS s32 bSavedPartner;
 BSS s32 bSavedOverrideFlags;
-BSS s32 D_8029DA38; // unused?
-BSS s32 D_8029DA3C; // unused?
 BSS s32 StarPointsBasePosX;
 BSS s32 StarPointsBasePosY;
 BSS s32 StarPointsMoveInterpAmt;
@@ -51,54 +49,62 @@ HudScript* bHPDigitHudScripts[] = {
 s32 BattleScreenFadeAmt = 255;
 
 EvtScript BtlPutPartnerAway = {
-    EVT_CALL(DispatchEvent, ACTOR_PARTNER, EVENT_PUT_PARTNER_AWAY)
-    EVT_CHILD_THREAD
-        EVT_SETF(LVar0, EVT_FLOAT(1.0))
-        EVT_LOOP(10)
-            EVT_CALL(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, EVT_FLOAT(1.0))
-            EVT_SUBF(LVar0, EVT_FLOAT(0.1))
-            EVT_WAIT(1)
-        EVT_END_LOOP
-    EVT_END_CHILD_THREAD
-    EVT_CALL(EnablePartnerBlur)
-    EVT_CALL(PlaySoundAtActor, 0, SOUND_PARTNER_GET_OUT)
-    EVT_CALL(GetActorPos, 0, LVar0, LVar1, LVar2)
-    EVT_ADD(LVar1, 25)
-    EVT_CALL(SetActorJumpGravity, ACTOR_PARTNER, EVT_FLOAT(1.0))
-    EVT_CALL(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    EVT_CALL(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
-    EVT_CALL(DisablePartnerBlur)
-    EVT_RETURN
-    EVT_END
+    Call(DispatchEvent, ACTOR_PARTNER, EVENT_PUT_PARTNER_AWAY)
+    ChildThread
+        SetF(LVar0, Float(1.0))
+        Loop(10)
+            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
+            SubF(LVar0, Float(0.1))
+            Wait(1)
+        EndLoop
+    EndChildThread
+    Call(EnablePartnerBlur)
+    Call(PlaySoundAtActor, 0, SOUND_PARTNER_GET_OUT)
+    Call(GetActorPos, 0, LVar0, LVar1, LVar2)
+    Add(LVar1, 25)
+    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
+    Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+#if VERSION_JP
+    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 1, 1)
+#else
+    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
+#endif
+    Call(DisablePartnerBlur)
+    Return
+    End
 };
 
 EvtScript BtlBringPartnerOut = {
-    EVT_CHILD_THREAD
-        EVT_SETF(LVar0, EVT_FLOAT(0.1))
-        EVT_LOOP(20)
-            EVT_CALL(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, EVT_FLOAT(1.0))
-            EVT_ADDF(LVar0, EVT_FLOAT(0.05))
-            EVT_WAIT(1)
-        EVT_END_LOOP
-        EVT_CALL(SetActorScale, ACTOR_PARTNER, EVT_FLOAT(1.0), EVT_FLOAT(1.0), EVT_FLOAT(1.0))
-    EVT_END_CHILD_THREAD
-    EVT_CALL(PlaySoundAtActor, 0, SOUND_PARTNER_PUT_AWAY)
-    EVT_CALL(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    EVT_CALL(SetActorJumpGravity, ACTOR_PARTNER, EVT_FLOAT(1.0))
-    EVT_IF_EQ(LVar1, 0)
-        EVT_CALL(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-    EVT_ELSE
-        EVT_CALL(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-    EVT_END_IF
-    EVT_CALL(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    EVT_CALL(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    EVT_RETURN
-    EVT_END
+    ChildThread
+        SetF(LVar0, Float(0.1))
+        Loop(20)
+            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
+            AddF(LVar0, Float(0.05))
+            Wait(1)
+        EndLoop
+        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
+    EndChildThread
+    Call(PlaySoundAtActor, 0, SOUND_PARTNER_PUT_AWAY)
+    Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
+    IfEq(LVar1, 0)
+        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
+    Else
+#if VERSION_JP
+        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 1, 1)
+#else
+        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
+#endif
+    EndIf
+    Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+    Call(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
+    Return
+    End
 };
 
 extern HudScript HES_HPBar;
-extern HudScript HES_Item_SmallStarPoint;
-extern HudScript HES_Item_StarPoint;
+extern HudScript HES_SmallStarPoint;
+extern HudScript HES_ItemStarPoint;
 extern HudScript HES_StatusSPShine;
 
 void btl_render_actors(void);
@@ -166,8 +172,8 @@ void initialize_battle(void) {
     gBattleStatus.inputBitmask = -1;
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
 
-    for (i = 0; i < 16; i++) {
-        battleStatus->pushInputBuffer[i] = 0; // @bug? why just 16
+    for (i = 0; i < ARRAY_COUNT(battleStatus->pushInputBuffer); i++) {
+        battleStatus->pushInputBuffer[i] = 0;
     }
 
     battleStatus->inputBufferPos = 0;
@@ -200,12 +206,12 @@ void initialize_battle(void) {
     create_worker_world(NULL, btl_render_actors);
     btl_popup_messages_init();
     func_80268E88();
-    set_windows_visible(WINDOW_GROUP_1);
+    set_windows_visible(WINDOW_GROUP_BATTLE);
     D_8029EFBC = hud_element_create(&HES_HPBar);
     hud_element_set_flags(D_8029EFBC, HUD_ELEMENT_FLAG_80);
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
-        hudElemID = BtlStarPointTensHIDs[i] = hud_element_create(&HES_Item_StarPoint);
+        hudElemID = BtlStarPointTensHIDs[i] = hud_element_create(&HES_ItemStarPoint);
         hud_element_set_flags(hudElemID, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hudElemID, 20);
     }
@@ -217,7 +223,7 @@ void initialize_battle(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {
-        hudElemID = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_Item_SmallStarPoint);
+        hudElemID = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_SmallStarPoint);
         hud_element_set_flags(hudElemID, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hudElemID, 20);
     }
@@ -481,9 +487,6 @@ void btl_draw_ui(void) {
     s32 changed = FALSE;
     s32 state;
 
-    do {} while (0); // TODO required to match (probably can be removed with some sort of control flow inversion)
-
-    // do not draw UI during the frame of a state change
     state = gBattleState;
     if (gBattleState != gLastDrawBattleState) {
         state = gLastDrawBattleState;
@@ -845,7 +848,7 @@ void tattle_cam_pre_render(Camera* camera) {
 
     gDPPipeSync(gMainGfxPos++);
     gSPPerspNormalize(gMainGfxPos++, cam->perspNorm);
-    guMtxF2L(cam->perspectiveMatrix, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
+    guMtxF2L(cam->mtxPerspective, &gDisplayContext->camPerspMatrix[gCurrentCamID]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCamID], G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 }
 
@@ -899,6 +902,7 @@ void btl_draw_enemy_health_bars(void) {
                     if (enemy->healthBarPos.y >= -500) {
                         s32 screenX, screenY, screenZ;
                         s32 id;
+                        s32 nextDigitXOffset;
 
                         get_screen_coords(CAM_BATTLE, x, y, z, &screenX, &screenY, &screenZ);
                         screenY += 16;
@@ -908,26 +912,27 @@ void btl_draw_enemy_health_bars(void) {
                         hud_element_set_render_pos(id, screenX, screenY);
                         hud_element_draw_clipped(id);
 
-                        temp = currentHP / 10;
-                        ones = currentHP % 10;
-
-                        // tens digit
-                        if (temp > 0) {
-                            id = D_8029EFBC;
-                            hud_element_set_render_depth(id, 10);
-                            hud_element_set_script(id, bHPDigitHudScripts[temp]);
-                            btl_draw_prim_quad(0, 0, 0, 0, screenX, screenY + 2, 8, 8);
-                            hud_element_set_render_pos(id, screenX + 4, screenY + 6);
-                            hud_element_draw_next(id);
-                        }
-
-                        // ones digit
+                        #define DIGIT_WIDTH 6
+                        nextDigitXOffset = DIGIT_WIDTH;
                         id = D_8029EFBC;
-                        hud_element_set_render_depth(id, 10);
-                        hud_element_set_script(id, bHPDigitHudScripts[ones]);
-                        btl_draw_prim_quad(0, 0, 0, 0, screenX + 6, screenY + 2, 8, 8);
-                        hud_element_set_render_pos(id, screenX + 10, screenY + 6);
-                        hud_element_draw_next(id);
+                        // draw all digits
+                        while (TRUE) {
+                            s32 digit = currentHP % 10;
+
+                            hud_element_set_render_depth(id, 10);
+                            hud_element_set_script(id, bHPDigitHudScripts[digit]);
+                            btl_draw_prim_quad(0, 0, 0, 0, screenX + nextDigitXOffset, screenY + 2, 8, 8);
+                            hud_element_set_render_pos(id, screenX + nextDigitXOffset + 4, screenY + 6);
+                            hud_element_draw_next(id);
+
+                            if (currentHP < 10) {
+                                break;
+                            }
+
+                            currentHP /= 10;
+                            nextDigitXOffset -= DIGIT_WIDTH;
+                        }
+                        #undef DIGIT_WIDTH
 
                         temp = enemy->healthFraction;
                         temp = 25 - temp;
@@ -939,8 +944,6 @@ void btl_draw_enemy_health_bars(void) {
         }
     }
 }
-
-NOP_FIX
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
@@ -1015,8 +1018,8 @@ void btl_update_starpoints_display(void) {
 
             for (i = 0; i < tens; i++) {
                 id = BtlStarPointTensHIDs[i];
-                if (hud_element_get_script(id) != &HES_Item_StarPoint) {
-                    hud_element_set_script(id, &HES_Item_StarPoint);
+                if (hud_element_get_script(id) != &HES_ItemStarPoint) {
+                    hud_element_set_script(id, &HES_ItemStarPoint);
                 }
                 hud_element_clear_flags(id, 2);
                 hud_element_set_render_pos(id, posX, posY);
@@ -1048,8 +1051,8 @@ void btl_update_starpoints_display(void) {
 
             for (i = 0; i < ones; i++) {
                 id = BtlStarPointOnesHIDs[i];
-                if (hud_element_get_script(id) != &HES_Item_SmallStarPoint) {
-                    hud_element_set_script(id, &HES_Item_SmallStarPoint);
+                if (hud_element_get_script(id) != &HES_SmallStarPoint) {
+                    hud_element_set_script(id, &HES_SmallStarPoint);
                 }
                 hud_element_clear_flags(id, 2);
                 hud_element_set_render_pos(id, posX, posY);

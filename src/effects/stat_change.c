@@ -219,8 +219,6 @@ void stat_change_update(EffectInstance* effect) {
     part->unk_3C = 0;
     part->unk_40 = 0;
 
-    do {} while (0); // required to match
-
     part->pos.x += part->unk_30;
     part->pos.y += part->unk_38;
     part->pos.z += part->unk_34;

@@ -5,22 +5,28 @@ import sys
 import yaml
 import argparse
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List, Tuple, Union
+from common import get_asset_path
+import xml.etree.ElementTree as ET
 from io import TextIOWrapper
 
 
 class ItemEntry:
+    hudElemID: int  # assigned later
+    itemEntID: int  # assigned later
+
     def __init__(self, entry):
         self.name = list(entry.keys())[0]
         data = entry[self.name]
 
-        self.category = data.get("category", "")
         self.nameMsg = data.get("nameMsg", "MSG_NONE")
         self.fullDescMsg = data.get("fullDescMsg", "MSG_NONE")
         self.shortDescMsg = data.get("shortDescMsg", "MSG_NONE")
-        self.hudElem = data.get("hudElement", "Item_Present")
-        self.itemEntity = data.get("itemEntity", "Placeholder")
+        self.hudElementTemplate = data.get("hudElementTemplate", "MISSING_TEMPLATE")
+        self.itemEntityTemplate = data.get("itemEntityTemplate", "MISSING_TEMPLATE")
+        self.skipScriptArg = data.get("noArgScripts", False)
         self.icon = data.get("icon", "key/Gift")
+        self.externHudScript = data.get("externHudScript")
         self.sellValue = data.get("sellValue", -1)
         self.sortValue = data.get("sortValue", 0)
         self.targetFlags = data.get("targetFlags", [])
@@ -44,7 +50,29 @@ def read_items_yaml(in_yaml: Path) -> List[ItemEntry]:
     return items
 
 
-def generate_item_table(fout: TextIOWrapper, items: List[ItemEntry], hs_map: Dict[str, int]):
+def read_icons_xml(asset_stack: Tuple[Path, ...]) -> Dict[str, bool]:
+    pair_map: Dict[str, bool] = {}
+
+    xml = ET.parse(get_asset_path(Path("icon/Icons.xml"), asset_stack))
+    IconList = xml.getroot()
+
+    for Icon in IconList.findall("Icon"):
+        type = Icon.attrib["type"]
+        name = Icon.attrib["name"]
+
+        if name is None:
+            raise Exception("Icon is missing attribute: 'name'")
+
+        if type is None:
+            raise Exception("Icon is missing attribute: 'type'")
+
+        name = re.sub("\\W", "_", name)
+        pair_map[name] = type == "pair"
+
+    return pair_map
+
+
+def generate_item_table(fout: TextIOWrapper, items: List[ItemEntry]):
     fout.write("ItemData gItemTable[] = {\n")
 
     def join_flags(flags: List[str]) -> str:
@@ -55,19 +83,11 @@ def generate_item_table(fout: TextIOWrapper, items: List[ItemEntry], hs_map: Dic
         return joined
 
     for idx, item in enumerate(items):
-        hud_elem_id = hs_map.get(item.hudElem, None)
-        if hud_elem_id == None:
-            raise Exception(f"Item {item.name} requires undefined HudScript: {item.hudElem}")
-        if item.hudElem.startswith("HES_"):
-            hud_elem_str = item.hudElem
-        else:
-            hud_elem_str = "HES_Item_" + item.hudElem
-
         fout.write(f"    {{   // 0x{idx:03X}: {item.name}\n")
         fout.write(f"        .nameMsg = {item.nameMsg},\n")
         fout.write(f"        .fullDescMsg = {item.fullDescMsg},\n")
         fout.write(f"        .shortDescMsg = {item.shortDescMsg},\n")
-        fout.write(f"        .hudElemID = {hud_elem_id}, // {hud_elem_str}\n")
+        fout.write(f"        .hudElemID = {item.hudElemID},\n")
         fout.write(f"        .sellValue = {item.sellValue},\n")
         fout.write(f"        .sortValue = {item.sortValue},\n")
         fout.write(f"        .targetFlags = {join_flags(item.targetFlags)},\n")
@@ -103,182 +123,191 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
     fout.write("};\n")
     fout.write("\n")
 
-    # determine itemID ranges for each category
-    min_cat: Dict[str, int] = {}
-    max_cat: Dict[str, int] = {}
+    nconsumables = 0
+    nbadges = 0
+    nkeys = 0
+
+    first_consumable = -1
 
     for idx, item in enumerate(items):
-        cat = item.category
-        if cat not in min_cat:
-            min_cat[cat] = idx
-        max_cat[cat] = idx
+        if ("ITEM_TYPE_FLAG_CONSUMABLE") in item.typeFlags:
+            nconsumables += 1
+            if first_consumable == -1:
+                first_consumable = idx
+        if ("ITEM_TYPE_FLAG_BADGE") in item.typeFlags:
+            nbadges += 1
+        if ("ITEM_TYPE_FLAG_KEY") in item.typeFlags:
+            nkeys += 1
 
-    fout.write(f"#define ITEM_FIRST_KEY              {item_enum[min_cat['KEY']]}\n")
-    fout.write(f"#define ITEM_LAST_KEY               {item_enum[max_cat['KEY']]}\n")
-    fout.write(f"#define ITEM_FIRST_CONSUMABLE       {item_enum[min_cat['CONSUMABLE']]}\n")
-    fout.write(f"#define ITEM_LAST_CONSUMABLE        {item_enum[max_cat['CONSUMABLE']]}\n")
-    fout.write(f"#define ITEM_FIRST_BADGE            {item_enum[min_cat['BADGE']]}\n")
-    fout.write(f"#define ITEM_LAST_BADGE             {item_enum[max_cat['BADGE']]}\n")
-    fout.write("\n")
-
-    fout.write("#define ITEM_NUM_KEYS (ITEM_LAST_KEY - ITEM_FIRST_KEY + 1)\n")
-    fout.write("#define ITEM_NUM_CONSUMABLES (ITEM_LAST_CONSUMABLE - ITEM_FIRST_CONSUMABLE + 1)\n")
-    fout.write("\n")
-
-    fout.write("#define IS_ITEM(itemID) (itemID >= ITEM_FIRST_KEY && itemID <= ITEM_LAST_CONSUMABLE)\n")
-    fout.write("#define IS_BADGE(itemID) (itemID >= ITEM_FIRST_BADGE && itemID <= ITEM_LAST_BADGE)\n")
+    fout.write(f"#define NUM_ITEMS {len(items)}\n")
+    fout.write(f"#define ITEM_NUM_CONSUMABLES {nconsumables}\n")
+    fout.write(f"#define ITEM_NUM_BADGES {nbadges}\n")
+    fout.write(f"#define ITEM_NUM_KEYS {nkeys}\n")
+    fout.write(f"#define ITEM_FIRST_CONSUMABLE {first_consumable}\n")
     fout.write("\n")
 
     fout.write("#endif // ITEM_ENUM_H\n")
 
 
-class ItemHudScriptEntry:
-    def __init__(self, script):
-        self.name = script.get("name", None)
-        self.template = script.get("template", None)
-        self.icon = script.get("icon", "")
-        priority_str = script.get("priority", "auto")
-        self.pair = script.get("pair", False)
-
-        if self.name == None:
-            raise Exception(f"ItemHudScript is missing 'name'")
-
-        self.extern = self.name.startswith("HES_")
-        if self.extern:
-            self.full_name = self.name
-        else:
-            self.full_name = "HES_Item_" + self.name
-
-        if self.template == None and not self.extern:
-            raise Exception(f"{self.name} is missing 'template'")
-
-        self.icon = re.sub("\\W", "_", self.icon)
-
-        if str(priority_str).lower() == "auto":
-            self.priority = sys.maxsize
-        else:
-            self.priority = int(priority_str)
+class HudScriptEntry:
+    def __init__(self, full_name: str, template: str, icon: str, pair: bool, index: int, skipArg: bool):
+        self.full_name = full_name
+        self.template = template
+        self.icon = icon
+        self.pair = pair
+        self.index = index
+        self.skipArg = skipArg
 
 
-def read_hud_scripts_yaml(in_yaml: Path) -> List[ItemHudScriptEntry]:
-    scripts: List[ItemHudScriptEntry] = []
-
-    with open(in_yaml) as f:
-        entry_list = yaml.load(f.read(), Loader=yaml.SafeLoader)
-
-        for entry in entry_list:
-            scripts.append(ItemHudScriptEntry(entry))
-
-    return scripts
+class ExternHudScriptEntry:
+    def __init__(self, full_name: str, index: int):
+        self.full_name = full_name
+        self.index = index
+        self.pair = True
 
 
-def generate_hud_scripts(fout: TextIOWrapper, hud_scripts: List[ItemHudScriptEntry]):
-    for entry in hud_scripts:
-        # do not generate scripts for entries defined externally
-        if entry.extern:
+def snake_to_pascal(s: str) -> str:
+    return s.replace("_", " ").title().replace(" ", "")
+
+
+def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pair_map: Dict[str, bool]):
+    hud_scripts: List[Union[HudScriptEntry, ExternHudScriptEntry]] = []
+    hud_script_map: Dict[str, Union[HudScriptEntry, ExternHudScriptEntry]] = {}
+
+    # determine a set of hud scripts to generate consisting of each unique pair of template + icon
+    # and then assign the index of the generated scripts to each of the items using that pair
+    for item in items:
+        if item.externHudScript:
+            script_name = item.externHudScript
+            if not script_name in hud_script_map:
+                cur_script = ExternHudScriptEntry(script_name, 1 + len(hud_scripts))
+                hud_scripts.append(cur_script)
+                hud_script_map[script_name] = cur_script
+            else:
+                cur_script = hud_script_map[script_name]
+            item.hudElemID = cur_script.index
             continue
 
-        fout.write(f"HudScript {entry.full_name} = HES_TEMPLATE_{entry.template}({entry.icon});\n")
+        if item.skipScriptArg:
+            template_name = snake_to_pascal(item.hudElementTemplate.lower())
+            script_name = f"HES_{template_name}"
+        else:
+            icon_name = snake_to_pascal(item.icon)
+            template_name = snake_to_pascal(item.hudElementTemplate.lower())
+            script_name = f"HES_{template_name}_{icon_name}"
 
-        if entry.pair:
-            fout.write(
-                f"HudScript {entry.full_name}_disabled = HES_TEMPLATE_{entry.template}({entry.icon}_disabled);\n"
+        if not script_name in hud_script_map:
+            if not item.icon in pair_map:
+                raise Exception(f"Item {item.name} requires undefined icon: {item.icon}")
+
+            cur_script = HudScriptEntry(
+                script_name,
+                item.hudElementTemplate,
+                item.icon,
+                pair_map[item.icon],
+                1 + len(hud_scripts),
+                item.skipScriptArg,
             )
+            hud_scripts.append(cur_script)
+            hud_script_map[script_name] = cur_script
+            item.hudElemID = cur_script.index
+        else:
+            cur_script = hud_script_map[script_name]
+            item.hudElemID = cur_script.index
 
-        # there is no item for these scripts, just generate them after the coin script
-        if entry.name == "Coin":
-            fout.write("HudScript HES_Item_CoinSparkleA = HES_COIN_SPARKLE(-8,  0);\n")
-            fout.write("HudScript HES_Item_CoinSparkleB = HES_COIN_SPARKLE( 8,  8);\n")
-            fout.write("HudScript HES_Item_CoinSparkleC = HES_COIN_SPARKLE(-4,  8);\n")
-            fout.write("HudScript HES_Item_CoinSparkleD = HES_COIN_SPARKLE( 6, -6);\n")
-            fout.write("HudScript HES_Item_CoinSparkleE = HES_COIN_SPARKLE( 1, -8);\n")
-            fout.write("HudScript HES_Item_CoinSparkleRandom = HES_TEMPLATE_COIN_SPARKLE();\n")
-        elif entry.name == "StarPoint":
-            fout.write("HudScript HES_Item_SmallStarPoint = HES_TEMPLATE_SMALL_STAR_POINT();\n")
+    # write the hud script bodies
+    for script in hud_scripts:
+        if isinstance(script, ExternHudScriptEntry):
+            fout.write(f"extern HudScript {script.full_name};\n")
+            fout.write(f"extern HudScript {script.full_name}_disabled;\n")
+        else:
+            script_arg = "" if script.skipArg else script.icon
+            fout.write(f"HudScript {script.full_name} = HES_TEMPLATE_{script.template}({script_arg});\n")
+
+            if script.pair:
+                script_arg = "" if script.skipArg else script.icon + "_disabled"
+                fout.write(f"HudScript {script.full_name}_disabled = HES_TEMPLATE_{script.template}({script_arg});\n")
+
     fout.write("\n")
 
-    fout.write("s32 pad_after_item_hudscripts[] = { 0, 0 };\n")
-    fout.write("\n")
-
-
-def generate_hud_scripts_table(fout: TextIOWrapper, hud_scripts: List[ItemHudScriptEntry]):
-    for entry in hud_scripts:
-        if entry.extern:
-            fout.write(f"extern HudScript {entry.full_name};\n")
-            if entry.pair:
-                fout.write(f"extern HudScript {entry.full_name}_disabled;\n")
-            fout.write("\n")
-
+    # write the hud script table
     fout.write("IconHudScriptPair gItemHudScripts[] = {\n")
     fout.write("    { .enabled = NULL, .disabled = NULL },\n")  # array index 0 is always NULL
 
-    for entry in hud_scripts:
-        if entry.pair:
-            fout.write(f"    {{ .enabled = &{entry.full_name}, .disabled = &{entry.full_name}_disabled }},\n")
+    for script in hud_scripts:
+        if script.pair:
+            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name}_disabled }},\n")
         else:
-            fout.write(f"    {{ .enabled = &{entry.full_name}, .disabled = &{entry.full_name} }},\n")
+            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name} }},\n")
 
     fout.write("};\n")
     fout.write("\n")
 
 
-def generate_item_entity_scripts(fout: TextIOWrapper, ies_yaml: Path):
-    with open(ies_yaml) as f:
-        scripts = yaml.load(f.read(), Loader=yaml.SafeLoader)
+class ItemScriptEntry:
+    def __init__(self, full_name: str, template: str, icon: str, index: int, skipArg: bool):
+        self.full_name = full_name
+        self.template = template
+        self.icon = icon
+        self.index = index
+        self.skipArg = skipArg
 
-    for script in scripts:
-        name = script.get("name", None)
-        template = script.get("template", None)
-        icon = script.get("icon", None)
 
-        if name is None:
-            raise Exception("Item entity script is missing 'name'")
+def generate_item_entity_scripts(fout: TextIOWrapper, items: List[ItemEntry]):
+    item_scripts: List[ItemScriptEntry] = []
+    item_script_map: Dict[str, ItemScriptEntry] = {}
 
-        if template is None:
-            raise Exception(f"{name} is missing 'template'")
-
-        if icon is None:
-            icon = ""
+    # determine a set of items scripts to generate consisting of each unique pair of template + icon
+    # and then assign the index of the generated scripts to each of the items using that pair
+    for item in items:
+        if item.skipScriptArg:
+            template_name = snake_to_pascal(item.itemEntityTemplate.lower())
+            script_name = f"IES_{template_name}"
         else:
-            icon = re.sub("\\W", "_", icon)
+            icon_name = snake_to_pascal(item.icon)
+            template_name = snake_to_pascal(item.itemEntityTemplate.lower())
+            script_name = f"IES_{template_name}_{icon_name}"
 
-        fout.write(f"ItemScript IES_{name} = IES_TEMPLATE_{template}({icon});\n")
+        if not script_name in item_script_map:
+            cur_script = ItemScriptEntry(
+                script_name, item.itemEntityTemplate, item.icon, len(item_scripts), item.skipScriptArg
+            )
+            item_scripts.append(cur_script)
+            item_script_map[script_name] = cur_script
+            item.itemEntID = cur_script.index
+        else:
+            cur_script = item_script_map[script_name]
+            item.itemEntID = cur_script.index
+
+    # write the item entity script bodies
+    for script in item_scripts:
+        script_arg = "" if script.skipArg else script.icon
+        fout.write(f"ItemScript {script.full_name} = IES_TEMPLATE_{script.template}({script_arg});\n")
 
     fout.write("\n")
 
-
-def generate_item_entity_scripts_table(fout: TextIOWrapper, items: List[ItemEntry]):
+    # write the item script table
     fout.write("// indexed by itemID\n")
     fout.write("s32* gItemEntityScripts[] = {\n")
-    idx = 0
     for item in items:
-        fout.write(f"    IES_{item.itemEntity},\n")
-        idx += 1
-
-    # must pad with IES_Placeholder to match
-    while idx <= 0x180:
-        fout.write(f"    IES_{items[0].itemEntity},\n")
-        idx += 1
-
+        script = item_scripts[item.itemEntID]
+        fout.write(f"    {script.full_name},\n")
     fout.write("};\n")
     fout.write("\n")
 
 
 def generate_item_icon_tables(fout: TextIOWrapper, items: List[ItemEntry]):
-    # note: DUMMY items have no icon rasters or palettes
     fout.write("// indexed by itemID\n")
     fout.write("s32 gItemIconRasterOffsets[] = {\n")
     for item in items:
-        if item.category != "DUMMY":
-            fout.write(f"    ICON_{item.icon}_raster,\n")
+        fout.write(f"    ICON_{item.icon}_raster,\n")
     fout.write("};\n")
     fout.write("\n")
 
     fout.write("// indexed by itemID\n")
     fout.write("s32 gItemIconPaletteOffsets[] = {\n")
     for item in items:
-        if item.category != "DUMMY":
-            fout.write(f"    ICON_{item.icon}_palette,\n")
+        fout.write(f"    ICON_{item.icon}_palette,\n")
     fout.write("};\n")
     fout.write("\n")
 
@@ -288,26 +317,13 @@ if __name__ == "__main__":
     parser.add_argument("out_data", help="output header file to generate containing the data")
     parser.add_argument("out_enum", help="output header file to generate containing the enum")
     parser.add_argument("items_yaml", type=Path, help="input yaml file path")
-    parser.add_argument("ies_yaml", type=Path, help="input yaml file path for item entity scripts")
-    parser.add_argument("hes_yaml", type=Path, help="input yaml file path for item hud element scripts")
+    parser.add_argument("asset_stack", help="comma-separated asset stack")
     args = parser.parse_args()
 
-    items = read_items_yaml(args.items_yaml)
-    hud_scripts = read_hud_scripts_yaml(args.hes_yaml)
+    asset_stack = tuple(Path(d) for d in args.asset_stack.split(","))
 
-    # sort items by category
-    CATEGORY_ORDER = {
-        "NONE": 0,
-        "GEAR": 1,
-        "QUEST": 2,
-        "KEY": 3,
-        "CONSUMABLE": 4,
-        "UNUSED": 5,
-        "BADGE": 6,
-        "UTILITY": 7,
-        "DUMMY": 1000,  # must always be at the end of the item table
-    }
-    items.sort(key=lambda x: CATEGORY_ORDER.get(x.category, 999))
+    items = read_items_yaml(args.items_yaml)
+    icons = read_icons_xml(asset_stack)
 
     with open(args.out_data, "w") as fout:
         fout.write("/* This file is auto-generated. Do not edit. */\n")
@@ -318,20 +334,10 @@ if __name__ == "__main__":
         fout.write('#include "icon_offsets.h"\n')
         fout.write("\n")
 
-        generate_hud_scripts(fout, hud_scripts)
+        generate_hud_element_scripts(fout, items, icons)
+        generate_item_entity_scripts(fout, items)
 
-        # after writing the hud script sources, sort them according to table order
-        hud_scripts.sort(key=lambda x: x.priority)
-
-        # get hudElemID for each hud element
-        hs_map: Dict[str, int] = {}
-        for idx, hs in enumerate(hud_scripts):
-            hs_map[hs.name] = idx + 1
-
-        generate_item_table(fout, items, hs_map)
-        generate_hud_scripts_table(fout, hud_scripts)
-        generate_item_entity_scripts(fout, args.ies_yaml)
-        generate_item_entity_scripts_table(fout, items)
+        generate_item_table(fout, items)
         generate_item_icon_tables(fout, items)
 
     with open(args.out_enum, "w") as fout:

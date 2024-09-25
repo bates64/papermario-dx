@@ -1,38 +1,13 @@
 #include "common.h"
 #include "ld_addrs.h"
 #include "npc.h"
-#include "camera.h"
 #include "hud_element.h"
 #include "rumble.h"
 #include "sprite.h"
 #include "model.h"
 #include "gcc/string.h"
-#include "dx/config.h"
-
-s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
-
-//TODO possible data split here
-
-Vec3s gEntityColliderFaces[] = {
-    { 4, 6, 5 }, { 4, 7, 6 },
-    { 0, 3, 4 }, { 3, 7, 4 },
-    { 3, 2, 7 }, { 2, 6, 7 },
-    { 2, 1, 6 }, { 1, 5, 6 },
-    { 1, 0, 5 }, { 0, 4, 5 },
-    { 0, 1, 2 }, { 0, 2, 3 },
-};
-
-Vec3f gEntityColliderNormals[] = {
-    {  0.0f,  1.0f,  0.0f }, {  0.0f,  1.0f,  0.0f },
-    {  1.0f,  0.0f,  0.0f }, {  1.0f,  0.0f,  0.0f },
-    {  0.0f,  0.0f, -1.0f }, {  0.0f,  0.0f, -1.0f },
-    { -1.0f,  0.0f,  0.0f }, { -1.0f,  0.0f,  0.0f },
-    {  0.0f,  0.0f,  1.0f }, {  0.0f,  0.0f,  1.0f },
-    {  0.0f, -1.0f,  0.0f }, {  0.0f, -1.0f,  0.0f },
-};
-
-//TODO data split here!
-s32 pad_map_table[] = { 0, 0 };
+#include "dx/debug_menu.h"
+#include "world/surfaces.h"
 
 #ifdef SHIFT
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
@@ -45,12 +20,15 @@ s32 pad_map_table[] = { 0, 0 };
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-SHIFT_BSS MapSettings gMapSettings;
-SHIFT_BSS MapConfig* gMapConfig;
-SHIFT_BSS char wMapHitName[0x18];
-SHIFT_BSS char wMapShapeName[0x18];
-SHIFT_BSS char wMapTexName[0x18];
-SHIFT_BSS char wMapBgName[0x18];
+BSS MapConfig* gMapConfig;
+BSS MapSettings gMapSettings;
+
+char wMapHitName[0x18];
+char wMapShapeName[0x18];
+char wMapTexName[0x18];
+char wMapBgName[0x14];
+
+s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
     /* 0x00 */ char name[16];
@@ -84,6 +62,9 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
 
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_WORLD;
+    surface_set_walk_effect(SURFACE_WALK_FX_STANDARD);
+    phys_set_player_sliding_check(NULL);
+    phys_set_landing_adjust_cam_check(NULL);
 
 #if !VERSION_IQUE
     load_obfuscation_shims();
@@ -113,7 +94,13 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     gGameStatusPtr->mapShop = NULL;
 
+    ASSERT_MSG(areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", areaID);
+    ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
     mapConfig = &gAreas[areaID].maps[mapID];
+
+    #if DX_DEBUG_MENU
+    dx_debug_set_map_info(mapConfig->id, gGameStatus.entryID);
+    #endif
 
     sprintf(wMapShapeName, "%s_shape", mapConfig->id);
     sprintf(wMapHitName, "%s_hit", mapConfig->id);
@@ -163,7 +150,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     sfx_clear_env_sounds(0);
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     spr_init_sprites(gGameStatusPtr->playerSpriteSet);
     clear_animator_list();
     clear_entity_models();
@@ -216,14 +203,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
     gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-    gCameras[CAM_3].flags |= CAMERA_FLAG_DISABLED;
+    gCameras[CAM_HUD].flags |= CAMERA_FLAG_DISABLED;
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
-#if DX_FULL_VIEWPORT
-        set_cam_viewport(CAM_DEFAULT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-#else
         set_cam_viewport(CAM_DEFAULT, 12, 20, 296, 200);
-#endif
     } else {
         set_cam_viewport(CAM_DEFAULT, 29, 28, 262, 162);
     }
@@ -242,7 +225,7 @@ MapSettings* get_current_map_settings(void) {
     return &gMapSettings;
 }
 
-s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
+NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     s32 i;
     s32 j;
     MapConfig* maps;
@@ -261,6 +244,10 @@ s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     return FALSE;
 }
 
+void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID) {
+    ASSERT_MSG(get_map_IDs_by_name(mapName, areaID, mapID), "Map not found: %s", mapName);
+}
+
 void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
@@ -272,6 +259,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
+        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *decompressedSize = curAsset->decompressedLength;
@@ -293,6 +281,7 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
+        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;

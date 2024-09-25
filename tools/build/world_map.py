@@ -49,7 +49,7 @@ def generate(in_xml: Path, out_c: Path):
 
         # write paths
         # note: len(locations) = 34, will only match if hardcoded to 32 here
-        f.write("Vec2b PauseMapPaths[][32] = {\n")
+        f.write(f"Vec2b PauseMapPaths[][{len(locations)}] = {{\n")
 
         for loc in locations:
             f.write("    { ")

@@ -6,8 +6,9 @@
 #include "ld_addrs.h"
 #include "nu/nusys.h"
 #include "game_modes.h"
+#include "include_asset.h"
 
-#include "theater/walls.png.inc.c"
+INCLUDE_IMG("theater/walls.png", theater_walls_png);
 
 Gfx D_800746E0[] = {
     gsDPSetTextureLUT(G_TT_NONE),
@@ -17,7 +18,7 @@ Gfx D_800746E0[] = {
     gsSPEndDisplayList(),
 };
 
-#include "theater/curtains.png.inc.c"
+INCLUDE_IMG("theater/curtains.png", theater_curtains_png);
 
 Gfx D_80075730[] = {
     gsDPSetTextureLUT(G_TT_NONE),
@@ -27,8 +28,8 @@ Gfx D_80075730[] = {
     gsSPEndDisplayList(),
 };
 
-#include "theater/floor.png.inc.c"
-#include "theater/floor.pal.inc.c"
+INCLUDE_IMG("theater/floor.png", theater_floor_png);
+INCLUDE_PAL("theater/floor.pal", theater_floor_pal);
 
 Gfx D_800758A0[] = {
     gsDPSetTextureLUT(G_TT_RGBA16),
@@ -50,7 +51,7 @@ Gfx D_800758A0[] = {
 Gfx TheaterWallShadowsGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_PASS, G_RM_CLD_SURF2),
-    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC_16),
+    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC2_MULTIPLY_PRIM),
     gsSPDisplayList(D_80075730),
     gsSPVertex(theater_wall_shadows_vtx, 8, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -61,7 +62,7 @@ Gfx TheaterWallShadowsGfx[] = {
 Gfx TheaterCurtainGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
-    gsDPSetCombineMode(G_CC_MODULATEIDECALA, PM_CC_16),
+    gsDPSetCombineMode(G_CC_MODULATEIDECALA, PM_CC2_MULTIPLY_PRIM),
     gsSPDisplayList(D_80075730),
     gsSPVertex(theater_curtain_vtx, 31, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -80,7 +81,7 @@ Gfx TheaterCurtainGfx[] = {
 Gfx TheaterInsetShadowsGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
-    gsDPSetCombineMode(G_CC_SHADE, PM_CC_16),
+    gsDPSetCombineMode(G_CC_SHADE, PM_CC2_MULTIPLY_PRIM),
     gsSPTexture(0x0080, 0x0080, 0, G_TX_RENDERTILE, G_OFF),
     gsSPVertex(theater_left_inset_shadow_vtx, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -93,7 +94,7 @@ Gfx TheaterFloorGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(CVG_DST_FULL | ZMODE_OPA | FORCE_BL | G_RM_PASS, CVG_DST_FULL | ZMODE_OPA | FORCE_BL |
                       GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)),
-    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC_16),
+    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC2_MULTIPLY_PRIM),
     gsSPDisplayList(D_800746E0),
     gsSPVertex(theater_floor_vtx, 25, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -115,7 +116,7 @@ Gfx TheaterRightWallGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(CVG_DST_FULL | ZMODE_OPA | FORCE_BL | G_RM_PASS, CVG_DST_FULL | ZMODE_OPA | FORCE_BL |
                       GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)),
-    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC_16),
+    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC2_MULTIPLY_PRIM),
     gsSPDisplayList(D_800758A0),
     gsSPVertex(theater_right_wall_vtx, 6, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -127,7 +128,7 @@ Gfx TheaterLeftWallGfx[] = {
     gsDPPipeSync(),
     gsDPSetRenderMode(CVG_DST_FULL | ZMODE_OPA | FORCE_BL | G_RM_PASS, CVG_DST_FULL | ZMODE_OPA | FORCE_BL |
                       GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1)),
-    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC_16),
+    gsDPSetCombineMode(G_CC_MODULATEIA, PM_CC2_MULTIPLY_PRIM),
     gsSPDisplayList(D_800758A0),
     gsSPVertex(theater_left_wall_vtx, 6, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -172,7 +173,7 @@ Gfx TheaterInitGfx[] = {
     gsSPEndDisplayList(),
 };
 
-#include "ui/no_controller.png.inc.c"
+INCLUDE_IMG("ui/no_controller.png", ui_no_controller_png);
 
 Gfx NoControllerSetupTexGfx[] = {
     gsDPPipeSync(),
@@ -201,12 +202,12 @@ Gfx NoControllerGfx[] = {
     gsSPEndDisplayList(),
 };
 
-SHIFT_BSS Mtx D_8009BAA8[2];
-SHIFT_BSS f32 gCurtainScale;
-SHIFT_BSS f32 gCurtainScaleGoal;
-SHIFT_BSS f32 gCurtainFade;
-SHIFT_BSS f32 gCurtainFadeGoal;
-SHIFT_BSS UNK_FUN_PTR(gCurtainDrawCallback);
+BSS f32 gCurtainScale;
+BSS f32 gCurtainScaleGoal;
+BSS f32 gCurtainFade;
+BSS f32 gCurtainFadeGoal;
+BSS UNK_FUN_PTR(gCurtainDrawCallback);
+BSS Mtx D_8009BAA8[2];
 
 void initialize_curtains(void) {
     gCurtainDrawCallback = NULL;

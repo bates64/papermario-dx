@@ -6,22 +6,17 @@
 #include "sprite.h"
 #include "game_modes.h"
 
-SHIFT_BSS s32 D_800DC060;
-SHIFT_BSS StageListRow* gCurrentStagePtr;
-SHIFT_BSS s32 gBattleState;
-SHIFT_BSS BattleStatus gBattleStatus;
-SHIFT_BSS s32 gLastDrawBattleState;
-SHIFT_BSS s32 D_800DC4D4;
-SHIFT_BSS s32 gDefeatedBattleSubstate;
-SHIFT_BSS s32 gBattleSubState;
-SHIFT_BSS s32 D_800DC4E0;
-SHIFT_BSS s32 gDefeatedBattleState;
-SHIFT_BSS s32 gCurrentBattleID;
-SHIFT_BSS s32 gCurrentStageID;
-SHIFT_BSS s32 D_800DC4F0;
-SHIFT_BSS Battle* gOverrideBattlePtr;
-SHIFT_BSS s32 D_800DC4F8;
-SHIFT_BSS Battle* gCurrentBattlePtr;
+BSS StageListRow* gCurrentStagePtr;
+BSS s32 gBattleState;
+BSS BattleStatus gBattleStatus;
+BSS s32 gLastDrawBattleState;
+BSS s32 gDefeatedBattleSubstate;
+BSS s32 gBattleSubState;
+BSS s32 gDefeatedBattleState;
+BSS s32 gCurrentBattleID;
+BSS s32 gCurrentStageID;
+BSS Battle* gOverrideBattlePtr;
+BSS Battle* gCurrentBattlePtr;
 
 // standard battle area table entry
 #define BTL_AREA(id, jpName) { \
@@ -104,26 +99,13 @@ BattleArea gBattleAreas[] = {
 void reset_battle_status(void) {
     gGameStatusPtr->demoBattleFlags = 0;
     gBattleState = BATTLE_STATE_0;
-    D_800DC4E0 = 1;
     gBattleSubState = BTL_SUBSTATE_INIT;
     gLastDrawBattleState = BATTLE_STATE_0;
-    D_800DC4F0 = 0;
-    D_800DC4D4 = 0;
     gCurrentBattlePtr = NULL;
-    D_800DC4F8 = 0;
     gCurrentBattleID = 0;
     gCurrentStagePtr = NULL;
-    D_800DC060 = 0;
     gCurrentStageID = 0;
     gOverrideBattlePtr = NULL;
-}
-
-void ALT_reset_battle_status(void) {
-    reset_battle_status();
-}
-
-void func_80072BCC(s32 arg0) {
-    D_800DC4F8 = arg0;
 }
 
 void load_battle_section(void) {
@@ -158,13 +140,6 @@ void set_battle_stage(s32 stageID) {
 
 void set_battle_formation(Battle* battle) {
     gOverrideBattlePtr = battle;
-}
-
-void func_80072CEC(f32 arg0, f32 arg1, f32 arg2) {
-}
-
-void func_80072CF4(void) {
-    func_80072CEC(1.0f, 1.1f, 1.2f);
 }
 
 void setup_demo_player(void) {
@@ -225,7 +200,7 @@ void load_demo_battle(u32 index) {
     general_heap_create();
     clear_worker_list();
     clear_script_list();
-    create_cameras_a();
+    create_cameras();
     spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
     clear_animator_list();
     clear_entity_models();

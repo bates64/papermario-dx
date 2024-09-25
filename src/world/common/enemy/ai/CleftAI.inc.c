@@ -185,7 +185,7 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     f32 posX, posY, posZ;
     s32 phi_s1 = FALSE;
 
-    spawn_surface_effects(npc, SURFACE_INTERACT_RUN);
+    npc_surface_spawn_fx(npc, SURFACE_INTERACT_RUN);
     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
 
     if (is_point_within_region(enemy->territory->wander.detectShape,
@@ -283,7 +283,7 @@ void N(CleftAI_PostDisguise)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     }
 }
 
-s32 N(CleftAI_Main)(Evt* script, s32 isInitialCall) {
+API_CALLABLE(N(CleftAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;

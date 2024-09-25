@@ -6,19 +6,38 @@
 
 #include "script_api/common.h"
 
-ApiStatus MakeNpcs(Evt* script, s32 isInitialCall);
-ApiStatus BasicAI_Main(Evt* script, s32 isInitialCall);
-ApiStatus ResetFromLava(Evt* script, s32 isInitialCall);
-ApiStatus MakeShop(Evt* script, s32 isInitialCall);
-ApiStatus MakeShopOwner(Evt* script, s32 isInitialCall);
-ApiStatus CreateMapRoom(Evt* script, s32 isInitialCall);
-ApiStatus CheckActionState(Evt* script, s32 isInitialCall);
-ApiStatus CreatePushBlockGrid(Evt* script, s32 isInitialCall);
-ApiStatus SetPushBlock(Evt* script, s32 isInitialCall);
-ApiStatus GetPushBlock(Evt* script, s32 isInitialCall);
-ApiStatus GetGridIndexFromPos(Evt* script, s32 isInitialCall);
-ApiStatus SetPushBlockFallEffect(Evt* script, s32 isInitialCall);
-ApiStatus TeleportPartnerToPlayer(Evt* script, s32 isInitialCall);
+API_CALLABLE(MakeNpcs);
+API_CALLABLE(BasicAI_Main);
+API_CALLABLE(ResetFromLava);
+API_CALLABLE(MakeShop);
+API_CALLABLE(MakeShopOwner);
+API_CALLABLE(CreateMapRoom);
+API_CALLABLE(CheckActionState);
+API_CALLABLE(CreatePushBlockGrid);
+API_CALLABLE(SetPushBlock);
+API_CALLABLE(GetPushBlock);
+
+/// @evtapi
+/// Fill a row of a `PushBlockGrid` from startZ to endZ (inclusive) along constant gridX
+/// @param gridSystemID
+/// @param gridX fixed x grid cell
+/// @param startZ first z grid cell to be filled
+/// @param endZ last z grid cell to be filled
+/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+API_CALLABLE(FillPushBlockX);
+
+/// @evtapi
+/// Fill a row of a `PushBlockGrid` from startX to endX (inclusive) along constant gridZ
+/// @param gridSystemID
+/// @param gridZ fixed z grid cell
+/// @param startX first x grid cell to be filled
+/// @param endX last x grid cell to be filled
+/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+API_CALLABLE(FillPushBlockZ);
+
+API_CALLABLE(GetGridIndexFromPos);
+API_CALLABLE(SetPushBlockFallEffect);
+API_CALLABLE(TeleportPartnerToPlayer);
 
 extern EvtScript EnterWalk;
 extern EvtScript EnterWalkShort;

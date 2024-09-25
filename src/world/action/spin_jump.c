@@ -105,7 +105,7 @@ void action_update_spin_jump(void) {
                 playerStatus->gravityIntegrator[1] = 0.0f;
                 playerStatus->gravityIntegrator[0] = -100.0f;
             }
-            if (belowColliderID >= 0) {
+            if (belowColliderID > NO_COLLIDER) {
                 if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT && (entityType = get_entity_type(collisionStatus->curFloor),
                         entityType == ENTITY_TYPE_RED_SWITCH || entityType == ENTITY_TYPE_BLUE_SWITCH)) {
                     get_entity_by_index(collisionStatus->curFloor)->collisionFlags |= ENTITY_COLLISION_PLAYER_TOUCH_FLOOR;
@@ -115,7 +115,9 @@ void action_update_spin_jump(void) {
                 } else {
                     surfaceType = get_collider_flags(belowColliderID) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
                     if (surfaceType == SURFACE_TYPE_LAVA) {
+#if !VERSION_JP
                         playerStatus->hazardType = HAZARD_TYPE_LAVA;
+#endif
                         set_action_state(ACTION_STATE_HIT_LAVA);
                         playerStatus->flags |= PS_FLAG_HIT_FIRE;
                         playerStatus->flags &= ~PS_FLAG_FLYING;

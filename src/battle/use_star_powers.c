@@ -85,7 +85,7 @@ s32 PartnerWishAnims[][5] = {
         [PARTNER_WISH_ANIM_PRAY]    ANIM_BattleWatt_Sleep,
         [PARTNER_WISH_ANIM_UNUSED]  ANIM_BattleWatt_Sleep,
         [PARTNER_WISH_ANIM_RETURN]  ANIM_BattleWatt_Run,
-        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleParakarry_Idle, // @bug uses wrong sprite!
+        [PARTNER_WISH_ANIM_IDLE]    ANIM_BattleWatt_Idle,
     },
     [PARTNER_SUSHIE] {
         [PARTNER_WISH_ANIM_WALK]    ANIM_BattleSushie_Run,
@@ -123,5 +123,3 @@ API_CALLABLE(LoadStarPowerScript) {
     script->varTable[0] = (s32) (&StarPowersTable[starPowerIdx])->mainScript;
     return ApiStatus_DONE2;
 }
-
-MATCHING_BSS(0x1390);

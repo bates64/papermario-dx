@@ -1,7 +1,19 @@
 #include "common.h"
+#include "vars_access.h"
 #include "effects.h"
 #include "ld_addrs.h"
 #include "entity.h"
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_model_SuperBlockContent_ROM_END;
+extern Addr entity_model_SuperBlockContent_ROM_START;
+extern Addr entity_model_SuperBlock_ROM_END;
+extern Addr entity_model_SuperBlock_ROM_START;
+extern Addr entity_model_UltraBlockContent_ROM_END;
+extern Addr entity_model_UltraBlockContent_ROM_START;
+extern Addr entity_model_UltraBlock_ROM_END;
+extern Addr entity_model_UltraBlock_ROM_START;
+#endif
 
 extern EntityBlueprint Entity_SuperBlockContent;
 

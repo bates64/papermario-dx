@@ -185,6 +185,7 @@ typedef struct ShapeFile {
 } ShapeFile; // size = variable
 
 typedef ModelTreeInfo ModelTreeInfoList[0x200];
+
 extern ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 extern ModelList* gCurrentModels;
 

@@ -7,6 +7,12 @@
 #include "model.h"
 #include "game_modes.h"
 
+#if VERSION_JP
+extern Addr btl_states_menus_ROM_START;
+extern Addr btl_states_menus_ROM_END;
+extern Addr btl_states_menus_VRAM;
+#endif
+
 extern StageListRow* gCurrentStagePtr;
 
 extern s16 D_802809F6;
@@ -37,33 +43,23 @@ void btl_merlee_on_start_turn(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    do {
-        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-            && playerData->merleeCastsLeft > 0
-        ) {
-            if (playerData->merleeTurnCount <= 0) {
-                s32 temp = rand_int(100);
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
+        && playerData->merleeCastsLeft > 0
+    ) {
+        if (playerData->merleeTurnCount <= 0) {
+            s32 temp = rand_int(100);
 
-                if (currentEncounter->curEnemy != NULL) {
-                    if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
-                        // 46/101 ≈ 45.5%
-                        if (temp <= 45) {
-                            playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                        } else if (temp <= 90) { // 45/101 ≈ 44.6%
-                            playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                        } else { // 10/101 ≈ 9.9%
-                            playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                        }
-                    } else if (temp <= 30) { // 31/101 ≈ 30.7%
+            if (currentEncounter->curEnemy != NULL) {
+                if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
+                    // 46/101 ≈ 45.5%
+                    if (temp <= 45) {
                         playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                    } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                    } else if (temp <= 90) { // 45/101 ≈ 44.6%
                         playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                    } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                    } else { // 10/101 ≈ 9.9%
                         playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                    } else { // 20/101 ≈ 19.8%
-                        playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                     }
                 } else if (temp <= 30) { // 31/101 ≈ 30.7%
                     playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
@@ -74,20 +70,28 @@ void btl_merlee_on_start_turn(void) {
                 } else { // 20/101 ≈ 19.8%
                     playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                 }
-
-                temp = rand_int(10) + 6;
-                playerData->merleeTurnCount = temp;
+            } else if (temp <= 30) { // 31/101 ≈ 30.7%
+                playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
+            } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
+            } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
+            } else { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
             }
 
-            if (playerData->merleeTurnCount >= 2) {
-                playerData->merleeTurnCount--;
-            } else {
-                playerData->merleeTurnCount = 0;
-                battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
-                playerData->merleeCastsLeft--;
-            }
+            temp = rand_int(10) + 6;
+            playerData->merleeTurnCount = temp;
         }
-    } while (0); // TODO: required to match
+
+        if (playerData->merleeTurnCount >= 2) {
+            playerData->merleeTurnCount--;
+        } else {
+            playerData->merleeTurnCount = 0;
+            battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
+            playerData->merleeCastsLeft--;
+        }
+    }
 }
 
 void btl_merlee_on_first_strike(void) {
@@ -95,33 +99,23 @@ void btl_merlee_on_first_strike(void) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerData* playerData = &gPlayerData;
 
-    do {
-        if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
-            && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
-            && playerData->merleeCastsLeft > 0)
-        {
-            if (playerData->merleeTurnCount <= 0) {
-                s32 temp = rand_int(100);
+    if (!(gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST
+        && battleStatus->nextMerleeSpellType != MERLEE_SPELL_COIN_BOOST
+        && playerData->merleeCastsLeft > 0)
+    {
+        if (playerData->merleeTurnCount <= 0) {
+            s32 temp = rand_int(100);
 
-                if (currentEncounter->curEnemy != NULL) {
-                    if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
-                        // 46/101 ≈ 45.5%
-                        if (temp <= 45) {
-                            playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                        } else if (temp <= 90) { // 45/101 ≈ 44.6%
-                            playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                        } else { // 10/101 ≈ 9.9%
-                            playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                        }
-                    } else if (temp <= 30) { // 31/101 ≈ 30.7%
+            if (currentEncounter->curEnemy != NULL) {
+                if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
+                    // 46/101 ≈ 45.5%
+                    if (temp <= 45) {
                         playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
-                    } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                    } else if (temp <= 90) { // 45/101 ≈ 44.6%
                         playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
-                    } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                    } else { // 10/101 ≈ 9.9%
                         playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
-                    } else { // 20/101 ≈ 19.8%
-                        playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                     }
                 } else if (temp <= 30) { // 31/101 ≈ 30.7%
                     playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
@@ -132,38 +126,45 @@ void btl_merlee_on_first_strike(void) {
                 } else { // 20/101 ≈ 19.8%
                     playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                 }
-
-                if (playerData->merleeSpellType != MERLEE_SPELL_COIN_BOOST) {
-                    // same outcome either way. has to be written like this, and the check does exist in the code. bug?
-                    if (playerData->merleeTurnCount == -1) {
-                        temp = rand_int(5) + 5;
-                    } else {
-                        temp = rand_int(5) + 5;
-
-                    }
-                } else {
-                    temp = rand_int(8) + 5;
-                }
-                playerData->merleeTurnCount = temp;
+            } else if (temp <= 30) { // 31/101 ≈ 30.7%
+                playerData->merleeSpellType = MERLEE_SPELL_ATK_BOOST;
+            } else if (temp <= 60) { // 30/101 ≈ 29.7%
+                playerData->merleeSpellType = MERLEE_SPELL_DEF_BOOST;
+            } else if (temp <= 80) { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_EXP_BOOST;
+            } else { // 20/101 ≈ 19.8%
+                playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
             }
 
-            if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST) {
-                if (playerData->merleeTurnCount >= 2) {
-                    playerData->merleeTurnCount--;
+            if (playerData->merleeSpellType != MERLEE_SPELL_COIN_BOOST) {
+                // same outcome either way. has to be written like this, and the check does exist in the code. bug?
+                if (playerData->merleeTurnCount == -1) {
+                    temp = rand_int(5) + 5;
                 } else {
-                    battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
-                    playerData->merleeTurnCount = 0;
-                    playerData->merleeCastsLeft--;
+                    temp = rand_int(5) + 5;
+
                 }
+            } else {
+                temp = rand_int(8) + 5;
+            }
+            playerData->merleeTurnCount = temp;
+        }
+
+        if (playerData->merleeSpellType == MERLEE_SPELL_EXP_BOOST || playerData->merleeSpellType == MERLEE_SPELL_COIN_BOOST) {
+            if (playerData->merleeTurnCount >= 2) {
+                playerData->merleeTurnCount--;
+            } else {
+                battleStatus->nextMerleeSpellType = playerData->merleeSpellType;
+                playerData->merleeTurnCount = 0;
+                playerData->merleeCastsLeft--;
             }
         }
-    } while (0); // TODO: required to match
+    }
 }
 
 void btl_set_state(s32 battleState) {
     s32 flags = gBattleStatus.flags2;
     gBattleState = battleState;
-    D_800DC4E0 = 1;
     gBattleSubState = BTL_SUBSTATE_INIT;
 
     flags &= BS_FLAGS2_PEACH_BATTLE;
@@ -219,6 +220,10 @@ void btl_state_update_normal_start(void) {
     battleStatus->curStage = stage;
     switch (gBattleSubState) {
         case BTL_SUBSTATE_NORMAL_START_INIT:
+            #if DX_DEBUG_MENU
+            dx_debug_set_battle_info(gCurrentBattleID << 16 | (gCurrentStageID & 0xFFFF), stage->shape);
+            #endif
+
             BattleEnemiesCreated = battle->formationSize;
             set_screen_overlay_params_back(OVERLAY_NONE, -1.0f);
             compressedAsset = load_asset_by_name(stage->shape, &size);
@@ -261,7 +266,7 @@ void btl_state_update_normal_start(void) {
             gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
-            if (is_ability_active(ABILITY_MYSTERY_SCROLL)) {
+            if (gPlayerData.hasActionCommands) {
                 battleStatus->actionCommandMode = ACTION_COMMAND_MODE_LEARNED;
             }
             battleStatus->actionSuccess = 0;
@@ -273,9 +278,9 @@ void btl_state_update_normal_start(void) {
             battleStatus->jumpCharge = 0;
             battleStatus->unk_98 = 0;
             battleStatus->hpDrainCount = 0;
-            gBattleStatus.flags2 |= BS_FLAGS2_CANT_FLEE;
-            if (currentEncounter->allowFleeing) {
-                gBattleStatus.flags2 &= ~BS_FLAGS2_CANT_FLEE;
+            gBattleStatus.flags2 |= BS_FLAGS2_CAN_FLEE;
+            if (currentEncounter->forbidFleeing) {
+                gBattleStatus.flags2 &= ~BS_FLAGS2_CAN_FLEE;
             }
             battleStatus->endBattleFadeOutRate = 10;
             battleStatus->waitForState = BATTLE_STATE_0;
@@ -836,12 +841,6 @@ void btl_state_update_begin_player_turn(void) {
             }
             break;
         case BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_TURBO_CHARGE:
-            if (0) { // TODO relocated block - required to match
-back:
-                player->koStatus = STATUS_KEY_DAZE;
-                player->disableEffect->data.disableX->koDuration = player->koDuration;
-                goto later;
-            }
             if (!btl_is_popup_displayed()) {
                 gBattleSubState = BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_STATUS_DAMAGE;
             }
@@ -920,13 +919,11 @@ back:
                 if (player->transparentStatus != 0) {
                     player->transparentDuration--;
                     part->flags |= ACTOR_PART_FLAG_TRANSPARENT;
-                    do {
-                        if (player->transparentDuration <= 0) {
-                            player->transparentStatus = 0;
-                            part->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
-                            remove_status_transparent(player->hudElementDataIndex);
-                        }
-                    } while (0); // TODO required to match
+                    if (player->transparentDuration <= 0) {
+                        player->transparentStatus = 0;
+                        part->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
+                        remove_status_transparent(player->hudElementDataIndex);
+                    }
                 }
 
                 if (player->debuff != 0) {
@@ -954,14 +951,14 @@ back:
                 temp = player->koDuration;
                 player->koDuration = debuffDuration;
                 if (debuffDuration > 0) {
-                    goto back;
+                    player->koStatus = STATUS_KEY_DAZE;
+                    player->disableEffect->data.disableX->koDuration = player->koDuration;
                 } else if (temp != debuffDuration) {
                     player->koStatus = 0;
                     player->koDuration = 0;
                     player->disableEffect->data.disableX->koDuration = 0;
                 }
             }
-    later:
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 Actor* enemy = battleStatus->enemyActors[i];
@@ -1575,9 +1572,7 @@ void btl_state_update_end_turn(void) {
             actor = battleStatus->enemyActors[i];
             if (actor != NULL && actor->handleEventScript != NULL) {
                 if (does_script_exist(actor->handleEventScriptID)) {
-                    do {
-                        cond = TRUE;
-                    } while (0); // TODO required to match
+                    cond = TRUE;
                 } else {
                     actor->handleEventScript = NULL;
                 }
@@ -2020,7 +2015,7 @@ void btl_state_update_end_training_battle(void) {
                 gBattleSubState = BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT;
             }
             break;
-        case BTL_SUBSTATE_END_TRAINING_RESET_CAM: //@bug should be BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT
+        case BTL_SUBSTATE_END_TRAINING_AWAIT_OUTTA_SIGHT:
             if (!does_script_exist(partner->handleBatttlePhaseScriptID)) {
                 battleStatus->outtaSightActive = FALSE;
                 gBattleSubState = BTL_SUBSTATE_END_TRAINING_RESET_CAM;
@@ -2070,7 +2065,7 @@ void btl_state_update_end_battle(void) {
             }
             if (encounterStatus->battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
                 btl_cam_unfreeze();
-                btl_cam_use_preset(BTL_CAM_PRESET_01);
+                btl_cam_use_preset(BTL_CAM_INTERRUPT);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
                 set_screen_overlay_center(SCREEN_LAYER_FRONT, 0, 160, 120);
             }
@@ -2148,7 +2143,7 @@ void btl_state_update_end_battle(void) {
 
                 btl_set_state(BATTLE_STATE_0);
                 gLastDrawBattleState = gBattleState;
-                get_map_IDs_by_name("gv_01", &areaID, &mapID);
+                get_map_IDs_by_name_checked("gv_01", &areaID, &mapID);
                 gGameStatusPtr->areaID = areaID;
                 gGameStatusPtr->mapID = mapID;
                 gGameStatusPtr->entryID = gv_01_ENTRY_0;
@@ -2167,7 +2162,7 @@ void btl_state_draw_end_battle(void) {
     Camera* camera = &gCameras[gCurrentCameraID];
 
     if (gCurrentEncounter.battleOutcome == OUTCOME_PLAYER_LOST && !(gBattleStatus.flags1 & BS_FLAGS1_NO_GAME_OVER)) {
-        camera->auxBoomZOffset += 256;
+        camera->params.basic.offsetY += 256;
         set_screen_overlay_params_front(OVERLAY_SCREEN_MARIO, BattleScreenFadeAmt);
     } else {
         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, BattleScreenFadeAmt);
@@ -2220,7 +2215,7 @@ void btl_state_update_run_away(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
 
             playerData->fleeAttempts++;
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
 
             // calculate average escape chance
@@ -2297,18 +2292,18 @@ void btl_state_update_run_away(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS) {
         if (battleStatus->totalStarPoints != 0) {
+            s32 deltaSP;
             s32 prevSP;
 
-            //TODO shouldnt need to reuse enemyCount here, see BTL_SUBSTATE_CELEBRATE_TALLY_STAR_POINTS
             RunAwayRewardTotal -= RunAwayRewardIncrement;
             prevSP = battleStatus->totalStarPoints;
-            battleStatus->totalStarPoints = (s8)(RunAwayRewardTotal / 100);
-            enemyCount = prevSP - battleStatus->totalStarPoints;
+            battleStatus->totalStarPoints = RunAwayRewardTotal / 100;
+            deltaSP = prevSP - battleStatus->totalStarPoints;
 
-            if (enemyCount > 0) {
+            if (deltaSP > 0) {
                 sfx_play_sound(SOUND_COIN_PICKUP);
             }
-            playerData->starPoints += enemyCount;
+            playerData->starPoints += deltaSP;
             BattleScreenFadeAmt++;
             if (RunAwayRewardStep == 0 && battleStatus->totalStarPoints != 0) {
                 playerData->starPoints++;
@@ -2399,7 +2394,7 @@ void btl_state_update_defeat(void) {
                 player->disableEffect->data.disableX->koDuration = 0;
             }
 
-            btl_cam_use_preset(BTL_CAM_PRESET_25);
+            btl_cam_use_preset(BTL_CAM_PLAYER_FLEE);
             btl_cam_target_actor(ACTOR_PLAYER);
             battleStatus->battlePhase = PHASE_DEATH;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
@@ -2452,12 +2447,12 @@ void btl_state_update_defeat(void) {
 void btl_state_draw_defeat(void) {
 }
 
-ApiStatus EnablePartnerBlur(Evt* script, s32 isInitialCall) {
+API_CALLABLE(EnablePartnerBlur) {
     enable_partner_blur();
     return ApiStatus_DONE2;
 }
 
-ApiStatus DisablePartnerBlur(Evt* script, s32 isInitialCall) {
+API_CALLABLE(DisablePartnerBlur) {
     disable_partner_blur();
     return ApiStatus_DONE2;
 }
@@ -2478,7 +2473,7 @@ void btl_state_update_change_partner(void) {
             partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             battleStatus->stateFreezeCount = 0;
             gBattleStatus.flags2 |= BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
-            btl_cam_use_preset(BTL_CAM_PRESET_19);
+            btl_cam_use_preset(BTL_CAM_REPOSITION);
             btl_cam_set_target_pos(-89.0, 40.0, -99.0);
             btl_cam_set_zoom(372);
             btl_cam_set_zoffset(0);
@@ -2833,7 +2828,7 @@ void btl_state_update_player_move(void) {
             if (!enemyNotDone) {
                 gBattleSubState = BTL_SUBSTATE_PLAYER_MOVE_CHECK_PLAYER_STATUS;
             } else {
-                btl_cam_use_preset(BTL_CAM_PRESET_03);
+                btl_cam_use_preset(BTL_CAM_VIEW_ENEMIES);
                 switch (actor->statusAfflicted) {
                     case 4:
                         messageIndex = BTL_MSG_ENEMY_DAZED;
@@ -3341,7 +3336,7 @@ void btl_state_update_partner_move(void) {
             if (!enemyFound) {
                 gBattleSubState = BTL_SUBSTATE_PARTNER_MOVE_DONE;
             } else {
-                btl_cam_use_preset(BTL_CAM_PRESET_03);
+                btl_cam_use_preset(BTL_CAM_VIEW_ENEMIES);
                 switchCondition = enemyActor->statusAfflicted - 4;
                 switch (switchCondition) {
                     case 0:
@@ -3884,7 +3879,7 @@ void btl_state_update_first_strike(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_MIDPOINT_CLOSE);
             btl_cam_target_actor(ACTOR_PLAYER);
             reset_actor_turn_info();
             // begin the partner turn script
@@ -4087,7 +4082,7 @@ void btl_state_update_partner_striking_first(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_IS_FIRST_STRIKE;
             gBattleStatus.flags1 |= BS_FLAGS1_PARTNER_ACTING;
             increment_status_bar_disabled();
-            btl_cam_use_preset(BTL_CAM_PRESET_10);
+            btl_cam_use_preset(BTL_CAM_MIDPOINT_CLOSE);
             btl_cam_target_actor(ACTOR_PARTNER);
             reset_actor_turn_info();
             // begin the partner turn script

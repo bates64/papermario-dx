@@ -129,10 +129,9 @@ typedef struct BattleMoveEntry {
 
 typedef struct ActorBlueprint {
     /* 0x00 */ s32 flags;
-    /* 0x04 */ char unk_04;
-    /* 0x05 */ u8 type;
-    /* 0x06 */ u8 level;
-    /* 0x07 */ u8 maxHP;
+    /* 0x04 */ s16 maxHP;
+    /* 0x06 */ u8 type;
+    /* 0x07 */ u8 level;
     /* 0x08 */ s16 partCount;
     /* 0x0A */ char unk_0A[2];
     /* 0x0C */ struct ActorPartBlueprint* partsData;
@@ -252,13 +251,12 @@ typedef struct PlayerCelebrationAnimOptions {
     /* 0x00 */ s16 randomChance;
     /* 0x02 */ s16 hpBasedChance;
     /* 0x04 */ s32 options[80];
-} PlayerCelebrationAnimOptions; // size = 0x8
+} PlayerCelebrationAnimOptions; // size = 0x144
 
 extern Battle* gCurrentBattlePtr;
 
 extern ActorOffsets bActorOffsets[];
 
-void func_80072BCC(s32 arg0);
 void load_demo_battle(u32 index);
 Actor* create_actor(Formation formation);
 

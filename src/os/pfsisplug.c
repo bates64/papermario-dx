@@ -15,13 +15,8 @@ s32 osPfsIsPlug(OSMesgQueue* mq, u8* pattern) {
     u8 bitpattern;
     OSContStatus data[MAXCONTROLLERS];
     int channel;
-#ifdef BBPLAYER
     int crc_error_cnt = 3;
     u8 bits = 0;
-#else
-    u8 bits = 0;
-    s32 crc_error_cnt = 3;
-#endif
 
     __osSiGetAccess();
 

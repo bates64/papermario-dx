@@ -3,166 +3,64 @@
 #include "common.h"
 #include "world/partners.h"
 #include "world/actions.h"
+#include "world/disguise.h"
 #include "npc.h"
 #include "effects.h"
 #include "ld_addrs.h"
 
+#include "sprite/npc/WorldClubba.h"
+#include "sprite/npc/WorldKoopatrol.h"
+#include "sprite/npc/HammerBros.h"
 #ifdef SHIFT
-#define PLAYER_ACTION_VRAM_DEF texture_memory_VRAM_END
+extern Addr world_action_CLASS_VRAM;
+#define PLAYER_ACTION_VRAM_DEF world_action_CLASS_VRAM
 #else
 #define PLAYER_ACTION_VRAM_DEF (void*) 0x802B6000
 #endif
 
-SHIFT_BSS void* D_8010C924;
-SHIFT_BSS s32 D_8010C92C;
-SHIFT_BSS s32 D_8010C964;
-SHIFT_BSS s32 gSpinHistoryBufferPos;
-SHIFT_BSS s16 D_8010C9B0;
-SHIFT_BSS s32 gSpinHistoryPosY[5];
-SHIFT_BSS s32 gSpinHistoryPosX[5];
-SHIFT_BSS s32 gSpinHistoryPosZ[5];
-SHIFT_BSS s16 gSpinHistoryPosAngle[5];
+void* LastLoadedActionOffset;
+s32 PeachDisguiseReapplyDelay;
+s32 D_8010C964;
+s32 gSpinHistoryBufferPos;
+s16 D_8010C9B0;
+s32 gSpinHistoryPosX[5];
+s32 gSpinHistoryPosY[5];
+s32 gSpinHistoryPosZ[5];
+s16 gSpinHistoryPosAngle[5];
+
+s32 PrevPlayerCamRelativeYaw = 0;
+s32 D_800F7B44 = 0; // always zero, remove?
+
+f32 LastMidairPlayerVelY = 0.0;
 
 void func_800E5520(void) {
     D_8010C9B0 = 0;
 }
 
+s32 (*LandingAdjustCamCallback)(void) = NULL;
+
+void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
+    LandingAdjustCamCallback = funcPtr;
+}
+
 s32 phys_adjust_cam_on_landing(void) {
-    PartnerStatus* partnerStatus = &gPartnerStatus;
-    GameStatus* gameStatus = gGameStatusPtr;
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 ret = 1;
+    s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    //TODO hardcoded map IDs
-    switch (gameStatus->areaID) {
-        case AREA_OBK:
-            ret = gameStatus->mapID != 4;
-            break;
-        case AREA_ISK:
-            switch (gameStatus->mapID) {
-                case 0:
-                    ret = 2;
-                    break;
-                case 1:
-                    if (D_8010C9B0 == 0) {
-                        if (playerStatus->pos.y <= 0.0f) {
-                            D_8010C9B0 = 1;
-                        }
-                        ret = 2;
-                    } else if (playerStatus->pos.y > 0.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 3:
-                    if (playerStatus->pos.y > 25.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 4:
-                    if (playerStatus->pos.y > 50.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 7:
-                    if (playerStatus->pos.y > -390.0f) {
-                        ret = 0;
-                    } else if (playerStatus->pos.y < -495.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 8:
-                    if (playerStatus->pos.y > -90.0f) {
-                        ret = 0;
-                    } else if (playerStatus->pos.y < -370.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 2:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > 0.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = 2;
-                                break;
-                            }
-                        }
-
-                        if (playerStatus->pos.y > 0.0f) {
-                            ret = 0;
-                        }
-                    } else {
-                        ret = 2;
-                    }
-                    break;
-                case 5:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > -130.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = 2;
-                                break;
-                            }
-
-                        }
-
-                        if (playerStatus->pos.y > -130.0f) {
-                            ret = 0;
-                        }
-                    } else {
-                        ret = 2;
-                    }
-                    break;
-                case 10:
-                    if (D_8010C9B0 == 0) {
-                        if (!(playerStatus->pos.y > -520.0f)) {
-                            D_8010C9B0 = 1;
-                        } else {
-                            ret = 2;
-                            break;
-                        }
-                    }
-
-                    if (playerStatus->pos.y > -520.0f) {
-                        ret = 0;
-                    }
-                    break;
-                case 11:
-                    if (gGameStatusPtr->entryID == 0) {
-                        if (D_8010C9B0 == 0) {
-                            if (!(playerStatus->pos.y > -520.0f)) {
-                                D_8010C9B0 = 1;
-                            } else {
-                                ret = 2;
-                                break;
-                            }
-
-                        }
-
-                        if (playerStatus->pos.y > -520.0f) {
-                            ret = 0;
-                        }
-                    }
-
-                    if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
-                        ret = 2;
-                    }
-                    break;
-            }
-            break;
+    if (LandingAdjustCamCallback != NULL) {
+        ret = LandingAdjustCamCallback();
     }
 
-    if (ret == 1) {
+    if (ret == LANDING_CAM_CHECK_SURFACE) {
         s32 surfaceType = get_collider_flags(gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
 
         if (surfaceType == SURFACE_TYPE_LAVA) {
             gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
-            ret = 0;
+            ret = LANDING_CAM_NEVER_ADJUST;
         } else {
             gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_IGNORE_PLAYER_Y;
         }
-    } else if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE && partnerStatus->actingPartner == PARTNER_PARAKARRY) {
+    } else if (gPartnerStatus.actingPartner == PARTNER_PARAKARRY && gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_NO_INTERP_Y;
     } else {
         gCameras[CAM_DEFAULT].moveFlags &= ~CAMERA_MOVE_NO_INTERP_Y;
@@ -176,20 +74,17 @@ void phys_clear_spin_history(void) {
 
     gSpinHistoryBufferPos = 0;
 
-    for (i = 0; i < ARRAY_COUNT(gSpinHistoryPosY); i++) {
+    for (i = 0; i < ARRAY_COUNT(gSpinHistoryPosAngle); i++) {
         gSpinHistoryPosAngle[i] = 180;
         gSpinHistoryPosY[i] = 0x80000000;
     }
 }
 
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z) {
-    s32 idx = gSpinHistoryBufferPos;
+    s32 idx = gSpinHistoryBufferPos - lag;
 
-    // Can't get this if/else to match otherwise...
-    if (idx - lag >= 0) {
-        idx -= lag;
-    } else {
-        idx = gSpinHistoryBufferPos - lag + 5;
+    if (idx < 0) {
+        idx += ARRAY_COUNT(gSpinHistoryPosAngle);
     }
 
     *x = gSpinHistoryPosX[idx];
@@ -212,12 +107,10 @@ void phys_reset_spin_history(void) {
     }
 
     D_8010C964 = 0;
-    D_8010C924 = NULL;
+    LastLoadedActionOffset = NULL;
 }
 
 void phys_update_action_state(void) {
-    Camera* cameras = gCameras;
-    PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerSpinState* playerSpinState = &gPlayerSpinState;
 
@@ -246,6 +139,7 @@ void phys_update_action_state(void) {
     }
 
     calculate_camera_yinterp_rate();
+
     if (playerSpinState->stopSoundTimer != 0) {
         playerSpinState->stopSoundTimer--;
         if (playerSpinState->stopSoundTimer == 0) {
@@ -268,57 +162,47 @@ void phys_update_action_state(void) {
                 cond = FALSE;
             }
 
-            if ((partnerStatus->partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
+            if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
                 set_action_state(ACTION_STATE_TALK);
             }
             check_input_spin();
         }
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            void* dmaStart = PlayerActionsTable[playerStatus->actionState].dmaStart;
+        Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-            if (dmaStart != NULL && dmaStart != D_8010C924) {
-                D_8010C924 = dmaStart;
-                dma_copy(dmaStart, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
+        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
+            if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
+                LastLoadedActionOffset = action->dmaStart;
+                dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
             }
         }
-        PlayerActionsTable[playerStatus->actionState].update();
+        action->update();
     } while (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED);
 }
 
 void phys_peach_update(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
     calculate_camera_yinterp_rate();
 
     do {
-        if (!(playerStatus->flags & PS_FLAG_PAUSED) && check_conversation_trigger()) {
+        if (!(gPlayerStatus.flags & PS_FLAG_PAUSED) && check_conversation_trigger()) {
             set_action_state(ACTION_STATE_TALK);
         }
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            Action* action = &PlayerActionsTable[playerStatus->actionState];
+        Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-            if (action->flag) {
-                if (action->dmaStart != NULL && action->dmaStart != D_8010C924) {
-                    D_8010C924 = action->dmaStart;
-
-                    dma_copy(D_8010C924, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
-                }
-
-                if (PlayerActionsTable[playerStatus->actionState].flag) {
-                    PlayerActionsTable[playerStatus->actionState].update();
+        if (action->flag) {
+            if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
+                if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
+                    LastLoadedActionOffset = action->dmaStart;
+                    dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
                 }
             }
-        } else {
-            if (PlayerActionsTable[playerStatus->actionState].flag) {
-                PlayerActionsTable[playerStatus->actionState].update();
-            }
+            action->update();
         }
-    } while (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED);
+    } while (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED);
 
     peach_check_for_parasol_input();
-    if (playerStatus->animFlags & PA_FLAG_INVISIBLE) {
+    if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
         peach_sync_disguise_npc();
     }
 }
@@ -334,20 +218,7 @@ void set_action_state(s32 actionState) {
     }
 
     if (playerStatus->animFlags & PA_FLAG_8BIT_MARIO) {
-        // TODO figure this out
-#ifdef NON_EQUIVALENT
-        if (
-            actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK ||
-            actionState == ACTION_STATE_RUN || actionState == ACTION_STATE_JUMP ||
-            actionState == ACTION_STATE_BOUNCE || actionState == ACTION_STATE_HOP ||
-            actionState == ACTION_STATE_LAUNCH || actionState == ACTION_STATE_LANDING_ON_SWITCH ||
-            actionState == ACTION_STATE_FALLING || actionState == ACTION_STATE_STEP_DOWN ||
-            actionState == ACTION_STATE_LAND || actionState == ACTION_STATE_STEP_DOWN_LAND
-        ) {
-#else
-        if (actionState < ACTION_STATE_TALK)
-            if (actionState >= 0) {
-#endif
+        if (actionState >= ACTION_STATE_IDLE && actionState < ACTION_STATE_TALK) {
             playerStatus->prevActionState = playerStatus->actionState;
             playerStatus->actionState = actionState;
             playerStatus->flags |= PS_FLAG_ACTION_STATE_CHANGED;
@@ -480,8 +351,7 @@ b32 check_input_jump(void) {
         return FALSE;
     }
 
-    // @bug? collider flags not properly masked with COLLIDER_FLAG_SURFACE_TYPE
-    surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor);
+    surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
         return FALSE;
     }
@@ -497,7 +367,7 @@ b32 check_input_jump(void) {
         Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
-            if ((entity->boundScriptBytecode == 0) || (entity->flags & ENTITY_FLAG_4000)) {
+            if ((entity->boundScriptBytecode == NULL) || (entity->flags & ENTITY_FLAG_4000)) {
                 if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
                     entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
                     entity->type == ENTITY_TYPE_TRUMPET_PLANT)
@@ -549,6 +419,91 @@ void check_input_spin(void) {
     }
 }
 
+AnimID ClubbaDisguiseExtraAnims[] = {
+    ANIM_WorldClubba_Anim00,
+    ANIM_WorldClubba_Anim02,
+    ANIM_WorldClubba_Anim03,
+    ANIM_WorldClubba_Anim04,
+    ANIM_WorldClubba_Anim05,
+    ANIM_WorldClubba_Anim08,
+    ANIM_WorldClubba_Anim07,
+    ANIM_WorldClubba_Anim13,
+    ANIM_WorldClubba_Anim14,
+    ANIM_LIST_END
+};
+
+AnimID HammerBroDisguiseExtraAnims[] = {
+    ANIM_HammerBros_Anim00,
+    ANIM_HammerBros_Anim02,
+    ANIM_HammerBros_Anim03,
+    ANIM_HammerBros_Anim04,
+    ANIM_HammerBros_Anim06,
+    ANIM_HammerBros_Anim07,
+    ANIM_HammerBros_Anim09,
+    ANIM_HammerBros_Anim0A,
+    ANIM_HammerBros_Anim0B,
+    ANIM_HammerBros_Anim1A,
+    ANIM_LIST_END
+};
+
+AnimID KoopatrolDisguiseExtraAnims[] = {
+    ANIM_WorldKoopatrol_Anim00,
+    ANIM_WorldKoopatrol_Anim01,
+    ANIM_WorldKoopatrol_Anim02,
+    ANIM_WorldKoopatrol_Anim04,
+    ANIM_WorldKoopatrol_Anim05,
+    ANIM_WorldKoopatrol_Anim06,
+    ANIM_WorldKoopatrol_Anim07,
+    ANIM_WorldKoopatrol_Anim08,
+    ANIM_WorldKoopatrol_Anim09,
+    ANIM_WorldKoopatrol_Anim12,
+    ANIM_WorldKoopatrol_Anim14,
+    ANIM_WorldKoopatrol_Anim1B,
+    ANIM_LIST_END
+};
+
+DisguiseAnims BasicPeachDisguiseAnims[] = {
+    [PEACH_DISGUISE_NONE] {
+        ANIM_WorldKoopatrol_Anim01,
+        ANIM_WorldKoopatrol_Anim04,
+        ANIM_WorldKoopatrol_Anim06,
+        ANIM_WorldKoopatrol_Anim08,
+        ANIM_WorldKoopatrol_Anim00,
+        ANIM_WorldKoopatrol_Anim1B
+    },
+    [PEACH_DISGUISE_KOOPATROL] {
+        ANIM_WorldKoopatrol_Anim01,
+        ANIM_WorldKoopatrol_Anim04,
+        ANIM_WorldKoopatrol_Anim06,
+        ANIM_WorldKoopatrol_Anim08,
+        ANIM_WorldKoopatrol_Anim00,
+        ANIM_WorldKoopatrol_Anim1B
+    },
+    [PEACH_DISGUISE_HAMMER_BROS] {
+        ANIM_HammerBros_Anim03,
+        ANIM_HammerBros_Anim06,
+        ANIM_HammerBros_Anim09,
+        ANIM_HammerBros_Anim0B,
+        ANIM_HammerBros_Anim00,
+        ANIM_HammerBros_Anim1A
+    },
+    [PEACH_DISGUISE_CLUBBA] {
+        ANIM_WorldClubba_Anim02,
+        ANIM_WorldClubba_Anim03,
+        ANIM_WorldClubba_Anim04,
+        ANIM_WorldClubba_Anim05,
+        ANIM_WorldClubba_Anim00,
+        ANIM_WorldClubba_Anim14
+    },
+};
+
+AnimID* PeachDisguiseExtraAnims[] = {
+    [PEACH_DISGUISE_NONE] KoopatrolDisguiseExtraAnims,
+    [PEACH_DISGUISE_KOOPATROL] KoopatrolDisguiseExtraAnims,
+    [PEACH_DISGUISE_HAMMER_BROS] HammerBroDisguiseExtraAnims,
+    [PEACH_DISGUISE_CLUBBA] ClubbaDisguiseExtraAnims
+};
+
 void peach_set_disguise_anim(AnimID anim) {
     s32 listIndex = PeachDisguiseNpcIndex;
 
@@ -579,9 +534,9 @@ void peach_check_for_parasol_input(void) {
     Npc* disguiseNpc;
 
     if (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN) {
-        if (D_8010C92C != 0) {
-            D_8010C92C--;
-            if (D_8010C92C == 0) {
+        if (PeachDisguiseReapplyDelay != 0) {
+            PeachDisguiseReapplyDelay--;
+            if (PeachDisguiseReapplyDelay == 0) {
                 if (gGameStatusPtr->peachFlags & PEACH_FLAG_DISGUISED) {
                     playerStatus->animFlags |= PA_FLAG_INVISIBLE;
                     gGameStatusPtr->peachFlags |= PEACH_FLAG_DISGUISED;
@@ -677,7 +632,7 @@ s32 peach_disguise_check_overlaps(void) {
         f32 y = playerStatus->pos.y + 4.0f;
         f32 z = playerStatus->pos.z - (dy * radius);
         hitID = player_test_lateral_overlap(PLAYER_COLLISION_3, playerStatus, &x, &y, &z, 4.0f, yaw);
-        if (hitID >= 0) {
+        if (hitID > NO_COLLIDER) {
             break;
         }
     }

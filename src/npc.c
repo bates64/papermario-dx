@@ -5,12 +5,13 @@
 #include "sprite.h"
 #include "world/partners.h"
 #include "sprite/npc/WorldWatt.h"
+#include "dx/debug_menu.h"
 
-SHIFT_BSS s16 gNpcCount;
-SHIFT_BSS NpcList gWorldNpcList;
-SHIFT_BSS NpcList gBattleNpcList;
-SHIFT_BSS NpcList* gCurrentNpcListPtr;
-SHIFT_BSS b8 gNpcPlayerCollisionsEnabled;
+s16 gNpcCount;
+static NpcList gWorldNpcList;
+static NpcList gBattleNpcList;
+static NpcList* gCurrentNpcListPtr;
+static b8 gNpcPlayerCollisionsEnabled;
 
 #define PAL_ANIM_END 0xFF
 
@@ -44,24 +45,6 @@ u8 wWattIdlePalettesAnim[] = {
     WATT_DEFAULT,    44,
     PAL_ANIM_END
 };
-
-s32 D_80077C0C = 0; //  padding?
-f32 D_80077C10 = 0.0f;
-s16 D_80077C14 = 4;
-s16 D_80077C16 = 0; // padding?
-f32 D_80077C18 = 0;
-s16 D_80077C1C = 4;
-s16 D_80077C1E = 5;
-s32 D_80077C20 = 0;
-f32 D_80077C24 = 0.0f;
-s16 D_80077C28 = 4;
-s16 D_80077C2A = 0; // padding?
-f32 D_80077C2C = 0.0f;
-s16 D_80077C30 = 4;
-s16 D_80077C32 = 0; // padding?
-s32 D_80077C34 = 0;
-s16 D_80077C38 = 4;
-s16 D_80077C3A = 4;
 
 void STUB_npc_callback(Npc* npc) {
 }
@@ -100,15 +83,6 @@ void init_npc_list(void) {
 
     gNpcCount = 0;
     gNpcPlayerCollisionsEnabled = TRUE;
-}
-
-void npc_iter_no_op(void) {
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
-        // Needed to avoid loop optimization.
-        do {} while (FALSE);
-    }
 }
 
 s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
@@ -908,11 +882,10 @@ void appendGfx_npc(void* data) {
             || (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D != 1.0f
             || npc->scale.z * SPRITE_WORLD_SCALE_D != 1.0f
         ) {
-            do {
-                guScaleF(mtx2, npc->scale.x * SPRITE_WORLD_SCALE_D,
-                               (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D,
-                               npc->scale.z * SPRITE_WORLD_SCALE_D);
-            } while (0); // required to match (macro?)
+            guScaleF(mtx2,
+                SPRITE_WORLD_SCALE_D * npc->scale.x,
+                SPRITE_WORLD_SCALE_D * npc->scale.y * npc->verticalStretch,
+                SPRITE_WORLD_SCALE_D * npc->scale.z);
             guMtxCatF(mtx2, mtx1, mtx1);
 
         }
@@ -940,12 +913,10 @@ void appendGfx_npc(void* data) {
             || (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D != 1.0f
             || npc->scale.z * SPRITE_WORLD_SCALE_D != 1.0f
         ) {
-            do {
-                guScaleF(mtx2, npc->scale.x * SPRITE_WORLD_SCALE_D,
-                               (npc->scale.y * npc->verticalStretch) * SPRITE_WORLD_SCALE_D,
-                               npc->scale.z * SPRITE_WORLD_SCALE_D);
-            } while (0); // required to match (macro?)
-
+            guScaleF(mtx2,
+                SPRITE_WORLD_SCALE_D * npc->scale.x,
+                SPRITE_WORLD_SCALE_D * npc->scale.y * npc->verticalStretch,
+                SPRITE_WORLD_SCALE_D * npc->scale.z);
             guMtxCatF(mtx2, mtx1, mtx1);
         }
         if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -974,7 +945,7 @@ void render_npcs(void) {
             && (npc->flags != 0)
             && !(npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_HAS_NO_SPRITE | NPC_FLAG_INACTIVE | NPC_FLAG_INVISIBLE))
         ) {
-            transform_point(cam->perspectiveMatrix, npc->pos.x, npc->pos.y, npc->pos.z, 1.0f, &x, &y, &z, &s);
+            transform_point(cam->mtxPerspective, npc->pos.x, npc->pos.y, npc->pos.z, 1.0f, &x, &y, &z, &s);
             if (!(s < 0.01) || !(s > -0.01)) {
                 renderDist = ((z * 5000.0f) / s) + 5000.0f;
                 if (renderDist < 0.0f) {
@@ -1726,7 +1697,7 @@ s32 npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
             }
 
             // blend next palettes
-            outColor = npc->copiedPalettes[1]; // @bug? should this be index 3?
+            outColor = npc->copiedPalettes[1]; /// @bug? should this be index 3?
             color2 = npc->originalPalettesList[npc->blendPalD];
             color1 = npc->originalPalettesList[npc->blendPalC];
             npc->adjustedPalettes[3] = npc->copiedPalettes[3];
@@ -1761,14 +1732,37 @@ s32 npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
 }
 
 void npc_set_decoration(Npc* npc, s32 idx, s32 decorationType) {
-    npc_remove_decoration_impl(npc, idx);
+    npc_remove_decoration(npc, idx);
     npc->decorationType[idx] = decorationType;
     npc->changedDecoration[idx] = 1;
     npc->decorationInitialized[idx] = 0;
 }
 
 void npc_remove_decoration(Npc* npc, s32 idx) {
-    npc_remove_decoration_impl(npc, idx);
+    switch (npc->decorationType[idx]) {
+        case NPC_DECORATION_NONE:
+            npc_remove_decoration_none(npc, idx);
+            break;
+        case NPC_DECORATION_BOWSER_AURA:
+            npc_remove_decoration_bowser_aura(npc, idx);
+            break;
+        case NPC_DECORATION_SWEAT:
+            npc_remove_decoration_sweat(npc, idx);
+            break;
+        case NPC_DECORATION_SEEING_STARS:
+            npc_remove_decoration_seeing_stars(npc, idx);
+            break;
+        case NPC_DECORATION_WHITE_GLOW_FRONT:
+            npc_remove_decoration_glow_in_front(npc, idx);
+            break;
+        case NPC_DECORATION_WHITE_GLOW_BEHIND:
+            npc_remove_decoration_glow_behind(npc, idx);
+            break;
+        case NPC_DECORATION_CHARGED:
+            npc_remove_decoration_charged(npc, idx);
+            break;
+    }
+    npc->decorationType[idx] = NPC_DECORATION_NONE;
 }
 
 s32 npc_update_decorations(Npc* npc) {
@@ -1801,33 +1795,6 @@ s32 npc_update_decorations(Npc* npc) {
     }
 }
 
-void npc_remove_decoration_impl(Npc* npc, s32 idx) {
-    switch (npc->decorationType[idx]) {
-        case NPC_DECORATION_NONE:
-            npc_remove_decoration_none(npc, idx);
-            break;
-        case NPC_DECORATION_BOWSER_AURA:
-            npc_remove_decoration_bowser_aura(npc, idx);
-            break;
-        case NPC_DECORATION_SWEAT:
-            npc_remove_decoration_sweat(npc, idx);
-            break;
-        case NPC_DECORATION_SEEING_STARS:
-            npc_remove_decoration_seeing_stars(npc, idx);
-            break;
-        case NPC_DECORATION_WHITE_GLOW_FRONT:
-            npc_remove_decoration_glow_in_front(npc, idx);
-            break;
-        case NPC_DECORATION_WHITE_GLOW_BEHIND:
-            npc_remove_decoration_glow_behind(npc, idx);
-            break;
-        case NPC_DECORATION_CHARGED:
-            npc_remove_decoration_charged(npc, idx);
-            break;
-    }
-    npc->decorationType[idx] = NPC_DECORATION_NONE;
-}
-
 void npc_reset_current_decoration(Npc* npc, s32 idx) {
     switch (npc->decorationType[idx]) {
         case NPC_DECORATION_NONE:
@@ -1838,7 +1805,7 @@ void npc_reset_current_decoration(Npc* npc, s32 idx) {
         case NPC_DECORATION_WHITE_GLOW_BEHIND:
             break;
         case NPC_DECORATION_CHARGED:
-            npc__reset_current_decoration(npc, idx);
+            npc->decorationInitialized[idx] = 0;
             break;
     }
 }
@@ -1963,9 +1930,10 @@ void npc_remove_decoration_glow_behind(Npc* npc, s32 idx) {
 }
 
 void npc_update_decoration_charged(Npc* npc, s32 idx) {
-    u8 rbuf[20];
-    u8 gbuf[20];
-    u8 bbuf[20];
+    #define RGBA_BUF_SIZE 20
+    u8 rbuf[RGBA_BUF_SIZE];
+    u8 gbuf[RGBA_BUF_SIZE];
+    u8 bbuf[RGBA_BUF_SIZE];
     s32 color;
     s32 alpha;
     s32 i;
@@ -1980,25 +1948,22 @@ void npc_update_decoration_charged(Npc* npc, s32 idx) {
             npc->decorationGlowPhase[idx] %= 360;
         }
 
-        for (i = 0; i < 20; i++) {
+        for (i = 0; i < RGBA_BUF_SIZE; i++) {
             rbuf[i] = (cosine(npc->decorationGlowPhase[idx] + (25 * i)) + 1.0) * 80.0f;
             gbuf[i] = (cosine(npc->decorationGlowPhase[idx] + (25 * i) + 45) + 1.0) * 80.0f;
             bbuf[i] = (cosine(npc->decorationGlowPhase[idx] + (25 * i) + 90) + 1.0) * 80.0f;
         }
 
         alpha = 255;
-        for (i = 0; i < 20; i++) {
+        for (i = 0; i < RGBA_BUF_SIZE; i++) {
             color = (rbuf[i] << 24) | (gbuf[i] << 16) | (bbuf[i] << 8) | alpha;
             set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_COLOR_BUF_SET_MODULATE, i, color, 0, 255, 0);
         }
     }
+    #undef RGBA_BUF_SIZE
 }
 
 void npc_remove_decoration_charged(Npc* npc, s32 idx) {
-}
-
-void npc__reset_current_decoration(Npc* npc, s32 idx) {
-    npc->decorationInitialized[idx] = 0;
 }
 
 Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius) {
@@ -2203,218 +2168,6 @@ void npc_set_imgfx_params(Npc* npc, s32 imgfxType, s32 arg2, s32 arg3, s32 arg4,
     npc->imgfxFlags = arg6;
     npc_imgfx_update(npc);
 }
-
-//TODO begin split for npc_surfaces
-
-void spawn_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    PartnerStatus* temp = &gPartnerStatus;
-
-    if (!(npc->flags & NPC_FLAG_INVISIBLE) && (npc->flags & NPC_FLAG_TOUCHES_GROUND)) {
-        if (npc->moveSpeed != 0.0f) {
-            s32 surfaceType = get_collider_flags((u16)npc->curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
-            switch (surfaceType) {
-                case SURFACE_TYPE_FLOWERS:
-                    spawn_flower_surface_effects(npc, mode);
-                    break;
-                case SURFACE_TYPE_CLOUD:
-                    spawn_cloud_surface_effects(npc, mode);
-                    break;
-                case SURFACE_TYPE_SNOW:
-                    if ((temp->partnerActionState == PARTNER_ACTION_NONE) || (temp->actingPartner != PARTNER_LAKILESTER)) {
-                        spawn_snow_surface_effects(npc, mode);
-                    }
-                    break;
-                case SURFACE_TYPE_HEDGES:
-                    spawn_hedge_surface_effects(npc, mode);
-                    break;
-                case SURFACE_TYPE_WATER:
-                    spawn_water_surface_effects(npc, mode);
-                    break;
-                case SURFACE_TYPE_SPIKES:
-                case SURFACE_TYPE_LAVA:
-                case SURFACE_TYPE_DOCK_WALL:
-                case SURFACE_TYPE_SLIDE:
-                default:
-                    spawn_default_surface_effects(npc, mode);
-                    break;
-            }
-        }
-    }
-}
-
-void spawn_default_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    s32 mapIsStarWay;
-    f32 sinTheta;
-    f32 cosTheta;
-
-    mapIsStarWay = FALSE;
-    if (gGameStatusPtr->areaID == AREA_HOS) {
-        mapIsStarWay = gGameStatusPtr->mapID == 2; //TODO hard-coded map ID
-    }
-    if (mode == SURFACE_INTERACT_LAND) {
-        f32 x = npc->pos.x;
-        f32 y = npc->pos.y + 0.0f;
-        f32 z = npc->pos.z;
-
-        if (!mapIsStarWay) {
-            fx_landing_dust(0, x, y, z, D_80077C10);
-            D_80077C10 = clamp_angle(D_80077C10 + 35.0f);
-        } else {
-            fx_misc_particles(3, x, y, z,  13.0f, 10.0f, 1.0f, 5, 30);
-        }
-    } else if (mode != SURFACE_INTERACT_WALK) {
-        if (D_80077C14++ >= 4) {
-            D_80077C14 = 0;
-            if (!mapIsStarWay) {
-                sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinTheta, &cosTheta);
-                fx_walking_dust(0, npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f), npc->pos.y + 1.5f,
-                               npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f), sinTheta, cosTheta);
-            } else {
-                sin_cos_rad(DEG_TO_RAD(clamp_angle(npc->yaw)), &sinTheta, &cosTheta);
-                fx_misc_particles(3, npc->pos.x + (npc->collisionDiameter * sinTheta), npc->pos.y + 1.5f,
-                              npc->pos.z + (npc->collisionDiameter * cosTheta), 5.0f, 10.0f, 1.0f, 5, 30);
-            }
-        }
-    }
-}
-
-void spawn_flower_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    f32 theta;
-    f32 sinTheta;
-    f32 cosTheta;
-    f32 x, y, z;
-
-    if (mode == SURFACE_INTERACT_LAND && D_80077C1E == 5) {
-        x = npc->pos.x;
-        y = npc->pos.y + + 14.0f;
-        z = npc->pos.z;
-
-        fx_flower_splash(x, y, z, D_80077C18);
-        D_80077C18 = clamp_angle(D_80077C18 + 35.0f);
-        D_80077C1E = 0;
-        return;
-    }
-
-    D_80077C1E++;
-    if (D_80077C1E > 5) {
-        D_80077C1E = 5;
-    }
-
-    if (D_80077C1C++ > 0) {
-        D_80077C1C = 0;
-        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
-        sinTheta = sin_rad(theta);
-        cosTheta = cos_rad(theta);
-
-        x = npc->pos.x + (npc->collisionDiameter * sinTheta * -0.4f);
-        z = npc->pos.z + (npc->collisionDiameter * cosTheta * -0.4f);
-        y = npc->pos.y + 15.5f;
-
-        fx_flower_trail(1, x, y, z, -npc->yaw + rand_int(10) - 5.0f, D_80077C20);
-        D_80077C20 = D_80077C20 == 0;
-    }
-}
-
-void spawn_cloud_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 xTemp, yTemp, zTemp;
-    f32 xTemp2, yTemp2, zTemp2;
-    f32 theta;
-    f32 sinTheta;
-    f32 cosTheta;
-    f32 angle;
-    s32 i;
-
-    D_80077C2C += 0.1f;
-    if (mode == SURFACE_INTERACT_LAND) {
-        fx_cloud_puff(npc->pos.x, (npc->pos.y + 14.0f) - 5.0f, npc->pos.z, D_80077C24);
-
-        D_80077C24 = clamp_angle(D_80077C24 + 35.0f);
-
-        for (i = 0; i < 4; i++) {
-            xTemp = rand_int(10) - 5;
-            zTemp = rand_int(10) - 5;
-            yTemp = -2.0f - ((SQ(xTemp) + SQ(zTemp)) / 5.0f);
-            D_80077C28 = 0;
-
-            theta = DEG_TO_RAD(clamp_angle(-npc->yaw + (i * 90)));
-            sinTheta = sin_rad(theta);
-            cosTheta = cos_rad(theta);
-
-            fx_cloud_trail(
-                1,
-                npc->pos.x + (npc->collisionDiameter * sinTheta * -0.3f) + xTemp,
-                npc->pos.y + 15.5f + yTemp,
-                npc->pos.z + (npc->collisionDiameter * cosTheta * -0.3f) + zTemp
-            );
-        }
-    } else {
-        xTemp2 = rand_int(10) - 5;
-        zTemp2 = rand_int(10) - 5;
-        yTemp2 = -2.0f - ((SQ(xTemp2) + SQ(zTemp2)) / 5.0f);
-
-        D_80077C28 = 0;
-
-        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
-        sinTheta = sin_rad(theta);
-        cosTheta = cos_rad(theta);
-        fx_cloud_trail(
-            1,
-            npc->pos.x + (npc->collisionDiameter * sinTheta * -0.3f) + xTemp2,
-            npc->pos.y + 15.5f + yTemp2,
-            npc->pos.z + (npc->collisionDiameter * cosTheta * -0.3f) + zTemp2
-        );
-    }
-}
-
-void spawn_snow_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    if (D_80077C30++ >= 4) {
-        f32 temp_f20;
-        f32 x;
-        f32 z;
-
-        D_80077C30 = 0;
-        temp_f20 = DEG_TO_RAD(clamp_angle(-npc->yaw));
-        x = sin_rad(temp_f20);
-        z = cos_rad(temp_f20);
-        fx_footprint(npc->pos.x + (npc->collisionDiameter * x * 0.2f), npc->pos.y + 1.5f,
-                  npc->pos.z + (npc->collisionDiameter * z * 0.2f), -npc->yaw, D_80077C34);
-        D_80077C34 = !D_80077C34;
-    }
-}
-
-void spawn_hedge_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    if (D_80077C38++ >= 4) {
-        f32 theta;
-        f32 sinTheta;
-        f32 cosTheta;
-
-        D_80077C38 = 0;
-        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
-        sinTheta = sin_rad(theta);
-        cosTheta = cos_rad(theta);
-        fx_falling_leaves(1, npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f),
-                  40.0f, npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f));
-    }
-}
-
-void spawn_water_surface_effects(Npc* npc, SurfaceInteractMode mode) {
-    if (D_80077C3A++ >= 4) {
-        f32 temp_f20;
-        f32 x;
-        f32 z;
-
-        D_80077C3A = 0;
-        temp_f20 = DEG_TO_RAD(clamp_angle(-npc->yaw));
-        x = sin_rad(temp_f20);
-        z = cos_rad(temp_f20);
-        fx_rising_bubble(0, npc->pos.x + (npc->collisionDiameter * x * 0.2f), npc->pos.y + 0.0f,
-                  npc->pos.z + (npc->collisionDiameter * z * 0.2f), 0.0f);
-    }
-}
-
-//TODO end split for npc_surfaces
-static const f32 padding[2] = { 0.0f, 0.0f }; // remove after splitting
 
 void COPY_set_defeated(s32 mapID, s32 encounterID) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
@@ -2656,7 +2409,13 @@ void kill_enemy(Enemy* enemy) {
     enemy->auxBytecode = NULL;
     enemy->defeatBytecode = NULL;
 
+    #if DX_DEBUG_MENU
+    if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
+        free_npc(get_npc_unsafe(enemy->npcID));
+    }
+    #else
     free_npc(get_npc_unsafe(enemy->npcID));
+    #endif
 
     if (enemy->unk_64 != NULL) {
         heap_free(enemy->unk_64);
@@ -2668,16 +2427,13 @@ void kill_enemy(Enemy* enemy) {
         }
     }
 
-    do {
-        if (!(enemy->flags & ENEMY_FLAG_4)
-            && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || (enemy == encounterStatus->curEnemy))
-            && !(enemy->flags & ENEMY_FLAG_PASSIVE)
-        ) {
-            if (!(enemy->flags & ENEMY_FLAG_FLED)) {
-                COPY_set_defeated(encounterStatus->mapID, encounter->encounterID + i);
-            }
-        }
-    } while (0); // required to match
+    if (!(enemy->flags & ENEMY_FLAG_4)
+        && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || (enemy == encounterStatus->curEnemy))
+        && !(enemy->flags & ENEMY_FLAG_PASSIVE)
+        && !(enemy->flags & ENEMY_FLAG_FLED)
+    ) {
+        COPY_set_defeated(encounterStatus->mapID, encounter->encounterID + i);
+    }
 
     heap_free(enemy);
 }

@@ -3,6 +3,8 @@
 #include "PR/os_internal_thread.h"
 #include "libc/xstdio.h"
 #include "gcc/string.h"
+#include "dx/backtrace.h"
+#include "include_asset.h"
 
 typedef struct {
     /* 0x000 */ OSThread thread;
@@ -14,7 +16,7 @@ typedef struct {
     /* 0x9D2 */ u16 height;
 } CrashScreen; // size = 0x9D4
 
-SHIFT_BSS CrashScreen gCrashScreen;
+BSS CrashScreen gCrashScreen;
 
 u8 gCrashScreencharToGlyph[128] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -25,17 +27,10 @@ u8 gCrashScreencharToGlyph[128] = {
     23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1,
 };
 
-// TODO extract?
-u32 gCrashScreenFont[] = {
-    0x70871C30, 0x8988A250, 0x88808290, 0x88831C90, 0x888402F8, 0x88882210, 0x71CF9C10, 0xF9CF9C70, 0x8228A288,
-    0xF200A288, 0x0BC11C78, 0x0A222208, 0x8A222288, 0x71C21C70, 0x23C738F8, 0x5228A480, 0x8A282280, 0x8BC822F0,
-    0xFA282280, 0x8A28A480, 0x8BC738F8, 0xF9C89C08, 0x82288808, 0x82088808, 0xF2EF8808, 0x82288888, 0x82288888,
-    0x81C89C70, 0x8A08A270, 0x920DA288, 0xA20AB288, 0xC20AAA88, 0xA208A688, 0x9208A288, 0x8BE8A270, 0xF1CF1CF8,
-    0x8A28A220, 0x8A28A020, 0xF22F1C20, 0x82AA0220, 0x82492220, 0x81A89C20, 0x8A28A288, 0x8A28A288, 0x8A289488,
-    0x8A2A8850, 0x894A9420, 0x894AA220, 0x70852220, 0xF8011000, 0x08020800, 0x10840400, 0x20040470, 0x40840400,
-    0x80020800, 0xF8011000, 0x70800000, 0x88822200, 0x08820400, 0x108F8800, 0x20821000, 0x00022200, 0x20800020,
-    0x00000000,
-};
+INCLUDE_IMG("crash_screen/font.png", gCrashScreenFont);
+
+// The font image is on 6x7 grid
+#define GLYPH(x, y) (x + (y * 5))
 
 const char* gFaultCauses[18] = {
     "Interrupt",
@@ -66,6 +61,24 @@ const char* gFPCSRFaultCauses[6] = {
     "Underflow",
     "Inexact operation",
 };
+
+char crashScreenAssertMessage[0x30] = {0};
+char crashScreenAssertLocation[0x30] = {0};
+
+void crash_screen_set_assert_info(const char* message, const char* file, u32 line, const char* func) {
+    strncpy(crashScreenAssertMessage, message, sizeof(crashScreenAssertMessage));
+    crashScreenAssertMessage[sizeof(crashScreenAssertMessage) - 1] = '\0';
+
+    // To make file consistent with standard exceptions, grab only the filename, not the full path.
+    const char* slash;
+    while (slash = strchr(file, '/')) {
+        if (slash[1] == '\0') {
+            break;
+        }
+        file = slash + 1;
+    }
+    sprintf(crashScreenAssertLocation, "%s (%s:%d)", func, file, line);
+}
 
 void crash_screen_sleep(s32 ms) {
     u64 cycles = ms * 1000LL * 46875000LL / 1000000ULL;
@@ -101,12 +114,26 @@ void crash_screen_draw_rect(s32 x, s32 y, s32 width, s32 height) {
     }
 }
 
-void crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
+/** @returns X advance */
+s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     s32 shift = ((glyph % 5) * 6);
     u16 width = gCrashScreen.width;
-    const u32* data = &gCrashScreenFont[glyph / 5 * 7];
+    const u32* data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
     s32 i;
     s32 j;
+
+    switch (glyph) {
+        case GLYPH(3, 10): // ;
+        case GLYPH(4, 10): // ,
+            y += 1;
+            break;
+        case GLYPH(1, 14): // g
+        case GLYPH(0, 16): // p
+        case GLYPH(1, 16): // q
+        case GLYPH(4, 17): // y
+            y += 2;
+            break;
+    }
 
     if (width == SCREEN_WIDTH) {
         u16* ptr = gCrashScreen.frameBuf + (gCrashScreen.width) * y + x;
@@ -116,7 +143,11 @@ void crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
             u32 rowMask = *data++;
 
             for (j = 0; j < 6; j++) {
-                *ptr++ = (bit & rowMask) ? 0xFFFF : 1;
+                if (bit & rowMask) {
+                    *ptr++ = 0xFFFF; // white
+                } else {
+                    ptr++; // dont draw
+                }
                 bit >>= 1;
             }
 
@@ -143,6 +174,24 @@ void crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
             ptr += (0x9E8 / 2);
         }
     }
+
+    // Calculate x advance by counting the width of the glyph + 1 pixel of padding
+    if (glyph == GLYPH(2, 15)) return 7; // m - fucked up hack
+    s32 xAdvance = 0;
+    data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
+    for (i = 0; i < 7; i++) { // 7 rows
+        u32 bit = 0x80000000U >> shift;
+        u32 rowMask = *data++;
+        for (j = 1; j < 6; j++) { // 6 columns
+            if (bit & rowMask) {
+                if (xAdvance < j) {
+                    xAdvance = j;
+                }
+            }
+            bit >>= 1;
+        }
+    }
+    return xAdvance + 1;
 }
 
 char* crash_screen_copy_to_buf(char* dest, const char* src, size_t size) {
@@ -156,6 +205,7 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     s32 size;
     u8 buf[0x100];
     va_list args;
+    s32 ox = x;
 
     va_start(args, fmt);
 
@@ -174,6 +224,51 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
             }
 
             x += 6;
+
+            if (*ptr == '\n') {
+                x = ox;
+                y += 10;
+            }
+
+            size--;
+            ptr++;
+        }
+    }
+
+    va_end(args);
+}
+
+void crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
+    u8* ptr;
+    u32 glyph;
+    s32 size;
+    u8 buf[0x100];
+    va_list args;
+    s32 ox = x;
+
+    va_start(args, fmt);
+
+    size = _Printf(crash_screen_copy_to_buf, buf, fmt, args);
+
+    if (size > 0) {
+        ptr = buf;
+
+        while (size > 0) {
+            u8* charToGlyph = gCrashScreencharToGlyph;
+
+            glyph = charToGlyph[*ptr & 0x7F];
+
+            if (glyph != 0xFF) {
+                x += crash_screen_draw_glyph(x, y, glyph);
+            } else {
+                x += 4;
+            }
+
+            if (*ptr == '\n') {
+                x = ox;
+                y += 10;
+            }
+
             size--;
             ptr++;
         }
@@ -203,8 +298,6 @@ void crash_screen_print_fpcsr(u32 value) {
         if (value & flag) {
             crash_screen_printf(132, 155, "(%s)", gFPCSRFaultCauses[i]);
             break;
-
-            do {} while (0);
         }
 
         i++;
@@ -215,6 +308,11 @@ void crash_screen_print_fpcsr(u32 value) {
 void crash_screen_draw(OSThread* faultedThread) {
     s16 causeIndex;
     __OSThreadContext* ctx;
+
+    s32 bt[8];
+    s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
+    s32 i = 0;
+    char buf[128];
 
     ctx = &faultedThread->context;
     causeIndex = ((faultedThread->context.cause >> 2) & 0x1F);
@@ -229,20 +327,39 @@ void crash_screen_draw(OSThread* faultedThread) {
 
     osWritebackDCacheAll();
 
-    crash_screen_draw_rect(25, 20, 270, 25);
-    crash_screen_printf(30, 25, "THREAD:%d  (%s)", faultedThread->id, gFaultCauses[causeIndex]);
-    crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
+    s32 x = 10;
+    s32 y = 0;
 
-    crash_screen_sleep(2000);
+    crash_screen_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    if (crashScreenAssertMessage[0] == '\0' || crashScreenAssertLocation[0] == '\0') {
+        crash_screen_printf_proportional(x, y += 10, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
+    } else {
+        crash_screen_printf_proportional(x, y += 10, crashScreenAssertMessage);
+        crash_screen_printf_proportional(x + 10, y += 10, "at %s", crashScreenAssertLocation);
+        i = 2; // Don't include is_debug_panic and ASSERT line in backtrace.
+    }
+
+    for (; i < max; i++) {
+        backtrace_address_to_string(bt[i], buf);
+        crash_screen_printf_proportional(x + 10, y += 10, "at %s", buf);
+    }
+
+    y += 5;
+#ifndef DEBUG
+    crash_screen_printf_proportional(x, y += 15, "Build with `./configure --debug` for file/line numbers", buf);
+#endif
 
     osViBlack(0);
     osViRepeatLine(0);
     osViSwapBuffer(gCrashScreen.frameBuf);
 
-    crash_screen_draw_rect(25, 45, 270, 185);
+    /*
+    crash_screen_draw_rect(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT - 30);
 
+    crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
     crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
-    crash_screen_printf(30, 60, "A0:%08XH   A1:%08XH   A2:%08XH", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
+    crash_screen_printf(30, 45, "A0: %08X   A1: %08X   A2: %08X", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
     crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
     crash_screen_printf(30, 80, "T2:%08XH   T3:%08XH   T4:%08XH", (u32)ctx->t2, (u32)ctx->t3, (u32)ctx->t4);
     crash_screen_printf(30, 90, "T5:%08XH   T6:%08XH   T7:%08XH", (u32)ctx->t5, (u32)ctx->t6, (u32)ctx->t7);
@@ -276,6 +393,7 @@ void crash_screen_draw(OSThread* faultedThread) {
     // all of these null terminators needed to pad the rodata section for this file
     // can potentially fix this problem in another way?
     crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
+    */
 }
 
 OSThread* crash_screen_get_faulted_thread(void) {
@@ -324,6 +442,23 @@ void crash_screen_init(void) {
     osCreateThread(&gCrashScreen.thread, 2, crash_screen_thread_entry, NULL,
                    gCrashScreen.stack + sizeof(gCrashScreen.stack), 0x80);
     osStartThread(&gCrashScreen.thread);
+
+    // gCrashScreencharToGlyph is hard to modify, so we'll just do it here
+    char chars[] =
+        "_[]<>"
+        "|{};,"
+        "\"#$&'"
+        "/=@\\`"
+        "abcde"
+        "fghij"
+        "klmno"
+        "pqrst"
+        "uvwxy"
+        "z";
+    s32 i;
+    for (i = 0; i < ARRAY_COUNT(chars); i++) {
+        gCrashScreencharToGlyph[chars[i]] = GLYPH(0, 9) + i;
+    }
 }
 
 // unused

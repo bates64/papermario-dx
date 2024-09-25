@@ -3,19 +3,19 @@
 #include "sprite/player.h"
 
 EvtScript N(EVS_PlayBeamFX) = {
-    EVT_THREAD
-        EVT_PLAY_EFFECT(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), 100, 0)
-        EVT_WAIT(5)
-        EVT_PLAY_EFFECT(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), 100, 0)
-        EVT_IF_EQ(LVarA, 1)
-            EVT_WAIT(5)
-            EVT_PLAY_EFFECT(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), 100, 0)
-        EVT_END_IF
-    EVT_END_THREAD
-    EVT_WAIT(20)
-    EVT_PLAY_EFFECT(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, EVT_FLOAT(1.0), 30, 0)
-    EVT_RETURN
-    EVT_END
+    Thread
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        Wait(5)
+        PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        IfEq(LVarA, 1)
+            Wait(5)
+            PlayEffect(EFFECT_SHIMMER_BURST, 0, LVar0, LVar1, LVar2, Float(1.0), 100, 0)
+        EndIf
+    EndThread
+    Wait(20)
+    PlayEffect(EFFECT_ENERGY_ORB_WAVE, 4, LVar0, LVar1, LVar2, Float(1.0), 30, 0)
+    Return
+    End
 };
 
 s32 N(SpiritsFlyDelay)[] = { 35, 0, 5, 10, 15, 20, 25, 30 };
@@ -304,7 +304,7 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                     }
                 }
 
-                btl_cam_use_preset(BTL_CAM_PRESET_03);
+                btl_cam_use_preset(BTL_CAM_VIEW_ENEMIES);
                 btl_cam_move(30);
                 script->functionTemp[FT_DELAY] = 15;
                 script->functionTemp[FT_STATE] = PEACH_STAR_BEAM_MAKE_ADDITIONAL_EFFECTS;
@@ -329,8 +329,6 @@ API_CALLABLE(N(ProcessPeachStarBeam)) {
                 newScript->varTable[1] = playerState->curPos.y * 0.5f;
                 newScript->varTable[2] = playerState->curPos.z;
                 newScript->varTable[10] = script->functionTemp[FT_IS_PEACH_BEAM];
-
-                do {} while (0); // required to match
 
                 sfx_play_sound(SOUND_STAR_BEAM_FIRE);
                 script->functionTemp[FT_DELAY] = 45;

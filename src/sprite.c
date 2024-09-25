@@ -1,25 +1,20 @@
 #include "sprite.h"
 #include "sprite/player.h"
 
+#define MAX_SPRITE_ID 0xFF // todo generate this
+
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
 
-BSS s32 D_802DF520; // unused?
 BSS s32 spr_allocateBtlComponentsOnWorldHeap;
-BSS s32 D_802DF528[2]; // unused?
 BSS s32 MaxLoadedSpriteInstanceID;
-BSS s32 D_802DF534[3]; // unused?
 BSS s32 D_802DF540;
-BSS s32 D_802DF544; // unused?
 BSS SpriteAnimData* spr_playerSprites[13];
 BSS s32 D_802DF57C;
 BSS s32 spr_playerMaxComponents;
-BSS s32 D_802DF584; // unused?
 BSS PlayerCurrentAnimInfo spr_playerCurrentAnimInfo[3];
-BSS s32 D_802DF5AC; // unused?
-BSS SpriteAnimData* NpcSpriteData[234];
-BSS u8 NpcSpriteInstanceCount[234];
-BSS s32 D_802DFA44; // unused?
+BSS SpriteAnimData* NpcSpriteData[MAX_SPRITE_ID];
+BSS u8 NpcSpriteInstanceCount[MAX_SPRITE_ID];
 BSS SpriteInstance SpriteInstances[51];
 BSS Quad* D_802DFE44;
 BSS s32 D_802DFE48[22];
@@ -145,28 +140,27 @@ Quad* spr_get_cached_quad(s32 quadIndex) {
 
 void spr_make_quad_for_size(Quad* quad, s32 width, s32 height) {
     Vtx* vtx = &quad->v[0];
-    s32 w = width; // required to match
 
     *quad = spr_defaultQuad;
 
-    vtx->v.ob[0] = -w / 2;
+    vtx->v.ob[0] = -width / 2;
     vtx->v.ob[1] = height;
     vtx->v.tc[0] = 0x2000;
     vtx->v.tc[1] = 0x2000;
 
     vtx++;
-    vtx->v.ob[0] = w / 2;
+    vtx->v.ob[0] = width / 2;
     vtx->v.ob[1] = height;
-    vtx->v.tc[0] = (w + 256) * 32;
+    vtx->v.tc[0] = (width + 256) * 32;
     vtx->v.tc[1] = 0x2000;
 
     vtx++;
-    vtx->v.tc[0] = (w + 256) * 32;
-    vtx->v.ob[0] = w / 2;
+    vtx->v.tc[0] = (width + 256) * 32;
+    vtx->v.ob[0] = width / 2;
     vtx->v.tc[1] = (height + 256) * 32;
 
     vtx++;
-    vtx->v.ob[0] = -w / 2;
+    vtx->v.ob[0] = -width / 2;
     vtx->v.tc[0] = 0x2000;
     vtx->v.tc[1] = (height + 256) * 32;
 }
@@ -230,14 +224,14 @@ void spr_appendGfx_component_flat(
     s32 alpha
 ) {
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, palette);
-    if (gSpriteShadingProfile->flags & 1) {
+    if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
         gDPScrollMultiTile2_4b(gMainGfxPos++, raster, G_IM_FMT_CI, width, height,
                               0, 0, width - 1, height - 1, 0,
                               G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
                               256, 256);
         gDPSetTile(gMainGfxPos++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0x0100, 2, 0, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
         gDPSetTileSize(gMainGfxPos++, 2, 0, 0, 63 << 2, 0);
-        if (gSpriteShadingProfile->flags & 2) {
+        if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
             Camera* camera = &gCameras[gCurrentCamID];
             if (gGameStatusPtr->isBattle == 2) {
                 gSPViewport(gMainGfxPos++, &SprPauseVpAlt);
@@ -264,7 +258,7 @@ void spr_appendGfx_component_flat(
         gDPScrollTextureBlock_4b(gMainGfxPos++, raster, G_IM_FMT_CI, width, height, 0,
                                  G_TX_CLAMP, G_TX_CLAMP, 8, 8, G_TX_NOLOD, G_TX_NOLOD,
                                  256, 256);
-        if (gSpriteShadingProfile->flags & 2) {
+        if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
             Camera* camera =  &gCameras[gCurrentCamID];
             if (gGameStatusPtr->isBattle == 2) {
                 gSPViewport(gMainGfxPos++, &SprPauseVpAlt);
@@ -299,7 +293,7 @@ void spr_appendGfx_component_flat(
         }
     }
 
-    if (gSpriteShadingProfile->flags & 2) {
+    if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT) {
         Camera* camera =  &gCameras[gCurrentCamID];
 
         if (gGameStatusPtr->isBattle == 2) {
@@ -356,7 +350,7 @@ void spr_appendGfx_component(
     gSPMatrix(gMainGfxPos++, VIRTUAL_TO_PHYSICAL(&gDisplayContext->matrixStack[gMatrixListPos++]),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    if (gSpriteShadingProfile->flags & 1) {
+    if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
         if ((u8) opacity == 255) {
             gSPDisplayList(gMainGfxPos++, D_802DF460);
         } else {
@@ -772,7 +766,7 @@ void spr_init_sprites(s32 playerSpriteSet) {
     s32 i;
 
     spr_allocateBtlComponentsOnWorldHeap = FALSE;
-    _heap_create(&heap_spriteHead, 0x40000);
+    _heap_create(&heap_spriteHead, SPRITE_HEAP_SIZE);
     imgfx_init();
 
     for (i = 0; i < ARRAY_COUNT(spr_playerSprites); i++) {
@@ -1085,6 +1079,8 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     s32 i = spriteInstanceID & 0xFF;
     s32 animIndex = animID & 0xFF;
 
+    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %x", spriteInstanceID);
+
     compList = SpriteInstances[i].componentList;
     spriteData = (u32*)SpriteInstances[i].spriteData;
 
@@ -1095,6 +1091,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     palID = (animID >> 8) & 0xFF;
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || ((SpriteInstances[i].curAnimID & 0xFF) != animIndex)) {
+        ASSERT_MSG(animList != -1, "Anim %x is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;

@@ -1800,25 +1800,24 @@ enum Cams {
     CAM_DEFAULT      = 0,
     CAM_BATTLE       = 1,
     CAM_TATTLE       = 2,
-    CAM_3            = 3,
+    CAM_HUD          = 3,
 };
 
 enum CamShakeModes {
     CAM_SHAKE_CONSTANT_VERTICAL     = 0,
     CAM_SHAKE_ANGULAR_HORIZONTAL    = 1,
-    CAM_SHAKE_DECAYING_VERTICAL     = 2
+    CAM_SHAKE_DECAYING_VERTICAL     = 2,
 };
 
 // for use with SetBattleCamParam
-enum AuxCameraParams {
-    AUX_CAM_PARAM_1             = 1,
-    AUX_CAM_BOOM_LENGTH         = 2,
-    AUX_CAM_PARAM_3             = 3,
-    AUX_CAM_BOOM_PITCH          = 4,
-    AUX_CAM_BOOM_YAW            = 5,
-    AUX_CAM_BOOM_ZOFFSET        = 6,
-    AUX_CAM_PARAM_7             = 7,
-    AUX_CAM_ZOOM_PERCENT        = 8
+enum BasicCameraParams {
+    CAM_PARAM_SKIP_RECALC           = 1,
+    CAM_PARAM_BOOM_LENGTH           = 2,
+    CAM_PARAM_FOV_SCALE             = 3,
+    CAM_PARAM_BOOM_PITCH            = 4,
+    CAM_PARAM_BOOM_YAW              = 5,
+    CAM_PARAM_BOOM_Y_OFFSET         = 6,
+    CAM_PARAM_ZOOM_PERCENT          = 7,
 };
 
 #include "item_enum.h"
@@ -2414,9 +2413,7 @@ enum DoorSounds {
     DOOR_SOUNDS_UNUSED              = 6,
 };
 
-#if VERSION_US || VERSION_PAL || VERSION_IQUE
 #include "sprite/sprite_shading_profiles.h"
-#endif
 
 enum LightSourceFlags {
     LIGHT_SOURCE_DISABLED           = 0,
@@ -2633,7 +2630,7 @@ enum EntityFlags {
     ENTITY_FLAG_PARTNER_COLLISION                           = 0x00020000,
     ENTITY_FLAG_DRAW_IF_CLOSE_HIDE_MODE2                    = 0x00040000,
     ENTITY_FLAG_IGNORE_DISTANCE_CULLING                     = 0x00080000,
-    ENTITY_FLAG_100000                                      = 0x00100000,
+    ENTITY_FLAG_USED                                        = 0x00100000,
     ENTITY_FLAG_200000                                      = 0x00200000,
     ENTITY_FLAG_SHADOW_POS_DIRTY                            = 0x00400000,
     ENTITY_FLAG_DARK_SHADOW                                 = 0x00800000,
@@ -3603,7 +3600,7 @@ enum BattleStatusFlags2 {
     BS_FLAGS2_PARTNER_TURN_USED             = 0x00000004, // set after partner has used their action for this turn
     BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER      = 0x00000008, // override inactive player animations and effects
     BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER     = 0x00000010, // override inactive partner animations and effects
-    BS_FLAGS2_CANT_FLEE                     = 0x00000020,
+    BS_FLAGS2_CAN_FLEE                      = 0x00000020,
     BS_FLAGS2_PEACH_BATTLE                  = 0x00000040,
     BS_FLAGS2_STORED_TURBO_CHARGE_TURN      = 0x00000100, // prevents turbo charge turns from decrementing on begin player turn
     BS_FLAGS2_DOING_JUMP_TUTORIAL           = 0x00000200,
@@ -4288,6 +4285,32 @@ enum DebuffTypes {
     DEBUFF_TYPE_INVISIBLE           = 0x04000000,
 };
 
+enum PlayerBasicJump {
+    PLAYER_BASIC_JUMP_0         = 0,
+    PLAYER_BASIC_JUMP_1         = 1,
+    PLAYER_BASIC_JUMP_2         = 2,
+    PLAYER_BASIC_JUMP_3         = 3,
+    PLAYER_BASIC_JUMP_4         = 4,
+};
+
+enum PlayerSuperJump {
+    PLAYER_SUPER_JUMP_0         = 0,
+    PLAYER_SUPER_JUMP_1         = 1,
+    PLAYER_SUPER_JUMP_2         = 2,
+    PLAYER_SUPER_JUMP_3         = 3,
+    PLAYER_SUPER_JUMP_4         = 4,
+    PLAYER_SUPER_JUMP_5         = 5,
+    PLAYER_SUPER_JUMP_6         = 6,
+};
+
+enum PlayerUltraJump {
+    PLAYER_ULTRA_JUMP_0         = 0,
+    PLAYER_ULTRA_JUMP_1         = 1,
+    PLAYER_ULTRA_JUMP_2         = 2,
+    PLAYER_ULTRA_JUMP_3         = 3,
+    PLAYER_ULTRA_JUMP_4         = 4,
+};
+
 enum GlobalOverrides {
     GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD           = 0x00000002,
     GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME             = 0x00000008,
@@ -4315,7 +4338,7 @@ enum GlobalOverrides {
     | MODEL_FLAG_20 \
     | MODEL_FLAG_IGNORE_FOG \
     | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY \
-    | MODEL_FLAG_USE_CAMERA_UNK_MATRIX \
+    | MODEL_FLAG_BILLBOARD \
     | MODEL_FLAG_DO_BOUNDS_CULLING \
     | MODEL_FLAG_HAS_TRANSFORM \
     | MODEL_FLAG_HAS_TEX_PANNER \
@@ -4333,7 +4356,7 @@ enum ModelFlags {
     MODEL_FLAG_20                       = 0x0020,
     MODEL_FLAG_IGNORE_FOG               = 0x0040,
     MODEL_FLAG_HAS_LOCAL_VERTEX_COPY    = 0x0080,
-    MODEL_FLAG_USE_CAMERA_UNK_MATRIX    = 0x0100,
+    MODEL_FLAG_BILLBOARD                = 0x0100, // rotate to face the camera
     MODEL_FLAG_DO_BOUNDS_CULLING        = 0x0200,
     MODEL_FLAG_HAS_TRANSFORM            = 0x0400,
     MODEL_FLAG_HAS_TEX_PANNER           = 0x0800,
@@ -4700,14 +4723,51 @@ enum CameraMoveFlags {
     CAMERA_MOVE_ACCEL_INTERP_Y      = 0x00000004,
 };
 
-enum CameraUpdateType {
-    CAM_UPDATE_MODE_INIT            = 0,
-    CAM_UPDATE_UNUSED_1             = 1,
-    CAM_UPDATE_MODE_2               = 2,
+enum CameraUpdateMode {
+    // simple camera based on lookAt_eye and lookAt_obj with no blending or interpolation
+    // control this camera by directly setting these positions
+    // has no other control parameters
+    CAM_UPDATE_MINIMAL              = 0,
+
+    // this camera uses a set of control parameters to calculate its target lookAt_obj and lookAt_eye positions,
+    // then interpolates current positions toward those targets, moving up to half the remaining distance each frame
+    // the ultimate target is given by lookAt_obj_target
+    // mostly used for CAM_HUD
+    CAM_UPDATE_INTERP_POS           = 2,
+
+    // this camera samples camera zones below its targetPos and derives control parameters from their settings,
+    // interpolating its control parameters when changing zones. these control parameters determine the camera
+    // position and orientation just like other camera modes.
+    // note that this code does NOT directly reference the player position in any manner, it is only concerned
+    // with the camera's targetPos, which must be assigned elsewhere.
+    // this is the camera used during world gameplay
     CAM_UPDATE_FROM_ZONE            = 3,
-    CAM_UPDATE_UNUSED_4             = 4,
-    CAM_UPDATE_UNUSED_5             = 5,
-    CAM_UPDATE_MODE_6               = 6,
+
+    // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
+    // which are only updated if skipRecalc = FALSE
+    // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
+    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
+    CAM_UPDATE_NO_INTERP            = 6,
+
+    // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
+    // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
+    CAM_UPDATE_UNUSED_RADIAL        = 1,
+
+    // this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+    // y-position is drawn from lookAt_obj_target
+    // does not use easing or interpolation
+    CAM_UPDATE_UNUSED_CONFINED      = 4,
+
+    // this camera tracks player position and adds basic 'leading' in the x-direction only
+    // camera yaw is fixed at zero and the lead direction is determined by player world yaw
+    // thus, this only works for '2D' style maps where left is -x and right is +x
+    CAM_UPDATE_UNUSED_LEADING       = 5,
+
+    // this mode is completely unused in vanilla; it doesn't even have a case in update_cameras
+    // seems to be based on CAM_UPDATE_NO_INTERP (the one used for battle cam)
+    // tracks a point 400 units ahead of player position in the z-direction and 60 units above
+    // defaults to a relatively short boom length and no pitch angle, resulting in a head-on direct view
+    // CAM_UPDATE_UNUSED_AHEAD,
 };
 
 enum CameraControlType {
@@ -4747,93 +4807,93 @@ enum CameraControlType {
     CAM_CONTROL_CONSTAIN_BETWEEN_POINTS         = 6,
 };
 
-enum BtlCameraPreset {
-    BTL_CAM_PRESET_00               = 0,    // unused?
-    BTL_CAM_PRESET_01               = 1,    // STOP
-    BTL_CAM_DEFAULT                 = 2,
-    BTL_CAM_PRESET_03               = 3,
-    BTL_CAM_PRESET_04               = 4,
-    BTL_CAM_PRESET_05               = 5,
-    BTL_CAM_PRESET_06               = 6,   // unused?
-    BTL_CAM_PRESET_07               = 7,
-    BTL_CAM_PRESET_08               = 8,
-    BTL_CAM_PRESET_09               = 9,    // unused?
-    BTL_CAM_PRESET_10               = 10,
-    BTL_CAM_PRESET_11               = 11,
-    BTL_CAM_PRESET_12               = 12,   // unused?
-    BTL_CAM_PRESET_13               = 13,
-    BTL_CAM_PRESET_14               = 14,  // FOCUS_ON_TARGET?
-    BTL_CAM_PRESET_15               = 15,
-    BTL_CAM_PRESET_16               = 16,   // unused?
-    BTL_CAM_PRESET_17               = 17,   // unused?
-    BTL_CAM_PRESET_18               = 18,   // unused?
-    BTL_CAM_PRESET_19               = 19,
-    BTL_CAM_PRESET_20               = 20,   // unused?
-    BTL_CAM_PRESET_21               = 21,   // unused?
-    BTL_CAM_PLAYER_ENTRY            = 22,
-    BTL_CAM_VICTORY                 = 23,   // closeup on party while star points are tallied
-    BTL_CAM_PRESET_24               = 24,
-    BTL_CAM_PRESET_25               = 25,   // closeup on player used when running away or being defeated
-    BTL_CAM_PLAYER_ATTACK_APPROACH  = 26,
-    BTL_CAM_PRESET_27               = 27,
-    BTL_CAM_PRESET_28               = 28,
-    BTL_CAM_PRESET_29               = 29,
-    BTL_CAM_PLAYER_HIT_SPIKE        = 30,   // player hurt via spike contact
-    BTL_CAM_PLAYER_HIT_HAZARD       = 31,   // player hurt via burn or shock contact
-    BTL_CAM_PLAYER_CHARGE_UP        = 32,
-    BTL_CAM_PLAYER_STATUS_AFFLICTED = 33,
-    BTL_CAM_PRESET_34               = 34,
-    BTL_CAM_PRESET_35               = 35,
-    BTL_CAM_PRESET_36               = 36,   // unused?
-    BTL_CAM_PRESET_37               = 37,
-    BTL_CAM_PRESET_38               = 38,
-    BTL_CAM_PRESET_39               = 39,
-    BTL_CAM_PRESET_40               = 40,
-    BTL_CAM_PRESET_41               = 41,   // unused?
-    BTL_CAM_PRESET_42               = 42,   // unused?
-    BTL_CAM_PLAYER_AIM_HAMMER       = 43,
-    BTL_CAM_PLAYER_HAMMER_STRIKE    = 44,
-    BTL_CAM_PRESET_45               = 45,   // unused?
-    BTL_CAM_PRESET_46               = 46,
-    BTL_CAM_PARTNER_APPROACH        = 47,   // used by Goombario and Watt (power shock only)
-    BTL_CAM_PRESET_48               = 48,
-    BTL_CAM_PRESET_49               = 49,   // unused?
-    BTL_CAM_PRESET_50               = 50,
-    BTL_CAM_PRESET_51               = 51,
-    BTL_CAM_PRESET_52               = 52,
-    BTL_CAM_PRESET_53               = 53,
-    BTL_CAM_PARTNER_INJURED         = 54,   // closeup on partner after being injured
-    BTL_CAM_PRESET_55               = 55,
-    BTL_CAM_PRESET_56               = 56,   // unused?
-    BTL_CAM_PRESET_57               = 57,   // unused?
-    BTL_CAM_PRESET_58               = 58,   // unused?
-    BTL_CAM_PRESET_59               = 59,
-    BTL_CAM_PRESET_60               = 60,   // unused?
-    BTL_CAM_PRESET_61               = 61,
-    BTL_CAM_PRESET_62               = 62,
-    BTL_CAM_ENEMY_APPROACH          = 63,   // (very common)
-    BTL_CAM_PRESET_64               = 64,   // unused?
-    BTL_CAM_PRESET_65               = 65,   // unused?
-    BTL_CAM_PRESET_66               = 66,
-    BTL_CAM_PRESET_67               = 67,   // unused?
-    BTL_CAM_PRESET_68               = 68,   // unused?
-    BTL_CAM_PRESET_69               = 69,
-    BTL_CAM_PRESET_70               = 70,   // unused?
-    BTL_CAM_PRESET_71               = 71,   // unused?
-    BTL_CAM_PRESET_72               = 72,   // unused?
-    BTL_CAM_PRESET_73               = 73,
+enum BattleCamPreset {
+    BTL_CAM_RESET                           = 0x00,
+    BTL_CAM_INTERRUPT                       = 0x01, // forces camera motion to end
+    BTL_CAM_DEFAULT                         = 0x02, // wide shot of the entire arena
+    BTL_CAM_VIEW_ENEMIES                    = 0x03, // broad focus on enemy side of the field
+    BTL_CAM_RETURN_HOME                     = 0x04,
+    BTL_CAM_ACTOR_TARGET_MIDPOINT           = 0x05, // focus on midpoint between subject actor and its target
+    BTL_CAM_ACTOR_PART                      = 0x06, // unused
+    BTL_CAM_ACTOR_GOAL_SIMPLE               = 0x07,
+    BTL_CAM_ACTOR_SIMPLE                    = 0x08, // same as BTL_CAM_ACTOR, but does not change boom pitch, yaw, or y-offset
+    BTL_CAM_SLOW_DEFAULT                    = 0x09, // unused, same as BTL_CAM_DEFAULT but takes 4x as long
+    BTL_CAM_MIDPOINT_CLOSE                  = 0x0A,
+    BTL_CAM_MIDPOINT_NORMAL                 = 0x0B,
+    BTL_CAM_MIDPOINT_FAR                    = 0x0C, // unused
+    BTL_CAM_ACTOR_CLOSE                     = 0x0D, // focus on a targeted actor, closer than normal
+    BTL_CAM_ACTOR                           = 0x0E, // focus on a targeted actor using typical distance
+    BTL_CAM_ACTOR_FAR                       = 0x0F, // focus on a targeted actor, further away than normal
+    BTL_CAM_ACTOR_GOAL_NEAR                 = 0x10, // unused, focus on a targeted actor's goal, closer than normal
+    BTL_CAM_ACTOR_GOAL                      = 0x11, // unused, focus on a targeted actor's goal, using typical distance
+    BTL_CAM_ACTOR_GOAL_FAR                  = 0x12, // unused, focus on a targeted actor's goal, further away than normal
+    BTL_CAM_REPOSITION                      = 0x13, // generic reposition, lerp to target parameters over the next 20 frames
+    BTL_CAM_FOLLOW_ACTOR_Y                  = 0x14, // unused
+    BTL_CAM_FOLLOW_ACTOR_POS                = 0x15, // unused
+    BTL_CAM_PLAYER_ENTRY                    = 0x16,
+    BTL_CAM_VICTORY                         = 0x17, // closeup on party while star points are tallied
+    BTL_CAM_PLAYER_DIES                     = 0x18, // closeup on player dying
+    BTL_CAM_PLAYER_FLEE                     = 0x19, // closeup on player while running away
+    BTL_CAM_PLAYER_ATTACK_APPROACH          = 0x1A,
+    BTL_CAM_PLAYER_PRE_JUMP_FINISH          = 0x1B,
+    BTL_CAM_PLAYER_PRE_ULTRA_JUMP_FINISH    = 0x1C,
+    BTL_CAM_PLAYER_MISTAKE                  = 0x1D, // player missed a jump or hammer acion command
+    BTL_CAM_PLAYER_HIT_SPIKE                = 0x1E, // player hurt via spike contact
+    BTL_CAM_PLAYER_HIT_HAZARD               = 0x1F, // player hurt via burn or shock contact
+    BTL_CAM_PLAYER_CHARGE_UP                = 0x20,
+    BTL_CAM_PLAYER_STATUS_AFFLICTED         = 0x21,
+    BTL_CAM_PLAYER_JUMP_MIDAIR              = 0x22, // move through the air with the player mid-jump
+    BTL_CAM_PLAYER_JUMP_FINISH              = 0x23, // after a sucessful action command
+    BTL_CAM_PLAYER_JUMP_FINISH_CLOSE        = 0x24, // unused
+    BTL_CAM_PLAYER_SUPER_JUMP_MIDAIR        = 0x25, // alternate BTL_CAM_PLAYER_JUMP_MIDAIR associated with an unused script for Super Jump
+    BTL_CAM_PLAYER_ULTRA_JUMP_MIDAIR        = 0x26, // alternate BTL_CAM_PLAYER_JUMP_MIDAIR associated with an unused script for Ultra Jump
+    BTL_CAM_PLAYER_UNUSED_ULTRA_JUMP        = 0x27, // unused camera for followup hit of unused script for Ultra Jump
+    BTL_CAM_PLAYER_MULTIBOUNCE              = 0x28,
+    BTL_CAM_PRESET_UNUSED_29                = 0x29, // unused
+    BTL_CAM_PRESET_UNUSED_2A                = 0x2A, // unused
+    BTL_CAM_PLAYER_AIM_HAMMER               = 0x2B,
+    BTL_CAM_PLAYER_HAMMER_STRIKE            = 0x2C,
+    BTL_CAM_PRESET_UNUSED_2D                = 0x2D, // unused, alterative to BTL_CAM_PLAYER_HAMMER_QUAKE
+    BTL_CAM_PLAYER_HAMMER_QUAKE             = 0x2E, // slowly pan over the enemy side
+    BTL_CAM_PARTNER_APPROACH                = 0x2F, // used by Goombario and Watt (power shock only)
+    BTL_CAM_CLOSER_PARTNER_APPROACH         = 0x30,
+    BTL_CAM_PRESET_UNUSED_31                = 0x31, // unused
+    BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_1       = 0x32, // goombario pre-jump 1
+    BTL_CAM_PARTNER_MISTAKE                 = 0x33,
+    BTL_CAM_PARTNER_MIDAIR                  = 0x34,
+    BTL_CAM_GOOMBARIO_BONK_FOLLOWUP_2       = 0x35, // goombario pre-jump 2
+    BTL_CAM_PARTNER_INJURED                 = 0x36, // closeup on partner after being injured
+    BTL_CAM_PARTNER_GOOMPA                  = 0x37, // focus on Goompa speaking or Goombario charging
+    BTL_CAM_PRESET_UNUSED_38                = 0x38, // unused
+    BTL_CAM_PRESET_UNUSED_39                = 0x39, // unused
+    BTL_CAM_PRESET_UNUSED_3A                = 0x3A, // unused
+    BTL_CAM_PARTNER_CLOSE_UP                = 0x3B, // close focus on partner, used when kooper or sushie are charging an attack
+    BTL_CAM_PRESET_UNUSED_3C                = 0x3C, // unused
+    BTL_CAM_PARTNER_HIT_SPIKE               = 0x3D, // partner hurt via spike contact
+    BTL_CAM_PARTNER_HIT_HAZARD              = 0x3E, // partner hurt via burn or shock contact
+    BTL_CAM_ENEMY_APPROACH                  = 0x3F, // (very common)
+    BTL_CAM_PRESET_UNUSED_40                = 0x40, // unused
+    BTL_CAM_SLOWER_DEFAULT                  = 0x41, // unused, same as BTL_CAM_DEFAULT but takes slightly longer
+    BTL_CAM_ENEMY_DIVE                      = 0x42, // used just before contact from dive attacks (paragoomba, para jr troopa, etc)
+    BTL_CAM_PRESET_UNUSED_43                = 0x43, // unused
+    BTL_CAM_PRESET_UNUSED_44                = 0x44, // unused
+    BTL_CAM_PLAYER_WISH                     = 0x45, // used for Focus and Star Spirit wishing
+    BTL_CAM_PRESET_UNUSED_46                = 0x46, // unused
+    BTL_CAM_PRESET_UNUSED_47                = 0x47, // unused
+    BTL_CAM_PRESET_UNUSED_48                = 0x48, // unused
+    BTL_CAM_STAR_SPIRIT                     = 0x49,
 };
 
-enum BattleCamXModes {
-    BTL_CAM_MODEX_0         = 0,
-    BTL_CAM_MODEX_1         = 1,
+enum BattleCamTargetAdjustX {
+    BTL_CAM_XADJ_NONE       = 0, // use actor X
+    BTL_CAM_XADJ_AVG        = 1, // use average
 };
 
-enum BattleCamYModes {
-    BTL_CAM_MODEY_MINUS_2   = -2,
-    BTL_CAM_MODEY_MINUS_1   = -1,
-    BTL_CAM_MODEY_0         = 0,
-    BTL_CAM_MODEY_1         = 1,
+enum BattleCamTargetAdjustY {
+    BTL_CAM_YADJ_SLIGHT     = -2, // target y position is weighted 75% actor and 25% target:
+    BTL_CAM_YADJ_TARGET     = -1, // use target Y
+    BTL_CAM_YADJ_NONE       = 0, // use actor Y
+    BTL_CAM_YADJ_AVG        = 1, // target y position is weighted 66% actor and 33% target:
 };
 
 enum ModelAnimatorFlags {
@@ -5044,13 +5104,6 @@ enum ModelTransformGroupFlags {
 };
 
 enum NpcDropFlags {
-    NPC_DROP_FLAG_1                 = 0x01,
-    NPC_DROP_FLAG_2                 = 0x02,
-    NPC_DROP_FLAG_4                 = 0x04,
-    NPC_DROP_FLAG_8                 = 0x08,
-    NPC_DROP_FLAG_10                = 0x10,
-    NPC_DROP_FLAG_20                = 0x20,
-    NPC_DROP_FLAG_40                = 0x40,
     NPC_DROP_FLAG_80                = 0x80,
 };
 
@@ -5168,6 +5221,11 @@ enum SpriteCompImgFXFlags {
     SPR_IMGFX_FLAG_ALL                  = 0xF0000000,
 };
 
+enum SpriteShadingFlags {
+    SPR_SHADING_FLAG_ENABLED            = 1,
+    SPR_SHADING_FLAG_SET_VIEWPORT       = 2, // never set
+};
+
 enum MoveType {
     MOVE_TYPE_NONE          = 0,
     MOVE_TYPE_HAMMER        = 1,
@@ -5196,78 +5254,78 @@ enum DictionaryIndex {
     DICTIONARY_SIZE,
 };
 
-enum WindowId {
-    WINDOW_ID_NONE                              = -1,
-    WINDOW_ID_0                                 = 0,
-    WINDOW_ID_1                                 = 1,
-    WINDOW_ID_2                                 = 2,
-    WINDOW_ID_3                                 = 3,
-    WINDOW_ID_4                                 = 4,
-    WINDOW_ID_5                                 = 5,
-    WINDOW_ID_6                                 = 6,
-    WINDOW_ID_7                                 = 7,
-    WINDOW_ID_8                                 = 8, // battle main?
-    WINDOW_ID_BATTLE_POPUP                      = 9,
-    WINDOW_ID_ITEM_INFO_NAME                    = 10,
-    WINDOW_ID_ITEM_INFO_DESC                    = 11,
-    WINDOW_ID_12                                = 12,
-    WINDOW_ID_13                                = 13,
-    WINDOW_ID_14                                = 14,
-    WINDOW_ID_15                                = 15,
-    WINDOW_ID_16                                = 16,
-    WINDOW_ID_17                                = 17, // brown box used for "Throw away an item" and certain popup titles
-    WINDOW_ID_18                                = 18,
-    WINDOW_ID_19                                = 19,
-    WINDOW_ID_CURRENCY_COUNTER                  = 20,
-    WINDOW_ID_21                                = 21,
-    WINDOW_ID_PAUSE_MAIN                        = 22,
-    WINDOW_ID_PAUSE_DECRIPTION                  = 23,
-    WINDOW_ID_FILEMENU_CURSOR                   = 23, // same as previous
-    WINDOW_ID_PAUSE_TUTORIAL                    = 24,
-    WINDOW_ID_FILEMENU_COPYARROW                = 24, // same as previous
-    WINDOW_ID_PAUSE_TAB_STATS                   = 25,
-    WINDOW_ID_PAUSE_TAB_BADGES                  = 26,
-    WINDOW_ID_PAUSE_TAB_ITEMS                   = 27,
-    WINDOW_ID_PAUSE_TAB_PARTY                   = 28,
-    WINDOW_ID_PAUSE_TAB_SPIRITS                 = 29,
-    WINDOW_ID_PAUSE_TAB_MAP                     = 30,
-    WINDOW_ID_PAUSE_STATS                       = 31,
-    WINDOW_ID_PAUSE_BADGES                      = 32,
-    WINDOW_ID_PAUSE_ITEMS                       = 33,
-    WINDOW_ID_PAUSE_PARTNERS                    = 34,
-    WINDOW_ID_PAUSE_PARTNERS_TITLE              = 35,
-    WINDOW_ID_PAUSE_PARTNERS_MOVELIST           = 36,
-    WINDOW_ID_PAUSE_PARTNERS_MOVELIST_TITLE     = 37,
-    WINDOW_ID_PAUSE_PARTNERS_MOVELIST_FLOWER    = 38,
-    WINDOW_ID_PAUSE_SPIRITS                     = 39,
-    WINDOW_ID_PAUSE_SPIRITS_TITLE               = 40,
-    WINDOW_ID_PAUSE_MAP                         = 41,
-    WINDOW_ID_PAUSE_MAP_TITLE                   = 42,
-    WINDOW_ID_PAUSE_TAB_INVIS                   = 43,
-    WINDOW_ID_PAUSE_CURSOR                      = 44,
-    WINDOW_ID_FILEMENU_MAIN                     = 44, // same as previous
-    WINDOW_ID_FILEMENU_TITLE                    = 45,
-    WINDOW_ID_FILEMENU_YESNO_PROMPT             = 46,
-    WINDOW_ID_FILEMENU_INFO                     = 47,
-    WINDOW_ID_FILEMENU_CREATEFILE_HEADER        = 48,
-    WINDOW_ID_FILEMENU_KEYBOARD                 = 49,
-    WINDOW_ID_FILEMENU_YESNO_OPTIONS            = 50,
-    WINDOW_ID_FILEMENU_STEREO                   = 51,
-    WINDOW_ID_FILEMENU_MONO                     = 52,
-    WINDOW_ID_FILEMENU_OPTION_LEFT              = 53,
-    WINDOW_ID_FILEMENU_OPTION_CENTER            = 54,
-    WINDOW_ID_FILEMENU_OPTION_RIGHT             = 55,
-    WINDOW_ID_FILEMENU_FILE0_INFO               = 56,
-    WINDOW_ID_FILEMENU_FILE1_INFO               = 57,
-    WINDOW_ID_FILEMENU_FILE2_INFO               = 58,
-    WINDOW_ID_FILEMENU_FILE3_INFO               = 59,
-    WINDOW_ID_FILEMENU_FILE0_TITLE              = 60,
-    WINDOW_ID_FILEMENU_FILE1_TITLE              = 61,
-    WINDOW_ID_FILEMENU_FILE2_TITLE              = 62,
-    WINDOW_ID_FILEMENU_FILE3_TITLE              = 63,
+enum WindowID {
+    WIN_NONE                                = -1,
+    WIN_UNUSED_0                            = 0,
+    WIN_BTL_MOVES_MENU                      = 1,
+    WIN_BTL_MOVES_TITLE                     = 2,
+    WIN_BTL_MOVES_ICON                      = 3,
+    WIN_BTL_SPIRITS_TITLE                   = 4,
+    WIN_BTL_SPIRITS_ICON                    = 5,
+    WIN_BTL_STRATS_MENU                     = 6,
+    WIN_BTL_STRATS_TITLE                    = 7,
+    WIN_BTL_DESC_BOX                        = 8, // strats and level up menus
+    WIN_BTL_POPUP                           = 9,
+    WIN_SHOP_ITEM_NAME                      = 10,
+    WIN_SHOP_ITEM_DESC                      = 11,
+    WIN_PICKUP_HEADER                       = 12,
+    WIN_UNUSED_13                           = 13, // unused
+    WIN_POPUP_CONTENT                       = 14,
+    WIN_POPUP_TITLE_A                       = 15,
+    WIN_POPUP_COST                          = 16,
+    WIN_POPUP_TITLE_B                       = 17, // brown box used for "Throw away an item" and certain popup titles
+    WIN_PARTNER_COST                        = 18,
+    WIN_POPUP_DESC                          = 19,
+    WIN_CURRENCY_COUNTER                    = 20,
+    WIN_POPUP_PROMPT                        = 21,
+    WIN_PAUSE_MAIN                          = 22,
+    WIN_PAUSE_DECRIPTION                    = 23,
+    WIN_FILES_CURSOR                        = 23, // same as previous
+    WIN_PAUSE_TUTORIAL                      = 24,
+    WIN_FILES_COPYARROW                     = 24, // same as previous
+    WIN_PAUSE_TAB_STATS                     = 25,
+    WIN_PAUSE_TAB_BADGES                    = 26,
+    WIN_PAUSE_TAB_ITEMS                     = 27,
+    WIN_PAUSE_TAB_PARTY                     = 28,
+    WIN_PAUSE_TAB_SPIRITS                   = 29,
+    WIN_PAUSE_TAB_MAP                       = 30,
+    WIN_PAUSE_STATS                         = 31,
+    WIN_PAUSE_BADGES                        = 32,
+    WIN_PAUSE_ITEMS                         = 33,
+    WIN_PAUSE_PARTNERS                      = 34,
+    WIN_PAUSE_PARTNERS_TITLE                = 35,
+    WIN_PAUSE_PARTNERS_MOVELIST             = 36,
+    WIN_PAUSE_PARTNERS_MOVELIST_TITLE       = 37,
+    WIN_PAUSE_PARTNERS_MOVELIST_FLOWER      = 38,
+    WIN_PAUSE_SPIRITS                       = 39,
+    WIN_PAUSE_SPIRITS_TITLE                 = 40,
+    WIN_PAUSE_MAP                           = 41,
+    WIN_PAUSE_MAP_TITLE                     = 42,
+    WIN_PAUSE_TAB_INVIS                     = 43,
+    WIN_PAUSE_CURSOR                        = 44,
+    WIN_FILES_MAIN                          = 44, // same as previous
+    WIN_FILES_TITLE                         = 45,
+    WIN_FILES_CONFIRM_PROMPT                = 46,
+    WIN_FILES_MESSAGE                       = 47,
+    WIN_FILES_INPUT_FIELD                   = 48,
+    WIN_FILES_INPUT_KEYBOARD                = 49,
+    WIN_FILES_CONFIRM_OPTIONS               = 50,
+    WIN_FILES_STEREO                        = 51,
+    WIN_FILES_MONO                          = 52,
+    WIN_FILES_OPTION_LEFT                   = 53,
+    WIN_FILES_OPTION_CENTER                 = 54,
+    WIN_FILES_OPTION_RIGHT                  = 55,
+    WIN_FILES_SLOT1_BODY                    = 56,
+    WIN_FILES_SLOT2_BODY                    = 57,
+    WIN_FILES_SLOT3_BODY                    = 58,
+    WIN_FILES_SLOT4_BODY                    = 59,
+    WIN_FILES_SLOT1_TITLE                   = 60,
+    WIN_FILES_SLOT2_TITLE                   = 61,
+    WIN_FILES_SLOT3_TITLE                   = 62,
+    WIN_FILES_SLOT4_TITLE                   = 63,
 };
 
-enum SimpleWindowUpdateId {
+enum SimpleWindowUpdateID {
     WINDOW_UPDATE_SHOW              = 1,
     WINDOW_UPDATE_HIDE              = 2,
     WINDOW_UPDATE_HIER_UPDATE       = 3,
@@ -5279,11 +5337,11 @@ enum SimpleWindowUpdateId {
     WINDOW_UPDATE_9                 = 9,
 };
 
-enum WindowGroupId {
+enum WindowGroups {
     WINDOW_GROUP_ALL = 0,
-    WINDOW_GROUP_1 = 1,
-    WINDOW_GROUP_PAUSE_MENU = 2,
-    WINDOW_GROUP_FILE_MENU = 3,
+    WINDOW_GROUP_BATTLE = 1,
+    WINDOW_GROUP_PAUSE = 2,
+    WINDOW_GROUP_FILES = 3,
 };
 
 enum RushFlags {
@@ -5446,6 +5504,373 @@ enum MsgPalettes {
 };
 
 enum MsgChars {
+#if VERSION_JP
+    // Variant 0 - Hiragana, Katakana, Numeric, Fullwidth Symbols
+    MSG_CHAR_HIRAGANA_A             = 0x00,
+    MSG_CHAR_HIRAGANA_I             = 0x01,
+    MSG_CHAR_HIRAGANA_U             = 0x02,
+    MSG_CHAR_HIRAGANA_E             = 0x03,
+    MSG_CHAR_HIRAGANA_O             = 0x04,
+    MSG_CHAR_HIRAGANA_KA            = 0x05,
+    MSG_CHAR_HIRAGANA_KI            = 0x06,
+    MSG_CHAR_HIRAGANA_KU            = 0x07,
+    MSG_CHAR_HIRAGANA_KE            = 0x08,
+    MSG_CHAR_HIRAGANA_KO            = 0x09,
+    MSG_CHAR_HIRAGANA_SA            = 0x0A,
+    MSG_CHAR_HIRAGANA_SI            = 0x0B,
+    MSG_CHAR_HIRAGANA_SU            = 0x0C,
+    MSG_CHAR_HIRAGANA_SE            = 0x0D,
+    MSG_CHAR_HIRAGANA_SO            = 0x0E,
+    MSG_CHAR_HIRAGANA_TA            = 0x0F,
+    MSG_CHAR_HIRAGANA_TI            = 0x10,
+    MSG_CHAR_HIRAGANA_TU            = 0x11,
+    MSG_CHAR_HIRAGANA_TE            = 0x12,
+    MSG_CHAR_HIRAGANA_TO            = 0x13,
+    MSG_CHAR_HIRAGANA_NA            = 0x14,
+    MSG_CHAR_HIRAGANA_NI            = 0x15,
+    MSG_CHAR_HIRAGANA_NU            = 0x16,
+    MSG_CHAR_HIRAGANA_NE            = 0x17,
+    MSG_CHAR_HIRAGANA_NO            = 0x18,
+    MSG_CHAR_HIRAGANA_HA            = 0x19,
+    MSG_CHAR_HIRAGANA_HI            = 0x1A,
+    MSG_CHAR_HIRAGANA_HU            = 0x1B,
+    MSG_CHAR_HIRAGANA_HE            = 0x1C,
+    MSG_CHAR_HIRAGANA_HO            = 0x1D,
+    MSG_CHAR_HIRAGANA_MA            = 0x1E,
+    MSG_CHAR_HIRAGANA_MI            = 0x1F,
+    MSG_CHAR_HIRAGANA_MU            = 0x20,
+    MSG_CHAR_HIRAGANA_ME            = 0x21,
+    MSG_CHAR_HIRAGANA_MO            = 0x22,
+    MSG_CHAR_HIRAGANA_YA            = 0x23,
+    MSG_CHAR_HIRAGANA_YU            = 0x24,
+    MSG_CHAR_HIRAGANA_YO            = 0x25,
+    MSG_CHAR_HIRAGANA_RA            = 0x26,
+    MSG_CHAR_HIRAGANA_RI            = 0x27,
+    MSG_CHAR_HIRAGANA_RU            = 0x28,
+    MSG_CHAR_HIRAGANA_RE            = 0x29,
+    MSG_CHAR_HIRAGANA_RO            = 0x2A,
+    MSG_CHAR_HIRAGANA_WA            = 0x2B,
+    MSG_CHAR_HIRAGANA_WO            = 0x2C,
+    MSG_CHAR_HIRAGANA_N             = 0x2D,
+    MSG_CHAR_HIRAGANA_VU            = 0x2E,
+    MSG_CHAR_HIRAGANA_GA            = 0x2F,
+    MSG_CHAR_HIRAGANA_GI            = 0x30,
+    MSG_CHAR_HIRAGANA_GU            = 0x31,
+    MSG_CHAR_HIRAGANA_GE            = 0x32,
+    MSG_CHAR_HIRAGANA_GO            = 0x33,
+    MSG_CHAR_HIRAGANA_ZA            = 0x34,
+    MSG_CHAR_HIRAGANA_ZI            = 0x35,
+    MSG_CHAR_HIRAGANA_ZU            = 0x36,
+    MSG_CHAR_HIRAGANA_ZE            = 0x37,
+    MSG_CHAR_HIRAGANA_ZO            = 0x38,
+    MSG_CHAR_HIRAGANA_DA            = 0x39,
+    MSG_CHAR_HIRAGANA_DI            = 0x3A,
+    MSG_CHAR_HIRAGANA_DU            = 0x3B,
+    MSG_CHAR_HIRAGANA_DE            = 0x3C,
+    MSG_CHAR_HIRAGANA_DO            = 0x3D,
+    MSG_CHAR_HIRAGANA_BA            = 0x3E,
+    MSG_CHAR_HIRAGANA_BI            = 0x3F,
+    MSG_CHAR_HIRAGANA_BU            = 0x40,
+    MSG_CHAR_HIRAGANA_BE            = 0x41,
+    MSG_CHAR_HIRAGANA_BO            = 0x42,
+    MSG_CHAR_HIRAGANA_PA            = 0x43,
+    MSG_CHAR_HIRAGANA_PI            = 0x44,
+    MSG_CHAR_HIRAGANA_PU            = 0x45,
+    MSG_CHAR_HIRAGANA_PE            = 0x46,
+    MSG_CHAR_HIRAGANA_PO            = 0x47,
+    MSG_CHAR_HIRAGANA_SMALL_A       = 0x48,
+    MSG_CHAR_HIRAGANA_SMALL_I       = 0x49,
+    MSG_CHAR_HIRAGANA_SMALL_U       = 0x4A,
+    MSG_CHAR_HIRAGANA_SMALL_E       = 0x4B,
+    MSG_CHAR_HIRAGANA_SMALL_O       = 0x4C,
+    MSG_CHAR_HIRAGANA_SMALL_TU      = 0x4D,
+    MSG_CHAR_HIRAGANA_SMALL_YA      = 0x4E,
+    MSG_CHAR_HIRAGANA_SMALL_YU      = 0x4F,
+    MSG_CHAR_HIRAGANA_SMALL_YO      = 0x50,
+    MSG_CHAR_KATAKANA_A             = 0x51,
+    MSG_CHAR_KATAKANA_I             = 0x52,
+    MSG_CHAR_KATAKANA_U             = 0x53,
+    MSG_CHAR_KATAKANA_E             = 0x54,
+    MSG_CHAR_KATAKANA_O             = 0x55,
+    MSG_CHAR_KATAKANA_KA            = 0x56,
+    MSG_CHAR_KATAKANA_KI            = 0x57,
+    MSG_CHAR_KATAKANA_KU            = 0x58,
+    MSG_CHAR_KATAKANA_KE            = 0x59,
+    MSG_CHAR_KATAKANA_KO            = 0x5A,
+    MSG_CHAR_KATAKANA_SA            = 0x5B,
+    MSG_CHAR_KATAKANA_SI            = 0x5C,
+    MSG_CHAR_KATAKANA_SU            = 0x5D,
+    MSG_CHAR_KATAKANA_SE            = 0x5E,
+    MSG_CHAR_KATAKANA_SO            = 0x5F,
+    MSG_CHAR_KATAKANA_TA            = 0x60,
+    MSG_CHAR_KATAKANA_TI            = 0x61,
+    MSG_CHAR_KATAKANA_TU            = 0x62,
+    MSG_CHAR_KATAKANA_TE            = 0x63,
+    MSG_CHAR_KATAKANA_TO            = 0x64,
+    MSG_CHAR_KATAKANA_NA            = 0x65,
+    MSG_CHAR_KATAKANA_NI            = 0x66,
+    MSG_CHAR_KATAKANA_NU            = 0x67,
+    MSG_CHAR_KATAKANA_NE            = 0x68,
+    MSG_CHAR_KATAKANA_NO            = 0x69,
+    MSG_CHAR_KATAKANA_HA            = 0x6A,
+    MSG_CHAR_KATAKANA_HI            = 0x6B,
+    MSG_CHAR_KATAKANA_HU            = 0x6C,
+    MSG_CHAR_KATAKANA_HE            = 0x6D,
+    MSG_CHAR_KATAKANA_HO            = 0x6E,
+    MSG_CHAR_KATAKANA_MA            = 0x6F,
+    MSG_CHAR_KATAKANA_MI            = 0x70,
+    MSG_CHAR_KATAKANA_MU            = 0x71,
+    MSG_CHAR_KATAKANA_ME            = 0x72,
+    MSG_CHAR_KATAKANA_MO            = 0x73,
+    MSG_CHAR_KATAKANA_YA            = 0x74,
+    MSG_CHAR_KATAKANA_YU            = 0x75,
+    MSG_CHAR_KATAKANA_YO            = 0x76,
+    MSG_CHAR_KATAKANA_RA            = 0x77,
+    MSG_CHAR_KATAKANA_RI            = 0x78,
+    MSG_CHAR_KATAKANA_RU            = 0x79,
+    MSG_CHAR_KATAKANA_RE            = 0x7A,
+    MSG_CHAR_KATAKANA_RO            = 0x7B,
+    MSG_CHAR_KATAKANA_WA            = 0x7C,
+    MSG_CHAR_KATAKANA_WO            = 0x7D,
+    MSG_CHAR_KATAKANA_N             = 0x7E,
+    MSG_CHAR_KATAKANA_VU            = 0x7F,
+    MSG_CHAR_KATAKANA_GA            = 0x80,
+    MSG_CHAR_KATAKANA_GI            = 0x81,
+    MSG_CHAR_KATAKANA_GU            = 0x82,
+    MSG_CHAR_KATAKANA_GE            = 0x83,
+    MSG_CHAR_KATAKANA_GO            = 0x84,
+    MSG_CHAR_KATAKANA_ZA            = 0x85,
+    MSG_CHAR_KATAKANA_ZI            = 0x86,
+    MSG_CHAR_KATAKANA_ZU            = 0x87,
+    MSG_CHAR_KATAKANA_ZE            = 0x88,
+    MSG_CHAR_KATAKANA_ZO            = 0x89,
+    MSG_CHAR_KATAKANA_DA            = 0x8A,
+    MSG_CHAR_KATAKANA_DI            = 0x8B,
+    MSG_CHAR_KATAKANA_DU            = 0x8C,
+    MSG_CHAR_KATAKANA_DE            = 0x8D,
+    MSG_CHAR_KATAKANA_DO            = 0x8E,
+    MSG_CHAR_KATAKANA_BA            = 0x8F,
+    MSG_CHAR_KATAKANA_BI            = 0x90,
+    MSG_CHAR_KATAKANA_BU            = 0x91,
+    MSG_CHAR_KATAKANA_BE            = 0x92,
+    MSG_CHAR_KATAKANA_BO            = 0x93,
+    MSG_CHAR_KATAKANA_PA            = 0x94,
+    MSG_CHAR_KATAKANA_PI            = 0x95,
+    MSG_CHAR_KATAKANA_PU            = 0x96,
+    MSG_CHAR_KATAKANA_PE            = 0x97,
+    MSG_CHAR_KATAKANA_PO            = 0x98,
+    MSG_CHAR_KATAKANA_SMALL_A       = 0x99,
+    MSG_CHAR_KATAKANA_SMALL_I       = 0x9A,
+    MSG_CHAR_KATAKANA_SMALL_U       = 0x9B,
+    MSG_CHAR_KATAKANA_SMALL_E       = 0x9C,
+    MSG_CHAR_KATAKANA_SMALL_O       = 0x9D,
+    MSG_CHAR_KATAKANA_SMALL_TU      = 0x9E,
+    MSG_CHAR_KATAKANA_SMALL_YA      = 0x9F,
+    MSG_CHAR_KATAKANA_SMALL_YU      = 0xA0,
+    MSG_CHAR_KATAKANA_SMALL_YO      = 0xA1,
+    MSG_CHAR_PROLONGED_SOUND        = 0xA2,
+    MSG_CHAR_TILDE                  = 0xA3,
+    MSG_CHAR_LONGDASH_0             = 0xA4,
+    MSG_CHAR_LONGDASH_1             = 0xA5,
+    MSG_CHAR_LONGDASH_2             = 0xA6,
+    MSG_CHAR_DIGIT_0                = 0xA7,
+    MSG_CHAR_DIGIT_1                = 0xA8,
+    MSG_CHAR_DIGIT_2                = 0xA9,
+    MSG_CHAR_DIGIT_3                = 0xAA,
+    MSG_CHAR_DIGIT_4                = 0xAB,
+    MSG_CHAR_DIGIT_5                = 0xAC,
+    MSG_CHAR_DIGIT_6                = 0xAD,
+    MSG_CHAR_DIGIT_7                = 0xAE,
+    MSG_CHAR_DIGIT_8                = 0xAF,
+    MSG_CHAR_DIGIT_9                = 0xB0,
+    MSG_CHAR_UP                     = 0xB1,
+    MSG_CHAR_DOWN                   = 0xB2,
+    MSG_CHAR_LEFT                   = 0xB3,
+    MSG_CHAR_RIGHT                  = 0xB4,
+    MSG_CHAR_EXCLAMATION            = 0xB5,
+    MSG_CHAR_QUESTION               = 0xB6,
+    MSG_CHAR_PLUS                   = 0xB7,
+    MSG_CHAR_MINUS                  = 0xB8,
+    MSG_CHAR_FORWARDSLASH           = 0xB9,
+    MSG_CHAR_PERIOD                 = 0xBA,
+    MSG_CHAR_AND                    = 0xBB,
+    MSG_CHAR_HASH                   = 0xBC,
+    MSG_CHAR_HEART                  = 0xBD,
+    MSG_CHAR_STAR                   = 0xBE,
+    MSG_CHAR_LPAREN                 = 0xBF,
+    MSG_CHAR_RPAREN                 = 0xC0,
+    MSG_CHAR_TLBRACKET              = 0xC1,
+    MSG_CHAR_BRBRACKET              = 0xC2,
+    MSG_CHAR_MIDDLE_DOT             = 0xC3,
+    MSG_CHAR_HIRAGANA_SMALL_N       = 0xC4,
+    MSG_CHAR_KATAKANA_SMALL_N       = 0xC5,
+    MSG_CHAR_KANJI_C6               = 0xC6,
+    MSG_CHAR_KANJI_C7               = 0xC7,
+
+    // Variant 1 - Latin Alphabet
+    MSG_CHAR_UPPER_A                = 0x00,
+    MSG_CHAR_UPPER_B                = 0x01,
+    MSG_CHAR_UPPER_C                = 0x02,
+    MSG_CHAR_UPPER_D                = 0x03,
+    MSG_CHAR_UPPER_E                = 0x04,
+    MSG_CHAR_UPPER_F                = 0x05,
+    MSG_CHAR_UPPER_G                = 0x06,
+    MSG_CHAR_UPPER_H                = 0x07,
+    MSG_CHAR_UPPER_I                = 0x08,
+    MSG_CHAR_UPPER_J                = 0x09,
+    MSG_CHAR_UPPER_K                = 0x0A,
+    MSG_CHAR_UPPER_L                = 0x0B,
+    MSG_CHAR_UPPER_M                = 0x0C,
+    MSG_CHAR_UPPER_N                = 0x0D,
+    MSG_CHAR_UPPER_O                = 0x0E,
+    MSG_CHAR_UPPER_P                = 0x0F,
+    MSG_CHAR_UPPER_Q                = 0x10,
+    MSG_CHAR_UPPER_R                = 0x11,
+    MSG_CHAR_UPPER_S                = 0x12,
+    MSG_CHAR_UPPER_T                = 0x13,
+    MSG_CHAR_UPPER_U                = 0x14,
+    MSG_CHAR_UPPER_V                = 0x15,
+    MSG_CHAR_UPPER_W                = 0x16,
+    MSG_CHAR_UPPER_X                = 0x17,
+    MSG_CHAR_UPPER_Y                = 0x18,
+    MSG_CHAR_UPPER_Z                = 0x19,
+    MSG_CHAR_LOWER_Z                = 0x1A,
+
+    // Variant 2 - Kanji (Chinese) characters
+    MSG_CHAR_KANJI_00               = 0x00,
+    MSG_CHAR_KANJI_01               = 0x01,
+    MSG_CHAR_KANJI_02               = 0x02,
+    MSG_CHAR_KANJI_03               = 0x03,
+    MSG_CHAR_KANJI_04               = 0x04,
+    MSG_CHAR_KANJI_05               = 0x05,
+    MSG_CHAR_KANJI_06               = 0x06,
+    MSG_CHAR_KANJI_07               = 0x07,
+    MSG_CHAR_KANJI_08               = 0x08,
+    MSG_CHAR_KANJI_09               = 0x09,
+    MSG_CHAR_KANJI_0A               = 0x0A,
+    MSG_CHAR_KANJI_0B               = 0x0B,
+    MSG_CHAR_KANJI_0C               = 0x0C,
+    MSG_CHAR_KANJI_0D               = 0x0D,
+    MSG_CHAR_KANJI_0E               = 0x0E,
+    MSG_CHAR_KANJI_0F               = 0x0F,
+    MSG_CHAR_KANJI_10               = 0x10,
+    MSG_CHAR_KANJI_11               = 0x11,
+    MSG_CHAR_KANJI_12               = 0x12,
+    MSG_CHAR_KANJI_13               = 0x13,
+    MSG_CHAR_KANJI_14               = 0x14,
+    MSG_CHAR_KANJI_15               = 0x15,
+    MSG_CHAR_KANJI_16               = 0x16,
+    MSG_CHAR_KANJI_17               = 0x17,
+    MSG_CHAR_KANJI_18               = 0x18,
+    MSG_CHAR_KANJI_19               = 0x19,
+    MSG_CHAR_KANJI_1A               = 0x1A,
+    MSG_CHAR_KANJI_1B               = 0x1B,
+    MSG_CHAR_KANJI_1C               = 0x1C,
+    MSG_CHAR_KANJI_1D               = 0x1D,
+    MSG_CHAR_KANJI_1E               = 0x1E,
+    MSG_CHAR_KANJI_1F               = 0x1F,
+    MSG_CHAR_KANJI_20               = 0x20,
+    MSG_CHAR_KANJI_21               = 0x21,
+    MSG_CHAR_KANJI_22               = 0x22,
+    MSG_CHAR_KANJI_23               = 0x23,
+    MSG_CHAR_KANJI_24               = 0x24,
+    MSG_CHAR_KANJI_25               = 0x25,
+    MSG_CHAR_KANJI_26               = 0x26,
+    MSG_CHAR_KANJI_27               = 0x27,
+    MSG_CHAR_KANJI_28               = 0x28,
+    MSG_CHAR_KANJI_29               = 0x29,
+    MSG_CHAR_KANJI_2A               = 0x2A,
+    MSG_CHAR_KANJI_2B               = 0x2B,
+    MSG_CHAR_KANJI_2C               = 0x2C,
+    MSG_CHAR_KANJI_2D               = 0x2D,
+    MSG_CHAR_KANJI_2E               = 0x2E,
+    MSG_CHAR_KANJI_2F               = 0x2F,
+    MSG_CHAR_KANJI_30               = 0x30,
+    MSG_CHAR_KANJI_31               = 0x31,
+    MSG_CHAR_KANJI_32               = 0x32,
+    MSG_CHAR_KANJI_33               = 0x33,
+    MSG_CHAR_KANJI_34               = 0x34,
+    MSG_CHAR_KANJI_35               = 0x35,
+    MSG_CHAR_KANJI_36               = 0x36,
+    MSG_CHAR_KANJI_37               = 0x37,
+    MSG_CHAR_KANJI_38               = 0x38,
+    MSG_CHAR_KANJI_39               = 0x39,
+    MSG_CHAR_KANJI_3A               = 0x3A,
+    MSG_CHAR_KANJI_3B               = 0x3B,
+    MSG_CHAR_KANJI_3C               = 0x3C,
+    MSG_CHAR_KANJI_3D               = 0x3D,
+    MSG_CHAR_KANJI_3E               = 0x3E,
+    MSG_CHAR_KANJI_3F               = 0x3F,
+    MSG_CHAR_KANJI_40               = 0x40,
+    MSG_CHAR_KANJI_41               = 0x41,
+    MSG_CHAR_KANJI_42               = 0x42,
+    MSG_CHAR_KANJI_43               = 0x43,
+    MSG_CHAR_KANJI_44               = 0x44,
+    MSG_CHAR_KANJI_45               = 0x45,
+    MSG_CHAR_KANJI_46               = 0x46,
+    MSG_CHAR_KANJI_47               = 0x47,
+    MSG_CHAR_KANJI_48               = 0x48,
+    MSG_CHAR_KANJI_49               = 0x49,
+    MSG_CHAR_KANJI_4A               = 0x4A,
+    MSG_CHAR_KANJI_4B               = 0x4B,
+    MSG_CHAR_KANJI_4C               = 0x4C,
+    MSG_CHAR_KANJI_4D               = 0x4D,
+    MSG_CHAR_KANJI_4E               = 0x4E,
+    MSG_CHAR_KANJI_4F               = 0x4F,
+    MSG_CHAR_KANJI_50               = 0x50,
+    MSG_CHAR_KANJI_51               = 0x51,
+    MSG_CHAR_KANJI_52               = 0x52,
+    MSG_CHAR_KANJI_53               = 0x53,
+    MSG_CHAR_KANJI_54               = 0x54,
+    MSG_CHAR_KANJI_55               = 0x55,
+    MSG_CHAR_KANJI_56               = 0x56,
+    MSG_CHAR_KANJI_57               = 0x57,
+    MSG_CHAR_KANJI_58               = 0x58,
+    MSG_CHAR_KANJI_59               = 0x59,
+    MSG_CHAR_KANJI_5A               = 0x5A,
+    MSG_CHAR_KANJI_5B               = 0x5B,
+    MSG_CHAR_KANJI_5C               = 0x5C,
+    MSG_CHAR_KANJI_5D               = 0x5D,
+    MSG_CHAR_KANJI_5E               = 0x5E,
+    MSG_CHAR_KANJI_5F               = 0x5F,
+    MSG_CHAR_KANJI_60               = 0x60,
+    MSG_CHAR_CIRCLE                 = 0x61,
+    MSG_CHAR_CROSS                  = 0x62,
+    MSG_CHAR_KANJI_63               = 0x63,
+    MSG_CHAR_KANJI_64               = 0x64,
+    MSG_CHAR_KANJI_65               = 0x65,
+    MSG_CHAR_KANJI_66               = 0x66,
+    MSG_CHAR_KANJI_67               = 0x67,
+    MSG_CHAR_KANJI_68               = 0x68,
+    MSG_CHAR_KANJI_69               = 0x69,
+    MSG_CHAR_NOTE                   = 0x6A,
+    MSG_CHAR_KANJI_6B               = 0x6B,
+    MSG_CHAR_KANJI_6C               = 0x6C,
+    MSG_CHAR_KANJI_6D               = 0x6D,
+    MSG_CHAR_KANJI_6E               = 0x6E,
+    MSG_CHAR_KANJI_6F               = 0x6F,
+    MSG_CHAR_KANJI_70               = 0x70,
+    MSG_CHAR_KANJI_71               = 0x71,
+    MSG_CHAR_KANJI_72               = 0x72,
+    MSG_CHAR_KANJI_73               = 0x73,
+    MSG_CHAR_KANJI_74               = 0x74,
+    MSG_CHAR_KANJI_75               = 0x75,
+    MSG_CHAR_KANJI_76               = 0x76,
+    MSG_CHAR_KANJI_77               = 0x77,
+    MSG_CHAR_LOWER_X                = 0x78,
+
+    // Variant 3 - N64 Button Icons
+    MSG_CHAR_BUTTON_A               = 0x00,
+    MSG_CHAR_BUTTON_B               = 0x01,
+    MSG_CHAR_BUTTON_START           = 0x02,
+    MSG_CHAR_BUTTON_C_UP            = 0x03,
+    MSG_CHAR_BUTTON_C_DOWN          = 0x04,
+    MSG_CHAR_BUTTON_C_LEFT          = 0x05,
+    MSG_CHAR_BUTTON_C_RIGHT         = 0x06,
+    MSG_CHAR_BUTTON_Z               = 0x07,
+    MSG_CHAR_BUTTON_L               = 0x08,
+    MSG_CHAR_BUTTON_R               = 0x09,
+#else
     MSG_CHAR_NOTE                   = 0x00,
     MSG_CHAR_EXCLAMTION             = 0x01,
     MSG_CHAR_BACKSLASH              = 0x02,
@@ -5613,6 +6038,7 @@ enum MsgChars {
     MSG_CHAR_SINGLE_QUOTE_OPEN      = 0xA4,
     MSG_CHAR_SINGLE_QUOTE_CLOSE     = 0xA5,
     // 0xA6 to 0xEF are unused
+#endif
 
 #if VERSION_IQUE
     // All US characters are in the rom, but their range is used for multibyte characters
@@ -5624,6 +6050,12 @@ enum MsgChars {
 #endif
 
     MSG_CHAR_UNK_C3                 = 0xC3,
+
+    MSG_CHAR_MENU_SPACE             = 0xC6,
+    MSG_CHAR_MENU_USE_CHARSET_B     = 0xC7,
+    MSG_CHAR_MENU_USE_CHARSET_A     = 0xC8,
+    MSG_CHAR_MENU_BACK              = 0xC9,
+    MSG_CHAR_MENU_END               = 0xCA,
 
     // special character codes used when reading from the source buffer
     MSG_CHAR_READ_ENDL              = 0xF0,
@@ -5999,6 +6431,12 @@ enum BlurState {
     ACTOR_BLUR_DISABLE  = 0,
     ACTOR_BLUR_ENABLE   = 1,
     ACTOR_BLUR_RESET    = -1,
+};
+
+enum LandingCamAdjustMode {
+    LANDING_CAM_NEVER_ADJUST  = 0,
+    LANDING_CAM_CHECK_SURFACE = 1,  // allow landing cam unless the surface is lava
+    LANDING_CAM_ALWAYS_ADJUST = 2,
 };
 
 #endif

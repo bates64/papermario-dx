@@ -47,15 +47,12 @@ enum {
 
 BSS HudElemID LevelUpStatEmblemIDs[4];
 BSS HudElemID LevelUpStatTextIDs[3][7];
-BSS s32 D_8029FAE4; // unused?
 BSS HudElemID LevelUpSpotlightID;
-BSS s32 D_8029FAEC[23]; // unused?
-
 BSS HudElemID LevelUpSelectTextID;
+
 BSS s32 CelebrateSubstateTime;
 BSS s32 D_8029FB50;
 BSS s32 EndBattleRewardStep;
-BSS s32 D_8029FB58[2]; // unused?
 BSS s32 CantLevelUpStat[3];
 BSS s32 EndBattleRewardTotal;
 BSS s32 EndBattleRewardIncrement;
@@ -352,124 +349,140 @@ API_CALLABLE(MakeLevelUpConfetti) {
 }
 
 EvtScript EVS_ShowStarpoints = {
-    EVT_SET(LVarF, 0)
-    EVT_CALL(GetRemainingStarPointsReward)
-    EVT_IF_EQ(LVar0, 0)
-        EVT_RETURN
-    EVT_END_IF
-    EVT_IF_LT(LVar0, 2)
-        EVT_CALL(CreateVirtualEntity, LVar6, EVT_PTR(EMS_starpoint_starpoint))
-        EVT_CALL(SetVirtualEntityPosition, LVar6, -278, 68, 70)
-        EVT_CALL(SetVirtualEntityScale, LVar6, EVT_FLOAT(0.5), EVT_FLOAT(0.5), EVT_FLOAT(0.5))
-    EVT_ELSE
-        EVT_CALL(CreateVirtualEntity, LVar6, EVT_PTR(EMS_starpoint_starpoints))
-        EVT_CALL(SetVirtualEntityPosition, LVar6, -278, 68, 70)
-        EVT_CALL(SetVirtualEntityScale, LVar6, EVT_FLOAT(0.5), EVT_FLOAT(0.5), EVT_FLOAT(0.5))
-        EVT_SET(LFlag0, TRUE)
-    EVT_END_IF
-    EVT_SWITCH(LVar0)
-        EVT_CASE_GT(99)
-            EVT_SET(LVarF, 3)
-        EVT_CASE_GT(9)
-            EVT_SET(LVarF, 2)
-        EVT_CASE_DEFAULT
-            EVT_SET(LVarF, 1)
-    EVT_END_SWITCH
-    EVT_CALL(GetStarPointDigitScripts)
-    EVT_CALL(CreateVirtualEntity, LVar7, LVarA)
-    EVT_CALL(SetVirtualEntityPosition, LVar7, -353, 68, 70)
-    EVT_CALL(SetVirtualEntityScale, LVar7, EVT_FLOAT(0.5), EVT_FLOAT(0.5), EVT_FLOAT(0.5))
-    EVT_CALL(CreateVirtualEntity, LVar8, LVarB)
-    EVT_CALL(SetVirtualEntityPosition, LVar8, -338, 68, 70)
-    EVT_CALL(SetVirtualEntityScale, LVar8, EVT_FLOAT(0.5), EVT_FLOAT(0.5), EVT_FLOAT(0.5))
-    EVT_CALL(CreateVirtualEntity, LVar9, LVarC)
-    EVT_CALL(SetVirtualEntityPosition, LVar9, -323, 68, 70)
-    EVT_CALL(SetVirtualEntityScale, LVar9, EVT_FLOAT(0.5), EVT_FLOAT(0.5), EVT_FLOAT(0.5))
-    EVT_CALL(InitStarPointModelFlags)
-    EVT_SWITCH(LVarF)
-        EVT_CASE_EQ(3)
-            EVT_SET(LVar0, -197)
-        EVT_CASE_EQ(2)
-            EVT_SET(LVar0, -204)
-        EVT_CASE_EQ(1)
-            EVT_SET(LVar0, -211)
-    EVT_END_SWITCH
-    EVT_LOOP(10)
-        EVT_ADD(LVar0, 20)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -78)
-        EVT_CALL(SetVirtualEntityPosition, LVar6, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -146)
-        EVT_CALL(SetVirtualEntityPosition, LVar7, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -131)
-        EVT_CALL(SetVirtualEntityPosition, LVar8, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -116)
-        EVT_CALL(SetVirtualEntityPosition, LVar9, LVar1, 68, 70)
-        EVT_WAIT(1)
-    EVT_END_LOOP
-    EVT_CALL(AwaitBattleRewardsDone)
-    EVT_SWITCH(LVarF)
-        EVT_CASE_EQ(3)
-            EVT_SET(LVar0, 3)
-        EVT_CASE_EQ(2)
-            EVT_SET(LVar0, -4)
-        EVT_CASE_EQ(1)
-            EVT_SET(LVar0, -11)
-    EVT_END_SWITCH
-    EVT_LOOP(10)
-        EVT_ADD(LVar0, 20)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -78)
-        EVT_CALL(SetVirtualEntityPosition, LVar6, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -154)
-        EVT_CALL(SetVirtualEntityPosition, LVar7, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -139)
-        EVT_CALL(SetVirtualEntityPosition, LVar8, LVar1, 68, 70)
-        EVT_SET(LVar1, LVar0)
-        EVT_ADD(LVar1, -124)
-        EVT_CALL(SetVirtualEntityPosition, LVar9, LVar1, 68, 70)
-        EVT_WAIT(1)
-    EVT_END_LOOP
-    EVT_CALL(DeleteVirtualEntity, LVar6)
-    EVT_CALL(DeleteVirtualEntity, LVar7)
-    EVT_CALL(DeleteVirtualEntity, LVar8)
-    EVT_CALL(DeleteVirtualEntity, LVar9)
-    EVT_RETURN
-    EVT_END
+    Set(LVarF, 0)
+    Call(GetRemainingStarPointsReward)
+    IfEq(LVar0, 0)
+        Return
+    EndIf
+    IfLt(LVar0, 2)
+        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoint))
+        Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
+        Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
+    Else
+#if VERSION_JP
+        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoint))
+#else
+        Call(CreateVirtualEntity, LVar6, Ref(EMS_starpoint_starpoints))
+#endif
+        Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
+        Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
+        Set(LFlag0, TRUE)
+    EndIf
+    Switch(LVar0)
+        CaseGt(99)
+            Set(LVarF, 3)
+        CaseGt(9)
+            Set(LVarF, 2)
+        CaseDefault
+            Set(LVarF, 1)
+    EndSwitch
+    Call(GetStarPointDigitScripts)
+    Call(CreateVirtualEntity, LVar7, LVarA)
+    Call(SetVirtualEntityPosition, LVar7, -353, 68, 70)
+    Call(SetVirtualEntityScale, LVar7, Float(0.5), Float(0.5), Float(0.5))
+    Call(CreateVirtualEntity, LVar8, LVarB)
+    Call(SetVirtualEntityPosition, LVar8, -338, 68, 70)
+    Call(SetVirtualEntityScale, LVar8, Float(0.5), Float(0.5), Float(0.5))
+    Call(CreateVirtualEntity, LVar9, LVarC)
+    Call(SetVirtualEntityPosition, LVar9, -323, 68, 70)
+    Call(SetVirtualEntityScale, LVar9, Float(0.5), Float(0.5), Float(0.5))
+    Call(InitStarPointModelFlags)
+    Switch(LVarF)
+        CaseEq(3)
+            Set(LVar0, -197)
+        CaseEq(2)
+            Set(LVar0, -204)
+        CaseEq(1)
+            Set(LVar0, -211)
+    EndSwitch
+    Loop(10)
+        Add(LVar0, 20)
+        Set(LVar1, LVar0)
+        Add(LVar1, -78)
+        Call(SetVirtualEntityPosition, LVar6, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -154)
+#else
+        Add(LVar1, -146)
+#endif
+        Call(SetVirtualEntityPosition, LVar7, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -139)
+#else
+        Add(LVar1, -131)
+#endif
+        Call(SetVirtualEntityPosition, LVar8, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+#if VERSION_JP
+        Add(LVar1, -124)
+#else
+        Add(LVar1, -116)
+#endif
+        Call(SetVirtualEntityPosition, LVar9, LVar1, 68, 70)
+        Wait(1)
+    EndLoop
+    Call(AwaitBattleRewardsDone)
+    Switch(LVarF)
+        CaseEq(3)
+            Set(LVar0, 3)
+        CaseEq(2)
+            Set(LVar0, -4)
+        CaseEq(1)
+            Set(LVar0, -11)
+    EndSwitch
+    Loop(10)
+        Add(LVar0, 20)
+        Set(LVar1, LVar0)
+        Add(LVar1, -78)
+        Call(SetVirtualEntityPosition, LVar6, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+        Add(LVar1, -154)
+        Call(SetVirtualEntityPosition, LVar7, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+        Add(LVar1, -139)
+        Call(SetVirtualEntityPosition, LVar8, LVar1, 68, 70)
+        Set(LVar1, LVar0)
+        Add(LVar1, -124)
+        Call(SetVirtualEntityPosition, LVar9, LVar1, 68, 70)
+        Wait(1)
+    EndLoop
+    Call(DeleteVirtualEntity, LVar6)
+    Call(DeleteVirtualEntity, LVar7)
+    Call(DeleteVirtualEntity, LVar8)
+    Call(DeleteVirtualEntity, LVar9)
+    Return
+    End
 };
 
 EvtScript EVS_ShowLevelUp = {
-    EVT_CALL(CreateVirtualEntity, LVar9, EVT_PTR(EMS_level_up))
-    EVT_CALL(SetVirtualEntityPosition, LVar9, 0, 210, 70)
-    EVT_CALL(InitLevelUpModelFlags)
-    EVT_CHILD_THREAD
-        EVT_WAIT(4)
-        EVT_CALL(MakeLevelUpConfetti)
-    EVT_END_CHILD_THREAD
-    EVT_THREAD
-        EVT_WAIT(8)
-        EVT_CALL(ShakeCam, 1, 0, 5, EVT_FLOAT(3.0))
-        EVT_CALL(ShakeCam, 1, 0, 3, EVT_FLOAT(2.25))
-        EVT_CALL(ShakeCam, 1, 0, 4, EVT_FLOAT(1.2))
-        EVT_CALL(ShakeCam, 1, 0, 6, EVT_FLOAT(0.45))
-        EVT_CALL(ShakeCam, 1, 0, 8, EVT_FLOAT(0.15))
-    EVT_END_THREAD
-    EVT_THREAD
-        EVT_SET(LVar0, 210)
-        EVT_LOOP(10)
-            EVT_SUB(LVar0, 10)
-            EVT_CALL(SetVirtualEntityPosition, LVar9, 0, LVar0, 70)
-            EVT_WAIT(1)
-        EVT_END_LOOP
-    EVT_END_THREAD
-    EVT_WAIT(8)
-    EVT_RETURN
-    EVT_END
+    Call(CreateVirtualEntity, LVar9, Ref(EMS_level_up))
+    Call(SetVirtualEntityPosition, LVar9, 0, 210, 70)
+    Call(InitLevelUpModelFlags)
+    ChildThread
+        Wait(4)
+        Call(MakeLevelUpConfetti)
+    EndChildThread
+    Thread
+        Wait(8)
+        Call(ShakeCam, 1, 0, 5, Float(3.0))
+        Call(ShakeCam, 1, 0, 3, Float(2.25))
+        Call(ShakeCam, 1, 0, 4, Float(1.2))
+        Call(ShakeCam, 1, 0, 6, Float(0.45))
+        Call(ShakeCam, 1, 0, 8, Float(0.15))
+    EndThread
+    Thread
+        Set(LVar0, 210)
+        Loop(10)
+            Sub(LVar0, 10)
+            Call(SetVirtualEntityPosition, LVar9, 0, LVar0, 70)
+            Wait(1)
+        EndLoop
+    EndThread
+    Wait(8)
+    Return
+    End
 };
 
 void btl_state_update_celebration(void) {
@@ -970,10 +983,16 @@ void btl_state_update_celebration(void) {
             CelebrateSubstateTime--;
             if (CelebrateSubstateTime == 0) {
                 hud_element_set_tint(id, 128, 128, 128);
+#if VERSION_JP
+                x = 32;
+                y = 186;
+                set_window_properties(WIN_BTL_DESC_BOX, 32, 186, 242, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
+#else
                 x = 20;
                 y = 186;
-                set_window_properties(WINDOW_ID_8, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
-                set_window_update(WINDOW_ID_8, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
+#endif
+                set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
                 gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
             }
             break;
@@ -1016,7 +1035,7 @@ void btl_state_update_celebration(void) {
             break;
         case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE:
             hud_element_free(LevelUpSpotlightID);
-            set_window_update(WINDOW_ID_8, WINDOW_UPDATE_HIDE);
+            set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_HIDE);
 
             switch (battleStatus->curSubmenu) {
                 case 0:
@@ -1123,8 +1142,8 @@ void btl_state_update_celebration(void) {
             width = get_msg_width(MSG_Menus_CantIncrease, 0) + 31;
             x = 160 - (width / 2);
             y = 80;
-            set_window_properties(WINDOW_ID_BATTLE_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
-            set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+            set_window_properties(WIN_BTL_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
+            set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             CelebrateSubstateTime = 60;
             gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY;
             break;
@@ -1136,19 +1155,22 @@ void btl_state_update_celebration(void) {
                 CelebrateSubstateTime--;
                 break;
             }
-            set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_HIDE);
+            set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_HIDE);
             gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
             break;
         case BTL_SUBSTATE_CELEBRATE_SKIPPABLE_END_DELAY:
             if (battleStatus->curButtonsPressed & (BUTTON_A | BUTTON_B)) {
                 CelebrateStateTime = 99;
+#if VERSION_JP
+                sfx_play_sound(SOUND_MENU_NEXT);
+#endif
             }
             if (CelebrateStateTime >= 99) {
                 if (!(gBattleStatus.flags2 & BS_FLAGS2_DONT_STOP_MUSIC)) {
                     bgm_set_song(0, -1, 0, 1500, 8);
                 }
                 bFadeToBlackAmt = 0;
-                btl_cam_set_params(1, 270, 100, 8, 0, 0x2400, 0, 100);
+                btl_cam_set_params(TRUE, 270, 100, 8, 0, 0x2400, 100);
                 set_actor_anim(0, 0, ANIM_MarioB1_AdjustCap);
                 if (partner != NULL) {
                     set_actor_anim(ACTOR_PARTNER, 0, D_80284154[playerData->curPartner]);

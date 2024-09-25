@@ -1,14 +1,23 @@
 #include "common.h"
+#include "dx/debug_menu.h"
 
-SHIFT_BSS s32 PeachDisguiseNpcIndex;
-SHIFT_BSS Entity* TweesterTouchingPartner;
-SHIFT_BSS Entity* TweesterTouchingPlayer;
-SHIFT_BSS s32 PrevPlayerDirection;
-SHIFT_BSS s32 PlayerRunStateTime;
-SHIFT_BSS f32 PlayerNormalYaw;
-SHIFT_BSS f32 PlayerNormalPitch;
-SHIFT_BSS PlayerSpinState gPlayerSpinState;
-SHIFT_BSS s32 PlayerYInterpUpdateDelay;
+s32 PeachDisguiseNpcIndex;
+Entity* TweesterTouchingPartner;
+Entity* TweesterTouchingPlayer;
+s32 PrevPlayerDirection;
+s32 PlayerRunStateTime;
+f32 PlayerNormalYaw;
+f32 PlayerNormalPitch;
+PlayerSpinState gPlayerSpinState;
+
+BSS s32 PlayerYInterpUpdateDelay;
+
+ // default move speeds
+f32 DefaultWalkSpeed = 2.0f;
+f32 DefaultRunSpeed = 4.0f;
+f32 DefaultJumpSpeed = 32.0f;
+
+extern s32 PeachDisguiseReapplyDelay;
 
 void update_player_input(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -49,15 +58,13 @@ void update_player_input(void) {
 void reset_player_status(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     MapSettings* mapSettings;
-    f32 one;
-    f32* floatsTemp;
 
     PeachDisguiseNpcIndex = -1;
     TweesterTouchingPartner = NULL;
     PulseStoneNotificationCallback = NULL;
     TalkNotificationCallback = NULL;
     InteractNotificationCallback = NULL;
-    D_8010C92C = 0;
+    PeachDisguiseReapplyDelay = 0;
     PrevPlayerDirection = 0;
     PlayerRunStateTime = 0;
     PrevPlayerCamRelativeYaw = 0;
@@ -72,15 +79,13 @@ void reset_player_status(void) {
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_BLOCK_NEXT_DISGUISE;
     gGameStatusPtr->peachFlags &= ~PEACH_FLAG_DEPRESSED;
 
-    one = 1.0f;
-
     if (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH) {
         playerStatus->colliderHeight = 55;
         playerStatus->colliderDiameter = 38;
         playerStatus->animFlags |= PA_FLAG_USING_PEACH_PHYSICS;
 
         if (gGameStatusPtr->peachFlags & PEACH_FLAG_DISGUISED) {
-            D_8010C92C = 2;
+            PeachDisguiseReapplyDelay = 2;
             playerStatus->peachDisguise = gGameStatusPtr->peachDisguise;
         }
     } else {
@@ -89,11 +94,9 @@ void reset_player_status(void) {
         gGameStatusPtr->peachBakingIngredient = PEACH_BAKING_NONE;
     }
 
-    // TODO required to match
-    floatsTemp = &(&D_800F7B74)[-1]; // index of 0 does not work
-    playerStatus->walkSpeed = *floatsTemp++ * one;
-    playerStatus->runSpeed = *floatsTemp++ * one;
-    playerStatus->maxJumpSpeed = *floatsTemp++ * one;
+    playerStatus->walkSpeed = DefaultWalkSpeed;
+    playerStatus->runSpeed = DefaultRunSpeed;
+    playerStatus->maxJumpSpeed = DefaultJumpSpeed;
 
     set_action_state(ACTION_STATE_IDLE);
 
@@ -110,9 +113,12 @@ void reset_player_status(void) {
     playerStatus->flipYaw[CAM_DEFAULT] = 0.0f;
     playerStatus->flipYaw[CAM_BATTLE] = 0.0f;
     playerStatus->flipYaw[CAM_TATTLE] = 0.0f;
-    playerStatus->flipYaw[CAM_3] = 0.0f;
+    playerStatus->flipYaw[CAM_HUD] = 0.0f;
 
-    mapSettings = gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID].settings;
+    ASSERT_MSG(gGameStatusPtr->areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", gGameStatusPtr->areaID);
+    AreaConfig* area = &gAreas[gGameStatusPtr->areaID];
+    ASSERT_MSG(gGameStatusPtr->mapID < area->mapCount, "Invalid map ID %d in %s", gGameStatusPtr->mapID, area->id);
+    mapSettings = area->maps[gGameStatusPtr->mapID].settings;
 
     if (mapSettings->entryList != NULL) {
         if (gGameStatusPtr->entryID < mapSettings->entryCount) {
@@ -129,12 +135,6 @@ void reset_player_status(void) {
 
     phys_reset_spin_history();
     mem_clear(&gPlayerSpinState, sizeof(gPlayerSpinState));
-}
-
-void get_packed_buttons(s32* out) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    *out = (playerStatus->curButtons & 0xFFFF) | (playerStatus->pressedButtons << 16);
 }
 
 void player_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
@@ -160,7 +160,6 @@ void player_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
 }
 
 void game_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     f32 stickX = gGameStatusPtr->stickX[0];
     f32 stickY = -gGameStatusPtr->stickY[0];
     f32 maxRadius = 70.0f;
@@ -174,7 +173,7 @@ void game_input_to_move_vector(f32* outAngle, f32* outMagnitude) {
 
     angle = clamp_angle(atan2(0.0f, 0.0f, stickX, stickY) + gCameras[CAM_DEFAULT].curYaw);
     if (magnitude == 0.0f) {
-        angle = playerStatus->targetYaw;
+        angle = gPlayerStatus.targetYaw;
     }
 
     *outAngle = angle;

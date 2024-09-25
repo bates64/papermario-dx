@@ -1,0 +1,71 @@
+name: Build
+on:
+  push:
+  pull_request:
+
+jobs:
+  game:
+    name: Game
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: ./install_deps.sh
+      - name: Install compilers
+        run: ./install_compilers.sh
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+      - name: Install pigment64 and crunch64
+        run: cargo binstall pigment64 crunch64-cli -y
+      - name: Download baserom
+        run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+      - name: Configure
+        run: ./configure
+      - name: Build
+        run: ninja ver/us/build/papermario.bps
+      - name: Upload patch as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: papermario.bps
+          path: ver/us/build/papermario.bps
+  prerelease:
+    name: Prerelease
+    runs-on: ubuntu-latest
+    needs: game
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: papermario.bps
+          path: papermario.bps
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: Development build
+          files: papermario.bps
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: game
+    if: github.ref == 'refs/tags/v*'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: papermario.bps
+          path: papermario.bps
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          files: papermario.bps

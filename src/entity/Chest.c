@@ -1,8 +1,14 @@
 #include "common.h"
+#include "vars_access.h"
 #include "effects.h"
 #include "ld_addrs.h"
 #include "entity.h"
 #include "sprite/player.h"
+
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_model_Chest_ROM_END;
+extern Addr entity_model_Chest_ROM_START;
+#endif
 
 extern EntityScript Entity_Chest_ScriptOpened;
 
@@ -11,52 +17,53 @@ extern Gfx Entity_Chest_RenderLid[];
 extern Mtx Entity_Chest_LidMtx;
 
 EvtScript Entity_Chest_AdjustCam_ISK = {
-    EVT_THREAD
-        EVT_CALL(GetPlayerPos, LVar0, LVar1, LVar2)
-        EVT_CALL(UseSettingsFrom, 0, -195, -358, -555)
-        EVT_CALL(SetPanTarget, 0, LVar0, LVar1, LVar2)
-        EVT_CALL(SetCamDistance, 0, EVT_FLOAT(290.0))
-        EVT_CALL(SetCamPitch, 0, EVT_FLOAT(20.0), EVT_FLOAT(-10.0))
-        EVT_CALL(SetCamSpeed, 0, EVT_FLOAT(8.0))
-        EVT_CALL(PanToTarget, 0, 0, 1)
-        EVT_CALL(WaitForCam, 0, EVT_FLOAT(1.0))
-    EVT_END_THREAD
-    EVT_RETURN
-    EVT_END
+    Thread
+        Call(GetPlayerPos, LVar0, LVar1, LVar2)
+        Call(UseSettingsFrom, CAM_DEFAULT, -195, -358, -555)
+        Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+        Call(SetCamDistance, CAM_DEFAULT, Float(290.0))
+        Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-10.0))
+        Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    EndThread
+    Return
+    End
 };
 
 EvtScript Entity_Chest_ResetCam_ISK = {
-    EVT_THREAD
-        EVT_CALL(ResetCam, 0, 3)
-    EVT_END_THREAD
-    EVT_RETURN
-    EVT_END
+    Thread
+        Call(ResetCam, 0, 3)
+    EndThread
+    Return
+    End
 };
 
 EvtScript Entity_Chest_AdjustCam_TIK = {
-    EVT_THREAD
-        EVT_CALL(AdjustCam, 0, EVT_FLOAT(8.0), 0, EVT_FLOAT(300.0), EVT_FLOAT(17.5), EVT_FLOAT(-9.5))
-    EVT_END_THREAD
-    EVT_RETURN
-    EVT_END
+    Thread
+        Call(AdjustCam, 0, Float(8.0), 0, Float(300.0), Float(17.5), Float(-9.5))
+    EndThread
+    Return
+    End
 };
 
 EvtScript Entity_Chest_AdjustCam_KZN = {
-    EVT_THREAD
-        EVT_CALL(AdjustCam, 0, EVT_FLOAT(8.0), 0, EVT_FLOAT(210.0), EVT_FLOAT(21.0), EVT_FLOAT(-16.0))
-    EVT_END_THREAD
-    EVT_RETURN
-    EVT_END
+    Thread
+        Call(AdjustCam, 0, Float(8.0), 0, Float(210.0), Float(21.0), Float(-16.0))
+    EndThread
+    Return
+    End
 };
 
 EvtScript Entity_Chest_ResetCam_Default = {
-    EVT_THREAD
-        EVT_CALL(ResetCam, 0, 3)
-    EVT_END_THREAD
-    EVT_RETURN
-    EVT_END
+    Thread
+        Call(ResetCam, 0, 3)
+    EndThread
+    Return
+    End
 };
 
+//TODO hardcoded area IDs
 void entity_Chest_adjust_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -75,6 +82,7 @@ void entity_Chest_adjust_camera(Entity* entity) {
     }
 }
 
+//TODO hardcoded area IDs
 void entity_Chest_reset_camera(Entity* entity) {
     s16 areaID;
     EvtScript* script;
@@ -311,6 +319,7 @@ void entity_GiantChest_open(Entity* entity) {
             giveItemLerpAlpha = sin_rad(DEG_TO_RAD(chest->giveItemRadiusInterpPhase));
             theta = intermediateTheta = clamp_angle(atan2(entity->pos.x, entity->pos.z, playerStatus->pos.x, playerStatus->pos.z));
 
+            // hardcoded areaID
             if (gGameStatusPtr->areaID == AREA_KZN) {
                 radius = 3.0f;
             } else {

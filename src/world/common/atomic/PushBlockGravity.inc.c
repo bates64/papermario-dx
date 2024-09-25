@@ -19,9 +19,7 @@ s32 N(push_block_handle_fall)(Entity* block, Evt* source) {
         fx_smoke_burst(1, block->pos.x, block->pos.y, block->pos.z, 1.0f, 20);
     }
 
-    do {
-        source->functionTemp[0]++;
-    } while (0); // required to match
+    source->functionTemp[0]++;
 
     return source->functionTemp[0] == ARRAY_COUNT(N(PushBlockFallCurve));
 }

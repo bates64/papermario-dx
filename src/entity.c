@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vars_access.h"
 #include "ld_addrs.h"
 #include "entity.h"
 #include "model.h"
@@ -20,38 +21,46 @@ extern Addr WorldEntityHeapBase;
 #define entity_default_VRAM (void*) 0x802BAE00
 #endif
 
+#if VERSION_JP // TODO remove once segments are split
+extern Addr entity_default_ROM_END;
+extern Addr entity_default_ROM_START;
+extern Addr entity_jan_iwa_ROM_END;
+extern Addr entity_jan_iwa_ROM_START;
+extern Addr entity_sbk_omo_ROM_END;
+extern Addr entity_sbk_omo_ROM_START;
+#endif
+
 s32 D_8014AFB0 = 255;
 
-SHIFT_BSS s32 CreateEntityVarArgBuffer[4];
-SHIFT_BSS HiddenPanelsData gCurrentHiddenPanels;
-SHIFT_BSS s32 gEntityHideMode;
+s32 CreateEntityVarArgBuffer[4];
+HiddenPanelsData gCurrentHiddenPanels;
+s32 gEntityHideMode;
 
-SHIFT_BSS s32 D_801516FC;
-SHIFT_BSS s32 D_801512BC;
-SHIFT_BSS s32 D_80151304;
-SHIFT_BSS s32 D_80151344;
-SHIFT_BSS s32 entity_numEntities;
-SHIFT_BSS s32 gEntityHeapBase;
-SHIFT_BSS s32 gLastCreatedEntityIndex;
+s32 D_801512BC;
+s32 D_80151304;
+s32 D_80151344;
+s32 entity_numEntities;
+s32 gEntityHeapBase;
+s32 gLastCreatedEntityIndex;
 
-SHIFT_BSS s32 gEntityHeapBottom;
-SHIFT_BSS s32 entity_numShadows;
-SHIFT_BSS s32 isAreaSpecificEntityDataLoaded;
-SHIFT_BSS s32 entity_updateCounter;
+s32 gEntityHeapBottom;
+s32 entity_numShadows;
+s32 isAreaSpecificEntityDataLoaded;
+s32 entity_updateCounter;
 
-SHIFT_BSS s32 wEntityDataLoadedSize;
-SHIFT_BSS s32 bEntityDataLoadedSize;
+BSS EntityList gWorldEntityList;
+BSS EntityList gBattleEntityList;
+BSS EntityList* gCurrentEntityListPtr;
+BSS ShadowList gWorldShadowList;
+BSS ShadowList gBattleShadowList;
+BSS ShadowList* gCurrentShadowListPtr;
 
-SHIFT_BSS EntityBlueprint* wEntityBlueprint[30];
-SHIFT_BSS EntityBlueprint* bEntityBlueprint[4];
+BSS s32 wEntityDataLoadedSize;
+BSS s32 bEntityDataLoadedSize;
 
-SHIFT_BSS EntityList gWorldEntityList;
-SHIFT_BSS EntityList gBattleEntityList;
-SHIFT_BSS EntityList* gCurrentEntityListPtr;
-
-SHIFT_BSS ShadowList gWorldShadowList;
-SHIFT_BSS ShadowList gBattleShadowList;
-SHIFT_BSS ShadowList* gCurrentShadowListPtr;
+BSS EntityBlueprint* wEntityBlueprint[MAX_ENTITIES + 2];
+BSS EntityBlueprint* bEntityBlueprint[4];
+BSS s32 D_801516FC;
 
 extern Addr BattleEntityHeapBottom; // todo ???
 
@@ -64,7 +73,6 @@ void update_shadow_transform_matrix(Shadow* shadow);
 void update_entity_inverse_rotation_matrix(Entity* entity);
 void delete_entity(s32 entityIndex);
 void delete_entity_and_unload_data(s32 entityIndex);
-void _delete_shadow(s32 shadowIndex);
 void reload_world_entity_data(void);
 s32 entity_get_collision_flags(Entity* entity);
 void entity_free_static_data(EntityBlueprint* data);
@@ -217,7 +225,7 @@ void update_shadows(void) {
                 }
 
                 if (shadow->flags & ENTITY_FLAG_PENDING_INSTANCE_DELETE) {
-                    _delete_shadow(shadow->listIndex);
+                    delete_shadow(shadow->listIndex);
                 }
             }
         }
@@ -615,7 +623,7 @@ void delete_entity_and_unload_data(s32 entityIndex) {
     (*gCurrentEntityListPtr)[entityIndex] = NULL;
 }
 
-void _delete_shadow(s32 shadowIndex) {
+void delete_shadow(s32 shadowIndex) {
     Shadow* shadow = get_shadow_by_index(shadowIndex);
 
     free_entity_model_by_index(shadow->entityModelID);
@@ -762,6 +770,7 @@ void entity_reset_collision(Entity* entity) {
 }
 
 void load_area_specific_entity_data(void) {
+    //TODO hardcoded map and area IDs, connect these to MapTable.xml eventually
     if (!isAreaSpecificEntityDataLoaded) {
         if (gGameStatusPtr->areaID == AREA_JAN || gGameStatusPtr->areaID == AREA_IWA) {
             DMA_COPY_SEGMENT(entity_jan_iwa);
@@ -967,7 +976,6 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
             break;
         } else {
             DmaEntry* bpDmaList = bp->dmaList;
-            do {} while (0); // TODO find better match
             entDmaList = blueprint->dmaList;
             if (bpDmaList == entDmaList) {
                 if (blueprint->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
@@ -1186,17 +1194,13 @@ void entity_free_static_data(EntityBlueprint* data) {
 
 s32 create_entity(EntityBlueprint* bp, ...) {
     va_list ap;
-    EntityBlueprint** bpPtr;
     f32 x, y, z;
     f32 rotY;
     s32 listIndex;
     Entity* entity;
-    s32* args;
+    s32 idx;
 
     va_start(ap, bp);
-    // needed to match
-    bpPtr = &bp;
-    *bpPtr = bp;
 
     load_area_specific_entity_data();
 
@@ -1205,19 +1209,17 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     z = va_arg(ap, s32);
     rotY = va_arg(ap, s32);
 
-    args = &CreateEntityVarArgBuffer[2];
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
+        CreateEntityVarArgBuffer[idx] = 0;
+    }
 
-    *args-- = 0;
-    *args-- = 0;
-    *args = 0;
-
-    for (listIndex = 3; listIndex > 0; listIndex--) {
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
         s32 arg = va_arg(ap, s32);
 
         if (arg == MAKE_ENTITY_END) {
             break;
         }
-        *args++ = arg;
+        CreateEntityVarArgBuffer[idx] = arg;
     }
 
     va_end(ap);
@@ -1346,47 +1348,45 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
     return shadow->listIndex;
 }
 
-s32 MakeEntity(Evt* script, s32 isInitialCall) {
+API_CALLABLE(MakeEntity) {
     Bytecode* args = script->ptrReadPos;
     EntityBlueprint* entityData;
     s32 x, y, z;
     s32 flags;
     s32 nextArg;
     s32 entityIndex;
-    s32 endOfArgs;
-    s32* varArgBufPos;
+    s32 idx;
 
     if (isInitialCall != TRUE) {
         return ApiStatus_DONE2;
     }
 
     entityData = (EntityBlueprint*)evt_get_variable(script, *args++);
-    varArgBufPos = &CreateEntityVarArgBuffer[2];
-    endOfArgs = MAKE_ENTITY_END;
     x = evt_get_variable(script, *args++);
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
     flags = evt_get_variable(script, *args++);
 
-    *varArgBufPos-- = 0;
-    *varArgBufPos-- = 0;
-    *varArgBufPos = 0;
+    for (idx = 0; idx < ARRAY_COUNT(CreateEntityVarArgBuffer); idx++) {
+        CreateEntityVarArgBuffer[idx] = 0;
+    }
 
-    do {
+    for (idx = 0;; idx++) {
         nextArg = evt_get_variable(script, *args++);
-
-        if (nextArg != endOfArgs) {
-            *varArgBufPos++ = nextArg;
+        if (nextArg == MAKE_ENTITY_END) {
+            break;
         }
-    } while (nextArg != endOfArgs);
+        CreateEntityVarArgBuffer[idx] = nextArg;
+    }
 
-    entityIndex = create_entity(entityData, x, y, z, flags, CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1], CreateEntityVarArgBuffer[2], endOfArgs);
+    entityIndex = create_entity(entityData, x, y, z, flags,
+        CreateEntityVarArgBuffer[0], CreateEntityVarArgBuffer[1], CreateEntityVarArgBuffer[2], MAKE_ENTITY_END);
     gLastCreatedEntityIndex = entityIndex;
     script->varTable[0] = entityIndex;
     return ApiStatus_DONE2;
 }
 
-ApiStatus SetEntityCullMode(Evt* script, s32 isInitialCall) {
+API_CALLABLE(SetEntityCullMode) {
     Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
     Bytecode* args = script->ptrReadPos;
     s32 mode = evt_get_variable(script, *args++);
@@ -1404,7 +1404,7 @@ ApiStatus SetEntityCullMode(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus UseDynamicShadow(Evt* script, s32 isInitialCall) {
+API_CALLABLE(UseDynamicShadow) {
     Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
     Bytecode* args = script->ptrReadPos;
 
@@ -1421,7 +1421,7 @@ ApiStatus UseDynamicShadow(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE2;
 }
 
-ApiStatus AssignScript(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignScript) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1434,7 +1434,7 @@ ApiStatus AssignScript(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignSwitchFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1443,7 +1443,7 @@ ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall) {
         SwitchData* data = entity->dataBuf.swtch;
 
         data->areaFlagIndex = areaFlag;
-        if (get_area_flag(areaFlag) != 0) {
+        if (get_area_flag(areaFlag)) {
             entity->flags |= ENTITY_FLAG_PENDING_INSTANCE_DELETE;
         }
         return ApiStatus_DONE2;
@@ -1452,7 +1452,7 @@ ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignBlockFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignBlockFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1467,7 +1467,7 @@ ApiStatus AssignBlockFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignChestFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignChestFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1480,7 +1480,7 @@ ApiStatus AssignChestFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignPanelFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignPanelFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1493,7 +1493,7 @@ ApiStatus AssignPanelFlag(Evt* script, s32 isInitialCall) {
     return ApiStatus_DONE1;
 }
 
-ApiStatus AssignCrateFlag(Evt* script, s32 isInitialCall) {
+API_CALLABLE(AssignCrateFlag) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall == TRUE) {
@@ -1555,10 +1555,6 @@ s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z) {
     }
 
     return shadowIndex;
-}
-
-void delete_shadow(s32 shadowIndex) {
-    _delete_shadow(shadowIndex);
 }
 
 void update_entity_shadow_position(Entity* entity) {
@@ -1638,42 +1634,41 @@ void update_entity_shadow_position(Entity* entity) {
     }
 }
 
-s32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
+b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
     f32 hitX, hitY, hitZ;
     f32 hitDepth;
     f32 hitNx, hitNy, hitNz;
     s32 entityID;
     s32 colliderID;
     s32 hitID;
-    s32 ret;
 
     hitDepth = 32767.0f;
-    *hitLength = 32767.0f;
-    entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
-    hitID = -1;
-    ret = FALSE;
+    hitID = NO_COLLIDER;
 
-    if ((entityID >= 0) && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0))) {
+    entityID = test_ray_entities(*x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx, &hitNy, &hitNz);
+
+    if ((entityID > NO_COLLIDER) && ((get_entity_type(entityID) != ENTITY_TYPE_PUSH_BLOCK) || (hitNx == 0.0f && hitNz == 0.0f && hitNy == 1.0))) {
         hitID = entityID | COLLISION_WITH_ENTITY_BIT;
     }
 
     colliderID = test_ray_colliders(COLLIDER_FLAG_IGNORE_PLAYER, *x, *y, *z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &hitNx,
                                     &hitNy, &hitNz);
-    if (colliderID >= 0) {
+    if (colliderID > NO_COLLIDER) {
         hitID = colliderID;
     }
 
-    if (hitID >= 0) {
-        *hitLength = hitDepth;
+    if (hitID > NO_COLLIDER) {
         *y = hitY;
+        *hitLength = hitDepth;
         *hitYaw = -atan2(0.0f, 0.0f, hitNz * 100.0f, hitNy * 100.0f);
         *hitPitch = -atan2(0.0f, 0.0f, hitNx * 100.0f, hitNy * 100.0f);
-        ret = TRUE;
+        return TRUE;
     } else {
+        *hitLength = 32767.0f;
         *hitYaw = 0.0f;
         *hitPitch = 0.0f;
+        return FALSE;
     }
-    return ret;
 }
 
 void set_standard_shadow_scale(Shadow* shadow, f32 height) {

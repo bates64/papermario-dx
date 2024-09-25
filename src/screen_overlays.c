@@ -1,25 +1,23 @@
 #include "common.h"
 #include "overlay.h"
+#include "include_asset.h"
 
-SHIFT_BSS s32 screen_overlay_frontType;
-SHIFT_BSS f32 screen_overlay_frontZoom;
-SHIFT_BSS s32 screen_overlay_backType;
-SHIFT_BSS f32 screen_overlay_backZoom;
-SHIFT_BSS s32 D_80156910;
-SHIFT_BSS ScreenOverlay ScreenOverlays[2];
+BSS s32 screen_overlay_frontType;
+BSS f32 screen_overlay_frontZoom;
+BSS s32 screen_overlay_backType;
+BSS f32 screen_overlay_backZoom;
+BSS s32 D_80156910;
+ScreenOverlay ScreenOverlays[2];
 
 ScreenTransition CurrentScreenTransition = TRANSITION_END_DEMO_SCENE_BLACK;
 
-// padding?
-s32 D_8014C6F4[] = { 0x00000000, 0x00000000, 0x00000000 };
+INCLUDE_IMG("ui/stencil/star.png", ui_stencil_star_png);
 
-#include "ui/stencil/star.png.inc.c"
+INCLUDE_IMG("ui/stencil/mario.png", ui_stencil_mario_png);
 
-#include "ui/stencil/mario.png.inc.c"
+INCLUDE_IMG("ui/stencil/sharp_circle.png", ui_stencil_sharp_circle_png);
 
-#include "ui/stencil/sharp_circle.png.inc.c"
-
-#include "ui/stencil/blurry_circle.png.inc.c"
+INCLUDE_IMG("ui/stencil/blurry_circle.png", ui_stencil_blurry_circle_png);
 
 #include "vtx/stencil1.vtx.inc.c"
 
@@ -87,7 +85,7 @@ Gfx D_8014E8F0[] = {
     gsDPSetDepthSource(G_ZS_PRIM),
     gsDPSetPrimDepth(0, 0),
     gsDPSetRenderMode(Z_UPD | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c1(G_BL_CLR_MEM, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA), Z_UPD | IM_RD | CVG_DST_SAVE | ZMODE_OPA | FORCE_BL | GBL_c2(G_BL_CLR_MEM, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA)),
-    gsDPSetCombineMode(PM_CC_3B, PM_CC_3B),
+    gsDPSetCombineMode(PM_CC_SCREEN_OVERLAY, PM_CC_SCREEN_OVERLAY),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetTextureDetail(G_TD_CLAMP),
     gsDPSetTextureLOD(G_TL_TILE),
@@ -111,7 +109,7 @@ Gfx D_8014E9A8[] = {
     gsDPSetDepthSource(G_ZS_PRIM),
     gsDPSetPrimDepth(20, 0),
     gsDPSetRenderMode(G_RM_ZB_XLU_SURF, G_RM_ZB_XLU_SURF2),
-    gsDPSetCombineMode(PM_CC_3B, PM_CC_3B),
+    gsDPSetCombineMode(PM_CC_SCREEN_OVERLAY, PM_CC_SCREEN_OVERLAY),
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING | G_SHADING_SMOOTH),
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE),
     gsDPSetColorDither(G_CD_MAGICSQ),
@@ -416,7 +414,7 @@ void set_screen_overlay_center_worldpos(s32 layer, s32 posIdx, s32 worldPosX, s3
     switch (layer) {
         case SCREEN_LAYER_FRONT:
         case SCREEN_LAYER_BACK:
-            transform_point(camera->perspectiveMatrix, worldPosX, worldPosY, worldPosZ, 1.0f, &tx, &ty, &tz, &tw);
+            transform_point(camera->mtxPerspective, worldPosX, worldPosY, worldPosZ, 1.0f, &tx, &ty, &tz, &tw);
             tw = 1.0f / tw;
             tx *= tw;
             ty *= -tw;

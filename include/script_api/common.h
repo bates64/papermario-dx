@@ -1,352 +1,1374 @@
+/// @file script_api/common.h
+/// EVT scripting API functions available at all times.
+/// @sa script_api/battle.h script_api/map.h
+
+// Command for reading all declarations in a source file:
+// $ cat src/evt/*.c | grep "ApiStatus [^{]*" -o | sed "s/ $/;/"
+
 #ifndef _SCRIPT_API_COMMON_H_
 #define _SCRIPT_API_COMMON_H_
 
-#include "common_structs.h"
+#include "../common.h"
 #include "macros.h"
 
-ApiStatus FadeBackgroundDarken(Evt* script, s32 isInitialCall);
-ApiStatus FadeBackgroundLighten(Evt* script, s32 isInitialCall);
-ApiStatus GetCamLookAtObjVector(Evt* script, s32 isInitialCall);
-ApiStatus HasMerleeCasts(Evt* script, s32 isInitialCall);
-ApiStatus OnDefeatEnemy(Evt* script, s32 isInitialCall);
-ApiStatus OnFleeBattleDrops(Evt* script, s32 isInitialCall);
-ApiStatus SetEncounterStatusFlags(Evt* script, s32 isInitialCall);
-ApiStatus LoadDemoBattle(Evt* script, s32 isInitialCall);
-ApiStatus RemoveNpc(Evt* script, s32 isInitialCall);
-ApiStatus RemoveEncounter(Evt* script, s32 isInitialCall);
-ApiStatus GetBattleOutcome(Evt* script, s32 isInitialCall);
-ApiStatus func_800445D4(Evt* script, s32 isInitialCall);
-ApiStatus GetOwnerEncounterTrigger(Evt* script, s32 isInitialCall);
-ApiStatus DoNpcDefeat(Evt* script, s32 isInitialCall);
-ApiStatus StartBattle(Evt* script, s32 isInitialCall);
-ApiStatus StartBattleWith(Evt* script, s32 isInitialCall);
-ApiStatus StartBossBattle(Evt* script, s32 isInitialCall);
-ApiStatus SetBattleMusic(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcAI(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcIdle(Evt* script, s32 isInitialCall);
-ApiStatus RestartNpcAI(Evt* script, s32 isInitialCall);
-ApiStatus EnableNpcAI(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcAux(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcAux(Evt* script, s32 isInitialCall);
-ApiStatus RestartNpcAux(Evt* script, s32 isInitialCall);
-ApiStatus EnableNpcAux(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcInteract(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcHit(Evt* script, s32 isInitialCall);
-ApiStatus BindNpcDefeat(Evt* script, s32 isInitialCall);
-ApiStatus SetSelfVar(Evt* script, s32 isInitialCall);
-ApiStatus GetSelfVar(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcVar(Evt* script, s32 isInitialCall);
-ApiStatus GetNpcVar(Evt* script, s32 isInitialCall);
-ApiStatus SetSelfRotation(Evt* script, s32 isInitialCall);
-ApiStatus SetSelfEnemyFlags(Evt* script, s32 isInitialCall);
-ApiStatus SetSelfEnemyFlagBits(Evt* script, s32 isInitialCall);
-ApiStatus SelfEnemyOverrideSyncPos(Evt* script, s32 isInitialCall);
-ApiStatus GetSelfNpcID(Evt* script, s32 isInitialCall);
-ApiStatus ClearDefeatedEnemies(Evt* script, s32 isInitialCall);
-ApiStatus SetEnemyFlagBits(Evt* script, s32 isInitialCall);
-ApiStatus GetSelfAnimationFromTable(Evt* script, s32 isInitialCall);
-ApiStatus SetBattleAsScripted(Evt* script, s32 isInitialCall);
-ApiStatus GetEncounterTriggerHitTier(Evt* script, s32 isInitialCall);
-ApiStatus SetOwnerInstigatorValue(Evt* script, s32 isInitialCall);
-ApiStatus ShowCoinCounter(Evt* script, s32 isInitialCall);
-ApiStatus MakeEntity(Evt* script, s32 isInitialCall);
-ApiStatus SetEntityCullMode(Evt* script, s32 isInitialCall);
-ApiStatus UseDynamicShadow(Evt* script, s32 isInitialCall);
-ApiStatus AssignScript(Evt* script, s32 isInitialCall);
-ApiStatus AssignSwitchFlag(Evt* script, s32 isInitialCall);
-ApiStatus AssignChestFlag(Evt* script, s32 isInitialCall);
-ApiStatus AssignBlockFlag(Evt* script, s32 isInitialCall);
-ApiStatus AssignPanelFlag(Evt* script, s32 isInitialCall);
-ApiStatus AssignCrateFlag(Evt* script, s32 isInitialCall);
-ApiStatus DeleteTrigger(Evt* script, s32 isInitialCall);
-ApiStatus TranslateModel(Evt* script, s32 isInitialCall);
-ApiStatus RotateModel(Evt* script, s32 isInitialCall);
-ApiStatus ScaleModel(Evt* script, s32 isInitialCall);
-ApiStatus CloneModel(Evt* script, s32 isInitialCall);
-ApiStatus GetModelIndex(Evt* script, s32 isInitialCall);
-ApiStatus GetModelCenter(Evt* script, s32 isInitialCall);
-ApiStatus SetTexPanner(Evt* script, s32 isInitialCall);
-ApiStatus SetCustomGfxEnabled(Evt* script, s32 isInitialCall);
-ApiStatus EnableTexPanning(Evt* script, s32 isInitialCall);
-ApiStatus EnableModel(Evt* script, s32 isInitialCall);
-ApiStatus SetGroupVisibility(Evt* script, s32 isInitialCall);
-ApiStatus SetTexPanOffset(Evt* script, s32 isInitialCall);
-ApiStatus SetModelFlags(Evt* script, s32 isInitialCall);
-ApiStatus TranslateGroup(Evt* script, s32 isInitialCall);
-ApiStatus RotateGroup(Evt* script, s32 isInitialCall);
-ApiStatus ScaleGroup(Evt* script, s32 isInitialCall);
-ApiStatus EnableGroup(Evt* script, s32 isInitialCall);
-ApiStatus ModifyColliderFlags(Evt* script, s32 isInitialCall);
-ApiStatus GetColliderCenter(Evt* script, s32 isInitialCall);
-ApiStatus ParentColliderToModel(Evt* script, s32 isInitialCall);
-ApiStatus UpdateColliderTransform(Evt* script, s32 isInitialCall);
-ApiStatus SetZoneEnabled(Evt* script, s32 isInitialCall);
-ApiStatus GotoMap(Evt* script, s32 isInitialCall);
-ApiStatus GotoMapSpecial(Evt* script, s32 isInitialCall);
-ApiStatus GotoMapByID(Evt* script, s32 isInitialCall);
-ApiStatus GetEntryID(Evt* script, s32 isInitialCall);
-ApiStatus GetMapID(Evt* script, s32 isInitialCall);
-ApiStatus GetLoadType(Evt* script, s32 isInitialCall);
-ApiStatus SetRenderMode(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAtModel(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAtCollider(Evt* script, s32 isInitialCall);
-ApiStatus SetCamEnabled(Evt* script, s32 isInitialCall);
-ApiStatus SetCamNoDraw(Evt* script, s32 isInitialCall);
-ApiStatus SetCamPerspective(Evt* script, s32 isInitialCall);
-ApiStatus SetCamViewport(Evt* script, s32 isInitialCall);
-ApiStatus func_802CABE8(Evt* script, s32 isInitialCall);
-ApiStatus SetCamBGColor(Evt* script, s32 isInitialCall);
-ApiStatus SetCamTarget(Evt* script, s32 isInitialCall);
-ApiStatus InterpCamTargetPos(Evt* script, s32 isInitialCall);
-ApiStatus ShakeCam(Evt* script, s32 isInitialCall);
-ApiStatus SetCamLeadPlayer(Evt* script, s32 isInitialCall);
-ApiStatus PanToTarget(Evt* script, s32 isInitialCall);
-ApiStatus UseSettingsFrom(Evt* script, s32 isInitialCall);
-ApiStatus LoadSettings(Evt* script, s32 isInitialCall);
-ApiStatus SetCamType(Evt* script, s32 isInitialCall);
-ApiStatus SetCamPitch(Evt* script, s32 isInitialCall);
-ApiStatus SetCamDistance(Evt* script, s32 isInitialCall);
-ApiStatus SetCamPosA(Evt* script, s32 isInitialCall);
-ApiStatus SetCamPosB(Evt* script, s32 isInitialCall);
-ApiStatus SetCamPosC(Evt* script, s32 isInitialCall);
-ApiStatus SetPanTarget(Evt* script, s32 isInitialCall);
-ApiStatus SetCamSpeed(Evt* script, s32 isInitialCall);
-ApiStatus GetCamType(Evt* script, s32 isInitialCall);
-ApiStatus GetCamPitch(Evt* script, s32 isInitialCall);
-ApiStatus GetCamDistance(Evt* script, s32 isInitialCall);
-ApiStatus GetCamPosA(Evt* script, s32 isInitialCall);
-ApiStatus GetCamPosB(Evt* script, s32 isInitialCall);
-ApiStatus GetCamPosC(Evt* script, s32 isInitialCall);
-ApiStatus GetCamPosition(Evt* script, s32 isInitialCall);
-ApiStatus WaitForCam(Evt* script, s32 isInitialCall);
-ApiStatus SetCamProperties(Evt* script, s32 isInitialCall);
-ApiStatus AdjustCam(Evt* script, s32 isInitialCall);
-ApiStatus ResetCam(Evt* script, s32 isInitialCall);
-ApiStatus LoadAnimatedModel(Evt* script, s32 isInitialCall);
-ApiStatus PlayModelAnimation(Evt* script, s32 isInitialCall);
-ApiStatus SetAnimatorFlags(Evt* script, s32 isInitialCall);
-ApiStatus SetAnimatedModelRootPosition(Evt* script, s32 isInitialCall);
-ApiStatus ChangeModelAnimation(Evt* script, s32 isInitialCall);
-ApiStatus DeleteNpc(Evt* script, s32 isInitialCall);
-ApiStatus GetNpcPointer(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcPos(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcRotation(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcScale(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcCollisionSize(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcSpeed(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcJumpscale(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcAnimation(Evt* script, s32 isInitialCall);
-ApiStatus GetNpcAnimation(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcAnimationSpeed(Evt* script, s32 isInitialCall);
-ApiStatus NpcMoveTo(Evt* script, s32 isInitialCall);
-ApiStatus NpcJump0(Evt* script, s32 isInitialCall);
-ApiStatus NpcJump1(Evt* script, s32 isInitialCall);
-ApiStatus NpcFlyTo(Evt* script, s32 isInitialCall);
-ApiStatus GetNpcYaw(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcYaw(Evt* script, s32 isInitialCall);
-ApiStatus InterpNpcYaw(Evt* script, s32 isInitialCall);
-ApiStatus NpcFacePlayer(Evt* script, s32 isInitialCall);
-ApiStatus NpcFaceNpc(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcFlagBits(Evt* script, s32 isInitialCall);
-ApiStatus GetNpcPos(Evt* script, s32 isInitialCall);
-ApiStatus EnableNpcShadow(Evt* script, s32 isInitialCall);
-ApiStatus EnableNpcBlur(Evt* script, s32 isInitialCall);
-ApiStatus ClearPartnerMoveHistory(Evt* script, s32 isInitialCall);
-ApiStatus GetPartnerPos(Evt* script, s32 isInitialCall);
-ApiStatus DisablePartnerAI(Evt* script, s32 isInitialCall);
-ApiStatus EnablePartnerAI(Evt* script, s32 isInitialCall);
-ApiStatus BringPartnerOut(Evt* script, s32 isInitialCall);
-ApiStatus PutPartnerAway(Evt* script, s32 isInitialCall);
-ApiStatus GetCurrentPartnerID(Evt* script, s32 isInitialCall);
-ApiStatus PartnerCanUseAbility(Evt* script, s32 isInitialCall);
-ApiStatus PartnerIsFlying(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcDecoration(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAtNpc(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcRenderMode(Evt* script, s32 isInitialCall);
-ApiStatus SpeakToPlayer(Evt* script, s32 isInitialCall);
-ApiStatus EndSpeech(Evt* script, s32 isInitialCall);
-ApiStatus ContinueSpeech(Evt* script, s32 isInitialCall);
-ApiStatus SpeakToNpc(Evt* script, s32 isInitialCall);
-ApiStatus ShowMessageAtScreenPos(Evt* script, s32 isInitialCall);
-ApiStatus ShowMessageAtWorldPos(Evt* script, s32 isInitialCall);
-ApiStatus CloseMessage(Evt* script, s32 isInitialCall);
-ApiStatus SwitchMessage(Evt* script, s32 isInitialCall);
-ApiStatus ShowChoice(Evt* script, s32 isInitialCall);
-ApiStatus CloseChoice(Evt* script, s32 isInitialCall);
-ApiStatus CancelMessage(Evt* script, s32 isInitialCall);
-ApiStatus SetMessageImages(Evt* script, s32 isInitialCall);
-ApiStatus SetMessageText(Evt* script, s32 isInitialCall);
-ApiStatus SetMessageValue(Evt* script, s32 isInitialCall);
-ApiStatus HidePlayerShadow(Evt* script, s32 isInitialCall);
-ApiStatus DisablePlayerPhysics(Evt* script, s32 isInitialCall);
-ApiStatus DisablePlayerInput(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerPos(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerCollisionSize(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerSpeed(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerJumpscale(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerAnimation(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerActionState(Evt* script, s32 isInitialCall);
-ApiStatus PlayerMoveTo(Evt* script, s32 isInitialCall);
-ApiStatus func_802D1270(Evt* script, s32 isInitialCall);
-ApiStatus PlayerJump(Evt* script, s32 isInitialCall);
-ApiStatus PlayerJump1(Evt* script, s32 isInitialCall);
-ApiStatus PlayerJump2(Evt* script, s32 isInitialCall);
-ApiStatus InterpPlayerYaw(Evt* script, s32 isInitialCall);
-ApiStatus PlayerFaceNpc(Evt* script, s32 isInitialCall);
-ApiStatus GetPlayerTargetYaw(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerFlagBits(Evt* script, s32 isInitialCall);
-ApiStatus GetPlayerActionState(Evt* script, s32 isInitialCall);
-ApiStatus GetPlayerPos(Evt* script, s32 isInitialCall);
-ApiStatus GetPlayerAnimation(Evt* script, s32 isInitialCall);
-ApiStatus FullyRestoreHPandFP(Evt* script, s32 isInitialCall);
-ApiStatus FullyRestoreSP(Evt* script, s32 isInitialCall);
-ApiStatus EnablePartner(Evt* script, s32 isInitialCall);
-ApiStatus DisablePartner(Evt* script, s32 isInitialCall);
-ApiStatus UseEntryHeading(Evt* script, s32 isInitialCall);
-ApiStatus func_802D2148(Evt* script, s32 isInitialCall);
-ApiStatus UseExitHeading(Evt* script, s32 isInitialCall);
-ApiStatus InitVirtualEntityList(Evt* script, s32 isInitialCall);
-ApiStatus DisablePulseStone(Evt* script, s32 isInitialCall);
-ApiStatus GetPartnerInUse(Evt* script, s32 isInitialCall);
-ApiStatus Disable8bitMario(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAtPlayer(Evt* script, s32 isInitialCall);
-ApiStatus MakeLerp(Evt* script, s32 isInitialCall);
-ApiStatus UpdateLerp(Evt* script, s32 isInitialCall);
-ApiStatus RandInt(Evt* script, s32 isInitialCall);
-ApiStatus GetAngleBetweenNPCs(Evt* script, s32 isInitialCall);
-ApiStatus GetAngleToNPC(Evt* script, s32 isInitialCall);
-ApiStatus GetAngleToPlayer(Evt* script, s32 isInitialCall);
-ApiStatus AwaitPlayerApproach(Evt* script, s32 isInitialCall);
-ApiStatus IsPlayerWithin(Evt* script, s32 isInitialCall);
-ApiStatus AwaitPlayerLeave(Evt* script, s32 isInitialCall);
-ApiStatus AddVectorPolar(Evt* script, s32 isInitialCall);
-ApiStatus func_802D4BDC(Evt* script, s32 initialCall);
-ApiStatus func_802D4C4C(Evt* script, s32 initialCall);
-ApiStatus func_802D4CC4(Evt* script, s32 initialCall);
-ApiStatus func_802D4D14(Evt* script, s32 initialCall);
-ApiStatus func_802D4D88(Evt* script, s32 initialCall);
-ApiStatus LoadPath(Evt* script, s32 isInitialCall);
-ApiStatus GetNextPathPos(Evt* script, s32 isInitialCall);
-ApiStatus GetDist2D(Evt* script, s32 isInitialCall);
-ApiStatus SetValueByRef(Evt* script, s32 isInitialCall);
-ApiStatus GetValueByRef(Evt* script, s32 isInitialCall);
-ApiStatus EnableWorldStatusBar(Evt* script, s32 isInitialCall);
-ApiStatus ShowWorldStatusBar(Evt* script, s32 isInitialCall);
-ApiStatus SetGameMode(Evt* script, s32 isInitialCall);
-ApiStatus ClampAngleInt(Evt* script, s32 isInitialCall);
-ApiStatus ClampAngleFloat(Evt* script, s32 isInitialCall);
-ApiStatus FadeOutMusic(Evt* script, s32 isInitialCall);
-ApiStatus SetMusicTrack(Evt* script, s32 isInitialCall);
-ApiStatus FadeInMusic(Evt* script, s32 isInitialCall);
-ApiStatus EnableMusicProximityMix(Evt* script, s32 isInitialCall);
-ApiStatus AdjustMusicProximityMix(Evt* script, s32 isInitialCall);
-ApiStatus SetMusicTrackVolumes(Evt* script, s32 isInitialCall);
-ApiStatus ClearAmbientSounds(Evt* script, s32 isInitialCall);
-ApiStatus PlayAmbientSounds(Evt* script, s32 isInitialCall);
-ApiStatus PlaySound(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundWithVolume(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAt(Evt* script, s32 isInitialCall);
-ApiStatus StopSound(Evt* script, s32 isInitialCall);
-ApiStatus UseDoorSounds(Evt* script, s32 isInitialCall);
-ApiStatus UseRoomDoorSounds(Evt* script, s32 isInitialCall);
-ApiStatus PlaySoundAtF(Evt* script, s32 isInitialCall);
-ApiStatus RemoveKeyItemAt(Evt* script, s32 isInitialCall);
-ApiStatus RemoveItemAt(Evt* script, s32 isInitialCall);
-ApiStatus AddKeyItem(Evt* script, s32 isInitialCall);
-ApiStatus HasKeyItem(Evt* script, s32 isInitialCall);
-ApiStatus FindKeyItem(Evt* script, s32 isInitialCall);
-ApiStatus AddItem(Evt* script, s32 isInitialCall);
-ApiStatus FindItem(Evt* script, s32 isInitialCall);
-ApiStatus RemoveItem(Evt* script, s32 isInitialCall);
-ApiStatus CountFortessKeys(Evt* script, s32 isInitialCall);
-ApiStatus RemoveFortressKeys(Evt* script, s32 isInitialCall);
-ApiStatus MakeItemEntity(Evt* script, s32 isInitialCall);
-ApiStatus DropItemEntity(Evt* script, s32 isInitialCall);
-ApiStatus DropResizableItemEntity(Evt* script, s32 isInitialCall);
-ApiStatus RemoveItemEntity(Evt* script, s32 isInitialCall);
-ApiStatus AddBadge(Evt* script, s32 isInitialCall);
-ApiStatus RemoveBadge(Evt* script, s32 isInitialCall);
-ApiStatus SetItemPos(Evt* script, s32 isInitialCall);
-ApiStatus SetItemFlags(Evt* script, s32 isInitialCall);
-ApiStatus SetItemAlpha(Evt* script, s32 isInitialCall);
-ApiStatus AddCoin(Evt* script, s32 isInitialCall);
-ApiStatus AddStarPoints(Evt* script, s32 isInitialCall);
-ApiStatus AddStarPieces(Evt* script, s32 isInitialCall);
-ApiStatus GetItemPower(Evt* script, s32 isInitialCall);
-ApiStatus ShowGotItem(Evt* script, s32 isInitialCall);
-ApiStatus ShowEmote(Evt* script, s32 isInitialCall);
-ApiStatus ShowSleepBubble(Evt* script, s32 isInitialCall);
-ApiStatus RemoveEffect(Evt* script, s32 isInitialCall);
-ApiStatus DismissEffect(Evt* script, s32 isInitialCall);
-ApiStatus DismissItemOutline(Evt* script, s32 isInitialCall);
-ApiStatus PlayEffect(Evt* script, s32 isInitialCall);
-ApiStatus SetSpriteShading(Evt* script, s32 isInitialCall);
-ApiStatus EnableSpriteShading(Evt* script, s32 isInitialCall);
-ApiStatus GetDemoState(Evt* script, s32 isInitialCall);
-ApiStatus DemoPressButton(Evt* script, s32 isInitialCall);
-ApiStatus DemoReleaseButton(Evt* script, s32 isInitialCall);
-ApiStatus DemoSetButtons(Evt* script, s32 isInitialCall);
-ApiStatus DemoJoystickRadial(Evt* script, s32 isInitialCall);
-ApiStatus DemoJoystickXY(Evt* script, s32 isInitialCall);
-ApiStatus WaitForPlayerInputEnabled(Evt* script, s32 isInitialCall);
-ApiStatus func_802D2484(Evt* script, s32 isInitialCall);
-ApiStatus WaitForPlayerTouchingFloor(Evt* script, s32 isInitialCall);
-ApiStatus IsPlayerOnValidFloor(Evt* script, s32 isInitialCall);
-ApiStatus WaitForPlayerMoveToComplete(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcImgFXFlags(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcImgFXParams(Evt* script, s32 isInitialCall);
-ApiStatus IsStartingConversation(Evt* script, s32 isInitialCall);
-ApiStatus SetTimeFreezeMode(Evt* script, s32 isInitialCall);
-ApiStatus CreateVirtualEntity(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcSprite(Evt* script, s32 isInitialCall);
+/// @{
+/// @name Map
 
-ApiStatus DeleteVirtualEntity(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityPosition(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityScale(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityRotation(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityJumpGravity(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityFlags(Evt* script, s32 isInitialCall);
-ApiStatus GetVirtualEntityPosition(Evt* script, s32 isInitialCall);
-ApiStatus SetVirtualEntityMoveSpeed(Evt* script, s32 isInitialCall);
-ApiStatus VirtualEntityMoveTo(Evt* script, s32 isInitialCall);
-ApiStatus VirtualEntityJumpTo(Evt* script, s32 isInitialCall);
-ApiStatus VirtualEntityLandJump(Evt* script, s32 isInitialCall);
+/// @evtapi
+API_CALLABLE(TranslateModel);
 
-ApiStatus FacePlayerTowardPoint(Evt* script, s32 isInitialCall);
-ApiStatus func_802D2C14(Evt* script, s32 isInitialCall);
-ApiStatus ShowConsumableChoicePopup(Evt* script, s32 isInitialCall);
-ApiStatus func_800458CC(Evt* script, s32 isInitialCall);
-ApiStatus OnPlayerFled(Evt* script, s32 isInitialCall);
-ApiStatus SetTattleMessage(Evt* script, s32 isInitialCall);
-ApiStatus ShowKeyChoicePopup(Evt* script, s32 isInitialCall);
-ApiStatus CloseChoicePopup(Evt* script, s32 isInitialCall);
-ApiStatus ForceUsePartner(Evt* script, s32 isInitialCall);
-ApiStatus InterruptUsePartner(Evt* script, s32 isInitialCall);
-ApiStatus func_80045838(Evt* script, s32 isInitialCall);
-ApiStatus ModifyGlobalOverrideFlags(Evt* script, s32 isInitialCall);
-ApiStatus func_802CF56C(Evt* script, s32 isInitialCall);
-ApiStatus func_802CA988(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcRotationPivot(Evt* script, s32 isInitialCall);
-ApiStatus SetSleepBubbleTimeLeft(Evt* script, s32 isInitialCall);
-ApiStatus SetPlayerImgFXFlags(Evt* script, s32 isInitialCall);
-ApiStatus UpdatePlayerImgFX(Evt* script, s32 isInitialCall);
-ApiStatus PushSong(Evt* script, s32 isInitialCall);
-ApiStatus PopSong(Evt* script, s32 isInitialCall);
-ApiStatus StopTrackingSoundPos(Evt* script, s32 isInitialCall);
-ApiStatus func_80044238(Evt* script, s32 isInitialCall);
-ApiStatus MakeLocalVertexCopy(Evt* script, s32 isInitialCall);
-ApiStatus SetCustomGfx(Evt* script, s32 isInitialCall);
-ApiStatus SetCustomGfxBuilders(Evt* script, s32 isInitialCall);
-ApiStatus SetModelCustomGfx(Evt* script, s32 isInitialCall);
-ApiStatus GetLanguage(Evt* script, s32 isInitialCall);
-ApiStatus SetModelTexVariant(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcPaletteSwapMode(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcPaletteSwapLower(Evt* script, s32 isInitialCall);
-ApiStatus SetNpcPaletteSwapping(Evt* script, s32 isInitialCall);
-ApiStatus MakeTransformGroup(Evt* script, s32 isInitialCall);
+/// @evtapi
+API_CALLABLE(RotateModel);
 
-ApiStatus SetMotionBlurParams(Evt* script, s32 isInitialCall);
-ApiStatus ShowSweat(Evt* script, s32 isInitialCall);
+/// @evtapi
+API_CALLABLE(ScaleModel);
+
+/// @evtapi
+API_CALLABLE(GetModelIndex);
+
+/// @evtapi
+API_CALLABLE(InvalidateModelTransform);
+
+/// @evtapi
+API_CALLABLE(CloneModel);
+
+/// @evtapi
+API_CALLABLE(GetModelCenter);
+
+/// @evtapi
+API_CALLABLE(SetTexPanner);
+
+/// @evtapi
+API_CALLABLE(SetCustomGfxEnabled);
+
+/// @evtapi
+API_CALLABLE(SetModelCustomGfx);
+
+/// @evtapi
+API_CALLABLE(SetModelTexVariant);
+
+/// @evtapi
+API_CALLABLE(EnableTexPanning);
+
+/// @evtapi
+API_CALLABLE(EnableModel);
+
+/// @evtapi
+API_CALLABLE(SetGroupVisibility);
+
+/// @evtapi
+API_CALLABLE(SetTexPanOffset);
+
+/// @evtapi
+API_CALLABLE(SetCustomGfx);
+
+/// @evtapi
+API_CALLABLE(SetCustomGfxBuilders);
+
+/// @evtapi
+API_CALLABLE(SetModelFlags);
+
+/// @evtapi
+API_CALLABLE(MakeTransformGroup);
+
+/// @evtapi
+API_CALLABLE(SetTransformGroupEnabled);
+
+/// @evtapi
+API_CALLABLE(TranslateGroup);
+
+/// @evtapi
+API_CALLABLE(RotateGroup);
+
+/// @evtapi
+API_CALLABLE(ScaleGroup);
+
+/// @evtapi
+API_CALLABLE(GetTransformGroup);
+
+/// @evtapi
+API_CALLABLE(EnableGroup);
+
+/// @evtapi
+API_CALLABLE(MakeLocalVertexCopy);
+
+/// @evtapi
+API_CALLABLE(ModifyColliderFlags);
+
+/// @evtapi
+API_CALLABLE(ResetFromLava);
+
+/// @evtapi
+API_CALLABLE(GetColliderCenter);
+
+/// @evtapi
+API_CALLABLE(ParentColliderToModel);
+
+/// @evtapi
+API_CALLABLE(UpdateColliderTransform);
+
+/// @evtapi
+API_CALLABLE(SetZoneEnabled);
+
+/// @evtapi
+API_CALLABLE(GotoMap);
+
+/// @evtapi
+API_CALLABLE(GotoMapSpecial);
+
+/// @evtapi
+API_CALLABLE(GotoMapByID);
+
+/// @evtapi
+API_CALLABLE(GetEntryID);
+
+/// @evtapi
+API_CALLABLE(GetMapID);
+
+/// @evtapi
+API_CALLABLE(GetLoadType);
+
+/// @evtapi
+API_CALLABLE(SetRenderMode);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAtModel);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAtCollider);
+
+/// @}
+
+/// @{
+/// @name Animated Model
+
+/// @evtapi
+API_CALLABLE(InitAnimatedModels);
+
+/// @evtapi
+API_CALLABLE(LoadAnimatedModel);
+
+/// @evtapi
+API_CALLABLE(LoadAnimatedMesh);
+
+/// @evtapi
+API_CALLABLE(PlayModelAnimation);
+
+/// @evtapi
+API_CALLABLE(PlayModelAnimationStartingFrom);
+
+/// @evtapi
+API_CALLABLE(ChangeModelAnimation);
+
+/// @evtapi
+API_CALLABLE(SetAnimatedModelRootPosition);
+
+/// @evtapi
+API_CALLABLE(GetAnimatedModelRootPosition);
+
+/// @evtapi
+API_CALLABLE(AddAnimatedModelRootPosition);
+
+/// @evtapi
+API_CALLABLE(SetAnimatedModelRootRotation);
+
+/// @evtapi
+API_CALLABLE(SetAnimatedModelRootScale);
+
+/// @evtapi
+API_CALLABLE(SetAnimatedModelRenderMode);
+
+/// @evtapi
+API_CALLABLE(DeleteAnimatedModel);
+
+/// @evtapi
+API_CALLABLE(SetAnimatorFlags);
+
+/// @evtapi
+API_CALLABLE(GetAnimatedNodePosition);
+
+/// @evtapi
+API_CALLABLE(GetAnimatedNodeRotation);
+
+/// @evtapi
+API_CALLABLE(GetAnimatedPositionByTreeIndex);
+
+/// @evtapi
+API_CALLABLE(GetAnimatedRotationByTreeIndex);
+
+/// @evtapi
+API_CALLABLE(SetAnimatedNodeFlags);
+
+/// @}
+
+/// @{
+/// @name Camera
+
+/// @evtapi
+API_CALLABLE(SetCamEnabled);
+
+/// @evtapi
+API_CALLABLE(SetCamNoDraw);
+
+/// @evtapi
+API_CALLABLE(SetCamPerspective);
+
+/// @evtapi
+API_CALLABLE(SetCamUpdateMode);
+
+/// @evtapi
+API_CALLABLE(GrabCamera);
+
+/// @evtapi
+API_CALLABLE(GetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(GetInterpCamOffsetY);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamDist);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamOffsetY);
+
+/// @evtapi
+API_CALLABLE(SetInterpCamParams);
+
+/// @evtapi
+API_CALLABLE(SetNoInterpCamParams);
+
+/// @evtapi
+API_CALLABLE(SetCamViewport);
+
+/// @evtapi
+API_CALLABLE(SetNoInterpCamParams);
+
+/// @evtapi
+API_CALLABLE(SetCamBGColor);
+
+/// @evtapi
+API_CALLABLE(SetCamLookTarget);
+
+/// @evtapi
+API_CALLABLE(SetCamTarget);
+
+/// @evtapi
+API_CALLABLE(InterpCamTargetPos);
+
+/// @evtapi
+API_CALLABLE(ShakeCam);
+
+/// @evtapi
+API_CALLABLE(SetCamLeadPlayer);
+
+/// @evtapi
+API_CALLABLE(EnableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(DisableCameraFollowPlayerY);
+
+/// @evtapi
+API_CALLABLE(EnableCameraLeadingPlayer);
+
+/// @evtapi
+API_CALLABLE(DisableCameraLeadingPlayer);
+
+/// @evtapi
+API_CALLABLE(SetCamLeadScale);
+
+/// @evtapi
+API_CALLABLE(PanToTarget);
+
+/// @evtapi
+API_CALLABLE(UseSettingsFrom);
+
+/// @evtapi
+API_CALLABLE(LoadSettings);
+
+/// @evtapi
+API_CALLABLE(SetCamType);
+
+/// @evtapi
+API_CALLABLE(SetCamPitch);
+
+/// @evtapi
+API_CALLABLE(SetCamDistance);
+
+/// @evtapi
+API_CALLABLE(SetCamPosA);
+
+/// @evtapi
+API_CALLABLE(SetCamPosB);
+
+/// @evtapi
+API_CALLABLE(SetCamPosC);
+
+/// @evtapi
+API_CALLABLE(SetPanTarget);
+
+/// @evtapi
+API_CALLABLE(SetCamSpeed);
+
+/// @evtapi
+API_CALLABLE(GetCamType);
+
+/// @evtapi
+API_CALLABLE(GetCamPitch);
+
+/// @evtapi
+API_CALLABLE(GetCamDistance);
+
+/// @evtapi
+API_CALLABLE(GetCamPosA);
+
+/// @evtapi
+API_CALLABLE(GetCamPosB);
+
+/// @evtapi
+API_CALLABLE(GetCamPosC);
+
+/// @evtapi
+API_CALLABLE(GetCamPosition);
+
+/// @evtapi
+API_CALLABLE(WaitForCam);
+
+/// @evtapi
+API_CALLABLE(SetCamProperties);
+
+/// @evtapi
+API_CALLABLE(AdjustCam);
+
+/// @evtapi
+API_CALLABLE(ResetCam);
+
+/// @}
+
+/// @{
+/// @name NPC
+
+/// @evtapi
+API_CALLABLE(CreateNpc);
+
+/// @evtapi
+API_CALLABLE(DeleteNpc);
+
+/// @evtapi
+API_CALLABLE(GetNpcPointer);
+
+/// @evtapi
+API_CALLABLE(SetNpcPos);
+
+/// @evtapi
+API_CALLABLE(SetNpcRotation);
+
+/// @evtapi
+API_CALLABLE(SetNpcRotationPivot);
+
+/// @evtapi
+API_CALLABLE(SetNpcScale);
+
+/// @evtapi
+API_CALLABLE(SetNpcCollisionSize);
+
+/// @evtapi
+API_CALLABLE(SetNpcSpeed);
+
+/// @evtapi
+API_CALLABLE(SetNpcJumpscale);
+
+/// @evtapi
+API_CALLABLE(SetNpcAnimation);
+
+/// @evtapi
+API_CALLABLE(GetNpcAnimation);
+
+/// @evtapi
+API_CALLABLE(SetNpcAnimationSpeed);
+
+/// @evtapi
+API_CALLABLE(NpcMoveTo);
+
+/// @evtapi
+API_CALLABLE(NpcJump0);
+
+/// @evtapi
+API_CALLABLE(NpcJump1);
+
+/// @evtapi
+API_CALLABLE(NpcFlyTo);
+
+/// @evtapi
+API_CALLABLE(GetNpcYaw);
+
+/// @evtapi
+API_CALLABLE(SetNpcYaw);
+
+/// @evtapi
+API_CALLABLE(InterpNpcYaw);
+
+/// @evtapi
+API_CALLABLE(NpcFacePlayer);
+
+/// @evtapi
+API_CALLABLE(NpcFaceNpc);
+
+/// @evtapi
+API_CALLABLE(SetNpcFlagBits);
+
+/// @evtapi
+API_CALLABLE(GetNpcPos);
+
+/// @evtapi
+API_CALLABLE(SetNpcCollisionChannel);
+
+/// @evtapi
+API_CALLABLE(SetNpcSprite);
+
+/// @evtapi
+API_CALLABLE(EnableNpcShadow);
+
+/// @evtapi
+API_CALLABLE(EnableNpcBlur);
+
+/// @evtapi
+API_CALLABLE(ClearPartnerMoveHistory);
+
+/// @evtapi
+API_CALLABLE(NpcSetHomePosToCurrent);
+
+/// @evtapi
+API_CALLABLE(GetPartnerPos);
+
+/// @evtapi
+API_CALLABLE(DisablePartnerAI);
+
+/// @evtapi
+API_CALLABLE(EnablePartnerAI);
+
+/// @evtapi
+API_CALLABLE(func_802CF54C);
+
+/// @evtapi
+API_CALLABLE(func_802CF56C);
+
+/// @evtapi
+API_CALLABLE(BringPartnerOut);
+
+/// @evtapi
+API_CALLABLE(PutPartnerAway);
+
+/// @evtapi
+API_CALLABLE(GetCurrentPartnerID);
+
+/// @evtapi
+API_CALLABLE(PartnerCanUseAbility);
+
+/// @evtapi
+API_CALLABLE(PartnerIsFlying);
+
+/// @evtapi
+API_CALLABLE(SetNpcImgFXParams);
+
+/// @evtapi
+API_CALLABLE(SetNpcImgFXFlags);
+
+/// @evtapi
+API_CALLABLE(SetNpcPaletteSwapMode);
+
+/// @evtapi
+API_CALLABLE(SetNpcPaletteSwapLower);
+
+/// @evtapi
+API_CALLABLE(SetNpcPaletteSwapping);
+
+/// @evtapi
+API_CALLABLE(SetNpcDecoration);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAtNpc);
+
+/// @evtapi
+API_CALLABLE(SetNpcRenderMode);
+
+/// @}
+
+/// @{
+/// @name Encounter
+
+/// @evtapi
+API_CALLABLE(SetEncounterStatusFlags);
+
+/// @evtapi
+API_CALLABLE(IsStartingConversation);
+
+/// @evtapi
+API_CALLABLE(LoadDemoBattle);
+
+/// @evtapi
+API_CALLABLE(func_80044290);
+
+/// @evtapi
+API_CALLABLE(MakeNpcs);
+
+/// @evtapi
+API_CALLABLE(RemoveNpc);
+
+/// @evtapi
+API_CALLABLE(RemoveEncounter);
+
+/// @evtapi
+API_CALLABLE(GetBattleOutcome);
+
+/// @evtapi
+API_CALLABLE(func_800445A8);
+
+/// @evtapi
+API_CALLABLE(func_800445D4);
+
+/// @evtapi
+API_CALLABLE(GetOwnerEncounterTrigger);
+
+/// @evtapi
+API_CALLABLE(DoNpcDefeat);
+
+/// @evtapi
+API_CALLABLE(StartBattle);
+
+/// @evtapi
+API_CALLABLE(StartBattleWith);
+
+/// @evtapi
+API_CALLABLE(StartBossBattle);
+
+/// @evtapi
+API_CALLABLE(SetBattleMusic);
+
+/// @evtapi
+API_CALLABLE(BindNpcAI);
+
+/// @evtapi
+API_CALLABLE(BindNpcIdle);
+
+/// @evtapi
+API_CALLABLE(RestartNpcAI);
+
+/// @evtapi
+API_CALLABLE(EnableNpcAI);
+
+/// @evtapi
+API_CALLABLE(SetNpcAux);
+
+/// @evtapi
+API_CALLABLE(BindNpcAux);
+
+/// @evtapi
+API_CALLABLE(RestartNpcAux);
+
+/// @evtapi
+API_CALLABLE(EnableNpcAux);
+
+/// @evtapi
+API_CALLABLE(BindNpcInteract);
+
+/// @evtapi
+API_CALLABLE(BindNpcHit);
+
+/// @evtapi
+API_CALLABLE(BindNpcDefeat);
+
+/// @evtapi
+API_CALLABLE(SetSelfVar);
+
+/// @evtapi
+API_CALLABLE(GetSelfVar);
+
+/// @evtapi
+API_CALLABLE(SetNpcVar);
+
+/// @evtapi
+API_CALLABLE(GetNpcVar);
+
+/// @evtapi
+API_CALLABLE(SetSelfRotation);
+
+/// @evtapi
+API_CALLABLE(SetSelfEnemyFlags);
+
+/// @evtapi
+API_CALLABLE(SetSelfEnemyFlagBits);
+
+/// @evtapi
+API_CALLABLE(SelfEnemyOverrideSyncPos);
+
+/// @evtapi
+API_CALLABLE(GetSelfNpcID);
+
+/// @evtapi
+API_CALLABLE(ClearDefeatedEnemies);
+
+/// @evtapi
+API_CALLABLE(SetEnemyFlagBits);
+
+/// @evtapi
+API_CALLABLE(func_8004572C);
+
+/// @evtapi
+API_CALLABLE(GetSelfAnimationFromTable);
+
+/// @evtapi
+API_CALLABLE(func_80045798);
+
+/// @evtapi
+API_CALLABLE(SetOwnerInstigatorValue);
+
+/// @evtapi
+API_CALLABLE(SetBattleAsScripted);
+
+/// @evtapi
+API_CALLABLE(GetEncounterTriggerHitTier);
+
+/// @evtapi
+API_CALLABLE(func_80045838);
+
+/// @evtapi
+API_CALLABLE(func_800458CC);
+
+/// @evtapi
+API_CALLABLE(OnPlayerFled);
+
+/// @evtapi
+API_CALLABLE(SetTattleMessage);
+
+/// @evtapi
+API_CALLABLE(ShowMerleeCoinMessage);
+
+/// @evtapi
+API_CALLABLE(ShowMerleeRanOutMessage);
+
+/// @evtapi
+API_CALLABLE(FadeInMerlee);
+
+/// @evtapi
+API_CALLABLE(FadeOutMerlee);
+
+/// @evtapi
+API_CALLABLE(MerleeUpdateFX);
+
+/// @evtapi
+API_CALLABLE(MerleeStopFX);
+
+/// @evtapi
+API_CALLABLE(PlayMerleeGatherFX);
+
+/// @evtapi
+API_CALLABLE(PlayMerleeOrbFX);
+
+/// @evtapi
+API_CALLABLE(ShowMerleeCoinMessage);
+
+/// @evtapi
+API_CALLABLE(ShowMerleeRanOutMessage);
+
+/// @evtapi
+API_CALLABLE(FadeBackgroundDarken);
+
+/// @evtapi
+API_CALLABLE(FadeBackgroundLighten);
+
+/// @evtapi
+API_CALLABLE(FadeInMerlee);
+
+/// @evtapi
+API_CALLABLE(FadeOutMerlee);
+
+/// @evtapi
+API_CALLABLE(MerleeUpdateFX);
+
+/// @evtapi
+API_CALLABLE(MerleeStopFX);
+
+/// @evtapi
+API_CALLABLE(GetCamLookAtObjVector);
+
+/// @evtapi
+API_CALLABLE(HasMerleeCasts);
+
+/// @evtapi
+API_CALLABLE(PlayMerleeGatherFX);
+
+/// @evtapi
+API_CALLABLE(PlayMerleeOrbFX);
+
+/// @evtapi
+API_CALLABLE(OnDefeatEnemy);
+
+/// @evtapi
+API_CALLABLE(OnFleeBattleDrops);
+
+/// @}
+
+/// @{
+/// @name Message
+
+/// @evtapi
+API_CALLABLE(SpeakToPlayer);
+
+/// @evtapi
+API_CALLABLE(EndSpeech);
+
+/// @evtapi
+API_CALLABLE(ContinueSpeech);
+
+/// @evtapi
+API_CALLABLE(SpeakToNpc);
+
+/// @evtapi
+API_CALLABLE(ShowMessageAtScreenPos);
+
+/// @evtapi
+API_CALLABLE(ShowMessageAtWorldPos);
+
+/// @evtapi
+API_CALLABLE(CloseMessage);
+
+/// @evtapi
+API_CALLABLE(SwitchMessage);
+
+/// @evtapi
+API_CALLABLE(ShowChoice);
+
+/// @evtapi
+API_CALLABLE(CloseChoice);
+
+/// @evtapi
+API_CALLABLE(CancelMessage);
+
+/// @evtapi
+API_CALLABLE(SetMessageImages);
+
+/// @evtapi
+API_CALLABLE(func_802D0C94);
+
+/// @evtapi
+API_CALLABLE(SetMessageText);
+
+/// @evtapi
+API_CALLABLE(SetMessageValue);
+
+/// @}
+
+/// @{
+/// @name Player
+
+/// Hides the player's shadow if `hide` is `TRUE`, shows it if `FALSE`.
+/// @evtapi
+/// @param hide Whether to hide the player's shadow.
+/// @see disable_player_shadow, enable_player_shadow
+API_CALLABLE(HidePlayerShadow);
+
+/// Disables player physics if `disable` is `TRUE`, enables it if `FALSE`.
+/// @evtapi
+/// @param disable Whether to disable player physics.
+/// @see disable_player_static_collisions, enable_player_static_collisions
+API_CALLABLE(DisablePlayerPhysics);
+
+/// Disables player and partner input, and disables the status menu.
+/// @evtapi
+/// @param disable Whether to disable player input.
+API_CALLABLE(DisablePlayerInput);
+
+/// Sets the player position.
+/// @evtapi
+/// @param x
+/// @param y `-1000` is used for hiding the player.
+/// @param z
+/// @see GetPlayerPos
+API_CALLABLE(SetPlayerPos);
+
+/// Overrides the player collision size.
+/// @evtapi
+/// @param height
+/// @param diameter
+API_CALLABLE(SetPlayerCollisionSize);
+
+/// Sets the move speed of the player for subequent \ref PlayerMoveTo calls.
+/// @evtapi
+/// @param speed Float multiplier.
+/// @see SetNpcSpeed
+API_CALLABLE(SetPlayerSpeed);
+
+/// @evtapi
+API_CALLABLE(SetPlayerJumpscale);
+
+/// @evtapi
+API_CALLABLE(SetPlayerAnimation);
+
+/// @evtapi
+API_CALLABLE(SetPlayerActionState);
+
+/// @evtapi
+API_CALLABLE(SetPlayerAnimationSpeed);
+
+/// @evtapi
+API_CALLABLE(PlayerMoveTo);
+
+/// @evtapi
+API_CALLABLE(func_802D1270);
+
+/// @evtapi
+API_CALLABLE(func_802D1380);
+
+/// @evtapi
+API_CALLABLE(PlayerJump);
+
+/// @evtapi
+API_CALLABLE(PlayerJump1);
+
+/// @evtapi
+API_CALLABLE(PlayerJump2);
+
+/// @evtapi
+API_CALLABLE(InterpPlayerYaw);
+
+/// @evtapi
+API_CALLABLE(PlayerFaceNpc);
+
+/// @evtapi
+API_CALLABLE(GetPlayerTargetYaw);
+
+/// @evtapi
+API_CALLABLE(SetPlayerFlagBits);
+
+/// @evtapi
+API_CALLABLE(GetPlayerActionState);
+
+/// @evtapi
+API_CALLABLE(GetPlayerPos);
+
+/// @evtapi
+API_CALLABLE(GetPlayerAnimation);
+
+/// @evtapi
+API_CALLABLE(FullyRestoreHPandFP);
+
+/// @evtapi
+API_CALLABLE(FullyRestoreSP);
+
+/// Enables switching to the given partner.
+/// @evtapi
+/// @param partnerID The \ref PartnerIDs "partner id" to enable.
+/// @see DisablePartner
+API_CALLABLE(EnablePartner);
+
+/// Disables switching to the given partner.
+/// @evtapi
+/// @param partnerID The \ref PartnerIDs "partner id" to disable.
+/// @see EnablePartner
+API_CALLABLE(DisablePartner);
+
+/// @evtapi
+API_CALLABLE(UseEntryHeading);
+
+/// @evtapi
+API_CALLABLE(func_802D2148);
+
+/// @evtapi
+API_CALLABLE(UseExitHeading);
+
+/// @evtapi
+API_CALLABLE(WaitForPlayerTouchingFloor);
+
+/// @evtapi
+API_CALLABLE(func_802D2484);
+
+/// @evtapi
+API_CALLABLE(IsPlayerOnValidFloor);
+
+/// @evtapi
+API_CALLABLE(WaitForPlayerMoveToComplete);
+
+/// @evtapi
+API_CALLABLE(WaitForPlayerInputEnabled);
+
+/// @evtapi
+API_CALLABLE(UpdatePlayerImgFX);
+
+/// @evtapi
+API_CALLABLE(SetPlayerImgFXFlags);
+
+/// @evtapi
+API_CALLABLE(FacePlayerTowardPoint);
+
+/// @evtapi
+API_CALLABLE(DisablePulseStone);
+
+/// @evtapi
+API_CALLABLE(GetPartnerInUse);
+
+/// @evtapi
+API_CALLABLE(ForceUsePartner);
+
+/// @evtapi
+API_CALLABLE(InterruptUsePartner);
+
+/// Enables and disables the 8-bit Mario easter egg.
+///
+/// @evtapi
+/// @param disable Disable the easter egg if `TRUE`, enable it if `FALSE`.
+///
+/// Whilst active, the player uses a retro sprite, and the following actions are disabled:
+/// - Spin dash
+/// - Hammer
+/// - Spin jump and tornado jump
+/// - Menus
+/// - Partner usage and partner switching
+///
+/// @see PA_FLAG_8BIT_MARIO
+API_CALLABLE(Disable8bitMario);
+
+/// @evtapi
+API_CALLABLE(func_802D2C14);
+
+/// @evtapi
+API_CALLABLE(SetPlayerPushVelocity);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAtPlayer);
+
+/// @}
+
+/// @{
+/// @name Math
+
+/// @evtapi
+API_CALLABLE(MakeLerp);
+
+/// @evtapi
+API_CALLABLE(UpdateLerp);
+
+/// @evtapi
+API_CALLABLE(RandInt);
+
+/// @evtapi
+API_CALLABLE(GetAngleBetweenNPCs);
+
+/// @evtapi
+API_CALLABLE(GetAngleToNPC);
+
+/// @evtapi
+API_CALLABLE(GetAngleToPlayer);
+
+/// @evtapi
+API_CALLABLE(AwaitPlayerApproach);
+
+/// @evtapi
+API_CALLABLE(IsPlayerWithin);
+
+/// @evtapi
+API_CALLABLE(AwaitPlayerLeave);
+
+/// @evtapi
+API_CALLABLE(AddVectorPolar);
+
+/// @evtapi
+API_CALLABLE(func_802D4BDC);
+
+/// @evtapi
+API_CALLABLE(func_802D4C4C);
+
+/// @evtapi
+API_CALLABLE(func_802D4CC4);
+
+/// @evtapi
+API_CALLABLE(func_802D4D14);
+
+/// @evtapi
+API_CALLABLE(func_802D4D88);
+
+/// @evtapi
+/// @see GetNextPathPos
+API_CALLABLE(LoadPath);
+
+/// @evtapi
+/// @see LoadPath
+API_CALLABLE(GetNextPathPos);
+
+/// @evtapi
+API_CALLABLE(GetDist2D);
+
+/// @evtapi
+API_CALLABLE(SetTimeFreezeMode);
+
+/// @evtapi
+API_CALLABLE(ModifyGlobalOverrideFlags);
+
+/// @evtapi
+API_CALLABLE(SetValueByRef);
+
+/// @evtapi
+API_CALLABLE(GetValueByRef);
+
+/// @evtapi
+API_CALLABLE(SetGameMode);
+
+/// @evtapi
+API_CALLABLE(ClampAngleInt);
+
+/// @evtapi
+API_CALLABLE(ClampAngleFloat);
+
+#ifdef VERSION_PAL
+/// @evtapi
+API_CALLABLE(GetLanguage);
+#endif
+
+/// @}
+
+/// @{
+/// @name UI
+
+/// @evtapi
+API_CALLABLE(EnableWorldStatusBar);
+
+/// @evtapi
+API_CALLABLE(ShowWorldStatusBar);
+
+/// @evtapi
+API_CALLABLE(ShowCoinCounter);
+
+/// @}
+
+/// @{
+/// @name Audio
+
+/// @evtapi
+API_CALLABLE(PollMusicEvents);
+
+/// @evtapi
+API_CALLABLE(RegisterMusicEvents);
+
+/// @evtapi
+API_CALLABLE(FadeOutMusic);
+
+/// @evtapi
+API_CALLABLE(SetMusicTrack);
+
+/// @evtapi
+API_CALLABLE(FadeInMusic);
+
+/// @evtapi
+API_CALLABLE(EnableMusicProximityMix);
+
+/// @evtapi
+API_CALLABLE(AdjustMusicProximityMix);
+
+/// @evtapi
+API_CALLABLE(SetMusicTrackVolumes);
+
+/// @evtapi
+API_CALLABLE(PopSong);
+
+/// @evtapi
+API_CALLABLE(PushSong);
+
+/// @evtapi
+API_CALLABLE(PopBattleSong);
+
+/// @evtapi
+API_CALLABLE(PushBattleSong);
+
+/// @evtapi
+API_CALLABLE(SetBattleSong);
+
+/// @evtapi
+API_CALLABLE(ClearAmbientSounds);
+
+/// @evtapi
+API_CALLABLE(PlayAmbientSounds);
+
+/// @evtapi
+API_CALLABLE(PlaySound);
+
+/// @evtapi
+API_CALLABLE(PlaySoundWithVolume);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAt);
+
+/// @evtapi
+API_CALLABLE(StopSound);
+
+/// @evtapi
+API_CALLABLE(StopTrackingSoundPos);
+
+/// @evtapi
+API_CALLABLE(UseDoorSounds);
+
+/// @evtapi
+API_CALLABLE(UseRoomDoorSounds);
+
+/// @evtapi
+API_CALLABLE(PlaySoundAtF);
+
+/// @}
+
+/// @{
+/// @name Virtual Entity
+
+/// @evtapi
+API_CALLABLE(InitVirtualEntityList);
+
+/// @evtapi
+API_CALLABLE(CreateVirtualEntityAt);
+
+/// @evtapi
+API_CALLABLE(CreateVirtualEntity);
+
+/// @evtapi
+API_CALLABLE(CreateVirtualEntity_ALT);
+
+/// @evtapi
+API_CALLABLE(DeleteVirtualEntity);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityRenderCommands);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityPosition);
+
+/// @evtapi
+API_CALLABLE(GetVirtualEntityPosition);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityRotation);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityScale);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityMoveSpeed);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityJumpGravity);
+
+/// @evtapi
+API_CALLABLE(VirtualEntityMoveTo);
+
+/// @evtapi
+API_CALLABLE(VirtualEntityJumpTo);
+
+/// @evtapi
+API_CALLABLE(VirtualEntityLandJump);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityFlags);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityFlagBits);
+
+/// @evtapi
+API_CALLABLE(SetVirtualEntityRenderMode);
+
+/// @}
+
+/// @{
+/// @name Item
+
+/// @evtapi
+API_CALLABLE(ShowKeyChoicePopup);
+
+/// @evtapi
+API_CALLABLE(ShowConsumableChoicePopup);
+
+/// @evtapi
+API_CALLABLE(RemoveKeyItemAt);
+
+/// @evtapi
+API_CALLABLE(RemoveItemAt);
+
+/// @evtapi
+API_CALLABLE(CloseChoicePopup);
+
+/// @evtapi
+API_CALLABLE(HasItem);
+
+/// @evtapi
+API_CALLABLE(FindItem);
+
+/// @evtapi
+API_CALLABLE(AddItem);
+
+/// @evtapi
+API_CALLABLE(RemoveItem);
+
+/// @evtapi
+API_CALLABLE(MakeItemEntity);
+
+/// @evtapi
+API_CALLABLE(DropItemEntity);
+
+/// @evtapi
+API_CALLABLE(DropResizableItemEntity);
+
+/// @evtapi
+API_CALLABLE(RemoveItemEntity);
+
+/// @evtapi
+API_CALLABLE(SetItemPos);
+
+/// @evtapi
+API_CALLABLE(SetItemFlags);
+
+/// @evtapi
+API_CALLABLE(SetItemAlpha);
+
+/// @evtapi
+API_CALLABLE(AddCoin);
+
+/// @evtapi
+API_CALLABLE(AddStarPoints);
+
+/// @evtapi
+API_CALLABLE(AddStarPieces);
+
+/// @evtapi
+API_CALLABLE(GetItemPower);
+
+/// @evtapi
+API_CALLABLE(ShowGotItem);
+
+/// @}
+
+/// @{
+/// @name Effect
+
+/// @evtapi
+API_CALLABLE(ShowStartRecoveryShimmer);
+
+/// @evtapi
+API_CALLABLE(ShowRecoveryShimmer);
+
+/// @evtapi
+API_CALLABLE(func_802D7690);
+
+/// @evtapi
+API_CALLABLE(ShowEmote);
+
+/// @evtapi
+API_CALLABLE(RemoveEffect);
+
+/// @evtapi
+API_CALLABLE(DismissEffect);
+
+/// @evtapi
+API_CALLABLE(DismissItemOutline);
+
+/// @evtapi
+API_CALLABLE(func_802D7B74);
+
+/// @evtapi
+API_CALLABLE(InterpMotionBlurParams);
+
+/// @evtapi
+API_CALLABLE(SetMotionBlurParams);
+
+/// @evtapi
+API_CALLABLE(ShowSweat);
+
+/// @evtapi
+API_CALLABLE(ShowSleepBubble);
+
+/// @evtapi
+API_CALLABLE(SetSleepBubbleTimeLeft);
+
+/// @evtapi
+/// @see PlayEffect
+API_CALLABLE(PlayEffect_impl);
+
+/// @}
+
+/// @{
+/// @name Entity
+
+// TODO: document varargs better
+/// Creates an entity.
+///
+/// @evtapi
+/// @param blueprint Pointer to \ref EntityBlueprint to use.
+/// @param x
+/// @param y
+/// @param z
+/// @param flags \ref EntityFlags
+/// @param ... Varargs.
+/// @param MAKE_ENTITY_END Terminates the varargs.
+/// @vars{out | LVar0 | Created entity's ID.}
+API_CALLABLE(MakeEntity);
+
+/// @evtapi
+API_CALLABLE(SetEntityCullMode);
+
+/// @evtapi
+API_CALLABLE(UseDynamicShadow);
+
+/// @evtapi
+API_CALLABLE(AssignScript);
+
+/// @evtapi
+API_CALLABLE(AssignSwitchFlag);
+
+/// @evtapi
+API_CALLABLE(AssignBlockFlag);
+
+/// @evtapi
+API_CALLABLE(AssignChestFlag);
+
+/// @evtapi
+API_CALLABLE(AssignPanelFlag);
+
+/// @evtapi
+API_CALLABLE(AssignCrateFlag);
+
+/// Removes a trigger previously bound with \ref BindTrigger.
+/// @evtapi
+/// @param triggerPtr
+API_CALLABLE(DeleteTrigger);
+
+/// @}
+
+/// @{
+/// @name Sprite shading
+
+/// @evtapi
+API_CALLABLE(SetSpriteShading);
+
+/// @evtapi
+API_CALLABLE(EnableSpriteShading);
+
+/// @}
+
+/// @{
+/// @name Demo
+
+/// @evtapi
+API_CALLABLE(GetDemoState);
+
+/// @evtapi
+API_CALLABLE(DemoPressButton);
+
+/// @evtapi
+API_CALLABLE(DemoReleaseButton);
+
+/// @evtapi
+API_CALLABLE(DemoSetButtons);
+
+/// @evtapi
+API_CALLABLE(DemoJoystickRadial);
+
+/// @evtapi
+API_CALLABLE(DemoJoystickXY);
+
+/// @}
 
 extern EvtScript EnemyNpcHit;
 extern EvtScript EnemyNpcDefeat;

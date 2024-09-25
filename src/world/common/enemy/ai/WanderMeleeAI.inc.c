@@ -13,7 +13,7 @@
 // prerequisites
 #include "world/common/enemy/ai/MeleeHitbox.inc.c"
 
-ApiStatus N(WanderMeleeAI_Main)(Evt* script, s32 isInitialCall) {
+API_CALLABLE(N(WanderMeleeAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc *npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
@@ -29,14 +29,6 @@ ApiStatus N(WanderMeleeAI_Main)(Evt* script, s32 isInitialCall) {
     territory.sizeZ = enemy->territory->wander.detectSize.z;
     territory.halfHeight = 65.0f;
     territory.detectFlags = 0;
-
-    #ifdef _DEAD_H_
-    enemy->unk_108.x = npc->pos.x;
-    enemy->unk_108.y = npc->pos.y;
-    enemy->unk_108.z = npc->pos.z;
-    enemy->unk_114 = 0.0001f;
-    enemy->unk_118 = 0.0001f;
-    #endif
 
     if (isInitialCall || (enemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
