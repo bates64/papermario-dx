@@ -107,7 +107,7 @@ segments:
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, c, dx/profiling]
-    - [auto, a, librust]
+    - [auto, a, rust/target/mips-nintendo64-none/release/librust]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
     - [auto, c, load_obfuscation_shims]

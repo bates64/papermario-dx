@@ -1,0 +1,3 @@
+On toolchain nightly-2022-06-21 (from https://github.com/rust-console/cargo-n64/blob/main/rust-toolchain):
+
+    cargo build -Zbuild-std=core --target mips-nintendo64-none.json --release
