@@ -77,7 +77,7 @@ void crash_screen_set_assert_info(const char* message, const char* file, u32 lin
         }
         file = slash + 1;
     }
-    sprintf(crashScreenAssertLocation, "%s (%s:%d)", func, file, line);
+    sprintf(crashScreenAssertLocation, "%s (%s:%d)", func == NULL ? "Unknown" : func, file, line);
 }
 
 void crash_screen_sleep(s32 ms) {
