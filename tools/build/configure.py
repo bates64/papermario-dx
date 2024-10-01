@@ -683,7 +683,7 @@ class Configure:
                     elif "os" in entry.src_paths[0].parts:  # libultra
                         cflags = ""
                     else:  # papermario
-                        cflags = "-fforce-addr"
+                        cflags = f"-fforce-addr -fmacro-prefix-map={str(entry.src_paths[0]).rsplit('/', 1)[0]}/="
 
                 # c
                 task = "cc"

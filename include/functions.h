@@ -1069,6 +1069,7 @@ void clear_character_set(void);
 void clear_trigger_data(void);
 void clear_script_list(void);
 void clear_entity_data(b32);
+void init_effect_data(void);
 void clear_effect_data(void);
 
 void clear_saved_variables(void);

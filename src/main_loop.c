@@ -330,7 +330,7 @@ void load_engine_data(void) {
     clear_player_data();
     init_encounter_status();
     clear_screen_overlays();
-    clear_effect_data();
+    init_effect_data();
     clear_saved_variables();
     clear_item_entity_data();
     bgm_reset_sequence_players();

@@ -68,15 +68,6 @@ char crashScreenAssertLocation[0x30] = {0};
 void crash_screen_set_assert_info(const char* message, const char* file, u32 line, const char* func) {
     strncpy(crashScreenAssertMessage, message, sizeof(crashScreenAssertMessage));
     crashScreenAssertMessage[sizeof(crashScreenAssertMessage) - 1] = '\0';
-
-    // To make file consistent with standard exceptions, grab only the filename, not the full path.
-    const char* slash;
-    while (slash = strchr(file, '/')) {
-        if (slash[1] == '\0') {
-            break;
-        }
-        file = slash + 1;
-    }
     sprintf(crashScreenAssertLocation, "%s (%s:%d)", func == NULL ? "Unknown" : func, file, line);
 }
 
