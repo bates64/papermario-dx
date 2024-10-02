@@ -17,7 +17,7 @@ void boot_idle(void* data);
 void boot_main(void* data);
 
 void is_debug_init(void);
-void is_debug_panic(const char* message, const char* file, u32 line, const char* func);
+void is_debug_panic(const char* message);
 
 f32 signF(f32 val);
 
@@ -1069,7 +1069,7 @@ void clear_character_set(void);
 void clear_trigger_data(void);
 void clear_script_list(void);
 void clear_entity_data(b32);
-void init_effect_data(void);
+void check_effect_sizes(void);
 void clear_effect_data(void);
 
 void clear_saved_variables(void);

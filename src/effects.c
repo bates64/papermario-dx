@@ -34,14 +34,13 @@ void set_effect_pos_offset(EffectInstance* effect, f32 x, f32 y, f32 z) {
     ((f32*)data)[3] = z;
 }
 
-void init_effect_data(void) {
+void check_effect_sizes(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gEffectTable); i++) {
         s32 size = gEffectTable[i].dmaEnd - gEffectTable[i].dmaStart;
         ASSERT_MSG(size <= 0x1000, "Effect 0x%x == 0x%x bytes (0x1000 limit)", i, size);
     }
-    clear_effect_data();
 }
 
 void clear_effect_data(void) {

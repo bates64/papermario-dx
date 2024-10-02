@@ -6,7 +6,7 @@
 // slimmed down assert so that all effects still fit under the TLB page size limit of 0x1000 bytes
 #define ASSERT(condition) \
     if (!(condition)) { \
-        IS_DEBUG_PANIC("Assert", __FILE__, __LINE__, NULL); \
+        IS_DEBUG_PANIC("ASSERT"); \
     }
 
 s32 effect_rand_int(s32);

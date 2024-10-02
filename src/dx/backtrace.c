@@ -56,10 +56,18 @@ typedef struct {
 
 bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool from_exception);
 
+/** @brief Converts virtual addresses to physical
+ *
+ * If addr is a virtual address, its physical equivalent is returned. If it's already physical, it will be unchanged. If
+ * the address is invalid, -1 is returned.
+ * */
+static u32 get_physical_address(u32 addr) {
+    return 0x80000000 | osVirtualToPhysical((void*)addr);
+}
+
 /** @brief Check if addr is a valid PC address */
 static bool is_valid_address(uint32_t addr) {
-    // TODO: for now we only handle RAM (cached access). This should be extended to handle
-    // TLB-mapped addresses for instance.
+    addr = get_physical_address(addr);
     return addr >= 0x80000400 && addr < 0x80800000 && (addr & 3) == 0;
 }
 
@@ -493,13 +501,12 @@ bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool
         uint32_t op;
 
         // Validate that we can dereference the virtual address without raising an exception
-        // TODO: enhance this check with more valid ranges.
         if (!is_valid_address(addr)) {
             // This address is invalid, probably something is corrupted. Avoid looking further.
             osSyncPrintf("backtrace: interrupted because of invalid return address 0x%08x\n", addr);
             return false;
         }
-        op = *(uint32_t*)addr;
+        op = *(uint32_t*)get_physical_address(addr);
         if (MIPS_OP_ADDIU_SP(op) || MIPS_OP_DADDIU_SP(op)) {
             // Extract the stack size only from the start of the function, where the
             // stack is allocated (negative value). This is important because the RA

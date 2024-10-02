@@ -2,7 +2,7 @@
 #include "stdlib/stdarg.h"
 #include "nu/nusys.h"
 
-void crash_screen_set_assert_info(const char* message, const char* file, u32 line, const char* func);
+void crash_screen_set_assert_info(const char* message);
 typedef struct {
     /* 0x00 */ u32 magic;
     /* 0x04 */ u32 get;
@@ -90,7 +90,7 @@ char* is_debug_print(char* arg0, const char* str, size_t count) {
     return (char*) 1;
 }
 
-void is_debug_panic(const char* message, const char* file, u32 line, const char* func) {
-    crash_screen_set_assert_info(message, file, line, func);
+void is_debug_panic(const char* message) {
+    crash_screen_set_assert_info(message);
     *(volatile u32*)0 = 0; // Crash so we can see the crash screen
 }
