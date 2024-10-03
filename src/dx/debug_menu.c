@@ -1919,7 +1919,7 @@ void dx_debug_update_banner() {
     char fmtBuf[128];
     s32 effect;
 
-    if (gGameStatus.isBattle == 0) {
+    if (gGameStatus.context == CONTEXT_BATTLE) {
         sprintf(fmtBuf, "Map: %7s (%X)", LastMapName, LastMapEntry);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 220, BottomRowY);
 

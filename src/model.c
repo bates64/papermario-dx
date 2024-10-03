@@ -2323,7 +2323,7 @@ void mdl_load_all_textures(ModelNode* rootModel, s32 romOffset, s32 size) {
     s32 baseOffset = 0;
 
     // textures are loaded to the upper half of the texture heap when not in the world
-    if (gGameStatusPtr->isBattle != 0) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD) {
         baseOffset = WORLD_TEXTURE_MEMORY_SIZE;
     }
 
@@ -2364,7 +2364,7 @@ s32 mdl_get_child_count(ModelNode* model) {
 void clear_model_data(void) {
     s32 i;
 
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentModels = &wModelList;
         gCurrentTransformGroups = &wTransformGroups;
         gCurrentCustomModelGfxPtr = &wCustomModelGfx;
@@ -2429,7 +2429,7 @@ void clear_model_data(void) {
 }
 
 void init_model_data(void) {
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentModels = &wModelList;
         gCurrentTransformGroups = &wTransformGroups;
         gCurrentCustomModelGfxPtr = &wCustomModelGfx;

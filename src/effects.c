@@ -5,11 +5,13 @@
 typedef s32 TlbEntry[0x1000 / 4];
 typedef TlbEntry TlbMappablePage[15];
 
+#define EFFECT_GLOBALS_TLB_IDX 0x10
+
 BSS EffectGraphics gEffectGraphicsData[15];
 EffectInstance* gEffectInstances[96];
 
-extern TlbMappablePage D_80197000;
-extern Addr D_801A6000;
+extern TlbMappablePage gEffectDataBuffer;
+extern Addr gEffectGlobals;
 
 #define FX_ENTRY(name, gfx_name) { \
     name##_main, effect_##name##_ROM_START, effect_##name##_ROM_END, effect_##name##_VRAM, gfx_name##_ROM_START, \
@@ -44,8 +46,8 @@ void clear_effect_data(void) {
     }
 
     osUnmapTLBAll();
-    osMapTLB(0x10, NULL, _325AD0_VRAM, (s32)&D_801A6000 & 0xFFFFFF, -1, -1);
-    DMA_COPY_SEGMENT(_325AD0);
+    osMapTLB(EFFECT_GLOBALS_TLB_IDX, OS_PM_4K, effect_globals_VRAM, (s32)&gEffectGlobals & 0xFFFFFF, -1, -1);
+    DMA_COPY_SEGMENT(effect_globals);
 }
 
 void func_80059D48(void) {
@@ -73,7 +75,7 @@ void update_effects(void) {
             if (effectInstance != NULL && (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED)) {
                 effectInstance->graphics->flags &= ~FX_GRAPHICS_CAN_FREE;
 
-                if (gGameStatusPtr->isBattle) {
+                if (gGameStatusPtr->context != CONTEXT_WORLD) {
                     if (effectInstance->flags & FX_INSTANCE_FLAG_BATTLE) {
                         effectInstance->graphics->update(effectInstance);
                         effectInstance->flags |= FX_INSTANCE_FLAG_HAS_UPDATED;
@@ -116,7 +118,7 @@ void render_effects_world(void) {
         if (effectInstance != NULL) {
             if (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
-                    if (gGameStatusPtr->isBattle) {
+                    if (gGameStatusPtr->context != CONTEXT_WORLD) {
                         if (effectInstance->flags & FX_INSTANCE_FLAG_BATTLE) {
                             effectInstance->graphics->renderWorld(effectInstance);
                         }
@@ -143,11 +145,11 @@ void render_effects_UI(void) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
                     void (*renderUI)(EffectInstance* effect);
 
-                    if (gGameStatusPtr->isBattle && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE)) {
+                    if (gGameStatusPtr->context != CONTEXT_WORLD && !(effectInstance->flags & FX_INSTANCE_FLAG_BATTLE)) {
                         continue;
                     }
 
-                    if (!gGameStatusPtr->isBattle && effectInstance->flags & FX_INSTANCE_FLAG_BATTLE) {
+                    if (gGameStatusPtr->context == CONTEXT_WORLD && effectInstance->flags & FX_INSTANCE_FLAG_BATTLE) {
                         continue;
                     }
 
@@ -242,7 +244,7 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
         effectBp->init(newEffectInst);
     }
 
-    if (gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD) {
         newEffectInst->flags |= FX_INSTANCE_FLAG_BATTLE;
     }
     return newEffectInst;
@@ -319,7 +321,7 @@ s32 load_effect(s32 effectIndex) {
     ASSERT(i < ARRAY_COUNT(gEffectGraphicsData));
 
     // Map space for the effect
-    tlbMappablePages = &D_80197000;
+    tlbMappablePages = &gEffectDataBuffer;
     osMapTLB(i, OS_PM_4K, effectEntry->dmaDest, (s32)((*tlbMappablePages)[i]) & 0xFFFFFF, -1, -1);
 
     // Copy the effect into the newly mapped space

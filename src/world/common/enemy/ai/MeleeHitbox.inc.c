@@ -104,7 +104,7 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
     Npc* baseNpc;
     f32 posX, posZ;
 
-    if (isInitialCall || (hitboxEnemy->aiFlags & ENEMY_AI_FLAG_SUSPEND)) {
+    if (isInitialCall || (hitboxEnemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->functionTemp[0] = 0;
         hitboxNpc->duration = 0;
         hitboxNpc->flags |= (NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION);
@@ -112,8 +112,8 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
         hitboxNpc->pos.x = NPC_DISPOSE_POS_X;
         hitboxNpc->pos.y = NPC_DISPOSE_POS_Y;
         hitboxNpc->pos.z = NPC_DISPOSE_POS_Z;
-        if (hitboxEnemy->aiFlags & ENEMY_AI_FLAG_SUSPEND) {
-            hitboxEnemy->aiFlags &= ~ENEMY_AI_FLAG_SUSPEND;
+        if (hitboxEnemy->aiFlags & AI_FLAG_SUSPEND) {
+            hitboxEnemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
     }
 

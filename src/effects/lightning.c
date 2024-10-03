@@ -99,7 +99,7 @@ EffectInstance* lightning_main(
 
     if (arg0 >= 3) {
         load_effect(EFFECT_FLASHING_BOX_SHOCKWAVE);
-        if (gGameStatusPtr->isBattle == TRUE) {
+        if (gGameStatusPtr->context == CONTEXT_BATTLE) {
             flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_BATTLE, arg1, arg2, arg3, arg4, arg5);
         } else {
             flashing_box_shockwave_main(FX_SHOCK_OVERLAY_LIGHTNING_WORLD, arg1, arg2, arg3, arg4, arg5);

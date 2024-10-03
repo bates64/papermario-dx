@@ -21,7 +21,7 @@ void state_step_startup(void) {
 
     gOverrideFlags = 0;
     gGameStatus.areaID = 0;
-    gGameStatus.isBattle = 0;
+    gGameStatus.context = CONTEXT_WORLD;
     gGameStatus.prevArea = -1;
     gGameStatus.mapID = 0;
     gGameStatus.entryID = 0;

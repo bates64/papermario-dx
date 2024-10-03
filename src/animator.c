@@ -222,7 +222,7 @@ void free_animator_nodes(ModelAnimator* animator) {
 void clear_animator_list(void) {
     s32 i;
 
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentAnimMeshListPtr = &D_801539C0;
         for (i = 0; i < ARRAY_COUNT(D_801533C0); i++) {
             D_801533C0[i].ttl = -1;
@@ -250,7 +250,7 @@ void clear_animator_list(void) {
 }
 
 void reset_animator_list(void) {
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentAnimMeshListPtr = &D_801539C0;
     } else {
         gCurrentAnimMeshListPtr = &D_80153A00;
@@ -357,7 +357,7 @@ s32 create_model_animator(s16* animPos) {
         animator->staticNodeIDs[j] = j + 1;
     }
 
-    if (gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD) {
         i |= BATTLE_ID_BIT;
     }
     return i;
@@ -401,7 +401,7 @@ s32 create_mesh_animator(s16* animPos, s16* animBuffer) {
         animator->staticNodeIDs[j] = j + 1;
     }
 
-    if (gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD) {
         i |= BATTLE_ID_BIT;
     }
     return i;
@@ -484,7 +484,7 @@ void update_model_animator(s32 animatorID) {
     s32 temp;
     s32 i;
 
-    if (gGameStatusPtr->isBattle && !(animatorID & BATTLE_ID_BIT)) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD && !(animatorID & BATTLE_ID_BIT)) {
         return;
     }
 
@@ -548,7 +548,7 @@ void update_model_animator_with_transform(s32 animatorID, Mtx* mtx) {
     s32 temp;
     s32 i;
 
-    if (gGameStatusPtr->isBattle && !(animatorID & BATTLE_ID_BIT)) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD && !(animatorID & BATTLE_ID_BIT)) {
         return;
     }
 
@@ -767,7 +767,7 @@ void render_animated_model(s32 animatorID, Mtx* rootTransform) {
     RenderTask rt;
     RenderTask* rtPtr = &rt;
 
-    if (gGameStatusPtr->isBattle && !(animatorID & BATTLE_ID_BIT)) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD && !(animatorID & BATTLE_ID_BIT)) {
         return;
     }
 
@@ -797,7 +797,7 @@ void render_animated_model_with_vertices(s32 animatorID, Mtx* rootTransform, s32
     RenderTask rt;
     RenderTask* rtPtr = &rt;
 
-    if (gGameStatusPtr->isBattle && !(animatorID & BATTLE_ID_BIT)) {
+    if (gGameStatusPtr->context != CONTEXT_WORLD && !(animatorID & BATTLE_ID_BIT)) {
         return;
     }
 

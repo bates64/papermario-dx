@@ -243,7 +243,7 @@ void reveal_item_entity(ItemEntity* item) {
 void clear_item_entity_data(void) {
     s32 i;
 
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentItemEntities = WorldItemEntities;
     } else {
         gCurrentItemEntities = BattleItemEntities;
@@ -259,7 +259,7 @@ void clear_item_entity_data(void) {
     CoinSparkleCenterZ = 0;
     ItemEntityAlternatingSpawn = 0;
 
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         ItemEntityRenderGroup = 0;
     }
 
@@ -272,7 +272,7 @@ void clear_item_entity_data(void) {
 }
 
 void init_item_entity_list(void) {
-    if (!gGameStatusPtr->isBattle) {
+    if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentItemEntities = WorldItemEntities;
     } else {
         gCurrentItemEntities = BattleItemEntities;
@@ -328,7 +328,7 @@ void item_entity_load(ItemEntity* item) {
                         ASSERT(*gHudElementCacheSize + size < 0x11000);
                         nuPiReadRom((s32)icon_ROM_START + raster, entry->data, size);
                         *gHudElementCacheSize += size;
-                        if (!gGameStatusPtr->isBattle) {
+                        if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
                             *pos = (u16)(*pos) | (i << 16);
@@ -338,7 +338,7 @@ void item_entity_load(ItemEntity* item) {
                     } else {
                         cond = entry->id == raster;  // TODO required to match
                         if (cond) {
-                            if (!gGameStatusPtr->isBattle) {
+                            if (gGameStatusPtr->context == CONTEXT_WORLD) {
                                 *pos = i;
                             } else {
                                 *pos = (u16)(*pos) | (i << 16);
@@ -361,7 +361,7 @@ void item_entity_load(ItemEntity* item) {
                         ASSERT(*gHudElementCacheSize + 0x20 < 0x11000);
                         nuPiReadRom((s32)icon_ROM_START + palette, entry->data, 0x20);
                         *gHudElementCacheSize += 0x20;
-                        if (!gGameStatusPtr->isBattle) {
+                        if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
                             *pos = (u16)(*pos) | (i << 16);
@@ -369,7 +369,7 @@ void item_entity_load(ItemEntity* item) {
                         pos++;
                         break;
                     } else if (entry->id == palette) {
-                        if (!gGameStatusPtr->isBattle) {
+                        if (gGameStatusPtr->context == CONTEXT_WORLD) {
                             *pos = i;
                         } else {
                             *pos = (u16)(*pos) | (i << 16);
@@ -792,7 +792,7 @@ void item_entity_update(ItemEntity* entity) {
                 entity->nextUpdate = *args++;
                 *args++;
                 *args++;
-                if (!gGameStatusPtr->isBattle) {
+                if (gGameStatusPtr->context == CONTEXT_WORLD) {
                     entity->lookupRasterIndex  = *args++;
                     entity->lookupPaletteIndex = *args++;
                 } else {
