@@ -328,7 +328,11 @@ def write_ninja_rules(
 
     ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
 
-    ninja.rule("check_section_sizes", command=f"$python {BUILD_TOOLS}/check_section_sizes.py $in $data > $out")
+    ninja.rule(
+        "check_segment_sizes",
+        description="check segment sizes $in",
+        command=f"$python {BUILD_TOOLS}/check_segment_sizes.py $in $data > $out",
+    )
 
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
@@ -1281,9 +1285,10 @@ class Configure:
         else:
             ninja.build(
                 str(self.rom_ok_path()),
-                "check_section_sizes",
+                "check_segment_sizes",
                 str(self.elf_path()),
-                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(',', ':')))}
+                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(',', ':')))},
+                implicit=[str(self.rom_path())],
             )
 
         ninja.build(

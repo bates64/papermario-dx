@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 # Checks each segment-size pair in JSON object are valid for the given ELF.
-# usage: python3 check_section_sizes.py <elf> <json>
+# usage: python3 check_segment_sizes.py <elf> <json>
 
 argv.pop(0) # python3
 elf_path = argv.pop(0)
