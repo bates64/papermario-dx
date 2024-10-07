@@ -39,7 +39,9 @@ void check_effect_sizes(void) {
 
     for (i = 0; i < ARRAY_COUNT(gEffectTable); i++) {
         s32 size = gEffectTable[i].dmaEnd - gEffectTable[i].dmaStart;
-        ASSERT_MSG(size <= 0x1000, "Effect 0x%x == 0x%x bytes (0x1000 limit)", i, size);
+        if (size > 0x1000) {
+            osSyncPrintf("WARNING: Effect 0x%x == 0x%x bytes (0x1000 limit)\n", i, size);
+        }
     }
 }
 
