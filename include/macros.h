@@ -35,27 +35,27 @@
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
 
 //#ifdef DEBUG
-#define IS_DEBUG_PANIC(statement, file, line, func) is_debug_panic(statement, file, line, func)
+#define IS_DEBUG_PANIC(statement) is_debug_panic(statement)
 /*#else
-#define IS_DEBUG_PANIC(statement, file, line, func) do {} while(TRUE)
+#define IS_DEBUG_PANIC(statement) do {} while(TRUE)
 #endif*/
 
-#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__, __func__)
+#define PANIC() IS_DEBUG_PANIC("Panic")
 #define PANIC_MSG(msg, args...) \
     do { \
         char panicMsg[0x40]; \
         sprintf(panicMsg, msg, ##args); \
-        IS_DEBUG_PANIC(msg, __FILE__, __LINE__, __func__); \
+        IS_DEBUG_PANIC(msg); \
     } while (0)
 #define ASSERT(condition) \
     if (!(condition)) { \
-        IS_DEBUG_PANIC("Assertion failed: " #condition, __FILE__, __LINE__, __func__); \
+        IS_DEBUG_PANIC("Assertion failed: " #condition); \
     }
 #define ASSERT_MSG(condition, msg, args...) \
     if (!(condition)) { \
         char assertMsg[0x40]; \
         sprintf(assertMsg, msg, ##args); \
-        IS_DEBUG_PANIC(assertMsg, __FILE__, __LINE__, __func__); \
+        IS_DEBUG_PANIC(assertMsg); \
     }
 
 #define BADGE_MENU_PAGE(index) (&gPauseBadgesPages[index])
