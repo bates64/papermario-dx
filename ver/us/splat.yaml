@@ -4785,7 +4785,7 @@ segments:
     vram: 0xE00D6000
     max_size: 0x1000
     subsegments:
-    - [auto, c, energy_in_out]
+    - [auto, c, energy_in_out, -Oz]
   - name: effect_gfx_energy_in_out
     dir: effects/gfx
     type: code
