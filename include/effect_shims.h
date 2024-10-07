@@ -37,7 +37,7 @@ void shim_draw_msg(s32, s32, s32, s32, s32, s32);
 s32 shim_get_msg_width(s32, u16);
 void shim_mdl_get_shroud_tint_params(u8* r, u8* g, u8* b, u8* a);
 void shim_sfx_play_sound_at_position(s32 soundID, s32 value2, f32 posX, f32 posY, f32 posZ);
-void shim_is_debug_panic(const char* message, const char* file, u32 line, const char* func);
+void shim_is_debug_panic(const char* message);
 
 #define guRotateF shim_guRotateF
 #define guTranslateF shim_guTranslateF

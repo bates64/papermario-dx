@@ -63,21 +63,10 @@ const char* gFPCSRFaultCauses[6] = {
 };
 
 char crashScreenAssertMessage[0x30] = {0};
-char crashScreenAssertLocation[0x30] = {0};
 
-void crash_screen_set_assert_info(const char* message, const char* file, u32 line, const char* func) {
+void crash_screen_set_assert_info(const char* message) {
     strncpy(crashScreenAssertMessage, message, sizeof(crashScreenAssertMessage));
     crashScreenAssertMessage[sizeof(crashScreenAssertMessage) - 1] = '\0';
-
-    // To make file consistent with standard exceptions, grab only the filename, not the full path.
-    const char* slash;
-    while (slash = strchr(file, '/')) {
-        if (slash[1] == '\0') {
-            break;
-        }
-        file = slash + 1;
-    }
-    sprintf(crashScreenAssertLocation, "%s (%s:%d)", func == NULL ? "Unknown" : func, file, line);
 }
 
 void crash_screen_sleep(s32 ms) {
@@ -332,12 +321,11 @@ void crash_screen_draw(OSThread* faultedThread) {
 
     crash_screen_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    if (crashScreenAssertMessage[0] == '\0' || crashScreenAssertLocation[0] == '\0') {
+    if (crashScreenAssertMessage[0] == '\0') {
         crash_screen_printf_proportional(x, y += 10, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
     } else {
         crash_screen_printf_proportional(x, y += 10, crashScreenAssertMessage);
-        crash_screen_printf_proportional(x + 10, y += 10, "at %s", crashScreenAssertLocation);
-        i = 2; // Don't include is_debug_panic and ASSERT line in backtrace.
+        i = 1; // Don't include is_debug_panic line in backtrace.
     }
 
     for (; i < max; i++) {

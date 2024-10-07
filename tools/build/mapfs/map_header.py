@@ -5,6 +5,7 @@ from os import path
 from xml.dom.minidom import parse
 from pathlib import Path
 
+
 def eprint(*args, **kwargs):
     print(*args, file=stderr, **kwargs)
 
