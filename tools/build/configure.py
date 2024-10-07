@@ -9,6 +9,7 @@ import subprocess
 import sys
 import ninja_syntax
 from glob import glob
+import json
 
 # Configuration:
 VERSIONS = ["us"]
@@ -326,6 +327,8 @@ def write_ninja_rules(
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
     ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
+
+    ninja.rule("check_section_sizes", command=f"$python {BUILD_TOOLS}/check_section_sizes.py $in $data > $out")
 
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
@@ -1275,6 +1278,13 @@ class Configure:
                 f"ver/{self.version}/checksum.sha1",
                 implicit=[str(self.rom_path())],
             )
+        else:
+            ninja.build(
+                str(self.rom_ok_path()),
+                "check_section_sizes",
+                str(self.elf_path()),
+                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(',', ':')))}
+            )
 
         ninja.build(
             str(self.patch_path()),
@@ -1285,6 +1295,23 @@ class Configure:
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
+
+
+
+    def get_segment_max_sizes(self):
+        assert self.linker_entries is not None
+        segment_size_map = {}
+
+        # depth-first search
+        def visit(segment):
+            if hasattr(segment, "parent") and segment.parent is not None:
+                visit(segment.parent)
+            if hasattr(segment, "yaml") and isinstance(segment.yaml, dict) and "max_size" in segment.yaml:
+                segment_size_map[segment.name] = segment.yaml["max_size"]
+        for entry in self.linker_entries:
+            visit(entry.segment)
+
+        return segment_size_map
 
     def make_current(self, ninja: ninja_syntax.Writer):
         current = Path("ver/current")
@@ -1505,8 +1532,5 @@ if __name__ == "__main__":
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
 
-    if non_matching:
-        ninja.build("all", "phony", [str(first_configure.rom_path())])
-    else:
-        ninja.build("all", "phony", all_rom_oks)
+    ninja.build("all", "phony", all_rom_oks)
     ninja.default("all")
