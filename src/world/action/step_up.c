@@ -24,27 +24,23 @@ AnimID StepUpPeachAnims[] = {
     [PEACH_BAKING_CAKE_WITH_BERRIES]    ANIM_Peach1_CarryBerryCake,
 };
 
-void func_802B6198_E24768(void);
+void action_update_step_up_set_peach_anim(void);
 
 void action_update_step_up(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
+    HitID colliderID;
     f32 cosTheta;
     f32 sinTheta;
-    s32 colliderID;
-    AnimID anim;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
         phys_adjust_cam_on_landing();
-        if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
-            if (!(playerStatus->animFlags & PA_FLAG_USING_WATT)) {
-                anim = ANIM_Mario1_Walk;
-            } else {
-                anim = ANIM_MarioW1_CarryWalk;
-            }
-            suggest_player_anim_allow_backward(anim);
+        if (playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) {
+            action_update_step_up_set_peach_anim();
+        } else if (playerStatus->animFlags & PA_FLAG_USING_WATT) {
+            suggest_player_anim_allow_backward(ANIM_MarioW1_CarryWalk);
         } else {
-            func_802B6198_E24768();
+            suggest_player_anim_allow_backward(ANIM_Mario1_Walk);
         }
         playerStatus->actionSubstate = 0;
         playerStatus->timeInAir = 0;
@@ -76,15 +72,13 @@ void action_update_step_up(void) {
     }
 }
 
-void func_802B6198_E24768(void) {
-    if (!(gPlayerStatus.animFlags & PA_FLAG_INVISIBLE)) {
-        if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_DEPRESSED)) {
-            suggest_player_anim_allow_backward(StepUpPeachAnims[gGameStatusPtr->peachBakingIngredient]);
-        } else {
-            suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
-        }
-    } else {
+void action_update_step_up_set_peach_anim(void) {
+    if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
         peach_set_disguise_anim(BasicPeachDisguiseAnims[gPlayerStatus.peachDisguise].walk);
+    } else if (gGameStatus.peachFlags & PEACH_FLAG_DEPRESSED) {
+        suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
+    } else {
+        suggest_player_anim_allow_backward(StepUpPeachAnims[gGameStatus.peachBakingIngredient]);
     }
 }
 

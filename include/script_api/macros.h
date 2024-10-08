@@ -643,7 +643,7 @@
 
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
@@ -653,7 +653,7 @@
         End \
     }
 
-// alternate version of EVT_EXIT_WALK used on Pleasant Path which does not join EVT_GROUP_1B
+// alternate version of EVT_EXIT_WALK used on Pleasant Path which does not join EVT_GROUP_EXIT_MAP
 #define EVT_EXIT_WALK_NOK(walkDistance, exitIdx, map, entryIdx) \
     { \
         Call(UseExitHeading, walkDistance, exitIdx) \
@@ -666,7 +666,7 @@
 
 #define EVT_EXIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, modelID, swingDir) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -682,7 +682,7 @@
 
 #define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, modelID, swingDir, sounds) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \
@@ -699,7 +699,7 @@
 
 #define EVT_EXIT_SPLIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, topModelID, bottomModelID, swingDir) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -716,7 +716,7 @@
 
 #define EVT_EXIT_DOUBLE_DOOR(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -732,7 +732,7 @@
 
 #define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \

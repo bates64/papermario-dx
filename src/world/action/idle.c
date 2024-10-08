@@ -114,14 +114,12 @@ void action_update_idle_peach(void) {
         playerStatus->curSpeed = 0.0f;
         playerStatus->flags &= ~PS_FLAG_AIRBORNE;
 
-        if (!(playerStatus->animFlags & PA_FLAG_INVISIBLE)) {
-            if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_DEPRESSED)) {
-                suggest_player_anim_allow_backward(IdlePeachAnims[gGameStatusPtr->peachBakingIngredient]);
-            } else {
-                suggest_player_anim_allow_backward(ANIM_Peach2_SadStill);
-            }
-        } else {
+        if (playerStatus->animFlags & PA_FLAG_INVISIBLE) {
             peach_set_disguise_anim(BasicPeachDisguiseAnims[gPlayerStatus.peachDisguise].idle);
+        } else if (gGameStatus.peachFlags & PEACH_FLAG_DEPRESSED) {
+            suggest_player_anim_allow_backward(ANIM_Peach2_SadStill);
+        } else {
+            suggest_player_anim_allow_backward(IdlePeachAnims[gGameStatus.peachBakingIngredient]);
         }
     }
 

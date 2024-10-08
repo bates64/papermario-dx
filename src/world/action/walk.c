@@ -199,16 +199,14 @@ void action_update_run(void) {
     playerData->runningStepsTaken++;
 }
 
-void func_802B6550_E23C30(void) {
-    if (!(gPlayerStatus.animFlags & PA_FLAG_INVISIBLE)) {
-        if (!(gGameStatusPtr->peachFlags & PEACH_FLAG_DEPRESSED)) {
-            suggest_player_anim_allow_backward(WalkPeachAnims[gGameStatusPtr->peachBakingIngredient]);
-            return;
-        }
+void action_update_walk_set_peach_anim(void) {
+    if (gPlayerStatus.animFlags & PA_FLAG_INVISIBLE) {
+        peach_set_disguise_anim(BasicPeachDisguiseAnims[gPlayerStatus.peachDisguise].walk);
+    } else if (gGameStatus.peachFlags & PEACH_FLAG_DEPRESSED) {
         suggest_player_anim_allow_backward(ANIM_Peach3_WalkSad);
-        return;
+    } else {
+        suggest_player_anim_allow_backward(WalkPeachAnims[gGameStatus.peachBakingIngredient]);
     }
-    peach_set_disguise_anim(BasicPeachDisguiseAnims[gPlayerStatus.peachDisguise].walk);
 }
 
 static void action_update_walk_peach(void) {
@@ -222,7 +220,7 @@ static void action_update_walk_peach(void) {
         if (!(playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT)) {
             playerStatus->curSpeed = playerStatus->walkSpeed;
         }
-        func_802B6550_E23C30();
+        action_update_walk_set_peach_anim();
     }
 
     if (playerStatus->flags & PS_FLAG_CUTSCENE_MOVEMENT) {
@@ -239,7 +237,7 @@ static void action_update_walk_peach(void) {
     }
 
     playerStatus->targetYaw = angle;
-    if (gGameStatusPtr->peachBakingIngredient == PEACH_BAKING_NONE) {
+    if (gGameStatus.peachBakingIngredient == PEACH_BAKING_NONE) {
         if (sqrtf(SQ(playerStatus->stickAxis[0]) + SQ(playerStatus->stickAxis[1])) > 55.0f) {
             set_action_state(ACTION_STATE_RUN);
             return;

@@ -16,6 +16,8 @@ typedef struct TransformationData {
     /* 0x20 */ f32 playerYawOffset;
 } TransformationData;
 
+BSS TransformationData ParasolTransformation;
+
 enum {
     SUBSTATE_DISGUISE_INIT              = 0,
     SUBSTATE_USE_PARASOL                = 1, // get parasol out and try copying an npc
@@ -35,10 +37,6 @@ enum {
     SUBSTATE_FAILED                     = 40,
     SUBSTATE_BLOCKED                    = 50, // cant raise parasol due to collisions with world
 };
-
-BSS TransformationData ParasolTransformation;
-
-TransformationData* D_802B6D80_E2B430 = &ParasolTransformation;
 
 void parasol_update_spin(void);
 
@@ -65,7 +63,7 @@ Npc* parasol_get_npc(void) {
     }
 
     angle = clamp_angle(atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, npc->pos.x, npc->pos.z));
-    if (fabs(angle - func_800E5348()) > 30.0) {
+    if (fabs(angle - player_get_side_angle()) > 30.0) {
         return NULL;
     }
 
@@ -226,7 +224,7 @@ void action_update_parasol(void) {
             break;
         case SUBSTATE_DISGUISE_DONE:
             if (--playerStatus->curStateTime == 0) {
-                set_time_freeze_mode(TIME_FREEZE_NORMAL);
+                set_time_freeze_mode(TIME_FREEZE_NONE);
                 disguiseNpc = get_npc_by_index(PeachDisguiseNpcIndex);
                 disguiseNpc->flags &= ~NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
                 playerStatus->flags &= ~PS_FLAG_ROTATION_LOCKED;
@@ -307,7 +305,7 @@ void action_update_parasol(void) {
             break;
         case SUBSTATE_REVERT_DONE:
             if (--playerStatus->curStateTime == 0) {
-                set_time_freeze_mode(TIME_FREEZE_NORMAL);
+                set_time_freeze_mode(TIME_FREEZE_NONE);
                 playerStatus->flags &= ~PS_FLAG_ROTATION_LOCKED;
                 set_action_state(ACTION_STATE_IDLE);
                 enable_player_static_collisions();

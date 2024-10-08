@@ -126,8 +126,7 @@ void state_init_title_screen(void) {
     void* titleData;
 
     gOverrideFlags = 0;
-    timeFreezeMode = 0;
-
+    gTimeFreezeMode = TIME_FREEZE_NONE;
     general_heap_create();
     clear_printers();
     sfx_set_reverb_mode(0);

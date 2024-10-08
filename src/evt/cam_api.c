@@ -1,14 +1,14 @@
 #include "common.h"
 
 EvtScript ShakeCam1 = {
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(ShakeCam, LVar0, LVar1, LVar2, Float(1.0))
     Return
     End
 };
 
 EvtScript ShakeCamX = {
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(ShakeCam, LVar0, LVar1, LVar2, LVar3)
     Return
     End

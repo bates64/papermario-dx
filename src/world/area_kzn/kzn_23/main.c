@@ -55,7 +55,7 @@ EvtScript N(EVS_StartTexPanners) = {
 
 EvtScript N(EVS_RaiseLava) = {
     Exec(N(EVS_ModulateLavaLevel))
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Set(MV_LavaLevel, -105)
     Set(LVar5, 40)
     Call(TranslateModel, MODEL_yu, 0, MV_LavaLevel, 0)

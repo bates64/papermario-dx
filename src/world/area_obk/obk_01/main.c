@@ -7,7 +7,7 @@ EvtScript N(EVS_ExitDoor_obk_02_0) = {
     IfLt(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
         Return
     EndIf
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, TRUE)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Set(LVar0, obk_01_ENTRY_1)
@@ -23,7 +23,7 @@ EvtScript N(EVS_ExitDoor_obk_02_0) = {
 };
 
 EvtScript N(EVS_ExitDoor_obk_05_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH3_TRIGGERED_DOOR_JUMP_SCARE)
         Exec(N(EVS_Scene_JumpScareBoo))
         Return
@@ -43,7 +43,7 @@ EvtScript N(EVS_ExitDoor_obk_05_0) = {
 };
 
 EvtScript N(EVS_ExitDoor_obk_07_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH3_TRIGGERED_DOOR_JUMP_SCARE)
         Exec(N(EVS_Scene_JumpScareBoo))
         Return
@@ -63,7 +63,7 @@ EvtScript N(EVS_ExitDoor_obk_07_0) = {
 };
 
 EvtScript N(EVS_ExitDoor_obk_08_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     IfLt(GB_StoryProgress, STORY_CH3_TRIGGERED_DOOR_JUMP_SCARE)
         Exec(N(EVS_Scene_JumpScareBoo))
         Return

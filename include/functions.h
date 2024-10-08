@@ -62,7 +62,12 @@ void player_input_to_move_vector(f32* angle, f32* magnitude);
 void game_input_to_move_vector(f32* x, f32* y);
 void exec_ShakeCamX(s32 arg0, s32 arg1, s32 arg2, f32 arg3);
 void exec_ShakeCam1(s32 arg0, s32 arg1, s32 arg2);
-f32 func_800E5348(void);
+
+// returns the angle that the player is facing "toward" in world-space.
+// this will always be to the left or the right relative to the current camera position.
+// note that this is NOT the direction the player character is moving, nor the orientation of the sprite itself.
+// think of this as the direction of a hammer impact relative to the center of the player.
+f32 player_get_side_angle(void);
 
 void draw_number(s32 value, s32 x, s32 y, s32 variableWidthChars, s32 palette, s32 opacity, u16 style);
 
@@ -126,7 +131,7 @@ void player_handle_floor_collider_type(s32 colliderID);
 f32 player_fall_distance(void);
 void func_800E4AD8(s32 arg0);
 f32 player_check_collision_below(f32, s32* colliderID);
-s32 can_trigger_loading_zone(void);
+b32 can_trigger_loading_zone(void);
 void update_damage_popups(void);
 void show_action_rating(s32, Actor*, f32, f32, f32);
 s32 render_with_adjusted_palettes(s32, ActorPart*, s32, Matrix4f, s32);
@@ -1056,7 +1061,7 @@ s32 lookup_defense(s32*, s32);
 s32 lookup_status_chance(s32*, s32);
 void peach_check_for_parasol_input(void);
 void peach_sync_disguise_npc(void);
-s32 check_conversation_trigger(void);
+b32 check_conversation_trigger(void);
 
 void clear_player_status(void);
 void clear_entity_models(void);

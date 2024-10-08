@@ -5,7 +5,7 @@
 EvtScript N(EVS_ExitWalk_mac_00_1) = EVT_EXIT_WALK(60, mac_01_ENTRY_0, "mac_00", mac_00_ENTRY_1);
 
 EvtScript N(EVS_ExitWalk_nok_11_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, mac_01_ENTRY_1)
     Exec(ExitWalk)
     IfEq(GF_StartedChapter1, FALSE)
@@ -34,7 +34,7 @@ s32 N(Models_CastleGateR)[] = {
 };
 
 EvtScript N(EVS_ExitDoors_osr_01_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, TRUE)
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Set(LVar0, 2)

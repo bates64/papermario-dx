@@ -158,7 +158,7 @@ EvtScript N(EVS_SetupTexPan) = {
 };
 
 EvtScript N(EVS_UpdateLavaWaves) = {
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Loop(0)
         Call(MakeLerp, 0, 180, 40, EASING_COS_IN)
         Loop(0)
