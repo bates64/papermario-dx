@@ -881,14 +881,14 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     es->songID = -1;
     es->unk_18 = -1;
     es->fadeOutAmount = 0;
-    es->unk_94 = 0;
+    es->substateDelay = 0;
 
     disable_player_input();
     partner_disable_input();
 
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
-    D_8009A678 = 1;
+    EncounterStateChanged = TRUE;
 }
 
 void dx_debug_begin_battle() {

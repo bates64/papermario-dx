@@ -65,7 +65,7 @@ Npc* parasol_get_npc(void) {
     }
 
     angle = clamp_angle(atan2(gPlayerStatus.pos.x, gPlayerStatus.pos.z, npc->pos.x, npc->pos.z));
-    if (fabs(angle - func_800E5348()) > 30.0) {
+    if (fabs(angle - player_get_side_angle()) > 30.0) {
         return NULL;
     }
 

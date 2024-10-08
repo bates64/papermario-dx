@@ -301,7 +301,7 @@ void action_hammer_end_swing(void) {
     s32 ret;
     s32 i;
 
-    yaw = func_800E5348();
+    yaw = player_get_side_angle();
     if (action_hammer_is_swinging_away(playerStatus->trueAnimation)) {
         angle = clamp_angle(yaw + 90.0f - gCameras[gCurrentCameraID].curYaw);
         if (angle >= 90.0f && angle < 270.0f) {

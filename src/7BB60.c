@@ -74,7 +74,6 @@ HitID collision_main_above(void) {
     f32 moveAngle;
     f32 moveMagnitude;
     f32 outDepth;
-    HitID hitResult;
 
     outDepth = halfHeight = playerStatus->colliderHeight * 0.5f;
     x = playerStatus->pos.x;

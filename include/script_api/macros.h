@@ -732,7 +732,7 @@
 
 #define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
     { \
-        SetGroup(EVT_GROUP_1B) \
+        SetGroup(EVT_GROUP_EXIT_MAP) \
         Call(DisablePlayerInput, TRUE) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \
