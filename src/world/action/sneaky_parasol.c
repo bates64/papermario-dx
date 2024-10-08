@@ -16,6 +16,8 @@ typedef struct TransformationData {
     /* 0x20 */ f32 playerYawOffset;
 } TransformationData;
 
+BSS TransformationData ParasolTransformation;
+
 enum {
     SUBSTATE_DISGUISE_INIT              = 0,
     SUBSTATE_USE_PARASOL                = 1, // get parasol out and try copying an npc
@@ -35,10 +37,6 @@ enum {
     SUBSTATE_FAILED                     = 40,
     SUBSTATE_BLOCKED                    = 50, // cant raise parasol due to collisions with world
 };
-
-BSS TransformationData ParasolTransformation;
-
-TransformationData* D_802B6D80_E2B430 = &ParasolTransformation;
 
 void parasol_update_spin(void);
 
