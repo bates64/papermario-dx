@@ -160,7 +160,7 @@ EvtScript N(EVS_NpcInit_Snowman_01) = {
 EndIf
 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_01)))
 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_01)))
-Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
 Call(EnableNpcShadow, NPC_SELF, FALSE)
 Return
 End
@@ -169,7 +169,7 @@ End
 EvtScript N(EVS_NpcInit_Snowman_02) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_02)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_02)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
@@ -178,7 +178,7 @@ EvtScript N(EVS_NpcInit_Snowman_02) = {
 EvtScript N(EVS_NpcInit_Snowman_03) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_03)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_03)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
@@ -187,7 +187,7 @@ EvtScript N(EVS_NpcInit_Snowman_03) = {
 EvtScript N(EVS_NpcInit_Snowman_04) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_04)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_04)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
@@ -196,7 +196,7 @@ EvtScript N(EVS_NpcInit_Snowman_04) = {
 EvtScript N(EVS_NpcInit_Snowman_05) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_05)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_05)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
@@ -205,14 +205,14 @@ EvtScript N(EVS_NpcInit_Snowman_05) = {
 EvtScript N(EVS_NpcInit_Snowman_06) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_06)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_06)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Dummy) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_10000000, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
@@ -225,7 +225,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_01),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -236,7 +236,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_02),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -247,7 +247,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_03),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -258,7 +258,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_04),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -269,7 +269,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_05),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -280,7 +280,7 @@ NpcData N(NpcData_Snowmen)[] = {
         .yaw = 0,
         .init = &N(EVS_NpcInit_Snowman_06),
         .settings = &N(NpcSettings_Snowman),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
         .tattle = MSG_NpcTattle_Snowman,
@@ -293,7 +293,7 @@ NpcData N(NpcData_Dummy) = {
     .yaw = 0,
     .init = &N(EVS_NpcInit_Dummy),
     .settings = &N(NpcSettings_Snowman),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_400000,
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = PENGUIN_ANIMS,
 };

@@ -2,7 +2,7 @@
 #include "world/surfaces.h"
 
 EvtScript N(EVS_ExitStarBeam) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, TRUE)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)

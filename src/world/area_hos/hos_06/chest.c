@@ -4,11 +4,11 @@
 extern IconHudScriptPair gItemHudScripts[];
 
 EvtScript N(EVS_Chest_ShowGotItem) = {
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
     Wait(40)
     Call(ShowGotItem, LVar0, FALSE, 0)
-    Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
+    Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Return
     Return
     End
@@ -174,10 +174,10 @@ EvtScript N(EVS_Interact_MagicChest_Mario) = {
         CaseOrEq(ITEM_POWER_RUSH)
         CaseOrEq(ITEM_DEEP_FOCUS_A)
         CaseOrEq(ITEM_LAST_STAND)
-            SetGroup(EVT_GROUP_00)
+            SetGroup(EVT_GROUP_NEVER_PAUSE)
             Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
             Call(ShowGotItem, LVar0, FALSE, 0)
-            Call(SetTimeFreezeMode, TIME_FREEZE_NORMAL)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Call(AddItem, LVar0, LVar1)
             Call(N(SetItemRetrieved))
         EndCaseGroup

@@ -15,7 +15,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_StartTexPanners) = {
-    SetGroup(EVT_GROUP_00)
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTexPanner, MODEL_yo1, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o349, TEX_PANNER_0)
     Thread

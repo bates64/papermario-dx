@@ -701,7 +701,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
             Set(LVar0, 1)
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -433, 0, -205)
-            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_400000, 0)
+            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, FALSE)
             Set(LVar0, 1)
     EndSwitch
     IfEq(LVar0, 1)
@@ -1032,7 +1032,7 @@ NpcData N(NpcData_Ravens)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Raven),
         .settings = &N(NpcSettings_Raven),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
         .extraAnimations = N(ExtraAnims_Raven),
@@ -1044,7 +1044,7 @@ NpcData N(NpcData_Ravens)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Raven),
         .settings = &N(NpcSettings_Raven),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
 #if VERSION_JP
@@ -1057,7 +1057,7 @@ NpcData N(NpcData_Ravens)[] = {
         .yaw = 90,
         .init = &N(EVS_NpcInit_Raven),
         .settings = &N(NpcSettings_Raven),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenC,
@@ -1068,7 +1068,7 @@ NpcData N(NpcData_Ravens)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Raven),
         .settings = &N(NpcSettings_Raven),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenD,
@@ -1079,7 +1079,7 @@ NpcData N(NpcData_Ravens)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_Raven),
         .settings = &N(NpcSettings_Raven),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenE,

@@ -522,13 +522,13 @@ EvtScript N(EVS_MerlonBargeOut) = {
 
 EvtScript N(D_80250D14_811594) = {
     Call(AwaitPlayerApproach, -130, -110, 150)
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, 1)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, TRUE)
     Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, TRUE)
     Call(NpcMoveTo, NPC_Merlon, 0, 0, 0)
     Call(NpcMoveTo, NPC_Merlon, 410, 0, 0)
     Call(SetNpcPos, NPC_Merlon, 410, 0, 0)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Idle)
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, 0)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, FALSE)
     Call(SetNpcFlagBits, NPC_Merlon, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, FALSE)
     Return
     End
@@ -1067,7 +1067,7 @@ NpcData N(NpcData_Merlon) = {
     .yaw = 30,
     .init = &N(EVS_NpcInit_Merlon),
     .settings = &N(NpcSettings_Merlon),
-    .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+    .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_Merlon_Idle,
@@ -1082,7 +1082,7 @@ NpcData N(NpcData_DarkToads)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_01),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_DarkToad_Red_Idle,
@@ -1095,7 +1095,7 @@ NpcData N(NpcData_DarkToads)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_DarkToad_Black_Idle,
@@ -1108,7 +1108,7 @@ NpcData N(NpcData_DarkToads)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_DarkToad_Yellow_Idle,
@@ -1121,7 +1121,7 @@ NpcData N(NpcData_DarkToads)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_DarkToad_02),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_DarkToad_Green_Idle,
@@ -1144,7 +1144,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_KoopaBros_Black_Idle,
@@ -1171,7 +1171,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_KoopaBros_Red_Idle,
@@ -1198,7 +1198,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_KoopaBros_Yellow_Idle,
@@ -1225,7 +1225,7 @@ NpcData N(NpcData_KoopaBros)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_400000,
+        .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_KoopaBros_Green_Idle,
@@ -1254,7 +1254,7 @@ NpcData N(NpcData_Ninji) = {
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 0,
     .settings = &N(NpcSettings_Ninji),
-    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
+    .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_PARTNER,
     .drops = NO_DROPS,
     .animations = {
         .idle   = ANIM_Ninji_Idle,
@@ -1934,7 +1934,7 @@ EvtScript N(EVS_NpcHit_ShyGuy_02) = {
     Set(GF_MAC01_ChasedShyGuyFromToadHouse, TRUE)
     Set(AF_MAC_43, TRUE)
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_02)))
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, 1)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, TRUE)
     Return
     End
 };
@@ -2265,7 +2265,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 300,
         .init = &N(EVS_NpcInit_Postmaster),
         .settings = &N(NpcSettings_Toad_Stationary),
-        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_10000,
+        .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = {
             .idle   = ANIM_Postmaster_Idle,
@@ -2317,7 +2317,7 @@ NpcData N(NpcData_Twink) = {
     .yaw = 274,
     .init = &N(EVS_NpcInit_Twink),
     .settings = &N(NpcSettings_Twink),
-    .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_400000,
+    .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
     .extraAnimations = N(ExtraAnims_Twink),
@@ -2340,7 +2340,7 @@ NpcData N(NpcData_ShyGuys)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShyGuy_02),
         .settings = &N(NpcSettings_ShyGuy_Stationary),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
@@ -2350,7 +2350,7 @@ NpcData N(NpcData_ShyGuys)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_GardenShyGuy1),
         .settings = &N(NpcSettings_ShyGuy_Stationary),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },
@@ -2360,7 +2360,7 @@ NpcData N(NpcData_ShyGuys)[] = {
         .yaw = 270,
         .init = &N(EVS_NpcInit_GardenShyGuy2),
         .settings = &N(NpcSettings_ShyGuy_Stationary),
-        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_100000 | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_400000 | ENEMY_FLAG_IGNORE_TOUCH,
+        .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH,
         .drops = NO_DROPS,
         .animations = RED_SHY_GUY_ANIMS,
     },

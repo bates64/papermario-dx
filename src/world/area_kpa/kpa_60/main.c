@@ -56,7 +56,7 @@ EvtScript N(EVS_ExitDoor_kpa_70_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kpa_60_ENTR
     COLLIDER_deilittn, MODEL_o1647, MODEL_o1646, DOOR_SOUNDS_METAL);
 
 EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_60_ENTRY_1)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, FALSE)
@@ -70,7 +70,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
 };
 
 EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_60_ENTRY_2)
     Exec(ExitWalk)
     IfEq(GF_KPA16_ShutOffLava, FALSE)
@@ -84,7 +84,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
 };
 
 EvtScript N(EVS_ExitDoor_kpa_63_0) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, TRUE)
     ExecWait(N(EVS_OpenAirshipDockDoor))
     Wait(15)

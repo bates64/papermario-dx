@@ -125,7 +125,7 @@ EvtScript N(EVS_Main) = {
     Call(TranslateModel, MODEL_yougan, 0, 40, 0)
     Set(MV_GlowIntensity, 0)
     Thread
-        SetGroup(EVT_GROUP_00)
+        SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(N(ApplyLavaGlowLighting), LAVA_GLOW_MODE_2, NULL)
     EndThread
     Thread

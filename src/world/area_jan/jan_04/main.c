@@ -11,7 +11,7 @@ EvtScript N(EVS_GotoMap_kmr_24_0) = {
 };
 
 EvtScript N(EVS_ExitWalk_jan_05_2) = {
-    SetGroup(EVT_GROUP_1B)
+    SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, jan_04_ENTRY_0)
     Exec(ExitWalk)
     Call(GotoMap, Ref("jan_05"), jan_05_ENTRY_2)

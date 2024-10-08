@@ -98,7 +98,7 @@ API_CALLABLE(N(GetFloorCollider1)) {
 }
 
 EvtScript N(EVS_UpdateLavaLevel) = {
-    SetGroup(EVT_GROUP_EF)
+    SetGroup(EVT_GROUP_NOT_BATTLE)
     Call(EnableModel, MODEL_yu, FALSE)
     Call(ParentColliderToModel, COLLIDER_o591, MODEL_yu)
     SetF(LVar4, Float(0.0))
