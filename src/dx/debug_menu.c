@@ -1919,7 +1919,7 @@ void dx_debug_update_banner() {
     char fmtBuf[128];
     s32 effect;
 
-    if (gGameStatus.context == CONTEXT_BATTLE) {
+    if (gGameStatus.context == CONTEXT_WORLD) {
         sprintf(fmtBuf, "Map: %7s (%X)", LastMapName, LastMapEntry);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 220, BottomRowY);
 
@@ -1939,7 +1939,7 @@ void dx_debug_update_banner() {
         if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
             dx_debug_draw_ascii("(GOD MODE)", MSG_PAL_YELLOW, 151, BottomRowY);
         }
-    } else {
+    } else if (gGameStatus.context == CONTEXT_BATTLE) {
         s32 areaID = (LastBattleID >> 24) & 0xFF;
         s32 battleID = (LastBattleID >> 16) & 0xFF;
         s32 stageID = LastBattleID & 0xFFFF;

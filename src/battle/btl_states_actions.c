@@ -6,6 +6,7 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
+#include "dx/debug_menu.h"
 
 #if VERSION_JP
 extern Addr btl_states_menus_ROM_START;
