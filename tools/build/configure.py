@@ -184,11 +184,10 @@ def write_ninja_rules(
         command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
-    # FIXME lld
     ninja.rule(
         "bin",
         description="bin $in",
-        command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",
+        command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out && $python {BUILD_TOOLS}/set_o32abi_bit.py $out",
     )
 
     ninja.rule(
