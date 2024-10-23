@@ -4,6 +4,10 @@
 #include "evt.h"
 #include "stdlib/stdarg.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 /****** EXPRESSIONS ***************************************************************************************************/
 
 /// Expressions in EVT instructions should be one of the following types:
@@ -829,5 +833,9 @@
     Call(PlayEffect_impl, effect, subtype, a, b, c, d, e, f, g, h, i, j, k, 0)
 #define PlayEffect14(effect, subtype, a, b, c, d, e, f, g, h, i, j, k, l) \
     Call(PlayEffect_impl, effect, subtype, a, b, c, d, e, f, g, h, i, j, k, l)
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif

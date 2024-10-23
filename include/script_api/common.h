@@ -11,6 +11,10 @@
 #include "../common.h"
 #include "macros.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 /// @{
 /// @name Map
 
@@ -1372,5 +1376,9 @@ API_CALLABLE(DemoJoystickXY);
 
 extern EvtScript EnemyNpcHit;
 extern EvtScript EnemyNpcDefeat;
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif

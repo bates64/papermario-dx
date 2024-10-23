@@ -66,11 +66,12 @@ def write_ninja_rules(
     cc_egcs_dir = f"{BUILD_TOOLS}/cc/egcs/"
     cc_egcs = f"{cc_egcs_dir}/gcc"
     cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
+    cxx_modern = f"{cross}g++"
 
     BFDNAME = "elf32-tradbigmips"
 
     CPPFLAGS_COMMON = (
-        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_LANGUAGE_C -D_FINALROM "
+        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_FINALROM "
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
@@ -80,9 +81,9 @@ def write_ninja_rules(
 
     CPPFLAGS = "-w " + CPPFLAGS_COMMON + " -nostdinc"
 
-    cflags = f"-c -G0 -O2 -gdwarf-2 -x c -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
+    cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
-    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch -x c {extra_cflags}"
+    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
     cflags_272 = cflags_272.replace("-ggdb3", "-g1")
@@ -147,7 +148,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="gcc_modern $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -174,6 +175,14 @@ def write_ninja_rules(
         "cxx",
         description="cxx $in",
         command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cxx} {cflags} $cflags - -o $out'",
+        depfile="$out.d",
+        deps="gcc",
+    )
+
+    ninja.rule(
+        "cxx_modern",
+        description="cxx_modern $in",
+        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -698,19 +707,22 @@ class Configure:
                     task = "cxx"
 
                 if modern_gcc:
-                    task = "cc_modern"
+                    if task == "cxx":
+                        task = "cxx_modern"
+                    else:
+                        task = "cc_modern"
 
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
                 elif "gcc_272" in cflags:
-                    task = "cc_272"
+                    #task = "cc_272"
                     cflags = cflags.replace("gcc_272", "")
                 elif "egcs" in cflags:
-                    if sys.platform == "darwin" and non_matching:
-                        print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
-                    else:
-                        task = "cc_egcs"
-                        cflags = cflags.replace("egcs", "")
+                   if sys.platform == "darwin" and non_matching:
+                       print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
+                   else:
+                       #task = "cc_egcs"
+                       cflags = cflags.replace("egcs", "")
                 elif "gcc_modern" in cflags:
                     task = "cc_modern"
                     cflags = cflags.replace("gcc_modern", "")
@@ -1488,7 +1500,7 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wmissing-braces -Wimplicit -Wredundant-decls -Wstrict-prototypes -Wno-redundant-decls"
+    extra_cflags += " -Wmissing-braces -Wredundant-decls -Wno-redundant-decls"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))

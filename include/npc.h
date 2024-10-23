@@ -5,6 +5,10 @@
 #include "enums.h"
 #include "script_api/map.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 // battle and stage are optional in overloaded NPC_GROUP macros
 #define NPC_GROUP(args...) VFUNC(NPC_GROUP, args)
 #define NPC_GROUP1(npcs)                { sizeof(npcs) / sizeof(NpcData), (NpcData*) &npcs, 0, 0 }
@@ -656,5 +660,9 @@ Enemy* get_enemy(s32 npcID);
 Enemy* get_enemy_safe(s32 npcID);
 
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif
