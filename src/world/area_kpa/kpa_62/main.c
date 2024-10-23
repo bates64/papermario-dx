@@ -217,5 +217,3 @@ EvtScript N(EVS_Main) = {
     Return
     End
 };
-
-

@@ -784,14 +784,7 @@ void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVol
 void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
 void basic_ai_suspend(Evt* script);
 
-// This legally allows all functions to be pointers without warnings.
-// Perhaps the void arg functions can be changed later to remove this need.
-typedef union {
-  void (*func1)(Evt*, s32);
-  void (*func2)(void);
-} WorldArgs TRANSPARENT_UNION;
-
-s32 create_worker_world(WorldArgs, WorldArgs);
+s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
@@ -945,12 +938,10 @@ b32 can_control_status_bar(void);
 void status_bar_respond_to_changes(void);
 void status_bar_always_show_on(void);
 void status_bar_always_show_off(void);
-void func_800F0CB0(s32, f32, f32, f32);
-void func_800F0D5C(void);
-void func_800F0D80(void);
-void func_800F102C(void);
-
-
+void star_power_shimmer_start(s32, f32, f32, f32);
+void star_power_shimmer_init(void);
+void star_power_shimmer_update(void);
+void star_power_shimmer_draw(void);
 void shop_open_item_select_popup(s32 mode);
 void hide_coin_counter(void);
 void set_message_text_var(s32 msgID, s32 index);
@@ -1001,8 +992,8 @@ void init_encounters_ui(void);
 void initialize_collision(void);
 void render_entities(void);
 void render_player(void);
-void render_workers_world(void);
-void render_effects_world(void);
+void render_workers_scene(void);
+void render_effects_scene(void);
 s32 get_asset_offset(char*, s32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);

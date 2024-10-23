@@ -302,7 +302,7 @@ void nuAuCleanDMABuffers(void) {
 
     nuAuDmaNext = 0;
     frameCounter = &nuAuFrameCounter;
-    *frameCounter += 1;
+    (*frameCounter)++;
 }
 
 void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter) {
