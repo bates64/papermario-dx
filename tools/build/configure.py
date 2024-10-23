@@ -92,7 +92,7 @@ def write_ninja_rules(
     ninja.variable("python", sys.executable)
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections -T $in -o $out"
-    ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
+    ld = f"ld.lld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     ninja.rule(
         "ld",
@@ -1254,8 +1254,7 @@ class Configure:
         ninja.build(
             str(self.elf_path()),
             "ld",
-            str(self.linker_script_path()),
-            implicit=[str(obj) for obj in built_objects] + additional_objects,
+            [str(self.linker_script_path())] + [str(obj) for obj in built_objects] + additional_objects,
             variables={"version": self.version, "mapfile": str(self.map_path())},
         )
 
