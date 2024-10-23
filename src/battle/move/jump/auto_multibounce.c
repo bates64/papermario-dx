@@ -254,7 +254,7 @@ EvtScript N(EVS_UseMove_Super) = {
             Return
         EndIf
         Wait(1)
-        Call(GetPlayerActionSuccess, LVar0)
+        Call(GetPlayerActionQuality, LVar0)
         Switch(LVar0)
             CaseGt(FALSE)
                 IfEq(LFlag0, FALSE)
@@ -286,7 +286,7 @@ EvtScript N(EVS_UseMove_Super) = {
                 Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_JUMP_COMBO_4)
         EndSwitch
         Call(SetActionResult, LVarE)
-        Call(GetPlayerActionSuccess, LVar0)
+        Call(GetPlayerActionQuality, LVar0)
         Switch(LVar0)
             CaseOrEq(FALSE)
             CaseOrEq(2)
@@ -394,7 +394,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
             Return
         EndIf
         Wait(1)
-        Call(GetPlayerActionSuccess, LVar0)
+        Call(GetPlayerActionQuality, LVar0)
         Switch(LVar0)
             CaseGt(FALSE)
                 IfEq(LFlag0, FALSE)
@@ -426,7 +426,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
                 Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_JUMP_COMBO_4)
         EndSwitch
         Call(SetActionResult, LVarE)
-        Call(GetPlayerActionSuccess, LVar0)
+        Call(GetPlayerActionQuality, LVar0)
         Switch(LVar0)
             CaseOrEq(FALSE)
             CaseOrEq(2)

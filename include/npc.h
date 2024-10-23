@@ -658,5 +658,3 @@ Enemy* get_enemy(s32 npcID);
 Enemy* get_enemy_safe(s32 npcID);
 
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
-
-#endif
