@@ -184,6 +184,7 @@ def write_ninja_rules(
         command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
+    # FIXME lld
     ninja.rule(
         "bin",
         description="bin $in",
@@ -199,7 +200,7 @@ def write_ninja_rules(
     ninja.rule(
         "as",
         description="as $in",
-        command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude -o $out",
+        command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -EB -march=vr4300 -mtune=vr4300 -mabi=32 -Iinclude -o $out",
     )
 
     ninja.rule(
@@ -703,13 +704,13 @@ class Configure:
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
                 elif "gcc_272" in cflags:
-                    task = "cc_272"
+                    #task = "cc_272"
                     cflags = cflags.replace("gcc_272", "")
                 elif "egcs" in cflags:
                     if sys.platform == "darwin" and non_matching:
                         print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
                     else:
-                        task = "cc_egcs"
+                        #task = "cc_egcs"
                         cflags = cflags.replace("egcs", "")
                 elif "gcc_modern" in cflags:
                     task = "cc_modern"
