@@ -402,8 +402,6 @@ typedef struct EncounterStatus {
 
 extern EncounterStatus gCurrentEncounter;
 
-#endif
-
 b32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
 
 /// The default Npc::onUpdate and Npc::onRender callback.
@@ -658,3 +656,5 @@ Enemy* get_enemy(s32 npcID);
 Enemy* get_enemy_safe(s32 npcID);
 
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
+
+#endif
