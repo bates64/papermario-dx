@@ -1,5 +1,9 @@
 #include "common.h"
 #include "dx/config.h"
+
+#ifndef __DX_DEBUG_MENU_H__
+#define __DX_DEBUG_MENU_H__
+
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 
 #define DX_DEBUG_DUMMY_ID 0xDEAD
@@ -67,5 +71,7 @@ API_CALLABLE(_dxDebugFloatPrintf);
     Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, 0)
 #define DebugFloatPrintf8(text, a, b, c, d, e, f, g) \
     Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, g)
+
+#endif
 
 #endif

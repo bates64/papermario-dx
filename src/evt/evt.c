@@ -1,5 +1,6 @@
 #include "common.h"
 #include "vars_access.h"
+#include "dx/backtrace.h"
 
 extern u32* gMapFlags;
 extern s32* gMapVars;
@@ -1357,7 +1358,11 @@ s32 evt_execute_next_command(Evt* script) {
         s32 nargs;
 
         commandsExecuted++;
-        ASSERT_MSG(commandsExecuted < 10000, "Script %x is blocking for ages (infinite loop?)", script->ptrFirstLine);
+        if (commandsExecuted > 10000) {
+            char scriptName[0x40];
+            backtrace_address_to_string(script->ptrFirstLine, scriptName);
+            PANIC_MSG("Script %s in infinite loop", scriptName);
+        }
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:

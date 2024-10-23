@@ -318,6 +318,8 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
     return ctx.i;
 }
 
+b32 dma_is_segment_loaded(u32 romStart);
+
 /**
  * @brief Uses the symbol table to look up the symbol corresponding to the given address.
  *
@@ -328,7 +330,7 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
  * @return Offset into out->address, -1 if not found
  */
 s32 address2symbol(u32 address, Symbol* out) {
-    #define symbolsPerChunk 0x1000
+    #define symbolsPerChunk 0x100
     #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
 
     static u32 romHeader[0x10];
@@ -364,6 +366,9 @@ s32 address2symbol(u32 address, Symbol* out) {
 
         Symbol sym = chunk[i % symbolsPerChunk];
 
+        if (!dma_is_segment_loaded(sym.segmentRomStart))
+            continue;
+
         if (sym.address == address) {
             *out = sym;
             return 0;
@@ -396,22 +401,22 @@ void backtrace_address_to_string(u32 address, char* dest) {
     Symbol sym;
     s32 offset = address2symbol(address, &sym);
 
-    if (offset >= 0 && offset < 0x1000) { // 0x1000 = arbitrary func size limit
+    if (offset >= 0 && offset < 0x4000) { // 0x4000 = arbitrary func size limit
         char name[32];
         char file[32];
         char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
         if (filep == NULL)
-            if (offset == 0)
+            //if (offset == 0)
                 sprintf(dest, "%s", namep);
-            else
-                sprintf(dest, "%s+0x%X", namep, offset);
+            //else
+            //    sprintf(dest, "%s+0x%X", namep, offset);
         else
-            if (offset == 0)
+            //if (offset == 0)
                 sprintf(dest, "%s (%s)", namep, filep);
-            else
-                sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
+            //else
+            //    sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
     } else {
         sprintf(dest, "0x%08X", address);
     }
