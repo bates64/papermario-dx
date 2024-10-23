@@ -6,6 +6,10 @@
 
 #include "script_api/common.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 API_CALLABLE(MakeNpcs);
 API_CALLABLE(BasicAI_Main);
 API_CALLABLE(ResetFromLava);
@@ -55,5 +59,9 @@ extern EvtScript BaseExitDoor;
 extern EvtScript BaseEnterDoor;
 extern EvtScript EnterPostPipe;
 extern EvtScript EVS_ShopOwnerDialog;
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif
