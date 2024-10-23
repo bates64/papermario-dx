@@ -12,12 +12,12 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
     addr2name = {}  # funcs
     addr2line = {}  # debug info
 
-    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"], stdout=subprocess.PIPE)
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
         parts = line.split()
 
         #  75082: 8048d5bc    44 FUNC    GLOBAL DEFAULT 1845 func_802BC0B8_E2E9E8
-        if len(parts) == 8 and parts[3] == "FUNC":
+        if len(parts) == 8 and parts[3] in ["FUNC", "OBJECT"]:
             addr = int(parts[1], 16)
             name = parts[-1]
             if name.startswith("dead_"):
