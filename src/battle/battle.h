@@ -266,4 +266,7 @@ Actor* create_actor(Formation formation);
 #define DANGER_THRESHOLD  5
 #define PERIL_THRESHOLD   1
 
+#define POPUP_MSG_ON 99
+#define POPUP_MSG_OFF 0
+
 #endif

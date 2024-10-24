@@ -32,7 +32,7 @@ void footprint_main(f32 x, f32 y, f32 z, f32 angle, b32 isLeft) {
     bp.unk_00 = 0;
     bp.init = footprint_init;
     bp.update = footprint_update;
-    bp.renderWorld = footprint_render;
+    bp.renderScene = footprint_render;
     bp.renderUI = NULL;
     bp.effectID = EFFECT_FOOTPRINT;
 
@@ -116,14 +116,14 @@ void func_E00183BC(EffectInstance* effect) {
 }
 
 void footprint_appendGfx(void* effect) {
-    EffectInstance* effectTemp = effect;
-    FootprintFXData* part = effectTemp->data.footprint;
+    EffectInstance* effectInst = effect;
+    FootprintFXData* part = effectInst->data.footprint;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);
-    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(effectTemp->graphics->data));
+    gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(effectInst->shared->graphics));
 
-    for (i = 0; i < effectTemp->numParts; i++, part++) {
+    for (i = 0; i < effectInst->numParts; i++, part++) {
         if (part->alive) {
             Gfx* dlist = D_09000240_32FD90;
 
