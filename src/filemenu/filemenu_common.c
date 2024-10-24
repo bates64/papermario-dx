@@ -874,8 +874,6 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
 }
 
-void func_PAL_8002B574(void); // TODO identify
-
 // TODO bad match, look into
 void filemenu_init(s32 arg0) {
     MenuPanel* menu;

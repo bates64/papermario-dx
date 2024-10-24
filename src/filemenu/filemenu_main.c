@@ -1156,7 +1156,7 @@ void filemenu_main_update(MenuPanel* menu) {
             break;
     }
 
-    // alsoadd highlight to "copy to" target
+    // also add highlight to "copy to" target
     if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_COPY_TO) {
         switch (filemenu_CopyFromFileIdx) {
             case FM_MAIN_OPT_FILE_1:
