@@ -552,7 +552,7 @@ class Configure:
                 implicit = []
                 order_only = []
 
-                if task in ["cc", "cxx", "cc_modern"]:
+                if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
                     if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
