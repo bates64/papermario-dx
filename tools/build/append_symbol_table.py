@@ -59,7 +59,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
                 else:
                     break
             if closest_addr is not None:
-                name, segment = addr2name[addr]
+                name, segment = addr2name[closest_addr]
                 symbols.append((addr, name, file_basename, line_number, segment2romstart[segment]))
 
     # non-debug builds
