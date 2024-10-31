@@ -876,7 +876,6 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
 
 // TODO bad match, look into
 void filemenu_init(s32 mode) {
-    MenuPanel** panelIt;
     MenuPanel* menu;
     s32 i;
 

@@ -30,9 +30,6 @@
 
 u8 filemenu_yesno_gridData[] = {
     0, 1,
-#if !VERSION_PAL
-    0, 1,
-#endif
     0, 1,
     0, 1,
     0, 1,

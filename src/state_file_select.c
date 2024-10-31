@@ -157,7 +157,7 @@ void state_step_exit_file_select(void) {
             }
             break;
         case 1:
-            if (exitMode == 0 || update_exit_map_screen_overlay(D_800A0932) != 0) {
+            if (exitMode == 0 || update_exit_map_screen_overlay(&D_800A0932) != 0) {
                 D_800A0931 = 2;
             }
             break;
