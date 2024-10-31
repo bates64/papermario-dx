@@ -5368,14 +5368,14 @@ enum FileMenuMessages {
     /* 31 */ FILE_MESSAGE_HAS_BEEN_CREATED,            // has been created.[End]
 #if VERSION_PAL
     // TODO: determine where these new entries should be placed
-    UNK1,
-    UNK2,
+    FILE_MESSAGE_PAL_UNK1,
+    FILE_MESSAGE_PAL_UNK2,
 #endif
     /* 32 */ FILE_MESSAGE_ENTER_A_FILE_NAME,           // Enter a file name![End]
     /* 33 */ FILE_MESSAGE_QUESTION,                    // ?[End]
     /* 34 */ FILE_MESSAGE_PERIOD_34,                   // .[End]
 #if VERSION_PAL
-    FILE_MESSAGE_BASE_UNK,
+    FILE_MESSAGE_PAL_UNK3,
 #endif
 };
 

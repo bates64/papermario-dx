@@ -733,15 +733,15 @@ void filemenu_update_hidden_name_confirm(
 }
 
 void filemenu_draw_cursor(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
-    s32 temp_a1;
+    s32 alpha;
 
     filemenu_update_cursor();
-    temp_a1 = filemenu_cursor_alpha;
-    if (temp_a1 > 0) {
-        if (temp_a1 > 255) {
-            temp_a1 = 255;
+    alpha = filemenu_cursor_alpha;
+    if (alpha > 0) {
+        if (alpha > 255) {
+            alpha = 255;
         }
-        hud_element_set_alpha(filemenu_cursorHIDs[0], temp_a1);
+        hud_element_set_alpha(filemenu_cursorHIDs[0], alpha);
         hud_element_set_render_pos(filemenu_cursorHIDs[0], baseX + filemenu_cursor_posX, baseY + filemenu_cursor_posY);
         hud_element_draw_without_clipping(filemenu_cursorHIDs[0]);
     }
@@ -875,7 +875,8 @@ void filemenu_draw_contents_copy_arrow(MenuPanel* menu, s32 baseX, s32 baseY, s3
 }
 
 // TODO bad match, look into
-void filemenu_init(s32 arg0) {
+void filemenu_init(s32 mode) {
+    MenuPanel** panelIt;
     MenuPanel* menu;
     s32 i;
 
@@ -887,7 +888,7 @@ void filemenu_init(s32 arg0) {
     }
 
     filemenu_cursorHID = filemenu_cursorHIDs[0];
-    if (arg0 == 0) {
+    if (mode == 0) {
         filemenu_common_windowBPs[0].style.customStyle->background.imgData = NULL; // ???
     }
     setup_pause_menu_tab(filemenu_common_windowBPs, ARRAY_COUNT(filemenu_common_windowBPs));
@@ -952,18 +953,22 @@ void filemenu_cleanup(void) {
 
     set_window_update(WIN_PAUSE_TUTORIAL, WINDOW_UPDATE_HIDE);
     set_window_update(WIN_PAUSE_DECRIPTION, WINDOW_UPDATE_HIDE);
-    func_80244BC4();
+    filemenu_get_exit_mode(); // part of a conditional that optimized out?
 }
 
-s32 func_80244BC4() {
+s32 filemenu_get_exit_mode() {
     if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE
         && filemenu_currentMenu == FILE_MENU_CONFIRM
-        && filemenu_menus[FILE_MENU_CONFIRM]->selected == 0)
-     {
+        && filemenu_menus[FILE_MENU_CONFIRM]->selected == 0
+    ) {
         return 2;
-    } else if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE && filemenu_menus[FILE_MENU_MAIN]->selected < 4) {
-        return 1;
-    } else {
-        return 0;
     }
+
+    if (filemenu_menus[FILE_MENU_MAIN]->state == FM_MAIN_SELECT_FILE
+        && filemenu_menus[FILE_MENU_MAIN]->selected <= FM_MAIN_OPT_FILE_4
+    ) {
+        return 1;
+    }
+
+    return 0;
 }

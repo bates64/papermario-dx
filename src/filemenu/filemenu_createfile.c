@@ -427,6 +427,8 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
     }
 
     if (filemenu_pressedButtons & BUTTON_A) {
+        MenuPanel* confirmMenu;
+
         switch (menu->selected) {
             case MSG_CHAR_MENU_SPACE:
                 sfx_play_sound(SOUND_CREATE_FILE_SET_CHARACTER);
@@ -540,6 +542,8 @@ void filemenu_choose_name_handle_input(MenuPanel* menu) {
     }
 
     if (filemenu_pressedButtons & BUTTON_START) {
+        MenuPanel* confirmMenu;
+
         for (i = 0; i < ARRAY_COUNT(filemenu_filename); i++) {
             if (filemenu_filename[i] != MSG_CHAR_READ_SPACE) {
                 break;

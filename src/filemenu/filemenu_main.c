@@ -477,10 +477,9 @@ void filemenu_draw_contents_option_center(
     s32 yOffset;
 
     switch (menu->state) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+        case FM_MAIN_SELECT_DELETE:
+        case FM_MAIN_SELECT_COPY_FROM:
+        case FM_MAIN_SELECT_COPY_TO:
             msgIdx = FILE_MESSAGE_CANCEL;
             xOffset = CENTER_CANCEL_X;
             yOffset = 0;
@@ -623,12 +622,12 @@ void filemenu_draw_contents_file_title(
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_OK), baseX + FILE_X, baseY + 1, 255, 0, 1);
 
     if (!gSaveSlotHasData[fileIdx]) {
-        filemenu_draw_message(filemenu_get_menu_message(fileIdx + FILE_MESSAGE_BASE_UNK),
+        filemenu_draw_message(filemenu_get_menu_message(fileIdx + FILE_MESSAGE_PAL_UNK3),
             baseX + D_filemenu_802508D0[gCurrentLanguage], baseY + 1, 255, 0, 1);
     } else {
         s32 tmp = D_filemenu_802508D0[gCurrentLanguage];
 
-        filemenu_draw_message(filemenu_get_menu_message(fileIdx + FILE_MESSAGE_BASE_UNK),
+        filemenu_draw_message(filemenu_get_menu_message(fileIdx + FILE_MESSAGE_PAL_UNK3),
             baseX + tmp, baseY + 1, 255, 0, 1);
 
         tmp += D_filemenu_802508D4[gCurrentLanguage];
@@ -753,6 +752,7 @@ void filemenu_main_init(MenuPanel* menu) {
     setup_pause_menu_tab(filemenu_main_windowBPs, ARRAY_COUNT(filemenu_main_windowBPs));
     menu->selected = MENU_PANEL_SELECTED_GRID_DATA(menu);
 
+#if VERSION_PAL
     gWindows[WIN_FILES_TITLE].pos.y = 1;
     gWindows[WIN_FILES_TITLE].width = 162;
     gWindows[WIN_FILES_TITLE].height = 25;
