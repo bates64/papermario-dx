@@ -444,19 +444,11 @@ BSS s32 D_802AD6D4;
 void create_battle_popup_menu(PopupMenu* popup);
 
 s32 get_player_anim_for_status(s32 animID);
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/main
 void btl_menu_moves_draw_content(void* data, s32 x, s32 y);
 void btl_menu_moves_show_title(void* data, s32 x, s32 y);
 void btl_menu_moves_show_icon(void* data, s32 x, s32 y);
 void btl_menu_moves_show_desc(void* data, s32 x, s32 y);
 void btl_menu_moves_show_error(void* data, s32 x, s32 y);
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/main
 void btl_menu_strats_draw_content(void* data, s32 x, s32 y);
 void btl_menu_strats_show_title(void* data, s32 x, s32 y);
 void btl_menu_strats_show_desc(void* data, s32 x, s32 y);

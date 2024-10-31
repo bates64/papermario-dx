@@ -752,7 +752,6 @@ void filemenu_main_init(MenuPanel* menu) {
     setup_pause_menu_tab(filemenu_main_windowBPs, ARRAY_COUNT(filemenu_main_windowBPs));
     menu->selected = MENU_PANEL_SELECTED_GRID_DATA(menu);
 
-#if VERSION_PAL
     gWindows[WIN_FILES_TITLE].pos.y = 1;
     gWindows[WIN_FILES_TITLE].width = 162;
     gWindows[WIN_FILES_TITLE].height = 25;
