@@ -33,7 +33,7 @@ jobs:
       - name: Upload patch as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: papermario.bps
+          name: papermario-dx.bps
           path: ver/us/build/papermario.bps
   prerelease:
     name: Prerelease
@@ -44,15 +44,15 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario.bps
-          path: papermario.bps
+          name: papermario-dx.bps
+          path: papermario-dx.bps
       - uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: "${{ secrets.MY_PAT }}"
           automatic_release_tag: "latest"
           prerelease: true
           title: Development build
-          files: papermario.bps
+          files: papermario-dx.bps
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -62,10 +62,10 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario.bps
-          path: papermario.bps
+          name: papermario-dx.bps
+          path: papermario-dx.bps
       - uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: "${{ secrets.MY_PAT }}"
           automatic_release_tag: "latest"
-          files: papermario.bps
+          files: papermario-dx.bps
