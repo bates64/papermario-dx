@@ -1051,7 +1051,7 @@ API_CALLABLE(PartnerDamageEnemy) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Actor* enemy = get_actor(script->owner1.enemyID);
-    s32 temp_s4 = *args++;
+    s32 retVar = *args++;
     s32 flags;
     s32 damageResult;
     u8 statusChance;
@@ -1123,7 +1123,7 @@ API_CALLABLE(PartnerDamageEnemy) {
         return ApiStatus_FINISH;
     }
 
-    evt_set_variable(script, temp_s4, damageResult);
+    evt_set_variable(script, retVar, damageResult);
 
     if (!does_script_exist_by_ref(script)) {
         return ApiStatus_FINISH;
@@ -1386,21 +1386,21 @@ API_CALLABLE(DeletePartner) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(GetPartnerActionSuccess) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    s32 var = *script->ptrReadPos;
-    s32 actionSuccess = battleStatus->actionSuccess;
-    s32 outVal = 0;
+API_CALLABLE(GetPartnerActionQuality) {
+    Bytecode* args = script->ptrReadPos;
+    s32 outVar = *args++;
+    s32 actionQuality = gBattleStatus.actionQuality;
+    s32 quality = 0;
 
-    if (actionSuccess < outVal) {
-        actionSuccess = outVal;
+    if (actionQuality < 0) {
+        actionQuality = 0;
     }
 
-    if (actionSuccess > outVal) {
-        outVal = actionSuccess;
+    if (quality < actionQuality) {
+        quality = actionQuality;
     }
 
-    evt_set_variable(script, var, outVal);
+    evt_set_variable(script, outVar, quality);
     return ApiStatus_DONE2;
 }
 

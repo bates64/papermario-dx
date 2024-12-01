@@ -679,7 +679,7 @@ void _use_partner_ability(void) {
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                     break;
                 case 1: // free old partner and create new one
@@ -692,14 +692,14 @@ void _use_partner_ability(void) {
                     create_partner_npc();
                     sfx_play_sound(SOUND_PARTNER_GET_OUT);
                     wPartner->init(wPartnerNpc);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     // fallthrough
                 case 2: // take out new partner
                     wPartnerCurrentScript = start_script(wPartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     set_time_freeze_mode(TIME_FREEZE_PARTIAL);
                     break;
                 case 3: // resume normal partner behaviour
@@ -721,7 +721,7 @@ void _use_partner_ability(void) {
             switch (PartnerCommandState) {
                 case 0:
                     kill_script_by_ID(wPartnerCurrentScriptID);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                 case 1:
                     partner_free_npc();
                     playerData->curPartner = wCurrentPartnerId = NextPartnerID;
@@ -734,10 +734,10 @@ void _use_partner_ability(void) {
                     wPartnerNpc->scale.y = 1.0f;
                     wPartnerNpc->scale.z = 1.0f;
                     wPartner->init(wPartnerNpc);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     // fallthrough
                 case 2:
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 3:
                     wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
@@ -758,7 +758,7 @@ void _use_partner_ability(void) {
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 1: // free old partner and resume game
                     if (does_script_exist(wPartnerCurrentScriptID)) {
@@ -787,14 +787,14 @@ void _use_partner_ability(void) {
                     playerData->curPartner = wCurrentPartnerId = NextPartnerID;
                     create_partner_npc();
                     wPartner->init(wPartnerNpc);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     // fallthrough
                 case 1: // take out new partner
                     wPartnerCurrentScript = start_script(wPartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 2: // resume standard partner behaviour
                     if (does_script_exist(wPartnerCurrentScriptID)) {
@@ -824,7 +824,7 @@ void _use_partner_ability(void) {
                     wPartnerNpc->scale.y = 1.0f;
                     wPartnerNpc->scale.z = 1.0f;
                     wPartner->init(wPartnerNpc);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 1:
                     wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
@@ -845,7 +845,7 @@ void _use_partner_ability(void) {
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 1:
                     if (does_script_exist(wPartnerCurrentScriptID)) {
@@ -865,10 +865,10 @@ void _use_partner_ability(void) {
                 case 0:
                     disable_player_input();
                     wPartner->init(wPartnerNpc);
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     // fallthrough
                 case 1:
-                    PartnerCommandState += 1;
+                    PartnerCommandState++;
                     break;
                 case 2:
                     if (partnerStatus->partnerActionState != 1) {
@@ -890,7 +890,7 @@ void _use_partner_ability(void) {
                 if (does_script_exist(wPartnerCurrentScriptID)) {
                     kill_script_by_ID(wPartnerCurrentScriptID);
                 }
-                PartnerCommandState += 1;
+                PartnerCommandState++;
             }
             break;
         case PARTNER_CMD_INIT:
