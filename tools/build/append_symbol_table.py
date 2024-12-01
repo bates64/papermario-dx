@@ -9,20 +9,24 @@ SYMBOL_TABLE_PTR_ROM_ADDR = 0x18
 
 
 def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
-    addr2name = {}  # funcs
+    addr2name = {}  # funcs and globals
     addr2line = {}  # debug info
+    segment2romstart = {} # segment name -> rom start address
 
-    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(["mips-linux-gnu-objdump", elf, "-t", "--wide", "--dwarf=decodedline", "--demangle"], stdout=subprocess.PIPE)
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
         parts = line.split()
 
-        #  75082: 8048d5bc    44 FUNC    GLOBAL DEFAULT 1845 func_802BC0B8_E2E9E8
-        if len(parts) == 8 and parts[3] == "FUNC":
-            addr = int(parts[1], 16)
+        # 8004bbd0 g     F .main  00000060 GetSelfAnimationFromTable
+        if len(parts) == 6 and parts[2] in ["F", "O"]:
+            addr = int(parts[0], 16)
+            segment = parts[3][1:]
             name = parts[-1]
+            if segment.endswith("_bss") or segment == "ABS*": # ignore BSS
+                continue
             if name.startswith("dead_"):
                 continue
-            addr2name[addr] = name
+            addr2name[addr] = (name, segment)
 
         # npc.c                                    120          0x8003910c               x
         elif len(parts) >= 4 and parts[2].startswith("0x"):
@@ -33,12 +37,19 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
             addr = int(parts[2], 0)
             addr2line[addr] = (file_basename, line_number)
 
+        # 00001000 g       *ABS*  00000000 main_ROM_START
+        elif len(parts) == 5 and parts[-1].endswith("_ROM_START"):
+            addr = int(parts[0], 16)
+            segment = parts[-1][0:-len("_ROM_START")]
+            segment2romstart[segment] = addr
+
     sorted_addr2name_addrs = sorted(addr2name.keys())
 
     symbols = []
     for addr, (file_basename, line_number) in addr2line.items():
         if addr in addr2name:
-            symbols.append((addr, addr2name[addr], file_basename, line_number))
+            name, segment = addr2name[addr]
+            symbols.append((addr, name, file_basename, line_number, segment2romstart[segment]))
         else:
             # find closest addr2name < addr
             closest_addr = None
@@ -48,13 +59,14 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
                 else:
                     break
             if closest_addr is not None:
-                symbols.append((addr, addr2name[closest_addr], file_basename, line_number))
+                name, segment = addr2name[closest_addr]
+                symbols.append((addr, name, file_basename, line_number, segment2romstart[segment]))
 
     # non-debug builds
     if len(symbols) == 0:
         print("no debug symbols found, using func names only")
-        for addr, name in addr2name.items():
-            symbols.append((addr, name, "", -1))
+        for addr, (name, segment) in addr2name.items():
+            symbols.append((addr, name, "", -1, segment2romstart[segment]))
 
     # sort by address
     symbols.sort(key=lambda x: x[0])
@@ -89,7 +101,7 @@ if __name__ == "__main__":
         f.write(b"SYMS")
         f.write(struct.pack(">I", len(symbols)))
 
-        sizeof_symbol = 4 + 4 + 4  # sizeof(Symbol)
+        sizeof_symbol = 4 + 4 + 4 + 4  # sizeof(Symbol)
         strings_begin = f.tell() + sizeof_symbol * len(symbols)
         strings = bytearray()
         string_map = {}
@@ -103,7 +115,7 @@ if __name__ == "__main__":
                 strings += b"\0"
             return string_map[s]
 
-        for addr, name, file_basename, line_number in symbols:
+        for addr, name, file_basename, line_number, segment_rom_start in symbols:
             # file_line = file_line.replace(root_dir + "/", "")
 
             f.write(struct.pack(">I", addr))
@@ -114,6 +126,8 @@ if __name__ == "__main__":
             else:
                 f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
 
+            f.write(struct.pack(">I", segment_rom_start))
+
         f.write(strings)
 
         # Pad to the nearest 16-byte alignment
@@ -121,7 +135,7 @@ if __name__ == "__main__":
         padding_bytes = b"\x00" * (padding_size - f.tell())
         f.write(padding_bytes)
 
-        print("symbol table size: {} kib".format((f.tell() - symbol_table_addr) / 1024))
+        print("symbol table size: {} kib ({} symbols)".format((f.tell() - symbol_table_addr) / 1024, len(symbols)))
 
         print(f"updating SYMBOL_TABLE_PTR_ROM_ADDR")
         f.seek(SYMBOL_TABLE_PTR_ROM_ADDR)
