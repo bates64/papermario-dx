@@ -4,6 +4,8 @@ import os
 import subprocess
 import shutil
 import platform
+from pathlib import Path
+import hashlib
 
 ROM = "ver/current/build/papermario.z64"
 EMULATOR_PATHS = [
@@ -41,10 +43,58 @@ def is_wsl(v: str = platform.uname().release) -> int:
 def windows_path(path):
     return subprocess.check_output(["wslpath", "-w", path]).decode().strip()
 
+def get_tree_hash(include_staged=False):
+    try:
+        if include_staged:
+            # Generate tree object hash including uncommitted changes
+            hash = subprocess.check_output(['git', 'write-tree']).decode().strip()
+        else:
+            # Get the hash of the current commit's tree
+            hash = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}']).decode().strip()
+        return hash
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Git command failed: {e}")
+
+def hash_file(file_path):
+    hasher = hashlib.sha1()  # Use SHA-1 to match Git's default hash type
+    try:
+        with open(file_path, 'rb') as f:
+            while chunk := f.read(8192):  # Read the file in chunks
+                hasher.update(chunk)
+        return hasher.hexdigest()
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File {file_path} not found.")
+
+def combine_hashes(*hashes):
+    # Concatenate and hash the combined string
+    combined = "".join(hashes).encode()
+    return hashlib.sha1(combined).hexdigest()
+
+class RunHash:
+    def __init__(self):
+        self.path = Path("./.run_hash")
+        self.old_hash = self.path.read_text() if self.path.exists() else None
+        self.new_hash = combine_hashes(get_tree_hash(include_staged=True), hash_file("ver/us/splat.yaml"))
+
+    def changed(self):
+        return self.old_hash != self.new_hash
+
+    def write_new_hash(self):
+        self.path.write_text(self.new_hash)
+
 def main():
+    hash = RunHash()
+
+    if hash.changed():
+        print("hash changed, running configure")
+        if os.system(f"./configure") != 0:
+            print("error: configure failed")
+            exit(1)
+        hash.write_new_hash()
+
     if os.system(f"ninja {ROM}") != 0:
         print("error: build failed")
-        return
+        exit(1)
 
     wsl = is_wsl() != 0
     rom = windows_path(ROM) if wsl else ROM

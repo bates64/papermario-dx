@@ -40,6 +40,7 @@ build/
 /include/sprite/
 /include/map
 /tools/permuter_settings.toml
+.run_hash
 
 # Assets
 # ** DO NOT UNIGNORE THESE FILES!! SEE THE FOLLOWING LINK IF YOU'RE MODDING ASSETS:**
