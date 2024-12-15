@@ -15,6 +15,7 @@ typedef struct Symbol {
     u32 address; ///< RAM address.
     u32 nameOffset; ///< Offset of the symbol name string.
     u32 fileOffset; ///< Offset of the file name and line string.
+    u32 segmentRomStart; ///< ROM start of segment.
 } Symbol;
 
 typedef struct SymbolTable {
