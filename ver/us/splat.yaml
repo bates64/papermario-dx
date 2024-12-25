@@ -2487,7 +2487,7 @@ segments:
     vram: 0xE0044000
     max_size: 0x1000
     subsegments:
-    - [auto, c, stars_shimmer]
+    - [auto, c, stars_shimmer, -Os]
   - name: effect_rising_bubble
     dir: effects
     type: code
