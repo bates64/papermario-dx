@@ -3,7 +3,7 @@ from dataclasses import astuple, dataclass
 import os
 import yaml
 import struct
-from typing import List
+from typing import List, Optional
 
 
 # splat imports; will fail if script run directly
@@ -282,10 +282,10 @@ class SBN:
             elif sbn_file.file_name().split("_")[0] == filename.split("_")[0]:
                 suggestion = sbn_file.file_name()
         if suggestion == "":
-            raise Exception(f"File not found: {filename} - is it in the file_id_map?")
+            raise Exception(f"File not found: {filename} - is it in the `files` list?")
         else:
             raise Exception(
-                f"File not found: {filename} - is it in the file_id_map? (Did you mean to name the file: {suggestion}?)"
+                f"File not found: {filename} - is it in the `files` list? (Did you mean to name the file: {suggestion}?)"
             )
 
     def __str__(self) -> str:
@@ -363,7 +363,9 @@ class SBNFile:
     # I couldn't figure out the pattern behind these fake sizes (if there even is one), so I'm just hardcoding them.
     fakesize: int
     # The file ID of the SBN file - needed to guarantee unique filenames. the filename in the header can't be used because it's not unique
-    ident: int
+    ident: Optional[int]
+
+    filename: str
 
     def decode(self, data: bytes, ident: int) -> int:
         self.signature, self.size, self.name = struct.unpack_from(">4si4s", data)
@@ -382,15 +384,21 @@ class SBNFile:
         with open(path, "rb") as f:
             data = f.read()
 
-        filename = os.path.basename(path)
+        self.filename = os.path.basename(path)
 
-        ident = int(filename.split("_")[0], 16)
+        try:
+            ident = int(self.filename.split("_")[0], 16)
+        except ValueError:
+            ident = None
 
         size = self.decode(data, ident)
 
         assert size == len(data), "File size mismatch"
 
     def file_name(self) -> str:
+        if self.ident is None:
+            return self.filename
+
         prefix = f"{self.ident:02X}_"
         stem = decode_null_terminated_ascii(self.name).rstrip(" ")
         extension = decode_null_terminated_ascii(self.signature).rstrip(" ").lower()
