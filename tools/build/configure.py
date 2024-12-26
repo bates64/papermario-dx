@@ -79,7 +79,7 @@ def write_ninja_rules(
 
     CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -nostdinc"
 
-    CPPFLAGS = "-w " + CPPFLAGS_COMMON + " -nostdinc"
+    CPPFLAGS = CPPFLAGS_COMMON + " -nostdinc"
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
@@ -1500,7 +1500,11 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wmissing-braces -Wredundant-decls -Wno-redundant-decls"
+    extra_cflags += " -Wall -Winline -Werror=old-style-declaration -Werror=old-style-definition -Werror=missing-parameter-type"
+
+    # Warnings made into errors by default in GCC 14
+    # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
+    extra_cflags += " -Werror=implicit --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion -Wreturn-type"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))

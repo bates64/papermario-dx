@@ -7,6 +7,8 @@
 
 // layout
 
+pls_warning();
+
 const s32 MainMenuPosX    = 26;
 const s32 MainMenuPosY    = 60;
 
