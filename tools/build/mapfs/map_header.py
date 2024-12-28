@@ -27,12 +27,16 @@ if __name__ == "__main__":
         for model in xml.getElementsByTagName("Model"):
             map_object = model.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
             f.write(f"#define MODEL_{name} {idx}\n")
     elif is_hit:
         for collider in xml.getElementsByTagName("Collider"):
             map_object = collider.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
             f.write(f"#define COLLIDER_{name} {idx}\n")
 
@@ -41,6 +45,8 @@ if __name__ == "__main__":
         for zone in xml.getElementsByTagName("Zone"):
             map_object = zone.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
             f.write(f"#define ZONE_{name} {idx}\n")
     else:
