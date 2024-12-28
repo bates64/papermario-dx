@@ -1500,7 +1500,7 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wall -Winline -Werror=old-style-declaration -Werror=old-style-definition -Werror=missing-parameter-type"
+    extra_cflags += " -Wall -Winline -Werror=old-style-declaration -Werror=missing-parameter-type"
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors

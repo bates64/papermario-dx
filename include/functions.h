@@ -788,6 +788,8 @@ void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVol
 void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
 void basic_ai_suspend(Evt* script);
 
+b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ);
+
 // This legally allows all functions to be pointers without warnings.
 // Perhaps the void arg functions can be changed later to remove this need.
 typedef union {

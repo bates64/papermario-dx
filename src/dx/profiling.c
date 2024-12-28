@@ -3,6 +3,7 @@
 #include "profiling.h"
 #include "dx/utils.h"
 #include "game_modes.h"
+#include "PR/os_internal_reg.h"
 
 #ifdef USE_PROFILER
 
@@ -302,14 +303,16 @@ void profiler_print_times() {
 
         // audio time is removed from the main thread profiling, so add it back here
         u32 total_cpu = microseconds[PROFILER_TIME_TOTAL] + microseconds[PROFILER_TIME_AUDIO] * 2;
+#ifndef GFX_PROFILING
         u32 total_rsp = microseconds[PROFILER_TIME_RSP_GFX] + microseconds[PROFILER_TIME_RSP_AUDIO] * 2;
-        u32 max_rdp = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
+        u32 max_rdp  = MAX(MAX(microseconds[PROFILER_TIME_TMEM], microseconds[PROFILER_TIME_CMD]), microseconds[PROFILER_TIME_PIPE]);
+#endif
 
         s32 text_buffer_labels_len = sprintf(
             text_buffer_labels,
             "    " // space for prepend
             "FPS: %5.2f\n"
-            "CPU\t\t%d (%d%%)\n"
+            "CPU\t\t%lu (%lu%%)\n"
             " Input\n"
             " Workers\n"
             " Triggers\n"
@@ -327,15 +330,15 @@ void profiler_print_times() {
             "    " // space for prepend
             "\n"
             "\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n",
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n",
             microseconds[PROFILER_TIME_CONTROLLERS],
             microseconds[PROFILER_TIME_WORKERS],
             microseconds[PROFILER_TIME_TRIGGERS],
@@ -358,12 +361,12 @@ void profiler_print_times() {
                     " Cameras\n"
                 );
                 sprintf(&text_buffer_time[text_buffer_time_len],
-                    "%d\n"
-                    "%d\n"
-                    "%d\n"
-                    "%d\n"
-                    "%d\n"
-                    "%d\n",
+                    "%lu\n"
+                    "%lu\n"
+                    "%lu\n"
+                    "%lu\n"
+                    "%lu\n"
+                    "%lu\n",
                     microseconds[PROFILE_TIME_WORLD_ENCOUNTERS],
                     microseconds[PROFILE_TIME_WORLD_NPCS],
                     microseconds[PROFILE_TIME_WORLD_PLAYER],
@@ -377,14 +380,14 @@ void profiler_print_times() {
                     " Game mode step\n"
                 );
                 sprintf(&text_buffer_time[text_buffer_time_len],
-                    "%d\n",
+                    "%lu\n",
                     microseconds[PROFILER_TIME_STEP_GAME_MODE]
                 );
                 break;
         }
 
-        dx_string_to_msg(&text_buffer_labels, &text_buffer_labels);
-        dx_string_to_msg(&text_buffer_time, &text_buffer_time);
+        dx_string_to_msg((u8*)&text_buffer_labels, (u8*)&text_buffer_labels);
+        dx_string_to_msg((u8*)&text_buffer_time, (u8*)&text_buffer_time);
         text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
         text_buffer_labels[2] = text_buffer_time[2] = 14;
@@ -415,16 +418,16 @@ void profiler_print_times() {
             "    " // space for prepend
             "\n"
             "\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
-            "%d\n",
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n",
             microseconds[PROFILER_TIME_SUB_GFX_ENTITIES],
             microseconds[PROFILER_TIME_SUB_GFX_MODELS],
             microseconds[PROFILER_TIME_SUB_GFX_PLAYER],
@@ -441,12 +444,12 @@ void profiler_print_times() {
         sprintf(text_buffer_labels,
             "    " // space for prepend
             "\n"
-            "RDP\t\t\t%d (%d%%)\n"
+            "RDP\t\t\t%lu (%lu%%)\n"
             " Tmem\n"
             " Cmd\n"
             " Pipe\n"
             "\n"
-            "RSP\t\t%d (%d%%)\n"
+            "RSP\t\t%lu (%lu%%)\n"
             " Gfx\n"
             " Audio\n",
             max_rdp, max_rdp / 333,
@@ -456,13 +459,13 @@ void profiler_print_times() {
             "    " // space for prepend
             "\n"
             "\n"
-            "%d\n"
-            "%d\n"
-            "%d\n"
+            "%lu\n"
+            "%lu\n"
+            "%lu\n"
             "\n"
             "\n"
-            "%d\n"
-            "%d\n",
+            "%lu\n"
+            "%lu\n",
             microseconds[PROFILER_TIME_TMEM],
             microseconds[PROFILER_TIME_CMD],
             microseconds[PROFILER_TIME_PIPE],
@@ -470,8 +473,8 @@ void profiler_print_times() {
             microseconds[PROFILER_TIME_RSP_AUDIO] * 2
         );
 #endif
-        dx_string_to_msg(&text_buffer_labels, &text_buffer_labels);
-        dx_string_to_msg(&text_buffer_time, &text_buffer_time);
+        dx_string_to_msg((u8*)&text_buffer_labels, (u8*)&text_buffer_labels);
+        dx_string_to_msg((u8*)&text_buffer_time, (u8*)&text_buffer_time);
         text_buffer_labels[0] = text_buffer_time[0] = MSG_CHAR_READ_FUNCTION;
         text_buffer_labels[1] = text_buffer_time[1] = MSG_READ_FUNC_SIZE;
         text_buffer_labels[2] = text_buffer_time[2] = 14;

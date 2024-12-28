@@ -5,6 +5,8 @@
 #include "ld_addrs.h"
 #include "game_modes.h"
 #include "dx/config.h"
+#include "gcc/memory.h"
+#include "gcc/string.h"
 
 extern HudScript HES_AnimatedCursorHand;
 

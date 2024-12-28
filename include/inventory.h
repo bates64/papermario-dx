@@ -43,13 +43,19 @@ s32 get_stored_count(void);
 s32 get_stored_empty(void);
 
 /// @returns whether `itemID` is a Consumable
-b32 item_is_consumable(s32 itemID);
+static ALWAYS_INLINE b32 item_is_consumable(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE;
+}
 
 /// @returns whether `itemID` is a Badge
-b32 item_is_badge(s32 itemID);
+static ALWAYS_INLINE b32 item_is_badge(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_BADGE;
+}
 
 /// @returns whether `itemID` is a Key Item
-b32 item_is_key(s32 itemID);
+static ALWAYS_INLINE b32 item_is_key(s32 itemID) {
+    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_KEY;
+}
 
 /// Recover player HP
 /// @param amt the amount to recover, -1 for full, -2 for full and increase max by 1 (unused)

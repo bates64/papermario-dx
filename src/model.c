@@ -6,6 +6,7 @@
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
 #include "qsort.h"
+#include "gcc/string.h"
 
 // models are rendered in two stages by the RDP:
 // (1) main and aux textures are combined in the color combiner
@@ -2178,7 +2179,6 @@ void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 siz
     s32 paletteSize;
     u32 auxRasterSize;
     u32 auxPaletteSize;
-    s32 bitDepth;
     s32 mainSize;
     s32 currentTextureID = textureID;
 

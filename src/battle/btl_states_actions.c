@@ -4490,8 +4490,6 @@ void btl_state_update_end_demo_battle(void) {
     }
 }
 
-const static f32 padding[] = { 0.0f, 0.0f, 0.0f };
-
 void btl_state_draw_end_demo_battle(void) {
     if (D_802809F6 == -1) {
         set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);

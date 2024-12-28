@@ -1,5 +1,7 @@
 #include "sam_09.h"
 #include "effects.h"
+#include "vars_access.h"
+#include "inventory.h"
 
 #include "world/common/complete/GiveReward.inc.c"
 #include "world/common/todo/GetItemName.inc.c"

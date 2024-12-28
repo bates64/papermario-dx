@@ -297,7 +297,7 @@ void item_entity_load(ItemEntity* item) {
     s32 size;
     s32 i;
 
-    item->savedReadPos = item->readPos = pos = gItemEntityScripts[item->itemID];
+    item->savedReadPos = item->readPos = gItemEntityScripts[item->itemID];
 
     while (TRUE) {
         switch (*pos++) {

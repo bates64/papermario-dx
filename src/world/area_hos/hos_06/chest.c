@@ -1,5 +1,6 @@
 #include "hos_06.h"
 #include "hud_element.h"
+#include "inventory.h"
 
 extern IconHudScriptPair gItemHudScripts[];
 

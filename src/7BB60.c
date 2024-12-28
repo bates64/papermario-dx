@@ -599,8 +599,6 @@ void collision_main_lateral(void) {
             break;
         default:
             if (!(playerStatus->flags & PS_FLAG_FLYING)) {
-                f32 new_var;
-
                 speed = 0.0f;
                 if (!(playerStatus->flags & (PS_FLAG_SCRIPTED_FALL | PS_FLAG_INPUT_DISABLED))) {
                     player_input_to_move_vector(&yaw, &speed);
@@ -1159,8 +1157,6 @@ HitID phys_check_interactable_collision(void) {
 }
 
 s32 phys_can_player_interact(void) {
-    PartnerStatus* partnerStatus = &gPartnerStatus;
-    PlayerStatus* playerStatus = &gPlayerStatus;
     s32 ret = TRUE;
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {

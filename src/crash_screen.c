@@ -198,7 +198,7 @@ void crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -237,7 +237,7 @@ void crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
 
     if (size > 0) {
         ptr = buf;
@@ -296,14 +296,12 @@ void crash_screen_print_fpcsr(u32 value) {
 
 void crash_screen_draw(OSThread* faultedThread) {
     s16 causeIndex;
-    __OSThreadContext* ctx;
 
     s32 bt[8];
     s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
     s32 i = 0;
     char buf[128];
 
-    ctx = &faultedThread->context;
     causeIndex = ((faultedThread->context.cause >> 2) & 0x1F);
 
     if (causeIndex == 23) {
@@ -432,7 +430,7 @@ void crash_screen_init(void) {
     osStartThread(&gCrashScreen.thread);
 
     // gCrashScreencharToGlyph is hard to modify, so we'll just do it here
-    char chars[] =
+    u8 chars[] =
         "_[]<>"
         "|{};,"
         "\"#$&'"
@@ -459,7 +457,7 @@ void crash_screen_printf_with_bg(s16 x, s16 y, const char* fmt, ...) {
 
     va_start(args, fmt);
 
-    size = _Printf(crash_screen_copy_to_buf, buf, fmt, args);
+    size = _Printf(crash_screen_copy_to_buf, (s8*)buf, fmt, args);
 
     if (size > 0) {
         crash_screen_draw_rect(x - 6, y - 6, (size + 2) * 6, 19);
