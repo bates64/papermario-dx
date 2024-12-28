@@ -1,15 +1,12 @@
 #include "common.h"
 #include "Credits.h"
+#include "msg.h"
 
 #if VERSION_PAL
 #define CREDITS_MESSAGE_BUFFER_COUNT (24)
 #else
 #define CREDITS_MESSAGE_BUFFER_COUNT (23)
 #endif
-
-s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgScale, s32 overrideCharWidth, u8 flags);
-void msg_get_glyph(s32 font, s32 variation, s32 charIndex, s32 palette, MesasgeFontGlyphData* out);
-void dma_load_msg(u32 msgID, void* dest);
 
 BSS CreditsData N(CreditsData);
 BSS CreditsData* N(CreditsDataPtr);

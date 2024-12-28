@@ -91,6 +91,7 @@ def main():
             print("error: configure failed")
             exit(1)
         hash.write_new_hash()
+        os.system("ninja -t compdb > compile_commands.json")
 
     if os.system(f"ninja {ROM}") != 0:
         print("error: build failed")

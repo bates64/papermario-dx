@@ -126,7 +126,6 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
     s32 raster;
     s32 palette;
     s32 preset;
-    Vec3s* size;
     HudCacheEntry* entry;
     s32 i;
     s32 capacity;
@@ -807,9 +806,7 @@ s32 hud_element_update(HudElement* hudElement) {
     u8 sizePreset;
     f32 xScaled, yScaled;
     s32 imageWidth, imageHeight, drawWidth, drawHeight;
-    u32 min, max;
     u32 flags;
-    s32 raster, palette;
     s32 s1, s2;
     s32 arg1, arg2;
     f32 uniformScale;
@@ -1421,11 +1418,8 @@ void render_hud_element(HudElement* hudElement) {
     s32 height, width;
     HudTransform* transform;
     s32 mode;
-    u32 flags;
-    IMG_PTR raster;
     PAL_PTR palette;
     u32 a0, v1;
-    s32 ulx, uly, lrx, lry;
     Vtx* vtx;
     Vtx* vtx2;
 
@@ -1612,7 +1606,6 @@ void render_transformed_hud_elements(void) {
     s32 el1, el2;
     HudElement* hudElement;
     s32 flags;
-    s32 z1, z2;
 
     count = 0;
     if (gCurrentCamID == CAM_HUD) {

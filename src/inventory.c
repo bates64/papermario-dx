@@ -454,18 +454,6 @@ s32 get_stored_empty(void) {
     return ARRAY_COUNT(gPlayerData.storedItems) - get_stored_count();
 }
 
-ALWAYS_INLINE b32 item_is_consumable(s32 itemID) {
-    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE;
-}
-
-ALWAYS_INLINE b32 item_is_badge(s32 itemID) {
-    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_BADGE;
-}
-
-ALWAYS_INLINE b32 item_is_key(s32 itemID) {
-    return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_KEY;
-}
-
 void enforce_hpfp_limits(void) {
     PlayerData* playerData = &gPlayerData;
 

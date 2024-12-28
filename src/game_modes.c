@@ -125,7 +125,7 @@ s32 get_game_mode(void) {
 }
 
 void set_game_mode(s32 modeID) {
-    GameModeData* template = &GameModeTemplates[modeID];
+    GameModeData const* template = &GameModeTemplates[modeID];
     CurGameModeID = modeID;
 
     CurGameMode.flags = MODE_FLAG_INITIALIZED | MODE_FLAG_NEEDS_STEP;

@@ -44,7 +44,6 @@ void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
 }
 
 s32 phys_adjust_cam_on_landing(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
     if (LandingAdjustCamCallback != NULL) {

@@ -3,6 +3,7 @@
 #include "hud_element.h"
 #include "model.h"
 #include "pause/pause_common.h"
+#include "inventory.h"
 
 #if !VERSION_JP
 extern u8 MessagePlural[];
