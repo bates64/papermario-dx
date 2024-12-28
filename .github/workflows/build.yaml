@@ -28,6 +28,7 @@ jobs:
         uses: Chocobo1/setup-ccache-action@v1
       - name: Configure
         run: ./configure
+      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Build
         run: ninja ver/us/build/papermario.bps
       - name: Upload patch as artifact
