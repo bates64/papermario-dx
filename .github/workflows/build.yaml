@@ -8,18 +8,21 @@ jobs:
     name: Game
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
         with:
-          fetch-depth: 0
-      - name: Install dependencies
-        run: ./install_deps.sh
-      - name: Install compilers
-        run: ./install_compilers.sh
-      - name: Install cargo-binstall
-        uses: cargo-bins/cargo-binstall@main
-      - name: Install pigment64 and crunch64
-        run: cargo binstall pigment64 crunch64-cli -y
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v14
+        with:
+          name: mycache
+          # If you chose signing key for write access
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+          # If you chose API tokens for write access OR if you have a private cache
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - run: nix-build
+      - run: nix-shell --run "echo OK"
       - name: Download baserom
         run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
         env:

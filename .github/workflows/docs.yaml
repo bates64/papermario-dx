@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install Doxygen
         run: |
           # doxygen on apt is too old
@@ -29,8 +31,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: ./docs/doxygen/html/
 
       - name: Deploy to GitHub Pages
         id: deployment
