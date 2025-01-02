@@ -1,7 +1,10 @@
-/* Fix scrollbar color */
-:root { color-scheme: dark }
-@media (prefers-color-scheme: light) {
-    :root { color-scheme: light }
+:root {
+    interpolate-size: allow-keywords;
+}
+
+body {
+    --font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+    --font-family-monospace: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
 }
 
 .memname {
@@ -12,7 +15,20 @@
 .memitem:has(.evtapi) {
     .memproto {
         td.memname .el { display: none }
-        td.memname::before { content: "EVT_CALL(" }
+        td.memname::before { content: "Call(" }
         td.memname::after { content: "," }
     }
+}
+
+details {
+    margin: var(--spacing-large) 0;
+    padding: var(--spacing-medium) var(--spacing-large);
+    background: var(--blockquote-background);
+    border-radius: var(--border-radius-large);
+}
+
+summary {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
 }

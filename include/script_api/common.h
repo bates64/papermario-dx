@@ -1306,7 +1306,7 @@ API_CALLABLE(PlayEffect_impl);
 /// @param flags \ref EntityFlags
 /// @param ... Varargs.
 /// @param MAKE_ENTITY_END Terminates the varargs.
-/// @vars{out | LVar0 | Created entity's ID.}
+/// @vars{out | \ref LVar0 | Created entity's ID.}
 API_CALLABLE(MakeEntity);
 
 /// @evtapi
