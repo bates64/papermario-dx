@@ -47,21 +47,17 @@ pkgsCross.mkShell {
     libyaml
     python3
     python3Packages.virtualenv
-    cargo
-    rustc
     ccache
     git
     iconv
     gcc # for n64crc
+    (callPackage ./tools/pigment64.nix {})
+    (callPackage ./tools/crunch64.nix {})
   ]);
   shellHook = ''
     rm -f ./ver/us/baserom.z64 && ln -s ${baseRom} ./ver/us/baserom.z64
 
-    # Install Rust deps
-    export PATH=$HOME/.cargo/bin:$PATH
-    cargo install pigment64 crunch64-cli
-
-    # Install python packages
+    # Install python packages (TODO: use derivations)
     virtualenv venv
     source venv/bin/activate
     pip install -r ${./requirements.txt}
