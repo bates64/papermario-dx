@@ -20,6 +20,7 @@ ctx.c.m2c
 # Build artifacts
 build.ninja
 .ninja*
+.n2_db
 *.ld
 !src/map_shape.ld
 *.elf

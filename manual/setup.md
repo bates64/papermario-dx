@@ -61,7 +61,7 @@ Nix is a package manager that DX uses to manage its dependencies.
 Run the following command in your terminal by typing it in and pressing Enter. You can also paste it with Ctrl+Shift+V.
 
 ```sh
-bash <(curl -L https://nixos.org/nix/install)
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
 ```
 
 Run the following command to install Cachix:
@@ -78,6 +78,22 @@ cachix use papermario-dx
 
 The cache allows Nix to download tools that are needed to build DX, rather than building them from scratch. This will save you a lot of time.
 
+### Provide your base ROM
+
+Type `cp ` then drag your Paper Mario ROM into the terminal window to paste its path. Then, type ` papermario.us.z64`. Be careful to include spaces around the ROM path. The command should look something like this:
+
+```sh
+cp /mnt/c/Users/yourname/Documents/EXAMPLE.z64 papermario.us.z64
+```
+
+Press Enter to run the command you just typed.
+
+Next, run this command:
+
+```sh
+nix-store --add-fixed sha256 papermario.us.z64
+```
+
 ### Clone the repository
 
 Run both the following commands in your terminal:
@@ -87,7 +103,7 @@ git clone https://github.com/bates64/papermario-dx
 cd papermario-dx
 ```
 
-This will copy Paper Mario DX into a directory (folder) called `~/papermario-dx`. In future, you can type `cd ~/papermario-dx` to navigate here.
+This will copy Paper Mario DX into a directory (folder) called `~/papermario-dx`.
 
 ### Open Visual Studio Code
 
@@ -98,10 +114,6 @@ code .
 ```
 
 Later, you can open DX again in Visual Studio Code by using the 'Recent' menu on the Welcome screen, or by running `code ~/papermario-dx` in the terminal.
-
-### Copy the base ROM to the correct location
-
-In Visual Studio Code, click on the `ver` folder, then the `us` folder. Drag and drop your ROM into this folder. Rename the file to `baserom.z64`.
 
 ### Run the game
 

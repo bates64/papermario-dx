@@ -8,36 +8,38 @@ jobs:
     name: Game
     runs-on: ubuntu-latest
     steps:
-      runs-on: ubuntu-latest
-      steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v25
         with:
           nix_path: nixpkgs=channel:nixos-unstable
       - uses: cachix/cachix-action@v14
         with:
-          name: mycache
-          # If you chose signing key for write access
-          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-          # If you chose API tokens for write access OR if you have a private cache
+          name: papermario-dx
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix-build
-      - run: nix-shell --run "echo OK"
-      - name: Download baserom
-        run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
+      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
+      - name: Download base ROM
+        run: |
+          curl -L $BASEROM_US_URL -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
         env:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
       - name: Configure
-        run: ./configure
-      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
-      - name: Build
-        run: ninja ver/us/build/papermario.bps
+        run: nix-shell --pure --run "./configure"
+        env:
+          NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1
+      - name: Build patch file
+        run: nix-shell --pure --run "ninja ver/us/build/papermario.bps"
+        env:
+          NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Upload patch as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: papermario.bps
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
           path: ver/us/build/papermario.bps
   prerelease:
     name: Prerelease
@@ -45,31 +47,41 @@ jobs:
     needs: game
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario.bps
-          path: papermario.bps
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
+          path: ${{ steps.repo-name.outputs.repository-name }}.bps
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
           title: Development build
-          files: papermario.bps
+          files: ${{ steps.repo-name.outputs.repository-name }}.bps
   release:
     name: Release
     runs-on: ubuntu-latest
     needs: game
     if: github.ref == 'refs/tags/v*'
     steps:
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario.bps
-          path: papermario.bps
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
+          path: ${{ steps.repo-name.outputs.repository-name }}.bps
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          files: papermario.bps
+          files: ${{ steps.repo-name.outputs.repository-name }}.bps
