@@ -30,18 +30,18 @@ API_CALLABLE(TranslateModel);
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x /// Act as "enablers" for if the model should be rotated on the axis or not
-/// @param y 
-/// @param z
+/// @param x  Whether to rotate on X axis
+/// @param y  Whether to rotate on Y axis
+/// @param z  Whether to rotate on Z axis
 API_CALLABLE(RotateModel);
 
 /// Scales the model the given amount along the selected axis.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x /// Act as "enablers" for if the model should be scaled on the axis or not
-/// @param y 
-/// @param z
+/// @param x  Whether to scale on X axis
+/// @param y  Whether to scale on Y axis
+/// @param z  Whether to scale on Z axis
 API_CALLABLE(ScaleModel);
 
 /// Returns the given model's index.
@@ -80,8 +80,8 @@ API_CALLABLE(SetCustomGfxEnabled);
 
 /// @evtapi
 /// @param modelID
-/// @param customGfxIndex /// -1 for no change
-/// @param fogType /// -1 for no change
+/// @param customGfxIndex  -1 for no change
+/// @param fogType  -1 for no change
 API_CALLABLE(SetModelCustomGfx);
 
 /// @evtapi
@@ -102,13 +102,13 @@ API_CALLABLE(EnableModel);
 /// Enables or disables the given group.
 /// @evtapi
 /// @param modelID
-/// @param mode /// "0 = disabled, 1 = enabled, 2 = all others disabled, 3 = all others enabled"
+/// @param mode  "0 = disabled, 1 = enabled, 2 = all others disabled, 3 = all others enabled"
 API_CALLABLE(SetGroupVisibility);
 
 /// Sets offsets for texture panners.
 /// @evtapi
 /// @param panID
-/// @param tile /// "0 = main | 1 = aux"
+/// @param tile  "0 = main | 1 = aux"
 /// @param offsetU
 /// @param offsetV
 API_CALLABLE(SetTexPanOffset);
@@ -123,7 +123,7 @@ API_CALLABLE(SetCustomGfxBuilders);
 /// @evtapi
 /// @param modelID
 /// @param flagbits
-/// @param bool /// 1 = set, 0 = clear
+/// @param bool  1 = set, 0 = clear
 API_CALLABLE(SetModelFlags);
 
 /// @evtapi
@@ -147,18 +147,18 @@ API_CALLABLE(TranslateGroup);
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x /// Act as "enablers" for if the model should be rotated on the axis or not
-/// @param y 
-/// @param z
+/// @param x  Whether to rotate on X axis
+/// @param y  Whether to rotate on Y axis
+/// @param z  Whether to rotate on Z axis
 API_CALLABLE(RotateGroup);
 
 /// Scales the given group's position.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x /// Act as "enablers" for if the model should be scaled on the axis or not
-/// @param y 
-/// @param z
+/// @param x  Whether to scale on X axis
+/// @param y  Whether to scale on Y axis
+/// @param z  Whether to scale on Z axis
 API_CALLABLE(ScaleGroup);
 
 /// @evtapi
@@ -173,12 +173,12 @@ API_CALLABLE(EnableGroup);
 /// @evtapi
 /// @param copyIndex
 /// @param modelID
-/// @param bool /// "0 = clear, 1 = get"
+/// @param bool  "0 = clear, 1 = get"
 API_CALLABLE(MakeLocalVertexCopy);
 
 /// Set flags for collider + siblings + children. 
 /// @evtapi
-/// @param mode /// 0 = set bits, 1 = clear bits, 2 = replace, 3 = replace lowest 16 bits
+/// @param mode  0 = set bits, 1 = clear bits, 2 = replace, 3 = replace lowest 16 bits
 /// @param colliderID
 /// @param flags
 API_CALLABLE(ModifyColliderFlags);
