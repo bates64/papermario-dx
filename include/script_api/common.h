@@ -18,49 +18,99 @@ extern "C" {
 /// @{
 /// @name Map
 
+/// Translates the given model's position.
 /// @evtapi
+/// @param modelID
+/// @param x
+/// @param y 
+/// @param z
 API_CALLABLE(TranslateModel);
 
+/// Rotates the model the given amount on the selected axis.
 /// @evtapi
+/// @param modelID
+/// @param angle
+/// @param x Whether to rotate on X axis
+/// @param y Whether to rotate on Y axis
+/// @param z Whether to rotate on Z axis
 API_CALLABLE(RotateModel);
 
+/// Scales the model the given amount along the selected axis.
 /// @evtapi
+/// @param modelID
+/// @param angle
+/// @param x Whether to scale on X axis
+/// @param y Whether to scale on Y axis
+/// @param z Whether to scale on Z axis
 API_CALLABLE(ScaleModel);
 
+/// Returns the given model's index.
 /// @evtapi
+/// @param modelID
+/// @vars {out | \ref LVar0 | Returns the index of the model. }
 API_CALLABLE(GetModelIndex);
 
 /// @evtapi
 API_CALLABLE(InvalidateModelTransform);
 
+/// Clones the given model.
 /// @evtapi
+/// @param modelID
+/// @param newModelID
 API_CALLABLE(CloneModel);
 
+/// Returns the center of the given model.
 /// @evtapi
+/// @param modelID
+/// @vars {out | \ref LVar0 int posX | Returns X coordinate of the given model. }
+/// @vars {out | \ref LVar1 int posY | Returns Y coordinate of the given model. }
+/// @vars {out | \ref LVar2 int posZ | Returns Z coordinate of the given model. }
 API_CALLABLE(GetModelCenter);
 
+/// Sets a model's pannerID and sets the texture pan flag
 /// @evtapi
+/// @param modelID
+/// @param panID
 API_CALLABLE(SetTexPanner);
 
 /// @evtapi
+/// @param modelID
+/// @param bool
 API_CALLABLE(SetCustomGfxEnabled);
 
 /// @evtapi
+/// @param modelID
+/// @param customGfxIndex -1 for no change
+/// @param fogType -1 for no change
 API_CALLABLE(SetModelCustomGfx);
 
 /// @evtapi
 API_CALLABLE(SetModelTexVariant);
 
+/// Enables or disables texture panning on the given model.
 /// @evtapi
+/// @param modelID
+/// @param bool
 API_CALLABLE(EnableTexPanning);
 
+/// Enables or disables the given model.
 /// @evtapi
+/// @param modelID
+/// @param bool
 API_CALLABLE(EnableModel);
 
+/// Enables or disables the given group.
 /// @evtapi
+/// @param modelID
+/// @param mode "0 = disabled, 1 = enabled, 2 = all others disabled, 3 = all others enabled"
 API_CALLABLE(SetGroupVisibility);
 
+/// Sets offsets for texture panners.
 /// @evtapi
+/// @param panID
+/// @param tile "0 = main | 1 = aux"
+/// @param offsetU
+/// @param offsetV
 API_CALLABLE(SetTexPanOffset);
 
 /// @evtapi
@@ -69,76 +119,150 @@ API_CALLABLE(SetCustomGfx);
 /// @evtapi
 API_CALLABLE(SetCustomGfxBuilders);
 
+/// Sets flags for models.
 /// @evtapi
+/// @param modelID
+/// @param flagbits
+/// @param bool 1 = set, 0 = clear
 API_CALLABLE(SetModelFlags);
 
 /// @evtapi
+/// @param modelID
 API_CALLABLE(MakeTransformGroup);
 
 /// @evtapi
+/// @param modelID
+/// @param bool
 API_CALLABLE(SetTransformGroupEnabled);
 
+/// Translates the given group's position.
 /// @evtapi
+/// @param modelID
+/// @param x
+/// @param y 
+/// @param z
 API_CALLABLE(TranslateGroup);
 
+/// Rotates the given group's position.
 /// @evtapi
+/// @param modelID
+/// @param angle
+/// @param x Whether to rotate on X axis
+/// @param y Whether to rotate on Y axis
+/// @param z Whether to rotate on Z axis
 API_CALLABLE(RotateGroup);
 
+/// Scales the given group's position.
 /// @evtapi
+/// @param modelID
+/// @param angle
+/// @param x Whether to scale on X axis
+/// @param y Whether to scale on Y axis
+/// @param z Whether to scale on Z axis
 API_CALLABLE(ScaleGroup);
 
 /// @evtapi
 API_CALLABLE(GetTransformGroup);
 
+/// Enables or disables the given group.
 /// @evtapi
+/// @param modelID
+/// @param bool
 API_CALLABLE(EnableGroup);
 
 /// @evtapi
+/// @param copyIndex
+/// @param modelID
+/// @param bool "0 = clear, 1 = get"
 API_CALLABLE(MakeLocalVertexCopy);
 
+/// Set flags for collider + siblings + children. 
 /// @evtapi
+/// @param mode 0 = set bits, 1 = clear bits, 2 = replace, 3 = replace lowest 16 bits
+/// @param colliderID
+/// @param flags
 API_CALLABLE(ModifyColliderFlags);
 
 /// @evtapi
 API_CALLABLE(ResetFromLava);
 
+/// Returns the center of the given collider.
 /// @evtapi
+/// @param modelID
+/// @vars {out | \ref LVar0 int posX | Returns X coordinate of the given collider. }
+/// @vars {out | \ref LVar1 int posY | Returns Y coordinate of the given collider. }
+/// @vars {out | \ref LVar2 int posZ | Returns Z coordinate of the given collider. }
 API_CALLABLE(GetColliderCenter);
 
+/// Associates a model with a collider and applies the model's transformation.
 /// @evtapi
+/// @param colliderID
+/// @param modelID
 API_CALLABLE(ParentColliderToModel);
 
+/// Applies transformation from parent model.
 /// @evtapi
+/// @param colliderID
 API_CALLABLE(UpdateColliderTransform);
 
+/// Enables or disables the given zone.
 /// @evtapi
+/// @param zoneID
+/// @param bool 
 API_CALLABLE(SetZoneEnabled);
 
+/// Makes the player go to the given map and at the given entrance.
 /// @evtapi
+/// @param mapName
+/// @param entryID
 API_CALLABLE(GotoMap);
 
+/// Makes the player go to the given map and at the given entrance with a unique fadeout effect.
 /// @evtapi
+/// @param mapName
+/// @param entryID
+/// @param transitionType
+/// @see ScreenTransitions in enums.h
 API_CALLABLE(GotoMapSpecial);
 
 /// @evtapi
+/// @param areaID
+/// @param mapID
+/// @param entryID
 API_CALLABLE(GotoMapByID);
 
+/// Returns the entryID of the Entry that the player entered the map from.
 /// @evtapi
+/// @vars {out | \ref LVar0 int entryID }
 API_CALLABLE(GetEntryID);
 
+/// Returns the mapID of the map the player is currently on.
 /// @evtapi
+/// @vars {out | \ref LVar0 int mapID }
 API_CALLABLE(GetMapID);
 
+/// Returns the way the player loaded into the map, commonly used by to put the player in the correct position for save blocks.
 /// @evtapi
+/// @vars {out | \ref LVar0 int LoadType }
 API_CALLABLE(GetLoadType);
 
 /// @evtapi
+/// @param modelID
+/// @param renderMode
 API_CALLABLE(SetRenderMode);
 
+/// Plays the given sound at the given model.
 /// @evtapi
+/// @param modelID
+/// @param soundID
+/// @param SoundSpatializationFlags
 API_CALLABLE(PlaySoundAtModel);
 
+/// Plays the given sound at the given collider.
 /// @evtapi
+/// @param colliderID
+/// @param soundID
+/// @param SoundSpatializationFlags
 API_CALLABLE(PlaySoundAtCollider);
 
 /// @}
