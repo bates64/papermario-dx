@@ -2034,7 +2034,7 @@ static char *proutSprintf(char *dst, const char *src, size_t count) {
     return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
 }
 
-void dx_hashed_debug_printf(char* filename, s32 line, char* fmt, ...) {
+void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
     char fmtBuf[128];
     va_list args;
     va_start(args, fmt);
