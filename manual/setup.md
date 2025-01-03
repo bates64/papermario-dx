@@ -54,15 +54,28 @@ You should see some sort of prompt, for instance, `user@hostname:~$`. This is wh
 
 Don't be scared by the terminal - it's just a way to interact with your computer using text commands. You can copy and paste commands from this guide. Use Ctrl+Shift+V to paste into the terminal. **After completing setup, you won't need to use the terminal anymore.**
 
-### Install Nix and Cachix
+### Install Nix
 
 Nix is a package manager that DX uses to manage its dependencies.
 
 Run the following command in your terminal by typing it in and pressing Enter. You can also paste it with Ctrl+Shift+V.
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate --no-confirm
 ```
+
+The installer may ask for your password. The password prompt may not show any characters as you type. This is normal! Just type your password and press Enter.
+
+Next, run this command to make Nix available in your terminal:
+
+```sh
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+```
+
+You can check that Nix is installed correctly by running `nix --version`.
+You should see something like "nix (Nix)" followed by a version number.
+
+### Install Cachix
 
 Run the following command to install Cachix:
 
