@@ -15,7 +15,6 @@ jobs:
         with:
           name: papermario-dx
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Download base ROM
         run: |
           curl -L $BASEROM_US_URL -o papermario.us.z64
@@ -26,6 +25,7 @@ jobs:
         run: nix-build shell.nix
       - name: Configure
         run: nix-shell --run "./configure"
+      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Build game
         run: nix-shell --run "ninja"
       - name: Build patch file
@@ -94,6 +94,12 @@ jobs:
         with:
           name: papermario-dx
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Download base ROM
+        run: |
+          curl -L $BASEROM_US_URL -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
       - name: Build shell.nix
         run: nix-build shell.nix
         env:
