@@ -50,6 +50,7 @@ jobs:
     needs: game
     if: github.ref == 'refs/heads/main'
     steps:
+      - uses: actions/checkout@v4
       - name: Get repository name
         id: repo-name
         uses: MariachiBear/get-repo-name-action@v1.1.0
@@ -73,6 +74,7 @@ jobs:
     needs: game
     if: github.ref == 'refs/tags/v*'
     steps:
+      - uses: actions/checkout@v4
       - name: Get repository name
         id: repo-name
         uses: MariachiBear/get-repo-name-action@v1.1.0
