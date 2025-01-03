@@ -66,6 +66,12 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 The installer may ask for your password. The password prompt may not show any characters as you type. This is normal! Just type your password and press Enter.
 
+Get Nix to trust you by running this command:
+
+```sh
+echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.custom.conf
+```
+
 Next, run this command to make Nix available in your terminal:
 
 ```sh
@@ -93,15 +99,19 @@ The cache allows Nix to download tools that are needed to build DX, rather than 
 
 ### Provide your base ROM
 
-Type `cp ` then drag your Paper Mario ROM into the terminal window to paste its path. Then, type ` papermario.us.z64`. Be careful to include spaces around the ROM path. The command should look something like this:
+- Windows: Type `cp "$(wslpath ` then drag your Paper Mario ROM into the terminal window. Then, type `)" papermario.us.z64`.
+- macOS and Linux: Type `cp ` then drag your Paper Mario ROM into the terminal window. Then, type ` papermario.us.z64`.
+
+The command should look something like this:
 
 ```sh
-cp /mnt/c/Users/yourname/Documents/EXAMPLE.z64 papermario.us.z64
+cp "$(wslpath "C:\Users\Mario\Documents\Paper Mario (U) [!].z64")" papermario.us.z64   # Windows
+cp "/Users/Luigi/Documents/Paper Mario (U) [!].z64" papermario.us.z64                  # macOS/Linux
 ```
 
-Press Enter to run the command you just typed.
+Make sure the spaces are correct. Press Enter to run the command you just typed.
 
-Next, run this command:
+Next, run this command to tell Nix about your ROM:
 
 ```sh
 nix-store --add-fixed sha256 papermario.us.z64
@@ -109,7 +119,7 @@ nix-store --add-fixed sha256 papermario.us.z64
 
 ### Clone the repository
 
-Run both the following commands in your terminal:
+Run the following two commands in your terminal:
 
 ```sh
 git clone https://github.com/bates64/papermario-dx
@@ -130,7 +140,7 @@ Later, you can open DX again in Visual Studio Code by using the 'Recent' menu on
 
 ### Run the game
 
-Press Ctrl+Shift+B (Cmd+Shift+B on macOS) to build the game. This can take a while (more than 5 minutes) the first time you do it depending on how fast your computer is.
+**Press Ctrl+Shift+B (Cmd+Shift+B on macOS) to build the game.** This can take a while (more than 5 minutes) the first time you do it depending on how fast your computer is.
 
 DX will automatically try to run the game in a known emulator after building. If you don't have an emulator already, I recommend using [ares](https://ares-emu.net) because it is very accurate. If you don't regularly test with ares and/or real hardware, your mod may not work correctly for others.
 
