@@ -57,7 +57,11 @@
         ".ninja*": true,
         "ver/current": true,
         "expected": true,
-        "**/*.i": true
+        "**/*.i": true,
+        ".run_hash": true,
+        ".n2_db": true,
+        "venv": true,
+        "compile_commands.json": true,
     },
     "[python]": {
         "editor.formatOnType": true,

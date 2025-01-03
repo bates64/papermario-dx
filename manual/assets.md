@@ -47,9 +47,9 @@ For example, let's override the title screen background image! We can find this 
 
 Copy that file. Then, create the directories `assets/master_quest/mapfs/bg/` and paste the file there.
 
-Then modify the pasted file in a pixel art editing program such as [Aseprite] or [GIMP].
+Then modify the pasted file in a pixel art editing program such as [Aseprite] (paid) or [LibreSprite] (free).
 [Aseprite]: https://www.aseprite.org/
-[GIMP]: https://www.gimp.org/
+[LibreSprite]: https://libresprite.github.io/#!/downloads
 
 Finally, run the mod to see your changes.
 

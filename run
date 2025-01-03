@@ -93,7 +93,8 @@ def main():
         hash.write_new_hash()
         os.system("ninja -t compdb > compile_commands.json")
 
-    if os.system(f"ninja {ROM}") != 0:
+    os.system("clear")
+    if os.system(f"n2 {ROM}") != 0:
         print("error: build failed")
         exit(1)
 

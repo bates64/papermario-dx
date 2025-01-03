@@ -2946,7 +2946,7 @@ segments:
     vram: 0xE006A000
     max_size: 0x1000
     subsegments:
-    - [auto, c, light_rays]
+    - [auto, c, light_rays, -Os]
   - name: effect_gfx_light_rays
     dir: effects/gfx
     type: code
@@ -3106,7 +3106,7 @@ segments:
     vram: 0xE0076000
     max_size: 0x1000
     subsegments:
-    - [auto, c, aura]
+    - [auto, c, aura, -Os]
   - name: effect_gfx_aura
     dir: effects/gfx
     type: code
@@ -4703,7 +4703,7 @@ segments:
     vram: 0xE00CC000
     max_size: 0x1000
     subsegments:
-    - [auto, c, tubba_heart_attack]
+    - [auto, c, tubba_heart_attack, -Os]
   - name: effect_gfx_tubba_heart_attack
     dir: effects/gfx
     type: code
@@ -5123,7 +5123,7 @@ segments:
     vram: 0xE010A000
     max_size: 0x1000
     subsegments:
-    - [auto, c, firework_rocket]
+    - [auto, c, firework_rocket, -Os]
   - name: effect_gfx_firework_rocket
     dir: effects/gfx
     type: code

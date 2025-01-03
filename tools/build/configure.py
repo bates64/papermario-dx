@@ -1398,29 +1398,6 @@ if __name__ == "__main__":
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
 
-    exec_shell(["make", "-C", str(ROOT / args.splat)])
-
-    # on macOS, /usr/bin/cpp defaults to clang rather than gcc (but we need gcc's)
-    if (
-        args.cpp is None
-        and sys.platform == "darwin"
-        and "Free Software Foundation" not in exec_shell(["cpp", "--version"])
-    ):
-        gcc_cpps = ("cpp-14", "cpp-13", "cpp-12", "cpp-11")
-        for ver in gcc_cpps:
-            try:
-                if "Free Software Foundation" in exec_shell([ver, "--version"]):
-                    args.cpp = ver
-                    break
-            except FileNotFoundError:
-                pass
-        if args.cpp is None:
-            print("error: system C preprocessor is not GNU!")
-            print("This is a known issue on macOS - only clang's cpp is installed by default.")
-            print("Use 'brew' to obtain GNU cpp, then run this script again with the --cpp option, e.g.")
-            print(f"    ./configure --cpp {gcc_cpps[0]}")
-            exit(1)
-
     version_err_msg = ""
     missing_tools = []
     version_old_tools = []
@@ -1515,7 +1492,7 @@ if __name__ == "__main__":
 
     write_ninja_rules(
         ninja,
-        args.cpp or "cpp",
+        args.cpp or "mips-linux-gnu-cpp",
         extra_cppflags,
         extra_cflags,
         args.ccache,
