@@ -25,15 +25,15 @@ jobs:
           nix-store --add-fixed sha256 papermario.us.z64
         env:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
-      - name: Build shell.nix
-        run: nix-build shell.nix
+      - name: Build shell
+        run: nix develop --command true
       - name: Configure
-        run: nix-shell --run "./configure"
+        run: nix develop --command "./configure"
       - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
       - name: Build game
-        run: nix-shell --run "ninja"
+        run: nix develop --command "ninja"
       - name: Build patch file
-        run: nix-shell --run "ninja ver/us/build/papermario.bps"
+        run: nix develop --command "ninja ver/us/build/papermario.bps"
       - name: Get repository name
         id: repo-name
         uses: MariachiBear/get-repo-name-action@v1.1.0
@@ -106,7 +106,7 @@ jobs:
           nix-store --add-fixed sha256 papermario.us.z64
         env:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
-      - name: Build shell.nix
-        run: nix-build shell.nix
+      - name: Build shell
+        run: nix develop --command true
         env:
           NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1 # glibc is marked unsupported on darwin
