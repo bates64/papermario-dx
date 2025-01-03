@@ -1,6 +1,8 @@
 #include "common.h"
 #include "nu/nusys.h"
 #include "gcc/string.h"
+#include "dx/debug_menu.h"
+#include "ld_addrs.h"
 
 u16 heap_nextMallocID = 0;
 
@@ -435,6 +437,8 @@ void copy_matrix(Matrix4f src, Matrix4f dest) {
     bcopy(src, dest, sizeof(Matrix4f));
 }
 
+static struct { u32 ram; u32 rom } loadedSegmentMap[128]; // dict ram -> rom
+
 // maybe u32
 u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest) {
     u32 length = romEnd - romStart;
@@ -450,7 +454,35 @@ u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest) {
         nuPiReadRom((u32)romStart + i, vramDest + i, length - i);
     }
 
+    // Mark segment as loaded and return length
+    for (s32 i = 0; i < ARRAY_COUNT(loadedSegmentMap); i++) {
+        if (loadedSegmentMap[i].ram == (u32)vramDest) {
+            loadedSegmentMap[i].rom = (u32)romStart;
+            return length;
+        }
+    }
+    for (s32 i = 0; i < ARRAY_COUNT(loadedSegmentMap); i++) {
+        if (loadedSegmentMap[i].ram == 0) {
+            loadedSegmentMap[i].ram = (u32)vramDest;
+            loadedSegmentMap[i].rom = (u32)romStart;
+            return length;
+        }
+    }
+    debug_print("loadedSegmentMap overflow\n");
     return length;
+}
+
+b32 dma_is_segment_loaded(u32 romStart) {
+    // main is loaded by boot.s, and is always loaded
+    if (romStart == main_ROM_START)
+        return TRUE;
+
+    for (s32 i = 0; i < ARRAY_COUNT(loadedSegmentMap); i++) {
+        if (loadedSegmentMap[i].rom == romStart) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 s32 dma_write(Addr romStart, Addr romEnd, void* vramDest) {

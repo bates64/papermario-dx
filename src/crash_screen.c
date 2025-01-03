@@ -62,7 +62,7 @@ const char* gFPCSRFaultCauses[6] = {
     "Inexact operation",
 };
 
-char crashScreenAssertMessage[0x30] = {0};
+char crashScreenAssertMessage[0x60] = {0};
 
 void crash_screen_set_assert_info(const char* message) {
     strncpy(crashScreenAssertMessage, message, sizeof(crashScreenAssertMessage));
@@ -328,7 +328,7 @@ void crash_screen_draw(OSThread* faultedThread) {
 
     for (; i < max; i++) {
         backtrace_address_to_string(bt[i], buf);
-        crash_screen_printf_proportional(x + 10, y += 10, "at %s", buf);
+        crash_screen_printf_proportional(x + 10, y += 10, "in %s", buf);
     }
 
     y += 5;
