@@ -342,6 +342,7 @@ segments:
     - [auto, c, gcc/umoddi3, -g2]
     - [auto, c, os/strcpy, gcc_272 -O1]
     - [auto, c, os/strcmp, gcc_272 -O1]
+    - [auto, c, os/strncmp]
     - [auto, c, os/memset, gcc_272 -O1]
     - [auto, a, libgcc_vr4300]
     - [auto, hasm, os/decode_yay0]
