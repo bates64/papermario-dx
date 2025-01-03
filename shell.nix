@@ -6,9 +6,13 @@ let
     gcc.tune = "vr4300";
     gcc.abi = "32";
   };
+  # pin nixpkgs-unstable
+  nixpkgs = (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/81934660d6e9ea54d2f0cdee821e8533b10c221a.tar.gz";
+  });
 in
-{ pkgs ? import <nixpkgs> {}
-, pkgsCross ? import <nixpkgs> { inherit crossSystem; }
+{ pkgs ? import nixpkgs {}
+, pkgsCross ? import nixpkgs { inherit crossSystem; }
 , binutilsCrossOld ? (import (builtins.fetchTarball {
     # This commit uses binutils 2.39. We don't want binutils 2.40+ because of a performance regression in ld.
     url = "https://github.com/NixOS/nixpkgs/archive/55070e598e0e03d1d116c49b9eff322ef07c6ac6.tar.gz";
