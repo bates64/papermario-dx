@@ -69,7 +69,7 @@ The installer may ask for your password. The password prompt may not show any ch
 Get Nix to trust you by running this command:
 
 ```sh
-echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.custom.conf
+echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.custom.conf && pkill nix-daemon
 ```
 
 Next, run this command to make Nix available in your terminal:
@@ -80,22 +80,6 @@ Next, run this command to make Nix available in your terminal:
 
 You can check that Nix is installed correctly by running `nix --version`.
 You should see something like "nix (Nix)" followed by a version number.
-
-### Install Cachix
-
-Run the following command to install Cachix:
-
-```sh
-nix-env -iA cachix -f https://cachix.org/api/v1/install
-```
-
-Then, tell Cachix to use the `papermario-dx` cache:
-
-```sh
-cachix use papermario-dx
-```
-
-The cache allows Nix to download tools that are needed to build DX, rather than building them from scratch. This will save you a lot of time.
 
 ### Provide your base ROM
 
@@ -140,7 +124,10 @@ Later, you can open DX again in Visual Studio Code by using the 'Recent' menu on
 
 ### Run the game
 
-**Press Ctrl+Shift+B (Cmd+Shift+B on macOS) to build the game.** This can take a while (more than 5 minutes) the first time you do it depending on how fast your computer is.
+With Visual Studio Code open, **press Ctrl+Shift+B (Cmd+Shift+B on macOS) to build the game.**
+
+- If you are prompted about adding to `extra-substituters` and `extra-trusted-public-keys`, type `y` and press Enter.
+- This can take a while (more than 5 minutes) the first time you do it depending on how fast your computer is. Go get a snack or something.
 
 DX will automatically try to run the game in a known emulator after building. If you don't have an emulator already, I recommend using [ares](https://ares-emu.net) because it is very accurate. If you don't regularly test with ares and/or real hardware, your mod may not work correctly for others.
 

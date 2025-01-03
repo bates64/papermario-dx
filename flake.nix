@@ -7,6 +7,16 @@
 
     flake-utils.url = "github:numtide/flake-utils";
   };
+  nixConfig = {
+    extra-substituters = [
+      "https://papermario-dx.cachix.org"
+      "https://papermario-dx-aarch64-darwin.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "papermario-dx.cachix.org-1:VTXILrqiajck9s5U2O3nDJH0pAI64GAJK41b2pt1JIk="
+      "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
+    ];
+  };
   outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39 }:
     flake-utils.lib.eachDefaultSystem (system:
       let

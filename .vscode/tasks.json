@@ -4,7 +4,7 @@
     {
       "label": "Run Mod",
       "type": "shell",
-      "command": "nix develop --command ./run",
+      "command": "nix develop --profile .nix-profile --command ./run",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
