@@ -17,13 +17,13 @@ RED="\033[1;31m"
 GREEN='\033[1;32m'
 RESET='\033[0m'
 
-DX_DIR=~/papermario-dx
+DX_DIR="${DX_DIR:-~/papermario-dx}"
 COMPLETE=0
 
 # Check for $DX_DIR; if it exists, exit
-if [ -d $DX_DIR ]; then
+if [ -d "$DX_DIR" ]; then
     COMPLETE=1
-    echo -e "${RED}Paper Mario DX is already installed in $DX_DIR!${RESET}"
+    echo -e "${RED}$DX_DIR already exists!${RESET}"
     echo -e "${RED}If you would like to reinstall, run the following command, then try again:${RESET}"
     echo -e "${YELLOW}    rm -rf $DX_DIR${RESET}"
     exit 1
@@ -45,13 +45,18 @@ fi
 
 # Ensure we are in Nix trusted-users so we can add caches
 if ! nix config show | grep -q -E "^trusted-users = .* ${USER}($| )"; then
+    # TODO: extend existing trusted-users
     echo -e "${PURPLE}Adding $USER to Nix trusted-users...${RESET}"
-    echo "trusted-users = $USER" | sudo tee -a /etc/nix/nix.conf
+    echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
 fi
 
 # Prompt for baserom
 echo -e "${PURPLE}Drag and drop a Paper Mario (US) ROM file below, then press Enter.${RESET}"
 read -r -p "> " baserom
+# Some terminals wrap the path in quotes, so remove them
+baserom="${baserom%\"}"
+baserom="${baserom#\"}"
+# Convert Windows path to Linux path
 if command -v wslpath > /dev/null; then
     baserom=$(wslpath -u "$baserom")
 fi
@@ -72,8 +77,8 @@ cp "$baserom" papermario.us.z64
 nix-store --add-fixed sha256 papermario.us.z64
 
 # Clone the repository
-git clone https://github.com/bates64/papermario-dx.git $DX_DIR --depth 1
-cd $DX_DIR
+git clone https://github.com/bates64/papermario-dx.git "$DX_DIR" --depth 1
+cd "$DX_DIR"
 
 # Prepare devshell
 echo -e "${PURPLE}Downloading dependencies and splitting assets from ROM...${RESET}"
