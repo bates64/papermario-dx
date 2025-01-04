@@ -20,6 +20,12 @@
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+#define EXTERN_C extern "C"
+#else
+#define EXTERN_C extern
+#endif
+
 #define NAME_SUFFIX
 #define NAME_PREFIX
 #ifdef _LANGUAGE_C_PLUS_PLUS

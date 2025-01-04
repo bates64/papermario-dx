@@ -5,6 +5,7 @@
 #include "gcc/string.h"
 #include "nu/nusys.h"
 #include "backtrace.h"
+#include "PR/osint.h"
 
 /** @brief Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
@@ -397,10 +398,12 @@ void backtrace_address_to_string(u32 address, char* dest) {
     s32 offset = address2symbol(address, &sym);
 
     if (offset >= 0 && offset < 0x1000) { // 0x1000 = arbitrary func size limit
-        char name[32];
-        char file[32];
+        char name[0x40];
+        char file[0x40];
         char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+
+        offset = 0; // Don't show offsets
 
         if (filep == NULL)
             if (offset == 0)
@@ -413,7 +416,7 @@ void backtrace_address_to_string(u32 address, char* dest) {
             else
                 sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
     } else {
-        sprintf(dest, "0x%08X", address);
+        sprintf(dest, "%p", address);
     }
 }
 

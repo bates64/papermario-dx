@@ -16,6 +16,7 @@ expected/
 /ver/*/assets
 ctx.c.m2c
 /data2c
+.nix-profile*
 
 # Build artifacts
 build.ninja

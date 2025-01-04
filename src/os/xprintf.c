@@ -155,6 +155,7 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
         case 'X':
         case 'u':
         case 'o':
+        case 'p':
             if (x->qual == 'l') {
                 x->v.ll = va_arg(*args, int);
             } else if (x->qual == 'L') {
@@ -169,11 +170,11 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
                 x->v.ll = (unsigned int)x->v.ll;
             }
 
-            if (x->flags & FLAGS_HASH) {
+            if ((x->flags & FLAGS_HASH) || type == 'p') {
                 buff[x->n0++] = '0';
 
-                if (type == 'x' || type == 'X') {
-                    buff[x->n0++] = type;
+                if (type == 'x' || type == 'X' || type == 'p') {
+                    buff[x->n0++] = 'x';
                 }
             }
 
@@ -210,11 +211,6 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
                 *va_arg(*args, unsigned int *) = x->nchar;
             }
 
-            break;
-        case 'p':
-            x->v.ll = (unsigned int)va_arg(*args, void *);
-            x->s = (char *)&buff[x->n0];
-            _Litob(x, 'x');
             break;
         case 's':
             x->s = va_arg(*args, char *);

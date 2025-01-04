@@ -27,7 +27,7 @@
         "ver/jp/expected": true,
         "ver/us/expected": true,
         "ver/pal/expected": true,
-        "ver/ique/expected": true
+        "ver/ique/expected": true,
     },
     "python.autoComplete.extraPaths": [
         "./tools"
@@ -62,6 +62,7 @@
         ".n2_db": true,
         "venv": true,
         "compile_commands.json": true,
+        ".nix-profile*": true,
     },
     "[python]": {
         "editor.formatOnType": true,

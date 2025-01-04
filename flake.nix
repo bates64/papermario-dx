@@ -7,6 +7,16 @@
 
     flake-utils.url = "github:numtide/flake-utils";
   };
+  nixConfig = {
+    extra-substituters = [
+      "https://papermario-dx.cachix.org"
+      "https://papermario-dx-aarch64-darwin.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "papermario-dx.cachix.org-1:VTXILrqiajck9s5U2O3nDJH0pAI64GAJK41b2pt1JIk="
+      "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
+    ];
+  };
   outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39 }:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -44,7 +54,34 @@
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
       in {
-        # TODO: migrate devShell from shell.nix. requires python dependencies to be derivations, as flakes are pure
+        devShells.default = pkgsCross.mkShell {
+          name = "papermario-dx";
+          venvDir = "./venv";
+          packages = with pkgs; [
+            ninja # needed for ninja -t compdb in run, as n2 doesn't support it
+            n2 # same as ninja, but with prettier output
+            zlib
+            libyaml
+            python3
+            python3Packages.virtualenv
+            ccache
+            git
+            iconv
+            gcc # for n64crc
+            (callPackage ./tools/pigment64.nix {})
+            (callPackage ./tools/crunch64.nix {})
+          ];
+          shellHook = ''
+            rm -f ./ver/us/baserom.z64 && ln -s ${baseRom} ./ver/us/baserom.z64
+            export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+
+            # Install python packages (TODO: use derivations)
+            virtualenv venv --quiet
+            source venv/bin/activate
+            pip install -r ${./requirements.txt} --quiet
+            pip install -r ${./requirements_extra.txt} --quiet
+          '';
+        };
       }
     );
 }
