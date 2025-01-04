@@ -31,17 +31,11 @@ You will need:
     </p>
 </details>
 
-### Step 1. Install WSL (Windows 10 only)
+### Step 1. Install WSL (Windows only)
 
-If you're on Windows 10, please set up Windows Subsystem for Linux:
-
-1. Install or upgrade to **WSL 2** following [these instructions](https://aka.ms/wsl2-install) (Ubuntu is recommended)
-2. Open a WSL terminal (may be called "Ubuntu" or similar)
-3. Run the following command: `sudo apt update && sudo apt upgrade && cd ~`
-
-If you're on Windows 11, you can skip this step. If you're on an earlier version of Windows, you'll need to use a virtual machine or dual-boot Linux.
-
-This step is necessary because DX uses a variety of tools that only work on Linux/macOS that don't work on Windows natively. WSL provides a Linux environment that can run these tools without any performance penalty.
+1. Open PowerShell in administrator mode by right-clicking and selecting "Run as administrator".
+2. Type `wsl --install` and press Enter.
+3. Restart your computer.
 
 ### Step 2. Install Visual Studio Code
 
@@ -51,13 +45,17 @@ Download and install Visual Studio Code (VSCode), a code editor that works well 
 
 ### Step 3. Run the setup script
 
-Open a terminal:
+#### Windows
 
-- On Windows, open the WSL terminal you installed earlier. (Do **not** use the Command Prompt or PowerShell.)
-- On macOS, open Terminal.
-- On Linux, open your terminal emulator of choice.
+Open PowerShell. Copy the following command and paste it into PowerShell with Ctrl+Shift+V:
 
-Copy the following command and paste it into the terminal with Ctrl+Shift+V (Cmd+V on macOS):
+```sh
+wsl --exec 'bash <(curl -Ls https://bates64.com/setup-dx.sh)'
+```
+
+#### macOS and Linux
+
+Open a terminal. Copy the following command and paste it into the terminal with Ctrl+Shift+V or Cmd+V:
 
 ```sh
 bash <(curl -Ls https://bates64.com/setup-dx.sh)
