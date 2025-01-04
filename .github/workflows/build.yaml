@@ -33,7 +33,7 @@ jobs:
       - name: Build game
         run: nix develop --command "ninja"
       - name: Build patch file
-        run: nix develop --command "ninja ver/us/build/papermario.bps"
+        run: nix develop --command ninja ver/us/build/papermario.bps
       - name: Get repository name
         id: repo-name
         uses: MariachiBear/get-repo-name-action@v1.1.0
