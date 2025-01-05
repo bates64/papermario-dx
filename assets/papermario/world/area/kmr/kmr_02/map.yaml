@@ -1,0 +1,17 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, npc]
+- [auto, c, rooms_1]
+- [auto, c, entity]
+- [auto, c, rooms_2]
+- [auto, c, kammy]
+- [auto, c, foliage]
+- [auto, c, images]
+- start: auto
+  type: .data
+  name: images
+  subsegments:
+  - [auto, ci4, heart_block, 32, 32]
+  - [auto, palette, heart_block]

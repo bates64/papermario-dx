@@ -1,0 +1,23 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, entity]
+- [auto, c, main]
+- [auto, c, rooms]
+- [auto, c, npc]
+- start: 0x96DFA0
+  type: .data
+  name: npc
+  subsegments:
+  - [0x96DFA0]
+  - [0x9707A8, ci4, card, 32, 32]
+  - [0x9709A8, palette, card]
+  - [0x9709C8, vtx, card_1]
+  - [0x970A48, vtx, card_2]
+  - [0x970A88, gfx, card_setup]
+  - [0x970B78, gfx, card_1]
+  - [0x970BF8, gfx, card_2]
+  - [0x970C40]
+  - [0x971F98] # unmapped vtx/gfx for toad house blanket
+  - [0x973AE0]
+- [0x9780D0]

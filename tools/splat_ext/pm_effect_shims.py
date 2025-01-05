@@ -27,7 +27,7 @@ glabel {name}
 """
 
     def shim_path(self, shim: str):
-        return options.opts.build_path / "asm" / "effect_shims" / f"{shim}.s"
+        return options.opts.asm_path / "effect_shims" / f"{shim}.s"
 
     def __init__(
         self,

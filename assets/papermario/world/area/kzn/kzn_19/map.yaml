@@ -1,0 +1,17 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, npc_settings]
+- [auto, c, npc]
+- [auto, c, eruption]
+- [auto, c, entity]
+- start: 0xC90BF0
+  type: .data
+  name: npc
+  subsegments:
+  - [0xC90BF0]
+  - [0xC91088, ci4, ../../../lava_piranha/vine, 64, 32]
+  - [0xC91488, palette, ../../../lava_piranha/vine]
+  - [0xC91688, gfx_common, ../../../lava_piranha/vine]
+  - [0xC91768]

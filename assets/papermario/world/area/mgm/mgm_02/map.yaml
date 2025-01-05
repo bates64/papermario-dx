@@ -1,0 +1,11 @@
+segments:
+- [auto, c, settings]
+- [auto, c, main]
+- [auto, c, npc]
+- [auto, c, images]
+- start: auto
+  type: .data
+  name: images
+  subsegments:
+  - [auto, ci4, panel_peach, 32, 32]
+  - [auto, palette, panel_peach]

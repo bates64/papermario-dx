@@ -1,0 +1,15 @@
+segments:
+- [auto, c, settings]
+- [auto, c, main]
+- [auto, c, entity]
+- [auto, c, splash]
+- [auto, c, npc]
+- [auto, c, slide]
+- start: 0x913070
+  type: .data
+  name: splash
+  subsegments:
+  - [0x913070, i8, splash, 32, 32]
+  - [0x913470, vtx, splash]
+  - [0x9134B0, gfx, splash]
+  - [0x913578]

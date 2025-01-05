@@ -1,0 +1,12 @@
+segments:
+- [auto, c, settings]
+- [auto, c, main]
+- [auto, c, npc]
+- start: auto
+  type: .data
+  name: npc
+  subsegments:
+  - [auto, ia8, window_ul, 8, 8]
+  - [auto, ia8, window_ur, 8, 8]
+  - [auto, ia8, window_ll, 8, 8]
+  - [auto, ia8, window_lr, 8, 8]

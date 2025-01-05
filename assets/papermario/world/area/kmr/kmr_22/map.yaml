@@ -1,0 +1,13 @@
+segments:
+- [auto, c, settings]
+- [auto, c, main]
+- [auto, c, npc]
+- start: 0x900A80
+  type: .data
+  name: npc
+  subsegments:
+  - [0x900A80]
+  - [0x900F70, ci4, lava_piranha_vine, 64, 32]
+  - [0x901370, palette, lava_piranha_vine]
+  - [0x901570, gfx, lava_piranha_vine]
+  - [0x901650]

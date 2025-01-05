@@ -1,0 +1,29 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, entity]
+- [auto, c, npc]
+- [auto, c, scenes]
+- [auto, c, monstar_gfx]
+- [auto, c, monstar_vtx]
+- start: auto
+  type: .data
+  name: npc
+  subsegments:
+  - [auto, ci4, monstar, 32, 32]
+  - [auto, ia4, monstar_blank1, 32, 32]
+  - [auto, ia4, monstar_blank2, 32, 32]
+  - [auto, ia4, monstar_blank3, 32, 32]
+  - [auto, palette, monstar]
+  - start: auto
+  type: .data
+  name: monstar_gfx
+  subsegments:
+  - [auto, gfx, monstar]
+- start: auto
+  type: .data
+  name: monstar_vtx
+  subsegments:
+  - [0xD1F890, vtx, monstar]
+- [0xD1FCB0]

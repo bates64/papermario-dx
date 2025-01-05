@@ -1,0 +1,20 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, rooms]
+- [auto, c, documents]
+- [auto, c, entity]
+- [auto, c, trees]
+- [auto, c, bushes]
+- [auto, c, bed]
+- [auto, c, npc_scenes]
+- [auto, c, npc]
+- [auto, c, npc_intro]
+- [auto, c, npc_epilogue]
+- [auto, c, records]
+- start: auto
+  type: .data
+  name: records
+  subsegments:
+  - [auto, gfx, records_screen]

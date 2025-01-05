@@ -7,6 +7,9 @@
 #pragma GCC diagnostic warning "-Wreturn-mismatch"
 #endif
 
+// TEMP until we get rid of all version differences
+#define VERSION_US 1
+
 #include "ultra64.h"
 #include "gbi_custom.h"
 #include "types.h"

@@ -74,7 +74,7 @@ class RunHash:
     def __init__(self):
         self.path = Path("./.run_hash")
         self.old_hash = self.path.read_text() if self.path.exists() else None
-        self.new_hash = combine_hashes(get_tree_hash(include_staged=True), hash_file("ver/us/splat.yaml"))
+        self.new_hash = combine_hashes(get_tree_hash(include_staged=True), hash_file("ver/us/splat.yaml")) # TODO: hash all yaml files
 
     def changed(self):
         return self.old_hash != self.new_hash

@@ -1,0 +1,15 @@
+*.png
+*.bgm
+*.sbn
+*.bk
+*.sef
+*.per
+*.prg
+*.mseq
+*.vtx.inc.c
+*.gfx.inc.c
+*.bin
+*.xml
+*.json
+*.msg
+audio/sbn.yaml

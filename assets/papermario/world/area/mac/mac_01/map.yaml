@@ -1,0 +1,22 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, entity]
+- [auto, c, rooms]
+- [auto, c, shop]
+- [auto, c, crystal_ball_gfx]
+- [auto, c, bulletin]
+- [auto, c, music_mix]
+- [auto, c, npc]
+- [auto, c, intro_npc]
+- [auto, c, epilogue_npc]
+- [auto, c, intro]
+- [auto, c, foliage]
+- start: auto
+  type: .data
+  name: npc
+  subsegments:
+  - [auto, vtx_common, ../../../toad_house/blanket]
+  - [auto, gfx_common, ../../../toad_house/blanket]
+  - [auto, rgba16, ../../../toad_house/blanket, 16, 32, namespaced]

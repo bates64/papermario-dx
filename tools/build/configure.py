@@ -10,6 +10,7 @@ import sys
 import ninja_syntax
 from glob import glob
 import json
+from configure.assets_to_splat import find_splat_yamls_in_asset_dirs, generate_splat_yaml_for_assets
 
 # Configuration:
 VERSIONS = ["us"]
@@ -71,7 +72,7 @@ def write_ninja_rules(
     BFDNAME = "elf32-tradbigmips"
 
     CPPFLAGS_COMMON = (
-        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_FINALROM "
+        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -D_FINALROM "
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
@@ -417,6 +418,9 @@ class Configure:
         if shift:
             splat_files += [str(self.version_path / "splat-shift.yaml")]
 
+        if self.version == "dx":
+            splat_files += ["assets/stack.yaml", *find_splat_yamls_in_asset_dirs(), generate_splat_yaml_for_assets()]
+
         split.main(
             splat_files,
             modes,
@@ -470,13 +474,13 @@ class Configure:
 
     # Given a directory relative to assets/, return a list of all assets in the directory
     # for all layers of the asset stack
-    def get_asset_list(self, asset_dir: str) -> List[str]:
+    def get_asset_list(self, asset_dir: str, recursive: bool = False) -> List[str]:
         ret: Dict[Path, Path] = {}
 
         for stack_dir in self.asset_stack:
             path_stem = f"assets/{stack_dir}/{asset_dir}"
 
-            for p in Path(path_stem).glob("**/*"):
+            for p in Path(path_stem).glob("**/*" if recursive else "*"):
                 glob_part = p.relative_to(path_stem)
                 if glob_part not in ret:
                     ret[glob_part] = p
@@ -490,6 +494,10 @@ class Configure:
 
         parts = list(path.parts)
 
+        if parts[0] == "src":
+            parts[0] = "assets"
+            parts.insert(1, self.version)
+
         if parts[0] != "assets":
             return path
 
@@ -500,6 +508,12 @@ class Configure:
                 return new_path
 
         return path
+
+    def include_flags_for_assets(self) -> str:
+        flags = ""
+        for asset_dir in self.asset_stack:
+            flags += f" -Iassets/{asset_dir}"
+        return flags
 
     def write_ninja(
         self,
@@ -558,9 +572,11 @@ class Configure:
                     if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
                         implicit.append(str(precompiled_header_path))
 
+                    variables["cppflags"] = variables.get("cppflags", "") + " " + self.include_flags_for_assets()
+
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
-                    inputs.extend(self.get_asset_list(dir))
+                    inputs.extend(self.get_asset_list(dir, recursive=True))
                 ninja.build(
                     outputs=object_strs,  # $out
                     rule=task,
@@ -573,7 +589,7 @@ class Configure:
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
-        effect_data_outdir = ROOT / "assets" / version / "effects"
+        effect_data_outdir = ROOT / "assets" / "papermario" / "effects"
         effect_macros_path = effect_data_outdir / "effect_macros.h"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
@@ -815,6 +831,7 @@ class Configure:
 
                             assert seg.vram_start is not None, "img with vram_start unset: " + seg.name
 
+                            # FIXME TODO FIXME TODO this is generating D_xxx instead of real names since changing to assets/papermario
                             c_sym = seg.create_symbol(
                                 addr=seg.vram_start,
                                 in_segment=True,
@@ -986,7 +1003,7 @@ class Configure:
                     "sprites",
                     variables={
                         "header_out": sprite_player_header_path,
-                        "build_dir": str(self.build_path() / "assets" / self.version / "sprite"),
+                        "build_dir": str(self.build_path() / "assets" / "papermario" / "sprite"),
                         "asset_stack": ",".join(self.asset_stack),
                     },
                     implicit_outputs=[sprite_player_header_path],
@@ -1462,6 +1479,14 @@ if __name__ == "__main__":
             except OSError:
                 pass
 
+        shutil.rmtree(ROOT / f"ver/dx/build", ignore_errors=True)
+        try:
+            os.remove(ROOT / f"ver/dx/.splat_cache")
+        except OSError:
+            pass
+
+        exec_shell(["git", "clean", "-fDX", str(ROOT / f"assets/papermario")])
+
     extra_cflags = ""
     extra_cppflags = ""
     if args.non_matching:
@@ -1506,29 +1531,23 @@ if __name__ == "__main__":
     first_configure = None
 
     for version in versions:
-        print(f"configure: configuring version {version}")
+        # asset_dir_exists = Path(f"assets/{version}").exists()
+        # if asset_dir_exists:
+        #     continue
 
-        if version == "ique" and not args.non_matching and sys.platform == "darwin":
-            print(
-                "configure: refusing to build iQue Player version on macOS because EGCS compiler is not available (use --non-matching to use default compiler)"
-            )
-            continue
+        print(f"configure: splitting version {version}")
 
         configure = Configure(version)
-
-        if not first_configure:
-            first_configure = configure
 
         # include tools/splat_ext in the python path
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
-        configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
-        configure.write_ninja(ninja, skip_files, non_matching, args.modern_gcc, args.c_maps)
+        configure.split(True, False, False, False)
 
-        all_rom_oks.append(str(configure.rom_ok_path()))
+    configure = Configure("dx")
+    configure.split(False, False, True, args.debug)
+    configure.write_ninja(ninja, skip_files, non_matching, args.modern_gcc, args.c_maps)
+    configure.make_current(ninja)
 
-    assert first_configure, "no versions configured"
-    first_configure.make_current(ninja)
-
-    ninja.build("all", "phony", all_rom_oks)
+    ninja.build("all", "phony", [str(configure.rom_ok_path())])
     ninja.default("all")

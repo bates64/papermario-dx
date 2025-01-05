@@ -107,7 +107,7 @@ glabel fx_{name}
         self.effects = effects_from_yaml(options.opts.src_path / "effects.yaml")
 
     def effect_s_path(self, effect_name: str):
-        return options.opts.build_path / "asm" / "effects" / f"{effect_name}.s"
+        return options.opts.asm_path / "effects" / f"{effect_name}.s"
 
     def split(self, rom_bytes):
         for i, effect in enumerate(self.effects):

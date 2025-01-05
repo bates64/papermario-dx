@@ -4,7 +4,7 @@
 
 #define NAMESPACE A(omo_01)
 
-// following part is very similar to RockingHorse.inc.c in world/area_omo,
+// following part is very similar to RockingHorse.inc.c in world/area/omo,
 // but it does not match it exactly
 
 extern EvtScript N(EVS_UpdateRockingHorse);

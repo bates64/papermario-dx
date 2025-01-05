@@ -1,0 +1,13 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, npc]
+- [auto, c, entity]
+- [auto, c, foliage]
+- start: auto
+  type: .data
+  name: foliage
+  subsegments:
+  - [auto, ci4, hammer_block_message, 48, 48]
+  - [auto, palette, hammer_block_message]

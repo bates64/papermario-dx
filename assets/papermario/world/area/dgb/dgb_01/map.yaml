@@ -1,0 +1,66 @@
+segments:
+- [auto, c, settings]
+- [auto, c, music]
+- [auto, c, main]
+- [auto, c, bridges]
+- [auto, c, entity]
+- [auto, c, npc]
+- [auto, c, img0]
+- [auto, c, img1]
+- [auto, c, img2]
+- [auto, c, img3]
+- [auto, c, img4]
+- [auto, c, img5]
+- [auto, c, img6]
+- [auto, c, img7]
+- [auto, c, gfx]
+- start: 0xC047F0
+  type: .data
+  name: img0
+  subsegments:
+  - [0xC047F0, rgba16, img0, 64, 32]
+  - [0xC057F0, gfx, img0]
+- start: 0xC05870
+  type: .data
+  name: img1
+  subsegments:
+  - [0xC05870, rgba16, img1, 64, 32]
+  - [0xC06870, gfx, img1]
+- start: 0xC068F0
+  type: .data
+  name: img2
+  subsegments:
+  - [0xC068F0, rgba16, img2, 32, 32]
+  - [0xC070F0, gfx, img2]
+- start: 0xC07170
+  type: .data
+  name: img3
+  subsegments:
+  - [0xC07170, rgba16, img3, 16, 32]
+  - [0xC07570, gfx, img3]
+- start: 0xC075F0
+  type: .data
+  name: img4
+  subsegments:
+  - [0xC075F0, rgba16, img4, 16, 32]
+  - [0xC079F0, gfx, img4]
+- start: 0xC07A70
+  type: .data
+  name: img5
+  subsegments:
+  - [0xC07A70, rgba16, img5, 16, 32]
+  - [0xC07E70, gfx, img5]
+- start: 0xC07EF0
+  type: .data
+  name: img6
+  subsegments:
+  - [0xC07EF0, rgba16, img6, 32, 32]
+  - [0xC086F0, gfx, img6]
+- start: 0xC08770
+  type: .data
+  name: img7
+  subsegments:
+  - [0xC08770, rgba16, img7, 32, 32]
+  - [0xC08F70, gfx, img7]
+- [0xC08FF0, .data, gfx] # TODO needs additioanl cleanup and gfx splitting
+- [0xC20C70]

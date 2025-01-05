@@ -47,7 +47,7 @@
         ".align 3\n" \
         ".type " #SYMBOLNAME", @object\n" \
         #SYMBOLNAME":\n" \
-        ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/assets/"ASTRINGIFY(VERSION)"/" FILENAME "\"\n" \
+        ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/assets/papermario/" FILENAME "\"\n" \
         POPSECTION \
     )
 
