@@ -68,11 +68,13 @@ def write_ninja_rules(
     cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
     cxx_modern = f"{cross}g++"
 
+    ultralib_include = os.getenv("ULTRALIB_INCLUDE")
+
     BFDNAME = "elf32-tradbigmips"
 
     CPPFLAGS_COMMON = (
-        "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_FINALROM "
-        "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
+        f"-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -I{ultralib_include} "
+        "-D_FINALROM -DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32 "
     )
 
     CPPFLAGS_272 = CPPFLAGS_COMMON + " -nostdinc"
@@ -83,7 +85,7 @@ def write_ninja_rules(
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
-    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
+    cflags_modern = f"-c -G0 -Ofast -gdwarf-2 -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
     cflags_272 = cflags_272.replace("-ggdb3", "-g1")
@@ -202,7 +204,7 @@ def write_ninja_rules(
     ninja.rule(
         "cp",
         description="cp $in $out",
-        command=f"cp $in $out",
+        command=f"rm -f $out && cp $in $out",
     )
 
     ninja.rule(
@@ -737,6 +739,10 @@ class Configure:
                         cppflags += " -DBBPLAYER"
                     elif entry.src_paths[0].parts[-2] == "bss":
                         cppflags += " -DBBPLAYER"
+
+                # Effects must call via shims due to being TLB mapped
+                if "effects" in entry.src_paths[0].parts:
+                    cflags += " -fno-tree-loop-distribute-patterns" # Don't call memset etc
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
                 if version == "ique":

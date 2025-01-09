@@ -20,12 +20,16 @@
   outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39 }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        crossSystem = {
-          config = "mips-linux-gnu"; # prefix expected by scripts in tools/
-          system = "mips64-elf";
-          gcc.arch = "vr4300";
-          gcc.tune = "vr4300";
-          gcc.abi = "32";
+        crossSystem = { # very similiar to nixpkgs examples.mips64-embedded
+          config = "mips64-none-elf";
+          system = "mips64-none-elf";
+          libc = "newlib";
+          gcc = {
+            cpu = "vr4300";
+            arch = "vr4300";
+            tune = "vr4300";
+            abi = "32";
+          };
         };
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs { inherit system crossSystem; };
@@ -53,10 +57,10 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
+        ultralib = (pkgs.callPackage ./lib/ultralib.nix { stdenv = pkgsCross.stdenv; });
       in {
         devShells.default = pkgsCross.mkShell {
           name = "papermario-dx";
-          venvDir = "./venv";
           packages = with pkgs; [
             ninja # needed for ninja -t compdb in run, as n2 doesn't support it
             n2 # same as ninja, but with prettier output
@@ -68,8 +72,10 @@
             git
             iconv
             gcc # for n64crc
+            clang-tools
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
+            ultralib
           ];
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && ln -s ${baseRom} ./ver/us/baserom.z64
@@ -80,6 +86,9 @@
             source venv/bin/activate
             pip install -r ${./requirements.txt} --quiet
             pip install -r ${./requirements_extra.txt} --quiet
+
+            export ULTRALIB_INCLUDE=${ultralib}/include
+            export ULTRALIB=${ultralib}/lib/libultra_rom.a
           '';
         };
       }

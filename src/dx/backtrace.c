@@ -5,7 +5,7 @@
 #include "gcc/string.h"
 #include "nu/nusys.h"
 #include "backtrace.h"
-#include "PR/osint.h"
+#include "PRinternal/osint.h"
 
 /** @brief Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
