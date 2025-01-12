@@ -20,16 +20,12 @@
   outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39 }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        crossSystem = { # very similiar to nixpkgs examples.mips64-embedded
-          config = "mips64-none-elf";
-          system = "mips64-none-elf";
-          libc = "newlib";
-          gcc = {
-            cpu = "vr4300";
-            arch = "vr4300";
-            tune = "vr4300";
-            abi = "32";
-          };
+        crossSystem = {
+          config = "mips-linux-gnu"; # prefix expected by scripts in tools/
+          system = "mips64-elf";
+          gcc.arch = "vr4300";
+          gcc.tune = "vr4300";
+          gcc.abi = "32";
         };
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs { inherit system crossSystem; };

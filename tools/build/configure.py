@@ -85,7 +85,7 @@ def write_ninja_rules(
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
-    cflags_modern = f"-c -G0 -Ofast -gdwarf-2 -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
+    cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
     cflags_272 = cflags_272.replace("-ggdb3", "-g1")
@@ -1468,17 +1468,16 @@ if __name__ == "__main__":
             except OSError:
                 pass
 
+    args.debug = True
+
     extra_cflags = ""
     extra_cppflags = ""
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
 
         if args.debug:
-            extra_cflags += " -ggdb3"  # we can generate more accurate debug info in non-matching mode
+            #extra_cflags += " -ggdb3"
             extra_cppflags += " -DDEBUG"  # e.g. affects ASSERT macro
-    elif args.debug:
-        # g1 doesn't affect codegen
-        extra_cflags += " -ggdb3"
 
     if args.shift:
         extra_cppflags += " -DSHIFT"
