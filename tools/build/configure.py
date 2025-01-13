@@ -335,7 +335,7 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
+    ninja.rule("flips", command=f"bash -c 'flips $baserom $in $out || true'")
 
     ninja.rule(
         "check_segment_sizes",

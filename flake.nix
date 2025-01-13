@@ -70,7 +70,7 @@
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
-          ];
+          ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && ln -s ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
