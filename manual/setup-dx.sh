@@ -17,7 +17,7 @@ RED="\033[1;31m"
 GREEN='\033[1;32m'
 RESET='\033[0m'
 
-GIT_REPO="${GIT_REPO:-'https://github.com/bates64/papermario-dx.git'}"
+GIT_REPO="${GIT_REPO:-https://github.com/bates64/papermario-dx.git}"
 
 DX_DIR="${DX_DIR:-$HOME/papermario-dx}"
 DX_DIR="$(printf '%s\n' "$DX_DIR")" # Expand ~ in path
