@@ -57,6 +57,6 @@ Finally, run the mod to see your changes.
 
 | Previous                |                             Next |
 |:------------------------|---------------------------------:|
-|[Setup](manual/setup.md) |[Setup](manual/setup.md)          |
+|[Setup](manual/setup.md) |[Star Rod](manual/star-rod.md)    |
 
 </div>

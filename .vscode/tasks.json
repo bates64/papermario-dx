@@ -11,5 +11,14 @@
         "isDefault": true
       }
     },
+    {
+      "label": "Open Star Rod",
+      "type": "shell",
+      "command": "nix develop --profile .nix-profile --command star-rod",
+      "problemMatcher": [],
+      "group": {
+        "kind": "none"
+      },
+    }
   ]
 }

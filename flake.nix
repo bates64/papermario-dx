@@ -6,6 +6,9 @@
     nixpkgs-binutils-2_39.url = "github:NixOS/nixpkgs/55070e598e0e03d1d116c49b9eff322ef07c6ac6";
 
     flake-utils.url = "github:numtide/flake-utils";
+
+    star-rod.url = "github:z64a/star-rod";
+    star-rod.inputs.nixpkgs.follows = "nixpkgs";
   };
   nixConfig = {
     extra-substituters = [
@@ -17,7 +20,7 @@
       "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
     ];
   };
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39 }:
+  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         crossSystem = {
@@ -70,6 +73,7 @@
             gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
+            star-rod.packages.${system}.default
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && ln -s ${baseRom} ./ver/us/baserom.z64
