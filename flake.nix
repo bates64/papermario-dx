@@ -7,7 +7,7 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    star-rod.url = "github:z64a/star-rod";
+    star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
     star-rod.inputs.nixpkgs.follows = "nixpkgs";
   };
   nixConfig = {

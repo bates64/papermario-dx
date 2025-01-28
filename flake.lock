@@ -96,16 +96,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1737326908,
-        "narHash": "sha256-eD97rwOmk+DCEcYuu/TpwVDHfVCMcC3aFK5iG/pEKEQ=",
+        "lastModified": 1737918690,
+        "narHash": "sha256-ZWuKG9rHsxCEcV2z7fy4PrIWhLSIZNsPi9caT2ZRhxI=",
         "owner": "z64a",
         "repo": "star-rod",
-        "rev": "7452ec0cace88080f1f4d005b9b743884d711113",
+        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
         "type": "github"
       },
       "original": {
         "owner": "z64a",
         "repo": "star-rod",
+        "rev": "9339cb4e867514267ff8ab404b00b53e5a5e67dd",
         "type": "github"
       }
     },
