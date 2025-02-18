@@ -4,19 +4,6 @@
     "editor.rulers": [
         120
     ],
-    "clang-tidy.compilerArgs": [
-        "-std=gnu89",
-        "-Iinclude",
-        "-Iinclude/PR",
-        "-Iver/current/build/include",
-        "-Isrc",
-        "-D_LANGUAGE_C",
-        "-Wall"
-    ],
-    "clang-tidy.blacklist": [
-        "include/PR",
-        "include/gcc"
-    ],
     "git.ignoreLimitWarning": true,
     "search.exclude": {
         "**/*.i": true,
