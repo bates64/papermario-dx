@@ -146,7 +146,7 @@ void state_step_unpause(void) {
     MapSettings* mapSettings;
     MapConfig* mapConfig;
     void* mapShape;
-    s32 assetSize;
+    u32 assetSize;
 
     switch (StepPauseState) {
         case 0:

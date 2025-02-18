@@ -372,7 +372,6 @@ API_CALLABLE(VirtualEntityJumpTo) {
     f32 zTemp;
     s32 moveTime;
     f32 goalPosX;
-    f32 goalPosY;
     f32 goalPosZ;
 
     if (isInitialCall) {

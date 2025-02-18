@@ -33,9 +33,9 @@ void au_voice_set_vol_changed(AuVoice* arg0);
 //2e230_len_2190.c
 void func_80052E30(u8 index);
 void au_engine_init(s32 outputRate);
-static void au_reset_instrument(Instrument* instrument);
-static void au_reset_drum_entry(BGMDrumInfo* arg0);
-static void au_reset_instrument_entry(BGMInstrumentInfo* arg0);
+void au_reset_instrument(Instrument* instrument);
+void au_reset_drum_entry(BGMDrumInfo* arg0);
+void au_reset_instrument_entry(BGMInstrumentInfo* arg0);
 void au_update_clients_2(void);
 void au_update_players_main(void);
 void au_syn_update(AuGlobals* globals);
