@@ -102,7 +102,7 @@ def main():
     rom = windows_path(ROM) if wsl else ROM
 
     if emulator is not None:
-        subprocess.run([emulator, rom])
+        subprocess.Popen([emulator, rom], start_new_session=True)
     else:
         print("error: no emulator found")
         if wsl:
