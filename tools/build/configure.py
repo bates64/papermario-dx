@@ -445,6 +445,9 @@ class Configure:
         return self.elf_path().with_suffix(".bps")
 
     def baserom_path(self) -> Path:
+        env_var = f"PAPERMARIO_{self.version.upper()}_ROM"
+        if env_var in os.environ:
+            return Path(os.environ[env_var])
         return Path(f"ver/{self.version}/baserom.z64")
 
     def linker_script_path(self) -> Path:
