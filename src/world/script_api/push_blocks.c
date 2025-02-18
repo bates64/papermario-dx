@@ -491,7 +491,7 @@ API_CALLABLE(GetPushBlock) {
 
     if (gridX >= blockGrid->numCellsX || gridX < 0 || gridZ >= blockGrid->numCellsZ || gridZ < 0) {
         evt_set_variable(script, outVar, PUSH_GRID_OUT_OF_BOUNDS);
-        return;
+        return ApiStatus_DONE2;
     }
     cellIndex = gridX + (gridZ * blockGrid->numCellsX);
     evt_set_variable(script, outVar, blockGrid->cells[cellIndex]);

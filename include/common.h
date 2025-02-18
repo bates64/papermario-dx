@@ -1,11 +1,5 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
-#if defined __GNUC__ && __GNUC__ >= 14
-#pragma GCC diagnostic warning "-Wimplicit-function-declaration"
-#pragma GCC diagnostic warning "-Wincompatible-pointer-types"
-#pragma GCC diagnostic warning "-Wint-conversion"
-#pragma GCC diagnostic warning "-Wreturn-mismatch"
-#endif
 
 #include "ultra64.h"
 #include "gbi_custom.h"

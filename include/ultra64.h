@@ -22,6 +22,8 @@
 #ifndef _ULTRA64_H_
 #define _ULTRA64_H_
 
+#pragma GCC system_header
+
 #include <PR/ultratypes.h>
 #include <PR/rcp.h>
 #include <PR/os.h>

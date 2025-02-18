@@ -13,7 +13,6 @@ API_CALLABLE(N(GiveRefund)) {
     f32 posZ;
     f32 angle = 0.0f;
     s32 delayTime = 0;
-    s32 tempIcon;
 
     if (player_team_is_ability_active(player, ABILITY_REFUND) && sellValue > 0) {
         s32 iconX;
