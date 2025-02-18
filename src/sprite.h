@@ -157,7 +157,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale);
 
 s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 arg2, PAL_PTR* paletteList, Matrix4f mtx);
 
-s32 spr_get_notify_value(s32 arg0);
+s32 spr_get_notify_value(s32 spriteIndex);
 
 s32 spr_free_sprite(s32 spriteInstanceID);
 
@@ -165,7 +165,7 @@ s32 get_npc_comp_imgfx_idx(s32, s32);
 
 void set_npc_imgfx_comp(s32, s32, ImgFXType, s32, s32, s32, s32, s32);
 
-void set_npc_imgfx_all(s32 arg0, ImgFXType arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
+void set_npc_imgfx_all(s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 imgfxArg5);
 
 s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, s32* outZ);
 
