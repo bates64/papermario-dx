@@ -22,6 +22,8 @@ for entry in compdb:
         .replace("-mfp32", "")
         .replace("-mabi=32", "")
         .replace("-fno-toplevel-reorder", "")
+        .replace("-fcall-used-gp", "")
+        .replace("-freg-struct-return", "")
         .replace("-march=vr4300", "-D__mips__")
         .replace("-Wno-builtin-declaration-mismatch", "")
         .replace("-Wmissing-parameter-type", "")

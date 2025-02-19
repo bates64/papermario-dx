@@ -87,7 +87,7 @@ def write_ninja_rules(
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
-    cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
+    cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -freg-struct-return -fshort-enums -fcall-used-gp -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
     cflags_272 = cflags_272.replace("-ggdb3", "-g1")

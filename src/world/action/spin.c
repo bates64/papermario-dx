@@ -128,14 +128,14 @@ void action_update_spin(void) {
     }
 
     // update saved position and rotation values for motion blur effect
-    gSpinHistoryPosAngle[gSpinHistoryBufferPos++] = playerStatus->spriteFacingAngle;
+    gSpinHistoryPosAngle[gSpinHistoryBufferPos++] = (s16)playerStatus->spriteFacingAngle;
     if (gSpinHistoryBufferPos > ARRAY_COUNT(gSpinHistoryPosX)) {
         gSpinHistoryBufferPos = 0;
     }
     gSpinHistoryPosX[gSpinHistoryBufferPos] = playerStatus->pos.x;
     gSpinHistoryPosY[gSpinHistoryBufferPos] = playerStatus->pos.y;
     gSpinHistoryPosZ[gSpinHistoryBufferPos] = playerStatus->pos.z;
-    gSpinHistoryPosAngle[gSpinHistoryBufferPos] = playerStatus->spriteFacingAngle;
+    gSpinHistoryPosAngle[gSpinHistoryBufferPos] = (s16)playerStatus->spriteFacingAngle;
     gSpinHistoryBufferPos++;
     if (gSpinHistoryBufferPos > ARRAY_COUNT(gSpinHistoryPosX)) {
         gSpinHistoryBufferPos = 0;
@@ -194,7 +194,7 @@ void action_update_spin(void) {
 
     if (!(playerStatus->curStateTime > playerSpinState->fullSpeedSpinTime)) {
         speedModifier = (playerSpinState->inputMagnitude) ? playerSpinState->speedScale : 0.0f;
-        playerSpinState->spinDirectionMagnitude = playerSpinState->spinDirectionMagnitude + 0.9;
+        playerSpinState->spinDirectionMagnitude = playerSpinState->spinDirectionMagnitude + 0.9f;
 
         if (playerSpinState->spinDirectionMagnitude > 9.0f) {
             playerSpinState->spinDirectionMagnitude = 9.0f;
@@ -235,6 +235,8 @@ void action_update_spin(void) {
         case ACTION_STATE_WALK:
         case ACTION_STATE_RUN:
             playerStatus->curSpeed = playerStatus->runSpeed * speedModifier;
+            break;
+        default:
             break;
     }
     if (playerStatus->actionSubstate == SUBSTATE_SPIN_0) {

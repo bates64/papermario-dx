@@ -2422,7 +2422,7 @@ enum LightSourceFlags {
     LIGHT_SOURCE_QUADRATIC_FALLOFF  = 8,
 };
 
-enum ActionStates {
+enum ActionState {
     ACTION_STATE_IDLE                           = 0x00000000,
     ACTION_STATE_WALK                           = 0x00000001,
     ACTION_STATE_RUN                            = 0x00000002,
@@ -2514,7 +2514,7 @@ enum PeachBakingItems {
     PEACH_BAKING_CAKE_WITH_BERRIES      = 18,
 };
 
-enum PeachDisguises {
+enum PeachDisguise {
     PEACH_DISGUISE_NONE                 = 0,
     PEACH_DISGUISE_KOOPATROL            = 1,
     PEACH_DISGUISE_HAMMER_BROS          = 2,

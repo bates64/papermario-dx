@@ -133,7 +133,7 @@ void force_disable_actor_blur(Actor*);
 
 void player_handle_floor_collider_type(s32 colliderID);
 f32 player_fall_distance(void);
-void func_800E4AD8(s32 arg0);
+void func_800E4AD8(s32 mode);
 f32 player_check_collision_below(f32, s32* colliderID);
 b32 can_trigger_loading_zone(void);
 void update_damage_popups(void);
@@ -198,8 +198,8 @@ void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* cen
 HitID collision_main_above(void);
 void collision_lava_reset_check_additional_overlaps(void);
 s32 player_test_lateral_overlap(s32, PlayerStatus*, f32*, f32*, f32*, f32, f32);
-Npc* peach_make_disguise_npc(s32 peachDisguise);
-void peach_set_disguise_anim(AnimID);
+Npc* peach_make_disguise_npc(enum PeachDisguise peachDisguise);
+void peach_set_disguise_anim(AnimID anim);
 
 s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s32 width, s32 height, u8 opacity,
               u8 darkening, f32 scaleX, f32 scaleY, f32 rotX, f32 rotY, f32 rotZ, void (*fpDrawContents)(s32, s32, s32, s32, s32, s32, s32),

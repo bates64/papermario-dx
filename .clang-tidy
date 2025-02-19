@@ -1,4 +1,6 @@
-Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming,misc-include-cleaner,misc-header-include-cycle,misc-definitions-in-headers,misc-unused-using-decls,misc-use-anonymous-namespace,misc-redundant-expression,misc-unused-alias-decls,modernize-use-auto,bugprone-*,llvm-namespace-comment,fuchsia-multiple-inheritance,misc-const-correctness,misc-confusable-identifiers,misc-misplaced-const'
+# TODO:
+# - misc-header-include-cycle (once common.h is removed)
+Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming,misc-definitions-in-headers,misc-unused-using-decls,misc-use-anonymous-namespace,misc-redundant-expression,misc-unused-alias-decls,modernize-use-auto,bugprone-infinite-loop,bugprone-assert-side-effect,bugprone-forward-declaration-namespace,bugprone-sizeof-*,bugprone-narrowing-conversions,bugprone-return-const-ref-from-parameter,bugprone-use-after-move,llvm-namespace-comment,fuchsia-multiple-inheritance,misc-const-correctness,misc-confusable-identifiers,misc-misplaced-const'
 CheckOptions:
   - key: readability-identifier-naming.LocalVariableCase
     value: camelBack
@@ -24,4 +26,7 @@ CheckOptions:
 
   - key: bugprone-assert-side-effect.AssertMacros
     value: ASSERT,ASSERT_MSG
+
+  - key: bugprone-narrowing-conversions.WarnOnEquivalentBitWidth
+    value: false
 HeaderFilterRegex: '(src|include)\/[^P].*\.h' # ignore include/PR/

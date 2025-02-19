@@ -1409,7 +1409,7 @@ typedef struct GameStatus {
     /* 0x07C */ b8 healthBarsEnabled;
     /* 0x07D */ b8 keepUsingPartnerOnMapChange;
     /* 0x07E */ u8 peachFlags; // see PeachFlags enum
-    /* 0x07F */ s8 peachDisguise; // see PeachDisguises enum
+    /* 0x07F */ enum PeachDisguise peachDisguise;
     /* 0x080 */ u8 peachBakingIngredient; ///< @see PeachBakingItems enum
     /* 0x081 */ b8 multiplayerEnabled;
     /* 0x082 */ Vec2b altViewportOffset;
@@ -1977,12 +1977,12 @@ typedef struct SlideParams {
 } SlideParams; // size = 0x14
 
 typedef struct PlayerStatus {
-    /* 0x000 */ s32 flags; // PlayerStatusFlags
+    /* 0x000 */ enum PlayerStatusFlags flags;
     /* 0x004 */ u32 animFlags;
     /* 0x008 */ s16 curStateTime;
     /* 0x00A */ s8 shiverTime;
     /* 0x00B */ char unk_0B;
-    /* 0x00C */ s8 peachDisguise;
+    /* 0x00C */ enum PeachDisguise peachDisguise;
     /* 0x00D */ s8 availableDisguiseType; ///< set in main map scripts
     /* 0x00E */ u8 curAlpha;
     /* 0x00F */ u8 prevAlpha;
@@ -2017,8 +2017,8 @@ typedef struct PlayerStatus {
     /* 0x0AC */ char unk_AC[4];
     /* 0x0B0 */ s16 colliderHeight;
     /* 0x0B2 */ s16 colliderDiameter;
-    /* 0x0B4 */ s8 actionState;
-    /* 0x0B5 */ s8 prevActionState;
+    /* 0x0B4 */ enum ActionState actionState;
+    /* 0x0B5 */ enum ActionState prevActionState;
     /* 0x0B6 */ s8 actionSubstate;
     /* 0x0B7 */ char unk_B7;
     /* 0x0B8 */ AnimID anim;
@@ -2204,7 +2204,7 @@ typedef struct PlayerSpinState {
     /* 0x20 */ f32 spinRate;
     /* 0x24 */ f32 speedScale;
     /* 0x28 */ f32 frictionScale;
-    /* 0x2C */ s16 initialSpinTime;
+    /* 0x2C */ s8 initialSpinTime;
     /* 0x2E */ s16 fullSpeedSpinTime;
     /* 0x30 */ s32 spinSoundID;
 } PlayerSpinState; // size = 0x34

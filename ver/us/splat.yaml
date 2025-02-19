@@ -395,7 +395,7 @@ segments:
     - [auto, c, 77480]
     - [auto, c, 7B440]
     - [auto, c, 7BB60]
-    - [auto, c, 7E9D0]
+    - [auto, c, world/disguise]
     - [auto, c, world/menus]
     - [auto, c, inventory]
     - [auto, c, world/actions]
