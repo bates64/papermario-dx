@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Tuple
 
-ASSETS_DIR = Path(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))) / "assets"
+ASSETS_DIR = Path("assets")
 
 
 @lru_cache(maxsize=None)

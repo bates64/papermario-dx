@@ -16,11 +16,9 @@ VERSIONS = ["us"]
 DO_SHA1_CHECK = False
 
 # Paths:
-ROOT = Path(__file__).parent.parent.parent
-if ROOT.is_absolute():
-    ROOT = ROOT.relative_to(Path.cwd())
+ROOT = Path(".")
 
-BUILD_TOOLS = Path("tools/build")
+BUILD_TOOLS = Path("tools/build") # TODO: integrate the tools into this pyproject as their own scripts
 CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 PIGMENT64 = "pigment64"
@@ -90,7 +88,7 @@ def write_ninja_rules(
 
     cflags_egcs = f"-c -fno-PIC -mno-abicalls -mcpu=4300 -G 0 -x c -B {cc_egcs_dir} {extra_cflags}"
 
-    ninja.variable("python", sys.executable)
+    ninja.variable("python", "python3")
 
     ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
@@ -119,7 +117,7 @@ def write_ninja_rules(
     ninja.rule(
         "z64",
         description="rom $out",
-        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out && {BUILD_TOOLS}/rom/n64crc $out",
+        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && $python {BUILD_TOOLS}/append_symbol_table.py $out && {BUILD_TOOLS}/rom/n64crc $out",
         pool="console",
     )
 
@@ -168,7 +166,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_egcs",
         description="cc_egcs $in",
-        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
+        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && $python ./tools/patch_64bit_compile.py $out'",
     )
 
     ninja.rule(
@@ -335,8 +333,6 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    ninja.rule("flips", command=f"bash -c 'flips $baserom $in $out || true'")
-
     ninja.rule(
         "check_segment_sizes",
         description="check segment sizes $in",
@@ -354,34 +350,16 @@ def write_ninja_for_tools(ninja: ninja_syntax.Writer):
     ninja.build(CRC_TOOL, "cc_tool", f"{BUILD_TOOLS}/rom/n64crc.c")
 
 
-def does_iconv_work() -> bool:
-    # run iconv and see if it works
-    stdin = "エリア ＯＭＯ２＿１".encode("utf-8")
-
-    def run(command, stdin):
-        sub = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=stdin, cwd=ROOT)
-        return sub.stdout
-
-    expected_stdout = run(["tools/build/iconv.py", "UTF-8", "CP932"], stdin)
-    actual_stdout = run(["iconv", "--from", "UTF-8", "--to", "CP932"], stdin)
-    return expected_stdout == actual_stdout
-
-
-use_python_iconv = not does_iconv_work()
-if use_python_iconv:
-    print("warning: iconv doesn't work, using python implementation")
-
-
 class Configure:
     def __init__(self, version: str):
         self.version = version
         self.version_path = ROOT / f"ver/{version}"
         self.linker_entries = None
 
-    def split(self, assets: bool, code: bool, shift: bool, debug: bool):
+    def split(self, assets: bool):
         import splat.scripts.split as split
 
-        modes = ["ld"]
+        modes = []
         if assets:
             modes.extend(
                 [
@@ -407,22 +385,19 @@ class Configure:
                     "pm_sbn",
                 ]
             )
-        if code:
-            modes.extend(["code", "c", "data", "rodata"])
+        else:
+            modes.extend(["ld"])
 
         splat_files = [str(self.version_path / "splat.yaml")]
-        if debug:
-            splat_files += [str(self.version_path / "splat-debug.yaml")]
-
-        if shift:
-            splat_files += [str(self.version_path / "splat-shift.yaml")]
+        splat_files += [str(self.version_path / "splat-debug.yaml")]
+        splat_files += [str(self.version_path / "splat-shift.yaml")]
 
         split.main(
             splat_files,
             modes,
             verbose=False,
         )
-        self.linker_entries = split.linker_writer.entries
+        self.linker_entries = [] if assets else split.linker_writer.entries
         self.asset_stack: List[str] = split.config["asset_stack"]
 
     def build_path(self) -> Path:
@@ -445,9 +420,6 @@ class Configure:
         return self.elf_path().with_suffix(".bps")
 
     def baserom_path(self) -> Path:
-        env_var = f"PAPERMARIO_{self.version.upper()}_ROM"
-        if env_var in os.environ:
-            return Path(os.environ[env_var])
         return Path(f"ver/{self.version}/baserom.z64")
 
     def linker_script_path(self) -> Path:
@@ -576,7 +548,7 @@ class Configure:
 
         # Effect data includes
         effect_yaml = ROOT / "src/effects.yaml"
-        effect_data_outdir = ROOT / "assets" / version / "effects"
+        effect_data_outdir = ROOT / "ver" / self.version / "build" / "include" / "effects"
         effect_macros_path = effect_data_outdir / "effect_macros.h"
         effect_defs_path = effect_data_outdir / "effect_defs.h"
         effect_table_path = effect_data_outdir / "effect_table.c"
@@ -672,7 +644,7 @@ class Configure:
             elif isinstance(seg, splat.segtypes.common.hasm.CommonSegHasm):
                 cppflags = f"-DVERSION_{self.version.upper()}"
 
-                if version == "ique" and seg.name.startswith("os/"):
+                if self.version == "ique" and seg.name.startswith("os/"):
                     cppflags += " -DBBPLAYER"
 
                 build(entry.object_path, entry.src_paths, "as", variables={"cppflags": cppflags})
@@ -733,7 +705,7 @@ class Configure:
                 if task == "cc_modern":
                     cppflags += " -DMODERN_COMPILER"
 
-                if version == "ique":
+                if self.version == "ique":
                     if "nusys" in entry.src_paths[0].parts:
                         pass
                     elif "os" in entry.src_paths[0].parts:
@@ -746,16 +718,13 @@ class Configure:
                     cflags += " -fno-tree-loop-distribute-patterns" # Don't call memset etc
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
-                if version == "ique":
+                if self.version == "ique":
                     encoding = "EUC-JP"
 
-                if use_python_iconv:
-                    iconv = f"tools/build/iconv.py UTF-8 {encoding}"
-                else:
-                    iconv = f"iconv --from UTF-8 --to {encoding}"
+                iconv = f"iconv --from UTF-8 --to {encoding}"
 
                 # use tools/sjis-escape.py for src/battle/area/tik2/area.c
-                if version != "ique" and seg.dir.parts[-3:] == ("battle", "area", "tik2") and seg.name == "area":
+                if self.version != "ique" and seg.dir.parts[-3:] == ("battle", "area", "tik2") and seg.name == "area":
                     iconv += " | tools/sjis-escape.py"
 
                 # Dead cod
@@ -1244,7 +1213,7 @@ class Configure:
             elif seg.type == "linker" or seg.type == "linker_offset":
                 pass
             elif seg.type == "pm_imgfx_data":
-                c_file_path = Path(f"assets/{self.version}") / "imgfx" / (seg.name + ".c")
+                c_file_path = self.build_path() / "imgfx" / (seg.name + ".c")
                 build(c_file_path, entry.src_paths, "imgfx_data")
 
                 build(
@@ -1310,13 +1279,6 @@ class Configure:
                 implicit=[str(self.rom_path())],
             )
 
-        ninja.build(
-            str(self.patch_path()),
-            "flips",
-            str(self.rom_path()),
-            variables={"baserom": str(self.baserom_path())},
-        )
-
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
 
@@ -1350,18 +1312,10 @@ class Configure:
         ninja.build("ver/current/build/papermario.z64", "phony", str(self.rom_path()))
 
 
-if __name__ == "__main__":
+def main():
     from argparse import ArgumentParser
 
     parser = ArgumentParser(description="Paper Mario build.ninja generator")
-    parser.add_argument(
-        "version",
-        nargs="*",
-        default=[],
-        choices=[*VERSIONS, []],
-        help="Version(s) to configure for. Most tools will operate on the first-provided only. Supported versions: "
-        + ",".join(VERSIONS),
-    )
     parser.add_argument("--cpp", help="GNU C preprocessor command")
     parser.add_argument(
         "-c",
@@ -1369,12 +1323,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Delete assets and previously-built files",
     )
-    parser.add_argument("--splat", default="tools/splat", help="Path to splat tool to use")
     parser.add_argument("--split-code", action="store_true", help="Re-split code segments to asm files")
     parser.add_argument(
-        "--no-split-assets",
+        "--assets",
         action="store_true",
-        help="Don't split assets from the baserom(s)",
+        help="Split assets instead of making a linker script",
     )
     parser.add_argument("-d", "--debug", action="store_true", help="Generate debugging information")
     parser.add_argument(
@@ -1405,55 +1358,7 @@ if __name__ == "__main__":
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
 
-    version_err_msg = ""
-    missing_tools = []
-    version_old_tools = []
-    for tool, crate_name, req_version in RUST_TOOLS:
-        try:
-            version = exec_shell([tool, "--version"]).split(" ")[1].strip()
-
-            if version < req_version:
-                version_err_msg += (
-                    f"error: {tool} version {req_version} or newer is required, system version is {version}"
-                )
-                version_old_tools.append(crate_name)
-        except (FileNotFoundError, PermissionError):
-            missing_tools.append(crate_name)
-
-    if version_old_tools or missing_tools:
-        if version_err_msg:
-            print(version_err_msg)
-        if missing_tools:
-            print(f"error: cannot find required Rust tool(s): {', '.join(missing_tools)}")
-        print()
-        print("To install/update dependencies, obtain cargo:\n\tcurl https://sh.rustup.rs -sSf | sh")
-        print(f"and then run:")
-        for tool in missing_tools:
-            print(f"\tcargo install {tool}")
-        for tool in version_old_tools:
-            print(f"\tcargo install {tool}")
-        exit(1)
-
-    # default version behaviour is to only do those that exist
-    if len(args.version) > 0:
-        versions = args.version
-    else:
-        versions = []
-
-        for version in VERSIONS:
-            rom = ROOT / f"ver/{version}/baserom.z64"
-
-            print(f"configure: looking for baserom {rom.relative_to(ROOT)}", end="")
-
-            if rom.exists():
-                print("...found")
-                versions.append(version)
-            else:
-                print("...missing")
-
-        if len(versions) == 0:
-            print("error: no baseroms found")
-            exit(1)
+    versions = ["us"]
 
     if args.clean:
         print("configure: cleaning...")
@@ -1489,8 +1394,8 @@ if __name__ == "__main__":
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
     extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion -Wreturn-type"
 
-    # add splat to python import path
-    sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
+    # add tools/build to import path
+    sys.path.insert(0, str((ROOT / "tools" / "build").resolve()))
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
 
@@ -1528,7 +1433,7 @@ if __name__ == "__main__":
         # include tools/splat_ext in the python path
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
-        configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
+        configure.split(args.assets)
         configure.write_ninja(ninja, skip_files, non_matching, args.modern_gcc, args.c_maps)
 
         all_rom_oks.append(str(configure.rom_ok_path()))

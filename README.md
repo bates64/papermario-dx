@@ -6,7 +6,7 @@
 
 This is a fork of the [Paper Mario decompilation][papermario-repo] which provides a flexible, easy-to-use base for creating romhacks.
 
-To get started, [read the manual](manual/introduction.md).
+To get started, **[read the introduction](https://pmdx.bates64.com/md_manual_2introduction.html)**!
 
 [discord]: https://discord.gg/star-haven
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff
@@ -14,29 +14,19 @@ To get started, [read the manual](manual/introduction.md).
 [releases]: https://github.com/bates64/papermario-dx/releases
 [download]: https://github.com/bates64/papermario-dx/releases/download/latest/papermario.bps
 
-### List of changes (incomplete)
+### Features
 
-- US release only (no JP, PAL, or iQue - none of these are near 100% yet).
-- Default configure flags: `--shift --modern-gcc --non-matching --ccache`
-- Backtrace (call stack) on crash screen including file names and line numbers.
-    - You can call [`debug_backtrace()`](src/dx/backtrace.h) to print a backtrace in any function.
-    - Failed assertions (`ASSERT`) will trigger the crash screen and print a backtrace instead of hanging.
-    - Backtraces provide filenames and line numbers for files with debug symbols (pass `--debug` to configure to enable for all files).
-- `assets/star_rod_build` directory for Star Rod to write assets to.
-- Fixed many bugs / incorrect behaviour.
-- Skip compiling or linking dead code.
-- Link with [libgcc_vr4300] to provide compiler intrinsics.
-- Added a debug/cheats menu.
-- Enemy HP is now a `s16`, increasing the cap to 32767.
-- Added support for badges with negative BP costs.
-- Additional features can be configured in [src/dx/config.h](src/dx/config.h).
+- Modern toolchain with C++ support
+- Compatible with [Star Rod](https://github.com/z64a/star-rod) and [Mamar](https://mamar.bates64.com)
+- Debug/cheat menu (`DX_DEBUG_MENU`; press D-Pad Left)
+- Print logs to the screen with `debug_printf` and `DebugPrintf`
+- Better crash screens: backtraces, file names, line numbers
+- Quick-launch into the world or a battle (`DX_QUICK_LAUNCH`, `DX_QUICK_LAUNCH_BATTLE`)
+- Assertions display an error message instead of freezing
+- Performance profiler (`DX_PROFILER`; press L + D-Pad Up)
+- Actor HP max increased to 32767 (from 127)
+- Badge BP costs can be negative, giving the player BP
+- Save file versioning and migration
+- Bugfixes and code quality improvements
 
-[libgcc_vr4300]: https://github.com/Decompollaborate/libgcc_vr4300
-
-<div class="section_buttons">
-
-|                                          Next |
-|----------------------------------------------:|
-|[Introduction](manual/introduction.md)         |
-
-</div>
+And more!

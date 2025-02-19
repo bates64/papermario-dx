@@ -35,25 +35,11 @@ if [ -d "$DX_DIR" ]; then
     exit 1
 fi
 
-# Ensure Nix with flakes is installed
+# Ensure Nix is installed
 if ! command -v nix > /dev/null; then
     # Determinate Nix comes with flakes
     echo -e "${PURPLE}Installing Nix...${RESET}"
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --determinate --no-confirm
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-else
-    # Check if flakes are enabled
-    if ! nix flake --help > /dev/null; then
-        echo -e "${PURPLE}Nix is installed but flakes are not enabled. Enabling flakes...${RESET}"
-        echo "experimental-features = nix-command" | sudo tee -a /etc/nix/nix.conf || echo -e "${RED}Please add \"experimental-features = nix-command\" to your Nix/NixOS config.${RESET}"
-    fi
-fi
-
-# Ensure we are in Nix trusted-users so we can add caches
-if ! nix config show | grep -q -E "^trusted-users = .* ${USER}($| )"; then
-    # TODO: extend existing trusted-users
-    echo -e "${PURPLE}Adding $USER to Nix trusted-users...${RESET}"
-    echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf || echo -e "${RED}Please add \"$USER\" to trusted-users in your Nix/NixOS config.${RESET}"
+    sh <(curl -L https://nixos.org/nix/install) --no-daemon
 fi
 
 # Prompt for baserom
@@ -62,6 +48,8 @@ read -r -p "> " baserom
 # Some terminals wrap the path in quotes, so remove them
 baserom="${baserom%\"}"
 baserom="${baserom#\"}"
+baserom="${baserom%\'}"
+baserom="${baserom#\'}"
 # Convert Windows path to Linux path
 if command -v wslpath > /dev/null; then
     baserom=$(wslpath -u "$baserom")
@@ -88,7 +76,7 @@ cd "$DX_DIR"
 
 # Prepare devshell
 echo -e "${PURPLE}Downloading dependencies and splitting assets from ROM...${RESET}"
-nix develop --profile .nix-profile --accept-flake-config --command ./configure
+nix --extra-experimental-features nix-command develop --profile .nix-profile --accept-flake-config --command "true"
 
 echo -e "${GREEN}Paper Mario DX has been installed in $DX_DIR!${RESET}"
 COMPLETE=1

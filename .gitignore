@@ -19,6 +19,7 @@ ctx.c.m2c
 .nix-profile*
 
 # Build artifacts
+/result
 build.ninja
 .ninja*
 .n2_db
@@ -43,6 +44,7 @@ build/
 /include/map
 /tools/permuter_settings.toml
 .run_hash
+.dream2nix
 
 # Assets
 # ** DO NOT UNIGNORE THESE FILES!! SEE THE FOLLOWING LINK IF YOU'RE MODDING ASSETS:**

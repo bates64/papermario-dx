@@ -9,6 +9,9 @@
 
     star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
     star-rod.inputs.nixpkgs.follows = "nixpkgs";
+
+    dream2nix.url = "github:nix-community/dream2nix";
+    dream2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
   nixConfig = {
     extra-substituters = [
@@ -20,9 +23,10 @@
       "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
     ];
   };
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod }:
+  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod, dream2nix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
+        name = "papermario-dx";
         crossSystem = {
           config = "mips-linux-gnu"; # prefix expected by scripts in tools/
           system = "mips64-elf";
@@ -43,7 +47,7 @@
 
             Please rename your ROM to papermario.us.z64 and add it to the Nix store using
                 nix-store --add-fixed sha256 papermario.us.z64
-            then rerun nix-shell.
+            then retry.
 
             If you don't have a ROM, dump it from your own cartridge.
 
@@ -56,34 +60,161 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
-      in {
-        devShells.default = pkgsCross.mkShell {
-          name = "papermario-dx";
-          venvDir = "./venv";
-          packages = with pkgs; [
-            ninja # needed for ninja -t compdb in run, as n2 doesn't support it
-            n2 # same as ninja, but with prettier output
-            zlib
-            libyaml
-            python3
-            python3Packages.virtualenv
-            ccache
-            git
-            iconv
-            gcc # for n64crc
-            (callPackage ./tools/pigment64.nix {})
-            (callPackage ./tools/crunch64.nix {})
-            star-rod.packages.${system}.default
-          ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
-          shellHook = ''
-            rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
-            export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+        configure = dream2nix.lib.evalModules {
+          packageSets.nixpkgs = pkgs;
+          modules = [
+            ./tools/configure/default.nix
+            {
+              paths.projectRoot = ./.;
+              paths.projectRootFile = "flake.nix";
+              paths.package = ./tools/configure;
+            }
+          ];
+        };
+        assets = pkgsCross.runCommand "papermario-assets" {
+          nativeBuildInputs = [ configure ];
+          srcs = [
+            ./ver/us
+            ./tools
+            ./src/effects.yaml
+            ./src/effect_shims.yaml
+          ];
+        } ''
+          mkdir -p assets/us ver/us src
+          cp ${baseRom} ver/us/baserom.z64
+          cp -r ${./ver/us}/* ver/us
+          ln -s ${./tools} tools
+          ln -s ${./src/effects.yaml} src/effects.yaml
+          ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
 
-            # Install python packages (TODO: use derivations)
-            virtualenv venv --quiet
-            source venv/bin/activate
-            pip install -r ${./requirements.txt} --quiet
-            pip install -r ${./requirements_extra.txt} --quiet
+          configure --assets
+
+          mkdir -p $out
+          cp -r assets $out
+          cp -r ver/us/build $out     # pm_effect_shims.py asm
+        '';
+        configured = pkgsCross.runCommand "${name}-configured" {
+          nativeBuildInputs = [ configure pkgs.ninja ];
+          buildInputs = [ pkgs.ccache ];
+          srcs = [
+            assets
+            ./assets
+            ./ver/us
+            ./tools
+            ./src/effects.yaml
+            ./src/effect_shims.yaml
+          ];
+        } ''
+          mkdir -p assets ver/us src
+          cp ${baseRom} ver/us/baserom.z64
+          cp -r ${./ver/us}/* ver/us
+          ln -s ${./tools} tools
+          ln -s ${./src/effects.yaml} src/effects.yaml
+          ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
+          ln -s ${./assets}/* assets/
+          rm -rf assets/us && ln -s ${assets}/assets/us assets/us
+
+          mkdir -p $out
+
+          PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld" configure
+          cp ver/us/papermario.ld $out
+          ninja -t compdb > $out/compile_commands.json
+          cp build.ninja $out
+          cp ver/us/build/include/ld_addrs.h $out
+        '';
+        commonDeps = with pkgs; [
+          ninja
+          zlib
+          libyaml
+          python3
+          ccache
+          git
+          iconv
+          gcc # for n64crc
+          (callPackage ./tools/pigment64.nix {})
+          (callPackage ./tools/crunch64.nix {})
+        ];
+        z64 = pkgsCross.stdenv.mkDerivation {
+          inherit name;
+          src = pkgs.symlinkJoin {
+            name = "configured-src";
+            paths = [ assets configured ./. ];
+          };
+          nativeBuildInputs = commonDeps ++ [ configure.pyEnv ];
+          configurePhase = ''
+            ln -s $src/assets assets
+            ln -s $src/src src
+            ln -s $src/include include
+            ln -s $src/tools tools
+
+            mv build ver/us
+            mv papermario.ld ver/us
+
+            mkdir -p ver/us/build/include
+            mv ld_addrs.h ver/us/build/include
+          '';
+          buildPhase = ''
+            ninja
+          '';
+          installPhase = ''
+            mkdir -p $out
+            cp ver/us/build/papermario.z64 $out/${name}.z64
+          '';
+          enableParallelBuilding = true;
+        };
+      in {
+        packages = {
+          default = z64;
+          bps = pkgs.stdenv.mkDerivation {
+            name = "${name}-bps";
+            src = z64;
+            nativeBuildInputs = [ pkgs.flips ];
+            buildPhase = ''
+              mkdir -p $
+              flips ${baseRom} $src/${name}.z64 $out/${name}.bps || true
+            '';
+          };
+          inherit configure; # for `nix run ".#configure.lock"` to update lockfile
+        };
+
+        apps.default = {
+          type = "app";
+          program = "${pkgs.writeShellApplication {
+            inherit name;
+            runtimeInputs = [ pkgs.ares ];
+            text = ''
+              ares ${z64}/${name}.z64
+            '';
+          }}/bin/${name}";
+        };
+
+        devShells.default = pkgsCross.mkShell {
+          name = "${name}-dev";
+          inputsFrom = [ configure.devShell ];
+          packages = with pkgs; [
+            n2
+            star-rod.packages.${system}.default
+            clang-tools
+            assets
+            configured
+          ] ++ commonDeps ++ (if pkgs.stdenv.isLinux then [ pkgs.ares ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
+          shellHook = ''
+            # Old versions of this devshell created this dir, delete it
+            rm -rf venv
+
+            rm -rf assets/us && ln -sf ${assets}/assets/us assets/us
+
+            mkdir -p ver/us/build/asm/effect_shims/ && cp -rf ${assets}/build/asm/effect_shims/* ver/us/build/asm/effect_shims/
+            mkdir -p ver/us/build/asm/effects/ && cp -rf ${assets}/build/asm/effects/* ver/us/build/asm/effects/
+            mkdir -p ver/us/build/include && ln -sf ${configured}/ld_addrs.h ver/us/build/include/ld_addrs.h
+            chmod -R +w ver/us/build
+
+            ln -sf ${configured}/papermario.ld ver/us/papermario.ld
+            ln -sf ${configured}/compile_commands.json compile_commands.json
+            ln -sf ${configured}/build.ninja build.ninja
+
+            # TODO: fix Star Rod being unable to follow WSL symlinks
+            rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
           '';
         };
       }

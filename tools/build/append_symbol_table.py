@@ -69,7 +69,6 @@ if __name__ == "__main__":
     elf = z64.replace(".z64", ".elf")
 
     symbols = readelf(elf)
-    root_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
 
     with open(z64, "r+b") as f:
         # seek to end
@@ -104,8 +103,6 @@ if __name__ == "__main__":
             return string_map[s]
 
         for addr, name, file_basename, line_number in symbols:
-            # file_line = file_line.replace(root_dir + "/", "")
-
             f.write(struct.pack(">I", addr))
             f.write(struct.pack(">I", add_string(name)))
 

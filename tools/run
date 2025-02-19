@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import shutil
+import platform
+
+ROM = "ver/current/build/papermario.z64"
+EMULATOR_PATHS = [
+    "cen64",
+    "ares",
+    "mupen64plus",
+    "retroarch",
+    "Project64",
+]
+emulator = None
+
+for command in EMULATOR_PATHS:
+    if shutil.which(command) is not None:
+        emulator = command
+        break
+
+    # WSl compat
+    command += ".exe"
+    if shutil.which(command) is not None:
+        emulator = command
+        break
+
+def is_wsl(v: str = platform.uname().release) -> int:
+    """
+    detects if Python is running in WSL
+    """
+
+    if v.endswith("-Microsoft"):
+        return 1
+    elif v.endswith("microsoft-standard-WSL2"):
+        return 2
+
+    return 0
+
+def windows_path(path):
+    return subprocess.check_output(["wslpath", "-w", path]).decode().strip()
+
+def main():
+    os.system("clear")
+    if os.system(f"n2 {ROM}") != 0:
+        print("error: build failed")
+        exit(1)
+
+    wsl = is_wsl() != 0
+    rom = windows_path(ROM) if wsl else ROM
+
+    if emulator is not None:
+        subprocess.Popen([emulator, rom], start_new_session=True)
+    else:
+        print(ROM)
+
+if __name__ == "__main__":
+    main()
