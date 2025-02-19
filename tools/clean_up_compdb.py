@@ -19,8 +19,14 @@ for entry in compdb:
         entry["command"]
         .replace("-gas-loc-support", "")
         .replace("-mgp32", "")
+        .replace("-mfp32", "")
+        .replace("-mabi=32", "")
         .replace("-fno-toplevel-reorder", "")
-        .replace("-march=vr4300", "-mcpu=mips3")
+        .replace("-march=vr4300", "-D__mips__")
+        .replace("-Wno-builtin-declaration-mismatch", "")
+        .replace("-Wmissing-parameter-type", "")
+        .replace("-Werror=old-style-declaration", "")
+        .replace("-Werror=missing-parameter-type", "")
     )
 
 with open(fname, "w") as f:

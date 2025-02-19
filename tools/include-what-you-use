@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+tmpfile=$(mktemp)
+iwyu_tool.py -p compile_commands.json $@ > "$tmpfile"
+fix_includes.py --nocomments --reorder  < "$tmpfile"
+rm -f "$tmpfile"

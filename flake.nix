@@ -229,6 +229,7 @@
               n2
               star-rod.packages.${system}.default
               clang-tools
+              include-what-you-use
               assets
               configured
             ]
@@ -280,6 +281,12 @@
                 ];
               };
               clang-tidy.enable = true;
+              include-what-you-use = {
+                enable = true;
+                name = "include-what-you-use";
+                entry = "./tools/include-what-you-use";
+                types = [ "c" "c++" ];
+              };
               ruff-format.enable = true;
               check-xml.enable = true;
               check-yaml.enable = true;
