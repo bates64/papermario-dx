@@ -1,4 +1,4 @@
-Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-named-parameter,-readability-braces-around-statements,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming'
+Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming,misc-include-cleaner,misc-header-include-cycle,misc-definitions-in-headers,misc-unused-using-decls,misc-use-anonymous-namespace,misc-redundant-expression,misc-unused-alias-decls,modernize-use-auto,bugprone-*,llvm-namespace-comment,fuchsia-multiple-inheritance,misc-const-correctness,misc-confusable-identifiers,misc-misplaced-const'
 CheckOptions:
   - key: readability-identifier-naming.LocalVariableCase
     value: camelBack
@@ -17,4 +17,11 @@ CheckOptions:
   #  value: CamelCase
   #- key: readability-identifier-naming.GlobalVariablePrefix
   #  value: g
+
+  # Allow `if` block to not use braces iff it is a single line
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: 1
+
+  - key: bugprone-assert-side-effect.AssertMacros
+    value: ASSERT,ASSERT_MSG
 HeaderFilterRegex: '(src|include)\/[^P].*\.h' # ignore include/PR/
