@@ -661,6 +661,22 @@ Enemy* get_enemy_safe(s32 npcID);
 
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
 
+void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_wander(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_loiter_init(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
+void basic_ai_loiter(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_suspend(Evt* script);
+
+s32 ai_check_fwd_collisions(Npc* npc, f32 arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5);
+void PatrolAI_LoiterInit(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
+
+void spawn_drops(Enemy* enemy);
+
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
 #endif

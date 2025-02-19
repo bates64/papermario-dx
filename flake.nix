@@ -12,6 +12,8 @@
 
     dream2nix.url = "github:nix-community/dream2nix";
     dream2nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
   nixConfig = {
     extra-substituters = [
@@ -23,20 +25,33 @@
       "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
     ];
   };
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod, dream2nix }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      nixpkgs-binutils-2_39,
+      star-rod,
+      dream2nix,
+      pre-commit-hooks,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         name = "papermario-dx";
         crossSystem = {
           config = "mips-linux-gnu"; # prefix expected by scripts in tools/
           system = "mips64-elf";
-          gcc.arch = "vr4300";
-          gcc.tune = "vr4300";
-          gcc.abi = "32";
+          gcc = {
+            arch = "vr4300";
+            tune = "vr4300";
+            abi = "32";
+          };
         };
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs { inherit system crossSystem; };
-        binutils2_39 = (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
+        binutils2_39 =
+          (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
         baseRom = pkgs.requireFile {
           name = "papermario.us.z64";
           message = ''
@@ -65,63 +80,73 @@
           modules = [
             ./tools/configure/default.nix
             {
-              paths.projectRoot = ./.;
-              paths.projectRootFile = "flake.nix";
-              paths.package = ./tools/configure;
+              paths = {
+                projectRoot = ./.;
+                projectRootFile = "flake.nix";
+                package = ./tools/configure;
+              };
             }
           ];
         };
-        assets = pkgsCross.runCommand "papermario-assets" {
-          nativeBuildInputs = [ configure ];
-          srcs = [
-            ./ver/us
-            ./tools
-            ./src/effects.yaml
-            ./src/effect_shims.yaml
-          ];
-        } ''
-          mkdir -p assets/us ver/us src
-          cp ${baseRom} ver/us/baserom.z64
-          cp -r ${./ver/us}/* ver/us
-          ln -s ${./tools} tools
-          ln -s ${./src/effects.yaml} src/effects.yaml
-          ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
+        assets =
+          pkgsCross.runCommand "papermario-assets"
+            {
+              nativeBuildInputs = [ configure ];
+              srcs = [
+                ./ver/us
+                ./tools
+                ./src/effects.yaml
+                ./src/effect_shims.yaml
+              ];
+            }
+            ''
+              mkdir -p assets/us ver/us src
+              cp ${baseRom} ver/us/baserom.z64
+              cp -r ${./ver/us}/* ver/us
+              ln -s ${./tools} tools
+              ln -s ${./src/effects.yaml} src/effects.yaml
+              ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
 
-          configure --assets
+              configure --assets
 
-          mkdir -p $out
-          cp -r assets $out
-          cp -r ver/us/build $out     # pm_effect_shims.py asm
-        '';
-        configured = pkgsCross.runCommand "${name}-configured" {
-          nativeBuildInputs = [ configure pkgs.ninja ];
-          buildInputs = [ pkgs.ccache ];
-          srcs = [
-            assets
-            ./assets
-            ./ver/us
-            ./tools
-            ./src/effects.yaml
-            ./src/effect_shims.yaml
-          ];
-        } ''
-          mkdir -p assets ver/us src
-          cp ${baseRom} ver/us/baserom.z64
-          cp -r ${./ver/us}/* ver/us
-          ln -s ${./tools} tools
-          ln -s ${./src/effects.yaml} src/effects.yaml
-          ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
-          ln -s ${./assets}/* assets/
-          rm -rf assets/us && ln -s ${assets}/assets/us assets/us
+              mkdir -p $out
+              cp -r assets $out
+              cp -r ver/us/build $out     # pm_effect_shims.py asm
+            '';
+        configured =
+          pkgsCross.runCommand "${name}-configured"
+            {
+              nativeBuildInputs = [
+                configure
+                pkgs.ninja
+                pkgs.ccache
+              ];
+              srcs = [
+                assets
+                ./assets
+                ./ver/us
+                ./tools
+                ./src/effects.yaml
+                ./src/effect_shims.yaml
+              ];
+            }
+            ''
+              mkdir -p assets ver/us src
+              cp ${baseRom} ver/us/baserom.z64
+              cp -r ${./ver/us}/* ver/us
+              ln -s ${./tools} tools
+              ln -s ${./src/effects.yaml} src/effects.yaml
+              ln -s ${./src/effect_shims.yaml} src/effect_shims.yaml
+              ln -s ${./assets}/* assets/
+              rm -rf assets/us && ln -s ${assets}/assets/us assets/us
 
-          mkdir -p $out
+              mkdir -p $out
 
-          PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld" configure
-          cp ver/us/papermario.ld $out
-          ninja -t compdb > $out/compile_commands.json
-          cp build.ninja $out
-          cp ver/us/build/include/ld_addrs.h $out
-        '';
+              PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld" configure
+              cp ver/us/papermario.ld $out
+              cp build.ninja $out
+              cp ver/us/build/include/ld_addrs.h $out
+            '';
         commonDeps = with pkgs; [
           ninja
           zlib
@@ -131,14 +156,18 @@
           git
           iconv
           gcc # for n64crc
-          (callPackage ./tools/pigment64.nix {})
-          (callPackage ./tools/crunch64.nix {})
+          (callPackage ./tools/pigment64.nix { })
+          (callPackage ./tools/crunch64.nix { })
         ];
         z64 = pkgsCross.stdenv.mkDerivation {
           inherit name;
           src = pkgs.symlinkJoin {
             name = "configured-src";
-            paths = [ assets configured ./. ];
+            paths = [
+              assets
+              configured
+              ./.
+            ];
           };
           nativeBuildInputs = commonDeps ++ [ configure.pyEnv ];
           configurePhase = ''
@@ -162,7 +191,8 @@
           '';
           enableParallelBuilding = true;
         };
-      in {
+      in
+      {
         packages = {
           default = z64;
           bps = pkgs.stdenv.mkDerivation {
@@ -179,25 +209,31 @@
 
         apps.default = {
           type = "app";
-          program = "${pkgs.writeShellApplication {
-            inherit name;
-            runtimeInputs = [ pkgs.ares ];
-            text = ''
-              ares ${z64}/${name}.z64
-            '';
-          }}/bin/${name}";
+          program = "${
+            pkgs.writeShellApplication {
+              inherit name;
+              runtimeInputs = [ pkgs.ares ];
+              text = ''
+                ares ${z64}/${name}.z64
+              '';
+            }
+          }/bin/${name}";
         };
 
         devShells.default = pkgsCross.mkShell {
           name = "${name}-dev";
           inputsFrom = [ configure.devShell ];
-          packages = with pkgs; [
-            n2
-            star-rod.packages.${system}.default
-            clang-tools
-            assets
-            configured
-          ] ++ commonDeps ++ (if pkgs.stdenv.isLinux then [ pkgs.ares ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
+          packages =
+            with pkgs;
+            [
+              n2
+              star-rod.packages.${system}.default
+              clang-tools
+              assets
+              configured
+            ]
+            ++ commonDeps
+            ++ (if pkgs.stdenv.isLinux then [ pkgs.ares ] else [ ]); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             # Old versions of this devshell created this dir, delete it
             rm -rf venv
@@ -210,12 +246,57 @@
             chmod -R +w ver/us/build
 
             ln -sf ${configured}/papermario.ld ver/us/papermario.ld
-            ln -sf ${configured}/compile_commands.json compile_commands.json
             ln -sf ${configured}/build.ninja build.ninja
+
+            rm -f compile_commands.json
+            ninja -t compdb > compile_commands.json
+            python3 ./tools/clean_up_compdb.py compile_commands.json
 
             # TODO: fix Star Rod being unable to follow WSL symlinks
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
+
+            ${self.checks.${system}.pre-commit-check.shellHook}
           '';
+        };
+
+        checks = {
+          pre-commit-check = pre-commit-hooks.lib.${system}.run {
+            src = pkgs.symlinkJoin {
+              name = "pre-commit-check-src";
+              paths = [
+                configured
+                ./.
+              ];
+            };
+            hooks = {
+              nixfmt-rfc-style.enable = true;
+              statix.enable = true;
+              deadnix.enable = true;
+              clang-format = {
+                enable = false; # TODO
+                types_or = pkgs.lib.mkForce [
+                  "c"
+                  "c++"
+                ];
+              };
+              clang-tidy.enable = true;
+              ruff-format.enable = true;
+              check-xml.enable = true;
+              check-yaml.enable = true;
+              check-symlinks.enable = true;
+              check-toml.enable = true;
+              check-case-conflicts.enable = true;
+              check-merge-conflicts.enable = true;
+              actionlint.enable = true;
+              end-of-file-fixer.enable = true;
+              trim-trailing-whitespace.enable = true;
+              editorconfig-checker.enable = false; # TODO(clang-format)
+              check-shebang-scripts-are-executable.enable = true;
+              check-executables-have-shebangs.enable = true;
+              fix-byte-order-marker.enable = true;
+              mixed-line-endings.enable = true;
+            };
+          };
         };
       }
     );

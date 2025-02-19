@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-import sys
 import yaml
 import argparse
 from pathlib import Path
@@ -95,7 +94,7 @@ def generate_item_table(fout: TextIOWrapper, items: List[ItemEntry]):
         fout.write(f"        .moveID = {item.moveID},\n")
         fout.write(f"        .potencyA = {item.potencyA},\n")
         fout.write(f"        .potencyB = {item.potencyB},\n")
-        fout.write(f"    }},\n")
+        fout.write("    },\n")
 
     fout.write("};\n")
     fout.write("\n")
@@ -116,7 +115,12 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
         # MagicalSeed1   -> MAGICAL_SEED1
         # UnusedLetter_4 -> UNUSED_LETTER_4
         # etc
-        name = "ITEM_" + re.sub("((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", item.name).upper()
+        name = (
+            "ITEM_"
+            + re.sub(
+                "((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", item.name
+            ).upper()
+        )
         item_enum.append(name)
         fout.write(f"    {name:39} = 0x{idx:03X},\n")
 
@@ -150,7 +154,15 @@ def generate_item_enum(fout: TextIOWrapper, items: List[ItemEntry]):
 
 
 class HudScriptEntry:
-    def __init__(self, full_name: str, template: str, icon: str, pair: bool, index: int, skipArg: bool):
+    def __init__(
+        self,
+        full_name: str,
+        template: str,
+        icon: str,
+        pair: bool,
+        index: int,
+        skipArg: bool,
+    ):
         self.full_name = full_name
         self.template = template
         self.icon = icon
@@ -170,7 +182,9 @@ def snake_to_pascal(s: str) -> str:
     return s.replace("_", " ").title().replace(" ", "")
 
 
-def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pair_map: Dict[str, bool]):
+def generate_hud_element_scripts(
+    fout: TextIOWrapper, items: List[ItemEntry], pair_map: Dict[str, bool]
+):
     hud_scripts: List[Union[HudScriptEntry, ExternHudScriptEntry]] = []
     hud_script_map: Dict[str, Union[HudScriptEntry, ExternHudScriptEntry]] = {}
 
@@ -179,7 +193,7 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
     for item in items:
         if item.externHudScript:
             script_name = item.externHudScript
-            if not script_name in hud_script_map:
+            if script_name not in hud_script_map:
                 cur_script = ExternHudScriptEntry(script_name, 1 + len(hud_scripts))
                 hud_scripts.append(cur_script)
                 hud_script_map[script_name] = cur_script
@@ -196,9 +210,11 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
             template_name = snake_to_pascal(item.hudElementTemplate.lower())
             script_name = f"HES_{template_name}_{icon_name}"
 
-        if not script_name in hud_script_map:
-            if not item.icon in pair_map:
-                raise Exception(f"Item {item.name} requires undefined icon: {item.icon}")
+        if script_name not in hud_script_map:
+            if item.icon not in pair_map:
+                raise Exception(
+                    f"Item {item.name} requires undefined icon: {item.icon}"
+                )
 
             cur_script = HudScriptEntry(
                 script_name,
@@ -222,30 +238,42 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
             fout.write(f"extern HudScript {script.full_name}_disabled;\n")
         else:
             script_arg = "" if script.skipArg else script.icon
-            fout.write(f"HudScript {script.full_name} = HES_TEMPLATE_{script.template}({script_arg});\n")
+            fout.write(
+                f"HudScript {script.full_name} = HES_TEMPLATE_{script.template}({script_arg});\n"
+            )
 
             if script.pair:
                 script_arg = "" if script.skipArg else script.icon + "_disabled"
-                fout.write(f"HudScript {script.full_name}_disabled = HES_TEMPLATE_{script.template}({script_arg});\n")
+                fout.write(
+                    f"HudScript {script.full_name}_disabled = HES_TEMPLATE_{script.template}({script_arg});\n"
+                )
 
     fout.write("\n")
 
     # write the hud script table
     fout.write("IconHudScriptPair gItemHudScripts[] = {\n")
-    fout.write("    { .enabled = NULL, .disabled = NULL },\n")  # array index 0 is always NULL
+    fout.write(
+        "    { .enabled = NULL, .disabled = NULL },\n"
+    )  # array index 0 is always NULL
 
     for script in hud_scripts:
         if script.pair:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name}_disabled }},\n")
+            fout.write(
+                f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name}_disabled }},\n"
+            )
         else:
-            fout.write(f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name} }},\n")
+            fout.write(
+                f"    {{ .enabled = &{script.full_name}, .disabled = &{script.full_name} }},\n"
+            )
 
     fout.write("};\n")
     fout.write("\n")
 
 
 class ItemScriptEntry:
-    def __init__(self, full_name: str, template: str, icon: str, index: int, skipArg: bool):
+    def __init__(
+        self, full_name: str, template: str, icon: str, index: int, skipArg: bool
+    ):
         self.full_name = full_name
         self.template = template
         self.icon = icon
@@ -268,9 +296,13 @@ def generate_item_entity_scripts(fout: TextIOWrapper, items: List[ItemEntry]):
             template_name = snake_to_pascal(item.itemEntityTemplate.lower())
             script_name = f"IES_{template_name}_{icon_name}"
 
-        if not script_name in item_script_map:
+        if script_name not in item_script_map:
             cur_script = ItemScriptEntry(
-                script_name, item.itemEntityTemplate, item.icon, len(item_scripts), item.skipScriptArg
+                script_name,
+                item.itemEntityTemplate,
+                item.icon,
+                len(item_scripts),
+                item.skipScriptArg,
             )
             item_scripts.append(cur_script)
             item_script_map[script_name] = cur_script
@@ -282,7 +314,9 @@ def generate_item_entity_scripts(fout: TextIOWrapper, items: List[ItemEntry]):
     # write the item entity script bodies
     for script in item_scripts:
         script_arg = "" if script.skipArg else script.icon
-        fout.write(f"ItemScript {script.full_name} = IES_TEMPLATE_{script.template}({script_arg});\n")
+        fout.write(
+            f"ItemScript {script.full_name} = IES_TEMPLATE_{script.template}({script_arg});\n"
+        )
 
     fout.write("\n")
 
@@ -314,8 +348,12 @@ def generate_item_icon_tables(fout: TextIOWrapper, items: List[ItemEntry]):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates item table")
-    parser.add_argument("out_data", help="output header file to generate containing the data")
-    parser.add_argument("out_enum", help="output header file to generate containing the enum")
+    parser.add_argument(
+        "out_data", help="output header file to generate containing the data"
+    )
+    parser.add_argument(
+        "out_enum", help="output header file to generate containing the enum"
+    )
     parser.add_argument("items_yaml", type=Path, help="input yaml file path")
     parser.add_argument("asset_stack", help="comma-separated asset stack")
     args = parser.parse_args()

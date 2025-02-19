@@ -1,7 +1,6 @@
 from pathlib import Path
 from dataclasses import astuple, dataclass
 import os
-import yaml
 import struct
 from typing import List
 
@@ -52,7 +51,9 @@ class SBN:
         entry_addr = header.tableOffset
         seen_entry_offsets = set()
         for i in range(header.numEntries):
-            entry = SBNFileEntry(*struct.unpack_from(SBNFileEntry.fstring, data, entry_addr))
+            entry = SBNFileEntry(
+                *struct.unpack_from(SBNFileEntry.fstring, data, entry_addr)
+            )
             entry_addr += SBNFileEntry.length
 
             # Check for duplicate entry offsets
@@ -146,7 +147,9 @@ class SBN:
             else:
                 raise ValueError("Unsupported file extension")
 
-            entry = SBNFileEntry(offset=current_file_offset, fmt=format, size=file.fakesize)
+            entry = SBNFileEntry(
+                offset=current_file_offset, fmt=format, size=file.fakesize
+            )
 
             struct.pack_into(
                 SBNFileEntry.fstring,
@@ -214,7 +217,9 @@ class SBN:
 
         with open(path / "sbn.yaml", "w") as f:
             # Filename->ID map
-            f.write("# Mapping of filenames to entry IDs. Use 'id: auto' to automatically assign a unique ID.\n")
+            f.write(
+                "# Mapping of filenames to entry IDs. Use 'id: auto' to automatically assign a unique ID.\n"
+            )
             f.write(
                 """
 # 'fakesize is an interesting case. In the final ROM, the size of a file is stored in the file header and the entry table.
@@ -257,7 +262,9 @@ class SBN:
             f.write("\n")
 
             # INIT mseqs
-            f.write("# AuGlobals::mseqFileList. Not sure why there's non-MSEQ files here!\n")
+            f.write(
+                "# AuGlobals::mseqFileList. Not sure why there's non-MSEQ files here!\n"
+            )
             f.write("mseqs:\n")
             for id, entry in enumerate(self.init.mseq_entries):
                 f.write(f"  - id: 0x{id:02x}\n")
@@ -423,7 +430,9 @@ class INIT:
         song_addr = header.tblOffset
         song_number = 0
         while True:
-            song = InitSongEntry(*struct.unpack_from(InitSongEntry.fstring, data, song_addr))
+            song = InitSongEntry(
+                *struct.unpack_from(InitSongEntry.fstring, data, song_addr)
+            )
 
             if song.bgmFileIndex == 0xFFFF:
                 break
@@ -449,7 +458,9 @@ class INIT:
         entries_len = header.entriesSize // 4 - 1
 
         for i in range(entries_len):
-            entry = BufferEntry(*struct.unpack_from(BufferEntry.fstring, data, entries_addr))
+            entry = BufferEntry(
+                *struct.unpack_from(BufferEntry.fstring, data, entries_addr)
+            )
             entries_addr += BufferEntry.length
 
             self.bk_entries.append(entry)
@@ -721,4 +732,4 @@ def get_song_symbol_name(song_id: int) -> str:
         0x00000095: "SONG_INTRO_STORY",
         0x00000096: "SONG_NEW_PARTNER_JP",
     }
-    return song_names.get(song_id, f"null")
+    return song_names.get(song_id, "null")

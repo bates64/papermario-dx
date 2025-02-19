@@ -1,5 +1,3 @@
-#! /usr/bin/env python3
-
 import struct
 import sys
 import re
@@ -101,7 +99,7 @@ BACK_PALETTE_XML = "backPalette"
 
 SPECIAL_RASTER = 0x1F880
 
-LIST_END_BYTES = b"\xFF\xFF\xFF\xFF"
+LIST_END_BYTES = b"\xff\xff\xff\xff"
 
 
 def indent(elem, level=0):
@@ -140,7 +138,9 @@ class RasterTableEntry:
     raster_bytes: bytes = field(default_factory=bytes)
     palette: Optional[bytes] = None
 
-    def write_png(self, raster_buffer: bytes, path: Path, palette: Optional[bytes] = None):
+    def write_png(
+        self, raster_buffer: bytes, path: Path, palette: Optional[bytes] = None
+    ):
         if self.height == 0 or self.width == 0:
             raise ValueError("Raster size has not been set")
 
@@ -151,7 +151,9 @@ class RasterTableEntry:
             raise ValueError("Palette has not been set")
 
         if self.raster_bytes is not None:
-            self.raster_bytes = raster_buffer[self.offset : self.offset + (self.width * self.height // 2)]
+            self.raster_bytes = raster_buffer[
+                self.offset : self.offset + (self.width * self.height // 2)
+            ]
 
         img = CI4(self.raster_bytes, self.width, self.height)
         img.set_palette(palette)
@@ -264,7 +266,9 @@ class PlayerSprite:
         )
 
 
-def extract_raster_table_entries(data: bytes, raster_sets: List[PlayerSpriteRasterSet]) -> Dict[int, RasterTableEntry]:
+def extract_raster_table_entries(
+    data: bytes, raster_sets: List[PlayerSpriteRasterSet]
+) -> Dict[int, RasterTableEntry]:
     ret: Dict[int, RasterTableEntry] = {}
     current_section_pos = 0
     current_section = 0
@@ -295,7 +299,9 @@ def extract_raster_table_entries(data: bytes, raster_sets: List[PlayerSpriteRast
     return ret
 
 
-def extract_sprites(yay0_data: bytes, raster_sets: List[PlayerSpriteRasterSet]) -> List[PlayerSprite]:
+def extract_sprites(
+    yay0_data: bytes, raster_sets: List[PlayerSpriteRasterSet]
+) -> List[PlayerSprite]:
     yay0_splits = []
     for i in range(14):
         yay0_splits.append(int.from_bytes(yay0_data[i * 4 : i * 4 + 4], "big"))
@@ -371,7 +377,9 @@ def write_player_xmls(
     raster_table_entry_dict: Dict[int, RasterTableEntry],
     raster_names: List[str],
 ) -> None:
-    def get_sprite_name_from_offset(offset: int, offsets: List[int], names: List[str]) -> str:
+    def get_sprite_name_from_offset(
+        offset: int, offsets: List[int], names: List[str]
+    ) -> str:
         return names[offsets.index(offset)]
 
     sprite_idx = 0
@@ -421,7 +429,9 @@ def write_player_xmls(
                 back_raster = cur_sprite_back.rasters[i]
 
                 if back_raster.is_special:
-                    raster_attributes["special"] = f"{back_raster.width & 0xFF:X},{back_raster.height & 0xFF:X}"
+                    raster_attributes["special"] = (
+                        f"{back_raster.width & 0xFF:X},{back_raster.height & 0xFF:X}"
+                    )
                 else:
                     back_name_offset = raster_sets[sprite_idx + 1].raster_offsets[i]
                     raster_attributes["back"] = (
@@ -476,7 +486,9 @@ def write_player_xmls(
                 )
 
                 for anim in comp.animations:
-                    ET.SubElement(Component, anim.__class__.__name__, anim.get_attributes())
+                    ET.SubElement(
+                        Component, anim.__class__.__name__, anim.get_attributes()
+                    )
 
         xml = ET.ElementTree(SpriteSheet)
         pretty_print_xml(xml, out_path / f"{cur_sprite_name}.xml")
@@ -538,8 +550,12 @@ def write_player_palettes(
             if pal_name not in dumped_palettes:
                 offset = PLAYER_PAL_TO_RASTER[pal_name]
                 if pal_name not in PLAYER_PAL_TO_RASTER:
-                    print(f"WARNING: Palette {pal_name} has no specified raster, not dumping!")
-                raster_table_entry_dict[offset].write_png(raster_data, path / (pal_name + ".png"), palette)
+                    print(
+                        f"WARNING: Palette {pal_name} has no specified raster, not dumping!"
+                    )
+                raster_table_entry_dict[offset].write_png(
+                    raster_data, path / (pal_name + ".png"), palette
+                )
 
 
 ###########
@@ -593,8 +609,12 @@ class NpcSprite:
 
     @staticmethod
     def from_bytes(data: bytearray):
-        image_offsets = read_offset_list(data[int.from_bytes(data[0:4], byteorder="big") :])
-        palette_offsets = read_offset_list(data[int.from_bytes(data[4:8], byteorder="big") :])
+        image_offsets = read_offset_list(
+            data[int.from_bytes(data[0:4], byteorder="big") :]
+        )
+        palette_offsets = read_offset_list(
+            data[int.from_bytes(data[4:8], byteorder="big") :]
+        )
         max_components = int.from_bytes(data[8:0xC], byteorder="big")
         num_variations = int.from_bytes(data[0xC:0x10], byteorder="big")
         animation_offsets = read_offset_list(data[0x10:])
@@ -651,7 +671,9 @@ class NpcSprite:
             name = self.image_names[i] if self.image_names else f"Raster{i:02X}"
 
             (path / "rasters").mkdir(parents=True, exist_ok=True)
-            image.write(path / "rasters" / (name + ".png"), self.palettes[image.palette_index])
+            image.write(
+                path / "rasters" / (name + ".png"), self.palettes[image.palette_index]
+            )
 
             if image.palette_index not in palette_to_raster:
                 palette_to_raster[image.palette_index] = []
@@ -668,7 +690,11 @@ class NpcSprite:
             )
 
         for i, palette in enumerate(self.palettes):
-            name = self.palette_names[i] if (self.palette_names and i < len(self.palette_names)) else f"Pal{i:02X}"
+            name = (
+                self.palette_names[i]
+                if (self.palette_names and i < len(self.palette_names))
+                else f"Pal{i:02X}"
+            )
 
             if i in palette_to_raster:
                 img = palette_to_raster[i][0]
@@ -692,7 +718,9 @@ class NpcSprite:
                 AnimationList,
                 "Animation",
                 {
-                    "name": self.animation_names[i] if self.animation_names else f"Anim{i:02X}",
+                    "name": self.animation_names[i]
+                    if self.animation_names
+                    else f"Anim{i:02X}",
                 },
             )
 
@@ -707,7 +735,9 @@ class NpcSprite:
                 )
 
                 for anim in comp.animations:
-                    ET.SubElement(Component, anim.__class__.__name__, anim.get_attributes())
+                    ET.SubElement(
+                        Component, anim.__class__.__name__, anim.get_attributes()
+                    )
 
         xml = ET.ElementTree(SpriteSheet)
         pretty_print_xml(xml, path / "SpriteSheet.xml")
@@ -717,14 +747,16 @@ class N64SegPm_sprites(Segment):
     DEFAULT_NPC_SPRITE_NAMES = [f"{i:02X}" for i in range(0xEA)]
 
     def __init__(self, rom_start, rom_end, type, name, vram_start, args, yaml) -> None:
-        super().__init__(rom_start, rom_end, type, name, vram_start, args=args, yaml=yaml)
+        super().__init__(
+            rom_start, rom_end, type, name, vram_start, args=args, yaml=yaml
+        )
 
-        path = Path(__file__).parent / f"npc_sprite_names.yaml"
+        path = Path(__file__).parent / "npc_sprite_names.yaml"
         with path.open("r") as f:
             self.npc_cfg = yaml_loader.load(f.read(), Loader=yaml_loader.SafeLoader)
         self.npc_cfg_modified_time = path.stat().st_mtime
 
-        path = Path(__file__).parent / f"player_sprite_names.yaml"
+        path = Path(__file__).parent / "player_sprite_names.yaml"
         with path.open("r") as f:
             self.player_cfg = yaml_loader.load(f.read(), Loader=yaml_loader.SafeLoader)
         self.player_cfg_modified_time = path.stat().st_mtime
@@ -732,7 +764,9 @@ class N64SegPm_sprites(Segment):
     def out_path(self):
         return options.opts.asset_path / "sprite" / "sprites"
 
-    def split_player(self, build_date: str, player_raster_data: bytes, player_yay0_data: bytes) -> None:
+    def split_player(
+        self, build_date: str, player_raster_data: bytes, player_yay0_data: bytes
+    ) -> None:
         player_sprite_cfg = self.player_cfg["player_sprites"]
         player_raster_names: List[str] = self.player_cfg["player_rasters"]
 
@@ -832,7 +866,9 @@ class N64SegPm_sprites(Segment):
         npc_yay0_offset = int.from_bytes(sprite_in_bytes[0x18:0x1C], "big") + 0x10
         sprite_end_offset = int.from_bytes(sprite_in_bytes[0x1C:0x20], "big") + 0x10
 
-        player_raster_data: bytes = sprite_in_bytes[player_raster_offset:player_yay0_offset]
+        player_raster_data: bytes = sprite_in_bytes[
+            player_raster_offset:player_yay0_offset
+        ]
         player_yay0_data: bytes = sprite_in_bytes[player_yay0_offset:npc_yay0_offset]
         npc_yay0_data: bytes = sprite_in_bytes[npc_yay0_offset:sprite_end_offset]
 
@@ -848,12 +884,29 @@ class N64SegPm_sprites(Segment):
         # read npc.xml - we can't use self.npc_cfg because nonvanilla asset packs can change it
         # for each sprite, add to src_paths
         asset_stack = tuple(Path(p) for p in split.config["asset_stack"])
-        orderings_tree = ET.parse(get_asset_path(Path("sprite") / NPC_SPRITE_MEDADATA_XML_FILENAME, asset_stack))
+        orderings_tree = ET.parse(
+            get_asset_path(
+                Path("sprite") / NPC_SPRITE_MEDADATA_XML_FILENAME, asset_stack
+            )
+        )
         for sprite_tag in orderings_tree.getroot()[0]:
             name = sprite_tag.attrib["name"]
             src_paths.append(options.opts.asset_path / "sprite" / "npc" / name)
 
-        return [LinkerEntry(self, src_paths, self.out_path(), self.get_linker_section(), self.get_linker_section())]
+        return [
+            LinkerEntry(
+                self,
+                src_paths,
+                self.out_path(),
+                self.get_linker_section(),
+                self.get_linker_section(),
+            )
+        ]
 
     def cache(self):
-        return (self.yaml, self.rom_end, self.player_cfg_modified_time, self.npc_cfg_modified_time)
+        return (
+            self.yaml,
+            self.rom_end,
+            self.player_cfg_modified_time,
+            self.npc_cfg_modified_time,
+        )

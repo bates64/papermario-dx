@@ -45,6 +45,7 @@ build/
 /tools/permuter_settings.toml
 .run_hash
 .dream2nix
+.pre-commit-config.yaml
 
 # Assets
 # ** DO NOT UNIGNORE THESE FILES!! SEE THE FOLLOWING LINK IF YOU'RE MODDING ASSETS:**

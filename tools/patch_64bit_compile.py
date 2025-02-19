@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-import argparse, struct, sys
+import argparse
+import struct
+import sys
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -4,7 +4,6 @@ import json
 import glob
 import os
 import argparse
-from enum import IntEnum
 
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -108,7 +107,9 @@ if __name__ == "__main__":
     elif args.size:
         print(json.dumps(dict(sorted(funcs.items(), key=lambda f: f[1])), indent=4))
     else:
-        for thing in sorted(sizes.keys(), key=lambda x: sizes[x][modes.index(args.mode)]):
+        for thing in sorted(
+            sizes.keys(), key=lambda x: sizes[x][modes.index(args.mode)]
+        ):
             val = sizes[thing][modes.index(args.mode)]
             if val > args.limit:
                 print(thing.split("nonmatchings/")[1].ljust(50) + str(val))

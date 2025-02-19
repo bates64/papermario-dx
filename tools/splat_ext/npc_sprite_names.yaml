@@ -7890,7 +7890,7 @@ WorldBowser:
     - DefeatedStill
     - DefeatedIdle
     - DefeatedTalk
-    - BlastUp   # unused, probably intended for after the final fight
+    - BlastUp # unused, probably intended for after the final fight
     - BlastFall # unused, probably intended for after the final fight
 BattleBowser:
   frames:
@@ -9329,8 +9329,8 @@ Chan:
     - ToppledStill
     - ToppledSleep
     - ToppledDizzy
-    - Empty       # removed BurnHurt
-    - EmptyStill  # removed BurnHurtStill
+    - Empty # removed BurnHurt
+    - EmptyStill # removed BurnHurtStill
     - ToppledBurnHurt
     - ToppledBurnStill
 Lee:

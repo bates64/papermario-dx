@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, os
+import sys
 
 # Under normal compilation we rely on splat to use a discard option in the ldscript
 # to not include sections in the elf then just output all sections, however under debug we want

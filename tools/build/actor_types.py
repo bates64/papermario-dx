@@ -35,9 +35,13 @@ class ActorTypeEntry:
             raise Exception("Steps delay array has incorrect size: " + self.stepDelay)
 
         if len(self.tattleCamOffset) != 3:
-            raise Exception("Tattle cam offset array has incorrect size: " + self.tattleCamOffset)
+            raise Exception(
+                "Tattle cam offset array has incorrect size: " + self.tattleCamOffset
+            )
 
-        self.enum_suffix = re.sub("((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", self.name).upper()
+        self.enum_suffix = re.sub(
+            "((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", self.name
+        ).upper()
         self.enum_name = "ACTOR_TYPE_" + self.enum_suffix
 
 
@@ -78,7 +82,7 @@ def generate_actors_data(fout: TextIOWrapper, actors: List[ActorTypeEntry]):
         fout.write(f"        .jump = {actor.jumpSound},\n")
         fout.write(f"        .hurt = {actor.hurtSound},\n")
         fout.write(f"        .delay = {{ {', '.join(map(str, actor.stepDelay))} }},\n")
-        fout.write(f"    }},\n")
+        fout.write("    },\n")
     fout.write("};\n")
     fout.write("\n")
 
@@ -92,9 +96,11 @@ def generate_actors_data(fout: TextIOWrapper, actors: List[ActorTypeEntry]):
     fout.write("ActorOffsets bActorOffsets[] = {\n")
     for actor in actors:
         fout.write(f"    [{actor.enum_name}] = {{\n")
-        fout.write(f"        .tattleCam = {{ {', '.join(map(str, actor.tattleCamOffset))} }},\n")
+        fout.write(
+            f"        .tattleCam = {{ {', '.join(map(str, actor.tattleCamOffset))} }},\n"
+        )
         fout.write(f"        .shadow = {actor.shadowOffset},\n")
-        fout.write(f"    }},\n")
+        fout.write("    },\n")
     fout.write("};\n")
     fout.write("\n")
 
@@ -112,7 +118,7 @@ def generate_actors_enums(fout: TextIOWrapper, actors: List[ActorTypeEntry]):
     fout.write("};\n")
     fout.write("\n")
 
-    fout.write(f"#define ACTOR_LEVEL_NONE                             99\n")
+    fout.write("#define ACTOR_LEVEL_NONE                             99\n")
     for idx, actor in enumerate(actors):
         fout.write(f"#define ACTOR_LEVEL_{actor.enum_suffix:32} {actor.level}\n")
     fout.write("\n")
@@ -122,8 +128,12 @@ def generate_actors_enums(fout: TextIOWrapper, actors: List[ActorTypeEntry]):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates actor tables")
-    parser.add_argument("out_data", help="output header file to generate containing the data")
-    parser.add_argument("out_enum", help="output header file to generate containing the enum")
+    parser.add_argument(
+        "out_data", help="output header file to generate containing the data"
+    )
+    parser.add_argument(
+        "out_enum", help="output header file to generate containing the enum"
+    )
     parser.add_argument("actors_yaml", type=Path, help="input yaml file path")
     args = parser.parse_args()
 

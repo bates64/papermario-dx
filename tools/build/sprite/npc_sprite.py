@@ -47,7 +47,9 @@ def resolve_image_path(
     except FileNotFoundError:
         # Allow missing subdirectory for backwards compatibility with Star Rod
         img_path = get_asset_path(sprite_dir / img_name, asset_stack)
-        print(f"warning: please move {sprite_dir}/{img_path.name} to '{sub_dir}' subdirectory")
+        print(
+            f"warning: please move {sprite_dir}/{img_path.name} to '{sub_dir}' subdirectory"
+        )
     return str(img_path)
 
 
@@ -91,7 +93,9 @@ def from_dir(
 
             palettes.append(palette)
 
-        palette_names.append(Palette.get("name", Palette.attrib["src"].split(".png")[0]))
+        palette_names.append(
+            Palette.get("name", Palette.attrib["src"].split(".png")[0])
+        )
 
     images = []
     image_names: List[str] = []
@@ -205,7 +209,9 @@ if __name__ == "__main__":
             palette_offsets.append(f.tell())
             for rgba in palette:
                 if rgba[3] not in (0, 0xFF):
-                    print("error: translucent pixels not allowed in palette {sprite.palette_names[i]}")
+                    print(
+                        "error: translucent pixels not allowed in palette {sprite.palette_names[i]}"
+                    )
                     exit(1)
 
                 color = pack_color(*rgba)

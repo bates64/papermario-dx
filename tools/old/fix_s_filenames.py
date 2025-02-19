@@ -2,9 +2,7 @@
 
 # Renames asm/nonmatchings/ files to match the glabel they hold.
 
-import argparse
 import os
-import re
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = script_dir + "/../../"

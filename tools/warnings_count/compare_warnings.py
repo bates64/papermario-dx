@@ -46,7 +46,7 @@ def main():
             delta = num_new_warnings - num_current_warnings
 
             if delta == 1:
-                print(f"⚠️ This PR introduces a warning:")
+                print("⚠️ This PR introduces a warning:")
             else:
                 print(f"⚠️ This PR introduces {delta} warnings:")
 

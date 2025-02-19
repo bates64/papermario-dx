@@ -9,8 +9,12 @@ def is_sjis_2byte(c):
 
 
 parser = argparse.ArgumentParser(description="")
-parser.add_argument("infile", nargs="?", type=argparse.FileType("rb"), default=sys.stdin.buffer)
-parser.add_argument("outfile", nargs="?", type=argparse.FileType("wb"), default=sys.stdout.buffer)
+parser.add_argument(
+    "infile", nargs="?", type=argparse.FileType("rb"), default=sys.stdin.buffer
+)
+parser.add_argument(
+    "outfile", nargs="?", type=argparse.FileType("wb"), default=sys.stdout.buffer
+)
 
 args = parser.parse_args()
 

@@ -258,7 +258,9 @@ class TexImage:
                 self.main_height,
             )
             if self.main_fmt == FMT_CI:
-                self.main_img.palette = self.get_n64_pal(texbuf, self.main_fmt, self.main_depth)
+                self.main_img.palette = self.get_n64_pal(
+                    texbuf, self.main_fmt, self.main_depth
+                )
         # main img + mipmaps
         elif self.extra_tiles == TILES_MIPMAPS:
             self.has_mipmaps = True
@@ -278,7 +280,9 @@ class TexImage:
                         break
                     mmw = self.main_width // divisor
                     mmh = self.main_height // divisor
-                    mipmap = self.get_n64_img(texbuf, self.main_fmt, self.main_depth, mmw, mmh)
+                    mipmap = self.get_n64_img(
+                        texbuf, self.main_fmt, self.main_depth, mmw, mmh
+                    )
                     self.mipmaps.append(mipmap)
 
                     divisor = divisor * 2
@@ -328,9 +332,13 @@ class TexImage:
                 pal = self.get_n64_pal(texbuf, self.main_fmt, self.main_depth)
                 self.main_img.palette = pal
             # read aux
-            self.aux_img = self.get_n64_img(texbuf, self.aux_fmt, self.aux_depth, self.aux_width, self.aux_height)
+            self.aux_img = self.get_n64_img(
+                texbuf, self.aux_fmt, self.aux_depth, self.aux_width, self.aux_height
+            )
             if self.aux_fmt == FMT_CI:
-                self.aux_img.palette = self.get_n64_pal(texbuf, self.aux_fmt, self.aux_depth)
+                self.aux_img.palette = self.get_n64_pal(
+                    texbuf, self.aux_fmt, self.aux_depth
+                )
 
     # constructs a dictionary entry for the tex archive for this texture
     def get_json_entry(self):
@@ -404,7 +412,9 @@ class TexImage:
 
             return (r << 11) | (g << 6) | (b << 1) | a
 
-        (out_img, out_w, out_h) = Converter(mode=fmt_str.lower(), infile=img_file, flip_y=True).convert()
+        (out_img, out_w, out_h) = Converter(
+            mode=fmt_str.lower(), infile=img_file, flip_y=True
+        ).convert()
 
         out_pal = bytearray()
         if fmt_str == "CI4" or fmt_str == "CI8":
@@ -416,13 +426,17 @@ class TexImage:
             palette_count = (0x20 if fmt_str == "CI4" else 0x200) // 2
             if len(palette) > palette_count:
                 palette = palette[:palette_count]
-                print(f"warning: {self.img_name} has more than {palette_count} colors, truncating")
+                print(
+                    f"warning: {self.img_name} has more than {palette_count} colors, truncating"
+                )
             elif len(palette) < palette_count:
                 palette += [(0, 0, 0, 0)] * (palette_count - len(palette))
 
             for rgba in palette:
                 if rgba[3] not in (0, 0xFF):
-                    print(f"warning: alpha mask mode but {self.img_name} has translucent pixels")
+                    print(
+                        f"warning: alpha mask mode but {self.img_name} has translucent pixels"
+                    )
 
                 color = pack_color(*rgba)
                 out_pal += color.to_bytes(2, byteorder="big")
@@ -484,7 +498,9 @@ class TexImage:
                 bytes += self.aux_pal
 
         size = len(bytes) - pos
-        assert size == self.expected_size(), f"{self.img_name}: size mismatch: {size} != {self.expected_size()}"
+        assert (
+            size == self.expected_size()
+        ), f"{self.img_name}: size mismatch: {size} != {self.expected_size()}"
 
     def expected_size(self) -> int:
         """
@@ -497,28 +513,44 @@ class TexImage:
         if self.main_depth == DEPTH_4_BIT:
             if self.has_mipmaps:
                 divisor = 2
-                while self.main_width // divisor >= 16 and self.main_height // divisor > 0:
-                    raster_size += self.main_width // divisor * self.main_height // divisor
+                while (
+                    self.main_width // divisor >= 16 and self.main_height // divisor > 0
+                ):
+                    raster_size += (
+                        self.main_width // divisor * self.main_height // divisor
+                    )
                     divisor *= 2
             raster_size //= 2
         elif self.main_depth == DEPTH_8_BIT:
             if self.has_mipmaps:
                 divisor = 2
-                while self.main_width // divisor >= 8 and self.main_height // divisor > 0:
-                    raster_size += self.main_width // divisor * self.main_height // divisor
+                while (
+                    self.main_width // divisor >= 8 and self.main_height // divisor > 0
+                ):
+                    raster_size += (
+                        self.main_width // divisor * self.main_height // divisor
+                    )
                     divisor *= 2
         elif self.main_depth == DEPTH_16_BIT:
             if self.has_mipmaps:
                 divisor = 2
-                while self.main_width // divisor >= 4 and self.main_height // divisor > 0:
-                    raster_size += self.main_width // divisor * self.main_height // divisor
+                while (
+                    self.main_width // divisor >= 4 and self.main_height // divisor > 0
+                ):
+                    raster_size += (
+                        self.main_width // divisor * self.main_height // divisor
+                    )
                     divisor *= 2
             raster_size *= 2
         elif self.main_depth == DEPTH_32_BIT:
             if self.has_mipmaps:
                 divisor = 2
-                while self.main_width // divisor >= 2 and self.main_height // divisor > 0:
-                    raster_size += self.main_width // divisor * self.main_height // divisor
+                while (
+                    self.main_width // divisor >= 2 and self.main_height // divisor > 0
+                ):
+                    raster_size += (
+                        self.main_width // divisor * self.main_height // divisor
+                    )
                     divisor *= 2
             raster_size *= 4
 

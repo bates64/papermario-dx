@@ -1,4 +1,9 @@
-{ lib, fetchFromGitHub, rustPlatform, ... }:
+{
+  lib,
+  fetchFromGitHub,
+  rustPlatform,
+  ...
+}:
 rustPlatform.buildRustPackage rec {
   pname = "pigment64";
   version = "0.4.5";

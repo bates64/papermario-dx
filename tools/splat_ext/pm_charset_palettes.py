@@ -34,7 +34,9 @@ class N64SegPm_charset_palettes(Segment):
         for i, palette in enumerate(self.palettes):
             raster = self.siblings[0].rasters[0]
 
-            w = png.Writer(self.siblings[0].width, self.siblings[0].height, palette=palette)
+            w = png.Writer(
+                self.siblings[0].width, self.siblings[0].height, palette=palette
+            )
             with open(fs_dir / f"{i:02X}.png", "wb") as f:
                 w.write_array(f, raster)
 

@@ -4,7 +4,7 @@
     {
       "label": "Run Mod",
       "type": "shell",
-      "command": "nix --extra-experimental-features nix-command develop --profile .nix-profile --accept-flake-config --command ./tools/run",
+      "command": "nix --extra-experimental-features nix-command develop --accept-flake-config --command ./tools/run",
       "problemMatcher": "$gcc",
       "group": {
         "kind": "build",
@@ -14,7 +14,7 @@
     {
       "label": "Open Star Rod",
       "type": "shell",
-      "command": "nix --extra-experimental-features nix-command develop --profile .nix-profile --accept-flake-config --command star-rod",
+      "command": "nix --extra-experimental-features nix-command develop --accept-flake-config --command star-rod",
       "problemMatcher": [],
       "group": {
         "kind": "none"

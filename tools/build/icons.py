@@ -66,7 +66,9 @@ def build(out_bin: Path, out_header: Path, asset_stack: Tuple[Path, ...]):
             out_bytes += out_pal
 
             if type == "pair":
-                img_path = str(get_asset_path(Path(f"icon/{file}.disabled.png"), asset_stack))
+                img_path = str(
+                    get_asset_path(Path(f"icon/{file}.disabled.png"), asset_stack)
+                )
                 (out_img, out_pal, out_w, out_h) = get_img_file("CI4", str(img_path))
 
                 offsets[name + "_disabled_raster"] = offsets[name + "_raster"]
@@ -89,7 +91,7 @@ def build(out_bin: Path, out_header: Path, asset_stack: Tuple[Path, ...]):
     with open(out_header, "w") as f:
         f.write("#ifndef ICON_OFFSETS_H\n")
         f.write("#define ICON_OFFSETS_H\n")
-        f.write(f"/* This file is auto-generated. Do not edit. */\n\n")
+        f.write("/* This file is auto-generated. Do not edit. */\n\n")
 
         for name, offset in offsets.items():
             f.write(f"#define ICON_{name} 0x{offset:X}\n")

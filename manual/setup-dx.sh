@@ -74,9 +74,19 @@ nix-store --add-fixed sha256 papermario.us.z64
 git clone "$GIT_REPO" "$DX_DIR" --depth 1
 cd "$DX_DIR"
 
-# Prepare devshell
-echo -e "${PURPLE}Downloading dependencies and splitting assets from ROM...${RESET}"
-nix --extra-experimental-features nix-command develop --profile .nix-profile --accept-flake-config --command "true"
+# direnv
+if ! command -v direnv > /dev/null; then
+    echo -e "${PURPLE}Installing direnv...${RESET}"
+
+    curl -sfL https://direnv.net/install.sh | bash
+
+    # nix-direnv is faster
+    echo 'source $HOME/.nix-profile/share/nix-direnv/direnvrc' >> "$HOME/.config/direnv/direnvrc"
+
+    echo 'eval "$(direnv hook bash)"' >> "$HOME/.bashrc"
+    source "$HOME/.bashrc"
+fi
+direnv allow
 
 echo -e "${GREEN}Paper Mario DX has been installed in $DX_DIR!${RESET}"
 COMPLETE=1

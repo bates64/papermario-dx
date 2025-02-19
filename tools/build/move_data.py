@@ -60,7 +60,7 @@ def generate_move_table(fout: TextIOWrapper, moves: List[MoveEntry]):
         fout.write(f"        .actionTip = {move.actionTip},\n")
         fout.write(f"        .costFP = {move.costFP},\n")
         fout.write(f"        .costBP = {move.costBP},\n")
-        fout.write(f"    }},\n")
+        fout.write("    },\n")
 
     fout.write("};\n")
     fout.write("\n")
@@ -77,7 +77,12 @@ def generate_move_enum(fout: TextIOWrapper, moves: List[MoveEntry]):
         if re.match(r"Unused_(?:Hammer_)?([0-9A-F]{2})", move.name):
             name = "MOVE_" + move.name.upper()
         else:
-            name = "MOVE_" + re.sub("((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", move.name).upper()
+            name = (
+                "MOVE_"
+                + re.sub(
+                    "((?<=[a-z0-9])[A-Z]|(?!^)(?<!_)[A-Z](?=[a-z]))", r"_\1", move.name
+                ).upper()
+            )
         fout.write(f"    {name:39} = 0x{idx:03X},\n")
 
     fout.write("};\n")
@@ -94,8 +99,12 @@ def generate_move_enum(fout: TextIOWrapper, moves: List[MoveEntry]):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates item table")
-    parser.add_argument("out_data", help="output header file to generate containing the data")
-    parser.add_argument("out_enum", help="output header file to generate containing the enum")
+    parser.add_argument(
+        "out_data", help="output header file to generate containing the data"
+    )
+    parser.add_argument(
+        "out_enum", help="output header file to generate containing the enum"
+    )
     parser.add_argument("moves_yaml", type=Path, help="input yaml file path")
     args = parser.parse_args()
 

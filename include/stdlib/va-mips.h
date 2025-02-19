@@ -164,7 +164,7 @@ enum {
 #endif
 #endif /* ! _STDARG_H */
 
-#ifndef va_end
+#if !defined(va_end) && !defined(__clang__)
 void va_end (__gnuc_va_list);		/* Defined in libgcc.a */
 #endif
 #define va_end(__AP)	((void)0)

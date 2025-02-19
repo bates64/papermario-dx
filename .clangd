@@ -1,3 +1,10 @@
 CompileFlags:
   Add: -Wno-unknown-warning-option
   Remove: [-m*, -f*]
+InlayHints:
+  BlockEnd: No
+  Designators: No
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
+  DefaultArguments: Yes

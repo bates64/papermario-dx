@@ -40,7 +40,9 @@ class N64SegPm_imgfx_data(Segment):
                 frame: List[Vertex] = []
 
                 for j in range(vtx_count):
-                    x, y, z, u, v, r, g, b, a = struct.unpack(">hhhBBbbbB", data[pos : pos + 12])
+                    x, y, z, u, v, r, g, b, a = struct.unpack(
+                        ">hhhBBbbbB", data[pos : pos + 12]
+                    )
                     pos += 12
                     frame.append(Vertex(j, x, y, z, u, v, r, g, b, a))
 
@@ -118,7 +120,10 @@ class N64SegPm_imgfx_data(Segment):
         return [
             LinkerEntry(
                 self,
-                [self.OUT_DIR / f"{name}.json" for name, _ in self.yaml.get("animations")],
+                [
+                    self.OUT_DIR / f"{name}.json"
+                    for name, _ in self.yaml.get("animations")
+                ],
                 options.opts.asset_path / "imgfx" / f"{self.name}.c",
                 self.get_linker_section(),
                 self.get_linker_section(),

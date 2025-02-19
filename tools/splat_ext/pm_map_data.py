@@ -1,5 +1,5 @@
 from math import ceil
-import os, sys
+import os
 import struct
 from pathlib import Path
 
@@ -168,25 +168,45 @@ class N64SegPm_map_data(Segment):
                     h = tex[4]
 
                     if imgtype == "ia4":
-                        img = n64img.image.IA4(data=bytes[pos : pos + w * h // 2], width=w, height=h)
+                        img = n64img.image.IA4(
+                            data=bytes[pos : pos + w * h // 2], width=w, height=h
+                        )
                     elif imgtype == "ia8":
-                        img = n64img.image.IA8(data=bytes[pos : pos + w * h], width=w, height=h)
+                        img = n64img.image.IA8(
+                            data=bytes[pos : pos + w * h], width=w, height=h
+                        )
                     elif imgtype == "ia16":
-                        img = n64img.image.IA16(data=bytes[pos : pos + w * h * 2], width=w, height=h)
+                        img = n64img.image.IA16(
+                            data=bytes[pos : pos + w * h * 2], width=w, height=h
+                        )
                     elif imgtype == "rgba16":
-                        img = n64img.image.RGBA16(data=bytes[pos : pos + w * h * 2], width=w, height=h)
+                        img = n64img.image.RGBA16(
+                            data=bytes[pos : pos + w * h * 2], width=w, height=h
+                        )
                     elif imgtype == "rgba32":
-                        img = n64img.image.RGBA32(data=bytes[pos : pos + w * h * 4], width=w, height=h)
+                        img = n64img.image.RGBA32(
+                            data=bytes[pos : pos + w * h * 4], width=w, height=h
+                        )
                     elif imgtype in ("ci4", "ci8"):
-                        palette = next(filter(lambda x: x[1] == "pal" and x[2] == outname, textures))
+                        palette = next(
+                            filter(
+                                lambda x: x[1] == "pal" and x[2] == outname, textures
+                            )
+                        )
                         pal_pos = palette[0]
 
                         if imgtype == "ci4":
-                            img = n64img.image.CI4(data=bytes[pos : pos + w * h // 2], width=w, height=h)
+                            img = n64img.image.CI4(
+                                data=bytes[pos : pos + w * h // 2], width=w, height=h
+                            )
                             img.palette = parse_palette(bytes[pal_pos : pal_pos + 0x20])
                         elif imgtype == "ci8":
-                            img = n64img.image.CI8(data=bytes[pos : pos + w * h], width=w, height=h)
-                            img.palette = parse_palette(bytes[pal_pos : pal_pos + 0x200])
+                            img = n64img.image.CI8(
+                                data=bytes[pos : pos + w * h], width=w, height=h
+                            )
+                            img.palette = parse_palette(
+                                bytes[pal_pos : pal_pos + 0x200]
+                            )
                     else:
                         raise Exception(f"Invalid image type {imgtype}")
 
@@ -195,8 +215,10 @@ class N64SegPm_map_data(Segment):
             elif name.endswith("_bg"):
                 for i in range(self.files[name].get("pal_count", 1)):
                     header_offset = i * 0x10
-                    raster_offset, palette_offset, draw_pos, width, height = struct.unpack(
-                        ">IIIHH", bytes[header_offset : header_offset + 0x10]
+                    raster_offset, palette_offset, draw_pos, width, height = (
+                        struct.unpack(
+                            ">IIIHH", bytes[header_offset : header_offset + 0x10]
+                        )
                     )
 
                     raster_offset -= 0x80200000
@@ -212,7 +234,9 @@ class N64SegPm_map_data(Segment):
                         w = png.Writer(
                             width,
                             height,
-                            palette=parse_palette(bytes[palette_offset : palette_offset + 512]),
+                            palette=parse_palette(
+                                bytes[palette_offset : palette_offset + 512]
+                            ),
                         )
                         w.write_array(f, bytes[raster_offset:])
 
@@ -225,7 +249,12 @@ class N64SegPm_map_data(Segment):
 
             if self.files[name].get("dump_raw", False):
                 with open(fs_dir / f"{name}.raw.dat", "wb") as f:
-                    f.write(rom_bytes[bytes_start : bytes_start + self.files[name]["dump_raw_size"]])
+                    f.write(
+                        rom_bytes[
+                            bytes_start : bytes_start
+                            + self.files[name]["dump_raw_size"]
+                        ]
+                    )
 
             asset_idx += 1
 

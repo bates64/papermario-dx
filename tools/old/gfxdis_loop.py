@@ -1,4 +1,3 @@
-import os, sys
 import subprocess
 import argparse
 from struct import unpack_from
@@ -27,7 +26,10 @@ while i < args.end:
 
     # print(f"Start {hex(dis_start)} end {hex(i)}")
     gfxdis = subprocess.run(
-        f"{gfxdis_path.resolve()} " + f"-x " + f"-dc " + f"-d {baserom[dis_start:i].hex()}",
+        f"{gfxdis_path.resolve()} "
+        + "-x "
+        + "-dc "
+        + f"-d {baserom[dis_start:i].hex()}",
         capture_output=True,
         shell=True,
         text=True,
@@ -53,4 +55,4 @@ while i < args.end:
     vram = 0x80240000 + (dis_start - rom_start)
     print(f"Gfx D_{vram:X}[] = {{")
     print("\n".join(new_commands))
-    print(f"}};\n")
+    print("};\n")

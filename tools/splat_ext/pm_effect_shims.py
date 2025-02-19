@@ -1,5 +1,4 @@
 from typing import List
-from yaml.loader import Loader
 from splat.segtypes.segment import Segment
 from splat.util import options
 import yaml as yaml_loader
@@ -67,7 +66,11 @@ glabel {name}
         ret = []
 
         for shim in self.shims:
-            ret.append(LinkerEntry(self, [self.shim_path(shim)], self.shim_path(shim), ".text", ".text"))
+            ret.append(
+                LinkerEntry(
+                    self, [self.shim_path(shim)], self.shim_path(shim), ".text", ".text"
+                )
+            )
 
         return ret
 

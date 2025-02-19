@@ -12,12 +12,14 @@ concurrency:
   cancel-in-progress: false
 jobs:
   doxygen:
+    name: Doxygen
+    if: github.event.repository.has_pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install Doxygen
@@ -27,12 +29,10 @@ jobs:
           sudo mv doxygen-*/bin/doxy* /usr/local/bin
       - name: Generate docs
         run: doxygen
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs/doxygen/html/
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

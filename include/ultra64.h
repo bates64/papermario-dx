@@ -24,19 +24,19 @@
 
 #pragma GCC system_header
 
-#include <PR/ultratypes.h>
-#include <PR/rcp.h>
-#include <PR/os.h>
-#include <PR/region.h>
-#include <PR/rmon.h>
-#include <PR/sptask.h>
-#include <PR/mbi.h>
-#include <PR/libaudio.h>
-#include <PR/gu.h>
-#include <PR/ramrom.h>
-#include <PR/sp.h>
-#include <PR/ucode.h>
-#include <PR/ultraerror.h>
-#include <PR/ultralog.h>
+#include <PR/ultratypes.h> // IWYU pragma: export
+#include <PR/rcp.h> // IWYU pragma: export
+#include <PR/os.h> // IWYU pragma: export
+#include <PR/region.h> // IWYU pragma: export
+#include <PR/rmon.h> // IWYU pragma: export
+#include <PR/sptask.h> // IWYU pragma: export
+#include <PR/mbi.h> // IWYU pragma: export
+#include <PR/libaudio.h> // IWYU pragma: export
+#include <PR/gu.h> // IWYU pragma: export
+#include <PR/ramrom.h> // IWYU pragma: export
+#include <PR/sp.h> // IWYU pragma: export
+#include <PR/ucode.h> // IWYU pragma: export
+#include <PR/ultraerror.h> // IWYU pragma: export
+#include <PR/ultralog.h> // IWYU pragma: export
 
 #endif

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-from pathlib import Path
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = script_dir + "/../"

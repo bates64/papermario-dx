@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 
-import glob
 import os
 import re
-import sys
 import subprocess
 from pathlib import Path
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(script_dir, "../.."))
 
-import glob, os
+import os
 
 os.chdir(root_dir)
 

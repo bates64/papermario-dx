@@ -44,10 +44,13 @@ API_CALLABLE(MakeNpcs) {
     }
 
     switch (script->functionTemp[0]) {
-        case 0:
-            make_npcs(evt_get_variable(script, *args++), gGameStatusPtr->mapID, (s32*) evt_get_variable(script, *args++));
+        case 0: {
+            s32 flags = evt_get_variable(script, *args++);
+            s32* npcGroupList = (s32*) evt_get_variable(script, *args++);
+            make_npcs(flags, gGameStatusPtr->mapID, npcGroupList);
             script->functionTemp[0] = 1;
             break;
+        }
         case 1:
             if (gEncounterState != ENCOUNTER_STATE_CREATE) {
                 return ApiStatus_DONE2;

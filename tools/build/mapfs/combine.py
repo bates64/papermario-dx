@@ -41,7 +41,11 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
             name = decompressed.stem + "\0"
             offset = next_data_pos
             decompressed_size = decompressed.stat().st_size
-            size = next_multiple(compressed.stat().st_size, 2) if compressed.exists() else decompressed_size
+            size = (
+                next_multiple(compressed.stat().st_size, 2)
+                if compressed.exists()
+                else decompressed_size
+            )
 
             if version == "ique" and decompressed.stem == "title_data":
                 size = compressed.stat().st_size
@@ -67,7 +71,11 @@ def build_mapfs(out_bin, assets, version, pre_write_assets):
 
             # write data.
             f.seek(0x20 + next_data_pos)
-            f.write(compressed.read_bytes() if compressed.exists() else decompressed.read_bytes())
+            f.write(
+                compressed.read_bytes()
+                if compressed.exists()
+                else decompressed.read_bytes()
+            )
             next_data_pos += max(len(pre_write_bytes), size)
 
             asset_idx += 1

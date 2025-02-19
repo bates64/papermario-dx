@@ -26,12 +26,6 @@
         "./tools/build/imgfx",
         "./tools/splat/src"
     ],
-    "[c]": {
-        "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?", // no $, for scripts
-        "editor.formatOnSave": false, // TODO: enable this once we solve EVTs, see #1004
-        "editor.formatOnSaveMode": "modifications",
-        "editor.defaultFormatter": "xaver.clang-format",
-    },
     "files.associations": {
         "*.h": "c",
     },
@@ -50,18 +44,13 @@
         "venv": true,
         "compile_commands.json": true,
         ".nix-profile*": true,
+        ".ruff_cache": true,
+        ".dream2nix": true,
+        ".cache": true,
+        ".pre-commit-config.yaml": true,
     },
-    "[python]": {
-        "editor.formatOnType": true,
-        "editor.wordBasedSuggestions": "off",
-        "editor.formatOnSave": true,
-        "editor.formatOnSaveMode": "modifications",
-        "editor.defaultFormatter": "ms-python.black-formatter",
-    },
-    "black-formatter.args": [
-        "-l 120"
-    ],
-    "search.useIgnoreFiles": false,
+    "search.useIgnoreFiles": true,
     "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
     "workbench.editor.labelFormat": "short",
+    "direnv.restart.automatic": true,
 }

@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import re
 import subprocess
 import sys
 from collections import OrderedDict
@@ -138,7 +137,9 @@ def group_matches(
             continue
         if max is not None and query_start > max:
             continue
-        if contains is not None and (query_start > contains or query_start + length < contains):
+        if contains is not None and (
+            query_start > contains or query_start + length < contains
+        ):
             continue
 
         ret.append(Result(query, target, query_start, target_start, length))
@@ -187,7 +188,11 @@ def get_line_numbers(obj_file: Path) -> Dict[int, int]:
 def get_tu_offset(obj_file: Path, symbol: str) -> Optional[int]:
     objdump = "mips-linux-gnu-objdump"
 
-    objdump_out = subprocess.run([objdump, "-t", obj_file], stdout=subprocess.PIPE).stdout.decode("utf-8").split("\n")
+    objdump_out = (
+        subprocess.run([objdump, "-t", obj_file], stdout=subprocess.PIPE)
+        .stdout.decode("utf-8")
+        .split("\n")
+    )
 
     if not objdump_out:
         return None
@@ -302,7 +307,9 @@ def get_matches(
                 if not matches:
                     continue
 
-                results: list[Result] = group_matches(query, symbol, matches, window_size, min, max, contains)
+                results: list[Result] = group_matches(
+                    query, symbol, matches, window_size, min, max, contains
+                )
                 if not results:
                     continue
 
@@ -330,7 +337,9 @@ def get_matches(
 
                     target_range_str = ""
                     if c_range:
-                        target_range_str = fg.li_cyan + f" (line {c_range} in {obj_file.stem})" + fg.rs
+                        target_range_str = (
+                            fg.li_cyan + f" (line {c_range} in {obj_file.stem})" + fg.rs
+                        )
 
                     query_str = f"query [{result.query_start}-{result.query_end}]"
                     target_str = f"{symbol.name} [insn {result.target_start}-{result.target_end}] ({result.length} total){target_range_str}"
@@ -342,14 +351,24 @@ def get_matches(
                         except ImportError:
                             print("rabbitizer not found, cannot show disassembly")
                             sys.exit(1)
-                        result_query_bytes = query_bytes.bytes[result.query_start * 4 : result.query_end * 4]
-                        result_target_bytes = sym_bytes.bytes[result.target_start * 4 : result.target_end * 4]
+                        result_query_bytes = query_bytes.bytes[
+                            result.query_start * 4 : result.query_end * 4
+                        ]
+                        result_target_bytes = sym_bytes.bytes[
+                            result.target_start * 4 : result.target_end * 4
+                        ]
 
                         for i in range(0, len(result_query_bytes), 4):
-                            q_insn = rabbitizer.Instruction(int.from_bytes(result_query_bytes[i : i + 4], "big"))
-                            t_insn = rabbitizer.Instruction(int.from_bytes(result_target_bytes[i : i + 4], "big"))
+                            q_insn = rabbitizer.Instruction(
+                                int.from_bytes(result_query_bytes[i : i + 4], "big")
+                            )
+                            t_insn = rabbitizer.Instruction(
+                                int.from_bytes(result_target_bytes[i : i + 4], "big")
+                            )
 
-                            print(f"\t\t{q_insn.disassemble():35} | {t_insn.disassemble()}")
+                            print(
+                                f"\t\t{q_insn.disassemble():35} | {t_insn.disassemble()}"
+                            )
 
     return OrderedDict(sorted(ret.items(), key=lambda kv: kv[1], reverse=True))
 

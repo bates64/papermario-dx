@@ -341,7 +341,10 @@ class AnimComponent:
 
         x, y, z = struct.unpack(">hhh", data[6:12])
 
-        commands = [int.from_bytes(d[0:2], byteorder="big", signed=False) for d in iter_in_groups(commands_data, 2)]
+        commands = [
+            int.from_bytes(d[0:2], byteorder="big", signed=False)
+            for d in iter_in_groups(commands_data, 2)
+        ]
         return AnimComponent(x, y, z, commands)
 
     @property
@@ -371,7 +374,7 @@ class AnimComponent:
                 else:
                     # properly formatted animations will have labels
                     lbl_name = cmd.attrib[XML_ATTR_DEST]
-                    if not lbl_name in labels:
+                    if lbl_name not in labels:
                         raise Exception("Label missing for Goto dest: " + lbl_name)
                     pos = labels[lbl_name]
                 commands.append(0x2000 + (pos & 0xFFF))
@@ -405,7 +408,7 @@ class AnimComponent:
                 else:
                     # properly formatted animations will have labels
                     lbl_name = cmd.attrib[XML_ATTR_DEST]
-                    if not lbl_name in labels:
+                    if lbl_name not in labels:
                         raise Exception("Label missing for Loop dest: " + lbl_name)
                     pos = labels[lbl_name]
                 commands.append(0x7000 + (count & 0xFFF))

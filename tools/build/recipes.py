@@ -47,10 +47,14 @@ def generate(in_yaml: Path, out_c: Path):
     for recipe in single_recipes:
         if len(recipe) != 2 and len(recipe) != 3:
             raise Exception(f"Invaid format for ExtraDoubleRecipe: {str(recipe)}")
-        if not recipe[1] in product_idx:
-            raise Exception(f"Product {recipe[1]} for SingleRecipe {recipe[0]} not listed in Products")
-        if len(recipe) == 3 and not recipe[2] in product_idx:
-            raise Exception(f"Product {recipe[2]} for SingleRecipe {recipe[0]} not listed in Products")
+        if recipe[1] not in product_idx:
+            raise Exception(
+                f"Product {recipe[1]} for SingleRecipe {recipe[0]} not listed in Products"
+            )
+        if len(recipe) == 3 and recipe[2] not in product_idx:
+            raise Exception(
+                f"Product {recipe[2]} for SingleRecipe {recipe[0]} not listed in Products"
+            )
 
     # double recipes with inputs not found in SingleRecipes are automatically treated as an ExtraDoubleRecipe
     for recipe in double_recipes:
@@ -60,8 +64,10 @@ def generate(in_yaml: Path, out_c: Path):
         #        raise Exception(f"Ingredient {recipe[0]} for DoubleRecipe ({recipe[0]}, {recipe[1]}) not listed in SingleRecipes")
         #    if not recipe[1] in input_idx:
         #        raise Exception(f"Ingredient {recipe[1]} for DoubleRecipe ({recipe[0]}, {recipe[1]}) not listed in SingleRecipes")
-        if not recipe[2] in product_idx:
-            raise Exception(f"Product {recipe[2]} for DoubleRecipe ({recipe[0]}, {recipe[1]}) not listed in Products")
+        if recipe[2] not in product_idx:
+            raise Exception(
+                f"Product {recipe[2]} for DoubleRecipe ({recipe[0]}, {recipe[1]}) not listed in Products"
+            )
 
     #    for recipe in extra_recipes:
     #        if len(recipe) != 3:
@@ -89,15 +95,21 @@ def generate(in_yaml: Path, out_c: Path):
 
         f.write("s8 SingleRecipesWithoutCookbook[] = {\n")
         for recipe in single_recipes:
-            f.write(f"    {product_idx[recipe[1]]:-2}, // {recipe[0]:20} --> {recipe[1]}\n")
+            f.write(
+                f"    {product_idx[recipe[1]]:-2}, // {recipe[0]:20} --> {recipe[1]}\n"
+            )
         f.write("};\n\n")
 
         f.write("s8 SingleRecipesWithCookbook[] = {\n")
         for recipe in single_recipes:
             if len(recipe) == 3:
-                f.write(f"    {product_idx[recipe[2]]:-2}, // {recipe[0]:20} --> {recipe[2]}\n")
+                f.write(
+                    f"    {product_idx[recipe[2]]:-2}, // {recipe[0]:20} --> {recipe[2]}\n"
+                )
             else:
-                f.write(f"    {product_idx[recipe[1]]:-2}, // {recipe[0]:20} --> {recipe[1]}\n")
+                f.write(
+                    f"    {product_idx[recipe[1]]:-2}, // {recipe[0]:20} --> {recipe[1]}\n"
+                )
         f.write("};\n\n")
 
         recipe_map: Dict[int, DoubleRecipe] = {}
@@ -111,7 +123,9 @@ def generate(in_yaml: Path, out_c: Path):
             if r.i < 99999 and r.j < 99999:
                 id_pair = combine_ids(r.i, r.j)
                 if id_pair in recipe_map:
-                    raise Exception(f"Duplicate recipe for {r.in1} and {r.in2} in DoubleRecipes")
+                    raise Exception(
+                        f"Duplicate recipe for {r.in1} and {r.in2} in DoubleRecipes"
+                    )
                 recipe_map[id_pair] = r
             recipe_list.append(r)
 
@@ -127,7 +141,10 @@ def generate(in_yaml: Path, out_c: Path):
                     recipe = recipe_map[combine_ids(i, j)]
                     # this special combination COULD be defined in the matrix, but isn't in vanilla
                     # so we need to grant it a special exception, forcing it to generate in ExtraDoubleRecipes
-                    if recipe.in1 == "ITEM_STRANGE_LEAF" and recipe.in2 == "ITEM_WHACKAS_BUMP":
+                    if (
+                        recipe.in1 == "ITEM_STRANGE_LEAF"
+                        and recipe.in2 == "ITEM_WHACKAS_BUMP"
+                    ):
                         id = 0
                     else:
                         id = product_idx[recipe.result]
@@ -144,7 +161,9 @@ def generate(in_yaml: Path, out_c: Path):
         #        f.write(f"    {{ {entry[0]}, {entry[1]}, {product_idx[entry[2]]} }},\n")
         for entry in recipe_list:
             if not entry.used:
-                f.write(f"    {{ {entry.in1}, {entry.in2}, {product_idx[entry.result]} }},\n")
+                f.write(
+                    f"    {{ {entry.in1}, {entry.in2}, {product_idx[entry.result]} }},\n"
+                )
         f.write("};\n\n")
 
         f.write("s32 MysteryResultOptions[] = {\n")

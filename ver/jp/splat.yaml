@@ -9797,7 +9797,6 @@ segments:
   - name: kpa_91
     dir: world/area_kpa/kpa_91
     type: code
-    name: kpa_91
     start: 0xA90170
     vram: 0x80240000
     subsegments:

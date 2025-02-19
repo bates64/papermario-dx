@@ -12,7 +12,10 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
     addr2name = {}  # funcs
     addr2line = {}  # debug info
 
-    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        ["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"],
+        stdout=subprocess.PIPE,
+    )
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
         parts = line.split()
 
@@ -48,7 +51,9 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
                 else:
                     break
             if closest_addr is not None:
-                symbols.append((addr, addr2name[closest_addr], file_basename, line_number))
+                symbols.append(
+                    (addr, addr2name[closest_addr], file_basename, line_number)
+                )
 
     # non-debug builds
     if len(symbols) == 0:
@@ -109,7 +114,9 @@ if __name__ == "__main__":
             if file_basename == "":
                 f.write(struct.pack(">I", 0))
             else:
-                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
+                f.write(
+                    struct.pack(">I", add_string(f"{file_basename}:{line_number}"))
+                )  # can make more efficient
 
         f.write(strings)
 
@@ -120,6 +127,6 @@ if __name__ == "__main__":
 
         print("symbol table size: {} kib".format((f.tell() - symbol_table_addr) / 1024))
 
-        print(f"updating SYMBOL_TABLE_PTR_ROM_ADDR")
+        print("updating SYMBOL_TABLE_PTR_ROM_ADDR")
         f.seek(SYMBOL_TABLE_PTR_ROM_ADDR)
         f.write(struct.pack(">I", symbol_table_addr))

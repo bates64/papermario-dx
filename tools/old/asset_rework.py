@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 
 IMG_C_RE = re.compile(r"#include \".*png\.inc\.c\"")
 PAL_C_RE = re.compile(r"#include \".*pal\.inc\.c\"")
@@ -49,7 +48,11 @@ for dirs, subdirs, files in os.walk("src"):
                     try:
                         first_line_idx = source_lines.index("\n")
                         if first_line_idx > 11:
-                            print("File {} has more than 11 lines before first empty line".format(file))
+                            print(
+                                "File {} has more than 11 lines before first empty line".format(
+                                    file
+                                )
+                            )
                             continue
                     except ValueError:
                         first_line_idx = 0

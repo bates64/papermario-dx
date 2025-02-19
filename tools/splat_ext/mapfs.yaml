@@ -1025,9 +1025,9 @@
 - title_bg
 - name: title_data
   textures:
-  - [0x10,   ia8,    copyright,   144, 32]
-  - [0x1210, ia8,    press_start, 128, 32]
-  - [0x2210, rgba32, logotype,    200, 112]
+    - [0x10, ia8, copyright, 144, 32]
+    - [0x1210, ia8, press_start, 128, 32]
+    - [0x2210, rgba32, logotype, 200, 112]
 - party_kurio
 - party_kameki
 - party_pinki

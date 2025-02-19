@@ -95,7 +95,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
 void replace_window_update(s32 idx, s8 arg1, WindowUpdateFunc pendingFunc);
 void decode_yay0(void* src, void* dst);
 
-s32 ai_check_player_dist(Enemy* enemy, s32 arg1, f32 arg2, f32 arg3);
+s32 ai_check_player_dist(struct Enemy* enemy, s32 arg1, f32 arg2, f32 arg3);
 
 //pause
 void pause_init(void);
@@ -578,8 +578,6 @@ void create_part_shadow(s32 actorID, s32 partID);
 void remove_part_shadow(s32 actorID, s32 partID);
 void create_part_shadow_by_ref(s32 arg0, ActorPart* part);
 
-void spawn_drops(Enemy* enemy);
-
 void set_part_pal_adjustment(ActorPart*, s32);
 char* int_to_string(s32, char*, s32);
 
@@ -778,16 +776,6 @@ void set_curtain_fade(f32 fade);
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_wander(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_loiter(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_suspend(Evt* script);
-
 b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ);
 
 // This legally allows all functions to be pointers without warnings.
@@ -806,10 +794,6 @@ s32 imgfx_appendGfx_component(s32, ImgFXTexture*, u32, Matrix4f);
 void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
 void free_worker(s32);
-
-s32 ai_check_fwd_collisions(Npc* npc, f32 arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5);
-void basic_ai_loiter_init(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
-void PatrolAI_LoiterInit(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
 
 s32 func_80263230(Actor*, Actor*);
 void set_part_glow_pal(ActorPart*, s32);

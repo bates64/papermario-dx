@@ -1,4 +1,4 @@
-Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-named-parameter,-readability-braces-around-statements,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming'
+Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-function-cognitive-complexity,-readability-magic-numbers,-readability-identifier-length,-readability-else-after-return,-readability-named-parameter,-readability-braces-around-statements,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming'
 CheckOptions:
   - key: readability-identifier-naming.LocalVariableCase
     value: camelBack
@@ -9,8 +9,9 @@ CheckOptions:
   #- key: readability-identifier-naming.TypedefCase
   #  value: CamelCase
 
-  - key: readability-identifier-naming.MemberCase
-    value: camelBack
+  # TODO: enable once all unks are removed and we name anim_C etc
+  # - key: readability-identifier-naming.MemberCase
+  #   value: camelBack
 
   #- key: readability-identifier-naming.GlobalVariableCase
   #  value: CamelCase

@@ -1,4 +1,9 @@
-{ lib, fetchFromGitHub, rustPlatform, ... }:
+{
+  lib,
+  fetchFromGitHub,
+  rustPlatform,
+  ...
+}:
 rustPlatform.buildRustPackage rec {
   pname = "crunch64";
   version = "0.5.3";

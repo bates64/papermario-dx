@@ -103,7 +103,9 @@ def from_yaml(yaml_path: Path, asset_stack: Tuple[Path, ...]) -> SBN:
                 assert type(bk_file) == str
                 bk_file_ids.append(sbn.lookup_file_id(bk_file))
 
-        init_song_entry = InitSongEntry(file_id, bk_file_ids[0], bk_file_ids[1], bk_file_ids[2])
+        init_song_entry = InitSongEntry(
+            file_id, bk_file_ids[0], bk_file_ids[1], bk_file_ids[2]
+        )
 
         # Replace sbn.init.song_entries[id]
         if id < len(sbn.init.song_entries):

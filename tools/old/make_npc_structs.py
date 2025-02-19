@@ -76,7 +76,13 @@ def get_constants():
 
     # sprites
     sprite_path = Path(
-        Path(__file__).resolve().parent.parent / "ver" / "current" / "build" / "include" / "sprite" / "npc"
+        Path(__file__).resolve().parent.parent
+        / "ver"
+        / "current"
+        / "build"
+        / "include"
+        / "sprite"
+        / "npc"
     )
     for file in sprite_path.iterdir():
         fd = file.read_text()
@@ -110,7 +116,9 @@ def get_constants():
                     }
                 CONSTANTS[enum][int(id_, 16)]["name"] = name
             elif enum == "NPC_PALETTE":
-                CONSTANTS["NPC_SPRITE"][int(saved_id, 16)]["palettes"][int(id_, 16)] = name
+                CONSTANTS["NPC_SPRITE"][int(saved_id, 16)]["palettes"][int(id_, 16)] = (
+                    name
+                )
             elif enum == "NPC_ANIM":
                 CONSTANTS["NPC_SPRITE"][int(saved_id, 16)]["anims"][int(id_, 16)] = name
     return
@@ -167,7 +175,9 @@ def parse_file(filename):
 
             struct_to_add = []
             i += 1
-            while ("} " + f"{supported_name.upper()}") not in fd[i].split(";", 1)[0].upper():
+            while ("} " + f"{supported_name.upper()}") not in fd[i].split(";", 1)[
+                0
+            ].upper():
                 type_, name, count, ptr = parse_var(fd[i])
 
                 if type_ == None:
@@ -179,7 +189,9 @@ def parse_file(filename):
                     i += 1
                     while "}" not in fd[i]:
                         type_, name, count, ptr = parse_var(fd[i])
-                        union.append({"type": type_, "name": name, "num": count, "ptr": ptr})
+                        union.append(
+                            {"type": type_, "name": name, "num": count, "ptr": ptr}
+                        )
                         i += 1
                     name = fd[i].split("}", 1)[1].split(";", 1)[0]
 
@@ -297,7 +309,7 @@ def get_vals(fd, offset, var):
 
 
 def INDENT(depth):
-    return f"    " * depth
+    return "    " * depth
 
 
 def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
@@ -311,7 +323,11 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
         if type(val) is list:
             line += f".{val[0]['name']} = " + "{ "
             struct = type(val[0]["data"]) is list
-            line += ", ".join(print_data(val, indent + 1, needs_name=False, is_array=True, is_struct=struct))
+            line += ", ".join(
+                print_data(
+                    val, indent + 1, needs_name=False, is_array=True, is_struct=struct
+                )
+            )
             if struct:
                 line += "\n" + INDENT(indent) + "},"
             else:
@@ -339,7 +355,7 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
                         line += f"0x{val2['data']:{fmt}}"
                     elif val2["type"] == "ptr":
                         if val2["data"] == 0:
-                            line += f"NULL"
+                            line += "NULL"
                         else:
                             line += f"0x{val2['data']:{fmt}}"
                     else:
@@ -348,7 +364,10 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
                 if not is_array:
                     line += ","
             else:
-                if "flags" in val["name"].lower() or "animations" in val["name"].lower():
+                if (
+                    "flags" in val["name"].lower()
+                    or "animations" in val["name"].lower()
+                ):
                     if val["name"] == "flags":
                         val["fmt"] = "08X"
                         val["type"] = "hex"
@@ -371,7 +390,7 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
                     line += f"0x{val['data']:{fmt}}"
                 elif val["type"] == "ptr":
                     if val["data"] == 0:
-                        line += f"NULL"
+                        line += "NULL"
                     else:
                         line += f"0x{val['data']:{fmt}}"
                 else:
@@ -563,7 +582,13 @@ def MacroReplaceStaticNPC(fd):
 
                 added_item = True
                 item_name = CONSTANTS["ItemIDs"][item[0]]
-                new_line += "    " * (indent + 1) + "{ " + item_name + f", {item[1]}, {item[2]}" + " },\n"
+                new_line += (
+                    "    " * (indent + 1)
+                    + "{ "
+                    + item_name
+                    + f", {item[1]}, {item[2]}"
+                    + " },\n"
+                )
 
             if added_item:
                 new_line += "    " * indent + "},"
@@ -583,7 +608,9 @@ def MacroReplaceStaticNPC(fd):
                 sprite = CONSTANTS["NPC_SPRITE"][sprite_id]["name"]
                 palette = CONSTANTS["NPC_SPRITE"][sprite_id]["palettes"][palette_id]
                 anim = CONSTANTS["NPC_SPRITE"][sprite_id]["anims"][anim_id]
-                new_line += "    " * (indent + 1) + f"NPC_ANIM_{sprite}_{palette}_{anim},\n"
+                new_line += (
+                    "    " * (indent + 1) + f"NPC_ANIM_{sprite}_{palette}_{anim},\n"
+                )
             new_line += "    " * indent + "},"
             out.append(new_line)
             i = x
@@ -596,36 +623,54 @@ def MacroReplaceStaticNPC(fd):
             attempts = vals[0][2]
 
             if ".heartDrops" in fd[i]:
-                if round(vals[0][1] / 327.67, 2) == 70 and round(vals[0][3] / 327.67, 2) == 50:
+                if (
+                    round(vals[0][1] / 327.67, 2) == 70
+                    and round(vals[0][3] / 327.67, 2) == 50
+                ):
                     new_line += f"STANDARD_HEART_DROPS({attempts}),"
-                elif round(vals[0][1] / 327.67, 2) == 80 and round(vals[0][3] / 327.67, 2) == 50:
+                elif (
+                    round(vals[0][1] / 327.67, 2) == 80
+                    and round(vals[0][3] / 327.67, 2) == 50
+                ):
                     new_line += f"GENEROUS_HEART_DROPS({attempts}),"
-                elif round(vals[0][1] / 327.67, 2) == 80 and round(vals[0][3] / 327.67, 2) == 60:
+                elif (
+                    round(vals[0][1] / 327.67, 2) == 80
+                    and round(vals[0][3] / 327.67, 2) == 60
+                ):
                     new_line += f"GENEROUS_WHEN_LOW_HEART_DROPS({attempts}),"
                 elif (
                     round(vals[0][0] / 327.67, 2) == 100
                     and round(vals[0][1] / 327.67, 2) == 0
                     and round(vals[0][2] / 327.67, 2) == 0
                 ):
-                    new_line += f"NO_DROPS,"
+                    new_line += "NO_DROPS,"
                 else:
                     print(
                         f"Unknown heart drop macro, values were {round(vals[0][1] / 327.67, 2)} and {round(vals[0][3] / 327.67, 2)}"
                     )
                     exit()
             else:
-                if round(vals[0][1] / 327.67, 2) == 50 and round(vals[0][3] / 327.67, 2) == 40:
+                if (
+                    round(vals[0][1] / 327.67, 2) == 50
+                    and round(vals[0][3] / 327.67, 2) == 40
+                ):
                     new_line += f"STANDARD_FLOWER_DROPS({attempts}),"
-                elif round(vals[0][1] / 327.67, 2) == 70 and round(vals[0][3] / 327.67, 2) == 50:
+                elif (
+                    round(vals[0][1] / 327.67, 2) == 70
+                    and round(vals[0][3] / 327.67, 2) == 50
+                ):
                     new_line += f"GENEROUS_WHEN_LOW_FLOWER_DROPS({attempts}),"
-                elif round(vals[0][1] / 327.67, 2) == 40 and round(vals[0][3] / 327.67, 2) == 40:
+                elif (
+                    round(vals[0][1] / 327.67, 2) == 40
+                    and round(vals[0][3] / 327.67, 2) == 40
+                ):
                     new_line += f"REDUCED_FLOWER_DROPS({attempts}),"
                 elif (
                     round(vals[0][0] / 327.67, 2) == 100
                     and round(vals[0][1] / 327.67, 2) == 0
                     and round(vals[0][2] / 327.67, 2) == 0
                 ):
-                    new_line += f"NO_DROPS,"
+                    new_line += "NO_DROPS,"
                 else:
                     print(
                         f"Unknown flower drop macro, values were {round(vals[0][1] / 327.67, 2)} and {round(vals[0][3] / 327.67, 2)}"
@@ -685,7 +730,9 @@ def MacroReplaceNpcGroupList(fd):
 parser = argparse.ArgumentParser()
 parser.add_argument("file", type=str, help="File to decompile struct from")
 parser.add_argument("type", type=str, help="Struct type to decompile")
-parser.add_argument("offset", type=lambda x: int(x, 0), help="Offset to decompile struct from")
+parser.add_argument(
+    "offset", type=lambda x: int(x, 0), help="Offset to decompile struct from"
+)
 parser.add_argument(
     "--count",
     "-c",
