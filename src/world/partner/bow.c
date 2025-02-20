@@ -3,6 +3,7 @@
 #include "npc.h"
 #include "sprite/npc/WorldBow.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 #define NAMESPACE world_bow
 
@@ -13,7 +14,7 @@ BSS s32 N(OuttaSightPosX);
 BSS s32 N(OuttaSightPosY);
 BSS s32 N(OuttaSightPosZ);
 
-void N(end_outta_sight_cleanup)(Npc* partner);
+void N(end_outta_sight_cleanup)(Npc* bow);
 s32 N(check_for_treadmill_overlaps)(void);
 
 void N(init)(Npc* bow) {

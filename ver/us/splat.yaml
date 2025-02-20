@@ -392,7 +392,9 @@ segments:
     vram_class: engine1
     subsegments:
     - [auto, c, npc_collision]
-    - [auto, c, 77480]
+    - [auto, c, player/physics]
+    - [auto, c, player/prompts]
+    - [auto, c, player/render]
     - [auto, c, 7B440]
     - [auto, c, 7BB60]
     - [auto, c, world/disguise]

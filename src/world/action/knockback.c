@@ -11,7 +11,7 @@ void action_update_knockback(void) {
     f32 dx, dy;
     f32 speed;
 
-    static f32 ReturnAngle;
+    static f32 returnAngle;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
@@ -28,12 +28,12 @@ void action_update_knockback(void) {
 
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
 
-        ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x,
+        returnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x,
                            playerStatus->lastGoodPos.z);
         playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
     }
 
-    sin_cos_rad(DEG_TO_RAD(ReturnAngle), &dx, &dy);
+    sin_cos_rad(DEG_TO_RAD(returnAngle), &dx, &dy);
 
     speed = playerStatus->curSpeed;
 
@@ -54,12 +54,10 @@ void action_update_knockback(void) {
             playerStatus->flags |= PS_FLAG_FALLING;
         }
     } else {
-        s32 colliderID;
-
+        HitID colliderID;
         playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &colliderID);
 
         if (colliderID > NO_COLLIDER) {
-            colliderID = get_collider_flags(colliderID); //TODO surfaceType
             set_action_state(ACTION_STATE_LAND);
         }
     }

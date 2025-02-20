@@ -2,6 +2,7 @@
 #include "sprite/npc/WorldClubba.h"
 #include "sprite/npc/WorldKoopatrol.h"
 #include "sprite/npc/HammerBros.h"
+#include "player/physics.h"
 
 AnimID ClubbaDisguiseExtraAnims[] = {
     ANIM_WorldClubba_Anim00,

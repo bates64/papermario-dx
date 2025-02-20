@@ -320,8 +320,7 @@ ApiStatus player_jump(Evt* script, s32 isInitialCall, s32 mode) {
         }
 
         if (mode == 0 || mode == 2) {
-            s32 colliderID;
-
+            HitID colliderID;
             yTemp = player_check_collision_below(playerNpc->jumpVel, &colliderID);
 
             if (colliderID > NO_COLLIDER) {
@@ -552,16 +551,16 @@ API_CALLABLE(UseExitHeading) {
         f32 entryX = (*mapSettings->entryList)[entryID].x;
         f32 entryZ = (*mapSettings->entryList)[entryID].z;
         f32 temp = (var1 + 10.0f) / 2;
-        f32 temp_f2 = dist2D(entryX, entryZ, playerStatus->pos.x, playerStatus->pos.z) - temp;
+        f32 tempF2 = dist2D(entryX, entryZ, playerStatus->pos.x, playerStatus->pos.z) - temp;
         f32 sinTheta;
         f32 cosTheta;
         f32 exitTangentFrac;
 
-        if (temp_f2 > 0.0f) {
-            if (temp_f2 > var1 + 10.0f) {
-                temp_f2 = var1 + 10.0f;
+        if (tempF2 > 0.0f) {
+            if (tempF2 > var1 + 10.0f) {
+                tempF2 = var1 + 10.0f;
             }
-            var1 -= temp_f2 / 2;
+            var1 -= tempF2 / 2;
         }
 
         sin_cos_deg(clamp_angle((*mapSettings->entryList)[entryID].yaw + 180.0f), &sinTheta, &cosTheta);

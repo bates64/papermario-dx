@@ -857,6 +857,10 @@ void update_encounters_neutral(void) {
                                 case ACTION_STATE_TORNADO_POUND:
                                     currentEncounter->hitTier = 2;
                                     break;
+                                default:
+                                    // ???
+                                    currentEncounter->hitTier = 0;
+                                    break;
                             }
                             sfx_play_sound_at_position(SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
                             enemy->encountered = ENCOUNTER_STATE_NEUTRAL;
@@ -866,6 +870,8 @@ void update_encounters_neutral(void) {
                             goto START_BATTLE;
                         }
                     }
+                    break;
+                default:
                     break;
             }
 
@@ -1545,16 +1551,16 @@ void draw_encounters_pre_battle(void) {
                 set_screen_overlay_color(SCREEN_LAYER_BACK, 0, 0, 0);
                 get_screen_coords(gCurrentCameraID, playerX, playerY + 20.0f, playerZ, &pScreenX, &pScreenY, &pScreenZ);
                 get_screen_coords(gCurrentCameraID, otherX, otherY + 15.0f, otherZ, &oScreenX, &oScreenY, &oScreenZ);
-                set_screen_overlay_center(SCREEN_LAYER_BACK, 0, (pScreenX - oScreenX) / 2 + oScreenX,
-                                              (pScreenY - oScreenY) / 2 + oScreenY);
+                set_screen_overlay_center(SCREEN_LAYER_BACK, 0, ((pScreenX - oScreenX) / 2) + oScreenX,
+                                              ((pScreenY - oScreenY) / 2) + oScreenY);
             } else {
                 set_screen_overlay_params_front(OVERLAY_START_BATTLE, encounter->fadeOutAmount);
                 set_screen_overlay_alpha(SCREEN_LAYER_FRONT, 255.0f);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
                 get_screen_coords(gCurrentCameraID, playerX, playerY + 20.0f, playerZ, &pScreenX, &pScreenY, &pScreenZ);
                 get_screen_coords(gCurrentCameraID, otherX, otherY + 15.0f, otherZ, &oScreenX, &oScreenY, &oScreenZ);
-                set_screen_overlay_center(SCREEN_LAYER_FRONT, 0, (pScreenX - oScreenX) / 2 + oScreenX,
-                                              (pScreenY - oScreenY) / 2 + oScreenY);
+                set_screen_overlay_center(SCREEN_LAYER_FRONT, 0, ((pScreenX - oScreenX) / 2) + oScreenX,
+                                              ((pScreenY - oScreenY) / 2) + oScreenY);
             }
         }
     }
@@ -2468,7 +2474,6 @@ void create_encounters(void) {
 
     Npc* newNpc;
     s32 newNpcIndex;
-    s32 npcCount;
 
     NpcSettings* npcSettings;
     NpcData* npcData;
@@ -2476,13 +2481,13 @@ void create_encounters(void) {
     Encounter* encounter;
     Evt* script;
 
-    s32 totalNpcCount;
+    s16 totalNpcCount;
 
     s32 cond1;
     s32 cond2;
     s32 i;
     s32 k;
-    s32 e;
+    s8 e;
 
     switch (gEncounterSubState) {
         case ENCOUNTER_SUBSTATE_CREATE_INIT:
@@ -2616,9 +2621,9 @@ void create_encounters(void) {
                     newNpc->npcID = npcData->id;
                     newNpc->collisionDiameter = npcSettings->radius;
                     newNpc->collisionHeight = npcSettings->height;
-                    enemy->spawnPos[0] = newNpc->pos.x = npcData->pos.x;
-                    enemy->spawnPos[1] = newNpc->pos.y = npcData->pos.y;
-                    enemy->spawnPos[2] = newNpc->pos.z = npcData->pos.z;
+                    enemy->spawnPos.x = newNpc->pos.x = npcData->pos.x;
+                    enemy->spawnPos.y = newNpc->pos.y = npcData->pos.y;
+                    enemy->spawnPos.z = newNpc->pos.z = npcData->pos.z;
                     newNpc->unk_96 = 0;
                     newNpc->planarFlyDist = 0.0f;
                     newNpc->homePos.x = newNpc->pos.x;
@@ -2627,7 +2632,7 @@ void create_encounters(void) {
                     set_npc_yaw(newNpc, npcData->yaw);
                     enemy->savedNpcYaw = 12345;
                     if (newNpc->collisionDiameter >= 24.0) {
-                        newNpc->shadowScale = newNpc->collisionDiameter / 24.0;
+                        newNpc->shadowScale = newNpc->collisionDiameter / 24.0f;
                     } else {
                         newNpc->shadowScale = 1.0f;
                     }
@@ -2681,7 +2686,7 @@ void create_encounters(void) {
                 }
                 groupList++;
                 e++;
-                totalNpcCount += groupNpcCount;
+                totalNpcCount += (s16)groupNpcCount;
             }
             currentEncounter->numEncounters = e;
             gEncounterSubState = ENCOUNTER_SUBSTATE_CREATE_RUN_INIT_SCRIPT;

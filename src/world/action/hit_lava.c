@@ -1,5 +1,6 @@
 #include "common.h"
 #include "effects.h"
+#include "macros.h"
 #include "sprite/player.h"
 
 enum {
@@ -23,11 +24,12 @@ void action_update_hit_lava(void) {
     f32 dx, dy;
     f32 componentSpeed;
     s32 completeAxes; // number of axes along which the 'return motion' is complete
+    HitID colliderID;
 
-    static f32 LaunchVelocity;
-    static f32 LaunchInterpPhase; // used to interp launch velocity
-    static f32 ReturnAngle;
-    static f32 InitialPosY;
+    static f32 launchVelocity;
+    static f32 launchInterpPhase; // used to interp launch velocity
+    static f32 returnAngle;
+    static f32 initialPosY;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
@@ -40,12 +42,12 @@ void action_update_hit_lava(void) {
         } else {
             playerStatus->actionSubstate = SUBSTATE_INIT;
         }
-        InitialPosY = playerStatus->pos.y;
+        initialPosY = playerStatus->pos.y;
         playerStatus->curSpeed = 0.0f;
-        LaunchVelocity = 0.0f;
+        launchVelocity = 0.0f;
 
         gCameras[CAM_DEFAULT].moveFlags |= (CAMERA_MOVE_IGNORE_PLAYER_Y | CAMERA_MOVE_NO_INTERP_Y);
-        LaunchInterpPhase = 90.0f;
+        launchInterpPhase = 90.0f;
         subtract_hp(1);
         open_status_bar_slowly();
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
@@ -76,7 +78,7 @@ void action_update_hit_lava(void) {
             playerStatus->curStateTime = 1;
             playerStatus->gravityIntegrator[0] = 20.0f;
             playerStatus->gravityIntegrator[2] = 250.0f;
-            playerStatus->gravityIntegrator[3] = InitialPosY;
+            playerStatus->gravityIntegrator[3] = initialPosY;
             playerStatus->jumpFromPos.x = playerStatus->pos.x;
             playerStatus->jumpFromPos.z = playerStatus->pos.z;
             playerStatus->jumpFromHeight = playerStatus->pos.y;
@@ -92,15 +94,15 @@ void action_update_hit_lava(void) {
                 fx_smoke_burst(0, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, 0.7f, 18);
             }
             if (playerStatus->pos.y < playerStatus->gravityIntegrator[3] + playerStatus->gravityIntegrator[2]) {
-                sin_cos_rad(DEG_TO_RAD(LaunchInterpPhase), &dx, &dy);
-                LaunchVelocity = sin_rad(DEG_TO_RAD(LaunchInterpPhase)) * 16.0f;
-                if (LaunchVelocity < -1.0f) {
-                    LaunchVelocity = -1.0f;
+                sin_cos_rad(DEG_TO_RAD(launchInterpPhase), &dx, &dy);
+                launchVelocity = sin_rad(DEG_TO_RAD(launchInterpPhase)) * 16.0f;
+                if (launchVelocity < -1.0f) {
+                    launchVelocity = -1.0f;
                 }
-                playerStatus->pos.y += LaunchVelocity;
-                LaunchInterpPhase += 3.0f;
-                if (LaunchInterpPhase > 180.0f) {
-                    LaunchInterpPhase = 180.0f;
+                playerStatus->pos.y += launchVelocity;
+                launchInterpPhase += 3.0f;
+                if (launchInterpPhase > 180.0f) {
+                    launchInterpPhase = 180.0f;
                     playerStatus->actionSubstate++;
                 }
             } else {
@@ -116,20 +118,20 @@ void action_update_hit_lava(void) {
                 resetPosX = playerStatus->pos.x;
                 resetPosZ = playerStatus->pos.z;
             }
-            playerStatus->lastGoodPos.x = resetPosX;
-            playerStatus->lastGoodPos.z = resetPosZ;
+            playerStatus->lastGoodPos.x = (s16)resetPosX;
+            playerStatus->lastGoodPos.z = (s16)resetPosZ;
             playerStatus->jumpApexHeight = playerStatus->pos.y;
             LOAD_INTEGRATOR_FALL(playerStatus->gravityIntegrator);
             playerStatus->actionSubstate++;
             break;
         case SUBSTATE_RETURN_INIT:
-            ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+            returnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
             playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
             playerStatus->actionSubstate++;
             break;
         case SUBSTATE_RETURN_MOTION:
-            ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
-            returnRadians = DEG_TO_RAD(ReturnAngle);
+            returnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+            returnRadians = DEG_TO_RAD(returnAngle);
             // update motion along x axis
             componentSpeed = playerStatus->curSpeed * sin_rad(returnRadians);
             playerStatus->pos.x += componentSpeed;
@@ -168,8 +170,8 @@ void action_update_hit_lava(void) {
             if (playerStatus->hazardType == HAZARD_TYPE_LAVA && (playerStatus->timeInAir % 2) == 0) {
                 fx_smoke_burst(0, playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z, 0.7f, 18);
             }
-            playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &completeAxes);
-            if (completeAxes >= 0) {
+            playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &colliderID);
+            if (colliderID != NO_COLLIDER) {
                 exec_ShakeCamX(CAM_DEFAULT, CAM_SHAKE_DECAYING_VERTICAL, 1, 0.8f);
                 start_rumble(256, 50);
                 phys_adjust_cam_on_landing();
@@ -185,9 +187,9 @@ void action_update_hit_lava(void) {
             }
             break;
         case SUBSTATE_BOUNCE:
-            playerStatus->gravityIntegrator[0] -= 1.0;
-            playerStatus->pos.y = player_check_collision_below(playerStatus->gravityIntegrator[0], &completeAxes);
-            if (completeAxes >= 0) {
+            playerStatus->gravityIntegrator[0] -= 1.0f;
+            playerStatus->pos.y = player_check_collision_below(playerStatus->gravityIntegrator[0], &colliderID);
+            if (colliderID != NO_COLLIDER) {
                 playerStatus->curStateTime = 10;
                 playerStatus->actionSubstate++;
             }

@@ -2,17 +2,14 @@
 #include "sprite/player.h"
 
 API_CALLABLE(N(AwaitPlayerFallDist)) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 fallSpeed;
-    s32 colliderID;
-
     if (isInitialCall) {
         script->functionTemp[0] = 0;
         suggest_player_anim_allow_backward(ANIM_Mario1_Jump);
     }
 
-    fallSpeed = player_fall_distance();
-    playerStatus->pos.y = player_check_collision_below(fallSpeed, &colliderID);
+    f32 fallSpeed = player_fall_distance();
+    HitID colliderID;
+    gPlayerStatus.pos.y = player_check_collision_below(fallSpeed, &colliderID);
     script->functionTemp[0] += fabsf(fallSpeed);
 
     if (script->functionTemp[0] > 50) {

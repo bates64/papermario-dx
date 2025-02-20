@@ -70,7 +70,7 @@ extern s32 PrevPlayerCamRelativeYaw;
 extern s32 D_800F7B44;
 extern f32 PlayerNormalYaw;
 extern f32 PlayerNormalPitch;
-extern s32 NpcHitQueryColliderID;
+extern HitID NpcHitQueryColliderID;
 extern Vec3s StandardActorHomePositions[];
 
 extern s32 gEncounterSubState;

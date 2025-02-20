@@ -1,4 +1,5 @@
 #include "omo_09.h"
+#include "player/physics.h"
 
 s32 N(ConveyorColliders)[4] = {
     COLLIDER_o904,
@@ -8,10 +9,10 @@ s32 N(ConveyorColliders)[4] = {
 };
 
 VecXZf N(ConveyorPushVels)[4] = {
-    { -3.9,  0.0 },
-    {  3.9,  0.0 },
-    {  0.0,  3.9 },
-    {  0.0, -3.9 },
+    { -3.9f,  0.0f },
+    {  3.9f,  0.0f },
+    {  0.0f,  3.9f },
+    {  0.0f, -3.9f },
 };
 
 s32 N(ShouldPauseConveyor)(void) {

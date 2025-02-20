@@ -17,7 +17,7 @@ enum {
 
 void action_update_use_munchlesia(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 colliderID;
+    HitID colliderID;
     f32 hitPosY;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

@@ -1,3 +1,4 @@
+#include "common_structs.h"
 #include "common.h"
 
 s32 NpcHitQueryBehindRightY;
@@ -5,7 +6,7 @@ s32 NpcHitQueryBehindCollider;
 s32 NpcHitQueryAheadCollider;
 s32 NpcHitQueryAheadY;
 s32 NpcHitQueryBehindLeftY;
-s32 NpcHitQueryColliderID;
+HitID NpcHitQueryColliderID;
 
 PlayerStatus* gPlayerStatusPtr = &gPlayerStatus;
 
@@ -482,35 +483,35 @@ HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 l
     f32 hitDepth;
     f32 hitX, hitY, hitZ;
     f32 outSinTheta, outCosTheta;
-    f32 temp_f0, temp_f20, temp_f22;
+    f32 tempF0, tempF20, tempF22;
     f32 aX, aZ;
     f32 inverseOutCosTheta;
     s32 raycastHitID;
-    s32 phi_s5;
+    s32 phiS5;
     s32 hitResult = NO_COLLIDER;
     f32 a, b;
 
     sin_cos_rad(DEG_TO_RAD(yaw), &outSinTheta, &outCosTheta);
     aX = length * outSinTheta;
-    temp_f22 = length + radius + (radius * 0.5f);
+    tempF22 = length + radius + (radius * 0.5f);
     inverseOutCosTheta = -outCosTheta;
     outCosTheta = inverseOutCosTheta;
-    hitDepth = temp_f22;
+    hitDepth = tempF22;
     aZ = length * inverseOutCosTheta;
     raycastHitID = npc_raycast_general(ignoreFlags, *x - (radius * outSinTheta * 0.5f), *y,
                                         *z - (radius * inverseOutCosTheta * 0.5f), outSinTheta,
                                         0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ);
-    phi_s5 = FALSE;
+    phiS5 = FALSE;
 
-    if (raycastHitID > NO_COLLIDER && hitDepth <= temp_f22) {
-        temp_f0 = atan2(0.0f, 0.0f, sqrtf(SQ(bX) + SQ(bZ)), -hitNy);
-        if (temp_f0 > 60.0f && temp_f0 < 90.0f) {
-            phi_s5 = TRUE;
+    if (raycastHitID > NO_COLLIDER && hitDepth <= tempF22) {
+        tempF0 = atan2(0.0f, 0.0f, sqrtf(SQ(bX) + SQ(bZ)), -hitNy);
+        if (tempF0 > 60.0f && tempF0 < 90.0f) {
+            phiS5 = TRUE;
         }
 
-        temp_f20 = hitDepth - (length + radius + (radius * 0.5f));
-        a = temp_f20 * outSinTheta;
-        b = temp_f20 * outCosTheta;
+        tempF20 = hitDepth - (length + radius + (radius * 0.5f));
+        a = tempF20 * outSinTheta;
+        b = tempF20 * outCosTheta;
         npc_get_slip_vector(&outX, &outY, aX, aZ, bX, bZ);
         *x += a + outX;
         *z += b + outY;
@@ -518,7 +519,7 @@ HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 l
         hitResult = raycastHitID;
     }
 
-    if (!phi_s5) {
+    if (!phiS5) {
         *x += aX;
         *z += aZ;
     }

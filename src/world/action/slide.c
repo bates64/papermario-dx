@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 BSS f32 SlideAcceleration;
 BSS f32 MaxSlideAccel;
@@ -43,7 +44,7 @@ void action_update_sliding(void) {
     f32 speed;
     f32 posX, posY, posZ, depth;
     f32 hitRx, hitRy, hitDirX, hitDirZ;
-    s32 hitID;
+    HitID hitID;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;

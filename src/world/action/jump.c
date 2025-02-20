@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 extern f32 JumpedOnSwitchX;
 extern f32 JumpedOnSwitchZ;

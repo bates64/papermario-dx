@@ -11,7 +11,7 @@ void action_update_hit_fire(void) {
     f32 dx, dy;
     f32 speed;
 
-    static f32 ReturnAngle;
+    static f32 returnAngle;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
@@ -27,18 +27,18 @@ void action_update_hit_fire(void) {
         playerStatus->gravityIntegrator[2] = 0.8059f;
         playerStatus->gravityIntegrator[3] = -0.0987f;
         gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
-        ReturnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
+        returnAngle = atan2(playerStatus->pos.x, playerStatus->pos.z, playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z);
         playerStatus->curSpeed = get_xz_dist_to_player(playerStatus->lastGoodPos.x, playerStatus->lastGoodPos.z) / 18.0f;
         subtract_hp(1);
         open_status_bar_slowly();
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
     }
 
-    sin_cos_rad(DEG_TO_RAD(ReturnAngle), &dx, &dy);
+    sin_cos_rad(DEG_TO_RAD(returnAngle), &dx, &dy);
     speed = playerStatus->curSpeed;
 
     if (playerStatus->flags & PS_FLAG_ENTERING_BATTLE) {
-        speed *= 0.5;
+        speed *= 0.5f;
     }
 
     playerStatus->pos.x += speed * dx;
@@ -52,11 +52,9 @@ void action_update_hit_fire(void) {
             playerStatus->flags |= PS_FLAG_FALLING;
         }
     } else {
-        s32 colliderID;
-
+        HitID colliderID;
         playerStatus->pos.y = player_check_collision_below(player_fall_distance(), &colliderID);
         if (colliderID > NO_COLLIDER) {
-            colliderID = get_collider_flags(colliderID); //TODO surfaceType
             set_action_state(ACTION_STATE_LAND);
             playerStatus->blinkTimer = 60;
             playerStatus->hazardType = HAZARD_TYPE_NONE;

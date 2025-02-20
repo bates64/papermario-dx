@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 extern s32 gSpinHistoryBufferPos;
 extern s32 gSpinHistoryPosY[5];
@@ -26,7 +27,7 @@ void action_update_tornado_jump(void) {
     f32 fallVelocity;
     s32 surfaceType;
     f32 spinRate;
-    s32 colliderBelow;
+    HitID colliderBelow;
     u32 entityType;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

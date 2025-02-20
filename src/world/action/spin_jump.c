@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 enum {
     SUBSTATE_SPIN           = 0,
@@ -20,13 +21,13 @@ void action_update_spin_jump(void) {
     CollisionStatus* collisionStatus = &gCollisionStatus;
     HiddenPanelsData* panels;
     Entity* entity;
-    s32 belowColliderID;
+    HitID belowColliderID;
     s32 landed;
     f32 velocity;
     u32 entityType;
     s32 surfaceType;
 
-    static f32 RotationRate;
+    static f32 rotationRate;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_JUMPING | PS_FLAG_FALLING);
@@ -34,7 +35,7 @@ void action_update_spin_jump(void) {
 
         playerStatus->actionSubstate = SUBSTATE_SPIN;
         playerStatus->curSpeed = 0.0f;
-        RotationRate = 0.0f;
+        rotationRate = 0.0f;
         playerStatus->gravityIntegrator[0] = 5.2f;
         suggest_player_anim_allow_backward(ANIM_Mario1_Sit);
         disable_player_input();
@@ -46,8 +47,8 @@ void action_update_spin_jump(void) {
     landed = FALSE;
     switch (playerStatus->actionSubstate) {
         case SUBSTATE_SPIN:
-            RotationRate = 40.0f;
-            playerStatus->pitch += RotationRate;
+            rotationRate = 40.0f;
+            playerStatus->pitch += rotationRate;
             if (playerStatus->pitch >= 360.0f) {
                 playerStatus->pitch = 360.0f;
             }
@@ -84,8 +85,8 @@ void action_update_spin_jump(void) {
             break;
         case SUBSTATE_HOVER:
             playerStatus->pos.y = player_check_collision_below(0.0f, &belowColliderID);
-            RotationRate = 45.0f;
-            playerStatus->pitch += RotationRate;
+            rotationRate = 45.0f;
+            playerStatus->pitch += rotationRate;
             if (playerStatus->pitch >= 360.0) {
                 playerStatus->pitch = 0.0f;
                 playerStatus->actionSubstate++;

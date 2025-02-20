@@ -1,5 +1,7 @@
 #include "common.h"
+#include "common_structs.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 BSS s32 SpinningFlower_EntityIndex;
 BSS f32 D_802B6ED4;
@@ -24,7 +26,7 @@ enum {
     SUBSTATE_FINISH     = 11,
 };
 
-static s32 get_entity_below_spinning_flower(void) {
+static HitID get_entity_below_spinning_flower(void) {
     f32 posX, posY, posZ, height;
     f32 hitRx, hitRz, hitDirX, hitDirZ;
 
@@ -38,15 +40,13 @@ static s32 get_entity_below_spinning_flower(void) {
 void action_update_use_spinning_flower(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Entity* entityByIndex;
-    s32* TempPointer;
-    s32 entityID;
+    HitID entityID;
     f32 inputMagnitude;
     f32 inputAngle;
     f32 dz;
     f32 dx;
     f32 ascentVelocity;
     f32 distToCenter;
-    s8 switchCondition;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;
@@ -66,7 +66,6 @@ void action_update_use_spinning_flower(void) {
         gCollisionStatus.curFloor = -1;
 #endif
 
-        TempPointer = &SpinningFlower_EntityIndex;
         if (entityID >= 0){
             if (entityID & COLLISION_WITH_ENTITY_BIT) {
                 SpinningFlower_EntityIndex = entityID & 0x3FF;
@@ -149,8 +148,8 @@ void action_update_use_spinning_flower(void) {
             }
             playerStatus->spriteFacingAngle = clamp_angle(playerStatus->spriteFacingAngle + D_802B6EE4);
             sin_cos_rad(DEG_TO_RAD(SpinningFlower_AngleToCenter - 60.0f), &dx, &dz);
-            D_802B6EDC += 0.2;
-            D_802B6EF0 -= 0.72;
+            D_802B6EDC += 0.2f;
+            D_802B6EF0 -= 0.72f;
             D_802B6ED4 =  dx * D_802B6EDC;
             D_802B6ED8 = -dz * D_802B6EDC;
             playerStatus->pos.x += D_802B6ED4;

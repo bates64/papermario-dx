@@ -2,6 +2,7 @@
 #include "effects.h"
 #include "sprite.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 enum {
     SUBSTATE_HAMMER_0   = 0,
@@ -293,12 +294,10 @@ void action_hammer_end_swing(void) {
     f32 outCosTheta;
     f32 playerX, playerY, playerZ;
     f32 x, y, z;
-    s32 result;
+    HitID result;
     s32 hammerLevel;
     s32 soundID;
-    u32 unk_BC;
     s32 ten;
-    s32 ret;
     s32 i;
 
     yaw = player_get_side_angle();

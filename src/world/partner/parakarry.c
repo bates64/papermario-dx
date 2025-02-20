@@ -2,6 +2,7 @@
 #include "../src/world/partners.h"
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 #define NAMESPACE world_parakarry
 

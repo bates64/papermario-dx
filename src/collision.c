@@ -198,7 +198,7 @@ void load_hit_data(s32 idx, HitFile* hit) {
     s32* trianglePacked;
     s16 numTriangles;
     s32 i,j;
-    f32 e13_y, e21_z, e13_z, e21_y, e21_x, e13_x, normalX, normalY, normalZ, coeff;
+    f32 e13Y, e21Z, e13Z, e21Y, e21X, e13X, normalX, normalY, normalZ, coeff;
 
     assetCollisionData = NULL;
     collisionData = NULL;
@@ -290,17 +290,17 @@ void load_hit_data(s32 idx, HitFile* hit) {
                 triangle->e32.y = v2->y - v3->y;
                 triangle->e32.z = v2->z - v3->z;
 
-                e13_x = triangle->e13.x;
-                e13_y = triangle->e13.y;
-                e13_z = triangle->e13.z;
-                e21_x = triangle->e21.x;
-                e21_y = triangle->e21.y;
-                e21_z = triangle->e21.z;
+                e13X = triangle->e13.x;
+                e13Y = triangle->e13.y;
+                e13Z = triangle->e13.z;
+                e21X = triangle->e21.x;
+                e21Y = triangle->e21.y;
+                e21Z = triangle->e21.z;
 
                 // cross product
-                normalX = e13_y * e21_z - e13_z * e21_y;
-                normalY = e13_z * e21_x - e13_x * e21_z;
-                normalZ = e13_x * e21_y - e13_y * e21_x;
+                normalX = e13Y * e21Z - e13Z * e21Y;
+                normalY = e13Z * e21X - e13X * e21Z;
+                normalZ = e13X * e21Y - e13Y * e21X;
                 coeff = SQ(normalX) + SQ(normalY) + SQ(normalZ);
 
                 if (coeff != 0) {
@@ -394,9 +394,9 @@ void update_collider_transform(s16 colliderID) {
     Matrix4f matrix;
     s32 i;
     Vec3f* vertexTable;
-    f32 min_x, min_y, min_z, max_x, max_y, max_z;
+    f32 minX, minY, minZ, maxX, maxY, maxZ;
     ColliderTriangle* triangle;
-    f32 e13_y, e21_z, e13_z, e21_y, e21_x, e13_x, normalX, normalY, normalZ, coeff;
+    f32 e13Y, e21Z, e13Z, e21Y, e21X, e13X, normalX, normalY, normalZ, coeff;
 
     collider = &gCollisionData.colliderList[colliderID];
     model = get_model_from_list_index(collider->parentModelIndex);
@@ -404,39 +404,45 @@ void update_collider_transform(s16 colliderID) {
     if (model->bakedMtx == NULL) {
         copy_matrix(model->userTransformMtx, matrix);
     } else {
-        guMtxL2F(matrix, (Mtx*)model->bakedMtx);
+        guMtxL2F(matrix, model->bakedMtx);
         guMtxCatF(model->userTransformMtx, matrix, matrix);
     }
 
     triangle = collider->triangleTable;
     vertexTable = collider->vertexTable;
 
-    min_x = min_y = min_z = 999999.9f;
-    max_x = max_y = max_z = -999999.9f;
+    minX = minY = minZ = 999999.9f;
+    maxX = maxY = maxZ = -999999.9f;
 
     for (i = 0; i < collider->numVertices; vertexTable += 2, i++) {
         guMtxXFMF(matrix, vertexTable[1].x, vertexTable[1].y, vertexTable[1].z, &vertexTable[0].x, &vertexTable[0].y, &vertexTable[0].z);
 
-        if (vertexTable[0].x < min_x)
-            min_x = vertexTable[0].x;
-        if (vertexTable[0].x > max_x)
-            max_x = vertexTable[0].x;
-        if (vertexTable[0].y < min_y)
-            min_y = vertexTable[0].y;
-        if (vertexTable[0].y > max_y)
-            max_y = vertexTable[0].y;
-        if (vertexTable[0].z < min_z)
-            min_z = vertexTable[0].z;
-        if (vertexTable[0].z > max_z)
-            max_z = vertexTable[0].z;
+        if (vertexTable[0].x < minX) {
+            minX = vertexTable[0].x;
+}
+        if (vertexTable[0].x > maxX) {
+            maxX = vertexTable[0].x;
+}
+        if (vertexTable[0].y < minY) {
+            minY = vertexTable[0].y;
+}
+        if (vertexTable[0].y > maxY) {
+            maxY = vertexTable[0].y;
+}
+        if (vertexTable[0].z < minZ) {
+            minZ = vertexTable[0].z;
+}
+        if (vertexTable[0].z > maxZ) {
+            maxZ = vertexTable[0].z;
+}
     }
 
-    collider->aabb->min.x = min_x;
-    collider->aabb->min.y = min_y;
-    collider->aabb->min.z = min_z;
-    collider->aabb->max.x = max_x;
-    collider->aabb->max.y = max_y;
-    collider->aabb->max.z = max_z;
+    collider->aabb->min.x = minX;
+    collider->aabb->min.y = minY;
+    collider->aabb->min.z = minZ;
+    collider->aabb->max.x = maxX;
+    collider->aabb->max.y = maxY;
+    collider->aabb->max.z = maxZ;
 
     for (i = 0; i < collider->numTriangles; triangle++, i++) {
         Vec3f* v1 = triangle->v1;
@@ -453,17 +459,17 @@ void update_collider_transform(s16 colliderID) {
         triangle->e32.y = v2->y - v3->y;
         triangle->e32.z = v2->z - v3->z;
 
-        e13_x = triangle->e13.x;
-        e13_y = triangle->e13.y;
-        e13_z = triangle->e13.z;
-        e21_x = triangle->e21.x;
-        e21_y = triangle->e21.y;
-        e21_z = triangle->e21.z;
+        e13X = triangle->e13.x;
+        e13Y = triangle->e13.y;
+        e13Z = triangle->e13.z;
+        e21X = triangle->e21.x;
+        e21Y = triangle->e21.y;
+        e21Z = triangle->e21.z;
 
         // vector product
-        normalX = e13_y * e21_z - e13_z * e21_y;
-        normalY = e13_z * e21_x - e13_x * e21_z;
-        normalZ = e13_x * e21_y - e13_y * e21_x;
+        normalX = e13Y * e21Z - e13Z * e21Y;
+        normalY = e13Z * e21X - e13X * e21Z;
+        normalZ = e13X * e21Y - e13Y * e21X;
         coeff  = SQ(normalX) + SQ(normalY) + SQ(normalZ);
 
         if (coeff != 0) {
@@ -511,8 +517,9 @@ s32 test_ray_triangle_general(ColliderTriangle* triangle, Vec3f* vertices) {
 
     if (triangle->normal.x == 0 &&
         triangle->normal.y == 0 &&
-        triangle->normal.z == 0)
+        triangle->normal.z == 0) {
         return FALSE;
+}
 
     v1 = triangle->v1;
     v2 = triangle->v2;
@@ -622,8 +629,9 @@ s32 test_ray_triangle_down(ColliderTriangle* triangle, Vec3f* vertices) {
             return FALSE;
         }
 
-        if (triangle->normal.y <= 0)
+        if (triangle->normal.y <= 0) {
             return FALSE;
+}
 
         if ((gCollisionRayStartZ - v1->z) * triangle->e13.x - (gCollisionRayStartX - v1->x) * triangle->e13.z < 0) {
             return FALSE;
@@ -765,14 +773,14 @@ s32 test_ray_triangle_horizontal(ColliderTriangle* triangle, Vec3f *vertices) {
     return TRUE;
 }
 
-s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ,
+s16 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ,
                        f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz) {
     Collider* collider;
     CollisionData* collisionData;
     ColliderTriangle* triangle;
-    s32 i, j;
-    s32 colliderID;
-    f32 min_x, min_y, min_z, max_x, max_y, max_z;
+    s16 i, j;
+    s16 colliderID;
+    f32 minX, minY, minZ, maxX, maxY, maxZ;
 
     if (dirX == 0 && dirY == 0 && dirZ == 0) {
         return 0;
@@ -789,27 +797,27 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
     colliderID = NO_COLLIDER;
 
     if (dirX < 0) {
-        min_x = startX + dirX * gCollisionRayLength;
-        max_x = startX;
+        minX = startX + dirX * gCollisionRayLength;
+        maxX = startX;
     } else {
-        min_x = startX;
-        max_x = startX + dirX * gCollisionRayLength;
+        minX = startX;
+        maxX = startX + dirX * gCollisionRayLength;
     }
 
     if (dirY < 0) {
-        min_y = startY + dirY * gCollisionRayLength;
-        max_y = startY;
+        minY = startY + dirY * gCollisionRayLength;
+        maxY = startY;
     } else {
-        min_y = startY;
-        max_y = startY + dirY * gCollisionRayLength;
+        minY = startY;
+        maxY = startY + dirY * gCollisionRayLength;
     }
 
     if (dirZ < 0) {
-        min_z = startZ + dirZ * gCollisionRayLength;
-        max_z = startZ;
+        minZ = startZ + dirZ * gCollisionRayLength;
+        maxZ = startZ;
     } else {
-        min_z = startZ;
-        max_z = startZ + dirZ * gCollisionRayLength;
+        minZ = startZ;
+        maxZ = startZ + dirZ * gCollisionRayLength;
     }
 
     for (i = 0; i < collisionData->numColliders; i++) {
@@ -817,12 +825,12 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
 
         if ((collider->flags & ignoreFlags) ||
             collider->numTriangles == 0     ||
-            max_x < collider->aabb->min.x   ||
-            min_x > collider->aabb->max.x   ||
-            max_z < collider->aabb->min.z   ||
-            min_z > collider->aabb->max.z   ||
-            max_y < collider->aabb->min.y   ||
-            min_y > collider->aabb->max.y)
+            maxX < collider->aabb->min.x   ||
+            minX > collider->aabb->max.x   ||
+            maxZ < collider->aabb->min.z   ||
+            minZ > collider->aabb->max.z   ||
+            maxY < collider->aabb->min.y   ||
+            minY > collider->aabb->max.y)
         {
             continue;
         }
@@ -884,11 +892,9 @@ s32 test_ray_zones(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 d
     for (i = 0; i < collisionData->numColliders; i++) {
         collider = &collisionData->colliderList[i];
 
-        if (collider->flags & COLLIDER_FLAG_IGNORE_PLAYER)
-            continue;
+        if (collider->flags & COLLIDER_FLAG_IGNORE_PLAYER) continue;
 
-        if (collider->numTriangles == 0 || collider->aabb == NULL)
-            continue;
+        if (collider->numTriangles == 0 || collider->aabb == NULL) continue;
 
         triangle = collider->triangleTable;
         for (j = 0; j < collider->numTriangles; j++) {
@@ -936,25 +942,27 @@ f32 test_ray_collider_horizontal(s32 ignoreFlags, s32 colliderID, f32 x, f32 y, 
     if (!(collider->flags & ignoreFlags) && collider->numTriangles != 0) {
         triangleTable = collider->triangleTable;
 
-        for (i = 0; i < collider->numTriangles; i++)
-            if (test_ray_triangle_horizontal(triangleTable++, collisionData->vertices))
+        for (i = 0; i < collider->numTriangles; i++) {
+            if (test_ray_triangle_horizontal(triangleTable++, collisionData->vertices)) {
                 ret = gCollisionRayLength;
+            }
+        }
     }
 
     return ret;
 }
 
-s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ,
+s16 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ,
                       f32* hitX, f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz) {
     f32 hitDepthDown, hitDepthHoriz;
     s32 type;
-    s32 i, j;
+    s16 i, j;
     Entity* entity;
     Matrix4f tempMatrix1;
     Matrix4f tempMatrix2;
     Vec3f boxVertices[8];
     ColliderTriangle entityTriangle;
-    s32 entityIndex;
+    s16 entityIndex;
     f32 h;
     f32 aabbX, aabbZ;
     s32 hasCollision;
@@ -1046,7 +1054,7 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
             triangle->normal.y = gEntityColliderNormals[j].y;
             triangle->normal.z = gEntityColliderNormals[j].z;
 
-            if (hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices)) {
+            if ((hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices))) {
                 break;
             }
         }

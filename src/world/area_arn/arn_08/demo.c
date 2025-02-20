@@ -107,11 +107,11 @@ API_CALLABLE(N(func_802400F4_BF4894)) {
     }
 
     if (!(playerStatus->pos.y > -10.0f)) {
-        f32 temp_f20 = player_fall_distance();
-        s32 colliderID;
+        f32 distance = player_fall_distance();
+        HitID colliderID;
 
-        playerStatus->pos.y = player_check_collision_below(temp_f20, &colliderID);
-        script->functionTemp[0] += fabsf(temp_f20);
+        playerStatus->pos.y = player_check_collision_below(distance, &colliderID);
+        script->functionTemp[0] += fabsf(distance);
 
         return (script->functionTemp[0] > 50) * ApiStatus_DONE2;
     }

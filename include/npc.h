@@ -241,7 +241,7 @@ typedef union NpcInitialVars {
 } NpcInitialVars;
 
 typedef struct NpcData {
-    /* 0x000 */ s32 id;
+    /* 0x000 */ s8 id;
     /* 0x004 */ NpcSettings* settings;
     /* 0x008 */ Vec3f pos;
     /* 0x014 */ s32 flags;
@@ -298,7 +298,7 @@ typedef struct Enemy {
     /* 0x06 */ u8 scriptGroup; /* scripts launched for this npc controller will be assigned this group */
     /* 0x07 */ s8 hitboxIsActive; // when set, contact will trigger a first strike
     /* 0x08 */ s16 npcID;
-    /* 0x0A */ s16 spawnPos[3];
+    /* 0x0A */ Vec3f spawnPos;
     /* 0x10 */ Vec3s unk_10;    //TODO hitbox pos?
     /* 0x16 */ char unk_16[2];
     /* 0x18 */ NpcSettings* npcSettings;

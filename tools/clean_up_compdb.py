@@ -22,6 +22,7 @@ for entry in compdb:
         .replace("-mfp32", "")
         .replace("-mabi=32", "")
         .replace("-fno-toplevel-reorder", "")
+        .replace("-fno-tree-loop-distribute-patterns", "")
         .replace("-fcall-used-gp", "")
         .replace("-freg-struct-return", "")
         .replace("-march=vr4300", "-D__mips__")

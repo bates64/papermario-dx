@@ -110,12 +110,7 @@ void update_triggers(void) {
         }
 
         if (listTrigger->flags & TRIGGER_WALL_PUSH) {
-            if (listTrigger->location.colliderID == collisionStatus->curWall) {
-                func_800E06C0(1);
-            }
-            if (listTrigger->location.colliderID == collisionStatus->pushingAgainstWall) {
-                func_800E06C0(0);
-            } else {
+            if (listTrigger->location.colliderID != collisionStatus->pushingAgainstWall) {
                 continue;
             }
         }

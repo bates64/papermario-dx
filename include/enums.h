@@ -4708,14 +4708,6 @@ enum ColliderFlagsModifyMode {
     MODIFY_COLLIDER_FLAGS_SET_SURFACE    = 3,
 };
 
-enum PlayerCollisionTests {
-    PLAYER_COLLISION_0          = 0,
-    PLAYER_COLLISION_1          = 1,
-    PLAYER_COLLISION_2          = 2,
-    PLAYER_COLLISION_HAMMER     = 3,
-    PLAYER_COLLISION_4          = 4,
-};
-
 enum CameraFlags {
     CAMERA_FLAG_INITIALIZED         = 0x00000001,
     CAMERA_FLAG_DISABLED            = 0x00000002,

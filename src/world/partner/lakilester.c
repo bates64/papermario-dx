@@ -3,6 +3,7 @@
 #include "effects.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/player.h"
+#include "player/physics.h"
 
 #define NAMESPACE world_lakilester
 
@@ -51,7 +52,7 @@ enum {
     MOUNT_STATE_DONE            = 2,
 };
 
-void N(offset_player_from_camera)(f32 arg0);
+void N(offset_player_from_camera)(f32 speed);
 
 void N(sync_player_position)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -372,11 +373,10 @@ void N(update_riding_physics)(Npc* lakilester) {
     f32 hitDepth, sp40, sp44, sp48, sp4C, sinAngle, cosAngle;
     f32 moveAngle, moveSpeed;
     f32 x, y, z;
-    f32 temp_f0_3;
-    s32 raycastBelowResult;
+    HitID raycastBelowResult;
     s32 currentSurfaceType;
     s32 belowSurfaceType;
-    s32 pitchShift;
+    s16 pitchShift;
     f32 height;
 
     moveAngle = 0.0f;
@@ -403,10 +403,10 @@ void N(update_riding_physics)(Npc* lakilester) {
             }
 
             if (N(MovePitchAdjustment) < 60) {
-                pitchShift = update_lerp(EASING_LINEAR,  0.0f, 100.0f, N(MovePitchAdjustment), 60);
+                pitchShift = (s16)update_lerp(EASING_LINEAR,  0.0f, 100.0f, N(MovePitchAdjustment), 60);
                 sfx_play_sound_with_params(SOUND_FLIGHT, 0, 64, pitchShift);
             } else {
-                pitchShift = update_lerp(EASING_LINEAR, 100.0f, 0.0f, N(MovePitchAdjustment) - 60, 60);
+                pitchShift = (s16)update_lerp(EASING_LINEAR, 100.0f, 0.0f, N(MovePitchAdjustment) - 60, 60);
                 sfx_play_sound_with_params(SOUND_FLIGHT, 0, 64, pitchShift);
             }
         }
@@ -419,7 +419,11 @@ void N(update_riding_physics)(Npc* lakilester) {
     if (npc_test_move_taller_with_slipping(lakilester->collisionChannel, &x, &y, &z,
         lakilester->collisionDiameter, lakilester->yaw, lakilester->collisionHeight, lakilester->collisionDiameter))
     {
-        collisionStatus->curInspect = (partnerStatus->pressedButtons & BUTTON_A) ? NpcHitQueryColliderID : NO_COLLIDER;
+        if (partnerStatus->pressedButtons & BUTTON_A) {
+            collisionStatus->curInspect = NpcHitQueryColliderID;
+        } else {
+            collisionStatus->curInspect = NO_COLLIDER;
+        }
     }
 
     if (moveSpeed != 0.0f) {
@@ -508,13 +512,13 @@ void N(update_riding_physics)(Npc* lakilester) {
 
     if (N(CurrentGroundPitch) > 0.0f && raycastBelowResult >= 0) {
         sin_cos_rad(DEG_TO_RAD(N(CurrentGroundPitch)), &sinAngle, &cosAngle);
-        lakilester->pos.y = (lakilester->pos.y + fabs((sinAngle / cosAngle) * playerStatus->runSpeed));
+        lakilester->pos.y = (lakilester->pos.y + fabsf((sinAngle / cosAngle) * playerStatus->runSpeed));
     }
 
     if (hitDepth <= height && raycastBelowResult > NO_COLLIDER) {
-        playerStatus->lastGoodPos.x = lakilester->pos.x;
-        playerStatus->lastGoodPos.y = lakilester->pos.y;
-        playerStatus->lastGoodPos.z = lakilester->pos.z;
+        playerStatus->lastGoodPos.x = (s16)lakilester->pos.x;
+        playerStatus->lastGoodPos.y = (s16)lakilester->pos.y;
+        playerStatus->lastGoodPos.z = (s16)lakilester->pos.z;
         collisionStatus->curFloor = raycastBelowResult;
 
         lakilester->curFloor = raycastBelowResult;
@@ -538,7 +542,7 @@ void N(update_riding_physics)(Npc* lakilester) {
     collisionStatus->curFloor = NO_COLLIDER;
     playerStatus->timeInAir++;
     lakilester->curFloor = NO_COLLIDER;
-    lakilester->jumpScale += 1.8;
+    lakilester->jumpScale += 1.8f;
 
     if (lakilester->jumpScale > 12.0f) {
         lakilester->jumpScale = 12.0f;
@@ -1176,9 +1180,9 @@ API_CALLABLE(N(EnterMap)) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* lakilester = get_npc_unsafe(NPC_PARTNER);
-    f32 temp_f0, temp_f2, temp_f4;
-    f32* temp_s0_2;
-    s32 temp_v0_2;
+    f32 tempF0, tempF2, tempF4;
+    f32* tempS02;
+    s32 tempV02;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
@@ -1187,12 +1191,12 @@ API_CALLABLE(N(EnterMap)) {
     switch (script->functionTemp[0]) {
         case 0:
             if (!script->varTable[12]) {
-                temp_f0 = playerStatus->pos.x;
-                lakilester->pos.x = temp_f0;
-                lakilester->moveToPos.x = temp_f0;
-                temp_f4 = playerStatus->pos.z;
-                lakilester->pos.z = temp_f4;
-                lakilester->moveToPos.z = temp_f4;
+                tempF0 = playerStatus->pos.x;
+                lakilester->pos.x = tempF0;
+                lakilester->moveToPos.x = tempF0;
+                tempF4 = playerStatus->pos.z;
+                lakilester->pos.z = tempF4;
+                lakilester->moveToPos.z = tempF4;
                 playerStatus->pos.y = lakilester->pos.y + 10.0f;
                 partner_kill_ability_script();
             } else {
@@ -1206,13 +1210,13 @@ API_CALLABLE(N(EnterMap)) {
             }
 
             script->functionTemp[1] = script->varTable[4];
-            temp_s0_2 = (f32*)&script->varTable[5];
-            temp_f2 = atan2(lakilester->pos.x, lakilester->pos.z, script->varTable[1], script->varTable[3]);
-            lakilester->yaw = temp_f2;
+            tempS02 = (f32*)&script->varTable[5];
+            tempF2 = atan2(lakilester->pos.x, lakilester->pos.z, script->varTable[1], script->varTable[3]);
+            lakilester->yaw = tempF2;
 
             if (script->varTable[12]) {
-                if (temp_f2 >= 0.0f && temp_f2 <= 180.0f) {
-                    lakilester->yawCamOffset = temp_f2;
+                if (tempF2 >= 0.0f && tempF2 <= 180.0f) {
+                    lakilester->yawCamOffset = (s16)tempF2;
                     lakilester->isFacingAway = TRUE;
                 }
             }
@@ -1224,7 +1228,7 @@ API_CALLABLE(N(EnterMap)) {
             N(offset_player_from_camera)(2.0f);
             gGameStatusPtr->keepUsingPartnerOnMapChange = TRUE;
             lakilester->flags |= NPC_FLAG_IGNORE_PLAYER_COLLISION;
-            lakilester->moveSpeed = *temp_s0_2;
+            lakilester->moveSpeed = *tempS02;
             lakilester->jumpScale = 0.0f;
             N(UpdatePushingWall) = FALSE;
             N(PlayerBounceOffset) = 0;

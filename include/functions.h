@@ -40,7 +40,6 @@ void copy_matrix(Matrix4f src, Matrix4f dest);
 
 Shadow* get_shadow_by_index(s32 index);
 s32 get_time_freeze_mode(void);
-void render_player_model(void);
 s32 is_picking_up_item(void);
 
 f32 integrate_gravity(void);
@@ -134,7 +133,7 @@ void force_disable_actor_blur(Actor*);
 void player_handle_floor_collider_type(s32 colliderID);
 f32 player_fall_distance(void);
 void func_800E4AD8(s32 mode);
-f32 player_check_collision_below(f32, s32* colliderID);
+f32 player_check_collision_below(f32 offset, HitID* colliderID);
 b32 can_trigger_loading_zone(void);
 void update_damage_popups(void);
 void show_action_rating(s32, Actor*, f32, f32, f32);
@@ -197,7 +196,6 @@ void get_model_center_and_size(u16 modelID, f32* centerX, f32* centerY, f32* cen
                                f32* sizeZ);
 HitID collision_main_above(void);
 void collision_lava_reset_check_additional_overlaps(void);
-s32 player_test_lateral_overlap(s32, PlayerStatus*, f32*, f32*, f32*, f32, f32);
 Npc* peach_make_disguise_npc(enum PeachDisguise peachDisguise);
 void peach_set_disguise_anim(AnimID anim);
 
@@ -218,7 +216,7 @@ NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID);
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID);
 
 void transform_point(Matrix4f mtx, f32 inX, f32 inY, f32 inZ, f32 inS, f32* outX, f32* outY, f32* outZ, f32* outW);
-void try_player_footstep_sounds(s32 arg0);
+void try_player_footstep_sounds(s32 interval);
 void phys_update_interact_collider(void);
 void phys_reset_spin_history(void);
 s32 phys_adjust_cam_on_landing(void);
@@ -232,13 +230,13 @@ void check_input_spin(void);
 void phys_set_player_sliding_check(b32 (*funcPtr)(void));
 void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void));
 
-b32 npc_test_move_simple_without_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
+b32 npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius);
 
 void update_collider_transform(s16 colliderID);
 void get_collider_center(s32 colliderID, f32* x, f32* y, f32* z);
 
-s32 is_another_trigger_bound(Trigger*, EvtScript* script);
-Trigger* create_trigger(TriggerBlueprint* def);
+s32 is_another_trigger_bound(Trigger* trigger, EvtScript* script);
+Trigger* create_trigger(TriggerBlueprint* bp);
 s32 evt_trigger_on_activate_exec_script(Trigger* trigger);
 Trigger* get_trigger_by_id(s32 triggerID);
 
@@ -251,9 +249,6 @@ s32 count_power_plus(s32);
 s32 phys_can_player_interact(void);
 
 void ai_enemy_play_sound(Npc* npc, s32 arg1, s32 arg2);
-
-HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
-HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
 s32 evt_get_variable(Evt* script, Bytecode var);
 s32 evt_set_variable(Evt* script, Bytecode var, s32 value);
@@ -276,7 +271,7 @@ s32 battle_heap_create(void);
 
 s32 test_ray_zones(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
                    f32* hitDepth, f32* nx, f32* ny, f32* nz);
-s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
+s16 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX,
                        f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
 
 /// Test a general ray from a given starting position and direction against all entities.
@@ -296,7 +291,7 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
 /// @param[out] hitNy y normal direction of the hit
 /// @param[out] hitNz z normal direction of the hit
 /// @returns entity index or `NO_COLLIDER` is none is hit
-s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
+s16 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
                       f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
 
 void mem_clear(void* data, s32 numBytes);
@@ -304,8 +299,7 @@ void mem_clear(void* data, s32 numBytes);
 void startup_set_fade_screen_color(s16 color);
 void startup_set_fade_screen_alpha(s16 alpha);
 
-f32 get_xz_dist_to_player(f32, f32);
-void func_800E06C0(s32);
+f32 get_xz_dist_to_player(f32 x, f32 z);
 void close_status_bar(void);
 Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState);
 Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 initialState);
@@ -420,16 +414,13 @@ s32 resume_all_script(s32 id);
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
 s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
 
-b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
+b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
-b32 npc_raycast_up(s32, f32*, f32*, f32*, f32*);
+b32 npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth);
 HitID npc_raycast_up_corners(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
-HitID player_raycast_up_corners(PlayerStatus*, f32*, f32*, f32*, f32*, f32);
-HitID player_raycast_below_cam_relative(PlayerStatus* playerStatus, f32* outX, f32* outY, f32* outZ, f32* outLength,
-                                      f32* hitRx, f32* hitRz, f32* hitDirX, f32* hitDirZ);
-b32 npc_test_move_taller_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
-b32 npc_test_move_simple_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
-s32 npc_test_move_complex_with_slipping(s32, f32*, f32*, f32*, f32, f32, f32, f32);
+b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius);
+b32 npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius);
+s32 npc_test_move_complex_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height, f32 radius);
 
 // Partner
 EvtScript* partner_get_enter_map_script(void);
@@ -520,7 +511,7 @@ Trigger* bind_trigger_1(EvtScript* script, s32 flags, s32 triggerFlagIndex, s32 
 void set_cam_viewport(s16 id, s16 x, s16 y, s16 width, s16 height);
 
 void disable_player_shadow(void);
-void move_player(s32 duration, f32 heading, f32 speed);
+void move_player(s16 duration, f32 heading, f32 speed);
 s32 enable_player_input(void);
 s32 enable_player_static_collisions(void);
 b32 check_input_jump(void);
@@ -907,14 +898,13 @@ void collision_check_player_overlaps(void);
 void update_player_input(void);
 void phys_update_action_state(void);
 void collision_main_lateral(void);
-void player_surface_spawn_fx(void);
 void check_input_open_menus(void);
 void check_input_status_bar(void);
 
 void update_player(void);
 
 void enforce_hpfp_limits(void);
-s32 should_collider_allow_interact(s32);
+s32 should_collider_allow_interact(s32 colliderID);
 void show_coin_counter(void);
 void hide_coin_counter_immediately(void);
 void hide_popup_menu(void);

@@ -1,8 +1,6 @@
 #include "common.h"
 #include "include_asset.h"
 
-extern s32 D_8010C950; //TODO never read, consider removing
-
 #define NAMESPACE inspect_icon
 
 typedef struct InspectIconData {
@@ -42,11 +40,9 @@ void interact_inspect_dismiss(void);
 
 void interact_inspect_setup(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 new_var;
 
     if (playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) {
         mem_clear(InspectIconPtr, sizeof(*InspectIconPtr));
-        D_8010C950 = -1;
         InspectIconPtr->pos.x = playerStatus->pos.x;
         InspectIconPtr->pos.y = playerStatus->pos.y + playerStatus->colliderHeight +
                                    (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS) ? 8.0f : 2.0f);
