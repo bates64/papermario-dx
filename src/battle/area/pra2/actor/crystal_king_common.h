@@ -1,5 +1,7 @@
-#ifndef _CRYSTAL_KING_COMMON_H_
-#define _CRYSTAL_KING_COMMON_H_
+#pragma once
+
+#include "macros.h"
+#include "enums.h"
 
 enum N(BattleCommon) {
     ACTOR_KING          = ACTOR_ENEMY0,
@@ -11,5 +13,3 @@ enum N(BattleCommon) {
     AVAR_King_PrismBitID        = 6,
     AVAR_Bit_ParticlesEffect    = 0,
 };
-
-#endif // _CRYSTAL_KING_COMMON_H_

@@ -1,7 +1,6 @@
 // Stolen from HackerSM64
 
-#ifndef __PROFILING_H__
-#define __PROFILING_H__
+#pragma once
 
 #include "common.h"
 #include "dx/config.h"
@@ -49,6 +48,7 @@
     PROFILER_TIME_SUB_GFX_FRONT_UI, \
     PROFILER_TIME_SUB_GFX_END
 
+// NOLINTNEXTLINE(readability-enum-initial-value)
 enum ProfilerTime {
     PROFILER_TIME_FPS,
     PROFILER_TIME_CONTROLLERS,
@@ -272,6 +272,7 @@ static ALWAYS_INLINE void profiler_audio_subset_complete_func(enum ProfilerTime 
 #define AUDIO_PROFILER_START(which) profiler_audio_subset_start_func(which - PROFILER_TIME_SUB_AUDIO_START)
 #define AUDIO_PROFILER_COMPLETE(which) profiler_audio_subset_complete_func(which - PROFILER_TIME_SUB_AUDIO_START)
 #else // AUDIO_PROFILING
+// NOLINTNEXTLINE(readability-enum-initial-value)
 enum ProfilerTimeAudioUnused {
     AUDIO_SUBSET_ENTRIES
 };
@@ -283,5 +284,3 @@ enum ProfilerTimeAudioUnused {
 #define AUDIO_PROFILER_START(which)
 #define AUDIO_PROFILER_COMPLETE(which)
 #endif // AUDIO_PROFILING
-
-#endif

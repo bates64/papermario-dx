@@ -1,5 +1,4 @@
-#ifndef DGB_VTX_H
-#define DGB_VTX_H
+#pragma once
 
 #include "common.h"
 
@@ -293,5 +292,3 @@ extern Vtx vtx_C2E800[];
 extern Vtx vtx_C2E8C0[];
 extern Vtx vtx_C2E980[];
 extern Vtx vtx_C2EA60[];
-
-#endif

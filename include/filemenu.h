@@ -1,5 +1,4 @@
-#ifndef _FILEMENU_H_
-#define _FILEMENU_H_
+#pragma once
 
 #include "common.h"
 
@@ -149,5 +148,3 @@ void filemenu_draw_rect(s32 ulx, s32 uly, s32 lrx, s32 lry, s32 tileIdx, s32 uls
 
 extern WindowStyleCustom filemenu_windowStyles[];
 extern u8 filemenu_createfile_gridData[];
-
-#endif

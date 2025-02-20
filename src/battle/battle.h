@@ -1,5 +1,4 @@
-#ifndef _BATTLE_BATTLE_H_
-#define _BATTLE_BATTLE_H_
+#pragma once
 
 #include "common.h"
 #include "message_ids.h"
@@ -265,5 +264,3 @@ Actor* create_actor(Formation formation);
 
 #define DANGER_THRESHOLD  5
 #define PERIL_THRESHOLD   1
-
-#endif

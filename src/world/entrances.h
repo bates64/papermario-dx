@@ -1,5 +1,4 @@
-#ifndef _ENTRANCES_H_
-#define _ENTRANCES_H_
+#pragma once
 
 enum {
     kmr_00_ENTRY_0   = 0,
@@ -1337,5 +1336,3 @@ enum {
     tst_13_ENTRY_0   = 0,
     tst_20_ENTRY_0   = 0,
 };
-
-#endif

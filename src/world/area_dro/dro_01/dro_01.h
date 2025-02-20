@@ -1,5 +1,4 @@
-#ifndef _DRO_01_H_
-#define _DRO_01_H_
+#pragma once
 
 /// @file dro_01.h
 /// @brief Dry Dry Outpost - Outpost 1
@@ -61,5 +60,3 @@ extern EvtScript N(main);
 extern EvtScript N(makeEntities);
 extern EvtScript N(unk_80248088);
 extern EvtScript N(unk_8024884C);
-
-#endif

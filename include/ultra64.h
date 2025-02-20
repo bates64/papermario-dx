@@ -19,8 +19,7 @@
  *
  **************************************************************************/
 
-#ifndef _ULTRA64_H_
-#define _ULTRA64_H_
+#pragma once
 
 #pragma GCC system_header
 
@@ -38,5 +37,3 @@
 #include <PR/ucode.h> // IWYU pragma: export
 #include <PR/ultraerror.h> // IWYU pragma: export
 #include <PR/ultralog.h> // IWYU pragma: export
-
-#endif

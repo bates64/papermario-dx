@@ -1,5 +1,4 @@
-#ifndef _WORLD_PARTNER_SUSHIE_H_
-#define _WORLD_PARTNER_SUSHIE_H_
+#pragma once
 
 #include "common.h"
 #include "script_api/map.h"
@@ -15,5 +14,3 @@ extern EvtScript EVS_WorldSushie_Update;
 extern EvtScript EVS_WorldSushie_UseAbility;
 extern EvtScript EVS_WorldSushie_PutAway;
 extern EvtScript EVS_WorldSushie_EnterMap;
-
-#endif

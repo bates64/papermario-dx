@@ -1,5 +1,4 @@
-#ifndef _VARS_ACCESS_H_
-#define _VARS_ACCESS_H_
+#pragma once
 
 #include "common.h"
 
@@ -45,5 +44,3 @@ s32 get_area_byte(s32 index);
 s32 set_area_flag(s32 index);
 s32 clear_area_flag(s32 index);
 s32 get_area_flag(s32 index);
-
-#endif

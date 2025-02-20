@@ -1,5 +1,7 @@
-#ifndef _LAVA_PIRANHA_COMMON_H_
-#define _LAVA_PIRANHA_COMMON_H_
+#pragma once
+
+#include "macros.h"
+#include "enums.h"
 
 enum N(BattleCommon) {
     ACTOR_BOSS          = ACTOR_ENEMY0,
@@ -84,5 +86,3 @@ enum N(VineAnims) {
     VINE_ANIM_EXTRA_DEATH               = 35,
     VINE_ANIM_EXTRA_EMERGE              = 36,
 };
-
-#endif // _LAVA_PIRANHA_COMMON_H_

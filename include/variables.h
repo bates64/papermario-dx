@@ -1,5 +1,4 @@
-#ifndef _VARIABLES_H_
-#define _VARIABLES_H_
+#pragma once
 
 #include "ultra64.h"
 #include "common_structs.h"
@@ -113,6 +112,4 @@ extern PlayerData gPlayerData;
 extern s32 gCurrentLanguage;
 #else
 #define gCurrentLanguage 0
-#endif
-
 #endif

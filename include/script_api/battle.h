@@ -1,5 +1,4 @@
-#ifndef _SCRIPT_API_BATTLE_H_
-#define _SCRIPT_API_BATTLE_H_
+#pragma once
 
 #include "common_structs.h"
 #include "evt.h"
@@ -384,6 +383,4 @@ extern EvtScript Rumble_Unused_4;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
-#endif
-
 #endif

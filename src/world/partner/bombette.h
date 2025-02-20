@@ -1,5 +1,4 @@
-#ifndef _WORLD_BOMBETTE_H_
-#define _WORLD_BOMBETTE_H_
+#pragma once
 
 #include "common.h"
 #include "script_api/map.h"
@@ -14,5 +13,3 @@ extern EvtScript EVS_WorldBombette_TakeOut;
 extern EvtScript EVS_WorldBombette_Update;
 extern EvtScript EVS_WorldBombette_UseAbility;
 extern EvtScript EVS_WorldBombette_PutAway;
-
-#endif

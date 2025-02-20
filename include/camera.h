@@ -1,5 +1,9 @@
-#ifndef _CAMERA_H_
-#define _CAMERA_H_
+#pragma once
+
+#include <ultra64.h>
+#include "common_structs.h"
+
+// TODO: move Camera here
 
 extern f32 CamLengthScale;
 
@@ -15,5 +19,3 @@ void update_camera_unused_ahead(Camera*);
 
 void create_camera_leadplayer_matrix(Camera*);
 Camera* initialize_next_camera(CameraInitData* data);
-
-#endif

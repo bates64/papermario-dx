@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_DGB_DGB_H_
-#define _WORLD_AREA_DGB_DGB_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_DGB_Unused_0     = AreaByte(0),
@@ -48,5 +50,3 @@ extern MapSettings dgb_17_settings;
 extern MapSettings dgb_18_settings;
 
 s32 dgb_00_map_init(void);
-
-#endif

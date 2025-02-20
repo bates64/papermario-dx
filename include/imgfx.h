@@ -1,5 +1,4 @@
-#ifndef _IMGFX_H_
-#define _IMGFX_H_
+#pragma once
 
 #include "PR/gbi.h"
 
@@ -19,5 +18,3 @@ typedef struct ImgFXAnimHeader {
     /* 0x0C */ u16 keyframesCount;
     /* 0x0E */ u16 flags;
 } ImgFXAnimHeader; // size = 0x10
-
-#endif /* _IMGFX_H_ */

@@ -1,5 +1,4 @@
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#pragma once
 
 #include "ultra64.h"
 #include "gbi_custom.h"
@@ -14,5 +13,3 @@
 #include "battle/battle_names.h"
 #include "battle/stage_names.h"
 #include "battle/actor_types.h"
-
-#endif

@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_END_END_H_
-#define _WORLD_AREA_END_END_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_END_Unused_0       = AreaByte(0),
@@ -26,5 +28,3 @@ extern MapSettings end_00_settings;
 s32 end_00_map_init(void);
 extern MapSettings end_01_settings;
 s32 end_01_map_init(void);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _TYPES_H_
-#define _TYPES_H_
+#pragma once
 
 #include "ultra64.h"
 
@@ -20,5 +19,3 @@ typedef u8 Addr[];
 
 /// Terminates an extraAnimationList
 #define ANIM_LIST_END -1
-
-#endif

@@ -191,6 +191,36 @@
           '';
           enableParallelBuilding = true;
         };
+        guardonce =
+          let
+            pname = "guardonce";
+            version = "2.4.0";
+            src = pkgs.fetchFromGitHub {
+              owner = "cgmb";
+              repo = pname;
+              rev = "v${version}";
+              hash = "sha256-yTywLxvo6R02svdfHx5iP5njFUTWdhnwNXN6BNIbyR8=";
+            };
+          in
+          pkgs.stdenv.mkDerivation {
+            name = pname;
+            inherit version src;
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            buildInputs = [ pkgs.python3 ];
+            installPhase = ''
+              mkdir -p $out/bin
+              cp -r $src/guardonce $out/guardonce
+              makeWrapper ${pkgs.python3}/bin/python3 $out/bin/checkguard \
+                --add-flags -m --add-flags guardonce.checkguard \
+                --set PYTHONPATH $out
+              makeWrapper ${pkgs.python3}/bin/python3 $out/bin/guard2once \
+                --add-flags -m --add-flags guardonce.guard2once \
+                --set PYTHONPATH $out
+              makeWrapper ${pkgs.python3}/bin/python3 $out/bin/once2guard \
+                --add-flags -m --add-flags guardonce.once2guard \
+                --set PYTHONPATH $out
+            '';
+          };
       in
       {
         packages = {
@@ -230,6 +260,7 @@
               star-rod.packages.${system}.default
               clang-tools
               include-what-you-use
+              guardonce
               assets
               configured
             ]
@@ -285,7 +316,18 @@
                 enable = true;
                 name = "include-what-you-use";
                 entry = "./tools/include-what-you-use";
-                types = [ "c" "c++" ];
+                types = [
+                  "c"
+                  "c++"
+                ];
+              };
+              # require `#pragma once` in all headers
+              checkguard = {
+                enable = true;
+                name = "checkguard";
+                entry = "${guardonce}/bin/checkguard --only once";
+                types = [ "header" ];
+                excludes = [ "include/(PR|gcc|libc|nu|stdlib)/.*" ];
               };
               ruff-format.enable = true;
               check-xml.enable = true;

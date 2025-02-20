@@ -9,6 +9,8 @@
 #ifndef _NUALSGI_H_
 #define _NUALSGI_H_
 
+#include "nusys.h"
+
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
@@ -251,22 +253,22 @@ extern s16		nuAuExtraSampleSize;	/* Number of extra samples */
 /*--------------------------------------*/
 extern s32 nuAuInit(void);
 extern s32 nuAuInitEx(void);
-extern s32 nuAuMgrInit(void* heap_ptr, u32 size, ALSynConfig* synconfig);
-extern s32 nuAuMgrInitEx(void* heap_ptr, u32 size, ALSynConfig* synConfig);
+extern s32 nuAuMgrInit(void* heapPtr, u32 size, ALSynConfig* synconfig);
+extern s32 nuAuMgrInitEx(void* heapPtr, u32 size, ALSynConfig* synConfig);
 
-extern void nuAuSeqPlayerInit(ALSeqpConfig* seqpconfig, u32 size, u32 player_no);
-extern void nuAuSeqPlayerBankSet(u8* bank_addr, u32 bank_size, u8* table_addr);
-extern void nuAuSeqPlayerPlay(u32 player_no);
-extern void nuAuSeqPlayerSeqSet(u8* seq_addr);
-extern void nuAuSeqPlayerSetNo(u32 player_no ,u32 seq_no);
-extern void nuAuSeqPlayerFadeOut(u32 player_no ,u32 speed);
+extern void nuAuSeqPlayerInit(ALSeqpConfig* seqpconfig, u32 size, u32 playerNo);
+extern void nuAuSeqPlayerBankSet(u8* bankAddr, u32 bankSize, u8* tableAddr);
+extern void nuAuSeqPlayerPlay(u32 playerNo);
+extern void nuAuSeqPlayerSeqSet(u8* seqAddr);
+extern void nuAuSeqPlayerSetNo(u32 playerNo ,u32 seqNo);
+extern void nuAuSeqPlayerFadeOut(u32 playerNo ,u32 speed);
 extern void nuAuSeqPlayerControl(void);
 
 extern void nuAuSndPlayerInit(ALSndpConfig* sndconfig);
-extern void nuAuSndPlayerBankSet(u8* bank_addr, u32 bank_size, u8* table_addr);
+extern void nuAuSndPlayerBankSet(u8* bankAddr, u32 bankSize, u8* tableAddr);
 extern ALSndId nuAuSndPlayerPlay(u32 sndNo);
 extern void nuAuPreNMIFuncSet(NUAuPreNMIFunc func);
-extern void nuAuPreNMIProc(NUScMsg mesg_type, u32 frameCounter);
+extern void nuAuPreNMIProc(NUScMsg mesgType, u32 frameCounter);
 extern void nuAuMgrFuncSet(NUAuMgrFunc func);
 extern ALDMAproc nuAuDmaNew(NUDMAState **state);
 extern void	nuAuCleanDMABuffers(void);

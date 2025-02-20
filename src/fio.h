@@ -1,6 +1,3 @@
-#ifndef _FIO_H_
-#define _FIO_H_
-
 #include "common.h"
 #include "dx/versioning.h"
 
@@ -13,5 +10,3 @@ void fio_erase_game(s32 saveSlot);
 extern SaveFileSummary gSaveSlotSummary[4];
 extern SaveSlotMetadata gSaveSlotMetadata[4];
 extern SaveGlobals gSaveGlobals;
-
-#endif

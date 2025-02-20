@@ -1,5 +1,4 @@
-#ifndef _MACROS_H_
-#define _MACROS_H_
+#pragma once
 
 #include "types.h"
 #include "include_asm.h"
@@ -619,6 +618,4 @@
 #define ALIGNED64 __attribute__((aligned(64)))
 #else
 #define ALIGNED64
-#endif
-
 #endif

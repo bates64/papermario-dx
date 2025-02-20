@@ -1,5 +1,4 @@
-#ifndef ITEM_ENTITY_H
-#define ITEM_ENTITY_H
+#pragma once
 
 #include "common.h"
 
@@ -110,5 +109,3 @@ enum {
         is_Restart \
         is_End \
     }
-
-#endif

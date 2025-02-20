@@ -1,7 +1,9 @@
-#ifndef _HUFF_N_PUFF_COMMON_H_
-#define _HUFF_N_PUFF_COMMON_H_
+#pragma once
 
-enum N(BattleCommon) {  
+#include "macros.h"
+#include "enums.h"
+
+enum N(BattleCommon) {
     ACTOR_HUFF_N_PUFF           = ACTOR_ENEMY0,
     AVAR_TREE_DELAY             = 6,
     AVAR_HuffNPuff_Flags        = 2,
@@ -12,5 +14,3 @@ enum N(BattleCommon) {
     AVAR_TuffPuff_ScaleY        = 4,
     AVAR_TuffPuff_HealValue     = 5,
 };
-
-#endif // _HUFF_N_PUFF_COMMON_H_

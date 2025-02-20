@@ -34,8 +34,7 @@
  *	SWAP(i, j) - exchanges A[i] with A[j].
  */
 
-#ifndef QSORT_H
-#define QSORT_H
+#pragma once
 
 /* Sort 3 elements. */
 #define Q_SORT3(q_a1, q_a2, q_a3, Q_LESS, Q_SWAP) \
@@ -181,6 +180,5 @@ do {									\
 	Q_LOOP(unsigned long, Q_N, Q_LESS, Q_SWAP);			\
 } while (0)
 
-#endif
 
 /* ex:set ts=8 sts=4 sw=4 noet: */

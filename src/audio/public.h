@@ -1,5 +1,7 @@
-#ifndef _AUDIO_PUBLIC_H_
-#define _AUDIO_PUBLIC_H_
+#pragma once
+
+#include "ultra64.h"
+#include "enums.h"
 
 // 30450.c
 void func_80055050(ALHeap* heap);
@@ -93,5 +95,3 @@ void sfx_get_spatialized_sound_params(f32 x, f32 y, f32 z, s16* volume, s16* pan
 void sfx_compute_spatialized_sound_params_ignore_depth(f32 x, f32 y, f32 z, s16* volume, s16* pan);
 void sfx_compute_spatialized_sound_params_with_depth(f32 x, f32 y, f32 z, s16* volume, s16* pan);
 void sfx_compute_spatialized_sound_params_full(f32 x, f32 y, f32 z, s16* volume, s16* pan, s32 flags);
-
-#endif

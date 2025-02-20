@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_OMO_OMO_H_
-#define _WORLD_AREA_OMO_OMO_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 // "CrowdScript" used in omo_02 and omo_15
 enum {
@@ -22,15 +24,6 @@ enum {
     AB_OMO_CurrentPeachChoice           = AreaByte(4),
     AB_OMO_5        = AreaByte(5),
     AB_OMO_6        = AreaByte(6),
-    AB_OMO_Unused_7                     = AreaByte(7),
-    AB_OMO_Unused_8                     = AreaByte(8),
-    AB_OMO_Unused_9                     = AreaByte(9),
-    AB_OMO_Unused_A                     = AreaByte(10),
-    AB_OMO_Unused_B                     = AreaByte(11),
-    AB_OMO_Unused_C                     = AreaByte(12),
-    AB_OMO_Unused_D                     = AreaByte(13),
-    AB_OMO_Unused_E                     = AreaByte(14),
-    AB_OMO_Unused_F                     = AreaByte(15),
 };
 
 enum {
@@ -69,5 +62,3 @@ extern MapSettings omo_14_settings;
 extern MapSettings omo_15_settings;
 extern MapSettings omo_16_settings;
 extern MapSettings omo_17_settings;
-
-#endif

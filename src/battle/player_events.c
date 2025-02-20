@@ -8,6 +8,7 @@
 #include "battle/action_cmd/flee.h"
 #include "battle/battle.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
 extern HudScript HES_Happy;
 extern HudScript HES_HPDrain;
@@ -116,7 +117,7 @@ API_CALLABLE(ChoosePlayerCelebrationAnim) {
             }
         }
 
-        script->varTable[0] = pcao->options[i * 2 + 1];
+        script->varTable[0] = pcao->options[(i * 2) + 1];
     } else {
         s32* opts;
         f32 healthRatio = playerData->curHP / (f32) playerData->curMaxHP;
@@ -142,7 +143,7 @@ API_CALLABLE(ChoosePlayerCelebrationAnim) {
                 break;
             }
         }
-        script->varTable[0] = opts[i * 2 + 1];
+        script->varTable[0] = opts[(i * 2) + 1];
     }
     return ApiStatus_DONE2;
 }

@@ -1,23 +1,12 @@
-#ifndef _WORLD_AREA_NOK_NOK_H_
-#define _WORLD_AREA_NOK_NOK_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_NOK_0            = AreaByte(0),
     AB_NOK_1            = AreaByte(1),
     AB_NOK_2            = AreaByte(2),
-    AB_NOK_Unused_3     = AreaByte(3),
-    AB_NOK_Unused_4     = AreaByte(4),
-    AB_NOK_Unused_5     = AreaByte(5),
-    AB_NOK_Unused_6     = AreaByte(6),
-    AB_NOK_Unused_7     = AreaByte(7),
-    AB_NOK_Unused_8     = AreaByte(8),
-    AB_NOK_Unused_9     = AreaByte(9),
-    AB_NOK_Unused_A     = AreaByte(10),
-    AB_NOK_Unused_B     = AreaByte(11),
-    AB_NOK_Unused_C     = AreaByte(12),
-    AB_NOK_Unused_D     = AreaByte(13),
-    AB_NOK_Unused_E     = AreaByte(14),
-    AB_NOK_Unused_F     = AreaByte(15),
 };
 
 enum {
@@ -52,5 +41,3 @@ extern MapSettings nok_12_settings;
 extern MapSettings nok_13_settings;
 extern MapSettings nok_14_settings;
 extern MapSettings nok_15_settings;
-
-#endif

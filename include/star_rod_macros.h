@@ -1,5 +1,4 @@
-#ifndef _STAR_ROD_MACROS_H_
-#define _STAR_ROD_MACROS_H_
+#pragma once
 // macros used by Star Rod's script generation
 
 #define EVT_MAKE_ITEM_ENTITY(args...) \
@@ -10,5 +9,3 @@
 
 #define GEN_FLOWER_SPAWN_REGION(args...) \
     EVT_FLOWER_SPAWN_REGION(args)
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _NPC_H_
-#define _NPC_H_
+#pragma once
 
 #include "common_structs.h"
 #include "enums.h"
@@ -679,6 +678,4 @@ void spawn_drops(Enemy* enemy);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
-#endif
-
 #endif

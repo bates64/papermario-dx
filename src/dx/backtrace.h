@@ -1,5 +1,4 @@
-#ifndef BACKTRACE_H
-#define BACKTRACE_H
+#pragma once
 
 #include "common.h"
 
@@ -54,5 +53,3 @@ void debug_backtrace(void);
 
 /** @brief Converts a function address to a string representation using its name, offset, and file. */
 void backtrace_address_to_string(u32 address, char* dest);
-
-#endif

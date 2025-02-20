@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_FLO_FLO_H_
-#define _WORLD_AREA_FLO_FLO_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_FLO_TolielupDialogue             = AreaByte(0),
@@ -10,14 +12,6 @@ enum {
     AB_FLO_TreePuzzle_SecondCorrect     = AreaByte(5),
     AB_FLO_GuardLakituTalkCount         = AreaByte(6),
     AB_FLO_GuardedMachineHitCount       = AreaByte(7),
-    AB_FLO_Unused_8     = AreaByte(8),
-    AB_FLO_Unused_9     = AreaByte(9),
-    AB_FLO_Unused_A     = AreaByte(10),
-    AB_FLO_Unused_B     = AreaByte(11),
-    AB_FLO_Unused_C     = AreaByte(12),
-    AB_FLO_Unused_D     = AreaByte(13),
-    AB_FLO_Unused_E     = AreaByte(14),
-    AB_FLO_Unused_F     = AreaByte(15),
 };
 
 enum {
@@ -66,8 +60,6 @@ enum {
     AF_FLO_RidingBeanstalk              = AreaFlag(44),
     AF_FLO_BeanstalkFadedOut            = AreaFlag(45),
 };
-
-#endif
 
 extern MapSettings flo_00_settings;
 extern MapSettings flo_03_settings;

@@ -1,4 +1,5 @@
 #include "mgm_00.h"
+#include "inventory.h"
 
 #include "world/common/npc/Toad_Patrol.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"

@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_DRO_DRO_H_
-#define _WORLD_AREA_DRO_DRO_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_DRO_0            = AreaByte(0),
@@ -30,5 +32,3 @@ enum {
 
 extern MapSettings dro_01_settings;
 extern MapSettings dro_02_settings;
-
-#endif

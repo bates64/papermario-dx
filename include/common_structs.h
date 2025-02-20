@@ -1,5 +1,4 @@
-#ifndef _COMMON_STRUCTS_H_
-#define _COMMON_STRUCTS_H_
+#pragma once
 
 #include "macros.h"
 #include "ultra64.h"
@@ -2483,5 +2482,3 @@ typedef struct SpeechBubbleData {
     /* 0x2A */ u8 state;
     /* 0x2B */ u8 brightness;
 } SpeechBubbleData; /* size = 0x2C */
-
-#endif

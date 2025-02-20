@@ -1,5 +1,4 @@
-#ifndef _SCRIPT_API_MACROS_H_
-#define _SCRIPT_API_MACROS_H_
+#pragma once
 
 #include "evt.h"
 #include "stdlib/stdarg.h"
@@ -836,6 +835,4 @@ extern "C" {
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
-#endif
-
 #endif

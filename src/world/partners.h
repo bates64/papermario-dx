@@ -1,5 +1,7 @@
-#ifndef _WORLD_PARTNERS_H
-#define _WORLD_PARTNERS_H
+#pragma once
+
+#include <ultra64.h>
+#include "common_structs.h"
 
 typedef void (*PartnerFunc)(Npc* partner);
 typedef s32 (*PartnerBoolFunc)(Npc* partner);
@@ -39,5 +41,3 @@ s32 partner_force_player_flip_done(void);
 void partner_suspend_ability_script(void);
 void partner_resume_ability_script(void);
 void partner_enable_input(void);
-
-#endif

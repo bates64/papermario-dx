@@ -1,5 +1,4 @@
-#ifndef __INCLUDE_ASM_H__
-#define __INCLUDE_ASM_H__
+#pragma once
 
 #define STRINGIFY_(x) #x
 #define STRINGIFY(x) STRINGIFY_(x)
@@ -24,7 +23,4 @@
 __asm__(".include \"include/macro.inc\"\n");
 #else
 #define INCLUDE_ASM(TYPE, FOLDER, NAME, ARGS...)
-#endif
-
-
 #endif

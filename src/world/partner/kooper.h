@@ -1,5 +1,4 @@
-#ifndef _WORLD_PARTNER_KOOPER_H_
-#define _WORLD_PARTNER_KOOPER_H_
+#pragma once
 
 #include "common.h"
 #include "script_api/map.h"
@@ -13,5 +12,3 @@ extern EvtScript EVS_WorldKooper_TakeOut;
 extern EvtScript EVS_WorldKooper_Update;
 extern EvtScript EVS_WorldKooper_UseAbility;
 extern EvtScript EVS_WorldKooper_PutAway;
-
-#endif

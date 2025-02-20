@@ -1,5 +1,4 @@
-#ifndef _WORLD_PARTNER_GOOMPA_H_
-#define _WORLD_PARTNER_GOOMPA_H_
+#pragma once
 
 #include "common.h"
 #include "script_api/map.h"
@@ -10,5 +9,3 @@ extern EvtScript EVS_WorldGoompa_TakeOut;
 extern EvtScript EVS_WorldGoompa_Update;
 extern EvtScript EVS_WorldGoompa_UseAbility;
 extern EvtScript EVS_WorldGoompa_PutAway;
-
-#endif

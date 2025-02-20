@@ -1,5 +1,7 @@
-#ifndef _GOOMBA_KING_COMMON_H_
-#define _GOOMBA_KING_COMMON_H_
+#pragma once
+
+#include "macros.h"
+#include "enums.h"
 
 enum N(BattleCommon) {
     ACTOR_KING          = ACTOR_ENEMY0,
@@ -11,5 +13,3 @@ enum N(BattleCommon) {
     PRT_TREE_NUT_3      = 5,
     AVAR_TREE_DELAY     = 6,
 };
-
-#endif // _GOOMBA_BROS_COMMON_H_

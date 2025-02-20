@@ -1,5 +1,4 @@
-#ifndef _INVENTORY_H_
-#define _INVENTORY_H_
+#pragma once
 
 #include "common.h"
 
@@ -66,5 +65,3 @@ s32 recover_hp(s32 amt);
 /// @param amt the amount to recover, -1 for full, -2 for full and increase max by 1 (unused)
 /// @return the new FP value, after recovery has been applied
 s32 recover_fp(s32 amt);
-
-#endif

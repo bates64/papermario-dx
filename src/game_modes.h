@@ -1,5 +1,4 @@
-#ifndef _GAME_MODES_H_
-#define _GAME_MODES_H_
+#pragma once
 
 #include "common.h"
 
@@ -30,5 +29,3 @@ void clear_game_mode(void);
 void step_game_mode(void);
 void render_game_mode_backUI(void);
 void render_game_mode_frontUI(void);
-
-#endif

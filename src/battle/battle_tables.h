@@ -1,5 +1,4 @@
-#ifndef _BATTLE_BATTLE_TABLE_H_
-#define _BATTLE_BATTLE_TABLE_H_
+#pragma once
 
 #include "battle/battle.h"
 
@@ -123,5 +122,3 @@ extern StageList b_area_kkj_Stages;
 
 extern BattleList b_area_dig_Formations;
 extern StageList b_area_dig_Stages;
-
-#endif

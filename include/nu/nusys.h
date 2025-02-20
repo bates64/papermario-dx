@@ -782,7 +782,7 @@ extern void nuGfxInit(void);
 extern void nuGfxInitEX2(void);
 extern void nuGfxThreadStart(void);
 extern void nuGfxTaskMgrInit(void);
-extern void nuGfxTaskStart(Gfx *gfxList_ptr, u32 gfxListSize, u32 ucode, u32 flag);
+extern void nuGfxTaskStart(Gfx *gfxListPtr, u32 gfxListSize, u32 ucode, u32 flag);
 extern void nuGfxFuncSet(NUGfxFunc func);
 extern void nuGfxPreNMIFuncSet(NUGfxPreNMIFunc func);
 extern void nuGfxSwapCfbFuncSet(NUGfxSwapCfbFunc func);
@@ -791,7 +791,7 @@ extern void nuGfxSwapCfb(void* framebuffer);
 
 extern void nuGfxTaskEndFuncSet(NUGfxTaskEndFunc func);
 extern void nuGfxTaskAllEndWait(void);
-extern void nuGfxRetraceWait(u32 retrace_num);
+extern void nuGfxRetraceWait(u32 retraceNum);
 extern void nuGfxDisplayOff(void);
 extern void nuGfxDisplayOn(void);
 
@@ -822,7 +822,7 @@ extern void nuContDataOpen(void);
 /*--------------------------------------*/
 /* controller pak function		*/
 /*--------------------------------------*/
-extern s32  nuContPakMgr(void* mesg_type);
+extern s32  nuContPakMgr(void* mesgType);
 extern void nuContPakMgrInit(void);
 extern void nuContPakMgrRemove(void);
 extern void nuContPakJisToN64(u8* src, u8* dest, u32 len);
@@ -841,7 +841,7 @@ extern s32  nuContPakFileDelete(NUContPakFile *file, u8* noteName, u8* extName);
 extern s32  nuContPakFileDeleteJis(NUContPakFile *file, u8* noteName, u8* extName);
 extern s32  nuContPakFileState(NUContPakFile *file, OSPfsState* state);
 extern s32  nuContPakFileNum(NUContPakFile *file,
-			     s32 *max_files, s32 *used_files);
+			     s32 *maxFiles, s32 *usedFiles);
 extern s32 nuContPakFileFread(NUContPakFile *file, s32 offset, s32 size, u8* buf);
 
 /*--------------------------------------*/
@@ -890,10 +890,10 @@ extern s32 nuEepromWrite(u8 address, u8* buffer,u16 len);
 /* pi functions				*/
 /*--------------------------------------*/
 extern void nuPiInit(void);
-extern void nuPiReadRom(u32 rom_addr, void* buf_ptr, u32 size);
+extern void nuPiReadRom(u32 romAddr, void* bufPtr, u32 size);
 extern void nuPiInitSram(void);
 extern void nuPiInitDDrom(void);
-extern void nuPiReadWriteSram(u32 addr, void* buf_ptr, u32 size, s32 flag);
+extern void nuPiReadWriteSram(u32 addr, void* bufPtr, u32 size, s32 flag);
 extern void nuPiReadRomOverlay(NUPiOverlaySegment* segment);
 
 /*--------------------------------------*/

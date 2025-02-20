@@ -1,5 +1,4 @@
-#ifndef _WORLD_SURFACES_H
-#define _WORLD_SURFACES_H
+#pragma once
 
 #include "common.h"
 
@@ -20,5 +19,3 @@ void surface_set_walk_effect(s32 effect);
 /// @param type enum value from SurfaceWalkEffect
 /// @evtapi
 API_CALLABLE(SetSurfaceWalkEffect);
-
-#endif

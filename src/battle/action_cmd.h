@@ -1,5 +1,4 @@
-#ifndef _BATTLE_ACTION_CMD_H_
-#define _BATTLE_ACTION_CMD_H_
+#pragma once
 
 #include "common.h"
 #include "hud_element.h"
@@ -147,5 +146,3 @@ API_CALLABLE(GetActionQuality);
 API_CALLABLE(SetActionQuality);
 API_CALLABLE(func_80269600);
 API_CALLABLE(func_8026962C);
-
-#endif

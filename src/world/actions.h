@@ -1,5 +1,4 @@
-#ifndef _WORLD_ACTIONS_H_
-#define _WORLD_ACTIONS_H_
+#pragma once
 
 #include "common.h"
 
@@ -11,5 +10,3 @@ typedef struct Action {
 } Action; // size = 0x10
 
 extern Action PlayerActionsTable[39];
-
-#endif

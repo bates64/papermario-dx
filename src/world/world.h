@@ -1,6 +1,3 @@
-#ifndef _WORLD_H
-#define _WORLD_H
+#pragma once
 
 #include "common.h"
-
-#endif

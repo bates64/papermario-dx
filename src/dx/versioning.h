@@ -1,5 +1,4 @@
-#ifndef _VERSIONING_H_
-#define _VERSIONING_H_
+#pragma once
 
 #include "common.h"
 
@@ -179,5 +178,3 @@ typedef struct SaveSlotMetadata {
     /* 0x2A */ b8 validData;
     /* 0x2B */ unsigned char pad[5];
 } SaveSlotMetadata; // size = 0x18
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _AUDIO_H_
-#define _AUDIO_H_
+#pragma once
 #include "nu/nusys.h"
 #include "nu/nualsgi.h"
 #include "PR/n_abi.h"
@@ -1213,5 +1212,3 @@ extern SoundManager* gSoundManager;
 extern BGMPlayer* gBGMPlayerA;
 
 #include "audio/private.h"
-
-#endif

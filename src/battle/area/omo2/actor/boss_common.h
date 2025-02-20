@@ -1,6 +1,7 @@
-#ifndef _GENERAL_GUY_COMMON_H_
-#define _GENERAL_GUY_COMMON_H_
+#pragma once
 
+#include "macros.h"
+#include "enums.h"
 #include "mapfs/omo_bt07_shape.h"
 
 enum N(BattleCommon) {
@@ -45,5 +46,3 @@ enum N(BattleCommon) {
     AVAR_Tank_DarknessAmt           = 8,
     AVAR_Tank_HandlingEvent         = 9,
 };
-
-#endif // _GENERAL_GUY_COMMON_H_

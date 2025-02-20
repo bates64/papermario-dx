@@ -1,5 +1,4 @@
-#ifndef _FUNCTIONS_H_
-#define _FUNCTIONS_H_
+#pragma once
 
 #include "ultra64.h"
 #include "common.h"
@@ -686,7 +685,6 @@ void remove_status_static(s32);
 void remove_status_transparent(s32);
 void remove_all_status_icons(s32);
 s32 create_status_icon_set(void);
-s32 find_item(s32);
 
 void enable_background_wave(void);
 
@@ -1078,6 +1076,4 @@ void mdl_calculate_model_sizes(void);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
-#endif
-
 #endif

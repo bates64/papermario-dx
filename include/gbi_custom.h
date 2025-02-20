@@ -1,5 +1,4 @@
-#ifndef _GBI_CUSTOM_H_
-#define _GBI_CUSTOM_H_
+#pragma once
 
 #include "ultra64.h"
 
@@ -198,5 +197,3 @@
 		(((width)-1) << G_TEXTURE_IMAGE_FRAC) + scrolls,			\
 		((((height) >> 1)-1) << G_TEXTURE_IMAGE_FRAC)  + scrollt)		\
 }
-
-#endif

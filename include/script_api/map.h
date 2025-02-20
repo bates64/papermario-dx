@@ -1,5 +1,4 @@
-#ifndef _SCRIPT_API_MAP_H_
-#define _SCRIPT_API_MAP_H_
+#pragma once
 
 #include "common_structs.h"
 #include "evt.h"
@@ -62,6 +61,4 @@ extern EvtScript EVS_ShopOwnerDialog;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 }
-#endif
-
 #endif

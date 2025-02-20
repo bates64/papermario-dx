@@ -1,5 +1,4 @@
-#ifndef ANIMATION_SCRIPT_H
-#define ANIMATION_SCRIPT_H
+#pragma once
 
 #include "common.h"
 
@@ -46,4 +45,3 @@ enum {
 
 // used in entity models
 #define ENTITY_ANIM_NULL (void*)(0xFFFFFFFF)
-#endif

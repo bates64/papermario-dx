@@ -1,5 +1,4 @@
-#ifndef _ENUMS_H_
-#define _ENUMS_H_
+#pragma once
 
 #include "ultra64.h"
 #include "types.h"
@@ -6412,5 +6411,3 @@ enum LandingCamAdjustMode {
     LANDING_CAM_CHECK_SURFACE = 1,  // allow landing cam unless the surface is lava
     LANDING_CAM_ALWAYS_ADJUST = 2,
 };
-
-#endif

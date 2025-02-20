@@ -1,5 +1,8 @@
-#ifndef _EFFECT_SHIMS_H_
-#define _EFFECT_SHIMS_H_
+#pragma once
+
+#include <ultra64.h>
+#include "common_structs.h"
+#include "effects.h"
 
 void shim_guRotateF(float mf[4][4], float a, float x, float y, float z);
 void shim_guTranslateF(float mf[4][4], float x, float y, float z);
@@ -72,5 +75,3 @@ void shim_is_debug_panic(const char* message);
 #define mdl_get_shroud_tint_params shim_mdl_get_shroud_tint_params
 #define sfx_play_sound_at_position shim_sfx_play_sound_at_position
 #define is_debug_panic shim_is_debug_panic
-
-#endif

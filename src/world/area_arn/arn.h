@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_ARN_ARN_H_
-#define _WORLD_AREA_ARN_ARN_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     AB_ARN_Unused_0     = AreaByte(0),
@@ -43,5 +45,3 @@ extern MapSettings arn_10_settings;
 extern MapSettings arn_11_settings;
 extern MapSettings arn_12_settings;
 extern MapSettings arn_13_settings;
-
-#endif

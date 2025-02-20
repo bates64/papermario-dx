@@ -1,5 +1,4 @@
-#ifndef PAUSE_COMMON_H
-#define PAUSE_COMMON_H
+#pragma once
 
 #include "common.h"
 #include "hud_element.h"
@@ -244,5 +243,3 @@ enum PauseMenuMessages {
     /* 0x55 */ PAUSE_MSG_PARTNER_ABILITIES,
     /* 0x56 */ PAUSE_MSG_UNKNOWN_SPIRIT,
 };
-
-#endif

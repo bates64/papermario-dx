@@ -1,5 +1,4 @@
-#ifndef _MAP_H_
-#define _MAP_H_
+#pragma once
 
 #include "common_structs.h"
 #include "enums.h"
@@ -78,5 +77,3 @@ extern AreaConfig gAreas[29];
 
 extern EvtScript EVS_NpcHitRecoil;
 extern EvtScript EVS_800936C0;
-
-#endif

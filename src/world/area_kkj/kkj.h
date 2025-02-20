@@ -1,5 +1,7 @@
-#ifndef _WORLD_AREA_KKJ_KKJ_H_
-#define _WORLD_AREA_KKJ_KKJ_H_
+#pragma once
+
+#include "map.h"
+#include "script_api/macros.h"
 
 enum {
     CAKE_TYPE_NONE              = 0, // cake has not been started
@@ -23,11 +25,6 @@ enum {
     AB_KKJ29_LeftKoopatrolScore     = AreaByte(8),
     AB_KKJ29_PeachScore             = AreaByte(9),
     AB_KKJ29_RightKoopatrolScore    = AreaByte(10),
-    AB_KKJ_Unused_B                 = AreaByte(11),
-    AB_KKJ_Unused_C                 = AreaByte(12),
-    AB_KKJ_Unused_D                 = AreaByte(13),
-    AB_KKJ_Unused_E                 = AreaByte(14),
-    AB_KKJ_Unused_F                 = AreaByte(15),
 };
 
 enum {
@@ -89,5 +86,3 @@ s32 kkj_13_map_init(void);
 s32 kkj_14_map_init(void);
 s32 kkj_23_map_init(void);
 s32 kkj_25_map_init(void);
-
-#endif

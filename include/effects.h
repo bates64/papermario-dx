@@ -1,5 +1,4 @@
-#ifndef _EFFECTS_H_
-#define _EFFECTS_H_
+#pragma once
 
 #include "types.h"
 #include "common_structs.h"
@@ -2686,5 +2685,3 @@ void remove_effect(EffectInstance*);
 s32 load_effect(s32 effectIndex);
 
 #include "effects/effect_defs.h"
-
-#endif

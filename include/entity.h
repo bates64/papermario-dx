@@ -1,5 +1,4 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
 #include "common.h"
 
@@ -474,5 +473,3 @@ void set_entity_model_render_command_list(s32 idx, EntityModelScript* cmdList);
 
 void virtual_entity_list_render_world(void);
 void virtual_entity_list_render_UI(void);
-
-#endif
