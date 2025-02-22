@@ -1,6 +1,7 @@
 #include "kkj_17.h"
 #include "hud_element.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
 extern IconHudScriptPair gItemHudScripts[];
 

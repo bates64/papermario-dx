@@ -8,6 +8,10 @@
 #include "stdlib/stdarg.h"
 #include "libc/xstdio.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 f32 fabsf(f32 f);
 f64 fabs(f64 f);
 f32 cosine(s16 arg0);
@@ -17,7 +21,7 @@ void boot_idle(void* data);
 void boot_main(void* data);
 
 void is_debug_init(void);
-void is_debug_panic(const char* message);
+[[noreturn]] void is_debug_panic(const char* message);
 
 f32 signF(f32 val);
 
@@ -1086,5 +1090,9 @@ void update_item_entities(void);
 void restore_map_collision_data(void);
 void mdl_load_all_textures(struct ModelNode* model, s32 romOffset, s32 size);
 void mdl_calculate_model_sizes(void);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif

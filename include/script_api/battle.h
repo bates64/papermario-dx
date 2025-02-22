@@ -9,6 +9,10 @@
 
 #include "effects.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 API_CALLABLE(EnablePartnerBlur);
 API_CALLABLE(DisablePartnerBlur);
 API_CALLABLE(UseBattleCamPreset);
@@ -377,5 +381,9 @@ extern EvtScript Rumble_Unused_1;
 extern EvtScript Rumble_Unused_2;
 extern EvtScript Rumble_Unused_3;
 extern EvtScript Rumble_Unused_4;
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif

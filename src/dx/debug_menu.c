@@ -4,6 +4,10 @@
 #include "battle/battle.h"
 #include "hud_element.h"
 #include "qsort.h"
+#include "gcc/string.h"
+#include "dx/utils.h"
+#include "msg.h"
+#include "fio.h"
 
 // layout
 
@@ -441,6 +445,29 @@ const s32 MainBoxHeight   = ARRAY_COUNT(DebugMainMenu) * RowHeight + 8;
 f32 ArrowAnimOffset = 0;
 f32 DebugArrowPhase = 0.0f;
 #define DEBUG_ARROW_ANIM_RATE 6
+
+void dx_debug_update_banner();
+void dx_debug_update_main_menu();
+void dx_debug_update_quick_save();
+void dx_debug_update_select_area();
+void dx_debug_update_select_map();
+void dx_debug_update_select_entry();
+void dx_debug_update_select_battle();
+void dx_debug_update_edit_progress();
+void dx_debug_update_sound_player();
+void dx_debug_update_select_sound();
+void dx_debug_update_edit_partners();
+void dx_debug_update_edit_inventory();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_gear();
+void dx_debug_update_edit_stats();
+void dx_debug_update_edit_coins();
+void dx_debug_update_edit_star_points();
+void dx_debug_update_edit_star_pieces();
+void dx_debug_update_view_collision();
+void dx_debug_update_cheat_menu();
 
 void dx_debug_menu_main() {
     s32 initialMenuState = DebugMenuState;
@@ -1749,6 +1776,8 @@ void dx_debug_draw_collision() {
 #define LESS(i, j) DebugTris[i].depth > DebugTris[j].depth
 #define SWAP(i, j) temp = DebugTris[i], DebugTris[i] = DebugTris[j], DebugTris[j] = temp
     QSORT(DebugTriPos, LESS, SWAP);
+#undef LESS
+#undef SWAP
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
@@ -2005,7 +2034,7 @@ static char *proutSprintf(char *dst, const char *src, size_t count) {
     return (char *)memcpy((u8 *)dst, (u8 *)src, count) + count;
 }
 
-void dx_hashed_debug_printf(char* filename, s32 line, char* fmt, ...) {
+void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...) {
     char fmtBuf[128];
     va_list args;
     va_start(args, fmt);
@@ -2130,6 +2159,8 @@ void dx_debug_console_main() {
 #define LESS(i, j) DebugConsole[i]->timeLeft > DebugConsole[j]->timeLeft
 #define SWAP(i, j) temp = DebugConsole[i], DebugConsole[i] = DebugConsole[j], DebugConsole[j] = temp
     QSORT(ARRAY_COUNT(DebugConsole), LESS, SWAP);
+#undef LESS
+#undef SWAP
 
     for (idx = 0; idx < ARRAY_COUNT(DebugConsole); idx++) {
         s32 timeLeft = DebugConsole[idx]->timeLeft;

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "nu/nusys.h"
 #include "gcc/string.h"
+#include "dx/debug_menu.h"
 
 u16 heap_nextMallocID = 0;
 
@@ -87,6 +88,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
     // must allocate 16 bytes or more at minimum or fail
     size = ALIGN16(size);
     if (!size) {
+        debug_printf("warning: attempt to malloc less than 16 bytes\n");
         return NULL;
     }
 
@@ -143,6 +145,7 @@ void* _heap_malloc(HeapNode* head, u32 size) {
         }
         return (u8*)pPrevHeapNode + sizeof(HeapNode);
     }
+    debug_printf("warning: out of memory\n");
     return NULL;
 }
 
@@ -158,6 +161,7 @@ void* _heap_malloc_tail(HeapNode* head, u32 size) {
 
     // make sure we have a size to allocate
     if (!size) {
+        debug_printf("warning: attempt to malloc less than 16 bytes\n");
         return NULL;
     }
 
@@ -209,6 +213,7 @@ void* _heap_malloc_tail(HeapNode* head, u32 size) {
     }
 
     // did not find a block
+    debug_printf("warning: out of memory\n");
     return NULL;
 }
 

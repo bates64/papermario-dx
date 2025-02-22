@@ -486,7 +486,6 @@ void imgfx_init_instance(ImgFXState* state) {
 void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
     ImgFXState* state = &(*ImgFXInstances)[idx];
     s32 oldFlags;
-    s32 t1;
     u8 r, g, b, a;
 
     if (!(state->flags & IMGFX_FLAG_VALID) || (idx >= MAX_IMGFX_INSTANCES)) {
@@ -685,6 +684,8 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             }
             state->floats.overlay.posX = 0.0f;
             state->floats.overlay.posY = 0.0f;
+            break;
+        case IMGFX_CLEAR:
             break;
     }
 }

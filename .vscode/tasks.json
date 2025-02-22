@@ -1,48 +1,24 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "ninja",
-            "type": "shell",
-            "command": "ninja",
-            "problemMatcher": [
-                {
-                    "fileLocation": ["relative", "${workspaceFolder}"],
-                    "pattern": {
-                        "regexp": "^(src\\/.*|include\\/.*):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                        "file": 1,
-                        "line": 2,
-                        "severity": 3,
-                        "message": 4,
-                    },
-                },
-                {
-                    "fileLocation": ["relative", "${workspaceFolder}"],
-                    "severity": "error",
-                    "pattern": {
-                        "regexp": "^(src\\/.*|include\\/.*):(\\d+):\\s+(?!warning|\\()(.*)$",
-                        "file": 1,
-                        "line": 2,
-                        "message": 3,
-                    },
-                },
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true,
-            },
-        },
-        {
-            "label": "run",
-            "type": "shell",
-            "command": "./run",
-            "isBackground": true,
-            "dependsOn": "ninja",
-            "problemMatcher": [],
-            "group": {
-                "kind": "test",
-                "isDefault": true,
-            },
-        },
-    ],
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Mod",
+      "type": "shell",
+      "command": "nix develop --profile .nix-profile --command ./run",
+      "problemMatcher": "$gcc",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Open Star Rod",
+      "type": "shell",
+      "command": "nix develop --profile .nix-profile --command star-rod",
+      "problemMatcher": [],
+      "group": {
+        "kind": "none"
+      },
+    }
+  ]
 }

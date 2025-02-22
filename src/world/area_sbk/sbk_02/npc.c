@@ -1,6 +1,7 @@
 #include "sbk_02.h"
 #include "effects.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"

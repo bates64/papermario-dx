@@ -10,6 +10,7 @@
             "miDebuggerServerAddress": "[::1]:9123",
             "miDebuggerArgs": "-readnow",
             "targetArchitecture": "mips",
-        },
+            "preLaunchTask": "run"
+        }
     ],
 }

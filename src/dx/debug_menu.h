@@ -2,6 +2,10 @@
 #include "dx/config.h"
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 #define DX_DEBUG_DUMMY_ID 0xDEAD
 
 typedef enum DebugCheat {
@@ -24,6 +28,8 @@ void dx_debug_set_map_info(char* mapName, s32 entryID);
 void dx_debug_set_battle_info(s32 battleID, char* stageName);
 
 void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
+
+void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...);
 
 #define debug_print(text) dx_hashed_debug_printf(__FILE__,__LINE__,text)
 #define debug_printf(fmt, args...) dx_hashed_debug_printf(__FILE__,__LINE__,fmt,##args)
@@ -67,5 +73,9 @@ API_CALLABLE(_dxDebugFloatPrintf);
     Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, 0)
 #define DebugFloatPrintf8(text, a, b, c, d, e, f, g) \
     Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, g)
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+}
+#endif
 
 #endif

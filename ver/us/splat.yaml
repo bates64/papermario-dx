@@ -342,6 +342,7 @@ segments:
     - [auto, c, gcc/umoddi3, -g2]
     - [auto, c, os/strcpy, gcc_272 -O1]
     - [auto, c, os/strcmp, gcc_272 -O1]
+    - [auto, c, os/strncmp]
     - [auto, c, os/memset, gcc_272 -O1]
     - [auto, a, libgcc_vr4300]
     - [auto, hasm, os/decode_yay0]
@@ -2487,7 +2488,7 @@ segments:
     vram: 0xE0044000
     max_size: 0x1000
     subsegments:
-    - [auto, c, stars_shimmer]
+    - [auto, c, stars_shimmer, -Os]
   - name: effect_rising_bubble
     dir: effects
     type: code
@@ -2946,7 +2947,7 @@ segments:
     vram: 0xE006A000
     max_size: 0x1000
     subsegments:
-    - [auto, c, light_rays]
+    - [auto, c, light_rays, -Os]
   - name: effect_gfx_light_rays
     dir: effects/gfx
     type: code
@@ -3106,7 +3107,7 @@ segments:
     vram: 0xE0076000
     max_size: 0x1000
     subsegments:
-    - [auto, c, aura]
+    - [auto, c, aura, -Os]
   - name: effect_gfx_aura
     dir: effects/gfx
     type: code
@@ -4703,7 +4704,7 @@ segments:
     vram: 0xE00CC000
     max_size: 0x1000
     subsegments:
-    - [auto, c, tubba_heart_attack]
+    - [auto, c, tubba_heart_attack, -Os]
   - name: effect_gfx_tubba_heart_attack
     dir: effects/gfx
     type: code
@@ -5123,7 +5124,7 @@ segments:
     vram: 0xE010A000
     max_size: 0x1000
     subsegments:
-    - [auto, c, firework_rocket]
+    - [auto, c, firework_rocket, -Os]
   - name: effect_gfx_firework_rocket
     dir: effects/gfx
     type: code
