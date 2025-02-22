@@ -385,7 +385,7 @@ void filemenu_draw_contents_title(
 
     sprintf(strBuf, "%s (v%d.%d.%d)", DX_MOD_NAME, DX_MOD_VER_MAJOR, DX_MOD_VER_MINOR, DX_MOD_VER_PATCH);
     dx_string_to_msg(msgBuf, strBuf);
-    msgWidth = get_msg_width(msgBuf, 0);
+    msgWidth = get_msg_width((s32)msgBuf, 0);
     filemenu_draw_message(msgBuf, (SCREEN_WIDTH - msgWidth) / 2, 245 - baseY, 255, 0, 0);
 }
 
@@ -540,14 +540,14 @@ void filemenu_draw_contents_file_info(s32 fileIdx,
 
     // do not show file summary from mods that don't match the current one
     if (!gSaveSlotMetadata[fileIdx].validData) {
-        char buf[32];
+        u8 buf[32];
         if (gSaveSlotMetadata[fileIdx].modName[0] == '\0') {
-            dx_string_to_msg(&buf, "Paper Mario");
+            dx_string_to_msg(buf, "Paper Mario");
         } else {
-            dx_string_to_msg(&buf, gSaveSlotMetadata[fileIdx].modName);
+            dx_string_to_msg(buf, gSaveSlotMetadata[fileIdx].modName);
         }
-        xOffset = 66 - get_msg_width(&buf, 0) / 2;
-        filemenu_draw_message(&buf, baseX + xOffset, baseY + 20, 255, MSG_PAL_RED, 0);
+        xOffset = 66 - get_msg_width((s32)&buf, 0) / 2;
+        filemenu_draw_message(buf, baseX + xOffset, baseY + 20, 255, MSG_PAL_RED, 0);
         return;
     }
 

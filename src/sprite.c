@@ -1090,7 +1090,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     palID = (animID >> 8) & 0xFF;
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || ((SpriteInstances[i].curAnimID & 0xFF) != animIndex)) {
-        ASSERT_MSG(animList != -1, "Anim %x is not loaded", animID);
+        ASSERT_MSG(animList != -1, "Anim %lx is not loaded", animID);
         spr_init_anim_state(compList, animList);
         SpriteInstances[i].curAnimID = (palID << 8) | animIndex;
         SpriteInstances[i].notifyValue = 0;
@@ -1265,7 +1265,7 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
     u32* spriteData;
 
     if (sprite->componentList == NULL) {
-        return; // bug: does not return a value
+        return -1;
     }
 
     animID = sprite->curAnimID;
@@ -1292,8 +1292,6 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
                 animCompList++;
             }
         }
-    } else {
-        return; // bug: does not return a value
     }
     return -1;
 }

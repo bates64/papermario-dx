@@ -4573,7 +4573,6 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     s32* sorted;
     RenderTask* taskList;
     RenderTask* task;
-    RenderTask* task2;
     Matrix4f mtxFlipY;
     void (*appendGfx)(void*);
     s32 tmp;
@@ -4586,20 +4585,20 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
 
     // sort in ascending order of dist
     taskList = RenderTaskLists[RENDER_TASK_LIST_MID];
-    sorted = &sorteds[RENDER_TASK_LIST_MID];
+    sorted = sorteds[RENDER_TASK_LIST_MID];
 #define LESS(i, j) taskList[sorted[i]].dist < taskList[sorted[j]].dist
 #define SWAP(i, j) tmp = sorted[i], sorted[i] = sorted[j], sorted[j] = tmp
     QSORT(RenderTaskCount[RENDER_TASK_LIST_MID], LESS, SWAP);
 
     // tasks with dist >= 3M sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_FAR];
-    sorted = &sorteds[RENDER_TASK_LIST_FAR];
+    sorted = sorteds[RENDER_TASK_LIST_FAR];
 #define LESS(i, j) taskList[sorted[i]].dist > taskList[sorted[j]].dist
     QSORT(RenderTaskCount[RENDER_TASK_LIST_FAR], LESS, SWAP);
 
     // tasks with dist <= 800k sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_NEAR];
-    sorted = &sorteds[RENDER_TASK_LIST_NEAR];
+    sorted = sorteds[RENDER_TASK_LIST_NEAR];
     QSORT(RenderTaskCount[RENDER_TASK_LIST_NEAR], LESS, SWAP);
 
     gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];

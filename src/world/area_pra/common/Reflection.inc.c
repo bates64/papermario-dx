@@ -158,15 +158,12 @@ API_CALLABLE(N(EnableFloorReflection)){
 
 void N(worker_reflect_player_floor)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    EntityModel* entityModel;
     s32 renderMode = playerStatus->renderMode;
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
     s32 screenX, screenY, screenZ;
 
     if (playerStatus->flags & PS_FLAG_HAS_REFLECTION) {
-        entityModel = get_entity_model(get_shadow_by_index(playerStatus->shadowID)->entityModelID);
-
         get_screen_coords(gCurrentCamID, playerStatus->pos.x, -playerStatus->pos.y, playerStatus->pos.z,
                           &screenX, &screenY, &screenZ);
 
