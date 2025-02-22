@@ -49,9 +49,7 @@ enum DebugMenuStates {
     DBM_EDIT_MEMORY,
     DBM_VIEW_COLLISION,
     DBM_CHEAT_MENU,
-};
-
-s32 DebugMenuState = DBM_NONE;
+} DebugMenuState = DBM_NONE;
 b32 DebugStateChanged = FALSE;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
@@ -157,7 +155,7 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
 }
 
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
-    char buf[128] = {
+    u8 buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
@@ -165,7 +163,7 @@ void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
 }
 
 void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, s32 effect) {
-    char buf[128] = {
+    u8 buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
@@ -173,7 +171,7 @@ void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, 
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
-    char buf[128] = {
+    u8 buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dma_load_msg(msgID, &buf[4]);
@@ -182,7 +180,7 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
 
 void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[16];
-    char buf[16] = {
+    u8 buf[16] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, number);
@@ -192,7 +190,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
 void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
-    char msgBuf[32] = {
+    u8 msgBuf[32] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
     };
@@ -499,7 +497,9 @@ void dx_debug_menu_main() {
         // main menu is always drawn if the debug menu is open at all
         dx_debug_draw_main_menu();
 
-        switch(DebugMenuState) {
+        switch (DebugMenuState) {
+            case DBM_NONE: // to satisfy compiler
+                break;
             case DBM_MAIN_MENU:
                 dx_debug_update_main_menu();
                 break;
@@ -844,7 +844,7 @@ void dx_debug_update_select_entry() {
         char fmtBuf[16];
         dx_debug_draw_ascii(map.id, DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
         dx_debug_draw_ascii("Entry:", DefaultColor, SubmenuPosX, SubmenuPosY + 2 * RowHeight);
-        sprintf(fmtBuf, "%2X", SelectedEntryValue);
+        sprintf(fmtBuf, "%2lX", SelectedEntryValue);
         dx_debug_draw_ascii(fmtBuf, HighlightColor, SubmenuPosX + 40, SubmenuPosY + 2 * RowHeight);
     }
 }
@@ -887,7 +887,7 @@ Enemy DebugDummyEnemy = {
 
 Encounter DebugDummyEncounter = {
     .encounterID = DX_DEBUG_DUMMY_ID,
-    .enemy = &DebugDummyEnemy,
+    .enemy = { &DebugDummyEnemy },
     .count = 0,
     .battle = 0,
     .stage = 0,
@@ -1250,6 +1250,8 @@ void dx_debug_update_edit_items() {
             invItems = gPlayerData.badges;
             invSize = ARRAY_COUNT(gPlayerData.badges);
             break;
+        default:
+            PANIC_MSG("invalid debug menu state");
     }
 
     if (DebugStateChanged) {
@@ -1949,20 +1951,20 @@ void dx_debug_update_banner() {
     s32 effect;
 
     if (gGameStatus.context == CONTEXT_WORLD) {
-        sprintf(fmtBuf, "Map: %7s (%X)", LastMapName, LastMapEntry);
+        sprintf(fmtBuf, "Map: %7s (%lX)", LastMapName, LastMapEntry);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 220, BottomRowY);
 
         dx_debug_draw_ascii("Pos:", DefaultColor, 20, BottomRowY);
 
         effect = dx_debug_is_cheat_enabled(DEBUG_CHEAT_SPEED_MODE) ? DRAW_MSG_STYLE_RAINBOW : 0;
 
-        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.x));
+        sprintf(fmtBuf, "%5ld", round(gPlayerStatus.pos.x));
         dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 48, BottomRowY, effect);
 
-        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.y));
+        sprintf(fmtBuf, "%5ld", round(gPlayerStatus.pos.y));
         dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 80, BottomRowY, effect);
 
-        sprintf(fmtBuf, "%5d", round(gPlayerStatus.pos.z));
+        sprintf(fmtBuf, "%5ld", round(gPlayerStatus.pos.z));
         dx_debug_draw_ascii_with_effect(fmtBuf, DefaultColor, 112, BottomRowY, effect);
 
         if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
@@ -1973,7 +1975,7 @@ void dx_debug_update_banner() {
         s32 battleID = (LastBattleID >> 16) & 0xFF;
         s32 stageID = LastBattleID & 0xFFFF;
 
-        sprintf(fmtBuf, "Battle:  %02X-%02X (%X)", areaID, battleID, stageID);
+        sprintf(fmtBuf, "Battle:  %02lX-%02lX (%lX)", areaID, battleID, stageID);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 200, BottomRowY);
 
         sprintf(fmtBuf, "Stage:  %-15s", LastStageName);
@@ -2017,11 +2019,11 @@ DebugConsoleLine *DebugConsole[8] = {
     &DebugConsoleLine7,
 };
 
-u32 dx_debug_hash_location(char* filename, s32 line) {
+u32 dx_debug_hash_location(const char* filename, s32 line) {
     u32 hash = 5381;
     s32 c;
 
-    while (c = *filename++) {
+    while ((c = *filename++)) {
         hash = ((hash << 5) + hash) + c;
     }
 
@@ -2092,9 +2094,9 @@ API_CALLABLE(_dxDebugIntPrintf) {
     s32 nargs = 0;
     s32 idx;
 
-    char* filename = *args++;
+    char* filename = (char*)*args++;
     s32 line = *args++;
-    char* fmt = *args++;
+    char* fmt = (char*)*args++;
 
     for (idx = 0; idx < 8; idx++) {
         s32 var = *args++;
@@ -2125,9 +2127,9 @@ API_CALLABLE(_dxDebugFloatPrintf) {
     s32 nargs = 0;
     s32 idx;
 
-    char* filename = *args++;
+    char* filename = (char*)*args++;
     s32 line = *args++;
-    char* fmt = *args++;
+    char* fmt = (char*)*args++;
 
     for (idx = 0; idx < 8; idx++) {
         s32 var = *args++;
@@ -2171,7 +2173,7 @@ void dx_debug_console_main() {
                 alpha = round(254 * (timeLeft / 20.0f));
             }
 
-            draw_msg(DebugConsole[idx]->buf, 32, 200 - 15 * idx, alpha, DefaultColor, 0);
+            draw_msg((s32)DebugConsole[idx]->buf, 32, 200 - 15 * idx, alpha, DefaultColor, 0);
             DebugConsole[idx]->timeLeft--;
         }
     }
