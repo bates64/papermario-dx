@@ -1,6 +1,14 @@
 CompileFlags:
   Add: -Wno-unknown-warning-option
   Remove: [-m*, -f*]
+Index:
+  StandardLibrary: No
+Style:
+  QuotedHeaders: "src/.*"
+  AngledHeaders: "include/.*"
+Includes:
+  AnalyzeAngledIncludes: Yes
+  MissingIncludes: Strict
 InlayHints:
   BlockEnd: No
   Designators: No
@@ -8,3 +16,5 @@ InlayHints:
   ParameterNames: Yes
   DeducedTypes: Yes
   DefaultArguments: Yes
+Hover:
+  ShowAKA: No
