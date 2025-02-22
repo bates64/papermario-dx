@@ -1141,7 +1141,7 @@ enum SoundIDs {
     SOUND_FIRE_BAR_8_A                          = 0x0000033E,
     SOUND_FIRE_BAR_9_A                          = 0x0000033F,
     SOUND_FIRE_BAR_DEAD                         = 0x00000340,
-    SOUND_LRAW_CHARGE_BAR                       = 0x00000341,
+    SOUND_LRAW_CHARGE_METER                     = 0x00000341,
     SOUND_POKEY_SWAY                            = 0x00000342, // same as SOUND_POKEY_LEAN_BACK?
     SOUND_POKEY_WALK                            = 0x00000343,
     SOUND_POKEY_LEAN_FORWARD                    = 0x00000344,
@@ -1642,7 +1642,7 @@ enum SoundIDs {
     SOUND_LOOP_TIK_UNUSED3_FLOW3                = 0x8000003E, // #unused
     SOUND_LOOP_TIK_UNUSED3_FLOW2                = 0x8000003F, // #unused
     SOUND_LOOP_SAM_STAIRS_RISE                  = 0x80000040,
-    SOUND_LOOP_CHARGE_BAR                       = 0x80000041,
+    SOUND_LOOP_CHARGE_METER                     = 0x80000041,
     SOUND_LOOP_CRYSTAL_BALL_GLOW                = 0x80000042,
     SOUND_LOOP_TIK18_WATER                      = 0x80000043,
     SOUND_LOOP_TIK19_WATER                      = 0x80000044,
@@ -1959,12 +1959,12 @@ typedef enum HitResult {
 } HitResult;
 
 typedef enum ActionResult {
-    ACTION_RESULT_NONE      = 127,
-    ACTION_RESULT_MINUS_4   = -4,
-    ACTION_RESULT_MINUS_2   = -2,
-    ACTION_RESULT_EARLY     = -1,
-    ACTION_RESULT_FAIL      = 0,
-    ACTION_RESULT_SUCCESS   = 1,
+    ACTION_RESULT_NONE              = 127,
+    ACTION_RESULT_METER_BELOW_HALF  = -4, // certain mashing comamnds fail with this value
+    ACTION_RESULT_METER_NOT_ENOUGH  = -2, // certain mashing comamnds fail with this value
+    ACTION_RESULT_EARLY             = -1, // timing commands too early fail with this value
+    ACTION_RESULT_FAIL              = 0,  // simple failure to complete action command
+    ACTION_RESULT_SUCCESS           = 1,
 } ActionResult;
 
 typedef enum BlockResult {
@@ -3475,10 +3475,10 @@ enum ActionCommand {
     ACTION_COMMAND_BREAK_FREE                = 0x00000004,
     ACTION_COMMAND_WHIRLWIND                 = 0x00000005,
     ACTION_COMMAND_STOP_LEECH                = 0x00000006,
-    ACTION_COMMAND_07                        = 0x00000007,
+    ACTION_COMMAND_UNUSED_FLEE               = 0x00000007,
     ACTION_COMMAND_DIZZY_SHELL               = 0x00000008,
     ACTION_COMMAND_FIRE_SHELL                = 0x00000009,
-    ACTION_COMMAND_0A                        = 0x0000000A,
+    ACTION_COMMAND_UNUSED_MASH_A             = 0x0000000A,
     ACTION_COMMAND_BOMB                      = 0x0000000B,
     ACTION_COMMAND_BODY_SLAM                 = 0x0000000C,
     ACTION_COMMAND_AIR_LIFT                  = 0x0000000D,
@@ -3490,7 +3490,7 @@ enum ActionCommand {
     ACTION_COMMAND_SPINY_SURGE               = 0x00000013,
     ACTION_COMMAND_HURRICANE                 = 0x00000014,
     ACTION_COMMAND_SPOOK                     = 0x00000015,
-    ACTION_COMMAND_WATER_BLOCK               = 0x00000016,
+    ACTION_COMMAND_THREE_CHANCES             = 0x00000016,
     ACTION_COMMAND_TIDAL_WAVE                = 0x00000017,
 };
 
@@ -3516,10 +3516,9 @@ enum EffectInstanceFlags {
     FX_INSTANCE_FLAG_DISMISS            = 0x00000010, // effect should perform cleanup and self-delete
 };
 
-enum EffectGfxDataFlags {
-    FX_GRAPHICS_DISABLED                = 0x00000000,
-    FX_GRAPHICS_LOADED                  = 0x00000001,
-    FX_GRAPHICS_CAN_FREE                = 0x00000002,
+enum EffectSharedDataFlags {
+    FX_SHARED_DATA_LOADED       = 0x00000001,
+    FX_SHARED_DATA_CAN_FREE     = 0x00000002,
 };
 
 #include "move_enum.h"
@@ -5360,14 +5359,14 @@ enum FileMenuMessages {
     /* 31 */ FILE_MESSAGE_HAS_BEEN_CREATED,            // has been created.[End]
 #if VERSION_PAL
     // TODO: determine where these new entries should be placed
-    UNK1,
-    UNK2,
+    FILE_MESSAGE_PAL_UNK1,
+    FILE_MESSAGE_PAL_UNK2,
 #endif
     /* 32 */ FILE_MESSAGE_ENTER_A_FILE_NAME,           // Enter a file name![End]
     /* 33 */ FILE_MESSAGE_QUESTION,                    // ?[End]
     /* 34 */ FILE_MESSAGE_PERIOD_34,                   // .[End]
 #if VERSION_PAL
-    FILE_MESSAGE_BASE_UNK,
+    FILE_MESSAGE_PAL_UNK3,
 #endif
 };
 

@@ -101,10 +101,10 @@ void pause_handle_input(s32 buttonsPressed, s32 buttonsHeld);
 void pause_cleanup(void);
 
 // file menu stuff
-void filemenu_init(s32);
+void filemenu_init(s32 mode);
 void filemenu_cleanup(void);
 void filemenu_update(void);
-s32 func_80244BC4(void);
+s32 filemenu_get_exit_mode(void);
 void filemenu_set_selected(MenuPanel* menu, s32 col, s32 row);
 void filemenu_set_cursor_alpha(s32 arg0);
 void filemenu_set_cursor_goal_pos(s32 windowIndex, s32 posX, s32 posY);
@@ -411,7 +411,7 @@ s32 suspend_all_script(s32 id);
 s32 resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
-s32 is_point_within_region(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
+b32 is_point_outside_territory(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
 
 b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
@@ -765,16 +765,7 @@ void set_curtain_fade(f32 fade);
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ);
-
-// This legally allows all functions to be pointers without warnings.
-// Perhaps the void arg functions can be changed later to remove this need.
-typedef union {
-  void (*func1)(Evt*, s32);
-  void (*func2)(void);
-} WorldArgs TRANSPARENT_UNION;
-
-s32 create_worker_world(WorldArgs, WorldArgs);
+s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
@@ -805,7 +796,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize);
 Gfx* mdl_get_copied_gfx(s32 copyIndex);
 void mdl_get_copied_vertices(s32 copyIndex, Vtx** firstVertex, Vtx** copiedVertices, s32* numCopied);
 void mdl_draw_hidden_panel_surface(Gfx** arg0, u16 treeIndex);
-s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY);
+b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY);
 void set_screen_overlay_center_worldpos(s32 idx, s32 posIdx, s32 x, s32 y, s32 z);
 void* mdl_get_next_texture_address(s32);
 s32 cancel_current_message(void);
@@ -923,12 +914,10 @@ b32 can_control_status_bar(void);
 void status_bar_respond_to_changes(void);
 void status_bar_always_show_on(void);
 void status_bar_always_show_off(void);
-void func_800F0CB0(s32, f32, f32, f32);
-void func_800F0D5C(void);
-void func_800F0D80(void);
-void func_800F102C(void);
-
-
+void star_power_shimmer_start(s32, f32, f32, f32);
+void star_power_shimmer_init(void);
+void star_power_shimmer_update(void);
+void star_power_shimmer_draw(void);
 void shop_open_item_select_popup(s32 mode);
 void hide_coin_counter(void);
 void set_message_text_var(s32 msgID, s32 index);
@@ -979,8 +968,8 @@ void init_encounters_ui(void);
 void initialize_collision(void);
 void render_entities(void);
 void render_player(void);
-void render_workers_world(void);
-void render_effects_world(void);
+void render_workers_scene(void);
+void render_effects_scene(void);
 s32 get_asset_offset(char*, s32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);

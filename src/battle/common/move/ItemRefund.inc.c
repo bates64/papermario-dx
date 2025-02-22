@@ -41,26 +41,23 @@ API_CALLABLE(N(GiveRefund)) {
 
         get_screen_coords(gCurrentCameraID, posX, posY, posZ, &iconX, &iconY, &iconZ);
 
-#if VERSION_PAL
         switch (gCurrentLanguage) {
             case LANGUAGE_EN:
-                itemIcon = tempIcon = hud_element_create(&HES_Refund);
+                itemIcon = hud_element_create(&HES_Refund);
                 break;
+#ifdef VERSION_PAL
             case LANGUAGE_DE:
-                itemIcon = tempIcon = hud_element_create(&HES_Refund_de);
+                itemIcon = hud_element_create(&HES_Refund_de);
                 break;
             case LANGUAGE_FR:
-                itemIcon = tempIcon = hud_element_create(&HES_Refund_fr);
+                itemIcon = hud_element_create(&HES_Refund_fr);
                 break;
             case LANGUAGE_ES:
-                itemIcon = tempIcon = hud_element_create(&HES_Refund_es);
+                itemIcon = hud_element_create(&HES_Refund_es);
                 break;
-        }
-        hud_element_set_render_pos(tempIcon, iconX + 36, iconY - 63);
-#else
-        itemIcon = hud_element_create(&HES_Refund);
-        hud_element_set_render_pos(itemIcon, iconX + 36, iconY - 63);
 #endif
+        }
+        hud_element_set_render_pos(itemIcon, iconX + 36, iconY - 63);
     }
 
     script->varTable[0] = delayTime;

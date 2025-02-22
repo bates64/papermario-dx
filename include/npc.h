@@ -405,7 +405,7 @@ typedef struct EncounterStatus {
 
 extern EncounterStatus gCurrentEncounter;
 
-s32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, b8 arg4);
+b32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
 
 /// The default Npc::onUpdate and Npc::onRender callback.
 void STUB_npc_callback(Npc*);
@@ -671,7 +671,7 @@ void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVol
 void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
 void basic_ai_suspend(Evt* script);
 
-s32 ai_check_fwd_collisions(Npc* npc, f32 arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5);
+b32 ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW);
 void PatrolAI_LoiterInit(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
 
 void spawn_drops(Enemy* enemy);
