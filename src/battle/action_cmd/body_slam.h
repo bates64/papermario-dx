@@ -3,10 +3,14 @@
 
 #include "common_structs.h"
 
-// args: none
+/// @evtapi
 API_CALLABLE(action_command_body_slam_init);
 
-// args: prep time, duration, difficulty, variation
+/// @evtapi
+/// @param prepTime
+/// @param duration
+/// @param difficulty
+/// @param variation
 API_CALLABLE(action_command_body_slam_start);
 
 void action_command_body_slam_update(void);
