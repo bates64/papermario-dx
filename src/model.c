@@ -3101,7 +3101,6 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     auxFmt = header->auxFmt;
     auxBitDepth = header->auxBitDepth;
 
-
     if (extraTileType == EXTRA_TILE_AUX_INDEPENDENT) {
         if (palette != NULL) {
             auxPaletteIndex = 1;
@@ -3368,7 +3367,7 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
 
             (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = -1;
             (*gCurrentModelTreeNodeInfo)[TreeIterPos].treeDepth = treeDepth;
-            TreeIterPos += 1;
+            TreeIterPos++;
             return;
         }
     }
@@ -3391,7 +3390,7 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
 
     mdl_create_model(modelBPptr, 4);
     (*gCurrentModelTreeNodeInfo)[TreeIterPos].treeDepth = treeDepth;
-    TreeIterPos += 1;
+    TreeIterPos++;
 }
 
 s32 get_model_list_index_from_tree_index(s32 treeIndex) {
@@ -4037,7 +4036,6 @@ void mdl_local_gfx_copy_vertices(Vtx* src, s32 num, Vtx* dest) {
     }
 }
 
-
 void mdl_make_local_vertex_copy(s32 copyIndex, u16 modelID, s32 isMakingCopy) {
     s32 numVertices;
     Vtx* baseVtx;
@@ -4384,7 +4382,7 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
 // Every nonnegative value of `depthQueryID` must be unique within a frame, otherwise the result will corrupt the data
 //   of the previous query that shared the same ID.
 // Occlusion visibility checks are always one frame out of date, as they reference the previous frame's depth buffer.
-OPTIMIZE_OFAST s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
+OPTIMIZE_OFAST b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 outX;
     f32 outY;

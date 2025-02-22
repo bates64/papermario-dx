@@ -110,7 +110,6 @@ void* _heap_malloc(HeapNode* head, u32 size) {
         }
     }
 
-
     // find out the required block size with header
     newBlockSize = size + sizeof(HeapNode);
 

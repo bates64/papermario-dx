@@ -96,7 +96,7 @@ void filemenu_info_draw_message_contents(
             xOffset += D_filemenu_802508FC[gCurrentLanguage];
             draw_number(filemenu_menus[FILE_MENU_MAIN]->selected + 1, baseX + xOffset, baseY + 6, 0, 0, 255, 3);
             xOffset++;
-            filemenu_draw_message(filemenu_get_menu_message(0x1F), baseX + xOffset, baseY + 4, 255, 0, 0);
+            filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_PAL_UNK1), baseX + xOffset, baseY + 4, 255, 0, 0);
             break;
     }
 #else
