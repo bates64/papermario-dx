@@ -75,7 +75,7 @@ cd "$DX_DIR"
 
 # Prepare devshell
 echo -e "${PURPLE}Downloading dependencies and splitting assets from ROM...${RESET}"
-nix --extra-experimental-features nix-command develop --profile .nix-profile --accept-flake-config --command ./configure
+nix --extra-experimental-features "flakes nix-command" develop --profile .nix-profile --accept-flake-config --command ./configure
 
 echo -e "${GREEN}Paper Mario DX has been installed in $DX_DIR!${RESET}"
 COMPLETE=1
