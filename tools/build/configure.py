@@ -715,14 +715,14 @@ class Configure:
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
                 elif "gcc_272" in cflags:
-                    #task = "cc_272"
+                    # task = "cc_272"
                     cflags = cflags.replace("gcc_272", "")
                 elif "egcs" in cflags:
-                   if sys.platform == "darwin" and non_matching:
-                       print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
-                   else:
-                       #task = "cc_egcs"
-                       cflags = cflags.replace("egcs", "")
+                    if sys.platform == "darwin" and non_matching:
+                        print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
+                    else:
+                        # task = "cc_egcs"
+                        cflags = cflags.replace("egcs", "")
                 elif "gcc_modern" in cflags:
                     task = "cc_modern"
                     cflags = cflags.replace("gcc_modern", "")
@@ -740,7 +740,7 @@ class Configure:
 
                 # Effects must call via shims due to being TLB mapped
                 if "effects" in entry.src_paths[0].parts:
-                    cflags += " -fno-tree-loop-distribute-patterns" # Don't call memset etc
+                    cflags += " -fno-tree-loop-distribute-patterns"  # Don't call memset etc
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
                 if version == "ique":
@@ -1303,7 +1303,7 @@ class Configure:
                 str(self.rom_ok_path()),
                 "check_segment_sizes",
                 str(self.elf_path()),
-                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(',', ':')))},
+                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(",", ":")))},
                 implicit=[str(self.rom_path())],
             )
 
@@ -1317,8 +1317,6 @@ class Configure:
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
 
-
-
     def get_segment_max_sizes(self):
         assert self.linker_entries is not None
         segment_size_map = {}
@@ -1329,6 +1327,7 @@ class Configure:
                 visit(segment.parent)
             if hasattr(segment, "yaml") and isinstance(segment.yaml, dict) and "max_size" in segment.yaml:
                 segment_size_map[segment.name] = segment.yaml["max_size"]
+
         for entry in self.linker_entries:
             visit(entry.segment)
 
@@ -1474,7 +1473,7 @@ if __name__ == "__main__":
         extra_cppflags += " -DNON_MATCHING"
 
         if args.debug:
-            #extra_cflags += " -ggdb3"
+            # extra_cflags += " -ggdb3"
             extra_cppflags += " -DDEBUG"  # e.g. affects ASSERT macro
 
     if args.shift:
