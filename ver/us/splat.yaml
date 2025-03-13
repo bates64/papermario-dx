@@ -74,6 +74,7 @@ vram_classes:
   - [entity_model_anim, 0x00000000]
   - { name: dgb_01_smash_bridges, vram: 0x80200000, vram_symbol: D_80200000 }
 asset_stack:
+  - mod
   - dx
   - us
 segments:
