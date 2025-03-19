@@ -1,43 +1,43 @@
-# The Asset Stack
+# Managing Assets
 
-DX uses a system called the Asset Stack when building assets. It allows you to override game assets with your own custom assets.
+### What is considered an asset?
 
-<details>
-    <summary>What is an asset?</summary>
-    An asset is a file of game data, as opposed to a code file. Examples of assets include textures, models, and audio files.
-</details>
+An asset is any file containing game data that is not code. Common examples include textures, models, audio files, and images.
 
-If you're familiar with LayeredFS from the Nintendo Switch modding scene, the Asset Stack behaves similarly.
+### Understanding the Asset Stack
 
-### How it works
+DX uses a system known as the **Asset Stack** when building game assets. The asset stack allows you to safely override existing game assets without permanently modifying or deleting the original files.
 
-In Visual Studio Code, click on the `assets` directory in the Explorer. You should see these subdirectories:
+To view the asset stack, open your project in Visual Studio Code and navigate to the `assets` directory. You will find these subdirectories:
 
-- `assets/dx/` contains assets from DX.
-- `assets/us/` contains assets split from your base ROM (`us` because the base ROM is the USA version).
+- `assets/mod/` contains custom assets for your mod.
+- `assets/dx/` contains assets required by DX.
+- `assets/us/` contains assets extracted from your base ROM (`us` because the base ROM is the USA version).
 
-When building assets, DX will look in `assets/dx/` first. If it doesn't find the asset there, it will look in `assets/us/`.
+### How Asset Priority Works
 
-For example, when building the asset `crash_screen/font.png`, DX will look for `assets/dx/crash_screen/font.png`. If that file does not exist, it will look in `assets/us/crash_screen/font.png`. If it still doesn't find the file, DX will fail to build.
+When building the game, DX looks for assets within these asset directories using the order defined by `asset_stack` in `ver/us/splat.yaml`. By default, the order will be:
+1. First, it looks in `assets/mod/`
+2. If the asset isn't found there, it checks `assets/dx/`
+3. If still not found, it falls back to `assets/us/`
+
+If an asset required by your modded game doesn't exist in any of these directories, DX will fail to build.
 
 ### Adding a new asset directory
 
-To add a new asset directory, create a new directory in `assets/` and place your assets there. **You should create a new asset directory for your mod.** This will prevent conflicts between mods. **Never** modify anything in `assets/dx/` or `assets/us/`.
+To add a new asset directory, you have two options:
 
-For example, to add a new asset directory for your innovative mod "Paper Master: Mario Quest," right-click on the `assets` directory and select "New Folder". Name the folder `master_quest` (or whatever you like).
+1. **Use the default mod directory**:\
+   Place your mod's assets directly into the existing `assets/mod/` directory.
 
-You can now place assets in `assets/master_quest/`, but DX will not use them. Note: do not use spaces in directory or file names.
+2. **Rename the default mod directory**:\
+   Rename the `assets/mod/` directory to a unique name for your mod (e.g., `assets/master_quest/`) and place your assets there. If you choose this approach, you must also modify the asset_stack entry in `ver/us/splat.yaml`. Find `asset_stack` with Ctrl+F and rename `mod` to match your asset directory name.
 
-To tell DX to prioritise your new asset directory, open the file `ver/us/splat.yaml`. Find the `asset_stack` list with Ctrl+F and **prepend** your new asset directory to the list.
+**Never** modify anything in `assets/dx/` or `assets/us/`. Keeping your mod assets separate helps prevent conflicts between mods.
 
-```yaml
-asset_stack:
-  - master_quest
-  - dx
-  - us
-```
+For example, for an innovative mod called *"Paper Master: Mario Quest,"* you could rename `assets/mod/` to `assets/master_quest/`. Then, place all your assets into this newly named directory.
 
-Now, when building assets, DX will look in `assets/master_quest/` first, then `assets/dx/`, and finally `assets/us/`.
+DX automatically prioritizes assets placed in your mod directory first, then falls back to `assets/dx/`, and finally to `assets/us/`. Avoid using spaces in directory or file names to ensure compatibility.
 
 ### Overriding an asset
 
@@ -55,8 +55,8 @@ Finally, run the mod to see your changes.
 
 <div class="section_buttons">
 
-| Previous                |                             Next |
-|:------------------------|---------------------------------:|
-|[Setup](manual/setup.md) |[Star Rod](manual/star-rod.md)    |
+| Previous | Next |
+|:---------|-----:|
+|[Setup](setup.md)|[Star Rod](star-rod.md)|
 
 </div>

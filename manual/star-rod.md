@@ -25,8 +25,8 @@ Opening Star Rod from VSCode may not work on Windows. Instead:
 
 <div class="section_buttons">
 
-| Previous                 | Next                     |
-|:-------------------------|-------------------------:|
-|[Assets](manual/assets.md)|[Debugging](manual/gdb.md)|
+| Previous | Next |
+|:---------|-----:|
+|[Assets](assets.md)|[Debugging](gdb.md)|
 
 </div>

@@ -28,8 +28,8 @@ Save this secret and you're done!
 
 <div class="section_buttons">
 
-| Previous                       |
-|:-------------------------------|
-|[Debugging](manual/gdb.md)      |
+| Previous | Next |
+|:---------|-----:|
+|[Debugging](gdb.md)|
 
 </div>
