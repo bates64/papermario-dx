@@ -4,7 +4,7 @@
 
 An asset is any file containing game data that is not code. Common examples include textures, models, audio files, and images.
 
-### Understanding the Asset Stack
+### Understanding the asset stack
 
 DX uses a system known as the **Asset Stack** when building game assets. The asset stack allows you to safely override existing game assets without permanently modifying or deleting the original files.
 
@@ -14,7 +14,7 @@ To view the asset stack, open your project in Visual Studio Code and navigate to
 - `assets/dx/` contains assets required by DX.
 - `assets/us/` contains assets extracted from your base ROM (`us` because the base ROM is the USA version).
 
-### How Asset Priority Works
+### How asset priority works
 
 When building the game, DX looks for assets within these asset directories using the order defined by `asset_stack` in `ver/us/splat.yaml`. By default, the order will be:
 1. First, it looks in `assets/mod/`
@@ -23,7 +23,7 @@ When building the game, DX looks for assets within these asset directories using
 
 If an asset required by your modded game doesn't exist in any of these directories, DX will fail to build.
 
-### Adding a new asset directory
+### Choosing an asset directory for your mod
 
 To add a new asset directory, you have two options:
 
