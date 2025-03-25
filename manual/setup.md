@@ -110,6 +110,6 @@ If you run into any issues during setup, ask for help in the `#papermario-dx` ch
 
 | Previous | Next |
 |:---------|-----:|
-|[Introduction](manual/introduction.md)|[The Asset Stack](manual/assets.md)|
+|[Introduction](introduction.md)|[The Asset Stack](assets.md)|
 
 </div>

@@ -104,8 +104,8 @@ With DX, you have the power to modify any aspect of Paper Mario, including modif
 
 <div class="section_buttons">
 
-| Previous                |                             Next |
-|:------------------------|---------------------------------:|
-|[Main page](../README.md)|[Setup](manual/setup.md)          |
+| Previous | Next |
+|:---------|-----:|
+|[Main page](../README.md)|[Setup](setup.md)|
 
 </div>

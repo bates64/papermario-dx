@@ -39,8 +39,8 @@ This page was adapted from [Dragorn421's oot gdb tutorial](https://github.com/Dr
 
 <div class="section_buttons">
 
-| Previous                     | Next                                 |
-|:-----------------------------|-------------------------------------:|
-|[Star Rod](manual/star-rod.md)|[GitHub Actions](manual/gh-actions.md)|
+| Previous | Next |
+|:---------|-----:|
+|[Star Rod](star-rod.md)|[GitHub Actions](gh-actions.md)|
 
 </div>
