@@ -29,7 +29,7 @@ Download and install Visual Studio Code (VSCode), a code editor that works well 
         However, you will need to adapt instructions to your editor and be confident using the command line.
     </p>
     <p>
-        For Step 4, to run the game, use <code>nix develop --profile .nix-profile --command ./run</code>.
+        For Step 4, to run the game, use <code>nix --extra-experimental-features "nix-command flakes" develop --profile .nix-profile --command ./run</code>.
     </p>
 </details>
 
