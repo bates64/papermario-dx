@@ -60,11 +60,6 @@ def write_ninja_rules(
     cross = "mips-linux-gnu-"
     cc = f"{BUILD_TOOLS}/cc/gcc/gcc"
     cc_modern = f"{cross}gcc"
-    cc_ido = f"{BUILD_TOOLS}/cc/ido5.3/cc"
-    cc_272_dir = f"{BUILD_TOOLS}/cc/gcc2.7.2/"
-    cc_272 = f"{cc_272_dir}/gcc"
-    cc_egcs_dir = f"{BUILD_TOOLS}/cc/egcs/"
-    cc_egcs = f"{cc_egcs_dir}/gcc"
     cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
     cxx_modern = f"{cross}g++"
 
@@ -75,20 +70,11 @@ def write_ninja_rules(
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
-    CPPFLAGS_272 = CPPFLAGS_COMMON + " -nostdinc"
-
-    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -nostdinc"
-
     CPPFLAGS = CPPFLAGS_COMMON + " -nostdinc"
 
     cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
 
     cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
-
-    cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
-    cflags_272 = cflags_272.replace("-ggdb3", "-g1")
-
-    cflags_egcs = f"-c -fno-PIC -mno-abicalls -mcpu=4300 -G 0 -x c -B {cc_egcs_dir} {extra_cflags}"
 
     ninja.variable("python", sys.executable)
 
@@ -138,50 +124,16 @@ def write_ninja_rules(
     ninja.rule("cpp", description="cpp $in", command=f"{cpp} $in {extra_cppflags} -P -o $out")
 
     ninja.rule(
-        "cc",
-        description="gcc $in",
-        command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} -DOLD_GCC $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cc} {cflags} $cflags - -o $out'",
-        depfile="$out.d",
-        deps="gcc",
-    )
-
-    ninja.rule(
         "cc_modern",
-        description="gcc_modern $in",
+        description="CC $in",
         command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
 
     ninja.rule(
-        "cc_ido",
-        description="ido $in",
-        command=f"{ccache}{cc_ido} -w {CPPFLAGS_COMMON} {extra_cppflags} $cppflags -c -mips1 -O0 -G0 -non_shared -Xfullwarn -Xcpluscomm -o $out $in",
-    )
-
-    ninja.rule(
-        "cc_272",
-        description="cc_272 $in",
-        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && {cross}objcopy -N $in $out'",
-    )
-
-    ninja.rule(
-        "cc_egcs",
-        description="cc_egcs $in",
-        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
-    )
-
-    ninja.rule(
-        "cxx",
-        description="cxx $in",
-        command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cxx} {cflags} $cflags - -o $out'",
-        depfile="$out.d",
-        deps="gcc",
-    )
-
-    ninja.rule(
         "cxx_modern",
-        description="cxx_modern $in",
+        description="CXX $in",
         command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
@@ -506,7 +458,6 @@ class Configure:
         ninja: ninja_syntax.Writer,
         skip_outputs: Set[str],
         non_matching: bool,
-        modern_gcc: bool,
         c_maps: bool = False,
     ):
         assert self.linker_entries is not None
@@ -702,33 +653,19 @@ class Configure:
                         cflags = "-fforce-addr"
 
                 # c
-                task = "cc"
+                task = "cc_modern"
                 if entry.src_paths[0].suffixes[-1] == ".cpp":
-                    task = "cxx"
+                    task = "cxx_modern"
 
-                if modern_gcc:
-                    if task == "cxx":
-                        task = "cxx_modern"
-                    else:
-                        task = "cc_modern"
+                if task == "cxx":
+                    task = "cxx_modern"
 
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
-                elif "gcc_272" in cflags:
-                    # task = "cc_272"
-                    cflags = cflags.replace("gcc_272", "")
-                elif "egcs" in cflags:
-                    if sys.platform == "darwin" and non_matching:
-                        print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
-                    else:
-                        # task = "cc_egcs"
-                        cflags = cflags.replace("egcs", "")
-                elif "gcc_modern" in cflags:
-                    task = "cc_modern"
-                    cflags = cflags.replace("gcc_modern", "")
 
-                if task == "cc_modern":
-                    cppflags += " -DMODERN_COMPILER"
+                cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
+
+                cppflags += " -DMODERN_COMPILER"
 
                 if version == "ique":
                     if "nusys" in entry.src_paths[0].parts:
@@ -1164,7 +1101,7 @@ class Configure:
                             build(
                                 o_path,
                                 [c_file_path],
-                                "cc" if not modern_gcc else "cc_modern",
+                                "cc_modern",
                                 variables={
                                     "cflags": "",
                                     "cppflags": f"-DVERSION_{self.version.upper()}",
@@ -1247,7 +1184,7 @@ class Configure:
                 build(
                     entry.object_path,
                     [c_file_path],
-                    "cc" if not modern_gcc else "cc_modern",
+                    "cc_modern",
                     variables={
                         "cflags": "",
                         "cppflags": f"-DVERSION_{self.version.upper()}",
@@ -1397,7 +1334,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     args.shift = not args.no_shift
-    args.modern_gcc = not args.no_modern_gcc
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
 
@@ -1490,7 +1426,7 @@ if __name__ == "__main__":
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
 
-    non_matching = args.non_matching or args.modern_gcc or args.shift
+    non_matching = args.non_matching or True or args.shift
 
     write_ninja_rules(
         ninja,
@@ -1525,7 +1461,7 @@ if __name__ == "__main__":
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
         configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
-        configure.write_ninja(ninja, skip_files, non_matching, args.modern_gcc, args.c_maps)
+        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
 
         all_rom_oks.append(str(configure.rom_ok_path()))
 
