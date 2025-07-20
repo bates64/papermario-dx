@@ -5,7 +5,7 @@
 #include "rumble.h"
 #include "sprite.h"
 #include "model.h"
-#include "gcc/string.h"
+#include <string.h>
 #include "dx/debug_menu.h"
 #include "world/surfaces.h"
 

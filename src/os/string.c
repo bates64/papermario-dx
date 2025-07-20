@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include "common.h"
 
 char* strchr(const char* s, int c) {
     const char ch = c;
@@ -38,4 +38,9 @@ void* memcpy(void* s1, const void* s2, size_t n) {
         n--;
     }
     return (void*)s1;
+}
+
+void* __memcpy_chk(void* s1, const void* s2, size_t n, size_t destlen) {
+    ASSERT_MSG(n <= destlen, "buffer overflow in memcpy");
+    return memcpy(s1, s2, n);
 }

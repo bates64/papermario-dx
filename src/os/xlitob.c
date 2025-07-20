@@ -1,5 +1,5 @@
-#include "gcc/stdlib.h"
-#include "gcc/string.h"
+#include <stdlib.h>
+#include <string.h>
 #include "libc/xstdio.h"
 
 #define BUFF_LEN 0x18

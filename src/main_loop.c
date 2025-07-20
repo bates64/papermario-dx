@@ -55,7 +55,7 @@ void step_game_loop(void) {
     profiler_frame_setup();
 
     PlayerData* playerData = &gPlayerData;
-    const int MAX_GAME_TIME = 1000*60*60*60 - 1; // 1000 hours minus one frame at 60 fps
+    const int MAX_GAME_TIME = (1000*60*60*60) - 1; // 1000 hours minus one frame at 60 fps
 
 #if !VERSION_JP
     update_input();

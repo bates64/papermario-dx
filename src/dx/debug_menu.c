@@ -4,7 +4,7 @@
 #include "battle/battle.h"
 #include "hud_element.h"
 #include "qsort.h"
-#include "gcc/string.h"
+#include <string.h>
 #include "dx/utils.h"
 #include "msg.h"
 #include "fio.h"

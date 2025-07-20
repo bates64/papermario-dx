@@ -80,15 +80,12 @@ extern "C" {
 
 /* byte string operations */
 
-
-extern void     bcopy(const void *, void *, int);
-extern int      bcmp(const void *, const void *, int);
-extern void     bzero(void *, int);
+#include <string.h>   // bcopy, bcmp, bzero
 
 /* Printf */
 
-extern int		sprintf(char *s, const char *fmt, ...);
-extern void		osSyncPrintf(const char *fmt, ...);
+#include <stdio.h>    // sprintf
+#include <stdarg.h>   // for varargs (used in sprintf)
 
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */

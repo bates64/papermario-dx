@@ -1,6 +1,6 @@
 #include "dx/versioning.h"
 #include "dx/config.h"
-#include "gcc/string.h"
+#include <string.h>
 
 void ver_deserialize_standard();
 void ver_deserialize_vanilla_save(SaveData* save);
