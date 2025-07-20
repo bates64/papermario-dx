@@ -148,7 +148,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="gcc_modern $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1483,7 +1483,7 @@ if __name__ == "__main__":
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
-    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion -Wreturn-type"
+    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
