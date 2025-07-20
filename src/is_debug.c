@@ -1,5 +1,5 @@
 #include "common.h"
-#include "stdlib/stdarg.h"
+#include <stdarg.h>
 #include "nu/nusys.h"
 
 void crash_screen_set_assert_info(const char* message);
@@ -22,11 +22,24 @@ void is_debug_init(void) {
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->magic, ASCII_TO_U32('I', 'S', '6', '4'));
 }
 
-void printf(const char* fmt, ...) {
+int printf(const char* restrict fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    _Printf(is_debug_print, NULL, fmt, args);
+    return _Printf(is_debug_print, NULL, fmt, args);
+}
+
+int __printf_chk(int flag, const char* restrict fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    (void)flag;
+
+    return _Printf(is_debug_print, NULL, fmt, args);
+}
+
+int puts(const char* s) {
+    printf("%s\n", s);
+    return 0;
 }
 
 void osSyncPrintf(const char* fmt, ...) {
@@ -93,4 +106,5 @@ char* is_debug_print(char* arg0, const char* str, size_t count) {
 void is_debug_panic(const char* message) {
     crash_screen_set_assert_info(message);
     *(volatile u32*)0 = 0; // Crash so we can see the crash screen
+    __builtin_unreachable();
 }

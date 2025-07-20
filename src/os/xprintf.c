@@ -1,6 +1,6 @@
-#include "stdlib/stdarg.h"
+#include <stdarg.h>
 #include "libc/xstdio.h"
-#include "gcc/string.h"
+#include <string.h>
 
 #define isdigit(x) ((x >= '0' && x <= '9'))
 #define LDSIGN(x) (((unsigned short *)&(x))[0] & 0x8000)

@@ -58,9 +58,7 @@ def write_ninja_rules(
             ccache = ""
 
     cross = "mips-linux-gnu-"
-    cc = f"{BUILD_TOOLS}/cc/gcc/gcc"
     cc_modern = f"{cross}gcc"
-    cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
     cxx_modern = f"{cross}g++"
 
     BFDNAME = "elf32-tradbigmips"
@@ -70,9 +68,7 @@ def write_ninja_rules(
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
-    CPPFLAGS = CPPFLAGS_COMMON + " -nostdinc"
-
-    cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
+    CPPFLAGS = CPPFLAGS_COMMON
 
     cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 

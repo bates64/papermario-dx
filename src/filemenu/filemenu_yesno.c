@@ -3,7 +3,7 @@
 #include "fio.h"
 #include "game_modes.h"
 #include "dx/config.h"
-#include "gcc/string.h"
+#include <string.h>
 
 #if VERSION_IQUE
 #define DELETE_FILE_DELETE_X            20

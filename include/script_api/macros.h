@@ -2,7 +2,7 @@
 #define _SCRIPT_API_MACROS_H_
 
 #include "evt.h"
-#include "stdlib/stdarg.h"
+#include <stdarg.h>
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {

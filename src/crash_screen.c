@@ -1,8 +1,8 @@
 #include "common.h"
-#include "stdlib/stdarg.h"
+#include <stdarg.h>
 #include "PR/os_internal_thread.h"
-#include "libc/xstdio.h"
-#include "gcc/string.h"
+#include <stdio.h>
+#include <string.h>
 #include "dx/backtrace.h"
 #include "include_asset.h"
 

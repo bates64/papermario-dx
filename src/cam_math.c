@@ -1,5 +1,6 @@
 #include "common.h"
 #include "camera.h"
+#include <stdlib.h>
 
 s32 gCurrentCameraID = CAM_DEFAULT;
 

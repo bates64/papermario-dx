@@ -1,8 +1,7 @@
 #include "ultra64.h"
 
-// n should be size_t but can't be
-int strncmp(const char* str1, const char* str2, int n) {
-    int i;
+int strncmp(const char* str1, const char* str2, size_t n) {
+    size_t i;
 
     for (i = 0; (*str1 == *str2) && (i < n); i++) {
         if (*str1 == 0) {

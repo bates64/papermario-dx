@@ -6,7 +6,7 @@
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
 #include "qsort.h"
-#include "gcc/string.h"
+#include <string.h>
 
 // models are rendered in two stages by the RDP:
 // (1) main and aux textures are combined in the color combiner
@@ -2154,7 +2154,7 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
 
     if (romOffset >= startOffset + 0x40000) {
         // did not find the texture with `textureName`
-        osSyncPrintf("could not find texture '%s'\n", textureName);
+        printf("could not find texture '%s'\n", textureName);
         (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
         return;
     }

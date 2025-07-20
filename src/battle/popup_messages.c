@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
+#include <stdlib.h>
 
 typedef struct BonkData {
     /* 0x00 */ b32 alive;
