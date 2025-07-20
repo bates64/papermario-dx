@@ -16,6 +16,16 @@ class Message:
         self.header_file_index = header_file_index
 
 
+def write_if_unique(f, name, value, seen, warned):
+    if name in seen:
+        if name not in warned:
+            print(f"warning: duplicate: {name}")
+            warned.add(name)
+        return
+    seen.add(name)
+    f.write(f"#define {name} {value}\n")
+
+
 if __name__ == "__main__":
     if len(argv) < 3:
         print("usage: combine.py [out.bin] [out.h] [compiled...]")
@@ -107,10 +117,12 @@ if __name__ == "__main__":
         f.write(b"\0\0\0\0")
 
     with open(header_file, "w") as f:
-        f.write(f"#ifndef _MESSAGE_IDS_H_\n" f"#define _MESSAGE_IDS_H_\n" "\n" '#include "messages.h"\n' "\n")
+        f.write(f"#pragma once\n" "\n" '#include "messages.h"\n' "\n")
 
+        seen = set()
+        warned = set()
         for message in messages:
             if message.name:
-                f.write(f"#define MSG_{message.name} MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})\n")
+                write_if_unique(f, f"MSG_{message.name}", f"MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})", seen, warned)
 
-        f.write("\n#endif\n")
+        f.write("\n")
