@@ -12,7 +12,7 @@ jsonstr = argv.pop(0)
 
 
 def read_elf():
-    result = subprocess.run(["mips-linux-gnu-nm", elf_path], stdout=subprocess.PIPE)
+    result = subprocess.run(["mips64-elf-nm", elf_path], stdout=subprocess.PIPE)
     lines = result.stdout.decode().split("\n")
     symbols = {}
     for line in lines:

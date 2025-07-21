@@ -24,14 +24,45 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         crossSystem = {
-          config = "mips-linux-gnu"; # prefix expected by scripts in tools/
+          config = "mips64-elf";
           system = "mips64-elf";
           gcc.arch = "vr4300";
           gcc.tune = "vr4300";
           gcc.abi = "32";
+          libc = "newlib";
         };
         pkgs = import nixpkgs { inherit system; };
-        pkgsCross = import nixpkgs { inherit system crossSystem; };
+        pkgsCross = import nixpkgs  {
+          inherit system crossSystem;
+          overlays = [
+            # Roughly same flags as libdragon
+            (final: prev: {
+              gcc = prev.gcc.overrideAttrs (oldAttrs: {
+                configureFlags = (oldAttrs.configureFlags or []) ++ [
+                  "--with-newlib"
+                  "--enable-newlib"
+                  "--disable-shared"
+                  "--disable-win32-registry"
+                  "--disable-nls"
+                ];
+                enableParallelBuilding = true;
+              });
+              newlib = prev.newlib.overrideAttrs (oldAttrs: {
+                configureFlags = [
+                  "--with-newlib"
+                  "--host=${system}"
+                  "--target=${crossSystem.config}"
+                  "--with-cpu=mips64vr4300"
+                  "--disable-libssp"
+                  "--disable-werror"
+                  #"--enable-newlib-multithread"
+                  #"--enable-newlib-retargetable-locking"
+                ];
+                CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2 -fpermissive -march=mips32";
+              });
+            })
+          ];
+        };
         binutils2_39 = (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
         baseRom = pkgs.requireFile {
           name = "papermario.us.z64";
@@ -74,10 +105,14 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
+            (clang-tools.override {
+              enableLibcxx = true;
+            })
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
-            export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+            export PAPERMARIO_LD="${binutils2_39}/bin/mips64-elf-ld"
+            export NEWLIB="${pkgsCross.newlib}"
 
             # Install python packages (TODO: use derivations)
             virtualenv venv --quiet

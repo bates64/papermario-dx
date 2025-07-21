@@ -118,7 +118,7 @@ def read_symbol_addrs():
 
 def read_elf():
     try:
-        result = subprocess.run(["mips-linux-gnu-objdump", "-x", elf_path], stdout=subprocess.PIPE)
+        result = subprocess.run(["mips64-elf-objdump", "-x", elf_path], stdout=subprocess.PIPE)
         objdump_lines = result.stdout.decode().split("\n")
     except:
         print(f"Error: Could not run objdump on {elf_path} - make sure that the project is built")

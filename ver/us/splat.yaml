@@ -16,6 +16,8 @@ options:
   ld_script_path: ver/us/papermario.ld
   ld_symbol_header_path: ver/us/build/include/ld_addrs.h
   ld_generate_symbol_per_data_segment: True
+  section_order: [".text", ".data", ".rodata", ".bss", ".eh_frame"]
+  auto_link_sections: [".text", ".data", ".rodata", ".bss", ".eh_frame"]
   src_path: src
   asm_path: ver/us/asm
   asset_path: assets/us
@@ -345,7 +347,6 @@ segments:
     - [auto, c, os/strcmp, gcc_272 -O1]
     - [auto, c, os/strncmp]
     - [auto, c, os/memset, gcc_272 -O1]
-    - [auto, a, libgcc_vr4300]
     - [auto, hasm, os/decode_yay0]
     - [auto, c, os/osFlash]
     - [0x4AC90, pm_effect_loads, effect_loads]

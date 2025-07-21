@@ -22,7 +22,7 @@ for f in Path(root_dir).rglob("*.bin"):
 
     ras = []
     result = subprocess.run(
-        ["mips-linux-gnu-objdump", "-Dz", "-bbinary", "-mmips", "-EB", f],
+        ["mips64-elf-objdump", "-Dz", "-bbinary", "-mmips", "-EB", f],
         stdout=subprocess.PIPE,
     )
     output = result.stdout.decode().split("\n")

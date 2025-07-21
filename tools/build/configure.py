@@ -57,11 +57,11 @@ def write_ninja_rules(
         except FileNotFoundError:
             ccache = ""
 
-    cross = "mips-linux-gnu-"
+    cross = "mips64-elf-"
     cc_modern = f"{cross}gcc"
     cxx_modern = f"{cross}g++"
 
-    BFDNAME = "elf32-tradbigmips"
+    BFDNAME = "elf32-bigmips"
 
     CPPFLAGS_COMMON = (
         "-Iver/$version/include -Iver/$version/build/include -Iinclude -Isrc -Iassets/$version -D_FINALROM "
@@ -74,13 +74,13 @@ def write_ninja_rules(
 
     ninja.variable("python", sys.executable)
 
-    ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
+    ld_args = f"--sysroot={os.environ["NEWLIB"]} -T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Wl,-Map $mapfile -Wl,--no-check-sections -T $in -o $out -lgcc -lc -lm"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     ninja.rule(
         "ld",
-        description="link($version) $out",
-        command=f"{ld} {ld_args}",
+        description="LINK $out",
+        command=f"{cc_modern} {ld_args}",
     )
 
     ninja.rule(
@@ -156,7 +156,7 @@ def write_ninja_rules(
     ninja.rule(
         "as",
         description="as $in",
-        command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude -o $out",
+        command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -32 -EB -march=vr4300 -mtune=vr4300 -Iinclude -o $out",
     )
 
     ninja.rule(
@@ -1426,7 +1426,7 @@ if __name__ == "__main__":
 
     write_ninja_rules(
         ninja,
-        args.cpp or "mips-linux-gnu-cpp",
+        args.cpp or "mips64-elf-cpp",
         extra_cppflags,
         extra_cflags,
         args.ccache,

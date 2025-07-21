@@ -20,7 +20,7 @@ build_dir = root_dir / "ver/current/build/"
 map_file_path = build_dir / "papermario.map"
 rom_path = root_dir / "ver/current/baserom.z64"
 
-OBJDUMP = "mips-linux-gnu-objdump"
+OBJDUMP = "mips64-elf-objdump"
 
 
 @dataclass
@@ -185,7 +185,7 @@ def get_line_numbers(obj_file: Path) -> Dict[int, int]:
 
 
 def get_tu_offset(obj_file: Path, symbol: str) -> Optional[int]:
-    objdump = "mips-linux-gnu-objdump"
+    objdump = "mips64-elf-objdump"
 
     objdump_out = subprocess.run([objdump, "-t", obj_file], stdout=subprocess.PIPE).stdout.decode("utf-8").split("\n")
 
