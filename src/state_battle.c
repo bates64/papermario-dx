@@ -181,9 +181,7 @@ void state_step_end_battle(void) {
                 initialize_collision();
                 restore_map_collision_data();
 
-                if (mapConfig->dmaStart != NULL) {
-                    dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-                }
+                PANIC_MSG("TODO: load map dso %s", mapConfig->id);
 
                 load_map_bg(mapConfig->bgName);
                 if (mapSettings->background != NULL) {

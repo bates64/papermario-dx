@@ -7,7 +7,7 @@ import platform
 from pathlib import Path
 import hashlib
 
-ROM = "ver/current/build/papermario.z64"
+ROM = "out/papermario.z64"
 EMULATOR_PATHS = [
     "cen64",
     "ares",
@@ -94,7 +94,7 @@ def main():
         os.system("ninja -t compdb > compile_commands.json")
 
     os.system("clear")
-    if os.system(f"n2 {ROM}") != 0:
+    if os.system(f"ninja {ROM}") != 0:
         print("error: build failed")
         exit(1)
 

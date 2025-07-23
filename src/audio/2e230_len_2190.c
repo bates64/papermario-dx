@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "../audio.h"
 #include "ld_addrs.h"
 
 AuCallback BeginSoundUpdateCallback;

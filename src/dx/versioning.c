@@ -2,7 +2,7 @@
 #include "dx/config.h"
 #include <string.h>
 
-void ver_deserialize_standard();
+void ver_deserialize_standard(SaveData* saveData);
 void ver_deserialize_vanilla_save(SaveData* save);
 
 /// Store current game data to gCurrentSaveFile
@@ -58,8 +58,7 @@ void fio_deserialize_state() {
 
 /// Load save file data from a supported save version
 /// Assumes no changes in the SaveData, PlayerData, or PartnerData structs and no remapped item IDs.
-void ver_deserialize_standard() {
-    SaveData* saveData = &gCurrentSaveFile;
+void ver_deserialize_standard(SaveData* saveData) {
     s32 i, j;
 
     // simply copy the saved player data

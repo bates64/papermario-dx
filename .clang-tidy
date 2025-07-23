@@ -1,22 +1,55 @@
-Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-magic-numbers,-readability-else-after-return,-readability-named-parameter,-readability-braces-around-statements,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming'
+Checks: >-
+  -*,
+  clang-analyzer-core.*,
+  clang-analyzer-deadcode.*,
+  readability-*,
+  bugprone-*,
+  performance-*,
+  misc-*,
+  modernize-*,
+  -readability-magic-numbers,
+  -readability-braces-around-statements,
+  -readability-isolate-declaration,
+  -readability-uppercase-literal-suffix,
+  -readability-function-size,
+  -readability-function-cognitive-complexity
 CheckOptions:
-  # TEMP: this only disabled because mips2c outputs snake_case
-  #- key: readability-identifier-naming.LocalVariableCase
-  #  value: camelBack
+  - key: readability-identifier-naming.LocalVariableCase
+    value: camelBack
 
   - key: readability-identifier-naming.ParameterCase
     value: camelBack
 
-  #- key: readability-identifier-naming.TypedefCase
-  #  value: CamelCase
+  - key: readability-identifier-naming.TypedefCase
+    value: CamelCase
 
-  # TODO: rename all unk_XXX members
-  #- key: readability-identifier-naming.MemberCase
-  #  value: camelBack
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
 
-  # TODO: rename all D_XXXXXXXX symbols
-  #- key: readability-identifier-naming.GlobalVariableCase
-  #  value: CamelCase
-  #- key: readability-identifier-naming.GlobalVariablePrefix
-  #  value: g
-HeaderFilterRegex: '(src|include)\/[^P].*\.h' # ignore include/PR/
+  - key: readability-identifier-naming.EnumCase
+    value: CamelCase
+
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+
+  - key: readability-identifier-naming.MemberCase
+    value: camelBack
+
+  - key: readability-identifier-naming.MemberIgnoredRegexp
+    value: '^unk_.*'
+
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: CamelCase
+
+  - key: readability-identifier-naming.GlobalVariableIgnoredRegexp
+    value: '^D_.*'
+
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+
+  - key: readability-identifier-naming.FunctionIgnoredRegexp
+    value: '^func_.*'
+HeaderFilterRegex: '(src|include)\/(?!(PR|nu)).*\.h' # ignore include/PR/ and include/nu

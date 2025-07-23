@@ -1,6 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "battle.h"
+#include "battle/battle.h"
 
 extern EvtScript battle_item_food_EVS_UseItem;
 extern EvtScript battle_item_mushroom_EVS_UseItem;

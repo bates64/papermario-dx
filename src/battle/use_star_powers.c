@@ -1,6 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "sprite/player.h"
 
 #include "sprite/npc/WorldGoombario.h"

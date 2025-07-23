@@ -5,7 +5,6 @@
 #include "script_api/battle.h"
 #include "sprite/npc/Twink.h"
 #include "sprite/npc/BattleMerlee.h"
-#include "battle/action_cmd/flee.h"
 #include "battle/battle.h"
 #include "sprite/player.h"
 
@@ -1179,8 +1178,8 @@ EvtScript EVS_RunAwayStart = {
     EndIf
     Call(ShowActionHud, 1)
     Call(GetActorVar, ACTOR_SELF, 0, LVar0)
-    Call(LoadActionCommand, ACTION_COMMAND_FLEE)
-    Call(action_command_flee_init, LVar0)
+    Call(LoadActionCommand, "flee")
+    Call(InitActionCommand, LVar0)
     Call(SetupMashMeter, 1, 100, 0, 0, 0, 0)
     Call(func_80260E38)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB3_Hustled)
@@ -1197,7 +1196,7 @@ EvtScript EVS_RunAwayStart = {
     Wait(1)
     Call(SetActorYaw, ACTOR_PLAYER, 180)
     Wait(5)
-    Call(action_command_flee_start, 0, 60, AC_DIFFICULTY_3)
+    Call(StartActionCommand, 0, 60, AC_DIFFICULTY_3)
     Call(func_80260E5C)
     Wait(5)
     Call(AddActorPos, ACTOR_PLAYER, 2, 0, 0)

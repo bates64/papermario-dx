@@ -4,7 +4,6 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 #include "sprite/npc/Fuzzy.h"
-#include "battle/action_cmd/stop_leech.h"
 
 #define NAMESPACE A(jungle_fuzzy)
 
@@ -442,11 +441,11 @@ EvtScript N(EVS_Attack_Leech) = {
         Call(ShowMessageBox, BTL_MSG_ACTION_TIP_MASH_BUTTON, AC_LEECH_MAX_TIME)
         Call(ShowActionHud, TRUE)
         Call(LoadActionCommand, ACTION_COMMAND_STOP_LEECH)
-        Call(action_command_stop_leech_init)
+        Call(InitActionCommand)
         Call(SetupMashMeter, 1, 23, 0, 0, 0, 0)
         Wait(10)
         Call(SetBattleFlagBits, BS_FLAGS1_4000, FALSE)
-        Call(action_command_stop_leech_start, 0, AC_LEECH_MAX_TIME, AC_DIFFICULTY_3)
+        Call(StartActionCommand, 0, AC_LEECH_MAX_TIME, AC_DIFFICULTY_3)
         Set(LVarD, 0)
         Loop(5)
             Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)

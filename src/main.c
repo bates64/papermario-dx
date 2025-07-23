@@ -1,6 +1,5 @@
 #include "common.h"
 #include "nu/nusys.h"
-#include "dx/profiling.h"
 
 // TODO move these somewhere else...
 u8 nuYieldBuf[NU_GFX_YIELD_BUF_SIZE];
@@ -46,7 +45,10 @@ u16* ResetFrameBufferArray;
 u16* nuGfxZBuffer;
 
 void gfx_task_end_callback(void* unk) {
-    profiler_rsp_completed(PROFILER_RSP_GFX);
+}
+
+void main(void) {
+    nuBoot();
 }
 
 void boot_main(void* data) {
@@ -96,7 +98,6 @@ void boot_main(void* data) {
 }
 
 void gfxRetrace_Callback(s32 gfxTaskNum) {
-    profiler_rsp_started(PROFILER_RSP_GFX);
     if (ResetGameState != RESET_STATE_NONE) {
         if (ResetGameState == RESET_STATE_INIT) {
             nuGfxTaskAllEndWait();

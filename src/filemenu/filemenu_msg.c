@@ -2,7 +2,7 @@
 #include "filemenu.h"
 #include "ld_addrs.h"
 
-#include "charset/charset.h"
+#include "../charset/charset.h"
 
 s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgScale, s32 overrideCharWidth, u8 flags);
 

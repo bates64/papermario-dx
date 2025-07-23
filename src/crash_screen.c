@@ -3,8 +3,11 @@
 #include "PR/os_internal_thread.h"
 #include <stdio.h>
 #include <string.h>
-#include "dx/backtrace.h"
+#include <backtrace.h>
 #include "include_asset.h"
+
+/** @brief Like #backtrace, but start from an arbitrary context. Useful for backtracing a thread */
+int __backtrace_from(void **buffer, int size, uint32_t *pc, uint32_t *sp, uint32_t *fp, uint32_t *exception_ra);
 
 typedef struct {
     /* 0x000 */ OSThread thread;
@@ -308,13 +311,49 @@ void crash_screen_print_fpcsr(u32 value) {
     }
 }
 
+struct backtrace_cb_arg {
+    s32* x;
+    s32* y;
+    s32 index;
+};
+
+static void backtrace_cb(void* arg, backtrace_frame_t* frame) {
+    struct backtrace_cb_arg *pos = arg;
+
+    switch (pos->index++) {
+        case 0:
+            crash_screen_printf_proportional(*pos->x, *pos->y, "Crash at:");
+            *pos->y += 10;
+            break;
+        case 1:
+            crash_screen_printf_proportional(*pos->x, *pos->y, "Called from:");
+            *pos->y += 10;
+            break;
+        default:
+            break;
+    }
+
+    s32 x = *pos->x + 10; // Indent the symbols
+    char buf[64];
+    FILE* file = fmemopen(buf, sizeof(buf), "w");
+    backtrace_frame_print_compact(frame, file, (SCREEN_WIDTH / 6) - x);
+    crash_screen_printf(x, *pos->y, "%s", buf);
+    fflush(file);
+    fclose(file);
+
+    *pos->y += 10;
+}
+
 void crash_screen_draw(OSThread* faultedThread) {
     s16 causeIndex;
 
-    s32 bt[8];
-    s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
+    void* bt[16];
     s32 i = 0;
     static char buf[0x200];
+
+    s32 max = __backtrace_from(
+        (void**)bt, ARRAY_COUNT(bt), &faultedThread->context.pc, &faultedThread->context.sp,
+        &faultedThread->context.fpcsr, &faultedThread->context.ra);
 
     causeIndex = ((faultedThread->context.cause >> 2) & 0x1F);
 
@@ -360,11 +399,8 @@ void crash_screen_draw(OSThread* faultedThread) {
     // Print backtrace
     crash_screen_printf_proportional(x, y, "Call stack:");
     y += 10;
-    for (; i < max; i++) {
-        backtrace_address_to_string(bt[i], buf);
-        crash_screen_printf_proportional(x, y, "  in %s", buf);
-        y += 10;
-    }
+    struct backtrace_cb_arg cbArg = { &x, &y, 0 };
+    backtrace_symbols_cb(bt, max, 0, backtrace_cb, &cbArg);
 
     y += 10;
 

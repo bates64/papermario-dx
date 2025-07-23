@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "../audio.h"
 
 extern u8 BlankMseqData[];
 

@@ -97,8 +97,6 @@ extern s16 gCurrentCamID;
 
 extern s32 PartnerWishAnims[][5];
 
-extern HeapNode heap_battleHead;
-
 extern u32 bMarioIdleAnims[];
 extern s32 bMarioDefendAnims[];
 extern s32 bPeachIdleAnims[];

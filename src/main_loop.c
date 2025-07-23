@@ -5,7 +5,6 @@
 #include "sprite.h"
 #include "overlay.h"
 #include "game_modes.h"
-#include "dx/profiling.h"
 #include "dx/debug_menu.h"
 
 s32 gOverrideFlags;
@@ -52,15 +51,10 @@ void gfx_init_state(void);
 void gfx_draw_background(void);
 
 void step_game_loop(void) {
-    profiler_frame_setup();
-
     PlayerData* playerData = &gPlayerData;
     const int MAX_GAME_TIME = (1000*60*60*60) - 1; // 1000 hours minus one frame at 60 fps
 
-#if !VERSION_JP
     update_input();
-    profiler_update(PROFILER_TIME_CONTROLLERS, 0);
-#endif
 
     gGameStatusPtr->frameCounter++;
 
@@ -68,11 +62,6 @@ void step_game_loop(void) {
     if (playerData->frameCounter > MAX_GAME_TIME) {
         playerData->frameCounter = MAX_GAME_TIME;
     }
-
-#if VERSION_JP
-    update_input();
-    profiler_update(PROFILER_TIME_CONTROLLERS, 0);
-#endif
 
     update_max_rumble_duration();
 
@@ -87,19 +76,12 @@ void step_game_loop(void) {
 
     mdl_reset_transform_flags();
     update_workers();
-    profiler_update(PROFILER_TIME_WORKERS, 0);
     update_triggers();
-    profiler_update(PROFILER_TIME_TRIGGERS, 0);
     update_scripts();
-    profiler_update(PROFILER_TIME_EVT, 0);
     update_messages();
-    profiler_update(PROFILER_TIME_MESSAGES, 0);
     update_hud_elements();
-    profiler_update(PROFILER_TIME_HUD_ELEMENTS, 0);
     step_game_mode();
-    profiler_update(PROFILER_TIME_STEP_GAME_MODE, 0);
     update_entities();
-    profiler_update(PROFILER_TIME_ENTITIES, 0);
     func_80138198();
     bgm_update_music_settings();
     update_ambient_sounds();
@@ -185,8 +167,6 @@ void gfx_task_background(void) {
 }
 
 void gfx_draw_frame(void) {
-    profiler_gfx_started();
-
     gMatrixListPos = 0;
     gMainGfxPos = &gDisplayContext->mainGfx[0];
 
@@ -199,8 +179,6 @@ void gfx_draw_frame(void) {
 
     spr_render_init();
 
-    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_UPDATE); // dummy
-
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD)) {
         render_frame(FALSE);
     }
@@ -208,7 +186,6 @@ void gfx_draw_frame(void) {
     player_render_interact_prompts();
     func_802C3EE4();
 
-    GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_HUD_ELEMENTS, PROFILER_TIME_SUB_GFX_BACK_UI);
     render_screen_overlay_backUI();
     render_workers_backUI();
     render_hud_elements_backUI();
@@ -218,8 +195,6 @@ void gfx_draw_frame(void) {
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_WINDOWS_OVER_CURTAINS)) {
         render_window_root();
     }
-
-    GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_BACK_UI, PROFILER_TIME_SUB_GFX_FRONT_UI);
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
         render_frame(TRUE);
@@ -261,11 +236,6 @@ void gfx_draw_frame(void) {
                 break;
         }
     }
-
-    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_FRONT_UI);
-
-    profiler_gfx_completed();
-    profiler_print_times();
 
     #if DX_DEBUG_MENU
     dx_debug_console_main();

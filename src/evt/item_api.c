@@ -1,6 +1,6 @@
 #include "common.h"
 #include "inventory.h"
-#include "pause/pause_common.h"
+#include "../pause/pause_common.h"
 #include "hud_element.h"
 #include "world/partners.h"
 

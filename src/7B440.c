@@ -118,7 +118,7 @@ void reset_player_status(void) {
     ASSERT_MSG(gGameStatusPtr->areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", gGameStatusPtr->areaID);
     AreaConfig* area = &gAreas[gGameStatusPtr->areaID];
     ASSERT_MSG(gGameStatusPtr->mapID < area->mapCount, "Invalid map ID %d in %s", gGameStatusPtr->mapID, area->id);
-    mapSettings = area->maps[gGameStatusPtr->mapID].settings;
+    PANIC_MSG("TODO: dlsym mapSettings");
 
     if (mapSettings->entryList != NULL) {
         if (gGameStatusPtr->entryID < mapSettings->entryCount) {

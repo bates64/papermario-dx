@@ -5,9 +5,8 @@
 #include "common.h"
 #include "sprite.h"
 #include "game_modes.h"
-#include "pause/pause_common.h"
+#include "../pause/pause_common.h"
 #include "world/partners.h"
-#include "world/partner/lakilester.h"
 
 enum WorldMenuStates {
     WORLD_MENU_STATE_NONE       = 0,
@@ -104,25 +103,7 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
                 }
             }
         } else if (partner_can_open_world_menus()) {
-            if (partnerStatus->actingPartner == PARTNER_WATT) {
-                return actionState == ACTION_STATE_IDLE ||
-                        actionState == ACTION_STATE_WALK ||
-                        actionState == ACTION_STATE_RUN;
-            } else if (partnerStatus->actingPartner == PARTNER_BOW) {
-                if (actionState == ACTION_STATE_RIDE) {
-                    gPlayerStatus.prevAlpha = 0;
-                    return TRUE;
-                }
-            } else if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
-                if (actionState == ACTION_STATE_RIDE) {
-                    if (world_lakilester_can_dismount()) {
-                        return TRUE;
-                    }
-                    sfx_play_sound(SOUND_MENU_ERROR);
-                }
-            } else if (partnerStatus->actingPartner == PARTNER_SUSHIE) {
-                sfx_play_sound(SOUND_MENU_ERROR);
-            }
+            return partner_dismount();
         }
     }
     return FALSE;

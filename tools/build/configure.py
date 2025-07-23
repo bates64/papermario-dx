@@ -11,9 +11,11 @@ import ninja_syntax
 from glob import glob
 import json
 
-# Configuration:
-VERSIONS = ["us"]
-DO_SHA1_CHECK = False
+asset_stack = [
+    "mod",
+    "dx",
+    "us",
+]
 
 # Paths:
 ROOT = Path(__file__).parent.parent.parent
@@ -25,12 +27,6 @@ CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 PIGMENT64 = "pigment64"
 CRUNCH64 = "crunch64"
-
-RUST_TOOLS = [
-    (PIGMENT64, "pigment64", "0.4.2"),
-    (CRUNCH64, "crunch64-cli", "0.3.1"),
-]
-
 
 def exec_shell(command: List[str]) -> str:
     ret = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -74,7 +70,7 @@ def write_ninja_rules(
 
     ninja.variable("python", sys.executable)
 
-    ld_args = f"--sysroot={os.environ["NEWLIB"]} -T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Wl,-Map $mapfile -Wl,--no-check-sections -T $in -o $out -lgcc -lc -lm"
+    ld_args = f"--sysroot={os.environ["NEWLIB"]} -T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Wl,-Map $mapfile -Wl,--no-check-sections -T $in @$objects_file -o $out -lgcc -lc -lm"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     ninja.rule(
@@ -192,7 +188,7 @@ def write_ninja_rules(
     ninja.rule(
         "sprites",
         description="sprites $out $header_out",
-        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack",
+        command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $builddir_dir $asset_stack",
     )
 
     ninja.rule(
@@ -319,6 +315,34 @@ use_python_iconv = not does_iconv_work()
 if use_python_iconv:
     print("warning: iconv doesn't work, using python implementation")
 
+def split_assets(version: str):
+    import splat.scripts.split as split
+    split.main(
+        [Path(f"ver/{version}/splat.yaml")],
+        [
+            "bin",
+            "rodatabin",
+            "textbin",
+            "yay0",
+            "img",
+            "vtx",
+            "vtx_common",
+            "gfx",
+            "gfx_common",
+            "pm_map_data",
+            "pm_icons",
+            "pm_msg",
+            "pm_sprites",
+            "pm_charset",
+            "pm_charset_palettes",
+            "pm_effect_loads",
+            "pm_effect_shims",
+            "pm_sprite_shading_profiles",
+            "pm_imgfx_data",
+            "pm_sbn",
+        ],
+        verbose=True,
+    )
 
 class Configure:
     def __init__(self, version: str):
@@ -395,10 +419,6 @@ class Configure:
     def baserom_path(self) -> Path:
         return Path(f"ver/{self.version}/baserom.z64")
 
-    def linker_script_path(self) -> Path:
-        # TODO: read from splat.yaml
-        return Path(f"ver/{self.version}/papermario.ld")
-
     def map_path(self) -> Path:
         return self.elf_path().with_suffix(".map")
 
@@ -416,38 +436,7 @@ class Configure:
 
         return out
 
-    # Given a directory relative to assets/, return a list of all assets in the directory
-    # for all layers of the asset stack
-    def get_asset_list(self, asset_dir: str) -> List[str]:
-        ret: Dict[Path, Path] = {}
 
-        for stack_dir in self.asset_stack:
-            path_stem = f"assets/{stack_dir}/{asset_dir}"
-
-            for p in Path(path_stem).glob("**/*"):
-                glob_part = p.relative_to(path_stem)
-                if glob_part not in ret:
-                    ret[glob_part] = p
-
-        return [str(v) for v in ret.values()]
-
-    @lru_cache(maxsize=None)
-    def resolve_asset_path(self, path: Path) -> Path:
-        # Remove nonsense
-        path = Path(os.path.normpath(path))
-
-        parts = list(path.parts)
-
-        if parts[0] != "assets":
-            return path
-
-        for asset_dir in self.asset_stack:
-            parts[1] = asset_dir
-            new_path = Path("/".join(parts))
-            if new_path.exists():
-                return new_path
-
-        return path
 
     def write_ninja(
         self,
@@ -1200,12 +1189,22 @@ class Configure:
         # Build elf, z64, ok
         additional_objects = [str(self.undefined_syms_path())]
 
+        # Write object list to a file
+        objects_file = self.build_path() / "objects.txt"
+        with objects_file.open("w") as f:
+            for obj in sorted(built_objects):
+                f.write(obj + "\n")
+
         ninja.build(
             str(self.elf_path()),
             "ld",
-            str(self.linker_script_path()),
+            "dx.ld",
             implicit=[str(obj) for obj in built_objects] + additional_objects,
-            variables={"version": self.version, "mapfile": str(self.map_path())},
+            variables={
+                "version": self.version,
+                "mapfile": str(self.map_path()),
+                "objects_file": str(objects_file),
+            },
         )
 
         if self.version == "ique":
@@ -1278,191 +1277,147 @@ class Configure:
 
         ninja.build("ver/current/build/papermario.z64", "phony", str(self.rom_path()))
 
+# Given a directory relative to assets/, return a list of all assets in the directory
+# for all layers of the asset stack
+def get_asset_list(asset_dir: str) -> Dict[Path, Path]:
+    ret: Dict[Path, Path] = {}
+
+    for stack_dir in asset_stack:
+        path_stem = f"assets/{stack_dir}/{asset_dir}"
+
+        for p in Path(path_stem).glob("**/*"):
+            glob_part = p.relative_to(path_stem)
+            if glob_part not in ret:
+                ret[glob_part] = p
+
+    return ret
+
+@lru_cache(maxsize=None)
+def resolve_asset_path(path: Path) -> Path:
+    # Remove nonsense
+    path = Path(os.path.normpath(path))
+
+    parts = list(path.parts)
+
+    if parts[0] != "assets":
+        return path
+
+    for asset_dir in asset_stack:
+        parts[1] = asset_dir
+        new_path = Path("/".join(parts))
+        if new_path.exists():
+            return new_path
+
+    return path
+
+def build_asset(ninja: ninja_syntax.Writer, full_path: Path, relative_path: Path) -> List[Path]:
+    """
+    Write a ninja task to build an asset in preparation for packing into a DFS file.
+    """
+
+    if not full_path.is_file():
+        return []
+
+    # TODO: all asset types
+
+    if len(relative_path.suffixes) >= 2 and relative_path.suffixes[-2] == ".inc":
+        # .inc.c etc. are embedded into the executable elsewhere, no need to put them in the DFS
+        return []
+    else:
+        # Simply copy assets by default
+        ninja.build(f"$builddir/assets/{relative_path}", "cp", str(full_path))
+        return [f"$builddir/assets/{relative_path}"]
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    parser = ArgumentParser(description="Paper Mario build.ninja generator")
-    parser.add_argument(
-        "version",
-        nargs="*",
-        default=[],
-        choices=[*VERSIONS, []],
-        help="Version(s) to configure for. Most tools will operate on the first-provided only. Supported versions: "
-        + ",".join(VERSIONS),
-    )
-    parser.add_argument("--cpp", help="GNU C preprocessor command")
+    parser = ArgumentParser(description="Paper Mario DX build configuration tool")
     parser.add_argument(
         "-c",
         "--clean",
         action="store_true",
         help="Delete assets and previously-built files",
     )
-    parser.add_argument("--splat", default="tools/splat", help="Path to splat tool to use")
-    parser.add_argument("--split-code", action="store_true", help="Re-split code segments to asm files")
     parser.add_argument(
-        "--no-split-assets",
-        action="store_true",
-        help="Don't split assets from the baserom(s)",
-    )
-    parser.add_argument("-d", "--debug", action="store_true", help="Generate debugging information")
-    parser.add_argument(
-        "-N",
-        "--no-non-matching",
-        action="store_true",
-        help="Compile nonmatching code. Combine with --debug for more detailed debug info",
+        "-o",
+        "--out-dir",
+        type=str,
+        default="out",
+        help="Output directory for build artifacts",
     )
     parser.add_argument(
-        "--no-shift",
-        action="store_true",
-        help="Build a shiftable version of the game (non-matching)",
-    )
-    parser.add_argument(
-        "--no-modern-gcc",
-        action="store_true",
-        help="Use modern GCC instead of the original compiler",
-    )
-    parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
-    parser.add_argument(
-        "--c-maps",
-        action="store_true",
-        help="Convert map binaries to C as part of the build process",
+        "--build-dir",
+        type=str,
+        default="build",
+        help="Directory for ephemeral build files",
     )
     args = parser.parse_args()
-    args.shift = not args.no_shift
-    args.non_matching = not args.no_non_matching
-    args.ccache = not args.no_ccache
 
-    version_err_msg = ""
-    missing_tools = []
-    version_old_tools = []
-    for tool, crate_name, req_version in RUST_TOOLS:
-        try:
-            version = exec_shell([tool, "--version"]).split(" ")[1].strip()
-
-            if version < req_version:
-                version_err_msg += (
-                    f"error: {tool} version {req_version} or newer is required, system version is {version}"
-                )
-                version_old_tools.append(crate_name)
-        except (FileNotFoundError, PermissionError):
-            missing_tools.append(crate_name)
-
-    if version_old_tools or missing_tools:
-        if version_err_msg:
-            print(version_err_msg)
-        if missing_tools:
-            print(f"error: cannot find required Rust tool(s): {', '.join(missing_tools)}")
-        print()
-        print("To install/update dependencies, obtain cargo:\n\tcurl https://sh.rustup.rs -sSf | sh")
-        print(f"and then run:")
-        for tool in missing_tools:
-            print(f"\tcargo install {tool}")
-        for tool in version_old_tools:
-            print(f"\tcargo install {tool}")
-        exit(1)
-
-    # default version behaviour is to only do those that exist
-    if len(args.version) > 0:
-        versions = args.version
-    else:
-        versions = []
-
-        for version in VERSIONS:
-            rom = ROOT / f"ver/{version}/baserom.z64"
-
-            print(f"configure: looking for baserom {rom.relative_to(ROOT)}", end="")
-
-            if rom.exists():
-                print("...found")
-                versions.append(version)
-            else:
-                print("...missing")
-
-        if len(versions) == 0:
-            print("error: no baseroms found")
-            exit(1)
+    rom = Path(os.environ["BASEROM"])
+    version = "us"
 
     if args.clean:
         print("configure: cleaning...")
 
         exec_shell(["ninja", "-t", "clean"])
 
-        for version in versions:
-            shutil.rmtree(ROOT / f"assets/{version}", ignore_errors=True)
-            shutil.rmtree(ROOT / f"ver/{version}/assets", ignore_errors=True)
-            shutil.rmtree(ROOT / f"ver/{version}/build", ignore_errors=True)
-            try:
-                os.remove(ROOT / f"ver/{version}/.splat_cache")
-            except OSError:
-                pass
+        shutil.rmtree(ROOT / f"assets/{version}", ignore_errors=True)
+        shutil.rmtree(ROOT / f"ver/{version}/assets", ignore_errors=True)
+        shutil.rmtree(ROOT / f"ver/{version}/build", ignore_errors=True)
+        try:
+            os.remove(ROOT / f"ver/{version}/.splat_cache")
+        except OSError:
+            pass
 
-    args.debug = True
+    # Split assets if necessary
+    need_to_split_assets = not (ROOT / f"assets/{version}").exists()
+    if need_to_split_assets:
+        sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
+        split_assets(version)
 
-    extra_cflags = ""
-    extra_cppflags = ""
-    if args.non_matching:
-        extra_cppflags += " -DNON_MATCHING"
-
-        if args.debug:
-            # extra_cflags += " -ggdb3"
-            extra_cppflags += " -DDEBUG"  # e.g. affects ASSERT macro
-
-    if args.shift:
-        extra_cppflags += " -DSHIFT"
-
-    extra_cflags += " -Wall -Wno-narrowing -Winline"
-
-    # Warnings made into errors by default in GCC 14
-    # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
-    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type"
-
-    # add splat to python import path
-    sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
+    # Create build dirs
+    Path(args.out_dir).mkdir(parents=True, exist_ok=True)
+    Path(args.build_dir).mkdir(parents=True, exist_ok=True)
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
-
-    non_matching = args.non_matching or True or args.shift
-
-    write_ninja_rules(
-        ninja,
-        args.cpp or "mips64-elf-cpp",
-        extra_cppflags,
-        extra_cflags,
-        args.ccache,
-        args.shift,
-        args.debug,
-    )
-    write_ninja_for_tools(ninja)
-
-    skip_files: Set[str] = set()
-    all_rom_oks: List[str] = []
-    first_configure = None
-
-    for version in versions:
-        print(f"configure: configuring version {version}")
-
-        if version == "ique" and not args.non_matching and sys.platform == "darwin":
-            print(
-                "configure: refusing to build iQue Player version on macOS because EGCS compiler is not available (use --non-matching to use default compiler)"
-            )
+    ninja.comment(f"Generated by configure, do not edit!")
+    ninja.newline()
+    ninja.variable("out", "out")
+    ninja.variable("builddir", "build")
+    ninja.newline()
+    ninja.variable("libdragon", os.environ["LIBDRAGON"])
+    ninja.variable("newlib", os.environ["NEWLIB"])
+    ninja.variable("asset_stack_includes", " ".join(f"-Iassets/{asset}" for asset in asset_stack))
+    ninja.newline()
+    ninja.variable("romname", "papermario")
+    ninja.variable("romtitle", "PAPERMARIO")
+    ninja.newline()
+    ninja.include("tools/build/n64.ninja")
+    ninja.newline()
+    ninja.comment("Executable")
+    ninja.build("all", "phony", ["$out/$romname.z64"])
+    ninja.build("$out/$romname.z64", "rom", ["$builddir/$romname.elf"], ["$builddir/assets.dfs"], variables={"dir": "$builddir", "dfs_file": "$builddir/assets.dfs"})
+    ninja.build("$builddir/$romname.elf", "elf", ["$builddir/dx.a"])
+    ninja.newline()
+    ninja.comment("DX")
+    dx_objects = []
+    for p in (ROOT / "src").glob("**/*"):
+        if not p.is_file():
             continue
-
-        configure = Configure(version)
-
-        if not first_configure:
-            first_configure = configure
-
-        # include tools/splat_ext in the python path
-        sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
-
-        configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
-        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
-
-        all_rom_oks.append(str(configure.rom_ok_path()))
-
-    assert first_configure, "no versions configured"
-    first_configure.make_current(ninja)
-
-    ninja.build("all", "phony", all_rom_oks)
+        o = "$builddir/dx/" + p.relative_to(ROOT / "src").with_suffix(".o").as_posix()
+        if p.suffixes == [".c"]:
+            ninja.build(o, "cc", str(p))
+        elif p.suffixes == [".cpp"] or p.suffixes == [".cc"] or p.suffixes == [".cxx"]:
+            ninja.build(o, "cxx", str(p))
+        else:
+            continue
+        dx_objects.append(o)
+    ninja.build("$builddir/dx.a", "ar", dx_objects)
+    ninja.newline()
+    ninja.comment("Assets")
+    built_assets = []
+    for relative_path, full_path in get_asset_list("").items():
+        built_assets += build_asset(ninja, full_path, relative_path)
+    ninja.build("$builddir/assets.dfs", "dfs", [], built_assets, variables={"dir": "$builddir/assets"})
+    ninja.newline()
     ninja.default("all")

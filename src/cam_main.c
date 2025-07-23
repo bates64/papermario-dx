@@ -2,7 +2,6 @@
 #include "camera.h"
 #include "nu/nusys.h"
 #include "hud_element.h"
-#include "dx/profiling.h"
 #include "dx/debug_menu.h"
 
 void render_models(void);
@@ -198,12 +197,9 @@ void render_frame(s32 isSecondPass) {
         if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
             if (gCurrentCamID != CAM_HUD) {
                 if (!(camera->flags & CAMERA_FLAG_RENDER_ENTITIES)) {
-                    GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_ENTITIES);
                     render_entities();
-                    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_ENTITIES);
                 }
                 if (!(camera->flags & CAMERA_FLAG_RENDER_MODELS)) {
-                    GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_MODELS);
                     #if DX_DEBUG_MENU
                     if (!dx_debug_should_hide_models()) {
                         render_models();
@@ -211,22 +207,15 @@ void render_frame(s32 isSecondPass) {
                     #else
                     render_models();
                     #endif
-                    GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_MODELS);
                 }
-                GFX_PROFILER_START(PROFILER_TIME_SUB_GFX_PLAYER);
                 render_player();
-                GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_PLAYER, PROFILER_TIME_SUB_GFX_NPCS);
                 render_npcs();
-                GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_NPCS, PROFILER_TIME_SUB_GFX_WORKERS);
                 render_workers_scene();
-                GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_WORKERS, PROFILER_TIME_SUB_GFX_EFFECTS);
                 render_effects_scene();
-                GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_EFFECTS, PROFILER_TIME_SUB_GFX_RENDER_TASKS);
                 execute_render_tasks();
                 #if DX_DEBUG_MENU
                 dx_debug_draw_collision();
                 #endif
-                GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_RENDER_TASKS, PROFILER_TIME_SUB_GFX_HUD_ELEMENTS);
                 render_transformed_hud_elements();
             } else {
                 guOrthoF(camera->mtxPerspective, 0.0f, SCREEN_WIDTH, -SCREEN_HEIGHT, 0.0f, -1000.0f, 1000.0f, 1.0f);

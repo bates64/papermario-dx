@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "../audio.h"
 
 #define LFSAMPLES       4
 #define AUEQPOWER_LENGTH 128

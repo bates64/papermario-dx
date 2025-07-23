@@ -3,7 +3,7 @@
 
 #include "common_structs.h"
 #include "enums.h"
-#include "world/entrances.h"
+#include "world_entrances.h"
 #include "script_api/map.h"
 #include "npc.h"
 
@@ -35,17 +35,13 @@ typedef struct MapSettings {
     } tattle;
 } MapSettings; // size = 0x40
 
+/// Return TRUE to skip normal asset (shape/hit/bg/tex) loading.
 typedef s32(*MapInit)(void);
 
 #define MAP_ID_MAX_LEN 7 ///< "xxx_yyy" excluding null terminator.
 typedef struct MapConfig {
     /* 0x00 */ char* id; ///< @see MAP_ID_MAX_LEN
-    /* 0x04 */ MapSettings* settings;
-    /* 0x08 */ void* dmaStart;
-    /* 0x0C */ void* dmaEnd;
-    /* 0x10 */ void* dmaDest;
     /* 0x14 */ char* bgName;
-    /* 0x18 */ MapInit init; ///< Return TRUE to skip normal asset (shape/hit/bg/tex) loading.
     /* 0x1C */ char unk_1C[0x2];
     /* 0x1E */ s8 songVariation; ///< 0 or 1. @see bgm_get_map_default_variation
     /* 0x1F */ s8 sfxReverb;

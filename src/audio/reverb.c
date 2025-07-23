@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "../audio.h"
 
 #define SWAP16(in, out) \
 { \

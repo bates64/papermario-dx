@@ -114,16 +114,17 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     }
     load_map_script_lib();
 
-    if (mapConfig->dmaStart != NULL) {
-        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-    }
+    PANIC_MSG("TODO: dlopen map dso %s", mapConfig->id);
 
-    gMapSettings = *mapConfig->settings;
+    PANIC_MSG("TODO: dlsym map settings");
+    //gMapSettings = *mapConfig->settings;
 
     mapSettings = &gMapSettings;
-    if (mapConfig->init != NULL) {
-        skipLoadingAssets = mapConfig->init();
-    }
+
+    PANIC_MSG("TODO: dlsym map init");
+    // if (mapConfig->init != NULL) {
+    //     skipLoadingAssets = mapConfig->init();
+    // }
 
     if (!skipLoadingAssets) {
         ShapeFile* shapeFile = &gMapShapeData;
@@ -292,19 +293,11 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
 
 #define AREA(area, jp_name) { ARRAY_COUNT(area##_maps), area##_maps, "area_" #area, jp_name }
 
-#define MAP(map) \
-    .id = #map, \
-    .settings = &map##_settings, \
-    .dmaStart = map##_ROM_START, \
-    .dmaEnd = map##_ROM_END, \
-    .dmaDest = map##_VRAM \
+#define MAP(map) .id = #map
 
-#define MAP_WITH_INIT(map) \
-    MAP(map), \
-    .init = &map##_map_init \
+#define MAP_WITH_INIT(map) MAP(map)
 
 /// Toad Town
-#include "area_mac/mac.h"
 MapConfig mac_maps[] = {
     { MAP(machi), .bgName = "nok_bg" },
     { MAP(mac_00), .bgName = "nok_bg" },
@@ -317,7 +310,6 @@ MapConfig mac_maps[] = {
 };
 
 /// Toad Town Tunnels
-#include "area_tik/tik.h"
 MapConfig tik_maps[] = {
     { MAP(tik_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(tik_02), .songVariation = 1, .sfxReverb = 2 },
@@ -344,14 +336,12 @@ MapConfig tik_maps[] = {
 };
 
 /// Inside the Whale
-#include "area_kgr/kgr.h"
 MapConfig kgr_maps[] = {
     { MAP(kgr_01), .sfxReverb = 1 },
     { MAP(kgr_02), .sfxReverb = 1 },
 };
 
 /// Goomba Region
-#include "area_kmr/kmr.h"
 MapConfig kmr_maps[] = {
     { MAP(kmr_00), .bgName = "kmr_bg", .sfxReverb = 1 },
     { MAP(kmr_02), .bgName = "kmr_bg" },
@@ -373,7 +363,6 @@ MapConfig kmr_maps[] = {
 };
 
 /// Mt. Rugged
-#include "area_iwa/iwa.h"
 MapConfig iwa_maps[] = {
     { MAP(iwa_00), .bgName = "iwa_bg" },
     { MAP(iwa_01), .bgName = "iwa_bg" },
@@ -385,14 +374,12 @@ MapConfig iwa_maps[] = {
 };
 
 /// Dry Dry Outpost
-#include "area_dro/dro.h"
 MapConfig dro_maps[] = {
     { MAP(dro_01), .bgName = "sbk_bg" },
     { MAP(dro_02), .bgName = "sbk_bg" },
 };
 
 /// Dry Dry Desert
-#include "area_sbk/sbk.h"
 MapConfig sbk_maps[] = {
     { MAP(sbk_00), .bgName = "sbk_bg" },
     { MAP(sbk_01), .bgName = "sbk_bg" },
@@ -447,7 +434,6 @@ MapConfig sbk_maps[] = {
 };
 
 /// Dry Dry Ruins
-#include "area_isk/isk.h"
 MapConfig isk_maps[] = {
     { MAP(isk_01), .bgName = "sbk3_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(isk_02), .bgName = "sbk3_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -469,7 +455,6 @@ MapConfig isk_maps[] = {
 };
 
 /// Koopa Bros. Fortress
-#include "area_trd/trd.h"
 MapConfig trd_maps[] = {
     { MAP(trd_00), .bgName = "nok_bg" },
     { MAP(trd_01), .songVariation = 1, .sfxReverb = 3 },
@@ -485,7 +470,6 @@ MapConfig trd_maps[] = {
 };
 
 /// Koopa Region
-#include "area_nok/nok.h"
 MapConfig nok_maps[] = {
     { MAP(nok_01), .bgName = "nok_bg" },
     { MAP(nok_02), .bgName = "nok_bg" },
@@ -499,7 +483,6 @@ MapConfig nok_maps[] = {
 };
 
 /// Star Region
-#include "area_hos/hos.h"
 MapConfig hos_maps[] = {
     { MAP_WITH_INIT(hos_00), .bgName = "nok_bg" },
     { MAP(hos_01), .bgName = "hos_bg" },
@@ -513,7 +496,6 @@ MapConfig hos_maps[] = {
 };
 
 /// Bowser's Castle
-#include "area_kpa/kpa.h"
 MapConfig kpa_maps[] = {
     { MAP(kpa_01), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kpa_03), .songVariation = 1, .sfxReverb = 3 },
@@ -568,7 +550,6 @@ MapConfig kpa_maps[] = {
 };
 
 /// Peach's Castle Grounds
-#include "area_osr/osr.h"
 MapConfig osr_maps[] = {
     { MAP(osr_00), .bgName = "nok_bg" },
     { MAP_WITH_INIT(osr_01), .bgName = "nok_bg" },
@@ -579,7 +560,6 @@ MapConfig osr_maps[] = {
 
 /// Peach's Castle
 /// @bug There are two entries for kkj_26; the latter is unreachable.
-#include "area_kkj/kkj.h"
 MapConfig kkj_maps[] = {
     { MAP_WITH_INIT(kkj_00), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_01), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
@@ -609,7 +589,6 @@ MapConfig kkj_maps[] = {
 };
 
 /// Jade Jungle
-#include "area_jan/jan.h"
 MapConfig jan_maps[] = {
     { MAP(jan_00), .bgName = "yos_bg" },
     { MAP(jan_01), .bgName = "yos_bg" },
@@ -636,7 +615,6 @@ MapConfig jan_maps[] = {
 };
 
 /// Forever Forest
-#include "area_mim/mim.h"
 MapConfig mim_maps[] = {
     { MAP(mim_01), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(mim_02), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -653,7 +631,6 @@ MapConfig mim_maps[] = {
 };
 
 /// Boo's Mansion
-#include "area_obk/obk.h"
 MapConfig obk_maps[] = {
     { MAP(obk_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(obk_02), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 1 },
@@ -667,7 +644,6 @@ MapConfig obk_maps[] = {
 };
 
 /// Gusty Gulch
-#include "area_arn/arn.h"
 MapConfig arn_maps[] = {
     { MAP(arn_02), .bgName = "arn_bg" },
     { MAP(arn_03), .bgName = "arn_bg" },
@@ -683,7 +659,6 @@ MapConfig arn_maps[] = {
 };
 
 /// Tubba Blubba's Castle
-#include "area_dgb/dgb.h"
 MapConfig dgb_maps[] = {
     { MAP_WITH_INIT(dgb_00), .bgName = "arn_bg" },
     { MAP(dgb_01), .songVariation = 1, .sfxReverb = 2 },
@@ -707,7 +682,6 @@ MapConfig dgb_maps[] = {
 };
 
 /// Mt. Lavalava
-#include "area_kzn/kzn.h"
 MapConfig kzn_maps[] = {
     { MAP(kzn_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kzn_02), .songVariation = 1, .sfxReverb = 2 },
@@ -729,7 +703,6 @@ MapConfig kzn_maps[] = {
 };
 
 /// Flower Fields
-#include "area_flo/flo.h"
 MapConfig flo_maps[] = {
     { MAP(flo_00), .bgName = "fla_bg" },
     { MAP(flo_03), .bgName = "fla_bg" },
@@ -754,7 +727,6 @@ MapConfig flo_maps[] = {
 };
 
 /// Shiver Region
-#include "area_sam/sam.h"
 MapConfig sam_maps[] = {
     { MAP(sam_01), .bgName = "yki_bg" },
     { MAP(sam_02), .bgName = "yki_bg" },
@@ -771,7 +743,6 @@ MapConfig sam_maps[] = {
 };
 
 /// Crystal Palace
-#include "area_pra/pra.h"
 MapConfig pra_maps[] = {
     { MAP_WITH_INIT(pra_01), .bgName = "yki_bg", .sfxReverb = 1 },
     { MAP_WITH_INIT(pra_02), .songVariation = 1, .sfxReverb = 2 },
@@ -808,7 +779,6 @@ MapConfig pra_maps[] = {
 };
 
 /// Shy Guy's Toy Box
-#include "area_omo/omo.h"
 MapConfig omo_maps[] = {
     { MAP(omo_01), .bgName = "omo_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(omo_02), .bgName = "omo_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -830,7 +800,6 @@ MapConfig omo_maps[] = {
 };
 
 /// Debug
-#include "area_tst/tst.h"
 MapConfig tst_maps[] = {
     { MAP(tst_01), .bgName = "nok_bg" },
     { MAP(tst_02), .bgName = "nok_bg" },
@@ -844,14 +813,12 @@ MapConfig tst_maps[] = {
 };
 
 /// Credits
-#include "area_end/end.h"
 MapConfig end_maps[] = {
     { MAP_WITH_INIT(end_00) },
     { MAP_WITH_INIT(end_01) },
 };
 
 /// Toad Town Playroom
-#include "area_mgm/mgm.h"
 MapConfig mgm_maps[] = {
     { MAP(mgm_00) },
     { MAP(mgm_01) },
@@ -860,11 +827,11 @@ MapConfig mgm_maps[] = {
 };
 
 /// Game Over
-#include "area_gv/gv.h"
 MapConfig gv_maps[] = {
     { MAP(gv_01) },
 };
 
+// TODO(decouple)
 AreaConfig gAreas[] = {
     AREA(kmr, "クリむら"),  // kuri mura [kuribou village, Goomba Village]
     AREA(mac, "まち"),  // machi [town, Toad Town]

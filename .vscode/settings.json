@@ -43,7 +43,7 @@
         "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?", // no $, for scripts
         "editor.formatOnSave": false, // TODO: enable this once we solve EVTs, see #1004
         "editor.formatOnSaveMode": "modifications",
-        "editor.defaultFormatter": "xaver.clang-format",
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
     "files.associations": {
         "*.h": "c",

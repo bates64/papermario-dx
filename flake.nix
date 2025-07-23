@@ -9,6 +9,9 @@
 
     star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
     star-rod.inputs.nixpkgs.follows = "nixpkgs";
+
+    libdragon.url = "github:DragonMinded/libdragon/trunk";
+    libdragon.flake = false;
   };
   nixConfig = {
     extra-substituters = [
@@ -20,37 +23,38 @@
       "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
     ];
   };
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod }:
+  outputs = { nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod, libdragon, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         crossSystem = {
           config = "mips64-elf";
-          system = "mips64-elf";
-          gcc.arch = "vr4300";
-          gcc.tune = "vr4300";
-          gcc.abi = "32";
-          libc = "newlib";
+          # system = "mips64-elf";
+          # gcc.arch = "vr4300";
+          # gcc.tune = "vr4300";
+          # gcc.abi = "64";
+          # gcc.fpu = "double";
+          #libc = "newlib";
         };
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs  {
           inherit system crossSystem;
           overlays = [
-            # Roughly same flags as libdragon
             (final: prev: {
               gcc = prev.gcc.overrideAttrs (oldAttrs: {
                 configureFlags = (oldAttrs.configureFlags or []) ++ [
                   "--with-newlib"
                   "--enable-newlib"
+                  "--enable-multilib"
                   "--disable-shared"
                   "--disable-win32-registry"
                   "--disable-nls"
                 ];
                 enableParallelBuilding = true;
               });
+            })
+            (final: prev: {
               newlib = prev.newlib.overrideAttrs (oldAttrs: {
                 configureFlags = [
-                  "--with-newlib"
-                  "--host=${system}"
                   "--target=${crossSystem.config}"
                   "--with-cpu=mips64vr4300"
                   "--disable-libssp"
@@ -58,11 +62,13 @@
                   #"--enable-newlib-multithread"
                   #"--enable-newlib-retargetable-locking"
                 ];
-                CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2 -fpermissive -march=mips32";
+                CFLAGS_FOR_TARGET="-DHAVE_ASSERT_FUNC -O2 -fpermissive";
               });
             })
           ];
         };
+        libdragonPkgs = pkgs.callPackage ./libdragon.nix { n64Pkgs = pkgsCross; inherit libdragon; };
+
         binutils2_39 = (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
         baseRom = pkgs.requireFile {
           name = "papermario.us.z64";
@@ -88,12 +94,12 @@
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
       in {
+        packages.gcc = pkgsCross.buildPackages.gcc;
         devShells.default = pkgsCross.mkShell {
           name = "papermario-dx";
           venvDir = "./venv";
           packages = with pkgs; [
-            ninja # needed for ninja -t compdb in run, as n2 doesn't support it
-            n2 # same as ninja, but with prettier output
+            ninja
             zlib
             libyaml
             python3
@@ -101,24 +107,36 @@
             ccache
             git
             iconv
-            gcc # for n64crc
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
             (clang-tools.override {
               enableLibcxx = true;
             })
+            libdragonPkgs.lib
+            libdragonPkgs.tools
+            lld
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
+            export BASEROM=${baseRom}
+
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips64-elf-ld"
             export NEWLIB="${pkgsCross.newlib}"
+
+            export CPATH=${libdragonPkgs.lib}/mips64-elf/include
+            export LIBDRAGON=${libdragonPkgs.lib}/mips64-elf
+
+            # Required for libdragon tools
+            export N64_INST=${libdragonPkgs.buildEnv}
 
             # Install python packages (TODO: use derivations)
             virtualenv venv --quiet
             source venv/bin/activate
             pip install -r ${./requirements.txt} --quiet
             pip install -r ${./requirements_extra.txt} --quiet
+
+            export NINJA_STATUS="%P %W "
           '';
         };
       }

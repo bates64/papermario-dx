@@ -3,7 +3,6 @@
 #include "world/disguise.h"
 #include "world/surfaces.h"
 #include "sprite.h"
-#include "world/partner/watt.h"
 #include "sprite/player.h"
 #include "dx/debug_menu.h"
 
@@ -779,9 +778,10 @@ void phys_update_standard(void) {
         }
     }
 
-    if (playerStatus->animFlags & PA_FLAG_WATT_IN_HANDS) {
-        world_watt_sync_held_position();
-    }
+    // TODO(decouple)
+    // if (playerStatus->animFlags & PA_FLAG_WATT_IN_HANDS) {
+    //     world_watt_sync_held_position();
+    // }
 
     if (!(playerStatus->flags & PS_FLAG_CAMERA_DOESNT_FOLLOW)) {
         gCameras[CAM_DEFAULT].targetPos.x = playerStatus->pos.x;

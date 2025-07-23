@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "../audio.h"
 
 static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundSFXEntry* sfxEntry, s32 arg4, s32 arg5);
 static void au_sfx_set_triggers(SoundManager* manager, u32 soundID);

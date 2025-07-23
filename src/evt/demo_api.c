@@ -1,8 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
 
-extern Addr sprite_shading_profiles_data_ROM_START;
-
 /// Packed equivalent of SpriteShadingLightSource as baked into the ROM, smaller due to packed position vector
 typedef struct PackedShadingLightSource {
     /* 0x00 */ s8 flags;
@@ -55,7 +53,7 @@ API_CALLABLE(SetSpriteShading) {
 
     // load shading profile
     profileStart = ShadingOffsetsBuffer[0];
-    dataOffset = (s32)sprite_shading_profiles_data_ROM_START + groupStart + profileStart;
+    dataOffset = (s32)sprite_shading_profiles_ROM_START + 0x1D0 + groupStart + profileStart;
     dma_copy((u8*) dataOffset, (u8*) dataOffset + sizeof(PackedShadingData), &PackedShadingData);
 
     profile = gSpriteShadingProfile;

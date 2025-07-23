@@ -1,43 +1,54 @@
+#include <dlfcn.h>
 #include "common_structs.h"
-#include "partners.h"
+#include "world/partners.h"
 #include "macros.h"
 
 #include "ld_addrs.h"
 #include "npc.h"
 #include "hud_element.h"
 
-#include "partner/goombario.h"
 #include "sprite/npc/WorldGoombario.h"
 
-#include "partner/kooper.h"
 #include "sprite/npc/WorldKooper.h"
 
-#include "partner/bombette.h"
 #include "sprite/npc/WorldBombette.h"
 
-#include "partner/parakarry.h"
 #include "sprite/npc/WorldParakarry.h"
 
-#include "partner/goompa.h"
 #include "sprite/npc/Goompa.h"
 
-#include "partner/watt.h"
 #include "sprite/npc/WorldWatt.h"
 
-#include "partner/sushie.h"
 #include "sprite/npc/WorldSushie.h"
 
-#include "partner/lakilester.h"
 #include "sprite/npc/WorldLakilester.h"
 
-#include "partner/bow.h"
 #include "sprite/npc/WorldBow.h"
 
-#include "partner/goombaria.h"
 #include "sprite/npc/Goombaria.h"
 
-#include "partner/twink.h"
 #include "sprite/npc/Twink.h"
+
+typedef void (*PartnerFunc)(Npc* partner);
+typedef s32 (*PartnerBoolFunc)(Npc* partner);
+typedef s32 (*PartnerTesHitFunc)(Npc* partner, Npc* enemy);
+
+typedef struct partner_overlay {
+    void* handle; // dlopen handle
+    /* 0x0C */ s32 isFlying;
+    /* 0x10 */ PartnerFunc init;
+    /* 0x14 */ EvtScript* takeOut;
+    /* 0x18 */ EvtScript* update;
+    /* 0x1C */ EvtScript* useAbility;
+    /* 0x20 */ EvtScript* putAway;
+    /* 0x24 */ s32 idle;
+    /* 0x28 */ PartnerTesHitFunc testFirstStrike;
+    /* 0x2C */ PartnerBoolFunc canUseAbility;
+    /* 0x30 */ PartnerBoolFunc canPlayerOpenMenus;
+    /* 0x34 */ PartnerFunc preBattle;
+    /* 0x38 */ PartnerFunc postBattle;
+    /* 0x3C */ EvtScript* onEnterMap;
+} partner_overlay;
 
 PartnerStatus gPartnerStatus;
 Npc* wPartnerNpc;
@@ -59,7 +70,16 @@ BSS s32 wPartnerCurrentScriptID;
 BSS s32 D_8010CFE0;
 BSS s32 NextPartnerID;
 BSS s32 NextPartnerCommand;
-BSS WorldPartner* wPartner;
+BSS partner_overlay PartnerOverlay;
+
+void partner_free_overlay(partner_overlay* partner [[nonnull]]) {
+    if (partner->handle) {
+        if (dlclose(PartnerOverlay.handle)) {
+            PANIC_MSG("dlclose failed: %s", dlerror());
+        }
+    }
+    memset(partner, 0, sizeof(*partner));
+}
 
 extern HudScript HES_Partner0;
 extern HudScript HES_Goombario;
@@ -163,178 +183,6 @@ f32 wPartnerMoveSpeed = 0.0f;
 f32 D_800F8034 = 0.0f;
 s16 D_800F8038 = 0;
 s16 D_800F803A = 0;
-
-WorldPartner wPartners[] = {
-    [PARTNER_NONE] {
-        // blank
-    },
-    [PARTNER_GOOMBARIO] {
-        .dmaStart = &world_partner_goombario_ROM_START,
-        .dmaEnd = &world_partner_goombario_ROM_END,
-        .dmaDest = &world_partner_goombario_VRAM,
-        .isFlying = FALSE,
-        .init = world_goombario_init,
-        .takeOut = &EVS_WorldGoombario_TakeOut,
-        .update = &EVS_WorldGoombario_Update,
-        .useAbility = &EVS_WorldGoombario_UseAbility,
-        .putAway = &EVS_WorldGoombario_PutAway,
-        .idle = ANIM_WorldGoombario_Idle,
-        .canUseAbility = world_goombario_can_open_menus,
-        .canPlayerOpenMenus = world_goombario_can_open_menus,
-        .preBattle = world_goombario_pre_battle,
-    },
-    [PARTNER_KOOPER] {
-        .dmaStart = &world_partner_kooper_ROM_START,
-        .dmaEnd = &world_partner_kooper_ROM_END,
-        .dmaDest = &world_partner_kooper_VRAM,
-        .isFlying = FALSE,
-        .init = world_kooper_init,
-        .takeOut = &EVS_WorldKooper_TakeOut,
-        .update = &EVS_WorldKooper_Update,
-        .useAbility = &EVS_WorldKooper_UseAbility,
-        .putAway = &EVS_WorldKooper_PutAway,
-        .idle = ANIM_WorldKooper_Idle,
-        .testFirstStrike = world_kooper_test_first_strike,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-        .preBattle = world_kooper_pre_battle,
-        .postBattle = world_kooper_post_battle,
-    },
-    [PARTNER_BOMBETTE] {
-        .dmaStart = &world_partner_bombette_ROM_START,
-        .dmaEnd = &world_partner_bombette_ROM_END,
-        .dmaDest = &world_partner_bombette_VRAM,
-        .isFlying = FALSE,
-        .init = world_bombette_init,
-        .takeOut = &EVS_WorldBombette_TakeOut,
-        .update = &EVS_WorldBombette_Update,
-        .useAbility = &EVS_WorldBombette_UseAbility,
-        .putAway = &EVS_WorldBombette_PutAway,
-        .idle = ANIM_WorldBombette_Idle,
-        .testFirstStrike = world_bombette_test_first_strike,
-        .canUseAbility = world_bombette_can_use_ability,
-        .canPlayerOpenMenus = world_bombette_can_open_menus,
-        .preBattle = world_bombette_pre_battle,
-    },
-    [PARTNER_PARAKARRY] {
-        .dmaStart = &world_partner_parakarry_ROM_START,
-        .dmaEnd = &world_partner_parakarry_ROM_END,
-        .dmaDest = &world_partner_parakarry_VRAM,
-        .isFlying = TRUE,
-        .init = world_parakarry_init,
-        .takeOut = &EVS_WorldParakarry_TakeOut,
-        .update = &EVS_WorldParakarry_Update,
-        .useAbility = &EVS_WorldParakarry_UseAbility,
-        .putAway = &EVS_WorldParakarry_PutAway,
-        .idle = ANIM_WorldParakarry_Idle,
-        .canPlayerOpenMenus = partner_is_idle,
-        .preBattle = world_parakarry_pre_battle,
-        .postBattle = world_parakarry_post_battle,
-    },
-    [PARTNER_GOOMPA] {
-        .dmaStart = &world_partner_goompa_ROM_START,
-        .dmaEnd = &world_partner_goompa_ROM_END,
-        .dmaDest = &world_partner_goompa_VRAM,
-        .isFlying = FALSE,
-        .init = world_goompa_init,
-        .takeOut = &EVS_WorldGoompa_TakeOut,
-        .update = &EVS_WorldGoompa_Update,
-        .useAbility = &EVS_WorldGoompa_UseAbility,
-        .putAway = &EVS_WorldGoompa_PutAway,
-        .idle = ANIM_Goompa_Idle,
-    },
-    [PARTNER_WATT] {
-        .dmaStart = &world_partner_watt_ROM_START,
-        .dmaEnd = &world_partner_watt_ROM_END,
-        .dmaDest = &world_partner_watt_VRAM,
-        .isFlying = TRUE,
-        .init = world_watt_init,
-        .takeOut = &EVS_WorldWatt_TakeOut,
-        .update = &EVS_WorldWatt_Update,
-        .useAbility = &EVS_WorldWatt_UseAbility,
-        .putAway = &EVS_WorldWatt_PutAway,
-        .idle = ANIM_WorldWatt_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_watt_pre_battle,
-        .postBattle = world_watt_post_battle,
-        .onEnterMap = &EVS_WorldWatt_EnterMap,
-    },
-    [PARTNER_SUSHIE] {
-        .dmaStart = &world_partner_sushie_ROM_START,
-        .dmaEnd = &world_partner_sushie_ROM_END,
-        .dmaDest = &world_partner_sushie_VRAM,
-        .isFlying = FALSE,
-        .init = world_sushie_init,
-        .takeOut = &EVS_WorldSushie_TakeOut,
-        .update = &EVS_WorldSushie_Update,
-        .useAbility = &EVS_WorldSushie_UseAbility,
-        .putAway = &EVS_WorldSushie_PutAway,
-        .idle = ANIM_WorldSushie_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_sushie_pre_battle,
-        .postBattle = world_sushie_post_battle,
-        .onEnterMap = &EVS_WorldSushie_EnterMap,
-    },
-    [PARTNER_LAKILESTER] {
-        .dmaStart = &world_partner_lakilester_ROM_START,
-        .dmaEnd = &world_partner_lakilester_ROM_END,
-        .dmaDest = &world_partner_lakilester_VRAM,
-        .isFlying = TRUE,
-        .init = world_lakilester_init,
-        .takeOut = &EVS_WorldLakilester_TakeOut,
-        .update = &EVS_WorldLakilester_Update,
-        .useAbility = &EVS_WorldLakilester_UseAbility,
-        .putAway = &EVS_WorldLakilester_PutAway,
-        .idle = ANIM_WorldLakilester_Idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_lakilester_pre_battle,
-        .postBattle = world_lakilester_post_battle,
-        .onEnterMap = &EVS_WorldLakilester_EnterMap,
-    },
-    [PARTNER_BOW] {
-        .dmaStart = &world_partner_bow_ROM_START,
-        .dmaEnd = &world_partner_bow_ROM_END,
-        .dmaDest = &world_partner_bow_VRAM,
-        .isFlying = TRUE,
-        .init = world_bow_init,
-        .takeOut = &EVS_WorldBow_TakeOut,
-        .update = &EVS_WorldBow_Update,
-        .useAbility = &EVS_WorldBow_UseAbility,
-        .putAway = &EVS_WorldBow_PutAway,
-        .idle = ANIM_WorldBow_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = world_partner_can_open_menus_default,
-        .preBattle = world_bow_pre_battle,
-    },
-    [PARTNER_GOOMBARIA] {
-        .dmaStart = &world_partner_goombaria_ROM_START,
-        .dmaEnd = &world_partner_goombaria_ROM_END,
-        .dmaDest = &world_partner_goombaria_VRAM,
-        .isFlying = FALSE,
-        .init = world_goombaria_init,
-        .takeOut = &EVS_WorldGoombaria_TakeOut,
-        .update = &EVS_WorldGoombaria_Update,
-        .useAbility = &EVS_WorldGoombaria_UseAbility,
-        .putAway = &EVS_WorldGoombaria_PutAway,
-        .idle = ANIM_Goombaria_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-    },
-    [PARTNER_TWINK] {
-        .dmaStart = &world_partner_twink_ROM_START,
-        .dmaEnd = &world_partner_twink_ROM_END,
-        .dmaDest = &world_partner_twink_VRAM,
-        .isFlying = TRUE,
-        .init = world_twink_init,
-        .takeOut = &EVS_WorldTwink_TakeOut,
-        .update = &EVS_WorldTwink_Update,
-        .useAbility = &EVS_WorldTwink_UseAbility,
-        .putAway = &EVS_WorldTwink_PutAway,
-        .idle = ANIM_Twink_Idle,
-        .canUseAbility = partner_is_idle,
-        .canPlayerOpenMenus = partner_is_idle,
-    },
-};
 
 f32 wSavedPartnerPosX = 0;
 f32 wSavedPartnerPosY = 0;
@@ -570,7 +418,7 @@ s32 func_800EA52C(s32 partnerID) {
 }
 
 s32 partner_is_flying(void) {
-    return !wPartner->isFlying;
+    return !PartnerOverlay.isFlying;
 }
 
 void func_800EA5B8(Npc* partner) {
@@ -579,41 +427,29 @@ void func_800EA5B8(Npc* partner) {
 }
 
 void create_partner_npc(void) {
-    WorldPartner* partnerEntry = &wPartners[wCurrentPartnerId];
     Npc** partnerNpcPtr = &wPartnerNpc;
-    WorldPartner** partner = &wPartner;
     s32 npcIndex;
     NpcBlueprint blueprint;
-    NpcBlueprint* blueprintPtr;
-
-    *partner = partnerEntry;
-    blueprintPtr = &blueprint;
-    dma_copy(partnerEntry->dmaStart, partnerEntry->dmaEnd, partnerEntry->dmaDest);
 
     blueprint.flags = NPC_FLAG_PARTNER | NPC_FLAG_IGNORE_PLAYER_COLLISION;
-    blueprint.initialAnim = (*partner)->idle;
+    blueprint.initialAnim = PartnerOverlay.idle;
     blueprint.onUpdate = NULL;
     blueprint.onRender = NULL;
-    wPartnerNpcIndex = npcIndex = create_basic_npc(blueprintPtr);
+    wPartnerNpcIndex = npcIndex = create_basic_npc(&blueprint);
 
     *partnerNpcPtr = get_npc_by_index(npcIndex);
 
-    {
-        Npc* npc = *partnerNpcPtr;
-        npc->npcID = NPC_PARTNER;
-        npc->collisionDiameter = 10;
-        npc->collisionHeight = 10;
-    }
+    Npc* npc = *partnerNpcPtr;
+    npc->npcID = NPC_PARTNER;
+    npc->collisionDiameter = 10;
+    npc->collisionHeight = 10;
 
-    {
-        Npc* npc = *partnerNpcPtr;
-        npc->pos.x = NPC_DISPOSE_POS_X;
-        npc->pos.y = NPC_DISPOSE_POS_Y;
-        npc->pos.z = NPC_DISPOSE_POS_Z;
-        npc->scale.x = 0.0f;
-        npc->scale.y = 0.0f;
-        npc->scale.z = 0.0f;
-    }
+    npc->pos.x = NPC_DISPOSE_POS_X;
+    npc->pos.y = NPC_DISPOSE_POS_Y;
+    npc->pos.z = NPC_DISPOSE_POS_Z;
+    npc->scale.x = 0.0f;
+    npc->scale.y = 0.0f;
+    npc->scale.z = 0.0f;
 
     TweesterTouchingPartner = NULL;
 }
@@ -675,7 +511,7 @@ void _use_partner_ability(void) {
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
                     kill_script_by_ID(wPartnerCurrentScriptID);
-                    wPartnerCurrentScript = start_script(wPartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -691,11 +527,11 @@ void _use_partner_ability(void) {
                     playerData->curPartner = wCurrentPartnerId = NextPartnerID;
                     create_partner_npc();
                     sfx_play_sound(SOUND_PARTNER_GET_OUT);
-                    wPartner->init(wPartnerNpc);
+                    PartnerOverlay.init(wPartnerNpc);
                     PartnerCommandState++;
                     // fallthrough
                 case 2: // take out new partner
-                    wPartnerCurrentScript = start_script(wPartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -706,7 +542,7 @@ void _use_partner_ability(void) {
                     if (does_script_exist(wPartnerCurrentScriptID)) {
                         break;
                     }
-                    wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -733,14 +569,14 @@ void _use_partner_ability(void) {
                     wPartnerNpc->scale.x = 1.0f;
                     wPartnerNpc->scale.y = 1.0f;
                     wPartnerNpc->scale.z = 1.0f;
-                    wPartner->init(wPartnerNpc);
+                    PartnerOverlay.init(wPartnerNpc);
                     PartnerCommandState++;
                     // fallthrough
                 case 2:
                     PartnerCommandState++;
                     break;
                 case 3:
-                    wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -754,7 +590,7 @@ void _use_partner_ability(void) {
                     disable_player_input();
                     sfx_play_sound(SOUND_PARTNER_PUT_AWAY);
                     kill_script_by_ID(wPartnerCurrentScriptID);
-                    wPartnerCurrentScript = start_script(wPartner->putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.putAway, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -786,11 +622,11 @@ void _use_partner_ability(void) {
                     disable_player_input();
                     playerData->curPartner = wCurrentPartnerId = NextPartnerID;
                     create_partner_npc();
-                    wPartner->init(wPartnerNpc);
+                    PartnerOverlay.init(wPartnerNpc);
                     PartnerCommandState++;
                     // fallthrough
                 case 1: // take out new partner
-                    wPartnerCurrentScript = start_script(wPartner->takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.takeOut, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -800,7 +636,7 @@ void _use_partner_ability(void) {
                     if (does_script_exist(wPartnerCurrentScriptID)) {
                         break;
                     }
-                    wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -823,11 +659,11 @@ void _use_partner_ability(void) {
                     wPartnerNpc->scale.x = 1.0f;
                     wPartnerNpc->scale.y = 1.0f;
                     wPartnerNpc->scale.z = 1.0f;
-                    wPartner->init(wPartnerNpc);
+                    PartnerOverlay.init(wPartnerNpc);
                     PartnerCommandState++;
                     break;
                 case 1:
-                    wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -841,7 +677,7 @@ void _use_partner_ability(void) {
             switch (PartnerCommandState) {
                 case 0:
                     kill_script_by_ID(wPartnerCurrentScriptID);
-                    wPartnerCurrentScript = start_script(wPartner->useAbility, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.useAbility, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -851,7 +687,7 @@ void _use_partner_ability(void) {
                     if (does_script_exist(wPartnerCurrentScriptID)) {
                         break;
                     }
-                    wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                    wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                     wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                     wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                     wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -864,7 +700,7 @@ void _use_partner_ability(void) {
             switch (PartnerCommandState) {
                 case 0:
                     disable_player_input();
-                    wPartner->init(wPartnerNpc);
+                    PartnerOverlay.init(wPartnerNpc);
                     PartnerCommandState++;
                     // fallthrough
                 case 1:
@@ -875,7 +711,7 @@ void _use_partner_ability(void) {
                         wSavedPartnerPosX = playerStatus->pos.x;
                         wSavedPartnerPosY = playerStatus->pos.y;
                         wSavedPartnerPosZ = playerStatus->pos.z;
-                        wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+                        wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
                         wPartnerCurrentScript->owner2.npc = wPartnerNpc;
                         wPartnerCurrentScriptID = wPartnerCurrentScript->id;
                         wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -965,8 +801,7 @@ s32 partner_use_ability(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
 
     if (!is_starting_conversation()
-        && wPartner != NULL
-        && (wPartner->canUseAbility == NULL || wPartner->canUseAbility(wPartnerNpc)))
+        && (PartnerOverlay.canUseAbility == NULL || PartnerOverlay.canUseAbility(wPartnerNpc)))
     {
         if (gGameStatusPtr->multiplayerEnabled && (partnerStatus->curButtons & BUTTON_B)) {
             sfx_play_sound(SOUND_MENU_ERROR);
@@ -981,9 +816,8 @@ s32 partner_use_ability(void) {
 }
 
 s32 partner_can_open_world_menus(void) {
-    if (wPartner != NULL
-        && wPartner->canPlayerOpenMenus != NULL
-        && !wPartner->canPlayerOpenMenus(wPartnerNpc)
+    if (PartnerOverlay.canPlayerOpenMenus != NULL
+        && !PartnerOverlay.canPlayerOpenMenus(wPartnerNpc)
     ) {
         return FALSE;
     }
@@ -991,10 +825,36 @@ s32 partner_can_open_world_menus(void) {
 }
 
 s32 partner_can_use_ability(void) {
-    if (wPartner->canUseAbility != NULL && !wPartner->canUseAbility(wPartnerNpc)) {
+    if (PartnerOverlay.canUseAbility != NULL && !PartnerOverlay.canUseAbility(wPartnerNpc)) {
         return TRUE;
     }
     return FALSE;
+}
+
+bool partner_dismount(void) {
+    // TODO(decouple): use dlsym
+    PartnerStatus* partnerStatus = &gPartnerStatus;
+    auto actionState = gPlayerStatusPtr->actionState;
+    if (partnerStatus->actingPartner == PARTNER_WATT) {
+        return actionState == ACTION_STATE_IDLE ||
+                actionState == ACTION_STATE_WALK ||
+                actionState == ACTION_STATE_RUN;
+    } else if (partnerStatus->actingPartner == PARTNER_BOW) {
+        if (actionState == ACTION_STATE_RIDE) {
+            gPlayerStatus.prevAlpha = 0;
+            return true;
+        }
+    } else if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
+        if (actionState == ACTION_STATE_RIDE) {
+            //if (world_lakilester_can_dismount()) {
+            //    return true;
+            //}
+            sfx_play_sound(SOUND_MENU_ERROR);
+        }
+    } else if (partnerStatus->actingPartner == PARTNER_SUSHIE) {
+        sfx_play_sound(SOUND_MENU_ERROR);
+    }
+    return false;
 }
 
 void partner_reset_data(void) {
@@ -1013,7 +873,50 @@ void partner_reset_data(void) {
         gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
     }
 
-    wPartner = NULL;
+    // Lookup partner ID
+    const char* name;
+    bool isFlying = false;
+    switch (currentPartner) {
+        case PARTNER_GOOMBARIO: name = "goombario"; break;
+        case PARTNER_KOOPER: name = "kooper"; break;
+        case PARTNER_BOMBETTE: name = "bombette"; break;
+        case PARTNER_PARAKARRY: name = "parakarry"; isFlying = true; break;
+        case PARTNER_GOOMPA: name = "goompa"; break;
+        case PARTNER_WATT: name = "watt"; isFlying = true; break;
+        case PARTNER_SUSHIE: name = "sushie"; break;
+        case PARTNER_LAKILESTER: name = "lakilester"; isFlying = true; break;
+        case PARTNER_BOW: name = "bow"; isFlying = true; break;
+        case PARTNER_GOOMBARIA: name = "goombaria"; break;
+        case PARTNER_TWINK: name = "twink"; isFlying = true; break;
+        default: PANIC_MSG("Invalid partner ID: %d", currentPartner);
+    }
+
+    // Load overlay
+    partner_free_overlay(&PartnerOverlay);
+    char path[64];
+    snprintf(path, sizeof(path), "rom:/world/partner/%s.dso", name);
+    PartnerOverlay.handle = dlopen(path, RTLD_LOCAL);
+    ASSERT_MSG(PartnerOverlay.handle, "Failed to load partner %s", name);
+
+    PartnerOverlay.isFlying = (s32)isFlying; // TODO(decouple): use dlsym
+    PartnerOverlay.init = dlsym(PartnerOverlay.handle, "init");
+    ASSERT_MSG(PartnerOverlay.init, "Partner %s lacks init function", name);
+    PartnerOverlay.takeOut = dlsym(PartnerOverlay.handle, "TakeOut");
+    ASSERT_MSG(PartnerOverlay.takeOut, "Partner %s lacks TakeOut script", name);
+    PartnerOverlay.update = dlsym(PartnerOverlay.handle, "Update");
+    ASSERT_MSG(PartnerOverlay.update, "Partner %s lacks Update script", name);
+    PartnerOverlay.useAbility = dlsym(PartnerOverlay.handle, "UseAbility");
+    ASSERT_MSG(PartnerOverlay.useAbility, "Partner %s lacks UseAbility script", name);
+    PartnerOverlay.putAway = dlsym(PartnerOverlay.handle, "PutAway");
+    ASSERT_MSG(PartnerOverlay.putAway, "Partner %s lacks PutAway script", name);
+    PartnerOverlay.idle = gPartnerAnimations[currentPartner].idle; // TODO(decouple): use dlsym
+    PartnerOverlay.testFirstStrike = dlsym(PartnerOverlay.handle, "test_first_strike");
+    PartnerOverlay.canUseAbility = dlsym(PartnerOverlay.handle, "can_use_ability");
+    PartnerOverlay.canPlayerOpenMenus = dlsym(PartnerOverlay.handle, "can_player_open_menus");
+    PartnerOverlay.preBattle = dlsym(PartnerOverlay.handle, "pre_battle");
+    PartnerOverlay.postBattle = dlsym(PartnerOverlay.handle, "post_battle");
+    PartnerOverlay.onEnterMap = dlsym(PartnerOverlay.handle, "EnterMap");
+
     wSavedPartnerPosX = playerStatus->pos.x;
     wSavedPartnerPosY = playerStatus->pos.y;
     wSavedPartnerPosZ = playerStatus->pos.z;
@@ -1042,26 +945,21 @@ void partner_initialize_data(void) {
     partnerStatus->partnerActionState = 0;
     partnerStatus->unk_358 = 0;
     partnerStatus->partnerAction_unk_2 = FALSE;
-    wPartner = NULL;
+    partner_free_overlay(&PartnerOverlay);
     wSavedPartnerPosX = 0;
     wSavedPartnerPosY = 0;
     wSavedPartnerPosZ = 0;
 }
 
 s32 partner_test_enemy_collision(Npc* enemy) {
-    if (wCurrentPartnerId != PARTNER_NONE && wPartner->testFirstStrike != NULL) {
-        return wPartner->testFirstStrike(wPartnerNpc, enemy);
+    if (wCurrentPartnerId != PARTNER_NONE && PartnerOverlay.testFirstStrike != NULL) {
+        return PartnerOverlay.testFirstStrike(wPartnerNpc, enemy);
     }
     return FALSE;
 }
 
 EvtScript* partner_get_enter_map_script(void) {
-    WorldPartner* partner = wPartner;
-
-    if (partner == NULL) {
-        return NULL;
-    }
-    return partner->onEnterMap;
+    return PartnerOverlay.onEnterMap;
 }
 
 void partner_handle_before_battle(void) {
@@ -1072,8 +970,8 @@ void partner_handle_before_battle(void) {
             kill_script_by_ID(*scriptID);
         }
 
-        if (wPartner->preBattle != NULL) {
-            wPartner->preBattle(wPartnerNpc);
+        if (PartnerOverlay.preBattle != NULL) {
+            PartnerOverlay.preBattle(wPartnerNpc);
         }
     }
 }
@@ -1087,7 +985,7 @@ void partner_handle_after_battle(void) {
             kill_script_by_ID(wPartnerCurrentScriptID);
         }
 
-        wPartnerCurrentScript = start_script(wPartner->update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
+        wPartnerCurrentScript = start_script(PartnerOverlay.update, EVT_PRIORITY_14, EVT_FLAG_RUN_IMMEDIATELY);
         wPartnerCurrentScript->owner2.npc = wPartnerNpc;
         wPartnerCurrentScriptID = wPartnerCurrentScript->id;
         wPartnerCurrentScript->groupFlags = EVT_GROUP_PASSIVE_NPC;
@@ -1100,8 +998,8 @@ void partner_handle_after_battle(void) {
             partnerStatus->actingPartner = PARTNER_NONE;
         }
 
-        if (wPartner->postBattle != NULL) {
-            wPartner->postBattle(wPartnerNpc);
+        if (PartnerOverlay.postBattle != NULL) {
+            PartnerOverlay.postBattle(wPartnerNpc);
         }
     }
 }
@@ -2273,7 +2171,7 @@ s32 partner_get_out(Npc* partner) {
             }
             partner->moveToPos.x = playerStatus->pos.x;
             partner->moveToPos.y = playerStatus->pos.y;
-            if (wPartner->isFlying) {
+            if (PartnerOverlay.isFlying) {
                 partner->moveToPos.y = playerStatus->pos.y;
             }
             partner->moveToPos.z = playerStatus->pos.z;
@@ -2281,7 +2179,7 @@ s32 partner_get_out(Npc* partner) {
             moveToX = partner->moveToPos.x;
             moveToY = partner->moveToPos.y;
             moveToZ = partner->moveToPos.z;
-            if (!wPartner->isFlying) {
+            if (!PartnerOverlay.isFlying) {
                 x = moveToX;
                 y = moveToY + partner->collisionHeight;
                 z = moveToZ;
@@ -2361,7 +2259,7 @@ s32 partner_get_out(Npc* partner) {
             partner->moveToPos.z = partner->pos.z;
             partner->pos.x = partner->pos.x;
             partner->pos.y = playerStatus->pos.y;
-            if (wPartner->isFlying) {
+            if (PartnerOverlay.isFlying) {
                 partner->pos.y = playerStatus->pos.y;
             }
             partner->pos.z = partner->pos.z;
@@ -2370,7 +2268,7 @@ s32 partner_get_out(Npc* partner) {
             partner->pos.y = partner->moveToPos.y;
             partner->pos.z = partner->moveToPos.z;
             if (partner->flags & NPC_FLAG_GROUNDED) {
-                if (!wPartner->isFlying) {
+                if (!PartnerOverlay.isFlying) {
                     npc_surface_spawn_fx(partner, SURFACE_INTERACT_LAND);
                 }
             }
@@ -2391,7 +2289,7 @@ void enable_partner_ai(void) {
     wPartnerFollowState = 0;
     partner_clear_player_tracking(wPartnerNpc);
 
-    if (!wPartner->isFlying) {
+    if (!PartnerOverlay.isFlying) {
         partner_walking_enable(wPartnerNpc, FALSE);
     } else {
         partner_flying_enable(wPartnerNpc, FALSE);

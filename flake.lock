@@ -36,6 +36,23 @@
         "type": "github"
       }
     },
+    "libdragon": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752997647,
+        "narHash": "sha256-wwsJOc15Yf7edBWk0IgsbrhQPCS8v+VVE87c4x4/PJ4=",
+        "owner": "DragonMinded",
+        "repo": "libdragon",
+        "rev": "035c7651465f531251e666b8a2d6407159643b5f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DragonMinded",
+        "ref": "trunk",
+        "repo": "libdragon",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1735471104,
@@ -83,6 +100,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "libdragon": "libdragon",
         "nixpkgs": "nixpkgs",
         "nixpkgs-binutils-2_39": "nixpkgs-binutils-2_39",
         "star-rod": "star-rod"

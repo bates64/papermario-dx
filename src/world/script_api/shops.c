@@ -2,7 +2,7 @@
 #include "message_ids.h"
 #include "hud_element.h"
 #include "model.h"
-#include "pause/pause_common.h"
+#include "../../pause/pause_common.h"
 #include "inventory.h"
 
 #if !VERSION_JP

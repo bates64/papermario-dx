@@ -1,7 +1,6 @@
 #include "common.h"
 #include "hud_element.h"
 #include "item_entity.h"
-#include "world/world.h"
 
 #if !VERSION_JP
 #define MSG_FullDesc_32 0

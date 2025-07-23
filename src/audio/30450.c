@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "../audio.h"
 
 static u8* snd_song_get_track_volumes_set(MusicTrackVols arg0);
 

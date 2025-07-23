@@ -1,5 +1,5 @@
 #include "common.h"
-#include "actions.h"
+#include "world/actions.h"
 #include "ld_addrs.h"
 
 void action_update_idle(void);

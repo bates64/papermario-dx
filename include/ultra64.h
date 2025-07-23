@@ -24,6 +24,12 @@
 
 #pragma GCC system_header
 
+#ifdef __cplusplus
+#define _LANGUAGE_C_PLUS_PLUS
+#else
+#define _LANGUAGE_C
+#endif
+
 #include <PR/ultratypes.h>
 #include <PR/rcp.h>
 #include <PR/os.h>

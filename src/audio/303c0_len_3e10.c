@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "../audio.h"
 
 typedef struct BufferEntry {
     /* 0x0 */ u16 fileIndex;

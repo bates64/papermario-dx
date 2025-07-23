@@ -1,0 +1,70 @@
+c_and_cxx_flags = $
+  -march=vr4300 -mtune=vr4300 -mfix4300 $
+  -O2 -g $
+  -Iinclude -Iver/us/build/include -I$libdragon/include $asset_stack_includes $
+  -falign-functions=32 -ffunction-sections -fdata-sections $
+  -ffast-math -ftrapping-math -fno-associative-math -funsigned-char $
+  -fdiagnostics-color=always $
+  -Wall -Wno-narrowing -Winline --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type $
+  -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type $
+  -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -w $
+  -DN64 -D_FINALROM -DVERSION=us -DVERSION_US -DF3DEX_GBI_2 -D_MIPS_SZLONG=64 -DNON_MATCHING -DDEBUG -DSHIFT
+cflags = $c_and_cxx_flags -std=gnu23
+cxxflags = $c_and_cxx_flags -std=gnu++20 -fno-exceptions -fno-rtti
+
+rule cp
+  description = 📂 Copying $in
+  command = cp $in $out
+
+rule cc
+  description = ⚙️ Compiling $in
+  command = ccache mips64-elf-gcc -c $cflags $flags -MD -MF $out.d $in -o $out
+  depfile = $out.d
+  deps = gcc
+
+rule cxx
+  description = ⚙️ Compiling $in
+  command = ccache mips64-elf-g++ -c $cxxflags $flags -MD -MF $out.d $in -o $out
+  depfile = $out.d
+  deps = gcc
+
+rule ar
+  description = 📦 Archiving $out
+  command = mips64-elf-ar rcs $out $in
+
+rule elf
+  description = 🚀 Linking executable $out
+  command = mips64-elf-g++ -fuse-ld=lld -L$libdragon/lib -o $out -ldragon -lm -lc -ldragonsys $in -T$libdragon/lib/n64.ld $
+    -Wl,--gc-sections -Wl,--wrap __do_global_ctors $
+    2> >(grep -v "skipping incompatible /usr/lib/" >&2)
+
+rule rom
+  description = 🎉 Building ROM $out
+  command = $
+    n64sym $in $in.sym && $
+    cp $in $in.stripped && $
+    n64elfcompress -o $dir $in.stripped && $
+    n64tool --title "$romtitle" --toc --output $out $
+      --align 256 $in.stripped $
+      --align 8 $in.sym $
+      --align 16 $dfs_file && $
+    ed64romconfig --savetype flashram $out
+
+rule dfs
+  description = 📂 Bundling filesystem $dir
+  command = mkdfs $out $dir
+
+rule dso
+  description = 🧩 Linking overlay $out
+  command = mips64-elf-ld -Map=$map_file -o $out $in --emit-relocs --unresolved-symbols=ignore-all --nmagic -T$libdragon/lib/dso.ld && $
+    n64dso $out && $
+    n64sym $out $out.sym
+
+build $romname.elf: elf test.o
+
+build $romname.z64: rom $romname.elf | filesystem.dfs
+  dfs_file = filesystem.dfs
+
+build filesystem.dfs: dfs filesystem | filesystem/hello.txt
+
+build test.o: cc test.c

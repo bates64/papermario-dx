@@ -1,6 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
-#include "battle.h"
+#include "battle/battle.h"
 
 extern EvtScript battle_move_hammer_attack_EVS_UseMove;
 extern EvtScript battle_move_hammer_attack_EVS_FirstStrike;
