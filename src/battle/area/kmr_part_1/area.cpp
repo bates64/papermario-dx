@@ -1,7 +1,6 @@
 #include "area.hpp"
 #include "stage/kmr_part_1_battle_stages.hpp"
 #include "battle/common/actor/kmr_part_1/goomba_family.hpp"
-
 // TODO: make actors relocatable
 #include "battle/common/actor/kmr_part_1/goomba_family.inc.cpp"
 
