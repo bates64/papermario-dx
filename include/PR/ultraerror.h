@@ -29,9 +29,7 @@
 #ifndef __ULTRAERROR_H__
 #define __ULTRAERROR_H__
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -172,8 +170,6 @@ typedef	void (*OSErrorHandler)(s16, s16, ...);
 OSErrorHandler	osSetErrorHandler(OSErrorHandler);
 #endif
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif	/* __ULTRAERROR_H__ */

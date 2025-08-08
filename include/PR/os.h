@@ -58,9 +58,7 @@
 #include <PR/os_libc.h>
 #include <PR/os_version.h>
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -100,8 +98,6 @@ extern "C" {
 #define	BOOT_ADDRESS_INDY 	0x88100000
 
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_OS_H */

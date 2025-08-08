@@ -24,10 +24,6 @@
 #include <PR/gs2dex.h>
 #endif
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
-
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
 /*	DEFINE								*/
@@ -1093,7 +1089,4 @@ extern void nuDebConPrintf(u32 wndNo, const char* fmt, ...);
 
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
 #endif /* _NUSYS_H_ */

@@ -11,9 +11,7 @@
 
 #define	DEBUG_DL_PTR()		IO_READ(SP_DMEM_START+0xfc0)
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
 /*========== F3DEX2/F3DLX2/L3DEX2/S2DEX2 ==========*/
@@ -46,9 +44,7 @@ extern long long int gspS2DEX2d_xbusTextStart[],    gspS2DEX2d_xbusTextEnd[];
 extern long long int gspS2DEX2d_xbusDataStart[],    gspS2DEX2d_xbusDataEnd[];
 
 #endif /* _LANGUAGE_C */
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 #endif /* !_UCODE_DEBUG_H */
 
 /*======== End of ucode_debug.h ========*/

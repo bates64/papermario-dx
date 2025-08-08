@@ -21,9 +21,7 @@
 #ifndef _SPTASK_H_
 #define	_SPTASK_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -194,8 +192,6 @@ extern OSYieldResult	osSpTaskYielded(OSTask *tp);
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_SPTASK_H */

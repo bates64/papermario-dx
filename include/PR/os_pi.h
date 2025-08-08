@@ -30,9 +30,7 @@
 #ifndef _OS_PI_H_
 #define	_OS_PI_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include "os_thread.h"
@@ -217,8 +215,6 @@ extern s32 osEPiLinkHandle(OSPiHandle *);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_OS_PI_H_ */

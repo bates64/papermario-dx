@@ -9,9 +9,7 @@
 #ifndef _OS_FLASH_H_
 #define _OS_FLASH_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include "ultratypes.h"
 #include "os_pi.h"
@@ -70,8 +68,6 @@ extern s32     osFlashCheckEraseEnd(void);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_OS_FLASH_H_ */

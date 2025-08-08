@@ -21,9 +21,7 @@
 #ifndef _UCODE_H_
 #define	_UCODE_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -185,8 +183,6 @@ extern long long int gspL3DEX2_xbusDataStart[],    gspL3DEX2_xbusDataEnd[];
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_UCODE_H */

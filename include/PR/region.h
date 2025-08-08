@@ -31,9 +31,7 @@
 #define _REGION_H_
 
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -113,9 +111,7 @@ extern s32	osGetRegionBufCount(void *);
 extern s32	osGetRegionBufSize(void *);
 
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 
 #endif  /* _REGION_H_ */

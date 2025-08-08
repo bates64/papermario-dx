@@ -5,7 +5,6 @@
 // TODO: make actors relocatable
 #include "battle/common/actor/kmr_part_1/goomba_family.inc.cpp"
 
-
 using namespace battle::actor;
 
 namespace battle::area::kmr_part_1 {

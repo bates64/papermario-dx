@@ -21,9 +21,7 @@
 #ifndef _OS_INTERNAL_HOST_H_
 #define	_OS_INTERNAL_HOST_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/os.h>
 
@@ -35,8 +33,6 @@ extern u32             __osRdbSend(u8 *buf, u32 size, u32 type);
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_OS_INTERNAL_HOST_H */

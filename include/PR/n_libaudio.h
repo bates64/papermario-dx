@@ -22,9 +22,7 @@
 
 #include <PR/libaudio.h>
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include <PR/mbi.h>
@@ -345,8 +343,6 @@ extern long long int    n_aspMainTextStart[], n_aspMainTextEnd[];
 extern long long int    n_aspMainDataStart[], n_aspMainDataEnd[];
 
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* __N_LIBAUDIO__ */

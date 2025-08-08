@@ -4,8 +4,6 @@
 
 namespace battle::area::kmr_part_1 {
 
-namespace kmr_06 {
-
 #include "battle/common/stage/lib/MovingClouds.inc.c"
 
 API_CALLABLE(SetupFog) {
@@ -40,16 +38,14 @@ s32 ForegroundModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-} // namespace kmr_06
-
 Stage PleasantPath6 = {
     .texture = "kmr_tex",
     .shape = "kmr_bt06_shape",
     .hit = "kmr_bt06_hit",
-    .preBattle = &kmr_06::EVS_PreBattle,
-    .postBattle = &kmr_06::EVS_PostBattle,
+    .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
     .bg = "kmr_bg",
-    .foregroundModelList = kmr_06::ForegroundModels,
+    .foregroundModelList = ForegroundModels,
 };
 
 } // namespace battle::area::kmr_part_1

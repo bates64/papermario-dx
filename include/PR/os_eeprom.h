@@ -30,9 +30,7 @@
 #ifndef _OS_EEPROM_H_
 #define	_OS_EEPROM_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include "os_message.h"
@@ -100,8 +98,6 @@ extern s32 osEepromLongWrite(OSMesgQueue *, u8, u8 *, int);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
+
 
 #endif /* !_OS_EEPROM_H_ */

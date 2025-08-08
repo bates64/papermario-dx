@@ -4,8 +4,6 @@
 
 namespace battle::area::kmr_part_1 {
 
-namespace kmr_03 {
-
 #include "battle/common/stage/lib/MovingClouds.inc.c"
 
 EvtScript EVS_PreBattle = {
@@ -31,16 +29,14 @@ s32 ForegroundModels[] = {
     STAGE_MODEL_LIST_END
 };
 
-} // namespace kmr_03
-
 Stage PleasantPath3 = {
     .texture = "kmr_tex",
     .shape = "kmr_bt03_shape",
     .hit = "kmr_bt03_hit",
-    .preBattle = &kmr_03::EVS_PreBattle,
-    .postBattle = &kmr_03::EVS_PostBattle,
+    .preBattle = &EVS_PreBattle,
+    .postBattle = &EVS_PostBattle,
     .bg = "kmr_bg",
-    .foregroundModelList = kmr_03::ForegroundModels,
+    .foregroundModelList = ForegroundModels,
 };
 
 } // namespace battle::area::kmr_part_1

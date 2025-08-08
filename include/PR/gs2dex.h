@@ -12,10 +12,6 @@
 #ifndef	_GS2DEX_H_
 #define	_GS2DEX_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
-
 #include <PR/ultratypes.h>
 
 /*===========================================================================*
@@ -384,9 +380,6 @@ extern	void	guS2DInitBg(uObjBg *);
   extern void	guS2DEmuBgRect1Cyc(Gfx **, uObjBg *);
 #endif
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-} // extern "C"
-#endif
 #endif /* _GS2DEX_H_ */
 
 /*======== End of gs2dex.h ========*/
