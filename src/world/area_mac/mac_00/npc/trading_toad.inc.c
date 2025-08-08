@@ -1,3 +1,5 @@
+#include "inventory.h"
+
 API_CALLABLE(N(CheckTradeEventTime)) {
     script->varTable[0] = (s32) ((gPlayerData.frameCounter - gPlayerData.tradeEventStartTime) / 3600) < script->varTable[0];
     return ApiStatus_DONE2;

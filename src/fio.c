@@ -1,6 +1,6 @@
 #include "fio.h"
 #include "PR/os_flash.h"
-#include "gcc/string.h"
+#include <string.h>
 #include "dx/versioning.h"
 #include "dx/config.h"
 

@@ -20,6 +20,12 @@
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 #define ALIGN8(val) (((val) + 0x7) & ~0x7)
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+#define EXTERN_C extern "C"
+#else
+#define EXTERN_C extern
+#endif
+
 #define NAME_SUFFIX
 #define NAME_PREFIX
 #ifdef _LANGUAGE_C_PLUS_PLUS
@@ -95,6 +101,10 @@
 
 #define SP_PER_BAR 256
 #define SP_PER_SEG 32
+
+#define AC_DIFFICULTY_LEN 8
+typedef s32 Difficulty1D[AC_DIFFICULTY_LEN];
+typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240

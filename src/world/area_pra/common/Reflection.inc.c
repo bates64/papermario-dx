@@ -69,7 +69,7 @@ s32 N(reflection_unk_change_anim_facing)(s32 playerAnim) {
 }
 
 API_CALLABLE(N(EnableWallReflection)){
-    script->array[0] = (s32) create_worker_world(NULL, N(worker_reflect_player_wall));
+    script->array[0] = (s32) create_worker_scene(NULL, N(worker_reflect_player_wall));
     return ApiStatus_DONE2;
 }
 
@@ -146,7 +146,7 @@ API_CALLABLE(N(EnableFloorReflection)){
     switch (script->varTable[0]) {
         case REFLECTION_FLOOR_WALL:
         case REFLECTION_FLOOR_ONLY:
-            script->array[0] = create_worker_world(NULL, N(worker_reflect_player_floor));
+            script->array[0] = create_worker_scene(NULL, N(worker_reflect_player_floor));
             gOverrideFlags |= GLOBAL_OVERRIDES_ENABLE_FLOOR_REFLECTION;
             break;
         case REFLECTION_WALL_ONLY:
@@ -158,15 +158,12 @@ API_CALLABLE(N(EnableFloorReflection)){
 
 void N(worker_reflect_player_floor)(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    EntityModel* entityModel;
     s32 renderMode = playerStatus->renderMode;
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
     s32 screenX, screenY, screenZ;
 
     if (playerStatus->flags & PS_FLAG_HAS_REFLECTION) {
-        entityModel = get_entity_model(get_shadow_by_index(playerStatus->shadowID)->entityModelID);
-
         get_screen_coords(gCurrentCamID, playerStatus->pos.x, -playerStatus->pos.y, playerStatus->pos.z,
                           &screenX, &screenY, &screenZ);
 
@@ -326,20 +323,20 @@ API_CALLABLE(N(EnablePartnerReflection)){
     if (script->varTable[1] == FALSE) {
         switch (script->varTable[0]) {
             case REFLECTION_FLOOR_WALL:
-                script->array[1] = create_worker_world(N(worker_reflect_partner_all), NULL);
+                script->array[1] = create_worker_scene(N(worker_reflect_partner_all), NULL);
                 break;
             case REFLECTION_FLOOR_ONLY:
-                script->array[1] = create_worker_world(N(worker_reflect_partner_floor), NULL);
+                script->array[1] = create_worker_scene(N(worker_reflect_partner_floor), NULL);
                 break;
             case REFLECTION_WALL_ONLY:
-                script->array[1] = create_worker_world(N(worker_reflect_partner_wall), NULL);
+                script->array[1] = create_worker_scene(N(worker_reflect_partner_wall), NULL);
                 break;
         }
     } else {
         switch (script->varTable[0]) {
             case REFLECTION_FLOOR_WALL:
             case REFLECTION_FLOOR_ONLY:
-                script->array[1] = create_worker_world(N(worker_reflect_partner_floor), NULL);
+                script->array[1] = create_worker_scene(N(worker_reflect_partner_floor), NULL);
                 break;
             case REFLECTION_WALL_ONLY:
                 break;

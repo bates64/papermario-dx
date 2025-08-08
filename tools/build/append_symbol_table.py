@@ -12,7 +12,9 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
     addr2name = {}  # funcs
     addr2line = {}  # debug info
 
-    process = subprocess.Popen(["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL"], stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        ["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"], stdout=subprocess.PIPE
+    )
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
         parts = line.split()
 

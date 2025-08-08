@@ -1,6 +1,6 @@
 #include "common.h"
 #include "effects.h"
-#include "gcc/string.h"
+#include <string.h>
 
 char* N(RightSunMaps)[] = {
     "flo_03",

@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
 static s32 N(ItemChoice_List)[ITEM_NUM_CONSUMABLES + 1];
 
@@ -44,7 +45,6 @@ API_CALLABLE(N(ItemChoice_SaveSelected)) {
 API_CALLABLE(N(BuildItemChoiceList)) {
     Bytecode* args = script->ptrReadPos;
     s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
-    s32 pos;
     s32 i;
 
     if (allowedItemList != NULL) {

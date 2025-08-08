@@ -263,15 +263,15 @@ void btl_state_update_normal_start(void) {
             battleStatus->incrementStarPointDelay = 0;
             battleStatus->damageTaken = 0;
             battleStatus->nextMerleeSpellType = MERLEE_SPELL_NONE;
-            battleStatus->actionCommandMode = ACTION_COMMAND_MODE_NOT_LEARNED;
+            battleStatus->actionCommandMode = AC_MODE_NOT_LEARNED;
             gCameras[CAM_DEFAULT].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_BATTLE].flags |= CAMERA_FLAG_DISABLED;
             gCameras[CAM_TATTLE].flags |= CAMERA_FLAG_DISABLED;
             if (gPlayerData.hasActionCommands) {
-                battleStatus->actionCommandMode = ACTION_COMMAND_MODE_LEARNED;
+                battleStatus->actionCommandMode = AC_MODE_LEARNED;
             }
-            battleStatus->actionSuccess = 0;
-            battleStatus->unk_82 = 0;
+            battleStatus->actionQuality = 0;
+            battleStatus->maxActionQuality = 0;
             battleStatus->enabledMenusFlags = -1;
             battleStatus->enabledStarPowersFlags = -1;
             battleStatus->itemUsesLeft = 0;
@@ -2230,7 +2230,6 @@ void btl_state_update_run_away(void) {
                         if (!(enemy->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                             f32 escapeChance = enemy->actorBlueprint->escapeChance;
 
-
                             if (enemy->debuff == STATUS_KEY_FEAR ||
                                 enemy->debuff == STATUS_KEY_DIZZY ||
                                 enemy->debuff == STATUS_KEY_PARALYZE ||
@@ -2241,7 +2240,7 @@ void btl_state_update_run_away(void) {
                                 escapeChance = 100.0f;
                             }
                             totalEscapeChance += escapeChance;
-                            enemyCount += 1;
+                            enemyCount++;
                         }
                     }
                 }
@@ -3589,7 +3588,7 @@ void btl_state_update_enemy_move(void) {
             }
             battleStatus->stateFreezeCount = 0;
             battleStatus->lastAttackDamage = 0;
-            battleStatus->actionSuccess = 0;
+            battleStatus->actionQuality = 0;
             battleStatus->actionResult = ACTION_RESULT_NONE;
             battleStatus->blockResult = BLOCK_RESULT_NONE;
             battleStatus->curDamageSource = DMG_SRC_DEFAULT;
@@ -4489,8 +4488,6 @@ void btl_state_update_end_demo_battle(void) {
             break;
     }
 }
-
-const static f32 padding[] = { 0.0f, 0.0f, 0.0f };
 
 void btl_state_draw_end_demo_battle(void) {
     if (D_802809F6 == -1) {

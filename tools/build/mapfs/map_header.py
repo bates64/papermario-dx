@@ -10,6 +10,23 @@ def eprint(*args, **kwargs):
     print(*args, file=stderr, **kwargs)
 
 
+seen = set()
+duplicate_warned = set()
+def write_if_unique(f, name, value):
+    """
+    Write a define to the file if it is not already defined.
+    Print a warning the first time a non-unique name is used (per name).
+    """
+    global seen, duplicate_warned
+    if name in seen:
+        if name not in duplicate_warned:
+            print(f"warning: duplicate: {name}")
+            duplicate_warned.add(name)
+        return
+    seen.add(name)
+    f.write(f"#define {name} {value}\n")
+
+
 if __name__ == "__main__":
     _, xml_path, out_path = argv
 
@@ -27,22 +44,28 @@ if __name__ == "__main__":
         for model in xml.getElementsByTagName("Model"):
             map_object = model.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
-            f.write(f"#define MODEL_{name} {idx}\n")
+            write_if_unique(f, f"MODEL_{name}", idx)
     elif is_hit:
         for collider in xml.getElementsByTagName("Collider"):
             map_object = collider.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
-            f.write(f"#define COLLIDER_{name} {idx}\n")
+            write_if_unique(f, f"COLLIDER_{name}", idx)
 
         f.write("\n")
 
         for zone in xml.getElementsByTagName("Zone"):
             map_object = zone.getElementsByTagName("MapObject")[0]
             name = map_object.getAttribute("name")
+            if " " in name:
+                continue
             idx = "0x" + map_object.getAttribute("id")
-            f.write(f"#define ZONE_{name} {idx}\n")
+            write_if_unique(f, f"ZONE_{name}", idx)
     else:
         raise ValueError("Invalid output file name")
 

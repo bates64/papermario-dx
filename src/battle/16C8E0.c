@@ -23,10 +23,10 @@ BSS Camera SavedWorldCameras[ARRAY_COUNT(gCameras)];
 BSS f32 SavedWorldPlayerPosX;
 BSS f32 SavedWorldPlayerPosY;
 BSS f32 SavedWorldPlayerPosZ;
-BSS s32 D_8029EFBC;
-BSS s32 BtlStarPointTensHIDs[10];
-BSS s32 BtlStarPointShinesHIDs[10];
-BSS s32 BtlStarPointOnesHIDs[10];
+BSS HudElemID HPBarHID;
+BSS HudElemID BtlStarPointTensHIDs[10];
+BSS HudElemID BtlStarPointShinesHIDs[10];
+BSS HudElemID BtlStarPointOnesHIDs[10];
 BSS PAL_BIN gTattleBgPalette[0x100];
 
 extern HudScript HES_HPDigit0;
@@ -161,7 +161,7 @@ void initialize_battle(void) {
     PlayerData* playerData = &gPlayerData;
     BattleStatus* battleStatus = &gBattleStatus;
     Camera* tattleCam = &gCameras[CAM_TATTLE];
-    s32 hudElemID;
+    HudElemID hid;
     s32 i;
 
     gBattleStatus.flags1 = 0;
@@ -203,29 +203,29 @@ void initialize_battle(void) {
         gBattleStatus.flags2 &= ~BS_FLAGS2_PEACH_BATTLE;
     }
 
-    create_worker_world(NULL, btl_render_actors);
+    create_worker_scene(NULL, btl_render_actors);
     btl_popup_messages_init();
-    func_80268E88();
+    create_action_command_ui_worker();
     set_windows_visible(WINDOW_GROUP_BATTLE);
-    D_8029EFBC = hud_element_create(&HES_HPBar);
-    hud_element_set_flags(D_8029EFBC, HUD_ELEMENT_FLAG_80);
+    HPBarHID = hud_element_create(&HES_HPBar);
+    hud_element_set_flags(HPBarHID, HUD_ELEMENT_FLAG_80);
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
-        hudElemID = BtlStarPointTensHIDs[i] = hud_element_create(&HES_ItemStarPoint);
-        hud_element_set_flags(hudElemID, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
-        hud_element_set_render_depth(hudElemID, 20);
+        hid = BtlStarPointTensHIDs[i] = hud_element_create(&HES_ItemStarPoint);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointShinesHIDs); i++) {
-        hudElemID = BtlStarPointShinesHIDs[i] = hud_element_create(&HES_StatusSPShine);
-        hud_element_set_flags(hudElemID, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
-        hud_element_set_render_depth(hudElemID, 20);
+        hid = BtlStarPointShinesHIDs[i] = hud_element_create(&HES_StatusSPShine);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {
-        hudElemID = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_SmallStarPoint);
-        hud_element_set_flags(hudElemID, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
-        hud_element_set_render_depth(hudElemID, 20);
+        hid = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_SmallStarPoint);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_render_depth(hid, 20);
     }
 
     tattleCam->fpDoPreRender = tattle_cam_pre_render;
@@ -901,29 +901,29 @@ void btl_draw_enemy_health_bars(void) {
 
                     if (enemy->healthBarPos.y >= -500) {
                         s32 screenX, screenY, screenZ;
-                        s32 id;
+                        HudElemID hid;
                         s32 nextDigitXOffset;
 
                         get_screen_coords(CAM_BATTLE, x, y, z, &screenX, &screenY, &screenZ);
                         screenY += 16;
-                        id = D_8029EFBC;
-                        hud_element_set_render_depth(id, 10);
-                        hud_element_set_script(id, &HES_HPBar);
-                        hud_element_set_render_pos(id, screenX, screenY);
-                        hud_element_draw_clipped(id);
+                        hid = HPBarHID;
+                        hud_element_set_render_depth(hid, 10);
+                        hud_element_set_script(hid, &HES_HPBar);
+                        hud_element_set_render_pos(hid, screenX, screenY);
+                        hud_element_draw_clipped(hid);
 
                         #define DIGIT_WIDTH 6
                         nextDigitXOffset = DIGIT_WIDTH;
-                        id = D_8029EFBC;
+                        hid = HPBarHID;
                         // draw all digits
                         while (TRUE) {
                             s32 digit = currentHP % 10;
 
-                            hud_element_set_render_depth(id, 10);
-                            hud_element_set_script(id, bHPDigitHudScripts[digit]);
+                            hud_element_set_render_depth(hid, 10);
+                            hud_element_set_script(hid, bHPDigitHudScripts[digit]);
                             btl_draw_prim_quad(0, 0, 0, 0, screenX + nextDigitXOffset, screenY + 2, 8, 8);
-                            hud_element_set_render_pos(id, screenX + nextDigitXOffset + 4, screenY + 6);
-                            hud_element_draw_next(id);
+                            hud_element_set_render_pos(hid, screenX + nextDigitXOffset + 4, screenY + 6);
+                            hud_element_draw_next(hid);
 
                             if (currentHP < 10) {
                                 break;
@@ -977,7 +977,6 @@ void btl_update_starpoints_display(void) {
             D_802809F5++;
         }
 
-
         if (cond) {
             s32 posX, posY;
             s32 tens, ones;
@@ -1021,7 +1020,7 @@ void btl_update_starpoints_display(void) {
                 if (hud_element_get_script(id) != &HES_ItemStarPoint) {
                     hud_element_set_script(id, &HES_ItemStarPoint);
                 }
-                hud_element_clear_flags(id, 2);
+                hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY);
                 hud_element_draw_clipped(id);
 
@@ -1029,7 +1028,7 @@ void btl_update_starpoints_display(void) {
                 if (hud_element_get_script(id) != &HES_StatusSPShine) {
                     hud_element_set_script(id, &HES_StatusSPShine);
                 }
-                hud_element_clear_flags(id, 2);
+                hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY - 5);
                 hud_element_draw_clipped(id);
                 posX -= (one * 20.0f);
@@ -1054,7 +1053,7 @@ void btl_update_starpoints_display(void) {
                 if (hud_element_get_script(id) != &HES_SmallStarPoint) {
                     hud_element_set_script(id, &HES_SmallStarPoint);
                 }
-                hud_element_clear_flags(id, 2);
+                hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY);
                 hud_element_draw_clipped(id);
                 posX -= one * 10.0f;

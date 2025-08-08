@@ -1,5 +1,5 @@
-#include "gcc/stdlib.h"
-#include "gcc/string.h"
+#include <stdlib.h>
+#include <string.h>
 #include "libc/xstdio.h"
 
 #define BUFF_LEN 0x18
@@ -14,9 +14,9 @@ void _Litob(_Pft *args, char type) {
     s32 i;
     unsigned long long ullval;
 
-    digs = (type == 'X') ? udigs : ldigs;
+    digs = (type == 'X' || type == 'p') ? udigs : ldigs;
 
-    base = (type == 'o') ? 8 : ((type != 'x' && type != 'X') ? 10 : 16);
+    base = (type == 'o') ? 8 : ((type != 'x' && type != 'X' && type != 'p') ? 10 : 16);
     i = BUFF_LEN;
     ullval = args->v.ll;
 

@@ -47,6 +47,7 @@ BSS Battle* gCurrentBattlePtr;
     .name = jpName, \
 } \
 
+// when adding an area, remember to update battle.h and add the new area to battle_tables.h as well
 BattleArea gBattleAreas[] = {
     [BTL_AREA_KMR_1]    BTL_AREA(kmr_part_1, "エリア ＫＭＲ その１"),
     [BTL_AREA_KMR_2]    BTL_AREA(kmr_part_2, "エリア ＫＭＲ その２"),

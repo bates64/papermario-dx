@@ -241,6 +241,8 @@ s32 entity_WoodenCrate_idle(Entity* entity) {
         exec_entity_commandlist(entity);
         sfx_play_sound(SOUND_BREAK_CRATE);
     }
+
+    return 0;
 }
 
 f32 player_get_camera_facing_angle(void);

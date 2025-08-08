@@ -28,7 +28,8 @@
             ],
             "cStandard": "c23",
             "cppStandard": "c++17",
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "${default}",
+            "compileCommands": "${workspaceFolder}/compile_commands.json"
         }
     ]
 }

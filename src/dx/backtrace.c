@@ -2,28 +2,18 @@
 // Heavily based on libdragon: https://github.com/DragonMinded/libdragon/blob/trunk/src/backtrace.c
 
 #include "common.h"
-#include "gcc/string.h"
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include "nu/nusys.h"
 #include "backtrace.h"
+#include "PR/osint.h"
 
 /** @brief Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
 
 /** @brief Function alignment enfored by the compiler (-falign-functions). */
 #define FUNCTION_ALIGNMENT      32
-
-typedef s64 int64_t;
-typedef s32 int32_t;
-typedef s16 int16_t;
-typedef s8 int8_t;
-typedef u64 uint64_t;
-typedef u32 uint32_t;
-typedef u16 uint16_t;
-typedef u8 uint8_t;
-
-typedef s32 bool;
-#define true 1
-#define false 0
 
 /** @brief The "type" of funciton as categorized by the backtrace heuristic (__bt_analyze_func) */
 typedef enum {
@@ -52,7 +42,7 @@ typedef struct {
 #define MIPS_OP_NOP(op)        ((op) == 0x00000000)                  ///< Matches: nop
 #define MIPS_OP_MOVE_FP_SP(op) ((op) == 0x03A0F025)                  ///< Matches: move $fp, $sp
 
-#define debugf osSyncPrintf
+#define debugf printf
 
 bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool from_exception);
 
@@ -336,7 +326,7 @@ s32 address2symbol(u32 address, Symbol* out) {
 
     u32 symbolTableRomAddr = romHeader[SYMBOL_TABLE_PTR_ROM_ADDR / sizeof(*romHeader)];
     if (symbolTableRomAddr == NULL) {
-        osSyncPrintf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is NULL)\n");
+        debugf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is NULL)\n");
         return -1;
     }
 
@@ -344,11 +334,11 @@ s32 address2symbol(u32 address, Symbol* out) {
     SymbolTable symt;
     nuPiReadRom(symbolTableRomAddr, &symt, sizeof(SymbolTable));
     if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
-        osSyncPrintf("address2symbol: no symbols available (invalid magic '%c%c%c%c')\n", symt.magic[0], symt.magic[1], symt.magic[2], symt.magic[3]);
+        debugf("address2symbol: no symbols available (invalid magic '%c%c%c%c')\n", symt.magic[0], symt.magic[1], symt.magic[2], symt.magic[3]);
         return -1;
     }
     if (symt.symbolCount <= 0) {
-        osSyncPrintf("address2symbol: no symbols available (symbolCount=%d)\n", symt.symbolCount);
+        debugf("address2symbol: no symbols available (symbolCount=%d)\n", symt.symbolCount);
         return -1;
     }
 
@@ -397,10 +387,12 @@ void backtrace_address_to_string(u32 address, char* dest) {
     s32 offset = address2symbol(address, &sym);
 
     if (offset >= 0 && offset < 0x1000) { // 0x1000 = arbitrary func size limit
-        char name[32];
-        char file[32];
+        char name[0x40];
+        char file[0x40];
         char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+
+        offset = 0; // Don't show offsets
 
         if (filep == NULL)
             if (offset == 0)
@@ -413,7 +405,7 @@ void backtrace_address_to_string(u32 address, char* dest) {
             else
                 sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
     } else {
-        sprintf(dest, "0x%08X", address);
+        sprintf(dest, "%p", address);
     }
 }
 
@@ -423,10 +415,10 @@ void debug_backtrace(void) {
     s32 i;
     char buf[128];
 
-    osSyncPrintf("Backtrace:\n");
+    debugf("Backtrace:\n");
     for (i = 0; i < max; i++) {
         backtrace_address_to_string(bt[i], buf);
-        osSyncPrintf("    %s\n", buf);
+        debugf("    %s\n", buf);
     }
 }
 
@@ -503,7 +495,7 @@ bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool
         // Validate that we can dereference the virtual address without raising an exception
         if (!is_valid_address(addr)) {
             // This address is invalid, probably something is corrupted. Avoid looking further.
-            osSyncPrintf("backtrace: interrupted because of invalid return address 0x%08x\n", addr);
+            debugf("backtrace: interrupted because of invalid return address 0x%08x\n", addr);
             return false;
         }
         op = *(uint32_t*)get_physical_address(addr);

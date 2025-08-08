@@ -93,7 +93,7 @@ void au_engine_init(s32 outputRate) {
         voice->priority = AU_PRIORITY_FREE;
     }
 
-    au_load_INIT(globals, audio_ROM_START, alHeap);
+    au_load_INIT(globals, (s32)audio_ROM_START, alHeap);
 
     for (i = 0; i < ARRAY_COUNT(globals->banks); i++) {
         globals->banks[i] = alHeapAlloc(alHeap, 1, 0x840);
@@ -145,7 +145,7 @@ void au_engine_init(s32 outputRate) {
     func_80055050(alHeap);
 }
 
-static void au_reset_instrument(Instrument* instrument) {
+void au_reset_instrument(Instrument* instrument) {
     instrument->base = DummyInstrumentBase;
     instrument->wavDataLength = sizeof(DummyInstrumentBase);
     instrument->predictor = DummyInstrumentPredictor;
@@ -167,7 +167,7 @@ static void au_reset_instrument(Instrument* instrument) {
     instrument->pitchRatio = 0.5f;
 }
 
-static void au_reset_drum_entry(BGMDrumInfo* arg0) {
+void au_reset_drum_entry(BGMDrumInfo* arg0) {
     arg0->bankPatch = 0x2010;
     arg0->keyBase = 4800; // middle C?
     arg0->volume = 0x7F;
@@ -179,7 +179,7 @@ static void au_reset_drum_entry(BGMDrumInfo* arg0) {
     arg0->randReverb = 0;
 }
 
-static void au_reset_instrument_entry(BGMInstrumentInfo* arg0) {
+void au_reset_instrument_entry(BGMInstrumentInfo* arg0) {
     arg0->bankPatch = 0x2010;
     arg0->volume = 0x7F;
     arg0->pan = 64;
@@ -1050,7 +1050,6 @@ s32* func_80054AA0(s32* bkFileOffset, void* vaddr, s32 bankIndex, s32 bankGroup)
     swizzleArg = 0;
     readState = BK_READ_FETCH_HEADER;
     keepReading = TRUE;
-
 
     while (keepReading) {
         switch (readState) {

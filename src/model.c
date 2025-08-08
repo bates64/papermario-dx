@@ -6,6 +6,7 @@
 #include "model_clear_render_tasks.h"
 #include "nu/nusys.h"
 #include "qsort.h"
+#include <string.h>
 
 // models are rendered in two stages by the RDP:
 // (1) main and aux textures are combined in the color combiner
@@ -2153,7 +2154,7 @@ void load_texture_by_name(ModelNodeProperty* propertyName, s32 romOffset, s32 si
 
     if (romOffset >= startOffset + 0x40000) {
         // did not find the texture with `textureName`
-        osSyncPrintf("could not find texture '%s'\n", textureName);
+        printf("could not find texture '%s'\n", textureName);
         (*gCurrentModelTreeNodeInfo)[TreeIterPos].textureID = 0;
         return;
     }
@@ -2178,7 +2179,6 @@ void load_texture_variants(u32 romOffset, s32 textureID, s32 baseOffset, s32 siz
     s32 paletteSize;
     u32 auxRasterSize;
     u32 auxPaletteSize;
-    s32 bitDepth;
     s32 mainSize;
     s32 currentTextureID = textureID;
 
@@ -3101,7 +3101,6 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     auxFmt = header->auxFmt;
     auxBitDepth = header->auxBitDepth;
 
-
     if (extraTileType == EXTRA_TILE_AUX_INDEPENDENT) {
         if (palette != NULL) {
             auxPaletteIndex = 1;
@@ -3368,7 +3367,7 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
 
             (*gCurrentModelTreeNodeInfo)[TreeIterPos].modelIndex = -1;
             (*gCurrentModelTreeNodeInfo)[TreeIterPos].treeDepth = treeDepth;
-            TreeIterPos += 1;
+            TreeIterPos++;
             return;
         }
     }
@@ -3391,7 +3390,7 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
 
     mdl_create_model(modelBPptr, 4);
     (*gCurrentModelTreeNodeInfo)[TreeIterPos].treeDepth = treeDepth;
-    TreeIterPos += 1;
+    TreeIterPos++;
 }
 
 s32 get_model_list_index_from_tree_index(s32 treeIndex) {
@@ -4037,7 +4036,6 @@ void mdl_local_gfx_copy_vertices(Vtx* src, s32 num, Vtx* dest) {
     }
 }
 
-
 void mdl_make_local_vertex_copy(s32 copyIndex, u16 modelID, s32 isMakingCopy) {
     s32 numVertices;
     Vtx* baseVtx;
@@ -4384,7 +4382,7 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
 // Every nonnegative value of `depthQueryID` must be unique within a frame, otherwise the result will corrupt the data
 //   of the previous query that shared the same ID.
 // Occlusion visibility checks are always one frame out of date, as they reference the previous frame's depth buffer.
-OPTIMIZE_OFAST s32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
+OPTIMIZE_OFAST b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 outX;
     f32 outY;
@@ -4575,7 +4573,6 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
     s32* sorted;
     RenderTask* taskList;
     RenderTask* task;
-    RenderTask* task2;
     Matrix4f mtxFlipY;
     void (*appendGfx)(void*);
     s32 tmp;
@@ -4588,20 +4585,20 @@ OPTIMIZE_OFAST void execute_render_tasks(void) {
 
     // sort in ascending order of dist
     taskList = RenderTaskLists[RENDER_TASK_LIST_MID];
-    sorted = &sorteds[RENDER_TASK_LIST_MID];
+    sorted = sorteds[RENDER_TASK_LIST_MID];
 #define LESS(i, j) taskList[sorted[i]].dist < taskList[sorted[j]].dist
 #define SWAP(i, j) tmp = sorted[i], sorted[i] = sorted[j], sorted[j] = tmp
     QSORT(RenderTaskCount[RENDER_TASK_LIST_MID], LESS, SWAP);
 
     // tasks with dist >= 3M sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_FAR];
-    sorted = &sorteds[RENDER_TASK_LIST_FAR];
+    sorted = sorteds[RENDER_TASK_LIST_FAR];
 #define LESS(i, j) taskList[sorted[i]].dist > taskList[sorted[j]].dist
     QSORT(RenderTaskCount[RENDER_TASK_LIST_FAR], LESS, SWAP);
 
     // tasks with dist <= 800k sort in descending order
     taskList = RenderTaskLists[RENDER_TASK_LIST_NEAR];
-    sorted = &sorteds[RENDER_TASK_LIST_NEAR];
+    sorted = sorteds[RENDER_TASK_LIST_NEAR];
     QSORT(RenderTaskCount[RENDER_TASK_LIST_NEAR], LESS, SWAP);
 
     gLastRenderTaskCount = RenderTaskCount[RENDER_TASK_LIST_MID] + RenderTaskCount[RENDER_TASK_LIST_FAR] + RenderTaskCount[RENDER_TASK_LIST_NEAR];

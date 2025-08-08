@@ -1,5 +1,6 @@
 #include "common.h"
 #include "include_asset.h"
+#include <stdlib.h>
 
 typedef struct PulseStoneData {
     /* 0x00 */ Vec3f pos;

@@ -330,11 +330,9 @@ HitID player_raycast_up_corner(f32* x, f32* y, f32* z, f32* length) {
     f32 hitNy;
     f32 hitNz;
     s32 hitID;
-    Entity* entity;
     s32 ret;
     f32 sx, sy, sz;
     f32 sx2, sy2, sz2;
-    f32 startX, startY, startZ;
 
     ret = NO_COLLIDER;
 
@@ -738,7 +736,6 @@ void check_input_use_partner(void) {
 
 void phys_update_standard(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 flags;
 
     check_input_use_partner();
     phys_update_action_state();
@@ -1064,7 +1061,6 @@ void clear_ispy_icon(void) {
 
 /// unavoidable use of hardcoded map and area IDs
 void check_for_pulse_stone(void) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     s32 dx, dy;
 
     if (PulseStoneNotificationCallback == NULL) {
@@ -1290,7 +1286,7 @@ void check_for_interactables(void) {
         }
 
         playerStatus->interactingWithID = curInteraction;
-        if (!collidingWithEntity || curInteraction > NO_COLLIDER && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
+        if (!collidingWithEntity || (curInteraction > NO_COLLIDER && get_entity_by_index(curInteraction)->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT)) {
             if (playerStatus->actionState == ACTION_STATE_IDLE || playerStatus->actionState == ACTION_STATE_WALK || playerStatus->actionState == ACTION_STATE_RUN) {
                 playerStatus->animFlags |= PA_FLAG_INTERACT_PROMPT_AVAILABLE;
                 func_800EF3D4(2);
@@ -1697,7 +1693,6 @@ void update_player_shadow(void) {
     f32 hitRx, hitRz;
     f32 x, y, z;
     f32 playerX, playerZ;
-    s32 dist;
     f32 raycastYaw;
 
     if (playerStatus->spriteFacingAngle >= 90.0f && playerStatus->spriteFacingAngle < 270.0f) {

@@ -1,4 +1,5 @@
 #include "tik_15.h"
+#include "inventory.h"
 
 #define RIP_CHEATO_COST 64
 

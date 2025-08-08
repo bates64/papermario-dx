@@ -1,20 +1,20 @@
 # Paper Mario DX
 
-[![Release](https://img.shields.io/github/v/release/star-haven/papermario-dx)][releases]
-[![Download](https://img.shields.io/github/downloads/star-haven/papermario-dx/total)][download]
-![Build Status](https://img.shields.io/github/actions/workflow/status/star-haven/papermario-dx/build.yaml)
+[![Release](https://img.shields.io/github/v/release/bates64/papermario-dx)][releases]
+[![Download](https://img.shields.io/github/downloads/bates64/papermario-dx/total)][download]
+![Build Status](https://img.shields.io/github/actions/workflow/status/bates64/papermario-dx/build.yaml)
 
 This is a fork of the [Paper Mario decompilation][papermario-repo] which provides a flexible, easy-to-use base for creating romhacks.
 
-To get started, see [docs.starhaven.dev](https://docs.starhaven.dev/tools/decomp/setup.html).
+To get started, [read the manual](manual/introduction.md).
 
 [discord]: https://discord.gg/star-haven
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff
 [papermario-repo]: https://github.com/pmret/papermario
-[releases]: https://github.com/star-haven/papermario-dx/releases
-[download]: https://github.com/star-haven/papermario-dx/releases/download/latest/papermario.bps
+[releases]: https://github.com/bates64/papermario-dx/releases
+[download]: https://github.com/bates64/papermario-dx/releases/download/latest/papermario.bps
 
-## List of changes
+### List of changes (incomplete)
 
 - US release only (no JP, PAL, or iQue - none of these are near 100% yet).
 - Default configure flags: `--shift --modern-gcc --non-matching --ccache`
@@ -32,3 +32,11 @@ To get started, see [docs.starhaven.dev](https://docs.starhaven.dev/tools/decomp
 - Additional features can be configured in [src/dx/config.h](src/dx/config.h).
 
 [libgcc_vr4300]: https://github.com/Decompollaborate/libgcc_vr4300
+
+<div class="section_buttons">
+
+|                                          Next |
+|----------------------------------------------:|
+|[Introduction](manual/introduction.md)         |
+
+</div>

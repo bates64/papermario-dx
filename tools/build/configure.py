@@ -58,14 +58,7 @@ def write_ninja_rules(
             ccache = ""
 
     cross = "mips-linux-gnu-"
-    cc = f"{BUILD_TOOLS}/cc/gcc/gcc"
     cc_modern = f"{cross}gcc"
-    cc_ido = f"{BUILD_TOOLS}/cc/ido5.3/cc"
-    cc_272_dir = f"{BUILD_TOOLS}/cc/gcc2.7.2/"
-    cc_272 = f"{cc_272_dir}/gcc"
-    cc_egcs_dir = f"{BUILD_TOOLS}/cc/egcs/"
-    cc_egcs = f"{cc_egcs_dir}/gcc"
-    cxx = f"{BUILD_TOOLS}/cc/gcc/g++"
     cxx_modern = f"{cross}g++"
 
     BFDNAME = "elf32-tradbigmips"
@@ -75,24 +68,13 @@ def write_ninja_rules(
         "-DVERSION=$version -DF3DEX_GBI_2 -D_MIPS_SZLONG=32"
     )
 
-    CPPFLAGS_272 = CPPFLAGS_COMMON + " -nostdinc"
+    CPPFLAGS = CPPFLAGS_COMMON
 
-    CPPFLAGS_EGCS = CPPFLAGS_COMMON + " -D__USE_ISOC99 -nostdinc"
-
-    CPPFLAGS = "-w " + CPPFLAGS_COMMON + " -nostdinc"
-
-    cflags = f"-c -G0 -O2 -gdwarf-2 -B {BUILD_TOOLS}/cc/gcc/ {extra_cflags}"
-
-    cflags_modern = f"-c -G0 -O2 -gdwarf-2 -fdiagnostics-color=always -fno-builtin-bcopy -fno-tree-loop-distribute-patterns -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -fno-toplevel-reorder -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
-
-    cflags_272 = f"-c -G0 -mgp32 -mfp32 -mips3 {extra_cflags}"
-    cflags_272 = cflags_272.replace("-ggdb3", "-g1")
-
-    cflags_egcs = f"-c -fno-PIC -mno-abicalls -mcpu=4300 -G 0 -x c -B {cc_egcs_dir} {extra_cflags}"
+    cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     ninja.variable("python", sys.executable)
 
-    ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections -T $in -o $out"
+    ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     ninja.rule(
@@ -138,50 +120,16 @@ def write_ninja_rules(
     ninja.rule("cpp", description="cpp $in", command=f"{cpp} $in {extra_cppflags} -P -o $out")
 
     ninja.rule(
-        "cc",
-        description="gcc $in",
-        command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} -DOLD_GCC $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cc} {cflags} $cflags - -o $out'",
-        depfile="$out.d",
-        deps="gcc",
-    )
-
-    ninja.rule(
         "cc_modern",
-        description="gcc_modern $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -MD -MF $out.d $in -o $out",
-        depfile="$out.d",
-        deps="gcc",
-    )
-
-    ninja.rule(
-        "cc_ido",
-        description="ido $in",
-        command=f"{ccache}{cc_ido} -w {CPPFLAGS_COMMON} {extra_cppflags} $cppflags -c -mips1 -O0 -G0 -non_shared -Xfullwarn -Xcpluscomm -o $out $in",
-    )
-
-    ninja.rule(
-        "cc_272",
-        description="cc_272 $in",
-        command=f"bash -o pipefail -c 'COMPILER_PATH={cc_272_dir} {cc_272} {CPPFLAGS_272} {extra_cppflags} $cppflags {cflags_272} $cflags $in -o $out && {cross}objcopy -N $in $out'",
-    )
-
-    ninja.rule(
-        "cc_egcs",
-        description="cc_egcs $in",
-        command=f"bash -o pipefail -c '{cc_egcs} {CPPFLAGS_EGCS} {extra_cppflags} $cppflags {cflags_egcs} $cflags $in -o $out && {cross}objcopy -N $in $out && python3 ./tools/patch_64bit_compile.py $out'",
-    )
-
-    ninja.rule(
-        "cxx",
-        description="cxx $in",
-        command=f"bash -o pipefail -c '{cpp} {CPPFLAGS} {extra_cppflags} $cppflags -MD -MF $out.d $in -o - | $iconv | {ccache}{cxx} {cflags} $cflags - -o $out'",
+        description="CC $in",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
 
     ninja.rule(
         "cxx_modern",
-        description="cxx_modern $in",
+        description="CXX $in",
         command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
@@ -335,7 +283,7 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    ninja.rule("flips", command=f"bash -c '{BUILD_TOOLS}/floating/flips $baserom $in $out || true'")
+    ninja.rule("flips", command=f"bash -c 'flips $baserom $in $out || true'")
 
     ninja.rule(
         "check_segment_sizes",
@@ -410,12 +358,12 @@ class Configure:
         if code:
             modes.extend(["code", "c", "data", "rodata"])
 
-        splat_files = [str(self.version_path / "splat.yaml")]
+        splat_files = [Path(self.version_path / "splat.yaml")]
         if debug:
-            splat_files += [str(self.version_path / "splat-debug.yaml")]
+            splat_files += [Path(self.version_path / "splat-debug.yaml")]
 
         if shift:
-            splat_files += [str(self.version_path / "splat-shift.yaml")]
+            splat_files += [Path(self.version_path / "splat-shift.yaml")]
 
         split.main(
             splat_files,
@@ -506,7 +454,6 @@ class Configure:
         ninja: ninja_syntax.Writer,
         skip_outputs: Set[str],
         non_matching: bool,
-        modern_gcc: bool,
         c_maps: bool = False,
     ):
         assert self.linker_entries is not None
@@ -702,33 +649,19 @@ class Configure:
                         cflags = "-fforce-addr"
 
                 # c
-                task = "cc"
+                task = "cc_modern"
                 if entry.src_paths[0].suffixes[-1] == ".cpp":
-                    task = "cxx"
+                    task = "cxx_modern"
 
-                if modern_gcc:
-                    if task == "cxx":
-                        task = "cxx_modern"
-                    else:
-                        task = "cc_modern"
+                if task == "cxx":
+                    task = "cxx_modern"
 
                 if entry.src_paths[0].suffixes[-1] == ".s":
                     task = "as"
-                elif "gcc_272" in cflags:
-                    #task = "cc_272"
-                    cflags = cflags.replace("gcc_272", "")
-                elif "egcs" in cflags:
-                   if sys.platform == "darwin" and non_matching:
-                       print(f"warning: using default compiler for {seg.name} because egcs is not supported on macOS")
-                   else:
-                       #task = "cc_egcs"
-                       cflags = cflags.replace("egcs", "")
-                elif "gcc_modern" in cflags:
-                    task = "cc_modern"
-                    cflags = cflags.replace("gcc_modern", "")
 
-                if task == "cc_modern":
-                    cppflags += " -DMODERN_COMPILER"
+                cflags = cflags.replace("gcc_modern", "").replace("gcc_272", "")
+
+                cppflags += " -DMODERN_COMPILER"
 
                 if version == "ique":
                     if "nusys" in entry.src_paths[0].parts:
@@ -737,6 +670,10 @@ class Configure:
                         cppflags += " -DBBPLAYER"
                     elif entry.src_paths[0].parts[-2] == "bss":
                         cppflags += " -DBBPLAYER"
+
+                # Effects must call via shims due to being TLB mapped
+                if "effects" in entry.src_paths[0].parts:
+                    cflags += " -fno-tree-loop-distribute-patterns"  # Don't call memset etc
 
                 encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
                 if version == "ique":
@@ -1160,7 +1097,7 @@ class Configure:
                             build(
                                 o_path,
                                 [c_file_path],
-                                "cc" if not modern_gcc else "cc_modern",
+                                "cc_modern",
                                 variables={
                                     "cflags": "",
                                     "cppflags": f"-DVERSION_{self.version.upper()}",
@@ -1243,7 +1180,7 @@ class Configure:
                 build(
                     entry.object_path,
                     [c_file_path],
-                    "cc" if not modern_gcc else "cc_modern",
+                    "cc_modern",
                     variables={
                         "cflags": "",
                         "cppflags": f"-DVERSION_{self.version.upper()}",
@@ -1299,7 +1236,7 @@ class Configure:
                 str(self.rom_ok_path()),
                 "check_segment_sizes",
                 str(self.elf_path()),
-                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(',', ':')))},
+                variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(",", ":")))},
                 implicit=[str(self.rom_path())],
             )
 
@@ -1313,8 +1250,6 @@ class Configure:
         ninja.build("generated_code_" + self.version, "phony", generated_code)
         ninja.build("inc_img_bins_" + self.version, "phony", inc_img_bins)
 
-
-
     def get_segment_max_sizes(self):
         assert self.linker_entries is not None
         segment_size_map = {}
@@ -1325,6 +1260,7 @@ class Configure:
                 visit(segment.parent)
             if hasattr(segment, "yaml") and isinstance(segment.yaml, dict) and "max_size" in segment.yaml:
                 segment_size_map[segment.name] = segment.yaml["max_size"]
+
         for entry in self.linker_entries:
             visit(entry.segment)
 
@@ -1394,32 +1330,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     args.shift = not args.no_shift
-    args.modern_gcc = not args.no_modern_gcc
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
-
-    exec_shell(["make", "-C", str(ROOT / args.splat)])
-
-    # on macOS, /usr/bin/cpp defaults to clang rather than gcc (but we need gcc's)
-    if (
-        args.cpp is None
-        and sys.platform == "darwin"
-        and "Free Software Foundation" not in exec_shell(["cpp", "--version"])
-    ):
-        gcc_cpps = ("cpp-14", "cpp-13", "cpp-12", "cpp-11")
-        for ver in gcc_cpps:
-            try:
-                if "Free Software Foundation" in exec_shell([ver, "--version"]):
-                    args.cpp = ver
-                    break
-            except FileNotFoundError:
-                pass
-        if args.cpp is None:
-            print("error: system C preprocessor is not GNU!")
-            print("This is a known issue on macOS - only clang's cpp is installed by default.")
-            print("Use 'brew' to obtain GNU cpp, then run this script again with the --cpp option, e.g.")
-            print(f"    ./configure --cpp {gcc_cpps[0]}")
-            exit(1)
 
     version_err_msg = ""
     missing_tools = []
@@ -1485,33 +1397,36 @@ if __name__ == "__main__":
             except OSError:
                 pass
 
+    args.debug = True
+
     extra_cflags = ""
     extra_cppflags = ""
     if args.non_matching:
         extra_cppflags += " -DNON_MATCHING"
 
         if args.debug:
-            extra_cflags += " -ggdb3"  # we can generate more accurate debug info in non-matching mode
+            # extra_cflags += " -ggdb3"
             extra_cppflags += " -DDEBUG"  # e.g. affects ASSERT macro
-    elif args.debug:
-        # g1 doesn't affect codegen
-        extra_cflags += " -ggdb3"
 
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wmissing-braces -Wredundant-decls -Wno-redundant-decls"
+    extra_cflags += " -Wall -Wno-narrowing -Winline"
+
+    # Warnings made into errors by default in GCC 14
+    # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
+    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
 
     ninja = ninja_syntax.Writer(open(str(ROOT / "build.ninja"), "w"), width=9999)
 
-    non_matching = args.non_matching or args.modern_gcc or args.shift
+    non_matching = args.non_matching or True or args.shift
 
     write_ninja_rules(
         ninja,
-        args.cpp or "cpp",
+        args.cpp or "mips-linux-gnu-cpp",
         extra_cppflags,
         extra_cflags,
         args.ccache,
@@ -1542,7 +1457,7 @@ if __name__ == "__main__":
         sys.path.append(str((ROOT / "tools/splat_ext").resolve()))
 
         configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
-        configure.write_ninja(ninja, skip_files, non_matching, args.modern_gcc, args.c_maps)
+        configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
 
         all_rom_oks.append(str(configure.rom_ok_path()))
 

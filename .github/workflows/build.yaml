@@ -1,71 +1,123 @@
 name: Build
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - main
+      - 'refs/tags/v*'
 
 jobs:
   game:
     name: Game
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
         with:
-          fetch-depth: 0
-      - name: Install dependencies
-        run: ./install_deps.sh
-      - name: Install compilers
-        run: ./install_compilers.sh
-      - name: Install cargo-binstall
-        uses: cargo-bins/cargo-binstall@main
-      - name: Install pigment64 and crunch64
-        run: cargo binstall pigment64 crunch64-cli -y
-      - name: Download baserom
-        run: curl -L $BASEROM_US_URL -o ver/us/baserom.z64
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Download base ROM
+        run: |
+          curl -L $BASEROM_US_URL -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
         env:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
-      - name: Setup ccache
-        uses: Chocobo1/setup-ccache-action@v1
+      - name: Cache build and asset directories
+        uses: actions/cache@v4
+        with:
+          key: ${{ runner.os }}-build-${{ hashFiles('flake.nix') }}
+          path: |
+            ver/us/build
+            assets/us
+            .n2_db
+            .ninja_deps
+      - name: Build shell
+        run: nix develop --command true
       - name: Configure
-        run: ./configure
-      - name: Build
-        run: ninja ver/us/build/papermario.bps
+        run: nix develop --command "./configure"
+      - uses: root-project/gcc-problem-matcher-improved@v0.0.1-alpha.1
+      - name: Build game
+        run: nix develop --command "ninja"
+      - name: Build patch file
+        run: nix develop --command ninja ver/us/build/papermario.bps
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Upload patch as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: papermario-dx.bps
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
           path: ver/us/build/papermario.bps
   prerelease:
     name: Prerelease
     runs-on: ubuntu-latest
     needs: game
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
     steps:
+      - uses: actions/checkout@v4
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario-dx.bps
-          path: papermario-dx.bps
-      - uses: marvinpinto/action-automatic-releases@latest
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
+          path: ${{ steps.repo-name.outputs.repository-name }}.bps
+      - uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.MY_PAT }}"
-          automatic_release_tag: "latest"
+          tag_name: "latest"
           prerelease: true
-          title: Development build
-          files: papermario-dx.bps
+          name: Development build
+          files: ${{ steps.repo-name.outputs.repository-name }}.bps
   release:
     name: Release
     runs-on: ubuntu-latest
     needs: game
     if: github.ref == 'refs/tags/v*'
+    permissions:
+      contents: write
     steps:
+      - uses: actions/checkout@v4
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          string-case: paramCase
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: papermario-dx.bps
-          path: papermario-dx.bps
-      - uses: marvinpinto/action-automatic-releases@latest
+          name: ${{ steps.repo-name.outputs.repository-name }}.bps
+          path: ${{ steps.repo-name.outputs.repository-name }}.bps
+      - uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.MY_PAT }}"
-          automatic_release_tag: "latest"
-          files: papermario-dx.bps
+          files: ${{ steps.repo-name.outputs.repository-name }}.bps
+  darwin-cachix:
+    name: Build Nix shell for macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v25
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx-aarch64-darwin
+          extraPullNames: papermario-dx
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Download base ROM
+        run: |
+          curl -L $BASEROM_US_URL -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Build shell
+        run: nix develop --command true
+        env:
+          NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM: 1 # glibc is marked unsupported on darwin

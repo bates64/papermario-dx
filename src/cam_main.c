@@ -3,6 +3,7 @@
 #include "nu/nusys.h"
 #include "hud_element.h"
 #include "dx/profiling.h"
+#include "dx/debug_menu.h"
 
 void render_models(void);
 void execute_render_tasks(void);
@@ -217,9 +218,9 @@ void render_frame(s32 isSecondPass) {
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_PLAYER, PROFILER_TIME_SUB_GFX_NPCS);
                 render_npcs();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_NPCS, PROFILER_TIME_SUB_GFX_WORKERS);
-                render_workers_world();
+                render_workers_scene();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_WORKERS, PROFILER_TIME_SUB_GFX_EFFECTS);
-                render_effects_world();
+                render_effects_scene();
                 GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_EFFECTS, PROFILER_TIME_SUB_GFX_RENDER_TASKS);
                 execute_render_tasks();
                 #if DX_DEBUG_MENU
@@ -236,7 +237,7 @@ void render_frame(s32 isSecondPass) {
                 render_item_entities();
             }
         } else {
-            render_workers_world();
+            render_workers_scene();
             execute_render_tasks();
         }
 

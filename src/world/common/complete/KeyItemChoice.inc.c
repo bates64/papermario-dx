@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "sprite/player.h"
+#include "inventory.h"
 
 static s32 N(KeyItemChoiceList)[ITEM_NUM_KEYS + 1];
 

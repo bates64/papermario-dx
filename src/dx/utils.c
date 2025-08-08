@@ -1,6 +1,6 @@
 #include "dx/utils.h"
 
-u8 dx_ascii_char_to_msg(u8 in) {
+u8 dx_ascii_char_to_msg(char in) {
     switch (in) {
         case '\0': return MSG_CHAR_READ_END;
         case ' ': case '\t': return MSG_CHAR_READ_SPACE;
@@ -13,7 +13,7 @@ u8 dx_ascii_char_to_msg(u8 in) {
     }
 }
 
-u8* dx_string_to_msg(u8* msg, const u8* str) {
+u8* dx_string_to_msg(u8* msg, const char* str) {
     while (*str) {
         *msg++ = dx_ascii_char_to_msg(*str++);
     }

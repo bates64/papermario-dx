@@ -7,6 +7,22 @@ path.append(str(Path(__file__).parent.parent))
 
 from sprite.npc_sprite import from_dir as npc_from_dir
 
+seen = set()
+duplicate_warned = set()
+def write_if_unique(f, name, value):
+    """
+    Write a define to the file if it is not already defined.
+    Print a warning the first time a non-unique name is used (per name).
+    """
+    global seen, duplicate_warned
+    if name in seen:
+        if name not in duplicate_warned:
+            print(f"warning: duplicate: {name}")
+            duplicate_warned.add(name)
+        return
+    seen.add(name)
+    f.write(f"#define {name} {value}\n")
+
 if __name__ == "__main__":
     if len(argv) < 4:
         print("usage: header.py [OUT] [NAME] [ID]")
@@ -23,36 +39,37 @@ if __name__ == "__main__":
 
         sprite = npc_from_dir(sprite_name, asset_stack, load_images=False)
 
-        f.write(f"#ifndef _NPC_SPRITE_{sprite_name.upper()}_H_\n")
-        f.write(f"#define _NPC_SPRITE_{sprite_name.upper()}_H_\n")
+        f.write(f"#pragma once\n")
         f.write("\n")
         f.write('#include "types.h"\n')
         f.write("\n")
 
         # sprite definition
-        f.write(f"#define SPR_{sprite_name} 0x{s:02X}\n")
+        write_if_unique(f, f"SPR_{sprite_name}", f"0x{s:02X}")
         f.write("\n")
 
         # definitions for images
         for i, image_name in enumerate(sprite.image_names):
-            f.write(f"#define SPR_IMG_{sprite_name}_{image_name} 0x{i:X}\n")
+            image_name = image_name.replace(" ", "_")
+            write_if_unique(f, f"SPR_IMG_{sprite_name}_{image_name}", f"0x{i:X}")
         f.write("\n")
 
         # definitions for palettes
         for p, palette_name in enumerate(sprite.palette_names):
+            palette_name = palette_name.replace(" ", "_")
             if palette_name == "Default":
-                f.write(f"#define SPR_PAL_{sprite_name} 0x{p:X}\n")
+                write_if_unique(f, f"SPR_PAL_{sprite_name}", f"0x{p:X}")
             else:
-                f.write(f"#define SPR_PAL_{sprite_name}_{palette_name} 0x{p:X}\n")
+                write_if_unique(f, f"SPR_PAL_{sprite_name}_{palette_name}", f"0x{p:X}")
         f.write("\n")
 
         # definitions for animations
         for p, palette_name in enumerate(sprite.palette_names):
+            palette_name = palette_name.replace(" ", "_")
             for a, name in enumerate(sprite.animation_names):
+                name = name.replace(" ", "_")
                 if palette_name == "Default":
-                    f.write(f"#define ANIM_{sprite_name}_{name} 0x{s:02X}{p:02X}{a:02X}\n")
+                    write_if_unique(f, f"ANIM_{sprite_name}_{name}", f"0x{s:02X}{p:02X}{a:02X}")
                 else:
-                    f.write(f"#define ANIM_{sprite_name}_{palette_name}_{name} 0x{s:02X}{p:02X}{a:02X}\n")
+                    write_if_unique(f, f"ANIM_{sprite_name}_{palette_name}_{name}", f"0x{s:02X}{p:02X}{a:02X}")
             f.write("\n")
-
-        f.write("#endif\n")

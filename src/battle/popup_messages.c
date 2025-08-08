@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "battle/battle.h"
 #include "battle/action_cmd.h"
+#include <stdlib.h>
 
 typedef struct BonkData {
     /* 0x00 */ b32 alive;
@@ -764,7 +765,7 @@ void btl_update_message_popup(void* data) {
         case BTL_MSG_ACTION_TIP_NOT_USED_3:
             actionCommandMode = battleStatus->actionCommandMode;
             ActionCommandTipVisible = TRUE;
-            if (actionCommandMode == ACTION_COMMAND_MODE_NOT_LEARNED) {
+            if (actionCommandMode == AC_MODE_NOT_LEARNED) {
                 ActionCommandTipVisible = FALSE;
                 shouldDisposeWindow = TRUE;
                 break;
@@ -919,7 +920,7 @@ void btl_update_message_popup(void* data) {
                     }
 
                     if (!(gBattleStatus.flags1 & BS_FLAGS1_4000)
-                        && (actionCommandMode != ACTION_COMMAND_MODE_TUTORIAL)
+                        && (actionCommandMode != AC_MODE_TUTORIAL)
                     ) {
                         set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_TRANSPARENT);
                         switch (popup->messageIndex) {
@@ -998,7 +999,7 @@ void btl_update_message_popup(void* data) {
                     }
                     break;
                 case BTL_MSG_STATE_ACTION_TIP_DISPOSE:
-                    if ((actionCommandMode != ACTION_COMMAND_MODE_TUTORIAL)
+                    if ((actionCommandMode != AC_MODE_TUTORIAL)
                         || (gBattleStatus.flags1 & BS_FLAGS1_10000)
                     ) {
                         if (BattleMessage_CurBoxPosY < 192) {
@@ -1669,8 +1670,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_MERLEE_ATK_UP:
@@ -1683,8 +1684,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 45 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_ACTION_TIP_PRESS_BEFORE_LANDING:
@@ -1721,11 +1722,11 @@ void btl_show_message_popup(void* data) {
                 }
                 BattleMessage_CurBoxPosY = posY;
 
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
                 if (popup->messageIndex == BTL_MSG_ACTION_TIP_UNUSED_3) {
-                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                    set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
                 } else {
-                    set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW_DARKENED);
+                    set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW_DARKENED);
                 }
             }
             break;
@@ -1742,8 +1743,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 40 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_PLAYER_DAZED:
@@ -1765,8 +1766,8 @@ void btl_show_message_popup(void* data) {
                     height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
                 }
 
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_ENEMY_DAZED:
@@ -1788,8 +1789,8 @@ void btl_show_message_popup(void* data) {
                     height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
                 }
 
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_CHARGE_HAMMER:
@@ -1812,8 +1813,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
         case BTL_MSG_CANT_MOVE:
@@ -1827,8 +1828,8 @@ void btl_show_message_popup(void* data) {
                 posX = 160 - (msgWidth / 2);
                 width = msgWidth;
                 height = 28 + D_8028374C_1BA13C[popup->messageIndex][1];
-                set_window_properties(WINDOW_ID_BATTLE_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
-                set_window_update(WINDOW_ID_BATTLE_POPUP, WINDOW_UPDATE_SHOW);
+                set_window_properties(WIN_BTL_POPUP, posX, posY, width, height, WINDOW_PRIORITY_0, btl_message_popup_draw_content, popup, -1);
+                set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             }
             break;
     }

@@ -16,10 +16,12 @@ expected/
 /ver/*/assets
 ctx.c.m2c
 /data2c
+.nix-profile*
 
 # Build artifacts
 build.ninja
 .ninja*
+.n2_db
 *.ld
 !src/map_shape.ld
 *.elf
@@ -40,6 +42,7 @@ build/
 /include/sprite/
 /include/map
 /tools/permuter_settings.toml
+.run_hash
 
 # Assets
 # ** DO NOT UNIGNORE THESE FILES!! SEE THE FOLLOWING LINK IF YOU'RE MODDING ASSETS:**

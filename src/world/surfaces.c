@@ -384,6 +384,13 @@ s32 NpcNextFootParity = 0;
 s16 NpcHedgeSpawnDelay = 4;
 s16 NpcWaterSpawnDelay = 4;
 
+void npc_surface_spawn_basic_fx(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_flower_fx(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_cloud_fx(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_snow_fx(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_hedges_fx(Npc* npc, SurfaceInteractMode mode);
+void npc_surface_spawn_water_fx(Npc* npc, SurfaceInteractMode mode);
+
 void npc_surface_spawn_fx(Npc* npc, SurfaceInteractMode mode) {
     s32 surfaceType;
 

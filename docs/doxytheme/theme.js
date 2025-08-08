@@ -18,6 +18,9 @@ for (const item of document.querySelectorAll(".memitem:has(.evtapi)")) {
     // Find its link
     const tr = document.getElementById(`r_${id}`)
     tr.innerHTML = `<td class="memItemLeft" align="right" valign="top"></td><td class="memItemRight" valign="bottom">${proto}</td>`
+
+    const titleTextNode = item.previousElementSibling.childNodes[1]  // memtitle is immediately before the memitem
+    titleTextNode.textContent = titleTextNode.textContent.replace("()", "")
 }
 
 // Combine @vars tables

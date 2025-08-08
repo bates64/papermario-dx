@@ -2,7 +2,8 @@
 // Expects Tayce T's NPC ID to be available as enum member NPC_TayceT.
 
 #include "common.h"
-#include "gcc/string.h"
+#include <string.h>
+#include "inventory.h"
 
 #include "world/common/todo/GetItemName.inc.c"
 
@@ -80,7 +81,6 @@ API_CALLABLE(N(GetCookResultForDoubleRecipe)) {
     s32 outVarQuality = *args++;
     s32 inputItemA = evt_get_variable(script, *args++);
     s32 inputItemB = evt_get_variable(script, *args++);
-    ExtraCookingPair* extraList;
     s32 resultItemID, resultQuality;
     s32 inputIdxA, inputIdxB;
     s32 recipeIdx;
