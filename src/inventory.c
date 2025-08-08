@@ -1,7 +1,6 @@
 #include "inventory.h"
 #include "hud_element.h"
 #include "dx/config.h"
-#include "dx/debug_menu.h"
 
 #define FULLY_EXTENDED_Y  18
 #define FULLY_RETRACTED_Y -100

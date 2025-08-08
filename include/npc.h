@@ -662,7 +662,7 @@ Enemy* get_enemy_safe(s32 npcID);
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif

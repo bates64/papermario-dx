@@ -47,7 +47,7 @@ extern long long int gspS2DEX2d_xbusDataStart[],    gspS2DEX2d_xbusDataEnd[];
 
 #endif /* _LANGUAGE_C */
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 #endif /* !_UCODE_DEBUG_H */
 

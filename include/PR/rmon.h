@@ -33,7 +33,7 @@ extern void rmonMain( void * );
 extern void rmonPrintf( const char *, ... );
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* !_OS_H */

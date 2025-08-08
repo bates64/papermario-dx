@@ -1,5 +1,10 @@
 #ifndef _XSTDIO_H
 #define _XSTDIO_H
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 #include "PR/ultratypes.h"
 #include <stdlib.h>
 #include <stdarg.h>
@@ -33,5 +38,9 @@ typedef char *outfun(char*,const char*,size_t);
 int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 void _Litob(_Pft *args, char type);
 void _Ldtob(_Pft* args, char type);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif
 
 #endif

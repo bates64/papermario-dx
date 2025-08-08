@@ -1,7 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
 #include <string.h>
-#include "dx/debug_menu.h"
 
 u16 heap_nextMallocID = 0;
 

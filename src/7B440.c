@@ -1,5 +1,4 @@
 #include "common.h"
-#include "dx/debug_menu.h"
 
 s32 PeachDisguiseNpcIndex;
 Entity* TweesterTouchingPartner;

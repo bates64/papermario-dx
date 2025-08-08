@@ -140,6 +140,7 @@ segments:
     - [auto, c, status_icons]
     - [auto, c, 23680]
     - [auto, c, 25AF0]
+    - [auto, cpp, foliage]
     - [auto, c, audio/25f00_len_940]
     - [auto, c, audio/sfx_player]
     - [auto, c, audio/28910_len_5090]
@@ -349,7 +350,7 @@ segments:
     - [auto, hasm, os/decode_yay0]
     - [auto, c, os/osFlash]
     - [0x4AC90, pm_effect_loads, effect_loads]
-    - [auto, c, battle/battle]
+    - [auto, cpp, battle/battle]
     - [0x4E5A0, bin, n_aspMain_text]
     - start: 0x4F200
       type: .data
@@ -6050,15 +6051,12 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, area]
-    - [auto, c, actor/goomba]
-    - [auto, c, actor/spiked_goomba]
-    - [auto, c, actor/paragoomba]
-    - [auto, c, stage/kmr_02]
-    - [auto, c, stage/kmr_03]
-    - [auto, c, stage/kmr_04]
-    - [auto, c, stage/kmr_05]
-    - [auto, c, stage/kmr_06]
+    - [auto, cpp, area]
+    - [auto, cpp, stage/kmr_bt02]
+    - [auto, cpp, stage/kmr_bt03]
+    - [auto, cpp, stage/kmr_bt04]
+    - [auto, cpp, stage/kmr_bt05]
+    - [auto, cpp, stage/kmr_bt06]
   - dir: battle/area/kmr_part_2
     type: code
     start: 0x439A90

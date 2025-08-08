@@ -190,7 +190,7 @@ void spScissor( s32 xmin, s32 xmax, s32 ymin, s32 ymax );
 void spFinish( Gfx **glistp );
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* _SP_H_ */

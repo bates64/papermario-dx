@@ -8,7 +8,6 @@
 #include "sprite/npc/BattleMerlee.h"
 #include "sprite/player.h"
 #include "model.h"
-#include "dx/debug_menu.h"
 
 API_CALLABLE(ShowMerleeCoinMessage);
 API_CALLABLE(ShowMerleeRanOutMessage);

@@ -356,7 +356,7 @@ typedef union {
 #endif	/* _LANGUAGE_ASSEMBLY */
 
 #ifdef	_LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif	/* _LANGUAGE_C_PLUS_PLUS */
 
 #ifdef	_LANGUAGE_MAKEROM

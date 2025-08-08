@@ -346,7 +346,7 @@ extern long long int    n_aspMainDataStart[], n_aspMainDataEnd[];
 
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* __N_LIBAUDIO__ */

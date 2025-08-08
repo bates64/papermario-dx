@@ -173,7 +173,7 @@ OSErrorHandler	osSetErrorHandler(OSErrorHandler);
 #endif
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif	/* __ULTRAERROR_H__ */

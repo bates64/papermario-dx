@@ -6,7 +6,6 @@
 #include "sprite.h"
 #include "model.h"
 #include <string.h>
-#include "dx/debug_menu.h"
 #include "world/surfaces.h"
 
 #ifdef SHIFT

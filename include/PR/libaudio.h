@@ -938,10 +938,7 @@ s32             alSndpGetState(ALSndPlayer *sndp);
 void alParseAbiCL(Acmd *cmdList, u32 nbytes);
 #endif
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* !__LIB_AUDIO__ */
-
-
-

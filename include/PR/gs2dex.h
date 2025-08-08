@@ -385,7 +385,7 @@ extern	void	guS2DInitBg(uObjBg *);
 #endif
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 #endif /* _GS2DEX_H_ */
 

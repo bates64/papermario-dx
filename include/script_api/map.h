@@ -61,7 +61,7 @@ extern EvtScript EnterPostPipe;
 extern EvtScript EVS_ShopOwnerDialog;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif

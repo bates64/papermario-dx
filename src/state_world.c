@@ -3,7 +3,6 @@
 #include "game_modes.h"
 #include "dx/config.h"
 #include "dx/profiling.h"
-#include "dx/debug_menu.h"
 
 void state_world_draw_aux_ui(void);
 

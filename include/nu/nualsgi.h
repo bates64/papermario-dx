@@ -339,6 +339,6 @@ extern s32 nuAuHeapGetUsed(void);
 /*----------------------------------------------------------------------*/
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 #endif /* _NUALSGI_H_ */

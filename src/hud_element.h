@@ -420,6 +420,10 @@ extern HudScript* wPartnerHudScripts[];
         hs_End \
     }
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 void hud_element_load_script(HudElement* hudElement, HudScript* anim);
 
 /// @param clamp        0 = repeat; 1 = clamp
@@ -514,5 +518,9 @@ void copy_world_hud_element_ref_to_battle(s32 worldID, s32 battleID);
 void hud_element_set_aux_cache(void* base, s32 size);
 
 void create_standard_popup_menu(PopupMenu*);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif
 
 #endif

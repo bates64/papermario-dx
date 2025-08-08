@@ -101,7 +101,7 @@ extern "C" {
 
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* !_OS_H */

@@ -114,10 +114,8 @@ extern s32	osGetRegionBufSize(void *);
 
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 
 #endif  /* _REGION_H_ */
-
-

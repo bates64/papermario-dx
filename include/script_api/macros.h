@@ -835,7 +835,7 @@ extern "C" {
     Call(PlayEffect_impl, effect, subtype, a, b, c, d, e, f, g, h, i, j, k, l)
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif

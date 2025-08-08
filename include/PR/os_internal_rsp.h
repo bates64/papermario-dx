@@ -42,7 +42,7 @@ extern s32		__osSpRawStartDma(s32, u32, void *, u32);
 #endif /* _LANGUAGE_C */
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* !_OS_INTERNAL_RSP_H */

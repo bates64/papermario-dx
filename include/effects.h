@@ -2681,10 +2681,18 @@ enum FireBreathType {
     FIRE_BREATH_TINY  = 2,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 EffectInstance* create_effect_instance(EffectBlueprint* effectBp);
 void remove_effect(EffectInstance*);
 s32 load_effect(s32 effectIndex);
 
 #include "effects/effect_defs.h"
 
+#ifdef __cplusplus
+} // extern "C"
 #endif
+
+#endif // _EFFECTS_H_

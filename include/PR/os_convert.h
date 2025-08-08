@@ -105,7 +105,7 @@ extern void *		 osPhysicalToVirtual(u32);
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif /* !_OS_CONVERT_H_ */

@@ -68,7 +68,7 @@ u32	osLogFloat(f32);
 extern void osDelay(int count);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif
