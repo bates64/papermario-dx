@@ -102,7 +102,7 @@ enum CommonActorVars {
     AVAR_JungleFuzzy_Generation         = 0,
 };
 
-extern s32 bActorNames[];
+EXTERN_C s32 bActorNames[];
 
 typedef struct BattleMoveEntry {
     /* 0x00 */ u8* romStart;
@@ -221,7 +221,7 @@ typedef struct BattleArea {
     /* 0x1C */ DmaTable* dmaTable;
 } BattleArea; // size = 0x20
 
-extern BattleArea gBattleAreas[0x30];
+EXTERN_C BattleArea gBattleAreas[0x30];
 
 #define BATTLE(formation, stage, name) { name, ARRAY_COUNT(formation), (Formation*) formation, &stage }
 #define BATTLE_WITH_SCRIPT(formation, stage, script, name) { name, ARRAY_COUNT(formation), (Formation*) formation, &stage, &script }
@@ -239,7 +239,7 @@ typedef struct ActorSounds {
     /* 0x18 */ s16 delay[2]; ///< Number of frames to wait between walk/fly sounds. Negative values are in distance.
 } ActorSounds; // size = 0x1C
 
-extern ActorSounds bActorSoundTable[];
+EXTERN_C ActorSounds bActorSoundTable[];
 
 typedef struct ActorOffsets {
     /* 0x00 */ Vec3b tattleCam;
@@ -252,6 +252,10 @@ typedef struct PlayerCelebrationAnimOptions {
     /* 0x02 */ s16 hpBasedChance;
     /* 0x04 */ s32 options[80];
 } PlayerCelebrationAnimOptions; // size = 0x144
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
 
 extern Battle* gCurrentBattlePtr;
 
@@ -268,5 +272,9 @@ Actor* create_actor(Formation formation);
 
 #define POPUP_MSG_ON 99
 #define POPUP_MSG_OFF 0
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif
 
 #endif

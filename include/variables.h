@@ -7,6 +7,10 @@
 #include "macros.h"
 #include "enums.h"
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 extern PlayerStatus* gPlayerStatusPtr;
 extern CollisionStatus gCollisionStatus;
 extern GameStatus gGameStatus;
@@ -113,6 +117,10 @@ extern PlayerData gPlayerData;
 extern s32 gCurrentLanguage;
 #else
 #define gCurrentLanguage 0
+#endif
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
 #endif
 
 #endif

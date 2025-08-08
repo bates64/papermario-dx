@@ -21,9 +21,7 @@
 #ifndef _OS_INTERNAL_SI_H_
 #define	_OS_INTERNAL_SI_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/os.h>
 
@@ -39,8 +37,6 @@ extern s32		__osSiRawStartDma(s32, void *);
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_INTERNAL_SI_H */

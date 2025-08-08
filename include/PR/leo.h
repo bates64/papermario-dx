@@ -10,9 +10,7 @@
 #ifndef _LEO_H_
 #define _LEO_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/os.h>
 #include <PR/leoappli.h>
@@ -273,8 +271,6 @@ extern  void LeoBootGame(void *entry);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_LEO_H */

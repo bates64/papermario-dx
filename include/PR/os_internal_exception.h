@@ -21,10 +21,6 @@
 #ifndef _OS_INTERNAL_EXCEPTION_H_
 #define	_OS_INTERNAL_EXCEPTION_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
-
 #include <PR/os.h>
 
 #if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
@@ -41,9 +37,5 @@ extern void		__osResetGlobalIntMask(OSHWIntr);
 
 
 #endif /* _LANGUAGE_C */
-
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
 
 #endif /* !_OS_INTERNAL_EXCEPTION_H */

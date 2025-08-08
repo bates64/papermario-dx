@@ -11,5 +11,5 @@ void msg_get_glyph(s32 font, s32 variation, s32 charIndex, s32 palette, MesasgeF
 void dma_load_msg(u32 msgID, void* dest);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif

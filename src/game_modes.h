@@ -22,6 +22,10 @@ enum GameMode {
     GAME_MODE_DEMO,
 };
 
+#ifdef _LANGUAGE_C_PLUS_PLUS
+extern "C" {
+#endif
+
 void set_game_mode(s32 mode);
 s32 get_game_mode(void);
 void set_game_mode_render_frontUI(void (*fn)(void));
@@ -30,5 +34,9 @@ void clear_game_mode(void);
 void step_game_mode(void);
 void render_game_mode_backUI(void);
 void render_game_mode_frontUI(void);
+
+#ifdef _LANGUAGE_C_PLUS_PLUS
+} // extern "C"
+#endif
 
 #endif

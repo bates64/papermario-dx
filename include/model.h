@@ -186,6 +186,10 @@ typedef struct ShapeFile {
 
 typedef ModelTreeInfo ModelTreeInfoList[0x200];
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern ModelTreeInfoList* gCurrentModelTreeNodeInfo;
 extern ModelList* gCurrentModels;
 
@@ -223,5 +227,9 @@ void mdl_make_local_vertex_copy(s32 arg0, u16 treeIdx, s32);
 void play_model_animation_starting_from(s32 index, s16* animPos, s32 framesToSkip);
 
 void mdl_set_shroud_tint_params(u8 r, u8 g, u8 b, u8 a);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

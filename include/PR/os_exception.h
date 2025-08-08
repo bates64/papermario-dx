@@ -30,9 +30,7 @@
 #ifndef _OS_EXCEPTION_H_
 #define	_OS_EXCEPTION_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -113,8 +111,6 @@ extern OSIntMask	osSetIntMask(OSIntMask);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_EXCEPTION_H_ */

@@ -21,9 +21,7 @@
 #ifndef _OS_INTERNAL_RSP_H_
 #define	_OS_INTERNAL_RSP_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/os.h>
 
@@ -41,8 +39,6 @@ extern s32		__osSpRawStartDma(s32, u32, void *, u32);
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_INTERNAL_RSP_H */

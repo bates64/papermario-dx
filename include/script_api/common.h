@@ -22,7 +22,7 @@ extern "C" {
 /// @evtapi
 /// @param modelID
 /// @param x
-/// @param y 
+/// @param y
 /// @param z
 API_CALLABLE(TranslateModel);
 
@@ -139,7 +139,7 @@ API_CALLABLE(SetTransformGroupEnabled);
 /// @evtapi
 /// @param modelID
 /// @param x
-/// @param y 
+/// @param y
 /// @param z
 API_CALLABLE(TranslateGroup);
 
@@ -176,7 +176,7 @@ API_CALLABLE(EnableGroup);
 /// @param bool "0 = clear, 1 = get"
 API_CALLABLE(MakeLocalVertexCopy);
 
-/// Set flags for collider + siblings + children. 
+/// Set flags for collider + siblings + children.
 /// @evtapi
 /// @param mode 0 = set bits, 1 = clear bits, 2 = replace, 3 = replace lowest 16 bits
 /// @param colliderID
@@ -208,7 +208,7 @@ API_CALLABLE(UpdateColliderTransform);
 /// Enables or disables the given zone.
 /// @evtapi
 /// @param zoneID
-/// @param bool 
+/// @param bool
 API_CALLABLE(SetZoneEnabled);
 
 /// Makes the player go to the given map and at the given entrance.
@@ -1502,7 +1502,7 @@ extern EvtScript EnemyNpcHit;
 extern EvtScript EnemyNpcDefeat;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif
