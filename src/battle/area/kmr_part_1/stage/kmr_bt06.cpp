@@ -4,6 +4,8 @@
 
 namespace battle::area::kmr_part_1 {
 
+namespace {
+
 #include "battle/common/stage/lib/MovingClouds.inc.c"
 
 API_CALLABLE(SetupFog) {
@@ -37,6 +39,8 @@ s32 ForegroundModels[] = {
     MODEL_ha3,
     STAGE_MODEL_LIST_END
 };
+
+} // blank namespace
 
 Stage PleasantPath6 = {
     .texture = "kmr_tex",
