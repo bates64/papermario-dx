@@ -2,6 +2,8 @@
 
 namespace battle::area::kmr_part_1 {
 
+namespace {
+
 EvtScript EVS_PreBattle = {
     Call(SetSpriteShading, SHADING_NONE)
     Return
@@ -12,6 +14,8 @@ EvtScript EVS_PostBattle = {
     Return
     End
 };
+
+} // blank namespace
 
 Stage PleasantPath2 = {
     .texture = "kmr_tex",
