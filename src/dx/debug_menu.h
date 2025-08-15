@@ -78,4 +78,9 @@ API_CALLABLE(_dxDebugFloatPrintf);
 } // extern "C"
 #endif
 
+#else
+
+#define debug_print(text)
+#define debug_printf(fmt, args...)
+
 #endif
