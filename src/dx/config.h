@@ -10,7 +10,7 @@
 #define DX_MOD_VER_PATCH 0 /// Increase this when fixing bugs
 
 /// Enables the debug menu.
-#define DX_DEBUG_MENU 0
+#define DX_DEBUG_MENU 1
 
 /// Loads last used save file.
 #define DX_QUICK_LAUNCH 0
