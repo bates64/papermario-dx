@@ -6,7 +6,7 @@
 #include "sprite.h"
 #include "game_modes.h"
 
-#include "area/kmr_part_1/area.hpp"
+// #include "area/kmr_part_1/area.hpp"
 
 extern "C" {
 
@@ -67,7 +67,7 @@ BSS Battle* gCurrentBattlePtr;
 /// - FormationNames in battle_names.h
 /// - battle_tables.h
 BattleArea gBattleAreas[] = {
-    BTL_AREA(kmr_part_1, "KMR Part 1"),
+    BTL_AREA_C(kmr_part_1, "KMR Part 1"),
     BTL_AREA_C(kmr_part_2, "エリア ＫＭＲ その２"),
     BTL_AREA_C(kmr_part_3, "エリア ＫＭＲ その３"),
     BTL_AREA_C(mac, "エリア ＭＡＣ"),

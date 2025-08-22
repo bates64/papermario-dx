@@ -6051,12 +6051,15 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, cpp, area]
-    - [auto, cpp, stage/kmr_bt02]
-    - [auto, cpp, stage/kmr_bt03]
-    - [auto, cpp, stage/kmr_bt04]
-    - [auto, cpp, stage/kmr_bt05]
-    - [auto, cpp, stage/kmr_bt06]
+    - [auto, c, area]
+    - [auto, c, actor/goomba]
+    - [auto, c, actor/spiked_goomba]
+    - [auto, c, actor/paragoomba]
+    - [auto, c, stage/kmr_02]
+    - [auto, c, stage/kmr_03]
+    - [auto, c, stage/kmr_04]
+    - [auto, c, stage/kmr_05]
+    - [auto, c, stage/kmr_06]
   - dir: battle/area/kmr_part_2
     type: code
     start: 0x439A90
