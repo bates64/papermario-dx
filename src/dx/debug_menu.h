@@ -1,3 +1,6 @@
+#ifndef _DX_DEBUG_MENU_H
+#define _DX_DEBUG_MENU_H
+
 #include "common.h"
 #include "dx/config.h"
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
@@ -88,3 +91,4 @@ API_CALLABLE(_dxDebugFloatPrintf);
 #endif
 
 #endif
+#endif // _DX_DEBUG_MENU_H
