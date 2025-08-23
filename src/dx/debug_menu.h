@@ -29,6 +29,15 @@ void dx_debug_set_battle_info(s32 battleID, char* stageName);
 
 void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
 
+void dx_debug_evt_force_detach(Evt* evt);
+void dx_debug_evt_reset();
+
+enum DebugEvtStep {
+    DEBUG_EVT_STEP_NONE,
+    DEBUG_EVT_STEP_ONCE,
+    DEBUG_EVT_STEP_OVER,
+};
+
 void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...);
 
 #define debug_print(text) dx_hashed_debug_printf(__FILE__,__LINE__,text)
