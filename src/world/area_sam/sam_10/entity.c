@@ -1,6 +1,24 @@
 #include "sam_10.h"
 #include "entity.h"
 
+#include "world/common/todo/StashVars.inc.c"
+#include "world/common/todo/GetItemName.inc.c"
+#include "world/common/todo/SomeItemEntityFunc.inc.c"
+#include "world/common/todo/IsItemBadge.inc.c"
+
+s32** N(varStash) = nullptr;
+
+EvtScript N(EVS_Chest_ShowGotItem) = {
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
+    Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
+    Wait(40)
+    Call(ShowGotItem, LVar0, false, 0)
+    Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+    Return
+    Return
+    End
+};
+
 API_CALLABLE(N(SetStarStoneItemScale)) {
     get_item_entity(script->varTable[0])->scale = 0.8f;
     return ApiStatus_DONE2;

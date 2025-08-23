@@ -11,8 +11,8 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHIVER_MOUNTAIN)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))
     IfLt(GB_StoryProgress, STORY_CH7_GOT_STAR_STONE)

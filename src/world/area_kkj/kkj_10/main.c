@@ -12,23 +12,101 @@ API_CALLABLE(N(DisableAllLightSources)) {
 
 #include "../common/SetAvailableDisguise.inc.c"
 
-EvtScript N(EVS_ExitDoors_osr_02_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_0, "osr_02", osr_02_ENTRY_1,
-    COLLIDER_tts, MODEL_door2, MODEL_door1, DOOR_SOUNDS_LARGE);
+EvtScript N(EVS_ExitDoors_osr_02_1) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
+    Set(LVar0, kkj_10_ENTRY_0)
+    Set(LVar1, COLLIDER_tts)
+    Set(LVar2, MODEL_door2)
+    Set(LVar3, MODEL_door1)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("osr_02"), osr_02_ENTRY_1)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_kkj_11_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_1, "kkj_11", kkj_11_ENTRY_0,
-    COLLIDER_ttn, MODEL_door3, MODEL_door4, DOOR_SOUNDS_LARGE);
+EvtScript N(EVS_ExitDoors_kkj_11_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
+    Set(LVar0, kkj_10_ENTRY_1)
+    Set(LVar1, COLLIDER_ttn)
+    Set(LVar2, MODEL_door3)
+    Set(LVar3, MODEL_door4)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_11"), kkj_11_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_kkj_21_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_2, "kkj_21", kkj_21_ENTRY_0,
-    COLLIDER_ttw, MODEL_door5, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_kkj_21_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
+    Set(LVar0, kkj_10_ENTRY_2)
+    Set(LVar1, COLLIDER_ttw)
+    Set(LVar2, MODEL_door5)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_21"), kkj_21_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_kkj_19_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_3, "kkj_19", kkj_19_ENTRY_0,
-    COLLIDER_ttne, MODEL_door8, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_kkj_19_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
+    Set(LVar0, kkj_10_ENTRY_3)
+    Set(LVar1, COLLIDER_ttne)
+    Set(LVar2, MODEL_door8)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_19"), kkj_19_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_kkj_20_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_4, "kkj_20", kkj_20_ENTRY_0,
-    COLLIDER_tte, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_kkj_20_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
+    Set(LVar0, kkj_10_ENTRY_4)
+    Set(LVar1, COLLIDER_tte)
+    Set(LVar2, MODEL_door7)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_20"), kkj_20_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_kkj_29_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_10_ENTRY_2, "kkj_29", kkj_29_ENTRY_0,
-    COLLIDER_ttw, MODEL_door5, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
+EvtScript N(EVS_ExitDoors_kkj_29_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
+    Set(LVar0, kkj_10_ENTRY_2)
+    Set(LVar1, COLLIDER_ttw)
+    Set(LVar2, MODEL_door5)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_29"), kkj_29_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
 EvtScript N(EVS_BindExitTriggers) = {
     IfGt(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
@@ -85,23 +163,23 @@ EvtScript N(EVS_Main) = {
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, FALSE, Ref(N(EarlyNPCs)))
+            Call(MakeNpcs, false, Ref(N(EarlyNPCs)))
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
             Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
-            Call(MakeNpcs, FALSE, Ref(N(LaterNPCs)))
+            Call(MakeNpcs, false, Ref(N(LaterNPCs)))
         CaseDefault
-            Call(EnableModel, MODEL_o273, FALSE)
-            Call(EnableModel, MODEL_o274, FALSE)
+            Call(EnableModel, MODEL_o273, false)
+            Call(EnableModel, MODEL_o274, false)
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
     IfGe(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Call(N(DisableAllLightSources))
     EndIf
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
-        Call(SetMusicTrack, 0, SONG_PEACH_SNEAKING, 0, 8)
+        Call(SetMusic, 0, SONG_PEACH_SNEAKING, 0, VOL_LEVEL_FULL)
     Else
-        Call(SetMusicTrack, 0, SONG_BOWSER_ATTACKS, 1, 8)
+        Call(SetMusic, 0, SONG_BOWSER_ATTACKS, BGM_VARIATION_1, VOL_LEVEL_FULL)
     EndIf
     Exec(N(EVS_BindExitTriggers))
     Exec(N(EVS_EnterMap))

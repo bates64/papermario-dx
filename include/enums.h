@@ -533,14 +533,17 @@ enum SoundIDBits {
     SOUND_ID_SECTION_MASK           = 0x00000300, // corresponds to sections 0-3 for indices < 0xC0 and 4-7 for those above
     SOUND_ID_INDEX_MASK             = 0x000000FF,
     SOUND_ID_UNK_INDEX_MASK         = 0x000001FF, // indices for the special large section
+
+    SOUND_ID_UPPER_MASK             = 0x03FF0000,
+    SOUND_ID_TYPE_MASK              = 0x70000000,
+    SOUND_ID_TYPE_FLAG              = 0x80000000,
 };
 
 enum SoundType {
-    SOUND_TYPE_SPECIAL              = 0x80000000,
-    SOUND_TYPE_LOOPING              = 0, // 0x80000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_EXIT_DOOR            = 1, // 0x90000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_ROOM_DOOR            = 2, // 0xA0000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_ALTERNATING          = 3, // 0xB0000000 (with SOUND_TYPE_SPECIAL)
+    SOUND_TYPE_LOOPING              = 0, // 0x80000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_EXIT_DOOR            = 1, // 0x90000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_ROOM_DOOR            = 2, // 0xA0000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_ALTERNATING          = 3, // 0xB0000000 (with SOUND_ID_TYPE_FLAG)
 };
 
 enum SoundIDs {
@@ -1307,7 +1310,7 @@ enum SoundIDs {
     SOUND_LULLABY                               = 0x000003F4,
     SOUND_BUBBLES_RISING                        = 0x000003F5, // unused
     SOUND_DRIP                                  = 0x000003F6,
-    STONE_STONE_CHOMP_STEP                      = 0x000003F9,
+    SOUND_STONE_CHOMP_STEP                      = 0x000003F9,
     SOUND_THROW                                 = 0x000003FA,
     SOUND_PLAYER_COLLAPSE                       = 0x000003FB,
     SOUND_LUCKY                                 = 0x000003FC,
@@ -1755,10 +1758,12 @@ enum SoundTriggers {
 typedef enum AuResult {
     AU_RESULT_OK                        = 0,
     AU_ERROR_1                          = 1,
-    AU_AMBIENCE_ERROR_1                 = 1,
+    AU_AMBIENCE_STOP_ERROR_1            = 1,
+    AU_AMBIENCE_STOP_ERROR_2            = 2,
+    AU_AMBIENCE_ERROR_PLAYER_BUSY       = 1, // player already has an mseq playing
     AU_ERROR_SONG_NOT_PLAYING           = 2, // player not found for songName
-    AU_AMBIENCE_ERROR_2                 = 2,
-    AU_ERROR_NULL_SONG_NAME             = 3, // songName is NULL
+    AU_AMBIENCE_ERROR_MSEQ_NOT_FOUND    = 2, // mseq not found
+    AU_ERROR_NULL_SONG_NAME             = 3, // songName is nullptr
     AU_AMBIENCE_ERROR_3                 = 3,
     AU_ERROR_INVALID_SONG_DURATION      = 4, // duration out of bounds: (250,10000)
     AU_ERROR_6                          = 6,
@@ -1786,15 +1791,36 @@ enum {
 };
 
 typedef enum MusicTrackVols {
-    TRACK_VOLS_0            = 0,
-    TRACK_VOLS_1            = 1,
-    TRACK_VOLS_2            = 2,
-    TRACK_VOLS_3            = 3,
+    TRACK_VOLS_JAN_FULL     = 0,
+    TRACK_VOLS_UNUSED_1     = 1,
+    TRACK_VOLS_TIK_SHIVER   = 2,
+    TRACK_VOLS_UNUSED_3     = 3,
     TRACK_VOLS_KPA_OUTSIDE  = 4,
     TRACK_VOLS_KPA_1        = 5,
     TRACK_VOLS_KPA_2        = 6,
     TRACK_VOLS_KPA_3        = 7
 } MusicTrackVols;
+
+typedef enum BGMVariation {
+    BGM_VARIATION_0                 = 0,
+    BGM_VARIATION_1                 = 1,
+    BGM_VARIATION_2                 = 2,
+    BGM_VARIATION_3                 = 3,
+} BGMVariation;
+
+/// Perceptual volume levels, 0 (mute) to 8 (max).
+/// Only attenuates, never amplifies.
+typedef enum VolumeLevels {
+    VOL_LEVEL_MUTE      = 0,
+    VOL_LEVEL_1         = 1,
+    VOL_LEVEL_2         = 2,
+    VOL_LEVEL_3         = 3,
+    VOL_LEVEL_4         = 4,
+    VOL_LEVEL_5         = 5,
+    VOL_LEVEL_6         = 6,
+    VOL_LEVEL_7         = 7,
+    VOL_LEVEL_FULL      = 8,
+} VolumeLevels;
 
 enum Cams {
     CAM_DEFAULT      = 0,
@@ -1880,18 +1906,20 @@ enum ActorPartTargetFlags {
 enum AmbientSounds {
     AMBIENT_SPOOKY          = 0,
     AMBIENT_WIND            = 1,
-    AMBIENT_BEACH           = 2,
+    AMBIENT_SEA             = 2,
     AMBIENT_JUNGLE          = 3,
     AMBIENT_LAVA_1          = 4,
     AMBIENT_LAVA_2          = 5,
-    AMBIENT_SILENCE         = 6,
+    AMBIENT_LAVA_FADE_IN    = 6,
     AMBIENT_LAVA_3          = 7,
     AMBIENT_LAVA_4          = 8,
     AMBIENT_LAVA_5          = 9,
     AMBIENT_LAVA_6          = 10,
     AMBIENT_LAVA_7          = 11,
     AMBIENT_BIRDS           = 12,
-    AMBIENT_SEA             = 13,
+    AMBIENT_UNUSED_13       = 13, // copy of AMBIENT_SEA, available for replacement
+    AMBIENT_UNUSED_14       = 14, // copy of AMBIENT_SEA, available for replacement
+    AMBIENT_UNUSED_15       = 15, // copy of AMBIENT_SEA, available for replacement
     AMBIENT_RADIO           = 16, // radio songs for nok
     // the following 4 IDs are reserved for additional radio songs,
     // and no more are expected to follow after that
@@ -3588,7 +3616,7 @@ enum BattleStatusFlags1 {
     BS_FLAGS1_PLAYER_IN_BACK                = 0x00100000,
     BS_FLAGS1_YIELD_TURN                    = 0x00200000, // moves end either when their script is finished or this flag is set by calling YieldTurn
     BS_FLAGS1_PLAYER_DEFENDING              = 0x00400000,
-    BS_FLAGS1_NO_GAME_OVER                  = 0x00800000, // don’t game over on loss
+    BS_FLAGS1_NO_GAME_OVER                  = 0x00800000, // don't game over on loss
     BS_FLAGS1_STAR_POINTS_DROPPED           = 0x01000000,
     BS_FLAGS1_TUTORIAL_BATTLE               = 0x02000000, // prevent player from swapping to/from partner
     BS_FLAGS1_HUSTLED                       = 0x04000000,
@@ -3636,7 +3664,7 @@ enum BattleStates {
     BATTLE_STATE_END_TURN                   = 6,
     BATTLE_STATE_BEGIN_PLAYER_TURN          = 7,
     BATTLE_STATE_BEGIN_PARTNER_TURN         = 8,
-    BATTLE_STATE_9                          = 9,    // can be reached from BATTLE_STATE_PARTNER_MOVE if partner == NULL
+    BATTLE_STATE_9                          = 9,    // can be reached from BATTLE_STATE_PARTNER_MOVE if partner == nullptr
     BATTLE_STATE_SWITCH_TO_PLAYER           = 10,
     BATTLE_STATE_SWITCH_TO_PARTNER          = 11,
     BATTLE_STATE_PREPARE_MENU               = 12,
@@ -4655,15 +4683,6 @@ enum ProjectileHitboxAttackStates {
     PROJECTILE_HITBOX_STATE_DONE        = 100
 };
 
-enum MusicSettingsFlags {
-    MUSIC_SETTINGS_FLAG_1                 = 0x00000001,
-    MUSIC_SETTINGS_FLAG_ENABLE_PROXIMITY_MIX   = 0x00000002,
-    MUSIC_SETTINGS_FLAG_4                 = 0x00000004,
-    MUSIC_SETTINGS_FLAG_8                 = 0x00000008,
-    MUSIC_SETTINGS_FLAG_10                = 0x00000010,
-    MUSIC_SETTINGS_FLAG_20                = 0x00000020,
-};
-
 // the lower byte of ColliderFlags
 enum SurfaceType {
     SURFACE_TYPE_DEFAULT            = 0,
@@ -4754,9 +4773,9 @@ enum CameraUpdateMode {
     CAM_UPDATE_FROM_ZONE            = 3,
 
     // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
-    // which are only updated if skipRecalc = FALSE
+    // which are only updated if skipRecalc = false
     // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
-    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
+    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to false
     CAM_UPDATE_NO_INTERP            = 6,
 
     // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update
@@ -5351,31 +5370,43 @@ enum FileMenuMessages {
     /* 14 */ FILE_MESSAGE_YES,                         // Yes[End]
     /* 15 */ FILE_MESSAGE_NO,                          // No[End]
     /* 16 */ FILE_MESSAGE_DELETE,                      // Delete[End]
+#if !VERSION_PAL
     /* 17 */ FILE_MESSAGE_OVERRIDE_TO_NEW_DATA,        // Override to New Data[End]
     /* 18 */ FILE_MESSAGE_SAVE_OK,                     // Save OK?[End]
+#endif
     /* 19 */ FILE_MESSAGE_FILE_NAME_IS,                // File name is :[End]
     /* 20 */ FILE_MESSAGE_PERIOD_20,                   // .[End]
     /* 21 */ FILE_MESSAGE_OK,                          // OK?[End]
     /* 22 */ FILE_MESSAGE_FILE_22,                     // File[End]
+#if VERSION_PAL
+    FILE_MESSAGE_PAL_FILE_20,                          // File[End] / Dat.[End] / Fich.[End]
+#endif
     /* 23 */ FILE_MESSAGE_WILL_BE_DELETED,             // will be deleted.[End]
     /* 24 */ FILE_MESSAGE_OK_TO_COPY_TO_THIS_FILE,     // OK to copy to this file?[End]
     /* 25 */ FILE_MESSAGE_START_GAME_WITH,             // Start game with[End]
+#if VERSION_PAL
+    FILE_MESSAGE_PAL_QUESTION_24,                      // ?[End] / beginnen?[End]
+#endif
     /* 26 */ FILE_MESSAGE_FILE_26,                     // File[End]
     /* 27 */ FILE_MESSAGE_HAS_BEEN_DELETED,            // has been deleted.[End]
     /* 28 */ FILE_MESSAGE_28,                          // [End]
     /* 29 */ FILE_MESSAGE_COPY_FROM,                   // Copy from[End]
     /* 30 */ FILE_MESSAGE_TO,                          // to[End]
+#if VERSION_PAL
+    FILE_MESSAGE_PAL_PERIOD_30,                        // .[End] / kopieren.[End]
+#endif
     /* 31 */ FILE_MESSAGE_HAS_BEEN_CREATED,            // has been created.[End]
 #if VERSION_PAL
-    // TODO: determine where these new entries should be placed
-    FILE_MESSAGE_PAL_UNK1,
-    FILE_MESSAGE_PAL_UNK2,
+    FILE_MESSAGE_PAL_ARTICLE,                          // [End] / Le[End] / El[End]
 #endif
     /* 32 */ FILE_MESSAGE_ENTER_A_FILE_NAME,           // Enter a file name![End]
     /* 33 */ FILE_MESSAGE_QUESTION,                    // ?[End]
     /* 34 */ FILE_MESSAGE_PERIOD_34,                   // .[End]
 #if VERSION_PAL
-    FILE_MESSAGE_PAL_UNK3,
+    FILE_MESSAGE_PAL_FILENUM_1,
+    FILE_MESSAGE_PAL_FILENUM_2,
+    FILE_MESSAGE_PAL_FILENUM_3,
+    FILE_MESSAGE_PAL_FILENUM_4,
 #endif
 };
 
@@ -5853,7 +5884,7 @@ enum MsgChars {
     MSG_CHAR_BUTTON_R               = 0x09,
 #else
     MSG_CHAR_NOTE                   = 0x00,
-    MSG_CHAR_EXCLAMTION             = 0x01,
+    MSG_CHAR_EXCLAMATION            = 0x01,
     MSG_CHAR_BACKSLASH              = 0x02,
     MSG_CHAR_HASH                   = 0x03,
     MSG_CHAR_DOLLAR                 = 0x04,
@@ -5993,7 +6024,7 @@ enum MsgChars {
     MSG_CHAR_LOWER_U_ACUTE          = 0x8A,
     MSG_CHAR_LOWER_U_CIRCUMFLEX     = 0x8B,
     MSG_CHAR_LOWER_U_UMLAUT         = 0x8C,
-    MSG_CHAR_INVERTED_EXCLAMTION    = 0x8D,
+    MSG_CHAR_INVERTED_EXCLAMATION   = 0x8D,
     MSG_CHAR_INVERTED_QUESTION      = 0x8E,
     MSG_CHAR_FEM_ORDINAL            = 0x8F,
     MSG_CHAR_HEART                  = 0x90,
@@ -6390,6 +6421,12 @@ enum WindowStyles {
     WINDOW_STYLE_21     = 21,
     WINDOW_STYLE_22     = 22,
     WINDOW_STYLE_MAX    = 22,
+};
+
+enum ThreadIDs {
+    THREAD_ID_PI        = 0,
+    THREAD_ID_CRASH     = 2,
+    THREAD_ID_AUDIO     = 3, // also = NU_MAIN_THREAD_ID
 };
 
 // LANGUAGE_DEFAULT as 0 will be the first index into several arrays containing data based on the current language.

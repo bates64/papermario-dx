@@ -891,20 +891,20 @@ ApiStatus evt_handle_call(Evt* script) {
     EvtCallingLine = script->ptrCurLine;
 
     if (script->blocked) {
-        isInitialCall = FALSE;
+        isInitialCall = false;
         func = script->callFunction;
         ret = func(script, isInitialCall);
     } else {
         script->callFunction = (ApiFunc)evt_get_variable(script, *args++);
         script->ptrReadPos = args;
         script->curArgc--;
-        script->blocked = TRUE;
-        isInitialCall = TRUE;
+        script->blocked = true;
+        isInitialCall = true;
         func = script->callFunction;
         ret = func(script, isInitialCall);
     }
 
-    EvtCallingLine = NULL;
+    EvtCallingLine = nullptr;
     return ret;
 }
 
@@ -982,7 +982,7 @@ s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
     EvtScript* scriptStart;
     Evt* script;
 
-    if (trigger->runningScript == NULL) {
+    if (trigger->runningScript == nullptr) {
         scriptStart = trigger->onTriggerEvt;
         if (is_another_trigger_bound(trigger, scriptStart)) {
             return 0;
@@ -998,7 +998,7 @@ s32 evt_trigger_on_activate_exec_script(Trigger* trigger) {
     }
 
     if (!does_script_exist(trigger->runningScriptID)) {
-        trigger->runningScript = NULL;
+        trigger->runningScript = nullptr;
         return 0; // stop calling this function
     }
 
@@ -1024,7 +1024,7 @@ ApiStatus evt_handle_bind(Evt* script) {
 
     trigger = create_trigger(&bp);
     trigger->onTriggerEvt = (EvtScript*)triggerScript;
-    trigger->runningScript = NULL;
+    trigger->runningScript = nullptr;
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
     trigger->varTable[1] = evt_get_variable(script, script->varTable[1]);
@@ -1107,7 +1107,7 @@ ApiStatus evt_handle_does_script_exist(Evt* script) {
 }
 
 s32 evt_trigger_on_activate_lock(Trigger* trigger) {
-    if (trigger->runningScript == NULL) {
+    if (trigger->runningScript == nullptr) {
         Evt* newScript = start_script(trigger->onTriggerEvt, trigger->priority, EVT_FLAG_RUN_IMMEDIATELY);
         trigger->runningScript = newScript;
         trigger->runningScriptID = newScript->id;
@@ -1118,7 +1118,7 @@ s32 evt_trigger_on_activate_lock(Trigger* trigger) {
     }
 
     if (!does_script_exist(trigger->runningScriptID)) {
-        trigger->runningScript = NULL;
+        trigger->runningScript = nullptr;
         trigger->flags &= ~TRIGGER_ACTIVATED;
     }
 }
@@ -1144,7 +1144,7 @@ ApiStatus evt_handle_bind_lock(Evt* script) {
 
     trigger = create_trigger(&bp);
     trigger->onTriggerEvt = (EvtScript*)triggerScript;
-    trigger->runningScript = NULL;
+    trigger->runningScript = nullptr;
     trigger->priority = script->priority;
     trigger->varTable[0] = evt_get_variable(script, script->varTable[0]);
     trigger->varTable[1] = evt_get_variable(script, script->varTable[1]);
@@ -1348,9 +1348,7 @@ ApiStatus func_802C73B8(Evt* script) {
 }
 
 s32 evt_execute_next_command(Evt* script) {
-    s32 commandsExecuted = 0;
-
-    while (TRUE) {
+    while (true) {
         s32 status = ApiStatus_DONE2;
         s32* lines;
         s32 nargs;
@@ -1365,7 +1363,7 @@ s32 evt_execute_next_command(Evt* script) {
                 script->curOpcode = *lines++;
                 nargs = *lines++;
                 script->ptrReadPos = lines;
-                script->blocked = FALSE;
+                script->blocked = false;
                 script->curArgc = nargs;
                 lines = &lines[nargs];
                 script->ptrNextLine = lines;
@@ -2074,7 +2072,7 @@ Bytecode* evt_skip_if(Evt* script) {
                 }
             break;
         }
-    } while (TRUE);
+    } while (true);
 }
 
 Bytecode* evt_skip_else(Evt* script) {
@@ -2122,7 +2120,7 @@ Bytecode* evt_skip_else(Evt* script) {
                 nestedIfDepth++;
                 break;
         }
-    } while (TRUE);
+    } while (true);
 }
 
 Bytecode* evt_goto_end_case(Evt* script) {
@@ -2150,7 +2148,7 @@ Bytecode* evt_goto_end_case(Evt* script) {
                 }
                 break;
         }
-    } while (TRUE);
+    } while (true);
 }
 
 Bytecode* evt_goto_next_case(Evt* script) {
@@ -2193,7 +2191,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
                 }
                 break;
         }
-    } while (TRUE);
+    } while (true);
 }
 
 Bytecode* evt_goto_end_loop(Evt* script) {
@@ -2221,5 +2219,5 @@ Bytecode* evt_goto_end_loop(Evt* script) {
                 loopDepth++;
                 break;
         }
-    } while (TRUE);
+    } while (true);
 }

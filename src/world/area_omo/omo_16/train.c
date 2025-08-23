@@ -5,7 +5,11 @@
 EvtScript N(D_8024262C_DEE4FC) = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
+#if VERSION_JP
+        Wait(200)
+#else
         Wait(140)
+#endif
         Switch(GB_OMO_TrainDestination)
             CaseEq(0)
                 IfEq(AB_OMO_6, 1)
@@ -25,7 +29,11 @@ EvtScript N(D_8024262C_DEE4FC) = {
                 EndIf
         EndSwitch
     Else
+#if VERSION_JP
+        Wait(200)
+#else
         Wait(140)
+#endif
         Switch(GB_OMO_TrainDestination)
             CaseEq(0)
                 IfEq(AB_OMO_6, 0)
@@ -90,8 +98,8 @@ API_CALLABLE(N(CheckForSceneSkip)) {
 }
 
 EvtScript N(EVS_802429C4) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, 0)
     Exec(N(D_802428CC_DEE79C))
     Exec(N(D_8024262C_DEE4FC))
@@ -101,7 +109,7 @@ EvtScript N(EVS_802429C4) = {
         Set(MV_TrainUnk_01, Ref(N(D_80242984_DEE854)))
         Set(MV_TrainUnk_02, 0)
         Exec(N(EVS_Scene_RideTrain))
-        Set(MF_TrainUnk_00, TRUE)
+        Set(MF_TrainUnk_00, true)
         Thread
             Label(10)
             Call(N(CheckForSceneSkip))
@@ -132,7 +140,7 @@ EvtScript N(EVS_802429C4) = {
         Set(MV_TrainUnk_01, Ref(N(D_802429A4_DEE874)))
         Set(MV_TrainUnk_02, 0)
         Exec(N(EVS_Scene_RideTrain))
-        Set(MF_TrainUnk_00, TRUE)
+        Set(MF_TrainUnk_00, true)
         Thread
             Label(30)
             Call(N(CheckForSceneSkip))

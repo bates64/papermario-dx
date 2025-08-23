@@ -41,9 +41,9 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(SetZoneEnabled, ZONE_o79, FALSE)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(SetZoneEnabled, ZONE_o79, false)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupBushes))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o97, SURFACE_TYPE_DOCK_WALL)
@@ -64,11 +64,10 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_Pipe_EnterVertical))
         Wait(1)
     EndIf
-    Call(SetMusicTrack, 0, SONG_JADE_JUNGLE, 0, 8)
+    Call(SetMusic, 0, SONG_JADE_JUNGLE, 0, VOL_LEVEL_FULL)
     Call(ClearAmbientSounds, 250)
     Call(MakeTransformGroup, MODEL_g51)
-    // water surface
-    Call(SetTexPanner, MODEL_o180, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_o180, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)

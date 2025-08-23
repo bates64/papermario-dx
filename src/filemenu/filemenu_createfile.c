@@ -35,7 +35,7 @@ MenuWindowBP filemenu_createfile_windowBPs[] = {
         .height = 46,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = &filemenu_draw_contents_file_create_header,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -49,7 +49,7 @@ MenuWindowBP filemenu_createfile_windowBPs[] = {
         .height = WINDOW_2_HEIGHT,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = &filemenu_draw_contents_choose_name,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -58,7 +58,7 @@ MenuWindowBP filemenu_createfile_windowBPs[] = {
 };
 
 MenuPanel filemenu_createfile_menuBP = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -156,9 +156,6 @@ void filemenu_draw_contents_file_create_header(
 #endif
 }
 
-#if VERSION_PAL
-INCLUDE_ASM(void, "filemenu/filemenu_createfile", filemenu_draw_contents_choose_name);
-#else
 s32 msg_get_print_char_width(s32 character, s32 charset, s32 variation, f32 msgScale, s32 overrideCharWidth, u8 flags);
 
 #if VERSION_PAL
@@ -176,17 +173,16 @@ void filemenu_draw_contents_choose_name(
     s32 width, s32 height,
     s32 opacity, s32 darkening
 ) {
+    s32 layer;
     s32 changeLayoutOffset;
     s32 currentPage;
     s32 previousPage;
     s32 page;
     s32 row, col;
     s32 xOffset, yOffset;
-    s32 c, specialChar;
-    s32 layer;
-    s32 flags;
+    s32 c;
     s32 color;
-    s32 xNudge;
+    s32 flags;
     Window* window = &gWindows[WIN_FILES_INPUT_KEYBOARD];
 
     if ((window->flags & WINDOW_FLAG_INITIAL_ANIMATION) && window->fpUpdate.func == filemenu_update_change_layout) {
@@ -218,7 +214,9 @@ void filemenu_draw_contents_choose_name(
 
                 for (col = 0; col < menu->numCols; col++) {
                     c = menu->gridData[page * menu->numCols * menu->numRows + menu->numCols * row + col];
-                    if (c != MSG_CHAR_MENU_SPACE) {
+                    if (c != MSG_CHAR_READ_SPACE) {
+                        s32 xNudge, specialChar;
+
                         if (col == menu->col && row == menu->row) {
                             flags = 8;
                             color = 0;
@@ -278,7 +276,9 @@ void filemenu_draw_contents_choose_name(
         for (col = 0; col < menu->numCols; col++) {
             for (row = 0; row < menu->numRows; row++) {
                 c = menu->gridData[menu->state * menu->numCols * menu->numRows + menu->numCols * row + col];
-                if (c != MSG_CHAR_MENU_SPACE) {
+                if (c != MSG_CHAR_READ_SPACE) {
+                    s32 xNudge, specialChar;
+
                     if (col == menu->col && row == menu->row) {
                         flags = 8;
                         color = 0;
@@ -340,7 +340,6 @@ void filemenu_draw_contents_choose_name(
                                      baseY + 13 + menu->row * KEYBOARD_ROW_HEIGHT);
     }
 }
-#endif
 
 void filemenu_choose_name_init(MenuPanel* menu) {
     s32 width;
@@ -360,7 +359,7 @@ void filemenu_choose_name_init(MenuPanel* menu) {
     gWindows[WIN_FILES_INPUT_FIELD].pos.x = CENTER_WINDOW_X(WIN_FILES_INPUT_FIELD);
     gWindows[WIN_FILES_INPUT_KEYBOARD].pos.x = CENTER_WINDOW_X(WIN_FILES_INPUT_KEYBOARD);
 
-    menu->initialized = TRUE;
+    menu->initialized = true;
 }
 
 void filemenu_choose_name_handle_input(MenuPanel* menu) {

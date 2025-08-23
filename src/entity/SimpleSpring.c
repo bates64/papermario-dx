@@ -3,17 +3,6 @@
 #include "animation_script.h"
 #include "ld_addrs.h"
 
-#if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_ScriptSpring_anim_ROM_END;
-extern Addr entity_model_ScriptSpring_anim_ROM_START;
-extern Addr entity_model_ScriptSpring_gfx_ROM_END;
-extern Addr entity_model_ScriptSpring_gfx_ROM_START;
-extern Addr entity_model_SimpleSpring_anim_ROM_END;
-extern Addr entity_model_SimpleSpring_anim_ROM_START;
-extern Addr entity_model_SimpleSpring_gfx_ROM_END;
-extern Addr entity_model_SimpleSpring_gfx_ROM_START;
-#endif
-
 extern StaticAnimatorNode* Entity_ScriptSpring_Mesh[];
 extern AnimScript Entity_ScriptSpring_AnimLaunch;
 extern AnimScript Entity_ScriptSpring_AnimIdle;
@@ -77,18 +66,18 @@ void entity_SimpleSpring_init(Entity* entity) {
 
 EntityScript Entity_ScriptSpring_Script = {
     es_SetCallback(entity_ScriptSpring_idle, 0)
-    es_SetCallback(NULL, 10)
+    es_SetCallback(nullptr, 10)
     es_Restart
     es_End
 };
 
 EntityScript Entity_SimpleSpring_Script = {
     es_SetCallback(entity_SimpleSpring_idle, 0)
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_Call(entity_SimpleSpring_set_jump_params)
-    es_SetCallback(NULL, 3)
+    es_SetCallback(nullptr, 3)
     es_Call(entity_SimpleSpring_enable_player_input)
-    es_SetCallback(NULL, 10)
+    es_SetCallback(nullptr, 10)
     es_Restart
     es_End
 };
@@ -104,7 +93,7 @@ EntityBlueprint Entity_ScriptSpring = {
     .modelAnimationNodes = Entity_ScriptSpring_Mesh,
     .fpInit = entity_ScriptSpring_init,
     .updateEntityScript = Entity_ScriptSpring_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_ScriptSpring_dma },
     .entityType = ENTITY_TYPE_SCRIPT_SPRING,
     .aabbSize = {40, 25, 40}
@@ -117,7 +106,7 @@ EntityBlueprint Entity_SimpleSpring = {
     .modelAnimationNodes = Entity_SimpleSpring_Mesh,
     .fpInit = entity_SimpleSpring_init,
     .updateEntityScript = Entity_SimpleSpring_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_SimpleSpring_dma },
     .entityType = ENTITY_TYPE_SIMPLE_SPRING,
     .aabbSize = {40, 25, 40}

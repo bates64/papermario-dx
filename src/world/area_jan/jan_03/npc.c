@@ -156,20 +156,20 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Thread
         Wait(15)
         Call(N(ToadHouse_CamSetFOV), 0, 40)
-        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+        Call(SetCamType, CAM_DEFAULT, 4, false)
         Call(SetCamPitch, CAM_DEFAULT, 54, -27)
         Call(SetCamDistance, CAM_DEFAULT, 135)
         Call(SetCamPosA, CAM_DEFAULT, 406, -130)
         Call(SetCamPosB, CAM_DEFAULT, 361, -190)
         Call(SetCamPosC, CAM_DEFAULT, 0, -1)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, 361, -194, 0)
     Call(PlayerMoveTo, 370, -257, 0)
     Call(InterpPlayerYaw, 229, 1)
-    Call(HidePlayerShadow, TRUE)
+    Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
@@ -184,14 +184,14 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
-        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+        Call(PanToTarget, CAM_DEFAULT, 0, false)
     EndThread
     Return
     End
 };
 
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Call(HidePlayerShadow, FALSE)
+    Call(HidePlayerShadow, false)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 345, 0, -186)
     Call(SetPlayerSpeed, Float(3.0))
@@ -223,9 +223,9 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
     ExecWait(N(EVS_GetRescuedYoshiCount))
     Switch(LVar0)
         CaseLt(1)
-            IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
+            IfEq(GF_JAN03_AgreedToRescueChildren, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Shout, ANIM_VillageLeader_IdleSad, 0, MSG_CH5_0099)
-                Set(GF_JAN03_AgreedToRescueChildren, TRUE)
+                Set(GF_JAN03_AgreedToRescueChildren, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Shout, ANIM_VillageLeader_IdleSad, 0, MSG_CH5_009A)
             EndIf
@@ -271,13 +271,13 @@ EvtScript N(EVS_NpcInteract_Yoshi_02) = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             ExecWait(N(EVS_GetRescuedYoshiCount))
             IfEq(LVar0, 0)
-                IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
+                IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_CryTalk, ANIM_Yoshi_Green_Cry, 0, MSG_CH5_005B)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_CryTalk, ANIM_Yoshi_Green_Cry, 0, MSG_CH5_005C)
                 EndIf
             Else
-                IfEq(GF_JAN11_SavedYoshi, FALSE)
+                IfEq(GF_JAN11_SavedYoshi, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_CryTalk, ANIM_Yoshi_Green_Cry, 0, MSG_CH5_005D)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Green_Talk, ANIM_Yoshi_Green_Idle, 0, MSG_CH5_005E)
@@ -309,7 +309,7 @@ EvtScript N(EVS_NpcInit_Yoshi_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN11_SavedYoshi, FALSE)
+            IfEq(GF_JAN11_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Green_Panic)
                 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_02)))
             Else
@@ -342,13 +342,13 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             ExecWait(N(EVS_GetRescuedYoshiCount))
             IfEq(LVar0, 0)
-                IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
+                IfEq(GF_JAN03_AgreedToRescueChildren, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_CryTalk, ANIM_Yoshi_Yellow_Cry, 0, MSG_CH5_0064)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_CryTalk, ANIM_Yoshi_Yellow_Cry, 0, MSG_CH5_0065)
                 EndIf
             Else
-                IfEq(GF_JAN07_SavedYoshi, FALSE)
+                IfEq(GF_JAN07_SavedYoshi, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_CryTalk, ANIM_Yoshi_Yellow_Cry, 0, MSG_CH5_0066)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_0067)
@@ -384,7 +384,7 @@ EvtScript N(EVS_NpcInit_Yoshi_03) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN07_SavedYoshi, FALSE)
+            IfEq(GF_JAN07_SavedYoshi, false)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Yellow_Panic)
                 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_03)))
             Else
@@ -497,7 +497,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_05) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid_01) = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-        IfEq(GF_JAN11_SavedYoshi, FALSE)
+        IfEq(GF_JAN11_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         Else
@@ -516,7 +516,7 @@ EvtScript N(EVS_NpcInit_YoshiKid_01) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid_02) = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-        IfEq(GF_JAN08_SavedYoshi, FALSE)
+        IfEq(GF_JAN08_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
@@ -528,7 +528,7 @@ EvtScript N(EVS_NpcInit_YoshiKid_02) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid_03) = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-        IfEq(GF_JAN10_SavedYoshi, FALSE)
+        IfEq(GF_JAN10_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
@@ -540,7 +540,7 @@ EvtScript N(EVS_NpcInit_YoshiKid_03) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid_04) = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-        IfEq(GF_JAN07_SavedYoshi, FALSE)
+        IfEq(GF_JAN07_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         Else
@@ -560,7 +560,7 @@ EvtScript N(EVS_NpcInit_YoshiKid_04) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid_05) = {
     IfGe(GB_StoryProgress, STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-        IfEq(GF_JAN05_SavedYoshi, FALSE)
+        IfEq(GF_JAN05_SavedYoshi, false)
             Call(RemoveNpc, NPC_SELF)
             Return
         EndIf
@@ -635,9 +635,9 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             ExecWait(N(EVS_LetterPrompt_Kolorado))
             ExecWait(N(EVS_LetterReward_Kolorado))
         CaseLt(STORY_CH5_ZIP_LINE_READY)
-            IfEq(AF_JAN_06, FALSE)
+            IfEq(AF_JAN_06, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0014)
-                Set(AF_JAN_06, TRUE)
+                Set(AF_JAN_06, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
@@ -672,10 +672,10 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                         Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
                         Wait(25)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001A)
-                        EVT_GIVE_REWARD(ITEM_MAGICAL_SEED4)
-                        Set(GF_JAN03_Gift_MagicalSeed4, TRUE)
+                        EVT_GIVE_KEY_REWARD(ITEM_MAGICAL_SEED4)
+                        Set(GF_JAN03_Gift_MagicalSeed4, true)
                         Wait(20)
-                        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+                        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001B)
                         Wait(10)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_001C)
@@ -700,7 +700,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
             Set(LVar0, 1)
         CaseEq(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SetNpcPos, NPC_SELF, -433, 0, -205)
-            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, FALSE)
+            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
             Set(LVar0, 1)
     EndSwitch
     IfEq(LVar0, 1)
@@ -713,9 +713,9 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
 };
 
 EvtScript N(EVS_NpcInteract_Sushie) = {
-    IfEq(AF_JAN_07, FALSE)
+    IfEq(AF_JAN_07, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0058)
-        Set(AF_JAN_07, TRUE)
+        Set(AF_JAN_07, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0059)
     EndIf
@@ -839,7 +839,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -864,7 +864,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -889,7 +889,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 5,
                 .points  = {
@@ -917,7 +917,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 3,
                 .points  = {
@@ -943,7 +943,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 3,
                 .points  = {
@@ -969,7 +969,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 3,
                 .points  = {
@@ -995,7 +995,7 @@ NpcData N(NpcData_Toad)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 3,
                 .points  = {

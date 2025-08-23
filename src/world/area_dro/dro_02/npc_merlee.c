@@ -84,7 +84,7 @@ API_CALLABLE(N(TryEnchantPlayer)) {
     u8 casts = N(MerleeSpellCasts)[tier];
 
     if (playerData->coins < coins) {
-        evt_set_variable(script, outPrevented, TRUE);
+        evt_set_variable(script, outPrevented, true);
     } else {
         playerData->coins = playerData->coins - coins;
         if (playerData->merleeCastsLeft < casts) {
@@ -105,7 +105,7 @@ API_CALLABLE(N(TryEnchantPlayer)) {
                 playerData->merleeSpellType = MERLEE_SPELL_COIN_BOOST;
                 break;
         }
-        evt_set_variable(script, outPrevented, FALSE);
+        evt_set_variable(script, outPrevented, false);
     }
 
     return ApiStatus_DONE2;
@@ -159,7 +159,7 @@ API_CALLABLE(N(UndarkenWorld)) {
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = get_npc_by_index(i);
 
-            if (npc != NULL && npc->flags != 0 && npc->npcID != NPC_PARTNER && npc->npcID != NPC_Merlee) {
+            if (npc != nullptr && npc->flags != 0 && npc->npcID != NPC_PARTNER && npc->npcID != NPC_Merlee) {
                 npc->flags &= ~NPC_FLAG_HIDING;
             }
         }
@@ -649,7 +649,7 @@ EvtScript N(EVS_PerformRitual) = {
         Call(DismissEffect, RITUAL_VAR_ORB_EFFECT)
     EndThread
     Call(N(DarkenWorld))
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerPhysics, true)
     Call(InterpPlayerYaw, 0, 0)
     Call(N(CreateRitualCards))
     Thread
@@ -730,7 +730,7 @@ EvtScript N(EVS_PerformRitual) = {
     Wait(1)
     Call(SetPlayerPos, RITUAL_VAR_POS_X, RITUAL_VAR_POS_Y, RITUAL_VAR_POS_Z)
     Wait(1)
-    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerPhysics, false)
     Call(N(DestroyRitualCards))
     Thread
         Call(N(UndarkenWorld))
@@ -741,21 +741,21 @@ EvtScript N(EVS_PerformRitual) = {
 
 EvtScript N(EVS_BeginMerleeCamera) = {
     Call(GetNpcPos, NPC_Merlee, LVar0, LVar1, LVar2)
-    Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamDistance, CAM_DEFAULT, 200)
-    Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
-    Call(SetCamPitch, CAM_DEFAULT, 20, -15)
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(UseSettingsFrom, 0, LVar0, LVar1, LVar2)
+    Call(SetCamDistance, 0, 200)
+    Call(SetPanTarget, 0, LVar0, LVar1, LVar2)
+    Call(SetCamSpeed, 0, Float(8.0))
+    Call(SetCamPitch, 0, 20, -15)
+    Call(PanToTarget, 0, 0, true)
+    Call(WaitForCam, 0, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_EndMerleeCamera) = {
-    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
-    Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Call(PanToTarget, 0, 0, false)
+    Call(SetCamSpeed, 0, Float(3.0))
+    Call(WaitForCam, 0, Float(1.0))
     Return
     End
 };
@@ -808,7 +808,7 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
         Return
     EndIf
     Call(ContinueSpeech, -1, ANIM_WorldMerlee_Talk, ANIM_WorldMerlee_Idle, 0, MSG_CH2_00DA)
-    Call(SetMusicTrack, 0, SONG_MERLEE_SPELL, 0, 8)
+    Call(SetMusic, 0, SONG_MERLEE_SPELL, 0, VOL_LEVEL_FULL)
     Call(DisablePartnerAI, 0)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     ExecGetTID(N(EVS_PerformRitual), LVar9)

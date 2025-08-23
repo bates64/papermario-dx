@@ -36,7 +36,7 @@ EvtScript N(EVS_CloseHangerDoor) = {
 
 EvtScript N(EVS_ExitDoor_kpa_62_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Exec(N(EVS_OpenHangerDoor))
     Wait(15)
     Call(UseExitHeading, 60, kpa_63_ENTRY_0)
@@ -77,8 +77,8 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_BowsersCastle, TRUE)
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Set(GF_MAP_BowsersCastle, true)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_EnterMap))
     Exec(N(EVS_SetupMusic))

@@ -17,9 +17,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
+      - uses: actions/checkout@v5
       - name: Install Doxygen
         run: |
           # doxygen on apt is too old
@@ -27,9 +25,16 @@ jobs:
           sudo mv doxygen-*/bin/doxy* /usr/local/bin
       - name: Generate docs
         run: doxygen
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # deploy to gh pages if repo is pmret/papermario
+      - name: Deploy to gh-pages
+        if: github.repository != 'pmret/papermario'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/doxygen/html
+      - name: Deploy to papermar.io
+        if: github.repository == 'pmret/papermario'
+        uses: appleboy/scp-action@master
         with:
           path: ./docs/doxygen/html/
 

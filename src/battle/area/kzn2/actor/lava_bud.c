@@ -147,7 +147,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 0, 0 },
         .targetOffset = { 0, 0 },
         .opacity = 255,
-        .idleAnimations = NULL,
+        .idleAnimations = nullptr,
         .defenseTable = N(DefenseTable),
         .eventFlags = 0,
         .elementImmunityFlags = 0,
@@ -181,7 +181,7 @@ ActorBlueprint NAMESPACE = {
 EvtScript N(EVS_Init) = {
     UseArray(N(unusedArray))
     Call(SetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, PIRANHA_STATE_STUNNED)
-    Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, NULL)
+    Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, nullptr)
     Call(SetActorVar, ACTOR_SELF, AVAR_Bud_PetitCount, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_SummonDelayTurns, 0)
     Call(SetActorVar, ACTOR_SELF, AVAR_Common_StunTurnsLeft, 0)
@@ -258,7 +258,7 @@ EvtScript N(EVS_PlayAnimForVine) = {
 };
 
 EvtScript N(EVS_HandleEvent) = {
-    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
+    Call(UseIdleAnimation, ACTOR_SELF, false)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetActorVar, ACTOR_SELF, AVAR_Bud_WhichVine, LVar0)
     Call(SetAnimatorFlags, LVar0, MODEL_ANIMATOR_FLAG_FREEZE_ANIMATION, 0)
@@ -317,7 +317,7 @@ EvtScript N(EVS_HandleEvent) = {
         Call(SetAnimatorFlags, LVar0, MODEL_ANIMATOR_FLAG_FREEZE_ANIMATION, 1)
     EndIf
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
+    Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
     End
 };
@@ -474,7 +474,7 @@ EvtScript N(EVS_Move_SummonPetit) = {
     IfNe(LVar0, 0)
         Return
     EndIf
-    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
+    Call(UseIdleAnimation, ACTOR_SELF, false)
     Thread
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
         Wait(8)
@@ -502,9 +502,9 @@ EvtScript N(EVS_Move_SummonPetit) = {
     EndThread
     Wait(56)
     IfEq(LVar0, 1)
-        Call(SummonEnemy, Ref(N(LeftPetitFormation)), FALSE)
+        Call(SummonEnemy, Ref(N(LeftPetitFormation)), false)
     Else
-        Call(SummonEnemy, Ref(N(RightPetitFormation)), FALSE)
+        Call(SummonEnemy, Ref(N(RightPetitFormation)), false)
     EndIf
     Set(LVar5, LVar0)
     Call(GetActorVar, ACTOR_SELF, AVAR_Bud_PetitCount, LVar0)
@@ -548,7 +548,7 @@ EvtScript N(EVS_Move_SummonPetit) = {
     EVT_LOAD_BUD_ANIM(LVar0, VINE_ANIM_BUD_IDLE)
     ExecWait(N(EVS_PlayAnimForVine))
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
+    Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
     End
 };
@@ -582,9 +582,9 @@ EvtScript N(EVS_Death) = {
         ExecWait(N(EVS_PlayAnimForVine))
         Call(SetActorVar, ACTOR_SELF, AVAR_Common_StunTurnsLeft, 2)
         Call(GetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, LVar0)
-        IfNe(LVar0, NULL)
+        IfNe(LVar0, nullptr)
             Call(RemoveEffect, LVar0)
-            Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, NULL)
+            Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, nullptr)
         EndIf
         Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedAnims)))
         Call(SetDefenseTable, ACTOR_SELF, PRT_MAIN, Ref(N(StunnedDefense)))
@@ -592,8 +592,8 @@ EvtScript N(EVS_Death) = {
         Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim1, ANIM_LavaBud_Anim0F)
         Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim2, ANIM_LavaBud_Anim09)
         Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBud_Anim0F)
-        Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_FIREY, FALSE)
-        Call(SetPartEventBits, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_FIREY, FALSE)
+        Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_FIREY, false)
+        Call(SetPartEventBits, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_FIREY, false)
         Wait(29)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_BUD_WITHER)
         Call(GetActorVar, ACTOR_SELF, AVAR_Bud_WhichVine, LVar0)
@@ -623,8 +623,8 @@ EvtScript N(EVS_Death) = {
         Wait(14)
         Call(SetActorVar, ACTOR_SELF, AVAR_Common_PiranhaState, PIRANHA_STATE_DEAD)
         ExecWait(N(EVS_PlayIdleAnimation))
-        Call(SetPartFlagBits, ACTOR_SELF, PRT_TARGET, ACTOR_PART_FLAG_DAMAGE_IMMUNE | ACTOR_PART_FLAG_NO_TARGET, TRUE)
-        Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_HEALTH_BAR, TRUE)
+        Call(SetPartFlagBits, ACTOR_SELF, PRT_TARGET, ACTOR_PART_FLAG_DAMAGE_IMMUNE | ACTOR_PART_FLAG_NO_TARGET, true)
+        Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_HEALTH_BAR, true)
     Else
         ExecWait(N(EVS_Hit))
         Return
@@ -732,9 +732,9 @@ EvtScript N(EVS_Hit) = {
                 ExecWait(N(EVS_PlayAnimForVine))
                 Call(SetActorVar, ACTOR_SELF, AVAR_Common_StunTurnsLeft, 2)
                 Call(GetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, LVar0)
-                IfNe(LVar0, NULL)
+                IfNe(LVar0, nullptr)
                     Call(RemoveEffect, LVar0)
-                    Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, NULL)
+                    Call(SetActorVar, ACTOR_SELF, AVAR_Common_FlameEffect, nullptr)
                     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
                     PlayEffect(EFFECT_COLD_BREATH, 0, LVar0, LVar1, LVar2, Float(2.0), 45, 0)
                 EndIf
@@ -744,8 +744,8 @@ EvtScript N(EVS_Hit) = {
                 Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim1, ANIM_LavaBud_Anim0F)
                 Call(SetActorVar, ACTOR_SELF, AVAR_Common_UnkAnim2, ANIM_LavaBud_Anim09)
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_LavaBud_Anim0F)
-                Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_FIREY, FALSE)
-                Call(SetPartEventBits, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_FIREY, FALSE)
+                Call(SetPartEventBits, ACTOR_SELF, PRT_MAIN, ACTOR_EVENT_FLAG_FIREY, false)
+                Call(SetPartEventBits, ACTOR_SELF, PRT_TARGET, ACTOR_EVENT_FLAG_FIREY, false)
                 Wait(29)
                 Call(PlaySoundAtActor, ACTOR_SELF, SOUND_LAVA_BUD_WITHER)
                 Call(GetActorVar, ACTOR_SELF, AVAR_Bud_WhichVine, LVar0)
@@ -804,7 +804,7 @@ API_CALLABLE(N(SetPetitFlameSize)) {
 }
 
 EvtScript N(EVS_Attack_SpitPetit) = {
-    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
+    Call(UseIdleAnimation, ACTOR_SELF, false)
     Thread
         Wait(8)
         Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
@@ -832,7 +832,7 @@ EvtScript N(EVS_Attack_SpitPetit) = {
         ExecWait(N(EVS_PlayAnimForVine))
     EndThread
     Wait(56)
-    Call(SummonEnemy, Ref(N(PetitBombFormation)), FALSE)
+    Call(SummonEnemy, Ref(N(PetitBombFormation)), false)
     Set(LVar5, LVar0)
     Call(GetPartOffset, ACTOR_SELF, PRT_MAIN, LVar0, LVar1, LVar2)
     Sub(LVar0, 15)
@@ -880,7 +880,7 @@ EvtScript N(EVS_Attack_SpitPetit) = {
         CaseOrEq(HIT_RESULT_HIT)
         CaseOrEq(HIT_RESULT_NO_DAMAGE)
         CaseOrEq(HIT_RESULT_10)
-            Call(SetPartFlagBits, LVar5, 1, ACTOR_PART_FLAG_INVISIBLE, TRUE)
+            Call(SetPartFlagBits, LVar5, 1, ACTOR_PART_FLAG_INVISIBLE, true)
             Call(SetGoalToTarget, LVar5)
             Call(GetGoalPos, LVar5, LVar0, LVar1, LVar2)
             Set(LVar1, 10)
@@ -907,7 +907,7 @@ EvtScript N(EVS_Attack_SpitPetit) = {
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
+    Call(UseIdleAnimation, ACTOR_SELF, true)
     Return
     End
 };

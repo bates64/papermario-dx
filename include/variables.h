@@ -79,7 +79,7 @@ extern Vec3s StandardActorHomePositions[];
 
 extern s32 gEncounterSubState;
 extern s32 gTimeFreezeMode;
-extern b32 EncounterStateChanged;
+extern bool EncounterStateChanged;
 
 extern u8 IntroMessageIdx;
 extern s32 PartnerIDFromMenuIndex[12]; // partner IDs
@@ -89,7 +89,7 @@ extern EvtScript EVS_NpcDefeat;
 extern EvtScript ShakeCam1;
 extern EvtScript ShakeCamX;
 
-extern MusicSettings gMusicSettings[2];
+extern MusicControlData gMusicControlData[2];
 
 // gfx
 extern DisplayContext* gDisplayContext;

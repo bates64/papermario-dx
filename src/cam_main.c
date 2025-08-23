@@ -116,7 +116,7 @@ void render_frame(s32 isSecondPass) {
 
         gCurrentCamID = camID;
 
-        if (camera->fpDoPreRender != NULL) {
+        if (camera->fpDoPreRender != nullptr) {
             camera->fpDoPreRender(camera);
         } else {
             s32 ulx;
@@ -240,7 +240,7 @@ void render_frame(s32 isSecondPass) {
             execute_render_tasks();
         }
 
-        if (camera->fpDoPostRender != NULL) {
+        if (camera->fpDoPostRender != nullptr) {
             camera->fpDoPostRender(camera);
         }
 
@@ -334,13 +334,16 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->targetOffsetY = 0;
     camera->curBoomYaw = 0.0f;
     camera->targetBoomYaw = 0.0f;
-    camera->needsInit = TRUE;
+    camera->unk_8C = 0.0f;
     camera->updateMode = initData->updateMode;
+    camera->needsInit = true;
     camera->nearClip = initData->nearClip;
     camera->farClip = initData->farClip;
     camera->vfov = initData->vfov;
     camera->params.world.zoomPercent = 100;
     set_cam_viewport(camID, initData->viewStartX, initData->viewStartY, initData->viewWidth, initData->viewHeight);
+    camera->unk_212 = -1;
+    camera->needsInitialConstrainDir = true;
     camera->bgColor[0] = 0;
     camera->bgColor[1] = 0;
     camera->bgColor[2] = 0;
@@ -350,20 +353,22 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->targetPos.x = 0;
     camera->targetPos.y = 0;
     camera->targetPos.z = 0;
-    camera->fpDoPreRender = NULL;
-    camera->fpDoPostRender = NULL;
+    camera->unk_98 = 0;
+    camera->unk_9C = 0;
+    camera->fpDoPreRender = nullptr;
+    camera->fpDoPostRender = nullptr;
     camera->leadAmount = 0.0f;
     camera->targetLeadAmount = 0.0f;
     camera->leadInterpAlpha = 0.0f;
     camera->accumulatedStickLead = 0.0f;
-    camera->increasingLeadInterp = FALSE;
+    camera->increasingLeadInterp = false;
     camera->prevLeadPosX = 0.0f;
     camera->prevLeadPosZ = 0.0f;
     camera->leadConstrainDir = 0;
-    camera->needsInitialConstrainDir = TRUE;
-    camera->prevLeadSettings = NULL;
-    camera->panActive = FALSE;
-    camera->useOverrideSettings = FALSE;
+    camera->prevLeadSettings = nullptr;
+    camera->panActive = false;
+    camera->followPlayer = false;
+    camera->unk_C4 = 1000.0f;
     camera->leadAmtScale = 0.2f;
     camera->moveSpeed = 1.0f;
     return camera;
@@ -439,15 +444,15 @@ b32 is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
     s32 endY = startY + gCameras[camID].viewportH;
 
     if (x < startX) {
-        return TRUE;
+        return true;
     } else if (x > endX) {
-        return TRUE;
+        return true;
     } else if (y < startY) {
-        return TRUE;
+        return true;
     } else if (y > endY) {
-        return TRUE;
+        return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 

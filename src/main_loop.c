@@ -1,5 +1,6 @@
 #include "common.h"
 #include "nu/nusys.h"
+#include "audio/public.h"
 #include "ld_addrs.h"
 #include "hud_element.h"
 #include "sprite.h"
@@ -100,7 +101,7 @@ void step_game_loop(void) {
     update_entities();
     profiler_update(PROFILER_TIME_ENTITIES, 0);
     func_80138198();
-    bgm_update_music_settings();
+    bgm_update_music_control();
     update_ambient_sounds();
     sfx_update_env_sound_params();
     update_windows();
@@ -201,7 +202,7 @@ void gfx_draw_frame(void) {
     GFX_PROFILER_COMPLETE(PROFILER_TIME_SUB_GFX_UPDATE); // dummy
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD)) {
-        render_frame(FALSE);
+        render_frame(false);
     }
 
     player_render_interact_prompts();
@@ -221,7 +222,7 @@ void gfx_draw_frame(void) {
     GFX_PROFILER_SWITCH(PROFILER_TIME_SUB_GFX_BACK_UI, PROFILER_TIME_SUB_GFX_FRONT_UI);
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD) && gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
-        render_frame(TRUE);
+        render_frame(true);
     }
 
     if (!(gOverrideFlags & GLOBAL_OVERRIDES_MESSAGES_OVER_CURTAINS)
@@ -256,7 +257,7 @@ void gfx_draw_frame(void) {
         switch (SoftResetState) {
             case 0:
             case 1:
-                _render_transition_stencil(OVERLAY_SCREEN_MARIO, SoftResetOverlayAlpha, NULL);
+                _render_transition_stencil(OVERLAY_SCREEN_MARIO, SoftResetOverlayAlpha, nullptr);
                 break;
         }
     }
@@ -294,11 +295,11 @@ void load_engine_data(void) {
     gOverrideFlags = 0;
     gGameStatusPtr->unk_79 = 0;
     gGameStatusPtr->backgroundFlags = 0;
-    gGameStatusPtr->musicEnabled = TRUE;
-    gGameStatusPtr->healthBarsEnabled = TRUE;
+    gGameStatusPtr->musicEnabled = true;
+    gGameStatusPtr->healthBarsEnabled = true;
     gGameStatusPtr->introPart = INTRO_PART_NONE;
     gGameStatusPtr->demoBattleFlags = 0;
-    gGameStatusPtr->multiplayerEnabled = FALSE;
+    gGameStatusPtr->multiplayerEnabled = false;
     gGameStatusPtr->altViewportOffset.x = -8;
     gGameStatusPtr->altViewportOffset.y = 4;
     gTimeFreezeMode = TIME_FREEZE_NONE;
@@ -325,7 +326,7 @@ void load_engine_data(void) {
     clear_npcs();
     hud_element_clear_cache();
     clear_trigger_data();
-    clear_entity_data(FALSE);
+    clear_entity_data(false);
     clear_player_data();
     init_encounter_status();
     clear_screen_overlays();

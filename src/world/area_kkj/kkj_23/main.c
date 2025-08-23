@@ -9,6 +9,19 @@ EvtScript N(EVS_EndPeachChapter6) = {
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("flo_00"), flo_00_ENTRY_A, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
+}; //@bug script not properly terminated
+
+EvtScript N(EVS_ExitDoors_kkj_22_1) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Set(LVar0, kkj_23_ENTRY_0)
+    Set(LVar1, COLLIDER_tte)
+    Set(LVar2, MODEL_o5)
+    Set(LVar3, MODEL_o4)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_22"), kkj_22_ENTRY_1)
+    Wait(100)
     Return
     End
 };
@@ -45,9 +58,9 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
-        Call(MakeNpcs, FALSE, Ref(N(PeachNPCs)))
+        Call(MakeNpcs, false, Ref(N(PeachNPCs)))
     Else
-        Call(MakeNpcs, FALSE, Ref(N(FinaleNPCs)))
+        Call(MakeNpcs, false, Ref(N(FinaleNPCs)))
     EndIf
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)

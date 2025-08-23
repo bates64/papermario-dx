@@ -25,11 +25,11 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_15)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupDrips))
-    Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
+    Call(EnableTexPanning, MODEL_mizu, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)

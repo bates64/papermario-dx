@@ -10,7 +10,7 @@ API_CALLABLE(N(InitializeRadio)) {
 
     evt_get_variable(script, *args++);
     snd_load_ambient(AMBIENT_RADIO);
-    snd_ambient_80055760(4);
+    snd_ambient_radio_setup(4);
     snd_ambient_set_volume(0, 250, 1);
     return ApiStatus_DONE2;
 }
@@ -19,7 +19,7 @@ API_CALLABLE(N(SetRadioVolumeMax)) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
 
-    snd_ambient_play_only(N(StationMseqMapping)[idx]);
+    snd_ambient_radio_select(N(StationMseqMapping)[idx]);
     snd_ambient_set_volume(N(StationMseqMapping)[idx], 1500, 127);
     return ApiStatus_DONE2;
 }
@@ -32,13 +32,13 @@ API_CALLABLE(N(SetRadioVolumeMute)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80242898_9C7C78)) {
-    snd_ambient_play_only(4);
+API_CALLABLE(N(MuteAllRadioStations)) {
+    snd_ambient_radio_select(4);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802428B8_9C7C98)) {
-    snd_ambient_stop_all(100);
+API_CALLABLE(N(StopAllRadioStations)) {
+    snd_ambient_radio_stop(100);
     return ApiStatus_DONE2;
 }
 
@@ -46,7 +46,7 @@ API_CALLABLE(N(SetRadioStation)) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
-    snd_ambient_play_only(N(StationMseqMapping)[index]);
+    snd_ambient_radio_select(N(StationMseqMapping)[index]);
     return ApiStatus_DONE2;
 }
 
@@ -66,7 +66,7 @@ EvtScript N(EVS_InitiateTradingEvent) = {
                 EndIf
             Else
                 Call(SwitchMessage, MSG_CH1_002A)
-                Set(GF_TradingEvent1_Active, TRUE)
+                Set(GF_TradingEvent1_Active, true)
                 Call(N(SetTradeEventStartTime))
             EndIf
         CaseEq(1)
@@ -74,7 +74,7 @@ EvtScript N(EVS_InitiateTradingEvent) = {
                 Call(SwitchMessage, MSG_CH1_002E)
             Else
                 Call(SwitchMessage, MSG_CH1_002B)
-                Set(GF_TradingEvent2_Active, TRUE)
+                Set(GF_TradingEvent2_Active, true)
                 Call(N(SetTradeEventStartTime))
             EndIf
         CaseEq(2)
@@ -82,7 +82,7 @@ EvtScript N(EVS_InitiateTradingEvent) = {
                 Call(SwitchMessage, MSG_CH1_002E)
             Else
                 Call(SwitchMessage, MSG_CH1_002C)
-                Set(GF_TradingEvent3_Active, TRUE)
+                Set(GF_TradingEvent3_Active, true)
                 Call(N(SetTradeEventStartTime))
             EndIf
         CaseEq(3)
@@ -93,7 +93,7 @@ EvtScript N(EVS_InitiateTradingEvent) = {
 };
 
 EvtScript N(EVS_Interact_Radio) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(2)
     Call(SetPlayerAnimation, ANIM_MarioW2_RideLaki)
@@ -103,7 +103,7 @@ EvtScript N(EVS_Interact_Radio) = {
     IfGe(AB_NOK_0, 4)
         Set(AB_NOK_0, 0)
     EndIf
-    IfNe(GF_MAC05_SimonGotMelody, TRUE)
+    IfNe(GF_MAC05_SimonGotMelody, true)
         IfEq(AB_NOK_0, 2)
             Add(AB_NOK_0, 1)
         EndIf
@@ -120,7 +120,7 @@ EvtScript N(EVS_Interact_Radio) = {
             Call(ShowMessageAtScreenPos, MSG_CH1_0032, 160, 40)
             ExecWait(N(EVS_InitiateTradingEvent))
     EndSwitch
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

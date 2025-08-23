@@ -18,7 +18,7 @@ void record_jump_apex(void) {
     gPlayerStatus.jumpApexHeight = gPlayerStatus.pos.y;
 }
 
-b32 can_trigger_loading_zone(void) {
+bool can_trigger_loading_zone(void) {
     PlayerData* playerData = &gPlayerData;
     s32 actionState = gPlayerStatusPtr->actionState;
     PartnerStatus* partnerStatus = &gPartnerStatus;
@@ -29,16 +29,16 @@ b32 can_trigger_loading_zone(void) {
         actionState == ACTION_STATE_USE_TWEESTER ||
         actionState == ACTION_STATE_SPIN
        ) {
-        return TRUE;
+        return true;
     }
 
     if (actionState == ACTION_STATE_RIDE) {
         if (playerData->curPartner == PARTNER_LAKILESTER || playerData->curPartner == PARTNER_BOW) {
             if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE) {
-                return TRUE;
+                return true;
             } else {
                 gPlayerStatusPtr->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
-                return FALSE;
+                return false;
             }
         } else {
             if (partnerStatus->actingPartner == PARTNER_WATT || partnerStatus->actingPartner == PARTNER_SUSHIE) {
@@ -46,11 +46,11 @@ b32 can_trigger_loading_zone(void) {
             }
             if (partnerStatus->actingPartner == PARTNER_PARAKARRY) {
                 gPlayerStatusPtr->animFlags |= PA_FLAG_INTERRUPT_USE_PARTNER;
-                return FALSE;
+                return false;
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 void move_player(s32 duration, f32 heading, f32 speed) {
@@ -164,7 +164,7 @@ void handle_jumping_land_on_switch(void) {
 
 void handle_jumping_launch(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 cond = FALSE;
+    s32 cond = false;
 
     if (playerStatus->pos.y < playerStatus->gravityIntegrator[3] + playerStatus->gravityIntegrator[2]) {
         f32 phi_f6 = (playerStatus->gravityIntegrator[3] - playerStatus->pos.y) / 777.0f;
@@ -178,12 +178,12 @@ void handle_jumping_launch(void) {
         playerStatus->gravityIntegrator[0] += phi_f6;
         playerStatus->pos.y += playerStatus->gravityIntegrator[0];
         if (playerStatus->gravityIntegrator[0] <= 0.0f) {
-            cond = TRUE;
+            cond = true;
         }
     } else {
         playerStatus->gravityIntegrator[0] += -1.2;
         if (playerStatus->gravityIntegrator[0] <= 0.0f) {
-            cond = TRUE;
+            cond = true;
         }
         playerStatus->pos.y += playerStatus->gravityIntegrator[0];
     }
@@ -833,11 +833,31 @@ void collision_check_player_overlaps(void) {
     }
 }
 
-b32 (*PlayerSlidingCallback)(void) = NULL;
+b32 (*PlayerSlidingCallback)(void) = nullptr;
 
 s32 phys_should_player_be_sliding(void) {
-    if (PlayerSlidingCallback != NULL) {
-        return PlayerSlidingCallback();
+    PlayerStatus* playerStatus = &gPlayerStatus;
+    Shadow* shadow = get_shadow_by_index(playerStatus->shadowID);
+    s32 ret = false;
+
+    if (gGameStatusPtr->areaID == AREA_IWA) {
+        f32 temp_f0 = shadow->rot.z + 180.0;
+
+        if (temp_f0 != 0.0f) {
+            ret = true;
+            switch (gGameStatusPtr->mapID) {
+                case 0:
+                    if (fabsf(temp_f0) < 20.0f) {
+                        ret = false;
+                    }
+                    break;
+                case 1:
+                    if (playerStatus->pos.x >= -300.0f && playerStatus->pos.x <= -140.0f) {
+                        ret = false;
+                    }
+                    break;
+            }
+        }
     }
     return FALSE;
 }
@@ -850,10 +870,10 @@ s32 phys_is_on_sloped_ground(void) {
     Shadow* playerShadow = get_shadow_by_index(gPlayerStatus.shadowID);
     f32 rotZ = playerShadow->rot.z + 180.0;
     f32 rotX = playerShadow->rot.x + 180.0;
-    s32 ret = TRUE;
+    s32 ret = true;
 
     if (fabsf(rotZ) < 20.0f && fabsf(rotX) < 20.0f) {
-        ret = FALSE;
+        ret = false;
     }
 
     return ret;
@@ -938,13 +958,12 @@ void phys_main_collision_below(void) {
                     } else {
                         set_action_state(ACTION_STATE_KNOCKBACK);
                     }
-                }
-                break;
-            default:
-                cond = FALSE;
-                if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
-                    cond = get_entity_type(collisionStatus->curFloor) == ENTITY_TYPE_HIDDEN_PANEL;
-                }
+                    break;
+                default:
+                    cond = false;
+                    if (collisionStatus->curFloor & COLLISION_WITH_ENTITY_BIT) {
+                        cond = get_entity_type(collisionStatus->curFloor) == ENTITY_TYPE_HIDDEN_PANEL;
+                    }
 
                 if (playerStatus->actionState != ACTION_STATE_STEP_UP && !cond) {
                     if (!(playerStatus->animFlags & PA_FLAG_USING_PEACH_PHYSICS)) {
@@ -1055,7 +1074,7 @@ void collision_lava_reset_check_additional_overlaps(void) {
 
 void collision_lateral_peach(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 climbableStep = FALSE;
+    s32 climbableStep = false;
     f32 yaw = playerStatus->targetYaw;
     f32 x = playerStatus->pos.x;
     f32 y = playerStatus->pos.y;
@@ -1156,20 +1175,22 @@ HitID phys_check_interactable_collision(void) {
 }
 
 s32 phys_can_player_interact(void) {
-    s32 ret = TRUE;
+    PartnerStatus* partnerStatus = &gPartnerStatus;
+    PlayerStatus* playerStatus = &gPlayerStatus;
+    s32 ret = true;
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         if (gPartnerStatus.actingPartner == PARTNER_BOMBETTE) {
             if (gPartnerStatus.partnerActionState <= PARTNER_ACTION_BOMBETTE_2) {
-                ret = FALSE;
+                ret = false;
             }
         } else {
-            ret = FALSE;
+            ret = false;
         }
     } else if (!(gPlayerStatus.actionState == ACTION_STATE_IDLE ||
                  gPlayerStatus.actionState == ACTION_STATE_WALK ||
                  gPlayerStatus.actionState == ACTION_STATE_RUN)) {
-        ret = FALSE;
+        ret = false;
     }
     return ret;
 }

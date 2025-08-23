@@ -19,14 +19,14 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupMagicDoors))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     ExecGetTID(EnterWalk, MV_EnterWalkScriptID)
     Wait(1)
-    Call(SetTexPanner, MODEL_suimen2, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_suimen2, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)

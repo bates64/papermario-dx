@@ -13,7 +13,7 @@ EvtScript N(EVS_SetupChainDrive) = {
 
 EvtScript N(EVS_ExitDoors_kpa_62_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Wait(3)
     Set(LVar0, kpa_70_ENTRY_0)
     Set(LVar1, COLLIDER_deilittw)
@@ -74,8 +74,8 @@ EvtScript N(EVS_Update_Gears) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Call(InitAnimatedModels)
     Exec(N(EVS_SetupChainDrive))
     Thread

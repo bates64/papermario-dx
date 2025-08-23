@@ -51,7 +51,7 @@ enum DebugMenuStates {
     DBM_VIEW_COLLISION,
     DBM_CHEAT_MENU,
 } DebugMenuState = DBM_NONE;
-b32 DebugStateChanged = FALSE;
+b32 DebugStateChanged = false;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
 const s32 HoverColor   = MSG_PAL_GREEN;
@@ -152,7 +152,7 @@ void dx_debug_update_buttons() {
 
 void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 opacity) {
     draw_box(0, (WindowStyle)style, posX, posY, 0, sizeX, sizeY, opacity,
-        0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+        0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
 }
 
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
@@ -349,9 +349,9 @@ void dx_debug_nav_editable_num(DebugEditableNumber* num) {
     s32 max = num->isHex ? 0xF : 9;
 
     if (num->size > 1) {
-        num->pos = dx_debug_menu_nav_1D_horizontal(num->pos, 0, num->size - 1, FALSE);
+        num->pos = dx_debug_menu_nav_1D_horizontal(num->pos, 0, num->size - 1, false);
     }
-    num->digits[num->pos] = dx_debug_menu_nav_1D_vertical(num->digits[num->pos], 0, max, TRUE);
+    num->digits[num->pos] = dx_debug_menu_nav_1D_vertical(num->digits[num->pos], 0, max, true);
 }
 
 void dx_debug_draw_editable_num(DebugEditableNumber* num, s32 posX, s32 posY) {
@@ -422,16 +422,16 @@ typedef struct DebugMenuEntry {
 
 DebugMenuEntry DebugMainMenu[] = {
     { "Full Restore",   dx_debug_exec_full_restore },
-    { "Save/Load",      NULL, DBM_QUICK_SAVE },
-    { "Map Select",     NULL, DBM_SELECT_AREA },
-    { "Battle Select",  NULL, DBM_SELECT_BATTLE },
-    { "Set Story Byte", NULL, DBM_SET_STORY },
-    { "Sound Player",   NULL, DBM_SOUND_PLAYER },
-    { "Edit Partners",  NULL, DBM_EDIT_PARTNERS },
-    { "Edit Inventory", NULL, DBM_EDIT_INVENTORY },
-//  { "Edit Memory",    NULL, DBM_EDIT_MEMORY },
-    { "View Collision", NULL, DBM_VIEW_COLLISION },
-    { "Cheats",         NULL, DBM_CHEAT_MENU },
+    { "Save/Load",      nullptr, DBM_QUICK_SAVE },
+    { "Map Select",     nullptr, DBM_SELECT_AREA },
+    { "Battle Select",  nullptr, DBM_SELECT_BATTLE },
+    { "Set Story Byte", nullptr, DBM_SET_STORY },
+    { "Sound Player",   nullptr, DBM_SOUND_PLAYER },
+    { "Edit Partners",  nullptr, DBM_EDIT_PARTNERS },
+    { "Edit Inventory", nullptr, DBM_EDIT_INVENTORY },
+//  { "Edit Memory",    nullptr, DBM_EDIT_MEMORY },
+    { "View Collision", nullptr, DBM_VIEW_COLLISION },
+    { "Cheats",         nullptr, DBM_CHEAT_MENU },
 };
 s32 MainMenuPos = 0;
 
@@ -573,9 +573,9 @@ void dx_debug_menu_main() {
 }
 
 void dx_debug_update_main_menu() {
-    MainMenuPos = dx_debug_menu_nav_1D_vertical(MainMenuPos, 0, ARRAY_COUNT(DebugMainMenu) - 1, FALSE);
+    MainMenuPos = dx_debug_menu_nav_1D_vertical(MainMenuPos, 0, ARRAY_COUNT(DebugMainMenu) - 1, false);
     if (RELEASED(BUTTON_R | BUTTON_D_RIGHT)) {
-        if (DebugMainMenu[MainMenuPos].onSelect != NULL) {
+        if (DebugMainMenu[MainMenuPos].onSelect != nullptr) {
             DebugMainMenu[MainMenuPos].onSelect();
         } else {
             DebugMenuState = DebugMainMenu[MainMenuPos].nextState;
@@ -618,7 +618,7 @@ void dx_debug_exec_quick_load() {
 }
 
 DebugMenuEntry DebugQuickSaveMenu[] = {
-    { "Cancel", NULL, DBM_MAIN_MENU },
+    { "Cancel", nullptr, DBM_MAIN_MENU },
     { "Quick Save", dx_debug_exec_quick_save },
     { "Quick Load", dx_debug_exec_quick_load },
 };
@@ -628,11 +628,11 @@ void dx_debug_update_quick_save() {
     s32 idx;
 
     // handle input
-    QuickSaveMenuPos = dx_debug_menu_nav_1D_vertical(QuickSaveMenuPos, 0, ARRAY_COUNT(DebugQuickSaveMenu) - 1, FALSE);
+    QuickSaveMenuPos = dx_debug_menu_nav_1D_vertical(QuickSaveMenuPos, 0, ARRAY_COUNT(DebugQuickSaveMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
-        if (DebugQuickSaveMenu[QuickSaveMenuPos].onSelect != NULL) {
+        if (DebugQuickSaveMenu[QuickSaveMenuPos].onSelect != nullptr) {
             DebugQuickSaveMenu[QuickSaveMenuPos].onSelect();
         } else {
             DebugMenuState = DebugQuickSaveMenu[QuickSaveMenuPos].nextState;
@@ -904,8 +904,8 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     es->curEnemy = &DebugDummyEnemy;
     es->hitType = ENCOUNTER_TRIGGER_NONE;
     es->firstStrikeType = FIRST_STRIKE_NONE;
-    es->forbidFleeing = FALSE;
-    es->scriptedBattle = TRUE;
+    es->forbidFleeing = false;
+    es->scriptedBattle = true;
     es->songID = -1;
     es->unk_18 = -1;
     es->fadeOutAmount = 0;
@@ -916,7 +916,7 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
 
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
-    EncounterStateChanged = TRUE;
+    EncounterStateChanged = true;
 }
 
 void dx_debug_begin_battle() {
@@ -942,7 +942,7 @@ void dx_debug_update_select_battle() {
         DebugMenuState = DBM_NONE;
     }
 
-    DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, FALSE);
+    DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, false);
     if (NAV_UP) {
         s32 value = DebugBattleNum[DebugBattleColumn] + 1;
         if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
@@ -986,7 +986,7 @@ void dx_debug_update_select_battle() {
 // set story byte
 
 DebugEditableNumber DebugStoryProgress = {
-    .isHex = TRUE,
+    .isHex = true,
     .digits = { 0, 0 },
     .size = 2,
     .pos = 0,
@@ -994,7 +994,7 @@ DebugEditableNumber DebugStoryProgress = {
 
 void dx_debug_update_edit_progress() {
     if (DebugStateChanged) {
-        s32 val = evt_get_variable(NULL, GB_StoryProgress);
+        s32 val = evt_get_variable(nullptr, GB_StoryProgress);
         dx_debug_set_editable_num(&DebugStoryProgress, val);
     }
 
@@ -1003,7 +1003,7 @@ void dx_debug_update_edit_progress() {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         s32 val = dx_debug_get_editable_num(&DebugStoryProgress);
-        evt_set_variable(NULL, GB_StoryProgress, val);
+        evt_set_variable(nullptr, GB_StoryProgress, val);
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
@@ -1019,8 +1019,8 @@ void dx_debug_update_edit_progress() {
 // sound player
 
 DebugMenuEntry DebugSoundPlayerMenu[] = {
-    { "Play Sound", NULL, DBM_SELECT_SOUND },
-    { "Stop Sound", NULL, DBM_SELECT_SOUND },
+    { "Play Sound", nullptr, DBM_SELECT_SOUND },
+    { "Stop Sound", nullptr, DBM_SELECT_SOUND },
 };
 s32 SoundPlayerMenuPos = 0;
 
@@ -1042,18 +1042,18 @@ void dx_debug_draw_sound_player(b32 activeMenu) {
 
 void dx_debug_update_sound_player() {
     // handle input
-    SoundPlayerMenuPos = dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, FALSE);
+    SoundPlayerMenuPos = dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         DebugMenuState = DBM_SELECT_SOUND;
     }
 
-    dx_debug_draw_sound_player(TRUE);
+    dx_debug_draw_sound_player(true);
 }
 
 DebugEditableNumber DebugSoundID = {
-    .isHex = TRUE,
+    .isHex = true,
     .digits = { 0, 0, 0, 0 },
     .size = 4,
     .pos = 0,
@@ -1073,7 +1073,7 @@ void dx_debug_update_select_sound() {
 
     dx_debug_nav_editable_num(&DebugSoundID);
 
-    dx_debug_draw_sound_player(FALSE);
+    dx_debug_draw_sound_player(false);
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + (4 * RowHeight), 75, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Sound ID:", DefaultColor, SubmenuPosX, SubmenuPosY + 4 * RowHeight);
     dx_debug_draw_editable_num(&DebugSoundID, SubmenuPosX, SubmenuPosY + 5 * RowHeight);
@@ -1095,18 +1095,18 @@ void dx_debug_update_edit_partners() {
     }
 
     // handle input
-    SelectPartnerMenuPos = dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, FALSE);
-    DebugPartnerLevels[SelectPartnerMenuPos] = dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, FALSE);
+    SelectPartnerMenuPos = dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, false);
+    DebugPartnerLevels[SelectPartnerMenuPos] = dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         for (idx = 1; idx < ARRAY_COUNT(gPlayerData.partners); idx++) {
             s32 val = DebugPartnerLevels[idx];
             if (val >= 0) {
-                gPlayerData.partners[idx].enabled = TRUE;
+                gPlayerData.partners[idx].enabled = true;
                 gPlayerData.partners[idx].level = val;
             } else {
-                gPlayerData.partners[idx].enabled = FALSE;
+                gPlayerData.partners[idx].enabled = false;
                 gPlayerData.partners[idx].level = 0;
             }
         }
@@ -1145,14 +1145,14 @@ void dx_debug_update_edit_partners() {
 // edit inventory
 
 DebugMenuEntry DebugInventoryMenu[] = {
-    { "Items", NULL, DBM_INV_EDIT_ITEMS },
-    { "Badges", NULL, DBM_INV_EDIT_BADGES },
-    { "Key Items", NULL, DBM_INV_EDIT_KEYS },
-    { "Equipment", NULL, DBM_INV_EDIT_GEAR },
-    { "Stats", NULL, DBM_INV_EDIT_STATS },
-    { "Coins", NULL, DBM_INV_EDIT_COINS },
-    { "Star Points", NULL, DBM_INV_EDIT_STAR_POINTS },
-    { "Star Pieces", NULL, DBM_INV_EDIT_STAR_PIECES },
+    { "Items", nullptr, DBM_INV_EDIT_ITEMS },
+    { "Badges", nullptr, DBM_INV_EDIT_BADGES },
+    { "Key Items", nullptr, DBM_INV_EDIT_KEYS },
+    { "Equipment", nullptr, DBM_INV_EDIT_GEAR },
+    { "Stats", nullptr, DBM_INV_EDIT_STATS },
+    { "Coins", nullptr, DBM_INV_EDIT_COINS },
+    { "Star Points", nullptr, DBM_INV_EDIT_STAR_POINTS },
+    { "Star Pieces", nullptr, DBM_INV_EDIT_STAR_PIECES },
 };
 s32 InventoryMenuPos = 0;
 
@@ -1160,11 +1160,11 @@ void dx_debug_update_edit_inventory() {
     s32 idx;
 
     // handle input
-    InventoryMenuPos = dx_debug_menu_nav_1D_vertical(InventoryMenuPos, 0, ARRAY_COUNT(DebugInventoryMenu) - 1, FALSE);
+    InventoryMenuPos = dx_debug_menu_nav_1D_vertical(InventoryMenuPos, 0, ARRAY_COUNT(DebugInventoryMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
-        if (DebugInventoryMenu[InventoryMenuPos].onSelect != NULL) {
+        if (DebugInventoryMenu[InventoryMenuPos].onSelect != nullptr) {
             DebugInventoryMenu[InventoryMenuPos].onSelect();
         } else {
             DebugMenuState = DebugInventoryMenu[InventoryMenuPos].nextState;
@@ -1180,7 +1180,7 @@ void dx_debug_update_edit_inventory() {
     }
 }
 
-b32 DebugEditingItem = FALSE;
+b32 DebugEditingItem = false;
 
 #define _MAX_INV_SIZE(a,b,c) MAX(MAX(ARRAY_COUNT(a), ARRAY_COUNT(b)), ARRAY_COUNT(c))
 s8 DebugItemDigits[_MAX_INV_SIZE(gPlayerData.invItems, gPlayerData.keyItems, gPlayerData.badges)][3];
@@ -1263,13 +1263,13 @@ void dx_debug_update_edit_items() {
 
     if (RELEASED(BUTTON_L)) {
         if (DebugEditingItem) {
-            DebugEditingItem = FALSE;
+            DebugEditingItem = false;
         } else {
             DebugMenuState = DBM_EDIT_INVENTORY;
         }
     } else if (RELEASED(BUTTON_R)) {
         if (!DebugEditingItem) {
-            DebugEditingItem = TRUE;
+            DebugEditingItem = true;
         } else {
             for (i = 0; i < invSize; i++) {
                 invItems[i] = dx_debug_get_item_id(i);
@@ -1280,9 +1280,9 @@ void dx_debug_update_edit_items() {
 
     if (DebugEditingItem) {
         s32 digit;
-        menu->col = dx_debug_menu_nav_1D_horizontal(menu->col, 0, 2, FALSE);
+        menu->col = dx_debug_menu_nav_1D_horizontal(menu->col, 0, 2, false);
         digit = DebugItemDigits[menu->pos][menu->col];
-        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 0xF, TRUE);
+        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 0xF, true);
         DebugItemDigits[menu->pos][menu->col] = digit;
     } else {
         if (NAV_UP) {
@@ -1314,11 +1314,11 @@ void dx_debug_update_edit_items() {
         b32 isSelectedRow = (menu->pos == i);
 
         if (DebugEditingItem) {
-            dx_debug_draw_editable_number(i, "%02X", -1, FALSE, SubmenuPosX, posY);
+            dx_debug_draw_editable_number(i, "%02X", -1, false, SubmenuPosX, posY);
             dx_debug_draw_editable_number(itemID, "%03X", menu->col, isSelectedRow, SubmenuPosX + 20, posY);
         } else {
             dx_debug_draw_editable_number(i, "%02X", -1, isSelectedRow, SubmenuPosX, posY);
-            dx_debug_draw_editable_number(itemID, "%03X", -1, FALSE, SubmenuPosX + 20, posY);
+            dx_debug_draw_editable_number(itemID, "%03X", -1, false, SubmenuPosX + 20, posY);
         }
 
         s32 itemMsg = MSG_NONE;
@@ -1400,7 +1400,7 @@ void dx_debug_update_edit_gear() {
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
-    DebugGearPos = dx_debug_menu_nav_1D_vertical(DebugGearPos, 0, ARRAY_COUNT(DebugGearValues) - 1, FALSE);
+    DebugGearPos = dx_debug_menu_nav_1D_vertical(DebugGearPos, 0, ARRAY_COUNT(DebugGearValues) - 1, false);
 
     dx = 0;
     if (NAV_RIGHT) {
@@ -1490,7 +1490,7 @@ void dx_debug_update_edit_stats() {
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
-    DebugStatPos = dx_debug_menu_nav_1D_vertical(DebugStatPos, 0, ARRAY_COUNT(DebugStatValues) - 1, FALSE);
+    DebugStatPos = dx_debug_menu_nav_1D_vertical(DebugStatPos, 0, ARRAY_COUNT(DebugStatValues) - 1, false);
 
     dx = 0;
     if (NAV_RIGHT) {
@@ -1540,7 +1540,7 @@ void dx_debug_update_edit_stats() {
 }
 
 DebugEditableNumber DebugCoins = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0, 0 },
     .size = 3,
     .pos = 0,
@@ -1568,7 +1568,7 @@ void dx_debug_update_edit_coins() {
 }
 
 DebugEditableNumber DebugStarPoints = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0 },
     .size = 2,
     .pos = 0,
@@ -1596,7 +1596,7 @@ void dx_debug_update_edit_star_points() {
 }
 
 DebugEditableNumber DebugStarPieces = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0, 0 },
     .size = 3,
     .pos = 0,
@@ -1648,13 +1648,13 @@ enum {
 };
 
 DebugCollisionEntry DebugCollisionMenu[] = {
-    [DBC_SHOW_COLLISION]  { "Show Collision",  FALSE },
-    [DBC_CULL_BACK]       { "Cull Back",       TRUE },
-    [DBC_SHOW_DISABLED]   { "Show Disabled",   TRUE },
-    [DBC_HIDE_MODELS]     { "Hide Models",     FALSE },
-    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   FALSE },
-    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", FALSE },
-    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  FALSE },
+    [DBC_SHOW_COLLISION]  { "Show Collision",  false },
+    [DBC_CULL_BACK]       { "Cull Back",       true },
+    [DBC_SHOW_DISABLED]   { "Show Disabled",   true },
+    [DBC_HIDE_MODELS]     { "Hide Models",     false },
+    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   false },
+    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", false },
+    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  false },
     [DBC_FADE_DIST]       { "Near Fade Dist",  1 },
 };
 
@@ -1674,10 +1674,10 @@ void dx_debug_update_view_collision() {
         }
     } else {
         s32 fadeDist = DebugCollisionMenu[DebugCollisionPos].state;
-        fadeDist = dx_debug_menu_nav_1D_horizontal(fadeDist, 0, 9, FALSE);
+        fadeDist = dx_debug_menu_nav_1D_horizontal(fadeDist, 0, 9, false);
         DebugCollisionMenu[DebugCollisionPos].state = fadeDist;
     }
-    DebugCollisionPos = dx_debug_menu_nav_1D_vertical(DebugCollisionPos, 0, ARRAY_COUNT(DebugCollisionMenu) - 1, FALSE);
+    DebugCollisionPos = dx_debug_menu_nav_1D_vertical(DebugCollisionPos, 0, ARRAY_COUNT(DebugCollisionMenu) - 1, false);
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, 8 * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1791,10 +1791,10 @@ void dx_debug_draw_collision() {
 
     if (DebugCollisionMenu[DBC_CULL_BACK].state) {
         gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK | G_SHADING_SMOOTH);
-        culling = TRUE;
+        culling = true;
     } else {
         gSPSetGeometryMode(gMainGfxPos++, G_SHADING_SMOOTH);
-        culling = FALSE;
+        culling = false;
     }
 
     DebugVtxPos = 0;
@@ -1806,12 +1806,12 @@ void dx_debug_draw_collision() {
         ColliderTriangle* tri = debugTri->tri;
         s32 r, g, b, a;
 
-        b32 highlight = FALSE;
+        b32 highlight = false;
         if (DebugCollisionMenu[DBC_HIGHLIGHT_FLOOR].state && debugTri->colliderID == gCollisionStatus.curFloor) {
-            highlight = TRUE;
+            highlight = true;
         }
         if (DebugCollisionMenu[DBC_HIGHLIGHT_WALL].state && debugTri->colliderID == gCollisionStatus.curWall) {
-            highlight = TRUE;
+            highlight = true;
         }
 
         if (rdpBufPos == 0) {
@@ -1824,11 +1824,11 @@ void dx_debug_draw_collision() {
             if (!tri->oneSided && culling) {
                 gDPPipeSync(gMainGfxPos++);
                 gSPClearGeometryMode(gMainGfxPos++, G_CULL_BACK);
-                culling = FALSE;
+                culling = false;
             } else if (tri->oneSided && !culling) {
                 gDPPipeSync(gMainGfxPos++);
                 gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK);
-                culling = TRUE;
+                culling = true;
             }
         }
 
@@ -1886,11 +1886,11 @@ typedef struct DebugCheatEntry {
 } DebugCheatEntry;
 
 DebugCheatEntry DebugCheatMenu[] = {
-    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   FALSE },
-    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", FALSE },
-    [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
-    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", FALSE },
-    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", FALSE },
+    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   false },
+    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", false },
+    [DEBUG_CHEAT_FLY]           { "Fly With L", false },
+    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", false },
+    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", false },
 };
 
 s32 DebugCheatPos = 0;
@@ -1926,7 +1926,7 @@ void dx_debug_update_cheat_menu() {
         }
 
     }
-    DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, FALSE);
+    DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, false);
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, ARRAY_COUNT(DebugCheatMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);

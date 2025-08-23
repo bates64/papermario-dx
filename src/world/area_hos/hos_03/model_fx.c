@@ -152,8 +152,8 @@ EvtScript N(EVS_SetupAurora) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetTexPanner, MODEL_o160, TEX_PANNER_7)
-    Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o76, TRUE)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_aurora)), NULL)
+    Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o76, true)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_aurora)), nullptr)
     Call(SetModelCustomGfx, MODEL_o76, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Return
     End

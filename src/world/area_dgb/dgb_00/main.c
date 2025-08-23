@@ -4,13 +4,26 @@ s32 N(map_init)(void) {
     sprintf(wMapShapeName, "arn_20_shape");
     sprintf(wMapHitName, "arn_20_hit");
     sprintf(wMapTexName, "arn_tex");
-    return FALSE;
+    return false;
 }
 
 EvtScript N(EVS_ExitWalk_arn_04_1) = EVT_EXIT_WALK(60, dgb_00_ENTRY_0, "arn_04", arn_04_ENTRY_1);
 
-EvtScript N(EVS_ExitDoors_dgb_01_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_00_ENTRY_1, "dgb_01", dgb_01_ENTRY_0,
-    COLLIDER_deiliwt, MODEL_d1, MODEL_d2, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_01_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
+    Set(LVar0, dgb_00_ENTRY_1)
+    Set(LVar1, COLLIDER_deiliwt)
+    Set(LVar2, MODEL_d1)
+    Set(LVar3, MODEL_d2)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_arn_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilie, 1, 0)
@@ -67,14 +80,14 @@ EvtScript N(EVS_EnterMap) = {
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
-    Set(GF_MAP_TubbasManor, TRUE)
+    Set(GF_MAP_TubbasManor, true)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, dgb_00_ENTRY_2)
-        Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Else
-        Call(MakeNpcs, FALSE, Ref(N(BooNPCs)))
+        Call(MakeNpcs, false, Ref(N(BooNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

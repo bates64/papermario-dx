@@ -2,6 +2,18 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
+EvtScript N(EVS_TexPan_MysticPyramid) = {
+    Call(EnableTexPanning, MODEL_o185, true)
+    Set(LVar0, 0)
+    Loop(0)
+        Add(LVar0, 0x4000)
+        Call(SetTexPanOffset, TEX_PANNER_C, TEX_PANNER_MAIN, LVar0, 0)
+        Wait(3)
+    EndLoop
+    Return
+    End
+};
+
 EvtScript N(EVS_Animate_MysticPyramid) = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_C)
@@ -54,16 +66,16 @@ EvtScript N(EVS_TexPan_Stars) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHOOTING_STAR_SUMMIT)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(AF_HOS06_SpokeWithMerluvlee, FALSE)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Set(AF_HOS06_SpokeWithMerluvlee, false)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMagicChest))
     Exec(N(EVS_Animate_MysticPyramid))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Wait(1)
-    Call(SetMusicTrack, 0, SONG_SHOOTING_STAR_SUMMIT, 0, 8)
+    Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
     Exec(N(EVS_SetupRooms))
     Exec(N(EVS_TexPan_Stars))
     BindTrigger(Ref(N(EVS_AskForHint)), TRIGGER_WALL_PRESS_A, COLLIDER_o224, 1, 0)

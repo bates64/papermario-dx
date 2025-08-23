@@ -319,7 +319,7 @@ def fix_args(self, func, args, info):
                 continue
 
             if info[i] == "Bool":
-                new_args.append(f"{'TRUE' if argNum == True else 'FALSE'}")
+                new_args.append(f"{'true' if argNum == True else 'false'}")
             elif info[i] == "Hex" and argNum > 0:
                 new_args.append(f"0x{argNum:08X}")
             elif info[i] == "CustomAnim":
@@ -556,7 +556,7 @@ replace_funcs = {
         3: "PlayerAnims",
         4: "PlayerAnims",
     },
-    "SetMusicTrack": {1: "SongIDs"},
+    "SetMusic": {1: "SongIDs"},
     "SetNpcAnimation": {0: "NpcIDs", 1: "CustomAnim"},
     "SetNpcAux": {0: "NpcIDs"},
     "SetNpcFlagBits": {0: "NpcIDs", 1: "NpcFlags", 2: "Bool"},

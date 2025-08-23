@@ -81,9 +81,9 @@ EvtScript N(EVS_BindExitTriggers) = {
 #include "../common/ManageSnowfall.inc.c"
 
 EvtScript N(EVS_TexPan_Fire) = {
-    Call(SetTexPanner, MODEL_hi1, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_hi2, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_hi3, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_hi1, true)
+    Call(EnableTexPanning, MODEL_hi2, true)
+    Call(EnableTexPanning, MODEL_hi3, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   50,   50,  -70,  300)
@@ -98,9 +98,9 @@ EvtScript N(EVS_TexPan_Fire) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_STARBORN_VALLEY)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_StarbornValley, TRUE)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Set(GF_MAP_StarbornValley, true)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Call(ClearDefeatedEnemies)
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))

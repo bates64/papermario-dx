@@ -84,23 +84,9 @@ void player_surface_spawn_basic_fx(void) {
     f32 sinAngle, cosAngle;
     f32 x, y, z;
 
-    // spawn effects if landing from a decent height
-    if (gPlayerStatus.actionState == ACTION_STATE_LAND
-        && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
-        && LandedTimeInAir >= 10
-    ) {
-        x = gPlayerStatus.pos.x;
-        y = gPlayerStatus.pos.y;
-        z = gPlayerStatus.pos.z;
-        switch (SurfaceWalkEffectType) {
-            case SURFACE_WALK_FX_STANDARD:
-                fx_landing_dust(0, x, y, z, 0.0f);
-                break;
-            case SURFACE_WALK_FX_SPARKLE:
-                fx_misc_particles(3, x, y, z, 13.0f, 10.0f, 1.0f, 5, 30);
-                break;
-        }
-        return;
+    cond = false;
+    if (gGameStatusPtr->areaID == AREA_HOS) {
+        cond = gGameStatusPtr->mapID == 2;
     }
 
     // spawn effects if ground pounding

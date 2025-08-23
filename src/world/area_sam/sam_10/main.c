@@ -32,8 +32,8 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHIVER_MOUNTAIN)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupStairs))

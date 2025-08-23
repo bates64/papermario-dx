@@ -37,7 +37,7 @@ void func_800E5520(void) {
     D_8010C9B0 = 0;
 }
 
-s32 (*LandingAdjustCamCallback)(void) = NULL;
+s32 (*LandingAdjustCamCallback)(void) = nullptr;
 
 void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
     LandingAdjustCamCallback = funcPtr;
@@ -46,8 +46,12 @@ void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
 s32 phys_adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (LandingAdjustCamCallback != NULL) {
-        ret = LandingAdjustCamCallback();
+                    if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
+                        ret = 2;
+                    }
+                    break;
+            }
+            break;
     }
 
     if (ret == LANDING_CAM_CHECK_SURFACE) {
@@ -106,7 +110,7 @@ void phys_reset_spin_history(void) {
     }
 
     D_8010C964 = 0;
-    LastLoadedActionOffset = NULL;
+    D_8010C924 = nullptr;
 }
 
 void phys_update_action_state(void) {
@@ -158,7 +162,7 @@ void phys_update_action_state(void) {
             if (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED)) {
                 cond = check_conversation_trigger();
             } else {
-                cond = FALSE;
+                cond = false;
             }
 
             if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
@@ -169,10 +173,9 @@ void phys_update_action_state(void) {
 
         Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
-        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
-                LastLoadedActionOffset = action->dmaStart;
-                dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
+            if (dmaStart != nullptr && dmaStart != D_8010C924) {
+                D_8010C924 = dmaStart;
+                dma_copy(dmaStart, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
             }
         }
         action->update();
@@ -187,11 +190,19 @@ void phys_peach_update(void) {
             set_action_state(ACTION_STATE_TALK);
         }
 
-        Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
+        if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
+            Action* action = &PlayerActionsTable[playerStatus->actionState];
+
+            if (action->flag) {
+                if (action->dmaStart != nullptr && action->dmaStart != D_8010C924) {
+                    D_8010C924 = action->dmaStart;
+
+                    dma_copy(D_8010C924, PlayerActionsTable[playerStatus->actionState].dmaEnd, PLAYER_ACTION_VRAM_DEF);
+                }
 
         if (action->flag) {
             if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
-                if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
+                if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
                     LastLoadedActionOffset = action->dmaStart;
                     dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
                 }
@@ -272,9 +283,9 @@ void set_action_state(s32 actionState) {
         sfx_stop_sound(spinState->spinSoundID);
     }
 
-    if (playerStatus->specialDecorationEffect != NULL) {
+    if (playerStatus->specialDecorationEffect != nullptr) {
         playerStatus->specialDecorationEffect->data.spin->timeLeft = 10;
-        playerStatus->specialDecorationEffect = NULL;
+        playerStatus->specialDecorationEffect = nullptr;
     }
 }
 
@@ -318,69 +329,69 @@ void start_bounce_b(void) {
     playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
 }
 
-b32 check_input_hammer(void) {
+bool check_input_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
     if (playerStatus->pressedButtons & BUTTON_B) {
         if (playerStatus->flags & PS_FLAG_FALLING) {
-            return FALSE;
+            return false;
         }
 
         if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && playerData->curPartner == PARTNER_WATT) {
-            return FALSE;
+            return false;
         }
 
         if (playerData->hammerLevel == -1) {
-            return FALSE;
+            return false;
         }
 
         set_action_state(ACTION_STATE_HAMMER);
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
-b32 check_input_jump(void) {
+bool check_input_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 surfaceType;
 
     if (!(playerStatus->pressedButtons & BUTTON_A)) {
-        return FALSE;
+        return false;
     }
 
     surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
-        return FALSE;
+        return false;
     }
 
     if (collisionStatus->touchingWallTrigger != 0 ||
         (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE |
                                     PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
     {
-        return FALSE;
+        return false;
     }
 
     if ((collisionStatus->curInspect != -1) && (collisionStatus->curInspect & COLLISION_WITH_ENTITY_BIT)) {
         Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
-            if ((entity->boundScriptBytecode == NULL) || (entity->flags & ENTITY_FLAG_4000)) {
+            if ((entity->boundScriptBytecode == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
                 if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
                     entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
                     entity->type == ENTITY_TYPE_TRUMPET_PLANT)
                 {
-                    return FALSE;
+                    return false;
                 }
             } else {
-                return FALSE;
+                return false;
             }
         }
     }
 
     set_action_state(ACTION_STATE_JUMP);
-    return TRUE;
+    return true;
 }
 
 void check_input_spin(void) {
@@ -403,7 +414,7 @@ void check_input_spin(void) {
                     if (actionState >= 0 && !(playerStatus->animFlags & PA_FLAG_SPINNING)) {
                         if (btnPressed || spinState->hasBufferedSpin) {
                             set_action_state(ACTION_STATE_SPIN);
-                            if (spinState->hasBufferedSpin != FALSE) {
+                            if (spinState->hasBufferedSpin != false) {
                                 if (spinState->bufferedStickAxis.x != 0 || spinState->bufferedStickAxis.y != 0) {
                                     playerStatus->prevActionState = temp2->prevActionState;
                                 } else {
@@ -541,7 +552,7 @@ void peach_check_for_parasol_input(void) {
                     gGameStatusPtr->peachFlags |= PEACH_FLAG_DISGUISED;
 
                     disguiseNpc = peach_make_disguise_npc(gGameStatusPtr->peachDisguise);
-                    if (disguiseNpc != NULL) {
+                    if (disguiseNpc != nullptr) {
                         disguiseNpc->flags &= ~NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
                     }
                 }
@@ -578,7 +589,7 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
     f32 yaw;
 
     if (peachDisguise == PEACH_DISGUISE_NONE) {
-        return NULL;
+        return nullptr;
     }
 
     playerStatus->colliderHeight = 37;
@@ -588,8 +599,8 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
 
     bpPtr->flags = NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
     bpPtr->initialAnim = BasicPeachDisguiseAnims[playerStatus->peachDisguise].idle;
-    bpPtr->onUpdate = NULL;
-    bpPtr->onRender = NULL;
+    bpPtr->onUpdate = nullptr;
+    bpPtr->onRender = nullptr;
 
     PeachDisguiseNpcIndex = create_standard_npc(bpPtr, PeachDisguiseExtraAnims[playerStatus->peachDisguise]);
     npc = get_npc_by_index(PeachDisguiseNpcIndex);

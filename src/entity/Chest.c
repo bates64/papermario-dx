@@ -5,11 +5,6 @@
 #include "entity.h"
 #include "sprite/player.h"
 
-#if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_Chest_ROM_END;
-extern Addr entity_model_Chest_ROM_START;
-#endif
-
 extern EntityScript Entity_Chest_ScriptOpened;
 
 extern Gfx Entity_Chest_RenderBox[];
@@ -19,13 +14,13 @@ extern Mtx Entity_Chest_LidMtx;
 EvtScript Entity_Chest_AdjustCam_ISK = {
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(UseSettingsFrom, CAM_DEFAULT, -195, -358, -555)
-        Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-        Call(SetCamDistance, CAM_DEFAULT, Float(290.0))
-        Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-10.0))
-        Call(SetCamSpeed, CAM_DEFAULT, Float(8.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
-        Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+        Call(UseSettingsFrom, 0, -195, -358, -555)
+        Call(SetPanTarget, 0, LVar0, LVar1, LVar2)
+        Call(SetCamDistance, 0, Float(290.0))
+        Call(SetCamPitch, 0, Float(20.0), Float(-10.0))
+        Call(SetCamSpeed, 0, Float(8.0))
+        Call(PanToTarget, 0, 0, true)
+        Call(WaitForCam, 0, Float(1.0))
     EndThread
     Return
     End
@@ -69,7 +64,7 @@ void entity_Chest_adjust_camera(Entity* entity) {
     EvtScript* script;
 
     areaID = gGameStatusPtr->areaID;
-    script = NULL;
+    script = nullptr;
     if (areaID == AREA_ISK) {
         script = &Entity_Chest_AdjustCam_ISK;
     } else if (areaID == AREA_TIK) {
@@ -77,7 +72,7 @@ void entity_Chest_adjust_camera(Entity* entity) {
     } else if (areaID == AREA_KZN) {
         script = &Entity_Chest_AdjustCam_KZN;
     }
-    if (script != NULL) {
+    if (script != nullptr) {
         start_script(script, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
     }
 }
@@ -88,7 +83,7 @@ void entity_Chest_reset_camera(Entity* entity) {
     EvtScript* script;
 
     areaID = gGameStatusPtr->areaID;
-    script = NULL;
+    script = nullptr;
     if (areaID == AREA_ISK) {
         script = &Entity_Chest_ResetCam_ISK;
     } else {
@@ -263,7 +258,7 @@ void entity_GiantChest_hide_effect(Entity* entity) {
     ChestData* chest = entity->dataBuf.chest;
     EffectInstance* effect = chest->gotItemEffect;
 
-    if (effect != NULL) {
+    if (effect != nullptr) {
         effect->data.gotItemOutline->timeLeft = 10;
     }
 }
@@ -471,13 +466,13 @@ EntityScript Entity_GiantChest_Script = {
     es_Call(entity_GiantChest_hide_effect)
     es_Call(entity_Chest_reset_camera)
     es_SetCallback(entity_Chest_close, 0)
-    es_SetCallback(NULL, 0)
+    es_SetCallback(nullptr, 0)
     es_Restart
     es_End
 };
 
 EntityScript Entity_Chest_ScriptOpened = {
-    es_SetCallback(NULL, 0)
+    es_SetCallback(nullptr, 0)
     es_End
 };
 EntityScript Entity_Chest_Script = {
@@ -489,7 +484,7 @@ EntityScript Entity_Chest_Script = {
     es_SetCallback(entity_Chest_open, 0)
     es_Call(entity_Chest_enable_player_input)
     es_SetCallback(entity_Chest_close, 0)
-    es_SetCallback(NULL, 0)
+    es_SetCallback(nullptr, 0)
     es_Restart
     es_End
 };
@@ -502,7 +497,7 @@ EntityBlueprint Entity_GiantChest = {
     .modelAnimationNodes = 0,
     .fpInit = entity_GiantChest_init,
     .updateEntityScript = Entity_GiantChest_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(Chest) },
     .entityType = ENTITY_TYPE_CHEST,
     .aabbSize = { 50, 45, 46 }
@@ -514,7 +509,7 @@ EntityBlueprint Entity_Chest = {
     .modelAnimationNodes = 0,
     .fpInit = entity_Chest_init,
     .updateEntityScript = Entity_Chest_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(Chest) },
     .entityType = ENTITY_TYPE_CHEST,
     .aabbSize = { 28, 26, 23 }

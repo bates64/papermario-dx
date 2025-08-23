@@ -21,7 +21,7 @@
 // ----------------------------------------------------------------
 // Options
 
-// define this TRUE to enable updating the z-pos of the chain
+// define this true to enable updating the z-pos of the chain
 // CHOMP_CHAIN_UPDATE_Z
 
 // ----------------------------------------------------------------
@@ -93,7 +93,7 @@ API_CALLABLE(N(ChompChainUpdate)) {
     s32 i;
 
     actor = get_actor(script->owner1.actorID);
-    if (actor == NULL) {
+    if (actor == nullptr) {
         return ApiStatus_BLOCK;
     }
 
@@ -179,7 +179,7 @@ API_CALLABLE(N(ChompChainUpdate)) {
         if (chain->settleAmt > 4.0) {
             chain->settleAmt = 4.0f;
         }
-        
+
         #if CHOMP_CHAIN_UPDATE_Z == TRUE
         chain->curPos.z = posZ;
         #endif

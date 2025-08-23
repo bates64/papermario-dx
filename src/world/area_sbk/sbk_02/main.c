@@ -36,17 +36,17 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
-        Call(DisablePulseStone, FALSE)
+        Call(DisablePulseStone, false)
     EndIf
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     IfLt(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
         PlayEffect(EFFECT_SUN, 0, 0, 0, 0, 0, 0, 0)
         Set(MV_Unk_00, LVarF)
     EndIf
     IfEq(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
-        Call(SetMusicTrack, 0, SONG_STAR_SPIRIT_THEME, 1, 8)
+        Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)
     Else
         Exec(N(EVS_SetupMusic))
     EndIf

@@ -151,7 +151,7 @@ void state_init_demo(void) {
     gGameStatusPtr->demoStickX = 0;
     gGameStatusPtr->demoStickY = 0;
 
-    disable_sounds();
+    snd_disable_sfx();
     set_map_transition_effect(TRANSITION_END_DEMO_SCENE_BLACK);
     set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 255.0f);
     clear_saved_variables();
@@ -190,11 +190,11 @@ void state_step_demo(void) {
                 gGameStatusPtr->nextDemoScene = 0;
                 gGameStatusPtr->demoState = DEMO_STATE_NONE;
                 gGameStatusPtr->peachFlags = 0;
-                enable_sounds();
+                snd_enable_sfx();
                 gGameStatusPtr->context = CONTEXT_WORLD;
-                gGameStatusPtr->debugUnused1 = FALSE;
+                gGameStatusPtr->debugUnused1 = false;
                 gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
-                gGameStatusPtr->keepUsingPartnerOnMapChange = FALSE;
+                gGameStatusPtr->keepUsingPartnerOnMapChange = false;
                 gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 general_heap_create();
                 clear_render_tasks();
@@ -210,7 +210,7 @@ void state_step_demo(void) {
                 hud_element_clear_cache();
                 clear_trigger_data();
                 clear_printers();
-                clear_entity_data(FALSE);
+                clear_entity_data(false);
                 clear_screen_overlays();
                 clear_player_status();
                 clear_npcs();
@@ -232,7 +232,7 @@ void state_step_demo(void) {
             gGameStatusPtr->peachFlags = 0;
             playerData->curPartner = demoSceneData->partnerID;
             set_cam_viewport(CAM_DEFAULT, 29, 20, -262, 177);
-            evt_set_variable(NULL, GB_StoryProgress, demoSceneData->storyProgress);
+            evt_set_variable(nullptr, GB_StoryProgress, demoSceneData->storyProgress);
 
             if (gGameStatusPtr->nextDemoScene == 0) {
                 set_map_transition_effect(TRANSITION_END_DEMO_SCENE_WHITE);
@@ -250,7 +250,7 @@ void state_step_demo(void) {
             gGameStatusPtr->peachFlags = PEACH_FLAG_IS_PEACH;
             playerData->curPartner = demoSceneData->partnerID;
             set_cam_viewport(CAM_DEFAULT, 29, 20, -262, 177);
-            evt_set_variable(NULL, GB_StoryProgress, demoSceneData->storyProgress);
+            evt_set_variable(nullptr, GB_StoryProgress, demoSceneData->storyProgress);
 
             if (gGameStatusPtr->nextDemoScene == 0) {
                 set_map_transition_effect(TRANSITION_END_DEMO_SCENE_WHITE);
@@ -279,10 +279,15 @@ void state_drawUI_demo(void) {
 char versionString[] = "Prg Ver.00/07/06 22:22";
 #elif VERSION_US
 char versionString[] = "Prg Ver.00/12/05 16:54";
+#elif VERSION_PAL
+char versionString[] = "Prg Ver.01/06/08 21:14";
 #elif VERSION_IQUE
 char versionString[] = "Prg Ver.04/05/18 10:52";
 #else
 char versionString[] = "Prg Ver.??/??/?? ??:??";
 #endif
 
-static const f32 pad[] = {0.0f, 0.0f};
+static const f32 pad1 = 0.0f;
+#if !VERSION_PAL
+static const f32 pad2 = 0.0f;
+#endif

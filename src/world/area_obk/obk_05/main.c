@@ -24,8 +24,39 @@ EvtScript N(EVS_EnterDoor_obk_05_0) = {
     End
 };
 
-EvtScript N(EVS_ExitDoor_obk_01_2) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_05_ENTRY_0, "obk_01", obk_01_ENTRY_2,
-    COLLIDER_tt1, MODEL_door1, MODEL_door1b, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_obk_01_2) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Set(LVar0, obk_05_ENTRY_0)
+    Set(LVar1, COLLIDER_tt1)
+    Set(LVar2, MODEL_door1)
+    Set(LVar4, MODEL_door1b)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSplitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("obk_01"), obk_01_ENTRY_2)
+    Wait(100)
+    Return
+    End
+};
+
+EvtScript N(EVS_TexPan_Fog) = {
+    Call(SetTexPanner, MODEL_m1, 0)
+    Call(SetTexPanner, MODEL_m2, 0)
+    Set(LVar0, 0)
+    Set(LVar1, 0)
+    Loop(0)
+        Add(LVar0, 300)
+        Add(LVar1, 100)
+        Call(SetTexPanOffset, 0, 0, LVar0, LVar1)
+        Wait(1)
+    EndLoop
+    Return
+    End
+};
+
+#include "world/common/EnableCameraFollowPlayerY.inc.c"
+#include "world/common/DisableCameraFollowPlayerY.inc.c"
 
 API_CALLABLE(N(RetroJar_AwaitPlayerEntry)) {
     if (gCollisionStatus.curFloor == COLLIDER_o420) {
@@ -38,25 +69,25 @@ API_CALLABLE(N(RetroJar_AwaitPlayerEntry)) {
 EvtScript N(EVS_ManageRetroJar) = {
     Loop(0)
         Call(N(RetroJar_AwaitPlayerEntry))
-        Call(DisablePlayerInput, TRUE)
+        Call(DisablePlayerInput, true)
         Wait(1)
-        IfEq(MF_IsRetroMario, FALSE)
+        IfEq(MF_IsRetroMario, false)
             Call(PlaySoundAtPlayer, SOUND_JUMP_8BIT_MARIO, SOUND_SPACE_DEFAULT)
-            Call(Disable8bitMario, FALSE)
-            Call(SetMusicTrack, 0, SONG_CHAPTER_START, 1, 8)
-            Set(MF_IsRetroMario, TRUE)
+            Call(Disable8bitMario, false)
+            Call(SetMusic, 0, SONG_CHAPTER_START, BGM_VARIATION_1, VOL_LEVEL_FULL)
+            Set(MF_IsRetroMario, true)
         Else
             Call(PlaySoundAtPlayer, SOUND_QUICK_PLAYER_JUMP, SOUND_SPACE_DEFAULT)
-            Call(Disable8bitMario, TRUE)
+            Call(Disable8bitMario, true)
             Exec(N(EVS_SetupMusic))
-            Set(MF_IsRetroMario, FALSE)
+            Set(MF_IsRetroMario, false)
         EndIf
         Call(DisableCameraFollowPlayerY)
         Call(SetPlayerJumpscale, Float(1.0))
         Call(PlayerJump, -105, 30, -55, 30)
         Wait(1)
-        Call(EnableCameraFollowPlayerY)
-        Call(DisablePlayerInput, FALSE)
+        Call(N(EnableCameraFollowPlayerY))
+        Call(DisablePlayerInput, false)
     EndLoop
     Return
     End
@@ -65,9 +96,8 @@ EvtScript N(EVS_ManageRetroJar) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(N(SetupLandingCamAdjust))
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupRockingChairs))
     Exec(N(EVS_ManageHole))

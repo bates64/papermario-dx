@@ -16,44 +16,33 @@ typedef struct {
 
 char* is_debug_print(char* arg0, const char* str, size_t count);
 
+#if !VERSION_PAL
 void is_debug_init(void) {
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->put, 0);
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->get, 0);
     osEPiWriteIo(nuPiCartHandle, (u32) &gISVDbgPrnAdrs->magic, ASCII_TO_U32('I', 'S', '6', '4'));
 }
+#endif
 
 int printf(const char* restrict fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    return _Printf(is_debug_print, NULL, fmt, args);
-}
-
-int __printf_chk(int flag, const char* restrict fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    (void)flag;
-
-    return _Printf(is_debug_print, NULL, fmt, args);
-}
-
-int puts(const char* s) {
-    printf("%s\n", s);
-    return 0;
+    _Printf(is_debug_print, nullptr, fmt, args);
 }
 
 void osSyncPrintf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    _Printf(is_debug_print, NULL, fmt, args);
+    _Printf(is_debug_print, nullptr, fmt, args);
 }
 
 void rmonPrintf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    _Printf(is_debug_print, NULL, fmt, args);
+    _Printf(is_debug_print, nullptr, fmt, args);
 }
 
 char* is_debug_print(char* arg0, const char* str, size_t count) {
@@ -103,8 +92,7 @@ char* is_debug_print(char* arg0, const char* str, size_t count) {
     return (char*) 1;
 }
 
-void is_debug_panic(const char* message) {
-    crash_screen_set_assert_info(message);
-    *(volatile u32*)0 = 0; // Crash so we can see the crash screen
-    __builtin_unreachable();
+void is_debug_panic(const char* message, char* file, s32 line) {
+    osSyncPrintf("File:%s Line:%d  %s \n", file, line, message);
+    do {} while (true);
 }

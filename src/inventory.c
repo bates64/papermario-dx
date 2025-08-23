@@ -55,8 +55,8 @@ void clear_player_data(void) {
     PlayerData* playerData = &gPlayerData;
     s32 i;
 
-    ShowingCoinCounter = FALSE;
-    HidingCoinCounter = FALSE;
+    ShowingCoinCounter = false;
+    HidingCoinCounter = false;
 
     playerData->curHP = 10;
     playerData->curMaxHP = 10;
@@ -67,8 +67,7 @@ void clear_player_data(void) {
     playerData->maxBP = 3;
     playerData->level = 1;
     playerData->bootsLevel = 0;
-    playerData->hammerLevel = -1;
-    playerData->hasActionCommands = FALSE;
+    playerData->hasActionCommands = false;
     playerData->coins = 0;
     playerData->starPieces = 0;
     playerData->starPoints = 0;
@@ -86,7 +85,7 @@ void clear_player_data(void) {
     playerData->curPartner = PARTNER_NONE;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
-        playerData->partners[i].enabled = FALSE;
+        playerData->partners[i].enabled = false;
         playerData->partners[i].level = PARTNER_RANK_NORMAL;
         playerData->partners[i].unk_02[0] = 0;
         playerData->partners[i].unk_02[1] = 0;
@@ -346,29 +345,29 @@ b32 has_item(s32 itemID) {
     if (item_is_key(itemID)) {
         for (idx = 0; idx < ARRAY_COUNT(gPlayerData.keyItems); idx++) {
             if (gPlayerData.keyItems[idx] == itemID) {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     // handle badges
     if (item_is_badge(itemID)) {
         for (idx = 0; idx < ARRAY_COUNT(gPlayerData.badges); idx++) {
             if (gPlayerData.badges[idx] == itemID) {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     // handle consumables
     for (idx = 0; idx < ARRAY_COUNT(gPlayerData.invItems); idx++) {
         if (gPlayerData.invItems[idx] == itemID) {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
 
 s32 store_item(s32 itemID) {
@@ -393,16 +392,16 @@ b32 is_badge_equipped(s32 itemID) {
     s32 idx;
 
     if (!item_is_badge(itemID)) {
-        return FALSE;
+        return false;
     }
 
     for (idx = 0; idx < ARRAY_COUNT(gPlayerData.equippedBadges); idx++) {
         if (gPlayerData.equippedBadges[idx] == itemID) {
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 /// Bubbles up player inventory items such that all ITEM_NONE values are at the bottom.
@@ -485,15 +484,15 @@ void initialize_status_bar(void) {
     HudElemID hid;
 
     statusBar->drawPosX = 12;
-    ShowingCoinCounter = FALSE;
-    HidingCoinCounter = FALSE;
+    ShowingCoinCounter = false;
+    HidingCoinCounter = false;
     statusBar->drawPosY = FULLY_RETRACTED_Y;
-    statusBar->hidden = FALSE;
+    statusBar->hidden = false;
     statusBar->showTimer = 210;
-    statusBar->unk_3B = FALSE;
-    statusBar->ignoreChanges = FALSE;
-    statusBar->openInputDisabled = FALSE;
-    statusBar->alwaysShown = FALSE;
+    statusBar->unk_3B = false;
+    statusBar->ignoreChanges = false;
+    statusBar->openInputDisabled = false;
+    statusBar->alwaysShown = false;
     statusBar->hpBlinking = BLINK_OFF;
     statusBar->hpBlinkAnimTime = 0;
     statusBar->hpBlinkTimeLeft = 0;
@@ -514,7 +513,7 @@ void initialize_status_bar(void) {
     statusBar->displayStarPower = playerData->starPower;
     statusBar->starpointsBlinkAnimTime = 0;
     statusBar->prevIgnoreChanges = -1;
-    statusBar->unk_3C = FALSE;
+    statusBar->unk_3C = false;
     statusBar->shimmerState = STATUS_SHIMMER_OFF;
     statusBar->shimmerTime = 0;
     statusBar->shimmerLimit = 0;
@@ -623,7 +622,7 @@ void initialize_status_bar(void) {
 void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 numDigits) {
     s8 digits[4];
     s32 drawX, drawY;
-    b32 keepDrawing;
+    bool keepDrawing;
     s32 digit;
     s32 i;
 
@@ -642,14 +641,14 @@ void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 n
     }
 
     drawX += 13;
-    keepDrawing = FALSE;
+    keepDrawing = false;
 
     for (i = 0; i < numDigits; i++, drawX += 8) {
         digit = digits[i];
 
         // Once we have encountered our first non-zero digit, we need to keep drawing the remaining digits
         if (digit != 0 || keepDrawing || (i == numDigits - 1)) {
-            keepDrawing = TRUE;
+            keepDrawing = true;
             hud_element_set_script(iconID, DigitHudScripts[digit]);
             hud_element_set_render_pos(iconID, drawX, drawY);
             hud_element_clear_flags(iconID, HUD_ELEMENT_FLAG_DISABLED);
@@ -660,7 +659,7 @@ void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 n
 
 void status_bar_draw_stat(s32 id, s32 startX, s32 startY, s32 currentValue, s32 maxValue) {
     s8 digits[4];
-    b32 keepDrawing;
+    bool keepDrawing;
     s32 digit;
     s32 numDigits = 2;
     s32 drawX;
@@ -682,11 +681,11 @@ void status_bar_draw_stat(s32 id, s32 startX, s32 startY, s32 currentValue, s32 
 
     drawX = baseX;
     drawY = baseY;
-    keepDrawing = FALSE;
+    keepDrawing = false;
     for (i = 0; i < numDigits; i++, drawX += 8) {
         digit = digits[i];
         if (digit != 0 || keepDrawing || i == numDigits - 1) {
-            keepDrawing = TRUE;
+            keepDrawing = true;
             hud_element_set_script(id, DigitHudScripts[digit]);
             hud_element_set_render_pos(id, drawX, drawY);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
@@ -701,11 +700,11 @@ void status_bar_draw_stat(s32 id, s32 startX, s32 startY, s32 currentValue, s32 
 
     drawX = baseX + 26;
     drawY = baseY;
-    keepDrawing = FALSE;
+    keepDrawing = false;
     for (i = 0; i < numDigits; i++, drawX += 8) {
         digit = digits[i];
         if (digit != 0 || keepDrawing || i == numDigits - 1) {
-            keepDrawing = TRUE;
+            keepDrawing = true;
             hud_element_set_script(id, DigitHudScripts[digit]);
             hud_element_set_render_pos(id, drawX, drawY);
             hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
@@ -719,7 +718,7 @@ void update_status_bar(void) {
     PlayerData* playerData = &gPlayerData;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 sp50;
-    b32 showAddedBar;
+    bool showAddedBar;
     s32 i;
     s32 x;
     s32 y;
@@ -734,7 +733,7 @@ void update_status_bar(void) {
     if (gGameStatusPtr->introPart >= INTRO_PART_0
         || gGameStatusPtr->demoState != DEMO_STATE_NONE
         || (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)
-        || evt_get_variable(NULL, GB_StoryProgress) >= STORY_EPILOGUE
+        || evt_get_variable(nullptr, GB_StoryProgress) >= STORY_EPILOGUE
     ) {
         return;
     }
@@ -756,8 +755,8 @@ void update_status_bar(void) {
     if (statusBar->displayHP != playerData->curHP && !statusBar->ignoreChanges) {
         if (statusBar->hidden) {
             statusBar->showTimer = 70;
-            statusBar->hidden = FALSE;
-            statusBar->unk_3B = FALSE;
+            statusBar->hidden = false;
+            statusBar->unk_3B = false;
         } else {
             statusBar->showTimer = 70;
         }
@@ -767,8 +766,8 @@ void update_status_bar(void) {
     if (statusBar->displayFP != playerData->curFP && !statusBar->ignoreChanges) {
         if (statusBar->hidden) {
             statusBar->showTimer = 70;
-            statusBar->hidden = FALSE;
-            statusBar->unk_3B = FALSE;
+            statusBar->hidden = false;
+            statusBar->unk_3B = false;
         } else {
             statusBar->showTimer = 70;
         }
@@ -778,8 +777,8 @@ void update_status_bar(void) {
     if (statusBar->displayStarPower != playerData->starPower && !statusBar->ignoreChanges) {
         if (statusBar->hidden) {
             statusBar->showTimer = 70;
-            statusBar->hidden = FALSE;
-            statusBar->unk_3B = FALSE;
+            statusBar->hidden = false;
+            statusBar->unk_3B = false;
         } else {
             statusBar->showTimer = 70;
         }
@@ -844,12 +843,12 @@ void update_status_bar(void) {
 
     if (statusBar->alwaysShown && statusBar->hidden && playerStatus->inputDisabledCount == 0) {
         statusBar->showTimer = 42;
-        statusBar->hidden = FALSE;
-        statusBar->unk_3B = FALSE;
+        statusBar->hidden = false;
+        statusBar->unk_3B = false;
     }
 
     switch (statusBar->hidden) {
-        case FALSE:
+        case false:
             statusBar->drawPosY += 10;
             if (statusBar->drawPosY >= FULLY_EXTENDED_Y) {
                 statusBar->drawPosY = FULLY_EXTENDED_Y;
@@ -862,16 +861,16 @@ void update_status_bar(void) {
                     if (!statusBar->ignoreChanges) {
                         if (!statusBar->unk_3B || playerStatus->actionState != ACTION_STATE_IDLE) {
                             if (gGameStatusPtr->context == CONTEXT_WORLD) {
-                                statusBar->hidden = TRUE;
+                                statusBar->hidden = true;
                                 statusBar->showTimer = 0;
-                                statusBar->unk_3C = FALSE;
+                                statusBar->unk_3C = false;
                             }
                         }
                     }
                 }
             }
             break;
-        case TRUE:
+        case true:
             statusBar->drawPosY -= 5;
             if (statusBar->drawPosY < FULLY_RETRACTED_Y) {
                 statusBar->drawPosY = FULLY_RETRACTED_Y;
@@ -886,9 +885,9 @@ void update_status_bar(void) {
 
                     if (statusBar->showTimer >= 240 && gGameStatusPtr->context == CONTEXT_WORLD) {
                         statusBar->showTimer = 210;
-                        statusBar->hidden = FALSE;
-                        statusBar->unk_3B = TRUE;
-                        statusBar->unk_3C = TRUE;
+                        statusBar->hidden = false;
+                        statusBar->unk_3B = true;
+                        statusBar->unk_3C = true;
                     }
                 }
             }
@@ -898,8 +897,8 @@ void update_status_bar(void) {
     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 12, 20, SCREEN_WIDTH - 12, SCREEN_HEIGHT - 20);
     x = statusBar->drawPosX;
     y = statusBar->drawPosY;
-    draw_box(0, WINDOW_STYLE_5, x,       y, 0, 174, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
-    draw_box(0, WINDOW_STYLE_6, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+    draw_box(0, WINDOW_STYLE_5, x,       y, 0, 174, 35, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(0, WINDOW_STYLE_6, x + 174, y, 0, 122, 25, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
 
     if (statusBar->hpBlinkTimeLeft > 0) {
         statusBar->hpBlinkTimeLeft--;
@@ -908,13 +907,13 @@ void update_status_bar(void) {
         }
     }
 
-    showStat = TRUE;
+    showStat = true;
     if (statusBar->hpBlinking != BLINK_OFF) {
         if (statusBar->hpBlinkAnimTime > 8) {
-            showStat = FALSE;
+            showStat = false;
             if (statusBar->hpBlinkAnimTime > 12) {
                 statusBar->hpBlinkAnimTime = 0;
-                showStat = TRUE;
+                showStat = true;
             }
         }
         statusBar->hpBlinkAnimTime++;
@@ -945,13 +944,13 @@ void update_status_bar(void) {
         }
     }
 
-    showStat = TRUE;
+    showStat = true;
     if (statusBar->fpBlinking != BLINK_OFF) {
         if (statusBar->fpBlinkAnimTime > 8) {
-            showStat = FALSE;
+            showStat = false;
             if (statusBar->fpBlinkAnimTime > 12) {
                 statusBar->fpBlinkAnimTime = 0;
-                showStat = TRUE;
+                showStat = true;
             }
         }
         statusBar->fpBlinkAnimTime++;
@@ -979,11 +978,11 @@ void update_status_bar(void) {
         playerData->starPoints = 0;
     }
 
-    showStat = TRUE;
+    showStat = true;
     if (statusBar->starpointsBlinking != BLINK_OFF) {
         if (statusBar->starpointsBlinkAnimTime > 8) {
             if (statusBar->starpointsBlinkAnimTime <= 12) {
-                showStat = FALSE;
+                showStat = false;
             } else {
                 statusBar->starpointsBlinkAnimTime = 0;
             }
@@ -1016,13 +1015,13 @@ void update_status_bar(void) {
         }
     }
 
-    showStat = TRUE;
+    showStat = true;
     if (statusBar->coinsBlinking != BLINK_OFF) {
         if (statusBar->coinsBlinkAnimTime > 8) {
-            showStat = FALSE;
+            showStat = false;
             if (statusBar->coinsBlinkAnimTime > 12) {
                 statusBar->coinsBlinkAnimTime = 0;
-                showStat = TRUE;
+                showStat = true;
             }
         }
         statusBar->coinsBlinkAnimTime++;
@@ -1047,14 +1046,14 @@ void update_status_bar(void) {
     }
 
     id = statusBar->starIconHID;
-    showStat = TRUE;
+    showStat = true;
     if (statusBar->starPowerBlinking != BLINK_OFF) {
         if (statusBar->starPowerBlinkCounter > 5) {
             if (statusBar->starPowerBlinkCounter <= 8) {
-                showStat = FALSE;
+                showStat = false;
             } else {
                 statusBar->starPowerBlinkCounter = 0;
-                showStat = TRUE;
+                showStat = true;
             }
         }
         statusBar->starPowerBlinkCounter++;
@@ -1076,7 +1075,7 @@ void update_status_bar(void) {
         statusBar->shimmerState = STATUS_SHIMMER_ON;
     }
 
-    showAddedBar = FALSE;
+    showAddedBar = false;
     if (statusBar->shimmerState != STATUS_SHIMMER_OFF) {
         if (statusBar->shimmerTime != 0) {
             statusBar->shimmerTime--;
@@ -1085,7 +1084,7 @@ void update_status_bar(void) {
         }
         // creates a stipple pattern repeating 5x zero, 5x one, ...
         if ((statusBar->shimmerTime / 5) & 1) {
-            showAddedBar = TRUE;
+            showAddedBar = true;
         }
         maxStarPower = statusBar->shimmerLimit; // required to match
         // added together, these just equal shimmerLimit
@@ -1103,7 +1102,7 @@ void update_status_bar(void) {
         if (!showStat) {
             s32 limit = statusBar->powBarsToBlink * 8;
             if (sp50 < limit) {
-                while (TRUE) {
+                while (true) {
                     i++; s1++; if (i >= limit) { break; }
                     i++; s1++; if (i >= limit) { break; }
                     i++; s1++; if (i >= limit) { break; }
@@ -1122,7 +1121,7 @@ void update_status_bar(void) {
         }
     }
 
-    while (TRUE) {
+    while (true) {
         if (i >= limit || i >= s7 && !showAddedBar) {
             break;
         }
@@ -1202,7 +1201,7 @@ void update_status_bar(void) {
 
     maxStarPower = playerData->maxStarPower;
     limit = maxStarPower * 8;
-    while (TRUE) {
+    while (true) {
         if (i >= limit) {
             break;
         }
@@ -1323,7 +1322,7 @@ void update_coin_counter(void) {
             hud_element_free(statusBar->iconIndex13);
             statusBar->iconIndex12 = -1;
         }
-        HidingCoinCounter = FALSE;
+        HidingCoinCounter = false;
     }
 
     if (statusBar->coinCounterHideDelay == 0) {
@@ -1342,8 +1341,8 @@ void update_coin_counter(void) {
 
         set_window_update(WIN_CURRENCY_COUNTER, (s32)basic_hidden_window_update);
         statusBar->coinCountDisposeTime = 15;
-        ShowingCoinCounter = FALSE;
-        HidingCoinCounter = TRUE;
+        ShowingCoinCounter = false;
+        HidingCoinCounter = true;
         statusBar->iconIndex12 = statusBar->coinCountTimesHID;
         statusBar->iconIndex13 = statusBar->coinCountIconHID;
         statusBar->displayCoins = gPlayerData.coins;
@@ -1368,8 +1367,8 @@ void show_coin_counter(void) {
         }
         statusBar->coinCounterHideDelay = 0;
         statusBar->coinCountDisposeTime = 0;
-        ShowingCoinCounter = FALSE;
-        HidingCoinCounter = FALSE;
+        ShowingCoinCounter = false;
+        HidingCoinCounter = false;
     }
 
     if (statusBar->coinCounterHideDelay == 0) {
@@ -1387,8 +1386,8 @@ void show_coin_counter(void) {
             statusBar->prevIgnoreChanges = statusBar->ignoreChanges;
         }
 
-        statusBar->ignoreChanges = TRUE;
-        ShowingCoinCounter = TRUE;
+        statusBar->ignoreChanges = true;
+        ShowingCoinCounter = true;
     }
 }
 
@@ -1432,8 +1431,8 @@ void open_status_bar_slowly(void) {
 
     if (statusBar->hidden) {
         statusBar->showTimer = 210;
-        statusBar->hidden = FALSE;
-        statusBar->unk_3B = TRUE;
+        statusBar->hidden = false;
+        statusBar->unk_3B = true;
     }
 }
 
@@ -1442,18 +1441,18 @@ void open_status_bar_quickly(void) {
 
     if (statusBar->hidden) {
         statusBar->showTimer = 105;
-        statusBar->hidden = FALSE;
-        statusBar->unk_3B = TRUE;
+        statusBar->hidden = false;
+        statusBar->unk_3B = true;
     }
 }
 
 void close_status_bar(void) {
     StatusBar* statusBar = &gStatusBar;
 
-    if (statusBar->hidden != TRUE) {
-        statusBar->hidden = TRUE;
+    if (statusBar->hidden != true) {
+        statusBar->hidden = true;
         statusBar->showTimer = 0;
-        statusBar->unk_3B = TRUE;
+        statusBar->unk_3B = true;
     }
 }
 
@@ -1461,62 +1460,61 @@ void setup_status_bar_for_world(void) {
     StatusBar* statusBar = &gStatusBar;
 
     statusBar->drawPosY = FULLY_RETRACTED_Y;
-    statusBar->ignoreChanges = FALSE;
+    statusBar->ignoreChanges = false;
     statusBar->showTimer = 0;
-    statusBar->hidden = TRUE;
-    statusBar->unk_3B = FALSE;
-    statusBar->unk_3C = FALSE;
+    statusBar->hidden = true;
+    statusBar->unk_3B = false;
+    statusBar->unk_3C = false;
 }
 
 void setup_status_bar_for_battle(void) {
     StatusBar* statusBar = &gStatusBar;
 
     statusBar->drawPosY = 0;
-    statusBar->ignoreChanges = FALSE;
+    statusBar->ignoreChanges = false;
     statusBar->showTimer = 210;
-    statusBar->hidden = FALSE;
-    statusBar->unk_3B = TRUE;
-    statusBar->unk_3C = FALSE;
+    statusBar->hidden = false;
+    statusBar->unk_3B = true;
+    statusBar->unk_3C = false;
 }
 
 void enable_status_bar_input(void) {
-    gStatusBar.openInputDisabled = FALSE;
+    gStatusBar.openInputDisabled = false;
 }
 
 void disable_status_bar_input(void) {
-    gStatusBar.openInputDisabled = TRUE;
+    gStatusBar.openInputDisabled = true;
 }
 
 // determine whether the player can open or close the status bar via button press
-b32 can_control_status_bar(void) {
-    if (gStatusBar.openInputDisabled) {
-        return FALSE;
+bool can_control_status_bar(void) {
+    StatusBar* statusBar = &gStatusBar;
+
+    s32 ret = 1 - statusBar->openInputDisabled;
+
+    if (statusBar->alwaysShown) {
+        ret = false;
+    }
+    if (statusBar->ignoreChanges) {
+        ret = false;
     }
 
-    if (gStatusBar.alwaysShown) {
-        return FALSE;
-    }
-
-    if (gStatusBar.ignoreChanges) {
-        return FALSE;
-    }
-
-    return TRUE;
+    return true;
 }
 
 void status_bar_ignore_changes(void) {
-    gStatusBar.ignoreChanges = TRUE;
+    gStatusBar.ignoreChanges = true;
 }
 
 void status_bar_show_and_ignore_changes(void) {
     StatusBar* statusBar = &gStatusBar;
 
-    statusBar->ignoreChanges = TRUE;
+    statusBar->ignoreChanges = true;
     statusBar->drawPosY = FULLY_EXTENDED_Y;
 }
 
 void status_bar_respond_to_changes(void) {
-    gStatusBar.ignoreChanges = FALSE;
+    gStatusBar.ignoreChanges = false;
 }
 
 s32 status_bar_is_ignoring_changes(void) {
@@ -1526,11 +1524,11 @@ s32 status_bar_is_ignoring_changes(void) {
 }
 
 void status_bar_always_show_on(void) {
-    gStatusBar.alwaysShown = TRUE;
+    gStatusBar.alwaysShown = true;
 }
 
 void status_bar_always_show_off(void) {
-    gStatusBar.alwaysShown = FALSE;
+    gStatusBar.alwaysShown = false;
 }
 
 s32 is_status_bar_visible(void) {
@@ -1687,10 +1685,10 @@ void reset_status_bar(void) {
     statusBar->drawPosY = FULLY_RETRACTED_Y;
     statusBar->hidden = 0;
     statusBar->showTimer = 210;
-    statusBar->unk_3B = FALSE;
-    statusBar->ignoreChanges = FALSE;
-    statusBar->openInputDisabled = FALSE;
-    statusBar->alwaysShown = FALSE;
+    statusBar->unk_3B = false;
+    statusBar->ignoreChanges = false;
+    statusBar->openInputDisabled = false;
+    statusBar->alwaysShown = false;
     statusBar->hpBlinking = BLINK_OFF;
     statusBar->hpBlinkAnimTime = 0;
     statusBar->hpBlinkTimeLeft = 0;
@@ -1711,7 +1709,7 @@ void reset_status_bar(void) {
     statusBar->displayCoins = playerData->coins;
     statusBar->displayStarpoints = playerData->starPoints;
     statusBar->displayStarPower = playerData->starPower;
-    statusBar->unk_3C = FALSE;
+    statusBar->unk_3C = false;
 
     for (i = 0; i < ARRAY_COUNT(statusBar->hpIconHIDs); i++) {
         copy_world_hud_element_ref_to_battle(statusBar->hpIconHIDs[i], statusBar->hpIconHIDs[i]);

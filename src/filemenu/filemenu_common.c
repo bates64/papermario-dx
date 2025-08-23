@@ -29,7 +29,10 @@ s32 filemenu_cursor_targetX = SCREEN_WIDTH / 2;
 s32 filemenu_cursor_targetY = -SCREEN_HEIGHT / 2;
 s32 filemenu_cursorGoalAlpha = 0;
 s32 filemenu_cursorGoalAlpha2 = 0;
-s32 D_80249BB0 = TRUE;
+s32 D_80249BB0 = true;
+#if !VERSION_PAL
+s32 D_80249BB4 = 0;
+#endif
 s32 D_80249BB8 = 0;
 s16 D_80249BBC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
 s16 D_80249BDC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
@@ -70,8 +73,8 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .width = 288,
         .height = 192,
         .priority = WINDOW_PRIORITY_0,
-        .fpDrawContents = NULL,
-        .tab = NULL,
+        .fpDrawContents = nullptr,
+        .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = WINDOW_FLAG_40,
@@ -87,7 +90,7 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .height = 192,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = filemenu_draw_contents_copy_arrow,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { WINDOW_UPDATE_SHOW } ,
         .extraFlags = 0,
@@ -103,7 +106,7 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .height = 240,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = filemenu_draw_cursor,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -176,7 +179,7 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
                 }
             }
             if (i >= ARRAY_COUNT(gWindows)) {
-                D_80249BB0 = FALSE;
+                D_80249BB0 = false;
             }
         }
         filemenu_cursor_targetX = posX;
@@ -288,15 +291,16 @@ void filemenu_update(void) {
     // only process inputs for the current menu
     menu = filemenu_menus[filemenu_currentMenu];
     if (menu->initialized) {
-        if (menu->fpHandleInput != NULL) {
+        if (menu->fpHandleInput != nullptr) {
             menu->fpHandleInput(menu);
         }
     }
 
-    // update all menus
-    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
-        menu = filemenu_menus[i];
-        if (menu->initialized && menu->fpUpdate != NULL) {
+    // TODO clean up bad match
+    menuIt = filemenu_menus;
+    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++, menuIt++) {
+        menu = *menuIt;
+        if (menu->initialized && menu->fpUpdate != nullptr) {
             menu->fpUpdate(menu);
         }
     }
@@ -890,10 +894,49 @@ void filemenu_init(s32 mode) {
 
     filemenu_cursorHID = filemenu_cursorHIDs[0];
     if (mode == 0) {
-        filemenu_common_windowBPs[0].style.customStyle->background.imgData = NULL; // ???
+        filemenu_common_windowBPs[0].style.customStyle->background.imgData = nullptr; // ???
     }
     setup_pause_menu_tab(filemenu_common_windowBPs, ARRAY_COUNT(filemenu_common_windowBPs));
 
+#if VERSION_PAL
+    if (mode != 2) {
+        filemenu_currentMenu = FILE_MENU_MAIN;
+        menu = filemenu_menus[FILE_MENU_MAIN];
+        menu->state = FM_MAIN_SELECT_FILE;
+        func_PAL_8002B574();
+
+        if (menu->state == FM_MAIN_SELECT_FILE) {
+            fio_load_globals();
+            if (gSaveGlobals.lastFileSelected >= 4) {
+                gSaveGlobals.lastFileSelected = 0;
+            }
+            gGameStatusPtr->saveSlot = gSaveGlobals.lastFileSelected;
+        }
+
+        filemenu_set_selected(menu, (gGameStatusPtr->saveSlot & 1) * 2, gGameStatusPtr->saveSlot >> 1);
+
+        panelIt = filemenu_menus;
+        for (i = 0; i < ARRAY_COUNT(filemenu_menus) - 1; i++, panelIt++) {
+            if ((*panelIt)->fpInit != nullptr) {
+                (*panelIt)->fpInit((*panelIt));
+            }
+        }
+        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
+    } else {
+        filemenu_currentMenu = FM_MAIN_SELECT_LANG_PAL;
+        filemenu_set_selected(filemenu_menus[FM_MAIN_SELECT_LANG_PAL], 0, gCurrentLanguage);
+
+        panelIt = filemenu_menus;
+        for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++, panelIt++) {
+            if (i == FM_MAIN_SELECT_LANG_PAL) {
+                if ((*panelIt)->fpInit != nullptr) {
+                    (*panelIt)->fpInit((*panelIt));
+                }
+            }
+        }
+        update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
+    }
+#else
     filemenu_currentMenu = FILE_MENU_MAIN;
     menu = filemenu_menus[FILE_MENU_MAIN];
 
@@ -901,15 +944,11 @@ void filemenu_init(s32 mode) {
 
     if (menu->state == FM_MAIN_SELECT_FILE) {
         for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
-            if (fio_load_game(i)) {
-                gSaveSlotSummary[i] = gCurrentSaveFile.summary;
-                gSaveSlotMetadata[i].hasData = TRUE;
-                gSaveSlotMetadata[i].validData = strcmp(gCurrentSaveFile.modName, DX_MOD_NAME) == 0;
-                memcpy(gSaveSlotMetadata[i].modName, gCurrentSaveFile.modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName));
+            if (!fio_load_game(i)) {
+                gSaveSlotHasData[i] = false;
             } else {
-                gSaveSlotMetadata[i].hasData = FALSE;
-                gSaveSlotMetadata[i].validData = FALSE;
-                memset(gSaveSlotMetadata[i].modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName), 0);
+                gSaveSlotMetadata[i] = gCurrentSaveFile.metadata;
+                gSaveSlotHasData[i] = true;
             }
         }
 
@@ -922,10 +961,10 @@ void filemenu_init(s32 mode) {
 
     filemenu_set_selected(menu, (gGameStatusPtr->saveSlot & 1) * 2, gGameStatusPtr->saveSlot >> 1);
 
-    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
-        menu = filemenu_menus[i];
-        if (menu->fpInit != NULL) {
-            menu->fpInit(menu);
+    panelIt = filemenu_menus;
+    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++, panelIt++) {
+        if ((*panelIt)->fpInit != nullptr) {
+            (*panelIt)->fpInit((*panelIt));
         }
     }
     update_window_hierarchy(WIN_PAUSE_DECRIPTION, 64);
@@ -939,11 +978,11 @@ void filemenu_cleanup(void) {
         hud_element_free(filemenu_cursorHIDs[i]);
     }
 
-    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
-        menu = filemenu_menus[i];
-        if (menu->initialized) {
-            if (menu->fpCleanup != NULL) {
-                menu->fpCleanup(menu);
+    panelIt = filemenu_menus;
+    for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++, panelIt++) {
+        if ((*panelIt)->initialized) {
+            if ((*panelIt)->fpCleanup != nullptr) {
+                (*panelIt)->fpCleanup(*panelIt);
             }
         }
     }

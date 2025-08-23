@@ -59,7 +59,7 @@ EvtScript N(EVS_HammerSupport_BasicRaiseDelay) = {
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, TRUE)
+        IfEq(LVar0, true)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
             BreakLoop
         EndIf
@@ -92,7 +92,7 @@ EvtScript N(EVS_HammerSupport_SuperRaiseDelay) = {
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, TRUE)
+        IfEq(LVar0, true)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
             BreakLoop
         EndIf
@@ -125,7 +125,7 @@ EvtScript N(EVS_HammerSupport_UltraRaiseDelay) = {
     Set(LVar1, 0)
     Loop(10)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, TRUE)
+        IfEq(LVar0, true)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
             BreakLoop
         EndIf
@@ -157,7 +157,7 @@ EvtScript N(EVS_HammerSupport_F) = {
     Call(PlaySoundAtActor, ACTOR_PLAYER, SOUND_HAMMER_WINDUP)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PullBack)
     Wait(4)
-    Call(action_command_hammer_start, 0, 36, AC_DIFFICULTY_3)
+    Call(action_command_hammer_start, 0, 36, AC_DIFFICULTY_STANDARD)
     Call(SetActionProgress, 0)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_Hold1)
     Set(LVar1, 0)
@@ -171,14 +171,14 @@ EvtScript N(EVS_HammerSupport_F) = {
             EndIf
         EndIf
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, FALSE)
+        IfEq(LVar0, false)
             BreakLoop
         EndIf
     EndLoop
     Label(0)
         Wait(1)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, TRUE)
+        IfEq(LVar0, true)
             Goto(0)
         EndIf
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PreSwing)
@@ -255,7 +255,7 @@ EvtScript N(EVS_UseBasicHammer) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_PullBack)
     Wait(4)
     Call(N(IsBerserkerEquipped))
-    IfNe(LVar0, FALSE)
+    IfNe(LVar0, false)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_Hold1)
         Call(GetActionCommandMode, LVar0)
         IfLt(LVar0, AC_MODE_TUTORIAL)
@@ -264,14 +264,14 @@ EvtScript N(EVS_UseBasicHammer) = {
                 Loop(45)
                     Wait(1)
                     Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-                    IfNe(LVar0, FALSE)
+                    IfNe(LVar0, false)
                         BreakLoop
                     EndIf
                 EndLoop
             EndIf
         EndIf
         Add(LVarD, 6)
-        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Set(LVar1, 0)
         Loop(30)
@@ -284,7 +284,7 @@ EvtScript N(EVS_UseBasicHammer) = {
                 EndIf
             EndIf
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfEq(LVar0, FALSE)
+            IfEq(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
@@ -298,7 +298,7 @@ EvtScript N(EVS_UseBasicHammer) = {
                 EndIf
             EndIf
     Else
-        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash1_Hold1)
         Sub(LVar1, 10)
@@ -341,20 +341,20 @@ EvtScript N(EVS_UseSuperHammer) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash2_PullBack)
     Wait(4)
     Call(N(IsBerserkerEquipped))
-    IfEq(LVar0, TRUE)
+    IfEq(LVar0, true)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash2_Hold1)
         Call(N(ShouldMovesAutoSucceed))
         IfEq(LVar0, HIT_RESULT_HIT)
             Loop(45)
                 Wait(1)
                 Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-                IfNe(LVar0, FALSE)
+                IfNe(LVar0, false)
                     BreakLoop
                 EndIf
             EndLoop
         EndIf
         Add(LVarD, 6)
-        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Set(LVar1, 0)
         Loop(30)
@@ -367,7 +367,7 @@ EvtScript N(EVS_UseSuperHammer) = {
                 EndIf
             EndIf
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfEq(LVar0, FALSE)
+            IfEq(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
@@ -378,7 +378,7 @@ EvtScript N(EVS_UseSuperHammer) = {
                 Goto(0)
             EndIf
     Else
-        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash2_Hold1)
         Sub(LVar1, 10)
@@ -410,20 +410,20 @@ EvtScript N(EVS_UseUltraHammer) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash3_PullBack)
     Wait(4)
     Call(N(IsBerserkerEquipped))
-    IfEq(LVar0, TRUE)
+    IfEq(LVar0, true)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash3_Hold1)
         Call(N(ShouldMovesAutoSucceed))
         IfEq(LVar0, HIT_RESULT_HIT)
             Loop(45)
                 Wait(1)
                 Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-                IfNe(LVar0, FALSE)
+                IfNe(LVar0, false)
                     BreakLoop
                 EndIf
             EndLoop
         EndIf
         Add(LVarD, 6)
-        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Set(LVar1, 0)
         Loop(30)
@@ -436,7 +436,7 @@ EvtScript N(EVS_UseUltraHammer) = {
                 EndIf
             EndIf
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfEq(LVar0, FALSE)
+            IfEq(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
@@ -447,7 +447,7 @@ EvtScript N(EVS_UseUltraHammer) = {
                 Goto(0)
             EndIf
     Else
-        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_3)
+        Call(action_command_hammer_start, 0, LVar1, AC_DIFFICULTY_STANDARD)
         Call(SetActionProgress, 0)
         Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_MarioB1_Smash3_Hold1)
         Sub(LVar1, 10)
@@ -484,13 +484,13 @@ EvtScript N(EVS_Hammer_UseBasicQuake) = {
         Loop(45)
             Wait(1)
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfNe(LVar0, FALSE)
+            IfNe(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
     EndIf
     Add(LVarD, 6)
-    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
     Call(SetActionProgress, 0)
     Set(LVar1, 0)
     Loop(30)
@@ -503,7 +503,7 @@ EvtScript N(EVS_Hammer_UseBasicQuake) = {
             EndIf
         EndIf
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, FALSE)
+        IfEq(LVar0, false)
             BreakLoop
         EndIf
     EndLoop
@@ -542,17 +542,17 @@ EvtScript N(EVS_Hammer_UseSuperQuake) = {
         Loop(45)
             Wait(1)
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfNe(LVar0, FALSE)
+            IfNe(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
     EndIf
     Add(LVarD, 6)
-    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
     Loop(60)
         Wait(1)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, FALSE)
+        IfEq(LVar0, false)
             BreakLoop
         EndIf
     EndLoop
@@ -591,17 +591,17 @@ EvtScript N(EVS_Hammer_UseUltraQuake) = {
         Loop(45)
             Wait(1)
             Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-            IfNe(LVar0, FALSE)
+            IfNe(LVar0, false)
                 BreakLoop
             EndIf
         EndLoop
     EndIf
     Add(LVarD, 6)
-    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_3)
+    Call(action_command_hammer_start, 0, LVarD, AC_DIFFICULTY_STANDARD)
     Loop(60)
         Wait(1)
         Call(CheckButtonDown, BUTTON_STICK_LEFT, LVar0)
-        IfEq(LVar0, FALSE)
+        IfEq(LVar0, false)
             BreakLoop
         EndIf
     EndLoop

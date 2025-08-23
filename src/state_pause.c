@@ -1,24 +1,12 @@
 #include "common.h"
 #include "ld_addrs.h"
+#include "audio/public.h"
 #include "npc.h"
 #include "nu/nusys.h"
 #include "hud_element.h"
 #include "sprite.h"
 #include "model.h"
 #include "game_modes.h"
-
-#if VERSION_JP
-// TODO: split this segment
-extern Addr pause_ROM_START;
-extern Addr pause_ROM_END;
-extern Addr pause_VRAM;
-extern Addr pause_TEXT_START;
-extern Addr pause_TEXT_END;
-extern Addr pause_RODATA_END;
-extern Addr pause_BSS_START;
-extern Addr pause_BSS_END;
-extern Addr pause_DATA_START;
-#endif
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -38,6 +26,56 @@ NUPiOverlaySegment PauseOverlaySegment = {
     .bssStart = pause_BSS_START,
     .bssEnd = pause_BSS_END,
 };
+
+#if VERSION_PAL
+NUPiOverlaySegment PauseGfxOverlaySegment_en = {
+    .romStart = pause_gfx_en_ROM_START,
+    .romEnd = pause_gfx_en_ROM_END,
+    .ramStart = pause_gfx_en_VRAM,
+    .textStart = pause_gfx_en_TEXT_START,
+    .textEnd = pause_gfx_en_TEXT_END,
+    .dataStart = pause_gfx_en_DATA_START,
+    .dataEnd = pause_gfx_en_RODATA_END,
+    .bssStart = pause_gfx_en_BSS_START,
+    .bssEnd = pause_gfx_en_BSS_END,
+};
+
+NUPiOverlaySegment PauseGfxOverlaySegment_de = {
+    .romStart = pause_gfx_de_ROM_START,
+    .romEnd = pause_gfx_de_ROM_END,
+    .ramStart = pause_gfx_de_VRAM,
+    .textStart = pause_gfx_de_TEXT_START,
+    .textEnd = pause_gfx_de_TEXT_END,
+    .dataStart = pause_gfx_de_DATA_START,
+    .dataEnd = pause_gfx_de_RODATA_END,
+    .bssStart = pause_gfx_de_BSS_START,
+    .bssEnd = pause_gfx_de_BSS_END,
+};
+
+NUPiOverlaySegment PauseGfxOverlaySegment_fr = {
+    .romStart = pause_gfx_fr_ROM_START,
+    .romEnd = pause_gfx_fr_ROM_END,
+    .ramStart = pause_gfx_fr_VRAM,
+    .textStart = pause_gfx_fr_TEXT_START,
+    .textEnd = pause_gfx_fr_TEXT_END,
+    .dataStart = pause_gfx_fr_DATA_START,
+    .dataEnd = pause_gfx_fr_RODATA_END,
+    .bssStart = pause_gfx_fr_BSS_START,
+    .bssEnd = pause_gfx_fr_BSS_END,
+};
+
+NUPiOverlaySegment PauseGfxOverlaySegment_es = {
+    .romStart = pause_gfx_es_ROM_START,
+    .romEnd = pause_gfx_es_ROM_END,
+    .ramStart = pause_gfx_es_VRAM,
+    .textStart = pause_gfx_es_TEXT_START,
+    .textEnd = pause_gfx_es_TEXT_END,
+    .dataStart = pause_gfx_es_DATA_START,
+    .dataEnd = pause_gfx_es_RODATA_END,
+    .bssStart = pause_gfx_es_BSS_START,
+    .bssEnd = pause_gfx_es_BSS_END,
+};
+#endif
 
 BSS s8 StepPauseDelay;
 BSS s8 StepPauseState;
@@ -104,12 +142,28 @@ void state_step_pause(void) {
                     clear_item_entity_data();
                     clear_script_list();
                     clear_npcs();
-                    clear_entity_data(FALSE);
+                    clear_entity_data(false);
                     clear_trigger_data();
                     SavedReverbMode = sfx_get_reverb_mode();
                     sfx_set_reverb_mode(0);
                     bgm_quiet_max_volume();
                     nuPiReadRomOverlay(&PauseOverlaySegment);
+#if VERSION_PAL
+                    switch (gCurrentLanguage) {
+                        case LANGUAGE_EN:
+                            nuPiReadRomOverlay(&PauseGfxOverlaySegment_en);
+                            break;
+                        case LANGUAGE_DE:
+                            nuPiReadRomOverlay(&PauseGfxOverlaySegment_de);
+                            break;
+                        case LANGUAGE_FR:
+                            nuPiReadRomOverlay(&PauseGfxOverlaySegment_fr);
+                            break;
+                        case LANGUAGE_ES:
+                            nuPiReadRomOverlay(&PauseGfxOverlaySegment_es);
+                            break;
+                    }
+#endif
                     pause_init();
                     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                 }
@@ -195,12 +249,12 @@ void state_step_unpause(void) {
                     initialize_collision();
                     restore_map_collision_data();
 
-                    if (mapConfig->dmaStart != NULL) {
+                    if (mapConfig->dmaStart != nullptr) {
                         dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
                     }
 
                     load_map_bg(mapConfig->bgName);
-                    if (mapSettings->background != NULL) {
+                    if (mapSettings->background != nullptr) {
                         set_background(mapSettings->background);
                     } else {
                         set_background_size(296, 200, 12, 20);

@@ -34,6 +34,7 @@ enum LogoStates {
     LOGOS_STATE_CLEANUP             = 0xB,
 };
 
+#if !VERSION_PAL
 s32 D_800778C0[] = { 0, 0 };
 
 Gfx D_800778C8[] = {
@@ -46,6 +47,7 @@ Gfx D_800778C8[] = {
     gsDPSetTextureFilter(G_TF_POINT),
     gsSPEndDisplayList(),
 };
+#endif
 
 Gfx D_80077908[] = {
     gsDPPipeSync(),
@@ -70,7 +72,7 @@ void state_init_logos(void) {
     general_heap_create();
     gGameStatusPtr->startupState = LOGOS_STATE_N64_FADE_IN;
     gGameStatusPtr->logoTime = 0;
-    gGameStatusPtr->skipLogos = FALSE;
+    gGameStatusPtr->skipLogos = false;
     startup_set_fade_screen_alpha(255);
     startup_set_fade_screen_color(0);
 
@@ -86,13 +88,20 @@ void state_init_logos(void) {
     nuContRmbForceStop();
     create_cameras();
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
-    gCameras[CAM_DEFAULT].needsInit = TRUE;
-    gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
-    gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
+    gCameras[CAM_DEFAULT].needsInit = true;
+    gCameras[CAM_DEFAULT].nearClip = 16;
+    gCameras[CAM_DEFAULT].farClip = 4096;
+    gCurrentCameraID = CAM_DEFAULT;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
-
-    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].params.basic.dist = 40;
+    gCameras[CAM_DEFAULT].bgColor[0] = 0;
+    gCameras[CAM_DEFAULT].bgColor[1] = 0;
+    gCameras[CAM_DEFAULT].bgColor[2] = 0;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.x = 25.0f;
+    gCameras[CAM_DEFAULT].lookAt_obj_target.y = 25.0f;
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = false;
+    gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
     gCameras[CAM_DEFAULT].params.basic.pitch = 0;
     gCameras[CAM_DEFAULT].params.basic.dist = 40;
     gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
@@ -125,7 +134,7 @@ void state_init_logos(void) {
     clear_npcs();
     hud_element_clear_cache();
     reset_background_settings();
-    clear_entity_data(TRUE);
+    clear_entity_data(true);
     clear_effect_data();
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
     startup_fade_screen_update();
@@ -154,7 +163,7 @@ void state_step_logos(void) {
             && (pressedButtons & (BUTTON_START | BUTTON_Z | BUTTON_A))
         ) {
             startup_set_fade_screen_color(208);
-            gGameStatusPtr->skipLogos = TRUE;
+            gGameStatusPtr->skipLogos = true;
         }
 
         switch (gGameStatusPtr->startupState) {
@@ -219,7 +228,7 @@ void state_step_logos(void) {
                 if (gGameStatusPtr->logoTime == 0) {
                     gGameStatusPtr->startupState++;
                     set_curtain_scale_goal(1.0f);
-                    set_curtain_draw_callback(NULL);
+                    set_curtain_draw_callback(nullptr);
                     set_curtain_fade_goal(0.3f);
                 } else {
                     gGameStatusPtr->logoTime--;
@@ -240,7 +249,7 @@ void state_step_logos(void) {
                 break;
             case LOGOS_STATE_CLEANUP:
                 heap_free(gLogosImages);
-                gLogosImages = NULL;
+                gLogosImages = nullptr;
                 startup_set_fade_screen_alpha(255);
                 gGameStatusPtr->introPart = INTRO_PART_0;
                 set_game_mode(GAME_MODE_INTRO);

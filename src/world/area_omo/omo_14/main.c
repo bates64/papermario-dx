@@ -15,16 +15,16 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHY_GUYS_TOYBOX)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     IfLt(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
         Call(PlaySoundAtNpc, NPC_ShyGuy_01, SOUND_LOOP_SHY_GUY_CROWD_1, SOUND_SPACE_DEFAULT)
     EndIf
     Exec(N(EVS_CreateDarkness))
     IfGe(GB_StoryProgress, STORY_CH4_OPENED_GENERAL_GUY_ROOM)
-        Call(EnableModel, MODEL_o823, FALSE)
-        Call(EnableModel, MODEL_o828, FALSE)
+        Call(EnableModel, MODEL_o823, false)
+        Call(EnableModel, MODEL_o828, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

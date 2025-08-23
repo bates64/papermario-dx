@@ -19,10 +19,12 @@ EvtScript N(EVS_BindTriggers) = {
     End
 };
 
-EvtScript N(EVS_SetupTexPan) = {
-    // lava surfaces
-    Call(SetTexPanner, MODEL_o112, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o151, TEX_PANNER_1)
+EvtScript N(EVS_StartTexPanners_Lava) = {
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
+    Call(EnableTexPanning, MODEL_o112, true)
+    Call(EnableTexPanning, MODEL_o151, true)
+    Call(EnableTexPanning, MODEL_toro, true)
+    Call(EnableTexPanning, MODEL_poko, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(  400,    0,  800,    0)
@@ -73,8 +75,8 @@ EvtScript N(EVS_SetupTexPan) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_03)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
@@ -85,7 +87,7 @@ EvtScript N(EVS_Main) = {
         Exec(EnterWalk)
     EndIf
     Wait(1)
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Exec(N(EVS_SetupTexPan))
     ExecWait(N(EVS_SetupZiplines))

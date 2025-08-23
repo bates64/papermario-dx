@@ -1,10 +1,36 @@
 #include "dgb_17.h"
 
-EvtScript N(EVS_ExitDoors_dgb_15_1) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_17_ENTRY_0, "dgb_15", dgb_15_ENTRY_1,
-    COLLIDER_deilittw, MODEL_o142, MODEL_o143, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_15_1) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
+    Set(LVar0, dgb_17_ENTRY_0)
+    Set(LVar1, COLLIDER_deilittw)
+    Set(LVar2, MODEL_o142)
+    Set(LVar3, MODEL_o143)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("dgb_15"), dgb_15_ENTRY_1)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_dgb_01_5) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_17_ENTRY_1, "dgb_01", dgb_01_ENTRY_5,
-    COLLIDER_deilitte, MODEL_o199, MODEL_o198, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_01_5) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
+    Set(LVar0, dgb_17_ENTRY_1)
+    Set(LVar1, COLLIDER_deilitte)
+    Set(LVar2, MODEL_o199)
+    Set(LVar3, MODEL_o198)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("dgb_01"), dgb_01_ENTRY_5)
+    Wait(100)
+    Return
+    End
+};
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_dgb_15_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)

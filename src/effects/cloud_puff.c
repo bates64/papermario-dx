@@ -21,19 +21,19 @@ void cloud_puff_main(f32 x, f32 y, f32 z, f32 angle) {
     bp.init = cloud_puff_init;
     bp.update = cloud_puff_update;
     bp.renderScene = cloud_puff_render;
-    bp.renderUI = NULL;
+    bp.renderUI = nullptr;
     bp.effectID = EFFECT_CLOUD_PUFF;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = general_heap_malloc(numParts * sizeof(*part));
     effect->data.cloudPuff = part;
-    ASSERT(effect->data.cloudPuff != NULL);
+    ASSERT(effect->data.cloudPuff != nullptr);
 
     mem_clear(part, numParts * sizeof(*part));
 
     for (i = 0; i < numParts; i++, part++) {
-        part->alive = TRUE;
+        part->alive = true;
         part->unk_40 = 0;
         part->pos.x = x;
         part->pos.y = y;
@@ -61,27 +61,27 @@ void cloud_puff_init(EffectInstance* effect) {
 
 void cloud_puff_update(EffectInstance* effect) {
     CloudPuffFXData* part = effect->data.cloudPuff;
-    s32 cond = FALSE;
+    s32 cond = false;
     s32 i;
 
     for (i = 0; i < effect->numParts; i++, part++) {
         if (part->alive) {
             part->timeLeft--;
             if (part->timeLeft <= 0) {
-                part->alive = FALSE;
+                part->alive = false;
             } else {
-                cond = TRUE;
-                part->rescalePhase = clamp_angle(part->rescalePhase + 12.0f);
-                part->scale.x = part->rescaleX + sin_deg(part->rescalePhase) * 0.1;
-                part->scale.y = part->rescaleY + cos_deg(part->rescalePhase) * 0.1;
-                part->radialVel *= 0.83;
-                part->pos.x += part->radialVel * part->dirX;
-                part->pos.z += part->radialVel * part->dirZ;
-                part->rescaleX += (7.5 - part->rescaleX) * 0.006;
-                part->accelY += part->jerkY;
-                part->velY += part->accelY;
-                part->pos.y += part->velY;
-                part->rescaleY *= 0.98;
+                cond = true;
+                part->unk_2C = clamp_angle(part->unk_2C + 12.0f);
+                part->unk_18 = part->unk_24 + sin_deg(part->unk_2C) * 0.1;
+                part->unk_1C = part->unk_28 + cos_deg(part->unk_2C) * 0.1;
+                part->unk_30 *= 0.83;
+                part->unk_0C += part->unk_30 * part->unk_44;
+                part->unk_14 += part->unk_30 * part->unk_48;
+                part->unk_24 += (7.5 - part->unk_24) * 0.006;
+                part->unk_38 += part->unk_3C;
+                part->unk_34 += part->unk_38;
+                part->unk_10 += part->unk_34;
+                part->unk_28 *= 0.98;
 
                 if (part->timeLeft < 10) {
                     part->rescaleY *= 0.9;

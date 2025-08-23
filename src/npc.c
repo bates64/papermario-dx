@@ -66,11 +66,11 @@ void clear_npcs(void) {
     }
 
     for (i = 0; i < MAX_NPCS; i++) {
-        (*gCurrentNpcListPtr)[i] = NULL;
+        (*gCurrentNpcListPtr)[i] = nullptr;
     }
 
     gNpcCount = 0;
-    gNpcPlayerCollisionsEnabled = TRUE;
+    gNpcPlayerCollisionsEnabled = true;
 }
 
 void init_npc_list(void) {
@@ -81,7 +81,16 @@ void init_npc_list(void) {
     }
 
     gNpcCount = 0;
-    gNpcPlayerCollisionsEnabled = TRUE;
+    gNpcPlayerCollisionsEnabled = true;
+}
+
+void npc_iter_no_op(void) {
+    s32 i;
+
+    for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
+        // Needed to avoid loop optimization.
+        do {} while (false);
+    }
 }
 
 s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
@@ -90,7 +99,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     s32 j;
 
     for (i = 0; i < MAX_NPCS; i++) {
-        if ((*gCurrentNpcListPtr)[i] == NULL) {
+        if ((*gCurrentNpcListPtr)[i] == nullptr) {
             break;
         }
     }
@@ -98,7 +107,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
 
     (*gCurrentNpcListPtr)[i] = npc = heap_malloc(sizeof(*npc));
     gNpcCount++;
-    ASSERT(npc != NULL);
+    ASSERT(npc != nullptr);
 
     npc->flags = blueprint->flags | (NPC_FLAG_TOUCHES_GROUND | NPC_FLAG_DIRTY_SHADOW | NPC_FLAG_HAS_SHADOW | NPC_FLAG_ENABLED);
     if (isPeachNpc) {
@@ -108,7 +117,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     npc->collisionDiameter = 32;
     npc->collisionHeight = 64;
     npc->renderMode = 13;
-    npc->blur.any = NULL;
+    npc->blur.any = nullptr;
     npc->yaw = 0.0f;
     npc->jumpVel = 0.0f;
     npc->pos.x = 0.0f;
@@ -139,7 +148,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     npc->imgfxType = IMGFX_CLEAR;
     npc->imgfxFlags = 0;
     npc->collisionChannel = COLLIDER_FLAG_IGNORE_NPC;
-    npc->isFacingAway = FALSE;
+    npc->isFacingAway = false;
     npc->yawCamOffset = 0;
     npc->turnAroundYawAdjustment = 0;
     npc->curFloor = NO_COLLIDER;
@@ -156,12 +165,12 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     }
 
     npc->onUpdate = blueprint->onUpdate;
-    if (npc->onUpdate == NULL) {
+    if (npc->onUpdate == nullptr) {
         npc->onUpdate = &STUB_npc_callback;
     }
 
     npc->onRender = blueprint->onRender;
-    if (npc->onRender == NULL) {
+    if (npc->onRender == nullptr) {
         npc->onRender = &STUB_npc_callback;
     }
     if (!isPeachNpc) {
@@ -187,15 +196,15 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
 }
 
 s32 create_basic_npc(NpcBlueprint* blueprint) {
-    return create_npc_impl(blueprint, NULL, FALSE);
+    return create_npc_impl(blueprint, nullptr, false);
 }
 
 s32 create_standard_npc(NpcBlueprint* blueprint, AnimID* animList) {
-    return create_npc_impl(blueprint, animList, FALSE);
+    return create_npc_impl(blueprint, animList, false);
 }
 
 s32 create_peach_npc(NpcBlueprint* blueprint) {
-    return create_npc_impl(blueprint, NULL, TRUE);
+    return create_npc_impl(blueprint, nullptr, true);
 }
 
 void free_npc_by_index(s32 listIndex) {
@@ -205,11 +214,11 @@ void free_npc_by_index(s32 listIndex) {
     listIndex &= ~BATTLE_NPC_ID_BIT;
 
     npc = (*gCurrentNpcListPtr)[listIndex];
-    if (npc != NULL) {
+    if (npc != nullptr) {
         if (npc->flags) {
-            if (npc->blur.any != NULL) {
+            if (npc->blur.any != nullptr) {
                 heap_free(npc->blur.any);
-                npc->blur.any = NULL;
+                npc->blur.any = nullptr;
             }
 
             if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -227,7 +236,7 @@ void free_npc_by_index(s32 listIndex) {
             }
 
             heap_free((*gCurrentNpcListPtr)[listIndex]);
-            (*gCurrentNpcListPtr)[listIndex] = NULL;
+            (*gCurrentNpcListPtr)[listIndex] = nullptr;
             gNpcCount--;
         }
     }
@@ -236,9 +245,9 @@ void free_npc_by_index(s32 listIndex) {
 void free_npc(Npc* npc) {
     s32 i;
 
-    if (npc->blur.any != NULL) {
+    if (npc->blur.any != nullptr) {
         heap_free(npc->blur.any);
-        npc->blur.any = NULL;
+        npc->blur.any = nullptr;
     }
 
     if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -263,7 +272,7 @@ void free_npc(Npc* npc) {
         }
     }
 
-    (*gCurrentNpcListPtr)[i] = NULL;
+    (*gCurrentNpcListPtr)[i] = nullptr;
     gNpcCount--;
 }
 
@@ -398,7 +407,7 @@ void npc_do_other_npc_collision(Npc* npc) {
 
         for (i = 0; i < MAX_NPCS; i++) {
             otherNpc = get_npc_by_index(i);
-            if (otherNpc != NULL && npc != otherNpc) {
+            if (otherNpc != nullptr && npc != otherNpc) {
                 if (otherNpc->flags != 0 && !(otherNpc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_IGNORE_PLAYER_COLLISION))) {
                     if (!(otherNpc->pos.y + otherNpc->collisionHeight < thisY) &&
                         !(thisY + npc->collisionHeight < otherNpc->pos.y))
@@ -411,13 +420,13 @@ void npc_do_other_npc_collision(Npc* npc) {
                         dist = sqrtf(SQ(xDiff) + SQ(zDiff));
 
                         if (!(thisBuf + otherBuf <= dist)) {
-                            collision = FALSE;
+                            collision = false;
                             if (npc->flags & NPC_FLAG_PARTNER) {
                                 collision = gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE;
                             } else if (!(otherNpc->flags & NPC_FLAG_PARTNER) ||
                                         gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE)
                             {
-                                collision = TRUE;
+                                collision = true;
                             }
 
                             if (collision) {
@@ -449,23 +458,23 @@ s32 npc_do_player_collision(Npc* npc) {
     f32 deltaX, deltaZ;
 
     if (npc->flags & NPC_FLAG_IGNORE_PLAYER_COLLISION) {
-        return FALSE;
+        return false;
     }
 
     if (npc->flags & NPC_FLAG_PARTNER) {
-        return FALSE;
+        return false;
     }
 
     if (!gNpcPlayerCollisionsEnabled) {
-        return FALSE;
+        return false;
     }
 
     if (playerStatus->pos.y + playerStatus->colliderHeight < npc->pos.y) {
-        return FALSE;
+        return false;
     }
 
     if (npc->pos.y + npc->collisionHeight < playerStatus->pos.y) {
-        return FALSE;
+        return false;
     }
 
     playerX = playerStatus->pos.x;
@@ -483,7 +492,7 @@ s32 npc_do_player_collision(Npc* npc) {
     distToNpc = sqrtf(SQ(deltaX) + SQ(deltaZ));
     colDist = npcColRadius + playerColRadius;
     if (colDist < distToNpc) {
-        return FALSE;
+        return false;
     }
 
     playerStatus->animFlags |= PA_FLAG_NPC_COLLIDED;
@@ -532,7 +541,7 @@ s32 npc_do_player_collision(Npc* npc) {
     npc->pos.x = npc->colliderPos.x;
     npc->pos.y = npc->colliderPos.y;
     npc->pos.z = npc->colliderPos.z;
-    return TRUE;
+    return true;
 }
 
 // update NPC position using gravitational acceleration = 1.0
@@ -583,12 +592,12 @@ s32 npc_try_snap_to_ground(Npc* npc, f32 velocity) {
     s32 hitID;
 
     if (npc->flags & (NPC_FLAG_GRAVITY | NPC_FLAG_FLYING)) {
-        return FALSE;
+        return false;
     }
 
     if (npc->flags & NPC_FLAG_JUMPING) {
         npc->flags &= ~NPC_FLAG_GROUNDED;
-        return FALSE;
+        return false;
     }
 
     length = testLength = fabsf(velocity) + 16;
@@ -606,11 +615,11 @@ s32 npc_try_snap_to_ground(Npc* npc, f32 velocity) {
         npc->pos.y = y;
         npc->curFloor = NpcHitQueryColliderID;
         npc->flags |= NPC_FLAG_GROUNDED;
-        return TRUE;
+        return true;
     }
 
     npc->flags &= ~NPC_FLAG_GROUNDED;
-    return FALSE;
+    return false;
 }
 
 void update_npcs(void) {
@@ -625,7 +634,7 @@ void update_npcs(void) {
         for (i = 0; i < MAX_NPCS; i++) {
             Npc* npc = (*gCurrentNpcListPtr)[i];
 
-            if (npc != NULL) {
+            if (npc != nullptr) {
                 if (npc->flags != 0) {
                     if (npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_INACTIVE)) {
                         npc_do_world_collision(npc);
@@ -939,7 +948,7 @@ void render_npcs(void) {
 
     for (i = 0; i < MAX_NPCS; i++) {
         Npc* npc = (*gCurrentNpcListPtr)[i];
-        if ((npc != NULL)
+        if ((npc != nullptr)
             && (npc->flags != 0)
             && !(npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_HAS_NO_SPRITE | NPC_FLAG_INACTIVE | NPC_FLAG_INVISIBLE))
         ) {
@@ -996,7 +1005,7 @@ Npc* get_npc_unsafe(s32 npcID) {
 
     for (i = 0; i < MAX_NPCS; i++) {
         npc = (*gCurrentNpcListPtr)[i];
-        if (npc != NULL && npc->flags != 0 && npc->npcID == npcID) {
+        if (npc != nullptr && npc->flags != 0 && npc->npcID == npcID) {
             break;
         }
     }
@@ -1011,12 +1020,12 @@ Npc* get_npc_safe(s32 npcID) {
 
     for (i = 0; i < MAX_NPCS; i++) {
         npc = (*gCurrentNpcListPtr)[i];
-        if (npc != NULL && npc->flags != 0 && npc->npcID == npcID) {
+        if (npc != nullptr && npc->flags != 0 && npc->npcID == npcID) {
             break;
         }
     }
     if (i >= MAX_NPCS) {
-        return NULL;
+        return nullptr;
     }
 
     return npc;
@@ -1071,7 +1080,7 @@ void enable_npc_blur(Npc* npc) {
 
         motionBlur = heap_malloc(sizeof(*motionBlur));
         npc->blur.motion = motionBlur;
-        ASSERT(motionBlur != NULL);
+        ASSERT(motionBlur != nullptr);
         motionBlur->unused = 0;
         motionBlur->index = 0;
 
@@ -1088,7 +1097,7 @@ void disable_npc_blur(Npc* npc) {
         npc->flags &= ~NPC_FLAG_MOTION_BLUR;
 
         heap_free(npc->blur.motion);
-        npc->blur.motion = NULL;
+        npc->blur.motion = nullptr;
     }
 }
 
@@ -1123,7 +1132,7 @@ void appendGfx_npc_blur(void* data) {
     blur = npc->blur.motion;
     bufPos = blur->index;
 
-    while (TRUE) {
+    while (true) {
         bufPos--;
         strideIdx++;
 
@@ -1193,11 +1202,11 @@ void appendGfx_npc_blur(void* data) {
 }
 
 void npc_enable_collisions(void) {
-    gNpcPlayerCollisionsEnabled = TRUE;
+    gNpcPlayerCollisionsEnabled = true;
 }
 
 void npc_disable_collisions(void) {
-    gNpcPlayerCollisionsEnabled = FALSE;
+    gNpcPlayerCollisionsEnabled = false;
 }
 
 void func_8003B1A8(void) {
@@ -1209,7 +1218,7 @@ void npc_reload_all(void) {
 
     for (i = 0; i < MAX_NPCS; i++) {
         Npc* npc = (*gCurrentNpcListPtr)[i];
-        if (npc != NULL) {
+        if (npc != nullptr) {
             if (npc->flags && !(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
                 if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE)) {
                     if (!(npc->flags & NPC_FLAG_PARTNER)) {
@@ -1246,10 +1255,10 @@ void set_npc_yaw(Npc* npc, f32 yaw) {
 
     if (get_clamped_angle_diff(gCameras[gCurrentCameraID].curYaw, yaw) >= 0.0f) {
         npc->yawCamOffset = 180;
-        npc->isFacingAway = TRUE;
+        npc->isFacingAway = true;
     } else {
         npc->yawCamOffset = 0;
-        npc->isFacingAway = FALSE;
+        npc->isFacingAway = false;
     }
 }
 
@@ -1305,10 +1314,10 @@ void npc_draw_with_palswap(Npc* npc, s32 yaw, Matrix4f mtx) {
             npc_render_with_watt_idle_palettes(npc, yaw, mtx);
             break;
         case NPC_PAL_ADJUST_BLEND_PALETTES_UNIFORM_INTERVALS:
-            npc_render_with_single_pal_blending(npc, yaw, FALSE, mtx);
+            npc_render_with_single_pal_blending(npc, yaw, false, mtx);
             break;
         case NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS:
-            npc_render_with_single_pal_blending(npc, yaw, TRUE, mtx);
+            npc_render_with_single_pal_blending(npc, yaw, true, mtx);
             break;
         case NPC_PAL_ADJUST_BLEND_DOUBLE_PALETTES:
             npc_render_with_double_pal_blending(npc, yaw, mtx);
@@ -1332,7 +1341,7 @@ void npc_render_without_adjusted_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
         } else {
             mask = 0;
         }
-        spr_draw_npc_sprite(npc->spriteInstanceID | mask, arg1, alpha, NULL, mtx);
+        spr_draw_npc_sprite(npc->spriteInstanceID | mask, arg1, alpha, nullptr, mtx);
     } else {
         spr_draw_player_sprite(PLAYER_SPRITE_AUX1 | DRAW_SPRITE_OVERRIDE_YAW, arg1, 0, 0, mtx);
     }
@@ -1355,7 +1364,7 @@ s32 npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
         for (i = 0; i < npc->originalPalettesCount; i++) {
             dst = npc->copiedPalettes[i];
             src = npc->originalPalettesList[i];
-            if (src != NULL) {
+            if (src != nullptr) {
                 for (j = 0; j < SPR_PAL_SIZE; j++) {
                     *dst++ = *src++;
                 }
@@ -1385,7 +1394,7 @@ s32 npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
             for (i = 0; i < npc->spriteColorVariations; i++) {
                 dst = npc->copiedPalettes[i];
                 src = npc->originalPalettesList[i];
-                if (src != NULL) {
+                if (src != nullptr) {
                     for (j = 0; j < SPR_PAL_SIZE; j++) {
                         *dst++ = *src++;
                     }
@@ -1397,7 +1406,7 @@ s32 npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
                 // use watt's Brightest palettes
                 dst = npc->copiedPalettes[i];
                 src = npc->originalPalettesList[npc->spriteColorVariations * SPR_PAL_WorldWatt_Brightest + i];
-                if (src != NULL) {
+                if (src != nullptr) {
                     for (j = 0; j < SPR_PAL_SIZE; j++) {
                         *dst++ = *src++;
                     }
@@ -1409,7 +1418,7 @@ s32 npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
                 // use watt's Brighter palettes
                 dst = npc->copiedPalettes[i];
                 src = npc->originalPalettesList[npc->spriteColorVariations * SPR_PAL_WorldWatt_Brighter + i];
-                if (src != NULL) {
+                if (src != nullptr) {
                     for (j = 0; j < SPR_PAL_SIZE; j++) {
                         *dst++ = *src++;
                     }
@@ -1443,7 +1452,7 @@ u16 npc_blend_palette_colors(u16 colorA, u16 colorB, s32 lerpAlpha) {
     return PACK_PAL_RGBA(r, g, b, a);
 }
 
-s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx) {
+s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, bool hasDifferentIntervals, Matrix4f mtx) {
     PAL_PTR color1;
     PAL_PTR color2;
     PAL_PTR outColor;
@@ -1473,7 +1482,7 @@ s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentInter
             color1 = npc->copiedPalettes[i];
             color2 = npc->originalPalettesList[i];
             npc->adjustedPalettes[i] = color1;
-            if (color2 != NULL) {
+            if (color2 != nullptr) {
                 for (j = 0; j < SPR_PAL_SIZE; j++) {
                     *color1++ = *color2++;
                 }
@@ -1609,7 +1618,7 @@ s32 npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
             color1 = npc->copiedPalettes[i];
             color2 = npc->originalPalettesList[i];
             npc->adjustedPalettes[i] = color1;
-            if (color2 != NULL) {
+            if (color2 != nullptr) {
                 for (j = 0; j < SPR_PAL_SIZE; j++) {
                     *color1++ = *color2++;
                 }
@@ -1965,7 +1974,7 @@ void npc_remove_decoration_charged(Npc* npc, s32 idx) {
 }
 
 Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius) {
-    Npc* closestNpc = NULL;
+    Npc* closestNpc = nullptr;
     f32 closestDist = radius;
     f32 maxDist = radius;
     s32 i;
@@ -1973,7 +1982,7 @@ Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
         Npc* npc = (*gCurrentNpcListPtr)[i];
 
-        if (npc != NULL && npc->flags != 0 && !(npc->flags & NPC_FLAG_PARTNER)) {
+        if (npc != nullptr && npc->flags != 0 && !(npc->flags & NPC_FLAG_PARTNER)) {
             if (!(npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_INACTIVE))) {
                 f32 distance = fabsf(dist2D(npc->pos.x, npc->pos.z, x, z));
 
@@ -1991,7 +2000,7 @@ Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius) {
 }
 
 Npc* npc_find_closest_simple(f32 x, f32 y, f32 z, f32 radius) {
-    Npc* closestNpc = NULL;
+    Npc* closestNpc = nullptr;
     f32 closestDist = radius;
     f32 maxDist = radius;
     s32 i;
@@ -1999,7 +2008,7 @@ Npc* npc_find_closest_simple(f32 x, f32 y, f32 z, f32 radius) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
         Npc* npc = (*gCurrentNpcListPtr)[i];
 
-        if (npc != NULL && npc->flags != 0 && (npc->flags & NPC_FLAG_PARTNER)) {
+        if (npc != nullptr && npc->flags != 0 && (npc->flags & NPC_FLAG_PARTNER)) {
             if (!(npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_INACTIVE))) {
                 f32 distance = fabsf(dist2D(npc->pos.x, npc->pos.z, x, z));
 
@@ -2028,7 +2037,7 @@ s32 npc_find_standing_on_entity(s32 entityIndex) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
         npc = (*gCurrentNpcListPtr)[i];
 
-        if (npc == NULL) {
+        if (npc == nullptr) {
             continue;
         }
         if (npc->flags == 0) {
@@ -2167,6 +2176,218 @@ void npc_set_imgfx_params(Npc* npc, s32 imgfxType, s32 arg2, s32 arg3, s32 arg4,
     npc_imgfx_update(npc);
 }
 
+//TODO begin split for npc_surfaces
+
+void spawn_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    PartnerStatus* temp = &gPartnerStatus;
+
+    if (!(npc->flags & NPC_FLAG_INVISIBLE) && (npc->flags & NPC_FLAG_TOUCHES_GROUND)) {
+        if (npc->moveSpeed != 0.0f) {
+            s32 surfaceType = get_collider_flags((u16)npc->curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
+            switch (surfaceType) {
+                case SURFACE_TYPE_FLOWERS:
+                    spawn_flower_surface_effects(npc, mode);
+                    break;
+                case SURFACE_TYPE_CLOUD:
+                    spawn_cloud_surface_effects(npc, mode);
+                    break;
+                case SURFACE_TYPE_SNOW:
+                    if ((temp->partnerActionState == PARTNER_ACTION_NONE) || (temp->actingPartner != PARTNER_LAKILESTER)) {
+                        spawn_snow_surface_effects(npc, mode);
+                    }
+                    break;
+                case SURFACE_TYPE_HEDGES:
+                    spawn_hedge_surface_effects(npc, mode);
+                    break;
+                case SURFACE_TYPE_WATER:
+                    spawn_water_surface_effects(npc, mode);
+                    break;
+                case SURFACE_TYPE_SPIKES:
+                case SURFACE_TYPE_LAVA:
+                case SURFACE_TYPE_DOCK_WALL:
+                case SURFACE_TYPE_SLIDE:
+                default:
+                    spawn_default_surface_effects(npc, mode);
+                    break;
+            }
+        }
+    }
+}
+
+void spawn_default_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    s32 mapIsStarWay;
+    f32 sinTheta;
+    f32 cosTheta;
+
+    mapIsStarWay = false;
+    if (gGameStatusPtr->areaID == AREA_HOS) {
+        mapIsStarWay = gGameStatusPtr->mapID == 2; //TODO hard-coded map ID
+    }
+    if (mode == SURFACE_INTERACT_LAND) {
+        f32 x = npc->pos.x;
+        f32 y = npc->pos.y + 0.0f;
+        f32 z = npc->pos.z;
+
+        if (!mapIsStarWay) {
+            fx_landing_dust(0, x, y, z, D_80077C10);
+            D_80077C10 = clamp_angle(D_80077C10 + 35.0f);
+        } else {
+            fx_misc_particles(3, x, y, z,  13.0f, 10.0f, 1.0f, 5, 30);
+        }
+    } else if (mode != SURFACE_INTERACT_WALK) {
+        if (D_80077C14++ >= 4) {
+            D_80077C14 = 0;
+            if (!mapIsStarWay) {
+                sin_cos_rad(DEG_TO_RAD(clamp_angle(-npc->yaw)), &sinTheta, &cosTheta);
+                fx_walking_dust(0, npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f), npc->pos.y + 1.5f,
+                               npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f), sinTheta, cosTheta);
+            } else {
+                sin_cos_rad(DEG_TO_RAD(clamp_angle(npc->yaw)), &sinTheta, &cosTheta);
+                fx_misc_particles(3, npc->pos.x + (npc->collisionDiameter * sinTheta), npc->pos.y + 1.5f,
+                              npc->pos.z + (npc->collisionDiameter * cosTheta), 5.0f, 10.0f, 1.0f, 5, 30);
+            }
+        }
+    }
+}
+
+void spawn_flower_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    f32 theta;
+    f32 sinTheta;
+    f32 cosTheta;
+    f32 x, y, z;
+
+    if (mode == SURFACE_INTERACT_LAND && D_80077C1E == 5) {
+        x = npc->pos.x;
+        y = npc->pos.y + + 14.0f;
+        z = npc->pos.z;
+
+        fx_flower_splash(x, y, z, D_80077C18);
+        D_80077C18 = clamp_angle(D_80077C18 + 35.0f);
+        D_80077C1E = 0;
+        return;
+    }
+
+    D_80077C1E++;
+    if (D_80077C1E > 5) {
+        D_80077C1E = 5;
+    }
+
+    if (D_80077C1C++ > 0) {
+        D_80077C1C = 0;
+        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
+        sinTheta = sin_rad(theta);
+        cosTheta = cos_rad(theta);
+
+        x = npc->pos.x + (npc->collisionDiameter * sinTheta * -0.4f);
+        z = npc->pos.z + (npc->collisionDiameter * cosTheta * -0.4f);
+        y = npc->pos.y + 15.5f;
+
+        fx_flower_trail(1, x, y, z, -npc->yaw + rand_int(10) - 5.0f, D_80077C20);
+        D_80077C20 = D_80077C20 == 0;
+    }
+}
+
+void spawn_cloud_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    PlayerStatus* playerStatus = &gPlayerStatus;
+    f32 xTemp, yTemp, zTemp;
+    f32 xTemp2, yTemp2, zTemp2;
+    f32 theta;
+    f32 sinTheta;
+    f32 cosTheta;
+    f32 angle;
+    s32 i;
+
+    D_80077C2C += 0.1f;
+    if (mode == SURFACE_INTERACT_LAND) {
+        fx_cloud_puff(npc->pos.x, (npc->pos.y + 14.0f) - 5.0f, npc->pos.z, D_80077C24);
+
+        D_80077C24 = clamp_angle(D_80077C24 + 35.0f);
+
+        for (i = 0; i < 4; i++) {
+            xTemp = rand_int(10) - 5;
+            zTemp = rand_int(10) - 5;
+            yTemp = -2.0f - ((SQ(xTemp) + SQ(zTemp)) / 5.0f);
+            D_80077C28 = 0;
+
+            theta = DEG_TO_RAD(clamp_angle(-npc->yaw + (i * 90)));
+            sinTheta = sin_rad(theta);
+            cosTheta = cos_rad(theta);
+
+            fx_cloud_trail(
+                1,
+                npc->pos.x + (npc->collisionDiameter * sinTheta * -0.3f) + xTemp,
+                npc->pos.y + 15.5f + yTemp,
+                npc->pos.z + (npc->collisionDiameter * cosTheta * -0.3f) + zTemp
+            );
+        }
+    } else {
+        xTemp2 = rand_int(10) - 5;
+        zTemp2 = rand_int(10) - 5;
+        yTemp2 = -2.0f - ((SQ(xTemp2) + SQ(zTemp2)) / 5.0f);
+
+        D_80077C28 = 0;
+
+        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
+        sinTheta = sin_rad(theta);
+        cosTheta = cos_rad(theta);
+        fx_cloud_trail(
+            1,
+            npc->pos.x + (npc->collisionDiameter * sinTheta * -0.3f) + xTemp2,
+            npc->pos.y + 15.5f + yTemp2,
+            npc->pos.z + (npc->collisionDiameter * cosTheta * -0.3f) + zTemp2
+        );
+    }
+}
+
+void spawn_snow_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    if (D_80077C30++ >= 4) {
+        f32 temp_f20;
+        f32 x;
+        f32 z;
+
+        D_80077C30 = 0;
+        temp_f20 = DEG_TO_RAD(clamp_angle(-npc->yaw));
+        x = sin_rad(temp_f20);
+        z = cos_rad(temp_f20);
+        fx_footprint(npc->pos.x + (npc->collisionDiameter * x * 0.2f), npc->pos.y + 1.5f,
+                  npc->pos.z + (npc->collisionDiameter * z * 0.2f), -npc->yaw, D_80077C34);
+        D_80077C34 = !D_80077C34;
+    }
+}
+
+void spawn_hedge_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    if (D_80077C38++ >= 4) {
+        f32 theta;
+        f32 sinTheta;
+        f32 cosTheta;
+
+        D_80077C38 = 0;
+        theta = DEG_TO_RAD(clamp_angle(-npc->yaw));
+        sinTheta = sin_rad(theta);
+        cosTheta = cos_rad(theta);
+        fx_falling_leaves(1, npc->pos.x + (npc->collisionDiameter * sinTheta * 0.2f),
+                  40.0f, npc->pos.z + (npc->collisionDiameter * cosTheta * 0.2f));
+    }
+}
+
+void spawn_water_surface_effects(Npc* npc, SurfaceInteractMode mode) {
+    if (D_80077C3A++ >= 4) {
+        f32 temp_f20;
+        f32 x;
+        f32 z;
+
+        D_80077C3A = 0;
+        temp_f20 = DEG_TO_RAD(clamp_angle(-npc->yaw));
+        x = sin_rad(temp_f20);
+        z = cos_rad(temp_f20);
+        fx_rising_bubble(0, npc->pos.x + (npc->collisionDiameter * x * 0.2f), npc->pos.y + 0.0f,
+                  npc->pos.z + (npc->collisionDiameter * z * 0.2f), 0.0f);
+    }
+}
+
+//TODO end split for npc_surfaces
+static const f32 padding[2] = { 0.0f, 0.0f }; // remove after splitting
+
 void COPY_set_defeated(s32 mapID, s32 encounterID) {
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     s32 encounterIdx = encounterID / 32;
@@ -2202,7 +2423,7 @@ void init_encounter_status(void) {
     currentEncounter->battleTriggerCooldown = 0;
     currentEncounter->npcGroupList = 0;
     currentEncounter->unk_08 = 0;
-    currentEncounter->dropWhackaBump = FALSE;
+    currentEncounter->dropWhackaBump = false;
 
     for (i = 0; i < ARRAY_COUNT(currentEncounter->defeatFlags); i++) {
         for (j = 0; j < ARRAY_COUNT(currentEncounter->defeatFlags[i]); j++) {
@@ -2216,7 +2437,7 @@ void init_encounter_status(void) {
 
     func_80045AC0();
     gEncounterState = ENCOUNTER_STATE_NONE;
-    create_worker_scene(NULL, npc_render_worker_do_nothing);
+    create_worker_scene(nullptr, npc_render_worker_do_nothing);
 }
 
 void clear_encounter_status(void) {
@@ -2251,11 +2472,11 @@ void clear_encounter_status(void) {
     currentEncounter->curEntryIndex = gGameStatusPtr->entryID;
     currentEncounter->npcGroupList = 0;
     currentEncounter->unk_08 = 0;
-    currentEncounter->scriptedBattle = FALSE;
+    currentEncounter->scriptedBattle = false;
 
     func_80045AC0();
     gEncounterState = ENCOUNTER_STATE_NONE;
-    create_worker_scene(NULL, npc_render_worker_do_nothing);
+    create_worker_scene(nullptr, npc_render_worker_do_nothing);
 }
 
 void func_8003E50C(void) {
@@ -2349,9 +2570,9 @@ void make_npcs(s32 flags, s32 mapID, s32* npcGroupList) {
         }
     }
 
-    if (npcGroupList != NULL) {
+    if (npcGroupList != nullptr) {
         gEncounterState = ENCOUNTER_STATE_CREATE;
-        EncounterStateChanged = TRUE;
+        EncounterStateChanged = true;
         gEncounterSubState = ENCOUNTER_SUBSTATE_CREATE_INIT;
     }
 }
@@ -2362,9 +2583,9 @@ s32 kill_encounter(Enemy* enemy) {
 
     for (i = 0; i < encounter->count; i++) {
         Enemy* currentEnemy = encounter->enemy[i];
-        if (currentEnemy != NULL) {
+        if (currentEnemy != nullptr) {
             kill_enemy(currentEnemy);
-            encounter->enemy[i] = NULL;
+            encounter->enemy[i] = nullptr;
         }
     }
 }
@@ -2382,30 +2603,30 @@ void kill_enemy(Enemy* enemy) {
         }
     }
 
-    if (enemy->initScript != NULL) {
+    if (enemy->initScript != nullptr) {
         kill_script_by_ID(enemy->initScriptID);
     }
-    if (enemy->interactScript != NULL) {
+    if (enemy->interactScript != nullptr) {
         kill_script_by_ID(enemy->interactScriptID);
     }
-    if (enemy->aiScript != NULL) {
+    if (enemy->aiScript != nullptr) {
         kill_script_by_ID(enemy->aiScriptID);
     }
-    if (enemy->hitScript != NULL) {
+    if (enemy->hitScript != nullptr) {
         kill_script_by_ID(enemy->hitScriptID);
     }
-    if (enemy->auxScript != NULL) {
+    if (enemy->auxScript != nullptr) {
         kill_script_by_ID(enemy->auxScriptID);
     }
-    if (enemy->defeatScript != NULL) {
+    if (enemy->defeatScript != nullptr) {
         kill_script_by_ID(enemy->defeatScriptID);
     }
 
-    enemy->interactBytecode = NULL;
-    enemy->aiBytecode = NULL;
-    enemy->hitBytecode = NULL;
-    enemy->auxBytecode = NULL;
-    enemy->defeatBytecode = NULL;
+    enemy->interactBytecode = nullptr;
+    enemy->aiBytecode = nullptr;
+    enemy->hitBytecode = nullptr;
+    enemy->auxBytecode = nullptr;
+    enemy->defeatBytecode = nullptr;
 
     #if DX_DEBUG_MENU
     if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
@@ -2415,13 +2636,13 @@ void kill_enemy(Enemy* enemy) {
     free_npc(get_npc_unsafe(enemy->npcID));
     #endif
 
-    if (enemy->unk_64 != NULL) {
+    if (enemy->unk_64 != nullptr) {
         heap_free(enemy->unk_64);
     }
 
     for (j = 0; j < ARRAY_COUNT(encounter->enemy); j++) {
         if (encounter->enemy[j] == enemy) {
-            encounter->enemy[j] = NULL;
+            encounter->enemy[j] = nullptr;
         }
     }
 
@@ -2440,7 +2661,7 @@ s32 bind_enemy_ai(Enemy* enemy, EvtScript* aiScriptBytecode) {
     Evt* aiScript;
     s32 id;
 
-    if (enemy->aiScript != NULL) {
+    if (enemy->aiScript != nullptr) {
         kill_script_by_ID(enemy->aiScript->id);
     }
     enemy->aiBytecode = aiScriptBytecode;
@@ -2454,7 +2675,7 @@ s32 bind_enemy_aux(Enemy* enemy, EvtScript* auxScriptBytecode) {
     Evt* auxScript;
     s32 id;
 
-    if (enemy->auxScript != NULL) {
+    if (enemy->auxScript != nullptr) {
         kill_script_by_ID(enemy->auxScript->id);
     }
     enemy->auxBytecode = auxScriptBytecode;
@@ -2468,7 +2689,7 @@ s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode) {
     Evt* interactScript;
     s32 id;
 
-    if (enemy->interactScript != NULL) {
+    if (enemy->interactScript != nullptr) {
         kill_script_by_ID(enemy->interactScript->id);
     }
     enemy->interactBytecode = interactScriptBytecode;
@@ -2485,10 +2706,10 @@ void bind_npc_ai(s32 npcID, EvtScript* npcAiBytecode) {
 
     for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
         Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
-        if (currentEncounter != NULL) {
+        if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
-                if ((currentEnemy != NULL) && (currentEnemy->npcID == npcID)) {
+                if ((currentEnemy != nullptr) && (currentEnemy->npcID == npcID)) {
                     bind_enemy_ai(currentEnemy, npcAiBytecode);
                     break;
                 }
@@ -2504,10 +2725,10 @@ void bind_npc_aux(s32 npcID, EvtScript* npcAuxBytecode) {
 
     for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
         Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
-        if (currentEncounter != NULL) {
+        if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
-                if ((currentEnemy != NULL) && (currentEnemy->npcID == npcID)) {
+                if ((currentEnemy != nullptr) && (currentEnemy->npcID == npcID)) {
                     bind_enemy_aux(currentEnemy, npcAuxBytecode);
                     break;
                 }
@@ -2523,10 +2744,10 @@ void bind_npc_interact(s32 npcID, EvtScript* npcInteractBytecode) {
 
     for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
         Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
-        if (currentEncounter != NULL) {
+        if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
-                if ((currentEnemy != NULL) && (currentEnemy->npcID == npcID)) {
+                if ((currentEnemy != nullptr) && (currentEnemy->npcID == npcID)) {
                     bind_enemy_interact(currentEnemy, npcInteractBytecode);
                     break;
                 }
@@ -2542,10 +2763,10 @@ Enemy* get_enemy(s32 npcID) {
 
     for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
         Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
-        if (currentEncounter != NULL) {
+        if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
-                if ((currentEnemy != NULL) && (currentEnemy->npcID == npcID)) {
+                if ((currentEnemy != nullptr) && (currentEnemy->npcID == npcID)) {
                     return currentEnemy;
                 }
             }
@@ -2562,14 +2783,14 @@ Enemy* get_enemy_safe(s32 npcID) {
     for (i = 0; i < currentEncounterStatus->numEncounters; i++) {
         Encounter* currentEncounter = currentEncounterStatus->encounterList[i];
 
-        if (currentEncounter != NULL) {
+        if (currentEncounter != nullptr) {
             for (j = 0; j < currentEncounter->count; j++) {
                 Enemy* currentEnemy = currentEncounter->enemy[j];
-                if ((currentEnemy != NULL) && (currentEnemy->npcID == npcID)) {
+                if ((currentEnemy != nullptr) && (currentEnemy->npcID == npcID)) {
                     return currentEnemy;
                 }
             }
         }
     }
-    return NULL;
+    return nullptr;
 }

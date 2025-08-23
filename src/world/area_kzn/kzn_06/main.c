@@ -50,10 +50,10 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_06)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Set(GF_KZN06_Visited, TRUE)
+    EVT_SETUP_CAMERA_DEFAULT()
+    Set(GF_KZN06_Visited, true)
     ExecWait(N(EVS_MakeEntities))
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     IfLt(GB_StoryProgress, STORY_CH5_LAVA_STREAM_BLOCKED)
         Call(PlayAmbientSounds, AMBIENT_LAVA_2)
     Else

@@ -1,7 +1,19 @@
 #include "pra_04.h"
 
-EvtScript N(EVS_ExitDoor_pra_02_4) = EVT_EXIT_SINGLE_DOOR(pra_04_ENTRY_0, "pra_02", pra_02_ENTRY_4,
-    COLLIDER_deilittssw, MODEL_o847, DOOR_SWING_OUT);
+EvtScript N(EVS_ExitDoor_pra_02_4) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Set(LVar0, pra_04_ENTRY_0)
+    Set(LVar1, COLLIDER_deilittssw)
+    Set(LVar2, MODEL_o847)
+    Set(LVar3, DOOR_SWING_OUT)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("pra_02"), pra_02_ENTRY_4)
+    Wait(100)
+    Return
+    End
+};
 
 EvtScript N(EVS_ExitDoors_pra_39_0) = EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_1, "pra_39", pra_39_ENTRY_0, COLLIDER_deilittse, MODEL_o874, MODEL_o876);
 EvtScript N(EVS_ExitDoors_pra_10_0) = EVT_EXIT_DOUBLE_DOOR(pra_04_ENTRY_2, "pra_10", pra_10_ENTRY_0, COLLIDER_deilittsse, MODEL_o986, MODEL_o987);
@@ -38,13 +50,16 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
+    Call(SetCamBGColor, CAM_DEFAULT, 24, 24, 40)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
+    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
-    IfEq(GF_PRA04_BoardedFloor, TRUE)
+    IfEq(GF_PRA04_BoardedFloor, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitts, COLLIDER_FLAGS_UPPER_MASK)
-        Call(EnableModel, MODEL_o994, FALSE)
+        Call(EnableModel, MODEL_o994, false)
     EndIf
     Exec(N(EVS_EnterMap))
     Wait(1)

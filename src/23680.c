@@ -31,7 +31,7 @@ void spawn_drops(Enemy* enemy) {
 
     availableShadows = 0;
     for (i = 0; i < MAX_SHADOWS; i++) {
-        if (get_shadow_by_index(i) == NULL) {
+        if (get_shadow_by_index(i) == nullptr) {
             availableShadows++;
         }
     }
@@ -100,7 +100,7 @@ void spawn_drops(Enemy* enemy) {
     }
 
     if (encounter->dropWhackaBump) {
-        encounter->dropWhackaBump = FALSE;
+        encounter->dropWhackaBump = false;
         make_item_entity(ITEM_WHACKAS_BUMP, x, y, z, ITEM_SPAWN_MODE_BATTLE_REWARD, pickupDelay, angle + angleMult * 360, 0);
         spawnCounter++;
         pickupDelay += 2;
@@ -272,7 +272,7 @@ void spawn_drops(Enemy* enemy) {
         encounter->damageTaken = 0;
     }
     if (encounter->hasMerleeCoinBonus) {
-        encounter->hasMerleeCoinBonus = FALSE;
+        encounter->hasMerleeCoinBonus = false;
         dropCount *= 3;
     }
     if (is_ability_active(ABILITY_MONEY_MONEY)) {
@@ -358,17 +358,17 @@ s32 get_coin_drop_amount(Enemy* enemy) {
 void func_80048E34(Enemy* enemy, s32 arg1, s32 arg2) {
     Evt* newScript;
 
-    if (enemy->aiScript != NULL) {
+    if (enemy->aiScript != nullptr) {
         kill_script_by_ID(enemy->aiScriptID);
-        enemy->aiScript = NULL;
+        enemy->aiScript = nullptr;
     }
 
-    if (enemy->unk_BC != NULL) {
+    if (enemy->unk_BC != nullptr) {
         kill_script_by_ID(enemy->unk_C0);
-        enemy->unk_BC = NULL;
+        enemy->unk_BC = nullptr;
     }
 
-    if (enemy->aiBytecode != NULL) {
+    if (enemy->aiBytecode != nullptr) {
         enemy->unk_C8 = arg2;
         newScript = start_script(enemy->aiBytecode, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
         enemy->aiScript = newScript;
@@ -377,7 +377,7 @@ void func_80048E34(Enemy* enemy, s32 arg1, s32 arg2) {
         newScript->owner1.enemy = enemy;
     }
 
-    if (enemy->unk_B8 != NULL) {
+    if (enemy->unk_B8 != nullptr) {
         enemy->unk_C4 = arg1;
         newScript = start_script(enemy->unk_B8, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
         enemy->unk_BC = newScript;
@@ -395,11 +395,11 @@ s32 func_80048F0C(void) {
     for (i = 0; i < currentEncounter->numEncounters; i++) {
         Encounter* encounter = currentEncounter->encounterList[i];
 
-        if (encounter != NULL) {
+        if (encounter != nullptr) {
             for (j = 0; j < encounter->count; j++) {
                 Enemy* enemy = encounter->enemy[j];
 
-                if (enemy != NULL && !(enemy->flags & ENEMY_FLAG_DISABLE_AI)) {
+                if (enemy != nullptr && !(enemy->flags & ENEMY_FLAG_DISABLE_AI)) {
                     get_npc_unsafe(enemy->npcID);
                 }
             }
@@ -409,7 +409,7 @@ s32 func_80048F0C(void) {
     return 0;
 }
 
-b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ) {
+bool is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ) {
     f32 dist1;
     f32 dist2;
 
@@ -422,11 +422,11 @@ b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, 
             dist2 = dist2D(0, centerZ, 0, pointZ);
             return ((sizeX < dist1) || (sizeZ < dist2));
         default:
-            return FALSE;
+            return false;
     }
 }
 
-b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, s8 useWorldYaw) {
+bool basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, s8 useWorldYaw) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus;
@@ -435,38 +435,38 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
     s32 skipCheckForPlayer;
 
     if (enemy->aiFlags & AI_FLAG_CANT_DETECT_PLAYER) {
-        return FALSE;
+        return false;
     }
 
     partnerStatus = &gPartnerStatus;
     if (partnerStatus->actingPartner == PARTNER_BOW && partnerStatus->partnerActionState
             && !(territory->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
-        return FALSE;
+        return false;
     }
 
     if (partnerStatus->actingPartner == PARTNER_SUSHIE && partnerStatus->partnerActionState
             && !(territory->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
-        return FALSE;
+        return false;
     }
 
     if (territory->skipPlayerDetectChance < 0) {
-        return FALSE;
+        return false;
     }
 
     if (territory->halfHeight <= fabsf(npc->pos.y - playerStatus->pos.y)
             && !(territory->detectFlags & AI_TERRITORY_IGNORE_ELEVATION)) {
-        return FALSE;
+        return false;
     }
 
     if (territory->sizeX | territory->sizeZ && is_point_outside_territory(territory->shape,
             territory->pointX, territory->pointZ,
             playerStatus->pos.x, playerStatus->pos.z,
             territory->sizeX, territory->sizeZ)) {
-        return FALSE;
+        return false;
     }
 
     if ((playerStatus->actionState == ACTION_STATE_USE_SPINNING_FLOWER)) {
-        return FALSE;
+        return false;
     }
 
     // check for unbroken line of sight
@@ -479,7 +479,7 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
                 &x, &y, &z,
                 dist, atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z),
                 0.1f, 0.1f)) {
-            return FALSE;
+            return false;
         }
     }
 
@@ -505,11 +505,11 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
             add_vec2D_polar(&x, &z, fwdPosOffset, 270.0f - npc->renderYaw);
         }
         if (dist2D(x, z, playerStatus->pos.x, playerStatus->pos.z) <= radius) {
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 s32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed) {
@@ -532,12 +532,12 @@ s32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed) {
             add_vec2D_polar(&posX, &posZ, moveSpeed, 270.0f - npc->renderYaw);
 
             if (dist2D(posX, posZ, playerStatus->pos.x, playerStatus->pos.z) <= radius) {
-                return TRUE;
+                return true;
             }
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 void ai_enemy_play_sound(Npc* npc, s32 soundID, s32 upperSoundFlags) {
@@ -588,7 +588,7 @@ void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDet
 void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 stillWithinTerritory = FALSE;
+    s32 stillWithinTerritory = false;
     f32 x, y, z;
     EffectInstance* sp34;
     f32 yaw;
@@ -647,10 +647,10 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
         if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 2.0 * npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
             yaw = clamp_angle(atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z));
             enemy->aiFlags &= ~AI_FLAG_NEEDS_HEADING;
-            ai_check_fwd_collisions(npc, 5.0f, &yaw, NULL, NULL, NULL);
+            ai_check_fwd_collisions(npc, 5.0f, &yaw, nullptr, nullptr, nullptr);
             npc->yaw = yaw;
         }
-        stillWithinTerritory = TRUE;
+        stillWithinTerritory = true;
     } else if (enemy->aiFlags & AI_FLAG_OUTSIDE_TERRITORY) {
         enemy->aiFlags &= ~AI_FLAG_OUTSIDE_TERRITORY;
         enemy->aiFlags &= ~AI_FLAG_NEEDS_HEADING;
@@ -747,12 +747,12 @@ void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISetting
 
 void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
-    s32 done = FALSE;
+    s32 done = false;
 
     if (npc->jumpVel <= 0.0) {
         if (npc->pos.y <= npc->moveToPos.y) {
             npc->pos.y = npc->moveToPos.y;
-            done = TRUE;
+            done = true;
         }
     }
 
@@ -769,13 +769,13 @@ void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, En
 void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 skipTurnAround = FALSE;
+    s32 skipTurnAround = false;
 
     if ((gPlayerStatusPtr->actionState == ACTION_STATE_JUMP || gPlayerStatusPtr->actionState == ACTION_STATE_BOUNCE ||
         gPlayerStatusPtr->actionState == ACTION_STATE_HOP || gPlayerStatusPtr->actionState == ACTION_STATE_FALLING) &&
         (f64)dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) < npc->collisionDiameter)
     {
-        skipTurnAround = TRUE;
+        skipTurnAround = true;
     }
 
     if (!skipTurnAround) {

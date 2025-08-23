@@ -1,0 +1,10 @@
+name: PR
+on: [pull_request]
+
+jobs:
+  delete-matched-asm:
+    name: Check matched assembly files are deleted
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: ./coverage.py --fail-undeleted

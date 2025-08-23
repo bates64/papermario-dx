@@ -28,10 +28,14 @@ def write_if_unique(f, name, value, seen, warned):
 
 if __name__ == "__main__":
     if len(argv) < 3:
-        print("usage: combine.py [out.bin] [out.h] [compiled...]")
+        print("usage: combine.py { [out.bin] [out.h] | --no-header [out.bin] } [compiled...]")
         exit(1)
 
-    _, outfile, header_file, *infiles = argv
+    if argv[1] == "--no-header":
+        _, _, outfile, *infiles = argv
+        header_file = None
+    else:
+        _, outfile, header_file, *infiles = argv
 
     messages = []
     # header_files = []
@@ -116,13 +120,12 @@ if __name__ == "__main__":
             f.write(offset.to_bytes(4, byteorder="big"))
         f.write(b"\0\0\0\0")
 
-    with open(header_file, "w") as f:
-        f.write(f"#pragma once\n" "\n" '#include "messages.h"\n' "\n")
+    if header_file is not None:
+        with open(header_file, "w") as f:
+            f.write(f"#ifndef _MESSAGE_IDS_H_\n" f"#define _MESSAGE_IDS_H_\n" "\n" '#include "messages.h"\n' "\n")
 
-        seen = set()
-        warned = set()
-        for message in messages:
-            if message.name:
-                write_if_unique(f, f"MSG_{message.name}", f"MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})", seen, warned)
+            for message in messages:
+                if message.name:
+                    f.write(f"#define MSG_{message.name} MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})\n")
 
-        f.write("\n")
+            f.write("\n#endif\n")

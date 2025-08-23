@@ -15,10 +15,10 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_09)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)

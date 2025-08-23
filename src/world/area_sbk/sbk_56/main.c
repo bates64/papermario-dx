@@ -24,13 +24,13 @@ MapSettings N(settings) = {
 
 #include "world/common/todo/SpawnSunEffect.inc.c"
 
-API_CALLABLE(N(StartOasisSongVariation)) {
-    bgm_set_variation(0, 1);
+API_CALLABLE(N(StartOasisTracks)) {
+    bgm_set_linked_mode(0, true);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StopOasisSongVariation)) {
-    bgm_set_variation(0, 0);
+API_CALLABLE(N(StopOasisTracks)) {
+    bgm_set_linked_mode(0, false);
     return ApiStatus_DONE2;
 }
 
@@ -38,7 +38,7 @@ EvtScript N(EVS_ExitWalk_sbk_55_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_0)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_55"), sbk_55_ENTRY_1)
     Wait(100)
     Return
@@ -49,7 +49,7 @@ EvtScript N(EVS_ExitWalk_sbk_46_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_2)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_46"), sbk_46_ENTRY_3)
     Wait(100)
     Return
@@ -60,7 +60,7 @@ EvtScript N(EVS_ExitWalk_sbk_66_2) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_3)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_66"), sbk_66_ENTRY_2)
     Wait(100)
     Return
@@ -75,18 +75,33 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
+EvtScript N(EVS_TexPan_Water) = {
+    Call(EnableTexPanning, MODEL_o49, true)
+    Set(LVar0, 0)
+    Label(10)
+        Set(LVar1, 0)
+        Sub(LVar1, LVar0)
+        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, LVar0, LVar0)
+        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_AUX, LVar1, LVar1)
+        Add(LVar0, 80)
+        Wait(1)
+        Goto(10)
+    Return
+    End
+};
+
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)
     IfEq(GB_StoryProgress, STORY_CH2_GOT_PULSE_STONE)
-        Call(DisablePulseStone, FALSE)
+        Call(DisablePulseStone, false)
     EndIf
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
     Call(N(SpawnSunEffect))
     Call(MakeTransformGroup, MODEL_sui)
-    Call(SetMusicTrack, 0, SONG_DRY_DRY_DESERT, 0, 8)
-    Call(N(StartOasisSongVariation))
+    Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
+    Call(N(StartOasisTracks))
     Call(PlaySound, SOUND_LOOP_SBK_OASIS_WATER)
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

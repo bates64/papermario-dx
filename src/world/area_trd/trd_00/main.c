@@ -25,8 +25,8 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(D_80240B34_99A7A4) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos,NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     Thread
@@ -35,13 +35,13 @@ EvtScript N(D_80240B34_99A7A4) = {
         Call(SetCamDistance, CAM_DEFAULT, -1000)
         Call(SetCamPitch, CAM_DEFAULT, 18, Float(-20.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SetPanTarget, CAM_DEFAULT, -480, 0, 400)
         Call(SetCamDistance, CAM_DEFAULT, -1300)
         Call(SetCamPitch, CAM_DEFAULT, 18, Float(-11.5))
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.8))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Wait(5)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
@@ -50,10 +50,10 @@ EvtScript N(D_80240B34_99A7A4) = {
     Call(SetPlayerPos, -1041, 0, 204)
     Call(SetPlayerAnimation, ANIM_Mario1_Walk)
     Call(SetNpcPos, NPC_PARTNER, -1041, 0, 204)
-    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerPhysics, false)
     Call(PlayerMoveTo, -900, 200, 30)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -105,9 +105,9 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_KoopaBrosFortress, TRUE)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Set(GF_MAP_KoopaBrosFortress, true)
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(trd_00_ENTRY_0)
@@ -117,7 +117,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Wait(1)
-    IfEq(GF_TRD05_BombedWall, FALSE)
+    IfEq(GF_TRD05_BombedWall, false)
         Call(SetGroupVisibility, MODEL_g21, MODEL_GROUP_HIDDEN)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt5, COLLIDER_FLAGS_UPPER_MASK)
@@ -130,15 +130,7 @@ EvtScript N(EVS_Main) = {
     Else
         Wait(1)
     EndIf
-    Call(SetTexPanner, MODEL_ue, TEX_PANNER_1)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
-        TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
-    Call(SetTexPanner, MODEL_o125, TEX_PANNER_2)
+    Call(EnableTexPanning, MODEL_o125, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0,   90,  -60,  -70)

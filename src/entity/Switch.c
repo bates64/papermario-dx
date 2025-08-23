@@ -4,15 +4,6 @@
 #include "ld_addrs.h"
 #include "entity.h"
 
-#if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_BlueSwitch_ROM_END;
-extern Addr entity_model_BlueSwitch_ROM_START;
-extern Addr entity_model_GreenStompSwitch_ROM_END;
-extern Addr entity_model_GreenStompSwitch_ROM_START;
-extern Addr entity_model_RedSwitch_ROM_END;
-extern Addr entity_model_RedSwitch_ROM_START;
-#endif
-
 #define REFLECTED_SWITCH_HIDDEN 1
 #define REFLECTED_SWITCH_LINKED 2
 
@@ -108,7 +99,7 @@ void entity_small_switch_idle(Entity* entity) {
             }
             exec_entity_commandlist(entity);
 
-            if (data->linkedSwitch == NULL) {
+            if (data->linkedSwitch == nullptr) {
                 return;
             }
 
@@ -133,7 +124,7 @@ void entity_small_switch_idle(Entity* entity) {
 
     exec_entity_commandlist(entity);
 
-    if (data->linkedSwitch == NULL) {
+    if (data->linkedSwitch == nullptr) {
         return;
     }
 
@@ -439,7 +430,7 @@ void entity_base_switch_animate_scale(Entity* entity) {
     }
 
     data->scaleAnimTimer++;
-    if (data->scaleAnimTimer == 10 && data->linkedSwitch == NULL) {
+    if (data->scaleAnimTimer == 10 && data->linkedSwitch == nullptr) {
         fx_cold_breath(0, entity->pos.x, entity->pos.y, entity->pos.z, 1.0f, 60);
     }
 }
@@ -464,13 +455,13 @@ void entity_BlueSwitch_init(Entity* entity) {
     }
 
     if (CreateEntityVarArgBuffer[0] == REFLECTED_SWITCH_HIDDEN) {
-        if (SwitchToLink != NULL) {
+        if (SwitchToLink != nullptr) {
             data->linkedSwitch = SwitchToLink;
             entity->flags |= ENTITY_FLAG_HIDDEN;
             return;
         }
     } else {
-        SwitchToLink = NULL;
+        SwitchToLink = nullptr;
     }
 }
 
@@ -522,7 +513,7 @@ EntityScript Entity_GreenStompSwitch_Script = {
     es_SetCallback(entity_GreenStompSwitch_idle, 0)
     es_SetCallback(entity_GreenStompSwitch_retract, 0)
     es_PlaySound(SOUND_ACTIVATE_SWITCH)
-    es_SetCallback(NULL, 128)
+    es_SetCallback(nullptr, 128)
     es_SetCallback(entity_GreenStompSwitch_extend, 0)
     es_Restart
 };
@@ -542,7 +533,7 @@ EntityBlueprint Entity_RedSwitch = {
     .modelAnimationNodes = 0,
     .fpInit = entity_base_switch_init,
     .updateEntityScript = Entity_RedSwitch_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(RedSwitch) },
     .entityType = ENTITY_TYPE_RED_SWITCH,
     .aabbSize = {22, 23, 22}
@@ -555,7 +546,7 @@ EntityBlueprint Entity_BlueSwitch = {
     .modelAnimationNodes = 0,
     .fpInit = entity_BlueSwitch_init,
     .updateEntityScript = Entity_BlueSwitch_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(BlueSwitch) },
     .entityType = ENTITY_TYPE_BLUE_SWITCH,
     .aabbSize = {22, 23, 22}
@@ -568,7 +559,7 @@ EntityBlueprint Entity_HugeBlueSwitch = {
     .modelAnimationNodes = 0,
     .fpInit = entity_HugeBlueSwitch_init,
     .updateEntityScript = Entity_HugeBlueSwitch_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(BlueSwitch) },
     .entityType = ENTITY_TYPE_HUGE_BLUE_SWITCH,
     .aabbSize = {66, 75, 66}
@@ -581,7 +572,7 @@ EntityBlueprint Entity_GreenStompSwitch = {
     .modelAnimationNodes = 0,
     .fpInit = entity_base_switch_init,
     .updateEntityScript = Entity_GreenStompSwitch_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(GreenStompSwitch) },
     .entityType = ENTITY_TYPE_GREEN_STOMP_SWITCH,
     .aabbSize = {50, 15, 50}

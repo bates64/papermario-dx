@@ -56,7 +56,39 @@ extern "C" {
 /// Progammatically converts f32 --> Float
 #define FLOAT_TO_FIXED(x) (((x) * 1024.0f) + -EVT_FIXED_OFFSET)
 
+// TODO(C23): use _Generic to convert float/double to fixed automatically
+#define BYTECODE_CAST(x) ((Bytecode)(x))
+
+// Utility macros used by EVT_CMD to BYTECODE_CAST all arguments
+#define EXPAND(x) x
+#define FOR_EACH_1(f, x) f(x)
+#define FOR_EACH_2(f, x, ...) f(x), EXPAND(FOR_EACH_1(f, __VA_ARGS__))
+#define FOR_EACH_3(f, x, ...) f(x), EXPAND(FOR_EACH_2(f, __VA_ARGS__))
+#define FOR_EACH_4(f, x, ...) f(x), EXPAND(FOR_EACH_3(f, __VA_ARGS__))
+#define FOR_EACH_5(f, x, ...) f(x), EXPAND(FOR_EACH_4(f, __VA_ARGS__))
+#define FOR_EACH_6(f, x, ...) f(x), EXPAND(FOR_EACH_5(f, __VA_ARGS__))
+#define FOR_EACH_7(f, x, ...) f(x), EXPAND(FOR_EACH_6(f, __VA_ARGS__))
+#define FOR_EACH_8(f, x, ...) f(x), EXPAND(FOR_EACH_7(f, __VA_ARGS__))
+#define FOR_EACH_9(f, x, ...) f(x), EXPAND(FOR_EACH_8(f, __VA_ARGS__))
+#define FOR_EACH_10(f, x, ...) f(x), EXPAND(FOR_EACH_9(f, __VA_ARGS__))
+#define FOR_EACH_11(f, x, ...) f(x), EXPAND(FOR_EACH_10(f, __VA_ARGS__))
+#define FOR_EACH_12(f, x, ...) f(x), EXPAND(FOR_EACH_11(f, __VA_ARGS__))
+#define FOR_EACH_13(f, x, ...) f(x), EXPAND(FOR_EACH_12(f, __VA_ARGS__))
+#define FOR_EACH_14(f, x, ...) f(x), EXPAND(FOR_EACH_13(f, __VA_ARGS__))
+#define FOR_EACH_15(f, x, ...) f(x), EXPAND(FOR_EACH_14(f, __VA_ARGS__))
+#define FOR_EACH_16(f, x, ...) f(x), EXPAND(FOR_EACH_15(f, __VA_ARGS__))
+#define GET_MACRO( \
+    _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8, \
+    _9, _10, _11, _12, _13, _14, _15, _16, NAME, ...) NAME
+#define FOR_EACH(f, ...) \
+    EXPAND(GET_MACRO(__VA_ARGS__, \
+        FOR_EACH_16, FOR_EACH_15, FOR_EACH_14, FOR_EACH_13, \
+        FOR_EACH_12, FOR_EACH_11, FOR_EACH_10, FOR_EACH_9,  \
+        FOR_EACH_8,  FOR_EACH_7,  FOR_EACH_6,  FOR_EACH_5,  \
+        FOR_EACH_4,  FOR_EACH_3,  FOR_EACH_2,  FOR_EACH_1)(f, __VA_ARGS__))
+
 /// Address/pointer constant.
+/// @deprecated Use `&`.
 #define Ref(sym) ((Bytecode) &(sym))
 
 /// Local Word. A variable local to the current thread.
@@ -204,10 +236,26 @@ extern "C" {
 ///     }
 /// This macro expands to the given opcode and argv, with argc calculated automatically.
 
+#ifndef PERMUTER
+#ifndef M2CTX
+#define EVT_CMD(opcode, ...) \
+    opcode, \
+    (sizeof((Bytecode[]){__VA_OPT__(FOR_EACH(BYTECODE_CAST, __VA_ARGS__))}) / sizeof(Bytecode)) \
+    __VA_OPT__(, FOR_EACH(BYTECODE_CAST, __VA_ARGS__))
+#else
+// This definition that passes in 0 for the number of args is used for pycparser since it can't handle varargs
 #define EVT_CMD(opcode, argv...) \
     opcode, \
-    (sizeof((Bytecode[]){argv})/sizeof(Bytecode)), \
+    0, \
     ##argv
+#endif
+#else
+// This definition that passes in 0 for the number of args is used for pycparser since it can't handle varargs
+#define EVT_CMD(opcode, argv...) \
+    opcode, \
+    0, \
+    ##argv
+#endif
 
 /// Signals the end of EVT script data. A script missing this will likely crash on load.
 #define End                                 EVT_CMD(EVT_OP_END),
@@ -536,7 +584,7 @@ extern "C" {
 /// Resumes a thread by its thread ID.
 #define ResumeThread(TID)                  EVT_CMD(EVT_OP_RESUME_THREAD, TID),
 
-/// Sets OUTVAR to TRUE/FALSE depending on whether a thread with the given ID exists (i.e. has not been killed).
+/// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
 #define IsThreadRunning(TID, OUTVAR)      EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
@@ -573,7 +621,7 @@ extern "C" {
 ///     Call(ApiFunction)
 ///
 /// The given arguments can be accessed from the API function using `thread->ptrReadPos`.
-#define Call(FUNC, ARGS...)                     EVT_CMD(EVT_OP_CALL, (Bytecode) FUNC, ##ARGS),
+#define Call(FUNC, ARGS...)                     EVT_CMD(EVT_OP_CALL, FUNC, ##ARGS),
 
 /// Does nothing in release version
 #define EVT_DEBUG_LOG(STRING)                   EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
@@ -648,10 +696,10 @@ extern "C" {
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
+        Call(DisablePlayerInput, true) \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -662,7 +710,7 @@ extern "C" {
     { \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -671,14 +719,10 @@ extern "C" {
 #define EVT_EXIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, modelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
-        Set(LVar0, exitIdx) \
-        Set(LVar1, colliderID) \
-        Set(LVar2, modelID) \
-        Set(LVar3, swingDir) \
-        Exec(ExitSingleDoor) \
-        Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(DisablePlayerInput, true) \
+        Call(UseExitHeading, walkDistance, exitIdx) \
+        Exec(ExitWalk) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -687,15 +731,14 @@ extern "C" {
 #define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, modelID, swingDir, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
-        Call(UseDoorSounds, sounds) \
+        Call(DisablePlayerInput, true) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, modelID) \
         Set(LVar3, swingDir) \
         Exec(ExitSingleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -704,7 +747,7 @@ extern "C" {
 #define EVT_EXIT_SPLIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, topModelID, bottomModelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
+        Call(DisablePlayerInput, true) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, topModelID) \
@@ -712,7 +755,7 @@ extern "C" {
         Set(LVar3, swingDir) \
         Exec(ExitSplitSingleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -721,14 +764,14 @@ extern "C" {
 #define EVT_EXIT_DOUBLE_DOOR(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
+        Call(DisablePlayerInput, true) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, leftDoorModelID) \
         Set(LVar3, rightDoorModelID) \
         Exec(ExitDoubleDoor) \
         Wait(17) \
-        Call(GotoMap, Ref(map), entryIdx) \
+        Call(GotoMap, map, entryIdx) \
         Wait(100) \
         Return \
         End \
@@ -737,7 +780,7 @@ extern "C" {
 #define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, TRUE) \
+        Call(DisablePlayerInput, true) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -757,8 +800,8 @@ extern "C" {
 /// @param b background blue color
 #define EVT_SETUP_CAMERA_DEFAULT(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
-    Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
+    Call(SetCamEnabled, CAM_DEFAULT, true)
 
 /// Enable camera using standard parameters for clip distances and FOV with LeadPlayer disabled
 /// @param r background red color
@@ -766,16 +809,16 @@ extern "C" {
 /// @param b background blue color
 #define EVT_SETUP_CAMERA_NO_LEAD(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
-    Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
+    Call(SetCamEnabled, CAM_DEFAULT, true) \
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
 
 /// Enable camera for `AREA_MIM` using a closer far clip distance and appropriate background color
 #define EVT_SETUP_CAMERA_MIM() \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650) \
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
-    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false) \
+    Call(SetCamEnabled, CAM_DEFAULT, true)
 
 // allow macros with variable number of arguments
 // see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments

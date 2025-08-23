@@ -1,11 +1,37 @@
 #include "dgb_14.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_ExitDoors_dgb_03_3) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_1, "dgb_03", dgb_03_ENTRY_3,
-    COLLIDER_deilittse, MODEL_o102, MODEL_o101, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_03_3) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
+    Set(LVar0, dgb_14_ENTRY_1)
+    Set(LVar1, COLLIDER_deilittse)
+    Set(LVar2, MODEL_o102)
+    Set(LVar3, MODEL_o101)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("dgb_03"), dgb_03_ENTRY_3)
+    Wait(100)
+    Return
+    End
+};
 
-EvtScript N(EVS_ExitDoors_dgb_15_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(dgb_14_ENTRY_0, "dgb_15", dgb_15_ENTRY_0,
-    COLLIDER_deilittne, MODEL_o31, MODEL_o30, DOOR_SOUNDS_CREAKY);
+EvtScript N(EVS_ExitDoors_dgb_15_0) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
+    Set(LVar0, dgb_14_ENTRY_0)
+    Set(LVar1, COLLIDER_deilittne)
+    Set(LVar2, MODEL_o31)
+    Set(LVar3, MODEL_o30)
+    Exec(ExitDoubleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("dgb_15"), dgb_15_ENTRY_0)
+    Wait(100)
+    Return
+    End
+};
 
 EvtScript N(EVS_EnterMap) = {
     Call(UseDoorSounds, DOOR_SOUNDS_CREAKY)
@@ -16,17 +42,17 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, MODEL_o101)
             ExecWait(EnterDoubleDoor)
         CaseEq(dgb_14_ENTRY_1)
-            Call(DisablePlayerInput, TRUE)
+            Call(DisablePlayerInput, true)
             Set(LVar2, MODEL_o31)
             Set(LVar3, MODEL_o30)
             ExecWait(EnterDoubleDoor)
-            IfEq(AF_DGB_01, TRUE)
+            IfEq(AF_DGB_01, true)
                 Wait(5)
                 Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
                 Wait(20)
                 Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             EndIf
-            Call(DisablePlayerInput, FALSE)
+            Call(DisablePlayerInput, false)
     EndSwitch
     Return
     End

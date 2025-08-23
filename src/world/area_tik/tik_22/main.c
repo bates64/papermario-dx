@@ -5,13 +5,13 @@
 #include "world/common/entity/Pipe.inc.c"
 
 API_CALLABLE(N(ResetTrackVolumes)) {
-    bgm_clear_track_volumes(0, TRACK_VOLS_2);
+    bgm_clear_track_volumes(0, TRACK_VOLS_TIK_SHIVER);
     return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_ExitDoors_tik_21_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(N(ResetTrackVolumes))
     Set(LVar0, tik_22_ENTRY_0)
     Set(LVar1, COLLIDER_tte)

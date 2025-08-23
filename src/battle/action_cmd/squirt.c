@@ -14,8 +14,8 @@ enum {
 // how much to subtract from the meter per frame after overfilling it
 #define METER_DRAIN_RATE 250
 
-s32 N(DrainRateTable)[] = { 300, 300, 265, 220, 175, 175 };
-s32 N(FillRateTable)[] = { 300, 300, 265, 220, 175, 175 };
+s32 N(DrainRateTable)[] = { 300 / DT, 300 / DT, 265 / DT, 220 / DT, 175 / DT, 175 / DT };
+s32 N(FillRateTable)[] = { 300 / DT, 300 / DT, 265 / DT, 220 / DT, 175 / DT, 175 / DT };
 
 // bug: the sixth entry is not accessible due to the way idx is calculated in these macros
 #define GET_DRAIN_RATE(pct) (N(DrainRateTable)[((pct) / (ONE_PCT_MASH / 5))])
@@ -37,12 +37,12 @@ API_CALLABLE(N(init)) {
 
     acs->actionCommandID = ACTION_COMMAND_SQUIRT;
     acs->state = AC_STATE_INIT;
-    acs->wrongButtonPressed = FALSE;
+    acs->wrongButtonPressed = false;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
     battleStatus->actionProgress = 0;
     acs->hudPosX = -48;
-    acs->squirt.draining = FALSE;
+    acs->squirt.draining = false;
     acs->hudPosY = 80;
 
     hid = hud_element_create(&HES_AButton);
@@ -77,7 +77,7 @@ API_CALLABLE(N(start)) {
     acs->difficulty = evt_get_variable(script, *args++);
     acs->difficulty = adjust_action_command_difficulty(acs->difficulty);
 
-    acs->wrongButtonPressed = FALSE;
+    acs->wrongButtonPressed = false;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
     battleStatus->actionQuality = 0;
@@ -137,7 +137,7 @@ void N(update)(void) {
 
             hud_element_set_script(acs->hudElemIDs[HIDX_BUTTON], &HES_AButtonDown);
             acs->meterFillLevel = 0;
-            acs->squirt.draining = FALSE;
+            acs->squirt.draining = false;
             acs->stateTimer = acs->duration;
             sfx_play_sound_with_params(SOUND_LOOP_CHARGE_METER, 0, 0, 0);
             acs->state = AC_STATE_ACTIVE;
@@ -160,14 +160,14 @@ void N(update)(void) {
                     acs->meterFillLevel += SCALE_BY_PCT(amt, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
                     if (acs->meterFillLevel > MAX_MASH_UNITS) {
                         acs->meterFillLevel = MAX_MASH_UNITS;
-                        acs->squirt.draining = TRUE;
+                        acs->squirt.draining = true;
                     }
                 }
             } else {
                 acs->meterFillLevel -= METER_DRAIN_RATE;
                 if (acs->meterFillLevel <= 0) {
                     acs->meterFillLevel = 0;
-                    acs->squirt.draining = FALSE;
+                    acs->squirt.draining = false;
                 }
             }
 

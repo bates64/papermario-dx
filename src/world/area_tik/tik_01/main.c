@@ -18,13 +18,12 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_01)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_TIK01_WATER)
-    // water streams
-    Call(SetTexPanner, MODEL_nagare1, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_nagare1, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   50,  200,  110,  500)
@@ -32,8 +31,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    // water leaking
-    Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
+    Call(EnableTexPanning, MODEL_mizu, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
@@ -41,7 +39,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(SetTexPanner, MODEL_mizu2, TEX_PANNER_3)
+    Call(EnableTexPanning, MODEL_mizu2, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_3)
         TEX_PAN_PARAMS_STEP(    0, -250, -100, -500)

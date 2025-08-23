@@ -40,12 +40,15 @@ EvtScript N(EVS_SetupFountains) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
+    Call(EnableTexPanning, MODEL_o438, true)
+    Call(EnableTexPanning, MODEL_o462, true)
+    Call(EnableTexPanning, MODEL_o469, true)
     Call(SetModelCustomGfx, MODEL_o469, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o462, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o465, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_o461, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_fountain_water)), NULL)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_fountain_stars)), NULL)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_fountain_water)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_fountain_stars)), nullptr)
     Return
     End
 };

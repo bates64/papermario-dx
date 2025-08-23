@@ -13,8 +13,8 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
     f32 nx, ny, nz;
     s32 zoneID = test_ray_zones(x, y, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
 
-    if (zoneID <= NO_COLLIDER) {
-        return NULL;
+    if (zoneID < 0) {
+        return nullptr;
     }
 
     return gZoneCollisionData.colliderList[zoneID].camSettings;
@@ -187,10 +187,10 @@ void update_camera_from_controller(
     y = y2;
     z = z2;
 
-    if (curSettings == NULL) {
-        curRig->targetPos.x = x;
-        curRig->targetPos.y = y;
-        curRig->targetPos.z = z;
+    if (controller == nullptr) {
+        configuration->targetPos.x = x;
+        configuration->targetPos.y = y;
+        configuration->targetPos.z = z;
     } else {
         switch (curSettings->type) {
             case CAM_CONTROL_FOLLOW_PLAYER:
@@ -704,11 +704,11 @@ void update_camera_zone_interp(Camera* camera) {
     targetX = camera->targetPos.x;
     targetY = camera->targetPos.y;
     targetZ = camera->targetPos.z;
-    changingZone = FALSE;
+    changingZone = false;
 
     if (camera->needsReinit) {
-        camera->curSettings = NULL;
-        camera->prevSettings = NULL;
+        camera->curSettings = nullptr;
+        camera->prevSettings = nullptr;
         camera->linearInterp = 0.0f;
         camera->yinterpAlpha = 1.0f;
         camera->yinterpGoal = 0.0f;
@@ -721,8 +721,9 @@ void update_camera_zone_interp(Camera* camera) {
         camera->prevTargetPos.x = 0.0f;
         camera->prevTargetPos.y = 0.0f;
         camera->prevTargetPos.z = 0.0f;
-        camera->prevUseOverride = FALSE;
-        camera->prevPrevUseOverride = FALSE;
+        camera->prevPrevFollowPlayer = false;
+        camera->prevFollowPlayer = false;
+        camera->interpEasingParameter = 0.0f;
         D_800A08DC = 0.0f;
         D_800A08E0 = 0.0f;
     }
@@ -742,15 +743,16 @@ void update_camera_zone_interp(Camera* camera) {
             nextSettings = test_ray_zone_aabb(targetX, targetY + 10.0f, targetZ);
         }
 
-        allParamsMatch = FALSE;
-        curSettings = camera->curSettings;
-        if (nextSettings != NULL
-            && curSettings != NULL
-            && nextSettings->type == curSettings->type
-            && nextSettings->flag == curSettings->flag
-            && nextSettings->boomLength == curSettings->boomLength
-            && nextSettings->boomPitch == curSettings->boomPitch
-            && nextSettings->viewPitch == curSettings->viewPitch
+        cond2 = false;
+        cs2 = cs;
+        currentController = camera->curSettings;
+        if (cs != nullptr
+            && currentController != nullptr
+            && cs->type == currentController->type
+            && cs->flag == currentController->flag
+            && cs->boomLength == currentController->boomLength
+            && cs->boomPitch == currentController->boomPitch
+            && cs->viewPitch == currentController->viewPitch
         ) {
             switch (nextSettings->type) {
                 case CAM_CONTROL_FIXED_ORIENTATION:
@@ -759,24 +761,27 @@ void update_camera_zone_interp(Camera* camera) {
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
                         && nextSettings->points.two.Bz == curSettings->points.two.Bz
                     ) {
-                        allParamsMatch = TRUE;
+                        cond2 = true;
                     }
                     break;
                 case CAM_CONTROL_LOOK_AT_POINT:
-                    if (nextSettings->flag) {
-                        if (nextSettings->points.two.Ax == curSettings->points.two.Ax
-                            && nextSettings->points.two.Az == curSettings->points.two.Az
-                            && nextSettings->points.two.Bx == curSettings->points.two.Bx
-                            && nextSettings->points.two.Bz == curSettings->points.two.Bz
-                        ) {
-                            allParamsMatch = TRUE;
-                        }
-                    } else {
-                        if (nextSettings->points.two.Ax == curSettings->points.two.Ax
-                            && nextSettings->points.two.Az == curSettings->points.two.Az
-                        ) {
-                            allParamsMatch = TRUE;
-                        }
+                    switch (cs->flag){
+                        case 0:
+                            if (cs->points.two.Ax == currentController->points.two.Ax
+                                && cs->points.two.Az == currentController->points.two.Az
+                            ) {
+                                cond2 = true;
+                            }
+                            break;
+                        case 1:
+                            if (cs->points.two.Ax == currentController->points.two.Ax
+                                && cs->points.two.Az == currentController->points.two.Az
+                                && cs->points.two.Bx == currentController->points.two.Bx
+                                && cs->points.two.Bz == currentController->points.two.Bz
+                            ) {
+                                cond2 = true;
+                            }
+                            break;
                     }
                     break;
                 default:
@@ -787,7 +792,7 @@ void update_camera_zone_interp(Camera* camera) {
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
                         && nextSettings->points.two.Bz == curSettings->points.two.Bz
                     ) {
-                        allParamsMatch = TRUE;
+                        cond2 = true;
                     }
                     break;
             }
@@ -799,13 +804,13 @@ void update_camera_zone_interp(Camera* camera) {
             } else {
                 camera->prevSettings = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
             }
-            camera->panActive = FALSE;
-            changingZone = TRUE;
+            changingZone = true;
             camera->prevRig = CurrentCamRig;
             camera->curSettings = nextSettings;
 
             camera->interpAlpha = 0.0f;
             camera->linearInterp = 0.0f;
+            camera->panActive = false;
             camera->linearInterpRate = camera->moveSpeed;
 
             camera->prevPrevUseOverride = camera->prevUseOverride;
@@ -860,7 +865,7 @@ void update_camera_zone_interp(Camera* camera) {
 
     if (camera->needsReinit) {
         camera->prevRig = camera->nextRig;
-        camera->needsReinit = FALSE;
+        camera->needsReinit = false;
         camera->interpAlpha = 1.0f;
     }
 

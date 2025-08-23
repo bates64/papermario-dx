@@ -19,7 +19,11 @@ void pause_tabs_handle_input(MenuPanel* tab);
 void pause_tabs_update(MenuPanel* tab);
 void pause_tabs_cleanup(MenuPanel* tab);
 
+#if VERSION_JP
+static HudElemID gPauseTabsHIDs[2];
+#else
 static HudElemID gPauseTabsHIDs[6];
+#endif
 static s32 gPauseTabsPreviousTab;
 static s32 gPauseTabsHorizScrollPos;
 
@@ -46,12 +50,18 @@ extern HudScript HES_HeaderSpirits_es;
 extern HudScript HES_HeaderMap_es;
 #endif
 
+#if VERSION_JP
+HudScript* gPauseTabsHudScripts[][2] = {
+    [LANGUAGE_DEFAULT] = {
+        &HES_HeaderSpirits, &HES_HeaderMap
+    },
+};
+#elif VERSION_PAL
 HudScript* gPauseTabsHudScripts[][6] = {
     [LANGUAGE_DEFAULT] = {
         &HES_HeaderStats, &HES_HeaderBadges, &HES_HeaderItems,
         &HES_HeaderParty, &HES_HeaderSpirits, &HES_HeaderMap
     },
-#if VERSION_PAL
     [LANGUAGE_DE] = {
         &HES_HeaderStats_de, &HES_HeaderBadges_de, &HES_HeaderItems_de,
         &HES_HeaderParty_de, &HES_HeaderSpirits_de, &HES_HeaderMap_de
@@ -64,8 +74,15 @@ HudScript* gPauseTabsHudScripts[][6] = {
         &HES_HeaderStats_es, &HES_HeaderBadges_es, &HES_HeaderItems_es,
         &HES_HeaderParty_es, &HES_HeaderSpirits_es, &HES_HeaderMap_es
     },
-#endif
 };
+#else
+HudScript* gPauseTabsHudScripts[][6] = {
+    [LANGUAGE_DEFAULT] = {
+        &HES_HeaderStats, &HES_HeaderBadges, &HES_HeaderItems,
+        &HES_HeaderParty, &HES_HeaderSpirits, &HES_HeaderMap
+    },
+};
+#endif
 
 s8 gPauseTabsGridData[] = { 0, 1, 2, 3, 4, 5 };
 u8 gPauseTabsPanelIDs[] = { 1, 2, 3, 4, 5, 6 };
@@ -80,7 +97,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = pause_tabs_draw_stats,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -94,7 +111,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_badges,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
@@ -108,7 +125,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_items,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
@@ -122,7 +139,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_party,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
@@ -136,7 +153,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_spirits,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
@@ -150,7 +167,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = pause_tabs_draw_map,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { .func = pause_update_tab_default },
         .extraFlags = 0,
@@ -164,7 +181,7 @@ MenuWindowBP gPauseTabsWindowBPs[] = {
         .height = 16,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = pause_tabs_draw_invis,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_NONE,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -181,9 +198,9 @@ s32 gPauseTabsMessages[] = {
     PAUSE_MSG_TAB_MAP,
 };
 u8 gPauseTabsInterpTable[] = { 0, 1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8 };
-s32 gPauseDoBasicWindowUpdate = TRUE; // TODO rename (eth name)
+s32 gPauseDoBasicWindowUpdate = true; // TODO rename (eth name)
 MenuPanel gPausePanelTabs = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -202,6 +219,9 @@ void pause_tabs_draw_invis(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32
 }
 
 void pause_tabs_draw_stats(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+#if VERSION_JP
+    draw_msg(pause_get_menu_msg(PAUSE_MSG_17), baseX + 9, baseY + 1, 255.0 - darkening * 0.5, 0, 1);
+#else
     if (darkening != 0) {
         hud_element_set_flags(gPauseTabsHIDs[0], HUD_ELEMENT_FLAG_TRANSPARENT);
         hud_element_set_alpha(gPauseTabsHIDs[0], 255.0 - darkening * 0.5);
@@ -212,6 +232,7 @@ void pause_tabs_draw_stats(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32
 
     hud_element_set_render_pos(gPauseTabsHIDs[0], baseX + 22, baseY + 7);
     hud_element_draw_without_clipping(gPauseTabsHIDs[0]);
+#endif
     if (gPauseMenuCurrentTab == 0) {
         if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_STATS) {
             pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
@@ -220,6 +241,9 @@ void pause_tabs_draw_stats(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32
 }
 
 void pause_tabs_draw_badges(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+#if VERSION_JP
+    draw_msg(pause_get_menu_msg(PAUSE_MSG_18), baseX + 9, baseY + 1, 255.0 - darkening * 0.5, 0, 1);
+#else
     if (darkening != 0) {
         hud_element_set_flags(gPauseTabsHIDs[1], HUD_ELEMENT_FLAG_TRANSPARENT);
         hud_element_set_alpha(gPauseTabsHIDs[1], 255.0 - darkening * 0.5);
@@ -230,6 +254,7 @@ void pause_tabs_draw_badges(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s3
 
     hud_element_set_render_pos(gPauseTabsHIDs[1], baseX + 22, baseY + 7);
     hud_element_draw_without_clipping(gPauseTabsHIDs[1]);
+#endif
     if (gPauseMenuCurrentTab == 0) {
         if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_BADGES) {
             pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
@@ -237,6 +262,25 @@ void pause_tabs_draw_badges(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s3
     }
 }
 
+#if VERSION_JP
+void pause_tabs_draw_items(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    draw_msg(pause_get_menu_msg(PAUSE_MSG_19), baseX + 4, baseY + 1, 255.0 - darkening * 0.5, 0, 1);
+    if (gPauseMenuCurrentTab == 0) {
+        if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_ITEMS) {
+            pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
+        }
+    }
+}
+
+void pause_tabs_draw_party(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+    draw_msg(pause_get_menu_msg(PAUSE_MSG_1A), baseX + 9, baseY + 1, 255.0 - darkening * 0.5, 0, 1);
+    if (gPauseMenuCurrentTab == 0) {
+        if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_PARTY) {
+            pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
+        }
+    }
+}
+#else
 void pause_tabs_draw_items(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     if (darkening != 0) {
         hud_element_set_flags(gPauseTabsHIDs[2], HUD_ELEMENT_FLAG_TRANSPARENT);
@@ -272,8 +316,21 @@ void pause_tabs_draw_party(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32
         }
     }
 }
+#endif
 
 void pause_tabs_draw_spirits(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+#if VERSION_JP
+    if (darkening != 0) {
+        hud_element_set_flags(gPauseTabsHIDs[0], HUD_ELEMENT_FLAG_TRANSPARENT);
+        hud_element_set_alpha(gPauseTabsHIDs[0], 255.0 - darkening * 0.5);
+    } else {
+        hud_element_clear_flags(gPauseTabsHIDs[0], HUD_ELEMENT_FLAG_TRANSPARENT);
+        hud_element_set_alpha(gPauseTabsHIDs[0], 255);
+    }
+
+    hud_element_set_render_pos(gPauseTabsHIDs[0], baseX + 23, baseY + 7);
+    hud_element_draw_without_clipping(gPauseTabsHIDs[0]);
+#else
     if (darkening != 0) {
         hud_element_set_flags(gPauseTabsHIDs[4], HUD_ELEMENT_FLAG_TRANSPARENT);
         hud_element_set_alpha(gPauseTabsHIDs[4], 255.0 - darkening * 0.5);
@@ -284,6 +341,7 @@ void pause_tabs_draw_spirits(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
 
     hud_element_set_render_pos(gPauseTabsHIDs[4], baseX + 22, baseY + 7);
     hud_element_draw_without_clipping(gPauseTabsHIDs[4]);
+#endif
     if (gPauseMenuCurrentTab == 0) {
         if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_SPIRITS) {
             pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
@@ -292,6 +350,18 @@ void pause_tabs_draw_spirits(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
 }
 
 void pause_tabs_draw_map(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
+#if VERSION_JP
+    if (darkening != 0) {
+        hud_element_set_flags(gPauseTabsHIDs[1], HUD_ELEMENT_FLAG_TRANSPARENT);
+        hud_element_set_alpha(gPauseTabsHIDs[1], 255.0 - darkening * 0.5);
+    } else {
+        hud_element_clear_flags(gPauseTabsHIDs[1], HUD_ELEMENT_FLAG_TRANSPARENT);
+        hud_element_set_alpha(gPauseTabsHIDs[1], 255);
+    }
+
+    hud_element_set_render_pos(gPauseTabsHIDs[1], baseX + 23, baseY + 7);
+    hud_element_draw_without_clipping(gPauseTabsHIDs[1]);
+#else
     if (darkening != 0) {
         hud_element_set_flags(gPauseTabsHIDs[5], HUD_ELEMENT_FLAG_TRANSPARENT);
         hud_element_set_alpha(gPauseTabsHIDs[5], 255.0 - darkening * 0.5);
@@ -302,6 +372,7 @@ void pause_tabs_draw_map(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 h
 
     hud_element_set_render_pos(gPauseTabsHIDs[5], baseX + 23, baseY + 7);
     hud_element_draw_without_clipping(gPauseTabsHIDs[5]);
+#endif
     if (gPauseMenuCurrentTab == 0) {
         if (gPauseTabsWindowIDs[menu->col] == WIN_PAUSE_TAB_MAP) {
             pause_set_cursor_pos(gPauseTabsWindowIDs[menu->col], baseX + TABS_CURSOR_OFFSET_X, baseY + 6);
@@ -324,7 +395,7 @@ void pause_tabs_init(MenuPanel* tab) {
     setup_pause_menu_tab(gPauseTabsWindowBPs, ARRAY_COUNT(gPauseTabsWindowBPs));
     gWindows[WIN_PAUSE_TAB_INVIS].pos.y = 25;
     gPauseTabsHorizScrollPos = 0;
-    tab->initialized = TRUE;
+    tab->initialized = true;
     gPauseTabsPreviousTab = 5;
 }
 
@@ -340,7 +411,7 @@ void pause_tabs_handle_input(MenuPanel* tab) {
                     gPauseTabsHorizScrollPos += 1800;
                 }
             }
-        } while (gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == FALSE);
+        } while (gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == false);
     }
 
     if (gPauseHeldButtons & (BUTTON_STICK_RIGHT | BUTTON_R)) {
@@ -351,7 +422,7 @@ void pause_tabs_handle_input(MenuPanel* tab) {
                     gPauseTabsHorizScrollPos -= 1800;
                 }
             }
-        } while (gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == FALSE);
+        } while (gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == false);
     }
 
     if (tab->col != gPauseTabsCurrentTab) {
@@ -367,13 +438,13 @@ void pause_tabs_handle_input(MenuPanel* tab) {
         sfx_play_sound(SOUND_MENU_CHANGE_TAB);
     }
 
-    if ((gPausePressedButtons & BUTTON_A) && gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == TRUE) {
+    if ((gPausePressedButtons & BUTTON_A) && gPausePanels[gPauseTabsPanelIDs[tab->col]]->initialized == true) {
         sfx_play_sound(SOUND_MENU_NEXT);
         gPauseMenuCurrentTab = gPauseTabsPanelIDs[tab->col];
     }
 
     gPauseCurrentDescMsg = pause_get_menu_msg(gPauseTabsMessages[tab->col]);
-    gPauseCurrentDescIconScript = NULL;
+    gPauseCurrentDescIconScript = nullptr;
 }
 
 void pause_tabs_update(MenuPanel* tab) {
@@ -414,10 +485,10 @@ void pause_tabs_update(MenuPanel* tab) {
         fpUpdateInactive = pause_update_page_inactive_2;
     }
 
-    flag = FALSE;
+    flag = false;
     for (i = 0; i < ARRAY_COUNT(gPauseTabsPanelIDs); i++) {
         if (gPausePanels[gPauseTabsPanelIDs[i]]->initialized && (gWindows[gPauseTabsPageWindowIDs[i]].flags & 8)) {
-            flag = TRUE;
+            flag = true;
             break;
         }
     }
@@ -431,7 +502,7 @@ void pause_tabs_update(MenuPanel* tab) {
                                       fpUpdate.func == basic_window_update ||
                                       fpUpdate.i == 1)) {
                     set_window_update(gPauseTabsPageWindowIDs[i], (s32)fpUpdateInactive);
-                    flag = TRUE;
+                    flag = true;
                 }
             }
         }
@@ -442,7 +513,7 @@ void pause_tabs_update(MenuPanel* tab) {
                 gWindows[gPauseTabsPageWindowIDs[tab->col]].fpUpdate.i == 2) {
                 if (gPauseDoBasicWindowUpdate) {
                     fpUpdateActive = &basic_window_update;
-                    gPauseDoBasicWindowUpdate = FALSE;
+                    gPauseDoBasicWindowUpdate = false;
                 }
 
                 set_window_update(gPauseTabsPageWindowIDs[tab->col], (s32)fpUpdateActive);

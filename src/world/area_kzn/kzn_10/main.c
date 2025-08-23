@@ -48,15 +48,15 @@ EvtScript N(EVS_Main) = {
             Call(SetPanTarget, CAM_DEFAULT, 425, -246, 0)
         EndIf
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
         Wait(2)
         Call(N(func_8024030C_C7E48C))
-        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+        Call(PanToTarget, CAM_DEFAULT, 0, false)
     EndThread
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Exec(N(EVS_SetupSpinyTromp))
     Exec(N(EVS_StartTexPanners))

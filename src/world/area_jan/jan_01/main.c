@@ -21,8 +21,8 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupFoliage))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitw, COLLIDER_FLAGS_UPPER_MASK)
@@ -32,9 +32,9 @@ EvtScript N(EVS_Main) = {
     Wait(1)
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_JAN_BEACH_WAVES)
-    // waves
-    Call(SetTexPanner, MODEL_o75, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o7, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_o75, true)
+    Call(EnableTexPanning, MODEL_o7, true)
+    Call(EnableTexPanning, MODEL_o6, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -100,  350,    0,    0)

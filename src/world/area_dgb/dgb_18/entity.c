@@ -4,8 +4,8 @@
 #include "world/common/entity/Chest.inc.c"
 
 EvtScript N(EVS_OpenChest_MysticalKey) = {
-    Set(GF_DGB18_Chest_MysticalKey, TRUE)
-    Call(AddItem, ITEM_MYSTICAL_KEY, EVT_IGNORE_ARG)
+    Set(GF_DGB18_Chest_MysticalKey, true)
+    Call(AddKeyItem, ITEM_MYSTICAL_KEY)
     Call(SetNpcVar, NPC_Yakkey, 0, 1)
     Return
     End

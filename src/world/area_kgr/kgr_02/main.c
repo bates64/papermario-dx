@@ -30,8 +30,8 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Exec(N(EVS_Dummy))

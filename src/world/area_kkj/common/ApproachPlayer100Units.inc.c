@@ -14,14 +14,14 @@ API_CALLABLE(N(ApproachPlayer100Units)) {
     f32 posX;
     f32 posZ;
 
-    if (npc == NULL) {
+    if (npc == nullptr) {
         return ApiStatus_DONE2;
     }
 
     if (dist2D(playerStatus->pos.x, playerStatus->pos.z, npc->pos.x, npc->pos.z) < 100.0f) {
-        isCloseToPlayer = FALSE;
+        isCloseToPlayer = false;
     } else {
-        isCloseToPlayer = TRUE;
+        isCloseToPlayer = true;
     }
 
     angle = clamp_angle(atan2(playerStatus->pos.x, playerStatus->pos.z, npc->pos.x, npc->pos.z));

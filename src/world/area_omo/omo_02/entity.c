@@ -12,8 +12,8 @@ EvtScript N(EVS_TetherCamToPlayer) = {
 };
 
 EvtScript N(EVS_StarBoxLaunch_Impl) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Loop(4)
@@ -29,9 +29,9 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     Call(DisableCameraFollowPlayerY)
     Wait(3)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(DisableCameraFollowPlayerY)
-    Call(DisablePlayerPhysics, FALSE)
-    Call(DisablePlayerInput, FALSE)
+    Call(N(DisableCameraFollowPlayerY))
+    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

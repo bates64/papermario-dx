@@ -4,7 +4,7 @@
 
 char gCloudyFlowerFieldsBg[] = "fla_bg";
 char gSunnyFlowerFieldsBg[] = "flb_bg";
-s8 gBackroundWaveEnabled = FALSE;
+s8 gBackroundWaveEnabled = false;
 s16 gBackroundTextureYOffset = 0;
 f32 gBackroundWavePhase = 0.0f;
 
@@ -12,12 +12,12 @@ BSS PAL_BIN gBackgroundPalette[256];
 BSS f32 gBackroundLastScrollValue;
 
 void load_map_bg(char* optAssetName) {
-    if (optAssetName != NULL) {
+    if (optAssetName != nullptr) {
         UNK_PTR compressedData;
         u32 assetSize;
         char* assetName = optAssetName;
 
-        if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE) {
+        if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE) {
             // Use sunny Flower Fields bg rather than cloudy
             if (strcmp(assetName, gCloudyFlowerFieldsBg) == 0) {
                 assetName = gSunnyFlowerFieldsBg;
@@ -32,7 +32,7 @@ void load_map_bg(char* optAssetName) {
 
 void reset_background_settings(void) {
     gBackroundLastScrollValue = 0;
-    gBackroundWaveEnabled = FALSE;
+    gBackroundWaveEnabled = false;
     gGameStatusPtr->backgroundDarkness = 180;
     gGameStatusPtr->backgroundFlags &= BACKGROUND_RENDER_STATE_MASK;
 }
@@ -307,9 +307,9 @@ void appendGfx_background_texture(void) {
 }
 
 void enable_background_wave(void) {
-    gBackroundWaveEnabled = TRUE;
+    gBackroundWaveEnabled = true;
 }
 
 void disable_background_wave(void) {
-    gBackroundWaveEnabled = FALSE;
+    gBackroundWaveEnabled = false;
 }

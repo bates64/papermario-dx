@@ -48,9 +48,9 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
-    Call(EnableGroup, MODEL_g156, FALSE)
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(EnableGroup, MODEL_g156, false)
     Call(SetTexPanner, MODEL_o715, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -60,7 +60,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetModelCustomGfx, MODEL_o715, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)
     Exec(N(EVS_BindExitTriggers))

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "hud_element.h"
+#include "audio/public.h"
 #include "fio.h"
 #include "sprite.h"
 #include "game_modes.h"
@@ -20,18 +21,18 @@ void state_step_startup(void) {
     }
 
     gOverrideFlags = 0;
-    gGameStatus.areaID = 0;
-    gGameStatus.context = CONTEXT_WORLD;
-    gGameStatus.prevArea = -1;
-    gGameStatus.mapID = 0;
-    gGameStatus.entryID = 0;
-    gGameStatus.debugUnused1 = FALSE;
-    gGameStatus.debugScripts = DEBUG_SCRIPTS_NONE;
-    gGameStatus.keepUsingPartnerOnMapChange = FALSE;
-    gGameStatus.introPart = INTRO_PART_NONE;
-    gGameStatus.demoBattleFlags = 0;
-    gGameStatus.unk_A9 = -1;
-    gGameStatus.demoState = DEMO_STATE_NONE;
+    gGameStatusPtr->areaID = 0;
+    gGameStatusPtr->context = CONTEXT_WORLD;
+    gameStatus->prevArea = -1;
+    gameStatus->mapID = 0;
+    gameStatus->entryID = 0;
+    gGameStatusPtr->debugUnused1 = false;
+    gGameStatusPtr->debugScripts = DEBUG_SCRIPTS_NONE;
+    gGameStatusPtr->keepUsingPartnerOnMapChange = false;
+    gGameStatusPtr->introPart = INTRO_PART_NONE;
+    gGameStatusPtr->demoBattleFlags = 0;
+    gGameStatusPtr->unk_A9 = -1;
+    gGameStatusPtr->demoState = DEMO_STATE_NONE;
 
     general_heap_create();
     clear_render_tasks();
@@ -48,7 +49,7 @@ void state_step_startup(void) {
     hud_element_clear_cache();
     clear_trigger_data();
     clear_printers();
-    clear_entity_data(FALSE);
+    clear_entity_data(false);
     clear_screen_overlays();
     clear_player_status();
     clear_npcs();
@@ -74,12 +75,19 @@ void state_step_startup(void) {
     fio_load_globals();
 
     if (gSaveGlobals.useMonoSound == 0) {
-        gGameStatus.soundOutputMode = SOUND_OUT_STEREO;
-        audio_set_stereo();
+        gGameStatusPtr->soundOutputMode = SOUND_OUT_STEREO;
+        snd_set_stereo();
     } else {
-        gGameStatus.soundOutputMode = SOUND_OUT_MONO;
-        audio_set_mono();
+        gGameStatusPtr->soundOutputMode = SOUND_OUT_MONO;
+        snd_set_mono();
     }
+
+#if VERSION_PAL
+    if (gSaveGlobals.language >= 4) {
+        gSaveGlobals.language = LANGUAGE_DEFAULT;
+    }
+    gCurrentLanguage = gSaveGlobals.language;
+#endif
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
 

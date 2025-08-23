@@ -135,31 +135,31 @@ EvtScript N(EVS_CarryPeachAway_Ch1) = {
 };
 
 EvtScript N(EVS_Inspect_Door) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, 0)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_004A)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
 
 EvtScript N(EVS_Inspect_BowsersDiary) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 50, 0, 37)
         Call(SetPanTarget, CAM_DEFAULT, -237, 0, 37)
         Call(SetCamDistance, CAM_DEFAULT, 300)
         Call(SetCamPosA, CAM_DEFAULT, -180, -20)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
     EndThread
-    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, TRUE)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
     Call(SetPlayerPos, -164, 0, -53)
     Call(InterpPlayerYaw, 225, 0)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, FALSE)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
     Call(DisablePartnerAI, 0)
     Call(NpcJump0, NPC_PARTNER, -225, 50, -80, 20 * DT)
     Call(NpcFacePlayer, NPC_PARTNER, 0)
@@ -198,7 +198,7 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Fly)
     Call(NpcFlyTo, NPC_PARTNER, -180, 40, -100, 10 * DT, 0, EASING_LINEAR)
     Wait(10 * DT)
-    Call(SetMusicTrack, 0, SONG_BOWSER_THEME, 0, 8)
+    Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
     Call(SetPanTarget, CAM_DEFAULT, 237, 0, 37)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-12.0))
     Call(SetCamPosB, CAM_DEFAULT, 170, -20)
@@ -251,7 +251,7 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Call(SetPanTarget, CAM_DEFAULT, 240, 0, 37)
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamPosB, CAM_DEFAULT, 134, -20)
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(5 * DT)
     Call(SetNpcPos, NPC_Bowser, -100, 0, -70)
     Call(SetNpcYaw, NPC_Bowser, 90)
@@ -329,10 +329,10 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Wait(30 * DT)
     Call(FadeOutMusic, 0, 1000 * DT)
     ExecWait(N(EVS_EndPeachChapter1))
-    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+    Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(EnablePartnerAI)
-    Call(DisablePlayerPhysics, FALSE)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

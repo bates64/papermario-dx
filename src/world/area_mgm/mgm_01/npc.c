@@ -118,10 +118,13 @@ void N(appendGfx_score_display) (void* renderData) {
     }
 
     if (data->scoreWindowPosX < SCREEN_WIDTH + 1) {
-        draw_box(0, WINDOW_STYLE_9, data->scoreWindowPosX, 28, 0, 72, 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+        draw_box(0, WINDOW_STYLE_9, data->scoreWindowPosX, 28, 0, 72, 20, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
         hid = data->hudElemID;
         hud_element_set_render_pos(hid, data->scoreWindowPosX + 15, 39);
         hud_element_draw_clipped(hid);
+#if VERSION_JP
+        draw_msg(MSG_MenuTip_JP_000C, data->scoreWindowPosX + 24, 30, 255, MSG_PAL_WHITE, 0);
+#endif
         if (data->curScore > data->targetScore) {
             data->curScore = data->targetScore;
         } else if (data->curScore < data->targetScore) {
@@ -253,9 +256,9 @@ API_CALLABLE(N(UpdatePanelEmergeFromBlock)) {
     data->panels[index].lerpElapsed++;
 
     if (data->panels[index].lerpElapsed >= data->panels[index].lerpDuration) {
-        evt_set_variable(script, LVar3, TRUE);
+        evt_set_variable(script, LVar3, true);
     } else {
-        evt_set_variable(script, LVar3, FALSE);
+        evt_set_variable(script, LVar3, false);
     }
 
     return ApiStatus_DONE2;
@@ -279,9 +282,9 @@ API_CALLABLE(N(UpdatetPanelHoldAboveBlock)) {
 
     data->panels[index].lerpElapsed++;
     if (data->panels[index].lerpElapsed >= data->panels[index].lerpDuration) {
-        evt_set_variable(script, LVar3, TRUE);
+        evt_set_variable(script, LVar3, true);
     } else {
-        evt_set_variable(script, LVar3, FALSE);
+        evt_set_variable(script, LVar3, false);
     }
 
     return ApiStatus_DONE2;
@@ -355,9 +358,9 @@ API_CALLABLE(N(UpdatePanelMoveToTally)) {
         data->panels[index].lerpElapsed, data->panels[index].lerpDuration);
 
     if (data->panels[index].lerpElapsed >= data->panels[index].lerpDuration) {
-        evt_set_variable(script, LVar3, TRUE);
+        evt_set_variable(script, LVar3, true);
     } else {
-        evt_set_variable(script, LVar3, FALSE);
+        evt_set_variable(script, LVar3, false);
     }
 
     return ApiStatus_DONE2;
@@ -627,7 +630,7 @@ API_CALLABLE(N(CreateMinigame)) {
     HudElemID hid;
 
     scorekeeper->varTablePtr[JUMP_DATA_VAR_IDX] = data;
-    data->workerID = create_worker_scene(NULL, &mgm_01_worker_draw_score);
+    data->workerID = create_worker_scene(nullptr, &mgm_01_worker_draw_score);
 
     hid = hud_element_create(&HES_StatusCoin);
     data->hudElemID = hid;
@@ -663,7 +666,7 @@ API_CALLABLE(N(SetMsgVars_BlocksRemaining)) {
     set_message_int_var(remaining, 0);
 #if VERSION_PAL
     evt_set_variable(script, LVarD, remaining);
-#else
+#elif VERSION_US || VERSION_IQUE
     set_message_text_var((remaining == 1) ? (s32)&MessageSingular : (s32)&MessagePlural, 1);
 #endif
 
@@ -727,17 +730,17 @@ EvtScript N(EVS_ManageMinigame) = {
             Call(N(GetPanelInfo), LVarA)
             Switch(LVar0)
                 CaseEq(0)
-                    Call(EnableModel, LVar1, FALSE)
+                    Call(EnableModel, LVar1, false)
                     Call(N(SetPanelState), LVarA, 1)
                 CaseEq(2)
-                    Call(DisablePlayerInput, TRUE)
+                    Call(DisablePlayerInput, true)
                     Call(N(InitPanelEmergeFromBlock), LVarA)
-                    Call(EnableModel, LVar1, TRUE)
+                    Call(EnableModel, LVar1, true)
                     Call(N(SetPanelState), LVarA, 3)
                 CaseEq(4)
                     IfNe(LVar2, 3)
                         IfLt(LVar3, LVarC)
-                            Call(DisablePlayerInput, FALSE)
+                            Call(DisablePlayerInput, false)
                         EndIf
                     EndIf
                     Call(N(InitPanelHoldAboveBlock), LVarA)
@@ -819,11 +822,11 @@ EvtScript N(EVS_ManageMinigame) = {
                     Call(N(UpdateRecords))
                     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0038)
             EndSwitch
-            Call(ShowCoinCounter, TRUE)
+            Call(ShowCoinCounter, true)
             Wait(10)
             Call(N(GiveCoinReward))
             Wait(15)
-            Call(ShowCoinCounter, FALSE)
+            Call(ShowCoinCounter, false)
             Wait(5)
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003A)
     EndSwitch
@@ -831,7 +834,7 @@ EvtScript N(EVS_ManageMinigame) = {
     Call(N(DestroyBlockEntities))
     Exec(N(EVS_InitializePanels))
     Wait(1)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Goto(0)
     Return
     End
@@ -931,14 +934,14 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     EndIf
     Call(GetSelfVar, 2, LVar0)
     IfEq(LVar0, -1)
-        IfEq(GF_MGM_Met_JumpAttack, FALSE)
+        IfEq(GF_MGM_Met_JumpAttack, false)
             Call(N(SetMsgImgs_Panels))
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_002D)
-            Set(GF_MGM_Met_JumpAttack, TRUE)
+            Set(GF_MGM_Met_JumpAttack, true)
         Else
             Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_002E)
         EndIf
-        Call(ShowCoinCounter, TRUE)
+        Call(ShowCoinCounter, true)
         Call(N(GetCoinCount))
         IfLt(LVarA, 10)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0039)

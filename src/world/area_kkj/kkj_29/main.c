@@ -8,6 +8,19 @@ EvtScript N(EVS_EndPeachChapter5) = {
     Call(PlaySound, SOUND_SLIDE_WHISTLE_OUT)
     Call(GotoMapSpecial, Ref("jan_22"), jan_22_ENTRY_3, TRANSITION_END_PEACH_INTERLUDE)
     Wait(100)
+}; //@bug script not properly terminated
+
+EvtScript N(EVS_ExitDoor_kkj_10_2) = {
+    SetGroup(EVT_GROUP_EXIT_MAP)
+    Call(DisablePlayerInput, true)
+    Set(LVar0, kkj_29_ENTRY_0)
+    Set(LVar1, COLLIDER_tte)
+    Set(LVar2, MODEL_o57)
+    Set(LVar3, DOOR_SWING_IN)
+    Exec(ExitSingleDoor)
+    Wait(17)
+    Call(GotoMap, Ref("kkj_10"), kkj_10_ENTRY_2)
+    Wait(100)
     Return
     End
 };
@@ -33,7 +46,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
-        Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     EndIf
     Exec(N(EVS_ManageStageEffects))
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)

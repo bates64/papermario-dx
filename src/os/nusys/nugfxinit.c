@@ -1,11 +1,11 @@
 #include "common.h"
 #include "nu/nusys.h"
 
-extern u64 gspF3DEX2kawase_fifo_text_bin[];
-extern u64 gspF3DEX2kawase_fifo_data_bin[];
+extern u64 gspF3DZEX2_NoN_PosLight_fifoTextStart[];
+extern u64 gspF3DZEX2_NoN_PosLight_fifoDataStart[];
 
 NUUcode nugfx_ucode = {
-    gspF3DEX2kawase_fifo_text_bin, gspF3DEX2kawase_fifo_data_bin,
+    gspF3DZEX2_NoN_PosLight_fifoTextStart, gspF3DZEX2_NoN_PosLight_fifoDataStart,
 };
 
 extern u16 gFrameBuf0[];
@@ -14,6 +14,8 @@ extern u16 gFrameBuf2[];
 u16* FrameBuf[] = {
     gFrameBuf0, gFrameBuf1, gFrameBuf2
 };
+
+extern s32 D_800B91D0[];
 
 Gfx rdpstateinit_dl[] = {
     gsDPSetEnvColor(0, 0, 0, 0),
@@ -63,6 +65,9 @@ void nuGfxInitEX2(void) {
     nuGfxSetCfb(FrameBuf, NU_GFX_FRAMEBUFFER_NUM);
     nuGfxSetZBuffer((u16*) NU_GFX_ZBUFFER_ADDR);
     nuGfxSwapCfbFuncSet(nuGfxSwapCfb);
+#if VERSION_PAL
+    nuGfxSetUcodeFifo(D_800B91D0, NU_GFX_RDP_OUTPUTBUFF_SIZE);
+#endif
     nuGfxUcode = &nugfx_ucode;
     nuGfxTaskMgrInit();
 

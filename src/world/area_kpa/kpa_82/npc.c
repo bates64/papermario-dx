@@ -92,83 +92,92 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 #include "world/common/complete/ConsumableItemChoice.inc.c"
 
 EvtScript N(EVS_SetCam_MeetingDoor) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.0))
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
     Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_SetCam_AfterBattle) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))
     Call(SetCamPitch, CAM_DEFAULT, Float(5.0), Float(-14.0))
     Call(SetCamDistance, CAM_DEFAULT, Float(375.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
     Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_SetCam_AfterResult) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-14.0))
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
     Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_SetCam_AskQuestion) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(11.0), Float(-10.5))
     Call(SetCamPosA, CAM_DEFAULT, Float(88.0), Float(256.6))
     Call(SetCamPosB, CAM_DEFAULT, Float(195.0), Float(142.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_SetCam_ViewRoom) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-9.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(-2.5), Float(300.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(-2.5), Float(200.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
 };
 
 EvtScript N(EVS_SetCam_BeforeBattle) = {
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+#if VERSION_JP
+    Call(UseSettingsFrom, CAM_DEFAULT, LVar3, LVar4, LVar5)
+    Call(SetCamSpeed, CAM_DEFAULT, LVar6)
+    Call(SetCamPitch, CAM_DEFAULT, Float(16.5), Float(-9.0))
+    Call(SetCamDistance, CAM_DEFAULT, Float(445.0))
+    Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
+    Call(WaitForCam, CAM_DEFAULT, Float(1.0))
+    Wait(20)
+#else
+    Call(SetCamType, CAM_DEFAULT, 4, false)
     Call(SetCamSpeed, CAM_DEFAULT, LVar6)
     Call(SetCamDistance, CAM_DEFAULT, Float(470.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-9.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(50.0), Float(300.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(50.0), Float(200.0))
     Call(SetCamPosC, CAM_DEFAULT, Float(0.0), Float(0.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
@@ -839,14 +848,14 @@ EvtScript N(EVS_AskQuestion) = {
 };
 
 EvtScript N(EVS_ShowUnknownCard) = {
-    Call(EnableModel, MODEL_m_, TRUE)
+    Call(EnableModel, MODEL_m_, true)
     Call(MakeLerp, 180, LVar0, 60 * DT, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
         IfGe(LVar0, 360)
             Call(RotateGroup, MODEL_g47, LVar0, 0, 1, 0)
-            Call(EnableGroup, MODEL_g47, TRUE)
-            Call(EnableModel, MODEL_m_, FALSE)
+            Call(EnableGroup, MODEL_g47, true)
+            Call(EnableModel, MODEL_m_, false)
         Else
             Call(RotateModel, MODEL_m_, LVar0, 0, 1, 0)
         EndIf
@@ -876,7 +885,7 @@ EvtScript N(EVS_TetherResultCardToDummyPos) = {
 };
 
 EvtScript N(EVS_ScaleResultCard) = {
-    Call(EnableModel, LVarA, TRUE)
+    Call(EnableModel, LVarA, true)
     Call(MakeLerp, 100, 50, 30 * DT, EASING_LINEAR)
     Loop(0)
         Call(UpdateLerp)
@@ -893,7 +902,7 @@ EvtScript N(EVS_ScaleResultCard) = {
 };
 
 EvtScript N(EVS_MoveCardToScoreboard) = {
-    Call(EnableModel, LVarA, TRUE)
+    Call(EnableModel, LVarA, true)
     Call(SetNpcPos, NPC_Dummy, 0, 130, 50)
     ExecGetTID(N(EVS_TetherResultCardToDummyPos), LVarB)
     Exec(N(EVS_ScaleResultCard))
@@ -987,24 +996,24 @@ EvtScript N(EVS_ShowResultCard) = {
         ExecWait(N(EVS_ShowUnknownCard))
         Call(PlaySound, SOUND_APPROVE)
         Wait(10 * DT)
-        Call(EnableGroup, MODEL_g47, FALSE)
+        Call(EnableGroup, MODEL_g47, false)
         Set(LVarA, MODEL_m_kai)
         ExecWait(N(EVS_MoveCardToScoreboard))
         ExecWait(N(EVS_GetCorrectScoreboardModel))
-        Call(EnableModel, MODEL_m_kai, FALSE)
-        Call(EnableModel, LVar0, TRUE)
+        Call(EnableModel, MODEL_m_kai, false)
+        Call(EnableModel, LVar0, true)
         Wait(30 * DT)
     Else
         Set(LVar0, 2340)
         ExecWait(N(EVS_ShowUnknownCard))
         Call(PlaySound, SOUND_MENU_ERROR)
         Wait(10 * DT)
-        Call(EnableGroup, MODEL_g47, FALSE)
+        Call(EnableGroup, MODEL_g47, false)
         Set(LVarA, MODEL_b_kai)
         ExecWait(N(EVS_MoveCardToScoreboard))
         ExecWait(N(EVS_GetWrongScoreboardModel))
-        Call(EnableModel, MODEL_b_kai, FALSE)
-        Call(EnableModel, LVar0, TRUE)
+        Call(EnableModel, MODEL_b_kai, false)
+        Call(EnableModel, LVar0, true)
         Wait(30 * DT)
     EndIf
     ExecWait(N(EVS_SetCam_AfterResult))
@@ -1015,30 +1024,30 @@ EvtScript N(EVS_ShowResultCard) = {
 EvtScript N(EVS_NpcIdle_Door) = {
     Label(1)
         Wait(1)
-        IfEq(GF_KPA82_PassedThroughDoor, FALSE)
+        IfEq(GF_KPA82_PassedThroughDoor, false)
             Goto(1)
         EndIf
-    Set(GF_KPA82_PassedThroughDoor, FALSE)
-    Call(DisablePlayerInput, TRUE)
+    Set(GF_KPA82_PassedThroughDoor, false)
+    Call(DisablePlayerInput, true)
     ExecWait(N(EVS_SetCam_MeetingDoor))
-    Set(MF_Sync_MusicChange, FALSE)
+    Set(MF_Sync_MusicChange, false)
     Thread
-        Call(SetMusicTrack, 0, SONG_FINAL_BOWSER_BATTLE, 1, 8)
+        Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, BGM_VARIATION_1, VOL_LEVEL_FULL)
         Wait(150 * DT)
-        IfNe(MF_Sync_MusicChange, FALSE)
+        IfNe(MF_Sync_MusicChange, false)
             Goto(5)
         EndIf
         Call(FadeOutMusic, 0, 250)
         Wait(15 * DT)
-        IfNe(MF_Sync_MusicChange, FALSE)
+        IfNe(MF_Sync_MusicChange, false)
             Goto(5)
         EndIf
         Exec(N(EVS_SetupMusic))
         Label(5)
     EndThread
-    IfEq(GF_KPA82_SpokeToDoor, FALSE)
+    IfEq(GF_KPA82_SpokeToDoor, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim01, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH8_002E)
-        Set(GF_KPA82_SpokeToDoor, TRUE)
+        Set(GF_KPA82_SpokeToDoor, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim01, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH8_002F)
     EndIf
@@ -1048,9 +1057,9 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_ShyGuy_Black_Anim01, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH8_0030)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
-        Set(GF_KPA82_PassedThroughDoor, FALSE)
-        Call(DisablePlayerInput, FALSE)
+        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Set(GF_KPA82_PassedThroughDoor, false)
+        Call(DisablePlayerInput, false)
         Goto(1)
     EndIf
     Call(ShowChoice, MSG_Choice_0013)
@@ -1062,11 +1071,11 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(DisablePartnerAI, 0)
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
-        Call(DisablePlayerPhysics, TRUE)
+        Call(DisablePlayerPhysics, true)
         Call(SetPlayerSpeed, Float(2.0))
         Call(PlayerMoveTo, 175, 236, 20)
         Call(InterpPlayerYaw, 270, 0)
-        Call(DisablePlayerPhysics, FALSE)
+        Call(DisablePlayerPhysics, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
     EndThread
     Thread
@@ -1083,15 +1092,15 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(10)
         Set(LVar6, Float(2.0 / DT))
         ExecWait(N(EVS_SetCam_ViewRoom))
-        Set(MF_Sync_MusicChange, TRUE)
+        Set(MF_Sync_MusicChange, true)
         Wait(2)
-        Call(SetMusicTrack, 0, SONG_NORMAL_BATTLE, 0, 8)
+        Call(SetMusic, 0, SONG_NORMAL_BATTLE, 0, VOL_LEVEL_FULL)
         ExecWait(N(EVS_SetDoorRots))
         ExecWait(N(EVS_Release_Wave))
         Wait(200 * DT)
         Thread
             Call(ShowMessageAtScreenPos, MSG_CH8_0034, 300, 200)
-            Set(MV_Sync_TimesUp, TRUE)
+            Set(MV_Sync_TimesUp, true)
         EndThread
         Wait(60 * DT)
         ExecWait(N(EVS_Withdraw_Wave))
@@ -1101,10 +1110,10 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Wait(30 * DT)
         Label(12)
             Wait(1)
-            IfEq(MV_Sync_TimesUp, FALSE)
+            IfEq(MV_Sync_TimesUp, false)
                 Goto(12)
             EndIf
-        Set(MV_Sync_TimesUp, FALSE)
+        Set(MV_Sync_TimesUp, false)
         ExecWait(N(EVS_AskQuestion))
         ExecWait(N(EVS_ShowResultCard))
         IfEq(MV_LastAnswerResult, ANSWER_CORRECT)
@@ -1168,11 +1177,11 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(30)
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
-        Call(DisablePlayerPhysics, TRUE)
+        Call(DisablePlayerPhysics, true)
         Call(SetPlayerSpeed, Float(3.0 / DT))
         Call(PlayerMoveTo, 120, 145, 0)
         Call(InterpPlayerYaw, 90, 0)
-        Call(DisablePlayerPhysics, FALSE)
+        Call(DisablePlayerPhysics, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
     EndThread
     Thread
@@ -1185,9 +1194,9 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim01, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH8_003F)
     Label(40)
     Call(EnablePartnerAI)
-    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+    Call(PanToTarget, CAM_DEFAULT, 0, false)
     Set(GB_KPA82_BowserDoorState, 1)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     BindTrigger(Ref(N(EVS_ExitDoors_kpa_61_0)), TRIGGER_WALL_PRESS_A, COLLIDER_o166, 1, 0)
     Return
     End
@@ -1220,8 +1229,8 @@ EvtScript N(EVS_NpcInit_Door) = {
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Door)))
     EndIf
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Door)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcPos, NPC_SELF, 184, 20, 150)
     Return
     End
@@ -1229,32 +1238,32 @@ EvtScript N(EVS_NpcInit_Door) = {
 
 EvtScript N(EVS_NpcInit_Goomba) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomba)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_ShyGuy) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_ShyGuy)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_KoopaTroopa) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bobomb) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Bobomb)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Return
     End
 };
@@ -1360,7 +1369,7 @@ NpcData N(NpcData_Goombas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1382,7 +1391,7 @@ NpcData N(NpcData_Goombas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1404,7 +1413,7 @@ NpcData N(NpcData_Goombas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1426,7 +1435,7 @@ NpcData N(NpcData_Goombas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1448,7 +1457,7 @@ NpcData N(NpcData_Goombas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1473,7 +1482,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1495,7 +1504,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1517,7 +1526,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1539,7 +1548,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1561,7 +1570,7 @@ NpcData N(NpcData_RedShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1586,7 +1595,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1608,7 +1617,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1630,7 +1639,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1652,7 +1661,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1674,7 +1683,7 @@ NpcData N(NpcData_BlueShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1699,7 +1708,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1721,7 +1730,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1743,7 +1752,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1765,7 +1774,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1787,7 +1796,7 @@ NpcData N(NpcData_GreenShyGuys)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1812,7 +1821,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1834,7 +1843,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1856,7 +1865,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1878,7 +1887,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1900,7 +1909,7 @@ NpcData N(NpcData_DarkTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1925,7 +1934,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1947,7 +1956,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1969,7 +1978,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -1991,7 +2000,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2013,7 +2022,7 @@ NpcData N(NpcData_KoopaTroopas)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2038,7 +2047,7 @@ NpcData N(NpcData_Bobombs)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2060,7 +2069,7 @@ NpcData N(NpcData_Bobombs)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2082,7 +2091,7 @@ NpcData N(NpcData_Bobombs)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2104,7 +2113,7 @@ NpcData N(NpcData_Bobombs)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },
@@ -2126,7 +2135,7 @@ NpcData N(NpcData_Bobombs)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_RECT,
                 .centerPos  = { 0, 0, 150 },

@@ -6,25 +6,6 @@
 #include "entity.h"
 #include "model.h"
 
-#if VERSION_JP // TODO remove once segments are split
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitFloatingYellowBlock_gfx_ROM_START;
-extern Addr entity_model_HitRedBlock_anim_ROM_END;
-extern Addr entity_model_HitRedBlock_anim_ROM_START;
-extern Addr entity_model_HitRedBlock_gfx_ROM_END;
-extern Addr entity_model_HitRedBlock_gfx_ROM_START;
-extern Addr entity_model_HitYellowBlock_anim_ROM_END;
-extern Addr entity_model_HitYellowBlock_anim_ROM_START;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_END;
-extern Addr entity_model_HitYellowBlock_gfx_ROM_START;
-extern Addr entity_model_RedBlock_ROM_END;
-extern Addr entity_model_RedBlock_ROM_START;
-extern Addr entity_model_YellowBlock_ROM_END;
-extern Addr entity_model_YellowBlock_ROM_START;
-#endif
-
 extern Gfx Entity_YellowBlock_Render[];
 extern Gfx Entity_RedBlock_Render[];
 extern AnimScript Entity_HitYellowBlock_AnimationHit;
@@ -223,11 +204,11 @@ void entity_HitItemBlock_hide(Entity* entity) {
 }
 
 s32 entity_TriggerBlock_start_bound_script(Entity* entity) {
-    if (entity->boundScriptBytecode != NULL) {
+    if (entity->boundScriptBytecode != nullptr) {
         entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 void entity_TriggerBlock_disable_player_input(void) {
@@ -286,44 +267,44 @@ void entity_ItemlessBlock_init(Entity* entity) {
 }
 
 EntityScript D_802EA310 = {
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_SetFlags(ENTITY_FLAG_PENDING_INSTANCE_DELETE)
     es_End
 };
 
 EntityScript Entity_ItemBlock_Script = {
     es_Call(entity_ItemBlock_check_if_inactive)
-    es_SetCallback(NULL, 0)
+    es_SetCallback(nullptr, 0)
     es_SetCallback(entity_ItemBlock_idle, 0)
     es_PlaySound(SOUND_HIT_BLOCK)
     es_Call(entity_ItemBlock_spawn_item)
     es_Call(entity_ItemBlock_replace_with_inactive)
-    es_SetCallback(NULL, 1)
+    es_SetCallback(nullptr, 1)
     es_SetFlags(ENTITY_FLAG_HIDDEN)
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_SetFlags(ENTITY_FLAG_PENDING_INSTANCE_DELETE)
     es_End
 };
 EntityScript Entity_HiddenItemBlock_Script = {
     es_Call(entity_ItemBlock_check_if_inactive)
-    es_SetCallback(NULL, 0)
+    es_SetCallback(nullptr, 0)
     es_SetCallback(entity_HiddenItemBlock_idle, 0)
     es_PlaySound(SOUND_HIT_BLOCK)
     es_Call(entity_ItemBlock_spawn_item)
     es_Call(entity_ItemBlock_replace_with_inactive)
-    es_SetCallback(NULL, 1)
+    es_SetCallback(nullptr, 1)
     es_SetFlags(ENTITY_FLAG_HIDDEN)
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_SetFlags(ENTITY_FLAG_PENDING_INSTANCE_DELETE)
     es_End
 };
 EntityScript Entity_HitBlock_Script = {
-    es_SetCallback(NULL, 1)
+    es_SetCallback(nullptr, 1)
     es_Call(entity_HitItemBlock_play_anim)
     es_SetCallback(entity_HitItemBlock_appear, 10)
     es_Call(entity_HitItemBlock_hide)
     es_Call(entity_HitItemBlock_show_inactive)
-    es_SetCallback(NULL, 1)
+    es_SetCallback(nullptr, 1)
     es_SetFlags(ENTITY_FLAG_HIDDEN)
     es_SetFlags(ENTITY_FLAG_PENDING_FULL_DELETE)
     es_End
@@ -341,7 +322,7 @@ EntityScript Entity_TriggerBlock_Script = {
     es_SetFlags(ENTITY_FLAG_HIDDEN)
     es_SetFlags(ENTITY_FLAG_DISABLE_COLLISION)
     es_Call(entity_TriggerBlock_start_bound_script_2)
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_SetFlags(ENTITY_FLAG_PENDING_FULL_DELETE)
     es_End
 };
@@ -427,7 +408,7 @@ EntityBlueprint Entity_HitGroundedYellowBlock = {
     .modelAnimationNodes = Entity_HitYellowBlock_Mesh,
     .fpInit = entity_ItemlessBlock_init,
     .updateEntityScript = Entity_HitBlock_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_HitYellowBlock_dma },
     .entityType = ENTITY_TYPE_YELLOW_BLOCK,
     .aabbSize = { 25, 25, 25 }
@@ -440,7 +421,7 @@ EntityBlueprint Entity_HitFloatingYellowBlock = {
     .modelAnimationNodes = Entity_HitFloatingYellowBlock_Mesh,
     .fpInit = entity_ItemlessBlock_init,
     .updateEntityScript = Entity_HitBlock_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_HitFloatinYellowBlock_dma },
     .entityType = ENTITY_TYPE_YELLOW_BLOCK,
     .aabbSize = { 25, 25, 25 }
@@ -453,7 +434,7 @@ EntityBlueprint Entity_HitRedBlock = {
     .modelAnimationNodes = Entity_HitRedBlock_Mesh,
     .fpInit = entity_ItemlessBlock_init,
     .updateEntityScript = Entity_HitBlock_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_HitRedBlock_dma },
     .entityType = ENTITY_TYPE_RED_BLOCK,
     .aabbSize = { 25, 25, 25 }

@@ -25,8 +25,8 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         Wait(1)
         Goto(0)
     EndIf
-    Call(DisablePlayerInput, TRUE)
-    Call(DisableCameraLeadingPlayer)
+    Call(DisablePlayerInput, true)
+    Call(N(DisableCameraLeadingPlayer))
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
     IfEq(GB_OMO_PeachChoice1, 0)
@@ -38,7 +38,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
         Call(EnableCameraLeadingPlayer)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
     EndThread
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
     End
@@ -48,7 +48,7 @@ EvtScript N(EVS_NpcDefeat_Goomba) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Set(GF_OMO04_Item_Mushroom, TRUE)
+            Set(GF_OMO04_Item_Mushroom, true)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -92,7 +92,11 @@ NpcData N(NpcData_Goomba) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Goomba),
     .settings = &N(NpcSettings_Goomba),
+#if VERSION_JP
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
+#else
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
+#endif
     .drops = NO_DROPS,
     .animations = GOOMBA_ANIMS,
 };
@@ -103,7 +107,11 @@ NpcData N(NpcData_Clubba) = {
     .yaw = 270,
     .init = &N(EVS_NpcInit_Clubba),
     .settings = &N(NpcSettings_Clubba),
+#if VERSION_JP
+    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
+#else
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
+#endif
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS_ALT,
 };
@@ -114,7 +122,7 @@ NpcData N(NpcData_ShyGuy) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -770, 0, 0 },
@@ -137,7 +145,7 @@ NpcData N(NpcData_SkyGuy) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -170, 60, 30 },

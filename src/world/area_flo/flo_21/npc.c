@@ -79,24 +79,24 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
         Return
     EndIf
     Call(AwaitPlayerApproach, 650, 0, 30)
-    Call(DisablePlayerInput, TRUE)
-    Call(SetMusicTrack, 0, SONG_HUFF_N_PUFF_THEME, 0, 8)
+    Call(DisablePlayerInput, true)
+    Call(SetMusic, 0, SONG_HUFF_N_PUFF_THEME, 0, VOL_LEVEL_FULL)
     ExecGetTID(N(EVS_PlayRumbleSounds), LVar9)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(InterruptUsePartner)
         Wait(20)
     EndIf
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerPhysics, true)
     Call(InterpPlayerYaw, 90, 1)
     Wait(5)
     Call(SetPlayerAnimation, ANIM_Mario1_Flail)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar2, LVar3, LVar4)
     Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(MakeLerp, LVar2, 600, 20, EASING_LINEAR)
     Set(LVar2, LVar3)
     Set(LVar5, LVar3)
@@ -116,8 +116,8 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     EndLoop
     Call(func_802D2C14, 1)
     Call(SetPlayerPos, LVar0, LVar2, LVar4)
-    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
-    Call(DisablePlayerPhysics, FALSE)
+    Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(DisablePlayerPhysics, false)
     Wait(10)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -126,19 +126,19 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(ShowMessageAtWorldPos, MSG_CH6_00CA, 630, 120, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(30.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10)
     Call(ShowMessageAtWorldPos, MSG_CH6_00CB, 630, 120, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(func_802D2C14, 0)
     Wait(10)
     Call(GetCurrentPartnerID, LVar0)
@@ -171,7 +171,7 @@ EvtScript N(EVS_Scene_HuffNPuffAmbush) = {
     KillThread(LVar9)
     Wait(30)
     Call(SetNpcVar, NPC_HuffNPuff_01, 0, 1)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Wait(15)
     Return
     End
@@ -266,25 +266,25 @@ EvtScript N(EVS_HuffNPuff_Defeat_Flashing) = {
     SetF(LVar1, 1)
     ChildThread
         Loop(8)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, FALSE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, FALSE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, FALSE)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, false)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, false)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, false)
             Wait(LVar0)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, TRUE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, TRUE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, TRUE)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, true)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, true)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, true)
             Wait(LVar1)
             SubF(LVar0, 0)
             AddF(LVar1, 0)
         EndLoop
         Loop(0)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, FALSE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, FALSE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, FALSE)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, false)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, false)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, false)
             Wait(LVar0)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, TRUE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, TRUE)
-            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, TRUE)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_01, NPC_FLAG_INVISIBLE, true)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_02, NPC_FLAG_INVISIBLE, true)
+            Call(SetNpcFlagBits, NPC_HuffNPuff_03, NPC_FLAG_INVISIBLE, true)
             Wait(LVar1)
         EndLoop
     EndChildThread
@@ -448,7 +448,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-5.5))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_HuffNPuff_01, ANIM_HuffNPuff_Anim30, ANIM_HuffNPuff_Anim05, 256, -30, 30, MSG_CH6_00CE)
     Call(FadeOutMusic, 0, 1500)
@@ -487,6 +487,16 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     End
 };
 
+#if VERSION_JP
+EvtScript N(EVS_80243428) = {
+    Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, 300, Float(17.0), Float(-6.0))
+    Call(SpeakToPlayer, NPC_SELF, ANIM_HuffNPuff_Anim2D, ANIM_HuffNPuff_Anim02, 0x100, -30, 30, MSG_CH6_00E1)
+    Call(ResetCam, CAM_DEFAULT, Float(4.0))
+    Return
+    End
+};
+#endif
+
 EvtScript N(EVS_NpcIdle_HuffNPuff_01) = {
     Label(0)
         Call(SetSelfVar, 0, 0)
@@ -508,7 +518,7 @@ EvtScript N(EVS_NpcDefeat_HuffNPuff_Main) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_THUMBS_UP, TRUE)
+            Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_THUMBS_UP, true)
             Call(SetNpcYaw, NPC_PARTNER, 90)
             Call(GetPlayerPos, LVar0, LVar1, LVar3)
             Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -516,8 +526,13 @@ EvtScript N(EVS_NpcDefeat_HuffNPuff_Main) = {
             Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar3)
             ExecWait(N(EVS_Scene_BossDefeated))
             Wait(50)
-            Set(MV_BossDefeated, TRUE)
+            Set(MV_BossDefeated, true)
             Exec(N(EVS_TrySpawningStarCard))
+#if VERSION_JP
+        CaseEq(OUTCOME_PLAYER_LOST)
+            ExecWait(N(EVS_80243428))
+        CaseEq(OUTCOME_PLAYER_FLED)
+#endif
     EndSwitch
     Return
     End
@@ -530,7 +545,7 @@ EvtScript N(EVS_NpcDefeat_HuffNPuff_Aux) = {
 
 EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
-        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, TRUE)
+        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_HuffNPuff_01)))
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Main)))
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim02)
@@ -543,7 +558,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Face) = {
 
 EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
-        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, TRUE)
+        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim01)
         Exec(N(EVS_HuffNPuff_AnimateBodyScale))
@@ -556,7 +571,7 @@ EvtScript N(EVS_NpcInit_HuffNPuff_Body) = {
 
 EvtScript N(EVS_NpcInit_HuffNPuff_Arms) = {
     IfLt(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
-        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, TRUE)
+        Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
         Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_HuffNPuff_Aux)))
         Call(SetNpcAnimation, NPC_SELF, ANIM_HuffNPuff_Anim19)
     Else

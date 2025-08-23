@@ -30,13 +30,16 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_JadeJungle, TRUE)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
+    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
+    Set(GF_MAP_JadeJungle, true)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    // waves
-    Call(SetTexPanner, MODEL_o135, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o142, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_o135, true)
+    Call(EnableTexPanning, MODEL_o142, true)
+    Call(EnableTexPanning, MODEL_o52, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)

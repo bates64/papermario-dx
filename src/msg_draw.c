@@ -48,7 +48,7 @@ extern s16 MsgStyleVerticalLineOffsets[];
 
 extern MessageCharset* MsgCharsets[5];
 extern PAL_BIN D_802F4560[80][8];
-extern s32 gMessageBoxFrameParts[2][16];
+extern IMG_BIN* gMessageBoxFrameParts[2][16];
 
 #if VERSION_IQUE
 static IMG_BIN D_801544A0[120][128];
@@ -163,8 +163,8 @@ void draw_message_window(MessagePrintState* printer) {
             printer->windowBasePos.x = 160 - (printer->windowSize.x / 2);
             printer->windowBasePos.y = 56;
             draw_box(DRAW_FLAG_ROTSCALE, WINDOW_STYLE_0, printer->windowBasePos.x, 56, 0, printer->windowSize.x, printer->windowSize.y, 255, 0,
-                     scale, scale, 0.0f, 0.0f, rotZ, drawbox_message_delegate, printer, NULL, SCREEN_WIDTH,
-                     SCREEN_HEIGHT, NULL);
+                     scale, scale, 0.0f, 0.0f, rotZ, drawbox_message_delegate, printer, nullptr, SCREEN_WIDTH,
+                     SCREEN_HEIGHT, nullptr);
             break;
         default:
             appendGfx_message(printer, printer->windowOffsetPos.x, printer->windowOffsetPos.y, printer->unk_46C,
@@ -208,8 +208,13 @@ void draw_message_window(MessagePrintState* printer) {
 #endif
 
 #if VERSION_PAL
-INCLUDE_ASM(s32, "msg_draw", appendGfx_message);
+#define MSG_FADE_IN_DURATION 6
+#define MSG_FADE_OUT_DURATION 4
 #else
+#define MSG_FADE_IN_DURATION 7
+#define MSG_FADE_OUT_DURATION 5
+#endif
+
 void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 additionalOffsetX, u16 additionalOffsetY,
                        u16 flag, u8 alpha) {
     SpriteRasterInfo sprRasterInfo;
@@ -348,7 +353,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
     }
 
-    sp80bool = FALSE;
+    sp80bool = false;
     msg_drawState->drawBufferPos = 0;
 
     while (!sp80bool) {
@@ -513,24 +518,24 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         }
 
                         if (printer->windowState == MSG_WINDOW_STATE_OPENING) {
-                            windowScaleX = update_lerp(EASING_LINEAR, 0.07f, 1.0f, printer->fadeInCounter, 7);
-                            windowScaleY = update_lerp(EASING_LINEAR, 0.3f, 1.0f, printer->fadeInCounter, 7);
-                            temp_f28 = update_lerp(EASING_LINEAR, 96.0f, 200.0f, printer->fadeInCounter, 7);
-                            temp_f20 = update_lerp(EASING_SIN_OUT, temp_s5, temp_s3, printer->fadeInCounter, 7);
-                            temp_f24 = update_lerp(EASING_SIN_OUT, temp_s6, temp_s4, printer->fadeInCounter, 7);
+                            windowScaleX = update_lerp(EASING_LINEAR, 0.07f, 1.0f, printer->fadeInCounter, MSG_FADE_IN_DURATION);
+                            windowScaleY = update_lerp(EASING_LINEAR, 0.3f, 1.0f, printer->fadeInCounter, MSG_FADE_IN_DURATION);
+                            temp_f28 = update_lerp(EASING_LINEAR, 96.0f, 200.0f, printer->fadeInCounter, MSG_FADE_IN_DURATION);
+                            temp_f20 = update_lerp(EASING_SIN_OUT, temp_s5, temp_s3, printer->fadeInCounter, MSG_FADE_IN_DURATION);
+                            temp_f24 = update_lerp(EASING_SIN_OUT, temp_s6, temp_s4, printer->fadeInCounter, MSG_FADE_IN_DURATION);
                             temp_f2_2 = printer->windowSize.x * windowScaleX;
                             temp_f0_2 = printer->windowSize.y * windowScaleY;
                             bubbleX = (temp_f24 - temp_f2_2 * 0.5) + 0.5;
                             bubbleY = (temp_f20 - temp_f0_2 * 0.5) + 0.5;
                             msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
                             printer->fadeInCounter++;
-                            if (printer->fadeInCounter == 7) {
+                            if (printer->fadeInCounter == MSG_FADE_IN_DURATION) {
                                 printer->windowState = MSG_WINDOW_STATE_PRINTING;
                             }
                         } else if (printer->windowState == MSG_WINDOW_STATE_CLOSING) {
                             printer->fadeOutCounter++;
-                            windowScaleX = update_lerp(EASING_LINEAR, 1.0f, 0.6f, printer->fadeOutCounter, 5);
-                            windowScaleY = update_lerp(EASING_LINEAR, 1.0f, 0.8f, printer->fadeOutCounter, 5);
+                            windowScaleX = update_lerp(EASING_LINEAR, 1.0f, 0.6f, printer->fadeOutCounter, MSG_FADE_OUT_DURATION);
+                            windowScaleY = update_lerp(EASING_LINEAR, 1.0f, 0.8f, printer->fadeOutCounter, MSG_FADE_OUT_DURATION);
                             temp_f2 = (printer->windowSize.x * windowScaleX);
                             temp_f0 = (printer->windowSize.y * windowScaleY);
                             temp_f24 = temp_s4;
@@ -539,7 +544,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             bubbleY = (temp_f20 - temp_f0 * 0.5) + 0.5;
                             temp_f22_2 = (temp_f24 + temp_f2 * 0.5) - 0.5;
                             temp_f20_3 = (temp_f20 + temp_f0 * 0.5) - 0.5;
-                            temp_f28 = update_lerp(EASING_LINEAR, 255.0f, 64.0f, printer->fadeOutCounter, 5);
+                            temp_f28 = update_lerp(EASING_LINEAR, 255.0f, 64.0f, printer->fadeOutCounter, MSG_FADE_OUT_DURATION);
                             sp8E = temp_f28 * 0.35;
                             spAE = temp_f28;
                             msg_drawState->clipX[0] = bubbleX + msg_drawState->textStartPos[0];
@@ -547,7 +552,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             msg_drawState->clipX[1] = temp_f22_2 - msg_drawState->textStartPos[0];
                             msg_drawState->clipY[1] = temp_f20_3 - msg_drawState->textStartPos[1];
                             msg_draw_speech_bubble(printer, bubbleX, bubbleY, straightWidth, curveWidth, height, windowScaleX, windowScaleY, temp_f28, 1);
-                            if (printer->fadeOutCounter >= 5) {
+                            if (printer->fadeOutCounter >= MSG_FADE_OUT_DURATION) {
                                 printer->stateFlags |= MSG_STATE_FLAG_1;
                             }
                         } else {
@@ -583,11 +588,11 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         if (printer->windowState == MSG_WINDOW_STATE_OPENING) {
 
                             printer->fadeInCounter++;
-                            if (printer->fadeInCounter == 6) {
+                            if (printer->fadeInCounter == MSG_FADE_IN_DURATION - 1) {
                                 printer->windowState = MSG_WINDOW_STATE_PRINTING;
                             }
 
-                            temp_f10 = ((f32) printer->fadeInCounter * (2.0 / 15.0)) + 0.2;
+                            temp_f10 = ((f32) printer->fadeInCounter * ((2.0 / 15.0) / DT)) + 0.2;
 
                             z1 = printer->windowBasePos.x + (windowSizeX / 2);
                             z2 = printer->windowBasePos.y + (windowSizeY / 2);
@@ -608,10 +613,14 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             sp8E = (u8)(temp_f10 * 255.0) * 0.6;
                         } else if (printer->windowState == MSG_WINDOW_STATE_CLOSING) {
                             printer->fadeOutCounter++;
-                            if (printer->fadeOutCounter >= 5) {
+                            if (printer->fadeOutCounter >= MSG_FADE_OUT_DURATION) {
                                 printer->stateFlags |= MSG_STATE_FLAG_1;
                             }
+#if VERSION_PAL
+                            frameAlpha = -(printer->fadeOutCounter * 57) - 1;
+#else
                             frameAlpha = -(printer->fadeOutCounter * 46) - 1;
+#endif
                             sp8E = ((u8)frameAlpha) * 0.6;
                             frameFading = 1;
                             if (sp8E >= 32) {
@@ -662,7 +671,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             sp8E = (phi_s0_5 & 0xFF) - 0x30;
                             printer->fadeInCounter++;
                             fading = 1;
-                            if ((s16)printer->fadeInCounter == 4) { // TODO why is this cast needed
+                            if (printer->fadeInCounter == 4) {
                                 printer->windowState = MSG_WINDOW_STATE_PRINTING;
                             }
                         } else if (printer->windowState == MSG_WINDOW_STATE_CLOSING) {
@@ -819,8 +828,8 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             printer->windowBasePos.x = 160 - printer->windowSize.x / 2;
                             printer->windowBasePos.y = 56;
                             draw_box(0, WINDOW_STYLE_0, printer->windowBasePos.x, 56, 0, printer->windowSize.x,
-                                     printer->windowSize.y, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
-                                     SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+                                     printer->windowSize.y, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr,
+                                     SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
                         }
                         msg_reset_gfx_state();
                         msg_drawState->drawBufferPos += 2;
@@ -846,16 +855,16 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case MSG_CHAR_PRINT_NEXT:
                 if (printer->windowState == MSG_WINDOW_STATE_C) {
                     if (msg_drawState->nextCounter >= printer->unkArraySize) {
-                        sp80bool = TRUE;
+                        sp80bool = true;
                     }
                 } else if (printer->windowState == MSG_WINDOW_STATE_B) {
                     if (printer->curLinePos < printer->lineEndPos[printer->unkArraySize]) {
                         if (msg_drawState->nextCounter >= printer->unkArraySize) {
-                            sp80bool = TRUE;
+                            sp80bool = true;
                         }
                     } else {
                         if (printer->unkArraySize < msg_drawState->nextCounter) {
-                            sp80bool = TRUE;
+                            sp80bool = true;
                         } else if (msg_drawState->nextCounter >= printer->unkArraySize) {
                             phi_a0_4 = 36;
                             if (printer->maxLinesPerPage >= 2) {
@@ -880,7 +889,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                 msg_drawState->drawBufferPos++;
                 break;
             case MSG_CHAR_PRINT_END:
-                sp80bool = TRUE;
+                sp80bool = true;
                 break;
             case MSG_CHAR_PRINT_FUNCTION:
                 msg_drawState->drawBufferPos++;
@@ -1010,7 +1019,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         }
 
                         dbPos = msg_drawState->drawBufferPos;
-                        while (TRUE) {
+                        while (true) {
                             if ((msg_drawState->printBuffer[dbPos - 1] == MSG_CHAR_PRINT_FUNCTION) &&
                                 (msg_drawState->printBuffer[dbPos] == MSG_PRINT_FUNC_ANIM_DELAY) &&
                                 (msg_drawState->printBuffer[dbPos + 1] == animIdx)) {
@@ -1309,17 +1318,34 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         charPosY += rand_int(10000) % 2;
                     }
                     if (msg_drawState->effectFlags & MSG_FX_FLAG_WAVE) {
-                        temp_f2_3 = msg_drawState->msgScale.x - 1.0;
-                        temp_s0_7 = (printer->effectFrameCounter * (s32)(20.0 - (temp_f2_3 * 5.0))) - (msg_drawState->visiblePrintedCount *
-                                    (s32)(45.0 - (temp_f2_3 * 15.0)));
-                        charPosX += cosine(temp_s0_7) * ((msg_drawState->msgScale.x - 1.0) + 1.6);
-                        charPosY += cosine((temp_s0_7 + 180.0 + 90.0)) * (msg_drawState->msgScale.y - 1.0 + 1.6);
+#if VERSION_PAL
+                        f32 waveFreqX = 20.0 - (msg_drawState->msgScale.x - 1.0) * 5.0;
+                        f32 waveFreqY = 45.0 - (msg_drawState->msgScale.x - 1.0) * 15.0;
+                        f32 wavePhaseX = printer->effectFrameCounter * waveFreqX * 1.2f;
+                        f32 charOffset = (u32) msg_drawState->visiblePrintedCount * waveFreqY;
+#else
+                        s32 waveFreqX = 20.0 - (msg_drawState->msgScale.x - 1.0) * 5.0;
+                        s32 waveFreqY = 45.0 - (msg_drawState->msgScale.x - 1.0) * 15.0;
+                        s32 wavePhaseX = printer->effectFrameCounter * waveFreqX;
+                        s32 charOffset = msg_drawState->visiblePrintedCount * waveFreqY;
+#endif
+
+                        charPosX += cosine(wavePhaseX - charOffset) * (msg_drawState->msgScale.x - 1.0 + 1.6);
+                        charPosY += cosine(wavePhaseX - charOffset + 180.0 + 90.0) * (msg_drawState->msgScale.y - 1.0 + 1.6);
                     }
                     if (msg_drawState->effectFlags & MSG_FX_FLAG_GLOBAL_WAVE) {
-                        temp_s0_8 = (gMsgGlobalWaveCounter * (s32)(20.0 - ((msg_drawState->msgScale.x - 1.0) * 5.0))) -
-                                    (msg_drawState->visiblePrintedCount * 45);
-                        charPosX += cosine(temp_s0_8) * ((msg_drawState->msgScale.x - 1.0) + 1.6);
-                        charPosY += cosine((temp_s0_8 + 180.0 + 90.0)) * ((msg_drawState->msgScale.y - 1.0) + 1.6);
+#if VERSION_PAL
+                        f32 waveFreqX = 20.0 - (msg_drawState->msgScale.x - 1.0) * 5.0;
+                        f32 wavePhaseX = gMsgGlobalWaveCounter * waveFreqX * 1.2f;
+                        f32 charOffset = (u32) msg_drawState->visiblePrintedCount * 45;
+#else
+                        s32 waveFreqX = 20.0 - (msg_drawState->msgScale.x - 1.0) * 5.0;
+                        s32 wavePhaseX = gMsgGlobalWaveCounter * waveFreqX;
+                        s32 charOffset = msg_drawState->visiblePrintedCount * 45;
+#endif
+
+                        charPosX += cosine(wavePhaseX - charOffset) * (msg_drawState->msgScale.x - 1.0 + 1.6);
+                        charPosY += cosine(wavePhaseX - charOffset + 180.0 + 90.0) * (msg_drawState->msgScale.y - 1.0 + 1.6);
                     }
                     if (msg_drawState->effectFlags & MSG_FX_FLAG_RAINBOW) {
                         palette = abs(msg_drawState->visiblePrintedCount - (u16)(printer->effectFrameCounter / 3)) % 10;
@@ -1581,7 +1607,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         }
     }
 
-    varImgHasBorder = FALSE;
+    varImgHasBorder = false;
     if (printer->varImageScreenPos.x != 0) {
         s16 varImgFinalAlpha;
 
@@ -1592,7 +1618,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case 0:
             case 1:
                 if (printer->varImgHasBorder) {
-                    varImgHasBorder = TRUE;
+                    varImgHasBorder = true;
                 }
                 switch (printer->varImageDisplayState) {
                     case 0:
@@ -1625,7 +1651,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             if (varImgHasBorder) {
                 draw_box(0, WINDOW_STYLE_15, printer->varImageScreenPos.x - 7, printer->varImageScreenPos.y - 7, 0,
                          msgVarImage->width + 15, msgVarImage->height + 14, varImgFinalAlpha, 0, 0.0f, 0.0f, 0.0f, 0.0f,
-                         0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+                         0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
             }
             draw_ci_image_with_clipping(msgVarImage->raster, msgVarImage->width, msgVarImage->height,
                                         msgVarImage->format, msgVarImage->bitDepth, msgVarImage->palette,
@@ -1637,7 +1663,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
     gDPPipeSync(gMainGfxPos++);
     D_80151338 = gMainGfxPos;
 }
-#endif
+
 
 void msg_reset_gfx_state(void) {
     gDPPipeSync(gMainGfxPos++);
@@ -1935,7 +1961,7 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
     Matrix4f sp10;
     s16 x1, x2, x3, x4;
     s32 y1, y2;
-    u8 pointRightSide = FALSE;
+    u8 pointRightSide = false;
     s16 windowX = printer->windowOffsetPos.x + printer->windowBasePos.x;
     s16 windowY = printer->windowOffsetPos.y + printer->windowBasePos.y;
 
@@ -1953,9 +1979,9 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
     }
 
     if (printer->style == MSG_STYLE_LEFT) {
-        pointRightSide = FALSE;
+        pointRightSide = false;
     } else if (printer->style == MSG_STYLE_CENTER || printer->openStartPos.x >= 160) {
-        pointRightSide = TRUE;
+        pointRightSide = true;
     }
 
     if (pointRightSide) {
@@ -2043,7 +2069,7 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
 void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 palette, s32 fading, s32 bgAlpha, s32 frameAlpha) {
     s32 i;
     s32 frameType;
-    s32 textures[16];
+    IMG_BIN* textures[16];
     u8 r, g, b;
     Rect quads[16];
 
@@ -2265,7 +2291,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, ui_msg_palettes[palette]);
 
     for (i = 0; i < ARRAY_COUNT(textures); i++) {
-        if (textures[i] != NULL && quads[i].ulx < 10000) {
+        if (textures[i] != nullptr && quads[i].ulx < 10000) {
             gDPLoadTextureTile_4b(gMainGfxPos++, textures[i], G_IM_FMT_CI, 8, 8, 0, 0, 7, 7, 0, G_TX_WRAP, G_TX_WRAP, 3, 3, G_TX_NOLOD, G_TX_NOLOD);
             gSPScisTextureRectangle(gMainGfxPos++, quads[i].ulx, quads[i].uly, quads[i].lrx, quads[i].lry,
                                     G_TX_RENDERTILE, 0, 0, 0x400, 0x400);

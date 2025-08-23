@@ -41,24 +41,18 @@
 
 #define PTR_LIST_END ((void*) -1)
 
-#define API_CALLABLE(name) ApiStatus name(Evt* script, b32 isInitialCall)
+#define API_CALLABLE(name) ApiStatus name(Evt* script, bool isInitialCall)
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)
 
-//#ifdef DEBUG
-#define IS_DEBUG_PANIC(statement) is_debug_panic(statement)
-/*#else
-#define IS_DEBUG_PANIC(statement) do {} while(TRUE)
-#endif*/
+#ifdef DEBUG
+#define IS_DEBUG_PANIC(statement, file, line) is_debug_panic(statement, file, line)
+#else
+#define IS_DEBUG_PANIC(statement, file, line) do {} while(true)
+#endif
 
-#define PANIC() IS_DEBUG_PANIC("Panic")
-#define PANIC_MSG(msg, args...) \
-    do { \
-        char panicMsg[0x40]; \
-        sprintf(panicMsg, msg, ##args); \
-        IS_DEBUG_PANIC(msg); \
-    } while (0)
+#define PANIC() IS_DEBUG_PANIC("Panic", __FILE__, __LINE__)
 #define ASSERT(condition) \
     if (!(condition)) { \
         IS_DEBUG_PANIC("Assertion failed: " #condition); \
@@ -521,108 +515,18 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #endif
 
 #if VERSION_PAL
-#define DT (50.0f/60.0f)
+#define DT (50.0/60.0)
 #else
-#define DT (1.0f)
+#define DT (1.0)
 #endif
 
 #define DMA_COPY_SEGMENT(segment) dma_copy(segment##_ROM_START, segment##_ROM_END, segment##_VRAM)
 
-#ifdef __GNUC__
-#define NODISCARD __attribute__((warn_unused_result))
-#else
-#define NODISCARD
-#endif
-
-// Avoid compiler warnings for unused variables.
-#ifdef __GNUC__
-#define UNUSED __attribute__((unused))
-#else
-#define UNUSED
-#endif
-
-// Avoid undefined behaviour for non-returning functions.
-#ifdef __GNUC__
-#define NORETURN __attribute__((noreturn))
-#else
-#define NORETURN
-#endif
-
-// Always inline a function.
-#ifdef __GNUC__
-#define ALWAYS_INLINE inline __attribute__((always_inline))
-#else
-#define ALWAYS_INLINE inline
-#endif
-
-// Fall through a switch case.
-#ifdef __GNUC__
-#define FALL_THROUGH __attribute__((fallthrough))
-#else
-#define FALL_THROUGH
-#endif
-
-// Use Og when compiling the function.
-#ifdef __GNUC__
-#define OPTIMIZE_OG __attribute__((optimize("Og")))
-#else
-#define OPTIMIZE_OG
-#endif
-
-// Use Os when compiling the function.
-#ifdef __GNUC__
-#define OPTIMIZE_OS __attribute__((optimize("Os")))
-#else
-#define OPTIMIZE_OS
-#endif
-
-// Use Ofast when compiling the function.
-#ifdef __GNUC__
-#define OPTIMIZE_OFAST __attribute__((optimize("Ofast")))
-#else
-#define OPTIMIZE_OFAST
-#endif
-
-// Ignore 4-byte alignment in structs.
-#ifdef __GNUC__
-#define PACKED __attribute__((packed))
-#else
-#define PACKED
-#endif
-
-// Align to 4-byte boundary.
-#ifdef __GNUC__
-#define ALIGNED4 __attribute__((aligned(4)))
-#else
-#define ALIGNED4
-#endif
-
-// Align to 8-byte boundary (for DMA requirements).
-#ifdef __GNUC__
-#define ALIGNED8 __attribute__((aligned(8)))
-#else
-#define ALIGNED8
-#endif
-
-// Align to 16-byte boundary (for audio lib requirements).
-#ifdef __GNUC__
-#define ALIGNED16 __attribute__((aligned(16)))
-#else
-#define ALIGNED16
-#endif
-
-// Align to 32-byte boundary.
-#ifdef __GNUC__
-#define ALIGNED32 __attribute__((aligned(32)))
-#else
-#define ALIGNED32
-#endif
-
-// Align to 64-byte boundary.
-#ifdef __GNUC__
-#define ALIGNED64 __attribute__((aligned(64)))
-#else
-#define ALIGNED64
+#if __STDC_VERSION__ < 202311L
+typedef enum {
+    false,
+    true
+} bool;
 #endif
 
 #endif

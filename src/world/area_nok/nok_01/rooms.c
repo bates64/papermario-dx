@@ -204,15 +204,15 @@ EvtScript N(EVS_RoomListener_BeachHouse) = {
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_g79, MODEL_GROUP_VISIBLE)
             Call(N(SetRadioVolumeMax), AB_NOK_0)
-            Exec(N(EVS_80242C38))
+            Exec(N(EVS_FadeOutMusic))
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             // do nothing
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             Call(N(SetRadioVolumeMute), AB_NOK_0)
-            Exec(N(EVS_80242DE0))
+            Exec(N(EVS_FadeInMusic))
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_g79, MODEL_GROUP_HIDDEN)
-            Call(N(func_80242898_9C7C78))
+            Call(N(MuteAllRadioStations))
     EndSwitch
     Return
     End
@@ -246,7 +246,7 @@ EvtScript N(EVS_MakeRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
         Ref(N(EVS_SetDoorRot_ToadHouse)),
         Ref(N(EVS_SetWallRot_ToadHouse)),
-        NULL,
+        nullptr,
         Ref(N(EVS_RoomListener_ToadHouse)),
         COLLIDER_o200,
         COLLIDER_o284,
@@ -257,7 +257,7 @@ EvtScript N(EVS_MakeRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
         Ref(N(EVS_SetDoorRot_Shop)),
         Ref(N(EVS_SetWallRot_Shop)),
-        NULL,
+        nullptr,
         Ref(N(EVS_RoomListener_Shop)),
         COLLIDER_o226,
         COLLIDER_o286,

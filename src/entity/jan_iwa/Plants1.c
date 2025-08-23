@@ -141,7 +141,7 @@ void func_802BB314_E2DC44(Entity* entity) {
 
 void func_802BB34C_E2DC7C(Entity* entity) {
     sfx_play_sound(SOUND_LRAW_SPINNING_FLOWER | SOUND_ID_TRIGGER_CHANGE_SOUND);
-    snd_stop_tracking_env_sound_pos(SOUND_LRAW_SPINNING_FLOWER, TRUE);
+    sfx_stop_tracking_env_sound_pos(SOUND_LRAW_SPINNING_FLOWER, true);
 }
 
 void entity_PinkFlowerLight_setupGfx(s32 entityIndex) {
@@ -353,7 +353,7 @@ EntityScript Entity_SpinningFlower_Script = {
 EntityScript Entity_PinkFlower_Script = {
     es_SetCallback(entity_PinkFlower_idle, 0)
     es_PlaySound(SOUND_PLANTS_LIGHT_UP)
-    es_SetCallback(NULL, 50)
+    es_SetCallback(nullptr, 50)
     es_SetFlags(ENTITY_FLAG_SHOWS_INSPECT_PROMPT)
     es_Restart
     es_End
@@ -381,9 +381,9 @@ EntityBlueprint Entity_CymbalPlant = {
     .typeDataSize = sizeof(CymbalPlantData),
     .renderCommandList = Entity_CymbalPlant_AnimationIdle,
     .modelAnimationNodes = Entity_CymbalPlant_Mesh,
-    .fpInit = NULL,
+    .fpInit = nullptr,
     .updateEntityScript = Entity_CymbalPlant_Update,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_CymbalPlant_dma },
     .entityType = ENTITY_TYPE_CYMBAL_PLANT,
     .aabbSize = { 103, 30, 24 }
@@ -396,7 +396,7 @@ EntityBlueprint Entity_PinkFlower = {
     .modelAnimationNodes = Entity_PinkFlower_Mesh,
     .fpInit = entity_PinkFlower_init,
     .updateEntityScript = Entity_PinkFlower_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dmaList = Entity_PinkFlower_dma },
     .entityType = ENTITY_TYPE_PINK_FLOWER,
     .aabbSize = { 44, 100, 25 }
@@ -409,7 +409,7 @@ EntityBlueprint Entity_PinkFlowerLight = {
     .modelAnimationNodes = 0,
     .fpInit = entity_PinkFlowerLight_init,
     .updateEntityScript = Entity_PinkFlowerLight_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(PinkFlower_gfx) },
     .entityType = ENTITY_TYPE_PINK_FLOWER,
     .aabbSize = { 44, 100, 25 }
@@ -422,7 +422,7 @@ EntityBlueprint Entity_SpinningFlower = {
     .modelAnimationNodes = 0,
     .fpInit = entity_SpinningFlower_init,
     .updateEntityScript = Entity_SpinningFlower_Script,
-    .fpHandleCollision = NULL,
+    .fpHandleCollision = nullptr,
     { .dma = ENTITY_ROM(SpinningFlower) },
     .entityType = ENTITY_TYPE_SPINNING_FLOWER,
     .aabbSize = { 45, 22, 42 }

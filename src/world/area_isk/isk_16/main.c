@@ -15,12 +15,12 @@ EvtScript N(EVS_SpawnStarCard) = {
             Return
     EndSwitch
     IfEq(LVar0, 0)
-        Call(DisablePlayerInput, TRUE)
+        Call(DisablePlayerInput, true)
         Call(UseSettingsFrom, CAM_DEFAULT, 408, -825, 414)
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
         Call(SetPanTarget, CAM_DEFAULT, 408, -880, 414)
         EVT_SPIRIT_ADJUST_CAM(10000)
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(N(StarSpiritEffectFunc2), 1, 180, 408, -900, 414, 408, -825, 414, -880, -910)
         Thread
             Call(N(StarSpiritEffectFunc3))
@@ -55,8 +55,8 @@ EvtScript N(EVS_SpawnStarCard) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
-        Call(DisablePlayerInput, FALSE)
+        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(DisablePlayerInput, false)
     Else
         Call(N(StarSpiritEffectFunc5), 1, 408, -880, 414, -910)
         Thread
@@ -66,7 +66,7 @@ EvtScript N(EVS_SpawnStarCard) = {
     EndIf
     Call(N(StarSpiritEffectFunc4), 3)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(GB_StoryProgress, STORY_CH2_STAR_SPIRIT_RESCUED)
     Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_1, TRANSITION_GET_STAR_CARD)
     Wait(100)
@@ -85,15 +85,15 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_16)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_SetupFlames))
     IfEq(GB_StoryProgress, STORY_CH2_DEFEATED_TUTANKOOPA)
         Exec(N(EVS_SpawnStarCard))
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Call(SetMusicTrack, 0, SONG_TUTANKOOPA_REVEALED, 0, 8)
+            Call(SetMusic, 0, SONG_TUTANKOOPA_REVEALED, 0, VOL_LEVEL_FULL)
         CaseEq(STORY_CH2_DEFEATED_TUTANKOOPA)
             Call(FadeOutMusic, 0, 500)
         CaseGt(STORY_CH2_DEFEATED_TUTANKOOPA)

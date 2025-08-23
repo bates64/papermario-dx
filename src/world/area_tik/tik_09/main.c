@@ -5,7 +5,7 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_CloseGates) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(PlaySound, SOUND_CHIME_BEGIN_AMBUSH)
@@ -24,7 +24,7 @@ EvtScript N(EVS_CloseGates) = {
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o58, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o59, COLLIDER_FLAGS_UPPER_MASK)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Wait(1)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Return
@@ -42,18 +42,18 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, tik_09_ENTRY_2)
         EVT_ENTER_PIPE_VERTICAL(N(EVS_BindExitTriggers))
     Else
         Set(LVar0, Ref(N(EVS_BindExitTriggers)))
         ExecWait(EnterWalk)
-        IfEq(GF_TIK09_Defeated_Ambush, FALSE)
+        IfEq(GF_TIK09_Defeated_Ambush, false)
             ExecWait(N(EVS_CloseGates))
         EndIf
     EndIf
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -63,8 +63,8 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_09)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_TIK09_WATER)
@@ -72,11 +72,10 @@ EvtScript N(EVS_Main) = {
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW4, SOUND_SPACE_WITH_DEPTH, 50, -20, -120)
     Call(PlaySoundAtF, SOUND_LOOP_TIK09_FLOW3, SOUND_SPACE_WITH_DEPTH, 290, -20, -120)
     Exec(N(EVS_SetupDrips))
-    // water surface
-    Call(SetTexPanner, MODEL_nagare, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o84, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o85, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o86, TEX_PANNER_1)
+    Call(EnableTexPanning, MODEL_nagare, true)
+    Call(EnableTexPanning, MODEL_o84, true)
+    Call(EnableTexPanning, MODEL_o85, true)
+    Call(EnableTexPanning, MODEL_o86, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
@@ -84,8 +83,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    // waterfalls
-    Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
+    Call(EnableTexPanning, MODEL_taki, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_4)
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
@@ -93,8 +91,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    // water spreading
-    Call(SetTexPanner, MODEL_takib, TEX_PANNER_5)
+    Call(EnableTexPanning, MODEL_takib, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(    0,-1400,-2600,  -60)
@@ -102,11 +99,10 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    // water merging and draining
-    Call(SetTexPanner, MODEL_nagare2, TEX_PANNER_6)
-    Call(SetTexPanner, MODEL_o87, TEX_PANNER_6)
-    Call(SetTexPanner, MODEL_o88, TEX_PANNER_6)
-    Call(SetTexPanner, MODEL_o89, TEX_PANNER_6)
+    Call(EnableTexPanning, MODEL_nagare2, true)
+    Call(EnableTexPanning, MODEL_o87, true)
+    Call(EnableTexPanning, MODEL_o88, true)
+    Call(EnableTexPanning, MODEL_o89, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_6)
         TEX_PAN_PARAMS_STEP(  200,  400,  250,    0)

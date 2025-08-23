@@ -145,7 +145,11 @@ EvtScript N(EVS_YoshiKids) = {
     Wait(10 * DT)
     Thread
         Call(GetNpcPos, NPC_YoshiKidGreen, LVar0, LVar1, LVar2)
+#if VERSION_JP
+        Call(NpcJump0, NPC_YoshiKidGreen, LVar0, LVar1, LVar2, 10)
+#else
         Call(NpcJump0, NPC_YoshiKidGreen, LVar0, LVar1, LVar2, 7)
+#endif
         Call(SetNpcAnimation, NPC_YoshiKidGreen, ANIM_YoshiKid_Green_Run)
         Call(NpcMoveTo, NPC_YoshiKidGreen, 980, 0, 60 * DT)
         Call(SetNpcAnimation, NPC_YoshiKidGreen, ANIM_YoshiKid_Green_LookUp)
@@ -328,16 +332,16 @@ EvtScript N(EVS_ParadePhase_HuffNPuff) = {
             EndIf
         EndLoop
         Wait(10 * DT)
-        Call(SetNpcFlagBits, NPC_HuffNPuffBody, NPC_FLAG_TOUCHES_GROUND, FALSE)
-        Call(SetNpcFlagBits, NPC_HuffNPuffFace, NPC_FLAG_TOUCHES_GROUND, FALSE)
-        Call(SetNpcFlagBits, NPC_HuffNPuffArms, NPC_FLAG_TOUCHES_GROUND, FALSE)
-        Call(SetNpcFlagBits, NPC_RuffPuff1, NPC_FLAG_TOUCHES_GROUND, FALSE)
-        Call(SetNpcFlagBits, NPC_RuffPuff2, NPC_FLAG_TOUCHES_GROUND, FALSE)
+        Call(SetNpcFlagBits, NPC_HuffNPuffBody, NPC_FLAG_TOUCHES_GROUND, false)
+        Call(SetNpcFlagBits, NPC_HuffNPuffFace, NPC_FLAG_TOUCHES_GROUND, false)
+        Call(SetNpcFlagBits, NPC_HuffNPuffArms, NPC_FLAG_TOUCHES_GROUND, false)
+        Call(SetNpcFlagBits, NPC_RuffPuff1, NPC_FLAG_TOUCHES_GROUND, false)
+        Call(SetNpcFlagBits, NPC_RuffPuff2, NPC_FLAG_TOUCHES_GROUND, false)
         Call(SetNpcScale, NPC_HuffNPuffBody, Float(0.75), Float(0.75), 1)
         Call(SetNpcScale, NPC_HuffNPuffFace, Float(0.75), Float(0.75), 1)
         Call(SetNpcScale, NPC_HuffNPuffArms, Float(0.75), Float(0.75), 1)
-        Call(EnableNpcShadow, NPC_HuffNPuffFace, FALSE)
-        Call(EnableNpcShadow, NPC_HuffNPuffArms, FALSE)
+        Call(EnableNpcShadow, NPC_HuffNPuffFace, false)
+        Call(EnableNpcShadow, NPC_HuffNPuffArms, false)
     EndThread
     Exec(N(EVS_YoshiKids))
     ExecGetTID(N(EVS_GourmetGuy_Enter), LVarB)

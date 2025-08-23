@@ -123,7 +123,7 @@ def from_dir(
     animation_names: List[str] = []
     for Animation in SpriteSheet.findall("./AnimationList/Animation"):
         # get a mapping of component names -> list indices
-        comp_map = {comp_xml.attrib.get("name", str(idx)): idx for idx, comp_xml in enumerate(Animation)}
+        comp_map = {comp_xml.attrib["name"]: idx for idx, comp_xml in enumerate(Animation)}
         # read each component
         comps: List[AnimComponent] = []
         for comp_xml in Animation:

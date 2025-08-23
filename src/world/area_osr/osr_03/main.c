@@ -1,14 +1,14 @@
 #include "osr_03.h"
 
 EvtScript N(EVS_HideGroundModels) = {
-    Call(EnableGroup, MODEL_hiru, FALSE)
-    Call(EnableGroup, MODEL_niwa, FALSE)
-    Call(EnableGroup, MODEL_jimidori, FALSE)
-    Call(EnableGroup, MODEL_kumo, FALSE)
-    Call(EnableGroup, MODEL_ki1, FALSE)
-    Call(EnableGroup, MODEL_jimen, FALSE)
-    Call(EnableGroup, MODEL_kemuri, FALSE)
-    Call(EnableGroup, MODEL_obj, FALSE)
+    Call(EnableGroup, MODEL_hiru, false)
+    Call(EnableGroup, MODEL_niwa, false)
+    Call(EnableGroup, MODEL_jimidori, false)
+    Call(EnableGroup, MODEL_kumo, false)
+    Call(EnableGroup, MODEL_ki1, false)
+    Call(EnableGroup, MODEL_jimen, false)
+    Call(EnableGroup, MODEL_kemuri, false)
+    Call(EnableGroup, MODEL_obj, false)
     Return
     End
 };
@@ -51,7 +51,7 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_03_ENTRY_4)
-            Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
         CaseDefault
     EndSwitch
     Switch(GB_StoryProgress)
@@ -59,24 +59,24 @@ EvtScript N(EVS_Main) = {
         CaseOrEq(STORY_CH1_STAR_SPIRIT_RESCUED)
         CaseOrEq(STORY_CH3_STAR_SPIRIT_RESCUED)
             Call(ClearAmbientSounds, 250)
-            Call(SetMusicTrack, 0, SONG_PRISONER_PEACH_THEME, 0, 8)
+            Call(SetMusic, 0, SONG_PRISONER_PEACH_THEME, 0, VOL_LEVEL_FULL)
         EndCaseGroup
         CaseEq(STORY_CH2_STAR_SPIRIT_RESCUED)
             Call(ClearAmbientSounds, 250)
-            Call(SetMusicTrack, 0, SONG_BOWSER_THEME, 0, 8)
+            Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
         CaseOrEq(STORY_CH4_STAR_SPIRIT_RESCUED)
         CaseOrEq(STORY_CH5_OPENED_ESCAPE_ROUTE)
         CaseOrEq(STORY_CH6_STAR_SPIRIT_RESCUED)
             Call(ClearAmbientSounds, 250)
-            Call(SetMusicTrack, 0, SONG_PEACH_MISSION, 0, 8)
+            Call(SetMusic, 0, SONG_PEACH_MISSION, 0, VOL_LEVEL_FULL)
         EndCaseGroup
         CaseEq(STORY_CH7_STAR_SPIRIT_RESCUED)
             Call(ClearAmbientSounds, 250)
             Call(FadeOutMusic, 0, 500)
         CaseDefault
-            IfEq(GF_KKJ25_Defeated_Bowser, FALSE)
+            IfEq(GF_KKJ25_Defeated_Bowser, false)
             Else
-                Call(SetMusicTrack, 0, SONG_BOWSERS_CASTLE_FALLS, 0, 8)
+                Call(SetMusic, 0, SONG_BOWSERS_CASTLE_FALLS, 0, VOL_LEVEL_FULL)
             EndIf
     EndSwitch
     Exec(N(EVS_EnterMap))

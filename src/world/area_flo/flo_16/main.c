@@ -27,33 +27,24 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_FLOWER_FIELDS)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupVines))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o174, SURFACE_TYPE_SPIKES)
     Thread
         Call(ResetFromLava, Ref(N(SafeFloorColliders)))
     EndThread
-    // vines scrolling left
-    Call(SetTexPanner, MODEL_o59, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o142, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o58, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o136, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o146, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o139, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o143, TEX_PANNER_1)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(  140,    0,    0,    0)
-        TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
-        TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
-    // vines scrolling right
-    Call(SetTexPanner, MODEL_o135, TEX_PANNER_2)
-    Call(SetTexPanner, MODEL_o138, TEX_PANNER_2)
-    Call(SetTexPanner, MODEL_o140, TEX_PANNER_2)
+    Call(EnableTexPanning, MODEL_o59, true)
+    Call(EnableTexPanning, MODEL_o142, true)
+    Call(EnableTexPanning, MODEL_o58, true)
+    Call(EnableTexPanning, MODEL_o136, true)
+    Call(EnableTexPanning, MODEL_o146, true)
+    Call(EnableTexPanning, MODEL_o143, true)
+    Call(EnableTexPanning, MODEL_o135, true)
+    Call(EnableTexPanning, MODEL_o138, true)
+    Call(EnableTexPanning, MODEL_o139, true)
+    Call(EnableTexPanning, MODEL_o140, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)

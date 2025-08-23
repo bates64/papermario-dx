@@ -35,7 +35,7 @@ EvtScript N(EVS_KnockAwayTreePart) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(EnableModel, LVar2, FALSE)
+    Call(EnableModel, LVar2, false)
     Return
     End
 };
@@ -80,9 +80,9 @@ EvtScript N(EVS_OnShakeTree2) = {
             Set(LVar2, MODEL_ki2_3)
             ExecWait(N(EVS_KnockAwayTreePart))
         CaseEq(3)
-            IfEq(GF_SAM04_Item_Letter05, FALSE)
-                IfEq(MV_DroppedLetter, FALSE)
-                    Set(MV_DroppedLetter, TRUE)
+            IfEq(GF_SAM04_Item_Letter05, false)
+                IfEq(MV_DroppedLetter, false)
+                    Set(MV_DroppedLetter, true)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Call(SetNpcPos, NPC_LetterDummy, -290, 70, 110)
                     ExecGetTID(N(EVS_TetherItemToDummyNpc), LVarA)
@@ -178,8 +178,8 @@ BombTrigger N(BombPos_Tree6) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_SHIVER_SNOWFIELD)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    SetUP_CAMERA_NO_LEAD()
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))
     PlayEffect(EFFECT_SNOWFALL, 0, 40)

@@ -8,7 +8,7 @@ Vec3f N(FlightPath_Away)[] = {
 };
 
 EvtScript N(EVS_Scene_KammyWatching) = {
-    Call(SetMusicTrack, 0, SONG_KAMMY_KOOPA_THEME, 0, 8)
+    Call(SetMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, VOL_LEVEL_FULL)
     Call(SetNpcVar, NPC_Kammy, 0, 1)
     Call(SetNpcPos, NPC_Kammy, 100, 182, -353)
     Call(UseSettingsFrom, CAM_DEFAULT, 100, 0, -220)
@@ -18,19 +18,19 @@ EvtScript N(EVS_Scene_KammyWatching) = {
     Call(SetCamPosB, CAM_DEFAULT, -24, -256)
     Call(SetCamPitch, CAM_DEFAULT, 8, -5)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(60 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 100, 0, -220)
     Call(SetPanTarget, CAM_DEFAULT, 100, 190, -353)
     Call(SetCamDistance, CAM_DEFAULT, 250)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 100, 0, -220)
     Call(SetPanTarget, CAM_DEFAULT, 100, 190, -353)
     Call(SetCamDistance, CAM_DEFAULT, 1000)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.65 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(30 * DT)
     Thread
         Call(GetNpcPos, NPC_Kammy, LVar7, LVar8, LVar9)

@@ -306,7 +306,7 @@ void N(build_gfx_floor)(void) {
     guScaleF(sp50, x, y, z);
     guMtxCatF(sp50, sp10, sp10);
     guMtxF2L(sp10, &gDisplayContext->matrixStack[gMatrixListPos]);
-    mdl_project_tex_coords(MODEL_o152, N(shockwave_gfx), sp10, NULL);
+    mdl_project_tex_coords(MODEL_o152, N(shockwave_gfx), sp10, nullptr);
 
     gDPPipeSync(gMainGfxPos++);
     gDPSetCycleType(gMainGfxPos++, G_CYC_1CYCLE);
@@ -324,8 +324,10 @@ s32 N(BetaPanelData)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096)
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
+    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Set(LVar0, Ref(N(BetaPanelData)))
     Exec(N(EVS_BetaPanel_Setup))
     Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, -1)

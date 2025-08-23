@@ -14,9 +14,9 @@ TweesterPath* N(TweesterPaths)[] = {
     PTR_LIST_END
 };
 
-EvtScript N(EVS_GotoMap_sbk_05_4) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+EvtScript N(D_8024047C_936B5C) = {
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(GotoMap, Ref("sbk_05"), sbk_05_ENTRY_4)
     Wait(100)
     Return

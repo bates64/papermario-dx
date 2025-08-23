@@ -19,28 +19,35 @@ EvtScript N(EVS_ExitWalk_iwa_03_0) = EVT_EXIT_WALK(60, iwa_01_ENTRY_1, "iwa_03",
 EvtScript N(EVS_ExitWalk_iwa_02_0) = EVT_EXIT_WALK(60, iwa_01_ENTRY_2, "iwa_02", iwa_02_ENTRY_0);
 EvtScript N(EVS_ExitWalk_iwa_02_1) = EVT_EXIT_WALK(60, iwa_01_ENTRY_3, "iwa_02", iwa_02_ENTRY_1);
 
-EvtScript N(EVS_StartTexPanners) = {
-    // waterfalls
-    Call(SetTexPanner, MODEL_o946, TEX_PANNER_1)
-    Call(SetTexPanner, MODEL_o947, TEX_PANNER_1)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_1)
-        TEX_PAN_PARAMS_STEP(    0, -3000,    0,    0)
-        TEX_PAN_PARAMS_FREQ(    0,     1,    0,    0)
-        TEX_PAN_PARAMS_INIT(    0,     0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
-    // foam and splashes
-    Call(SetTexPanner, MODEL_o952, TEX_PANNER_C)
-    Call(SetTexPanner, MODEL_o956, TEX_PANNER_C)
-    Call(SetTexPanner, MODEL_o957, TEX_PANNER_C)
-    Thread
-        TEX_PAN_PARAMS_ID(TEX_PANNER_C)
-        TEX_PAN_PARAMS_STEP(0x8000,    0,    0,    0)
-        TEX_PAN_PARAMS_FREQ(     4,    0,    0,    0)
-        TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
-    EndThread
+EvtScript N(EVS_TexPan_Water) = {
+    Call(EnableTexPanning, MODEL_o946, true)
+    Call(EnableTexPanning, MODEL_o947, true)
+    Set(LVar0, 0)
+    Label(10)
+        Sub(LVar0, 3000)
+        Call(SetTexPanOffset, TEX_PANNER_1, TEX_PANNER_MAIN, 0, LVar0)
+        Wait(1)
+        Goto(10)
+    Return
+    End
+};
+
+EvtScript N(D_80243568_912C18) = {
+    Call(EnableTexPanning, MODEL_o952, true)
+    Call(EnableTexPanning, MODEL_o956, true)
+    Call(EnableTexPanning, MODEL_o957, true)
+    Set(LVar0, 0)
+    Set(LVar1, 0)
+    Label(10)
+        Call(SetTexPanOffset, TEX_PANNER_C, TEX_PANNER_MAIN, LVar0, 0)
+        Call(SetTexPanOffset, TEX_PANNER_D, TEX_PANNER_MAIN, 0, LVar1)
+        Add(LVar0, 0x8000)
+        Add(LVar1, 0x8000)
+        Wait(2)
+        Call(SetTexPanOffset, TEX_PANNER_D, TEX_PANNER_MAIN, 0, LVar1)
+        Add(LVar1, 0x8000)
+        Wait(2)
+        Goto(10)
     Return
     End
 };
@@ -57,15 +64,14 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_RUGGED)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(N(SetupSlidingCheck))
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_StartTexPanners))
     ExecWait(N(EVS_MakeSplashes))
     Exec(N(EVS_BindSlideTriggers2))
     Exec(N(EVS_BindSlideTriggers1))
-    Call(SetMusicTrack, 0, SONG_MT_RUGGED, 0, 8)
+    Call(SetMusic, 0, SONG_MT_RUGGED, 0, VOL_LEVEL_FULL)
     Call(PlaySoundAtF, SOUND_LOOP_IWA01_FLOW1, SOUND_SPACE_WITH_DEPTH, -570, -180, 425)
     Call(PlaySoundAtF, SOUND_LOOP_IWA01_FLOW2, SOUND_SPACE_WITH_DEPTH, 740, -170, 330)
     Call(GetLoadType, LVar1)

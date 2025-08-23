@@ -23,10 +23,12 @@ EvtScript N(EVS_EnterMap) = {
     End
 };
 
-EvtScript N(EVS_StartTexPanners) = {
-    // lava surfaces
-    Call(SetTexPanner, MODEL_yougan1_1, TEX_PANNER_2)
-    Call(SetTexPanner, MODEL_yougan1_2, TEX_PANNER_2)
+EvtScript N(EVS_StartTexPanners_Lava) = {
+    SetGroup(EVT_GROUP_NEVER_PAUSE)
+    Call(EnableTexPanning, MODEL_yougan1_1, true)
+    Call(EnableTexPanning, MODEL_yougan1_2, true)
+    Call(EnableTexPanning, MODEL_toro, true)
+    Call(EnableTexPanning, MODEL_poko, true)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP( 200,    0,  400, -100)
@@ -89,8 +91,8 @@ LavaReset N(SafeFloorColliders)[] = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_02)
-    EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    EVT_SETUP_CAMERA_DEFAULT()
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o112, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o217, SURFACE_TYPE_LAVA)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o218, SURFACE_TYPE_LAVA)
@@ -112,7 +114,7 @@ EvtScript N(EVS_Main) = {
     EndIf
     Exec(N(EVS_EnterMap))
     Wait(1)
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Return
     End

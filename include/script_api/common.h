@@ -889,13 +889,13 @@ API_CALLABLE(SetMessageValue);
 /// @{
 /// @name Player
 
-/// Hides the player's shadow if `hide` is `TRUE`, shows it if `FALSE`.
+/// Hides the player's shadow if `hide` is `true`, shows it if `false`.
 /// @evtapi
 /// @param hide Whether to hide the player's shadow.
 /// @see disable_player_shadow, enable_player_shadow
 API_CALLABLE(HidePlayerShadow);
 
-/// Disables player physics if `disable` is `TRUE`, enables it if `FALSE`.
+/// Disables player physics if `disable` is `true`, enables it if `false`.
 /// @evtapi
 /// @param disable Whether to disable player physics.
 /// @see disable_player_static_collisions, enable_player_static_collisions
@@ -1043,7 +1043,7 @@ API_CALLABLE(InterruptUsePartner);
 /// Enables and disables the 8-bit Mario easter egg.
 ///
 /// @evtapi
-/// @param disable Disable the easter egg if `TRUE`, enable it if `FALSE`.
+/// @param disable Disable the easter egg if `true`, enable it if `false`.
 ///
 /// Whilst active, the player uses a retro sprite, and the following actions are disabled:
 /// - Spin dash
@@ -1180,7 +1180,13 @@ API_CALLABLE(RegisterMusicEvents);
 API_CALLABLE(FadeOutMusic);
 
 /// @evtapi
-API_CALLABLE(SetMusicTrack);
+/// Start playing a song.
+///
+/// @param playerID MusicPlayer to use, should almost always be 0 (MUSIC_PLAYER_MAIN).
+/// @param song Song from SongIDs.
+/// @param variation
+/// @param volumeLevel Perceptual loudness from VOL_LEVEL_MUTE to VOL_LEVEL_FULL.
+API_CALLABLE(SetMusic);
 
 /// @evtapi
 API_CALLABLE(FadeInMusic);
@@ -1192,7 +1198,7 @@ API_CALLABLE(EnableMusicProximityMix);
 API_CALLABLE(AdjustMusicProximityMix);
 
 /// @evtapi
-API_CALLABLE(SetMusicTrackVolumes);
+API_CALLABLE(SetTrackVolumes);
 
 /// @evtapi
 API_CALLABLE(PopSong);

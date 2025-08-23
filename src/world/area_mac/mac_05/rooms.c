@@ -41,19 +41,19 @@ EvtScript N(D_80252580_8646F0) = {
 EvtScript N(D_802525B0_864720) = {
     Switch(LVar0)
         CaseEq(0)
-            Call(SetMusicTrack, 0, SONG_CLUB64, 0, 8)
+            Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
             Call(StopSound, SOUND_LOOP_MAC_HARBOR_WATER)
 #if !VERSION_JP
             Call(StopTrackingSoundPos, SOUND_LRAW_MAC_HARBOR_WATER)
 #endif
-            Call(EnableGroup, MODEL_bar_inn, TRUE)
-            Call(EnableModel, MODEL_o139, FALSE)
-            Call(EnableModel, MODEL_o140, FALSE)
+            Call(EnableGroup, MODEL_bar_inn, true)
+            Call(EnableModel, MODEL_o139, false)
+            Call(EnableModel, MODEL_o140, false)
         CaseEq(3)
-            Set(AF_JAN01_TreeDrop_StarPiece, FALSE)
-            Call(EnableGroup, MODEL_bar_inn, FALSE)
-            Call(EnableModel, MODEL_o139, TRUE)
-            Call(EnableModel, MODEL_o140, TRUE)
+            Set(MF_DivaSinging, false)
+            Call(EnableGroup, MODEL_bar_inn, false)
+            Call(EnableModel, MODEL_o139, true)
+            Call(EnableModel, MODEL_o140, true)
             Wait(5)
             Exec(N(EVS_SetupMusic))
     EndSwitch
@@ -62,7 +62,7 @@ EvtScript N(D_802525B0_864720) = {
 };
 
 s32 N(D_802526C8_864838)[] = {
-    NPC_Toad_02,
+    NPC_WaiterToad,
     NPC_Bartender,
     NPC_Chanterelle,
     NPC_ArtistToad,

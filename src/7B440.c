@@ -59,11 +59,11 @@ void reset_player_status(void) {
     MapSettings* mapSettings;
 
     PeachDisguiseNpcIndex = -1;
-    TweesterTouchingPartner = NULL;
-    PulseStoneNotificationCallback = NULL;
-    TalkNotificationCallback = NULL;
-    InteractNotificationCallback = NULL;
-    PeachDisguiseReapplyDelay = 0;
+    TweesterTouchingPartner = nullptr;
+    PulseStoneNotificationCallback = nullptr;
+    TalkNotificationCallback = nullptr;
+    InteractNotificationCallback = nullptr;
+    D_8010C92C = 0;
     PrevPlayerDirection = 0;
     PlayerRunStateTime = 0;
     PrevPlayerCamRelativeYaw = 0;
@@ -119,7 +119,7 @@ void reset_player_status(void) {
     ASSERT_MSG(gGameStatusPtr->mapID < area->mapCount, "Invalid map ID %d in %s", gGameStatusPtr->mapID, area->id);
     mapSettings = area->maps[gGameStatusPtr->mapID].settings;
 
-    if (mapSettings->entryList != NULL) {
+    if (mapSettings->entryList != nullptr) {
         if (gGameStatusPtr->entryID < mapSettings->entryCount) {
             playerStatus->pos.x = (*mapSettings->entryList)[gGameStatusPtr->entryID].x;
             playerStatus->pos.y = (*mapSettings->entryList)[gGameStatusPtr->entryID].y;

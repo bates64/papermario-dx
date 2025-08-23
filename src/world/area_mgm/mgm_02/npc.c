@@ -172,7 +172,7 @@ void N(appendGfx_score_display)(void* renderData) {
         }
     }
 
-    draw_box(0, WINDOW_STYLE_9, data->windowA_posX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+    draw_box(0, WINDOW_STYLE_9, data->windowA_posX, 23, 0, 80, 38, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
     draw_msg(MSG_MGM_0047, data->windowA_posX + 42, TEXT_POS_Y, 255, MSG_PAL_WHITE, 0);
     draw_number(NUM_PANELS - data->found, data->windowA_posX + 65, COUNT_POS_Y, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
     draw_ci_image_with_clipping(&N(panel_peach_img), 32, 32, G_IM_FMT_CI, G_IM_SIZ_4b, &N(panel_peach_pal),
@@ -182,7 +182,7 @@ void N(appendGfx_score_display)(void* renderData) {
     deciseconds = ((f32)(timeLeft % FRAME_RATE) * 10.0) / FRAME_RATE;
     seconds = timeLeft / FRAME_RATE;
 
-    draw_box(0, WINDOW_STYLE_11, data->windowB_posX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+    draw_box(0, WINDOW_STYLE_11, data->windowB_posX, 27, 0, 60, 20, 180, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
     // draw whole seconds
     draw_number(seconds, data->windowB_posX + 29, 31, DRAW_NUMBER_CHARSET_THIN, MSG_PAL_WHITE, 255, DRAW_NUMBER_STYLE_MONOSPACE | DRAW_NUMBER_STYLE_ALIGN_RIGHT);
     // draw tenths of seconds
@@ -208,7 +208,7 @@ API_CALLABLE(N(CreateScoreDisplay)) {
     HudElemID hidMeter;
 
     if (isInitialCall) {
-        data->workerID = create_worker_scene(NULL, &N(worker_draw_score));
+        data->workerID = create_worker_scene(nullptr, &N(worker_draw_score));
 
         hidButton = hud_element_create(&HES_AButton);
         data->buttonHID = hidButton;
@@ -289,10 +289,6 @@ API_CALLABLE(N(OnHitBox)) {
     return ApiStatus_DONE2;
 }
 
-#if VERSION_PAL
-API_CALLABLE(N(SetBoxContents));
-INCLUDE_ASM(ApiResult, "world/area_mgm/mgm_02/mgm_02_2_npc", mgm_02_SetBoxContents);
-#else
 API_CALLABLE(N(SetBoxContents)) {
     s32 initialConfiguration;
     s32 configuration[NUM_BOXES];
@@ -302,9 +298,14 @@ API_CALLABLE(N(SetBoxContents)) {
     Enemy* enemy;
     Npc* npc;
 
-    SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
+    SmashGameData* data;
+
+#if VERSION_PAL
+    N(pal_variable) = 1;
+#endif
+    data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     data->found = 0;
-    data->timeLeft = PLAY_TIME + 10;
+    data->timeLeft = PLAY_TIME + (s32)(10 * DT);
     data->curScore = 0;
     data->mashProgress = 0;
     data->stunFlags = 0;
@@ -353,7 +354,7 @@ API_CALLABLE(N(SetBoxContents)) {
     }
 
     for (i = 0; i < ARRAY_COUNT(D_80248600); i++) {
-        D_80248600[i] = FALSE;
+        D_80248600[i] = false;
     }
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -402,7 +403,7 @@ API_CALLABLE(N(SetBoxContents)) {
                 // ARRAY BOUNDS ERROR IN ORIGINAL CODE!
                 for (j = 0; j <= ARRAY_COUNT(D_80248600); j++) {
                     if (!D_80248600[j]) {
-                        D_80248600[j] = TRUE;
+                        D_80248600[j] = true;
                         data->box[i].peachPanelModelID = N(PanelModelIDs[j]);
                         break;
                     }
@@ -415,12 +416,7 @@ API_CALLABLE(N(SetBoxContents)) {
     }
     return ApiStatus_DONE2;
 }
-#endif
 
-#if VERSION_PAL
-API_CALLABLE(N(RunMinigame));
-INCLUDE_ASM(ApiResult, "world/area_mgm/mgm_02/mgm_02_2_npc", mgm_02_RunMinigame);
-#else
 API_CALLABLE(N(RunMinigame)) {
     SmashGameData* data;
     Enemy* enemy;
@@ -437,8 +433,8 @@ API_CALLABLE(N(RunMinigame)) {
     s32 gameFinished;
     s32 hittingPeachBlock;
 
-    gameFinished = FALSE;
-    hittingPeachBlock = FALSE;
+    gameFinished = false;
+    hittingPeachBlock = false;
     data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -740,7 +736,7 @@ API_CALLABLE(N(RunMinigame)) {
                     model->flags &= ~MODEL_FLAG_HIDDEN;
                     // fallthrough
                 case BOX_STATE_PEACH_EMERGE:
-                    hittingPeachBlock = TRUE;
+                    hittingPeachBlock = true;
                     model = get_model_from_list_index(get_model_list_index_from_tree_index(data->box[i].peachPanelModelID));
                     centerY = update_lerp(EASING_QUADRATIC_OUT, npc->moveToPos.y, npc->moveToPos.y + 30.0, npc->duration, 30);
                     if (!(model->flags & MODEL_FLAG_HAS_TRANSFORM)) {
@@ -771,31 +767,31 @@ API_CALLABLE(N(RunMinigame)) {
     if (data->timeLeft > 0) {
         if (data->found < NUM_PANELS) {
             data->timeLeft--;
-            if (data->timeLeft == 750) {
+            if (data->timeLeft == (s32)(750 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
-            } else if (data->timeLeft == 600) {
+            } else if (data->timeLeft == (s32)(600 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
-            } else if (data->timeLeft == 450) {
+            } else if (data->timeLeft == (s32)(450 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_1);
-            } else if (data->timeLeft == 300) {
+            } else if (data->timeLeft == (s32)(300 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
-            } else if (data->timeLeft == 270) {
+            } else if (data->timeLeft == (s32)(270 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
-            } else if (data->timeLeft == 240) {
+            } else if (data->timeLeft == (s32)(240 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
-            } else if (data->timeLeft == 210) {
+            } else if (data->timeLeft == (s32)(210 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
-            } else if (data->timeLeft == 180) {
+            } else if (data->timeLeft == (s32)(180 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_2);
-            } else if (data->timeLeft == 150) {
+            } else if (data->timeLeft == (s32)(150 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
-            } else if (data->timeLeft == 120) {
+            } else if (data->timeLeft == (s32)(120 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
-            } else if (data->timeLeft == 90) {
+            } else if (data->timeLeft == (s32)(90 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
-            } else if (data->timeLeft == 60) {
+            } else if (data->timeLeft == (s32)(60 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
-            } else if (data->timeLeft == 30) {
+            } else if (data->timeLeft == (s32)(30 * DT)) {
                 sfx_play_sound(SOUND_OMO_BOX_CHIME_3);
             }
         }
@@ -822,9 +818,12 @@ API_CALLABLE(N(RunMinigame)) {
     }
     if (!hittingPeachBlock && ((data->found == 10) || ((data->timeLeft == 0)
         && (gPlayerStatusPtr->actionState != ACTION_STATE_HAMMER)))) {
-        gameFinished = TRUE;
+        gameFinished = true;
     }
     if (gameFinished) {
+#if VERSION_PAL
+        N(pal_variable) = 0;
+#endif
         if (data->stunFlags & STUN_FLAG_STUNNED) {
             enable_player_input();
             partner_enable_input();
@@ -845,7 +844,6 @@ API_CALLABLE(N(RunMinigame)) {
 
     return ApiStatus_BLOCK;
 }
-#endif
 
 API_CALLABLE(N(UpdateRecords)) {
     PlayerData* playerData = &gPlayerData;
@@ -1068,16 +1066,16 @@ EvtScript N(EVS_CreateScoreDisplay) = {
 };
 
 EvtScript N(read_sign_instructions) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(N(SetMsgImgs_Panel))
     Call(ShowMessageAtScreenPos, MSG_MGM_0046, 160, 40)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
 
 EvtScript N(EVS_ShowBox) = {
-    Call(EnableModel, LVar0, TRUE)
+    Call(EnableModel, LVar0, true)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, LVar1, COLLIDER_FLAGS_UPPER_MASK)
     Call(TranslateModel, LVar0, 0, 0, 0)
     Return
@@ -1099,7 +1097,7 @@ EvtScript N(EVS_MakeBoxAppear) = {
 
 EvtScript N(EVS_HideBox) = {
     Call(TranslateModel, LVar0, 0, 0, 0)
-    Call(EnableModel, LVar0, FALSE)
+    Call(EnableModel, LVar0, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVar1, COLLIDER_FLAGS_UPPER_MASK)
     Return
     End
@@ -1446,16 +1444,16 @@ EvtScript N(EVS_MakeAllBoxesAppear) = {
 };
 
 EvtScript N(EVS_HidePeachPanels) = {
-    Call(EnableModel, MODEL_o50, FALSE)
-    Call(EnableModel, MODEL_o51, FALSE)
-    Call(EnableModel, MODEL_o52, FALSE)
-    Call(EnableModel, MODEL_o53, FALSE)
-    Call(EnableModel, MODEL_o54, FALSE)
-    Call(EnableModel, MODEL_o55, FALSE)
-    Call(EnableModel, MODEL_o56, FALSE)
-    Call(EnableModel, MODEL_o57, FALSE)
-    Call(EnableModel, MODEL_o58, FALSE)
-    Call(EnableModel, MODEL_o59, FALSE)
+    Call(EnableModel, MODEL_o50, false)
+    Call(EnableModel, MODEL_o51, false)
+    Call(EnableModel, MODEL_o52, false)
+    Call(EnableModel, MODEL_o53, false)
+    Call(EnableModel, MODEL_o54, false)
+    Call(EnableModel, MODEL_o55, false)
+    Call(EnableModel, MODEL_o56, false)
+    Call(EnableModel, MODEL_o57, false)
+    Call(EnableModel, MODEL_o58, false)
+    Call(EnableModel, MODEL_o59, false)
     Return
     End
 };
@@ -1476,7 +1474,7 @@ EvtScript N(EVS_OnHitBox) = {
             Wait(1)
             Call(TranslateModel, LVarA, 0, -21, 0)
             Wait(1)
-            Call(EnableModel, LVarA, FALSE)
+            Call(EnableModel, LVarA, false)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVarB, COLLIDER_FLAGS_UPPER_MASK)
             Wait(4)
             Sub(LVar1, 5)
@@ -1487,7 +1485,7 @@ EvtScript N(EVS_OnHitBox) = {
             PlayEffect(EFFECT_WALKING_DUST, 1, LVar0, LVar1, LVar2)
         EndCaseGroup
     EndSwitch
-    Call(EnableModel, LVarA, FALSE)
+    Call(EnableModel, LVarA, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, LVarB, COLLIDER_FLAGS_UPPER_MASK)
     Return
     End
@@ -1619,7 +1617,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
     Call(N(DisableMenus))
     Call(N(RunMinigame))
     Call(N(EnableMenus))
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(SetSelfVar, 3, 3)
     Call(PopSong)
     Exec(N(EVS_CleanupGame))
@@ -1634,17 +1632,17 @@ EvtScript N(EVS_Toad_GovernGame) = {
         Call(SetPanTarget, CAM_DEFAULT, 358, -20, 185)
         Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+        Call(PanToTarget, CAM_DEFAULT, 0, true)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(N(CreateSignpost))
     PlayEffect(EFFECT_WALKING_DUST, 1, 355, 45, -175)
     Thread
         Call(SetNpcPos, NPC_Toad, 358, -20, 185)
-        Call(EnableNpcShadow, NPC_Toad, TRUE)
+        Call(EnableNpcShadow, NPC_Toad, true)
         PlayEffect(EFFECT_WALKING_DUST, 1, 358, 5, 189)
-        Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, FALSE)
+        Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, false)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Toad, LVar3, LVar4, LVar5)
@@ -1655,7 +1653,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
     EndIf
     Call(PlayerMoveTo, 330, 185, LVarA)
     Call(WaitForPlayerMoveToComplete)
-    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+    Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
     Wait(5)
     Call(SetSelfVar, 3, 5)
     Call(N(UpdateRecords))
@@ -1669,22 +1667,22 @@ EvtScript N(EVS_Toad_GovernGame) = {
 #if VERSION_PAL
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_PAL_MGM_0046)
-            Call(ShowCoinCounter, TRUE)
+            Call(ShowCoinCounter, true)
             Wait(10)
             Call(N(GiveCoinReward))
             Wait(15)
-            Call(ShowCoinCounter, FALSE)
+            Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0045)
 #endif
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0042)
-            Call(ShowCoinCounter, TRUE)
+            Call(ShowCoinCounter, true)
             Wait(10)
             Call(N(GiveCoinReward))
             Wait(15)
-            Call(ShowCoinCounter, FALSE)
+            Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
             Wait(5)
             Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0045)
@@ -1695,10 +1693,10 @@ EvtScript N(EVS_Toad_GovernGame) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
-    Call(DisablePlayerInput, FALSE)
+    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -1721,14 +1719,14 @@ EvtScript N(EVS_DestroyMinigame) = {
 };
 
 EvtScript N(EVS_NpcInteract_Toad) = {
-    IfEq(GF_MGM_Met_SmashAttack, FALSE)
+    IfEq(GF_MGM_Met_SmashAttack, false)
         Call(N(SetMsgImgs_Panel))
-        Set(GF_MGM_Met_SmashAttack, TRUE)
+        Set(GF_MGM_Met_SmashAttack, true)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003C)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003D)
     EndIf
-    Call(ShowCoinCounter, TRUE)
+    Call(ShowCoinCounter, true)
     Call(N(GetCoinCount))
     IfLt(LVarA, 10)
         Call(ContinueSpeech, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_003E)
@@ -1777,7 +1775,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
         Wait(12)
         PlayEffect(EFFECT_WALKING_DUST, 1, 358, -10, 185)
         Call(SetNpcPos, NPC_Toad, 358, 500, 185)
-        Call(EnableNpcShadow, NPC_Toad, FALSE)
+        Call(EnableNpcShadow, NPC_Toad, false)
         Call(N(DestroySignpost))
         PlayEffect(EFFECT_WALKING_DUST, 1, 355, 30, -180)
     EndThread
@@ -1829,9 +1827,9 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
         CaseDefault
             Call(SetSelfVar, 8, SOUND_FUZZY_HOP_B)
     EndSwitch
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Call(RandInt, 100, LVar0)
     IfLt(LVar0, 50)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
@@ -1845,9 +1843,9 @@ EvtScript N(EVS_NpcInit_Fuzzy) = {
 EvtScript N(EVS_NpcInit_Bobomb) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Bobomb_AngryIdle)
     Call(SetSelfVar, 0, 0)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetSelfNpcID, LVar0)
     Switch(LVar0)
         CaseEq(NPC_Bobomb_01)
@@ -1872,9 +1870,9 @@ EvtScript N(EVS_NpcInit_Bobomb) = {
 EvtScript N(EVS_NpcInit_Luigi) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Jump)
     Call(SetSelfVar, 0, 0)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, TRUE)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_JUMPING, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Call(RandInt, 100, LVar0)
     IfLt(LVar0, 50)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)

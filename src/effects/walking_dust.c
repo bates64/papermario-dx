@@ -29,7 +29,7 @@ void walking_dust_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     bp.init = walking_dust_init;
     bp.update = walking_dust_update;
     bp.renderScene = walking_dust_render;
-    bp.renderUI = NULL;
+    bp.renderUI = nullptr;
     bp.effectID = EFFECT_WALKING_DUST;
 
     effect = create_effect_instance(&bp);
@@ -37,7 +37,7 @@ void walking_dust_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
     data = general_heap_malloc(numParts * sizeof(*data));
     effect->data.walkingDust = data;
-    ASSERT(effect->data.walkingDust != NULL);
+    ASSERT(effect->data.walkingDust != nullptr);
 
     mem_clear(data, numParts * sizeof(*data));
     data->unk_6C = arg0 == 2;
@@ -97,7 +97,7 @@ void walking_dust_appendGfx(void* effect) {
     WalkingDustFXData* data = effectTemp->data.walkingDust;
     s32 temp_t3 = data->unk_04;
     s32 temp_t4 = data->unk_74;
-    s32 cond = FALSE;
+    s32 cond = false;
     Matrix4f sp18;
     Matrix4f sp58;
     s32 temp_a0;
@@ -126,7 +126,7 @@ void walking_dust_appendGfx(void* effect) {
     }
 
     if ((data->unk_6C == 0 && temp_t4 == 6) || (data->unk_6C == 1 && temp_t4 == 7)) {
-        cond = TRUE;
+        cond = true;
     }
 
     gDPPipeSync(gMainGfxPos++);

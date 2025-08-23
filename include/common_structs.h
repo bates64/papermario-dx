@@ -14,6 +14,7 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 typedef Bytecode EvtScript[];
 
 typedef void NoArgCallback(void*);
+typedef void (*AuCallback)(void);
 
 #define MSG_PTR u8*
 #define IMG_PTR u8*
@@ -23,7 +24,6 @@ typedef void NoArgCallback(void*);
 #define IMG_BIN u8
 #define PAL_BIN u16
 
-typedef s32 b32;
 typedef s16 b16;
 typedef s8 b8;
 
@@ -435,6 +435,7 @@ typedef struct Evt {
     /*       */     s32 functionTemp[4];
     /*       */     f32 functionTempF[4];
     /*       */     void* functionTempPtr[4];
+    /*       */     bool functionTempBool[4];
     /*       */ };
     /* 0x080 */ ApiFunc callFunction;
     /* 0x084 */ union {
@@ -626,28 +627,28 @@ typedef struct Worker {
 
 typedef Worker* WorkerList[MAX_WORKERS];
 
-typedef struct MusicSettings {
+typedef struct MusicControlData {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 state;
     /* 0x04 */ s32 fadeOutTime;
     /* 0x08 */ s32 fadeInTime;
     /* 0x0C */ s16 fadeStartVolume;
     /* 0x0E */ s16 fadeEndVolume;
-    /* 0x10 */ s32 songID;
+    /* 0x10 */ s32 requestedSongID;
     /* 0x14 */ s32 variation;
-    /* 0x18 */ s32 songName;
+    /* 0x18 */ s32 songName; /// name or handle of currently playing song
     /* 0x1C */ s32 battleSongID;
     /* 0x20 */ s32 battleVariation;
     /* 0x24 */ s32 savedSongID;
     /* 0x28 */ s32 savedVariation;
     /* 0x2C */ s32 savedSongName;
-} MusicSettings; // size = 0x30
+} MusicControlData; // size = 0x30
 
 typedef struct MusicProximityTrigger {
     /* 0x00 */ VecXZf pos;
     /* 0x08 */ f32 innerDist;
     /* 0x0C */ f32 outerDist;
-    /* 0x10 */ s32 unk;
+    /* 0x10 */ s32 mix; /// which branch value to switch to
     /* 0x14 */ s32 manualActivationFlag;
 } MusicProximityTrigger; // size = 0x18
 
@@ -743,7 +744,7 @@ typedef struct CameraControlSettings {
         } three;
     } points;
     /* 0x24 */ f32 viewPitch;
-    /* 0x28 */ b32 flag;
+    /* 0x28 */ bool flag;
 } CameraControlSettings; // size = 0x2C
 
 typedef struct Camera {
@@ -847,7 +848,7 @@ typedef struct Camera {
     /* 0x524 */ f32 prevLeadPosX;
     /* 0x528 */ f32 prevLeadPosZ;
     /* 0x52C */ s32 leadConstrainDir;
-    /* 0x530 */ b32 needsInitialConstrainDir;
+    /* 0x530 */ bool needsInitialConstrainDir;
     /* 0x534 */ CameraControlSettings* prevLeadSettings;
     /* 0x550 */ f32 unusedLeadAmt;
     /* 0x554 */ s16 unusedLeadCounter;
@@ -1230,7 +1231,7 @@ typedef struct MessagePrintState {
     /* 0x4FC */ s32 stateFlags;
     /* 0x500 */ s16 delayFlags; // ?
     /* 0x502 */ char unk_502[0x2];
-    /* 0x504 */ s32* closedWritebackBool; // if not null, writes 1 here when message closes
+    /* 0x504 */ bool* closedWritebackBool; // if not null, writes 1 here when message closes
     /* 0x508 */ u8 style;
     /* 0x509 */ u8 fadeInCounter;
     /* 0x50A */ Vec2s initOpenPos; // where the message originates from, in screen-space coords
@@ -1502,7 +1503,7 @@ typedef struct ItemEntityPhysicsData {
     /* 0x14 */ f32 velZ;
     /* 0x18 */ f32 moveAngle;
     /* 0x1C */ s32 timeLeft;
-    /* 0x20 */ b32 useSimplePhysics;
+    /* 0x20 */ bool useSimplePhysics;
 } ItemEntityPhysicsData; // size = 0x24
 
 typedef struct RenderTask {
@@ -2051,6 +2052,53 @@ typedef struct PlayerStatus {
     /* 0x281 */ char unk_281[7];
 } PlayerStatus; // size = 0x288
 
+typedef struct SaveGlobals {
+    /* 0x00 */ char magicString[16]; /* "Mario Story 006" string */
+    /* 0x10 */ s8 pad[32]; /* always zero */
+    /* 0x30 */ s32 crc1;
+    /* 0x34 */ s32 crc2;
+    /* 0x38 */ s32 useMonoSound;
+    /* 0x3C */ u32 lastFileSelected;
+    /* 0x40 */ u32 language; // only used for PAL
+    /* 0x44 */ s8 reserved[60]; // unused
+} SaveGlobals; // size = 0x80
+
+typedef struct SaveMetadata {
+    /* 0x00 */ s32 timePlayed;
+    /* 0x04 */ u8 spiritsRescued;
+    /* 0x05 */ char unk_05[1];
+    /* 0x06 */ s8 level;
+    /* 0x07 */ unsigned char filename[8];
+    /* 0x0F */ char unk_0F[9];
+} SaveMetadata; // size = 0x18
+
+typedef struct SaveData {
+    /* 0x0000 */ char magicString[16]; /* "Mario Story 006" string */
+    /* 0x0010 */ s8 pad[32]; /* always zero */
+    /* 0x0030 */ s32 crc1;
+    /* 0x0034 */ s32 crc2;
+    /* 0x0038 */ s32 saveSlot;
+    /* 0x003C */ s32 saveCount;
+    /* 0x0040 */ PlayerData player;
+    /* 0x0468 */ s16 areaID;
+    /* 0x046A */ s16 mapID;
+    /* 0x046C */ s16 entryID;
+    /* 0x046E */ char unk_46E[2];
+    /* 0x0470 */ s32 enemyDefeatFlags[60][12];
+    /* 0x0FB0 */ s32 globalFlags[64];
+    /* 0x10B0 */ s8 globalBytes[512];
+    /* 0x12B0 */ s32 areaFlags[8];
+    /* 0x12D0 */ s8 areaBytes[16];
+    /* 0x12E0 */ s8 debugEnemyContact;
+    /* 0x12E0 */ b8 debugUnused1;
+    /* 0x12E0 */ b8 debugUnused2;
+    /* 0x12E0 */ b8 musicEnabled;
+    /* 0x12E4 */ char unk_12E4[0x2];
+    /* 0x12E6 */ Vec3s savePos;
+    /* 0x12EC */ SaveMetadata metadata;
+    /* 0x1304 */ char unk_1304[0x7C];
+} SaveData; // size = 0x1380
+
 typedef struct Path {
     /* 0x00 */ s32 numVectors;
     /* 0x04 */ f32* lengths;
@@ -2173,7 +2221,7 @@ typedef struct {
 
 #if VERSION_JP
 #define DISPLAYCONTEXT_GFX_COUNT 0x2000
-#elif VERSION_IQUE
+#elif VERSION_IQUE || VERSION_PAL
 #define DISPLAYCONTEXT_GFX_COUNT 0x2200
 #else
 #define DISPLAYCONTEXT_GFX_COUNT 0x2080
@@ -2185,10 +2233,6 @@ typedef struct {
     /* 0x00030 */ Mtx camPerspMatrix[8]; // could only be length 4, unsure
     /* 0x00230 */ Gfx mainGfx[DISPLAYCONTEXT_GFX_COUNT];
     /* 0x10630 */ Gfx backgroundGfx[0x200]; // used by gfx_task_background
-#if VERSION_PAL
-    // TODO: find where this space belongs to
-    s32 pad[0x300];
-#endif
     /* 0x11630 */ Mtx matrixStack[0x200];
 } DisplayContext; // size = 0x19630
 
@@ -2272,6 +2316,23 @@ typedef struct VirtualEntity {
 
 typedef VirtualEntity* VirtualEntityList[0x40];
 
+typedef struct Message {
+    /* 0x00 */ bool unk_00;
+    /* 0x04 */ s32 entityModelIndex;
+    /* 0x08 */ Vec3f accel;
+    /* 0x14 */ Vec3f vel;
+    /* 0x20 */ s32 appearTime;
+    /* 0x24 */ s32 unk_24;
+    /* 0x28 */ f32 rotZ;
+    /* 0x2C */ f32 rotVelZ;
+    /* 0x30 */ f32 rotY;
+    /* 0x34 */ f32 scale;
+    /* 0x38 */ Vec3f pos;
+    /* 0x44 */ s32 deleteTime;
+    /* 0x48 */ f32 unk_48;
+} Message; // size = 0x4C
+
+struct PopupMessage;
 typedef void (*PopupMessageCallback)(void* popup);
 
 typedef struct PopupMessage {
@@ -2347,17 +2408,6 @@ typedef struct ImgFXWorkingTexture {
     /* 0x24 */ u8 alphaMultiplier;
 } ImgFXWorkingTexture; // size = 0x25
 
-typedef struct SongUpdateEvent {
-    /* 0x00 */ s32 songName;
-    /* 0x04 */ s32 duration;
-    /* 0x08 */ s32 startVolume;
-    /* 0x0C */ s32 finalVolume;
-    /* 0x10 */ s32 variation;
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ s32 unk1C; // may be fake
-} SongUpdateEvent; // size = 0x1C or 0x20
-
 // unfortunately, cant use bitfield for this
 // format: ABCC00DD
 // A = playerID
@@ -2431,10 +2481,16 @@ typedef struct CreditsChar {
     /* 0x18 */ s32 fadeInTime;
 } CreditsChar; // size = unk
 
+#if VERSION_JP
+#define MAX_CREDITS_LINES 30
+#else
+#define MAX_CREDITS_LINES 32
+#endif
+
 typedef struct CreditsData {
     /* 0x00 */ u32 workerID;
-    /* 0x04 */ CreditsLine lines[32];
-} CreditsData; // size = 0x74
+    /* 0x04 */ CreditsLine lines[MAX_CREDITS_LINES];
+} CreditsData; // size = 0xE84, JP size = 0xD9C
 
 typedef struct CreditsPairOffset {
     /* 0x00 */ u8 firstChar;

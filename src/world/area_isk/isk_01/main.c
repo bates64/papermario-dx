@@ -35,9 +35,8 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_NONE)
-    Call(N(SetupLandingCamAdjust))
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_DryDryRuins, TRUE)
+    SetUP_CAMERA_ALT_NO_LEAD()
+    Set(GF_MAP_DryDryRuins, true)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupHaze))

@@ -19,7 +19,7 @@ s32 N(adjust_cam_on_landing)(void) {
         }
     }
 
-    if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
+    if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH2_DRAINED_THIRD_SAND_ROOM) {
         ret = LANDING_CAM_ALWAYS_ADJUST;
     }
 
@@ -51,24 +51,24 @@ EvtScript N(EVS_Main) = {
     Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_THIRD_SAND_ROOM)
-        Call(SetZoneEnabled, ZONE_deiliw, FALSE)
+        Call(SetZoneEnabled, ZONE_deiliw, false)
     Else
-        Call(SetZoneEnabled, ZONE_deiliw, FALSE)
-        Call(SetZoneEnabled, ZONE_on, FALSE)
+        Call(SetZoneEnabled, ZONE_deiliw, false)
+        Call(SetZoneEnabled, ZONE_on, false)
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupSand))
     Exec(N(EVS_SetupSwitches))
 #if VERSION_PAL
-    Call(SetMusicTrack, 0, SONG_DRY_DRY_RUINS, 0, 8)
+    Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
 #else
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
-            Call(SetMusicTrack, 0, SONG_DRY_DRY_RUINS, 0, 8)
+            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
         CaseLt(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Call(SetMusicTrack, 0, SONG_RUINS_BASEMENT, 0, 8)
+            Call(SetMusic, 0, SONG_RUINS_BASEMENT, 0, VOL_LEVEL_FULL)
         CaseGe(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Call(SetMusicTrack, 0, SONG_DRY_DRY_RUINS, 0, 8)
+            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

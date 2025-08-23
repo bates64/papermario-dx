@@ -42,10 +42,14 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)
-    EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_DryDryDesert, TRUE)
+    SetUP_CAMERA_MINIMAL()
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 152, 240)
+    Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
+    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Set(GF_MAP_DryDryDesert, true)
     ExecWait(N(EVS_MakeEntities))
-    Call(SetMusicTrack, 0, SONG_MT_RUGGED, 0, 8)
+    Call(SetMusic, 0, SONG_MT_RUGGED, 0, VOL_LEVEL_FULL)
     Exec(N(EVS_EnterMap))
     Wait(1)
     Return
