@@ -1,5 +1,7 @@
 #include "common.h"
 #include "hud_element.h"
+#include "dx/config.h"
+#include "dx/debug_menu.h"
 
 s32 UniqueScriptCounter = 1;
 s32 IsUpdatingScripts = FALSE;
@@ -175,6 +177,10 @@ void clear_script_list(void) {
         gMapFlags[i] = 0;
     }
 
+    #if DX_DEBUG_MENU
+    dx_debug_evt_reset();
+    #endif
+
     clear_virtual_entity_list();
     reset_model_animators();
 }
@@ -253,6 +259,7 @@ Evt* start_script(EvtScript* source, s32 priority, s32 flags) {
     newScript->frameCounter = 0.0f;
     newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
+    newScript->debugPaused = FALSE;
 
     scriptListCount = 0;
 
@@ -320,6 +327,7 @@ Evt* start_script_in_group(EvtScript* source, u8 priority, u8 flags, u8 groupFla
     newScript->frameCounter = 0.0f;
     newScript->unk_158 = 0;
     newScript->timeScale = GlobalTimeRate;
+    newScript->debugPaused = FALSE;
 
     scriptListCount = 0;
 
@@ -389,6 +397,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
     child->unk_158 = 0;
+    child->debugPaused = FALSE;
 
     scriptListCount = 0;
 
@@ -457,6 +466,7 @@ Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     child->timeScale = GlobalTimeRate;
     child->frameCounter = 0.0f;
     child->unk_158 = 0;
+    child->debugPaused = FALSE;
 
     scriptListCount = 0;
 
@@ -494,6 +504,10 @@ Evt* func_802C3C10(Evt* script, Bytecode* line, s32 arg2) {
     script->frameCounter = 0;
     script->stateFlags |= arg2;
     script->timeScale = 1.0f;
+
+    #if DX_DEBUG_MENU
+    dx_debug_evt_force_detach(script);
+    #endif
 
     if (script->userData != NULL) {
         heap_free(script->userData);
@@ -560,12 +574,12 @@ void update_scripts(void) {
     for (i = 0; i < gScriptListCount; i++) {
         Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
 
-        if (script != NULL &&
-            script->id == gScriptIdList[i] &&
-            script->stateFlags != 0 &&
-            !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED)))
-        {
-            s32 stop = FALSE;
+        if (script != NULL
+            && script->id == gScriptIdList[i]
+            && script->stateFlags != 0
+            && !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED))
+        ) {
+            b32 stop = FALSE;
             s32 status;
 
             script->frameCounter += script->timeScale;
@@ -649,6 +663,10 @@ void kill_script(Evt* instanceToKill) {
             blockingParent->varFlags[j] = instanceToKill->varFlags[j];
         }
     }
+
+    #if DX_DEBUG_MENU
+    dx_debug_evt_force_detach(instanceToKill);
+    #endif
 
     if (instanceToKill->userData != NULL) {
         heap_free(instanceToKill->userData);

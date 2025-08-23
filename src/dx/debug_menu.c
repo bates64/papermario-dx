@@ -3,6 +3,7 @@
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "hud_element.h"
+#include "inventory.h"
 #include "qsort.h"
 #include <string.h>
 #include "dx/utils.h"
@@ -453,6 +454,32 @@ const s32 MainBoxHeight   = ARRAY_COUNT(DebugMainMenu) * RowHeight + 8;
 f32 ArrowAnimOffset = 0;
 f32 DebugArrowPhase = 0.0f;
 #define DEBUG_ARROW_ANIM_RATE 6
+
+void dx_debug_update_banner();
+void dx_debug_update_main_menu();
+void dx_debug_update_quick_save();
+void dx_debug_update_select_area();
+void dx_debug_update_select_map();
+void dx_debug_update_select_entry();
+void dx_debug_update_select_battle();
+void dx_debug_update_edit_progress();
+void dx_debug_update_sound_player();
+void dx_debug_update_select_sound();
+void dx_debug_update_edit_partners();
+void dx_debug_update_edit_inventory();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_items();
+void dx_debug_update_edit_gear();
+void dx_debug_update_edit_stats();
+void dx_debug_update_edit_coins();
+void dx_debug_update_edit_star_points();
+void dx_debug_update_edit_star_pieces();
+void dx_debug_update_view_collision();
+void dx_debug_update_cheat_menu();
+void dx_debug_update_evt_main();
+void dx_debug_update_evt_select();
+void dx_debug_update_evt_attached();
 
 void dx_debug_menu_main() {
     s32 initialMenuState = DebugMenuState;
@@ -2362,6 +2389,16 @@ void dx_debug_draw_var(s32 i, s32 number, char* fmt, s32 color, s32 alpha, s32 p
     draw_msg((s32)buf, posX, posY, alpha, color, 0);
 }
 
+void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
+    char fmtBuf[64];
+    char buf[64] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    sprintf(fmtBuf, fmt, i, number);
+    dx_string_to_msg(&buf[4], fmtBuf);
+    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+}
+
 void dx_debug_evt_draw_vars() {
     s32 i;
 
@@ -2375,7 +2412,7 @@ void dx_debug_evt_draw_vars() {
                 dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %d", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_FLOAT:
-                dx_debug_draw_var(i, DebugEvtAttached->varTableF[i], "LVar%X  %f", color, 255, posX, posY);
+                dx_debug_draw_fvar(i, DebugEvtAttached->varTableF[i], "LVar%X  %f", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_RAW:
                 dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %08X", color, 255, posX, posY);
@@ -2393,7 +2430,7 @@ void dx_debug_evt_draw_vars() {
                 dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %d", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_FLOAT:
-                dx_debug_draw_var(i, DebugEvtAttached->functionTempF[i], "Temp%X  %f", color, 255, posX, posY);
+                dx_debug_draw_fvar(i, DebugEvtAttached->functionTempF[i], "Temp%X  %f", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_RAW:
                 dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %08X", color, 255, posX, posY);
@@ -2683,7 +2720,7 @@ u32 dx_debug_hash_location(const char* filename, s32 line) {
     u32 hash = 5381;
     s32 c;
 
-    while (c = *filename++) {
+    while ((c = *filename++)) {
         hash = ((hash << 5) + hash) + c;
     }
 
