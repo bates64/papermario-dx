@@ -2292,9 +2292,12 @@ void dx_debug_draw_evt_list() {
 void dx_debug_evt_break_all() {
     s32 i;
 
+    debug_printf("count: %d", DebugEvtCount);
+
     for (i = 0; i < DebugEvtCount; i++) {
         Evt* script = DebugEvtList[i];
         script->debugPaused = TRUE;
+        script->debugStep = DEBUG_EVT_STEP_NONE;
     }
 }
 
@@ -2304,6 +2307,7 @@ void dx_debug_evt_resume_all() {
     for (i = 0; i < DebugEvtCount; i++) {
         Evt* script = DebugEvtList[i];
         script->debugPaused = FALSE;
+        script->debugStep = DEBUG_EVT_STEP_NONE;
     }
 }
 
@@ -2360,9 +2364,11 @@ void dx_debug_update_evt_select() {
                     break;
                 case DEBUG_EVT_MAIN_BREAK:
                     DebugEvtList[EvtListCurPos]->debugPaused = TRUE;
+                    DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
                     break;
                 case DEBUG_EVT_MAIN_RESUME:
                     DebugEvtList[EvtListCurPos]->debugPaused = FALSE;
+                    DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
                     break;
             }
         }
