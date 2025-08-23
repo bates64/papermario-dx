@@ -1206,7 +1206,7 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     } while (opcode != EVT_OP_END_CHILD_THREAD);
 
     script->ptrNextLine = endLine;
-    newScript = func_802C39F8(script, startLine, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD);
+    newScript = start_child_thread(script, startLine, EVT_FLAG_RUN_IMMEDIATELY | EVT_FLAG_THREAD);
     newScript->owner1.enemyID = script->owner1.enemyID;
     newScript->owner2.npcID = script->owner2.npcID;
     newScript->groupFlags = script->groupFlags;

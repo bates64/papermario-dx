@@ -102,6 +102,7 @@ enum {
     EVT_OP_92,
     EVT_OP_93,
     EVT_OP_94,
+    EVT_OP_DEBUG_BREAKPOINT,
 };
 
 #define MAKE_ENTITY_END      0x80000000
@@ -116,7 +117,7 @@ typedef s32 ApiStatus;
 #define ApiStatus_BLOCK  0   /* Call again next frame */
 #define ApiStatus_DONE1  1   /* Unconditional. Probably only exists to return a bool from functions */
 #define ApiStatus_DONE2  2   /* Conditional on Evt->disableScripts */
-#define ApiStatus_REPEAT 3   /* Call again immediately */
+#define ApiStatus_REPEAT 3   /* Call again immediately. Used internally during fetch operation. */
 #define ApiStatus_FINISH 255 /* Corresponds to EVT_FINISH */
 
 enum EventCommandResults {

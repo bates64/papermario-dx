@@ -416,7 +416,7 @@ Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 flags) {
     return child;
 }
 
-Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState) {
+Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState) {
     Evt* child;
     s32 curScriptIndex;
     s32 i;
