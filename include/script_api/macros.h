@@ -579,7 +579,10 @@ extern "C" {
 #define EVT_DEBUG_LOG(STRING)                   EVT_CMD(EVT_OP_DEBUG_LOG, STRING),
 
 /// Prints variable name and value
-#define DebugPrintVar(VAR)                EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),
+#define DebugPrintVar(VAR)                  EVT_CMD(EVT_OP_DEBUG_PRINT_VAR, VAR),
+
+/// Halt execution after this command
+#define BreakPoint(TEXT)                    EVT_CMD(EVT_OP_DEBUG_BREAKPOINT, Ref(TEXT)),
 
 /****** VECTOR OPERATIONS *********************************************************************************************/
 
