@@ -6,8 +6,6 @@
 #include "sprite.h"
 #include "game_modes.h"
 
-// #include "area/kmr_part_1/area.hpp"
-
 extern "C" {
 
 BSS StageListRow* gCurrentStagePtr;
