@@ -43,6 +43,7 @@ extern "C" {
 #define EVT_ARRAY_FLAG_OFFSET    210000000
 #define EVT_FIXED_CUTOFF        -220000000
 #define EVT_FIXED_OFFSET         230000000
+#define EVT_FIXED_END           -240000000
 #define EVT_IGNORE_ARG          -250000000 // used by a couple functions to selectively ignore args
 #define EVT_LIMIT               -270000000 // TODO better name
 

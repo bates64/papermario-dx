@@ -2150,7 +2150,8 @@ enum {
 enum {
     DEBUG_EVT_DISP_MODE_RAW         = 0,
     DEBUG_EVT_DISP_MODE_INT         = 1,
-    DEBUG_EVT_DISP_MODE_FLOAT       = 2,
+    DEBUG_EVT_DISP_MODE_FIXED       = 2,
+    DEBUG_EVT_DISP_MODE_FLOAT       = 3,
     DEBUG_EVT_DISP_MODE_COUNT,
 };
 
@@ -2406,6 +2407,9 @@ void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 
 }
 
 void dx_debug_evt_draw_vars() {
+    #define MAX_VALID_FLOAT 1e9
+    s32 val;
+    f32 fval;
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -2414,14 +2418,27 @@ void dx_debug_evt_draw_vars() {
         s32 color = DebugEvtPrevLVars[i] == DebugEvtAttached->varTable[i] ? DefaultColor : HoverColor;
 
         switch (EvtAttachedVarsMode) {
+                case DEBUG_EVT_DISP_MODE_RAW:
+                dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %08X", color, 255, posX, posY);
+                break;
             case DEBUG_EVT_DISP_MODE_INT:
                 dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %d", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_FLOAT:
-                dx_debug_draw_fvar(i, DebugEvtAttached->varTableF[i], "LVar%X  %f", color, 255, posX, posY);
+                fval = DebugEvtAttached->varTableF[i];
+                if (fabsf(fval) < MAX_VALID_FLOAT) {
+                    dx_debug_draw_fvar(i, fval, "LVar%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "LVar%X  ---", color, 255, posX, posY);
+                }
                 break;
-            case DEBUG_EVT_DISP_MODE_RAW:
-                dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %08X", color, 255, posX, posY);
+            case DEBUG_EVT_DISP_MODE_FIXED:
+                val = DebugEvtAttached->varTable[i];
+                if (val > EVT_FIXED_END && val < EVT_FIXED_CUTOFF) {
+                    dx_debug_draw_fvar(i, EVT_FIXED_TO_FLOAT(val), "LVar%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "LVar%X  ---", color, 255, posX, posY);
+                }
                 break;
         }
     }
@@ -2432,14 +2449,28 @@ void dx_debug_evt_draw_vars() {
         s32 color = DebugEvtPrevTemps[i] == DebugEvtAttached->functionTemp[i] ? DefaultColor : HoverColor;
 
         switch (EvtAttachedVarsMode) {
+            case DEBUG_EVT_DISP_MODE_RAW:
+                dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %08X", color, 255, posX, posY);
+                break;
             case DEBUG_EVT_DISP_MODE_INT:
                 dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %d", color, 255, posX, posY);
                 break;
             case DEBUG_EVT_DISP_MODE_FLOAT:
+                fval = DebugEvtAttached->functionTempF[i];
+                if (fabsf(fval) < MAX_VALID_FLOAT) {
+                    dx_debug_draw_fvar(i, fval, "Temp%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "Temp%X  ---", color, 255, posX, posY);
+                }
                 dx_debug_draw_fvar(i, DebugEvtAttached->functionTempF[i], "Temp%X  %f", color, 255, posX, posY);
                 break;
-            case DEBUG_EVT_DISP_MODE_RAW:
-                dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %08X", color, 255, posX, posY);
+            case DEBUG_EVT_DISP_MODE_FIXED:
+                val = DebugEvtAttached->functionTemp[i];
+                if (val > EVT_FIXED_END && val < EVT_FIXED_CUTOFF) {
+                    dx_debug_draw_fvar(i, EVT_FIXED_TO_FLOAT(val), "Temp%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "Temp%X  ---", color, 255, posX, posY);
+                }
                 break;
         }
     }
@@ -2587,6 +2618,9 @@ void dx_debug_update_evt_attached() {
     switch (EvtAttachedVarsMode) {
         case DEBUG_EVT_DISP_MODE_INT:
             dx_debug_evt_draw_menu_line(4, "Vars: Int");
+            break;
+        case DEBUG_EVT_DISP_MODE_FIXED:
+            dx_debug_evt_draw_menu_line(4, "Vars: Fixed");
             break;
         case DEBUG_EVT_DISP_MODE_FLOAT:
             dx_debug_evt_draw_menu_line(4, "Vars: Float");
