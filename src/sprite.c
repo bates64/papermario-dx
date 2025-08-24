@@ -10,22 +10,22 @@ BSS s32 spr_allocateBtlComponentsOnWorldHeap;
 BSS s32 MaxLoadedSpriteInstanceID;
 BSS s32 D_802DF540;
 BSS SpriteAnimData* spr_playerSprites[13];
-BSS s32 D_802DF57C;
+BSS s32 CurPlayerSpriteIndex;
 BSS s32 spr_playerMaxComponents;
 BSS PlayerCurrentAnimInfo spr_playerCurrentAnimInfo[3];
 BSS SpriteAnimData* NpcSpriteData[MAX_SPRITE_ID];
 BSS u8 NpcSpriteInstanceCount[MAX_SPRITE_ID];
 BSS SpriteInstance SpriteInstances[51];
-BSS Quad* D_802DFE44;
-BSS s32 D_802DFE48[22];
-BSS s32 D_802DFEA0[3];
+BSS Quad* SpriteQuadCache;
+BSS s32 SpriteQuadCacheInfo[22]; // upper bytes: width, height; lower 16 bits: time left
+BSS s32 SpriteCurBaseRot[3];
 BSS s32 SpriteUpdateNotifyValue;
 
 SpriteComponent** spr_allocate_components(s32);
 void spr_load_npc_extra_anims(SpriteAnimData*, u32*);
 void spr_init_player_raster_cache(s32 cacheSize, s32 maxRasterSize);
 
-Quad spr_defaultQuad = {
+Quad SprTemplateQuad = {
     {
     {{{ -16, 56, 0 }, FALSE, {    0,    0 }, { 240, 240, 240, 255 }}},
     {{{  16, 56, 0 }, FALSE, { 1024,    0 }, { 120, 120, 120, 255 }}},
@@ -46,7 +46,7 @@ Vp SprPauseVpAlt = {{
     }
 };
 
-Gfx D_802DF3F0[] = {
+Gfx OpaqueSpriteGfx[] = {
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
     gsSPTexture(-1, -1, 0, G_TX_RENDERTILE, G_ON),
@@ -56,7 +56,7 @@ Gfx D_802DF3F0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_802DF428[] = {
+Gfx TranslucentSpriteGfx[] = {
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsDPSetCombineMode(PM_CC_02, PM_CC_02),
     gsSPTexture(-1, -1, 0, G_TX_RENDERTILE, G_ON),
@@ -66,7 +66,7 @@ Gfx D_802DF428[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_802DF460[] = {
+Gfx OpaqueShadedSpriteGfx[] = {
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsSPTexture(-1, -1, 0, G_TX_RENDERTILE, G_ON),
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH),
@@ -75,7 +75,7 @@ Gfx D_802DF460[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_802DF490[] = {
+Gfx TranslucentShadedSpriteGfx[] = {
     gsSPClearGeometryMode(G_CULL_BOTH | G_LIGHTING),
     gsSPTexture(-1, -1, 0, G_TX_RENDERTILE, G_ON),
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH),
@@ -124,24 +124,24 @@ PlayerSpriteSet spr_playerSpriteSets[] = {
 void spr_init_quad_cache(void) {
     s32 i;
 
-    D_802DFE44 = _heap_malloc(&heap_spriteHead, ARRAY_COUNT(D_802DFE48) * sizeof(*D_802DFE44));
+    SpriteQuadCache = _heap_malloc(&heap_spriteHead, ARRAY_COUNT(SpriteQuadCacheInfo) * sizeof(*SpriteQuadCache));
 
-    for (i = 0; i < ARRAY_COUNT(D_802DFE48); i++) {
-        D_802DFE48[i] = -1;
+    for (i = 0; i < ARRAY_COUNT(SpriteQuadCacheInfo); i++) {
+        SpriteQuadCacheInfo[i] = -1;
     }
 }
 
 Quad* spr_get_cached_quad(s32 quadIndex) {
-    s32* temp_v1 = &D_802DFE48[quadIndex];
+    s32* quadInfo = &SpriteQuadCacheInfo[quadIndex];
 
-    *temp_v1 |= 0x1F;
-    return &D_802DFE44[quadIndex];
+    *quadInfo |= 0x1F; // reset life timer
+    return &SpriteQuadCache[quadIndex];
 }
 
 void spr_make_quad_for_size(Quad* quad, s32 width, s32 height) {
     Vtx* vtx = &quad->v[0];
 
-    *quad = spr_defaultQuad;
+    *quad = SprTemplateQuad;
 
     vtx->v.ob[0] = -width / 2;
     vtx->v.ob[1] = height;
@@ -174,26 +174,26 @@ Quad* spr_get_quad_for_size(s32* quadIndex, s32 width, s32 height) {
     if ((width * height) / 2 <= 0x800) {
         dimensions = (width << 0x18) + (height << 0x10);
         qi = *quadIndex;
-        if (qi != -1 && (dimensions == (D_802DFE48[qi] & 0xFFFF0000))) {
+        if (qi != -1 && (dimensions == (SpriteQuadCacheInfo[qi] & 0xFFFF0000))) {
             return spr_get_cached_quad(qi);
         }
 
-        for (i = 0; i < ARRAY_COUNT(D_802DFE48); i++) {
-            if (dimensions == (D_802DFE48[i] & 0xFFFF0000)) {
+        for (i = 0; i < ARRAY_COUNT(SpriteQuadCacheInfo); i++) {
+            if (dimensions == (SpriteQuadCacheInfo[i] & 0xFFFF0000)) {
                 *quadIndex = i;
                 return spr_get_cached_quad(i);
             }
         }
 
-        for (i = 0; i < ARRAY_COUNT(D_802DFE48); i++) {
-            if (D_802DFE48[i] == -1) {
+        for (i = 0; i < ARRAY_COUNT(SpriteQuadCacheInfo); i++) {
+            if (SpriteQuadCacheInfo[i] == -1) {
                 break;
             }
         }
 
-        if (i != ARRAY_COUNT(D_802DFE48)) {
+        if (i != ARRAY_COUNT(SpriteQuadCacheInfo)) {
             *quadIndex = i;
-            D_802DFE48[i] = dimensions;
+            SpriteQuadCacheInfo[i] = dimensions;
             quad = spr_get_cached_quad(i);
             spr_make_quad_for_size(quad, width, height);
             return quad;
@@ -205,11 +205,11 @@ Quad* spr_get_quad_for_size(s32* quadIndex, s32 width, s32 height) {
 void spr_clear_quad_cache(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_802DFE48); i++) {
-        if (D_802DFE48[i] != -1) {
-            D_802DFE48[i]--;
-            if (!(D_802DFE48[i] & 0xFFFF)) {
-                D_802DFE48[i] = -1;
+    for (i = 0; i < ARRAY_COUNT(SpriteQuadCacheInfo); i++) {
+        if (SpriteQuadCacheInfo[i] != -1) {
+            SpriteQuadCacheInfo[i]--;
+            if ((SpriteQuadCacheInfo[i] & 0xFFFF) == 0) {
+                SpriteQuadCacheInfo[i] = -1;
             }
         }
     }
@@ -352,16 +352,16 @@ void spr_appendGfx_component(
 
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
         if ((u8) opacity == 255) {
-            gSPDisplayList(gMainGfxPos++, D_802DF460);
+            gSPDisplayList(gMainGfxPos++, OpaqueShadedSpriteGfx);
         } else {
-            gSPDisplayList(gMainGfxPos++, D_802DF490);
+            gSPDisplayList(gMainGfxPos++, TranslucentShadedSpriteGfx);
         }
     } else {
         if ((u8) opacity == 255) {
-            gSPDisplayList(gMainGfxPos++, D_802DF3F0);
+            gSPDisplayList(gMainGfxPos++, OpaqueSpriteGfx);
         } else {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (u8) opacity);
-            gSPDisplayList(gMainGfxPos++, D_802DF428);
+            gSPDisplayList(gMainGfxPos++, TranslucentSpriteGfx);
         }
     }
 
@@ -432,9 +432,9 @@ void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComp
     f32 inX, inY, inZ;
 
     if (component->initialized && component->curRaster != -1) {
-        rotX = D_802DFEA0[0];
-        rotY = D_802DFEA0[1];
-        rotZ = D_802DFEA0[2];
+        rotX = SpriteCurBaseRot[0];
+        rotY = SpriteCurBaseRot[1];
+        rotZ = SpriteCurBaseRot[2];
         inX = component->compPos.x + anim->compOffset.x;
         inY = component->compPos.y + anim->compOffset.y;
         inZ = component->compPos.z + anim->compOffset.z;
@@ -443,7 +443,7 @@ void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComp
         cacheEntry = cache[component->curRaster];
         paletteIdx = component->curPalette;
         if (drawOpts & DRAW_SPRITE_USE_PLAYER_RASTERS) {
-            cacheEntry->image = spr_get_player_raster(component->curRaster & 0xFFF, D_802DF57C);
+            cacheEntry->image = spr_get_player_raster(component->curRaster & 0xFFF, CurPlayerSpriteIndex);
         }
         D_802DF540 = component->imgfxIdx;
         pal = palettes[paletteIdx];
@@ -816,20 +816,15 @@ void spr_render_init(void) {
     spr_clear_quad_cache();
 }
 
-s32 func_802DDA84(void) {
-    return 0;
-}
-
 s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
-    u32* spriteData;
+    SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteComponent* component;
     SpriteAnimComponent** animList;
     SpriteRasterCacheEntry** rasterList;
-    s32 spriteId = ((animID >> 16) & 0xFF) - 1;
+    s32 spriteID = SPR_UNPACK_SPR(animID);
     s32 instanceIdx = spriteInstanceID & 0xFF;
-    s32 animIndex = animID & 0xFF;
-    D_802DF57C = spriteId;
+    CurPlayerSpriteIndex = spriteID - 1;
 
     if (spr_playerCurrentAnimInfo[instanceIdx].componentList == NULL) {
         compList = spr_allocate_components(spr_playerMaxComponents);
@@ -841,16 +836,15 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
         }
     }
 
-    spriteData = (u32*)spr_playerSprites[spriteId];
+    spriteData = spr_playerSprites[CurPlayerSpriteIndex];
     compList = spr_playerCurrentAnimInfo[instanceIdx].componentList;
 
     if (spriteData == NULL) {
         return 0;
     }
 
-    rasterList = (SpriteRasterCacheEntry**)*spriteData;
-    spriteData += 4 + animIndex;
-    animList = (SpriteAnimComponent**)*spriteData;
+    rasterList = spriteData->rastersOffset;
+    animList = spriteData->animListStart[animID & 0xFF];
 
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) ||
@@ -870,56 +864,41 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
 }
 
 s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* paletteList, Matrix4f mtx) {
-    s32 instanceIdx = spriteInstanceID & 0xFF;
-    s32 animID = spr_playerCurrentAnimInfo[instanceIdx].animID;
-    SpriteRasterCacheEntry** rasters;
+    SpriteAnimData* spriteData;
+    SpriteComponent** compList;
+    SpriteAnimComponent** animList;
+    SpriteRasterCacheEntry** rasterList;
     PAL_PTR* palettes;
-    SpriteAnimComponent** animComponents;
-    SpriteComponent** components;
     f32 zscale;
     u32 alpha;
-    u32* spriteData;
-    s32 spriteId;
-    s32 spriteIdBackFacing;
+    s32 spriteID;
+    s32 instanceIdx = spriteInstanceID & 0xFF;
+    s32 animID = spr_playerCurrentAnimInfo[instanceIdx].animID;
 
     if (animID == ANIM_LIST_END) {
         return FALSE;
     }
 
-    D_802DF57C = spriteId = ((animID >> 0x10) & 0xFF) - 1;
-    spriteData = (u32*)spr_playerSprites[spriteId];
+    spriteID = SPR_UNPACK_SPR(animID);
+    CurPlayerSpriteIndex = spriteID - 1;
+
+    spriteData = spr_playerSprites[CurPlayerSpriteIndex];
     if (spriteData == NULL) {
         return FALSE;
     }
 
-    // TODO: fake match or not?
-    rasters = (SpriteRasterCacheEntry**)*spriteData++;
-    palettes = (PAL_PTR*)*spriteData++;
-    spriteData++;
-    spriteData++;
-    animComponents = (SpriteAnimComponent**)spriteData[animID & 0xFF];
+    rasterList = spriteData->rastersOffset;
+    palettes = spriteData->palettesOffset;
+    animList = spriteData->animListStart[SPR_UNPACK_ANIM(animID)];
 
     if (animID & SPRITE_ID_BACK_FACING) {
-        switch (spriteId) {
-            case 0:
-            case 5:
-            case 9:
-                spriteIdBackFacing = spriteId + 1;
-                // TODO find better match
-                rasters = (SpriteRasterCacheEntry**)spr_playerSprites[spriteIdBackFacing];
-                D_802DF57C = spriteIdBackFacing;
-                rasters = (SpriteRasterCacheEntry**)*rasters;
+        switch (spriteID) {
+            case SPR_Mario1:
+            case SPR_MarioW1:
+            case SPR_Peach1:
+                CurPlayerSpriteIndex++; // use the following sprite index if using back sprite
+                rasterList = spr_playerSprites[CurPlayerSpriteIndex]->rastersOffset;
                 break;
-        }
-    }
-
-    if (!(spriteInstanceID & DRAW_SPRITE_OVERRIDE_YAW)) {
-        yaw += (s32)-gCameras[gCurrentCamID].curYaw;
-        if (yaw > 360) {
-            yaw -= 360;
-        }
-        if (yaw < -360) {
-            yaw += 360;
         }
     }
 
@@ -930,12 +909,22 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
     }
 
     if (spriteInstanceID & DRAW_SPRITE_UPSIDE_DOWN) {
-        zscale = 0.0f - zscale;
+        zscale = -zscale;
     }
 
-    D_802DFEA0[0] = 0;
-    D_802DFEA0[1] = yaw;
-    D_802DFEA0[2] = 0;
+    if (!(spriteInstanceID & DRAW_SPRITE_OVERRIDE_YAW)) {
+        yaw -= gCameras[gCurrentCamID].curYaw;
+        if (yaw > 360) {
+            yaw -= 360;
+        }
+        if (yaw < -360) {
+            yaw += 360;
+        }
+    }
+
+    SpriteCurBaseRot[0] = 0;
+    SpriteCurBaseRot[1] = yaw;
+    SpriteCurBaseRot[2] = 0;
 
     if (spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) {
         alpha = alphaIn & 0xFF;
@@ -946,15 +935,15 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
         alpha = 255;
     }
 
-    components = spr_playerCurrentAnimInfo[instanceIdx].componentList;
+    compList = spr_playerCurrentAnimInfo[instanceIdx].componentList;
     if (spriteInstanceID & DRAW_SPRITE_OVERRIDE_PALETTES) {
         palettes = paletteList;
     }
 
-    while (*components != PTR_LIST_END) {
-        spr_draw_component(alpha | DRAW_SPRITE_USE_PLAYER_RASTERS, *components++, *animComponents, rasters, palettes, zscale, mtx);
-        if (*animComponents != PTR_LIST_END) {
-            animComponents++;
+    while (*compList != PTR_LIST_END) {
+        spr_draw_component(alpha | DRAW_SPRITE_USE_PLAYER_RASTERS, *compList++, *animList, rasterList, palettes, zscale, mtx);
+        if (*animList != PTR_LIST_END) {
+            animList++;
         }
     }
 
@@ -1069,25 +1058,24 @@ s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
 }
 
 s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
-    u32* spriteData;
+    SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteAnimComponent** animList;
     SpriteRasterCacheEntry** rasterList;
 
     s32 palID;
     s32 i = spriteInstanceID & 0xFF;
-    s32 animIndex = animID & 0xFF;
+    s32 animIndex = SPR_UNPACK_ANIM(animID);
 
     ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %x", spriteInstanceID);
 
     compList = SpriteInstances[i].componentList;
-    spriteData = (u32*)SpriteInstances[i].spriteData;
+    spriteData = SpriteInstances[i].spriteData;
 
-    rasterList = (SpriteRasterCacheEntry**)*spriteData;
-    spriteData += 4 + animIndex;
-    animList = (SpriteAnimComponent**)*spriteData;
+    rasterList = spriteData->rastersOffset;
+    animList = spriteData->animListStart[animIndex];
 
-    palID = (animID >> 8) & 0xFF;
+    palID = SPR_UNPACK_PAL(animID);
     spr_set_anim_timescale(timeScale);
     if ((spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) || ((SpriteInstances[i].curAnimID & 0xFF) != animIndex)) {
         ASSERT_MSG(animList != -1, "Anim %lx is not loaded", animID);
@@ -1102,33 +1090,29 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     return SpriteInstances[i].notifyValue;
 }
 
-s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 arg2, PAL_PTR* paletteList, Matrix4f mtx) {
-    s32 i = spriteInstanceID & 0xFF;
-    s32 animID = SpriteInstances[i].curAnimID;
+s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* paletteList, Matrix4f mtx) {
+    SpriteAnimData* spriteData;
+    SpriteAnimComponent** animComps;
+    SpriteComponent** components;
     SpriteRasterCacheEntry** rasters;
     PAL_PTR* palettes;
-    SpriteAnimComponent** animComponents;
-    SpriteComponent** components;
     f32 zscale;
     u32 alpha;
-    u32* spriteData;
+    s32 instanceIdx = spriteInstanceID & 0xFF;
+    s32 animID = SpriteInstances[instanceIdx].curAnimID;
 
     if (animID == ANIM_LIST_END) {
         return FALSE;
     }
 
-    spriteData = (u32*)SpriteInstances[i].spriteData;
+    spriteData = SpriteInstances[instanceIdx].spriteData;
+    rasters = spriteData->rastersOffset;
+    palettes = spriteData->palettesOffset;
+    animComps = spriteData->animListStart[animID & 0xFF];
 
-    // TODO: fake match or not?
-    rasters = (SpriteRasterCacheEntry**)*spriteData++;
-    palettes = (PAL_PTR*)*spriteData++;
-    spriteData++;
-    spriteData++;
-    animComponents = (SpriteAnimComponent**)spriteData[animID & 0xFF];
-
-    D_802DFEA0[0] = 0;
-    D_802DFEA0[1] = yaw;
-    D_802DFEA0[2] = 0;
+    SpriteCurBaseRot[0] = 0;
+    SpriteCurBaseRot[1] = yaw;
+    SpriteCurBaseRot[2] = 0;
 
     if (!(spriteInstanceID & DRAW_SPRITE_OVERRIDE_YAW)) {
         yaw += gCameras[gCurrentCamID].curYaw;
@@ -1147,31 +1131,31 @@ s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 arg2, PAL_PTR* palett
     }
 
     if (spriteInstanceID & DRAW_SPRITE_OVERRIDE_ALPHA) {
-        alpha = arg2 & 0xFF;
-        if (arg2 == 0) {
+        alpha = alphaIn & 0xFF;
+        if (alphaIn == 0) {
             return FALSE;
         }
     } else {
         alpha = 255;
     }
 
-    components = SpriteInstances[i].componentList;
+    components = SpriteInstances[instanceIdx].componentList;
     if (spriteInstanceID & DRAW_SPRITE_OVERRIDE_PALETTES) {
         palettes = paletteList;
     }
 
     while (*components != PTR_LIST_END) {
-        spr_draw_component(alpha, *components++, *animComponents, rasters, palettes, zscale, mtx);
-        if (*animComponents != PTR_LIST_END) {
-            animComponents++;
+        spr_draw_component(alpha, *components++, *animComps, rasters, palettes, zscale, mtx);
+        if (*animComps != PTR_LIST_END) {
+            animComps++;
         }
     }
 
     return TRUE;
 }
 
-s32 spr_get_notify_value(s32 spriteIndex) {
-    return SpriteInstances[spriteIndex].notifyValue;
+s32 spr_get_notify_value(s32 spriteInstanceID) {
+    return SpriteInstances[spriteInstanceID].notifyValue;
 }
 
 s32 spr_free_sprite(s32 spriteInstanceID) {
@@ -1256,13 +1240,12 @@ void set_npc_imgfx_all(s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 im
 
 s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, s32* outZ) {
     SpriteInstance* sprite = &SpriteInstances[spriteIdx];
-    SpriteAnimComponent** animCompList;
-    SpriteAnimComponent* anim;
+    SpriteAnimComponent** animComps;
+    SpriteAnimComponent* animComp;
     SpriteComponent** compList;
     SpriteComponent* comp;
     u8 animID;
     s32 i;
-    u32* spriteData;
 
     if (sprite->componentList == NULL) {
         return -1;
@@ -1270,26 +1253,22 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
 
     animID = sprite->curAnimID;
     if (animID != 255) {
-        // following 3 lines equivalent to:
-        // animCompList = sprite->spriteData->animListStart[animID];
-        spriteData = (u32*)sprite->spriteData;
-        spriteData += 4 + animID;
-        animCompList = (SpriteAnimComponent**)*spriteData;
+        animComps = sprite->spriteData->animListStart[animID];
         compList = sprite->componentList;
         i = 0;
         while (*compList != PTR_LIST_END) {
             if (i == compListIdx) {
-                anim = *animCompList;
+                animComp = *animComps;
                 comp = *compList;
-                *outX = comp->compPos.x + anim->compOffset.x;
-                *outY = comp->compPos.y + anim->compOffset.y;
-                *outZ = comp->compPos.z + anim->compOffset.z;
+                *outX = comp->compPos.x + animComp->compOffset.x;
+                *outY = comp->compPos.y + animComp->compOffset.y;
+                *outZ = comp->compPos.z + animComp->compOffset.z;
                 return 0;
             }
             i++;
             compList++;
-            if (*animCompList != PTR_LIST_END) {
-                animCompList++;
+            if (*animComps != PTR_LIST_END) {
+                animComps++;
             }
         }
     }
