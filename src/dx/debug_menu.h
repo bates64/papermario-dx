@@ -1,3 +1,6 @@
+#ifndef _DX_DEBUG_MENU_H
+#define _DX_DEBUG_MENU_H
+
 #include "common.h"
 #include "dx/config.h"
 #if DX_DEBUG_MENU || defined(DX_QUICK_LAUNCH_BATTLE)
@@ -28,6 +31,15 @@ void dx_debug_set_map_info(char* mapName, s32 entryID);
 void dx_debug_set_battle_info(s32 battleID, char* stageName);
 
 void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
+
+void dx_debug_evt_force_detach(Evt* evt);
+void dx_debug_evt_reset();
+
+enum DebugEvtStep {
+    DEBUG_EVT_STEP_NONE,
+    DEBUG_EVT_STEP_ONCE,
+    DEBUG_EVT_STEP_OVER,
+};
 
 void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...);
 
@@ -84,3 +96,4 @@ API_CALLABLE(_dxDebugFloatPrintf);
 #define debug_printf(fmt, args...)
 
 #endif
+#endif // _DX_DEBUG_MENU_H
