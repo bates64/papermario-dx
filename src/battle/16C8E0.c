@@ -5,6 +5,7 @@
 #include "script_api/battle.h"
 #include "sprite.h"
 #include "effects.h"
+#include "battle/states/states.h"
 
 f32 D_802809F0 = 0.0f;
 s8 D_802809F4 = 0;
@@ -47,60 +48,6 @@ HudScript* bHPDigitHudScripts[] = {
 };
 
 s32 BattleScreenFadeAmt = 255;
-
-EvtScript BtlPutPartnerAway = {
-    Call(DispatchEvent, ACTOR_PARTNER, EVENT_PUT_PARTNER_AWAY)
-    ChildThread
-        SetF(LVar0, Float(1.0))
-        Loop(10)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            SubF(LVar0, Float(0.1))
-            Wait(1)
-        EndLoop
-    EndChildThread
-    Call(EnablePartnerBlur)
-    Call(PlaySoundAtActor, 0, SOUND_PARTNER_GET_OUT)
-    Call(GetActorPos, 0, LVar0, LVar1, LVar2)
-    Add(LVar1, 25)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
-    Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-#if VERSION_JP
-    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 1, 1)
-#else
-    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
-#endif
-    Call(DisablePartnerBlur)
-    Return
-    End
-};
-
-EvtScript BtlBringPartnerOut = {
-    ChildThread
-        SetF(LVar0, Float(0.1))
-        Loop(20)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            AddF(LVar0, Float(0.05))
-            Wait(1)
-        EndLoop
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
-    EndChildThread
-    Call(PlaySoundAtActor, 0, SOUND_PARTNER_PUT_AWAY)
-    Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
-    IfEq(LVar1, 0)
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-    Else
-#if VERSION_JP
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 1, 1)
-#else
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-#endif
-    EndIf
-    Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Return
-    End
-};
 
 extern HudScript HES_HPBar;
 extern HudScript HES_SmallStarPoint;
@@ -178,7 +125,7 @@ void initialize_battle(void) {
 
     battleStatus->inputBufferPos = 0;
     battleStatus->holdInputBufferPos = 0;
-    battleStatus->waitForState = BATTLE_STATE_0;
+    battleStatus->waitForState = BATTLE_STATE_NONE;
 
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
         battleStatus->enemyActors[i] = NULL;
@@ -295,10 +242,10 @@ void btl_update(void) {
     }
 
     cond = TRUE;
-    if (battleStatus->waitForState == BATTLE_STATE_0 || battleStatus->waitForState != gBattleState) {
+    if (battleStatus->waitForState == BATTLE_STATE_NONE || battleStatus->waitForState != gBattleState) {
         switch (gBattleState) {
             case BATTLE_STATE_NEGATIVE_1:
-            case BATTLE_STATE_0:
+            case BATTLE_STATE_NONE:
                 return;
             case BATTLE_STATE_NORMAL_START:
                 btl_state_update_normal_start();
@@ -499,7 +446,7 @@ void btl_draw_ui(void) {
                 btl_draw_enemy_health_bars();
                 draw_status_ui();
                 return;
-            case BATTLE_STATE_0:
+            case BATTLE_STATE_NONE:
                 return;
         }
     }
@@ -624,7 +571,7 @@ void btl_render_actors(void) {
     Actor* actor;
     s32 i;
 
-    if (gBattleState != BATTLE_STATE_0) {
+    if (gBattleState != BATTLE_STATE_NONE) {
         btl_popup_messages_draw_world_geometry();
         if (battleStatus->initBattleCallback != NULL) {
             battleStatus->initBattleCallback();

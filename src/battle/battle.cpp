@@ -115,9 +115,9 @@ BattleArea gBattleAreas[] = {
 
 void reset_battle_status(void) {
     gGameStatusPtr->demoBattleFlags = 0;
-    gBattleState = BATTLE_STATE_0;
+    gBattleState = BATTLE_STATE_NONE;
     gBattleSubState = BTL_SUBSTATE_INIT;
-    gLastDrawBattleState = BATTLE_STATE_0;
+    gLastDrawBattleState = BATTLE_STATE_NONE;
     gCurrentBattlePtr = NULL;
     gCurrentBattleID = 0;
     gCurrentStagePtr = NULL;
@@ -140,14 +140,14 @@ void load_battle_section(void) {
     }
 
     btl_set_state(BATTLE_STATE_NORMAL_START);
-    gLastDrawBattleState = BATTLE_STATE_0;
+    gLastDrawBattleState = BATTLE_STATE_NONE;
 }
 
 void load_battle(s32 battleID) {
     gCurrentBattleID = battleID;
     set_game_mode(GAME_MODE_BATTLE);
-    gBattleState = BATTLE_STATE_0;
-    gLastDrawBattleState = BATTLE_STATE_0;
+    gBattleState = BATTLE_STATE_NONE;
+    gLastDrawBattleState = BATTLE_STATE_NONE;
     gBattleSubState = BTL_SUBSTATE_INIT;
 }
 

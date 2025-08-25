@@ -3627,7 +3627,7 @@ enum BattleStatusReflectionFlags {
 
 enum BattleStates {
     BATTLE_STATE_NEGATIVE_1                 = -1,
-    BATTLE_STATE_0                          = 0,
+    BATTLE_STATE_NONE                          = 0,
     BATTLE_STATE_NORMAL_START               = 1,
     BATTLE_STATE_FIRST_STRIKE               = 2,
     BATTLE_STATE_PARTNER_FIRST_STRIKE       = 3,
@@ -3669,13 +3669,6 @@ enum BattleSubStates {
     // shared
     BTL_SUBSTATE_INIT                                       = 0,
 
-    // BATTLE_STATE_NORMAL_START
-    BTL_SUBSTATE_NORMAL_START_INIT                          = 0, // loads assets, initializes state, and runs OnBattleInit script
-    BTL_SUBSTATE_NORMAL_START_CREATE_ENEMIES                = 1,
-    BTL_SUBSTATE_NORMAL_START_CHECK_FIRST_STRIKE            = 4, // wait for actor scripts to finish
-    BTL_SUBSTATE_NORMAL_START_FADE_IN                       = 7,
-    BTL_SUBSTATE_NORMAL_START_DONE                          = 8,
-
     // BATTLE_STATE_FIRST_STRIKE
     BTL_SUBSTATE_FIRST_STRIKE_INIT                          = 0,
     BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_READY             = 1,
@@ -3692,11 +3685,6 @@ enum BattleSubStates {
     BTL_SUBSTATE_ENEMY_FIRST_STRIKE_INIT                    = 0,
     BTL_SUBSTATE_ENEMY_FIRST_STRIKE_AWAIT_SCRIPTS           = 2,
 
-    // BATTLE_STATE_BEGIN_TURN
-    BTL_SUBSTATE_BEGIN_TURN_INIT                            = 0,
-    BTL_SUBSTATE_BEGIN_TURN_AWAIT_ENEMY_SCRIPTS             = 5,
-    BTL_SUBSTATE_BEGIN_TURN_AWAIT_ENEMY_DEATH               = 10,
-
     // BATTLE_STATE_END_TURN
     BTL_SUBSTATE_END_TURN_INIT                              = 0,
     BTL_SUBSTATE_END_TURN_CHECK_FOR_SWAP                    = 1,
@@ -3705,21 +3693,6 @@ enum BattleSubStates {
     BTL_SUBSTATE_END_TURN_UNUSED_4                          = 4,
     BTL_SUBSTATE_END_TURN_PERFORM_SWAP                      = 11,
     BTL_SUBSTATE_END_TURN_START_SCRIPTS                     = 12,
-
-    // BATTLE_STATE_BEGIN_PLAYER_TURN
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_INIT                     = 0,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_COMMAND_RECOVER      = 1,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_WATER_BLOCK        = 2,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_CHECK_WATER_BLOCK        = 10,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_CHECK_CLOUD_NINE         = 11,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_CLOUD_NINE         = 12,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_CHECK_TURBO_CHARGE       = 15,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_TURBO_CHARGE       = 16,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_AWAIT_OUTTA_SIGHT        = 20,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_STATUS_DAMAGE        = 21,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_TRY_STATUS_RECOVER       = 22,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_END_DELAY                = 30,
-    BTL_SUBSTATE_BEGIN_PLAYER_TURN_RESET_STATE              = 100,
 
     // BATTLE_STATE_BEGIN_PARTNER_TURN
     BTL_SUBSTATE_BEGIN_PARTNER_TURN_INIT                    = 0,
@@ -3822,12 +3795,6 @@ enum BattleSubStates {
     BTL_SUBSTATE_ENEMY_MOVE_POST_PARTNER_POPUP_DELAY        = 22, // a brief delay after the popup vanishes
     BTL_SUBSTATE_ENEMY_MOVE_DONE                            = 30,
 
-    // BATTLE_STATE_END_PLAYER_TURN
-    BTL_SUBSTATE_END_PLAYER_TURN_CHECK_HAPPY                = 0,
-    BTL_SUBSTATE_END_PLAYER_TURN_AWAIT_HAPPY                = 5,
-    BTL_SUBSTATE_END_PLAYER_TURN_AWAIT_SWAP                 = 6,
-    BTL_SUBSTATE_END_PLAYER_TURN_DONE                       = 10,
-
     // BATTLE_STATE_END_PARTNER_TURN
 
     // BATTLE_STATE_RUN_AWAY
@@ -3860,15 +3827,6 @@ enum BattleSubStates {
     BTL_SUBSTATE_DEFEAT_DONE                                = 10,
 
     // BATTLE_STATE_28
-
-    // BATTLE_STATE_CHANGE_PARTNER
-    BTL_SUBSTATE_CHANGE_PARTNER_INIT                        = 0,
-    BTL_SUBSTATE_CHANGE_PARTNER_EXEC_PUT_AWAY               = 2,
-    BTL_SUBSTATE_CHANGE_PARTNER_LOAD_NEW_PARTNER            = 3,
-    BTL_SUBSTATE_CHANGE_PARTNER_EXEC_BRING_OUT              = 4,
-    BTL_SUBSTATE_CHANGE_PARTNER_EXEC_PHASE                  = 5,
-    BTL_SUBSTATE_CHANGE_PARTNER_AWAIT_PHASE                 = 6,
-    BTL_SUBSTATE_CHANGE_PARTNER_DONE                        = 7,
 
     // BATTLE_STATE_END_TRAINING_BATTLE
     BTL_SUBSTATE_END_TRAINING_INIT                          = 0,

@@ -1294,6 +1294,11 @@ segments:
     subsegments:
     - [auto, c, battle/16C8E0]
     - [auto, c, battle/btl_states_actions]
+    - [auto, c, battle/states/normal_start]
+    - [auto, c, battle/states/begin_turn]
+    - [auto, c, battle/states/begin_player_turn]
+    - [auto, c, battle/states/end_player_turn]
+    - [auto, c, battle/states/change_partner]
     - [auto, c, battle/camera]
     - [auto, c, battle/actors]
     - [auto, c, battle/popup_messages]

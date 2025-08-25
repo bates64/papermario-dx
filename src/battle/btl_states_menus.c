@@ -3324,7 +3324,7 @@ void btl_state_update_player_menu(void) {
 
             if (jumpTargetCount <= 0 && hammerTargetCount <= 0) {
                 battleStatus->moveCategory = BTL_MENU_TYPE_DO_NOTHING;
-                battleStatus->waitForState = BATTLE_STATE_0;
+                battleStatus->waitForState = BATTLE_STATE_NONE;
                 btl_set_state(BATTLE_STATE_END_PLAYER_TURN);
             } else {
                 jumpChance = 50;

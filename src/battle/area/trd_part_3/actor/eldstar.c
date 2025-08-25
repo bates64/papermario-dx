@@ -339,7 +339,7 @@ EvtScript N(EVS_ManageTutorial) = {
     Call(N(StopBlinkingSP))
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
     Call(ActorSpeak, MSG_CH1_011D, ACTOR_SELF, PRT_MAIN, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Idle)
-    Call(WaitForState, BATTLE_STATE_0)
+    Call(WaitForState, BATTLE_STATE_NONE)
     Call(SetBattleState, BATTLE_STATE_END_TRAINING_BATTLE)
     Wait(10000)
     Return
