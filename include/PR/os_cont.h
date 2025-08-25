@@ -30,9 +30,7 @@
 #ifndef _OS_CONT_H_
 #define	_OS_CONT_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include "os_message.h"
@@ -200,8 +198,6 @@ extern void		osContGetReadData(OSContPad *);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_CONT_H_ */

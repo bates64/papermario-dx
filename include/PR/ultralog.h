@@ -29,9 +29,7 @@
 #ifndef __log__
 #define __log__
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -67,8 +65,6 @@ u32	osLogFloat(f32);
 
 extern void osDelay(int count);
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif

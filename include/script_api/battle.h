@@ -383,7 +383,7 @@ extern EvtScript Rumble_Unused_3;
 extern EvtScript Rumble_Unused_4;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif

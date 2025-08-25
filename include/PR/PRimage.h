@@ -121,6 +121,6 @@ unsigned short *ibufalloc();
 
 #define IMAGEDEF		/* for backwards compatibility */
 #ifdef __cplusplus
-}
+} // extern "C"
 #endif
 #endif	/* !__GL_IMAGE_H__ */

@@ -140,6 +140,7 @@ segments:
     - [auto, c, status_icons]
     - [auto, c, 23680]
     - [auto, c, 25AF0]
+    - [auto, cpp, foliage]
     - [auto, c, audio/25f00_len_940]
     - [auto, c, audio/sfx_player]
     - [auto, c, audio/28910_len_5090]
@@ -349,7 +350,7 @@ segments:
     - [auto, hasm, os/decode_yay0]
     - [auto, c, os/osFlash]
     - [0x4AC90, pm_effect_loads, effect_loads]
-    - [auto, c, battle/battle]
+    - [auto, cpp, battle/battle]
     - [0x4E5A0, bin, n_aspMain_text]
     - start: 0x4F200
       type: .data

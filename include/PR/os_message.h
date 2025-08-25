@@ -30,9 +30,7 @@
 #ifndef _OS_MESSAGE_H_
 #define	_OS_MESSAGE_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 
@@ -160,8 +158,6 @@ extern void		osSetEventMesg(OSEvent, OSMesgQueue *, OSMesg);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_MESSAGE_H_ */

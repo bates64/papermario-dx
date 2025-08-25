@@ -6,6 +6,8 @@
 #include "sprite.h"
 #include "game_modes.h"
 
+extern "C" {
+
 BSS StageListRow* gCurrentStagePtr;
 BSS s32 gBattleState;
 BSS BattleStatus gBattleStatus;
@@ -18,83 +20,97 @@ BSS s32 gCurrentStageID;
 BSS Battle* gOverrideBattlePtr;
 BSS Battle* gCurrentBattlePtr;
 
+
+#define BTL_AREA(id, debugName) { \
+    .name = debugName, \
+    .dmaStart = battle_area_##id##_ROM_START, \
+    .dmaEnd = battle_area_##id##_ROM_END, \
+    .dmaDest = battle_area_##id##_VRAM, \
+    .battles = &battle::area::id::Battles, \
+    .stages = &battle::area::id::Stages, \
+}
+
 // standard battle area table entry
-#define BTL_AREA(id, jpName) { \
+#define BTL_AREA_C(id, debugName) { \
+    .name = debugName, \
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
     .dmaDest = battle_area_##id##_VRAM, \
     .battles = &b_area_##id##_Formations, \
     .stages = &b_area_##id##_Stages, \
-    .name = jpName, \
 } \
 
 // extended battle area with a dmaTable, used by kzn2 for lava piranha animations
 #define BTL_AREA_DMA(id, jpName) { \
+    .name = jpName, \
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
     .dmaDest = battle_area_##id##_VRAM, \
     .battles = &b_area_##id##_Formations, \
     .stages = &b_area_##id##_Stages, \
     .dmaTable = b_area_##id##_dmaTable, \
-    .name = jpName, \
 } \
 
 // auxiliary battle area for omo which contains only additional enemy data
 #define BTL_AREA_AUX(id, jpName) { \
+    .name = jpName, \
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
     .dmaDest = battle_area_##id##_VRAM, \
-    .name = jpName, \
 } \
 
-// when adding an area, remember to update battle.h and add the new area to battle_tables.h as well
+/// When updating this, make sure you also update:
+/// - the length of gBattleAreas in battle.h
+/// - BattleAreaIDs in battle_names.h
+/// - FormationNames in battle_names.h
+/// - battle_tables.h
 BattleArea gBattleAreas[] = {
-    [BTL_AREA_KMR_1]    BTL_AREA(kmr_part_1, "エリア ＫＭＲ その１"),
-    [BTL_AREA_KMR_2]    BTL_AREA(kmr_part_2, "エリア ＫＭＲ その２"),
-    [BTL_AREA_KMR_3]    BTL_AREA(kmr_part_3, "エリア ＫＭＲ その３"),
-    [BTL_AREA_MAC]      BTL_AREA(mac, "エリア ＭＡＣ"),
-    [BTL_AREA_HOS]      BTL_AREA(hos, "エリア ＨＯＳ"),
-    [BTL_AREA_NOK]      BTL_AREA(nok, "エリア ＮＯＫ"),
-    [BTL_AREA_TRD_1]    BTL_AREA(trd_part_1, "エリア ＴＲＤ その１"),
-    [BTL_AREA_TRD_2]    BTL_AREA(trd_part_2, "エリア ＴＲＤ その２"),
-    [BTL_AREA_TRD_3]    BTL_AREA(trd_part_3, "エリア ＴＲＤ その３"),
-    [BTL_AREA_IWA]      BTL_AREA(iwa, "エリア ＩＷＡ"),
-    [BTL_AREA_SBK]      BTL_AREA(sbk, "エリア ＳＢＫ"),
-    [BTL_AREA_ISK_1]    BTL_AREA(isk_part_1, "エリア ＩＳＫ その１"),
-    [BTL_AREA_ISK_2]    BTL_AREA(isk_part_2, "エリア ＩＳＫ その２"),
-    [BTL_AREA_MIM]      BTL_AREA(mim, "エリア ＭＩＭ"),
-    [BTL_AREA_ARN]      BTL_AREA(arn, "エリア ＡＲＮ"),
-    [BTL_AREA_DGB]      BTL_AREA(dgb, "エリア ＤＧＢ"),
-    [BTL_AREA_OMO]      BTL_AREA(omo, "エリア ＯＭＯ"),
-    [BTL_AREA_OMO2]     BTL_AREA(omo2, "エリア ＯＭＯ２"),
-    [BTL_AREA_OMO3]     BTL_AREA(omo3, "エリア ＯＭＯ３"),
-    [BTL_AREA_KGR]      BTL_AREA(kgr, "エリア ＫＧＲ"),
-    [BTL_AREA_JAN]      BTL_AREA(jan, "エリア ＪＡＮ"),
-    [BTL_AREA_JAN2]     BTL_AREA(jan2, "エリア ＪＡＮ２"),
-    [BTL_AREA_KZN]      BTL_AREA(kzn, "エリア ＫＺＮ"),
-    [BTL_AREA_KZN2]     BTL_AREA_DMA(kzn2, "エリア ＫＺＮ２"),
-    [BTL_AREA_FLO]      BTL_AREA(flo, "エリア ＦＬＯ"),
-    [BTL_AREA_FLO2]     BTL_AREA(flo2, "エリア ＦＬＯ２"),
-    [BTL_AREA_TIK]      BTL_AREA(tik, "エリア ＴＩＫ"),
-    [BTL_AREA_TIK2]     BTL_AREA(tik2, "エリア ＴＩＫ２"),
-    [BTL_AREA_TIK3]     BTL_AREA(tik3, "エリア ＴＩＫ３"),
-    [BTL_AREA_SAM]      BTL_AREA(sam, "エリア ＳＡＭ"),
-    [BTL_AREA_SAM2]     BTL_AREA(sam2, "エリア ＳＡＭ２"),
-    [BTL_AREA_PRA]      BTL_AREA(pra, "エリア ＰＲＡ"),
-    [BTL_AREA_PRA2]     BTL_AREA(pra2, "エリア ＰＲＡ２"),
-    [BTL_AREA_PRA3]     BTL_AREA(pra3, "エリア ＰＲＡ３"),
-    [BTL_AREA_KPA]      BTL_AREA(kpa, "エリア ＫＰＡ"),
-    [BTL_AREA_KPA2]     BTL_AREA(kpa2, "エリア ＫＰＡ２"),
-    [BTL_AREA_KPA3]     BTL_AREA(kpa3, "エリア ＫＰＡ３"),
-    [BTL_AREA_KPA4]     BTL_AREA(kpa4, "エリア ＫＰＡ４"),
-    [BTL_AREA_KKJ]      BTL_AREA(kkj, "エリア ＫＫＪ"),
-    [BTL_AREA_DIG]      BTL_AREA(dig, "エリア ＤＩＧ"),
-    [BTL_AREA_OMO2_1]   BTL_AREA_AUX(omo2_1, "エリア ＯＭＯ２＿１"),
-    [BTL_AREA_OMO2_2]   BTL_AREA_AUX(omo2_2, "エリア ＯＭＯ２＿２"),
-    [BTL_AREA_OMO2_3]   BTL_AREA_AUX(omo2_3, "エリア ＯＭＯ２＿３"),
-    [BTL_AREA_OMO2_4]   BTL_AREA_AUX(omo2_4, "エリア ＯＭＯ２＿４"),
-    [BTL_AREA_OMO2_5]   BTL_AREA_AUX(omo2_5, "エリア ＯＭＯ２＿５"),
-    [BTL_AREA_OMO2_6]   BTL_AREA_AUX(omo2_6, "エリア ＯＭＯ２＿６"),
+    BTL_AREA_C(kmr_part_1, "KMR Part 1"),
+    BTL_AREA_C(kmr_part_2, "エリア ＫＭＲ その２"),
+    BTL_AREA_C(kmr_part_3, "エリア ＫＭＲ その３"),
+    BTL_AREA_C(mac, "エリア ＭＡＣ"),
+    BTL_AREA_C(hos, "エリア ＨＯＳ"),
+    BTL_AREA_C(nok, "エリア ＮＯＫ"),
+    BTL_AREA_C(trd_part_1, "エリア ＴＲＤ その１"),
+    BTL_AREA_C(trd_part_2, "エリア ＴＲＤ その２"),
+    BTL_AREA_C(trd_part_3, "エリア ＴＲＤ その３"),
+    BTL_AREA_C(iwa, "エリア ＩＷＡ"),
+    BTL_AREA_C(sbk, "エリア ＳＢＫ"),
+    BTL_AREA_C(isk_part_1, "エリア ＩＳＫ その１"),
+    BTL_AREA_C(isk_part_2, "エリア ＩＳＫ その２"),
+    BTL_AREA_C(mim, "エリア ＭＩＭ"),
+    BTL_AREA_C(arn, "エリア ＡＲＮ"),
+    BTL_AREA_C(dgb, "エリア ＤＧＢ"),
+    BTL_AREA_C(omo, "エリア ＯＭＯ"),
+    BTL_AREA_C(omo2, "エリア ＯＭＯ２"),
+    BTL_AREA_C(omo3, "エリア ＯＭＯ３"),
+    BTL_AREA_C(kgr, "エリア ＫＧＲ"),
+    BTL_AREA_C(jan, "エリア ＪＡＮ"),
+    BTL_AREA_C(jan2, "エリア ＪＡＮ２"),
+    BTL_AREA_C(kzn, "エリア ＫＺＮ"),
+    BTL_AREA_DMA(kzn2, "エリア ＫＺＮ２"),
+    BTL_AREA_C(flo, "エリア ＦＬＯ"),
+    BTL_AREA_C(flo2, "エリア ＦＬＯ２"),
+    BTL_AREA_C(tik, "エリア ＴＩＫ"),
+    BTL_AREA_C(tik2, "エリア ＴＩＫ２"),
+    BTL_AREA_C(tik3, "エリア ＴＩＫ３"),
+    BTL_AREA_C(sam, "エリア ＳＡＭ"),
+    BTL_AREA_C(sam2, "エリア ＳＡＭ２"),
+    BTL_AREA_C(pra, "エリア ＰＲＡ"),
+    BTL_AREA_C(pra2, "エリア ＰＲＡ２"),
+    BTL_AREA_C(pra3, "エリア ＰＲＡ３"),
+    BTL_AREA_C(kpa, "エリア ＫＰＡ"),
+    BTL_AREA_C(kpa2, "エリア ＫＰＡ２"),
+    BTL_AREA_C(kpa3, "エリア ＫＰＡ３"),
+    BTL_AREA_C(kpa4, "エリア ＫＰＡ４"),
+    BTL_AREA_C(kkj, "エリア ＫＫＪ"),
+    BTL_AREA_C(dig, "エリア ＤＩＧ"),
+    BTL_AREA_AUX(omo2_1, "エリア ＯＭＯ２＿１"),
+    BTL_AREA_AUX(omo2_2, "エリア ＯＭＯ２＿２"),
+    BTL_AREA_AUX(omo2_3, "エリア ＯＭＯ２＿３"),
+    BTL_AREA_AUX(omo2_4, "エリア ＯＭＯ２＿４"),
+    BTL_AREA_AUX(omo2_5, "エリア ＯＭＯ２＿５"),
+    BTL_AREA_AUX(omo2_6, "エリア ＯＭＯ２＿６"),
 };
 
 void reset_battle_status(void) {
@@ -113,7 +129,7 @@ void load_battle_section(void) {
     BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
     s32 battleIdx = UNPACK_BTL_INDEX(gCurrentBattleID);
 
-    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
+    dma_copy((u8*)battleArea->dmaStart, (u8*)battleArea->dmaEnd, (u8*)battleArea->dmaDest);
 
     gCurrentBattlePtr = &(*battleArea->battles)[battleIdx];
 
@@ -308,3 +324,5 @@ void load_demo_battle(u32 index) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
     load_battle(battleID);
 }
+
+} // extern "C"

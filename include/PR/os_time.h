@@ -30,9 +30,7 @@
 #ifndef _OS_TIME_H_
 #define	_OS_TIME_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include "os_message.h"
@@ -107,8 +105,6 @@ extern int		osStopTimer(OSTimer *);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_TIME_H_ */

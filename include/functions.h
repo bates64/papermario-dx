@@ -1097,7 +1097,7 @@ void mdl_load_all_textures(struct ModelNode* model, s32 romOffset, s32 size);
 void mdl_calculate_model_sizes(void);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
 
 #endif

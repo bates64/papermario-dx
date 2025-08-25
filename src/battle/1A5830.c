@@ -3,7 +3,6 @@
 #include "effects.h"
 #include "hud_element.h"
 #include "sprite.h"
-#include "dx/debug_menu.h"
 
 s32 has_enchanted_part(Actor* actor) {
     ActorPart* partIt = actor->partsTable;

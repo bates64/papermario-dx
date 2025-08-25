@@ -236,6 +236,12 @@ void load_font(s32 font) {
             load_font_data(charset_standard_OFFSET, 0x5100, MsgCharImgNormal);
 #endif
             load_font_data(charset_standard_pal_OFFSET, 0x500, D_802F4560);
+
+            // fix outline color after loading
+            for (s32 i = 0; i < 80; i++) {
+                // set the transparent color to the outline color but with alpha = 0
+                D_802F4560[i][0] = D_802F4560[i][6] & ~1;
+            }
         } else if (font == 1) {
             load_font_data(charset_title_OFFSET, 0xF60, MsgCharImgTitle);
             load_font_data(charset_subtitle_OFFSET, 0xB88, MsgCharImgSubtitle);

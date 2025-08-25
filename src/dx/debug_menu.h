@@ -75,7 +75,12 @@ API_CALLABLE(_dxDebugFloatPrintf);
     Call(_dxDebugFloatPrintf, Ref(__FILE__), __LINE__, Ref(text), a, b, c, d, e, f, g)
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
-}
+} // extern "C"
 #endif
+
+#else
+
+#define debug_print(text)
+#define debug_printf(fmt, args...)
 
 #endif

@@ -30,9 +30,7 @@
 #ifndef _OS_PFS_H_
 #define	_OS_PFS_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/ultratypes.h>
 #include "os_message.h"
@@ -193,8 +191,6 @@ extern s32 osPfsNumFiles(OSPfs *, s32 *, s32 *);
 
 #endif  /* defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_PFS_H_ */

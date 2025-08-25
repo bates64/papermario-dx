@@ -21,9 +21,7 @@
 #ifndef _OS_INTERNAL_ERROR_H_
 #define	_OS_INTERNAL_ERROR_H_
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-extern "C" {
-#endif
+
 
 #include <PR/os.h>
 
@@ -38,8 +36,6 @@ extern OSThread *	__osGetNextFaultedThread(OSThread *);
 
 #endif /* _LANGUAGE_C */
 
-#ifdef _LANGUAGE_C_PLUS_PLUS
-}
-#endif
+
 
 #endif /* !_OS_INTERNAL_ERROR_H */

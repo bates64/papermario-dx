@@ -5,7 +5,6 @@
 #include "sprite.h"
 #include "world/partners.h"
 #include "sprite/npc/WorldWatt.h"
-#include "dx/debug_menu.h"
 
 s16 gNpcCount;
 static NpcList gWorldNpcList;
