@@ -1,6 +1,5 @@
-#include "common.h"
-#include "script_api/battle.h"
 #include "states.h"
+#include "script_api/battle.h"
 
 enum {
     // BTL_SUBSTATE_INIT                     = 0,
@@ -93,13 +92,13 @@ void btl_state_update_change_partner(void) {
             }
 
             battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_MAIN] = -1;
-            BattleSubStateDelay = 10;
+            BattleSubstateDelay = 10;
             gBattleSubState = BTL_SUBSTATE_EXEC_PUT_AWAY;
 
             // fallthrough
         case BTL_SUBSTATE_EXEC_PUT_AWAY:
-            if (BattleSubStateDelay != 0) {
-                BattleSubStateDelay--;
+            if (BattleSubstateDelay != 0) {
+                BattleSubstateDelay--;
                 break;
             }
             deduct_current_move_fp();

@@ -1,6 +1,5 @@
-#include "common.h"
-#include "script_api/battle.h"
 #include "states.h"
+#include "script_api/battle.h"
 
 b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
 

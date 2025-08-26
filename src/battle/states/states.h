@@ -3,9 +3,10 @@
 
 #include "common.h"
 
+extern s16 D_802809F6;
 extern b32 D_8029F254;
 extern s32 D_8029F258;
-extern s32 BattleSubStateDelay;
+extern s32 BattleSubstateDelay;
 extern s32 BattleScreenFadeAmt;
 
 void btl_state_update_normal_start(void);
@@ -26,8 +27,6 @@ void btl_state_update_prepare_menu(void);
 void btl_state_draw_prepare_menu(void);
 void btl_state_update_end_turn(void);
 void btl_state_draw_end_turn(void);
-void btl_state_update_1C(void);
-void btl_state_draw_1C(void);
 void btl_state_update_victory(void);
 void btl_state_draw_victory(void);
 void btl_state_update_end_training_battle(void);
@@ -73,11 +72,8 @@ void btl_state_update_twink_menu(void);
 void btl_state_draw_twink_menu(void);
 void btl_state_update_select_target(void);
 void btl_state_draw_select_target(void);
-void btl_state_update_22(void);
-void btl_state_draw_22(void);
 
 void btl_state_update_celebration(void);
-void btl_draw_upgrade_windows(s32);
 void btl_state_draw_celebration(void);
 
 #endif

@@ -244,7 +244,7 @@ void btl_update(void) {
     cond = TRUE;
     if (battleStatus->waitForState == BATTLE_STATE_NONE || battleStatus->waitForState != gBattleState) {
         switch (gBattleState) {
-            case BATTLE_STATE_NEGATIVE_1:
+            case BATTLE_STATE_INVALID:
             case BATTLE_STATE_NONE:
                 return;
             case BATTLE_STATE_NORMAL_START:
@@ -332,17 +332,11 @@ void btl_update(void) {
             case BATTLE_STATE_DEFEAT:
                 btl_state_update_defeat();
                 break;
-            case BATTLE_STATE_28:
-                btl_state_update_1C();
-                break;
             case BATTLE_STATE_END_TRAINING_BATTLE:
                 btl_state_update_end_training_battle();
                 break;
             case BATTLE_STATE_ENEMY_FIRST_STRIKE:
                 btl_state_update_enemy_striking_first();
-                break;
-            case BATTLE_STATE_34:
-                btl_state_update_22();
                 break;
             case BATTLE_STATE_CELEBRATION:
                 btl_state_update_celebration();
@@ -441,7 +435,7 @@ void btl_draw_ui(void) {
         changed = TRUE;
     } else {
         switch (state) {
-            case BATTLE_STATE_NEGATIVE_1:
+            case BATTLE_STATE_INVALID:
                 btl_update_starpoints_display();
                 btl_draw_enemy_health_bars();
                 draw_status_ui();
@@ -540,17 +534,11 @@ void btl_draw_ui(void) {
             case BATTLE_STATE_DEFEAT:
                 btl_state_draw_defeat();
                 break;
-            case BATTLE_STATE_28:
-                btl_state_draw_1C();
-                break;
             case BATTLE_STATE_END_TRAINING_BATTLE:
                 btl_state_draw_end_training_battle();
                 break;
             case BATTLE_STATE_ENEMY_FIRST_STRIKE:
                 btl_state_draw_enemy_striking_first();
-                break;
-            case BATTLE_STATE_34:
-                btl_state_draw_22();
                 break;
             case BATTLE_STATE_CELEBRATION:
                 btl_state_draw_celebration();

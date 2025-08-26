@@ -1,6 +1,5 @@
-#include "common.h"
-#include "script_api/battle.h"
 #include "states.h"
+#include "script_api/battle.h"
 
 enum {
     // BTL_SUBSTATE_INIT            = 0,

@@ -1,7 +1,6 @@
-#include "common.h"
-#include "script_api/battle.h"
 #include "states.h"
 #include "model.h"
+#include "script_api/battle.h"
 
 extern ShapeFile gMapShapeData;
 extern StageListRow* gCurrentStagePtr;
@@ -317,7 +316,7 @@ void btl_state_update_normal_start(void) {
                     }
 
                     BattleScreenFadeAmt = 305;
-                    BattleSubStateDelay = 0;
+                    BattleSubstateDelay = 0;
                     gBattleSubState = BTL_SUBSTATE_FADE_IN;
                     break;
             }
@@ -328,8 +327,8 @@ void btl_state_update_normal_start(void) {
                 break;
             }
 
-            BattleSubStateDelay++;
-            if (BattleSubStateDelay == 15) {
+            BattleSubstateDelay++;
+            if (BattleSubstateDelay == 15) {
                 btl_cam_use_preset(BTL_CAM_DEFAULT);
             }
 

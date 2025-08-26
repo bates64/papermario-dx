@@ -1,6 +1,5 @@
-#include "common.h"
-#include "script_api/battle.h"
 #include "states.h"
+#include "battle/battle.h"
 
 void btl_merlee_on_start_turn(void);
 
@@ -18,7 +17,6 @@ void btl_state_update_begin_turn(void) {
     Actor* enemy1;
     Actor* enemy2;
     Evt* script;
-    Evt* script2;
     b32 awaiting;
     u16 id1;
     u16 id2;
