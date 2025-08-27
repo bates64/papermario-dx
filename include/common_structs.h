@@ -865,7 +865,7 @@ typedef struct BattleStatus {
     /* 0x048 */ s8 curSubmenu;
     /* 0x049 */ s8 unk_49;
     /* 0x04A */ s8 curPartnerSubmenu;
-    /* 0x04B */ s8 unk_4B;
+    /* 0x04B */ s8 lastPartnerPowerSelection;
     /* 0x04C */ s8 lastPlayerMenuSelection[16];
     /* 0x05C */ s8 lastPartnerMenuSelection[16];
     /* 0x06C */ s16 cancelTargetMenuSubstate; // might be more generally for returning from nested 'inner' state
@@ -961,7 +961,7 @@ typedef struct BattleStatus {
     /* 0x1A6 */ s8 curTargetPart2;
     /* 0x1A7 */ s8 battlePhase;
     /* 0x1A8 */ s16 attackerActorID;
-    /* 0x1AA */ s16 unk_1AA;
+    /* 0x1AA */ s16 lastSelectedItem; // itemID of most recently selected item
     /* 0x1AC */ s8 unk_1AC;
     /* 0x1AD */ char unk_1AD;
     /* 0x1AE */ s16 submenuIcons[24]; /* icon IDs */

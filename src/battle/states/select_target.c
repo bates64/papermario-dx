@@ -124,7 +124,7 @@ void btl_state_update_select_target(void) {
 
             if (battleStatus->curButtonsPressed & BUTTON_A) {
                 sfx_play_sound(SOUND_MENU_NEXT);
-                D_802ACC60 = 8;
+                D_802ACC60 = UNK_MENU_DELAY;
                 BattleMenu_SwapDelay = 4;
                 gBattleSubState = BTL_SUBSTATE_SELECT_TARGET_DONE;
                 break;
@@ -238,7 +238,6 @@ void btl_state_update_select_target(void) {
 
 void btl_state_draw_select_target(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    PlayerData* playerData = &gPlayerData;
     s32 msgID;
     s32 msgX;
     s32 msgY;
@@ -256,7 +255,6 @@ void btl_state_draw_select_target(void) {
     s32 screenX, screenY, screenZ;
     s32 selectedTargetIndex;
     s8* targetIndexList;
-    s32* tmpPtr; // TODO required to match and CURSED
 
     if (!(gBattleStatus.flags1 & BS_FLAGS1_PARTNER_ACTING)) {
         choosingActor = battleStatus->playerActor;
@@ -268,8 +266,6 @@ void btl_state_draw_select_target(void) {
     target = choosingActor->targetData;
     selectedTargetIndex = choosingActor->selectedTargetIndex;
     targetIndexList = choosingActor->targetIndexList;
-
-    tmpPtr = &BattleMenu_TargetNameOffsetX;
 
     if (targetListLength == 0) {
         return;
@@ -332,7 +328,7 @@ void btl_state_draw_select_target(void) {
         }
     }
 
-    currentPartner = playerData->curPartner;
+    currentPartner = gPlayerData.curPartner;
     screenX = 52;
     screenY = 64;
     if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
@@ -387,7 +383,7 @@ void btl_state_draw_select_target(void) {
             if (msgID == MSG_NONE) {
                 msgID = bActorNames[enemyActor->actorType];
             }
-            draw_msg(msgID, screenX + *tmpPtr, screenY, 255, MSG_PAL_36, 0); // TODO required to match
+            draw_msg(msgID, screenX + BattleMenu_TargetNameOffsetX, screenY, 255, MSG_PAL_36, 0);
         }
     } else {
         target = &choosingActor->targetData[targetIndexList[selectedTargetIndex]];

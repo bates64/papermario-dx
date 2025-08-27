@@ -20,6 +20,26 @@
 extern HudScript HES_ProjectorBeam;
 extern IconHudScriptPair gItemHudScripts[];
 
+enum {
+    // BTL_SUBSTATE_INIT                            = 0,
+    BTL_SUBSTATE_LOAD_STAR_POINTS                   = 1,
+    BTL_SUBSTATE_TALLY_STAR_POINTS                  = 2,
+    BTL_SUBSTATE_POST_STAR_POINTS                   = 3,
+    BTL_SUBSTATE_LEVEL_UP_LOAD                      = 4,
+    BTL_SUBSTATE_LEVEL_UP_BEGIN                     = 5,
+    BTL_SUBSTATE_LEVEL_UP_CREATE_HUD                = 6,
+    BTL_SUBSTATE_LEVEL_UP_SHOW_HUD                  = 7,
+    BTL_SUBSTATE_LEVEL_UP_CHOOSE                    = 8,
+    BTL_SUBSTATE_LEVEL_UP_UPGRADE                   = 9,
+    BTL_SUBSTATE_LEVEL_UP_FADE_OUT                  = 10,
+    BTL_SUBSTATE_LEVEL_UP_DESTROY_HUD               = 11,
+    BTL_SUBSTATE_LEVEL_UP_INVALID                   = 15,
+    BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY             = 16,
+    BTL_SUBSTATE_SKIPPABLE_END_DELAY                = 20,
+    BTL_SUBSTATE_WALK_AWAY                          = 21,
+    BTL_SUBSTATE_DONE                               = 22,
+};
+
 // menu position index for level up screen
 enum {
     MENU_HP  = 0,
@@ -172,7 +192,6 @@ s32 D_80284154[] = {
     [PARTNER_BOW]           = ANIM_BattleBow_Walk,
     [PARTNER_GOOMBARIA]     = 0,
     [PARTNER_TWINK]         = 0,
-    0
 };
 
 EntityModelScript* starpoint_digit_scripts[] = {
@@ -512,7 +531,7 @@ void btl_state_update_celebration(void) {
     HudScript* new_var;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_CELEBRATE_INIT:
+        case BTL_SUBSTATE_INIT:
             if (battleStatus->pendingStarPoints <= 0) {
                 player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
                 EndBattleRewardTotal = battleStatus->totalStarPoints * 100;
@@ -534,11 +553,11 @@ void btl_state_update_celebration(void) {
                 btl_cam_use_preset(BTL_CAM_VICTORY);
                 EndBattleRewardStep = 0;
                 CelebrateSubstateTime = 1;
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_LOAD_STAR_POINTS;
+                gBattleSubState = BTL_SUBSTATE_LOAD_STAR_POINTS;
                 gBattleStatus.flags2 |= BS_FLAGS2_AWARDING_STAR_POINTS;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LOAD_STAR_POINTS:
+        case BTL_SUBSTATE_LOAD_STAR_POINTS:
             if (CelebrateSubstateTime != 0) {
                 CelebrateSubstateTime--;
             } else if (btl_cam_is_moving_done()) {
@@ -552,10 +571,10 @@ void btl_state_update_celebration(void) {
                 CelebrateSubstateTime = 1;
                 player->takeTurnScriptID = script->id;
                 script->owner1.actorID = ACTOR_PLAYER;
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_TALLY_STAR_POINTS;
+                gBattleSubState = BTL_SUBSTATE_TALLY_STAR_POINTS;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_TALLY_STAR_POINTS:
+        case BTL_SUBSTATE_TALLY_STAR_POINTS:
             if (CelebrateSubstateTime == 0) {
                 if (battleStatus->totalStarPoints != 0) {
                     // determine the remaining star point reward after this step and give the difference to the player
@@ -602,7 +621,7 @@ void btl_state_update_celebration(void) {
                             script->owner1.actorID = ACTOR_PARTNER;
                         }
                         CelebrateSubstateTime = 40;
-                        gBattleSubState = BTL_SUBSTATE_CELEBRATE_POST_STAR_POINTS;
+                        gBattleSubState = BTL_SUBSTATE_POST_STAR_POINTS;
                     } else {
                         EndBattleRewardStep--;
                     }
@@ -611,18 +630,18 @@ void btl_state_update_celebration(void) {
                 CelebrateSubstateTime--;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_POST_STAR_POINTS:
+        case BTL_SUBSTATE_POST_STAR_POINTS:
             if (CelebrateSubstateTime == 0) {
                 if (pendingLevelUps == 0) {
-                    gBattleSubState = BTL_SUBSTATE_CELEBRATE_SKIPPABLE_END_DELAY;
+                    gBattleSubState = BTL_SUBSTATE_SKIPPABLE_END_DELAY;
                 } else {
-                    gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_LOAD;
+                    gBattleSubState = BTL_SUBSTATE_LEVEL_UP_LOAD;
                 }
                 break;
             }
             CelebrateSubstateTime--;
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_LOAD:
+        case BTL_SUBSTATE_LEVEL_UP_LOAD:
             if (CelebrateStateTime >= 99) {
                 playerData->level++;
                 btl_cam_use_preset(BTL_CAM_DEFAULT);
@@ -630,19 +649,19 @@ void btl_state_update_celebration(void) {
                 DMA_COPY_SEGMENT(level_up);
                 sfx_play_sound(SOUND_LOOP_CHEERING);
                 CelebrateStateTime = 0;
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_BEGIN;
+                gBattleSubState = BTL_SUBSTATE_LEVEL_UP_BEGIN;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_BEGIN:
+        case BTL_SUBSTATE_LEVEL_UP_BEGIN:
             LevelUpScriptPtr = start_script(&EVS_ShowLevelUp, EVT_PRIORITY_A, 0);
             LevelUpScriptID = LevelUpScriptPtr->id;
             CelebrateSubstateTime = 25;
-            gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CREATE_HUD;
+            gBattleSubState = BTL_SUBSTATE_LEVEL_UP_CREATE_HUD;
             mdl_set_all_tint_type(ENV_TINT_SHROUD);
             *gBackgroundTintModePtr = ENV_TINT_SHROUD;
             mdl_set_shroud_tint_params(0, 0, 0, 0);
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CREATE_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_CREATE_HUD:
             if (CelebrateSubstateTime == 18) {
                 playerData->curHP = playerData->curMaxHP;
                 playerData->curFP = playerData->curMaxFP;
@@ -935,10 +954,10 @@ void btl_state_update_celebration(void) {
                 battleStatus->curSubmenu = 1;
 
                 CelebrateSubstateTime = 10;
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_SHOW_HUD;
+                gBattleSubState = BTL_SUBSTATE_LEVEL_UP_SHOW_HUD;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_SHOW_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_SHOW_HUD:
             hid = LevelUpStatEmblemIDs[0];
             hud_element_get_render_pos(hid, &x, &y);
             x -= 20;
@@ -993,18 +1012,18 @@ void btl_state_update_celebration(void) {
                 set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
 #endif
                 set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
+                gBattleSubState = BTL_SUBSTATE_LEVEL_UP_CHOOSE;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE:
+        case BTL_SUBSTATE_LEVEL_UP_CHOOSE:
             if (battleStatus->curButtonsPressed & BUTTON_A) {
                 if (!CantLevelUpStat[battleStatus->curSubmenu]) {
                     sfx_play_sound(SOUND_MENU_NEXT);
                     sfx_play_sound(SOUND_LRAW_CHEERING | SOUND_ID_TRIGGER_CHANGE_SOUND);
-                    gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE;
+                    gBattleSubState = BTL_SUBSTATE_LEVEL_UP_UPGRADE;
                 } else {
                     sfx_play_sound(SOUND_MENU_ERROR);
-                    gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID;
+                    gBattleSubState = BTL_SUBSTATE_LEVEL_UP_INVALID;
                 }
                 break;
             }
@@ -1033,7 +1052,7 @@ void btl_state_update_celebration(void) {
                 CelebrateStateTime = 0;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE:
+        case BTL_SUBSTATE_LEVEL_UP_UPGRADE:
             hud_element_free(LevelUpSpotlightID);
             set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_HIDE);
 
@@ -1082,9 +1101,9 @@ void btl_state_update_celebration(void) {
                 bgm_set_song(0, -1, 0, 2000, 8);
             }
             bFadeToBlackAmt = 0;
-            gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_FADE_OUT;
+            gBattleSubState = BTL_SUBSTATE_LEVEL_UP_FADE_OUT;
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_FADE_OUT:
+        case BTL_SUBSTATE_LEVEL_UP_FADE_OUT:
             if ((gGameStatusPtr->frameCounter % 2) != 0) {
                 switch (battleStatus->curSubmenu) {
                     case 0:
@@ -1113,7 +1132,7 @@ void btl_state_update_celebration(void) {
                 }
             }
             if (bFadeToBlackAmt == 255) {
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_DESTROY_HUD;
+                gBattleSubState = BTL_SUBSTATE_LEVEL_UP_DESTROY_HUD;
                 break;
             }
             bFadeToBlackAmt += 10;
@@ -1121,7 +1140,7 @@ void btl_state_update_celebration(void) {
                 bFadeToBlackAmt = 255;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_DESTROY_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_DESTROY_HUD:
             hud_element_free(LevelUpStatEmblemIDs[0]);
             hud_element_free(LevelUpStatEmblemIDs[1]);
             hud_element_free(LevelUpStatEmblemIDs[3]);
@@ -1138,16 +1157,16 @@ void btl_state_update_celebration(void) {
             btl_set_state(BATTLE_STATE_END_BATTLE);
             gBattleSubState = BTL_SUBSTATE_END_BATTLE_EXEC_STAGE_SCRIPT;
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID:
             width = get_msg_width(MSG_Menus_CantIncrease, 0) + 31;
             x = 160 - (width / 2);
             y = 80;
             set_window_properties(WIN_BTL_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             CelebrateSubstateTime = 60;
-            gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY;
+            gBattleSubState = BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY;
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY:
             if (gGameStatusPtr->pressedButtons[0] & (BUTTON_A | BUTTON_B)) {
                 CelebrateSubstateTime = 0;
             }
@@ -1156,9 +1175,9 @@ void btl_state_update_celebration(void) {
                 break;
             }
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_HIDE);
-            gBattleSubState = BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE;
+            gBattleSubState = BTL_SUBSTATE_LEVEL_UP_CHOOSE;
             break;
-        case BTL_SUBSTATE_CELEBRATE_SKIPPABLE_END_DELAY:
+        case BTL_SUBSTATE_SKIPPABLE_END_DELAY:
             if (battleStatus->curButtonsPressed & (BUTTON_A | BUTTON_B)) {
                 CelebrateStateTime = 99;
 #if VERSION_JP
@@ -1176,11 +1195,11 @@ void btl_state_update_celebration(void) {
                     set_actor_anim(ACTOR_PARTNER, 0, D_80284154[playerData->curPartner]);
                 }
                 CelebrateSubstateTime = 6;
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_WALK_AWAY;
+                gBattleSubState = BTL_SUBSTATE_WALK_AWAY;
                 break;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_WALK_AWAY:
+        case BTL_SUBSTATE_WALK_AWAY:
             if (CelebrateSubstateTime != 0) {
                 CelebrateSubstateTime--;
                 if (CelebrateSubstateTime == 0) {
@@ -1198,7 +1217,7 @@ void btl_state_update_celebration(void) {
                 }
             }
             if (bFadeToBlackAmt == 255) {
-                gBattleSubState = BTL_SUBSTATE_CELEBRATE_DONE;
+                gBattleSubState = BTL_SUBSTATE_DONE;
                 break;
             }
             bFadeToBlackAmt += 20;
@@ -1206,7 +1225,7 @@ void btl_state_update_celebration(void) {
                 bFadeToBlackAmt = 255;
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_DONE:
+        case BTL_SUBSTATE_DONE:
             if (does_script_exist(player->takeTurnScriptID)) {
                 kill_script_by_ID(player->takeTurnScriptID);
             }
@@ -1279,7 +1298,7 @@ void btl_state_draw_celebration(void) {
     s32 j;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_SHOW_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_SHOW_HUD:
             btl_draw_upgrade_windows(0);
             id = LevelUpStatEmblemIDs[0];
             hud_element_set_tint(id, 128, 128, 128);
@@ -1303,9 +1322,9 @@ void btl_state_draw_celebration(void) {
                 }
             }
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY:
+        case BTL_SUBSTATE_LEVEL_UP_CHOOSE:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY:
             switch (battleStatus->curSubmenu) {
                 case 0:
                     rotZ = 152;
@@ -1419,8 +1438,8 @@ void btl_state_draw_celebration(void) {
             hud_element_set_transform_rotation(id, 0.0f, 0.0f, rotZ);
             func_80144238(id);
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_FADE_OUT:
+        case BTL_SUBSTATE_LEVEL_UP_UPGRADE:
+        case BTL_SUBSTATE_LEVEL_UP_FADE_OUT:
             btl_draw_upgrade_windows(1);
             hud_element_draw_clipped(LevelUpStatEmblemIDs[0]);
             hud_element_draw_clipped(LevelUpStatEmblemIDs[3]);
@@ -1435,10 +1454,10 @@ void btl_state_draw_celebration(void) {
 
             set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, bFadeToBlackAmt);
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_DESTROY_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_DESTROY_HUD:
             set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, bFadeToBlackAmt);
             break;
-        case BTL_SUBSTATE_CELEBRATE_WALK_AWAY:
+        case BTL_SUBSTATE_WALK_AWAY:
             if (bFadeToBlackAmt != 0) {
                 set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, bFadeToBlackAmt);
             }
@@ -1446,9 +1465,9 @@ void btl_state_draw_celebration(void) {
     }
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_SHOW_HUD:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_UPGRADE:
+        case BTL_SUBSTATE_LEVEL_UP_SHOW_HUD:
+        case BTL_SUBSTATE_LEVEL_UP_CHOOSE:
+        case BTL_SUBSTATE_LEVEL_UP_UPGRADE:
             LevelUpSelectTextVelX += 2;
             LevelUpSelectTextOffsetX += LevelUpSelectTextVelX;
             if (LevelUpSelectTextOffsetX > 200) {
@@ -1459,7 +1478,7 @@ void btl_state_draw_celebration(void) {
             hud_element_set_render_pos(id, LevelUpSelectTextOffsetX - 43, 176);
             hud_element_draw_clipped(id);
             break;
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_FADE_OUT:
+        case BTL_SUBSTATE_LEVEL_UP_FADE_OUT:
             LevelUpSelectTextVelX += 4;
             LevelUpSelectTextOffsetX += LevelUpSelectTextVelX;
             if (LevelUpSelectTextOffsetX > 500) {
@@ -1478,9 +1497,9 @@ void draw_content_level_up_textbox(void* data, s32 posX, s32 posY) {
     s32 msgID;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_CHOOSE:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID:
-        case BTL_SUBSTATE_CELEBRATE_LEVEL_UP_INVALID_DELAY:
+        case BTL_SUBSTATE_LEVEL_UP_CHOOSE:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID:
+        case BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY:
             switch (battleStatus->curSubmenu) {
                 case MENU_HP:
                     if (!CantLevelUpStat[MENU_HP]) {

@@ -172,8 +172,8 @@ void setup_demo_player(void) {
     playerData->level = 3;
     playerData->hasActionCommands = TRUE;
     playerData->starPoints = 55;
-    playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
+    playerData->bootsLevel = GEAR_RANK_NORMAL;
+    playerData->hammerLevel = GEAR_RANK_NORMAL;
     playerData->coins = 34;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {

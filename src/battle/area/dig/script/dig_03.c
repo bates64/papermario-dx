@@ -8,8 +8,8 @@ API_CALLABLE(N(SetupDemoPlayerMove)) {
     SelectableTarget* selectableTarget;
 
     battleStatus->moveCategory = BTL_MENU_TYPE_ABILITY;
-    battleStatus->moveArgument = 0;
     battleStatus->selectedMoveID = MOVE_SHELL_SHOT;
+    battleStatus->moveArgument = 0;
     battleStatus->curTargetListFlags = gMoveTable[MOVE_SHELL_SHOT].flags;
 
     create_current_pos_target_list(partner);
