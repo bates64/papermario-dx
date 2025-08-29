@@ -1,6 +1,13 @@
 #include "states.h"
 #include "script_api/battle.h"
 
+enum {
+    // BTL_SUBSTATE_INIT                    = 0,
+    BTL_SUBSTATE_AWAIT_ENEMY_READY          = 1,
+    BTL_SUBSTATE_AWAIT_SCRIPTS              = 2,
+    BTL_SUBSTATE_AWAIT_ENEMY_DONE           = 3,
+};
+
 void btl_merlee_on_first_strike(void);
 
 void btl_state_update_first_strike(void) {
@@ -15,7 +22,7 @@ void btl_state_update_first_strike(void) {
     s32 i;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_FIRST_STRIKE_INIT:
+        case BTL_SUBSTATE_INIT:
             D_8029F254 = FALSE;
             btl_merlee_on_first_strike();
             if (playerData->playerFirstStrikes < 9999) {
@@ -67,9 +74,9 @@ void btl_state_update_first_strike(void) {
                 enemy->handleEventScriptID = script->id;
                 script->owner1.actorID = enemy->actorID;
             }
-            gBattleSubState = BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_READY;
+            gBattleSubState = BTL_SUBSTATE_AWAIT_ENEMY_READY;
             break;
-        case BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_READY:
+        case BTL_SUBSTATE_AWAIT_ENEMY_READY:
             enemy = get_actor(ACTOR_ENEMY0);
             if (enemy->handleEventSource != NULL) {
                 if (does_script_exist(enemy->handleEventScriptID)) {
@@ -97,9 +104,9 @@ void btl_state_update_first_strike(void) {
             player->takeTurnScriptID = script->id;
             script->owner1.actorID = ACTOR_PLAYER;
             BattleSubstateDelay = 3;
-            gBattleSubState = BTL_SUBSTATE_FIRST_STRIKE_AWAIT_SCRIPTS;
+            gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPTS;
             break;
-        case BTL_SUBSTATE_FIRST_STRIKE_AWAIT_SCRIPTS:
+        case BTL_SUBSTATE_AWAIT_SCRIPTS:
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
             } else {
@@ -188,13 +195,13 @@ void btl_state_update_first_strike(void) {
                             script->owner1.actorID = target->actorID;
                         }
                     }
-                    gBattleSubState = BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_DONE;
+                    gBattleSubState = BTL_SUBSTATE_AWAIT_ENEMY_DONE;
                 } else {
                     btl_set_state(BATTLE_STATE_END_DEMO_BATTLE);
                 }
             }
             break;
-        case BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_DONE:
+        case BTL_SUBSTATE_AWAIT_ENEMY_DONE:
             enemyNotDone = FALSE;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];

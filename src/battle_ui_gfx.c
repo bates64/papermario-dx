@@ -224,27 +224,9 @@ INCLUDE_PAL("ui/battle/cmd/aim/target_1.pal", ui_battle_cmd_aim_target_1_pal);
 INCLUDE_IMG("ui/battle/solid_star.png", ui_battle_solid_star_png);
 INCLUDE_PAL("ui/battle/solid_star.pal", ui_battle_solid_star_pal);
 
-Gfx D_8028F860[] = {
-    gsSPEndDisplayList(),
-};
-
 INCLUDE_IMG("ui/battle/projector_spot.png", ui_battle_projector_spot_png);
-
-Gfx D_8028FC68[] = {
-    gsSPEndDisplayList(),
-};
-
 INCLUDE_IMG("ui/battle/projector_beam.png", ui_battle_projector_beam_png);
-
-Gfx D_80290C70[] = {
-    gsSPEndDisplayList(),
-};
-
 INCLUDE_IMG("ui/battle/projector_reel.png", ui_battle_projector_reel_png);
-
-Gfx D_80291C78[] = {
-    gsSPEndDisplayList(),
-};
 
 INCLUDE_IMG("ui/battle/swap_background.png", ui_battle_swap_background_png);
 

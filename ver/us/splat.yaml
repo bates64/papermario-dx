@@ -1300,7 +1300,7 @@ segments:
     - [auto, c, battle/states/enemy_first_strike]
     - [auto, c, battle/states/turn_begin]
     - [auto, c, battle/states/turn_end]
-    - [auto, c, battle/states/next_enemy]
+    - [auto, c, battle/states/enemy_next]
     - [auto, c, battle/states/enemy_move]
     - [auto, c, battle/states/switch_to_player]
     - [auto, c, battle/states/switch_to_partner]
@@ -5867,6 +5867,8 @@ segments:
     vram_class: battle_move
     subsegments:
     - [auto, c, battle/btl_states_menus]
+    - [auto, c, battle/menu_moves]
+    - [auto, c, battle/menu_strats]
   - type: code
     start: 0x4219F0
     vram_class: action_cmd

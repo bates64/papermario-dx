@@ -3669,43 +3669,6 @@ enum BattleStates {
     BATTLE_STATE_END_DEMO_BATTLE            = 35,
 };
 
-enum BattleSubStates {
-    // shared
-    BTL_SUBSTATE_INIT                                       = 0,
-
-    // accessed across states
-    BTL_SUBSTATE_END_BATTLE_EXEC_STAGE_SCRIPT               = 2,
-    BTL_SUBSTATE_PLAYER_MENU_DIPPING_1                      = 70,
-
-    // BATTLE_STATE_FIRST_STRIKE
-    BTL_SUBSTATE_FIRST_STRIKE_INIT                          = 0,
-    BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_READY             = 1,
-    BTL_SUBSTATE_FIRST_STRIKE_AWAIT_SCRIPTS                 = 2,
-    BTL_SUBSTATE_FIRST_STRIKE_AWAIT_ENEMY_DONE              = 3,
-
-    // BATTLE_STATE_PREPARE_MENU
-    BATTLE_SUBSTATE_PREPARE_MENU_DIPPING                    = 70,
-
-    // BATTLE_STATE_SELECT_TARGET
-    BTL_SUBSTATE_SELECT_TARGET_INIT                         = 0,
-    BTL_SUBSTATE_SELECT_TARGET_CHOOSE                       = 1,
-    BTL_SUBSTATE_SELECT_TARGET_DONE                         = 2,
-    BTL_SUBSTATE_SELECT_TARGET_CANCEL                       = 10,
-
-    // BATTLE_STATE_NEXT_ENEMY
-    BTL_SUBSTATE_NEXT_ENEMY_INIT                            = 0,
-    BTL_SUBSTATE_NEXT_ENEMY_UNUSED_1                        = 1,
-    BTL_SUBSTATE_NEXT_ENEMY_DONE                            = 2, // enemy has been found
-
-    // BATTLE_STATE_RUN_AWAY
-    BTL_SUBSTATE_RUN_AWAY_EXEC_SCRIPT                       = 0,
-    BTL_SUBSTATE_RUN_AWAY_AWAIT_SCRIPT                      = 2,
-    BTL_SUBSTATE_RUN_AWAY_EXEC_POST_FAILURE                 = 3,
-    BTL_SUBSTATE_RUN_AWAY_AWAIT_POST_FAILURE                = 4,
-    BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS                  = 10,
-    BTL_SUBSTATE_RUN_AWAY_DONE                              = 11,
-};
-
 enum BattleMessages {
     BTL_MSG_MERLEE_ATK_UP                           = 0x00,
     BTL_MSG_MERLEE_DEF_UP                           = 0x01,
@@ -3817,7 +3780,6 @@ enum BattleMessageStates {
     BTL_MSG_STATE_DISABLED_DELAY        = 1,
 };
 
-// BattleMenuState
 enum BattleMenuStates {
     BTL_MENU_STATE_OPENED_SUBMENU       = -1,
     BTL_MENU_STATE_CREATE               = 0,
@@ -3829,35 +3791,6 @@ enum BattleMenuStates {
     BTL_MENU_STATE_UNK_1E               = 30,
     BTL_MENU_STATE_SHOW_DISABLED_POPUP  = 100,
     BTL_MENU_STATE_AWAIT_DISABLED_POPUP = 101,
-};
-
-enum BattleMoveSubmenuStates {
-    BTL_SUBMENU_MOVES_CANCEL                    = -2,
-    BTL_SUBMENU_MOVES_SELECT                    = -1,
-    BTL_SUBMENU_MOVES_INIT                      = 0,
-    BTL_SUBMENU_MOVES_CHOOSING                  = 1,
-    BTL_SUBMENU_MOVES_HIDE_INIT               = 10,
-    BTL_SUBMENU_MOVES_HIDE_HOLD               = 11,
-    BTL_SUBMENU_MOVES_STATE_UNK_14              = 20,
-    BTL_SUBMENU_MOVES_STATE_UNK_1E              = 30,
-    BTL_SUBMENU_MOVES_ERROR_INIT                = 40,
-    BTL_SUBMENU_MOVES_ERROR_SHOW                = 41,
-    BTL_SUBMENU_MOVES_ERROR_DONE                = 42,
-};
-
-
-enum BattleStratsSubmenuStates {
-    BTL_SUBMENU_STRATS_STATE_CANCEL               = -2,
-    BTL_SUBMENU_STRATS_STATE_SELECT               = -1, // approve choice
-    BTL_SUBMENU_STRATS_STATE_INIT                 = 0,
-    BTL_SUBMENU_STRATS_STATE_CHOOSE               = 1,
-    BTL_SUBMENU_STRATS_STATE_UNK_10               = 10,
-    BTL_SUBMENU_STRATS_STATE_UNK_11               = 11,
-    BTL_SUBMENU_STRATS_STATE_UNK_20               = 20,
-    BTL_SUBMENU_STRATS_STATE_UNK_30               = 30,
-    BTL_SUBMENU_STRATS_STATE_ERROR_INIT           = 40,
-    BTL_SUBMENU_STRATS_STATE_ERROR_SHOW           = 41,
-    BTL_SUBMENU_STRATS_STATE_ERROR_DONE           = 42,
 };
 
 enum BattleMenuIndex {

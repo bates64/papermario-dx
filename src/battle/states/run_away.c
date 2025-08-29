@@ -1,6 +1,15 @@
 #include "states.h"
 #include "script_api/battle.h"
 
+enum {
+    BTL_SUBSTATE_EXEC_SCRIPT            = BTL_SUBSTATE_INIT,
+    BTL_SUBSTATE_AWAIT_SCRIPT           = 2,
+    BTL_SUBSTATE_EXEC_POST_FAILURE      = 3,
+    BTL_SUBSTATE_AWAIT_POST_FAILURE     = 4,
+    BTL_SUBSTATE_GIVE_STAR_POINTS       = 10,
+    BTL_SUBSTATE_DONE                   = 11,
+};
+
 BSS s32 RunAwayRewardStep;
 BSS s32 RunAwayRewardTotal;
 BSS s32 RunAwayRewardIncrement;
@@ -18,7 +27,7 @@ void btl_state_update_run_away(void) {
     s32 i;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_RUN_AWAY_EXEC_SCRIPT:
+        case BTL_SUBSTATE_EXEC_SCRIPT:
             battleStatus->stateFreezeCount = 0;
             gBattleStatus.flags1 &= ~BS_FLAGS1_BATTLE_FLED;
             gBattleStatus.flags2 |= BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
@@ -73,18 +82,18 @@ void btl_state_update_run_away(void) {
                 partner->takeTurnScriptID = script->id;
                 script->owner1.actorID = ACTOR_PARTNER;
             }
-            gBattleSubState = BTL_SUBSTATE_RUN_AWAY_AWAIT_SCRIPT;
+            gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPT;
             break;
-        case BTL_SUBSTATE_RUN_AWAY_AWAIT_SCRIPT:
+        case BTL_SUBSTATE_AWAIT_SCRIPT:
             if (does_script_exist(player->takeTurnScriptID) || battleStatus->stateFreezeCount != 0) {
                 break;
             }
             if (!(gBattleStatus.flags1 & BS_FLAGS1_BATTLE_FLED)) {
-                gBattleSubState = BTL_SUBSTATE_RUN_AWAY_EXEC_POST_FAILURE;
+                gBattleSubState = BTL_SUBSTATE_EXEC_POST_FAILURE;
             } else {
                 currentEncounter->battleOutcome = OUTCOME_PLAYER_FLED;
                 if (!is_ability_active(ABILITY_RUNAWAY_PAY)) {
-                    gBattleSubState = BTL_SUBSTATE_RUN_AWAY_DONE;
+                    gBattleSubState = BTL_SUBSTATE_DONE;
                 } else {
                     status_bar_start_blinking_starpoints();
                     func_8023E104();
@@ -93,13 +102,13 @@ void btl_state_update_run_away(void) {
                     RunAwayRewardTotal = battleStatus->totalStarPoints * 100;
                     RunAwayRewardStep = 20;
                     RunAwayRewardIncrement = RunAwayRewardTotal / RunAwayRewardStep;
-                    gBattleSubState = BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS;
+                    gBattleSubState = BTL_SUBSTATE_GIVE_STAR_POINTS;
                 }
             }
             break;
     }
 
-    if (gBattleSubState == BTL_SUBSTATE_RUN_AWAY_GIVE_STAR_POINTS) {
+    if (gBattleSubState == BTL_SUBSTATE_GIVE_STAR_POINTS) {
         if (battleStatus->totalStarPoints != 0) {
             s32 deltaSP;
             s32 prevSP;
@@ -127,12 +136,12 @@ void btl_state_update_run_away(void) {
             } else {
                 status_bar_stop_blinking_starpoints();
                 func_8023E11C();
-                gBattleSubState = BTL_SUBSTATE_RUN_AWAY_DONE;
+                gBattleSubState = BTL_SUBSTATE_DONE;
             }
         }
     }
 
-    if (gBattleSubState == BTL_SUBSTATE_RUN_AWAY_DONE) {
+    if (gBattleSubState == BTL_SUBSTATE_DONE) {
         playerData->battlesFled++;
         if (!(gBattleStatus.flags2 & BS_FLAGS2_DONT_STOP_MUSIC)) {
             bgm_set_song(0, -1, 0, 1500, 8);
@@ -141,7 +150,7 @@ void btl_state_update_run_away(void) {
     }
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_RUN_AWAY_EXEC_POST_FAILURE:
+        case BTL_SUBSTATE_EXEC_POST_FAILURE:
             battleStatus->battlePhase = PHASE_RUN_AWAY_FAIL;
             script = start_script(&EVS_Mario_HandlePhase, EVT_PRIORITY_A, 0);
             player->takeTurnScript = script;
@@ -153,9 +162,9 @@ void btl_state_update_run_away(void) {
                 partner->takeTurnScriptID = script->id;
                 script->owner1.actorID = ACTOR_PARTNER;
             }
-            gBattleSubState = BTL_SUBSTATE_RUN_AWAY_AWAIT_POST_FAILURE;
+            gBattleSubState = BTL_SUBSTATE_AWAIT_POST_FAILURE;
             break;
-        case BTL_SUBSTATE_RUN_AWAY_AWAIT_POST_FAILURE:
+        case BTL_SUBSTATE_AWAIT_POST_FAILURE:
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
                 return;

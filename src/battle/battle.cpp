@@ -5,6 +5,7 @@
 #include "hud_element.h"
 #include "sprite.h"
 #include "game_modes.h"
+#include "battle/states/states.h"
 
 extern "C" {
 

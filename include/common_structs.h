@@ -962,7 +962,7 @@ typedef struct BattleStatus {
     /* 0x1A7 */ s8 battlePhase;
     /* 0x1A8 */ s16 attackerActorID;
     /* 0x1AA */ s16 lastSelectedItem; // itemID of most recently selected item
-    /* 0x1AC */ s8 unk_1AC;
+    /* 0x1AC */ s8 lastSelectedPartner; // partnerID of most recently selected partner
     /* 0x1AD */ char unk_1AD;
     /* 0x1AE */ s16 submenuIcons[24]; /* icon IDs */
     /* 0x1DE */ u8 submenuMoves[24]; /* move IDs */

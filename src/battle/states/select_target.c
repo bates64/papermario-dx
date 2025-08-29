@@ -3,6 +3,13 @@
 #include "battle/battle_menu.h"
 #include "hud_element.h"
 
+enum {
+    // BTL_SUBSTATE_INIT            = 0,
+    BTL_SUBSTATE_CHOOSE             = 1,
+    BTL_SUBSTATE_DONE               = 2,
+    BTL_SUBSTATE_CANCEL             = 10,
+};
+
 void btl_state_update_select_target(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* actor;
@@ -24,7 +31,7 @@ void btl_state_update_select_target(void) {
     actor->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
     targetIndexList = actor->targetIndexList;
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_SELECT_TARGET_INIT:
+        case BTL_SUBSTATE_INIT:
             BattleMenu_TargetPointerAlpha = 255;
             BattleMenu_TargetNameOffsetX = -100;
             gBattleStatus.flags1 &= ~BS_FLAGS1_MENU_OPEN;
@@ -105,9 +112,9 @@ void btl_state_update_select_target(void) {
                 hud_element_set_render_depth(hid, 0);
                 hud_element_set_render_pos(hid, 0, -100);
             }
-            gBattleSubState = BTL_SUBSTATE_SELECT_TARGET_CHOOSE;
+            gBattleSubState = BTL_SUBSTATE_CHOOSE;
             break;
-        case BTL_SUBSTATE_SELECT_TARGET_CHOOSE:
+        case BTL_SUBSTATE_CHOOSE:
             // animate the target name sliding into view
             if (BattleMenu_TargetNameOffsetX < 0) {
                 BattleMenu_TargetNameOffsetX += 20;
@@ -118,7 +125,7 @@ void btl_state_update_select_target(void) {
 
             if (battleStatus->curButtonsPressed & BUTTON_B) {
                 sfx_play_sound(SOUND_MENU_BACK);
-                gBattleSubState = BTL_SUBSTATE_SELECT_TARGET_CANCEL;
+                gBattleSubState = BTL_SUBSTATE_CANCEL;
                 break;
             }
 
@@ -126,7 +133,7 @@ void btl_state_update_select_target(void) {
                 sfx_play_sound(SOUND_MENU_NEXT);
                 D_802ACC60 = UNK_MENU_DELAY;
                 BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_SELECT_TARGET_DONE;
+                gBattleSubState = BTL_SUBSTATE_DONE;
                 break;
             }
 
@@ -168,7 +175,7 @@ void btl_state_update_select_target(void) {
                 actor->selectedTargetIndex = selectedTargetIndex;
             }
             break;
-        case BTL_SUBSTATE_SELECT_TARGET_DONE:
+        case BTL_SUBSTATE_DONE:
             gBattleStatus.flags1 &= ~BS_FLAGS1_MENU_OPEN;
             target = &actor->targetData[targetIndexList[actor->selectedTargetIndex]];
             actor->targetActorID = target->actorID;
@@ -198,7 +205,7 @@ void btl_state_update_select_target(void) {
                 btl_set_state(BATTLE_STATE_PARTNER_MOVE);
             }
             break;
-        case BTL_SUBSTATE_SELECT_TARGET_CANCEL:
+        case BTL_SUBSTATE_CANCEL:
             // free the HUD elements for the target pointers
             for (i = 0; i < targetListLength; i++) {
                 hud_element_free(BattleMenu_TargetHudElems[i]);

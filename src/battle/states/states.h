@@ -3,6 +3,18 @@
 
 #include "common.h"
 
+enum BattleSubStates {
+    // shared
+    BTL_SUBSTATE_INIT                                       = 0,
+
+    // accessed across states
+    BTL_SUBSTATE_END_BATTLE_EXEC_STAGE_SCRIPT               = 2,
+    BTL_SUBSTATE_PLAYER_MENU_DIPPING_1                      = 70,
+
+    // BATTLE_STATE_PREPARE_MENU
+    BATTLE_SUBSTATE_PREPARE_MENU_DIPPING                    = 70,
+};
+
 extern s16 D_802809F6;
 extern b32 D_8029F254;
 extern s32 D_8029F258;

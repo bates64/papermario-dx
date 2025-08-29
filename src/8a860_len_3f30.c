@@ -251,7 +251,7 @@ void destroy_popup_menu(void) {
     gPopupState = POPUP_STATE_MINUS_4;
 }
 
-void func_800F16CC(void) {
+void show_popup_menu(void) {
     if (PopupNotBattle) {
         switch (gPopupMenu->popupType) {
             case POPUP_MENU_USE_ITEM:

@@ -12,7 +12,7 @@ void btl_main_menu_init(void);
 // btl_main_menu_hide? (after begin targeting)
 void func_802A1030(void);
 
-// (after submenu closed/cancelled)
+// (after submenu closed/canceled)
 void func_802A1050(void);
 
 // btl_main_menu_show? (canceling targeting -> main menu)
@@ -26,7 +26,7 @@ void btl_main_menu_destroy(void);
 s32 btl_main_menu_update(void);
 void btl_main_menu_draw(void);
 
-s32 btl_update_strats_menu(void);
+s32 btl_submenu_strats_update(void);
 
 s32 can_switch_to_player(void);
 s32 can_switch_to_partner(void);
@@ -34,62 +34,61 @@ s32 can_switch_to_partner(void);
 void create_battle_popup_menu(PopupMenu* popup);
 
 void func_800F52BC(void);
-void func_800F16CC(void);
+void show_popup_menu(void);
 
-void func_802A2684(void);
-void func_802A27D0(void);
-void func_802A27E4(void);
-void func_802A472C(void);
-void func_802A47E0(void);
-void func_802A48FC(void);
-void func_802A4A10(void);
+void btl_submenu_moves_init(void);
+void btl_submenu_moves_hide(void);
+void btl_submenu_moves_destroy(void);
+void btl_submenu_strats_destroy(void);
+void btl_submenu_strats_resume_choose(void);
+void btl_submenu_strats_restore_choose(void);
+void btl_submenu_strats_restore_locked(void);
 
-void func_802A2AB8(void);
-void func_802A45D8(void);
+void btl_submenu_moves_restore_choose(void);
+void btl_menu_strats_init(void);
 
-void func_802A2910(void);
-void func_802A2C58(void);
+void btl_submenu_moves_resume_choose(void);
+void btl_submenu_moves_restore_locked(void);
 
-void func_802A4718(void);
+void btl_submenu_strats_hide(void);
 
 void btl_check_can_change_partner(void);
 void btl_init_menu_items(void);
 s32 btl_submenu_moves_update(void);
 
-extern PopupMenu D_802ACCD0;
+extern PopupMenu BattlePopupMenu;
 
-extern s32 D_802AD628[];
-extern s16 D_802AD63C;
-extern s16 D_802AD63E;
-extern HudScript* StratsOptionHudScript[];
-extern s32 D_802AD658[]; // msg IDs
-extern s32 D_802AD66C;
-extern s32 StratsMenuLastPos;
+extern s32 StratsOptionHIDs[];
+extern s16 StratsMenuPosX;
+extern s16 StratsMenuPosY;
+extern HudScript* StratsOptionHudScripts[];
+extern s32 StratsOptionNames[]; // msg IDs
+extern s32 StratsOptionCount;
+extern s32 StratsPrevSelected;
 
-extern s32 D_802AD678[];
+extern s32 StratsOptionMenuTypes[];
 extern s32 StratsOptionEnabled[];
 extern s32 StratsOptionError[];
 extern s32 StratsOptionMessage[];
-extern s32 D_802AD6D4;
 
 extern s8 BattleMenu_CurPos;
 extern s8 BattleMenu_HomePos;
 
 extern s32 PartnerNameMessages[];
 
-extern IconHudScriptPair battle_menu_ItemHudScripts;
-extern IconHudScriptPair battle_menu_StarPowerHudScripts;
-extern IconHudScriptPair battle_menu_StrategiesHudScript;
+extern IconHudScriptPair ItemsHudScripts;
+extern IconHudScriptPair StarPowersHudScripts;
+extern IconHudScriptPair StrategiesHudScripts;
 extern IconHudScriptPair DoNothingHudScripts;
 extern IconHudScriptPair FleeHudScripts;
 
-extern s32 BattleMenu_LeftJustMessages[];
-extern s32 BattleMenu_CenteredMessages[];
+extern s32 LeftJustMenuMessages[];
+extern s32 CenteredBattleMessages[];
 
 extern IconHudScriptPair PartnerHudScripts[];
 extern HudScript* battle_menu_DisabledPartnerHudScripts[];
 
-extern IconHudScriptPair battle_menu_StarPowerMovesHudScripts[];
+extern IconHudScriptPair StarPowerMovesHudScripts[];
 
 extern HudScript HES_HandPointDownLoop;
 extern HudScript HES_HandPointLeftLoop;
@@ -100,21 +99,21 @@ extern s32 BattleMenu_TargetPointerAlpha;
 extern s32 BattleMenu_TargetNameOffsetX;
 extern s32 BattleMenu_SwapDelay;
 
-extern HudScript* battle_menu_moveOptionIconScripts[24];
-extern s32 battle_menu_moveOptionNames[24];
-extern s32 battle_menu_moveOptionDisplayCosts[24];
-extern s32 battle_menu_moveOptionDisplayCostReductions[24];
-extern s32 battle_menu_moveOptionDisplayCostReductionColors[24];
-extern s32 battle_menu_moveOptionBPCosts[24];
-extern s32 BattleMenu_UsingSpiritsSubmenu;
-extern s32 BattleMenu_Moves_OptionCount;
-extern s32 D_802AD4A8;
-extern s32 BattleMenu_Moves_OptionIndices[24];
-extern s32 BattleMenu_Moves_OptionEnabled[24];
-extern s32 BattleMenu_Moves_OptionDescMessages[24];
-extern s8 BattleMenu_Moves_OptionSortPriority[24];
-extern s8 BattleMenu_Moves_OptionCantUseMessages[24];
-extern s32 battle_menu_moveOptionActive;
+extern HudScript* MovesOptionHudScripts[24];
+extern s32 MovesOptionNames[24];
+extern s32 MovesOptionDisplayCosts[24];
+extern s32 MovesOptionDiscounts[24];
+extern s32 MovesOptionDiscountColors[24];
+extern s32 MovesOptionBPCosts[24];
+extern s32 UsingSpiritsSubmenu;
+extern s32 MovesOptionCount;
+extern s32 MovesPrevSelected;
+extern s32 MovesOptionIndices[24];
+extern s32 MovesOptionEnabled[24];
+extern s32 MovesOptionDesc[24];
+extern s8 MovesOptionSortPriority[24];
+extern s8 MovesOptionError[24];
+extern s32 SelectedMovesIndex;
 
 extern s32 battle_menu_submenuIDs[];
 extern s32 BattleMenu_OptionEnabled[];

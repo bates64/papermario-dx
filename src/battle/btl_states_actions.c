@@ -1,4 +1,5 @@
 #include "common.h"
+#include "battle/states/states.h"
 
 BSS s32 BattleSubstateDelay; // generic delay time usable for various substates
 BSS b32 D_8029F254;

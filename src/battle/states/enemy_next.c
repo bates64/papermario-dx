@@ -1,5 +1,11 @@
 #include "states.h"
 
+enum {
+    // BTL_SUBSTATE_INIT        = 0,
+    BTL_SUBSTATE_UNUSED_1       = 1,
+    BTL_SUBSTATE_DONE           = 2, // enemy has been found
+};
+
 BSS u8 D_8029F244;
 
 void btl_state_update_next_enemy(void) {
@@ -11,8 +17,8 @@ void btl_state_update_next_enemy(void) {
     s32 i;
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_NEXT_ENEMY_INIT:
-        case BTL_SUBSTATE_NEXT_ENEMY_UNUSED_1:
+        case BTL_SUBSTATE_INIT:
+        case BTL_SUBSTATE_UNUSED_1:
             i = battleStatus->nextEnemyIndex;
             if (i >= battleStatus->numEnemyActors) {
                 // all enemies have been exhausted
@@ -77,7 +83,7 @@ void btl_state_update_next_enemy(void) {
 
             if (skipEnemy) {
                 // reset state to fetch next enemy
-                gBattleSubState = BTL_SUBSTATE_NEXT_ENEMY_INIT;
+                gBattleSubState = BTL_SUBSTATE_INIT;
                 return;
             }
 
@@ -109,9 +115,9 @@ void btl_state_update_next_enemy(void) {
                 enemy->handleBatttlePhaseScriptID = onTurnChanceScript->id;
                 onTurnChanceScript->owner1.actorID = battleStatus->activeEnemyActorID;
             }
-            gBattleSubState = BTL_SUBSTATE_NEXT_ENEMY_DONE;
+            gBattleSubState = BTL_SUBSTATE_DONE;
             break;
-        case BTL_SUBSTATE_NEXT_ENEMY_DONE:
+        case BTL_SUBSTATE_DONE:
             if (battleStatus->stateFreezeCount == 0) {
                 enemy = get_actor(battleStatus->activeEnemyActorID);
 
