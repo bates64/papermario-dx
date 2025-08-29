@@ -802,38 +802,44 @@ void btl_state_update_player_menu(void) {
             break;
         case BTL_SUBSTATE_MAIN_MENU_2:
             submenuResult = btl_submenu_moves_update();
-            if (submenuResult == -1) {
-                gBattleSubState = BTL_SUBSTATE_MAIN_MENU_7;
-            } else if (submenuResult == 0) {
-            } else if (submenuResult == 255) {
-                func_802A1050();
-                D_802ACC60 = UNK_MENU_DELAY;
-                BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
-                btl_state_update_player_menu();
-                btl_state_update_player_menu();
-            } else {
-                battleStatus->unk_49 = MovesOptionIndices[submenuResult - 1];
-                battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->unk_49];
-                if (battleStatus->curSubmenu == BTL_MENU_TYPE_JUMP) {
-                    battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_JUMP] = SelectedMovesIndex;
-                }
-                if (battleStatus->curSubmenu == BTL_MENU_TYPE_SMASH) {
-                    battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_SMASH] = SelectedMovesIndex;
-                }
-                currentSubmenu2 = battleStatus->curSubmenu;
-                if (battleStatus->curSubmenu == BTL_MENU_TYPE_ITEMS) {
-                    battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_ITEMS] = SelectedMovesIndex;
-                    if (battleStatus->curSubmenu == currentSubmenu2) {
-                        gBattleSubState = BTL_SUBSTATE_UNKNOWN_1;
-                        btl_state_update_player_menu();
-                        btl_state_update_player_menu();
-                        break;
+            switch (submenuResult) {
+                case POPUP_RESULT_INVALID:
+                    gBattleSubState = BTL_SUBSTATE_MAIN_MENU_7;
+                    break;
+                case POPUP_RESULT_CHOOSING:
+                    // do nothing while player is choosing from menu
+                    break;
+                case POPUP_RESULT_CANCEL:
+                    func_802A1050();
+                    D_802ACC60 = UNK_MENU_DELAY;
+                    BattleMenu_SwapDelay = 4;
+                    gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
+                    btl_state_update_player_menu();
+                    btl_state_update_player_menu();
+                    break;
+                default: // something has been selected
+                    battleStatus->unk_49 = MovesOptionIndices[submenuResult - 1];
+                    battleStatus->selectedMoveID = battleStatus->submenuMoves[battleStatus->unk_49];
+                    if (battleStatus->curSubmenu == BTL_MENU_TYPE_JUMP) {
+                        battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_JUMP] = SelectedMovesIndex;
                     }
-                }
-                btl_submenu_moves_hide();
-                func_802A1030();
-                gBattleSubState = BTL_SUBSTATE_MOVE_CHOOSE_TARGET;
+                    if (battleStatus->curSubmenu == BTL_MENU_TYPE_SMASH) {
+                        battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_SMASH] = SelectedMovesIndex;
+                    }
+                    currentSubmenu2 = battleStatus->curSubmenu;
+                    if (battleStatus->curSubmenu == BTL_MENU_TYPE_ITEMS) {
+                        battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_ITEMS] = SelectedMovesIndex;
+                        if (battleStatus->curSubmenu == currentSubmenu2) {
+                            gBattleSubState = BTL_SUBSTATE_UNKNOWN_1;
+                            btl_state_update_player_menu();
+                            btl_state_update_player_menu();
+                            break;
+                        }
+                    }
+                    btl_submenu_moves_hide();
+                    func_802A1030();
+                    gBattleSubState = BTL_SUBSTATE_MOVE_CHOOSE_TARGET;
+                    break;
             }
             break;
         case BTL_SUBSTATE_MOVE_CHOOSE_TARGET:
