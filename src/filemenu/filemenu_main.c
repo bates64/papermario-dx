@@ -742,7 +742,7 @@ void filemenu_main_init(MenuPanel* menu) {
 
     for (i = 0; i < ARRAY_COUNT(filemenu_mainHIDs); i++) {
         filemenu_mainHIDs[i] = hud_element_create(filemenu_main_hudScripts[gCurrentLanguage][i]);
-        hud_element_set_flags(filemenu_mainHIDs[i], HUD_ELEMENT_FLAG_80);
+        hud_element_set_flags(filemenu_mainHIDs[i], HUD_ELEMENT_FLAG_MANUAL_RENDER);
     }
 
     for (i = 0; i < ARRAY_COUNT(filemenu_main_windowBPs); i++) {

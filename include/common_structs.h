@@ -30,6 +30,7 @@ typedef s8 b8;
 typedef s32 HitID;
 typedef u32 AnimID;
 typedef s32 HudElemID;
+typedef s32 MsgID;
 
 typedef struct {
     u8 r, g, b, a;

@@ -191,19 +191,19 @@ s32 btl_submenu_strats_update(void) {
             for (i = 0; i < StratsOptionCount; i++) {
                 StratsOptionHIDs[i] = hid = hud_element_create(StratsOptionHudScripts[i]);
                 hud_element_set_scale(hid, 0.45f);
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
 
             HID_StratsCursor = hid = hud_element_create(&HES_AnimatedHandPointer);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX, StratsMenuPosY);
 
             HID_StratsArrowUp = hid = hud_element_create(&HES_GreenArrowUp);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX + 39, StratsMenuPosY - 7);
 
             HID_StratsArrowDown = hid = hud_element_create(&HES_GreenArrowDown);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, StratsMenuPosX + 39, StratsMenuPosY + 78);
 
             StratsTextColor = MSG_PAL_STANDARD;

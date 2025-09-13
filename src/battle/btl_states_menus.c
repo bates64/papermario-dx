@@ -1,6 +1,26 @@
 #include "battle/battle.h"
 #include "battle_hud_scripts.h"
 
+#define MENU_CAPACITY 6
+
+#define WHEEL_SPACING (28.0f)
+#define WHEEL_RADIUS (87.0f)
+
+#define REEL_APPEAR_TIME (3)
+
+enum BattleMenuStates {
+    BTL_MENU_STATE_SUBMENU_OPEN         = -1,
+    BTL_MENU_STATE_CREATE               = 0,
+    BTL_MENU_STATE_SHOW_REEL            = 1,
+    BTL_MENU_STATE_CHOOSING             = 2,
+    BTL_MENU_STATE_HIDE_INIT            = 10,
+    BTL_MENU_STATE_HIDE_HOLD            = 11,
+    BTL_MENU_STATE_UNK_14               = 20,
+    BTL_MENU_STATE_UNK_1E               = 30,
+    BTL_MENU_STATE_ERROR_SHOW           = 100,
+    BTL_MENU_STATE_ERROR_DONE           = 101,
+};
+
 extern HudScript HES_YellowArrow;
 
 extern HudScript HES_MenuFlee;
@@ -175,59 +195,58 @@ BSS s32 BattleMenu_SwapDelay; // delay before the player and partner can swap af
 BSS s32 BattleMenu_TargetHudElems[MAX_ENEMY_ACTORS];
 BSS PopupMenu BattlePopupMenu;
 BSS s8 BattleMenuState;
-BSS s8 D_802AD001;
+BSS s8 BattleMenu_ReelAppearTimer;
 BSS s8 BattleMenu_CurPos;
 BSS s8 BattleMenu_PrevPos;
-BSS s8 D_802AD004;
-BSS s16 D_802AD006;
+BSS b8 BattleMenu_WheelMoving;
+BSS s16 BattleMenu_ReelAlpha;
 BSS s16 BattleMenuAlpha;
-BSS s16 D_802AD00A;
-BSS s32 HID_OptionIcons[6];
-BSS s32 HID_Spotlights[6];
-BSS s32 HID_HighlightSpot;
-BSS s32 HID_ProjectorReelA;
-BSS s32 HID_ProjectorReelB;
-BSS s32 HID_ProjectorBeam;
-BSS s32 HID_SwapZ;
-BSS s32 HID_SwapArrowLeft;
-BSS s32 HID_SwapArrowRight;
-BSS s32 HID_SwapBackground;
+BSS s16 BattleMenu_ReelHidePercent;
+BSS HudElemID HID_HighlightSpot;
+BSS HudElemID HID_ProjectorReelA;
+BSS HudElemID HID_ProjectorReelB;
+BSS HudElemID HID_ProjectorBeam;
+BSS HudElemID HID_SwapZ;
+BSS HudElemID HID_SwapArrowLeft;
+BSS HudElemID HID_SwapArrowRight;
+BSS HudElemID HID_SwapBackground;
 BSS s32 BattleMenu_BasePosX;
 BSS s32 BattleMenu_BasePosY;
-BSS s8 BattleMenuDisableMsg;
+BSS s8 BattleMenu_ErrorCode;
 BSS s8 BattleMenu_MinIdx;
 BSS s8 BattleMenu_MaxIdx;
 BSS s8 BattleMenu_HomePos;
-BSS f32 BattleMenu_WheelAngle;
-BSS f32 D_802AD070;
-BSS HudScript* BattleMenu_HudScripts[6];
-BSS s32 BattleMenu_TitleMessages[6];
-BSS s32 D_802AD0A8;
-BSS s32 BattleMenu_NumOptions;
-BSS s32 D_802AD0B0;
-BSS s32 battle_menu_submenuIDs[6];
-BSS s32 BattleMenu_OptionEnabled[6];
-BSS s32 battle_menu_isMessageDisabled[6];
+BSS s32 BattleMenu_PrevSelected;
 BSS s32 D_802AD100;
-BSS s32 BattleMenu_ShowSwapIcons;
+BSS f32 BattleMenu_WheelAngle;
+BSS f32 BattleMenu_WheelSpeed;
+BSS b32 BattleMenu_ShowSwapIcons;
+
+BSS HudScript* WheelOptionHudScript[MENU_CAPACITY];
+BSS HudElemID HID_OptionIcons[MENU_CAPACITY];
+BSS HudElemID HID_Spotlights[MENU_CAPACITY];
+BSS MsgID WheelOptionName[MENU_CAPACITY];
+BSS s32 WheelOptionSubmenu[MENU_CAPACITY];
+BSS s32 WheelOptionEnabled[MENU_CAPACITY];
+BSS s32 WheelOptionError[MENU_CAPACITY];
+BSS s32 WheelOptionCount;
 
 void btl_main_menu_init(void) {
-    D_802AD006 = 255;
+    BattleMenu_ReelAlpha = 255;
     BattleMenuAlpha = 255;
     BattleMenuState = BTL_MENU_STATE_CREATE;
-    BattleMenuDisableMsg = -1;
+    BattleMenu_ErrorCode = -1;
 }
 
-// btl_main_menu_hide? (after begin targeting)
-void func_802A1030(void) {
-    D_802AD001 = 3;
-    BattleMenuState = BTL_MENU_STATE_UNK_A;
+void btl_main_menu_hide(void) {
+    BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
+    BattleMenuState = BTL_MENU_STATE_HIDE_INIT;
 }
 
 // (after submenu closed/canceled)
 void func_802A1050(void) {
-    BattleMenuState = BTL_MENU_STATE_ACCEPT_INPUT;
-    D_802AD006 = 255;
+    BattleMenuState = BTL_MENU_STATE_CHOOSING;
+    BattleMenu_ReelAlpha = 255;
     BattleMenuAlpha = 255;
 }
 
@@ -246,12 +265,9 @@ void func_802A1098(void) {
 void btl_main_menu_destroy(void) {
     s32 i;
 
-    for (i = 0; i < BattleMenu_NumOptions; i++) {
-        s32* icons1 = HID_OptionIcons;
-        s32* icons2 = HID_Spotlights;
-
-        hud_element_free(icons1[i]);
-        hud_element_free(icons2[i]);
+    for (i = 0; i < WheelOptionCount; i++) {
+        hud_element_free(HID_OptionIcons[i]);
+        hud_element_free(HID_Spotlights[i]);
     }
 
     hud_element_free(HID_HighlightSpot);
@@ -266,7 +282,6 @@ void btl_main_menu_destroy(void) {
 
 s32 btl_main_menu_update(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    f32 theta;
     HudElemID hid;
     s32 i;
     f32 x, y;
@@ -276,26 +291,26 @@ s32 btl_main_menu_update(void) {
         case BTL_MENU_STATE_CREATE:
             BattleMenu_BasePosX = 54;
             BattleMenu_BasePosY = 173;
-            D_802AD070 = 0.3f;
-            D_802AD004 = 0;
-            BattleMenu_HomePos = D_802AD0B0;
+            BattleMenu_WheelSpeed = 0.3f;
+            BattleMenu_WheelMoving = FALSE;
+            BattleMenu_HomePos = BattleMenu_PrevSelected;
             BattleMenu_MinIdx = 0;
-            BattleMenu_MinIdx -= D_802AD0B0;
-            BattleMenu_MaxIdx = BattleMenu_NumOptions - 1;
-            BattleMenu_MaxIdx -= D_802AD0B0;
+            BattleMenu_MaxIdx = WheelOptionCount - 1;
+            BattleMenu_MinIdx -= BattleMenu_PrevSelected;
+            BattleMenu_MaxIdx -= BattleMenu_PrevSelected;
 
-            for (i = 0; i < BattleMenu_NumOptions; i++) {
-                HID_OptionIcons[i] = hid = hud_element_create(BattleMenu_HudScripts[i]);
+            for (i = 0; i < WheelOptionCount; i++) {
+                HID_OptionIcons[i] = hid = hud_element_create(WheelOptionHudScript[i]);
                 hud_element_set_render_depth(hid, 5);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_scale(hid, 0.75f);
 
                 HID_Spotlights[i] = hid = hud_element_create(&HES_ProjectorSpot);
                 hud_element_create_transform_B(hid);
                 hud_element_set_render_depth(hid, 10);
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
             }
@@ -303,7 +318,7 @@ s32 btl_main_menu_update(void) {
             HID_HighlightSpot = hid = hud_element_create(&HES_ProjectorSpot);
             hud_element_create_transform_B(hid);
             hud_element_set_render_depth(hid, 7);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
@@ -313,7 +328,7 @@ s32 btl_main_menu_update(void) {
             hud_element_set_render_pos(hid, 40, 212);
             hud_element_set_tint(hid, 0, 91, 127);
             hud_element_set_transform_rotation_pivot(hid, 16, -16);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 240);
 
@@ -323,7 +338,7 @@ s32 btl_main_menu_update(void) {
             hud_element_set_render_pos(hid, 39, 212);
             hud_element_set_tint(hid, 0, 91, 127);
             hud_element_set_transform_rotation_pivot(hid, 16, -16);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 240);
 
@@ -335,7 +350,7 @@ s32 btl_main_menu_update(void) {
             hud_element_set_transform_rotation_pivot(hid, 0, 0);
             hud_element_set_transform_rotation(hid, 0.0f, 0.0f, -45.0f);
             hud_element_set_alpha(hid, 200);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
 
@@ -343,52 +358,54 @@ s32 btl_main_menu_update(void) {
             hud_element_set_render_depth(hid, 0);
             hud_element_set_render_pos(hid, 97, 208);
             hud_element_set_tint(hid, 255, 255, 255);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
             hud_element_set_alpha(hid, 230);
 
             HID_SwapZ = hid = hud_element_create(&HES_SwapZ);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, 94, 209);
 
             HID_SwapArrowLeft = hid = hud_element_create(&HES_SwapArrowLeft);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, 81, 210);
 
             HID_SwapArrowRight = hid = hud_element_create(&HES_SwapArrowRight);
             hud_element_set_render_depth(hid, 5);
             hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX);
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, 102, 210);
-            D_802AD00A = 100;
-            D_802AD001 = 3;
-            BattleMenuState = BTL_MENU_STATE_UNK_1;
-            BattleMenu_WheelAngle = theta = D_802AD100 * 28;
+            BattleMenu_ReelHidePercent = 100;
+            BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
+            BattleMenuState = BTL_MENU_STATE_SHOW_REEL;
+            BattleMenu_WheelAngle = D_802AD100 * WHEEL_SPACING;
             break;
-        case BTL_MENU_STATE_UNK_1:
-            D_802AD00A = (D_802AD001 * 100) / 3;
+        case BTL_MENU_STATE_SHOW_REEL:
+            BattleMenu_ReelHidePercent = (100 * BattleMenu_ReelAppearTimer) / REEL_APPEAR_TIME;
 
-            switch (D_802AD001) {
-                case 1:
-                    if (D_802AD001 == 1) {
-                        hid = HID_ProjectorBeam;
-                        hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
-                    }
+            switch (BattleMenu_ReelAppearTimer) {
                 default:
-                    D_802AD001--;
+                    BattleMenu_ReelAppearTimer--;
+                    break;
+                case 1:
+                    // show the projector beam
+                    hid = HID_ProjectorBeam;
+                    hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
+                    // last tick
+                    BattleMenu_ReelAppearTimer--;
                     break;
                 case 0:
                     BattleMenu_CurPos = 0;
                     BattleMenu_PrevPos = 0;
-                    BattleMenu_WheelAngle = theta = D_802AD100 * 28;
-                    for (i = 0; i < BattleMenu_NumOptions; i++, theta += 28.0f) {
+                    BattleMenu_WheelAngle = D_802AD100 * WHEEL_SPACING;
+                    for (i = 0; i < WheelOptionCount; i++) {
                         x = 0.0f;
                         y = 0.0f;
-                        add_vec2D_polar(&x, &y, 87.0f, theta);
+                        add_vec2D_polar(&x, &y, WHEEL_RADIUS, D_802AD100 * WHEEL_SPACING);
 
                         l = BattleMenu_BasePosX + x;
                         t = BattleMenu_BasePosY + y;
@@ -404,8 +421,7 @@ s32 btl_main_menu_update(void) {
 
                     x = 0.0f;
                     y = 0.0f;
-                    theta = D_802AD100 * 28;
-                    add_vec2D_polar(&x, &y, 87.0f, theta);
+                    add_vec2D_polar(&x, &y, WHEEL_RADIUS, D_802AD100 * WHEEL_SPACING);
 
                     l = BattleMenu_BasePosX + x;
                     t = BattleMenu_BasePosY + y;
@@ -414,23 +430,23 @@ s32 btl_main_menu_update(void) {
                     hud_element_set_alpha(hid, 180);
                     hud_element_set_scale(hid, 0.85f);
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
-                    BattleMenuState = BTL_MENU_STATE_ACCEPT_INPUT;
+                    BattleMenuState = BTL_MENU_STATE_CHOOSING;
                     break;
             }
             break;
-        case BTL_MENU_STATE_ACCEPT_INPUT:
+        case BTL_MENU_STATE_CHOOSING:
             if (battleStatus->curButtonsPressed & BUTTON_A) {
-                if (BattleMenu_OptionEnabled[BattleMenu_CurPos + BattleMenu_HomePos] == TRUE) {
+                if (WheelOptionEnabled[BattleMenu_CurPos + BattleMenu_HomePos] == TRUE) {
                     sfx_play_sound(SOUND_MENU_NEXT);
-                    BattleMenuState = BTL_MENU_STATE_OPENED_SUBMENU;
+                    BattleMenuState = BTL_MENU_STATE_SUBMENU_OPEN;
                 } else {
                     sfx_play_sound(SOUND_MENU_ERROR);
-                    BattleMenuDisableMsg = battle_menu_isMessageDisabled[BattleMenu_CurPos + BattleMenu_HomePos];
-                    BattleMenuState = BTL_MENU_STATE_SHOW_DISABLED_POPUP;
+                    BattleMenu_ErrorCode = WheelOptionError[BattleMenu_CurPos + BattleMenu_HomePos];
+                    BattleMenuState = BTL_MENU_STATE_ERROR_SHOW;
                 }
             } else {
                 BattleMenu_PrevPos = BattleMenu_CurPos;
-                if (D_802AD004 == 0) {
+                if (!BattleMenu_WheelMoving) {
                     if ((battleStatus->curButtonsHeld & (BUTTON_STICK_LEFT | BUTTON_STICK_UP)) &&
                         BattleMenu_MinIdx < BattleMenu_CurPos)
                     {
@@ -444,193 +460,203 @@ s32 btl_main_menu_update(void) {
                 }
 
                 if (BattleMenu_PrevPos != BattleMenu_CurPos) {
-                    D_802AD004 = 1;
+                    BattleMenu_WheelMoving = TRUE;
                     sfx_play_sound(SOUND_MENU_CHANGE_TAB);
                 }
             }
             break;
-        case BTL_MENU_STATE_OPENED_SUBMENU:
+        case BTL_MENU_STATE_SUBMENU_OPEN:
             BattleMenuAlpha = 100;
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
-        case BTL_MENU_STATE_UNK_A:
-            D_802AD001 = 0;
-            D_802AD006 = 0;
-            BattleMenuState = BTL_MENU_STATE_UNK_B;
+        case BTL_MENU_STATE_HIDE_INIT:
+            BattleMenu_ReelAppearTimer = 0;
+            BattleMenu_ReelAlpha = 0;
+            BattleMenuState = BTL_MENU_STATE_HIDE_HOLD;
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
-        case BTL_MENU_STATE_UNK_B:
+        case BTL_MENU_STATE_HIDE_HOLD:
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
         case BTL_MENU_STATE_UNK_14:
-            D_802AD001 = 3;
-            D_802AD006 = 255;
-            BattleMenuState = BTL_MENU_STATE_ACCEPT_INPUT;
+            BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
+            BattleMenu_ReelAlpha = 255;
+            BattleMenuState = BTL_MENU_STATE_CHOOSING;
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
         case BTL_MENU_STATE_UNK_1E:
-            D_802AD001 = 3;
-            D_802AD006 = 255;
-            BattleMenuState = BTL_MENU_STATE_OPENED_SUBMENU;
+            BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
+            BattleMenu_ReelAlpha = 255;
+            BattleMenuState = BTL_MENU_STATE_SUBMENU_OPEN;
             break;
-        case BTL_MENU_STATE_SHOW_DISABLED_POPUP:
-            btl_show_battle_message(BattleMenuDisableMsg, 90);
-            BattleMenuState = BTL_MENU_STATE_AWAIT_DISABLED_POPUP;
+        case BTL_MENU_STATE_ERROR_SHOW:
+            btl_show_battle_message(BattleMenu_ErrorCode, 90);
+            BattleMenuState = BTL_MENU_STATE_ERROR_DONE;
             break;
-        case BTL_MENU_STATE_AWAIT_DISABLED_POPUP:
+        case BTL_MENU_STATE_ERROR_DONE:
             if (btl_is_popup_displayed()) {
                 break;
             }
-            BattleMenuDisableMsg = -1;
-            BattleMenuState = BTL_MENU_STATE_ACCEPT_INPUT;
+            BattleMenu_ErrorCode = -1;
+            BattleMenuState = BTL_MENU_STATE_CHOOSING;
             break;
     }
     return 0;
 }
 
 void btl_main_menu_draw(void) {
-    s32 id;
+    s32 hid;
     s32 opacity;
     f32 theta;
-    s32 cond;
+    b32 wheelDoneMoving;
     f32 x, y;
     f32 scale;
     s32 i;
-    s32 l, t;
 
     switch (BattleMenuState) {
-        case BTL_MENU_STATE_UNK_1:
-            func_80144218(-1);
-            id = HID_ProjectorReelB;
-            hud_element_set_transform_rotation(id, 0.0f, 0.0f, 0.0f);
-            hud_element_set_alpha(id, (D_802AD006 * 254) / 255);
-            hud_element_set_render_pos(id, 3940 - D_802AD00A, D_802AD00A + 212);
-            func_80144238(id);
-            id = HID_ProjectorReelA;
-            hud_element_set_alpha(id, (D_802AD006 * 254) / 255);
-            hud_element_set_render_pos(id, 40 - D_802AD00A, D_802AD00A + 212);
-            func_80144238(id);
+        case BTL_MENU_STATE_SHOW_REEL:
+            hud_element_draw_complex_hud_first(-1);
+            hid = HID_ProjectorReelB;
+            hud_element_set_transform_rotation(hid, 0.0f, 0.0f, 0.0f);
+            hud_element_set_alpha(hid, (BattleMenu_ReelAlpha * 254) / 255);
+            hud_element_set_render_pos(hid, 40 - BattleMenu_ReelHidePercent + 3900, BattleMenu_ReelHidePercent + 212);
+            hud_element_draw_complex_hud_next(hid);
+            hid = HID_ProjectorReelA;
+            hud_element_set_alpha(hid, (BattleMenu_ReelAlpha * 254) / 255);
+            hud_element_set_render_pos(hid, 40 - BattleMenu_ReelHidePercent, BattleMenu_ReelHidePercent + 212);
+            hud_element_draw_complex_hud_next(hid);
             break;
-        case BTL_MENU_STATE_OPENED_SUBMENU:
-        case BTL_MENU_STATE_ACCEPT_INPUT:
-        case BTL_MENU_STATE_UNK_A:
+        case BTL_MENU_STATE_SUBMENU_OPEN:
+        case BTL_MENU_STATE_CHOOSING:
+        case BTL_MENU_STATE_HIDE_INIT:
         case BTL_MENU_STATE_UNK_14:
         case BTL_MENU_STATE_UNK_1E:
-            opacity = (D_802AD006 * BattleMenuAlpha) / 255;
-            func_80144218(-1);
-            theta = (D_802AD100 - BattleMenu_CurPos) * 28;
+            opacity = (BattleMenu_ReelAlpha * BattleMenuAlpha) / 255;
+            hud_element_draw_complex_hud_first(-1);
+            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
 
-            cond = FALSE;
+            wheelDoneMoving = FALSE;
             if (BattleMenu_WheelAngle > theta) {
-                BattleMenu_WheelAngle -= D_802AD070;
+                BattleMenu_WheelAngle -= BattleMenu_WheelSpeed;
                 if (BattleMenu_WheelAngle < theta) {
                     BattleMenu_WheelAngle = theta;
-                    cond = TRUE;
+                    wheelDoneMoving = TRUE;
                 }
             } else if (BattleMenu_WheelAngle < theta) {
-                BattleMenu_WheelAngle += D_802AD070;
+                BattleMenu_WheelAngle += BattleMenu_WheelSpeed;
                 if (BattleMenu_WheelAngle > theta) {
                     BattleMenu_WheelAngle = theta;
-                    cond = TRUE;
+                    wheelDoneMoving = TRUE;
                 }
-            } else {
-                cond = TRUE;
+            } else { // BattleMenu_WheelAngle == theta
+                wheelDoneMoving = TRUE;
             }
 
-            if (!cond) {
-                D_802AD070 = (D_802AD070 * (D_802AD070 + 1.0) * (D_802AD070 + 1.0));
+            if (wheelDoneMoving) {
+                BattleMenu_WheelMoving = FALSE;
+                BattleMenu_WheelSpeed = 0.3f;
             } else {
-                D_802AD004 = 0;
-                D_802AD070 = 0.3f;
+                BattleMenu_WheelSpeed *= SQ(BattleMenu_WheelSpeed + 1.0f);
             }
 
-            theta = BattleMenu_WheelAngle;
-            for (i = 0; i < BattleMenu_NumOptions; i++, theta += 28.0f) {
+            // draw the spotlights
+            for (i = 0; i < WheelOptionCount; i++) {
+                // draw the series of base spotlights under each option
+                theta = BattleMenu_WheelAngle + i * WHEEL_SPACING;
                 x = 0.0f;
                 y = 0.0f;
-                add_vec2D_polar(&x, &y, 87.0f, theta);
-                id = HID_Spotlights[i];
-                x = BattleMenu_BasePosX + x;
-                y = BattleMenu_BasePosY + y;
-                hud_element_set_transform_pos(id, x, -y, 0.0f);
-                hud_element_set_render_pos(id, 0, 0);
-                hud_element_set_alpha(id, (opacity * 150) / 255);
+                add_vec2D_polar(&x, &y, WHEEL_RADIUS, theta);
+                x += BattleMenu_BasePosX;
+                y += BattleMenu_BasePosY;
 
-                if (theta == 56.0f && cond == TRUE) {
-                    hud_element_set_scale(id, 1.6f);
+                hid = HID_Spotlights[i];
+                hud_element_set_transform_pos(hid, x, -y, 0.0f);
+                hud_element_set_render_pos(hid, 0, 0);
+                hud_element_set_alpha(hid, (opacity * 150) / 255);
+
+                if (wheelDoneMoving && theta == (2 * WHEEL_SPACING)) {
+                    hud_element_set_scale(hid, 1.6f);
                 } else {
-                    hud_element_set_scale(id, 1.0f);
+                    hud_element_set_scale(hid, 1.0f);
                 }
+                hud_element_draw_complex_hud_next(hid);
 
-                func_80144238(id);
+                // draw the current selection highlight (if aligned)
                 if (i == BattleMenu_HomePos + BattleMenu_CurPos) {
                     x = 0.0f;
                     y = 0.0f;
-                    add_vec2D_polar(&x, &y, 87.0f, 56.0f);
-                    x = BattleMenu_BasePosX + x;
-                    y = BattleMenu_BasePosY + y;
-                    id = HID_HighlightSpot;
-                    hud_element_set_transform_pos(id, x, -y, 0.0f);
-                    hud_element_set_render_pos(id, 0, 0);
-                    hud_element_set_alpha(id, (opacity * 180) / 255);
-                    hud_element_set_scale(id, 1.2f);
-                    if (!cond) {
-                        hud_element_set_flags(id, HUD_ELEMENT_FLAG_DISABLED);
+                    add_vec2D_polar(&x, &y, WHEEL_RADIUS, 2 * WHEEL_SPACING);
+                    x += BattleMenu_BasePosX;
+                    y += BattleMenu_BasePosY;
+
+                    hid = HID_HighlightSpot;
+                    hud_element_set_transform_pos(hid, x, -y, 0.0f);
+                    hud_element_set_render_pos(hid, 0, 0);
+                    hud_element_set_alpha(hid, (opacity * 180) / 255);
+                    hud_element_set_scale(hid, 1.2f);
+
+                    if (!wheelDoneMoving) {
+                        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     } else {
-                        hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
+                        hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     }
-                    func_80144238(id);
+                    hud_element_draw_complex_hud_next(hid);
                 }
             }
-            theta = (D_802AD100 - BattleMenu_CurPos) * 28;
-            scale = (fabsf(fabsf((BattleMenu_WheelAngle - theta) * (45.0 / 28.0)) - 22.5) / 22.5) + 0.01;
-            if (cond) {
+            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
+
+            // calculate beam narrowing
+            scale = (fabsf(fabsf((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING)) - 22.5) / 22.5) + 0.01;
+            if (wheelDoneMoving) {
                 scale = 1.0f;
             }
 
-            id = HID_ProjectorBeam;
-            hud_element_set_transform_rotation_pivot(id, 0, 0);
-            hud_element_set_transform_rotation(id, 0.0f, 0.0f, -43.0f);
-            hud_element_set_scale(id, scale);
-            hud_element_set_transform_scale(id, 1.0f, 1.8f, 1.0f);
-            hud_element_set_alpha(id, (opacity * 200) / 255);
-            hud_element_set_render_pos(id, 79, 176);
-            func_80144238(id);
+            hid = HID_ProjectorBeam;
+            hud_element_set_transform_rotation_pivot(hid, 0, 0);
+            hud_element_set_transform_rotation(hid, 0.0f, 0.0f, -43.0f);
+            hud_element_set_scale(hid, scale);
+            hud_element_set_transform_scale(hid, 1.0f, 1.8f, 1.0f);
+            hud_element_set_alpha(hid, (opacity * 200) / 255);
+            hud_element_set_render_pos(hid, 79, 176);
+            hud_element_draw_complex_hud_next(hid);
 
-            id = HID_ProjectorReelB;
-            theta = (D_802AD100 - BattleMenu_CurPos) * 28;
-            scale = (BattleMenu_WheelAngle - theta) * (45.0 / 28.0);
-            hud_element_set_transform_rotation(id, 0.0f, 0.0f, -scale);
-            hud_element_set_transform_rotation_pivot(id, 18, -20);
-            hud_element_set_scale(id, 0.95f);
-            hud_element_set_alpha(id, (opacity * 254) / 255);
-            hud_element_set_render_pos(id, 40 - D_802AD00A, D_802AD00A + 212);
-            func_80144238(id);
+            hid = HID_ProjectorReelB;
+            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
+            scale = (BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING);
+            hud_element_set_transform_rotation(hid, 0.0f, 0.0f, -scale);
+            hud_element_set_transform_rotation_pivot(hid, 18, -20);
+            hud_element_set_scale(hid, 0.95f);
+            hud_element_set_alpha(hid, (opacity * 254) / 255);
+            hud_element_set_render_pos(hid, 40 - BattleMenu_ReelHidePercent, BattleMenu_ReelHidePercent + 212);
+            hud_element_draw_complex_hud_next(hid);
 
-            id = HID_ProjectorReelA;
-            hud_element_set_alpha(id, (opacity * 254) / 255);
-            hud_element_set_render_pos(id, 40 - D_802AD00A, D_802AD00A + 212);
-            hud_element_set_scale(id, 1.0f);
-            func_80144238(id);
+            hid = HID_ProjectorReelA;
+            hud_element_set_alpha(hid, (opacity * 254) / 255);
+            hud_element_set_render_pos(hid, 40 - BattleMenu_ReelHidePercent, BattleMenu_ReelHidePercent + 212);
+            hud_element_set_scale(hid, 1.0f);
+            hud_element_draw_complex_hud_next(hid);
 
-            theta = BattleMenu_WheelAngle;
-            for (i = 0; i < BattleMenu_NumOptions; i++, theta += 28.0f) {
+            // draw the icons for each option
+            for (i = 0; i < WheelOptionCount; i++) {
+                theta = BattleMenu_WheelAngle + i * WHEEL_SPACING;
                 x = 0.0f;
                 y = 0.0f;
-                add_vec2D_polar(&x, &y, 87.0f, theta);
-                l = x = BattleMenu_BasePosX + x;
-                t = y = BattleMenu_BasePosY + y;
-                btl_draw_prim_quad(0, 0, 0, 0, l - 12, t - 12, 24, 24);
-                id = HID_OptionIcons[i];
-                hud_element_set_render_pos(id, l, t);
-                hud_element_set_alpha(id, (opacity * 180) / 255);
+                add_vec2D_polar(&x, &y, WHEEL_RADIUS, theta);
+                x += BattleMenu_BasePosX;
+                y += BattleMenu_BasePosY;
+
+                btl_draw_prim_quad(0, 0, 0, 0, x - 12, y - 12, 24, 24);
+                hid = HID_OptionIcons[i];
+                hud_element_set_render_pos(hid, x, y);
+                hud_element_set_alpha(hid, (opacity * 180) / 255);
                 if (i == BattleMenu_HomePos + BattleMenu_CurPos) {
-                    hud_element_set_alpha(id, opacity);
+                    hud_element_set_alpha(hid, opacity);
                 }
-                hud_element_draw_clipped(id);
+                hud_element_draw_clipped(hid);
             }
 
-            if (cond) {
-                l = BattleMenu_BasePosX + 20;
-                t = BattleMenu_BasePosY - 34;
-                btl_draw_prim_quad(0, 0, 0, 0, l + 26, t, 48, 16);
-                draw_msg(BattleMenu_TitleMessages[BattleMenu_CurPos + BattleMenu_HomePos], l, t, opacity, MSG_PAL_35, 0);
+            // draw the names for each option
+            if (wheelDoneMoving) {
+                x = BattleMenu_BasePosX + 20;
+                y = BattleMenu_BasePosY - 34;
+                btl_draw_prim_quad(0, 0, 0, 0, x + 26, y, 48, 16);
+                draw_msg(WheelOptionName[BattleMenu_CurPos + BattleMenu_HomePos], x, y, opacity, MSG_PAL_35, 0);
             }
 
             if ((gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) || (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
@@ -638,18 +664,18 @@ void btl_main_menu_draw(void) {
             }
 
             if (BattleMenu_ShowSwapIcons) {
-                id = HID_SwapBackground;
-                hud_element_set_alpha(id, (opacity * 200) / 255);
-                hud_element_draw_clipped(id);
-                id = HID_SwapZ;
-                hud_element_set_alpha(id, opacity);
-                hud_element_draw_clipped(id);
-                id = HID_SwapArrowLeft;
-                hud_element_set_alpha(id, opacity);
-                hud_element_draw_clipped(id);
-                id = HID_SwapArrowRight;
-                hud_element_set_alpha(id, opacity);
-                hud_element_draw_clipped(id);
+                hid = HID_SwapBackground;
+                hud_element_set_alpha(hid, (opacity * 200) / 255);
+                hud_element_draw_clipped(hid);
+                hid = HID_SwapZ;
+                hud_element_set_alpha(hid, opacity);
+                hud_element_draw_clipped(hid);
+                hid = HID_SwapArrowLeft;
+                hud_element_set_alpha(hid, opacity);
+                hud_element_draw_clipped(hid);
+                hid = HID_SwapArrowRight;
+                hud_element_set_alpha(hid, opacity);
+                hud_element_draw_clipped(hid);
             }
             break;
     }

@@ -12,7 +12,7 @@
 dlabel gAuxSpriteShadingProfile
 .space 4
 
-dlabel gHudElementsNumber
+dlabel HudElemCount
 .space 4
 
 dlabel gCurrentCustomModelGfxBuildersPtr
@@ -579,7 +579,7 @@ dlabel gHudElementCacheTableRasterBattle
 dlabel gHudElementCacheTablePaletteBattle
 .space 0x00000600
 
-dlabel D_80159180
+dlabel FrameQuadIndex
 .space 0x00000010
 
 dlabel wTriggerList

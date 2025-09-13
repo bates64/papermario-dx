@@ -155,23 +155,23 @@ void initialize_battle(void) {
     create_action_command_ui_worker();
     set_windows_visible(WINDOW_GROUP_BATTLE);
     HPBarHID = hud_element_create(&HES_HPBar);
-    hud_element_set_flags(HPBarHID, HUD_ELEMENT_FLAG_80);
+    hud_element_set_flags(HPBarHID, HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
         hid = BtlStarPointTensHIDs[i] = hud_element_create(&HES_ItemStarPoint);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointShinesHIDs); i++) {
         hid = BtlStarPointShinesHIDs[i] = hud_element_create(&HES_StatusSPShine);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {
         hid = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_SmallStarPoint);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 

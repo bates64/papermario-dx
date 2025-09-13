@@ -10,7 +10,7 @@ enum {
     BTL_SUBMENU_STATE_SELECT                = -1, // a result is selected
     BTL_SUBMENU_STATE_INIT                  = 0,  // build and initialize the menu
     BTL_SUBMENU_STATE_CHOOSING              = 1,  // selecting an option
-    BTL_SUBMENU_STATE_HIDE_INIT             = 10,
+    BTL_SUBMENU_STATE_HIDE_INIT             = 10, // begin hiding the menu, will quickly change to HIDE_HOLD
     BTL_SUBMENU_STATE_HIDE_HOLD             = 11,
     BTL_SUBMENU_STATE_RESTORE               = 20,
     BTL_SUBMENU_STATE_LOCK                  = 30,
@@ -52,8 +52,8 @@ BSS s32 MovesOptionIndexMap[MENU_CAPACITY];
 BSS HudScript* MovesOptionHudScripts[MENU_CAPACITY];
 BSS HudElemID MovesOptionHIDs[MENU_CAPACITY];
 BSS HudElemID MovesOptionCostHIDs[MENU_CAPACITY];
-BSS s32 MovesOptionNames[MENU_CAPACITY];
-BSS s32 MovesOptionDesc[MENU_CAPACITY];
+BSS MsgID MovesOptionNames[MENU_CAPACITY];
+BSS MsgID MovesOptionDesc[MENU_CAPACITY];
 BSS s32 MovesOptionDisplayCosts[MENU_CAPACITY];
 BSS s32 MovesOptionDiscounts[MENU_CAPACITY];
 BSS s32 MovesOptionDiscountColors[MENU_CAPACITY];
@@ -303,33 +303,33 @@ s32 btl_submenu_moves_update(void) {
                 hid = hud_element_create(MovesOptionHudScripts[MovesOptionIndexMap[i]]);
                 MovesOptionHIDs[i] = hid;
                 hud_element_set_scale(hid, 0.45f);
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_FILTER_TEX | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
 
             hid = hud_element_create(&HES_AnimatedHandPointer);
             HID_MovesCursor = hid;
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX, MovesMenuPosY);
 
             hid = hud_element_create(&HES_GreenArrowUp);
             HID_MovesArrowUp = hid;
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX + 39, MovesMenuPosY - 7);
 
             hid = hud_element_create(&HES_GreenArrowDown);
             HID_MovesArrowDown = hid;
-            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+            hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
             hud_element_set_render_pos(hid, MovesMenuPosX + 39, MovesMenuPosY + 78);
 
             if (!UsingSpiritsSubmenu) {
                 hid = hud_element_create(&HES_StatusFlower);
                 HID_MovesTitle = hid;
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             } else {
                 hid = hud_element_create(&HES_MenuStarPower);
                 HID_MovesTitle = hid;
                 hud_element_set_scale(hid, 0.75f);
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
             }
             hud_element_set_render_pos(hid, MovesMenuPosX + 56, MovesMenuPosY);
 
@@ -365,7 +365,7 @@ s32 btl_submenu_moves_update(void) {
                             break;
                     }
                 }
-                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80);
+                hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_render_pos(hid, MovesMenuPosX + 56, MovesMenuPosY);
             }
 

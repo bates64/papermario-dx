@@ -3780,19 +3780,6 @@ enum BattleMessageStates {
     BTL_MSG_STATE_DISABLED_DELAY        = 1,
 };
 
-enum BattleMenuStates {
-    BTL_MENU_STATE_OPENED_SUBMENU       = -1,
-    BTL_MENU_STATE_CREATE               = 0,
-    BTL_MENU_STATE_UNK_1                = 1,
-    BTL_MENU_STATE_ACCEPT_INPUT         = 2,
-    BTL_MENU_STATE_UNK_A                = 10,
-    BTL_MENU_STATE_UNK_B                = 11,
-    BTL_MENU_STATE_UNK_14               = 20,
-    BTL_MENU_STATE_UNK_1E               = 30,
-    BTL_MENU_STATE_SHOW_DISABLED_POPUP  = 100,
-    BTL_MENU_STATE_AWAIT_DISABLED_POPUP = 101,
-};
-
 enum BattleMenuIndex {
     BTL_MENU_IDX_MAIN               = 0,
     BTL_MENU_IDX_JUMP               = 1,

@@ -116,22 +116,21 @@ void btl_state_update_twink_menu(void) {
             // add main menu entry for star powers
             entryIdx = 0;
             battleStatus->selectedMoveID = MOVE_NONE;
-            battle_menu_submenuIDs[entryIdx] = BTL_MENU_TYPE_STAR_POWERS;
-            BattleMenu_OptionEnabled[entryIdx] = TRUE;
-            battle_menu_isMessageDisabled[entryIdx] = 0;
-            BattleMenu_HudScripts[entryIdx] = TwinkStarPowerHudScripts.enabled;
-            BattleMenu_TitleMessages[entryIdx] = TwinkMenuMessages[entryIdx];
+            WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_STAR_POWERS;
+            WheelOptionEnabled[entryIdx] = TRUE;
+            WheelOptionError[entryIdx] = 0;
+            WheelOptionHudScript[entryIdx] = TwinkStarPowerHudScripts.enabled;
+            WheelOptionName[entryIdx] = TwinkMenuMessages[entryIdx];
             if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_STAR_POWERS)) {
-                BattleMenu_OptionEnabled[entryIdx] = FALSE;
-                battle_menu_isMessageDisabled[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
-                BattleMenu_HudScripts[entryIdx] = TwinkStarPowerHudScripts.disabled;
+                WheelOptionEnabled[entryIdx] = FALSE;
+                WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
+                WheelOptionHudScript[entryIdx] = TwinkStarPowerHudScripts.disabled;
             }
             entryIdx++;
 
             initialPos = 0;
-            BattleMenu_NumOptions = entryIdx;
-            D_802AD0A8 = 0;
-            D_802AD0B0 = initialPos;
+            WheelOptionCount = entryIdx;
+            BattleMenu_PrevSelected = initialPos;
             D_802AD100 = 2 - initialPos;
 
             if (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED) {
@@ -153,8 +152,8 @@ void btl_state_update_twink_menu(void) {
             }
             if (selection != 0) {
                 set_actor_anim(ACTOR_PARTNER, 0, ANIM_Twink_Angry);
-                battleStatus->curSubmenu = battle_menu_submenuIDs[selection - 1];
-                func_802A1030();
+                battleStatus->curSubmenu = WheelOptionSubmenu[selection - 1];
+                btl_main_menu_hide();
                 D_802ACC60 = UNK_MENU_DELAY;
                 BattleMenu_SwapDelay = 4;
                 gBattleSubState = BTL_SUBSTATE_CHOOSE_TARGET;

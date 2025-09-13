@@ -10,7 +10,7 @@
 void btl_main_menu_init(void);
 
 // btl_main_menu_hide? (after begin targeting)
-void func_802A1030(void);
+void btl_main_menu_hide(void);
 
 // (after submenu closed/canceled)
 void func_802A1050(void);
@@ -115,17 +115,16 @@ extern s8 MovesOptionSortPriority[24];
 extern s8 MovesOptionError[24];
 extern s32 SelectedMovesIndex;
 
-extern s32 battle_menu_submenuIDs[];
-extern s32 BattleMenu_OptionEnabled[];
-extern s32 battle_menu_isMessageDisabled[];
-extern HudScript* BattleMenu_HudScripts[];
-extern s32 BattleMenu_TitleMessages[];
+extern s32 WheelOptionSubmenu[];
+extern s32 WheelOptionEnabled[];
+extern s32 WheelOptionError[];
+extern HudScript* WheelOptionHudScript[];
+extern s32 WheelOptionName[];
 
-extern s32 BattleMenu_ShowSwapIcons;
-extern s32 BattleMenu_NumOptions;
+extern b32 BattleMenu_ShowSwapIcons;
+extern s32 WheelOptionCount;
 
-extern s32 D_802AD0A8;
-extern s32 D_802AD0B0;
+extern s32 BattleMenu_PrevSelected;
 extern s32 D_802AD100;
 extern s8 ShowingErrorMessage;
 

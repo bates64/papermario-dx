@@ -831,9 +831,9 @@ HudScript HES_AimBlinkA = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_16x16)
     hs_Loop
-        hs_ClearFlags(HUD_ELEMENT_FLAG_200000)
+        hs_ClearFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
-        hs_SetFlags(HUD_ELEMENT_FLAG_200000)
+        hs_SetFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
     hs_Restart
@@ -844,11 +844,11 @@ HudScript HES_AimBlinkB = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_16x16)
     hs_Loop
-        hs_SetFlags(HUD_ELEMENT_FLAG_200000)
+        hs_SetFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
-        hs_ClearFlags(HUD_ELEMENT_FLAG_200000)
+        hs_ClearFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
-        hs_SetFlags(HUD_ELEMENT_FLAG_200000)
+        hs_SetFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
     hs_Restart
     hs_End
@@ -858,10 +858,10 @@ HudScript HES_AimBlinkC = {
     hs_SetVisible
     hs_SetTileSize(HUD_ELEMENT_SIZE_16x16)
     hs_Loop
-        hs_SetFlags(HUD_ELEMENT_FLAG_200000)
+        hs_SetFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
-        hs_ClearFlags(HUD_ELEMENT_FLAG_200000)
+        hs_ClearFlags(HUD_ELEMENT_FLAG_INVISIBLE)
         hs_SetCI(3, ui_battle_cmd_aim_marker_0)
     hs_Restart
     hs_End

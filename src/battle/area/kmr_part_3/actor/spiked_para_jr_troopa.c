@@ -564,7 +564,7 @@ API_CALLABLE(N(ShowPointerHudElem)) {
 
     hud_element_set_render_pos(hid, posX, posY);
     hud_element_set_scale(hid, 1.5f);
-    hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_200000 | HUD_ELEMENT_FLAG_DISABLED);
+    hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_INVISIBLE | HUD_ELEMENT_FLAG_DISABLED);
     evt_set_variable(script, *args++, hid);
     load_tattle_flags(ACTOR_TYPE_JR_TROOPA_4);
     return ApiStatus_DONE2;
