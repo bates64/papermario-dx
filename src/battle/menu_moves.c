@@ -12,7 +12,7 @@ enum {
     BTL_SUBMENU_STATE_CHOOSING              = 1,  // selecting an option
     BTL_SUBMENU_STATE_HIDE_INIT             = 10, // begin hiding the menu, will quickly change to HIDE_HOLD
     BTL_SUBMENU_STATE_HIDE_HOLD             = 11,
-    BTL_SUBMENU_STATE_RESTORE               = 20,
+    BTL_SUBMENU_STATE_RESTORE               = 20, // reappear and resume choosing
     BTL_SUBMENU_STATE_LOCK                  = 30,
     BTL_SUBMENU_STATE_ERROR_INIT            = 40,
     BTL_SUBMENU_STATE_ERROR_SHOW            = 41,

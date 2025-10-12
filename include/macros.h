@@ -233,8 +233,8 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 
 #define STATUS_KEY_IGNORE_RES 0xFE
 #define STATUS_KEY_NEVER 0xFF
-#define DMG_STATUS_KEY(typeFlag, duration, chance) (STATUS_FLAG_80000000 | typeFlag | (duration << 8) | chance)
-#define DMG_STATUS_ALWAYS(typeFlag, duration) (STATUS_FLAG_80000000 | STATUS_FLAG_RIGHT_ON | typeFlag | (duration << 8))
+#define DMG_STATUS_KEY(typeFlag, duration, chance) (STATUS_FLAG_USE_DURATION | typeFlag | (duration << 8) | chance)
+#define DMG_STATUS_ALWAYS(typeFlag, duration) (STATUS_FLAG_USE_DURATION | STATUS_FLAG_RIGHT_ON | typeFlag | (duration << 8))
 #define DMG_STATUS_IGNORE_RES(typeFlag, duration) (STATUS_KEY_IGNORE_RES | typeFlag | (duration << 8))
 
 #define _RDP_WHOLE(x) (((s32)(x * 65536.0) >> 16) & 0xFFFF)

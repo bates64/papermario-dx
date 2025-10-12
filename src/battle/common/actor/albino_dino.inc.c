@@ -316,7 +316,7 @@ EvtScript N(EVS_TakeTurn) = {
     KillThread(LVar9)
     Wait(2)
     Call(SetGoalToTarget, ACTOR_SELF)
-    // invalid status field has 24% chance, but no status and doesn't have STATUS_FLAG_80000000 set
+    // invalid status field has 24% chance, but no status and doesn't have STATUS_FLAG_USE_DURATION set
     Call(EnemyDamageTarget, ACTOR_SELF, LVarF, 0, 0, 24, DMG_TACKLE, BS_FLAGS1_TRIGGER_EVENTS)
     Switch(LVarF)
         CaseOrEq(HIT_RESULT_HIT)

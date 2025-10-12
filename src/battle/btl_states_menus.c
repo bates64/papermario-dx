@@ -15,8 +15,8 @@ enum BattleMenuStates {
     BTL_MENU_STATE_CHOOSING             = 2,
     BTL_MENU_STATE_HIDE_INIT            = 10,
     BTL_MENU_STATE_HIDE_HOLD            = 11,
-    BTL_MENU_STATE_UNK_14               = 20,
-    BTL_MENU_STATE_UNK_1E               = 30,
+    BTL_MENU_STATE_RESTORE              = 20, // reappear and resume choosing
+    BTL_MENU_STATE_RESUME_SUBMENU       = 30,
     BTL_MENU_STATE_ERROR_SHOW           = 100,
     BTL_MENU_STATE_ERROR_DONE           = 101,
 };
@@ -243,23 +243,20 @@ void btl_main_menu_hide(void) {
     BattleMenuState = BTL_MENU_STATE_HIDE_INIT;
 }
 
-// (after submenu closed/canceled)
-void func_802A1050(void) {
+void btl_main_menu_resume_choose(void) {
     BattleMenuState = BTL_MENU_STATE_CHOOSING;
     BattleMenu_ReelAlpha = 255;
     BattleMenuAlpha = 255;
 }
 
-// btl_main_menu_show? (canceling targeting -> main menu)
-void func_802A1078(void) {
+void btl_main_menu_restore_choose(void) {
     BattleMenuAlpha = 255;
-    BattleMenuState = BTL_MENU_STATE_UNK_14;
+    BattleMenuState = BTL_MENU_STATE_RESTORE;
 }
 
-// btl_main_menu_show? (canceling targeting -> submenu)
-void func_802A1098(void) {
+void btl_main_menu_restore_submenu(void) {
     BattleMenuAlpha = 100;
-    BattleMenuState = BTL_MENU_STATE_UNK_1E;
+    BattleMenuState = BTL_MENU_STATE_RESUME_SUBMENU;
 }
 
 void btl_main_menu_destroy(void) {
@@ -475,12 +472,12 @@ s32 btl_main_menu_update(void) {
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
         case BTL_MENU_STATE_HIDE_HOLD:
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
-        case BTL_MENU_STATE_UNK_14:
+        case BTL_MENU_STATE_RESTORE:
             BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
             BattleMenu_ReelAlpha = 255;
             BattleMenuState = BTL_MENU_STATE_CHOOSING;
             return BattleMenu_CurPos + BattleMenu_HomePos + 1;
-        case BTL_MENU_STATE_UNK_1E:
+        case BTL_MENU_STATE_RESUME_SUBMENU:
             BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
             BattleMenu_ReelAlpha = 255;
             BattleMenuState = BTL_MENU_STATE_SUBMENU_OPEN;
@@ -525,8 +522,8 @@ void btl_main_menu_draw(void) {
         case BTL_MENU_STATE_SUBMENU_OPEN:
         case BTL_MENU_STATE_CHOOSING:
         case BTL_MENU_STATE_HIDE_INIT:
-        case BTL_MENU_STATE_UNK_14:
-        case BTL_MENU_STATE_UNK_1E:
+        case BTL_MENU_STATE_RESTORE:
+        case BTL_MENU_STATE_RESUME_SUBMENU:
             opacity = (BattleMenu_ReelAlpha * BattleMenuAlpha) / 255;
             hud_element_draw_complex_hud_first(-1);
             theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;

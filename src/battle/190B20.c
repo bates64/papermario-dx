@@ -2296,7 +2296,7 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
     }
 
     if (duration > 0) {
-        if (battleStatus->curAttackStatus < 0) {
+        if (battleStatus->curAttackStatus & STATUS_FLAG_USE_DURATION) {
             duration = battleStatus->statusDuration;
             duration += lookup_status_duration_mod(actor->statusTable, statusKey);
             inflict_status(actor, statusTypeKey, duration);

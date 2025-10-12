@@ -4,22 +4,23 @@
 #include "common.h"
 #include "hud_element.h"
 
-#define UNK_MENU_DELAY 8
+#define UNK_MENU_DELAY 80
 #define UNK_MENU_SHORT_DELAY 5
 
 void btl_main_menu_init(void);
 
-// btl_main_menu_hide? (after begin targeting)
+// hides the main menu (wheel) (e.g., while choosing a target for an action)
 void btl_main_menu_hide(void);
 
-// (after submenu closed/canceled)
-void func_802A1050(void);
+// restore main menu (wheel) to a choosing state immediately (e.g., after a submenu is closed)
+void btl_main_menu_resume_choose(void);
 
-// btl_main_menu_show? (canceling targeting -> main menu)
-void func_802A1078(void);
+// restore main menu (wheel) to a choosing state after a one-frame transitional state
+void btl_main_menu_restore_choose(void);
 
-// btl_main_menu_show? (canceling targeting -> submenu)
-void func_802A1098(void);
+// restore main menu (wheel) to a visible, but locked state (e.g., canceling target selection to reopen a submenu)
+// use this when the menu should be visibile, but in the background of another menu
+void btl_main_menu_restore_submenu(void);
 
 void btl_main_menu_destroy(void);
 

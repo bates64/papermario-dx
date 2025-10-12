@@ -142,7 +142,7 @@ void btl_state_update_peach_menu(void) {
             }
             break;
         case BTL_SUBSTATE_TARGET_CANCEL:
-            func_802A1050();
+            btl_main_menu_resume_choose();
             gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
             btl_state_update_peach_menu();
             btl_state_update_peach_menu();

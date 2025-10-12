@@ -2834,7 +2834,7 @@ enum StatusFlags {
     STATUS_FLAG_DEFENSE_BOOST   = 0x10000000,
     STATUS_FLAG_CHILL_OUT       = 0x20000000,
     STATUS_FLAG_RIGHT_ON        = 0x40000000,
-    STATUS_FLAG_80000000        = 0x80000000,
+    STATUS_FLAG_USE_DURATION    = 0x80000000, // indicates the status being inflicted should derive duration from BattleStatus::statusDuration
 };
 
 // general combination of flags for checking if an enemy is immobilized
