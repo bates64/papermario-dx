@@ -378,11 +378,11 @@ void btl_state_update_begin_player_turn(void) {
                 return;
             }
 
-            if (!D_8029F254) {
-                btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
-            } else{
+            if (D_8029F254) {
                 btl_set_state(BATTLE_STATE_BEGIN_PARTNER_TURN);
                 gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
+            } else{
+                btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
             }
         }
     }

@@ -131,7 +131,7 @@ void btl_state_update_select_target(void) {
 
             if (battleStatus->curButtonsPressed & BUTTON_A) {
                 sfx_play_sound(SOUND_MENU_NEXT);
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
                 gBattleSubState = BTL_SUBSTATE_DONE;
                 break;

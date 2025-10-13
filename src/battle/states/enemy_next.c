@@ -6,7 +6,7 @@ enum {
     BTL_SUBSTATE_DONE           = 2, // enemy has been found
 };
 
-BSS u8 D_8029F244;
+BSS u8 NextEnemyWaitingOrdinal;
 
 void btl_state_update_next_enemy(void) {
     BattleStatus* battleStatus = &gBattleStatus;
@@ -105,7 +105,7 @@ void btl_state_update_next_enemy(void) {
             gBattleStatus.flags2 &= ~BS_FLAGS2_PARTNER_TURN_USED;
             gBattleStatus.flags2 |= BS_FLAGS2_HIDE_BUFF_COUNTERS;
 
-            D_8029F244 = enemy->unk_134;
+            NextEnemyWaitingOrdinal = enemy->ordinal;
             if (enemy->handlePhaseSource != NULL) {
                 Evt* onTurnChanceScript;
 
@@ -121,12 +121,12 @@ void btl_state_update_next_enemy(void) {
             if (battleStatus->stateFreezeCount == 0) {
                 enemy = get_actor(battleStatus->activeEnemyActorID);
 
-                if (enemy == NULL || enemy->unk_134 != D_8029F244) {
+                if (enemy == NULL || enemy->ordinal != NextEnemyWaitingOrdinal) {
                     btl_set_state(BATTLE_STATE_NEXT_ENEMY);
                 } else {
                     if (enemy->handlePhaseSource == NULL || !does_script_exist(enemy->handleBatttlePhaseScriptID)) {
-                        if (battleStatus->unk_94 < 0) {
-                            battleStatus->unk_94 = 0;
+                        if (battleStatus->cancelTurnMode < 0) {
+                            battleStatus->cancelTurnMode = 0;
                             btl_set_state(BATTLE_STATE_END_TURN);
                         } else {
                             btl_set_state(BATTLE_STATE_ENEMY_MOVE);

@@ -141,8 +141,8 @@ void btl_state_update_end_player_turn(void) {
         }
 
         // if the rest of the turn was canceled, proceed immediately to END_TURN
-        if (battleStatus->unk_94 < 0) {
-            battleStatus->unk_94 = 0;
+        if (battleStatus->cancelTurnMode < 0) {
+            battleStatus->cancelTurnMode = 0;
             battleStatus->itemUsesLeft = 0;
             btl_set_state(BATTLE_STATE_END_TURN);
             return;
@@ -153,7 +153,7 @@ void btl_state_update_end_player_turn(void) {
             if (battleStatus->itemUsesLeft != 0) {
                 // double or triple dip has not run out yet, let the player choose another item
                 btl_set_state(BATTLE_STATE_PREPARE_MENU);
-                gBattleSubState = BATTLE_SUBSTATE_PREPARE_MENU_DIPPING;
+                gBattleSubState = BTL_SUBSTATE_PLAYER_CONTINUE_DIP;
                 return;
             }
 

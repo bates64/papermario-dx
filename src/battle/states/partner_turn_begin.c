@@ -112,11 +112,11 @@ void btl_state_update_begin_partner_turn(void) {
             return;
         }
         gBattleStatus.flags2 &= ~BS_FLAGS2_NO_PLAYER_PAL_ADJUST;
-        if (!D_8029F254) {
-            btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
-        } else {
+        if (D_8029F254) {
             gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
             btl_set_state(BATTLE_STATE_9);
+        } else {
+            btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
         }
     }
 }

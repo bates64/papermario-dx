@@ -2315,10 +2315,10 @@ API_CALLABLE(CancelEnemyTurn) {
 
     switch (cancelMode) {
         case 0:
-            battleStatus->unk_94 = 1;
+            battleStatus->cancelTurnMode = 1;
             break;
         case 1:
-            battleStatus->unk_94 = -1;
+            battleStatus->cancelTurnMode = -1;
             break;
     }
 

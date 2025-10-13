@@ -2365,6 +2365,7 @@ void create_battle_popup_menu(PopupMenu* popup) {
     gPopupWorker = create_worker_frontUI((void (*) (void)) popup_menu_update, NULL);
 }
 
-void func_800F52BC(void) {
+// forces an update step for the popup menu
+void flush_popup_menu(void) {
     popup_menu_update();
 }

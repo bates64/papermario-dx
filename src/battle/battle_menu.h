@@ -4,8 +4,8 @@
 #include "common.h"
 #include "hud_element.h"
 
-#define UNK_MENU_DELAY 80
-#define UNK_MENU_SHORT_DELAY 5
+#define MENU_CHANGE_DELAY 8
+#define MENU_DIPPING_DELAY 5
 
 void btl_main_menu_init(void);
 
@@ -34,7 +34,7 @@ s32 can_switch_to_partner(void);
 
 void create_battle_popup_menu(PopupMenu* popup);
 
-void func_800F52BC(void);
+void flush_popup_menu(void);
 void show_popup_menu(void);
 
 void btl_submenu_moves_init(void);
@@ -95,7 +95,7 @@ extern HudScript HES_HandPointDownLoop;
 extern HudScript HES_HandPointLeftLoop;
 extern s32 BattleMenu_TargetHudElems[];
 
-extern s32 D_802ACC60;
+extern s32 BattleMenu_ChooseDelay;
 extern s32 BattleMenu_TargetPointerAlpha;
 extern s32 BattleMenu_TargetNameOffsetX;
 extern s32 BattleMenu_SwapDelay;
@@ -126,7 +126,7 @@ extern b32 BattleMenu_ShowSwapIcons;
 extern s32 WheelOptionCount;
 
 extern s32 BattleMenu_PrevSelected;
-extern s32 D_802AD100;
+extern s32 BattleMenu_WheelBase;
 extern s8 ShowingErrorMessage;
 
 extern HudScript HES_YellowArrow;

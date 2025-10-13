@@ -11,8 +11,8 @@ void btl_state_update_end_partner_turn(void) {
         battleStatus->flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
         battleStatus->flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
 
-        if (battleStatus->unk_94 < 0) {
-            battleStatus->unk_94 = 0;
+        if (battleStatus->cancelTurnMode < 0) {
+            battleStatus->cancelTurnMode = 0;
             btl_set_state(BATTLE_STATE_END_TURN);
         } else {
             btl_set_state(BATTLE_STATE_9);

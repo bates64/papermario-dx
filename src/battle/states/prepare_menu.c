@@ -19,9 +19,9 @@ void btl_state_update_prepare_menu(void) {
 
     if (battleStatus->flags1 & BS_FLAGS1_PARTNER_ACTING) {
         btl_set_state(BATTLE_STATE_PARTNER_MENU);
-    } else if (gBattleSubState == BATTLE_SUBSTATE_PREPARE_MENU_DIPPING) {
+    } else if (gBattleSubState == BTL_SUBSTATE_PLAYER_CONTINUE_DIP) {
         btl_set_state(BATTLE_STATE_PLAYER_MENU);
-        gBattleSubState = BTL_SUBSTATE_PLAYER_MENU_DIPPING_1;
+        gBattleSubState = BTL_SUBSTATE_PLAYER_CONTINUE_DIP; // maintain substate
     } else {
         btl_set_state(BATTLE_STATE_PLAYER_MENU);
     }

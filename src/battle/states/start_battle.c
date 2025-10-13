@@ -94,7 +94,7 @@ void btl_state_update_normal_start(void) {
             battleStatus->preUpdateCallback = NULL;
             battleStatus->initBattleCallback = NULL;
             battleStatus->curSubmenu = 0;
-            battleStatus->unk_49 = 0;
+            battleStatus->lastSelectedAbility = 0;
             battleStatus->curPartnerSubmenu = 0;
             battleStatus->lastPartnerPowerSelection = 0;
             battleStatus->totalStarPoints = 0;
@@ -143,8 +143,8 @@ void btl_state_update_normal_start(void) {
             battleStatus->darknessMode = BTL_DARKNESS_STATE_NONE;
             battleStatus->unk_433 = -1;
             battleStatus->hustleTurns = 0;
-            battleStatus->unk_93 = 0;
-            battleStatus->unk_94 = 0;
+            battleStatus->nextActorOrdinal = 0;
+            battleStatus->cancelTurnMode = 0;
             gBattleStatus.flags2 &= ~BS_FLAGS2_PLAYER_TURN_USED;
             gBattleStatus.flags2 &= ~BS_FLAGS2_PARTNER_TURN_USED;
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER;

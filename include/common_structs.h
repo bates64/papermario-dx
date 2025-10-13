@@ -864,7 +864,7 @@ typedef struct BattleStatus {
     /*       */     void* varTablePtr[16];
     /*       */ };
     /* 0x048 */ s8 curSubmenu;
-    /* 0x049 */ s8 unk_49;
+    /* 0x049 */ s8 lastSelectedAbility;
     /* 0x04A */ s8 curPartnerSubmenu;
     /* 0x04B */ s8 lastPartnerPowerSelection;
     /* 0x04C */ s8 lastPlayerMenuSelection[16];
@@ -897,8 +897,8 @@ typedef struct BattleStatus {
     /* 0x08F */ char unk_8F[1];
     /* 0x090 */ s16 unk_90;
     /* 0x092 */ s8 reflectFlags;
-    /* 0x093 */ s8 unk_93;
-    /* 0x094 */ s8 unk_94;
+    /* 0x093 */ s8 nextActorOrdinal;
+    /* 0x094 */ s8 cancelTurnMode;
     /* 0x095 */ s8 waitForState;
     /* 0x096 */ s8 hammerCharge;
     /* 0x097 */ s8 jumpCharge;
@@ -1860,7 +1860,7 @@ typedef struct Actor {
     /* 0x00C */ ActorState state;
     /* 0x0C8 */ ActorMovement fly;
     /* 0x124 */ char unk_124[16];
-    /* 0x134 */ u8 unk_134;
+    /* 0x134 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x135 */ u8 footStepCounter;
     /* 0x136 */ u8 actorType;
     /* 0x137 */ char unk_137;

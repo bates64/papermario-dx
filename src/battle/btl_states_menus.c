@@ -188,7 +188,7 @@ s32 CenteredBattleMessages[] = {
     MSG_Menus_Focus_Centered,
 };
 
-BSS s32 D_802ACC60;
+BSS s32 BattleMenu_ChooseDelay;
 BSS s32 BattleMenu_TargetPointerAlpha;
 BSS s32 BattleMenu_TargetNameOffsetX; // used to animate the position of the target name box
 BSS s32 BattleMenu_SwapDelay; // delay before the player and partner can swap after the main menu is opened
@@ -217,7 +217,7 @@ BSS s8 BattleMenu_MinIdx;
 BSS s8 BattleMenu_MaxIdx;
 BSS s8 BattleMenu_HomePos;
 BSS s32 BattleMenu_PrevSelected;
-BSS s32 D_802AD100;
+BSS s32 BattleMenu_WheelBase;
 BSS f32 BattleMenu_WheelAngle;
 BSS f32 BattleMenu_WheelSpeed;
 BSS b32 BattleMenu_ShowSwapIcons;
@@ -379,7 +379,7 @@ s32 btl_main_menu_update(void) {
             BattleMenu_ReelHidePercent = 100;
             BattleMenu_ReelAppearTimer = REEL_APPEAR_TIME;
             BattleMenuState = BTL_MENU_STATE_SHOW_REEL;
-            BattleMenu_WheelAngle = D_802AD100 * WHEEL_SPACING;
+            BattleMenu_WheelAngle = BattleMenu_WheelBase * WHEEL_SPACING;
             break;
         case BTL_MENU_STATE_SHOW_REEL:
             BattleMenu_ReelHidePercent = (100 * BattleMenu_ReelAppearTimer) / REEL_APPEAR_TIME;
@@ -398,11 +398,11 @@ s32 btl_main_menu_update(void) {
                 case 0:
                     BattleMenu_CurPos = 0;
                     BattleMenu_PrevPos = 0;
-                    BattleMenu_WheelAngle = D_802AD100 * WHEEL_SPACING;
+                    BattleMenu_WheelAngle = BattleMenu_WheelBase * WHEEL_SPACING;
                     for (i = 0; i < WheelOptionCount; i++) {
                         x = 0.0f;
                         y = 0.0f;
-                        add_vec2D_polar(&x, &y, WHEEL_RADIUS, D_802AD100 * WHEEL_SPACING);
+                        add_vec2D_polar(&x, &y, WHEEL_RADIUS, BattleMenu_WheelBase * WHEEL_SPACING);
 
                         l = BattleMenu_BasePosX + x;
                         t = BattleMenu_BasePosY + y;
@@ -418,7 +418,7 @@ s32 btl_main_menu_update(void) {
 
                     x = 0.0f;
                     y = 0.0f;
-                    add_vec2D_polar(&x, &y, WHEEL_RADIUS, D_802AD100 * WHEEL_SPACING);
+                    add_vec2D_polar(&x, &y, WHEEL_RADIUS, BattleMenu_WheelBase * WHEEL_SPACING);
 
                     l = BattleMenu_BasePosX + x;
                     t = BattleMenu_BasePosY + y;
@@ -526,7 +526,7 @@ void btl_main_menu_draw(void) {
         case BTL_MENU_STATE_RESUME_SUBMENU:
             opacity = (BattleMenu_ReelAlpha * BattleMenuAlpha) / 255;
             hud_element_draw_complex_hud_first(-1);
-            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
+            theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
 
             wheelDoneMoving = FALSE;
             if (BattleMenu_WheelAngle > theta) {
@@ -596,7 +596,7 @@ void btl_main_menu_draw(void) {
                     hud_element_draw_complex_hud_next(hid);
                 }
             }
-            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
+            theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
 
             // calculate beam narrowing
             scale = (fabsf(fabsf((BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING)) - 22.5) / 22.5) + 0.01;
@@ -614,7 +614,7 @@ void btl_main_menu_draw(void) {
             hud_element_draw_complex_hud_next(hid);
 
             hid = HID_ProjectorReelB;
-            theta = (D_802AD100 - BattleMenu_CurPos) * WHEEL_SPACING;
+            theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
             scale = (BattleMenu_WheelAngle - theta) * (45.0 / WHEEL_SPACING);
             hud_element_set_transform_rotation(hid, 0.0f, 0.0f, -scale);
             hud_element_set_transform_rotation_pivot(hid, 18, -20);

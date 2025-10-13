@@ -13,71 +13,76 @@
 #include "sprite/npc/BattleLakilester.h"
 
 enum {
-    // BTL_SUBSTATE_INIT                        = 0,
+    // BTL_SUBSTATE_INIT                                = 0,
 
     // Main menu
-    BTL_SUBSTATE_MAIN_MENU_1                    = 2,
-    BTL_SUBSTATE_MAIN_MENU_2                    = 3,
-    BTL_SUBSTATE_MAIN_MENU_3                    = 4,
-    BTL_SUBSTATE_MAIN_MENU_4                    = 5,
-    BTL_SUBSTATE_MAIN_MENU_5                    = 6,
-    BTL_SUBSTATE_MAIN_MENU_6                    = 7,
-    BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP            = 8,
-    BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP           = 9,
+    BTL_SUBSTATE_MAIN_BEGIN                             = 2,
+    BTL_SUBSTATE_MAIN_CHOOSING                          = 3,
+    // these states would be used to select targets from main menu choices, but none of the main menu options
+    // actually trigger these, so they are unused
+    BTL_SUBSTATE_MAIN_HANDOVER                          = 4,
+    BTL_SUBSTATE_MAIN_REOPEN_MENU                       = 5,
+    BTL_SUBSTATE_MAIN_TARGET_CANCEL                     = 6,
+    BTL_SUBSTATE_MAIN_TARGET_CHOSEN                     = 7,
+    BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP                    = 8,
+    BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP                   = 9,
     // Abilities
-    BTL_SUBSTATE_ABILITIES_1                    = 10,
-    BTL_SUBSTATE_ABILITIES_2                    = 11,
-    BTL_SUBSTATE_ABILITIES_3                    = 12,
-    BTL_SUBSTATE_ABILITIES_4                    = 13,
-    BTL_SUBSTATE_ABILITIES_5                    = 14,
-    BTL_SUBSTATE_ABILITIES_6                    = 15,
-    BTL_SUBSTATE_ABILITIES_7                    = 16,
+    BTL_SUBSTATE_ABILITIES_BUILD_MENU                   = 10,
+    BTL_SUBSTATE_ABILITIES_CHOOSING                     = 11,
+    BTL_SUBSTATE_ABILITIES_HANDOVER                     = 12,
+    BTL_SUBSTATE_ABILITIES_REOPEN_MENU                  = 13,
+    BTL_SUBSTATE_ABILITIES_TARGET_CANCEL                = 14,
+    BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN                = 15,
+    BTL_SUBSTATE_ABILITIES_SHOW_ERROR                   = 16,
     // Unknown, referenced only in btl_state_draw_partner_menu
-    BTL_SUBSTATE_UNKNOWN_1                      = 20,
-    BTL_SUBSTATE_UNKNOWN_2                      = 21,
-    BTL_SUBSTATE_UNKNOWN_3                      = 22,
-    BTL_SUBSTATE_UNKNOWN_4                      = 23,
-    BTL_SUBSTATE_UNKNOWN_5                      = 24,
+    // Matches up with the Double/Triple dip states in menu_player.
+    BTL_SUBSTATE_UNKNOWN_1                              = 20,
+    BTL_SUBSTATE_UNKNOWN_2                              = 21,
+    BTL_SUBSTATE_UNKNOWN_3                              = 22,
+    BTL_SUBSTATE_UNKNOWN_4                              = 23,
+    BTL_SUBSTATE_UNKNOWN_5                              = 24,
     // Change Partner
-    BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU      = 30,
-    BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING        = 31,
-    BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER        = 32, // handle switch to change partner state
-    BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU     = 33,
-    BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL   = 34,
-    BTL_SUBSTATE_CHANGE_PARTNER_TARGET_SELECT   = 35,
-    BTL_SUBSTATE_CHANGE_PARTNER_ERROR           = 36,
+    BTL_SUBSTATE_CHANGE_PARTNER_BUILD_MENU              = 30,
+    BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING                = 31,
+    BTL_SUBSTATE_CHANGE_PARTNER_HANDOVER                = 32, // handle switch to change partner state
+    BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU             = 33,
+    BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL           = 34,
+    BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN           = 35,
+    BTL_SUBSTATE_CHANGE_PARTNER_ERROR                   = 36,
     // Items
-    BTL_SUBSTATE_ITEMS_BUILD_MENU               = 40,
-    BTL_SUBSTATE_ITEMS_CHOOSING                 = 41,
-    BTL_SUBSTATE_ITEMS_HANDOVER                 = 42, // handle switch to target selection state
-    BTL_SUBSTATE_ITEMS_REOPEN_MENU              = 43,
-    BTL_SUBSTATE_ITEMS_TARGET_CANCELED          = 44,
-    BTL_SUBSTATE_ITEMS_TARGET_SELECTED          = 45,
+    BTL_SUBSTATE_ITEMS_BUILD_MENU                       = 40,
+    BTL_SUBSTATE_ITEMS_CHOOSING                         = 41,
+    BTL_SUBSTATE_ITEMS_HANDOVER                         = 42, // handle switch to target selection state
+    BTL_SUBSTATE_ITEMS_REOPEN_MENU                      = 43,
+    BTL_SUBSTATE_ITEMS_TARGET_CANCEL                    = 44,
+    BTL_SUBSTATE_ITEMS_TARGET_CHOSEN                    = 45,
     // Switch partner (from main menu?) (unused)
-    BTL_SUBSTATE_UNUSED_CHANGE_BUILD_MENU       = 50,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2        = 51,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_3        = 52,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_4        = 53,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_5        = 54,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_6        = 55,
-    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_7        = 56,
+    // At one point in development, Switch Partner would have been a top-level menu option.
+    // These are the states corresponding to that.
+    BTL_SUBSTATE_UNUSED_CHANGE_BUILD_MENU               = 50,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING         = 51,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER         = 52,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU      = 53,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL    = 54,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN    = 55,
+    BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR       = 56,
     // Focus
-    BTL_SUBSTATE_FOCUS_BUILD_MENU               = 60,
-    BTL_SUBSTATE_FOCUS_CHOOSING                 = 61,
-    BTL_SUBSTATE_FOCUS_3                        = 62,
-    BTL_SUBSTATE_FOCUS_REOPEN_MENU              = 63,
-    BTL_SUBSTATE_FOCUS_CANCELED                 = 64,
-    BTL_SUBSTATE_FOCUS_SELECTED                 = 65,
+    BTL_SUBSTATE_FOCUS_BUILD_MENU                       = 60,
+    BTL_SUBSTATE_FOCUS_CHOOSING                         = 61,
+    BTL_SUBSTATE_FOCUS_HANDOVER                         = 62,
+    BTL_SUBSTATE_FOCUS_REOPEN_MENU                      = 63,
+    BTL_SUBSTATE_FOCUS_CANCELED                         = 64,
+    BTL_SUBSTATE_FOCUS_SELECTED                         = 65,
     // Strategies
-    BTL_SUBSTATE_STRATEGIES_BUILD_MENU          = 200,
-    BTL_SUBSTATE_STRATEGIES_CHOOSING            = 201,
-    BTL_SUBSTATE_STRATEGIES_3                   = 202,
-    BTL_SUBSTATE_STRATEGIES_4                   = 203,
-    BTL_SUBSTATE_STRATEGIES_5                   = 204,
-    BTL_SUBSTATE_STRATEGIES_6                   = 205,
+    BTL_SUBSTATE_STRATEGIES_BUILD_MENU                  = 200,
+    BTL_SUBSTATE_STRATEGIES_CHOOSING                    = 201,
+    BTL_SUBSTATE_STRATEGIES_HANDOVER                    = 202,
+    BTL_SUBSTATE_STRATEGIES_REOPEN_MENU                 = 203,
+    BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL               = 204,
+    BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN               = 205,
     // initialize
-    BTL_SUBSTATE_12D                            = 301,
-    BTL_SUBSTATE_INIT_MENU                      = 302,
+    BTL_SUBSTATE_PERFORM_SWAP                           = 301,
+    BTL_SUBSTATE_CREATE_MAIN_MENU                       = 302,
 };
 
 AnimID PartnerThinkAnims[] = {
@@ -298,9 +303,9 @@ void btl_state_update_partner_menu(void) {
             playerActor->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
             partnerActor->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
             if (battleStatus->flags1 & BS_FLAGS1_PLAYER_IN_BACK) {
-                gBattleSubState = BTL_SUBSTATE_INIT_MENU;
+                gBattleSubState = BTL_SUBSTATE_CREATE_MAIN_MENU;
             } else {
-                gBattleSubState = BTL_SUBSTATE_12D;
+                gBattleSubState = BTL_SUBSTATE_PERFORM_SWAP;
                 partnerActor->state.curPos.x = partnerActor->homePos.x;
                 partnerActor->state.curPos.z = partnerActor->homePos.z;
                 partnerActor->state.goalPos.x = playerActor->homePos.x;
@@ -311,7 +316,7 @@ void btl_state_update_partner_menu(void) {
         }
     }
 
-    if (gBattleSubState == BTL_SUBSTATE_12D) {
+    if (gBattleSubState == BTL_SUBSTATE_PERFORM_SWAP) {
         if (partnerActor->state.moveTime != 0) {
             partnerActor->curPos.x += (partnerActor->state.goalPos.x - partnerActor->curPos.x) / partnerActor->state.moveTime;
             partnerActor->curPos.z += (partnerActor->state.goalPos.z - partnerActor->curPos.z) / partnerActor->state.moveTime;
@@ -326,7 +331,7 @@ void btl_state_update_partner_menu(void) {
         if (partnerActor->state.moveTime != 0) {
             partnerActor->state.moveTime--;
         } else {
-            gBattleSubState = BTL_SUBSTATE_INIT_MENU;
+            gBattleSubState = BTL_SUBSTATE_CREATE_MAIN_MENU;
             partnerActor->curPos.x = partnerActor->state.goalPos.x;
             partnerActor->curPos.z = partnerActor->state.goalPos.z;
             playerActor->curPos.x = partnerActor->state.curPos.x;
@@ -340,7 +345,7 @@ void btl_state_update_partner_menu(void) {
     }
 
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_INIT_MENU:
+        case BTL_SUBSTATE_CREATE_MAIN_MENU:
             partnerActor->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
             partnerActor->flags &= ~ACTOR_FLAG_USING_IDLE_ANIM;
             playerActor->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
@@ -415,22 +420,22 @@ void btl_state_update_partner_menu(void) {
 
             WheelOptionCount = entryIdx;
             BattleMenu_PrevSelected = initialPos;
-            D_802AD100 = 2 - initialPos;
+            BattleMenu_WheelBase = 2 - initialPos;
             if (can_switch_to_player()) {
                 BattleMenu_ShowSwapIcons = TRUE;
             } else {
                 BattleMenu_ShowSwapIcons = FALSE;
             }
             btl_main_menu_init();
-            D_802ACC60 = UNK_MENU_DELAY;
+            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
             BattleMenu_SwapDelay = 0;
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
             return;
-        case BTL_SUBSTATE_MAIN_MENU_1:
+        case BTL_SUBSTATE_MAIN_BEGIN:
             set_actor_anim(ACTOR_PARTNER, 0, PartnerThinkAnims[playerData->curPartner]);
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_2;
+            gBattleSubState = BTL_SUBSTATE_MAIN_CHOOSING;
             // fall through
-        case BTL_SUBSTATE_MAIN_MENU_2:
+        case BTL_SUBSTATE_MAIN_CHOOSING:
             entryIdx = btl_main_menu_update();
 
             if (BattleMenu_SwapDelay != 0) {
@@ -448,8 +453,8 @@ void btl_state_update_partner_menu(void) {
                 break;
             }
 
-            if (D_802ACC60 != 0) {
-                D_802ACC60--;
+            if (BattleMenu_ChooseDelay != 0) {
+                BattleMenu_ChooseDelay--;
                 break;
             }
 
@@ -463,7 +468,7 @@ void btl_state_update_partner_menu(void) {
                         btl_state_update_partner_menu();
                         break;
                     case BTL_MENU_TYPE_ABILITY:
-                        gBattleSubState = BTL_SUBSTATE_ABILITIES_1;
+                        gBattleSubState = BTL_SUBSTATE_ABILITIES_BUILD_MENU;
                         btl_state_update_partner_menu();
                         btl_state_update_partner_menu();
                         break;
@@ -483,19 +488,19 @@ void btl_state_update_partner_menu(void) {
                         btl_state_update_partner_menu();
                         break;
                     default:
-                        battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_MAIN_MENU_5;
-                        battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_MAIN_MENU_6;
+                        battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_MAIN_TARGET_CANCEL;
+                        battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_MAIN_TARGET_CHOSEN;
                         btl_main_menu_hide();
-                        gBattleSubState = BTL_SUBSTATE_MAIN_MENU_3;
+                        gBattleSubState = BTL_SUBSTATE_MAIN_HANDOVER;
                         break;
                 }
             }
             break;
-    case BTL_SUBSTATE_MAIN_MENU_3:
+    case BTL_SUBSTATE_MAIN_HANDOVER:
         entryIdx = btl_main_menu_update();
         if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
             btl_main_menu_restore_choose();
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_4;
+            gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
             return;
         }
         if (entryIdx != 0) {
@@ -507,18 +512,18 @@ void btl_state_update_partner_menu(void) {
             return;
         }
         break;
-    case BTL_SUBSTATE_MAIN_MENU_4:
+    case BTL_SUBSTATE_MAIN_REOPEN_MENU:
         if (btl_main_menu_update() != 0) {
-            D_802ACC60 = UNK_MENU_DELAY;
+            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
             BattleMenu_SwapDelay = 4;
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
         }
         break;
-    case BTL_SUBSTATE_MAIN_MENU_5:
+    case BTL_SUBSTATE_MAIN_TARGET_CANCEL:
         btl_main_menu_restore_choose();
-        gBattleSubState = BTL_SUBSTATE_MAIN_MENU_4;
+        gBattleSubState = BTL_SUBSTATE_MAIN_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_MAIN_MENU_6:
+    case BTL_SUBSTATE_MAIN_TARGET_CHOSEN:
         btl_main_menu_destroy();
         break;
     case BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP:
@@ -534,12 +539,12 @@ void btl_state_update_partner_menu(void) {
         if (btl_is_popup_displayed()) {
             break;
         }
-        D_802ACC60 = 0;
         ShowingErrorMessage = FALSE;
+        BattleMenu_ChooseDelay = 0;
         BattleMenu_SwapDelay = 4;
-        gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+        gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
         break;
-    case BTL_SUBSTATE_ABILITIES_1:
+    case BTL_SUBSTATE_ABILITIES_BUILD_MENU:
         for (i = 0; i < battleStatus->submenuMoveCount; i++) {
             moveData = &gMoveTable[battleStatus->submenuMoves[i]];
 
@@ -586,62 +591,67 @@ void btl_state_update_partner_menu(void) {
         initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY];
         MovesPrevSelected = initialPos;
         btl_submenu_moves_init();
-        gBattleSubState = BTL_SUBSTATE_ABILITIES_2;
+        gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
         break;
-    case BTL_SUBSTATE_ABILITIES_2:
+    case BTL_SUBSTATE_ABILITIES_CHOOSING:
         entryIdx = btl_submenu_moves_update();
-        if (entryIdx == -1) {
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_7;
-        } else if (entryIdx  != 0) {
-            if (entryIdx == 255) {
+        switch (entryIdx) {
+            case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from popup menu
+                break;
+            case POPUP_RESULT_INVALID:
+                gBattleSubState = BTL_SUBSTATE_ABILITIES_SHOW_ERROR;
+                break;
+            case POPUP_RESULT_CANCEL:
                 btl_main_menu_resume_choose();
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
                 btl_state_update_partner_menu();
                 btl_state_update_partner_menu();
-            } else {
+                break;
+            default:
                 battleStatus->lastPartnerPowerSelection = entryIdx - 1;
                 btl_submenu_moves_hide();
                 btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_ABILITIES_3;
-            }
+                gBattleSubState = BTL_SUBSTATE_ABILITIES_HANDOVER;
+                break;
         }
         break;
-    case BTL_SUBSTATE_ABILITIES_3:
+    case BTL_SUBSTATE_ABILITIES_HANDOVER:
         entryIdx = btl_submenu_moves_update();
         if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == 0) {
             btl_submenu_moves_restore_choose();
             btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_4;
+            gBattleSubState = BTL_SUBSTATE_ABILITIES_REOPEN_MENU;
         } else if (btl_main_menu_update() != 0) {
             battleStatus->moveCategory = BTL_MENU_TYPE_ABILITY;
             battleStatus->selectedMoveID = MovesOptionIndices[battleStatus->lastPartnerPowerSelection];
             battleStatus->curTargetListFlags = gMoveTable[battleStatus->selectedMoveID].flags;
             battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_ABILITY] = SelectedMovesIndex;
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_5;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_6;
+            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CANCEL;
+            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN;
             btl_set_state(BATTLE_STATE_SELECT_TARGET);
         }
         break;
-    case BTL_SUBSTATE_ABILITIES_4:
+    case BTL_SUBSTATE_ABILITIES_REOPEN_MENU:
         btl_submenu_moves_update();
         if (btl_main_menu_update() != 0) {
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_2;
+            gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
         }
         break;
-    case BTL_SUBSTATE_ABILITIES_5:
+    case BTL_SUBSTATE_ABILITIES_TARGET_CANCEL:
         btl_submenu_moves_restore_choose();
         btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_ABILITIES_4;
+        gBattleSubState = BTL_SUBSTATE_ABILITIES_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_ABILITIES_6:
+    case BTL_SUBSTATE_ABILITIES_TARGET_CHOSEN:
         btl_submenu_moves_destroy();
         btl_main_menu_destroy();
         break;
-    case BTL_SUBSTATE_ABILITIES_7:
+    case BTL_SUBSTATE_ABILITIES_SHOW_ERROR:
         if (btl_submenu_moves_update() != -1) {
-            gBattleSubState = BTL_SUBSTATE_ABILITIES_2;
+            gBattleSubState = BTL_SUBSTATE_ABILITIES_CHOOSING;
         }
         break;
     case BTL_SUBSTATE_ITEMS_BUILD_MENU:
@@ -675,32 +685,35 @@ void btl_state_update_partner_menu(void) {
         initialPos = battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM];
         popupMenu->initialPos = initialPos;
         create_battle_popup_menu(popupMenu);
-        func_800F52BC();
+        flush_popup_menu();
         gBattleSubState = BTL_SUBSTATE_ITEMS_CHOOSING;
         break;
     case BTL_SUBSTATE_ITEMS_CHOOSING:
-        if (popupMenu->result == POPUP_RESULT_CHOOSING) {
-            // do nothing while player is choosing from popup menu
-            break;
-        } else if (popupMenu->result == POPUP_RESULT_CANCEL) {
-            btl_main_menu_resume_choose();
-            D_802ACC60 = UNK_MENU_DELAY;
-            BattleMenu_SwapDelay = 4;
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
-            btl_state_update_partner_menu();
-            btl_state_update_partner_menu();
-        } else {
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CANCELED;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_SELECTED;
-            battleStatus->lastSelectedItem = popupMenu->userIndex[popupMenu->result - 1];
-            battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
-            battleStatus->moveArgument = battleStatus->lastSelectedItem;
-            battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
-            battleStatus->curAttackElement = 0;
-            battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = popupMenu->result - 1;
-            hide_popup_menu();
-            btl_main_menu_hide();
-            gBattleSubState = BTL_SUBSTATE_ITEMS_HANDOVER;
+        switch (popupMenu->result) {
+            case POPUP_RESULT_CHOOSING:
+                // do nothing while player is choosing from menu
+                break;
+            case POPUP_RESULT_CANCEL:
+                btl_main_menu_resume_choose();
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
+                BattleMenu_SwapDelay = 4;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
+                btl_state_update_partner_menu();
+                btl_state_update_partner_menu();
+                break;
+            default: // something has been selected
+                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CANCEL;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_ITEMS_TARGET_CHOSEN;
+                battleStatus->lastSelectedItem = popupMenu->userIndex[popupMenu->result - 1];
+                battleStatus->moveCategory = BTL_MENU_TYPE_ITEMS;
+                battleStatus->moveArgument = battleStatus->lastSelectedItem;
+                battleStatus->curTargetListFlags = gItemTable[battleStatus->moveArgument].targetFlags | TARGET_FLAG_PRIMARY_ONLY;
+                battleStatus->curAttackElement = 0;
+                battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER_ITEM] = popupMenu->result - 1;
+                hide_popup_menu();
+                btl_main_menu_hide();
+                gBattleSubState = BTL_SUBSTATE_ITEMS_HANDOVER;
+                break;
         }
         break;
     case BTL_SUBSTATE_ITEMS_REOPEN_MENU:
@@ -717,12 +730,12 @@ void btl_state_update_partner_menu(void) {
             btl_set_state(BATTLE_STATE_SELECT_TARGET);
         }
         break;
-    case BTL_SUBSTATE_ITEMS_TARGET_CANCELED:
+    case BTL_SUBSTATE_ITEMS_TARGET_CANCEL:
         show_popup_menu();
         btl_main_menu_restore_submenu();
         gBattleSubState = BTL_SUBSTATE_ITEMS_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_ITEMS_TARGET_SELECTED:
+    case BTL_SUBSTATE_ITEMS_TARGET_CHOSEN:
         destroy_popup_menu();
         btl_main_menu_destroy();
         break;
@@ -754,68 +767,68 @@ void btl_state_update_partner_menu(void) {
         popupMenu->dipMode = 0;
         popupMenu->titleNumber = 0;
         create_battle_popup_menu(popupMenu);
-        func_800F52BC();
-        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2;
+        flush_popup_menu();
+        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING:
         switch (popupMenu->result) {
-            case POPUP_RESULT_INVALID:
-                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_7;
-                break;
             case POPUP_RESULT_CHOOSING:
                 // do nothing while player is choosing from popup menu
                 break;
+            case POPUP_RESULT_INVALID:
+                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR;
+                break;
             case POPUP_RESULT_CANCEL:
                 btl_main_menu_resume_choose();
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
                 btl_state_update_partner_menu();
                 btl_state_update_partner_menu();
                 break;
             default:
-                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_5;
-                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_6;
+                battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN;
                 battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
                 battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
-                battleStatus->selectedMoveID = MOVE_UNUSED_37;
+                battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
                 battleStatus->curTargetListFlags = TARGET_FLAG_2;
                 battleStatus->moveArgument = battleStatus->lastSelectedPartner;
                 battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
                 hide_popup_menu();
                 btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_3;
+                gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER;
                 break;
         }
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_3:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER:
         if ((battleStatus->curButtonsPressed & BUTTON_B) && (popupMenu->result == POPUP_RESULT_CHOOSING)) {
             show_popup_menu();
             btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_4;
+            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
         } else if (btl_main_menu_update() != 0) {
             gBattleSubState = battleStatus->acceptTargetMenuSubstate;
             btl_state_update_partner_menu();
             btl_set_state(BATTLE_STATE_CHANGE_PARTNER);
         }
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_4:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU:
         if (btl_main_menu_update() != 0) {
-            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2;
+            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
         }
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_5:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL:
         show_popup_menu();
         btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_4;
+        gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_6:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CHOSEN:
         destroy_popup_menu();
         btl_main_menu_destroy();
         break;
-    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_7:
+    case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_SHOW_ERROR:
         if (popupMenu->result != POPUP_RESULT_INVALID) {
-            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2;
+            gBattleSubState = BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING;
         }
         break;
     case BTL_SUBSTATE_FOCUS_BUILD_MENU:
@@ -858,9 +871,9 @@ void btl_state_update_partner_menu(void) {
                 break;
             case POPUP_RESULT_CANCEL:
                 btl_main_menu_resume_choose();
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
                 btl_state_update_partner_menu();
                 btl_state_update_partner_menu();
                 break;
@@ -868,11 +881,11 @@ void btl_state_update_partner_menu(void) {
                 battleStatus->lastPartnerPowerSelection = MovesOptionIndices[entryIdx - 1];
                 btl_submenu_moves_hide();
                 btl_main_menu_hide();
-                gBattleSubState = BTL_SUBSTATE_FOCUS_3;
+                gBattleSubState = BTL_SUBSTATE_FOCUS_HANDOVER;
                 break;
         }
         break;
-    case BTL_SUBSTATE_FOCUS_3:
+    case BTL_SUBSTATE_FOCUS_HANDOVER:
         entryIdx = btl_submenu_moves_update();
         if ((battleStatus->curButtonsPressed & BUTTON_B) && (entryIdx == 0)) {
             btl_submenu_moves_restore_choose();
@@ -948,9 +961,9 @@ void btl_state_update_partner_menu(void) {
                 break;
             case POPUP_RESULT_CANCEL:
                 btl_main_menu_resume_choose();
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
-                gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+                gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
                 btl_state_update_partner_menu();
                 btl_state_update_partner_menu();
                 break;
@@ -964,55 +977,55 @@ void btl_state_update_partner_menu(void) {
                 } else {
                     btl_submenu_strats_hide();
                     btl_main_menu_hide();
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_3;
+                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_HANDOVER;
                 }
                 break;
         }
         break;
-    case BTL_SUBSTATE_STRATEGIES_3:
+    case BTL_SUBSTATE_STRATEGIES_HANDOVER:
         entryIdx = btl_submenu_strats_update();
         if ((battleStatus->curButtonsPressed & BUTTON_B) && entryIdx == POPUP_RESULT_CHOOSING) {
             btl_submenu_strats_restore_choose();
             btl_main_menu_restore_submenu();
-            gBattleSubState = BTL_SUBSTATE_STRATEGIES_4;
+            gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
         } else if (btl_main_menu_update() != 0) {
-            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_5;
-            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_6;
+            battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL;
+            battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
             switch (battleStatus->curPartnerSubmenu) {
                 case BTL_MENU_TYPE_DO_NOTHING:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_6;
+                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
                     btl_state_update_partner_menu();
                     btl_set_state(BATTLE_STATE_END_PARTNER_TURN);
                     break;
                 case BTL_MENU_TYPE_RUN_AWAY:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_6;
+                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
                     btl_state_update_partner_menu();
                     battleStatus->moveCategory = BTL_MENU_TYPE_RUN_AWAY;
-                    battleStatus->selectedMoveID = MOVE_UNUSED_39;
+                    battleStatus->selectedMoveID = MOVE_RUN_AWAY;
                     btl_set_state(BATTLE_STATE_RUN_AWAY);
                     break;
                 case BTL_MENU_TYPE_ACT_LATER:
-                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_6;
+                    gBattleSubState = BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN;
                     btl_state_update_partner_menu();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PLAYER);
                     break;
             }
         }
         break;
-    case BTL_SUBSTATE_STRATEGIES_4:
+    case BTL_SUBSTATE_STRATEGIES_REOPEN_MENU:
         btl_submenu_strats_update();
         if (btl_main_menu_update() != 0) {
-            D_802ACC60 = UNK_MENU_DELAY;
+            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
             BattleMenu_SwapDelay = 4;
-            gBattleSubState = BTL_SUBSTATE_MAIN_MENU_1;
+            gBattleSubState = BTL_SUBSTATE_MAIN_BEGIN;
         }
         break;
-    case BTL_SUBSTATE_STRATEGIES_5:
+    case BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL:
         btl_submenu_strats_restore_choose();
         btl_main_menu_restore_submenu();
-        gBattleSubState = BTL_SUBSTATE_STRATEGIES_4;
+        gBattleSubState = BTL_SUBSTATE_STRATEGIES_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_STRATEGIES_6:
+    case BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN:
         btl_submenu_strats_destroy();
         btl_main_menu_destroy();
         break;
@@ -1044,16 +1057,16 @@ void btl_state_update_partner_menu(void) {
         popupMenu->dipMode = 0;
         popupMenu->titleNumber = 0;
         create_battle_popup_menu(popupMenu);
-        func_800F52BC();
+        flush_popup_menu();
         gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING;
         break;
     case BTL_SUBSTATE_CHANGE_PARTNER_CHOOSING:
         switch (popupMenu->result) {
-            case POPUP_RESULT_INVALID:
-                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_ERROR;
-                break;
             case POPUP_RESULT_CHOOSING:
                 // do nothing while player is choosing from popup menu
+                break;
+            case POPUP_RESULT_INVALID:
+                gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_ERROR;
                 break;
             case POPUP_RESULT_CANCEL:
                 btl_submenu_strats_resume_choose();
@@ -1063,10 +1076,10 @@ void btl_state_update_partner_menu(void) {
                 break;
             default:
                 battleStatus->cancelTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CANCEL;
-                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_SELECT;
+                battleStatus->acceptTargetMenuSubstate = BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN;
                 battleStatus->lastSelectedPartner = popupMenu->userIndex[popupMenu->result - 1];
                 battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
-                battleStatus->selectedMoveID = MOVE_UNUSED_37;
+                battleStatus->selectedMoveID = MOVE_CHANGE_PARTNER;
                 battleStatus->curTargetListFlags = TARGET_FLAG_2;
                 battleStatus->moveArgument = battleStatus->lastSelectedPartner;
                 battleStatus->lastPartnerMenuSelection[BTL_MENU_IDX_PARTNER] = popupMenu->result - 1;
@@ -1104,7 +1117,7 @@ void btl_state_update_partner_menu(void) {
         btl_main_menu_restore_submenu();
         gBattleSubState = BTL_SUBSTATE_CHANGE_PARTNER_REOPEN_MENU;
         break;
-    case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_SELECT:
+    case BTL_SUBSTATE_CHANGE_PARTNER_TARGET_CHOSEN:
         destroy_popup_menu();
         btl_submenu_strats_destroy();
         btl_main_menu_destroy();
@@ -1123,16 +1136,16 @@ void btl_state_update_partner_menu(void) {
 
 void btl_state_draw_partner_menu(void) {
     switch (gBattleSubState) {
-        case BTL_SUBSTATE_MAIN_MENU_1:
-        case BTL_SUBSTATE_MAIN_MENU_2:
-        case BTL_SUBSTATE_MAIN_MENU_3:
-        case BTL_SUBSTATE_MAIN_MENU_4:
-        case BTL_SUBSTATE_MAIN_MENU_5:
-        case BTL_SUBSTATE_ABILITIES_1:
-        case BTL_SUBSTATE_ABILITIES_2:
-        case BTL_SUBSTATE_ABILITIES_3:
-        case BTL_SUBSTATE_ABILITIES_4:
-        case BTL_SUBSTATE_ABILITIES_5:
+        case BTL_SUBSTATE_MAIN_BEGIN:
+        case BTL_SUBSTATE_MAIN_CHOOSING:
+        case BTL_SUBSTATE_MAIN_HANDOVER:
+        case BTL_SUBSTATE_MAIN_REOPEN_MENU:
+        case BTL_SUBSTATE_MAIN_TARGET_CANCEL:
+        case BTL_SUBSTATE_ABILITIES_BUILD_MENU:
+        case BTL_SUBSTATE_ABILITIES_CHOOSING:
+        case BTL_SUBSTATE_ABILITIES_HANDOVER:
+        case BTL_SUBSTATE_ABILITIES_REOPEN_MENU:
+        case BTL_SUBSTATE_ABILITIES_TARGET_CANCEL:
         case BTL_SUBSTATE_UNKNOWN_1:
         case BTL_SUBSTATE_UNKNOWN_2:
         case BTL_SUBSTATE_UNKNOWN_3:
@@ -1147,22 +1160,22 @@ void btl_state_draw_partner_menu(void) {
         case BTL_SUBSTATE_ITEMS_CHOOSING:
         case BTL_SUBSTATE_ITEMS_HANDOVER:
         case BTL_SUBSTATE_ITEMS_REOPEN_MENU:
-        case BTL_SUBSTATE_ITEMS_TARGET_CANCELED:
-        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_2:
-        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_3:
-        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_4:
-        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_5:
+        case BTL_SUBSTATE_ITEMS_TARGET_CANCEL:
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_CHOOSING:
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_HANDOVER:
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_REOPEN_MENU:
+        case BTL_SUBSTATE_UNUSED_CHANGE_PARTNER_TARGET_CANCEL:
         case BTL_SUBSTATE_FOCUS_CHOOSING:
-        case BTL_SUBSTATE_FOCUS_3:
+        case BTL_SUBSTATE_FOCUS_HANDOVER:
         case BTL_SUBSTATE_FOCUS_REOPEN_MENU:
         case BTL_SUBSTATE_FOCUS_CANCELED:
         case BTL_SUBSTATE_FOCUS_SELECTED:
         case BTL_SUBSTATE_STRATEGIES_BUILD_MENU:
         case BTL_SUBSTATE_STRATEGIES_CHOOSING:
-        case BTL_SUBSTATE_STRATEGIES_3:
-        case BTL_SUBSTATE_STRATEGIES_4:
-        case BTL_SUBSTATE_STRATEGIES_5:
-        case BTL_SUBSTATE_STRATEGIES_6:
+        case BTL_SUBSTATE_STRATEGIES_HANDOVER:
+        case BTL_SUBSTATE_STRATEGIES_REOPEN_MENU:
+        case BTL_SUBSTATE_STRATEGIES_TARGET_CANCEL:
+        case BTL_SUBSTATE_STRATEGIES_TARGET_CHOSEN:
             btl_main_menu_draw();
             break;
     }

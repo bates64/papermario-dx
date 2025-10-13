@@ -950,7 +950,7 @@ void load_player_actor(void) {
 
     ASSERT(player != NULL);
 
-    player->unk_134 = battleStatus->unk_93++;
+    player->ordinal = battleStatus->nextActorOrdinal++;
     player->footStepCounter = 0;
     player->flags = 0;
     player->actorBlueprint = &bPlayerActorBlueprint;
@@ -1194,7 +1194,7 @@ void load_partner_actor(void) {
         ASSERT(partnerActor != NULL);
 
         actorBP->level = playerData->partners[playerData->curPartner].level;
-        partnerActor->unk_134 = battleStatus->unk_93++;
+        partnerActor->ordinal = battleStatus->nextActorOrdinal++;
         partnerActor->footStepCounter = 0;
         partnerActor->actorBlueprint = actorBP;
         partnerActor->actorType = actorBP->type;
@@ -1440,7 +1440,7 @@ Actor* create_actor(Formation formation) {
 
     ASSERT(actor != NULL);
 
-    actor->unk_134 = battleStatus->unk_93++;
+    actor->ordinal = battleStatus->nextActorOrdinal++;
     actor->footStepCounter = 0;
     actor->actorBlueprint = formationActor;
     actor->actorType = formationActor->type;

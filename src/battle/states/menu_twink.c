@@ -131,7 +131,7 @@ void btl_state_update_twink_menu(void) {
             initialPos = 0;
             WheelOptionCount = entryIdx;
             BattleMenu_PrevSelected = initialPos;
-            D_802AD100 = 2 - initialPos;
+            BattleMenu_WheelBase = 2 - initialPos;
 
             if (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED) {
                 BattleMenu_ShowSwapIcons = FALSE;
@@ -140,21 +140,21 @@ void btl_state_update_twink_menu(void) {
             }
 
             btl_main_menu_init();
-            D_802ACC60 = UNK_MENU_DELAY;
+            BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
             gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
             break;
         case BTL_SUBSTATE_CHOOSE_CATEGORY:
             set_actor_anim(ACTOR_PARTNER, 0, ANIM_Twink_Idle);
             selection = btl_main_menu_update();
-            if (D_802ACC60 != 0) {
-                D_802ACC60--;
+            if (BattleMenu_ChooseDelay != 0) {
+                BattleMenu_ChooseDelay--;
                 break;
             }
             if (selection != 0) {
                 set_actor_anim(ACTOR_PARTNER, 0, ANIM_Twink_Angry);
                 battleStatus->curSubmenu = WheelOptionSubmenu[selection - 1];
                 btl_main_menu_hide();
-                D_802ACC60 = UNK_MENU_DELAY;
+                BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
                 BattleMenu_SwapDelay = 4;
                 gBattleSubState = BTL_SUBSTATE_CHOOSE_TARGET;
             }
@@ -189,7 +189,7 @@ void btl_state_update_twink_menu(void) {
                 break;
             }
             ShowingErrorMessage = FALSE;
-            D_802ACC60 = 0;
+            BattleMenu_ChooseDelay = 0;
             gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
             break;
     }
