@@ -21,18 +21,16 @@ void btl_state_update_begin_partner_turn(void) {
         if (partner == NULL) {
             D_8029F254 = TRUE;
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
-        } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) != (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) {
-            if (!(partner->flags & ACTOR_FLAG_NO_ATTACK)) {
-                btl_cam_use_preset(BTL_CAM_DEFAULT);
-                btl_cam_move(5);
-                gBattleSubState = BTL_SUBSTATE_RESET_STATE;
-            } else {
-                btl_set_state(BATTLE_STATE_9);
-                return;
-            }
-        } else {
+        } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) == (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) {
             btl_set_state(BATTLE_STATE_9);
             return;
+        } else if (partner->flags & ACTOR_FLAG_NO_ATTACK) {
+            btl_set_state(BATTLE_STATE_9);
+            return;
+        } else {
+            btl_cam_use_preset(BTL_CAM_DEFAULT);
+            btl_cam_move(5);
+            gBattleSubState = BTL_SUBSTATE_RESET_STATE;
         }
     }
 
