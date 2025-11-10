@@ -112,7 +112,7 @@ void btl_state_update_next_enemy(void) {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                 onTurnChanceScript = start_script(enemy->handlePhaseSource, EVT_PRIORITY_A, 0);
                 enemy->handlePhaseScript = onTurnChanceScript;
-                enemy->handleBatttlePhaseScriptID = onTurnChanceScript->id;
+                enemy->handlePhaseScriptID = onTurnChanceScript->id;
                 onTurnChanceScript->owner1.actorID = battleStatus->activeEnemyActorID;
             }
             gBattleSubState = BTL_SUBSTATE_DONE;
@@ -124,7 +124,7 @@ void btl_state_update_next_enemy(void) {
                 if (enemy == NULL || enemy->ordinal != NextEnemyWaitingOrdinal) {
                     btl_set_state(BATTLE_STATE_NEXT_ENEMY);
                 } else {
-                    if (enemy->handlePhaseSource == NULL || !does_script_exist(enemy->handleBatttlePhaseScriptID)) {
+                    if (enemy->handlePhaseSource == NULL || !does_script_exist(enemy->handlePhaseScriptID)) {
                         if (battleStatus->cancelTurnMode < 0) {
                             battleStatus->cancelTurnMode = 0;
                             btl_set_state(BATTLE_STATE_END_TURN);

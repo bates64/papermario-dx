@@ -247,7 +247,7 @@ void btl_update(void) {
             case BATTLE_STATE_INVALID:
             case BATTLE_STATE_NONE:
                 return;
-            case BATTLE_STATE_NORMAL_START:
+            case BATTLE_STATE_START:
                 btl_state_update_normal_start();
                 cond = FALSE;
                 break;
@@ -257,8 +257,8 @@ void btl_update(void) {
             case BATTLE_STATE_BEGIN_PARTNER_TURN:
                 btl_state_update_begin_partner_turn();
                 break;
-            case BATTLE_STATE_9:
-                btl_state_update_9();
+            case BATTLE_STATE_TRANSFER_TURN:
+                btl_state_update_transfer_turn();
                 break;
             case BATTLE_STATE_BEGIN_TURN:
                 btl_state_update_begin_turn();
@@ -450,7 +450,7 @@ void btl_draw_ui(void) {
 
     if (!changed) {
         switch (state) {
-            case BATTLE_STATE_NORMAL_START:
+            case BATTLE_STATE_START:
                 btl_state_draw_normal_start();
                 break;
             case BATTLE_STATE_BEGIN_PLAYER_TURN:
@@ -459,8 +459,8 @@ void btl_draw_ui(void) {
             case BATTLE_STATE_BEGIN_PARTNER_TURN:
                 btl_state_draw_begin_partner_turn();
                 break;
-            case BATTLE_STATE_9:
-                btl_state_draw_9();
+            case BATTLE_STATE_TRANSFER_TURN:
+                btl_state_draw_transfer_turn();
                 break;
             case BATTLE_STATE_BEGIN_TURN:
                 btl_state_draw_begin_turn();

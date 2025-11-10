@@ -128,7 +128,7 @@ void btl_state_update_end_turn(void) {
                 battleStatus->battlePhase = PHASE_ENEMY_END;
                 script = start_script(actor->handlePhaseSource, EVT_PRIORITY_A, 0);
                 actor->handlePhaseScript = script;
-                actor->handleBatttlePhaseScriptID = script->id;
+                actor->handlePhaseScriptID = script->id;
                 script->owner1.enemyID = i | ACTOR_ENEMY0;
             }
         }
@@ -137,7 +137,7 @@ void btl_state_update_end_turn(void) {
             battleStatus->battlePhase = PHASE_ENEMY_END;
             script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
             partner->handlePhaseScript = script;
-            partner->handleBatttlePhaseScriptID = script->id;
+            partner->handlePhaseScriptID = script->id;
             script->owner1.actorID = ACTOR_PARTNER;
         }
         gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPTS;
@@ -145,20 +145,20 @@ void btl_state_update_end_turn(void) {
 
     // wait for all end turn scripts to finish executing
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_SCRIPTS) {
-        s32 cond = FALSE;
+        s32 waitingForScript = FALSE;
 
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             actor = battleStatus->enemyActors[i];
-            if (actor != NULL && actor->handlePhaseSource != NULL && does_script_exist(actor->handleBatttlePhaseScriptID)) {
-                cond = TRUE;
+            if (actor != NULL && actor->handlePhaseSource != NULL && does_script_exist(actor->handlePhaseScriptID)) {
+                waitingForScript = TRUE;
             }
         }
 
-        if (partner != NULL && partner->handlePhaseSource != NULL && does_script_exist(partner->handleBatttlePhaseScriptID)) {
-            cond = TRUE;
+        if (partner != NULL && partner->handlePhaseSource != NULL && does_script_exist(partner->handlePhaseScriptID)) {
+            waitingForScript = TRUE;
         }
 
-        if (!cond) {
+        if (!waitingForScript) {
             btl_cam_use_preset(BTL_CAM_DEFAULT);
             gBattleSubState = BTL_SUBSTATE_BEGIN_NEXT;
         }

@@ -719,8 +719,8 @@ void reset_actor_turn_info(void) {
             actor->damageCounter = 0;
             actor->actionRatingCombo = 0;
         }
-
     }
+
     actor = battleStatus->playerActor;
     actor->hpChangeCounter = 0;
     actor->damageCounter = 0;

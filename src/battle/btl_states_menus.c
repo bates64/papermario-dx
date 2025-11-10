@@ -678,7 +678,7 @@ void btl_main_menu_draw(void) {
     }
 }
 
-s32 can_switch_to_player(void) {
+b32 btl_player_can_act(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -725,7 +725,7 @@ s32 can_switch_to_player(void) {
     }
 }
 
-s32 can_switch_to_partner(void) {
+b32 btl_partner_can_act(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
     s8 partnerDebuff;

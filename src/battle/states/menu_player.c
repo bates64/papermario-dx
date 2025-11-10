@@ -318,7 +318,7 @@ void btl_state_update_player_menu(void) {
             battleStatus->moveCategory = BTL_MENU_TYPE_INVALID;
             battleStatus->selectedMoveID = 0;
             battleStatus->curAttackElement = 0;
-            if (!can_switch_to_player()) {
+            if (!btl_player_can_act()) {
                 btl_set_state(BATTLE_STATE_END_PLAYER_TURN);
                 return;
             }
@@ -514,7 +514,7 @@ void btl_state_update_player_menu(void) {
             WheelOptionCount = entryIdx;
             BattleMenu_PrevSelected = initialPos;
             BattleMenu_WheelBase = 2 - initialPos;
-            if (can_switch_to_partner()) {
+            if (btl_partner_can_act()) {
                 BattleMenu_ShowSwapIcons = TRUE;
             } else {
                 BattleMenu_ShowSwapIcons = FALSE;
@@ -534,7 +534,7 @@ void btl_state_update_player_menu(void) {
             if (BattleMenu_SwapDelay != 0) {
                 BattleMenu_SwapDelay--;
             } else if (!(gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) && (gGameStatusPtr->pressedButtons[0] & BUTTON_Z)) {
-                if (can_switch_to_partner() && battleStatus->hustleTurns != 1) {
+                if (btl_partner_can_act() && battleStatus->hustleTurns != 1) {
                     sfx_play_sound(SOUND_PARTNER_SWAP_BATTLE_POS);
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
@@ -1289,7 +1289,7 @@ void btl_state_update_player_menu(void) {
             }
             break;
         case BTL_SUBSTATE_NEXT_DIP_BUILD_MENU:
-            if (!can_switch_to_player()) {
+            if (!btl_player_can_act()) {
                 battleStatus->itemUsesLeft = 1;
                 btl_set_state(BATTLE_STATE_END_PLAYER_TURN);
             } else {

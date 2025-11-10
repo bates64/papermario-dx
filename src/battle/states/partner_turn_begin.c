@@ -22,10 +22,10 @@ void btl_state_update_begin_partner_turn(void) {
             D_8029F254 = TRUE;
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
         } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) == (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) {
-            btl_set_state(BATTLE_STATE_9);
+            btl_set_state(BATTLE_STATE_TRANSFER_TURN);
             return;
         } else if (partner->flags & ACTOR_FLAG_NO_ATTACK) {
-            btl_set_state(BATTLE_STATE_9);
+            btl_set_state(BATTLE_STATE_TRANSFER_TURN);
             return;
         } else {
             btl_cam_use_preset(BTL_CAM_DEFAULT);
@@ -36,7 +36,7 @@ void btl_state_update_begin_partner_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_RESET_STATE) {
         if (btl_cam_is_moving_done()) {
-            D_8029F258 = 0;
+            BattleStatusUpdateDelay = 0;
             reset_actor_turn_info();
             partner = battleStatus->partnerActor;
             battleStatus->actionResult = ACTION_RESULT_NONE;
@@ -49,7 +49,7 @@ void btl_state_update_begin_partner_turn(void) {
             if (partner->koStatus != 0) {
                 partner->koDuration--;
                 D_8029F254 = TRUE;
-                D_8029F258 = 20;
+                BattleStatusUpdateDelay = 20;
                 if (partner->koDuration > 0) {
                     partner->disableEffect->data.disableX->koDuration = partner->koDuration;
                 } else {
@@ -92,27 +92,27 @@ void btl_state_update_begin_partner_turn(void) {
             battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
             script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
             partner->handlePhaseScript = script;
-            partner->handleBatttlePhaseScriptID = script->id;
+            partner->handlePhaseScriptID = script->id;
             script->owner1.actorID = ACTOR_PARTNER;
         }
         gBattleSubState = BTL_SUBSTATE_AWAIT_TURN_SCRIPT;
     }
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_TURN_SCRIPT) {
-        if (partner->handlePhaseSource == NULL || !does_script_exist(partner->handleBatttlePhaseScriptID)) {
+        if (partner->handlePhaseSource == NULL || !does_script_exist(partner->handlePhaseScriptID)) {
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
         }
     }
 
     if (gBattleSubState == BTL_SUBSTATE_END_DELAY) {
-        if (D_8029F258 != 0) {
-            D_8029F258--;
+        if (BattleStatusUpdateDelay != 0) {
+            BattleStatusUpdateDelay--;
             return;
         }
         gBattleStatus.flags2 &= ~BS_FLAGS2_NO_PLAYER_PAL_ADJUST;
         if (D_8029F254) {
             gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
-            btl_set_state(BATTLE_STATE_9);
+            btl_set_state(BATTLE_STATE_TRANSFER_TURN);
         } else {
             btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
         }

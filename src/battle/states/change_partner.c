@@ -155,7 +155,7 @@ void btl_state_update_change_partner(void) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                     script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                     partner->handlePhaseScript = script;
-                    partner->handleBatttlePhaseScriptID = script->id;
+                    partner->handlePhaseScriptID = script->id;
                     script->owner1.actorID = ACTOR_PARTNER;
                 }
             }
@@ -164,7 +164,7 @@ void btl_state_update_change_partner(void) {
         case BTL_SUBSTATE_AWAIT_PHASE:
             partner = battleStatus->partnerActor;
             if (partner != NULL) {
-                if (partner->handlePhaseSource != NULL && does_script_exist(partner->handleBatttlePhaseScriptID)) {
+                if (partner->handlePhaseSource != NULL && does_script_exist(partner->handlePhaseScriptID)) {
                     break;
                 }
             }

@@ -140,7 +140,7 @@ void load_battle_section(void) {
         gCurrentStagePtr = &(*battleArea->stages)[gCurrentStageID];
     }
 
-    btl_set_state(BATTLE_STATE_NORMAL_START);
+    btl_set_state(BATTLE_STATE_START);
     gLastDrawBattleState = BATTLE_STATE_NONE;
 }
 

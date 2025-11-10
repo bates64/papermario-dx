@@ -1899,7 +1899,7 @@ typedef struct Actor {
     /* 0x1E0 */ s32 idleScriptID;
     /* 0x1E4 */ s32 takeTurnScriptID;
     /* 0x1E8 */ s32 handleEventScriptID;
-    /* 0x1EC */ s32 handleBatttlePhaseScriptID;
+    /* 0x1EC */ s32 handlePhaseScriptID;
     /* 0x1F0 */ s8 lastEventType;
     /* 0x1F1 */ s8 turnPriority;
     /* 0x1F2 */ s8 enemyIndex; /* actorID = this | 200 */

@@ -14,7 +14,7 @@ enum BattleSubStates {
 
 extern s16 D_802809F6;
 extern b32 D_8029F254;
-extern s32 D_8029F258;
+extern s32 BattleStatusUpdateDelay;
 extern s32 BattleSubstateDelay;
 extern s32 BattleScreenFadeAmt;
 
@@ -30,8 +30,8 @@ void btl_state_update_begin_partner_turn(void);
 void btl_state_draw_begin_partner_turn(void);
 void btl_state_update_switch_to_partner(void);
 void btl_state_draw_switch_to_partner(void);
-void btl_state_update_9(void);
-void btl_state_draw_9(void);
+void btl_state_update_transfer_turn(void);
+void btl_state_draw_transfer_turn(void);
 void btl_state_update_prepare_menu(void);
 void btl_state_draw_prepare_menu(void);
 void btl_state_update_end_turn(void);

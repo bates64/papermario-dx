@@ -2172,7 +2172,7 @@ enum Events {
     EVENT_SHOCK_HIT                   = 0x0000002F,
     EVENT_30                          = 0x00000030,
     EVENT_RECOVER_STATUS              = 0x00000031,
-    EVENT_32                          = 0x00000032,
+    EVENT_RECOVER_FROZEN              = 0x00000032,
     EVENT_33                          = 0x00000033,
     EVENT_RECOVER_FROM_KO             = 0x00000034,
     EVENT_END_FIRST_STRIKE            = 0x00000035,
@@ -3635,7 +3635,7 @@ enum BattleStatusReflectionFlags {
 enum BattleStates {
     BATTLE_STATE_INVALID                    = -1,   // may have been part of a debug state at some point, unused
     BATTLE_STATE_NONE                       = 0,
-    BATTLE_STATE_NORMAL_START               = 1,
+    BATTLE_STATE_START                      = 1,
     BATTLE_STATE_FIRST_STRIKE               = 2,
     BATTLE_STATE_PARTNER_FIRST_STRIKE       = 3,
     BATTLE_STATE_ENEMY_FIRST_STRIKE         = 4,
@@ -3643,7 +3643,7 @@ enum BattleStates {
     BATTLE_STATE_END_TURN                   = 6,
     BATTLE_STATE_BEGIN_PLAYER_TURN          = 7,
     BATTLE_STATE_BEGIN_PARTNER_TURN         = 8,
-    BATTLE_STATE_9                          = 9,    // can be reached from BATTLE_STATE_PARTNER_MOVE if partner == NULL
+    BATTLE_STATE_TRANSFER_TURN              = 9,    // can be reached from BATTLE_STATE_PARTNER_MOVE if partner == NULL
     BATTLE_STATE_SWITCH_TO_PLAYER           = 10,
     BATTLE_STATE_SWITCH_TO_PARTNER          = 11,
     BATTLE_STATE_PREPARE_MENU               = 12,

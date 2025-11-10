@@ -26,7 +26,7 @@ void btl_state_update_partner_move(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
             if (partner == NULL) {
-                btl_set_state(BATTLE_STATE_9);
+                btl_set_state(BATTLE_STATE_TRANSFER_TURN);
                 break;
             }
             battleStatus->stateFreezeCount = 0;

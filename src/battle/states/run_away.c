@@ -173,7 +173,7 @@ void btl_state_update_run_away(void) {
                 && (partner == NULL || !does_script_exist(partner->takeTurnScriptID))
                 && battleStatus->stateFreezeCount == 0
             ) {
-                btl_set_state(BATTLE_STATE_9);
+                btl_set_state(BATTLE_STATE_TRANSFER_TURN);
             }
             break;
     }

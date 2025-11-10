@@ -106,14 +106,14 @@ void btl_state_update_begin_player_turn(void) {
 
                 battleStatus->stateFreezeCount = 0;
                 D_8029F254 = FALSE;
-                D_8029F258 = 0;
+                BattleStatusUpdateDelay = 0;
 
                 if (battleStatus->outtaSightActive != 0) {
                     battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                     script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                     partner->handlePhaseScript = script;
                     gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
-                    partner->handleBatttlePhaseScriptID = script->id;
+                    partner->handlePhaseScriptID = script->id;
                     script->owner1.actorID = ACTOR_PARTNER;
                 } else {
                     gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
@@ -121,7 +121,7 @@ void btl_state_update_begin_player_turn(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->handleBatttlePhaseScriptID)) {
+            if (!does_script_exist(partner->handlePhaseScriptID)) {
                 battleStatus->outtaSightActive = 0;
                 gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
                 gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
@@ -266,14 +266,14 @@ void btl_state_update_begin_player_turn(void) {
                     if (player->debuff <= STATUS_KEY_POISON) {
                         D_8029F254 = TRUE;
                     }
-                    D_8029F258 = 20;
+                    BattleStatusUpdateDelay = 20;
                     player->debuffDuration--;
                     if (player->debuffDuration <= 0) {
                         if (player->debuff == STATUS_KEY_FROZEN) {
                             sfx_play_sound(SOUND_FROZEN_SHATTER);
                             player->icePillarEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
                             player->icePillarEffect = NULL;
-                            dispatch_event_player(EVENT_32);
+                            dispatch_event_player(EVENT_RECOVER_FROZEN);
                         } else {
                             dispatch_event_player(EVENT_RECOVER_STATUS);
                         }
@@ -306,7 +306,7 @@ void btl_state_update_begin_player_turn(void) {
                         if (enemy->chillOutTurns == 0) {
                             enemy->chillOutAmount = 0;
                             remove_status_chill_out(enemy->hudElementDataIndex);
-                            D_8029F258 = 20;
+                            BattleStatusUpdateDelay = 20;
                         }
                     }
                 }
@@ -373,8 +373,8 @@ void btl_state_update_begin_player_turn(void) {
                 return;
             }
 
-            if (D_8029F258 != 0) {
-                D_8029F258--;
+            if (BattleStatusUpdateDelay != 0) {
+                BattleStatusUpdateDelay--;
                 return;
             }
 

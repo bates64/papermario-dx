@@ -86,13 +86,13 @@ void btl_state_update_end_training_battle(void) {
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                 script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                 partner->handlePhaseScript = script;
-                partner->handleBatttlePhaseScriptID = script->id;
+                partner->handlePhaseScriptID = script->id;
                 script->owner1.actorID = ACTOR_PARTNER;
                 gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
             }
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->handleBatttlePhaseScriptID)) {
+            if (!does_script_exist(partner->handlePhaseScriptID)) {
                 battleStatus->outtaSightActive = FALSE;
                 gBattleSubState = BTL_SUBSTATE_RESET_CAM;
             }

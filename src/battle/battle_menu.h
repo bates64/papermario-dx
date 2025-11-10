@@ -29,8 +29,8 @@ void btl_main_menu_draw(void);
 
 s32 btl_submenu_strats_update(void);
 
-s32 can_switch_to_player(void);
-s32 can_switch_to_partner(void);
+b32 btl_player_can_act(void);
+b32 btl_partner_can_act(void);
 
 void create_battle_popup_menu(PopupMenu* popup);
 

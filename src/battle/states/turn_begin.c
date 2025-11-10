@@ -129,7 +129,7 @@ void btl_state_update_begin_turn(void) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                     script = start_script(enemy->handlePhaseSource, EVT_PRIORITY_A, 0);
                     enemy->handlePhaseScript = script;
-                    enemy->handleBatttlePhaseScriptID = script->id;
+                    enemy->handlePhaseScriptID = script->id;
                     script->owner1.actorID = i | ACTOR_ENEMY0;
                 }
             }
@@ -139,7 +139,7 @@ void btl_state_update_begin_turn(void) {
                 battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                 script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                 partner->handlePhaseScript = script;
-                partner->handleBatttlePhaseScriptID = script->id;
+                partner->handlePhaseScriptID = script->id;
                 script->owner1.actorID = ACTOR_PARTNER;
             }
             gBattleSubState = BTL_SUBSTATE_AWAIT_ENEMY_SCRIPTS;
@@ -150,11 +150,11 @@ void btl_state_update_begin_turn(void) {
         awaiting = FALSE;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != NULL && enemy->handlePhaseSource != NULL && does_script_exist(enemy->handleBatttlePhaseScriptID)) {
+            if (enemy != NULL && enemy->handlePhaseSource != NULL && does_script_exist(enemy->handlePhaseScriptID)) {
                 awaiting = TRUE;
             }
         }
-        if (partner != NULL && partner->handlePhaseSource != NULL && does_script_exist(partner->handleBatttlePhaseScriptID)) {
+        if (partner != NULL && partner->handlePhaseSource != NULL && does_script_exist(partner->handlePhaseScriptID)) {
             awaiting = TRUE;
         }
 

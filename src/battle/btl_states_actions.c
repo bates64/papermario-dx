@@ -3,7 +3,7 @@
 
 BSS s32 BattleSubstateDelay; // generic delay time usable for various substates
 BSS b32 D_8029F254;
-BSS s32 D_8029F258;
+BSS s32 BattleStatusUpdateDelay;
 
 void btl_merlee_on_start_turn(void) {
     BattleStatus* battleStatus = &gBattleStatus;

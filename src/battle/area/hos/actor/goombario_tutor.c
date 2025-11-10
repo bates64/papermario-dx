@@ -362,7 +362,7 @@ EvtScript N(EVS_ManageTutorial) = {
     Call(UseIdleAnimation, ACTOR_PARTNER, FALSE)
     Call(ActorSpeak, MSG_HOS_001D, ACTOR_PARTNER, 1, ANIM_Twink_Talk, ANIM_Twink_Fly)
     Call(UseIdleAnimation, ACTOR_PARTNER, TRUE)
-    Call(WaitForState, BATTLE_STATE_9)
+    Call(WaitForState, BATTLE_STATE_TRANSFER_TURN)
     Call(UseBattleCamPreset, BTL_CAM_DEFAULT)
     Wait(15)
     Call(UseIdleAnimation, ACTOR_PARTNER, FALSE)
