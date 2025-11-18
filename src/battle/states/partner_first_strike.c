@@ -21,7 +21,7 @@ void btl_state_update_partner_striking_first(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
-            D_8029F254 = FALSE;
+            BattleCanShowFirstStrike = FALSE;
             // setup dummy 'menu selection' for partner move
             level = partner->actorBlueprint->level;
             switch (gPlayerData.curPartner) {
@@ -77,7 +77,7 @@ void btl_state_update_partner_striking_first(void) {
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
             } else {
-                D_8029F254 = TRUE;
+                BattleCanShowFirstStrike = TRUE;
             }
             // wait for partner move script
             if (partner->takeTurnScript != NULL && does_script_exist(partner->takeTurnScriptID)) {
@@ -173,7 +173,7 @@ void btl_state_update_partner_striking_first(void) {
 }
 
 void btl_state_draw_partner_striking_first(void) {
-    if (D_8029F254) {
+    if (BattleCanShowFirstStrike) {
         if (BattleScreenFadeAmt == 0) {
             set_screen_overlay_params_front(OVERLAY_NONE, -1.0f);
         } else {

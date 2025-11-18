@@ -22,7 +22,7 @@ void btl_state_update_end_demo_battle(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
             BattleScreenFadeAmt = 0;
-            if (D_802809F6 == -1) {
+            if (EndDemoWhiteOut == -1) {
                 if (DemoBattleBeginDelay != 0) {
                     DemoBattleBeginDelay--;
                     break;
@@ -31,7 +31,7 @@ void btl_state_update_end_demo_battle(void) {
             gBattleSubState = BTL_SUBSTATE_FADE_OUT;
             break;
         case BTL_SUBSTATE_FADE_OUT:
-            switch (D_802809F6) {
+            switch (EndDemoWhiteOut) {
                 case 255:
                     gBattleSubState = BTL_SUBSTATE_EXEC_STAGE_SCRIPT;
                     return;
@@ -93,7 +93,7 @@ void btl_state_update_end_demo_battle(void) {
                 decrement_status_bar_disabled();
             }
 
-            if (D_802809F6 != -1) {
+            if (EndDemoWhiteOut != -1) {
                 gGameStatusPtr->nextDemoScene = LAST_DEMO_SCENE_IDX;
             }
 
@@ -105,7 +105,7 @@ void btl_state_update_end_demo_battle(void) {
 }
 
 void btl_state_draw_end_demo_battle(void) {
-    if (D_802809F6 == -1) {
+    if (EndDemoWhiteOut == -1) {
         set_screen_overlay_color(SCREEN_LAYER_FRONT, 0, 0, 0);
         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, BattleScreenFadeAmt);
     }

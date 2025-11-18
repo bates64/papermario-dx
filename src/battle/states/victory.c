@@ -30,9 +30,6 @@ void btl_state_update_victory(void) {
             if (battleStatus->outtaSightActive == 0) {
                 gBattleSubState = BTL_SUBSTATE_RECOVER_STATUS;
             } else {
-                if (battleStatus->outtaSightActive > 0) {
-                    D_8029F254 = TRUE;
-                }
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
                 script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                 partner->handlePhaseScript = script;

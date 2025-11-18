@@ -96,7 +96,7 @@ void btl_state_update_run_away(void) {
                     gBattleSubState = BTL_SUBSTATE_DONE;
                 } else {
                     status_bar_start_blinking_starpoints();
-                    func_8023E104();
+                    btl_start_blinking_starpoints();
                     BattleScreenFadeAmt = 0;
                     // divide reward into 20 increments
                     RunAwayRewardTotal = battleStatus->totalStarPoints * 100;
@@ -135,7 +135,7 @@ void btl_state_update_run_away(void) {
                 RunAwayRewardStep--;
             } else {
                 status_bar_stop_blinking_starpoints();
-                func_8023E11C();
+                btl_stop_blinking_starpoints();
                 gBattleSubState = BTL_SUBSTATE_DONE;
             }
         }

@@ -19,7 +19,7 @@ void btl_state_update_begin_partner_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_INIT) {
         if (partner == NULL) {
-            D_8029F254 = TRUE;
+            BattleSkipActorTurn = TRUE;
             gBattleSubState = BTL_SUBSTATE_END_DELAY;
         } else if ((battleStatus->flags2 & (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) == (BS_FLAGS2_PARTNER_TURN_USED | BS_FLAGS2_PLAYER_TURN_USED)) {
             btl_set_state(BATTLE_STATE_TRANSFER_TURN);
@@ -41,14 +41,14 @@ void btl_state_update_begin_partner_turn(void) {
             partner = battleStatus->partnerActor;
             battleStatus->actionResult = ACTION_RESULT_NONE;
             battleStatus->blockResult = BLOCK_RESULT_NONE;
-            D_8029F254 = FALSE;
+            BattleSkipActorTurn = FALSE;
             gBattleStatus.flags1 |= BS_FLAGS1_PARTNER_ACTING;
             gBattleStatus.flags2 |= BS_FLAGS1_PLAYER_IN_BACK;
             partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
 
             if (partner->koStatus != 0) {
                 partner->koDuration--;
-                D_8029F254 = TRUE;
+                BattleSkipActorTurn = TRUE;
                 BattleStatusUpdateDelay = 20;
                 if (partner->koDuration > 0) {
                     partner->disableEffect->data.disableX->koDuration = partner->koDuration;
@@ -110,7 +110,7 @@ void btl_state_update_begin_partner_turn(void) {
             return;
         }
         gBattleStatus.flags2 &= ~BS_FLAGS2_NO_PLAYER_PAL_ADJUST;
-        if (D_8029F254) {
+        if (BattleSkipActorTurn) {
             gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
             btl_set_state(BATTLE_STATE_TRANSFER_TURN);
         } else {

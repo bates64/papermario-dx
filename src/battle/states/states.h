@@ -12,8 +12,9 @@ enum BattleSubStates {
     BTL_SUBSTATE_PLAYER_CONTINUE_DIP                        = 70,
 };
 
-extern s16 D_802809F6;
-extern b32 D_8029F254;
+extern s16 EndDemoWhiteOut;
+extern b32 BattleSkipActorTurn;
+extern b32 BattleCanShowFirstStrike;
 extern s32 BattleStatusUpdateDelay;
 extern s32 BattleSubstateDelay;
 extern s32 BattleScreenFadeAmt;

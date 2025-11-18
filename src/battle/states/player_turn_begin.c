@@ -19,7 +19,7 @@ enum {
     BTL_SUBSTATE_RESET_STATE              = 100,
 };
 
-void handle_water_block(void) {
+void update_water_block(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -67,121 +67,91 @@ void handle_water_block(void) {
     }
 }
 
-void btl_state_update_begin_player_turn(void) {
+void update_cloud_nine(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    Actor* player = battleStatus->playerActor;
-    Actor* partner = battleStatus->partnerActor;
-    ActorPart* part = &player->partsTable[0];
-    Evt* script;
-    s32 i;
-
-    s8 debuffDuration;
-    s32 koDuration;
-    s32 prevDuration;
-    s32 itemSpawnOffsetX;
-
-    if (gBattleSubState == BTL_SUBSTATE_INIT) {
-        btl_cam_use_preset(BTL_CAM_DEFAULT);
-        btl_cam_move(5);
-        gBattleSubState = BTL_SUBSTATE_RESET_STATE;
-    }
-
-    switch (gBattleSubState) {
-        case BTL_SUBSTATE_RESET_STATE:
-            if (btl_cam_is_moving_done()) {
-                gBattleStatus.flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
-                reset_actor_turn_info();
-                battleStatus->actionResult = ACTION_RESULT_NONE;
-                battleStatus->blockResult = BLOCK_RESULT_NONE;
-                battleStatus->selectedMoveID = 0;
-                gBattleStatus.flags1 |= BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
-                gBattleStatus.flags2 &= ~BS_FLAGS2_IS_FIRST_STRIKE;
-                player->disableDismissTimer = 0;
-                player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
-
-                if (partner != NULL) {
-                    player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
-                    partner->disableDismissTimer = 0;
-                }
-
-                battleStatus->stateFreezeCount = 0;
-                D_8029F254 = FALSE;
-                BattleStatusUpdateDelay = 0;
-
-                if (battleStatus->outtaSightActive != 0) {
-                    battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
-                    script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
-                    partner->handlePhaseScript = script;
-                    gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
-                    partner->handlePhaseScriptID = script->id;
-                    script->owner1.actorID = ACTOR_PARTNER;
-                } else {
-                    gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
-                }
-            }
-            break;
-        case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
-            if (!does_script_exist(partner->handlePhaseScriptID)) {
-                battleStatus->outtaSightActive = 0;
-                gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
-                gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
-            }
-            break;
-    }
-
-    handle_water_block();
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_CHECK_CLOUD_NINE:
-            if (battleStatus->cloudNineTurnsLeft != 0) {
-                battleStatus->cloudNineTurnsLeft--;
-                battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft = battleStatus->cloudNineTurnsLeft;
+            // is could nine active?
+            if (battleStatus->cloudNineTurnsLeft == 0) {
+                gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
+                return;
+            }
 
-                if (battleStatus->cloudNineTurnsLeft <= 0) {
-                    remove_effect(battleStatus->cloudNineEffect);
-                    battleStatus->cloudNineEffect = NULL;
-                    btl_show_battle_message(BTL_MSG_CLOUD_NINE_END, 60);
-                    gBattleSubState = BTL_SUBSTATE_AWAIT_CLOUD_NINE;
-                } else {
-                    gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
-                }
-            } else {
+            // decrement buff duration by 1 turn
+            battleStatus->cloudNineTurnsLeft--;
+            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft = battleStatus->cloudNineTurnsLeft;
+            if (battleStatus->cloudNineTurnsLeft > 0) {
                 gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
+                return;
             }
+
+            // buff has ended
+            remove_effect(battleStatus->cloudNineEffect);
+            battleStatus->cloudNineEffect = NULL;
+
+            // new substate will wait for popup to go away
+            btl_show_battle_message(BTL_MSG_CLOUD_NINE_END, 60);
+            gBattleSubState = BTL_SUBSTATE_AWAIT_CLOUD_NINE;
             break;
+
         case BTL_SUBSTATE_AWAIT_CLOUD_NINE:
-            if (!btl_is_popup_displayed()) {
-                gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
+            if (btl_is_popup_displayed()) {
+                return;
             }
+            gBattleSubState = BTL_SUBSTATE_CHECK_TURBO_CHARGE;
             break;
     }
+}
+
+void update_turbo_charge(void) {
+    BattleStatus* battleStatus = &gBattleStatus;
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_CHECK_TURBO_CHARGE:
-            if (battleStatus->turboChargeTurnsLeft != 0) {
-                if (gBattleStatus.flags2 & BS_FLAGS2_STORED_TURBO_CHARGE_TURN) {
-                    gBattleStatus.flags2 &= ~BS_FLAGS2_STORED_TURBO_CHARGE_TURN;
-                    gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
-                } else {
-                    battleStatus->turboChargeTurnsLeft--;
-                    battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft = battleStatus->turboChargeTurnsLeft;
-                    if (battleStatus->turboChargeTurnsLeft <= 0) {
-                        btl_show_battle_message(BTL_MSG_TURBO_CHARGE_END, 60);
-                        gBattleSubState = BTL_SUBSTATE_AWAIT_TURBO_CHARGE;
-                    } else {
-                        gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
-                    }
-                }
-            } else {
+            // is turbo charge active?
+            if (battleStatus->turboChargeTurnsLeft == 0) {
                 gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
+                return;
             }
+
+            // consume the 'stored' turn if player was buffed after theyd used their turn
+            if (gBattleStatus.flags2 & BS_FLAGS2_STORED_TURBO_CHARGE_TURN) {
+                gBattleStatus.flags2 &= ~BS_FLAGS2_STORED_TURBO_CHARGE_TURN;
+                gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
+                return;
+            }
+
+            // decrement buff duration by 1 turn
+            battleStatus->turboChargeTurnsLeft--;
+            battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft = battleStatus->turboChargeTurnsLeft;
+            if (battleStatus->turboChargeTurnsLeft > 0) {
+                gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
+                return;
+            }
+
+            // new substate will wait for popup to go away
+            btl_show_battle_message(BTL_MSG_TURBO_CHARGE_END, 60);
+            gBattleSubState = BTL_SUBSTATE_AWAIT_TURBO_CHARGE;
             break;
+
         case BTL_SUBSTATE_AWAIT_TURBO_CHARGE:
-            if (!btl_is_popup_displayed()) {
-                gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
+            if (btl_is_popup_displayed()) {
+                return;
             }
+            gBattleSubState = BTL_SUBSTATE_TRY_STATUS_DAMAGE;
             break;
     }
+}
+
+void update_status_damage(void) {
+    BattleStatus* battleStatus = &gBattleStatus;
+    Actor* player = battleStatus->playerActor;
+    ActorPart* part = &player->partsTable[0];
+    s8 debuffDuration;
+    s32 koDuration;
+    s32 prevDuration;
+    s32 i;
 
     if (gBattleSubState == BTL_SUBSTATE_TRY_STATUS_DAMAGE) {
         if (player->debuff == STATUS_KEY_POISON && player->stoneStatus == 0) {
@@ -216,7 +186,7 @@ void btl_state_update_begin_player_turn(void) {
                 return;
             }
 
-            D_8029F254 = FALSE;
+            BattleSkipActorTurn = FALSE;
             player->disableDismissTimer = 0;
             player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
 
@@ -264,7 +234,7 @@ void btl_state_update_begin_player_turn(void) {
 
                 if (player->debuff != 0) {
                     if (player->debuff <= STATUS_KEY_POISON) {
-                        D_8029F254 = TRUE;
+                        BattleSkipActorTurn = TRUE;
                     }
                     BattleStatusUpdateDelay = 20;
                     player->debuffDuration--;
@@ -314,6 +284,13 @@ void btl_state_update_begin_player_turn(void) {
             gBattleSubState = BTL_SUBSTATE_TRY_COMMAND_RECOVER;
         }
     }
+}
+
+void update_command_loss(void) {
+    BattleStatus* battleStatus = &gBattleStatus;
+    Actor* player = battleStatus->playerActor;
+    Evt* script;
+    s32 itemSpawnOffsetX;
 
     if (gBattleSubState == BTL_SUBSTATE_TRY_COMMAND_RECOVER) {
         if (btl_check_enemies_defeated()) {
@@ -364,6 +341,69 @@ void btl_state_update_begin_player_turn(void) {
         }
         gBattleSubState = BTL_SUBSTATE_END_DELAY;
     }
+}
+
+void btl_state_update_begin_player_turn(void) {
+    BattleStatus* battleStatus = &gBattleStatus;
+    Actor* player = battleStatus->playerActor;
+    Actor* partner = battleStatus->partnerActor;
+    Evt* script;
+
+    if (gBattleSubState == BTL_SUBSTATE_INIT) {
+        btl_cam_use_preset(BTL_CAM_DEFAULT);
+        btl_cam_move(5);
+        gBattleSubState = BTL_SUBSTATE_RESET_STATE;
+    }
+
+    switch (gBattleSubState) {
+        case BTL_SUBSTATE_RESET_STATE:
+            if (btl_cam_is_moving_done()) {
+                gBattleStatus.flags1 &= ~BS_FLAGS1_PARTNER_ACTING;
+                reset_actor_turn_info();
+                battleStatus->actionResult = ACTION_RESULT_NONE;
+                battleStatus->blockResult = BLOCK_RESULT_NONE;
+                battleStatus->selectedMoveID = 0;
+                gBattleStatus.flags1 |= BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
+                gBattleStatus.flags2 &= ~BS_FLAGS2_IS_FIRST_STRIKE;
+                player->disableDismissTimer = 0;
+                player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
+
+                if (partner != NULL) {
+                    player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
+                    partner->disableDismissTimer = 0;
+                }
+
+                battleStatus->stateFreezeCount = 0;
+                BattleSkipActorTurn = FALSE;
+                BattleStatusUpdateDelay = 0;
+
+                if (battleStatus->outtaSightActive != 0) {
+                    battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
+                    script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
+                    partner->handlePhaseScript = script;
+                    gBattleSubState = BTL_SUBSTATE_AWAIT_OUTTA_SIGHT;
+                    partner->handlePhaseScriptID = script->id;
+                    script->owner1.actorID = ACTOR_PARTNER;
+                } else {
+                    gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
+                }
+            }
+            break;
+        case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
+            if (!does_script_exist(partner->handlePhaseScriptID)) {
+                battleStatus->outtaSightActive = 0;
+                gBattleSubState = BTL_SUBSTATE_CHECK_WATER_BLOCK;
+                gBattleStatus.flags2 |= BS_FLAGS2_PARTNER_TURN_USED;
+            }
+            break;
+    }
+
+    update_water_block();
+    update_cloud_nine();
+    update_turbo_charge();
+
+    update_status_damage();
+    update_command_loss();
 
     if (gBattleSubState == BTL_SUBSTATE_END_DELAY) {
         if (player->handleEventScript == NULL || !does_script_exist(player->handleEventScriptID)) {
@@ -378,7 +418,7 @@ void btl_state_update_begin_player_turn(void) {
                 return;
             }
 
-            if (D_8029F254) {
+            if (BattleSkipActorTurn) {
                 btl_set_state(BATTLE_STATE_BEGIN_PARTNER_TURN);
                 gBattleStatus.flags2 |= BS_FLAGS2_PLAYER_TURN_USED;
             } else{

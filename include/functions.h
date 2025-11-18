@@ -920,8 +920,8 @@ void reset_player_blur(void);
 void force_disable_player_blur(void);
 void force_disable_player_blur_immediately(void);
 
-void func_8023E104(void);
-void func_8023E11C(void);
+void btl_start_blinking_starpoints(void);
+void btl_stop_blinking_starpoints(void);
 
 void set_goal_pos_to_part(ActorState* state, s32 actorID, s32 partID);
 

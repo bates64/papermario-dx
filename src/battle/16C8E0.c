@@ -7,10 +7,10 @@
 #include "effects.h"
 #include "battle/states/states.h"
 
-f32 D_802809F0 = 0.0f;
-s8 D_802809F4 = 0;
-s8 D_802809F5 = 0;
-s16 D_802809F6 = -1;
+f32 StarPointsIncrementInterp = 0.0f;
+b8 BtlStarPointsBlinking = FALSE;
+s8 StarPointsBlinkTimer = 0;
+s16 EndDemoWhiteOut = -1;
 s16 DemoBattleBeginDelay = 0;
 u16 gTattleBgTextureYOffset = 0;
 
@@ -94,14 +94,14 @@ void get_stick_input_radial(f32* angle, f32* magnitude) {
     *magnitude = mag;
 }
 
-void func_8023E104(void) {
-    D_802809F4 = 1;
-    D_802809F5 = 0;
+void btl_start_blinking_starpoints(void) {
+    BtlStarPointsBlinking = TRUE;
+    StarPointsBlinkTimer = 0;
 }
 
-void func_8023E11C(void) {
-    D_802809F4 = 0;
-    D_802809F5 = 0;
+void btl_stop_blinking_starpoints(void) {
+    BtlStarPointsBlinking = FALSE;
+    StarPointsBlinkTimer = 0;
 }
 
 void initialize_battle(void) {
@@ -186,9 +186,6 @@ void initialize_battle(void) {
     if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
         playerData->curPartner = PARTNER_TWINK;
     }
-}
-
-void func_8023E3FC(void) {
 }
 
 void update_nonplayer_actor_shadows(void) {
@@ -393,29 +390,29 @@ void btl_update(void) {
             }
         }
 
-        if (cond || D_802809F6 != -1) {
-            if (D_802809F6 == -1) {
+        if (cond || EndDemoWhiteOut != -1) {
+            if (EndDemoWhiteOut == -1) {
                 if (gGameStatusPtr->demoState == DEMO_STATE_CHANGE_MAP) {
                     u8 paramType;
                     f32 paramAmount;
 
                     get_screen_overlay_params(SCREEN_LAYER_FRONT, &paramType, &paramAmount);
                     if (paramType == (u8) OVERLAY_NONE) {
-                        D_802809F6 = 0;
+                        EndDemoWhiteOut = 0;
                         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 0.0f);
                     }
                 }
-            } else if (D_802809F6 == 255) {
+            } else if (EndDemoWhiteOut == 255) {
                 if (gBattleState != BATTLE_STATE_END_DEMO_BATTLE) {
                     btl_set_state(BATTLE_STATE_END_DEMO_BATTLE);
                 }
             } else {
-                D_802809F6 += 10;
-                if (D_802809F6 > 255) {
-                    D_802809F6 = 255;
+                EndDemoWhiteOut += 10;
+                if (EndDemoWhiteOut > 255) {
+                    EndDemoWhiteOut = 255;
                 }
 
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_802809F6);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, EndDemoWhiteOut);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
                 startup_set_fade_screen_alpha(255);
                 startup_set_fade_screen_color(224);
@@ -882,7 +879,7 @@ void btl_draw_enemy_health_bars(void) {
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    s32 cond;
+    b32 showStarPoints;
     s32 i;
 
     if (gBattleStatus.flags1 & BS_FLAGS1_ACTORS_VISIBLE) {
@@ -900,27 +897,27 @@ void btl_update_starpoints_display(void) {
             }
         }
 
-        cond = TRUE;
-        if (D_802809F4 != 0) {
-            if (D_802809F5 > 8) {
-                if (D_802809F5 <= 12) {
-                    cond = FALSE;
+        showStarPoints = TRUE;
+        if (BtlStarPointsBlinking) {
+            if (StarPointsBlinkTimer > 8) {
+                if (StarPointsBlinkTimer <= 12) {
+                    showStarPoints = FALSE;
                 } else {
-                    D_802809F5 = 0;
+                    StarPointsBlinkTimer = 0;
                 }
             }
-            D_802809F5++;
+            StarPointsBlinkTimer++;
         }
 
-        if (cond) {
+        if (showStarPoints) {
             s32 posX, posY;
             s32 tens, ones;
             s32 id;
             f32 one = 1.0f;
 
             battleStatus->incrementStarPointDelay--;
-            D_802809F0 -= 1.0;
-            if (D_802809F0 <= 0.0f) {
+            StarPointsIncrementInterp -= 1.0;
+            if (StarPointsIncrementInterp <= 0.0f) {
                 s32 pendingStarPoints;
 
                 if (battleStatus->pendingStarPoints > 0) {
@@ -936,12 +933,12 @@ void btl_update_starpoints_display(void) {
                     pendingStarPoints = 1;
                 }
 
-                D_802809F0 = (f32) battleStatus->incrementStarPointDelay / pendingStarPoints;
-                if (D_802809F0 < 1.0) {
-                    D_802809F0 = 1.0f;
+                StarPointsIncrementInterp = (f32) battleStatus->incrementStarPointDelay / pendingStarPoints;
+                if (StarPointsIncrementInterp < 1.0) {
+                    StarPointsIncrementInterp = 1.0f;
                 }
-                if (D_802809F0 > 6.0) {
-                    D_802809F0 = 6.0f;
+                if (StarPointsIncrementInterp > 6.0) {
+                    StarPointsIncrementInterp = 6.0f;
                 }
             }
 
@@ -1052,6 +1049,7 @@ void btl_delete_actor(Actor* actor) {
     for (i = 0; i < 2; i++) {
         remove_actor_decoration(actor, i);
     }
+
     if (actor->idleScript != NULL) {
         kill_script_by_ID(actor->idleScriptID);
     }

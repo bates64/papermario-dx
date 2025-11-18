@@ -23,7 +23,7 @@ void btl_state_update_first_strike(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
-            D_8029F254 = FALSE;
+            BattleCanShowFirstStrike = FALSE;
             btl_merlee_on_first_strike();
             if (playerData->playerFirstStrikes < 9999) {
                 playerData->playerFirstStrikes++;
@@ -110,7 +110,7 @@ void btl_state_update_first_strike(void) {
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
             } else {
-                D_8029F254 = TRUE;
+                BattleCanShowFirstStrike = TRUE;
             }
 
             // wait for player move script
@@ -225,7 +225,7 @@ void btl_state_update_first_strike(void) {
 }
 
 void btl_state_draw_first_stike(void) {
-    if (D_802809F6 == -1 && D_8029F254) {
+    if (EndDemoWhiteOut == -1 && BattleCanShowFirstStrike) {
         if (BattleScreenFadeAmt == 0) {
             set_screen_overlay_params_front(OVERLAY_NONE, -1.0f);
         } else {

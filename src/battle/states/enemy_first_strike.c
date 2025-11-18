@@ -27,7 +27,7 @@ void btl_state_update_enemy_striking_first(void) {
             battleStatus->lastAttackDamage = 0;
             battleStatus->curDamageSource = DMG_SRC_DEFAULT;
             battleStatus->flags1 &= ~BS_FLAGS1_MENU_OPEN;
-            D_8029F254 = FALSE;
+            BattleCanShowFirstStrike = FALSE;
             player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             if (partner != NULL) {
                 partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
@@ -100,7 +100,7 @@ void btl_state_update_enemy_striking_first(void) {
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
             } else {
-                D_8029F254 = TRUE;
+                BattleCanShowFirstStrike = TRUE;
             }
 
             // wait for current enemy TakeTurn script to finish
@@ -180,7 +180,7 @@ void btl_state_update_enemy_striking_first(void) {
 }
 
 void btl_state_draw_enemy_striking_first(void) {
-    if (D_8029F254) {
+    if (BattleCanShowFirstStrike) {
         if (BattleScreenFadeAmt == 0) {
             set_screen_overlay_params_front(OVERLAY_NONE, -1.0f);
         } else {
