@@ -4,6 +4,7 @@
 #include "game_modes.h"
 #include "battle/battle.h"
 #include "hud_element.h"
+#include "inventory.h"
 #include "qsort.h"
 #include <string.h>
 #include "dx/utils.h"
@@ -21,13 +22,17 @@ const s32 BottomRowY      = 222;
 const s32 SubmenuPosX     = 140;
 const s32 SubmenuPosY     = MainMenuPosY;
 
-const s32 SubBoxPosX      = SubmenuPosX - 10;
-const s32 SubBoxPosY      = SubmenuPosY - 4;
+const s32 BoxOutsetX      = 10;
+const s32 BoxOutsetY      = 4;
+
+const s32 SubBoxPosX      = SubmenuPosX - BoxOutsetX;
+const s32 SubBoxPosY      = SubmenuPosY - BoxOutsetY;
 
 // which menu or submenu is open, only one is displayed at a time
 // pressing ACCEPT (R) or CANCEL (L) usually moves between these states
 enum DebugMenuStates {
     DBM_NONE,
+    // press D-left to open debug menu
     DBM_MAIN_MENU,
     DBM_QUICK_SAVE,
     DBM_SELECT_AREA,
@@ -50,7 +55,13 @@ enum DebugMenuStates {
     DBM_EDIT_MEMORY,
     DBM_VIEW_COLLISION,
     DBM_CHEAT_MENU,
-} DebugMenuState = DBM_NONE;
+    // press D-right to open script debugger
+    DBM_EVT_MAIN,
+    DBM_EVT_SELECT,
+    DBM_EVT_ATTACHED,
+};
+
+s32 DebugMenuState = DBM_NONE;
 b32 DebugStateChanged = FALSE;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
@@ -156,7 +167,7 @@ void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 
 }
 
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
-    u8 buf[128] = {
+    char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
@@ -164,7 +175,7 @@ void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
 }
 
 void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, s32 effect) {
-    u8 buf[128] = {
+    char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dx_string_to_msg(&buf[4], text);
@@ -172,7 +183,7 @@ void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, 
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
-    u8 buf[128] = {
+    char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     dma_load_msg(msgID, &buf[4]);
@@ -181,7 +192,7 @@ void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
 
 void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
     char fmtBuf[16];
-    u8 buf[16] = {
+    char buf[16] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
     };
     sprintf(fmtBuf, fmt, number);
@@ -191,7 +202,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
 void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
-    u8 msgBuf[32] = {
+    char msgBuf[32] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
     };
@@ -436,8 +447,8 @@ DebugMenuEntry DebugMainMenu[] = {
 s32 MainMenuPos = 0;
 
 // position of the blue box containing the main menu options
-const s32 MainBoxPosX     = MainMenuPosX - 10;
-const s32 MainBoxPosY     = MainMenuPosY - 4;
+const s32 MainBoxPosX     = MainMenuPosX - BoxOutsetX;
+const s32 MainBoxPosY     = MainMenuPosY - BoxOutsetY;
 const s32 MainBoxWidth    = 96;
 const s32 MainBoxHeight   = ARRAY_COUNT(DebugMainMenu) * RowHeight + 8;
 
@@ -467,6 +478,9 @@ void dx_debug_update_edit_star_points();
 void dx_debug_update_edit_star_pieces();
 void dx_debug_update_view_collision();
 void dx_debug_update_cheat_menu();
+void dx_debug_update_evt_main();
+void dx_debug_update_evt_select();
+void dx_debug_update_evt_attached();
 
 void dx_debug_menu_main() {
     s32 initialMenuState = DebugMenuState;
@@ -488,15 +502,24 @@ void dx_debug_menu_main() {
         if (PRESSED(BUTTON_D_LEFT)) {
             DebugMenuState = DBM_MAIN_MENU;
         }
+        if (PRESSED(BUTTON_D_RIGHT)) {
+            DebugMenuState = DBM_EVT_MAIN;
+        }
     } else if (DebugMenuState == DBM_MAIN_MENU) {
         if (PRESSED(BUTTON_D_LEFT | BUTTON_L)) {
+            DebugMenuState = DBM_NONE;
+        }
+    } else if (DebugMenuState == DBM_EVT_MAIN) {
+        if (PRESSED(BUTTON_D_RIGHT | BUTTON_L)) {
             DebugMenuState = DBM_NONE;
         }
     }
 
     if (DebugMenuState != DBM_NONE) {
         // main menu is always drawn if the debug menu is open at all
-        dx_debug_draw_main_menu();
+        if (DebugMenuState < DBM_EVT_MAIN) {
+            dx_debug_draw_main_menu();
+        }
 
         switch (DebugMenuState) {
             case DBM_NONE: // to satisfy compiler
@@ -565,6 +588,15 @@ void dx_debug_menu_main() {
                 break;
             case DBM_CHEAT_MENU:
                 dx_debug_update_cheat_menu();
+                break;
+            case DBM_EVT_MAIN:
+                dx_debug_update_evt_main();
+                break;
+            case DBM_EVT_SELECT:
+                dx_debug_update_evt_select();
+                break;
+            case DBM_EVT_ATTACHED:
+                dx_debug_update_evt_attached();
                 break;
         }
     }
@@ -1387,15 +1419,12 @@ void dx_debug_update_edit_gear() {
         gPlayerData.hasActionCommands = DebugGearValues[DEBUG_GEAR_LUCKY_STAR];
         gPlayerData.starBeamLevel = DebugGearValues[DEBUG_GEAR_STAR_BEAM];
 
-        //TODO functions do not exist yet
-        /*
-        if (gPlayerData.hasActionCommands && !has_key_item(ITEM_LUCKY_STAR)) {
-            add_key_item(ITEM_LUCKY_STAR);
+        if (gPlayerData.hasActionCommands && !has_item(ITEM_LUCKY_STAR)) {
+            add_item(ITEM_LUCKY_STAR);
         }
-        if (!gPlayerData.hasActionCommands && has_key_item(ITEM_LUCKY_STAR)) {
-            remove_key_item(ITEM_LUCKY_STAR);
+        if (!gPlayerData.hasActionCommands && has_item(ITEM_LUCKY_STAR)) {
+            remove_item(ITEM_LUCKY_STAR);
         }
-        */
 
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
@@ -1942,6 +1971,714 @@ void dx_debug_update_cheat_menu() {
 
 b32 dx_debug_is_cheat_enabled(DebugCheat cheat) {
     return DebugCheatMenu[cheat].enabled;
+}
+
+// ----------------------------------------------------------------------------
+// script debugger
+
+const s32 EvtDebugBoxWidth    = 72;
+const s32 EvtDebugBoxHeight   = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+
+const s32 EvtDebugMenuPosX    = 314 - EvtDebugBoxWidth; // right edge should be at 314
+const s32 EvtDebugMenuPosY    = 60;
+
+// position of the blue box containing the main menu options
+const s32 EvtDebugBoxPosX     = EvtDebugMenuPosX - BoxOutsetX;
+const s32 EvtDebugBoxPosY     = EvtDebugMenuPosY - BoxOutsetY;
+
+const s32 EvtDebugInfoX     = 26;
+const s32 EvtDebugInfoY     = 60;
+const s32 EvtDebugInfoWidth     = 212;
+const s32 EvtDebugInfoHeight    = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+
+char* EvtMainMenuOpts[] = {
+    "Attach",
+    "Break",
+    "Resume",
+    "Break All",
+    "Resume All",
+};
+
+s32 EvtMainMenuPos = 0;
+
+s32 EvtListCurPos = 0;
+s32 EvtListDrawPos = 0;
+
+s32 EvtAttachedMenuPos = 0;
+s32 EvtAttachedDispMode = 0;
+s32 EvtAttachedVarsMode = 0;
+
+extern ScriptList* gCurrentScriptListPtr;
+extern s32 gScriptIndexList[];
+extern s32 gScriptIdList[];
+extern s32 gScriptListCount;
+
+Evt* DebugEvtList[MAX_SCRIPTS];
+s32 DebugEvtCount;
+
+Evt* DebugEvtAttached;
+s32 DebugEvtPrevLVars[16];
+s32 DebugEvtPrevTemps[4];
+
+u16 DebugEvtLineOffsets[1024];
+s32 DebugEvtLineCount;
+s32 DebugEvtCurLine;
+s32 DebugEvtDrawLine;
+
+typedef struct DebugOpcode {
+    char* text;
+} DebugOpcode;
+
+DebugOpcode DebugOps[] = {
+    [EVT_OP_END]                { "End" },
+    [EVT_OP_RETURN]             { "Return" },
+    [EVT_OP_LABEL]              { "Label" },
+    [EVT_OP_GOTO]               { "Goto" },
+    [EVT_OP_LOOP]               { "Loop" },
+    [EVT_OP_END_LOOP]           { "EndLoop" },
+    [EVT_OP_BREAK_LOOP]         { "BreakLoop" },
+    [EVT_OP_WAIT_FRAMES]        { "Wait" },
+    [EVT_OP_WAIT_SECS]          { "WaitSecs" },
+    [EVT_OP_IF_EQ]              { "If EQ" },
+    [EVT_OP_IF_NE]              { "If NE" },
+    [EVT_OP_IF_LT]              { "If LT" },
+    [EVT_OP_IF_GT]              { "If GT" },
+    [EVT_OP_IF_LE]              { "If LE" },
+    [EVT_OP_IF_GE]              { "If GE" },
+    [EVT_OP_IF_FLAG]            { "If AND" },
+    [EVT_OP_IF_NOT_FLAG]        { "If NAND" },
+    [EVT_OP_ELSE]               { "Else" },
+    [EVT_OP_END_IF]             { "EndIf" },
+    [EVT_OP_SWITCH]             { "Switch" },
+    [EVT_OP_SWITCH_CONST]       { "SwitchConst" },
+    [EVT_OP_CASE_EQ]            { "Case EQ" },
+    [EVT_OP_CASE_NE]            { "Case NE" },
+    [EVT_OP_CASE_LT]            { "Case LT" },
+    [EVT_OP_CASE_GT]            { "Case GT" },
+    [EVT_OP_CASE_LE]            { "Case LE" },
+    [EVT_OP_CASE_GE]            { "Case GE" },
+    [EVT_OP_CASE_DEFAULT]       { "Default" },
+    [EVT_OP_CASE_OR_EQ]         { "CaseOR EQ" },
+    [EVT_OP_CASE_AND_EQ]        { "CaseAND EQ" },
+    [EVT_OP_CASE_FLAG]          { "Case AND" },
+    [EVT_OP_END_CASE_GROUP]     { "EndCaseGroup" },
+    [EVT_OP_CASE_RANGE]         { "Case Range" },
+    [EVT_OP_BREAK_SWITCH]       { "BreakSwitch" },
+    [EVT_OP_END_SWITCH]         { "EndSwitch" },
+    [EVT_OP_SET]                { "Set" },
+    [EVT_OP_SET_CONST]          { "SetConst" },
+    [EVT_OP_SETF]               { "SetF" },
+    [EVT_OP_ADD]                { "Add" },
+    [EVT_OP_SUB]                { "Sub" },
+    [EVT_OP_MUL]                { "Mul" },
+    [EVT_OP_DIV]                { "Div" },
+    [EVT_OP_MOD]                { "Mod" },
+    [EVT_OP_ADDF]               { "AddF" },
+    [EVT_OP_SUBF]               { "SubF" },
+    [EVT_OP_MULF]               { "MulF" },
+    [EVT_OP_DIVF]               { "DivF" },
+    [EVT_OP_USE_BUF]            { "UseBuf" },
+    [EVT_OP_BUF_READ1]          { "BufRead1" },
+    [EVT_OP_BUF_READ2]          { "BufRead2" },
+    [EVT_OP_BUF_READ3]          { "BufRead3" },
+    [EVT_OP_BUF_READ4]          { "BufRead4" },
+    [EVT_OP_BUF_PEEK]           { "BufPeek" },
+    [EVT_OP_USE_FBUF]           { "UseFBuf" },
+    [EVT_OP_FBUF_READ1]         { "FBufRead1" },
+    [EVT_OP_FBUF_READ2]         { "FBufRead2" },
+    [EVT_OP_FBUF_READ3]         { "FBufRead3" },
+    [EVT_OP_FBUF_READ4]         { "FBufRead4" },
+    [EVT_OP_FBUF_PEEK]          { "FBufPeek" },
+    [EVT_OP_USE_ARRAY]          { "UseArray" },
+    [EVT_OP_USE_FLAGS]          { "UseFlags" },
+    [EVT_OP_MALLOC_ARRAY]       { "MallocArray" },
+    [EVT_OP_BITWISE_AND]        { "AND" },
+    [EVT_OP_BITWISE_AND_CONST]  { "AND Const" },
+    [EVT_OP_BITWISE_OR]         { "OR" },
+    [EVT_OP_BITWISE_OR_CONST]   { "OR Const" },
+    [EVT_OP_CALL]               { "Call" },
+    [EVT_OP_EXEC]               { "Exec" },
+    [EVT_OP_EXEC_GET_TID]       { "ExecGet" },
+    [EVT_OP_EXEC_WAIT]          { "ExecWait" },
+    [EVT_OP_BIND_TRIGGER]       { "BindTrigger" },
+    [EVT_OP_UNBIND]             { "Unbind" },
+    [EVT_OP_KILL_THREAD]        { "KillThread" },
+    [EVT_OP_JUMP]               { "Jump" },
+    [EVT_OP_SET_PRIORITY]       { "SetPriority" },
+    [EVT_OP_SET_TIMESCALE]      { "SetTimescale" },
+    [EVT_OP_SET_GROUP]          { "SetGroup" },
+    [EVT_OP_BIND_PADLOCK]       { "BindPadlock" },
+    [EVT_OP_SUSPEND_GROUP]      { "SuspendGroup" },
+    [EVT_OP_RESUME_GROUP]       { "ResumeGroup" },
+    [EVT_OP_SUSPEND_OTHERS]     { "SuspendOthers" },
+    [EVT_OP_RESUME_OTHERS]      { "ResumeOthers" },
+    [EVT_OP_SUSPEND_THREAD]     { "SuspendThread" },
+    [EVT_OP_RESUME_THREAD]      { "ResumeThread" },
+    [EVT_OP_IS_THREAD_RUNNING]  { "IsRunning" },
+    [EVT_OP_THREAD]             { "Thread" },
+    [EVT_OP_END_THREAD]         { "EndThread" },
+    [EVT_OP_CHILD_THREAD]       { "ChildThread" },
+    [EVT_OP_END_CHILD_THREAD]   { "EndChildThread" },
+    [EVT_OP_DEBUG_LOG]          { "Log" },
+    [EVT_OP_DEBUG_PRINT_VAR]    { "PrintVar" },
+    [EVT_OP_92]                 { "Op92" },
+    [EVT_OP_93]                 { "Op93" },
+    [EVT_OP_94]                 { "Op94" },
+    [EVT_OP_DEBUG_BREAKPOINT]   { "Breakpoint" },
+};
+
+// main menu options for evt debugger
+enum {
+    DEBUG_EVT_MAIN_ATTACH           = 0,
+    DEBUG_EVT_MAIN_BREAK            = 1,
+    DEBUG_EVT_MAIN_RESUME           = 2,
+    DEBUG_EVT_MAIN_BREAK_ALL        = 3,
+    DEBUG_EVT_MAIN_RESUME_ALL       = 4,
+    DEBUG_EVT_MAIN_COUNT,
+};
+
+// menu options for evt debugger while attached
+enum {
+    DEBUG_EVT_ATTACHED_DETACH       = 0,
+    DEBUG_EVT_ATTACHED_BREAK        = 1,
+    DEBUG_EVT_ATTACHED_STEP_ONCE    = 2,
+    DEBUG_EVT_ATTACHED_STEP_OVER    = 3,
+    DEBUG_EVT_ATTACHED_DISP_MODE    = 4,
+    DEBUG_EVT_ATTACHED_COUNT,
+};
+
+// display modes for evt debugger vars
+enum {
+    DEBUG_EVT_DISP_MODE_RAW         = 0,
+    DEBUG_EVT_DISP_MODE_INT         = 1,
+    DEBUG_EVT_DISP_MODE_FIXED       = 2,
+    DEBUG_EVT_DISP_MODE_FLOAT       = 3,
+    DEBUG_EVT_DISP_MODE_COUNT,
+};
+
+void dx_debug_update_evt_list() {
+    s32 i;
+
+    DebugEvtCount = 0;
+
+    for (i = 0; i < gScriptListCount; i++) {
+        Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
+
+        if (script != NULL
+            && script->id == gScriptIdList[i]
+            && script->stateFlags != 0
+        ) {
+            DebugEvtList[DebugEvtCount] = script;
+            DebugEvtCount++;
+        }
+    }
+
+    for (i = DebugEvtCount; i < MAX_SCRIPTS; i++) {
+        DebugEvtList[i] = NULL;
+    }
+}
+
+void dx_debug_evt_capture_vars() {
+    s32 i;
+
+    if (DebugEvtAttached == NULL) {
+        return;
+    }
+
+    for (i = 0; i < 16; i++) {
+        DebugEvtPrevLVars[i] = DebugEvtAttached->varTable[i];
+    }
+    for (i = 0; i < 4; i++) {
+        DebugEvtPrevTemps[i] = DebugEvtAttached->functionTemp[i];
+    }
+}
+
+s32 dx_debug_scroll_to_line(s32 drawnLine, s32 selectedLine, s32 maxLine, s32 maxVisible) {
+    // if all lines can fit, do not scroll
+    if (maxLine <= maxVisible) {
+        return 0;
+    }
+
+    // scroll up to show selectedLine with an extra line before, if available
+    if (selectedLine < drawnLine + 1) {
+        return MAX(0, selectedLine - 1);
+    }
+
+    // last line selected, scroll to it without end padding
+    if (selectedLine == maxLine - 1) {
+        return selectedLine - (maxVisible - 1);
+    }
+
+    //scroll down to show selectedLine with an extra line after
+    if (selectedLine > drawnLine + (maxVisible - 2)) {
+        return selectedLine - (maxVisible - 2);
+    }
+
+    // no change
+    return drawnLine;
+}
+
+void dx_debug_draw_evt_list() {
+    s32 i;
+
+    const s32 BoxStartX = EvtDebugInfoX - BoxOutsetX;
+    const s32 BoxStartY = EvtDebugInfoY - BoxOutsetY;
+    const s32 BoxHeight = BoxOutsetY + 10 * RowHeight + BoxOutsetY;
+    const s32 BoxWidth = 212;
+
+    // script list box
+    dx_debug_draw_box(BoxStartX, BoxStartY, BoxWidth, BoxHeight, WINDOW_STYLE_20, 192);
+
+    dx_debug_draw_ascii("Grp", DefaultColor, EvtDebugInfoX - 3, EvtDebugInfoY);
+    dx_debug_draw_ascii("Start", DefaultColor, EvtDebugInfoX + 20 + 8, EvtDebugInfoY);
+    dx_debug_draw_ascii("Current", DefaultColor, EvtDebugInfoX + 80, EvtDebugInfoY);
+
+    EvtListDrawPos = dx_debug_scroll_to_line(EvtListDrawPos, EvtListCurPos, DebugEvtCount, 9);
+    s32 last = MIN(EvtListDrawPos + 9, DebugEvtCount);
+    s32 row = 0;
+
+    for (i = EvtListDrawPos; i < last; i++) {
+        Evt* script = DebugEvtList[i];
+
+        s32 posY = EvtDebugInfoY + (1 + row) * RowHeight;
+        s32 color = DefaultColor;
+
+        if (script->debugPaused) {
+            color = MSG_PAL_RED;
+        }
+
+        if (DebugMenuState == DBM_EVT_SELECT && EvtListCurPos == i) {
+            color = HighlightColor;
+        }
+
+        dx_debug_draw_number(script->groupFlags, "%02X", color, 255, EvtDebugInfoX, posY);
+        dx_debug_draw_number(script->ptrFirstLine, "%08X", color, 255, EvtDebugInfoX + 20, posY);
+        dx_debug_draw_number((u8*)script->ptrCurLine - (u8*)script->ptrFirstLine, "%X", color, 255, EvtDebugInfoX + 80, posY);
+
+        row++;
+    }
+
+    // animated down arrow
+    if (DebugEvtCount > last) {
+        char msgDownArrow[] = {
+            MSG_CHAR_DOWN, MSG_CHAR_READ_END
+        };
+        s32 posY = EvtDebugInfoY + (9) * RowHeight;
+        draw_msg((s32)msgDownArrow, EvtDebugInfoX + 185, posY - round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+    }
+    // animated up arrow
+    if (EvtListDrawPos > 0) {
+        char msgUpArrow[] = {
+            MSG_CHAR_UP, MSG_CHAR_READ_END
+        };
+        s32 posY = EvtDebugInfoY + (1) * RowHeight;
+        draw_msg((s32)msgUpArrow, EvtDebugInfoX + 185, posY + round(2.0f * ArrowAnimOffset), 255, DefaultColor, 0);
+    }
+
+    // menu box (upper right)
+    dx_debug_draw_box(EvtDebugBoxPosX, EvtDebugBoxPosY, EvtDebugBoxWidth, ARRAY_COUNT(EvtMainMenuOpts) * RowHeight + 8, WINDOW_STYLE_4, 192);
+
+    for (i = 0; i < ARRAY_COUNT(EvtMainMenuOpts); i++) {
+        s32 color = DefaultColor;
+        if (EvtMainMenuPos == i) {
+            color = (DebugMenuState != DBM_EVT_SELECT) ? HighlightColor : HoverColor;
+        }
+        dx_debug_draw_ascii(EvtMainMenuOpts[i], color, EvtDebugMenuPosX, EvtDebugMenuPosY + i * RowHeight);
+    }
+
+    // count box (lower right)
+    dx_debug_draw_box(EvtDebugBoxPosX, EvtDebugBoxPosY + 9 * RowHeight, EvtDebugBoxWidth, RowHeight + 8, WINDOW_STYLE_4, 192);
+    dx_debug_draw_number(DebugEvtCount, "%d running", DefaultColor, 255, EvtDebugMenuPosX, EvtDebugMenuPosY + 9 * RowHeight);
+}
+
+void dx_debug_evt_break_all() {
+    s32 i;
+
+    debug_printf("count: %d", DebugEvtCount);
+
+    for (i = 0; i < DebugEvtCount; i++) {
+        Evt* script = DebugEvtList[i];
+        script->debugPaused = TRUE;
+        script->debugStep = DEBUG_EVT_STEP_NONE;
+    }
+}
+
+void dx_debug_evt_resume_all() {
+    s32 i;
+
+    for (i = 0; i < DebugEvtCount; i++) {
+        Evt* script = DebugEvtList[i];
+        script->debugPaused = FALSE;
+        script->debugStep = DEBUG_EVT_STEP_NONE;
+    }
+}
+
+void dx_debug_update_evt_main() {
+    s32 count;
+    s32 idx;
+
+    dx_debug_update_evt_list();
+
+    EvtMainMenuPos = dx_debug_menu_nav_1D_vertical(EvtMainMenuPos, 0, DEBUG_EVT_MAIN_COUNT - 1, FALSE);
+
+    // handle input
+    if (RELEASED(BUTTON_R)) {
+        switch (EvtMainMenuPos) {
+            case DEBUG_EVT_MAIN_ATTACH:
+            case DEBUG_EVT_MAIN_BREAK:
+            case DEBUG_EVT_MAIN_RESUME:
+                DebugMenuState = DBM_EVT_SELECT;
+                break;
+            case DEBUG_EVT_MAIN_BREAK_ALL:
+                dx_debug_evt_break_all();
+                break;
+            case DEBUG_EVT_MAIN_RESUME_ALL:
+                dx_debug_evt_resume_all();
+                break;
+        }
+    }
+
+    dx_debug_draw_evt_list();
+}
+
+void dx_debug_update_evt_select() {
+
+    dx_debug_update_evt_list();
+
+    if (DebugEvtCount > 1) {
+        EvtListCurPos = dx_debug_menu_nav_1D_vertical(EvtListCurPos, 0, DebugEvtCount - 1, FALSE);
+    } else {
+        EvtListCurPos = 0;
+    }
+
+    // handle input
+    if (RELEASED(BUTTON_L)) {
+        DebugMenuState = DBM_EVT_MAIN;
+    } else if (RELEASED(BUTTON_R)) {
+        if (DebugEvtCount > 0) {
+            switch (EvtMainMenuPos) {
+                case DEBUG_EVT_MAIN_ATTACH:
+                    DebugMenuState = DBM_EVT_ATTACHED;
+                    DebugEvtAttached = DebugEvtList[EvtListCurPos];
+                    DebugEvtAttached->debugStep = DEBUG_EVT_STEP_NONE;
+                    DebugEvtDrawLine = 0;
+                    dx_debug_evt_capture_vars();
+                    break;
+                case DEBUG_EVT_MAIN_BREAK:
+                    DebugEvtList[EvtListCurPos]->debugPaused = TRUE;
+                    DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
+                    break;
+                case DEBUG_EVT_MAIN_RESUME:
+                    DebugEvtList[EvtListCurPos]->debugPaused = FALSE;
+                    DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
+                    break;
+            }
+        }
+    }
+
+    dx_debug_draw_evt_list();
+}
+
+void dx_debug_evt_draw_menu_line(s32 idx, char* text) {
+    s32 color = DefaultColor;
+    if (EvtAttachedMenuPos == idx) {
+        color = (DebugMenuState != DBM_EVT_SELECT) ? HighlightColor : HoverColor;
+    }
+    dx_debug_draw_ascii(text, color, EvtDebugMenuPosX, EvtDebugMenuPosY + idx * RowHeight);
+}
+
+void dx_debug_draw_var(s32 i, s32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
+    char fmtBuf[64];
+    char buf[64] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    sprintf(fmtBuf, fmt, i, number);
+    dx_string_to_msg(&buf[4], fmtBuf);
+    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+}
+
+void dx_debug_draw_fvar(s32 i, f32 number, char* fmt, s32 color, s32 alpha, s32 posX, s32 posY) {
+    char fmtBuf[64];
+    char buf[64] = {
+        MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12
+    };
+    sprintf(fmtBuf, fmt, i, number);
+    dx_string_to_msg(&buf[4], fmtBuf);
+    draw_msg((s32)buf, posX, posY, alpha, color, 0);
+}
+
+void dx_debug_evt_draw_vars() {
+    #define MAX_VALID_FLOAT 1e9
+    s32 val;
+    f32 fval;
+    s32 i;
+
+    for (i = 0; i < 16; i++) {
+        s32 posX = EvtDebugInfoX + (i / 8) * 106;
+        s32 posY = EvtDebugInfoY + (i % 8) * RowHeight;
+        s32 color = DebugEvtPrevLVars[i] == DebugEvtAttached->varTable[i] ? DefaultColor : HoverColor;
+
+        switch (EvtAttachedVarsMode) {
+                case DEBUG_EVT_DISP_MODE_RAW:
+                dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %08X", color, 255, posX, posY);
+                break;
+            case DEBUG_EVT_DISP_MODE_INT:
+                dx_debug_draw_var(i, DebugEvtAttached->varTable[i], "LVar%X  %d", color, 255, posX, posY);
+                break;
+            case DEBUG_EVT_DISP_MODE_FLOAT:
+                fval = DebugEvtAttached->varTableF[i];
+                if (fabsf(fval) < MAX_VALID_FLOAT) {
+                    dx_debug_draw_fvar(i, fval, "LVar%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "LVar%X  ---", color, 255, posX, posY);
+                }
+                break;
+            case DEBUG_EVT_DISP_MODE_FIXED:
+                val = DebugEvtAttached->varTable[i];
+                if (val > EVT_FIXED_END && val < EVT_FIXED_CUTOFF) {
+                    dx_debug_draw_fvar(i, EVT_FIXED_TO_FLOAT(val), "LVar%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "LVar%X  ---", color, 255, posX, posY);
+                }
+                break;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        s32 posX = EvtDebugInfoX + (i / 2) * 106;
+        s32 posY = EvtDebugInfoY + (8 + (i % 2)) * RowHeight;
+        s32 color = DebugEvtPrevTemps[i] == DebugEvtAttached->functionTemp[i] ? DefaultColor : HoverColor;
+
+        switch (EvtAttachedVarsMode) {
+            case DEBUG_EVT_DISP_MODE_RAW:
+                dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %08X", color, 255, posX, posY);
+                break;
+            case DEBUG_EVT_DISP_MODE_INT:
+                dx_debug_draw_var(i, DebugEvtAttached->functionTemp[i], "Temp%X  %d", color, 255, posX, posY);
+                break;
+            case DEBUG_EVT_DISP_MODE_FLOAT:
+                fval = DebugEvtAttached->functionTempF[i];
+                if (fabsf(fval) < MAX_VALID_FLOAT) {
+                    dx_debug_draw_fvar(i, fval, "Temp%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "Temp%X  ---", color, 255, posX, posY);
+                }
+                dx_debug_draw_fvar(i, DebugEvtAttached->functionTempF[i], "Temp%X  %f", color, 255, posX, posY);
+                break;
+            case DEBUG_EVT_DISP_MODE_FIXED:
+                val = DebugEvtAttached->functionTemp[i];
+                if (val > EVT_FIXED_END && val < EVT_FIXED_CUTOFF) {
+                    dx_debug_draw_fvar(i, EVT_FIXED_TO_FLOAT(val), "Temp%X  %f", color, 255, posX, posY);
+                } else {
+                    dx_debug_draw_var(i, 0, "Temp%X  ---", color, 255, posX, posY);
+                }
+                break;
+        }
+    }
+}
+
+void dx_debug_evt_draw_arg(u32 value, b32 asDecimal, s32 color, s32 posX, s32 posY) {
+    if (value >= LVar0 && value <= LVarF) {
+        dx_debug_draw_number(value - LVar0, "LVar%X", color, 255, posX, posY);
+    } else if (asDecimal) {
+        dx_debug_draw_number(value, "%d", color, 255, posX, posY);
+    } else {
+        dx_debug_draw_number(value, "%08X", color, 255, posX, posY);
+    }
+}
+
+void dx_debug_evt_draw_disasm() {
+    Bytecode* pos;
+    s32 i, j;
+    s32 op, nargs;
+
+    if (DebugEvtAttached == NULL) {
+        return;
+    }
+
+    pos = DebugEvtAttached->ptrFirstLine;
+    DebugEvtLineCount = 0;
+
+    // find offsets for all lines in script
+    while (TRUE) {
+        DebugEvtLineOffsets[DebugEvtLineCount] = (u16)(pos - DebugEvtAttached->ptrFirstLine);
+
+        if (pos == DebugEvtAttached->ptrCurLine) {
+            DebugEvtCurLine = DebugEvtLineCount;
+        }
+
+        op = *pos++;
+        nargs = *pos++;
+        pos += nargs;
+
+        DebugEvtLineCount++;
+
+        if (op == EVT_OP_END || DebugEvtLineCount == ARRAY_COUNT(DebugEvtLineOffsets)) {
+            break;
+        }
+    }
+
+    DebugEvtDrawLine = dx_debug_scroll_to_line(DebugEvtDrawLine, DebugEvtCurLine, DebugEvtLineCount, 10);
+    s32 last = MIN(DebugEvtDrawLine + 10, DebugEvtLineCount);
+    s32 row = 0;
+
+    for (i = DebugEvtDrawLine; i < last; i++) {
+        pos = DebugEvtAttached->ptrFirstLine + DebugEvtLineOffsets[i];
+        op = *pos++;
+        nargs = *pos++;
+        s32* args = pos;
+        pos += nargs;
+
+        s32 posY = EvtDebugInfoY + row * RowHeight;
+        s32 color = (i == DebugEvtCurLine) ? HoverColor : DefaultColor;
+
+        dx_debug_draw_number(i, "%d", color, 255, EvtDebugInfoX, posY);
+
+        if (op > 0 && op < ARRAY_COUNT(DebugOps)) {
+            dx_debug_draw_ascii(DebugOps[op].text, color, EvtDebugInfoX + 15, posY);
+        } else {
+            dx_debug_draw_number(op, "%08X", color, 255, EvtDebugInfoX + 15, posY);
+        }
+
+        switch (op) {
+            case EVT_OP_LABEL:
+            case EVT_OP_GOTO:
+            case EVT_OP_LOOP:
+            case EVT_OP_WAIT_FRAMES:
+            case EVT_OP_WAIT_SECS:
+                dx_debug_evt_draw_arg(args[0], TRUE, color, EvtDebugInfoX + 15 + 55, posY);
+                break;
+            default:
+                for (j = 0; j < MIN(2, nargs); j++) {
+                    dx_debug_evt_draw_arg(args[j], FALSE, color, EvtDebugInfoX + 15 + 55 * (j + 1), posY);
+                }
+                break;
+        }
+
+        if (nargs > 2) {
+            dx_debug_draw_ascii("...", color, EvtDebugInfoX + 15 + 55 * 3, posY);
+        }
+
+        row++;
+    }
+}
+
+void dx_debug_update_evt_attached() {
+    s32 posY;
+
+    if (DebugEvtAttached == NULL) {
+        DebugMenuState = DBM_EVT_MAIN;
+        return;
+    }
+
+    // saves worrying about null checks while drawing on the frame we detach the evt
+    b32 detachAfter = FALSE;
+
+    EvtAttachedMenuPos = dx_debug_menu_nav_1D_vertical(EvtAttachedMenuPos, 0, DEBUG_EVT_ATTACHED_COUNT - 1, FALSE);
+    EvtAttachedDispMode = dx_debug_menu_nav_1D_horizontal(EvtAttachedDispMode, 0, 1, FALSE);
+
+    // handle input
+    if (RELEASED(BUTTON_L)) {
+        DebugMenuState = DBM_EVT_MAIN;
+    } else if (RELEASED(BUTTON_R)) {
+        switch (EvtAttachedMenuPos) {
+            case DEBUG_EVT_ATTACHED_DETACH:
+                detachAfter = TRUE;
+                break;
+            case DEBUG_EVT_ATTACHED_BREAK:
+                DebugEvtAttached->debugPaused = !DebugEvtAttached->debugPaused;
+                break;
+            case DEBUG_EVT_ATTACHED_STEP_ONCE:
+                dx_debug_evt_capture_vars();
+                DebugEvtAttached->debugStep = DEBUG_EVT_STEP_ONCE;
+                break;
+            case DEBUG_EVT_ATTACHED_STEP_OVER:
+                dx_debug_evt_capture_vars();
+                DebugEvtAttached->debugStep = DEBUG_EVT_STEP_OVER;
+                break;
+            case DEBUG_EVT_ATTACHED_DISP_MODE:
+                EvtAttachedVarsMode++;
+                if (EvtAttachedVarsMode >= DEBUG_EVT_DISP_MODE_COUNT) {
+                    EvtAttachedVarsMode = 0;
+                }
+                break;
+        }
+    }
+
+    // draw menu (upper right)
+    dx_debug_draw_box(EvtDebugBoxPosX, EvtDebugBoxPosY, EvtDebugBoxWidth, 5 * RowHeight + 8, WINDOW_STYLE_4, 192);
+
+    dx_debug_evt_draw_menu_line(0, "Detach");
+    if (DebugEvtAttached->debugPaused) {
+        dx_debug_evt_draw_menu_line(1, "Resume");
+    } else {
+        dx_debug_evt_draw_menu_line(1, "Break");
+    }
+    dx_debug_evt_draw_menu_line(2, "Step Once");
+    dx_debug_evt_draw_menu_line(3, "Step Over");
+    switch (EvtAttachedVarsMode) {
+        case DEBUG_EVT_DISP_MODE_INT:
+            dx_debug_evt_draw_menu_line(4, "Vars: Int");
+            break;
+        case DEBUG_EVT_DISP_MODE_FIXED:
+            dx_debug_evt_draw_menu_line(4, "Vars: Fixed");
+            break;
+        case DEBUG_EVT_DISP_MODE_FLOAT:
+            dx_debug_evt_draw_menu_line(4, "Vars: Float");
+            break;
+        case DEBUG_EVT_DISP_MODE_RAW:
+            dx_debug_evt_draw_menu_line(4, "Vars: Raw");
+            break;
+    }
+
+    // header box
+    posY = EvtDebugInfoY - 4;
+    posY -= RowHeight + 3; // move up one line and include a small gap
+    dx_debug_draw_box(EvtDebugInfoX - 10, posY - 4, EvtDebugInfoWidth, 18, WINDOW_STYLE_20, 192);
+
+    dx_debug_draw_number(DebugEvtAttached->ptrFirstLine, "%08X", DefaultColor, 255, EvtDebugInfoX + 40, posY);
+
+    // evt info box
+    dx_debug_draw_box(EvtDebugInfoX - 10, EvtDebugInfoY - 4, EvtDebugInfoWidth, EvtDebugInfoHeight, WINDOW_STYLE_20, 192);
+
+    switch (EvtAttachedDispMode) {
+        case 0:
+            dx_debug_draw_ascii("Vars", DefaultColor, EvtDebugInfoX, posY);
+            dx_debug_evt_draw_vars();
+            break;
+        case 1:
+            dx_debug_draw_ascii("Disasm", DefaultColor, EvtDebugInfoX, posY);
+            dx_debug_evt_draw_disasm();
+            break;
+    }
+
+    if (!DebugEvtAttached->debugPaused) {
+        dx_debug_evt_capture_vars();
+    }
+
+    if (detachAfter) {
+        DebugMenuState = DBM_EVT_SELECT;
+        DebugEvtAttached = NULL;
+    }
+}
+
+void dx_debug_evt_force_detach(Evt* evt) {
+    if (DebugEvtAttached != NULL && (DebugEvtAttached == evt)) {
+        DebugEvtAttached = NULL;
+
+        if (DebugMenuState == DBM_EVT_ATTACHED) {
+            DebugMenuState = DBM_EVT_MAIN;
+        }
+    }
+}
+
+void dx_debug_evt_reset() {
+    if (DebugEvtAttached != NULL) {
+        DebugEvtAttached = NULL;
+    }
+
+    EvtListCurPos = 0;
+    EvtListDrawPos = 0;
 }
 
 // ----------------------------------------------------------------------------
