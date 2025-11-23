@@ -212,7 +212,7 @@ EvtScript N(EVS_RoomListener_BeachHouse) = {
             Exec(N(EVS_80242DE0))
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_g79, MODEL_GROUP_HIDDEN)
-            Call(N(func_80242898_9C7C78))
+            Call(N(MuteAllRadioStations))
     EndSwitch
     Return
     End

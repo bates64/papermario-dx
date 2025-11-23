@@ -58,6 +58,6 @@ extern NpcGroupList N(NormalNPCs);
 API_CALLABLE(N(InitializeRadio));
 API_CALLABLE(N(SetRadioVolumeMax));
 API_CALLABLE(N(SetRadioVolumeMute));
-API_CALLABLE(N(func_80242898_9C7C78));
-API_CALLABLE(N(func_802428B8_9C7C98));
+API_CALLABLE(N(MuteAllRadioStations));
+API_CALLABLE(N(StopAllRadioStations));
 API_CALLABLE(N(func_802428D8_9C7CB8));

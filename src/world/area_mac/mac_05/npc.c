@@ -1973,7 +1973,7 @@ EvtScript N(EVS_NpcInit_ArtistToad) = {
     End
 };
 
-API_CALLABLE(N(func_8024335C_8554CC)) {
+API_CALLABLE(N(AwaitSongFinished)) {
     if (func_8014AD40() == 0) {
         return ApiStatus_DONE2;
     } else {
@@ -1994,7 +1994,7 @@ EvtScript N(D_8024E23C_8603AC) = {
     EndChildThread
     ChildThread
         Wait(30)
-        Call(N(func_8024335C_8554CC))
+        Call(N(AwaitSongFinished))
         Set(AF_JAN01_TreeDrop_StarPiece, FALSE)
     EndChildThread
     Loop(0)

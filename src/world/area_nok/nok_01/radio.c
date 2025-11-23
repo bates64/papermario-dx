@@ -32,12 +32,12 @@ API_CALLABLE(N(SetRadioVolumeMute)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80242898_9C7C78)) {
+API_CALLABLE(N(MuteAllRadioStations)) {
     snd_ambient_radio_select(4);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802428B8_9C7C98)) {
+API_CALLABLE(N(StopAllRadioStations)) {
     snd_ambient_radio_stop(100);
     return ApiStatus_DONE2;
 }
