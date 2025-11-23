@@ -287,7 +287,7 @@ Acmd* au_pull_voice(AuPVoice* pvoice, Acmd* cmdBufPos) {
         decoder->sample = 0;
         decoder->memin = (s32) decoder->instrument->base;
         decoder->loop.count = decoder->instrument->loopCount;
-        func_80052E30(pvoice->index);
+        au_release_voice(pvoice->index);
     }
     return ptr;
 }

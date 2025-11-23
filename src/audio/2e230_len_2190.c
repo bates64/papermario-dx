@@ -15,7 +15,7 @@ extern u8 EnvelopePressDefault[];
 extern u8 EnvelopeReleaseDefault[];
 extern f32 AlTuneScaling[];
 
-void func_80052E30(u8 index) {
+void au_release_voice(u8 index) {
     AuVoice* voice = &gSoundGlobals->voices[index];
 
     voice->cmdPtr = NULL;
@@ -141,8 +141,8 @@ void au_engine_init(s32 outputRate) {
     globals->channelDelayBusId = 0;
     globals->channelDelayPending = 0;
 
-    au_delay_channel(0);
-    func_80055050(alHeap);
+    au_init_delay_channel(0);
+    snd_notify_engine_ready(alHeap);
 }
 
 void au_reset_instrument(Instrument* instrument) {
@@ -188,18 +188,18 @@ void au_reset_instrument_entry(BGMInstrumentInfo* arg0) {
     arg0->fineTune = 0;
 }
 
-void au_update_clients_2(void) {
+void au_update_clients_for_audio_frame(void) {
     AuGlobals* globals = gSoundGlobals;
     SoundManager* sfxManager = gSoundManager;
     AmbienceManager* ambManager = gAuAmbienceManager;
     BGMPlayer* bgmPlayer;
 
-    au_syn_update(globals);
+    au_syn_begin_audio_frame(globals);
 
     ambManager->nextUpdateCounter -= ambManager->nextUpdateStep;
     if (ambManager->nextUpdateCounter <= 0) {
         ambManager->nextUpdateCounter += ambManager->nextUpdateInterval;
-        au_amb_manager_update(ambManager);
+        au_amb_manager_audio_frame_update(ambManager);
     }
 
     if (sfxManager->fadeInfo.fadeTime != 0) {
@@ -210,7 +210,7 @@ void au_update_clients_2(void) {
     sfxManager->nextUpdateCounter -= sfxManager->nextUpdateStep;
     if (sfxManager->nextUpdateCounter <= 0) {
         sfxManager->nextUpdateCounter += sfxManager->nextUpdateInterval;
-        sfxManager->unk_BA = au_sfx_manager_update(sfxManager);
+        sfxManager->unk_BA = au_sfx_manager_audio_frame_update(sfxManager);
     }
 
     // update gBGMPlayerB
@@ -232,13 +232,13 @@ void au_update_clients_2(void) {
 
     if (!PreventBGMPlayerUpdate) {
         if (globals->unk_80 != 0) {
-            func_8004DFD4(globals);
+            au_bgm_restore_copied_player(globals);
         }
         bgmPlayer = gBGMPlayerA;
         if (bgmPlayer->fadeInfo.volScaleTime != 0) {
-            func_80053BA8(&bgmPlayer->fadeInfo);
+            au_fade_update_envelope(&bgmPlayer->fadeInfo);
             if (bgmPlayer->fadeInfo.fadeTime == 0) {
-                func_8004E444(bgmPlayer);
+                au_bgm_update_bus_volumes(bgmPlayer);
             } else {
                 au_bgm_update_fade(bgmPlayer);
             }
@@ -272,15 +272,15 @@ void au_update_players_main(void) {
         BeginSoundUpdateCallback();
     }
 
-    au_bgm_update_main(player);
+    au_bgm_begin_video_frame(player);
 
     player = gBGMPlayerB;
-    au_bgm_update_main(player);
+    au_bgm_begin_video_frame(player);
 
-    au_sfx_update_main(manager);
+    au_sfx_begin_video_frame(manager);
 }
 
-void au_syn_update(AuGlobals* globals) {
+void au_syn_begin_audio_frame(AuGlobals* globals) {
     u32 i;
 
     if (globals->unk_130C == 2) {
@@ -429,7 +429,7 @@ void au_fade_set_volume(u8 busId, u16 volume, s32 busVolume) {
     au_bus_set_volume(busId, (u32)(volume * busVolume) >> 15);
 }
 
-void func_80053AC8(Fade* fade) {
+void au_fade_flush(Fade* fade) {
     if (fade->fadeTime == 0) {
         fade->fadeTime = 1;
         fade->fadeStep = 0;
@@ -437,14 +437,14 @@ void func_80053AC8(Fade* fade) {
     }
 }
 
-void au_fade_set_vol_scale(Fade* fade, s16 value) {
+void au_fade_set_envelope(Fade* fade, s16 value) {
     fade->volScale.s32 = value << 16;
     fade->targetVolScale = value;
     fade->volScaleTime = 0;
     fade->volScaleStep = 0;
 }
 
-void func_80053B04(Fade* fade, u32 arg1, s32 target) {
+void au_fade_calc_envelope(Fade* fade, u32 arg1, s32 target) {
     s16 time;
     s32 delta;
 
@@ -461,7 +461,7 @@ void func_80053B04(Fade* fade, u32 arg1, s32 target) {
     }
 }
 
-void func_80053BA8(Fade* fade) {
+void au_fade_update_envelope(Fade* fade) {
     fade->volScaleTime--;
 
     if (fade->volScaleTime != 0) {
@@ -558,7 +558,7 @@ AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
             return status;
         }
 
-        if (func_8004DB28(arg2_copy)) {
+        if (au_bgm_player_is_active(arg2_copy)) {
             return AU_ERROR_201;
         }
 
@@ -590,7 +590,7 @@ AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
     }
 }
 
-AuResult func_80053E58(s32 songID, BGMHeader* bgmFile) {
+AuResult au_unk_80053E58(s32 songID, BGMHeader* bgmFile) {
     AuResult status;
     SBNFileEntry fileEntry;
     SBNFileEntry sbnEntry;
@@ -626,7 +626,7 @@ AuResult func_80053E58(s32 songID, BGMHeader* bgmFile) {
     return status;
 }
 
-BGMPlayer* func_80053F64(s32 arg0) {
+BGMPlayer* au_get_snapshot_by_index(s32 arg0) {
     if (arg0 == 0) {
         return gSoundGlobals->unk_globals_6C[0].bgmPlayer;
     }
@@ -695,7 +695,7 @@ AuResult au_ambient_load(u32 ambSoundID) {
     return AU_RESULT_OK;
 }
 
-BGMPlayer* func_80054248(u8 arg0) {
+BGMPlayer* au_get_client_by_priority(u8 arg0) {
     switch (arg0) {
         case 1:
             return gBGMPlayerA;
@@ -825,7 +825,7 @@ void au_load_PRG(AuGlobals* arg0, s32 romAddr) {
     }
 }
 
-s32 snd_load_BGM(s32 arg0) {
+s32 au_load_BGM(s32 arg0) {
     AuGlobals* globals = gSoundGlobals;
     InitSongEntry* song = globals->songList;
     s32 ret = 0;
@@ -1033,7 +1033,7 @@ void au_swizzle_BK_instruments(s32 bkFileOffset, SoundBank* bank, InstrumentGrou
     }
 }
 
-s32* func_80054AA0(s32* bkFileOffset, void* vaddr, s32 bankIndex, s32 bankGroup) {
+s32* au_load_static_BK_to_bank(s32* bkFileOffset, void* vaddr, s32 bankIndex, s32 bankGroup) {
     ALHeap* heap = gSynDriverPtr->heap;
     BKHeader localHeader;
     void* fileData = vaddr;
@@ -1122,30 +1122,30 @@ void func_80054C84(s32 bankIndex, s32 bankGroup) {
     }
 }
 
-void func_80054CE0(s32 arg0, u32 idx) {
+void au_set_bus_volume_level(s32 arg0, u32 idx) {
     if (idx < ARRAY_COUNT(D_80078530)) {
         s32 temp_s0 = D_80078530[idx];
         if (arg0 & 1) {
             gBGMPlayerA->busVolume = temp_s0;
-            func_80053AC8(&gBGMPlayerA->fadeInfo);
+            au_fade_flush(&gBGMPlayerA->fadeInfo);
             gBGMPlayerB->busVolume = temp_s0;
-            func_80053AC8(&gBGMPlayerB->fadeInfo);
+            au_fade_flush(&gBGMPlayerB->fadeInfo);
         }
         if (arg0 & 0x10) {
             gSoundManager->busVolume = temp_s0;
-            func_80053AC8(&gSoundManager->fadeInfo);
+            au_fade_flush(&gSoundManager->fadeInfo);
         }
     }
 }
 
-s32 func_80054D74(s32 arg0, s32 arg1) {
+s32 au_set_reverb_type(s32 arg0, s32 arg1) {
     if (arg0 & 0x10) {
         return au_sfx_set_reverb_type(gSoundManager, arg1);
     }
     return 0;
 }
 
-void func_80054DA8(u32 bMonoSound) {
+void au_sync_channel_delay_enabled(u32 bMonoSound) {
     if (bMonoSound % 2 == 1) {
         // mono sound
         if (gSoundGlobals->unk_130C == 0) {

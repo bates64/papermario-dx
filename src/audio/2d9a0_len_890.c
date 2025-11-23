@@ -1,7 +1,7 @@
 #include "common.h"
 #include "audio.h"
 
-void au_update_stopped_voices(AuGlobals* globals) {
+void au_flush_finished_voices(AuGlobals* globals) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(globals->voices); i++) {

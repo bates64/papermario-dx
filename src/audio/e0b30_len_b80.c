@@ -70,7 +70,7 @@ void bgm_reset_sequence_players(void) {
     MusicTargetVolume = 8;
     MusicMaxVolume = 8;
     MusicCurrentVolume = 8;
-    func_800561A4(8);
+    snd_set_bgm_volume(8);
 }
 
 void bgm_reset_volume(void) {
@@ -94,20 +94,20 @@ void bgm_update_music_settings(void) {
             if (music->flags & MUSIC_SETTINGS_FLAG_1) {
                 if (music->fadeOutTime < 250) {
                     if (!(music->flags & MUSIC_SETTINGS_FLAG_4)) {
-                        if (au_song_stop(music->songName) == AU_RESULT_OK) {
+                        if (snd_song_stop(music->songName) == AU_RESULT_OK) {
                             music->state = state2;
                         }
                     } else {
-                        if (func_80055AF0(music->songName) == AU_RESULT_OK) {
+                        if (snd_song_UNK_push_stop(music->songName) == AU_RESULT_OK) {
                            music->state = state2;
                         }
                     }
                 } else if (!(music->flags & MUSIC_SETTINGS_FLAG_4)) {
-                    if (snd_set_song_variation_fade_time(music->songName, music->fadeOutTime, 0) == 0) {
+                    if (snd_song_request_fade_out(music->songName, music->fadeOutTime, 0) == 0) {
                         music->state = state2;
                     }
                 } else {
-                    if (func_80055BB8(music->songName, 250) == AU_RESULT_OK) {
+                    if (snd_song_UNK_request_push_fade_out(music->songName, 250) == AU_RESULT_OK) {
                         music->state = state2;
                     }
                 }
@@ -123,7 +123,7 @@ void bgm_update_music_settings(void) {
             flags = music->flags;
             music->flags &= ~flag4;
             if (flags & MUSIC_SETTINGS_FLAG_1) {
-                if (au_song_is_playing(music->songName) == AU_RESULT_OK) {
+                if (snd_song_is_playing(music->songName) == AU_RESULT_OK) {
                     music->flags &= ~MUSIC_SETTINGS_FLAG_1;
                     music->state = 3;
                 }
@@ -142,16 +142,16 @@ void bgm_update_music_settings(void) {
                 if (music->songID < 0) {
                     music->state = 0;
                 } else {
-                    music->songName = au_song_load(music->songID, i);
+                    music->songName = snd_song_load(music->songID, i);
                     if (music->songName > 0xFFFFU) {
                         if ((music->flags & MUSIC_SETTINGS_FLAG_20)) {
-                            snd_set_song_variation_fade(music->songName, music->variation,
+                            snd_song_request_fade_in(music->songName, music->variation,
                                 music->fadeInTime, music->fadeStartVolume, music->fadeEndVolume);
                             music->flags &= ~MUSIC_SETTINGS_FLAG_20;
                         } else {
                             bgm_set_target_volume(MusicDefaultVolume);
                         }
-                        if (au_song_start_variation(music->songName, music->variation) == 0) {
+                        if (snd_song_request_play(music->songName, music->variation) == 0) {
                             music->flags |= MUSIC_SETTINGS_FLAG_1;
                             music->state = 0;
                         }
@@ -161,7 +161,7 @@ void bgm_update_music_settings(void) {
                 if (music->flags & MUSIC_SETTINGS_FLAG_10) {
                     music->state = 0;
                     music->flags &= ~(MUSIC_SETTINGS_FLAG_10 | MUSIC_SETTINGS_FLAG_8);
-                } else if (func_80055B28(music->savedSongName) == 0) {
+                } else if (snd_song_UNK_request_pop(music->savedSongName) == 0) {
                     music->songID = music->savedSongID;
                     music->variation = music->savedVariation;
                     music->songName = music->savedSongName;
@@ -187,7 +187,7 @@ s32 _bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s
     musicSetting = &gMusicSettings[playerIndex];
 
     if (!gGameStatusPtr->musicEnabled) {
-        au_song_stop(musicSetting->songName);
+        snd_song_stop(musicSetting->songName);
         musicSetting->flags &= ~MUSIC_SETTINGS_FLAG_1;
 
         return 1;
@@ -236,7 +236,7 @@ s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s1
     musicSetting = &gMusicSettings[playerIndex];
 
     if (!gGameStatusPtr->musicEnabled) {
-        au_song_stop(musicSetting->songName);
+        snd_song_stop(musicSetting->songName);
         musicSetting->flags &= ~MUSIC_SETTINGS_FLAG_1;
         return 1;
     }
@@ -271,13 +271,13 @@ s32 bgm_adjust_proximity(s32 playerIndex, s32 mix, s16 state) {
 
     switch (state) {
         case MUSIC_PROXIMITY_FAR:
-            bgm_set_proximity_mix_far(musicSetting->songName, mix);
+            snd_song_set_proximity_mix_far(musicSetting->songName, mix);
             break;
         case MUSIC_PROXIMITY_NEAR:
-            bgm_set_proximity_mix_near(musicSetting->songName, mix);
+            snd_song_set_proximity_mix_near(musicSetting->songName, mix);
             break;
         case MUSIC_PROXIMITY_FULL:
-            bgm_set_proximity_mix_full(musicSetting->songName, mix);
+            snd_song_set_proximity_mix_full(musicSetting->songName, mix);
             break;
     }
     return TRUE;
@@ -310,7 +310,7 @@ AuResult bgm_set_variation(s32 playerIndex, s16 arg1) {
         return AU_RESULT_OK;
     }
 
-    return snd_set_song_variation(musicSetting->songName, arg1);
+    return snd_song_set_linked_mode(musicSetting->songName, arg1);
 }
 
 s32 bgm_init_music_players(void) {
@@ -351,7 +351,7 @@ void bgm_update_volume(void) {
         } else {
             MusicCurrentVolume++;
         }
-        func_800561A4(MusicCurrentVolume);
+        snd_set_bgm_volume(MusicCurrentVolume);
         NextVolumeUpdateTimer = 3;
     }
 }
@@ -365,7 +365,7 @@ s32 func_8014AD40(void) {
             continue;
         }
 
-        if (au_song_is_playing(settings->songName)) {
+        if (snd_song_is_playing(settings->songName)) {
             return TRUE;
         }
     }

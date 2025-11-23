@@ -203,7 +203,7 @@ void au_amb_set_volume(s32 index, s32 time, s32 volume) {
     }
 }
 
-AuResult au_amb_is_stopped(s32 index) {
+AuResult au_amb_check_stopped(s32 index) {
     AmbiencePlayer* player = &gAuAmbienceManager->players[index];
     AuResult status = AU_RESULT_OK;
 
@@ -252,7 +252,7 @@ void au_amb_play_sequence(AmbienceManager* manager, MSEQHeader* mseqFile, s32 in
     player->resetRequired = TRUE;
 }
 
-void au_amb_manager_update(AmbienceManager* manager) {
+void au_amb_manager_audio_frame_update(AmbienceManager* manager) {
     u32 i;
     s32 j;
 

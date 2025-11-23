@@ -9,8 +9,8 @@
 }
 
 static void _init_lpfilter(AuLowPass* lp);
-static Acmd* _saveBuffer(AuFX* fx, s16* oldPos, s32 buff, s32 count, Acmd* cmdBufPos);
-static f32 func_80059BD4(AuDelay* delay, s32 rsdelta);
+static Acmd* _loadDelayLineBuffer(AuFX* fx, s16* oldPos, s32 buff, s32 count, Acmd* cmdBufPos);
+static f32 updateTriangleModulation(AuDelay* delay, s32 rsdelta);
 
 /*
 * the following constant is derived from:
@@ -131,10 +131,10 @@ static void _init_lpfilter(AuLowPass* lp) {
     }
 }
 
-// definately AuFX, evidenced by call to func_8005904C
+// definately AuFX, evidenced by call to au_fx_load_preset
 // this is n_alFxNew
 /// @param effectType from enum AuEffectType
-void func_80058E84(AuFX* fx, u8 effectType, ALHeap* heap) {
+void au_fx_create(AuFX* fx, u8 effectType, ALHeap* heap) {
     AuDelay* delay;
     u16 i;
 
@@ -150,19 +150,19 @@ void func_80058E84(AuFX* fx, u8 effectType, ALHeap* heap) {
         delay->lowpass_24->fstate = alHeapAlloc(heap, 1, sizeof(POLEF_STATE));
     }
 
-    func_8005904C(fx, effectType);
+    au_fx_load_preset(fx, effectType);
 }
 
 // no known calls to this function
-void func_80058F88(AlUnkKappa* kappa, ALHeap* heap) {
+void au_filter_create(AlUnkKappa* kappa, ALHeap* heap) {
     kappa->unk_00 = alHeapAlloc(heap, 0x1420, sizeof(s16));
     kappa->lowpass_10 = alHeapAlloc(heap, 1, sizeof(AuLowPass));
     kappa->lowpass_10->fstate = alHeapAlloc(heap, 1, sizeof(POLEF_STATE));
-    func_80059008(kappa, 0, 0, 0x5000);
+    au_filter_init(kappa, 0, 0, 0x5000);
 }
 
-// no known entry point to this function, called only by func_80058F88
-void func_80059008(AlUnkKappa* kappa, s16 arg1, s16 arg2, s16 fc) {
+// no known entry point to this function, called only by au_filter_create
+void au_filter_init(AlUnkKappa* kappa, s16 arg1, s16 arg2, s16 fc) {
     kappa->unk_06 = arg1;
     kappa->unk_08 = arg2;
 
@@ -177,7 +177,7 @@ void func_80059008(AlUnkKappa* kappa, s16 arg1, s16 arg2, s16 fc) {
 }
 
 // part of n_alFxNew, extracted to allow reseting fx without reallocating AuFX
-void func_8005904C(AuFX* fx, u8 effectType) {
+void au_fx_load_preset(AuFX* fx, u8 effectType) {
     s32* params;
     s32* clr;
     s32 i, j;
@@ -307,7 +307,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 outputBuf, s16 arg3) {
             s16* rsOutPtr;
 
             length = delay->output - delay->input;
-            delta = func_80059BD4(delay, AUDIO_SAMPLES);
+            delta = updateTriangleModulation(delay, AUDIO_SAMPLES);
             delta /= length;
             delta = (s32)(delta * fUnityPitch);
             delta = delta / UNITY_PITCH;
@@ -324,7 +324,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 outputBuf, s16 arg3) {
                 rsOutPtr += fx->length;
             }
 
-            cmdBufPos = _saveBuffer(fx, rsOutPtr, rbuff, count + ramAlign, cmdBufPos);
+            cmdBufPos = _loadDelayLineBuffer(fx, rsOutPtr, rbuff, count + ramAlign, cmdBufPos);
             ratio = fratio * fUnityPitch;
 
             tmp = buff2 >> 8;
@@ -414,7 +414,7 @@ s32 au_fx_param_hdl(AuFX* fx, s16 index, s16 paramID, s32 value) {
 }
 
 // TODO: _n_loadBuffer
-static Acmd* _saveBuffer(AuFX* fx, s16* oldPos, s32 buf, s32 count, Acmd* cmdBufPos) {
+static Acmd* _loadDelayLineBuffer(AuFX* fx, s16* oldPos, s32 buf, s32 count, Acmd* cmdBufPos) {
     Acmd *ptr = cmdBufPos;
     s16* newPos = oldPos + count;
     s16* delayEnd = &fx->base[fx->length];
@@ -434,7 +434,7 @@ static Acmd* _saveBuffer(AuFX* fx, s16* oldPos, s32 buf, s32 count, Acmd* cmdBuf
 // updates rsval, producing a triangle wave between ±1
 // time delta specified in samples
 //TODO rename to _updateTriWaveModulation
-static f32 func_80059BD4(AuDelay* delay, s32 rsdelta) {
+static f32 updateTriangleModulation(AuDelay* delay, s32 rsdelta) {
     f32 result;
 
     delay->rsval += delay->rsinc * rsdelta;

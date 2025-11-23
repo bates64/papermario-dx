@@ -91,8 +91,8 @@ void au_driver_init(AuSynDriver* driver, ALConfig* config) {
         fxBus->curEffectType = AU_FX_NONE;
         fxBus->fxL = alHeapAlloc(heap, 1, sizeof(*fxBus->fxL));
         fxBus->fxR = alHeapAlloc(heap, 1, sizeof(*fxBus->fxR));
-        func_80058E84(fxBus->fxL, fxBus->curEffectType, heap);
-        func_80058E84(fxBus->fxR, fxBus->curEffectType, heap);
+        au_fx_create(fxBus->fxL, fxBus->curEffectType, heap);
+        au_fx_create(fxBus->fxR, fxBus->curEffectType, heap);
     }
 
     gSynDriverPtr->savedMainOut = alHeapAlloc(heap, 2 * AUDIO_SAMPLES, 2);
@@ -144,7 +144,7 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
             AuSynStereoDirty = FALSE;
         }
         while (outLen > 0) {
-            au_update_clients_2();
+            au_update_clients_for_audio_frame();
             for (i = 0; i < gSynDriverPtr->num_pvoice; i++) {
                 pvoice = &gSynDriverPtr->pvoices[i];
 
@@ -280,8 +280,8 @@ void au_bus_set_effect(u8 index, u8 effectType) {
     AuFxBus* fxBus = &gSynDriverPtr->fxBus[index];
 
     fxBus->curEffectType = effectType;
-    func_8005904C(fxBus->fxL, effectType);
-    func_8005904C(fxBus->fxR, effectType);
+    au_fx_load_preset(fxBus->fxL, effectType);
+    au_fx_load_preset(fxBus->fxR, effectType);
 }
 
 void au_bus_set_fx_params(u8 index, s16 delayIndex, s16 paramID, s32 value) {
@@ -707,7 +707,7 @@ void au_disable_channel_delay(void) {
     AuDelayCounter = 0;
 }
 
-void au_delay_channel(s16 arg0) {
+void au_init_delay_channel(s16 arg0) {
     s32* phi_a1 = (s32*)AuDelayBufferMain;
     s32* phi_v1 = (s32*)AuDelayBufferAux;
     s32 i;

@@ -20,7 +20,7 @@ API_CALLABLE(PollMusicEvents) {
     u32 count;
     s32 i;
 
-    bgm_poll_music_events(&list, &count);
+    snd_song_poll_music_events(&list, &count);
 
     for (i = 0; i < count; i++, list++) {
         MusicEvent* cur = MusicEventList;
@@ -46,7 +46,7 @@ API_CALLABLE(PollMusicEvents) {
             }
         }
     }
-    bgm_flush_music_events();
+    snd_song_flush_music_events();
     MusicEventPollCount++;
     return ApiStatus_BLOCK;
 }
