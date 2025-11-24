@@ -101,7 +101,7 @@ WINDOW_UPDATE_FUNC(filemenu_update_deselect_file);
 WINDOW_UPDATE_FUNC(filemenu_update_show_name_confirm);
 WINDOW_UPDATE_FUNC(filemenu_update_hidden_name_confirm);
 
-WINDOW_UPDATE_FUNC(unused_main_menu_window_darkening);
+WINDOW_UPDATE_FUNC(main_menu_window_update);
 
 WINDOW_UPDATE_FUNC(filemenu_update_show_title);
 

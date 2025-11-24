@@ -201,7 +201,7 @@ void basic_hidden_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, 
     }
 }
 
-void unused_main_menu_window_darkening(s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
+void main_menu_window_update(s32 windowID, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
                         f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity) {
     Window* window = &gWindows[windowID];
     s32 counter = window->updateCounter;

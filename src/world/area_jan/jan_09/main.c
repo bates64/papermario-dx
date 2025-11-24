@@ -64,7 +64,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_Pipe_EnterVertical))
         Wait(1)
     EndIf
-    Call(SetMusicTrack, 0, SONG_JADE_JUNGLE, 0, 8)
+    Call(SetMusic, 0, SONG_JADE_JUNGLE, 0, 8)
     Call(ClearAmbientSounds, 250)
     Call(MakeTransformGroup, MODEL_g51)
     // water surface

@@ -1796,6 +1796,27 @@ typedef enum MusicTrackVols {
     TRACK_VOLS_KPA_3        = 7
 } MusicTrackVols;
 
+typedef enum BGMVariation {
+    BGM_VARIATION_0                 = 0,
+    BGM_VARIATION_1                 = 1,
+    BGM_VARIATION_2                 = 2,
+    BGM_VARIATION_3                 = 3,
+} BGMVariation;
+
+/// Perceptual volume levels, 0 (mute) to 8 (max).
+/// Only attenuates, never amplifies.
+typedef enum VolumeLevels {
+    VOL_LEVEL_MUTE      = 0,
+    VOL_LEVEL_1         = 1,
+    VOL_LEVEL_2         = 2,
+    VOL_LEVEL_3         = 3,
+    VOL_LEVEL_4         = 4,
+    VOL_LEVEL_5         = 5,
+    VOL_LEVEL_6         = 6,
+    VOL_LEVEL_7         = 7,
+    VOL_LEVEL_FULL      = 8,
+} VolumeLevels;
+
 enum Cams {
     CAM_DEFAULT      = 0,
     CAM_BATTLE       = 1,

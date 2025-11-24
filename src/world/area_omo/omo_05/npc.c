@@ -251,7 +251,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_GOURMET_GUY_SHOCK_3, SOUND_SPACE_DEFAULT)
             Wait(18 * DT)
-            Call(SetMusicTrack, 0, SONG_GOURMET_GUY_FREAKOUT, 0, 8)
+            Call(SetMusic, 0, SONG_GOURMET_GUY_FREAKOUT, 0, 8)
             Wait(30 * DT)
             Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 128, 10)
             Loop(7)

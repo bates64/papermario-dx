@@ -89,7 +89,7 @@ extern EvtScript EVS_NpcDefeat;
 extern EvtScript ShakeCam1;
 extern EvtScript ShakeCamX;
 
-extern MusicSettings gMusicSettings[2];
+extern MusicSettings gMusicControlData[2];
 
 // gfx
 extern DisplayContext* gDisplayContext;

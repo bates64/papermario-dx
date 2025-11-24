@@ -475,7 +475,7 @@ void add_vec2D_polar(f32* x, f32* y, f32 r, f32 theta);
 
 enum AuResult bgm_set_track_volumes(s32 playerIndex, s16 trackVolSet);
 enum AuResult bgm_clear_track_volumes(s32 playerIndex, s16 trackVolSet);
-enum AuResult bgm_set_variation(s32 playerIndex, s16 arg1);
+enum AuResult bgm_set_linked_mode(s32 playerIndex, s16 arg1);
 void bgm_quiet_max_volume(void);
 void bgm_reset_max_volume(void);
 void bgm_reset_volume(void);
@@ -485,7 +485,7 @@ void bgm_set_battle_song(s32, s32);
 void bgm_push_battle_song(void);
 s32 bgm_adjust_proximity(s32 playerIndex, s32 arg1, s16 arg2);
 void func_801491E4(Matrix4f mtx, s32, s32, s32, s32, s32 alpha);
-s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 arg4, s16 arg5);
+s32 bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 arg4, s16 arg5);
 
 #include "audio/public.h"
 
@@ -537,8 +537,8 @@ void update_scripts(void);
 void update_messages(void);
 void update_entities(void);
 void func_80138198(void);
-void bgm_update_music_settings(void);
-s32 func_8014AD40(void);
+void bgm_update_music_control(void);
+s32 bgm_is_any_song_playing(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);

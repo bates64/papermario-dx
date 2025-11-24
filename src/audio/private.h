@@ -310,7 +310,7 @@ SoundInstance* sfx_get_env_sound_instance(s32 soundID);
 void sfx_play_sound_looping(s32 soundId, u8 volume, u8 pan, s16 pitchShift);
 void sfx_register_looping_sound_at_position(s32 soundID, s32 flags, f32 x, f32 y, f32 z);
 s32 sfx_adjust_env_sound_pos(s32 soundID, s32 sourceFlags, f32 x, f32 y, f32 z);
-void snd_stop_tracking_env_sound_pos(s32 soundID, s32 keepPlaying);
+void sfx_stop_tracking_env_sound_pos(s32 soundID, s32 keepPlaying);
 void sfx_play_sound_with_params(s32 soundID, u8 volume, u8 pan, s16 pitchShift);
 void sfx_adjust_env_sound_params(s32 soundID, u8 volume, u8 pan, s16 pitchShift);
 void sfx_stop_sound(s32 soundID);

@@ -9,7 +9,7 @@ BSS s16 MusicTargetVolume;
 BSS s16 MusicMaxVolume;
 BSS s16 MusicCurrentVolume;
 
-MusicSettings gMusicSettings[2];
+MusicSettings gMusicControlData[2];
 
 MusicSettings BlankMusicSettings = {
     .flags = 0,
@@ -63,8 +63,8 @@ s32 bgm_get_map_default_variation(s32 songID) {
 void bgm_reset_sequence_players(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(gMusicSettings); i++) {
-        gMusicSettings[i] = BlankMusicSettings;
+    for (i = 0; i < ARRAY_COUNT(gMusicControlData); i++) {
+        gMusicControlData[i] = BlankMusicSettings;
     }
 
     MusicTargetVolume = 8;
@@ -79,14 +79,14 @@ void bgm_reset_volume(void) {
 }
 
 //TODO refactor out constants
-void bgm_update_music_settings(void) {
-    MusicSettings* music = gMusicSettings;
+void bgm_update_music_control(void) {
+    MusicSettings* music = gMusicControlData;
     s32 i = 0;
     s16 state2 = 2;
     s16 flag4 = MUSIC_SETTINGS_FLAG_4;
     s32 flags;
 
-    for (i; i < ARRAY_COUNT(gMusicSettings); i++, music++) {
+    for (i; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
         switch (music->state) {
         case 0:
             break;
@@ -184,7 +184,7 @@ s32 _bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s
         return 1;
     }
 
-    musicSetting = &gMusicSettings[playerIndex];
+    musicSetting = &gMusicControlData[playerIndex];
 
     if (!gGameStatusPtr->musicEnabled) {
         snd_song_stop(musicSetting->songName);
@@ -220,12 +220,12 @@ s32 _bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s
 }
 
 s32 bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s16 volume) {
-    gMusicSettings[playerIndex].flags &= ~MUSIC_SETTINGS_FLAG_8;
+    gMusicControlData[playerIndex].flags &= ~MUSIC_SETTINGS_FLAG_8;
 
     return _bgm_set_song(playerIndex, songID, variation, fadeOutTime, volume);
 }
 
-s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume) {
+s32 bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume) {
     MusicSettings* musicSetting;
     s32 mapSongVariation;
 
@@ -233,7 +233,7 @@ s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s1
         return 1;
     }
 
-    musicSetting = &gMusicSettings[playerIndex];
+    musicSetting = &gMusicControlData[playerIndex];
 
     if (!gGameStatusPtr->musicEnabled) {
         snd_song_stop(musicSetting->songName);
@@ -259,7 +259,7 @@ s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s1
 }
 
 s32 bgm_adjust_proximity(s32 playerIndex, s32 mix, s16 state) {
-    MusicSettings* musicSetting = &gMusicSettings[playerIndex];
+    MusicSettings* musicSetting = &gMusicControlData[playerIndex];
 
     if (!(musicSetting->flags & MUSIC_SETTINGS_FLAG_1)) {
         return FALSE;
@@ -284,7 +284,7 @@ s32 bgm_adjust_proximity(s32 playerIndex, s32 mix, s16 state) {
 }
 
 AuResult bgm_set_track_volumes(s32 playerIndex, s16 trackVolSet) {
-    MusicSettings* musicSetting = &gMusicSettings[playerIndex];
+    MusicSettings* musicSetting = &gMusicControlData[playerIndex];
 
     if (!(musicSetting->flags & MUSIC_SETTINGS_FLAG_1)) {
         return AU_RESULT_OK;
@@ -294,7 +294,7 @@ AuResult bgm_set_track_volumes(s32 playerIndex, s16 trackVolSet) {
 }
 
 AuResult bgm_clear_track_volumes(s32 playerIndex, s16 trackVolSet) {
-    MusicSettings* musicSetting = &gMusicSettings[playerIndex];
+    MusicSettings* musicSetting = &gMusicControlData[playerIndex];
 
     if (!(musicSetting->flags & MUSIC_SETTINGS_FLAG_1)) {
         return AU_RESULT_OK;
@@ -303,8 +303,8 @@ AuResult bgm_clear_track_volumes(s32 playerIndex, s16 trackVolSet) {
     return snd_song_clear_track_volumes(musicSetting->songName, trackVolSet);
 }
 
-AuResult bgm_set_variation(s32 playerIndex, s16 arg1) {
-    MusicSettings* musicSetting = &gMusicSettings[playerIndex];
+AuResult bgm_set_linked_mode(s32 playerIndex, s16 arg1) {
+    MusicSettings* musicSetting = &gMusicControlData[playerIndex];
 
     if (!(musicSetting->flags & MUSIC_SETTINGS_FLAG_1)) {
         return AU_RESULT_OK;
@@ -356,11 +356,11 @@ void bgm_update_volume(void) {
     }
 }
 
-s32 func_8014AD40(void) {
-    MusicSettings* settings = gMusicSettings;
+s32 bgm_is_any_song_playing(void) {
+    MusicSettings* settings = gMusicControlData;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(gMusicSettings); i++, settings++) {
+    for (i = 0; i < ARRAY_COUNT(gMusicControlData); i++, settings++) {
         if (!(settings->flags & MUSIC_SETTINGS_FLAG_1)) {
             continue;
         }
@@ -373,7 +373,7 @@ s32 func_8014AD40(void) {
 }
 
 void bgm_pop_song(void) {
-    MusicSettings* musicSetting = gMusicSettings;
+    MusicSettings* musicSetting = gMusicControlData;
 
     if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         musicSetting->flags |= MUSIC_SETTINGS_FLAG_8;
@@ -382,7 +382,7 @@ void bgm_pop_song(void) {
 }
 
 void bgm_push_song(s32 songID, s32 variation) {
-    MusicSettings* musicSetting = gMusicSettings;
+    MusicSettings* musicSetting = gMusicControlData;
 
     if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         musicSetting->savedSongID = musicSetting->songID;
@@ -394,7 +394,7 @@ void bgm_push_song(s32 songID, s32 variation) {
 }
 
 void bgm_pop_battle_song(void) {
-    MusicSettings* musicSetting = gMusicSettings;
+    MusicSettings* musicSetting = gMusicControlData;
 
     if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         if (gOverrideFlags & GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE) {
@@ -408,7 +408,7 @@ void bgm_pop_battle_song(void) {
 }
 
 void bgm_push_battle_song(void) {
-    MusicSettings* musicSetting = gMusicSettings;
+    MusicSettings* musicSetting = gMusicControlData;
 
     if (gGameStatusPtr->demoState == DEMO_STATE_NONE) {
         if (!(gOverrideFlags & GLOBAL_OVERRIDES_DONT_RESUME_SONG_AFTER_BATTLE)) {
@@ -423,11 +423,11 @@ void bgm_push_battle_song(void) {
 }
 
 void bgm_set_battle_song(s32 songID, s32 variation) {
-    MusicSettings* musicSetting = gMusicSettings;
+    MusicSettings* musicSetting = gMusicControlData;
 
     musicSetting->battleSongID = songID;
     musicSetting->battleVariation = variation;
 }
 
-void func_8014AFA0(void) {
+void bgm_NOOP(void) {
 }

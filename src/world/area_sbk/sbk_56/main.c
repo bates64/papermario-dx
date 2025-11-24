@@ -25,12 +25,12 @@ MapSettings N(settings) = {
 #include "world/common/todo/SpawnSunEffect.inc.c"
 
 API_CALLABLE(N(StartOasisTracks)) {
-    bgm_set_variation(0, 1);
+    bgm_set_linked_mode(0, 1);
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(StopOasisTracks)) {
-    bgm_set_variation(0, 0);
+    bgm_set_linked_mode(0, 0);
     return ApiStatus_DONE2;
 }
 
@@ -85,7 +85,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Call(N(SpawnSunEffect))
     Call(MakeTransformGroup, MODEL_sui)
-    Call(SetMusicTrack, 0, SONG_DRY_DRY_DESERT, 0, 8)
+    Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, 8)
     Call(N(StartOasisTracks))
     Call(PlaySound, SOUND_LOOP_SBK_OASIS_WATER)
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
