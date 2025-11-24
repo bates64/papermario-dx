@@ -533,14 +533,17 @@ enum SoundIDBits {
     SOUND_ID_SECTION_MASK           = 0x00000300, // corresponds to sections 0-3 for indices < 0xC0 and 4-7 for those above
     SOUND_ID_INDEX_MASK             = 0x000000FF,
     SOUND_ID_UNK_INDEX_MASK         = 0x000001FF, // indices for the special large section
+
+    SOUND_ID_UPPER_MASK             = 0x03FF0000,
+    SOUND_ID_TYPE_MASK              = 0x70000000,
+    SOUND_ID_TYPE_FLAG              = 0x80000000,
 };
 
 enum SoundType {
-    SOUND_TYPE_SPECIAL              = 0x80000000,
-    SOUND_TYPE_LOOPING              = 0, // 0x80000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_EXIT_DOOR            = 1, // 0x90000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_ROOM_DOOR            = 2, // 0xA0000000 (with SOUND_TYPE_SPECIAL)
-    SOUND_TYPE_ALTERNATING          = 3, // 0xB0000000 (with SOUND_TYPE_SPECIAL)
+    SOUND_TYPE_LOOPING              = 0, // 0x80000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_EXIT_DOOR            = 1, // 0x90000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_ROOM_DOOR            = 2, // 0xA0000000 (with SOUND_ID_TYPE_FLAG)
+    SOUND_TYPE_ALTERNATING          = 3, // 0xB0000000 (with SOUND_ID_TYPE_FLAG)
 };
 
 enum SoundIDs {
@@ -1755,10 +1758,12 @@ enum SoundTriggers {
 typedef enum AuResult {
     AU_RESULT_OK                        = 0,
     AU_ERROR_1                          = 1,
-    AU_AMBIENCE_ERROR_1                 = 1,
+    AU_AMBIENCE_STOP_ERROR_1            = 1,
+    AU_AMBIENCE_STOP_ERROR_2            = 2,
+    AU_AMBIENCE_ERROR_PLAYER_BUSY       = 1, // player already has an mseq playing
     AU_ERROR_SONG_NOT_PLAYING           = 2, // player not found for songName
-    AU_AMBIENCE_ERROR_2                 = 2,
-    AU_ERROR_NULL_SONG_NAME             = 3, // songName is NULL
+    AU_AMBIENCE_ERROR_MSEQ_NOT_FOUND    = 2, // mseq not found
+    AU_ERROR_NULL_SONG_NAME             = 3, // songName is nullptr
     AU_AMBIENCE_ERROR_3                 = 3,
     AU_ERROR_INVALID_SONG_DURATION      = 4, // duration out of bounds: (250,10000)
     AU_ERROR_6                          = 6,
@@ -5984,6 +5989,12 @@ enum WindowStyles {
     WINDOW_STYLE_21     = 21,
     WINDOW_STYLE_22     = 22,
     WINDOW_STYLE_MAX    = 22,
+};
+
+enum ThreadIDs {
+    THREAD_ID_PI        = 0,
+    THREAD_ID_CRASH     = 2,
+    THREAD_ID_AUDIO     = 3, // also = NU_MAIN_THREAD_ID
 };
 
 // LANGUAGE_DEFAULT as 0 will be the first index into several arrays containing data based on the current language.

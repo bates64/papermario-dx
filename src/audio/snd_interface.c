@@ -1,15 +1,20 @@
 #include "common.h"
 #include "audio.h"
+#include "audio/core.h"
 
 static u8* snd_song_get_track_volumes_set(MusicTrackVols arg0);
 
+/// While TRUE, the audio thread skips BGM player updates.
+/// Used by the game thread to lock out BGM updates while modifying player state,
+/// to prevent race conditions.
 s32 PreventBGMPlayerUpdate = FALSE;
+
 u16 SoundEngineReady = 0;
-u16 AuAmbiencePlayOnlyIndex = 0;
+u16 AmbienceRadioChannel = 0;
 
 // lists of data:
 //  u8 trackIdx
-//  u8 volume?
+//  u8 volume
 // repeated until idx = 0
 u8 TrackVols_JAN_Full[] = {
     2, 94,
@@ -105,24 +110,27 @@ void snd_notify_engine_ready(ALHeap* heap) {
     PreventBGMPlayerUpdate = FALSE;
 }
 
-void snd_legacy_sound_dispatch(u32 arg0) {
-    u16 temp_a0 = SoundEngineReady;
-    u32 temp_v1 = arg0 & 0xF;
+/// Unused
+/// Seems to be an early function that accepts a command to play any kind of audio asset,
+// but only BGM and SFX are supported.
+void snd_legacy_sound_dispatch(u32 id) {
+    u16 ready = SoundEngineReady;
+    u32 type = id & 0xF;
 
-    if (temp_a0 == 1) {
-        switch (temp_v1) {
+    if (ready == 1) {
+        switch (type) {
             case 2:
             case 3:
                 break;
             case 4:
-                snd_start_sound_with_shift(arg0 >> 4, 0, 0, 0);
+                snd_start_sound_with_shift(id >> 4, 0, 0, 0);
                 break;
             case 1:
-                if (temp_v1 == 1) {
-                    s32 filename = snd_song_load((arg0 >> 4) & 0xFF, 0);
+                if (type == 1) {
+                    s32 filename = snd_song_load((id >> 4) & 0xFF, 0);
 
                     if (filename > ASCII_TO_U32('0', ' ', ' ', '\0')) {
-                        snd_song_request_play(filename, (arg0 >> 0xC) & 3);
+                        snd_song_request_play(filename, (id >> 0xC) & 3);
                     }
                 }
                 break;
@@ -130,53 +138,58 @@ void snd_legacy_sound_dispatch(u32 arg0) {
     }
 }
 
+/// Part of an unused system for inter-thread communication with a BGM player using commands.
+/// Use functions in bgm_control to manipualte gMusicControlData instead.
 void snd_bgm_clear_legacy_commands(BGMPlayer* player) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(player->unk_238); i++) {
-        player->unk_238[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(player->cmdBufData); i++) {
+        player->cmdBufData[i] = 0;
     }
 
-    player->unk_25B = 0;
-    player->unk_25A = 0;
-    player->unk_259 = 0;
-    player->unk_258 = 0;
+    player->cmdBufOverflows = 0;
+    player->cmdBufWritePos = 0;
+    player->cmdBufReadPos = 0;
+    player->cmdBufPending = 0;
 }
 
-void snd_bgm_enqueue_legacy_command(u32 arg0) {
+/// Unused
+/// Part of an unused system for inter-thread communication with a BGM player using commands.
+/// Use functions in bgm_control to manipualte gMusicControlData instead.
+void snd_bgm_enqueue_legacy_command(u32 cmd) {
     BGMPlayer* player = NULL;
-    u32 playerSwitch = arg0 & 0xF;
+    u32 playerID = cmd & 0xF;
 
-    if (playerSwitch != 0) {
-        if (playerSwitch == 1) {
-            player = gBGMPlayerA;
-        } else if (playerSwitch == 2) {
-            player = gBGMPlayerB;
-        }
+    if (playerID == 0) {
+        return;
+    } else if (playerID == 1) {
+        player = gBGMPlayerA;
+    } else if (playerID == 2) {
+        player = gBGMPlayerB;
+    }
 
-        if (player != NULL) {
-            u32 temp;
+    if (player != NULL) {
+        u32 pos;
 
-            if (player->unk_258 < 8) {
-                temp = player->unk_25A;
+        if (player->cmdBufPending < ARRAY_COUNT(player->cmdBufData)) {
+            pos = player->cmdBufWritePos;
 
-                player->unk_238[temp] = arg0 >> 4;
+            player->cmdBufData[pos] = cmd >> 4;
 
-                temp++;
-                if (temp >= 8) {
-                    temp = 0;
-                }
-                player->unk_25A = temp;
-
-                player->unk_258++;
-            } else {
-                temp = player->unk_25B + 1;
-
-                if (temp > 99) {
-                    temp = 99;
-                }
-                player->unk_25B = temp;
+            pos++;
+            if (pos >= 8) {
+                pos = 0;
             }
+            player->cmdBufWritePos = pos;
+
+            player->cmdBufPending++;
+        } else {
+            pos = player->cmdBufOverflows + 1;
+
+            if (pos > 99) {
+                pos = 99;
+            }
+            player->cmdBufOverflows = pos;
         }
     }
 }
@@ -189,8 +202,8 @@ void snd_start_sound(s32 soundID, u8 volume, u8 pan) {
         vol |= 0xFF;
     }
 
-    if (pan > 0x7F) {
-        pan = 0x7F;
+    if (pan > AU_PAN_MAX) {
+        pan = AU_PAN_MAX;
     }
 
     au_sfx_enqueue_event(soundManager, soundID, vol, 0, pan);
@@ -204,14 +217,14 @@ void snd_start_sound_with_shift(s32 soundID, u8 volume, u8 pan, s16 pitchShift) 
         vol |= 0xFF;
     }
 
-    if (pan > 0x7F) {
-        pan = 0x7F;
+    if (pan > AU_PAN_MAX) {
+        pan = AU_PAN_MAX;
     }
 
-    if (pitchShift > 2400) {
-        pitchShift = 2400;
-    } else if (pitchShift < -2400) {
-        pitchShift = -2400;
+    if (pitchShift > 2 * AU_OCTAVE_CENTS) {
+        pitchShift = 2 * AU_OCTAVE_CENTS;
+    } else if (pitchShift < -2 * AU_OCTAVE_CENTS) {
+        pitchShift = -2 * AU_OCTAVE_CENTS;
     }
 
     au_sfx_enqueue_event(soundManager, soundID, vol, pitchShift, pan);
@@ -225,8 +238,8 @@ void snd_adjust_sound(s32 soundID, u8 volume, u8 pan) {
         vol |= 0xFF;
     }
 
-    if (pan > 0x7F) {
-        pan = 0x7F;
+    if (pan > AU_PAN_MAX) {
+        pan = AU_PAN_MAX;
     }
 
     au_sfx_enqueue_event(soundManager, soundID | SOUND_ID_ADJUST, vol, 0, pan);
@@ -240,14 +253,14 @@ void snd_adjust_sound_with_shift(s32 soundID, u8 volume, u8 pan, s16 pitchShift)
         vol |= 0xFF;
     }
 
-    if (pan > 0x7F) {
-        pan = 0x7F;
+    if (pan > AU_PAN_MAX) {
+        pan = AU_PAN_MAX;
     }
 
-    if (pitchShift > 2400) {
-        pitchShift = 2400;
-    } else if (pitchShift < -2400) {
-        pitchShift = -2400;
+    if (pitchShift > 2 * AU_OCTAVE_CENTS) {
+        pitchShift = 2 * AU_OCTAVE_CENTS;
+    } else if (pitchShift < -2 * AU_OCTAVE_CENTS) {
+        pitchShift = -2 * AU_OCTAVE_CENTS;
     }
 
     au_sfx_enqueue_event(soundManager, soundID | SOUND_ID_ADJUST, vol, pitchShift, pan);
@@ -274,112 +287,110 @@ AuResult snd_load_ambient(s32 ambSoundID) {
 }
 
 AuResult snd_ambient_play(s32 index, s32 fadeInTime) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status != AU_RESULT_OK) {
         return status;
     }
-    return au_amb_start(index, fadeInTime);
+    return au_mseq_start(index, fadeInTime);
 }
 
 AuResult snd_ambient_stop_quick(s32 index) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_stop_quick(index);
+        au_mseq_stop_quick(index);
     }
 
     return status;
 }
 
 AuResult snd_ambient_stop_slow(s32 index, s32 fadeOutTime) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_stop_slow(index, fadeOutTime);
+        au_mseq_stop_slow(index, fadeOutTime);
     }
 
     return status;
 }
 
 AuResult snd_ambient_pause(s32 index, s32 fadeOutTime) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_pause(index, fadeOutTime);
+        au_mseq_pause(index, fadeOutTime);
     }
 
     return status;
 }
 
 AuResult snd_ambient_resume(s32 index, s32 fadeInTime) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_resume(index, fadeInTime);
+        au_mseq_resume(index, fadeInTime);
     }
 
     return status;
 }
 
 AuResult snd_ambient_is_stopped(s32 index) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status != AU_RESULT_OK) {
         return status;
     }
-    return au_amb_check_stopped(index);
+    return au_mseq_check_stopped(index);
 }
 
-// TODO perhaps inaccurate name
 AuResult snd_ambient_fade_out(s32 index, s32 arg1) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_load_tracks_fade(index, arg1);
+        au_mseq_load_tracks_fade(index, arg1);
     }
 
     return status;
 }
 
 AuResult snd_ambient_set_volume(s32 index, s32 time, s32 volume) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_set_volume(index, time, volume);
+        au_mseq_set_volume(index, time, volume);
     }
 
     return status;
 }
 
 AuResult snd_ambient_disable(s32 index) {
-    AuResult status = au_amb_check_player_index(index);
+    AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_set_disabled(index, TRUE);
+        au_mseq_set_disabled(index, TRUE);
     }
 
     return status;
 }
 
 AuResult snd_ambient_enable(s32 index) {
-    AuResult status  = au_amb_check_player_index(index);
+    AuResult status  = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_amb_set_disabled(index, FALSE);
+        au_mseq_set_disabled(index, FALSE);
     }
 
     return status;
 }
 
-// snd_ambient_init_tracks ?
 void snd_ambient_radio_setup(s32 index) {
+    s32 radioChannels = 4;
     u32 i;
-    s32 lim = 4;
 
-    AuAmbiencePlayOnlyIndex = 0xFF;
+    AmbienceRadioChannel = 0xFF;
 
-    for (i = 0; i < lim; i++) {
+    for (i = 0; i < radioChannels; i++) {
         if (snd_ambient_play(i, 0) != AU_RESULT_OK) {
             return;
         }
@@ -390,11 +401,11 @@ void snd_ambient_radio_setup(s32 index) {
 
 AuResult snd_ambient_radio_stop(s32 time) {
     AuResult status = AU_RESULT_OK;
-    s32 lim = 4;
+    s32 radioChannels = 4;
     u32 i;
 
-    for (i = 0; i < lim; i++) {
-        if (i == AuAmbiencePlayOnlyIndex) {
+    for (i = 0; i < radioChannels; i++) {
+        if (i == AmbienceRadioChannel) {
             status = snd_ambient_stop_slow(i, time);
         } else {
             status = snd_ambient_stop_quick(i);
@@ -408,12 +419,12 @@ AuResult snd_ambient_radio_stop(s32 time) {
 
 AuResult snd_ambient_radio_select(s32 index) {
     AuResult status = AU_RESULT_OK;
-    s32 lim = 4;
+    s32 radioChannels = 4;
 
-    if (index != AuAmbiencePlayOnlyIndex) {
+    if (index != AmbienceRadioChannel) {
         u32 i;
 
-        for (i = 0; i < lim; i++) {
+        for (i = 0; i < radioChannels; i++) {
             if (i == index) {
                 status = snd_ambient_enable(i);
             } else {
@@ -426,7 +437,7 @@ AuResult snd_ambient_radio_select(s32 index) {
         }
 
         if (status == AU_RESULT_OK) {
-            AuAmbiencePlayOnlyIndex = index;
+            AmbienceRadioChannel = index;
         }
     }
 
@@ -446,34 +457,36 @@ AuResult snd_song_load(s32 songID, s32 playerIndex) {
     }
 }
 
+/// Unused -- snd_song_request_play but always uses BGM_VARIATION_0
 AuResult snd_song_request_play_default(s32 songName) {
     AuResult status;
-    SongUpdateEvent s;
+    SongStartRequest s;
 
     PreventBGMPlayerUpdate = TRUE;
     s.songName = songName;
     s.duration = 0;
-    s.startVolume = 127;
-    s.finalVolume = 127;
-    s.variation = 0;
-    s.unk14 = 0;
+    s.startVolume = AU_MAX_VOLUME_8;
+    s.finalVolume = AU_MAX_VOLUME_8;
+    s.variation = BGM_VARIATION_0;
+    s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
     PreventBGMPlayerUpdate = FALSE;
 
     return status;
 }
 
+/// Called from bgm_control to start playing a particular song + variation
 AuResult snd_song_request_play(s32 songName, s32 variation) {
     AuResult status;
-    SongUpdateEvent s;
+    SongStartRequest s;
 
     PreventBGMPlayerUpdate = TRUE;
     s.songName = songName;
     s.duration = 0;
-    s.startVolume = 127;
-    s.finalVolume = 127;
+    s.startVolume = AU_MAX_VOLUME_8;
+    s.finalVolume = AU_MAX_VOLUME_8;
     s.variation = variation;
-    s.unk14 = 0;
+    s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
     PreventBGMPlayerUpdate = FALSE;
 
@@ -492,9 +505,10 @@ AuResult snd_song_is_playing(s32 songName) {
     return au_bgm_is_song_playing(songName);
 }
 
+/// Called from bgm_control to fade in a particular song + variation
 AuResult snd_song_request_fade_in(s32 songName, s32 variation, s32 fadeInTime, s32 startVolume, s32 endVolume) {
     AuResult status;
-    SongUpdateEvent s;
+    SongStartRequest s;
 
     PreventBGMPlayerUpdate = TRUE;
     s.songName = songName;
@@ -502,16 +516,17 @@ AuResult snd_song_request_fade_in(s32 songName, s32 variation, s32 fadeInTime, s
     s.startVolume = startVolume;
     s.finalVolume = endVolume;
     s.variation = variation;
-    s.unk14 = 0;
+    s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
     PreventBGMPlayerUpdate = FALSE;
 
     return status;
 }
 
+/// Unused
 AuResult snd_song_request_fade_in_default(s32 songName, s32 fadeInTime, s32 startVolume, s32 endVolume) {
     AuResult status;
-    SongUpdateEvent s;
+    SongStartRequest s;
 
     PreventBGMPlayerUpdate = TRUE;
     s.songName = songName;
@@ -519,116 +534,134 @@ AuResult snd_song_request_fade_in_default(s32 songName, s32 fadeInTime, s32 star
     s.startVolume = startVolume;
     s.finalVolume = endVolume;
     s.variation = 0;
-    s.unk14 = 0;
+    s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
     PreventBGMPlayerUpdate = FALSE;
 
     return status;
 }
 
-AuResult snd_song_request_fade_out(s32 songName, s32 fadeTime, s32 variation) {
-    SongUpdateEvent s;
+AuResult snd_song_request_fade_out(s32 songName, s32 fadeTime, AuCallback callback) {
+    SongFadeOutRequest s;
+
     s.songName = songName;
     s.duration = fadeTime;
-    s.startVolume = 0;
+    s.unused_08 = 0;
     s.finalVolume = 0;
-    s.variation = variation;
-    s.unk14 = 0;
+    s.doneCallback = callback;
+    s.onPush = FALSE;
+
     return au_bgm_process_fade_out(&s);
 }
 
-AuResult snd_song_UNK_push_stop(s32 songName) {
-    SongUpdateEvent s;
+AuResult snd_song_push_stop(s32 songName) {
+    SongSuspendRequest s;
+
     s.songName = songName;
     s.duration = 0;
     s.startVolume = 0;
     s.finalVolume = 0;
-    s.variation = 0;
-    s.unk14 = 0;
-    return au_bgm_process_suspend(&s, 0);
+    s.index = BGM_SNAPSHOT_0;
+    s.pauseMode = FALSE;
+
+    return au_bgm_process_suspend(&s, FALSE); // force stop
 }
 
-AuResult snd_song_UNK_request_pop(s32 songName) {
+AuResult snd_song_request_pop(s32 songName) {
     AuResult status;
-    SongUpdateEvent s;
+    SongResumeRequest s;
 
     PreventBGMPlayerUpdate = TRUE;
     s.songName = songName;
     s.duration = 2000;
     s.startVolume = 1;
-    s.finalVolume = 127;
-    s.variation = 0;
-    s.unk14 = 0;
+    s.finalVolume = AU_MAX_VOLUME_8;
+    s.index = BGM_SNAPSHOT_0;
+    s.pauseMode = FALSE;
     status = au_bgm_process_resume(&s);
     PreventBGMPlayerUpdate = FALSE;
 
     return status;
 }
 
-AuResult func_80055B80(s32 songName) {
-    SongUpdateEvent s;
+AuResult snd_song_request_snapshot(s32 songName) {
+    SongSuspendRequest s;
+
     s.songName = songName;
     s.duration = 0;
     s.startVolume = 0;
     s.finalVolume = 0;
-    s.variation = 0;
-    s.unk14 = 0;
-    return au_bgm_process_suspend(&s, 1);
+    s.index = BGM_SNAPSHOT_0;
+    s.pauseMode = FALSE;
+
+    return au_bgm_process_suspend(&s, TRUE); // no stop
 }
 
-AuResult snd_song_UNK_request_push_fade_out(s32 songName, s32 fadeTime) {
-    SongUpdateEvent s;
+AuResult snd_song_request_push_fade_out(s32 songName, s32 fadeTime) {
+    SongFadeOutRequest s;
+
     s.songName = songName;
     s.duration = fadeTime;
-    s.startVolume = 0;
+    s.unused_08 = 0;
     s.finalVolume = 0;
-    s.variation = 0;
-    s.unk14 = 1;
+    s.doneCallback = NULL;
+    s.onPush = TRUE;
+
     return au_bgm_process_fade_out(&s);
 }
 
 AuResult snd_song_request_pause(s32 songName) {
-    SongUpdateEvent s;
+    SongSuspendRequest s;
+
     s.songName = songName;
     s.duration = 0;
     s.startVolume = 0;
     s.finalVolume = 0;
-    s.variation = 0;
-    s.unk14 = 1;
-    return au_bgm_process_suspend(&s, 0);
+    s.index = BGM_SNAPSHOT_0;
+    s.pauseMode = TRUE;
+
+    return au_bgm_process_suspend(&s, FALSE); // force stop
 }
 
 AuResult snd_song_request_unpause(s32 songName) {
-    SongUpdateEvent s;
+    SongResumeRequest s;
+
     s.songName = songName;
     s.duration = 0;
     s.startVolume = 0;
     s.finalVolume = 0;
-    s.variation = 0;
-    s.unk14 = 1;
+    s.index = BGM_SNAPSHOT_0;
+    s.pauseMode = TRUE;
+
     return au_bgm_process_resume(&s);
 }
 
 AuResult snd_song_set_volume_quiet(s32 songName) {
-    SongUpdateEvent s;
+    SongStartRequest s;
+
     s.songName = songName;
     s.duration = 500;
-    s.finalVolume = 0x2000;
+    s.finalVolume = 0.25001 * AU_MAX_VOLUME_16;
+
     return au_bgm_adjust_volume(&s);
 }
 
 AuResult snd_song_set_volume_full(s32 songName) {
-    SongUpdateEvent s;
+    SongStartRequest s;
+
     s.songName = songName;
     s.duration = 500;
-    s.finalVolume = 0x7FFF;
+    s.finalVolume = AU_MAX_VOLUME_16;
+
     return au_bgm_adjust_volume(&s);
 }
 
-AuResult snd_song_set_linked_mode(s32 songName, s32 variation) {
-    SongUpdateEvent s;
+AuResult snd_song_set_linked_mode(s32 songName, b32 mode) {
+    SongSwapLinkedRequest s;
+
     s.songName = songName;
-    s.variation = variation;
+    s.enabled = mode;
+
     return au_bgm_set_linked_tracks(&s);
 }
 
@@ -754,8 +787,6 @@ static u8* snd_song_get_track_volumes_set(MusicTrackVols trackVolSet) {
     return trackVols;
 }
 
-static const f32 padding[] = {0.0f};
-
 static AuResult snd_song_change_track_volume(s32 songName, u32 trackIdx, u32 volume) {
     BGMPlayer* bgmPlayer;
     BGMHeader* bgmFile;
@@ -763,8 +794,8 @@ static AuResult snd_song_change_track_volume(s32 songName, u32 trackIdx, u32 vol
 
     status = snd_song_get_playing_info(songName, &bgmFile, &bgmPlayer);
     if (status == AU_RESULT_OK) {
-        if (volume > 0x7F) {
-            volume = 0x7F;
+        if (volume > AU_MAX_VOLUME_8) {
+            volume = AU_MAX_VOLUME_8;
         }
         if (trackIdx > 15) {
             trackIdx = 15;
@@ -779,11 +810,11 @@ AuResult snd_song_set_track_vol_mute(s32 songName, s32 trackIdx) {
 }
 
 AuResult snd_song_set_track_vol_quiet(s32 songName, s32 trackIdx) {
-    return snd_song_change_track_volume(songName, trackIdx, 0x3F);
+    return snd_song_change_track_volume(songName, trackIdx, AU_MAX_VOLUME_8 / 2);
 }
 
 AuResult snd_song_set_track_vol_full(s32 songName, s32 trackIdx) {
-    return snd_song_change_track_volume(songName, trackIdx, 0x7F);
+    return snd_song_change_track_volume(songName, trackIdx, AU_MAX_VOLUME_8);
 }
 
 void snd_song_set_proximity_mix_far(s32 songName, s32 mix) {
@@ -791,11 +822,11 @@ void snd_song_set_proximity_mix_far(s32 songName, s32 mix) {
 }
 
 void snd_song_set_proximity_mix_near(s32 songName, s32 mix) {
-    au_bgm_set_proximity_mix(songName, (u8)mix | 0x57000000);
+    au_bgm_set_proximity_mix(songName, (u8)mix | ((s32)(0.69f * AU_MAX_VOLUME_8) << 24));
 }
 
 void snd_song_set_proximity_mix_full(s32 songName, s32 mix) {
-    au_bgm_set_proximity_mix(songName, (u8)mix | 0x7F000000);
+    au_bgm_set_proximity_mix(songName, (u8)mix | (AU_MAX_VOLUME_8 << 24));
 }
 
 void snd_song_poll_music_events(MusicEventTrigger** musicEvents, s32* count) {
@@ -809,16 +840,16 @@ void snd_song_flush_music_events(void) {
     gSoundGlobals->flushMusicEventQueue = TRUE;
 }
 
-void bgm_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo) {
+void snd_song_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo) {
     AuGlobals* globals = gSoundGlobals;
 
-    if (globals->musicEventQueueCount < 16) {
-        *globals->musicEventQueuePos++ = ((playerID << 0x1C) + ((trackIndex & 0xF) << 0x18) + eventInfo);
+    if (globals->musicEventQueueCount < MUS_QUEUE_SIZE) {
+        *globals->musicEventQueuePos++ = ((playerID << 28) + ((trackIndex & 0xF) << 24) + eventInfo);
         globals->musicEventQueueCount++;
     }
 }
 
-void bgm_clear_music_events(void) {
+void snd_song_clear_music_events(void) {
     AuGlobals* globals = gSoundGlobals;
     s32* buf = globals->musicEventQueue;
     s32 i = 15;
@@ -832,30 +863,32 @@ void bgm_clear_music_events(void) {
     globals->musicEventQueuePos = globals->musicEventQueue;
 }
 
-void au_register_callback(AuCallback func, s32 index) {
+static const f32 padding[] = {0.0f};
+
+void snd_register_callback(AuCallback func, s32 index) {
     gSoundGlobals->audioThreadCallbacks[index] = func;
 }
 
 void snd_set_stereo(void) {
-    func_80056D5C(1);
+    au_set_stereo_enabled(TRUE);
     au_sync_channel_delay_enabled(0);
 }
 
 void snd_set_mono(void) {
-    func_80056D5C(0);
+    au_set_stereo_enabled(FALSE);
     au_sync_channel_delay_enabled(1);
 }
 
-void snd_set_bgm_volume(s32 arg0) {
-    au_set_bus_volume_level(1, arg0);
+void snd_set_bgm_volume(VolumeLevels volume) {
+    au_set_bus_volume_level(AUDIO_TYPE_BGM, volume);
 }
 
-void snd_set_sfx_volume(s32 arg0) {
-    au_set_bus_volume_level(0x10, arg0);
+void snd_set_sfx_volume(VolumeLevels volume) {
+    au_set_bus_volume_level(AUDIO_TYPE_SFX, volume);
 }
 
-void snd_set_sfx_reverb_type(s32 arg0) {
-    au_set_reverb_type(0x10, arg0);
+void snd_set_sfx_reverb_type(s32 reverbType) {
+    au_set_reverb_type(AUDIO_TYPE_SFX, reverbType);
 }
 
 void snd_enable_sfx(void) {

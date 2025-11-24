@@ -471,22 +471,6 @@ f32 dist2D(f32 ax, f32 ay, f32 bx, f32 by);
 f32 dist3D(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void add_vec2D_polar(f32* x, f32* y, f32 r, f32 theta);
 
-//TODO -- remove these and use audio/public.h instead
-
-enum AuResult bgm_set_track_volumes(s32 playerIndex, s16 trackVolSet);
-enum AuResult bgm_clear_track_volumes(s32 playerIndex, s16 trackVolSet);
-enum AuResult bgm_set_linked_mode(s32 playerIndex, s16 arg1);
-void bgm_quiet_max_volume(void);
-void bgm_reset_max_volume(void);
-void bgm_reset_volume(void);
-s32 bgm_init_music_players(void);
-s32 bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s16 volume);
-void bgm_set_battle_song(s32, s32);
-void bgm_push_battle_song(void);
-s32 bgm_adjust_proximity(s32 playerIndex, s32 arg1, s16 arg2);
-void func_801491E4(Matrix4f mtx, s32, s32, s32, s32, s32 alpha);
-s32 bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 arg4, s16 arg5);
-
 #include "audio/public.h"
 
 void basic_window_update(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
@@ -538,7 +522,6 @@ void update_messages(void);
 void update_entities(void);
 void func_80138198(void);
 void bgm_update_music_control(void);
-s32 bgm_is_any_song_playing(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);
@@ -582,7 +565,7 @@ void exec_entity_commandlist(Entity* entity);
 void show_start_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);
 void show_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);
 
-void show_next_damage_popup(f32 x, f32 y, f32 z, s32 damageAmount, s32);
+void show_next_damage_popup(f32 x, f32 y, f32 z, s32 damageAmount, s32 angle);
 void add_xz_vec3f(Vec3f* vector, f32 speed, f32 angleDeg);
 void add_xz_vec3f_copy1(Vec3f* vector, f32 speed, f32 angleDeg);
 void add_xz_vec3f_copy2(Vec3f* vector, f32 speed, f32 angleDeg);
