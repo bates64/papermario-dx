@@ -15,7 +15,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_BattleKooper_Idle,
     STATUS_KEY_PARALYZE,  ANIM_BattleKooper_Still,
     STATUS_KEY_DIZZY,     ANIM_BattleKooper_Injured,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleKooper_Injured,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BattleKooper_Injured,
     STATUS_END,
 };
 
@@ -28,7 +28,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_BattleKooper_Toppled,
     STATUS_KEY_PARALYZE,  ANIM_BattleKooper_StillToppled,
     STATUS_KEY_DIZZY,     ANIM_BattleKooper_Toppled,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleKooper_Toppled,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BattleKooper_Toppled,
     STATUS_END,
 };
 
@@ -49,7 +49,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              75,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             80,

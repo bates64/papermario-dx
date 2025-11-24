@@ -79,7 +79,7 @@ s32 DefaultAnims[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dizzy,
     STATUS_KEY_FROZEN,    ANIM_Goomba_Still,
     STATUS_END,
 };
@@ -94,7 +94,7 @@ s32 ShuffleAnims[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Run,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dizzy,
     STATUS_KEY_FROZEN,    ANIM_Goomba_Still,
     STATUS_END,
 };
@@ -576,7 +576,7 @@ s32 DefaultAnims[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dizzy,
     STATUS_END,
 };
 
@@ -589,7 +589,7 @@ s32 ShuffleAnims[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Run,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dizzy,
     STATUS_END,
 };
 
@@ -1034,7 +1034,7 @@ s32 DefaultAnims[] = {
     STATUS_KEY_STATIC,    ANIM_SpikedGoomba_Idle,
     STATUS_KEY_PARALYZE,  ANIM_SpikedGoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_SpikedGoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpikedGoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpikedGoomba_Dizzy,
     STATUS_END,
 };
 
@@ -1047,7 +1047,7 @@ s32 ShuffleAnims[] = {
     STATUS_KEY_STATIC,    ANIM_SpikedGoomba_Run,
     STATUS_KEY_PARALYZE,  ANIM_SpikedGoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_SpikedGoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpikedGoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpikedGoomba_Dizzy,
     STATUS_END,
 };
 

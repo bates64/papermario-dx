@@ -31,7 +31,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_MediGuy_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_MediGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_MediGuy_Anim0A,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_MediGuy_Anim0A,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_MediGuy_Anim0A,
     STATUS_END,
 };
 

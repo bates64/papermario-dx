@@ -86,7 +86,7 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_KEY_POISON,             80,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             80,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,             80,
@@ -187,7 +187,7 @@ s32 N(ChargedFlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Hyper_Miss,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -438,7 +438,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Hyper_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -451,7 +451,7 @@ s32 N(FlyingShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Hyper_Run,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -857,7 +857,7 @@ s32 N(DownedChargedAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Sleep,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -1120,7 +1120,7 @@ s32 N(DownedAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -1133,7 +1133,7 @@ s32 N(DownedShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Run,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 

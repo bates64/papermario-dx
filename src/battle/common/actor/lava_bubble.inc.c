@@ -161,7 +161,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_LavaBubble_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_LavaBubble_Anim00,
     STATUS_KEY_DIZZY,     ANIM_LavaBubble_Anim0A,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_LavaBubble_Anim0A,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_LavaBubble_Anim0A,
     STATUS_END,
 };
 

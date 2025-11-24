@@ -43,7 +43,7 @@ s32 N(MalletAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpyGuy_Anim03,
     STATUS_KEY_PARALYZE,  ANIM_SpyGuy_Anim01,
     STATUS_KEY_DIZZY,     ANIM_SpyGuy_Anim12,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpyGuy_Anim12,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpyGuy_Anim12,
     STATUS_END,
 };
 
@@ -56,7 +56,7 @@ s32 N(SlingshotAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpyGuy_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_SpyGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_SpyGuy_Anim12,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpyGuy_Anim12,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpyGuy_Anim12,
     STATUS_END,
 };
 

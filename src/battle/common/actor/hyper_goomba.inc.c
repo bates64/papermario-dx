@@ -109,7 +109,7 @@ s32 N(HyperAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Sleep,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -352,7 +352,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 
@@ -365,7 +365,7 @@ s32 N(ShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Hyper_Run,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Hyper_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Hyper_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Hyper_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Hyper_Dizzy,
     STATUS_END,
 };
 

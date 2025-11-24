@@ -61,7 +61,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           60,
     STATUS_KEY_SHRINK,              0,
@@ -140,7 +140,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_BigLanternGhost_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_BigLanternGhost_Anim00,
     STATUS_KEY_DIZZY,     ANIM_BigLanternGhost_Anim0D,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BigLanternGhost_Anim0D,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BigLanternGhost_Anim0D,
     STATUS_END,
 };
 

@@ -173,7 +173,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dizzy,
     STATUS_END,
 };
 
@@ -186,7 +186,7 @@ s32 N(ShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Run,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dizzy,
     STATUS_END,
 };
 

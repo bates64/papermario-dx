@@ -43,7 +43,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           PARALYZE_CHANCE,
     STATUS_KEY_SHRINK,             50,
@@ -108,7 +108,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Black_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Black_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Black_Anim13,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_ShyGuy_Black_Anim13,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_ShyGuy_Black_Anim13,
     STATUS_END,
 };
 

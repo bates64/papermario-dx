@@ -29,7 +29,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,               THIS_DIZZY_CHANCE,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,            THIS_PARALYZE_CHANCE,
     STATUS_KEY_SHRINK,            100,

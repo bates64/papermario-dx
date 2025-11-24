@@ -86,7 +86,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,            100,
@@ -111,7 +111,7 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,            100,
@@ -238,7 +238,7 @@ s32 N(GroundAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Magikoopa_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_Magikoopa_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Magikoopa_Anim07,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Magikoopa_Anim07,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Magikoopa_Anim07,
     STATUS_END,
 };
 
@@ -251,7 +251,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_FlyingMagikoopa_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_FlyingMagikoopa_Anim00,
     STATUS_KEY_DIZZY,     ANIM_FlyingMagikoopa_Anim07,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_FlyingMagikoopa_Anim07,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_FlyingMagikoopa_Anim07,
     STATUS_END,
 };
 
@@ -1269,7 +1269,7 @@ s32 N(CloneStatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,               0,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,            0,
     STATUS_KEY_SHRINK,              0,
@@ -1294,7 +1294,7 @@ s32 N(FlyingCloneStatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,               0,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,            0,
     STATUS_KEY_SHRINK,              0,

@@ -15,7 +15,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_BattleWatt_Idle,
     STATUS_KEY_PARALYZE,  ANIM_BattleWatt_Still,
     STATUS_KEY_DIZZY,     ANIM_BattleWatt_Injured,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleWatt_Injured,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BattleWatt_Injured,
     STATUS_END,
 };
 
@@ -32,7 +32,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              75,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             80,

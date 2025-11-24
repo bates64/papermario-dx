@@ -53,7 +53,7 @@ s32 N(SpearForwardAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpearGuy_Anim04,
     STATUS_KEY_PARALYZE,  ANIM_SpearGuy_Anim02,
     STATUS_KEY_DIZZY,     ANIM_SpearGuy_Anim0F,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpearGuy_Anim0F,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpearGuy_Anim0F,
     STATUS_END,
 };
 
@@ -66,7 +66,7 @@ s32 N(SpearUpwardAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpearGuy_Anim03,
     STATUS_KEY_PARALYZE,  ANIM_SpearGuy_Anim01,
     STATUS_KEY_DIZZY,     ANIM_SpearGuy_Anim0F,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpearGuy_Anim0F,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SpearGuy_Anim0F,
     STATUS_END,
 };
 
@@ -1122,7 +1122,7 @@ s32 N(ShyGuyAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Red_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Red_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Red_Anim13,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_ShyGuy_Red_Anim13,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_ShyGuy_Red_Anim13,
     STATUS_END,
 };
 

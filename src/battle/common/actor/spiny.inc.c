@@ -35,7 +35,7 @@ s32 N(UprightAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Spiny_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_Spiny_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Spiny_Anim12,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Spiny_Anim12,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Spiny_Anim12,
     STATUS_END,
 };
 
@@ -48,7 +48,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Spiny_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_Spiny_Anim15,
     STATUS_KEY_DIZZY,     ANIM_Spiny_Anim13,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Spiny_Anim13,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Spiny_Anim13,
     STATUS_END,
 };
 
@@ -74,7 +74,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              75,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             75,

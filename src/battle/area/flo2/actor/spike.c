@@ -26,7 +26,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_BattleLakilester_Idle,
     STATUS_KEY_PARALYZE,  ANIM_BattleLakilester_Still,
     STATUS_KEY_DIZZY,     ANIM_BattleLakilester_Injured,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleLakilester_Idle,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BattleLakilester_Idle,
     STATUS_END,
 };
 
@@ -47,7 +47,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           40,
     STATUS_KEY_SHRINK,             50,

@@ -28,7 +28,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_PyroGuy_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_PyroGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_PyroGuy_Anim08,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_PyroGuy_Anim08,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_PyroGuy_Anim08,
     STATUS_END,
 };
 

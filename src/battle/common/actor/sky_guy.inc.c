@@ -49,7 +49,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SkyGuy_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_SkyGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_SkyGuy_Anim05,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SkyGuy_Anim05,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SkyGuy_Anim05,
     STATUS_END,
 };
 
@@ -62,7 +62,7 @@ s32 N(YellowBalloonAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SkyGuy_Anim10,
     STATUS_KEY_PARALYZE,  ANIM_SkyGuy_Anim0D,
     STATUS_KEY_DIZZY,     ANIM_SkyGuy_Anim10,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SkyGuy_Anim10,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SkyGuy_Anim10,
     STATUS_END,
 };
 
@@ -75,7 +75,7 @@ s32 N(RedBalloonAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SkyGuy_Anim0F,
     STATUS_KEY_PARALYZE,  ANIM_SkyGuy_Anim0C,
     STATUS_KEY_DIZZY,     ANIM_SkyGuy_Anim0F,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SkyGuy_Anim0F,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SkyGuy_Anim0F,
     STATUS_END,
 };
 
@@ -88,7 +88,7 @@ s32 N(BlueBalloonAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SkyGuy_Anim11,
     STATUS_KEY_PARALYZE,  ANIM_SkyGuy_Anim0E,
     STATUS_KEY_DIZZY,     ANIM_SkyGuy_Anim11,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_SkyGuy_Anim11,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_SkyGuy_Anim11,
     STATUS_END,
 };
 
@@ -623,7 +623,7 @@ s32 N(GroundAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Red_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Red_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Red_Anim13,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_ShyGuy_Red_Anim13,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_ShyGuy_Red_Anim13,
     STATUS_END,
 };
 

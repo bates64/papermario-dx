@@ -45,7 +45,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,            100,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           50,
     STATUS_KEY_SHRINK,             75,
@@ -110,7 +110,7 @@ s32 N(UprightAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Cleft_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_Cleft_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Cleft_Anim0E,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Cleft_Anim0E,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Cleft_Anim0E,
     STATUS_END,
 };
 
@@ -123,7 +123,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Cleft_Anim05,
     STATUS_KEY_PARALYZE,  ANIM_Cleft_Anim01,
     STATUS_KEY_DIZZY,     ANIM_Cleft_Anim0F,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Cleft_Anim0F,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Cleft_Anim0F,
     STATUS_END,
 };
 

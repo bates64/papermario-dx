@@ -102,7 +102,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dizzy,
     STATUS_END,
 };
 
@@ -116,7 +116,7 @@ s32 N(ShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Run,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dizzy,
     STATUS_END,
 };
 

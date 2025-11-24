@@ -40,7 +40,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             70,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             75,
@@ -105,7 +105,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Fuzzy_Jungle_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Fuzzy_Jungle_Still,
     STATUS_KEY_DIZZY,     ANIM_Fuzzy_Jungle_Stunned,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Fuzzy_Jungle_Stunned,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Fuzzy_Jungle_Stunned,
     STATUS_END,
 };
 

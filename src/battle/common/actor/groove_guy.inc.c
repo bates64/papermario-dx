@@ -45,7 +45,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_GrooveGuy_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_GrooveGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_GrooveGuy_Anim07,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_GrooveGuy_Anim07,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_GrooveGuy_Anim07,
     STATUS_END,
 };
 

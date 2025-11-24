@@ -37,7 +37,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             80,
     STATUS_KEY_FROZEN,            100,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             10,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,             90,
@@ -126,7 +126,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_MontyMole_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_MontyMole_Anim00,
     STATUS_KEY_DIZZY,     ANIM_MontyMole_Anim14,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_MontyMole_Anim14,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_MontyMole_Anim14,
     STATUS_END,
 };
 

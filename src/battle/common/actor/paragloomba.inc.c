@@ -176,7 +176,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Dark_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Dark_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dark_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dark_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dark_Dizzy,
     STATUS_END,
 };
 
@@ -189,7 +189,7 @@ s32 N(FlyingShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Paragoomba_Dark_Run,
     STATUS_KEY_PARALYZE,  ANIM_Paragoomba_Dark_Still,
     STATUS_KEY_DIZZY,     ANIM_Paragoomba_Dark_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Paragoomba_Dark_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Paragoomba_Dark_Dizzy,
     STATUS_END,
 };
 
@@ -571,7 +571,7 @@ s32 N(DownedAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Dark_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Dark_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dark_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dark_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dark_Dizzy,
     STATUS_END,
 };
 
@@ -584,7 +584,7 @@ s32 N(DownedShuffleAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Goomba_Dark_Run,
     STATUS_KEY_PARALYZE,  ANIM_Goomba_Dark_Still,
     STATUS_KEY_DIZZY,     ANIM_Goomba_Dark_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Goomba_Dark_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Goomba_Dark_Dizzy,
     STATUS_END,
 };
 

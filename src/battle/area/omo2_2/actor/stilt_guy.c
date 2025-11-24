@@ -66,7 +66,7 @@ s32 N(StiltAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_StiltGuy_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_StiltGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_StiltGuy_Anim00,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_StiltGuy_Anim00,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_StiltGuy_Anim00,
     STATUS_END,
 };
 
@@ -93,7 +93,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              60,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -941,7 +941,7 @@ s32 N(ShyGuyAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Red_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Red_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Red_Anim13,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_ShyGuy_Red_Anim13,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_ShyGuy_Red_Anim13,
     STATUS_END,
 };
 

@@ -38,7 +38,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Bandit_Idle,
     STATUS_KEY_PARALYZE,  ANIM_Bandit_Still,
     STATUS_KEY_DIZZY,     ANIM_Bandit_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Bandit_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Bandit_Dizzy,
     STATUS_END,
 };
 
@@ -51,7 +51,7 @@ s32 N(HoldingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Bandit_IdleHolding,
     STATUS_KEY_PARALYZE,  ANIM_Bandit_StillHolding,
     STATUS_KEY_DIZZY,     ANIM_Bandit_Dizzy,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Bandit_Dizzy,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Bandit_Dizzy,
     STATUS_END,
 };
 

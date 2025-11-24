@@ -27,7 +27,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_BattleClubba_Frost_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_BattleClubba_Frost_Anim00,
     STATUS_KEY_DIZZY,     ANIM_BattleClubba_Frost_Anim05,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleClubba_Frost_Anim05,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_BattleClubba_Frost_Anim05,
     STATUS_END,
 };
 

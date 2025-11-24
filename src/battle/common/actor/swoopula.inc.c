@@ -39,7 +39,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             60,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_UNIMPLEMENTED,       0,0,
+    STATUS_KEY_UNIMPLEMENTED,       0,
     STATUS_KEY_STATIC,             80,
     STATUS_KEY_PARALYZE,           80,
     STATUS_KEY_SHRINK,             75,
@@ -104,7 +104,7 @@ s32 N(CeilingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Swooper_Gray_Anim0C,
     STATUS_KEY_PARALYZE,  ANIM_Swooper_Gray_Anim0B,
     STATUS_KEY_DIZZY,     ANIM_Swooper_Gray_Anim10,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Swooper_Gray_Anim10,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Swooper_Gray_Anim10,
     STATUS_END,
 };
 
@@ -117,7 +117,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Swooper_Gray_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_Swooper_Gray_Anim01,
     STATUS_KEY_DIZZY,     ANIM_Swooper_Gray_Anim14,
-    STATUS_KEY_UNIMPLEMENTED,      ANIM_Swooper_Gray_Anim14,
+    STATUS_KEY_UNIMPLEMENTED, ANIM_Swooper_Gray_Anim14,
     STATUS_END,
 };
 
