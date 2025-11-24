@@ -952,7 +952,7 @@ void btl_state_update_celebration(void) {
                 LevelUpSelectTextID = hid = hud_element_create(&HES_level_up_select_one_to_upgrade);
                 hud_element_set_render_pos(hid, 0, 0);
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
-                battleStatus->curSubmenu = 1;
+                battleStatus->curSubmenu = MENU_FP;
 
                 CelebrateSubstateTime = 10;
                 gBattleSubState = BTL_SUBSTATE_LEVEL_UP_SHOW_HUD;
@@ -1107,27 +1107,27 @@ void btl_state_update_celebration(void) {
         case BTL_SUBSTATE_LEVEL_UP_FADE_OUT:
             if ((gGameStatusPtr->frameCounter % 2) != 0) {
                 switch (battleStatus->curSubmenu) {
-                    case 0:
+                    case MENU_HP:
                         hud_element_set_flags(LevelUpStatEmblemIDs[0], HUD_ELEMENT_FLAG_DISABLED);
                         break;
-                    case 1:
+                    case MENU_FP:
                         hud_element_set_flags(LevelUpStatEmblemIDs[1], HUD_ELEMENT_FLAG_DISABLED);
                         hud_element_set_flags(LevelUpStatEmblemIDs[3], HUD_ELEMENT_FLAG_DISABLED);
                         break;
-                    case 2:
+                    case MENU_BP:
                         hud_element_set_flags(LevelUpStatEmblemIDs[2], HUD_ELEMENT_FLAG_DISABLED);
                         break;
                 }
             } else {
                 switch (battleStatus->curSubmenu) {
-                    case 0:
+                    case MENU_HP:
                         hud_element_clear_flags(LevelUpStatEmblemIDs[0], HUD_ELEMENT_FLAG_DISABLED);
                         break;
-                    case 1:
+                    case MENU_FP:
                         hud_element_clear_flags(LevelUpStatEmblemIDs[1], HUD_ELEMENT_FLAG_DISABLED);
                         hud_element_clear_flags(LevelUpStatEmblemIDs[3], HUD_ELEMENT_FLAG_DISABLED);
                         break;
-                    case 2:
+                    case MENU_BP:
                         hud_element_clear_flags(LevelUpStatEmblemIDs[2], HUD_ELEMENT_FLAG_DISABLED);
                         break;
                 }
@@ -1327,7 +1327,7 @@ void btl_state_draw_celebration(void) {
         case BTL_SUBSTATE_LEVEL_UP_INVALID:
         case BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY:
             switch (battleStatus->curSubmenu) {
-                case 0:
+                case MENU_HP:
                     rotZ = 152;
                     hud_element_set_tint(LevelUpStatEmblemIDs[0], 255, 255, 255);
                     hud_element_set_tint(LevelUpStatEmblemIDs[3], 128, 128, 128);
@@ -1369,7 +1369,7 @@ void btl_state_draw_celebration(void) {
                         hud_element_set_script(id, &HES_level_up_badge);
                     }
                     break;
-                case 1:
+                case MENU_FP:
                     rotZ = 180;
                     hud_element_set_tint(LevelUpStatEmblemIDs[0], 128, 128, 128);
                     hud_element_set_tint(LevelUpStatEmblemIDs[3], 255, 255, 255);
@@ -1394,7 +1394,7 @@ void btl_state_draw_celebration(void) {
                         hud_element_set_tint(id, 128, 128, 128);
                     }
                     break;
-                case 2:
+                case MENU_BP:
                 default:
                     rotZ = 208;
                     hud_element_set_tint(LevelUpStatEmblemIDs[0], 128, 128, 128);
