@@ -725,16 +725,16 @@ static u8* snd_song_get_track_volumes_set(MusicTrackVols trackVolSet) {
     u8* trackVols = NULL;
 
     switch (trackVolSet) {
-        case TRACK_VOLS_0:
+        case TRACK_VOLS_JAN_FULL:
             trackVols = TrackVols_JAN_Full;
             break;
-        case TRACK_VOLS_1:
+        case TRACK_VOLS_UNUSED_1:
             trackVols = TrackVols_Unused1;
             break;
-        case TRACK_VOLS_2:
+        case TRACK_VOLS_TIK_SHIVER:
             trackVols = TrackVols_TIK_Shiver;
             break;
-        case TRACK_VOLS_3:
+        case TRACK_VOLS_UNUSED_3:
             trackVols = TrackVols_Unused3;
             break;
         case TRACK_VOLS_KPA_OUTSIDE:

@@ -1786,10 +1786,10 @@ enum {
 };
 
 typedef enum MusicTrackVols {
-    TRACK_VOLS_0            = 0,
-    TRACK_VOLS_1            = 1,
-    TRACK_VOLS_2            = 2,
-    TRACK_VOLS_3            = 3,
+    TRACK_VOLS_JAN_FULL     = 0,
+    TRACK_VOLS_UNUSED_1     = 1,
+    TRACK_VOLS_TIK_SHIVER   = 2,
+    TRACK_VOLS_UNUSED_3     = 3,
     TRACK_VOLS_KPA_OUTSIDE  = 4,
     TRACK_VOLS_KPA_1        = 5,
     TRACK_VOLS_KPA_2        = 6,
@@ -2224,7 +2224,7 @@ enum StatusKeys {
     STATUS_END                      = 0x00000000,
     STATUS_KEY_NORMAL               = 0x00000001,
     STATUS_KEY_DEFAULT              = 0x00000002,
-    STATUS_KEY_FEAR                 = 0x00000003,
+    STATUS_KEY_UNIMPLEMENTED        = 0x00000003,
     STATUS_KEY_DIZZY                = 0x00000004,
     STATUS_KEY_PARALYZE             = 0x00000005,
     STATUS_KEY_SLEEP                = 0x00000006,
@@ -2256,7 +2256,7 @@ enum StatusKeys {
     STATUS_TURN_MOD_SLEEP           = 0x00000020,
     STATUS_TURN_MOD_STATIC          = 0x00000021,
     STATUS_TURN_MOD_FROZEN          = 0x00000022,
-    STATUS_TURN_MOD_FEAR            = 0x00000023,
+    STATUS_TURN_MOD_UNIMPLEMENTED   = 0x00000023,
     STATUS_TURN_MOD_DIZZY           = 0x00000024,
     STATUS_TURN_MOD_POISON          = 0x00000025,
     STATUS_TURN_MOD_PARALYZE        = 0x00000026,
@@ -2840,14 +2840,14 @@ enum StatusFlags {
     STATUS_FLAG_SLEEP           = 0x00001000,
     STATUS_FLAG_STATIC          = 0x00002000,
     STATUS_FLAG_FROZEN          = 0x00004000,
-    STATUS_FLAG_FEAR            = 0x00008000,
+    STATUS_FLAG_UNIMPLEMENTED   = 0x00008000, // an unused 'disabling' status like sleep, paralyze, or dizzy
     STATUS_FLAG_PARALYZE        = 0x00010000,
     STATUS_FLAG_POISON          = 0x00020000,
     STATUS_FLAG_DIZZY           = 0x00040000,
     STATUS_FLAG_SHRINK          = 0x00080000,
     STATUS_FLAG_STONE           = 0x00100000,
     STATUS_FLAG_STOP            = 0x00200000,
-    STATUS_FLAG_400000          = 0x00400000,
+    STATUS_FLAG_FEAR          = 0x00400000,
     STATUS_FLAG_KO              = 0x01000000,
     STATUS_FLAG_GLOWING         = 0x02000000,
     STATUS_FLAG_TRANSPARENT     = 0x04000000,
@@ -2862,7 +2862,7 @@ enum StatusFlags {
 #define STATUS_FLAGS_IMMOBILIZED \
      (STATUS_FLAG_SLEEP \
     | STATUS_FLAG_FROZEN \
-    | STATUS_FLAG_FEAR \
+    | STATUS_FLAG_UNIMPLEMENTED \
     | STATUS_FLAG_PARALYZE \
     | STATUS_FLAG_DIZZY \
     | STATUS_FLAG_STONE \
@@ -3664,7 +3664,7 @@ enum BattleStates {
     BATTLE_STATE_END_TURN                   = 6,
     BATTLE_STATE_BEGIN_PLAYER_TURN          = 7,
     BATTLE_STATE_BEGIN_PARTNER_TURN         = 8,
-    BATTLE_STATE_TRANSFER_TURN              = 9,    // can be reached from BATTLE_STATE_PARTNER_MOVE if partner == NULL
+    BATTLE_STATE_TRANSFER_TURN              = 9,
     BATTLE_STATE_SWITCH_TO_PLAYER           = 10,
     BATTLE_STATE_SWITCH_TO_PARTNER          = 11,
     BATTLE_STATE_PREPARE_MENU               = 12,

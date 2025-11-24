@@ -1818,7 +1818,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
     EffectInstance* effect;
 
     switch (statusTypeKey) {
-        case STATUS_KEY_FEAR:
+        case STATUS_KEY_UNIMPLEMENTED:
         case STATUS_KEY_DIZZY:
         case STATUS_KEY_PARALYZE:
         case STATUS_KEY_SLEEP:
@@ -1863,9 +1863,9 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
                         case STATUS_KEY_DIZZY:
                             create_status_debuff(target->hudElementDataIndex, STATUS_KEY_DIZZY);
                             return TRUE;
-                        case STATUS_KEY_FEAR:
+                        case STATUS_KEY_UNIMPLEMENTED:
                             set_actor_pal_adjustment(target, ACTOR_PAL_ADJUST_FEAR);
-                            create_status_debuff(target->hudElementDataIndex, STATUS_KEY_FEAR);
+                            create_status_debuff(target->hudElementDataIndex, STATUS_KEY_UNIMPLEMENTED);
                             return TRUE;
                         case STATUS_KEY_POISON:
                             set_actor_pal_adjustment(target, ACTOR_PAL_ADJUST_POISON);

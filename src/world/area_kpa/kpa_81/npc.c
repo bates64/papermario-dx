@@ -46,7 +46,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Thread
-            Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, 1, 8)
+            Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, BGM_VARIATION_1, VOL_LEVEL_FULL)
             Wait(150 * DT)
             Call(FadeOutMusic, 0, 250)
             Wait(15 * DT)
@@ -76,7 +76,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
-        Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, 1, 8)
+        Call(SetMusic, 0, SONG_FINAL_BOWSER_BATTLE, BGM_VARIATION_1, VOL_LEVEL_FULL)
         Wait(150 * DT)
         Call(FadeOutMusic, 0, 250)
         Wait(15 * DT)

@@ -40,15 +40,15 @@ EvtScript N(EVS_Main) = {
     Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
 #if VERSION_PAL
-    Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, 8)
+    Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
 #else
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
-            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, 8)
+            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
         CaseLt(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Call(SetMusic, 0, SONG_RUINS_BASEMENT, 0, 8)
+            Call(SetMusic, 0, SONG_RUINS_BASEMENT, 0, VOL_LEVEL_FULL)
         CaseGe(STORY_CH2_DEFEATED_TUTANKOOPA)
-            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, 8)
+            Call(SetMusic, 0, SONG_DRY_DRY_RUINS, 0, VOL_LEVEL_FULL)
     EndSwitch
 #endif
     Call(TranslateGroup, MODEL_g304, 0, 65, 0)

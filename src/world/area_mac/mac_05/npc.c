@@ -1915,7 +1915,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
                 Call(SetNpcAnimation, NPC_Bartender, ANIM_Bartender_Talk)
                 Call(SetNpcAnimation, NPC_Chanterelle, ANIM_Chanterelle_Still)
                 Wait(30)
-                Call(SetMusic, 0, SONG_POP_DIVA_SONG, 0, 8)
+                Call(SetMusic, 0, SONG_POP_DIVA_SONG, 0, VOL_LEVEL_FULL)
                 Call(SetNpcAnimation, NPC_Bartender, ANIM_Bartender_StrumGuitar)
                 Call(SetNpcAnimation, NPC_Chanterelle, ANIM_Chanterelle_Idle)
                 Wait(30 * DT)
@@ -1985,7 +1985,7 @@ EvtScript N(D_8024E23C_8603AC) = {
     Set(AF_JAN01_TreeDrop_StarPiece, TRUE)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_CANT_INTERACT, TRUE)
     Call(InterpNpcYaw, NPC_Chanterelle, 270, 0)
-    Call(SetMusic, 0, SONG_POP_DIVA_SONG, 1, 8)
+    Call(SetMusic, 0, SONG_POP_DIVA_SONG, BGM_VARIATION_1, VOL_LEVEL_FULL)
     ChildThread
         Wait(30)
         Call(SetNpcAnimation, NPC_Chanterelle, ANIM_Chanterelle_Sing)

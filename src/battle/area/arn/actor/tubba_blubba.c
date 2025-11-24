@@ -35,7 +35,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_BattleTubba_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_BattleTubba_Anim00,
     STATUS_KEY_DIZZY,     ANIM_BattleTubba_Anim18,
-    STATUS_KEY_FEAR,      ANIM_BattleTubba_Anim00,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_BattleTubba_Anim00,
     STATUS_END,
 };
 
@@ -51,7 +51,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              80,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNIMPLEMENTED,       0,0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           80,
     STATUS_KEY_SHRINK,             90,
@@ -61,7 +61,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,

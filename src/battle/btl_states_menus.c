@@ -700,7 +700,7 @@ b32 btl_player_can_act(void) {
         if (debuff == STATUS_KEY_SLEEP) {
             playerCantMove = TRUE;
         }
-        if (debuff == STATUS_KEY_FEAR) {
+        if (debuff == STATUS_KEY_UNIMPLEMENTED) {
             playerCantMove = TRUE;
         }
         if (debuff == STATUS_KEY_DIZZY) {
@@ -750,7 +750,7 @@ b32 btl_partner_can_act(void) {
     if (partnerDebuff == STATUS_KEY_SLEEP) {
         partnerCantMove = TRUE;
     }
-    if (partnerDebuff == STATUS_KEY_FEAR) {
+    if (partnerDebuff == STATUS_KEY_UNIMPLEMENTED) {
         partnerCantMove = TRUE;
     }
     if (partnerDebuff == STATUS_KEY_PARALYZE) {

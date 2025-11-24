@@ -48,7 +48,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              75,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNIMPLEMENTED,       0,0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             80,
@@ -58,7 +58,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -73,7 +73,7 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNIMPLEMENTED,       0,0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           75,
     STATUS_KEY_SHRINK,             80,
@@ -83,7 +83,7 @@ s32 N(FlyingStatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -200,7 +200,7 @@ s32 N(GroundAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Magikoopa_Gray_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_Magikoopa_Gray_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Magikoopa_Gray_Anim07,
-    STATUS_KEY_FEAR,      ANIM_Magikoopa_Gray_Anim07,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_Magikoopa_Gray_Anim07,
     STATUS_END,
 };
 
@@ -213,7 +213,7 @@ s32 N(FlyingAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_FlyingMagikoopa_Gray_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_FlyingMagikoopa_Gray_Anim00,
     STATUS_KEY_DIZZY,     ANIM_FlyingMagikoopa_Gray_Anim07,
-    STATUS_KEY_FEAR,      ANIM_FlyingMagikoopa_Gray_Anim07,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_FlyingMagikoopa_Gray_Anim07,
     STATUS_END,
 };
 

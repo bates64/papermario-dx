@@ -58,7 +58,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_KentCKoopa_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_KentCKoopa_Anim00,
     STATUS_KEY_DIZZY,     ANIM_KentCKoopa_Anim14,
-    STATUS_KEY_FEAR,      ANIM_KentCKoopa_Anim00,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_KentCKoopa_Anim00,
     STATUS_END,
 };
 
@@ -97,7 +97,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              30,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNIMPLEMENTED,       0,0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           30,
     STATUS_KEY_SHRINK,             40,
@@ -107,7 +107,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,         -1,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,      -1,
     STATUS_TURN_MOD_SHRINK,        -1,

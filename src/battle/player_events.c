@@ -52,7 +52,7 @@ void btl_set_player_idle_anims(void) {
 API_CALLABLE(IsPlayerImmobile) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_FEAR
+    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNIMPLEMENTED
                      || playerActor->debuff == STATUS_KEY_DIZZY
                      || playerActor->debuff == STATUS_KEY_PARALYZE
                      || playerActor->debuff == STATUS_KEY_SLEEP
@@ -85,7 +85,7 @@ API_CALLABLE(TryPlayerLucky) {
     sfx_play_sound(SOUND_LUCKY);
 
     script->varTable[0] = FALSE;
-    if (player->debuff == STATUS_KEY_FEAR
+    if (player->debuff == STATUS_KEY_UNIMPLEMENTED
         || player->debuff == STATUS_KEY_DIZZY
         || player->debuff == STATUS_KEY_PARALYZE
         || player->debuff == STATUS_KEY_SLEEP

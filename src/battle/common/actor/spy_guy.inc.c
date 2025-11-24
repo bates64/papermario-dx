@@ -43,7 +43,7 @@ s32 N(MalletAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpyGuy_Anim03,
     STATUS_KEY_PARALYZE,  ANIM_SpyGuy_Anim01,
     STATUS_KEY_DIZZY,     ANIM_SpyGuy_Anim12,
-    STATUS_KEY_FEAR,      ANIM_SpyGuy_Anim12,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpyGuy_Anim12,
     STATUS_END,
 };
 
@@ -56,7 +56,7 @@ s32 N(SlingshotAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpyGuy_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_SpyGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_SpyGuy_Anim12,
-    STATUS_KEY_FEAR,      ANIM_SpyGuy_Anim12,
+    STATUS_KEY_UNIMPLEMENTED,      ANIM_SpyGuy_Anim12,
     STATUS_END,
 };
 
@@ -78,7 +78,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              80,
-    STATUS_KEY_FEAR,              100,
+    STATUS_KEY_UNIMPLEMENTED,              100,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -88,7 +88,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       1,
     STATUS_TURN_MOD_SHRINK,         0,

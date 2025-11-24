@@ -45,7 +45,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(GF_MAP_DryDryDesert, TRUE)
     ExecWait(N(EVS_MakeEntities))
-    Call(SetMusic, 0, SONG_MT_RUGGED, 0, 8)
+    Call(SetMusic, 0, SONG_MT_RUGGED, 0, VOL_LEVEL_FULL)
     Exec(N(EVS_EnterMap))
     Wait(1)
     Return

@@ -39,7 +39,7 @@ void btl_state_update_twink_menu(void) {
 
             switch (player->debuff) {
                 case STATUS_KEY_SLEEP:
-                case STATUS_KEY_FEAR:
+                case STATUS_KEY_UNIMPLEMENTED:
                 case STATUS_KEY_DIZZY:
                 case STATUS_KEY_PARALYZE:
                 case STATUS_KEY_FROZEN:
