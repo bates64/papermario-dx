@@ -246,12 +246,18 @@ typedef struct ActorOffsets {
     /* 0x03 */ s8 shadow;
 } ActorOffsets; // size = 0x04
 
-// TODO look into making options here better. it's really an array of 5 substructs, each having an [8][2] array
-typedef struct PlayerCelebrationAnimOptions {
+typedef struct CelebrationAnimEntry {
+    /* 0x00 */ s32 weight;
+    /* 0x04 */ AnimID anim;
+} CelebrationAnimEntry;
+
+typedef CelebrationAnimEntry CelebrationOptionSet[8];
+
+typedef struct CelebrationAnimOptions {
     /* 0x00 */ s16 randomChance;
     /* 0x02 */ s16 hpBasedChance;
-    /* 0x04 */ s32 options[80];
-} PlayerCelebrationAnimOptions; // size = 0x144
+    /* 0x04 */ CelebrationOptionSet options[5];
+} CelebrationAnimOptions; // size = 0x144
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {

@@ -2852,7 +2852,7 @@ enum StatusFlags {
     STATUS_FLAG_SHRINK          = 0x00080000,
     STATUS_FLAG_STONE           = 0x00100000,
     STATUS_FLAG_STOP            = 0x00200000,
-    STATUS_FLAG_FEAR          = 0x00400000,
+    STATUS_FLAG_FEAR            = 0x00400000,
     STATUS_FLAG_KO              = 0x01000000,
     STATUS_FLAG_GLOWING         = 0x02000000,
     STATUS_FLAG_TRANSPARENT     = 0x04000000,
