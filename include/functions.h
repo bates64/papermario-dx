@@ -946,7 +946,7 @@ void update_encounters_post_battle(void);
 void load_map_bg(char* optAssetName);
 void reset_background_settings(void);
 void func_80138188(void);
-void func_80266970(Actor*);
+void cancel_action_rating_combo(Actor*);
 void show_actor_health_bar(Actor*);
 void hide_actor_health_bar(Actor*);
 void clear_part_pal_adjustment(ActorPart*);

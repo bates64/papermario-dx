@@ -2168,7 +2168,7 @@ void show_action_rating(s32 rating, Actor* actor, f32 x, f32 y, f32 z) {
     }
 }
 
-void func_80266970(Actor* target) {
+void cancel_action_rating_combo(Actor* target) {
     target->actionRatingCombo = 0;
 }
 

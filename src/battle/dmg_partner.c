@@ -791,7 +791,7 @@ HitResult calc_partner_damage_enemy(void) {
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
-        func_80266970(target);
+        cancel_action_rating_combo(target);
     }
 
     if (battleStatus->lastAttackDamage > 0) {
