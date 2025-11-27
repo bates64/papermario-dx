@@ -228,7 +228,7 @@ void load_demo_battle(u32 index) {
     clear_model_data();
     clear_sprite_shading_data();
     reset_background_settings();
-    func_80138188();
+    reset_back_screen_overlay_progress();
     reset_battle_status();
     clear_encounter_status();
     clear_entity_data(TRUE);

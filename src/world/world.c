@@ -161,7 +161,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     reset_background_settings();
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
-        func_80138188();
+        reset_back_screen_overlay_progress();
     }
 
     if (!skipLoadingAssets) {

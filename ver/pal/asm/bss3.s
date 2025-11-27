@@ -498,13 +498,13 @@ dlabel D_801568FC
 dlabel screen_overlay_frontType
 .space 4
 
-dlabel screen_overlay_frontZoom
+dlabel screen_overlay_frontProgress
 .space 4
 
 dlabel screen_overlay_backType
 .space 4
 
-dlabel screen_overlay_backZoom
+dlabel screen_overlay_backProgress
 .space 4
 
 dlabel D_80156910
