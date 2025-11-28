@@ -913,7 +913,6 @@ void btl_update_starpoints_display(void) {
             s32 posX, posY;
             s32 tens, ones;
             s32 id;
-            f32 one = 1.0f;
 
             battleStatus->incrementStarPointDelay--;
             StarPointsIncrementInterp -= 1.0;
@@ -963,7 +962,7 @@ void btl_update_starpoints_display(void) {
                 hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY - 5);
                 hud_element_draw_clipped(id);
-                posX -= (one * 20.0f);
+                posX -= 20.0f;
             }
 
            for (; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
@@ -972,7 +971,7 @@ void btl_update_starpoints_display(void) {
             }
 
             posX = StarPointsBasePosX;
-            posY = StarPointsBasePosY + (one * 14.0f);
+            posY = StarPointsBasePosY + 14.0f;
             if (gBattleStatus.flags2 & BS_FLAGS2_AWARDING_STAR_POINTS) {
                 if (ones != 0) {
                     draw_box(0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL,
@@ -988,7 +987,7 @@ void btl_update_starpoints_display(void) {
                 hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY);
                 hud_element_draw_clipped(id);
-                posX -= one * 10.0f;
+                posX -= 10.0f;
             }
 
             for (; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {

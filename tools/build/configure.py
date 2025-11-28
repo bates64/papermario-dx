@@ -130,7 +130,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="CXX $in",
-        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++2a -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )

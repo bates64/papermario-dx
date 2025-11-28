@@ -237,9 +237,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     Actor* target;
     ActorPart* targetPart;
     s32 hitResult;
-    s32 one = TRUE;
     s32 statusInflicted = FALSE;
-    s32 statusInflicted2 = FALSE;
     s32 isFire = FALSE;
     s32 isWater = FALSE;
     s32 isIce = FALSE;
@@ -600,55 +598,34 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && !(actorClass == ACTOR_PLAYER && is_ability_active(ABILITY_HEALTHY_HEALTHY) && (rand_int(100) < 50)))
     {
         if (battleStatus->curAttackStatus & STATUS_FLAG_SHRINK && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_POISON && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STONE && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_SLEEP && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_DIZZY && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STOP && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STATIC && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_UNIMPLEMENTED && try_inflict_status(target, STATUS_KEY_UNIMPLEMENTED, STATUS_TURN_MOD_UNIMPLEMENTED)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
-
-        /// @bug? repeated paralyze and dizzy infliction
-        if (battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
-        }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_DIZZY && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
-        }
-
         if (battleStatus->curAttackStatus & STATUS_FLAG_FROZEN && target->debuff != STATUS_KEY_FROZEN && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN)) {
-            statusInflicted = one;
-            statusInflicted2 = one;
+            statusInflicted = TRUE;
         }
 
         if (statusInflicted) {
@@ -690,8 +667,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
             case ACTOR_CLASS_PLAYER:
             case ACTOR_CLASS_PARTNER:
                 if (battleStatus->lastAttackDamage == 0) {
-                    if (!statusInflicted2 && !statusInflicted) {
-                        // immune star fx?
+                    if (!statusInflicted) {
                         show_immune_bonk(state->goalPos.x, state->goalPos.y, state->goalPos.z, 0, 1, -3);
                     }
                 } else if (battleStatus->curAttackElement & (DAMAGE_TYPE_MULTIPLE_POPUPS | DAMAGE_TYPE_SMASH)) {
@@ -705,7 +681,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
                 break;
             case ACTOR_CLASS_ENEMY:
                 if (battleStatus->lastAttackDamage == 0) {
-                    if (!statusInflicted2 && !statusInflicted) {
+                    if (!statusInflicted) {
                         show_immune_bonk(state->goalPos.x, state->goalPos.y, state->goalPos.z, 0, 1, 3);
                     }
                 } else if (battleStatus->curAttackElement & (DAMAGE_TYPE_MULTIPLE_POPUPS | DAMAGE_TYPE_SMASH)) {
@@ -739,7 +715,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         play_hit_sound(target, state->goalPos.x, state->goalPos.y, state->goalPos.z, hitSound);
     }
 
-    if ((battleStatus->lastAttackDamage < 1 && !statusInflicted2 && !madeElectricContact) || targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE) {
+    if ((battleStatus->lastAttackDamage < 1 && !statusInflicted && !madeElectricContact) || targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE) {
         sfx_play_sound_at_position(SOUND_IMMUNE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
     }
 

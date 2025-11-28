@@ -356,7 +356,6 @@ s32 popup_menu_update(void) {
     s32 cond;
     s32 buttons;
     s32 msgID;
-    s32 one;
     s32 i;
 
     s32 var_s5 = 0;
@@ -433,7 +432,6 @@ s32 popup_menu_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
             }
 
-            one = POPUP_MENU_SWITCH_PARTNER; // required to match (why is 1 loaded so early?)
             hid = hud_element_create(gPopupMenu->ptrIcon[0]);
             PopupMenu_EntryIconHID = hid;
             hud_element_set_scale(hid, 0.45f);
@@ -475,7 +473,7 @@ s32 popup_menu_update(void) {
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
                 hud_element_set_tint(hid, 255, 255, 255);
             }
-            if (gPopupMenu->popupType == one || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
+            if (gPopupMenu->popupType == POPUP_MENU_SWITCH_PARTNER || gPopupMenu->popupType == POPUP_MENU_UPGRADE_PARTNER) {
                 PopupMenu_PartnerLevelHID = hud_element_create(D_80109890[0]);
                 hid = PopupMenu_PartnerLevelHID;
                 hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER);
