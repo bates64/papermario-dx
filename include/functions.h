@@ -312,7 +312,7 @@ void startup_set_fade_screen_alpha(s16 alpha);
 f32 get_xz_dist_to_player(f32, f32);
 void func_800E06C0(s32);
 void close_status_bar(void);
-Evt* func_802C39F8(Evt* parentScript, Bytecode* nextLine, s32 newState);
+Evt* start_child_thread(Evt* parentScript, Bytecode* nextLine, s32 newState);
 Evt* start_child_script(Evt* parentScript, EvtScript* source, s32 initialState);
 Evt* restart_script(Evt* script);
 void clear_virtual_entity_list(void);
