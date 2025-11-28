@@ -2229,7 +2229,7 @@ enum StatusKeys {
     STATUS_END                      = 0x00000000,
     STATUS_KEY_NORMAL               = 0x00000001,
     STATUS_KEY_DEFAULT              = 0x00000002,
-    STATUS_KEY_UNIMPLEMENTED        = 0x00000003,
+    STATUS_KEY_UNUSED               = 0x00000003,
     STATUS_KEY_DIZZY                = 0x00000004,
     STATUS_KEY_PARALYZE             = 0x00000005,
     STATUS_KEY_SLEEP                = 0x00000006,
@@ -2261,7 +2261,7 @@ enum StatusKeys {
     STATUS_TURN_MOD_SLEEP           = 0x00000020,
     STATUS_TURN_MOD_STATIC          = 0x00000021,
     STATUS_TURN_MOD_FROZEN          = 0x00000022,
-    STATUS_TURN_MOD_UNIMPLEMENTED   = 0x00000023,
+    STATUS_TURN_MOD_UNUSED          = 0x00000023,
     STATUS_TURN_MOD_DIZZY           = 0x00000024,
     STATUS_TURN_MOD_POISON          = 0x00000025,
     STATUS_TURN_MOD_PARALYZE        = 0x00000026,
@@ -2845,7 +2845,7 @@ enum StatusFlags {
     STATUS_FLAG_SLEEP           = 0x00001000,
     STATUS_FLAG_STATIC          = 0x00002000,
     STATUS_FLAG_FROZEN          = 0x00004000,
-    STATUS_FLAG_UNIMPLEMENTED   = 0x00008000, // an unused 'disabling' status like sleep, paralyze, or dizzy
+    STATUS_FLAG_UNUSED          = 0x00008000, // an unused 'disabling' status like sleep, paralyze, or dizzy
     STATUS_FLAG_PARALYZE        = 0x00010000,
     STATUS_FLAG_POISON          = 0x00020000,
     STATUS_FLAG_DIZZY           = 0x00040000,
@@ -2867,7 +2867,7 @@ enum StatusFlags {
 #define STATUS_FLAGS_IMMOBILIZED \
      (STATUS_FLAG_SLEEP \
     | STATUS_FLAG_FROZEN \
-    | STATUS_FLAG_UNIMPLEMENTED \
+    | STATUS_FLAG_UNUSED \
     | STATUS_FLAG_PARALYZE \
     | STATUS_FLAG_DIZZY \
     | STATUS_FLAG_STONE \

@@ -2845,8 +2845,8 @@ API_CALLABLE(GetStatusFlags) {
         if (debuff == STATUS_KEY_DIZZY) {
             flags |= STATUS_FLAG_DIZZY;
         }
-        if (debuff == STATUS_KEY_UNIMPLEMENTED) {
-            flags |= STATUS_FLAG_UNIMPLEMENTED;
+        if (debuff == STATUS_KEY_UNUSED) {
+            flags |= STATUS_FLAG_UNUSED;
         }
         if (debuff == STATUS_KEY_POISON) {
             flags |= STATUS_FLAG_POISON;

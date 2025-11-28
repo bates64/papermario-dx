@@ -50,7 +50,7 @@ void btl_state_update_run_away(void) {
                         if (!(enemy->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                             f32 escapeChance = enemy->actorBlueprint->escapeChance;
 
-                            if (enemy->debuff == STATUS_KEY_UNIMPLEMENTED ||
+                            if (enemy->debuff == STATUS_KEY_UNUSED ||
                                 enemy->debuff == STATUS_KEY_DIZZY ||
                                 enemy->debuff == STATUS_KEY_PARALYZE ||
                                 enemy->debuff == STATUS_KEY_SLEEP ||

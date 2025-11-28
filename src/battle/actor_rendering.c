@@ -1041,7 +1041,7 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
             }
             palChanged = TRUE;
         }
-        if (actor->debuff == STATUS_KEY_UNIMPLEMENTED) {
+        if (actor->debuff == STATUS_KEY_UNUSED) {
             if (!palChanged) {
                 set_actor_pal_adjustment(actor, ACTOR_PAL_ADJUST_FEAR);
             }
@@ -1079,9 +1079,9 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
                             part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_DIZZY);
                             animChanged = TRUE;
                         }
-                    } else if (actor->debuff == STATUS_KEY_UNIMPLEMENTED) {
+                    } else if (actor->debuff == STATUS_KEY_UNUSED) {
                         if (!animChanged) {
-                            part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_UNIMPLEMENTED);
+                            part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_UNUSED);
                             animChanged = TRUE;
                         }
                     } else if (actor->debuff == STATUS_KEY_SLEEP) {
@@ -1608,7 +1608,7 @@ void appendGfx_player_actor(void* arg0) {
         && !((partner != NULL) && (partner->flags & ACTOR_FLAG_NO_ATTACK))
     ) {
         if (!(gBattleStatus.flags2 & BS_FLAGS2_NO_PLAYER_PAL_ADJUST)) {
-            if ((player->debuff != STATUS_KEY_UNIMPLEMENTED)
+            if ((player->debuff != STATUS_KEY_UNUSED)
                 && (player->debuff != STATUS_KEY_PARALYZE)
                 && (player->debuff != STATUS_KEY_FROZEN)
                 && (player->debuff != STATUS_KEY_STOP)

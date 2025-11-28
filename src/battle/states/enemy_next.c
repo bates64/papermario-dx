@@ -59,7 +59,7 @@ void btl_state_update_next_enemy(void) {
             if (enemy->debuff == STATUS_KEY_SLEEP) {
                 skipEnemy = TRUE;
             }
-            if (enemy->debuff == STATUS_KEY_UNIMPLEMENTED) {
+            if (enemy->debuff == STATUS_KEY_UNUSED) {
                 skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_DIZZY) {

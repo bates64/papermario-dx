@@ -35,7 +35,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Gulpit_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_Gulpit_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Gulpit_Anim0E,
-    STATUS_KEY_UNIMPLEMENTED, ANIM_Gulpit_Anim0E,
+    STATUS_KEY_UNUSED,    ANIM_Gulpit_Anim0E,
     STATUS_END,
 };
 
@@ -61,7 +61,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             80,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNIMPLEMENTED,       0,
+    STATUS_KEY_UNUSED,              0,
     STATUS_KEY_STATIC,             10,
     STATUS_KEY_PARALYZE,           80,
     STATUS_KEY_SHRINK,             75,
@@ -71,7 +71,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       1,
     STATUS_TURN_MOD_SHRINK,         0,

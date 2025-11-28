@@ -85,7 +85,7 @@ API_CALLABLE(N(ModifyBowPos)) {
 API_CALLABLE(N(IsPlayerImmobile)) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNIMPLEMENTED
+    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
                      || playerActor->debuff == STATUS_KEY_DIZZY
                      || playerActor->debuff == STATUS_KEY_PARALYZE
                      || playerActor->debuff == STATUS_KEY_SLEEP
@@ -172,7 +172,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,            100,
     STATUS_KEY_FROZEN,            100,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_UNIMPLEMENTED,     100,
+    STATUS_KEY_UNUSED,     100,
     STATUS_KEY_STATIC,            100,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,            100,
@@ -182,7 +182,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,

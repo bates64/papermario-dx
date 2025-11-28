@@ -61,7 +61,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_UNIMPLEMENTED,       0,
+    STATUS_KEY_UNUSED,              0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           60,
     STATUS_KEY_SHRINK,              0,
@@ -71,7 +71,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,         -1,
-    STATUS_TURN_MOD_UNIMPLEMENTED,  0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,      -1,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -140,7 +140,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_BigLanternGhost_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_BigLanternGhost_Anim00,
     STATUS_KEY_DIZZY,     ANIM_BigLanternGhost_Anim0D,
-    STATUS_KEY_UNIMPLEMENTED, ANIM_BigLanternGhost_Anim0D,
+    STATUS_KEY_UNUSED,    ANIM_BigLanternGhost_Anim0D,
     STATUS_END,
 };
 
