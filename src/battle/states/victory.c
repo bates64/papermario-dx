@@ -60,7 +60,7 @@ void btl_state_update_victory(void) {
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
 
             gBattleStatus.flags1 &= ~BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
-            if (player->koStatus == STATUS_KEY_DAZE) {
+            if (player->koStatus == STATUS_KEY_KO) {
                 dispatch_event_player(EVENT_RECOVER_FROM_KO);
                 gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVER_KO;
             }
@@ -73,7 +73,7 @@ void btl_state_update_victory(void) {
             player->disableEffect->data.disableX->koDuration = 0;
 
             if (partner != NULL) {
-                if (partner->koStatus == STATUS_KEY_DAZE) {
+                if (partner->koStatus == STATUS_KEY_KO) {
                     dispatch_event_partner(EVENT_RECOVER_FROM_KO);
                     gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVER_KO;
                 }

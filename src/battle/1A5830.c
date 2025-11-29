@@ -670,7 +670,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
         && !(target->flags & ACTOR_FLAG_NO_DMG_APPLY))
     {
-        inflict_partner_ko(target, STATUS_KEY_DAZE, battleStatus->lastAttackDamage);
+        inflict_partner_ko(target, STATUS_KEY_KO, battleStatus->lastAttackDamage);
     }
 
     if (!(target->flags & ACTOR_FLAG_NO_DMG_POPUP)) {

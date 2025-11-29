@@ -50,7 +50,7 @@ s32 N(DownedFlyingStatusTable)[] = {
     STATUS_KEY_POISON,            100,
     STATUS_KEY_FROZEN,            100,
     STATUS_KEY_DIZZY,              80,
-    STATUS_KEY_UNUSED,     100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,            100,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             80,

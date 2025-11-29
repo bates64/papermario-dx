@@ -2856,36 +2856,20 @@ API_CALLABLE(GetStatusFlags) {
         }
     }
 
-    switch (actor->staticStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_STATIC:
-            flags |= STATUS_FLAG_STATIC;
-            break;
+    if (actor->staticStatus == STATUS_KEY_STATIC) {
+        flags |= STATUS_FLAG_STATIC;
     }
 
-    switch (actor->stoneStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_STONE:
-            flags |= STATUS_FLAG_STONE;
-            break;
+    if (actor->stoneStatus == STATUS_KEY_STONE) {
+        flags |= STATUS_FLAG_STONE;
     }
 
-    switch (actor->koStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_DAZE:
-            flags |= STATUS_FLAG_KO;
-            break;
+    if (actor->koStatus == STATUS_KEY_KO) {
+        flags |= STATUS_FLAG_KO;
     }
 
-    switch (actor->transparentStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_TRANSPARENT:
-            flags |= STATUS_FLAG_TRANSPARENT;
-            break;
+    if (actor->transparentStatus == STATUS_KEY_TRANSPARENT) {
+        flags |= STATUS_FLAG_TRANSPARENT;
     }
 
     for (partsTable = actor->partsTable; partsTable != NULL; partsTable = partsTable->nextPart) {

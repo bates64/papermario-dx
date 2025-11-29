@@ -688,7 +688,7 @@ b32 btl_player_can_act(void) {
         s8 debuff = player->debuff;
         s32 playerCantMove = FALSE;
 
-        if (player->koStatus == STATUS_KEY_DAZE) {
+        if (player->koStatus == STATUS_KEY_KO) {
             playerCantMove = TRUE;
         }
         if (debuff == STATUS_KEY_POISON) {
@@ -738,7 +738,7 @@ b32 btl_partner_can_act(void) {
     partnerDebuff = partner->debuff;
     partnerCantMove = FALSE;
 
-    if (partner->koStatus == STATUS_KEY_DAZE) {
+    if (partner->koStatus == STATUS_KEY_KO) {
         partnerCantMove = TRUE;
     }
     if (partnerDebuff == STATUS_KEY_POISON) {

@@ -159,7 +159,7 @@ void btl_state_update_partner_move(void) {
 
             btl_update_ko_status();
 
-            if (partner->statusAfflicted == STATUS_KEY_DAZE && !btl_are_all_enemies_defeated()) {
+            if (partner->statusAfflicted == STATUS_KEY_KO && !btl_are_all_enemies_defeated()) {
                 btl_cam_use_preset(BTL_CAM_PARTNER_INJURED);
                 btl_show_battle_message(BTL_MSG_PARTNER_INJURED, 60);
                 partner->statusAfflicted = 0;

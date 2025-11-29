@@ -951,7 +951,7 @@ s32 dispatch_damage_event_partner(s32 damageAmount, s32 event, s32 stopMotion) {
     if (battleStatus->lastAttackDamage > 0) {
         gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
 
-        inflict_status(partner, STATUS_KEY_DAZE, battleStatus->lastAttackDamage);
+        inflict_status(partner, STATUS_KEY_KO, battleStatus->lastAttackDamage);
     }
 
     if (!stopMotion) {

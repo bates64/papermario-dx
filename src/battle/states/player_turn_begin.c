@@ -257,7 +257,7 @@ void update_status_damage(void) {
                 prevDuration = player->koDuration;
                 player->koDuration = debuffDuration;
                 if (debuffDuration > 0) {
-                    player->koStatus = STATUS_KEY_DAZE;
+                    player->koStatus = STATUS_KEY_KO;
                     player->disableEffect->data.disableX->koDuration = player->koDuration;
                 } else if (prevDuration != debuffDuration) {
                     player->koStatus = 0;

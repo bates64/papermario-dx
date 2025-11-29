@@ -426,7 +426,7 @@ HitResult calc_item_damage_enemy(void) {
 
     if (actorClass == ACTOR_PARTNER) {
         if ((battleStatus->lastAttackDamage > 0) && (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)) {
-            inflict_status(target, STATUS_KEY_DAZE, battleStatus->lastAttackDamage);
+            inflict_status(target, STATUS_KEY_KO, battleStatus->lastAttackDamage);
         }
     }
 

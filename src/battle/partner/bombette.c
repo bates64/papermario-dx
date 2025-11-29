@@ -262,7 +262,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_SLEEP,     ANIM_BattleBombette_Sleep,
     STATUS_KEY_POISON,    ANIM_BattleBombette_Still,
     STATUS_KEY_STOP,      ANIM_BattleBombette_Still,
-    STATUS_KEY_DAZE,      ANIM_BattleBombette_Injured,
+    STATUS_KEY_KO,        ANIM_BattleBombette_Injured,
     STATUS_KEY_INACTIVE,  ANIM_BattleBombette_Still,
     STATUS_END,
 };
@@ -279,7 +279,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,            100,
     STATUS_KEY_FROZEN,            100,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_UNUSED,     100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,            100,
     STATUS_KEY_PARALYZE,          100,
     STATUS_KEY_SHRINK,            100,

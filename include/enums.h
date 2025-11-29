@@ -2239,9 +2239,9 @@ enum StatusKeys {
     STATUS_KEY_SHRINK               = 0x0000000A,
     STATUS_KEY_STATIC               = 0x0000000B,
     STATUS_KEY_STONE                = 0x0000000C,
-    STATUS_KEY_DAZE                 = 0x0000000D,
+    STATUS_KEY_KO                   = 0x0000000D,
     STATUS_KEY_TRANSPARENT          = 0x0000000E,
-    STATUS_KEY_KO                   = 0x0000000F,
+    STATUS_KEY_0F                   = 0x0000000F,
     STATUS_KEY_BERSERK              = 0x00000010,
     STATUS_KEY_11                   = 0x00000011,
     STATUS_KEY_INACTIVE             = 0x00000012,
@@ -3873,20 +3873,6 @@ enum DebugScriptstModes {
     DEBUG_SCRIPTS_NONE              = 0,
     DEBUG_SCRIPTS_NO_UPDATE         = 1,
     DEBUG_SCRIPTS_BLOCK_FUNC_DONE   = 2,
-};
-
-enum DebuffTypes {
-    DEBUFF_TYPE_SLEEP               = 0x00001000,
-    DEBUFF_TYPE_STATIC              = 0x00002000,
-    DEBUFF_TYPE_FROZEN              = 0x00004000,
-    DEBUFF_TYPE_PARALYZED           = 0x00010000,
-    DEBUFF_TYPE_POISON              = 0x00020000,
-    DEBUFF_TYPE_DIZZY               = 0x00040000,
-    DEBUFF_TYPE_SHRINK              = 0x00080000,
-    DEBUFF_TYPE_STONE               = 0x00100000,
-    DEBUFF_TYPE_STOP                = 0x00200000,
-    DEBUFF_TYPE_DAZE                = 0x01000000,
-    DEBUFF_TYPE_INVISIBLE           = 0x04000000,
 };
 
 enum PlayerBasicJump {

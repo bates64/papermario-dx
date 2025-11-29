@@ -54,7 +54,7 @@ void btl_state_update_twink_menu(void) {
                 shouldSkipTurn = TRUE;
             }
 
-            if (player->koStatus == STATUS_KEY_DAZE) {
+            if (player->koStatus == STATUS_KEY_KO) {
                 shouldSkipTurn = TRUE;
             }
 

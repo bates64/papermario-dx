@@ -131,7 +131,7 @@ void btl_state_update_transfer_turn(void) {
             oldKoDuration = actor->koDuration;
             actor->koDuration = actor->debuffDuration;
             if (actor->koDuration > 0) {
-                actor->koStatus = STATUS_KEY_DAZE;
+                actor->koStatus = STATUS_KEY_KO;
                 actor->disableEffect->data.disableX->koDuration = actor->koDuration;
             } else if (oldKoDuration != actor->koDuration) {
                 actor->koStatus = 0;

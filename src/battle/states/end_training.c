@@ -30,7 +30,7 @@ void btl_state_update_end_training_battle(void) {
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PLAYER;
             gBattleStatus.flags2 &= ~BS_FLAGS2_OVERRIDE_INACTIVE_PARTNER;
 
-            if (player->koStatus == STATUS_KEY_DAZE) {
+            if (player->koStatus == STATUS_KEY_KO) {
                 dispatch_event_player(EVENT_RECOVER_FROM_KO);
                 gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVERING;
             }
@@ -42,7 +42,7 @@ void btl_state_update_end_training_battle(void) {
             player->koDuration = 0;
             player->disableEffect->data.disableX->koDuration = 0;
             if (partner != NULL) {
-                if (partner->koStatus == STATUS_KEY_DAZE) {
+                if (partner->koStatus == STATUS_KEY_KO) {
                     dispatch_event_partner(EVENT_RECOVER_FROM_KO);
                     gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVERING;
                 }

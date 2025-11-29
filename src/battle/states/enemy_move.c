@@ -202,7 +202,7 @@ void btl_state_update_enemy_move(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_CHECK_PARTNER:
             if (partner != NULL) {
-                if (partner->statusAfflicted == STATUS_KEY_DAZE) {
+                if (partner->statusAfflicted == STATUS_KEY_KO) {
                     player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     btl_cam_use_preset(BTL_CAM_PARTNER_INJURED);

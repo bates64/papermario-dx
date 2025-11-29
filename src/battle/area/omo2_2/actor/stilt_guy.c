@@ -118,7 +118,7 @@ s32 N(UnusedStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNUSED,     100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,

@@ -1108,12 +1108,12 @@ void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
                 }
 
                 if (isPartner) {
-                    if (actor->koStatus == STATUS_KEY_DAZE) {
-                        part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_DAZE);
+                    if (actor->koStatus == STATUS_KEY_KO) {
+                        part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_KO);
                         animChanged = TRUE;
                     } else {
                         s32 temp = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_NORMAL);
-                        if (temp == get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_DAZE)) {
+                        if (temp == get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_KO)) {
                             part->curAnimation = get_npc_anim_for_status(part->idleAnimations, STATUS_KEY_NORMAL);
                         }
                     }
