@@ -2289,15 +2289,15 @@ API_CALLABLE(WaitForState) {
 
     if (isInitialCall) {
         waitForState = evt_get_variable(script, *args++);
-        if (waitForState == BATTLE_STATE_0) {
-            battleStatus->waitForState = BATTLE_STATE_0;
+        if (waitForState == BATTLE_STATE_NONE) {
+            battleStatus->waitForState = BATTLE_STATE_NONE;
             return ApiStatus_DONE2;
         }
         battleStatus->waitForState = waitForState;
     }
 
     waitForState = battleStatus->waitForState;
-    if (waitForState == BATTLE_STATE_0) {
+    if (waitForState == BATTLE_STATE_NONE) {
         return ApiStatus_DONE2;
     }
 
@@ -2315,10 +2315,10 @@ API_CALLABLE(CancelEnemyTurn) {
 
     switch (cancelMode) {
         case 0:
-            battleStatus->unk_94 = 1;
+            battleStatus->cancelTurnMode = 1;
             break;
         case 1:
-            battleStatus->unk_94 = -1;
+            battleStatus->cancelTurnMode = -1;
             break;
     }
 
@@ -2845,8 +2845,8 @@ API_CALLABLE(GetStatusFlags) {
         if (debuff == STATUS_KEY_DIZZY) {
             flags |= STATUS_FLAG_DIZZY;
         }
-        if (debuff == STATUS_KEY_FEAR) {
-            flags |= STATUS_FLAG_FEAR;
+        if (debuff == STATUS_KEY_UNUSED) {
+            flags |= STATUS_FLAG_UNUSED;
         }
         if (debuff == STATUS_KEY_POISON) {
             flags |= STATUS_FLAG_POISON;
@@ -2856,36 +2856,20 @@ API_CALLABLE(GetStatusFlags) {
         }
     }
 
-    switch (actor->staticStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_STATIC:
-            flags |= STATUS_FLAG_STATIC;
-            break;
+    if (actor->staticStatus == STATUS_KEY_STATIC) {
+        flags |= STATUS_FLAG_STATIC;
     }
 
-    switch (actor->stoneStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_STONE:
-            flags |= STATUS_FLAG_STONE;
-            break;
+    if (actor->stoneStatus == STATUS_KEY_STONE) {
+        flags |= STATUS_FLAG_STONE;
     }
 
-    switch (actor->koStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_DAZE:
-            flags |= STATUS_FLAG_KO;
-            break;
+    if (actor->koStatus == STATUS_KEY_KO) {
+        flags |= STATUS_FLAG_KO;
     }
 
-    switch (actor->transparentStatus) {
-        case 0:
-            break;
-        case STATUS_KEY_TRANSPARENT:
-            flags |= STATUS_FLAG_TRANSPARENT;
-            break;
+    if (actor->transparentStatus == STATUS_KEY_TRANSPARENT) {
+        flags |= STATUS_FLAG_TRANSPARENT;
     }
 
     for (partsTable = actor->partsTable; partsTable != NULL; partsTable = partsTable->nextPart) {

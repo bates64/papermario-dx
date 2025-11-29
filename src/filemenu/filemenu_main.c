@@ -742,7 +742,7 @@ void filemenu_main_init(MenuPanel* menu) {
 
     for (i = 0; i < ARRAY_COUNT(filemenu_mainHIDs); i++) {
         filemenu_mainHIDs[i] = hud_element_create(filemenu_main_hudScripts[gCurrentLanguage][i]);
-        hud_element_set_flags(filemenu_mainHIDs[i], HUD_ELEMENT_FLAG_80);
+        hud_element_set_flags(filemenu_mainHIDs[i], HUD_ELEMENT_FLAG_MANUAL_RENDER);
     }
 
     for (i = 0; i < ARRAY_COUNT(filemenu_main_windowBPs); i++) {
@@ -852,9 +852,9 @@ void filemenu_main_handle_input(MenuPanel* menu) {
         if (originalOutputMode != gGameStatusPtr->soundOutputMode) {
             sfx_play_sound(SOUND_MENU_CHANGE_TAB);
             if (gGameStatusPtr->soundOutputMode != SOUND_OUT_MONO) {
-                audio_set_stereo();
+                snd_set_stereo();
             } else {
-                audio_set_mono();
+                snd_set_mono();
             }
         }
     }

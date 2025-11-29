@@ -17,7 +17,7 @@ extern EvtScript EVS_Player_SimpleHit;
 extern EvtScript EVS_Player_ComplexHit;
 extern EvtScript EVS_Player_NoDamageHit;
 
-extern PlayerCelebrationAnimOptions bPlayerCelebrations;
+extern CelebrationAnimOptions bPlayerCelebrations;
 
 BSS s32 BattleMerleeEffectsTime;
 BSS f32 BattleMerleeBasePosY;
@@ -49,10 +49,10 @@ void btl_set_player_idle_anims(void) {
     }
 }
 
-API_CALLABLE(IsPartnerImmobile) {
+API_CALLABLE(IsPlayerImmobile) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* playerActor = battleStatus->playerActor;
-    s32 isImmobile = playerActor->debuff == STATUS_KEY_FEAR
+    s32 isImmobile = playerActor->debuff == STATUS_KEY_UNUSED
                      || playerActor->debuff == STATUS_KEY_DIZZY
                      || playerActor->debuff == STATUS_KEY_PARALYZE
                      || playerActor->debuff == STATUS_KEY_SLEEP
@@ -85,7 +85,7 @@ API_CALLABLE(TryPlayerLucky) {
     sfx_play_sound(SOUND_LUCKY);
 
     script->varTable[0] = FALSE;
-    if (player->debuff == STATUS_KEY_FEAR
+    if (player->debuff == STATUS_KEY_UNUSED
         || player->debuff == STATUS_KEY_DIZZY
         || player->debuff == STATUS_KEY_PARALYZE
         || player->debuff == STATUS_KEY_SLEEP
@@ -98,52 +98,41 @@ API_CALLABLE(TryPlayerLucky) {
 }
 
 API_CALLABLE(ChoosePlayerCelebrationAnim) {
-    PlayerCelebrationAnimOptions* pcao = &bPlayerCelebrations;
-    PlayerData* playerData = &gPlayerData;
-    s32 temp;
+    CelebrationAnimOptions* celebrations = &bPlayerCelebrations;
+    s32 optionSet;
+    s32 weight;
     s32 i;
 
-    if (rand_int(pcao->randomChance + pcao->hpBasedChance) < pcao->randomChance) {
-        temp = 0;
-        for (i = 0; i < 8; i++) {
-            temp += pcao->options[i * 2];
-        }
-        temp = rand_int(temp);
-        for (i = 0; i < 8; i++) {
-            temp -= pcao->options[i * 2];
-            if (temp <= 0) {
-                break;
-            }
-        }
-
-        script->varTable[0] = pcao->options[i * 2 + 1];
+    if (rand_int(celebrations->randomChance + celebrations->hpBasedChance) < celebrations->randomChance) {
+        optionSet = 0;
     } else {
-        s32* opts;
-        f32 healthRatio = playerData->curHP / (f32) playerData->curMaxHP;
+        f32 healthRatio = gPlayerData.curHP / (f32) gPlayerData.curMaxHP;
 
         if (healthRatio <= 0.25) {
-            opts = &pcao->options[16];
+            optionSet = 1;
         } else if (healthRatio <= 0.5) {
-            opts = &pcao->options[32];
+            optionSet = 2;
         } else if (healthRatio <= 0.75) {
-            opts = &pcao->options[48];
+            optionSet = 3;
         } else {
-            opts = &pcao->options[64];
+            optionSet = 4;
         }
-
-        temp = 0;
-        for (i = 0; i < 8; i++) {
-            temp += opts[i * 2];
-        }
-        temp = rand_int(temp);
-        for (i = 0; i < 8; i++) {
-            temp -= opts[i * 2];
-            if (temp <= 0) {
-                break;
-            }
-        }
-        script->varTable[0] = opts[i * 2 + 1];
     }
+
+    weight = 0;
+    for (i = 0; i < 8; i++) {
+        weight += celebrations->options[optionSet][i].weight;
+    }
+    weight = rand_int(weight);
+    for (i = 0; i < 8; i++) {
+        weight -= celebrations->options[optionSet][i].weight;
+        if (weight <= 0) {
+            break;
+        }
+    }
+
+    script->varTable[0] = celebrations->options[optionSet][i].anim;
+
     return ApiStatus_DONE2;
 }
 
@@ -854,7 +843,7 @@ EvtScript EVS_StartDefend = {
 EvtScript EVS_Player_HandleEvent = {
     Call(GetLastEvent, ACTOR_PLAYER, LVarF)
     Switch(LVarF)
-        CaseNe(EVENT_32)
+        CaseNe(EVENT_RECOVER_FROZEN)
             Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
     EndSwitch
     Call(InterruptActionCommand)
@@ -994,7 +983,7 @@ EvtScript EVS_Player_HandleEvent = {
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Run)
             Call(PlayerRunToGoal, 0)
             Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_Idle)
-        CaseEq(EVENT_32)
+        CaseEq(EVENT_RECOVER_FROZEN)
             Wait(10)
             Call(UseIdleAnimation, ACTOR_PLAYER, FALSE)
             Call(SetActorJumpGravity, ACTOR_PLAYER, Float(1.8))
@@ -1831,21 +1820,21 @@ EvtScript EVS_PlayerRegainAbility = {
         CaseEq(BTL_MENU_TYPE_SMASH)
             Set(LVarE, 1)
             Switch(LVarC)
-                CaseEq(0)
+                CaseEq(GEAR_RANK_NORMAL)
                     Set(LVarA, ITEM_MENU_HAMMER1)
-                CaseEq(1)
+                CaseEq(GEAR_RANK_SUPER)
                     Set(LVarA, ITEM_MENU_HAMMER2)
-                CaseEq(2)
+                CaseEq(GEAR_RANK_ULTRA)
                     Set(LVarA, ITEM_MENU_HAMMER3)
             EndSwitch
         CaseEq(BTL_MENU_TYPE_JUMP)
             Set(LVarE, 2)
             Switch(LVarB)
-                CaseEq(0)
+                CaseEq(GEAR_RANK_NORMAL)
                     Set(LVarA, ITEM_MENU_BOOTS1)
-                CaseEq(1)
+                CaseEq(GEAR_RANK_SUPER)
                     Set(LVarA, ITEM_MENU_BOOTS2)
-                CaseEq(2)
+                CaseEq(GEAR_RANK_ULTRA)
                     Set(LVarA, ITEM_MENU_BOOTS3)
             EndSwitch
     EndSwitch

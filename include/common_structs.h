@@ -14,6 +14,7 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 typedef Bytecode EvtScript[];
 
 typedef void NoArgCallback(void*);
+typedef void (*AuCallback)(void);
 
 #define MSG_PTR u8*
 #define IMG_PTR u8*
@@ -30,6 +31,7 @@ typedef s8 b8;
 typedef s32 HitID;
 typedef u32 AnimID;
 typedef s32 HudElemID;
+typedef s32 MsgID;
 
 typedef struct {
     u8 r, g, b, a;
@@ -628,22 +630,22 @@ typedef struct Worker {
 
 typedef Worker* WorkerList[MAX_WORKERS];
 
-typedef struct MusicSettings {
+typedef struct MusicControlData {
     /* 0x00 */ u16 flags;
     /* 0x02 */ s16 state;
     /* 0x04 */ s32 fadeOutTime;
     /* 0x08 */ s32 fadeInTime;
     /* 0x0C */ s16 fadeStartVolume;
     /* 0x0E */ s16 fadeEndVolume;
-    /* 0x10 */ s32 songID;
+    /* 0x10 */ s32 requestedSongID;
     /* 0x14 */ s32 variation;
-    /* 0x18 */ s32 songName;
+    /* 0x18 */ s32 songName; /// name or handle of currently playing song
     /* 0x1C */ s32 battleSongID;
     /* 0x20 */ s32 battleVariation;
     /* 0x24 */ s32 savedSongID;
     /* 0x28 */ s32 savedVariation;
     /* 0x2C */ s32 savedSongName;
-} MusicSettings; // size = 0x30
+} MusicControlData; // size = 0x30
 
 typedef struct MusicProximityTrigger {
     /* 0x00 */ VecXZf pos;
@@ -865,9 +867,9 @@ typedef struct BattleStatus {
     /*       */     void* varTablePtr[16];
     /*       */ };
     /* 0x048 */ s8 curSubmenu;
-    /* 0x049 */ s8 unk_49;
+    /* 0x049 */ s8 lastSelectedAbility;
     /* 0x04A */ s8 curPartnerSubmenu;
-    /* 0x04B */ s8 unk_4B;
+    /* 0x04B */ s8 lastPartnerPowerSelection;
     /* 0x04C */ s8 lastPlayerMenuSelection[16];
     /* 0x05C */ s8 lastPartnerMenuSelection[16];
     /* 0x06C */ s16 cancelTargetMenuSubstate; // might be more generally for returning from nested 'inner' state
@@ -898,8 +900,8 @@ typedef struct BattleStatus {
     /* 0x08F */ char unk_8F[1];
     /* 0x090 */ s16 unk_90;
     /* 0x092 */ s8 reflectFlags;
-    /* 0x093 */ s8 unk_93;
-    /* 0x094 */ s8 unk_94;
+    /* 0x093 */ s8 nextActorOrdinal;
+    /* 0x094 */ s8 cancelTurnMode;
     /* 0x095 */ s8 waitForState;
     /* 0x096 */ s8 hammerCharge;
     /* 0x097 */ s8 jumpCharge;
@@ -963,8 +965,8 @@ typedef struct BattleStatus {
     /* 0x1A6 */ s8 curTargetPart2;
     /* 0x1A7 */ s8 battlePhase;
     /* 0x1A8 */ s16 attackerActorID;
-    /* 0x1AA */ s16 unk_1AA;
-    /* 0x1AC */ s8 unk_1AC;
+    /* 0x1AA */ s16 lastSelectedItem; // itemID of most recently selected item
+    /* 0x1AC */ s8 lastSelectedPartner; // partnerID of most recently selected partner
     /* 0x1AD */ char unk_1AD;
     /* 0x1AE */ s16 submenuIcons[24]; /* icon IDs */
     /* 0x1DE */ u8 submenuMoves[24]; /* move IDs */
@@ -1861,7 +1863,7 @@ typedef struct Actor {
     /* 0x00C */ ActorState state;
     /* 0x0C8 */ ActorMovement fly;
     /* 0x124 */ char unk_124[16];
-    /* 0x134 */ u8 unk_134;
+    /* 0x134 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x135 */ u8 footStepCounter;
     /* 0x136 */ u8 actorType;
     /* 0x137 */ char unk_137;
@@ -1900,7 +1902,7 @@ typedef struct Actor {
     /* 0x1E0 */ s32 idleScriptID;
     /* 0x1E4 */ s32 takeTurnScriptID;
     /* 0x1E8 */ s32 handleEventScriptID;
-    /* 0x1EC */ s32 handleBatttlePhaseScriptID;
+    /* 0x1EC */ s32 handlePhaseScriptID;
     /* 0x1F0 */ s8 lastEventType;
     /* 0x1F1 */ s8 turnPriority;
     /* 0x1F2 */ s8 enemyIndex; /* actorID = this | 200 */

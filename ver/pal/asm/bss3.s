@@ -12,7 +12,7 @@
 dlabel gAuxSpriteShadingProfile
 .space 4
 
-dlabel gHudElementsNumber
+dlabel HudElemCount
 .space 4
 
 dlabel gCurrentCustomModelGfxBuildersPtr
@@ -498,13 +498,13 @@ dlabel D_801568FC
 dlabel screen_overlay_frontType
 .space 4
 
-dlabel screen_overlay_frontZoom
+dlabel screen_overlay_frontProgress
 .space 4
 
 dlabel screen_overlay_backType
 .space 4
 
-dlabel screen_overlay_backZoom
+dlabel screen_overlay_backProgress
 .space 4
 
 dlabel D_80156910
@@ -579,7 +579,7 @@ dlabel gHudElementCacheTableRasterBattle
 dlabel gHudElementCacheTablePaletteBattle
 .space 0x00000600
 
-dlabel D_80159180
+dlabel FrameQuadIndex
 .space 0x00000010
 
 dlabel wTriggerList

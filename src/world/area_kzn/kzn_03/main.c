@@ -85,7 +85,7 @@ EvtScript N(EVS_Main) = {
         Exec(EnterWalk)
     EndIf
     Wait(1)
-    Call(SetMusicTrack, 0, SONG_MT_LAVALAVA, 0, 8)
+    Call(SetMusic, 0, SONG_MT_LAVALAVA, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_LAVA_1)
     Exec(N(EVS_SetupTexPan))
     ExecWait(N(EVS_SetupZiplines))

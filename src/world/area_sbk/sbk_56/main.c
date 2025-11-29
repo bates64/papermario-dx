@@ -24,13 +24,13 @@ MapSettings N(settings) = {
 
 #include "world/common/todo/SpawnSunEffect.inc.c"
 
-API_CALLABLE(N(StartOasisSongVariation)) {
-    bgm_set_variation(0, 1);
+API_CALLABLE(N(StartOasisTracks)) {
+    bgm_set_linked_mode(0, 1);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(StopOasisSongVariation)) {
-    bgm_set_variation(0, 0);
+API_CALLABLE(N(StopOasisTracks)) {
+    bgm_set_linked_mode(0, 0);
     return ApiStatus_DONE2;
 }
 
@@ -38,7 +38,7 @@ EvtScript N(EVS_ExitWalk_sbk_55_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_0)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_55"), sbk_55_ENTRY_1)
     Wait(100)
     Return
@@ -49,7 +49,7 @@ EvtScript N(EVS_ExitWalk_sbk_46_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_2)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_46"), sbk_46_ENTRY_3)
     Wait(100)
     Return
@@ -60,7 +60,7 @@ EvtScript N(EVS_ExitWalk_sbk_66_2) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, sbk_56_ENTRY_3)
     Exec(ExitWalk)
-    Call(N(StopOasisSongVariation))
+    Call(N(StopOasisTracks))
     Call(GotoMap, Ref("sbk_66"), sbk_66_ENTRY_2)
     Wait(100)
     Return
@@ -85,8 +85,8 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Call(N(SpawnSunEffect))
     Call(MakeTransformGroup, MODEL_sui)
-    Call(SetMusicTrack, 0, SONG_DRY_DRY_DESERT, 0, 8)
-    Call(N(StartOasisSongVariation))
+    Call(SetMusic, 0, SONG_DRY_DRY_DESERT, 0, VOL_LEVEL_FULL)
+    Call(N(StartOasisTracks))
     Call(PlaySound, SOUND_LOOP_SBK_OASIS_WATER)
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

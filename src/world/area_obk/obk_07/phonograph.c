@@ -355,17 +355,17 @@ API_CALLABLE(N(CreatePhonographHudData)) {
     data->buttonHID = hid = hud_element_create(&HES_AButton);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY);
     hud_element_set_render_depth(hid, 0);
-    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
     data->meterHID = hid = hud_element_create(&HES_BlueMeter);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY + 28);
     hud_element_set_render_depth(hid, 0);
-    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
 
     data->okHID = hid = hud_element_create(&HES_RunAwayOK);
     hud_element_set_render_pos(hid, data->hudBaseX, data->hudBaseY + 28);
     hud_element_set_render_depth(hid, 0);
-    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+    hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
     return ApiStatus_DONE2;
 }
 
@@ -381,7 +381,7 @@ API_CALLABLE(N(SavePhonographUpdateScriptIDs)) {
     data->updateScaleScriptID = evt_get_variable(NULL, MV_UpdateScaleScript);
     data->updateCrankScriptID = evt_get_variable(NULL, MV_UpdateCrankScript);
     data->updateRecordScriptID = evt_get_variable(NULL, MV_UpdateRecordScript);
-    data->songName = gMusicSettings->songName;
+    data->songName = gMusicControlData->songName;
     return ApiStatus_DONE2;
 }
 

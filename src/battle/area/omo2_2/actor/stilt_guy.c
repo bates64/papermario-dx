@@ -66,7 +66,7 @@ s32 N(StiltAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_StiltGuy_Anim00,
     STATUS_KEY_PARALYZE,  ANIM_StiltGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_StiltGuy_Anim00,
-    STATUS_KEY_FEAR,      ANIM_StiltGuy_Anim00,
+    STATUS_KEY_UNUSED,    ANIM_StiltGuy_Anim00,
     STATUS_END,
 };
 
@@ -93,7 +93,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              60,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNUSED,              0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -103,7 +103,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -118,7 +118,7 @@ s32 N(UnusedStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_FEAR,              100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -128,7 +128,7 @@ s32 N(UnusedStatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       1,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -941,7 +941,7 @@ s32 N(ShyGuyAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Red_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Red_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Red_Anim13,
-    STATUS_KEY_FEAR,      ANIM_ShyGuy_Red_Anim13,
+    STATUS_KEY_UNUSED,    ANIM_ShyGuy_Red_Anim13,
     STATUS_END,
 };
 

@@ -937,7 +937,7 @@ API_CALLABLE(MakeShop) {
     }
 
     shop->costHID = hud_element_create(&HES_ItemCoin);
-    hud_element_set_flags(shop->costHID, HUD_ELEMENT_FLAG_80);
+    hud_element_set_flags(shop->costHID, HUD_ELEMENT_FLAG_MANUAL_RENDER);
     hud_element_clear_flags(shop->costHID, HUD_ELEMENT_FLAG_FILTER_TEX);
     get_worker(create_worker_frontUI(NULL, draw_shop_items));
     set_window_properties(WIN_SHOP_ITEM_NAME, 100, 66, 120, 28, WINDOW_PRIORITY_0, shop_draw_item_name, NULL, -1);

@@ -53,7 +53,7 @@ s32 N(SpearForwardAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpearGuy_Anim04,
     STATUS_KEY_PARALYZE,  ANIM_SpearGuy_Anim02,
     STATUS_KEY_DIZZY,     ANIM_SpearGuy_Anim0F,
-    STATUS_KEY_FEAR,      ANIM_SpearGuy_Anim0F,
+    STATUS_KEY_UNUSED,    ANIM_SpearGuy_Anim0F,
     STATUS_END,
 };
 
@@ -66,7 +66,7 @@ s32 N(SpearUpwardAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_SpearGuy_Anim03,
     STATUS_KEY_PARALYZE,  ANIM_SpearGuy_Anim01,
     STATUS_KEY_DIZZY,     ANIM_SpearGuy_Anim0F,
-    STATUS_KEY_FEAR,      ANIM_SpearGuy_Anim0F,
+    STATUS_KEY_UNUSED,    ANIM_SpearGuy_Anim0F,
     STATUS_END,
 };
 
@@ -99,7 +99,7 @@ s32 N(SpearGuyStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_FEAR,              100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -109,7 +109,7 @@ s32 N(SpearGuyStatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       1,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -124,7 +124,7 @@ s32 N(ShyGuyStatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_FEAR,              100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -134,7 +134,7 @@ s32 N(ShyGuyStatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       1,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -273,7 +273,7 @@ EvtScript N(EVS_SelectAnim) = {
     Call(GetActorVar, ACTOR_SELF, AVAR_State, LVarA)
     IfEq(LVarA, AVAL_State_SpearForward)
         Call(GetStatusFlags, ACTOR_SELF, LVarB)
-        IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_FEAR | STATUS_FLAG_DIZZY)
+        IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_UNUSED | STATUS_FLAG_DIZZY)
         Else
             Set(LVar1, LVar2)
         EndIf
@@ -288,7 +288,7 @@ EvtScript N(EVS_Idle) = {
         Switch(LVar0)
             CaseEq(AVAL_State_SpearForward)
                 Call(GetStatusFlags, ACTOR_SELF, LVar0)
-                IfFlag(LVar0, STATUS_FLAG_SLEEP | STATUS_FLAG_FEAR | STATUS_FLAG_DIZZY)
+                IfFlag(LVar0, STATUS_FLAG_SLEEP | STATUS_FLAG_UNUSED | STATUS_FLAG_DIZZY)
                     Call(SetIdleAnimations, ACTOR_SELF, PRT_SPEAR_GUY, Ref(N(SpearUpwardAnims)))
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_TOP, TRUE)
                     Call(SetPartEventBits, ACTOR_SELF, PRT_SPEAR_GUY, ACTOR_EVENT_FLAG_SPIKY_FRONT, FALSE)
@@ -341,7 +341,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
             IfEq(LVar0, AVAL_State_SpearForward)
                 Call(GetStatusFlags, ACTOR_SELF, LVarB)
-                IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_FEAR | STATUS_FLAG_DIZZY)
+                IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_UNUSED | STATUS_FLAG_DIZZY)
                     SetConst(LVar0, PRT_SPEAR_GUY)
                     SetConst(LVar1, ANIM_SpearGuy_Anim0A)
                     SetConst(LVar2, ANIM_SpearGuy_Anim0C)
@@ -360,7 +360,7 @@ EvtScript N(EVS_HandleEvent) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_State, LVar0)
             IfEq(LVar0, AVAL_State_SpearForward)
                 Call(GetStatusFlags, ACTOR_SELF, LVarB)
-                IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_FEAR | STATUS_FLAG_DIZZY)
+                IfFlag(LVarB, STATUS_FLAG_SLEEP | STATUS_FLAG_UNUSED | STATUS_FLAG_DIZZY)
                     SetConst(LVar0, PRT_SPEAR_GUY)
                     SetConst(LVar1, ANIM_SpearGuy_Anim0A)
                     SetConst(LVar2, ANIM_SpearGuy_Anim0C)
@@ -1122,7 +1122,7 @@ s32 N(ShyGuyAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_ShyGuy_Red_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_ShyGuy_Red_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyGuy_Red_Anim13,
-    STATUS_KEY_FEAR,      ANIM_ShyGuy_Red_Anim13,
+    STATUS_KEY_UNUSED,    ANIM_ShyGuy_Red_Anim13,
     STATUS_END,
 };
 

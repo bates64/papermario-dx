@@ -583,7 +583,7 @@ void btl_check_can_change_partner(void) {
         }
 
         if (partnersEnabled >= 2) {
-            if (partner->koStatus == STATUS_KEY_DAZE) {
+            if (partner->koStatus == STATUS_KEY_KO) {
                 battleStatus->changePartnerAllowed = 0;
             } else if (partner->debuff == STATUS_KEY_FROZEN) {
                 battleStatus->changePartnerAllowed = 0;
@@ -668,274 +668,6 @@ s32 btl_check_player_defeated(void) {
     return TRUE;
 }
 
-void btl_init_menu_boots(void) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    PlayerData* playerData = &gPlayerData;
-    Actor* player = battleStatus->playerActor;
-    MoveData* move;
-    s32 i;
-    s32 moveCount;
-    s32 hasAnyBadgeMoves;
-    s32 fpCost;
-
-    // If you don't have boots equipped, disable this menu
-    if (playerData->bootsLevel == -1) {
-        battleStatus->menuStatus[1] = 0;
-        return;
-    }
-
-    for (i = 0; i < ARRAY_COUNT(battleStatus->submenuMoves); i++) {
-        battleStatus->submenuMoves[i] = MOVE_NONE;
-    }
-
-    // Standard jump move
-    moveCount = 1;
-    battleStatus->submenuMoves[0] = playerData->bootsLevel + MOVE_JUMP1;
-    battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
-
-    // Jump badges
-    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        s16 badge = playerData->equippedBadges[i];
-
-        if (badge != ITEM_NONE) {
-            MoveData* moveTable = gMoveTable;
-            u8 moveID = gItemTable[badge].moveID;
-
-            move = &moveTable[moveID];
-            if (move->category == MOVE_TYPE_JUMP) {
-                battleStatus->submenuMoves[moveCount] = moveID;
-                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                moveCount++;
-            }
-        }
-    }
-
-    battleStatus->submenuMoveCount = moveCount;
-
-    hasAnyBadgeMoves = FALSE;
-    for (i = 0; i < battleStatus->submenuMoveCount; i++) {
-        move = &gMoveTable[battleStatus->submenuMoves[i]];
-
-        // Calculate FP cost
-        fpCost = move->costFP;
-        if (fpCost != 0) {
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_SAVER);
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_FANATIC) * 2;
-            if (fpCost < 1) {
-                fpCost = 1;
-            }
-        }
-
-        // See if there are any targets for this move
-        battleStatus->moveCategory = BTL_MENU_TYPE_JUMP;
-        battleStatus->moveArgument = playerData->bootsLevel;
-        battleStatus->curTargetListFlags = move->flags; // Controls target filters
-        create_current_pos_target_list(player);
-
-        // If there are targets, enable the move
-        if (player->targetListLength != 0) {
-            hasAnyBadgeMoves = TRUE;
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_ENABLED;
-        }
-
-        // If you don't have enough FP, disable the move
-        if (playerData->curFP < fpCost) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NOT_ENOUGH_FP;
-        }
-
-        // If there are no targets available, disable the move
-        if (player->targetListLength == 0) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NO_TARGETS_2;
-        }
-        if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
-            battleStatus->submenuStatus[moveCount] = BATTLE_SUBMENU_STATUS_NO_TARGETS;
-        }
-    }
-
-    if (!hasAnyBadgeMoves) {
-        // Only the standard jump is available - no badge moves.
-        // Selecting this submenu should immediately pick the standard jump move
-        battleStatus->menuStatus[1] = -1;
-    } else {
-        // Enable this submenu
-        battleStatus->menuStatus[1] = 1;
-    }
-}
-
-void btl_init_menu_hammer(void) {
-    BattleStatus* battleStatus = &gBattleStatus;
-    PlayerData* playerData = &gPlayerData;
-    Actor* player = battleStatus->playerActor;
-    MoveData* move;
-    s32 i;
-    s32 moveCount;
-    s32 hasAnyBadgeMoves;
-    s32 fpCost;
-
-    // If you don't have a hammer, disable this menu
-    if (playerData->hammerLevel == -1) {
-        battleStatus->menuStatus[2] = 0;
-        return;
-    }
-
-    for (i = 0; i < ARRAY_COUNT(battleStatus->submenuMoves); i++) {
-        battleStatus->submenuMoves[i] = 0;
-    }
-
-    // Standard hammer move
-    moveCount = 1;
-    battleStatus->submenuMoves[0] = playerData->hammerLevel + MOVE_HAMMER1;
-    battleStatus->submenuIcons[0] = ITEM_PARTNER_ATTACK;
-
-    // Hammer badges
-    for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        s16 badge = playerData->equippedBadges[i];
-        if (badge != MOVE_NONE) {
-            MoveData* moveTable = gMoveTable;
-            u8 moveID = gItemTable[badge].moveID;
-            move = &moveTable[moveID];
-            if (move->category == MOVE_TYPE_HAMMER) {
-                battleStatus->submenuMoves[moveCount] = moveID;
-                battleStatus->submenuIcons[moveCount] = playerData->equippedBadges[i];
-                moveCount++;
-            }
-        }
-    }
-
-    battleStatus->submenuMoveCount = moveCount;
-
-    hasAnyBadgeMoves = FALSE;
-    for (i = 0; i < battleStatus->submenuMoveCount; i++) {
-        move = &gMoveTable[battleStatus->submenuMoves[i]];
-
-        // Calculate FP cost
-        fpCost = move->costFP;
-        if (fpCost != 0) {
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_SAVER);
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_FANATIC) * 2;
-            if (fpCost < 1) {
-                fpCost = 1;
-            }
-        }
-
-        // See if there are any targets for this move
-        battleStatus->moveCategory = BTL_MENU_TYPE_SMASH;
-        battleStatus->moveArgument = playerData->hammerLevel;
-        battleStatus->curTargetListFlags = move->flags;
-        create_current_pos_target_list(player);
-
-        // If there are targets, enable the move
-        if (player->targetListLength != 0) {
-            hasAnyBadgeMoves = TRUE;
-            battleStatus->submenuStatus[i] = 1;
-        }
-
-        // If you don't have enough FP, disable the move
-        if (playerData->curFP < fpCost) {
-            battleStatus->submenuStatus[i] = 0;
-        }
-
-        // If there are no targets available, disable the move
-        if (player->targetListLength == 0) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NO_TARGETS_2;
-        }
-        if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
-            battleStatus->submenuStatus[moveCount] = BATTLE_SUBMENU_STATUS_NO_TARGETS;
-        }
-    }
-
-    if (!hasAnyBadgeMoves) {
-        // Only the standard hammer is available - no badge moves.
-        // Selecting this submenu should immediately pick the standard hammer move
-        battleStatus->menuStatus[2] = -1;
-    } else {
-        // Enable this submenu
-        battleStatus->menuStatus[2] = 1;
-    }
-}
-
-void btl_init_menu_partner(void) {
-    PlayerData* playerData = &gPlayerData;
-    BattleStatus* battleStatus = &gBattleStatus;
-    Actor* player = battleStatus->playerActor;
-    Actor* partner = battleStatus->partnerActor;
-    s32 fpCost;
-    s32 i;
-    s32 hasAnyBadgeMoves;
-
-    for (i = 0; i < ARRAY_COUNT(battleStatus->submenuMoves); i++) {
-        battleStatus->submenuMoves[i] = 0;
-    }
-
-    // In the move table (enum MoveIDs), partners get move IDs set up like this:
-    //
-    //  Move ID offset | Description          | Goombario example
-    // ----------------+----------------------+-------------------
-    //  0              | No rank only         | Headbonk
-    //  1              | Super rank only      | Headbonk (2)
-    //  2              | Ultra rank only      | Headbonk (3)
-    //  3              | Always unlocked      | Tattle
-    //  4              | Unlocked after super | Charge
-    //  5              | Unlocked after ultra | Multibonk
-
-    battleStatus->submenuMoveCount = partner->actorBlueprint->level + 2;
-
-    // Offsets 0,1,2
-    battleStatus->submenuMoves[0] =
-        playerData->curPartner * 6
-        + (MOVE_HEADBONK1 - 6)
-        + partner->actorBlueprint->level;
-
-    // Offsets 3,4,5
-    for (i = 1; i < battleStatus->submenuMoveCount; i++) {
-        battleStatus->submenuMoves[i] =
-            playerData->curPartner * 6
-            + (MOVE_TATTLE - 6)
-            + (i - 1);
-    }
-
-    hasAnyBadgeMoves = FALSE;
-    for (i = 0; i < battleStatus->submenuMoveCount; i++){
-        MoveData* move = &gMoveTable[battleStatus->submenuMoves[i]];
-
-        fpCost = move->costFP;
-        if (fpCost != 0) {
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_SAVER);
-            fpCost -= player_team_is_ability_active(player, ABILITY_FLOWER_FANATIC) * 2;
-            if (fpCost < 1) {
-                fpCost = 1;
-            }
-        }
-
-        battleStatus->moveCategory = BTL_MENU_TYPE_CHANGE_PARTNER;
-        battleStatus->moveArgument = partner->actorBlueprint->level;
-        battleStatus->curTargetListFlags = move->flags;
-        create_current_pos_target_list(partner);
-
-        if (partner->targetListLength != 0){
-            hasAnyBadgeMoves = TRUE;
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_ENABLED;
-        }
-
-        if (partner->targetListLength == 0) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NO_TARGETS_2;
-        }
-
-        if (playerData->curFP < fpCost) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NOT_ENOUGH_FP;
-        }
-        if (gBattleStatus.flags2 & BS_FLAGS2_NO_TARGET_AVAILABLE) {
-            battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_NO_TARGETS;
-        }
-    }
-
-    if (!hasAnyBadgeMoves) {
-        battleStatus->menuStatus[3] = -1;
-    } else {
-        battleStatus->menuStatus[3] = 1;
-    }
-}
-
 s32 count_power_plus(s32 damageType) {
     s32 count;
     s32 i;
@@ -987,8 +719,8 @@ void reset_actor_turn_info(void) {
             actor->damageCounter = 0;
             actor->actionRatingCombo = 0;
         }
-
     }
+
     actor = battleStatus->playerActor;
     actor->hpChangeCounter = 0;
     actor->damageCounter = 0;
@@ -1218,7 +950,7 @@ void load_player_actor(void) {
 
     ASSERT(player != NULL);
 
-    player->unk_134 = battleStatus->unk_93++;
+    player->ordinal = battleStatus->nextActorOrdinal++;
     player->footStepCounter = 0;
     player->flags = 0;
     player->actorBlueprint = &bPlayerActorBlueprint;
@@ -1462,7 +1194,7 @@ void load_partner_actor(void) {
         ASSERT(partnerActor != NULL);
 
         actorBP->level = playerData->partners[playerData->curPartner].level;
-        partnerActor->unk_134 = battleStatus->unk_93++;
+        partnerActor->ordinal = battleStatus->nextActorOrdinal++;
         partnerActor->footStepCounter = 0;
         partnerActor->actorBlueprint = actorBP;
         partnerActor->actorType = actorBP->type;
@@ -1708,7 +1440,7 @@ Actor* create_actor(Formation formation) {
 
     ASSERT(actor != NULL);
 
-    actor->unk_134 = battleStatus->unk_93++;
+    actor->ordinal = battleStatus->nextActorOrdinal++;
     actor->footStepCounter = 0;
     actor->actorBlueprint = formationActor;
     actor->actorType = formationActor->type;
@@ -2011,7 +1743,7 @@ s32 get_player_anim_for_status(s32 statusKey) {
 
     // search IdleAnimations to get animID for key
     while (*anim != NULL) {
-        if (*anim == 1) {
+        if (*anim == STATUS_KEY_NORMAL) {
             ret = anim[1];
         }
         if (*anim == statusKey) {
@@ -2086,7 +1818,7 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
     EffectInstance* effect;
 
     switch (statusTypeKey) {
-        case STATUS_KEY_FEAR:
+        case STATUS_KEY_UNUSED:
         case STATUS_KEY_DIZZY:
         case STATUS_KEY_PARALYZE:
         case STATUS_KEY_SLEEP:
@@ -2131,9 +1863,9 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
                         case STATUS_KEY_DIZZY:
                             create_status_debuff(target->hudElementDataIndex, STATUS_KEY_DIZZY);
                             return TRUE;
-                        case STATUS_KEY_FEAR:
+                        case STATUS_KEY_UNUSED:
                             set_actor_pal_adjustment(target, ACTOR_PAL_ADJUST_FEAR);
-                            create_status_debuff(target->hudElementDataIndex, STATUS_KEY_FEAR);
+                            create_status_debuff(target->hudElementDataIndex, STATUS_KEY_UNUSED);
                             return TRUE;
                         case STATUS_KEY_POISON:
                             set_actor_pal_adjustment(target, ACTOR_PAL_ADJUST_POISON);
@@ -2171,14 +1903,14 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
                 target->statusAfflicted = STATUS_KEY_STONE;
             }
             return TRUE;
-        case STATUS_KEY_DAZE:
+        case STATUS_KEY_KO:
             if (target->koStatus < statusTypeKey) {
-                target->koStatus = STATUS_KEY_DAZE;
+                target->koStatus = STATUS_KEY_KO;
                 target->koDuration = duration;
                 if ((s8)duration > 9) {
                     target->koDuration = 9;
                 }
-                target->statusAfflicted = STATUS_KEY_DAZE;
+                target->statusAfflicted = STATUS_KEY_KO;
             }
             return TRUE;
         case STATUS_KEY_TRANSPARENT:
@@ -2201,9 +1933,9 @@ s32 inflict_status(Actor* target, s32 statusTypeKey, s32 duration) {
 }
 
 s32 inflict_partner_ko(Actor* target, s32 statusTypeKey, s32 duration) {
-    if (statusTypeKey == STATUS_KEY_DAZE) {
+    if (statusTypeKey == STATUS_KEY_KO) {
         if (statusTypeKey != target->koStatus) {
-            inflict_status(target, STATUS_KEY_DAZE, duration);
+            inflict_status(target, STATUS_KEY_KO, duration);
             sfx_play_sound(SOUND_INFLICT_KO);
         } else {
             target->koDuration += duration;
@@ -2436,7 +2168,7 @@ void show_action_rating(s32 rating, Actor* actor, f32 x, f32 y, f32 z) {
     }
 }
 
-void func_80266970(Actor* target) {
+void cancel_action_rating_combo(Actor* target) {
     target->actionRatingCombo = 0;
 }
 
@@ -2529,15 +2261,15 @@ void update_health_bars(void) {
     }
 }
 
-s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
+s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusTurnsKey) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 chance;
     s32 duration;
 
     if (battleStatus->statusChance == STATUS_KEY_IGNORE_RES) {
         duration = battleStatus->statusDuration;
-        duration += lookup_status_duration_mod(actor->statusTable, statusKey);
-        return inflict_status_set_duration(actor, statusTypeKey, statusKey, duration);
+        duration += lookup_status_duration_mod(actor->statusTable, statusTurnsKey);
+        return inflict_status_set_duration(actor, statusTypeKey, statusTurnsKey, duration);
     }
 
     duration = 0;
@@ -2556,7 +2288,7 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
             chance = (chance * battleStatus->statusChance) / 100;
             if (chance > 0 && chance >= rand_int(100)) {
                 duration = 3;
-                duration += lookup_status_duration_mod(actor->statusTable, statusKey);
+                duration += lookup_status_duration_mod(actor->statusTable, statusTurnsKey);
             }
         }
     } else {
@@ -2564,9 +2296,9 @@ s32 try_inflict_status(Actor* actor, s32 statusTypeKey, s32 statusKey) {
     }
 
     if (duration > 0) {
-        if (battleStatus->curAttackStatus < 0) {
+        if (battleStatus->curAttackStatus & STATUS_FLAG_USE_DURATION) {
             duration = battleStatus->statusDuration;
-            duration += lookup_status_duration_mod(actor->statusTable, statusKey);
+            duration += lookup_status_duration_mod(actor->statusTable, statusTurnsKey);
             inflict_status(actor, statusTypeKey, duration);
         } else {
             inflict_status(actor, statusTypeKey, duration);
@@ -2875,7 +2607,7 @@ void btl_update_ko_status(void) {
 
     player->koDuration = player->debuffDuration;
     if (player->koDuration > 0) {
-        player->koStatus = STATUS_KEY_DAZE;
+        player->koStatus = STATUS_KEY_KO;
         player->disableEffect->data.disableX->koDuration = player->koDuration;
 
         if (koDuration == 0) {
@@ -2885,12 +2617,12 @@ void btl_update_ko_status(void) {
 
     if (partner != NULL) {
         if (partner->koDuration < partner->debuffDuration) {
-            partner->koStatus = STATUS_KEY_DAZE;
+            partner->koStatus = STATUS_KEY_KO;
             partner->koDuration = partner->debuffDuration;
         }
 
         if (partner->koDuration > 0) {
-            partner->koStatus = STATUS_KEY_DAZE;
+            partner->koStatus = STATUS_KEY_KO;
             partner->disableEffect->data.disableX->koDuration = partner->koDuration;
         }
     }
@@ -2901,7 +2633,7 @@ void btl_update_ko_status(void) {
         if (enemy != NULL) {
             enemy->koDuration = enemy->debuffDuration;
             if (enemy->koDuration > 0) {
-                enemy->koStatus = STATUS_KEY_DAZE;
+                enemy->koStatus = STATUS_KEY_KO;
                 enemy->disableEffect->data.disableX->koDuration = enemy->koDuration;
             }
         }

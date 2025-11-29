@@ -672,7 +672,7 @@ HitResult calc_player_damage_enemy(void) {
         if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
             if (battleStatus->curAttackElement & DAMAGE_TYPE_FEAR
                 && rand_int(99) < (target->actorBlueprint->escapeChance * battleStatus->statusChance) / 100
-                && (target->debuff != STATUS_KEY_FEAR
+                && (target->debuff != STATUS_KEY_UNUSED
                     && target->debuff != STATUS_KEY_DIZZY
                     && target->debuff != STATUS_KEY_PARALYZE
                     && target->debuff != STATUS_KEY_SLEEP
@@ -875,11 +875,16 @@ HitResult calc_player_damage_enemy(void) {
         INFLICT_STATUS(SLEEP);
         INFLICT_STATUS(STOP);
         INFLICT_STATUS(STATIC);
-        INFLICT_STATUS(FEAR);
         INFLICT_STATUS(PARALYZE);
         INFLICT_STATUS(DIZZY);
 
         #undef INFLICT_STATUS
+
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) &&
+            try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
+            wasSpecialHit = TRUE;
+            wasStatusInflicted = TRUE;
+        }
 
         if (wasStatusInflicted) {
             if (dispatchEvent == EVENT_ZERO_DAMAGE) {
@@ -938,7 +943,7 @@ HitResult calc_player_damage_enemy(void) {
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
-        func_80266970(target);
+        cancel_action_rating_combo(target);
     }
 
     if ((battleStatus->lastAttackDamage > 0 || wasSpecialHit) && !partImmuneToElement) {

@@ -664,11 +664,16 @@ HitResult calc_partner_damage_enemy(void) {
             INFLICT_STATUS(SLEEP);
             INFLICT_STATUS(STOP);
             INFLICT_STATUS(STATIC);
-            INFLICT_STATUS(FEAR);
             INFLICT_STATUS(PARALYZE);
             INFLICT_STATUS(DIZZY);
 
             #undef INFLICT_STATUS
+
+            if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) &&
+                try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
+                wasSpecialHit = TRUE;
+                wasStatusInflicted = TRUE;
+            }
 
             statusChanceOrDefense = target->actorBlueprint->spookChance;
 
@@ -678,9 +683,9 @@ HitResult calc_partner_damage_enemy(void) {
 
             statusChanceOrDefense = (battleStatus->statusChance * statusChanceOrDefense) / 100;
 
-            if (battleStatus->curAttackStatus & STATUS_FLAG_400000) {
+            if (battleStatus->curAttackStatus & STATUS_FLAG_FEAR) {
                 if (rand_int(99) < statusChanceOrDefense) {
-                    if (!(target->debuff == STATUS_KEY_FEAR
+                    if (!(target->debuff == STATUS_KEY_UNUSED
                         || target->debuff == STATUS_KEY_DIZZY
                         || target->debuff == STATUS_KEY_PARALYZE
                         || target->debuff == STATUS_KEY_SLEEP
@@ -726,7 +731,7 @@ HitResult calc_partner_damage_enemy(void) {
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
         if (battleStatus->curAttackElement & DAMAGE_TYPE_FEAR) {
             if (rand_int(99) < statusChanceOrDefense) {
-                if (!(target->debuff == STATUS_KEY_FEAR ||
+                if (!(target->debuff == STATUS_KEY_UNUSED ||
                       target->debuff == STATUS_KEY_DIZZY ||
                       target->debuff == STATUS_KEY_PARALYZE ||
                       target->debuff == STATUS_KEY_SLEEP ||
@@ -791,7 +796,7 @@ HitResult calc_partner_damage_enemy(void) {
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
-        func_80266970(target);
+        cancel_action_rating_combo(target);
     }
 
     if (battleStatus->lastAttackDamage > 0) {
@@ -946,7 +951,7 @@ s32 dispatch_damage_event_partner(s32 damageAmount, s32 event, s32 stopMotion) {
     if (battleStatus->lastAttackDamage > 0) {
         gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
 
-        inflict_status(partner, STATUS_KEY_DAZE, battleStatus->lastAttackDamage);
+        inflict_status(partner, STATUS_KEY_KO, battleStatus->lastAttackDamage);
     }
 
     if (!stopMotion) {

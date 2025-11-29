@@ -2,49 +2,26 @@
 #include "battle/battle.h"
 #include "sprite/player.h"
 
-PlayerCelebrationAnimOptions bPlayerCelebrations = {
-    10, 90,
-    {
-        50, ANIM_MarioB1_JumpForJoy,
-        50, ANIM_Mario1_Chuckle,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        50, ANIM_Mario1_DustOff,
-        50, ANIM_Mario1_DustOff,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        50, ANIM_Mario1_ThumbsUp,
-        50, ANIM_Mario1_ThumbsUp,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        50, ANIM_MarioB1_FingerWag,
-        50, ANIM_MarioB1_FingerWag,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        80, ANIM_MarioB1_FingerWag,
-        20, ANIM_MarioB1_JumpForJoy,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
-        0, 0,
+CelebrationAnimOptions bPlayerCelebrations = {
+    .randomChance = 10,
+    .hpBasedChance = 90,
+    .options = {
+        { // 0: random celebration
+            { 50, ANIM_MarioB1_JumpForJoy },
+            { 50, ANIM_Mario1_Chuckle },
+        }, { // 1: HP <= 25%
+            { 50, ANIM_Mario1_DustOff },
+            { 50, ANIM_Mario1_DustOff },
+        }, { // 2: HP <= 50%
+            { 50, ANIM_Mario1_ThumbsUp },
+            { 50, ANIM_Mario1_ThumbsUp },
+        }, { // 3: HP <= 75%
+            { 50, ANIM_MarioB1_FingerWag },
+            { 50, ANIM_MarioB1_FingerWag },
+        }, { // 4: HP > 50%
+            { 80, ANIM_MarioB1_FingerWag },
+            { 20, ANIM_MarioB1_JumpForJoy },
+        }
     }
 };
 
@@ -137,7 +114,7 @@ s32 bPlayerStatusTable[] = {
     STATUS_KEY_POISON,          100,
     STATUS_KEY_FROZEN,          100,
     STATUS_KEY_DIZZY,           100,
-    STATUS_KEY_FEAR,            100,
+    STATUS_KEY_UNUSED,   100,
     STATUS_KEY_STATIC,          100,
     STATUS_KEY_PARALYZE,        100,
     STATUS_KEY_SHRINK,          100,
@@ -147,7 +124,7 @@ s32 bPlayerStatusTable[] = {
     STATUS_TURN_MOD_POISON,   0,
     STATUS_TURN_MOD_FROZEN,   0,
     STATUS_TURN_MOD_DIZZY,    0,
-    STATUS_TURN_MOD_FEAR,     0,
+    STATUS_TURN_MOD_UNUSED, 0,
     STATUS_TURN_MOD_STATIC,   0,
     STATUS_TURN_MOD_PARALYZE, 0,
     STATUS_TURN_MOD_SHRINK,   0,
@@ -203,14 +180,4 @@ Vec3s StandardActorHomePositions[] = {
     [BTL_POS_TOP_C] { 95, 125, 10 },
     [BTL_POS_TOP_D] { 135, 130, 25 },
     [BTL_POS_CENTER] { 105, 0, 0 },
-};
-
-// TODO: what is this, and look into warnings that are silenced via casts
-// Note: check D_8028358C_2 in battle/popup_messages.c (file split might be incorrect)
-s32* D_8028358C[] = {
-    (s32*)-1, (s32*)-1, (s32*)-1, (s32*)-1, (s32*)-1, (s32*)-1, (s32*)-1, (s32*)-1,
-    (s32*)D_8028358C, (s32*)D_8028358C, (s32*)D_8028358C, (s32*)D_8028358C, (s32*)D_8028358C,
-#if !VERSION_JP
-    (s32*)D_8028358C, (s32*)D_8028358C, (s32*)D_8028358C, 0
-#endif
 };

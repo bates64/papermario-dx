@@ -86,7 +86,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,              0,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              60,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNUSED,              0,
     STATUS_KEY_STATIC,              0,
     STATUS_KEY_PARALYZE,           90,
     STATUS_KEY_SHRINK,             75,
@@ -96,7 +96,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          0,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -309,7 +309,7 @@ s32 N(FourStackAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_ShyStackGuy_Anim00,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0C,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0C,
-    STATUS_KEY_FEAR,      ANIM_ShyStackGuy_Anim00,
+    STATUS_KEY_UNUSED,    ANIM_ShyStackGuy_Anim00,
     STATUS_END,
 };
 
@@ -324,7 +324,7 @@ s32 N(ThreeStackAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_ShyStackGuy_Anim01,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0D,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0D,
-    STATUS_KEY_FEAR,      ANIM_ShyStackGuy_Anim01,
+    STATUS_KEY_UNUSED,    ANIM_ShyStackGuy_Anim01,
     STATUS_END,
 };
 
@@ -339,7 +339,7 @@ s32 N(TwoStackAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_ShyStackGuy_Anim02,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0E,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0E,
-    STATUS_KEY_FEAR,      ANIM_ShyStackGuy_Anim02,
+    STATUS_KEY_UNUSED,    ANIM_ShyStackGuy_Anim02,
     STATUS_END,
 };
 
@@ -354,7 +354,7 @@ s32 N(OneStackAnims)[] = {
     STATUS_KEY_PARALYZE,  ANIM_ShyStackGuy_Anim03,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0F,
     STATUS_KEY_DIZZY,     ANIM_ShyStackGuy_Anim0F,
-    STATUS_KEY_FEAR,      ANIM_ShyStackGuy_Anim03,
+    STATUS_KEY_UNUSED,    ANIM_ShyStackGuy_Anim03,
     STATUS_END,
 };
 

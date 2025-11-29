@@ -751,14 +751,14 @@ void collision_main_lateral(void) {
     }
 }
 
-HitID collision_check_player_intersecting_world(s32 mode, s32 arg1, f32 yaw) {
+HitID collision_check_player_intersecting_world(s32 mode, s32 offsetY, f32 yaw) {
     HitID ret = NO_COLLIDER;
     f32 angle = 0.0f;
     s32 i;
 
     for (i = 0; i < 4; i++) {
         f32 x = gPlayerStatusPtr->pos.x;
-        f32 y = gPlayerStatusPtr->pos.y + arg1;
+        f32 y = gPlayerStatusPtr->pos.y + offsetY;
         f32 z = gPlayerStatusPtr->pos.z;
         s32 hitID, hitID2;
 
@@ -786,7 +786,8 @@ HitID collision_check_player_intersecting_world(s32 mode, s32 arg1, f32 yaw) {
     return ret;
 }
 
-HitID func_800E4404(s32 mode, s32 offsetY, f32 arg2, f32* outX, f32* outY, f32* outZ) {
+// unused
+HitID collision_check_pos_intersecting_world(s32 mode, s32 offsetY, f32 arg2, f32* outX, f32* outY, f32* outZ) {
     HitID ret = NO_COLLIDER;
     f32 angle = 0.0f;
     s32 i;
@@ -983,7 +984,7 @@ void func_800E4AD8(s32 mode) {
 void func_800E4B40(s32 mode, f32* outX, f32* outY, f32* outZ) {
     f32 camYaw = gCameras[gCurrentCameraID].curYaw;
 
-    func_800E4404(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + camYaw, outX, outY, outZ);
+    collision_check_pos_intersecting_world(mode, 0, gPlayerStatus.spriteFacingAngle - 90.0f + camYaw, outX, outY, outZ);
 }
 
 void collision_lava_reset_check_additional_overlaps(void) {
@@ -1083,13 +1084,13 @@ void check_input_midair_jump(void) {
         && gPlayerStatus.pressedButtons & BUTTON_A
     ) {
         switch (gPlayerData.bootsLevel) {
-            case 0:
+            case GEAR_RANK_NORMAL:
                 break;
-            case 1:
+            case GEAR_RANK_SUPER:
                 set_action_state(ACTION_STATE_SPIN_JUMP);
                 gPlayerStatus.flags |= PS_FLAG_FLYING;
                 break;
-            case 2:
+            case GEAR_RANK_ULTRA:
                 set_action_state(ACTION_STATE_TORNADO_JUMP);
                 gPlayerStatus.flags |= PS_FLAG_FLYING;
                 break;

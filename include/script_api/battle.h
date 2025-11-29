@@ -13,8 +13,6 @@
 extern "C" {
 #endif
 
-API_CALLABLE(EnablePartnerBlur);
-API_CALLABLE(DisablePartnerBlur);
 API_CALLABLE(UseBattleCamPreset);
 API_CALLABLE(SetBattleCamTarget);
 API_CALLABLE(SetBattleCamOffsetY);
@@ -313,10 +311,6 @@ extern EvtScript EVS_Peach_HandlePhase;
 extern EvtScript EVS_ExecuteMarioAction;
 extern EvtScript EVS_ExecutePeachAction;
 extern EvtScript EVS_Player_HandleEvent;
-extern EvtScript BtlPutPartnerAway;
-extern EvtScript BtlBringPartnerOut;
-extern EvtScript EVS_MarioEnterStage;
-extern EvtScript EVS_PeachEnterStage;
 extern EvtScript EVS_PlayerFirstStrike;
 extern EvtScript EVS_StartDefend;
 extern EvtScript EVS_RunAwayStart;

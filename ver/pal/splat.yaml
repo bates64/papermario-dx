@@ -565,8 +565,8 @@ segments:
     - [auto, c, audio/ambience]
     - [auto, c, windows]
     - [auto, c, sprite_shading]
-    - [auto, c, audio/sfx]
-    - [auto, c, audio/e0b30_len_b80]
+    - [auto, c, audio/sfx_control]
+    - [auto, c, audio/bgm_control]
     - start: 0xE1610
       type: .data
       name: screen_overlays

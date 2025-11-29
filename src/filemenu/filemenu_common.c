@@ -885,7 +885,7 @@ void filemenu_init(s32 mode) {
 
     for (i = 0; i < ARRAY_COUNT(filemenu_cursorHIDs); i++) {
         filemenu_cursorHIDs[i] = hud_element_create(filemenu_cursor_hudElemScripts[i]);
-        hud_element_set_flags(filemenu_cursorHIDs[i], HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_80);
+        hud_element_set_flags(filemenu_cursorHIDs[i], HUD_ELEMENT_FLAG_DROP_SHADOW | HUD_ELEMENT_FLAG_MANUAL_RENDER);
     }
 
     filemenu_cursorHID = filemenu_cursorHIDs[0];

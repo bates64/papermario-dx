@@ -99,8 +99,7 @@ void step_game_loop(void) {
     profiler_update(PROFILER_TIME_STEP_GAME_MODE, 0);
     update_entities();
     profiler_update(PROFILER_TIME_ENTITIES, 0);
-    func_80138198();
-    bgm_update_music_settings();
+    bgm_update_music_control();
     update_ambient_sounds();
     sfx_update_env_sound_params();
     update_windows();

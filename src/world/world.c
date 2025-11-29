@@ -161,7 +161,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     reset_background_settings();
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
-        func_80138188();
+        reset_back_screen_overlay_progress();
     }
 
     if (!skipLoadingAssets) {
@@ -195,7 +195,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     if (mapSettings->background != NULL) {
         set_background(mapSettings->background);
     } else {
-        set_background_size(296, 200, 12, 20);
+        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
+            SCREEN_INSET_X, SCREEN_INSET_Y);
     }
 
     gCurrentCameraID = CAM_DEFAULT;

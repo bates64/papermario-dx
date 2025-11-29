@@ -43,7 +43,6 @@ EffectInstance* shimmer_wave_main(
     EffectBlueprint bp;
     EffectInstance* effect;
     ShimmerWaveFXData* part;
-    f32 one = 1.0f;
     f32 temp;
     s32 i;
 
@@ -72,7 +71,7 @@ EffectInstance* shimmer_wave_main(
     part->unk_04 = arg1;
     part->unk_08 = arg2;
     part->unk_0C = arg3;
-    part->unk_60 = one;
+    part->unk_60 = 1.0f;
     part->unk_10 = arg4;
     part->unk_14 = arg5;
     part->unk_40 = 255;

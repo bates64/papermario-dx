@@ -5,11 +5,12 @@
 #include "script_api/battle.h"
 #include "sprite.h"
 #include "effects.h"
+#include "battle/states/states.h"
 
-f32 D_802809F0 = 0.0f;
-s8 D_802809F4 = 0;
-s8 D_802809F5 = 0;
-s16 D_802809F6 = -1;
+f32 StarPointsIncrementInterp = 0.0f;
+b8 BtlStarPointsBlinking = FALSE;
+s8 StarPointsBlinkTimer = 0;
+s16 EndDemoWhiteOut = -1;
 s16 DemoBattleBeginDelay = 0;
 u16 gTattleBgTextureYOffset = 0;
 
@@ -47,60 +48,6 @@ HudScript* bHPDigitHudScripts[] = {
 };
 
 s32 BattleScreenFadeAmt = 255;
-
-EvtScript BtlPutPartnerAway = {
-    Call(DispatchEvent, ACTOR_PARTNER, EVENT_PUT_PARTNER_AWAY)
-    ChildThread
-        SetF(LVar0, Float(1.0))
-        Loop(10)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            SubF(LVar0, Float(0.1))
-            Wait(1)
-        EndLoop
-    EndChildThread
-    Call(EnablePartnerBlur)
-    Call(PlaySoundAtActor, 0, SOUND_PARTNER_GET_OUT)
-    Call(GetActorPos, 0, LVar0, LVar1, LVar2)
-    Add(LVar1, 25)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
-    Call(SetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-#if VERSION_JP
-    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 1, 1)
-#else
-    Call(JumpToGoal, ACTOR_PARTNER, 10, 0, 0, 1)
-#endif
-    Call(DisablePartnerBlur)
-    Return
-    End
-};
-
-EvtScript BtlBringPartnerOut = {
-    ChildThread
-        SetF(LVar0, Float(0.1))
-        Loop(20)
-            Call(SetActorScale, ACTOR_PARTNER, LVar0, LVar0, Float(1.0))
-            AddF(LVar0, Float(0.05))
-            Wait(1)
-        EndLoop
-        Call(SetActorScale, ACTOR_PARTNER, Float(1.0), Float(1.0), Float(1.0))
-    EndChildThread
-    Call(PlaySoundAtActor, 0, SOUND_PARTNER_PUT_AWAY)
-    Call(GetGoalPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(SetActorJumpGravity, ACTOR_PARTNER, Float(1.0))
-    IfEq(LVar1, 0)
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-    Else
-#if VERSION_JP
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 1, 1)
-#else
-        Call(JumpToGoal, ACTOR_PARTNER, 20, 0, 0, 1)
-#endif
-    EndIf
-    Call(GetActorPos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Call(ForceHomePos, ACTOR_PARTNER, LVar0, LVar1, LVar2)
-    Return
-    End
-};
 
 extern HudScript HES_HPBar;
 extern HudScript HES_SmallStarPoint;
@@ -147,14 +94,14 @@ void get_stick_input_radial(f32* angle, f32* magnitude) {
     *magnitude = mag;
 }
 
-void func_8023E104(void) {
-    D_802809F4 = 1;
-    D_802809F5 = 0;
+void btl_start_blinking_starpoints(void) {
+    BtlStarPointsBlinking = TRUE;
+    StarPointsBlinkTimer = 0;
 }
 
-void func_8023E11C(void) {
-    D_802809F4 = 0;
-    D_802809F5 = 0;
+void btl_stop_blinking_starpoints(void) {
+    BtlStarPointsBlinking = FALSE;
+    StarPointsBlinkTimer = 0;
 }
 
 void initialize_battle(void) {
@@ -178,7 +125,7 @@ void initialize_battle(void) {
 
     battleStatus->inputBufferPos = 0;
     battleStatus->holdInputBufferPos = 0;
-    battleStatus->waitForState = BATTLE_STATE_0;
+    battleStatus->waitForState = BATTLE_STATE_NONE;
 
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
         battleStatus->enemyActors[i] = NULL;
@@ -208,23 +155,23 @@ void initialize_battle(void) {
     create_action_command_ui_worker();
     set_windows_visible(WINDOW_GROUP_BATTLE);
     HPBarHID = hud_element_create(&HES_HPBar);
-    hud_element_set_flags(HPBarHID, HUD_ELEMENT_FLAG_80);
+    hud_element_set_flags(HPBarHID, HUD_ELEMENT_FLAG_MANUAL_RENDER);
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
         hid = BtlStarPointTensHIDs[i] = hud_element_create(&HES_ItemStarPoint);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointShinesHIDs); i++) {
         hid = BtlStarPointShinesHIDs[i] = hud_element_create(&HES_StatusSPShine);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 
     for (i = 0; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {
         hid = BtlStarPointOnesHIDs[i] = hud_element_create(&HES_SmallStarPoint);
-        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_80 | HUD_ELEMENT_FLAG_DISABLED);
+        hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
         hud_element_set_render_depth(hid, 20);
     }
 
@@ -239,9 +186,6 @@ void initialize_battle(void) {
     if (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) {
         playerData->curPartner = PARTNER_TWINK;
     }
-}
-
-void func_8023E3FC(void) {
 }
 
 void update_nonplayer_actor_shadows(void) {
@@ -295,12 +239,12 @@ void btl_update(void) {
     }
 
     cond = TRUE;
-    if (battleStatus->waitForState == BATTLE_STATE_0 || battleStatus->waitForState != gBattleState) {
+    if (battleStatus->waitForState == BATTLE_STATE_NONE || battleStatus->waitForState != gBattleState) {
         switch (gBattleState) {
-            case BATTLE_STATE_NEGATIVE_1:
-            case BATTLE_STATE_0:
+            case BATTLE_STATE_INVALID:
+            case BATTLE_STATE_NONE:
                 return;
-            case BATTLE_STATE_NORMAL_START:
+            case BATTLE_STATE_START:
                 btl_state_update_normal_start();
                 cond = FALSE;
                 break;
@@ -310,8 +254,8 @@ void btl_update(void) {
             case BATTLE_STATE_BEGIN_PARTNER_TURN:
                 btl_state_update_begin_partner_turn();
                 break;
-            case BATTLE_STATE_9:
-                btl_state_update_9();
+            case BATTLE_STATE_TRANSFER_TURN:
+                btl_state_update_transfer_turn();
                 break;
             case BATTLE_STATE_BEGIN_TURN:
                 btl_state_update_begin_turn();
@@ -385,17 +329,11 @@ void btl_update(void) {
             case BATTLE_STATE_DEFEAT:
                 btl_state_update_defeat();
                 break;
-            case BATTLE_STATE_28:
-                btl_state_update_1C();
-                break;
             case BATTLE_STATE_END_TRAINING_BATTLE:
                 btl_state_update_end_training_battle();
                 break;
             case BATTLE_STATE_ENEMY_FIRST_STRIKE:
                 btl_state_update_enemy_striking_first();
-                break;
-            case BATTLE_STATE_34:
-                btl_state_update_22();
                 break;
             case BATTLE_STATE_CELEBRATION:
                 btl_state_update_celebration();
@@ -452,29 +390,29 @@ void btl_update(void) {
             }
         }
 
-        if (cond || D_802809F6 != -1) {
-            if (D_802809F6 == -1) {
+        if (cond || EndDemoWhiteOut != -1) {
+            if (EndDemoWhiteOut == -1) {
                 if (gGameStatusPtr->demoState == DEMO_STATE_CHANGE_MAP) {
                     u8 paramType;
                     f32 paramAmount;
 
                     get_screen_overlay_params(SCREEN_LAYER_FRONT, &paramType, &paramAmount);
                     if (paramType == (u8) OVERLAY_NONE) {
-                        D_802809F6 = 0;
+                        EndDemoWhiteOut = 0;
                         set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, 0.0f);
                     }
                 }
-            } else if (D_802809F6 == 255) {
+            } else if (EndDemoWhiteOut == 255) {
                 if (gBattleState != BATTLE_STATE_END_DEMO_BATTLE) {
                     btl_set_state(BATTLE_STATE_END_DEMO_BATTLE);
                 }
             } else {
-                D_802809F6 += 10;
-                if (D_802809F6 > 255) {
-                    D_802809F6 = 255;
+                EndDemoWhiteOut += 10;
+                if (EndDemoWhiteOut > 255) {
+                    EndDemoWhiteOut = 255;
                 }
 
-                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, D_802809F6);
+                set_screen_overlay_params_front(OVERLAY_SCREEN_COLOR, EndDemoWhiteOut);
                 set_screen_overlay_color(SCREEN_LAYER_FRONT, 208, 208, 208);
                 startup_set_fade_screen_alpha(255);
                 startup_set_fade_screen_color(224);
@@ -494,12 +432,12 @@ void btl_draw_ui(void) {
         changed = TRUE;
     } else {
         switch (state) {
-            case BATTLE_STATE_NEGATIVE_1:
+            case BATTLE_STATE_INVALID:
                 btl_update_starpoints_display();
                 btl_draw_enemy_health_bars();
                 draw_status_ui();
                 return;
-            case BATTLE_STATE_0:
+            case BATTLE_STATE_NONE:
                 return;
         }
     }
@@ -509,7 +447,7 @@ void btl_draw_ui(void) {
 
     if (!changed) {
         switch (state) {
-            case BATTLE_STATE_NORMAL_START:
+            case BATTLE_STATE_START:
                 btl_state_draw_normal_start();
                 break;
             case BATTLE_STATE_BEGIN_PLAYER_TURN:
@@ -518,8 +456,8 @@ void btl_draw_ui(void) {
             case BATTLE_STATE_BEGIN_PARTNER_TURN:
                 btl_state_draw_begin_partner_turn();
                 break;
-            case BATTLE_STATE_9:
-                btl_state_draw_9();
+            case BATTLE_STATE_TRANSFER_TURN:
+                btl_state_draw_transfer_turn();
                 break;
             case BATTLE_STATE_BEGIN_TURN:
                 btl_state_draw_begin_turn();
@@ -593,17 +531,11 @@ void btl_draw_ui(void) {
             case BATTLE_STATE_DEFEAT:
                 btl_state_draw_defeat();
                 break;
-            case BATTLE_STATE_28:
-                btl_state_draw_1C();
-                break;
             case BATTLE_STATE_END_TRAINING_BATTLE:
                 btl_state_draw_end_training_battle();
                 break;
             case BATTLE_STATE_ENEMY_FIRST_STRIKE:
                 btl_state_draw_enemy_striking_first();
-                break;
-            case BATTLE_STATE_34:
-                btl_state_draw_22();
                 break;
             case BATTLE_STATE_CELEBRATION:
                 btl_state_draw_celebration();
@@ -624,7 +556,7 @@ void btl_render_actors(void) {
     Actor* actor;
     s32 i;
 
-    if (gBattleState != BATTLE_STATE_0) {
+    if (gBattleState != BATTLE_STATE_NONE) {
         btl_popup_messages_draw_world_geometry();
         if (battleStatus->initBattleCallback != NULL) {
             battleStatus->initBattleCallback();
@@ -947,7 +879,7 @@ void btl_draw_enemy_health_bars(void) {
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    s32 cond;
+    b32 showStarPoints;
     s32 i;
 
     if (gBattleStatus.flags1 & BS_FLAGS1_ACTORS_VISIBLE) {
@@ -965,27 +897,26 @@ void btl_update_starpoints_display(void) {
             }
         }
 
-        cond = TRUE;
-        if (D_802809F4 != 0) {
-            if (D_802809F5 > 8) {
-                if (D_802809F5 <= 12) {
-                    cond = FALSE;
+        showStarPoints = TRUE;
+        if (BtlStarPointsBlinking) {
+            if (StarPointsBlinkTimer > 8) {
+                if (StarPointsBlinkTimer <= 12) {
+                    showStarPoints = FALSE;
                 } else {
-                    D_802809F5 = 0;
+                    StarPointsBlinkTimer = 0;
                 }
             }
-            D_802809F5++;
+            StarPointsBlinkTimer++;
         }
 
-        if (cond) {
+        if (showStarPoints) {
             s32 posX, posY;
             s32 tens, ones;
             s32 id;
-            f32 one = 1.0f;
 
             battleStatus->incrementStarPointDelay--;
-            D_802809F0 -= 1.0;
-            if (D_802809F0 <= 0.0f) {
+            StarPointsIncrementInterp -= 1.0;
+            if (StarPointsIncrementInterp <= 0.0f) {
                 s32 pendingStarPoints;
 
                 if (battleStatus->pendingStarPoints > 0) {
@@ -1001,12 +932,12 @@ void btl_update_starpoints_display(void) {
                     pendingStarPoints = 1;
                 }
 
-                D_802809F0 = (f32) battleStatus->incrementStarPointDelay / pendingStarPoints;
-                if (D_802809F0 < 1.0) {
-                    D_802809F0 = 1.0f;
+                StarPointsIncrementInterp = (f32) battleStatus->incrementStarPointDelay / pendingStarPoints;
+                if (StarPointsIncrementInterp < 1.0) {
+                    StarPointsIncrementInterp = 1.0f;
                 }
-                if (D_802809F0 > 6.0) {
-                    D_802809F0 = 6.0f;
+                if (StarPointsIncrementInterp > 6.0) {
+                    StarPointsIncrementInterp = 6.0f;
                 }
             }
 
@@ -1031,7 +962,7 @@ void btl_update_starpoints_display(void) {
                 hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY - 5);
                 hud_element_draw_clipped(id);
-                posX -= (one * 20.0f);
+                posX -= 20.0f;
             }
 
            for (; i < ARRAY_COUNT(BtlStarPointTensHIDs); i++) {
@@ -1040,7 +971,7 @@ void btl_update_starpoints_display(void) {
             }
 
             posX = StarPointsBasePosX;
-            posY = StarPointsBasePosY + (one * 14.0f);
+            posY = StarPointsBasePosY + 14.0f;
             if (gBattleStatus.flags2 & BS_FLAGS2_AWARDING_STAR_POINTS) {
                 if (ones != 0) {
                     draw_box(0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL,
@@ -1056,7 +987,7 @@ void btl_update_starpoints_display(void) {
                 hud_element_clear_flags(id, HUD_ELEMENT_FLAG_DISABLED);
                 hud_element_set_render_pos(id, posX, posY);
                 hud_element_draw_clipped(id);
-                posX -= one * 10.0f;
+                posX -= 10.0f;
             }
 
             for (; i < ARRAY_COUNT(BtlStarPointOnesHIDs); i++) {
@@ -1117,6 +1048,7 @@ void btl_delete_actor(Actor* actor) {
     for (i = 0; i < 2; i++) {
         remove_actor_decoration(actor, i);
     }
+
     if (actor->idleScript != NULL) {
         kill_script_by_ID(actor->idleScriptID);
     }

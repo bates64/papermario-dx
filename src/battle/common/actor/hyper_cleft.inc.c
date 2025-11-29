@@ -52,7 +52,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,              50,
-    STATUS_KEY_FEAR,                0,
+    STATUS_KEY_UNUSED,              0,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           50,
     STATUS_KEY_SHRINK,             90,
@@ -62,7 +62,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,         -1,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -117,7 +117,7 @@ s32 N(HyperAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Cleft_Hyper_Anim04,
     STATUS_KEY_PARALYZE,  ANIM_Cleft_Hyper_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Cleft_Hyper_Anim0E,
-    STATUS_KEY_FEAR,      ANIM_Cleft_Hyper_Anim0E,
+    STATUS_KEY_UNUSED,    ANIM_Cleft_Hyper_Anim0E,
     STATUS_END,
 };
 
@@ -377,7 +377,7 @@ s32 N(UprightAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Cleft_Hyper_Anim02,
     STATUS_KEY_PARALYZE,  ANIM_Cleft_Hyper_Anim00,
     STATUS_KEY_DIZZY,     ANIM_Cleft_Hyper_Anim0E,
-    STATUS_KEY_FEAR,      ANIM_Cleft_Hyper_Anim0E,
+    STATUS_KEY_UNUSED,    ANIM_Cleft_Hyper_Anim0E,
     STATUS_END,
 };
 
@@ -390,7 +390,7 @@ s32 N(ToppledAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_Cleft_Hyper_Anim05,
     STATUS_KEY_PARALYZE,  ANIM_Cleft_Hyper_Anim01,
     STATUS_KEY_DIZZY,     ANIM_Cleft_Hyper_Anim0F,
-    STATUS_KEY_FEAR,      ANIM_Cleft_Hyper_Anim0F,
+    STATUS_KEY_UNUSED,    ANIM_Cleft_Hyper_Anim0F,
     STATUS_END,
 };
 

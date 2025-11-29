@@ -326,78 +326,6 @@ void load_battle_hit_asset(const char* hitName);
 void load_data_for_models(struct ModelNode* model, s32 romOffset, s32 size);
 void load_player_actor(void);
 
-void btl_state_update_normal_start(void);
-void btl_state_draw_normal_start(void);
-void btl_state_update_begin_turn(void);
-void btl_state_draw_begin_turn(void);
-void btl_state_update_begin_player_turn(void);
-void btl_state_draw_begin_player_turn(void);
-void btl_state_update_switch_to_player(void);
-void btl_state_draw_switch_to_player(void);
-void btl_state_update_begin_partner_turn(void);
-void btl_state_draw_begin_partner_turn(void);
-void btl_state_update_switch_to_partner(void);
-void btl_state_draw_switch_to_partner(void);
-void btl_state_update_9(void);
-void btl_state_draw_9(void);
-void btl_state_update_prepare_menu(void);
-void btl_state_draw_prepare_menu(void);
-void btl_state_update_end_turn(void);
-void btl_state_draw_end_turn(void);
-void btl_state_update_1C(void);
-void btl_state_draw_1C(void);
-void btl_state_update_victory(void);
-void btl_state_draw_victory(void);
-void btl_state_update_end_training_battle(void);
-void btl_state_draw_end_training_battle(void);
-void btl_state_update_end_battle(void);
-void btl_state_draw_end_battle(void);
-void btl_state_update_defend(void);
-void btl_state_draw_defend(void);
-void btl_state_update_run_away(void);
-void btl_state_draw_run_away(void);
-void btl_state_update_defeat(void);
-void btl_state_draw_defeat(void);
-void btl_state_update_change_partner(void);
-void btl_state_draw_change_partner(void);
-void btl_state_update_player_move(void);
-void btl_state_draw_player_move(void);
-void btl_state_update_end_player_turn(void);
-void btl_state_update_partner_move(void);
-void btl_state_draw_end_player_turn(void);
-void btl_state_draw_partner_move(void);
-void btl_state_update_end_partner_turn(void);
-void btl_state_draw_end_partner_turn(void);
-void btl_state_update_next_enemy(void);
-void btl_state_draw_next_enemy(void);
-void btl_state_update_enemy_move(void);
-void btl_state_draw_enemy_move(void);
-void btl_state_update_first_strike(void);
-void btl_state_draw_first_stike(void);
-void btl_state_update_partner_striking_first(void);
-void btl_state_draw_partner_striking_first(void);
-void btl_state_update_enemy_striking_first(void);
-void btl_state_draw_enemy_striking_first(void);
-void btl_state_update_end_demo_battle(void);
-void btl_state_draw_end_demo_battle(void);
-
-void btl_state_update_player_menu(void);
-void btl_state_draw_player_menu(void);
-void btl_state_update_partner_menu(void);
-void btl_state_draw_partner_menu(void);
-void btl_state_update_peach_menu(void);
-void btl_state_draw_peach_menu(void);
-void btl_state_update_twink_menu(void);
-void btl_state_draw_twink_menu(void);
-void btl_state_update_select_target(void);
-void btl_state_draw_select_target(void);
-void btl_state_update_22(void);
-void btl_state_draw_22(void);
-
-void btl_state_update_celebration(void);
-void btl_draw_upgrade_windows(s32);
-void btl_state_draw_celebration(void);
-
 void btl_bonk_cleanup(void);
 void set_actor_anim_by_ref(Actor*, ActorPart*, AnimID);
 void update_action_ratings(void);
@@ -543,22 +471,6 @@ f32 dist2D(f32 ax, f32 ay, f32 bx, f32 by);
 f32 dist3D(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void add_vec2D_polar(f32* x, f32* y, f32 r, f32 theta);
 
-//TODO -- remove these and use audio/public.h instead
-
-enum AuResult bgm_set_track_volumes(s32 playerIndex, s16 trackVolSet);
-enum AuResult bgm_clear_track_volumes(s32 playerIndex, s16 trackVolSet);
-enum AuResult bgm_set_variation(s32 playerIndex, s16 arg1);
-void bgm_quiet_max_volume(void);
-void bgm_reset_max_volume(void);
-void bgm_reset_volume(void);
-s32 bgm_init_music_players(void);
-s32 bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s16 volume);
-void bgm_set_battle_song(s32, s32);
-void bgm_push_battle_song(void);
-s32 bgm_adjust_proximity(s32 playerIndex, s32 arg1, s16 arg2);
-void func_801491E4(Matrix4f mtx, s32, s32, s32, s32, s32 alpha);
-s32 func_8014A964(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 arg4, s16 arg5);
-
 #include "audio/public.h"
 
 void basic_window_update(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
@@ -608,9 +520,7 @@ void update_triggers(void);
 void update_scripts(void);
 void update_messages(void);
 void update_entities(void);
-void func_80138198(void);
-void bgm_update_music_settings(void);
-s32 func_8014AD40(void);
+void bgm_update_music_control(void);
 void update_ambient_sounds(void);
 void update_windows(void);
 void player_render_interact_prompts(void);
@@ -654,7 +564,7 @@ void exec_entity_commandlist(Entity* entity);
 void show_start_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);
 void show_recovery_shimmer(f32 x, f32 y, f32 z, s32 arg3);
 
-void show_next_damage_popup(f32 x, f32 y, f32 z, s32 damageAmount, s32);
+void show_next_damage_popup(f32 x, f32 y, f32 z, s32 damageAmount, s32 angle);
 void add_xz_vec3f(Vec3f* vector, f32 speed, f32 angleDeg);
 void add_xz_vec3f_copy1(Vec3f* vector, f32 speed, f32 angleDeg);
 void add_xz_vec3f_copy2(Vec3f* vector, f32 speed, f32 angleDeg);
@@ -992,8 +902,8 @@ void reset_player_blur(void);
 void force_disable_player_blur(void);
 void force_disable_player_blur_immediately(void);
 
-void func_8023E104(void);
-void func_8023E11C(void);
+void btl_start_blinking_starpoints(void);
+void btl_stop_blinking_starpoints(void);
 
 void set_goal_pos_to_part(ActorState* state, s32 actorID, s32 partID);
 
@@ -1034,8 +944,8 @@ void update_encounters_conversation(void);
 void update_encounters_post_battle(void);
 void load_map_bg(char* optAssetName);
 void reset_background_settings(void);
-void func_80138188(void);
-void func_80266970(Actor*);
+void reset_back_screen_overlay_progress(void);
+void cancel_action_rating_combo(Actor*);
 void show_actor_health_bar(Actor*);
 void hide_actor_health_bar(Actor*);
 void clear_part_pal_adjustment(ActorPart*);

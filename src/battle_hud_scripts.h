@@ -1,0 +1,97 @@
+// These are all the HudScripts associated with battle_ui_gfx
+
+#ifndef BATTLE_MENU_HUDS_H
+#define BATTLE_MENU_HUDS_H
+
+#include "hud_element.h"
+
+extern HudScript HES_HPBar;
+extern HudScript HES_HPDigit0;
+extern HudScript HES_HPDigit1;
+extern HudScript HES_HPDigit2;
+extern HudScript HES_HPDigit3;
+extern HudScript HES_HPDigit4;
+extern HudScript HES_HPDigit5;
+extern HudScript HES_HPDigit6;
+extern HudScript HES_HPDigit7;
+extern HudScript HES_HPDigit8;
+extern HudScript HES_HPDigit9;
+extern HudScript HES_YellowArrow;
+extern HudScript HES_MenuFlee;
+extern HudScript HES_MenuFleeDisabled;
+extern HudScript HES_MenuDefend;
+extern HudScript HES_MenuDefendDisabled;
+extern HudScript HES_MenuStrategies;
+extern HudScript HES_MenuStrategiesDisabled;
+extern HudScript HES_MenuPouch;
+extern HudScript HES_MenuPouchDisabled;
+extern HudScript HES_MenuDoNothing;
+extern HudScript HES_MenuDoNothingDisabled;
+extern HudScript HES_TimingBar1Chance;
+extern HudScript HES_BButton;
+extern HudScript HES_BButtonHeld;
+extern HudScript HES_MashBButton1;
+extern HudScript HES_PressBButton;
+extern HudScript HES_MashBButton2;
+extern HudScript HES_CLeftButton;
+extern HudScript HES_CLeftButtonHeld;
+extern HudScript HES_MashCLeftButton;
+extern HudScript HES_CRightButton;
+extern HudScript HES_CRightButtonHeld;
+extern HudScript HES_MashCRightButton1;
+extern HudScript HES_MashCRightButton2;
+extern HudScript HES_CUpButton;
+extern HudScript HES_CUpButtonHeld;
+extern HudScript HES_MashCUpButton;
+extern HudScript HES_CDownButton;
+extern HudScript HES_CDownButtonHeld;
+extern HudScript HES_MashCDownButton1;
+extern HudScript HES_PressCDownButton;
+extern HudScript HES_MashCDownButton2;
+extern HudScript HES_TimingWait;
+extern HudScript HES_TimingReady;
+extern HudScript HES_TimingBlink;
+extern HudScript HES_TimingCharge4a;
+extern HudScript HES_TimingCharge1;
+extern HudScript HES_TimingCharge4b;
+extern HudScript HES_TimingCharge2;
+extern HudScript HES_TimingCharge4c;
+extern HudScript HES_TimingCharge3;
+extern HudScript HES_RunningAway;
+extern HudScript HES_100pct;
+extern HudScript HES_RightOn;
+extern HudScript HES_TimingBar3Chances;
+extern HudScript HES_TimingGaugeResult;
+extern HudScript HES_TimingOK;
+extern HudScript HES_TimingMiss;
+extern HudScript HES_FillGaugeResult;
+extern HudScript HES_ProjectorReel;
+extern HudScript HES_ProjectorSpot;
+extern HudScript HES_ProjectorBeam;
+extern HudScript HES_SwapZ;
+extern HudScript HES_SwapArrowLeft;
+extern HudScript HES_SwapArrowRight;
+extern HudScript HES_SwapBackground;
+extern HudScript HES_AimMarkerA;
+extern HudScript HES_AimMarkerB;
+extern HudScript HES_AimMarkerC;
+extern HudScript HES_AimMarkerD;
+extern HudScript HES_AimMarkerE;
+extern HudScript HES_AimMarkerF;
+extern HudScript HES_AimMarkerG;
+extern HudScript HES_AimMarkerH;
+extern HudScript HES_AimShimmerA;
+extern HudScript HES_AimShimmerB;
+extern HudScript HES_AimShimmerC;
+extern HudScript HES_AimShimmerD;
+extern HudScript HES_AimShimmerE;
+extern HudScript HES_AimShimmerF;
+extern HudScript HES_AimShimmerG;
+extern HudScript HES_AimShimmerH;
+extern HudScript HES_AimReticle;
+extern HudScript HES_AimTarget;
+extern HudScript HES_AimBlinkA;
+extern HudScript HES_AimBlinkB;
+extern HudScript HES_AimBlinkC;
+
+#endif // BATTLE_MENU_HUDS_H

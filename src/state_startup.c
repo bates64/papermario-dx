@@ -75,10 +75,10 @@ void state_step_startup(void) {
 
     if (gSaveGlobals.useMonoSound == 0) {
         gGameStatus.soundOutputMode = SOUND_OUT_STEREO;
-        audio_set_stereo();
+        snd_set_stereo();
     } else {
         gGameStatus.soundOutputMode = SOUND_OUT_MONO;
-        audio_set_mono();
+        snd_set_mono();
     }
 
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;

@@ -354,11 +354,15 @@ HitResult calc_item_damage_enemy(void) {
         INFLICT_STATUS(SLEEP);
         INFLICT_STATUS(STOP);
         INFLICT_STATUS(STATIC);
-        INFLICT_STATUS(FEAR);
         INFLICT_STATUS(PARALYZE);
         INFLICT_STATUS(DIZZY);
 
         #undef INFLICT_STATUS
+
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) &&
+            try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
+            wasStatusInflicted = TRUE;
+        }
 
         if (wasStatusInflicted) {
             if (dispatchEvent == EVENT_ZERO_DAMAGE) {
@@ -375,7 +379,7 @@ HitResult calc_item_damage_enemy(void) {
 
     if ((gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) && (battleStatus->curAttackElement & DAMAGE_TYPE_FEAR)) {
         if (rand_int(99) < temp
-            && (target->debuff != STATUS_KEY_FEAR
+            && (target->debuff != STATUS_KEY_UNUSED
                 && target->debuff != STATUS_KEY_DIZZY
                 && target->debuff != STATUS_KEY_PARALYZE
                 && target->debuff != STATUS_KEY_SLEEP
@@ -415,14 +419,14 @@ HitResult calc_item_damage_enemy(void) {
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
-        func_80266970(target);
+        cancel_action_rating_combo(target);
     }
 
     dispatch_event_actor(target, dispatchEvent);
 
     if (actorClass == ACTOR_PARTNER) {
         if ((battleStatus->lastAttackDamage > 0) && (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS)) {
-            inflict_status(target, STATUS_KEY_DAZE, battleStatus->lastAttackDamage);
+            inflict_status(target, STATUS_KEY_KO, battleStatus->lastAttackDamage);
         }
     }
 

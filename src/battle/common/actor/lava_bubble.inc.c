@@ -48,7 +48,7 @@ s32 N(StatusTable)[] = {
     STATUS_KEY_POISON,             50,
     STATUS_KEY_FROZEN,              0,
     STATUS_KEY_DIZZY,             100,
-    STATUS_KEY_FEAR,              100,
+    STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,             50,
     STATUS_KEY_PARALYZE,           50,
     STATUS_KEY_SHRINK,             75,
@@ -58,7 +58,7 @@ s32 N(StatusTable)[] = {
     STATUS_TURN_MOD_POISON,         0,
     STATUS_TURN_MOD_FROZEN,         0,
     STATUS_TURN_MOD_DIZZY,          1,
-    STATUS_TURN_MOD_FEAR,           0,
+    STATUS_TURN_MOD_UNUSED,         0,
     STATUS_TURN_MOD_STATIC,         0,
     STATUS_TURN_MOD_PARALYZE,       0,
     STATUS_TURN_MOD_SHRINK,         0,
@@ -161,7 +161,7 @@ s32 N(DefaultAnims)[] = {
     STATUS_KEY_STATIC,    ANIM_LavaBubble_Anim01,
     STATUS_KEY_PARALYZE,  ANIM_LavaBubble_Anim00,
     STATUS_KEY_DIZZY,     ANIM_LavaBubble_Anim0A,
-    STATUS_KEY_FEAR,      ANIM_LavaBubble_Anim0A,
+    STATUS_KEY_UNUSED,    ANIM_LavaBubble_Anim0A,
     STATUS_END,
 };
 
