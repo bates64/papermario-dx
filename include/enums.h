@@ -2223,53 +2223,6 @@ enum HitSounds {
     HIT_SOUND_SHOCK            = 5,
 };
 
-// Player.debuff
-// Partner.debuff
-enum StatusKeys {
-    STATUS_END                      = 0x00000000,
-    STATUS_KEY_NORMAL               = 0x00000001,
-    STATUS_KEY_DEFAULT              = 0x00000002,
-    STATUS_KEY_UNUSED               = 0x00000003,
-    STATUS_KEY_DIZZY                = 0x00000004,
-    STATUS_KEY_PARALYZE             = 0x00000005,
-    STATUS_KEY_SLEEP                = 0x00000006,
-    STATUS_KEY_FROZEN               = 0x00000007,
-    STATUS_KEY_STOP                 = 0x00000008,
-    STATUS_KEY_POISON               = 0x00000009,
-    STATUS_KEY_SHRINK               = 0x0000000A,
-    STATUS_KEY_STATIC               = 0x0000000B,
-    STATUS_KEY_STONE                = 0x0000000C,
-    STATUS_KEY_KO                   = 0x0000000D,
-    STATUS_KEY_TRANSPARENT          = 0x0000000E,
-    STATUS_KEY_0F                   = 0x0000000F,
-    STATUS_KEY_BERSERK              = 0x00000010,
-    STATUS_KEY_11                   = 0x00000011,
-    STATUS_KEY_INACTIVE             = 0x00000012,
-    STATUS_KEY_INACTIVE_BERSERK     = 0x00000013,
-    STATUS_KEY_14                   = 0x00000014, // probably STATUS_KEY_INACTIVE_FROZEN
-    STATUS_KEY_INACTIVE_SLEEP       = 0x00000015,
-    STATUS_KEY_INACTIVE_WEARY       = 0x00000016,
-    STATUS_KEY_17                   = 0x00000017,
-    STATUS_KEY_INACTIVE_DIZZY       = 0x00000018,
-    STATUS_KEY_HUSTLE               = 0x00000019,
-    STATUS_KEY_DANGER               = 0x0000001A,
-    STATUS_KEY_1B                   = 0x0000001B,
-    STATUS_KEY_THINKING             = 0x0000001C,
-    STATUS_KEY_WEARY                = 0x0000001D,
-    STATUS_KEY_1E                   = 0x0000001E,
-    STATUS_TURN_MOD_DEFAULT         = 0x0000001F,
-    STATUS_TURN_MOD_SLEEP           = 0x00000020,
-    STATUS_TURN_MOD_STATIC          = 0x00000021,
-    STATUS_TURN_MOD_FROZEN          = 0x00000022,
-    STATUS_TURN_MOD_UNUSED          = 0x00000023,
-    STATUS_TURN_MOD_DIZZY           = 0x00000024,
-    STATUS_TURN_MOD_POISON          = 0x00000025,
-    STATUS_TURN_MOD_PARALYZE        = 0x00000026,
-    STATUS_TURN_MOD_SHRINK          = 0x00000027,
-    STATUS_TURN_MOD_STONE           = 0x00000028,
-    STATUS_TURN_MOD_STOP            = 0x00000029,
-};
-
 enum ActorPaletteAdjustments {
     ACTOR_PAL_ADJUST_NONE             = 0,
     ACTOR_PAL_ADJUST_SLEEP            = 3,
@@ -2827,8 +2780,9 @@ enum Buttons {
     BUTTON_STICK_RIGHT  = 0x00080000,
 };
 
+// only used with RemovePlayerBuffs
 enum PlayerBuffs {
-    PLAYER_BUFF_ALL             = 0xFFFFFFFF,
+    PLAYER_BUFF_ALL             = 0x0FFFFFFF,
     PLAYER_BUFF_JUMP_CHARGE     = 0x00000001,
     PLAYER_BUFF_HAMMER_CHARGE   = 0x00000002,
     PLAYER_BUFF_STONE           = 0x00000008,
@@ -2839,6 +2793,53 @@ enum PlayerBuffs {
     PLAYER_BUFF_TURBO_CHARGE    = 0x00000100,
     PLAYER_BUFF_WATER_BLOCK     = 0x00000200,
     PLAYER_BUFF_PARTNER_GLOWING = 0x00010000,
+};
+
+// Player.debuff
+// Partner.debuff
+enum StatusKeys {
+    STATUS_END                      = 0x00000000,
+    STATUS_KEY_NORMAL               = 0x00000001,
+    STATUS_KEY_DEFAULT              = 0x00000002,
+    STATUS_KEY_UNUSED               = 0x00000003,
+    STATUS_KEY_DIZZY                = 0x00000004,
+    STATUS_KEY_PARALYZE             = 0x00000005,
+    STATUS_KEY_SLEEP                = 0x00000006,
+    STATUS_KEY_FROZEN               = 0x00000007,
+    STATUS_KEY_STOP                 = 0x00000008,
+    STATUS_KEY_POISON               = 0x00000009,
+    STATUS_KEY_SHRINK               = 0x0000000A,
+    STATUS_KEY_STATIC               = 0x0000000B,
+    STATUS_KEY_STONE                = 0x0000000C,
+    STATUS_KEY_KO                   = 0x0000000D,
+    STATUS_KEY_TRANSPARENT          = 0x0000000E,
+    STATUS_KEY_0F                   = 0x0000000F,
+    STATUS_KEY_BERSERK              = 0x00000010,
+    STATUS_KEY_11                   = 0x00000011,
+    STATUS_KEY_INACTIVE             = 0x00000012,
+    STATUS_KEY_INACTIVE_BERSERK     = 0x00000013,
+    STATUS_KEY_14                   = 0x00000014, // probably STATUS_KEY_INACTIVE_FROZEN
+    STATUS_KEY_INACTIVE_SLEEP       = 0x00000015,
+    STATUS_KEY_INACTIVE_WEARY       = 0x00000016,
+    STATUS_KEY_17                   = 0x00000017,
+    STATUS_KEY_INACTIVE_DIZZY       = 0x00000018,
+    STATUS_KEY_HUSTLE               = 0x00000019,
+    STATUS_KEY_DANGER               = 0x0000001A,
+    STATUS_KEY_1B                   = 0x0000001B,
+    STATUS_KEY_THINKING             = 0x0000001C,
+    STATUS_KEY_WEARY                = 0x0000001D,
+    STATUS_KEY_1E                   = 0x0000001E,
+    STATUS_TURN_MOD_DEFAULT         = 0x0000001F,
+    STATUS_TURN_MOD_SLEEP           = 0x00000020,
+    STATUS_TURN_MOD_STATIC          = 0x00000021,
+    STATUS_TURN_MOD_FROZEN          = 0x00000022,
+    STATUS_TURN_MOD_UNUSED          = 0x00000023,
+    STATUS_TURN_MOD_DIZZY           = 0x00000024,
+    STATUS_TURN_MOD_POISON          = 0x00000025,
+    STATUS_TURN_MOD_PARALYZE        = 0x00000026,
+    STATUS_TURN_MOD_SHRINK          = 0x00000027,
+    STATUS_TURN_MOD_STONE           = 0x00000028,
+    STATUS_TURN_MOD_STOP            = 0x00000029,
 };
 
 enum StatusFlags {
