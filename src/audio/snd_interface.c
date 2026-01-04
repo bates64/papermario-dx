@@ -4,10 +4,10 @@
 
 static u8* snd_song_get_track_volumes_set(MusicTrackVols arg0);
 
-/// While TRUE, the audio thread skips BGM player updates.
+/// While true, the audio thread skips BGM player updates.
 /// Used by the game thread to lock out BGM updates while modifying player state,
 /// to prevent race conditions.
-s32 PreventBGMPlayerUpdate = FALSE;
+s32 PreventBGMPlayerUpdate = false;
 
 u16 SoundEngineReady = 0;
 u16 AmbienceRadioChannel = 0;
@@ -107,7 +107,7 @@ u8 TrackVols_KPA_3[] = {
 
 void snd_notify_engine_ready(ALHeap* heap) {
     SoundEngineReady = 1;
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 }
 
 /// Unused
@@ -157,7 +157,7 @@ void snd_bgm_clear_legacy_commands(BGMPlayer* player) {
 /// Part of an unused system for inter-thread communication with a BGM player using commands.
 /// Use functions in bgm_control to manipualte gMusicControlData instead.
 void snd_bgm_enqueue_legacy_command(u32 cmd) {
-    BGMPlayer* player = NULL;
+    BGMPlayer* player = nullptr;
     u32 playerID = cmd & 0xF;
 
     if (playerID == 0) {
@@ -168,7 +168,7 @@ void snd_bgm_enqueue_legacy_command(u32 cmd) {
         player = gBGMPlayerB;
     }
 
-    if (player != NULL) {
+    if (player != nullptr) {
         u32 pos;
 
         if (player->cmdBufPending < ARRAY_COUNT(player->cmdBufData)) {
@@ -368,7 +368,7 @@ AuResult snd_ambient_disable(s32 index) {
     AuResult status = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_mseq_set_disabled(index, TRUE);
+        au_mseq_set_disabled(index, true);
     }
 
     return status;
@@ -378,7 +378,7 @@ AuResult snd_ambient_enable(s32 index) {
     AuResult status  = au_mseq_check_player_index(index);
 
     if (status == AU_RESULT_OK) {
-        au_mseq_set_disabled(index, FALSE);
+        au_mseq_set_disabled(index, false);
     }
 
     return status;
@@ -450,10 +450,10 @@ AuResult snd_song_load(s32 songID, s32 playerIndex) {
 
     au_get_bgm_player_and_file(playerIndex, &bgmFile, &player);
 
-    if (bgmFile != NULL) {
+    if (bgmFile != nullptr) {
         return au_load_song_files(songID, bgmFile, player);
     } else {
-        return AU_ERROR_NULL_SONG_NAME;
+        return AU_ERROR_nullptr_SONG_NAME;
     }
 }
 
@@ -462,7 +462,7 @@ AuResult snd_song_request_play_default(s32 songName) {
     AuResult status;
     SongStartRequest s;
 
-    PreventBGMPlayerUpdate = TRUE;
+    PreventBGMPlayerUpdate = true;
     s.songName = songName;
     s.duration = 0;
     s.startVolume = AU_MAX_VOLUME_8;
@@ -470,7 +470,7 @@ AuResult snd_song_request_play_default(s32 songName) {
     s.variation = BGM_VARIATION_0;
     s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 
     return status;
 }
@@ -480,7 +480,7 @@ AuResult snd_song_request_play(s32 songName, s32 variation) {
     AuResult status;
     SongStartRequest s;
 
-    PreventBGMPlayerUpdate = TRUE;
+    PreventBGMPlayerUpdate = true;
     s.songName = songName;
     s.duration = 0;
     s.startVolume = AU_MAX_VOLUME_8;
@@ -488,7 +488,7 @@ AuResult snd_song_request_play(s32 songName, s32 variation) {
     s.variation = variation;
     s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 
     return status;
 }
@@ -510,7 +510,7 @@ AuResult snd_song_request_fade_in(s32 songName, s32 variation, s32 fadeInTime, s
     AuResult status;
     SongStartRequest s;
 
-    PreventBGMPlayerUpdate = TRUE;
+    PreventBGMPlayerUpdate = true;
     s.songName = songName;
     s.duration = fadeInTime;
     s.startVolume = startVolume;
@@ -518,7 +518,7 @@ AuResult snd_song_request_fade_in(s32 songName, s32 variation, s32 fadeInTime, s
     s.variation = variation;
     s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 
     return status;
 }
@@ -528,7 +528,7 @@ AuResult snd_song_request_fade_in_default(s32 songName, s32 fadeInTime, s32 star
     AuResult status;
     SongStartRequest s;
 
-    PreventBGMPlayerUpdate = TRUE;
+    PreventBGMPlayerUpdate = true;
     s.songName = songName;
     s.duration = fadeInTime;
     s.startVolume = startVolume;
@@ -536,7 +536,7 @@ AuResult snd_song_request_fade_in_default(s32 songName, s32 fadeInTime, s32 star
     s.variation = 0;
     s.unused_14 = 0;
     status = au_bgm_process_init_song(&s);
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 
     return status;
 }
@@ -549,7 +549,7 @@ AuResult snd_song_request_fade_out(s32 songName, s32 fadeTime, AuCallback callba
     s.unused_08 = 0;
     s.finalVolume = 0;
     s.doneCallback = callback;
-    s.onPush = FALSE;
+    s.onPush = false;
 
     return au_bgm_process_fade_out(&s);
 }
@@ -562,24 +562,24 @@ AuResult snd_song_push_stop(s32 songName) {
     s.startVolume = 0;
     s.finalVolume = 0;
     s.index = BGM_SNAPSHOT_0;
-    s.pauseMode = FALSE;
+    s.pauseMode = false;
 
-    return au_bgm_process_suspend(&s, FALSE); // force stop
+    return au_bgm_process_suspend(&s, false); // force stop
 }
 
 AuResult snd_song_request_pop(s32 songName) {
     AuResult status;
     SongResumeRequest s;
 
-    PreventBGMPlayerUpdate = TRUE;
+    PreventBGMPlayerUpdate = true;
     s.songName = songName;
     s.duration = 2000;
     s.startVolume = 1;
     s.finalVolume = AU_MAX_VOLUME_8;
     s.index = BGM_SNAPSHOT_0;
-    s.pauseMode = FALSE;
+    s.pauseMode = false;
     status = au_bgm_process_resume(&s);
-    PreventBGMPlayerUpdate = FALSE;
+    PreventBGMPlayerUpdate = false;
 
     return status;
 }
@@ -592,9 +592,9 @@ AuResult snd_song_request_snapshot(s32 songName) {
     s.startVolume = 0;
     s.finalVolume = 0;
     s.index = BGM_SNAPSHOT_0;
-    s.pauseMode = FALSE;
+    s.pauseMode = false;
 
-    return au_bgm_process_suspend(&s, TRUE); // no stop
+    return au_bgm_process_suspend(&s, true); // no stop
 }
 
 AuResult snd_song_request_push_fade_out(s32 songName, s32 fadeTime) {
@@ -604,8 +604,8 @@ AuResult snd_song_request_push_fade_out(s32 songName, s32 fadeTime) {
     s.duration = fadeTime;
     s.unused_08 = 0;
     s.finalVolume = 0;
-    s.doneCallback = NULL;
-    s.onPush = TRUE;
+    s.doneCallback = nullptr;
+    s.onPush = true;
 
     return au_bgm_process_fade_out(&s);
 }
@@ -618,9 +618,9 @@ AuResult snd_song_request_pause(s32 songName) {
     s.startVolume = 0;
     s.finalVolume = 0;
     s.index = BGM_SNAPSHOT_0;
-    s.pauseMode = TRUE;
+    s.pauseMode = true;
 
-    return au_bgm_process_suspend(&s, FALSE); // force stop
+    return au_bgm_process_suspend(&s, false); // force stop
 }
 
 AuResult snd_song_request_unpause(s32 songName) {
@@ -631,7 +631,7 @@ AuResult snd_song_request_unpause(s32 songName) {
     s.startVolume = 0;
     s.finalVolume = 0;
     s.index = BGM_SNAPSHOT_0;
-    s.pauseMode = TRUE;
+    s.pauseMode = true;
 
     return au_bgm_process_resume(&s);
 }
@@ -656,7 +656,7 @@ AuResult snd_song_set_volume_full(s32 songName) {
     return au_bgm_adjust_volume(&s);
 }
 
-AuResult snd_song_set_linked_mode(s32 songName, b32 mode) {
+AuResult snd_song_set_linked_mode(s32 songName, bool mode) {
     SongSwapLinkedRequest s;
 
     s.songName = songName;
@@ -724,8 +724,8 @@ AuResult snd_song_set_track_volumes(s32 songName, MusicTrackVols trackVolSet) {
     if (status == AU_RESULT_OK) {
         u8* trackVols = snd_song_get_track_volumes_set(trackVolSet);
 
-        if (trackVols != NULL) {
-            au_bgm_set_track_volumes(bgmPlayer, trackVols, TRUE);
+        if (trackVols != nullptr) {
+            au_bgm_set_track_volumes(bgmPlayer, trackVols, true);
         } else {
             status = AU_ERROR_11;
         }
@@ -744,8 +744,8 @@ AuResult snd_song_clear_track_volumes(s32 songName, MusicTrackVols trackVolSet) 
     if (status == AU_RESULT_OK) {
         u8* trackVols = snd_song_get_track_volumes_set(trackVolSet);
 
-        if (trackVols != NULL) {
-            au_bgm_set_track_volumes(bgmPlayer, trackVols, FALSE);
+        if (trackVols != nullptr) {
+            au_bgm_set_track_volumes(bgmPlayer, trackVols, false);
         } else {
             status = AU_ERROR_11;
         }
@@ -755,7 +755,7 @@ AuResult snd_song_clear_track_volumes(s32 songName, MusicTrackVols trackVolSet) 
 }
 
 static u8* snd_song_get_track_volumes_set(MusicTrackVols trackVolSet) {
-    u8* trackVols = NULL;
+    u8* trackVols = nullptr;
 
     switch (trackVolSet) {
         case TRACK_VOLS_JAN_FULL:
@@ -837,7 +837,7 @@ void snd_song_poll_music_events(MusicEventTrigger** musicEvents, s32* count) {
 }
 
 void snd_song_flush_music_events(void) {
-    gSoundGlobals->flushMusicEventQueue = TRUE;
+    gSoundGlobals->flushMusicEventQueue = true;
 }
 
 void snd_song_trigger_music_event(s32 playerID, s32 trackIndex, s32 eventInfo) {
@@ -859,7 +859,7 @@ void snd_song_clear_music_events(void) {
     } while (i-- != 0);
 
     globals->musicEventQueueCount = 0;
-    globals->flushMusicEventQueue = FALSE;
+    globals->flushMusicEventQueue = false;
     globals->musicEventQueuePos = globals->musicEventQueue;
 }
 
@@ -870,12 +870,12 @@ void snd_register_callback(AuCallback func, s32 index) {
 }
 
 void snd_set_stereo(void) {
-    au_set_stereo_enabled(TRUE);
+    au_set_stereo_enabled(true);
     au_sync_channel_delay_enabled(0);
 }
 
 void snd_set_mono(void) {
-    au_set_stereo_enabled(FALSE);
+    au_set_stereo_enabled(false);
     au_sync_channel_delay_enabled(1);
 }
 

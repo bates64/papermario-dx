@@ -2,5 +2,5 @@
 #include "nu/nusys.h"
 
 void nuContQueryRead(void) {
-    nuSiSendMesg(NU_CONT_QUERY_MSG, NULL);
+    nuSiSendMesg(NU_CONT_QUERY_MSG, nullptr);
 }

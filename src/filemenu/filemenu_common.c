@@ -29,7 +29,7 @@ s32 filemenu_cursor_targetX = SCREEN_WIDTH / 2;
 s32 filemenu_cursor_targetY = -SCREEN_HEIGHT / 2;
 s32 filemenu_cursorGoalAlpha = 0;
 s32 filemenu_cursorGoalAlpha2 = 0;
-s32 D_80249BB0 = TRUE;
+s32 D_80249BB0 = true;
 s32 D_80249BB8 = 0;
 s16 D_80249BBC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
 s16 D_80249BDC[16] = { 315, 303, 283, 260, 235, 210, 185, 160, 135, 110, 85, 60, 37, 17, 5, 0 };
@@ -70,8 +70,8 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .width = 288,
         .height = 192,
         .priority = WINDOW_PRIORITY_0,
-        .fpDrawContents = NULL,
-        .tab = NULL,
+        .fpDrawContents = nullptr,
+        .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = WINDOW_FLAG_40,
@@ -87,7 +87,7 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .height = 192,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = filemenu_draw_contents_copy_arrow,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { WINDOW_UPDATE_SHOW } ,
         .extraFlags = 0,
@@ -103,7 +103,7 @@ MenuWindowBP filemenu_common_windowBPs[] = {
         .height = 240,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = filemenu_draw_cursor,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -176,7 +176,7 @@ void filemenu_set_cursor_goal_pos(s32 windowID, s32 posX, s32 posY) {
                 }
             }
             if (i >= ARRAY_COUNT(gWindows)) {
-                D_80249BB0 = FALSE;
+                D_80249BB0 = false;
             }
         }
         filemenu_cursor_targetX = posX;
@@ -288,7 +288,7 @@ void filemenu_update(void) {
     // only process inputs for the current menu
     menu = filemenu_menus[filemenu_currentMenu];
     if (menu->initialized) {
-        if (menu->fpHandleInput != NULL) {
+        if (menu->fpHandleInput != nullptr) {
             menu->fpHandleInput(menu);
         }
     }
@@ -296,7 +296,7 @@ void filemenu_update(void) {
     // update all menus
     for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
         menu = filemenu_menus[i];
-        if (menu->initialized && menu->fpUpdate != NULL) {
+        if (menu->initialized && menu->fpUpdate != nullptr) {
             menu->fpUpdate(menu);
         }
     }
@@ -890,7 +890,7 @@ void filemenu_init(s32 mode) {
 
     filemenu_cursorHID = filemenu_cursorHIDs[0];
     if (mode == 0) {
-        filemenu_common_windowBPs[0].style.customStyle->background.imgData = NULL; // ???
+        filemenu_common_windowBPs[0].style.customStyle->background.imgData = nullptr; // ???
     }
     setup_pause_menu_tab(filemenu_common_windowBPs, ARRAY_COUNT(filemenu_common_windowBPs));
 
@@ -903,12 +903,12 @@ void filemenu_init(s32 mode) {
         for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
             if (fio_load_game(i)) {
                 gSaveSlotSummary[i] = gCurrentSaveFile.summary;
-                gSaveSlotMetadata[i].hasData = TRUE;
+                gSaveSlotMetadata[i].hasData = true;
                 gSaveSlotMetadata[i].validData = strcmp(gCurrentSaveFile.modName, DX_MOD_NAME) == 0;
                 memcpy(gSaveSlotMetadata[i].modName, gCurrentSaveFile.modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName));
             } else {
-                gSaveSlotMetadata[i].hasData = FALSE;
-                gSaveSlotMetadata[i].validData = FALSE;
+                gSaveSlotMetadata[i].hasData = false;
+                gSaveSlotMetadata[i].validData = false;
                 memset(gSaveSlotMetadata[i].modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName), 0);
             }
         }
@@ -924,7 +924,7 @@ void filemenu_init(s32 mode) {
 
     for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
         menu = filemenu_menus[i];
-        if (menu->fpInit != NULL) {
+        if (menu->fpInit != nullptr) {
             menu->fpInit(menu);
         }
     }
@@ -942,7 +942,7 @@ void filemenu_cleanup(void) {
     for (i = 0; i < ARRAY_COUNT(filemenu_menus); i++) {
         menu = filemenu_menus[i];
         if (menu->initialized) {
-            if (menu->fpCleanup != NULL) {
+            if (menu->fpCleanup != nullptr) {
                 menu->fpCleanup(menu);
             }
         }

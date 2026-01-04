@@ -28,7 +28,7 @@ EvtScript N(EVS_Main) = {
     Set(AB_MIM_2, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)
     ExecWait(N(EVS_SetupGates))
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

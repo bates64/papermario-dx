@@ -9,7 +9,7 @@ void nuSiCallBackRemove(NUCallBackList* list) {
         if ((*siCallBackListPtr)->next == list) {
             mask = osSetIntMask(OS_IM_NONE);
             (*siCallBackListPtr)->next = list->next;
-            list->next = NULL;
+            list->next = nullptr;
             osSetIntMask(mask);
             break;
         }

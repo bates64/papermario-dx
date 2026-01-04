@@ -47,7 +47,7 @@ EvtScript N(EVS_NpcInteract_Snowman_05) = {
 };
 
 EvtScript N(EVS_ItemPrompt_Scarf) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(FindItem, ITEM_SNOWMAN_SCARF, LVar0)
     IfNe(LVar0, -1)
         Call(ShowKeyChoicePopup)
@@ -56,10 +56,10 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
             CaseEq(0)
             CaseEq(-1)
             CaseDefault
-                Set(GF_SAM04_PlacedScarf, TRUE)
+                Set(GF_SAM04_PlacedScarf, true)
                 Call(RemoveKeyItemAt, LVar1)
-                Call(EnableModel, CLONED_MODEL(11), TRUE)
-                IfEq(GF_SAM04_PlacedBucket, TRUE)
+                Call(EnableModel, CLONED_MODEL(11), true)
+                IfEq(GF_SAM04_PlacedBucket, true)
                     Call(GetNpcPos, NPC_Snowman_03, LVar0, LVar1, LVar2)
                     Add(LVar1, 30)
                     Add(LVar2, 20)
@@ -75,7 +75,7 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     EndIf
     Unbind
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -87,7 +87,7 @@ EvtScript N(EVS_NpcInteract_Snowman_03) = {
 };
 
 EvtScript N(EVS_ItemPrompt_Bucket) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(FindItem, ITEM_SNOWMAN_BUCKET, LVar0)
     IfNe(LVar0, -1)
         Call(ShowKeyChoicePopup)
@@ -96,10 +96,10 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
             CaseEq(0)
             CaseEq(-1)
             CaseDefault
-                Set(GF_SAM04_PlacedBucket, TRUE)
+                Set(GF_SAM04_PlacedBucket, true)
                 Call(RemoveKeyItemAt, LVar1)
-                Call(EnableModel, MODEL_baketu, TRUE)
-                IfEq(GF_SAM04_PlacedScarf, TRUE)
+                Call(EnableModel, MODEL_baketu, true)
+                IfEq(GF_SAM04_PlacedScarf, true)
                     Call(GetNpcPos, NPC_Snowman_06, LVar0, LVar1, LVar2)
                     Add(LVar1, 60)
                     Add(LVar2, 20)
@@ -115,7 +115,7 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)
     EndIf
     Unbind
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -160,8 +160,8 @@ EvtScript N(EVS_NpcInit_Snowman_01) = {
 EndIf
 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_01)))
 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_01)))
-Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-Call(EnableNpcShadow, NPC_SELF, FALSE)
+Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+Call(EnableNpcShadow, NPC_SELF, false)
 Return
 End
 };
@@ -169,8 +169,8 @@ End
 EvtScript N(EVS_NpcInit_Snowman_02) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_02)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_02)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
@@ -178,8 +178,8 @@ EvtScript N(EVS_NpcInit_Snowman_02) = {
 EvtScript N(EVS_NpcInit_Snowman_03) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_03)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_03)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
@@ -187,8 +187,8 @@ EvtScript N(EVS_NpcInit_Snowman_03) = {
 EvtScript N(EVS_NpcInit_Snowman_04) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_04)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_04)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
@@ -196,8 +196,8 @@ EvtScript N(EVS_NpcInit_Snowman_04) = {
 EvtScript N(EVS_NpcInit_Snowman_05) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_05)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_05)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
@@ -205,15 +205,15 @@ EvtScript N(EVS_NpcInit_Snowman_05) = {
 EvtScript N(EVS_NpcInit_Snowman_06) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Snowman_06)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Snowman_06)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Dummy) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, TRUE)
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Return
     End
 };

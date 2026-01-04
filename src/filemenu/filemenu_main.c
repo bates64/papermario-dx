@@ -138,7 +138,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 0,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_title },
         .extraFlags = 0,
@@ -152,7 +152,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 20,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_stereo,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_left },
         .extraFlags = 0,
@@ -166,7 +166,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 20,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_mono,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_right },
         .extraFlags = 0,
@@ -180,7 +180,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 16,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_option_left,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_bottom },
         .extraFlags = 0,
@@ -194,7 +194,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 16,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_option_center,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_bottom },
         .extraFlags = 0,
@@ -208,7 +208,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 16,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_option_right,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_bottom },
         .extraFlags = 0,
@@ -222,7 +222,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 54,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_2_info,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_left },
         .extraFlags = 0,
@@ -236,7 +236,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_2_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_SLOT3_BODY,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -250,7 +250,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 54,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_3_info,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_right },
         .extraFlags = 0,
@@ -264,7 +264,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_3_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_SLOT4_BODY,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -278,7 +278,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 54,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_0_info,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_left },
         .extraFlags = 0,
@@ -292,7 +292,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_0_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_SLOT1_BODY,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -306,7 +306,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 54,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_1_info,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_MAIN,
         .fpUpdate = { .func = &filemenu_update_show_options_right },
         .extraFlags = 0,
@@ -320,7 +320,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
         .height = 15,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_draw_contents_file_1_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_SLOT2_BODY,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -329,7 +329,7 @@ MenuWindowBP filemenu_main_windowBPs[] = {
 };
 
 MenuPanel filemenu_main_menuBP = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -765,7 +765,7 @@ void filemenu_main_init(MenuPanel* menu) {
         set_window_update(WIN_FILES_STEREO, WINDOW_UPDATE_HIDE);
         set_window_update(WIN_FILES_MONO, WINDOW_UPDATE_HIDE);
     }
-    menu->initialized = TRUE;
+    menu->initialized = true;
 }
 
 void filemenu_main_handle_input(MenuPanel* menu) {
@@ -773,7 +773,7 @@ void filemenu_main_handle_input(MenuPanel* menu) {
     s32 i;
 
     if (filemenu_heldButtons & BUTTON_STICK_LEFT) {
-        while (TRUE) {
+        while (true) {
             menu->col--;
             if (menu->col < 0) {
                 menu->col = 0;
@@ -786,7 +786,7 @@ void filemenu_main_handle_input(MenuPanel* menu) {
     }
 
     if (filemenu_heldButtons & BUTTON_STICK_RIGHT) {
-        while (TRUE) {
+        while (true) {
             menu->col++;
             if (menu->col >= menu->numCols) {
                 menu->col = menu->numCols - 1;

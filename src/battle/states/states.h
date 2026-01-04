@@ -13,8 +13,8 @@ enum BattleSubStates {
 };
 
 extern s16 EndDemoWhiteOut;
-extern b32 BattleSkipActorTurn;
-extern b32 BattleCanShowFirstStrike;
+extern bool BattleSkipActorTurn;
+extern bool BattleCanShowFirstStrike;
 extern s32 BattleStatusUpdateDelay;
 extern s32 BattleSubstateDelay;
 extern s32 BattleScreenFadeAmt;

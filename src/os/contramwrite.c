@@ -14,7 +14,7 @@ s32 __osContRamWrite(OSMesgQueue* mq, int channel, u16 address, u8* buffer, int 
 #ifdef BBPLAYER
     s32 ret = 0;
 
-    if ((force != TRUE) && (address < PFS_LABEL_AREA) && (address != 0)) {
+    if ((force != true) && (address < PFS_LABEL_AREA) && (address != 0)) {
         return 0;
     }
 
@@ -41,7 +41,7 @@ s32 __osContRamWrite(OSMesgQueue* mq, int channel, u16 address, u8* buffer, int 
     s32 retry = 2;
     u8 crc;
 
-    if ((force != TRUE) && (address < PFS_LABEL_AREA) && (address != 0)) {
+    if ((force != true) && (address < PFS_LABEL_AREA) && (address != 0)) {
         return 0;
     }
 
@@ -76,10 +76,10 @@ s32 __osContRamWrite(OSMesgQueue* mq, int channel, u16 address, u8* buffer, int 
 
         ret = __osSiRawStartDma(OS_WRITE, &__osPfsPifRam);
         crc = __osContDataCrc(buffer);
-        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
+        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
 
         ret = __osSiRawStartDma(OS_READ, &__osPfsPifRam);
-        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
+        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
 
         ret = CHNL_ERR(*READFORMAT(ptr));
 

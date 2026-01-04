@@ -28,7 +28,7 @@ void btl_state_update_defeat(void) {
                 if (player->debuff == STATUS_KEY_FROZEN) {
                     sfx_play_sound(SOUND_FROZEN_SHATTER);
                     player->icePillarEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
-                    player->icePillarEffect = NULL;
+                    player->icePillarEffect = nullptr;
                 }
                 player->debuff = 0;
                 player->debuffDuration = 0;
@@ -49,7 +49,7 @@ void btl_state_update_defeat(void) {
             script->owner1.actorID = ACTOR_PLAYER;
 
             // prompt partner to handle PHASE_DEATH
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
                 partner->takeTurnScript = script;
                 partner->takeTurnScriptID = script->id;

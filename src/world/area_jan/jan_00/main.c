@@ -31,8 +31,8 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_JADE_JUNGLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_JadeJungle, TRUE)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Set(GF_MAP_JadeJungle, true)
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     // waves
     Call(SetTexPanner, MODEL_o135, TEX_PANNER_1)

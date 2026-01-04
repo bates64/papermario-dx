@@ -36,7 +36,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_ISK_08)
     Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_SetupFlames))
     ExecWait(N(EVS_SetupBombableWall))
 #if VERSION_PAL

@@ -8,7 +8,7 @@ EvtScript N(EVS_ExitDoor_pra_20_1) = EVT_EXIT_SINGLE_DOOR(pra_21_ENTRY_0, "pra_2
 
 EvtScript N(EVS_ExitDoors_pra_36_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_21_ENTRY_1)
     Set(LVar1, COLLIDER_deilittnne)
     Set(LVar2, Ref(N(DoorModelsL)))

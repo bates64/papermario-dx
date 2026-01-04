@@ -280,8 +280,8 @@ extern s32 nuAuHeapGetUsed(void);
 /*----------------------------------------------------------------------*/
 
 /* Delete the callback function */
-#define nuAuPreNMIFuncRemove()	nuAuPreNMIFuncSet(NULL)
-#define nuAuMgrFuncRemove()	nuAuMgrFuncSet(NULL)
+#define nuAuPreNMIFuncRemove()	nuAuPreNMIFuncSet(nullptr)
+#define nuAuMgrFuncRemove()	nuAuMgrFuncSet(nullptr)
 
 #define nuAuSeqPlayerGetChlVol(player_no, chan)				\
 	alCSPGetChlVol(&nuAuSeqPlayer[player_no].player, chan)

@@ -6,11 +6,11 @@
 
 s32 has_enchanted_part(Actor* actor) {
     ActorPart* partIt = actor->partsTable;
-    s32 ret = FALSE;
+    s32 ret = false;
 
-    while (partIt != NULL) {
+    while (partIt != nullptr) {
         if (partIt->eventFlags & (ACTOR_EVENT_FLAG_ENCHANTED | ACTOR_EVENT_FLAG_STAR_ROD_ENCHANTED)) {
-            ret = TRUE;
+            ret = true;
             break;
         } else {
             partIt = partIt->nextPart;
@@ -103,7 +103,7 @@ void dispatch_event_actor(Actor* actor, s32 event) {
     Evt* handleEventScript = actor->handleEventScript;
     s32 onHitID = actor->handleEventScriptID;
 
-    if (actor->handleEventSource != NULL) {
+    if (actor->handleEventSource != nullptr) {
         Evt* newScript;
 
         actor->lastEventType = event;
@@ -113,13 +113,13 @@ void dispatch_event_actor(Actor* actor, s32 event) {
         newScript->owner1.actorID = actor->actorID;
     }
 
-    if (actor->takeTurnScript != NULL) {
+    if (actor->takeTurnScript != nullptr) {
         get_script_by_index(actor->takeTurnScriptID);
         kill_script_by_ID(actor->takeTurnScriptID);
-        actor->takeTurnScript = NULL;
+        actor->takeTurnScript = nullptr;
     }
 
-    if (handleEventScript != NULL) {
+    if (handleEventScript != nullptr) {
         kill_script_by_ID(onHitID);
     }
 }
@@ -139,12 +139,12 @@ HitResult calc_enemy_test_target(Actor* actor) {
     battleStatus->curTargetPart2 = battleStatus->curTargetPart;
 
     target = get_actor(targetID);
-    if (target == NULL) {
+    if (target == nullptr) {
         return HIT_RESULT_HIT;
     }
 
     targetPart = get_actor_part(target, targetPartIdx);
-    ASSERT(targetPart != NULL);
+    ASSERT(targetPart != nullptr);
 
     actorClass = targetID & ACTOR_CLASS_MASK;
     switch (actorClass) {
@@ -237,20 +237,20 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     Actor* target;
     ActorPart* targetPart;
     s32 hitResult;
-    b32 wasSpecialHit = FALSE;
-    b32 statusInflicted = FALSE;
-    b32 isFire = FALSE;
-    b32 isWater = FALSE;
-    b32 isIce = FALSE;
-    b32 isElectric = FALSE;
-    b32 madeElectricContact = FALSE;
-    b32 isPlayer;
+    bool wasSpecialHit = false;
+    bool statusInflicted = false;
+    bool isFire = false;
+    bool isWater = false;
+    bool isIce = false;
+    bool isElectric = false;
+    bool madeElectricContact = false;
+    bool isPlayer;
     s32 defense;
     s32 event;
     s32 damage;
     Evt* script;
 
-    battleStatus->wasStatusInflicted = FALSE;
+    battleStatus->wasStatusInflicted = false;
     battleStatus->lastAttackDamage = 0;
 
     battleStatus->attackerActorID = attacker->actorID;
@@ -258,12 +258,12 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     battleStatus->curTargetPart2 = targetPartIdx;
 
     target = get_actor(targetID);
-    if (target == NULL) {
+    if (target == nullptr) {
         return HIT_RESULT_HIT;
     }
 
     targetPart = get_actor_part(target, targetPartIdx);
-    ASSERT(targetPart != NULL);
+    ASSERT(targetPart != nullptr);
 
     actorClass = targetID & ACTOR_CLASS_MASK;
     target->lastDamageTaken = 0;
@@ -316,19 +316,19 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
         fx_ring_blast(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-        isFire = TRUE;
+        isFire = true;
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
         apply_shock_effect(target);
-        isElectric = TRUE;
+        isElectric = true;
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
         fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-        isWater = TRUE;
+        isWater = true;
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {
         fx_big_snowflakes(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f);
-        isIce = TRUE;
+        isIce = true;
     }
 
     if (!(attacker->staticStatus == STATUS_KEY_STATIC)
@@ -337,7 +337,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && !(battleStatus->curAttackEventSuppression & SUPPRESS_EVENT_SHOCK_CONTACT)
         && !has_enchanted_part(attacker)) // enchanted attacks ignore electrified defenders
     {
-        madeElectricContact = TRUE;
+        madeElectricContact = true;
         gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
     }
 
@@ -566,7 +566,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         if (event == EVENT_DEATH) {
             event = EVENT_FIRE_DEATH;
         }
-        isFire = TRUE;
+        isFire = true;
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_ATK_BLOCKED) {
@@ -599,44 +599,44 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && !(actorClass == ACTOR_PLAYER && is_ability_active(ABILITY_HEALTHY_HEALTHY) && (rand_int(100) < 50)))
     {
         if (battleStatus->curAttackStatus & STATUS_FLAG_SHRINK && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_POISON && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STONE && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_SLEEP && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_DIZZY && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STOP && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_STATIC && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_UNUSED && try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
         if (battleStatus->curAttackStatus & STATUS_FLAG_FROZEN && target->debuff != STATUS_KEY_FROZEN && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN)) {
-            statusInflicted = TRUE;
-            wasSpecialHit = TRUE;
+            statusInflicted = true;
+            wasSpecialHit = true;
         }
 
         if (statusInflicted) {
@@ -873,11 +873,11 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
 }
 
 s32 dispatch_damage_event_actor_0(Actor* actor, s32 damageAmount, s32 event) {
-    return dispatch_damage_event_actor(actor, damageAmount, event, FALSE);
+    return dispatch_damage_event_actor(actor, damageAmount, event, false);
 }
 
 s32 dispatch_damage_event_actor_1(Actor* actor, s32 damageAmount, s32 event) {
-    return dispatch_damage_event_actor(actor, damageAmount, event, TRUE);
+    return dispatch_damage_event_actor(actor, damageAmount, event, true);
 }
 
 API_CALLABLE(BindTakeTurn) {
@@ -960,7 +960,7 @@ API_CALLABLE(EnableIdleScript) {
     var1 = evt_get_variable(script, *args++);
     actor = get_actor(actorID);
 
-    if (actor->idleScript != NULL) {
+    if (actor->idleScript != nullptr) {
         switch (var1) {
             case IDLE_SCRIPT_RESTART:
                 restart_script(actor->idleScript);
@@ -1124,7 +1124,7 @@ API_CALLABLE(IdleJumpToGoal) {
     f32 moveDist;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1173,7 +1173,7 @@ API_CALLABLE(IdleJumpToGoal) {
 
         movement->vel = (movement->acceleration * movement->flyTime * 0.5f) + (posY / movement->flyTime);
         movement->speed += moveDist / movement->flyTime;
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -1212,7 +1212,7 @@ API_CALLABLE(JumpToGoalSimple2) {
     Actor* actor;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1261,7 +1261,7 @@ API_CALLABLE(JumpToGoalSimple2) {
         if (actor->actorTypeData1[4] != 0) {
             sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
         }
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -1299,7 +1299,7 @@ API_CALLABLE(JumpWithBounce) {
     f32 moveDist;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1349,7 +1349,7 @@ API_CALLABLE(JumpWithBounce) {
         if (actor->actorTypeData1[4] != 0) {
             sfx_play_sound_at_position(actor->actorTypeData1[4], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
         }
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -1396,7 +1396,7 @@ API_CALLABLE(LandJump) {
     Actor* actor;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1411,7 +1411,7 @@ API_CALLABLE(LandJump) {
         actor->state.curPos.x = actor->curPos.x;
         actor->state.curPos.y = actor->curPos.y;
         actor->state.curPos.z = actor->curPos.z;
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -1518,7 +1518,7 @@ API_CALLABLE(RunToGoal) {
     f32 goalX, goalY, goalZ;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1568,7 +1568,7 @@ API_CALLABLE(RunToGoal) {
         if ((actor->actorTypeData1[0] != 0) && (actor->actorTypeData1[1] == 0)) {
             sfx_play_sound_at_position(actor->actorTypeData1[0], SOUND_SPACE_DEFAULT, actor->curPos.x, actor->curPos.y, actor->curPos.z);
         }
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -1643,7 +1643,7 @@ API_CALLABLE(IdleRunToGoal) {
     s32 actorID;
 
     if (isInitialCall) {
-        script->functionTemp[0] = FALSE;
+        script->functionTemp[0] = false;
     }
 
     if (!script->functionTemp[0]) {
@@ -1691,7 +1691,7 @@ API_CALLABLE(IdleRunToGoal) {
         } else {
             movement->dist = -(actor->actorTypeData1b[0] + 1);
         }
-        script->functionTemp[0] = TRUE;
+        script->functionTemp[0] = true;
     }
 
     actor = script->functionTempPtr[1];
@@ -2162,11 +2162,11 @@ API_CALLABLE(FlyToGoal) {
         actorState->moveTime = evt_get_variable(script, *args++);
         actorState->moveArcAmplitude = evt_get_variable(script, *args++);
         script->functionTemp[3] = evt_get_variable(script, *args++);
-        actorState->functionTemp[0] = FALSE;
+        actorState->functionTemp[0] = false;
 
         if (script->functionTemp[3] >= 100) {
             script->functionTemp[3] -= 100;
-            actorState->functionTemp[0] = TRUE;
+            actorState->functionTemp[0] = true;
         }
 
         goalX = actorState->goalPos.x;
@@ -2679,7 +2679,7 @@ API_CALLABLE(RemoveActor) {
     currentEncounter->coinsEarned += actor->extraCoinBonus;
     currentEncounter->coinsEarned += actor->actorBlueprint->coinReward;
     btl_delete_actor(actor);
-    battleStatus->enemyActors[actorID & 0xFF] = NULL;
+    battleStatus->enemyActors[actorID & 0xFF] = nullptr;
 
     return ApiStatus_DONE2;
 }
@@ -2928,7 +2928,7 @@ API_CALLABLE(EnemyFollowupAfflictTarget) {
     }
 
     evt_set_variable(script, outVar, hitResults);
-    if (does_script_exist_by_ref(script) == NULL) {
+    if (does_script_exist_by_ref(script) == nullptr) {
         return ApiStatus_FINISH;
     }
     return ApiStatus_DONE2;
@@ -3353,8 +3353,8 @@ API_CALLABLE(EnableActorGlow) {
     if (!flag) {
         ActorPart* it = actor->partsTable;
 
-        while (it != NULL) {
-            if (it->idleAnimations != NULL) {
+        while (it != nullptr) {
+            if (it->idleAnimations != nullptr) {
                 set_npc_imgfx_all(it->spriteInstanceID, IMGFX_CLEAR, 0, 0, 0, 0, 0);
             }
             it = it->nextPart;
@@ -3453,7 +3453,7 @@ API_CALLABLE(ClearStatusEffects) {
     actor->disableEffect->data.disableX->koDuration = 0;
     actor->attackBoost = 0;
     actor->defenseBoost = 0;
-    actor->isGlowing = FALSE;
+    actor->isGlowing = false;
 
     return ApiStatus_DONE2;
 }

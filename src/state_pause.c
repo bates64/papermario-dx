@@ -104,7 +104,7 @@ void state_step_pause(void) {
                     clear_item_entity_data();
                     clear_script_list();
                     clear_npcs();
-                    clear_entity_data(FALSE);
+                    clear_entity_data(false);
                     clear_trigger_data();
                     SavedReverbMode = sfx_get_reverb_mode();
                     sfx_set_reverb_mode(0);
@@ -195,12 +195,12 @@ void state_step_unpause(void) {
                     initialize_collision();
                     restore_map_collision_data();
 
-                    if (mapConfig->dmaStart != NULL) {
+                    if (mapConfig->dmaStart != nullptr) {
                         dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
                     }
 
                     load_map_bg(mapConfig->bgName);
-                    if (mapSettings->background != NULL) {
+                    if (mapSettings->background != nullptr) {
                         set_background(mapSettings->background);
                     } else {
                         set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,

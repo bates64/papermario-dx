@@ -27,10 +27,10 @@ EvtScript N(EVS_DropDoor_LeftHouse) = {
 EvtScript N(EVS_RoomListener_LeftHouse) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, FALSE)
+            Set(AF_SAM_Snowing, false)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, TRUE)
+            Set(AF_SAM_Snowing, true)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -59,7 +59,7 @@ EvtScript N(EVS_SetWallRot_Shop) = {
 EvtScript N(EVS_RoomListener_Shop) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, FALSE)
+            Set(AF_SAM_Snowing, false)
             Call(SetGroupVisibility, MODEL_t_naiso, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             Switch(GB_StoryProgress)
@@ -68,7 +68,7 @@ EvtScript N(EVS_RoomListener_Shop) = {
                 CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
             EndSwitch
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, TRUE)
+            Set(AF_SAM_Snowing, true)
             Call(SetGroupVisibility, MODEL_t_naiso, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -97,10 +97,10 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
 EvtScript N(EVS_RoomListener_ToadHouse) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, FALSE)
+            Set(AF_SAM_Snowing, false)
             Call(SetGroupVisibility, MODEL_k_naisou, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, TRUE)
+            Set(AF_SAM_Snowing, true)
             Call(SetGroupVisibility, MODEL_k_naisou, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -141,7 +141,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_Shop)),
         Ref(N(EVS_SetWallRot_Shop)),
-        NULL,
+        nullptr,
         Ref(N(EVS_RoomListener_Shop)),
         COLLIDER_o382,
         COLLIDER_o471,
@@ -153,7 +153,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_ToadHouse)),
         Ref(N(EVS_SetWallRot_ToadHouse)),
-        NULL,
+        nullptr,
         Ref(N(EVS_RoomListener_ToadHouse)),
         COLLIDER_k_doa,
         COLLIDER_o472,

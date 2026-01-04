@@ -15,11 +15,11 @@ EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTR
     COLLIDER_tt2, MODEL_d2, MODEL_d1, DOOR_SOUNDS_LARGE);
 
 EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, 1)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0180)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -65,21 +65,21 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     IfGt(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
-        Set(GF_MAP_PeachsCastle, TRUE)
+        Set(GF_MAP_PeachsCastle, true)
     EndIf
     Call(SetSpriteShading, SHADING_OSR_02)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(N(SetAvailableDisguise), PEACH_DISGUISE_CLUBBA)
-        Call(MakeNpcs, FALSE, Ref(N(PeachNPCs)))
+        Call(MakeNpcs, false, Ref(N(PeachNPCs)))
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(osr_02_ENTRY_2)
-            Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
-    IfEq(GF_KKJ25_Defeated_Bowser, FALSE)
+    IfEq(GF_KKJ25_Defeated_Bowser, false)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-269.16895), Float(50.0), Float(100.22), 1, LVar0)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(-2.6025392), Float(50.0), Float(161.583), 1, LVar0)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(182.146), Float(50.0), Float(158.033), 1, LVar0)
@@ -90,7 +90,7 @@ EvtScript N(EVS_Main) = {
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(52.5), Float(70.0), Float(-233.73735), 1, LVar0)
         PlayEffect(EFFECT_FLAME, FX_FLAME_PINK, Float(108.229), Float(70.0), Float(-200.6), 1, LVar0)
     Else
-        Call(EnableGroup, MODEL_g116, FALSE)
+        Call(EnableGroup, MODEL_g116, false)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)
         Call(FadeOutMusic, 0, 500)

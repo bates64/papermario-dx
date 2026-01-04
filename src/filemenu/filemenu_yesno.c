@@ -45,7 +45,7 @@ MenuWindowBP filemenu_yesno_windowBPs[] = {
         .height = 0,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = &filemenu_yesno_draw_options_contents,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -59,7 +59,7 @@ MenuWindowBP filemenu_yesno_windowBPs[] = {
         .height = 0,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &filemenu_yesno_draw_prompt_contents,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_FILES_CONFIRM_OPTIONS,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -68,7 +68,7 @@ MenuWindowBP filemenu_yesno_windowBPs[] = {
 };
 
 MenuPanel filemenu_yesno_menuBP = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -199,7 +199,7 @@ void filemenu_yesno_init(MenuPanel* tab) {
     }
 
     setup_pause_menu_tab(filemenu_yesno_windowBPs, ARRAY_COUNT(filemenu_yesno_windowBPs));
-    tab->initialized = TRUE;
+    tab->initialized = true;
 }
 
 void filemenu_yesno_handle_input(MenuPanel* menu) {
@@ -257,8 +257,8 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         gSaveSlotSummary[selected].timePlayed = 0;
                         gSaveSlotSummary[selected].spiritsRescued = 0;
                         fio_erase_game(selected);
-                        gSaveSlotMetadata[selected].hasData = FALSE;
-                        gSaveSlotMetadata[selected].validData = FALSE;
+                        gSaveSlotMetadata[selected].hasData = false;
+                        gSaveSlotMetadata[selected].validData = false;
                         break;
                     case FM_CONFIRM_COPY:
                         filemenu_currentMenu = FILE_MENU_MESSAGE;
@@ -279,15 +279,15 @@ void filemenu_yesno_handle_input(MenuPanel* menu) {
                         clear_saved_variables();
                         get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatusPtr->areaID, &gGameStatusPtr->mapID);
                         gGameStatusPtr->entryID = NEW_GAME_ENTRY_ID;
-                        evt_set_variable(NULL, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
+                        evt_set_variable(nullptr, GB_StoryProgress, NEW_GAME_STORY_PROGRESS);
 
                         selected = filemenu_menus[FILE_MENU_MAIN]->selected;
                         for (i = 0; i < ARRAY_COUNT(gSaveSlotSummary->filename); i++) {
                             gSaveSlotSummary[selected].filename[i] = filemenu_filename[i];
                         }
                         fio_save_game(selected);
-                        gSaveSlotMetadata[selected].hasData = TRUE;
-                        gSaveSlotMetadata[selected].validData = TRUE;
+                        gSaveSlotMetadata[selected].hasData = true;
+                        gSaveSlotMetadata[selected].validData = true;
                         strcpy(gSaveSlotMetadata[selected].modName, DX_MOD_NAME);
 
                         set_window_update(WIN_FILES_INPUT_FIELD, (s32)filemenu_update_hidden_name_input);

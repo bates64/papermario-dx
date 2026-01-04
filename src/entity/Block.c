@@ -143,7 +143,7 @@ void entity_base_block_update_slow_sinking(Entity* entity) {
         if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_CEILING) {
             if (!(playerStatus->flags & PS_FLAG_JUMPING)) {
                 Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
-                if (shadow != NULL) {
+                if (shadow != nullptr) {
                     f32 temp2 = entity->pos.y - shadow->pos.y;
 
                     if (entity->pos.y - temp2 <= playerStatus->colliderHeight + 1) {
@@ -157,7 +157,7 @@ void entity_base_block_update_slow_sinking(Entity* entity) {
             }
         } else {
             Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
-            if (shadow != NULL) {
+            if (shadow != nullptr) {
                 if (entity->pos.y <= shadow->pos.y) {
                     entity->pos.y = shadow->pos.y;
                     data->sinkingTimer = 1;
@@ -283,7 +283,7 @@ void entity_MulticoinBlock_spawn_coin(Entity* entity) {
     }
 
     if ((data->coinsLeft == 0) || (data->timeLeft == 0)) {
-        data->empty = TRUE;
+        data->empty = true;
         set_entity_commandlist(get_entity_by_index(create_entity(&Entity_InertYellowBlock,
             (s32)entity->pos.x, (s32)entity->pos.y, (s32)entity->pos.z,
             (s32)entity->rot.y, MAKE_ENTITY_END)), Entity_CreatedInertBlock_Script);
@@ -336,7 +336,7 @@ s32 entity_block_handle_collision(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (entity->alpha == 0 && (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR)) {
-        return FALSE;
+        return false;
     }
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_CEILING) {
@@ -349,13 +349,13 @@ s32 entity_block_handle_collision(Entity* entity) {
             case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
             case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
             case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
-                return FALSE;
+                return false;
         }
 
         if (playerStatus->flags & PS_FLAG_JUMPING) {
             exec_entity_commandlist(entity);
         }
-        return TRUE;
+        return true;
     }
 
     if (entity->collisionFlags & ENTITY_COLLISION_PARTNER) {
@@ -366,30 +366,30 @@ s32 entity_block_handle_collision(Entity* entity) {
                 case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
                     set_entity_commandlist(entity, Entity_BreakingBlock_Script);
                     sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
-                    return TRUE;
+                    return true;
             }
         }
         exec_entity_commandlist(entity);
-        return TRUE;
+        return true;
     }
 
-    breakBlock = FALSE;
+    breakBlock = false;
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if (playerStatus->actionState == ACTION_STATE_SPIN_JUMP || playerStatus->actionState == ACTION_STATE_TORNADO_JUMP) {
-            return FALSE;
+            return false;
         }
 
         if (playerStatus->actionState == ACTION_STATE_SPIN_POUND || playerStatus->actionState == ACTION_STATE_TORNADO_POUND) {
-            breakBlock = TRUE;
+            breakBlock = true;
         } else {
-            return TRUE;
+            return true;
         }
     } else {
         if (!(entity->collisionFlags & ENTITY_COLLISION_PLAYER_HAMMER)) {
-            return TRUE;
+            return true;
         }
         if (!(playerStatus->flags & PS_FLAG_HAMMER_CHECK)) {
-            return TRUE;
+            return true;
         }
     }
 
@@ -407,15 +407,15 @@ s32 entity_block_handle_collision(Entity* entity) {
         case ENTITY_TYPE_HAMMER1_BLOCK_TINY:
             if (breakBlock) {
                 if (gPlayerData.bootsLevel < 1) {
-                    breakBlock = FALSE;
+                    breakBlock = false;
                 }
             } else {
                 if (gPlayerData.hammerLevel > -1) {
-                    breakBlock = TRUE;
+                    breakBlock = true;
                 }
             }
             if (!breakBlock) {
-                return TRUE;
+                return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
             sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_1, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
@@ -424,13 +424,13 @@ s32 entity_block_handle_collision(Entity* entity) {
         case ENTITY_TYPE_HAMMER2_BLOCK_TINY:
             if (breakBlock) {
                 if (gPlayerData.bootsLevel < 2) {
-                    breakBlock = FALSE;
+                    breakBlock = false;
                 }
             } else if (gPlayerData.hammerLevel > 0) {
-                breakBlock = TRUE;
+                breakBlock = true;
             }
             if (!breakBlock) {
-                return TRUE;
+                return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
             sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_2, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
@@ -438,7 +438,7 @@ s32 entity_block_handle_collision(Entity* entity) {
         case ENTITY_TYPE_HAMMER3_BLOCK:
         case ENTITY_TYPE_HAMMER3_BLOCK_TINY:
             if (gPlayerData.hammerLevel < 2) {
-                return TRUE;
+                return true;
             }
             set_entity_commandlist(entity, Entity_BreakingBlock_Script);
             sfx_play_sound_at_position(SOUND_SMASH_HAMER_BLOCK_3, SOUND_SPACE_DEFAULT, entity->pos.x, entity->pos.y, entity->pos.z);
@@ -459,7 +459,7 @@ s32 entity_block_handle_collision(Entity* entity) {
             break;
     }
 
-    return TRUE;
+    return true;
 }
 
 void entity_init_Hammer1Block_normal(Entity* entity) {
@@ -522,7 +522,7 @@ EntityScript Entity_BreakingBlock_Script = {
     es_SetFlags(ENTITY_FLAG_HIDDEN)
     es_SetFlags(ENTITY_FLAG_DISABLE_COLLISION)
     es_Call(entity_breakable_block_create_shattering_entity)
-    es_SetCallback(NULL, 1)
+    es_SetCallback(nullptr, 1)
     es_SetFlags(ENTITY_FLAG_PENDING_INSTANCE_DELETE)
     es_End
 };
@@ -533,7 +533,7 @@ EntityScript Entity_BrickBlock_Script = {
     es_SetFlags(ENTITY_FLAG_DISABLE_COLLISION)
     es_Call(entity_breakable_block_create_shattering_entity)
     es_PlaySound(SOUND_HIT_BLOCK)
-    es_SetCallback(NULL, 2)
+    es_SetCallback(nullptr, 2)
     es_SetFlags(ENTITY_FLAG_PENDING_INSTANCE_DELETE)
     es_End
 };

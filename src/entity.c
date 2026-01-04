@@ -89,7 +89,7 @@ void update_entities(void) {
     for (i = 0; i < MAX_ENTITIES; i++) {
         Entity* entity = get_entity_by_index(i);
 
-        if (entity != NULL) {
+        if (entity != nullptr) {
             entity_numEntities++;
 
             if (!(entity->flags & ENTITY_FLAG_SKIP_UPDATE)) {
@@ -128,7 +128,7 @@ void update_entities(void) {
                     if (entity->collisionFlags) {
                         EntityCallback handleCollision = entity->blueprint->fpHandleCollision;
 
-                        if (handleCollision != NULL && handleCollision(entity) != 0) {
+                        if (handleCollision != nullptr && handleCollision(entity) != 0) {
                             entity->collisionTimer = 10;
                             entity->flags |= ENTITY_FLAG_DETECTED_COLLISION;
                         }
@@ -153,11 +153,11 @@ void update_entities(void) {
                 }
 
                 if (gGameStatusPtr->debugScripts == DEBUG_SCRIPTS_NONE) {
-                    if (entity->updateScriptCallback != NULL) {
+                    if (entity->updateScriptCallback != nullptr) {
                         entity->updateScriptCallback(entity);
                     }
 
-                    if (entity->scriptReadPos != NULL) {
+                    if (entity->scriptReadPos != nullptr) {
                         if (entity->scriptDelay != 0) {
                             entity->scriptDelay--;
                             if (entity->scriptDelay == 0) {
@@ -197,7 +197,7 @@ void update_entities(void) {
     }
 
     update_shadows();
-    gCurrentHiddenPanels.tryFlipTrigger = FALSE;
+    gCurrentHiddenPanels.tryFlipTrigger = false;
 }
 
 void update_shadows(void) {
@@ -208,7 +208,7 @@ void update_shadows(void) {
     for (i = 0; i < MAX_SHADOWS; i++) {
         Shadow* shadow = get_shadow_by_index(i);
 
-        if (shadow != NULL) {
+        if (shadow != nullptr) {
             entity_numShadows++;
 
             if (!(shadow->flags & ENTITY_FLAG_SKIP_UPDATE)) {
@@ -247,64 +247,64 @@ s32 step_entity_commandlist(Entity* entity) {
     switch (*args++) {
         case ENTITY_SCRIPT_OP_End:
             entity->scriptDelay = -1;
-            entity->updateScriptCallback = NULL;
-            entity->scriptReadPos = NULL;
-            ret = FALSE;
+            entity->updateScriptCallback = nullptr;
+            entity->scriptReadPos = nullptr;
+            ret = false;
             break;
         case ENTITY_SCRIPT_OP_Jump:
             entity->scriptReadPos = (s32*)*args;
             entity->scriptDelay = 1;
             entity->savedReadPos[0] = entity->scriptReadPos;
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_Call:
             tempfunc = (void (*)(Entity*))(*args++);
             entity->scriptReadPos = args;
             (tempfunc)(entity);
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_SetCallback:
             entity->scriptDelay = *args++;
             entity->updateScriptCallback = (s32 (*)(Entity*)) *args++;
             entity->scriptReadPos = args++;
-            ret = FALSE;
+            ret = false;
             break;
         case ENTITY_SCRIPT_OP_Goto:
             entity->scriptReadPos = entity->savedReadPos[*args];
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_Label:
             labelId = *args++;
             entity->savedReadPos[labelId] = args;
             entity->scriptReadPos = args;
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_RestartBoundScript:
-            if (entity->boundScriptBytecode != NULL) {
+            if (entity->boundScriptBytecode != nullptr) {
                 entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
             }
             entity->scriptReadPos = args++;
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_SetFlags:
             entity->flags |= *args++;
             entity->scriptReadPos = args++;
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_ClearFlags:
             entity->flags &= ~*args++;
             entity->scriptReadPos = args++;
-            ret = TRUE;
+            ret = true;
             break;
         case ENTITY_SCRIPT_OP_PlaySound:
             sfx_play_sound(*args++);
             entity->scriptReadPos = args++;
-            ret = TRUE;
+            ret = true;
             break;
         default:
             args++;
             entity->scriptReadPos = args++;
-            ret = TRUE;
+            ret = true;
             break;
     }
     return ret;
@@ -341,7 +341,7 @@ void render_entities(void) {
     for (i = 0; i < MAX_ENTITIES; i++) {
         Entity* entity = get_entity_by_index(i);
 
-        if (entity != NULL) {
+        if (entity != nullptr) {
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
                 if (gEntityHideMode != ENTITY_HIDE_MODE_0 &&
                     !(entity->flags & ENTITY_FLAG_IGNORE_DISTANCE_CULLING) &&
@@ -367,7 +367,7 @@ void render_entities(void) {
             if (!(entity->flags & ENTITY_FLAG_HIDDEN)) {
                 if (entity->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                     if (D_8014AFB0 == 255) {
-                        if (entity->renderSetupFunc != NULL) {
+                        if (entity->renderSetupFunc != nullptr) {
                             set_animator_render_callback(
                                 entity->virtualModelIndex,
                                 (void*)(u32) entity->listIndex,
@@ -382,7 +382,7 @@ void render_entities(void) {
                         );
                     }
 
-                    if (entity->gfxBaseAddr == NULL) {
+                    if (entity->gfxBaseAddr == nullptr) {
                         render_animated_model(entity->virtualModelIndex, &entity->transformMatrix);
                     } else {
                         render_animated_model_with_vertices(entity->virtualModelIndex,
@@ -392,20 +392,20 @@ void render_entities(void) {
                     }
                 } else {
                     if (D_8014AFB0 == 255) {
-                        if (entity->renderSetupFunc != NULL) {
+                        if (entity->renderSetupFunc != nullptr) {
                             bind_entity_model_setupGfx(
                                 entity->virtualModelIndex,
                                 (void*)(u32) entity->listIndex,
                                 (void (*)(void*)) entity->renderSetupFunc
                             );
                         } else {
-                            get_entity_model(entity->virtualModelIndex)->fpSetupGfxCallback = NULL;
+                            get_entity_model(entity->virtualModelIndex)->fpSetupGfxCallback = nullptr;
                         }
                     } else {
                         bind_entity_model_setupGfx(entity->virtualModelIndex, (void*)(u32)entity->listIndex, func_8010FE44);
                     }
 
-                    if (entity->gfxBaseAddr == NULL) {
+                    if (entity->gfxBaseAddr == nullptr) {
                         draw_entity_model_A(entity->virtualModelIndex, &entity->transformMatrix);
                     } else {
                         draw_entity_model_B(entity->virtualModelIndex,
@@ -427,7 +427,7 @@ void render_shadows(void) {
     for (i = 0; i < MAX_SHADOWS; i++) {
         Shadow* shadow = get_shadow_by_index(i);
 
-        if (shadow != NULL) {
+        if (shadow != nullptr) {
             if (shadow->flags & ENTITY_FLAG_HIDDEN) {
                 if (shadow->flags & ENTITY_FLAG_FADING_AWAY) {
                     shadow->alpha -= 20;
@@ -436,7 +436,7 @@ void render_shadows(void) {
                     }
                 }
             } else if (shadow->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
-                if (shadow->vertexArray == NULL) {
+                if (shadow->vertexArray == nullptr) {
                     render_animated_model(shadow->entityModelID, &shadow->transformMatrix);
                 } else {
                     render_animated_model_with_vertices(shadow->entityModelID,
@@ -454,7 +454,7 @@ void render_shadows(void) {
 
                 bind_entity_model_setupGfx(shadow->entityModelID, (void*)(u32)shadow->alpha, entity_model_set_shadow_color);
 
-                if (shadow->vertexArray == NULL) {
+                if (shadow->vertexArray == nullptr) {
                     draw_entity_model_A(shadow->entityModelID, &shadow->transformMatrix);
                 } else {
                     draw_entity_model_B(shadow->entityModelID,
@@ -476,7 +476,7 @@ void update_entity_transform_matrix(Entity* entity) {
     Matrix4f sp158;
     Matrix4f sp198;
 
-    if (entity->updateMatrixOverride != NULL) {
+    if (entity->updateMatrixOverride != nullptr) {
         entity->updateMatrixOverride(entity);
         return;
     }
@@ -558,7 +558,7 @@ ShadowList* get_shadow_list(void) {
 }
 
 s32 entity_start_script(Entity* entity) {
-    if (entity->boundScriptBytecode != NULL) {
+    if (entity->boundScriptBytecode != nullptr) {
         entity->flags |= ENTITY_FLAG_BOUND_SCRIPT_DIRTY;
         return 1;
     }
@@ -568,7 +568,7 @@ s32 entity_start_script(Entity* entity) {
 u32 get_entity_type(s32 index) {
     Entity* entity = get_entity_by_index(index);
 
-    if (entity == NULL) {
+    if (entity == nullptr) {
         return -1;
     } else {
         return entity->blueprint->entityType;
@@ -578,7 +578,7 @@ u32 get_entity_type(s32 index) {
 void delete_entity(s32 entityIndex) {
     Entity* entity = get_entity_by_index(entityIndex);
 
-    if (entity->dataBuf.any != NULL) {
+    if (entity->dataBuf.any != nullptr) {
         heap_free(entity->dataBuf.any);
     }
 
@@ -595,13 +595,13 @@ void delete_entity(s32 entityIndex) {
     }
 
     heap_free((*gCurrentEntityListPtr)[entityIndex]);
-    (*gCurrentEntityListPtr)[entityIndex] = NULL;
+    (*gCurrentEntityListPtr)[entityIndex] = nullptr;
 }
 
 void delete_entity_and_unload_data(s32 entityIndex) {
     Entity* entity = get_entity_by_index(entityIndex);
 
-    if (entity->dataBuf.any != NULL) {
+    if (entity->dataBuf.any != nullptr) {
         heap_free(entity->dataBuf.any);
     }
 
@@ -620,7 +620,7 @@ void delete_entity_and_unload_data(s32 entityIndex) {
     }
 
     heap_free((*gCurrentEntityListPtr)[entityIndex]);
-    (*gCurrentEntityListPtr)[entityIndex] = NULL;
+    (*gCurrentEntityListPtr)[entityIndex] = nullptr;
 }
 
 void delete_shadow(s32 shadowIndex) {
@@ -628,7 +628,7 @@ void delete_shadow(s32 shadowIndex) {
 
     free_entity_model_by_index(shadow->entityModelID);
     heap_free((*gCurrentShadowListPtr)[shadowIndex]);
-    (*gCurrentShadowListPtr)[shadowIndex] = NULL;
+    (*gCurrentShadowListPtr)[shadowIndex] = nullptr;
 }
 
 s32 entity_get_collision_flags(Entity* entity) {
@@ -675,7 +675,7 @@ s32 entity_get_collision_flags(Entity* entity) {
 }
 
 s32 entity_try_partner_interaction_trigger(s32 entityIdx) {
-    s32 interacted = FALSE;
+    s32 interacted = false;
     u32 entityType = get_entity_type(entityIdx);
     s32 partnerID = get_current_partner_id();
     Entity* entity;
@@ -684,7 +684,7 @@ s32 entity_try_partner_interaction_trigger(s32 entityIdx) {
         case PARTNER_BOMBETTE:
             switch (entityType) {
                 default:
-                    return FALSE;
+                    return false;
                 case ENTITY_TYPE_BLUE_SWITCH:
                 case ENTITY_TYPE_RED_SWITCH:
                 case ENTITY_TYPE_MULTI_TRIGGER_BLOCK:
@@ -701,13 +701,13 @@ s32 entity_try_partner_interaction_trigger(s32 entityIdx) {
                 case ENTITY_TYPE_BOMBABLE_ROCK:
                     entity = get_entity_by_index(entityIdx);
                     entity->flags |= ENTITY_FLAG_PARTNER_COLLISION;
-                    interacted = TRUE;
+                    interacted = true;
             }
             break;
         case PARTNER_KOOPER:
              switch (entityType) {
                 default:
-                    return FALSE;
+                    return false;
                 case ENTITY_TYPE_BLUE_SWITCH:
                 case ENTITY_TYPE_RED_SWITCH:
                 case ENTITY_TYPE_MULTI_TRIGGER_BLOCK:
@@ -724,7 +724,7 @@ s32 entity_try_partner_interaction_trigger(s32 entityIdx) {
                 case ENTITY_TYPE_SUPER_BLOCK:
                     entity = get_entity_by_index(entityIdx);
                     entity->flags |= ENTITY_FLAG_PARTNER_COLLISION;
-                    interacted = TRUE;
+                    interacted = true;
             }
             break;
     }
@@ -780,11 +780,11 @@ void load_area_specific_entity_data(void) {
             DMA_COPY_SEGMENT(entity_default);
         }
 
-        isAreaSpecificEntityDataLoaded = TRUE;
+        isAreaSpecificEntityDataLoaded = true;
     }
 }
 
-void clear_entity_data(b32 arg0) {
+void clear_entity_data(bool arg0) {
     s32 i;
 
     D_801516FC = 1;
@@ -797,9 +797,9 @@ void clear_entity_data(b32 arg0) {
         gEntityHideMode = ENTITY_HIDE_MODE_0;
     }
 
-    isAreaSpecificEntityDataLoaded = FALSE;
+    isAreaSpecificEntityDataLoaded = false;
     gCurrentHiddenPanels.panelsCount = 0;
-    gCurrentHiddenPanels.activateISpy = FALSE;
+    gCurrentHiddenPanels.activateISpy = false;
     if (!arg0) {
         D_80151344 = 0;
     }
@@ -808,12 +808,12 @@ void clear_entity_data(b32 arg0) {
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         wEntityDataLoadedSize = 0;
         for (i = 0; i < MAX_ENTITIES; i++) {
-            wEntityBlueprint[i] = NULL;
+            wEntityBlueprint[i] = nullptr;
         }
     } else {
         bEntityDataLoadedSize = 0;
         for (i = 0; i < ARRAY_COUNT(bEntityBlueprint); i++) {
-            bEntityBlueprint[i] = NULL;
+            bEntityBlueprint[i] = nullptr;
         }
     }
 
@@ -829,11 +829,11 @@ void clear_entity_data(b32 arg0) {
     gCurrentShadowListPtr = get_shadow_list();
 
     for (i = 0; i < MAX_ENTITIES; i++) {
-        (*gCurrentEntityListPtr)[i] = NULL;
+        (*gCurrentEntityListPtr)[i] = nullptr;
     }
 
     for (i = 0; i < MAX_SHADOWS; i++) {
-        (*gCurrentShadowListPtr)[i] = NULL;
+        (*gCurrentShadowListPtr)[i] = nullptr;
     }
 }
 
@@ -867,7 +867,7 @@ void reload_world_entity_data(void) {
 
     for (i = 0; i < MAX_ENTITIES; i++) {
         EntityBlueprint* bp = wEntityBlueprint[i];
-        if (bp == NULL) {
+        if (bp == nullptr) {
             break;
         }
 
@@ -910,7 +910,7 @@ void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, v
     StaticAnimatorNode* node;
     s32* ptr = (s32*)((s32)baseAnim + (s32)entityData->modelAnimationNodes);
 
-    while (TRUE) {
+    while (true) {
         if (*ptr == -1) {
             *ptr = 0;
             return;
@@ -921,25 +921,25 @@ void entity_swizzle_anim_pointers(EntityBlueprint* entityData, void* baseAnim, v
         if ((s32)node->displayList != -1) {
             node->displayList = (Gfx*)((s32)baseGfx + ((s32)(node->displayList) & 0xFFFF));
         } else {
-            node->displayList = NULL;
+            node->displayList = nullptr;
         }
 
         if ((s32)node->sibling != -1) {
             node->sibling = (StaticAnimatorNode*)((s32)baseAnim + ((s32)(node->sibling) & 0xFFFF));
         } else {
-            node->sibling = NULL;
+            node->sibling = nullptr;
         }
 
         if ((s32)node->child != -1) {
             node->child = (StaticAnimatorNode*)((s32)baseAnim + ((s32)(node->child) & 0xFFFF));
         } else {
-            node->child = NULL;
+            node->child = nullptr;
         }
 
         if ((s32)node->vtxList != -1) {
             node->vtxList = (Vtx*)((s32)baseGfx + ((s32)(node->vtxList) & 0xFFFFF));
         } else {
-            node->vtxList = NULL;
+            node->vtxList = nullptr;
         }
     }
 }
@@ -953,7 +953,7 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
 
     *loadedStart = 0;
     *loadedEnd = 0;
-    ret = FALSE;
+    ret = false;
 
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         blueprints = wEntityBlueprint;
@@ -963,10 +963,10 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
 
     for (i = 0; i < MAX_ENTITIES; i++, blueprints++) {
         EntityBlueprint* bp = *blueprints;
-        if (bp == NULL) {
+        if (bp == nullptr) {
             blueprints[0] = blueprint;
-            blueprints[1] = NULL;
-            ret = TRUE;
+            blueprints[1] = nullptr;
+            ret = true;
             if (blueprint->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL) {
                 s32 size;
                 entDmaList = blueprint->dmaList;
@@ -1043,7 +1043,7 @@ void load_simple_entity_data(Entity* entity, EntityBlueprint* bp, s32 listIndex)
 }
 
 void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 listIndex) {
-    s32 swizzlePointers = FALSE;
+    s32 swizzlePointers = false;
     s32 loadedStart, loadedEnd;
     void* animBaseAddr;
     s16* animationScript;
@@ -1086,7 +1086,7 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             entity->gfxBaseAddr = (void*)(gEntityHeapBottom + specialSize * 4);
             dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + specialSize * 4 + dma1size * 4));
             animBaseAddr = (void*)(gEntityHeapBottom + specialSize * 4 + dma1size * 4);
-            swizzlePointers = TRUE;
+            swizzlePointers = true;
         } else if (is_entity_data_loaded(entity, entityData, &loadedStart, &loadedEnd)) {
             if (gGameStatusPtr->context == CONTEXT_WORLD) {
                 totalLoaded = wEntityDataLoadedSize;
@@ -1118,7 +1118,7 @@ void load_split_entity_data(Entity* entity, EntityBlueprint* entityData, s32 lis
             } else {
                 bEntityDataLoadedSize = totalLoaded;
             }
-            swizzlePointers = TRUE;
+            swizzlePointers = true;
         } else {
             u32 temp = (dmaList[0].end - dmaList[0].start) >> 2;
             entity->gfxBaseAddr = (void*)(gEntityHeapBase - loadedStart * 4 - temp * 4);
@@ -1149,13 +1149,13 @@ s32 func_80111790(EntityBlueprint* data) {
     for (i = 0; i < ARRAY_COUNT(*gCurrentEntityListPtr); i++) {
         Entity* entity = (*gCurrentEntityListPtr)[i];
 
-        if (entity != NULL && entity->blueprint->dma.start != NULL) {
+        if (entity != nullptr && entity->blueprint->dma.start != nullptr) {
             if (entity->blueprint->dma.start == entity->blueprint) {
-                return TRUE;
+                return true;
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 void entity_free_static_data(EntityBlueprint* data) {
@@ -1165,7 +1165,7 @@ void entity_free_static_data(EntityBlueprint* data) {
 
     for (freeSlot = 0; freeSlot < MAX_ENTITIES; freeSlot++) {
         bp = wEntityBlueprint[freeSlot];
-        if (bp == NULL) {
+        if (bp == nullptr) {
             break;
         }
     }
@@ -1178,13 +1178,13 @@ void entity_free_static_data(EntityBlueprint* data) {
                 size = ((dmaList[0].end - dmaList[0].start) >> 2);
                 size += ((dmaList[1].end - dmaList[1].start) >> 2);
                 if (!func_80111790(bp)) {
-                    wEntityBlueprint[freeSlot - 1] = NULL;
+                    wEntityBlueprint[freeSlot - 1] = nullptr;
                     wEntityDataLoadedSize -= size;
                 }
             } else {
                 size = (bp->dma.end - bp->dma.start) >> 2;
                 if (!func_80111790(bp)) {
-                    wEntityBlueprint[freeSlot - 1] = NULL;
+                    wEntityBlueprint[freeSlot - 1] = nullptr;
                     wEntityDataLoadedSize -= size;
                 }
             }
@@ -1225,7 +1225,7 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     va_end(ap);
 
     for (listIndex = 0; listIndex < ARRAY_COUNT(*gCurrentEntityListPtr); listIndex++) {
-        if ((*gCurrentEntityListPtr)[listIndex] == NULL) {
+        if ((*gCurrentEntityListPtr)[listIndex] == nullptr) {
             break;
         }
     }
@@ -1236,24 +1236,24 @@ s32 create_entity(EntityBlueprint* bp, ...) {
 
     (*gCurrentEntityListPtr)[listIndex] = entity = heap_malloc(sizeof(*entity));
     mem_clear(entity, sizeof(*entity));
-    entity->dataBuf.any = NULL;
+    entity->dataBuf.any = nullptr;
     if (bp->typeDataSize != 0) {
         entity->dataBuf.any = heap_malloc(bp->typeDataSize);
         mem_clear(entity->dataBuf.any, bp->typeDataSize);
     }
     entity->type = bp->entityType;
     entity->listIndex = listIndex;
-    entity->boundScript = NULL;
-    entity->updateMatrixOverride = NULL;
+    entity->boundScript = nullptr;
+    entity->updateMatrixOverride = nullptr;
     entity->blueprint = bp;
     entity->scriptReadPos = bp->updateEntityScript;
-    entity->scriptDelay = entity->scriptReadPos != NULL ? 1 : 0;
+    entity->scriptDelay = entity->scriptReadPos != nullptr ? 1 : 0;
     entity->savedReadPos[0] = bp->updateEntityScript;
-    entity->updateScriptCallback = NULL;
+    entity->updateScriptCallback = nullptr;
     entity->flags = bp->flags | ENTITY_FLAG_CREATED;
     entity->collisionFlags = 0;
     entity->collisionTimer = 0;
-    entity->renderSetupFunc = NULL;
+    entity->renderSetupFunc = nullptr;
     entity->pos.x = x;
     entity->pos.y = y;
     entity->pos.z = z;
@@ -1271,13 +1271,13 @@ s32 create_entity(EntityBlueprint* bp, ...) {
     entity->alpha = 255;
     entity->virtualModelIndex = -1;
     entity->shadowIndex = -1;
-    entity->gfxBaseAddr = NULL;
+    entity->gfxBaseAddr = nullptr;
 
     if (!(bp->flags & ENTITY_FLAG_HAS_ANIMATED_MODEL)) {
         if (bp->dma.start != 0) {
             load_simple_entity_data(entity, bp, listIndex);
         }
-        if (bp->renderCommandList != NULL) {
+        if (bp->renderCommandList != nullptr) {
             entity->virtualModelIndex = load_entity_model(bp->renderCommandList);
             exec_entity_model_commandlist(entity->virtualModelIndex);
         }
@@ -1299,7 +1299,7 @@ s32 create_entity(EntityBlueprint* bp, ...) {
             break;
     }
 
-    if (bp->fpInit != NULL) {
+    if (bp->fpInit != nullptr) {
         bp->fpInit(entity);
     }
 
@@ -1312,7 +1312,7 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(*gCurrentShadowListPtr); i++) {
-        if ((*gCurrentShadowListPtr)[i] == NULL) {
+        if ((*gCurrentShadowListPtr)[i] == nullptr) {
             break;
         }
     }
@@ -1333,7 +1333,7 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
     shadow->scale.y = 1.0f;
     shadow->scale.z = 1.0f;
 
-    if (bp->animModelNode != NULL) {
+    if (bp->animModelNode != nullptr) {
         shadow->flags |= ENTITY_FLAG_HAS_ANIMATED_MODEL;
         shadow->entityModelID = create_model_animator(bp->renderCommandList);
         load_model_animator_tree(shadow->entityModelID, bp->animModelNode);
@@ -1341,7 +1341,7 @@ s32 create_shadow_from_data(ShadowBlueprint* bp, f32 x, f32 y, f32 z) {
         shadow->entityModelID = load_entity_model(bp->renderCommandList);
     }
 
-    if (bp->onCreateCallback != NULL) {
+    if (bp->onCreateCallback != nullptr) {
         bp->onCreateCallback(shadow);
     }
     update_shadow_transform_matrix(shadow);
@@ -1357,7 +1357,7 @@ API_CALLABLE(MakeEntity) {
     s32 entityIndex;
     s32 idx;
 
-    if (isInitialCall != TRUE) {
+    if (isInitialCall != true) {
         return ApiStatus_DONE2;
     }
 
@@ -1424,7 +1424,7 @@ API_CALLABLE(UseDynamicShadow) {
 API_CALLABLE(AssignScript) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         EvtScript* toBind = (EvtScript*)evt_get_variable(script, *args++);
 
         get_entity_by_index(gLastCreatedEntityIndex)->boundScriptBytecode = toBind;
@@ -1437,7 +1437,7 @@ API_CALLABLE(AssignScript) {
 API_CALLABLE(AssignSwitchFlag) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         s32 areaFlag = evt_get_variable(script, *args++);
         Entity* entity = get_entity_by_index(gLastCreatedEntityIndex);
         SwitchData* data = entity->dataBuf.swtch;
@@ -1455,7 +1455,7 @@ API_CALLABLE(AssignSwitchFlag) {
 API_CALLABLE(AssignBlockFlag) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         s32 index = evt_get_variable_index(script, *args++);
 
         BlockData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.block;
@@ -1470,7 +1470,7 @@ API_CALLABLE(AssignBlockFlag) {
 API_CALLABLE(AssignChestFlag) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         ChestData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.chest;
         data->gameFlagIndex = evt_get_variable_index(script, *args);
 
@@ -1483,7 +1483,7 @@ API_CALLABLE(AssignChestFlag) {
 API_CALLABLE(AssignPanelFlag) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         HiddenPanelData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.hiddenPanel;
 
         data->pickupVar = evt_get_variable_index(script, *args++);
@@ -1496,7 +1496,7 @@ API_CALLABLE(AssignPanelFlag) {
 API_CALLABLE(AssignCrateFlag) {
     Bytecode* args = script->ptrReadPos;
 
-    if (isInitialCall == TRUE) {
+    if (isInitialCall == true) {
         WoodenCrateData* data = get_entity_by_index(gLastCreatedEntityIndex)->dataBuf.crate;
 
         data->globalFlagIndex = evt_get_variable_index(script, *args++);
@@ -1526,23 +1526,23 @@ s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z) {
 }
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z) {
-    s32 isFixedSize = FALSE;
+    s32 isFixedSize = false;
     ShadowBlueprint* bp = &CircularShadowA;
     s32 shadowIndex;
 
     switch (type) {
         case SHADOW_FIXED_CIRCLE:
-            isFixedSize = TRUE;
+            isFixedSize = true;
         case SHADOW_VARYING_CIRCLE:
             bp = &CircularShadowA;
             break;
         case SHADOW_FIXED_SQUARE:
-            isFixedSize = TRUE;
+            isFixedSize = true;
         case SHADOW_VARYING_SQUARE:
             bp = &SquareShadow;
             break;
         case SHADOW_FIXED_ALT_CIRCLE:
-            isFixedSize = TRUE;
+            isFixedSize = true;
         case SHADOW_VARYING_ALT_CIRCLE:
             bp = &CircularShadowB;
             break;
@@ -1560,7 +1560,7 @@ s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z) {
 void update_entity_shadow_position(Entity* entity) {
     Shadow* shadow = get_shadow_by_index(entity->shadowIndex);
 
-    if (shadow != NULL) {
+    if (shadow != nullptr) {
         f32 rayX;
         f32 rayY;
         f32 rayZ;
@@ -1634,7 +1634,7 @@ void update_entity_shadow_position(Entity* entity) {
     }
 }
 
-b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
+bool entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
     f32 hitX, hitY, hitZ;
     f32 hitDepth;
     f32 hitNx, hitNy, hitNz;
@@ -1662,12 +1662,12 @@ b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32*
         *hitLength = hitDepth;
         *hitYaw = -atan2(0.0f, 0.0f, hitNz * 100.0f, hitNy * 100.0f);
         *hitPitch = -atan2(0.0f, 0.0f, hitNx * 100.0f, hitNy * 100.0f);
-        return TRUE;
+        return true;
     } else {
         *hitLength = 32767.0f;
         *hitYaw = 0.0f;
         *hitPitch = 0.0f;
-        return FALSE;
+        return false;
     }
 }
 
@@ -1746,7 +1746,7 @@ s32 is_block_on_ground(Entity* block) {
 
     ret = hitLength;
     if (ret == 32767) {
-        ret = FALSE;
+        ret = false;
     }
 
     return ret;

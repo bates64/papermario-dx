@@ -60,7 +60,7 @@ s32 __osRepairPackId(OSPfs* pfs, __OSPackId* badid, __OSPackId* newid) {
             temp[i] = ~temp[i];
         }
 
-        ERRCK(__osContRamWrite(pfs->queue, pfs->channel, 0, temp, FALSE));
+        ERRCK(__osContRamWrite(pfs->queue, pfs->channel, 0, temp, false));
         ERRCK(__osContRamRead(pfs->queue, pfs->channel, 0, comp));
 
         for (i = 0; i < BLOCKSIZE; i++) {
@@ -99,7 +99,7 @@ s32 __osRepairPackId(OSPfs* pfs, __OSPackId* badid, __OSPackId* newid) {
     index[3] = PFS_ID_3AREA;
 
     for (i = 0; i < ARRLEN(index); i++) {
-        ERRCK(__osContRamWrite(pfs->queue, pfs->channel, index[i], (u8*)newid, TRUE));
+        ERRCK(__osContRamWrite(pfs->queue, pfs->channel, index[i], (u8*)newid, true));
     }
 
     ERRCK(__osContRamRead(pfs->queue, pfs->channel, PFS_ID_0AREA, (u8*)temp));
@@ -139,7 +139,7 @@ s32 __osCheckPackId(OSPfs* pfs, __OSPackId* temp) {
 
     for (j = 0; j < ARRLEN(index); j++) {
         if (j != i) {
-            ERRCK(__osContRamWrite(pfs->queue, pfs->channel, index[j], (u8*)temp, TRUE));
+            ERRCK(__osContRamWrite(pfs->queue, pfs->channel, index[j], (u8*)temp, true));
         }
     }
 
@@ -248,8 +248,8 @@ s32 __osPfsRWInode(OSPfs* pfs, __OSInode* inode, u8 flag, u8 bank) {
         addr = ((u8*)inode->inode_page + j * BLOCKSIZE);
 
         if (flag == PFS_WRITE) {
-            ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->inode_table + bank * PFS_ONE_PAGE + j, addr, FALSE);
-            ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->minode_table + bank * PFS_ONE_PAGE + j, addr, FALSE);
+            ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->inode_table + bank * PFS_ONE_PAGE + j, addr, false);
+            ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->minode_table + bank * PFS_ONE_PAGE + j, addr, false);
         } else {
             ret = __osContRamRead(pfs->queue, pfs->channel, pfs->inode_table + bank * 8 + j, addr);
         }
@@ -276,7 +276,7 @@ s32 __osPfsRWInode(OSPfs* pfs, __OSInode* inode, u8 flag, u8 bank) {
             for (j = 0; j < PFS_ONE_PAGE; j++) {
                 addr = ((u8*)inode->inode_page + j * BLOCKSIZE);
                 ret =
-                    __osContRamWrite(pfs->queue, pfs->channel, pfs->inode_table + bank * PFS_ONE_PAGE + j, addr, FALSE);
+                    __osContRamWrite(pfs->queue, pfs->channel, pfs->inode_table + bank * PFS_ONE_PAGE + j, addr, false);
             }
         }
     }

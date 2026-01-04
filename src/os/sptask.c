@@ -4,7 +4,7 @@
 #include "PR/osint.h"
 
 #define _osVirtualToPhysical(ptr)               \
-    if (ptr != NULL)                            \
+    if (ptr != nullptr)                            \
     {                                           \
         ptr = (void *)osVirtualToPhysical(ptr); \
     }

@@ -2,7 +2,7 @@
 #include "nu/nusys.h"
 
 NUSched nusched;
-NUScPreNMIFunc nuScPreNMIFunc = NULL;
+NUScPreNMIFunc nuScPreNMIFunc = nullptr;
 u8 nuScPreNMIFlag;
 
 char nusys_version[] = "NuSystem2.05";
@@ -20,10 +20,10 @@ static u64 nuScAudioStack[NU_SC_STACK_SIZE / sizeof(u64)];
 static u64 nuScGraphicsStack[NU_SC_STACK_SIZE / sizeof(u64)];
 
 void nuScCreateScheduler(u8 videoMode, u8 numFields) {
-    nusched.curGraphicsTask =       NULL;
-    nusched.curAudioTask =          NULL;
-    nusched.graphicsTaskSuspended = NULL;
-    nusched.clientList =            NULL;
+    nusched.curGraphicsTask =       nullptr;
+    nusched.curAudioTask =          nullptr;
+    nusched.graphicsTaskSuspended = nullptr;
+    nusched.clientList =            nullptr;
 
     nusched.retraceMsg =     NU_SC_RETRACE_MSG;
     nusched.prenmiMsg =      NU_SC_PRENMI_MSG;
@@ -47,7 +47,7 @@ void nuScCreateScheduler(u8 videoMode, u8 numFields) {
 
     osCreateViManager(0xFE);
     osViSetMode(&osViModeTable[videoMode]);
-    osViBlack(TRUE);
+    osViBlack(true);
     osViSetEvent(&nusched.retraceMQ, (OSMesg) 0x29A, numFields);
 
     osSetEventMesg(OS_EVENT_SP,     &nusched.rspMQ, (OSMesg) 0x29B);
@@ -73,7 +73,7 @@ void nuScExecuteAudio(void) {
     OSMesg msg;
     u32 yieldFlag;
 
-    while (TRUE) {
+    while (true) {
         osRecvMesg(&nusched.audioRequestMQ, (OSMesg *) &audioTask, OS_MESG_BLOCK);
         if (nuScPreNMIFlag & NU_SC_BEFORE_RESET) {
             osSendMesg(audioTask->msgQ, audioTask->msg, OS_MESG_BLOCK);
@@ -85,7 +85,7 @@ void nuScExecuteAudio(void) {
         yieldFlag = 0;
         gfxTask = nusched.curGraphicsTask;
 
-        if (gfxTask != NULL) {
+        if (gfxTask != nullptr) {
             osSpTaskYield();
             osRecvMesg(&nusched.rspMQ, &msg, OS_MESG_BLOCK);
 
@@ -100,7 +100,7 @@ void nuScExecuteAudio(void) {
         osSpTaskStart(&audioTask->list);
 
         osRecvMesg(&nusched.rspMQ, &msg, OS_MESG_BLOCK);
-        nusched.curAudioTask = NULL;
+        nusched.curAudioTask = nullptr;
 
         if( nusched.graphicsTaskSuspended )
             osSendMesg(&nusched.waitMQ, &msg, OS_MESG_BLOCK );
@@ -120,7 +120,7 @@ void nuScExecuteGraphics(void) {
     NUScTask* gfxTask;
     OSIntMask mask;
 
-    while (TRUE) {
+    while (true) {
         osRecvMesg(&nusched.graphicsRequestMQ, (OSMesg *) &gfxTask, OS_MESG_BLOCK);
         if(nuScPreNMIFlag & NU_SC_BEFORE_RESET){
             osSendMesg(gfxTask->msgQ, (OSMesg*) gfxTask, OS_MESG_BLOCK);
@@ -135,7 +135,7 @@ void nuScExecuteGraphics(void) {
             osSetIntMask(mask);
             osRecvMesg(&nusched.waitMQ, &msg, OS_MESG_BLOCK);
             mask = osSetIntMask(OS_IM_NONE);
-            nusched.graphicsTaskSuspended = NULL;
+            nusched.graphicsTaskSuspended = nullptr;
         }
         osSetIntMask(mask);
 
@@ -148,7 +148,7 @@ void nuScExecuteGraphics(void) {
         osRecvMesg(&nusched.rspMQ, &msg, OS_MESG_BLOCK);
 
         mask = osSetIntMask(OS_IM_NONE);
-        nusched.curGraphicsTask = NULL;
+        nusched.curGraphicsTask = nullptr;
         osSetIntMask(mask);
 
         if (!(gfxTask->flags & NU_SC_NORDP)) {
@@ -179,11 +179,11 @@ void nuScAddClient(NUScClient* c, OSMesgQueue* mq, NUScMsg msgType) {
 void nuScRemoveClient(NUScClient* client) {
     s32 mask = osSetIntMask(OS_IM_NONE);
     NUScClient* clientList = nusched.clientList;
-    NUScClient* prev = NULL;
+    NUScClient* prev = nullptr;
 
-    while (clientList != NULL) {
+    while (clientList != nullptr) {
         if (clientList == client) {
-            if (prev != NULL) {
+            if (prev != nullptr) {
                 prev->next = clientList->next;
             } else {
                 nusched.clientList = clientList->next;
@@ -227,7 +227,7 @@ void nuScEventHandler(void) {
 
     nuScRetraceCounter = 0;
 
-    while (TRUE) {
+    while (true) {
         osRecvMesg(&nusched.retraceMQ, &msg, OS_MESG_BLOCK);
 
         switch ((s32) msg) {
@@ -243,7 +243,7 @@ void nuScEventHandler(void) {
                         nuScPreNMIFlag |= NU_SC_BEFORE_RESET;
                         osAfterPreNMI();
                         osViSetYScale(1.0);
-                        osViBlack(TRUE);
+                        osViBlack(true);
                     }
                 }
                 break;
@@ -251,7 +251,7 @@ void nuScEventHandler(void) {
                 nuScPreNMIFlag = NU_SC_PRENMI_GET;
                 nuScEventBroadcast(&nusched.prenmiMsg);
 
-                if (nuScPreNMIFunc != NULL){
+                if (nuScPreNMIFunc != nullptr){
                     (*nuScPreNMIFunc)();
                 }
 
@@ -266,7 +266,7 @@ void nuScEventHandler(void) {
 void nuScEventBroadcast(NUScMsg* msg) {
     NUScClient* clientList = nusched.clientList;
 
-    while (clientList != NULL) {
+    while (clientList != nullptr) {
         if (clientList->msgType & *msg) {
             osSendMesg(clientList->msgQ, msg, OS_MESG_NOBLOCK);
         }
@@ -297,11 +297,11 @@ static inline void nuScAddClient_inline(NUScClient* c, OSMesgQueue* mq, NUScMsg 
 static inline void nuScRemoveClient_inline(NUScClient* client) {
     s32 mask = osSetIntMask(OS_IM_NONE);
     NUScClient* clientList = nusched.clientList;
-    NUScClient* prev = NULL;
+    NUScClient* prev = nullptr;
 
-    while (clientList != NULL) {
+    while (clientList != nullptr) {
         if (clientList == client) {
-            if (prev != NULL) {
+            if (prev != nullptr) {
                 prev->next = clientList->next;
             } else {
                 nusched.clientList = clientList->next;
@@ -326,7 +326,7 @@ void nuScWaitTaskReady(NUScTask* task) {
 
     while (osViGetCurrentFramebuffer() == fb || osViGetNextFramebuffer() == fb) {
         nuScAddClient_inline(&client, &nusched.waitMQ, NU_SC_RETRACE_MSG);
-        osRecvMesg(&nusched.waitMQ, NULL, OS_MESG_BLOCK);
+        osRecvMesg(&nusched.waitMQ, nullptr, OS_MESG_BLOCK);
         nuScRemoveClient_inline(&client);
     }
 }

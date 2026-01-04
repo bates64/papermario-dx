@@ -76,13 +76,13 @@ EvtScript N(EVS_NpcDefeat_ShyGuy_Thief) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Set(GF_OMO09_Defeated_MysteryNoteThief, TRUE)
+            Set(GF_OMO09_Defeated_MysteryNoteThief, true)
             Call(SetSelfVar, 10, 1)
             Wait(2)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
         CaseEq(OUTCOME_ENEMY_FLED)
-            Set(GF_OMO09_Defeated_MysteryNoteThief, TRUE)
+            Set(GF_OMO09_Defeated_MysteryNoteThief, true)
             Call(SetSelfVar, 10, 1)
     EndSwitch
     Return
@@ -99,7 +99,7 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
         IfLt(LVar1, 150)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(DisableCameraLeadingPlayer)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(5.0), LVar0, LVar1, LVar2, 300, Float(13.0), Float(-9.5))
@@ -112,7 +112,7 @@ EvtScript N(EVS_NpcIdle_Pokey) = {
         Call(EnableCameraLeadingPlayer)
         Call(ResetCam, CAM_DEFAULT, Float(4.0))
     EndThread
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
     End
@@ -122,7 +122,7 @@ EvtScript N(EVS_NpcDefeat_Pokey) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Set(GF_OMO09_Item_SuperSoda, TRUE)
+            Set(GF_OMO09_Item_SuperSoda, true)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_LOST)
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -170,13 +170,13 @@ EvtScript N(EVS_NpcAI_ShyGuy_Jackpot) = {
                     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_Wander)))
                 EndIf
             CaseEq(2)
-                Call(DisablePlayerInput, TRUE)
+                Call(DisablePlayerInput, true)
                 Wait(25)
                 Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, FALSE)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(SetSelfVar, 0, 0)
-                Call(DisablePlayerInput, FALSE)
+                Call(DisablePlayerInput, false)
         EndSwitch
         Wait(1)
     EndLoop
@@ -233,7 +233,7 @@ NpcData N(NpcData_ShyGuy_01) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 460, 0, 50 },
@@ -256,7 +256,7 @@ NpcData N(NpcData_ShyGuy_02) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 497, 0, 50 },
@@ -279,7 +279,7 @@ NpcData N(NpcData_ShyGuy_03) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 535, 0, 50 },
@@ -302,7 +302,7 @@ NpcData N(NpcData_ShyGuy_04) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 573, 0, 50 },
@@ -325,7 +325,7 @@ NpcData N(NpcData_ShyGuy_05) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 610, 0, 50 },
@@ -365,7 +365,7 @@ NpcData N(NpcData_Kammy) = {
 };
 
 EvtScript N(EVS_ShyGuy_Thief) = {
-    IfEq(GF_OMO09_Defeated_MysteryNoteThief, TRUE)
+    IfEq(GF_OMO09_Defeated_MysteryNoteThief, true)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
@@ -385,7 +385,7 @@ NpcData N(NpcData_ShyGuy_Thief) = {
     .yaw = 270,
     .territory = {
         .patrol = {
-            .isFlying = TRUE,
+            .isFlying = true,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .numPoints  = 2,
             .points  = {
@@ -413,7 +413,7 @@ NpcData N(NpcData_SpyGuy)[] = {
         .yaw = 270,
         .territory = {
             .wander = {
-                .isFlying = TRUE,
+                .isFlying = true,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 850, 0, 0 },

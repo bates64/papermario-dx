@@ -1,6 +1,7 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#include <stddef.h>
 #include "ultra64.h"
 
 #define UNK_TYPE s32

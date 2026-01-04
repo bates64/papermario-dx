@@ -14,7 +14,7 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
     s32 zoneID = test_ray_zones(x, y, z, 0.0f, -1.0f, 0.0f, &hitX, &hitY, &hitZ, &hitDepth, &nx, &ny, &nz);
 
     if (zoneID <= NO_COLLIDER) {
-        return NULL;
+        return nullptr;
     }
 
     return gZoneCollisionData.colliderList[zoneID].camSettings;
@@ -23,7 +23,7 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
 enum CameraSettingsPtrType {
     CAMERA_SETTINGS_PTR_MINUS_2     = -2,
     CAMERA_SETTINGS_PTR_MINUS_1     = -1,
-    CAMERA_SETTINGS_PTR_NULL        = 0,
+    CAMERA_SETTINGS_PTR_nullptr        = 0,
 };
 
 void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* configuration, f32 x, f32 y, f32 z)
@@ -57,7 +57,7 @@ void update_camera_from_controller(
     CameraRig* newRig, CameraControlSettings** curSettingsPtr,
     f32 x1, f32 y1, f32 z1,
     f32 x2, f32 y2, f32 z2,
-    f32* interpAlpha, b32 changingMap, b32 changingZone)
+    f32* interpAlpha, bool changingMap, bool changingZone)
 {
     CameraControlSettings* prevSettings;
     CameraControlSettings* curSettings;
@@ -72,7 +72,7 @@ void update_camera_from_controller(
     z = z1;
 
     if ((s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_2 && (s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_1) {
-        if (curSettings == CAMERA_SETTINGS_PTR_NULL) {
+        if (curSettings == CAMERA_SETTINGS_PTR_nullptr) {
             curRig->targetPos.x = x;
             curRig->targetPos.y = y;
             curRig->targetPos.z = z;
@@ -187,7 +187,7 @@ void update_camera_from_controller(
     y = y2;
     z = z2;
 
-    if (curSettings == NULL) {
+    if (curSettings == nullptr) {
         curRig->targetPos.x = x;
         curRig->targetPos.y = y;
         curRig->targetPos.z = z;
@@ -254,7 +254,7 @@ void update_camera_from_controller(
                         prevSettings = *prevSettingsPtr;
                         if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                 && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
                             && prevSettings->type == curSettings->type
                             && prevSettings->boomLength == curSettings->boomLength
                             && prevSettings->boomPitch == curSettings->boomPitch
@@ -312,7 +312,7 @@ void update_camera_from_controller(
                             prevSettings = *prevSettingsPtr;
                             if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                     && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)
@@ -374,7 +374,7 @@ void update_camera_from_controller(
                             prevSettings = *prevSettingsPtr;
                             if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                     && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)
@@ -697,18 +697,18 @@ void update_camera_zone_interp(Camera* camera) {
     f32 cosAngle;
     f32 temp_f24;
     f64 temp_f22_2;
-    b32 allParamsMatch;
+    bool allParamsMatch;
     s32 changingZone;
     f32 dist;
 
     targetX = camera->targetPos.x;
     targetY = camera->targetPos.y;
     targetZ = camera->targetPos.z;
-    changingZone = FALSE;
+    changingZone = false;
 
     if (camera->needsReinit) {
-        camera->curSettings = NULL;
-        camera->prevSettings = NULL;
+        camera->curSettings = nullptr;
+        camera->prevSettings = nullptr;
         camera->linearInterp = 0.0f;
         camera->yinterpAlpha = 1.0f;
         camera->yinterpGoal = 0.0f;
@@ -721,8 +721,8 @@ void update_camera_zone_interp(Camera* camera) {
         camera->prevTargetPos.x = 0.0f;
         camera->prevTargetPos.y = 0.0f;
         camera->prevTargetPos.z = 0.0f;
-        camera->prevUseOverride = FALSE;
-        camera->prevPrevUseOverride = FALSE;
+        camera->prevUseOverride = false;
+        camera->prevPrevUseOverride = false;
         D_800A08DC = 0.0f;
         D_800A08E0 = 0.0f;
     }
@@ -742,10 +742,10 @@ void update_camera_zone_interp(Camera* camera) {
             nextSettings = test_ray_zone_aabb(targetX, targetY + 10.0f, targetZ);
         }
 
-        allParamsMatch = FALSE;
+        allParamsMatch = false;
         curSettings = camera->curSettings;
-        if (nextSettings != NULL
-            && curSettings != NULL
+        if (nextSettings != nullptr
+            && curSettings != nullptr
             && nextSettings->type == curSettings->type
             && nextSettings->flag == curSettings->flag
             && nextSettings->boomLength == curSettings->boomLength
@@ -759,7 +759,7 @@ void update_camera_zone_interp(Camera* camera) {
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
                         && nextSettings->points.two.Bz == curSettings->points.two.Bz
                     ) {
-                        allParamsMatch = TRUE;
+                        allParamsMatch = true;
                     }
                     break;
                 case CAM_CONTROL_LOOK_AT_POINT:
@@ -769,13 +769,13 @@ void update_camera_zone_interp(Camera* camera) {
                             && nextSettings->points.two.Bx == curSettings->points.two.Bx
                             && nextSettings->points.two.Bz == curSettings->points.two.Bz
                         ) {
-                            allParamsMatch = TRUE;
+                            allParamsMatch = true;
                         }
                     } else {
                         if (nextSettings->points.two.Ax == curSettings->points.two.Ax
                             && nextSettings->points.two.Az == curSettings->points.two.Az
                         ) {
-                            allParamsMatch = TRUE;
+                            allParamsMatch = true;
                         }
                     }
                     break;
@@ -787,7 +787,7 @@ void update_camera_zone_interp(Camera* camera) {
                         && nextSettings->points.two.Bx == curSettings->points.two.Bx
                         && nextSettings->points.two.Bz == curSettings->points.two.Bz
                     ) {
-                        allParamsMatch = TRUE;
+                        allParamsMatch = true;
                     }
                     break;
             }
@@ -799,8 +799,8 @@ void update_camera_zone_interp(Camera* camera) {
             } else {
                 camera->prevSettings = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
             }
-            camera->panActive = FALSE;
-            changingZone = TRUE;
+            camera->panActive = false;
+            changingZone = true;
             camera->prevRig = CurrentCamRig;
             camera->curSettings = nextSettings;
 
@@ -860,7 +860,7 @@ void update_camera_zone_interp(Camera* camera) {
 
     if (camera->needsReinit) {
         camera->prevRig = camera->nextRig;
-        camera->needsReinit = FALSE;
+        camera->needsReinit = false;
         camera->interpAlpha = 1.0f;
     }
 

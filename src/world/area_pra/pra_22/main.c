@@ -16,13 +16,13 @@ API_CALLABLE(N(PreventFalling)) {
 
     playerStatus->pos.x = x;
     playerStatus->pos.z = z;
-    script->varTable[10] = FALSE;
+    script->varTable[10] = false;
     if (playerStatus->pos.y != y) {
         playerStatus->pos.y = 0.0f;
         script->varTable[3]++;
         if (script->varTable[3] >= 30) {
             // player may now fall
-            script->varTable[10] = TRUE;
+            script->varTable[10] = true;
         }
     }
     return ApiStatus_DONE2;
@@ -36,7 +36,7 @@ EvtScript N(EVS_ExitDoors_pra_20_4) = EVT_EXIT_SINGLE_DOOR(pra_22_ENTRY_0, "pra_
 
 EvtScript N(EVS_ExitDoors_pra_37_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_22_ENTRY_1)
     Set(LVar1, COLLIDER_deilittsse)
     Set(LVar2, Ref(N(DoorModelsL)))
@@ -100,7 +100,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         Set(LVar8, -1)
         Return
     EndIf
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
     EndThread
@@ -122,7 +122,7 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
             Call(N(PreventFalling))
-            IfEq(LVarA, TRUE)
+            IfEq(LVarA, true)
                 BreakLoop
             EndIf
             Wait(1)
@@ -133,17 +133,17 @@ EvtScript N(EVS_PushRightStatue_Impl) = {
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
         Wait(1)
         IfEq(LVarA, 1)
-            Call(DisablePlayerPhysics, TRUE)
+            Call(DisablePlayerPhysics, true)
             Wait(1)
             Call(SetPlayerAnimation, ANIM_MarioW2_TouchedLava)
             Wait(15)
             Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             Wait(1)
-            Call(DisablePlayerPhysics, FALSE)
+            Call(DisablePlayerPhysics, false)
             Call(SetPlayerActionState, ACTION_STATE_FALLING)
             Wait(1)
         EndIf
-        Call(DisablePlayerInput, FALSE)
+        Call(DisablePlayerInput, false)
     EndThread
     Call(MakeLerp, LVar6, LVar7, 100, EASING_LINEAR)
     Call(PlaySoundAtCollider, COLLIDER_o1064, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT)

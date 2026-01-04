@@ -44,7 +44,7 @@ void update_camera_unused_confined(Camera* camera) {
     camera->targetOffsetY = camera->params.confined.offsetY * CamLengthScale;
 
     if (camera->needsInit) {
-        camera->needsInit = FALSE;
+        camera->needsInit = false;
 
         camera->lookAt_obj.x = camera->lookAt_obj_target.x;
         camera->lookAt_obj.y = camera->lookAt_obj_target.y + camera->targetOffsetY;

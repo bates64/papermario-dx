@@ -11,7 +11,7 @@ static OSMesgQueue piEventQueue OSALIGNED(8);
 static OSMesg piEventBuf[1];
 
 OSDevMgr __osPiDevMgr = { 0 };
-OSPiHandle* __osPiTable = NULL;
+OSPiHandle* __osPiTable = nullptr;
 OSPiHandle __Dom1SpeedParam OSALIGNED(8);
 OSPiHandle __Dom2SpeedParam OSALIGNED(8);
 OSPiHandle* __osCurrentHandle[2] OSALIGNED(8) = { &__Dom1SpeedParam, &__Dom2SpeedParam };
@@ -33,11 +33,11 @@ void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgC
 
     osSetEventMesg(OS_EVENT_PI, &piEventQueue, (OSMesg)0x22222222);
     oldPri = -1;
-    myPri = osGetThreadPri(NULL);
+    myPri = osGetThreadPri(nullptr);
 
     if (myPri < pri) {
         oldPri = myPri;
-        osSetThreadPri(NULL, pri);
+        osSetThreadPri(nullptr, pri);
     }
 
     savedMask = __osDisableInt();
@@ -58,6 +58,6 @@ void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgC
     __osRestoreInt(savedMask);
 
     if (oldPri != -1) {
-        osSetThreadPri(NULL, oldPri);
+        osSetThreadPri(nullptr, oldPri);
     }
 }

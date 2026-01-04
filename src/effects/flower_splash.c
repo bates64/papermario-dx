@@ -55,19 +55,19 @@ void flower_splash_main(f32 posX, f32 posY, f32 posZ, f32 angle) {
     bp.update = flower_splash_update;
     bp.renderScene = flower_splash_render;
     bp.unk_00 = 0;
-    bp.renderUI = NULL;
+    bp.renderUI = nullptr;
     bp.effectID = EFFECT_FLOWER_SPLASH;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
 
     part = effect->data.flowerSplash = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.flowerSplash != NULL);
+    ASSERT(effect->data.flowerSplash != nullptr);
 
     mem_clear(part, numParts * sizeof(*part));
 
     for (i = 0; i < numParts; i++, part++) {
-        part->alive = TRUE;
+        part->alive = true;
         part->rot.y = angle + (i * 72);
         part->velScaleB = 0.29999998f;
         part->visibilityAmt = 0.0f;
@@ -104,16 +104,16 @@ void flower_splash_init(EffectInstance* effect) {
 
 void flower_splash_update(EffectInstance* effect) {
     FlowerFXData* data = effect->data.flowerSplash;
-    s32 anyAlive = FALSE;
+    s32 anyAlive = false;
     s32 i;
 
     for (i = 0; i < effect->numParts; i++, data++) {
         if (data->alive) {
             data->timeLeft--;
             if (data->timeLeft <= 0) {
-                data->alive = FALSE;
+                data->alive = false;
             } else {
-                anyAlive = TRUE;
+                anyAlive = true;
                 flower_splash_update_part(data);
                 flower_splash_update_part_transform(data);
             }

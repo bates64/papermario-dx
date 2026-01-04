@@ -10,7 +10,7 @@
 - shim_remove_effect
 - shim_general_heap_malloc
 - shim_mem_clear
-- shim_NULL
+- shim_nullptr
 - shim_rand_int
 - shim_clamp_angle
 - shim_sin_deg

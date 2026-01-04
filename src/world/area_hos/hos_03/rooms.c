@@ -69,9 +69,9 @@ EvtScript N(EVS_SetWallRot_ToadHouse) = {
     Call(RotateGroup, MODEL_g56, LVar1, 0, 1, 0)
     Switch(LVar0)
         CaseEq(90)
-            Call(EnableModel, MODEL_o177, FALSE)
+            Call(EnableModel, MODEL_o177, false)
         CaseDefault
-            Call(EnableModel, MODEL_o177, TRUE)
+            Call(EnableModel, MODEL_o177, true)
     EndSwitch
     Return
     End
@@ -89,18 +89,18 @@ EvtScript N(EVS_SetupRooms) = {
         Ref(N(EVS_SetDoorRot_House)),
         Ref(N(EVS_SetWallRot_House)),
         Ref(N(EVS_DropDoor_House)),
-        NULL,
+        nullptr,
         COLLIDER_o99,
         COLLIDER_o184,
         MODEL_o76,
-        NULL)
+        nullptr)
     // shop
     Call(CreateMapRoom,
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_Shop)),
         Ref(N(EVS_SetWallRot_Shop)),
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         COLLIDER_o72,
         COLLIDER_o185,
         MODEL_o76,
@@ -110,8 +110,8 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_ToadHouse)),
         Ref(N(EVS_SetWallRot_ToadHouse)),
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         COLLIDER_o100,
         COLLIDER_o186,
         MODEL_o76,

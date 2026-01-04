@@ -79,7 +79,7 @@ void btl_state_update_peach_menu(void) {
             gBattleStatus.flags1 |= BS_FLAGS1_MENU_OPEN;
             player->flags &= ~ACTOR_FLAG_USING_IDLE_ANIM;
             player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 partner->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
                 partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
             }
@@ -88,12 +88,12 @@ void btl_state_update_peach_menu(void) {
             entryIdx = 0;
             battleStatus->selectedMoveID = MOVE_NONE;
             WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_STAR_POWERS;
-            WheelOptionEnabled[entryIdx] = TRUE;
+            WheelOptionEnabled[entryIdx] = true;
             WheelOptionError[entryIdx] = 0;
             WheelOptionHudScript[entryIdx] = PeachStarPowerHudScripts.enabled;
             WheelOptionName[entryIdx] = PeachMenuMessages[entryIdx];
             if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_STAR_POWERS)) {
-                WheelOptionEnabled[entryIdx] = FALSE;
+                WheelOptionEnabled[entryIdx] = false;
                 WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 WheelOptionHudScript[entryIdx] = PeachStarPowerHudScripts.disabled;
             }
@@ -105,9 +105,9 @@ void btl_state_update_peach_menu(void) {
             BattleMenu_WheelBase = 2 - initialPos;
 
             if (gBattleStatus.flags2 & BS_FLAGS2_PARTNER_TURN_USED) {
-                BattleMenu_ShowSwapIcons = FALSE;
+                BattleMenu_ShowSwapIcons = false;
             } else {
-                BattleMenu_ShowSwapIcons = TRUE;
+                BattleMenu_ShowSwapIcons = true;
             }
 
             btl_main_menu_init();
@@ -152,14 +152,14 @@ void btl_state_update_peach_menu(void) {
             break;
         case BTL_SUBSTATE_SHOW_CANT_SWITCH:
             btl_show_variable_battle_message(BTL_MSG_CANT_SWITCH, 60, 0);
-            ShowingErrorMessage = TRUE;
+            ShowingErrorMessage = true;
             gBattleSubState = BTL_SUBSTATE_AWAIT_CANT_SWITCH_POPUP;
             break;
         case BTL_SUBSTATE_AWAIT_CANT_SWITCH_POPUP:
             if (btl_is_popup_displayed()) {
                 break;
             }
-            ShowingErrorMessage = FALSE;
+            ShowingErrorMessage = false;
             BattleMenu_ChooseDelay = 0;
             gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
             break;

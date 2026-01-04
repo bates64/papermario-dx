@@ -46,7 +46,7 @@ s32 osPfsAllocateFile(OSPfs* pfs, u16 company_code, u32 game_code, u8* game_name
         return PFS_ERR_INVALID;
     }
 
-    if (((ret = osPfsFindFile(pfs, 0, 0, NULL, NULL, file_no)) != 0) && ret != PFS_ERR_INVALID) {
+    if (((ret = osPfsFindFile(pfs, 0, 0, nullptr, nullptr, file_no)) != 0) && ret != PFS_ERR_INVALID) {
         return ret;
     }
 
@@ -94,7 +94,7 @@ s32 osPfsAllocateFile(OSPfs* pfs, u16 company_code, u32 game_code, u8* game_name
     bcopy(game_name, dir.game_name, PFS_FILE_NAME_LEN);
     bcopy(ext_name, dir.ext_name, PFS_FILE_EXT_LEN);
 
-    ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->dir_table + *file_no, (u8*)&dir, FALSE);
+    ret = __osContRamWrite(pfs->queue, pfs->channel, pfs->dir_table + *file_no, (u8*)&dir, false);
     return ret;
 }
 

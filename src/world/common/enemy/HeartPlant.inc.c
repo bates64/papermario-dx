@@ -5,7 +5,7 @@
 extern EvtScript N(EVS_NpcInteract_HeartPlant);
 
 EvtScript N(EVS_NpcAuxAI_HeartPlant) = {
-    Call(EnableNpcShadow, NPC_SELF, FALSE)
+    Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, 0, 0)
     Call(SetSelfVar, 1, 0)
     Return
@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcInteract_HeartPlant) = {
         Call(N(HeartPlant_SpawnHeart))
         Call(SetNpcAnimation, NPC_SELF, ANIM_HeartPlant_Anim01)
         Thread
-            Call(BindNpcInteract, NPC_SELF, NULL)
+            Call(BindNpcInteract, NPC_SELF, nullptr)
             Exec(N(EVS_HeartPlant_RebindInteractAfterDelay))
             Wait(45)
             Call(SetSelfVar, 1, 0)

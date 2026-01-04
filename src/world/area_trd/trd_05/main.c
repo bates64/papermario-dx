@@ -73,7 +73,7 @@ EvtScript N(EVS_BombWall) = {
         Wait(1)
     EndLoop
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tte, COLLIDER_FLAGS_UPPER_MASK)
-    Set(GF_TRD05_BombedWall, TRUE)
+    Set(GF_TRD05_BombedWall, true)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return
@@ -84,9 +84,9 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    IfEq(GF_TRD05_BombedWall, FALSE)
+    IfEq(GF_TRD05_BombedWall, false)
         Call(SetGroupVisibility, MODEL_ana2, MODEL_GROUP_HIDDEN)
         BindTrigger(Ref(N(EVS_BombWall)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Wall)), 1, 0)
     Else
@@ -94,8 +94,8 @@ EvtScript N(EVS_Main) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tte, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Exec(N(EVS_SetupMusic))
-    Call(EnableModel, MODEL_o95, FALSE)
-    Call(EnableModel, MODEL_o96, FALSE)
+    Call(EnableModel, MODEL_o95, false)
+    Call(EnableModel, MODEL_o96, false)
     Call(SetGroupVisibility, MODEL_kesu, MODEL_GROUP_HIDDEN)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o103, COLLIDER_FLAGS_UPPER_MASK)
     IfLt(GB_StoryProgress, STORY_CH1_KOOPA_BROS_SET_TRAP)

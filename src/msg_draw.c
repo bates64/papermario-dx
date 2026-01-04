@@ -163,8 +163,8 @@ void draw_message_window(MessagePrintState* printer) {
             printer->windowBasePos.x = 160 - (printer->windowSize.x / 2);
             printer->windowBasePos.y = 56;
             draw_box(DRAW_FLAG_ROTSCALE, WINDOW_STYLE_0, printer->windowBasePos.x, 56, 0, printer->windowSize.x, printer->windowSize.y, 255, 0,
-                     scale, scale, 0.0f, 0.0f, rotZ, drawbox_message_delegate, printer, NULL, SCREEN_WIDTH,
-                     SCREEN_HEIGHT, NULL);
+                     scale, scale, 0.0f, 0.0f, rotZ, drawbox_message_delegate, printer, nullptr, SCREEN_WIDTH,
+                     SCREEN_HEIGHT, nullptr);
             break;
         default:
             appendGfx_message(printer, printer->windowOffsetPos.x, printer->windowOffsetPos.y, printer->unk_46C,
@@ -348,7 +348,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
     }
 
-    sp80bool = FALSE;
+    sp80bool = false;
     msg_drawState->drawBufferPos = 0;
 
     while (!sp80bool) {
@@ -819,8 +819,8 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                             printer->windowBasePos.x = 160 - printer->windowSize.x / 2;
                             printer->windowBasePos.y = 56;
                             draw_box(0, WINDOW_STYLE_0, printer->windowBasePos.x, 56, 0, printer->windowSize.x,
-                                     printer->windowSize.y, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL,
-                                     SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+                                     printer->windowSize.y, 255, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr,
+                                     SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
                         }
                         msg_reset_gfx_state();
                         msg_drawState->drawBufferPos += 2;
@@ -846,16 +846,16 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case MSG_CHAR_PRINT_NEXT:
                 if (printer->windowState == MSG_WINDOW_STATE_C) {
                     if (msg_drawState->nextCounter >= printer->unkArraySize) {
-                        sp80bool = TRUE;
+                        sp80bool = true;
                     }
                 } else if (printer->windowState == MSG_WINDOW_STATE_B) {
                     if (printer->curLinePos < printer->lineEndPos[printer->unkArraySize]) {
                         if (msg_drawState->nextCounter >= printer->unkArraySize) {
-                            sp80bool = TRUE;
+                            sp80bool = true;
                         }
                     } else {
                         if (printer->unkArraySize < msg_drawState->nextCounter) {
-                            sp80bool = TRUE;
+                            sp80bool = true;
                         } else if (msg_drawState->nextCounter >= printer->unkArraySize) {
                             phi_a0_4 = 36;
                             if (printer->maxLinesPerPage >= 2) {
@@ -880,7 +880,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                 msg_drawState->drawBufferPos++;
                 break;
             case MSG_CHAR_PRINT_END:
-                sp80bool = TRUE;
+                sp80bool = true;
                 break;
             case MSG_CHAR_PRINT_FUNCTION:
                 msg_drawState->drawBufferPos++;
@@ -1010,7 +1010,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
                         }
 
                         dbPos = msg_drawState->drawBufferPos;
-                        while (TRUE) {
+                        while (true) {
                             if ((msg_drawState->printBuffer[dbPos - 1] == MSG_CHAR_PRINT_FUNCTION) &&
                                 (msg_drawState->printBuffer[dbPos] == MSG_PRINT_FUNC_ANIM_DELAY) &&
                                 (msg_drawState->printBuffer[dbPos + 1] == animIdx)) {
@@ -1581,7 +1581,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
         }
     }
 
-    varImgHasBorder = FALSE;
+    varImgHasBorder = false;
     if (printer->varImageScreenPos.x != 0) {
         s16 varImgFinalAlpha;
 
@@ -1592,7 +1592,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             case 0:
             case 1:
                 if (printer->varImgHasBorder) {
-                    varImgHasBorder = TRUE;
+                    varImgHasBorder = true;
                 }
                 switch (printer->varImageDisplayState) {
                     case 0:
@@ -1625,7 +1625,7 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
             if (varImgHasBorder) {
                 draw_box(0, WINDOW_STYLE_15, printer->varImageScreenPos.x - 7, printer->varImageScreenPos.y - 7, 0,
                          msgVarImage->width + 15, msgVarImage->height + 14, varImgFinalAlpha, 0, 0.0f, 0.0f, 0.0f, 0.0f,
-                         0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+                         0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
             }
             draw_ci_image_with_clipping(msgVarImage->raster, msgVarImage->width, msgVarImage->height,
                                         msgVarImage->format, msgVarImage->bitDepth, msgVarImage->palette,
@@ -1935,7 +1935,7 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
     Matrix4f sp10;
     s16 x1, x2, x3, x4;
     s32 y1, y2;
-    u8 pointRightSide = FALSE;
+    u8 pointRightSide = false;
     s16 windowX = printer->windowOffsetPos.x + printer->windowBasePos.x;
     s16 windowY = printer->windowOffsetPos.y + printer->windowBasePos.y;
 
@@ -1953,9 +1953,9 @@ void msg_draw_speech_arrow(MessagePrintState* printer) {
     }
 
     if (printer->style == MSG_STYLE_LEFT) {
-        pointRightSide = FALSE;
+        pointRightSide = false;
     } else if (printer->style == MSG_STYLE_CENTER || printer->openStartPos.x >= 160) {
-        pointRightSide = TRUE;
+        pointRightSide = true;
     }
 
     if (pointRightSide) {
@@ -2265,7 +2265,7 @@ void msg_draw_frame(s32 posX, s32 posY, s32 sizeX, s32 sizeY, s32 style, s32 pal
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, ui_msg_palettes[palette]);
 
     for (i = 0; i < ARRAY_COUNT(textures); i++) {
-        if (textures[i] != NULL && quads[i].ulx < 10000) {
+        if (textures[i] != nullptr && quads[i].ulx < 10000) {
             gDPLoadTextureTile_4b(gMainGfxPos++, textures[i], G_IM_FMT_CI, 8, 8, 0, 0, 7, 7, 0, G_TX_WRAP, G_TX_WRAP, 3, 3, G_TX_NOLOD, G_TX_NOLOD);
             gSPScisTextureRectangle(gMainGfxPos++, quads[i].ulx, quads[i].uly, quads[i].lrx, quads[i].lry,
                                     G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
