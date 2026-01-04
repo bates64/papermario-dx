@@ -16,7 +16,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_KKJ_20)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     BindTrigger(Ref(N(EVS_ExitDoor_kkj_10_4)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)

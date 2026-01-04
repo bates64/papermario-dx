@@ -29,7 +29,7 @@ void btl_state_update_enemy_move(void) {
             gBattleStatus.flags1 &= ~BS_FLAGS1_MENU_OPEN;
             gBattleStatus.flags1 &= ~BS_FLAGS1_YIELD_TURN;
             player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             }
             battleStatus->stateFreezeCount = 0;
@@ -41,21 +41,21 @@ void btl_state_update_enemy_move(void) {
             reset_actor_turn_info();
             gBattleStatus.flags1 |= BS_FLAGS1_EXECUTING_MOVE;
             player->statusAfflicted = 0;
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 partner->statusAfflicted = 0;
             }
 
             gBattleStatus.flags2 |= BS_FLAGS2_IGNORE_DARKNESS;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != NULL) {
+                if (enemy != nullptr) {
                     enemy->flags &= ~ACTOR_FLAG_HEALTH_BAR_HIDDEN;
                 }
             }
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != NULL) {
+                if (enemy != nullptr) {
                     if (!(enemy->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                         enemy->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
                     }
@@ -74,31 +74,31 @@ void btl_state_update_enemy_move(void) {
             gBattleSubState = BTL_SUBSTATE_AWAIT_SCRIPTS;
             break;
         case BTL_SUBSTATE_AWAIT_SCRIPTS:
-            if (player->takeTurnScript != NULL && does_script_exist(player->takeTurnScriptID)) {
+            if (player->takeTurnScript != nullptr && does_script_exist(player->takeTurnScriptID)) {
                 break;
             }
-            player->takeTurnScript = NULL;
+            player->takeTurnScript = nullptr;
 
-            if (player->handleEventScript != NULL && does_script_exist(player->handleEventScriptID)) {
+            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
                 break;
             }
-            player->handleEventScript = NULL;
+            player->handleEventScript = nullptr;
 
-            if (partner != NULL) {
-                if (partner->handleEventScript != NULL && does_script_exist(partner->handleEventScriptID)) {
+            if (partner != nullptr) {
+                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
                     break;
                 }
-                partner->handleEventScript = NULL;
+                partner->handleEventScript = nullptr;
             }
 
-            waitingForEnemyScript = FALSE;
+            waitingForEnemyScript = false;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != NULL && enemy->handleEventScript != NULL) {
+                if (enemy != nullptr && enemy->handleEventScript != nullptr) {
                     if (does_script_exist(enemy->handleEventScriptID)) {
-                        waitingForEnemyScript = TRUE;
+                        waitingForEnemyScript = true;
                     } else {
-                        enemy->handleEventScript = NULL;
+                        enemy->handleEventScript = nullptr;
                     }
                 }
             }
@@ -113,11 +113,11 @@ void btl_state_update_enemy_move(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != NULL && enemy->takeTurnScript != NULL) {
+                if (enemy != nullptr && enemy->takeTurnScript != nullptr) {
                     if (does_script_exist(enemy->takeTurnScriptID)) {
-                        waitingForEnemyScript = TRUE;
+                        waitingForEnemyScript = true;
                     } else {
-                        enemy->takeTurnScript = NULL;
+                        enemy->takeTurnScript = nullptr;
                     }
                 }
             }
@@ -142,7 +142,7 @@ void btl_state_update_enemy_move(void) {
                 btl_update_ko_status();
                 if (player->statusAfflicted != 0) {
                     player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
-                    if (partner != NULL) {
+                    if (partner != nullptr) {
                         partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     }
                     btl_cam_use_preset(BTL_CAM_PLAYER_STATUS_AFFLICTED);
@@ -201,7 +201,7 @@ void btl_state_update_enemy_move(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_CHECK_PARTNER:
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 if (partner->statusAfflicted == STATUS_KEY_KO) {
                     player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;

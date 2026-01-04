@@ -13,7 +13,7 @@ s32 remove_item(s32 itemID);
 
 /// Check whether player has `itemID` in their inventory.
 /// @returns boolean 'does player have item?'
-b32 has_item(s32 itemID);
+bool has_item(s32 itemID);
 
 /// Search player inventory for `itemID` and return first matching array index.
 /// @returns the index of the given item in the player's inventory, or -1 if not found
@@ -24,7 +24,7 @@ s32 find_item(s32 itemID);
 s32 count_item(s32 itemID);
 
 /// @returns whether the player has `itemID` as an equipped badge
-b32 is_badge_equipped(s32 itemID);
+bool is_badge_equipped(s32 itemID);
 
 /// @returns the number of consumables in player inventory
 s32 get_consumables_count(void);
@@ -43,17 +43,17 @@ s32 get_stored_count(void);
 s32 get_stored_empty(void);
 
 /// @returns whether `itemID` is a Consumable
-static ALWAYS_INLINE b32 item_is_consumable(s32 itemID) {
+static ALWAYS_INLINE bool item_is_consumable(s32 itemID) {
     return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_CONSUMABLE;
 }
 
 /// @returns whether `itemID` is a Badge
-static ALWAYS_INLINE b32 item_is_badge(s32 itemID) {
+static ALWAYS_INLINE bool item_is_badge(s32 itemID) {
     return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_BADGE;
 }
 
 /// @returns whether `itemID` is a Key Item
-static ALWAYS_INLINE b32 item_is_key(s32 itemID) {
+static ALWAYS_INLINE bool item_is_key(s32 itemID) {
     return gItemTable[itemID].typeFlags & ITEM_TYPE_FLAG_KEY;
 }
 

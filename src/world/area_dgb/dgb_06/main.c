@@ -20,12 +20,12 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_DGB_06)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    IfEq(GF_DGB05_BoardedFloor, FALSE)
-        Call(EnableGroup, MODEL_g52, FALSE)
+    IfEq(GF_DGB05_BoardedFloor, false)
+        Call(EnableGroup, MODEL_g52, false)
     Else
-        Call(EnableGroup, MODEL_g53, FALSE)
+        Call(EnableGroup, MODEL_g53, false)
     EndIf
     BindTrigger(Ref(N(EVS_ExitDoor_dgb_04_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     Exec(N(EVS_SetupMusic))

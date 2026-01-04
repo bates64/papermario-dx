@@ -99,7 +99,7 @@ API_CALLABLE(N(GetFloorCollider1)) {
 
 EvtScript N(EVS_UpdateLavaLevel) = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
-    Call(EnableModel, MODEL_yu, FALSE)
+    Call(EnableModel, MODEL_yu, false)
     Call(ParentColliderToModel, COLLIDER_o591, MODEL_yu)
     SetF(LVar4, Float(0.0))
     SetF(LVar5, Float(0.0))
@@ -112,8 +112,8 @@ EvtScript N(EVS_UpdateLavaLevel) = {
                 Call(N(GetFloorCollider1), LVar0)
                 IfEq(LVar0, COLLIDER_o357)
                     Exec(N(EVS_InterruptPartnersInLava))
-                    Call(EnableModel, MODEL_yu, TRUE)
-                    Call(EnableModel, MODEL_yu1, FALSE)
+                    Call(EnableModel, MODEL_yu, true)
+                    Call(EnableModel, MODEL_yu1, false)
                     // start lava flowing toward the left
                     Call(SetTexPanner, MODEL_yu1, TEX_PANNER_2)
                     Call(SetTexPanner, MODEL_yu, TEX_PANNER_2)
@@ -124,7 +124,7 @@ EvtScript N(EVS_UpdateLavaLevel) = {
                 IfLt(LVar4, 140)
                     Set(LVar5, Float(1.5))
                 Else
-                    IfEq(AF_KZN22_FlewAway, FALSE)
+                    IfEq(AF_KZN22_FlewAway, false)
                         Set(LVar5, Float(0.0))
                     Else
                         IfLt(LVar4, 285)
@@ -154,7 +154,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_22)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)

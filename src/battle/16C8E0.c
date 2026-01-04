@@ -8,7 +8,7 @@
 #include "battle/states/states.h"
 
 f32 StarPointsIncrementInterp = 0.0f;
-b8 BtlStarPointsBlinking = FALSE;
+b8 BtlStarPointsBlinking = false;
 s8 StarPointsBlinkTimer = 0;
 s16 EndDemoWhiteOut = -1;
 s16 DemoBattleBeginDelay = 0;
@@ -44,7 +44,7 @@ extern HudScript HES_HPDigit9;
 HudScript* bHPDigitHudScripts[] = {
     &HES_HPDigit0, &HES_HPDigit1, &HES_HPDigit2, &HES_HPDigit3, &HES_HPDigit4,
     &HES_HPDigit5, &HES_HPDigit6, &HES_HPDigit7, &HES_HPDigit8, &HES_HPDigit9,
-    NULL, NULL, NULL,
+    nullptr, nullptr, nullptr,
 };
 
 s32 BattleScreenFadeAmt = 255;
@@ -95,12 +95,12 @@ void get_stick_input_radial(f32* angle, f32* magnitude) {
 }
 
 void btl_start_blinking_starpoints(void) {
-    BtlStarPointsBlinking = TRUE;
+    BtlStarPointsBlinking = true;
     StarPointsBlinkTimer = 0;
 }
 
 void btl_stop_blinking_starpoints(void) {
-    BtlStarPointsBlinking = FALSE;
+    BtlStarPointsBlinking = false;
     StarPointsBlinkTimer = 0;
 }
 
@@ -128,11 +128,11 @@ void initialize_battle(void) {
     battleStatus->waitForState = BATTLE_STATE_NONE;
 
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
-        battleStatus->enemyActors[i] = NULL;
+        battleStatus->enemyActors[i] = nullptr;
     }
 
-    battleStatus->playerActor = NULL;
-    battleStatus->partnerActor = NULL;
+    battleStatus->playerActor = nullptr;
+    battleStatus->partnerActor = nullptr;
 
     for (i = 0; i < ARRAY_COUNT(battleStatus->lastPlayerMenuSelection); i++) {
         battleStatus->lastPlayerMenuSelection[i] = -1;
@@ -150,7 +150,7 @@ void initialize_battle(void) {
         gBattleStatus.flags2 &= ~BS_FLAGS2_PEACH_BATTLE;
     }
 
-    create_worker_scene(NULL, btl_render_actors);
+    create_worker_scene(nullptr, btl_render_actors);
     btl_popup_messages_init();
     create_action_command_ui_worker();
     set_windows_visible(WINDOW_GROUP_BATTLE);
@@ -234,11 +234,11 @@ void btl_update(void) {
         battleStatus->inputBufferPos = 0;
     }
 
-    if (battleStatus->preUpdateCallback != NULL) {
+    if (battleStatus->preUpdateCallback != nullptr) {
         battleStatus->preUpdateCallback();
     }
 
-    cond = TRUE;
+    cond = true;
     if (battleStatus->waitForState == BATTLE_STATE_NONE || battleStatus->waitForState != gBattleState) {
         switch (gBattleState) {
             case BATTLE_STATE_INVALID:
@@ -246,7 +246,7 @@ void btl_update(void) {
                 return;
             case BATTLE_STATE_START:
                 btl_state_update_normal_start();
-                cond = FALSE;
+                cond = false;
                 break;
             case BATTLE_STATE_BEGIN_PLAYER_TURN:
                 btl_state_update_begin_player_turn();
@@ -340,7 +340,7 @@ void btl_update(void) {
                 break;
             case BATTLE_STATE_END_DEMO_BATTLE:
                 btl_state_update_end_demo_battle();
-                cond = FALSE;
+                cond = false;
                 break;
         }
     }
@@ -364,7 +364,7 @@ void btl_update(void) {
 
         if (battleStatus->darknessMode > BTL_DARKNESS_STATE_NONE) {
             set_screen_overlay_color(SCREEN_LAYER_BACK, 0, 0, 0);
-            if (partner == NULL) {
+            if (partner == nullptr) {
                 set_screen_overlay_params_back(OVERLAY_SCREEN_COLOR, 215.0f);
             } else if (playerData->curPartner == PARTNER_WATT) {
                 paramAmount -= 10.0f;
@@ -422,14 +422,14 @@ void btl_update(void) {
 }
 
 void btl_draw_ui(void) {
-    s32 changed = FALSE;
+    s32 changed = false;
     s32 state;
 
     state = gBattleState;
     if (gBattleState != gLastDrawBattleState) {
         state = gLastDrawBattleState;
         gLastDrawBattleState = gBattleState;
-        changed = TRUE;
+        changed = true;
     } else {
         switch (state) {
             case BATTLE_STATE_INVALID:
@@ -558,7 +558,7 @@ void btl_render_actors(void) {
 
     if (gBattleState != BATTLE_STATE_NONE) {
         btl_popup_messages_draw_world_geometry();
-        if (battleStatus->initBattleCallback != NULL) {
+        if (battleStatus->initBattleCallback != nullptr) {
             battleStatus->initBattleCallback();
         }
         if (battleStatus->flags1 & BS_FLAGS1_ACTORS_VISIBLE) {
@@ -568,7 +568,7 @@ void btl_render_actors(void) {
                 for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                     actor = battleStatus->enemyActors[i];
 
-                    if (actor != NULL && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
+                    if (actor != nullptr && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
                         renderTaskPtr->appendGfxArg = (void*)i;
                         renderTaskPtr->appendGfx = appendGfx_enemy_actor;
                         renderTaskPtr->dist = actor->curPos.z;
@@ -594,8 +594,8 @@ void btl_render_actors(void) {
                 }
 
                 actor = battleStatus->partnerActor;
-                if (actor != NULL && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
-                    renderTaskPtr->appendGfxArg = NULL;
+                if (actor != nullptr && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
+                    renderTaskPtr->appendGfxArg = nullptr;
                     renderTaskPtr->appendGfx = appendGfx_partner_actor;
                     renderTaskPtr->dist = actor->curPos.z;
                     renderTaskPtr->renderMode = actor->renderMode;
@@ -610,7 +610,7 @@ void btl_render_actors(void) {
                     }
 
                     if (battleStatus->reflectFlags & BS_REFLECT_FLOOR) {
-                        renderTaskPtr->appendGfxArg = NULL;
+                        renderTaskPtr->appendGfxArg = nullptr;
                         renderTaskPtr->appendGfx = appendGfx_partner_actor_reflection;
                         renderTaskPtr->dist = actor->curPos.z;
                         renderTaskPtr->renderMode = actor->renderMode;
@@ -619,8 +619,8 @@ void btl_render_actors(void) {
                 }
 
                 actor = battleStatus->playerActor;
-                if (actor != NULL && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
-                    renderTaskPtr->appendGfxArg = NULL;
+                if (actor != nullptr && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
+                    renderTaskPtr->appendGfxArg = nullptr;
                     renderTaskPtr->appendGfx = appendGfx_player_actor;
                     renderTaskPtr->dist = actor->curPos.z;
                     renderTaskPtr->renderMode = actor->renderMode;
@@ -635,7 +635,7 @@ void btl_render_actors(void) {
                     }
 
                     if (battleStatus->reflectFlags & BS_REFLECT_FLOOR) {
-                        renderTaskPtr->appendGfxArg = NULL;
+                        renderTaskPtr->appendGfxArg = nullptr;
                         renderTaskPtr->appendGfx = appendGfx_player_actor_reflection;
                         renderTaskPtr->dist = actor->curPos.z;
                         renderTaskPtr->renderMode = actor->renderMode;
@@ -653,7 +653,7 @@ u16 blend_tattle_background_channel(u16 a, s32 b, s32 alpha) {
 
 void tattle_cam_pre_render(Camera* camera) {
     Camera* cam = &gCameras[gCurrentCamID];
-    s32 fogEnabled = FALSE;
+    s32 fogEnabled = false;
     u8 r1, g1, b1, a1;
     s32 fogR, fogG, fogB, fogA;
     s32 i;
@@ -669,7 +669,7 @@ void tattle_cam_pre_render(Camera* camera) {
     hide_foreground_models_unchecked();
 
     if (is_world_fog_enabled()) {
-        fogEnabled = TRUE;
+        fogEnabled = true;
         get_world_fog_color(&fogR, &fogG, &fogB, &fogA);
         fogA = gGameStatusPtr->backgroundDarkness;
         mdl_get_shroud_tint_params(&r1, &g1, &b1, &a1);
@@ -801,7 +801,7 @@ void btl_draw_enemy_health_bars(void) {
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             Actor* enemy = battleStatus->enemyActors[i];
 
-            if (enemy != NULL) {
+            if (enemy != nullptr) {
                 s32 currentHP;
                 s32 temp;
                 s32 ones;
@@ -848,7 +848,7 @@ void btl_draw_enemy_health_bars(void) {
                         nextDigitXOffset = DIGIT_WIDTH;
                         hid = HPBarHID;
                         // draw all digits
-                        while (TRUE) {
+                        while (true) {
                             s32 digit = currentHP % 10;
 
                             hud_element_set_render_depth(hid, 10);
@@ -879,7 +879,7 @@ void btl_draw_enemy_health_bars(void) {
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    b32 showStarPoints;
+    bool showStarPoints;
     s32 i;
 
     if (gBattleStatus.flags1 & BS_FLAGS1_ACTORS_VISIBLE) {
@@ -897,11 +897,11 @@ void btl_update_starpoints_display(void) {
             }
         }
 
-        showStarPoints = TRUE;
+        showStarPoints = true;
         if (BtlStarPointsBlinking) {
             if (StarPointsBlinkTimer > 8) {
                 if (StarPointsBlinkTimer <= 12) {
-                    showStarPoints = FALSE;
+                    showStarPoints = false;
                 } else {
                     StarPointsBlinkTimer = 0;
                 }
@@ -974,8 +974,8 @@ void btl_update_starpoints_display(void) {
             posY = StarPointsBasePosY + 14.0f;
             if (gBattleStatus.flags2 & BS_FLAGS2_AWARDING_STAR_POINTS) {
                 if (ones != 0) {
-                    draw_box(0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL,
-                             NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+                    draw_box(0, WINDOW_STYLE_4, posX - 100, posY - 5, 0, 110, 12, 120, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr,
+                             nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
                 }
             }
 
@@ -1049,25 +1049,25 @@ void btl_delete_actor(Actor* actor) {
         remove_actor_decoration(actor, i);
     }
 
-    if (actor->idleScript != NULL) {
+    if (actor->idleScript != nullptr) {
         kill_script_by_ID(actor->idleScriptID);
     }
-    if (actor->handleEventScript != NULL) {
+    if (actor->handleEventScript != nullptr) {
         kill_script_by_ID(actor->handleEventScriptID);
     }
-    if (actor->takeTurnScript != NULL) {
+    if (actor->takeTurnScript != nullptr) {
         kill_script_by_ID(actor->takeTurnScriptID);
     }
     set_actor_glow_pal(actor, GLOW_PAL_OFF);
 
     part = actor->partsTable;
 
-    while (part != NULL) {
+    while (part != nullptr) {
         if (!(part->flags & ACTOR_PART_FLAG_NO_SHADOW)) {
             delete_shadow(part->shadowIndex);
         }
 
-        if (part->idleAnimations != NULL) {
+        if (part->idleAnimations != nullptr) {
             set_npc_imgfx_all(part->spriteInstanceID, IMGFX_CLEAR, 0, 0, 0, 0, 0);
 
             ASSERT(spr_free_sprite(part->spriteInstanceID) == 0);
@@ -1089,14 +1089,14 @@ void btl_delete_actor(Actor* actor) {
     remove_all_status_icons(actor->hudElementDataIndex);
     remove_effect(actor->disableEffect);
 
-    if (actor->attackResultEffect != NULL) {
-        actor->attackResultEffect->data.attackResultText->isVisible = FALSE;
+    if (actor->attackResultEffect != nullptr) {
+        actor->attackResultEffect->data.attackResultText->isVisible = false;
     }
 
     battleStatus = &gBattleStatus;
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
         if (battleStatus->enemyActors[i] == actor) {
-            battleStatus->enemyActors[i] = NULL;
+            battleStatus->enemyActors[i] = nullptr;
             break;
         }
     }
@@ -1114,13 +1114,13 @@ void btl_delete_player_actor(Actor* player) {
         remove_actor_decoration(player, i);
     }
 
-    if (player->idleScript != NULL) {
+    if (player->idleScript != nullptr) {
         kill_script_by_ID(player->idleScriptID);
     }
-    if (player->handleEventScript != NULL) {
+    if (player->handleEventScript != nullptr) {
         kill_script_by_ID(player->handleEventScriptID);
     }
-    if (player->takeTurnScript != NULL) {
+    if (player->takeTurnScript != nullptr) {
         kill_script_by_ID(player->takeTurnScriptID);
     }
 
@@ -1132,8 +1132,8 @@ void btl_delete_player_actor(Actor* player) {
     remove_all_status_icons(player->hudElementDataIndex);
     remove_effect(player->disableEffect);
 
-    if (player->attackResultEffect != NULL) {
-        player->attackResultEffect->data.attackResultText->isVisible = FALSE;
+    if (player->attackResultEffect != nullptr) {
+        player->attackResultEffect->data.attackResultText->isVisible = false;
     }
 
     heap_free(movement);

@@ -27,28 +27,28 @@ void osCreateViManager(OSPri pri) {
         osCreateMesgQueue(&viEventQueue, viEventBuf, ARRAY_COUNT(viEventBuf));
         viRetraceMsg.hdr.type = OS_MESG_TYPE_VRETRACE;
         viRetraceMsg.hdr.pri = OS_MESG_PRI_NORMAL;
-        viRetraceMsg.hdr.retQueue = NULL;
+        viRetraceMsg.hdr.retQueue = nullptr;
         viCounterMsg.hdr.type = OS_MESG_TYPE_COUNTER;
         viCounterMsg.hdr.pri = OS_MESG_PRI_NORMAL;
-        viCounterMsg.hdr.retQueue = NULL;
+        viCounterMsg.hdr.retQueue = nullptr;
         osSetEventMesg(OS_EVENT_VI, &viEventQueue, &viRetraceMsg);
         osSetEventMesg(OS_EVENT_COUNTER, &viEventQueue, &viCounterMsg);
         oldPri = -1;
-        myPri = osGetThreadPri(NULL);
+        myPri = osGetThreadPri(nullptr);
 
         if (myPri < pri) {
             oldPri = myPri;
-            osSetThreadPri(NULL, pri);
+            osSetThreadPri(nullptr, pri);
         }
 
         savedMask = __osDisableInt();
-        __osViDevMgr.active = TRUE;
+        __osViDevMgr.active = true;
         __osViDevMgr.thread = &viThread;
         __osViDevMgr.cmdQueue = &viEventQueue;
         __osViDevMgr.evtQueue = &viEventQueue;
-        __osViDevMgr.acsQueue = NULL;
-        __osViDevMgr.dma = NULL;
-        __osViDevMgr.edma = NULL;
+        __osViDevMgr.acsQueue = nullptr;
+        __osViDevMgr.dma = nullptr;
+        __osViDevMgr.edma = nullptr;
 #ifdef BBPLAYER
         osCreateThread(&viThread, 0xD49, viMgrMain, &__osViDevMgr, &viThreadStack[OS_VIM_STACKSIZE], pri);
 #else
@@ -72,7 +72,7 @@ static void viMgrMain(void *arg) {
     s32 first;
     u32 count;
 
-    mb = NULL;
+    mb = nullptr;
     first = 0;
     vc = __osViGetCurrentContext();
     retrace = vc->retraceCount;
@@ -80,7 +80,7 @@ static void viMgrMain(void *arg) {
         retrace = 1;
     dm = (OSDevMgr *)arg;
 
-    while (TRUE) {
+    while (true) {
         osRecvMesg(dm->evtQueue, (OSMesg)&mb, OS_MESG_BLOCK);
         switch (mb->hdr.type) {
             case OS_MESG_TYPE_VRETRACE:
@@ -89,7 +89,7 @@ static void viMgrMain(void *arg) {
 
                 if (retrace == 0) {
                     vc = __osViGetCurrentContext();
-                    if (vc->msgq != NULL)
+                    if (vc->msgq != nullptr)
                         osSendMesg(vc->msgq, vc->msg, OS_MESG_NOBLOCK);
                     retrace = vc->retraceCount;
                 }

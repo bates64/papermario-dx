@@ -9,7 +9,7 @@ s32 N(FarLeftDoorModelsR)[]  = { MODEL_o861, -1 };
 
 EvtScript N(EVS_ExitDoors_pra_34_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, Ref(N(NearLeftDoorModelsL)))
@@ -24,7 +24,7 @@ EvtScript N(EVS_ExitDoors_pra_34_1) = {
 
 EvtScript N(EVS_ExitDoors_pra_40_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_1)
     Set(LVar1, COLLIDER_deilitte)
     Set(LVar2, Ref(N(RightDoorModelsL)))
@@ -39,7 +39,7 @@ EvtScript N(EVS_ExitDoors_pra_40_0) = {
 
 EvtScript N(EVS_ExitDoors_pra_34_2) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_31_ENTRY_2)
     Set(LVar1, COLLIDER_deilittnw)
     Set(LVar2, Ref(N(FarLeftDoorModelsL)))
@@ -83,7 +83,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_SetupPuzzle))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))

@@ -4,7 +4,7 @@
 void osSetThreadPri(OSThread* thread, OSPri pri) {
     register u32 prevInt = __osDisableInt();
 
-    if (thread == NULL) {
+    if (thread == nullptr) {
         thread = __osRunningThread;
     }
 

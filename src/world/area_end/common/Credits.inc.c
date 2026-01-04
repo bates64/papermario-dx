@@ -506,14 +506,14 @@ void N(credits_update_line)(CreditsLine* line) {
     s32 posX;
     s32 i;
 
-    doneCurrentState = FALSE;
+    doneCurrentState = false;
     if (line->flags & CREDITS_LINE_FLAG_2) {
         line->flags &= ~CREDITS_LINE_FLAG_2;
         line->time = 0;
         line->state = 0;
     }
 
-    get_msg_properties((s32) line->message, &msgHeight, &msgWidth, &msgMaxLineChars, NULL, NULL, NULL, 0);
+    get_msg_properties((s32) line->message, &msgHeight, &msgWidth, &msgMaxLineChars, nullptr, nullptr, nullptr, 0);
 
     curChar->font = 0;
     curChar->variation = 0;
@@ -524,7 +524,7 @@ void N(credits_update_line)(CreditsLine* line) {
     do {
         curMsgChar = line->message[readPos++];
         nextMsgChar1 = line->message[readPos];
-        doneCalcLoop = FALSE;
+        doneCalcLoop = false;
 
         switch (curMsgChar) {
             case MSG_CHAR_READ_VARIANT0:
@@ -534,7 +534,7 @@ void N(credits_update_line)(CreditsLine* line) {
                 break;
             case MSG_CHAR_READ_ENDL:
             case MSG_CHAR_READ_END:
-                doneCalcLoop = TRUE;
+                doneCalcLoop = true;
                 break;
             case MSG_CHAR_READ_FUNCTION:
                 // only support function for selecting font
@@ -585,7 +585,7 @@ void N(credits_update_line)(CreditsLine* line) {
     do {
         curMsgChar = line->message[readPos++];
         nextMsgChar2 = line->message[readPos];
-        doneDrawLoop = FALSE;
+        doneDrawLoop = false;
 
         switch (curMsgChar) {
             case MSG_CHAR_READ_VARIANT0:
@@ -595,7 +595,7 @@ void N(credits_update_line)(CreditsLine* line) {
                 break;
             case MSG_CHAR_READ_ENDL:
             case MSG_CHAR_READ_END:
-                doneDrawLoop = TRUE;
+                doneDrawLoop = true;
                 break;
             case MSG_CHAR_READ_FUNCTION:
                 if (line->message[readPos++] == 0) {
@@ -616,7 +616,7 @@ void N(credits_update_line)(CreditsLine* line) {
                                     curChar->fadeInTime = line->appearTime;
                                 }
                                 if ((nextMsgChar2 == MSG_CHAR_READ_END) && (curChar->fadeInTime == line->appearTime)) {
-                                    doneCurrentState = TRUE;
+                                    doneCurrentState = true;
                                 }
                                 switch (line->appearMode) {
                                     case 0:
@@ -644,7 +644,7 @@ void N(credits_update_line)(CreditsLine* line) {
                         case CREDITS_LINE_HOLDING:
                             if (nextMsgChar2 == MSG_CHAR_READ_END) {
                                 if (line->time == line->holdTime) {
-                                    doneCurrentState = TRUE;
+                                    doneCurrentState = true;
                                 }
                             }
                             N(CharAnim_Hold)(line, curChar);
@@ -659,7 +659,7 @@ void N(credits_update_line)(CreditsLine* line) {
                                 curChar->fadeInTime = line->vanishTime;
                             }
                             if (nextMsgChar2 == MSG_CHAR_READ_END && curChar->fadeInTime == line->vanishTime) {
-                                doneCurrentState = TRUE;
+                                doneCurrentState = true;
                             }
 
                             switch (line->vanishMode) {
@@ -708,7 +708,7 @@ void N(credits_update_line)(CreditsLine* line) {
 
     if ((line->state == CREDITS_LINE_APPEARING) && doneCurrentState) {
         s32 temp = 0;
-        get_msg_properties((s32) line->message, NULL, NULL, &temp, NULL, NULL, NULL, 0);
+        get_msg_properties((s32) line->message, nullptr, nullptr, &temp, nullptr, nullptr, nullptr, 0);
         line->time = 0;
         line->state++;
         if (line->holdTime <= 0) {
@@ -748,7 +748,7 @@ void N(credits_load_message)(CreditsEntry* entry) {
     s32 numSpaces;
     s32 i = 0;
 
-    while (TRUE) {
+    while (true) {
         if (!(N(CreditsDataPtr)->lines[i].flags & CREDITS_LINE_FLAG_1)) {
             break;
         }
@@ -758,7 +758,7 @@ void N(credits_load_message)(CreditsEntry* entry) {
     }
 
     line = &N(CreditsDataPtr)->lines[i];
-    if (entry->msgID != NULL) {
+    if (entry->msgID != nullptr) {
         if (entry->msgID >= 0) {
             dma_load_msg(entry->msgID, N(CreditsMessageBuffers)[N(CreditsBufferIndex)]);
             line->message = N(CreditsMessageBuffers)[N(CreditsBufferIndex)];
@@ -769,7 +769,7 @@ void N(credits_load_message)(CreditsEntry* entry) {
         } else {
             line->message = (u8*) entry->msgID;
         }
-        get_msg_properties((s32) line->message, NULL, NULL, &maxLineChars, NULL, NULL, &numSpaces, 0);
+        get_msg_properties((s32) line->message, nullptr, nullptr, &maxLineChars, nullptr, nullptr, &numSpaces, 0);
         line->posX            = entry->posX;
         line->posY            = entry->posY;
         line->palette         = entry->palette;
@@ -795,7 +795,7 @@ void N(init_credits)(void) {
     s32 i;
 
     N(CreditsDataPtr) = &N(CreditsData);
-    N(CreditsData).workerID = create_worker_frontUI(NULL, N(credits_worker_render));
+    N(CreditsData).workerID = create_worker_frontUI(nullptr, N(credits_worker_render));
 
     for (i = 0; i < ARRAY_COUNT(N(CreditsData).lines); i++) {
         N(CreditsData).lines[i].flags = 0;
@@ -819,7 +819,7 @@ API_CALLABLE(N(ShowCreditList)) {
 
     switch (script->varTable[0]) {
         case 0:
-            while (TRUE) {
+            while (true) {
                 if (creditList[script->varTable[2]].msgID != 0) {
                     N(credits_load_message)(&creditList[script->varTable[2]]);
                 }

@@ -85,7 +85,7 @@ def apply_renames(file_path: str):
         for f_name in files:
             c_files.append(os.path.join(root, f_name))
     for f_path in tqdm(c_files):
-        if f_path.endswith(".c") or f_path.endswith(".h") or f_path.endswith(".yaml"):
+        if f_path.endswith(".c") or f_path.endswith(".h") or f_path.endswith(".yaml") or f_path.endswith(".cpp") or f_path.endswith(".hpp"):
             handle_file(f_path, True)
 
     # Walk through include files and rename stuff

@@ -43,7 +43,7 @@ struct bitmap {
 	void	*buf;		/* Pointer to bitmap data	*/
 				/* Don't re-load if new buf	*/
 				/* is the same as the old one   */
-				/* Skip if NULL */
+				/* Skip if nullptr */
 
 	s16	actualHeight;	/* True Height of this bitmap piece */
 
@@ -125,16 +125,16 @@ typedef struct sprite Sprite;
  * Misc constants
  */
 
-#ifndef NULL
-#define NULL			0
+#ifndef nullptr
+#define nullptr			0
 #endif
 
-#ifndef TRUE
-#define TRUE			1
+#ifndef true
+#define true			1
 #endif
 
-#ifndef FALSE
-#define FALSE			0
+#ifndef false
+#define false			0
 #endif
 
 /*

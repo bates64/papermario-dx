@@ -4,8 +4,8 @@
 API_CALLABLE(N(WakeSpikedGoomba)) {
     Enemy* enemy = get_enemy_safe(NPC_SpikedGloomba);
 
-    if (enemy != NULL) {
-        enemy->varTable[0] = TRUE;
+    if (enemy != nullptr) {
+        enemy->varTable[0] = true;
     }
     return ApiStatus_DONE2;
 }

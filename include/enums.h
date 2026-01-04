@@ -1763,7 +1763,7 @@ typedef enum AuResult {
     AU_AMBIENCE_ERROR_PLAYER_BUSY       = 1, // player already has an mseq playing
     AU_ERROR_SONG_NOT_PLAYING           = 2, // player not found for songName
     AU_AMBIENCE_ERROR_MSEQ_NOT_FOUND    = 2, // mseq not found
-    AU_ERROR_NULL_SONG_NAME             = 3, // songName is nullptr
+    AU_ERROR_nullptr_SONG_NAME             = 3, // songName is nullptr
     AU_AMBIENCE_ERROR_3                 = 3,
     AU_ERROR_INVALID_SONG_DURATION      = 4, // duration out of bounds: (250,10000)
     AU_ERROR_6                          = 6,
@@ -4340,9 +4340,9 @@ enum CameraUpdateMode {
     CAM_UPDATE_FROM_ZONE            = 3,
 
     // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
-    // which are only updated if skipRecalc = FALSE
+    // which are only updated if skipRecalc = false
     // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
-    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
+    // in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to false
     CAM_UPDATE_NO_INTERP            = 6,
 
     // this camera tracks lookAt_obj_target in a circular region centered on targetPos. the camera does not update

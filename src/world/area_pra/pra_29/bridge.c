@@ -28,7 +28,7 @@ void N(setup_gfx_bridge)(s32 index) {
     Vtx* dest1;
     Vtx* dest2;
     s32 numVertices;
-    s32 extendAmt = evt_get_variable(NULL, MV_BridgeExtendAmt);
+    s32 extendAmt = evt_get_variable(nullptr, MV_BridgeExtendAmt);
     if (extendAmt <= 255) {
         mdl_get_copied_vertices(index * 3 + 0, &srcVtx1, &dest1, &numVertices);
         mdl_get_copied_vertices(index * 3 + 1, &srcVtx2, &dest2, &numVertices);
@@ -75,33 +75,33 @@ EvtScript N(EVS_ExtendBridgeFromMirror) = {
 
 EvtScript N(EVS_SetupBridge) = {
     IfLt(GB_StoryProgress, STORY_CH7_EXTENDED_PALACE_BRIDGE)
-        Call(EnableModel, MODEL_u00, FALSE)
-        Call(EnableModel, MODEL_s00, FALSE)
+        Call(EnableModel, MODEL_u00, false)
+        Call(EnableModel, MODEL_s00, false)
         Set(MV_BridgeExtendAmt, 0)
         Set(MV_UnusedBridgeAlpha, 255)
         Call(SetModelCustomGfx, MODEL_u02, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
         Call(SetModelCustomGfx, MODEL_s02, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-        Call(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX, FALSE)
-        Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX, FALSE)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_bridge)), NULL)
-        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_bridge)), NULL)
-        Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_u02, TRUE)
-        Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_u01, FALSE)
-        Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_u03, FALSE)
-        Call(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, TRUE)
-        Call(MakeLocalVertexCopy, VTX_COPY_3, MODEL_s02, TRUE)
-        Call(MakeLocalVertexCopy, VTX_COPY_4, MODEL_s01, FALSE)
-        Call(MakeLocalVertexCopy, VTX_COPY_5, MODEL_s03, FALSE)
-        Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, TRUE)
+        Call(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX, false)
+        Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX, false)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_bridge)), nullptr)
+        Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_bridge)), nullptr)
+        Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_u02, true)
+        Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_u01, false)
+        Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_u03, false)
+        Call(SetModelFlags, MODEL_u02, MODEL_FLAG_USES_CUSTOM_GFX | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
+        Call(MakeLocalVertexCopy, VTX_COPY_3, MODEL_s02, true)
+        Call(MakeLocalVertexCopy, VTX_COPY_4, MODEL_s01, false)
+        Call(MakeLocalVertexCopy, VTX_COPY_5, MODEL_s03, false)
+        Call(SetModelFlags, MODEL_s02, MODEL_FLAG_USES_CUSTOM_GFX | MODEL_FLAG_HAS_LOCAL_VERTEX_COPY, true)
         BindTrigger(Ref(N(EVS_ExtendBridgeFromMirror)), TRIGGER_AREA_FLAG_SET, AF_PRA09_HitSwitch, 1, 0)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1041, COLLIDER_FLAGS_UPPER_MASK)
-        Call(EnableModel, MODEL_u00, FALSE)
-        Call(EnableModel, MODEL_u01, FALSE)
-        Call(EnableModel, MODEL_u02, FALSE)
-        Call(EnableModel, MODEL_s00, FALSE)
-        Call(EnableModel, MODEL_s01, FALSE)
-        Call(EnableModel, MODEL_s02, FALSE)
+        Call(EnableModel, MODEL_u00, false)
+        Call(EnableModel, MODEL_u01, false)
+        Call(EnableModel, MODEL_u02, false)
+        Call(EnableModel, MODEL_s00, false)
+        Call(EnableModel, MODEL_s01, false)
+        Call(EnableModel, MODEL_s02, false)
     EndIf
     Return
     End

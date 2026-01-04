@@ -139,7 +139,7 @@ EvtScript N(EVS_UseSocket1) = {
             Call(RemoveItemEntity, MV_Socket1_ItemEntityID)
             Set(MV_Socket1_ItemID, -1)
             Call(N(SerializeItemIDs))
-            Call(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
+            Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m1_kabe)
             Set(LVar4, COLLIDER_o55)
             ExecWait(N(EVS_TakeItemFromSocket))
@@ -188,7 +188,7 @@ EvtScript N(EVS_UseSocket2) = {
             Call(RemoveItemEntity, MV_Socket2_ItemEntityID)
             Set(MV_Socket2_ItemID, -1)
             Call(N(SerializeItemIDs))
-            Call(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
+            Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m2_kabe)
             Set(LVar4, COLLIDER_o54)
             ExecWait(N(EVS_TakeItemFromSocket))
@@ -237,7 +237,7 @@ EvtScript N(EVS_UseSocket3) = {
             Call(RemoveItemEntity, MV_Socket3_ItemEntityID)
             Set(MV_Socket3_ItemID, -1)
             Call(N(SerializeItemIDs))
-            Call(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_UNIQUE)
+            Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_UNIQUE)
             Set(LVar2, MODEL_m3_kabe)
             Set(LVar4, COLLIDER_o53)
             ExecWait(N(EVS_TakeItemFromSocket))
@@ -249,7 +249,7 @@ EvtScript N(EVS_UseSocket3) = {
 };
 
 EvtScript N(EVS_Interact_ItemSockets) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Label(0)
         Call(GetPlayerActionState, LVar0)
         Wait(1)
@@ -266,7 +266,7 @@ EvtScript N(EVS_Interact_ItemSockets) = {
             ExecWait(N(EVS_UseSocket3))
     EndSwitch
     EndIf
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
@@ -275,8 +275,8 @@ EvtScript N(EVS_SetupSockets) = {
     Call(ParentColliderToModel, COLLIDER_o55, MODEL_m1_kabe)
     Call(ParentColliderToModel, COLLIDER_o54, MODEL_m2_kabe)
     Call(ParentColliderToModel, COLLIDER_o53, MODEL_m3_kabe)
-    IfEq(GF_SAM09_Visited, FALSE)
-        Set(GF_SAM09_Visited, TRUE)
+    IfEq(GF_SAM09_Visited, false)
+        Set(GF_SAM09_Visited, true)
         Set(MV_Socket1_ItemID, ITEM_SHOOTING_STAR)
         Set(MV_Socket2_ItemID, ITEM_SNOWMAN_DOLL)
         Set(MV_Socket3_ItemID, ITEM_THUNDER_RAGE)

@@ -30,7 +30,7 @@ s32 osPfsFileState(OSPfs* pfs, s32 fileNo, OSPfsState* state) {
     page = dir.start_page;
     pages = 0;
     bank = 0xFF;
-    while (TRUE) {
+    while (true) {
         if (page.ipage < pfs->inode_start_page) {
             break;
         }

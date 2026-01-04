@@ -47,7 +47,7 @@ MenuWindowBP PauseMapWindowBPs[] = {
         .height = 154,
         .priority = WINDOW_PRIORITY_1,
         .fpDrawContents = &pause_map_draw_contents,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -61,7 +61,7 @@ MenuWindowBP PauseMapWindowBPs[] = {
         .height = 20,
         .priority = WINDOW_PRIORITY_0,
         .fpDrawContents = &pause_map_draw_title,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAP,
         .fpUpdate = { WINDOW_UPDATE_SHOW },
         .extraFlags = 0,
@@ -74,7 +74,7 @@ MenuWindowBP PauseMapWindowBPs[] = {
     {}
 };
 MenuPanel gPausePanelMap = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -82,7 +82,7 @@ MenuPanel gPausePanelMap = {
     .numCols = 0,
     .numRows = 0,
     .numPages = 0,
-    .gridData = NULL,
+    .gridData = nullptr,
     .fpInit = &pause_map_init,
     .fpHandleInput = &pause_map_handle_input,
     .fpUpdate = &pause_map_update,
@@ -204,7 +204,7 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
         posX = mapSpace->pos.x;
         posY = mapSpace->pos.y;
 
-        if (evt_get_variable(NULL, GF_MAP_ToadTown + i) == 0) {
+        if (evt_get_variable(nullptr, GF_MAP_ToadTown + i) == 0) {
             continue;
         }
 
@@ -372,7 +372,7 @@ void pause_map_init(MenuPanel* tab) {
         PauseMapCameraY = -209.0f;
     }
 
-    tab->initialized = TRUE;
+    tab->initialized = true;
 }
 
 void pause_map_handle_input(MenuPanel* tab) {

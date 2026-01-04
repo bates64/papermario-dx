@@ -39,7 +39,7 @@ void big_smoke_puff_main(f32 x, f32 y, f32 z) {
     bp.init = big_smoke_puff_init;
     bp.update = big_smoke_puff_update;
     bp.renderScene = big_smoke_puff_render;
-    bp.renderUI = NULL;
+    bp.renderUI = nullptr;
     bp.effectID = EFFECT_BIG_SMOKE_PUFF;
 
     effect = create_effect_instance(&bp);
@@ -48,7 +48,7 @@ void big_smoke_puff_main(f32 x, f32 y, f32 z) {
     data = general_heap_malloc(effect->numParts * sizeof(*data));
     effect->data.bigSmokePuff = data;
 
-    ASSERT(data != NULL);
+    ASSERT(data != nullptr);
 
     for (i = 0; i < effect->numParts; i++, data++) {
         data->unk_00 = 0;
@@ -76,7 +76,7 @@ void big_smoke_puff_init(EffectInstance* effect) {
 
 void big_smoke_puff_update(EffectInstance* effect) {
     BigSmokePuffFXData* data = effect->data.bigSmokePuff;
-    s32 cond = FALSE;
+    s32 cond = false;
     s32 i;
 
     for (i = 0; i < effect->numParts; i++, data++) {
@@ -88,7 +88,7 @@ void big_smoke_puff_update(EffectInstance* effect) {
                 data->partY += data->unk_24;
                 data->unk_00++;
                 data->unk_02--;
-                cond = TRUE;
+                cond = true;
 
                 if (data->unk_02 >= 0) {
                     data->unk_06--;

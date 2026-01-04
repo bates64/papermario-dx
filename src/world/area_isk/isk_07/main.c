@@ -14,8 +14,8 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_RUINS)
     Call(SetSpriteShading, SHADING_ISK_07)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    IfEq(GF_ISK07_Defeated_Mummies, FALSE)
-        Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
+    IfEq(GF_ISK07_Defeated_Mummies, false)
+        Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupLock))

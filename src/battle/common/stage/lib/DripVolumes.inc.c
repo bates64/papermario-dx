@@ -17,7 +17,7 @@ API_CALLABLE(N(CheckDripCollisionWithActors)) {
     script->varTable[2] = 0;
 
     actor = battleStatus->playerActor;
-    if (actor != NULL) {
+    if (actor != nullptr) {
         xDiff = actor->curPos.x - model->center.x;
         yDiff = actor->curPos.y + actor->size.y - 1.5f - model->center.y;
         zDiff = actor->curPos.z - model->center.z;
@@ -30,7 +30,7 @@ API_CALLABLE(N(CheckDripCollisionWithActors)) {
     }
 
     actor = battleStatus->partnerActor;
-    if (actor != NULL) {
+    if (actor != nullptr) {
         xDiff = actor->curPos.x - model->center.x;
         yDiff = actor->curPos.y + actor->size.y - 1.5f - model->center.y;
         zDiff = actor->curPos.z - model->center.z;
@@ -47,7 +47,7 @@ API_CALLABLE(N(CheckDripCollisionWithActors)) {
 
         actor = battleStatus->enemyActors[i];
 
-        if (actor != NULL && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
+        if (actor != nullptr && !(actor->flags & ACTOR_FLAG_INVISIBLE)) {
             xDiff = actor->curPos.x - model->center.x;
             yDiff = actor->curPos.y + actor->size.y - 1.5f - model->center.y;
             zDiff = actor->curPos.z - model->center.z;
@@ -58,7 +58,7 @@ API_CALLABLE(N(CheckDripCollisionWithActors)) {
                 return ApiStatus_DONE2;
             }
 
-            for (part = actor->partsTable; part != NULL; part = part->nextPart) {
+            for (part = actor->partsTable; part != nullptr; part = part->nextPart) {
                 if (!(part->flags & ACTOR_PART_FLAG_INVISIBLE)) {
                     if (part->flags & ACTOR_PART_FLAG_USE_ABSOLUTE_POSITION) {
                         xDiff = part->curPos.x - model->center.x;
@@ -95,10 +95,10 @@ EvtScript N(EVS_UpdateDripSplash) = {
     Add(LVarA, 4)
     Set(LVarB, ArrayVar(0))
     Set(LVarC, ArrayVar(1))
-    Call(EnableModel, LVar1, TRUE)
-    Call(EnableModel, LVar4, TRUE)
-    Call(EnableModel, LVar7, TRUE)
-    Call(EnableModel, LVarA, TRUE)
+    Call(EnableModel, LVar1, true)
+    Call(EnableModel, LVar4, true)
+    Call(EnableModel, LVar7, true)
+    Call(EnableModel, LVarA, true)
     Loop(5)
         Add(LVar0, 1)
         Add(LVar2, 1)
@@ -139,10 +139,10 @@ EvtScript N(EVS_UpdateDripSplash) = {
         Call(ScaleModel, LVarA, Float(0.5), Float(0.5), Float(0.5))
         Wait(1)
     EndLoop
-    Call(EnableModel, LVar1, FALSE)
-    Call(EnableModel, LVar4, FALSE)
-    Call(EnableModel, LVar7, FALSE)
-    Call(EnableModel, LVarA, FALSE)
+    Call(EnableModel, LVar1, false)
+    Call(EnableModel, LVar4, false)
+    Call(EnableModel, LVar7, false)
+    Call(EnableModel, LVarA, false)
     Return
     End
 };
@@ -160,7 +160,7 @@ EvtScript N(EVS_UpdateDripVolume) = {
     Call(RandInt, 200, LVar0)
     Add(LVar0, 50)
     Wait(LVar0)
-    Call(EnableModel, ArrayVar(5), TRUE)
+    Call(EnableModel, ArrayVar(5), true)
     Call(MakeLerp, ArrayVar(2), ArrayVar(3), ArrayVar(4), EASING_QUADRATIC_IN)
     Label(1)
     Call(UpdateLerp)
@@ -174,7 +174,7 @@ EvtScript N(EVS_UpdateDripVolume) = {
         Goto(1)
     EndIf
     Label(10)
-    Call(EnableModel, ArrayVar(5), FALSE)
+    Call(EnableModel, ArrayVar(5), false)
     ExecWait(N(EVS_UpdateDripSplash))
     Goto(0)
     Return
@@ -210,7 +210,7 @@ EvtScript N(EVS_CreateDripVolumes) = {
             Add(LVarF, 5)
         EndLoop
     EndLoop
-    Call(EnableModel, DROPLET_MODEL, FALSE)
+    Call(EnableModel, DROPLET_MODEL, false)
     Return
     End
 };

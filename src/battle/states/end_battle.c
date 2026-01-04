@@ -47,12 +47,12 @@ void btl_state_update_end_battle(void) {
         case BTL_SUBSTATE_EXEC_STAGE_SCRIPT:
             BattleScreenFadeAmt = 255;
             gBattleStatus.flags1 &= ~BS_FLAGS1_ACTORS_VISIBLE;
-            if (gCurrentStagePtr == NULL) {
+            if (gCurrentStagePtr == nullptr) {
                 stage = battle->stage;
             } else {
                 stage = gCurrentStagePtr->stage;
             }
-            if (stage->postBattle == NULL) {
+            if (stage->postBattle == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_CLEANUP;
                 return;
             }
@@ -70,25 +70,25 @@ void btl_state_update_end_battle(void) {
         case BTL_SUBSTATE_CLEANUP:
             kill_all_scripts();
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
-                if (battleStatus->enemyActors[i] != NULL) {
+                if (battleStatus->enemyActors[i] != nullptr) {
                     btl_delete_actor(battleStatus->enemyActors[i]);
                 }
             }
-            if (battleStatus->partnerActor != NULL) {
+            if (battleStatus->partnerActor != nullptr) {
                 btl_delete_actor(battleStatus->partnerActor);
             }
 
             btl_delete_player_actor(battleStatus->playerActor);
 
             if (battleStatus->nextMerleeSpellType == MERLEE_SPELL_COIN_BOOST) {
-                encounterStatus->hasMerleeCoinBonus = TRUE;
+                encounterStatus->hasMerleeCoinBonus = true;
                 battleStatus->nextMerleeSpellType = MERLEE_SPELL_NONE;
             }
 
             encounterStatus->damageTaken = battleStatus->damageTaken;
 
             if (gBattleStatus.flags2 & BS_FLAGS2_DROP_WHACKA_BUMP) {
-                encounterStatus->dropWhackaBump = TRUE;
+                encounterStatus->dropWhackaBump = true;
             }
 
             remove_all_effects();

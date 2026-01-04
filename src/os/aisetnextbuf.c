@@ -2,7 +2,7 @@
 #include "PR/rcp.h"
 
 s32 osAiSetNextBuffer(void *bufPtr, u32 size) {
-    static u8 hdwrBugFlag = FALSE;
+    static u8 hdwrBugFlag = false;
     char *bptr;
 
     if (__osAiDeviceBusy()) {
@@ -16,9 +16,9 @@ s32 osAiSetNextBuffer(void *bufPtr, u32 size) {
     }
 
     if ((((u32)bufPtr + size) & 0x1fff) == 0) {
-        hdwrBugFlag = TRUE;
+        hdwrBugFlag = true;
     } else {
-        hdwrBugFlag = FALSE;
+        hdwrBugFlag = false;
     }
 
     IO_WRITE(AI_DRAM_ADDR_REG, osVirtualToPhysical(bptr));

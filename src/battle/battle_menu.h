@@ -29,8 +29,8 @@ void btl_main_menu_draw(void);
 
 s32 btl_submenu_strats_update(void);
 
-b32 btl_player_can_act(void);
-b32 btl_partner_can_act(void);
+bool btl_player_can_act(void);
+bool btl_partner_can_act(void);
 
 void create_battle_popup_menu(PopupMenu* popup);
 
@@ -122,7 +122,7 @@ extern s32 WheelOptionError[];
 extern HudScript* WheelOptionHudScript[];
 extern s32 WheelOptionName[];
 
-extern b32 BattleMenu_ShowSwapIcons;
+extern bool BattleMenu_ShowSwapIcons;
 extern s32 WheelOptionCount;
 
 extern s32 BattleMenu_PrevSelected;

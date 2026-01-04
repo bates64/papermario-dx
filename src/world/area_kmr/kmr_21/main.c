@@ -82,7 +82,7 @@ API_CALLABLE(N(LoadTitleImage)) {
     decode_yay0(compressed, TitleData);
     general_heap_free(compressed);
     TitleImage = (IMG_PTR)(TitleData->img_offset_title + (s32)TitleData);
-    create_worker_frontUI(NULL, worker_render_title_image);
+    create_worker_frontUI(nullptr, worker_render_title_image);
     return ApiStatus_DONE2;
 }
 
@@ -152,19 +152,19 @@ EvtScript N(EVS_Scene_ShowTitle) = {
 };
 
 EvtScript N(EVS_Main) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
     Wait(1)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(208, 208, 208)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 440)
     Call(SetCamPosA, CAM_DEFAULT, 0, 100)
@@ -172,9 +172,9 @@ EvtScript N(EVS_Main) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, 65)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Wait(1)
     Exec(N(EVS_Scene_ShowTitle))
     Return

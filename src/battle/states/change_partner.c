@@ -85,7 +85,7 @@ void btl_state_update_change_partner(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemyActor = battleStatus->enemyActors[i];
-                if (enemyActor != NULL) {
+                if (enemyActor != nullptr) {
                     enemyActor->flags &= ~ACTOR_FLAG_HEALTH_BAR_HIDDEN;
                     enemyActor->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
                 }
@@ -132,11 +132,11 @@ void btl_state_update_change_partner(void) {
             break;
         case BTL_SUBSTATE_EXEC_BRING_OUT:
             partner = battleStatus->partnerActor;
-            if (partner != NULL) {
+            if (partner != nullptr) {
                 if (does_script_exist(partner->takeTurnScriptID)) {
                     break;
                 }
-                partner->takeTurnScript = NULL;
+                partner->takeTurnScript = nullptr;
             }
 
             script = start_script(&EVS_BtlBringPartnerOut, EVT_PRIORITY_A, 0);
@@ -150,8 +150,8 @@ void btl_state_update_change_partner(void) {
                 break;
             }
             partner = battleStatus->partnerActor;
-            if (partner != NULL) {
-                if (partner->handlePhaseSource != NULL) {
+            if (partner != nullptr) {
+                if (partner->handlePhaseSource != nullptr) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                     script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                     partner->handlePhaseScript = script;
@@ -163,8 +163,8 @@ void btl_state_update_change_partner(void) {
             break;
         case BTL_SUBSTATE_AWAIT_PHASE:
             partner = battleStatus->partnerActor;
-            if (partner != NULL) {
-                if (partner->handlePhaseSource != NULL && does_script_exist(partner->handlePhaseScriptID)) {
+            if (partner != nullptr) {
+                if (partner->handlePhaseSource != nullptr && does_script_exist(partner->handlePhaseScriptID)) {
                     break;
                 }
             }

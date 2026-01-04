@@ -44,14 +44,14 @@ API_CALLABLE(N(ChestItemPrompt)) {
         menuIdx = 0;
         for (i = 0; i < ARRAY_COUNT(N(ChestItems)); i++) {
             // meaning of 'can use' and 'used before' depends on type of chest interaction
-            canUseItem = evt_get_variable(NULL, script->varTable[1] + i);
-            itemUsedBefore = evt_get_variable(NULL, script->varTable[2] + i);
+            canUseItem = evt_get_variable(nullptr, script->varTable[1] + i);
+            itemUsedBefore = evt_get_variable(nullptr, script->varTable[2] + i);
             if (canUseItem && !itemUsedBefore) {
                 ItemData* item = &gItemTable[N(ChestItems)[i]];
                 IconHudScriptPair* itemHudScripts = &gItemHudScripts[item->hudElemID];
                 menu->ptrIcon[menuIdx] = itemHudScripts->enabled;
                 menu->userIndex[menuIdx] = i;
-                menu->enabled[menuIdx] = TRUE;
+                menu->enabled[menuIdx] = true;
                 menu->nameMsg[menuIdx] = item->nameMsg;
                 menu->descMsg[menuIdx] = item->shortDescMsg;
                 menuIdx++;
@@ -91,7 +91,7 @@ API_CALLABLE(N(ChestItemPrompt)) {
         selectIdx = menu->userIndex[script->functionTemp[1] - 1];
         script->varTable[0] = N(ChestItems)[selectIdx];
         if (script->varTable[10] == 0) {
-            evt_set_variable(NULL, script->varTable[2] + selectIdx, 1);
+            evt_set_variable(nullptr, script->varTable[2] + selectIdx, 1);
         }
         heap_free(script->functionTempPtr[2]);
     }
@@ -101,20 +101,20 @@ API_CALLABLE(N(ChestItemPrompt)) {
 
 // assumes itemID on LVar0, sets GF_KKJ_Retrieved_* based on item list position
 API_CALLABLE(N(SetItemRetrieved)) {
-    s32 found = FALSE;
+    s32 found = false;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(ChestItems)); i++) {
         s32 listItemID = N(ChestItems)[i];
 
         if (script->varTable[0] == listItemID) {
-            found = TRUE;
+            found = true;
             break;
         }
     }
 
     if (found) {
-        evt_set_variable(NULL, GF_KKJ_Retrieved_PowerRush + i, TRUE);
+        evt_set_variable(nullptr, GF_KKJ_Retrieved_PowerRush + i, true);
     }
 
     return ApiStatus_DONE2;
@@ -216,7 +216,7 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
         CaseOrEq(ITEM_LAST_STAND)
             SetGroup(EVT_GROUP_NEVER_PAUSE)
             Call(SetTimeFreezeMode, TIME_FREEZE_FULL)
-            Call(ShowGotItem, LVar0, FALSE, 0)
+            Call(ShowGotItem, LVar0, false, 0)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Call(AddItem, LVar0, LVar1)
             Call(N(SetItemRetrieved))
@@ -226,7 +226,7 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
             IfLe(LVar1, 0)
                 Call(ShowMessageAtScreenPos, MSG_Menus_00D5, 160, 40)
             Else
-                Call(ShowGotItem, LVar0, FALSE, ITEM_PICKUP_FLAG_NO_ANIMS)
+                Call(ShowGotItem, LVar0, false, ITEM_PICKUP_FLAG_NO_ANIMS)
                 Call(AddItem, LVar0, LVar1)
                 Call(N(SetItemRetrieved))
             EndIf
@@ -237,12 +237,12 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
 };
 
 EvtScript N(EVS_Interact_MagicChest) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, 1)
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
-        IfEq(GF_KKJ17_FoundMagicChest, FALSE)
+        IfEq(GF_KKJ17_FoundMagicChest, false)
             ExecWait(N(EVS_FindMagicChest))
-            Set(GF_KKJ17_FoundMagicChest, TRUE)
+            Set(GF_KKJ17_FoundMagicChest, true)
         Else
             ExecWait(N(EVS_UseMagicChest_Peach))
         EndIf
@@ -250,7 +250,7 @@ EvtScript N(EVS_Interact_MagicChest) = {
         ExecWait(N(EVS_UseMagicChest_Mario))
     EndIf
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

@@ -62,7 +62,7 @@ enum DebugMenuStates {
 };
 
 s32 DebugMenuState = DBM_NONE;
-b32 DebugStateChanged = FALSE;
+bool DebugStateChanged = false;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
 const s32 HoverColor   = MSG_PAL_GREEN;
@@ -163,7 +163,7 @@ void dx_debug_update_buttons() {
 
 void dx_debug_draw_box(s32 posX, s32 posY, s32 sizeX, s32 sizeY, int style, s32 opacity) {
     draw_box(0, (WindowStyle)style, posX, posY, 0, sizeX, sizeY, opacity,
-        0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, 0, NULL, SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
+        0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, 0, nullptr, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
 }
 
 void dx_debug_draw_ascii(char* text, s32 color, s32 posX, s32 posY) {
@@ -201,7 +201,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 }
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
-void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
+void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, bool hasSelected, s32 posX, s32 posY) {
     char msgBuf[32] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
@@ -248,7 +248,7 @@ s32 dx_debug_wrap(s32 v, s32 min, s32 max) {
 }
 
 // range from [min, max] with min < max
-s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, b32 flip) {
+s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, bool flip) {
     if (NAV_UP) {
         if(flip) {
             cur++;
@@ -274,7 +274,7 @@ s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, b32 flip) {
 }
 
 // range from [min, max] with min < max
-s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
+s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, bool flip) {
     if (NAV_LEFT) {
         if(flip) {
             cur++;
@@ -360,9 +360,9 @@ void dx_debug_nav_editable_num(DebugEditableNumber* num) {
     s32 max = num->isHex ? 0xF : 9;
 
     if (num->size > 1) {
-        num->pos = dx_debug_menu_nav_1D_horizontal(num->pos, 0, num->size - 1, FALSE);
+        num->pos = dx_debug_menu_nav_1D_horizontal(num->pos, 0, num->size - 1, false);
     }
-    num->digits[num->pos] = dx_debug_menu_nav_1D_vertical(num->digits[num->pos], 0, max, TRUE);
+    num->digits[num->pos] = dx_debug_menu_nav_1D_vertical(num->digits[num->pos], 0, max, true);
 }
 
 void dx_debug_draw_editable_num(DebugEditableNumber* num, s32 posX, s32 posY) {
@@ -414,7 +414,7 @@ void dx_debug_set_editable_num(DebugEditableNumber* num, s32 in) {
 
 void dx_debug_draw_main_menu();
 
-b32 dx_debug_menu_is_open() {
+bool dx_debug_menu_is_open() {
     return DebugMenuState != DBM_NONE;
 }
 
@@ -433,16 +433,16 @@ typedef struct DebugMenuEntry {
 
 DebugMenuEntry DebugMainMenu[] = {
     { "Full Restore",   dx_debug_exec_full_restore },
-    { "Save/Load",      NULL, DBM_QUICK_SAVE },
-    { "Map Select",     NULL, DBM_SELECT_AREA },
-    { "Battle Select",  NULL, DBM_SELECT_BATTLE },
-    { "Set Story Byte", NULL, DBM_SET_STORY },
-    { "Sound Player",   NULL, DBM_SOUND_PLAYER },
-    { "Edit Partners",  NULL, DBM_EDIT_PARTNERS },
-    { "Edit Inventory", NULL, DBM_EDIT_INVENTORY },
-//  { "Edit Memory",    NULL, DBM_EDIT_MEMORY },
-    { "View Collision", NULL, DBM_VIEW_COLLISION },
-    { "Cheats",         NULL, DBM_CHEAT_MENU },
+    { "Save/Load",      nullptr, DBM_QUICK_SAVE },
+    { "Map Select",     nullptr, DBM_SELECT_AREA },
+    { "Battle Select",  nullptr, DBM_SELECT_BATTLE },
+    { "Set Story Byte", nullptr, DBM_SET_STORY },
+    { "Sound Player",   nullptr, DBM_SOUND_PLAYER },
+    { "Edit Partners",  nullptr, DBM_EDIT_PARTNERS },
+    { "Edit Inventory", nullptr, DBM_EDIT_INVENTORY },
+//  { "Edit Memory",    nullptr, DBM_EDIT_MEMORY },
+    { "View Collision", nullptr, DBM_VIEW_COLLISION },
+    { "Cheats",         nullptr, DBM_CHEAT_MENU },
 };
 s32 MainMenuPos = 0;
 
@@ -605,9 +605,9 @@ void dx_debug_menu_main() {
 }
 
 void dx_debug_update_main_menu() {
-    MainMenuPos = dx_debug_menu_nav_1D_vertical(MainMenuPos, 0, ARRAY_COUNT(DebugMainMenu) - 1, FALSE);
+    MainMenuPos = dx_debug_menu_nav_1D_vertical(MainMenuPos, 0, ARRAY_COUNT(DebugMainMenu) - 1, false);
     if (RELEASED(BUTTON_R | BUTTON_D_RIGHT)) {
-        if (DebugMainMenu[MainMenuPos].onSelect != NULL) {
+        if (DebugMainMenu[MainMenuPos].onSelect != nullptr) {
             DebugMainMenu[MainMenuPos].onSelect();
         } else {
             DebugMenuState = DebugMainMenu[MainMenuPos].nextState;
@@ -650,7 +650,7 @@ void dx_debug_exec_quick_load() {
 }
 
 DebugMenuEntry DebugQuickSaveMenu[] = {
-    { "Cancel", NULL, DBM_MAIN_MENU },
+    { "Cancel", nullptr, DBM_MAIN_MENU },
     { "Quick Save", dx_debug_exec_quick_save },
     { "Quick Load", dx_debug_exec_quick_load },
 };
@@ -660,11 +660,11 @@ void dx_debug_update_quick_save() {
     s32 idx;
 
     // handle input
-    QuickSaveMenuPos = dx_debug_menu_nav_1D_vertical(QuickSaveMenuPos, 0, ARRAY_COUNT(DebugQuickSaveMenu) - 1, FALSE);
+    QuickSaveMenuPos = dx_debug_menu_nav_1D_vertical(QuickSaveMenuPos, 0, ARRAY_COUNT(DebugQuickSaveMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
-        if (DebugQuickSaveMenu[QuickSaveMenuPos].onSelect != NULL) {
+        if (DebugQuickSaveMenu[QuickSaveMenuPos].onSelect != nullptr) {
             DebugQuickSaveMenu[QuickSaveMenuPos].onSelect();
         } else {
             DebugMenuState = DebugQuickSaveMenu[QuickSaveMenuPos].nextState;
@@ -936,8 +936,8 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
     es->curEnemy = &DebugDummyEnemy;
     es->hitType = ENCOUNTER_TRIGGER_NONE;
     es->firstStrikeType = FIRST_STRIKE_NONE;
-    es->forbidFleeing = FALSE;
-    es->scriptedBattle = TRUE;
+    es->forbidFleeing = false;
+    es->scriptedBattle = true;
     es->songID = -1;
     es->unk_18 = -1;
     es->fadeOutAmount = 0;
@@ -948,7 +948,7 @@ void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage) {
 
     gEncounterState = ENCOUNTER_STATE_PRE_BATTLE;
     gEncounterSubState = ENCOUNTER_SUBSTATE_PRE_BATTLE_INIT;
-    EncounterStateChanged = TRUE;
+    EncounterStateChanged = true;
 }
 
 void dx_debug_begin_battle() {
@@ -974,7 +974,7 @@ void dx_debug_update_select_battle() {
         DebugMenuState = DBM_NONE;
     }
 
-    DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, FALSE);
+    DebugBattleColumn = dx_debug_menu_nav_1D_horizontal(DebugBattleColumn, 0, 4, false);
     if (NAV_UP) {
         s32 value = DebugBattleNum[DebugBattleColumn] + 1;
         if (DebugBattleColumn == DEBUG_BATTLE_STAGE) {
@@ -1018,7 +1018,7 @@ void dx_debug_update_select_battle() {
 // set story byte
 
 DebugEditableNumber DebugStoryProgress = {
-    .isHex = TRUE,
+    .isHex = true,
     .digits = { 0, 0 },
     .size = 2,
     .pos = 0,
@@ -1026,7 +1026,7 @@ DebugEditableNumber DebugStoryProgress = {
 
 void dx_debug_update_edit_progress() {
     if (DebugStateChanged) {
-        s32 val = evt_get_variable(NULL, GB_StoryProgress);
+        s32 val = evt_get_variable(nullptr, GB_StoryProgress);
         dx_debug_set_editable_num(&DebugStoryProgress, val);
     }
 
@@ -1035,7 +1035,7 @@ void dx_debug_update_edit_progress() {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         s32 val = dx_debug_get_editable_num(&DebugStoryProgress);
-        evt_set_variable(NULL, GB_StoryProgress, val);
+        evt_set_variable(nullptr, GB_StoryProgress, val);
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
@@ -1051,12 +1051,12 @@ void dx_debug_update_edit_progress() {
 // sound player
 
 DebugMenuEntry DebugSoundPlayerMenu[] = {
-    { "Play Sound", NULL, DBM_SELECT_SOUND },
-    { "Stop Sound", NULL, DBM_SELECT_SOUND },
+    { "Play Sound", nullptr, DBM_SELECT_SOUND },
+    { "Stop Sound", nullptr, DBM_SELECT_SOUND },
 };
 s32 SoundPlayerMenuPos = 0;
 
-void dx_debug_draw_sound_player(b32 activeMenu) {
+void dx_debug_draw_sound_player(bool activeMenu) {
     s32 idx;
 
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugSoundPlayerMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1074,18 +1074,18 @@ void dx_debug_draw_sound_player(b32 activeMenu) {
 
 void dx_debug_update_sound_player() {
     // handle input
-    SoundPlayerMenuPos = dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, FALSE);
+    SoundPlayerMenuPos = dx_debug_menu_nav_1D_vertical(SoundPlayerMenuPos, 0, ARRAY_COUNT(DebugSoundPlayerMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         DebugMenuState = DBM_SELECT_SOUND;
     }
 
-    dx_debug_draw_sound_player(TRUE);
+    dx_debug_draw_sound_player(true);
 }
 
 DebugEditableNumber DebugSoundID = {
-    .isHex = TRUE,
+    .isHex = true,
     .digits = { 0, 0, 0, 0 },
     .size = 4,
     .pos = 0,
@@ -1105,7 +1105,7 @@ void dx_debug_update_select_sound() {
 
     dx_debug_nav_editable_num(&DebugSoundID);
 
-    dx_debug_draw_sound_player(FALSE);
+    dx_debug_draw_sound_player(false);
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + (4 * RowHeight), 75, 2 * RowHeight + 8, WINDOW_STYLE_20, 192);
     dx_debug_draw_ascii("Sound ID:", DefaultColor, SubmenuPosX, SubmenuPosY + 4 * RowHeight);
     dx_debug_draw_editable_num(&DebugSoundID, SubmenuPosX, SubmenuPosY + 5 * RowHeight);
@@ -1127,18 +1127,18 @@ void dx_debug_update_edit_partners() {
     }
 
     // handle input
-    SelectPartnerMenuPos = dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, FALSE);
-    DebugPartnerLevels[SelectPartnerMenuPos] = dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, FALSE);
+    SelectPartnerMenuPos = dx_debug_menu_nav_1D_vertical(SelectPartnerMenuPos, 1, ARRAY_COUNT(gPlayerData.partners) - 1, false);
+    DebugPartnerLevels[SelectPartnerMenuPos] = dx_debug_menu_nav_1D_horizontal(DebugPartnerLevels[SelectPartnerMenuPos], -1, 2, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
         for (idx = 1; idx < ARRAY_COUNT(gPlayerData.partners); idx++) {
             s32 val = DebugPartnerLevels[idx];
             if (val >= 0) {
-                gPlayerData.partners[idx].enabled = TRUE;
+                gPlayerData.partners[idx].enabled = true;
                 gPlayerData.partners[idx].level = val;
             } else {
-                gPlayerData.partners[idx].enabled = FALSE;
+                gPlayerData.partners[idx].enabled = false;
                 gPlayerData.partners[idx].level = 0;
             }
         }
@@ -1149,7 +1149,7 @@ void dx_debug_update_edit_partners() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 120, 14 * 11 + 8, WINDOW_STYLE_20, 192);
 
     for (idx = 1; idx < ARRAY_COUNT(gPlayerData.partners); idx++) {
-        b32 isSelected = (SelectPartnerMenuPos == idx);
+        bool isSelected = (SelectPartnerMenuPos == idx);
         s32 color = isSelected ? HighlightColor : DefaultColor;
         s32 posY = SubmenuPosY + (idx - 1) * 14;
         s32 level = DebugPartnerLevels[idx];
@@ -1177,14 +1177,14 @@ void dx_debug_update_edit_partners() {
 // edit inventory
 
 DebugMenuEntry DebugInventoryMenu[] = {
-    { "Items", NULL, DBM_INV_EDIT_ITEMS },
-    { "Badges", NULL, DBM_INV_EDIT_BADGES },
-    { "Key Items", NULL, DBM_INV_EDIT_KEYS },
-    { "Equipment", NULL, DBM_INV_EDIT_GEAR },
-    { "Stats", NULL, DBM_INV_EDIT_STATS },
-    { "Coins", NULL, DBM_INV_EDIT_COINS },
-    { "Star Points", NULL, DBM_INV_EDIT_STAR_POINTS },
-    { "Star Pieces", NULL, DBM_INV_EDIT_STAR_PIECES },
+    { "Items", nullptr, DBM_INV_EDIT_ITEMS },
+    { "Badges", nullptr, DBM_INV_EDIT_BADGES },
+    { "Key Items", nullptr, DBM_INV_EDIT_KEYS },
+    { "Equipment", nullptr, DBM_INV_EDIT_GEAR },
+    { "Stats", nullptr, DBM_INV_EDIT_STATS },
+    { "Coins", nullptr, DBM_INV_EDIT_COINS },
+    { "Star Points", nullptr, DBM_INV_EDIT_STAR_POINTS },
+    { "Star Pieces", nullptr, DBM_INV_EDIT_STAR_PIECES },
 };
 s32 InventoryMenuPos = 0;
 
@@ -1192,11 +1192,11 @@ void dx_debug_update_edit_inventory() {
     s32 idx;
 
     // handle input
-    InventoryMenuPos = dx_debug_menu_nav_1D_vertical(InventoryMenuPos, 0, ARRAY_COUNT(DebugInventoryMenu) - 1, FALSE);
+    InventoryMenuPos = dx_debug_menu_nav_1D_vertical(InventoryMenuPos, 0, ARRAY_COUNT(DebugInventoryMenu) - 1, false);
     if (RELEASED(BUTTON_L)) {
         DebugMenuState = DBM_MAIN_MENU;
     } else if (RELEASED(BUTTON_R)) {
-        if (DebugInventoryMenu[InventoryMenuPos].onSelect != NULL) {
+        if (DebugInventoryMenu[InventoryMenuPos].onSelect != nullptr) {
             DebugInventoryMenu[InventoryMenuPos].onSelect();
         } else {
             DebugMenuState = DebugInventoryMenu[InventoryMenuPos].nextState;
@@ -1212,7 +1212,7 @@ void dx_debug_update_edit_inventory() {
     }
 }
 
-b32 DebugEditingItem = FALSE;
+bool DebugEditingItem = false;
 
 #define _MAX_INV_SIZE(a,b,c) MAX(MAX(ARRAY_COUNT(a), ARRAY_COUNT(b)), ARRAY_COUNT(c))
 s8 DebugItemDigits[_MAX_INV_SIZE(gPlayerData.invItems, gPlayerData.keyItems, gPlayerData.badges)][3];
@@ -1295,13 +1295,13 @@ void dx_debug_update_edit_items() {
 
     if (RELEASED(BUTTON_L)) {
         if (DebugEditingItem) {
-            DebugEditingItem = FALSE;
+            DebugEditingItem = false;
         } else {
             DebugMenuState = DBM_EDIT_INVENTORY;
         }
     } else if (RELEASED(BUTTON_R)) {
         if (!DebugEditingItem) {
-            DebugEditingItem = TRUE;
+            DebugEditingItem = true;
         } else {
             for (i = 0; i < invSize; i++) {
                 invItems[i] = dx_debug_get_item_id(i);
@@ -1312,9 +1312,9 @@ void dx_debug_update_edit_items() {
 
     if (DebugEditingItem) {
         s32 digit;
-        menu->col = dx_debug_menu_nav_1D_horizontal(menu->col, 0, 2, FALSE);
+        menu->col = dx_debug_menu_nav_1D_horizontal(menu->col, 0, 2, false);
         digit = DebugItemDigits[menu->pos][menu->col];
-        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 0xF, TRUE);
+        digit = dx_debug_menu_nav_1D_vertical(digit, 0, 0xF, true);
         DebugItemDigits[menu->pos][menu->col] = digit;
     } else {
         if (NAV_UP) {
@@ -1343,14 +1343,14 @@ void dx_debug_update_edit_items() {
     for (i = menu->startPos; i <= menu->startPos + 9; i++) {
         s32 posY = SubmenuPosY + (i - menu->startPos) * RowHeight;
         s32 itemID = dx_debug_get_item_id(i);
-        b32 isSelectedRow = (menu->pos == i);
+        bool isSelectedRow = (menu->pos == i);
 
         if (DebugEditingItem) {
-            dx_debug_draw_editable_number(i, "%02X", -1, FALSE, SubmenuPosX, posY);
+            dx_debug_draw_editable_number(i, "%02X", -1, false, SubmenuPosX, posY);
             dx_debug_draw_editable_number(itemID, "%03X", menu->col, isSelectedRow, SubmenuPosX + 20, posY);
         } else {
             dx_debug_draw_editable_number(i, "%02X", -1, isSelectedRow, SubmenuPosX, posY);
-            dx_debug_draw_editable_number(itemID, "%03X", -1, FALSE, SubmenuPosX + 20, posY);
+            dx_debug_draw_editable_number(itemID, "%03X", -1, false, SubmenuPosX + 20, posY);
         }
 
         s32 itemMsg = MSG_NONE;
@@ -1429,7 +1429,7 @@ void dx_debug_update_edit_gear() {
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
-    DebugGearPos = dx_debug_menu_nav_1D_vertical(DebugGearPos, 0, ARRAY_COUNT(DebugGearValues) - 1, FALSE);
+    DebugGearPos = dx_debug_menu_nav_1D_vertical(DebugGearPos, 0, ARRAY_COUNT(DebugGearValues) - 1, false);
 
     dx = 0;
     if (NAV_RIGHT) {
@@ -1519,7 +1519,7 @@ void dx_debug_update_edit_stats() {
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
-    DebugStatPos = dx_debug_menu_nav_1D_vertical(DebugStatPos, 0, ARRAY_COUNT(DebugStatValues) - 1, FALSE);
+    DebugStatPos = dx_debug_menu_nav_1D_vertical(DebugStatPos, 0, ARRAY_COUNT(DebugStatValues) - 1, false);
 
     dx = 0;
     if (NAV_RIGHT) {
@@ -1569,7 +1569,7 @@ void dx_debug_update_edit_stats() {
 }
 
 DebugEditableNumber DebugCoins = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0, 0 },
     .size = 3,
     .pos = 0,
@@ -1597,7 +1597,7 @@ void dx_debug_update_edit_coins() {
 }
 
 DebugEditableNumber DebugStarPoints = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0 },
     .size = 2,
     .pos = 0,
@@ -1625,7 +1625,7 @@ void dx_debug_update_edit_star_points() {
 }
 
 DebugEditableNumber DebugStarPieces = {
-    .isHex = FALSE,
+    .isHex = false,
     .digits = { 0, 0, 0 },
     .size = 3,
     .pos = 0,
@@ -1677,13 +1677,13 @@ enum {
 };
 
 DebugCollisionEntry DebugCollisionMenu[] = {
-    [DBC_SHOW_COLLISION]  { "Show Collision",  FALSE },
-    [DBC_CULL_BACK]       { "Cull Back",       TRUE },
-    [DBC_SHOW_DISABLED]   { "Show Disabled",   TRUE },
-    [DBC_HIDE_MODELS]     { "Hide Models",     FALSE },
-    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   FALSE },
-    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", FALSE },
-    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  FALSE },
+    [DBC_SHOW_COLLISION]  { "Show Collision",  false },
+    [DBC_CULL_BACK]       { "Cull Back",       true },
+    [DBC_SHOW_DISABLED]   { "Show Disabled",   true },
+    [DBC_HIDE_MODELS]     { "Hide Models",     false },
+    [DBC_EXTRUDE_FACES]   { "Extrude Faces",   false },
+    [DBC_HIGHLIGHT_FLOOR] { "Highlight Floor", false },
+    [DBC_HIGHLIGHT_WALL]  { "Highlight Wall",  false },
     [DBC_FADE_DIST]       { "Near Fade Dist",  1 },
 };
 
@@ -1703,10 +1703,10 @@ void dx_debug_update_view_collision() {
         }
     } else {
         s32 fadeDist = DebugCollisionMenu[DebugCollisionPos].state;
-        fadeDist = dx_debug_menu_nav_1D_horizontal(fadeDist, 0, 9, FALSE);
+        fadeDist = dx_debug_menu_nav_1D_horizontal(fadeDist, 0, 9, false);
         DebugCollisionMenu[DebugCollisionPos].state = fadeDist;
     }
-    DebugCollisionPos = dx_debug_menu_nav_1D_vertical(DebugCollisionPos, 0, ARRAY_COUNT(DebugCollisionMenu) - 1, FALSE);
+    DebugCollisionPos = dx_debug_menu_nav_1D_vertical(DebugCollisionPos, 0, ARRAY_COUNT(DebugCollisionMenu) - 1, false);
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, 8 * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1759,7 +1759,7 @@ s32 DebugVtxPos;
 void dx_debug_draw_collision() {
     DebugTriangle temp;
     s32 rdpBufPos;
-    b32 culling;
+    bool culling;
     s32 fadeDist;
     s32 i, j;
     s32 dist;
@@ -1820,10 +1820,10 @@ void dx_debug_draw_collision() {
 
     if (DebugCollisionMenu[DBC_CULL_BACK].state) {
         gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK | G_SHADING_SMOOTH);
-        culling = TRUE;
+        culling = true;
     } else {
         gSPSetGeometryMode(gMainGfxPos++, G_SHADING_SMOOTH);
-        culling = FALSE;
+        culling = false;
     }
 
     DebugVtxPos = 0;
@@ -1835,12 +1835,12 @@ void dx_debug_draw_collision() {
         ColliderTriangle* tri = debugTri->tri;
         s32 r, g, b, a;
 
-        b32 highlight = FALSE;
+        bool highlight = false;
         if (DebugCollisionMenu[DBC_HIGHLIGHT_FLOOR].state && debugTri->colliderID == gCollisionStatus.curFloor) {
-            highlight = TRUE;
+            highlight = true;
         }
         if (DebugCollisionMenu[DBC_HIGHLIGHT_WALL].state && debugTri->colliderID == gCollisionStatus.curWall) {
-            highlight = TRUE;
+            highlight = true;
         }
 
         if (rdpBufPos == 0) {
@@ -1853,11 +1853,11 @@ void dx_debug_draw_collision() {
             if (!tri->oneSided && culling) {
                 gDPPipeSync(gMainGfxPos++);
                 gSPClearGeometryMode(gMainGfxPos++, G_CULL_BACK);
-                culling = FALSE;
+                culling = false;
             } else if (tri->oneSided && !culling) {
                 gDPPipeSync(gMainGfxPos++);
                 gSPSetGeometryMode(gMainGfxPos++, G_CULL_BACK);
-                culling = TRUE;
+                culling = true;
             }
         }
 
@@ -1902,7 +1902,7 @@ void dx_debug_draw_collision() {
     gDPPipeSync(gMainGfxPos++);
 }
 
-b32 dx_debug_should_hide_models() {
+bool dx_debug_should_hide_models() {
     return DebugCollisionMenu[DBC_HIDE_MODELS].state;
 }
 
@@ -1911,15 +1911,15 @@ b32 dx_debug_should_hide_models() {
 
 typedef struct DebugCheatEntry {
     char* text;
-    b32 enabled;
+    bool enabled;
 } DebugCheatEntry;
 
 DebugCheatEntry DebugCheatMenu[] = {
-    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   FALSE },
-    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", FALSE },
-    [DEBUG_CHEAT_FLY]           { "Fly With L", FALSE },
-    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", FALSE },
-    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", FALSE },
+    [DEBUG_CHEAT_GOD_MODE]      { "God Mode",   false },
+    [DEBUG_CHEAT_SPEED_MODE]    { "Speed Mode", false },
+    [DEBUG_CHEAT_FLY]           { "Fly With L", false },
+    [DEBUG_CHEAT_HIGH_JUMP]     { "High Jump", false },
+    [DEBUG_CHEAT_IGNORE_WALLS]  { "Ignore Walls", false },
 };
 
 s32 DebugCheatPos = 0;
@@ -1955,7 +1955,7 @@ void dx_debug_update_cheat_menu() {
         }
 
     }
-    DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, FALSE);
+    DebugCheatPos = dx_debug_menu_nav_1D_vertical(DebugCheatPos, 0, ARRAY_COUNT(DebugCheatMenu) - 1, false);
 
     // draw
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 120, ARRAY_COUNT(DebugCheatMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1969,7 +1969,7 @@ void dx_debug_update_cheat_menu() {
     }
 }
 
-b32 dx_debug_is_cheat_enabled(DebugCheat cheat) {
+bool dx_debug_is_cheat_enabled(DebugCheat cheat) {
     return DebugCheatMenu[cheat].enabled;
 }
 
@@ -2164,7 +2164,7 @@ void dx_debug_update_evt_list() {
     for (i = 0; i < gScriptListCount; i++) {
         Evt* script = (*gCurrentScriptListPtr)[gScriptIndexList[i]];
 
-        if (script != NULL
+        if (script != nullptr
             && script->id == gScriptIdList[i]
             && script->stateFlags != 0
         ) {
@@ -2174,14 +2174,14 @@ void dx_debug_update_evt_list() {
     }
 
     for (i = DebugEvtCount; i < MAX_SCRIPTS; i++) {
-        DebugEvtList[i] = NULL;
+        DebugEvtList[i] = nullptr;
     }
 }
 
 void dx_debug_evt_capture_vars() {
     s32 i;
 
-    if (DebugEvtAttached == NULL) {
+    if (DebugEvtAttached == nullptr) {
         return;
     }
 
@@ -2298,7 +2298,7 @@ void dx_debug_evt_break_all() {
 
     for (i = 0; i < DebugEvtCount; i++) {
         Evt* script = DebugEvtList[i];
-        script->debugPaused = TRUE;
+        script->debugPaused = true;
         script->debugStep = DEBUG_EVT_STEP_NONE;
     }
 }
@@ -2308,7 +2308,7 @@ void dx_debug_evt_resume_all() {
 
     for (i = 0; i < DebugEvtCount; i++) {
         Evt* script = DebugEvtList[i];
-        script->debugPaused = FALSE;
+        script->debugPaused = false;
         script->debugStep = DEBUG_EVT_STEP_NONE;
     }
 }
@@ -2319,7 +2319,7 @@ void dx_debug_update_evt_main() {
 
     dx_debug_update_evt_list();
 
-    EvtMainMenuPos = dx_debug_menu_nav_1D_vertical(EvtMainMenuPos, 0, DEBUG_EVT_MAIN_COUNT - 1, FALSE);
+    EvtMainMenuPos = dx_debug_menu_nav_1D_vertical(EvtMainMenuPos, 0, DEBUG_EVT_MAIN_COUNT - 1, false);
 
     // handle input
     if (RELEASED(BUTTON_R)) {
@@ -2346,7 +2346,7 @@ void dx_debug_update_evt_select() {
     dx_debug_update_evt_list();
 
     if (DebugEvtCount > 1) {
-        EvtListCurPos = dx_debug_menu_nav_1D_vertical(EvtListCurPos, 0, DebugEvtCount - 1, FALSE);
+        EvtListCurPos = dx_debug_menu_nav_1D_vertical(EvtListCurPos, 0, DebugEvtCount - 1, false);
     } else {
         EvtListCurPos = 0;
     }
@@ -2365,11 +2365,11 @@ void dx_debug_update_evt_select() {
                     dx_debug_evt_capture_vars();
                     break;
                 case DEBUG_EVT_MAIN_BREAK:
-                    DebugEvtList[EvtListCurPos]->debugPaused = TRUE;
+                    DebugEvtList[EvtListCurPos]->debugPaused = true;
                     DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
                     break;
                 case DEBUG_EVT_MAIN_RESUME:
-                    DebugEvtList[EvtListCurPos]->debugPaused = FALSE;
+                    DebugEvtList[EvtListCurPos]->debugPaused = false;
                     DebugEvtList[EvtListCurPos]->debugStep = DEBUG_EVT_STEP_NONE;
                     break;
             }
@@ -2477,7 +2477,7 @@ void dx_debug_evt_draw_vars() {
     }
 }
 
-void dx_debug_evt_draw_arg(u32 value, b32 asDecimal, s32 color, s32 posX, s32 posY) {
+void dx_debug_evt_draw_arg(u32 value, bool asDecimal, s32 color, s32 posX, s32 posY) {
     if (value >= LVar0 && value <= LVarF) {
         dx_debug_draw_number(value - LVar0, "LVar%X", color, 255, posX, posY);
     } else if (asDecimal) {
@@ -2492,7 +2492,7 @@ void dx_debug_evt_draw_disasm() {
     s32 i, j;
     s32 op, nargs;
 
-    if (DebugEvtAttached == NULL) {
+    if (DebugEvtAttached == nullptr) {
         return;
     }
 
@@ -2500,7 +2500,7 @@ void dx_debug_evt_draw_disasm() {
     DebugEvtLineCount = 0;
 
     // find offsets for all lines in script
-    while (TRUE) {
+    while (true) {
         DebugEvtLineOffsets[DebugEvtLineCount] = (u16)(pos - DebugEvtAttached->ptrFirstLine);
 
         if (pos == DebugEvtAttached->ptrCurLine) {
@@ -2546,11 +2546,11 @@ void dx_debug_evt_draw_disasm() {
             case EVT_OP_LOOP:
             case EVT_OP_WAIT_FRAMES:
             case EVT_OP_WAIT_SECS:
-                dx_debug_evt_draw_arg(args[0], TRUE, color, EvtDebugInfoX + 15 + 55, posY);
+                dx_debug_evt_draw_arg(args[0], true, color, EvtDebugInfoX + 15 + 55, posY);
                 break;
             default:
                 for (j = 0; j < MIN(2, nargs); j++) {
-                    dx_debug_evt_draw_arg(args[j], FALSE, color, EvtDebugInfoX + 15 + 55 * (j + 1), posY);
+                    dx_debug_evt_draw_arg(args[j], false, color, EvtDebugInfoX + 15 + 55 * (j + 1), posY);
                 }
                 break;
         }
@@ -2566,16 +2566,16 @@ void dx_debug_evt_draw_disasm() {
 void dx_debug_update_evt_attached() {
     s32 posY;
 
-    if (DebugEvtAttached == NULL) {
+    if (DebugEvtAttached == nullptr) {
         DebugMenuState = DBM_EVT_MAIN;
         return;
     }
 
     // saves worrying about null checks while drawing on the frame we detach the evt
-    b32 detachAfter = FALSE;
+    bool detachAfter = false;
 
-    EvtAttachedMenuPos = dx_debug_menu_nav_1D_vertical(EvtAttachedMenuPos, 0, DEBUG_EVT_ATTACHED_COUNT - 1, FALSE);
-    EvtAttachedDispMode = dx_debug_menu_nav_1D_horizontal(EvtAttachedDispMode, 0, 1, FALSE);
+    EvtAttachedMenuPos = dx_debug_menu_nav_1D_vertical(EvtAttachedMenuPos, 0, DEBUG_EVT_ATTACHED_COUNT - 1, false);
+    EvtAttachedDispMode = dx_debug_menu_nav_1D_horizontal(EvtAttachedDispMode, 0, 1, false);
 
     // handle input
     if (RELEASED(BUTTON_L)) {
@@ -2583,7 +2583,7 @@ void dx_debug_update_evt_attached() {
     } else if (RELEASED(BUTTON_R)) {
         switch (EvtAttachedMenuPos) {
             case DEBUG_EVT_ATTACHED_DETACH:
-                detachAfter = TRUE;
+                detachAfter = true;
                 break;
             case DEBUG_EVT_ATTACHED_BREAK:
                 DebugEvtAttached->debugPaused = !DebugEvtAttached->debugPaused;
@@ -2658,13 +2658,13 @@ void dx_debug_update_evt_attached() {
 
     if (detachAfter) {
         DebugMenuState = DBM_EVT_SELECT;
-        DebugEvtAttached = NULL;
+        DebugEvtAttached = nullptr;
     }
 }
 
 void dx_debug_evt_force_detach(Evt* evt) {
-    if (DebugEvtAttached != NULL && (DebugEvtAttached == evt)) {
-        DebugEvtAttached = NULL;
+    if (DebugEvtAttached != nullptr && (DebugEvtAttached == evt)) {
+        DebugEvtAttached = nullptr;
 
         if (DebugMenuState == DBM_EVT_ATTACHED) {
             DebugMenuState = DBM_EVT_MAIN;
@@ -2673,8 +2673,8 @@ void dx_debug_evt_force_detach(Evt* evt) {
 }
 
 void dx_debug_evt_reset() {
-    if (DebugEvtAttached != NULL) {
-        DebugEvtAttached = NULL;
+    if (DebugEvtAttached != nullptr) {
+        DebugEvtAttached = nullptr;
     }
 
     EvtListCurPos = 0;

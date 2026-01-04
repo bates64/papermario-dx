@@ -4,7 +4,7 @@ s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
     sprintf(wMapShapeName, "pra_05_shape");
     sprintf(wMapHitName, "pra_05_hit");
-    return FALSE;
+    return false;
 }
 
 #include "../common/Reflection.inc.c"
@@ -12,7 +12,7 @@ s32 N(map_init)(void) {
 
 EvtScript N(EVS_ExitDoors_pra_10_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_12_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, MODEL_o772)

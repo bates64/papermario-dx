@@ -21,7 +21,7 @@ s32 osSendMesg(OSMesgQueue *mq, OSMesg msg, s32 flags)
     last = (mq->first + mq->validCount) % mq->msgCount;
     mq->msg[last] = msg;
     mq->validCount++;
-    if (mq->mtqueue->next != NULL)
+    if (mq->mtqueue->next != nullptr)
     {
         osStartThread(__osPopThread(&mq->mtqueue));
     }
