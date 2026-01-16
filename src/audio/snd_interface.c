@@ -453,7 +453,7 @@ AuResult snd_song_load(s32 songID, s32 playerIndex) {
     if (bgmFile != nullptr) {
         return au_load_song_files(songID, bgmFile, player);
     } else {
-        return AU_ERROR_nullptr_SONG_NAME;
+        return AU_ERROR_NULL_SONG_NAME;
     }
 }
 

@@ -66,13 +66,13 @@
 #define GIO_RDB_READ_INTR_BIT	0x40000000
 
 /* debug command */
-#define DEBUG_COMMAND_nullptr	0
+#define DEBUG_COMMAND_NULL  	0
 #define DEBUG_COMMAND_MEMORY	1
 #define DEBUG_COMMAND_REGISTER	2
 #define DEBUG_COMMAND_INVALID	255
 
 /* debug state */
-#define DEBUG_STATE_nullptr	0
+#define DEBUG_STATE_NULL	0
 #define DEBUG_STATE_RECEIVE	1
 #define DEBUG_STATE_INVALID	255
 

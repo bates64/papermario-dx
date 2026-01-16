@@ -23,7 +23,7 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
 enum CameraSettingsPtrType {
     CAMERA_SETTINGS_PTR_MINUS_2     = -2,
     CAMERA_SETTINGS_PTR_MINUS_1     = -1,
-    CAMERA_SETTINGS_PTR_nullptr        = 0,
+    CAMERA_SETTINGS_PTR_NULL        = 0,
 };
 
 void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* configuration, f32 x, f32 y, f32 z)
@@ -72,7 +72,7 @@ void update_camera_from_controller(
     z = z1;
 
     if ((s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_2 && (s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_1) {
-        if (curSettings == CAMERA_SETTINGS_PTR_nullptr) {
+        if (curSettings == CAMERA_SETTINGS_PTR_NULL) {
             curRig->targetPos.x = x;
             curRig->targetPos.y = y;
             curRig->targetPos.z = z;
@@ -254,7 +254,7 @@ void update_camera_from_controller(
                         prevSettings = *prevSettingsPtr;
                         if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                 && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
+                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
                             && prevSettings->type == curSettings->type
                             && prevSettings->boomLength == curSettings->boomLength
                             && prevSettings->boomPitch == curSettings->boomPitch
@@ -312,7 +312,7 @@ void update_camera_from_controller(
                             prevSettings = *prevSettingsPtr;
                             if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                     && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
+                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)
@@ -374,7 +374,7 @@ void update_camera_from_controller(
                             prevSettings = *prevSettingsPtr;
                             if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
                                     && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_nullptr)
+                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)

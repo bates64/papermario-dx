@@ -94,7 +94,7 @@ s32 FLANGE_PARAMS[] = {
         0,      1,      0, 0x5FFF, 0x7FFF,    380,    500,      0
 };
 
-s32 nullptr_PARAMS[] = {
+s32 NULL_PARAMS[] = {
     /* sections    length */
         0,              0,
     /*                                      chorus  chorus   filter
@@ -104,7 +104,7 @@ s32 nullptr_PARAMS[] = {
 
 // up to four custom effects can be defined and installed here at runtime
 s32* AU_FX_CUSTOM_PARAMS[] = {
-    nullptr_PARAMS, nullptr_PARAMS, nullptr_PARAMS, nullptr_PARAMS
+    NULL_PARAMS, NULL_PARAMS, NULL_PARAMS, NULL_PARAMS
 };
 
 static void _init_lpfilter(AuLowPass* filter) {
@@ -216,7 +216,7 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
             params = BIG_ROOM_PARAMS;
             break;
         default:
-            params = nullptr_PARAMS;
+            params = NULL_PARAMS;
             break;
     }
 

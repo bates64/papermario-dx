@@ -219,7 +219,7 @@ AuResult au_bgm_process_init_song(SongStartRequest* request) {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
     return status;
 }
@@ -238,7 +238,7 @@ AuResult au_bgm_stop_song(s32 songName) {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
 
     return status;
@@ -270,7 +270,7 @@ AuResult au_bgm_is_song_playing(s32 songName) {
             result = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        result = AU_ERROR_nullptr_SONG_NAME;
+        result = AU_ERROR_NULL_SONG_NAME;
     }
 
     return result;
@@ -316,7 +316,7 @@ AuResult au_bgm_process_fade_out(SongFadeOutRequest* request) {
             status = AU_ERROR_INVALID_SONG_DURATION;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
     return status;
 }
@@ -387,7 +387,7 @@ AuResult au_bgm_process_suspend(SongSuspendRequest* request, bool skipStop) {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
     return status;
 }
@@ -465,7 +465,7 @@ AuResult au_bgm_process_resume(SongResumeRequest* request) {
             }
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
     return status;
 }
@@ -515,7 +515,7 @@ AuResult au_bgm_adjust_volume(SongStartRequest* request) {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
     return status;
 }
@@ -883,12 +883,12 @@ void au_bgm_player_read_composition(BGMPlayer* player) {
                 case BGM_COMP_END_LOOP << 16:
                     au_bgm_end_composition_loop(player, cmd);
                     break;
-                case BGM_COMP_END_COND_LOOP_false << 16:
+                case BGM_COMP_END_COND_LOOP_FALSE << 16:
                     if (!(player->conditionalLoopFlags & 1)) {
                         au_bgm_end_composition_loop(player, cmd);
                     }
                     break;
-                case BGM_COMP_END_COND_LOOP_true << 16:
+                case BGM_COMP_END_COND_LOOP_TRUE << 16:
                     if (player->conditionalLoopFlags & 1) {
                         au_bgm_end_composition_loop(player, cmd);
                     }
@@ -2136,7 +2136,7 @@ AuResult au_bgm_set_linked_tracks(SongSwapLinkedRequest* request) {
             status = AU_ERROR_SONG_NOT_PLAYING;
         }
     } else {
-        status = AU_ERROR_nullptr_SONG_NAME;
+        status = AU_ERROR_NULL_SONG_NAME;
     }
 
     return status;
