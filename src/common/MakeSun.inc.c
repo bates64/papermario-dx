@@ -21,7 +21,7 @@ API_CALLABLE(N(SpawnSunEffect)) {
     u32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(RightSunMaps)); i++) {
-        if (strcmp(gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID].id, N(RightSunMaps)[i]) == 0) {
+        if (strcmp(get_current_map_config()->id, N(RightSunMaps)[i]) == 0) {
             direction = FX_SUN_FROM_RIGHT;
             break;
         }

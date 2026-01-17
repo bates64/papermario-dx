@@ -166,7 +166,7 @@ void state_step_unpause(void) {
                     pause_cleanup();
                     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                     mapSettings = get_current_map_settings();
-                    mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
+                    mapConfig = get_current_map_config();
                     gGameStatusPtr->context = CONTEXT_WORLD;
                     gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
                     func_8005AF84();

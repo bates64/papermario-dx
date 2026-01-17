@@ -1,5 +1,6 @@
 #include "common.h"
 #include "ld_addrs.h"
+#include "map.h"
 #include "npc.h"
 #include "hud_element.h"
 #include "rumble.h"

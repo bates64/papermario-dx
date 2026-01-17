@@ -1,4 +1,5 @@
 #include "common.h"
+#include "map.h"
 #include "npc.h"
 #include "audio.h"
 
@@ -52,9 +53,7 @@ s32 bgm_get_map_default_variation(s32 songID) {
 
     for (i = 0; i < ARRAY_COUNT(SongsUsingVariationFlag); i++) {
         if (SongsUsingVariationFlag[i] == songID) {
-            MapConfig* map = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
-
-            return map->songVariation & 1;
+            return get_current_map_config()->songVariation & 1;
         }
     }
 

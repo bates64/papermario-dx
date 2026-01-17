@@ -143,7 +143,7 @@ void state_step_end_battle(void) {
             nuContRmbForceStopEnd();
             sfx_stop_env_sounds();
             mapSettings = get_current_map_settings();
-            mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
+            mapConfig = get_current_map_config();
             btl_restore_world_cameras();
             gGameStatusPtr->context = CONTEXT_WORLD;
             func_8005AF84();

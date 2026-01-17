@@ -58,6 +58,7 @@ typedef struct AreaConfig {
     /* 0x0C */ char* name; ///< JP debug name.
 } AreaConfig; // size = 0x10
 
+MapConfig* get_current_map_config(void);
 MapSettings* get_current_map_settings(void);
 
 extern char wMapTexName[];
