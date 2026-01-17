@@ -1,12 +1,13 @@
 #include "common.h"
+#include "functions.h"
 #include "game_modes.h"
 
 // args: start, end, duration, EasingType
 API_CALLABLE(MakeLerp) {
     Bytecode* ptrReadPos = script->ptrReadPos;
 
-    script->varTable[0xC] = evt_get_variable(script, *ptrReadPos++); // start
-    script->varTable[0xD] = evt_get_variable(script, *ptrReadPos++); // end
+    script->varTableF[0xC] = evt_get_float_variable(script, *ptrReadPos++); // start
+    script->varTableF[0xD] = evt_get_float_variable(script, *ptrReadPos++); // end
     script->varTable[0xF] = evt_get_variable(script, *ptrReadPos++); // duration
     script->varTable[0xB] = evt_get_variable(script, *ptrReadPos++); // easing type
     script->varTable[0xE] = 0; // elapsed
@@ -15,18 +16,18 @@ API_CALLABLE(MakeLerp) {
 }
 
 API_CALLABLE(UpdateLerp) {
-    script->varTable[0x0] = (s32) update_lerp(
-                                script->varTable[0xB],
-                                script->varTable[0xC],
-                                script->varTable[0xD],
-                                script->varTable[0xE],
-                                script->varTable[0xF]
-                            );
+    evt_set_float_variable(script, LVar0, update_lerp(
+        script->varTable[0xB],
+        script->varTableF[0xC],
+        script->varTableF[0xD],
+        script->varTable[0xE],
+        script->varTable[0xF]
+    ));
 
     if (script->varTable[0xE] >= script->varTable[0xF]) {
-        script->varTable[0x1] = 0; // finished
+        script->varTable[0x1] = false; // finished
     } else {
-        script->varTable[0x1] = 1; // lerping
+        script->varTable[0x1] = true; // lerping
     }
     script->varTable[0xE]++;
 
