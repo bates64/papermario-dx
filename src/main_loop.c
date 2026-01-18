@@ -379,7 +379,8 @@ void load_engine_data(void) {
     run_global_ctors();
 
     register_vanilla_areas();
-    // TODO: load mods
+    void load_all_mods(void);
+    load_all_mods();
 }
 
 /// Time freeze modes:

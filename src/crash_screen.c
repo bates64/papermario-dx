@@ -395,7 +395,7 @@ void crash_screen_draw(OSThread* faultedThread) {
     y += 10;
 
     if (crash_screen_stable_sort_logs()) {
-        crash_screen_printf_proportional(x, y, "Logs (most recent first):");
+        crash_screen_printf_proportional(x, y, "Logs:");
         y += 10;
 
         for (i = 0; i < ARRAY_COUNT(DebugConsole); i++) {

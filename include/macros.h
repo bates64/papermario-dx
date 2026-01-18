@@ -55,7 +55,7 @@
 #define PANIC() IS_DEBUG_PANIC("Panic")
 #define PANIC_MSG(msg, args...) \
     do { \
-        char panicMsg[0x40]; \
+        char panicMsg[0x80]; \
         sprintf(panicMsg, msg, ##args); \
         IS_DEBUG_PANIC(msg); \
     } while (0)

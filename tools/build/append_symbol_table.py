@@ -5,6 +5,7 @@ import sys
 import io
 
 
+# "Unknown 1" in header.s
 SYMBOL_TABLE_PTR_ROM_ADDR = 0x18
 
 
@@ -60,11 +61,6 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
 
     # sort by address
     symbols.sort(key=lambda x: x[0])
-
-    # print all symbols from *world.c
-    for addr, name, file_basename, line_number in symbols:
-        if file_basename.endswith("world.c"):
-            print(f"0x{addr:08X} {name} {file_basename}:{line_number}")
 
     return symbols
 

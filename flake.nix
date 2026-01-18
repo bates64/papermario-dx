@@ -9,6 +9,9 @@
 
     star-rod.url = "github:z64a/star-rod/9339cb4e867514267ff8ab404b00b53e5a5e67dd";
     star-rod.inputs.nixpkgs.follows = "nixpkgs";
+
+    libdragon.url = "github:DragonMinded/libdragon/trunk";
+    libdragon.flake = false;
   };
   nixConfig = {
     extra-substituters = [
@@ -20,7 +23,7 @@
       "papermario-dx-aarch64-darwin.cachix.org-1:Tr3Kx63xvrTDCOELacSPjMC3Re0Nwg2WBRSprH3eMU0="
     ];
   };
-  outputs = { self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, nixpkgs-binutils-2_39, star-rod, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         crossSystem = {
@@ -33,6 +36,7 @@
         pkgs = import nixpkgs { inherit system; };
         pkgsCross = import nixpkgs { inherit system crossSystem; };
         binutils2_39 = (import nixpkgs-binutils-2_39 { inherit system crossSystem; }).buildPackages.binutilsNoLibc;
+        libdragonPkgs = pkgs.callPackage ./tools/libdragon.nix { inherit inputs; };
         baseRom = pkgs.requireFile {
           name = "papermario.us.z64";
           message = ''
@@ -74,10 +78,12 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
+            libdragonPkgs.tools
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+            export LIBDRAGON_INCLUDE="-I${libdragonPkgs.includePath}"
 
             # Install python packages (TODO: use derivations)
             virtualenv venv --quiet

@@ -1,7 +1,6 @@
 #pragma once
 #include "common.h"
 #include "dx/debug_menu.h"
-#include "functions.h"
 #include <stdint.h>
 #include <new>
 
@@ -14,10 +13,6 @@ typedef struct RegistryKey RegistryKey;
 #else
 
 namespace registry {
-
-/// Global heap for registry allocations.
-/// General heap is cleared between game states so we can't use that.
-extern BSS HeapNode heap[];
 
 /// Mix function for hash table indexing
 static u16 mix16(u16 x) {
@@ -110,7 +105,7 @@ class Registry {
             while (layer) {
                 Layer* next = layer->next;
                 layer->~Layer();
-                _heap_free(heap, layer);
+                ::operator delete(layer);
                 layer = next;
             }
         }
@@ -125,7 +120,7 @@ class Registry {
         Entry*  old     = table;
 
         cap = (cap != 0) ? (cap * 2) : 128; // Double in capacity
-        table = (Entry*)_heap_malloc(heap, (size_t)cap * sizeof(Entry));
+        table = static_cast<Entry*>(::operator new[]((size_t)cap * sizeof(Entry)));
         for (u16 i = 0; i < cap; ++i) {
             ::new (&table[i]) Entry();
         }
@@ -144,7 +139,12 @@ class Registry {
             ++size;
         }
 
-        if (old != nullptr) _heap_free(heap, old);
+        if (old != nullptr) {
+            for (u16 i = 0; i < old_cap; ++i) {
+                old[i].~Entry();
+            }
+            ::operator delete[](old);
+        }
     }
 
 public:
@@ -179,7 +179,7 @@ public:
             if (e.top == nullptr) {
                 e.name = key.name;
 
-                Layer* new_layer = (Layer*)_heap_malloc(heap, sizeof(Layer));
+                Layer* new_layer = static_cast<Layer*>(::operator new(sizeof(Layer)));
                 ::new (new_layer) Layer{ key.mod, true, value, nullptr };
                 e.top = new_layer;
                 ++size;
@@ -201,7 +201,7 @@ public:
                 }
 
                 // Mod not found, insert new layer at top of stack
-                Layer* new_layer = (Layer*)_heap_malloc(heap, sizeof(Layer));
+                Layer* new_layer = static_cast<Layer*>(::operator new(sizeof(Layer)));
                 ::new (new_layer) Layer{ key.mod, true, value, nullptr };
                 e.top = new_layer;
                 return;
@@ -386,7 +386,7 @@ public:
         for (u16 i = 0; i < cap; ++i) {
             table[i].~Entry();
         }
-        _heap_free(heap, table);
+        ::operator delete[](table);
         table = nullptr;
         cap = 0;
         size = 0;

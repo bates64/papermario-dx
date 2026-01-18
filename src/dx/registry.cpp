@@ -2,15 +2,7 @@
 #include "registry.h"
 #include <stdint.h>
 
-extern HeapNode heap_generalHead;
-
 namespace registry {
-
-HeapNode heap[0x4000];
-
-__attribute__((constructor)) void create_heap() {
-    _heap_create(heap, sizeof(heap));
-}
 
 /// Hash function for interned strings
 static uint16_t fnv1a16(const char* s, uint16_t len) {
@@ -19,7 +11,7 @@ static uint16_t fnv1a16(const char* s, uint16_t len) {
         h ^= (uint8_t)s[i];
         h *= 0x0101u;              // 16-bit FNV prime (257)
     }
-    return h ? h : 1u;
+    return (h != 0) ? h : 1u;
 }
 
 String*   String::table = nullptr;
@@ -31,17 +23,21 @@ void String::init() {
 
     cap = 256;
     size = 0;
-    table = (String*)_heap_malloc(heap, sizeof(String) * cap);
-    memset(table, 0, sizeof(String) * cap);
+    table = static_cast<String*>(::operator new[](cap * sizeof(String)));
+    for (u16 i = 0; i < cap; ++i) {
+        ::new (&table[i]) String(nullptr);
+    }
 }
 
 void String::grow() {
     u16 old_cap = cap;
     String*  old     = table;
 
-    cap = cap ? (cap * 2) : 256; // Double in capacity
-    table = (String*)_heap_malloc(heap, (size_t)cap * sizeof(String));
-    memset(table, 0, sizeof(String) * cap);
+    cap = (cap != 0) ? (cap * 2) : 256; // Double in capacity
+    table = static_cast<String*>(::operator new[](cap * sizeof(String)));
+    for (u16 i = 0; i < cap; ++i) {
+        ::new (&table[i]) String(nullptr);
+    }
 
     size = 0;
 
@@ -49,7 +45,7 @@ void String::grow() {
     u16 mask = cap - 1;
     for (u16 i = 0; i < old_cap; ++i) {
         String e = old[i];
-        if (!e.ptr) continue;
+        if (e.ptr == nullptr) continue;
 
         u16 j = mix16(e.hash) & mask;
         while (table[j].ptr != nullptr) j = (j + 1) & mask;
@@ -57,7 +53,10 @@ void String::grow() {
         ++size;
     }
 
-    _heap_free(heap, old);
+    for (u16 i = 0; i < old_cap; ++i) {
+        old[i].~String();
+    }
+    ::operator delete[](old);
 }
 
 String* String::intern_slot(const char* s) {
@@ -80,8 +79,8 @@ String* String::intern_slot(const char* s) {
         // Empty slot, insert here
         if (e.ptr == nullptr) {
             // Reallocate the string to make sure its owned by the general heap
-            char* p = (char*)_heap_malloc(heap, (size_t)l + 1);
-            if (l) memcpy(p, s, l);
+            char* p = new char[(size_t)l + 1];
+            if (l != 0) memcpy(p, s, l);
             p[l] = '\0';
 
             e.hash = h;
