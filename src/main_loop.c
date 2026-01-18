@@ -1,4 +1,5 @@
 #include "common.h"
+#include <stdint.h>
 #include "nu/nusys.h"
 #include "ld_addrs.h"
 #include "hud_element.h"
@@ -6,6 +7,7 @@
 #include "overlay.h"
 #include "game_modes.h"
 #include "dx/profiling.h"
+#include "world/world.h"
 
 s32 gOverrideFlags;
 s32 gTimeFreezeMode;
@@ -46,6 +48,29 @@ u16 D_800741F2 = 0;
 s32 gCurrentDisplayContextIndex = 0;
 s32 gPauseBackgroundFade = 0;
 s32 D_800741FC = 0;
+
+typedef void (*ctor_fn)(void);
+
+extern ctor_fn __preinit_array_start[];
+extern ctor_fn __preinit_array_end[];
+extern ctor_fn __init_array_start[];
+extern ctor_fn __init_array_end[];
+
+static void run_array(ctor_fn* a, ctor_fn* b) {
+    for (; a != b; ++a) {
+        if (*a) (*a)();
+    }
+}
+
+void run_global_ctors(void) {
+    run_array(__preinit_array_start, __preinit_array_end);
+    run_array(__init_array_start, __init_array_end);
+}
+
+// Stubs for C++ global destructors - they are never called
+void* __dso_handle = (void*)&__dso_handle;
+int __cxa_atexit(void (*)(void*), void*, void*) { return 0; }
+void __cxa_finalize(void*) {}
 
 void gfx_init_state(void);
 void gfx_draw_background(void);
@@ -345,6 +370,16 @@ void load_engine_data(void) {
 
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
     set_game_mode(GAME_MODE_STARTUP);
+
+    // Run global constructors. This happens down here because we want to make sure that heaps etc are set up first.
+    extern Addr ctors_ROM_START;
+    extern Addr ctors_ROM_END;
+    extern Addr ctors_VRAM;
+    DMA_COPY_SEGMENT(ctors);
+    run_global_ctors();
+
+    register_vanilla_areas();
+    // TODO: load mods
 }
 
 /// Time freeze modes:
@@ -389,6 +424,3 @@ s32 get_time_freeze_mode(void) {
     return gTimeFreezeMode;
 }
 
-#if VERSION_IQUE
-static const f32 rodata_padding[] = {0.0f, 0.0f};
-#endif

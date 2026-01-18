@@ -1,7 +1,9 @@
-#ifndef _WORLD_SURFACES_H
-#define _WORLD_SURFACES_H
-
+#pragma once
 #include "common.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 enum SurfaceWalkEffect {
     SURFACE_WALK_FX_STANDARD,   // puffs of dust follow the player
@@ -21,4 +23,7 @@ void surface_set_walk_effect(s32 effect);
 /// @evtapi
 API_CALLABLE(SetSurfaceWalkEffect);
 
+#ifdef __cplusplus
+} // extern "C"
 #endif
+

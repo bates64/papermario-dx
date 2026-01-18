@@ -71,12 +71,12 @@ s32 HighlightColor;
 
 // data grabbed during map or battle load
 
-char LastMapName[16];
-char LastStageName[16];
+char LastMapName[24];
+char LastStageName[24];
 s32 LastMapEntry;
 s32 LastBattleID;
 
-void dx_debug_set_map_info(char* mapName, s32 entryID) {
+void dx_debug_set_map_info(const char* mapName, s32 entryID) {
     strcpy(LastMapName, mapName);
     LastMapEntry = entryID;
 }
@@ -2689,8 +2689,8 @@ void dx_debug_update_banner() {
     s32 effect;
 
     if (gGameStatus.context == CONTEXT_WORLD) {
-        sprintf(fmtBuf, "Map: %7s (%lX)", LastMapName, LastMapEntry);
-        dx_debug_draw_ascii(fmtBuf, DefaultColor, 220, BottomRowY);
+        sprintf(fmtBuf, "Map: %19s (%lX)", LastMapName, LastMapEntry);
+        dx_debug_draw_ascii(fmtBuf, DefaultColor, 170, BottomRowY);
 
         dx_debug_draw_ascii("Pos:", DefaultColor, 20, BottomRowY);
 
@@ -2716,7 +2716,7 @@ void dx_debug_update_banner() {
         sprintf(fmtBuf, "Battle:  %02lX-%02lX (%lX)", areaID, battleID, stageID);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 200, BottomRowY);
 
-        sprintf(fmtBuf, "Stage:  %-15s", LastStageName);
+        sprintf(fmtBuf, "Stage:  %-23s", LastStageName);
         dx_debug_draw_ascii(fmtBuf, DefaultColor, 20, BottomRowY);
 
         if (dx_debug_is_cheat_enabled(DEBUG_CHEAT_GOD_MODE)) {
@@ -2728,14 +2728,7 @@ void dx_debug_update_banner() {
 // ----------------------------------------------------------------------------
 // console printing
 
-#define DEBUG_CONSOLE_DEFAULT_TIMELEFT 60
-#define DEBUG_CONSOLE_MSG_BUF_SIZE 85
-
-typedef struct DebugConsoleLine {
-    u32 hash;
-    s32 timeLeft;
-    u8 buf[DEBUG_CONSOLE_MSG_BUF_SIZE];
-} DebugConsoleLine;
+#define DEBUG_CONSOLE_DEFAULT_TIMELEFT (30 * 4)
 
 DebugConsoleLine DebugConsoleLine0 = { 0 };
 DebugConsoleLine DebugConsoleLine1 = { 0 };
@@ -2823,6 +2816,8 @@ void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...
 
         DebugConsole[matchedLine]->hash = hash;
         DebugConsole[matchedLine]->timeLeft = DEBUG_CONSOLE_DEFAULT_TIMELEFT;
+
+        strncpy(DebugConsole[matchedLine]->asciiBuf, fmtBuf, sizeof(DebugConsole[matchedLine]->asciiBuf) - 1);
     }
 }
 

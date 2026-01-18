@@ -1,4 +1,5 @@
 #include "common.h"
+#include "world/world.h"
 #include "ld_addrs.h"
 #include "map.h"
 #include "npc.h"
@@ -8,6 +9,8 @@
 #include "model.h"
 #include <string.h>
 #include "world/surfaces.h"
+#include "dx/registry.h"
+#include "dx/versioning.h"
 
 #ifdef SHIFT
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
@@ -19,6 +22,9 @@
 
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
+
+registry::Registry<MapConfig> MapRegistry;
+registry::Registry<AreaConfig> AreaRegistry;
 
 BSS MapConfig* gMapConfig;
 BSS MapSettings gMapSettings;
@@ -37,8 +43,7 @@ typedef struct {
     /* 0x18 */ u32 decompressedLength;
 } AssetHeader; // size = 0x1C
 
-void fio_deserialize_state(void);
-void load_map_hit_asset(void);
+EXTERN_C void load_map_hit_asset(void);
 
 #if defined(SHIFT) || VERSION_IQUE
 #define shim_general_heap_create_obfuscated general_heap_create
@@ -55,7 +60,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     MapConfig* mapConfig;
     MapSettings* mapSettings;
     char texStr[17];
-    s32 decompressedSize;
+    u32 decompressedSize;
 
     sfx_stop_env_sounds();
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
@@ -87,19 +92,35 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
             fio_deserialize_state();
             areaID = gGameStatusPtr->areaID;
             mapID = gGameStatusPtr->mapID;
-            gGameStatusPtr->prevArea = areaID;
+            gGameStatusPtr->prevArea = gGameStatusPtr->areaID;
             gGameStatusPtr->loadType = LOAD_FROM_FILE_SELECT;
             break;
     }
 
     gGameStatusPtr->mapShop = nullptr;
 
-    ASSERT_MSG(areaID < ARRAY_COUNT(gAreas) - 1, "Invalid area ID %d", areaID);
-    ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
-    mapConfig = &gAreas[areaID].maps[mapID];
+    // Look up area
+    AreaConfig* area = AreaRegistry.try_get_by_index(areaID);
+    if (area == nullptr) {
+        PANIC_MSG("Invalid areaID %d", areaID);
+    }
+
+    // Look up map
+    if (mapID < 0 || mapID >= area->mapCount) {
+        PANIC_MSG("Invalid mapID %d for area %s", mapID, area->id);
+    }
+    const char* id = area->maps[mapID].id; // TODO: store only id in AreaConfig's maps array
+    mapConfig = MapRegistry.try_get(registry::String(id));
+    if (mapConfig == nullptr) {
+        PANIC_MSG("Map not registered: %s", id);
+    }
 
     #if DX_DEBUG_MENU
-    dx_debug_set_map_info(mapConfig->id, gGameStatus.entryID);
+    const auto& mod = MapRegistry.get_mod(registry::String(id));
+    char buf[32];
+    sprintf(buf, "%s:%s", mod.c_str(), mapConfig->id);
+    buf[ARRAY_COUNT(buf) - 1] = '\0';
+    dx_debug_set_map_info(buf, gGameStatus.entryID);
     #endif
 
     sprintf(wMapShapeName, "%s_shape", mapConfig->id);
@@ -115,7 +136,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     load_map_script_lib();
 
     if (mapConfig->dmaStart != nullptr) {
-        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
+        dma_copy((u8*)mapConfig->dmaStart, (u8*)mapConfig->dmaEnd, (u8*)mapConfig->dmaDest);
     }
 
     gMapSettings = *mapConfig->settings;
@@ -226,23 +247,23 @@ MapSettings* get_current_map_settings(void) {
     return &gMapSettings;
 }
 
+// TODO: change to u16
+/// Search all areas for a map with this name
 NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
-    s32 i;
-    s32 j;
-    MapConfig* maps;
+    bool found = false;
+    AreaRegistry.for_each([&](u16 i, registry::String name, AreaConfig& area) {
+        debug_printf("Searching area %s for map %s\n", area.id, mapName);
 
-    // TODO: Potentially a fake match? Difficult to not set the temp in the for conditional.
-    for (i = 0; (maps = gAreas[i].maps) != nullptr; i++) {
-        for (j = 0; j < gAreas[i].mapCount; j++) {
-            if (strcmp(maps[j].id, mapName) == 0) {
+        for (u16 j = 0; j < area.mapCount; j++) {
+            debug_printf("  Checking map %s\n", area.maps[j].id);
+            if (strcmp(area.maps[j].id, mapName) == 0) {
                 *areaID = i;
                 *mapID = j;
-                return true;
+                found = true;
             }
         }
-    }
-
-    return false;
+    });
+    return found;
 }
 
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID) {
@@ -256,7 +277,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     void* ret;
 
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = heap_malloc(firstHeader.offset);
+    assetTableBuffer = (AssetHeader*)heap_malloc(firstHeader.offset);
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
@@ -271,14 +292,14 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     return ret;
 }
 
-s32 get_asset_offset(char* assetName, s32* compressedSize) {
+s32 get_asset_offset(char* assetName, u32* compressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
     AssetHeader* curAsset;
     s32 ret;
 
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = heap_malloc(firstHeader.offset);
+    assetTableBuffer = (AssetHeader*)heap_malloc(firstHeader.offset);
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
@@ -304,8 +325,38 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
     MAP(map), \
     .init = &map##_map_init \
 
-/// Toad Town
+extern "C" {
 #include "area_mac/mac.h"
+#include "area_tik/tik.h"
+#include "area_kgr/kgr.h"
+#include "area_kmr/kmr.h"
+#include "area_iwa/iwa.h"
+#include "area_sbk/sbk.h"
+#include "area_dro/dro.h"
+#include "area_isk/isk.h"
+#include "area_trd/trd.h"
+#include "area_nok/nok.h"
+#include "area_hos/hos.h"
+#include "area_kpa/kpa.h"
+#include "area_osr/osr.h"
+#include "area_kkj/kkj.h"
+#include "area_jan/jan.h"
+#include "area_mim/mim.h"
+#include "area_obk/obk.h"
+#include "area_arn/arn.h"
+#include "area_dgb/dgb.h"
+#include "area_kzn/kzn.h"
+#include "area_flo/flo.h"
+#include "area_sam/sam.h"
+#include "area_pra/pra.h"
+#include "area_omo/omo.h"
+#include "area_tst/tst.h"
+#include "area_end/end.h"
+#include "area_mgm/mgm.h"
+#include "area_gv/gv.h"
+}
+
+/// Toad Town
 MapConfig mac_maps[] = {
     { MAP(machi), .bgName = "nok_bg" },
     { MAP(mac_00), .bgName = "nok_bg" },
@@ -318,7 +369,6 @@ MapConfig mac_maps[] = {
 };
 
 /// Toad Town Tunnels
-#include "area_tik/tik.h"
 MapConfig tik_maps[] = {
     { MAP(tik_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(tik_02), .songVariation = 1, .sfxReverb = 2 },
@@ -345,14 +395,12 @@ MapConfig tik_maps[] = {
 };
 
 /// Inside the Whale
-#include "area_kgr/kgr.h"
 MapConfig kgr_maps[] = {
     { MAP(kgr_01), .sfxReverb = 1 },
     { MAP(kgr_02), .sfxReverb = 1 },
 };
 
 /// Goomba Region
-#include "area_kmr/kmr.h"
 MapConfig kmr_maps[] = {
     { MAP(kmr_00), .bgName = "kmr_bg", .sfxReverb = 1 },
     { MAP(kmr_02), .bgName = "kmr_bg" },
@@ -374,7 +422,6 @@ MapConfig kmr_maps[] = {
 };
 
 /// Mt. Rugged
-#include "area_iwa/iwa.h"
 MapConfig iwa_maps[] = {
     { MAP(iwa_00), .bgName = "iwa_bg" },
     { MAP(iwa_01), .bgName = "iwa_bg" },
@@ -386,14 +433,12 @@ MapConfig iwa_maps[] = {
 };
 
 /// Dry Dry Outpost
-#include "area_dro/dro.h"
 MapConfig dro_maps[] = {
     { MAP(dro_01), .bgName = "sbk_bg" },
     { MAP(dro_02), .bgName = "sbk_bg" },
 };
 
 /// Dry Dry Desert
-#include "area_sbk/sbk.h"
 MapConfig sbk_maps[] = {
     { MAP(sbk_00), .bgName = "sbk_bg" },
     { MAP(sbk_01), .bgName = "sbk_bg" },
@@ -448,7 +493,6 @@ MapConfig sbk_maps[] = {
 };
 
 /// Dry Dry Ruins
-#include "area_isk/isk.h"
 MapConfig isk_maps[] = {
     { MAP(isk_01), .bgName = "sbk3_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(isk_02), .bgName = "sbk3_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -470,7 +514,6 @@ MapConfig isk_maps[] = {
 };
 
 /// Koopa Bros. Fortress
-#include "area_trd/trd.h"
 MapConfig trd_maps[] = {
     { MAP(trd_00), .bgName = "nok_bg" },
     { MAP(trd_01), .songVariation = 1, .sfxReverb = 3 },
@@ -486,7 +529,6 @@ MapConfig trd_maps[] = {
 };
 
 /// Koopa Region
-#include "area_nok/nok.h"
 MapConfig nok_maps[] = {
     { MAP(nok_01), .bgName = "nok_bg" },
     { MAP(nok_02), .bgName = "nok_bg" },
@@ -500,7 +542,6 @@ MapConfig nok_maps[] = {
 };
 
 /// Star Region
-#include "area_hos/hos.h"
 MapConfig hos_maps[] = {
     { MAP_WITH_INIT(hos_00), .bgName = "nok_bg" },
     { MAP(hos_01), .bgName = "hos_bg" },
@@ -514,7 +555,6 @@ MapConfig hos_maps[] = {
 };
 
 /// Bowser's Castle
-#include "area_kpa/kpa.h"
 MapConfig kpa_maps[] = {
     { MAP(kpa_01), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kpa_03), .songVariation = 1, .sfxReverb = 3 },
@@ -569,7 +609,6 @@ MapConfig kpa_maps[] = {
 };
 
 /// Peach's Castle Grounds
-#include "area_osr/osr.h"
 MapConfig osr_maps[] = {
     { MAP(osr_00), .bgName = "nok_bg" },
     { MAP_WITH_INIT(osr_01), .bgName = "nok_bg" },
@@ -580,7 +619,6 @@ MapConfig osr_maps[] = {
 
 /// Peach's Castle
 /// @bug There are two entries for kkj_26; the latter is unreachable.
-#include "area_kkj/kkj.h"
 MapConfig kkj_maps[] = {
     { MAP_WITH_INIT(kkj_00), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_01), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
@@ -610,7 +648,6 @@ MapConfig kkj_maps[] = {
 };
 
 /// Jade Jungle
-#include "area_jan/jan.h"
 MapConfig jan_maps[] = {
     { MAP(jan_00), .bgName = "yos_bg" },
     { MAP(jan_01), .bgName = "yos_bg" },
@@ -637,7 +674,6 @@ MapConfig jan_maps[] = {
 };
 
 /// Forever Forest
-#include "area_mim/mim.h"
 MapConfig mim_maps[] = {
     { MAP(mim_01), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(mim_02), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -654,7 +690,6 @@ MapConfig mim_maps[] = {
 };
 
 /// Boo's Mansion
-#include "area_obk/obk.h"
 MapConfig obk_maps[] = {
     { MAP(obk_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(obk_02), .bgName = "obk_bg", .songVariation = 1, .sfxReverb = 1 },
@@ -668,7 +703,6 @@ MapConfig obk_maps[] = {
 };
 
 /// Gusty Gulch
-#include "area_arn/arn.h"
 MapConfig arn_maps[] = {
     { MAP(arn_02), .bgName = "arn_bg" },
     { MAP(arn_03), .bgName = "arn_bg" },
@@ -684,7 +718,6 @@ MapConfig arn_maps[] = {
 };
 
 /// Tubba Blubba's Castle
-#include "area_dgb/dgb.h"
 MapConfig dgb_maps[] = {
     { MAP_WITH_INIT(dgb_00), .bgName = "arn_bg" },
     { MAP(dgb_01), .songVariation = 1, .sfxReverb = 2 },
@@ -708,7 +741,6 @@ MapConfig dgb_maps[] = {
 };
 
 /// Mt. Lavalava
-#include "area_kzn/kzn.h"
 MapConfig kzn_maps[] = {
     { MAP(kzn_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kzn_02), .songVariation = 1, .sfxReverb = 2 },
@@ -730,7 +762,6 @@ MapConfig kzn_maps[] = {
 };
 
 /// Flower Fields
-#include "area_flo/flo.h"
 MapConfig flo_maps[] = {
     { MAP(flo_00), .bgName = "fla_bg" },
     { MAP(flo_03), .bgName = "fla_bg" },
@@ -755,7 +786,6 @@ MapConfig flo_maps[] = {
 };
 
 /// Shiver Region
-#include "area_sam/sam.h"
 MapConfig sam_maps[] = {
     { MAP(sam_01), .bgName = "yki_bg" },
     { MAP(sam_02), .bgName = "yki_bg" },
@@ -772,7 +802,6 @@ MapConfig sam_maps[] = {
 };
 
 /// Crystal Palace
-#include "area_pra/pra.h"
 MapConfig pra_maps[] = {
     { MAP_WITH_INIT(pra_01), .bgName = "yki_bg", .sfxReverb = 1 },
     { MAP_WITH_INIT(pra_02), .songVariation = 1, .sfxReverb = 2 },
@@ -809,7 +838,6 @@ MapConfig pra_maps[] = {
 };
 
 /// Shy Guy's Toy Box
-#include "area_omo/omo.h"
 MapConfig omo_maps[] = {
     { MAP(omo_01), .bgName = "omo_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(omo_02), .bgName = "omo_bg", .songVariation = 1, .sfxReverb = 2 },
@@ -831,7 +859,6 @@ MapConfig omo_maps[] = {
 };
 
 /// Debug
-#include "area_tst/tst.h"
 MapConfig tst_maps[] = {
     { MAP(tst_01), .bgName = "nok_bg" },
     { MAP(tst_02), .bgName = "nok_bg" },
@@ -845,14 +872,12 @@ MapConfig tst_maps[] = {
 };
 
 /// Credits
-#include "area_end/end.h"
 MapConfig end_maps[] = {
     { MAP_WITH_INIT(end_00) },
     { MAP_WITH_INIT(end_01) },
 };
 
 /// Toad Town Playroom
-#include "area_mgm/mgm.h"
 MapConfig mgm_maps[] = {
     { MAP(mgm_00) },
     { MAP(mgm_01) },
@@ -861,7 +886,6 @@ MapConfig mgm_maps[] = {
 };
 
 /// Game Over
-#include "area_gv/gv.h"
 MapConfig gv_maps[] = {
     { MAP(gv_01) },
 };
@@ -897,3 +921,24 @@ AreaConfig gAreas[] = {
     AREA(tst, "テストマップ"),  // tesuto mappu [Test map]
     {},
 };
+
+void register_areas(const registry::String& mod, AreaConfig* area) {
+    while (area->id != nullptr) {
+        // Register the maps within
+        for (size_t i = 0; i < area->mapCount; i++) {
+            auto key = registry::Key(mod, registry::String(area->maps[i].id));
+            MapRegistry.insert(key, area->maps[i]);
+        }
+
+        AreaRegistry.insert(registry::Key(mod, registry::String(area->id)), *area);
+        area++;
+    }
+}
+
+void register_vanilla_areas() {
+    register_areas(registry::String("vanilla"), gAreas);
+}
+
+u16 vanilla_area_id_to_registry_index(size_t areaId) {
+    return AreaRegistry.get_index(registry::String(gAreas[areaId].id));
+}

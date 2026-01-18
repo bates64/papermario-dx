@@ -7,6 +7,10 @@
 #include "script_api/map.h"
 #include "npc.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CLONED_MODEL(idx)       (10000+(idx))
 
 // TODO: consider moving Npc here
@@ -39,13 +43,13 @@ typedef s32(*MapInit)(void);
 
 #define MAP_ID_MAX_LEN 7 ///< "xxx_yyy" excluding null terminator.
 typedef struct MapConfig {
-    /* 0x00 */ char* id; ///< @see MAP_ID_MAX_LEN
+    /* 0x00 */ const char* id; ///< @see MAP_ID_MAX_LEN
     /* 0x04 */ MapSettings* settings;
     /* 0x08 */ void* dmaStart;
     /* 0x0C */ void* dmaEnd;
     /* 0x10 */ void* dmaDest;
-    /* 0x14 */ char* bgName;
-    /* 0x18 */ MapInit init; ///< Return true to skip normal asset (shape/hit/bg/tex) loading.
+    /* 0x14 */ MapInit init; ///< Return true to skip normal asset (shape/hit/bg/tex) loading.
+    /* 0x18 */ const char* bgName;
     /* 0x1C */ char unk_1C[0x2];
     /* 0x1E */ s8 songVariation; ///< 0 or 1. @see bgm_get_map_default_variation
     /* 0x1F */ s8 sfxReverb;
@@ -71,5 +75,9 @@ extern AreaConfig gAreas[29];
 
 extern EvtScript EVS_NpcHitRecoil;
 extern EvtScript EVS_800936C0;
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

@@ -69,12 +69,13 @@ def write_ninja_rules(
     )
 
     CPPFLAGS = CPPFLAGS_COMMON
+    CXXFLAGS = "-Wno-write-strings"
 
     cflags_modern = f"-c -G0 -O2 -g1 -gdwarf -gz -gas-loc-support -ffast-math -fno-unsafe-math-optimizations -fdiagnostics-color=always -funsigned-char -mgp32 -mfp32 -mabi=32 -mfix4300 -march=vr4300 -mno-gpopt -mno-abicalls -fno-pic -fno-exceptions -fno-stack-protector -fno-toplevel-reorder -fno-zero-initialized-in-bss -Wno-builtin-declaration-mismatch {extra_cflags}"
 
     ninja.variable("python", sys.executable)
 
-    ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -T $in -o $out"
+    ld_args = f"-T ver/$version/build/undefined_syms.txt -T ver/$version/undefined_syms_auto.txt -T ver/$version/undefined_funcs_auto.txt -Map $mapfile --no-check-sections --whole-archive -Tsrc/ctors.ld -T $in -o $out"
     ld = f"{cross}ld" if not "PAPERMARIO_LD" in os.environ else os.environ["PAPERMARIO_LD"]
 
     ninja.rule(
@@ -130,7 +131,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="CXX $in",
-        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags {CXXFLAGS} -std=gnu++23 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1204,7 +1205,7 @@ class Configure:
             str(self.elf_path()),
             "ld",
             str(self.linker_script_path()),
-            implicit=[str(obj) for obj in built_objects] + additional_objects,
+            implicit=[str(obj) for obj in built_objects] + additional_objects + ["src/ctors.ld"],
             variables={"version": self.version, "mapfile": str(self.map_path())},
         )
 

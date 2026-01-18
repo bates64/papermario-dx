@@ -308,6 +308,32 @@ void crash_screen_print_fpcsr(u32 value) {
     }
 }
 
+/// Returns true if there are any logs to print
+bool crash_screen_stable_sort_logs(void) {
+    s32 i;
+    bool hasLogs = false;
+    DebugConsoleLine* tempLine;
+
+    // Insertion sort by timeLeft
+    for (i = 1; i < ARRAY_COUNT(DebugConsole); i++) {
+        s32 j = i;
+        tempLine = DebugConsole[j];
+        while (j > 0 && DebugConsole[j - 1]->timeLeft < tempLine->timeLeft) {
+            DebugConsole[j] = DebugConsole[j - 1];
+            j--;
+        }
+        DebugConsole[j] = tempLine;
+    }
+
+    for (i = 0; i < ARRAY_COUNT(DebugConsole); i++) {
+        if (DebugConsole[i]->timeLeft > 0) {
+            hasLogs = true;
+            break;
+        }
+    }
+    return hasLogs;
+}
+
 void crash_screen_draw(OSThread* faultedThread) {
     s16 causeIndex;
 
@@ -367,6 +393,19 @@ void crash_screen_draw(OSThread* faultedThread) {
     }
 
     y += 10;
+
+    if (crash_screen_stable_sort_logs()) {
+        crash_screen_printf_proportional(x, y, "Logs (most recent first):");
+        y += 10;
+
+        for (i = 0; i < ARRAY_COUNT(DebugConsole); i++) {
+            DebugConsoleLine* line = DebugConsole[i];
+            if (line->timeLeft > 0) {
+                crash_screen_printf_proportional(x, y, "  %s", line->asciiBuf);
+                y += 10;
+            }
+        }
+    }
 
     osViBlack(0);
     osViRepeatLine(0);

@@ -1,6 +1,7 @@
 #include "dx/versioning.h"
 #include "dx/config.h"
 #include <string.h>
+#include "world/world.h"
 
 void ver_deserialize_standard(SaveData* save);
 void ver_deserialize_vanilla_save(SaveData* save);
@@ -518,7 +519,7 @@ void ver_deserialize_vanilla_save(SaveData* newSave) {
     newSave->summary.spiritsRescued = oldSave.summary.spiritsRescued;
 
     // copy world location
-    newSave->areaID = oldSave.areaID;
+    newSave->areaID = vanilla_area_id_to_registry_index(oldSave.areaID);
     newSave->mapID = oldSave.mapID;
     newSave->entryID = oldSave.entryID;
     newSave->savePos = oldSave.savePos;

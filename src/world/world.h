@@ -1,6 +1,6 @@
-#ifndef _WORLD_H
-#define _WORLD_H
-
+#pragma once
 #include "common.h"
 
-#endif
+EXTERN_C void register_vanilla_areas(void);
+
+EXTERN_C u16 vanilla_area_id_to_registry_index(size_t areaId);

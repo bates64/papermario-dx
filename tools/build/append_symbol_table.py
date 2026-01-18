@@ -29,7 +29,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         # npc.c                                    120          0x8003910c               x
         elif len(parts) >= 4 and parts[2].startswith("0x"):
             file_basename = parts[0]
-            if not file_basename.endswith(".c"):
+            if not file_basename.endswith(".c") and not file_basename.endswith(".cpp"):
                 continue
             line_number = int(parts[1])
             addr = int(parts[2], 0)
@@ -60,6 +60,11 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
 
     # sort by address
     symbols.sort(key=lambda x: x[0])
+
+    # print all symbols from *world.c
+    for addr, name, file_basename, line_number in symbols:
+        if file_basename.endswith("world.c"):
+            print(f"0x{addr:08X} {name} {file_basename}:{line_number}")
 
     return symbols
 

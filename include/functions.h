@@ -913,7 +913,7 @@ void render_entities(void);
 void render_player(void);
 void render_workers_scene(void);
 void render_effects_scene(void);
-s32 get_asset_offset(char*, s32*);
+s32 get_asset_offset(char*, u32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);
 s32 is_status_bar_visible(void);

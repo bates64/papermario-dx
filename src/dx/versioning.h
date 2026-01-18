@@ -1,7 +1,9 @@
-#ifndef _VERSIONING_H_
-#define _VERSIONING_H_
-
+#pragma once
 #include "common.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void fio_deserialize_state();
 void fio_serialize_state();
@@ -180,4 +182,6 @@ typedef struct SaveSlotMetadata {
     /* 0x2B */ unsigned char pad[5];
 } SaveSlotMetadata; // size = 0x18
 
+#ifdef __cplusplus
+} // extern "C"
 #endif

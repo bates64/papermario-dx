@@ -27,7 +27,7 @@ bool dx_debug_menu_is_open();
 bool dx_debug_should_hide_models();
 bool dx_debug_is_cheat_enabled(DebugCheat cheat);
 
-void dx_debug_set_map_info(char* mapName, s32 entryID);
+void dx_debug_set_map_info(const char* mapName, s32 entryID);
 void dx_debug_set_battle_info(s32 battleID, char* stageName);
 
 void dx_debug_begin_battle_with_IDs(s16 battle, s16 stage);
@@ -40,6 +40,17 @@ enum DebugEvtStep {
     DEBUG_EVT_STEP_ONCE,
     DEBUG_EVT_STEP_OVER,
 };
+
+#define DEBUG_CONSOLE_MSG_BUF_SIZE 85
+
+typedef struct DebugConsoleLine {
+    u32 hash;
+    s32 timeLeft;
+    u8 buf[DEBUG_CONSOLE_MSG_BUF_SIZE];
+    char asciiBuf[DEBUG_CONSOLE_MSG_BUF_SIZE];
+} DebugConsoleLine;
+
+extern DebugConsoleLine *DebugConsole[8];
 
 void dx_hashed_debug_printf(const char* filename, s32 line, const char* fmt, ...);
 
