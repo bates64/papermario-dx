@@ -1388,11 +1388,11 @@ typedef struct GameStatus {
     /* 0x030 */ u32 prevButtons[4]; /* from previous frame */
     /* 0x040 */ s8 stickX[4]; /* with deadzone */
     /* 0x044 */ s8 stickY[4]; /* with deadzone */
-    /* 0x048 */ s16 unk_48[4];
-    /* 0x050 */ s16 unk_50[4];
-    /* 0x058 */ s16 unk_58;
+    /* 0x048 */ s16 holdDelayTime[4];
+    /* 0x050 */ s16 holdRepeatInterval[4];
+    /* 0x058 */ s16 holdDelayCounter;
     /* 0x05A */ char unk_5A[6];
-    /* 0x060 */ s16 unk_60;
+    /* 0x060 */ s16 holdRepeatCounter;
     /* 0x062 */ char unk_62[6];
     /* 0x068 */ s16 demoButtonInput;
     /* 0x06A */ s8 demoStickX;
