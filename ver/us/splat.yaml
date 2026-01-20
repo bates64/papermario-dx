@@ -26,7 +26,8 @@ options:
   undefined_funcs_auto_path: ver/us/undefined_funcs_auto.txt
   undefined_syms_auto_path: ver/us/undefined_syms_auto.txt
   ld_wildcard_sections: True
-  ld_use_symbolic_vram_addresses: False
+  ld_use_symbolic_vram_addresses: True
+  ld_sort_segments_by_vram_class_dependency: True
   hasm_in_src_path: True
 vram_classes:
   # Main

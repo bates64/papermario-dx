@@ -233,7 +233,7 @@ void update_status_damage(void) {
                 }
 
                 if (player->debuff != 0) {
-                    if (player->debuff <= STATUS_KEY_POISON) {
+                    if (player->debuff < STATUS_KEY_POISON) {
                         BattleSkipActorTurn = true;
                     }
                     BattleStatusUpdateDelay = 20;
