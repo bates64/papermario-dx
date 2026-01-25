@@ -537,7 +537,7 @@ extern "C" {
 /// Resumes a thread by its thread ID.
 #define ResumeThread(TID)                  EVT_CMD(EVT_OP_RESUME_THREAD, TID),
 
-/// Sets OUTVAR to true/false depending on whether a thread with the given ID exists (i.e. has not been killed).
+/// Sets OUTVAR to TRUE/FALSE depending on whether a thread with the given ID exists (i.e. has not been killed).
 #define IsThreadRunning(TID, OUTVAR)      EVT_CMD(EVT_OP_IS_THREAD_RUNNING, TID, OUTVAR),
 
 /// Marks the start of a thread block. Commands between this and a matching EndThread
@@ -652,7 +652,7 @@ extern "C" {
 #define EVT_EXIT_WALK(walkDistance, exitIdx, map, entryIdx) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Call(UseExitHeading, walkDistance, exitIdx) \
         Exec(ExitWalk) \
         Call(GotoMap, Ref(map), entryIdx) \
@@ -675,7 +675,7 @@ extern "C" {
 #define EVT_EXIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, modelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, modelID) \
@@ -691,7 +691,7 @@ extern "C" {
 #define EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, modelID, swingDir, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -708,7 +708,7 @@ extern "C" {
 #define EVT_EXIT_SPLIT_SINGLE_DOOR(exitIdx, map, entryIdx, colliderID, topModelID, bottomModelID, swingDir) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, topModelID) \
@@ -725,7 +725,7 @@ extern "C" {
 #define EVT_EXIT_DOUBLE_DOOR(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
         Set(LVar2, leftDoorModelID) \
@@ -741,7 +741,7 @@ extern "C" {
 #define EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(exitIdx, map, entryIdx, colliderID, leftDoorModelID, rightDoorModelID, sounds) \
     { \
         SetGroup(EVT_GROUP_EXIT_MAP) \
-        Call(DisablePlayerInput, true) \
+        Call(DisablePlayerInput, TRUE) \
         Call(UseDoorSounds, sounds) \
         Set(LVar0, exitIdx) \
         Set(LVar1, colliderID) \
@@ -762,7 +762,7 @@ extern "C" {
 #define EVT_SETUP_CAMERA_DEFAULT(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
-    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
 
 /// Enable camera using standard parameters for clip distances and FOV with LeadPlayer disabled
 /// @param r background red color
@@ -771,15 +771,15 @@ extern "C" {
 #define EVT_SETUP_CAMERA_NO_LEAD(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
-    Call(SetCamLeadPlayer, CAM_DEFAULT, false) \
-    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
+    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
 
 /// Enable camera for `AREA_MIM` using a closer far clip distance and appropriate background color
 #define EVT_SETUP_CAMERA_MIM() \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650) \
     Call(SetCamBGColor, CAM_DEFAULT, 0, 0, 0) \
-    Call(SetCamLeadPlayer, CAM_DEFAULT, false) \
-    Call(SetCamEnabled, CAM_DEFAULT, true)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE) \
+    Call(SetCamEnabled, CAM_DEFAULT, TRUE)
 
 // allow macros with variable number of arguments
 // see https://stackoverflow.com/questions/11761703/overloading-macro-on-number-of-arguments

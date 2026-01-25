@@ -32,14 +32,14 @@ EvtScript N(D_80242560_BB95D0) = {
     Call(ShakeCam, CAM_DEFAULT, 0, 15, Float(1.5))
     Wait(20 * DT)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, true)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_ORIENTATION, TRUE)
     Call(SetCamPitch, CAM_DEFAULT, Float(19.5), Float(-14.9))
     Call(SetCamDistance, CAM_DEFAULT, 350)
     Call(SetCamPosA, CAM_DEFAULT, -133, 52)
     Call(SetCamPosB, CAM_DEFAULT, 23, -109)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 23, 0, -109)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetMusic, 0, SONG_BOOS_MANSION, 0, VOL_LEVEL_FULL)
     Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
@@ -54,7 +54,7 @@ EvtScript N(D_80242560_BB95D0) = {
     Wait(10 * DT)
     Call(SetCamPitch, CAM_DEFAULT, Float(0.0), Float(-25.0))
     Call(SetCamDistance, CAM_DEFAULT, 550)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(ShowMessageAtScreenPos, MSG_CH3_0029, 160, 40)
@@ -62,7 +62,7 @@ EvtScript N(D_80242560_BB95D0) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(19.5), Float(-14.9))
     Call(SetCamDistance, CAM_DEFAULT, 350)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Bootler, ANIM_Bootler_Talk, ANIM_Bootler_Idle, 0, MSG_CH3_002A)
     Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
@@ -77,9 +77,9 @@ EvtScript N(D_80242560_BB95D0) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Return
     End
 };
@@ -158,23 +158,23 @@ EvtScript N(D_80242DC8_BB9E38) = {
 };
 
 EvtScript N(D_80242FF4_BBA064) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(InterruptUsePartner)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_OPENED_BOOS_MANSION_GATE)
             Set(GB_StoryProgress, STORY_CH3_OPENED_BOOS_MANSION_GATE)
-            Set(AF_MIM_01, true)
+            Set(AF_MIM_01, TRUE)
             ExecWait(N(D_80242560_BB95D0))
         CaseGe(STORY_CH3_OPENED_BOOS_MANSION_GATE)
-            IfEq(AF_MIM_01, false)
+            IfEq(AF_MIM_01, FALSE)
                 ExecWait(N(D_80242B90_BB9C00))
-                Set(AF_MIM_01, true)
+                Set(AF_MIM_01, TRUE)
             Else
                 ExecWait(N(D_80242DC8_BB9E38))
-                Set(AF_MIM_01, false)
+                Set(AF_MIM_01, FALSE)
             EndIf
     EndSwitch
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

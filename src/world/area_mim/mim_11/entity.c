@@ -9,11 +9,11 @@ EvtScript N(EVS_UseBluePipe) = {
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_MIM11_WarpPipe, false)
-        IfEq(GF_TIK09_WarpPipe, true)
+    IfEq(GF_MIM11_WarpPipe, FALSE)
+        IfEq(GF_TIK09_WarpPipe, TRUE)
             Call(GetEntryID, LVar0)
             IfNe(LVar0, mim_11_ENTRY_3)
-                Set(GF_KMR02_WarpPipe, true)
+                Set(GF_KMR02_WarpPipe, TRUE)
             EndIf
         EndIf
     EndIf

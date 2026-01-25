@@ -2,9 +2,9 @@
 
 API_CALLABLE(N(IsPartnerBow)) {
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
-        script->varTable[0] = true;
+        script->varTable[0] = TRUE;
     } else {
-        script->varTable[0] = false;
+        script->varTable[0] = FALSE;
     }
     return ApiStatus_DONE2;
 }
@@ -66,7 +66,7 @@ EvtScript N(EVS_OpenSecretDoor) = {
 
 EvtScript N(EVS_SuspiciousGuy_RevealSecretRoom) = {
     Wait(20 * DT)
-    Call(SetNpcFlagBits, NPC_ShyGuy_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_ShyGuy_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SpeakToPlayer, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Anim11, ANIM_ShyGuy_Pink_Anim01, 5, MSG_MAC_Housing_00B3)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Anim02)
     Wait(4 * DT)
@@ -154,7 +154,7 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     ExecWait(N(EVS_SuspiciousGuy_OpenDoor))
     Call(SetNpcPos, NPC_ShyGuy_01, -501, 20, 223)
     Call(SetNpcAnimation, NPC_ShyGuy_01, ANIM_ShyGuy_Pink_Anim02)
@@ -172,7 +172,7 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
         EndThread
     EndIf
     Call(SetNpcPos, NPC_ShyGuy_01, NPC_DISPOSE_LOCATION)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -201,17 +201,17 @@ EvtScript N(EVS_OnEnterShop) = {
     IfGt(GB_StoryProgress, STORY_CH4_GOT_STOREROOM_KEY)
         Return
     EndIf
-    IfNe(GF_MAC04_StoreroomKeyStolen, false)
+    IfNe(GF_MAC04_StoreroomKeyStolen, FALSE)
         Return
     EndIf
     Call(SetNpcPos, NPC_ShyGuy_02, 250, 20, -402)
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim04)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(30)
     Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0000)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Thread
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Wait(20)
         Set(LVar0, 0)
         Loop(36)
@@ -220,7 +220,7 @@ EvtScript N(EVS_OnEnterShop) = {
             Wait(1)
         EndLoop
         Call(InterpPlayerYaw, 0, 0)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
     EndThread
     Thread
         Wait(23)
@@ -244,7 +244,7 @@ EvtScript N(EVS_OnEnterShop) = {
     Call(NpcMoveTo, NPC_ShyGuy_02, 254, -66, 30)
     KillThread(LVarA)
     Call(SetNpcPos, NPC_ShyGuy_02, NPC_DISPOSE_LOCATION)
-    Set(GF_MAC04_StoreroomKeyStolen, true)
+    Set(GF_MAC04_StoreroomKeyStolen, TRUE)
     Return
     End
 };

@@ -35,7 +35,7 @@ void btl_state_update_twink_menu(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
-            shouldSkipTurn = false;
+            shouldSkipTurn = FALSE;
 
             switch (player->debuff) {
                 case STATUS_KEY_SLEEP:
@@ -44,18 +44,18 @@ void btl_state_update_twink_menu(void) {
                 case STATUS_KEY_PARALYZE:
                 case STATUS_KEY_FROZEN:
                 case STATUS_KEY_STOP:
-                    shouldSkipTurn = true;
+                    shouldSkipTurn = TRUE;
                     break;
                 default:
                     break;
             }
 
             if (player->stoneStatus == STATUS_KEY_STONE) {
-                shouldSkipTurn = true;
+                shouldSkipTurn = TRUE;
             }
 
             if (player->koStatus == STATUS_KEY_KO) {
-                shouldSkipTurn = true;
+                shouldSkipTurn = TRUE;
             }
 
             if (shouldSkipTurn) {
@@ -108,7 +108,7 @@ void btl_state_update_twink_menu(void) {
             gBattleStatus.flags1 |= BS_FLAGS1_MENU_OPEN;
             player->flags &= ~ACTOR_FLAG_USING_IDLE_ANIM;
             player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 partner->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
                 partner->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
             }
@@ -117,12 +117,12 @@ void btl_state_update_twink_menu(void) {
             entryIdx = 0;
             battleStatus->selectedMoveID = MOVE_NONE;
             WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_STAR_POWERS;
-            WheelOptionEnabled[entryIdx] = true;
+            WheelOptionEnabled[entryIdx] = TRUE;
             WheelOptionError[entryIdx] = 0;
             WheelOptionHudScript[entryIdx] = TwinkStarPowerHudScripts.enabled;
             WheelOptionName[entryIdx] = TwinkMenuMessages[entryIdx];
             if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_STAR_POWERS)) {
-                WheelOptionEnabled[entryIdx] = false;
+                WheelOptionEnabled[entryIdx] = FALSE;
                 WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 WheelOptionHudScript[entryIdx] = TwinkStarPowerHudScripts.disabled;
             }
@@ -134,9 +134,9 @@ void btl_state_update_twink_menu(void) {
             BattleMenu_WheelBase = 2 - initialPos;
 
             if (gBattleStatus.flags2 & BS_FLAGS2_PLAYER_TURN_USED) {
-                BattleMenu_ShowSwapIcons = false;
+                BattleMenu_ShowSwapIcons = FALSE;
             } else {
-                BattleMenu_ShowSwapIcons = true;
+                BattleMenu_ShowSwapIcons = TRUE;
             }
 
             btl_main_menu_init();
@@ -181,14 +181,14 @@ void btl_state_update_twink_menu(void) {
             break;
         case BTL_SUBSTATE_SHOW_CANT_SWITCH:
             btl_show_variable_battle_message(BTL_MSG_CANT_SWITCH, 60, 0);
-            ShowingErrorMessage = true;
+            ShowingErrorMessage = TRUE;
             gBattleSubState = BTL_SUBSTATE_AWAIT_CANT_SWITCH_POPUP;
             break;
         case BTL_SUBSTATE_AWAIT_CANT_SWITCH_POPUP:
             if (btl_is_popup_displayed()) {
                 break;
             }
-            ShowingErrorMessage = false;
+            ShowingErrorMessage = FALSE;
             BattleMenu_ChooseDelay = 0;
             gBattleSubState = BTL_SUBSTATE_CHOOSE_CATEGORY;
             break;

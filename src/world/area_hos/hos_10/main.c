@@ -10,13 +10,13 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(hos_10_ENTRY_1)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Descent)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Descent)))
         CaseEq(hos_10_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_FlyAway)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_FlyAway)))
         CaseDefault
     EndSwitch
     IfNe(GB_StoryProgress, STORY_INTRO)
-        Call(EnableModel, MODEL_mario_o, false)
+        Call(EnableModel, MODEL_mario_o, FALSE)
     EndIf
     Exec(N(EVS_SetupMusic))
     Call(GetEntryID, LVar0)

@@ -110,13 +110,13 @@ EffectInstance* pink_sparkles_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     bp.update = pink_sparkles_update;
     bp.renderScene = pink_sparkles_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_PINK_SPARKLES;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = effect->data.pinkSparkles = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.pinkSparkles != nullptr);
+    ASSERT(effect->data.pinkSparkles != NULL);
 
     part->unk_04 = arg1;
     part->unk_08 = arg2;

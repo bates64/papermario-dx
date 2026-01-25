@@ -3,32 +3,32 @@
 
 EvtScript N(EVS_ReadSign_NoEntry) = {
     Call(IsStartingConversation, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, TRUE)
         Return
     EndIf
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShowMessageAtScreenPos, MSG_Menus_0179, 160, 40)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Return
     End
 };
 
 EvtScript N(EVS_BreakBlock_ThunderBolt) = {
-    IfEq(GF_NOK14_Item_ThunderBolt, true)
+    IfEq(GF_NOK14_Item_ThunderBolt, TRUE)
         Return
     EndIf
     Thread
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Loop(25)
             Wait(1)
             Call(GetNpcPos, NPC_KoopaTroopa_02, LVar0, LVar1, LVar2)
             Call(SetItemPos, MV_Item_ThunderBolt, LVar0, LVar1, LVar2)
         EndLoop
         Call(SetNpcPos, NPC_KoopaTroopa_02, NPC_DISPOSE_LOCATION)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
     EndThread
     Call(SetNpcPos, NPC_KoopaTroopa_02, -345, 75, -117)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)

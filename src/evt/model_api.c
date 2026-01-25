@@ -77,7 +77,7 @@ API_CALLABLE(LoadAnimatedModel) {
     animModel->scale.x = 1.0f;
     animModel->scale.y = 1.0f;
     animModel->scale.z = 1.0f;
-    animModel->curAnimData = nullptr;
+    animModel->curAnimData = NULL;
     guMtxIdent(&animModel->mtx);
 
     return ApiStatus_DONE2;
@@ -101,7 +101,7 @@ API_CALLABLE(LoadAnimatedMesh) {
     animModel->scale.x = 1.0f;
     animModel->scale.y = 1.0f;
     animModel->scale.z = 1.0f;
-    animModel->curAnimData = nullptr;
+    animModel->curAnimData = NULL;
     guMtxIdent(&animModel->mtx);
 
     return ApiStatus_DONE2;
@@ -268,7 +268,7 @@ void reset_model_animators(void) {
         AnimatedModel* model = heap_malloc(sizeof(*model));
 
         (*gCurrentMeshAnimationListPtr)[i] = model;
-        ASSERT((*gCurrentMeshAnimationListPtr)[i] != nullptr);
+        ASSERT((*gCurrentMeshAnimationListPtr)[i] != NULL);
         (*gCurrentMeshAnimationListPtr)[i]->animModelID = -1;
     }
 

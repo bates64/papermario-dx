@@ -19,21 +19,21 @@ s32 osPfsFindFile(OSPfs* pfs, u16 company_code, u32 game_code, u8* game_name, u8
         ERRCK(__osPfsGetStatus(pfs->queue, pfs->channel));
 
         if ((dir.company_code == company_code) && dir.game_code == game_code) {
-            fail = false;
+            fail = FALSE;
 
-            if (game_name != nullptr) {
+            if (game_name != NULL) {
                 for (i = 0; i < ARRLEN(dir.game_name); i++) {
                     if (dir.game_name[i] != game_name[i]) {
-                        fail = true;
+                        fail = TRUE;
                         break;
                     }
                 }
             }
 
-            if (ext_name != nullptr && !fail) {
+            if (ext_name != NULL && !fail) {
                 for (i = 0; i < ARRLEN(dir.ext_name); i++) {
                     if (dir.ext_name[i] != ext_name[i]) {
-                        fail = true;
+                        fail = TRUE;
                         break;
                     }
                 }

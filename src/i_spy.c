@@ -152,8 +152,8 @@ void ispy_notification_update(void) {
             }
 
             if (ISpyPtr->time++ > 50) {
-                gCurrentHiddenPanels.activateISpy = false;
-                ISpyNotificationCallback = nullptr;
+                gCurrentHiddenPanels.activateISpy = FALSE;
+                ISpyNotificationCallback = NULL;
                 playerStatus->animFlags &= ~PA_FLAG_ISPY_VISIBLE;
             }
             break;

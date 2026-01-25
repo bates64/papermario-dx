@@ -5,17 +5,17 @@
 #include "world/common/atomic/TexturePan.h"
 
 EvtScript N(EVS_Scene_PreTitle) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerAnimation, ANIM_Mario1_Hurt)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
-    Call(EnableModel, MODEL_o2, false)
-    Call(EnableModel, MODEL_nagare, false)
-    Call(SetCamLeadPlayer, CAM_DEFAULT, false)
+    Call(EnableModel, MODEL_o2, FALSE)
+    Call(EnableModel, MODEL_nagare, FALSE)
+    Call(SetCamLeadPlayer, CAM_DEFAULT, FALSE)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(  400,    0,    0,    0)
@@ -37,12 +37,12 @@ EvtScript N(EVS_Scene_PreTitle) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Call(EnableTexPanning, MODEL_k2, true)
-    Call(EnableTexPanning, MODEL_k7, true)
-    Call(EnableTexPanning, MODEL_k1, true)
-    Call(EnableTexPanning, MODEL_k5, true)
-    Call(EnableTexPanning, MODEL_k9, true)
-    Call(EnableTexPanning, MODEL_k12, true)
+    Call(EnableTexPanning, MODEL_k2, TRUE)
+    Call(EnableTexPanning, MODEL_k7, TRUE)
+    Call(EnableTexPanning, MODEL_k1, TRUE)
+    Call(EnableTexPanning, MODEL_k5, TRUE)
+    Call(EnableTexPanning, MODEL_k9, TRUE)
+    Call(EnableTexPanning, MODEL_k12, TRUE)
     Thread
         SetF(LVar0, -1800)
         Loop(450 * DT)

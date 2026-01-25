@@ -2,8 +2,8 @@
 #include "nu/nusys.h"
 
 u32 nuGfxCfbNum = 1;
-NUGfxSwapCfbFunc nuGfxSwapCfbFunc = nullptr;
-NUGfxTaskEndFunc nuGfxTaskEndFunc = nullptr;
+NUGfxSwapCfbFunc nuGfxSwapCfbFunc = NULL;
+NUGfxTaskEndFunc nuGfxTaskEndFunc = NULL;
 u16 beforeFlag = 0;
 
 static NUScTask* nuGfxTask_ptr;
@@ -32,17 +32,17 @@ void nuGfxTaskMgr(void* data) {
 
     osCreateMesgQueue(&D_800DAC90, &D_8009E6D0[0], NU_GFX_MESGS);
 
-    while (true) {
+    while (TRUE) {
         osRecvMesg(&D_800DAC90, (OSMesg*)&task, OS_MESG_BLOCK);
         msg = task->msg;
 
         switch (*msg) {
             case NU_SC_SWAPBUFFER_MSG:
-                if (nuGfxSwapCfbFunc != nullptr) {
+                if (nuGfxSwapCfbFunc != NULL) {
                     nuGfxSwapCfbFunc(task);
                 }
                 if (nuGfxDisplay & NU_GFX_DISPLAY_ON_TRIGGER) {
-                    osViBlack(false);
+                    osViBlack(FALSE);
                     nuGfxDisplay = NU_GFX_DISPLAY_ON;
                 }
                 mask = osSetIntMask(OS_IM_NONE);
@@ -50,7 +50,7 @@ void nuGfxTaskMgr(void* data) {
                 osSetIntMask(mask);
                 break;
             case NU_SC_GTASKEND_MSG:
-                if (nuGfxTaskEndFunc != nullptr) {
+                if (nuGfxTaskEndFunc != NULL) {
                     nuGfxTaskEndFunc(task);
                 }
                 mask = osSetIntMask(OS_IM_NONE);
@@ -68,7 +68,7 @@ void nuGfxTaskMgrInit(void) {
     swapBufMsg = NU_SC_SWAPBUFFER_MSG;
     nuGfxTaskSpool = 0;
     nuGfxDisplayOff();
-    osCreateThread(&GfxTaskMgrThread, NU_GFX_TASKMGR_THREAD_ID, nuGfxTaskMgr, nullptr, &GfxTaskMgrStack[NU_GFX_TASKMGR_STACK_SIZE / sizeof(u64)], NU_GFX_TASKMGR_THREAD_PRI);
+    osCreateThread(&GfxTaskMgrThread, NU_GFX_TASKMGR_THREAD_ID, nuGfxTaskMgr, NULL, &GfxTaskMgrStack[NU_GFX_TASKMGR_STACK_SIZE / sizeof(u64)], NU_GFX_TASKMGR_THREAD_PRI);
     osStartThread(&GfxTaskMgrThread);
 
     for (i = 0; i < NU_GFX_TASK_NUM; i++) {

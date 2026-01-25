@@ -43,13 +43,13 @@ EffectInstance* radial_shimmer_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     bp.update = radial_shimmer_update;
     bp.renderScene = radial_shimmer_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_RADIAL_SHIMMER;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.radialShimmer = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.radialShimmer != nullptr);
+    ASSERT(effect->data.radialShimmer != NULL);
 
     data->unk_00 = arg0;
     data->timeLeft = arg5_2;

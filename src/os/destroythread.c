@@ -8,7 +8,7 @@ void osDestroyThread(OSThread* t) {
 
     saveMask = __osDisableInt();
 
-    if (t == nullptr) {
+    if (t == NULL) {
         t = __osRunningThread;
     } else if (t->state != OS_STATE_STOPPED) {
         __osDequeueThread(t->queue, t);

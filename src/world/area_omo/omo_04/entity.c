@@ -5,9 +5,9 @@
 
 EvtScript N(EVS_OpenChest_StoreroomKey) = {
     Set(LVarA, ITEM_STOREROOM_KEY)
-    Set(GF_OMO04_Chest_StoreroomKey, true)
+    Set(GF_OMO04_Chest_StoreroomKey, TRUE)
     ExecWait(N(EVS_Chest_GetItem))
-    Set(GF_MAC04_StoreroomKeyStolen, true)
+    Set(GF_MAC04_StoreroomKeyStolen, TRUE)
     Set(GB_StoryProgress, STORY_CH4_GOT_STOREROOM_KEY)
     Return
     End
@@ -35,8 +35,8 @@ Vec3i N(StarBoxLaunchTargets)[] = {
 };
 
 EvtScript N(EVS_StarBoxLaunch_Impl) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     UseBuf(Ref(N(StarBoxLaunchTargets)))
     Loop(LVar0)
         BufRead3(LVar7, LVar8, LVar9)
@@ -53,8 +53,8 @@ EvtScript N(EVS_StarBoxLaunch_Impl) = {
     Call(DisableCameraFollowPlayerY)
     Wait(1)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

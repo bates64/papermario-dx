@@ -11,12 +11,12 @@ API_CALLABLE(N(MakeGreenImpactFX)) {
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
-    bool success = script->varTable[10]; // value from GetPlayerActionQuality
+    b32 success = script->varTable[10]; // value from GetPlayerActionQuality
 
     if (!success) {
-        fx_green_impact(true, x + 30, y + 25, z, 45.0f);
+        fx_green_impact(TRUE, x + 30, y + 25, z, 45.0f);
     } else {
-        fx_green_impact(false, x + 30, y + 25, z, 45.0f);
+        fx_green_impact(FALSE, x + 30, y + 25, z, 45.0f);
     }
 
     return ApiStatus_DONE2;
@@ -25,7 +25,7 @@ API_CALLABLE(N(MakeGreenImpactFX)) {
 extern EvtScript N(EVS_UseMove_Impl);
 
 EvtScript N(EVS_UseMove) = {
-    Call(ShowActionHud, true)
+    Call(ShowActionHud, TRUE)
     Call(SetDamageSource, DMG_SRC_D_DOWN_POUND)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
@@ -62,7 +62,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Call(PlayerTestEnemy, LVar0, DAMAGE_TYPE_SMASH | DAMAGE_TYPE_IGNORE_DEFENSE, 25, 0, LVar9, 16)
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
-        CaseGt(false)
+        CaseGt(FALSE)
             Call(GetMenuSelection, LVar0, LVar1, LVar2)
             Switch(LVar1)
                 CaseEq(0)
@@ -102,7 +102,7 @@ EvtScript N(EVS_UseMove_Impl) = {
             EndSwitch
     EndSwitch
     Call(GetPlayerActionQuality, LVar0)
-    IfGt(LVar0, false)
+    IfGt(LVar0, FALSE)
         Call(UseBattleCamPreset, BTL_CAM_PLAYER_HAMMER_STRIKE)
         Call(MoveBattleCamOver, 5)
     Else
@@ -128,7 +128,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     Call(N(MakeGreenImpactFX), LVar0, LVar1, LVar2)
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
-        CaseGt(false)
+        CaseGt(FALSE)
             Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_SMASH | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENTS_HAMMER, 0, LVarF, BS_FLAGS1_TRIGGER_EVENTS | BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_NICE_HIT)
         CaseDefault
             Call(PlayerDamageEnemy, LVar0, DAMAGE_TYPE_SMASH | DAMAGE_TYPE_IGNORE_DEFENSE, SUPPRESS_EVENTS_HAMMER, 0, LVarE, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_TRIGGER_EVENTS)

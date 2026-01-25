@@ -47,11 +47,11 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
-    IfEq(GF_PRA04_BoardedFloor, true)
+    IfEq(GF_PRA04_BoardedFloor, TRUE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittn, COLLIDER_FLAGS_UPPER_MASK)
-        Call(EnableModel, MODEL_g286, false)
+        Call(EnableModel, MODEL_g286, FALSE)
     Else
-        Call(EnableModel, MODEL_o998, false)
+        Call(EnableModel, MODEL_o998, FALSE)
     EndIf
     Exec(N(EVS_EnterMap))
     Wait(1)

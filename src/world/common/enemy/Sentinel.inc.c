@@ -5,8 +5,8 @@
 #include "world/common/enemy/ai/SentinelAI.inc.c"
 
 EvtScript N(EVS_NpcAuxAI_Sentinel) = {
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_DONT_UPDATE_SHADOW_Y | NPC_FLAG_JUMPING, true)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_DONT_UPDATE_SHADOW_Y | NPC_FLAG_JUMPING, TRUE)
     Return
     End
 };
@@ -30,7 +30,7 @@ EvtScript N(EVS_NpcAI_Sentinel) = {
     Call(SetSelfVar, 6, 30)
     Call(SetSelfVar, 1, 600)
     Call(N(SentinelAI_Main), Ref(N(AISettings_Sentinel)))
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(2)
     Label(20)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -41,7 +41,7 @@ EvtScript N(EVS_NpcAI_Sentinel) = {
         Wait(1)
         Goto(20)
     EndIf
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Call(InterruptUsePartner)
     Call(DisablePartnerAI, 0)
     SetGroup(EVT_GROUP_NEVER_PAUSE)

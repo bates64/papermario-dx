@@ -2,10 +2,10 @@
 #include "entity.h"
 
 EvtScript N(EVS_ReadSign_HowToPlay) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(N(SetMsgImgs_Panels))
     Call(ShowMessageAtScreenPos, MSG_MGM_003B, 160, 40)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

@@ -20,7 +20,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupMagicDoors))
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

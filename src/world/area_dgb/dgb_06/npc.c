@@ -3,12 +3,12 @@
 #include "world/common/npc/Boo.inc.c"
 
 EvtScript N(EVS_NpcInteract_Boo) = {
-    IfEq(AF_DGB06_Boo_Dialogue, false)
+    IfEq(AF_DGB06_Boo_Dialogue, FALSE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00F0)
-        Set(AF_DGB06_Boo_Dialogue, true)
+        Set(AF_DGB06_Boo_Dialogue, TRUE)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00F1)
-        Set(AF_DGB06_Boo_Dialogue, false)
+        Set(AF_DGB06_Boo_Dialogue, FALSE)
     EndIf
     Return
     End

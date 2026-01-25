@@ -16,7 +16,7 @@ s32 osJamMesg(OSMesgQueue *mq, OSMesg msg, s32 flag) {
     mq->first = (mq->first + mq->msgCount - 1) % mq->msgCount;
     mq->msg[mq->first] = msg;
     mq->validCount++;
-    if (mq->mtqueue->next != nullptr) {
+    if (mq->mtqueue->next != NULL) {
         osStartThread(__osPopThread(&mq->mtqueue));
     }
     __osRestoreInt(saveMask);

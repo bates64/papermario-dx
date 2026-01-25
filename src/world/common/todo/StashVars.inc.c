@@ -5,10 +5,10 @@
 extern s32** N(varStash);
 
 API_CALLABLE(N(StashVars)) {
-    //static s32** varTable = nullptr;
+    //static s32** varTable = NULL;
     s32 i;
 
-    if (N(varStash) == nullptr) {
+    if (N(varStash) == NULL) {
         N(varStash) = heap_malloc(sizeof(script->varTable));
 
         for (i = 0; i < ARRAY_COUNT(script->varTable); i++) {
@@ -20,7 +20,7 @@ API_CALLABLE(N(StashVars)) {
         }
 
         heap_free(N(varStash));
-        N(varStash) = nullptr;
+        N(varStash) = NULL;
     }
 
     return ApiStatus_DONE2;

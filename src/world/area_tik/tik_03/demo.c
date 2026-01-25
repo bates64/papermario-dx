@@ -19,10 +19,10 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     Wait(15)
     Call(N(ChangePartnerFollowState))
     Wait(15)
-    IfEq(GF_DemoSceneDone, true)
+    IfEq(GF_DemoSceneDone, TRUE)
         Return
     EndIf
-    Set(GF_DemoSceneDone, true)
+    Set(GF_DemoSceneDone, TRUE)
     Call(GotoMapSpecial, Ref("tik_03"), tik_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_BLACK)
     Wait(110)
     Return
@@ -38,10 +38,10 @@ EvtScript N(EVS_MonitorDemoState) = {
         EndIf
         Wait(1)
     EndLoop
-    IfEq(GF_DemoSceneDone, true)
+    IfEq(GF_DemoSceneDone, TRUE)
         Return
     EndIf
-    Set(GF_DemoSceneDone, true)
+    Set(GF_DemoSceneDone, TRUE)
     Call(GotoMapSpecial, Ref("tik_03"), tik_03_ENTRY_2, TRANSITION_END_DEMO_SCENE_WHITE)
     Wait(100)
     Return
@@ -79,7 +79,7 @@ API_CALLABLE(N(SetupDemoScene)) {
 
 EvtScript N(EVS_PlayDemoScene) = {
     Call(N(SetupDemoScene))
-    Set(GF_DemoSceneDone, false)
+    Set(GF_DemoSceneDone, FALSE)
     Exec(N(EVS_MonitorDemoState))
     Exec(N(EVS_ProvideDemoInputs))
     Return

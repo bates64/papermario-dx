@@ -37,7 +37,7 @@ EntityBlueprint Entity_ShatteringHammer1Block = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer1Block) },
     .entityType = ENTITY_TYPE_HAMMER1_BLOCK,
     .aabbSize = {16, 16, 16}
@@ -50,7 +50,7 @@ EntityBlueprint Entity_ShatteringHammer2Block = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer2Block) },
     .entityType = ENTITY_TYPE_HAMMER2_BLOCK,
     .aabbSize = {16, 16, 16}
@@ -63,7 +63,7 @@ EntityBlueprint Entity_ShatteringHammer3Block = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer3Block) },
     .entityType = ENTITY_TYPE_HAMMER3_BLOCK,
     .aabbSize = {16, 16, 16}
@@ -76,7 +76,7 @@ EntityBlueprint Entity_ShatteringHammer1BlockTiny = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer1Block) },
     .entityType = ENTITY_TYPE_HAMMER1_BLOCK_TINY,
     .aabbSize = {8, 8, 8}
@@ -89,7 +89,7 @@ EntityBlueprint Entity_ShatteringHammer2BlockTiny = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer2Block) },
     .entityType = ENTITY_TYPE_HAMMER2_BLOCK_TINY,
     .aabbSize = {8, 8, 8}
@@ -102,7 +102,7 @@ EntityBlueprint Entity_ShatteringHammer3BlockTiny = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringHammer3Block) },
     .entityType = ENTITY_TYPE_HAMMER3_BLOCK_TINY,
     .aabbSize = {8, 8, 8}
@@ -115,7 +115,7 @@ EntityBlueprint Entity_ShatteringBrickBlock = {
     .modelAnimationNodes = 0,
     .fpInit = entity_shattering_block_init,
     .updateEntityScript = Entity_ShatteringBlock_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(ShatteringBrickBlock) },
     .entityType = ENTITY_TYPE_BRICK_BLOCK,
     .aabbSize = {8, 8, 8}
@@ -123,8 +123,8 @@ EntityBlueprint Entity_ShatteringBrickBlock = {
 
 void entity_shattering_block_init(Entity* entity) {
     u32 type;
-    Mtx* fragmentMatrices = nullptr;
-    Gfx** fragmentDisplayLists = nullptr;
+    Mtx* fragmentMatrices = NULL;
+    Gfx** fragmentDisplayLists = NULL;
 
     entity->dataBuf.shatteringBlock->originalPosY = entity->pos.y;
     type = get_entity_type(entity->listIndex);
@@ -168,7 +168,7 @@ void entity_shattering_block_init(Entity* entity) {
             break;
     }
 
-    if (fragmentMatrices == nullptr) {
+    if (fragmentMatrices == NULL) {
         return;
     }
 
@@ -176,7 +176,7 @@ void entity_shattering_block_init(Entity* entity) {
 }
 
 void entity_breakable_block_create_shattering_entity(Entity* entity) {
-    EntityBlueprint* bp = nullptr;
+    EntityBlueprint* bp = NULL;
 
     switch (get_entity_type(entity->listIndex)) {
         case ENTITY_TYPE_HAMMER1_BLOCK:
@@ -209,7 +209,7 @@ void entity_breakable_block_create_shattering_entity(Entity* entity) {
             break;
     }
 
-    if (bp == nullptr) {
+    if (bp == NULL) {
         return;
     }
 

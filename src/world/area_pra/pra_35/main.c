@@ -13,7 +13,7 @@ s32 N(RightDoorModelsR)[] = { MODEL_o859, MODEL_o860, -1 };
 
 EvtScript N(EVS_ExitWalk_pra_33_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_35_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, Ref(N(LeftDoorModelsL)))
@@ -28,7 +28,7 @@ EvtScript N(EVS_ExitWalk_pra_33_0) = {
 
 EvtScript N(EVS_ExitWalk_pra_19_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_35_ENTRY_1)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, Ref(N(RightDoorModelsL)))
@@ -78,7 +78,7 @@ BombTrigger N(D_802432A8_D904F8) = {
 };
 
 EvtScript N(D_802432B8_D90508) = {
-    Call(EnableGroup, MODEL_g297, false)
+    Call(EnableGroup, MODEL_g297, FALSE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittnw, COLLIDER_FLAGS_UPPER_MASK)
     Unbind
     Return
@@ -89,7 +89,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Set(LVar0, 64)
     Set(LVar1, 65)
     Set(LVar2, 0)
@@ -97,10 +97,10 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_EnterMap))
     Wait(1)
-    IfEq(GF_PRA33_BombedWall, false)
+    IfEq(GF_PRA33_BombedWall, FALSE)
         BindTrigger(Ref(N(D_802432B8_D90508)), TRIGGER_POINT_BOMB, Ref(N(D_802432A8_D904F8)), 1, 0)
     Else
-        Call(EnableGroup, MODEL_g297, false)
+        Call(EnableGroup, MODEL_g297, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittnw, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Set(LVar0, 0)

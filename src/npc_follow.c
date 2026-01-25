@@ -14,14 +14,14 @@ void get_npc_pos(s32 npcID, f32* outX, f32* outY, f32* outZ, s32* outAirborne) {
     *outX = 0.0f;
     *outY = 0.0f;
     *outZ = 0.0f;
-    *outAirborne = false;
+    *outAirborne = FALSE;
 
     if (npcID == NPC_SELF) {
         *outX = playerStatus->pos.x;
         *outY = playerStatus->pos.y;
         *outZ = playerStatus->pos.z;
         if (playerStatus->flags & (PS_FLAG_FALLING | PS_FLAG_JUMPING)) {
-            *outAirborne = true;
+            *outAirborne = TRUE;
         }
     } else {
         npc = get_npc_unsafe(npcID);
@@ -29,7 +29,7 @@ void get_npc_pos(s32 npcID, f32* outX, f32* outY, f32* outZ, s32* outAirborne) {
         *outY = npc->pos.y;
         *outZ = npc->pos.z;
         if (npc->flags & NPC_FLAG_JUMPING) {
-            *outAirborne = true;
+            *outAirborne = TRUE;
         }
     }
 
@@ -41,13 +41,13 @@ void npc_follow_init(Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpee
     s32 i;
 
     npc->blur.followData = followData = heap_malloc(sizeof(*followData));
-    ASSERT(followData != nullptr);
+    ASSERT(followData != NULL);
 
     for (i = 0; i < ARRAY_COUNT(followData->moveHistory); i++) {
         followData->moveHistory[i].pos.x = playerStatus->pos.x;
         followData->moveHistory[i].pos.y = playerStatus->pos.y;
         followData->moveHistory[i].pos.z = playerStatus->pos.z;
-        followData->moveHistory[i].isAirborne = false;
+        followData->moveHistory[i].isAirborne = FALSE;
     }
     followData->lastPointIdx = 0;
     followData->targetPointIdx = 0;
@@ -74,7 +74,7 @@ void npc_update_npc_tracking(Npc* npc) {
 
     get_npc_pos(followData->targetNpcID, &x, &y, &z, &airborne);
     historyPoint = &followData->moveHistory[followData->lastPointIdx];
-    isAirborne = airborne != false;
+    isAirborne = airborne != FALSE;
 
     if (historyPoint->isAirborne && isAirborne) {
         return;
@@ -134,7 +134,7 @@ void npc_follow_npc(Npc* npc) {
                 npc->curAnim = followData->anims->fall;
             }
 
-            while (true) {
+            while (TRUE) {
                 dist = dist2D(currentX, currentZ, targetX, targetZ);
                 yaw = atan2(currentX, currentZ, targetX, targetZ);
                 if (dist > npc->moveSpeed) {
@@ -272,7 +272,7 @@ void npc_follow_npc(Npc* npc) {
                 break;
             }
 
-            while (true) {
+            while (TRUE) {
                 if (historyPoint->isAirborne) {
                     break;
                 }
@@ -301,7 +301,7 @@ void npc_follow_npc(Npc* npc) {
                 return;
             }
 
-            while (true) {
+            while (TRUE) {
                 if (!historyPoint->isAirborne) {
                     break;
                 }

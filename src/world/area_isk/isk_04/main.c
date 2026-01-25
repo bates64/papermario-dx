@@ -49,7 +49,7 @@ EvtScript N(EVS_Main) = {
         ExecWait(N(EVS_SetupDemo))
         Return
     EndIf
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupObstructions))
     Exec(N(EVS_SetupMusic))

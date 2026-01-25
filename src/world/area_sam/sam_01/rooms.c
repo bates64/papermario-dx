@@ -28,8 +28,8 @@ EvtScript N(EVS_RoomListener_MayorFoyer) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_04, true)
-            Set(AF_SAM_Snowing, false)
+            Set(AF_SAM_04, TRUE)
+            Set(AF_SAM_Snowing, FALSE)
             Call(SetGroupVisibility, MODEL_s_naisou, MODEL_GROUP_VISIBLE)
             IfGe(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
                 Call(SetNpcPos, NPC_MayorPenguin, -275, 0, -200)
@@ -38,8 +38,8 @@ EvtScript N(EVS_RoomListener_MayorFoyer) = {
                 Call(InterpNpcYaw, NPC_MayorPenguinWife, 0, 0)
             EndIf
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_04, false)
-            Set(AF_SAM_Snowing, true)
+            Set(AF_SAM_04, FALSE)
+            Set(AF_SAM_Snowing, TRUE)
             Call(SetGroupVisibility, MODEL_s_naisou, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -56,10 +56,10 @@ EvtScript N(EVS_SetWallRot_MayorOffice) = {
     Call(RotateGroup, MODEL_s_yane, LVar0, 0, 0, 1)
     Call(RotateGroup, MODEL_s_yoko, LVar0, 0, 0, -1)
     IfGt(LVar0, 89)
-        Call(EnableGroup, MODEL_s_yoko, false)
+        Call(EnableGroup, MODEL_s_yoko, FALSE)
     EndIf
     IfLt(LVar0, 89)
-        Call(EnableGroup, MODEL_s_yoko, true)
+        Call(EnableGroup, MODEL_s_yoko, TRUE)
     EndIf
     Return
     End
@@ -68,7 +68,7 @@ EvtScript N(EVS_SetWallRot_MayorOffice) = {
 EvtScript N(EVS_RoomListener_MayorOffice) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
-        IfEq(AF_SAM_03, true)
+        IfEq(AF_SAM_03, TRUE)
             Set(LVar0, -1)
             Return
         EndIf
@@ -78,13 +78,13 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
                 Thread
                     Call(BindNpcInteract, NPC_Herringway, 0)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Walk)
                     Call(SetNpcSpeed, NPC_Herringway, Float(1.5 / DT))
                     Call(NpcMoveTo, NPC_Herringway, -252, -55, 0)
                     Call(SetNpcAnimation, NPC_Herringway, ANIM_Penguin_Idle)
-                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                    Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
                     Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))
                 EndThread
             EndIf
@@ -92,12 +92,12 @@ EvtScript N(EVS_RoomListener_MayorOffice) = {
             IfEq(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
                 Call(SetMusic, 0, SONG_PENGUIN_WHODUNIT, BGM_VARIATION_1, VOL_LEVEL_FULL)
             EndIf
-            Set(AF_SAM_03, true)
+            Set(AF_SAM_03, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_END)
             IfEq(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_MYSTERY)
                 Exec(N(EVS_SetupMusic))
             EndIf
-            Set(AF_SAM_03, false)
+            Set(AF_SAM_03, FALSE)
     EndSwitch
     Return
     End
@@ -126,14 +126,14 @@ EvtScript N(EVS_RoomListener_MiddleHouse) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_DOOR)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, false)
+            Set(AF_SAM_Snowing, FALSE)
             Call(SetGroupVisibility, MODEL_f_naiso, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             // do nothing
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             // do nothing
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, true)
+            Set(AF_SAM_Snowing, TRUE)
             Call(SetGroupVisibility, MODEL_f_naiso, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -169,10 +169,10 @@ EvtScript N(EVS_RoomListener_UpperRightHouse) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_BASIC)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, false)
+            Set(AF_SAM_Snowing, FALSE)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, true)
+            Set(AF_SAM_Snowing, TRUE)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -183,10 +183,10 @@ EvtScript N(EVS_RoomListener_LowerRightHouse) = {
     Call(UseRoomDoorSounds, DOOR_SOUNDS_DOOR)
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_SAM_Snowing, false)
+            Set(AF_SAM_Snowing, FALSE)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_SAM_Snowing, true)
+            Set(AF_SAM_Snowing, TRUE)
             Call(SetGroupVisibility, MODEL_m_naiso, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -247,12 +247,12 @@ EvtScript N(EVS_SetupMayorRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_MayorOffice)),
         Ref(N(EVS_SetWallRot_MayorOffice)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_MayorOffice)),
         COLLIDER_ttsn,
         COLLIDER_o353,
         MODEL_o430,
-        nullptr)
+        NULL)
     Return
     End
 };
@@ -268,7 +268,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_MiddleHouse)),
         Ref(N(EVS_SetWallRot_MiddleHouse)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_MiddleHouse)),
         COLLIDER_ttf2,
         COLLIDER_o354,
@@ -280,7 +280,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_UpperRightHouse)),
         Ref(N(EVS_SetWallRot_RightHouse)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_UpperRightHouse)),
         COLLIDER_ttm,
         COLLIDER_o355,
@@ -292,7 +292,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_LowerRightHouse)),
         Ref(N(EVS_SetWallRot_RightHouse)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_LowerRightHouse)),
         COLLIDER_o376,
         COLLIDER_o390,

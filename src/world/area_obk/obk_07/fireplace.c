@@ -75,11 +75,11 @@ EvtScript N(EVS_PlaySmokeFX) = {
 };
 
 EvtScript N(EVS_Inspect_Fireplace) = {
-    IfEq(MV_InspectingFireplace, true)
+    IfEq(MV_InspectingFireplace, TRUE)
         Return
     EndIf
-    Set(MV_InspectingFireplace, true)
-    Call(DisablePlayerInput, true)
+    Set(MV_InspectingFireplace, TRUE)
+    Call(DisablePlayerInput, TRUE)
     Thread
         Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, Float(250.0), Float(17.5), Float(-10.0))
     EndThread
@@ -89,9 +89,9 @@ EvtScript N(EVS_Inspect_Fireplace) = {
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar0, 25)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
         Call(EnablePartnerAI)
         Call(InterpPlayerYaw, 90, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
@@ -110,8 +110,8 @@ EvtScript N(EVS_Inspect_Fireplace) = {
     Wait(40)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(ResetCam, CAM_DEFAULT, Float(4.0))
-    Set(MV_InspectingFireplace, false)
-    Call(DisablePlayerInput, false)
+    Set(MV_InspectingFireplace, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

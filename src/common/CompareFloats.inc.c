@@ -6,9 +6,9 @@ API_CALLABLE(N(CompareFloats)) {
     f32 temp = evt_get_float_variable(script, *args++);
 
     if (temp < temp_f20) {
-        evt_set_variable(script, *args++, true);
+        evt_set_variable(script, *args++, TRUE);
     } else {
-        evt_set_variable(script, *args++, false);
+        evt_set_variable(script, *args++, FALSE);
     }
     return ApiStatus_DONE2;
 }

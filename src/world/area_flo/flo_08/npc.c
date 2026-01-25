@@ -9,15 +9,15 @@
 #include "../common/ItemChoice_FlowerGuard.inc.c"
 
 EvtScript N(EVS_NpcInteract_GateFlower) = {
-    Call(DisablePlayerInput, true)
-    IfEq(GF_FLO08_GaveYellowBerry, false)
+    Call(DisablePlayerInput, TRUE)
+    IfEq(GF_FLO08_GaveYellowBerry, FALSE)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamDistance, CAM_DEFAULT, 350)
         Call(SetCamPitch, CAM_DEFAULT, Float(18.5), Float(-7.5))
         Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_Talk, ANIM_GateFlower_Yellow_Idle, 0, MSG_CH6_0042)
         Call(SetPlayerAnimation, ANIM_Mario1_Thinking)
@@ -63,7 +63,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
                             EndIf
                         EndLoop
                         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Yellow_HappyDance)
-                        Set(GF_FLO08_GaveYellowBerry, true)
+                        Set(GF_FLO08_GaveYellowBerry, TRUE)
                     CaseEq(159)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_Chew, ANIM_GateFlower_Yellow_Idle, 0, MSG_CH6_0045)
                         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Yellow_Idle)
@@ -134,7 +134,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_GateFlower_Yellow_HappyTalk, ANIM_GateFlower_Yellow_HappyIdle, 0, MSG_CH6_0048)
         EndIf
     EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Unbind
     Return
     End
@@ -142,7 +142,7 @@ EvtScript N(EVS_NpcInteract_GateFlower) = {
 
 EvtScript N(EVS_NpcInit_GateFlower) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_GateFlower)))
-    IfEq(GF_FLO08_GaveYellowBerry, true)
+    IfEq(GF_FLO08_GaveYellowBerry, TRUE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GateFlower_Yellow_HappyDance)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o96, COLLIDER_FLAGS_UPPER_MASK)
         Call(RotateModel, MODEL_o69, 50, 0, 1, 0)
@@ -174,7 +174,7 @@ NpcData N(NpcData_Dayzee_01) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 205, 0, -80 },
@@ -197,7 +197,7 @@ NpcData N(NpcData_Dayzee_02) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 275, 0, -115 },
@@ -220,7 +220,7 @@ NpcData N(NpcData_Dayzee_03) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -230, 60, -110 },
@@ -243,7 +243,7 @@ NpcData N(NpcData_Dayzee_04) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -330, 60, -110 },
@@ -266,7 +266,7 @@ NpcData N(NpcData_Dayzee_05) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -430, 60, -110 },
@@ -289,7 +289,7 @@ NpcData N(NpcData_Dayzee_06) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -530, 60, -110 },
@@ -312,7 +312,7 @@ NpcData N(NpcData_Dayzee_07) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -630, 60, -110 },
@@ -339,10 +339,10 @@ EvtScript N(EVS_NpcInit_AmazyDayzee) = {
         EndIf
         Call(RandInt, 100, LVar0)
         IfLt(LVar0, 30)
-            Call(SetNpcFlagBits, NPC_Dayzee_02, NPC_FLAG_INVISIBLE | NPC_FLAG_INACTIVE, true)
+            Call(SetNpcFlagBits, NPC_Dayzee_02, NPC_FLAG_INVISIBLE | NPC_FLAG_INACTIVE, TRUE)
             Call(SetNpcPos, NPC_Dayzee_02, NPC_DISPOSE_LOCATION)
         Else
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_INACTIVE, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_INACTIVE, TRUE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         EndIf
     EndThread
@@ -356,7 +356,7 @@ NpcData N(NpcData_AmazyDayzee) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 240, 0, -90 },

@@ -20,8 +20,8 @@ API_CALLABLE(N(UpgradeStarPowerCh6)) {
 }
 
 EvtScript N(EVS_Scene_SunReturns) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(UseSettingsFrom, CAM_DEFAULT, 50, 0, -200)
     Call(SetPanTarget, CAM_DEFAULT, 50, 0, -200)
     Call(SetCamDistance, CAM_DEFAULT, 700)
@@ -29,7 +29,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     Call(SetCamPosA, CAM_DEFAULT, -27, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -50)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(20)
     Call(ShowMessageAtWorldPos, MSG_CH6_00C4, 0, 50, -200)
@@ -41,13 +41,13 @@ EvtScript N(EVS_Scene_SunReturns) = {
 };
 
 EvtScript N(EVS_Wisterwood_Introduction) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, -170)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -170)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-8.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(75 * DT)
     Call(ShowMessageAtScreenPos, MSG_CH6_0000, 160, 40)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -64,7 +64,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(SetCamDistance, CAM_DEFAULT, 800)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-5.8))
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(15 * DT)
     Call(SpeakToPlayer, NPC_Dummy_Wisterwood, -1, -1, 5, MSG_CH6_0001)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
@@ -75,7 +75,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(SetCamDistance, CAM_DEFAULT, 333)
     Call(SetCamPitch, CAM_DEFAULT, Float(9.0), Float(-22.0))
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(EnablePartnerAI)
     Call(func_802D2C14, 1)
@@ -84,7 +84,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(16.5), Float(-11.8))
     Call(SetCamDistance, CAM_DEFAULT, 525)
     Call(SetCamPosA, CAM_DEFAULT, -14, 0)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
@@ -94,20 +94,20 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(9.0), Float(-22.0))
     Call(SetCamDistance, CAM_DEFAULT, 333)
     Call(SetCamPosA, CAM_DEFAULT, -2, 0)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_0005, 0, 70, -200)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
     Set(GB_StoryProgress, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
     Call(func_802D2C14, 0)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_Interact_Wisterwood) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(2)
     Call(GetPlayerActionState, LVar3)
     Set(LVar4, 0)
@@ -121,13 +121,13 @@ EvtScript N(EVS_Interact_Wisterwood) = {
         Add(LVar4, 1)
     EndIf
     IfEq(LVar4, 0)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Return
     EndIf
     IfEq(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(ShowMessageAtWorldPos, MSG_CH6_0006, 0, 50, -200)
         Set(GB_StoryProgress, STORY_CH6_WISTERWOOD_GAVE_HINT)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH6_RETURNED_TO_TOAD_TOWN)
@@ -174,7 +174,7 @@ EvtScript N(EVS_Interact_Wisterwood) = {
                 Call(CloseMessage)
         EndSwitch
     EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -186,7 +186,7 @@ EvtScript N(EVS_Wisterwood_Farewell) = {
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, -30)
     Call(SetCamDistance, CAM_DEFAULT, 250)
     Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-25.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(ShowMessageAtWorldPos, MSG_CH6_000C, 0, 50, -200)
@@ -196,12 +196,12 @@ EvtScript N(EVS_Wisterwood_Farewell) = {
 };
 
 EvtScript N(EVS_NpcInit_Wisterwood) = {
-    Call(EnableGroup, MODEL_ha, false)
-    Call(EnableGroup, MODEL_tuta, false)
-    Call(EnableGroup, MODEL_g54, false)
+    Call(EnableGroup, MODEL_ha, FALSE)
+    Call(EnableGroup, MODEL_tuta, FALSE)
+    Call(EnableGroup, MODEL_g54, FALSE)
     Call(SetNpcPos, NPC_SELF, 50, 70, -230)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
-    Call(EnableNpcShadow, NPC_SELF, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, TRUE)
+    Call(EnableNpcShadow, NPC_SELF, FALSE)
     IfLt(GB_StoryProgress, STORY_CH6_ARRIVED_AT_FLOWER_FIELDS)
         Exec(N(EVS_Wisterwood_Introduction))
     EndIf
@@ -223,10 +223,10 @@ EvtScript N(EVS_NpcInteract_Bubulb1) = {
             Switch(AF_FLO_PinkBubulbDialogueToggle)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001A)
-                    Set(AF_FLO_PinkBubulbDialogueToggle, true)
+                    Set(AF_FLO_PinkBubulbDialogueToggle, TRUE)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001B)
-                    Set(AF_FLO_PinkBubulbDialogueToggle, false)
+                    Set(AF_FLO_PinkBubulbDialogueToggle, FALSE)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001C)
@@ -249,10 +249,10 @@ EvtScript N(EVS_NpcInteract_Bubulb2) = {
             Switch(AF_FLO_PurpleBubulbDialogueToggle)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0021)
-                    Set(AF_FLO_PurpleBubulbDialogueToggle, true)
+                    Set(AF_FLO_PurpleBubulbDialogueToggle, TRUE)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0022)
-                    Set(AF_FLO_PurpleBubulbDialogueToggle, false)
+                    Set(AF_FLO_PurpleBubulbDialogueToggle, FALSE)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0023)
@@ -275,10 +275,10 @@ EvtScript N(EVS_NpcInteract_Bubulb_03) = {
             Switch(AF_FLO_GreenBubulbDialogueToggle)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_0028)
-                    Set(AF_FLO_GreenBubulbDialogueToggle, true)
+                    Set(AF_FLO_GreenBubulbDialogueToggle, TRUE)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_0029)
-                    Set(AF_FLO_GreenBubulbDialogueToggle, false)
+                    Set(AF_FLO_GreenBubulbDialogueToggle, FALSE)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_002A)
@@ -301,10 +301,10 @@ EvtScript N(EVS_NpcInteract_Bubulb_04) = {
             Switch(AF_FLO_YellowBubulbDialogueToggle)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_002F)
-                    Set(AF_FLO_YellowBubulbDialogueToggle, true)
+                    Set(AF_FLO_YellowBubulbDialogueToggle, TRUE)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_0030)
-                    Set(AF_FLO_YellowBubulbDialogueToggle, false)
+                    Set(AF_FLO_YellowBubulbDialogueToggle, FALSE)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_0031)
@@ -314,37 +314,37 @@ EvtScript N(EVS_NpcInteract_Bubulb_04) = {
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_01) = {
-    Set(AF_FLO_PinkBubulbDialogueToggle, false)
+    Set(AF_FLO_PinkBubulbDialogueToggle, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb1)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_02) = {
-    Set(AF_FLO_PurpleBubulbDialogueToggle, false)
+    Set(AF_FLO_PurpleBubulbDialogueToggle, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb2)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_03) = {
-    Set(AF_FLO_GreenBubulbDialogueToggle, false)
+    Set(AF_FLO_GreenBubulbDialogueToggle, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_03)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_04) = {
-    Set(AF_FLO_YellowBubulbDialogueToggle, false)
+    Set(AF_FLO_YellowBubulbDialogueToggle, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_04)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_Tolielup) = {
-    IfEq(GF_FLO00_Met_Tolielup, false)
+    IfEq(GF_FLO00_Met_Tolielup, FALSE)
         Call(AdjustCam, CAM_DEFAULT, Float(4.0), -30, 300, Float(20.0), Float(-9.5))
-        Set(GF_FLO00_Met_Tolielup, true)
+        Set(GF_FLO00_Met_Tolielup, TRUE)
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
@@ -446,7 +446,7 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Set(LVar4, LVar1)
     Add(LVar4, 26)
     Call(SetNpcPos, NPC_Klevar, LVar3, LVar4, LVar2)
-    Call(PlayerFaceNpc, NPC_Klevar, false)
+    Call(PlayerFaceNpc, NPC_Klevar, FALSE)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Klevar, 0)
     Add(LVar0, -25)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -454,16 +454,16 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(475.0))
     Call(SetCamPitch, CAM_DEFAULT, 18, -8)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(1)
     Call(WaitForPlayerInputEnabled)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(40 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_200, MSG_CH6_00D8)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, 18, -9)
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(MakeLerp, 0, 360, 10 * DT, EASING_LINEAR)
     Loop(0)
@@ -474,7 +474,7 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(EnableNpcAI, NPC_Klevar, false)
+    Call(EnableNpcAI, NPC_Klevar, FALSE)
     Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Leap)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_UsePower)
@@ -498,14 +498,14 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetNpcAnimation, NPC_Klevar, ANIM_WorldKlevar_Idle)
-    Call(EnableNpcAI, NPC_Klevar, true)
+    Call(EnableNpcAI, NPC_Klevar, TRUE)
     Call(N(UpgradeStarPowerCh6))
     Call(ShowMessageAtScreenPos, MSG_Menus_0196, 160, 40)
     Wait(10 * DT)
     Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_200, MSG_CH6_00D9)
@@ -515,11 +515,11 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Klevar, ANIM_WorldKlevar_Talk, ANIM_WorldKlevar_Idle, SPEECH_FLAG_200, MSG_CH6_00DA)
-    Call(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
+    Call(SetNpcFlagBits, NPC_Klevar, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, TRUE)
     Thread
         Loop(25)
             Call(GetNpcPos, NPC_Klevar, LVar0, LVar1, LVar2)
@@ -566,7 +566,7 @@ EvtScript N(EVS_Scene_RescuedKlevar) = {
     Set(GB_StoryProgress, STORY_CH6_STAR_SPRIT_DEPARTED)
     ExecWait(N(EVS_Wisterwood_Farewell))
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -637,7 +637,7 @@ NpcData N(NpcData_Bubulbs)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -662,7 +662,7 @@ NpcData N(NpcData_Bubulbs)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -687,7 +687,7 @@ NpcData N(NpcData_Bubulbs)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -712,7 +712,7 @@ NpcData N(NpcData_Bubulbs)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {

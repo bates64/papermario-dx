@@ -83,7 +83,7 @@ API_CALLABLE(N(ResetRussHintsGiven)) {
     u32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
-        evt_set_variable(script, entry->hasBeenGivenFlag, false);
+        evt_set_variable(script, entry->hasBeenGivenFlag, FALSE);
     }
     return ApiStatus_DONE2;
 }
@@ -102,14 +102,14 @@ API_CALLABLE(N(InitRussHintUnlocks)) {
 
 API_CALLABLE(N(GetRussHintMessage)) {
     RussTLoreEntry* entry = N(RussTLore);
-    s32 hasHintMessage = false;
+    s32 hasHintMessage = FALSE;
     s32 count = 0;
     u32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(RussTLore)); i++, entry++) {
         if (evt_get_variable(script, entry->isAvailableFlag)) {
             if (!evt_get_variable(script, entry->savedFlag)) {
-                hasHintMessage = true;
+                hasHintMessage = TRUE;
                 break;
             } else {
                 if (!evt_get_variable(script, entry->hasBeenGivenFlag)) {
@@ -140,8 +140,8 @@ API_CALLABLE(N(GetRussHintMessage)) {
     script->varTable[0] = i;
     script->varTable[1] = entry->hintMessage;
     script->varTable[2] = hasHintMessage;
-    evt_set_variable(script, entry->savedFlag, true);
-    evt_set_variable(script, entry->hasBeenGivenFlag, true);
+    evt_set_variable(script, entry->savedFlag, TRUE);
+    evt_set_variable(script, entry->hasBeenGivenFlag, TRUE);
     return ApiStatus_DONE2;
 }
 
@@ -189,7 +189,7 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
     Call(SetNpcPos, NPC_ShyGuyThief, -30, 20, -470)
     Call(SetNpcAnimation, NPC_ShyGuyThief, ANIM_ShyGuy_Red_Anim04)
     Wait(1)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShowMessageAtScreenPos, MSG_MAC_Gate_0009, 160, 40)
     Exec(N(EVS_ManageCarriedDictionary))
     Thread
@@ -228,8 +228,8 @@ EvtScript N(EVS_ShyGuy_StealDictionary) = {
         KillThread(LVarA)
         Call(SetNpcPos, NPC_ShyGuyThief, NPC_DISPOSE_LOCATION)
     EndThread
-    Set(GF_MAC00_DictionaryStolen, true)
-    Call(DisablePlayerInput, false)
+    Set(GF_MAC00_DictionaryStolen, TRUE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -241,7 +241,7 @@ EvtScript N(EVS_NpcInit_ShyGuyThief) = {
     IfGt(GB_StoryProgress, STORY_CH4_GOT_TAYCE_TS_CAKE)
         Return
     EndIf
-    IfNe(GF_MAC00_DictionaryStolen, false)
+    IfNe(GF_MAC00_DictionaryStolen, FALSE)
         Return
     EndIf
     Exec(N(EVS_ShyGuy_StealDictionary))
@@ -251,8 +251,8 @@ EvtScript N(EVS_NpcInit_ShyGuyThief) = {
 
 EvtScript N(EVS_RussT_GetHint) = {
     Call(N(InitRussHintUnlocks))
-    IfEq(GF_MAC00_Met_RussT, false)
-        Set(GF_MAC00_Met_RussT, true)
+    IfEq(GF_MAC00_Met_RussT, FALSE)
+        Set(GF_MAC00_Met_RussT, TRUE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0004)
         Return
     EndIf
@@ -287,9 +287,9 @@ s32 N(ItemList_RussDocuments2)[] = {
 };
 
 EvtScript N(EVS_ItemPrompt_Dictionary) = {
-    IfEq(AF_MAC_0D, false)
+    IfEq(AF_MAC_0D, FALSE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000A)
-        Set(AF_MAC_0D, true)
+        Set(AF_MAC_0D, TRUE)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000B)
     EndIf
@@ -297,25 +297,25 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
     Switch(LVar0)
         CaseEq(ITEM_DICTIONARY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000D)
-            Set(GF_MAC00_DictionaryReturned, true)
+            Set(GF_MAC00_DictionaryReturned, TRUE)
             Wait(10)
             EVT_GIVE_STAR_PIECE()
             Wait(10)
-            IfEq(GF_MAC00_TranslatedMysteryNote, true)
+            IfEq(GF_MAC00_TranslatedMysteryNote, TRUE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
             EndIf
 #if VERSION_JP
-            IfEq(GF_MAC00_TranslatedSuspiciousNote, true)
+            IfEq(GF_MAC00_TranslatedSuspiciousNote, TRUE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_JP_0011)
             EndIf
 #endif
         CaseEq(ITEM_MYSTERY_NOTE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000F)
-            Set(GF_MAC00_TranslatedMysteryNote, true)
+            Set(GF_MAC00_TranslatedMysteryNote, TRUE)
 #if VERSION_JP
         CaseEq(ITEM_SUSPICIOUS_NOTE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0122)
-            Set(GF_MAC00_TranslatedSuspiciousNote, true)
+            Set(GF_MAC00_TranslatedSuspiciousNote, TRUE)
 #endif
         CaseEq(-1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000C)
@@ -331,14 +331,14 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
     Switch(LVar0)
         CaseEq(0)
             IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)
-                IfEq(GF_MAC00_TranslatedMysteryNote, true)
+                IfEq(GF_MAC00_TranslatedMysteryNote, TRUE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
                     Set(LVarA, 1)
                     Return
                 EndIf
             Else
 #if VERSION_JP
-                IfEq(GF_MAC00_TranslatedSuspiciousNote, true)
+                IfEq(GF_MAC00_TranslatedSuspiciousNote, TRUE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_JP_0011)
                     Set(LVarA, 1)
                     Return
@@ -349,12 +349,12 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
         CaseDefault
             IfEq(LVar0, ITEM_MYSTERY_NOTE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000E)
-                Set(GF_MAC00_TranslatedMysteryNote, true)
+                Set(GF_MAC00_TranslatedMysteryNote, TRUE)
                 Set(LVarA, 1)
 #if VERSION_JP
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0121)
-                Set(GF_MAC00_TranslatedSuspiciousNote, true)
+                Set(GF_MAC00_TranslatedSuspiciousNote, TRUE)
                 Set(LVarA, 1)
 #endif
             EndIf
@@ -365,7 +365,7 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
 
 EvtScript N(EVS_NpcInteract_RussT) = {
     IfGe(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
-        IfEq(GF_MAC00_DictionaryReturned, false)
+        IfEq(GF_MAC00_DictionaryReturned, FALSE)
             ExecWait(N(EVS_ItemPrompt_Dictionary))
             ExecWait(N(EVS_LetterPrompt_RussT))
             ExecWait(N(EVS_LetterReward_RussT))

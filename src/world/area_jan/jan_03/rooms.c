@@ -20,9 +20,9 @@ EvtScript N(EVS_SetWallRot_Shop) = {
 EvtScript N(EVS_RoomListener_Shop) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Call(EnableGroup, MODEL_g126, true)
+            Call(EnableGroup, MODEL_g126, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Call(EnableGroup, MODEL_g126, false)
+            Call(EnableGroup, MODEL_g126, FALSE)
     EndSwitch
     Return
     End
@@ -72,7 +72,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_IN),
         Ref(N(EVS_SetDoorRot_Shop)),
         Ref(N(EVS_SetWallRot_Shop)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_Shop)),
         COLLIDER_o156,
         COLLIDER_o161,
@@ -85,7 +85,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_LARGE_DOOR_RIGHT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_ToadHouse)),
         Ref(N(EVS_SetWallRot_ToadHouse)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_ToadHouse)),
         COLLIDER_o199,
         COLLIDER_o200,

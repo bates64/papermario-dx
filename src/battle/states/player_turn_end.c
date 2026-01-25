@@ -78,10 +78,10 @@ void btl_state_update_end_player_turn(void) {
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_RECOVER) {
         // if a script is running from 'Happy!', wait for it to complete
-        if (player->takeTurnScript != nullptr && does_script_exist(player->takeTurnScriptID)) {
+        if (player->takeTurnScript != NULL && does_script_exist(player->takeTurnScriptID)) {
             return;
         }
-        player->takeTurnScript = nullptr;
+        player->takeTurnScript = NULL;
 
         // force peach to back position after turn end
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) && !(gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {

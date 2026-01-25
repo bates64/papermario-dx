@@ -24,7 +24,7 @@ EvtScript N(EVS_SpinKooperCeilingFan) = {
 
 EvtScript N(EVS_UpdateKooperFightSounds) = {
     Loop(0)
-        IfEq(GF_Quizmo_TakingQuiz, false)
+        IfEq(GF_Quizmo_TakingQuiz, FALSE)
             Call(PlaySoundAt, SOUND_NOK_HOUSE_CONFLICT, SOUND_SPACE_DEFAULT, 0, 0, -180)
         EndIf
         Call(RandInt, 30, LVar5)
@@ -44,7 +44,7 @@ EvtScript N(EVS_PlayKooperVsFuzzyEffects) = {
                 KillThread(MV_KooperFightSoundsScript)
                 Return
         EndSwitch
-        IfEq(GF_NOK02_ConfrontedBobombs, true)
+        IfEq(GF_NOK02_ConfrontedBobombs, TRUE)
             KillThread(MV_KooperFightSoundsScript)
             Return
         EndIf
@@ -53,15 +53,15 @@ EvtScript N(EVS_PlayKooperVsFuzzyEffects) = {
         Wait(LVar0)
         Call(RandInt, 10, LVar0)
         Add(LVar0, 5)
-        IfEq(GF_Quizmo_TakingQuiz, false)
+        IfEq(GF_Quizmo_TakingQuiz, FALSE)
             Call(N(SpawnKooperFightingDust))
         EndIf
         Loop(LVar0)
-            IfEq(AF_NOK_12, true)
+            IfEq(AF_NOK_12, TRUE)
                 KillThread(MV_KooperFightSoundsScript)
                 Call(TranslateGroup, MODEL_kameki, 0, 0, 0)
                 Label(10)
-                IfEq(AF_NOK_12, true)
+                IfEq(AF_NOK_12, TRUE)
                     Wait(1)
                     Goto(10)
                 EndIf
@@ -153,11 +153,11 @@ EvtScript N(EVS_SetWallsRot_KooperHouse) = {
     IfNe(LVar1, 0)
         Call(ScaleModel, MODEL_o308, 1, LVar1, 1)
         Call(ScaleModel, MODEL_o307, 1, LVar1, 1)
-        Call(EnableModel, MODEL_o308, true)
-        Call(EnableModel, MODEL_o307, true)
+        Call(EnableModel, MODEL_o308, TRUE)
+        Call(EnableModel, MODEL_o307, TRUE)
     Else
-        Call(EnableModel, MODEL_o308, false)
-        Call(EnableModel, MODEL_o307, false)
+        Call(EnableModel, MODEL_o308, FALSE)
+        Call(EnableModel, MODEL_o307, FALSE)
     EndIf
     Return
     End
@@ -211,7 +211,7 @@ EvtScript N(EVS_DropDoor_KootHouse) = {
 EvtScript N(EVS_RoomListener_KooperHouse) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_NOK_12, true)
+            Set(AF_NOK_12, TRUE)
             IfLt(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
                 ExecWait(N(EVS_Scene_MeetKooper))
                 Set(LVar0, ROOM_UPDATE_REQUEST_CANCEL)
@@ -220,11 +220,11 @@ EvtScript N(EVS_RoomListener_KooperHouse) = {
             Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             Exec(N(EVS_FuzzyBoss_PlayerEntersKoopersHouse))
-            Set(AF_NOK_10, true)
+            Set(AF_NOK_10, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
-            Set(AF_NOK_10, false)
+            Set(AF_NOK_10, FALSE)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_NOK_12, false)
+            Set(AF_NOK_12, FALSE)
             Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return
@@ -305,14 +305,14 @@ EvtScript N(EVS_SetupRooms) = {
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
             Ref(N(EVS_SetDoorRot_KoloradoOffice)),
             Ref(N(EVS_SetWallRot_KoloradoOffice)),
-            nullptr,
-            nullptr,
+            NULL,
+            NULL,
             COLLIDER_o314,
             COLLIDER_o317,
             MODEL_o271,
-            nullptr)
+            NULL)
     Else
-        IfEq(GF_NOK11_Defeated_KentC, true)
+        IfEq(GF_NOK11_Defeated_KentC, TRUE)
             // kolorado house
             Call(CreateMapRoom,
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
@@ -329,12 +329,12 @@ EvtScript N(EVS_SetupRooms) = {
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
                 Ref(N(EVS_SetDoorRot_KoloradoOffice)),
                 Ref(N(EVS_SetWallRot_KoloradoOffice)),
-                nullptr,
-                nullptr,
+                NULL,
+                NULL,
                 COLLIDER_o314,
                 COLLIDER_o317,
                 MODEL_o271,
-                nullptr)
+                NULL)
         Else
             // kolorado house
             Call(CreateMapRoom,
@@ -352,12 +352,12 @@ EvtScript N(EVS_SetupRooms) = {
                 PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT),
                 Ref(N(EVS_SetDoorRot_KoloradoOffice)),
                 Ref(N(EVS_SetWallRot_KoloradoOffice)),
-                nullptr,
-                nullptr,
+                NULL,
+                NULL,
                 COLLIDER_o314,
                 COLLIDER_o317,
                 MODEL_o271,
-                nullptr)
+                NULL)
         EndIf
     EndIf
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
@@ -366,7 +366,7 @@ EvtScript N(EVS_SetupRooms) = {
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
             Ref(N(EVS_SetDoorRot_KooperFrontDoor)),
             Ref(N(EVS_SetWallRot_KooperHouse)),
-            nullptr,
+            NULL,
             Ref(N(EVS_RoomListener_KooperHouse)),
             COLLIDER_o284,
             COLLIDER_o287,
@@ -377,7 +377,7 @@ EvtScript N(EVS_SetupRooms) = {
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
             Ref(N(EVS_SetDoorRot_KooperBackDoor)),
             Ref(N(EVS_SetWallRot_KooperHouse)),
-            nullptr,
+            NULL,
             Ref(N(EVS_RoomListener_KooperHouse)),
             COLLIDER_o302,
             COLLIDER_o299,
@@ -389,7 +389,7 @@ EvtScript N(EVS_SetupRooms) = {
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_RIGHT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
             Ref(N(EVS_SetDoorRot_KooperFrontDoor)),
             Ref(N(EVS_SetWallRot_KooperHouse)),
-            nullptr,
+            NULL,
             Ref(N(EVS_RoomListener_KooperHouse)),
             COLLIDER_o284,
             COLLIDER_o287,
@@ -400,7 +400,7 @@ EvtScript N(EVS_SetupRooms) = {
             PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT | ROOM_FLAG_CUSTOM_ANIM_WALL_ROT),
             Ref(N(EVS_SetDoorRot_KooperBackDoor)),
             Ref(N(EVS_SetWallRot_KooperHouse)),
-            nullptr,
+            NULL,
             Ref(N(EVS_RoomListener_KooperHouse)),
             COLLIDER_o302,
             COLLIDER_o299,

@@ -16,7 +16,7 @@ MobileAISettings N(AISettings_ForestFuzzy_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_ForestFuzzy_Wander) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
     Call(N(HoppingAI_Main), Ref(N(AISettings_ForestFuzzy_Wander)), 1)
     Return
     End

@@ -45,7 +45,7 @@ void entity_HiddenPanel_set_ispy_notification(Entity* entity) {
     HiddenPanelData* data = entity->dataBuf.hiddenPanel;
 
     if (is_ability_active(ABILITY_I_SPY) && !get_global_flag(data->pickupVar) && !gCurrentHiddenPanels.activateISpy) {
-        gCurrentHiddenPanels.activateISpy = true;
+        gCurrentHiddenPanels.activateISpy = TRUE;
     }
 }
 
@@ -60,11 +60,11 @@ void entity_HiddenPanel_idle(Entity* entity) {
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if (!data->unk_04) {
-            data->unk_04 = true;
+            data->unk_04 = TRUE;
             func_800EF3D4(1);
         }
     } else {
-        data->unk_04 = false;
+        data->unk_04 = FALSE;
     }
 
     data->standingNpcIndex = -1;
@@ -126,14 +126,14 @@ void entity_HiddenPanel_flip_over(Entity* entity) {
         case 0:
             sfx_play_sound(SOUND_FLIP_PANEL);
             data->state = 1;
-            data->unk_02 = true;
+            data->unk_02 = TRUE;
             data->riseInterpPhase = 90.0f;
             data->rotSpeed = 65.0f;
             set_time_freeze_mode(TIME_FREEZE_PARTIAL);
             disable_player_static_collisions();
             gPlayerStatusPtr->animFlags |= PA_FLAG_OPENED_HIDDEN_PANEL;
             if (data->needSpawnItem) {
-                data->needSpawnItem = false;
+                data->needSpawnItem = FALSE;
                 data->spawnedItemIndex = make_item_entity_nodelay(data->itemID,
                     entity->pos.x, entity->pos.y + 2.0, entity->pos.z,
                     ITEM_SPAWN_MODE_TOSS_NEVER_VANISH, data->pickupVar);
@@ -217,7 +217,7 @@ void entity_HiddenPanel_flip_over(Entity* entity) {
             break;
         case 10:
             entity->flags &= ~ENTITY_FLAG_HIDDEN;
-            data->unk_02 = false;
+            data->unk_02 = FALSE;
             data->state++;
             entity->pos.y += 6.0f;
             break;
@@ -260,7 +260,7 @@ void entity_HiddenPanel_flip_over(Entity* entity) {
 
     if (data->spawnedItemIndex >= 0) {
         ItemEntity* itemEntity = get_item_entity(data->spawnedItemIndex);
-        if (itemEntity != nullptr) {
+        if (itemEntity != NULL) {
             if (itemEntity->flags & ITEM_ENTITY_FLAG_10) {
                 data->spawnedItemPos.x = itemEntity->pos.x;
                 data->spawnedItemPos.y = itemEntity->pos.y;
@@ -281,18 +281,18 @@ s32 entity_HiddenPanel_is_item_on_top(Entity* entity) {
 
     if (data->spawnedItemIndex >= 0) {
         ItemEntity* itemEntity = get_item_entity(data->spawnedItemIndex);
-        if (itemEntity != nullptr) {
+        if (itemEntity != NULL) {
             if (itemEntity->flags & ITEM_ENTITY_FLAG_10) {
                 if (fabs(entity->pos.x - data->spawnedItemPos.x) <= 34.0)  {
                     if (fabs(entity->pos.z - data->spawnedItemPos.z) <= 34.0) {
-                        return true;
+                        return TRUE;
                     }
                 }
             }
         }
     }
 
-    return false;
+    return FALSE;
 }
 
 void entity_HiddenPanel_init(Entity* entity) {
@@ -307,7 +307,7 @@ void entity_HiddenPanel_init(Entity* entity) {
     data->initialY = entity->pos.y;
     data->modelID = CreateEntityVarArgBuffer[0];
     data->itemID = CreateEntityVarArgBuffer[1];
-    data->needSpawnItem = true;
+    data->needSpawnItem = TRUE;
     data->spawnedItemIndex = -1;
 
     if (data->itemID == 0) {
@@ -370,7 +370,7 @@ EntityBlueprint Entity_HiddenPanel = {
     .modelAnimationNodes = 0,
     .fpInit = entity_HiddenPanel_init,
     .updateEntityScript = Entity_HiddenPanel_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(HiddenPanel) },
     .entityType = ENTITY_TYPE_HIDDEN_PANEL,
     .aabbSize = { 60, 0, 60 }

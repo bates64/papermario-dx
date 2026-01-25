@@ -25,10 +25,10 @@ AnimID N(ExtraAnims_HammerBros)[] = {
 #include "../common/ApproachPlayer50Units.inc.c"
 
 EvtScript N(EVS_NpcInteract_HammerBros_01) = {
-    IfEq(GF_KKJ16_Gift_ShootingStar, false)
+    IfEq(GF_KKJ16_Gift_ShootingStar, FALSE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 16, MSG_Peach_013A)
-        Call(ShowGotItem, ITEM_SHOOTING_STAR, true, ITEM_PICKUP_FLAG_NO_ANIMS)
-        Set(GF_KKJ16_Gift_ShootingStar, true)
+        Call(ShowGotItem, ITEM_SHOOTING_STAR, TRUE, ITEM_PICKUP_FLAG_NO_ANIMS)
+        Set(GF_KKJ16_Gift_ShootingStar, TRUE)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 16, MSG_Peach_013B)
     EndIf
@@ -37,7 +37,7 @@ EvtScript N(EVS_NpcInteract_HammerBros_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_HammerBros_02) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0136)
@@ -46,13 +46,13 @@ EvtScript N(EVS_NpcInteract_HammerBros_02) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0137)
         Call(SetSelfVar, 0, 0)
     EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_HammerBros_03) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetSelfVar, 0, LVar0)
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0138)
@@ -61,13 +61,13 @@ EvtScript N(EVS_NpcInteract_HammerBros_03) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0139)
         Call(SetSelfVar, 0, 0)
     EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_CapturePeach) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(N(PreventNextPeachDisguise))
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -75,7 +75,7 @@ EvtScript N(EVS_CapturePeach) = {
     Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 20, EMOTER_NPC, 0, 0, 0, 0)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Wait(20)
-    Call(PlayerFaceNpc, NPC_SELF, false)
+    Call(PlayerFaceNpc, NPC_SELF, FALSE)
     Call(SetPlayerAnimation, ANIM_Peach2_Gasp)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HammerBros_Anim02)
     Call(SpeakToPlayer, NPC_SELF, ANIM_HammerBros_Anim0A, ANIM_HammerBros_Anim02, 0, MSG_Peach_0174)
@@ -91,7 +91,7 @@ EvtScript N(EVS_CapturePeach) = {
     Wait(20)
     Call(GotoMapSpecial, Ref("kkj_14"), kkj_14_ENTRY_B, TRANSITION_PEACH_CAPTURED)
     Wait(100)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -100,14 +100,14 @@ EvtScript N(EVS_WatchForPlayer) = {
     Loop(0)
         Call(N(GetPeachDisguise), LVar1)
         IfEq(LVar1, PEACH_DISGUISE_NONE)
-            Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, true)
+            Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, TRUE)
             Call(N(UnkPhysicsFunc), LVar0, 85, 60, 38)
             IfNe(LVar0, 0)
                 Call(BindNpcAI, NPC_SELF, Ref(N(EVS_CapturePeach)))
                 Return
             EndIf
         Else
-            Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, false)
+            Call(SetSelfEnemyFlagBits, ENEMY_FLAG_CANT_INTERACT, FALSE)
         EndIf
         Wait(1)
     EndLoop

@@ -19,7 +19,7 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
     s32 temp;
     s32 lol;
 
-    if (actor == nullptr) {
+    if (actor == NULL) {
         return ApiStatus_DONE2;
     }
 

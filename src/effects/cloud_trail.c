@@ -20,7 +20,7 @@ void cloud_trail_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     bp.init = cloud_trail_init;
     bp.update = cloud_trail_update;
     bp.renderScene = cloud_trail_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_CLOUD_TRAIL;
 
     effect = create_effect_instance(&bp);
@@ -28,7 +28,7 @@ void cloud_trail_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     part = general_heap_malloc(numParts * sizeof(*part));
     effect->data.cloudTrail = part;
 
-    ASSERT(effect->data.cloudTrail != nullptr);
+    ASSERT(effect->data.cloudTrail != NULL);
 
     mem_clear(part, numParts * sizeof(*part));
 
@@ -61,16 +61,16 @@ void cloud_trail_init(EffectInstance* effect) {
 
 void cloud_trail_update(EffectInstance* effect) {
     CloudTrailFXData* part = effect->data.cloudTrail;
-    s32 cond = false;
+    s32 cond = FALSE;
     s32 i;
 
     for (i = 0; i < effect->numParts; i++, part++) {
         if (part->alive) {
             part->lifetime--;
             if (part->lifetime <= 0) {
-                part->alive = false;
+                part->alive = FALSE;
             } else {
-                cond = true;
+                cond = TRUE;
                 part->unk_30 = clamp_angle(part->unk_30 + 12.0f);
                 part->unk_1C = part->unk_28 + sin_deg(part->unk_30) * 0.1;
                 part->unk_20 = part->unk_2C + cos_deg(part->unk_30) * 0.1;

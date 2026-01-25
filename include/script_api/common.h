@@ -889,13 +889,13 @@ API_CALLABLE(SetMessageValue);
 /// @{
 /// @name Player
 
-/// Hides the player's shadow if `hide` is `true`, shows it if `false`.
+/// Hides the player's shadow if `hide` is `TRUE`, shows it if `FALSE`.
 /// @evtapi
 /// @param hide Whether to hide the player's shadow.
 /// @see disable_player_shadow, enable_player_shadow
 API_CALLABLE(HidePlayerShadow);
 
-/// Disables player physics if `disable` is `true`, enables it if `false`.
+/// Disables player physics if `disable` is `TRUE`, enables it if `FALSE`.
 /// @evtapi
 /// @param disable Whether to disable player physics.
 /// @see disable_player_static_collisions, enable_player_static_collisions
@@ -1043,7 +1043,7 @@ API_CALLABLE(InterruptUsePartner);
 /// Enables and disables the 8-bit Mario easter egg.
 ///
 /// @evtapi
-/// @param disable Disable the easter egg if `true`, enable it if `false`.
+/// @param disable Disable the easter egg if `TRUE`, enable it if `FALSE`.
 ///
 /// Whilst active, the player uses a retro sprite, and the following actions are disabled:
 /// - Spin dash

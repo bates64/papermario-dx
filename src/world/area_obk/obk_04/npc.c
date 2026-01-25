@@ -20,7 +20,7 @@ API_CALLABLE(N(InitHiddenBoo)) {
     s32* isGameStarted = heap_malloc(sizeof(s32));
 
     npc->blur.keepAwayStarted = isGameStarted;
-    *isGameStarted = false;
+    *isGameStarted = FALSE;
     npc->planarFlyDist = 125.0f; // default ring radius
     npc->yaw = 0.0f;
     npc->pos.x = 0.0f;
@@ -175,7 +175,7 @@ API_CALLABLE(N(UpdateKeepAwayBoo)) {
     switch (script->functionTemp[1]) {
         case RING_STATE_0:
             npc->yaw = clamp_angle(script->functionTemp[2] + hiddenBoo->yaw);
-            if (*isGameStarted == true) {
+            if (*isGameStarted == TRUE) {
                 script->functionTemp[1] = RING_STATE_1;
                 npc->duration = rand_int(20) + 10;
             }
@@ -591,18 +591,18 @@ EvtScript N(EVS_NpcInit_Boo_10) = {
 };
 
 EvtScript N(EVS_NpcInit_Boo_11) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_TutorialBoo) = {
-    IfEq(GF_OBK04_HiddenPanel, false)
+    IfEq(GF_OBK04_HiddenPanel, FALSE)
         Call(SpeakToPlayer, NPC_TutorialBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_003F)
     Else
-        IfEq(GF_OBK04_HeardAboutHiddenPanels, false)
+        IfEq(GF_OBK04_HeardAboutHiddenPanels, FALSE)
             Call(SpeakToPlayer, NPC_TutorialBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0040)
-            Set(GF_OBK04_HeardAboutHiddenPanels, true)
+            Set(GF_OBK04_HeardAboutHiddenPanels, TRUE)
         Else
             Call(SpeakToPlayer, NPC_TutorialBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0041)
         EndIf

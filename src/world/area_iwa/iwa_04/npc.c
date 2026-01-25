@@ -48,12 +48,12 @@ EvtScript N(EVS_MonitorFlyingAnimation) = {
 };
 
 EvtScript N(EVS_NpcAuxAI_Buzzar) = {
-    IfEq(GF_IWA04_Defeated_Buzzar, true)
+    IfEq(GF_IWA04_Defeated_Buzzar, TRUE)
         Call(RemoveNpc, NPC_SELF)
     Else
         Exec(N(EVS_MonitorFlyingAnimation))
         Call(SetNpcPos, NPC_SELF, 10, 96, -347)
-        Call(EnableNpcShadow, NPC_SELF, false)
+        Call(EnableNpcShadow, NPC_SELF, FALSE)
     EndIf
     Return
     End
@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
         Wait(1)
     EndLoop
     Call(SetMusic, 0, SONG_MINIBOSS_BATTLE, 0, VOL_LEVEL_FULL)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, 0)
         Call(InterruptUsePartner)
@@ -94,12 +94,12 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Call(UseSettingsFrom, CAM_DEFAULT, 430, 0, -25)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(1)
     Call(SetPanTarget, CAM_DEFAULT, 30, 180, -600)
     Call(SetCamDistance, CAM_DEFAULT, Float(100.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_SELF, ANIM_Buzzar_Anim05, ANIM_Buzzar_Anim05, 5, MSG_CH2_0031)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Anim02)
@@ -118,7 +118,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Call(SetPlayerPos, 430, 0, -25)
     Call(func_802CF56C, 2)
     Call(SetNpcPos, NPC_SELF, 538, 200, -25)
-    Call(EnableNpcShadow, NPC_SELF, true)
+    Call(EnableNpcShadow, NPC_SELF, TRUE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -126,7 +126,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Call(SetCamPosB, CAM_DEFAULT, 100, -100)
     Call(SetCamDistance, CAM_DEFAULT, 600)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -135,11 +135,11 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamDistance, CAM_DEFAULT, 500)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
-        Call(PanToTarget, CAM_DEFAULT, Float(0.5), true)
+        Call(PanToTarget, CAM_DEFAULT, Float(0.5), TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(func_802CF56C, 2)
     EndThread
-    Call(PlayerFaceNpc, NPC_SELF, false)
+    Call(PlayerFaceNpc, NPC_SELF, FALSE)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
@@ -173,7 +173,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 275)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Buzzar_Anim03, ANIM_Buzzar_Anim01, 0, MSG_CH2_0032)
     Call(AdjustCam, CAM_DEFAULT, Float(90.0), 50, 350, Float(15.0), Float(-12.0))
@@ -198,7 +198,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 275)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_SELF, LVarC, ANIM_Buzzar_Anim01, 0, LVarB)
@@ -207,7 +207,7 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Anim06)
         Wait(30 * DT)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Anim02)
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
         Call(GetNpcPos, NPC_SELF, LVar2, LVar3, LVar4)
         Set(LVar5, LVar3)
@@ -222,17 +222,17 @@ EvtScript N(EVS_NpcAI_Buzzar) = {
             EndIf
         EndLoop
         Call(SetNpcPos, NPC_SELF, 10, 96, -347)
-        Call(EnableNpcShadow, NPC_SELF, false)
+        Call(EnableNpcShadow, NPC_SELF, FALSE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Anim05)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0 / DT))
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
     Else
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
         Wait(5 * DT)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     EndIf
     Return
@@ -243,7 +243,7 @@ EvtScript N(EVS_NpcDefeat_Buzzar) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Set(GF_IWA04_Defeated_Buzzar, true)
+            Set(GF_IWA04_Defeated_Buzzar, TRUE)
             Exec(N(EVS_SetupMusic))
             Call(SetNpcPos, NPC_SELF, 530, 15, -20)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Buzzar_Anim0B)
@@ -284,7 +284,7 @@ NpcData N(NpcData_Cleft) = {
     .yaw = 0,
     .territory = {
         .wander = {
-            .isFlying = false,
+            .isFlying = FALSE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -412, -250, 143 },

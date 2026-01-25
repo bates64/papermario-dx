@@ -153,7 +153,7 @@ void btl_init_menu_boots(void) {
 
     battleStatus->submenuMoveCount = moveCount;
 
-    hasAnyBadgeMoves = false;
+    hasAnyBadgeMoves = FALSE;
     for (i = 0; i < battleStatus->submenuMoveCount; i++) {
         move = &gMoveTable[battleStatus->submenuMoves[i]];
 
@@ -175,7 +175,7 @@ void btl_init_menu_boots(void) {
 
         // If there are targets, enable the move
         if (player->targetListLength != 0) {
-            hasAnyBadgeMoves = true;
+            hasAnyBadgeMoves = TRUE;
             battleStatus->submenuStatus[i] = BATTLE_SUBMENU_STATUS_ENABLED;
         }
 
@@ -245,7 +245,7 @@ void btl_init_menu_hammer(void) {
 
     battleStatus->submenuMoveCount = moveCount;
 
-    hasAnyBadgeMoves = false;
+    hasAnyBadgeMoves = FALSE;
     for (i = 0; i < battleStatus->submenuMoveCount; i++) {
         move = &gMoveTable[battleStatus->submenuMoves[i]];
 
@@ -267,7 +267,7 @@ void btl_init_menu_hammer(void) {
 
         // If there are targets, enable the move
         if (player->targetListLength != 0) {
-            hasAnyBadgeMoves = true;
+            hasAnyBadgeMoves = TRUE;
             battleStatus->submenuStatus[i] = 1;
         }
 
@@ -370,7 +370,7 @@ void btl_state_update_player_menu(void) {
             gBattleStatus.flags1 |= BS_FLAGS1_MENU_OPEN;
             playerActor->flags &= ~ACTOR_FLAG_USING_IDLE_ANIM;
             playerActor->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
-            if (partnerActor != nullptr) {
+            if (partnerActor != NULL) {
                 partnerActor->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
                 partnerActor->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
             }
@@ -391,7 +391,7 @@ void btl_state_update_player_menu(void) {
 
             // strategies menu category
             WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_STRATEGIES;
-            WheelOptionEnabled[entryIdx] = true;
+            WheelOptionEnabled[entryIdx] = TRUE;
             WheelOptionHudScript[entryIdx] = StrategiesHudScripts.enabled;
             WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_STRATEGIES];
             if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL || gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) {
@@ -400,7 +400,7 @@ void btl_state_update_player_menu(void) {
             WheelOptionError[entryIdx] = 0;
             if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_STRATEGIES)) {
                 WheelOptionHudScript[entryIdx] = StrategiesHudScripts.disabled;
-                WheelOptionEnabled[entryIdx] = false;
+                WheelOptionEnabled[entryIdx] = FALSE;
                 WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
             }
             if (battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] == BTL_MENU_TYPE_STRATEGIES) {
@@ -412,24 +412,24 @@ void btl_state_update_player_menu(void) {
             if (battleStatus->menuStatus[0] >= 0) {
                 WheelOptionHudScript[entryIdx] = ItemsHudScripts.enabled;
                 WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_ITEMS;
-                WheelOptionEnabled[entryIdx] = true;
+                WheelOptionEnabled[entryIdx] = TRUE;
                 WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_ITEMS];
 
                 if(battleStatus->menuStatus[0] == 0) {
                     WheelOptionHudScript[entryIdx] = ItemsHudScripts.disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_NO_ITEM_TARGET;
                 }
 
                 if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_ITEMS)) {
                     WheelOptionHudScript[entryIdx] = ItemsHudScripts.disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 }
 
                 if (battleStatus->itemLossTurns >= 0) {
                     WheelOptionHudScript[entryIdx] = ItemsHudScripts.disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 }
 
@@ -443,22 +443,22 @@ void btl_state_update_player_menu(void) {
             // jump menu category
             WheelOptionHudScript[entryIdx] = BootsHudScripts[playerData->bootsLevel + 1].enabled;
             WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_JUMP;
-            WheelOptionEnabled[entryIdx] = true;
+            WheelOptionEnabled[entryIdx] = TRUE;
             WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_JUMP];
 
             if (battleStatus->menuStatus[1] <= 0) {
                 WheelOptionHudScript[entryIdx] = BootsHudScripts[0].enabled;
-                WheelOptionEnabled[entryIdx] = false;
+                WheelOptionEnabled[entryIdx] = FALSE;
                 WheelOptionError[entryIdx] = BTL_MSG_NO_JUMP_TARGET;
             }
             if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_JUMP)) {
                 WheelOptionHudScript[entryIdx] = BootsHudScripts[0].disabled;
-                WheelOptionEnabled[entryIdx] = false;
+                WheelOptionEnabled[entryIdx] = FALSE;
                 WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
             }
             if (battleStatus->jumpLossTurns >= 0) {
                 WheelOptionHudScript[entryIdx] = BootsHudScripts[0].disabled;
-                WheelOptionEnabled[entryIdx] = false;
+                WheelOptionEnabled[entryIdx] = FALSE;
                 WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
             }
             if (battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] == BTL_MENU_TYPE_JUMP) {
@@ -470,21 +470,21 @@ void btl_state_update_player_menu(void) {
             if (playerData->hammerLevel >= 0) {
                 WheelOptionHudScript[entryIdx] = HammerHudScripts[playerData->hammerLevel + 1].enabled;
                 WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_SMASH;
-                WheelOptionEnabled[entryIdx] = true;
+                WheelOptionEnabled[entryIdx] = TRUE;
                 WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_SMASH];
                 if (battleStatus->menuStatus[2] <= 0) {
                     WheelOptionHudScript[entryIdx] = HammerHudScripts[0].enabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_NO_HAMMER_TARGET;
                 }
                 if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_SMASH)) {
                     WheelOptionHudScript[entryIdx] = HammerHudScripts[0].disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 }
                 if (battleStatus->hammerLossTurns >= 0) {
                     WheelOptionHudScript[entryIdx] = HammerHudScripts[0].disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 }
                 if (battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] == BTL_MENU_TYPE_SMASH) {
@@ -497,12 +497,12 @@ void btl_state_update_player_menu(void) {
             if (playerData->maxStarPower != 0) {
                 WheelOptionHudScript[entryIdx] = StarPowersHudScripts.enabled;
                 WheelOptionSubmenu[entryIdx] = BTL_MENU_TYPE_STAR_POWERS;
-                WheelOptionEnabled[entryIdx] = true;
+                WheelOptionEnabled[entryIdx] = TRUE;
                 WheelOptionName[entryIdx] = CenteredBattleMessages[BTL_MENU_TYPE_STAR_POWERS];
                 WheelOptionError[entryIdx] = 0;
                 if (!(battleStatus->enabledMenusFlags & BTL_MENU_ENABLED_STAR_POWERS)) {
                     WheelOptionHudScript[entryIdx] = StarPowersHudScripts.disabled;
-                    WheelOptionEnabled[entryIdx] = false;
+                    WheelOptionEnabled[entryIdx] = FALSE;
                     WheelOptionError[entryIdx] = BTL_MSG_CANT_SELECT_NOW;
                 }
                 if (battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] == BTL_MENU_TYPE_STAR_POWERS) {
@@ -515,9 +515,9 @@ void btl_state_update_player_menu(void) {
             BattleMenu_PrevSelected = initialPos;
             BattleMenu_WheelBase = 2 - initialPos;
             if (btl_partner_can_act()) {
-                BattleMenu_ShowSwapIcons = true;
+                BattleMenu_ShowSwapIcons = TRUE;
             } else {
-                BattleMenu_ShowSwapIcons = false;
+                BattleMenu_ShowSwapIcons = FALSE;
             }
             btl_main_menu_init();
             BattleMenu_ChooseDelay = MENU_CHANGE_DELAY;
@@ -539,7 +539,7 @@ void btl_state_update_player_menu(void) {
                     battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_MAIN] = WheelOptionSubmenu[BattleMenu_CurPos + BattleMenu_HomePos];
                     btl_main_menu_destroy();
                     btl_set_state(BATTLE_STATE_SWITCH_TO_PARTNER);
-                } else if (partnerActor != nullptr && !(partnerActor->flags & BS_FLAGS1_YIELD_TURN) && battleStatus->hustleTurns != 1) {
+                } else if (partnerActor != NULL && !(partnerActor->flags & BS_FLAGS1_YIELD_TURN) && battleStatus->hustleTurns != 1) {
                     sfx_play_sound(SOUND_MENU_ERROR);
                     gBattleSubState = BTL_SUBSTATE_MAIN_SHOW_CANT_SWAP;
                 }
@@ -797,7 +797,7 @@ void btl_state_update_player_menu(void) {
                 MovesOptionDesc[i] = moveData->shortDescMsg;
 
             }
-            UsingSpiritsSubmenu = false;
+            UsingSpiritsSubmenu = FALSE;
             MovesOptionCount = battleStatus->submenuMoveCount;
             MovesPrevSelected = initialPos;
             btl_submenu_moves_init();
@@ -907,14 +907,14 @@ void btl_state_update_player_menu(void) {
             } else {
                 btl_show_variable_battle_message(BTL_MSG_CANT_MOVE, 60, playerData->curPartner);
             }
-            ShowingErrorMessage = true;
+            ShowingErrorMessage = TRUE;
             gBattleSubState = BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP;
             break;
         case BTL_SUBSTATE_MAIN_AWAIT_CANT_SWAP:
             if (btl_is_popup_displayed()) {
                 break;
             }
-            ShowingErrorMessage = false;
+            ShowingErrorMessage = FALSE;
             BattleMenu_ChooseDelay = 0;
             BattleMenu_SwapDelay = 4;
             gBattleSubState = BTL_SUBSTATE_MAIN_CHOOSING;
@@ -992,7 +992,7 @@ void btl_state_update_player_menu(void) {
                 create_current_pos_target_list(playerActor);
                 popup->ptrIcon[entryIdx] = hudScriptPair->enabled;
                 popup->userIndex[entryIdx] = playerData->invItems[i];
-                popup->enabled[entryIdx] = true;
+                popup->enabled[entryIdx] = TRUE;
                 popup->nameMsg[entryIdx] = itemData->nameMsg;
                 popup->descMsg[entryIdx] = itemData->shortDescMsg;
                 if (playerActor->targetListLength == 0) {
@@ -1101,7 +1101,7 @@ void btl_state_update_player_menu(void) {
                 popup->ptrIcon[entryIdx] = hudScriptPair->enabled;
 
                 popup->userIndex[entryIdx] = playerData->invItems[i];
-                popup->enabled[entryIdx] = true;
+                popup->enabled[entryIdx] = TRUE;
                 popup->nameMsg[entryIdx] = itemData->nameMsg;
                 popup->descMsg[entryIdx] = itemData->shortDescMsg;
                 if (playerActor->targetListLength == 0) {
@@ -1216,7 +1216,7 @@ void btl_state_update_player_menu(void) {
             if (battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_STAR_POWER] < 0) {
                 battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_STAR_POWER] = 0;
             }
-            UsingSpiritsSubmenu = true;
+            UsingSpiritsSubmenu = TRUE;
             MovesOptionCount = battleStatus->submenuMoveCount;
             initialPos = battleStatus->lastPlayerMenuSelection[BTL_MENU_IDX_STAR_POWER];
             MovesPrevSelected = initialPos;
@@ -1310,12 +1310,12 @@ void btl_state_update_player_menu(void) {
                     create_current_pos_target_list(playerActor);
                     popup->ptrIcon[entryIdx] = hudScriptPair->enabled;
                     popup->userIndex[entryIdx] = playerData->invItems[i];
-                    popup->enabled[entryIdx] = true;
+                    popup->enabled[entryIdx] = TRUE;
                     popup->nameMsg[entryIdx] = itemData->nameMsg;
                     popup->descMsg[entryIdx] = itemData->shortDescMsg;
                     if (playerActor->targetListLength == 0) {
                         popup->ptrIcon[entryIdx] = hudScriptPair->disabled;
-                        popup->enabled[entryIdx] = false;
+                        popup->enabled[entryIdx] = FALSE;
                     }
                     entryIdx++;
                 }
@@ -1446,11 +1446,11 @@ void btl_state_update_player_menu(void) {
                 StratsOptionMenuTypes[entryIdx] = BTL_MENU_TYPE_CHANGE_PARTNER;
                 StratsOptionNames[entryIdx] = LeftJustMenuMessages[BTL_MENU_TYPE_CHANGE_PARTNER];
                 StratsOptionHudScripts[entryIdx] = PartnerHudScripts[playerData->curPartner].enabled;
-                StratsOptionEnabled[entryIdx] = true;
+                StratsOptionEnabled[entryIdx] = TRUE;
                 StratsOptionMessage[entryIdx] = MSG_Menus_Action_ChangePartner;
                 if (battleStatus->changePartnerAllowed <= 0) {
                     StratsOptionHudScripts[entryIdx] = PartnerHudScripts[playerData->curPartner].disabled;
-                    StratsOptionEnabled[entryIdx] = false;
+                    StratsOptionEnabled[entryIdx] = FALSE;
                     StratsOptionError[entryIdx] = 0;
                 }
                 entryIdx++;
@@ -1459,7 +1459,7 @@ void btl_state_update_player_menu(void) {
             // add 'Do Nothing' command
             StratsOptionHudScripts[entryIdx] = DoNothingHudScripts.enabled;
             StratsOptionMenuTypes[entryIdx] = BTL_MENU_TYPE_DO_NOTHING;
-            StratsOptionEnabled[entryIdx] = true;
+            StratsOptionEnabled[entryIdx] = TRUE;
             StratsOptionNames[entryIdx] = LeftJustMenuMessages[BTL_MENU_TYPE_DO_NOTHING];
             StratsOptionMessage[entryIdx] = MSG_Menus_Action_DoNothing;
             entryIdx++;
@@ -1467,12 +1467,12 @@ void btl_state_update_player_menu(void) {
             // add 'Run Away' command
             StratsOptionHudScripts[entryIdx] = FleeHudScripts.enabled;
             StratsOptionMenuTypes[entryIdx] = BTL_MENU_TYPE_RUN_AWAY;
-            StratsOptionEnabled[entryIdx] = true;
+            StratsOptionEnabled[entryIdx] = TRUE;
             StratsOptionNames[entryIdx] = LeftJustMenuMessages[BTL_MENU_TYPE_RUN_AWAY];
             StratsOptionMessage[entryIdx] = MSG_Menus_Action_RunAway;
             if (!(gBattleStatus.flags2 & BS_FLAGS2_CAN_FLEE)) {
                 StratsOptionHudScripts[entryIdx] = FleeHudScripts.disabled;
-                StratsOptionEnabled[entryIdx] = false;
+                StratsOptionEnabled[entryIdx] = FALSE;
                 StratsOptionError[entryIdx] = 1;
             }
             entryIdx++;
@@ -1586,14 +1586,14 @@ void btl_state_update_player_menu(void) {
                 if (playerData->partners[partnerId].enabled) {
                     prop = &gPartnerPopupProperties[partnerId];
                     popup->ptrIcon[entryIdx] = PartnerHudScripts[partnerId].enabled;
-                    popup->enabled[entryIdx] = true;
+                    popup->enabled[entryIdx] = TRUE;
                     popup->userIndex[entryIdx] = partnerId;
                     popup->nameMsg[entryIdx] = prop->nameMsg;
                     popup->descMsg[entryIdx] = prop->battleDescMsg;
                     popup->value[entryIdx] = playerData->partners[partnerId].level;
                     if (playerData->curPartner == partnerId) {
                         popup->ptrIcon[entryIdx] = PartnerHudScripts[partnerId].disabled;
-                        popup->enabled[entryIdx] = false;
+                        popup->enabled[entryIdx] = FALSE;
                     }
                     entryIdx++;
                 }

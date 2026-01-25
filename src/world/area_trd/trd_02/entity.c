@@ -23,7 +23,7 @@ EvtScript N(D_80242890_9A3870) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
-    Set(GF_TRD02_UnlockedDoor, true)
+    Set(GF_TRD02_UnlockedDoor, TRUE)
     Call(N(GetEntityPosition), MV_Padlock_EntityIndex, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Set(LVar0, MV_Padlock_EntityIndex)
@@ -41,7 +41,7 @@ EvtScript N(EVS_BindLockTrigger) = {
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_TRD02_UnlockedDoor, false)
+    IfEq(GF_TRD02_UnlockedDoor, FALSE)
         Call(MakeEntity, Ref(Entity_Padlock), -265, 195, -55, 80, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
         Set(MV_Padlock_EntityIndex, LVar0)

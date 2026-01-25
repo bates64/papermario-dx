@@ -17,7 +17,7 @@ EvtScript N(EVS_ExitDoors_dgb_16_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(dgb_15_ENT
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_dgb_14_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_dgb_16_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
-    IfEq(GF_DGB15_UnlockedUpperFoyer, false)
+    IfEq(GF_DGB15_UnlockedUpperFoyer, FALSE)
         BindPadlock(Ref(N(EVS_UnlockPrompt_Door)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
     Else
         BindTrigger(Ref(N(EVS_ExitDoors_dgb_17_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilitte, 1, 0)
@@ -53,10 +53,10 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    Set(AF_DGB_01, false)
+    Set(AF_DGB_01, FALSE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    IfEq(GF_DGB16_EscapedFromTubba, false)
-        Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    IfEq(GF_DGB16_EscapedFromTubba, FALSE)
+        Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

@@ -2,7 +2,7 @@
 
 // skip loading shape/hit/tex for this map
 s32 N(map_init)(void) {
-    return true;
+    return TRUE;
 }
 
 EntryList N(Entrances) = {

@@ -17,7 +17,7 @@ API_CALLABLE(N(SpawnLightningFX)) {
     f32 posY, posX, posZ;
     s32 scaleX, scaleY;
 
-    if (actor != nullptr) {
+    if (actor != NULL) {
         sfx_play_sound(SOUND_LIGHTNING_STRIKE);
 
         posX = actor->curPos.x;

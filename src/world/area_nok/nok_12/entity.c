@@ -13,7 +13,7 @@ API_CALLABLE(N(SetNpcVarSafe)) {
     }
 
     enemy = get_enemy_safe(npcID);
-    if (enemy != nullptr) {
+    if (enemy != NULL) {
         enemy->varTable[varIdx] = val;
     }
 
@@ -34,7 +34,7 @@ EvtScript N(EVS_OnShakeTree_DropSwitch) = {
         Wait(15)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Call(MakeLerp, 95, 0, 12, EASING_QUADRATIC_IN)
         Label(0)
             Call(UpdateLerp)
@@ -49,7 +49,7 @@ EvtScript N(EVS_OnShakeTree_DropSwitch) = {
             Wait(5)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         EndThread
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
     EndIf
     Return
     End

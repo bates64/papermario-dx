@@ -2,8 +2,8 @@
 #include "battle/states/states.h"
 
 BSS s32 BattleSubstateDelay; // generic delay time usable for various substates
-BSS bool BattleSkipActorTurn;
-BSS bool BattleCanShowFirstStrike;
+BSS b32 BattleSkipActorTurn;
+BSS b32 BattleCanShowFirstStrike;
 BSS s32 BattleStatusUpdateDelay;
 
 void btl_merlee_on_start_turn(void) {
@@ -19,7 +19,7 @@ void btl_merlee_on_start_turn(void) {
         if (playerData->merleeTurnCount <= 0) {
             s32 temp = rand_int(100);
 
-            if (currentEncounter->curEnemy != nullptr) {
+            if (currentEncounter->curEnemy != NULL) {
                 if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
                     // 46/101 ≈ 45.5%
                     if (temp <= 45) {
@@ -75,7 +75,7 @@ void btl_merlee_on_first_strike(void) {
         if (playerData->merleeTurnCount <= 0) {
             s32 temp = rand_int(100);
 
-            if (currentEncounter->curEnemy != nullptr) {
+            if (currentEncounter->curEnemy != NULL) {
                 if (currentEncounter->curEnemy->flags & ACTOR_FLAG_NO_HEALTH_BAR) {
                     // 46/101 ≈ 45.5%
                     if (temp <= 45) {

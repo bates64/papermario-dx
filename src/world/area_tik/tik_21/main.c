@@ -19,9 +19,9 @@ EvtScript N(EVS_GotoMap_tik_14_0) = {
 EvtScript N(EVS_ExitPipe_tik_14_0) = EVT_EXIT_PIPE_VERTICAL(tik_21_ENTRY_2, COLLIDER_o49, N(EVS_GotoMap_tik_14_0));
 
 EvtScript N(EVS_ShowMessage_DoorLocked) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShowMessageAtScreenPos, MSG_Menus_0177, 160, 40)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

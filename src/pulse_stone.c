@@ -35,16 +35,16 @@ s32 should_cancel_pulse_stone(void) {
     s8 actionState = playerStatus->actionState;
 
     if (actionState == ACTION_STATE_USE_TWEESTER) {
-        return true;
+        return TRUE;
     }
 
     if (partnerStatus->partnerActionState == PARTNER_ACTION_USE
         && (partnerStatus->actingPartner == PARTNER_BOW || partnerStatus->actingPartner == PARTNER_PARAKARRY)
     ) {
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
 s32 should_continue_pulse_stone(void) {
@@ -62,11 +62,11 @@ s32 should_continue_pulse_stone(void) {
 
         if ((dx + dy) < 6) {
             if (!should_cancel_pulse_stone()) {
-                return true;
+                return TRUE;
             }
         }
     }
-    return false;
+    return FALSE;
 }
 
 void pulse_stone_notification_setup(void) {
@@ -161,7 +161,7 @@ void pulse_stone_notification_update(void) {
     PulseStonePtr->pos.z = playerStatus->pos.z;
 
     if (!should_continue_pulse_stone()) {
-        PulseStoneNotificationCallback = nullptr;
+        PulseStoneNotificationCallback = NULL;
         playerStatus->animFlags &= ~PA_FLAG_PULSE_STONE_VISIBLE;
         return;
     }

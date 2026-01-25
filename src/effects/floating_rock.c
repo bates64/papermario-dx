@@ -26,13 +26,13 @@ EffectInstance* floating_rock_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 f
     bp.update = floating_rock_update;
     bp.renderScene = floating_rock_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_FLOATING_ROCK;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.floatingRock = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.floatingRock != nullptr);
+    ASSERT(effect->data.floatingRock != NULL);
 
     data->type = type;
     data->pos.x = posX;

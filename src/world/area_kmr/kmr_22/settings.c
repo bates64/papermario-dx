@@ -1,7 +1,7 @@
 #include "kmr_22.h"
 
 s32 N(map_init)(void) {
-    return true;
+    return TRUE;
 }
 
 EntryList N(Entrances) = {

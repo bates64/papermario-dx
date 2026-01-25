@@ -8,7 +8,7 @@ void nuPiReadRomOverlay(NUPiOverlaySegment* segment) {
     u32 readSize;
     u8* romAddr;
     u32 size;
-    s32 clearBSS = true;
+    s32 clearBSS = TRUE;
     void* bufPtr;
 
     osCreateMesgQueue(&dmaMesgQ, &dmaMesgBuf, 1);
@@ -37,7 +37,7 @@ void nuPiReadRomOverlay(NUPiOverlaySegment* segment) {
 
         if (clearBSS) {
             bzero(segment->bssStart, segment->bssEnd - segment->bssStart);
-            clearBSS = false;
+            clearBSS = FALSE;
         }
 
         osRecvMesg(&dmaMesgQ, &dmaMesgBuf, OS_MESG_BLOCK);

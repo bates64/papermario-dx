@@ -6,9 +6,9 @@
 extern AnimScript Entity_ScriptSpring_AnimLaunch;
 
 API_CALLABLE(N(PlaySpringAnimation)) {
-    Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
+    Entity* entity = get_entity_by_index(evt_get_variable(NULL, MV_SpringEntityID));
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         return ApiStatus_BLOCK;
     }
 
@@ -37,15 +37,15 @@ EvtScript N(EVS_LaunchToCeiling) = {
 };
 
 EvtScript N(EVS_UseSpring) = {
-    IfEq(AF_DGB_03, true)
+    IfEq(AF_DGB_03, TRUE)
         Return
     EndIf
-    Set(AF_DGB_03, true)
-    Call(DisablePlayerInput, true)
-    Call(SetZoneEnabled, ZONE_o203, false)
-    IfEq(AF_DGB_02, false)
-        IfEq(GF_DGB10_BoardedFloor3, false)
-            Call(DisablePlayerPhysics, true)
+    Set(AF_DGB_03, TRUE)
+    Call(DisablePlayerInput, TRUE)
+    Call(SetZoneEnabled, ZONE_o203, FALSE)
+    IfEq(AF_DGB_02, FALSE)
+        IfEq(GF_DGB10_BoardedFloor3, FALSE)
+            Call(DisablePlayerPhysics, TRUE)
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
             Wait(1)
             Set(LVar3, 500)
@@ -75,12 +75,12 @@ EvtScript N(EVS_UseSpring) = {
             KillThread(LVarA)
             Call(SetPlayerActionState, ACTION_STATE_IDLE)
             Wait(2)
-            Call(SetZoneEnabled, ZONE_o203, true)
-            Call(DisablePlayerPhysics, false)
-            Call(DisablePlayerInput, false)
-            Set(AF_DGB_03, false)
+            Call(SetZoneEnabled, ZONE_o203, TRUE)
+            Call(DisablePlayerPhysics, FALSE)
+            Call(DisablePlayerInput, FALSE)
+            Set(AF_DGB_03, FALSE)
         Else
-            Call(DisablePlayerPhysics, true)
+            Call(DisablePlayerPhysics, TRUE)
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
             Wait(1)
             Thread
@@ -92,7 +92,7 @@ EvtScript N(EVS_UseSpring) = {
             ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
             Call(SetPlayerJumpscale, Float(0.7))
             Call(PlayerJump, 375, 270, -250, 20)
-            Set(AF_DGB_03, false)
+            Set(AF_DGB_03, FALSE)
         EndIf
     Else
         Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -100,13 +100,13 @@ EvtScript N(EVS_UseSpring) = {
         Set(LVar3, 25)
         Call(SetPlayerJumpscale, Float(0.7))
         Call(PlayerJump, 375, 0, -175, 15)
-        Set(AF_DGB_02, false)
+        Set(AF_DGB_02, FALSE)
         KillThread(LVarA)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
         Wait(2)
-        Call(SetZoneEnabled, ZONE_o203, true)
-        Call(DisablePlayerInput, false)
-        Set(AF_DGB_03, false)
+        Call(SetZoneEnabled, ZONE_o203, TRUE)
+        Call(DisablePlayerInput, FALSE)
+        Set(AF_DGB_03, FALSE)
     EndIf
     Return
     End

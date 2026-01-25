@@ -14,7 +14,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 #include "../common/ManageSnowfall.inc.c"
 
 EvtScript N(EVS_OpenAndCloseMayorsDoor) = {
-    Call(EnableGroup, MODEL_s_naisou, true)
+    Call(EnableGroup, MODEL_s_naisou, TRUE)
     Call(PlaySoundAtCollider, COLLIDER_tts, SOUND_BASIC_DOOR_OPEN, 0)
     Call(MakeLerp, 0, -80, 15, EASING_QUADRATIC_IN)
     Loop(0)
@@ -36,7 +36,7 @@ EvtScript N(EVS_OpenAndCloseMayorsDoor) = {
         EndIf
     EndLoop
     Call(PlaySoundAtCollider, COLLIDER_tts, SOUND_BASIC_DOOR_CLOSE, 0)
-    Call(EnableGroup, MODEL_s_naisou, false)
+    Call(EnableGroup, MODEL_s_naisou, FALSE)
     Return
     End
 };
@@ -51,7 +51,7 @@ EvtScript N(EVS_SetupHerringway) = {
                 BreakLoop
             EndIf
         EndLoop
-        Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_Walk)
         Call(NpcMoveTo, NPC_Herringway, -265, 275, 20 * DT)
         Exec(N(EVS_OpenAndCloseMayorsDoor))
@@ -62,7 +62,7 @@ EvtScript N(EVS_SetupHerringway) = {
             Call(NpcMoveTo, NPC_Herringway, -228, 91, 20 * DT)
             Call(SetNpcAnimation, NPC_Herringway, ANIM_Herringway_Idle)
             Call(InterpNpcYaw, NPC_Herringway, 270, 0)
-            Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_Herringway, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
         EndThread
         Set(GB_StoryProgress, STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
         Call(BindNpcInteract, NPC_Herringway, Ref(N(EVS_NpcInteract_Herringway)))
@@ -78,11 +78,11 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH7_MAYOR_MURDER_MYSTERY)
-            Call(MakeNpcs, false, Ref(N(BeforeNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(BeforeNPCs)))
         CaseLt(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(N(MysteryNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(MysteryNPCs)))
         CaseGe(STORY_CH7_MAYOR_MURDER_SOLVED)
-            Call(MakeNpcs, false, Ref(N(AfterNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(AfterNPCs)))
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))

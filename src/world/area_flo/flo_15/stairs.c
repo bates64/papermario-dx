@@ -15,13 +15,13 @@ s32 N(ShakeCamParams)[] = {
 };
 
 EvtScript N(EVS_MonitorFallingStairs) = {
-    IfEq(GF_FLO15_BombedRock, false)
+    IfEq(GF_FLO15_BombedRock, FALSE)
         Label(0)
-        IfEq(GF_FLO15_BombedRock, false)
+        IfEq(GF_FLO15_BombedRock, FALSE)
             Wait(1)
             Goto(0)
         EndIf
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Thread
             UseBuf(Ref(N(ShakeCamParams)))
             Loop(10)
@@ -35,7 +35,7 @@ EvtScript N(EVS_MonitorFallingStairs) = {
         Call(SetCamPitch, CAM_DEFAULT, Float(25.0), Float(-9.0))
         Call(SetCamPosA, CAM_DEFAULT, Float(-50.0), Float(25.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Thread
             Wait(100)
@@ -61,7 +61,7 @@ EvtScript N(EVS_MonitorFallingStairs) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_g58, COLLIDER_FLAGS_UPPER_MASK)
         Wait(15)
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g54, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_g58, COLLIDER_FLAGS_UPPER_MASK)

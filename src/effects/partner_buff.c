@@ -28,7 +28,7 @@ extern Gfx D_09001B80_406AC0[];
 Gfx* D_E011AC20[] = { D_09001800_406740 };
 Gfx* D_E011AC24[] = {
     D_090019A0_4068E0, D_09001A18_406958, D_09001A90_4069D0, D_09001B08_406A48, D_09001B80_406AC0,
-    nullptr, nullptr, nullptr, nullptr, nullptr
+    NULL, NULL, NULL, NULL, NULL
 };
 
 s8 D_E011AC4C[] = { 15, 15, 15, 15, 15, 35, 75, 100, 100, 100, 100, 0 };
@@ -52,7 +52,7 @@ EffectInstance* partner_buff_main(s32 useRandomValues, f32 arg1, f32 arg2, f32 a
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = effect->data.partnerBuff = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.partnerBuff != nullptr);
+    ASSERT(effect->data.partnerBuff != NULL);
 
     part->useRandomValues = useRandomValues;
     part->lifeTime = 0;
@@ -70,9 +70,9 @@ EffectInstance* partner_buff_main(s32 useRandomValues, f32 arg1, f32 arg2, f32 a
         part->unk_0C[i].stateTimer = 0;
     }
 
-    part->visible = false;
+    part->visible = FALSE;
     if (useRandomValues == 1) {
-        part->visible = true;
+        part->visible = TRUE;
     }
 
     return effect;
@@ -268,7 +268,7 @@ void func_E011A700(EffectInstance* effect) {
                         idx = turnsDisplay + 1;
                     }
                     dlist = D_E011AC24[idx];
-                    if (dlist != nullptr) {
+                    if (dlist != NULL) {
                         gSPDisplayList(gMainGfxPos++, dlist);
                         scale = D_E011AC4C[(s16)stateTimer] * 0.01f;
                         temp2 = (-(scale - 1.0f) * 16.0f) + 0.5;
@@ -279,7 +279,7 @@ void func_E011A700(EffectInstance* effect) {
                 }
 
                 dlist = D_E011AC24[turnsDisplay];
-                if (dlist != nullptr) {
+                if (dlist != NULL) {
                     gSPDisplayList(gMainGfxPos++, dlist);
                     temp1 = D_E011AC64[(s16)stateTimer];
                     temp2 = -temp1;

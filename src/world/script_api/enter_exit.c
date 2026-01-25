@@ -8,7 +8,7 @@ API_CALLABLE(CheckUsingRideablePartner) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     script->varTable[10] = 0;
-    if (partner_get_enter_map_script() != nullptr) {
+    if (partner_get_enter_map_script() != NULL) {
         if (gPartnerStatus.partnerActionState == ACTION_STATE_IDLE) {
             script->varTable[10] = 0;
         } else {
@@ -61,7 +61,7 @@ API_CALLABLE(SetPlayerPositionFromSaveData) {
         enable_partner_ai();
     }
 
-    camera->needsReinit = true;
+    camera->needsReinit = TRUE;
     return ApiStatus_DONE2;
 }
 
@@ -261,12 +261,12 @@ EvtScript EnterWalkCustom = {
 };
 
 EvtScript EnterPostPipe = {
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
     Call(EnterPlayerPostPipe)
     Call(ResetPartnerTetherDistance)
-    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerPhysics, FALSE)
     Return
     End
 };
@@ -281,7 +281,7 @@ EvtScript EnterSavePoint = {
 };
 
 EvtScript ExitWalk = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShortenPartnerTetherDistance)
     Call(CheckUsingRideablePartner)
     IfEq(LVarA, 0)
@@ -354,8 +354,8 @@ EvtScript EnterSplitDoubleDoor = {
 };
 
 EvtScript BaseExitDoor = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(ShortenPartnerTetherDistance)
     Set(LVar9, LVar0)
     Call(GetEntryCoords, LVar0, LVarC, LVarD, LVarE, LVarB)
@@ -397,14 +397,14 @@ EvtScript BaseExitDoor = {
         ExecWait(LVarB)
     EndIf
     Call(ResetPartnerTetherDistance)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript BaseEnterDoor = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShortenPartnerTetherDistance)
     UseBuf(LVar2)
     Loop(0)
@@ -462,7 +462,7 @@ EvtScript BaseEnterDoor = {
         Goto(0)
     EndIf
     Call(ResetPartnerTetherDistance)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

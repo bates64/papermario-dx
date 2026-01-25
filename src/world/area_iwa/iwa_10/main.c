@@ -46,8 +46,8 @@ EvtScript N(EVS_Main) = {
     Call(GetLanguage, LVar0)
     Call(SetModelTexVariant, MODEL_o110, LVar0)
 #endif
-    Set(GF_MAP_MtRugged, true)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Set(GF_MAP_MtRugged, TRUE)
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Call(ClearDefeatedEnemies)
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_InitializeTrainScene))

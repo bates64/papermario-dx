@@ -79,7 +79,7 @@ extern Vec3s StandardActorHomePositions[];
 
 extern s32 gEncounterSubState;
 extern s32 gTimeFreezeMode;
-extern bool EncounterStateChanged;
+extern b32 EncounterStateChanged;
 
 extern u8 IntroMessageIdx;
 extern s32 PartnerIDFromMenuIndex[12]; // partner IDs

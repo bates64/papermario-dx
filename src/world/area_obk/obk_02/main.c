@@ -66,40 +66,40 @@ EvtScript N(EVS_OnStep_LowerFloor) = {
 };
 
 EvtScript N(EVS_EnableModels_LowerFloor) = {
-    Call(EnableGroup, MODEL_off_1, true)
-    Call(EnableGroup, MODEL_bom, true)
-    Call(EnableGroup, MODEL_tokei, true)
-    Call(EnableGroup, MODEL_hikido, true)
-    IfEq(GF_OBK06_BombedWall, false)
-        Call(EnableModel, MODEL_bomu_ato, false)
+    Call(EnableGroup, MODEL_off_1, TRUE)
+    Call(EnableGroup, MODEL_bom, TRUE)
+    Call(EnableGroup, MODEL_tokei, TRUE)
+    Call(EnableGroup, MODEL_hikido, TRUE)
+    IfEq(GF_OBK06_BombedWall, FALSE)
+        Call(EnableModel, MODEL_bomu_ato, FALSE)
     Else
-        Call(EnableModel, MODEL_bom_mae, false)
+        Call(EnableModel, MODEL_bom_mae, FALSE)
     EndIf
     Return
     End
 };
 
 EvtScript N(EVS_DisableModels_LowerFloor) = {
-    Call(EnableGroup, MODEL_off_1, false)
-    Call(EnableGroup, MODEL_bom, false)
-    Call(EnableGroup, MODEL_tokei, false)
-    Call(EnableGroup, MODEL_hikido, false)
+    Call(EnableGroup, MODEL_off_1, FALSE)
+    Call(EnableGroup, MODEL_bom, FALSE)
+    Call(EnableGroup, MODEL_tokei, FALSE)
+    Call(EnableGroup, MODEL_hikido, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_EnableModels_UpperFloor) = {
-    Call(EnableGroup, MODEL_off_2, true)
-    Call(EnableGroup, MODEL_shiyan, true)
-    Call(EnableGroup, MODEL_door_1, true)
+    Call(EnableGroup, MODEL_off_2, TRUE)
+    Call(EnableGroup, MODEL_shiyan, TRUE)
+    Call(EnableGroup, MODEL_door_1, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_DisableModels_UpperFloor) = {
-    Call(EnableGroup, MODEL_off_2, false)
-    Call(EnableGroup, MODEL_shiyan, false)
-    Call(EnableGroup, MODEL_door_1, false)
+    Call(EnableGroup, MODEL_off_2, FALSE)
+    Call(EnableGroup, MODEL_shiyan, FALSE)
+    Call(EnableGroup, MODEL_door_1, FALSE)
     Return
     End
 };
@@ -150,7 +150,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupTexPan))
     Exec(N(EVS_SetupBombableWall))

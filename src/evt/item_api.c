@@ -31,12 +31,12 @@ API_CALLABLE(ShowKeyChoicePopup) {
                 s16 invItem = playerData->keyItems[i];
 
                 if (invItem != ITEM_NONE) {
-                    s32 found = false;
+                    s32 found = FALSE;
                     s32* itemIt = trigger->itemList;
 
                     while (*itemIt > 0) {
                         if (invItem == *itemIt) {
-                            found = true;
+                            found = TRUE;
                             break;
                         }
                         itemIt++;
@@ -47,7 +47,7 @@ API_CALLABLE(ShowKeyChoicePopup) {
 
                         menu->ptrIcon[numEntries] = gItemHudScripts[item->hudElemID].enabled;
                         menu->userIndex[numEntries] = i;
-                        menu->enabled[numEntries] = true;
+                        menu->enabled[numEntries] = TRUE;
                         menu->nameMsg[numEntries] = item->nameMsg;
                         menu->descMsg[numEntries] = item->shortDescMsg;
                         numEntries++;
@@ -118,12 +118,12 @@ API_CALLABLE(ShowConsumableChoicePopup) {
                 s16 invItem = playerData->invItems[i];
 
                 if (invItem != ITEM_NONE) {
-                    s32 found = false;
+                    s32 found = FALSE;
                     s32* itemIt = trigger->itemList;
 
                     while (*itemIt > 0) {
                         if (invItem == *itemIt) {
-                            found = true;
+                            found = TRUE;
                             break;
                         }
                         itemIt++;
@@ -134,7 +134,7 @@ API_CALLABLE(ShowConsumableChoicePopup) {
 
                         menu->ptrIcon[numEntries] = gItemHudScripts[item->hudElemID].enabled;
                         menu->userIndex[numEntries] = i;
-                        menu->enabled[numEntries] = true;
+                        menu->enabled[numEntries] = TRUE;
                         menu->nameMsg[numEntries] = item->nameMsg;
                         menu->descMsg[numEntries] = item->shortDescMsg;
                         numEntries++;
@@ -243,7 +243,7 @@ API_CALLABLE(CountItem) {
     s32 itemID = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
-    bool count = count_item(itemID);
+    b32 count = count_item(itemID);
 
     evt_set_variable(script, outVar, count);
     return ApiStatus_DONE2;
@@ -254,7 +254,7 @@ API_CALLABLE(HasItem) {
     s32 itemID = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
-    bool hasItem = has_item(itemID);
+    b32 hasItem = has_item(itemID);
 
     evt_set_variable(script, outVar, hasItem);
     return ApiStatus_DONE2;
@@ -382,11 +382,11 @@ API_CALLABLE(ShowGotItem) {
     s32 itemID, unkCond, pickupMsgFlags;
 
     if (isInitialCall) {
-        script->functionTemp[0] = false;
+        script->functionTemp[0] = FALSE;
     }
 
     if (script->functionTemp[0]) {
-        if (get_item_entity(script->functionTemp[1]) == nullptr) {
+        if (get_item_entity(script->functionTemp[1]) == NULL) {
             return ApiStatus_DONE2;
          }
     } else {
@@ -394,7 +394,7 @@ API_CALLABLE(ShowGotItem) {
         unkCond = evt_get_variable(script, *args++);
         pickupMsgFlags = *args++;
         script->functionTemp[1] = make_item_entity_at_player(itemID, unkCond, pickupMsgFlags);
-        script->functionTemp[0] = true;
+        script->functionTemp[0] = TRUE;
     }
     return ApiStatus_BLOCK;
 }

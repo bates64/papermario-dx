@@ -2,13 +2,13 @@
 #include "entity.h"
 
 EvtScript N(EVS_OnSmashBlock) = {
-    Set(GF_IWA01_Hammer1Block, true)
+    Set(GF_IWA01_Hammer1Block, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_IWA01_Hammer1Block, false)
+    IfEq(GF_IWA01_Hammer1Block, FALSE)
         Call(MakeEntity, Ref(Entity_Hammer1BlockWideZ), 900, -30, 220, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_OnSmashBlock)))
     EndIf

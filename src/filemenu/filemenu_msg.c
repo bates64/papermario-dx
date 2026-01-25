@@ -60,7 +60,7 @@ Gfx filemenu_dl_draw_char_init[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx* filemenu_savedGfxPos = nullptr;
+Gfx* filemenu_savedGfxPos = NULL;
 s32 filemenu_charset = 0;
 s32 filemenu_charset_raster_id = 0;
 s32 filemenu_char_color = -1;

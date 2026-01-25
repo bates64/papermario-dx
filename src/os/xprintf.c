@@ -26,7 +26,7 @@
 #define PUT(s, n)                                \
     if (0 < (n))                                 \
     {                                            \
-        if ((arg = (*prout)(arg, s, n)) != nullptr) \
+        if ((arg = (*prout)(arg, s, n)) != NULL) \
             x.nchar += (n);                      \
         else                                     \
             return x.nchar;                      \
@@ -62,7 +62,7 @@ int _Printf(outfun prout, char *arg, const char *fmt, va_list args) {
 
         fmt = ++s;
 
-        for (x.flags = 0; (t = strchr(fchar, *s)) != nullptr; s++) {
+        for (x.flags = 0; (t = strchr(fchar, *s)) != NULL; s++) {
             x.flags |= fbit[t - fchar];
         }
 

@@ -79,7 +79,7 @@ BSS s8 MovesErrorTimer; // how much time is left for showing an error message
 BSS s16 MovesTextColor;
 BSS s16 MovesTextAlpha;
 
-BSS bool UsingSpiritsSubmenu;
+BSS b32 UsingSpiritsSubmenu;
 BSS s32 SelectedMovesIndex;
 
 s16 ErrorMessageHeight[] = { 28, 40 };
@@ -112,7 +112,7 @@ void btl_submenu_moves_init(void) {
     }
 
     MovesTextAlpha = 255;
-    MovesDescVisible = true;
+    MovesDescVisible = TRUE;
 
     if (MovesPrevCursorPos < 0) {
         MovesVisibleStart = MovesPrevCursorPos;
@@ -199,7 +199,7 @@ void btl_submenu_moves_resume_choose(void) {
 
     set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
     MovesTextColor = MSG_PAL_STANDARD;
-    MovesDescVisible = true;
+    MovesDescVisible = TRUE;
     MovesTextAlpha = 255;
     MovesMenuState = BTL_SUBMENU_STATE_CHOOSING;
 }
@@ -239,7 +239,7 @@ void btl_submenu_moves_restore_choose(void) {
 
     hud_element_set_script(HID_MovesCursor, &HES_AnimatedHandPointer);
     MovesTextColor = MSG_PAL_STANDARD;
-    MovesDescVisible = true;
+    MovesDescVisible = TRUE;
     MovesMenuState = BTL_SUBMENU_STATE_RESTORE;
 }
 
@@ -373,16 +373,16 @@ s32 btl_submenu_moves_update(void) {
             x = MovesMenuPosX;
             y = MovesMenuPosY;
             if (!UsingSpiritsSubmenu) {
-                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 150, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, nullptr, -1);
-                set_window_properties(WIN_BTL_MOVES_TITLE, x + 16, y - 6, 90, 16, 1, btl_menu_moves_show_title, nullptr, -1);
-                set_window_properties(WIN_BTL_MOVES_ICON, x + 114, y - 12, 32, 32, 1, btl_menu_moves_show_icon, nullptr, -1);
+                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 150, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, NULL, -1);
+                set_window_properties(WIN_BTL_MOVES_TITLE, x + 16, y - 6, 90, 16, 1, btl_menu_moves_show_title, NULL, -1);
+                set_window_properties(WIN_BTL_MOVES_ICON, x + 114, y - 12, 32, 32, 1, btl_menu_moves_show_icon, NULL, -1);
             } else {
-                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 144, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, nullptr, -1);
+                set_window_properties(WIN_BTL_MOVES_MENU, x, y, 144, (MovesMenuLines * MENU_LINE_HEIGHT) + 28, 0, btl_menu_moves_draw_content, NULL, -1);
                 set_window_properties(WIN_BTL_SPIRITS_TITLE, x + 10, y - 6, 100, 16, 1, btl_menu_moves_show_title, 0, -1);
                 set_window_properties(WIN_BTL_SPIRITS_ICON, x + 110, y - 12, 32, 35, 1, btl_menu_moves_show_icon, 0, -1);
             }
 
-            set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, btl_menu_moves_show_desc, nullptr, -1);
+            set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, btl_menu_moves_show_desc, NULL, -1);
             set_window_update(WIN_BTL_MOVES_MENU, WINDOW_UPDATE_SHOW);
             if (!UsingSpiritsSubmenu) {
                 set_window_update(WIN_BTL_MOVES_TITLE, WINDOW_UPDATE_SHOW);
@@ -394,7 +394,7 @@ s32 btl_submenu_moves_update(void) {
             set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
 
             do {
-                cond = false;
+                cond = FALSE;
                 if (MovesCursorPos >= (MovesVisibleStart + MovesVisibleEnd) - 1) {
                     MovesVisibleStart++;
                     if (MovesVisibleStart > MovesOptionCount - MENU_MAX_VISIBLE) {
@@ -403,7 +403,7 @@ s32 btl_submenu_moves_update(void) {
                             MovesVisibleStart = 0;
                         }
                     } else {
-                        cond = true;
+                        cond = TRUE;
                     }
                 }
             } while (cond);
@@ -594,7 +594,7 @@ s32 btl_submenu_moves_update(void) {
             msgWidth = get_msg_width(msgID, 0) + 23;
             msgHeight = ErrorMessageHeight[get_msg_lines(msgID) - 1];
             x = (SCREEN_WIDTH / 2) - (msgWidth / 2);
-            set_window_properties(WIN_BTL_POPUP, x, 80, msgWidth, msgHeight, 20, btl_menu_moves_show_error, nullptr, -1);
+            set_window_properties(WIN_BTL_POPUP, x, 80, msgWidth, msgHeight, 20, btl_menu_moves_show_error, NULL, -1);
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             MovesErrorTimer = 60;
             MovesMenuState = BTL_SUBMENU_STATE_ERROR_DONE;

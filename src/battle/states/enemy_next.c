@@ -28,12 +28,12 @@ void btl_state_update_next_enemy(void) {
             }
 
             // find the next eligible enemy
-            while (true) {
+            while (TRUE) {
                 if (battleStatus->enemyIDs[i] >= 0) {
                     u16 enemyID = battleStatus->enemyIDs[i];
 
                     enemy = battleStatus->enemyActors[enemyID & 0xFF];
-                    if (enemy != nullptr) {
+                    if (enemy != NULL) {
                         if (!(enemy->flags & (ACTOR_FLAG_NO_ATTACK | ACTOR_FLAG_TARGET_ONLY))) {
                             break;
                         }
@@ -54,31 +54,31 @@ void btl_state_update_next_enemy(void) {
             battleStatus->curTurnEnemy = enemy;
             battleStatus->nextEnemyIndex = i;
 
-            skipEnemy = false;
+            skipEnemy = FALSE;
 
             if (enemy->debuff == STATUS_KEY_SLEEP) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_UNUSED) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_DIZZY) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_PARALYZE) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_FROZEN) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->debuff == STATUS_KEY_STOP) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->stoneStatus == STATUS_KEY_STONE) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
             if (enemy->flags & ACTOR_FLAG_SKIP_TURN) {
-                skipEnemy = true;
+                skipEnemy = TRUE;
             }
 
             if (skipEnemy) {
@@ -96,7 +96,7 @@ void btl_state_update_next_enemy(void) {
             player->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
             player->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
 
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 partner->flags &= ~ACTOR_FLAG_SHOW_STATUS_ICONS;
                 partner->flags |= ACTOR_FLAG_USING_IDLE_ANIM;
             }
@@ -106,7 +106,7 @@ void btl_state_update_next_enemy(void) {
             gBattleStatus.flags2 |= BS_FLAGS2_HIDE_BUFF_COUNTERS;
 
             NextEnemyWaitingOrdinal = enemy->ordinal;
-            if (enemy->handlePhaseSource != nullptr) {
+            if (enemy->handlePhaseSource != NULL) {
                 Evt* onTurnChanceScript;
 
                 battleStatus->battlePhase = PHASE_ENEMY_BEGIN;
@@ -121,10 +121,10 @@ void btl_state_update_next_enemy(void) {
             if (battleStatus->stateFreezeCount == 0) {
                 enemy = get_actor(battleStatus->activeEnemyActorID);
 
-                if (enemy == nullptr || enemy->ordinal != NextEnemyWaitingOrdinal) {
+                if (enemy == NULL || enemy->ordinal != NextEnemyWaitingOrdinal) {
                     btl_set_state(BATTLE_STATE_NEXT_ENEMY);
                 } else {
-                    if (enemy->handlePhaseSource == nullptr || !does_script_exist(enemy->handlePhaseScriptID)) {
+                    if (enemy->handlePhaseSource == NULL || !does_script_exist(enemy->handlePhaseScriptID)) {
                         if (battleStatus->cancelTurnMode < 0) {
                             battleStatus->cancelTurnMode = 0;
                             btl_set_state(BATTLE_STATE_END_TURN);

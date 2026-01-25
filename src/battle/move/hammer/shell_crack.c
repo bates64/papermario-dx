@@ -23,7 +23,7 @@ API_CALLABLE(func_802A10A4_77F2E4) {
 extern EvtScript N(EVS_UseMove_Impl);
 
 EvtScript N(EVS_UseMove) = {
-    Call(ShowActionHud, true)
+    Call(ShowActionHud, TRUE)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
@@ -88,7 +88,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     EndIf
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
-        CaseGt(false)
+        CaseGt(FALSE)
             Call(GetMenuSelection, LVar0, LVar1, LVar2)
             Switch(LVar1)
                 CaseEq(0)

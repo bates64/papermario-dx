@@ -102,13 +102,13 @@ EffectInstance* star_spirits_energy_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3,
     bp.update = star_spirits_energy_update;
     bp.renderScene = star_spirits_energy_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_STAR_SPIRITS_ENERGY;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.starSpiritsEnergy = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.starSpiritsEnergy != nullptr);
+    ASSERT(effect->data.starSpiritsEnergy != NULL);
 
     data->unk_00 = arg0 & 0xFF00;
     arg0 &= 0xFF;

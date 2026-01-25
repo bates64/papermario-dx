@@ -1,8 +1,8 @@
 #include "obk_09.h"
 
 EvtScript N(EVS_EnterMap) = {
-    Call(DisablePlayerInput, true)
-    Call(EnableGroup, MODEL_ori, false)
+    Call(DisablePlayerInput, TRUE)
+    Call(EnableGroup, MODEL_ori, FALSE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ori, COLLIDER_FLAGS_UPPER_MASK)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -19,7 +19,7 @@ EvtScript N(EVS_EnterMap) = {
     EndSwitch
     Exec(N(EVS_Scene_MeetBow))
     Wait(1)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -36,13 +36,13 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, obk_09_ENTRY_2)
-        Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(EpilogueNPCs)))
         Exec(N(EVS_Scene_Epilogue))
         Call(FadeInMusic, 0, SONG_CHEERFUL_BOOS_MANSION, 0, 3000, 0, 127)
         Wait(1)
         Return
     EndIf
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     BindTrigger(Ref(N(EVS_ExitDoors_obk_01_5)), TRIGGER_WALL_PRESS_A, COLLIDER_tt1, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_obk_01_6)), TRIGGER_WALL_PRESS_A, COLLIDER_tt2, 1, 0)
     Exec(N(EVS_EnterMap))

@@ -103,7 +103,7 @@ MenuWindowBP gPauseBadgesWindowBPs[] = {
         .height = 154,
         .priority = WINDOW_PRIORITY_1,
         .fpDrawContents = &pause_badges_draw_contents,
-        .tab = nullptr,
+        .tab = NULL,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -111,7 +111,7 @@ MenuWindowBP gPauseBadgesWindowBPs[] = {
     }
 };
 MenuPanel gPausePanelBadges = {
-    .initialized = false,
+    .initialized = FALSE,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -119,7 +119,7 @@ MenuPanel gPausePanelBadges = {
     .numCols = 0,
     .numRows = 0,
     .numPages = 0,
-    .gridData = nullptr,
+    .gridData = NULL,
     .fpInit = &pause_badges_init,
     .fpHandleInput = &pause_badges_handle_input,
     .fpUpdate = &pause_badges_update,
@@ -200,7 +200,7 @@ s32 pause_badges_get_row(s32 page, s32 itemIdx) {
 
 s32 pause_badges_is_visible(s32 y) {
     if (y < gPauseBadgesCurrentScrollPos - 32) {
-        return false;
+        return FALSE;
     } else {
         return y < gPauseBadgesCurrentScrollPos + 128;
     }
@@ -367,7 +367,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
     s32 msg2;
 
     costBP = 0;
-    canBeEquipped = false;
+    canBeEquipped = FALSE;
     style = DRAW_MSG_STYLE_MENU;
     bpAvailable = gPlayerData.maxBP - pause_get_total_equipped_bp_cost();
     currentBadgeColumn = gPauseBadgesSelectedIndex / currentPage->numCols;
@@ -418,10 +418,10 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
 
             for (itemIndex = 0; itemIndex < page->count; itemIndex++) {
                 badgeID = gPauseBadgesItemIds[page->startIndex + itemIndex];
-                isEquipped = false;
-                isSelected = false;
+                isEquipped = FALSE;
+                isSelected = FALSE;
                 equippedBadges = gPlayerData.equippedBadges;
-                cannotBeEquipped = false;
+                cannotBeEquipped = FALSE;
                 if (badgeID == BADGE_INVALID) {
                     continue;
                 }
@@ -432,7 +432,7 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
 
                 for (j = 0; j < ARRAY_COUNT(gPlayerData.equippedBadges); equippedBadges++, j++) {
                     if (badgeID == *equippedBadges) {
-                        isEquipped = true;
+                        isEquipped = TRUE;
                         break;
                     }
                 }
@@ -442,17 +442,17 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
                     pause_badges_get_column(pageIndex, itemIndex) == currentBadgeRow &&
                     pause_badges_get_row(pageIndex, itemIndex) == currentBadgeColumn) {
                     itemID = badgeID;
-                    isSelected = true;
+                    isSelected = TRUE;
                     if (!isNone) {
                         costBP = gMoveTable[gItemTable[itemID].moveID].costBP;
                         if (!isEquipped && bpAvailable >= costBP) {
-                            canBeEquipped = true;
+                            canBeEquipped = TRUE;
                         }
                     }
                 }
 
                 if (!isNone && bpAvailable < gMoveTable[gItemTable[badgeID].moveID].costBP) {
-                    cannotBeEquipped = true;
+                    cannotBeEquipped = TRUE;
                 }
 
                 badgeEntryOffsetX = 0;
@@ -727,8 +727,8 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
     }
 
     draw_box(4, &gPauseWS_13, gPauseBadgesCurrentTab == 1 ? baseX + 9 : baseX, baseY + 37, 0, 91, 34, 255,
-             gPauseBadgesCurrentTab != 0 ? 0 : 128, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
-             SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+             gPauseBadgesCurrentTab != 0 ? 0 : 128, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL,
+             SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 
     msg2 = pause_get_menu_msg(PAUSE_MSG_ACTIVE);
     msgX = baseX + 12;
@@ -883,7 +883,7 @@ void pause_badges_load_badges(s32 onlyEquipped) {
         page->listStart = i * 8;
         page->numCols = 1;
         page->numRows = 8;
-        page->enabled = true;
+        page->enabled = TRUE;
         page->startIndex = i * 8;
         page->count = 8;
     }
@@ -891,7 +891,7 @@ void pause_badges_load_badges(s32 onlyEquipped) {
     if ((gPauseBadgesNumItems % 8) != 0) {
         page->listStart = i * 8;
         page->numCols = 1;
-        page->enabled = true;
+        page->enabled = TRUE;
         page->startIndex = i * 8;
         page->count = gPauseBadgesNumItems % 8;
         page->numRows = page->count;
@@ -900,7 +900,7 @@ void pause_badges_load_badges(s32 onlyEquipped) {
     }
 
     while (i < ARRAY_COUNT(gPauseBadgesPages)) {
-        page->enabled = false;
+        page->enabled = FALSE;
         i++;
         page++;
     }
@@ -918,9 +918,9 @@ void pause_badges_init(MenuPanel* panel) {
     gPauseBadgesCurrentTab = 0;
     gPauseBadgesShowNotEnoughBP = 0;
 
-    pause_badges_load_badges(false);
+    pause_badges_load_badges(FALSE);
     if (gPauseBadgesItemIds[0] == BADGE_NONE_STANDIN) {
-        panel->initialized = false;
+        panel->initialized = FALSE;
         return;
     }
 
@@ -933,7 +933,7 @@ void pause_badges_init(MenuPanel* panel) {
         gPauseBadgesWindowBPs[i].tab = panel;
     }
     setup_pause_menu_tab(gPauseBadgesWindowBPs, ARRAY_COUNT(gPauseBadgesWindowBPs));
-    panel->initialized = true;
+    panel->initialized = TRUE;
 }
 
 void pause_badges_handle_input(MenuPanel* panel) {
@@ -1084,11 +1084,11 @@ void pause_badges_handle_input(MenuPanel* panel) {
             gPauseCurrentDescMsg = gItemTable[itemID].fullDescMsg;
         } else {
             gPauseCurrentDescMsg = MSG_NONE;
-            gPauseCurrentDescIconScript = nullptr;
+            gPauseCurrentDescIconScript = NULL;
         }
     } else {
         gPauseCurrentDescMsg = pause_get_menu_msg(gPauseBadgesCurrentTab == 0 ? PAUSE_MSG_BAGDE_DESC_ALL : PAUSE_MSG_BAGDE_DESC_ACTIVE);
-        gPauseCurrentDescIconScript = nullptr;
+        gPauseCurrentDescIconScript = NULL;
     }
 
     if (gPausePressedButtons & BUTTON_B) {
@@ -1100,7 +1100,7 @@ void pause_badges_handle_input(MenuPanel* panel) {
             gPauseBadgesLevel = 0;
             enforce_hpfp_limits();
             if (gPauseBadgesCurrentTab == 1) {
-                pause_badges_load_badges(true);
+                pause_badges_load_badges(TRUE);
             }
         }
     }

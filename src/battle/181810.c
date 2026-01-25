@@ -13,7 +13,7 @@ BSS ActorPart* gSpeakingActorPart;
 
 #define ACTOR_TYPE_LIST_END 0xFF
 
-u8* gBattleDmaDest = nullptr;
+u8* gBattleDmaDest = NULL;
 
 u8 ActorTypesGhost[] = {
     ACTOR_TYPE_DUPLIGHOST,
@@ -109,7 +109,7 @@ u8* ActorTypesLists[] = {
     ActorTypesGrayMagikoopa,
     ActorTypesYellowMagikoopa,
     ActorTypesWhiteMagikoopa,
-    nullptr,
+    NULL,
 };
 
 API_CALLABLE(ActorSpeak) {
@@ -152,7 +152,7 @@ API_CALLABLE(ActorSpeak) {
         headZ = actor->curPos.z + actor->headOffset.z;
         get_screen_coords(CAM_BATTLE, headX, headY, headZ, &screenX, &screenY, &screenZ);
 
-        gSpeakingActorPrintIsDone = false;
+        gSpeakingActorPrintIsDone = FALSE;
         gSpeakingActorPrintCtx = msg_get_printer_for_msg(msgID2, &gSpeakingActorPrintIsDone);
         msg_printer_set_origin_pos(gSpeakingActorPrintCtx, screenX, screenY);
 
@@ -195,7 +195,7 @@ API_CALLABLE(ActorSpeak) {
             set_actor_anim_by_ref(actor, part, anim);
         }
 
-        if (gSpeakingActorPrintIsDone == true) {
+        if (gSpeakingActorPrintIsDone == TRUE) {
             decrement_status_bar_disabled();
             gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
             return ApiStatus_DONE1;
@@ -262,7 +262,7 @@ API_CALLABLE(EndActorSpeech) {
             set_actor_anim_by_ref(actor, actorPart, anim);
         }
 
-        if (gSpeakingActorPrintIsDone == true) {
+        if (gSpeakingActorPrintIsDone == TRUE) {
             decrement_status_bar_disabled();
             gOverrideFlags &= ~GLOBAL_OVERRIDES_MESSAGES_OVER_FRONTUI;
             return ApiStatus_DONE1;
@@ -296,7 +296,7 @@ API_CALLABLE(ShowBattleChoice) {
 
 API_CALLABLE(EnableBattleStatusBar) {
     Bytecode* args = script->ptrReadPos;
-    bool shouldEnable = evt_get_variable(script, *args++);
+    b32 shouldEnable = evt_get_variable(script, *args++);
 
     if (shouldEnable) {
         decrement_status_bar_disabled();
@@ -316,11 +316,11 @@ API_CALLABLE(LoadBattleDmaData) {
     BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
     DmaTable* dmaEntry = &battleArea->dmaTable[dmaIndex];
 
-    if (dmaEntry == nullptr) {
+    if (dmaEntry == NULL) {
         return ApiStatus_DONE2;
     }
 
-    if (gBattleDmaDest == nullptr) {
+    if (gBattleDmaDest == NULL) {
         dma_copy(dmaEntry->start, dmaEntry->end, dmaEntry->dest);
     } else {
         dma_copy(dmaEntry->start, dmaEntry->end, gBattleDmaDest);
@@ -378,9 +378,9 @@ API_CALLABLE(GetDarknessStatus) {
     get_screen_overlay_params(SCREEN_LAYER_BACK, &type, &amt);
 
     if (amt < 128.0f) {
-        isLight = false;
+        isLight = FALSE;
     } else {
-        isLight = true;
+        isLight = TRUE;
     }
 
     evt_set_variable(script, out1, SCREEN_LAYER_BACK);
@@ -505,7 +505,7 @@ s32 is_actor_health_bar_visible(Actor* actor) {
     s32 flags;
 
     if (is_ability_active(ABILITY_PEEKABOO)) {
-        return true;
+        return TRUE;
     }
 
     flags = get_global_byte(EVT_INDEX_OF_GAME_BYTE(GB_Tattles_00) + actor->actorType / 8);
@@ -523,7 +523,7 @@ s32 is_actortype_health_bar_visible(s32 actorType) {
     s32 flagIdx;
 
     if (is_ability_active(ABILITY_PEEKABOO)) {
-        return true;
+        return TRUE;
     }
 
     flags = get_global_byte(EVT_INDEX_OF_GAME_BYTE(GB_Tattles_00) + actorType / 8);
@@ -540,9 +540,9 @@ void save_tattle_flags(s32 actorType) {
     s32 j;
     s32 k;
 
-    while (true) {
+    while (TRUE) {
         types = ActorTypesLists[i];
-        if (types == nullptr) {
+        if (types == NULL) {
             break;
         }
 
@@ -576,9 +576,9 @@ void load_tattle_flags(s32 actorType) {
     s32 j;
     s32 k;
 
-    while (true) {
+    while (TRUE) {
         types = ActorTypesLists[i];
-        if (types == nullptr) {
+        if (types == NULL) {
             break;
         }
 

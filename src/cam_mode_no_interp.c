@@ -2,9 +2,9 @@
 
 // implements CAM_UPDATE_NO_INTERP
 // this camera uses a set of control parameters to calculate its lookAt_obj and lookAt_eye positions,
-// which are only updated if skipRecalc = false
+// which are only updated if skipRecalc = FALSE
 // the ultimate target is given by lookAt_obj_target, with an offset given by targetPos (?!)
-// in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to false
+// in practice, this is used for CAM_BATTLE and CAM_TATTLE, with skipRecalc almost always set to FALSE
 //
 // control parameters:
 // dist -- length of the camera boom arm
@@ -19,9 +19,9 @@ void update_camera_no_interp(Camera* camera) {
     f32 dx, dy, dz, dr;
 
     if (camera->needsInit || camera->needsReinit) {
-        camera->needsInit = false;
-        camera->needsReinit = false;
-        camera->params.basic.skipRecalc = false;
+        camera->needsInit = FALSE;
+        camera->needsReinit = FALSE;
+        camera->params.basic.skipRecalc = FALSE;
         camera->params.basic.dist = 100;
         camera->params.basic.pitch = 0;
         camera->params.basic.yaw = 0;

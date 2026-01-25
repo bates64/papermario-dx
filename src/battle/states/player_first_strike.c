@@ -23,7 +23,7 @@ void btl_state_update_first_strike(void) {
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
-            BattleCanShowFirstStrike = false;
+            BattleCanShowFirstStrike = FALSE;
             btl_merlee_on_first_strike();
             if (playerData->playerFirstStrikes < 9999) {
                 playerData->playerFirstStrikes++;
@@ -67,7 +67,7 @@ void btl_state_update_first_strike(void) {
             }
             // let the enemy know a first strike is coming
             enemy = get_actor(ACTOR_ENEMY0);
-            if (enemy->handleEventSource != nullptr) {
+            if (enemy->handleEventSource != NULL) {
                 enemy->lastEventType = EVENT_BEGIN_FIRST_STRIKE;
                 script = start_script(enemy->handleEventSource, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
                 enemy->handleEventScript = script;
@@ -78,11 +78,11 @@ void btl_state_update_first_strike(void) {
             break;
         case BTL_SUBSTATE_AWAIT_ENEMY_READY:
             enemy = get_actor(ACTOR_ENEMY0);
-            if (enemy->handleEventSource != nullptr) {
+            if (enemy->handleEventSource != NULL) {
                 if (does_script_exist(enemy->handleEventScriptID)) {
                     break;
                 } else {
-                    enemy->handleEventScript = nullptr;
+                    enemy->handleEventScript = NULL;
                 }
             }
 
@@ -110,42 +110,42 @@ void btl_state_update_first_strike(void) {
             if (BattleSubstateDelay != 0) {
                 BattleSubstateDelay--;
             } else {
-                BattleCanShowFirstStrike = true;
+                BattleCanShowFirstStrike = TRUE;
             }
 
             // wait for player move script
             if (!(gBattleStatus.flags1 & BS_FLAGS1_YIELD_TURN)) {
-                if (player->takeTurnScript != nullptr && does_script_exist(player->takeTurnScriptID)) {
+                if (player->takeTurnScript != NULL && does_script_exist(player->takeTurnScriptID)) {
                     break;
                 }
-                player->takeTurnScript = nullptr;
+                player->takeTurnScript = NULL;
             }
 
             gBattleStatus.flags1 &= ~BS_FLAGS1_EXECUTING_MOVE;
 
             // wait for player handle event script
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (player->handleEventScript != NULL && does_script_exist(player->handleEventScriptID)) {
                 break;
             }
-            player->handleEventScript = nullptr;
+            player->handleEventScript = NULL;
 
             // wait for partner handle event script
-            if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+            if (partner != NULL) {
+                if (partner->handleEventScript != NULL && does_script_exist(partner->handleEventScriptID)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
+                partner->handleEventScript = NULL;
             }
 
             // wait for all enemy turn scripts
-            enemyNotDone = false;
+            enemyNotDone = FALSE;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->takeTurnScript != nullptr) {
+                if (enemy != NULL && enemy->takeTurnScript != NULL) {
                     if (does_script_exist(enemy->takeTurnScriptID)) {
-                        enemyNotDone = true;
+                        enemyNotDone = TRUE;
                     } else {
-                        enemy->takeTurnScript = nullptr;
+                        enemy->takeTurnScript = NULL;
                     }
                 }
             }
@@ -154,14 +154,14 @@ void btl_state_update_first_strike(void) {
             }
 
             // wait for all enemy handle event scripts
-            enemyNotDone = false;
+            enemyNotDone = FALSE;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handleEventScript != nullptr) {
+                if (enemy != NULL && enemy->handleEventScript != NULL) {
                     if (does_script_exist(enemy->handleEventScriptID)) {
-                        enemyNotDone = true;
+                        enemyNotDone = TRUE;
                     } else {
-                        enemy->handleEventScript = nullptr;
+                        enemy->handleEventScript = NULL;
                     }
                 }
             }
@@ -171,7 +171,7 @@ void btl_state_update_first_strike(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr) {
+                if (enemy != NULL) {
                     enemy->flags &= ~ACTOR_FLAG_HEALTH_BAR_HIDDEN;
                 }
             }
@@ -186,8 +186,8 @@ void btl_state_update_first_strike(void) {
                     }
 
                     target = get_actor(player->targetActorID);
-                    if (target != nullptr) {
-                        if (target->handleEventSource != nullptr) {
+                    if (target != NULL) {
+                        if (target->handleEventSource != NULL) {
                             target->lastEventType = EVENT_END_FIRST_STRIKE;
                             script = start_script(target->handleEventSource, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
                             target->handleEventScript = script;
@@ -202,22 +202,22 @@ void btl_state_update_first_strike(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_ENEMY_DONE:
-            enemyNotDone = false;
+            enemyNotDone = FALSE;
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handleEventScript != nullptr) {
+                if (enemy != NULL && enemy->handleEventScript != NULL) {
                     if (does_script_exist(enemy->handleEventScriptID)) {
-                        enemyNotDone = true;
+                        enemyNotDone = TRUE;
                     } else {
-                        enemy->handleEventScript = nullptr;
+                        enemy->handleEventScript = NULL;
                     }
                 }
             }
             if (enemyNotDone) {
                 break;
             }
-            if (player->takeTurnScript == nullptr || !does_script_exist(player->takeTurnScriptID)) {
-                player->takeTurnScript = nullptr;
+            if (player->takeTurnScript == NULL || !does_script_exist(player->takeTurnScriptID)) {
+                player->takeTurnScript = NULL;
                 btl_set_state(BATTLE_STATE_BEGIN_TURN);
             }
             break;

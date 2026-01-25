@@ -16,13 +16,13 @@ void __osDevMgrMain(void* args) {
 #endif
 
     dm = (OSDevMgr*)args;
-    mb = nullptr;
+    mb = NULL;
     ret = 0;
 
-    while (true) {
+    while (TRUE) {
         osRecvMesg(dm->cmdQueue, (OSMesg)&mb, OS_MESG_BLOCK);
 
-        if (mb->piHandle != nullptr && mb->piHandle->type == DEVICE_TYPE_64DD &&
+        if (mb->piHandle != NULL && mb->piHandle->type == DEVICE_TYPE_64DD &&
             (mb->piHandle->transferInfo.cmdType == LEO_CMD_TYPE_0 ||
              mb->piHandle->transferInfo.cmdType == LEO_CMD_TYPE_1)) {
             __OSBlockInfo* blockInfo;
@@ -72,7 +72,7 @@ void __osDevMgrMain(void* args) {
                 goto readblock1;
             }
 
-            osSendMesg(dm->acsQueue, nullptr, OS_MESG_NOBLOCK);
+            osSendMesg(dm->acsQueue, NULL, OS_MESG_NOBLOCK);
             if (mb->piHandle->transferInfo.blockNum == 1) {
                 osYieldThread();
             }
@@ -81,8 +81,8 @@ void __osDevMgrMain(void* args) {
                 case OS_MESG_TYPE_DMAREAD:
                     osRecvMesg(dm->acsQueue, &dummy, OS_MESG_BLOCK);
 #ifdef BBPLAYER
-                    if (__osBbIsBb == true && ((u32)mb->dramAddr & 0x7F) >= 0x60) {
-                        check = true;
+                    if (__osBbIsBb == TRUE && ((u32)mb->dramAddr & 0x7F) >= 0x60) {
+                        check = TRUE;
                         ret = dm->dma(OS_READ, mb->devAddr, (void*)(u32)0x80600000, mb->size);
                         break;
                     }
@@ -96,8 +96,8 @@ void __osDevMgrMain(void* args) {
                 case OS_MESG_TYPE_EDMAREAD:
                     osRecvMesg(dm->acsQueue, &dummy, OS_MESG_BLOCK);
 #ifdef BBPLAYER
-                    if (__osBbIsBb == true && ((u32)mb->dramAddr & 0x7F) >= 0x60) {
-                        check = true;
+                    if (__osBbIsBb == TRUE && ((u32)mb->dramAddr & 0x7F) >= 0x60) {
+                        check = TRUE;
                         ret = dm->edma(mb->piHandle, OS_READ, mb->devAddr, (void*)(u32)0x80600000, mb->size);
                         break;
                     }
@@ -120,15 +120,15 @@ void __osDevMgrMain(void* args) {
             if (ret == 0) {
                 osRecvMesg(dm->evtQueue, &em, OS_MESG_BLOCK);
 #ifdef BBPLAYER
-                if (__osBbIsBb == true && check) {
+                if (__osBbIsBb == TRUE && check) {
                     osInvalDCache((void*)0x80600000, (mb->size + DCACHE_LINEMASK) & ~DCACHE_LINEMASK);
                     bcopy((void*)0x80600000, mb->dramAddr, mb->size);
-                    check = false;
+                    check = FALSE;
                     osWritebackDCache(mb->dramAddr, mb->size);
                 }
 #endif
                 osSendMesg(mb->hdr.retQueue, mb, OS_MESG_NOBLOCK);
-                osSendMesg(dm->acsQueue, nullptr, OS_MESG_NOBLOCK);
+                osSendMesg(dm->acsQueue, NULL, OS_MESG_NOBLOCK);
             }
         }
     }

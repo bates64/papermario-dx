@@ -11,13 +11,13 @@ EvtScript N(EVS_MakeEntities) = {
     Call(SetPushBlock, 0, 1, 4, PUSH_GRID_BLOCK)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), -52, 70, -32, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_TIK10_HiddenItem_CoinA)
-    Call(UseDynamicShadow, true)
+    Call(UseDynamicShadow, TRUE)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 23, 70, -32, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_TIK10_HiddenItem_CoinB)
-    Call(UseDynamicShadow, true)
+    Call(UseDynamicShadow, TRUE)
     Call(MakeEntity, Ref(Entity_HiddenYellowBlock), 98, 70, -32, 0, ITEM_COIN, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_TIK10_HiddenItem_CoinC)
-    Call(UseDynamicShadow, true)
+    Call(UseDynamicShadow, TRUE)
     Return
     End
 };

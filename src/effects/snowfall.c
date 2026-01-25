@@ -34,14 +34,14 @@ EffectInstance* snowfall_main(s32 arg0, s32 arg1) {
     effectBp.update = snowfall_update;
     effectBp.renderScene = snowfall_render;
     effectBp.unk_00 = 0;
-    effectBp.renderUI = nullptr;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_SNOWFALL;
 
     effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
 
     data = effect->data.snowfall = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(data != nullptr);
+    ASSERT(data != NULL);
 
     data->timeLeft = 100;
     data->lifeTime = 0;

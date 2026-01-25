@@ -5,9 +5,9 @@
 
 EvtScript N(EVS_OpenChest_Dictionary) = {
     Set(LVarA, ITEM_DICTIONARY)
-    Set(GF_OMO09_Chest_Dictionary, true)
+    Set(GF_OMO09_Chest_Dictionary, TRUE)
     ExecWait(N(EVS_Chest_GetItem))
-    Set(GF_MAC00_DictionaryStolen, true)
+    Set(GF_MAC00_DictionaryStolen, TRUE)
     Return
     End
 };
@@ -28,12 +28,12 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeItemEntity, ITEM_COIN, 1825, 25, 50, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO09_Item_CoinL)
     Call(MakeEntity, Ref(Entity_MulticoinBlock), 1285, 230, -50, 0, MAKE_ENTITY_END)
     Call(AssignBlockFlag, GF_OMO09_MultiCoinBrick)
-    Call(UseDynamicShadow, true)
+    Call(UseDynamicShadow, TRUE)
     Call(MakeEntity, Ref(Entity_Chest), 1950, 150, -31, 0, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_OMO09_Chest_Dictionary)
     Call(AssignScript, Ref(N(EVS_OpenChest_Dictionary)))
-    IfEq(GF_OMO09_Defeated_MysteryNoteThief, true)
-        IfEq(GF_OMO09_Item_MysteryNote, false)
+    IfEq(GF_OMO09_Defeated_MysteryNoteThief, TRUE)
+        IfEq(GF_OMO09_Item_MysteryNote, FALSE)
             Call(MakeItemEntity, ITEM_MYSTERY_NOTE, 142, 10, -96, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_OMO09_Item_MysteryNote)
         EndIf
     EndIf

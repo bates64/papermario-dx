@@ -7,8 +7,8 @@ extern EvtScript N(EVS_ToadHouse_ReturnFromRest);
 extern EvtScript N(EVS_ToadHouse_GetInBed);
 
 EvtScript N(EVS_ToadHouse_Unk1) = {
-    Call(EnableModel, LVar4, false)
-    Call(EnableModel, LVar5, true)
+    Call(EnableModel, LVar4, FALSE)
+    Call(EnableModel, LVar5, TRUE)
     Call(RotateModel, LVar6, 0, 0, 0, 1)
     Call(RotateModel, LVar7, 0, 0, 0, 1)
     Return
@@ -21,10 +21,10 @@ EvtScript N(EVS_ToadHouse_Unk2) = {
     Set(LVar7, LVar5)
     Set(LVar6, LVar4)
     Wait(70)
-    Call(EnableModel, LVar6, false)
+    Call(EnableModel, LVar6, FALSE)
     Thread
         Wait(5)
-        Call(EnableModel, LVar6, true)
+        Call(EnableModel, LVar6, TRUE)
     EndThread
     Call(MakeLerp, 0, 180, 20, EASING_CUBIC_IN)
     Label(1)
@@ -35,7 +35,7 @@ EvtScript N(EVS_ToadHouse_Unk2) = {
         Wait(1)
         Goto(1)
     EndIf
-    Call(EnableModel, LVar7, false)
+    Call(EnableModel, LVar7, FALSE)
     Return
     End
 };
@@ -70,8 +70,8 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     EndIf
     Call(ContinueSpeech, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVarA)
     Call(SetPlayerJumpscale, 1)
-    Call(DisablePlayerPhysics, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(DisablePlayerPhysics, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(N(ToadHouse_DisableStatusBar))
     IfNe(LVar4, 0)
         Exec(N(EVS_ToadHouse_Unk2))
@@ -106,8 +106,8 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     EndThread
     Wait(105)
     ExecWait(N(EVS_ToadHouse_ReturnFromRest))
-    Call(DisablePlayerPhysics, false)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVarB)
     Call(N(ToadHouse_ShowWorldStatusBar))
     Return

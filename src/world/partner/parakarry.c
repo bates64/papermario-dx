@@ -5,10 +5,10 @@
 
 #define NAMESPACE world_parakarry
 
-BSS bool N(UsingAbility);
-BSS bool N(LockingPlayerInput);
-BSS bool N(PlayerCollisionDisabled); // minor bug: never gets properly reset to false
-BSS bool N(PlayerWasFacingLeft);
+BSS b32 N(UsingAbility);
+BSS b32 N(LockingPlayerInput);
+BSS b32 N(PlayerCollisionDisabled); // minor bug: never gets properly reset to FALSE
+BSS b32 N(PlayerWasFacingLeft);
 BSS s32 N(AbilityState);
 BSS s32 N(AbilityStateTime);
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -31,11 +31,11 @@ enum {
 void N(init)(Npc* parakarry) {
     parakarry->collisionHeight = 37;
     parakarry->collisionDiameter = 40;
-    N(UsingAbility)  = false;
+    N(UsingAbility)  = FALSE;
     N(AbilityState) = AIR_LIFT_NONE;
-    N(LockingPlayerInput) = false;
-    N(PlayerCollisionDisabled) = false;
-    N(PlayerWasFacingLeft) = false;
+    N(LockingPlayerInput) = FALSE;
+    N(PlayerCollisionDisabled) = FALSE;
+    N(PlayerWasFacingLeft) = FALSE;
     N(AbilityStateTime) = 0;
 }
 
@@ -70,13 +70,13 @@ API_CALLABLE(N(Update)) {
     if (isInitialCall) {
         partner_flying_enable(parakarry, 1);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
-        TweesterTouchingPartner = nullptr;
+        TweesterTouchingPartner = NULL;
     }
 
     playerData->partnerUsedTime[PARTNER_PARAKARRY]++;
     entity = TweesterTouchingPartner;
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         partner_flying_update_player_tracking(parakarry);
         partner_flying_update_motion(parakarry);
         return ApiStatus_BLOCK;
@@ -137,7 +137,7 @@ API_CALLABLE(N(Update)) {
 
             if (--N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
-                TweesterTouchingPartner = nullptr;
+                TweesterTouchingPartner = NULL;
             }
             break;
     }
@@ -152,7 +152,7 @@ EvtScript EVS_WorldParakarry_Update = {
 
 void N(try_cancel_tweester)(Npc* parakarry) {
     if (TweesterTouchingPartner) {
-        TweesterTouchingPartner = nullptr;
+        TweesterTouchingPartner = NULL;
         parakarry->flags = N(TweesterPhysicsPtr)->prevFlags;
         N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking (parakarry);
@@ -193,7 +193,7 @@ API_CALLABLE(N(UseAbility)) {
     f32 parakarryDeltaX, parakarryDeltaZ;
     f32 halfCollisionHeight;
     s32 hitCount;
-    bool hitAbove;
+    b32 hitAbove;
 
     if (gCurrentEncounter.unk_08 != 0) {
          return ApiStatus_BLOCK;
@@ -213,10 +213,10 @@ API_CALLABLE(N(UseAbility)) {
             parakarry->flags &= ~NPC_FLAG_COLLDING_FORWARD_WITH_WORLD;
             parakarry->flags |= NPC_FLAG_COLLDING_WITH_WORLD;
         } else {
-            partnerStatus->shouldResumeAbility = false;
+            partnerStatus->shouldResumeAbility = FALSE;
             set_action_state(ACTION_STATE_RIDE);
             parakarry->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
-            N(UsingAbility)  = true;
+            N(UsingAbility)  = TRUE;
             gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
             parakarry->curAnim = ANIM_WorldParakarry_CarryLight;
             partnerStatus->actingPartner = PARTNER_PARAKARRY;
@@ -253,9 +253,9 @@ API_CALLABLE(N(UseAbility)) {
             disable_player_input();
             disable_player_static_collisions();
             script->functionTemp[2] = playerStatus->inputDisabledCount;
-            N(LockingPlayerInput) = true;
-            N(PlayerCollisionDisabled) = true;
-            N(UsingAbility) = true;
+            N(LockingPlayerInput) = TRUE;
+            N(PlayerCollisionDisabled) = TRUE;
+            N(UsingAbility) = TRUE;
             gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
             parakarry->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
             parakarry->flags |= NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING;
@@ -513,7 +513,7 @@ API_CALLABLE(N(UseAbility)) {
                             &x, &y, &z, parakarry->moveSpeed, parakarry->yaw,
                             parakarry->collisionHeight, parakarry->collisionDiameter)
                     ) {
-                        hitAbove = false;
+                        hitAbove = FALSE;
                         x = parakarry->pos.x;
                         y = parakarry->pos.y + parakarry->collisionHeight / 2.0f;
                         z = parakarry->pos.z;
@@ -523,7 +523,7 @@ API_CALLABLE(N(UseAbility)) {
                         if (npc_raycast_up(COLLIDER_FLAG_IGNORE_PLAYER, &x, &y, &z, &length) && (length < halfCollisionHeight)) {
                             parakarry->pos.y =  y - parakarry->collisionHeight;
                             playerStatus->pos.y = parakarry->pos.y - 32.0f;
-                            hitAbove = true;
+                            hitAbove = TRUE;
                         }
                         x = playerStatus->pos.x;
                         y = playerStatus->pos.y + playerStatus->colliderHeight / 2.0f;
@@ -578,7 +578,7 @@ API_CALLABLE(N(UseAbility)) {
      || N(AbilityState) == AIR_LIFT_CANCEL
     ) {
         parakarry->curAnim = ANIM_WorldParakarry_Idle;
-        N(UsingAbility)  = false;
+        N(UsingAbility)  = FALSE;
         parakarry->jumpVel = 0.0f;
         parakarry->flags &= ~NPC_FLAG_JUMPING;
         parakarry->animationSpeed = 1.0f;
@@ -650,7 +650,7 @@ void N(pre_battle)(Npc* parakarry) {
 
         set_action_state(ACTION_STATE_IDLE);
         partnerStatus->npc = *parakarry;
-        partnerStatus->shouldResumeAbility = true;
+        partnerStatus->shouldResumeAbility = TRUE;
         partner_clear_player_tracking(parakarry);
     }
 

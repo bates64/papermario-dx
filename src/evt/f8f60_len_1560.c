@@ -509,7 +509,7 @@ API_CALLABLE(GetValueByRef) {
 
 API_CALLABLE(EnableWorldStatusBar) {
     Bytecode* args = script->ptrReadPos;
-    bool shouldEnable = evt_get_variable(script, *args++);
+    b32 shouldEnable = evt_get_variable(script, *args++);
 
     if (shouldEnable) {
         decrement_status_bar_disabled();
@@ -522,7 +522,7 @@ API_CALLABLE(EnableWorldStatusBar) {
 
 API_CALLABLE(ShowWorldStatusBar) {
     Bytecode* args = script->ptrReadPos;
-    bool shouldShow = evt_get_variable(script, *args++);
+    b32 shouldShow = evt_get_variable(script, *args++);
 
     if (shouldShow) {
         status_bar_ignore_changes();

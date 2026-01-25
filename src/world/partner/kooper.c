@@ -16,7 +16,7 @@ BSS s32 N(TriggeredBattle);
 BSS s32 N(PlayerWasFacingLeft);
 BSS s32 N(D_802BEC5C);
 BSS s32 N(ShellTossKickFalling);
-BSS bool N(LockingPlayerInput);
+BSS b32 N(LockingPlayerInput);
 BSS s32 N(HeldItemIdx);
 BSS s32 N(HasItem);
 BSS f32 N(ShellTossPosX);
@@ -34,11 +34,11 @@ s32 ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
 
 s32 N(lateral_hit_interactable_entity)(Npc* npc) {
     if (NpcHitQueryColliderID < 0) {
-        return false;
+        return FALSE;
     }
 
     if (!(NpcHitQueryColliderID & COLLISION_WITH_ENTITY_BIT)) {
-        return false;
+        return FALSE;
     }
 
     return entity_try_partner_interaction_trigger(NpcHitQueryColliderID & ~COLLISION_WITH_ENTITY_BIT);
@@ -60,20 +60,20 @@ s32 N(check_for_item_collision)(Npc* kooper) {
     N(HeldItemIdx) = test_item_entity_position(kooper->pos.x, kooper->pos.y, kooper->pos.z, kooper->collisionDiameter);
 
     if (N(HeldItemIdx) < 0) {
-        return false;
+        return FALSE;
     }
 
-    N(HasItem) = true;
+    N(HasItem) = TRUE;
     gOverrideFlags |= GLOBAL_OVERRIDES_40;
     set_item_entity_flags(N(HeldItemIdx), ITEM_ENTITY_FLAG_CANT_COLLECT);
-    return true;
+    return TRUE;
 }
 
 void N(init)(Npc* kooper) {
     kooper->collisionHeight = 37;
     kooper->collisionDiameter = 24;
     kooper->collisionChannel = COLLIDER_FLAG_IGNORE_PLAYER;
-    N(TriggeredBattle) = false;
+    N(TriggeredBattle) = FALSE;
 }
 
 API_CALLABLE(N(TakeOut)) {
@@ -108,13 +108,13 @@ API_CALLABLE(N(Update)) {
     if (isInitialCall) {
         partner_walking_enable(kooper, 1);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
-        TweesterTouchingPartner = nullptr;
+        TweesterTouchingPartner = NULL;
     }
 
     playerData->partnerUsedTime[PARTNER_KOOPER]++;
     entity = TweesterTouchingPartner;
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         partner_walking_update_player_tracking(kooper);
         partner_walking_update_motion(kooper);
         return ApiStatus_BLOCK;
@@ -175,7 +175,7 @@ API_CALLABLE(N(Update)) {
 
             if (--N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
-                TweesterTouchingPartner = nullptr;
+                TweesterTouchingPartner = NULL;
             }
             break;
     }
@@ -183,8 +183,8 @@ API_CALLABLE(N(Update)) {
 }
 
 void N(try_cancel_tweester)(Npc* kooper) {
-    if (TweesterTouchingPartner != nullptr) {
-        TweesterTouchingPartner = nullptr;
+    if (TweesterTouchingPartner != NULL) {
+        TweesterTouchingPartner = NULL;
         kooper->flags = N(TweesterPhysicsPtr)->prevFlags;
         N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(kooper);
@@ -264,9 +264,9 @@ API_CALLABLE(N(UseAbility)) {
 
             disable_player_input();
             script->functionTemp[2] = playerStatus->inputDisabledCount;
-            N(LockingPlayerInput) = true;
+            N(LockingPlayerInput) = TRUE;
             ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
-            N(HasItem) = false;
+            N(HasItem) = FALSE;
             kooper->flags &= ~(NPC_FLAG_GRAVITY | NPC_FLAG_JUMPING | NPC_FLAG_FLYING);
             kooper->flags |= (NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION);
             partnerStatus->actingPartner = PARTNER_KOOPER;
@@ -339,7 +339,7 @@ API_CALLABLE(N(UseAbility)) {
 #endif
 
             suggest_player_anim_allow_backward(ANIM_Mario1_Jump);
-            N(ShellTossKickFalling) = false;
+            N(ShellTossKickFalling) = FALSE;
             sfx_play_sound_at_npc(SOUND_QUICK_PLAYER_JUMP, SOUND_SPACE_DEFAULT, NPC_PARTNER);
             script->USE_STATE = SHELL_TOSS_STATE_JUMP;
             // fallthrough
@@ -357,7 +357,7 @@ API_CALLABLE(N(UseAbility)) {
             playerStatus->pos.y += kooper->jumpVel;
             if (kooper->jumpVel < 0.0f) {
                 if (!N(ShellTossKickFalling)) {
-                    N(ShellTossKickFalling) = true;
+                    N(ShellTossKickFalling) = TRUE;
                     suggest_player_anim_allow_backward(ANIM_Mario1_Fall);
                 }
             }
@@ -389,11 +389,11 @@ API_CALLABLE(N(UseAbility)) {
 
                 if (N(LockingPlayerInput)) {
                     enable_player_input();
-                    N(LockingPlayerInput) = false;
+                    N(LockingPlayerInput) = FALSE;
                 }
 
                 script->USE_STATE = SHELL_TOSS_STATE_KICK;
-                N(ShellTossKickFalling) = false;
+                N(ShellTossKickFalling) = FALSE;
                 gCameras[CAM_DEFAULT].moveFlags |= CAMERA_MOVE_IGNORE_PLAYER_Y;
                 sfx_play_sound_at_npc(SOUND_KOOPER_SHELL_KICK, SOUND_SPACE_DEFAULT, NPC_PARTNER);
                 sfx_play_sound_at_npc(SOUND_KOOPER_SHELL_SWIRL, SOUND_SPACE_DEFAULT, NPC_PARTNER);
@@ -617,7 +617,7 @@ API_CALLABLE(N(UseAbility)) {
     if (script->USE_STATE == SHELL_TOSS_STATE_FINISH) {
         if (N(LockingPlayerInput)) {
             enable_player_input();
-            N(LockingPlayerInput) = false;
+            N(LockingPlayerInput) = FALSE;
         }
 
         ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;
@@ -633,10 +633,10 @@ API_CALLABLE(N(UseAbility)) {
 
         if (N(HasItem)) {
             auto_collect_item_entity(N(HeldItemIdx));
-            N(HasItem) = false;
+            N(HasItem) = FALSE;
         }
 
-        N(TriggeredBattle) = false;
+        N(TriggeredBattle) = FALSE;
         partner_clear_player_tracking(kooper);
         return ApiStatus_DONE2;
     }
@@ -704,15 +704,15 @@ s32 N(test_first_strike)(Npc* kooper, Npc* enemy) {
         if (npc_test_move_taller_with_slipping(0, &xTemp, &yTemp, &zTemp, distToEnemy, angleToEnemy,
             kooperCollHeight, kooperCollRadius + enemyCollRadius)
         ) {
-            return false;
+            return FALSE;
         }
 
         if (kooperY > enemyY + enemyCollHeight) {
-            return false;
+            return FALSE;
         }
 
         if (enemyY > kooperY + kooperCollHeight) {
-            return false;
+            return FALSE;
         }
 
         kooperX = enemyX - kooperX;
@@ -721,25 +721,25 @@ s32 N(test_first_strike)(Npc* kooper, Npc* enemy) {
 
         if (!(SQ(kooperCollRadius) + SQ(enemyCollRadius) <= distToEnemy)) {
             ShellTossHitboxState = SHELL_TOSS_HITBOX_HIT_ENEMY;
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
 void N(pre_battle)(Npc* kooper) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
-    N(TriggeredBattle) = false;
+    N(TriggeredBattle) = FALSE;
 
     if (partnerStatus->partnerActionState != PARTNER_ACTION_NONE) {
         if (partnerStatus->partnerActionState == PARTNER_ACTION_KOOPER_TOSS) {
-            N(TriggeredBattle) = true;
+            N(TriggeredBattle) = TRUE;
         }
 
         if (N(LockingPlayerInput)) {
             enable_player_input();
-            N(LockingPlayerInput) = false;
+            N(LockingPlayerInput) = FALSE;
         }
 
         ShellTossHitboxState = SHELL_TOSS_HITBOX_DISABLED;

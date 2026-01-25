@@ -64,7 +64,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_06)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_ToadTownTunnels, true)
+    Set(GF_MAP_ToadTownTunnels, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_TIK06_WATER)
@@ -109,7 +109,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Set(GF_MAC01_RowfBadgesChosen, false)
+    Set(GF_MAC01_RowfBadgesChosen, FALSE)
     Exec(N(EVS_EnterMap))
     Wait(1)
     Return

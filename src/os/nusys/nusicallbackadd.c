@@ -6,18 +6,18 @@ void nuSiCallBackAdd(NUCallBackList* list) {
     NUCallBackList** siCallBackListPtr = &nuSiCallBackList;
     u32 i;
 
-    while (*siCallBackListPtr != nullptr) {
+    while (*siCallBackListPtr != NULL) {
         if ((*siCallBackListPtr)->majorNo == list->majorNo) {
             return;
         }
         siCallBackListPtr = &(*siCallBackListPtr)->next;
     }
 
-    for (i = 1; list->func[i] != nullptr; i++);
+    for (i = 1; list->func[i] != NULL; i++);
 
     mask = osSetIntMask(OS_IM_NONE);
     *siCallBackListPtr = list;
-    list->next = nullptr;
+    list->next = NULL;
     list->funcNum = i;
     osSetIntMask(mask);
 }

@@ -54,10 +54,10 @@ EvtScript N(EVS_OnEnterPipe_SmashAttack) = {
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_OnEnterPipe_ToadTown)), TRIGGER_WALL_PUSH, COLLIDER_deili1, 1, 0)
-    IfEq(GF_MGM_Unlocked_JumpAttack, true)
+    IfEq(GF_MGM_Unlocked_JumpAttack, TRUE)
         BindTrigger(Ref(N(EVS_OnEnterPipe_JumpAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili2, 1, 0)
     EndIf
-    IfEq(GF_MGM_Unlocked_SmashAttack, true)
+    IfEq(GF_MGM_Unlocked_SmashAttack, TRUE)
         BindTrigger(Ref(N(EVS_OnEnterPipe_SmashAttack)), TRIGGER_FLOOR_TOUCH, COLLIDER_deili3, 1, 0)
     EndIf
     Return
@@ -65,15 +65,15 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    IfEq(GF_MGM_Unlocked_JumpAttack, false)
+    IfEq(GF_MGM_Unlocked_JumpAttack, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o5, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deili2, COLLIDER_FLAGS_UPPER_MASK)
-        Call(EnableModel, MODEL_o5, false)
+        Call(EnableModel, MODEL_o5, FALSE)
     EndIf
-    IfEq(GF_MGM_Unlocked_SmashAttack, false)
+    IfEq(GF_MGM_Unlocked_SmashAttack, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o9, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deili3, COLLIDER_FLAGS_UPPER_MASK)
-        Call(EnableModel, MODEL_o9, false)
+        Call(EnableModel, MODEL_o9, FALSE)
     EndIf
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -95,7 +95,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     ExecWait(N(D_80243C40_E123E0))
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(D_80241850_E0FFF0))
     Exec(N(EVS_BindInteractTriggers))
     Exec(N(EVS_EnterMap))

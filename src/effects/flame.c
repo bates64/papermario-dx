@@ -80,13 +80,13 @@ void flame_main(
     bpPtr->update = flame_update;
     bpPtr->renderScene = flame_render;
     bpPtr->unk_00 = 0;
-    bpPtr->renderUI = nullptr;
+    bpPtr->renderUI = NULL;
     bpPtr->effectID = EFFECT_FLAME;
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     data = effect->data.flame = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.flame != nullptr);
+    ASSERT(effect->data.flame != NULL);
 
     data->type = type;
     data->unk_18 = 0;
@@ -101,7 +101,7 @@ void flame_main(
     data->scaleH = 1.0f;
     data->unk_28 = 1.0f;
 
-    if (outEffect != nullptr) {
+    if (outEffect != NULL) {
         *outEffect = effect;
     }
 }

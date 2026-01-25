@@ -27,24 +27,24 @@ EvtScript N(EVS_OpenAndCloseDoor) = {
 };
 
 EvtScript N(EVS_FirstTimeEnterHall) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(DisablePartnerAI, 0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, 10, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 444)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 444)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(1)
     Wait(30)
     Call(UseSettingsFrom, CAM_DEFAULT, -430, 0, 50)
     Call(SetPanTarget, CAM_DEFAULT, -430, 0, 50)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(30)
-    Set(AF_KKJ_06, true)
+    Set(AF_KKJ_06, TRUE)
     Exec(N(EVS_OpenAndCloseDoor))
     Wait(10)
     Thread
@@ -53,10 +53,10 @@ EvtScript N(EVS_FirstTimeEnterHall) = {
     EndThread
     Call(PlayerMoveTo, -430, 50, 30)
     Call(SetPlayerPos, -430, 0, 50)
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Wait(5)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

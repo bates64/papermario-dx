@@ -22,27 +22,27 @@ SaveData gCurrentSaveFile;
 
 char MagicSaveString[] = "Mario Story 006";
 
-bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
-bool fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
+b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
+b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
 void fio_erase_flash(s32 pageNum);
 
 s32 get_spirits_rescued(void) {
-    s32 storyProgress = evt_get_variable(nullptr, GB_StoryProgress);
+    s32 storyProgress = evt_get_variable(NULL, GB_StoryProgress);
     s32 ret = 7;
 
-    if (storyProgress < evt_get_variable(nullptr, STORY_CH1_STAR_SPIRIT_RESCUED)) {
+    if (storyProgress < evt_get_variable(NULL, STORY_CH1_STAR_SPIRIT_RESCUED)) {
         ret = 0;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH2_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH2_STAR_SPIRIT_RESCUED)) {
         ret = 1;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH3_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH3_STAR_SPIRIT_RESCUED)) {
         ret = 2;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH4_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH4_STAR_SPIRIT_RESCUED)) {
         ret = 3;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH5_OPENED_ESCAPE_ROUTE)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH5_OPENED_ESCAPE_ROUTE)) {
         ret = 4;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH6_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH6_STAR_SPIRIT_RESCUED)) {
         ret = 5;
-    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH7_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(NULL, STORY_CH7_STAR_SPIRIT_RESCUED)) {
         ret = 6;
     }
 
@@ -60,34 +60,34 @@ s32 fio_calc_globals_checksum(void) {
     return sum;
 }
 
-bool fio_validate_globals_checksums(void) {
+b32 fio_validate_globals_checksums(void) {
     SaveGlobals* header = &gSaveGlobals;
 
     if (strcmp(header->magicString, MagicSaveString)) {
-        return false;
+        return FALSE;
     }
     if (header->crc1 != ~header->crc2) {
-        return false;
+        return FALSE;
     }
     return fio_calc_globals_checksum() == header->crc1;
 }
 
-bool fio_load_globals(void) {
+b32 fio_load_globals(void) {
     fio_read_flash(GLOBALS_PAGE_1, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
-        return true;
+        return TRUE;
     }
 
     fio_read_flash(GLOBALS_PAGE_2, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
-        return true;
+        return TRUE;
     }
 
     bzero(&gSaveGlobals, sizeof(gSaveGlobals));
-    return false;
+    return FALSE;
 }
 
-bool fio_save_globals(void) {
+b32 fio_save_globals(void) {
     s32 checksum;
 
     strcpy(gSaveGlobals.magicString, MagicSaveString);
@@ -100,7 +100,7 @@ bool fio_save_globals(void) {
     fio_write_flash(GLOBALS_PAGE_1, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
     fio_erase_flash(GLOBALS_PAGE_2);
     fio_write_flash(GLOBALS_PAGE_2, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
-    return true;
+    return TRUE;
 }
 
 s32 fio_calc_file_checksum(SaveData* saveData) {
@@ -114,14 +114,14 @@ s32 fio_calc_file_checksum(SaveData* saveData) {
     return sum;
 }
 
-bool fio_validate_file_checksum(SaveData* saveData) {
+b32 fio_validate_file_checksum(SaveData* saveData) {
     if (!strcmp(saveData->magicString, MagicSaveString) && saveData->crc1 == ~saveData->crc2) {
         return fio_calc_file_checksum(saveData) == saveData->crc1;
     }
-    return false;
+    return FALSE;
 }
 
-bool fio_fetch_saved_file_info(void) {
+b32 fio_fetch_saved_file_info(void) {
     SaveData* fetchBuf = &FetchSaveBuffer; // temps required to match
     SaveData* validBuf = fetchBuf;
     s32 i, j, minSaveCount;
@@ -161,10 +161,10 @@ bool fio_fetch_saved_file_info(void) {
             }
         }
     }
-    return true;
+    return TRUE;
 }
 
-bool fio_load_game(s32 saveSlot) {
+b32 fio_load_game(s32 saveSlot) {
     gGameStatusPtr->saveSlot = saveSlot;
 
     fio_fetch_saved_file_info();
@@ -176,9 +176,9 @@ bool fio_load_game(s32 saveSlot) {
         }
         fio_deserialize_state();
         gSaveSlotSummary[gGameStatusPtr->saveSlot] = gCurrentSaveFile.summary;
-        return true;
+        return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
 void fio_save_game(s32 saveSlot) {
@@ -233,7 +233,7 @@ void fio_init_flash(void) {
     osFlashInit();
 }
 
-bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
+b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
@@ -253,15 +253,15 @@ bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
         }
 
         osFlashReadArray(&mb, 0, pageNum * sizeof(SaveGlobals) + i, buf, 1, &mesgQueue);
-        osRecvMesg(&mesgQueue, nullptr, 1);
+        osRecvMesg(&mesgQueue, NULL, 1);
         i++;
         numBytes -= amt;
         buf += amt;
     }
-    return true;
+    return TRUE;
 }
 
-bool fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
+b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
@@ -281,12 +281,12 @@ bool fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
 
         osFlashWriteBuffer(&mb, 0, readBuffer, &mesgQueue);
         osFlashWriteArray((pageNum * sizeof(SaveGlobals)) + i);
-        osRecvMesg(&mesgQueue, nullptr, 1);
+        osRecvMesg(&mesgQueue, NULL, 1);
         i++;
         numBytes -= amt;
         readBuffer += amt;
     }
-    return true;
+    return TRUE;
 }
 
 void fio_erase_flash(s32 pageNum) {

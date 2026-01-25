@@ -9,7 +9,7 @@ s32 N(DoorModelsR)[] = { MODEL_o768, MODEL_o846, -1 };
 
 EvtScript N(EVS_ExitDoor_pra_35_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_19_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
     Set(LVar2, Ref(N(DoorModelsL)))
@@ -53,20 +53,20 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_KOOPER_DUPLIGHOSTS)
-        Call(EnableModel, MODEL_o1024, false)
+        Call(EnableModel, MODEL_o1024, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1054, COLLIDER_FLAGS_UPPER_MASK)
     Else
-        Call(EnableModel, MODEL_o1026, false)
+        Call(EnableModel, MODEL_o1026, FALSE)
     EndIf
     Set(LVar0, MODEL_o945)
     Set(LVar1, MODEL_o947)
     Set(LVar2, TEX_PANNER_0)
     Exec(N(EVS_GlassShimmer))
     Set(LVar0, REFLECTION_FLOOR_WALL)
-    Set(LVar1, true) // disable reflections in this room
+    Set(LVar1, TRUE) // disable reflections in this room
     Exec(N(EVS_SetupReflections))
     Exec(N(EVS_EnterMap))
     Wait(1)

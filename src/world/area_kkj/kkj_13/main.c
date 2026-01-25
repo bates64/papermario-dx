@@ -52,24 +52,24 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_KKJ_13)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_INTRO)
-        Call(MakeNpcs, false, Ref(N(IntroNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(IntroNPCs)))
     EndIf
     IfGe(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-        Call(MakeNpcs, false, Ref(N(ChapterNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(ChapterNPCs)))
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kkj_13_ENTRY_2)
-        Call(EnableGroup, MODEL_g152, false)
-        Call(EnableGroup, MODEL_g154, false)
-        Call(EnableGroup, MODEL_g153, false)
+        Call(EnableGroup, MODEL_g152, FALSE)
+        Call(EnableGroup, MODEL_g154, FALSE)
+        Call(EnableGroup, MODEL_g153, FALSE)
     Else
-        Call(EnableGroup, MODEL_g133, false)
-        Call(EnableGroup, MODEL_g147, false)
-        Call(EnableGroup, MODEL_g153, false)
+        Call(EnableGroup, MODEL_g133, FALSE)
+        Call(EnableGroup, MODEL_g147, FALSE)
+        Call(EnableGroup, MODEL_g153, FALSE)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-        IfEq(GF_KKJ13_BowserTaunts, false)
-            Call(EnableGroup, MODEL_g153, true)
+        IfEq(GF_KKJ13_BowserTaunts, FALSE)
+            Call(EnableGroup, MODEL_g153, TRUE)
             Call(TranslateGroup, MODEL_g153, 780, 90, 0)
             Call(RotateGroup, MODEL_g153, -60, 0, 1, 0)
         EndIf
@@ -83,7 +83,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetModelCustomGfx, MODEL_o685, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
     Exec(N(EVS_SetupMusic))
     BindTrigger(Ref(N(EVS_ExitDoors_kkj_12_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilit1, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_kkj_22_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilit2, 1, 0)

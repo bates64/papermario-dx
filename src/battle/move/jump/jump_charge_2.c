@@ -10,7 +10,7 @@
 
 #include "world/common/todo/IsJumpMaxCharged.inc.c"
 
-BSS bool N(HasCharged);
+BSS b32 N(HasCharged);
 
 API_CALLABLE(N(func_802A1108_74D678)) {
     Bytecode* args = script->ptrReadPos;
@@ -22,9 +22,9 @@ API_CALLABLE(N(func_802A1108_74D678)) {
 
     fx_stat_change(2, var1, var2, var3, 1.0f, 60);
 
-    N(HasCharged) = false;
+    N(HasCharged) = FALSE;
     if (battleStatus->jumpCharge > 0) {
-        N(HasCharged) = true;
+        N(HasCharged) = TRUE;
     }
 
     battleStatus->jumpCharge += 3;
@@ -101,7 +101,7 @@ EvtScript N(EVS_UseMove) = {
     Label(0)
     Wait(1)
     Call(IsMessageBoxDisplayed, LVar0)
-    IfEq(LVar0, true)
+    IfEq(LVar0, TRUE)
         Goto(0)
     EndIf
     Call(SetGoalToHome, ACTOR_PLAYER)

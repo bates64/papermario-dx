@@ -39,13 +39,13 @@ void smoke_impact_main(
     bp.update = smoke_impact_update;
     bp.renderScene = smoke_impact_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SMOKE_IMPACT;
 
     effect = create_effect_instance(&bp);
     effect->numParts = arg5;
     part = effect->data.smokeImpact = general_heap_malloc(arg5 * sizeof(*part));
-    ASSERT(effect->data.smokeImpact != nullptr);
+    ASSERT(effect->data.smokeImpact != NULL);
 
     mem_clear(part, arg5 * sizeof(*part));
 

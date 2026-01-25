@@ -35,16 +35,16 @@ EvtScript N(EVS_ChestTrap) = {
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Set(GF_OBK02_TriggeredChestTrap, true)
+    Set(GF_OBK02_TriggeredChestTrap, TRUE)
     Wait(5 * DT)
     Return
     End
 };
 
 EvtScript N(EVS_OpenChest) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     ExecWait(N(EVS_ChestTrap))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

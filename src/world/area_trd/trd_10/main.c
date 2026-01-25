@@ -31,12 +31,12 @@ EvtScript N(EVS_BossDefeated) = {
             Return
     EndSwitch
     IfEq(LVar0, 0)
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Call(UseSettingsFrom, CAM_DEFAULT, -135, 85, 0)
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
         Call(SetPanTarget, CAM_DEFAULT, -135, 30, 0)
         EVT_SPIRIT_ADJUST_CAM(10000)
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(N(StarSpiritEffectFunc2), 0, 180, -135, 10, 0, -135, 85, 0, 30, 0)
         Thread
             Call(N(StarSpiritEffectFunc3))
@@ -71,8 +71,8 @@ EvtScript N(EVS_BossDefeated) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
-        Call(DisablePlayerInput, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+        Call(DisablePlayerInput, FALSE)
     Else
         Call(N(StarSpiritEffectFunc5), 0, -135, 30, 0, 0)
         Thread
@@ -82,7 +82,7 @@ EvtScript N(EVS_BossDefeated) = {
     EndIf
     Call(N(StarSpiritEffectFunc4), 3)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(GB_StoryProgress, STORY_CH1_STAR_SPIRIT_RESCUED)
     Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_0, TRANSITION_GET_STAR_CARD)
     Wait(100)
@@ -122,7 +122,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(SetMapChangeFadeRate))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_InitFakeBowser))
     Exec(N(EVS_SetupFakeBowser))
     IfEq(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)

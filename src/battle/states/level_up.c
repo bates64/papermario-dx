@@ -305,7 +305,7 @@ API_CALLABLE(GetRemainingStarPointsReward) {
 }
 
 API_CALLABLE(GetStarPointDigitScripts) {
-    s32 levelUp = false;
+    s32 levelUp = FALSE;
 
     script->varTable[10] = gBattleStatus.totalStarPoints / 100; // star points in hundreds (levels to gain)
     script->varTable[11] = (gBattleStatus.totalStarPoints % 100) / 10; // star points in tens
@@ -313,7 +313,7 @@ API_CALLABLE(GetStarPointDigitScripts) {
 
     if (script->varTable[10] > 0) {
         script->varTablePtr[10] = starpoint_digit_scripts[script->varTable[10]];
-        levelUp = true;
+        levelUp = TRUE;
     } else {
         script->varTablePtr[10] = starpoint_space_script;
     }
@@ -386,7 +386,7 @@ EvtScript EVS_ShowStarpoints = {
 #endif
         Call(SetVirtualEntityPosition, LVar6, -278, 68, 70)
         Call(SetVirtualEntityScale, LVar6, Float(0.5), Float(0.5), Float(0.5))
-        Set(LFlag0, true)
+        Set(LFlag0, TRUE)
     EndIf
     Switch(LVar0)
         CaseGt(99)
@@ -564,7 +564,7 @@ void btl_state_update_celebration(void) {
             } else if (btl_cam_is_moving_done()) {
                 DMA_COPY_SEGMENT(starpoint);
                 script = start_script(&EVS_ShowStarpoints, EVT_PRIORITY_A, 0);
-                EndBattleRewardsDone = false;
+                EndBattleRewardsDone = FALSE;
                 // divide reward into 20 increments
                 EndBattleRewardStep = 20;
                 EndBattleRewardIncrement = EndBattleRewardTotal / EndBattleRewardStep;
@@ -605,9 +605,9 @@ void btl_state_update_celebration(void) {
                 }
                 if (battleStatus->totalStarPoints == 0) {
                     if (EndBattleRewardStep == 0) {
-                        EndBattleRewardsDone = true;
+                        EndBattleRewardsDone = TRUE;
                         player->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
-                        if (partner != nullptr) {
+                        if (partner != NULL) {
                             partner->flags &= ~(ACTOR_FLAG_USING_IDLE_ANIM | ACTOR_FLAG_SHOW_STATUS_ICONS);
                         }
                         battleStatus->battlePhase = PHASE_CELEBRATE;
@@ -615,7 +615,7 @@ void btl_state_update_celebration(void) {
                         player->takeTurnScript = script;
                         player->takeTurnScriptID = script->id;
                         script->owner1.actorID = ACTOR_PLAYER;
-                        if (partner != nullptr) {
+                        if (partner != NULL) {
                             script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
                             partner->takeTurnScript = script;
                             partner->takeTurnScriptID = script->id;
@@ -739,9 +739,9 @@ void btl_state_update_celebration(void) {
                     hud_element_set_flags(hid, HUD_ELEMENT_FLAG_MANUAL_RENDER | HUD_ELEMENT_FLAG_DISABLED);
                 }
 
-                CantLevelUpStat[MENU_HP] = false;
-                CantLevelUpStat[MENU_FP] = false;
-                CantLevelUpStat[MENU_BP] = false;
+                CantLevelUpStat[MENU_HP] = FALSE;
+                CantLevelUpStat[MENU_FP] = FALSE;
+                CantLevelUpStat[MENU_BP] = FALSE;
 
                 if (playerData->hardMaxFP != 50) {
                     // current FP
@@ -800,7 +800,7 @@ void btl_state_update_celebration(void) {
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x + 2, y + 46);
-                    CantLevelUpStat[MENU_FP] = true;
+                    CantLevelUpStat[MENU_FP] = TRUE;
                 }
 
                 if (is_ability_active(ABILITY_FP_PLUS)) {
@@ -871,7 +871,7 @@ void btl_state_update_celebration(void) {
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x + 2, y + 46);
-                    CantLevelUpStat[MENU_HP] = true;
+                    CantLevelUpStat[MENU_HP] = TRUE;
                 }
 
                 if (is_ability_active(ABILITY_HP_PLUS)) {
@@ -936,7 +936,7 @@ void btl_state_update_celebration(void) {
                     hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);
                     hud_element_get_render_pos(hid, &x, &y);
                     hud_element_set_render_pos(hid, x + 2, y + 46);
-                    CantLevelUpStat[MENU_BP] = true;
+                    CantLevelUpStat[MENU_BP] = TRUE;
                 }
 
                 LevelUpSpotlightID = hid = hud_element_create(&HES_ProjectorBeam);
@@ -1006,11 +1006,11 @@ void btl_state_update_celebration(void) {
 #if VERSION_JP
                 x = 32;
                 y = 186;
-                set_window_properties(WIN_BTL_DESC_BOX, 32, 186, 242, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, nullptr, -1);
+                set_window_properties(WIN_BTL_DESC_BOX, 32, 186, 242, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
 #else
                 x = 20;
                 y = 186;
-                set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, nullptr, -1);
+                set_window_properties(WIN_BTL_DESC_BOX, 20, 186, 280, 32, WINDOW_PRIORITY_20, draw_content_level_up_textbox, NULL, -1);
 #endif
                 set_window_update(WIN_BTL_DESC_BOX, WINDOW_UPDATE_SHOW);
                 gBattleSubState = BTL_SUBSTATE_LEVEL_UP_CHOOSE;
@@ -1092,7 +1092,7 @@ void btl_state_update_celebration(void) {
 
             set_actor_anim(0, 0, ANIM_MarioB1_AdjustCap);
 
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
                 partner->takeTurnScript = script;
                 partner->takeTurnScriptID = script->id;
@@ -1162,7 +1162,7 @@ void btl_state_update_celebration(void) {
             width = get_msg_width(MSG_Menus_CantIncrease, 0) + 31;
             x = 160 - (width / 2);
             y = 80;
-            set_window_properties(WIN_BTL_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, nullptr, -1);
+            set_window_properties(WIN_BTL_POPUP, x, y, width, 28, WINDOW_PRIORITY_10, draw_content_cant_increase_popup, NULL, -1);
             set_window_update(WIN_BTL_POPUP, WINDOW_UPDATE_SHOW);
             CelebrateSubstateTime = 60;
             gBattleSubState = BTL_SUBSTATE_LEVEL_UP_INVALID_DELAY;
@@ -1190,9 +1190,9 @@ void btl_state_update_celebration(void) {
                     bgm_set_song(0, -1, 0, 1500, 8);
                 }
                 bFadeToBlackAmt = 0;
-                btl_cam_set_params(true, 270, 100, 8, 0, 0x2400, 100);
+                btl_cam_set_params(TRUE, 270, 100, 8, 0, 0x2400, 100);
                 set_actor_anim(0, 0, ANIM_MarioB1_AdjustCap);
-                if (partner != nullptr) {
+                if (partner != NULL) {
                     set_actor_anim(ACTOR_PARTNER, 0, D_80284154[playerData->curPartner]);
                 }
                 CelebrateSubstateTime = 6;
@@ -1208,12 +1208,12 @@ void btl_state_update_celebration(void) {
                 }
             } else {
                 player->yaw = 0.0f;
-                if (partner != nullptr) {
+                if (partner != NULL) {
                     partner->yaw = 0.0f;
                 }
 
                 player->curPos.x += 4.0f;
-                if (partner != nullptr) {
+                if (partner != NULL) {
                     partner->curPos.x += 4.0f;
                 }
             }
@@ -1230,7 +1230,7 @@ void btl_state_update_celebration(void) {
             if (does_script_exist(player->takeTurnScriptID)) {
                 kill_script_by_ID(player->takeTurnScriptID);
             }
-            if (partner != nullptr && does_script_exist(partner->takeTurnScriptID)) {
+            if (partner != NULL && does_script_exist(partner->takeTurnScriptID)) {
                 kill_script_by_ID(partner->takeTurnScriptID);
             }
             btl_set_state(BATTLE_STATE_END_BATTLE);
@@ -1281,14 +1281,14 @@ void btl_draw_upgrade_windows(s32 phase) {
     }
 
     hud_element_get_render_pos(LevelUpStatEmblemIDs[0], &x, &y);
-    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d1, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
-             SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d1, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL,
+             SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
     hud_element_get_render_pos(LevelUpStatEmblemIDs[3], &x, &y);
-    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d2, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
-             SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d2, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL,
+             SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
     hud_element_get_render_pos(LevelUpStatEmblemIDs[2], &x, &y);
-    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d3, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, nullptr, nullptr, nullptr,
-             SCREEN_WIDTH, SCREEN_HEIGHT, nullptr);
+    draw_box(0, WINDOW_STYLE_15, x - 22, y - 22, 0, 44, 44, 255, d3, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, NULL, NULL, NULL,
+             SCREEN_WIDTH, SCREEN_HEIGHT, NULL);
 }
 
 void btl_state_draw_celebration(void) {

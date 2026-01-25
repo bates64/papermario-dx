@@ -30,13 +30,13 @@ void steam_burst_main(
     bp.update = steam_burst_update;
     bp.renderScene = steam_burst_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_STEAM_BURST;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = effect->data.steamBurst = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.steamBurst != nullptr);
+    ASSERT(effect->data.steamBurst != NULL);
 
     mem_clear(part, numParts * sizeof(*part));
 

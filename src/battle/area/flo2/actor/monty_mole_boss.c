@@ -155,7 +155,7 @@ ActorPartBlueprint N(HoleParts)[] = {
         .targetOffset = { 0, 0 },
         .opacity = 255,
         .idleAnimations = N(EmptyHoleAnims),
-        .defenseTable = nullptr,
+        .defenseTable = NULL,
         .eventFlags = 0,
         .elementImmunityFlags = 0,
         .projectileTargetOffset = { 0, 0 },
@@ -179,7 +179,7 @@ ActorBlueprint N(hole) = {
     .partCount = ARRAY_COUNT(N(HoleParts)),
     .partsData = N(HoleParts),
     .initScript = &N(EVS_Hole_Init),
-    .statusTable = nullptr,
+    .statusTable = NULL,
     .escapeChance = 80,
     .airLiftChance = 0,
     .hurricaneChance = 80,
@@ -197,19 +197,19 @@ ActorBlueprint N(hole) = {
 Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
 
 Formation N(HoleFormation) = {
-    ACTOR_BY_POS(N(hole), N(SummonPos), 0, false),
+    ACTOR_BY_POS(N(hole), N(SummonPos), 0, FALSE),
 };
 
 Formation N(SmallHoleFormation) = {
-    ACTOR_BY_POS(N(hole), N(SummonPos), 0, true),
+    ACTOR_BY_POS(N(hole), N(SummonPos), 0, TRUE),
 };
 
 EvtScript N(EVS_CreateEmptyHole) = {
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
-        Call(SummonEnemy, Ref(N(SmallHoleFormation)), false)
+        Call(SummonEnemy, Ref(N(SmallHoleFormation)), FALSE)
     Else
-        Call(SummonEnemy, Ref(N(HoleFormation)), false)
+        Call(SummonEnemy, Ref(N(HoleFormation)), FALSE)
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Sub(LVar3, 1)
@@ -222,7 +222,7 @@ EvtScript N(EVS_Init) = {
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
     Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))
     Call(BindHandleEvent, ACTOR_SELF, Ref(N(EVS_HandleEvent)))
-    Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, true)
+    Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_NO_SHADOW, TRUE)
     Return
     End
 };
@@ -233,7 +233,7 @@ EvtScript N(EVS_Idle) = {
 };
 
 EvtScript N(EVS_HandleEvent) = {
-    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(GetLastElement, LVarE)
     Call(GetLastEvent, ACTOR_SELF, LVar0)
@@ -316,7 +316,7 @@ EvtScript N(EVS_HandleEvent) = {
             Wait(15)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_MontyMole_Dark_Anim08)
             Wait(15)
-            Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_DMG_APPLY, true)
+            Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TARGET_ONLY | ACTOR_FLAG_NO_DMG_APPLY, TRUE)
             Call(SetIdleAnimations, ACTOR_SELF, PRT_MAIN, Ref(N(EmptyHoleAnims)))
             Return
         CaseEq(EVENT_BEGIN_AIR_LIFT)
@@ -355,13 +355,13 @@ EvtScript N(EVS_HandleEvent) = {
         CaseDefault
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_TakeTurn) = {
-    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_DISABLE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
@@ -381,7 +381,7 @@ EvtScript N(EVS_TakeTurn) = {
     Add(LVar1, 20)
     Call(SetPartPos, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2)
     Wait(1)
-    Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, false)
+    Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, FALSE)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
         Call(SetPartScale, ACTOR_SELF, PRT_ROCK, Float(0.4), Float(0.4), Float(0.4))
@@ -404,13 +404,13 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetPartJumpGravity, ACTOR_SELF, PRT_ROCK, Float(0.1))
             Call(SetAnimation, ACTOR_SELF, PRT_ROCK, ANIM_MontyMole_Dark_Anim0F)
             Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 30, EASING_LINEAR)
-            Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, true)
+            Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, TRUE)
             IfEq(LVarA, HIT_RESULT_LUCKY)
                 Call(EnemyTestTarget, ACTOR_SELF, LVar0, DAMAGE_TYPE_TRIGGER_LUCKY, 0, 0, 0)
             EndIf
             Call(YieldTurn)
             Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-            Call(UseIdleAnimation, ACTOR_SELF, true)
+            Call(UseIdleAnimation, ACTOR_SELF, TRUE)
             Return
         EndCaseGroup
     EndSwitch
@@ -435,11 +435,11 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetPartMoveSpeed, ACTOR_SELF, PRT_ROCK, Float(4.0))
             Sub(LVar0, 20)
             Call(FlyPartTo, ACTOR_SELF, PRT_ROCK, LVar0, LVar1, LVar2, 0, 21, EASING_LINEAR)
-            Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, true)
+            Call(SetPartFlagBits, ACTOR_SELF, PRT_ROCK, ACTOR_PART_FLAG_INVISIBLE, TRUE)
         EndCaseGroup
     EndSwitch
     Call(EnableIdleScript, ACTOR_SELF, IDLE_SCRIPT_ENABLE)
-    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
     Return
     End
 };

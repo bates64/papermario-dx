@@ -36,15 +36,15 @@ EffectInstance* star_main(s32 type, f32 startX, f32 startY, f32 startZ, f32 endX
     bp.init = star_init;
     bp.update = star_update;
     bp.renderScene = star_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_STAR;
 
     effect = create_effect_instance(&bp);
     effect->numParts = 1;
     part = effect->data.star = general_heap_malloc(numParts * sizeof(*part));
 
-    ASSERT(effect->data.star != nullptr);
-    part->canBounce = true;
+    ASSERT(effect->data.star != NULL);
+    part->canBounce = TRUE;
     part->pos.x = startX;
     part->pos.y = startY;
     part->pos.z = startZ;
@@ -155,7 +155,7 @@ void star_update(EffectInstance* effect) {
                 sfx_play_sound_at_position(SOUND_SEQ_SHOOTING_STAR_BOUNCE, SOUND_SPACE_DEFAULT, data->pos.x, data->pos.y, data->pos.z);
             }
 
-            data->canBounce = false;
+            data->canBounce = FALSE;
             if (data->bounceTime >= 10.0f) {
                 data->timeLeft = -1;
             }

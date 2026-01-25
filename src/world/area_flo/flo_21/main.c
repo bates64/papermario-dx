@@ -14,23 +14,23 @@ API_CALLABLE(N(SpawnSunEffect)) {
 EvtScript N(EVS_TrySpawningStarCard) = {
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH6_GREW_MAGIC_BEANSTALK)
-            Set(LVar0, false)
-            IfEq(MV_BossDefeated, false)
+            Set(LVar0, FALSE)
+            IfEq(MV_BossDefeated, FALSE)
                 Return
             EndIf
             Set(GB_StoryProgress, STORY_CH6_DEFEATED_HUFF_N_PUFF)
         CaseEq(STORY_CH6_DEFEATED_HUFF_N_PUFF)
-            Set(LVar0, true)
+            Set(LVar0, TRUE)
         CaseDefault
             Return
     EndSwitch
-    IfEq(LVar0, false)
-        Call(DisablePlayerInput, true)
+    IfEq(LVar0, FALSE)
+        Call(DisablePlayerInput, TRUE)
         Call(UseSettingsFrom, CAM_DEFAULT, 650, 205, 0)
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.6))
         Call(SetPanTarget, CAM_DEFAULT, 650, 150, 0)
         EVT_SPIRIT_ADJUST_CAM(Float(-5.5))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(N(StarSpiritEffectFunc2), 5, 180, 650, 170, 0, 650, 205, 0, 150, 120)
         Thread
             Call(N(StarSpiritEffectFunc3))
@@ -65,8 +65,8 @@ EvtScript N(EVS_TrySpawningStarCard) = {
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
         Call(SetPanTarget, CAM_DEFAULT, LVar2, LVar3, LVar4)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
-        Call(DisablePlayerInput, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+        Call(DisablePlayerInput, FALSE)
     Else
         Call(N(StarSpiritEffectFunc5), 5, 650, 150, 0, 120)
         Thread
@@ -76,7 +76,7 @@ EvtScript N(EVS_TrySpawningStarCard) = {
     EndIf
     Call(N(StarSpiritEffectFunc4), 3)
     Call(PlaySoundAtPlayer, SOUND_RESCUE_STAR_SPIRIT, SOUND_SPACE_DEFAULT)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_RESCUED)
     Call(GotoMapSpecial, Ref("kmr_23"), kmr_23_ENTRY_5, TRANSITION_GET_STAR_CARD)
     Wait(100)
@@ -96,9 +96,9 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CLOUDY_CLIMB)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_Scene_HuffNPuffAmbush))
-    Call(HidePlayerShadow, true)
+    Call(HidePlayerShadow, TRUE)
     Exec(N(EVS_SetupCloudPuffs))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o114, SURFACE_TYPE_CLOUD)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o115, SURFACE_TYPE_CLOUD)

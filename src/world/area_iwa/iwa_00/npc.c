@@ -55,7 +55,7 @@ NpcData N(NpcData_MontyMole_GroundAmbush)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = false,
+                .isFlying = FALSE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 880, 70, 67 },
@@ -77,7 +77,7 @@ NpcData N(NpcData_MontyMole_GroundAmbush)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 880, 70, 67 },
@@ -101,7 +101,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = false,
+                .isFlying = FALSE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 1220, -30, 70 },
@@ -123,7 +123,7 @@ NpcData N(NpcData_MontyMole_WallAmbush)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 1220, -30, 70 },
@@ -150,7 +150,7 @@ EvtScript N(EVS_NpcInteract_Whacka_01) = {
     EndIf
     Switch(GB_IWA00_Whacka_HitCount)
         CaseEq(0)
-            IfEq(GF_IWA00_Met_Whacka, false)
+            IfEq(GF_IWA00_Met_Whacka, FALSE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Whacka_Talk, ANIM_Whacka_Idle, 0, MSG_CH2_0027)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Whacka_Talk, ANIM_Whacka_Idle, 0, MSG_CH2_0028)
@@ -164,7 +164,7 @@ EvtScript N(EVS_NpcInteract_Whacka_01) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Whacka_Talk, ANIM_Whacka_Idle, 0, MSG_CH2_002B)
     EndSwitch
-    Set(GF_IWA00_Met_Whacka, true)
+    Set(GF_IWA00_Met_Whacka, TRUE)
     Return
     End
 };
@@ -231,9 +231,9 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
     IfEq(LVarA, 0)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(BindNpcInteract, NPC_Whacka_01, 0)
-    Call(EnableNpcAI, NPC_Whacka_01, false)
+    Call(EnableNpcAI, NPC_Whacka_01, FALSE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfLt(LVar0, LVar3)
@@ -307,7 +307,7 @@ EvtScript N(EVS_NpcHit_Whacka_02) = {
     EndIf
     Call(SetNpcPos, NPC_Whacka_01, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Whacka_02, NPC_DISPOSE_LOCATION)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(RemoveNpc, NPC_Whacka_01)
     Call(RemoveNpc, NPC_Whacka_02)
     Return
@@ -319,8 +319,8 @@ EvtScript N(EVS_NpcInit_Whacka_01) = {
     IfLt(GB_IWA00_Whacka_HitCount, 8)
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Whacka_01)))
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Whacka_01)))
-        Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLIP_INSTANTLY, true)
+        Call(EnableNpcShadow, NPC_SELF, FALSE)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLIP_INSTANTLY, TRUE)
     Else
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -330,7 +330,7 @@ EvtScript N(EVS_NpcInit_Whacka_01) = {
 
 EvtScript N(EVS_NpcInit_Whacka_02) = {
     IfLt(GB_IWA00_Whacka_HitCount, 8)
-        Call(EnableNpcShadow, NPC_SELF, false)
+        Call(EnableNpcShadow, NPC_SELF, FALSE)
         Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Whacka_02)))
     Else
         Call(RemoveNpc, NPC_SELF)

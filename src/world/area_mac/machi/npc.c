@@ -56,7 +56,7 @@ API_CALLABLE(N(SetupChapter0)) {
     playerData->hammerLevel = -1;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
-        playerData->partners[i].enabled = false;
+        playerData->partners[i].enabled = FALSE;
     }
     switch_to_partner(PARTNER_NONE);
     return ApiStatus_DONE2;
@@ -79,10 +79,10 @@ API_CALLABLE(N(SetupChapter1)) {
     playerData->curMaxHP = 8;
     playerData->bootsLevel = 0;
     playerData->hammerLevel = 0;
-    playerData->partners[PARTNER_NONE].enabled = true;
+    playerData->partners[PARTNER_NONE].enabled = TRUE;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
-        playerData->partners[i].enabled = false;
+        playerData->partners[i].enabled = FALSE;
     }
     return ApiStatus_DONE2;
 }
@@ -97,12 +97,12 @@ API_CALLABLE(N(SetupChapter2)) {
     playerData->hammerLevel = 0;
 
     for (i = 0; i < ARRAY_COUNT(playerData->partners); i++) {
-        playerData->partners[i].enabled = false;
+        playerData->partners[i].enabled = FALSE;
     }
 
-    playerData->partners[PARTNER_NONE].enabled = true;
-    playerData->partners[PARTNER_GOOMBARIO].enabled = true;
-    playerData->partners[PARTNER_BOMBETTE].enabled = true;
+    playerData->partners[PARTNER_NONE].enabled = TRUE;
+    playerData->partners[PARTNER_GOOMBARIO].enabled = TRUE;
+    playerData->partners[PARTNER_BOMBETTE].enabled = TRUE;
     return ApiStatus_DONE2;
 }
 

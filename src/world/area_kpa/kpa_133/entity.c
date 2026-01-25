@@ -8,7 +8,7 @@ extern EvtScript N(EVS_SetupHiddenSpring);
 
 API_CALLABLE(N(SetSpringRotation)) {
     Bytecode* args = script->ptrReadPos;
-    Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
+    Entity* entity = get_entity_by_index(evt_get_variable(NULL, MV_SpringEntityID));
 
     entity->rot.x = evt_get_variable(script, *args++);
     entity->rot.y = evt_get_variable(script, *args++);
@@ -18,7 +18,7 @@ API_CALLABLE(N(SetSpringRotation)) {
 
 API_CALLABLE(N(SetSpringPosition)) {
     Bytecode* args = script->ptrReadPos;
-    Entity* entity = get_entity_by_index(evt_get_variable(nullptr, MV_SpringEntityID));
+    Entity* entity = get_entity_by_index(evt_get_variable(NULL, MV_SpringEntityID));
 
     entity->pos.x = evt_get_variable(script, *args++);
     entity->pos.y = evt_get_variable(script, *args++);
@@ -27,12 +27,12 @@ API_CALLABLE(N(SetSpringPosition)) {
 }
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_KPA133_BlueSwitch, false)
+    IfEq(GF_KPA133_BlueSwitch, FALSE)
         Call(MakeEntity, Ref(Entity_BlueSwitch), 60, 115, 10, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA133_HitWaterSwitch))
         Call(AssignScript, Ref(N(EVS_TriggerSwitch)))
     EndIf
-    IfEq(GF_KPA133_BlueSwitch, true)
+    IfEq(GF_KPA133_BlueSwitch, TRUE)
         Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 115, 0, 90, 60, MAKE_ENTITY_END)
     Else
         Call(MakeEntity, Ref(Entity_SimpleSpring), 150, 150, -105, 90, 60, MAKE_ENTITY_END)
@@ -48,12 +48,12 @@ EvtScript N(EVS_MakeEntities) = {
 EvtScript N(EVS_SetupHiddenSpring) = {
     Loop(0)
         Wait(1)
-        IfEq(MV_RevealHiddenSpring, true)
+        IfEq(MV_RevealHiddenSpring, TRUE)
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerInput, true)
-    Set(GF_KPA133_BlueSwitch, true)
+    Call(DisablePlayerInput, TRUE)
+    Set(GF_KPA133_BlueSwitch, TRUE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     IfGe(LVar0, 115)
         IfLe(LVar0, 180)
@@ -94,7 +94,7 @@ EvtScript N(EVS_SetupHiddenSpring) = {
         PlayEffect(EFFECT_LANDING_DUST, 1, 135, 115, -40, 0)
         PlayEffect(EFFECT_LANDING_DUST, 1, 180, 115, -40, 0)
         Wait(20)
-        Call(EnableModel, MODEL_kakusitobira, false)
+        Call(EnableModel, MODEL_kakusitobira, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_123, COLLIDER_FLAGS_UPPER_MASK)
     EndThread
     Thread
@@ -126,13 +126,13 @@ EvtScript N(EVS_SetupHiddenSpring) = {
     Call(NpcJump0, NPC_Dummy, 150, 115, 0, 17)
     Call(GetNpcPos, NPC_Dummy, LVar0, LVar1, LVar2)
     Wait(20)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_TriggerSwitch) = {
-    Set(MV_RevealHiddenSpring, true)
+    Set(MV_RevealHiddenSpring, TRUE)
     Return
     End
 };

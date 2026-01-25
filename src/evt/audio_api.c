@@ -32,14 +32,14 @@ API_CALLABLE(PollMusicEvents) {
             }
             cur++;
         }
-        /// @bug? can cur ever be nullptr here?
+        /// @bug? can cur ever be NULL here?
         /// condition should probably be if (cur->musicEventID != -1)
-        if (cur != nullptr) {
+        if (cur != NULL) {
             EvtScript* newSource = cur->scripts[scriptSelector];
-            if (RunningMusicEvents[musicEventID] != nullptr) {
+            if (RunningMusicEvents[musicEventID] != NULL) {
                 kill_script_by_ID(RunningMusicEventIDs[musicEventID]);
             }
-            if (newSource != nullptr) {
+            if (newSource != NULL) {
                 Evt* newEvt = start_script(newSource, EVT_PRIORITY_1, 0);
                 RunningMusicEvents[musicEventID] = newEvt;
                 RunningMusicEventIDs[musicEventID] = newEvt->id;
@@ -59,7 +59,7 @@ API_CALLABLE(RegisterMusicEvents) {
     MusicEventList = (MusicEvent*) evt_get_variable(script, *args++);
 
     for (i = 0; i < ARRAY_COUNT(RunningMusicEvents); i++) {
-        RunningMusicEvents[i] = nullptr;
+        RunningMusicEvents[i] = NULL;
         RunningMusicEventIDs[i] = 0;
     }
 
@@ -231,7 +231,7 @@ API_CALLABLE(StopTrackingSoundPos) {
     Bytecode* args = script->ptrReadPos;
     s32 soundID = evt_get_variable(script, *args++);
 
-    sfx_stop_tracking_env_sound_pos(soundID, true);
+    sfx_stop_tracking_env_sound_pos(soundID, TRUE);
     return ApiStatus_DONE2;
 }
 

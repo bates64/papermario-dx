@@ -20,14 +20,14 @@ s32 N(KeyList)[] = {
 };
 
 EvtScript N(EVS_NpcInteract_BubbleFlower) = {
-    IfEq(AF_FLO_BigBubbleReady, true)
-        Set(AF_FLO_PauseBlowingBubbles, true)
+    IfEq(AF_FLO_BigBubbleReady, TRUE)
+        Set(AF_FLO_PauseBlowingBubbles, TRUE)
         Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0063)
-        Set(AF_FLO_PauseBlowingBubbles, false)
+        Set(AF_FLO_PauseBlowingBubbles, FALSE)
         Return
     EndIf
-    Set(AF_FLO_PauseBlowingBubbles, true)
-    IfEq(GF_FLO14_GaveBerryToBubblePlant, false)
+    Set(AF_FLO_PauseBlowingBubbles, TRUE)
+    IfEq(GF_FLO14_GaveBerryToBubblePlant, FALSE)
         Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_005F)
     Else
         Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0060)
@@ -39,10 +39,10 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0064)
         Else
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0061)
-            Set(AF_FLO_BlowingBigBubble, true)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Set(AF_FLO_BlowingBigBubble, TRUE)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
             Call(PlayerMoveTo, 555, 110, 20)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             Call(InterpPlayerYaw, 90, 0)
             Call(func_802CF56C, 2)
             Wait(5)
@@ -54,24 +54,24 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
                 Call(InterpPlayerYaw, 315, 0)
             EndThread
             Label(10)
-            IfEq(AF_FLO_BigBubbleReady, false)
+            IfEq(AF_FLO_BigBubbleReady, FALSE)
                 Wait(1)
                 Goto(10)
             EndIf
             Call(ResetCam, CAM_DEFAULT, Float(4.0))
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 5, MSG_CH6_0063)
-            Set(GF_FLO14_GaveBerryToBubblePlant, true)
+            Set(GF_FLO14_GaveBerryToBubblePlant, TRUE)
             BindTrigger(Ref(N(EVS_RideBigBubble)), TRIGGER_FLOOR_PRESS_A, COLLIDER_o154, 1, 0)
         EndIf
     EndIf
-    Set(AF_FLO_PauseBlowingBubbles, false)
+    Set(AF_FLO_PauseBlowingBubbles, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_BubbleFlower) = {
-    Set(AF_FLO_BlowingBigBubble, false)
-    Set(AF_FLO_BigBubbleReady, false)
+    Set(AF_FLO_BlowingBigBubble, FALSE)
+    Set(AF_FLO_BigBubbleReady, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_BubbleFlower)))
     Return
     End
@@ -96,7 +96,7 @@ NpcData N(NpcData_Bzzap) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -175, 55, 15 },

@@ -7,7 +7,7 @@ API_CALLABLE(N(PlaySpringReboundAnimation)) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         return ApiStatus_BLOCK;
     }
 

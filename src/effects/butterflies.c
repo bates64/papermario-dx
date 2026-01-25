@@ -40,13 +40,13 @@ EffectInstance* butterflies_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     bp.init = butterflies_init;
     bp.update = butterflies_update;
     bp.renderScene = butterflies_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_BUTTERFLIES;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = effect->data.butterflies = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.butterflies != nullptr);
+    ASSERT(effect->data.butterflies != NULL);
 
     part->unk_04 = 1000;
     part->unk_00 = arg0;

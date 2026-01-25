@@ -103,19 +103,19 @@ EvtScript N(EVS_SetupModelFX) = {
     Call(SetTexPanner, MODEL_o208, TEX_PANNER_5)
     Call(SetTexPanner, MODEL_o211, TEX_PANNER_5)
     IfLt(GB_StoryProgress, STORY_CH7_STAR_SPRIT_DEPARTED)
-        Call(EnableModel, MODEL_7, false)
+        Call(EnableModel, MODEL_7, FALSE)
         IfLt(GB_StoryProgress, STORY_CH6_STAR_SPIRIT_RESCUED)
-            Call(EnableModel, MODEL_6, false)
+            Call(EnableModel, MODEL_6, FALSE)
             IfLt(GB_StoryProgress, STORY_CH5_STAR_SPRIT_DEPARTED)
-                Call(EnableModel, MODEL_5, false)
+                Call(EnableModel, MODEL_5, FALSE)
                 IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
-                    Call(EnableModel, MODEL_4, false)
+                    Call(EnableModel, MODEL_4, FALSE)
                     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-                        Call(EnableModel, MODEL_3, false)
+                        Call(EnableModel, MODEL_3, FALSE)
                         IfLt(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
-                            Call(EnableModel, MODEL_2, false)
+                            Call(EnableModel, MODEL_2, FALSE)
                             IfLt(GB_StoryProgress, STORY_CH1_STAR_SPRIT_DEPARTED)
-                                Call(EnableModel, MODEL_1, false)
+                                Call(EnableModel, MODEL_1, FALSE)
                             EndIf
                         EndIf
                     EndIf
@@ -124,7 +124,7 @@ EvtScript N(EVS_SetupModelFX) = {
         EndIf
     EndIf
     IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-        Call(EnableModel, MODEL_power, false)
+        Call(EnableModel, MODEL_power, FALSE)
     Else
         PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
         Set(MV_StarBeamFXPtr, LVarF)
@@ -151,10 +151,10 @@ EvtScript N(EVS_SetupModelFX) = {
     Call(SetModelCustomGfx, MODEL_5, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_6, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetModelCustomGfx, MODEL_7, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_glowing_star)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(setup_gfx_glowing_star)), NULL)
     Call(TranslateModel, MODEL_power, 0, 2, 0)
     Call(SetModelCustomGfx, MODEL_power, CUSTOM_GFX_1, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_giving_power)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(setup_gfx_giving_power)), NULL)
     Thread
         Loop(0)
             Call(MakeLerp, 255, 100, 60, EASING_COS_IN_OUT)

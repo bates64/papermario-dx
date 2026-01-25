@@ -54,7 +54,7 @@ EvtScript N(EVS_ShakingWorld) = {
     Else
         Loop(0)
             Call(ShakeCam, CAM_DEFAULT, 0, 2, Float(0.5))
-            IfNe(AF_KZN_RumblingIntensified, false)
+            IfNe(AF_KZN_RumblingIntensified, FALSE)
                 BreakLoop
             EndIf
         EndLoop
@@ -164,7 +164,7 @@ EvtScript N(EVS_KoloradoBurned_PlayerReaction) = {
 };
 
 API_CALLABLE(N(func_80240A68_C96998)) {
-    snd_ambient_fade_out(0, true);
+    snd_ambient_fade_out(0, TRUE);
     return ApiStatus_DONE2;
 }
 
@@ -182,7 +182,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Label(10)
         Switch(MV_SceneState)
             CaseEq(SCENE_STATE_BEGIN)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Walk)
                 Call(InterpNpcYaw, NPC_SELF, 90, 1)
                 Call(SetNpcPos, NPC_SELF, -30, 100, 40)
@@ -203,7 +203,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
                 Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-                Call(PanToTarget, CAM_DEFAULT, 0, true)
+                Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                 Call(InterpNpcYaw, NPC_SELF, 270, 4)
                 Wait(10)
                 Call(InterpNpcYaw, NPC_SELF, 90, 4)
@@ -216,12 +216,12 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
                 Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
                 Call(NpcJump0, NPC_SELF, -35, 125, -20, 12)
-                Call(PlayerFaceNpc, NPC_SELF, false)
+                Call(PlayerFaceNpc, NPC_SELF, FALSE)
                 Call(SetNpcSpeed, NPC_SELF, Float(1.0))
                 Label(25)
                 Call(NpcMoveTo, NPC_SELF, -15, -20, 0)
                 Call(NpcMoveTo, NPC_SELF, -40, -20, 0)
-                IfEq(AF_KZN20_SceneSync, false)
+                IfEq(AF_KZN20_SceneSync, FALSE)
                     Wait(1)
                     Goto(25)
                 EndIf
@@ -241,7 +241,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                     Call(NpcFacePlayer, NPC_SELF, 0)
                 EndThread
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 5, MSG_CH5_010C)
-                Set(AF_KZN_RumblingIntensified, true)
+                Set(AF_KZN_RumblingIntensified, TRUE)
                 Call(SetMusic, 0, SONG_VOLCANO_ESCAPE, 0, VOL_LEVEL_FULL)
                 Wait(20)
                 Thread
@@ -264,7 +264,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(N(func_80240A68_C96998))
                 Exec(N(EVS_KoloradoBurned_PlayerReaction))
                 Thread
-                    Call(PlayerFaceNpc, NPC_SELF, false)
+                    Call(PlayerFaceNpc, NPC_SELF, FALSE)
                     Call(ShowMessageAtScreenPos, MSG_CH5_010F, 160, 40)
                 EndThread
                 Thread
@@ -290,7 +290,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
                 Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-7.0))
                 Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-                Call(PanToTarget, CAM_DEFAULT, 0, true)
+                Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Panic, ANIM_Kolorado_Panic, 0, MSG_CH5_0110)
                 Call(ResetCam, CAM_DEFAULT, Float(90.0))
@@ -307,7 +307,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
                 Call(SetNpcSpeed, NPC_SELF, Float(3.0))
                 Call(NpcMoveTo, NPC_SELF, 75, -30, 0)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
         EndSwitch
         Wait(1)
         Goto(10)
@@ -318,10 +318,10 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     IfLt(LVar1, 100)
-        Call(EnableNpcAI, NPC_SELF, false)
+        Call(EnableNpcAI, NPC_SELF, FALSE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0108)
         EVT_LETTER_CHECK(Kolorado)
-        Call(EnableNpcAI, NPC_SELF, true)
+        Call(EnableNpcAI, NPC_SELF, TRUE)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_0113)
         EVT_LETTER_CHECK(Kolorado)
@@ -369,10 +369,10 @@ API_CALLABLE(N(GetFloorCollider)) {
 }
 
 EvtScript N(EVS_Scene_Misstar) = {
-    IfEq(AF_KZN20_MisstarFlightDone, false)
+    IfEq(AF_KZN20_MisstarFlightDone, FALSE)
         Call(SetNpcPos, NPC_SELF, -120, 70, 45)
         Wait(30)
-        Set(AF_KZN20_MisstarFlightDone, true)
+        Set(AF_KZN20_MisstarFlightDone, TRUE)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
         Call(LoadPath, 60, Ref(N(FlightPath1)), ARRAY_COUNT(N(FlightPath1)), EASING_LINEAR)
         Loop(0)
@@ -392,7 +392,7 @@ EvtScript N(EVS_Scene_Misstar) = {
             Wait(1)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(10)
     Thread
         Wait(10)
@@ -404,18 +404,18 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Set(AF_KZN_RumblingIntensified, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Set(AF_KZN_RumblingIntensified, FALSE)
     Set(MV_SceneState, SCENE_STATE_BEGIN)
     Label(10)
         Switch(MV_SceneState)
             CaseEq(SCENE_STATE_STARFISH_REMARK)
-                Set(AF_KZN20_SceneSync, false)
+                Set(AF_KZN20_SceneSync, FALSE)
                 Thread
                     Wait(30)
                     Set(MV_SceneState, SCENE_STATE_KOLORADO_LOOKS_AROUND)
                 EndThread
-                Set(AF_KZN20_SceneSync, true)
+                Set(AF_KZN20_SceneSync, TRUE)
             CaseEq(SCENE_STATE_KOLORADO_WENT_BACK)
                 Thread
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -423,7 +423,7 @@ EvtScript N(EVS_Scene_Misstar) = {
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
                     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0))
-                    Call(PanToTarget, CAM_DEFAULT, 0, true)
+                    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                     Set(MV_SceneState, SCENE_STATE_KOLORADO_CAM_SYNC)
                 EndThread
@@ -470,24 +470,24 @@ EvtScript N(EVS_Scene_Misstar) = {
             Wait(1)
             Goto(10)
         EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Label(90)
         IfLt(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
             Wait(1)
             Goto(90)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(40)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     Thread
-        Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kolorado, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(SetNpcAnimation, NPC_Kolorado, ANIM_Kolorado_Panic)
         Call(SetNpcSpeed, NPC_Kolorado, Float(5.0))
         Call(NpcMoveTo, NPC_Kolorado, 305, 0, 0)
         Call(RemoveNpc, NPC_Kolorado)
     EndThread
     Wait(30)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.5))
     Call(NpcJump0, NPC_SELF, 145, 195, -10, 5)
     Wait(5)
@@ -503,7 +503,7 @@ EvtScript N(EVS_Scene_Misstar) = {
             Goto(91)
         EndIf
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

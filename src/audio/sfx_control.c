@@ -386,7 +386,7 @@ SoundInstance* sfx_get_env_sound_instance(s32 soundID) {
         }
     }
 
-    return nullptr;
+    return NULL;
 }
 
 void sfx_play_sound_looping(s32 soundID, u8 volume, u8 pan, s16 pitchShift) {
@@ -431,8 +431,8 @@ void sfx_register_looping_sound_at_position(s32 soundID, s32 flags, f32 x, f32 y
 s32 sfx_adjust_env_sound_pos(s32 soundID, s32 sourceFlags, f32 x, f32 y, f32 z) {
     SoundInstance* sound = sfx_get_env_sound_instance(soundID);
 
-    if (sound == nullptr) {
-        return false;
+    if (sound == NULL) {
+        return FALSE;
     }
 
     sound->sourceFlags = sourceFlags;
@@ -441,13 +441,13 @@ s32 sfx_adjust_env_sound_pos(s32 soundID, s32 sourceFlags, f32 x, f32 y, f32 z) 
     sound->pos.z = z;
     sound->soundID = soundID;
     sound->flags |= SOUND_INSTANCE_FLAG_ACTIVE | SOUND_INSTANCE_FLAG_POSITION_CHANGED;
-    return true;
+    return TRUE;
 }
 
 void sfx_stop_tracking_env_sound_pos(s32 soundID, s32 keepPlaying) {
     SoundInstance* sound = sfx_get_env_sound_instance(soundID);
 
-    if (sound != nullptr) {
+    if (sound != NULL) {
         sound->flags &= ~(SOUND_INSTANCE_FLAG_ACTIVE | SOUND_INSTANCE_FLAG_POSITION_CHANGED);
         if (!keepPlaying) {
             snd_stop_sound(sound->soundID);
@@ -492,7 +492,7 @@ void sfx_adjust_env_sound_params(s32 soundID, u8 volume, u8 pan, s16 pitchShift)
 
     if (soundID & SOUND_ID_TYPE_FLAG) {
         sound = sfx_get_env_sound_instance(LoopingSounds[soundID & 0xFFFF]);
-        if (sound != nullptr) {
+        if (sound != NULL) {
             sound->volume = volume;
             sound->pan = pan;
             sound->pitchShift = pitchShift;
@@ -506,7 +506,7 @@ void sfx_stop_sound(s32 soundID) {
     s32 sound = soundID;
 
     if (sound & SOUND_ID_TYPE_FLAG) {
-        sfx_stop_tracking_env_sound_pos(LoopingSounds[sound & 0xFFFF], false);
+        sfx_stop_tracking_env_sound_pos(LoopingSounds[sound & 0xFFFF], FALSE);
     } else {
         snd_stop_sound(sound);
     }
@@ -525,7 +525,7 @@ void sfx_play_sound_at_player(s32 soundID, s32 flags) {
 void sfx_play_sound_at_npc(s32 soundID, s32 flags, s32 npcID) {
     Npc* npc = get_npc_safe(npcID);
 
-    if (npc != nullptr) {
+    if (npc != NULL) {
         sfx_play_sound_at_position(soundID, flags, npc->pos.x, npc->pos.y, npc->pos.z);
     }
 }

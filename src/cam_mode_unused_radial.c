@@ -21,7 +21,7 @@ void update_camera_unused_radial(Camera* camera) {
     f32 dist, angle;
 
     if (camera->needsInit) {
-        camera->needsInit = false;
+        camera->needsInit = FALSE;
 
         x1 = camera->lookAt_obj_target.x;
         z1 = camera->lookAt_obj_target.z;

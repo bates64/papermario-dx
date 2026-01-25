@@ -17,12 +17,12 @@ void dispatch_event_partner(s32 lastEventType) {
     partnerActor->handleEventScriptID = script->id;
     script->owner1.actorID = ACTOR_PARTNER;
 
-    if (partnerActor->takeTurnScript != nullptr) {
+    if (partnerActor->takeTurnScript != NULL) {
         kill_script_by_ID(partnerActor->takeTurnScriptID);
-        partnerActor->takeTurnScript = nullptr;
+        partnerActor->takeTurnScript = NULL;
     }
 
-    if (handleEventScript != nullptr) {
+    if (handleEventScript != NULL) {
         kill_script_by_ID(onHitID);
     }
 }
@@ -40,7 +40,7 @@ void dispatch_event_partner_continue_turn(s8 lastEventType) {
     partnerActor->handleEventScriptID = script->id;
     script->owner1.actorID = ACTOR_PARTNER;
 
-    if (handleEventScript != nullptr) {
+    if (handleEventScript != NULL) {
         kill_script_by_ID(onHitID);
     }
 }
@@ -59,12 +59,12 @@ HitResult calc_partner_test_enemy(void) {
     target = get_actor(currentTargetID);
     state = &partner->state;
 
-    if (target == nullptr) {
+    if (target == NULL) {
         return HIT_RESULT_HIT;
     }
 
     part = get_actor_part(target, currentTargetPart);
-    ASSERT(part != nullptr);
+    ASSERT(part != NULL);
 
     if (target->stoneStatus == STATUS_KEY_STONE) {
         return HIT_RESULT_IMMUNE;
@@ -165,13 +165,13 @@ HitResult calc_partner_damage_enemy(void) {
     s32 currentTargetID = battleStatus->curTargetID;
     s32 currentTargetPartID = battleStatus->curTargetPart;
     s32 hitResult = HIT_RESULT_HIT;
-    s32 partImmuneToElement = false;
-    s32 isFireDamage = false;
-    s32 isWaterDamage = false;
-    s32 isShockDamage = false;
-    s32 isIceDamage = false;
-    s32 wasSpecialHit = false;
-    s32 wasStatusInflicted = false;
+    s32 partImmuneToElement = FALSE;
+    s32 isFireDamage = FALSE;
+    s32 isWaterDamage = FALSE;
+    s32 isShockDamage = FALSE;
+    s32 isIceDamage = FALSE;
+    s32 wasSpecialHit = FALSE;
+    s32 wasStatusInflicted = FALSE;
     Actor* target;
     ActorPart* targetPart;
     ActorState* state;
@@ -180,7 +180,7 @@ HitResult calc_partner_damage_enemy(void) {
     s32 damageDealt;
     s32 dispatchEvent;
 
-    battleStatus->wasStatusInflicted = false;
+    battleStatus->wasStatusInflicted = FALSE;
     battleStatus->lastAttackDamage = 0;
     battleStatus->attackerActorID = partner->actorID;
     battleStatus->curTargetID2 = battleStatus->curTargetID;
@@ -188,13 +188,13 @@ HitResult calc_partner_damage_enemy(void) {
     target = get_actor(currentTargetID);
     state = &partner->state;
 
-    if (target == nullptr) {
+    if (target == NULL) {
         return HIT_RESULT_HIT;
     }
 
     targetPart = get_actor_part(target, currentTargetPartID);
 
-    ASSERT(targetPart != nullptr);
+    ASSERT(targetPart != NULL);
 
     target->lastDamageTaken = 0;
 
@@ -223,7 +223,7 @@ HitResult calc_partner_damage_enemy(void) {
         }
 
         if (targetPart->elementalImmunities & battleStatus->curAttackElement) {
-            partImmuneToElement = true;
+            partImmuneToElement = TRUE;
         }
 
         // check jumping on spiky enemy
@@ -351,22 +351,22 @@ HitResult calc_partner_damage_enemy(void) {
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_FIRE) {
             fx_ring_blast(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-            isFireDamage = true;
+            isFireDamage = TRUE;
         }
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_SHOCK) {
             apply_shock_effect(target);
-            isShockDamage = true;
+            isShockDamage = TRUE;
         }
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
             fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-            isWaterDamage = true;
+            isWaterDamage = TRUE;
         }
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {
             fx_big_snowflakes(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f);
-            isIceDamage = true;
+            isIceDamage = TRUE;
         }
 
         if (partner->staticStatus != STATUS_KEY_STATIC
@@ -536,7 +536,7 @@ HitResult calc_partner_damage_enemy(void) {
                 dispatchEvent = EVENT_SPIN_SMASH_DEATH;
             }
 
-            wasSpecialHit = true;
+            wasSpecialHit = TRUE;
         }
 
         if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
@@ -572,7 +572,7 @@ HitResult calc_partner_damage_enemy(void) {
                         dispatchEvent = EVENT_FALL_TRIGGER;
                     }
 
-                    wasSpecialHit = true;
+                    wasSpecialHit = TRUE;
                 }
 
                 if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
@@ -586,7 +586,7 @@ HitResult calc_partner_damage_enemy(void) {
                         }
 
                         if (!(target->flags & ACTOR_FLAG_FLIPPED)) {
-                            wasSpecialHit = true;
+                            wasSpecialHit = TRUE;
                         }
                     }
                 }
@@ -607,7 +607,7 @@ HitResult calc_partner_damage_enemy(void) {
         }
 
         if (!(target->flags & ACTOR_FLAG_FLIPPED)) {
-            wasSpecialHit = true;
+            wasSpecialHit = TRUE;
         }
     }
 
@@ -627,8 +627,8 @@ HitResult calc_partner_damage_enemy(void) {
             dispatchEvent = EVENT_EXPLODE_TRIGGER;
         }
 
-        wasSpecialHit = true;
-        isFireDamage = true;
+        wasSpecialHit = TRUE;
+        isFireDamage = TRUE;
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS) {
@@ -641,7 +641,7 @@ HitResult calc_partner_damage_enemy(void) {
                 dispatchEvent = EVENT_BURN_DEATH;
             }
 
-            isFireDamage = true;
+            isFireDamage = TRUE;
         }
 
         if (gBattleStatus.flags1 & BS_FLAGS1_TRIGGER_EVENTS
@@ -654,8 +654,8 @@ HitResult calc_partner_damage_enemy(void) {
             #define INFLICT_STATUS(STATUS_TYPE) \
                 if ((battleStatus->curAttackStatus & STATUS_FLAG_##STATUS_TYPE) && \
                     try_inflict_status(target, STATUS_KEY_##STATUS_TYPE, STATUS_TURN_MOD_##STATUS_TYPE)) { \
-                    wasSpecialHit = true; \
-                    wasStatusInflicted = true; \
+                    wasSpecialHit = TRUE; \
+                    wasStatusInflicted = TRUE; \
                 } \
 
             INFLICT_STATUS(SHRINK);
@@ -671,8 +671,8 @@ HitResult calc_partner_damage_enemy(void) {
 
             if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) &&
                 try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
-                wasSpecialHit = true;
-                wasStatusInflicted = true;
+                wasSpecialHit = TRUE;
+                wasStatusInflicted = TRUE;
             }
 
             statusChanceOrDefense = target->actorBlueprint->spookChance;
@@ -694,9 +694,9 @@ HitResult calc_partner_damage_enemy(void) {
                         && !(target->flags & ACTOR_FLAG_FLIPPED)
                     ) {
                         dispatchEvent = EVENT_SCARE_AWAY;
-                        wasStatusInflicted = true;
+                        wasStatusInflicted = TRUE;
                         hitResult = HIT_RESULT_HIT;
-                        wasSpecialHit = true;
+                        wasSpecialHit = TRUE;
                         gBattleStatus.flags1 |= BS_FLAGS1_NICE_HIT;
                         gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
                         gBattleStatus.flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;
@@ -738,9 +738,9 @@ HitResult calc_partner_damage_enemy(void) {
                       target->debuff == STATUS_KEY_FROZEN ||
                       target->debuff == STATUS_KEY_STOP) && !(target->flags & ACTOR_FLAG_FLIPPED)) {
                     dispatchEvent = EVENT_SCARE_AWAY;
-                    wasStatusInflicted = true;
+                    wasStatusInflicted = TRUE;
                     hitResult = HIT_RESULT_HIT;
-                    wasSpecialHit = true;
+                    wasSpecialHit = TRUE;
                     gBattleStatus.flags1 |= BS_FLAGS1_NICE_HIT;
                     gBattleStatus.flags1 |= BS_FLAGS1_TRIGGER_EVENTS;
                     gBattleStatus.flags1 |= BS_FLAGS1_INCLUDE_POWER_UPS;
@@ -975,11 +975,11 @@ s32 dispatch_damage_event_partner(s32 damageAmount, s32 event, s32 stopMotion) {
 }
 
 s32 dispatch_damage_event_partner_0(s32 damageAmount, s32 event, s32 stopMotion) {
-    return dispatch_damage_event_partner(damageAmount, event, false);
+    return dispatch_damage_event_partner(damageAmount, event, FALSE);
 }
 
 s32 dispatch_damage_event_partner_1(s32 damageAmount, s32 event) {
-    return dispatch_damage_event_partner(damageAmount, event, true);
+    return dispatch_damage_event_partner(damageAmount, event, TRUE);
 }
 
 API_CALLABLE(MakeOwnerTargetIndex) {

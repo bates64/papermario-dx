@@ -17,7 +17,7 @@ void btl_state_update_begin_turn(void) {
     Actor* enemy1;
     Actor* enemy2;
     Evt* script;
-    bool awaiting;
+    b32 awaiting;
     u16 id1;
     u16 id2;
     s32 numEnemyActors;
@@ -36,7 +36,7 @@ void btl_state_update_begin_turn(void) {
 
         player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
         player->disableDismissTimer = 0;
-        if (partner != nullptr) {
+        if (partner != NULL) {
             player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
             partner->disableDismissTimer = 0;
         }
@@ -48,7 +48,7 @@ void btl_state_update_begin_turn(void) {
         numEnemyActors = 0;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != nullptr) {
+            if (enemy != NULL) {
                 battleStatus->enemyIDs[numEnemyActors] = i | ACTOR_ENEMY0;
                 numEnemyActors++;
             }
@@ -112,7 +112,7 @@ void btl_state_update_begin_turn(void) {
         if (gGameStatusPtr->debugEnemyContact == DEBUG_CONTACT_DIE_IN_BATTLE) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handleEventSource != nullptr) {
+                if (enemy != NULL && enemy->handleEventSource != NULL) {
                     Evt* script = start_script(enemy->handleEventSource, EVT_PRIORITY_A, 0);
 
                     enemy->handleEventScript = script;
@@ -125,7 +125,7 @@ void btl_state_update_begin_turn(void) {
         } else {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != nullptr && enemy->handlePhaseSource != nullptr) {
+                if (enemy != NULL && enemy->handlePhaseSource != NULL) {
                     battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                     script = start_script(enemy->handlePhaseSource, EVT_PRIORITY_A, 0);
                     enemy->handlePhaseScript = script;
@@ -135,7 +135,7 @@ void btl_state_update_begin_turn(void) {
             }
 
             partner = battleStatus->partnerActor;
-            if (partner != nullptr && partner->handlePhaseSource != nullptr) {
+            if (partner != NULL && partner->handlePhaseSource != NULL) {
                 battleStatus->battlePhase = PHASE_PLAYER_BEGIN;
                 script = start_script(partner->handlePhaseSource, EVT_PRIORITY_A, 0);
                 partner->handlePhaseScript = script;
@@ -147,15 +147,15 @@ void btl_state_update_begin_turn(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_ENEMY_SCRIPTS) {
-        awaiting = false;
+        awaiting = FALSE;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != nullptr && enemy->handlePhaseSource != nullptr && does_script_exist(enemy->handlePhaseScriptID)) {
-                awaiting = true;
+            if (enemy != NULL && enemy->handlePhaseSource != NULL && does_script_exist(enemy->handlePhaseScriptID)) {
+                awaiting = TRUE;
             }
         }
-        if (partner != nullptr && partner->handlePhaseSource != nullptr && does_script_exist(partner->handlePhaseScriptID)) {
-            awaiting = true;
+        if (partner != NULL && partner->handlePhaseSource != NULL && does_script_exist(partner->handlePhaseScriptID)) {
+            awaiting = TRUE;
         }
 
         if (!awaiting) {
@@ -167,11 +167,11 @@ void btl_state_update_begin_turn(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_AWAIT_ENEMY_DEATH) {
-        awaiting = false;
+        awaiting = FALSE;
         for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
             enemy = battleStatus->enemyActors[i];
-            if (enemy != nullptr && enemy->handleEventSource != nullptr && does_script_exist(enemy->handleEventScriptID)) {
-                awaiting = true;
+            if (enemy != NULL && enemy->handleEventSource != NULL && does_script_exist(enemy->handleEventScriptID)) {
+                awaiting = TRUE;
             }
         }
 

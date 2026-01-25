@@ -49,21 +49,21 @@ EvtScript N(EVS_PutridPiranhas_IdleChomping) = {
 };
 
 EvtScript N(EVS_NpcIdle_PutridPiranha) = {
-    IfEq(GF_JAN15_EncounteredMiniboss, false)
+    IfEq(GF_JAN15_EncounteredMiniboss, FALSE)
         Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 34)
             Wait(1)
             Goto(0)
         EndIf
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         Call(ShowMessageAtScreenPos, MSG_CH5_00BB, 320, 60)
-        Set(GF_JAN15_EncounteredMiniboss, true)
-        Call(DisablePlayerInput, false)
+        Set(GF_JAN15_EncounteredMiniboss, TRUE)
+        Call(DisablePlayerInput, FALSE)
     EndIf
     ExecGetTID(N(EVS_PutridPiranhas_IdleChomping), LVar9)
     Call(AwaitPlayerApproach, 400, -10, 135)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     KillThread(LVar9)
     Wait(15)
     Call(SetNpcAnimation, NPC_PutridPiranha_01, ANIM_LargePiranha_Putrid_Anim01)
@@ -143,7 +143,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Call(SetNpcAnimation, NPC_PutridPiranha_02, ANIM_LargePiranha_Putrid_Anim06)
     Call(SetNpcAnimation, NPC_PutridPiranha_03, ANIM_LargePiranha_Putrid_Anim06)
     Call(PlaySoundAtNpc, NPC_PutridPiranha_01, SOUND_PIRANHA_CHOMP, SOUND_SPACE_DEFAULT)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
     End

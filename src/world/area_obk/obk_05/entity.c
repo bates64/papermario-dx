@@ -2,13 +2,13 @@
 #include "entity.h"
 
 EvtScript N(EVS_OnSmashFloor) = {
-    Set(GF_OBK05_BoardedFloor, true)
+    Set(GF_OBK05_BoardedFloor, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_OBK05_BoardedFloor, false)
+    IfEq(GF_OBK05_BoardedFloor, FALSE)
         Call(MakeEntity, Ref(Entity_BoardedFloor), 0, 0, 0, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_OnSmashFloor)))
     EndIf

@@ -3,14 +3,14 @@
 // switch for draining the sand into the lower chamber
 EvtScript N(EVS_OnTouch_DrainSwitch) = {
     Call(IsPlayerOnValidFloor, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, FALSE)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Label(5)
         Wait(1)
         Call(PartnerCanUseAbility, LVar0)
-        IfEq(LVar0, true)
+        IfEq(LVar0, TRUE)
             Goto(5)
         EndIf
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -35,7 +35,7 @@ EvtScript N(EVS_OnTouch_DrainSwitch) = {
         Goto(10)
     EndIf
     Call(PlaySoundAtCollider, COLLIDER_o2059, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
-    Set(AF_ISK12_SandSwitchActivated, true)
+    Set(AF_ISK12_SandSwitchActivated, TRUE)
     Unbind
     Return
     End
@@ -44,10 +44,10 @@ EvtScript N(EVS_OnTouch_DrainSwitch) = {
 // switch for creating a staircase of bricks emerging from the wall
 EvtScript N(EVS_OnTouch_StaircaseSwitch) = {
     Call(IsPlayerOnValidFloor, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, FALSE)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(PlaySoundAtCollider, COLLIDER_o2090, SOUND_FLOOR_SWITCH_DEPRESS, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -14, 30, EASING_LINEAR)
     Label(10)
@@ -60,7 +60,7 @@ EvtScript N(EVS_OnTouch_StaircaseSwitch) = {
     EndIf
     Call(PlaySoundAtCollider, COLLIDER_o2090, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
     Call(InterpPlayerYaw, 260, 0)
-    Set(AF_ISK12_StairSwitchActivated, true)
+    Set(AF_ISK12_StairSwitchActivated, TRUE)
     Thread
         Call(PlaySoundAt, SOUND_ISK_STAIRS_EMERGE_RUMBLE, SOUND_SPACE_DEFAULT, 449, -822, 148)
         Call(MakeLerp, -50, 0, 60, EASING_QUADRATIC_IN)
@@ -119,7 +119,7 @@ EvtScript N(EVS_OnTouch_StaircaseSwitch) = {
     Wait(50)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o2080, COLLIDER_FLAGS_UPPER_MASK)
     Wait(3)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Unbind
     Return
     End
@@ -129,14 +129,14 @@ EvtScript N(EVS_SetupSwitches) = {
     Call(ParentColliderToModel, COLLIDER_o2056, MODEL_g367)
     Call(ParentColliderToModel, COLLIDER_o2059, MODEL_g367)
     Call(ParentColliderToModel, COLLIDER_o2090, MODEL_B2)
-    IfEq(AF_ISK12_SandSwitchActivated, false)
+    IfEq(AF_ISK12_SandSwitchActivated, FALSE)
         BindTrigger(Ref(N(EVS_OnTouch_DrainSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2059, 1, 0)
     Else
         Call(TranslateModel, MODEL_g367, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o2056)
         Call(UpdateColliderTransform, COLLIDER_o2059)
     EndIf
-    IfEq(AF_ISK12_StairSwitchActivated, true)
+    IfEq(AF_ISK12_StairSwitchActivated, TRUE)
         Call(TranslateModel, MODEL_B2, 0, -14, 0)
         Call(UpdateColliderTransform, COLLIDER_o2090)
     Else
@@ -146,15 +146,15 @@ EvtScript N(EVS_SetupSwitches) = {
             Call(TranslateGroup, MODEL_g376, -52, 0, 0)
             Call(TranslateGroup, MODEL_g373, -52, 0, 0)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2080, COLLIDER_FLAGS_UPPER_MASK)
-            IfEq(GF_ISK12_Hammer2Block, false)
+            IfEq(GF_ISK12_Hammer2Block, FALSE)
                 Call(TranslateModel, MODEL_B2, 0, -14, 0)
                 Call(UpdateColliderTransform, COLLIDER_o2090)
                 Label(10)
-                IfEq(GF_ISK12_Hammer2Block, false)
+                IfEq(GF_ISK12_Hammer2Block, FALSE)
                     Wait(1)
                     Goto(10)
                 EndIf
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(MakeLerp, -14, 0, 30, EASING_LINEAR)
                 Label(20)
                 Call(UpdateLerp)
@@ -165,7 +165,7 @@ EvtScript N(EVS_SetupSwitches) = {
                     Goto(20)
                 EndIf
                 Wait(3)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
             EndIf
             BindTrigger(Ref(N(EVS_OnTouch_StaircaseSwitch)), TRIGGER_FLOOR_TOUCH, COLLIDER_o2090, 1, 0)
         EndThread

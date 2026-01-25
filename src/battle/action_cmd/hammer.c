@@ -34,7 +34,7 @@ API_CALLABLE(N(init)) {
     action_command_init_status();
     acs->actionCommandID = ACTION_COMMAND_SMASH;
     acs->state = AC_STATE_INIT;
-    acs->wrongButtonPressed = false;
+    acs->wrongButtonPressed = FALSE;
     acs->hudPosX = -48;
     acs->hudPosY = 96;
 
@@ -100,14 +100,14 @@ API_CALLABLE(N(start)) {
     acs->duration = evt_get_variable(script, *args++);
     acs->difficulty = evt_get_variable(script, *args++);
     acs->difficulty = adjust_action_command_difficulty(acs->difficulty);
-    acs->wrongButtonPressed = false;
-    acs->playHammerSounds = true;
+    acs->wrongButtonPressed = FALSE;
+    acs->playHammerSounds = TRUE;
     if (acs->prepareTime < 0) {
         acs->prepareTime = 0;
-        acs->playHammerSounds = false;
+        acs->playHammerSounds = FALSE;
     }
 
-    acs->hammerMissedStart = false;
+    acs->hammerMissedStart = FALSE;
     battleStatus->actionQuality = 0;
     battleStatus->actionProgress = 0;
     battleStatus->actionResult = ACTION_RESULT_FAIL;
@@ -211,7 +211,7 @@ void N(update)(void) {
 
             acs->stateTimer = 0;
             if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT) && battleStatus->actionCommandMode < AC_MODE_TUTORIAL) {
-                acs->hammerMissedStart = true;
+                acs->hammerMissedStart = TRUE;
             }
             acs->state = AC_STATE_ACTIVE;
 

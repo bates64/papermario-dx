@@ -45,9 +45,9 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
         Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
-        Call(MakeNpcs, false, Ref(N(PeachNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(PeachNPCs)))
     Else
-        Call(MakeNpcs, false, Ref(N(FinaleNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(FinaleNPCs)))
     EndIf
     Exec(N(EVS_SetupMusic))
     Call(UseDoorSounds, DOOR_SOUNDS_LARGE)

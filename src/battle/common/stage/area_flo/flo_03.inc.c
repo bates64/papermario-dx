@@ -41,7 +41,7 @@ EvtScript N(EVS_AnimateVines) = {
 #include "common/CosInterpMinMax.inc.c"
 
 EvtScript N(EVS_AnimateSmokePuff) = {
-    Call(EnableModel, LVarF, true)
+    Call(EnableModel, LVarF, TRUE)
     Set(LVarE, 159)
     Loop(LVarE)
         AddF(LVar3, 0)
@@ -65,7 +65,7 @@ EvtScript N(EVS_AnimateSmokePuff) = {
         Call(RotateModel, LVarF, LVarA, 0, 0, 1)
         Wait(1)
     EndLoop
-    Call(EnableModel, LVarF, false)
+    Call(EnableModel, LVarF, FALSE)
     Return
     End
 };
@@ -143,10 +143,10 @@ EvtScript N(EVS_PreBattle) = {
             Add(LVar1, CLONED_MODEL(0))
             Add(LVar0, 1)
             Call(CloneModel, MODEL_o454, LVar1)
-            Call(EnableModel, LVar1, false)
+            Call(EnableModel, LVar1, FALSE)
         EndLoop
         // hide the original
-        Call(EnableModel, MODEL_o454, false)
+        Call(EnableModel, MODEL_o454, FALSE)
         // animate them
         Set(LVarE, 0)
         Loop(0)

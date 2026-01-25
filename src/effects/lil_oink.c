@@ -60,13 +60,13 @@ EffectInstance* lil_oink_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
     bp.init = lil_oink_init;
     bp.update = lil_oink_update;
     bp.renderScene = lil_oink_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_LIL_OINK;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.lilOink = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(data != nullptr);
+    ASSERT(data != NULL);
 
     data->lifetime = 0;
     data->timeLeft = 1000;
@@ -97,28 +97,28 @@ void lil_oink_update(EffectInstance* effect) {
 
     for (i = 0; i < MAX_LIL_OINKS; i++) {
         s32 time = data->animTime[i];
-        s32 animDone = false;
+        s32 animDone = FALSE;
 
         switch (data->anim[i]) {
             case LIL_OINK_ANIM_0:
-                animDone = true;
+                animDone = TRUE;
                 break;
             case LIL_OINK_ANIM_1:
                 data->gfxFrame[i] = 1;
-                animDone = true;
+                animDone = TRUE;
                 break;
             case LIL_OINK_ANIM_3:
                 data->gfxFrame[i] = lil_oink_AnimateGfxSelect[time % ARRAY_COUNT(lil_oink_AnimateGfxSelect)];
                 data->rot[i] = data->rot[i] + sin_deg(time * 10);
                 if (time >= 36) {
-                    animDone = true;
+                    animDone = TRUE;
                     data->animTime[i] = 0;
                 }
                 break;
             case LIL_OINK_ANIM_2:
                 data->gfxFrame[i] = lil_oink_AnimateGfxSelect[time % ARRAY_COUNT(lil_oink_AnimateGfxSelect)];
                 data->jumpOffset[i] = sin_deg(time * 20) * 2.0f;
-                animDone = true;
+                animDone = TRUE;
                 if (time >= 9) {
                     data->jumpOffset[i] = 0.0f;
                     data->animTime[i] = 0;
@@ -128,7 +128,7 @@ void lil_oink_update(EffectInstance* effect) {
                 data->gfxFrame[i] = lil_oink_AnimateGfxSelect[time % ARRAY_COUNT(lil_oink_AnimateGfxSelect)];
                 data->jumpOffset[i] = sin_deg(time * 20) * 4.0f;
                 if (!(time < 9)) {
-                    animDone = true;
+                    animDone = TRUE;
                     data->jumpOffset[i] = 0.0f;
                     data->animTime[i] = 0;
                 }
@@ -138,7 +138,7 @@ void lil_oink_update(EffectInstance* effect) {
                 data->gfxFrame[i] = lil_oink_AnimateGfxSelect[time % ARRAY_COUNT(lil_oink_AnimateGfxSelect)];
                 data->jumpOffset[i] = sin_deg(time * 5) * 12.0f;
                 if (!(time < 36)) {
-                    animDone = true;
+                    animDone = TRUE;
                     data->jumpOffset[i] = 0.0f;
                     data->animTime[i] = 0;
                 }

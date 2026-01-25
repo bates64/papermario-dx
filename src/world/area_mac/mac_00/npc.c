@@ -15,7 +15,7 @@
 #include "npc/russ_and_thief.inc.c"
 
 EvtScript N(EVS_NpcAI_ShyGuy_03) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim0C)
     Wait(10)
     Call(SetNpcAnimation, NPC_ShyGuy_02, ANIM_ShyGuy_Red_Anim03)
@@ -42,13 +42,13 @@ EvtScript N(EVS_NpcAI_ShyGuy_03) = {
     Call(SetNpcPos, NPC_ShyGuy_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_02, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_Toad_01, 170, 20, -140)
-    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SetNpcSpeed, NPC_Toad_01, Float(8.0))
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_HarryT_Run)
     Call(NpcMoveTo, NPC_Toad_01, 430, -373, 0)
     Call(SetNpcPos, NPC_Toad_01, 430, 20, -373)
     Call(SetNpcAnimation, NPC_Toad_01, ANIM_HarryT_Idle)
-    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_Toad_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Call(NpcFacePlayer, NPC_Toad_01, 0)
     Wait(10)
     Call(SpeakToPlayer, NPC_Toad_01, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Gate_0003)
@@ -59,7 +59,7 @@ EvtScript N(EVS_NpcAI_ShyGuy_03) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_mono5, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_mono6, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -87,9 +87,9 @@ EvtScript N(EVS_NpcHit_ShyGuy_03) = {
     EndIf
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
-    Set(GF_MAC00_ShyGuyChasedFromShop, true)
+    Set(GF_MAC00_ShyGuyChasedFromShop, TRUE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-    Call(SetEnemyFlagBits, NPC_ShyGuy_02, ENEMY_FLAG_CANT_INTERACT, true)
+    Call(SetEnemyFlagBits, NPC_ShyGuy_02, ENEMY_FLAG_CANT_INTERACT, TRUE)
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_03)))
     Return
     End
@@ -104,8 +104,8 @@ EvtScript N(EVS_NpcInteract_ShyGuy_02) = {
 EvtScript N(EVS_NpcInit_ShyGuy_02) = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-            IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
-                Set(GF_MAC01_ShyGuyTookOverShop, true)
+            IfEq(GF_MAC00_ShyGuyChasedFromShop, FALSE)
+                Set(GF_MAC01_ShyGuyTookOverShop, TRUE)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
                 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ShyGuy_02)))
                 Return
@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcInit_ShyGuy_02) = {
 EvtScript N(EVS_NpcInit_GardenShyGuy1) = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-            IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
+            IfEq(GF_MAC00_ShyGuyChasedFromShop, FALSE)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono1, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono2, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono3, COLLIDER_FLAGS_UPPER_MASK)
@@ -127,8 +127,8 @@ EvtScript N(EVS_NpcInit_GardenShyGuy1) = {
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono5, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_mono6, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_dummy, COLLIDER_FLAGS_UPPER_MASK)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, TRUE)
                 Call(SetNpcPos, NPC_SELF, 430, 20, -373)
                 Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_ShyGuy_03)))
                 Return
@@ -154,7 +154,7 @@ EvtScript N(EVS_NpcInteract_Toad_02) = {
 EvtScript N(EVS_NpcInit_Toad_01) = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-            IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
+            IfEq(GF_MAC00_ShyGuyChasedFromShop, FALSE)
                 Call(SetNpcPos, NPC_Toad_01, NPC_DISPOSE_LOCATION)
             EndIf
     EndSwitch
@@ -166,7 +166,7 @@ EvtScript N(EVS_NpcInit_Toad_01) = {
 EvtScript N(EVS_NpcInit_Toad_02) = {
     Switch(GB_StoryProgress)
         CaseRange(STORY_CH3_STAR_SPRIT_DEPARTED, STORY_CH4_STAR_SPIRIT_RESCUED)
-            IfEq(GF_MAC00_ShyGuyChasedFromShop, false)
+            IfEq(GF_MAC00_ShyGuyChasedFromShop, FALSE)
                 Call(SetNpcPos, NPC_SELF, 105, 0, -40)
                 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_02)))
                 Return

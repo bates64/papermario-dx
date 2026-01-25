@@ -91,13 +91,13 @@ EffectInstance* something_rotating_main(
     bp.update = something_rotating_update;
     bp.renderScene = something_rotating_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SOMETHING_ROTATING;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     part = effect->data.somethingRotating = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.somethingRotating != nullptr);
+    ASSERT(effect->data.somethingRotating != NULL);
 
     part->unk_00 = arg0;
     part->unk_14 = 0;

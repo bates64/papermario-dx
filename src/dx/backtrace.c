@@ -90,7 +90,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
     debugf("backtrace: start\n");
     #endif
 
-    exception_ra = nullptr;      // If != nullptr,
+    exception_ra = NULL;      // If != NULL,
     func_start = 0;            // Start of the current function (when known)
 
     // Start from the backtrace function itself. Put the start pointer somewhere after the initial
@@ -128,7 +128,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                     fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
                 ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
+                exception_ra = NULL;
                 func_start = 0;
                 break;
             /*
@@ -172,7 +172,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                     // The function that jumped into an invalid PC was not interrupted by the exception: it
                     // is a regular function
                     // call now.
-                    exception_ra = nullptr;
+                    exception_ra = NULL;
                     break;
                 }
 
@@ -199,7 +199,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                 // beginning of a standard function (before RA is saved), does have a stack but
                 // will be marked as a leaf function. In this case, we mus update the stack pointer.
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
+                exception_ra = NULL;
                 func_start = 0;
                 break;
         }
@@ -215,7 +215,7 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
     uint32_t* exception_ra;
     uint32_t func_start;
 
-    exception_ra = nullptr;      // If != nullptr,
+    exception_ra = NULL;      // If != NULL,
     func_start = 0;            // Start of the current function (when known)
 
     while (1) {
@@ -249,7 +249,7 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                     fp = *(uint32_t**)((uint32_t)sp + func.fp_offset);
                 ra = *(uint32_t**)((uint32_t)sp + func.ra_offset) - 2;
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
+                exception_ra = NULL;
                 func_start = 0;
                 break;
             case BT_LEAF:
@@ -258,7 +258,7 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 // beginning of a standard function (before RA is saved), does have a stack but
                 // will be marked as a leaf function. In this case, we mus update the stack pointer.
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
-                exception_ra = nullptr;
+                exception_ra = NULL;
                 func_start = 0;
                 break;
         }
@@ -325,8 +325,8 @@ s32 address2symbol(u32 address, Symbol* out) {
     nuPiReadRom(0, &romHeader, sizeof(romHeader));
 
     u32 symbolTableRomAddr = romHeader[SYMBOL_TABLE_PTR_ROM_ADDR / sizeof(*romHeader)];
-    if (symbolTableRomAddr == nullptr) {
-        debugf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is nullptr)\n");
+    if (symbolTableRomAddr == NULL) {
+        debugf("address2symbol: no symbols available (SYMBOL_TABLE_PTR is NULL)\n");
         return -1;
     }
 
@@ -370,8 +370,8 @@ s32 address2symbol(u32 address, Symbol* out) {
 }
 
 char* load_symbol_string(char* dest, u32 addr, int n) {
-    if (addr == nullptr) {
-        return nullptr;
+    if (addr == NULL) {
+        return NULL;
     }
 
     u32 aligned = addr & ~3;
@@ -394,7 +394,7 @@ void backtrace_address_to_string(u32 address, char* dest) {
 
         offset = 0; // Don't show offsets
 
-        if (filep == nullptr)
+        if (filep == NULL)
             if (offset == 0)
                 sprintf(dest, "%s", namep);
             else

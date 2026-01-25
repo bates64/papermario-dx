@@ -22,7 +22,7 @@ API_CALLABLE(N(StarRodPowerUpEffect)) {
     s32 endedCount;
     StarOutlineState2* effectState;
 
-    if (actor == nullptr) {
+    if (actor == NULL) {
         return ApiStatus_DONE2;
     }
 
@@ -51,7 +51,7 @@ API_CALLABLE(N(StarRodPowerUpEffect)) {
             effectState->unk_24 = 90.0f;
             effectState->unk_28 = 0.0f;
             effectState->unk_2C = 0.0f;
-            effectState->effectEnded = false;
+            effectState->effectEnded = FALSE;
         }
         return ApiStatus_BLOCK;
     }
@@ -138,7 +138,7 @@ API_CALLABLE(N(StarRodPowerUpEffect)) {
 
             if (effectState->duration <= 0) {
                 remove_effect(effectState->effect);
-                effectState->effectEnded = true;
+                effectState->effectEnded = TRUE;
             }
         }
     }

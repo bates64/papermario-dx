@@ -87,7 +87,7 @@ StaticAnimatorNode* NAMESPACE[] = {
     &N(8021A178),
     &N(8021A14C),
     &N(8021A120),
-    nullptr,
+    NULL,
 };
 
 AnimScript N(8021A364) = {

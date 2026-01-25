@@ -73,7 +73,7 @@ HitID npc_raycast_down(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f
 }
 
 // used specifically for partners
-bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius) {
+b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth, f32 yaw, f32 radius) {
     f32 startX;
     f32 startY;
     f32 startZ;
@@ -89,7 +89,7 @@ bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
     f32 deltaX,deltaZ;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehindRight;
 
-    hasCollision = false;
+    hasCollision = FALSE;
     x = *posX;
     y = *posY;
     z = *posZ;
@@ -119,7 +119,7 @@ bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
             NpcHitQueryAheadCollider = colliderID;
             NpcHitQueryAheadY = hitYAhead;
             minDepth = depth;
-            hasCollision = true;
+            hasCollision = TRUE;
         }
     }
 
@@ -142,7 +142,7 @@ bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindRightY = hitYBehindRight;
             minDepth = depth;
-            hasCollision = true;
+            hasCollision = TRUE;
         }
     }
 
@@ -165,7 +165,7 @@ bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindLeftY = hitYBehindLeft;
             minDepth = depth;
-            hasCollision = true;
+            hasCollision = TRUE;
         }
     }
 
@@ -175,15 +175,15 @@ bool npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f
             *posY = hitYBehindLeft;
         }
         *hitDepth = minDepth;
-        return true;
+        return TRUE;
     }
 
     *posY = startY;
-    return false;
+    return FALSE;
 }
 
 // used for non-partner NPCs
-bool npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth) {
+b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth) {
     f32 startX;
     f32 startY;
     f32 startZ;
@@ -200,7 +200,7 @@ bool npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
     f32 yaw;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehind, radius;
 
-    hasCollision = false;
+    hasCollision = FALSE;
 
     x = *posX;
     y = *posY;
@@ -236,7 +236,7 @@ bool npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             NpcHitQueryAheadCollider = colliderID;
             NpcHitQueryAheadY = hitYAhead;
             minDepth = depth;
-            hasCollision = true;
+            hasCollision = TRUE;
         }
     }
 
@@ -259,7 +259,7 @@ bool npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindRightY = hitYBehind;
             minDepth = depth;
-            hasCollision = true;
+            hasCollision = TRUE;
         }
     }
 
@@ -269,13 +269,13 @@ bool npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             *posY = hitYUnused;
         }
         *hitDepth = minDepth;
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
-bool npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth) {
+b32 npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth) {
     f32 cHitX;
     f32 cHitY;
     f32 cHitZ;
@@ -318,14 +318,14 @@ bool npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32*
     }
 
     if (ret <= NO_COLLIDER) {
-        return false;
+        return FALSE;
     } else {
         *hitDepth = cHitDepth;
         *startX = cHitX;
         *startY = cHitY;
         *startZ = cHitZ;
         NpcHitQueryColliderID = ret;
-        return true;
+        return TRUE;
     }
 }
 
@@ -500,12 +500,12 @@ HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 l
     raycastHitID = npc_raycast_general(ignoreFlags, *x - (radius * outSinTheta * 0.5f), *y,
                                         *z - (radius * inverseOutCosTheta * 0.5f), outSinTheta,
                                         0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ);
-    phi_s5 = false;
+    phi_s5 = FALSE;
 
     if (raycastHitID > NO_COLLIDER && hitDepth <= temp_f22) {
         temp_f0 = atan2(0.0f, 0.0f, sqrtf(SQ(bX) + SQ(bZ)), -hitNy);
         if (temp_f0 > 60.0f && temp_f0 < 90.0f) {
-            phi_s5 = true;
+            phi_s5 = TRUE;
         }
 
         temp_f20 = hitDepth - (length + radius + (radius * 0.5f));
@@ -563,7 +563,7 @@ s32 npc_test_move_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 
     return ret;
 }
 
-bool npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
+b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
                                        f32 radius) {
     f32 xTemp = *x;
     f32 yTemp = *y + height - 1.0f;
@@ -579,14 +579,14 @@ bool npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z,
         *x = xTemp;
         *z = zTemp;
     } else {
-        ret = true;
+        ret = TRUE;
         *x = xTemp;
         *z = zTemp;
     }
     return ret;
 }
 
-bool npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
+b32 npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
                                        f32 radius) {
     f32 tempX = *x;
     f32 tempY = *y + 10.01f;
@@ -599,7 +599,7 @@ bool npc_test_move_simple_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z,
     return hitID > NO_COLLIDER;
 }
 
-bool npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
+b32 npc_test_move_simple_without_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 length, f32 yaw, f32 height,
                                           f32 radius) {
     f32 tempX = *x;
     f32 tempY = *y + 10.01f;

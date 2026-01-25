@@ -26,13 +26,13 @@ EffectInstance* waterfall_main(
     bp.update = waterfall_update;
     bp.renderScene = waterfall_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_WATERFALL;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.waterfall = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.waterfall != nullptr);
+    ASSERT(effect->data.waterfall != NULL);
 
     data->unk_00 = arg0;
     data->unk_14 = 0;

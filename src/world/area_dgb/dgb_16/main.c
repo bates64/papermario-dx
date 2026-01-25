@@ -8,8 +8,8 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(dgb_16_ENTRY_0)
-            IfEq(GF_DGB16_EscapedFromTubba, false)
-                Set(GF_DGB16_EscapedFromTubba, true)
+            IfEq(GF_DGB16_EscapedFromTubba, FALSE)
+                Set(GF_DGB16_EscapedFromTubba, TRUE)
                 Set(GB_ARN_Tubba_MapID, 18)
             EndIf
             Set(LVar2, MODEL_o123)
@@ -25,7 +25,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

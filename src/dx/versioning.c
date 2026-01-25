@@ -2,7 +2,7 @@
 #include "dx/config.h"
 #include <string.h>
 
-void ver_deserialize_standard(SaveData* save);
+void ver_deserialize_standard();
 void ver_deserialize_vanilla_save(SaveData* save);
 
 /// Store current game data to gCurrentSaveFile
@@ -51,31 +51,32 @@ void fio_deserialize_state() {
     }
 
     gGameStatus.debugEnemyContact = DEBUG_CONTACT_NONE;
-    gGameStatus.debugUnused1 = false;
-    gGameStatus.debugUnused2 = false;
-    gGameStatus.musicEnabled = true;
+    gGameStatus.debugUnused1 = FALSE;
+    gGameStatus.debugUnused2 = FALSE;
+    gGameStatus.musicEnabled = TRUE;
 }
 
 /// Load save file data from a supported save version
 /// Assumes no changes in the SaveData, PlayerData, or PartnerData structs and no remapped item IDs.
-void ver_deserialize_standard(SaveData* save) {
+void ver_deserialize_standard() {
+    SaveData* saveData = &gCurrentSaveFile;
     s32 i, j;
 
     // simply copy the saved player data
-    gPlayerData = save->player;
+    gPlayerData = saveData->player;
 
     // copy saved game status fields to GameStatus
-    gGameStatus.areaID = save->areaID;
-    gGameStatus.mapID = save->mapID;
-    gGameStatus.entryID = save->entryID;
-    gGameStatus.savedPos.x = save->savePos.x;
-    gGameStatus.savedPos.y = save->savePos.y;
-    gGameStatus.savedPos.z = save->savePos.z;
+    gGameStatus.areaID = saveData->areaID;
+    gGameStatus.mapID = saveData->mapID;
+    gGameStatus.entryID = saveData->entryID;
+    gGameStatus.savedPos.x = saveData->savePos.x;
+    gGameStatus.savedPos.y = saveData->savePos.y;
+    gGameStatus.savedPos.z = saveData->savePos.z;
 
     // copy saved enemy defeat flags
     for (i = 0; i < ARRAY_COUNT(gCurrentEncounter.defeatFlags[0]); i++) {
         for (j = 0; j < ARRAY_COUNT(gCurrentEncounter.defeatFlags); j++) {
-            gCurrentEncounter.defeatFlags[j][i] = save->enemyDefeatFlags[j][i];
+            gCurrentEncounter.defeatFlags[j][i] = saveData->enemyDefeatFlags[j][i];
         }
     }
 }

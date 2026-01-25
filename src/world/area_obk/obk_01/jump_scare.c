@@ -2,7 +2,7 @@
 #include "effects.h"
 
 EvtScript N(EVS_Scene_JumpScareBoo) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Add(LVar4, 80)
     Call(SetNpcPos, NPC_JumpScareBoo, LVar3, LVar4, LVar5)
@@ -37,7 +37,7 @@ EvtScript N(EVS_Scene_JumpScareBoo) = {
     EndLoop
     Call(RemoveNpc, NPC_JumpScareBoo)
     Set(GB_StoryProgress, STORY_CH3_TRIGGERED_DOOR_JUMP_SCARE)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

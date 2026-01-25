@@ -78,15 +78,15 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
 
 EvtScript N(EVS_UpdateLavaWaves) = {
     SetGroup(EVT_GROUP_NOT_BATTLE)
-    Call(EnableModel, MODEL_yu, false)
+    Call(EnableModel, MODEL_yu, FALSE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_yu, COLLIDER_FLAGS_UPPER_MASK)
     Call(ParentColliderToModel, COLLIDER_yu, MODEL_yu)
     Label(0)
-        IfEq(AF_KZN_RumblingIntensified, false)
+        IfEq(AF_KZN_RumblingIntensified, FALSE)
             Wait(1)
             Goto(0)
         EndIf
-    Call(EnableModel, MODEL_yu, true)
+    Call(EnableModel, MODEL_yu, TRUE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS,  COLLIDER_yu, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yu, SURFACE_TYPE_LAVA)
     Thread
@@ -154,8 +154,8 @@ BombTrigger N(WeakWallBombTrigger) = {
 
 EvtScript N(EVS_OnBreakWall) = {
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 2, 2, 1, 10, 30)
-    Call(EnableGroup, MODEL_bom_mae, false)
-    Call(EnableGroup, MODEL_bom_ato, true)
+    Call(EnableGroup, MODEL_bom_mae, FALSE)
+    Call(EnableGroup, MODEL_bom_ato, TRUE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     Set(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
     Unbind
@@ -167,16 +167,16 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_MT_LAVALAVA)
     Call(SetSpriteShading, SHADING_KZN_20)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Set(LVar0, N(EVS_BindExitTriggers))
     Exec(EnterWalk)
     Wait(1)
     Exec(N(EVS_ShakingWorld))
     IfLt(GB_StoryProgress, STORY_CH5_OPENED_ESCAPE_ROUTE)
-        Call(EnableGroup, MODEL_bom_ato, false)
+        Call(EnableGroup, MODEL_bom_ato, FALSE)
         BindTrigger(N(EVS_OnBreakWall), TRIGGER_POINT_BOMB, Ref(N(WeakWallBombTrigger)), 1, 0)
     Else
-        Call(EnableGroup, MODEL_bom_mae, false)
+        Call(EnableGroup, MODEL_bom_mae, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt1, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Exec(N(EVS_SetupMusic))

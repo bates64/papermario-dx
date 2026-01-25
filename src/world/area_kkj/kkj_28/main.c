@@ -15,7 +15,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACHS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(EnableGroup, MODEL_g40, false)
+    Call(EnableGroup, MODEL_g40, FALSE)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     BindTrigger(Ref(N(EVS_ExitDoor_kkj_10_2)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     Exec(N(EVS_EnterMap))

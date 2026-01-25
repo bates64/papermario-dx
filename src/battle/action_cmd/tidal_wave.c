@@ -51,7 +51,7 @@ API_CALLABLE(N(init)) {
 
     acs->actionCommandID = ACTION_COMMAND_TIDAL_WAVE;
     acs->state = TIDAL_WAVE_STATE_INIT;
-    acs->wrongButtonPressed = false;
+    acs->wrongButtonPressed = FALSE;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
     battleStatus->actionProgress = 0;
@@ -92,7 +92,7 @@ API_CALLABLE(N(start)) {
     acs->difficulty = evt_get_variable(script, *args++);
     acs->difficulty = adjust_action_command_difficulty(acs->difficulty);
 
-    acs->wrongButtonPressed = false;
+    acs->wrongButtonPressed = FALSE;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
     battleStatus->actionQuality = 0;
@@ -217,49 +217,49 @@ void N(update)(void) {
                         break;
                     };
 
-                    success = false;
-                    acs->wrongButtonPressed = false;
+                    success = FALSE;
+                    acs->wrongButtonPressed = FALSE;
 
                     // Check for presses of the current button.
                     switch (acs->tidalWave.prevButton) {
                         case TIDAL_WAVE_INPUT_A:
                             if (acs->autoSucceed) {
-                                success = true;
+                                success = TRUE;
                             } else {
                                 buttonsPressed = battleStatus->pushInputBuffer[bufferPos];
                                 if (buttonsPressed != 0) {
                                     if (buttonsPressed & ~BUTTON_A) {
-                                        acs->wrongButtonPressed = true;
+                                        acs->wrongButtonPressed = TRUE;
                                     } else {
-                                        success = true;
+                                        success = TRUE;
                                     }
                                 }
                             }
                             break;
                         case TIDAL_WAVE_INPUT_B:
                             if (acs->autoSucceed) {
-                                success = true;
+                                success = TRUE;
                             } else {
                                 buttonsPressed = battleStatus->pushInputBuffer[bufferPos];
                                 if (buttonsPressed != 0) {
                                     if (buttonsPressed & ~BUTTON_B) {
-                                        acs->wrongButtonPressed = true;
+                                        acs->wrongButtonPressed = TRUE;
                                     } else {
-                                        success = true;
+                                        success = TRUE;
                                     }
                                 }
                             }
                             break;
                         case TIDAL_WAVE_INPUT_C_DOWN:
                             if (acs->autoSucceed) {
-                                success = true;
+                                success = TRUE;
                             } else {
                                 buttonsPressed = battleStatus->pushInputBuffer[bufferPos];
                                 if (buttonsPressed != 0) {
                                     if (buttonsPressed & ~BUTTON_C_DOWN) {
-                                        acs->wrongButtonPressed = true;
+                                        acs->wrongButtonPressed = TRUE;
                                     } else {
-                                        success = true;
+                                        success = TRUE;
                                     }
                                 }
                             }

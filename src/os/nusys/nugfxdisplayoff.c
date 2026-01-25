@@ -3,5 +3,5 @@
 
 void nuGfxDisplayOff(void) {
     nuGfxDisplay = NU_GFX_DISPLAY_OFF;
-    osViBlack(true);
+    osViBlack(TRUE);
 }

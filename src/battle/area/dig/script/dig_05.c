@@ -9,7 +9,7 @@ EvtScript NAMESPACE = {
     Call(MoveBattleCamOver, 1)
     Wait(3)
     Call(SetCamViewport, CAM_BATTLE, 29, 20, 262, 177)
-    Call(EnableBattleStatusBar, false)
+    Call(EnableBattleStatusBar, FALSE)
     Set(LVar0, 5)
     Call(N(SetDemoBattleBeginDelay))
     Call(WaitForState, BATTLE_STATE_PLAYER_MENU)

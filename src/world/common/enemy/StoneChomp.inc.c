@@ -18,8 +18,8 @@ API_CALLABLE(N(StoneChompFXA)) {
     bp.flags = NPC_FLAG_IGNORE_ENTITY_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION
         | NPC_FLAG_FLYING | NPC_FLAG_INVISIBLE;
     bp.initialAnim = ANIM_StoneChomp_Chain;
-    bp.onUpdate = nullptr;
-    bp.onRender = nullptr;
+    bp.onUpdate = NULL;
+    bp.onRender = NULL;
 
     for (i = 0; i < 8; i++, blurData++) {
         blurData->npc = newNpc = get_npc_by_index(create_basic_npc(bpPtr));

@@ -872,7 +872,7 @@ MessageCharset* MsgCharsets[] = {
 #endif
     [MSG_FONT_TITLE]    &MsgCharsetTitle,
     [MSG_FONT_SUBTITLE] &MsgCharsetSubtitle,
-    nullptr
+    NULL
 };
 
 IMG_PTR MsgLetterRasterOffsets[] = {

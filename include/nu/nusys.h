@@ -990,12 +990,12 @@ extern void nuDebConPrintf(u32 wndNo, const char* fmt, ...);
 /*	Remove callback functions						*/
 /*	IN:	nothing							*/
 /*----------------------------------------------------------------------*/
-#define	nuPreNmiFuncRemove()		nuPreNmiFuncSet(nullptr)
-#define nuGfxFuncRemove()		nuGfxFuncSet(nullptr)
-#define nuGfxPreNMIFuncRemove()		nuGfxPreNMIFuncSet(nullptr)
-#define	nuGfxSwapCfbFuncRemove()	nuGfxSwapCfbFuncSet(nullptr)
-#define	nuGfxTaskEndFuncRemove()	nuGfxTaskEndFuncSet(nullptr)
-#define nuContReadFuncRemove()		nuContReadFuncSet(nullptr)
+#define	nuPreNmiFuncRemove()		nuPreNmiFuncSet(NULL)
+#define nuGfxFuncRemove()		nuGfxFuncSet(NULL)
+#define nuGfxPreNMIFuncRemove()		nuGfxPreNMIFuncSet(NULL)
+#define	nuGfxSwapCfbFuncRemove()	nuGfxSwapCfbFuncSet(NULL)
+#define	nuGfxTaskEndFuncRemove()	nuGfxTaskEndFuncSet(NULL)
+#define nuContReadFuncRemove()		nuContReadFuncSet(NULL)
 
 /*----------------------------------------------------------------------*/
 /*	nuContDataGet - Obtains Controller data			*/

@@ -224,13 +224,13 @@ void entity_WoodenCrate_setupGfx(s32 entityIndex) {
 
 s32 entity_WoodenCrate_idle(Entity* entity) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    s32 shouldBreak = false;
+    s32 shouldBreak = FALSE;
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         if ((playerStatus->actionState == ACTION_STATE_SPIN_POUND)
             || (playerStatus->actionState == ACTION_STATE_TORNADO_POUND)) {
             set_action_state(ACTION_STATE_FALLING);
-            shouldBreak = true;
+            shouldBreak = TRUE;
         }
     }
 
@@ -251,12 +251,12 @@ void entity_WoodenCrate_shatter(Entity* entity, f32 arg1) {
     WoodenCrateData* data = entity->dataBuf.crate;
 
     if (data->itemID != -1) {
-        s32 flag = false;
+        s32 flag = FALSE;
 
         if (data->globalFlagIndex == 0xFFFF) {
-            flag = true;
+            flag = TRUE;
         } else if (!get_global_flag(data->globalFlagIndex)) {
-            flag = true;
+            flag = TRUE;
         }
 
         if (flag) {
@@ -286,7 +286,7 @@ EntityBlueprint Entity_WoodenCrate = {
     .modelAnimationNodes = 0,
     .fpInit = entity_WoodenCrate_init,
     .updateEntityScript = Entity_WoodenCrate_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(WoodenCrate) },
     .entityType = ENTITY_TYPE_WOODEN_CRATE,
     .aabbSize = { 35, 30, 35 }

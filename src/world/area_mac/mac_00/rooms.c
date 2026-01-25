@@ -41,10 +41,10 @@ EvtScript N(EVS_RoomListener_RussHouse) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_intel_inn, MODEL_GROUP_VISIBLE)
-            Set(MF_MusicMixTrigger1, true)
+            Set(MF_MusicMixTrigger1, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_intel_inn, MODEL_GROUP_HIDDEN)
-            Set(MF_MusicMixTrigger1, false)
+            Set(MF_MusicMixTrigger1, FALSE)
     EndSwitch
     Return
     End
@@ -75,12 +75,12 @@ EvtScript N(EVS_RoomListener_Shop) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_shop_in, MODEL_GROUP_VISIBLE)
-            Call(EnableModel, MODEL_o375, false)
+            Call(EnableModel, MODEL_o375, FALSE)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
             // do nothing
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_shop_in, MODEL_GROUP_HIDDEN)
-            Call(EnableModel, MODEL_o375, true)
+            Call(EnableModel, MODEL_o375, TRUE)
     EndSwitch
     Return
     End
@@ -113,11 +113,11 @@ EvtScript N(EVS_RoomListener_Dojo) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
             Call(SetGroupVisibility, MODEL_minka_inn, MODEL_GROUP_VISIBLE)
-            Set(MF_MusicMixTrigger2, true)
+            Set(MF_MusicMixTrigger2, TRUE)
         CaseEq(ROOM_UPDATE_EXIT_END)
             Call(SetGroupVisibility, MODEL_minka_inn, MODEL_GROUP_HIDDEN)
             Call(EnableMusicProximityMix, 0)
-            Set(MF_MusicMixTrigger2, false)
+            Set(MF_MusicMixTrigger2, FALSE)
     EndSwitch
     Return
     End
@@ -205,7 +205,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_1, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_Shop)),
         Ref(N(EVS_SetWallRot_Shop)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_Shop)),
         COLLIDER_deilit5, COLLIDER_deilit5u, MODEL_omise, Ref(N(InteriorNPCs_Shop)))
     // the dojo
@@ -224,7 +224,7 @@ EvtScript N(EVS_SetupRooms) = {
         PACK_ROOM_FLAGS(VIS_GROUP_0, ROOM_DOOR_LEFT_HINGE_OPENS_OUT),
         Ref(N(EVS_SetDoorRot_Waterfront)),
         Ref(N(EVS_SetWallRot_Waterfront)),
-        nullptr,
+        NULL,
         Ref(N(EVS_RoomListener_Waterfront)),
         COLLIDER_deilit4,
         COLLIDER_deilit4u,

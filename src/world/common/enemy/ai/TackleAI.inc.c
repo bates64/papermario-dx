@@ -38,7 +38,7 @@ API_CALLABLE(N(TackleAI_Main)) {
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = 0;
         npc->duration = 0;
-        enemy->hitboxIsActive = false;
+        enemy->hitboxIsActive = FALSE;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
         npc->collisionHeight = enemy->varTable[6];

@@ -15,7 +15,7 @@ void osSetEventMesg(OSEvent event, OSMesgQueue *mq, OSMesg msg) {
         if (__osShutdown && !__osPreNMI) {
             osSendMesg(mq, msg, OS_MESG_NOBLOCK);
         }
-        __osPreNMI = true;
+        __osPreNMI = TRUE;
     }
 
     __osRestoreInt(saveMask);

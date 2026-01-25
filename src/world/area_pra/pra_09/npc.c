@@ -101,7 +101,7 @@ EvtScript N(EVS_FocusCam_OnPosition) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-5.5))
     Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(20.0))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Return
     End
@@ -114,9 +114,9 @@ EvtScript N(EVS_FocusCam_StartBattle) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(386.0), Float(20.0))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Return
     End
 };
@@ -131,21 +131,21 @@ EvtScript N(EVS_FocusCam_OnPlayer) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(20.0))
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_Imposter_Unmask) = {
     Call(N(ChangeNpcCollisionRadius))
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SpeakToPlayer, LVar3, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, LVar5)
     Call(GetNpcPos, LVar3, LVar0, LVar1, LVar2)
     Call(N(PlayBigSmokePuff), LVar0, LVar1, LVar2)
     Call(SetNpcPos, LVar3, NPC_DISPOSE_LOCATION)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Call(SetNpcPos, LVar4, LVar0, LVar1, LVar2)
     Call(PlaySoundAtNpc, LVar4, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, 2880, 40, EASING_QUADRATIC_OUT)
@@ -158,7 +158,7 @@ EvtScript N(EVS_Imposter_Unmask) = {
     EndIf
     Call(EndSpeech, LVar4, ANIM_Duplighost_Anim05, ANIM_Duplighost_Anim02, 0)
     ExecWait(N(EVS_FocusCam_OnPlayer))
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Thread
         Call(SetNpcAnimation, LVar4, ANIM_Duplighost_Anim04)
         Call(InterpNpcYaw, LVar4, 90, 0)
@@ -237,7 +237,7 @@ EvtScript N(EVS_RevealEveryImposter) = {
 };
 
 EvtScript N(EVS_Imposter_ChaseDownPlayer) = {
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SetNpcAnimation, LVar3, ANIM_WorldBombette_Run)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 30)
@@ -262,14 +262,14 @@ EvtScript N(EVS_Imposter_CarryPlayerBack) = {
 EvtScript N(EVS_Imposter_ReturnToStation) = {
     Call(NpcMoveTo, LVar3, LVar0, LVar2, 20)
     Call(SetNpcAnimation, LVar3, ANIM_WorldBombette_Idle)
-    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar3, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Call(InterpNpcYaw, LVar3, 90, 0)
     Return
     End
 };
 
 EvtScript N(EVS_PreventPlayerLeaving) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Loop(0)
         Wait(1)
         Call(GetPlayerActionState, LVar0)
@@ -277,7 +277,7 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     IfEq(MV_RevealedFakeBombette1, 0)
         Set(LVar3, NPC_Bombette_02)
         Exec(N(EVS_Imposter_ChaseDownPlayer))
@@ -308,10 +308,10 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, LVar0, 0, LVar2)
             Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Wait(1)
         EndLoop
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Thread
         Loop(30)
@@ -350,7 +350,7 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
         Exec(N(EVS_Imposter_CarryPlayerBack))
     EndIf
     Call(NpcMoveTo, NPC_Bombette_01, 370, 73, 30)
-    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerPhysics, FALSE)
     IfEq(MV_RevealedFakeBombette1, 0)
         Set(LVar3, NPC_Bombette_02)
         Set(LVar0, 280)
@@ -380,7 +380,7 @@ EvtScript N(EVS_PreventPlayerLeaving) = {
     Set(LVar2, 120)
     ExecWait(N(EVS_Imposter_ReturnToStation))
     Call(ShowMessageAtScreenPos, MSG_CH7_014E, 160, 40)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -395,27 +395,27 @@ EvtScript N(EVS_ManageImpostersScene) = {
         IfEq(LVar0, 0)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(25)
     Call(DisablePartnerAI, 0)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(UseSettingsFrom, CAM_DEFAULT, 386, 0, 93)
     Call(SetPanTarget, CAM_DEFAULT, 386, 0, 93)
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(12.0), Float(-7.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(500.0), Float(20.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Thread
         Set(LVar0, NPC_Bombette_04)
         Set(LVar1, 350)
         Set(LVar2, 150)
         Set(LVar3, 90)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(N(ImposterFallFromCeiling))
         Wait(1)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EndThread
     Wait(5)
     Thread
@@ -423,10 +423,10 @@ EvtScript N(EVS_ManageImpostersScene) = {
         Set(LVar1, 280)
         Set(LVar2, 150)
         Set(LVar3, 100)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(N(ImposterFallFromCeiling))
         Wait(1)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EndThread
     Wait(5)
     Thread
@@ -434,10 +434,10 @@ EvtScript N(EVS_ManageImpostersScene) = {
         Set(LVar1, 420)
         Set(LVar2, 150)
         Set(LVar3, 60)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(N(ImposterFallFromCeiling))
         Wait(1)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EndThread
     Wait(5)
     Thread
@@ -445,20 +445,20 @@ EvtScript N(EVS_ManageImpostersScene) = {
         Set(LVar1, 385)
         Set(LVar2, 150)
         Set(LVar3, 120)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(N(ImposterFallFromCeiling))
         Wait(1)
-        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     EndThread
     Wait(5)
     Set(LVar0, NPC_Bombette_03)
     Set(LVar1, 315)
     Set(LVar2, 150)
     Set(LVar3, 55)
-    Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(N(ImposterFallFromCeiling))
     Wait(1)
-    Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, LVar0, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Wait(30)
     Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
     SetF(LVarA, Float(3.0))
@@ -503,9 +503,9 @@ EvtScript N(EVS_ManageImpostersScene) = {
     ExecWait(N(EVS_FocusCam_OnPosition))
     Call(SpeakToPlayer, NPC_Bombette_04, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH7_0143)
     Call(ResetCam, CAM_DEFAULT, Float(2.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(DisablePlayerInput, false)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+    Call(DisablePlayerInput, FALSE)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, TRUE)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfGt(LVar0, 490)
@@ -521,12 +521,12 @@ EvtScript N(EVS_ManageImpostersScene) = {
             IfEq(MV_RevealedFakeBombette2, 1)
                 IfEq(MV_RevealedFakeBombette3, 1)
                     IfEq(MV_RevealedFakeBombette4, 1)
-                        Call(DisablePlayerInput, true)
+                        Call(DisablePlayerInput, TRUE)
                         Call(DisablePartnerAI, 0)
                         Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_Bombette_01, NPC_DISPOSE_LOCATION)
-                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE, false)
+                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE, FALSE)
                         Call(GetAngleToNPC, NPC_PARTNER, LVarA)
                         Call(GetPlayerPos, LVar0, LVar1, LVar2)
                         IfLe(LVarA, 180)
@@ -535,7 +535,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                             Add(LVar0, -20)
                         EndIf
                         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
-                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 20)
                         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Idle)
                         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH7_014F)
@@ -555,10 +555,10 @@ EvtScript N(EVS_ManageImpostersScene) = {
                         Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)
                         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Idle)
                         Wait(10)
-                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                        Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
+                        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+                        Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, FALSE)
                         Call(EnablePartnerAI)
-                        Call(DisablePlayerInput, false)
+                        Call(DisablePlayerInput, FALSE)
                         Set(GB_StoryProgress, STORY_CH7_DEFEATED_BOMBETTE_DUPLIGHOSTS)
                         BindTrigger(Ref(N(EVS_ExitWalk_pra_11_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
                         BreakLoop
@@ -570,7 +570,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
             CaseEq(0)
                 Wait(1)
             CaseEq(1)
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
                 ExecWait(N(EVS_FocusCam_OnPosition))
@@ -581,11 +581,11 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(N(ChooseImposterBattleFormation), MV_RevealedFakeBombette1, MV_RevealedFakeBombette2, MV_RevealedFakeBombette3, MV_RevealedFakeBombette4)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
                 Call(StartBossBattle, SONG_SPECIAL_BATTLE)
                 BreakLoop
             CaseEq(2)
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(GetNpcPos, NPC_Bombette_02, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
                 ExecWait(N(EVS_FocusCam_OnPosition))
@@ -595,9 +595,9 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 ExecWait(N(EVS_Imposter_Unmask))
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeBombette1, 1)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
             CaseEq(3)
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(GetNpcPos, NPC_Bombette_03, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
                 ExecWait(N(EVS_FocusCam_OnPosition))
@@ -607,9 +607,9 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 ExecWait(N(EVS_Imposter_Unmask))
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeBombette2, 1)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
             CaseEq(4)
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(GetNpcPos, NPC_Bombette_04, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
                 ExecWait(N(EVS_FocusCam_OnPosition))
@@ -619,9 +619,9 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 ExecWait(N(EVS_Imposter_Unmask))
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeBombette3, 1)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
             CaseEq(5)
-                Call(DisablePlayerInput, true)
+                Call(DisablePlayerInput, TRUE)
                 Call(GetNpcPos, NPC_Bombette_05, LVar0, LVar1, LVar2)
                 SetF(LVarA, Float(6.0))
                 ExecWait(N(EVS_FocusCam_OnPosition))
@@ -631,7 +631,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 ExecWait(N(EVS_Imposter_Unmask))
                 Set(MV_UnmaskingState, 0)
                 Set(MV_RevealedFakeBombette4, 1)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, FALSE)
         EndSwitch
     EndLoop
     Return
@@ -639,15 +639,15 @@ EvtScript N(EVS_ManageImpostersScene) = {
 };
 
 EvtScript N(EVS_NpcDefeat_Duplighost_05) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(DisablePartnerAI, 0)
     Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_Bombette_01, NPC_DISPOSE_LOCATION)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, FALSE)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Set(GB_StoryProgress, STORY_CH7_DEFEATED_BOMBETTE_DUPLIGHOSTS)
     BindTrigger(Ref(N(EVS_ExitWalk_pra_11_0)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilise, 1, 0)
     Return
@@ -686,7 +686,7 @@ EvtScript N(EVS_NpcInteract_Bombette_05) = {
 
 EvtScript N(EVS_NpcInit_Duplighost_05) = {
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_Duplighost_05)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Exec(N(EVS_ManageImpostersScene))
     Return
     End
@@ -694,64 +694,64 @@ EvtScript N(EVS_NpcInit_Duplighost_05) = {
 
 EvtScript N(EVS_NpcInit_Bombette_01) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette_01)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bombette_02) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette_02)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bombette_03) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette_03)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bombette_04) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette_04)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bombette_05) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bombette_05)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Duplighost_01) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Duplighost_02) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Duplighost_03) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Duplighost_04) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_REFLECT_FLOOR | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
@@ -965,7 +965,7 @@ EvtScript N(EVS_NpcIdle_TargetBombette_05) = {
 EvtScript N(EVS_NpcInit_TargetBombette_01) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetBombette_01)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetBombette_01)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
@@ -973,7 +973,7 @@ EvtScript N(EVS_NpcInit_TargetBombette_01) = {
 EvtScript N(EVS_NpcInit_TargetBombette_02) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetBombette_02)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetBombette_02)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
@@ -981,7 +981,7 @@ EvtScript N(EVS_NpcInit_TargetBombette_02) = {
 EvtScript N(EVS_NpcInit_TargetBombette_03) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetBombette_03)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetBombette_03)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
@@ -989,7 +989,7 @@ EvtScript N(EVS_NpcInit_TargetBombette_03) = {
 EvtScript N(EVS_NpcInit_TargetBombette_04) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetBombette_04)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetBombette_04)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };
@@ -997,7 +997,7 @@ EvtScript N(EVS_NpcInit_TargetBombette_04) = {
 EvtScript N(EVS_NpcInit_TargetBombette_05) = {
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_TargetBombette_05)))
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_TargetBombette_05)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_USE_INSPECT_ICON, TRUE)
     Return
     End
 };

@@ -12,9 +12,9 @@ s32 entity_can_collide_with_jumping_player(Entity* entity) {
     if ((entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_CEILING)
         && (gPlayerStatus.flags & PS_FLAG_JUMPING)
     ) {
-        return true;
+        return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
 INCLUDE_IMG("entity/shadow/square.png", D_802E9170);
@@ -106,7 +106,7 @@ EntityModelScript Entity_SquareShadow_Render = {
 ShadowBlueprint CircularShadowA = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .renderCommandList = Entity_CircularShadowA_Render,
-    .animModelNode =  nullptr,
+    .animModelNode =  NULL,
     .onCreateCallback = entity_Shadow_init,
     .entityType = ENTITY_TYPE_SHADOW,
     .aabbSize = { 25, 10, 25 }
@@ -115,7 +115,7 @@ ShadowBlueprint CircularShadowA = {
 ShadowBlueprint CircularShadowB = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .renderCommandList = Entity_CircularShadowB_Render,
-    .animModelNode =  nullptr,
+    .animModelNode =  NULL,
     .onCreateCallback = entity_Shadow_init,
     .entityType = ENTITY_TYPE_SHADOW,
     .aabbSize = { 25, 10, 25 }
@@ -124,7 +124,7 @@ ShadowBlueprint CircularShadowB = {
 ShadowBlueprint SquareShadow = {
     .flags = ENTITY_FLAG_DISABLE_COLLISION,
     .renderCommandList = Entity_SquareShadow_Render,
-    .animModelNode =  nullptr,
+    .animModelNode =  NULL,
     .onCreateCallback = entity_Shadow_init,
     .entityType = ENTITY_TYPE_SHADOW,
     .aabbSize = { 25, 10, 25 }

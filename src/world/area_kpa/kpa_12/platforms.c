@@ -30,9 +30,9 @@ API_CALLABLE(N(AddPlatformPushVelocity)) {
 
 API_CALLABLE(N(IsPartnerLakilester)) {
     if (gPartnerStatus.actingPartner == PARTNER_LAKILESTER) {
-        script->varTable[9] = true;
+        script->varTable[9] = TRUE;
     } else {
-        script->varTable[9] = false;
+        script->varTable[9] = FALSE;
     }
     return ApiStatus_DONE2;
 }

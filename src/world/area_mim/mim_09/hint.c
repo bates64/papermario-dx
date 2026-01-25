@@ -56,8 +56,8 @@ EvtScript N(EVS_FlowersGentleRocking) = {
 };
 
 EvtScript N(EVS_InspectBush) = {
-    IfEq(MV_FoundHint, false)
-        Set(MV_FoundHint, true)
+    IfEq(MV_FoundHint, FALSE)
+        Set(MV_FoundHint, TRUE)
         Call(SetGroupVisibility, MODEL_hana, MODEL_GROUP_VISIBLE)
         Call(PlaySound, SOUND_FLOWERS_GROW)
         Call(MakeLerp, 10, 100, 30, EASING_LINEAR)

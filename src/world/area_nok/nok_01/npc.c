@@ -82,9 +82,9 @@ API_CALLABLE(N(IsNpcFacingRight)) {
     f32 angle = clamp_angle((npc->yaw + 180.0f) - gCameras[gCurrentCameraID].curYaw);
     s32 outVal;
 
-    outVal = false;
+    outVal = FALSE;
     if (angle > 270.0f || angle < 90.0f) {
-        outVal = true;
+        outVal = TRUE;
     }
 
     evt_set_variable(script, outVar, outVal);
@@ -221,7 +221,7 @@ EvtScript N(EVS_MiscFuzzyFlee) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Run)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FUZZY_HOP_B, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15)
-    Call(EnableNpcShadow, NPC_SELF, false)
+    Call(EnableNpcShadow, NPC_SELF, FALSE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Return
     End
@@ -229,7 +229,7 @@ EvtScript N(EVS_MiscFuzzyFlee) = {
 
 EvtScript N(EVS_NpcHit_MiscFuzzy1) = {
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_MiscFuzzyFlee)))
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, TRUE)
     Return
     End
 };
@@ -265,7 +265,7 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
 
 EvtScript N(EVS_NpcHit_MiscFuzzy2) = {
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_MiscFuzzyFlee)))
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, TRUE)
     Return
     End
 };
@@ -305,20 +305,20 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Thread
         Wait(5)
         Call(N(ToadHouse_CamSetFOV), 0, 40)
-        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
+        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
         Call(SetCamPitch, CAM_DEFAULT, 34, -8)
         Call(SetCamDistance, CAM_DEFAULT, 220)
         Call(SetCamPosA, CAM_DEFAULT, -200, 53)
         Call(SetCamPosB, CAM_DEFAULT, -401, 50)
         Call(SetCamPosC, CAM_DEFAULT, 0, -2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     EndThread
     Call(func_802D1270, -334, 70, Float(3.0))
     Call(func_802D1270, -385, -6, Float(3.0))
     Wait(1)
     Call(InterpPlayerYaw, 160, 1)
-    Call(HidePlayerShadow, true)
+    Call(HidePlayerShadow, TRUE)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
     Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
@@ -333,14 +333,14 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Return
     End
 };
 
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    Call(HidePlayerShadow, false)
+    Call(HidePlayerShadow, FALSE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, -380, 0, 5)
     Call(SetPlayerSpeed, Float(3.0))
@@ -369,12 +369,12 @@ EvtScript N(EVS_NpcInit_MortT) = {
 
 EvtScript N(EVS_NpcInteract_RelaxedKoopa) = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        IfEq(AF_NOK01_Dialogue_RelaxedKoopa, false)
+        IfEq(AF_NOK01_Dialogue_RelaxedKoopa, FALSE)
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0021)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, true)
+            Set(AF_NOK01_Dialogue_RelaxedKoopa, TRUE)
         Else
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0022)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, false)
+            Set(AF_NOK01_Dialogue_RelaxedKoopa, FALSE)
         EndIf
         Return
     EndIf
@@ -420,7 +420,7 @@ NpcData N(NpcData_Crisis)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -233, 0, 256 },
@@ -443,7 +443,7 @@ NpcData N(NpcData_Crisis)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 0, 0, 0 },
@@ -475,7 +475,7 @@ NpcData N(NpcData_Crisis)[] = {
         .yaw = 180,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 50, 0, 325 },
@@ -508,7 +508,7 @@ NpcData N(NpcData_Crisis)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = OVERRIDE_MOVEMENT_SPEED(3.0f),
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 175, 0, 225 },
@@ -590,7 +590,7 @@ NpcData N(NpcData_Normal)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -233, 0, 256 },
@@ -613,7 +613,7 @@ NpcData N(NpcData_Normal)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 50, 0, 325 },
@@ -636,7 +636,7 @@ NpcData N(NpcData_Normal)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 110, 0, 240 },

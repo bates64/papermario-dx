@@ -58,20 +58,20 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
     u16 texOffsetX, texOffsetY;
 
     if (posX >= clipX + clipWidth || posY >= clipY + clipHeight) {
-        return false;
+        return FALSE;
     }
     if (clipX >= (s16)(posX + width)) {
-        return false;
+        return FALSE;
     }
     if (clipY >= (s16)(posY + height)) {
-        return false;
+        return FALSE;
     }
 
     texRect.uly = 0;
     drawRect.uly = posY;
-    stopDrawing = false;
+    stopDrawing = FALSE;
 
-    while (true) {
+    while (TRUE) {
         texRect.lry = texRect.uly + 31;
         drawRect.lry = drawRect.uly + 32;
         texOffsetY = 0;
@@ -91,21 +91,21 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
 
         if (drawRect.lry >= clipY + clipHeight) {
             texRect.lry = clipY + clipHeight - posY - 1;
-            stopDrawing = true;
+            stopDrawing = TRUE;
             drawRect.lry = clipY + clipHeight;
         }
 
         if (texRect.lry + 1 >= height) {
             texRect.lry = height - 1;
             drawRect.lry = texRect.lry + posY + 1;
-            stopDrawing = true;
+            stopDrawing = TRUE;
         }
 
         texRect.ulx = zero;
         drawRect.ulx = posX;
-        stopDrawingLine = false;
+        stopDrawingLine = FALSE;
 
-        while (true) {
+        while (TRUE) {
             texRect.lrx = texRect.ulx + 63;
             drawRect.lrx = drawRect.ulx + 64;
             texOffsetX = 0;
@@ -126,14 +126,14 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
 
             if (drawRect.lrx >= clipX + clipWidth) {
                 texRect.lrx = clipX + clipWidth - posX - 1;
-                stopDrawingLine = true;
+                stopDrawingLine = TRUE;
                 drawRect.lrx = clipX + clipWidth;
             }
 
             if (texRect.lrx + 1 >= width) {
                 texRect.lrx = width - 1;
                 drawRect.lrx = texRect.lrx + posX + 1;
-                stopDrawingLine = true;
+                stopDrawingLine = TRUE;
             }
 
             if (bitDepth == G_IM_SIZ_4b) {
@@ -167,7 +167,7 @@ s32 draw_image_with_clipping(IMG_PTR raster, u32 width, u32 height, s32 fmt, s32
         drawRect.uly = drawRect.lry;
     }
 
-    return true;
+    return TRUE;
 }
 
 s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
@@ -202,7 +202,7 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
     drawRect.uly = posY;
     dsdx = 1.0f / scaleX * 1024.0f;
     dtdy = 1.0f / scaleY * 1024.0f;
-    while (true) {
+    while (TRUE) {
         texRect.lry = texRect.uly + 31;
         drawRect.lry = drawRect.uly + (scaleY * 32.0 + 0.5);
         texOffsetY = 0;
@@ -238,7 +238,7 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
         stopDrawingLine = 0;
         texRect.ulx = 0;
         drawRect.ulx = posX;
-        while (true) {
+        while (TRUE) {
             texRect.lrx = texRect.ulx + 63;
             drawRect.lrx = drawRect.ulx + (scaleX * 64.0 + 0.3);
             texOffsetX = 0;
@@ -259,14 +259,14 @@ s32 draw_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u8 bitDepth,
 
             if ((u32)(texRect.lrx + 1) >= width) {
                 texRect.lrx = width - 1;
-                stopDrawingLine = true;
+                stopDrawingLine = TRUE;
                 drawRect.lrx = posX + (s16)(texRect.lrx * scaleX);
                 drawRect.lrx = drawRect.lrx + scaleX + 0.3;
             }
 
             if (drawRect.lrx > clipX + clipWidth) {
                 drawRect.lrx = clipX + clipWidth;
-                stopDrawingLine = true;
+                stopDrawingLine = TRUE;
             }
 
             if (bitDepth == G_IM_SIZ_16b) {
@@ -303,7 +303,7 @@ s32 integer_log(s32 number, u32 base) {
     f32 fNumber = number;
     s32 ret = 1;
 
-    while (true) {
+    while (TRUE) {
         fNumber /= base;
         if (fNumber <= 1.0) {
             return ret;
@@ -404,7 +404,7 @@ s32 draw_adjustable_tiled_image(IMG_PTR raster, u32 width, u32 height, u8 fmt, u
     drawRect.ulx = posX;
     drawRect.uly = posY;
 
-    while (true) {
+    while (TRUE) {
         texRect.lrx = width - 1;
         texRect.lry = texRect.uly + lineHeight - 1;
         drawRect.lry = drawRect.uly + lineHeight * scaleY;

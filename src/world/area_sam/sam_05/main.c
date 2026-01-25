@@ -16,9 +16,9 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH7_DEFEATED_MONSTAR)
-        Call(MakeNpcs, false, Ref(N(BeforeNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(BeforeNPCs)))
     Else
-        Call(MakeNpcs, false, Ref(N(AfterNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(AfterNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMusic))

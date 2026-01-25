@@ -44,7 +44,7 @@ void entity_upgrade_block_hide_content(s32 entityIndex) {
     if (data->childEntityIndex >= 0) {
         Entity* childEntity = get_entity_by_index(data->childEntityIndex);
         SuperBlockContentData* childEntityData = childEntity->dataBuf.superBlockContent;
-        childEntityData->isHidden = true;
+        childEntityData->isHidden = TRUE;
     }
 }
 
@@ -199,7 +199,7 @@ void entity_SuperBlockContent_idle(Entity* entity) {
 
     entity_SuperBlockContent_attach_to_parent(entity);
     if (data->isHidden) {
-        entity->renderSetupFunc = nullptr;
+        entity->renderSetupFunc = NULL;
     }
 
     entity->rot.y = clamp_angle(entity->rot.y + 3.0);
@@ -270,7 +270,7 @@ EntityBlueprint Entity_SuperBlockContent = {
     .modelAnimationNodes = 0,
     .fpInit = entity_init_SuperBlockContent,
     .updateEntityScript = Entity_SuperBlockContent_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(SuperBlockContent) },
     .entityType = ENTITY_TYPE_SUPER_BLOCK_HIT_EFFECT,
     .aabbSize = { 18, 6, 18 }
@@ -296,7 +296,7 @@ EntityBlueprint Entity_UltraBlockContent = {
     .modelAnimationNodes = 0,
     .fpInit = entity_init_UltraBlockContent,
     .updateEntityScript = Entity_UltraBlockContent_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(UltraBlockContent) },
     .entityType = ENTITY_TYPE_ULTRA_BLOCK_HIT_EFFECT,
     .aabbSize = { 18, 6, 18 }

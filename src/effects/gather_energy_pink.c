@@ -29,13 +29,13 @@ void gather_energy_pink_main(s32 type, f32 posX, f32 posY, f32 posZ, f32 scale, 
     bp.init = gather_energy_pink_init;
     bp.update = gather_energy_pink_update;
     bp.renderScene = gather_energy_pink_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_GATHER_ENERGY_PINK;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.gatherEnergyPink = general_heap_malloc(sizeof(*data));
-    ASSERT (data != nullptr);
+    ASSERT (data != NULL);
 
     data->unk_00 = type;
     data->unk_28 = duration;

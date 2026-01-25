@@ -7,7 +7,7 @@
 extern EvtScript N(EVS_UseMove_Impl);
 
 EvtScript N(EVS_UseMove) = {
-    Call(ShowActionHud, true)
+    Call(ShowActionHud, TRUE)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
@@ -91,7 +91,7 @@ EvtScript N(EVS_UseMove_Impl) = {
     EndIf
     Call(GetPlayerActionQuality, LVar0)
     Switch(LVar0)
-        CaseGt(false)
+        CaseGt(FALSE)
             Call(GetMenuSelection, LVar0, LVar1, LVar2)
             Switch(LVar1)
                 CaseEq(0)

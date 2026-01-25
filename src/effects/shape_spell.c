@@ -40,14 +40,14 @@ EffectInstance* shape_spell_main(s32 isChild, f32 x, f32 y, f32 z, f32 arg4, f32
     bp.update = shape_spell_update;
     bp.renderScene = shape_spell_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SHAPE_SPELL;
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     part = effect->data.shapeSpell = general_heap_malloc(numParts * sizeof(*part));
 
-    ASSERT(effect->data.shapeSpell != nullptr);
+    ASSERT(effect->data.shapeSpell != NULL);
 
     part->unk_2C = 0;
     part->isChild = isChild;
@@ -111,7 +111,7 @@ void shape_spell_update(EffectInstance* effect) {
         newPart->unk_28 = part->unk_28;
     }
 
-    if (isChild == true) {
+    if (isChild == TRUE) {
         part->unk_34 = part->unk_34 * 0.9;
         part->unk_1C = part->unk_1C * 0.83;
     }

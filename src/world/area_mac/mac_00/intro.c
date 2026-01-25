@@ -2,8 +2,8 @@
 #include "sprite/player.h"
 
 EvtScript N(EVS_PlayerExitPipe_Intro) = {
-    Call(DisablePlayerPhysics, true)
-    Call(HidePlayerShadow, true)
+    Call(DisablePlayerPhysics, TRUE)
+    Call(HidePlayerShadow, TRUE)
     Call(SetPlayerPos, -100, -10, -370)
     Call(InterpPlayerYaw, 135, 0)
     Wait(2)
@@ -17,14 +17,14 @@ EvtScript N(EVS_PlayerExitPipe_Intro) = {
         Wait(1)
     EndLoop
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
-    Call(HidePlayerShadow, false)
-    Call(DisablePlayerPhysics, false)
+    Call(HidePlayerShadow, FALSE)
+    Call(DisablePlayerPhysics, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_LuigiExitPipe_Intro) = {
-    Call(EnableNpcShadow, NPC_Luigi_Intro, false)
+    Call(EnableNpcShadow, NPC_Luigi_Intro, FALSE)
     Call(SetNpcPos, NPC_Luigi_Intro, -100, -35, -370)
     Call(SetNpcYaw, NPC_Luigi_Intro, 135)
     Wait(2)
@@ -41,18 +41,18 @@ EvtScript N(EVS_LuigiExitPipe_Intro) = {
     Call(SetNpcImgFXParams, NPC_Luigi_Intro, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetNpcPos, NPC_Luigi_Intro, -100, 30, -370)
     Wait(3)
-    Call(EnableNpcShadow, NPC_Luigi_Intro, true)
+    Call(EnableNpcShadow, NPC_Luigi_Intro, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_Scene_Intro) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 30, -370)
     Call(SetPanTarget, CAM_DEFAULT, -100, 30, -370)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Thread
         ExecWait(N(EVS_PlayerExitPipe_Intro))
         Wait(10 * DT)
@@ -66,7 +66,7 @@ EvtScript N(EVS_Scene_Intro) = {
         Wait(70 * DT)
         ExecWait(N(EVS_LuigiExitPipe_Intro))
         Wait(10 * DT)
-        Call(SetNpcFlagBits, NPC_Luigi_Intro, NPC_FLAG_GRAVITY, true)
+        Call(SetNpcFlagBits, NPC_Luigi_Intro, NPC_FLAG_GRAVITY, TRUE)
         Call(SetNpcAnimation, NPC_Luigi_Intro, ANIM_Luigi_Run)
         Call(SetNpcSpeed, NPC_Luigi_Intro, Float(4.0 / DT))
         Call(NpcMoveTo, NPC_Luigi_Intro, 80, -60, 0)
@@ -77,17 +77,17 @@ EvtScript N(EVS_Scene_Intro) = {
     Call(SetPanTarget, CAM_DEFAULT, -60, 0, -320)
     Call(SetCamDistance, CAM_DEFAULT, Float(600.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(UseSettingsFrom, CAM_DEFAULT, 400, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 400, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.5 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(GotoMap, Ref("mac_01"), mac_01_ENTRY_4)
     Wait(100 * DT)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

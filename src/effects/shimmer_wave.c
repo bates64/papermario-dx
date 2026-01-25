@@ -52,13 +52,13 @@ EffectInstance* shimmer_wave_main(
     bp.update = shimmer_wave_update;
     bp.renderScene = shimmer_wave_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SHIMMER_WAVE;
 
     effect = create_effect_instance(&bp);
     effect->numParts = arg6;
     part = effect->data.shimmerWave = general_heap_malloc(arg6 * sizeof(*part));
-    ASSERT(effect->data.shimmerWave != nullptr);
+    ASSERT(effect->data.shimmerWave != NULL);
 
     part->unk_00 = arg0;
     part->unk_3C = 0;

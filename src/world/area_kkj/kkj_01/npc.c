@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcIdle_Toad_01) = {
 };
 
 EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
-    IfEq(AF_KKJ_02, true)
+    IfEq(AF_KKJ_02, TRUE)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -86,10 +86,10 @@ EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
         Return
     EndIf
     Call(WaitForPlayerInputEnabled)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0042)
-    Set(AF_KKJ_02, true)
-    Call(DisablePlayerInput, false)
+    Set(AF_KKJ_02, TRUE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -151,13 +151,13 @@ EvtScript N(EVS_NpcInteract_ToadGuard_02) = {
             Else
                 Set(LVar3, 50)
             EndIf
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
             Call(SetNpcSpeed, NPC_SELF, Float(2.0))
             Call(NpcMoveTo, NPC_SELF, LVar3, -245, 0)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             Call(SetNpcAnimation, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Idle)
             Call(InterpNpcYaw, NPC_SELF, 180, 5)
-            Set(AF_KKJ_01, true)
+            Set(AF_KKJ_01, TRUE)
             BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0041)
@@ -178,12 +178,12 @@ EvtScript N(EVS_NpcInteract_Dryite) = {
 };
 
 EvtScript N(EVS_NpcInteract_Mouser) = {
-    Call(EnableNpcAI, NPC_Dryite, false)
+    Call(EnableNpcAI, NPC_Dryite, FALSE)
     Call(SetNpcAnimation, NPC_Mouser, ANIM_Mouser_Blue_Idle)
     Call(SetNpcAnimation, NPC_Dryite, ANIM_Dryite_Yellow_Idle)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 16, MSG_Intro_0035)
-    Call(EnableNpcAI, NPC_Dryite, true)
+    Call(EnableNpcAI, NPC_Dryite, TRUE)
     Return
     End
 };
@@ -198,12 +198,12 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
 };
 
 EvtScript N(EVS_NpcInteract_Koopa) = {
-    Call(EnableNpcAI, NPC_MayorPenguin, false)
+    Call(EnableNpcAI, NPC_MayorPenguin, FALSE)
     Call(SetNpcAnimation, NPC_MayorPenguin, ANIM_MayorPenguin_Idle)
     Call(SetNpcAnimation, NPC_Koopa, ANIM_Koopa_Idle)
     Wait(10)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 16, MSG_Intro_0037)
-    Call(EnableNpcAI, NPC_MayorPenguin, true)
+    Call(EnableNpcAI, NPC_MayorPenguin, TRUE)
     Return
     End
 };
@@ -247,7 +247,7 @@ EvtScript N(EVS_NpcInit_ToadGuard_01) = {
 };
 
 EvtScript N(EVS_NpcInit_ToadGuard_02) = {
-    IfEq(AF_KKJ_01, true)
+    IfEq(AF_KKJ_01, TRUE)
         Call(SetNpcPos, NPC_SELF, -50, 0, -245)
         Call(SetSelfVar, 0, 5)
     Else
@@ -312,7 +312,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 270,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 200, 0, 110 },
@@ -334,7 +334,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -358,7 +358,7 @@ NpcData N(NpcData_ToadMinister)[] = {
         .yaw = 90,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -170, 0, 100 },

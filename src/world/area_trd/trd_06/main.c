@@ -24,13 +24,13 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, MODEL_o94)
             ExecWait(EnterDoubleDoor)
         CaseLe(trd_06_ENTRY_3)
-            Call(DisablePlayerInput, true)
-            Call(DisablePlayerPhysics, true)
+            Call(DisablePlayerInput, TRUE)
+            Call(DisablePlayerPhysics, TRUE)
             Call(DisablePartnerAI, 0)
             Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
             Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
-            Call(EnableNpcShadow, NPC_PARTNER, false)
+            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, TRUE)
+            Call(EnableNpcShadow, NPC_PARTNER, FALSE)
             Exec(N(EVS_Scene_ImprisonedKoopaBros))
     EndSwitch
     Return
@@ -44,7 +44,7 @@ BombTrigger N(BombPos_CellWall) = {
 
 EvtScript N(EVS_BombWall_Cell) = {
 #if !VERSION_JP
-    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, TRUE)
 #endif
     PlayEffect(EFFECT_BOMBETTE_BREAKING, 0, 19, 19, 1, 10, 30)
     Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_VISIBLE)
@@ -57,25 +57,25 @@ EvtScript N(EVS_BombWall_Cell) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitse, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttse, COLLIDER_FLAGS_UPPER_MASK)
     Call(WaitForPlayerInputEnabled)
-    Call(DisablePlayerInput, true)
-    Set(GF_TRD06_BombedWall, true)
+    Call(DisablePlayerInput, TRUE)
+    Set(GF_TRD06_BombedWall, TRUE)
     Wait(60 * DT)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, 110)
             IfLt(LVar2, 140)
                 Wait(25 * DT)
-                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
+                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 Call(SetPlayerSpeed, Float(3.0))
                 Call(PlayerMoveTo, 110, 140, 0)
-                Call(PlayerFaceNpc, NPC_PARTNER, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(PlayerFaceNpc, NPC_PARTNER, FALSE)
+                Call(SetNpcFlagBits, NPC_Bobomb_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+                Call(SetNpcFlagBits, NPC_Bobomb_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+                Call(SetNpcFlagBits, NPC_Bobomb_03, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
+                Call(SetNpcFlagBits, NPC_Bobomb_04, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             EndIf
         EndIf
     EndThread
@@ -94,10 +94,10 @@ EvtScript N(EVS_BombWall_Cell) = {
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_00E3)
 #if !VERSION_JP
-    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, false)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, FALSE)
 #endif
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Thread
         Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -121,26 +121,26 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(EnableModel, MODEL_o97, false)
-            Call(EnableModel, MODEL_o98, false)
+            Call(EnableModel, MODEL_o97, FALSE)
+            Call(EnableModel, MODEL_o98, FALSE)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o109, COLLIDER_FLAGS_UPPER_MASK)
     EndSwitch
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_DUNGEON_GUARDS)
-        Set(GF_TRD06_BombedWall, true)
+        Set(GF_TRD06_BombedWall, TRUE)
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_KOOPA_BROS)
-            Call(MakeNpcs, true, Ref(N(NpcGroup_Prisoners)))
+            Call(MakeNpcs, TRUE, Ref(N(NpcGroup_Prisoners)))
             Call(SetGroupVisibility, MODEL_g27, MODEL_GROUP_HIDDEN)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
-            Call(MakeNpcs, true, Ref(N(NpcGroup_KoopaBros)))
+            Call(MakeNpcs, TRUE, Ref(N(NpcGroup_KoopaBros)))
     EndSwitch
     Wait(2)
     ExecWait(N(EVS_MakeEntities))
     BindTrigger(Ref(N(EVS_ExitDoors_trd_04_5)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     Call(GetEntryID, LVar0)
     IfLe(LVar0, trd_06_ENTRY_1)
-        IfEq(GF_TRD06_BombedWall, false)
+        IfEq(GF_TRD06_BombedWall, FALSE)
             BindTrigger(Ref(N(EVS_BombWall_Cell)), TRIGGER_POINT_BOMB, Ref(N(BombPos_CellWall)), 1, 0)
             Call(SetGroupVisibility, MODEL_ana, MODEL_GROUP_HIDDEN)
         Else

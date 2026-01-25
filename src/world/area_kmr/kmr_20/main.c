@@ -39,26 +39,26 @@ EvtScript N(EVS_Main) = {
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, kmr_20_ENTRY_4)
-        Set(MF_LuigiWaiting, false)
-        IfEq(GF_KMR20_ReunitedWithLuigi, false)
-            Set(GF_KMR20_ReunitedWithLuigi, true)
+        Set(MF_LuigiWaiting, FALSE)
+        IfEq(GF_KMR20_ReunitedWithLuigi, FALSE)
+            Set(GF_KMR20_ReunitedWithLuigi, TRUE)
             IfLt(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
-                Set(MF_LuigiWaiting, true)
+                Set(MF_LuigiWaiting, TRUE)
             EndIf
         EndIf
     EndIf
-    Set(MF_Unk_0C, false)
+    Set(MF_Unk_0C, FALSE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Exec(N(EVS_SetupMusic))
     Call(GetEntryID, LVar0)
     IfLt(LVar0, kmr_20_ENTRY_4)
-        Call(MakeNpcs, false, Ref(N(SceneNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(SceneNPCs)))
     Else
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     EndIf
     ExecWait(N(EVS_MakeEntities))
-    Call(EnableGroup, MODEL_g100, false)
+    Call(EnableGroup, MODEL_g100, FALSE)
     Exec(N(EVS_SetupTrees))
     Exec(N(EVS_SetupBushes))
     Exec(N(EVS_SetupRooms))
@@ -81,14 +81,14 @@ EvtScript N(EVS_Main) = {
             Exec(N(EVS_BindExitTriggers))
             Exec(N(EVS_Scene_EpilogueGetLetter))
         CaseEq(kmr_20_ENTRY_4)
-            Set(GF_MAP_MariosHouse, true)
-            IfEq(MF_LuigiWaiting, true)
+            Set(GF_MAP_MariosHouse, TRUE)
+            IfEq(MF_LuigiWaiting, TRUE)
                 Exec(N(EVS_Scene_LuigiWaitingAround))
                 Thread
-                    Call(DisablePlayerPhysics, true)
+                    Call(DisablePlayerPhysics, TRUE)
                     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
                     Label(0)
-                        IfEq(MF_ReadyForPlayerEntry, false)
+                        IfEq(MF_ReadyForPlayerEntry, FALSE)
                             Wait(1)
                             Goto(0)
                         EndIf

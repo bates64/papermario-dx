@@ -5,7 +5,7 @@ API_CALLABLE(N(CheckGameVarRanges)) {
     GameVarRange* flags;
 
     bytes = N(GameByteTable);
-    while (true) {
+    while (TRUE) {
         if (bytes->name == 0) {
             break;
         }
@@ -14,7 +14,7 @@ API_CALLABLE(N(CheckGameVarRanges)) {
     }
 
     flags = N(GameFlagTable);
-    while (true) {
+    while (TRUE) {
         if (flags->name == 0) {
             break;
         }
@@ -69,7 +69,7 @@ EvtScript N(EVS_Main) = {
     BindTrigger(Ref(N(EVS_GotoMap_iwa_00_0)), TRIGGER_WALL_PUSH, COLLIDER_deilite, 1, 0)
     BindTrigger(Ref(N(EVS_GotoMap_tst_01_0)), TRIGGER_WALL_PUSH, COLLIDER_deilitnw, 1, 0)
     BindTrigger(Ref(N(EVS_GotoMap_jan_00_0)), TRIGGER_WALL_PUSH, COLLIDER_deilitsw, 1, 0)
-    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_GoombaKing_Init))
     Exec(N(EVS_FlyPartnerAround))
     Return

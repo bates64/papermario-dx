@@ -12,7 +12,7 @@ extern EvtScript N(EVS_UseMove_Ultra);
 
 EvtScript N(EVS_UseMove) = {
     Call(EnablePlayerBlur, ACTOR_BLUR_ENABLE)
-    Call(ShowActionHud, true)
+    Call(ShowActionHud, TRUE)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)

@@ -28,9 +28,9 @@ API_CALLABLE(N(CheckForAPress)) {
     s32 pressed;
 
     if (pressedButtons & BUTTON_A) {
-        pressed = true;
+        pressed = TRUE;
     } else {
-        pressed = false;
+        pressed = FALSE;
     }
     script->varTable[6] = pressed;
     return ApiStatus_DONE2;
@@ -118,8 +118,8 @@ API_CALLABLE(N(UpdateChandelier)) {
         chandelier->flags = 0;
 
         script->functionTemp[0] = CHANDELIER_STATE_IDLE;
-        script->functionTemp[2] = false;
-        script->functionTemp[3] = false;
+        script->functionTemp[2] = FALSE;
+        script->functionTemp[3] = FALSE;
     }
 
     chandelier = script->functionTempPtr[1];
@@ -214,13 +214,13 @@ API_CALLABLE(N(UpdateChandelier)) {
         // is chain moving?
         if (chandelier->dropDistance != lastDropDistance) {
             sfx_play_sound_at_position(SOUND_LOOP_OBK_LOWER_CHAIN, SOUND_SPACE_DEFAULT, 440.0f, chandelier->dropDistance, 271.0f);
-            script->functionTemp[2] = true;
+            script->functionTemp[2] = TRUE;
         }
     } else {
         // is chain done moving?
         if (chandelier->dropDistance == lastDropDistance) {
             sfx_stop_sound(SOUND_LOOP_OBK_LOWER_CHAIN);
-            script->functionTemp[2] = false;
+            script->functionTemp[2] = FALSE;
         }
     }
 
@@ -233,13 +233,13 @@ API_CALLABLE(N(UpdateChandelier)) {
 
             get_collider_center(COLLIDER_o557, &x, &y, &z);
             sfx_play_sound_at_position(SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT, x, y, z);
-            script->functionTemp[3] = true;
+            script->functionTemp[3] = TRUE;
         }
     } else {
         // is cabinet done moving?
         if (cabinetPos == script->varTable[1]) {
             sfx_stop_sound(SOUND_LOOP_MOVE_STATUE);
-            script->functionTemp[3] = false;
+            script->functionTemp[3] = FALSE;
         }
     }
 
@@ -278,9 +278,9 @@ API_CALLABLE(N(ChandelierTryCancel)) {
     chandelier = script->functionTempPtr[1];
     if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
         if (chandelier->flags & CHANDELIER_FLAG_RELEASED_PLAYER) {
-            script->varTable[0] = true;
+            script->varTable[0] = TRUE;
         } else {
-            script->varTable[0] = false;
+            script->varTable[0] = FALSE;
         }
         chandelier->flags &= ~CHANDELIER_FLAG_TETHER_PLAYER;
         return ApiStatus_DONE2;
@@ -313,7 +313,7 @@ EvtScript N(EVS_ManageChandelierPosition) = {
 
 EvtScript N(EVS_ManageCabinetPosition) = {
     Label(10)
-        IfNe(AF_OBK01_CabinetMoved, false)
+        IfNe(AF_OBK01_CabinetMoved, FALSE)
             Goto(30)
         EndIf
         Set(LVar0, MV_CabinetPosOffset)
@@ -400,7 +400,7 @@ EvtScript N(EVS_Couch_AnimateSpring) = {
 };
 
 EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(DisablePartnerAI, 0)
     Call(InterruptUsePartner)
     Loop(0)
@@ -410,10 +410,10 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Set(LVarA, LVar0)
     UseArray(LVar0)
-    Set(CONTROL_DATA_8, false)
+    Set(CONTROL_DATA_8, FALSE)
     Set(LVar8, MODEL_tobu1)
     Exec(N(EVS_Couch_AnimateCushion))
     Call(PlaySoundAtCollider, COLLIDER_o567, SOUND_SPRING, SOUND_SPACE_DEFAULT)
@@ -434,7 +434,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, -420, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(10.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Wait(1)
         Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
         Call(SetCamDistance, CAM_DEFAULT, 750)
@@ -447,7 +447,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Wait(1)
     Call(SetPlayerAnimation, ANIM_MarioW2_HoldOnto)
     Wait(1)
-    Set(AF_OBK01_CabinetMoved, true)
+    Set(AF_OBK01_CabinetMoved, TRUE)
     Thread
         Wait(60)
         Call(MakeLerp, 0, -100, 100, EASING_LINEAR)
@@ -459,7 +459,7 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
         Call(UpdateColliderTransform, COLLIDER_o556)
         Set(MV_CabinetPosOffset, LVar0)
         Wait(1)
-        IfEq(AF_OBK01_CabinetMoved, false)
+        IfEq(AF_OBK01_CabinetMoved, FALSE)
             Goto(15)
         EndIf
         IfNe(LVar1, 0)
@@ -486,24 +486,24 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(CloseChoicePopup)
     Label(39)
     Set(CONTROL_DATA_STATE, CONTROL_STATE_RETRACT)
-    Set(CONTROL_DATA_8, true)
+    Set(CONTROL_DATA_8, TRUE)
     Thread
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(3.0))
         Call(SetPanTarget, CAM_DEFAULT, LVar0, -420, LVar2)
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(EnablePartnerAI)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Thread
         Wait(30)
-        Set(AF_OBK01_CabinetMoved, false)
+        Set(AF_OBK01_CabinetMoved, FALSE)
     EndThread
     Return
     Label(40)
@@ -511,13 +511,13 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(MakeItemEntity, LVar0, 447, -350, 278, ITEM_SPAWN_MODE_DECORATION, 0)
     Set(GB_StoryProgress, STORY_CH3_WEIGHED_DOWN_CHANDELIER)
     Call(CloseChoicePopup)
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     BindTrigger(Ref(N(EVS_LaunchFromCouch_Crash)), TRIGGER_FLOOR_TOUCH, COLLIDER_o567, 1, 0)
     Call(EnablePartnerAI)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Unbind
     Return
     End
@@ -529,7 +529,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Wait(1)
     EndLoop
     Return
@@ -537,7 +537,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
 };
 
 EvtScript N(EVS_LaunchFromCouch_Crash) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(InterruptUsePartner)
     Call(DisablePartnerAI, 0)
     Loop(0)
@@ -547,7 +547,7 @@ EvtScript N(EVS_LaunchFromCouch_Crash) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Set(LVar8, MODEL_tobu1)
     Exec(N(EVS_Couch_AnimateCushion))
     Call(PlaySoundAtCollider, COLLIDER_o567, SOUND_SPRING, SOUND_SPACE_DEFAULT)
@@ -579,20 +579,20 @@ EvtScript N(EVS_LaunchFromCouch_Crash) = {
     Wait(15)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     KillThread(LVarA)
-    Call(DisablePlayerPhysics, false)
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Wait(1)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_SetupChandelier) = {
     MallocArray(3, LVarA)
-    Set(CONTROL_DATA_PTR, nullptr)
+    Set(CONTROL_DATA_PTR, NULL)
     Set(CONTROL_DATA_STATE, CONTROL_STATE_WAITING)
-    Set(CONTROL_DATA_8, false)
+    Set(CONTROL_DATA_8, FALSE)
     Call(ParentColliderToModel, COLLIDER_o557, MODEL_hon1)
     Call(ParentColliderToModel, COLLIDER_o556, MODEL_hon2)
     Call(ParentColliderToModel, COLLIDER_tobu_1_1, MODEL_tobu_1_1)

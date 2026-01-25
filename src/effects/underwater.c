@@ -23,13 +23,13 @@ EffectInstance* underwater_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
     bp.update = underwater_update;
     bp.renderScene = underwater_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_UNDERWATER;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.underwater = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.underwater != nullptr);
+    ASSERT(effect->data.underwater != NULL);
 
     data->unk_00 = arg0;
     data->lifeTime = 0;
@@ -202,36 +202,36 @@ void underwater_appendGfx(void* effect) {
 
     for (j = 0; j < 12; j++) {
         y = j * 16 + 24;
-        edgeY = false;
+        edgeY = FALSE;
 
         if (j == 0) {
             dyTop = -4;
-            edgeY = true;
+            edgeY = TRUE;
         } else {
             dyTop = 0;
         }
 
         if (j == 11) {
             dyBottom = 4;
-            edgeY = true;
+            edgeY = TRUE;
         } else {
             dyBottom = 0;
         }
 
         for (i = 0; i < 18; i++) {
             x = i * 16 + 16;
-            edgeX = false;
+            edgeX = FALSE;
 
             if (i == 0) {
                 dxLeft = -4;
-                edgeX = true;
+                edgeX = TRUE;
             } else {
                 dxLeft = 0;
             }
 
             if (i == 17) {
                 dxRight = 4;
-                edgeX = true;
+                edgeX = TRUE;
             } else {
                 dxRight = 0;
             }

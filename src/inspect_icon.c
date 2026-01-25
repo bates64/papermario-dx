@@ -118,17 +118,17 @@ s32 should_continue_inspect(void) {
             }
         } else if (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED)
             && (playerStatus->flags & PS_FLAG_HAS_CONVERSATION_NPC)
-            && (npc != nullptr)
+            && (npc != NULL)
             && (npc->flags & NPC_FLAG_USE_INSPECT_ICON)
         ) {
             curInteraction = npc->npcID | COLLISION_WITH_NPC_BIT;
             if (playerStatus->interactingWithID == curInteraction) {
-                return true;
+                return TRUE;
             }
         } else {
             playerStatus->interactingWithID = NO_COLLIDER;
             playerStatus->flags &= ~PS_FLAG_INTERACTED;
-            return false;
+            return FALSE;
         }
     } else {
         if (!(curInteraction & COLLISION_WITH_ENTITY_BIT)) {
@@ -136,27 +136,27 @@ s32 should_continue_inspect(void) {
                 if (!should_collider_allow_interact(curInteraction)) {
                     playerStatus->interactingWithID = NO_COLLIDER;
                     playerStatus->flags &= ~PS_FLAG_INTERACTED;
-                    return false;
+                    return FALSE;
                 }
             }
         } else {
             if (!phys_can_player_interact()) {
                 playerStatus->interactingWithID = NO_COLLIDER;
                 playerStatus->flags &= ~PS_FLAG_INTERACTED;
-                return false;
+                return FALSE;
             }
         }
     }
     if (playerStatus->interactingWithID == curInteraction) {
         if ((playerStatus->flags & PS_FLAG_INTERACTED)) {
-            return false;
+            return FALSE;
         }
     } else {
         playerStatus->flags &= ~PS_FLAG_INTERACTED;
     }
 
     playerStatus->interactingWithID = curInteraction;
-    return true;
+    return TRUE;
 }
 
 void update_inspect_icon_pos(void) {
@@ -268,8 +268,8 @@ void interact_inspect_update(void) {
 void interact_inspect_dismiss(void) {
     update_inspect_icon_pos();
     gPlayerStatusPtr->interactingWithID = NO_COLLIDER;
-    InteractNotificationCallback = nullptr;
-    gPlayerStatusPtr->encounteredNPC = nullptr;
+    InteractNotificationCallback = NULL;
+    gPlayerStatusPtr->encounteredNPC = NULL;
     gPlayerStatusPtr->animFlags &= ~PA_FLAG_INTERACT_PROMPT_AVAILABLE;
     func_800EF3D4(0);
     partner_reset_tether_distance();

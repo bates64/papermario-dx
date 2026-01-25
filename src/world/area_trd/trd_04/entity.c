@@ -49,7 +49,7 @@ EvtScript N(EVS_UnlockUpperLeftDoors) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
-    Set(GF_TRD04_UnlockedUpperDoor, true)
+    Set(GF_TRD04_UnlockedUpperDoor, TRUE)
     Call(N(GetEntityPosition), MV_Unk_00, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Set(LVar0, MV_Unk_00)
@@ -77,7 +77,7 @@ EvtScript N(EVS_UnlockLowerRightDoors) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
-    Set(GF_TRD04_UnlockedLowerDoor, true)
+    Set(GF_TRD04_UnlockedLowerDoor, TRUE)
     Call(N(GetEntityPosition), MV_Unk_01, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Set(LVar0, MV_Unk_01)
@@ -101,13 +101,13 @@ EvtScript N(EVS_Padlock_UpperDoors) = {
 };
 
 EvtScript N(EVS_DropSwitch) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(40 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, -188, 0, -43)
     Call(SetPanTarget, CAM_DEFAULT, -188, 0, -43)
     Call(SetCamDistance, CAM_DEFAULT, Float(510.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(3 * DT)
     Call(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, -180, 175, -35)
     Call(MakeLerp, 175, 0, 20 * DT, EASING_QUADRATIC_IN)
@@ -128,21 +128,21 @@ EvtScript N(EVS_DropSwitch) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(2)
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
-    Call(DisablePlayerInput, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_TRD04_UnlockedLowerDoor, false)
+    IfEq(GF_TRD04_UnlockedLowerDoor, FALSE)
         Call(MakeEntity, Ref(Entity_Padlock), 265, 8, 90, -80, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_Padlock_LowerDoors)))
         Set(MV_Unk_01, LVar0)
     EndIf
-    IfEq(GF_TRD04_UnlockedUpperDoor, false)
+    IfEq(GF_TRD04_UnlockedUpperDoor, FALSE)
         Call(MakeEntity, Ref(Entity_Padlock), -265, 195, -55, 80, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_Padlock_UpperDoors)))
         Set(MV_Unk_00, LVar0)

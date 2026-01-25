@@ -41,7 +41,7 @@ EvtScript N(EVS_ToadHouse_SetDialogue) = {
     Set(LVar3, MSG_CH7_006F)
     IfGe(GB_StoryProgress, STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
         IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-            IfEq(GF_SAM02_MushroomPresents, false)
+            IfEq(GF_SAM02_MushroomPresents, FALSE)
                 Set(LVar3, MSG_CH7_0070)
             EndIf
         EndIf
@@ -57,18 +57,18 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
     Thread
         Wait(15)
         Call(N(ToadHouse_CamSetFOV), 0, 40)
-        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
+        Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
         Call(SetCamPitch, CAM_DEFAULT, 65, -36)
         Call(SetCamDistance, CAM_DEFAULT, 111)
         Call(SetCamPosA, CAM_DEFAULT, 549, -5)
         Call(SetCamPosB, CAM_DEFAULT, 315, -171)
         Call(SetCamPosC, CAM_DEFAULT, 0, 23)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     EndThread
     Call(PlayerMoveTo, 274, -270, 0)
     Call(InterpPlayerYaw, 229, 1)
-    Call(HidePlayerShadow, true)
+    Call(HidePlayerShadow, TRUE)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_GET_IN_BED, 1, 1, 0)
@@ -83,30 +83,30 @@ EvtScript N(EVS_ToadHouse_GetInBed) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Wait(1)
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     EndThread
     Return
     End
 };
 
 EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
-    IfEq(GF_SAM02_Item_IcedPotato, true)
-        Set(MF_SkipIcedPotato, false)
-        Set(GF_SAM02_Item_IcedPotato, false)
+    IfEq(GF_SAM02_Item_IcedPotato, TRUE)
+        Set(MF_SkipIcedPotato, FALSE)
+        Set(GF_SAM02_Item_IcedPotato, FALSE)
     EndIf
-    IfEq(MF_SkipIcedPotato, false)
-        Set(MF_SkipIcedPotato, true)
+    IfEq(MF_SkipIcedPotato, FALSE)
+        Set(MF_SkipIcedPotato, TRUE)
         Call(MakeItemEntity, ITEM_ICED_POTATO, 349, 25, -280, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_SAM02_Item_IcedPotato)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH7_UNLOCKED_SHIVER_MOUNTAIN)
         IfLt(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
-            IfEq(GF_SAM02_MushroomPresents, false)
-                Set(GF_SAM02_MushroomPresents, true)
+            IfEq(GF_SAM02_MushroomPresents, FALSE)
+                Set(GF_SAM02_MushroomPresents, TRUE)
                 Exec(N(EVS_MakeToadHouseGifts))
             EndIf
         EndIf
     EndIf
-    Call(HidePlayerShadow, false)
+    Call(HidePlayerShadow, FALSE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerPos, 277, 0, -256)
     Call(SetPlayerSpeed, Float(3.0))
@@ -401,7 +401,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 0, 0, 60 },
@@ -424,7 +424,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -400, 0, 60 },
@@ -447,7 +447,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 400, 0, 60 },
@@ -495,7 +495,7 @@ NpcData N(NpcData_MysteryOnly)[] = {
         .yaw = 0,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { 200, 0, 60 },

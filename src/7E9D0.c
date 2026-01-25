@@ -37,7 +37,7 @@ void func_800E5520(void) {
     D_8010C9B0 = 0;
 }
 
-s32 (*LandingAdjustCamCallback)(void) = nullptr;
+s32 (*LandingAdjustCamCallback)(void) = NULL;
 
 void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
     LandingAdjustCamCallback = funcPtr;
@@ -46,7 +46,7 @@ void phys_set_landing_adjust_cam_check(s32 (*funcPtr)(void)) {
 s32 phys_adjust_cam_on_landing(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
-    if (LandingAdjustCamCallback != nullptr) {
+    if (LandingAdjustCamCallback != NULL) {
         ret = LandingAdjustCamCallback();
     }
 
@@ -106,7 +106,7 @@ void phys_reset_spin_history(void) {
     }
 
     D_8010C964 = 0;
-    LastLoadedActionOffset = nullptr;
+    LastLoadedActionOffset = NULL;
 }
 
 void phys_update_action_state(void) {
@@ -158,7 +158,7 @@ void phys_update_action_state(void) {
             if (!(playerStatus->flags & PS_FLAG_INPUT_DISABLED)) {
                 cond = check_conversation_trigger();
             } else {
-                cond = false;
+                cond = FALSE;
             }
 
             if ((gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) && !(playerStatus->flags & PS_FLAG_PAUSED) && cond) {
@@ -170,7 +170,7 @@ void phys_update_action_state(void) {
         Action* action = &PlayerActionsTable[gPlayerStatus.actionState];
 
         if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
-            if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
+            if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
                 LastLoadedActionOffset = action->dmaStart;
                 dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
             }
@@ -191,7 +191,7 @@ void phys_peach_update(void) {
 
         if (action->flag) {
             if (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
-                if (action->dmaStart != nullptr && action->dmaStart != LastLoadedActionOffset) {
+                if (action->dmaStart != NULL && action->dmaStart != LastLoadedActionOffset) {
                     LastLoadedActionOffset = action->dmaStart;
                     dma_copy(action->dmaStart, action->dmaEnd, PLAYER_ACTION_VRAM_DEF);
                 }
@@ -272,9 +272,9 @@ void set_action_state(s32 actionState) {
         sfx_stop_sound(spinState->spinSoundID);
     }
 
-    if (playerStatus->specialDecorationEffect != nullptr) {
+    if (playerStatus->specialDecorationEffect != NULL) {
         playerStatus->specialDecorationEffect->data.spin->timeLeft = 10;
-        playerStatus->specialDecorationEffect = nullptr;
+        playerStatus->specialDecorationEffect = NULL;
     }
 }
 
@@ -318,69 +318,69 @@ void start_bounce_b(void) {
     playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
 }
 
-bool check_input_hammer(void) {
+b32 check_input_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
     if (playerStatus->pressedButtons & BUTTON_B) {
         if (playerStatus->flags & PS_FLAG_FALLING) {
-            return false;
+            return FALSE;
         }
 
         if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE && playerData->curPartner == PARTNER_WATT) {
-            return false;
+            return FALSE;
         }
 
         if (playerData->hammerLevel == -1) {
-            return false;
+            return FALSE;
         }
 
         set_action_state(ACTION_STATE_HAMMER);
-        return true;
+        return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
-bool check_input_jump(void) {
+b32 check_input_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 surfaceType;
 
     if (!(playerStatus->pressedButtons & BUTTON_A)) {
-        return false;
+        return FALSE;
     }
 
     surfaceType = get_collider_flags((u16)gCollisionStatus.curFloor) & COLLIDER_FLAGS_SURFACE_TYPE_MASK;
     if ((surfaceType == SURFACE_TYPE_SLIDE) && phys_should_player_be_sliding()) {
-        return false;
+        return FALSE;
     }
 
     if (collisionStatus->touchingWallTrigger != 0 ||
         (playerStatus->animFlags & (PA_FLAG_SPEECH_PROMPT_AVAILABLE |
                                     PA_FLAG_INTERACT_PROMPT_AVAILABLE)))
     {
-        return false;
+        return FALSE;
     }
 
     if ((collisionStatus->curInspect != -1) && (collisionStatus->curInspect & COLLISION_WITH_ENTITY_BIT)) {
         Entity* entity = get_entity_by_index(collisionStatus->curInspect);
 
         if (entity->flags & ENTITY_FLAG_SHOWS_INSPECT_PROMPT) {
-            if ((entity->boundScriptBytecode == nullptr) || (entity->flags & ENTITY_FLAG_4000)) {
+            if ((entity->boundScriptBytecode == NULL) || (entity->flags & ENTITY_FLAG_4000)) {
                 if (entity->type == ENTITY_TYPE_PINK_FLOWER ||
                     entity->type == ENTITY_TYPE_BELLBELL_PLANT ||
                     entity->type == ENTITY_TYPE_TRUMPET_PLANT)
                 {
-                    return false;
+                    return FALSE;
                 }
             } else {
-                return false;
+                return FALSE;
             }
         }
     }
 
     set_action_state(ACTION_STATE_JUMP);
-    return true;
+    return TRUE;
 }
 
 void check_input_spin(void) {
@@ -403,7 +403,7 @@ void check_input_spin(void) {
                     if (actionState >= 0 && !(playerStatus->animFlags & PA_FLAG_SPINNING)) {
                         if (btnPressed || spinState->hasBufferedSpin) {
                             set_action_state(ACTION_STATE_SPIN);
-                            if (spinState->hasBufferedSpin != false) {
+                            if (spinState->hasBufferedSpin != FALSE) {
                                 if (spinState->bufferedStickAxis.x != 0 || spinState->bufferedStickAxis.y != 0) {
                                     playerStatus->prevActionState = temp2->prevActionState;
                                 } else {
@@ -541,7 +541,7 @@ void peach_check_for_parasol_input(void) {
                     gGameStatusPtr->peachFlags |= PEACH_FLAG_DISGUISED;
 
                     disguiseNpc = peach_make_disguise_npc(gGameStatusPtr->peachDisguise);
-                    if (disguiseNpc != nullptr) {
+                    if (disguiseNpc != NULL) {
                         disguiseNpc->flags &= ~NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
                     }
                 }
@@ -578,7 +578,7 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
     f32 yaw;
 
     if (peachDisguise == PEACH_DISGUISE_NONE) {
-        return nullptr;
+        return NULL;
     }
 
     playerStatus->colliderHeight = 37;
@@ -588,8 +588,8 @@ Npc* peach_make_disguise_npc(s32 peachDisguise) {
 
     bpPtr->flags = NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
     bpPtr->initialAnim = BasicPeachDisguiseAnims[playerStatus->peachDisguise].idle;
-    bpPtr->onUpdate = nullptr;
-    bpPtr->onRender = nullptr;
+    bpPtr->onUpdate = NULL;
+    bpPtr->onRender = NULL;
 
     PeachDisguiseNpcIndex = create_standard_npc(bpPtr, PeachDisguiseExtraAnims[playerStatus->peachDisguise]);
     npc = get_npc_by_index(PeachDisguiseNpcIndex);

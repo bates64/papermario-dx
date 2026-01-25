@@ -22,7 +22,7 @@ void btl_state_update_victory(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_CHECK_OUTTA_SIGHT:
             player->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 partner->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
             }
 
@@ -50,7 +50,7 @@ void btl_state_update_victory(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_RECOVER_STATUS:
             player->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 partner->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
             }
             gBattleSubState = BTL_SUBSTATE_CHECK_SWAP;
@@ -72,7 +72,7 @@ void btl_state_update_victory(void) {
             player->koDuration = 0;
             player->disableEffect->data.disableX->koDuration = 0;
 
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 if (partner->koStatus == STATUS_KEY_KO) {
                     dispatch_event_partner(EVENT_RECOVER_FROM_KO);
                     gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVER_KO;
@@ -87,23 +87,23 @@ void btl_state_update_victory(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_RECOVER_KO:
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (player->handleEventScript != NULL && does_script_exist(player->handleEventScriptID)) {
                 break;
             }
-            player->handleEventScript = nullptr;
+            player->handleEventScript = NULL;
 
-            if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+            if (partner != NULL) {
+                if (partner->handleEventScript != NULL && does_script_exist(partner->handleEventScriptID)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
+                partner->handleEventScript = NULL;
             }
             gBattleSubState = BTL_SUBSTATE_CHECK_SWAP;
             break;
     }
 
     if (gBattleSubState == BTL_SUBSTATE_CHECK_SWAP) {
-        if (partner == nullptr || !(gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {
+        if (partner == NULL || !(gBattleStatus.flags1 & BS_FLAGS1_PLAYER_IN_BACK)) {
             gBattleSubState = BTL_SUBSTATE_CHECK_MERLEE;
         } else {
             partner->state.curPos.x = partner->curPos.x;
@@ -169,8 +169,8 @@ void btl_state_update_victory(void) {
         if (BattleSubstateDelay != 0) {
             BattleSubstateDelay--;
         } else {
-            if (player->takeTurnScript == nullptr || !does_script_exist(player->takeTurnScriptID)) {
-                player->takeTurnScript = nullptr;
+            if (player->takeTurnScript == NULL || !does_script_exist(player->takeTurnScriptID)) {
+                player->takeTurnScript = NULL;
                 if (battleStatus->nextMerleeSpellType != MERLEE_SPELL_EXP_BOOST) {
                     gBattleSubState = BTL_SUBSTATE_DONE;
                 } else {

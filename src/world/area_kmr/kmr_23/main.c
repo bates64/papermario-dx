@@ -3,14 +3,14 @@
 
 API_CALLABLE(N(func_80240010_907A40)) {
     set_curtain_scale_goal(2.0f);
-    set_curtain_draw_callback(nullptr);
+    set_curtain_draw_callback(NULL);
     return ApiStatus_DONE2;
 }
 
 EvtScript N(D_80241190_908BC0) = {
-    Set(AF_JAN01_TreeDrop_StarPiece, false)
+    Set(AF_JAN01_TreeDrop_StarPiece, FALSE)
         Loop(0)
-            IfNe(AF_JAN01_TreeDrop_StarPiece, false)
+            IfNe(AF_JAN01_TreeDrop_StarPiece, FALSE)
                 BreakLoop
             EndIf
             Wait(1)
@@ -29,22 +29,22 @@ EvtScript N(D_80241190_908BC0) = {
 };
 
 EvtScript N(EVS_Main) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerPos, -2, 0, 0)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, TRUE)
     Call(InterpPlayerYaw, 90, 0)
     Wait(1)
     Call(SetPlayerAnimation, ANIM_Mario1_GetItem)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, false)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
+        Call(DisablePartnerAI, FALSE)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, FALSE)
     Call(SetCamPitch, CAM_DEFAULT, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 440)
     Call(SetCamPosA, CAM_DEFAULT, 0, 100)
@@ -52,26 +52,26 @@ EvtScript N(EVS_Main) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, 65)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(kmr_23_ENTRY_0)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Eldstar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Eldstar)))
         CaseEq(kmr_23_ENTRY_1)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Mamar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Mamar)))
         CaseEq(kmr_23_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Skolar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Skolar)))
         CaseEq(kmr_23_ENTRY_3)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Muskular)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Muskular)))
         CaseEq(kmr_23_ENTRY_4)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Misstar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Misstar)))
         CaseEq(kmr_23_ENTRY_5)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Klevar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Klevar)))
         CaseEq(kmr_23_ENTRY_6)
-            Call(MakeNpcs, false, Ref(N(NpcGroup_Kalmar)))
+            Call(MakeNpcs, FALSE, Ref(N(NpcGroup_Kalmar)))
     EndSwitch
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Wait(1)
     Exec(N(D_80241190_908BC0))
     Thread

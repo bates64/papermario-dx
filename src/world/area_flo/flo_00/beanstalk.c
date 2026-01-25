@@ -16,14 +16,14 @@ API_CALLABLE(N(GetPlayerAngles)) {
 }
 
 API_CALLABLE(N(PlayerRideBeanstalk)) {
-    f32 temp = evt_get_variable(nullptr, script->varTable[2]);
+    f32 temp = evt_get_variable(NULL, script->varTable[2]);
     f32 dist = dist2D(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[9], script->varTable[11]);
     f32 angle = atan2(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[9], script->varTable[11]);
     f32 clamped = clamp_angle(angle - temp);
 
     temp = sin_deg(clamped);
     gPlayerStatus.pos.x = BEANSTALK_BASE_X + (dist * temp);
-    gPlayerStatus.pos.y = evt_get_variable(nullptr, script->varTable[10]) + evt_get_variable(nullptr, script->varTable[3]);
+    gPlayerStatus.pos.y = evt_get_variable(NULL, script->varTable[10]) + evt_get_variable(NULL, script->varTable[3]);
     temp = cos_deg(clamped);
     gPlayerStatus.pos.z = BEANSTALK_BASE_Z - (dist * temp);
 
@@ -32,14 +32,14 @@ API_CALLABLE(N(PlayerRideBeanstalk)) {
 
 API_CALLABLE(N(PartnerRideBeanstalk)) {
     Npc* npc = get_npc_by_index(NPC_Dummy_Wisterwood);
-    f32 temp = evt_get_variable(nullptr, script->varTable[2]);
+    f32 temp = evt_get_variable(NULL, script->varTable[2]);
     f32 dist = dist2D(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[12], script->varTable[14]);
     f32 angle = atan2(BEANSTALK_BASE_X, BEANSTALK_BASE_Z, script->varTable[12], script->varTable[14]);
     f32 clamped = clamp_angle(angle - temp);
 
     temp = sin_deg(clamped);
     npc->pos.x = BEANSTALK_BASE_X + (dist * temp);
-    npc->pos.y = evt_get_variable(nullptr, script->varTable[13]) + evt_get_variable(nullptr, script->varTable[3]);
+    npc->pos.y = evt_get_variable(NULL, script->varTable[13]) + evt_get_variable(NULL, script->varTable[3]);
     temp = cos_deg(clamped);
     npc->pos.z = BEANSTALK_BASE_Z - (dist * temp);
 
@@ -239,12 +239,12 @@ EvtScript N(EVS_SetBigLeafPosition) = {
 };
 
 EvtScript N(EVS_Exit_Beanstalk) = {
-    IfEq(AF_FLO_RidingBeanstalk, false)
-        Call(DisablePlayerInput, true)
+    IfEq(AF_FLO_RidingBeanstalk, FALSE)
+        Call(DisablePlayerInput, TRUE)
         Call(InterruptUsePartner)
         Wait(15)
         Call(DisablePartnerAI, 0)
-        Set(AF_FLO_RidingBeanstalk, true)
+        Set(AF_FLO_RidingBeanstalk, TRUE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
         EVT_VEC3I_SET(LVar9, Float(-59.0), Float(22.0), Float(125.0)) // target player pos
@@ -259,17 +259,17 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(N(GetPlayerAngles), LVar3, LVar4)
         Switch(LVar4)
             CaseLt(90)
-                Set(AF_FLO_BeanstalkFacingRight, false)
+                Set(AF_FLO_BeanstalkFacingRight, FALSE)
                 Call(InterpPlayerYaw, 90, 0)
                 Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
             CaseGe(270)
-                Set(AF_FLO_BeanstalkFacingRight, true)
+                Set(AF_FLO_BeanstalkFacingRight, TRUE)
                 Call(InterpPlayerYaw, 270, 0)
                 Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         EndSwitch
         Call(TranslateModel, MODEL_o142, Float(-0.26), Float(2.0), Float(1.477))
         Call(UpdateColliderTransform, COLLIDER_o240)
-        Set(MV_BeanstalkSceneSync, false)
+        Set(MV_BeanstalkSceneSync, FALSE)
         Thread
             Set(LVarF, 0)
             Loop(0)
@@ -282,13 +282,13 @@ EvtScript N(EVS_Exit_Beanstalk) = {
                 Call(N(PlayerRideBeanstalk))
                 Call(N(PartnerRideBeanstalk))
                 IfEq(LVarF, 350)
-                    Set(MV_BeanstalkSceneSync, true)
+                    Set(MV_BeanstalkSceneSync, TRUE)
                 EndIf
                 Wait(1)
             EndLoop
         EndThread
         Label(10)
-            IfEq(MV_BeanstalkSceneSync, false)
+            IfEq(MV_BeanstalkSceneSync, FALSE)
                 Wait(1)
                 Goto(10)
             EndIf
@@ -300,7 +300,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
 };
 
 EvtScript N(EVS_Enter_Beanstalk) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
@@ -308,7 +308,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Set(LVar9, Float(-59.0))
     Set(LVarA, Float(22.0))
     Set(LVarB, Float(125.0))
@@ -351,11 +351,11 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Wait(5)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)
-    Set(AF_FLO_RidingBeanstalk, false)
+    Set(AF_FLO_RidingBeanstalk, FALSE)
     Call(StopSound, SOUND_FLO_RIDE_BEANSTALK_DOWN_LOOP)
     ExecWait(N(EVS_SetupMusic))
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -369,7 +369,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
         Exec(N(EVS_SetSproutGrowth))
         Wait(1)
     EndLoop
-    Set(MV_BeanstalkSceneSync, false)
+    Set(MV_BeanstalkSceneSync, FALSE)
     Thread
         Set(LVarF, 0)
         Loop(1200)
@@ -397,18 +397,18 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
                     Call(SetCamDistance, CAM_DEFAULT, 800)
                     Call(SetCamPosA, CAM_DEFAULT, -200, 0)
                     Call(SetCamPosB, CAM_DEFAULT, 0, -300)
-                    Call(PanToTarget, CAM_DEFAULT, 0, true)
+                    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                 CaseDefault
             EndSwitch
             IfGt(LVarF, 550)
-                Set(MV_BeanstalkSceneSync, true)
+                Set(MV_BeanstalkSceneSync, TRUE)
             EndIf
             Wait(1)
         EndLoop
     EndThread
     Label(10)
-        IfEq(MV_BeanstalkSceneSync, false)
+        IfEq(MV_BeanstalkSceneSync, FALSE)
             Wait(1)
             Goto(10)
         EndIf
@@ -421,7 +421,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
 };
 
 EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(InterpPlayerYaw, 200, 0)
     Call(SetPlayerPos, -60, 0, 30)
     Call(NpcFacePlayer, NPC_PARTNER, 1)
@@ -436,7 +436,7 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     Call(SetCamDistance, CAM_DEFAULT, 800)
     Call(SetCamPosA, CAM_DEFAULT, -200, 0)
     Call(SetCamPosB, CAM_DEFAULT, 0, -300)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Set(LVarF, 0)
     Loop(5)
@@ -448,7 +448,7 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o240, COLLIDER_FLAGS_UPPER_MASK)
     Call(ShowMessageAtWorldPos, MSG_CH6_000A, 0, 50, -200)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -461,11 +461,11 @@ s32 N(BeanstalkIngredients)[] = {
 };
 
 EvtScript N(EVS_BeanPatch_ItemPrompt) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(FacePlayerTowardPoint, -85, 85, 0)
     Call(func_802CF56C, 2)
-    Call(DisablePlayerInput, false)
-    IfEq(GF_FLO00_PlacedFertileSoil, false)
+    Call(DisablePlayerInput, FALSE)
+    IfEq(GF_FLO00_PlacedFertileSoil, FALSE)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
         Label(10)
@@ -489,19 +489,19 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                     Switch(AF_FLO_PlatingInstructionsToggle)
                         CaseEq(0)
                             Call(ShowMessageAtWorldPos, MSG_CH6_0008, 0, 10, -200)
-                            Set(AF_FLO_PlatingInstructionsToggle, true)
+                            Set(AF_FLO_PlatingInstructionsToggle, TRUE)
                         CaseDefault
                             Call(ShowMessageAtWorldPos, MSG_CH6_0009, 0, 10, -200)
                     EndSwitch
             EndSwitch
-            Call(DisablePlayerInput, false)
-            Call(DisablePlayerPhysics, false)
+            Call(DisablePlayerInput, FALSE)
+            Call(DisablePlayerPhysics, FALSE)
             IfNe(LVar2, 89)
                 Goto(10)
             EndIf
-        Set(GF_FLO00_PlacedFertileSoil, true)
+        Set(GF_FLO00_PlacedFertileSoil, TRUE)
     EndIf
-    IfEq(GF_FLO00_PlacedMagicalBean, false)
+    IfEq(GF_FLO00_PlacedMagicalBean, FALSE)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
         Label(20)
@@ -527,17 +527,17 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                     Switch(AF_FLO_PlatingInstructionsToggle)
                         CaseEq(0)
                             Call(ShowMessageAtWorldPos, MSG_CH6_0008, 0, 10, -200)
-                            Set(AF_FLO_PlatingInstructionsToggle, true)
+                            Set(AF_FLO_PlatingInstructionsToggle, TRUE)
                         CaseDefault
                             Call(ShowMessageAtWorldPos, MSG_CH6_0009, 0, 10, -200)
                     EndSwitch
             EndSwitch
-            Call(DisablePlayerInput, false)
-            Call(DisablePlayerPhysics, false)
+            Call(DisablePlayerInput, FALSE)
+            Call(DisablePlayerPhysics, FALSE)
             IfNe(LVar2, 88)
                 Goto(20)
             EndIf
-        Set(GF_FLO00_PlacedMagicalBean, true)
+        Set(GF_FLO00_PlacedMagicalBean, TRUE)
     EndIf
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -577,7 +577,7 @@ EvtScript N(EVS_BeanPatch_ItemPrompt) = {
                 Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
                 Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-6.0))
                 Call(SetCamDistance, CAM_DEFAULT, 250)
-                Call(PanToTarget, CAM_DEFAULT, 0, true)
+                Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                 ExecWait(N(EVS_Scene_BeanstalkGrowing))
         EndSwitch
@@ -595,7 +595,7 @@ EvtScript N(EVS_BeanPatch_TryInteract) = {
         Return
     Else
         Call(IsPlayerOnValidFloor, LVar0)
-        IfEq(LVar0, false)
+        IfEq(LVar0, FALSE)
             Wait(1)
             Goto(0)
         EndIf
@@ -619,8 +619,8 @@ EvtScript N(EVS_SetupBeanPatch) = {
                 BreakLoop
             EndIf
         EndLoop
-        IfEq(GF_FLO00_PlacedFertileSoil, true)
-            IfEq(GF_FLO00_PlacedMagicalBean, false)
+        IfEq(GF_FLO00_PlacedFertileSoil, TRUE)
+            IfEq(GF_FLO00_PlacedMagicalBean, FALSE)
                 Call(MakeItemEntity, ITEM_FERTILE_SOIL, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
             Else
                 Call(MakeItemEntity, ITEM_MAGICAL_BEAN, BEANSTALK_BASE_X, 0, BEANSTALK_BASE_Z, ITEM_SPAWN_MODE_DECORATION, 0)
@@ -635,8 +635,8 @@ EvtScript N(EVS_SetupBeanPatch) = {
 
 EvtScript N(EVS_SetupBeanstalk) = {
     BindTrigger(Ref(N(EVS_Exit_Beanstalk)), TRIGGER_FLOOR_TOUCH, COLLIDER_o240, 1, 0)
-    Call(EnableGroup, MODEL_ha, true)
-    Call(EnableGroup, MODEL_tuta, true)
+    Call(EnableGroup, MODEL_ha, TRUE)
+    Call(EnableGroup, MODEL_tuta, TRUE)
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH6_WISTERWOOD_GAVE_HINT)
             Set(LVar0, -700)

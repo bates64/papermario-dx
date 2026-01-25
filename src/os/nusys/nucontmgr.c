@@ -18,17 +18,17 @@ static s32 contReadNW(NUSiCommonMesg* mesg);
 static inline s32 contReadData(OSContPad* pad, u32 lockflag);
 static s32 contQuery(NUSiCommonMesg* mesg);
 
-NUContReadFunc nuContReadFunc = nullptr;
+NUContReadFunc nuContReadFunc = NULL;
 
 static s32 (*funcList[])(NUSiCommonMesg*) = {
     contRetrace,
     contRead,
     contReadNW,
     contQuery,
-    nullptr,
+    NULL,
 };
 
-NUCallBackList nuContCallBack = { nullptr, funcList, NU_SI_MAJOR_NO_CONT };
+NUCallBackList nuContCallBack = { NULL, funcList, NU_SI_MAJOR_NO_CONT };
 
 u8 nuContMgrInit(void) {
     s32 i;
@@ -65,21 +65,21 @@ void nuContMgrRemove(void) {
 }
 
 void nuContDataClose(void) {
-    osSendMesg(&nuContDataMutexQ, nullptr, OS_MESG_BLOCK);
+    osSendMesg(&nuContDataMutexQ, NULL, OS_MESG_BLOCK);
 }
 
 void nuContDataOpen(void) {
-    osRecvMesg(&nuContDataMutexQ, nullptr, OS_MESG_BLOCK);
+    osRecvMesg(&nuContDataMutexQ, NULL, OS_MESG_BLOCK);
 }
 
 //copy of nuContDataClose
 static inline void nuContDataClose_inline(void) {
-    osSendMesg(&nuContDataMutexQ, nullptr, OS_MESG_BLOCK);
+    osSendMesg(&nuContDataMutexQ, NULL, OS_MESG_BLOCK);
 }
 
 //copy of nuContDataOpen
 static inline void nuContDataOpen_inline(void) {
-    osRecvMesg(&nuContDataMutexQ, nullptr, OS_MESG_BLOCK);
+    osRecvMesg(&nuContDataMutexQ, NULL, OS_MESG_BLOCK);
 }
 
 static inline s32 contReadData(OSContPad* pad, u32 lockflag) {
@@ -90,7 +90,7 @@ static inline s32 contReadData(OSContPad* pad, u32 lockflag) {
         return rtn;
     }
 
-    osRecvMesg(&nuSiMesgQ, nullptr, OS_MESG_BLOCK);
+    osRecvMesg(&nuSiMesgQ, NULL, OS_MESG_BLOCK);
 
     if(lockflag & nuContDataLockKey) {
         return rtn;
@@ -108,15 +108,15 @@ static s32 contRetrace(NUSiCommonMesg* mesg) {
         return NU_SI_CALLBACK_CONTINUE;
     }
 
-    osRecvMesg(&nuContWaitMesgQ, nullptr, OS_MESG_NOBLOCK);
+    osRecvMesg(&nuContWaitMesgQ, NULL, OS_MESG_NOBLOCK);
 
     contReadData(nuContData, 1);
 
-    if(nuContReadFunc != nullptr) {
+    if(nuContReadFunc != NULL) {
         (*nuContReadFunc)(mesg->mesg);
     }
 
-    osSendMesg(&nuContWaitMesgQ, nullptr, OS_MESG_NOBLOCK);
+    osSendMesg(&nuContWaitMesgQ, NULL, OS_MESG_NOBLOCK);
 
     return NU_SI_CALLBACK_CONTINUE;
 }
@@ -128,14 +128,14 @@ static s32 contRead(NUSiCommonMesg* mesg) {
 static s32 contReadNW(NUSiCommonMesg* mesg) {
     s32 rtn;
 
-    osRecvMesg(&nuContWaitMesgQ, nullptr, OS_MESG_NOBLOCK);
+    osRecvMesg(&nuContWaitMesgQ, NULL, OS_MESG_NOBLOCK);
 
     rtn = contReadData(nuContData, 0);
     if (rtn) {
         return rtn;
     }
 
-    if(nuContReadFunc != nullptr) {
+    if(nuContReadFunc != NULL) {
         (*nuContReadFunc)(mesg->mesg);
     }
 
@@ -149,7 +149,7 @@ static s32 contQuery(NUSiCommonMesg* mesg) {
         return ret;
     }
 
-    osRecvMesg(&nuSiMesgQ, nullptr, OS_MESG_BLOCK);
+    osRecvMesg(&nuSiMesgQ, NULL, OS_MESG_BLOCK);
     osContGetQuery(nuContStatus);
 
     return ret;

@@ -9,9 +9,9 @@ API_CALLABLE(N(SwingCameraPitchUpward)) {
         script->functionTemp[0] = 40;
     }
     script->functionTemp[0]--;
-    if (camera->curSettings != nullptr) {
+    if (camera->curSettings != NULL) {
         camera->curSettings->viewPitch -= 1.0 - ((f32) (40 - script->functionTemp[0]) * 0.01);
-    } else if (camera->prevSettings != nullptr) {
+    } else if (camera->prevSettings != NULL) {
         camera->prevSettings->viewPitch -= 1.0 - ((f32) (40 - script->functionTemp[0]) * 0.01);
     }
 
@@ -26,11 +26,11 @@ EvtScript N(EVS_UpdatePassengers) = {
     Label(0)
         Call(GetModelCenter, MODEL_o637)
         Add(LVar0, -5)
-        IfEq(MV_PlayerOnBoard, true)
+        IfEq(MV_PlayerOnBoard, TRUE)
             Call(SetPlayerPos, LVar0, LVar1, LVar2)
         EndIf
         Add(LVar0, 10)
-        IfEq(MV_PartnerOnBoard, true)
+        IfEq(MV_PartnerOnBoard, TRUE)
             Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         EndIf
         Wait(1)
@@ -44,26 +44,26 @@ EvtScript N(EVS_Starship_Depart) = {
     IfNe(LVar9, PARTNER_NONE)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
     ExecGetTID(N(EVS_UpdatePassengers), LVar9)
-    Call(HidePlayerShadow, true)
+    Call(HidePlayerShadow, TRUE)
     Call(GetModelCenter, MODEL_o637)
     Add(LVar0, -5)
     Call(SetPlayerJumpscale, 0)
     Call(PlayerJump2, LVar0, LVar1, LVar2, 2)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Set(MV_PlayerOnBoard, true)
+    Set(MV_PlayerOnBoard, TRUE)
     Call(InterpPlayerYaw, 0, 0)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Call(DisablePartnerAI, 0)
     Add(LVar0, 10)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.5))
     Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 12)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    Set(MV_PartnerOnBoard, true)
-    Call(EnableNpcShadow, NPC_PARTNER, false)
+    Set(MV_PartnerOnBoard, TRUE)
+    Call(EnableNpcShadow, NPC_PARTNER, FALSE)
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_Menus_0188, 160, 40)
     Call(ShowChoice, MSG_Choice_000C)
@@ -71,26 +71,26 @@ EvtScript N(EVS_Starship_Depart) = {
     IfEq(LVar0, 1)
         // player chose "not ready to take off"
         KillThread(LVar9)
-        Call(DisablePlayerPhysics, false)
-        Set(MV_PlayerOnBoard, false)
+        Call(DisablePlayerPhysics, FALSE)
+        Set(MV_PlayerOnBoard, FALSE)
         Thread
-            Set(MV_PartnerOnBoard, false)
+            Set(MV_PartnerOnBoard, FALSE)
             Call(PartnerIsFlying, LVar0)
-            IfEq(LVar0, true)
+            IfEq(LVar0, TRUE)
                 Wait(10)
                 Call(SetNpcJumpscale, NPC_PARTNER, 1)
                 Call(NpcJump0, NPC_PARTNER, 45, 162, 25, 10)
             EndIf
-            Call(EnableNpcShadow, NPC_PARTNER, true)
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+            Call(EnableNpcShadow, NPC_PARTNER, TRUE)
+            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
             Call(EnablePartnerAI)
         EndThread
         Call(SetPlayerJumpscale, 1)
         Call(PlayerJump, 25, 162, 45, 10)
         Call(SetPlayerActionState, ACTION_STATE_LAND)
-        Call(HidePlayerShadow, false)
+        Call(HidePlayerShadow, FALSE)
         Wait(10)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Return
     EndIf
     Wait(20)
@@ -126,22 +126,22 @@ EvtScript N(EVS_Starship_Depart) = {
 };
 
 EvtScript N(EVS_EnterStarship) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, 0)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    Call(HidePlayerShadow, true)
-    Call(EnableNpcShadow, NPC_PARTNER, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
+    Call(HidePlayerShadow, TRUE)
+    Call(EnableNpcShadow, NPC_PARTNER, FALSE)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 180, -5)
     Call(SetPanTarget, CAM_DEFAULT, 0, 180, -5)
     Call(SetCamDistance, CAM_DEFAULT, Float(550.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-35.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Set(MV_PlayerOnBoard, true)
-    Set(MV_PartnerOnBoard, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Set(MV_PlayerOnBoard, TRUE)
+    Set(MV_PartnerOnBoard, TRUE)
     ExecGetTID(N(EVS_UpdatePassengers), LVar9)
     Thread
         Wait(25)
@@ -152,7 +152,7 @@ EvtScript N(EVS_EnterStarship) = {
             DivF(LVar2, 10)
             Call(SetCamPitch, CAM_DEFAULT, Float(17.0), LVar2)
             Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -170,13 +170,13 @@ EvtScript N(EVS_EnterStarship) = {
         EndIf
     EndLoop
     KillThread(LVar9)
-    Set(MV_PlayerOnBoard, false)
+    Set(MV_PlayerOnBoard, FALSE)
     Call(SetPlayerJumpscale, 1)
     Call(PlayerJump, 25, 162, 45, 10)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(HidePlayerShadow, false)
+    Call(HidePlayerShadow, FALSE)
     Thread
-        Set(MV_PartnerOnBoard, false)
+        Set(MV_PartnerOnBoard, FALSE)
         Call(GetCurrentPartnerID, LVar0)
         Switch(LVar0)
             CaseEq(PARTNER_PARAKARRY)
@@ -188,15 +188,15 @@ EvtScript N(EVS_EnterStarship) = {
                 Call(SetNpcJumpscale, NPC_PARTNER, 1)
                 Call(NpcJump0, NPC_PARTNER, 45, 162, 25, 10)
         EndSwitch
-        Call(EnableNpcShadow, NPC_PARTNER, true)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+        Call(EnableNpcShadow, NPC_PARTNER, TRUE)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
         Call(EnablePartnerAI)
     EndThread
-    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerPhysics, FALSE)
     Call(SetMusic, 0, SONG_STAR_SANCTUARY, 0, VOL_LEVEL_FULL)
     Call(ResetCam, CAM_DEFAULT, Float(1.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

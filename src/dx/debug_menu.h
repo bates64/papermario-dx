@@ -23,9 +23,9 @@ void dx_debug_menu_main();
 void dx_debug_console_main();
 void dx_debug_draw_collision();
 
-bool dx_debug_menu_is_open();
-bool dx_debug_should_hide_models();
-bool dx_debug_is_cheat_enabled(DebugCheat cheat);
+b32 dx_debug_menu_is_open();
+b32 dx_debug_should_hide_models();
+b32 dx_debug_is_cheat_enabled(DebugCheat cheat);
 
 void dx_debug_set_map_info(char* mapName, s32 entryID);
 void dx_debug_set_battle_info(s32 battleID, char* stageName);

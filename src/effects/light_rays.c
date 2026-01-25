@@ -104,13 +104,13 @@ void light_rays_main(
     bpPtr->update = light_rays_update;
     bpPtr->renderScene = light_rays_render;
     bpPtr->unk_00 = 0;
-    bpPtr->renderUI = nullptr;
+    bpPtr->renderUI = NULL;
     bpPtr->effectID = EFFECT_LIGHT_RAYS;
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     part = effect->data.lightRays = general_heap_malloc(numParts * sizeof(*part));
-    ASSERT(effect->data.lightRays != nullptr);
+    ASSERT(effect->data.lightRays != NULL);
 
     part->type = type;
     part->timeLeft = 100;

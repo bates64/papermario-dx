@@ -13,7 +13,7 @@ void __osTimerServicesInit(void) {
     __osViIntrCount = 0;
     __osTimerList->next = __osTimerList->prev = __osTimerList;
     __osTimerList->interval = __osTimerList->value = 0;
-    __osTimerList->mq = nullptr;
+    __osTimerList->mq = NULL;
     __osTimerList->msg = 0;
 }
 
@@ -46,10 +46,10 @@ void __osTimerInterrupt(void) {
 
         t->prev->next = t->next;
         t->next->prev = t->prev;
-        t->next = nullptr;
-        t->prev = nullptr;
+        t->next = NULL;
+        t->prev = NULL;
 
-        if (t->mq != nullptr) {
+        if (t->mq != NULL) {
             osSendMesg(t->mq, t->msg, OS_MESG_NOBLOCK);
         }
         if (t->interval != 0) {

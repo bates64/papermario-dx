@@ -18,7 +18,7 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
         EndLoop
     EndThread
     Wait(5)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, TRUE)
     Thread
         Call(MakeLerp, 0, 360, 20, EASING_LINEAR)
         Label(1)
@@ -31,15 +31,15 @@ EvtScript N(EVS_NpcIdle_KoopaTroopa_01) = {
     EndThread
     Call(SetNpcJumpscale, NPC_SELF, Float(0.6))
     Call(NpcJump0, NPC_SELF, -650, 75, -30, 20)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, false)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_FLIP_INSTANTLY, FALSE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, TRUE)
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_KoopaTroopa_Wander)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_KoopaTroopa_01) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
     Call(SetNpcPos, NPC_SELF, -650, 75, -150)
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_KoopaTroopa_01)))
     Return
@@ -47,7 +47,7 @@ EvtScript N(EVS_NpcInit_KoopaTroopa_01) = {
 };
 
 EvtScript N(EVS_NpcInit_KoopaTroopa_02) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, FALSE)
     Return
     End
 };
@@ -58,7 +58,7 @@ NpcData N(NpcData_KoopaTroopa_01) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = false,
+            .isFlying = FALSE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -690, 75, -50 },
@@ -81,7 +81,7 @@ NpcData N(NpcData_ParaTroopa) = {
     .yaw = 270,
     .territory = {
         .wander = {
-            .isFlying = false,
+            .isFlying = FALSE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_RECT,
             .centerPos  = { 184, 50, -100 },
@@ -103,7 +103,7 @@ NpcData N(NpcData_SpikedGoomba) = {
     .yaw = 90,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { -257, 0, -47 },

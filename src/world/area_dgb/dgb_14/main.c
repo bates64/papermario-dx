@@ -16,17 +16,17 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, MODEL_o101)
             ExecWait(EnterDoubleDoor)
         CaseEq(dgb_14_ENTRY_1)
-            Call(DisablePlayerInput, true)
+            Call(DisablePlayerInput, TRUE)
             Set(LVar2, MODEL_o31)
             Set(LVar3, MODEL_o30)
             ExecWait(EnterDoubleDoor)
-            IfEq(AF_DGB_01, true)
+            IfEq(AF_DGB_01, TRUE)
                 Wait(5)
                 Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
                 Wait(20)
                 Call(SetPlayerAnimation, ANIM_Mario1_Idle)
             EndIf
-            Call(DisablePlayerInput, false)
+            Call(DisablePlayerInput, FALSE)
     EndSwitch
     Return
     End

@@ -20,11 +20,11 @@ EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_BrickBlock), 151, 81, 251, 0, MAKE_ENTITY_END)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)
-            IfEq(GF_NOK02_RecoveredShellB, false)
+            IfEq(GF_NOK02_RecoveredShellB, FALSE)
                 Call(AssignScript, Ref(N(EVS_BreakBlock_DropShell)))
             EndIf
         CaseGe(STORY_CH1_KOOPER_JOINED_PARTY)
-            IfEq(GF_NOK02_Item_StarPiece, false)
+            IfEq(GF_NOK02_Item_StarPiece, FALSE)
                 Call(AssignScript, Ref(N(EVS_BreakBlock_DropStarPiece)))
                 Call(MakeItemEntity, ITEM_STAR_PIECE, 150, 106, 250, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_NOK02_Item_StarPiece)
                 Set(MV_StarPieceItem, LVar0)
@@ -32,11 +32,11 @@ EvtScript N(EVS_MakeEntities) = {
     EndSwitch
     Call(CreatePushBlockGrid, 0, 5, 5, 88, -4, 188, 0)
     Call(SetPushBlock, 0, 0, 0, PUSH_GRID_BLOCK)
-    IfEq(GF_NOK02_WarpPipe, false)
-        IfEq(GF_TIK01_WarpPipes, true)
+    IfEq(GF_NOK02_WarpPipe, FALSE)
+        IfEq(GF_TIK01_WarpPipes, TRUE)
             Call(GetEntryID, LVar0)
             IfNe(LVar0, nok_02_ENTRY_2)
-                Set(GF_NOK02_WarpPipe, true)
+                Set(GF_NOK02_WarpPipe, TRUE)
             EndIf
         EndIf
     EndIf

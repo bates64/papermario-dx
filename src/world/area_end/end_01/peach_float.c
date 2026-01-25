@@ -19,7 +19,7 @@ EvtScript N(EVS_ParadePhase_Toads1) = {
 };
 
 EvtScript N(EVS_TexPan_FinalFloat_MushroomTop) = {
-    Call(EnableTexPanning, MODEL_mp1, true)
+    Call(EnableTexPanning, MODEL_mp1, TRUE)
     Set(LVar0, 0)
     Set(LVar1, 0)
     Loop(0)
@@ -34,7 +34,7 @@ EvtScript N(EVS_TexPan_FinalFloat_MushroomTop) = {
 };
 
 EvtScript N(EVS_TexPan_FinalFloat_MushroomRim) = {
-    Call(EnableTexPanning, MODEL_mp2, true)
+    Call(EnableTexPanning, MODEL_mp2, TRUE)
     Set(LVar0, 0)
     Loop(0)
         Add(LVar0, 0x2000)
@@ -46,7 +46,7 @@ EvtScript N(EVS_TexPan_FinalFloat_MushroomRim) = {
 };
 
 EvtScript N(EVS_TexPan_FinalFloat_Front) = {
-    Call(EnableTexPanning, MODEL_mp3, true)
+    Call(EnableTexPanning, MODEL_mp3, TRUE)
     Set(LVar0, 0)
     Loop(0)
         Add(LVar0, 0x1000)
@@ -58,7 +58,7 @@ EvtScript N(EVS_TexPan_FinalFloat_Front) = {
 };
 
 EvtScript N(EVS_TexPan_FinalFloat_Star) = {
-    Call(EnableTexPanning, MODEL_mp4, true)
+    Call(EnableTexPanning, MODEL_mp4, TRUE)
     Set(LVar0, 0)
     Loop(0)
         Add(LVar0, 0x1000)
@@ -70,7 +70,7 @@ EvtScript N(EVS_TexPan_FinalFloat_Star) = {
 };
 
 EvtScript N(EVS_TexPan_FinalFloat_Sides) = {
-    Call(EnableTexPanning, MODEL_mp6, true)
+    Call(EnableTexPanning, MODEL_mp6, TRUE)
     Set(LVar0, 0)
     Loop(0)
         Add(LVar0, 0x3000)
@@ -222,7 +222,7 @@ EvtScript N(EVS_ParadePhase_MarioPeach) = {
 
 EvtScript N(EVS_Twirler) = {
     ChildThread
-        Call(EnableNpcShadow, LVar1, false)
+        Call(EnableNpcShadow, LVar1, FALSE)
         Call(SetNpcJumpscale, LVar1, Float(0.5))
         Loop(0)
             Wait(30)

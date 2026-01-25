@@ -7,8 +7,8 @@ int osSetTimer(OSTimer *t, OSTime countdown, OSTime interval, OSMesgQueue *mq, O
     u32 value;
     u32 saveMask;
 
-    t->next = nullptr;
-    t->prev = nullptr;
+    t->next = NULL;
+    t->prev = NULL;
     t->interval = interval;
     t->value = (countdown != 0) ? countdown : interval;
     t->mq = mq;

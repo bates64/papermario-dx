@@ -116,7 +116,7 @@ typedef struct {
     Gfx		rdpOthermode;
     u32		segBases[16];	/* table of segment base addrs (SEE NOTE!) */
     Vp		viewport;	/* the viewport to use */
-    Gfx		*rdpCmds;	/* block of RDP data, process if !nullptr
+    Gfx		*rdpCmds;	/* block of RDP data, process if !NULL
 				 * block terminated by gDPEndDisplayList()
 				 * (This is a segment address)
 				 */
@@ -337,10 +337,10 @@ extern void gtDumpTurbo(OSTask *tp,u8 flags);
  *
  */
 typedef struct {
-    gtGlobState	*gstatep;	/* global state, usually nullptr */
-    gtState	*statep;	/* if this is nullptr, end object processing */
-    Vtx		*vtxp;		/* if this is nullptr, use points in buffer */
-    gtTriN	*trip;		/* if this is nullptr, use tris in buffer */
+    gtGlobState	*gstatep;	/* global state, usually NULL */
+    gtState	*statep;	/* if this is NULL, end object processing */
+    Vtx		*vtxp;		/* if this is NULL, use points in buffer */
+    gtTriN	*trip;		/* if this is NULL, use tris in buffer */
 } gtGfx_t;
 
 typedef union {

@@ -93,11 +93,11 @@ EvtScript N(D_802448C4_856A34) = {
             Exec(N(EVS_80248878))
             Exec(N(EVS_BindExitTriggers))
         CaseEq(mac_05_ENTRY_3)
-            Call(DisablePlayerInput, true)
-            Call(DisablePlayerPhysics, true)
+            Call(DisablePlayerInput, TRUE)
+            Call(DisablePlayerPhysics, TRUE)
             Call(SetPlayerPos, -160, -10, 371)
             Call(SetNpcPos, NPC_PARTNER, -160, -10, 371)
-            Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, true)
+            Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, TRUE)
             Call(DisablePartnerAI, 0)
             Call(InterruptUsePartner)
             Wait(10)
@@ -117,12 +117,12 @@ EvtScript N(D_802448C4_856A34) = {
             Wait(30)
             Call(SetPlayerPos, -280, -10, 371)
             Call(EnablePartnerAI)
-            Call(DisablePlayerPhysics, false)
-            Call(DisablePlayerInput, false)
+            Call(DisablePlayerPhysics, FALSE)
+            Call(DisablePlayerInput, FALSE)
             Set(LVar0, Ref(N(EVS_BindExitTriggers)))
             ExecWait(EnterWalk)
             Call(SetNpcPos, NPC_Whale, -220, 10, 372)
-            Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, false)
+            Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, FALSE)
     EndSwitch
     Return
     End
@@ -140,7 +140,7 @@ EvtScript N(EVS_Main) = {
         CaseLt(STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Call(GetEntryID, LVar1)
             IfEq(LVar1, mac_05_ENTRY_1)
-                IfEq(GF_MAC01_Defeated_JrTroopa4, false)
+                IfEq(GF_MAC01_Defeated_JrTroopa4, FALSE)
                     Set(LVar0, Ref(N(NpcSetC)))
                 Else
                     Set(LVar0, Ref(N(NpcSetB)))
@@ -153,7 +153,7 @@ EvtScript N(EVS_Main) = {
         CaseDefault
             Set(LVar0, Ref(N(NpcSetA)))
     EndSwitch
-    Call(MakeNpcs, false, LVar0)
+    Call(MakeNpcs, FALSE, LVar0)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupWhale))
     Call(GetEntryID, LVar0)

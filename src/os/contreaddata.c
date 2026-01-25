@@ -12,7 +12,7 @@ s32 osContStartReadData(OSMesgQueue* mq) {
     if (__osContLastCmd != CONT_CMD_READ_BUTTON) {
         __osPackReadData();
         ret = __osSiRawStartDma(OS_WRITE, __osContPifRam.ramarray);
-        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
+        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
     }
 
     ret = __osSiRawStartDma(OS_READ, __osContPifRam.ramarray);

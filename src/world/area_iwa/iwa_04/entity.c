@@ -28,8 +28,8 @@ EvtScript N(TetherCameraToPlayer) = {
 };
 
 EvtScript N(EVS_UseSpring) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Wait(1)
     ExecGetTID(N(TetherCameraToPlayer), LVarA)
@@ -42,8 +42,8 @@ EvtScript N(EVS_UseSpring) = {
     EndIf
     KillThread(LVarA)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

@@ -26,7 +26,7 @@ void action_hammer_end_swing(void);
 
 s32 action_hammer_is_swinging_away(s32 animID) {
     if (animID & SPRITE_ID_BACK_FACING) {
-        return true;
+        return TRUE;
     }
 
     // back facing swing anims
@@ -37,9 +37,9 @@ s32 action_hammer_is_swinging_away(s32 animID) {
         case ANIM_MarioW1_Smash2_Hit_Back:
         case ANIM_MarioW1_Smash3_Miss_Back:
         case ANIM_MarioW1_Smash3_Hit_Back:
-            return true;
+            return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
 void action_hammer_play_hit_fx(s32 hitID) {
@@ -390,7 +390,7 @@ void action_hammer_end_swing(void) {
         }
 
         if (HammerHit->hitID <= NO_COLLIDER && gPlayerData.hammerLevel >= 2) {
-            gCurrentHiddenPanels.tryFlipTrigger = true;
+            gCurrentHiddenPanels.tryFlipTrigger = TRUE;
             gCurrentHiddenPanels.flipTriggerPosY = playerStatus->pos.y;
         }
     }

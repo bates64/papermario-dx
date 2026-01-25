@@ -2,7 +2,7 @@
 
 EvtScript N(EVS_ParadePhase_Yoshis) = {
     ChildThread
-        Call(EnableTexPanning, MODEL_o119, true)
+        Call(EnableTexPanning, MODEL_o119, TRUE)
         Set(LVar0, 0)
         Loop(0)
             Add(LVar0, 512)

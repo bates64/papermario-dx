@@ -19,7 +19,7 @@ void basic_ai_suspend(Evt* script) {
     }
 }
 
-bool ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW) {
+b32 ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW) {
     f32 x1, y1, z1;
     f32 x2, y2, z2;
     f32 x3, y3, z3;
@@ -27,7 +27,7 @@ bool ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f
     f32 cwHitDist = -1.0f;
     f32 ccwHitDist = -1.0f;
     f32 yaw;
-    bool fwdHit;
+    b32 fwdHit;
 
     x1 = npc->pos.x;
     y1 = npc->pos.y;
@@ -76,16 +76,16 @@ bool ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f
         }
     }
 
-    if (outYaw != nullptr) {
+    if (outYaw != NULL) {
         *outYaw = clamp_angle(yaw);
     }
-    if (outDistFwd != nullptr) {
+    if (outDistFwd != NULL) {
         *outDistFwd = fwdHitDist;
     }
-    if (outDistCW != nullptr) {
+    if (outDistCW != NULL) {
         *outDistCW = cwHitDist;
     }
-    if (outDistCCW != nullptr) {
+    if (outDistCCW != NULL) {
         *outDistCCW = ccwHitDist;
     }
     return fwdHit;

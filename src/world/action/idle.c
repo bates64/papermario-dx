@@ -36,7 +36,7 @@ void action_update_idle_peach(void);
 void action_update_idle(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    s32 firstFrame = false;
+    s32 firstFrame = FALSE;
     f32 angle, magnitude;
     AnimID anim;
 
@@ -49,7 +49,7 @@ void action_update_idle(void) {
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~(PS_FLAG_ACTION_STATE_CHANGED | PS_FLAG_ARMS_RAISED | PS_FLAG_AIRBORNE);
-        firstFrame = true;
+        firstFrame = TRUE;
         playerStatus->actionSubstate = SUBSTATE_IDLE_DEFAULT;
         playerStatus->curStateTime = 0;
         playerStatus->timeInAir = 0;

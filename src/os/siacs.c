@@ -10,7 +10,7 @@ OSMesgQueue __osSiAccessQueue OSALIGNED(8);
 void __osSiCreateAccessQueue(void) {
     __osSiAccessQueueEnabled = 1;
     osCreateMesgQueue(&__osSiAccessQueue, siAccessBuf, SI_Q_BUF_LEN);
-    osSendMesg(&__osSiAccessQueue, nullptr, OS_MESG_NOBLOCK);
+    osSendMesg(&__osSiAccessQueue, NULL, OS_MESG_NOBLOCK);
 }
 
 void __osSiGetAccess(void) {
@@ -22,5 +22,5 @@ void __osSiGetAccess(void) {
 }
 
 void __osSiRelAccess(void) {
-    osSendMesg(&__osSiAccessQueue, nullptr, OS_MESG_NOBLOCK);
+    osSendMesg(&__osSiAccessQueue, NULL, OS_MESG_NOBLOCK);
 }

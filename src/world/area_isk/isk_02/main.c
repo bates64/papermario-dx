@@ -1,13 +1,13 @@
 #include "isk_02.h"
 
-bool N(CamAdjustReady) = false;
+b32 N(CamAdjustReady) = FALSE;
 
 s32 N(adjust_cam_on_landing)(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
     if (!N(CamAdjustReady)) {
         if (gPlayerStatus.pos.y <= 0.0f) {
-            N(CamAdjustReady) = true;
+            N(CamAdjustReady) = TRUE;
         }
         ret = LANDING_CAM_ALWAYS_ADJUST;
     } else if (gPlayerStatus.pos.y > 0.0f) {
@@ -39,7 +39,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupLock))
     Exec(N(EVS_SetupSarcophagi))

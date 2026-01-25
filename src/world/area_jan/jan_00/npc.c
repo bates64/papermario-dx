@@ -125,7 +125,7 @@ API_CALLABLE(N(func_80240CF8_B21238)) {
             break;
         case 1:
             partner = get_npc_safe(NPC_PARTNER);
-            if (partner == nullptr) {
+            if (partner == NULL) {
                 return ApiStatus_DONE2;
             }
             partner->pos.x = x;
@@ -235,14 +235,14 @@ EvtScript N(D_80242DB0_B232F0) = {
     Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     IfEq(LVar0, 0)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Else
         Call(SetCamSpeed, CAM_DEFAULT, 1)
     EndIf
     Wait(1)
-    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
     Call(SetCamSpeed, CAM_DEFAULT, 1)
     Label(0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -263,21 +263,21 @@ EvtScript N(D_80242DB0_B232F0) = {
 };
 
 EvtScript N(D_80242FA8_B234E8) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 310)
         Call(SetPanTarget, CAM_DEFAULT, 0, 0, 310)
         Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.5))
         Call(SetCamPosA, CAM_DEFAULT, Float(5.0), Float(0.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Wait(60)
         Call(SetPanTarget, CAM_DEFAULT, 180, 0, 0)
         Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
         Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-7.5))
         Call(SetCamPosA, CAM_DEFAULT, Float(0.0), Float(0.0))
         Call(SetCamSpeed, CAM_DEFAULT, Float(0.4))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     EndThread
     Set(LVar0, 0)
     ExecGetTID(N(D_80242D90_B232D0), LVar3)
@@ -296,7 +296,7 @@ EvtScript N(D_80242FA8_B234E8) = {
     Wait(1)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(func_80240B4C_B2108C, 3, LVar0, LVar1, LVar2)
-        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Walk)
         Call(NpcMoveTo, NPC_Kolorado_02, LVar0, LVar2, 10)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Thrown)
@@ -306,7 +306,7 @@ EvtScript N(D_80242FA8_B234E8) = {
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Walk)
         Call(NpcMoveTo, NPC_Kolorado_02, 290, 20, 20)
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Idle)
-        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_Kolorado_02, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
         Call(InterpNpcYaw, NPC_Kolorado_02, 270, 0)
     EndIf
     Call(func_80240B4C_B2108C, 3, LVar0, LVar1, LVar2)
@@ -322,7 +322,7 @@ EvtScript N(D_80242FA8_B234E8) = {
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, 224, 0, 20, 20)
     Call(PartnerIsFlying, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, FALSE)
         Call(EnablePartnerAI)
         Wait(10)
         Call(DisablePartnerAI, 0)
@@ -364,9 +364,9 @@ EvtScript N(D_80242FA8_B234E8) = {
         SetF(LVar9, Float(1.0))
     EndIf
     Exec(N(D_80245860_B25DA0))
-    Call(DisablePlayerPhysics, false)
+    Call(DisablePlayerPhysics, FALSE)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(ResetCam, CAM_DEFAULT, LVar9)
     Return
     End
@@ -388,7 +388,7 @@ EvtScript N(EVS_NpcIdle_Kolorado_01) = {
     Call(SetPanTarget, CAM_DEFAULT, 250, 0, 200)
     Call(SetCamPosA, CAM_DEFAULT, Float(20.0), Float(0.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Exec(N(D_80242FA8_B234E8))
     Return
@@ -402,13 +402,13 @@ Vec3f N(D_802438E4_B23E24)[] = {
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado_01) = {
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerPhysics, TRUE)
     Call(InterpPlayerYaw, 270, 0)
     Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_CH5_0003)
     Call(ShowChoice, MSG_Choice_0010)
     IfEq(LVar0, 1)
         Call(ContinueSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_CH5_0005)
-        Call(DisablePlayerPhysics, false)
+        Call(DisablePlayerPhysics, FALSE)
         Return
     EndIf
     Call(EndSpeech, NPC_SELF, -1, -1, 5)
@@ -421,8 +421,8 @@ EvtScript N(EVS_NpcInteract_Kolorado_01) = {
     Set(LVar0, 0)
     Exec(N(D_80242DB0_B232F0))
     Call(DisablePartnerAI, 0)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, TRUE)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Call(func_80240B4C_B2108C, 3, LVar0, LVar1, LVar2)
@@ -471,7 +471,7 @@ EvtScript N(EVS_NpcInteract_Kolorado_01) = {
         Call(SpeakToPlayer, NPC_Kolorado_02, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0007)
     EndIf
     IfGe(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
-        IfEq(GF_MAC01_Defeated_JrTroopa4, true)
+        IfEq(GF_MAC01_Defeated_JrTroopa4, TRUE)
             Goto(90)
         EndIf
         Call(SetNpcVar, NPC_JrTroopa, 0, 1)
@@ -484,12 +484,12 @@ EvtScript N(EVS_NpcInteract_Kolorado_01) = {
         EndLoop
         Exec(N(D_802437C4_B23D04))
         Call(N(func_80240F14_B21454), 0)
-        Call(EnableGroup, MODEL_kujira, false)
+        Call(EnableGroup, MODEL_kujira, FALSE)
     Else
         Label(90)
         Exec(N(D_802437C4_B23D04))
         Call(N(func_80240F14_B21454), 0)
-        Call(EnableGroup, MODEL_kujira, false)
+        Call(EnableGroup, MODEL_kujira, FALSE)
         Call(GotoMap, Ref("mac_06"), mac_06_ENTRY_1)
         Wait(100)
     EndIf
@@ -498,17 +498,17 @@ EvtScript N(EVS_NpcInteract_Kolorado_01) = {
 };
 
 EvtScript N(EVS_NpcInit_Kolorado_01) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, FALSE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Still)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_00_ENTRY_0)
-        Call(DisablePlayerPhysics, true)
+        Call(DisablePlayerPhysics, TRUE)
         Call(InterpPlayerYaw, 90, 0)
         Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, TRUE)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
         Call(SetNpcYaw, NPC_PARTNER, 90)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Kolorado_01)))
@@ -522,7 +522,7 @@ EvtScript N(EVS_NpcInit_Kolorado_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Kolorado_02) = {
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0006)
     ExecWait(N(EVS_LetterPrompt_Kolorado))
     ExecWait(N(EVS_LetterReward_Kolorado))
@@ -542,7 +542,7 @@ EvtScript N(EVS_NpcInit_Kolorado_02) = {
 
 EvtScript N(D_802441C8_B24708) = {
     Loop(0)
-        Call(PlayerFaceNpc, NPC_JrTroopa, false)
+        Call(PlayerFaceNpc, NPC_JrTroopa, FALSE)
         Call(NpcFaceNpc, NPC_Kolorado_02, NPC_JrTroopa, 0)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_JrTroopa, 0)
         Wait(1)
@@ -571,7 +571,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(22.5), Float(-12.5))
     Call(SetCamPosA, CAM_DEFAULT, Float(23.0), Float(0.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_ChargeTripped)
     Call(SetNpcSpeed, NPC_SELF, Float(4.0))
     Call(NpcMoveTo, NPC_SELF, 80, 90, 0)
@@ -579,7 +579,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(250.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(14.5), Float(-10.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.7))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Charge)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
     Call(StopSound, SOUND_LOOP_JR_TROOPA_SWIM)
@@ -613,7 +613,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(SetCamPitch, CAM_DEFAULT, Float(20.0), Float(-10.0))
     Call(SetCamPosA, CAM_DEFAULT, Float(24.0), Float(0.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.5))
     Call(NpcJump0, NPC_SELF, 80, -50, 90, 20)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_JR_TROOPA_SPLASH, SOUND_SPACE_DEFAULT)
@@ -631,7 +631,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
 };
 
 EvtScript N(EVS_NpcInit_JrTroopa) = {
-    IfEq(GF_MAC01_Defeated_JrTroopa4, false)
+    IfEq(GF_MAC01_Defeated_JrTroopa4, FALSE)
         Call(SetNpcPos, NPC_SELF, -530, -50, 20)
         Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa)))
     EndIf

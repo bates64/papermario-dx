@@ -3,9 +3,9 @@
 #include "world/common/npc/TrainToad.inc.c"
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     ExecWait(N(D_80244B10_DBC420))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

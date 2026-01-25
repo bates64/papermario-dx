@@ -13,14 +13,14 @@ void btl_state_update_switch_to_player(void) {
         gBattleStatus.blockResult = BLOCK_RESULT_NONE;
         gBattleStatus.flags1 |= BS_FLAGS1_SHOW_PLAYER_DECORATIONS;
         player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
-        if (partner != nullptr) {
+        if (partner != NULL) {
             partner->flags |= (ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
         }
 
         for (i = 0; i < ARRAY_COUNT(gBattleStatus.enemyActors); i++) {
             Actor* enemy = gBattleStatus.enemyActors[i];
 
-            if (enemy != nullptr) {
+            if (enemy != NULL) {
                 enemy->flags |= ACTOR_FLAG_HEALTH_BAR_HIDDEN;
                 enemy->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS;
             }

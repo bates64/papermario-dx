@@ -29,13 +29,13 @@ EffectInstance* floating_cloud_puff_main(
     bp.update = floating_cloud_puff_update;
     bp.renderScene = floating_cloud_puff_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_FLOATING_CLOUD_PUFF;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.floatingCloudPuff = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.floatingCloudPuff != nullptr);
+    ASSERT(effect->data.floatingCloudPuff != NULL);
 
     data->unk_00 = arg0;
     data->unk_14 = 0;

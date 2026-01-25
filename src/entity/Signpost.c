@@ -36,10 +36,10 @@ EntityBlueprint Entity_Signpost = {
     .flags = ENTITY_FLAG_CIRCULAR_SHADOW | ENTITY_FLAG_400 | ENTITY_FLAG_FIXED_SHADOW_SIZE,
     .typeDataSize = sizeof(SignpostData),
     .renderCommandList = Entity_Signpost_RenderScript,
-    .modelAnimationNodes = nullptr,
-    .fpInit = nullptr,
+    .modelAnimationNodes = NULL,
+    .fpInit = NULL,
     .updateEntityScript = Entity_Signpost_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     {{ entity_model_Signpost_ROM_START, entity_model_Signpost_ROM_END }},
     .entityType = ENTITY_TYPE_SIGNPOST,
     .aabbSize = { 40, 50, 20 }

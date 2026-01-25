@@ -139,7 +139,7 @@ API_CALLABLE(N(func_802446AC_804F2C)) {
 }
 
 EvtScript N(EVS_Merlon_AnimateDiscoBall) = {
-    Call(EnableModel, MODEL_mirrorball, true)
+    Call(EnableModel, MODEL_mirrorball, TRUE)
     Set(LVar0, 328)
     Set(LVar1, 0)
     Loop(50)
@@ -198,7 +198,7 @@ EvtScript N(EVS_Merlon_AnimateDiscoBall) = {
         Call(RotateModel, MODEL_mirrorball, LVar1, 0, 1, 0)
         Wait(1)
     EndLoop
-    Call(EnableModel, MODEL_mirrorball, false)
+    Call(EnableModel, MODEL_mirrorball, FALSE)
     Return
     End
 };
@@ -229,7 +229,7 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
     Call(GetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     SetF(LVar1, Float(-11.0))
     Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Set(ArrayVar(6), 1)
     PlayEffect(EFFECT_MERLIN_HOUSE_STARS, 0, -298, 21, -330)
@@ -278,25 +278,25 @@ EvtScript N(EVS_Merlon_ReadFortuneFX) = {
 };
 
 EvtScript N(EVS_Merlon_GiveHint) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0036)
-    Call(ShowCoinCounter, true)
+    Call(ShowCoinCounter, TRUE)
     Call(ShowChoice, MSG_Choice_000D)
     IfNe(LVar0, 0)
-        Call(ShowCoinCounter, false)
+        Call(ShowCoinCounter, FALSE)
         Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0039)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Return
     EndIf
     Call(N(GetPlayerCoins))
     IfLt(LVar0, 5)
-        Call(ShowCoinCounter, false)
+        Call(ShowCoinCounter, FALSE)
         Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_003A)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Return
     EndIf
     Call(AddCoin, -5)
-    Call(ShowCoinCounter, false)
+    Call(ShowCoinCounter, FALSE)
     Call(ContinueSpeech, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, MSG_MAC_Plaza_0037)
     Call(SetNpcAnimation, NPC_Merlon, ANIM_Merlon_Gather1)
     Wait(10)
@@ -324,7 +324,7 @@ EvtScript N(EVS_Merlon_GiveHint) = {
         CaseLt(STORY_CH1_STAR_SPIRIT_RESCUED)
             Set(LVar0, MSG_MerlonHint_0005)
         CaseLt(STORY_CH2_PARAKARRY_JOINED_PARTY)
-            IfEq(GF_MAC03_BombedRock, false)
+            IfEq(GF_MAC03_BombedRock, FALSE)
                 Set(LVar0, MSG_MerlonHint_0006)
             Else
                 Set(LVar0, MSG_MerlonHint_0007)
@@ -364,15 +364,15 @@ EvtScript N(EVS_Merlon_GiveHint) = {
         CaseLt(STORY_CH3_ARRIVED_AT_TUBBAS_MANOR)
             Set(LVar0, MSG_MerlonHint_0018)
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
-            IfEq(GF_DGB06_Chest_CastleKey1, false)
+            IfEq(GF_DGB06_Chest_CastleKey1, FALSE)
                 Set(LVar0, MSG_MerlonHint_0019)
                 BreakSwitch
             EndIf
-            IfEq(GF_DGB12_Chest_CastleKey1, false)
+            IfEq(GF_DGB12_Chest_CastleKey1, FALSE)
                 Set(LVar0, MSG_MerlonHint_001A)
                 BreakSwitch
             EndIf
-            IfEq(GF_DGB16_Item_CastleKey1, false)
+            IfEq(GF_DGB16_Item_CastleKey1, FALSE)
                 Set(LVar0, MSG_MerlonHint_001B)
                 BreakSwitch
             EndIf
@@ -430,8 +430,8 @@ EvtScript N(EVS_Merlon_GiveHint) = {
         CaseLt(STORY_CH6_GOT_FERTILE_SOIL)
             Set(LVar0, MSG_MerlonHint_0036)
         CaseRange(STORY_CH6_GOT_FERTILE_SOIL, STORY_CH6_GOT_WATER_STONE)
-            IfEq(GF_FLO07_Item_CrystalBerry, false)
-                IfEq(GF_FLO10_LilyRequestedWaterStone, false)
+            IfEq(GF_FLO07_Item_CrystalBerry, FALSE)
+                IfEq(GF_FLO10_LilyRequestedWaterStone, FALSE)
                     Set(LVar0, MSG_MerlonHint_0037)
                 Else
                     Set(LVar0, MSG_MerlonHint_0038)
@@ -487,7 +487,7 @@ EvtScript N(EVS_Merlon_GiveHint) = {
             Set(LVar0, MSG_MerlonHint_004E)
     EndSwitch
     Call(SpeakToPlayer, NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle, 0, LVar0)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

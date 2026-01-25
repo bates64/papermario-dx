@@ -10,14 +10,14 @@ EvtScript N(EVS_UpdateBulletinKootFavor) = {
         Return
     EndIf
     IfEq(LVar0, 0)
-        Set(GF_MAC01_KootFavor_ReadNewsBulletin, true)
+        Set(GF_MAC01_KootFavor_ReadNewsBulletin, TRUE)
     Else
-        Set(GF_MAC01_KootFavor_ReadGossipBulletin, true)
+        Set(GF_MAC01_KootFavor_ReadGossipBulletin, TRUE)
     EndIf
     Set(LVar0, GF_MAC01_KootFavor_ReadNewsBulletin)
     Add(LVar0, GF_MAC01_KootFavor_ReadGossipBulletin)
     IfEq(LVar0, 2)
-        Set(GF_MAC02_KootFavor_CurrentComplete, true)
+        Set(GF_MAC02_KootFavor_CurrentComplete, TRUE)
     EndIf
     Return
     End
@@ -88,24 +88,24 @@ API_CALLABLE(N(SelectBulletinMessages)) {
 
 EvtScript N(EVS_ReadBulletin_News) = {
     Call(N(SelectBulletinMessages))
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(N(GetBulletinMessages))
     Call(ShowMessageAtScreenPos, LVar0, 160, 40)
     Set(LVar0, 0)
     ExecWait(N(EVS_UpdateBulletinKootFavor))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
 
 EvtScript N(EVS_ReadBulletin_Gossip) = {
     Call(N(SelectBulletinMessages))
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(N(GetBulletinMessages))
     Call(ShowMessageAtScreenPos, LVar1, 160, 40)
     Set(LVar0, 1)
     ExecWait(N(EVS_UpdateBulletinKootFavor))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

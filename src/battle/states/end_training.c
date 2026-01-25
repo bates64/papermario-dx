@@ -21,7 +21,7 @@ void btl_state_update_end_training_battle(void) {
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:
             player->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 partner->flags &= ~(ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM);
             }
             gBattleSubState = BTL_SUBSTATE_CHECK_OUTTA_SIGHT;
@@ -41,7 +41,7 @@ void btl_state_update_end_training_battle(void) {
             player->koStatus = 0;
             player->koDuration = 0;
             player->disableEffect->data.disableX->koDuration = 0;
-            if (partner != nullptr) {
+            if (partner != NULL) {
                 if (partner->koStatus == STATUS_KEY_KO) {
                     dispatch_event_partner(EVENT_RECOVER_FROM_KO);
                     gBattleSubState = BTL_SUBSTATE_AWAIT_RECOVERING;
@@ -56,16 +56,16 @@ void btl_state_update_end_training_battle(void) {
             }
             break;
         case BTL_SUBSTATE_AWAIT_RECOVERING:
-            if (player->handleEventScript != nullptr && does_script_exist(player->handleEventScriptID)) {
+            if (player->handleEventScript != NULL && does_script_exist(player->handleEventScriptID)) {
                 break;
             }
-            player->handleEventScript = nullptr;
+            player->handleEventScript = NULL;
 
-            if (partner != nullptr) {
-                if (partner->handleEventScript != nullptr && does_script_exist(partner->handleEventScriptID)) {
+            if (partner != NULL) {
+                if (partner->handleEventScript != NULL && does_script_exist(partner->handleEventScriptID)) {
                     break;
                 }
-                partner->handleEventScript = nullptr;
+                partner->handleEventScript = NULL;
             }
 
             gBattleSubState = BTL_SUBSTATE_CHECK_OUTTA_SIGHT;
@@ -93,7 +93,7 @@ void btl_state_update_end_training_battle(void) {
             break;
         case BTL_SUBSTATE_AWAIT_OUTTA_SIGHT:
             if (!does_script_exist(partner->handlePhaseScriptID)) {
-                battleStatus->outtaSightActive = false;
+                battleStatus->outtaSightActive = FALSE;
                 gBattleSubState = BTL_SUBSTATE_RESET_CAM;
             }
             break;

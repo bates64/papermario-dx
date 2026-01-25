@@ -19,16 +19,16 @@ s32 N(ShouldPauseConveyor)(void) {
     PlayerData* playerData = &gPlayerData;
 
     if (playerStatus->flags & PS_FLAG_PAUSED) {
-        return true;
+        return TRUE;
     }
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE &&
         (playerData->curPartner == PARTNER_GOOMBARIO || playerData->curPartner == PARTNER_SUSHIE))
     {
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 
 API_CALLABLE(N(WaitWhileConveyorPaused)) {
@@ -103,10 +103,10 @@ API_CALLABLE(N(AddConveyorPush)) {
 
 EvtScript N(EVS_SetupConveyors) = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
-    Call(EnableTexPanning, MODEL_1, true)
-    Call(EnableTexPanning, MODEL_3, true)
-    Call(EnableTexPanning, MODEL_4, true)
-    Call(EnableTexPanning, MODEL_8, true)
+    Call(EnableTexPanning, MODEL_1, TRUE)
+    Call(EnableTexPanning, MODEL_3, TRUE)
+    Call(EnableTexPanning, MODEL_4, TRUE)
+    Call(EnableTexPanning, MODEL_8, TRUE)
     Thread
         Set(LVar0, 0)
         Label(0)

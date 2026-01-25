@@ -105,7 +105,7 @@ enum ImgFXAnimFlags {
 typedef struct ImgFXRenderMode {
     /* 0x0 */ s32 mode1;
     /* 0x4 */ s32 mode2;
-    /* 0x8 */ u8 flags; // only checks true so far. some kind of switch?
+    /* 0x8 */ u8 flags; // only checks TRUE so far. some kind of switch?
 } ImgFXRenderMode; // size = 0xC
 
 typedef ImgFXState ImgFXInstanceList[MAX_IMGFX_INSTANCES];
@@ -254,9 +254,9 @@ void imgfx_init(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {
-        ImgFXDataCache[i].data = nullptr;
+        ImgFXDataCache[i].data = NULL;
         ImgFXDataCache[i].staleCooldownTimer = 0;
-        ImgFXDataCache[i].usingContextualHeap = false;
+        ImgFXDataCache[i].usingContextualHeap = FALSE;
     }
 
     imgfx_vtxCount = 0;
@@ -279,7 +279,7 @@ void func_8013A4D0(void) {
     }
 
     for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if ((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID && (*ImgFXInstances)[i].colorBuf != nullptr) {
+        if ((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID && (*ImgFXInstances)[i].colorBuf != NULL) {
             if ((*ImgFXInstances)[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MULTIPLY) {
                 continue;
             }
@@ -287,7 +287,7 @@ void func_8013A4D0(void) {
                 continue;
             }
             general_heap_free((*ImgFXInstances)[i].colorBuf);
-            (*ImgFXInstances)[i].colorBuf = nullptr;
+            (*ImgFXInstances)[i].colorBuf = NULL;
             (*ImgFXInstances)[i].colorBufCount = 0;
         }
     }
@@ -297,7 +297,7 @@ void imgfx_add_to_cache(void* data, s8 usingContextualHeap) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {
-        if (ImgFXDataCache[i].data == nullptr) {
+        if (ImgFXDataCache[i].data == NULL) {
             ImgFXDataCache[i].data = data;
             ImgFXDataCache[i].staleCooldownTimer = 4;
             ImgFXDataCache[i].usingContextualHeap = usingContextualHeap;
@@ -310,20 +310,20 @@ void imgfx_update_cache_impl(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {
-        if (ImgFXDataCache[i].data != nullptr) {
+        if (ImgFXDataCache[i].data != NULL) {
             ImgFXDataCache[i].staleCooldownTimer--;
 
             if (ImgFXDataCache[i].staleCooldownTimer == 0) {
                 if (ImgFXDataCache[i].usingContextualHeap) {
                     heap_free(ImgFXDataCache[i].data);
-                    ImgFXDataCache[i].data = nullptr;
+                    ImgFXDataCache[i].data = NULL;
                 } else {
                     general_heap_free(ImgFXDataCache[i].data);
-                    ImgFXDataCache[i].data = nullptr;
+                    ImgFXDataCache[i].data = NULL;
                 }
 
                 ImgFXDataCache[i].staleCooldownTimer = 0;
-                ImgFXDataCache[i].usingContextualHeap = false;
+                ImgFXDataCache[i].usingContextualHeap = FALSE;
             }
         }
     }
@@ -353,7 +353,7 @@ s32 imgfx_get_free_instances(s32 count) {
     }
 
     firstIdx = 0;
-    foundAny = false;
+    foundAny = FALSE;
     numAssigned = 0;
     iPrev = -1;
     for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
@@ -363,7 +363,7 @@ s32 imgfx_get_free_instances(s32 count) {
 
         if (!foundAny) {
             firstIdx = i;
-            foundAny = true;
+            foundAny = TRUE;
         } else {
             (*ImgFXInstances)[iPrev].nextIdx = i;
         }
@@ -418,34 +418,34 @@ ImgFXState* imgfx_get_instance(s32 idx) {
 }
 
 void imgfx_cache_instance_data(ImgFXState* state) {
-    if (state->curAnimOffset != nullptr) {
-        state->curAnimOffset = nullptr;
+    if (state->curAnimOffset != NULL) {
+        state->curAnimOffset = NULL;
     }
-    if (state->vtxBufs[0] != nullptr) {
-        imgfx_add_to_cache(state->vtxBufs[0], true);
-        state->vtxBufs[0] = nullptr;
+    if (state->vtxBufs[0] != NULL) {
+        imgfx_add_to_cache(state->vtxBufs[0], TRUE);
+        state->vtxBufs[0] = NULL;
     }
-    if (state->vtxBufs[1] != nullptr) {
-        imgfx_add_to_cache(state->vtxBufs[1], true);
-        state->vtxBufs[1] = nullptr;
+    if (state->vtxBufs[1] != NULL) {
+        imgfx_add_to_cache(state->vtxBufs[1], TRUE);
+        state->vtxBufs[1] = NULL;
     }
-    if (state->gfxBufs[0] != nullptr) {
-        imgfx_add_to_cache(state->gfxBufs[0], true);
-        state->gfxBufs[0] = nullptr;
+    if (state->gfxBufs[0] != NULL) {
+        imgfx_add_to_cache(state->gfxBufs[0], TRUE);
+        state->gfxBufs[0] = NULL;
     }
-    if (state->gfxBufs[1] != nullptr) {
-        imgfx_add_to_cache(state->gfxBufs[1], true);
-        state->gfxBufs[1] = nullptr;
+    if (state->gfxBufs[1] != NULL) {
+        imgfx_add_to_cache(state->gfxBufs[1], TRUE);
+        state->gfxBufs[1] = NULL;
     }
 }
 
 void imgfx_clear_instance_data(ImgFXState* state) {
-    state->curAnimOffset = nullptr;
-    state->vtxBufs[0] = nullptr;
-    state->vtxBufs[1] = nullptr;
-    state->gfxBufs[0] = nullptr;
-    state->gfxBufs[1] = nullptr;
-    state->colorBuf = nullptr;
+    state->curAnimOffset = NULL;
+    state->vtxBufs[0] = NULL;
+    state->vtxBufs[1] = NULL;
+    state->gfxBufs[0] = NULL;
+    state->gfxBufs[1] = NULL;
+    state->colorBuf = NULL;
     state->colorBufCount = 0;
 }
 
@@ -524,7 +524,7 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             state->ints.raw[1][0] = -1;
             return;
         case IMGFX_ALLOC_COLOR_BUF:
-            if (state->colorBuf != nullptr) {
+            if (state->colorBuf != NULL) {
                 heap_free(state->colorBuf);
             }
             state->colorBufCount = imgfxArg1 * 4;
@@ -724,7 +724,7 @@ s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matri
         return 0;
     }
 
-    if (idx >= MAX_IMGFX_INSTANCES || state == nullptr) {
+    if (idx >= MAX_IMGFX_INSTANCES || state == NULL) {
         return 0;
     }
 
@@ -793,7 +793,7 @@ void imgfx_make_mesh(ImgFXState* state) {
 }
 
 void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
-    s16 skipModeChange = false;
+    s16 skipModeChange = FALSE;
     s32 primAlpha = state->ints.color.a;
     s32 renderType = state->renderType;
     s8 angle1;
@@ -824,7 +824,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
         mode1 = renderMode->mode1;
         mode2 = renderMode->mode2;
         if (renderMode->flags & IMGFX_RENDER_NO_OVERRIDE) {
-            skipModeChange = true;
+            skipModeChange = TRUE;
         }
 
         ifxImgAlpha = (f32) ImgFXCurrentTexturePtr->alphaMultiplier / 255.0;
@@ -849,7 +849,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
             //TODO figure out bits
             mode1 = 0x404B40;
             mode2 = 0x104B40;
-            skipModeChange = true;
+            skipModeChange = TRUE;
         }
 
         if ((state->flags & IMGFX_FLAG_400) && !skipModeChange) {
@@ -1095,7 +1095,7 @@ void imgfx_mesh_make_strip(ImgFXState* state) {
 
     // create remaining pairs of vertices along the strip
     nextY = stepY;
-    while (true) {
+    while (TRUE) {
         rightColor = (nextY * 120) / ImgFXCurrentTexturePtr->tex.height;
         leftColor = rightColor + 120;
         imgfx_vtxCount += 2;
@@ -1196,23 +1196,23 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
 
         dma_copy(state->curAnimOffset, state->curAnimOffset + sizeof(*anim), anim);
 
-        if (state->vtxBufs[0] != nullptr) {
+        if (state->vtxBufs[0] != NULL) {
             imgfx_add_to_cache(state->vtxBufs[0], 1);
-            state->vtxBufs[0] = nullptr;
+            state->vtxBufs[0] = NULL;
         }
-        if (state->vtxBufs[1] != nullptr) {
+        if (state->vtxBufs[1] != NULL) {
             imgfx_add_to_cache(state->vtxBufs[1], 1);
-            state->vtxBufs[1] = nullptr;
+            state->vtxBufs[1] = NULL;
         }
-        if (state->gfxBufs[0] != nullptr) {
+        if (state->gfxBufs[0] != NULL) {
             imgfx_add_to_cache(state->gfxBufs[0], 1);
-            state->gfxBufs[0] = nullptr;
+            state->gfxBufs[0] = NULL;
         }
-        if (state->gfxBufs[1] != nullptr) {
+        if (state->gfxBufs[1] != NULL) {
             // imgfx_add_to_cache(state->gfxBufs[1], 1);
             romEnd = (u8*) state->gfxBufs[1]; // required to match
             imgfx_add_to_cache(state->gfxBufs[1], 1);
-            state->gfxBufs[1] = nullptr;
+            state->gfxBufs[1] = NULL;
         }
         state->vtxBufs[0] = heap_malloc(anim->vtxCount * sizeof(Vtx));
         state->vtxBufs[1] = heap_malloc(anim->vtxCount * sizeof(Vtx));
@@ -1255,8 +1255,8 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
     s32 absKeyframeInterval;
     s32 nextKeyIdx;
     s32 curKeyIdx;
-    ImgFXVtx* curKeyframe = nullptr;
-    ImgFXVtx* nextKeyframe = nullptr;
+    ImgFXVtx* curKeyframe = NULL;
+    ImgFXVtx* nextKeyframe = NULL;
     s32 keyframeInterval = state->ints.anim.interval;
     s32 animStep = state->ints.anim.step;
     s32 curSubframe = state->floats.anim.curFrame;
@@ -1265,7 +1265,7 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
     f32 lerpAlpha;
     s32 i;
 
-    if (header == nullptr) {
+    if (header == NULL) {
         return;
     }
 
@@ -1372,7 +1372,7 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
     state->lastVtxIdx = header->vtxCount - 1;
 
     heap_free(curKeyframe);
-    if (nextKeyframe != nullptr) {
+    if (nextKeyframe != NULL) {
         heap_free(nextKeyframe);
     }
 
@@ -1460,7 +1460,7 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
 
     i = state->firstVtxIdx;
 
-    while (true) {
+    while (TRUE) {
         Camera* cam;
         s32 uls = (imgfx_vtxBuf[i + 0].v.tc[0] >> 0x5) - 256;
         s32 ult = (imgfx_vtxBuf[i + 0].v.tc[1] >> 0x5) - 256;
@@ -1704,7 +1704,7 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
 }
 
 void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
-    if (state->vtxBufs[gCurrentDisplayContextIndex] == nullptr || state->gfxBufs[gCurrentDisplayContextIndex] == nullptr) {
+    if (state->vtxBufs[gCurrentDisplayContextIndex] == NULL || state->gfxBufs[gCurrentDisplayContextIndex] == NULL) {
         return;
     }
 

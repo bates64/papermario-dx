@@ -62,7 +62,7 @@ API_CALLABLE(N(func_80240790_BB7800)) {
     moveAngle = (((angle2 - angle1) / 40.0f) * script->functionTemp[1]) + angle1;
     cam->movePos.x = (s32) (sin_deg(moveAngle) * 100.0f) + 89;
     cam->movePos.z = (s32)(-cos_deg(moveAngle) * 100.0f) + 84;
-    cam->panActive = true;
+    cam->panActive = TRUE;
 
     script->functionTemp[1]++;
     if (script->functionTemp[1] < 41) {
@@ -73,19 +73,19 @@ API_CALLABLE(N(func_80240790_BB7800)) {
 }
 
 EvtScript N(EVS_Scene_ReachedMansion) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerPos, -800, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -800, 0, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, true)
+    Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_LOOK_AT_POINT, TRUE)
     Call(SetCamPitch, CAM_DEFAULT, Float(40.0), Float(-63.59375))
     Call(SetCamDistance, CAM_DEFAULT, 720)
     Call(SetCamPosA, CAM_DEFAULT, 89, 84)
     Call(SetCamPosB, CAM_DEFAULT, 89, 84)
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 75, 0, 309)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(N(func_8024066C_BB76DC))
     Wait(30)
     ChildThread
@@ -103,14 +103,14 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
     Wait(50)
     Call(SetPlayerPos, -701, 0, -34)
     Call(SetNpcPos, NPC_PARTNER, -701, 0, -34)
-    Call(DisablePlayerPhysics, false)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, true)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, TRUE)
     Call(PlayerMoveTo, -407, 103, 120)
-    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
+    Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, FALSE)
     Wait(10)
     Thread
         Wait(15)
-        Call(PlayerFaceNpc, NPC_PARTNER, false)
+        Call(PlayerFaceNpc, NPC_PARTNER, FALSE)
     EndThread
     Call(DisablePartnerAI, 0)
     Call(GetCurrentPartnerID, LVar0)
@@ -125,7 +125,7 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 5, MSG_CH3_0027)
     EndSwitch
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -141,7 +141,7 @@ EvtScript N(EVS_ExitWalk_mim_07_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, mim_11_ENTRY_0)
     Exec(ExitWalk)
-    Set(GF_MIM_ChoosingPath, false)
+    Set(GF_MIM_ChoosingPath, FALSE)
     Call(GotoMap, Ref("mim_07"), mim_07_ENTRY_3)
     Wait(100)
     Return
@@ -162,7 +162,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    Set(AF_MIM_01, true)
+    Set(AF_MIM_01, TRUE)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
@@ -172,7 +172,7 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mim_11_ENTRY_0)
-            Set(AF_MIM_01, false)
+            Set(AF_MIM_01, FALSE)
             IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 ExecWait(N(EVS_Scene_ReachedMansion))
@@ -181,7 +181,7 @@ EvtScript N(EVS_EnterMap) = {
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-                Call(PanToTarget, CAM_DEFAULT, 0, false)
+                Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
                 Exec(N(EVS_BindExitTriggers))
             Else
                 Set(LVar0, Ref(N(EVS_BindExitTriggers)))
@@ -197,21 +197,21 @@ EvtScript N(EVS_EnterMap) = {
             ExecWait(EnterDoubleDoor)
             Exec(N(EVS_BindExitTriggers))
         CaseEq(mim_11_ENTRY_3)
-            IfEq(GF_MIM11_WarpPipe, false)
-                Call(DisablePlayerInput, true)
-                Call(DisablePlayerPhysics, true)
+            IfEq(GF_MIM11_WarpPipe, FALSE)
+                Call(DisablePlayerInput, TRUE)
+                Call(DisablePlayerPhysics, TRUE)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                 Call(SetPlayerPos, LVar0, NPC_DISPOSE_POS_Y, LVar2)
                 Wait(30)
                 Call(PlaySound, SOUND_GROW)
-                Set(GF_MIM11_WarpPipe, true)
+                Set(GF_MIM11_WarpPipe, TRUE)
                 Wait(30)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
                 Call(SetPlayerPos, LVar0, LVar1, LVar2)
                 Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-                Call(DisablePlayerPhysics, false)
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerPhysics, FALSE)
+                Call(DisablePlayerInput, FALSE)
             EndIf
             Set(LVarA, Ref(N(EVS_BindExitTriggers)))
             ExecWait(N(EVS_Pipe_EnterVertical))
@@ -227,11 +227,11 @@ EvtScript N(EVS_EnterMap) = {
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOOS_MANSION)
-    Set(GF_MAP_BoosMansion, true)
+    Set(GF_MAP_BoosMansion, TRUE)
     Call(SetSpriteShading, SHADING_MIM_11)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(EnableGroup, MODEL_g62, false)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(EnableGroup, MODEL_g62, FALSE)
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(D_802430E0_BBA150))
     Exec(N(EVS_SetupFoliage))

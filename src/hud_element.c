@@ -11,7 +11,7 @@ typedef struct HudElementSize {
     s16 size;
 } HudElementSize;
 
-u8* HudElemAuxCache = nullptr;
+u8* HudElemAuxCache = NULL;
 s32 HudElemCacheCapacity = 0x11000;
 
 HudScript HES_Empty = {
@@ -129,13 +129,13 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
     s32 i;
     s32 capacity;
 
-    if (pos == nullptr) {
+    if (pos == NULL) {
         return;
     }
 
     preset = 0;
 
-    while (true) {
+    while (TRUE) {
         switch (*pos++) {
             case HUD_ELEMENT_OP_End:
                 return;
@@ -182,7 +182,7 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
 
                 i = 0;
                 entry = gHudElementCacheTableRaster;
-                while (true) {
+                while (TRUE) {
                     if (entry->id == -1) {
                         entry->id = raster;
                         entry->data = &gHudElementCacheBuffer[*gHudElementCacheSize];
@@ -218,7 +218,7 @@ void hud_element_load_script(HudElement* hudElement, HudScript* anim) {
 
                 entry = gHudElementCacheTablePalette;
                 i = 0;
-                while (true) {
+                while (TRUE) {
                     if (entry->id == -1) {
                         entry->id = palette;
                         entry->data = &gHudElementCacheBuffer[*gHudElementCacheSize];
@@ -263,7 +263,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
     s32 fmt;
     s32 widthScale, heightScale;
     s32 texStartX, texStartY;
-    bool isLastTileX, isLastTileY;
+    b32 isLastTileX, isLastTileY;
     s32 uls, ult, lrs, lrt;
     s32 uly, lry, ulx, lrx;
     s32 masks, maskt;
@@ -371,9 +371,9 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
     }
 
     ult = 0;
-    isLastTileY = false;
+    isLastTileY = FALSE;
     uly = baseY;
-    while (true) {
+    while (TRUE) {
         lry = uly + 1024.0 / heightScale * 32.0;
         lrt = ult + 31;
         if (flipY) {
@@ -389,7 +389,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
         if (lry >= SCREEN_HEIGHT) {
             lrt = SCREEN_HEIGHT - baseY - 1;
             lry = SCREEN_HEIGHT;
-            isLastTileY = true;
+            isLastTileY = TRUE;
         }
 
         if (lrt + 1 >= texSizeY) {
@@ -399,13 +399,13 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
             } else {
                 lry = baseY + drawSizeY;
             }
-            isLastTileY = true;
+            isLastTileY = TRUE;
         }
 
-        isLastTileX = false;
+        isLastTileX = FALSE;
         uls = 0;
         ulx = baseX;
-        while (true) {
+        while (TRUE) {
             lrx = ulx + 1024.0 / widthScale * 64.0;
             lrs = uls + 63;
             if (flipX) {
@@ -421,7 +421,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
             if (lrx >= SCREEN_WIDTH) {
                 lrs = SCREEN_WIDTH - baseX - 1;
                 lrx = SCREEN_WIDTH;
-                isLastTileX = true;
+                isLastTileX = TRUE;
             }
 
             if (lrs + 1 >= texSizeX) {
@@ -431,7 +431,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
                 } else {
                     lrx = baseX + drawSizeX;
                 }
-                isLastTileX = true;
+                isLastTileX = TRUE;
             }
 
             gDPPipeSync(gMainGfxPos++);
@@ -604,7 +604,7 @@ void hud_element_clear_cache(void) {
             entryPalette[i].id = -1;
         }
     } else {
-        if (HudElemAuxCache == nullptr) {
+        if (HudElemAuxCache == NULL) {
             gHudElementCacheBuffer = general_heap_malloc(HudElemCacheCapacity / 2);
             ASSERT(gHudElementCacheBuffer);
         } else {
@@ -621,7 +621,7 @@ void hud_element_clear_cache(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
-        (*gHudElements)[i] = nullptr;
+        (*gHudElements)[i] = NULL;
     }
 
     HudElemCount = 0;
@@ -635,7 +635,7 @@ extern Addr D_80200000;
 
 void init_hud_element_list(void) {
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
-        if (gHudElementCacheBufferBattle != nullptr) {
+        if (gHudElementCacheBufferBattle != NULL) {
 #if VERSION_PAL
             if (gHudElementCacheBufferBattle != D_80200000) {
                 general_heap_free(gHudElementCacheBufferBattle);
@@ -643,7 +643,7 @@ void init_hud_element_list(void) {
 #else
             general_heap_free(gHudElementCacheBufferBattle);
 #endif
-            gHudElementCacheBufferBattle = nullptr;
+            gHudElementCacheBufferBattle = NULL;
         }
 
         gHudElements = &gHudElementsWorld;
@@ -665,7 +665,7 @@ void init_hud_element_list(void) {
 
 void hud_element_setup_cam(void) {
     gCameras[CAM_HUD].updateMode = CAM_UPDATE_INTERP_POS;
-    gCameras[CAM_HUD].needsInit = true;
+    gCameras[CAM_HUD].needsInit = TRUE;
     gCameras[CAM_HUD].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_HUD].farClip = 0x4000;
     gCameras[CAM_HUD].vfov = 1.0f;
@@ -692,7 +692,7 @@ s32 hud_element_create(HudScript* anim) {
     s32 id;
 
     for (id = 0; id < ARRAY_COUNT(*gHudElements); id++) {
-        if ((*gHudElements)[id] == nullptr) {
+        if ((*gHudElements)[id] == NULL) {
             break;
         }
     }
@@ -702,11 +702,11 @@ s32 hud_element_create(HudScript* anim) {
     (*gHudElements)[id] = hudElement = heap_malloc(sizeof(*hudElement));
     HudElemCount++;
 
-    ASSERT(hudElement != nullptr);
+    ASSERT(hudElement != NULL);
 
     hudElement->flags = HUD_ELEMENT_FLAG_INITIALIZED;
     hudElement->readPos = anim;
-    if (anim == nullptr) {
+    if (anim == NULL) {
         hudElement->readPos = &HES_Empty;
     }
     hudElement->updateTimer = 1;
@@ -746,7 +746,7 @@ void update_hud_elements(void) {
     for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
         HudElement* elem = (*gHudElements)[i];
 
-        if (elem == nullptr || elem->flags == 0 || elem->flags & HUD_ELEMENT_FLAG_DISABLED) {
+        if (elem == NULL || elem->flags == 0 || elem->flags & HUD_ELEMENT_FLAG_DISABLED) {
             continue;
         }
 
@@ -755,7 +755,7 @@ void update_hud_elements(void) {
             continue;
         }
 
-        if (elem->readPos == nullptr) {
+        if (elem->readPos == NULL) {
             // bail out and skip updating any subsequent elements
             break;
         }
@@ -803,25 +803,25 @@ s32 hud_element_update(HudElement* hudElement) {
         case HUD_ELEMENT_OP_UseIA8:
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags |= HUD_ELEMENT_FLAG_FMT_IA8;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetVisible:
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags |= HUD_ELEMENT_FLAG_FMT_CI4;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetHidden:
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_FMT_CI4;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetFlags:
             s1 = *nextPos++;
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags |= s1;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_ClearFlags:
             s1 = *nextPos++;
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags &= ~s1;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetRGBA:
             hudElement->updateTimer = *nextPos++;
             hudElement->imageAddr = (u8*)*nextPos++;
@@ -914,7 +914,7 @@ s32 hud_element_update(HudElement* hudElement) {
             }
 
             i = 0;
-            while (true) {
+            while (TRUE) {
                 if (entryRaster[i].id == *nextPos) {
                     break;
                 }
@@ -925,7 +925,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->imageAddr = entryRaster[i].data;
 
             i = 0;
-            while (true) {
+            while (TRUE) {
                 if (entryPalette[i].id == *nextPos) {
                     break;
                 }
@@ -967,11 +967,11 @@ s32 hud_element_update(HudElement* hudElement) {
             break;
         case HUD_ELEMENT_OP_Restart:
             hudElement->readPos = hudElement->loopStartPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_Loop:
             hudElement->loopStartPos = (HudScript*)nextPos;
             hudElement->readPos = (HudScript*)nextPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_RandomRestart:
             s1 = *nextPos++;
             s2 = *nextPos++;
@@ -980,7 +980,7 @@ s32 hud_element_update(HudElement* hudElement) {
             } else {
                 hudElement->readPos = (HudScript*)nextPos;
             }
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetTileSize:
             sizePreset = *nextPos++;
             hudElement->widthScale = X10(1);
@@ -990,7 +990,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->tileSizePreset = sizePreset;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_REPEATED;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetSizesAutoScale:
             tileSizePreset = *nextPos++;
             drawSizePreset = *nextPos++;
@@ -1015,7 +1015,7 @@ s32 hud_element_update(HudElement* hudElement) {
 
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags |= HUD_ELEMENT_FLAG_REPEATED;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetSizesFixedScale:
             tileSizePreset = *nextPos++;
             drawSizePreset = *nextPos++;
@@ -1028,12 +1028,12 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->flags |= HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_REPEATED;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZE_DIR;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_AddTexelOffsetX:
             s1 = *nextPos++;
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->screenPosOffset.x += s1;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_AddTexelOffsetY:
             s2 = *nextPos++;
             if (hudElement->flags & HUD_ELEMENT_FLAG_FLIPY) {
@@ -1042,7 +1042,7 @@ s32 hud_element_update(HudElement* hudElement) {
                 hudElement->screenPosOffset.y += s2;
             }
             hudElement->readPos = (HudScript*)nextPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetTexelOffset:
             s1 = *nextPos++;
             s2 = *nextPos++;
@@ -1053,7 +1053,7 @@ s32 hud_element_update(HudElement* hudElement) {
                 hudElement->screenPosOffset.y = s2;
             }
             hudElement->readPos = (HudScript*)nextPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetScale:
             uniformScale = (f32)*nextPos++;
             uniformScale /= 65536;
@@ -1085,7 +1085,7 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags |= HUD_ELEMENT_FLAG_REPEATED | HUD_ELEMENT_FLAG_SCALED;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetAlpha:
             s1 = *nextPos++;
             hudElement->opacity = s1;
@@ -1094,7 +1094,7 @@ s32 hud_element_update(HudElement* hudElement) {
                 hudElement->flags &= ~HUD_ELEMENT_FLAG_TRANSPARENT;
             }
             hudElement->readPos = (HudScript*)nextPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_RandomDelay:
             s1 = *nextPos++;
             s2 = *nextPos++;
@@ -1112,24 +1112,24 @@ s32 hud_element_update(HudElement* hudElement) {
             hudElement->flags &= ~HUD_ELEMENT_FLAG_RESIZING;
             hudElement->flags &= ~HUD_ELEMENT_FLAG_REPEATED;
             hudElement->flags |= HUD_ELEMENT_FLAG_CUSTOM_SIZE;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetVariable:
             s1 = *nextPos++;
             hudElement->readPos = (HudScript*)nextPos;
             hudElement->flags &= ~HUD_ELEMENT_VARIABLE_MASK;
             hudElement->flags |= s1 << 24;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_RandomBranch:
             s1 = *nextPos++;
             newReadPos = (HudScript*)nextPos[rand_int(s1 - 1)];
             hudElement->readPos = newReadPos;
             hud_element_load_script(hudElement, newReadPos);
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_PlaySound:
             arg2 = *nextPos++;
             sfx_play_sound(arg2);
             hudElement->readPos = (HudScript*)nextPos;
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_SetPivot:
             arg1 = *nextPos++;
             arg2 = *nextPos++;
@@ -1138,12 +1138,12 @@ s32 hud_element_update(HudElement* hudElement) {
                 hudTransform->pivot.x = arg1;
                 hudTransform->pivot.y = arg2;
             }
-            return true;
+            return TRUE;
         case HUD_ELEMENT_OP_op_16:
             break;
     }
 
-    return false;
+    return FALSE;
 }
 
 void render_hud_elements_backUI(void) {
@@ -1164,7 +1164,7 @@ void render_hud_elements_backUI(void) {
     count = 0;
     for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
         elem = (*gHudElements)[i];
-        if (elem == nullptr) {
+        if (elem == NULL) {
             continue;
         }
 
@@ -1212,7 +1212,7 @@ void render_hud_elements_backUI(void) {
     for (i = 0; i < count; i++) {
         elem = (*gHudElements)[sortedElements[i]];
 
-        if (elem->readPos == nullptr) {
+        if (elem->readPos == NULL) {
             break;
         }
 
@@ -1241,14 +1241,14 @@ void render_hud_elements_backUI(void) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
             } else {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, FALSE);
             }
         } else {
             f32 xScaled, yScaled;
@@ -1277,9 +1277,9 @@ void render_hud_elements_backUI(void) {
             elem->heightScale = X10(yScaled);
 
             if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
             }
-            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
         }
     }
 }
@@ -1298,7 +1298,7 @@ void render_hud_elements_frontUI(void) {
     count = 0;
     for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
         elem = (*gHudElements)[i];
-        if (elem == nullptr) {
+        if (elem == NULL) {
             continue;
         }
 
@@ -1369,14 +1369,14 @@ void render_hud_elements_frontUI(void) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
             } else {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, FALSE);
             }
         } else {
             f32 xScaled, yScaled;
@@ -1405,9 +1405,9 @@ void render_hud_elements_frontUI(void) {
             elem->heightScale = X10(yScaled);
 
             if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
             }
-            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
         }
     }
 }
@@ -1596,7 +1596,7 @@ void render_complex_hud_element(HudElement* elem) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-s32 gather_and_sort_hud_elements(s32* sortedElements, bool isBattle)
+s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle)
 {
     HudElement* elem;
     s32 el1, el2;
@@ -1606,7 +1606,7 @@ s32 gather_and_sort_hud_elements(s32* sortedElements, bool isBattle)
     count = 0;
     for (i = 0; i < ARRAY_COUNT(*gHudElements); i++) {
         elem = (*gHudElements)[i];
-        if (elem == nullptr) {
+        if (elem == NULL) {
             continue;
         }
 
@@ -1669,7 +1669,7 @@ void render_transformed_hud_elements(void) {
     s32 count, i;
 
     if (gCurrentCamID == CAM_HUD) {
-        count = gather_and_sort_hud_elements(sortedElements, false);
+        count = gather_and_sort_hud_elements(sortedElements, FALSE);
 
         if (count != 0) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
@@ -1688,7 +1688,7 @@ void render_transformed_hud_elements(void) {
     }
 
     if (gCurrentCamID == CAM_BATTLE) {
-        count = gather_and_sort_hud_elements(sortedElements, true);
+        count = gather_and_sort_hud_elements(sortedElements, TRUE);
 
         if (count != 0) {
             gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, SCREEN_XMIN, SCREEN_YMIN, SCREEN_XMAX, SCREEN_YMAX);
@@ -1707,7 +1707,7 @@ void render_transformed_hud_elements(void) {
     }
 }
 
-void immediately_render_complex_hud_element(s32 elemID, bool includeSetup, s32 camID) {
+void immediately_render_complex_hud_element(s32 elemID, b32 includeSetup, s32 camID) {
     Camera* camera = &gCameras[camID];
 
     if (includeSetup) {
@@ -1769,7 +1769,7 @@ void immediately_render_complex_hud_element(s32 elemID, bool includeSetup, s32 c
         elemID &= ~HUD_ELEMENT_BATTLE_ID_MASK;
         elem = (*gHudElements)[elemID];
 
-        if (elem == nullptr) {
+        if (elem == NULL) {
             return;
         }
 
@@ -1798,19 +1798,19 @@ void immediately_render_complex_hud_element(s32 elemID, bool includeSetup, s32 c
 }
 
 void hud_element_draw_complex_hud_first(s32 hid) {
-    immediately_render_complex_hud_element(hid, true, CAM_HUD);
+    immediately_render_complex_hud_element(hid, TRUE, CAM_HUD);
 }
 
 void hud_element_draw_complex_hud_next(s32 hid) {
-    immediately_render_complex_hud_element(hid, false, CAM_HUD);
+    immediately_render_complex_hud_element(hid, FALSE, CAM_HUD);
 }
 
 void hud_element_draw_complex_battle_first(s32 hid) {
-    immediately_render_complex_hud_element(hid, true, CAM_BATTLE);
+    immediately_render_complex_hud_element(hid, TRUE, CAM_BATTLE);
 }
 
 void hud_element_draw_complex_battle_next(s32 hid) {
-    immediately_render_complex_hud_element(hid, false, CAM_BATTLE);
+    immediately_render_complex_hud_element(hid, FALSE, CAM_BATTLE);
 }
 
 void draw_hud_element_internal(s32 id, s32 clipMode) {
@@ -1871,14 +1871,14 @@ void draw_hud_element_internal(s32 id, s32 clipMode) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_REPEATED) {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
             } else {
                 if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, true);
+                    hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, TRUE);
                 }
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, true, false);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, TRUE, FALSE);
             }
         } else {
             f32 xScaled, yScaled;
@@ -1907,9 +1907,9 @@ void draw_hud_element_internal(s32 id, s32 clipMode) {
             elem->heightScale = X10(yScaled);
 
             if (elem->flags & HUD_ELEMENT_FLAG_DROP_SHADOW) {
-                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, true);
+                hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, TRUE);
             }
-            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, false, false);
+            hud_element_draw_rect(elem, texSizeX, texSizeY, drawSizeX, drawSizeY, offsetX, offsetY, FALSE, FALSE);
         }
     }
 }
@@ -1929,7 +1929,7 @@ void hud_element_draw_without_clipping(s32 id) {
 void hud_element_set_script(s32 id, HudScript* anim) {
     HudElement* hudElement = (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK];
 
-    if (anim == nullptr) {
+    if (anim == NULL) {
         anim = &HES_Empty;
     }
 
@@ -1965,7 +1965,7 @@ void hud_element_free(s32 id) {
     }
 
     heap_free((*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK]);
-    (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK] = nullptr;
+    (*gHudElements)[id & ~HUD_ELEMENT_BATTLE_ID_MASK] = NULL;
     HudElemCount--;
 }
 
@@ -2014,7 +2014,7 @@ void ALT_clear_hud_element_cache(void) {
             gHudElementCacheTablePaletteWorld[i].id = -1;
         }
     } else {
-        if (HudElemAuxCache == nullptr) {
+        if (HudElemAuxCache == NULL) {
             heap_free(gHudElementCacheBuffer);
             gHudElementCacheBuffer = heap_malloc(HudElemCacheCapacity / 2);
             ASSERT(gHudElementCacheBuffer);
@@ -2117,7 +2117,7 @@ void hud_element_create_transform_A(s32 id) {
     HudTransform* transform = general_heap_malloc(sizeof(*transform));
 
     element->hudTransform = transform;
-    ASSERT(transform != nullptr);
+    ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_TRANSFORM;
     transform->imgfxIdx = imgfx_get_free_instances(1);
     transform->pos.x = 0.0f;
@@ -2139,7 +2139,7 @@ void hud_element_create_transform_B(s32 id) {
     HudTransform* transform = general_heap_malloc(sizeof(*transform));
 
     element->hudTransform = transform;
-    ASSERT(transform != nullptr);
+    ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_TRANSFORM | HUD_ELEMENT_FLAG_NO_FOLD;
     transform->imgfxIdx = 0;
     transform->pos.x = 0.0f;
@@ -2159,7 +2159,7 @@ void hud_element_create_transform_C(s32 id) {
     HudTransform* transform = general_heap_malloc(sizeof(*transform));
 
     element->hudTransform = transform;
-    ASSERT(transform != nullptr);
+    ASSERT(transform != NULL);
     element->flags |= HUD_ELEMENT_FLAG_BATTLE_CAM | HUD_ELEMENT_FLAG_NO_FOLD | HUD_ELEMENT_FLAG_TRANSFORM;
     transform->imgfxIdx = 0;
     transform->pos.x = 0.0f;
@@ -2183,7 +2183,7 @@ void hud_element_free_transform(s32 id) {
     }
 
     heap_free(hudElement->hudTransform);
-    hudElement->hudTransform = nullptr;
+    hudElement->hudTransform = NULL;
     hudElement->flags &= ~(HUD_ELEMENT_FLAG_BATTLE_CAM | HUD_ELEMENT_FLAG_NO_FOLD | HUD_ELEMENT_FLAG_TRANSFORM);
 }
 
@@ -2236,7 +2236,7 @@ void copy_world_hud_element_ref_to_battle(s32 worldID, s32 battleID) {
 
 void hud_element_set_aux_cache(void* base, s32 size) {
     HudElemAuxCache = (u8*)base;
-    if (base == nullptr) {
+    if (base == NULL) {
         HudElemCacheCapacity = 0x11000;
     } else {
         HudElemCacheCapacity = size;

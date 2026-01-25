@@ -17,10 +17,10 @@ s32 N(LeftDoorModelsR)[] = { MODEL_o997, MODEL_o998, -1 };
 
 EvtScript N(EVS_ExitDoors_pra_16_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_18_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
-    IfEq(GF_PRA_BrokeIllusion, false)
+    IfEq(GF_PRA_BrokeIllusion, FALSE)
         Set(LVar2, Ref(N(BothRightDoorModelsL)))
         Set(LVar3, Ref(N(BothRightDoorModelsR)))
     Else
@@ -37,7 +37,7 @@ EvtScript N(EVS_ExitDoors_pra_16_1) = {
 
 EvtScript N(EVS_ExitDoors_pra_33_1) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_18_ENTRY_1)
     Set(LVar1, COLLIDER_deilittne)
     Set(LVar2, Ref(N(LeftDoorModelsL)))
@@ -52,10 +52,10 @@ EvtScript N(EVS_ExitDoors_pra_33_1) = {
 
 EvtScript N(EVS_ExitDoors_pra_16_2) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar0, pra_18_ENTRY_2)
     Set(LVar1, COLLIDER_deilittnw)
-    IfEq(GF_PRA_BrokeIllusion, false)
+    IfEq(GF_PRA_BrokeIllusion, FALSE)
         Set(LVar2, Ref(N(BothRightDoorModelsL)))
         Set(LVar3, Ref(N(BothRightDoorModelsR)))
     Else
@@ -84,7 +84,7 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_18_ENTRY_0)
-            IfEq(GF_PRA_BrokeIllusion, false)
+            IfEq(GF_PRA_BrokeIllusion, FALSE)
                 Set(LVar2, Ref(N(BothRightDoorModelsL)))
                 Set(LVar3, Ref(N(BothRightDoorModelsR)))
             Else
@@ -95,7 +95,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, Ref(N(LeftDoorModelsL)))
             Set(LVar3, Ref(N(LeftDoorModelsR)))
         CaseEq(pra_18_ENTRY_2)
-            IfEq(GF_PRA_BrokeIllusion, false)
+            IfEq(GF_PRA_BrokeIllusion, FALSE)
                 Set(LVar2, Ref(N(BothRightDoorModelsL)))
                 Set(LVar3, Ref(N(BothRightDoorModelsR)))
             Else
@@ -113,7 +113,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CRYSTAL_PALACE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(24, 24, 40)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     Exec(N(EVS_SetupMusic))
     IfGe(GB_StoryProgress, STORY_CH7_DEFEATED_CLUBBAS)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o1174, COLLIDER_FLAGS_UPPER_MASK)

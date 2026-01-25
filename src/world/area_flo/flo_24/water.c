@@ -3,7 +3,7 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_Scene_FillWithWater) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(TranslateGroup, MODEL_g73, 0, 45, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, 170, 0, 160)
     Call(SetPanTarget, CAM_DEFAULT, 170, -90, 160)
@@ -12,7 +12,7 @@ EvtScript N(EVS_Scene_FillWithWater) = {
     Call(SetCamPosA, CAM_DEFAULT, Float(-300.0), Float(200.0))
     Call(SetCamPosB, CAM_DEFAULT, Float(300.0), Float(-150.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(PlaySound, SOUND_LOOP_FLO_FILL_WATER_POOL)
     Thread
         Call(MakeLerp, 80, 90, 10, EASING_LINEAR)
@@ -46,14 +46,14 @@ EvtScript N(EVS_Scene_FillWithWater) = {
 
 EvtScript N(EVS_SetupWater) = {
     IfLt(GB_StoryProgress, STORY_CH6_FILLED_SPRING_WITH_WATER)
-        Call(EnableGroup, MODEL_water1, false)
+        Call(EnableGroup, MODEL_water1, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g58, COLLIDER_FLAGS_UPPER_MASK)
     Else
-        Call(EnableGroup, MODEL_g60, false)
+        Call(EnableGroup, MODEL_g60, FALSE)
     EndIf
     Call(GetEntryID, LVar0)
     IfNe(LVar0, flo_24_ENTRY_2)
-        Call(EnableGroup, MODEL_g67, false)
+        Call(EnableGroup, MODEL_g67, FALSE)
     EndIf
     // water surface
     Call(SetTexPanner, MODEL_o165, TEX_PANNER_1)

@@ -38,13 +38,13 @@ void got_item_outline_main(
     bp.update = got_item_outline_update;
     bp.renderScene = got_item_outline_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_GOT_ITEM_OUTLINE;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.gotItemOutline = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.gotItemOutline != nullptr);
+    ASSERT(effect->data.gotItemOutline != NULL);
 
     data->timeLeft = 100;
     data->type = type;

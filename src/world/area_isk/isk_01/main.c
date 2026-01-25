@@ -37,7 +37,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_DryDryRuins, true)
+    Set(GF_MAP_DryDryRuins, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_SetupHaze))

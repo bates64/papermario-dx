@@ -25,7 +25,7 @@ void N(gfx_build_water)(void) {
 
 EvtScript N(EVS_SetupWaterCustomGfx) = {
     Wait(1)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(gfx_build_water)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(gfx_build_water)), NULL)
     Call(SetModelCustomGfx, MODEL_water, CUSTOM_GFX_0, -1)
     Return
     End

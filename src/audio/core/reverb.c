@@ -94,7 +94,7 @@ s32 FLANGE_PARAMS[] = {
         0,      1,      0, 0x5FFF, 0x7FFF,    380,    500,      0
 };
 
-s32 nullptr_PARAMS[] = {
+s32 NULL_PARAMS[] = {
     /* sections    length */
         0,              0,
     /*                                      chorus  chorus   filter
@@ -104,7 +104,7 @@ s32 nullptr_PARAMS[] = {
 
 // up to four custom effects can be defined and installed here at runtime
 s32* AU_FX_CUSTOM_PARAMS[] = {
-    nullptr_PARAMS, nullptr_PARAMS, nullptr_PARAMS, nullptr_PARAMS
+    NULL_PARAMS, NULL_PARAMS, NULL_PARAMS, NULL_PARAMS
 };
 
 static void _init_lpfilter(AuLowPass* filter) {
@@ -174,7 +174,7 @@ void au_filter_init(AuFilter* filter, s16 arg1, s16 arg2, s16 cutoff) {
         return;
     }
 
-    filter->activeLowpass = nullptr;
+    filter->activeLowpass = NULL;
 }
 
 // reset fx without reallocating AuFX
@@ -216,7 +216,7 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
             params = BIG_ROOM_PARAMS;
             break;
         default:
-            params = nullptr_PARAMS;
+            params = NULL_PARAMS;
             break;
     }
 
@@ -244,9 +244,9 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
             delay->rsdelta = 0.0f;
             delay->activeResampler = delay->resamplerTemplate;
             delay->resamplerTemplate->delta = 0.0;
-            delay->activeResampler->first = true;
+            delay->activeResampler->first = TRUE;
         } else {
-            delay->activeResampler = nullptr;
+            delay->activeResampler = NULL;
             j++;
             j++;
         }
@@ -256,7 +256,7 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
             delay->activeLowpass->fc = params[j++];
             _init_lpfilter(delay->activeLowpass);
         } else {
-            delay->activeLowpass = nullptr;
+            delay->activeLowpass = NULL;
             j++;
         }
     }
@@ -360,7 +360,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
             tmp = outputTapBuffer >> 8;
             n_aResample(cmdBufPos++, osVirtualToPhysical(delay->activeResampler->state),
                 delay->activeResampler->first, ratio, resampleBuffer + (ramAlign<<1), tmp);
-            delay->activeResampler->first = false;
+            delay->activeResampler->first = FALSE;
             delay->rsdelta += count - AUDIO_SAMPLES;
         } else {
             // no resampling -- just load from output pointer
@@ -372,7 +372,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
             aMix(cmdBufPos++, 0, (u16)delay->ffcoef, inputTapBuffer, outputTapBuffer);
 
             // save output if no additional processing needed
-            if (delay->activeResampler == nullptr && delay->activeLowpass == nullptr) {
+            if (delay->activeResampler == NULL && delay->activeLowpass == NULL) {
                 n_aSaveBuffer(cmdBufPos++, 2 * AUDIO_SAMPLES, outputTapBuffer, osVirtualToPhysical(outPtr));
             }
         }
@@ -384,7 +384,7 @@ Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
         }
 
         // Save processed output back into delay line (if not resampled)
-        if (delay->activeLowpass != nullptr) {
+        if (delay->activeLowpass != NULL) {
             // modified _n_filterBuffer
             s16 alignedBuffer = outputTapBuffer >> 8;
             n_aLoadADPCM(cmdBufPos++, 32, osVirtualToPhysical(delay->activeLowpass->fccoef));

@@ -5,10 +5,10 @@
 #define NAME_SUFFIX
 
 API_CALLABLE(N(IsJungleFuzzyAlive)) {
-    if (get_enemy_safe(NPC_JungleFuzzy) == nullptr) {
-        script->varTable[0] = false;
+    if (get_enemy_safe(NPC_JungleFuzzy) == NULL) {
+        script->varTable[0] = FALSE;
     } else {
-        script->varTable[0] = true;
+        script->varTable[0] = TRUE;
     }
     return ApiStatus_DONE2;
 }
@@ -16,7 +16,7 @@ API_CALLABLE(N(IsJungleFuzzyAlive)) {
 EvtScript N(EVS_OnShakeTree1) = {
     Wait(15)
     Call(N(IsJungleFuzzyAlive))
-    IfEq(LVar0, true)
+    IfEq(LVar0, TRUE)
         Call(SetNpcVar, NPC_JungleFuzzy, 7, 1)
     EndIf
     Return

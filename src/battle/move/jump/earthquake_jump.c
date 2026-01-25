@@ -22,8 +22,8 @@ extern EvtScript N(EVS_UseMove_Super);
 extern EvtScript N(EVS_UseMove_Ultra);
 
 EvtScript N(EVS_UseMove) = {
-    Set(LFlagA, false)
-    Call(ShowActionHud, true)
+    Set(LFlagA, FALSE)
+    Call(ShowActionHud, TRUE)
     Call(GetMenuSelection, LVar0, LVar1, LVar2)
     Switch(LVar1)
         CaseEq(0)
@@ -96,7 +96,7 @@ EvtScript N(EVS_UseMove_Basic) = {
             Goto(2)
         EndIf
         Switch(LVarB)
-            CaseGt(false)
+            CaseGt(FALSE)
                 Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_1, SOUND_NONE)
                 Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_NICE_HIT)
             CaseDefault
@@ -128,7 +128,7 @@ EvtScript N(EVS_UseMove_Basic) = {
     EndChildThread
     Call(GetJumpActionQuality, LVarE)
     Set(LVarF, 0)
-    Set(LFlag0, false)
+    Set(LFlag0, FALSE)
     Label(10)
         ChildThread
             Call(UseBattleCamPreset, BTL_CAM_PLAYER_PRE_JUMP_FINISH)
@@ -181,13 +181,13 @@ EvtScript N(EVS_UseMove_Basic) = {
         Call(GetCommandAutoSuccess, LVar1)
         IfEq(LVar1, 1)
             IfGt(LVarF, 3)
-                Set(LFlag0, true)
+                Set(LFlag0, TRUE)
             EndIf
         EndIf
         Set(LVar0, 3)
         Call(N(func_802A10E4_785C04))
         IfGt(LVarF, LVar0)
-            Set(LFlag0, true)
+            Set(LFlag0, TRUE)
         EndIf
         Call(InitTargetIterator)
         Call(GetPlayerActionQuality, LVarB)
@@ -199,8 +199,8 @@ EvtScript N(EVS_UseMove_Basic) = {
                 Goto(12)
             EndIf
             Switch(LVarB)
-                CaseGt(false)
-                    IfEq(LFlag0, false)
+                CaseGt(FALSE)
+                    IfEq(LFlag0, FALSE)
                         Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_1, SOUND_NONE)
                         Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_NICE_HIT)
                     Else
@@ -234,7 +234,7 @@ EvtScript N(EVS_UseMove_Basic) = {
         Switch(LVarC)
             CaseOrEq(HIT_RESULT_HIT)
             CaseOrEq(HIT_RESULT_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf
@@ -243,7 +243,7 @@ EvtScript N(EVS_UseMove_Basic) = {
             EndCaseGroup
             CaseOrEq(HIT_RESULT_NICE)
             CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf
@@ -316,7 +316,7 @@ EvtScript N(EVS_UseMove_Super) = {
             Goto(2)
         EndIf
         Switch(LVarB)
-            CaseGt(false)
+            CaseGt(FALSE)
                 Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_3, SOUND_NONE)
                 Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_NICE_HIT)
             CaseDefault
@@ -348,7 +348,7 @@ EvtScript N(EVS_UseMove_Super) = {
     EndChildThread
     Call(GetJumpActionQuality, LVarE)
     Set(LVarF, 0)
-    Set(LFlag0, false)
+    Set(LFlag0, FALSE)
     Label(10)
         ChildThread
             Call(UseBattleCamPreset, BTL_CAM_PLAYER_PRE_JUMP_FINISH)
@@ -407,13 +407,13 @@ EvtScript N(EVS_UseMove_Super) = {
         Call(GetCommandAutoSuccess, LVar1)
         IfEq(LVar1, 1)
             IfGt(LVarF, 4)
-                Set(LFlag0, true)
+                Set(LFlag0, TRUE)
             EndIf
         EndIf
         Set(LVar0, 4)
         Call(N(func_802A10E4_785C04))
         IfGt(LVarF, LVar0)
-            Set(LFlag0, true)
+            Set(LFlag0, TRUE)
         EndIf
         Call(InitTargetIterator)
         Call(GetPlayerActionQuality, LVarB)
@@ -425,8 +425,8 @@ EvtScript N(EVS_UseMove_Super) = {
                 Goto(12)
             EndIf
             Switch(LVarB)
-                CaseGt(false)
-                    IfEq(LFlag0, false)
+                CaseGt(FALSE)
+                    IfEq(LFlag0, FALSE)
                         Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_2, SOUND_NONE)
                         Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_NICE_HIT)
                     Else
@@ -460,7 +460,7 @@ EvtScript N(EVS_UseMove_Super) = {
         Switch(LVarC)
             CaseOrEq(HIT_RESULT_HIT)
             CaseOrEq(HIT_RESULT_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf
@@ -469,7 +469,7 @@ EvtScript N(EVS_UseMove_Super) = {
             EndCaseGroup
             CaseOrEq(HIT_RESULT_NICE)
             CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf
@@ -542,7 +542,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
             Goto(2)
         EndIf
         Switch(LVarB)
-            CaseGt(false)
+            CaseGt(FALSE)
                 Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_3, SOUND_NONE)
                 Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_INCLUDE_POWER_UPS | BS_FLAGS1_NICE_HIT)
             CaseDefault
@@ -574,7 +574,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
     EndChildThread
     Call(GetJumpActionQuality, LVarE)
     Set(LVarF, 0)
-    Set(LFlag0, false)
+    Set(LFlag0, FALSE)
     Label(10)
         ChildThread
             Call(UseBattleCamPreset, BTL_CAM_PLAYER_PRE_ULTRA_JUMP_FINISH)
@@ -629,13 +629,13 @@ EvtScript N(EVS_UseMove_Ultra) = {
         Call(GetCommandAutoSuccess, LVar1)
         IfEq(LVar1, 1)
             IfGt(LVarF, 5)
-                Set(LFlag0, true)
+                Set(LFlag0, TRUE)
             EndIf
         EndIf
         Set(LVar0, 5)
         Call(N(func_802A10E4_785C04))
         IfGt(LVarF, LVar0)
-            Set(LFlag0, true)
+            Set(LFlag0, TRUE)
         EndIf
         Call(InitTargetIterator)
         Call(GetPlayerActionQuality, LVarB)
@@ -647,8 +647,8 @@ EvtScript N(EVS_UseMove_Ultra) = {
                 Goto(12)
             EndIf
             Switch(LVarB)
-                CaseGt(false)
-                    IfEq(LFlag0, false)
+                CaseGt(FALSE)
+                    IfEq(LFlag0, FALSE)
                         Call(SetActorSounds, ACTOR_PLAYER, ACTOR_SOUND_HURT, SOUND_ACTOR_JUMPED_3, SOUND_NONE)
                         Call(PlayerDamageEnemy, LVarC, DAMAGE_TYPE_QUAKE | DAMAGE_TYPE_IGNORE_DEFENSE | DAMAGE_TYPE_NO_CONTACT | DAMAGE_TYPE_MULTIPLE_POPUPS, 0, 0, 1, BS_FLAGS1_NICE_HIT)
                     Else
@@ -682,7 +682,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
         Switch(LVarC)
             CaseOrEq(HIT_RESULT_HIT)
             CaseOrEq(HIT_RESULT_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf
@@ -691,7 +691,7 @@ EvtScript N(EVS_UseMove_Ultra) = {
             EndCaseGroup
             CaseOrEq(HIT_RESULT_NICE)
             CaseOrEq(HIT_RESULT_NICE_NO_DAMAGE)
-                IfEq(LFlag0, true)
+                IfEq(LFlag0, TRUE)
                     ExecWait(N(EVS_JumpSupport_Rebound))
                     Return
                 EndIf

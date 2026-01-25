@@ -23,17 +23,17 @@ EvtScript N(EVS_GetRescuedYoshiCount) = {
 };
 
 EvtScript N(EVS_Scene_GetJadeRaven) = {
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    IfEq(GF_JAN02_Met_VillageLeader, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
+    IfEq(GF_JAN02_Met_VillageLeader, TRUE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0023)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_0024)
     EndIf
     Wait(5 * DT)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Walk)
     Call(NpcMoveTo, NPC_SELF, 8, -140, 25)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Idle)
     Wait(5 * DT)
     Call(UseSettingsFrom, CAM_DEFAULT, 25, 15, -150)
@@ -41,12 +41,12 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamPitch, CAM_DEFAULT, Float(16.0), Float(-8.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Wait(5 * DT)
     Call(PlayerMoveTo, 58, -140, 25)
-    Call(PlayerFaceNpc, NPC_SELF, false)
+    Call(PlayerFaceNpc, NPC_SELF, FALSE)
     Call(func_802D2C14, 1)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Wait(30 * DT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_VillageLeader_Rummage)
     Wait(30 * DT)
@@ -62,22 +62,22 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
     Add(LVar3, 25)
     Call(SetPanTarget, CAM_DEFAULT, LVar3, LVar4, LVar5)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.5 / DT))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     Call(func_802D2C14, 0)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)
         Thread
             Wait(15 * DT)
-            Call(PlayerFaceNpc, NPC_PARTNER, false)
+            Call(PlayerFaceNpc, NPC_PARTNER, FALSE)
         EndThread
         Call(DisablePartnerAI, 0)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 2, MSG_CH5_0028)
     Else
         Call(N(SwitchToPartner), PARTNER_SUSHIE)
         Call(SpeakToPlayer, NPC_PARTNER, -1, -1, 5, MSG_CH5_0029)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Wait(15 * DT)
         Call(GetNpcPos, NPC_PARTNER, LVar2, LVar3, LVar4)
         Call(MakeLerp, LVar2, 85, 10 * DT, EASING_LINEAR)
@@ -93,7 +93,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
         Wait(10 * DT)
         Thread
             Wait(10 * DT)
-            Call(PlayerFaceNpc, NPC_PARTNER, false)
+            Call(PlayerFaceNpc, NPC_PARTNER, FALSE)
         EndThread
         Call(DisablePartnerAI, 0)
         Call(ContinueSpeech, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 5, MSG_CH5_002A)
@@ -113,9 +113,9 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
 EvtScript N(EVS_NpcInteract_VillageLeader) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-            IfEq(GF_JAN02_Met_VillageLeader, false)
+            IfEq(GF_JAN02_Met_VillageLeader, FALSE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_0021)
-                Set(GF_JAN02_Met_VillageLeader, true)
+                Set(GF_JAN02_Met_VillageLeader, TRUE)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_0022)
             EndIf
@@ -125,9 +125,9 @@ EvtScript N(EVS_NpcInteract_VillageLeader) = {
         CaseLt(STORY_CH5_RAPHAEL_LEFT_NEST)
             Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_Talk, ANIM_VillageLeader_Idle, 0, MSG_CH5_002D)
         CaseLt(STORY_CH5_ZIP_LINE_READY)
-            IfEq(AF_JAN02_RaphaelComment, false)
+            IfEq(AF_JAN02_RaphaelComment, FALSE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_002E)
-                Set(AF_JAN02_RaphaelComment, true)
+                Set(AF_JAN02_RaphaelComment, TRUE)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_VillageLeader_TalkSit, ANIM_VillageLeader_IdleSit, 0, MSG_CH5_002F)
             EndIf
@@ -172,15 +172,15 @@ EvtScript N(EVS_NpcInit_VillageLeader) = {
 EvtScript N(EVS_NpcInteract_Councillor) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
-            IfEq(AF_JAN02_MetCouncillor, false)
+            IfEq(AF_JAN02_MetCouncillor, FALSE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_0034)
                 Call(EndSpeech, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0)
-                Set(AF_JAN02_MetCouncillor, true)
+                Set(AF_JAN02_MetCouncillor, TRUE)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSit, ANIM_LeadersFriend_IdleSit, 0, MSG_CH5_0035)
             EndIf
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN03_AgreedToRescueChildren, false)
+            IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSitSad, ANIM_LeadersFriend_BowSit, 0, MSG_CH5_0036)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_LeadersFriend_TalkSitSad, ANIM_LeadersFriend_BowSit, 0, MSG_CH5_0037)
@@ -222,13 +222,13 @@ EvtScript N(EVS_NpcInteract_Yoshi_01) = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             ExecWait(N(EVS_GetRescuedYoshiCount))
             IfEq(LVar0, 0)
-                IfEq(GF_JAN03_AgreedToRescueChildren, false)
+                IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_CryTalk, ANIM_Yoshi_Red_Cry, 0, MSG_CH5_003E)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_CryTalk, ANIM_Yoshi_Red_Cry, 0, MSG_CH5_003F)
                 EndIf
             Else
-                IfEq(GF_JAN08_SavedYoshi, false)
+                IfEq(GF_JAN08_SavedYoshi, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_CryTalk, ANIM_Yoshi_Red_Cry, 0, MSG_CH5_0040)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Red_Talk, ANIM_Yoshi_Red_Idle, 0, MSG_CH5_0041)
@@ -260,7 +260,7 @@ EvtScript N(EVS_NpcInit_Yoshi_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN08_SavedYoshi, false)
+            IfEq(GF_JAN08_SavedYoshi, FALSE)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Red_Panic)
                 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_01)))
             EndIf
@@ -277,13 +277,13 @@ EvtScript N(EVS_NpcInteract_Yoshi_02) = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             ExecWait(N(EVS_GetRescuedYoshiCount))
             IfEq(LVar0, 0)
-                IfEq(GF_JAN03_AgreedToRescueChildren, false)
+                IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_CryTalk, ANIM_Yoshi_Blue_Cry, 0, MSG_CH5_0047)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_CryTalk, ANIM_Yoshi_Blue_Cry, 0, MSG_CH5_0048)
                 EndIf
             Else
-                IfEq(GF_JAN10_SavedYoshi, false)
+                IfEq(GF_JAN10_SavedYoshi, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_CryTalk, ANIM_Yoshi_Blue_Cry, 0, MSG_CH5_0049)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Blue_Talk, ANIM_Yoshi_Blue_Idle, 0, MSG_CH5_004A)
@@ -315,7 +315,7 @@ EvtScript N(EVS_NpcInit_Yoshi_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN10_SavedYoshi, false)
+            IfEq(GF_JAN10_SavedYoshi, FALSE)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Blue_Panic)
                 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_02)))
             EndIf
@@ -332,13 +332,13 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
             ExecWait(N(EVS_GetRescuedYoshiCount))
             IfEq(LVar0, 0)
-                IfEq(GF_JAN03_AgreedToRescueChildren, false)
+                IfEq(GF_JAN03_AgreedToRescueChildren, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_CryTalk, ANIM_Yoshi_Purple_Cry, 0, MSG_CH5_0050)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_CryTalk, ANIM_Yoshi_Purple_Cry, 0, MSG_CH5_0051)
                 EndIf
             Else
-                IfEq(GF_JAN05_SavedYoshi, false)
+                IfEq(GF_JAN05_SavedYoshi, FALSE)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_CryTalk, ANIM_Yoshi_Purple_Cry, 0, MSG_CH5_0052)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Purple_Talk, ANIM_Yoshi_Purple_Idle, 0, MSG_CH5_0053)
@@ -370,7 +370,7 @@ EvtScript N(EVS_NpcInit_Yoshi_03) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_YOSHI_CHILDREN_ARE_MISSING)
         CaseLt(STORY_CH5_ALL_YOSHI_CHILDREN_RESCUED)
-            IfEq(GF_JAN05_SavedYoshi, false)
+            IfEq(GF_JAN05_SavedYoshi, FALSE)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Yoshi_Purple_Panic)
                 Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Yoshi_03)))
             EndIf
@@ -418,7 +418,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 90,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {
@@ -443,7 +443,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 3,
                 .points  = {
@@ -469,7 +469,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .yaw = 270,
         .territory = {
             .patrol = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .numPoints  = 2,
                 .points  = {

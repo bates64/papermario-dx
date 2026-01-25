@@ -34,8 +34,8 @@ EvtScript N(EVS_Sun_AnimateBobbing) = {
 };
 
 EvtScript N(EVS_Scene_SunReturns) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetNpcPos, NPC_Sun_01, 0, 270, 0)
     Call(SetNpcPos, NPC_Sun_02, NPC_DISPOSE_LOCATION)
     Wait(1)
@@ -45,19 +45,19 @@ EvtScript N(EVS_Scene_SunReturns) = {
     Call(SetCamDistance, CAM_DEFAULT, 1050)
     Call(SetCamPitch, CAM_DEFAULT, Float(10.0), Float(4.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(15.0), Float(-10.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(6.5))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkJoy, ANIM_Sun_TalkJoy, SPEECH_FLAG_200 | 5, MSG_CH6_00C3)
     Call(SetNpcAnimation, NPC_Sun_01, ANIM_Sun_TalkJoy)
     Thread
         Call(SetCamDistance, CAM_DEFAULT, 1000)
         Call(SetCamSpeed, CAM_DEFAULT, Float(5.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     EndThread
     Wait(15)
@@ -111,7 +111,7 @@ EvtScript N(EVS_Sun_DescendFromSky) = {
     EndLoop
     Thread
         Wait(15)
-        Call(PlayerFaceNpc, NPC_Sun_01, false)
+        Call(PlayerFaceNpc, NPC_Sun_01, FALSE)
     EndThread
     Call(SetNpcJumpscale, NPC_Sun_01, Float(0.0))
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
@@ -120,17 +120,17 @@ EvtScript N(EVS_Sun_DescendFromSky) = {
     ExecGetTID(N(EVS_Sun_AnimateBobbing), LVar9)
     Loop(0)
         Wait(1)
-        IfEq(AF_FLO_MetTheSun, true)
+        IfEq(AF_FLO_MetTheSun, TRUE)
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Wait(10)
     KillThread(LVar9)
-    Call(SetNpcFlagBits, NPC_Sun_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_Sun_01, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(GetNpcPos, NPC_Sun_01, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_Sun_01, LVar0, 450, LVar2, 30)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Unbind
     Return
     End
@@ -150,23 +150,23 @@ EvtScript N(EVS_NpcInteract_Sun_01) = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkSad, ANIM_Sun_Idle, 517, MSG_CH6_009C)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            IfEq(GF_FLO15_SunThankedPlayer, false)
+            IfEq(GF_FLO15_SunThankedPlayer, FALSE)
                 Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkSad, ANIM_Sun_Idle, 517, MSG_CH6_009D)
-                Set(GF_FLO15_SunThankedPlayer, true)
+                Set(GF_FLO15_SunThankedPlayer, TRUE)
             Else
                 Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkSad, ANIM_Sun_Idle, 517, MSG_CH6_009E)
             EndIf
         CaseDefault
             Call(SpeakToPlayer, NPC_Sun_01, ANIM_Sun_TalkSad, ANIM_Sun_Idle, 517, MSG_CH6_009F)
     EndSwitch
-    Set(AF_FLO_MetTheSun, true)
+    Set(AF_FLO_MetTheSun, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Sun_01) = {
     Call(SetNpcCollisionSize, NPC_Sun_01, 64, 40)
-    Call(EnableNpcShadow, NPC_Sun_01, false)
+    Call(EnableNpcShadow, NPC_Sun_01, FALSE)
     IfLt(GB_StoryProgress, STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
         Call(SetNpcPos, NPC_Sun_01, 0, 270, 0)
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Sun_01)))
@@ -174,7 +174,7 @@ EvtScript N(EVS_NpcInit_Sun_01) = {
     Else
         Call(SetNpcPos, NPC_Sun_01, 0, 450, 0)
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Sun_01)))
-        Set(AF_FLO_MetTheSun, false)
+        Set(AF_FLO_MetTheSun, FALSE)
         Exec(N(EVS_Sun_DescendFromSky))
     EndIf
     Return
@@ -182,7 +182,7 @@ EvtScript N(EVS_NpcInit_Sun_01) = {
 };
 
 EvtScript N(EVS_NpcInit_Sun_02) = {
-    Call(EnableNpcShadow, NPC_Sun_02, false)
+    Call(EnableNpcShadow, NPC_Sun_02, FALSE)
     Call(SetNpcAnimation, NPC_Sun_02, ANIM_Sun_FireIdle)
     Call(SetNpcPaletteSwapMode, NPC_Sun_01, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)
     Call(SetNpcPaletteSwapMode, NPC_Sun_02, NPC_PAL_ADJUST_BLEND_PALETTES_VARYING_INTERVALS)

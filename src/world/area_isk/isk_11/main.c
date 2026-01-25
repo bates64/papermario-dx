@@ -1,13 +1,13 @@
 #include "isk_11.h"
 
-bool N(CamAdjustReady) = false;
+b32 N(CamAdjustReady) = FALSE;
 
 s32 N(adjust_cam_on_landing)(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
 
     if (!N(CamAdjustReady)) {
         if (!(gPlayerStatus.pos.y > -520.0f)) {
-            N(CamAdjustReady) = true;
+            N(CamAdjustReady) = TRUE;
         } else {
             return LANDING_CAM_ALWAYS_ADJUST;
         }
@@ -51,7 +51,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_SetupLock))
     IfLt(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)
         Exec(N(EVS_ManageSecretPassage))
-        Call(EnableGroup, MODEL_15, false)
+        Call(EnableGroup, MODEL_15, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2222, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2223, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2224, COLLIDER_FLAGS_UPPER_MASK)
@@ -60,8 +60,8 @@ EvtScript N(EVS_Main) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2226, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2227, COLLIDER_FLAGS_UPPER_MASK)
     Else
-        Call(EnableGroup, MODEL_g377, false)
-        Call(EnableModel, MODEL_o2205, false)
+        Call(EnableGroup, MODEL_g377, FALSE)
+        Call(EnableModel, MODEL_o2205, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2087, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2088, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o2089, COLLIDER_FLAGS_UPPER_MASK)

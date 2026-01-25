@@ -27,39 +27,39 @@ API_CALLABLE(N(func_80241300_BD4B70)) {
     Npc* npc8 = get_npc_unsafe(NPC_KeepAwayBoo8);
     s32 keepAwayNpcID = 0;
 
-    script->varTable[1] = false;
+    script->varTable[1] = FALSE;
     evt_set_variable(script, MV_ThrowTargetNpc, 0);
 
     if (npc1->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc1->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo1;
     }
     if (npc2->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc2->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo2;
     }
     if (npc3->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc3->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo3;
     }
     if (npc4->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc4->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo4;
     }
     if (npc5->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc5->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo5;
     }
     if (npc6->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc6->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo6;
     }
     if (npc7->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc7->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo7;
     }
     if (npc8->yaw <= script->varTable[0] - 23 && script->varTable[0] - 27 <= npc8->yaw) {
-        script->varTable[1] = true;
+        script->varTable[1] = TRUE;
         keepAwayNpcID = NPC_KeepAwayBoo8;
     }
 
@@ -76,15 +76,15 @@ API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     s32 lt;
 
     if (!(dist > 90.0f)) {
-        gt = false;
+        gt = FALSE;
     } else {
-        gt = true;
+        gt = TRUE;
     }
 
     if (!(dist < 150.0f)) {
-        lt = false;
+        lt = FALSE;
     } else {
-        lt = true;
+        lt = TRUE;
     }
 
     if ((gt | lt) != 0) {
@@ -145,7 +145,7 @@ EvtScript N(EVS_TetherItemToNpcWithOffset) = {
 };
 
 EvtScript N(EVS_BooSpookAndVanish) = {
-    Call(SetNpcFlagBits, LVarA, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, false)
+    Call(SetNpcFlagBits, LVarA, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, FALSE)
     Call(NpcFacePlayer, LVarA, 0)
     Wait(5)
     Call(SetNpcAnimation, LVarA, ANIM_Boo_Spook)
@@ -164,7 +164,7 @@ EvtScript N(EVS_BooSpookAndVanish) = {
 };
 
 EvtScript N(EVS_Scene_BoosUnleashed) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(InterruptUsePartner)
     Call(SetMusic, 0, SONG_BOO_MINIGAME, 0, VOL_LEVEL_FULL)
     Wait(20)
@@ -266,7 +266,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(N(func_802412BC_BD4B2C))
             Call(N(func_80241300_BD4B70))
             Wait(1)
-            IfEq(LVar1, true)
+            IfEq(LVar1, TRUE)
                 BreakLoop
             EndIf
         EndLoop
@@ -297,10 +297,10 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndIf
         EndLoop
         Call(SpeakToPlayer, NPC_LeaderBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0032)
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Wait(10)
         Set(MV_KeepAwayResult, KEEP_AWAY_WAITING)
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Loop(0)
             Wait(1)
             IfNe(MV_KeepAwayResult, KEEP_AWAY_WAITING)
@@ -308,7 +308,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndIf
         EndLoop
         Set(MV_Unk_02, 1)
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         ExecWait(N(EVS_DetermineCarrierNPC))
         IfEq(MV_KeepAwayResult, KEEP_AWAY_RIGHT)
             Call(GetNpcPos, MV_ItemCarrierNpc, LVar3, LVar4, LVar5)
@@ -327,7 +327,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, Float(350.0))
             Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
             Call(SpeakToPlayer, NPC_LeaderBoo, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0033)
             Wait(20)
@@ -343,7 +343,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
             Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
             Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
             Wait(20)
             Thread
@@ -374,13 +374,13 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetCamDistance, CAM_DEFAULT, Float(450.0))
             Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-            Call(PanToTarget, CAM_DEFAULT, 0, false)
+            Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Else
             Call(SetCamProperties, CAM_DEFAULT, Float(2.0), 0, 0, 0, Float(450.0), Float(15.0), Float(-7.0))
             Wait(30)
-            Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, false)
+            Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, FALSE)
             Call(GetNpcPos, MV_ItemCarrierNpc, LVar3, LVar4, LVar5)
             Call(GetAngleBetweenNPCs, MV_ItemCarrierNpc, NPC_Boo_01, LVar0)
             Call(InterpNpcYaw, MV_ItemCarrierNpc, LVar0, 0)
@@ -427,7 +427,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
                     BreakLoop
                 EndIf
             EndLoop
-            Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
+            Call(SetNpcFlagBits, MV_ItemCarrierNpc, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, TRUE)
             Set(MV_KeepAwayResult, KEEP_AWAY_WAITING)
             Set(MV_Unk_02, 0)
             Call(N(GetPlayerPosOutsideKeepAwayRing))
@@ -438,7 +438,7 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
     Set(GB_StoryProgress, STORY_CH3_GOT_RECORD)
     Exec(N(EVS_BindCabinetTriggers))
     Exec(N(EVS_SetupMusic))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

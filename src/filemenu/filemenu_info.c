@@ -32,7 +32,7 @@ MenuWindowBP filemenu_info_windowBPs[] = {
         .height = 0,
         .priority = WINDOW_PRIORITY_64,
         .fpDrawContents = &filemenu_info_draw_message_contents,
-        .tab = nullptr,
+        .tab = NULL,
         .parentID = -1,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -41,7 +41,7 @@ MenuWindowBP filemenu_info_windowBPs[] = {
 };
 
 MenuPanel filemenu_info_menuBP = {
-    .initialized = false,
+    .initialized = FALSE,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -143,7 +143,7 @@ void filemenu_info_init(MenuPanel* tab) {
     }
 
     setup_pause_menu_tab(filemenu_info_windowBPs, ARRAY_COUNT(filemenu_info_windowBPs));
-    tab->initialized = true;
+    tab->initialized = TRUE;
 }
 
 void filemenu_info_handle_input(MenuPanel* menu) {

@@ -56,13 +56,13 @@ EffectInstance* static_status_main(
     bp.update = static_status_update;
     bp.renderScene = static_status_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_STATIC_STATUS;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numBolts;
     part = effect->data.staticStatus = general_heap_malloc(numBolts * sizeof(*part));
-    ASSERT(effect->data.staticStatus != nullptr);
+    ASSERT(effect->data.staticStatus != NULL);
 
     part->type = type;
     part->lifetime = 0;

@@ -29,7 +29,7 @@ Gfx Gfx_DarknessStencilQuad[] = {
 void appendGfx_draw_prev_frame_buffer(s32 x1, s32 y1, s32 x2, s32 y2, f32 alpha) {
     s32 stripY, extraY;
     s32 i;
-    u16* prevGfxCfb = nullptr;
+    u16* prevGfxCfb = NULL;
 
     // round the x positions
     x1 = x1 - (x1 % 4);
@@ -126,7 +126,7 @@ void draw_prev_frame_buffer_at_screen_pos(s32 x1, s32 y1, s32 x2, s32 y2, f32 al
     }
 }
 
-void appendGfx_darkness_stencil(bool isWorld, s32 posX, s32 posY, f32 alpha, f32 progress) {
+void appendGfx_darkness_stencil(b32 isWorld, s32 posX, s32 posY, f32 alpha, f32 progress) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 texScale, f24;
     s32 i;

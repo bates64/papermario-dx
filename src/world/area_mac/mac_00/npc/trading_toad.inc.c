@@ -20,7 +20,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
         PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-        Set(GF_TradingEvent1_Active, false)
+        Set(GF_TradingEvent1_Active, FALSE)
         Return
     EndIf
     Call(N(GetTradeEventItemCount))
@@ -44,7 +44,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
             Call(PlaySoundAtNpc, NPC_SELF, SOUND_SMOKE_BURST, SOUND_SPACE_DEFAULT)
             PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Set(GF_TradingEvent1_Active, false)
+            Set(GF_TradingEvent1_Active, FALSE)
             Add(GB_TradingEvent_Count, 1)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011E)
@@ -54,7 +54,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
 };
 
 EvtScript N(EVS_NpcInit_TradingToad) = {
-    IfNe(GF_TradingEvent1_Active, false)
+    IfNe(GF_TradingEvent1_Active, FALSE)
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_TradingToad)))
     Else
         Call(RemoveNpc, NPC_SELF)

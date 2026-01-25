@@ -14,11 +14,11 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
 #include "world/common/enemy/SpearGuy_Wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_02, FALSE)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_02, TRUE)
             BreakLoop
         EndIf
     EndLoop
@@ -27,8 +27,8 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
 };
 
 EvtScript N(EVS_NpcIdle_YoshiKid) = {
-    IfEq(GF_JAN07_YoshiCriedForHelp, false)
-        Call(DisablePlayerInput, true)
+    IfEq(GF_JAN07_YoshiCriedForHelp, FALSE)
+        Call(DisablePlayerInput, TRUE)
         Call(ShowMessageAtScreenPos, MSG_CH5_00B4, 320, 60)
         Call(PlaySoundAtPlayer, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         Call(ShowEmote, 0, EMOTE_EXCLAMATION, 0, 30, EMOTER_PLAYER, 0, 0, 0, 0)
@@ -40,14 +40,14 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Call(SetCamDistance, CAM_DEFAULT, 500)
         Call(SetCamPitch, CAM_DEFAULT, 16, Float(-6.0))
         Call(SetCamSpeed, CAM_DEFAULT, 3)
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Yellow_Cry, ANIM_YoshiKid_Yellow_Cry, 5, MSG_CH5_00B5)
         Wait(10)
         Exec(N(EVS_YoshiKid_CryForHelp))
         Call(ResetCam, CAM_DEFAULT, Float(90.0))
-        Set(GF_JAN07_YoshiCriedForHelp, true)
-        Call(DisablePlayerInput, false)
+        Set(GF_JAN07_YoshiCriedForHelp, TRUE)
+        Call(DisablePlayerInput, FALSE)
     EndIf
     Label(0)
         Call(GetSelfVar, 0, LVar0)
@@ -55,25 +55,25 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
             Wait(1)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(UseSettingsFrom, CAM_DEFAULT, -20, 0, 20)
     Call(SetPanTarget, CAM_DEFAULT, -20, 0, 20)
     Call(SetCamDistance, CAM_DEFAULT, Float(300.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Thread
         Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, TRUE)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(NpcMoveTo, NPC_PARTNER, -55, 5, 30)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, false)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, FALSE)
         Call(EnablePartnerAI)
     EndThread
     Call(PlayerMoveTo, -20, 10, 25)
     Wait(15)
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_02, TRUE)
     Thread
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 30, EMOTER_NPC, 0, 0, 0, 0)
@@ -95,13 +95,13 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     EndIf
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Yellow_Talk, ANIM_YoshiKid_Yellow_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -150, 15, 0)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
-    Set(GF_JAN07_SavedYoshi, true)
+    Set(GF_JAN07_SavedYoshi, TRUE)
     Set(LVar0, 0)
     Add(LVar0, GF_JAN05_SavedYoshi)
     Add(LVar0, GF_JAN07_SavedYoshi)
@@ -124,7 +124,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Wait(30)
     EndIf
     Call(ResetCam, CAM_DEFAULT, Float(4.5))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
@@ -132,7 +132,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
 
 EvtScript N(EVS_NpcInit_YoshiKid) = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
-        IfEq(GF_JAN07_SavedYoshi, false)
+        IfEq(GF_JAN07_SavedYoshi, FALSE)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Yellow_Cry)
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid)))
             Return
@@ -145,18 +145,18 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
 
 EvtScript N(EVS_NpcIdle_PutridPiranha) = {
 #if VERSION_PAL
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, true)
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, true)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, TRUE)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, TRUE)
 #elif VERSION_US || VERSION_IQUE
     ChildThread
         Loop(0)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             IfLt(LVar0, -190)
-                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, true)
-                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, true)
+                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, TRUE)
+                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, TRUE)
             Else
-                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, false)
-                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, false)
+                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH, FALSE)
+                Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_PARTNER, FALSE)
             EndIf
             Wait(1)
         EndLoop
@@ -165,7 +165,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Call(SetNpcCollisionSize, NPC_PutridPiranha_01, 48, 40)
     Call(SetNpcCollisionSize, NPC_PutridPiranha_02, 48, 40)
     Call(AwaitPlayerApproach, 60, 20, 140)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, 0)
         Call(InterruptUsePartner)
@@ -175,7 +175,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
         Call(UseSettingsFrom, CAM_DEFAULT, -60, 0, 20)
         Call(SetPanTarget, CAM_DEFAULT, -50, 0, 20)
         Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     EndThread
     Thread
         Call(InterpNpcYaw, NPC_PutridPiranha_01, 270, 0)
@@ -247,7 +247,7 @@ EvtScript N(EVS_NpcIdle_PutridPiranha) = {
     Call(SetNpcAnimation, NPC_PutridPiranha_01, ANIM_LargePiranha_Putrid_Anim06)
     Call(SetNpcAnimation, NPC_PutridPiranha_02, ANIM_LargePiranha_Putrid_Anim06)
     Call(PlaySoundAtNpc, NPC_PutridPiranha_01, SOUND_PIRANHA_CHOMP, SOUND_SPACE_DEFAULT)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
     End
@@ -258,7 +258,7 @@ EvtScript N(EVS_NpcDefeat_PutridPiranha) = {
     Call(SetPanTarget, CAM_DEFAULT, -20, 0, 20)
     Call(SetCamDistance, CAM_DEFAULT, Float(500.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
@@ -273,7 +273,7 @@ EvtScript N(EVS_NpcDefeat_PutridPiranha) = {
 
 EvtScript N(EVS_NpcInit_PutridPiranha) = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
-        IfEq(GF_JAN07_SavedYoshi, false)
+        IfEq(GF_JAN07_SavedYoshi, FALSE)
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_PutridPiranha)))
             Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_PutridPiranha)))
             Return
@@ -285,7 +285,7 @@ EvtScript N(EVS_NpcInit_PutridPiranha) = {
 };
 
 EvtScript N(EVS_NpcInit_SpearGuy_Hitbox) = {
-    IfEq(GF_JAN07_SavedYoshi, false)
+    IfEq(GF_JAN07_SavedYoshi, FALSE)
         Call(RemoveNpc, NPC_SpearGuy)
         Call(RemoveNpc, NPC_SpearGuy_Hitbox)
     EndIf
@@ -300,7 +300,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .yaw = 90,
         .territory = {
             .wander = {
-                .isFlying = true,
+                .isFlying = TRUE,
                 .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
                 .wanderShape = SHAPE_CYLINDER,
                 .centerPos  = { -28, 0, 13 },

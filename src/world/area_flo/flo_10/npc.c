@@ -4,15 +4,15 @@
 #include "world/common/npc/Lily.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetNpcPos, NPC_Lily, 60, 0, 55)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 0, 0, 0)
     Call(SetCamDistance, CAM_DEFAULT, 450)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-6.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(20)
     Call(SpeakToPlayer, NPC_Lily, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_00C6)
@@ -29,13 +29,13 @@ s32 N(KeyList)[] = {
 };
 
 EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
-    IfEq(GF_FLO10_ShowedLilyTheWaterStone, true)
+    IfEq(GF_FLO10_ShowedLilyTheWaterStone, TRUE)
         Call(GetPartnerInUse, LVarA)
         IfNe(LVarA, 0)
             Call(AwaitPlayerLeave, 0, 0, 19)
             Return
         EndIf
-        Call(DisablePlayerInput, true)
+        Call(DisablePlayerInput, TRUE)
         SetGroup(EVT_GROUP_NEVER_PAUSE)
         Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
         Call(ShowKeyChoicePopup)
@@ -62,7 +62,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
                 ExecWait(N(EVS_Scene_ReleaseFountain))
         EndSwitch
-        Call(DisablePlayerInput, false)
+        Call(DisablePlayerInput, FALSE)
         Call(AwaitPlayerLeave, 0, 0, 19)
     EndIf
     Return
@@ -96,10 +96,10 @@ EvtScript N(EVS_MovePlayerToTalk) = {
                 Else
                     Add(LVar0, 40)
                 EndIf
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
                 Call(PlayerMoveTo, LVar0, LVar5, 15 * DT)
-                Call(PlayerFaceNpc, NPC_Lily, true)
-                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
+                Call(PlayerFaceNpc, NPC_Lily, TRUE)
+                Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, FALSE)
             EndThread
     EndSwitch
     Return
@@ -117,13 +117,13 @@ EvtScript N(EVS_NpcInteract_Lily) = {
             Call(SetCamDistance, CAM_DEFAULT, 325)
             Call(SetCamPitch, CAM_DEFAULT, Float(23.0), Float(-9.0))
             Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-            Call(PanToTarget, CAM_DEFAULT, 0, true)
+            Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
             Wait(10 * DT)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 5, MSG_CH6_0078)
             Call(EndSpeech, NPC_SELF, ANIM_Lily_DreadLoop, ANIM_Lily_Dread, 5)
         CaseLt(STORY_CH6_GOT_WATER_STONE)
-            IfEq(GF_FLO10_LilyRequestedWaterStone, false)
+            IfEq(GF_FLO10_LilyRequestedWaterStone, FALSE)
                 Exec(N(EVS_MovePlayerToTalk))
                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                 Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -131,7 +131,7 @@ EvtScript N(EVS_NpcInteract_Lily) = {
                 Call(SetCamDistance, CAM_DEFAULT, 325)
                 Call(SetCamPitch, CAM_DEFAULT, Float(23.0), Float(-9.0))
                 Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
-                Call(PanToTarget, CAM_DEFAULT, 0, true)
+                Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
                 Call(WaitForCam, CAM_DEFAULT, Float(1.0))
                 Wait(10 * DT)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 5, MSG_CH6_0079)
@@ -158,14 +158,14 @@ EvtScript N(EVS_NpcInteract_Lily) = {
                         Call(ContinueSpeech, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 0, MSG_CH6_007E)
                 EndSwitch
                 Wait(10 * DT)
-                Set(GF_FLO10_LilyRequestedWaterStone, true)
-                Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, false)
+                Set(GF_FLO10_LilyRequestedWaterStone, TRUE)
+                Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, FALSE)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 5, MSG_CH6_007F)
             EndIf
         CaseLt(STORY_CH6_FILLED_SPRING_WITH_WATER)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_Talk, ANIM_Lily_Idle, 0, MSG_CH6_0080)
-            Set(GF_FLO10_ShowedLilyTheWaterStone, true)
+            Set(GF_FLO10_ShowedLilyTheWaterStone, TRUE)
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Lily_TalkPlead, ANIM_Lily_IdlePlead, 0, MSG_CH6_0085)
             Call(EndSpeech, NPC_SELF, ANIM_Lily_Talk, ANIM_Lily_Idle, 0)
@@ -185,10 +185,10 @@ EvtScript N(EVS_NpcInit_Lily) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Lily)))
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_WATER_STONE)
-            IfEq(GF_FLO10_LilyRequestedWaterStone, false)
+            IfEq(GF_FLO10_LilyRequestedWaterStone, FALSE)
                 Call(SetNpcAnimation, NPC_SELF, ANIM_Lily_IdlePlead)
                 Call(InterpNpcYaw, NPC_SELF, 90, 1)
-                Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, true)
+                Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER, TRUE)
             EndIf
         CaseEq(STORY_CH6_GOT_WATER_STONE)
             Call(InterpNpcYaw, NPC_SELF, 270, 1)

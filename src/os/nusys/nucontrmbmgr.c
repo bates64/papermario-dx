@@ -13,10 +13,10 @@ s32 contRmbForceStopEndMesg(NUSiCommonMesg* mesg);
 
 s32 (*D_80093CE4[])(NUSiCommonMesg*) = {
     contRmbRetrace, contRmbCheckMesg, contRmbStartMesg, contRmbStopMesg, contRmbForceStopMesg, contRmbForceStopEndMesg,
-    nullptr
+    NULL
 };
 
-NUCallBackList nuContRmbCallBack = {.next = nullptr, .func = D_80093CE4, .majorNo = 0x300, .funcNum = 0};
+NUCallBackList nuContRmbCallBack = {.next = NULL, .func = D_80093CE4, .majorNo = 0x300, .funcNum = 0};
 
 s32 contRmbControl(NUContRmbCtl* rmbCtl, u32 contNo) {
     s32 ret = 0;

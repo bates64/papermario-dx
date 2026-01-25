@@ -80,7 +80,7 @@ API_CALLABLE(N(Merlow_SetBadgePurchased)) {
     Bytecode* args = script->ptrReadPos;
     s32 index = evt_get_variable(script, *args++);
 
-    evt_set_variable(nullptr, GF_HOS06_MerlowBadge_00 + index, true);
+    evt_set_variable(NULL, GF_HOS06_MerlowBadge_00 + index, TRUE);
     return ApiStatus_DONE2;
 }
 
@@ -94,7 +94,7 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
         menu = script->functionTempPtr[2];
         menuPos = 0;
         for (i = 0; i < MERLOW_BADGE_COUNT; i++) {
-            if (!evt_get_variable(nullptr, GF_HOS06_MerlowBadge_00 + i)) {
+            if (!evt_get_variable(NULL, GF_HOS06_MerlowBadge_00 + i)) {
                 ItemData* item = &gItemTable[N(MerlowBadgeInventory)[i].itemID];
                 IconHudScriptPair* itemHudScripts = &gItemHudScripts[item->hudElemID];
                 menu->userIndex[menuPos] = i;
@@ -103,7 +103,7 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
                 menu->enabled[menuPos] = playerData->starPieces >= N(MerlowBadgeInventory)[i].price;
                 if (playerData->starPieces < N(MerlowBadgeInventory)[i].price) {
                     menu->ptrIcon[menuPos] = itemHudScripts->disabled;
-                    menu->enabled[menuPos] = false;
+                    menu->enabled[menuPos] = FALSE;
                 }
                 menu->descMsg[menuPos] = N(MerlowBadgeInventory)[i].descMsg;
                 menu->value[menuPos] = N(MerlowBadgeInventory)[i].price;
@@ -160,12 +160,12 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004C)
         Return
     EndIf
-    IfEq(MF_PurchasedBadge, true)
+    IfEq(MF_PurchasedBadge, TRUE)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004D)
     Else
-        IfEq(GF_HOS06_Met_Merlow, false)
+        IfEq(GF_HOS06_Met_Merlow, FALSE)
             Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004A)
-            Set(GF_HOS06_Met_Merlow, true)
+            Set(GF_HOS06_Met_Merlow, TRUE)
         Else
             Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004B)
         EndIf
@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcInteract_Merlow) = {
     Mul(LVar1, -1)
     Call(AddStarPieces, LVar1)
     Add(GB_HOS06_Merlow_PurchaseCount, 1)
-    Set(MF_PurchasedBadge, true)
+    Set(MF_PurchasedBadge, TRUE)
     Call(N(Merlow_SetBadgePurchased), LVar2)
     // awkward
     #define NAME_SUFFIX _Merlow
@@ -250,7 +250,7 @@ EvtScript N(EVS_NpcInit_Merluvlee_Passthrough) = {
 };
 
 EvtScript N(EVS_NpcInit_Merlow) = {
-    Set(MF_PurchasedBadge, false)
+    Set(MF_PurchasedBadge, FALSE)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Merlow)))
     Return
     End

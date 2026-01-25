@@ -33,7 +33,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     EndIf
     Exec(N(EVS_ManageStageEffects))
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)

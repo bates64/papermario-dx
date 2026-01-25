@@ -140,7 +140,7 @@ API_CALLABLE(N(ProjectileAI_Main)) {
     MobileAISettings* aiSettings;
     u32 vt0;
 
-    if (get_enemy_safe(enemy->npcID) != nullptr) {
+    if (get_enemy_safe(enemy->npcID) != NULL) {
         if (enemy->varTable[0] != 5) {
             aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
             npc = get_npc_unsafe(enemy->npcID);
@@ -282,7 +282,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
         script->functionTemp[0] = 0;
     }
 
-    if (get_enemy_safe(enemy->npcID) == nullptr) {
+    if (get_enemy_safe(enemy->npcID) == NULL) {
         evt_set_variable(script, LVar0, 0);
         return ApiStatus_DONE2;
     }
@@ -290,7 +290,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
         evt_set_variable(script, LVar0, 0);
         return ApiStatus_DONE2;
     }
-    if (get_enemy_safe(enemy->npcID) == nullptr) {
+    if (get_enemy_safe(enemy->npcID) == NULL) {
         evt_set_variable(script, LVar0, 0);
         return ApiStatus_DONE2;
     }
@@ -326,7 +326,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
                 phi_s4 = 1;
             }
 
-            cond = false;
+            cond = FALSE;
             if (npc->jumpVel < 0.0) {
                 x = npc->pos.x;
                 y = npc->pos.y + 13.0;
@@ -335,7 +335,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
                 if ((npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth) != 0) &&
                     (hitDepth <= (fabsf(npc->jumpVel) + 13.0)))
                 {
-                    cond = true;
+                    cond = TRUE;
                 }
             }
 

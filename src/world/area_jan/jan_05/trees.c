@@ -5,10 +5,10 @@
 #define NAME_SUFFIX
 
 API_CALLABLE(N(func_8024268C_B4D0FC)) {
-    if (get_enemy_safe(NPC_JungleFuzzy) == nullptr) {
-        script->varTable[0] = false;
+    if (get_enemy_safe(NPC_JungleFuzzy) == NULL) {
+        script->varTable[0] = FALSE;
     } else {
-        script->varTable[0] = true;
+        script->varTable[0] = TRUE;
     }
     return ApiStatus_DONE2;
 }

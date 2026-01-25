@@ -9,10 +9,10 @@ API_CALLABLE(N(HideRowfBadge)) {
 
 API_CALLABLE(N(SetRowfBadgeBought)) {
     s32 itemIndex = evt_get_variable(script, *script->ptrReadPos);
-    s32* buyFlags = (s32*) evt_get_variable(nullptr, MV_RowfShopBuyFlags);
+    s32* buyFlags = (s32*) evt_get_variable(NULL, MV_RowfShopBuyFlags);
 
     set_item_entity_flags(gGameStatusPtr->shopItemEntities[itemIndex].index, ITEM_ENTITY_FLAG_HIDDEN);
-    evt_set_variable(nullptr, buyFlags[itemIndex], true);
+    evt_set_variable(NULL, buyFlags[itemIndex], TRUE);
     return ApiStatus_DONE2;
 }
 
@@ -40,8 +40,8 @@ API_CALLABLE(N(CreateShopInventory)) {
     if (!evt_get_variable(script, GF_MAC01_RowfBadgesChosen)) {
         available = 0;
         for (i = 0; i < (u32) ARRAY_COUNT(options); i++) {
-            s32 isUnlocked = evt_get_variable(nullptr, varBaseUnlocked + i);
-            s32 hasBought = evt_get_variable(nullptr, varBaseHasBought + i);
+            s32 isUnlocked = evt_get_variable(NULL, varBaseUnlocked + i);
+            s32 hasBought = evt_get_variable(NULL, varBaseHasBought + i);
             if ((isUnlocked == 1) && (hasBought == 0)) {
                 options[available++] = i;
             }
@@ -70,8 +70,8 @@ API_CALLABLE(N(CreateShopInventory)) {
             available--;
         }
         evt_set_variable(script, GB_MAC01_Rowf_NumBadges, count);
-        evt_set_variable(script, GF_MAC01_RowfBadgesChosen, true);
-        script->varTable[3] = false;
+        evt_set_variable(script, GF_MAC01_RowfBadgesChosen, TRUE);
+        script->varTable[3] = FALSE;
     } else {
         count = evt_get_variable(script, GB_MAC01_Rowf_NumBadges);
         for (i = 0; i < count; i++) {
@@ -82,7 +82,7 @@ API_CALLABLE(N(CreateShopInventory)) {
             inventory[i].descMsg = mac_01_RowfBadgeInventory[shopIdx].descMsg;
             buyFlags[i] = varBaseHasBought + shopIdx;
         }
-        script->varTable[3] = true;
+        script->varTable[3] = TRUE;
     }
 
     script->varTable[0] = count;
@@ -129,13 +129,13 @@ EvtScript N(EVS_OnBuy) = {
         CaseEq(SHOP_BUY_RESULT_OK)
             Switch(LVar2)
                 CaseEq(0) // left badge shop slot
-                    Set(GF_MAC01_RowfBadgeAvailableA, true)
+                    Set(GF_MAC01_RowfBadgeAvailableA, TRUE)
                     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b3, COLLIDER_FLAGS_UPPER_MASK)
                 CaseEq(1) // middle badge shop slot
-                    Set(GF_MAC01_RowfBadgeAvailableB, true)
+                    Set(GF_MAC01_RowfBadgeAvailableB, TRUE)
                     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b2, COLLIDER_FLAGS_UPPER_MASK)
                 CaseEq(2) // right badge shop slot
-                    Set(GF_MAC01_RowfBadgeAvailableC, true)
+                    Set(GF_MAC01_RowfBadgeAvailableC, TRUE)
                     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b1, COLLIDER_FLAGS_UPPER_MASK)
             EndSwitch
             Call(N(SetRowfBadgeBought), LVar2)
@@ -191,57 +191,57 @@ EvtScript N(EVS_SetupBadgeShop) = {
     IfLt(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
         Goto(4)
     EndIf
-    Set(GF_MAC01_UnlockedRowfBadge_0F, true)
-    Set(GF_MAC01_UnlockedRowfBadge_0E, true)
-    Set(GF_MAC01_UnlockedRowfBadge_0D, true)
+    Set(GF_MAC01_UnlockedRowfBadge_0F, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_0E, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_0D, TRUE)
     Label(4)
-    Set(GF_MAC01_UnlockedRowfBadge_0C, true)
-    Set(GF_MAC01_UnlockedRowfBadge_0B, true)
-    Set(GF_MAC01_UnlockedRowfBadge_0A, true)
+    Set(GF_MAC01_UnlockedRowfBadge_0C, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_0B, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_0A, TRUE)
     Label(3)
-    Set(GF_MAC01_UnlockedRowfBadge_09, true)
-    Set(GF_MAC01_UnlockedRowfBadge_08, true)
-    Set(GF_MAC01_UnlockedRowfBadge_07, true)
+    Set(GF_MAC01_UnlockedRowfBadge_09, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_08, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_07, TRUE)
     Label(2)
-    Set(GF_MAC01_UnlockedRowfBadge_06, true)
-    Set(GF_MAC01_UnlockedRowfBadge_05, true)
-    Set(GF_MAC01_UnlockedRowfBadge_04, true)
+    Set(GF_MAC01_UnlockedRowfBadge_06, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_05, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_04, TRUE)
     Label(1)
-    Set(GF_MAC01_UnlockedRowfBadge_03, true)
-    Set(GF_MAC01_UnlockedRowfBadge_02, true)
-    Set(GF_MAC01_UnlockedRowfBadge_01, true)
-    Set(GF_MAC01_UnlockedRowfBadge_00, true)
+    Set(GF_MAC01_UnlockedRowfBadge_03, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_02, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_01, TRUE)
+    Set(GF_MAC01_UnlockedRowfBadge_00, TRUE)
     Call(N(CreateShopInventory))
     Set(MV_RowfShopBuyFlags, LVar1)
     IfEq(LVar3, 0)
-        Set(GF_MAC01_RowfBadgeAvailableA, false)
-        Set(GF_MAC01_RowfBadgeAvailableB, false)
-        Set(GF_MAC01_RowfBadgeAvailableC, false)
+        Set(GF_MAC01_RowfBadgeAvailableA, FALSE)
+        Set(GF_MAC01_RowfBadgeAvailableB, FALSE)
+        Set(GF_MAC01_RowfBadgeAvailableC, FALSE)
         IfLt(LVar0, 3)
-            Set(GF_MAC01_RowfBadgeAvailableC, true)
+            Set(GF_MAC01_RowfBadgeAvailableC, TRUE)
         EndIf
         IfLt(LVar0, 2)
-            Set(GF_MAC01_RowfBadgeAvailableB, true)
+            Set(GF_MAC01_RowfBadgeAvailableB, TRUE)
         EndIf
         IfLt(LVar0, 1)
-            Set(GF_MAC01_RowfBadgeAvailableA, true)
+            Set(GF_MAC01_RowfBadgeAvailableA, TRUE)
         EndIf
     EndIf
     Call(MakeShop, Ref(N(RowfItemPositions)), LVar2, Ref(N(RowfDummyPriceList)), 0)
     Call(MakeShopOwner, Ref(N(ShopOwnerRowf)))
     IfEq(LVar3, 1)
         IfGe(LVar0, 3)
-            IfEq(GF_MAC01_RowfBadgeAvailableC, true)
+            IfEq(GF_MAC01_RowfBadgeAvailableC, TRUE)
                 Call(N(SetRowfBadgeBought), 2)
             EndIf
         EndIf
         IfGe(LVar0, 2)
-            IfEq(GF_MAC01_RowfBadgeAvailableB, true)
+            IfEq(GF_MAC01_RowfBadgeAvailableB, TRUE)
                 Call(N(SetRowfBadgeBought), 1)
             EndIf
         EndIf
         IfGe(LVar0, 1)
-            IfEq(GF_MAC01_RowfBadgeAvailableA, true)
+            IfEq(GF_MAC01_RowfBadgeAvailableA, TRUE)
                 Call(N(SetRowfBadgeBought), 0)
             EndIf
         EndIf

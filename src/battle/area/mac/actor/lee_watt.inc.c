@@ -69,7 +69,7 @@ ActorPartBlueprint N(ActorParts)[] = {
         .posOffset = { 0, 50, 0 },
         .targetOffset = { -1, -30 },
         .opacity = 255,
-        .idleAnimations = nullptr,
+        .idleAnimations = NULL,
         .defenseTable = N(DefenseTable),
         .eventFlags = ACTOR_EVENT_FLAG_ELECTRIFIED,
         .elementImmunityFlags = 0,
@@ -119,13 +119,13 @@ API_CALLABLE(N(WattFXUpdate)) {
     if (isInitialCall) {
         wattEffectData = heap_malloc(sizeof(*wattEffectData));
         actor->state.varTablePtr[3] = wattEffectData;
-        wattEffectData->isBouncing = true;
+        wattEffectData->isBouncing = TRUE;
         wattEffectData->bouncePhase = 0;
-        wattEffectData->isActive = true;
+        wattEffectData->isActive = TRUE;
         wattEffectData->currentEffectIndex = 0;
         wattEffectData->effect1 = fx_static_status(0, actor->curPos.x, actor->curPos.y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
         wattEffectData->effect2 = fx_static_status(1, actor->curPos.x, NPC_DISPOSE_POS_Y, actor->curPos.z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
-        wattEffectData->initialized = true;
+        wattEffectData->initialized = TRUE;
         wattEffectData->debuff = actor->debuff;
     }
 
@@ -147,24 +147,24 @@ API_CALLABLE(N(WattFXUpdate)) {
     if (wattEffectData->isActive) {
         switch (wattEffectData->currentEffectIndex) {
             case 0:
-                if (wattEffectData->effect1 == nullptr) {
+                if (wattEffectData->effect1 == NULL) {
                     wattEffectData->effect1 = fx_static_status(0, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
                 }
 
-                if (wattEffectData->effect2 != nullptr) {
+                if (wattEffectData->effect2 != NULL) {
                     wattEffectData->effect2->flags |= FX_INSTANCE_FLAG_DISMISS;
-                    wattEffectData->effect2 = nullptr;
+                    wattEffectData->effect2 = NULL;
                 }
                 wattEffectData->effect1->data.staticStatus->pos.x = x;
                 wattEffectData->effect1->data.staticStatus->pos.y = y;
                 wattEffectData->effect1->data.staticStatus->pos.z = z;
                 break;
             case 1:
-                if (wattEffectData->effect1 != nullptr) {
+                if (wattEffectData->effect1 != NULL) {
                     wattEffectData->effect1->flags |= FX_INSTANCE_FLAG_DISMISS;
-                    wattEffectData->effect1 = nullptr;
+                    wattEffectData->effect1 = NULL;
                 }
-                if (wattEffectData->effect2 == nullptr) {
+                if (wattEffectData->effect2 == NULL) {
                     wattEffectData->effect2 = fx_static_status(1, x, y, z, (actor->debuff != STATUS_KEY_SHRINK) ? 1.0f : 0.4f, 5, 0);
 
                 }
@@ -174,23 +174,23 @@ API_CALLABLE(N(WattFXUpdate)) {
                 break;
         }
     } else {
-        if (wattEffectData->effect1 != nullptr) {
+        if (wattEffectData->effect1 != NULL) {
             wattEffectData->effect1->flags |= FX_INSTANCE_FLAG_DISMISS;
-            wattEffectData->effect1 = nullptr;
+            wattEffectData->effect1 = NULL;
         }
-        if (wattEffectData->effect2 != nullptr) {
+        if (wattEffectData->effect2 != NULL) {
             wattEffectData->effect2->flags |= FX_INSTANCE_FLAG_DISMISS;
-            wattEffectData->effect2 = nullptr;
+            wattEffectData->effect2 = NULL;
         }
     }
     if (wattEffectData->debuff != actor->debuff && wattEffectData->isActive) {
-        if (wattEffectData->effect1 != nullptr) {
+        if (wattEffectData->effect1 != NULL) {
             wattEffectData->effect1->flags |= FX_INSTANCE_FLAG_DISMISS;
-            wattEffectData->effect1 = nullptr;
+            wattEffectData->effect1 = NULL;
         }
-        if (wattEffectData->effect2 != nullptr) {
+        if (wattEffectData->effect2 != NULL) {
             wattEffectData->effect2->flags |= FX_INSTANCE_FLAG_DISMISS;
-            wattEffectData->effect2 = nullptr;
+            wattEffectData->effect2 = NULL;
         }
     }
     wattEffectData->debuff = actor->debuff;
@@ -207,13 +207,13 @@ EvtScript N(EVS_Idle) = {
 API_CALLABLE(N(WattFXRemove)) {
     WattEffectData* wattEffectData = (WattEffectData*)get_actor(script->owner1.actorID)->state.varTable[3];
 
-    wattEffectData->initialized = false;
+    wattEffectData->initialized = FALSE;
 
-    if (wattEffectData->effect1 != nullptr) {
+    if (wattEffectData->effect1 != NULL) {
         wattEffectData->effect1->flags |= FX_INSTANCE_FLAG_DISMISS;
     }
 
-    if (wattEffectData->effect2 != nullptr) {
+    if (wattEffectData->effect2 != NULL) {
         wattEffectData->effect2->flags |= FX_INSTANCE_FLAG_DISMISS;
     }
 
@@ -245,7 +245,7 @@ API_CALLABLE(N(WattFXSetEffect)) {
 }
 
 EvtScript N(EVS_HandleEvent) = {
-    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(N(WattFXSetBouncing), 0)
     Call(N(WattFXSetActive), 1)
     Call(N(WattFXSetEffect), 0)
@@ -327,7 +327,7 @@ EvtScript N(EVS_HandleEvent) = {
         CaseDefault
     EndSwitch
     Call(N(WattFXSetBouncing), 1)
-    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
     Return
     End
 };
@@ -337,14 +337,14 @@ EvtScript N(EVS_HandleEvent) = {
 #include "common/SetBackgroundAlpha.inc.c"
 
 EvtScript N(EVS_TakeTurn) = {
-    Call(UseIdleAnimation, ACTOR_SELF, false)
+    Call(UseIdleAnimation, ACTOR_SELF, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_REPOSITION)
     Call(GetActorPos, ACTOR_PLAYER, LVar0, LVar1, LVar2)
     Call(SetBattleCamTarget, LVar0, LVar1, LVar2)
     Call(SetBattleCamDist, 350)
     Call(SetBattleCamOffsetY, 40)
     Call(MoveBattleCamOver, 80)
-    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, false)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_TARGET, BTL_CAM_XADJ_AVG, FALSE)
     Call(SetTargetActor, ACTOR_SELF, ACTOR_PLAYER)
     Call(SetGoalToTarget, ACTOR_SELF)
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Run)
@@ -384,7 +384,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Run)
             Call(FlyToGoal, ACTOR_SELF, 30, 0, EASING_COS_IN_OUT)
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Idle)
-            Call(UseIdleAnimation, ACTOR_SELF, true)
+            Call(UseIdleAnimation, ACTOR_SELF, TRUE)
             Return
         EndCaseGroup
     EndSwitch
@@ -392,7 +392,7 @@ EvtScript N(EVS_TakeTurn) = {
     Set(LVarA, 40)
     Call(AddBattleCamDist, -75)
     Call(MoveBattleCamOver, LVarA)
-    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, true)
+    Call(SetBattleCamTargetingModes, BTL_CAM_YADJ_NONE, BTL_CAM_XADJ_NONE, TRUE)
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_WATT_CHARGE)
     Call(GetStatusFlags, ACTOR_SELF, LVar0)
     IfFlag(LVar0, STATUS_FLAG_SHRINK)
@@ -451,7 +451,7 @@ EvtScript N(EVS_TakeTurn) = {
             Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_BattleWatt_Idle)
         EndCaseGroup
     EndSwitch
-    Call(UseIdleAnimation, ACTOR_SELF, true)
+    Call(UseIdleAnimation, ACTOR_SELF, TRUE)
     Return
     End
 };

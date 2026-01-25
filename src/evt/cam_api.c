@@ -50,8 +50,8 @@ API_CALLABLE(SetCamPerspective) {
     Camera* camera = &gCameras[id];
 
     camera->updateMode = mode;
-    camera->needsInit = true;
-    camera->needsReinit = true;
+    camera->needsInit = TRUE;
+    camera->needsReinit = TRUE;
 
     camera->vfov = vfov;
     camera->farClip = farClip;
@@ -66,7 +66,7 @@ API_CALLABLE(SetCamUpdateMode) {
     Camera* camera = &gCameras[id];
 
     camera->updateMode = mode;
-    camera->needsInit = false;
+    camera->needsInit = FALSE;
     return ApiStatus_DONE2;
 }
 
@@ -80,7 +80,7 @@ API_CALLABLE(GrabCamera) {
     f32 dx, dy, dz;
 
     gCameras[id].updateMode = CAM_UPDATE_INTERP_POS;
-    gCameras[id].needsInit = false;
+    gCameras[id].needsInit = FALSE;
     gCameras[id].params.interp.pitch = -round(gCameras[id].lookAt_pitch);
     gCameras[id].params.interp.yaw = -gCameras[id].lookAt_yaw;
     gCameras[id].params.interp.offsetY = 0;
@@ -157,7 +157,7 @@ API_CALLABLE(SetInterpCamParams) {
 API_CALLABLE(SetNoInterpCamParams) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
-    bool skipRecalc = evt_get_variable(script, *args++);
+    b32 skipRecalc = evt_get_variable(script, *args++);
     s32 dist = evt_get_variable(script, *args++);
     s32 fovScale = evt_get_variable(script, *args++);
     s32 pitch = evt_get_variable(script, *args++);
@@ -283,7 +283,7 @@ API_CALLABLE(InterpCamTargetPos) {
     data->time--;
     if (data->time == 0) {
         heap_free(script->userData);
-        script->userData = nullptr;
+        script->userData = NULL;
         return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -440,12 +440,12 @@ API_CALLABLE(PanToTarget) {
     s32 targetType = evt_get_variable(script, *args++);
     Camera* camera = &gCameras[id];
 
-    camera->panActive = true;
+    camera->panActive = TRUE;
     if (targetType != 0) {
-        camera->useOverrideSettings = true;
+        camera->useOverrideSettings = TRUE;
         camera->interpEasingParameter = panPhase;
     } else {
-        camera->useOverrideSettings = false;
+        camera->useOverrideSettings = FALSE;
         camera->interpEasingParameter = 0.0f;
         camera->moveSpeed = 1.0f;
     }
@@ -562,7 +562,7 @@ API_CALLABLE(SetPanTarget) {
     camera->movePos.x = x;
     camera->movePos.y = y;
     camera->movePos.z = z;
-    camera->panActive = true;
+    camera->panActive = TRUE;
     return ApiStatus_DONE2;
 }
 
@@ -699,8 +699,8 @@ API_CALLABLE(SetCamProperties) {
         camera->overrideSettings.boomPitch = boomPitch;
         camera->overrideSettings.viewPitch = viewPitch;
         camera->moveSpeed = moveSpeed;
-        camera->panActive = true;
-        camera->useOverrideSettings = true;
+        camera->panActive = TRUE;
+        camera->useOverrideSettings = TRUE;
         camera->interpEasingParameter = 0.0f;
         return ApiStatus_BLOCK;
     }
@@ -742,8 +742,8 @@ API_CALLABLE(AdjustCam) {
         camera->overrideSettings.boomPitch = boomPitch;
         camera->overrideSettings.viewPitch = viewPitch;
         camera->moveSpeed = moveSpeed;
-        camera->panActive = true;
-        camera->useOverrideSettings = true;
+        camera->panActive = TRUE;
+        camera->useOverrideSettings = TRUE;
         camera->interpEasingParameter = 0.0f;
         return ApiStatus_BLOCK;
     }
@@ -782,8 +782,8 @@ API_CALLABLE(ResetCam) {
         camera->movePos.y = y;
         camera->movePos.z = z;
         camera->moveSpeed = moveSpeed;
-        camera->panActive = true;
-        camera->useOverrideSettings = true;
+        camera->panActive = TRUE;
+        camera->useOverrideSettings = TRUE;
         camera->interpEasingParameter = 0.0f;
         return ApiStatus_BLOCK;
     }
@@ -792,8 +792,8 @@ API_CALLABLE(ResetCam) {
         return ApiStatus_BLOCK;
     }
 
-    camera->panActive = true;
-    camera->useOverrideSettings = false;
+    camera->panActive = TRUE;
+    camera->useOverrideSettings = FALSE;
     camera->moveSpeed = 1.0f;
     camera->interpEasingParameter = 0.0f;
     return ApiStatus_DONE2;

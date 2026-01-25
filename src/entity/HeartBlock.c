@@ -368,7 +368,7 @@ void entity_HeartBlock_change_render_script(Entity* entity) {
 
 void entity_HeartBlock_show_tutorial_message(Entity* entity) {
     if (!gPlayerData.partners[PARTNER_GOOMBARIO].enabled && !get_global_flag(GF_Tutorial_HeartBlock)) {
-        HeartBlockPrinterClosed = false;
+        HeartBlockPrinterClosed = FALSE;
         msg_get_printer_for_msg(MSG_Menus_Tutorial_HeartBlock, &HeartBlockPrinterClosed);
         set_time_freeze_mode(TIME_FREEZE_PARTIAL);
         gOverrideFlags |= GLOBAL_OVERRIDES_40;
@@ -398,7 +398,7 @@ s8 entity_HeartBlock_create_child_entity(Entity* entity, EntityBlueprint* bp) {
     data = childEntity->dataBuf.heartBlockContent;
     data->parentEntityIndex = entity->listIndex;
 
-    if (useAltSparkleType == false) {
+    if (useAltSparkleType == FALSE) {
         data->sparkleEffectType = 3;
     } else {
         data->sparkleEffectType = 6;
@@ -419,7 +419,7 @@ EntityScript Entity_HeartBlockContent_Script = {
     es_SetCallback(entity_HeartBlockContent_anim_heal, 0)
     es_Call(entity_HeartBlock_show_tutorial_message)
     es_SetCallback(entity_HeartBlock_wait_for_close_tutorial, 0)
-    es_SetCallback(nullptr, 60)
+    es_SetCallback(NULL, 60)
     es_Restart
     es_End
 };
@@ -458,7 +458,7 @@ EntityBlueprint Entity_HeartBlockContent = {
     .modelAnimationNodes = 0,
     .fpInit = entity_HeartBlockContent_init,
     .updateEntityScript = Entity_HeartBlockContent_Script,
-    .fpHandleCollision = nullptr,
+    .fpHandleCollision = NULL,
     { .dma = ENTITY_ROM(HeartBlockContent) },
     .entityType = ENTITY_TYPE_HEALING_BLOCK_CONTENT,
     .aabbSize = { 18, 6, 18 }

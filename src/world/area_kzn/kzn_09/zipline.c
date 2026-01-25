@@ -78,16 +78,16 @@ EvtScript N(EVS_RideZipline) = {
         Return
     EndIf
     UseArray(LVar0)
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     ExecGetTID(N(EVS_Zipline_TetherCameraToPlayer), LVar9)
     Thread
         Wait(7)
         Call(DisablePartnerAI, 0)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
+        Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
         Set(LVar0, ArrayVar(4))
         Sub(LVar0, 10)
         Set(LVar1, ArrayVar(5))
@@ -105,7 +105,7 @@ EvtScript N(EVS_RideZipline) = {
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Call(PlaySound, SOUND_LOOP_ZIPLINE_RIDE)
     ChildThread
-        Set(MF_Zipline_GoingDown, true)
+        Set(MF_Zipline_GoingDown, TRUE)
         Set(LVar0, ArrayVar(6))
         Set(AB_KZN_LastZiplineNpc1, ArrayVar(6))
         Loop(0)
@@ -133,18 +133,18 @@ EvtScript N(EVS_RideZipline) = {
         EndIf
     Call(PlaySound, SOUND_ZIPLINE_FINISH)
     Label(10)
-    Call(SetPlayerFlagBits, PS_FLAG_SCRIPTED_FALL, true)
-    Set(MF_Zipline_GoingDown, false)
+    Call(SetPlayerFlagBits, PS_FLAG_SCRIPTED_FALL, TRUE)
+    Set(MF_Zipline_GoingDown, FALSE)
     Call(StopSound, SOUND_LOOP_ZIPLINE_RIDE)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     Call(EnablePartnerAI)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     KillThread(LVar9)
     Wait(20)
     Call(PlaySound, SOUND_LOOP_ZIPLINE_RETURN)
     ChildThread
-        Set(MF_Zipline_GoingUp, true)
+        Set(MF_Zipline_GoingUp, TRUE)
         Set(LVar0, ArrayVar(6))
         Set(AB_KZN_LastZiplineNpc2, ArrayVar(6))
         Loop(0)
@@ -168,7 +168,7 @@ EvtScript N(EVS_RideZipline) = {
         IfEq(LVar1, 1)
             Goto(1)
         EndIf
-    Set(MF_Zipline_GoingUp, false)
+    Set(MF_Zipline_GoingUp, FALSE)
     Call(StopSound, SOUND_LOOP_ZIPLINE_RETURN)
     Return
     End

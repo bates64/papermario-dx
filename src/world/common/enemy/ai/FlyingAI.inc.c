@@ -42,7 +42,7 @@ void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 cond = false;
+    s32 cond = FALSE;
     f32 vt7 = (f32)enemy->varTable[7] / 100.0;
     f32 vt3 = (f32)enemy->varTable[3] / 100.0;
     f32 vt4 = (f32)enemy->varTable[4] / 100.0;
@@ -102,7 +102,7 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             s32 hit;
 
             if (npc->flags & NPC_FLAG_FLYING) {
-                hit = false;
+                hit = FALSE;
             } else {
                 posX = npc->pos.x;
                 posY = npc->pos.y;
@@ -155,7 +155,7 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
         posW = dist2D(enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z);
         if (npc->moveSpeed < posW) {
             npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
-            cond = true;
+            cond = TRUE;
         }
     }
 
@@ -203,10 +203,10 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     if (enemy->varTable[1] > 0) {
         f32 undulateAmplitude = (f32)enemy->varTable[1] / 100.0;
         f32 undulateAmount = sin_deg(enemy->varTable[2]);
-        bool hasCollision;
+        b32 hasCollision;
 
         if (npc->flags & NPC_FLAG_FLYING) {
-            hasCollision = false;
+            hasCollision = FALSE;
         } else {
             posX = npc->pos.x;
             posY = npc->pos.y;
@@ -298,7 +298,7 @@ void N(FlyingAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
         enemy->unk_10.x = npc->pos.x;
         enemy->unk_10.y = npc->pos.y;
         enemy->unk_10.z = npc->pos.z;
-        enemy->hitboxIsActive = true;
+        enemy->hitboxIsActive = TRUE;
     }
 }
 
@@ -334,7 +334,7 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     if (npc->jumpVel >= 0.0) {
         npc->pos.y += npc->jumpVel;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
-        enemy->hitboxIsActive = false;
+        enemy->hitboxIsActive = FALSE;
         if (!(npc->flags & NPC_FLAG_FLYING)) {
             posX = npc->pos.x;
             posY = npc->pos.y;
@@ -342,7 +342,7 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
             posW = 1000.0f;
             hitBelow = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
         } else {
-            hitBelow = false;
+            hitBelow = FALSE;
         }
         if (hitBelow) {
             temp_f2 = posY + temp_f20;

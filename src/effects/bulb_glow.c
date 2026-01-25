@@ -57,13 +57,13 @@ void bulb_glow_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg4, EffectInst
     bp.update = bulb_glow_update;
     bp.renderScene = bulb_glow_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_BULB_GLOW;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.bulbGlow = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.bulbGlow != nullptr);
+    ASSERT(effect->data.bulbGlow != NULL);
 
     data->type = arg0 & 255;
     if (arg0 < 256) {
@@ -192,7 +192,7 @@ void bulb_glow_appendGfx(void* effect) {
     isPointVisible = is_point_visible(data->pos.x, data->pos.y, data->pos.z, data->depthQueryID, &centerX, &centerY);
 
     if (type == 5) {
-        isPointVisible = true;
+        isPointVisible = TRUE;
     }
 
     if (!isPointVisible || centerX < 0.0f || centerY < 0.0f || centerX >= SCREEN_WIDTH || centerY >= SCREEN_HEIGHT) {

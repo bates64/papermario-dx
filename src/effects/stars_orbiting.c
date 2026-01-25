@@ -39,7 +39,7 @@ void stars_orbiting_main(
     effect = create_effect_instance(&bp);
     effect->numParts = numStars;
     part = effect->data.starsOrbiting = general_heap_malloc(numStars * sizeof(*part));
-    ASSERT(effect->data.starsOrbiting != nullptr);
+    ASSERT(effect->data.starsOrbiting != NULL);
 
     mem_clear(part, numStars * sizeof(*part));
 
@@ -50,7 +50,7 @@ void stars_orbiting_main(
     part->orbitRadius = 0;
     part->yaw = 0;
     part->targetRadius = radius;
-    part->enabled = true;
+    part->enabled = TRUE;
 
     part++;
     for (i = 1; i < numStars; i++, part++) {

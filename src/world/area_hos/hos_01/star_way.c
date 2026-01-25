@@ -12,7 +12,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
             Wait(1)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(FacePlayerTowardPoint, -30, -160, 0)
     Wait(15)
@@ -25,7 +25,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, 3)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_HOS_005D, 160, 40)
@@ -35,7 +35,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
 #else
     Wait(10)
 #endif
-    Call(EnableModel, MODEL_power, true)
+    Call(EnableModel, MODEL_power, TRUE)
     Set(MV_StarBeamState, 1)
         Label(10)
         IfNe(MV_StarBeamState, 2)
@@ -47,7 +47,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 600)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-11.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     PlayEffect(EFFECT_75, 0, -30, 250, -160, 1, -1)
     Set(MV_StarBeamFXPtr, LVarF)
@@ -70,7 +70,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamPitch, CAM_DEFAULT, Float(17.0), Float(-9.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(10)
     Call(ShowMessageAtScreenPos, MSG_HOS_005E, 160, 40)
@@ -78,7 +78,7 @@ EvtScript N(EVS_Scene_StarWayOpened) = {
     Set(GB_StoryProgress, STORY_CH8_OPENED_PATH_TO_STAR_WAY)
     Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -88,13 +88,13 @@ EvtScript N(EVS_AscendStarBeam) = {
     Call(UseSettingsFrom, CAM_DEFAULT, -30, 250, -160)
     Call(SetPanTarget, CAM_DEFAULT, -30, 250, -160)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
+    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
     Call(SetPlayerSpeed, Float(3.0))
     Call(PlayerMoveTo, -30, -160, 0)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetMusic, 0, SONG_STAR_WAY_OPENS, BGM_VARIATION_1, VOL_LEVEL_FULL)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, FALSE)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, TRUE)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(1.0))
     Call(NpcJump0, NPC_PARTNER, -30, 250, -170, 15)
     Thread

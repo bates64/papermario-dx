@@ -48,7 +48,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
     s32 animID;
     s32 ret;
 
-    targetNpc = nullptr;
+    targetNpc = NULL;
 
     if (isInitialCall) {
         D_802DB264 = 0;
@@ -166,11 +166,11 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
     }
 
     if (gCurrentPrintContext->stateFlags & MSG_STATE_FLAG_40) {
-        return true;
+        return TRUE;
     }
 
     if (D_802DB264 != 1) {
-        return false;
+        return FALSE;
     }
 
     if (script->varTable[13] != -1) {
@@ -183,7 +183,7 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
     if (script->functionTemp[1] & SPEECH_FLAG_10) {
         speakerNpc->yaw = script->varTable[0xF];
     }
-    return true;
+    return TRUE;
 }
 
 API_CALLABLE(ShowMessageAtScreenPos) {

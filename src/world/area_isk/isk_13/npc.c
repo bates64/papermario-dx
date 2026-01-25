@@ -20,7 +20,7 @@ typedef struct StoneChompAmbushIsk13 {
 } StoneChompAmbushIsk13; // size = 0x54
 
 void N(func_80241610_990DF0)(void) {
-    StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(nullptr, MV_AmbushPtr);
+    StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(NULL, MV_AmbushPtr);
     Camera* cam = &gCameras[gCurrentCameraID];
     ImgFXTexture ifxImg;
     SpriteRasterInfo spriteRaster;
@@ -89,7 +89,7 @@ API_CALLABLE(N(func_80241BA8_991388)) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     ambush = heap_malloc(sizeof(*ambush));
-    ambush->useBitingAnim = false;
+    ambush->useBitingAnim = FALSE;
     ambush->spriteIndex = SPR_StoneChomp;
     ambush->rasterIndex = 0;
     spr_get_npc_raster_info(&rasterInfo, ambush->spriteIndex, ambush->rasterIndex);
@@ -112,7 +112,7 @@ API_CALLABLE(N(func_80241BA8_991388)) {
     ambush->color.a = 0.0f;
     ambush->imgfxIdx = 0;
 
-    ambush->workerID = create_worker_frontUI(nullptr, N(func_80241610_990DF0));
+    ambush->workerID = create_worker_frontUI(NULL, N(func_80241610_990DF0));
     evt_set_variable(script, MV_AmbushPtr, (s32) ambush);
     return ApiStatus_DONE2;
 }
@@ -190,17 +190,17 @@ API_CALLABLE(N(func_80241EF8_9916D8)) {
 
 API_CALLABLE(N(func_80242044_991824)) {
     StoneChompAmbushIsk13* ambush = (StoneChompAmbushIsk13*) evt_get_variable(script, MV_AmbushPtr);
-    ambush->useBitingAnim = true;
+    ambush->useBitingAnim = TRUE;
     return ApiStatus_DONE2;
 }
 
 EvtScript N(EVS_NpcIdle_StoneChomp) = {
     Label(0)
     Wait(1)
-    IfEq(GF_ISK13_Item_LunarStone, false)
+    IfEq(GF_ISK13_Item_LunarStone, FALSE)
         Goto(0)
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(N(func_80241BA8_991388))
     Call(N(func_80241EF8_9916D8), 255, 128, 255, 0)
     Thread
@@ -259,16 +259,16 @@ EvtScript N(EVS_NpcIdle_StoneChomp) = {
         Call(N(func_80241D38_991518), LVar0, LVar1, LVar2)
         Wait(1)
     EndLoop
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(StartBossBattle, SONG_SPECIAL_BATTLE)
     Return
     End
 };
 
 EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
-    Set(GF_ISK13_Defeated_StoneChomp, true)
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
-    Call(EnableNpcShadow, NPC_SELF, true)
+    Set(GF_ISK13_Defeated_StoneChomp, TRUE)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, FALSE)
+    Call(EnableNpcShadow, NPC_SELF, TRUE)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(N(DestroyAmbushWorker))
     Call(GetBattleOutcome, LVar0)
@@ -284,14 +284,14 @@ EvtScript N(EVS_NpcDefeat_StoneChomp_Override) = {
 };
 
 EvtScript N(EVS_NpcInit_StoneChomp) = {
-    IfEq(GF_ISK13_Defeated_StoneChomp, true)
+    IfEq(GF_ISK13_Defeated_StoneChomp, TRUE)
         Call(RemoveNpc, NPC_SELF)
         Return
     EndIf
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_StoneChomp)))
     Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_StoneChomp_Override)))
-    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
-    Call(EnableNpcShadow, NPC_SELF, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, TRUE)
+    Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
 };
@@ -302,7 +302,7 @@ NpcData N(NpcData_StoneChomp) = {
     .yaw = 320,
     .territory = {
         .wander = {
-            .isFlying = true,
+            .isFlying = TRUE,
             .moveSpeedOverride = NO_OVERRIDE_MOVEMENT_SPEED,
             .wanderShape = SHAPE_CYLINDER,
             .centerPos  = { 468, 0, -378 },

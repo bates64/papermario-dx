@@ -45,13 +45,13 @@ EffectInstance* peach_star_beam_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s3
     bp.init = peach_star_beam_init;
     bp.update = peach_star_beam_update;
     bp.renderScene = peach_star_beam_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_PEACH_STAR_BEAM;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.peachStarBeam = general_heap_malloc(sizeof(*data));
-    ASSERT(effect->data.peachStarBeam != nullptr);
+    ASSERT(effect->data.peachStarBeam != NULL);
 
     data->type = type;
     data->lifetime = 0;

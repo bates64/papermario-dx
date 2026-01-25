@@ -39,7 +39,7 @@ EvtScript N(EVS_CheckForAPress) = {
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_BeforeJump)
     Loop(5)
         Call(CheckButtonPress, BUTTON_A, LVar0)
-        IfEq(LVar0, true)
+        IfEq(LVar0, TRUE)
             BreakLoop
         EndIf
         Wait(1)
@@ -137,7 +137,7 @@ EvtScript N(EVS_JumpSupport_CalcJumpTime_Alt2) = {
 // normal dismount after successful follow-up hit
 EvtScript N(EVS_JumpSupport_Rebound) = {
     Call(PlayerYieldTurn)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(func_802693F0)
     // jump to position 40 units ahead of home
@@ -170,7 +170,7 @@ EvtScript N(EVS_JumpSupport_Rebound) = {
 // weak dismount after unsuccessful Power/Mega Jump
 EvtScript N(EVS_JumpSupport_WeakRebound) = {
     Call(PlayerYieldTurn)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(func_802693F0)
     // jump to position 50 units behind player
@@ -202,7 +202,7 @@ EvtScript N(EVS_JumpSupport_WeakRebound) = {
 
 EvtScript N(EVS_JumpSupport_NoFollowUp) = {
     Call(PlayerYieldTurn)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_PLAYER_MISTAKE)
     Call(func_802693F0)
     // jump to position 40 units behind player
@@ -235,7 +235,7 @@ EvtScript N(EVS_JumpSupport_NoFollowUp) = {
 // Unused
 EvtScript N(EVS_JumpSupport_UnusedRebound) = {
     Call(PlayerYieldTurn)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(func_802693F0)
     // jump to position 60 units behind player
@@ -269,7 +269,7 @@ EvtScript N(EVS_JumpSupport_UnusedRebound) = {
 // dismount after hit bouncing all the way to home position
 EvtScript N(EVS_JumpSupport_BouncingRebound) = {
     Call(PlayerYieldTurn)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(EnablePlayerBlur, ACTOR_BLUR_RESET)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(func_802693F0)
@@ -320,7 +320,7 @@ EvtScript N(EVS_JumpSupport_Miss) = {
     Wait(10)
     Call(SetAnimation, ACTOR_PLAYER, 0, ANIM_Mario1_DustOff)
     Wait(20)
-    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, false)
+    Call(SetBattleFlagBits, BS_FLAGS1_EXECUTING_MOVE, FALSE)
     Call(UseBattleCamPreset, BTL_CAM_VIEW_ENEMIES)
     Call(func_802693F0)
     // walk home

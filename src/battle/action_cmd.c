@@ -53,7 +53,7 @@ Difficulty1D actionCmdTableTidalWave = { 130, 120, 110, 100, 90, 80, 70, 60 };
     action_cmd_ ## name ## _ROM_START, action_cmd_ ## name ## _ROM_END, action_cmd_ ## name ## _VRAM
 
 void* actionCommandDmaTable[] = {
-    nullptr, nullptr, nullptr,
+    NULL, NULL, NULL,
     AC_TBL_ENTRY(jump),
     AC_TBL_ENTRY(hammer),
     AC_TBL_ENTRY(flee),
@@ -256,31 +256,31 @@ void draw_mash_meter_blink_with_divisor(s32 posX, s32 posY, s32 fillValue, s32 d
 void action_command_init_status(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
 
-    acs->autoSucceed = false;
-    acs->berserkerEnabled = false;
+    acs->autoSucceed = FALSE;
+    acs->berserkerEnabled = FALSE;
 
     if (!(gBattleStatus.flags1 & BS_FLAGS1_PARTNER_ACTING)) {
         if (is_ability_active(ABILITY_RIGHT_ON)) {
-            acs->autoSucceed = true;
+            acs->autoSucceed = TRUE;
         }
 
         if (is_ability_active(ABILITY_BERSERKER)) {
-            acs->showHud = false;
-            acs->berserkerEnabled = true;
+            acs->showHud = FALSE;
+            acs->berserkerEnabled = TRUE;
 
             if (rand_int(100) < 25) {
-                acs->autoSucceed = true;
+                acs->autoSucceed = TRUE;
             }
         }
     }
 
     if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {
-        acs->autoSucceed = true;
+        acs->autoSucceed = TRUE;
     }
 
     if (gBattleStatus.flags1 & BS_FLAGS1_AUTO_SUCCEED_ACTION) {
-        acs->autoSucceed = true;
-        acs->showHud = false;
+        acs->autoSucceed = TRUE;
+        acs->showHud = FALSE;
     }
 }
 
@@ -541,7 +541,7 @@ s32 check_block_input(s32 buttonMask) {
     s32 mashWindow;
     s32 blockWindow;
     s32 block;
-    s32 mash = false;
+    s32 mash = FALSE;
     s32 bufferPos;
     s32 i;
     s32 ignoreWindow;
@@ -550,21 +550,21 @@ s32 check_block_input(s32 buttonMask) {
 
     if (battleStatus->actionCommandMode == AC_MODE_TUTORIAL_BLOCK && (battleStatus->flags1 & BS_FLAGS1_TUTORIAL_BATTLE)) {
         battleStatus->blockResult = BLOCK_RESULT_SUCCESS;
-        return true;
+        return TRUE;
     }
 
     if (battleStatus->actionCommandMode == AC_MODE_NOT_LEARNED || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED)) {
-        return false;
+        return FALSE;
     }
 
     if (playerData->hitsTaken < 9999) {
         playerData->hitsTaken++;
-        acs->hitsTakenIsMax = false;
+        acs->hitsTakenIsMax = FALSE;
     } else {
-        acs->hitsTakenIsMax = true;
+        acs->hitsTakenIsMax = TRUE;
     }
 
-    block = false;
+    block = FALSE;
     blockWindow = 3;
     mashWindow = 10;
 
@@ -585,7 +585,7 @@ s32 check_block_input(s32 buttonMask) {
         }
 
         if (battleStatus->pushInputBuffer[bufferPos] & buttonMask) {
-            mash = true;
+            mash = TRUE;
             break;
         }
         bufferPos++;
@@ -604,7 +604,7 @@ s32 check_block_input(s32 buttonMask) {
 
         if (battleStatus->pushInputBuffer[bufferPos] & buttonMask) {
             battleStatus->blockResult = BLOCK_RESULT_SUCCESS;
-            block = true;
+            block = TRUE;
             break;
         }
         bufferPos++;
@@ -612,11 +612,11 @@ s32 check_block_input(s32 buttonMask) {
 
     if (mash) {
         battleStatus->blockResult = BLOCK_RESULT_EARLY;
-        block = false;
+        block = FALSE;
     }
 
     // Ignore inputs until another mash window has passed, so check_block_input() can be called in quick succession
-    if (block == true) {
+    if (block == TRUE) {
         bufferPos = battleStatus->inputBufferPos;
         bufferPos -= mashWindow + blockWindow;
         if (bufferPos < 0) {
@@ -645,9 +645,9 @@ void increment_action_command_attempt_count(void) {
     if (!acs->autoSucceed) {
         if (playerData->actionCommandAttempts < 9999) {
             playerData->actionCommandAttempts++;
-            acs->hitsTakenIsMax = false;
+            acs->hitsTakenIsMax = FALSE;
         } else {
-            acs->hitsTakenIsMax = true;
+            acs->hitsTakenIsMax = TRUE;
         }
     }
 }
@@ -711,9 +711,9 @@ API_CALLABLE(SetCommandAutoSuccess) {
     ActionCommandStatus* acs = &gActionCommandStatus;
 
     if (evt_get_variable(script, *script->ptrReadPos) != 0) {
-        acs->autoSucceed = true;
+        acs->autoSucceed = TRUE;
     } else {
-        acs->autoSucceed = false;
+        acs->autoSucceed = FALSE;
     }
     return ApiStatus_DONE2;
 }
@@ -757,9 +757,9 @@ API_CALLABLE(ShowActionHud) {
     ActionCommandStatus* acs = &gActionCommandStatus;
 
     if (evt_get_variable(script, *script->ptrReadPos) == 0) {
-        acs->showHud = false;
+        acs->showHud = FALSE;
     } else {
-        acs->showHud = true;
+        acs->showHud = TRUE;
     }
     return ApiStatus_DONE2;
 }

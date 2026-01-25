@@ -4,11 +4,11 @@
 #include "world/common/npc/YoshiKid.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_02, FALSE)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_02, TRUE)
             BreakLoop
         EndIf
     EndLoop
@@ -20,9 +20,9 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
 
 API_CALLABLE(N(IsPartnerWatt)) {
     if (gPartnerStatus.actingPartner == PARTNER_WATT) {
-        script->varTable[9] = true;
+        script->varTable[9] = TRUE;
     } else {
-        script->varTable[9] = false;
+        script->varTable[9] = FALSE;
     }
     return ApiStatus_DONE2;
 }
@@ -42,7 +42,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         IfLt(LVar2, 85)
             Goto(0)
         EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetNpcPos, NPC_SELF, LVar4, LVar5, LVar6)
     IfLt(LVar1, LVar4)
         Set(LVar1, LVar4)
@@ -53,12 +53,12 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     EndIf
     Call(SetPlayerSpeed, Float(1.0))
     Call(PlayerMoveTo, LVar1, LVar3, 0)
-    Call(PlayerFaceNpc, NPC_SELF, false)
+    Call(PlayerFaceNpc, NPC_SELF, FALSE)
     Sub(LVar4, LVar1)
     Div(LVar4, 2)
     Add(LVar1, LVar4)
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), LVar4, 350, Float(17.0), Float(-7.0))
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_02, TRUE)
     Wait(15)
     Call(NpcFacePlayer, NPC_SELF, 0)
     Thread
@@ -68,14 +68,14 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Green_SadTalk, ANIM_YoshiKid_Green_SadIdle, 0, MSG_CH5_00AE)
     Call(EndSpeech, NPC_SELF, ANIM_YoshiKid_Green_Talk, ANIM_YoshiKid_Green_Idle, 0)
     Thread
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, TRUE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Green_Run)
         Call(SetNpcSpeed, NPC_SELF, Float(5.0))
         Call(NpcMoveTo, NPC_SELF, -100, 50, 0)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
+        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, FALSE)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndThread
-    Set(GF_JAN11_SavedYoshi, true)
+    Set(GF_JAN11_SavedYoshi, TRUE)
     Set(LVar0, 0)
     Add(LVar0, GF_JAN05_SavedYoshi)
     Add(LVar0, GF_JAN07_SavedYoshi)
@@ -93,7 +93,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Wait(35)
     EndIf
     Call(ResetCam, CAM_DEFAULT, Float(4.0))
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Call(RemoveNpc, NPC_SELF)
     Return
     End
@@ -108,7 +108,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid) = {
 EvtScript N(EVS_NpcInit_YoshiKid) = {
     IfEq(GB_StoryProgress, STORY_CH5_SUSHIE_JOINED_PARTY)
         Exec(N(EVS_YoshiKid_CryForHelp))
-        IfEq(GF_JAN11_SavedYoshi, false)
+        IfEq(GF_JAN11_SavedYoshi, FALSE)
             Call(SetNpcAnimation, NPC_SELF, ANIM_YoshiKid_Green_Cry)
             Call(SetNpcPos, NPC_SELF, 132, 85, 11)
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_YoshiKid)))

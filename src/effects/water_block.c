@@ -75,13 +75,13 @@ EffectInstance* water_block_main(s32 type, f32 x, f32 y, f32 z, f32 arg4, s32 du
     bpPtr->update = &water_block_update;
     bpPtr->renderScene = water_block_render;
     bpPtr->unk_00 = 0;
-    bpPtr->renderUI = nullptr;
+    bpPtr->renderUI = NULL;
     bpPtr->effectID = EFFECT_WATER_BLOCK;
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     data = effect->data.waterBlock = general_heap_malloc(sizeof(*data));
-    ASSERT(data != nullptr);
+    ASSERT(data != NULL);
 
     data->type = type;
     data->lifetime = 0;

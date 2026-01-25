@@ -1,7 +1,7 @@
 #include "states.h"
 #include "script_api/battle.h"
 
-bool dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
+b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
 
 enum {
     // BTL_SUBSTATE_INIT                  = 0,
@@ -50,7 +50,7 @@ void update_water_block(void) {
             fx_water_splash(0, player->curPos.x - 10.0f, player->curPos.y + 5.0f, player->curPos.z + 5.0f, 1.0f, 24);
             fx_water_splash(0, player->curPos.x - 15.0f, player->curPos.y + 32.0f, player->curPos.z + 5.0f, 1.0f, 24);
             fx_water_splash(1, player->curPos.x + 15.0f, player->curPos.y + 22.0f, player->curPos.z + 5.0f, 1.0f, 24);
-            battleStatus->waterBlockEffect = nullptr;
+            battleStatus->waterBlockEffect = NULL;
             sfx_play_sound(SOUND_DESTROY_WATER_BLOCK);
 
             // new substate will wait for popup to go away
@@ -88,7 +88,7 @@ void update_cloud_nine(void) {
 
             // buff has ended
             remove_effect(battleStatus->cloudNineEffect);
-            battleStatus->cloudNineEffect = nullptr;
+            battleStatus->cloudNineEffect = NULL;
 
             // new substate will wait for popup to go away
             btl_show_battle_message(BTL_MSG_CLOUD_NINE_END, 60);
@@ -180,13 +180,13 @@ void update_status_damage(void) {
     }
 
     if (gBattleSubState == BTL_SUBSTATE_TRY_STATUS_RECOVER) {
-        if (player->handleEventScript == nullptr || !does_script_exist(player->handleEventScriptID)) {
-            player->handleEventScript = nullptr;
+        if (player->handleEventScript == NULL || !does_script_exist(player->handleEventScriptID)) {
+            player->handleEventScript = NULL;
             if (btl_check_player_defeated()) {
                 return;
             }
 
-            BattleSkipActorTurn = false;
+            BattleSkipActorTurn = FALSE;
             player->disableDismissTimer = 0;
             player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
 
@@ -234,7 +234,7 @@ void update_status_damage(void) {
 
                 if (player->debuff != 0) {
                     if (player->debuff <= STATUS_KEY_POISON) {
-                        BattleSkipActorTurn = true;
+                        BattleSkipActorTurn = TRUE;
                     }
                     BattleStatusUpdateDelay = 20;
                     player->debuffDuration--;
@@ -242,7 +242,7 @@ void update_status_damage(void) {
                         if (player->debuff == STATUS_KEY_FROZEN) {
                             sfx_play_sound(SOUND_FROZEN_SHATTER);
                             player->icePillarEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
-                            player->icePillarEffect = nullptr;
+                            player->icePillarEffect = NULL;
                             dispatch_event_player(EVENT_RECOVER_FROZEN);
                         } else {
                             dispatch_event_player(EVENT_RECOVER_STATUS);
@@ -269,7 +269,7 @@ void update_status_damage(void) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 Actor* enemy = battleStatus->enemyActors[i];
 
-                if (enemy != nullptr) {
+                if (enemy != NULL) {
                     enemy->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     if (enemy->chillOutTurns != 0) {
                         enemy->chillOutTurns--;
@@ -368,13 +368,13 @@ void btl_state_update_begin_player_turn(void) {
                 player->disableDismissTimer = 0;
                 player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
 
-                if (partner != nullptr) {
+                if (partner != NULL) {
                     player->flags |= ACTOR_FLAG_SHOW_STATUS_ICONS | ACTOR_FLAG_USING_IDLE_ANIM;
                     partner->disableDismissTimer = 0;
                 }
 
                 battleStatus->stateFreezeCount = 0;
-                BattleSkipActorTurn = false;
+                BattleSkipActorTurn = FALSE;
                 BattleStatusUpdateDelay = 0;
 
                 if (battleStatus->outtaSightActive != 0) {
@@ -406,8 +406,8 @@ void btl_state_update_begin_player_turn(void) {
     update_command_loss();
 
     if (gBattleSubState == BTL_SUBSTATE_END_DELAY) {
-        if (player->handleEventScript == nullptr || !does_script_exist(player->handleEventScriptID)) {
-            player->handleEventScript = nullptr;
+        if (player->handleEventScript == NULL || !does_script_exist(player->handleEventScriptID)) {
+            player->handleEventScript = NULL;
 
             if (btl_check_player_defeated() || btl_check_enemies_defeated()) {
                 return;

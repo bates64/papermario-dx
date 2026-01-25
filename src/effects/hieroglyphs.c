@@ -36,14 +36,14 @@ EffectInstance* hieroglyphs_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 arg
     effectBp.update = hieroglyphs_update;
     effectBp.renderScene = hieroglyphs_render;
     effectBp.unk_00 = 0;
-    effectBp.renderUI = nullptr;
+    effectBp.renderUI = NULL;
     effectBp.effectID = EFFECT_HIEROGLYPHS;
 
     effect = create_effect_instance(&effectBp);
     effect->numParts = numParts;
 
     data = effect->data.hieroglyphs = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(data != nullptr);
+    ASSERT(data != NULL);
 
     data->unk_00 = arg0;
     data->lifeTime = 0;

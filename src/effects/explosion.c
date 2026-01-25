@@ -36,13 +36,13 @@ void explosion_main(s32 type, f32 x, f32 y, f32 z) {
     bpPtr->init = explosion_init;
     bpPtr->update = explosion_update;
     bpPtr->renderScene = explosion_render;
-    bpPtr->renderUI = nullptr;
+    bpPtr->renderUI = NULL;
     bpPtr->effectID = EFFECT_EXPLOSION;
 
     effect = create_effect_instance(bpPtr);
     effect->numParts = numParts;
     effect->data.explosion = data = general_heap_malloc(effect->numParts * sizeof(*data));
-    ASSERT(effect->data.explosion != nullptr);
+    ASSERT(effect->data.explosion != NULL);
 
     data->pos.x = x;
     data->pos.y = y;

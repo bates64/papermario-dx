@@ -4,7 +4,7 @@ char* strchr(const char* s, int c) {
     const char ch = c;
     while (*s != ch) {
         if (*s == 0)
-            return nullptr;
+            return NULL;
         s++;
     }
     return (char *)s;

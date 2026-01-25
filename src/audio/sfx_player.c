@@ -490,7 +490,7 @@ void au_sfx_init(SoundManager* manager, u8 priority, u8 busID, AuGlobals* global
     for (i = 0; i < ARRAY_COUNT(manager->players); i++) {
         SoundPlayer* player = &manager->players[i];
 
-        player->sefDataReadPos = nullptr;
+        player->sefDataReadPos = NULL;
         player->sfxVolume = 0;
         player->delay = 0;
         player->playLength = 0;
@@ -520,7 +520,7 @@ void au_sfx_init(SoundManager* manager, u8 priority, u8 busID, AuGlobals* global
         manager->customCmdList[i].data[0] = 0;
     }
 
-    manager->resetPending = false;
+    manager->resetPending = FALSE;
     au_sfx_set_state(manager, SND_MANAGER_STATE_ENABLED);
     au_sfx_clear_queue(manager);
     au_fade_init(&manager->fadeInfo, 0, AU_MAX_VOLUME_16, AU_MAX_VOLUME_16);
@@ -624,7 +624,7 @@ void au_sfx_begin_video_frame(SoundManager* manager) {
     manager->frameCounter++;
     if (manager->resetPending) {
         au_sfx_reset_players(manager);
-        manager->resetPending = false;
+        manager->resetPending = FALSE;
     }
 
     // Process sound effects triggered by music via BGM_SPECIAL_TRIGGER_SOUND
@@ -648,7 +648,7 @@ void au_sfx_begin_video_frame(SoundManager* manager) {
                             newRequest.volume = 0;
                         }
                         newRequest.pan = 0;
-                        au_sfx_try_sound(manager, &newRequest, nullptr);
+                        au_sfx_try_sound(manager, &newRequest, NULL);
                         break;
                     }
                 }
@@ -659,7 +659,7 @@ void au_sfx_begin_video_frame(SoundManager* manager) {
                 newRequest.volume = 0;
                 newRequest.pitchShift = 0;
                 newRequest.pan = 0;
-                au_sfx_try_sound(manager, &newRequest, nullptr);
+                au_sfx_try_sound(manager, &newRequest, NULL);
             }
         }
         // clear the event
@@ -694,7 +694,7 @@ void au_sfx_begin_video_frame(SoundManager* manager) {
                 if (request->soundID & SOUND_ID_STOP) {
                     au_sfx_stop_by_id(manager, request->soundID);
                 } else if (!(request->soundID & (SOUND_ID_ADJUST | SOUND_ID_TRIGGER_MASK))) {
-                    au_sfx_try_sound(manager, request, nullptr);
+                    au_sfx_try_sound(manager, request, NULL);
                 } else {
                     if (request->soundID & SOUND_ID_TRIGGER_MASK) {
                         au_sfx_set_triggers(manager, request->soundID);
@@ -724,7 +724,7 @@ s32 au_sfx_set_reverb_type(SoundManager* manager, s32 arg1) {
             if (manager->lastCustomEffectIdx != customIdx) {
                 manager->lastCustomEffectIdx = customIdx;
                 manager->globals->effectChanges[FX_BUS_SOUND].type = AU_FX_CUSTOM_0;
-                manager->globals->effectChanges[FX_BUS_SOUND].changed = true;
+                manager->globals->effectChanges[FX_BUS_SOUND].changed = TRUE;
                 AU_FX_CUSTOM_PARAMS[0] = manager->customReverbParams[customIdx];
             }
             manager->defaultReverbAmt = manager->customReverbAmounts[customIdx];
@@ -749,7 +749,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     s32 playerIndex;
     u16* cmdList;
     s32 trackCount;
-    s32 foundPlayer = false;
+    s32 foundPlayer = FALSE;
     u32 exclusiveID;
     s32 sectionIndex;
     u16 soundInfo;
@@ -773,7 +773,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 for (playerIndex = 7; playerIndex >= 0; playerIndex--) {
                     player = &manager->players[playerIndex];
                     if (player->curSoundID == soundIDLower) {
-                        foundPlayer = true;
+                        foundPlayer = TRUE;
                         break;
                     }
                 }
@@ -782,8 +782,8 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                     //find free player
                     for (playerIndex = 7; playerIndex >= 0; playerIndex--) {
                         player = &manager->players[playerIndex];
-                        if (player->sefDataReadPos == nullptr) {
-                            foundPlayer = true;
+                        if (player->sefDataReadPos == NULL) {
+                            foundPlayer = TRUE;
                             break;
                         }
                     }
@@ -796,7 +796,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
         }
     } else {
         if (soundIndex >= 0xC0) {
-            if (customSEF != nullptr) {
+            if (customSEF != NULL) {
                 cmdList = (u16*)customSEF;
             } else {
                 sectionIndex = ((soundIDLower - 1) >> 8) + 4;
@@ -810,7 +810,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 for (playerIndex = 7; playerIndex >= 0; playerIndex--) {
                     player = &manager->players[playerIndex];
                     if (player->curSoundID == soundIDLower) {
-                        foundPlayer = true;
+                        foundPlayer = TRUE;
                         break;
                     }
                 }
@@ -819,8 +819,8 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                     //find free player
                     for (playerIndex = 7; playerIndex >= 0; playerIndex--) {
                         player = &manager->players[playerIndex];
-                        if (player->sefDataReadPos == nullptr) {
-                            foundPlayer = true;
+                        if (player->sefDataReadPos == NULL) {
+                            foundPlayer = TRUE;
                             break;
                         }
                     }
@@ -831,7 +831,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 }
             }
         } else {
-            if (customSEF != nullptr) {
+            if (customSEF != NULL) {
                 cmdList = (u16*)customSEF;
             } else {
                 sectionIndex = ((soundID) >> 8) & 3;
@@ -852,7 +852,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         for (playerIndex = 0; playerIndex < 8; playerIndex++) {
                             player = &manager->players[playerIndex];
                             if (player->curSoundID == request->toReplaceID) {
-                                foundPlayer = true;
+                                foundPlayer = TRUE;
                                 break;
                             }
                         }
@@ -862,7 +862,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         if (!foundPlayer) {
                             playerIndex = soundInfo & 0x7;
                             player = &manager->players[playerIndex];
-                            if (player->sefDataReadPos == nullptr || priority >= player->priority) {
+                            if (player->sefDataReadPos == NULL || priority >= player->priority) {
                                 au_sfx_play_sound(manager, player, AU_FILE_RELATIVE(manager->sefData, *cmdList), request, priority, 0);
                             }
                             return;
@@ -875,7 +875,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         for (playerIndex = soundInfo & 0x7; playerIndex >= 0; playerIndex--) {
                             player = &manager->players[playerIndex];
                             if (player->curSoundID == soundIDLower) {
-                                foundPlayer = true;
+                                foundPlayer = TRUE;
                                 break;
                             }
                         }
@@ -885,8 +885,8 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         // find free player
                         for (playerIndex = soundInfo & 0x7; playerIndex >= 0; playerIndex--) {
                             player = &manager->players[playerIndex];
-                            if (player->sefDataReadPos == nullptr) {
-                                foundPlayer = true;
+                            if (player->sefDataReadPos == NULL) {
+                                foundPlayer = TRUE;
                                 break;
                             }
                         }
@@ -897,7 +897,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         for (playerIndex = soundInfo & 0x7; playerIndex >= 0; playerIndex--) {
                             player = &manager->players[playerIndex];
                             if (player->priority < priority) {
-                                foundPlayer = true;
+                                foundPlayer = TRUE;
                                 break;
                             }
                         }
@@ -907,7 +907,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                         playerIndex = soundInfo & 0x7;
                         player = &manager->players[playerIndex];
                         if (player->priority <= priority) {
-                            foundPlayer = true;
+                            foundPlayer = TRUE;
                         }
                     }
 
@@ -945,7 +945,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                                 if (*cmdList != 0) {
                                     // then check any free players
                                     player = &manager->players[playerIndex];
-                                    if (player->sefDataReadPos == nullptr) {
+                                    if (player->sefDataReadPos == NULL) {
                                         au_sfx_play_sound(manager, player, AU_FILE_RELATIVE(manager->sefData, *cmdList), request, priority, exclusiveID);
                                         NEXT_POLY_TRACK;
                                     }
@@ -978,7 +978,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                                 playerIndex = soundInfo & 7;
                                 player = &manager->players[playerIndex];
                                 priority = (soundInfo & 0x300) >> 8; // bits 8, 9
-                                if (player->sefDataReadPos == nullptr || priority >= player->priority) {
+                                if (player->sefDataReadPos == NULL || priority >= player->priority) {
                                     au_sfx_play_sound(manager, player, AU_FILE_RELATIVE(manager->sefData, *cmdList), request, priority, exclusiveID);
                                 }
                                 cmdList += 2;
@@ -1006,14 +1006,14 @@ static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* re
         player->playVelocity = AU_MAX_VOLUME_8;
         player->coarseTune = 0;
         player->fineTune = 0;
-        player->loopStartPos = nullptr;
+        player->loopStartPos = NULL;
         player->loopIterCount = 0;
         player->delay = 1;
         player->playLength = 0;
         player->curSoundID = request->soundID & SOUND_ID_LOWER;
         player->priority = priority;
         player->exclusiveID = exclusiveID;
-        player->envelopCustomPressProfile = nullptr;
+        player->envelopCustomPressProfile = NULL;
         player->changed.all = 0;
         player->unused_A0 = 0;
         player->randomPitch = 0;
@@ -1027,7 +1027,7 @@ static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* re
         player->tuneLerp.time = 0;
         player->tuneLerp.step = 0;
         player->tuneLerp.goal = 0;
-        player->alternativeDataPos = nullptr;
+        player->alternativeDataPos = NULL;
         player->alternativeType = 0;
         player->triggers = 0;
         player->sfxParamsFlags = *player->sefDataReadPos++;
@@ -1076,7 +1076,7 @@ static void au_sfx_stop_by_id(SoundManager* manager, u32 soundID) {
         SoundPlayer* player = &manager->players[i];
         if (player->curSoundID == (soundID & SOUND_ID_LOWER)) {
             player->sefDataReadPos = BlankSEFData;
-            player->alternativeDataPos = nullptr;
+            player->alternativeDataPos = NULL;
             player->sfxParamsFlags = SFX_PARAM_MODE_SEQUENCE;
             player->state = SND_PLAYER_STATE_CONTINUE;
             player->delay = 1;
@@ -1093,7 +1093,7 @@ static void au_sfx_stop_by_exlusive_id(SoundManager* manager, u32 exclusiveID) {
         SoundPlayer* player = &manager->players[i];
         if (exclusiveID == player->exclusiveID) {
             player->sefDataReadPos = BlankSEFData;
-            player->alternativeDataPos = nullptr;
+            player->alternativeDataPos = NULL;
             player->sfxParamsFlags = SFX_PARAM_MODE_SEQUENCE;
             player->state = SND_PLAYER_STATE_CONTINUE;
             player->delay = 1;
@@ -1120,19 +1120,19 @@ static void au_sfx_set_player_modifiers(SoundPlayer* player, SoundRequest* reque
         player->masterVolume = 0;
     } else {
         player->masterVolume = request->volume;
-        player->changed.volume = true;
+        player->changed.volume = TRUE;
     }
     if (player->sfxParamsFlags & SFX_PARAM_LOCK_PAN) {
         player->masterPan = 0;
     } else {
         player->masterPan = request->pan;
-        player->changed.pan = true;
+        player->changed.pan = TRUE;
     }
     if (player->sfxParamsFlags & SFX_PARAM_LOCK_PITCH) {
         player->masterPitchShift = 0;
     } else {
         player->masterPitchShift = request->pitchShift;
-        player->changed.tune = true;
+        player->changed.tune = TRUE;
     }
 }
 
@@ -1149,7 +1149,7 @@ s16 au_sfx_manager_audio_frame_update(SoundManager* manager) {
     startVoice = manager->firstVoice;
     for (i = startVoice, end = startVoice + ARRAY_COUNT(manager->players); i < end; i++) {
         player = &manager->players[i - manager->firstVoice];
-        if (player->sefDataReadPos != nullptr) {
+        if (player->sefDataReadPos != NULL) {
             voice = &manager->globals->voices[i];
             manager->curVoice = voice;
             if (voice->priority <= manager->priority) {
@@ -1165,7 +1165,7 @@ s16 au_sfx_manager_audio_frame_update(SoundManager* manager) {
                         break;
                 }
             } else {
-                player->sefDataReadPos = nullptr;
+                player->sefDataReadPos = NULL;
                 player->curSoundID = SOUND_NONE;
                 player->priority = 0;
             }
@@ -1184,7 +1184,7 @@ static void au_sfx_update_basic(SoundManager* manager, SoundPlayer* player, AuVo
     switch (player->state) {
         case SND_PLAYER_STATE_CONTINUE:
             if (voice->priority != manager->priority) {
-                player->sefDataReadPos = nullptr;
+                player->sefDataReadPos = NULL;
                 player->curSoundID = SOUND_NONE;
                 player->priority = 0;
             } else {
@@ -1256,7 +1256,7 @@ static void au_sfx_update_basic(SoundManager* manager, SoundPlayer* player, AuVo
             player->state = SND_PLAYER_STATE_CONTINUE;
             break;
         default:
-            player->sefDataReadPos = nullptr;
+            player->sefDataReadPos = NULL;
             player->curSoundID = SOUND_NONE;
             player->priority = 0;
             break;
@@ -1282,7 +1282,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
     s32 startedNewVoice;
     void (**CmdHandlers)(SoundManager*, SoundPlayer*);
 
-    startedNewVoice = false;
+    startedNewVoice = FALSE;
     if (player->state == SND_PLAYER_STATE_INIT) {
         player->state = SND_PLAYER_STATE_CONTINUE;
         if (voice->priority == manager->priority) {
@@ -1290,16 +1290,16 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
         }
     }
 
-    if (player->alternativeDataPos != nullptr) {
+    if (player->alternativeDataPos != NULL) {
         if (player->triggers == 1) {
             player->sefDataReadPos = player->alternativeDataPos;
-            player->alternativeDataPos = nullptr;
+            player->alternativeDataPos = NULL;
             player->triggers = 0;
             player->delay = 1;
         }
     }
     if (player->triggers == 2) {
-        player->changed.volume = true;
+        player->changed.volume = TRUE;
         player->sfxVolume = player->alternativeVolume;
     }
     player->delay--;
@@ -1311,7 +1311,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
                 if (voice->priority == manager->priority) {
                     au_reset_voice(voice, voiceIdx);
                 }
-                player->sefDataReadPos = nullptr;
+                player->sefDataReadPos = NULL;
                 player->curSoundID = SOUND_NONE;
                 player->priority = 0;
                 player->exclusiveID = 0;
@@ -1358,7 +1358,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
 
                 voice->reverb = player->reverb;
                 au_sfx_set_voice_volume(voice, manager, player);
-                if (player->envelopCustomPressProfile == nullptr) {
+                if (player->envelopCustomPressProfile == NULL) {
                     voice->envelope.cmdListPress = player->envelope.cmdListPress;
                     voice->envelope.cmdListRelease = player->envelope.cmdListRelease;
                 } else {
@@ -1371,9 +1371,9 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
 
                 voice->priority = manager->priority;
                 voice->syncFlags = AU_VOICE_SYNC_FLAG_ALL;
-                startedNewVoice = true;
+                startedNewVoice = TRUE;
                 voice->clientPriority = manager->priority;
-                player->changed.tune = true;
+                player->changed.tune = TRUE;
             }
         } else {
             s32 index = opcode - 0xE0;
@@ -1389,7 +1389,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
         } else {
             player->volumeLerp.current = player->volumeLerp.goal << 0x10;
         }
-        player->changed.volume = true;
+        player->changed.volume = TRUE;
     }
 
     if (!startedNewVoice) {
@@ -1406,7 +1406,7 @@ static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, A
             } else {
                 player->tuneLerp.current = player->tuneLerp.goal << 0x10;
             }
-            player->changed.tune = true;
+            player->changed.tune = TRUE;
         }
         if (player->changed.pan || player->changed.reverb) {
             if ((player->sfxParamsFlags & SFX_PARAM_LOCK_PAN) || (player->masterPan == 0)) {
@@ -1491,13 +1491,13 @@ static void au_SEFCmd_00_SetVolume(SoundManager* manager, SoundPlayer* player) {
     if (player->sfxVolume != 0) {
         player->sfxVolume = AU_VOL_8_TO_16(player->sfxVolume);
     }
-    player->changed.volume = true;
+    player->changed.volume = TRUE;
 }
 
 static void au_SEFCmd_01_SetPan(SoundManager* manager, SoundPlayer* player) {
     s32 sfxPan = *player->sefDataReadPos++;
 
-    player->changed.pan = true;
+    player->changed.pan = TRUE;
     player->sfxPan = sfxPan;
 }
 
@@ -1518,7 +1518,7 @@ static void au_SEFCmd_03_SetReverb(SoundManager* manager, SoundPlayer* player) {
         reverb = manager->defaultReverbAmt;
     }
     player->reverb = reverb;
-    player->changed.reverb = true;
+    player->changed.reverb = TRUE;
 }
 
 static void au_SEFCmd_04_SetEnvelope(SoundManager* manager, SoundPlayer* player) {
@@ -1547,7 +1547,7 @@ static void au_SEFCmd_04_SetEnvelope(SoundManager* manager, SoundPlayer* player)
     player->sfxInstrumentRef = &player->sfxInstrument;
 
     envPreset = player->sfxInstrument.envelopes;
-    if (envPreset != nullptr && envPreset->count != 0) {
+    if (envPreset != NULL && envPreset->count != 0) {
         player->envelope.cmdListPress = AU_FILE_RELATIVE(envPreset, envPreset->offsets[0].offsetPress);
         player->envelope.cmdListRelease = AU_FILE_RELATIVE(envPreset, envPreset->offsets[0].offsetRelease);
     }
@@ -1611,7 +1611,7 @@ static void au_SEFCmd_0C_SetCurrentVolume(SoundManager* manager, SoundPlayer* pl
         vol = AU_VOL_8_TO_32(vol);
     }
     player->volumeLerp.current = vol;
-    player->changed.volume = true;
+    player->changed.volume = TRUE;
 }
 
 static void au_SEFCmd_0D_VolumeRamp(SoundManager* manager, SoundPlayer* player) {
@@ -1652,7 +1652,7 @@ static void au_SEFCmd_0E_SetAlternativeSound(SoundManager* manager, SoundPlayer*
             player->alternativeDataPos = pos;
             break;
         default:
-            player->alternativeDataPos = nullptr;
+            player->alternativeDataPos = NULL;
             break;
     }
 }
@@ -1696,7 +1696,7 @@ static void au_SEFCmd_16_SetEnvelopePress(SoundManager* manager, SoundPlayer* pl
     if (offset != 0) {
         player->envelopCustomPressProfile = AU_FILE_RELATIVE(manager->sefData, offset);
     } else {
-        player->envelopCustomPressProfile = nullptr;
+        player->envelopCustomPressProfile = NULL;
     }
 
     player->sefDataReadPos = &buf[2];
@@ -1762,7 +1762,7 @@ static void au_sfx_reset_players(SoundManager* manager) {
     for (i = 0; i < ARRAY_COUNT(manager->players); i++) {
         SoundPlayer* player = &manager->players[i];
         player->sefDataReadPos = BlankSEFData;
-        player->alternativeDataPos = nullptr;
+        player->alternativeDataPos = NULL;
         player->sfxParamsFlags = SFX_PARAM_MODE_SEQUENCE;
         player->state = SND_PLAYER_STATE_CONTINUE;
         player->delay = 1;

@@ -3,14 +3,14 @@
 #include "entity.h"
 
 EvtScript N(D_80242210_97FCE0) = {
-    Set(GF_ISK05_Hammer2Block, true)
+    Set(GF_ISK05_Hammer2Block, TRUE)
     Return
     End
 };
 
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeItemEntity, ITEM_PYRAMID_STONE, 316, 82, -481, ITEM_SPAWN_MODE_KEY, GF_ISK05_Item_PyramidStone)
-    IfEq(GF_ISK05_Hammer2Block, false)
+    IfEq(GF_ISK05_Hammer2Block, FALSE)
         Call(MakeEntity, Ref(Entity_Hammer2BlockWideX), 431, 0, -478, 45, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(D_80242210_97FCE0)))
     EndIf

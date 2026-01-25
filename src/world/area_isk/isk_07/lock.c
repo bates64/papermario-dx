@@ -24,7 +24,7 @@ EvtScript N(EVS_UnlockPrompt_RuinsDoor) = {
     EndSwitch
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, -300, -380, 530)
     Call(RemoveKeyItemAt, LVar1)
-    Set(GF_ISK07_UnlockedDoor, true)
+    Set(GF_ISK07_UnlockedDoor, TRUE)
     Set(LVar0, MV_LockEntityID)
     Call(N(RemovePadlock))
     Set(LVar1, 0)
@@ -47,11 +47,11 @@ EvtScript N(EVS_UnlockPrompt_RuinsDoor) = {
 };
 
 EvtScript N(EVS_SetupLock) = {
-    IfEq(GF_ISK07_UnlockedDoor, false)
+    IfEq(GF_ISK07_UnlockedDoor, FALSE)
         Call(MakeTransformGroup, MODEL_g310)
         BindPadlock(Ref(N(EVS_UnlockPrompt_RuinsDoor)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(ItemList_RuinsKey)), 0, 1)
     Else
-        Call(EnableModel, MODEL_g310, false)
+        Call(EnableModel, MODEL_g310, FALSE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittw, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Call(TranslateModel, MODEL_o2057, 0, 65, 0)

@@ -116,7 +116,7 @@ void render_frame(s32 isSecondPass) {
 
         gCurrentCamID = camID;
 
-        if (camera->fpDoPreRender != nullptr) {
+        if (camera->fpDoPreRender != NULL) {
             camera->fpDoPreRender(camera);
         } else {
             s32 ulx;
@@ -240,7 +240,7 @@ void render_frame(s32 isSecondPass) {
             execute_render_tasks();
         }
 
-        if (camera->fpDoPostRender != nullptr) {
+        if (camera->fpDoPostRender != NULL) {
             camera->fpDoPostRender(camera);
         }
 
@@ -334,7 +334,7 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->targetOffsetY = 0;
     camera->curBoomYaw = 0.0f;
     camera->targetBoomYaw = 0.0f;
-    camera->needsInit = true;
+    camera->needsInit = TRUE;
     camera->updateMode = initData->updateMode;
     camera->nearClip = initData->nearClip;
     camera->farClip = initData->farClip;
@@ -350,20 +350,20 @@ Camera* initialize_next_camera(CameraInitData* initData) {
     camera->targetPos.x = 0;
     camera->targetPos.y = 0;
     camera->targetPos.z = 0;
-    camera->fpDoPreRender = nullptr;
-    camera->fpDoPostRender = nullptr;
+    camera->fpDoPreRender = NULL;
+    camera->fpDoPostRender = NULL;
     camera->leadAmount = 0.0f;
     camera->targetLeadAmount = 0.0f;
     camera->leadInterpAlpha = 0.0f;
     camera->accumulatedStickLead = 0.0f;
-    camera->increasingLeadInterp = false;
+    camera->increasingLeadInterp = FALSE;
     camera->prevLeadPosX = 0.0f;
     camera->prevLeadPosZ = 0.0f;
     camera->leadConstrainDir = 0;
-    camera->needsInitialConstrainDir = true;
-    camera->prevLeadSettings = nullptr;
-    camera->panActive = false;
-    camera->useOverrideSettings = false;
+    camera->needsInitialConstrainDir = TRUE;
+    camera->prevLeadSettings = NULL;
+    camera->panActive = FALSE;
+    camera->useOverrideSettings = FALSE;
     camera->leadAmtScale = 0.2f;
     camera->moveSpeed = 1.0f;
     return camera;
@@ -432,22 +432,22 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
     }
 }
 
-bool is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
+b32 is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
     s32 startX = gCameras[camID].viewportStartX;
     s32 startY = gCameras[camID].viewportStartY;
     s32 endX = startX + gCameras[camID].viewportW;
     s32 endY = startY + gCameras[camID].viewportH;
 
     if (x < startX) {
-        return true;
+        return TRUE;
     } else if (x > endX) {
-        return true;
+        return TRUE;
     } else if (y < startY) {
-        return true;
+        return TRUE;
     } else if (y > endY) {
-        return true;
+        return TRUE;
     } else {
-        return false;
+        return FALSE;
     }
 }
 

@@ -20,10 +20,10 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_CLOUDY_CLIMB)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_CloudyClimb, true)
+    Set(GF_MAP_CloudyClimb, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Call(ParentColliderToModel, COLLIDER_o117, MODEL_o142)
-    Call(HidePlayerShadow, true)
+    Call(HidePlayerShadow, TRUE)
     Exec(N(EVS_SetupBeanstalk))
     Exec(N(EVS_SetupClouds))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o122, SURFACE_TYPE_CLOUD)
@@ -45,7 +45,7 @@ EvtScript N(EVS_Main) = {
     EndThread
     Call(GetEntryID, LVar0)
     IfNe(LVar0, flo_19_ENTRY_3)
-        Set(AF_FLO_RidingBeanstalk, false)
+        Set(AF_FLO_RidingBeanstalk, FALSE)
     EndIf
     Switch(LVar0)
         CaseEq(flo_19_ENTRY_0)

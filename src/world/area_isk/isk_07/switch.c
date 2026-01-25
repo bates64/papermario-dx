@@ -19,10 +19,10 @@ EvtScript N(EVS_SetupSwitch) = {
 
 EvtScript N(EVS_OnTouch_StairSwitch) = {
     Call(IsPlayerOnValidFloor, LVar0)
-    IfEq(LVar0, false)
+    IfEq(LVar0, FALSE)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(PlaySoundAtCollider, COLLIDER_o2022, SOUND_FLOOR_SWITCH_DEPRESS, SOUND_SPACE_DEFAULT)
     Call(MakeLerp, 0, -14, 30, EASING_LINEAR)
     Label(10)
@@ -34,10 +34,10 @@ EvtScript N(EVS_OnTouch_StairSwitch) = {
             Goto(10)
         EndIf
     Call(PlaySoundAtCollider, COLLIDER_o2022, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
-    Set(AF_ISK07_FlippingRedStairs, true)
+    Set(AF_ISK07_FlippingRedStairs, TRUE)
     Label(15)
     Wait(1)
-        IfEq(AF_ISK07_FlippingRedStairs, true)
+        IfEq(AF_ISK07_FlippingRedStairs, TRUE)
             Goto(15)
         EndIf
     Call(MakeLerp, -14, 0, 5, EASING_LINEAR)

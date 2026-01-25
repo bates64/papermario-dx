@@ -53,16 +53,16 @@ void state_init_file_select(void) {
     general_heap_create();
     hud_element_set_aux_cache(0, 0);
     hud_element_clear_cache();
-    mdl_load_all_textures(nullptr, 0, 0);
+    mdl_load_all_textures(NULL, 0, 0);
 
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
-    gCameras[CAM_DEFAULT].needsInit = true;
+    gCameras[CAM_DEFAULT].needsInit = TRUE;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
 
-    gCameras[CAM_DEFAULT].params.basic.skipRecalc = false;
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
     gCameras[CAM_DEFAULT].params.basic.pitch = 0;
     gCameras[CAM_DEFAULT].params.basic.dist = 40;
     gCameras[CAM_DEFAULT].params.basic.fovScale = 100;

@@ -21,8 +21,8 @@ API_CALLABLE(N(MonitorPlayerLastFloor)) {
 }
 
 EvtScript N(EVS_UseSpring) = {
-    Call(DisablePlayerInput, true)
-    Call(DisablePlayerPhysics, true)
+    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerPhysics, TRUE)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
     Wait(1)
     IfEq(MV_LastFloorLevel, 0)
@@ -33,15 +33,15 @@ EvtScript N(EVS_UseSpring) = {
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
         Call(SetCamPosC, CAM_DEFAULT, 0, -520)
-        Call(PanToTarget, CAM_DEFAULT, 0, true)
+        Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
         Call(SetPlayerJumpscale, Float(1.4))
         Call(PlayerJump, -561, -520, 23, 30)
-        Call(PanToTarget, CAM_DEFAULT, 0, false)
+        Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
         Call(SetCamSpeed, CAM_DEFAULT, Float(2.8))
     EndIf
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
-    Call(DisablePlayerPhysics, false)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

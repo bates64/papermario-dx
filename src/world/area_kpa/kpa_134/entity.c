@@ -15,10 +15,10 @@ API_CALLABLE(N(UnusedSetEntityPosition)) {
 #include "world/common/todo/GetEntityPosition.inc.c"
 
 EvtScript N(EVS_BreakBlock_Brick) = {
-    IfEq(GF_KPA134_BlueSwitch, true)
+    IfEq(GF_KPA134_BlueSwitch, TRUE)
         Return
     EndIf
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar5, -224)
     Call(MakeLerp, 355, 370, 4, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -40,7 +40,7 @@ EvtScript N(EVS_BreakBlock_Brick) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -62,7 +62,7 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
         Return
     EndIf
     Call(RemoveKeyItemAt, LVar1)
-    Set(GF_KPA134_UnlockedDoor, true)
+    Set(GF_KPA134_UnlockedDoor, TRUE)
     Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
     Set(LVar0, MV_PadlockEntityID)
@@ -77,14 +77,14 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
 };
 
 EvtScript N(EVS_MakeEntities) = {
-    IfEq(GF_KPA134_UnlockedDoor, false)
+    IfEq(GF_KPA134_UnlockedDoor, FALSE)
         Call(MakeEntity, Ref(Entity_Padlock), 743, 10, 115, 270, MAKE_ENTITY_END)
         Set(MV_PadlockEntityID, LVar0)
         BindPadlock(Ref(N(EVS_UnlockPrompt_Door)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList_BowsersCastle)), 0, 1)
     Else
         BindTrigger(Ref(N(EVS_ExitDoors_kpa_130_0)), TRIGGER_WALL_PRESS_A, COLLIDER_nno, 1, 0)
     EndIf
-    IfEq(GF_KPA134_BlueSwitch, false)
+    IfEq(GF_KPA134_BlueSwitch, FALSE)
         Call(MakeEntity, Ref(Entity_BlueSwitch), -224, 355, -25, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_KPA134_HitWaterSwitch))
         Set(MV_SwitchEntityID, LVar0)

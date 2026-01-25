@@ -38,7 +38,7 @@ u32 __OSGlobalIntMask = OS_IM_ALL;
 u32 __osFinalrom;
 #else
 u32 __kmc_pt_mode;
-void* __printfunc = nullptr;
+void* __printfunc = NULL;
 #endif
 
 void __createSpeedParam(void) {
@@ -59,7 +59,7 @@ void __osInitialize_common() {
     u32 pifdata;
 
 #ifdef _FINALROM
-    __osFinalrom = true;
+    __osFinalrom = TRUE;
 #endif
 
     __osSetSR(__osGetSR() | SR_CU1);    // enable fpu
@@ -128,7 +128,7 @@ void __osInitialize_common() {
 
     // Lock up if there are RCP interrupts pending
     if (__osGetCause() & CAUSE_IP5) {
-        while (true) {
+        while (TRUE) {
             ;
         }
     }

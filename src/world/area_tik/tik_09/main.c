@@ -5,7 +5,7 @@
 #include "world/common/atomic/TexturePan.inc.c"
 
 EvtScript N(EVS_CloseGates) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(PlaySound, SOUND_CHIME_BEGIN_AMBUSH)
@@ -24,7 +24,7 @@ EvtScript N(EVS_CloseGates) = {
     Call(ShakeCam, CAM_DEFAULT, 0, 5, Float(1.0))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o58, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o59, COLLIDER_FLAGS_UPPER_MASK)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Wait(1)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Return
@@ -42,18 +42,18 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, tik_09_ENTRY_2)
         EVT_ENTER_PIPE_VERTICAL(N(EVS_BindExitTriggers))
     Else
         Set(LVar0, Ref(N(EVS_BindExitTriggers)))
         ExecWait(EnterWalk)
-        IfEq(GF_TIK09_Defeated_Ambush, false)
+        IfEq(GF_TIK09_Defeated_Ambush, FALSE)
             ExecWait(N(EVS_CloseGates))
         EndIf
     EndIf
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -64,7 +64,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TOAD_TOWN_TUNNELS)
     Call(SetSpriteShading, SHADING_TIK_09)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, TRUE, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))
     Call(PlaySound, SOUND_LOOP_TIK09_WATER)

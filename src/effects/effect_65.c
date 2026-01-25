@@ -31,13 +31,13 @@ EffectInstance* effect_65_main(
     bp.update = effect_65_update;
     bp.renderScene = effect_65_render;
     bp.unk_00 = 0;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_65;
 
     effect = create_effect_instance(&bp);
     effect->numParts = numParts;
     data = effect->data.unk_65 = general_heap_malloc(numParts * sizeof(*data));
-    ASSERT(effect->data.unk_65 != nullptr);
+    ASSERT(effect->data.unk_65 != NULL);
 
     data->variation = variation;
     data->lifeTime = 0;
@@ -95,14 +95,14 @@ EffectInstance* effect_65_main(
     data->pos.z = posZ;
 
     for (i = 0; i < MAX_POINTS; i++) {
-        data->pathPointEnabled[i] = false;
+        data->pathPointEnabled[i] = FALSE;
     }
 
     data->lastPointIndex = 0;
     data->pathX[0] = posX;
     data->pathY[0] = posY;
     data->pathZ[0] = posZ;
-    data->pathPointEnabled[0] = true;
+    data->pathPointEnabled[0] = TRUE;
     data->pathTimestamp[0] = 0;
     data->pathLength[0] = 0;
     data->pathJitterX = rand_int(30) + 10;
@@ -179,7 +179,7 @@ void effect_65_update(EffectInstance* effect) {
 
         idx = data->lastPointIndex;
 
-        data->pathPointEnabled[idx] = true;
+        data->pathPointEnabled[idx] = TRUE;
         data->pathX[idx] = posX;
         data->pathY[idx] = posY;
         data->pathZ[idx] = posZ;

@@ -3,7 +3,7 @@
 #include "world/common/npc/Toad_Stationary.inc.c"
 
 EvtScript N(EVS_NpcInit_Toad) = {
-    Call(EnableNpcShadow, NPC_SELF, false)
+    Call(EnableNpcShadow, NPC_SELF, FALSE)
     Return
     End
 };

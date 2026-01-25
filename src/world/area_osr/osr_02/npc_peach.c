@@ -18,7 +18,7 @@ AnimID N(ExtraAnims_Clubba)[] = {
 };
 
 EvtScript N(EVS_NpcInteract_Clubba) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(CancelMessage)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Anim08)
@@ -36,7 +36,7 @@ EvtScript N(EVS_NpcInteract_Clubba) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldClubba_Anim05, ANIM_WorldClubba_Anim02, 16, LVar1)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldClubba_Anim07)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };

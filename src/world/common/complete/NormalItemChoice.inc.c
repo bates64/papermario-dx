@@ -19,11 +19,11 @@ API_CALLABLE(N(ItemChoice_WaitForSelection)) {
     Bytecode* args = script->ptrReadPos;
 
     if (isInitialCall) {
-        N(ItemChoice_HasSelectedItem) = false;
+        N(ItemChoice_HasSelectedItem) = FALSE;
     }
 
     if (N(ItemChoice_HasSelectedItem)) {
-        N(ItemChoice_HasSelectedItem) = false;
+        N(ItemChoice_HasSelectedItem) = FALSE;
         evt_set_variable(script, *args++, N(ItemChoice_SelectedItemID));
         return ApiStatus_DONE2;
     }
@@ -35,7 +35,7 @@ API_CALLABLE(N(ItemChoice_SaveSelected)) {
     Bytecode* args = script->ptrReadPos;
 
     N(ItemChoice_SelectedItemID) = evt_get_variable(script, *args);
-    N(ItemChoice_HasSelectedItem) = true;
+    N(ItemChoice_HasSelectedItem) = TRUE;
     return ApiStatus_DONE2;
 }
 
@@ -46,7 +46,7 @@ API_CALLABLE(N(BuildItemChoiceList)) {
     s32* allowedItemList = (s32*)evt_get_variable(script, *args++);
     s32 i;
 
-    if (allowedItemList != nullptr) {
+    if (allowedItemList != NULL) {
         for (i = 0; allowedItemList[i] != ITEM_NONE; i++) {
             N(ItemChoice_List)[i] = allowedItemList[i];
         }
@@ -93,7 +93,7 @@ EvtScript N(EVS_ChooseItem) = {
 };
 
 #define EVT_CHOOSE_ANY_CONSUMABLE(unkMode) \
-    Set(LVar0, nullptr) \
+    Set(LVar0, NULL) \
     Set(LVar1, unkMode) \
     ExecWait(N(EVS_ChooseItem))
 

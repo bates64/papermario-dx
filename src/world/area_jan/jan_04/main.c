@@ -50,9 +50,9 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(jan_04_ENTRY_0)
-            Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
         CaseEq(jan_04_ENTRY_3)
-            Call(MakeNpcs, false, Ref(N(EpilogueNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(EpilogueNPCs)))
     EndSwitch
     Exec(N(EVS_MakeEntities))
     Exec(N(EVS_SetupTrees))

@@ -37,8 +37,8 @@ EvtScript N(EVS_EndPeachChapter7) = {
 
 EvtScript N(EVS_ExitDoor_GrandHall) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
-    Set(AF_KKJ_13, true)
+    Call(DisablePlayerInput, TRUE)
+    Set(AF_KKJ_13, TRUE)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Set(LVar0, kkj_14_ENTRY_0)
     Set(LVar1, COLLIDER_ttw)
@@ -58,8 +58,8 @@ EvtScript N(EVS_ExitDoor_GrandHall) = {
 
 EvtScript N(EVS_ExitDoors_Balcony) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
-    Set(AF_KKJ_13, false)
+    Call(DisablePlayerInput, TRUE)
+    Set(AF_KKJ_13, FALSE)
     Call(UseDoorSounds, DOOR_SOUNDS_DOOR)
     Set(LVar0, kkj_14_ENTRY_1)
     Set(LVar1, COLLIDER_tte)
@@ -77,10 +77,10 @@ EvtScript N(EVS_ExitDoors_Balcony) = {
 
 EvtScript N(EVS_ExitWalk_SecretPassage) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Set(AF_KKJ_13, false)
+    Set(AF_KKJ_13, FALSE)
     Call(UseExitHeading, 60, kkj_14_ENTRY_2)
     Exec(ExitWalk)
-    IfEq(GF_KKJ14_SkipSecretPassage, false)
+    IfEq(GF_KKJ14_SkipSecretPassage, FALSE)
         Call(GotoMap, Ref("kkj_27"), kkj_27_ENTRY_0)
     Else
         Call(GotoMap, Ref("kkj_15"), kkj_15_ENTRY_1)
@@ -91,9 +91,9 @@ EvtScript N(EVS_ExitWalk_SecretPassage) = {
 };
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_DoesntOpen, 160, 40)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -167,47 +167,47 @@ EvtScript N(EVS_Main) = {
     Call(GetEntryID, LVar0)
     IfGe(LVar0, kkj_14_ENTRY_3)
         IfNe(LVar0, kkj_14_ENTRY_B)
-            Set(GF_KKJ14_RevealedButton, false)
-            Set(GF_KKJ14_OpenedPassage, false)
+            Set(GF_KKJ14_RevealedButton, FALSE)
+            Set(GF_KKJ14_OpenedPassage, FALSE)
         EndIf
         Switch(LVar0)
             CaseEq(kkj_14_ENTRY_3)
                 Set(GB_StoryProgress, STORY_CH0_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, false)
-                Call(MakeNpcs, false, Ref(N(Chapter0NPCs)))
+                Set(GF_KKJ14_SkipSecretPassage, FALSE)
+                Call(MakeNpcs, FALSE, Ref(N(Chapter0NPCs)))
             CaseEq(kkj_14_ENTRY_4)
                 Set(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, false)
+                Set(GF_KKJ14_SkipSecretPassage, FALSE)
             CaseEq(kkj_14_ENTRY_5)
                 Set(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, false)
-                Set(AF_KKJ_06, false)
-                Call(MakeNpcs, false, Ref(N(Chapter2NPCs)))
+                Set(GF_KKJ14_SkipSecretPassage, FALSE)
+                Set(AF_KKJ_06, FALSE)
+                Call(MakeNpcs, FALSE, Ref(N(Chapter2NPCs)))
             CaseEq(kkj_14_ENTRY_6)
                 Set(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, false)
+                Set(GF_KKJ14_SkipSecretPassage, FALSE)
             CaseEq(kkj_14_ENTRY_7)
                 Set(GB_StoryProgress, STORY_CH4_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, true)
+                Set(GF_KKJ14_SkipSecretPassage, TRUE)
             CaseEq(kkj_14_ENTRY_8)
                 Set(GB_StoryProgress, STORY_CH5_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, true)
+                Set(GF_KKJ14_SkipSecretPassage, TRUE)
             CaseEq(kkj_14_ENTRY_9)
                 Call(N(EnableParasol))
                 Set(GB_StoryProgress, STORY_CH6_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
-                Set(GF_KKJ14_SkipSecretPassage, true)
+                Set(GF_KKJ14_SkipSecretPassage, TRUE)
             CaseEq(kkj_14_ENTRY_A)
-                Call(MakeNpcs, false, Ref(N(Chapter7NPCs)))
+                Call(MakeNpcs, FALSE, Ref(N(Chapter7NPCs)))
             CaseEq(kkj_14_ENTRY_B)
                 Add(GB_KKJ_CaughtCount, 1)
-                Call(MakeNpcs, false, Ref(N(TossBackNPCs)))
+                Call(MakeNpcs, FALSE, Ref(N(TossBackNPCs)))
         EndSwitch
     EndIf
     Exec(N(EVS_SetupInteractables))
@@ -225,7 +225,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetModelCustomGfx, MODEL_o154, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
     Return
     End
 };

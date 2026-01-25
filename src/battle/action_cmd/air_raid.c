@@ -42,13 +42,13 @@ API_CALLABLE(N(init)) {
     action_command_init_status();
 
     acs->actionCommandID = ACTION_COMMAND_AIR_RAID;
-    acs->showHud = true;
+    acs->showHud = TRUE;
     acs->hudPrepareTime = 30;
     acs->state = AC_STATE_INIT;
-    acs->wrongButtonPressed = false;
+    acs->wrongButtonPressed = FALSE;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
-    acs->isMeterFilled = false;
+    acs->isMeterFilled = FALSE;
     battleStatus->actionQuality = 0;
     acs->hudPosX = -48;
     acs->hudPosY = 80;
@@ -92,7 +92,7 @@ API_CALLABLE(N(start)) {
     acs->difficulty = adjust_action_command_difficulty(acs->difficulty);
     acs->statusChance = evt_get_variable(script, *args++); // unused
 
-    acs->wrongButtonPressed = false;
+    acs->wrongButtonPressed = FALSE;
     acs->meterFillLevel = 0;
     acs->meterFillWidth = 0;
     battleStatus->actionQuality = 0;
@@ -158,7 +158,7 @@ void N(update)(void) {
             hud_element_set_script(acs->hudElemIDs[HIDX_STICK], &HES_StickMashLeft);
             acs->meterFillLevel = 0;
             battleStatus->resultTier = 0;
-            acs->airRaid.holdingLeft = false;
+            acs->airRaid.holdingLeft = FALSE;
             acs->stateTimer = acs->duration;
             sfx_play_sound_with_params(SOUND_LOOP_CHARGE_METER, 0, 0, 0);
             acs->state = AC_STATE_ACTIVE;
@@ -179,13 +179,13 @@ void N(update)(void) {
             // check for meter-filling input
             if (!acs->isMeterFilled) {
                 if (battleStatus->curButtonsDown & BUTTON_STICK_LEFT) {
-                    acs->airRaid.holdingLeft = true;
+                    acs->airRaid.holdingLeft = TRUE;
                 }
 
                 if (!(battleStatus->curButtonsDown & BUTTON_STICK_LEFT)) {
                     if (acs->airRaid.holdingLeft) {
                         acs->meterFillLevel += SCALE_BY_PCT(METER_FILL_RATE, battleStatus->actionCmdDifficultyTable[acs->difficulty]);
-                        acs->airRaid.holdingLeft = false;
+                        acs->airRaid.holdingLeft = FALSE;
                     }
                 }
 
@@ -203,7 +203,7 @@ void N(update)(void) {
             // handle meter reaching 100%
             if (acs->meterFillLevel > MAX_MASH_UNITS) {
                 acs->meterFillLevel = MAX_MASH_UNITS;
-                acs->isMeterFilled = true;
+                acs->isMeterFilled = TRUE;
                 hid = acs->hudElemIDs[HIDX_100_PCT];
                 hud_element_set_render_pos(hid, acs->hudPosX + 50, acs->hudPosY + 28);
                 hud_element_clear_flags(hid, HUD_ELEMENT_FLAG_DISABLED);

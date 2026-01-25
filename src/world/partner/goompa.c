@@ -41,13 +41,13 @@ API_CALLABLE(N(Update)) {
     if (isInitialCall) {
         partner_walking_enable(goompa, 1);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
-        TweesterTouchingPartner = nullptr;
+        TweesterTouchingPartner = NULL;
     }
 
     playerData->partnerUsedTime[PARTNER_GOOMPA]++;
     entity = TweesterTouchingPartner;
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         partner_walking_update_player_tracking(goompa);
         partner_walking_update_motion(goompa);
         return ApiStatus_BLOCK;
@@ -107,7 +107,7 @@ API_CALLABLE(N(Update)) {
 
             if (--N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
-                TweesterTouchingPartner = nullptr;
+                TweesterTouchingPartner = NULL;
             }
             break;
     }
@@ -121,8 +121,8 @@ EvtScript EVS_WorldGoompa_Update = {
 };
 
 void N(try_cancel_tweester)(Npc* goompa) {
-    if (TweesterTouchingPartner != nullptr) {
-        TweesterTouchingPartner = nullptr;
+    if (TweesterTouchingPartner != NULL) {
+        TweesterTouchingPartner = NULL;
         goompa->flags = N(TweesterPhysicsPtr)->prevFlags;
         N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(goompa);

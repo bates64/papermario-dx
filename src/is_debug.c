@@ -26,7 +26,7 @@ int printf(const char* restrict fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    return _Printf(is_debug_print, nullptr, fmt, args);
+    return _Printf(is_debug_print, NULL, fmt, args);
 }
 
 int __printf_chk(int flag, const char* restrict fmt, ...) {
@@ -34,7 +34,7 @@ int __printf_chk(int flag, const char* restrict fmt, ...) {
     va_start(args, fmt);
     (void)flag;
 
-    return _Printf(is_debug_print, nullptr, fmt, args);
+    return _Printf(is_debug_print, NULL, fmt, args);
 }
 
 int puts(const char* s) {
@@ -46,14 +46,14 @@ void osSyncPrintf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    _Printf(is_debug_print, nullptr, fmt, args);
+    _Printf(is_debug_print, NULL, fmt, args);
 }
 
 void rmonPrintf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    _Printf(is_debug_print, nullptr, fmt, args);
+    _Printf(is_debug_print, NULL, fmt, args);
 }
 
 char* is_debug_print(char* arg0, const char* str, size_t count) {

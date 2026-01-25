@@ -52,9 +52,9 @@ EffectInstance* attack_result_text_main(s32 type, f32 posX, f32 posY, f32 posZ, 
 
     data = effect->data.attackResultText = general_heap_malloc(effect->numParts * sizeof(*data));
 
-    ASSERT(data != nullptr);
+    ASSERT(data != NULL);
 
-    data->isVisible = true;
+    data->isVisible = TRUE;
     data->unk_20 = 0;
     data->type = type;
     data->lifetime = 0;
@@ -105,7 +105,7 @@ void attack_result_text_update(EffectInstance* effect) {
     curTime = data->lifetime;
 
     if (data->timeLeft < 0) {
-        data->isVisible = false;
+        data->isVisible = FALSE;
         data->timeLeft = -1;
         remove_effect(effect);
         return;

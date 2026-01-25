@@ -4,7 +4,7 @@
 
 EvtScript N(EVS_OpenAirshipDockDoor) = {
     Call(PlaySoundAtCollider, COLLIDER_deilitts, SOUND_AIRSHIP_DOCK_DOOR_OPEN, SOUND_SPACE_DEFAULT)
-    Call(EnableModel, MODEL_o1616, false)
+    Call(EnableModel, MODEL_o1616, FALSE)
     Call(MakeLerp, 0, -10, 20, EASING_CUBIC_IN)
     Loop(0)
         Call(UpdateLerp)
@@ -47,7 +47,7 @@ EvtScript N(EVS_CloseAirshipDockDoor) = {
             BreakLoop
         EndIf
     EndLoop
-    Call(EnableModel, MODEL_o1616, true)
+    Call(EnableModel, MODEL_o1616, TRUE)
     Return
     End
 };
@@ -59,7 +59,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Upper) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_62_ENTRY_1)
     Exec(ExitWalk)
-    IfEq(GF_KPA16_ShutOffLava, false)
+    IfEq(GF_KPA16_ShutOffLava, FALSE)
         Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_0)
     Else
         Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_0)
@@ -73,7 +73,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(UseExitHeading, 60, kpa_62_ENTRY_2)
     Exec(ExitWalk)
-    IfEq(GF_KPA16_ShutOffLava, false)
+    IfEq(GF_KPA16_ShutOffLava, FALSE)
         Call(GotoMap, Ref("kpa_11"), kpa_11_ENTRY_3)
     Else
         Call(GotoMap, Ref("kpa_10"), kpa_10_ENTRY_3)
@@ -85,7 +85,7 @@ EvtScript N(EVS_ExitWalk_kpa_1X_Lower) = {
 
 EvtScript N(EVS_ExitDoor_kpa_63_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     ExecWait(N(EVS_OpenAirshipDockDoor))
     Wait(15)
     Call(UseExitHeading, 60, kpa_62_ENTRY_3)
@@ -97,12 +97,12 @@ EvtScript N(EVS_ExitDoor_kpa_63_0) = {
 };
 
 EvtScript N(EVS_EnterFromAirshipDock) = {
-    Call(DisablePlayerInput, true)
+    Call(DisablePlayerInput, TRUE)
     Call(DisablePartnerAI, 0)
     Call(SetPlayerPos, -30, 21, 590)
     Call(SetNpcPos, NPC_PARTNER, -30, 21, 590)
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    Call(EnableModel, MODEL_o1616, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, TRUE)
+    Call(EnableModel, MODEL_o1616, FALSE)
     Call(TranslateModel, MODEL_o1650, -10, 0, 45)
     Thread
         Call(SetPlayerSpeed, Float(3.0))
@@ -112,9 +112,9 @@ EvtScript N(EVS_EnterFromAirshipDock) = {
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
     Call(NpcMoveTo, NPC_PARTNER, 65, 600, 0)
     ExecWait(N(EVS_CloseAirshipDockDoor))
-    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+    Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, FALSE)
     Call(EnablePartnerAI)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -192,17 +192,17 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_BowsersCastle, true)
+    Set(GF_MAP_BowsersCastle, TRUE)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_EnterMap))
     Exec(N(EVS_SetupMusic))
-    IfEq(GF_KPA16_ShutOffLava, false)
-        Call(EnableGroup, MODEL_after, false)
+    IfEq(GF_KPA16_ShutOffLava, FALSE)
+        Call(EnableGroup, MODEL_after, FALSE)
         Exec(N(EVS_TexPan_Lava))
     Else
-        Call(EnableGroup, MODEL_before, false)
+        Call(EnableGroup, MODEL_before, FALSE)
     EndIf
-    IfEq(GF_KPA16_ShutOffLava, false)
+    IfEq(GF_KPA16_ShutOffLava, FALSE)
         Thread
             Wait(3)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o1508, SURFACE_TYPE_LAVA)

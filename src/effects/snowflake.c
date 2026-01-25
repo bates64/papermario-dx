@@ -22,14 +22,14 @@ void snowflake_main(f32 x, f32 y, f32 z, s32 arg3) {
     bp.init = snowflake_init;
     bp.update = snowflake_update;
     bp.renderScene = snowflake_render;
-    bp.renderUI = nullptr;
+    bp.renderUI = NULL;
     bp.effectID = EFFECT_SNOWFLAKE;
 
     effect = create_effect_instance(&bp);
     effect->numParts = 1;
     part = effect->data.snowflake = general_heap_malloc(numParts * sizeof(*part));
 
-    ASSERT(effect->data.snowflake != nullptr);
+    ASSERT(effect->data.snowflake != NULL);
 
     part->pos.x = x;
     part->pos.y = y;

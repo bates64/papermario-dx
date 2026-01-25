@@ -9,7 +9,7 @@ API_CALLABLE(N(PlaySpringAnimation)) {
     Bytecode* args = script->ptrReadPos;
     Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
 
-    if (entity == nullptr) {
+    if (entity == NULL) {
         return ApiStatus_BLOCK;
     }
 
@@ -20,11 +20,11 @@ API_CALLABLE(N(PlaySpringAnimation)) {
 #include "world/common/todo/SetEntityPosition.inc.c"
 
 EvtScript N(EVS_BreakBlock_DropSpring) = {
-    IfEq(GF_TIK05_SpringBrick, true)
+    IfEq(GF_TIK05_SpringBrick, TRUE)
         Return
     EndIf
-    Set(GF_TIK05_SpringBrick, true)
-    Call(DisablePlayerInput, true)
+    Set(GF_TIK05_SpringBrick, TRUE)
+    Call(DisablePlayerInput, TRUE)
     Set(LVar5, 25)
     Call(MakeLerp, 75, 105, 8, EASING_QUADRATIC_OUT)
     Loop(0)
@@ -49,7 +49,7 @@ EvtScript N(EVS_BreakBlock_DropSpring) = {
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
     Call(PlaySoundAt, SOUND_SPRING, SOUND_SPACE_DEFAULT, LVar5, LVar0, 0)
     Call(N(PlaySpringAnimation), MV_Unk_00)
-    Call(DisablePlayerInput, false)
+    Call(DisablePlayerInput, FALSE)
     Return
     End
 };
@@ -62,7 +62,7 @@ EvtScript N(EVS_MakeEntities) = {
     Call(AssignScript, Ref(N(EVS_OpenChest)))
     Call(MakeEntity, Ref(Entity_BrickBlock), 25, 50, 0, 0, MAKE_ENTITY_END)
     Call(AssignScript, Ref(N(EVS_BreakBlock_DropSpring)))
-    IfEq(GF_TIK05_SpringBrick, false)
+    IfEq(GF_TIK05_SpringBrick, FALSE)
         Call(MakeEntity, Ref(Entity_SimpleSpring), 25, 75, 0, 0, 100, MAKE_ENTITY_END)
         Set(MV_Unk_00, LVar0)
     Else

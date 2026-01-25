@@ -12,7 +12,7 @@ s32 osFlashWriteBuffer(OSIoMesg* mb, s32 priority, void* dramAddr, OSMesgQueue* 
 #ifdef BBPLAYER
     if (__osBbFlashSize != 0) {
         bcopy(dramAddr, __osBbFlashBuffer, 0x80);
-        return osSendMesg(mq, nullptr, nullptr);
+        return osSendMesg(mq, NULL, NULL);
     }
     return -1;
 #else

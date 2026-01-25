@@ -101,15 +101,15 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PLEASANT_PATH)
     Call(SetSpriteShading, SHADING_NONE)
-    Set(AF_NOK12_HitSwitch, false)
+    Set(AF_NOK12_HitSwitch, FALSE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(GetDemoState, LVar0)
     IfEq(LVar0, DEMO_STATE_NONE)
-        Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
+        Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
     Else
         Call(GetEntryID, LVar0)
         IfEq(LVar0, nok_12_ENTRY_2)
-            Call(MakeNpcs, false, Ref(N(DemoNPCs)))
+            Call(MakeNpcs, FALSE, Ref(N(DemoNPCs)))
         EndIf
     EndIf
     ExecWait(N(EVS_MakeEntities))
@@ -130,7 +130,7 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))
     Wait(1)
-    Set(GF_MAC01_RowfBadgesChosen, false)
+    Set(GF_MAC01_RowfBadgesChosen, FALSE)
     Return
     End
 };

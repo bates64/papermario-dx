@@ -9,10 +9,10 @@ s32 osFlashReadArray(OSIoMesg* mb, s32 priority, u32 page_num, void* dramAddr, u
 #ifdef BBPLAYER
     if (__osBbFlashSize != 0 && __osBbFlashSize >= (page_num + n_pages) * 0x80) {
         bcopy((void*)(__osBbFlashAddress + page_num * 0x80), dramAddr, n_pages * 0x80);
-        return osSendMesg(mq, nullptr, OS_MESG_NOBLOCK);
+        return osSendMesg(mq, NULL, OS_MESG_NOBLOCK);
     } else {
         bzero(dramAddr, n_pages * 0x80);
-        return osSendMesg(mq, nullptr, OS_MESG_NOBLOCK);
+        return osSendMesg(mq, NULL, OS_MESG_NOBLOCK);
     }
 #else
     u32 ret;
@@ -38,7 +38,7 @@ s32 osFlashReadArray(OSIoMesg* mb, s32 priority, u32 page_num, void* dramAddr, u
         mb->size = one_dma_pages * FLASH_BLOCK_SIZE;
         mb->devAddr = __osFlashGetAddr(page_num);
         osEPiStartDma(&__osFlashHandler, mb, OS_READ);
-        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
+        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
         page_num = (page_num + 256) & 0xF00;
         mb->dramAddr = (u32)mb->dramAddr + mb->size;
     }
@@ -49,7 +49,7 @@ s32 osFlashReadArray(OSIoMesg* mb, s32 priority, u32 page_num, void* dramAddr, u
         mb->size = one_dma_pages * FLASH_BLOCK_SIZE;
         mb->devAddr = __osFlashGetAddr(page_num);
         osEPiStartDma(&__osFlashHandler, mb, OS_READ);
-        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
+        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
         page_num += 256;
         mb->dramAddr = (u32)mb->dramAddr + mb->size;
     }
