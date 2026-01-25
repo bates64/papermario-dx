@@ -24,8 +24,8 @@ GameStatus gGameStatus = {
     .prevButtons = { 0 },
     .stickX = { 0 },
     .stickY = { 0 },
-    .unk_48 = { 0 },
-    .unk_50 = { 0 },
+    .holdDelayTime = { 0 },
+    .holdRepeatInterval = { 0 },
 };
 
 GameStatus* gGameStatusPtr = &gGameStatus;
@@ -305,7 +305,7 @@ void load_engine_data(void) {
     gGameStepDelayCount = 5;
     gGameStatusPtr->saveCount = 0;
     fio_init_flash();
-    func_80028838();
+    clear_input();
     general_heap_create();
     clear_render_tasks();
     clear_worker_list();
@@ -338,9 +338,9 @@ void load_engine_data(void) {
     initialize_curtains();
     poll_rumble();
 
-    for (i = 0; i < ARRAY_COUNT(gGameStatusPtr->unk_50); i++) {
-        gGameStatusPtr->unk_50[i] = 3;
-        gGameStatusPtr->unk_48[i] = 12;
+    for (i = 0; i < ARRAY_COUNT(gGameStatusPtr->holdRepeatInterval); i++) {
+        gGameStatusPtr->holdRepeatInterval[i] = 3;
+        gGameStatusPtr->holdDelayTime[i] = 12;
     }
 
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;

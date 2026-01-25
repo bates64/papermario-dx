@@ -1,35 +1,35 @@
 #include "common.h"
 #include "nu/nusys.h"
 
-OSContPad D_8009A5B8;
-BSS s16 D_8009A6A0;
-BSS s16 D_8009A6A2;
-BSS s16 D_8009A6A4;
-BSS s16 D_8009A6A6;
+OSContPad ContPadData;
+BSS s16 StickExtremeX;
+BSS s16 StickExtremeY;
+BSS s16 StickRetriggerStateX;
+BSS s16 StickRetriggerStateY;
 
-void func_800287F0(void) {
+void reset_input_state(void) {
     gGameStatusPtr->curButtons[0] = 0;
     gGameStatusPtr->pressedButtons[0] = 0;
     gGameStatusPtr->heldButtons[0] = 0;
     gGameStatusPtr->stickX[0] = 0;
     gGameStatusPtr->stickY[0] = 0;
     gGameStatusPtr->prevButtons[0] = 0;
-    gGameStatusPtr->unk_50[0] = 4;
-    gGameStatusPtr->unk_48[0] = 15;
-    gGameStatusPtr->unk_60 = 0;
-    gGameStatusPtr->unk_58 = 0;
+    gGameStatusPtr->holdRepeatInterval[0] = 4;
+    gGameStatusPtr->holdDelayTime[0] = 15;
+    gGameStatusPtr->holdRepeatCounter = 0;
+    gGameStatusPtr->holdDelayCounter = 0;
 }
 
-void func_80028838(void) {
-    func_800287F0();
-    D_8009A6A0 = 0;
-    D_8009A6A2 = 0;
-    D_8009A6A4 = 0;
-    D_8009A6A6 = 0;
+void clear_input(void) {
+    reset_input_state();
+    StickExtremeX = 0;
+    StickExtremeY = 0;
+    StickRetriggerStateX = 0;
+    StickRetriggerStateY = 0;
 }
 
 void update_input(void) {
-    OSContPad* contData = &D_8009A5B8;
+    OSContPad* contData = &ContPadData;
     s16 handleInput = FALSE;
     s16 cond1;
     s32 buttons;
@@ -95,14 +95,14 @@ void update_input(void) {
         cond1 = TRUE;
         buttons |= BUTTON_STICK_RIGHT;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_RIGHT)) {
-            D_8009A6A0 = stickX;
-        } else if (D_8009A6A4 == 0) {
-            if (D_8009A6A0 < stickX) {
-                D_8009A6A0 = stickX;
+            StickExtremeX = stickX;
+        } else if (StickRetriggerStateX == 0) {
+            if (StickExtremeX < stickX) {
+                StickExtremeX = stickX;
             }
         } else {
-            if (D_8009A6A0 > stickX) {
-                D_8009A6A0 = stickX;
+            if (StickExtremeX > stickX) {
+                StickExtremeX = stickX;
             }
         }
     }
@@ -111,22 +111,22 @@ void update_input(void) {
         cond1 = TRUE;
         buttons |= BUTTON_STICK_LEFT;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_LEFT)) {
-            D_8009A6A0 = stickX;
-        } else if (D_8009A6A4 == 0) {
-            if (D_8009A6A0 > stickX) {
-                D_8009A6A0 = stickX;
+            StickExtremeX = stickX;
+        } else if (StickRetriggerStateX == 0) {
+            if (StickExtremeX > stickX) {
+                StickExtremeX = stickX;
             }
         } else {
-            if (D_8009A6A0 < stickX)
+            if (StickExtremeX < stickX)
             {
-                D_8009A6A0 = stickX;
+                StickExtremeX = stickX;
             }
         }
     }
 
     if (!cond1) {
-        D_8009A6A4 = 0;
-        D_8009A6A0 = stickX;
+        StickRetriggerStateX = 0;
+        StickExtremeX = stickX;
     }
 
     cond1 = FALSE;
@@ -134,14 +134,14 @@ void update_input(void) {
         cond1 = TRUE;
         buttons |= BUTTON_STICK_UP;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_UP)) {
-            D_8009A6A2 = stickY;
-        } else if (D_8009A6A6 == 0) {
-            if (D_8009A6A2 < stickY) {
-                D_8009A6A2 = stickY;
+            StickExtremeY = stickY;
+        } else if (StickRetriggerStateY == 0) {
+            if (StickExtremeY < stickY) {
+                StickExtremeY = stickY;
             }
         } else {
-            if (D_8009A6A2 > stickY) {
-                D_8009A6A2 = stickY;
+            if (StickExtremeY > stickY) {
+                StickExtremeY = stickY;
             }
         }
     }
@@ -150,60 +150,60 @@ void update_input(void) {
         cond1 = TRUE;
         buttons |= BUTTON_STICK_DOWN;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_DOWN)) {
-            D_8009A6A2 = stickY;
-        } else if (D_8009A6A6 == 0) {
-            if (D_8009A6A2 > stickY) {
-                D_8009A6A2 = stickY;
+            StickExtremeY = stickY;
+        } else if (StickRetriggerStateY == 0) {
+            if (StickExtremeY > stickY) {
+                StickExtremeY = stickY;
             }
         } else {
-            if (D_8009A6A2 < stickY) {
-                D_8009A6A2 = stickY;
+            if (StickExtremeY < stickY) {
+                StickExtremeY = stickY;
             }
         }
     }
 
     if (!cond1) {
-        D_8009A6A6 = 0;
-        D_8009A6A2 = stickY;
+        StickRetriggerStateY = 0;
+        StickExtremeY = stickY;
     }
 
     if (stickX > 0x20) {
-        if (D_8009A6A4 == 1 && stickX - D_8009A6A0 > 0x10) {
+        if (StickRetriggerStateX == 1 && stickX - StickExtremeX > 0x10) {
             buttons &= ~BUTTON_STICK_RIGHT;
-            D_8009A6A4 = 0;
+            StickRetriggerStateX = 0;
         }
-        if (D_8009A6A0 - stickX > 0x10) {
-            D_8009A6A4 = 1;
+        if (StickExtremeX - stickX > 0x10) {
+            StickRetriggerStateX = 1;
         }
     }
 
     if (stickX < -0x20) {
-        if (D_8009A6A4 == 1 && D_8009A6A0 - stickX > 0x10) {
+        if (StickRetriggerStateX == 1 && StickExtremeX - stickX > 0x10) {
             buttons &= ~BUTTON_STICK_LEFT;
-            D_8009A6A4 = 0;
+            StickRetriggerStateX = 0;
         }
-        if (stickX - D_8009A6A0 > 0x10) {
-            D_8009A6A4 = 1;
+        if (stickX - StickExtremeX > 0x10) {
+            StickRetriggerStateX = 1;
         }
     }
 
     if (stickY > 0x20) {
-        if (D_8009A6A6 == 1 && stickY - D_8009A6A2 > 0x10) {
+        if (StickRetriggerStateY == 1 && stickY - StickExtremeY > 0x10) {
             buttons &= ~BUTTON_STICK_UP;
-            D_8009A6A6 = 0;
+            StickRetriggerStateY = 0;
         }
-        if (D_8009A6A2 - stickY > 0x10) {
-            D_8009A6A6 = 1;
+        if (StickExtremeY - stickY > 0x10) {
+            StickRetriggerStateY = 1;
         }
     }
 
     if (stickY < -0x20) {
-        if (D_8009A6A6 == 1 && D_8009A6A2 - stickY > 0x10) {
+        if (StickRetriggerStateY == 1 && StickExtremeY - stickY > 0x10) {
             buttons &= ~BUTTON_STICK_DOWN;
-            D_8009A6A6 = 0;
+            StickRetriggerStateY = 0;
         }
-        if (stickY - D_8009A6A2 > 0x10) {
-            D_8009A6A6 = 1;
+        if (stickY - StickExtremeY > 0x10) {
+            StickRetriggerStateY = 1;
         }
     }
 
@@ -215,26 +215,26 @@ void update_input(void) {
         gGameStatusPtr->heldButtons[0] = 0;
     } else if (gGameStatusPtr->prevButtons[0] != gGameStatusPtr->curButtons[0]) {
         gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-        gGameStatusPtr->unk_60 = -1;
+        gGameStatusPtr->holdRepeatCounter = -1;
         gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0] ^ gGameStatusPtr->prevButtons[0];
         gGameStatusPtr->heldButtons[0] &= gGameStatusPtr->curButtons[0];
-        gGameStatusPtr->unk_58 = gGameStatusPtr->unk_48[0];
+        gGameStatusPtr->holdDelayCounter = gGameStatusPtr->holdDelayTime[0];
     } else {
-        if (gGameStatusPtr->unk_60 >= 0) {
-            gGameStatusPtr->unk_60--;
-            if (gGameStatusPtr->unk_60 != 0) {
+        if (gGameStatusPtr->holdRepeatCounter >= 0) {
+            gGameStatusPtr->holdRepeatCounter--;
+            if (gGameStatusPtr->holdRepeatCounter != 0) {
                 gGameStatusPtr->heldButtons[0] = 0;
             } else {
                 gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-                gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
+                gGameStatusPtr->holdRepeatCounter = gGameStatusPtr->holdRepeatInterval[0];
             }
         } else {
-            gGameStatusPtr->unk_58--;
-            if (gGameStatusPtr->unk_58 != 0) {
+            gGameStatusPtr->holdDelayCounter--;
+            if (gGameStatusPtr->holdDelayCounter != 0) {
                 gGameStatusPtr->heldButtons[0] = 0;
             } else {
                 gGameStatusPtr->heldButtons[0] = gGameStatusPtr->curButtons[0];
-                gGameStatusPtr->unk_60 = gGameStatusPtr->unk_50[0];
+                gGameStatusPtr->holdRepeatCounter = gGameStatusPtr->holdRepeatInterval[0];
             }
         }
     }
