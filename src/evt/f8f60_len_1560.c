@@ -1,34 +1,44 @@
 #include "common.h"
 #include "game_modes.h"
 
+enum {
+    LERP_VAR_0 = 0x0, // (out float) cur
+    LERP_VAR_1 = 0x1, // (out bool) in-progress
+    LERP_VAR_B = 0xB, // mode
+    LERP_VAR_C = 0xC, // start
+    LERP_VAR_D = 0xD, // end
+    LERP_VAR_E = 0xE, // elapsed
+    LERP_VAR_F = 0xF, // duration
+};
+
 // args: start, end, duration, EasingType
 API_CALLABLE(MakeLerp) {
     Bytecode* ptrReadPos = script->ptrReadPos;
 
-    script->varTable[0xC] = evt_get_variable(script, *ptrReadPos++); // start
-    script->varTable[0xD] = evt_get_variable(script, *ptrReadPos++); // end
-    script->varTable[0xF] = evt_get_variable(script, *ptrReadPos++); // duration
-    script->varTable[0xB] = evt_get_variable(script, *ptrReadPos++); // easing type
-    script->varTable[0xE] = 0; // elapsed
+    script->varTableF[LERP_VAR_C] = evt_get_float_variable(script, *ptrReadPos++); // start
+    script->varTableF[LERP_VAR_D] = evt_get_float_variable(script, *ptrReadPos++); // end
+    script->varTable[LERP_VAR_F] = evt_get_variable(script, *ptrReadPos++); // duration
+    script->varTable[LERP_VAR_B] = evt_get_variable(script, *ptrReadPos++); // easing type
+    script->varTable[LERP_VAR_E] = 0; // elapsed
 
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(UpdateLerp) {
-    script->varTable[0x0] = (s32) update_lerp(
-                                script->varTable[0xB],
-                                script->varTable[0xC],
-                                script->varTable[0xD],
-                                script->varTable[0xE],
-                                script->varTable[0xF]
-                            );
+    evt_set_float_variable(script, LocalVar(LERP_VAR_0), update_lerp(
+        script->varTable[LERP_VAR_B],
+        script->varTableF[LERP_VAR_C],
+        script->varTableF[LERP_VAR_D],
+        script->varTable[LERP_VAR_E],
+        script->varTable[LERP_VAR_F]
+    ));
 
-    if (script->varTable[0xE] >= script->varTable[0xF]) {
-        script->varTable[0x1] = 0; // finished
+    if (script->varTable[LERP_VAR_E] >= script->varTable[LERP_VAR_F]) {
+        script->varTable[LERP_VAR_1] = false; // finished
     } else {
-        script->varTable[0x1] = 1; // lerping
+        script->varTable[LERP_VAR_1] = true; // lerping
     }
-    script->varTable[0xE]++;
+    script->varTable[LERP_VAR_E]++;
 
     return ApiStatus_DONE2;
 }
@@ -101,9 +111,9 @@ API_CALLABLE(AwaitPlayerApproach) {
     }
 
     distance = dist2D(
-                   playerStatus->pos.x, playerStatus->pos.z,
-                   *targetX, *targetZ
-               );
+        playerStatus->pos.x, playerStatus->pos.z,
+        *targetX, *targetZ
+    );
 
     if (distance < *distanceRequired) {
         return ApiStatus_DONE2;
@@ -131,9 +141,9 @@ API_CALLABLE(IsPlayerWithin) {
     }
 
     distance = dist2D(
-                   playerStatus->pos.x, playerStatus->pos.z,
-                   *targetX, *targetZ
-               );
+        playerStatus->pos.x, playerStatus->pos.z,
+        *targetX, *targetZ
+    );
 
     evt_set_variable(script, outVar, 0);
     if (distance < *distanceRequired) {
@@ -160,9 +170,9 @@ API_CALLABLE(AwaitPlayerLeave) {
     }
 
     distance = dist2D(
-                   playerStatus->pos.x, playerStatus->pos.z,
-                   *targetX, *targetZ
-               );
+        playerStatus->pos.x, playerStatus->pos.z,
+        *targetX, *targetZ
+    );
 
     if (distance > *distanceRequired) {
         return ApiStatus_DONE2;
