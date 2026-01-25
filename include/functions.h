@@ -46,7 +46,7 @@ void copy_matrix(Matrix4f src, Matrix4f dest);
 Shadow* get_shadow_by_index(s32 index);
 s32 get_time_freeze_mode(void);
 void render_player_model(void);
-s32 is_picking_up_item(void);
+b32 is_picking_up_item(void);
 
 f32 integrate_gravity(void);
 void gravity_use_fall_parms(void);
@@ -534,7 +534,7 @@ void render_workers_frontUI(void);
 void render_screen_overlay_frontUI(void);
 void render_curtains(void);
 void fio_init_flash(void);
-void func_80028838(void);
+void clear_input(void);
 void clear_screen_overlays(void);
 void bgm_reset_sequence_players(void);
 void reset_ambient_sounds(void);
