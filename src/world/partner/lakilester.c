@@ -7,10 +7,10 @@
 #define NAMESPACE world_lakilester
 
 BSS s32 N(PutAwayState);
-BSS bool N(LockingPlayerInput);
-BSS bool N(PlayerCollisionDisabled);
+BSS b32 N(LockingPlayerInput);
+BSS b32 N(PlayerCollisionDisabled);
 BSS s32 N(MountState);
-BSS bool N(UpdatePushingWall);
+BSS b32 N(UpdatePushingWall);
 BSS s32 N(AbilityState);
 BSS s32 N(PlayerBounceOffset);
 BSS s32 N(MoveSoundsTime);

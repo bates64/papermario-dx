@@ -53,7 +53,7 @@ extern PartnerDMAData bPartnerDmaTable[];
 
 s32 get_npc_anim_for_status(AnimID*, s32);
 
-void create_target_list(Actor* actor, bool targetHomePos) {
+void create_target_list(Actor* actor, b32 targetHomePos) {
     s32 numTargets = 0;
     BattleStatus* battleStatus = &gBattleStatus;
     SelectableTarget* targetDataList = actor->targetData;
@@ -477,7 +477,7 @@ void create_home_target_list(Actor* actor) {
     create_target_list(actor, true);
 }
 
-s32 func_80263064(Actor* actor, Actor* targetActor, bool unused) {
+s32 func_80263064(Actor* actor, Actor* targetActor, b32 unused) {
     s32 count = 0;
     SelectableTarget* target = actor->targetData;
     ActorPartBlueprint* partData;
@@ -1998,7 +1998,7 @@ s32 get_defense(Actor* actor, s32* defenseTable, s32 elementFlags) {
 }
 
 // refresh the first (primary) damage popup
-void show_primary_damage_popup(f32 posX, f32 posY, f32 posZ, s32 damageAmt, bool angle) {
+void show_primary_damage_popup(f32 posX, f32 posY, f32 posZ, s32 damageAmt, b32 angle) {
     s32 i;
 
     for (i = 0; i < 1; i++) {
@@ -2024,7 +2024,7 @@ void show_primary_damage_popup(f32 posX, f32 posY, f32 posZ, s32 damageAmt, bool
 }
 
 // show another damage popup, if any are available
-void show_next_damage_popup(f32 posX, f32 posY, f32 posZ, s32 damageAmt, bool angle) {
+void show_next_damage_popup(f32 posX, f32 posY, f32 posZ, s32 damageAmt, b32 angle) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gDamageCountEffects); i++) {

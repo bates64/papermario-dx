@@ -30,7 +30,7 @@ static void action_update_walk_peach(void);
 void action_update_walk(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    bool firstFrame = false;
+    b32 firstFrame = false;
     f32 moveMag;
     f32 moveAngle;
     AnimID anim;
@@ -111,7 +111,7 @@ void action_update_walk(void) {
 void action_update_run(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
-    bool firstFrame = false;
+    b32 firstFrame = false;
     f32 moveAngle;
     f32 moveMag;
     AnimID anim;

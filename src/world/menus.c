@@ -24,7 +24,6 @@ enum WorldMenuTypes {
     WORLD_MENU_PAUSE            = 2,
 };
 
-BSS s32 D_8010C9C4;
 BSS PopupMenu WorldPopupMenu;
 BSS s16 WorldMenuType;
 BSS s16 WorldMenuDelay;
@@ -46,7 +45,7 @@ void reset_outta_sight_alpha_on_menu_close(void) {
     }
 }
 
-bool should_cancel_open_world_menu(void) {
+b32 should_cancel_open_world_menu(void) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 actionState = playerStatus->actionState;
@@ -78,7 +77,7 @@ bool should_cancel_open_world_menu(void) {
     return false;
 }
 
-bool can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
+b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
     PartnerStatus* partnerStatus = &gPartnerStatus;
     s32 actionState = gPlayerStatus.actionState;
 

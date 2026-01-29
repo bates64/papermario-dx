@@ -16,7 +16,7 @@ BSS s32 N(TriggeredBattle);
 BSS s32 N(PlayerWasFacingLeft);
 BSS s32 N(D_802BEC5C);
 BSS s32 N(ShellTossKickFalling);
-BSS bool N(LockingPlayerInput);
+BSS b32 N(LockingPlayerInput);
 BSS s32 N(HeldItemIdx);
 BSS s32 N(HasItem);
 BSS f32 N(ShellTossPosX);

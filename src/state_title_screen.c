@@ -61,7 +61,7 @@ SaveSlotMetadata gSaveSlotMetadata[4] = {
 };
 
 s32 PressStart_Alpha = 0; // the opacity of "PRESS START" text
-bool PressStart_IsVisible = false; // toggles the visibility of "PRESS START"
+b32 PressStart_IsVisible = false; // toggles the visibility of "PRESS START"
 s32 PressStart_BlinkCounter = 0; // counts to 16, then toggles PressStart_IsVisible
 
 // controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done

@@ -62,7 +62,7 @@ enum DebugMenuStates {
 };
 
 s32 DebugMenuState = DBM_NONE;
-bool DebugStateChanged = false;
+b32 DebugStateChanged = false;
 
 const s32 DefaultColor = MSG_PAL_WHITE;
 const s32 HoverColor   = MSG_PAL_GREEN;
@@ -201,7 +201,7 @@ void dx_debug_draw_number(s32 number, char* fmt, s32 color, s32 alpha, s32 posX,
 }
 
 // efficiently renders an number with (optionally) a digit highlighted using a single draw_msg call
-void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, bool hasSelected, s32 posX, s32 posY) {
+void dx_debug_draw_editable_number(s32 number, char* fmt, s32 selectedDigit, b32 hasSelected, s32 posX, s32 posY) {
     char msgBuf[32] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SPACING, 8
@@ -248,7 +248,7 @@ s32 dx_debug_wrap(s32 v, s32 min, s32 max) {
 }
 
 // range from [min, max] with min < max
-s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, bool flip) {
+s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, b32 flip) {
     if (NAV_UP) {
         if(flip) {
             cur++;
@@ -274,7 +274,7 @@ s32 dx_debug_menu_nav_1D_vertical(s32 cur, s32 min, s32 max, bool flip) {
 }
 
 // range from [min, max] with min < max
-s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, bool flip) {
+s32 dx_debug_menu_nav_1D_horizontal(s32 cur, s32 min, s32 max, b32 flip) {
     if (NAV_LEFT) {
         if(flip) {
             cur++;
@@ -414,7 +414,7 @@ void dx_debug_set_editable_num(DebugEditableNumber* num, s32 in) {
 
 void dx_debug_draw_main_menu();
 
-bool dx_debug_menu_is_open() {
+b32 dx_debug_menu_is_open() {
     return DebugMenuState != DBM_NONE;
 }
 
@@ -1056,7 +1056,7 @@ DebugMenuEntry DebugSoundPlayerMenu[] = {
 };
 s32 SoundPlayerMenuPos = 0;
 
-void dx_debug_draw_sound_player(bool activeMenu) {
+void dx_debug_draw_sound_player(b32 activeMenu) {
     s32 idx;
 
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY + RowHeight, 75, ARRAY_COUNT(DebugSoundPlayerMenu) * RowHeight + 8, WINDOW_STYLE_20, 192);
@@ -1149,7 +1149,7 @@ void dx_debug_update_edit_partners() {
     dx_debug_draw_box(SubBoxPosX, SubBoxPosY, 120, 14 * 11 + 8, WINDOW_STYLE_20, 192);
 
     for (idx = 1; idx < ARRAY_COUNT(gPlayerData.partners); idx++) {
-        bool isSelected = (SelectPartnerMenuPos == idx);
+        b32 isSelected = (SelectPartnerMenuPos == idx);
         s32 color = isSelected ? HighlightColor : DefaultColor;
         s32 posY = SubmenuPosY + (idx - 1) * 14;
         s32 level = DebugPartnerLevels[idx];
@@ -1212,7 +1212,7 @@ void dx_debug_update_edit_inventory() {
     }
 }
 
-bool DebugEditingItem = false;
+b32 DebugEditingItem = false;
 
 #define _MAX_INV_SIZE(a,b,c) MAX(MAX(ARRAY_COUNT(a), ARRAY_COUNT(b)), ARRAY_COUNT(c))
 s8 DebugItemDigits[_MAX_INV_SIZE(gPlayerData.invItems, gPlayerData.keyItems, gPlayerData.badges)][3];
@@ -1343,7 +1343,7 @@ void dx_debug_update_edit_items() {
     for (i = menu->startPos; i <= menu->startPos + 9; i++) {
         s32 posY = SubmenuPosY + (i - menu->startPos) * RowHeight;
         s32 itemID = dx_debug_get_item_id(i);
-        bool isSelectedRow = (menu->pos == i);
+        b32 isSelectedRow = (menu->pos == i);
 
         if (DebugEditingItem) {
             dx_debug_draw_editable_number(i, "%02X", -1, false, SubmenuPosX, posY);
@@ -1759,7 +1759,7 @@ s32 DebugVtxPos;
 void dx_debug_draw_collision() {
     DebugTriangle temp;
     s32 rdpBufPos;
-    bool culling;
+    b32 culling;
     s32 fadeDist;
     s32 i, j;
     s32 dist;
@@ -1835,7 +1835,7 @@ void dx_debug_draw_collision() {
         ColliderTriangle* tri = debugTri->tri;
         s32 r, g, b, a;
 
-        bool highlight = false;
+        b32 highlight = false;
         if (DebugCollisionMenu[DBC_HIGHLIGHT_FLOOR].state && debugTri->colliderID == gCollisionStatus.curFloor) {
             highlight = true;
         }
@@ -1902,7 +1902,7 @@ void dx_debug_draw_collision() {
     gDPPipeSync(gMainGfxPos++);
 }
 
-bool dx_debug_should_hide_models() {
+b32 dx_debug_should_hide_models() {
     return DebugCollisionMenu[DBC_HIDE_MODELS].state;
 }
 
@@ -1911,7 +1911,7 @@ bool dx_debug_should_hide_models() {
 
 typedef struct DebugCheatEntry {
     char* text;
-    bool enabled;
+    b32 enabled;
 } DebugCheatEntry;
 
 DebugCheatEntry DebugCheatMenu[] = {
@@ -1969,7 +1969,7 @@ void dx_debug_update_cheat_menu() {
     }
 }
 
-bool dx_debug_is_cheat_enabled(DebugCheat cheat) {
+b32 dx_debug_is_cheat_enabled(DebugCheat cheat) {
     return DebugCheatMenu[cheat].enabled;
 }
 
@@ -2477,7 +2477,7 @@ void dx_debug_evt_draw_vars() {
     }
 }
 
-void dx_debug_evt_draw_arg(u32 value, bool asDecimal, s32 color, s32 posX, s32 posY) {
+void dx_debug_evt_draw_arg(u32 value, b32 asDecimal, s32 color, s32 posX, s32 posY) {
     if (value >= LVar0 && value <= LVarF) {
         dx_debug_draw_number(value - LVar0, "LVar%X", color, 255, posX, posY);
     } else if (asDecimal) {
@@ -2572,7 +2572,7 @@ void dx_debug_update_evt_attached() {
     }
 
     // saves worrying about null checks while drawing on the frame we detach the evt
-    bool detachAfter = false;
+    b32 detachAfter = false;
 
     EvtAttachedMenuPos = dx_debug_menu_nav_1D_vertical(EvtAttachedMenuPos, 0, DEBUG_EVT_ATTACHED_COUNT - 1, false);
     EvtAttachedDispMode = dx_debug_menu_nav_1D_horizontal(EvtAttachedDispMode, 0, 1, false);

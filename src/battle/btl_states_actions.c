@@ -2,8 +2,8 @@
 #include "battle/states/states.h"
 
 BSS s32 BattleSubstateDelay; // generic delay time usable for various substates
-BSS bool BattleSkipActorTurn;
-BSS bool BattleCanShowFirstStrike;
+BSS b32 BattleSkipActorTurn;
+BSS b32 BattleCanShowFirstStrike;
 BSS s32 BattleStatusUpdateDelay;
 
 void btl_merlee_on_start_turn(void) {

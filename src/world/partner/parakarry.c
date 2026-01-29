@@ -5,10 +5,10 @@
 
 #define NAMESPACE world_parakarry
 
-BSS bool N(UsingAbility);
-BSS bool N(LockingPlayerInput);
-BSS bool N(PlayerCollisionDisabled); // minor bug: never gets properly reset to false
-BSS bool N(PlayerWasFacingLeft);
+BSS b32 N(UsingAbility);
+BSS b32 N(LockingPlayerInput);
+BSS b32 N(PlayerCollisionDisabled); // minor bug: never gets properly reset to false
+BSS b32 N(PlayerWasFacingLeft);
 BSS s32 N(AbilityState);
 BSS s32 N(AbilityStateTime);
 BSS TweesterPhysics N(TweesterPhysicsData);
@@ -193,7 +193,7 @@ API_CALLABLE(N(UseAbility)) {
     f32 parakarryDeltaX, parakarryDeltaZ;
     f32 halfCollisionHeight;
     s32 hitCount;
-    bool hitAbove;
+    b32 hitAbove;
 
     if (gCurrentEncounter.unk_08 != 0) {
          return ApiStatus_BLOCK;

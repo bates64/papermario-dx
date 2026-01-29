@@ -339,7 +339,7 @@ s32 count_item(s32 itemID) {
     return sum;
 }
 
-bool has_item(s32 itemID) {
+b32 has_item(s32 itemID) {
     s32 idx;
 
     // handle key items
@@ -389,7 +389,7 @@ s32 store_item(s32 itemID) {
     return idx;
 }
 
-bool is_badge_equipped(s32 itemID) {
+b32 is_badge_equipped(s32 itemID) {
     s32 idx;
 
     if (!item_is_badge(itemID)) {
@@ -623,7 +623,7 @@ void initialize_status_bar(void) {
 void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 numDigits) {
     s8 digits[4];
     s32 drawX, drawY;
-    bool keepDrawing;
+    b32 keepDrawing;
     s32 digit;
     s32 i;
 
@@ -660,7 +660,7 @@ void status_bar_draw_number(s32 iconID, s32 startX, s32 startY, s32 value, s32 n
 
 void status_bar_draw_stat(s32 id, s32 startX, s32 startY, s32 currentValue, s32 maxValue) {
     s8 digits[4];
-    bool keepDrawing;
+    b32 keepDrawing;
     s32 digit;
     s32 numDigits = 2;
     s32 drawX;
@@ -719,7 +719,7 @@ void update_status_bar(void) {
     PlayerData* playerData = &gPlayerData;
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 sp50;
-    bool showAddedBar;
+    b32 showAddedBar;
     s32 i;
     s32 x;
     s32 y;
@@ -1488,7 +1488,7 @@ void disable_status_bar_input(void) {
 }
 
 // determine whether the player can open or close the status bar via button press
-bool can_control_status_bar(void) {
+b32 can_control_status_bar(void) {
     if (gStatusBar.openInputDisabled) {
         return false;
     }

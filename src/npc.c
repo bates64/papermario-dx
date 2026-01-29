@@ -1443,7 +1443,7 @@ u16 npc_blend_palette_colors(u16 colorA, u16 colorB, s32 lerpAlpha) {
     return PACK_PAL_RGBA(r, g, b, a);
 }
 
-s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, bool hasDifferentIntervals, Matrix4f mtx) {
+s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx) {
     PAL_PTR color1;
     PAL_PTR color2;
     PAL_PTR outColor;

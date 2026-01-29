@@ -413,7 +413,7 @@ void apply_constraints_to_lead_amount(Camera* camera) {
     ) {
         f32 intX, intZ, intDistSq;
         f32 minDistSq = SQ(1000.0f);
-        bool constrainToZoneTriangles = true;
+        b32 constrainToZoneTriangles = true;
 
         // clamp lead amount to the points when using CAM_CONTROL_CONSTAIN_BETWEEN_POINTS
         if (camera->prevLeadSettings != nullptr && camera->prevLeadSettings->type == CAM_CONTROL_CONSTAIN_BETWEEN_POINTS) {

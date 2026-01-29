@@ -334,7 +334,7 @@ void crash_screen_draw(OSThread* faultedThread) {
     crash_screen_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Print error message
-    bool isException = false;
+    b32 isException = false;
     if (crashScreenAssertMessage[0] == '\0') {
         y += crash_screen_printf_proportional(x, y, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
         isException = true;

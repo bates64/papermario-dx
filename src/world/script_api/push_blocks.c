@@ -88,7 +88,7 @@ API_CALLABLE(FinishPushBlockMotion) {
     PushBlockGrid* grid = script->varTablePtr[10];
     Entity* block = get_entity_by_index(script->varTable[11]);
     f32 hitX, hitY, hitZ, hitDepth;
-    bool hasCollision;
+    b32 hasCollision;
     s32 i, j;
 
     if (isInitialCall) {

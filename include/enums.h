@@ -1763,7 +1763,7 @@ typedef enum AuResult {
     AU_AMBIENCE_ERROR_PLAYER_BUSY       = 1, // player already has an mseq playing
     AU_ERROR_SONG_NOT_PLAYING           = 2, // player not found for songName
     AU_AMBIENCE_ERROR_MSEQ_NOT_FOUND    = 2, // mseq not found
-    AU_ERROR_nullptr_SONG_NAME             = 3, // songName is nullptr
+    AU_ERROR_NULL_SONG_NAME             = 3, // songName is nullptr
     AU_AMBIENCE_ERROR_3                 = 3,
     AU_ERROR_INVALID_SONG_DURATION      = 4, // duration out of bounds: (250,10000)
     AU_ERROR_6                          = 6,

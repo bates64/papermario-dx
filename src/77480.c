@@ -823,7 +823,7 @@ void player_reset_data(void) {
     func_800E5520();
 }
 
-bool is_player_dismounted(void) {
+b32 is_player_dismounted(void) {
     if (gPartnerStatus.partnerActionState == PARTNER_ACTION_USE &&
         (gPartnerStatus.actingPartner == PARTNER_WATT
         || gPartnerStatus.actingPartner == PARTNER_BOW
@@ -1012,7 +1012,7 @@ void func_800E01DC(void) {
     }
 }
 
-bool check_player_action_debug(void) {
+b32 check_player_action_debug(void) {
     if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE && (gGameStatusPtr->curButtons[0] & BUTTON_R)) {
         if (gPartnerStatus.partnerActionState == PARTNER_ACTION_NONE) {
             set_action_state(ACTION_STATE_IDLE);
@@ -1206,7 +1206,7 @@ s32 func_800E06D8(void) {
 void check_for_interactables(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = gPlayerStatus.encounteredNPC;
-    bool collidingWithEntity = false;
+    b32 collidingWithEntity = false;
 
     if ((playerStatus->animFlags & PA_FLAG_ISPY_VISIBLE) || TalkNotificationCallback || PulseStoneNotificationCallback != nullptr) {
         return;

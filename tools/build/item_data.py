@@ -232,7 +232,7 @@ def generate_hud_element_scripts(fout: TextIOWrapper, items: List[ItemEntry], pa
 
     # write the hud script table
     fout.write("IconHudScriptPair gItemHudScripts[] = {\n")
-    fout.write("    { .enabled = NULL, .disabled = NULL },\n")  # array index 0 is always NULL
+    fout.write("    { .enabled = nullptr, .disabled = nullptr },\n")  # array index 0 is always nullptr
 
     for script in hud_scripts:
         if script.pair:

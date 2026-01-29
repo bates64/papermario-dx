@@ -453,7 +453,7 @@ AuResult snd_song_load(s32 songID, s32 playerIndex) {
     if (bgmFile != nullptr) {
         return au_load_song_files(songID, bgmFile, player);
     } else {
-        return AU_ERROR_nullptr_SONG_NAME;
+        return AU_ERROR_NULL_SONG_NAME;
     }
 }
 
@@ -656,7 +656,7 @@ AuResult snd_song_set_volume_full(s32 songName) {
     return au_bgm_adjust_volume(&s);
 }
 
-AuResult snd_song_set_linked_mode(s32 songName, bool mode) {
+AuResult snd_song_set_linked_mode(s32 songName, b32 mode) {
     SongSwapLinkedRequest s;
 
     s.songName = songName;

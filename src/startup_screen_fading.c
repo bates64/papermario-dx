@@ -10,7 +10,7 @@ void startup_set_fade_screen_color(s16 color) {
     gGameStatusPtr->screenColorR = color;
 }
 
-bool startup_fade_screen_in(s16 subtractAlpha) {
+b32 startup_fade_screen_in(s16 subtractAlpha) {
     if (gGameStatusPtr->screenColorA == 0) {
         return true;
     }
@@ -23,7 +23,7 @@ bool startup_fade_screen_in(s16 subtractAlpha) {
     return false;
 }
 
-bool startup_fade_screen_out(s16 addAlpha) {
+b32 startup_fade_screen_out(s16 addAlpha) {
     if (gGameStatusPtr->screenColorA == 255) {
         return true;
     }
@@ -32,7 +32,7 @@ bool startup_fade_screen_out(s16 addAlpha) {
     if (gGameStatusPtr->screenColorA > 255) {
         gGameStatusPtr->screenColorA = 255;
     }
-   
+
     return false;
 }
 

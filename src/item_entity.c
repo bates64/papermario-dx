@@ -51,13 +51,13 @@ BSS s32 ThrowAwayMenuIdx;
 BSS s32 ThrowAwayItemID;
 BSS EffectInstance* ItemPickupGotOutline;
 BSS MessagePrintState* GotItemTutorialPrinter;
-BSS bool GotItemTutorialClosed;
+BSS b32 GotItemTutorialClosed;
 
 void item_entity_update(ItemEntity*);
 void appendGfx_item_entity(void*);
 void draw_item_entities(void);
 void draw_ui_item_entities(void);
-bool test_item_player_collision(ItemEntity*);
+s32 test_item_player_collision(ItemEntity*);
 void update_item_entity_collectable(ItemEntity*);
 void draw_ui_item_entity_collectable(ItemEntity*);
 void update_item_entity_stationary(ItemEntity*);
@@ -1319,7 +1319,7 @@ void func_80133A94(s32 idx, s32 itemID) {
     item_entity_load(item);
 }
 
-bool test_item_player_collision(ItemEntity* item) {
+b32 test_item_player_collision(ItemEntity* item) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus = &gPartnerStatus;
     EncounterStatus* encounterStatus = &gCurrentEncounter;
@@ -1336,7 +1336,7 @@ bool test_item_player_collision(ItemEntity* item) {
     f32 dx, dz;
     f32 dist;
     f32 angle;
-    bool hitDetected;
+    b32 hitDetected;
     // below weird temps required to match
     f32 hammerRadius;
     f32 hammerHitboxHeight;
@@ -1551,11 +1551,11 @@ void auto_collect_item_entity(s32 index) {
 }
 
 /// @returns true when "you got X" popup is on-screen
-bool is_picking_up_item(void) {
+b32 is_picking_up_item(void) {
 #if VERSION_JP
     return isPickingUpItem;
 #else
-    bool ret = D_801565A8 != false;
+    b32 ret = D_801565A8 != false;
 
     if (isPickingUpItem) {
         ret = true;

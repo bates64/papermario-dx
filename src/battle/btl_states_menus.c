@@ -220,7 +220,7 @@ BSS s32 BattleMenu_PrevSelected;
 BSS s32 BattleMenu_WheelBase;
 BSS f32 BattleMenu_WheelAngle;
 BSS f32 BattleMenu_WheelSpeed;
-BSS bool BattleMenu_ShowSwapIcons;
+BSS b32 BattleMenu_ShowSwapIcons;
 
 BSS HudScript* WheelOptionHudScript[MENU_CAPACITY];
 BSS HudElemID HID_OptionIcons[MENU_CAPACITY];
@@ -501,7 +501,7 @@ void btl_main_menu_draw(void) {
     s32 hid;
     s32 opacity;
     f32 theta;
-    bool wheelDoneMoving;
+    b32 wheelDoneMoving;
     f32 x, y;
     f32 scale;
     s32 i;
@@ -678,7 +678,7 @@ void btl_main_menu_draw(void) {
     }
 }
 
-bool btl_player_can_act(void) {
+b32 btl_player_can_act(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
 
@@ -725,7 +725,7 @@ bool btl_player_can_act(void) {
     }
 }
 
-bool btl_partner_can_act(void) {
+b32 btl_partner_can_act(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = battleStatus->partnerActor;
     s8 partnerDebuff;

@@ -37,7 +37,7 @@ BSS HudScript* StratsOptionHudScripts[MENU_CAPACITY];
 BSS s32 StratsOptionHIDs[MENU_CAPACITY];
 BSS s32 StratsOptionNames[MENU_CAPACITY];
 BSS s32 StratsOptionMenuTypes[MENU_CAPACITY];
-BSS bool StratsOptionEnabled[MENU_CAPACITY];
+BSS b32 StratsOptionEnabled[MENU_CAPACITY];
 BSS s32 StratsOptionMessage[MENU_CAPACITY];
 BSS s32 StratsOptionError[MENU_CAPACITY];
 BSS s32 StratsOptionCount;

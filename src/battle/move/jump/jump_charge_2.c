@@ -10,7 +10,7 @@
 
 #include "world/common/todo/IsJumpMaxCharged.inc.c"
 
-BSS bool N(HasCharged);
+BSS b32 N(HasCharged);
 
 API_CALLABLE(N(func_802A1108_74D678)) {
     Bytecode* args = script->ptrReadPos;

@@ -79,7 +79,7 @@ API_CALLABLE(N(GetFoodParameters)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemIdx = evt_get_variable(script, *args++);
     ItemData* item = &gItemTable[itemIdx];
-    bool isHarmful;
+    b32 isHarmful;
 
     script->varTable[11] = item->potencyA;
     script->varTable[12] = item->potencyB;

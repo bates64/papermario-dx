@@ -2,7 +2,7 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
-bool N(should_player_be_sliding)(void) {
+b32 N(should_player_be_sliding)(void) {
     Shadow* shadow = get_shadow_by_index(gPlayerStatus.shadowID);
     f32 angle = shadow->rot.z + 180.0;
 

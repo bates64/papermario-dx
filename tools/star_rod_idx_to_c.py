@@ -133,7 +133,7 @@ def read_flags(flags: int, constants_name: str) -> str:
 
 def read_ptr(addr: int, symbol_map: dict, needs_ampersand: bool = False) -> str:
     if addr == 0:
-        return "NULL"
+        return "nullptr"
     elif addr in symbol_map:
         if needs_ampersand:
             return f"&{symbol_map[addr][0][1]}"

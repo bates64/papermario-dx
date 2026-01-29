@@ -124,7 +124,7 @@ Acmd* alAudioFrame(Acmd* cmdList, s32* cmdLen, s16* outBuf, s32 outLen) {
     s16 mainOut;
     s16 auxOut;
     s32 busID;
-    bool firstBus;
+    b32 firstBus;
 
     // sanity check: ensure audio system is initialized
     if (gActiveSynDriverPtr == nullptr) {

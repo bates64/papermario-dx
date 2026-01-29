@@ -215,7 +215,7 @@ typedef struct {
     /* 0x1C */ Vec3i detectPos;
     /* 0x28 */ VecXZi detectSize;
     /* 0x30 */ enum TerritoryShape detectShape;
-    /* 0x34 */ bool isFlying;
+    /* 0x34 */ b32 isFlying;
 } EnemyTerritoryWander; // size = 0x38
 
 typedef struct {
@@ -225,7 +225,7 @@ typedef struct {
     /* 0x80 */ Vec3i detectPos;
     /* 0x8C */ VecXZi detectSize;
     /* 0x94 */ enum TerritoryShape detectShape;
-    /* 0x98 */ bool isFlying;
+    /* 0x98 */ b32 isFlying;
 } EnemyTerritoryPatrol; // size = 0x9C
 
 typedef union {
@@ -406,7 +406,7 @@ typedef struct EncounterStatus {
 
 extern EncounterStatus gCurrentEncounter;
 
-bool basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
+b32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
 
 /// The default Npc::onUpdate and Npc::onRender callback.
 void STUB_npc_callback(Npc*);
@@ -496,7 +496,7 @@ s32 npc_render_with_watt_idle_palettes(Npc*, s32, Matrix4f mtx);
 
 u16 npc_blend_palette_colors(u16 colorA, u16 colorB, s32 lerpAlpha);
 
-s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, bool hasDifferentIntervals, Matrix4f mtx);
+s32 npc_render_with_single_pal_blending(Npc*, s32, s32, Matrix4f mtx);
 
 s32 npc_render_with_double_pal_blending(Npc*, s32, Matrix4f mtx);
 

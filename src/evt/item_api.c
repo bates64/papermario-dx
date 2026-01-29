@@ -243,7 +243,7 @@ API_CALLABLE(CountItem) {
     s32 itemID = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
-    bool count = count_item(itemID);
+    b32 count = count_item(itemID);
 
     evt_set_variable(script, outVar, count);
     return ApiStatus_DONE2;
@@ -254,7 +254,7 @@ API_CALLABLE(HasItem) {
     s32 itemID = evt_get_variable(script, *args++);
     Bytecode outVar = *args++;
 
-    bool hasItem = has_item(itemID);
+    b32 hasItem = has_item(itemID);
 
     evt_set_variable(script, outVar, hasItem);
     return ApiStatus_DONE2;

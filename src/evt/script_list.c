@@ -579,7 +579,7 @@ void update_scripts(void) {
             && script->stateFlags != 0
             && !(script->stateFlags & (EVT_FLAG_SUSPENDED | EVT_FLAG_BLOCKED_BY_CHILD | EVT_FLAG_PAUSED))
         ) {
-            bool stop = false;
+            b32 stop = false;
             s32 status;
 
             script->frameCounter += script->timeScale;

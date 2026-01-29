@@ -22,8 +22,8 @@ SaveData gCurrentSaveFile;
 
 char MagicSaveString[] = "Mario Story 006";
 
-bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
-bool fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
+b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes);
+b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
 void fio_erase_flash(s32 pageNum);
 
 s32 get_spirits_rescued(void) {
@@ -60,7 +60,7 @@ s32 fio_calc_globals_checksum(void) {
     return sum;
 }
 
-bool fio_validate_globals_checksums(void) {
+b32 fio_validate_globals_checksums(void) {
     SaveGlobals* header = &gSaveGlobals;
 
     if (strcmp(header->magicString, MagicSaveString)) {
@@ -72,7 +72,7 @@ bool fio_validate_globals_checksums(void) {
     return fio_calc_globals_checksum() == header->crc1;
 }
 
-bool fio_load_globals(void) {
+b32 fio_load_globals(void) {
     fio_read_flash(GLOBALS_PAGE_1, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
         return true;
@@ -87,7 +87,7 @@ bool fio_load_globals(void) {
     return false;
 }
 
-bool fio_save_globals(void) {
+b32 fio_save_globals(void) {
     s32 checksum;
 
     strcpy(gSaveGlobals.magicString, MagicSaveString);
@@ -114,14 +114,14 @@ s32 fio_calc_file_checksum(SaveData* saveData) {
     return sum;
 }
 
-bool fio_validate_file_checksum(SaveData* saveData) {
+b32 fio_validate_file_checksum(SaveData* saveData) {
     if (!strcmp(saveData->magicString, MagicSaveString) && saveData->crc1 == ~saveData->crc2) {
         return fio_calc_file_checksum(saveData) == saveData->crc1;
     }
     return false;
 }
 
-bool fio_fetch_saved_file_info(void) {
+b32 fio_fetch_saved_file_info(void) {
     SaveData* fetchBuf = &FetchSaveBuffer; // temps required to match
     SaveData* validBuf = fetchBuf;
     s32 i, j, minSaveCount;
@@ -164,7 +164,7 @@ bool fio_fetch_saved_file_info(void) {
     return true;
 }
 
-bool fio_load_game(s32 saveSlot) {
+b32 fio_load_game(s32 saveSlot) {
     gGameStatusPtr->saveSlot = saveSlot;
 
     fio_fetch_saved_file_info();
@@ -233,7 +233,7 @@ void fio_init_flash(void) {
     osFlashInit();
 }
 
-bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
+b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;
@@ -261,7 +261,7 @@ bool fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     return true;
 }
 
-bool fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
+b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
     OSIoMesg mb;
     OSMesgQueue mesgQueue;
     OSMesg mesg;

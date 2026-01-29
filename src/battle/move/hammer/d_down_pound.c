@@ -11,7 +11,7 @@ API_CALLABLE(N(MakeGreenImpactFX)) {
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
-    bool success = script->varTable[10]; // value from GetPlayerActionQuality
+    b32 success = script->varTable[10]; // value from GetPlayerActionQuality
 
     if (!success) {
         fx_green_impact(true, x + 30, y + 25, z, 45.0f);

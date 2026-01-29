@@ -7,7 +7,7 @@
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
 
-BSS bool SpriteUseGeneralHeap;
+BSS b32 SpriteUseGeneralHeap;
 BSS s32 MaxLoadedSpriteInstanceID;
 BSS s32 CurSpriteImgFX;
 BSS SpriteAnimData* PlayerSprites[13];

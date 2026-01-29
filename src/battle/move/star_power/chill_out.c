@@ -5,7 +5,7 @@
 
 #define NAMESPACE battle_move_chill_out
 
-BSS bool DidChillOutHit;
+BSS b32 DidChillOutHit;
 
 #include "battle/common/move/StarPowerSupport.inc.c"
 

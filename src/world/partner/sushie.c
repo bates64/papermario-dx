@@ -11,9 +11,9 @@
 BSS f32 N(WaterSurfaceY);
 BSS s32 N(DiveState);
 BSS s32 N(DiveTime);
-BSS bool N(IsRiding);
+BSS b32 N(IsRiding);
 BSS s32 N(TouchDockTime);
-BSS bool N(IsUnderwater);
+BSS b32 N(IsUnderwater);
 BSS f32 N(InertialMoveSpeed);
 BSS f32 N(InertialMoveAngle);
 BSS f32 N(UnusedMoveX);

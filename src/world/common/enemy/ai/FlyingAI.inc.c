@@ -203,7 +203,7 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     if (enemy->varTable[1] > 0) {
         f32 undulateAmplitude = (f32)enemy->varTable[1] / 100.0;
         f32 undulateAmount = sin_deg(enemy->varTable[2]);
-        bool hasCollision;
+        b32 hasCollision;
 
         if (npc->flags & NPC_FLAG_FLYING) {
             hasCollision = false;

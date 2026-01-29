@@ -879,7 +879,7 @@ void btl_draw_enemy_health_bars(void) {
 
 void btl_update_starpoints_display(void) {
     BattleStatus* battleStatus = &gBattleStatus;
-    bool showStarPoints;
+    b32 showStarPoints;
     s32 i;
 
     if (gBattleStatus.flags1 & BS_FLAGS1_ACTORS_VISIBLE) {

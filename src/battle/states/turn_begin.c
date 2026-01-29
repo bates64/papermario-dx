@@ -17,7 +17,7 @@ void btl_state_update_begin_turn(void) {
     Actor* enemy1;
     Actor* enemy2;
     Evt* script;
-    bool awaiting;
+    b32 awaiting;
     u16 id1;
     u16 id2;
     s32 numEnemyActors;

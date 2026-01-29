@@ -1,7 +1,7 @@
 #include "states.h"
 #include "script_api/battle.h"
 
-bool dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
+b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event);
 
 enum {
     // BTL_SUBSTATE_INIT                  = 0,
@@ -233,7 +233,7 @@ void update_status_damage(void) {
                 }
 
                 if (player->debuff != 0) {
-                    if (player->debuff <= STATUS_KEY_POISON) {
+                    if (player->debuff < STATUS_KEY_POISON) {
                         BattleSkipActorTurn = true;
                     }
                     BattleStatusUpdateDelay = 20;

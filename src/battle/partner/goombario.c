@@ -10,7 +10,7 @@
 extern s32 bActorTattles[];
 
 static EffectInstance* N(TattleWindowEffect);
-static bool N(isCharged);
+static b32 N(isCharged);
 extern s32 N(MultibonkChance);
 
 extern EvtScript N(EVS_Init);

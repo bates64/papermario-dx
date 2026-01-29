@@ -3,7 +3,7 @@
 
 extern HeapNode heap_spriteHead;
 
-extern bool SpriteUseGeneralHeap;
+extern b32 SpriteUseGeneralHeap;
 extern ParadeNpcInfo N(ParadeNpcsTable)[];
 
 extern EvtScript N(EVS_ParadePhase_Wizards);

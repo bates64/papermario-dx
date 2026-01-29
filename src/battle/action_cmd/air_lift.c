@@ -20,7 +20,7 @@ s32 N(DrainRateTable)[] = { 0, 25, 50, 75, 75 };
 
 #define GET_DRAIN_RATE(pct) PCT_TO_TABLE_RATE(N(DrainRateTable), pct)
 
-BSS bool N(HasStarted);
+BSS b32 N(HasStarted);
 
 API_CALLABLE(N(init)) {
     s32 *args = script->ptrReadPos;

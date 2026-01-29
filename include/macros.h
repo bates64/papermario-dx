@@ -41,7 +41,7 @@
 
 #define PTR_LIST_END ((void*) -1)
 
-#define API_CALLABLE(name) ApiStatus name(Evt* script, bool isInitialCall)
+#define API_CALLABLE(name) ApiStatus name(Evt* script, b32 isInitialCall)
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((u32)(addr) + 0x80000000)
 #define VIRTUAL_TO_PHYSICAL(addr) (u32)((u8*)(addr) - 0x80000000)

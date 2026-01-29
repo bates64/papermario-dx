@@ -14,7 +14,7 @@
 #define SPRITE_ROM_START 0x1A40000 + 0x10
 #endif
 
-extern bool SpriteUseGeneralHeap;
+extern b32 SpriteUseGeneralHeap;
 extern HeapNode heap_generalHead;
 extern HeapNode heap_spriteHead;
 

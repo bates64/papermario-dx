@@ -79,7 +79,7 @@ BSS s8 MovesErrorTimer; // how much time is left for showing an error message
 BSS s16 MovesTextColor;
 BSS s16 MovesTextAlpha;
 
-BSS bool UsingSpiritsSubmenu;
+BSS b32 UsingSpiritsSubmenu;
 BSS s32 SelectedMovesIndex;
 
 s16 ErrorMessageHeight[] = { 28, 40 };

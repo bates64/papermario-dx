@@ -104,7 +104,7 @@ u8 WattAttackPalettesAnim[] = {
 s16 SparkleSpawnIntervals[] = { -1, 15, 10, 7, 5, 3, 2, 1 };
 
 void update_player_actor_shadow(void);
-void appendGfx_npc_actor(bool isPartner, s32 actorIndex);
+void appendGfx_npc_actor(s32 isPartner, s32 actorIndex);
 
 void create_status_chill_out(s32 iconID);
 void enable_status_static(s32 iconID);
@@ -128,8 +128,8 @@ void func_unkA_draw_npc(ActorPart*, s32, Matrix4f);
 void func_unkB_draw_npc(ActorPart*, s32, Matrix4f);
 void func_unkA_draw_player(ActorPart*, s32, Matrix4f);
 void func_unkB_draw_player(ActorPart*, s32, Matrix4f);
-void part_glow_on(bool arg0, ActorPart* part, s32 yaw, bool arg3);
-void part_flash_on(bool arg0, ActorPart* part, s32 yaw, bool arg3);
+void part_glow_on(b32 arg0, ActorPart* part, s32 yaw, b32 arg3);
+void part_flash_on(b32 arg0, ActorPart* part, s32 yaw, b32 arg3);
 
 void add_part_decor_none(ActorPart*, s32);
 void add_part_decor_golden_flames(ActorPart*, s32);
@@ -144,20 +144,20 @@ void add_part_decor_sparkles(ActorPart*, s32);
 void add_part_decor_bowser_aura(ActorPart*, s32);
 void add_part_decor_radiating_stars(ActorPart*, s32);
 
-void render_without_adjusted_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_sleep_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_static_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_fear_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_poison_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_paralyze_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_berserk_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_watt_idle_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_watt_attack_palettes(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-void render_with_player_debuff_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation, bool isPoison);
-void render_with_pal_blending(bool isNpcSprite, ActorPart* part, s32 yaw, bool hasDifferentIntervals, Matrix4f mtx, bool skipAnimation);
-void render_with_palset_blending(bool arg0, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation);
-s32 update_part_glow(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection);
-s32 update_part_flash(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection);
+void render_without_adjusted_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_sleep_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_static_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_fear_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_poison_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_paralyze_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_berserk_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_watt_idle_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_watt_attack_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+void render_with_player_debuff_palettes(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, s32 isPoison);
+void render_with_pal_blending(b32 arg0, ActorPart* part, s32 yaw, s32 arg3, Matrix4f mtx, s32 skipAnimation);
+void render_with_palset_blending(b32 arg0, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation);
+s32 update_part_glow(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection);
+s32 update_part_flash(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection);
 s32 get_player_anim_for_status(s32 animID);
 void clear_part_flash_mode(ActorPart* part);
 
@@ -485,7 +485,7 @@ void appendGfx_player_actor_blur(Actor* actor) {
     }
 }
 
-void update_nonplayer_actor_blur_history(bool isPartner, Actor* actor) {
+void update_nonplayer_actor_blur_history(b32 isPartner, Actor* actor) {
     s32 numParts = actor->numParts;
     ActorPart* partsTable = actor->partsTable;
     DecorationTable* decorations;
@@ -519,7 +519,7 @@ void update_nonplayer_actor_blur_history(bool isPartner, Actor* actor) {
     }
 }
 
-void appendGfx_nonplayer_actor_blur(bool isPartner, Actor* actor) {
+void appendGfx_nonplayer_actor_blur(b32 isPartner, Actor* actor) {
     DecorationTable* decorations;
     ActorPart* partTable;
     Matrix4f mtxRotX, mtxRotY, mtxRotZ, mtxRotation;
@@ -690,7 +690,7 @@ void appendGfx_partner_actor_blur(void* data) {
     appendGfx_nonplayer_actor_blur(true, actor);
 }
 
-void update_nonplayer_actor_shadow(bool isPartner, Actor* actor) {
+void update_nonplayer_actor_shadow(b32 isPartner, Actor* actor) {
     Camera* camera = &gCameras[CAM_BATTLE];
     ActorPart* actorPart;
     Shadow* shadow;
@@ -829,7 +829,7 @@ void update_hero_shadows(void) {
 void func_80255FD8(void) {
 }
 
-void appendGfx_npc_actor(bool isPartner, s32 actorIndex) {
+void appendGfx_npc_actor(b32 isPartner, s32 actorIndex) {
     BattleStatus* battleStatus = &gBattleStatus;
     Matrix4f mtxRotX, mtxRotY, mtxRotZ, mtxRotation;
     Matrix4f mtxScale, mtxScaleMod;
@@ -1923,7 +1923,7 @@ void appendGfx_player_actor_reflection(void* arg0) {
     render_with_adjusted_palettes(SPRITE_MODE_PLAYER, part, clamp_angle(playerYaw + 180.0f), mtxTransform, true);
 }
 
-s32 render_with_adjusted_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+s32 render_with_adjusted_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     s32 opacity;
     s32 sprDrawOpts;
 
@@ -2163,7 +2163,7 @@ void func_unkB_draw_player(ActorPart* part, s32 yaw, Matrix4f mtx) {
     }
 }
 
-void render_without_adjusted_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_without_adjusted_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
 
     if (decorations->resetPalAdjust) {
@@ -2179,7 +2179,7 @@ void render_without_adjusted_palettes(bool isNpcSprite, ActorPart* part, s32 yaw
     }
 }
 
-void render_with_sleep_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_sleep_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     s32 i, j;
 
@@ -2234,7 +2234,7 @@ void render_with_sleep_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matr
     }
 }
 
-void render_with_static_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_static_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2351,7 +2351,7 @@ void render_with_static_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Mat
     }
 }
 
-void render_with_fear_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2421,7 +2421,7 @@ void render_with_fear_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matri
     }
 }
 
-void render_with_poison_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_poison_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2479,7 +2479,7 @@ void render_with_poison_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Mat
     }
 }
 
-void render_with_paralyze_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_paralyze_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2581,7 +2581,7 @@ void render_with_paralyze_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, M
     }
 }
 
-void render_with_berserk_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_berserk_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     s32 i, j;
 
@@ -2639,7 +2639,7 @@ void render_with_berserk_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Ma
     }
 }
 
-void render_with_watt_idle_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_watt_idle_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2751,7 +2751,7 @@ void render_with_watt_idle_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, 
     }
 }
 
-void render_with_watt_attack_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_watt_attack_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR palIn;
     PAL_PTR palOut;
@@ -2862,7 +2862,7 @@ void render_with_watt_attack_palettes(bool isNpcSprite, ActorPart* part, s32 yaw
     }
 }
 
-void render_with_player_debuff_palettes(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation, bool isPoison) {
+void render_with_player_debuff_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation, b32 isPoison) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR color2;
     PAL_PTR color1;
@@ -2987,7 +2987,7 @@ void render_with_player_debuff_palettes(bool isNpcSprite, ActorPart* part, s32 y
     }
 }
 
-void render_with_pal_blending(bool isNpcSprite, ActorPart* part, s32 yaw, bool hasDifferentIntervals, Matrix4f mtx, bool skipAnimation) {
+void render_with_pal_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR color1;
     PAL_PTR color2;
@@ -3160,7 +3160,7 @@ void render_with_pal_blending(bool isNpcSprite, ActorPart* part, s32 yaw, bool h
     }
 }
 
-void render_with_palset_blending(bool isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, bool skipAnimation) {
+void render_with_palset_blending(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix4f mtx, b32 skipAnimation) {
     DecorationTable* decorations = part->decorationTable;
     PAL_PTR color1;
     PAL_PTR color2;
@@ -3331,7 +3331,7 @@ void render_with_palset_blending(bool isNpcSprite, ActorPart* part, s32 yaw, Mat
     }
 }
 
-s32 update_part_glow(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+s32 update_part_glow(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     if (!(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)) {
         switch (part->decorationTable->glowState) {
             case GLOW_PAL_OFF:
@@ -3345,7 +3345,7 @@ s32 update_part_glow(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflecti
     return 0;
 }
 
-void part_glow_off(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+void part_glow_off(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     if (part->decorationTable->glowStateChanged) {
         part->decorationTable->glowStateChanged = false;
         if (isNpcSprite == SPRITE_MODE_PLAYER) {
@@ -3356,7 +3356,7 @@ void part_glow_off(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection
     }
 }
 
-void part_glow_on(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+void part_glow_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     DecorationTable* decorations = part->decorationTable;
     u8 rbuf[20];
     u8 gbuf[20];
@@ -3411,7 +3411,7 @@ void part_glow_on(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection)
     }
 }
 
-s32 update_part_flash(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+s32 update_part_flash(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     if (!(part->flags & ACTOR_PART_FLAG_NO_DECORATIONS)) {
         switch (part->decorationTable->flashState) {
             case 0:
@@ -3425,7 +3425,7 @@ s32 update_part_flash(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflect
     return 0;
 }
 
-void part_flash_off(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+void part_flash_off(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     DecorationTable* decorations = part->decorationTable;
 
     if (decorations->flashStateChanged) {
@@ -3434,7 +3434,7 @@ void part_flash_off(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflectio
     decorations->flashEnabled = FLASH_PAL_OFF;
 }
 
-void part_flash_on(bool isNpcSprite, ActorPart* part, s32 yaw, bool isReflection) {
+void part_flash_on(b32 isNpcSprite, ActorPart* part, s32 yaw, b32 isReflection) {
     DecorationTable* decorations = part->decorationTable;
 
     if (decorations->flashStateChanged) {

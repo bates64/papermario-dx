@@ -18,7 +18,7 @@ void record_jump_apex(void) {
     gPlayerStatus.jumpApexHeight = gPlayerStatus.pos.y;
 }
 
-bool can_trigger_loading_zone(void) {
+b32 can_trigger_loading_zone(void) {
     PlayerData* playerData = &gPlayerData;
     s32 actionState = gPlayerStatusPtr->actionState;
     PartnerStatus* partnerStatus = &gPartnerStatus;
@@ -834,7 +834,7 @@ void collision_check_player_overlaps(void) {
     }
 }
 
-bool (*PlayerSlidingCallback)(void) = nullptr;
+b32 (*PlayerSlidingCallback)(void) = nullptr;
 
 s32 phys_should_player_be_sliding(void) {
     if (PlayerSlidingCallback != nullptr) {
@@ -843,7 +843,7 @@ s32 phys_should_player_be_sliding(void) {
     return false;
 }
 
-void phys_set_player_sliding_check(bool (*funcPtr)(void)) {
+void phys_set_player_sliding_check(b32 (*funcPtr)(void)) {
     PlayerSlidingCallback = funcPtr;
 }
 

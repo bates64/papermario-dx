@@ -4,8 +4,8 @@
 #include "script_api/battle.h"
 #include "sprite/player.h"
 
-bool dispatch_damage_event_player(s32 damageAmount, s32 event, bool noHitSound);
-bool dispatch_hazard_event_player(s32 damageAmount, s32 event);
+b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound);
+b32 dispatch_hazard_event_player(s32 damageAmount, s32 event);
 
 API_CALLABLE(PlaySleepHitFX) {
     fx_debuff(0, script->varTable[0], script->varTable[1], script->varTable[2]);
@@ -1052,7 +1052,7 @@ HitResult calc_player_damage_enemy(void) {
     return hitResult;
 }
 
-bool dispatch_damage_event_player(s32 damageAmount, s32 event, bool noHitSound) {
+b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound) {
     BattleStatus* battleStatus = &gBattleStatus;
     PlayerData* playerData = &gPlayerData;
     Actor* player = battleStatus->playerActor;
@@ -1124,7 +1124,7 @@ bool dispatch_damage_event_player(s32 damageAmount, s32 event, bool noHitSound) 
 }
 
 // damage received from "damage over time" effects (only used for poison)
-bool dispatch_damage_tick_event_player(s32 damageAmount, s32 event) {
+b32 dispatch_damage_tick_event_player(s32 damageAmount, s32 event) {
     BattleStatus* battleStatus = &gBattleStatus;
 
     battleStatus->curAttackElement = ELEMENT_END;
@@ -1133,7 +1133,7 @@ bool dispatch_damage_tick_event_player(s32 damageAmount, s32 event) {
 }
 
 // damage received from contact hazards
-bool dispatch_hazard_event_player(s32 damageAmount, s32 event) {
+b32 dispatch_hazard_event_player(s32 damageAmount, s32 event) {
     return dispatch_damage_event_player(damageAmount, event, true);
 }
 

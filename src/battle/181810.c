@@ -296,7 +296,7 @@ API_CALLABLE(ShowBattleChoice) {
 
 API_CALLABLE(EnableBattleStatusBar) {
     Bytecode* args = script->ptrReadPos;
-    bool shouldEnable = evt_get_variable(script, *args++);
+    b32 shouldEnable = evt_get_variable(script, *args++);
 
     if (shouldEnable) {
         decrement_status_bar_disabled();

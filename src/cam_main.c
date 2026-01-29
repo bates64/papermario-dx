@@ -432,7 +432,7 @@ void get_screen_coords(s32 camID, f32 x, f32 y, f32 z, s32* screenX, s32* screen
     }
 }
 
-bool is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
+b32 is_outside_cam_viewport_bounds(s32 camID, s32 x, s32 y) {
     s32 startX = gCameras[camID].viewportStartX;
     s32 startY = gCameras[camID].viewportStartY;
     s32 endX = startX + gCameras[camID].viewportW;

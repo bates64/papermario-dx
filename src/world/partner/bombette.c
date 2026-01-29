@@ -6,13 +6,13 @@
 
 #define NAMESPACE world_bombette
 
-BSS bool N(PlayerWasFacingLeft);
-BSS bool N(PlayingFuseSound);
-BSS bool N(IsBlasting); // true for 3 frames while using ability
-BSS bool N(LockingPlayerInput);
-BSS bool N(MaintainPosAfterBlast);
-BSS bool N(TriggeredEarlyDetonation);
-BSS bool N(MovementBlocked);
+BSS b32 N(PlayerWasFacingLeft);
+BSS b32 N(PlayingFuseSound);
+BSS b32 N(IsBlasting); // true for 3 frames while using ability
+BSS b32 N(LockingPlayerInput);
+BSS b32 N(MaintainPosAfterBlast);
+BSS b32 N(TriggeredEarlyDetonation);
+BSS b32 N(MovementBlocked);
 BSS s32 N(D_802BE93C); // unused (padding?)
 
 void entity_try_partner_interaction_trigger(s32 arg0);
@@ -600,7 +600,7 @@ s32 N(test_first_strike)(Npc* bombette, Npc* enemy) {
     f32 x, y, z, dist;
     f32 angle, distance;
     f32 enemyRadius, blastRadius;
-    bool hasCollision;
+    b32 hasCollision;
     s32 enemyHit;
 
     if (!N(IsBlasting)) {

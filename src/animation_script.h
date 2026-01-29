@@ -42,8 +42,8 @@ enum {
 #define as_DisableMirroring AS_OP_19,
 
 #define AS_MODEL_ID(modelID) ((modelID) + 1)
-#define AS_nullptr_MODEL 0
+#define AS_NULL_MODEL 0
 
 // used in entity models
-#define ENTITY_ANIM_nullptr (void*)(0xFFFFFFFF)
+#define ENTITY_ANIM_NULL (void*)(0xFFFFFFFF)
 #endif

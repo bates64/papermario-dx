@@ -18,9 +18,9 @@ API_CALLABLE(MerleeStopFX);
 API_CALLABLE(PlayMerleeGatherFX);
 API_CALLABLE(PlayMerleeOrbFX);
 
-bool D_80077C40 = false;
+b32 D_80077C40 = false;
 
-bool EncounterStateChanged;
+b32 EncounterStateChanged;
 
 EvtScript EVS_MerleeDropCoins = {
     Wait(10)
@@ -2318,7 +2318,7 @@ void update_encounters_conversation(void) {
 void draw_encounters_conversation(void) {
 }
 
-bool check_conversation_trigger(void) {
+b32 check_conversation_trigger(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Camera* camera = &gCameras[gCurrentCameraID];
     EncounterStatus* encounterStatus = &gCurrentEncounter;

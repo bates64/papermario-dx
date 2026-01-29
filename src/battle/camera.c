@@ -62,7 +62,7 @@ f32 clamp_edge_pos_x(f32 x) {
     return x;
 }
 
-bool get_cam_subject_properties(CamSubjects* subjects, bool usePart) {
+b32 get_cam_subject_properties(CamSubjects* subjects, b32 usePart) {
     s32 actorClass = BattleCam_SubjectActor & ACTOR_CLASS_MASK;
     s32 actorID = BattleCam_SubjectActor & 0xFF;
     ActorPart* part = nullptr;

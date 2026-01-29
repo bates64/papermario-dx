@@ -19,7 +19,7 @@ void func_E0018000(FootprintFXData* part) {
     guMtxF2L(sp18, &part->mtx);
 }
 
-void footprint_main(f32 x, f32 y, f32 z, f32 angle, bool isLeft) {
+void footprint_main(f32 x, f32 y, f32 z, f32 angle, b32 isLeft) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FootprintFXData* part;

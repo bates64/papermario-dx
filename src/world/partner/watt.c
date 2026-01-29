@@ -12,10 +12,10 @@ void force_player_anim(AnimID);
 void N(sync_held_position)(void);
 void N(update_player_carry_anim)(void);
 
-BSS bool N(D_802BE300);
+BSS b32 N(D_802BE300);
 BSS s32 N(AbilityState);
-BSS bool N(D_802BE308);
-BSS bool N(IsPlayerHolding);
+BSS b32 N(D_802BE308);
+BSS b32 N(IsPlayerHolding);
 BSS EffectInstance* N(StaticEffect);
 BSS s32 N(D_802BE314); // unused (padding?)
 
@@ -96,7 +96,7 @@ EvtScript EVS_WorldWatt_TakeOut = {
 BSS TweesterPhysics N(TweesterPhysicsData);
 TweesterPhysics* N(TweesterPhysicsPtr) = &N(TweesterPhysicsData);
 
-bool N(WattIsMoving) = false;
+b32 N(WattIsMoving) = false;
 
 API_CALLABLE(N(Update)) {
     PlayerData* playerData = &gPlayerData;

@@ -6,8 +6,8 @@
 
 #define NAMESPACE world_bow
 
-BSS bool N(IsHiding);
-BSS bool N(LockingPlayerInput);
+BSS b32 N(IsHiding);
+BSS b32 N(LockingPlayerInput);
 BSS TweesterPhysics N(TweesterPhysicsData);
 BSS s32 N(OuttaSightPosX);
 BSS s32 N(OuttaSightPosY);

@@ -49,7 +49,7 @@ static s32 hudAim[1];
 static HudElemID HID_AnalogStick;
 static s32 HudStickPosX;
 static s32 HudStickPosY;
-static bool SpinyFlipTargetingDone;
+static b32 SpinyFlipTargetingDone;
 static s32 D_8023D2CC;
 static s32 EnemyHurricaneChances[MAX_ENEMY_ACTORS];
 static s32 NumEnemiesBeingBlown;

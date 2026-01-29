@@ -233,7 +233,7 @@ s32 bgm_set_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeOutTime, s1
     return _bgm_set_song(playerIndex, songID, variation, fadeOutTime, volume);
 }
 
-bool bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume) {
+b32 bgm_fade_in_song(s32 playerIndex, s32 songID, s32 variation, s32 fadeInTime, s16 fadeStartVolume, s16 fadeEndVolume) {
     MusicControlData* music;
     s32 mapSongVariation;
 
@@ -364,7 +364,7 @@ void bgm_update_volume(void) {
     }
 }
 
-bool bgm_is_any_song_playing(void) {
+b32 bgm_is_any_song_playing(void) {
     MusicControlData* music = gMusicControlData;
     s32 i;
 

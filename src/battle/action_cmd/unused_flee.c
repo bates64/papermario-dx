@@ -25,7 +25,7 @@ enum {
 // how much to add to the meter per input if all modifiers are neutral
 #define METER_FILL_TICK 600
 
-BSS bool N(HasStarted);
+BSS b32 N(HasStarted);
 
 API_CALLABLE(N(init)) {
     ActionCommandStatus* acs = &gActionCommandStatus;

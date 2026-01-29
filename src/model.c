@@ -3691,7 +3691,7 @@ void mdl_group_set_visibility(u16 treeIndex, s32 flags, s32 mode) {
     }
 }
 
-void mdl_group_set_custom_gfx(u16 groupModelID, s32 customGfxIndex, s32 tintType, bool invertSelection) {
+void mdl_group_set_custom_gfx(u16 groupModelID, s32 customGfxIndex, s32 tintType, b32 invertSelection) {
     s32 maxGroupIndex = -1;
     s32 i;
     s32 minGroupIndex;
@@ -4382,7 +4382,7 @@ s32 is_model_center_visible(u16 modelID, s32 depthQueryID, f32* screenX, f32* sc
 // Every nonnegative value of `depthQueryID` must be unique within a frame, otherwise the result will corrupt the data
 //   of the previous query that shared the same ID.
 // Occlusion visibility checks are always one frame out of date, as they reference the previous frame's depth buffer.
-OPTIMIZE_OFAST bool is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
+OPTIMIZE_OFAST b32 is_point_visible(f32 x, f32 y, f32 z, s32 depthQueryID, f32* screenX, f32* screenY) {
     Camera* camera = &gCameras[gCurrentCameraID];
     f32 outX;
     f32 outY;

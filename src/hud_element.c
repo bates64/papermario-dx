@@ -263,7 +263,7 @@ void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s
     s32 fmt;
     s32 widthScale, heightScale;
     s32 texStartX, texStartY;
-    bool isLastTileX, isLastTileY;
+    b32 isLastTileX, isLastTileY;
     s32 uls, ult, lrs, lrt;
     s32 uly, lry, ulx, lrx;
     s32 masks, maskt;
@@ -1596,7 +1596,7 @@ void render_complex_hud_element(HudElement* elem) {
     gDPPipeSync(gMainGfxPos++);
 }
 
-s32 gather_and_sort_hud_elements(s32* sortedElements, bool isBattle)
+s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle)
 {
     HudElement* elem;
     s32 el1, el2;
@@ -1707,7 +1707,7 @@ void render_transformed_hud_elements(void) {
     }
 }
 
-void immediately_render_complex_hud_element(s32 elemID, bool includeSetup, s32 camID) {
+void immediately_render_complex_hud_element(s32 elemID, b32 includeSetup, s32 camID) {
     Camera* camera = &gCameras[camID];
 
     if (includeSetup) {

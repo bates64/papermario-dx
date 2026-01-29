@@ -157,7 +157,7 @@ API_CALLABLE(SetInterpCamParams) {
 API_CALLABLE(SetNoInterpCamParams) {
     Bytecode* args = script->ptrReadPos;
     s32 id = evt_get_variable(script, *args++);
-    bool skipRecalc = evt_get_variable(script, *args++);
+    b32 skipRecalc = evt_get_variable(script, *args++);
     s32 dist = evt_get_variable(script, *args++);
     s32 fovScale = evt_get_variable(script, *args++);
     s32 pitch = evt_get_variable(script, *args++);

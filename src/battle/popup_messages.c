@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 typedef struct BonkData {
-    /* 0x00 */ bool alive;
+    /* 0x00 */ b32 alive;
     /* 0x04 */ s32 entityModelIndex;
     /* 0x08 */ Vec3f accel;
     /* 0x14 */ Vec3f vel;
@@ -348,7 +348,7 @@ void show_immune_bonk(f32 x, f32 y, f32 z, s32 numStars, s32 startupTime, s32 an
     f32 timescale;
     f32 baseScale;
     s32 bonkPosIdx;
-    bool hasShortLifetime;
+    b32 hasShortLifetime;
     s32 sign;
     s32 i;
 

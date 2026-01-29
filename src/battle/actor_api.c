@@ -1193,7 +1193,7 @@ API_CALLABLE(FreezeBattleState) {
     BattleStatus* battleStatus = &gBattleStatus;
     BattleStatus* battleStatus2 = &gBattleStatus;
     Bytecode* args = script->ptrReadPos;
-    bool increaseFreeze = evt_get_variable(script, *args++);
+    b32 increaseFreeze = evt_get_variable(script, *args++);
 
     if (increaseFreeze) {
         battleStatus->stateFreezeCount++;
@@ -2145,7 +2145,7 @@ API_CALLABLE(ActorExists) {
     Actor* partner = gBattleStatus.partnerActor;
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    bool exists;
+    b32 exists;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;

@@ -174,7 +174,7 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     s32 powIncrements;
     s32 powIncIdx;
     s32 curIncrement;
-    bool drawingFirst;
+    b32 drawingFirst;
     s32 powBarIdx;
     s32 boxWidth;
     s16 level;

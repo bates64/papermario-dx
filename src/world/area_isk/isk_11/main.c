@@ -1,6 +1,6 @@
 #include "isk_11.h"
 
-bool N(CamAdjustReady) = false;
+b32 N(CamAdjustReady) = false;
 
 s32 N(adjust_cam_on_landing)(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;

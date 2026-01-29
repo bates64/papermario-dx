@@ -409,7 +409,7 @@ s32 func_80048F0C(void) {
     return 0;
 }
 
-bool is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ) {
+b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ) {
     f32 dist1;
     f32 dist2;
 
@@ -426,7 +426,7 @@ bool is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX,
     }
 }
 
-bool basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, s8 useWorldYaw) {
+b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, s8 useWorldYaw) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus;

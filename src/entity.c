@@ -784,7 +784,7 @@ void load_area_specific_entity_data(void) {
     }
 }
 
-void clear_entity_data(bool arg0) {
+void clear_entity_data(b32 arg0) {
     s32 i;
 
     D_801516FC = 1;
@@ -1634,7 +1634,7 @@ void update_entity_shadow_position(Entity* entity) {
     }
 }
 
-bool entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
+b32 entity_raycast_down(f32* x, f32* y, f32* z, f32* hitYaw, f32* hitPitch, f32* hitLength) {
     f32 hitX, hitY, hitZ;
     f32 hitDepth;
     f32 hitNx, hitNy, hitNz;

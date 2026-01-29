@@ -1,4 +1,0 @@
-b32 bool
-TRUE true
-FALSE false
-NULL nullptr

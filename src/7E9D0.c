@@ -318,7 +318,7 @@ void start_bounce_b(void) {
     playerStatus->flags |= PS_FLAG_SCRIPTED_FALL;
 }
 
-bool check_input_hammer(void) {
+b32 check_input_hammer(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
 
@@ -341,7 +341,7 @@ bool check_input_hammer(void) {
     return false;
 }
 
-bool check_input_jump(void) {
+b32 check_input_jump(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     CollisionStatus* collisionStatus = &gCollisionStatus;
     s32 surfaceType;
