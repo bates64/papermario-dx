@@ -51,30 +51,30 @@ b32 should_cancel_open_world_menu(void) {
     s32 actionState = playerStatus->actionState;
 
     if (playerStatus->animFlags & PA_FLAG_CHANGING_MAP) {
-        return FALSE;
+        return false;
     }
 
     if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE) {
         if (!(playerStatus->flags & PS_FLAG_NO_STATIC_COLLISION) &&
             (actionState == ACTION_STATE_IDLE || actionState == ACTION_STATE_WALK || actionState == ACTION_STATE_RUN))
         {
-            return TRUE;
+            return true;
         }
     } else if (partner_can_open_world_menus()) {
         if (partnerStatus->actingPartner == PARTNER_WATT) {
-            return TRUE;
+            return true;
         } else if (partnerStatus->actingPartner == PARTNER_BOW) {
             if (actionState == ACTION_STATE_RIDE) {
-                return TRUE;
+                return true;
             }
         } else if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
             if (actionState == ACTION_STATE_RIDE) {
-                return TRUE;
+                return true;
             }
             sfx_play_sound(SOUND_MENU_ERROR);
         }
     }
-    return FALSE;
+    return false;
 }
 
 b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
@@ -85,13 +85,13 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
         && !(gPlayerStatus.flags & PS_FLAG_PAUSE_DISABLED)
         && !(currentButtons & (BUTTON_Z | BUTTON_R))
         && (pressedButtons & (BUTTON_START | BUTTON_C_LEFT | BUTTON_C_RIGHT))
-        && !((gGameStatusPtr->mapShop != NULL) && (gGameStatusPtr->mapShop->flags & SHOP_FLAG_SHOWING_ITEM_INFO))
+        && !((gGameStatusPtr->mapShop != nullptr) && (gGameStatusPtr->mapShop->flags & SHOP_FLAG_SHOWING_ITEM_INFO))
         && !(gOverrideFlags & GLOBAL_OVERRIDES_DISABLE_MENUS)
         && !is_picking_up_item()
     ) {
         if (gPlayerStatus.animFlags & PA_FLAG_8BIT_MARIO) {
             sfx_play_sound(SOUND_MENU_ERROR);
-            return FALSE;
+            return false;
         }
         if (partnerStatus->partnerActionState == PARTNER_ACTION_NONE) {
             if (!(gPlayerStatus.flags & PS_FLAG_NO_STATIC_COLLISION)) {
@@ -99,7 +99,7 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
                     actionState == ACTION_STATE_WALK ||
                     actionState == ACTION_STATE_RUN
                 ) {
-                    return TRUE;
+                    return true;
                 }
             }
         } else if (partner_can_open_world_menus()) {
@@ -110,12 +110,12 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
             } else if (partnerStatus->actingPartner == PARTNER_BOW) {
                 if (actionState == ACTION_STATE_RIDE) {
                     gPlayerStatus.prevAlpha = 0;
-                    return TRUE;
+                    return true;
                 }
             } else if (partnerStatus->actingPartner == PARTNER_LAKILESTER) {
                 if (actionState == ACTION_STATE_RIDE) {
                     if (world_lakilester_can_dismount()) {
-                        return TRUE;
+                        return true;
                     }
                     sfx_play_sound(SOUND_MENU_ERROR);
                 }
@@ -124,7 +124,7 @@ b32 can_open_world_menu(s32 currentButtons, s32 pressedButtons) {
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 void clear_world_menus(void) {
@@ -144,12 +144,12 @@ s32 setup_partner_popup(PopupMenu* menu) {
 
             menu->ptrIcon[optionCount] = wPartnerHudScripts[partnerID];
             menu->userIndex[optionCount] = partnerID;
-            menu->enabled[optionCount] = TRUE;
+            menu->enabled[optionCount] = true;
             menu->nameMsg[optionCount] = properties->nameMsg;
             menu->descMsg[optionCount] = properties->worldDescMsg;
             menu->value[optionCount] = playerData->partners[partnerID].level;
             if (playerData->curPartner == partnerID) {
-                menu->enabled[optionCount] = FALSE;
+                menu->enabled[optionCount] = false;
                 menu->ptrIcon[optionCount] = wDisabledPartnerHudScripts[partnerID];
             }
             optionCount++;
@@ -177,7 +177,7 @@ s32 setup_item_popup(PopupMenu* menu) {
             } else {
                 menu->ptrIcon[optionCount] = itemScripts->disabled;
                 menu->userIndex[optionCount] = i;
-                menu->enabled[optionCount] = FALSE;
+                menu->enabled[optionCount] = false;
             }
             menu->nameMsg[optionCount] = item->nameMsg;
             menu->descMsg[optionCount] = item->shortDescMsg;
@@ -207,7 +207,7 @@ void check_input_open_menus(void) {
 
     if (gGameStatusPtr->debugScripts != DEBUG_SCRIPTS_NONE
         || (gGameStatusPtr->peachFlags & PEACH_FLAG_IS_PEACH)
-        || evt_get_variable(NULL, GB_StoryProgress) == STORY_INTRO
+        || evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO
     ) {
         return;
     }
@@ -226,7 +226,7 @@ void check_input_open_menus(void) {
     partnerActionState = &partnerStatus->partnerActionState;
 
     // prevent opening popup menus during the epilogue
-    if (evt_get_variable(NULL, GB_StoryProgress) >= STORY_EPILOGUE) {
+    if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_EPILOGUE) {
         currentButtons &= ~(BUTTON_C_LEFT | BUTTON_C_RIGHT);
         pressedButtons &= ~(BUTTON_C_LEFT | BUTTON_C_RIGHT);
     }
@@ -241,7 +241,7 @@ void check_input_open_menus(void) {
                 if (pressedButtons & BUTTON_START) {
                     WorldMenuType = WORLD_MENU_PAUSE;
                 }
-                SwappedWorldMenus = FALSE;
+                SwappedWorldMenus = false;
 block_17:
                 switch (WorldMenuType) {
                     case WORLD_MENU_CHANGE_PARTNER:
@@ -350,7 +350,7 @@ block_17:
                             WorldMenuType = WORLD_MENU_CHANGE_PARTNER;
                             break;
                     }
-                    SwappedWorldMenus = TRUE;
+                    SwappedWorldMenus = true;
                     goto block_17; // TODO required to match
                 }
             }
@@ -391,7 +391,7 @@ void check_input_status_bar(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 pressedButtons;
 
-    if (evt_get_variable(NULL, GB_StoryProgress) < STORY_EPILOGUE) {
+    if (evt_get_variable(nullptr, GB_StoryProgress) < STORY_EPILOGUE) {
         if (playerStatus->actionState != ACTION_STATE_RIDE) {
             pressedButtons = playerStatus->pressedButtons;
         } else {

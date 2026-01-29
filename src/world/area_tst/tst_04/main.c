@@ -9,7 +9,7 @@ extern NpcGroupList N(DefaultNPCs);
 API_CALLABLE(N(PushGoompaTest)) {
     Npc* npc = get_npc_safe(NPC_Goompa);
 
-    if (npc != NULL && npc->curFloor == COLLIDER_o3) {
+    if (npc != nullptr && npc->curFloor == COLLIDER_o3) {
         f32 sinTheta;
         f32 cosTheta;
         f32 xTemp;
@@ -34,7 +34,7 @@ API_CALLABLE(N(PushPartnerTest)) {
     f32 x0, x1;
     f32 z0, z1;
 
-    if (npc == NULL) {
+    if (npc == nullptr) {
         return ApiStatus_DONE2;
     }
 
@@ -157,7 +157,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TESTING)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     BindTrigger(Ref(N(EVS_GotoMap_tst_03_1)), TRIGGER_WALL_PUSH, COLLIDER_deilitw, 1, 0)
     Call(ParentColliderToModel, COLLIDER_o5, MODEL_o5)

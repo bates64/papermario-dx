@@ -27,22 +27,22 @@ b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes);
 void fio_erase_flash(s32 pageNum);
 
 s32 get_spirits_rescued(void) {
-    s32 storyProgress = evt_get_variable(NULL, GB_StoryProgress);
+    s32 storyProgress = evt_get_variable(nullptr, GB_StoryProgress);
     s32 ret = 7;
 
-    if (storyProgress < evt_get_variable(NULL, STORY_CH1_STAR_SPIRIT_RESCUED)) {
+    if (storyProgress < evt_get_variable(nullptr, STORY_CH1_STAR_SPIRIT_RESCUED)) {
         ret = 0;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH2_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH2_STAR_SPIRIT_RESCUED)) {
         ret = 1;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH3_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH3_STAR_SPIRIT_RESCUED)) {
         ret = 2;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH4_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH4_STAR_SPIRIT_RESCUED)) {
         ret = 3;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH5_OPENED_ESCAPE_ROUTE)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH5_OPENED_ESCAPE_ROUTE)) {
         ret = 4;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH6_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH6_STAR_SPIRIT_RESCUED)) {
         ret = 5;
-    } else if (storyProgress < evt_get_variable(NULL, STORY_CH7_STAR_SPIRIT_RESCUED)) {
+    } else if (storyProgress < evt_get_variable(nullptr, STORY_CH7_STAR_SPIRIT_RESCUED)) {
         ret = 6;
     }
 
@@ -64,10 +64,10 @@ b32 fio_validate_globals_checksums(void) {
     SaveGlobals* header = &gSaveGlobals;
 
     if (strcmp(header->magicString, MagicSaveString)) {
-        return FALSE;
+        return false;
     }
     if (header->crc1 != ~header->crc2) {
-        return FALSE;
+        return false;
     }
     return fio_calc_globals_checksum() == header->crc1;
 }
@@ -75,16 +75,16 @@ b32 fio_validate_globals_checksums(void) {
 b32 fio_load_globals(void) {
     fio_read_flash(GLOBALS_PAGE_1, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
-        return TRUE;
+        return true;
     }
 
     fio_read_flash(GLOBALS_PAGE_2, &gSaveGlobals, sizeof(gSaveGlobals));
     if (fio_validate_globals_checksums()) {
-        return TRUE;
+        return true;
     }
 
     bzero(&gSaveGlobals, sizeof(gSaveGlobals));
-    return FALSE;
+    return false;
 }
 
 b32 fio_save_globals(void) {
@@ -100,7 +100,7 @@ b32 fio_save_globals(void) {
     fio_write_flash(GLOBALS_PAGE_1, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
     fio_erase_flash(GLOBALS_PAGE_2);
     fio_write_flash(GLOBALS_PAGE_2, (s8*)&gSaveGlobals, sizeof(gSaveGlobals));
-    return TRUE;
+    return true;
 }
 
 s32 fio_calc_file_checksum(SaveData* saveData) {
@@ -118,7 +118,7 @@ b32 fio_validate_file_checksum(SaveData* saveData) {
     if (!strcmp(saveData->magicString, MagicSaveString) && saveData->crc1 == ~saveData->crc2) {
         return fio_calc_file_checksum(saveData) == saveData->crc1;
     }
-    return FALSE;
+    return false;
 }
 
 b32 fio_fetch_saved_file_info(void) {
@@ -161,7 +161,7 @@ b32 fio_fetch_saved_file_info(void) {
             }
         }
     }
-    return TRUE;
+    return true;
 }
 
 b32 fio_load_game(s32 saveSlot) {
@@ -176,9 +176,9 @@ b32 fio_load_game(s32 saveSlot) {
         }
         fio_deserialize_state();
         gSaveSlotSummary[gGameStatusPtr->saveSlot] = gCurrentSaveFile.summary;
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 void fio_save_game(s32 saveSlot) {
@@ -253,12 +253,12 @@ b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
         }
 
         osFlashReadArray(&mb, 0, pageNum * sizeof(SaveGlobals) + i, buf, 1, &mesgQueue);
-        osRecvMesg(&mesgQueue, NULL, 1);
+        osRecvMesg(&mesgQueue, nullptr, 1);
         i++;
         numBytes -= amt;
         buf += amt;
     }
-    return TRUE;
+    return true;
 }
 
 b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
@@ -281,12 +281,12 @@ b32 fio_write_flash(s32 pageNum, s8* readBuffer, u32 numBytes) {
 
         osFlashWriteBuffer(&mb, 0, readBuffer, &mesgQueue);
         osFlashWriteArray((pageNum * sizeof(SaveGlobals)) + i);
-        osRecvMesg(&mesgQueue, NULL, 1);
+        osRecvMesg(&mesgQueue, nullptr, 1);
         i++;
         numBytes -= amt;
         readBuffer += amt;
     }
-    return TRUE;
+    return true;
 }
 
 void fio_erase_flash(s32 pageNum) {

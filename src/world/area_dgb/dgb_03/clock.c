@@ -25,7 +25,7 @@ EvtScript N(EVS_PushClock_Impl) = {
         Set(LVar8, -1)
         Return
     EndIf
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Thread
         Call(ShakeCam, CAM_DEFAULT, 0, 100, Float(0.6))
     EndThread
@@ -52,7 +52,7 @@ EvtScript N(EVS_PushClock_Impl) = {
             EndIf
         EndLoop
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
-        Call(DisablePlayerInput, FALSE)
+        Call(DisablePlayerInput, false)
     EndThread
     Call(MakeLerp, LVar6, LVar7, 100, EASING_LINEAR)
     Call(PlaySoundAtCollider, COLLIDER_o77, SOUND_LOOP_MOVE_STATUE, SOUND_SPACE_DEFAULT)
@@ -73,7 +73,7 @@ EvtScript N(EVS_PushClock_Impl) = {
 };
 
 EvtScript N(EVS_PushClockRight) = {
-    IfNe(GF_DGB03_PushedClock, FALSE)
+    IfNe(GF_DGB03_PushedClock, false)
         Goto(90)
     EndIf
     Set(LVar6, 0)
@@ -83,8 +83,8 @@ EvtScript N(EVS_PushClockRight) = {
     ExecWait(N(EVS_PushClock_Impl))
     Label(90)
     IfNe(LVar8, -1)
-        Set(GF_DGB03_PushedClockLeft, FALSE)
-        Set(GF_DGB03_PushedClock, TRUE)
+        Set(GF_DGB03_PushedClockLeft, false)
+        Set(GF_DGB03_PushedClock, true)
         Unbind
     EndIf
     Return
@@ -92,7 +92,7 @@ EvtScript N(EVS_PushClockRight) = {
 };
 
 EvtScript N(EVS_PushClockLeft) = {
-    IfNe(GF_DGB03_PushedClock, FALSE)
+    IfNe(GF_DGB03_PushedClock, false)
         Goto(90)
     EndIf
     Set(LVar6, 0)
@@ -102,8 +102,8 @@ EvtScript N(EVS_PushClockLeft) = {
     ExecWait(N(EVS_PushClock_Impl))
     Label(90)
     IfNe(LVar8, -1)
-        Set(GF_DGB03_PushedClockLeft, TRUE)
-        Set(GF_DGB03_PushedClock, TRUE)
+        Set(GF_DGB03_PushedClockLeft, true)
+        Set(GF_DGB03_PushedClock, true)
         Unbind
     EndIf
     Return
@@ -114,11 +114,11 @@ EvtScript N(EVS_SetupClock) = {
     Call(ParentColliderToModel, COLLIDER_o77, MODEL_o77)
     Call(ParentColliderToModel, COLLIDER_o112, MODEL_o77)
     Call(ParentColliderToModel, COLLIDER_o113, MODEL_o77)
-    IfEq(GF_DGB03_PushedClock, FALSE)
+    IfEq(GF_DGB03_PushedClock, false)
         BindTrigger(Ref(N(EVS_PushClockRight)), TRIGGER_WALL_PUSH, COLLIDER_o77, 1, 0)
         BindTrigger(Ref(N(EVS_PushClockLeft)), TRIGGER_WALL_PUSH, COLLIDER_o112, 1, 0)
     Else
-        IfEq(GF_DGB03_PushedClockLeft, FALSE)
+        IfEq(GF_DGB03_PushedClockLeft, false)
             Set(LVar0, 48)
         Else
             Set(LVar0, -48)

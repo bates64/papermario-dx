@@ -1,6 +1,6 @@
 #include "isk_06.h"
 
-b32 N(CamAdjustReady) = FALSE;
+b32 N(CamAdjustReady) = false;
 
 s32 N(adjust_cam_on_landing)(void) {
     s32 ret = LANDING_CAM_CHECK_SURFACE;
@@ -8,7 +8,7 @@ s32 N(adjust_cam_on_landing)(void) {
     if (gGameStatusPtr->entryID == isk_06_ENTRY_0) {
         if (!N(CamAdjustReady)) {
             if (!(gPlayerStatus.pos.y > -130.0f)) {
-                N(CamAdjustReady) = TRUE;
+                N(CamAdjustReady) = true;
             } else {
                 return LANDING_CAM_ALWAYS_ADJUST;
             }
@@ -45,10 +45,10 @@ EvtScript N(EVS_Main) = {
     Call(N(SetupLandingCamAdjust))
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfLt(GB_StoryProgress, STORY_CH2_DRAINED_SECOND_SAND_ROOM)
-        Call(SetZoneEnabled, ZONE_o2016, FALSE)
+        Call(SetZoneEnabled, ZONE_o2016, false)
     Else
-        Call(SetZoneEnabled, ZONE_C2, FALSE)
-        Call(SetZoneEnabled, ZONE_o2012, FALSE)
+        Call(SetZoneEnabled, ZONE_C2, false)
+        Call(SetZoneEnabled, ZONE_o2012, false)
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupSand))

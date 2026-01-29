@@ -272,7 +272,7 @@ class PropertyListSegment(Segment):
 
             if key == 0x5E:
                 if value == 0:
-                    shape.print(f"    {{ .key = {hex(key)}, .dataType = {fmt}, .data = {{ .p = NULL }}}},")
+                    shape.print(f"    {{ .key = {hex(key)}, .dataType = {fmt}, .data = {{ .p = nullptr }}}},")
                 else:
                     tex_name = read_ascii_string(shape.file_bytes, value)
                     shape.print(f'    {{ .key = {hex(key)}, .dataType = {fmt}, .data = {{ .p = "{tex_name}" }}}},')

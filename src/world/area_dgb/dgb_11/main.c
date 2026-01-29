@@ -21,16 +21,16 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetPanTarget, CAM_DEFAULT, 500, 75, -250)
             Set(LVar3, 75)
         CaseEq(dgb_11_ENTRY_3)
-            Call(SetZoneEnabled, ZONE_o203, FALSE)
+            Call(SetZoneEnabled, ZONE_o203, false)
             Call(UseSettingsFrom, CAM_DEFAULT, 375, 0, -175)
             Call(SetPanTarget, CAM_DEFAULT, 375, 0, -175)
-            Set(AF_DGB_02, TRUE)
+            Set(AF_DGB_02, true)
             Set(LVar3, 1)
     EndSwitch
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 180, 0)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
-    Call(PanToTarget, CAM_DEFAULT, 0, TRUE)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Loop(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLe(LVar1, LVar3)
@@ -38,8 +38,8 @@ EvtScript N(EVS_EnterMap) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(PanToTarget, CAM_DEFAULT, 0, FALSE)
-    Call(DisablePlayerInput, FALSE)
+    Call(PanToTarget, CAM_DEFAULT, 0, false)
+    Call(DisablePlayerInput, false)
     Return
     End
 };

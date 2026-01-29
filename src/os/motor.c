@@ -31,9 +31,9 @@ s32 __osMotorAccess(OSPfs* pfs, s32 flag) {
 
     __osContLastCmd = CONT_CMD_END;
     __osSiRawStartDma(OS_WRITE, &__MotorDataBuf[pfs->channel]);
-    osRecvMesg(pfs->queue, NULL, OS_MESG_BLOCK);
+    osRecvMesg(pfs->queue, nullptr, OS_MESG_BLOCK);
     __osSiRawStartDma(OS_READ, &__MotorDataBuf[pfs->channel]);
-    osRecvMesg(pfs->queue, NULL, OS_MESG_BLOCK);
+    osRecvMesg(pfs->queue, nullptr, OS_MESG_BLOCK);
 
     ret = READFORMAT(ptr)->rxsize & CHNL_ERR_MASK;
     if (!ret) {

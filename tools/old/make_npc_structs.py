@@ -339,7 +339,7 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
                         line += f"0x{val2['data']:{fmt}}"
                     elif val2["type"] == "ptr":
                         if val2["data"] == 0:
-                            line += f"NULL"
+                            line += f"nullptr"
                         else:
                             line += f"0x{val2['data']:{fmt}}"
                     else:
@@ -371,7 +371,7 @@ def print_data(vals, indent, needs_name, is_array=False, is_struct=False):
                     line += f"0x{val['data']:{fmt}}"
                 elif val["type"] == "ptr":
                     if val["data"] == 0:
-                        line += f"NULL"
+                        line += f"nullptr"
                     else:
                         line += f"0x{val['data']:{fmt}}"
                 else:
@@ -532,7 +532,7 @@ def MacroReplaceStaticNPC(fd):
             val = fd[i].split(" = ", 1)[1][:-1]
             if "0x" in val:
                 val = int(val, 16)
-            elif "NULL" in val:
+            elif "nullptr" in val:
                 val = 0
             elif "." in val:
                 val = float(val)
@@ -665,7 +665,7 @@ def MacroReplaceNpcGroupList(fd):
     while i < len(fd):
         fd[i] = fd[i].strip()
         if ";" not in fd[i]:
-            if "NULL" in fd[i]:
+            if "nullptr" in fd[i]:
                 val = 0
             else:
                 if "0x" in fd[i]:

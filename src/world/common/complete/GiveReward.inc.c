@@ -4,13 +4,13 @@
 #include "common.h"
 
 EvtScript N(GiveItemReward) = {
-    Call(ShowGotItem, LVar0, TRUE, 0)
+    Call(ShowGotItem, LVar0, true, 0)
     Return
     End
 };
 
 EvtScript N(GiveCoinReward) = {
-    Call(ShowGotItem, LVar0, TRUE, ITEM_PICKUP_FLAG_1_COIN)
+    Call(ShowGotItem, LVar0, true, ITEM_PICKUP_FLAG_1_COIN)
     Return
     End
 };

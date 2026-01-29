@@ -89,7 +89,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
     f32 deltaX,deltaZ;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehindRight;
 
-    hasCollision = FALSE;
+    hasCollision = false;
     x = *posX;
     y = *posY;
     z = *posZ;
@@ -119,7 +119,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             NpcHitQueryAheadCollider = colliderID;
             NpcHitQueryAheadY = hitYAhead;
             minDepth = depth;
-            hasCollision = TRUE;
+            hasCollision = true;
         }
     }
 
@@ -142,7 +142,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindRightY = hitYBehindRight;
             minDepth = depth;
-            hasCollision = TRUE;
+            hasCollision = true;
         }
     }
 
@@ -165,7 +165,7 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindLeftY = hitYBehindLeft;
             minDepth = depth;
-            hasCollision = TRUE;
+            hasCollision = true;
         }
     }
 
@@ -175,11 +175,11 @@ b32 npc_raycast_down_around(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f3
             *posY = hitYBehindLeft;
         }
         *hitDepth = minDepth;
-        return TRUE;
+        return true;
     }
 
     *posY = startY;
-    return FALSE;
+    return false;
 }
 
 // used for non-partner NPCs
@@ -200,7 +200,7 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
     f32 yaw;
     f32 theta, sinTheta, minDepth, hitYAhead, hitYBehind, radius;
 
-    hasCollision = FALSE;
+    hasCollision = false;
 
     x = *posX;
     y = *posY;
@@ -236,7 +236,7 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
             NpcHitQueryAheadCollider = colliderID;
             NpcHitQueryAheadY = hitYAhead;
             minDepth = depth;
-            hasCollision = TRUE;
+            hasCollision = true;
         }
     }
 
@@ -259,7 +259,7 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
             NpcHitQueryBehindCollider = colliderID;
             NpcHitQueryBehindRightY = hitYBehind;
             minDepth = depth;
-            hasCollision = TRUE;
+            hasCollision = true;
         }
     }
 
@@ -269,10 +269,10 @@ b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32
             *posY = hitYUnused;
         }
         *hitDepth = minDepth;
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 b32 npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* hitDepth) {
@@ -318,14 +318,14 @@ b32 npc_raycast_up(s32 ignoreFlags, f32* startX, f32* startY, f32* startZ, f32* 
     }
 
     if (ret <= NO_COLLIDER) {
-        return FALSE;
+        return false;
     } else {
         *hitDepth = cHitDepth;
         *startX = cHitX;
         *startY = cHitY;
         *startZ = cHitZ;
         NpcHitQueryColliderID = ret;
-        return TRUE;
+        return true;
     }
 }
 
@@ -500,12 +500,12 @@ HitID npc_test_move_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, f32 l
     raycastHitID = npc_raycast_general(ignoreFlags, *x - (radius * outSinTheta * 0.5f), *y,
                                         *z - (radius * inverseOutCosTheta * 0.5f), outSinTheta,
                                         0.0f, inverseOutCosTheta, &hitX, &hitY, &hitZ, &hitDepth, &bX, &hitNy, &bZ);
-    phi_s5 = FALSE;
+    phi_s5 = false;
 
     if (raycastHitID > NO_COLLIDER && hitDepth <= temp_f22) {
         temp_f0 = atan2(0.0f, 0.0f, sqrtf(SQ(bX) + SQ(bZ)), -hitNy);
         if (temp_f0 > 60.0f && temp_f0 < 90.0f) {
-            phi_s5 = TRUE;
+            phi_s5 = true;
         }
 
         temp_f20 = hitDepth - (length + radius + (radius * 0.5f));
@@ -579,7 +579,7 @@ b32 npc_test_move_taller_with_slipping(s32 ignoreFlags, f32* x, f32* y, f32* z, 
         *x = xTemp;
         *z = zTemp;
     } else {
-        ret = TRUE;
+        ret = true;
         *x = xTemp;
         *z = zTemp;
     }

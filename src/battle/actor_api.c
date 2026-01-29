@@ -153,7 +153,7 @@ void set_actor_home_position(s32 actorID, f32 x, f32 y, f32 z) {
 }
 
 Actor* get_actor(s32 actorID) {
-    Actor* ret = NULL;
+    Actor* ret = nullptr;
     BattleStatus* battleStatus = &gBattleStatus;
     s32 actorClass = actorID & ACTOR_CLASS_MASK;
     u32 idIdx = (u8)actorID;
@@ -843,7 +843,7 @@ API_CALLABLE(GetAnimation) {
 
     actorPart = get_actor_part(get_actor(actorID), partID);
 
-    if (actorPart != NULL) {
+    if (actorPart != nullptr) {
         evt_set_variable(script, outVar, actorPart->curAnimation);
     }
     return ApiStatus_DONE2;
@@ -2151,9 +2151,9 @@ API_CALLABLE(ActorExists) {
         actorID = script->owner1.actorID;
     }
 
-    exists = get_actor(actorID) != NULL;
-    if ((actorID == ACTOR_PARTNER) && (partner == NULL)) {
-        exists = FALSE;
+    exists = get_actor(actorID) != nullptr;
+    if ((actorID == ACTOR_PARTNER) && (partner == nullptr)) {
+        exists = false;
     }
 
     evt_set_variable(script, *args++, exists);
@@ -2872,7 +2872,7 @@ API_CALLABLE(GetStatusFlags) {
         flags |= STATUS_FLAG_TRANSPARENT;
     }
 
-    for (partsTable = actor->partsTable; partsTable != NULL; partsTable = partsTable->nextPart) {
+    for (partsTable = actor->partsTable; partsTable != nullptr; partsTable = partsTable->nextPart) {
             if (partsTable->flags & ACTOR_PART_FLAG_TRANSPARENT) {
                 flags |= STATUS_FLAG_TRANSPARENT;
             }
@@ -3222,7 +3222,7 @@ API_CALLABLE(BoostAttack) {
         if (actor->flags & ACTOR_FLAG_UPSIDE_DOWN) {
             btl_cam_set_zoffset(0);
         }
-        ApplyingBuff = TRUE;
+        ApplyingBuff = true;
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
@@ -3269,7 +3269,7 @@ API_CALLABLE(BoostAttack) {
                 dispatch_event_actor(actor, EVENT_RECEIVE_BUFF);
                 btl_cam_use_preset(BTL_CAM_DEFAULT);
                 btl_cam_move(15);
-                actor->isGlowing = TRUE;
+                actor->isGlowing = true;
                 actor->attackBoost += attackBoost;
                 if (actor->attackBoost > 20) {
                     actor->attackBoost = 20;
@@ -3303,10 +3303,10 @@ API_CALLABLE(BoostAttack) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->handleEventScript != NULL) && does_script_exist(actor->handleEventScriptID)) {
+            if ((actor->handleEventScript != nullptr) && does_script_exist(actor->handleEventScriptID)) {
                 break;
             }
-            ApplyingBuff = FALSE;
+            ApplyingBuff = false;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -3346,7 +3346,7 @@ API_CALLABLE(BoostDefense) {
             btl_cam_set_zoffset(0);
         }
 
-        ApplyingBuff = TRUE;
+        ApplyingBuff = true;
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
@@ -3393,7 +3393,7 @@ API_CALLABLE(BoostDefense) {
                 dispatch_event_actor(actor, EVENT_RECEIVE_BUFF);
                 btl_cam_use_preset(BTL_CAM_DEFAULT);
                 btl_cam_move(15);
-                actor->isGlowing = TRUE;
+                actor->isGlowing = true;
                 actor->defenseBoost += defenseBoost;
                 if (actor->defenseBoost > 20) {
                     actor->defenseBoost = 20;
@@ -3427,10 +3427,10 @@ API_CALLABLE(BoostDefense) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->handleEventScript != NULL) && does_script_exist(actor->handleEventScriptID)) {
+            if ((actor->handleEventScript != nullptr) && does_script_exist(actor->handleEventScriptID)) {
                 break;
             }
-            ApplyingBuff = FALSE;
+            ApplyingBuff = false;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -3468,7 +3468,7 @@ API_CALLABLE(VanishActor) {
             btl_cam_set_zoffset(0);
         }
 
-        ApplyingBuff = TRUE;
+        ApplyingBuff = true;
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
@@ -3533,10 +3533,10 @@ API_CALLABLE(VanishActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->handleEventScript != NULL) && does_script_exist(actor->handleEventScriptID)) {
+            if ((actor->handleEventScript != nullptr) && does_script_exist(actor->handleEventScriptID)) {
                 break;
             }
-            ApplyingBuff = FALSE;
+            ApplyingBuff = false;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -3574,7 +3574,7 @@ API_CALLABLE(ElectrifyActor) {
             btl_cam_set_zoffset(0);
         }
 
-        ApplyingBuff = TRUE;
+        ApplyingBuff = true;
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
@@ -3639,10 +3639,10 @@ API_CALLABLE(ElectrifyActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->handleEventScript != NULL) && does_script_exist(actor->handleEventScriptID)) {
+            if ((actor->handleEventScript != nullptr) && does_script_exist(actor->handleEventScriptID)) {
                 break;
             }
-            ApplyingBuff = FALSE;
+            ApplyingBuff = false;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;
@@ -3680,7 +3680,7 @@ API_CALLABLE(HealActor) {
         btl_cam_move(10);
         btl_cam_disable_clamp_x();
 
-        ApplyingBuff = TRUE;
+        ApplyingBuff = true;
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
@@ -3763,10 +3763,10 @@ API_CALLABLE(HealActor) {
                 script->functionTemp[3]--;
                 break;
             }
-            if ((actor->handleEventScript != NULL) && does_script_exist(actor->handleEventScriptID)) {
+            if ((actor->handleEventScript != nullptr) && does_script_exist(actor->handleEventScriptID)) {
                 break;
             }
-            ApplyingBuff = FALSE;
+            ApplyingBuff = false;
             return ApiStatus_DONE2;
     }
     return ApiStatus_BLOCK;

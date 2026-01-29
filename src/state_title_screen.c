@@ -54,20 +54,20 @@ SaveFileSummary gSaveSlotSummary[4] = {
 };
 
 SaveSlotMetadata gSaveSlotMetadata[4] = {
-    { .hasData = TRUE },
-    { .hasData = TRUE },
-    { .hasData = TRUE },
-    { .hasData = TRUE },
+    { .hasData = true },
+    { .hasData = true },
+    { .hasData = true },
+    { .hasData = true },
 };
 
 s32 PressStart_Alpha = 0; // the opacity of "PRESS START" text
-b32 PressStart_IsVisible = FALSE; // toggles the visibility of "PRESS START"
+b32 PressStart_IsVisible = false; // toggles the visibility of "PRESS START"
 s32 PressStart_BlinkCounter = 0; // counts to 16, then toggles PressStart_IsVisible
 
 // controls whether the intro story or the demo will player after TITLE_STATE_HOLD is done
 // since this state is reached for the first time after the intro has already played once or was skipped,
 // this is initially false and the demo is will play first.
-s32 PlayIntroNext = FALSE;
+s32 PlayIntroNext = false;
 
 Lights1 D_80077A38 = gdSPDefLights1(255, 255, 255, 0, 0, 0, 0, 0, 0);
 
@@ -148,13 +148,13 @@ void state_init_title_screen(void) {
 
     create_cameras();
     gCameras[CAM_DEFAULT].updateMode = CAM_UPDATE_NO_INTERP;
-    gCameras[CAM_DEFAULT].needsInit = TRUE;
+    gCameras[CAM_DEFAULT].needsInit = true;
     gCameras[CAM_DEFAULT].nearClip = CAM_NEAR_CLIP;
     gCameras[CAM_DEFAULT].farClip = CAM_FAR_CLIP;
     gCameras[CAM_DEFAULT].vfov = 25.0f;
     set_cam_viewport(CAM_DEFAULT, 12, 28, 296, 184);
 
-    gCameras[CAM_DEFAULT].params.basic.skipRecalc = FALSE;
+    gCameras[CAM_DEFAULT].params.basic.skipRecalc = false;
     gCameras[CAM_DEFAULT].params.basic.pitch = 0;
     gCameras[CAM_DEFAULT].params.basic.dist = 40;
     gCameras[CAM_DEFAULT].params.basic.fovScale = 100;
@@ -187,7 +187,7 @@ void state_init_title_screen(void) {
     clear_npcs();
     hud_element_clear_cache();
     reset_background_settings();
-    clear_entity_data(TRUE);
+    clear_entity_data(true);
     clear_effect_data();
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
     clear_player_data();
@@ -330,7 +330,7 @@ void state_step_title_screen(void) {
             clear_npcs();
             hud_element_clear_cache();
             spr_init_sprites(PLAYER_SPRITES_MARIO_WORLD);
-            clear_entity_data(TRUE);
+            clear_entity_data(true);
             clear_windows();
             gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
             gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_RENDER_WORLD;
@@ -364,7 +364,7 @@ void state_drawUI_title_screen(void) {
     switch (gGameStatusPtr->startupState) {
         case TITLE_STATE_INIT:
             PressStart_Alpha = 0;
-            PressStart_IsVisible = FALSE;
+            PressStart_IsVisible = false;
             PressStart_BlinkCounter = 0;
             break;
         case TITLE_STATE_HOLD:
@@ -426,8 +426,8 @@ void appendGfx_title_screen(void) {
     gDPSetTextureConvert(gMainGfxPos++, G_TC_FILT);
     gDPSetCombineKey(gMainGfxPos++, G_CK_NONE);
     gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
-    render_frame(FALSE);
-    render_frame(TRUE);
+    render_frame(false);
+    render_frame(true);
 }
 
 void title_screen_draw_images(f32 logoMoveAlpha, f32 copyrightMoveAlpha) {
@@ -474,7 +474,7 @@ void title_screen_draw_logo(f32 moveAlpha) {
 
 void title_screen_draw_press_start(void) {
     switch (PressStart_IsVisible) {
-        case FALSE:
+        case false:
             PressStart_Alpha -= 128;
             if (PressStart_Alpha < 0) {
                 PressStart_Alpha = 0;
@@ -483,10 +483,10 @@ void title_screen_draw_press_start(void) {
             PressStart_BlinkCounter++;
             if (PressStart_BlinkCounter >= 16) {
                 PressStart_BlinkCounter = 0;
-                PressStart_IsVisible = TRUE;
+                PressStart_IsVisible = true;
             }
             break;
-        case TRUE:
+        case true:
             PressStart_Alpha += 128;
             if (PressStart_Alpha > 255) {
                 PressStart_Alpha = 255;
@@ -495,7 +495,7 @@ void title_screen_draw_press_start(void) {
             PressStart_BlinkCounter++;
             if (PressStart_BlinkCounter >= 16) {
                 PressStart_BlinkCounter = 0;
-                PressStart_IsVisible = FALSE;
+                PressStart_IsVisible = false;
             }
     }
 

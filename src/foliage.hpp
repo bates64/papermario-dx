@@ -60,7 +60,7 @@ namespace foliage {
         }; \
         SearchBushConfig SearchBush = { \
             .bush = &BushModels, \
-            .drops = NULL, \
+            .drops = nullptr, \
             .vectors = &Effects, \
         }; \
     }; \
@@ -105,7 +105,7 @@ namespace foliage {
         ShakeTreeConfig ShakeTree = { \
             .leaves = &LeafModels, \
             .trunk = &TrunkModels, \
-            .drops = NULL, \
+            .drops = nullptr, \
         }; \
         BombTrigger BombPos = { \
             .pos = { bomb_pos }, \
@@ -118,9 +118,9 @@ namespace foliage {
         s32 TrunkModelsData[] = { trunk_model }; \
         FoliageModelList TrunkModels = { .count = 1, .models = TrunkModelsData }; \
         ShakeTreeConfig ShakeTree = { \
-            .leaves = NULL, \
+            .leaves = nullptr, \
             .trunk = &TrunkModels, \
-            .drops = NULL, \
+            .drops = nullptr, \
         }; \
         BombTrigger BombPos = { \
             .pos = { bomb_pos }, \
@@ -141,7 +141,7 @@ namespace foliage {
         ShakeTreeConfig ShakeTree = { \
             .leaves = &LeafModels, \
             .trunk = &TrunkModels, \
-            .drops = NULL, \
+            .drops = nullptr, \
             .vectors = &Vectors, \
         }; \
         BombTrigger BombPos = { \

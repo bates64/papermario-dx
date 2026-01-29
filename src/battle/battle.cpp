@@ -119,11 +119,11 @@ void reset_battle_status(void) {
     gBattleState = BATTLE_STATE_NONE;
     gBattleSubState = BTL_SUBSTATE_INIT;
     gLastDrawBattleState = BATTLE_STATE_NONE;
-    gCurrentBattlePtr = NULL;
+    gCurrentBattlePtr = nullptr;
     gCurrentBattleID = 0;
-    gCurrentStagePtr = NULL;
+    gCurrentStagePtr = nullptr;
     gCurrentStageID = 0;
-    gOverrideBattlePtr = NULL;
+    gOverrideBattlePtr = nullptr;
 }
 
 void load_battle_section(void) {
@@ -135,7 +135,7 @@ void load_battle_section(void) {
     gCurrentBattlePtr = &(*battleArea->battles)[battleIdx];
 
     if (gCurrentStageID < 0) {
-        gCurrentStagePtr = NULL;
+        gCurrentStagePtr = nullptr;
     } else {
         gCurrentStagePtr = &(*battleArea->stages)[gCurrentStageID];
     }
@@ -171,14 +171,14 @@ void setup_demo_player(void) {
     playerData->curMaxFP = 10;
     playerData->hardMaxFP = 10;
     playerData->level = 3;
-    playerData->hasActionCommands = TRUE;
+    playerData->hasActionCommands = true;
     playerData->starPoints = 55;
     playerData->bootsLevel = GEAR_RANK_NORMAL;
     playerData->hammerLevel = GEAR_RANK_NORMAL;
     playerData->coins = 34;
 
     for (i = 1; i < ARRAY_COUNT(playerData->partners); i++) {
-        playerData->partners[i].enabled = TRUE;
+        playerData->partners[i].enabled = true;
         playerData->partners[i].level = 2;
     }
 
@@ -231,7 +231,7 @@ void load_demo_battle(u32 index) {
     reset_back_screen_overlay_progress();
     reset_battle_status();
     clear_encounter_status();
-    clear_entity_data(TRUE);
+    clear_entity_data(true);
     clear_effect_data();
     clear_player_status();
     clear_printers();
@@ -245,7 +245,7 @@ void load_demo_battle(u32 index) {
         case 0: // hammer first strike on Fuzzies
             setup_demo_player();
             mode = 0;
-            playerData->hasActionCommands = FALSE;
+            playerData->hasActionCommands = false;
             battleID = BTL_DIG_FORMATION_00;
             break;
         case 1: // jump on Monty Mole
@@ -281,7 +281,7 @@ void load_demo_battle(u32 index) {
     }
 
     gGameStatusPtr->debugEnemyContact = DEBUG_CONTACT_NONE;
-    gGameStatusPtr->healthBarsEnabled = TRUE;
+    gGameStatusPtr->healthBarsEnabled = true;
 
     switch (mode) {
         case 0:
@@ -317,7 +317,7 @@ void load_demo_battle(u32 index) {
             break;
     }
 
-    evt_set_variable(NULL, GF_Tutorial_SwapTurnOrder, 1);
+    evt_set_variable(nullptr, GF_Tutorial_SwapTurnOrder, 1);
     gCurrentEncounter.unk_07 = 0;
     gCurrentEncounter.instigatorValue = 0;
     set_battle_stage(BTL_STAGE_DEFAULT);

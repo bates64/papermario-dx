@@ -402,7 +402,7 @@ API_CALLABLE(PlayerFaceNpc) {
             npc = (Npc*)npcID;
         } else {
             npc = get_npc_safe(npcID);
-            if (npc == NULL) {
+            if (npc == nullptr) {
                 return ApiStatus_DONE2;
             }
         }
@@ -499,7 +499,7 @@ API_CALLABLE(EnablePartner) {
     s32 partnerIdx = evt_get_variable(script, *script->ptrReadPos) - 1;
     PartnerData* partner = &gPlayerData.partners[partnerIdx];
 
-    partner->enabled = TRUE;
+    partner->enabled = true;
     return ApiStatus_DONE2;
 }
 
@@ -507,7 +507,7 @@ API_CALLABLE(DisablePartner) {
     s32 partnerIdx = evt_get_variable(script, *script->ptrReadPos) - 1;
     PartnerData* partner = &gPlayerData.partners[partnerIdx];
 
-    partner->enabled = FALSE;
+    partner->enabled = false;
     return ApiStatus_DONE2;
 }
 
@@ -584,9 +584,9 @@ s32 func_802D23F8(void) {
         gPlayerStatus.actionState == ACTION_STATE_RUN || gPlayerStatus.actionState == ACTION_STATE_LAND ||
         gPlayerStatus.actionState == ACTION_STATE_STEP_DOWN_LAND || gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND ||
         gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND || gPlayerStatus.actionState == ACTION_STATE_SPIN) {
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 API_CALLABLE(WaitForPlayerTouchingFloor) {
@@ -607,7 +607,7 @@ API_CALLABLE(func_802D2484) {
 
 API_CALLABLE(IsPlayerOnValidFloor) {
     Bytecode* args = script->ptrReadPos;
-    s32 result = FALSE;
+    s32 result = false;
 
     if (gCollisionStatus.curFloor >= 0) {
         result = (func_802D23F8() != 0);

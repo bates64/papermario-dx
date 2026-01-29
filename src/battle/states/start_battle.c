@@ -36,12 +36,12 @@ void load_stage_assets(Stage* stage) {
 
     rootModel = gMapShapeData.header.root;
     texturesOffset = get_asset_offset(stage->texture, &size);
-    if (rootModel != NULL) {
+    if (rootModel != nullptr) {
         load_data_for_models(rootModel, texturesOffset, size);
     }
     load_battle_hit_asset(stage->hit);
 
-    if (stage->bg != NULL) {
+    if (stage->bg != nullptr) {
         load_map_bg(stage->bg);
         set_background(&gBackgroundImage);
     }
@@ -62,11 +62,11 @@ void btl_state_update_normal_start(void) {
     s32* types;
 
     battle = gCurrentBattlePtr;
-    if (gOverrideBattlePtr != NULL) {
+    if (gOverrideBattlePtr != nullptr) {
         battle = gOverrideBattlePtr;
     }
 
-    if (gCurrentStagePtr == NULL) {
+    if (gCurrentStagePtr == nullptr) {
         stage = battle->stage;
     } else {
         stage = gCurrentStagePtr->stage;
@@ -88,11 +88,11 @@ void btl_state_update_normal_start(void) {
                 set_curtain_scale_goal(1.0f);
             }
 
-            battleStatus->controlScript = NULL;
-            battleStatus->camMovementScript = NULL;
+            battleStatus->controlScript = nullptr;
+            battleStatus->camMovementScript = nullptr;
             battleStatus->unk_90 = 0;
-            battleStatus->preUpdateCallback = NULL;
-            battleStatus->initBattleCallback = NULL;
+            battleStatus->preUpdateCallback = nullptr;
+            battleStatus->initBattleCallback = nullptr;
             battleStatus->curSubmenu = 0;
             battleStatus->lastSelectedAbility = 0;
             battleStatus->curPartnerSubmenu = 0;
@@ -130,10 +130,10 @@ void btl_state_update_normal_start(void) {
             battleStatus->outtaSightActive = 0;
             battleStatus->waterBlockTurnsLeft = 0;
             battleStatus->waterBlockAmount = 0;
-            battleStatus->waterBlockEffect = NULL;
+            battleStatus->waterBlockEffect = nullptr;
             battleStatus->cloudNineTurnsLeft = 0;
             battleStatus->cloudNineDodgeChance = 0;
-            battleStatus->cloudNineEffect = NULL;
+            battleStatus->cloudNineEffect = nullptr;
             battleStatus->reflectFlags = 0;
             battleStatus->turboChargeTurnsLeft = 0;
             battleStatus->turboChargeAmount = 0;
@@ -172,17 +172,17 @@ void btl_state_update_normal_start(void) {
                 break;
             }
 
-            if (stage->preBattle != NULL) {
+            if (stage->preBattle != nullptr) {
                 script = start_script(stage->preBattle, EVT_PRIORITY_A, 0);
                 battleStatus->controlScript = script;
                 battleStatus->controlScriptID = script->id;
             }
 
-            gStatusBar.hidden = FALSE;
+            gStatusBar.hidden = false;
             gBattleStatus.flags1 |= BS_FLAGS1_ACTORS_VISIBLE;
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
-                battleStatus->enemyActors[i] = NULL;
+                battleStatus->enemyActors[i] = nullptr;
             }
             battleStatus->initialEnemyCount = 0;
 
@@ -191,7 +191,7 @@ void btl_state_update_normal_start(void) {
                 types = bActorsIgnoreDuringCount;
                 actor = battleStatus->enemyActors[i];
 
-                while (TRUE) {
+                while (true) {
                     type = *types;
                     if (type == -1) {
                         battleStatus->initialEnemyCount++;
@@ -243,14 +243,14 @@ void btl_state_update_normal_start(void) {
             gBattleSubState = BTL_SUBSTATE_CHECK_FIRST_STRIKE;
             break;
         case BTL_SUBSTATE_CHECK_FIRST_STRIKE:
-            enemyNotDone = FALSE;
+            enemyNotDone = false;
             for (i = 0; i < BattleEnemiesCreated; i++) {
                 actor = battleStatus->enemyActors[i];
                 if (does_script_exist(actor->takeTurnScriptID)) {
-                    enemyNotDone = TRUE;
+                    enemyNotDone = true;
                     break;
                 } else {
-                    actor->takeTurnScript = NULL;
+                    actor->takeTurnScript = nullptr;
                 }
             }
             if (enemyNotDone) {
@@ -261,17 +261,17 @@ void btl_state_update_normal_start(void) {
             if (does_script_exist(actor->takeTurnScriptID)) {
                 break;
             }
-            actor->takeTurnScript = NULL;
+            actor->takeTurnScript = nullptr;
 
             actor = battleStatus->partnerActor;
-            if (actor != NULL) {
+            if (actor != nullptr) {
                 if (does_script_exist(actor->takeTurnScriptID)) {
                     break;
                 }
-                actor->takeTurnScript = NULL;
+                actor->takeTurnScript = nullptr;
             }
 
-            if (battle->onBattleStart != NULL) {
+            if (battle->onBattleStart != nullptr) {
                 script = start_script(battle->onBattleStart, EVT_PRIORITY_A, 0);
                 battleStatus->controlScript = script;
                 battleStatus->controlScriptID = script->id;
@@ -304,7 +304,7 @@ void btl_state_update_normal_start(void) {
                         script->owner1.actorID = ACTOR_PLAYER;
                     }
 
-                    if (currentEncounter->curEnemy != NULL
+                    if (currentEncounter->curEnemy != nullptr
                         && currentEncounter->curEnemy->encountered == ENCOUNTER_TRIGGER_SPIN
                         && is_ability_active(ABILITY_DIZZY_ATTACK)
                     ) {

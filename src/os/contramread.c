@@ -68,10 +68,10 @@ s32 __osContRamRead(OSMesgQueue* mq, int channel, u16 address, u8* buffer) {
         READFORMAT(ptr)->addrl = (u8)((address << 5) | __osContAddressCrc(address));
 
         ret = __osSiRawStartDma(OS_WRITE, &__osPfsPifRam);
-        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
+        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
 
         ret = __osSiRawStartDma(OS_READ, &__osPfsPifRam);
-        osRecvMesg(mq, NULL, OS_MESG_BLOCK);
+        osRecvMesg(mq, nullptr, OS_MESG_BLOCK);
 
         ret = CHNL_ERR(*READFORMAT(ptr));
 

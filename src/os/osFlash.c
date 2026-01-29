@@ -87,7 +87,7 @@ void osFlashReadId(u32* flash_type, u32* flash_maker) {
 
     osWritebackDCache(&__osFlashID[0], 0x10);
     osEPiStartDma(&__osFlashHandler, &__osFlashMsg, OS_READ);
-    osRecvMesg(&__osFlashMessageQ, NULL, OS_MESG_BLOCK);
+    osRecvMesg(&__osFlashMessageQ, nullptr, OS_MESG_BLOCK);
 
     *flash_type = __osFlashID[0];
     *flash_maker = __osFlashID[1];

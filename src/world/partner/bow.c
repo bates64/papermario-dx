@@ -20,8 +20,8 @@ void N(init)(Npc* bow) {
     bow->collisionHeight = 26;
     bow->collisionDiameter = 24;
     bow->renderMode = RENDER_MODE_SURFACE_XLU_LAYER1;
-    N(LockingPlayerInput) = FALSE;
-    N(IsHiding) = FALSE;
+    N(LockingPlayerInput) = false;
+    N(IsHiding) = false;
 }
 
 API_CALLABLE(N(TakeOut)) {
@@ -55,13 +55,13 @@ API_CALLABLE(N(Update)) {
     if (isInitialCall) {
         partner_flying_enable(bow, 1);
         mem_clear(N(TweesterPhysicsPtr), sizeof(TweesterPhysics));
-        TweesterTouchingPartner = NULL;
+        TweesterTouchingPartner = nullptr;
     }
 
     entity = TweesterTouchingPartner;
     playerData->partnerUsedTime[PARTNER_BOW]++;
 
-    if (entity == NULL) {
+    if (entity == nullptr) {
         partner_flying_update_player_tracking(bow);
         partner_flying_update_motion(bow);
         return ApiStatus_BLOCK;
@@ -118,7 +118,7 @@ API_CALLABLE(N(Update)) {
 
             if (--N(TweesterPhysicsPtr)->countdown == 0) {
                 N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
-                TweesterTouchingPartner = NULL;
+                TweesterTouchingPartner = nullptr;
             }
             break;
     }
@@ -132,8 +132,8 @@ EvtScript EVS_WorldBow_Update = {
 };
 
 void N(try_cancel_tweester)(Npc* bow) {
-    if (TweesterTouchingPartner != NULL) {
-        TweesterTouchingPartner = NULL;
+    if (TweesterTouchingPartner != nullptr) {
+        TweesterTouchingPartner = nullptr;
         bow->flags = N(TweesterPhysicsPtr)->prevFlags;
         N(TweesterPhysicsPtr)->state = TWEESTER_PARTNER_INIT;
         partner_clear_player_tracking(bow);
@@ -191,7 +191,7 @@ API_CALLABLE(N(UseAbility)) {
         if (playerStatus->animFlags & PA_FLAG_PARTNER_USAGE_FORCED) {
             playerStatus->animFlags &= ~PA_FLAG_PARTNER_USAGE_FORCED;
             script->functionTemp[2] = disable_player_input();
-            N(LockingPlayerInput) = TRUE;
+            N(LockingPlayerInput) = true;
             script->USE_STATE = OUTTA_SIGHT_BEGIN;
         } else {
             script->USE_STATE = OUTTA_SIGHT_INIT;
@@ -207,7 +207,7 @@ API_CALLABLE(N(UseAbility)) {
             playerStatus->flags |= PS_FLAG_PAUSE_DISABLED;
             script->functionTemp[1] = 3;
             script->functionTemp[2] = disable_player_input();
-            N(LockingPlayerInput) = TRUE;
+            N(LockingPlayerInput) = true;
             script->USE_STATE++; // OUTTA_SIGHT_DELAY
             break;
         case OUTTA_SIGHT_DELAY:
@@ -216,7 +216,7 @@ API_CALLABLE(N(UseAbility)) {
                 && N(LockingPlayerInput)
             ) {
                 enable_player_input();
-                N(LockingPlayerInput) = FALSE;
+                N(LockingPlayerInput) = false;
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 return ApiStatus_DONE2;
             }
@@ -225,7 +225,7 @@ API_CALLABLE(N(UseAbility)) {
                 if (script->functionTemp[2] < playerStatus->inputDisabledCount) {
                     if (N(LockingPlayerInput)) {
                         enable_player_input();
-                        N(LockingPlayerInput) = FALSE;
+                        N(LockingPlayerInput) = false;
                     }
                     playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                     return ApiStatus_DONE2;
@@ -241,15 +241,15 @@ API_CALLABLE(N(UseAbility)) {
                 playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
                 if (N(LockingPlayerInput)) {
                     enable_player_input();
-                    N(LockingPlayerInput) = FALSE;
+                    N(LockingPlayerInput) = false;
                 }
                 return ApiStatus_DONE2;
             }
             if (script->functionTemp[2] != 0) {
-                N(LockingPlayerInput) = TRUE;
+                N(LockingPlayerInput) = true;
             }
 
-            N(IsHiding) = TRUE;
+            N(IsHiding) = true;
             bow->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY);
             partnerStatus->partnerActionState = 1;
             partnerStatus->actingPartner = 9;
@@ -379,7 +379,7 @@ void N(end_outta_sight_cleanup)(Npc* bow) {
 
     playerStatus->flags &= ~(PS_FLAG_HAZARD_INVINCIBILITY | PS_FLAG_JUMPING);
     bow->flags &= ~(NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_INVISIBLE);
-    N(LockingPlayerInput) = FALSE;
+    N(LockingPlayerInput) = false;
     actionState = ACTION_STATE_IDLE;
 
     if (playerStatus->flags & PS_FLAG_HIT_FIRE) {
@@ -391,7 +391,7 @@ void N(end_outta_sight_cleanup)(Npc* bow) {
     partnerStatus->actingPartner = 0;
     playerStatus->flags &= ~PS_FLAG_PAUSE_DISABLED;
     partner_clear_player_tracking(bow);
-    N(IsHiding) = FALSE;
+    N(IsHiding) = false;
 }
 
 API_CALLABLE(N(PutAway)) {
@@ -427,7 +427,7 @@ void N(pre_battle)(Npc* bow) {
         partner_clear_player_tracking(bow);
         partnerStatus->partnerActionState = PARTNER_ACTION_NONE;
         partnerStatus->actingPartner = PARTNER_NONE;
-        N(IsHiding) = FALSE;
+        N(IsHiding) = false;
         bow->flags &= ~NPC_FLAG_INVISIBLE;
     }
 }

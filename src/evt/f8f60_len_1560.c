@@ -35,9 +35,9 @@ API_CALLABLE(UpdateLerp) {
     ));
 
     if (script->varTable[LERP_VAR_E] >= script->varTable[LERP_VAR_F]) {
-        script->varTable[LERP_VAR_1] = FALSE; // finished
+        script->varTable[LERP_VAR_1] = false; // finished
     } else {
-        script->varTable[LERP_VAR_1] = TRUE; // lerping
+        script->varTable[LERP_VAR_1] = true; // lerping
     }
     script->varTable[LERP_VAR_E]++;
 

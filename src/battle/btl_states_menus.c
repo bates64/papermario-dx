@@ -289,7 +289,7 @@ s32 btl_main_menu_update(void) {
             BattleMenu_BasePosX = 54;
             BattleMenu_BasePosY = 173;
             BattleMenu_WheelSpeed = 0.3f;
-            BattleMenu_WheelMoving = FALSE;
+            BattleMenu_WheelMoving = false;
             BattleMenu_HomePos = BattleMenu_PrevSelected;
             BattleMenu_MinIdx = 0;
             BattleMenu_MaxIdx = WheelOptionCount - 1;
@@ -433,7 +433,7 @@ s32 btl_main_menu_update(void) {
             break;
         case BTL_MENU_STATE_CHOOSING:
             if (battleStatus->curButtonsPressed & BUTTON_A) {
-                if (WheelOptionEnabled[BattleMenu_CurPos + BattleMenu_HomePos] == TRUE) {
+                if (WheelOptionEnabled[BattleMenu_CurPos + BattleMenu_HomePos] == true) {
                     sfx_play_sound(SOUND_MENU_NEXT);
                     BattleMenuState = BTL_MENU_STATE_SUBMENU_OPEN;
                 } else {
@@ -457,7 +457,7 @@ s32 btl_main_menu_update(void) {
                 }
 
                 if (BattleMenu_PrevPos != BattleMenu_CurPos) {
-                    BattleMenu_WheelMoving = TRUE;
+                    BattleMenu_WheelMoving = true;
                     sfx_play_sound(SOUND_MENU_CHANGE_TAB);
                 }
             }
@@ -528,25 +528,25 @@ void btl_main_menu_draw(void) {
             hud_element_draw_complex_hud_first(-1);
             theta = (BattleMenu_WheelBase - BattleMenu_CurPos) * WHEEL_SPACING;
 
-            wheelDoneMoving = FALSE;
+            wheelDoneMoving = false;
             if (BattleMenu_WheelAngle > theta) {
                 BattleMenu_WheelAngle -= BattleMenu_WheelSpeed;
                 if (BattleMenu_WheelAngle < theta) {
                     BattleMenu_WheelAngle = theta;
-                    wheelDoneMoving = TRUE;
+                    wheelDoneMoving = true;
                 }
             } else if (BattleMenu_WheelAngle < theta) {
                 BattleMenu_WheelAngle += BattleMenu_WheelSpeed;
                 if (BattleMenu_WheelAngle > theta) {
                     BattleMenu_WheelAngle = theta;
-                    wheelDoneMoving = TRUE;
+                    wheelDoneMoving = true;
                 }
             } else { // BattleMenu_WheelAngle == theta
-                wheelDoneMoving = TRUE;
+                wheelDoneMoving = true;
             }
 
             if (wheelDoneMoving) {
-                BattleMenu_WheelMoving = FALSE;
+                BattleMenu_WheelMoving = false;
                 BattleMenu_WheelSpeed = 0.3f;
             } else {
                 BattleMenu_WheelSpeed *= SQ(BattleMenu_WheelSpeed + 1.0f);
@@ -657,7 +657,7 @@ void btl_main_menu_draw(void) {
             }
 
             if ((gBattleStatus.flags1 & BS_FLAGS1_TUTORIAL_BATTLE) || (gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE)) {
-                BattleMenu_ShowSwapIcons = FALSE;
+                BattleMenu_ShowSwapIcons = false;
             }
 
             if (BattleMenu_ShowSwapIcons) {
@@ -683,43 +683,43 @@ b32 btl_player_can_act(void) {
     Actor* player = battleStatus->playerActor;
 
     if (battleStatus->flags2 & BS_FLAGS2_PLAYER_TURN_USED) {
-        return FALSE;
+        return false;
     } else {
         s8 debuff = player->debuff;
-        s32 playerCantMove = FALSE;
+        s32 playerCantMove = false;
 
         if (player->koStatus == STATUS_KEY_KO) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_POISON) {
-            playerCantMove = FALSE;
+            playerCantMove = false;
         }
         if (debuff == STATUS_KEY_SHRINK) {
-            playerCantMove = FALSE;
+            playerCantMove = false;
         }
         if (debuff == STATUS_KEY_SLEEP) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_UNUSED) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_DIZZY) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_PARALYZE) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_FROZEN) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (debuff == STATUS_KEY_STOP) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (player->stoneStatus == STATUS_KEY_STONE) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         if (battleStatus->outtaSightActive) {
-            playerCantMove = TRUE;
+            playerCantMove = true;
         }
         return !playerCantMove;
     }
@@ -732,38 +732,38 @@ b32 btl_partner_can_act(void) {
     s32 partnerCantMove;
 
     if (battleStatus->flags2 & BS_FLAGS2_PARTNER_TURN_USED || partner == PARTNER_NONE || partner->flags & ACTOR_FLAG_NO_ATTACK) {
-        return FALSE;
+        return false;
     }
 
     partnerDebuff = partner->debuff;
-    partnerCantMove = FALSE;
+    partnerCantMove = false;
 
     if (partner->koStatus == STATUS_KEY_KO) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partnerDebuff == STATUS_KEY_POISON) {
-        partnerCantMove = FALSE;
+        partnerCantMove = false;
     }
     if (partnerDebuff == STATUS_KEY_SHRINK) {
-        partnerCantMove = FALSE;
+        partnerCantMove = false;
     }
     if (partnerDebuff == STATUS_KEY_SLEEP) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partnerDebuff == STATUS_KEY_UNUSED) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partnerDebuff == STATUS_KEY_PARALYZE) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partnerDebuff == STATUS_KEY_FROZEN) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partnerDebuff == STATUS_KEY_STOP) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     if (partner->stoneStatus == STATUS_KEY_STONE) {
-        partnerCantMove = TRUE;
+        partnerCantMove = true;
     }
     return !partnerCantMove;
 }

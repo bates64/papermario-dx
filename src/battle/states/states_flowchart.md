@@ -287,7 +287,7 @@ flowchart TD
     BeginPartner --> |Can't Act| TransferTurn
     BeginPartner ==> SwitchPartner
 
-    %% exists only as a sanity check in partner_move to ensure partner is not NULL
+    %% exists only as a sanity check in partner_move to ensure partner is not nullptr
     %% PartnerMove --> |Invalid Partner| TransferTurn
 
     PartnerMove ==> EndPartner

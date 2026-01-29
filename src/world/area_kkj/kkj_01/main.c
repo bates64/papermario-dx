@@ -10,15 +10,15 @@ EvtScript N(EVS_ExitDoors_kkj_14_0) = EVT_EXIT_SINGLE_DOOR_SET_SOUNDS(kkj_01_ENT
     COLLIDER_ttn2, MODEL_door7, DOOR_SWING_OUT, DOOR_SOUNDS_BASIC);
 
 EvtScript N(EVS_ShowMessage_CantOpen) = {
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_DoesntOpen, 160, 40)
-    Call(DisablePlayerInput, FALSE)
+    Call(DisablePlayerInput, false)
     Return
     End
 };
 
 EvtScript N(EVS_BindExitTriggers) = {
-    IfEq(AF_KKJ_01, TRUE)
+    IfEq(AF_KKJ_01, true)
         BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
     EndIf
     BindTrigger(Ref(N(EVS_ShowMessage_CantOpen)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
@@ -74,14 +74,14 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Call(MakeNpcs, FALSE, Ref(N(DefaultNPCs)))
+    Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     IfNe(GB_StoryProgress, STORY_INTRO)
-        Call(EnableModel, MODEL_g74, FALSE)
+        Call(EnableModel, MODEL_g74, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g77, COLLIDER_FLAGS_UPPER_MASK)
     Else
-        Call(EnableModel, MODEL_o321, FALSE)
-        Call(EnableModel, MODEL_o337, FALSE)
-        Call(EnableModel, MODEL_o330, FALSE)
+        Call(EnableModel, MODEL_o321, false)
+        Call(EnableModel, MODEL_o337, false)
+        Call(EnableModel, MODEL_o330, false)
     EndIf
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_BindExitTriggers))

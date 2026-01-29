@@ -20,97 +20,97 @@ const GameModeData GameModeTemplates[] = {
         .init = state_init_startup,
         .step = state_step_startup,
         .renderBackUI = state_drawUI_startup,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_LOGOS] {
         .init = state_init_logos,
         .step = state_step_logos,
         .renderBackUI = state_drawUI_logos,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_TITLE_SCREEN] {
         .init = state_init_title_screen,
         .step = state_step_title_screen,
         .renderBackUI = state_drawUI_title_screen,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_ENTER_DEMO_WORLD] {
         .init = state_init_enter_demo,
         .step = state_step_enter_world,
         .renderBackUI = state_drawUI_enter_world,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_ENTER_WORLD] {
         .init = state_init_enter_world,
         .step = state_step_enter_world,
         .renderBackUI = state_drawUI_enter_world,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_WORLD] {
         .init = state_init_world,
         .step = state_step_world,
         .renderBackUI = state_drawUI_world,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_CHANGE_MAP] {
         .init = state_init_change_map,
         .step = state_step_change_map,
         .renderBackUI = state_drawUI_change_map,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_GAME_OVER] {
         .init = state_init_game_over,
         .step = state_step_game_over,
         .renderBackUI = state_drawUI_game_over,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_BATTLE] {
         .init = state_init_battle,
         .step = state_step_battle,
         .renderBackUI = state_drawUI_battle,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_END_BATTLE] {
         .init = state_init_end_battle,
         .step = state_step_end_battle,
         .renderBackUI = state_drawUI_end_battle,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_PAUSE] {
         .init = state_init_pause,
         .step = state_step_pause,
         .renderBackUI = state_drawUI_pause,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_UNPAUSE] {
         .init = state_init_unpause,
         .step = state_step_unpause,
         .renderBackUI = state_drawUI_unpause,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_FILE_SELECT] {
         .init = state_init_file_select,
         .step = state_step_file_select,
         .renderBackUI = state_drawUI_file_select,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_END_FILE_SELECT] {
         .init = state_init_exit_file_select,
         .step = state_step_exit_file_select,
         .renderBackUI = state_drawUI_exit_file_select,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_INTRO] {
         .init = state_init_intro,
         .step = state_step_intro,
         .renderBackUI = state_drawUI_intro,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
     [GAME_MODE_DEMO] {
         .init = state_init_demo,
         .step = state_step_demo,
         .renderBackUI = state_drawUI_demo,
-        .renderFrontUI = NULL,
+        .renderFrontUI = nullptr,
     },
 };
 
@@ -133,13 +133,13 @@ void set_game_mode(s32 modeID) {
     CurGameMode.step = template->step;
     CurGameMode.renderBackUI = template->renderBackUI;
 
-    if (CurGameMode.init == NULL) {
+    if (CurGameMode.init == nullptr) {
         CurGameMode.init = game_mode_nop;
     }
-    if (CurGameMode.step == NULL) {
+    if (CurGameMode.step == nullptr) {
         CurGameMode.step = game_mode_nop;
     }
-    if (CurGameMode.renderBackUI == NULL) {
+    if (CurGameMode.renderBackUI == nullptr) {
         CurGameMode.renderBackUI = game_mode_nop;
     }
 
@@ -155,7 +155,7 @@ void set_game_mode_render_frontUI(void (*fn)(void)) {
     CurGameMode.renderFrontUI = fn;
     CurGameMode.flags |= MODE_FLAG_HAS_FRONT_UI;
 
-    if (fn == NULL) {
+    if (fn == nullptr) {
         CurGameMode.renderFrontUI = game_mode_nop;
     }
 }

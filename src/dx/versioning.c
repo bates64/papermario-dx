@@ -51,9 +51,9 @@ void fio_deserialize_state() {
     }
 
     gGameStatus.debugEnemyContact = DEBUG_CONTACT_NONE;
-    gGameStatus.debugUnused1 = FALSE;
-    gGameStatus.debugUnused2 = FALSE;
-    gGameStatus.musicEnabled = TRUE;
+    gGameStatus.debugUnused1 = false;
+    gGameStatus.debugUnused2 = false;
+    gGameStatus.musicEnabled = true;
 }
 
 /// Load save file data from a supported save version

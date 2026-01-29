@@ -45,7 +45,7 @@ void btl_state_update_run_away(void) {
 
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 enemy = battleStatus->enemyActors[i];
-                if (enemy != NULL) {
+                if (enemy != nullptr) {
                     if (!(enemy->flags & ACTOR_FLAG_TARGET_ONLY)) {
                         if (!(enemy->flags & ACTOR_FLAG_NO_DMG_APPLY)) {
                             f32 escapeChance = enemy->actorBlueprint->escapeChance;
@@ -76,7 +76,7 @@ void btl_state_update_run_away(void) {
             player->takeTurnScript = script;
             player->takeTurnScriptID = script->id;
             script->owner1.actorID = ACTOR_PLAYER;
-            if (partner != NULL && partner->koStatus == 0) {
+            if (partner != nullptr && partner->koStatus == 0) {
                 script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
                 partner->takeTurnScript = script;
                 partner->takeTurnScriptID = script->id;
@@ -156,7 +156,7 @@ void btl_state_update_run_away(void) {
             player->takeTurnScript = script;
             player->takeTurnScriptID = script->id;
             script->owner1.actorID = ACTOR_PLAYER;
-            if (partner != NULL && partner->koStatus == 0) {
+            if (partner != nullptr && partner->koStatus == 0) {
                 script = start_script(partner->takeTurnSource, EVT_PRIORITY_A, 0);
                 partner->takeTurnScript = script;
                 partner->takeTurnScriptID = script->id;
@@ -170,7 +170,7 @@ void btl_state_update_run_away(void) {
                 return;
             }
             if (!does_script_exist(player->takeTurnScriptID)
-                && (partner == NULL || !does_script_exist(partner->takeTurnScriptID))
+                && (partner == nullptr || !does_script_exist(partner->takeTurnScriptID))
                 && battleStatus->stateFreezeCount == 0
             ) {
                 btl_set_state(BATTLE_STATE_TRANSFER_TURN);

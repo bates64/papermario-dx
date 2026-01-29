@@ -2,7 +2,7 @@
 
 OSMesgQueue *osPiGetCmdQueue(void) {
     if (!__osPiDevMgr.active) {
-        return NULL;
+        return nullptr;
     }
 
     return __osPiDevMgr.cmdQueue;

@@ -52,14 +52,14 @@ void clear_input(void) {
 
 void update_input(void) {
     OSContPad* contData = &ContPadData;
-    b32 hasInput = FALSE;
+    b32 hasInput = false;
     b32 stickButtonDetected;
     s32 buttons;
     s16 stickX;
     s16 stickY;
 
     if (gGameStatusPtr->contBitPattern & 1) {
-        hasInput = TRUE;
+        hasInput = true;
         nuContDataGet(contData, 0);
     }
 
@@ -73,7 +73,7 @@ void update_input(void) {
         contData->button = gGameStatusPtr->demoButtonInput;
         contData->stick_x = gGameStatusPtr->demoStickX;
         contData->stick_y = gGameStatusPtr->demoStickY;
-        hasInput = TRUE;
+        hasInput = true;
     }
 
     if (!hasInput) {
@@ -113,9 +113,9 @@ void update_input(void) {
     buttons = contData->button;
 
     // check if stickX is over the 'digital' threshold for a right stick 'button' press
-    stickButtonDetected = FALSE;
+    stickButtonDetected = false;
     if (stickX > STICK_BUTTON_THRESHOLD) {
-        stickButtonDetected = TRUE;
+        stickButtonDetected = true;
         buttons |= BUTTON_STICK_RIGHT;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_RIGHT)) {
             StickExtremeX = stickX;
@@ -134,7 +134,7 @@ void update_input(void) {
 
     // likewise for left stick 'button' (comparisons reversed since we are working with negative values)
     if (stickX < -STICK_BUTTON_THRESHOLD) {
-        stickButtonDetected = TRUE;
+        stickButtonDetected = true;
         buttons |= BUTTON_STICK_LEFT;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_LEFT)) {
             StickExtremeX = stickX;
@@ -156,9 +156,9 @@ void update_input(void) {
     }
 
     // likewise for up stick 'button'
-    stickButtonDetected = FALSE;
+    stickButtonDetected = false;
     if (stickY > STICK_BUTTON_THRESHOLD) {
-        stickButtonDetected = TRUE;
+        stickButtonDetected = true;
         buttons |= BUTTON_STICK_UP;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_UP)) {
             StickExtremeY = stickY;
@@ -175,7 +175,7 @@ void update_input(void) {
 
     // likewise for down stick 'button'
     if (stickY < -STICK_BUTTON_THRESHOLD) {
-        stickButtonDetected = TRUE;
+        stickButtonDetected = true;
         buttons |= BUTTON_STICK_DOWN;
         if (!(gGameStatusPtr->prevButtons[0] & BUTTON_STICK_DOWN)) {
             StickExtremeY = stickY;

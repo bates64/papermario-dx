@@ -34,7 +34,7 @@ s16 PlayerFlowerTrailDelay = 4;
 s32 PlayerFlowerTrailVariant = 0;
 f32 PlayerCloudPuffAngle = 0.0f;
 s16 PlayerSnowSpawnDelay = 4;
-b32 PlayerNextFootParity = FALSE; // FALSE => RIGHT, TRUE => LEFT
+b32 PlayerNextFootParity = false; // false => RIGHT, true => LEFT
 s16 PlayerHedgeSpawnDelay = 4;
 s16 PlayerWaterSpawnDelay = 4;
 

@@ -21,10 +21,10 @@ s32 N(BothRightDoorModelsR)[] = { MODEL_o997, MODEL_o1094, -1 };
 
 EvtScript N(EVS_ExitDoors_pra_20_2) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_29_ENTRY_0)
     Set(LVar1, COLLIDER_deilittsw)
-    IfEq(GF_PRA_BrokeIllusion, FALSE)
+    IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, Ref(N(BothLeftDoorModelsL)))
         Set(LVar3, Ref(N(BothLeftDoorModelsR)))
     Else
@@ -41,10 +41,10 @@ EvtScript N(EVS_ExitDoors_pra_20_2) = {
 
 EvtScript N(EVS_ExitDoors_pra_34_0) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_29_ENTRY_1)
     Set(LVar1, COLLIDER_deilittse)
-    IfEq(GF_PRA_BrokeIllusion, FALSE)
+    IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, Ref(N(BothRightDoorModelsL)))
         Set(LVar3, Ref(N(BothRightDoorModelsR)))
     Else
@@ -61,10 +61,10 @@ EvtScript N(EVS_ExitDoors_pra_34_0) = {
 
 EvtScript N(EVS_ExitDoors_pra_34_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_29_ENTRY_2)
     Set(LVar1, COLLIDER_deilittne)
-    IfEq(GF_PRA_BrokeIllusion, FALSE)
+    IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, Ref(N(BothRightDoorModelsL)))
         Set(LVar3, Ref(N(BothRightDoorModelsR)))
     Else
@@ -81,10 +81,10 @@ EvtScript N(EVS_ExitDoors_pra_34_3) = {
 
 EvtScript N(EVS_ExitDoors_pra_20_3) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Call(DisablePlayerInput, TRUE)
+    Call(DisablePlayerInput, true)
     Set(LVar0, pra_29_ENTRY_3)
     Set(LVar1, COLLIDER_deilittnw)
-    IfEq(GF_PRA_BrokeIllusion, FALSE)
+    IfEq(GF_PRA_BrokeIllusion, false)
         Set(LVar2, Ref(N(BothLeftDoorModelsL)))
         Set(LVar3, Ref(N(BothLeftDoorModelsR)))
     Else
@@ -112,7 +112,7 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(pra_29_ENTRY_0)
-            IfEq(GF_PRA_BrokeIllusion, FALSE)
+            IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, Ref(N(BothLeftDoorModelsL)))
                 Set(LVar3, Ref(N(BothLeftDoorModelsR)))
             Else
@@ -120,7 +120,7 @@ EvtScript N(EVS_EnterMap) = {
                 Set(LVar3, Ref(N(NearLeftDoorModelsR)))
             EndIf
         CaseEq(pra_29_ENTRY_1)
-            IfEq(GF_PRA_BrokeIllusion, FALSE)
+            IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, Ref(N(BothRightDoorModelsL)))
                 Set(LVar3, Ref(N(BothRightDoorModelsR)))
             Else
@@ -128,7 +128,7 @@ EvtScript N(EVS_EnterMap) = {
                 Set(LVar3, Ref(N(NearRightDoorModelsR)))
             EndIf
         CaseEq(pra_29_ENTRY_2)
-            IfEq(GF_PRA_BrokeIllusion, FALSE)
+            IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, Ref(N(BothRightDoorModelsL)))
                 Set(LVar3, Ref(N(BothRightDoorModelsR)))
             Else
@@ -136,7 +136,7 @@ EvtScript N(EVS_EnterMap) = {
                 Set(LVar3, Ref(N(FarRightDoorModelsR)))
             EndIf
         CaseEq(pra_29_ENTRY_3)
-            IfEq(GF_PRA_BrokeIllusion, FALSE)
+            IfEq(GF_PRA_BrokeIllusion, false)
                 Set(LVar2, Ref(N(BothLeftDoorModelsL)))
                 Set(LVar3, Ref(N(BothLeftDoorModelsR)))
             Else
@@ -163,9 +163,9 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_GlassShimmer))
     Set(LVar0, REFLECTION_WALL_ONLY)
     IfGe(GB_StoryProgress, STORY_CH7_EXTENDED_PALACE_BRIDGE)
-        Set(LVar1, TRUE)
+        Set(LVar1, true)
     Else
-        Set(LVar1, FALSE)
+        Set(LVar1, false)
     EndIf
     Exec(N(EVS_SetupReflections))
     Exec(N(EVS_EnterMap))

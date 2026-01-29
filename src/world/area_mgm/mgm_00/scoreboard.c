@@ -103,7 +103,7 @@ void N(draw_record_display)(RecordDisplayData* data, s32 alpha) {
 #endif
 
 void N(animate_and_draw_record)(void* renderData) {
-    RecordDisplayData* data = (RecordDisplayData*)evt_get_variable(NULL, MV_RecordDisplayData);
+    RecordDisplayData* data = (RecordDisplayData*)evt_get_variable(nullptr, MV_RecordDisplayData);
 
     switch (data->state) {
         case RECORD_START_SHOW:
@@ -168,7 +168,7 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
         script->functionTempPtr[0] = data;
         data->state = RECORD_START_SHOW;
         data->alpha = 255;
-        data->workerID = create_worker_scene(NULL, &N(work_draw_record));
+        data->workerID = create_worker_scene(nullptr, &N(work_draw_record));
         data->gameType = gameType;
         evt_set_variable(script, MV_RecordDisplayData, (s32)data);
     }
@@ -182,21 +182,21 @@ API_CALLABLE(N(UpdateRecordDisplay)) {
 }
 
 EvtScript N(EVS_OnInteract_JumpRecords) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(N(UpdateRecordDisplay), MINIGAME_TYPE_JUMP)
-    Call(DisablePlayerInput, FALSE)
-    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, false)
     Return
     End
 };
 
 EvtScript N(EVS_OnInteract_SmashRecords) = {
-    Call(DisablePlayerInput, TRUE)
-    Call(DisablePlayerPhysics, TRUE)
+    Call(DisablePlayerInput, true)
+    Call(DisablePlayerPhysics, true)
     Call(N(UpdateRecordDisplay), MINIGAME_TYPE_SMASH)
-    Call(DisablePlayerInput, FALSE)
-    Call(DisablePlayerPhysics, FALSE)
+    Call(DisablePlayerInput, false)
+    Call(DisablePlayerPhysics, false)
     Return
     End
 };

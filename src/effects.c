@@ -46,7 +46,7 @@ void clear_effect_data(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
-        gEffectInstances[i] = NULL;
+        gEffectInstances[i] = nullptr;
     }
 
     osUnmapTLBAll();
@@ -76,7 +76,7 @@ void update_effects(void) {
         for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
             EffectInstance* effectInstance = gEffectInstances[i];
 
-            if (effectInstance != NULL && (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED)) {
+            if (effectInstance != nullptr && (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED)) {
                 effectInstance->shared->flags &= ~FX_SHARED_DATA_CAN_FREE;
 
                 if (gGameStatusPtr->context != CONTEXT_WORLD) {
@@ -100,9 +100,9 @@ void update_effects(void) {
                     if (sharedData->freeDelay != 0) {
                         sharedData->freeDelay--;
                     } else {
-                        if (sharedData->graphics != NULL) {
+                        if (sharedData->graphics != nullptr) {
                             general_heap_free(sharedData->graphics);
-                            sharedData->graphics = NULL;
+                            sharedData->graphics = nullptr;
                         }
                         sharedData->flags = 0;
                         osUnmapTLB(i);
@@ -119,7 +119,7 @@ void render_effects_scene(void) {
     for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
         EffectInstance* effectInstance = gEffectInstances[i];
 
-        if (effectInstance != NULL) {
+        if (effectInstance != nullptr) {
             if (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
                     if (gGameStatusPtr->context != CONTEXT_WORLD) {
@@ -138,13 +138,13 @@ void render_effects_scene(void) {
 }
 
 void render_effects_UI(void) {
-    s32 cond = TRUE;
+    s32 cond = true;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
         EffectInstance* effectInstance = gEffectInstances[i];
 
-        if (effectInstance != NULL) {
+        if (effectInstance != nullptr) {
             if (effectInstance->flags & FX_INSTANCE_FLAG_ENABLED) {
                 if (effectInstance->flags & FX_INSTANCE_FLAG_HAS_UPDATED) {
                     void (*renderUI)(EffectInstance* effect);
@@ -175,7 +175,7 @@ void render_effects_UI(void) {
                                               camera->viewportStartY + camera->viewportH);
                             gSPClipRatio(gMainGfxPos++, FRUSTRATIO_2);
 
-                            cond = FALSE;
+                            cond = false;
                             if (!(camera->flags & CAMERA_FLAG_ORTHO)) {
                                 gSPPerspNormalize(gMainGfxPos++, camera->perspNorm);
                                 gSPMatrix(gMainGfxPos++, &gDisplayContext->camPerspMatrix[gCurrentCameraID],
@@ -198,7 +198,7 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
 
     // Search for an unused instance
     for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
-        if (gEffectInstances[i] == NULL) {
+        if (gEffectInstances[i] == nullptr) {
             break;
         }
     }
@@ -207,7 +207,7 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
 
     // Allocate space for the new instance
     gEffectInstances[i] = newEffectInst = general_heap_malloc(sizeof(*newEffectInst));
-    ASSERT(newEffectInst != NULL);
+    ASSERT(newEffectInst != nullptr);
 
     sharedData = &gEffectSharedData[0];
     newEffectInst->effectID = effectBp->effectID;
@@ -226,17 +226,17 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
     // If this is the first new instance of the effect, initialize the function pointers
     if (sharedData->instanceCounter == 0) {
         sharedData->update = effectBp->update;
-        if (sharedData->update == NULL) {
+        if (sharedData->update == nullptr) {
             sharedData->renderScene = stub_effect_delegate;
         }
 
         sharedData->renderScene = effectBp->renderScene;
-        if (sharedData->renderScene == NULL) {
+        if (sharedData->renderScene == nullptr) {
             sharedData->renderScene = stub_effect_delegate;
         }
 
         sharedData->renderUI = effectBp->renderUI;
-        if (sharedData->renderUI == NULL) {
+        if (sharedData->renderUI == nullptr) {
             sharedData->renderUI = stub_effect_delegate;
         }
     }
@@ -244,7 +244,7 @@ EffectInstance* create_effect_instance(EffectBlueprint* effectBp) {
     sharedData->instanceCounter++;
     newEffectInst->shared = sharedData;
 
-    if (effectBp->init != NULL) {
+    if (effectBp->init != nullptr) {
         effectBp->init(newEffectInst);
     }
 
@@ -265,13 +265,13 @@ void remove_effect(EffectInstance* effectInstance) {
 
     ASSERT(i < ARRAY_COUNT(gEffectInstances));
 
-    if (effectInstance->data.any == NULL) {
+    if (effectInstance->data.any == nullptr) {
         general_heap_free(effectInstance);
-        gEffectInstances[i] = NULL;
+        gEffectInstances[i] = nullptr;
     } else {
         general_heap_free(effectInstance->data.any);
         general_heap_free(effectInstance);
-        gEffectInstances[i] = NULL;
+        gEffectInstances[i] = nullptr;
     }
 }
 
@@ -281,12 +281,12 @@ void remove_all_effects(void) {
     for (i = 0; i < ARRAY_COUNT(gEffectInstances); i++) {
         EffectInstance* effect = gEffectInstances[i];
 
-        if (effect != NULL && effect->flags & FX_INSTANCE_FLAG_BATTLE) {
-            if (effect->data.any != NULL) {
+        if (effect != nullptr && effect->flags & FX_INSTANCE_FLAG_BATTLE) {
+            if (effect->data.any != nullptr) {
                 general_heap_free(effect->data.any);
             }
             general_heap_free(effect);
-            gEffectInstances[i] = NULL;
+            gEffectInstances[i] = nullptr;
         }
     }
 }
@@ -330,10 +330,10 @@ s32 load_effect(s32 effectIndex) {
     dma_copy(effectEntry->dmaStart, effectEntry->dmaEnd, effectEntry->dmaDest);
 
     // If there's graphics data for the effect, allocate space and copy into the new space
-    if (effectEntry->graphicsDmaStart != NULL) {
+    if (effectEntry->graphicsDmaStart != nullptr) {
         void* graphics = general_heap_malloc(effectEntry->graphicsDmaEnd - effectEntry->graphicsDmaStart);
         sharedData->graphics = graphics;
-        ASSERT(graphics != NULL);
+        ASSERT(graphics != nullptr);
         dma_copy(effectEntry->graphicsDmaStart, effectEntry->graphicsDmaEnd, sharedData->graphics);
     }
 

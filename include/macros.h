@@ -49,7 +49,7 @@
 //#ifdef DEBUG
 #define IS_DEBUG_PANIC(statement) is_debug_panic(statement)
 /*#else
-#define IS_DEBUG_PANIC(statement) do {} while(TRUE)
+#define IS_DEBUG_PANIC(statement) do {} while(true)
 #endif*/
 
 #define PANIC() IS_DEBUG_PANIC("Panic")

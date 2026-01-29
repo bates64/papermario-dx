@@ -1,7 +1,7 @@
 #include "PR/osint.h"
 
 OSPri osGetThreadPri(OSThread *thread) {
-    if (thread == NULL) {
+    if (thread == nullptr) {
         thread = __osRunningThread;
     }
 

@@ -85,14 +85,14 @@ EvtScript N(EVS_Main) = {
     Switch(GB_StoryProgress)
         CaseOrEq(STORY_CH4_BEGAN_PEACH_MISSION)
         CaseOrEq(STORY_CH5_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, FALSE, Ref(N(EarlyNPCs)))
+            Call(MakeNpcs, false, Ref(N(EarlyNPCs)))
         EndCaseGroup
         CaseEq(STORY_CH6_BEGAN_PEACH_MISSION)
             Call(N(SetAvailableDisguise), PEACH_DISGUISE_KOOPATROL)
-            Call(MakeNpcs, FALSE, Ref(N(LaterNPCs)))
+            Call(MakeNpcs, false, Ref(N(LaterNPCs)))
         CaseDefault
-            Call(EnableModel, MODEL_o273, FALSE)
-            Call(EnableModel, MODEL_o274, FALSE)
+            Call(EnableModel, MODEL_o273, false)
+            Call(EnableModel, MODEL_o274, false)
     EndSwitch
     ExecWait(N(EVS_MakeEntities))
     IfGe(GB_StoryProgress, STORY_CH8_REACHED_BOWSERS_CASTLE)

@@ -43,7 +43,7 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_DRY_DRY_DESERT)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(GF_MAP_DryDryDesert, TRUE)
+    Set(GF_MAP_DryDryDesert, true)
     ExecWait(N(EVS_MakeEntities))
     Call(SetMusic, 0, SONG_MT_RUGGED, 0, VOL_LEVEL_FULL)
     Exec(N(EVS_EnterMap))

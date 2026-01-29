@@ -101,14 +101,14 @@ EvtScript N(EVS_Main) = {
     EndSwitch
     Switch(GB_StoryProgress)
         CaseEq(STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-            Call(MakeNpcs, FALSE, Ref(N(Chapter0NPCs)))
+            Call(MakeNpcs, false, Ref(N(Chapter0NPCs)))
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, FALSE, Ref(N(Chapter1NPCs)))
+            Call(MakeNpcs, false, Ref(N(Chapter1NPCs)))
         CaseEq(STORY_CH3_BEGAN_PEACH_MISSION)
-            Call(MakeNpcs, FALSE, Ref(N(Chapter3NPCs)))
+            Call(MakeNpcs, false, Ref(N(Chapter3NPCs)))
     EndSwitch
     IfNe(GB_StoryProgress, STORY_CH1_BEGAN_PEACH_MISSION)
-        Call(EnableModel, MODEL_o76, FALSE)
+        Call(EnableModel, MODEL_o76, false)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o76, COLLIDER_FLAGS_UPPER_MASK)
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_g25, COLLIDER_FLAGS_UPPER_MASK)
@@ -121,7 +121,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetModelCustomGfx, MODEL_o151, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
     Call(SetTexPanner, MODEL_o152, TEX_PANNER_0)
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_0)
@@ -131,7 +131,7 @@ EvtScript N(EVS_Main) = {
         Exec(N(EVS_UpdateTexturePan))
     EndThread
     Call(SetModelCustomGfx, MODEL_o152, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
-    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), NULL)
+    Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Exec(N(EVS_SetupMusic))
     Call(GetEntryID, LVar0)

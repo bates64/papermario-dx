@@ -50,13 +50,13 @@ void btl_state_update_end_demo_battle(void) {
         case BTL_SUBSTATE_EXEC_STAGE_SCRIPT:
             BattleScreenFadeAmt = 255;
             gBattleStatus.flags1 &= ~BS_FLAGS1_ACTORS_VISIBLE;
-            if (gCurrentStagePtr == NULL) {
+            if (gCurrentStagePtr == nullptr) {
                 stage = battle->stage;
             } else {
                 stage = gCurrentStagePtr->stage;
             }
 
-            if (stage->postBattle == NULL) {
+            if (stage->postBattle == nullptr) {
                 gBattleSubState = BTL_SUBSTATE_CLEANUP;
             } else {
                 battleStatus->controlScript = start_script(stage->postBattle, EVT_PRIORITY_A, 0);
@@ -76,12 +76,12 @@ void btl_state_update_end_demo_battle(void) {
             for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {
                 Actor* enemy = battleStatus->enemyActors[i];
 
-                if (enemy != NULL) {
+                if (enemy != nullptr) {
                     btl_delete_actor(enemy);
                 }
             }
 
-            if (battleStatus->partnerActor != NULL) {
+            if (battleStatus->partnerActor != nullptr) {
                 btl_delete_actor(battleStatus->partnerActor);
             }
 

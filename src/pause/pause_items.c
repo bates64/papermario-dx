@@ -42,7 +42,7 @@ MenuWindowBP gPauseItemsWindowBPs[] = {
         .height = 154,
         .priority = WINDOW_PRIORITY_1,
         .fpDrawContents = &pause_items_draw_contents,
-        .tab = NULL,
+        .tab = nullptr,
         .parentID = WIN_PAUSE_MAIN,
         .fpUpdate = { WINDOW_UPDATE_HIDE },
         .extraFlags = 0,
@@ -50,7 +50,7 @@ MenuWindowBP gPauseItemsWindowBPs[] = {
     }
 };
 MenuPanel gPausePanelItems = {
-    .initialized = FALSE,
+    .initialized = false,
     .col = 0,
     .row = 0,
     .selected = 0,
@@ -58,7 +58,7 @@ MenuPanel gPausePanelItems = {
     .numCols = 0,
     .numRows = 0,
     .numPages = 0,
-    .gridData = NULL,
+    .gridData = nullptr,
     .fpInit = &pause_items_init,
     .fpHandleInput = &pause_items_handle_input,
     .fpUpdate = &pause_items_update,
@@ -91,7 +91,7 @@ s32 pause_items_get_row(s32 page, s32 itemIdx) {
 
 s32 pause_items_is_visible(s32 y) {
     if (y < gPauseItemsCurrentScrollPos - 32) {
-        return FALSE;
+        return false;
     }
     return y < gPauseItemsCurrentScrollPos + 128;
 }
@@ -177,7 +177,7 @@ void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
 
             for (itemIndex = 0; itemIndex < page->count; itemIndex++) {
                 itemID = gPauseItemsItemIDs[page->startIndex + itemIndex];
-                isSelected = FALSE;
+                isSelected = false;
                 if (itemID == ITEM_INVALID) {
                     continue;
                 }
@@ -191,7 +191,7 @@ void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
                     gPauseItemsLevel == 1 &&
                     pause_items_get_column(pageIndex, itemIndex) == currentItemRow &&
                     pause_items_get_row(pageIndex, itemIndex) == currentItemColumn) {
-                    isSelected = TRUE;
+                    isSelected = true;
                 }
 
                 itemOffsetX = 0;
@@ -364,7 +364,7 @@ void pause_items_load_items(s32 invItems) {
     s16* itemMenuItemIDs;
 
     D_802705D0 = 0;
-    if (invItems == TRUE) {
+    if (invItems == true) {
         for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
             if (playerData->invItems[i] != ITEM_NONE) {
                 gPauseItemsItemIDs[totalItems] = playerData->invItems[i];
@@ -404,7 +404,7 @@ void pause_items_load_items(s32 invItems) {
         page->listStart = i * 8;
         page->numCols = 1;
         page->numRows = 8;
-        page->enabled = TRUE;
+        page->enabled = true;
         page->startIndex =  i * 8;
         page->count = 8;
     }
@@ -412,7 +412,7 @@ void pause_items_load_items(s32 invItems) {
     if ((gPauseItemsNumItems % 8) != 0) {
         page->listStart = i * 8;
         page->numCols = 1;
-        page->enabled = TRUE;
+        page->enabled = true;
         page->startIndex = i * 8;
         page->count = gPauseItemsNumItems % 8;
         page->numRows = page->count;
@@ -421,7 +421,7 @@ void pause_items_load_items(s32 invItems) {
     }
 
     for (; i < ARRAY_COUNT(gPauseItemsPages); i++, page++) {
-        page->enabled = FALSE;
+        page->enabled = false;
     }
 
     gPauseItemsTargetScrollPos = gPauseItemsCurrentScrollPos = pause_items_get_pos_y(0, 0);
@@ -432,7 +432,7 @@ void pause_items_init(MenuPanel* panel) {
 
     gPauseItemsLevel = 0;
     gPauseItemsCurrentTab = 0;
-    pause_items_load_items(FALSE);
+    pause_items_load_items(false);
 
     for (i = 0; i < ARRAY_COUNT(gPauseItemsHIDs); i++) {
         gPauseItemsHIDs[i] = hud_element_create(gPauseItemsHudScripts[i]);
@@ -444,7 +444,7 @@ void pause_items_init(MenuPanel* panel) {
     }
 
     setup_pause_menu_tab(gPauseItemsWindowBPs, ARRAY_COUNT(gPauseItemsWindowBPs));
-    panel->initialized = TRUE;
+    panel->initialized = true;
 }
 
 void pause_items_handle_input(MenuPanel* panel) {
@@ -547,7 +547,7 @@ void pause_items_handle_input(MenuPanel* panel) {
             gPauseCurrentDescMsg = gItemTable[gPauseItemsSelectedItem].fullDescMsg;
         } else {
             gPauseCurrentDescMsg = MSG_NONE;
-            gPauseCurrentDescIconScript = NULL;
+            gPauseCurrentDescIconScript = nullptr;
         }
     } else {
         if (gPauseItemsCurrentTab == 1) {
@@ -556,7 +556,7 @@ void pause_items_handle_input(MenuPanel* panel) {
             gPauseCurrentDescMsg = pause_get_menu_msg(PAUSE_MSG_DESC_KEY_ITEMS);
         }
 
-        gPauseCurrentDescIconScript = NULL;
+        gPauseCurrentDescIconScript = nullptr;
     }
 
     if (gPausePressedButtons & BUTTON_B) {
