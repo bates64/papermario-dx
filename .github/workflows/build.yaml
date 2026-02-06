@@ -53,31 +53,6 @@ jobs:
         with:
           name: ${{ steps.repo-name.outputs.repository-name }}.bps
           path: ver/us/build/papermario.bps
-  prerelease:
-    name: Prerelease
-    runs-on: ubuntu-latest
-    needs: game
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Get repository name
-        id: repo-name
-        uses: MariachiBear/get-repo-name-action@v1.1.0
-        with:
-          string-case: paramCase
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ steps.repo-name.outputs.repository-name }}.bps
-          path: ${{ steps.repo-name.outputs.repository-name }}.bps
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: "latest"
-          prerelease: true
-          name: Development build
-          files: ${{ steps.repo-name.outputs.repository-name }}.bps
   release:
     name: Release
     runs-on: ubuntu-latest
