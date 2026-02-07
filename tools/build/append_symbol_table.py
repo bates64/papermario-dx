@@ -1,9 +1,8 @@
-import subprocess
-from typing import List, Tuple
-import struct
-import sys
 import io
-
+import struct
+import subprocess
+import sys
+from typing import List, Tuple
 
 SYMBOL_TABLE_PTR_ROM_ADDR = 0x18
 
@@ -13,7 +12,8 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
     addr2line = {}  # debug info
 
     process = subprocess.Popen(
-        ["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"], stdout=subprocess.PIPE
+        ["mips-linux-gnu-readelf", "-s", elf, "--wide", "-wL", "--demangle"],
+        stdout=subprocess.PIPE,
     )
     for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
         parts = line.split()
@@ -29,7 +29,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         # npc.c                                    120          0x8003910c               x
         elif len(parts) >= 4 and parts[2].startswith("0x"):
             file_basename = parts[0]
-            if not file_basename.endswith(".c"):
+            if not file_basename.endswith(".c") and not file_basename.endswith(".cpp"):
                 continue
             line_number = int(parts[1])
             addr = int(parts[2], 0)
@@ -50,7 +50,9 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
                 else:
                     break
             if closest_addr is not None:
-                symbols.append((addr, addr2name[closest_addr], file_basename, line_number))
+                symbols.append(
+                    (addr, addr2name[closest_addr], file_basename, line_number)
+                )
 
     # non-debug builds
     if len(symbols) == 0:
@@ -71,7 +73,11 @@ if __name__ == "__main__":
     elf = z64.replace(".z64", ".elf")
 
     symbols = readelf(elf)
-    root_dir = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
+    root_dir = (
+        subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
+        .decode("utf-8")
+        .strip()
+    )
 
     with open(z64, "r+b") as f:
         # seek to end
@@ -114,7 +120,9 @@ if __name__ == "__main__":
             if file_basename == "":
                 f.write(struct.pack(">I", 0))
             else:
-                f.write(struct.pack(">I", add_string(f"{file_basename}:{line_number}")))  # can make more efficient
+                f.write(
+                    struct.pack(">I", add_string(f"{file_basename}:{line_number}"))
+                )  # can make more efficient
 
         f.write(strings)
 

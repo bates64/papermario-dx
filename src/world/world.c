@@ -30,8 +30,8 @@ char wMapBgName[0x14];
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
-    /* 0x00 */ char name[16];
-    /* 0x10 */ u32 offset;
+    /* 0x00 */ char name[16]; // "END DATA" sentinel
+    /* 0x10 */ u32 offset; // sentinel holds offset of next asset table
     /* 0x14 */ u32 compressedLength;
     /* 0x18 */ u32 decompressedLength;
 } AssetHeader; // size = 0x1C
@@ -259,7 +259,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
-        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
+        ASSERT_MSG(strcmp(curAsset->name, "END DATA") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *decompressedSize = curAsset->decompressedLength;
@@ -281,7 +281,7 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
     curAsset = &assetTableBuffer[0];
     dma_copy((u8*) ASSET_TABLE_FIRST_ENTRY, (u8*) ASSET_TABLE_FIRST_ENTRY + firstHeader.offset, assetTableBuffer);
     while (strcmp(curAsset->name, assetName) != 0) {
-        ASSERT_MSG(strcmp(curAsset->name, "end_data") != 0, "Asset not found: %s", assetName);
+        ASSERT_MSG(strcmp(curAsset->name, "END DATA") != 0, "Asset not found: %s", assetName);
         curAsset++;
     }
     *compressedSize = curAsset->compressedLength;
