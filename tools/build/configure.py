@@ -502,6 +502,7 @@ class Configure:
             task: str,
             variables: Dict[str, str] = {},
             implicit_outputs: List[str] = [],
+            implicit_inputs: List[str] = [],
             asset_deps: List[str] = [],
         ):
             if not isinstance(object_paths, list):
@@ -533,7 +534,7 @@ class Configure:
             if needs_build:
                 skip_outputs.update(object_strs)
 
-                implicit = []
+                implicit = [] + implicit_inputs
                 order_only = []
 
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
@@ -1057,9 +1058,10 @@ class Configure:
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
 
             elif seg.type == "pm_map_data":
-                # flat list of (uncompressed path, compressed? path) pairs
-                bin_yay0s: List[Path] = []
+                mapfs_inputs: List[Path] = []
+                mapfs_files: List[dict] = []
                 src_dir = Path("assets/x") / seg.name
+                compress = False
 
                 for path in entry.src_paths:
                     name = path.stem
@@ -1077,9 +1079,7 @@ class Configure:
                                 "img_flags": "",
                             },
                         )
-                    elif path.suffixes[-2:] == [".raw", ".dat"]:
-                        compress = False
-                        bin_path = path
+                        asset_name = name
                     elif name == "title_data":
                         compress = True
 
@@ -1145,6 +1145,7 @@ class Configure:
                             imgs = [logotype_path, copyright_path, press_start_path]
 
                         build(bin_path, imgs, "pack_title_data")
+                        asset_name = "title_data"
                     elif name.endswith("_bg"):
                         compress = True
                         build(
@@ -1156,6 +1157,8 @@ class Configure:
                                 "img_flags": "",
                             },
                         )
+                        base_name = name[:-4]
+                        asset_name = name
                     elif name.endswith("_tex"):
                         compress = False
                         tex_dir = path.parent / name
@@ -1169,6 +1172,8 @@ class Configure:
                             },
                             asset_deps=[f"mapfs/tex/{name}"],
                         )
+                        base_name = name[:-4]
+                        asset_name = name
                     elif name.endswith("_shape_built"):
                         base_name = name[:-6]
                         map_name = base_name[:-6]
@@ -1215,6 +1220,7 @@ class Configure:
 
                         compress = True
                         out_dir = out_dir / "geom"
+                        asset_name = f"{map_name}_shape"
                     elif name.endswith("_hit"):
                         base_name = name
                         map_name = base_name[:-4]
@@ -1243,21 +1249,40 @@ class Configure:
                                 [xml_path],
                                 "map_header",
                             )
+
+                        asset_name = name
                     else:
                         compress = True
                         bin_path = path
+                        asset_name = name
 
+                    yay0_path = out_dir / f"{name}.Yay0"
                     if compress:
-                        yay0_path = out_dir / f"{name}.Yay0"
                         build(yay0_path, [bin_path], "yay0")
+                        mapfs_inputs.append(yay0_path)
                     else:
-                        yay0_path = bin_path
+                        mapfs_inputs.append(bin_path)
 
-                    bin_yay0s.append(bin_path)
-                    bin_yay0s.append(yay0_path)
+                    mapfs_files.append(
+                        {
+                            "name": asset_name,
+                            "decompressed": str(bin_path),
+                            "compressed": str(yay0_path) if compress else None,
+                        }
+                    )
+
+                # write mapfs_files to a file for mapfs task to read
+                mapfs_json = self.build_path() / "mapfs.json"
+                with open(mapfs_json, "w") as f:
+                    json.dump(mapfs_files, f)
 
                 # combine
-                build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
+                build(
+                    entry.object_path.with_suffix(""),
+                    [mapfs_json],
+                    "mapfs",
+                    implicit_inputs=[str(s) for s in mapfs_inputs],
+                )
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif seg.type == "pm_sprite_shading_profiles":
                 header_path = str(

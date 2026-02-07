@@ -16,25 +16,28 @@
 #define ASSET_TABLE_ROM_START 0x1E40000
 #endif
 
+// should match values in tools/build/mapfs/combine.py
 #define ASSET_TABLE_HEADER_SIZE 0x20
+#define ASSET_TABLE_NAME_LEN 64
+
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
 BSS MapConfig* gMapConfig;
 BSS MapSettings gMapSettings;
 
-char wMapHitName[0x18];
-char wMapShapeName[0x18];
-char wMapTexName[0x18];
-char wMapBgName[0x14];
+char wMapHitName[64];
+char wMapShapeName[64];
+char wMapTexName[64];
+char wMapBgName[64];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 typedef struct {
-    /* 0x00 */ char name[16]; // "END DATA" sentinel
-    /* 0x10 */ u32 offset; // sentinel holds offset of next asset table
-    /* 0x14 */ u32 compressedLength;
-    /* 0x18 */ u32 decompressedLength;
-} AssetHeader; // size = 0x1C
+    char name[ASSET_TABLE_NAME_LEN]; // "END DATA" sentinel
+    u32 offset; // sentinel holds offset of next asset table
+    u32 compressedLength;
+    u32 decompressedLength;
+} AssetHeader;
 
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
@@ -44,6 +47,20 @@ void load_map_hit_asset(void);
 #endif
 
 extern ShapeFile gMapShapeData;
+
+/** Split an asset name into its namespace and name components. */
+void parse_asset_name(char** name, char** namespace) {
+    // format: namespace:name
+    char* colon = strchr(*name, ':');
+    if (colon) {
+        *colon = '\0';
+        *namespace = *name;
+        *name = colon + 1;
+    } else {
+        // just a name
+        *namespace = nullptr;
+    }
+}
 
 void load_map_script_lib(void) {
     DMA_COPY_SEGMENT(world_script_api);
@@ -103,6 +120,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     sprintf(wMapShapeName, "%s_shape", mapConfig->id);
     sprintf(wMapHitName, "%s_hit", mapConfig->id);
+
+    // TODO: allow specifying this
     strcpy(texStr, mapConfig->id);
     texStr[3] = '\0';
     sprintf(wMapTexName, "%s_tex", texStr);
