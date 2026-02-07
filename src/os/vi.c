@@ -1,5 +1,4 @@
 #include "ultra64.h"
-#include "include_asm.h"
 #include "macros.h"
 #include "PR/os_internal.h"
 #include "PR/os_vi.h"

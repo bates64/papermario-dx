@@ -2,7 +2,6 @@
 #define _MACROS_H_
 
 #include "types.h"
-#include "include_asm.h"
 
 #define BSS __attribute__ ((nocommon, section (".bss")))
 #define TRANSPARENT_UNION __attribute__ ((__transparent_union__))
