@@ -2,7 +2,7 @@
 
 s32 N(map_init)(void) {
     if (evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO) {
-        sprintf(wMapBgName, "nok_bg");
+        sprintf(wMapBgName, "backgrounds/nok_bg");
     }
     return false;
 }

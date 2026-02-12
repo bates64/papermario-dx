@@ -2,8 +2,8 @@
 
 s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
-    sprintf(wMapShapeName, "pra_05_shape");
-    sprintf(wMapHitName, "pra_05_hit");
+    sprintf(wMapShapeName, "areas/pra/pra_05_shape");
+    sprintf(wMapHitName, "areas/pra/pra_05_hit");
     return false;
 }
 

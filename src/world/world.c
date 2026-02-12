@@ -70,7 +70,6 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     MapConfig* mapConfig;
     MapSettings* mapSettings;
-    char texStr[17];
     s32 decompressedSize;
 
     sfx_stop_env_sounds();
@@ -118,17 +117,24 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     dx_debug_set_map_info(mapConfig->id, gGameStatus.entryID);
     #endif
 
-    sprintf(wMapShapeName, "%s_shape", mapConfig->id);
-    sprintf(wMapHitName, "%s_hit", mapConfig->id);
 
-    // TODO: allow specifying this
-    strcpy(texStr, mapConfig->id);
-    texStr[3] = '\0';
-    sprintf(wMapTexName, "%s_tex", texStr);
+    // Extract area code from map ID (first 3 chars, with special cases)
+    char area[4];
+    if (strcmp(mapConfig->id, "machi") == 0) {
+        strcpy(area, "mac");
+    } else {
+        strncpy(area, mapConfig->id, 3);
+        area[3] = '\0';
+    }
+
+    // Generate hierarchical asset names
+    sprintf(wMapShapeName, "areas/%s/%s_shape", area, mapConfig->id);
+    sprintf(wMapHitName, "areas/%s/%s_hit", area, mapConfig->id);
+    sprintf(wMapTexName, "areas/%s/%s_tex", area, area);
 
     gMapConfig = mapConfig;
     if (mapConfig->bgName != nullptr) {
-        strcpy(wMapBgName, mapConfig->bgName);
+        sprintf(wMapBgName, "backgrounds/%s", mapConfig->bgName);
     }
     load_map_script_lib();
 

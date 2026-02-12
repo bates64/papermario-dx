@@ -167,15 +167,15 @@ s8 gPausePartnersGridData[] = {
 };
 
 char* gPausePartnersAssetNames[] = {
-    "party_kurio",
-    "party_kameki",
-    "party_pinki",
-    "party_pareta",
-    "party_resa",
-    "party_akari",
-    "party_opuku",
-    "party_pokopi",
-    "letter_peach"
+    "party/goombario_art",
+    "party/kooper_art",
+    "party/bombette_art",
+    "party/parakarry_art",
+    "party/bow_art",
+    "party/watt_art",
+    "party/sushie_art",
+    "party/lakilester_art",
+    "letter_peach" // doesn't exist? unused? lol
 };
 
 s8* gPausePartnersImageBuffers[] = { gPauseBufferImg1, gPauseBufferImg2 };

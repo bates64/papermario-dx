@@ -19,7 +19,7 @@ MapSettings N(settings) = {
 
 s32 N(map_init)(void) {
     if (gGameStatusPtr->entryID == mac_04_ENTRY_4) {
-        sprintf(wMapBgName, "hos_bg");
+        sprintf(wMapBgName, "backgrounds/hos_bg");
     }
     return false;
 }

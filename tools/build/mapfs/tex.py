@@ -39,7 +39,13 @@ def img_from_json(json_data, tex_name: str, asset_stack: Tuple[Path, ...]) -> Te
     (ret.main_fmt, ret.main_depth) = get_format_code(main_fmt_name)
 
     # read main image
-    img_path = get_asset_path(Path(f"mapfs/tex/{tex_name}/{ret.img_name}.png"), asset_stack)
+    # Try new structure first: mapfs/areas/{area}/{area}.tex/{name}.png
+    area = tex_name[:-4]  # Strip _tex suffix
+    try:
+        img_path = get_asset_path(Path(f"mapfs/areas/{area}/{area}.tex/{ret.img_name}.png"), asset_stack)
+    except FileNotFoundError:
+        # Fall back to old structure: mapfs/tex/{tex_name}/{name}.png
+        img_path = get_asset_path(Path(f"mapfs/tex/{tex_name}/{ret.img_name}.png"), asset_stack)
     if not os.path.isfile(img_path):
         raise Exception(f"Could not find main image for texture: {ret.img_name}")
     (
@@ -68,7 +74,13 @@ def img_from_json(json_data, tex_name: str, asset_stack: Tuple[Path, ...]) -> Te
             ret.extra_tiles = TILES_INDEPENDENT_AUX
 
         # read aux image
-        img_path = get_asset_path(Path(f"mapfs/tex/{tex_name}/{ret.img_name}_AUX.png"), asset_stack)
+        # Try new structure first
+        area = tex_name[:-4]  # Strip _tex suffix
+        try:
+            img_path = get_asset_path(Path(f"mapfs/areas/{area}/{area}.tex/{ret.img_name}_AUX.png"), asset_stack)
+        except FileNotFoundError:
+            # Fall back to old structure
+            img_path = get_asset_path(Path(f"mapfs/tex/{tex_name}/{ret.img_name}_AUX.png"), asset_stack)
         if not os.path.isfile(img_path):
             raise Exception(f"Could not find AUX image for texture: {ret.img_name}")
         (
@@ -105,10 +117,19 @@ def img_from_json(json_data, tex_name: str, asset_stack: Tuple[Path, ...]) -> Te
                 mmw = ret.main_width // divisor
                 mmh = ret.main_height // divisor
 
-                img_path = get_asset_path(
-                    Path(f"mapfs/tex/{tex_name}/{ret.img_name}_MM{mipmap_idx}.png"),
-                    asset_stack,
-                )
+                # Try new structure first
+                area = tex_name[:-4]  # Strip _tex suffix
+                try:
+                    img_path = get_asset_path(
+                        Path(f"mapfs/areas/{area}/{area}.tex/{ret.img_name}_MM{mipmap_idx}.png"),
+                        asset_stack,
+                    )
+                except FileNotFoundError:
+                    # Fall back to old structure
+                    img_path = get_asset_path(
+                        Path(f"mapfs/tex/{tex_name}/{ret.img_name}_MM{mipmap_idx}.png"),
+                        asset_stack,
+                    )
                 if not os.path.isfile(img_path):
                     raise Exception(
                         f"Texture {ret.img_name} is missing mipmap level {mipmap_idx} (size = {mmw} x {mmh})"
@@ -148,7 +169,13 @@ def img_from_json(json_data, tex_name: str, asset_stack: Tuple[Path, ...]) -> Te
 def build(out_path: Path, tex_name: str, asset_stack: Tuple[Path, ...], endian: str = "big"):
     out_bytes = bytearray()
 
-    json_path = get_asset_path(Path(f"mapfs/tex/{tex_name}.json"), asset_stack)
+    # Try new structure first: mapfs/areas/{area}/{area}.tex/textures.json
+    area = tex_name[:-4]  # Strip _tex suffix
+    try:
+        json_path = get_asset_path(Path(f"mapfs/areas/{area}/{area}.tex/textures.json"), asset_stack)
+    except FileNotFoundError:
+        # Fall back to old structure: mapfs/tex/{tex_name}.json
+        json_path = get_asset_path(Path(f"mapfs/tex/{tex_name}.json"), asset_stack)
 
     with open(json_path) as json_file:
         json_str = json_file.read()

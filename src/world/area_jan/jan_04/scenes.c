@@ -8,7 +8,7 @@ BSS MessageImageData N(image);
 
 API_CALLABLE(N(LoadPartyImage)) {
     u32 decompressedSize;
-    void* compressed = load_asset_by_name("party_opuku", &decompressedSize);
+    void* compressed = load_asset_by_name("party/sushie_art", &decompressedSize);
 
     decode_yay0(compressed, &N(palette));
     general_heap_free(compressed);

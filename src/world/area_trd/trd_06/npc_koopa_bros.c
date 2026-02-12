@@ -131,5 +131,5 @@ NpcGroupList N(NpcGroup_KoopaBros) = {
     {}
 };
 
-#define PARTY_IMAGE "party_pinki"
+#define PARTY_IMAGE "party/bombette_art"
 #include "world/common/todo/LoadPartyImage.inc.c"

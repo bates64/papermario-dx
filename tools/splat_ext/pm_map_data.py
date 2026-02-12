@@ -14,7 +14,6 @@ from tex_archives import TexArchive
 
 script_dir = Path(os.path.dirname(os.path.realpath(__file__)))
 
-
 def decode_null_terminated_ascii(data):
     length = 0
     for byte in data:
@@ -50,6 +49,7 @@ def parse_palette(data):
 
 
 def add_file_ext(name: str, linker: bool = False) -> str:
+    """Get file path for asset extraction (split phase - uses old flat structure)."""
     if name.startswith("party_"):
         return "party/" + name + ".png"
     elif name.endswith("_hit"):
@@ -64,6 +64,56 @@ def add_file_ext(name: str, linker: bool = False) -> str:
         return "bg/" + name + ".png"
     else:
         return name + ".bin"
+
+
+def get_new_asset_path(name: str, fs_dir: Path) -> Path:
+    """
+    Get file path for asset after reorganization (linker phase - uses new structure).
+
+    Returns a path with the correct stem (filename) for configure.py to extract.
+    The actual file location may be different - configure.py will resolve it.
+    """
+    if name.startswith("party_"):
+        # Party icons: Preserve original name in path for configure.py to extract
+        # The actual file location will be resolved by resolve_mapfs_asset
+        return fs_dir / "party" / f"{name}.png"
+    elif name == "title_data":
+        # Title data stays as-is (built from title/ directory)
+        return fs_dir / "title" / f"{name}.bin"
+    elif name.endswith("_tex"):
+        # Textures: tex/kmr_tex -> areas/kmr/kmr.tex/
+        # Return path with correct stem, configure.py will find the directory
+        area = name[:-4]  # Strip _tex
+        return fs_dir / "areas" / area / (area + ".tex") / f"{name}.bin"
+    elif name.endswith("_bg"):
+        # Backgrounds: bg/kmr_bg.png -> backgrounds/kmr.bg.png
+        # Return path with correct stem
+        bg_name = name[:-3]  # Strip _bg
+        return fs_dir / "backgrounds" / f"{name}.png"
+    elif name.endswith("_hit"):
+        # Hit files: geom/kmr_20_hit.bin -> areas/kmr/kmr_20.map/hit.bin
+        map_name = name[:-4]  # Strip _hit
+        area = parse_area_from_map_name(map_name)
+        ext = ".stage" if "_bt" in map_name else ".map"
+        return fs_dir / "areas" / area / (map_name + ext) / f"{name}.bin"
+    elif name.endswith("_shape"):
+        # Shape files: geom/kmr_20_shape_built.bin -> areas/kmr/kmr_20.map/shape_built.bin
+        # Note: linker adds _built suffix
+        map_name = name[:-6]  # Strip _shape
+        area = parse_area_from_map_name(map_name)
+        ext = ".stage" if "_bt" in map_name else ".map"
+        return fs_dir / "areas" / area / (map_name + ext) / f"{name}_built.bin"
+    else:
+        return fs_dir / f"{name}.bin"
+
+
+def parse_area_from_map_name(map_name: str) -> str:
+    """Extract area code from map name (must match reorganize_mapfs.py logic)."""
+    if map_name == "machi":
+        return "mac"
+    if "_" in map_name:
+        return map_name.split("_")[0]
+    return map_name[:3]
 
 
 class N64SegPm_map_data(Segment):
@@ -234,9 +284,18 @@ class N64SegPm_map_data(Segment):
 
         fs_dir = options.opts.asset_path / self.dir / self.name
 
+        # Check if mapfs has been reorganized to new structure
+        new_structure_exists = (fs_dir / "areas").exists()
+
         src_paths = []
         for name, file in self.files.items():
-            src_paths.append(fs_dir / add_file_ext(name, linker=True))
+            if new_structure_exists:
+                # Use new structure paths (after reorganize_mapfs.py)
+                src_paths.append(get_new_asset_path(name, fs_dir))
+            else:
+                # Use old structure paths (before reorganization)
+                src_paths.append(fs_dir / add_file_ext(name, linker=True))
+
             if file.get("dump_raw", False):
                 src_paths.append(fs_dir / f"{name}.raw.dat")
 

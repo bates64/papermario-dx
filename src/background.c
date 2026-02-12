@@ -2,8 +2,8 @@
 #include "model.h"
 #include <string.h>
 
-char gCloudyFlowerFieldsBg[] = "fla_bg";
-char gSunnyFlowerFieldsBg[] = "flb_bg";
+char gCloudyFlowerFieldsBg[] = "backgrounds/fla_bg";
+char gSunnyFlowerFieldsBg[] = "backgrounds/flb_bg";
 s8 gBackroundWaveEnabled = false;
 s16 gBackroundTextureYOffset = 0;
 f32 gBackroundWavePhase = 0.0f;

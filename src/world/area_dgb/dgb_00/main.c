@@ -1,9 +1,9 @@
 #include "dgb_00.h"
 
 s32 N(map_init)(void) {
-    sprintf(wMapShapeName, "arn_20_shape");
-    sprintf(wMapHitName, "arn_20_hit");
-    sprintf(wMapTexName, "arn_tex");
+    sprintf(wMapShapeName, "areas/arn/arn_20_shape");
+    sprintf(wMapHitName, "areas/arn/arn_20_hit");
+    sprintf(wMapTexName, "areas/arn/arn_tex");
     return false;
 }
 
