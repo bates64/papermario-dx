@@ -32,13 +32,6 @@ char wMapBgName[64];
 
 s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
-typedef struct {
-    char name[ASSET_TABLE_NAME_LEN]; // "END DATA" sentinel
-    u32 offset; // sentinel holds offset of next asset table
-    u32 compressedLength;
-    u32 decompressedLength;
-} AssetHeader;
-
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
 
@@ -271,72 +264,6 @@ NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) 
 
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID) {
     ASSERT_MSG(get_map_IDs_by_name(mapName, areaID, mapID), "Map not found: %s", mapName);
-}
-
-void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
-    AssetHeader firstHeader;
-    AssetHeader* assetTableBuffer;
-    AssetHeader* curAsset;
-    void* ret;
-    u8* base = (u8*) ASSET_TABLE_FIRST_ENTRY;
-
-    dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = heap_malloc(firstHeader.offset);
-    curAsset = &assetTableBuffer[0];
-    dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-    while (strcmp(curAsset->name, assetName) != 0) {
-        if (strcmp(curAsset->name, "END DATA") == 0) {
-            ASSERT_MSG(curAsset->offset != 0, "Asset not found: %s", assetName);
-
-            // Follow link to next asset table
-            base = (u8*) curAsset->offset;
-            dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-            heap_free(assetTableBuffer);
-            assetTableBuffer = heap_malloc(firstHeader.offset);
-            curAsset = &assetTableBuffer[0];
-            dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-        } else {
-            curAsset++;
-        }
-    }
-    *decompressedSize = curAsset->decompressedLength;
-    ret = general_heap_malloc(curAsset->compressedLength);
-    dma_copy(base + curAsset->offset,
-             base + curAsset->offset + curAsset->compressedLength, ret);
-    heap_free(assetTableBuffer);
-    return ret;
-}
-
-s32 get_asset_offset(char* assetName, s32* compressedSize) {
-    AssetHeader firstHeader;
-    AssetHeader* assetTableBuffer;
-    AssetHeader* curAsset;
-    s32 ret;
-    u8* base = (u8*) ASSET_TABLE_FIRST_ENTRY;
-
-    dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = heap_malloc(firstHeader.offset);
-    curAsset = &assetTableBuffer[0];
-    dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-    while (strcmp(curAsset->name, assetName) != 0) {
-        if (strcmp(curAsset->name, "END DATA") == 0) {
-            ASSERT_MSG(curAsset->offset != 0, "Asset not found: %s", assetName);
-
-            // Follow link to next asset table
-            base = (u8*) curAsset->offset;
-            dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-            heap_free(assetTableBuffer);
-            assetTableBuffer = heap_malloc(firstHeader.offset);
-            curAsset = &assetTableBuffer[0];
-            dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-        } else {
-            curAsset++;
-        }
-    }
-    *compressedSize = curAsset->compressedLength;
-    ret = (u32)base + curAsset->offset;
-    heap_free(assetTableBuffer);
-    return ret;
 }
 
 #define AREA(area, jp_name) { ARRAY_COUNT(area##_maps), area##_maps, "area_" #area, jp_name }

@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "nu/nusys.h"
-#include "backtrace.h"
+#include "dx/backtrace.h"
 #include "PR/osint.h"
 
 /** @brief Enable to debug why a backtrace is wrong */

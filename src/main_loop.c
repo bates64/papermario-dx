@@ -280,6 +280,8 @@ void gfx_draw_frame(void) {
     crash_screen_set_draw_info(nuGfxCfb_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
+void create_global_heap(void);
+
 void load_engine_data(void) {
     s32 i;
 
@@ -289,6 +291,8 @@ void load_engine_data(void) {
     DMA_COPY_SEGMENT(entity);
     DMA_COPY_SEGMENT(engine2);
     DMA_COPY_SEGMENT(font_width);
+
+    create_global_heap();
 
     gOverrideFlags = 0;
     gGameStatusPtr->unk_79 = 0;

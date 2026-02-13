@@ -109,8 +109,9 @@ segments:
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, c, dx/profiling]
-    - [auto, cpp, dx/module]
     - [auto, cpp, dx/heap]
+    - [auto, cpp, dx/module]
+    - [auto, cpp, dx/asset]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
     - [auto, c, load_obfuscation_shims]
@@ -14732,8 +14733,5 @@ segments:
       - 2C_QuizQuestions
       - 2D_QuizChoices
       - 2E_Credits
-  - [0x1C84D30, bin, unk_1C84D30] # junk(?)
-  - [0x1E00000, bin, copy_1E00000] # copy of 0x1943000 - 0x1983000
   - [0x1E40000, pm_map_data, mapfs]
-  - { name: copy_27FEE22, type: bin, start: 0x27FEE22, subalign: 2 } # copy of 0x232EE22 - 0x2330000
   - [0x2800000]

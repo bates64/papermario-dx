@@ -1,6 +1,6 @@
 // Stolen from HackerSM64
 
-#include "profiling.h"
+#include "dx/profiling.h"
 #include "dx/utils.h"
 #include "game_modes.h"
 #include "PR/os_internal_reg.h"
