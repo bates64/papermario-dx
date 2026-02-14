@@ -31,7 +31,7 @@ options:
 vram_classes:
   # Main
   - { name: main, vram: 0x80025C00 }
-  - { name: engine1, vram: 0x800DC500, vram_symbol: overlays_start } # follows_classes: [main] (hard-coded in undefined_syms since BG data / map data doesn't shift currently)
+  - { name: engine1, vram: 0x800DC500, follows_classes: [main] }
   - { name: engine2, vram: 0x8010F6D0, vram_symbol: engine1_VRAM_END }
   - { name: heaps, vram: 0x80197000, vram_symbol: engine2_VRAM_END }
 
@@ -102,19 +102,18 @@ segments:
     - [auto, c, 43F0]
     - [auto, c, heap]
     - [auto, c, fio]
-    - [auto, c, dx/versioning]
     - [auto, c, curtains]
     - [auto, c, crash_screen]
-    - [auto, c, dx/utils]
-    - [auto, c, dx/backtrace]
-    - [auto, c, dx/debug_menu]
-    - [auto, c, dx/profiling]
-    - [auto, cpp, dx/heap]
-    - [auto, cpp, dx/module]
-    - [auto, cpp, dx/asset]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
-    - [auto, c, load_obfuscation_shims]
+    - [auto, cpp, dx/asset]
+    - [auto, c, dx/backtrace]
+    - [auto, c, dx/debug_menu]
+    - [auto, cpp, dx/heap]
+    - [auto, cpp, dx/module]
+    - [auto, c, dx/profiling]
+    - [auto, c, dx/utils]
+    - [auto, c, dx/versioning]
     - [auto, c, cam_main]
     - [auto, c, cam_mode_minimal]
     - [auto, c, cam_mode_interp]
@@ -842,7 +841,7 @@ segments:
     - [auto, c, hud_element]
     - [auto, c, vars_access]
     - [auto, c, trigger]
-    - [auto, c, background]
+    - [auto, cpp, background]
     - [auto, c, audio/ambience]
     - [auto, c, windows]
     - [auto, c, sprite_shading]
@@ -1562,37 +1561,6 @@ segments:
     - ["flip_card_3", 0xC6150]
     - ["cymbal_crush", 0xCA380]
   - [0x315B80, pm_sprite_shading_profiles, sprite_shading_profiles]
-  - type: code
-    start: 0x3169F0
-    name: create_audio_system_obfuscated
-    vram: 0x80200000
-    subsegments:
-    - [auto, c, create_audio_system_obfuscated]
-  - type: code
-    start: 0x316A70
-    vram: 0x80200080
-    name: load_engine_data_obfuscated
-    follows_vram: create_audio_system_obfuscated
-    subsegments:
-    - [auto, c, load_engine_data_obfuscated]
-  - type: code
-    start: 0x316C00
-    name: general_heap_create_obfuscated
-    vram: 0x802AE000
-    subsegments:
-    - [auto, c, general_heap_create_obfuscated]
-  - type: code
-    start: 0x316D90
-    name: battle_heap_create_obfuscated
-    vram: 0x802AE000
-    subsegments:
-    - [auto, c, battle_heap_create_obfuscated]
-  - type: code
-    start: 0x316F30
-    name: obfuscation_shims
-    vram: 0x802B2000
-    subsegments:
-    - [auto, c, obfuscation_shims]
   - type: code
     dir: world/partner
     name: world_partner_goombario

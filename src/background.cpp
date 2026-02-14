@@ -1,5 +1,6 @@
 #include "common.h"
 #include "model.h"
+#include "dx/prelude.h"
 #include <string.h>
 
 char gCloudyFlowerFieldsBg[] = "backgrounds/fla_bg";
@@ -11,10 +12,21 @@ f32 gBackroundWavePhase = 0.0f;
 BSS PAL_BIN gBackgroundPalette[256];
 BSS f32 gBackroundLastScrollValue;
 
+static u32 generation = 0;
+static auto backgroundAsset = Option<Rc<Asset>>::none();
+
+void hot_accept_new_background_asset() {
+    const auto& asset = backgroundAsset.unwrap();
+
+    u32 newGeneration = asset->generation();
+    if (generation == newGeneration) return; // No updates
+    generation = newGeneration;
+
+    set_background(static_cast<BackgroundHeader*>(asset->data()));
+}
+
 void load_map_bg(char* optAssetName) {
     if (optAssetName != nullptr) {
-        UNK_PTR compressedData;
-        u32 assetSize;
         char* assetName = optAssetName;
 
         if (evt_get_variable(nullptr, GB_StoryProgress) >= STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE) {
@@ -24,9 +36,14 @@ void load_map_bg(char* optAssetName) {
             }
         }
 
-        compressedData = load_asset_by_name(assetName, &assetSize);
-        decode_yay0(compressedData, &gBackgroundImage);
-        general_heap_free(compressedData);
+        backgroundAsset.clear();
+        backgroundAsset = Option<Rc<Asset>>::some(Asset::load(assetName));
+        generation = 0;
+        hot_accept_new_background_asset();
+    } else {
+        backgroundAsset.clear();
+        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
+            SCREEN_INSET_X, SCREEN_INSET_Y);
     }
 }
 
@@ -37,13 +54,18 @@ void reset_background_settings(void) {
     gGameStatusPtr->backgroundFlags &= BACKGROUND_RENDER_STATE_MASK;
 }
 
+template<typename T>
+static T* offset_to_ptr(BackgroundHeader* bg, T* ptr) {
+    return reinterpret_cast<T*>(reinterpret_cast<u32>(bg) + reinterpret_cast<u32>(ptr));
+}
+
 void set_background(BackgroundHeader* bg) {
     gGameStatusPtr->backgroundMaxX = bg->width;
     gGameStatusPtr->backgroundMaxY = bg->height;
     gGameStatusPtr->backgroundMinX = bg->startX;
     gGameStatusPtr->backgroundMinY = bg->startY;
-    gGameStatusPtr->backgroundRaster = bg->raster;
-    gGameStatusPtr->backgroundPalette = bg->palette;
+    gGameStatusPtr->backgroundRaster = offset_to_ptr(bg, bg->raster);
+    gGameStatusPtr->backgroundPalette = offset_to_ptr(bg, bg->palette);
     gGameStatusPtr->backgroundFlags |= BACKGROUND_FLAG_TEXTURE;
 }
 
@@ -60,6 +82,8 @@ u16 blend_background_channel(u16 arg0, s32 arg1, s32 alpha) {
 }
 
 void appendGfx_background_texture(void) {
+    hot_accept_new_background_asset();
+
     Camera* cam = &gCameras[gCurrentCameraID];
     u16 flags = 0;
     s32 fogR, fogG, fogB, fogA;

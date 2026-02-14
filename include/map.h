@@ -28,7 +28,7 @@ typedef struct MapSettings {
     /* 0x2C */ char** colliderNameList;
     /* 0x30 */ char** zoneNameList;
     /* 0x34 */ char unk_34[4];
-    /* 0x38 */ BackgroundHeader* background;
+    /* 0x38 */ BackgroundHeader* background; // TODO: remove
     /* 0x3C */ union {
         s32 msgID;
         s32 (*get)(void);

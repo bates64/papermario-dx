@@ -35,6 +35,11 @@ void* operator new(size_t size) {
     return ptr;
 }
 
+// Placement new (constructs object at given address)
+void* operator new(size_t size, void* ptr) noexcept {
+    return ptr;
+}
+
 void operator delete(void* ptr) noexcept {
     free(ptr);
 }

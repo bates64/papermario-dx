@@ -7,22 +7,34 @@ from sys import argv
 
 HEADER_SIZE = 0x20
 TOC_NAME_LEN = 64
-TOC_ROW_SIZE = TOC_NAME_LEN + 4 * 3
+TOC_ROW_SIZE = TOC_NAME_LEN + 4 * 4  # name + offset + compressed_size + decompressed_size + hash
 
 
 def next_multiple(pos, multiple):
     return pos + pos % multiple
 
 
-def get_version_date(version):
-    return f"MAPFS {version}"
-
-
 def build_mapfs(out_bin, assets, version):
     with open(out_bin, "wb") as f:
-        f.write(get_version_date(version).encode("ascii"))
+        # Write AssetTableHeader
+        magic = f"MAPFS {version}"[:8].ljust(8, '\0')
+        entry_count = len(assets)
+        next_table = 0  # No linked tables for now
 
-        next_data_pos = (len(assets) + 1) * TOC_ROW_SIZE
+        # Calculate hash of entry names for quick change detection
+        import hashlib
+        entries_hash_str = "".join(sorted(asset["name"] for asset in assets))
+        entries_hash = int.from_bytes(hashlib.sha256(entries_hash_str.encode()).digest()[:4], 'big')
+
+        generation = 0  # Base table always starts at generation 0
+
+        f.write(magic.encode("ascii"))
+        f.write(struct.pack(">III", entry_count, next_table, entries_hash))
+        f.write(struct.pack("B", generation))
+        f.write(b'\x00' * 11)  # reserved[11]
+
+        # Calculate where data starts (after header + all entries)
+        next_data_pos = HEADER_SIZE + len(assets) * TOC_ROW_SIZE
 
         asset_idx = 0
         for asset in assets:
@@ -44,16 +56,17 @@ def build_mapfs(out_bin, assets, version):
                 else decompressed_size
             )
 
-            # print(f"{name} {offset:08X} {size:08X} {decompressed_size:08X}")
+            # Hash is always 0 for vanilla assets
+            data_hash = 0
 
             # write TOC entry.
             f.seek(toc_entry_pos)
             f.write(name.encode("ascii"))
             f.seek(toc_entry_pos + TOC_NAME_LEN)
-            f.write(struct.pack(">III", offset, size, decompressed_size))
+            f.write(struct.pack(">IIII", offset, size, decompressed_size, data_hash))
 
             # write data.
-            f.seek(HEADER_SIZE + next_data_pos)
+            f.seek(next_data_pos)
             f.write(
                 compressed.read_bytes()
                 if compressed.exists()
@@ -62,12 +75,6 @@ def build_mapfs(out_bin, assets, version):
             next_data_pos += size
 
             asset_idx += 1
-
-        # sentinel
-        toc_entry_pos = HEADER_SIZE + asset_idx * TOC_ROW_SIZE
-        f.seek(toc_entry_pos)
-        f.write("END DATA\0".encode("ascii"))
-        f.write(struct.pack(">III", 0, 0, 0))
 
 
 if __name__ == "__main__":

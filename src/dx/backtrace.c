@@ -343,7 +343,7 @@ s32 address2symbol(u32 address, Symbol* out) {
     }
 
     // Read symbols in chunks
-    static Symbol chunk[chunkSize];
+    static Symbol chunk[symbolsPerChunk];
     s32 i;
     for (i = 0; i < symt.symbolCount; i++) {
         // Do we need to load the next chunk?

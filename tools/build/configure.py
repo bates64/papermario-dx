@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Dict, List, Set, Union
 
 import ninja_syntax
-
 from reorganize_mapfs import PARTY_NAME_MAP, reorganize_mapfs
 
 # Configuration:
@@ -507,7 +506,9 @@ class Configure:
             return map_name.split("_")[0]
         return map_name[:3]
 
-    def resolve_mapfs_asset(self, seg_name: str, asset_name: str, asset_type: str) -> Path:
+    def resolve_mapfs_asset(
+        self, seg_name: str, asset_name: str, asset_type: str
+    ) -> Path:
         """
         Resolve mapfs asset path for new structure.
 
@@ -1186,9 +1187,15 @@ class Configure:
                         press_start_path = out_dir / "title_press_start.bin"
 
                         # Title assets stay in title/ directory in both structures
-                        logotype_src = self.resolve_asset_path(src_dir / "title/logotype.png")
-                        copyright_src = self.resolve_asset_path(src_dir / "title/copyright.png")
-                        press_start_src = self.resolve_asset_path(src_dir / "title/press_start.png")
+                        logotype_src = self.resolve_asset_path(
+                            src_dir / "title/logotype.png"
+                        )
+                        copyright_src = self.resolve_asset_path(
+                            src_dir / "title/copyright.png"
+                        )
+                        press_start_src = self.resolve_asset_path(
+                            src_dir / "title/press_start.png"
+                        )
 
                         build(
                             logotype_path,

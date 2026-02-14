@@ -174,6 +174,8 @@ Gfx TheaterInitGfx[] = {
 };
 
 INCLUDE_IMG("ui/no_controller.png", ui_no_controller_png);
+#define ui_no_controller_png_width 128
+#define ui_no_controller_png_height 32
 
 Gfx NoControllerSetupTexGfx[] = {
     gsDPPipeSync(),

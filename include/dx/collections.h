@@ -9,11 +9,6 @@
 namespace dx {
 namespace collections {
 
-using dx::option::Option;
-using dx::hash::Hash;
-using dx::cmp::Eq;
-using dx::move;
-
 /// An associative container that maps keys to values.
 ///
 /// Use a HashMap when you need to associate arbitrary keys with values and
@@ -35,7 +30,6 @@ public:
         : capacity(initialCapacity)
         , count(0)
     {
-        printf("hello\n");
         if (capacity > 0) {
             buckets = new Entry*[capacity]();  // Zero-initialize
         } else {
@@ -55,7 +49,7 @@ public:
         // Allocate initial capacity on first insert
         if (capacity == 0) {
             capacity = 16;
-            buckets = new Entry*[capacity];
+            buckets = new Entry*[capacity]();
         }
         // Resize if load factor > 0.75
         else if (count * 4 > capacity * 3) {
@@ -68,56 +62,101 @@ public:
         // Check if key already exists - overwrite if so (for "last instance" behavior)
         while (entry) {
             if (equals(entry->key, key)) {
-                entry->value = move(value);
+                entry->value = dx::move(value);
                 return;
             }
             entry = entry->next;
         }
 
         // Add new entry at head of chain
-        Entry* new_entry = new Entry{move(key), move(value), buckets[hash_value]};
+        Entry* new_entry = new Entry{dx::move(key), dx::move(value), buckets[hash_value]};
         buckets[hash_value] = new_entry;
         count++;
     }
 
     /// Constructs key in-place from arguments (more ergonomic than put)
+    /// For String keys, pass const char* directly
     template<typename KeyArg>
-    void emplace(KeyArg&& key_arg, V value) {
-        put(K(key_arg), move(value));
+    void emplace(const KeyArg& key_arg, V value) {
+        put(K(key_arg), dx::move(value));
     }
 
-    Option<V&> get(const K& key) {
+    option::Option<V&> get(const K& key) {
         if (capacity == 0) {
-            return Option<V&>::none();
+            return option::Option<V&>::none();
         }
         u32 hashValue = hasher(key) % capacity;
         Entry* entry = buckets[hashValue];
 
         while (entry) {
             if (equals(entry->key, key)) {
-                return Option<V&>::some(entry->value);
+                return option::Option<V&>::some(entry->value);
             }
             entry = entry->next;
         }
 
-        return Option<V&>::none();
+        return option::Option<V&>::none();
     }
 
-    Option<const V&> get(const K& key) const {
+    option::Option<const V&> get(const K& key) const {
         if (capacity == 0) {
-            return Option<const V&>::none();
+            return option::Option<const V&>::none();
         }
         u32 hashValue = hasher(key) % capacity;
         Entry* entry = buckets[hashValue];
 
         while (entry) {
             if (equals(entry->key, key)) {
-                return Option<const V&>::some(entry->value);
+                return option::Option<const V&>::some(entry->value);
             }
             entry = entry->next;
         }
 
-        return Option<const V&>::none();
+        return option::Option<const V&>::none();
+    }
+
+    /// Heterogeneous lookup: allows get(const char*) for string-like keys
+    /// Avoids constructing a temporary key object
+    option::Option<V&> get(const char* key) {
+        if (capacity == 0) {
+            return option::Option<V&>::none();
+        }
+
+        // Hash the const char* directly
+        hash::Hash<const char*> str_hasher;
+        u32 hashValue = str_hasher(key) % capacity;
+        Entry* entry = buckets[hashValue];
+
+        // Compare using strcmp (assumes K has c_str() method)
+        while (entry) {
+            if (strcmp(entry->key.c_str(), key) == 0) {
+                return option::Option<V&>::some(entry->value);
+            }
+            entry = entry->next;
+        }
+
+        return option::Option<V&>::none();
+    }
+
+    option::Option<const V&> get(const char* key) const {
+        if (capacity == 0) {
+            return option::Option<const V&>::none();
+        }
+
+        // Hash the const char* directly
+        hash::Hash<const char*> str_hasher;
+        u32 hashValue = str_hasher(key) % capacity;
+        Entry* entry = buckets[hashValue];
+
+        // Compare using strcmp (assumes K has c_str() method)
+        while (entry) {
+            if (strcmp(entry->key.c_str(), key) == 0) {
+                return option::Option<const V&>::some(entry->value);
+            }
+            entry = entry->next;
+        }
+
+        return option::Option<const V&>::none();
     }
 
     /// Panics if key not found
@@ -149,6 +188,19 @@ public:
 
     u32 size() const {
         return count;
+    }
+
+    /// Reserve capacity for at least `n` elements total
+    /// Does nothing if capacity is already sufficient
+    void reserve(u32 n) {
+        while (capacity < n) {
+            if (capacity == 0) {
+                capacity = 16;
+                buckets = new Entry*[capacity]();
+            } else {
+                resize();
+            }
+        }
     }
 
 private:
@@ -265,19 +317,19 @@ public:
     };
 
     Iterator begin() {
-        return iterator(this, 0, nullptr);
+        return Iterator(this, 0, nullptr);
     }
 
     Iterator end() {
-        return iterator(this, capacity, nullptr);
+        return Iterator(this, capacity, nullptr);
     }
 
     ConstIterator begin() const {
-        return const_iterator(this, 0, nullptr);
+        return ConstIterator(this, 0, nullptr);
     }
 
     ConstIterator end() const {
-        return const_iterator(this, capacity, nullptr);
+        return ConstIterator(this, capacity, nullptr);
     }
 
 private:
@@ -288,8 +340,8 @@ private:
     };
 
     Entry** buckets;
-    Hash<K> hasher;
-    Eq<K> equals;
+    hash::Hash<K> hasher;
+    cmp::Eq<K> equals;
     u32 capacity;
     u32 count;
 
@@ -299,7 +351,7 @@ private:
 
         // Double capacity
         capacity *= 2;
-        buckets = new Entry*[capacity];
+        buckets = new Entry*[capacity]();
 
         // Rehash all existing entries
         for (u32 i = 0; i < oldCapacity; i++) {
@@ -318,6 +370,147 @@ private:
 
         delete[] oldBuckets;
     }
+};
+
+/// A dynamic array that grows as needed.
+///
+/// Use a Vec when you need an ordered collection of elements with random access.
+/// Elements are stored contiguously in memory for cache efficiency.
+///
+/// @tparam T Element type.
+template<typename T>
+class Vec {
+public:
+    Vec(u32 initialCapacity = 0)
+        : capacity(initialCapacity)
+        , count(0)
+    {
+        if (capacity > 0) {
+            data = new T[capacity];
+        } else {
+            data = nullptr;
+        }
+    }
+
+    ~Vec() {
+        if (data != nullptr) {
+            delete[] data;
+        }
+    }
+
+    // Move constructor
+    Vec(Vec&& other)
+        : data(other.data)
+        , capacity(other.capacity)
+        , count(other.count)
+    {
+        other.data = nullptr;
+        other.capacity = 0;
+        other.count = 0;
+    }
+
+    // Move assignment
+    Vec& operator=(Vec&& other) {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            capacity = other.capacity;
+            count = other.count;
+            other.data = nullptr;
+            other.capacity = 0;
+            other.count = 0;
+        }
+        return *this;
+    }
+
+    // Disable copy (use move semantics instead)
+    Vec(const Vec&) = delete;
+    Vec& operator=(const Vec&) = delete;
+
+    /// Add element to end of vector
+    void push(T value) {
+        if (capacity == 0) {
+            capacity = 4;
+            data = new T[capacity];
+        } else if (count >= capacity) {
+            // Double capacity
+            u32 newCapacity = capacity * 2;
+            T* newData = new T[newCapacity];
+            for (u32 i = 0; i < count; i++) {
+                newData[i] = dx::move(data[i]);
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
+        }
+
+        data[count++] = dx::move(value);
+    }
+
+    /// Access element by index (mutable)
+    T& operator[](u32 index) {
+        if (index >= count) {
+            PANIC_MSG("Vec: index %lu out of bounds (size=%lu)", index, count);
+        }
+        return data[index];
+    }
+
+    /// Access element by index (const)
+    const T& operator[](u32 index) const {
+        if (index >= count) {
+            PANIC_MSG("Vec: index %lu out of bounds (size=%lu)", index, count);
+        }
+        return data[index];
+    }
+
+    /// Get number of elements
+    u32 size() const {
+        return count;
+    }
+
+    /// Remove all elements (keeps capacity)
+    void clear() {
+        count = 0;
+    }
+
+    /// Reserve capacity for at least `n` elements total
+    /// Does nothing if capacity is already sufficient
+    void reserve(u32 n) {
+        if (n > capacity) {
+            u32 newCapacity = n;
+            T* newData = new T[newCapacity];
+            for (u32 i = 0; i < count; i++) {
+                newData[i] = dx::move(data[i]);
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
+        }
+    }
+
+    /// Resize vector to new size (fills with default value if growing)
+    void resize(u32 newSize) {
+        if (newSize > capacity) {
+            u32 newCapacity = newSize;
+            T* newData = new T[newCapacity];
+            for (u32 i = 0; i < count; i++) {
+                newData[i] = dx::move(data[i]);
+            }
+            // Zero-initialize new elements
+            for (u32 i = count; i < newSize; i++) {
+                newData[i] = T();
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
+        }
+        count = newSize;
+    }
+
+private:
+    T* data;
+    u32 capacity;
+    u32 count;
 };
 
 } // namespace collections

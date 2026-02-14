@@ -39,6 +39,7 @@ extern s32 gEntityHideMode;
 
 extern HiddenPanelsData gCurrentHiddenPanels;
 
+__attribute__((deprecated("aliases to zero; maps do not need to provide background anymore")))
 extern BackgroundHeader gBackgroundImage;
 
 extern CollisionData gZoneCollisionData;

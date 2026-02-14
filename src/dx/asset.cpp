@@ -7,141 +7,240 @@ b32 _assetsDirty = false;
 
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
 
-#define ASSET_TABLE_HEADER_SIZE 0x20
-#define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
-
 namespace dx {
+namespace asset {
 
-// Cache value: stores location info for an asset
+using rc::Rc;
+using string::FixedString;
+using collections::Vec;
+
+// Cache value: stores location info and loaded instance for an asset
 struct AssetCacheValue {
     u8* base;              // ROM base address for this asset's table
-    AssetHeader header;    // Asset metadata
+    struct {
+        u32 offset;
+        u32 compressedLength;
+        u32 decompressedLength;
+        u32 hash;
+    } header;    // Asset metadata
+    Weak<Asset> loaded;  // Weak reference - asset is freed when no strong refs exist
 };
 
 // Caches info per asset so that we don't have to do a linear lookup every load
-static HashMap<String, AssetCacheValue> assets;
+static HashMap<FixedString<64>, AssetCacheValue> assets;
 static bool assetsLoaded = false;
 
-void Asset::init() {
+// Track generations of tables in the chain (index 0 = root, 1 = first mod, etc.)
+static Vec<u8> lastSeenGenerations;
+
+extern "C" void poll_hot_assets() {
     if (assetsLoaded && !_assetsDirty) {
         return;
     }
 
-    // Clear old cache if rebuilding
-    assets.clear();
+    // Pre-allocate assets map based on root table size (speeds up initial load)
+    if (!assetsLoaded) {
+        AssetTableHeader rootHeader;
+        u8* rootBase = (u8*) ASSET_TABLE_ROM_START;
+        dma_copy(rootBase, rootBase + sizeof(AssetTableHeader), &rootHeader);
+        assets.reserve(rootHeader.entryCount);
+    }
 
-    // Traverse all asset tables
-    u8* base = (u8*) ASSET_TABLE_FIRST_ENTRY;
-    AssetHeader firstHeader;
-    AssetHeader* assetTableBuffer;
-    AssetHeader* curAsset;
+    // Save old hashes and loaded instances before rebuilding
+    u32 assetCount = assets.size();
 
-    dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-    assetTableBuffer = (AssetHeader*) heap_malloc(firstHeader.offset);
-    curAsset = &assetTableBuffer[0];
-    dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-
-    // Traverse entire chain to find all assets (last instance wins - for mods)
-    while (true) {
-        if (strcmp(curAsset->name, "END DATA") == 0) {
-            if (curAsset->decompressedLength == 0) {
-                // End of chain
-                break;
-            }
-            // Follow link to next asset table (stored in decompressedLength)
-            base = (u8*) curAsset->decompressedLength;
-            dma_copy(base, base + sizeof(AssetHeader), &firstHeader);
-            heap_free(assetTableBuffer);
-            assetTableBuffer = (AssetHeader*) heap_malloc(firstHeader.offset);
-            curAsset = &assetTableBuffer[0];
-            dma_copy(base, base + firstHeader.offset, assetTableBuffer);
-        } else {
-            // Upsert asset in cache
-            assets.emplace(curAsset->name, AssetCacheValue { base, *curAsset });
-            curAsset++;
+    HashMap<FixedString<64>, u32> oldHashes(assetCount);
+    HashMap<FixedString<64>, Weak<Asset>> oldLoaded(assetCount);
+    for (auto [name, value] : assets) {
+        oldHashes.put(name, value.header.hash);
+        if (value.loaded.is_alive()) {
+            oldLoaded.put(name, value.loaded);
         }
     }
 
+    // PASS 1: Traverse all asset tables and build final cache (last instance wins)
+    u8* tableBase = (u8*) ASSET_TABLE_ROM_START;
+    AssetTableHeader tableHeader;
+    AssetHeader* assetTableBuffer = nullptr;
+    u32 bufferCapacity = 0;
+    u32 tableIndex = 0;
+
+    while (tableBase != nullptr) {
+        // Read table header
+        dma_copy(tableBase, tableBase + sizeof(AssetTableHeader), &tableHeader);
+
+        if (tableHeader.magic[0] != 'M' || tableHeader.magic[1] != 'A' || tableHeader.magic[2] != 'P' || tableHeader.magic[3] != 'F' || tableHeader.magic[4] != 'S') {
+            printf("Ignoring invalid asset table at %p (bad magic)\n", tableBase);
+            break;
+        }
+
+        // Check if this table's generation changed
+        bool tableChanged = tableIndex >= lastSeenGenerations.size() || tableHeader.generation != lastSeenGenerations[tableIndex];
+
+        if (tableChanged) {
+            // Allocate or resize buffer for entries
+            u32 tableSize = tableHeader.entryCount * sizeof(AssetHeader);
+            if (tableSize > bufferCapacity) {
+                heap_free(assetTableBuffer);
+                assetTableBuffer = (AssetHeader*) heap_malloc(tableSize);
+                bufferCapacity = tableSize;
+            }
+
+            // Read all entries
+            u8* entriesStart = tableBase + sizeof(AssetTableHeader);
+            dma_copy(entriesStart, entriesStart + tableSize, assetTableBuffer);
+
+            // Process each entry
+            for (u32 i = 0; i < tableHeader.entryCount; i++) {
+                AssetHeader* curAsset = &assetTableBuffer[i];
+
+                AssetCacheValue cacheValue {
+                    tableBase,
+                    {
+                        curAsset->offset,
+                        curAsset->compressedLength,
+                        curAsset->decompressedLength,
+                        curAsset->hash
+                    },
+                    Weak<Asset>()  // Empty weak reference for now
+                };
+                assets.put(FixedString<64>(curAsset->name), cacheValue);
+            }
+        }
+
+        // Store generation for this table
+        if (tableIndex >= lastSeenGenerations.size()) {
+            lastSeenGenerations.push(tableHeader.generation);
+        } else {
+            lastSeenGenerations[tableIndex] = tableHeader.generation;
+        }
+
+        // Follow chain to next table
+        tableBase = tableHeader.nextTable != 0 ? (u8*) tableHeader.nextTable : nullptr;
+        tableIndex++;
+    }
+
+    // Trim vector if chain got shorter
+    if (tableIndex < lastSeenGenerations.size()) {
+        lastSeenGenerations.resize(tableIndex);
+    }
+
     heap_free(assetTableBuffer);
+
+    // PASS 2: Restore loaded instances and check for hot reloads
+    // Only iterate over assets that were actually loaded (not the entire cache)
+    for (auto [name, weak] : oldLoaded) {
+        auto entry = assets.get(name);
+        if (!entry) {
+            continue;
+        }
+
+        auto& value = entry.unwrap();
+        value.loaded = weak;
+
+        // Check if the FINAL hash changed from previous run
+        auto oldHash = oldHashes.get(name);
+        if (oldHash && oldHash.unwrap() != value.header.hash) {
+            if (auto rc = weak.upgrade()) {
+                rc.unwrap()->reload(
+                    value.base,
+                    value.header.offset,
+                    value.header.compressedLength,
+                    value.header.decompressedLength
+                );
+            }
+        }
+    }
+
     assetsLoaded = true;
     _assetsDirty = false;
 }
 
-Asset::Asset(void* data, u32 size)
-    : dataPtr(data), dataSize(size) {}
+Asset::Asset(void* data, u32 size, u32 generation)
+    : dataPtr(data), dataSize(size), gen(generation) {}
 
 Asset::~Asset() {
-    delete[] static_cast<u8*>(dataPtr);
-}
-
-Asset::Asset(Asset&& other)
-    : dataPtr(other.dataPtr), dataSize(other.dataSize) {
-    other.dataPtr = nullptr;
-    other.dataSize = 0;
-}
-
-Asset& Asset::operator=(Asset&& other) {
-    if (this != &other) {
+    if (dataPtr) {
         delete[] static_cast<u8*>(dataPtr);
-        dataPtr = other.dataPtr;
-        dataSize = other.dataSize;
-        other.dataPtr = nullptr;
-        other.dataSize = 0;
     }
-    return *this;
 }
 
-Asset Asset::load(const char* name) {
-    init();
+void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedLength) {
+    u8* romStart = base + offset;
+
+    // Allocate decompressed buffer FIRST (larger, needs more space)
+    // This is more likely to succeed right after freeing the old asset
+    u8* decompressedData;
+    if (compressedLength != decompressedLength) {
+        decompressedData = new u8[decompressedLength];
+    }
+
+    // Now allocate and load compressed data (smaller, easier to find space)
+    u8* compressedData = new u8[compressedLength];
+    dma_copy(romStart, romStart + compressedLength, compressedData);
+
+    // Decompress if necessary
+    if (compressedLength != decompressedLength) {
+        if (compressedData[0] == 'Y' && compressedData[1] == 'a' && compressedData[2] == 'y' && compressedData[3] == '0')
+            decode_yay0(compressedData, decompressedData);
+        else PANIC();
+
+        delete[] compressedData;
+    } else {
+        decompressedData = compressedData;
+    }
+
+    // Free old data if any
+    if (dataPtr) {
+        delete[] static_cast<u8*>(dataPtr);
+    }
+
+    // Update state
+    dataPtr = decompressedData;
+    dataSize = decompressedLength;
+    gen++;
+}
+
+Rc<Asset> Asset::load(const char* name) {
+    poll_hot_assets();
 
     // Look up asset in cache
-    auto entry = assets.get(String(name));
+    auto entry = assets.get(name);
     if (!entry) {
         PANIC_MSG("Asset not found: %s", name);
     }
 
     AssetCacheValue& value = entry.unwrap();
-    u8* romStart = value.base + value.header.offset;
-    u32 compressedSize = value.header.compressedLength;
-    u32 decompressedSize = value.header.decompressedLength;
 
-    // Allocate and load compressed data
-    u8* compressedData = new u8[compressedSize];
-    dma_copy(romStart, romStart + compressedSize, compressedData);
-
-    // Allocate and decompress
-    u8* decompressedData = new u8[decompressedSize];
-    decode_yay0(compressedData, decompressedData);
-
-    // Free compressed data
-    delete[] compressedData;
-
-    return Asset(decompressedData, decompressedSize);
-}
-
-Option<AssetHeader&> Asset::get_info(const char* name) {
-    init();
-    auto entry = assets.get(String(name));
-    if (entry) {
-        return Option<AssetHeader&>::some(entry->header);
+    // Try to upgrade weak reference
+    auto existingAsset = value.loaded.upgrade();
+    if (existingAsset) {
+        return existingAsset.unwrap();
     }
-    return Option<AssetHeader&>::none();
-}
 
-} // namespace dx
+    // Asset was freed - load it fresh
+    Rc<Asset> asset = Rc<Asset>::make(static_cast<void*>(nullptr), static_cast<u32>(0), static_cast<u32>(1));
+    asset->reload(
+        value.base,
+        value.header.offset,
+        value.header.compressedLength,
+        value.header.decompressedLength
+    );
+
+    // Store weak reference in cache
+    value.loaded = asset.downgrade();
+    return asset;
+}
 
 // Legacy C API implementations
 extern "C" {
 
-using namespace dx;
-
 void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
-    Asset::init();
+    poll_hot_assets();
 
-    auto entry = assets.get(String(assetName));
+    auto entry = assets.get(assetName);
     if (!entry) {
-        ASSERT_MSG(false, "Asset not found: %s", assetName);
-        return nullptr;
+        PANIC_MSG("Asset not found: %s", assetName);
     }
 
     AssetCacheValue& value = entry.unwrap();
@@ -156,12 +255,11 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
 }
 
 s32 get_asset_offset(char* assetName, s32* compressedSize) {
-    Asset::init();
+    poll_hot_assets();
 
-    auto entry = assets.get(String(assetName));
+    auto entry = assets.get(assetName);
     if (!entry) {
-        ASSERT_MSG(false, "Asset not found: %s", assetName);
-        return 0;
+        PANIC_MSG("Asset not found: %s", assetName);
     }
 
     AssetCacheValue& value = entry.unwrap();
@@ -170,3 +268,6 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
 }
 
 }  // extern "C"
+
+} // namespace asset
+} // namespace dx

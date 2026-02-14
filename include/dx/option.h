@@ -28,6 +28,15 @@ namespace option {
 // Forward declarations
 template<typename T> class Option;
 
+} // namespace option
+
+// Forward declare Rc for specialization
+namespace rc {
+    template<typename T> class Rc;
+}
+
+namespace option {
+
 namespace detail {
     /// Base class with shared Option methods (CRTP pattern - internal use only)
     template<typename Derived, typename T>
@@ -255,6 +264,137 @@ public:
 
     /// Returns nullptr if none
     const T* operator->() const { return ptr; }
+};
+
+/// Specialization for Option<Rc<T>> with null-pointer optimization
+/// Uses nullptr to represent None, reducing size from 12 bytes to 8 bytes
+/// Same size as Rc<T> itself (8 bytes vs 12 bytes for generic Option<Rc<T>>)
+template<typename T>
+class Option<rc::Rc<T>> : public detail::OptionBase<Option<rc::Rc<T>>, rc::Rc<T>> {
+    // Mirror Rc's internal layout - stores T* and u32* refCount
+    // nullptr in ptr represents None
+    alignas(rc::Rc<T>) unsigned char storage[sizeof(rc::Rc<T>)];
+
+    rc::Rc<T>& get_rc() {
+        ASSERT(*ptr_field() != nullptr);
+        return *reinterpret_cast<rc::Rc<T>*>(storage);
+    }
+    const rc::Rc<T>& get_rc() const {
+        ASSERT(*ptr_field() != nullptr);
+        return *reinterpret_cast<const rc::Rc<T>*>(storage);
+    }
+
+    T** ptr_field() { return reinterpret_cast<T**>(storage); }
+    T* const* ptr_field() const { return reinterpret_cast<T* const*>(storage); }
+
+public:
+    /// Construct None
+    Option() {
+        *ptr_field() = nullptr;
+    }
+
+    /// Construct Some from Rc (shares ownership)
+    Option(const rc::Rc<T>& rc) {
+        new (storage) rc::Rc<T>(rc);
+    }
+
+    /// Construct Some from Rc (moves ownership)
+    Option(rc::Rc<T>&& rc) {
+        new (storage) rc::Rc<T>(dx::move(rc));
+    }
+
+    /// Copy constructor
+    Option(const Option& other) {
+        if (other.is_some()) {
+            new (storage) rc::Rc<T>(other.get_rc());
+        } else {
+            *ptr_field() = nullptr;
+        }
+    }
+
+    /// Move constructor
+    Option(Option&& other) {
+        if (other.is_some()) {
+            new (storage) rc::Rc<T>(dx::move(other.get_rc()));
+            *other.ptr_field() = nullptr;
+        } else {
+            *ptr_field() = nullptr;
+        }
+    }
+
+    ~Option() {
+        if (is_some()) {
+            get_rc().~Rc();
+        }
+    }
+
+    /// Copy assignment
+    Option& operator=(const Option& other) {
+        if (this != &other) {
+            if (is_some()) {
+                get_rc().~Rc();
+            }
+            if (other.is_some()) {
+                new (storage) rc::Rc<T>(other.get_rc());
+            } else {
+                *ptr_field() = nullptr;
+            }
+        }
+        return *this;
+    }
+
+    /// Move assignment
+    Option& operator=(Option&& other) {
+        if (this != &other) {
+            if (is_some()) {
+                get_rc().~Rc();
+            }
+            if (other.is_some()) {
+                new (storage) rc::Rc<T>(dx::move(other.get_rc()));
+                *other.ptr_field() = nullptr;
+            } else {
+                *ptr_field() = nullptr;
+            }
+        }
+        return *this;
+    }
+
+    static Option some(const rc::Rc<T>& val) { return Option(val); }
+    static Option some(rc::Rc<T>&& val) { return Option(dx::move(val)); }
+    static Option none() { return Option(); }
+
+    bool is_some() const { return *ptr_field() != nullptr; }
+    bool is_none() const { return *ptr_field() == nullptr; }
+
+    rc::Rc<T>* get() { return is_some() ? &get_rc() : nullptr; }
+    const rc::Rc<T>* get() const { return is_some() ? &get_rc() : nullptr; }
+
+    rc::Rc<T>& get_value() { return get_rc(); }
+    const rc::Rc<T>& get_value() const { return get_rc(); }
+
+    /// Set to some(rc)
+    void set(const rc::Rc<T>& val) {
+        if (is_some()) {
+            get_rc().~Rc();
+        }
+        new (storage) rc::Rc<T>(val);
+    }
+
+    /// Set to some(rc) with move
+    void set(rc::Rc<T>&& val) {
+        if (is_some()) {
+            get_rc().~Rc();
+        }
+        new (storage) rc::Rc<T>(dx::move(val));
+    }
+
+    /// Set to none
+    void clear() {
+        if (is_some()) {
+            get_rc().~Rc();
+            *ptr_field() = nullptr;
+        }
+    }
 };
 
 // Template method definitions (after both Option specializations are declared)

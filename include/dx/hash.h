@@ -27,6 +27,14 @@ struct Hash<const char*> {
     }
 };
 
+/// Specialization for u32 keys (identity hash)
+template<>
+struct Hash<u32> {
+    u32 operator()(u32 value) const {
+        return value;
+    }
+};
+
 } // namespace hash
 } // namespace dx
 

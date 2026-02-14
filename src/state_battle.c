@@ -23,10 +23,6 @@ BSS s8 BattleTransitionDelay;
 BSS s32 SavedWorldAnimFlags;
 BSS s32 SavedWorldFreezeMode;
 
-#if defined(SHIFT) || VERSION_IQUE
-#define shim_battle_heap_create_obfuscated battle_heap_create
-#endif
-
 extern ShapeFile gMapShapeData;
 
 void state_init_battle(void) {
@@ -60,10 +56,7 @@ void state_step_battle(void) {
         gGameStatusPtr->context = CONTEXT_BATTLE;
         backup_map_collision_data();
 
-#if !VERSION_IQUE
-        load_obfuscation_shims();
-#endif
-        shim_battle_heap_create_obfuscated();
+        battle_heap_create();
 
         sfx_clear_env_sounds(0);
 
@@ -186,12 +179,6 @@ void state_step_end_battle(void) {
                 }
 
                 load_map_bg(mapConfig->bgName);
-                if (mapSettings->background != nullptr) {
-                    set_background(mapSettings->background);
-                } else {
-                    set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-                        SCREEN_INSET_X, SCREEN_INSET_Y);
-                }
 
                 mdl_load_all_textures(mapSettings->modelTreeRoot, get_asset_offset(wMapTexName, &sizeTemp), sizeTemp);
                 mdl_calculate_model_sizes();

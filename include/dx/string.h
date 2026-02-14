@@ -10,6 +10,34 @@
 namespace dx {
 namespace string {
 
+/// A fixed-size string stored inline (no heap allocation).
+/// Useful for HashMap keys with known max length.
+template<u32 N>
+struct FixedString {
+    char data[N];
+
+    FixedString() {
+        data[0] = '\0';
+    }
+
+    FixedString(const char* str) {
+        if (str) {
+            u32 i;
+            for (i = 0; i < N - 1 && str[i] != '\0'; i++) {
+                data[i] = str[i];
+            }
+            data[i] = '\0';
+        } else {
+            data[0] = '\0';
+        }
+    }
+
+    const char* c_str() const { return data; }
+
+    // Allow implicit conversion to const char* for convenience
+    operator const char*() const { return data; }
+};
+
 /// An owned string. Like `char*`, but frees the data in its destructor.
 class String {
 public:
@@ -63,6 +91,21 @@ private:
 } // namespace string
 
 namespace hash {
+    // Hash specialization for string::FixedString<N>
+    template<u32 N>
+    struct Hash<string::FixedString<N>> {
+        u32 operator()(const string::FixedString<N>& str) const {
+            // FNV-1a hash
+            u32 hash = 2166136261u;
+            const char* ptr = str.c_str();
+            while (*ptr != '\0') {
+                hash ^= (u32)*ptr++;
+                hash *= 16777619u;
+            }
+            return hash;
+        }
+    };
+
     // Hash specialization for string::String
     template<>
     struct Hash<string::String> {
@@ -80,6 +123,14 @@ namespace hash {
 } // namespace hash
 
 namespace cmp {
+    // Eq specialization for string::FixedString<N>
+    template<u32 N>
+    struct Eq<string::FixedString<N>> {
+        bool operator()(const string::FixedString<N>& lhs, const string::FixedString<N>& rhs) const {
+            return strcmp(lhs.c_str(), rhs.c_str()) == 0;
+        }
+    };
+
     // Eq specialization for string::String
     template<>
     struct Eq<string::String> {

@@ -1,10 +1,14 @@
 // hard-coded things
-gBackgroundImage = 0x80200000; // hard-coded inside mapfs for now
-gMapShapeData = 0x80210000; // needs to be hard-coded atm due to pointers in shape data
+gBackgroundImage = 0; // hard-coded inside mapfs for now
+// TODO: gMapShapeData needs pointer fixup - shape data has baked-in absolute pointers
+// gMapShapeData = 0x80210000;
 
 heap_battleHead = gFrameBuf2;
 
-overlays_start = 0x802DC500;
+// Initial value for forward reference in linker script.
+// The linker script redefines this, but GNU ld needs a valid
+// starting value to place .evt correctly on the first pass.
+world_use_item_VRAM_END = 0x802F8000;
 
 sprite_shading_profiles_data_ROM_START = sprite_shading_profiles_ROM_START + 0x1D0;
 
@@ -30,11 +34,3 @@ D_A6000000 = 0xA6000000;
 D_B0000000 = 0xB0000000;
 D_B0000008 = 0xB0000008;
 D_B0000010 = 0xB0000010;
-
-// Obfuscation symbols
-obfuscated_battle_heap_create = battle_heap_create - 0xFEFFFFF;
-obfuscated_general_heap_create = general_heap_create - 0xFEFEFEF;
-obfuscated_load_engine_data = load_engine_data - 0x315;
-obfuscated_create_audio_system = create_audio_system - 0x7B;
-obfuscated_obfuscation_shims_VRAM = obfuscation_shims_VRAM - 0xA912928;
-obfuscated_obfuscation_shims_ROM_START = obfuscation_shims_ROM_START - 0x8939221;

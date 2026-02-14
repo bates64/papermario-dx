@@ -49,8 +49,10 @@ s32 D_800741FC = 0;
 
 void gfx_init_state(void);
 void gfx_draw_background(void);
+void poll_hot_assets(void);
 
 void step_game_loop(void) {
+    poll_hot_assets();
     profiler_frame_setup();
 
     PlayerData* playerData = &gPlayerData;

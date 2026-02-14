@@ -31,7 +31,6 @@ int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 f32 signF(f32 val);
 
 s32 func_8002ACDC(void);
-void load_obfuscation_shims(void);
 
 void* heap_malloc(s32 size);
 void* _heap_malloc(HeapNode* head, u32 size);
@@ -669,10 +668,6 @@ void state_drawUI_demo(void);
 
 void btl_set_player_idle_anims(void);
 
-void shim_create_audio_system_obfuscated(void);
-void shim_load_engine_data_obfuscated(void);
-void shim_general_heap_create_obfuscated(void);
-void shim_battle_heap_create_obfuscated(void);
 void appendGfx_ispy_icon(void);
 void interact_inspect_setup(void);
 void interact_speech_setup(void);

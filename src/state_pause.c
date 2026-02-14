@@ -200,12 +200,6 @@ void state_step_unpause(void) {
                     }
 
                     load_map_bg(mapConfig->bgName);
-                    if (mapSettings->background != nullptr) {
-                        set_background(mapSettings->background);
-                    } else {
-                        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-                            SCREEN_INSET_X, SCREEN_INSET_Y);
-                    }
 
                     gGameStatusPtr->backgroundDarkness = gGameStatusPtr->savedBackgroundDarkness;
                     mdl_calculate_model_sizes();

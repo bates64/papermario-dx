@@ -1,4 +1,5 @@
 #include "common.h"
+#include "functions.h"
 #include "ld_addrs.h"
 #include "npc.h"
 #include "hud_element.h"
@@ -17,10 +18,7 @@
 #endif
 
 // should match values in tools/build/mapfs/combine.py
-#define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_NAME_LEN 64
-
-#define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
 BSS MapConfig* gMapConfig;
 BSS MapSettings gMapSettings;
@@ -34,10 +32,6 @@ s32 WorldReverbModeMapping[] = { 0, 1, 2, 3 };
 
 void fio_deserialize_state(void);
 void load_map_hit_asset(void);
-
-#if defined(SHIFT) || VERSION_IQUE
-#define shim_general_heap_create_obfuscated general_heap_create
-#endif
 
 extern ShapeFile gMapShapeData;
 
@@ -74,10 +68,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     phys_set_player_sliding_check(nullptr);
     phys_set_landing_adjust_cam_check(nullptr);
 
-#if !VERSION_IQUE
-    load_obfuscation_shims();
-#endif
-    shim_general_heap_create_obfuscated();
+    general_heap_create();
 
 #if VERSION_JP
     reset_max_rumble_duration();
@@ -155,14 +146,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
         mapSettings->zoneNameList = shapeFile->header.zoneNames;
     }
 
-    if (mapConfig->bgName != nullptr) {
-        load_map_bg(wMapBgName);
-    }
+    reset_background_settings();
+    load_map_bg(wMapBgName);
 
-#if !VERSION_IQUE
-    load_obfuscation_shims();
-#endif
-    shim_general_heap_create_obfuscated();
+    general_heap_create();
 
     sfx_clear_env_sounds(0);
     clear_worker_list();
@@ -176,7 +163,6 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     clear_trigger_data();
     clear_model_data();
     clear_sprite_shading_data();
-    reset_background_settings();
 
     if (gGameStatusPtr->introPart == INTRO_PART_NONE) {
         reset_back_screen_overlay_progress();
@@ -208,13 +194,6 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
         if (mapSettings->modelTreeRoot != nullptr) {
             load_data_for_models(mapSettings->modelTreeRoot, texturesOffset, decompressedSize);
         }
-    }
-
-    if (mapSettings->background != nullptr) {
-        set_background(mapSettings->background);
-    } else {
-        set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
-            SCREEN_INSET_X, SCREEN_INSET_Y);
     }
 
     gCurrentCameraID = CAM_DEFAULT;

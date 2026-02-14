@@ -9,13 +9,18 @@
 #include "dx/string.h"
 #include "dx/hash.h"
 #include "dx/cmp.h"
+#include "dx/rc.h"
 #include "dx/asset.h"
 
 using dx::option::Option;
+using dx::collections::Vec;
 using dx::collections::HashMap;
 using dx::string::String;
+using dx::asset::Asset;
 using dx::hash::Hash;
 using dx::cmp::Eq;
+using dx::rc::Rc;
+using dx::rc::Weak;
 using dx::move;
 
 #endif // __cplusplus

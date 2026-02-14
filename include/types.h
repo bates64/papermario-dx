@@ -21,4 +21,9 @@ typedef u8 Addr[];
 /// Terminates an extraAnimationList
 #define ANIM_LIST_END -1
 
+#ifdef __cplusplus
+// Placement new operator (allows constructing objects at a specific address)
+void* operator new(size_t size, void* ptr) noexcept;
+#endif
+
 #endif

@@ -215,7 +215,7 @@ class Converter:
                 pal.preamble(True)
                 palettes.append(pal.palette(alpha="force"))
 
-            baseaddr = 0x80200000  # gBackgroundImage
+            baseaddr = 0
             headers_len = 0x10 * len(palettes)
             palettes_len = 0x200 * len(palettes)
 

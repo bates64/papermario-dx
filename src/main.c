@@ -37,11 +37,6 @@ extern s16 D_80073E0A;
 extern IMG_BIN ResetTilesImg[];
 extern DisplayContext DisplayContexts[2];
 
-#if defined(SHIFT) || VERSION_IQUE
-#define shim_create_audio_system_obfuscated create_audio_system
-#define shim_load_engine_data_obfuscated load_engine_data
-#endif
-
 u16* ResetFrameBufferArray;
 u16* nuGfxZBuffer;
 
@@ -80,11 +75,8 @@ void boot_main(void* data) {
     nuGfxInit();
     gGameStatusPtr->contBitPattern = nuContInit();
 
-#if !VERSION_IQUE
-    load_obfuscation_shims();
-#endif
-    shim_create_audio_system_obfuscated();
-    shim_load_engine_data_obfuscated();
+    create_audio_system();
+    load_engine_data();
 
     nuGfxFuncSet((NUGfxFunc) gfxRetrace_Callback);
     nuGfxPreNMIFuncSet(gfxPreNMI_Callback);
