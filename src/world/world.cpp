@@ -462,8 +462,8 @@ MapConfig hos_maps[] = {
     { MAP(hos_04), .bgName = "hos_bg" },
     { MAP(hos_05), .bgName = "hos_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(hos_06), .bgName = "hos_bg" },
-    { MAP_WITH_INIT(hos_10), .bgName = "hos_bg" },
-    { MAP(hos_20), .bgName = "hos_bg" },
+    { MAP_WITH_INIT(hos_10) },
+    { MAP(hos_20) },
 };
 
 /// Bowser's Castle
@@ -535,9 +535,9 @@ MapConfig osr_maps[] = {
 /// @bug There are two entries for kkj_26; the latter is unreachable.
 #include "area_kkj/kkj.h"
 MapConfig kkj_maps[] = {
-    { MAP_WITH_INIT(kkj_00), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
-    { MAP(kkj_01), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
-    { MAP(kkj_02), .bgName = "nok_bg", .sfxReverb = 2 },
+    { MAP_WITH_INIT(kkj_00), .songVariation = 1, .sfxReverb = 3 },
+    { MAP(kkj_01), .songVariation = 1, .sfxReverb = 3 },
+    { MAP(kkj_02), .sfxReverb = 2 },
     { MAP_WITH_INIT(kkj_03), .bgName = "nok_bg", .sfxReverb = 3 },
     { MAP(kkj_10), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_11), .songVariation = 1, .sfxReverb = 3 },
@@ -576,15 +576,15 @@ MapConfig jan_maps[] = {
     { MAP(jan_08), .bgName = "yos_bg" },
     { MAP(jan_09), .bgName = "yos_bg" },
     { MAP(jan_10), .bgName = "yos_bg" },
-    { MAP(jan_11), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 2 },
+    { MAP(jan_11), .songVariation = 1, .sfxReverb = 2 },
     { MAP(jan_12), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(jan_13), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(jan_14), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(jan_15), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(jan_16), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
-    { MAP(jan_17), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 2 },
+    { MAP(jan_17), .songVariation = 1, .sfxReverb = 2 },
     { MAP(jan_18), .bgName = "yos_bg" },
-    { MAP(jan_19), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 2 },
+    { MAP(jan_19), .songVariation = 1, .sfxReverb = 2 },
     { MAP(jan_22), .bgName = "jan_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(jan_23), .bgName = "yos_bg" },
 };
@@ -721,7 +721,7 @@ MapConfig sam_maps[] = {
     { MAP(sam_09), .bgName = "yki_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(sam_10), .bgName = "yki_bg", .songVariation = 1, .sfxReverb = 1 },
     { MAP(sam_11), .bgName = "yki_bg" },
-    { MAP(sam_12), .bgName = "yki_bg", .songVariation = 1, .sfxReverb = 1 },
+    { MAP(sam_12), .songVariation = 1, .sfxReverb = 1 },
 };
 
 /// Crystal Palace
@@ -786,15 +786,15 @@ MapConfig omo_maps[] = {
 /// Debug
 #include "area_tst/tst.h"
 MapConfig tst_maps[] = {
-    { MAP(tst_01), .bgName = "nok_bg" },
-    { MAP(tst_02), .bgName = "nok_bg" },
-    { MAP(tst_03), .bgName = "nok_bg" },
-    { MAP(tst_04), .bgName = "nok_bg" },
+    { MAP(tst_01) },
+    { MAP(tst_02) },
+    { MAP(tst_03) },
+    { MAP(tst_04) },
     { MAP(tst_10), .bgName = "nok_bg" },
-    { MAP(tst_11), .bgName = "nok_bg" },
+    { MAP(tst_11) },
     { MAP(tst_12), .bgName = "nok_bg" },
     { MAP(tst_13), .bgName = "nok_bg" },
-    { MAP(tst_20), .bgName = "nok_bg" },
+    { MAP(tst_20) },
 };
 
 /// Credits
