@@ -186,6 +186,59 @@ public:
         count = 0;
     }
 
+    /// Removes an entry by key. Returns true if entry was found and removed.
+    bool remove(const K& key) {
+        if (capacity == 0) {
+            return false;
+        }
+        u32 hashValue = hasher(key) % capacity;
+        Entry* entry = buckets[hashValue];
+        Entry* prev = nullptr;
+
+        while (entry) {
+            if (equals(entry->key, key)) {
+                if (prev) {
+                    prev->next = entry->next;
+                } else {
+                    buckets[hashValue] = entry->next;
+                }
+                delete entry;
+                count--;
+                return true;
+            }
+            prev = entry;
+            entry = entry->next;
+        }
+        return false;
+    }
+
+    /// Heterogeneous remove for string-like keys
+    bool remove(const char* key) {
+        if (capacity == 0) {
+            return false;
+        }
+        hash::Hash<const char*> str_hasher;
+        u32 hashValue = str_hasher(key) % capacity;
+        Entry* entry = buckets[hashValue];
+        Entry* prev = nullptr;
+
+        while (entry) {
+            if (strcmp(entry->key.c_str(), key) == 0) {
+                if (prev) {
+                    prev->next = entry->next;
+                } else {
+                    buckets[hashValue] = entry->next;
+                }
+                delete entry;
+                count--;
+                return true;
+            }
+            prev = entry;
+            entry = entry->next;
+        }
+        return false;
+    }
+
     u32 size() const {
         return count;
     }

@@ -1,7 +1,10 @@
 #include "dx/prelude.h"
+#include "dx/sync.h"
 #include "functions.h"
 #include "ld_addrs.h"
 #include <string.h>
+
+using dx::sync::Mutex;
 
 b32 _assetsDirty = false;
 
@@ -13,18 +16,101 @@ static OSMesg sAsyncDmaMesg;
 static OSIoMesg sAsyncDmaIoMesg;
 static bool sAsyncDmaQueueInit = false;
 
+namespace preload {
+
+constexpr int THREAD_PRI = 10;    // Same as main thread for time-slicing
+constexpr int STACK_SIZE = 0x2000;
+
+struct Request {
+    char name[64];
+    u8* romBase;
+    u32 offset;
+    u32 compressedLength;
+    u32 decompressedLength;
+};
+
+struct Result {
+    char name[64] = {0};
+    u8* data = nullptr;
+    u32 size = 0;
+
+    void clear() {
+        name[0] = '\0';
+        data = nullptr;
+        size = 0;
+    }
+};
+
+static Mutex<Result> result;
+static OSThread thread;
+static OSMesgQueue queue;
+static OSMesg queueMsg;
+static bool started = false;
+
+static void do_load(Request* req) {
+    u8* romStart = req->romBase + req->offset;
+    bool isCompressed = req->compressedLength != req->decompressedLength;
+
+    u8* decompressedData;
+
+    if (isCompressed) {
+        decompressedData = new u8[req->decompressedLength + 8];  // +8 for LZ4
+        u8* compressedData = new u8[req->compressedLength];
+
+        dma_copy(romStart, romStart + req->compressedLength, compressedData);
+        decompress_lz4_full_fast(compressedData, req->compressedLength, decompressedData);
+
+        delete[] compressedData;
+    } else {
+        decompressedData = new u8[req->decompressedLength];
+        dma_copy(romStart, romStart + req->decompressedLength, decompressedData);
+    }
+
+    // Store result
+    {
+        auto r = result.lock();
+        strncpy(r->name, req->name, sizeof(r->name) - 1);
+        r->name[sizeof(r->name) - 1] = '\0';
+        r->data = decompressedData;
+        r->size = req->decompressedLength;
+    }
+
+    printf("Preloaded %s (%lu bytes)\n", req->name, req->decompressedLength);
+    delete req;
+}
+
+static void thread_func(void* arg) {
+    (void)arg;
+
+    while (true) {
+        OSMesg msg;
+        osRecvMesg(&queue, &msg, OS_MESG_BLOCK);
+        do_load((Request*)msg);
+    }
+}
+
+static void init() {
+    osCreateMesgQueue(&queue, &queueMsg, 1);
+
+    u8* stack = new u8[STACK_SIZE + 16];
+    u8* stackAligned = (u8*)(((u32)stack + 15) & ~15);
+
+    osCreateThread(&thread, 100, thread_func, nullptr,
+                   stackAligned + STACK_SIZE, THREAD_PRI);
+    osStartThread(&thread);
+    started = true;
+}
+
+} // namespace preload
+
 // Start a DMA transfer without waiting for completion.
-// The LZ4 decompressor polls PI registers to track progress.
-// Call dma_wait_async() after decompression to ensure DMA finished.
 static void dma_start_async(u8* romStart, u8* dest, u32 size) {
     if (!sAsyncDmaQueueInit) {
         osCreateMesgQueue(&sAsyncDmaQueue, &sAsyncDmaMesg, 1);
         sAsyncDmaQueueInit = true;
     }
 
-    // Clear any pending message from previous DMA
     osRecvMesg(&sAsyncDmaQueue, NULL, OS_MESG_NOBLOCK);
-
     osInvalDCache(dest, size);
 
     sAsyncDmaIoMesg.hdr.pri = OS_MESG_PRI_NORMAL;
@@ -34,10 +120,8 @@ static void dma_start_async(u8* romStart, u8* dest, u32 size) {
     sAsyncDmaIoMesg.size = size;
 
     osEPiStartDma(nuPiCartHandle, &sAsyncDmaIoMesg, OS_READ);
-    // Don't wait - return immediately so decompressor can start
 }
 
-// Wait for async DMA to complete (call after decompression)
 static void dma_wait_async() {
     osRecvMesg(&sAsyncDmaQueue, NULL, OS_MESG_BLOCK);
 }
@@ -208,8 +292,6 @@ void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedL
         return;
     }
 
-    OSTime start_time = osGetTime();
-
     u8* romStart = base + offset;
     bool isCompressed = compressedLength != decompressedLength;
 
@@ -240,11 +322,6 @@ void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedL
     dataPtr = decompressedData;
     dataSize = decompressedLength;
     gen++;
-
-    OSTime elapsed = osGetTime() - start_time;
-    u32 total_ms = OS_CYCLES_TO_USEC(elapsed) / 1000;
-    printf("Asset reload: %lu bytes in %lu ms (%s)\n", decompressedLength, total_ms,
-           isCompressed ? "LZ4" : "raw");
 }
 
 Rc<Asset> Asset::load(const char* name) {
@@ -266,7 +343,25 @@ Rc<Asset> Asset::load(const char* name) {
         return existingAsset.unwrap();
     }
 
-    // Asset was freed - load it fresh
+    // Check if this asset was preloaded
+    {
+        auto r = preload::result.lock();
+        if (strcmp(r->name, name) == 0 && r->data != nullptr) {
+            u8* data = r->data;
+            u32 size = r->size;
+            r->clear();
+
+            Rc<Asset> asset = Rc<Asset>::make(
+                static_cast<void*>(data),
+                size,
+                static_cast<u32>(1)
+            );
+            value.loaded = asset.downgrade();
+            return asset;
+        }
+    }
+
+    // Load fresh
     Rc<Asset> asset = Rc<Asset>::make(static_cast<void*>(nullptr), static_cast<u32>(0), static_cast<u32>(1));
     asset->reload(
         value.base,
@@ -278,6 +373,43 @@ Rc<Asset> Asset::load(const char* name) {
     // Store weak reference in cache
     value.loaded = asset.downgrade();
     return asset;
+}
+
+void Asset::preload(const char* name) {
+    if (!preload::started) {
+        preload::init();
+    }
+
+    // Check if already loaded or preloaded
+    poll_hot_assets();
+    auto entry = assets.get(name);
+    if (!entry) {
+        return;
+    }
+
+    AssetCacheValue& value = entry.unwrap();
+    if (value.loaded.is_alive()) {
+        return;
+    }
+
+    // Check if already preloading/preloaded
+    {
+        auto r = preload::result.lock();
+        if (r->name[0] != '\0') {
+            return;
+        }
+    }
+
+    // Queue preload request
+    auto* req = new preload::Request();
+    strncpy(req->name, name, sizeof(req->name) - 1);
+    req->name[sizeof(req->name) - 1] = '\0';
+    req->romBase = value.base;
+    req->offset = value.header.offset;
+    req->compressedLength = value.header.compressedLength;
+    req->decompressedLength = value.header.decompressedLength;
+
+    osSendMesg(&preload::queue, req, OS_MESG_NOBLOCK);
 }
 
 // Legacy C API implementations
@@ -331,6 +463,10 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
     AssetCacheValue& value = entry.unwrap();
     *compressedSize = value.header.compressedLength;
     return (s32)(value.base + value.header.offset);
+}
+
+void preload_asset(const char* assetName) {
+    Asset::preload(assetName);
 }
 
 }  // extern "C"

@@ -2,6 +2,7 @@
 #include "model.h"
 #include "evt.h"
 #include "game_modes.h"
+#include "dx/asset.h"
 
 extern LavaReset* gLavaResetList;
 extern s32 LastSafeFloor;
@@ -711,6 +712,25 @@ void goto_map(Evt* script, s32 mode) {
 
     if (mode == 1) {
         mapTransitionEffect = evt_get_variable(script, *args++);
+    }
+
+    // Preload next map's module while transition plays
+    {
+        MapConfig* mapConfig = &gAreas[areaID].maps[mapID];
+        char area[4];
+        char assetName[64];
+
+        // Extract area code from map ID (matches logic in world.cpp)
+        if (strcmp(mapConfig->id, "machi") == 0) {
+            strcpy(area, "mac");
+        } else {
+            strncpy(area, mapConfig->id, 3);
+            area[3] = '\0';
+        }
+
+        // Preload map module (contains shape + hit data)
+        sprintf(assetName, "areas/%s/%s", area, mapConfig->id);
+        preload_asset(assetName);
     }
 
     set_map_transition_effect(mapTransitionEffect);

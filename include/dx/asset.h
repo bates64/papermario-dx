@@ -28,6 +28,7 @@ EXTERN_C b32 _assetsDirty;
 // Legacy C API
 EXTERN_C void* load_asset_by_name(const char* assetName, u32* decompressedSize);
 EXTERN_C s32 get_asset_offset(char* assetName, s32* compressedSize);
+EXTERN_C void preload_asset(const char* assetName);
 
 #ifdef __cplusplus
 
@@ -60,6 +61,15 @@ public:
     /// Returns a shared reference - multiple loads of the same asset return the same instance
     /// Panics if asset not found
     static rc::Rc<Asset> load(const char* name);
+
+    /// Starts loading an asset in the background (on a separate thread)
+    /// The asset will be available instantly when load() is called later
+    ///
+    /// Only one asset can be preloaded at once, and it is stored until it is load()ed
+    /// Therefore, make sure you make sure you call load(name) after preload(name)
+    ///
+    /// Duplicate requests are ignored
+    static void preload(const char* name);
 
     /// Polls for asset changes and reloads modified assets (call each frame)
     static void pollForChanges();
