@@ -136,7 +136,7 @@ void state_init_title_screen(void) {
     startup_fade_screen_update();
     titleData = load_asset_by_name("title_data", &titleDataSize);
     titleDataDst = TitleScreen_ImgList = heap_malloc(titleDataSize);
-    decode_yay0(titleData, titleDataDst);
+    memcpy(titleDataDst, titleData, titleDataSize);
     general_heap_free(titleData);
 
     TitleScreen_ImgList_Logo = (s32*)(TitleScreen_ImgList->logo + (s32) TitleScreen_ImgList);

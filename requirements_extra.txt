@@ -8,3 +8,4 @@ colour
 ahocorasick-rs
 types-tqdm
 types-colorama
+lz4

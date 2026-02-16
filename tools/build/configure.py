@@ -196,6 +196,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "lz4",
+        description="lz4 $in",
+        command=f"$python {BUILD_TOOLS}/lz4_compress.py $in $out",
+    )
+
+    ninja.rule(
         "npc_sprite",
         description="sprite $sprite_name",
         command=f"$python {BUILD_TOOLS}/sprite/npc_sprite.py $out $sprite_name $asset_stack",
@@ -1366,10 +1372,10 @@ class Configure:
                         bin_path = path
                         asset_name = name
 
-                    yay0_path = out_dir / f"{name}.Yay0"
+                    lz4_path = out_dir / f"{name}.lz4"
                     if compress:
-                        build(yay0_path, [bin_path], "yay0")
-                        mapfs_inputs.append(yay0_path)
+                        build(lz4_path, [bin_path], "lz4")
+                        mapfs_inputs.append(lz4_path)
                     else:
                         mapfs_inputs.append(bin_path)
 
@@ -1377,7 +1383,7 @@ class Configure:
                         {
                             "name": asset_name,
                             "decompressed": str(bin_path),
-                            "compressed": str(yay0_path) if compress else None,
+                            "compressed": str(lz4_path) if compress else None,
                         }
                     )
 

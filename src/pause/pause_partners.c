@@ -296,14 +296,14 @@ void pause_partners_load_portrait(s32 index) {
     if (gPausePartnersCurrentPortraitIndex != gPausePartnersPartnerIdx[index]) {
         gPausePartnersCurrentPortraitIndex = gPausePartnersPartnerIdx[index];
         asset = load_asset_by_name(gPausePartnersAssetNames[gPausePartnersCurrentPortraitIndex], &size);
-        decode_yay0(asset, gPausePartnersPaletteBuffers[0]);
+        memcpy(gPausePartnersPaletteBuffers[0], asset, size);
         general_heap_free(asset);
     }
 
     if (gPausePartnersNextPortraitIndex != gPausePartnersPartnerIdx[(index + 1) % gPausePartnersNumPartners]) {
         gPausePartnersNextPortraitIndex = gPausePartnersPartnerIdx[(index + 1) % gPausePartnersNumPartners];
         asset = load_asset_by_name(gPausePartnersAssetNames[gPausePartnersNextPortraitIndex], &size);
-        decode_yay0(asset, gPausePartnersPaletteBuffers[1]);
+        memcpy(gPausePartnersPaletteBuffers[1], asset, size);
         general_heap_free(asset);
     }
 }

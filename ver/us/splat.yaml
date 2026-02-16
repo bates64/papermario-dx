@@ -114,6 +114,7 @@ segments:
     - [auto, c, dx/profiling]
     - [auto, c, dx/utils]
     - [auto, c, dx/versioning]
+    - [auto, hasm, dx/lz4]
     - [auto, c, cam_main]
     - [auto, c, cam_mode_minimal]
     - [auto, c, cam_mode_interp]

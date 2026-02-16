@@ -8,10 +8,10 @@ BSS MessageImageData N(image);
 
 API_CALLABLE(N(LoadPartyImage)) {
     u32 decompressedSize;
-    void* compressed = load_asset_by_name("party/sushie_art", &decompressedSize);
+    void* decompressed = load_asset_by_name("party/sushie_art", &decompressedSize);
 
-    decode_yay0(compressed, &N(palette));
-    general_heap_free(compressed);
+    memcpy(&N(palette), decompressed, decompressedSize);
+    general_heap_free(decompressed);
 
     N(image).raster = N(raster);
     N(image).palette = N(palette);

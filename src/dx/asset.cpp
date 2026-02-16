@@ -5,6 +5,43 @@
 
 b32 _assetsDirty = false;
 
+extern "C" int decompress_lz4_full_fast(const void* inbuf, int insize, void* outbuf);
+
+// Static message queue for async DMA - must persist until DMA completes
+static OSMesgQueue sAsyncDmaQueue;
+static OSMesg sAsyncDmaMesg;
+static OSIoMesg sAsyncDmaIoMesg;
+static bool sAsyncDmaQueueInit = false;
+
+// Start a DMA transfer without waiting for completion.
+// The LZ4 decompressor polls PI registers to track progress.
+// Call dma_wait_async() after decompression to ensure DMA finished.
+static void dma_start_async(u8* romStart, u8* dest, u32 size) {
+    if (!sAsyncDmaQueueInit) {
+        osCreateMesgQueue(&sAsyncDmaQueue, &sAsyncDmaMesg, 1);
+        sAsyncDmaQueueInit = true;
+    }
+
+    // Clear any pending message from previous DMA
+    osRecvMesg(&sAsyncDmaQueue, NULL, OS_MESG_NOBLOCK);
+
+    osInvalDCache(dest, size);
+
+    sAsyncDmaIoMesg.hdr.pri = OS_MESG_PRI_NORMAL;
+    sAsyncDmaIoMesg.hdr.retQueue = &sAsyncDmaQueue;
+    sAsyncDmaIoMesg.dramAddr = dest;
+    sAsyncDmaIoMesg.devAddr = (u32)romStart;
+    sAsyncDmaIoMesg.size = size;
+
+    osEPiStartDma(nuPiCartHandle, &sAsyncDmaIoMesg, OS_READ);
+    // Don't wait - return immediately so decompressor can start
+}
+
+// Wait for async DMA to complete (call after decompression)
+static void dma_wait_async() {
+    osRecvMesg(&sAsyncDmaQueue, NULL, OS_MESG_BLOCK);
+}
+
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
 
 namespace dx {
@@ -171,28 +208,27 @@ void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedL
         return;
     }
 
+    OSTime start_time = osGetTime();
+
     u8* romStart = base + offset;
+    bool isCompressed = compressedLength != decompressedLength;
 
-    // Allocate decompressed buffer FIRST (larger, needs more space)
-    // This is more likely to succeed right after freeing the old asset
     u8* decompressedData;
-    if (compressedLength != decompressedLength) {
-        decompressedData = new u8[decompressedLength];
-    }
 
-    // Now allocate and load compressed data (smaller, easier to find space)
-    u8* compressedData = new u8[compressedLength];
-    dma_copy(romStart, romStart + compressedLength, compressedData);
+    if (isCompressed) {
+        decompressedData = new u8[decompressedLength + 8]; // +8 for lz4 algorithm
+        u8* compressedData = new u8[compressedLength];
 
-    // Decompress if necessary
-    if (compressedLength != decompressedLength) {
-        if (compressedData[0] == 'Y' && compressedData[1] == 'a' && compressedData[2] == 'y' && compressedData[3] == '0')
-            decode_yay0(compressedData, decompressedData);
-        else PANIC();
+        // LZ4 streaming decompression
+        dma_start_async(romStart, compressedData, compressedLength);
+        decompress_lz4_full_fast(compressedData, compressedLength, decompressedData);
+        dma_wait_async();
 
         delete[] compressedData;
     } else {
-        decompressedData = compressedData;
+        // Uncompressed - direct DMA
+        decompressedData = new u8[decompressedLength];
+        dma_copy(romStart, romStart + decompressedLength, decompressedData);
     }
 
     // Free old data if any
@@ -204,6 +240,11 @@ void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedL
     dataPtr = decompressedData;
     dataSize = decompressedLength;
     gen++;
+
+    OSTime elapsed = osGetTime() - start_time;
+    u32 total_ms = OS_CYCLES_TO_USEC(elapsed) / 1000;
+    printf("Asset reload: %lu bytes in %lu ms (%s)\n", decompressedLength, total_ms,
+           isCompressed ? "LZ4" : "raw");
 }
 
 Rc<Asset> Asset::load(const char* name) {
@@ -253,12 +294,30 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     AssetCacheValue& value = entry.unwrap();
     *decompressedSize = value.header.decompressedLength;
 
-    // Load compressed data
     u8* romStart = value.base + value.header.offset;
-    void* compressedData = general_heap_malloc(value.header.compressedLength);
-    dma_copy(romStart, romStart + value.header.compressedLength, compressedData);
+    bool isCompressed = value.header.compressedLength != value.header.decompressedLength;
 
-    return compressedData;  // Returns compressed data (caller decompresses)
+    if (isCompressed) {
+        // LZ4 streaming decompression - decompress while DMA is in progress
+        u8* compressedData = (u8*)general_heap_malloc(value.header.compressedLength);
+
+        // Allocate output buffer (+8 for LZ4 overwrite safety)
+        u8* decompressedData = (u8*)general_heap_malloc(value.header.decompressedLength + 8);
+
+        // Start async DMA - decompressor will poll PI registers to track progress
+        dma_start_async(romStart, compressedData, value.header.compressedLength);
+
+        // Decompress - polls PI_DRAM_ADDR to wait for data as needed
+        decompress_lz4_full_fast(compressedData, value.header.compressedLength, decompressedData);
+
+        general_heap_free(compressedData);
+        return decompressedData;
+    } else {
+        // Uncompressed - direct copy
+        void* data = general_heap_malloc(value.header.decompressedLength);
+        dma_copy(romStart, romStart + value.header.decompressedLength, data);
+        return data;
+    }
 }
 
 s32 get_asset_offset(char* assetName, s32* compressedSize) {

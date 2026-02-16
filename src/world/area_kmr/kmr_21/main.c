@@ -76,11 +76,11 @@ void worker_render_title_image(void) {
 
 API_CALLABLE(N(LoadTitleImage)) {
     u32 assetSize;
-    void* compressed = load_asset_by_name("title_data", &assetSize);
+    void* decompressed = load_asset_by_name("title_data", &assetSize);
     TitleData = (TitleDataFile*) heap_malloc(assetSize);
 
-    decode_yay0(compressed, TitleData);
-    general_heap_free(compressed);
+    memcpy(TitleData, decompressed, assetSize);
+    general_heap_free(decompressed);
     TitleImage = (IMG_PTR)(TitleData->img_offset_title + (s32)TitleData);
     create_worker_frontUI(nullptr, worker_render_title_image);
     return ApiStatus_DONE2;

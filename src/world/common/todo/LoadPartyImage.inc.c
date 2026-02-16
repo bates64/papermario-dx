@@ -26,15 +26,15 @@ API_CALLABLE(N(LoadPartyImage)) {
     static MessageImageData image;
 
     u32 decompressedSize;
-    void* compressed = load_asset_by_name(PARTY_IMAGE, &decompressedSize);
+    void* decompressed = load_asset_by_name(PARTY_IMAGE, &decompressedSize);
 
     #ifdef SHIFT
-    decode_yay0(compressed, &img);
+    memcpy(&img, decompressed, decompressedSize);
     #else
-    decode_yay0(compressed, palette);
+    memcpy(palette, decompressed, decompressedSize);
     #endif
 
-    general_heap_free(compressed);
+    general_heap_free(decompressed);
 
     #ifdef SHIFT
     image.raster = img.raster;
