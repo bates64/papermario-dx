@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 MOD_MAGIC = b"MOD\x00"
-MOD_VERSION = 1
+MOD_VERSION = 2
 
 R_MIPS_NONE = 0
 R_MIPS_32 = 2
@@ -375,10 +375,26 @@ def build_module(input_path, output_path):
     relocs = collect_relocs(elf)
     exports = collect_exports(elf)
 
-    # Build reloc table: packed (u8 type, u8 pad, u16 pad, u32 offset)
-    reloc_blob = b""
-    for r_type, r_offset in relocs:
-        reloc_blob += struct.pack(">BxxxI", r_type, r_offset - LINK_ADDR)
+    # Separate relocs by type
+    # R_MIPS_32/26: sort by offset for cache-friendly sequential access
+    # HI16/LO16: keep original order to preserve pairing
+    r32_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_32])
+    r26_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_26])
+    hi16_relocs = [r[1] for r in relocs if r[0] == R_MIPS_HI16]
+    lo16_relocs = [r[1] for r in relocs if r[0] == R_MIPS_LO16]
+
+    if len(hi16_relocs) != len(lo16_relocs):
+        print(
+            f"error: HI16/LO16 count mismatch ({len(hi16_relocs)} vs {len(lo16_relocs)})",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    # Build reloc tables: just u32 offsets
+    r32_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in r32_relocs)
+    r26_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in r26_relocs)
+    hi16_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in hi16_relocs)
+    lo16_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in lo16_relocs)
 
     # Build export table and string table
     export_entries = b""
@@ -392,7 +408,7 @@ def build_module(input_path, output_path):
         export_entries += struct.pack(">II", offset - LINK_ADDR, str_offsets[name])
 
     # Build header
-    HEADER_SIZE = 68
+    HEADER_SIZE = 92
 
     # Align text start to 16 bytes for N64 RSP DMA (vertex/matrix loads)
     off = (HEADER_SIZE + 15) & ~15
@@ -400,8 +416,14 @@ def build_module(input_path, output_path):
     off += len(text_data)
     data_off = off
     off += len(data_data)
-    reloc_off = off
-    off += len(reloc_blob)
+    r32_off = off
+    off += len(r32_blob)
+    r26_off = off
+    off += len(r26_blob)
+    hi16_off = off
+    off += len(hi16_blob)
+    lo16_off = off
+    off += len(lo16_blob)
     ctor_off = off
     off += len(ctors_data)
     dtor_off = off
@@ -415,7 +437,10 @@ def build_module(input_path, output_path):
     header += struct.pack(">II", text_off, text_size)
     header += struct.pack(">II", data_off, data_size)
     header += struct.pack(">I", bss_size)
-    header += struct.pack(">II", reloc_off, len(relocs))
+    header += struct.pack(">II", r32_off, len(r32_relocs))
+    header += struct.pack(">II", r26_off, len(r26_relocs))
+    header += struct.pack(">II", hi16_off, len(hi16_relocs))
+    header += struct.pack(">II", lo16_off, len(lo16_relocs))
     header += struct.pack(">II", ctor_off, ctors_size // 4)
     header += struct.pack(">II", dtor_off, dtors_size // 4)
     header += struct.pack(">II", export_off, len(exports))
@@ -430,17 +455,21 @@ def build_module(input_path, output_path):
         f.write(b"\x00" * (text_off - HEADER_SIZE))
         f.write(text_data)
         f.write(data_data)
-        f.write(reloc_blob)
+        f.write(r32_blob)
+        f.write(r26_blob)
+        f.write(hi16_blob)
+        f.write(lo16_blob)
         f.write(ctors_data)
         f.write(dtors_data)
         f.write(export_entries)
         f.write(strtab)
 
     total_size = off
+    total_relocs = len(r32_relocs) + len(r26_relocs) + len(hi16_relocs) + len(lo16_relocs)
     print(
         f"{Path(output_path).name}: {total_size} bytes "
         f"(text={text_size} data={data_size} bss={bss_size} "
-        f"relocs={len(relocs)} exports={len(exports)})"
+        f"relocs={total_relocs} exports={len(exports)})"
     )
 
 
