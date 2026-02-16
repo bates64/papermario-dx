@@ -1,6 +1,10 @@
 #pragma once
 
 #include "common.h"
+#include "dx/rc.h"
+#include "dx/collections.h"
+#include "dx/string.h"
+#include "dx/asset.h"
 
 namespace dx {
 namespace module {
@@ -8,17 +12,15 @@ namespace module {
 /** A loaded dynamic library. */
 class Module {
 public:
-    /** Loads a module, including running ctors. */
-    Module(const char* filename);
+    /** Loads a module by name, with caching.
+     *  Returns a shared reference - loading the same name twice returns the same instance. */
+    static rc::Rc<Module> load(const char* name);
 
     /** Unloads the module, including running dtors. */
     ~Module();
 
     /** Returns a pointer to the symbol with the given name. */
     void *sym(const char *name) const;
-
-    /** Returns the address of the symbol with the given name. */
-    u32 addr(const char *name) const;
 
     /** Returns the name of the symbol at the given address. */
     const char *sym_for_addr(u32 addr) const;
@@ -32,7 +34,14 @@ public:
     /** Returns the size of the module. */
     u32 size() const;
 
+    /** Returns true if the underlying asset has a pending hot-reload. */
+    bool has_update() const;
+
 private:
+    friend class rc::Rc<Module>;
+
+    Module(const char* filename);
+
     struct Header;
     struct Reloc;
     struct Export;
@@ -43,10 +52,13 @@ private:
     const Export *exports() const;
     const char *strtab() const;
 
-    u8 *blob_ = nullptr;
+    rc::Rc<asset::Asset> asset_;
     u8 *base_ = nullptr;
     u8 *bss_ = nullptr;
     Header *hdr_ = nullptr;
+    collections::HashMap<string::FixedString<64>, void*> syms_;
+
+    static collections::HashMap<string::FixedString<64>, rc::Weak<Module>> cache_;
 };
 
 } // namespace module

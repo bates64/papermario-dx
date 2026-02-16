@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.h"
-#include "dx/prelude.h"
 #include "dx/rc.h"
 
 /// Header at the start of each asset table
@@ -33,6 +32,7 @@ EXTERN_C s32 get_asset_offset(char* assetName, s32* compressedSize);
 #ifdef __cplusplus
 
 namespace dx {
+namespace module { class Module; }
 namespace asset {
 
 /// An asset loaded from the ROM.
@@ -53,6 +53,9 @@ public:
     /// Use this to detect when an asset has changed and rebuild derived data
     u32 generation() const { return gen; }
 
+    /// Returns true if a reload was deferred because the asset is exclusive
+    bool has_pending_reload() const { return pendingReload; }
+
     /// Loads and decompresses an asset by name
     /// Returns a shared reference - multiple loads of the same asset return the same instance
     /// Panics if asset not found
@@ -69,6 +72,8 @@ public:
     Asset(void* data, u32 size, u32 generation);
 
 private:
+    friend class dx::module::Module;
+
     // Non-copyable, non-movable (Rc handles sharing)
     Asset(const Asset&) = delete;
     Asset& operator=(const Asset&) = delete;
@@ -78,6 +83,8 @@ private:
     void* dataPtr;
     u32 dataSize;
     u32 gen;
+    bool exclusive;      // Set by Module - prevents reload and other loads
+    bool pendingReload;  // Set when reload was skipped due to exclusivity
 };
 
 } // namespace asset

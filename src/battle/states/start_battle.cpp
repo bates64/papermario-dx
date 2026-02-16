@@ -1,10 +1,8 @@
 #include "states.h"
-#include "dx/module.h"
+#include "dx/prelude.h"
 #include "model.h"
 #include "map.h"
 #include "script_api/battle.h"
-
-using dx::module::Module;
 
 extern StageListRow* gCurrentStagePtr;
 extern s32 bActorsIgnoreDuringCount[];
@@ -25,9 +23,9 @@ enum {
 
 BSS s32 BattleEnemiesCreated;
 
-static Module* sBattleModule = nullptr;
+static Option<Rc<Module>> sBattleModule = Option<Rc<Module>>::none();
 
-Module* get_battle_module() { return sBattleModule; }
+Module* get_battle_module() { return sBattleModule.is_some() ? sBattleModule.get_value().as_ptr() : nullptr; }
 
 extern "C" {
 
@@ -36,10 +34,9 @@ void load_stage_assets(Stage* stage) {
     s32 texturesOffset;
     s32 size;
 
-    delete sBattleModule;
-    sBattleModule = new Module(stage->module);
+    sBattleModule.set(Module::load(stage->module));
 
-    ShapeFileHeader* shape = (ShapeFileHeader*)sBattleModule->sym("shape");
+    ShapeFileHeader* shape = (ShapeFileHeader*)sBattleModule.get_value()->sym("shape");
     rootModel = shape->root;
     texturesOffset = get_asset_offset(stage->texture, &size);
     if (rootModel != nullptr) {

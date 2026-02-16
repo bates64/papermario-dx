@@ -4,6 +4,11 @@
 namespace dx {
 namespace module {
 
+using rc::Rc;
+using rc::Weak;
+using string::FixedString;
+using collections::HashMap;
+
 static constexpr u32 MOD_MAGIC = 0x4D4F4400; // "MOD\0"
 static constexpr u32 LINK_ADDR = 0x80000000;
 
@@ -38,12 +43,14 @@ struct Module::Export {
     u32 name_offset;
 };
 
+HashMap<FixedString<64>, Weak<Module>> Module::cache_;
+
 const Module::Export *Module::exports() const {
-    return (const Export *)(blob_ + hdr_->export_offset);
+    return (const Export *)((u8*)asset_->data() + hdr_->export_offset);
 }
 
 const char *Module::strtab() const {
-    return (const char *)(blob_ + hdr_->strtab_offset);
+    return (const char *)((u8*)asset_->data() + hdr_->strtab_offset);
 }
 
 u32 Module::size() const {
@@ -53,7 +60,8 @@ u32 Module::size() const {
 void Module::apply_relocs() {
     u32 load = (u32)base_;
     u32 delta = load - LINK_ADDR;
-    const Reloc *relocs = (const Reloc *)(blob_ + hdr_->reloc_offset);
+    u8* blob = (u8*)asset_->data();
+    const Reloc *relocs = (const Reloc *)(blob + hdr_->reloc_offset);
 
     for (u32 i = 0; i < hdr_->reloc_count; i++) {
         u32 off = relocs[i].offset;
@@ -116,7 +124,8 @@ void Module::apply_relocs() {
 }
 
 void Module::run_table(u32 offset, u32 count) {
-    u32 *table = (u32 *)(blob_ + offset);
+    u8* blob = (u8*)asset_->data();
+    u32 *table = (u32 *)(blob + offset);
     s32 delta = (u32)base_ - LINK_ADDR;
 
     for (u32 i = 0; i < count; i++) {
@@ -125,23 +134,38 @@ void Module::run_table(u32 offset, u32 count) {
     }
 }
 
-Module::Module(const char* filename) {
-    // TODO: use Asset::load
-    u32 size;
-    void* compressedData = load_asset_by_name(filename, &size);
-    ASSERT_MSG(compressedData, "Cannot read %s, out of memory", filename);
-    void* decompressedData = malloc(size);
-    ASSERT_MSG(decompressedData, "Cannot decompress %s, out of memory", filename);
-    ASSERT_MSG(*(u32*)compressedData == ASCII_TO_U32('Y', 'a', 'y', '0'), "Module %s is uncompressed", filename);
-    decode_yay0(compressedData, decompressedData);
-    general_heap_free(compressedData);
+Rc<Module> Module::load(const char* name) {
+    FixedString<64> key(name);
 
-    blob_ = (u8*)decompressedData;
-    hdr_ = (Header *)decompressedData;
+    // Try to upgrade existing weak reference
+    auto existing = cache_.get(key);
+    if (existing) {
+        auto upgraded = existing.unwrap().upgrade();
+        if (upgraded) {
+            return upgraded.unwrap();
+        }
+    }
+
+    // Construct new module
+    Rc<Module> mod = Rc<Module>::make(name);
+
+    // Cache weak reference
+    cache_.put(key, mod.downgrade());
+    return mod;
+}
+
+Module::Module(const char* filename)
+    : asset_(asset::Asset::load(filename))
+{
+    // Mark asset as exclusive - prevents hot-reload from freeing our code buffer
+    asset_->exclusive = true;
+
+    u8* blob = (u8*)asset_->data();
+    hdr_ = (Header*)blob;
 
     ASSERT_MSG(hdr_->magic == MOD_MAGIC, "Invalid module %s", filename);
 
-    base_ = blob_ + hdr_->text_offset;
+    base_ = blob + hdr_->text_offset;
 
     if (hdr_->bss_size > 0) {
         bss_ = (u8 *)malloc(hdr_->bss_size);
@@ -153,7 +177,16 @@ Module::Module(const char* filename) {
     osWritebackDCache(base_, hdr_->text_size + hdr_->data_size);
     osInvalICache(base_, hdr_->text_size);
 
-    printf("Loaded module %s to %p (%lu relocs)\n", filename, base_, hdr_->reloc_count);
+    // Build symbol lookup table
+    const Export* exp = exports();
+    const char* str = strtab();
+    syms_.reserve(hdr_->export_count);
+    for (u32 i = 0; i < hdr_->export_count; i++) {
+        syms_.put(FixedString<64>(str + exp[i].name_offset), base_ + exp[i].offset);
+    }
+
+    printf("Loaded module %s to %p (%lu relocs, %lu exports)\n",
+           filename, base_, hdr_->reloc_count, hdr_->export_count);
 
     run_table(hdr_->ctor_offset, hdr_->ctor_count);
 }
@@ -161,17 +194,17 @@ Module::Module(const char* filename) {
 Module::~Module() {
     run_table(hdr_->dtor_offset, hdr_->dtor_count);
 
+    // Release exclusivity - Asset will handle freeing the buffer
+    asset_->exclusive = false;
+
     free(bss_);
-    free(blob_);
+
 }
 
 void *Module::sym(const char *name) const {
-    const Export *exp = exports();
-    const char *str = strtab();
-
-    for (u32 i = 0; i < hdr_->export_count; i++) {
-        if (strcmp(str + exp[i].name_offset, name) == 0)
-            return base_ + exp[i].offset;
+    auto result = syms_.get(name);
+    if (result) {
+        return result.unwrap();
     }
     return nullptr;
 }
@@ -196,6 +229,10 @@ const char *Module::sym_for_addr(u32 addr) const {
 bool Module::contains(u32 addr) const {
     u32 b = (u32)base_;
     return addr >= b && addr < b + hdr_->text_size;
+}
+
+bool Module::has_update() const {
+    return asset_->has_pending_reload();
 }
 
 } // namespace module

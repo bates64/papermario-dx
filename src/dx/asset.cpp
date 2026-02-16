@@ -157,7 +157,7 @@ extern "C" void poll_hot_assets() {
 }
 
 Asset::Asset(void* data, u32 size, u32 generation)
-    : dataPtr(data), dataSize(size), gen(generation) {}
+    : dataPtr(data), dataSize(size), gen(generation), exclusive(false), pendingReload(false) {}
 
 Asset::~Asset() {
     if (dataPtr) {
@@ -166,6 +166,11 @@ Asset::~Asset() {
 }
 
 void Asset::reload(u8* base, u32 offset, u32 compressedLength, u32 decompressedLength) {
+    if (exclusive) {
+        pendingReload = true;
+        return;
+    }
+
     u8* romStart = base + offset;
 
     // Allocate decompressed buffer FIRST (larger, needs more space)
@@ -215,6 +220,8 @@ Rc<Asset> Asset::load(const char* name) {
     // Try to upgrade weak reference
     auto existingAsset = value.loaded.upgrade();
     if (existingAsset) {
+        ASSERT_MSG(!existingAsset.unwrap()->exclusive,
+            "Asset '%s' is exclusively owned by a Module", name);
         return existingAsset.unwrap();
     }
 

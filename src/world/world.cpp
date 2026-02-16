@@ -1,5 +1,5 @@
 #include "common.h"
-#include "dx/module.h"
+#include "dx/prelude.h"
 #include "functions.h"
 #include "ld_addrs.h"
 #include "npc.h"
@@ -9,8 +9,6 @@
 #include "model.h"
 #include <string.h>
 #include "world/surfaces.h"
-
-using dx::module::Module;
 
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
 
@@ -24,9 +22,9 @@ char wMapModuleName[64];
 char wMapTexName[64];
 char wMapBgName[64];
 
-static Module* sMapModule = nullptr;
+static Option<Rc<Module>> sMapModule = Option<Rc<Module>>::none();
 
-Module* get_map_module() { return sMapModule; }
+Module* get_map_module() { return sMapModule.is_some() ? sMapModule.get_value().as_ptr() : nullptr; }
 
 extern "C" {
 
@@ -135,9 +133,8 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     }
 
     if (!skipLoadingAssets) {
-        delete sMapModule;
-        sMapModule = new Module(wMapModuleName);
-        ShapeFileHeader* shape = (ShapeFileHeader*)sMapModule->sym("shape");
+        sMapModule.set(Module::load(wMapModuleName));
+        ShapeFileHeader* shape = (ShapeFileHeader*)sMapModule.get_value()->sym("shape");
         ASSERT_MSG(shape != nullptr, "Map missing shape");
         mapSettings->modelTreeRoot = shape->root;
         mapSettings->modelNameList = shape->modelNames;
