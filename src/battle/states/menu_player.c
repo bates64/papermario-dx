@@ -951,9 +951,11 @@ void btl_state_update_player_menu(void) {
                     battleStatus->curTargetListFlags = gMoveTable[battleStatus->selectedMoveID].flags;
                     btl_set_state(BATTLE_STATE_SELECT_TARGET);
                     break;
-                default:
-                    ; // fallthrough
             }
+            if (gBattleState == BATTLE_STATE_SELECT_TARGET) {
+                break;
+            }
+            // fallthrough
         case BTL_SUBSTATE_NOSUBMENU_RETURN_MAIN:
             if (btl_main_menu_update() == 0) {
                 break;
