@@ -443,6 +443,8 @@ u32 dma_copy(Addr romStart, Addr romEnd, void* vramDest) {
     u32 length = romEnd - romStart;
     s32 i;
 
+    ASSERT_MSG(((u32)vramDest & 7) == 0, "dma_copy: dest not 8-byte aligned");
+
     osInvalICache(vramDest, length);
 
     for (i = 0; i + ROM_CHUNK_SIZE < length; i += ROM_CHUNK_SIZE) {
