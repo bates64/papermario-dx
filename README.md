@@ -14,6 +14,10 @@ To get started, [read the manual](manual/introduction.md).
 [releases]: https://github.com/bates64/papermario-dx/releases
 [download]: https://github.com/bates64/papermario-dx/releases/download/latest/papermario.bps
 
+### Stability
+
+Game functions and structs are available but have **no stability guarantees**. They may be renamed, removed, or changed in any release.
+
 ### List of changes (incomplete)
 
 - US release only (no JP, PAL, or iQue - none of these are near 100% yet).
