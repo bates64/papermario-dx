@@ -1143,6 +1143,9 @@ void dx_debug_update_edit_partners() {
                 gPlayerData.partners[idx].level = 0;
             }
         }
+        if (DebugPartnerLevels[SelectPartnerMenuPos] >= 0) {
+            switch_to_partner(SelectPartnerMenuPos);
+        }
         sfx_play_sound(SOUND_MENU_BADGE_EQUIP);
     }
 
