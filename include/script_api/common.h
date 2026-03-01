@@ -1151,6 +1151,9 @@ API_CALLABLE(ClampAngleFloat);
 API_CALLABLE(GetLanguage);
 #endif
 
+/// @evtapi
+API_CALLABLE(GetGameContext);
+
 /// @}
 
 /// @{

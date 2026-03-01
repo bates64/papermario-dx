@@ -827,6 +827,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, model]
     - [auto, c, animator]
+    - [auto, c, foliage]
     - [auto, c, entity_model]
     - [auto, c, worker]
     - [auto, c, msg]

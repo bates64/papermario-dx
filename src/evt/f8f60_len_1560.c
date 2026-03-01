@@ -579,3 +579,10 @@ API_CALLABLE(GetLanguage) {
     return ApiStatus_DONE2;
 }
 #endif
+
+API_CALLABLE(GetGameContext) {
+    Bytecode* args = script->ptrReadPos;
+
+    evt_set_variable(script, *args++, gGameStatusPtr->context);
+    return ApiStatus_DONE2;
+}

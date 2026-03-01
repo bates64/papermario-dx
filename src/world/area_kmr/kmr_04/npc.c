@@ -21,7 +21,13 @@ EvtScript N(EVS_NpcAux_Goompa) = {
     End
 };
 
-#include "world/common/todo/CheckPartnerFlags1000.inc.c"
+API_CALLABLE(N(AwaitPartnerGrounded)) {
+    if (get_npc_unsafe(NPC_PARTNER)->flags & NPC_FLAG_GROUNDED) {
+        return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
+    }
+}
 
 API_CALLABLE(N(GetPlayerHP)) {
     script->varTable[0] = gPlayerData.curHP;
@@ -71,8 +77,8 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 IfGt(LVar2, 85)
                     Goto(10)
                 EndIf
-                Call(DisablePlayerInput, true)
-                Call(N(CheckPartnerFlags1000))
+                Call(DisablePlayerInput, false)
+                Call(N(AwaitPartnerGrounded))
                 Call(DisablePartnerAI, 0)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Walk)

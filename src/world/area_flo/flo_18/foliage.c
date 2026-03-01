@@ -1,6 +1,6 @@
 #include "flo_18.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 EvtScript N(EVS_SetupFoliage) = {
     Return
