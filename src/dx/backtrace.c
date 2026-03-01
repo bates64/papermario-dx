@@ -343,10 +343,9 @@ s32 address2symbol(u32 address, Symbol* out) {
     }
 
     // Read symbols in chunks
-    static Symbol chunk[chunkSize];
+    static Symbol chunk[symbolsPerChunk];
     s32 i;
     for (i = 0; i < symt.symbolCount; i++) {
-        // Do we need to load the next chunk?
         if (i % symbolsPerChunk == 0) {
             u32 chunkAddr = symbolTableRomAddr + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
             nuPiReadRom(chunkAddr, chunk, chunkSize);
@@ -358,11 +357,8 @@ s32 address2symbol(u32 address, Symbol* out) {
             *out = sym;
             return 0;
         } else if (address < sym.address) {
-            // Symbols are sorted by address, so if we passed the address, we can stop
             break;
         } else {
-            // Keep searching, but remember this as the last symbol
-            // incase we don't find an exact match
             *out = sym;
         }
     }
@@ -405,7 +401,7 @@ s32 module_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol
         return -1;
     }
 
-    static Symbol chunk[chunkSize];
+    static Symbol chunk[symbolsPerChunk];
     s32 i;
     for (i = 0; i < symt.symbolCount; i++) {
         if (i % symbolsPerChunk == 0) {
