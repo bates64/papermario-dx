@@ -1,5 +1,5 @@
-#ifndef DX
-#define DX
+#ifndef DX_CONFIG_H
+#define DX_CONFIG_H
 
 /// Creates the version string that appears on the file select menu.
 /// Also used to sign save files created with this mod.

@@ -382,7 +382,16 @@ char* load_symbol_string(char* dest, u32 addr, int n) {
     return (char*)((u32)dest + (addr & 3));
 }
 
+extern const char* module_sym_for_addr(u32 addr, const char** out_module_name);
+
 void backtrace_address_to_string(u32 address, char* dest) {
+    const char* module_name = NULL;
+    const char* module_sym = module_sym_for_addr(address, &module_name);
+    if (module_sym != NULL) {
+        sprintf(dest, "%s (%s)", module_sym, module_name);
+        return;
+    }
+
     Symbol sym;
     s32 offset = address2symbol(address, &sym);
 
