@@ -32,6 +32,8 @@ ver/*/*.ld
 *.msg.h
 *.i
 *.o
+*.gch
+*.gch.d
 *.zip
 baserom.*
 build/

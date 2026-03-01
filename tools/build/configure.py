@@ -508,7 +508,8 @@ class Configure:
         built_objects = set()
         generated_code = []
         inc_img_bins = []
-        precompiled_header_path = self.build_path() / "include" / "precompiled.h.gch"
+        precompiled_header_path = Path("include/common.h.gch")
+        cxx_precompiled_header_path = Path("include/dx/prelude.hpp.gch")
 
         def build(
             object_paths: Union[Path, List[Path]],
@@ -553,8 +554,11 @@ class Configure:
                 if task in ["cc", "cxx", "cc_modern", "cxx_modern"]:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
-                    if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
-                        implicit.append(str(precompiled_header_path))
+                    if object_paths[0].suffixes[-1] != ".gch":
+                        if task == "cc_modern":
+                            implicit.append(str(precompiled_header_path))
+                        elif task == "cxx_modern":
+                            implicit.append(str(cxx_precompiled_header_path))
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -650,6 +654,7 @@ class Configure:
             )
 
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
+        build([cxx_precompiled_header_path], [Path("include/dx/prelude.hpp")], "cxx_modern")
 
         import splat
 
@@ -1454,8 +1459,8 @@ class Configure:
             generate_build_ninja(module_dir, dx_root, name, sources, self.version)
             ninja.subninja(str(build_dir / "build.ninja"))
 
-            elf_path = str(build_dir.resolve() / f"{name}.elf")
-            module_path = str(build_dir.resolve() / f"{name}.module")
+            elf_path = str(build_dir / f"{name}.elf")
+            module_path = str(build_dir / f"{name}.module")
 
             next_rom = str(build_dir / f"{name}.z64")
             ninja.build(

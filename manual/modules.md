@@ -26,18 +26,14 @@ my_module/
 
 ### Source files
 
-Module source files have access to all the game's headers:
+Module source files are C++ (`.cpp`) only.
 
 ```cpp
-#include "common.h"
-
 __attribute__((constructor))
 void my_init() {
     // Runs when the module is loaded
 }
 ```
-
-Both C (`.c`) and C++ (`.cpp`) source files are supported.
 
 Functions marked with `__attribute__((constructor))` run automatically when the module is loaded. Functions marked with `__attribute__((destructor))` run when the module is unloaded. C++ static initializers and destructors also work as expected.
 
@@ -77,8 +73,6 @@ it will overwrite the existing module.
 ## Loading modules
 
 ```cpp
-#include <dx/module.hpp>
-
 auto& mod = Module::get("name_of_module");
 ```
 
