@@ -17,6 +17,8 @@ struct ModuleEntry {
     u32 romStart;
     u32 romEnd;
     u32 flags;
+    u32 debugRomStart;
+    u32 debugRomEnd;
 };
 
 static constexpr u32 MODULE_DIR_CAPACITY = 1024;
@@ -144,6 +146,9 @@ Module::Module(const FixedString<64>& name) : name_(name) {
 
     nuPiReadRom(entry->romStart, romData, romSize);
 
+    debugRomStart_ = entry->debugRomStart;
+    debugRomEnd_ = entry->debugRomEnd;
+
     blob_ = (u8*)romData;
     hdr_ = (Header *)romData;
 
@@ -212,22 +217,24 @@ bool Module::contains(u32 addr) const {
 } // namespace dx
 
 extern "C"
-const char* module_sym_for_addr(u32 addr, const char** out_module_name) {
+const char* module_sym_for_addr(u32 addr, const char** out_module_name,
+                                u32* out_debug_rom_start, u32* out_debug_rom_end,
+                                u32* out_module_base) {
     using namespace dx;
 
     const char* result = nullptr;
-    printf("module_sym_for_addr: addr=0x%08lX loaded=%lu\n", addr, Module::loaded_.size());
     Module::loaded_.for_each([&](const FixedString<64>& name, Module* mod) {
         if (result) return;
-        u32 base = (u32)mod->base();
-        u32 end = base + mod->size();
-        printf("  module '%s': base=0x%08lX end=0x%08lX contains=%d\n",
-               name.c_str(), base, end, mod->contains(addr));
         if (mod->contains(addr)) {
             const char* sym = mod->sym_for_addr(addr);
-            printf("  -> sym='%s'\n", sym ? sym : "(null)");
             if (out_module_name)
                 *out_module_name = name;
+            if (out_debug_rom_start)
+                *out_debug_rom_start = mod->debugRomStart_;
+            if (out_debug_rom_end)
+                *out_debug_rom_end = mod->debugRomEnd_;
+            if (out_module_base)
+                *out_module_base = (u32)mod->base();
             result = sym;
         }
     });

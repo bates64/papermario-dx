@@ -380,7 +380,7 @@ def elf_to_module(input_path, output_path):
 
 
 # Module directory layout (must match module.cpp)
-MODULE_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4  # name[64] + romStart(u32) + romEnd(u32) + flags(u32)
+MODULE_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + flags + debugRomStart + debugRomEnd
 MODULE_DIR_CAPACITY = 1024
 MODULE_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
 
@@ -484,8 +484,12 @@ def link_module(objects, syms_path, output_path):
         sys.exit(result.returncode)
 
 
-def attach_to_rom(module_data, rom_path, name, dir_rom_offset, flags):
-    """Attach compressed module data to a ROM by updating the module directory."""
+def attach_to_rom(module_data, rom_path, name, dir_rom_offset, flags, debug_symbols=None):
+    """Attach module data to a ROM by updating the module directory.
+
+    If debug_symbols is provided (list from module_readelf), a debug symbol table
+    is also appended after the module data.
+    """
     if len(name) >= 64:
         print(f"error: module name '{name}' exceeds 63 characters", file=sys.stderr)
         sys.exit(1)
@@ -525,6 +529,22 @@ def attach_to_rom(module_data, rom_path, name, dir_rom_offset, flags):
         f.write(module_data)
         module_rom_end = rom_start + len(module_data)
 
+        debug_rom_start = 0
+        debug_rom_end = 0
+        if debug_symbols:
+            debug_rom_start = (module_rom_end + 15) & ~15
+            debug_padding = debug_rom_start - module_rom_end
+            debug_blob = build_debug_symbol_table(debug_symbols, debug_rom_start)
+            f.seek(module_rom_end)
+            if debug_padding > 0:
+                f.write(b"\x00" * debug_padding)
+            f.write(debug_blob)
+            debug_rom_end = debug_rom_start + len(debug_blob)
+            print(
+                f"  debug symbols: ROM 0x{debug_rom_start:08X}-0x{debug_rom_end:08X} "
+                f"({len(debug_blob)} bytes, {len(debug_symbols)} symbols)"
+            )
+
         f.seek(dir_rom_offset + 4)
         f.write(struct.pack(">I", count))
 
@@ -532,13 +552,118 @@ def attach_to_rom(module_data, rom_path, name, dir_rom_offset, flags):
         f.seek(entry_off)
         name_bytes = name.encode("ascii")
         f.write(name_bytes + b"\x00" * (64 - len(name_bytes)))
-        f.write(struct.pack(">III", rom_start, module_rom_end, flags))
+        f.write(struct.pack(">IIIII", rom_start, module_rom_end, flags,
+                            debug_rom_start, debug_rom_end))
 
     print(
         f"  attached '{name}' "
         f"(ROM 0x{rom_start:08X}-0x{module_rom_end:08X}, {len(module_data)} bytes, "
         f"slot {slot}, flags=0x{flags:X})"
     )
+
+
+def module_readelf(elf_path):
+    """Extract demangled function names + file:line from a module ELF.
+
+    Returns a list of (offset, name, file_basename, line_number) sorted by offset.
+    Addresses are stored as offsets from LINK_ADDR (0x80000000).
+    """
+    import io
+
+    LINK_ADDR = 0x80000000
+    addr2name = {}
+    addr2line = {}
+
+    process = subprocess.Popen(
+        ["mips-linux-gnu-readelf", "-s", str(elf_path), "--wide", "-wL", "--demangle"],
+        stdout=subprocess.PIPE,
+    )
+    for line in io.TextIOWrapper(process.stdout, encoding="utf-8"):
+        parts = line.split()
+
+        if len(parts) == 8 and parts[3] == "FUNC":
+            addr = int(parts[1], 16)
+            name = parts[-1]
+            if name.startswith("dead_"):
+                continue
+            addr2name[addr] = name
+
+        elif len(parts) >= 4 and parts[2].startswith("0x"):
+            file_basename = parts[0]
+            if not file_basename.endswith(".c") and not file_basename.endswith(".cpp"):
+                continue
+            line_number = int(parts[1])
+            addr = int(parts[2], 0)
+            addr2line[addr] = (file_basename, line_number)
+
+    sorted_addr2name_addrs = sorted(addr2name.keys())
+
+    symbols = []
+    for addr, (file_basename, line_number) in addr2line.items():
+        if addr in addr2name:
+            symbols.append((addr - LINK_ADDR, addr2name[addr], file_basename, line_number))
+        else:
+            closest_addr = None
+            for a in sorted_addr2name_addrs:
+                if a < addr:
+                    closest_addr = a
+                else:
+                    break
+            if closest_addr is not None:
+                symbols.append(
+                    (addr - LINK_ADDR, addr2name[closest_addr], file_basename, line_number)
+                )
+
+    if len(symbols) == 0:
+        for addr, name in addr2name.items():
+            symbols.append((addr - LINK_ADDR, name, "", -1))
+
+    symbols.sort(key=lambda x: x[0])
+    return symbols
+
+
+def build_debug_symbol_table(symbols, rom_base):
+    """Build a debug symbol table blob in the same format as the main symbol table.
+
+    rom_base is the ROM offset where this blob will be placed, used to compute
+    absolute ROM offsets for strings.
+
+    Returns the complete blob (header + symbols + strings).
+    """
+    sizeof_symbol = 4 + 4 + 4  # address, nameOffset, fileOffset
+    header_size = 4 + 4  # magic + symbolCount
+    strings_begin = rom_base + header_size + sizeof_symbol * len(symbols)
+
+    strings = bytearray()
+    string_map = {}
+
+    def add_string(s):
+        nonlocal strings
+        if s not in string_map:
+            string_map[s] = strings_begin + len(strings)
+            strings += s.encode("utf-8")
+            strings += b"\0"
+        return string_map[s]
+
+    blob = bytearray()
+    blob += b"SYMS"
+    blob += struct.pack(">I", len(symbols))
+
+    for offset, name, file_basename, line_number in symbols:
+        blob += struct.pack(">I", offset)
+        blob += struct.pack(">I", add_string(name))
+        if file_basename == "":
+            blob += struct.pack(">I", 0)
+        else:
+            blob += struct.pack(">I", add_string(f"{file_basename}:{line_number}"))
+
+    blob += strings
+
+    # Pad to 16-byte alignment
+    padding = (len(blob) + 15) & ~15
+    blob += b"\x00" * (padding - len(blob))
+
+    return bytes(blob)
 
 
 def load_module_json(module_dir):
@@ -586,9 +711,12 @@ def main():
         mod_path = tmpdir / f"{name}.module"
         elf_to_module(str(elf_path), str(mod_path))
 
+        debug_symbols = module_readelf(elf_path)
+        print(f"  {len(debug_symbols)} debug symbols extracted")
+
         with open(mod_path, "rb") as f:
             module_data = f.read()
-        attach_to_rom(module_data, args.rom, name, dir_offset, flags)
+        attach_to_rom(module_data, args.rom, name, dir_offset, flags, debug_symbols)
 
     n64crc = SCRIPT_DIR / "rom" / "n64crc"
     subprocess.run([str(n64crc), args.rom], check=True)

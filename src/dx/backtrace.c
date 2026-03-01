@@ -382,12 +382,77 @@ char* load_symbol_string(char* dest, u32 addr, int n) {
     return (char*)((u32)dest + (addr & 3));
 }
 
-extern const char* module_sym_for_addr(u32 addr, const char** out_module_name);
+extern const char* module_sym_for_addr(u32 addr, const char** out_module_name,
+                                       u32* out_debug_rom_start, u32* out_debug_rom_end,
+                                       u32* out_module_base);
+
+/**
+ * @brief Look up a symbol in a module's debug symbol table stored in ROM.
+ *
+ * Addresses in the table are stored as offsets from LINK_ADDR (0x80000000).
+ * The caller passes `offset = addr - module_base` as the lookup key.
+ */
+s32 module_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* out) {
+    #define symbolsPerChunk 0x1000
+    #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
+
+    SymbolTable symt;
+    nuPiReadRom(debugRomStart, &symt, sizeof(SymbolTable));
+    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
+        return -1;
+    }
+    if (symt.symbolCount <= 0) {
+        return -1;
+    }
+
+    static Symbol chunk[chunkSize];
+    s32 i;
+    for (i = 0; i < symt.symbolCount; i++) {
+        if (i % symbolsPerChunk == 0) {
+            u32 chunkAddr = debugRomStart + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
+            nuPiReadRom(chunkAddr, chunk, chunkSize);
+        }
+
+        Symbol sym = chunk[i % symbolsPerChunk];
+
+        if (sym.address == offset) {
+            *out = sym;
+            return 0;
+        } else if (offset < sym.address) {
+            break;
+        } else {
+            *out = sym;
+        }
+    }
+    return offset - out->address;
+
+    #undef symbolsPerChunk
+    #undef chunkSize
+}
 
 void backtrace_address_to_string(u32 address, char* dest) {
     const char* module_name = NULL;
-    const char* module_sym = module_sym_for_addr(address, &module_name);
+    u32 debugRomStart = 0, debugRomEnd = 0, moduleBase = 0;
+    const char* module_sym = module_sym_for_addr(address, &module_name,
+                                                  &debugRomStart, &debugRomEnd, &moduleBase);
     if (module_sym != NULL) {
+        if (debugRomStart != 0) {
+            u32 offset = address - moduleBase;
+            Symbol sym;
+            s32 sym_offset = module_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
+            if (sym_offset >= 0 && sym_offset < 0x1000) {
+                char name[0x40];
+                char file[0x40];
+                char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
+                char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+
+                if (filep == NULL)
+                    sprintf(dest, "%s (%s)", namep, module_name);
+                else
+                    sprintf(dest, "%s (%s %s)", namep, module_name, filep);
+                return;
+            }
+        }
         sprintf(dest, "%s (%s)", module_sym, module_name);
         return;
     }
