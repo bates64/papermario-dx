@@ -10,6 +10,11 @@ from glob import glob
 from pathlib import Path
 from typing import Dict, List, Set, Union
 
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
+
 import ninja_syntax
 
 # Configuration:
@@ -316,9 +321,9 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "module",
-        description="module $name",
-        command=f"$python {BUILD_TOOLS}/module.py --version $version $rom $syms $name $in && touch $out",
+        "mod_apply",
+        description="Applying $name",
+        command=f"$python {BUILD_TOOLS}/module_internal.py apply $in $out $syms $name $module $flags $elf_flag",
     )
 
 
@@ -419,8 +424,11 @@ class Configure:
         # TODO: read basename and build_path from splat.yaml
         return Path(f"ver/{self.version}/build/papermario.elf")
 
+    def base_rom_path(self) -> Path:
+        return Path(f"ver/{self.version}/build/papermario_base.z64")
+
     def rom_path(self) -> Path:
-        return self.elf_path().with_suffix(".z64")
+        return Path(f"ver/{self.version}/build/papermario.z64")
 
     def rom_ok_path(self) -> Path:
         return self.elf_path().with_suffix(".ok")
@@ -1334,14 +1342,14 @@ class Configure:
 
         if self.version == "ique":
             ninja.build(
-                str(self.rom_path()),
+                str(self.base_rom_path()),
                 "z64_ique",
                 str(self.elf_path()),
                 variables={"version": self.version},
             )
         else:
             ninja.build(
-                str(self.rom_path()),
+                str(self.base_rom_path()),
                 "z64",
                 str(self.elf_path()),
                 implicit=[CRC_TOOL],
@@ -1353,7 +1361,7 @@ class Configure:
                 str(self.rom_ok_path()),
                 "sha1sum",
                 f"ver/{self.version}/checksum.sha1",
-                implicit=[str(self.rom_path())],
+                implicit=[str(self.base_rom_path())],
             )
         else:
             ninja.build(
@@ -1365,7 +1373,7 @@ class Configure:
                         json.dumps(self.get_segment_max_sizes(), separators=(",", ":"))
                     )
                 },
-                implicit=[str(self.rom_path())],
+                implicit=[str(self.base_rom_path())],
             )
 
         ninja.build(
@@ -1404,48 +1412,67 @@ class Configure:
 
         return segment_size_map
 
-    def write_modules(self, ninja: ninja_syntax.Writer) -> List[str]:
+    def write_modules(self, ninja: ninja_syntax.Writer) -> str:
+        """Write module build statements. Returns the final ROM path."""
+        from module import generate_build_ninja, load_module_toml, find_sources
+
+        MODULE_FLAG_AUTOLOAD = 1 << 0
+        dx_root = ROOT.resolve()
+
         modules_dir = ROOT / "modules"
+        current_rom = str(self.base_rom_path())
+
         if not modules_dir.is_dir():
-            return []
+            ninja.build(str(self.rom_path()), "cp", current_rom)
+            return str(self.rom_path())
 
-        stamps = []
-        prev_stamp = None
-
+        modules = []
         for module_dir in sorted(modules_dir.iterdir()):
             if not module_dir.is_dir():
                 continue
 
-            name = module_dir.name
-            sources = sorted(str(p) for p in module_dir.glob("*.cpp"))
+            config = load_module_toml(module_dir)
+            name = config.get("name", module_dir.name)
+            sources = find_sources(module_dir)
             if not sources:
                 continue
 
-            stamp = str(self.build_path() / "modules" / f"{name}.stamp")
-            module_json = module_dir / "module.json"
-            implicit = [str(self.elf_path()), str(self.syms_path())]
-            if module_json.exists():
-                implicit.append(str(module_json))
-            if prev_stamp:
-                implicit.append(prev_stamp)
+            flags = 0
+            if config.get("autoload", False):
+                flags |= MODULE_FLAG_AUTOLOAD
 
+            modules.append((name, module_dir, sources, config, flags))
+
+        if not modules:
+            ninja.build(str(self.rom_path()), "cp", current_rom)
+            return str(self.rom_path())
+
+        prev_rom = current_rom
+        for name, module_dir, sources, config, flags in modules:
+            build_dir = module_dir / "build"
+
+            generate_build_ninja(module_dir, dx_root, name, sources, self.version)
+            ninja.subninja(str(build_dir / "build.ninja"))
+
+            elf_path = str(build_dir.resolve() / f"{name}.elf")
+            module_path = str(build_dir.resolve() / f"{name}.module")
+
+            next_rom = str(build_dir / f"{name}.z64")
             ninja.build(
-                stamp,
-                "module",
-                sources,
-                implicit=implicit,
-                order_only=[str(self.rom_path())],
+                next_rom, "mod_apply", prev_rom,
+                implicit=[module_path, str(self.syms_path()), elf_path, CRC_TOOL],
                 variables={
-                    "rom": str(self.rom_path()),
                     "syms": str(self.syms_path()),
                     "name": name,
-                    "version": self.version,
+                    "module": module_path,
+                    "flags": f"0x{flags:X}",
+                    "elf_flag": f"--elf {elf_path}",
                 },
             )
-            stamps.append(stamp)
-            prev_stamp = stamp
+            prev_rom = next_rom
 
-        return stamps
+        ninja.build(str(self.rom_path()), "cp", prev_rom)
+        return str(self.rom_path())
 
     def make_current(self, ninja: ninja_syntax.Writer):
         current = Path("ver/current")
@@ -1652,7 +1679,7 @@ if __name__ == "__main__":
 
         all.append(str(configure.rom_ok_path()))
         all.append(str(configure.syms_path()))
-        all.extend(configure.write_modules(ninja))
+        all.append(configure.write_modules(ninja))
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)

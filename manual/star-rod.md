@@ -27,6 +27,6 @@ Opening Star Rod from VSCode may not work on Windows. Instead:
 
 | Previous | Next |
 |:---------|-----:|
-|[Assets](assets.md)|[Debugging](gdb.md)|
+|[Modules](modules.md)|[Debugging](gdb.md)|
 
 </div>

@@ -14,7 +14,7 @@ namespace dx {
 class Module {
 public:
     /** Gets a module by name. Loads it from ROM if not already loaded. */
-    static Module* get(const FixedString<64>& name);
+    static Module& get(const FixedString<64>& name);
 
     /** Unloads the module (removes from cache, runs dtors). */
     ~Module();

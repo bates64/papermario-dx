@@ -126,11 +126,11 @@ static const ModuleEntry* find_in_directory(const char* name) {
     return nullptr;
 }
 
-Module* Module::get(const FixedString<64>& name) {
+Module& Module::get(const FixedString<64>& name) {
     auto existing = loaded_.find(name);
     if (existing.has_value())
-        return *existing;
-    return new Module(name);
+        return **existing;
+    return *new Module(name);
 }
 
 Module::Module(const FixedString<64>& name) : name_(name) {
