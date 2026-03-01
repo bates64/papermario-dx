@@ -21,19 +21,10 @@ struct ModuleEntry {
     u32 debugRomEnd;
 };
 
-static constexpr u32 MODULE_DIR_CAPACITY = 1024;
-static constexpr u32 MODULE_DIR_MAGIC = 0x4D4F4444; // "MODD"
+static_assert(sizeof(ModuleEntry) == 84, "ModuleEntry size must match module.py");
 
-struct ModuleDirectory {
-    u32 magic;
-    u32 count;
-    ModuleEntry entries[MODULE_DIR_CAPACITY];
-};
-
-// Populated by module.py. Zeroed entries are empty.
-extern "C"
-__attribute__((aligned(16)))
-volatile ModuleDirectory moduleDirectory = { MODULE_DIR_MAGIC, 0, {} };
+// ROM address of the module directory, patched by module.py.
+extern "C" volatile u32 moduleDirectoryRomAddr = 0;
 
 struct Module::Header {
     u32 magic;
@@ -116,14 +107,23 @@ void Module::run_table(u32 offset, u32 count) {
     }
 }
 
-static const ModuleEntry* find_in_directory(const char* name) {
-    u32 count = moduleDirectory.count;
+static bool find_in_directory(const char* name, ModuleEntry* out) {
+    if (moduleDirectoryRomAddr == 0) return false;
+
+    ALIGNED(16) u32 header[2];
+    nuPiReadRom(moduleDirectoryRomAddr, header, sizeof(header));
+    u32 count = header[1];
+
+    ALIGNED(16) ModuleEntry entry;
+    u32 entriesAddr = moduleDirectoryRomAddr + sizeof(header);
     for (u32 i = 0; i < count; i++) {
-        if (strcmp((const char*)moduleDirectory.entries[i].name, name) == 0) {
-            return (const ModuleEntry*)&moduleDirectory.entries[i];
+        nuPiReadRom(entriesAddr + i * sizeof(ModuleEntry), &entry, sizeof(ModuleEntry));
+        if (strcmp(entry.name, name) == 0) {
+            *out = entry;
+            return true;
         }
     }
-    return nullptr;
+    return false;
 }
 
 Module& Module::get(const FixedString<64>& name) {
@@ -136,18 +136,19 @@ Module& Module::get(const FixedString<64>& name) {
 Module::Module(const FixedString<64>& name) : name_(name) {
     loaded_.insert_or_assign(name_, this);
 
-    const ModuleEntry* entry = find_in_directory(name);
-    ASSERT_MSG(entry != nullptr, "Module '%s' not found in directory", name.c_str());
+    ModuleEntry entry;
+    bool found = find_in_directory(name, &entry);
+    ASSERT_MSG(found, "Module '%s' not found in directory", name.c_str());
 
-    u32 romSize = entry->romEnd - entry->romStart;
+    u32 romSize = entry.romEnd - entry.romStart;
 
     void* romData = malloc(romSize);
     ASSERT_MSG(romData, "Cannot allocate %lu bytes for module %s", romSize, name.c_str());
 
-    nuPiReadRom(entry->romStart, romData, romSize);
+    nuPiReadRom(entry.romStart, romData, romSize);
 
-    debugRomStart_ = entry->debugRomStart;
-    debugRomEnd_ = entry->debugRomEnd;
+    debugRomStart_ = entry.debugRomStart;
+    debugRomEnd_ = entry.debugRomEnd;
 
     blob_ = (u8*)romData;
     hdr_ = (Header *)romData;
@@ -245,11 +246,18 @@ extern "C"
 void load_autoload_modules(void) {
     using namespace dx;
 
-    u32 count = moduleDirectory.count;
+    if (moduleDirectoryRomAddr == 0) return;
+
+    __attribute__((aligned(16))) u32 header[2];
+    nuPiReadRom(moduleDirectoryRomAddr, header, sizeof(header));
+    u32 count = header[1];
+
+    __attribute__((aligned(16))) ModuleEntry entry;
+    u32 entriesAddr = moduleDirectoryRomAddr + sizeof(header);
     for (u32 i = 0; i < count; i++) {
-        const ModuleEntry* e = (const ModuleEntry*)&moduleDirectory.entries[i];
-        if (e->flags & MODULE_FLAG_AUTOLOAD) {
-            Module::get(e->name);
+        nuPiReadRom(entriesAddr + i * sizeof(ModuleEntry), &entry, sizeof(entry));
+        if (entry.flags & MODULE_FLAG_AUTOLOAD) {
+            Module::get(entry.name);
         }
     }
 }

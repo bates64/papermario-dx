@@ -403,18 +403,45 @@ def parse_syms(syms_path):
     return syms
 
 
-def module_directory_rom_offset(syms):
-    """Compute the ROM file offset of moduleDirectory from linker symbols."""
-    for name in ("moduleDirectory", "main_VRAM", "main_ROM_START"):
+def get_or_create_module_directory(syms, rom_path):
+    """Get or create the module directory in the ROM, returning its ROM offset.
+
+    On first invocation (moduleDirectoryRomAddr is zero), creates the directory
+    at the end of the ROM and patches the pointer. Subsequent invocations read
+    the existing pointer.
+    """
+    for name in ("moduleDirectoryRomAddr", "main_VRAM", "main_ROM_START"):
         if name not in syms:
             print(f"error: '{name}' not found in syms file", file=sys.stderr)
             sys.exit(1)
-    vma = syms["moduleDirectory"]
+    vma = syms["moduleDirectoryRomAddr"]
     base = syms["main_VRAM"]
     rom_start = syms["main_ROM_START"]
-    offset = vma - base + rom_start
-    print(f"  moduleDirectory: VMA=0x{vma:08X} main_VRAM=0x{base:08X} main_ROM_START=0x{rom_start:08X} -> ROM offset 0x{offset:08X}")
-    return offset
+    ptr_rom_offset = vma - base + rom_start
+
+    with open(rom_path, "r+b") as f:
+        f.seek(ptr_rom_offset)
+        dir_rom_addr = struct.unpack(">I", f.read(4))[0]
+
+        if dir_rom_addr == 0:
+            f.seek(0, 2)
+            rom_end = f.tell()
+            dir_rom_addr = (rom_end + 15) & ~15
+            padding = dir_rom_addr - rom_end
+
+            f.seek(rom_end)
+            if padding > 0:
+                f.write(b"\x00" * padding)
+            f.write(struct.pack(">II", 0x4D4F4444, 0))  # MODD magic, count=0
+            f.write(b"\x00" * (MODULE_DIR_ENTRY_SIZE * MODULE_DIR_CAPACITY))
+
+            f.seek(ptr_rom_offset)
+            f.write(struct.pack(">I", dir_rom_addr))
+
+            print(f"  created module directory at ROM 0x{dir_rom_addr:08X}")
+
+    print(f"  moduleDirectoryRomAddr: ROM 0x{ptr_rom_offset:08X} -> directory at ROM 0x{dir_rom_addr:08X}")
+    return dir_rom_addr
 
 
 def apply_module(module_data, input_rom_path, output_rom_path, name, dir_rom_offset, flags, debug_symbols=None):
@@ -614,7 +641,7 @@ def cmd_apply(args):
     print(f"module {args.name}")
 
     syms = parse_syms(args.syms)
-    dir_offset = module_directory_rom_offset(syms)
+    dir_offset = get_or_create_module_directory(syms, args.input_rom)
 
     with open(args.module_file, "rb") as f:
         module_data = f.read()
