@@ -22,6 +22,4 @@ enum {
 
 #define AF_GV(index) AreaFlag(index)
 
-extern MapSettings gv_01_settings;
-
 #endif

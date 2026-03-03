@@ -1,6 +1,6 @@
 #include "osr_04.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
     sprintf(wMapShapeName, "osr_03_shape");
     sprintf(wMapHitName, "osr_03_hit");

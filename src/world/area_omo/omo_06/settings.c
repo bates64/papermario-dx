@@ -8,7 +8,7 @@ EntryList N(Entrances) = {
     [omo_06_ENTRY_4]    {  337.0,    0.0,  337.0,  315.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

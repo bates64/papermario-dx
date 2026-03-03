@@ -7,6 +7,7 @@
 #include "model.h"
 #include <string.h>
 #include "world/surfaces.h"
+#include "dx/overlay.h"
 
 #ifdef SHIFT
 #define ASSET_TABLE_ROM_START (s32) mapfs_ROM_START
@@ -52,9 +53,10 @@ void load_map_script_lib(void) {
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     MapConfig* mapConfig;
-    MapSettings* mapSettings;
     char texStr[17];
     s32 decompressedSize;
+
+    ovl_unload_type(OVL_MAP);
 
     sfx_stop_env_sounds();
     gOverrideFlags &= ~GLOBAL_OVERRIDES_40;
@@ -113,15 +115,20 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     }
     load_map_script_lib();
 
-    if (mapConfig->dmaStart != nullptr) {
-        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-    }
+    // TODO: don't use NAMESPACE in maps
+    char symSettings[32];
+    char symInit[32];
+    sprintf(symSettings, "%s_settings", mapConfig->id);
+    sprintf(symInit, "%s_map_init", mapConfig->id);
 
-    gMapSettings = *mapConfig->settings;
+    Overlay* ovl = ovl_load(mapConfig->id, OVL_MAP);
+    MapSettings* settings = ovl_import(ovl, symSettings);
+    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapConfig->id);
+    gMapSettings = *settings;
 
-    mapSettings = &gMapSettings;
-    if (mapConfig->init != nullptr) {
-        skipLoadingAssets = mapConfig->init();
+    s32 (*init)(void) = ovl_import(ovl, symInit);
+    if (init != nullptr) {
+        skipLoadingAssets = init();
     }
 
     if (!skipLoadingAssets) {
@@ -131,10 +138,10 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
         decode_yay0(yay0Asset, shapeFile);
         general_heap_free(yay0Asset);
 
-        mapSettings->modelTreeRoot = shapeFile->header.root;
-        mapSettings->modelNameList = shapeFile->header.modelNames;
-        mapSettings->colliderNameList = shapeFile->header.colliderNames;
-        mapSettings->zoneNameList = shapeFile->header.zoneNames;
+        gMapSettings.modelTreeRoot = shapeFile->header.root;
+        gMapSettings.modelNameList = shapeFile->header.modelNames;
+        gMapSettings.colliderNameList = shapeFile->header.colliderNames;
+        gMapSettings.zoneNameList = shapeFile->header.zoneNames;
     }
 
     if (mapConfig->bgName != nullptr) {
@@ -181,19 +188,19 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     gPlayerStatus.targetYaw = gPlayerStatus.curYaw;
 
-    sfx_set_reverb_mode(WorldReverbModeMapping[*(s32*)mapConfig->unk_1C & 0x3]);
+    sfx_set_reverb_mode(WorldReverbModeMapping[mapConfig->sfxReverb & 0x3]);
     sfx_reset_door_sounds();
 
     if (!skipLoadingAssets) {
         s32 texturesOffset = get_asset_offset(wMapTexName, &decompressedSize);
 
-        if (mapSettings->modelTreeRoot != nullptr) {
-            load_data_for_models(mapSettings->modelTreeRoot, texturesOffset, decompressedSize);
+        if (gMapSettings.modelTreeRoot != nullptr) {
+            load_data_for_models(gMapSettings.modelTreeRoot, texturesOffset, decompressedSize);
         }
     }
 
-    if (mapSettings->background != nullptr) {
-        set_background(mapSettings->background);
+    if (gMapSettings.background != nullptr) {
+        set_background(gMapSettings.background);
     } else {
         set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
             SCREEN_INSET_X, SCREEN_INSET_Y);
@@ -214,7 +221,7 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     initialize_status_bar();
     gGameStatusPtr->unk_90 = 1000;
     gGameStatusPtr->unk_92 = 1000;
-    gGameStatusPtr->mainScriptID = start_script_in_group(mapSettings->main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;
+    gGameStatusPtr->mainScriptID = start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;
 }
 
 MapConfig* get_current_map_config(void) {
@@ -292,16 +299,7 @@ s32 get_asset_offset(char* assetName, s32* compressedSize) {
 
 #define AREA(area, jp_name) { ARRAY_COUNT(area##_maps), area##_maps, "area_" #area, jp_name }
 
-#define MAP(map) \
-    .id = #map, \
-    .settings = &map##_settings, \
-    .dmaStart = map##_ROM_START, \
-    .dmaEnd = map##_ROM_END, \
-    .dmaDest = map##_VRAM \
-
-#define MAP_WITH_INIT(map) \
-    MAP(map), \
-    .init = &map##_map_init \
+#define MAP(map) .id = #map
 
 /// Toad Town
 #include "area_mac/mac.h"
@@ -311,7 +309,7 @@ MapConfig mac_maps[] = {
     { MAP(mac_01), .bgName = "nok_bg" },
     { MAP(mac_02), .bgName = "nok_bg" },
     { MAP(mac_03), .bgName = "nok_bg" },
-    { MAP_WITH_INIT(mac_04), .bgName = "nok_bg" },
+    { MAP(mac_04), .bgName = "nok_bg" },
     { MAP(mac_05), .bgName = "nok_bg" },
     { MAP(mac_06), .bgName = "nok_bg" },
 };
@@ -339,7 +337,7 @@ MapConfig tik_maps[] = {
     { MAP(tik_21), .songVariation = 1, .sfxReverb = 2 },
     { MAP(tik_22), .songVariation = 1, .sfxReverb = 2 },
     { MAP(tik_23), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(tik_24), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(tik_24), .songVariation = 1, .sfxReverb = 2 },
     { MAP(tik_25), .songVariation = 1, .sfxReverb = 2 },
 };
 
@@ -365,10 +363,10 @@ MapConfig kmr_maps[] = {
     { MAP(kmr_11), .bgName = "kmr_bg" },
     { MAP(kmr_12), .bgName = "kmr_bg" },
     { MAP(kmr_20), .bgName = "kmr_bg" }, // Mario's House
-    { MAP_WITH_INIT(kmr_21) },
-    { MAP_WITH_INIT(kmr_22) },
-    { MAP_WITH_INIT(kmr_23) },
-    { MAP_WITH_INIT(kmr_24) },
+    { MAP(kmr_21) },
+    { MAP(kmr_22) },
+    { MAP(kmr_23) },
+    { MAP(kmr_24) },
     { MAP(kmr_30) },
 };
 
@@ -501,14 +499,14 @@ MapConfig nok_maps[] = {
 /// Star Region
 #include "area_hos/hos.h"
 MapConfig hos_maps[] = {
-    { MAP_WITH_INIT(hos_00), .bgName = "nok_bg" },
+    { MAP(hos_00), .bgName = "nok_bg" },
     { MAP(hos_01), .bgName = "hos_bg" },
     { MAP(hos_02), .bgName = "hos_bg" },
     { MAP(hos_03), .bgName = "hos_bg" },
     { MAP(hos_04), .bgName = "hos_bg" },
     { MAP(hos_05), .bgName = "hos_bg", .songVariation = 1, .sfxReverb = 2 },
     { MAP(hos_06), .bgName = "hos_bg" },
-    { MAP_WITH_INIT(hos_10), .bgName = "hos_bg" },
+    { MAP(hos_10), .bgName = "hos_bg" },
     { MAP(hos_20), .bgName = "hos_bg" },
 };
 
@@ -533,29 +531,29 @@ MapConfig kpa_maps[] = {
     { MAP(kpa_40), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_41), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_50), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kpa_51), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_51), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_52), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kpa_53), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_53), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_60), .bgName = "kpa_bg" },
     { MAP(kpa_61), .bgName = "kpa_bg" },
     { MAP(kpa_62), .bgName = "kpa_bg" },
     { MAP(kpa_63), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_70), .songVariation = 1, .sfxReverb = 3 },
-    { MAP_WITH_INIT(kpa_81), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kpa_82), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kpa_83), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_81), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_82), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_83), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_90), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_91), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_94), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_95), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_96), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(kpa_100), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(kpa_101), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(kpa_100), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(kpa_101), .songVariation = 1, .sfxReverb = 1 },
     { MAP(kpa_102), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kpa_111), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kpa_112), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_113), .songVariation = 1, .sfxReverb = 3 },
-    { MAP_WITH_INIT(kpa_114), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(kpa_114), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_115), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kpa_116), .songVariation = 1, .sfxReverb = 2 },
     { MAP(kpa_117), .songVariation = 1, .sfxReverb = 1 },
@@ -571,25 +569,25 @@ MapConfig kpa_maps[] = {
 #include "area_osr/osr.h"
 MapConfig osr_maps[] = {
     { MAP(osr_00), .bgName = "nok_bg" },
-    { MAP_WITH_INIT(osr_01), .bgName = "nok_bg" },
-    { MAP_WITH_INIT(osr_02), .bgName = "kpa_bg" },
-    { MAP_WITH_INIT(osr_03), .bgName = "kpa_bg" },
-    { MAP_WITH_INIT(osr_04), .bgName = "nok_bg" },
+    { MAP(osr_01), .bgName = "nok_bg" },
+    { MAP(osr_02), .bgName = "kpa_bg" },
+    { MAP(osr_03), .bgName = "kpa_bg" },
+    { MAP(osr_04), .bgName = "nok_bg" },
 };
 
 /// Peach's Castle
 /// @bug There are two entries for kkj_26; the latter is unreachable.
 #include "area_kkj/kkj.h"
 MapConfig kkj_maps[] = {
-    { MAP_WITH_INIT(kkj_00), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
+    { MAP(kkj_00), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_01), .bgName = "nok_bg", .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_02), .bgName = "nok_bg", .sfxReverb = 2 },
-    { MAP_WITH_INIT(kkj_03), .bgName = "nok_bg", .sfxReverb = 3 },
+    { MAP(kkj_03), .bgName = "nok_bg", .sfxReverb = 3 },
     { MAP(kkj_10), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_11), .songVariation = 1, .sfxReverb = 3 },
     { MAP(kkj_12), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kkj_13), .bgName = "kpa_bg",  .songVariation = 1, .sfxReverb = 3},
-    { MAP_WITH_INIT(kkj_14), .bgName = "kpa_bg" },
+    { MAP(kkj_13), .bgName = "kpa_bg",  .songVariation = 1, .sfxReverb = 3},
+    { MAP(kkj_14), .bgName = "kpa_bg" },
     { MAP(kkj_15) },
     { MAP(kkj_16), .sfxReverb = 1 },
     { MAP(kkj_17) },
@@ -598,9 +596,9 @@ MapConfig kkj_maps[] = {
     { MAP(kkj_20) },
     { MAP(kkj_21), .sfxReverb = 1 },
     { MAP(kkj_22), .bgName = "kpa_bg", .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kkj_23), .bgName = "kpa_bg" },
+    { MAP(kkj_23), .bgName = "kpa_bg" },
     { MAP(kkj_24), .bgName = "kpa_bg", .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(kkj_25), .bgName = "kpa_bg" },
+    { MAP(kkj_25), .bgName = "kpa_bg" },
     { MAP(kkj_26), .bgName = "kpa_bg" },
     { MAP(kkj_26), .sfxReverb = 2 },
     { MAP(kkj_27), .sfxReverb = 1 },
@@ -685,7 +683,7 @@ MapConfig arn_maps[] = {
 /// Tubba Blubba's Castle
 #include "area_dgb/dgb.h"
 MapConfig dgb_maps[] = {
-    { MAP_WITH_INIT(dgb_00), .bgName = "arn_bg" },
+    { MAP(dgb_00), .bgName = "arn_bg" },
     { MAP(dgb_01), .songVariation = 1, .sfxReverb = 2 },
     { MAP(dgb_02), .songVariation = 1, .sfxReverb = 2 },
     { MAP(dgb_03), .songVariation = 1, .sfxReverb = 2 },
@@ -773,38 +771,38 @@ MapConfig sam_maps[] = {
 /// Crystal Palace
 #include "area_pra/pra.h"
 MapConfig pra_maps[] = {
-    { MAP_WITH_INIT(pra_01), .bgName = "yki_bg", .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_02), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_03), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_04), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_05), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_06), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_09), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_10), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_11), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_12), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_13), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_14), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_15), .bgName = "yki_bg", .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_16), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_18), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_19), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_20), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_21), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_22), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_27), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_28), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_29), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_31), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_32), .bgName = "sam_bg", .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_33), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_34), .songVariation = 1, .sfxReverb = 1 },
-    { MAP_WITH_INIT(pra_35), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_36), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_37), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_38), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_39), .songVariation = 1, .sfxReverb = 2 },
-    { MAP_WITH_INIT(pra_40), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_01), .bgName = "yki_bg", .sfxReverb = 1 },
+    { MAP(pra_02), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_03), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_04), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_05), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_06), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_09), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_10), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_11), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_12), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_13), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_14), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_15), .bgName = "yki_bg", .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_16), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_18), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_19), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_20), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_21), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_22), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_27), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_28), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_29), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_31), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_32), .bgName = "sam_bg", .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_33), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_34), .songVariation = 1, .sfxReverb = 1 },
+    { MAP(pra_35), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_36), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_37), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_38), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_39), .songVariation = 1, .sfxReverb = 2 },
+    { MAP(pra_40), .songVariation = 1, .sfxReverb = 1 },
 };
 
 /// Shy Guy's Toy Box
@@ -846,8 +844,8 @@ MapConfig tst_maps[] = {
 /// Credits
 #include "area_end/end.h"
 MapConfig end_maps[] = {
-    { MAP_WITH_INIT(end_00) },
-    { MAP_WITH_INIT(end_01) },
+    { MAP(end_00) },
+    { MAP(end_01) },
 };
 
 /// Toad Town Playroom

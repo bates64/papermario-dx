@@ -7,7 +7,7 @@ EntryList N(Entrances) = {
     [dgb_11_ENTRY_3]    {  375.0,  180.0, -250.0,  180.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

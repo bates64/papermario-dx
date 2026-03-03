@@ -52,22 +52,4 @@ enum {
     AF_OMO_11                       = AreaFlag(17),
 };
 
-extern MapSettings omo_01_settings;
-extern MapSettings omo_02_settings;
-extern MapSettings omo_03_settings;
-extern MapSettings omo_04_settings;
-extern MapSettings omo_05_settings;
-extern MapSettings omo_06_settings;
-extern MapSettings omo_07_settings;
-extern MapSettings omo_08_settings;
-extern MapSettings omo_09_settings;
-extern MapSettings omo_10_settings;
-extern MapSettings omo_11_settings;
-extern MapSettings omo_12_settings;
-extern MapSettings omo_13_settings;
-extern MapSettings omo_14_settings;
-extern MapSettings omo_15_settings;
-extern MapSettings omo_16_settings;
-extern MapSettings omo_17_settings;
-
 #endif

@@ -8,7 +8,7 @@ import sys
 from functools import lru_cache
 from glob import glob
 from pathlib import Path
-from typing import Dict, List, Set, Union
+from typing import Dict, List, Set, Tuple, Union
 
 try:
     import tomllib
@@ -317,13 +317,13 @@ def write_ninja_rules(
 
     ninja.rule(
         "syms",
-        command=r"""${cross}nm -g $in | awk '/ [TtDdBbA] /{print $$3, "=", "0x" $$1, ";"}' > $out""",
+        command=r"""${cross}nm -g $in | awk '/ [TtDdBbA] /{print "PROVIDE(" $$3, "=", "0x" $$1, ");"}' > $out""",
     )
 
     ninja.rule(
         "ovl_link",
         description="link overlay $out",
-        command=f"{cross}ld --emit-relocs -nostdlib -T {BUILD_TOOLS}/module.ld -T $syms $in -o $out",
+        command=f"{cross}ld --emit-relocs -nostdlib $ldflags -T {BUILD_TOOLS}/module.ld -T $syms $in -o $out",
     )
 
     ninja.rule(
@@ -335,7 +335,7 @@ def write_ninja_rules(
     ninja.rule(
         "ovl_apply",
         description="Applying overlay $name",
-        command=f"$python {BUILD_TOOLS}/overlay.py apply $in $out $syms $name $overlay $flags $type_flag $elf_flag",
+        command=f"$python {BUILD_TOOLS}/overlay.py apply-all $in $out $syms $manifest",
     )
 
 
@@ -425,6 +425,61 @@ class Configure:
         )
         self.linker_entries = split.linker_writer.entries
         self.asset_stack: List[str] = split.config["asset_stack"]
+
+        # Map overlay code is compiled as an overlay, not linked into the main ROM.
+        # Discard non-data sections from map overlay .o files in the linker script
+        # to prevent orphan .text sections from causing relocation errors.
+        self._discard_map_overlay_text_sections()
+
+    # TODO: remove hack
+    def _discard_map_overlay_text_sections(self):
+        """Post-process the linker script to discard .text/.rodata/.bss from map overlay .o files.
+
+        Map overlay segments in splat.yaml only need their .data sections linked into the ROM.
+        Without discarding, the .text sections become orphan sections whose relocations cannot
+        be resolved (the code references functions at addresses too far away).
+        """
+        import splat.segtypes.common.data
+        import splat.segtypes.common.c
+
+        # Collect .o paths for map overlay C/data segments
+        discard_objs = set()
+        for entry in self.linker_entries:
+            seg = entry.segment
+            if not (isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
+                isinstance(seg, splat.segtypes.common.data.CommonSegData)
+                and seg.type[0] == "."
+            )):
+                continue
+            most_parent = seg.get_most_parent()
+            if most_parent.vram_class is not None and most_parent.vram_class.name == "map":
+                if entry.object_path is not None:
+                    discard_objs.add(str(entry.object_path))
+
+        if not discard_objs:
+            return
+
+        ld_path = self.linker_script_path()
+        text = ld_path.read_text()
+
+        discard_lines = "\n".join(
+            f"        {obj}(.text* .rodata* .bss*);" for obj in sorted(discard_objs)
+        )
+        text = text.replace(
+            "/DISCARD/ :\n    {\n        *(.eh_frame);",
+            f"/DISCARD/ :\n    {{\n        *(.eh_frame);\n{discard_lines}",
+        )
+
+        # Provide placeholder addresses for symbols referenced by map overlay data
+        # but defined in files without splat segments. The actual definitions come
+        # from the overlay at runtime; these just satisfy the linker.
+        text = text.replace(
+            "SECTIONS",
+            "PROVIDE(pra_31_stairs_lights = 0);\nSECTIONS",
+            1,
+        )
+
+        ld_path.write_text(text)
 
     def build_path(self) -> Path:
         return Path(f"ver/{self.version}/build")
@@ -812,18 +867,18 @@ class Configure:
 
                 # images embedded inside data aren't linked, but they do need to be built into .bin files
                 if isinstance(seg, splat.segtypes.common.group.CommonSegGroup):
-                    for seg in seg.subsegments:
-                        if isinstance(seg, splat.segtypes.n64.img.N64SegImg):
+                    for subseg in seg.subsegments:
+                        if isinstance(subseg, splat.segtypes.n64.img.N64SegImg):
                             flags = ""
-                            if seg.n64img.flip_h:
+                            if subseg.n64img.flip_h:
                                 flags += "--flip-x "
-                            if seg.n64img.flip_v:
+                            if subseg.n64img.flip_v:
                                 flags += "--flip-y "
 
-                            src_paths = [seg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / seg.dir
+                            src_paths = [subseg.out_path().relative_to(ROOT)]
+                            inc_dir = self.build_path() / "include" / subseg.dir
                             bin_path = (
-                                self.build_path() / seg.dir / (seg.name + ".png.bin")
+                                self.build_path() / subseg.dir / (subseg.name + ".png.bin")
                             )
 
                             build(
@@ -831,36 +886,36 @@ class Configure:
                                 src_paths,
                                 "pigment",
                                 variables={
-                                    "img_type": seg.type,
+                                    "img_type": subseg.type,
                                     "img_flags": flags,
                                 },
                             )
 
-                            assert seg.vram_start is not None, (
-                                "img with vram_start unset: " + seg.name
+                            assert subseg.vram_start is not None, (
+                                "img with vram_start unset: " + subseg.name
                             )
 
-                            c_sym = seg.create_symbol(
-                                addr=seg.vram_start,
+                            c_sym = subseg.create_symbol(
+                                addr=subseg.vram_start,
                                 in_segment=True,
                                 type="data",
                                 define=True,
                             )
                             name = c_sym.name
-                            if "namespaced" in seg.args:
+                            if "namespaced" in subseg.args:
                                 name = f"N({name[7:]})"
                             vars = {"c_name": name}
                             build(
-                                inc_dir / (seg.name + ".png.h"),
+                                inc_dir / (subseg.name + ".png.h"),
                                 src_paths,
                                 "img_header",
                                 vars,
                             )
-                        elif isinstance(seg, splat.segtypes.n64.palette.N64SegPalette):
-                            src_paths = [seg.out_path().relative_to(ROOT)]
-                            inc_dir = self.build_path() / "include" / seg.dir
+                        elif isinstance(subseg, splat.segtypes.n64.palette.N64SegPalette):
+                            src_paths = [subseg.out_path().relative_to(ROOT)]
+                            inc_dir = self.build_path() / "include" / subseg.dir
                             bin_path = (
-                                self.build_path() / seg.dir / (seg.name + ".pal.bin")
+                                self.build_path() / subseg.dir / (subseg.name + ".pal.bin")
                             )
 
                             build(
@@ -868,27 +923,27 @@ class Configure:
                                 src_paths,
                                 "pigment",
                                 variables={
-                                    "img_type": seg.type,
+                                    "img_type": subseg.type,
                                     "img_flags": "",
                                 },
                             )
 
-                            assert seg.vram_start is not None
-                            c_sym = seg.create_symbol(
-                                addr=seg.vram_start,
+                            assert subseg.vram_start is not None
+                            c_sym = subseg.create_symbol(
+                                addr=subseg.vram_start,
                                 in_segment=True,
                                 type="data",
                                 define=True,
                             )
-                        elif seg.type == "pm_charset":
+                        elif subseg.type == "pm_charset":
                             rasters = []
-                            entry = seg.get_linker_entries()[0]
+                            entry = subseg.get_linker_entries()[0]
 
                             for src_path in entry.src_paths:
                                 out_path = (
                                     self.build_path()
-                                    / seg.dir
-                                    / seg.name
+                                    / subseg.dir
+                                    / subseg.name
                                     / (src_path.stem + ".bin")
                                 )
                                 build(
@@ -908,15 +963,15 @@ class Configure:
                                 [entry.object_path.with_suffix("")],
                                 "bin",
                             )
-                        elif seg.type == "pm_charset_palettes":
+                        elif subseg.type == "pm_charset_palettes":
                             palettes = []
-                            entry = seg.get_linker_entries()[0]
+                            entry = subseg.get_linker_entries()[0]
 
                             for src_path in entry.src_paths:
                                 out_path = (
                                     self.build_path()
-                                    / seg.dir
-                                    / seg.name
+                                    / subseg.dir
+                                    / subseg.name
                                     / "palette"
                                     / (src_path.stem + ".bin")
                                 )
@@ -1429,59 +1484,79 @@ class Configure:
 
         return segment_size_map
 
-    def find_overlays(self):
-        """Find overlay sources across asset stacks.
+    def find_overlays(self) -> List[Tuple[Path, int]]:
+        overlays = []
 
-        Returns a dict of overlay_name -> (source_path, type_index).
-        Higher-priority asset stack layers take precedence.
-        """
-        overlays = {}
+        overlay_types = [
+            "src/battle/actor/*",
+            "src/world/area_*/*/",
+        ]
+        for type_index, glob_str in enumerate(overlay_types):
+            for match in ROOT.glob(glob_str, case_sensitive=True):
+                overlays.append((
+                    match,
+                    type_index,
+                ))
 
-        # OVL_ACTOR (type_index=0): battle/actor/*.c
-        for stack_dir in self.asset_stack:
-            actor_dir = ROOT / f"assets/{stack_dir}/battle/actor"
-            if not actor_dir.is_dir():
-                continue
-            for c_file in sorted(actor_dir.glob("*.c")):
-                name = c_file.stem
-                if name not in overlays:
-                    overlays[name] = (c_file, 0)
-
-        return overlays
+        return sorted(overlays, key=lambda x: x[0].stem)
 
     def write_overlays(self, ninja: ninja_syntax.Writer) -> str:
         """Write overlay build statements. Returns the final ROM path."""
-        prev_rom = str(self.base_rom_path())
+        import json
 
         overlays = self.find_overlays()
         precompiled_header_path = Path("include/common.h.gch")
 
-        for name, (src_path, type_index) in sorted(overlays.items()):
-            build_dir = self.build_path() / "ovl" / name
+        manifest_entries = []
+        implicit_deps = [str(self.syms_path()), CRC_TOOL]
 
-            obj_path = build_dir / f"{name}.o"
+        for src_path, type_index in overlays:
+            name = src_path.stem
+            build_dir = self.build_path() / "ovl" / str(type_index) / name
             elf_path = build_dir / f"{name}.elf"
             ovl_path = build_dir / f"{name}.ovl"
+            objects = []
 
-            ninja.build(
-                str(obj_path),
-                "cc_modern",
-                str(src_path),
-                implicit=[str(precompiled_header_path)],
-                order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
-                variables={
-                    "version": self.version,
-                    "cflags": "-fforce-addr -fno-common -fvisibility=hidden",
-                    "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
-                },
-            )
+            c_files = []
+            if src_path.is_dir():
+                for c_file in src_path.glob("*.c"):
+                    if not c_file.name.endswith(".inc.c"):
+                        c_files.append(c_file)
+                for c_file in src_path.glob("*.cpp"):
+                    if not c_file.name.endswith(".inc.c"):
+                        c_files.append(c_file)
+            else:
+                c_files.append(src_path)
+
+            for c_file in c_files:
+                obj_path = build_dir / (c_file.name + ".o")
+                ninja.build(
+                    str(obj_path),
+                    "cc_modern",
+                    str(c_file),
+                    implicit=[str(precompiled_header_path)],
+                    order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
+                    variables={
+                        "version": self.version,
+                        "cflags": "-fno-common -fvisibility=hidden",
+                        "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                    },
+                )
+                objects.append(str(obj_path))
+
+            if len(objects) == 0:
+                continue
+
+            ldflags = ""
+            if type_index == 1:  # maps
+                ldflags = "--defsym OVERLAY_BASE=0x80240000"
 
             ninja.build(
                 str(elf_path),
                 "ovl_link",
-                str(obj_path),
+                objects,
                 implicit=[str(self.syms_path())],
-                variables={"syms": str(self.syms_path())},
+                variables={"syms": str(self.syms_path()), "ldflags": ldflags},
             )
 
             ninja.build(
@@ -1490,22 +1565,28 @@ class Configure:
                 str(elf_path),
             )
 
-            next_rom = str(build_dir / f"{name}.z64")
-            ninja.build(
-                next_rom, "ovl_apply", prev_rom,
-                implicit=[str(ovl_path), str(self.syms_path()), str(elf_path), CRC_TOOL],
-                variables={
-                    "syms": str(self.syms_path()),
-                    "name": name,
-                    "overlay": str(ovl_path),
-                    "flags": "0x0",
-                    "type_flag": f"--type-index {type_index}",
-                    "elf_flag": f"--elf {elf_path}",
-                },
-            )
-            prev_rom = next_rom
+            manifest_entries.append({
+                "name": name,
+                "type_index": type_index,
+                "ovl": str(ovl_path),
+                "elf": str(elf_path),
+            })
+            implicit_deps.append(str(ovl_path))
+            implicit_deps.append(str(elf_path))
 
-        ninja.build(str(self.rom_path()), "cp", prev_rom)
+        manifest_path = self.build_path() / "ovl" / "manifest.json"
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(manifest_path, "w") as f:
+            json.dump(manifest_entries, f)
+
+        ninja.build(
+            str(self.rom_path()), "ovl_apply", str(self.base_rom_path()),
+            implicit=implicit_deps,
+            variables={
+                "syms": str(self.syms_path()),
+                "manifest": str(manifest_path),
+            },
+        )
         return str(self.rom_path())
 
     def make_current(self, ninja: ninja_syntax.Writer):

@@ -58,36 +58,4 @@ enum {
     AF_KKJ_1A                       = AreaFlag(26),
 };
 
-extern MapSettings kkj_00_settings;
-extern MapSettings kkj_01_settings;
-extern MapSettings kkj_02_settings;
-extern MapSettings kkj_03_settings;
-extern MapSettings kkj_10_settings;
-extern MapSettings kkj_11_settings;
-extern MapSettings kkj_12_settings;
-extern MapSettings kkj_13_settings;
-extern MapSettings kkj_14_settings;
-extern MapSettings kkj_15_settings;
-extern MapSettings kkj_16_settings;
-extern MapSettings kkj_17_settings;
-extern MapSettings kkj_18_settings;
-extern MapSettings kkj_19_settings;
-extern MapSettings kkj_20_settings;
-extern MapSettings kkj_21_settings;
-extern MapSettings kkj_22_settings;
-extern MapSettings kkj_23_settings;
-extern MapSettings kkj_24_settings;
-extern MapSettings kkj_25_settings;
-extern MapSettings kkj_26_settings;
-extern MapSettings kkj_27_settings;
-extern MapSettings kkj_28_settings;
-extern MapSettings kkj_29_settings;
-
-s32 kkj_00_map_init(void);
-s32 kkj_03_map_init(void);
-s32 kkj_13_map_init(void);
-s32 kkj_14_map_init(void);
-s32 kkj_23_map_init(void);
-s32 kkj_25_map_init(void);
-
 #endif

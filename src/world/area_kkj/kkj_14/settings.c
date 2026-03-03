@@ -1,6 +1,6 @@
 #include "kkj_14.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     if (evt_get_variable(nullptr, GB_StoryProgress) == STORY_INTRO) {
         sprintf(wMapBgName, "nok_bg");
     }
@@ -22,7 +22,7 @@ EntryList N(Entrances) = {
     [kkj_14_ENTRY_B]    {  150.0,    0.0,  -30.0,   90.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

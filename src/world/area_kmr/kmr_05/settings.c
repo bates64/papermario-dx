@@ -5,7 +5,7 @@ EntryList N(Entrances) = {
     [kmr_05_ENTRY_1]    { 1397.0,  200.0, -145.0,  220.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

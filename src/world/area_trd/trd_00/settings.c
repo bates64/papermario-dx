@@ -11,7 +11,7 @@ EntryList N(Entrances) = {
     [trd_00_ENTRY_5]    { -518.0,    0.0,  212.0,  240.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

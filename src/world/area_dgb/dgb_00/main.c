@@ -1,6 +1,6 @@
 #include "dgb_00.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     sprintf(wMapShapeName, "arn_20_shape");
     sprintf(wMapHitName, "arn_20_hit");
     sprintf(wMapTexName, "arn_tex");

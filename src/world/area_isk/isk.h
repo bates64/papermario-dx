@@ -42,22 +42,4 @@ enum {
     AF_ISK14_StoneChompDefeated     = AreaFlag(19),
 };
 
-extern MapSettings isk_01_settings;
-extern MapSettings isk_02_settings;
-extern MapSettings isk_03_settings;
-extern MapSettings isk_04_settings;
-extern MapSettings isk_05_settings;
-extern MapSettings isk_06_settings;
-extern MapSettings isk_07_settings;
-extern MapSettings isk_08_settings;
-extern MapSettings isk_09_settings;
-extern MapSettings isk_10_settings;
-extern MapSettings isk_11_settings;
-extern MapSettings isk_12_settings;
-extern MapSettings isk_13_settings;
-extern MapSettings isk_14_settings;
-extern MapSettings isk_16_settings;
-extern MapSettings isk_18_settings;
-extern MapSettings isk_19_settings;
-
 #endif

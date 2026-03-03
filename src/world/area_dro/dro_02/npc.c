@@ -50,7 +50,7 @@ NpcSettings N(NpcSettings_Archeologist) = {
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "npc_merlee.c"
+#include "npc_merlee.inc.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/ConsumableItemChoice.inc.c"
@@ -236,7 +236,7 @@ EvtScript N(EVS_NpcInit_Mouser_02) = {
     End
 };
 
-#include "npc_moustafa.c"
+#include "npc_moustafa.inc.c"
 
 EvtScript N(EVS_NpcIdle_Mouser_03) = {
     Call(InterpNpcYaw, NPC_DisguisedMoustafa, 270, 0)

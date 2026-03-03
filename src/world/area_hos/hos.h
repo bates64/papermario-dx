@@ -29,17 +29,4 @@ enum {
     AF_HOS06_SpokeWithMerluvlee = AreaFlag(182),
 };
 
-extern MapSettings hos_00_settings;
-extern MapSettings hos_01_settings;
-extern MapSettings hos_02_settings;
-extern MapSettings hos_03_settings;
-extern MapSettings hos_04_settings;
-extern MapSettings hos_05_settings;
-extern MapSettings hos_06_settings;
-extern MapSettings hos_10_settings;
-extern MapSettings hos_20_settings;
-
-s32 hos_00_map_init(void);
-s32 hos_10_map_init(void);
-
 #endif

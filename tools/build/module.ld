@@ -1,6 +1,6 @@
 SECTIONS
 {
-    . = 0x80000000;
+    . = DEFINED(OVERLAY_BASE) ? OVERLAY_BASE : 0x80000000;
 
     .text : {
         __text_start = .;

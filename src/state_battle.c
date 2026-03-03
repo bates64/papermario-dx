@@ -184,10 +184,6 @@ void state_step_end_battle(void) {
                 initialize_collision();
                 restore_map_collision_data();
 
-                if (mapConfig->dmaStart != nullptr) {
-                    dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-                }
-
                 load_map_bg(mapConfig->bgName);
                 if (mapSettings->background != nullptr) {
                     set_background(mapSettings->background);

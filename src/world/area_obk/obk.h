@@ -30,14 +30,4 @@ enum {
     AF_OBK08_KeepAwayStarted        = AreaFlag(8),
 };
 
-extern MapSettings obk_01_settings;
-extern MapSettings obk_02_settings;
-extern MapSettings obk_03_settings;
-extern MapSettings obk_04_settings;
-extern MapSettings obk_05_settings;
-extern MapSettings obk_06_settings;
-extern MapSettings obk_07_settings;
-extern MapSettings obk_08_settings;
-extern MapSettings obk_09_settings;
-
 #endif

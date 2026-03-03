@@ -43,14 +43,4 @@ enum {
     AF_NOK_15               = AreaFlag(21),
 };
 
-extern MapSettings nok_01_settings;
-extern MapSettings nok_02_settings;
-extern MapSettings nok_03_settings;
-extern MapSettings nok_04_settings;
-extern MapSettings nok_11_settings;
-extern MapSettings nok_12_settings;
-extern MapSettings nok_13_settings;
-extern MapSettings nok_14_settings;
-extern MapSettings nok_15_settings;
-
 #endif

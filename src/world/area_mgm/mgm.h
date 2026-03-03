@@ -22,9 +22,4 @@ enum {
 
 #define AF_MGM(index) AreaFlag(index)
 
-extern MapSettings mgm_00_settings;
-extern MapSettings mgm_01_settings;
-extern MapSettings mgm_02_settings;
-extern MapSettings mgm_03_settings;
-
 #endif

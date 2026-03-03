@@ -27,26 +27,4 @@ enum {
     AF_DGB06_Boo_Dialogue   = AreaFlag(4),
 };
 
-extern MapSettings dgb_00_settings;
-extern MapSettings dgb_01_settings;
-extern MapSettings dgb_02_settings;
-extern MapSettings dgb_03_settings;
-extern MapSettings dgb_04_settings;
-extern MapSettings dgb_05_settings;
-extern MapSettings dgb_06_settings;
-extern MapSettings dgb_07_settings;
-extern MapSettings dgb_08_settings;
-extern MapSettings dgb_09_settings;
-extern MapSettings dgb_10_settings;
-extern MapSettings dgb_11_settings;
-extern MapSettings dgb_12_settings;
-extern MapSettings dgb_13_settings;
-extern MapSettings dgb_14_settings;
-extern MapSettings dgb_15_settings;
-extern MapSettings dgb_16_settings;
-extern MapSettings dgb_17_settings;
-extern MapSettings dgb_18_settings;
-
-s32 dgb_00_map_init(void);
-
 #endif

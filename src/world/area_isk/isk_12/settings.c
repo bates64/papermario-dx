@@ -7,7 +7,7 @@ EntryList N(Entrances) = {
     [isk_12_ENTRY_3]    {  580.0, -710.0,   20.0,  191.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

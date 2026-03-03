@@ -47,27 +47,4 @@ enum {
     AF_JAN03_TreeDrop1                  = AreaFlag(23),
 };
 
-extern MapSettings jan_00_settings;
-extern MapSettings jan_01_settings;
-extern MapSettings jan_02_settings;
-extern MapSettings jan_03_settings;
-extern MapSettings jan_04_settings;
-extern MapSettings jan_05_settings;
-extern MapSettings jan_06_settings;
-extern MapSettings jan_07_settings;
-extern MapSettings jan_08_settings;
-extern MapSettings jan_09_settings;
-extern MapSettings jan_10_settings;
-extern MapSettings jan_11_settings;
-extern MapSettings jan_12_settings;
-extern MapSettings jan_13_settings;
-extern MapSettings jan_14_settings;
-extern MapSettings jan_15_settings;
-extern MapSettings jan_16_settings;
-extern MapSettings jan_17_settings;
-extern MapSettings jan_18_settings;
-extern MapSettings jan_19_settings;
-extern MapSettings jan_22_settings;
-extern MapSettings jan_23_settings;
-
 #endif

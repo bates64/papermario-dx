@@ -70,7 +70,7 @@ if __name__ == "__main__":
     z64 = sys.argv[1]
     if not z64.endswith(".z64"):
         raise Exception("expected z64 as argument")
-    elf = z64.replace(".z64", ".elf")
+    elf = "ver/us/build/papermario.elf"
 
     symbols = readelf(elf)
     root_dir = (

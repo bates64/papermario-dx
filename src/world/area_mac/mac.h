@@ -137,15 +137,4 @@ enum {
     AF_MAC_9A           = AreaFlag(0x9A),
 };
 
-extern MapSettings machi_settings;
-extern MapSettings mac_00_settings;
-extern MapSettings mac_01_settings;
-extern MapSettings mac_02_settings;
-extern MapSettings mac_03_settings;
-extern MapSettings mac_04_settings;
-extern MapSettings mac_05_settings;
-extern MapSettings mac_06_settings;
-
-s32 mac_04_map_init(void);
-
 #endif

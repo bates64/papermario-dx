@@ -1,6 +1,6 @@
 #include "osr_03.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
     return false;
 }
@@ -15,7 +15,7 @@ EntryList N(Entrances) = {
     [osr_03_ENTRY_6]    {    0.0,    0.0, -290.0,  180.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

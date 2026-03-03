@@ -1,3 +1,4 @@
+#ifdef VERSION_JP
 #include "hos_10.h"
 
 #include "../common/Narrator.inc.c"
@@ -68,3 +69,4 @@ EvtScript N(EVS_SetupNarrator) = {
     Return
     End
 };
+#endif

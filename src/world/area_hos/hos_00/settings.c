@@ -1,6 +1,6 @@
 #include "hos_00.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     if (gGameStatusPtr->entryID == hos_00_ENTRY_3) {
         sprintf(wMapBgName, "hos_bg");
     }
@@ -14,7 +14,7 @@ EntryList N(Entrances) = {
     [hos_00_ENTRY_3]    {  870.0,  -10.0,   30.0,  270.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

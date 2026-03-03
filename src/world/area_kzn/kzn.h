@@ -45,22 +45,4 @@ enum {
     AF_KZN11_FireBar3_Coins         = AreaFlag(23),
 };
 
-extern MapSettings kzn_01_settings;
-extern MapSettings kzn_02_settings;
-extern MapSettings kzn_03_settings;
-extern MapSettings kzn_04_settings;
-extern MapSettings kzn_05_settings;
-extern MapSettings kzn_06_settings;
-extern MapSettings kzn_07_settings;
-extern MapSettings kzn_08_settings;
-extern MapSettings kzn_09_settings;
-extern MapSettings kzn_10_settings;
-extern MapSettings kzn_11_settings;
-extern MapSettings kzn_17_settings;
-extern MapSettings kzn_18_settings;
-extern MapSettings kzn_19_settings;
-extern MapSettings kzn_20_settings;
-extern MapSettings kzn_22_settings;
-extern MapSettings kzn_23_settings;
-
 #endif

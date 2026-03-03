@@ -9,7 +9,7 @@ EntryList N(Entrances) = {
     [kzn_19_ENTRY_3]    {  440.0,   25.0,  -50.0,   90.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

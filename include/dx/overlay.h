@@ -30,6 +30,7 @@ typedef struct Overlay Overlay;
 
 typedef enum {
     OVL_ACTOR, ///< `assets/*/battle/actor/*`
+    OVL_MAP,   ///< `assets/*/world/area_*/*`
     OVL_NUM_TYPES,
 } OverlayType;
 

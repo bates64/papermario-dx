@@ -119,10 +119,10 @@ EvtScript N(EVS_NpcInit_Dryite_02) = {
     End
 };
 
-#include "npc_hint_dryite.c"
-#include "npc_hint_dryite_companion.c"
-#include "npc_composer.c"
-#include "npc_shop_owner.c"
+#include "npc_hint_dryite.inc.c"
+#include "npc_hint_dryite_companion.inc.c"
+#include "npc_composer.inc.c"
+#include "npc_shop_owner.inc.c"
 
 EvtScript N(EVS_NpcInteract_Toadette) = {
     Call(SpeakToPlayer, NPC_Toadette_01, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008E)

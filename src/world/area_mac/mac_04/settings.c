@@ -9,7 +9,7 @@ EntryList N(Entrances) = {
     [mac_04_ENTRY_5]    { -420.0,   20.0,  235.0,  270.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),
@@ -17,7 +17,7 @@ MapSettings N(settings) = {
     .tattle = { MSG_MapTattle_mac_04 },
 };
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     if (gGameStatusPtr->entryID == mac_04_ENTRY_4) {
         sprintf(wMapBgName, "hos_bg");
     }

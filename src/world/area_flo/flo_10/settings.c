@@ -14,7 +14,7 @@ EntryList N(Entrances) = {
     [flo_10_ENTRY_2]    { -100.0,  -10.0, -172.0,  135.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

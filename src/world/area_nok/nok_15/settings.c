@@ -8,7 +8,7 @@ EntryList N(Entrances) = {
     [nok_15_ENTRY_4]    { -138.0,  260.0, -638.0,  320.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

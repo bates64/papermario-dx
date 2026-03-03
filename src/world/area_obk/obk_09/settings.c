@@ -11,7 +11,7 @@ EntryList N(Entrances) = {
     [obk_09_ENTRY_2]    { -135.0,    0.0,  135.0,    0.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

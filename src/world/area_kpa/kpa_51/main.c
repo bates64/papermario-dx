@@ -1,7 +1,7 @@
 
 #include "kpa_51.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     sprintf(wMapShapeName, "kpa_50_shape");
     sprintf(wMapHitName, "kpa_50_hit");
     return false;

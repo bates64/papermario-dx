@@ -8,7 +8,7 @@ EntryList N(Entrances) = {
     [tik_08_ENTRY_4]    {   95.0,   25.0,  -88.0,  180.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

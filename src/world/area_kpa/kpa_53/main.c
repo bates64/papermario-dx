@@ -1,7 +1,7 @@
 
 #include "kpa_53.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
     sprintf(wMapShapeName, "kpa_50_shape");
     sprintf(wMapHitName, "kpa_50_hit");

@@ -1,7 +1,7 @@
 #include "kpa_100.h"
 #include "sprite.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     sprintf(wMapShapeName, "kpa_117_shape");
     sprintf(wMapHitName, "kpa_117_hit");
     return false;

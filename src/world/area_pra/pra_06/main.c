@@ -1,6 +1,6 @@
 #include "pra_06.h"
 
-s32 N(map_init)(void) {
+export s32 N(map_init)(void) {
     gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_MARIO_REFLECT_FLOOR;
     sprintf(wMapShapeName, "pra_05_shape");
     sprintf(wMapHitName, "pra_05_hit");

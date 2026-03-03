@@ -8,7 +8,7 @@ EntryList N(Entrances) = {
     [kpa_11_ENTRY_4]    { 1529.0,  -20.0, -1082.0,  180.0 },
 };
 
-MapSettings N(settings) = {
+export MapSettings N(settings) = {
     .main = &N(EVS_Main),
     .entryList = &N(Entrances),
     .entryCount = ENTRY_COUNT(N(Entrances)),

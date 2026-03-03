@@ -10,7 +10,6 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 OVL_MAGIC = b"MOD\x00"
-OVL_VERSION = 2
 CROSS = "mips-linux-gnu-"
 
 R_MIPS_NONE = 0
@@ -39,9 +38,10 @@ IGNORED_SHNDX = {SHN_UNDEF, SHN_ABS, SHN_COMMON}
 
 
 class ElfSection:
-    def __init__(self, name, sh_type, sh_offset, sh_size, sh_link, data):
+    def __init__(self, name, sh_type, sh_addr, sh_offset, sh_size, sh_link, data):
         self.name = name
         self.type = sh_type
+        self.addr = sh_addr
         self.offset = sh_offset
         self.size = sh_size
         self.link = sh_link
@@ -143,7 +143,7 @@ class Elf32:
             )
 
             self.sections.append(
-                ElfSection(name, sh_type, sh_offset, sh_size, sh_link, sec_data)
+                ElfSection(name, sh_type, sh_addr, sh_offset, sh_size, sh_link, sec_data)
             )
 
         symtab_sec = None
@@ -195,14 +195,7 @@ def collect_relocs(elf):
         if not sec.name.startswith(".rel."):
             continue
         target_name = sec.name[4:]
-        if target_name not in (
-            ".text",
-            ".data",
-            ".ctors",
-            ".dtors",
-            ".init_array",
-            ".fini_array",
-        ):
+        if target_name not in (".text", ".data"):
             continue
 
         data = sec.content
@@ -265,9 +258,9 @@ def elf_to_overlay(input_path, output_path):
         elf_data = f.read()
 
     elf = Elf32(elf_data)
-    LINK_ADDR = 0x80000000
 
-    _, text_data, text_size = get_section(elf, ".text")
+    text_sec, text_data, text_size = get_section(elf, ".text")
+    LINK_ADDR = text_sec.addr if text_sec else 0x80000000
 
     rodata_sec = elf.get_section(".rodata")
     if rodata_sec and rodata_sec.size > 0:
@@ -283,24 +276,63 @@ def elf_to_overlay(input_path, output_path):
     ctors_data, ctors_size = read_section_data(elf, [".ctors", ".init_array"])
     dtors_data, dtors_size = read_section_data(elf, [".dtors", ".fini_array"])
 
-    relocs = collect_relocs(elf)
     exports = collect_exports(elf)
 
-    r32_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_32])
-    r26_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_26])
-    hi16_relocs = [r[1] for r in relocs if r[0] == R_MIPS_HI16]
-    lo16_relocs = [r[1] for r in relocs if r[0] == R_MIPS_LO16]
+    # Static overlays don't need relocations (loaded at link address)
+    if LINK_ADDR != 0x80000000:
+        relocs = []
+        r32_relocs = []
+        r26_relocs = []
+        lo16_relocs = []
+    else:
+        relocs = collect_relocs(elf)
+        r32_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_32])
+        r26_relocs = sorted([r[1] for r in relocs if r[0] == R_MIPS_26])
+        lo16_relocs = [r[1] for r in relocs if r[0] == R_MIPS_LO16]
 
-    if len(hi16_relocs) != len(lo16_relocs):
+    # Build load image preserving ELF memory layout (alignment gaps between
+    # sections must be kept so that sym.value - LINK_ADDR indexes correctly).
+    data_sec = elf.get_section(".data")
+    if data_sec and data_size > 0:
+        load_end = data_sec.addr + data_size
+    else:
+        load_end = LINK_ADDR + text_size
+    load_data = bytearray(load_end - LINK_ADDR)
+    load_data[0:text_size] = text_data
+    if data_sec and data_size > 0:
+        data_off = data_sec.addr - LINK_ADDR
+        load_data[data_off:data_off + data_size] = data_data
+
+    # Pair each HI16 with its next LO16 (MIPS ABI order) to recover the
+    # original full address.  The pairing is only needed at build time;
+    # at runtime HI16 and LO16 relocs are applied independently.
+    hi16_entries = []  # (offset, original_addr)
+    pending_hi16 = []
+    for r_type, r_offset in relocs:
+        if r_type == R_MIPS_HI16:
+            pending_hi16.append(r_offset)
+        elif r_type == R_MIPS_LO16 and pending_hi16:
+            lo_insn = struct.unpack_from(">I", load_data, r_offset - LINK_ADDR)[0]
+            lo_val = lo_insn & 0xFFFF
+            if lo_val >= 0x8000:
+                lo_val -= 0x10000
+            for hi_off in pending_hi16:
+                hi_insn = struct.unpack_from(">I", load_data, hi_off - LINK_ADDR)[0]
+                hi_val = hi_insn & 0xFFFF
+                hi16_entries.append((hi_off, (hi_val << 16) + lo_val))
+            pending_hi16 = []
+    if pending_hi16:
         print(
-            f"error: HI16/LO16 count mismatch ({len(hi16_relocs)} vs {len(lo16_relocs)})",
+            f"warning: {len(pending_hi16)} orphan HI16 relocs",
             file=sys.stderr,
         )
-        sys.exit(1)
 
     r32_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in r32_relocs)
     r26_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in r26_relocs)
-    hi16_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in hi16_relocs)
+    hi16_blob = b"".join(
+        struct.pack(">II", off - LINK_ADDR, addr)
+        for off, addr in hi16_entries
+    )
     lo16_blob = b"".join(struct.pack(">I", off - LINK_ADDR) for off in lo16_relocs)
 
     export_entries = b""
@@ -312,63 +344,43 @@ def elf_to_overlay(input_path, output_path):
             strtab += name.encode("ascii") + b"\x00"
         export_entries += struct.pack(">II", offset - LINK_ADDR, str_offsets[name])
 
-    HEADER_SIZE = 92
+    strtab_padded = strtab + b"\x00" * ((4 - len(strtab) % 4) % 4)
 
-    off = (HEADER_SIZE + 15) & ~15
-    text_off = off
-    off += len(text_data)
-    data_off = off
-    off += len(data_data)
-    r32_off = off
-    off += len(r32_blob)
-    r26_off = off
-    off += len(r26_blob)
-    hi16_off = off
-    off += len(hi16_blob)
-    lo16_off = off
-    off += len(lo16_blob)
-    ctor_off = off
-    off += len(ctors_data)
-    dtor_off = off
-    off += len(dtors_data)
-    export_off = off
-    off += len(export_entries)
-    strtab_off = off
-    off += len(strtab)
+    # Meta section (persists in memory): exports + strtab (4-padded) + dtors
+    meta_blob = export_entries + strtab_padded + dtors_data
+    # Temporary section (DMA'd to stack): r32 + r26 + hi16 + lo16 + ctors
+    temp_blob = r32_blob + r26_blob + hi16_blob + lo16_blob + ctors_data
 
-    header = struct.pack(">4sI", OVL_MAGIC, OVL_VERSION)
-    header += struct.pack(">II", text_off, text_size)
-    header += struct.pack(">II", data_off, data_size)
+    HEADER_SIZE = 48
+
+    header = struct.pack(">4s", OVL_MAGIC)
+    header += struct.pack(">I", len(load_data))
+    header += struct.pack(">I", text_size)
     header += struct.pack(">I", bss_size)
-    header += struct.pack(">II", r32_off, len(r32_relocs))
-    header += struct.pack(">II", r26_off, len(r26_relocs))
-    header += struct.pack(">II", hi16_off, len(hi16_relocs))
-    header += struct.pack(">II", lo16_off, len(lo16_relocs))
-    header += struct.pack(">II", ctor_off, ctors_size // 4)
-    header += struct.pack(">II", dtor_off, dtors_size // 4)
-    header += struct.pack(">II", export_off, len(exports))
-    header += struct.pack(">II", strtab_off, len(strtab))
+    header += struct.pack(">I", len(exports))
+    header += struct.pack(">I", len(strtab))  # unpadded
+    header += struct.pack(">I", dtors_size // 4)
+    header += struct.pack(">I", len(r32_relocs))
+    header += struct.pack(">I", len(r26_relocs))
+    header += struct.pack(">I", len(hi16_entries))
+    header += struct.pack(">I", len(lo16_relocs))
+    header += struct.pack(">I", ctors_size // 4)
 
     assert len(header) == HEADER_SIZE, (
         f"Header size mismatch: {len(header)} != {HEADER_SIZE}"
     )
 
+    pad_to_16 = (16 - HEADER_SIZE % 16) % 16
+
     with open(output_path, "wb") as f:
         f.write(header)
-        f.write(b"\x00" * (text_off - HEADER_SIZE))
-        f.write(text_data)
-        f.write(data_data)
-        f.write(r32_blob)
-        f.write(r26_blob)
-        f.write(hi16_blob)
-        f.write(lo16_blob)
-        f.write(ctors_data)
-        f.write(dtors_data)
-        f.write(export_entries)
-        f.write(strtab)
+        f.write(b"\x00" * pad_to_16)
+        f.write(load_data)
+        f.write(meta_blob)
+        f.write(temp_blob)
 
-    total_size = off
-    total_relocs = len(r32_relocs) + len(r26_relocs) + len(hi16_relocs) + len(lo16_relocs)
+    total_size = HEADER_SIZE + pad_to_16 + len(load_data) + len(meta_blob) + len(temp_blob)
+    total_relocs = len(r32_relocs) + len(r26_relocs) + len(hi16_entries) + len(lo16_relocs)
     print(
         f"  {Path(output_path).name}: {total_size} bytes "
         f"(text={text_size} data={data_size} bss={bss_size} "
@@ -377,7 +389,7 @@ def elf_to_overlay(input_path, output_path):
 
 
 # Overlay directory layout (must match overlay.c)
-OVL_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + flags + debugRomStart + debugRomEnd
+OVL_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + debugRomStart + debugRomEnd
 OVL_DIR_CAPACITY = 1024
 OVL_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
 
@@ -388,6 +400,8 @@ def parse_syms(syms_path):
     with open(syms_path) as f:
         for line in f:
             line = line.strip().rstrip(";").strip()
+            if line.startswith("PROVIDE(") and line.endswith(")"):
+                line = line[len("PROVIDE("):-1].strip()
             if "=" not in line:
                 continue
             name, _, value = line.partition("=")
@@ -444,12 +458,13 @@ def get_or_create_overlay_directory(syms, rom_path, type_index=0):
     return dir_rom_addr
 
 
-def apply_overlay(overlay_data, input_rom_path, output_rom_path, name, dir_rom_offset, flags, debug_symbols=None):
+def apply_overlay(overlay_data, input_rom_path, output_rom_path, name, dir_rom_offset, debug_symbols=None):
     if len(name) >= 64:
         print(f"error: overlay name '{name}' exceeds 63 characters", file=sys.stderr)
         sys.exit(1)
 
-    shutil.copy2(input_rom_path, output_rom_path)
+    if input_rom_path != output_rom_path:
+        shutil.copy2(input_rom_path, output_rom_path)
 
     with open(output_rom_path, "r+b") as f:
         rom_data = f.read()
@@ -505,7 +520,7 @@ def apply_overlay(overlay_data, input_rom_path, output_rom_path, name, dir_rom_o
         f.seek(entry_off)
         name_bytes = name.encode("ascii")
         f.write(name_bytes + b"\x00" * (64 - len(name_bytes)))
-        f.write(struct.pack(">IIIII", rom_start, overlay_rom_end, flags,
+        f.write(struct.pack(">IIII", rom_start, overlay_rom_end,
                             debug_rom_start, debug_rom_end))
 
 
@@ -513,11 +528,14 @@ def overlay_readelf(elf_path):
     """Extract demangled function names + file:line from an overlay ELF.
 
     Returns a list of (offset, name, file_basename, line_number) sorted by offset.
-    Addresses are stored as offsets from LINK_ADDR (0x80000000).
+    Addresses are stored as offsets from the text section VMA.
     """
     import io
 
-    LINK_ADDR = 0x80000000
+    with open(elf_path, "rb") as f:
+        elf = Elf32(f.read())
+    text_sec = elf.get_section(".text")
+    LINK_ADDR = text_sec.addr if text_sec else 0x80000000
     addr2name = {}
     addr2line = {}
 
@@ -627,13 +645,51 @@ def cmd_apply(args):
     with open(args.overlay_file, "rb") as f:
         overlay_data = f.read()
 
-    flags = int(args.flags, 0)
-
     debug_symbols = None
     if args.elf:
         debug_symbols = overlay_readelf(args.elf)
 
-    apply_overlay(overlay_data, args.input_rom, args.output_rom, args.name, dir_offset, flags, debug_symbols)
+    apply_overlay(overlay_data, args.input_rom, args.output_rom, args.name, dir_offset, debug_symbols)
+
+    n64crc = SCRIPT_DIR / "rom" / "n64crc"
+    subprocess.run([str(n64crc), args.output_rom], check=True)
+
+
+def cmd_apply_all(args):
+    """Subcommand: apply all overlays listed in a manifest to a ROM."""
+    import json
+
+    syms = parse_syms(args.syms)
+
+    with open(args.manifest) as f:
+        entries = json.load(f)
+
+    shutil.copy2(args.input_rom, args.output_rom)
+
+    dir_offsets = {}
+
+    for entry in entries:
+        name = entry["name"]
+        type_index = entry["type_index"]
+        ovl_path = entry["ovl"]
+        elf_path = entry.get("elf")
+
+        if type_index not in dir_offsets:
+            dir_offsets[type_index] = get_or_create_overlay_directory(
+                syms, args.output_rom, type_index
+            )
+
+        with open(ovl_path, "rb") as f:
+            overlay_data = f.read()
+
+        debug_symbols = None
+        if elf_path:
+            debug_symbols = overlay_readelf(elf_path)
+
+        apply_overlay(
+            overlay_data, args.output_rom, args.output_rom,
+            name, dir_offsets[type_index], debug_symbols,
+        )
 
     n64crc = SCRIPT_DIR / "rom" / "n64crc"
     subprocess.run([str(n64crc), args.output_rom], check=True)
@@ -654,10 +710,16 @@ def main():
     p_apply.add_argument("syms", help="Symbol file (syms.ld)")
     p_apply.add_argument("name", help="Overlay name")
     p_apply.add_argument("overlay_file", help="Overlay file (.ovl)")
-    p_apply.add_argument("flags", help="Overlay flags (hex or decimal)")
     p_apply.add_argument("--type-index", type=int, default=0, help="Overlay type index")
     p_apply.add_argument("--elf", help="ELF file for debug symbol extraction")
     p_apply.set_defaults(func=cmd_apply)
+
+    p_apply_all = subparsers.add_parser("apply-all", help="Apply all overlays from a manifest")
+    p_apply_all.add_argument("input_rom", help="Input ROM file (not modified)")
+    p_apply_all.add_argument("output_rom", help="Output ROM file")
+    p_apply_all.add_argument("syms", help="Symbol file (syms.ld)")
+    p_apply_all.add_argument("manifest", help="JSON manifest listing overlays")
+    p_apply_all.set_defaults(func=cmd_apply_all)
 
     args = parser.parse_args()
     args.func(args)

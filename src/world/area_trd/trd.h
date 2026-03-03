@@ -33,16 +33,4 @@ enum {
     AF_TRD_FakeBowserRevealed   = AreaFlag(13),
 };
 
-extern MapSettings trd_00_settings;
-extern MapSettings trd_01_settings;
-extern MapSettings trd_02_settings;
-extern MapSettings trd_03_settings;
-extern MapSettings trd_04_settings;
-extern MapSettings trd_05_settings;
-extern MapSettings trd_06_settings;
-extern MapSettings trd_07_settings;
-extern MapSettings trd_08_settings;
-extern MapSettings trd_09_settings;
-extern MapSettings trd_10_settings;
-
 #endif
