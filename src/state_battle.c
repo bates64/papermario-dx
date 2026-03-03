@@ -6,6 +6,7 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
+#include "dx/overlay.h"
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -164,6 +165,8 @@ void state_step_end_battle(void) {
             init_npc_list();
             init_entity_data();
             init_trigger_list();
+
+            ovl_unload_type(OVL_ACTOR);
 
             if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {
                 npc_reload_all();

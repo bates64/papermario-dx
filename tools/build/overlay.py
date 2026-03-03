@@ -2,7 +2,7 @@
 """
 Module compiler.
 
-Internal subcommands (invoked by ninja rules, not users):
+Subcommands for ninja:
   module.py convert <elf> <output>
   module.py apply <input_rom> <output_rom> <syms> <name> <module_file> <flags> [--elf ELF]
 """
@@ -377,12 +377,10 @@ def elf_to_module(input_path, output_path):
     )
 
 
-# Module directory layout (must match module.cpp)
+# Module directory layout (must match module.c)
 MODULE_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + flags + debugRomStart + debugRomEnd
 MODULE_DIR_CAPACITY = 1024
 MODULE_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
-
-MODULE_FLAG_AUTOLOAD = 1 << 0
 
 
 def parse_syms(syms_path):
@@ -403,18 +401,21 @@ def parse_syms(syms_path):
     return syms
 
 
-def get_or_create_module_directory(syms, rom_path):
+def get_or_create_module_directory(syms, rom_path, type_index=0):
     """Get or create the module directory in the ROM, returning its ROM offset.
 
-    On first invocation (moduleDirectoryRomAddr is zero), creates the directory
-    at the end of the ROM and patches the pointer. Subsequent invocations read
-    the existing pointer.
+    ovlDirectoryRomAddr is an array of u32 pointers keyed by module type.
+    type_index selects which element to use.
+
+    On first invocation (the pointer is zero), creates the directory at the end
+    of the ROM and patches the pointer. Subsequent invocations read the existing
+    pointer.
     """
-    for name in ("moduleDirectoryRomAddr", "main_VRAM", "main_ROM_START"):
+    for name in ("ovlDirectoryRomAddr", "main_VRAM", "main_ROM_START"):
         if name not in syms:
             print(f"error: '{name}' not found in syms file", file=sys.stderr)
             sys.exit(1)
-    vma = syms["moduleDirectoryRomAddr"]
+    vma = syms["ovlDirectoryRomAddr"] + type_index * 4
     base = syms["main_VRAM"]
     rom_start = syms["main_ROM_START"]
     ptr_rom_offset = vma - base + rom_start
@@ -440,7 +441,7 @@ def get_or_create_module_directory(syms, rom_path):
 
             print(f"  created module directory at ROM 0x{dir_rom_addr:08X}")
 
-    print(f"  moduleDirectoryRomAddr: ROM 0x{ptr_rom_offset:08X} -> directory at ROM 0x{dir_rom_addr:08X}")
+    print(f"  ovlDirectoryRomAddr: ROM 0x{ptr_rom_offset:08X} -> directory at ROM 0x{dir_rom_addr:08X}")
     return dir_rom_addr
 
 
@@ -641,7 +642,7 @@ def cmd_apply(args):
     print(f"module {args.name}")
 
     syms = parse_syms(args.syms)
-    dir_offset = get_or_create_module_directory(syms, args.input_rom)
+    dir_offset = get_or_create_module_directory(syms, args.input_rom, args.type_index)
 
     with open(args.module_file, "rb") as f:
         module_data = f.read()
@@ -675,6 +676,7 @@ def main():
     p_apply.add_argument("name", help="Module name")
     p_apply.add_argument("module_file", help="Module file (.module)")
     p_apply.add_argument("flags", help="Module flags (hex or decimal)")
+    p_apply.add_argument("--type-index", type=int, default=0, help="Module type index into ovlDirectoryRomAddr array")
     p_apply.add_argument("--elf", help="ELF file for debug symbol extraction")
     p_apply.set_defaults(func=cmd_apply)
 

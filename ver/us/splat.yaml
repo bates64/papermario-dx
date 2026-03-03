@@ -109,7 +109,7 @@ segments:
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, c, dx/profiling]
-    - [auto, cpp, dx/module]
+    - [auto, c, dx/overlay]
     - [auto, cpp, dx/heap]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
@@ -6331,7 +6331,6 @@ segments:
     subsegments:
     - [auto, c, actor/hyper_goomba]
     - [auto, c, actor/hyper_paragoomba]
-    - [auto, c, actor/hyper_cleft]
     - [auto, c, actor/tubbas_heart]
     - [auto, c, actor/tubba_blubba]
     - [auto, c, stage/arn_01]

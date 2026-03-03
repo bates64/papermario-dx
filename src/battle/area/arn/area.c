@@ -1,6 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(hyper_cleft);
 extern ActorBlueprint A(hyper_goomba);
 extern ActorBlueprint A(hyper_paragoomba);
 extern ActorBlueprint A(tubba_blubba);
@@ -71,29 +70,29 @@ Formation A(Formation_09) = {
 };
 
 Formation A(Formation_0A) = {
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_0B) = {
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0C) = {
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0D) = {
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(hyper_goomba), BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(hyper_goomba), BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0E) = {
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(hyper_cleft), BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("hyper_cleft", BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(hyper_goomba), BTL_POS_GROUND_C, 8),
     ACTOR_BY_IDX(A(hyper_goomba), BTL_POS_GROUND_D, 7),
 };

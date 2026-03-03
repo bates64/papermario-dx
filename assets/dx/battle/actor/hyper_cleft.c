@@ -85,7 +85,7 @@ ActorPartBlueprint N(ActorParts)[] = {
     },
 };
 
-ActorBlueprint NAMESPACE = {
+ActorBlueprint blueprint = {
     .flags = 0,
     .type = ACTOR_TYPE_HYPER_CLEFT,
     .level = ACTOR_LEVEL_HYPER_CLEFT,

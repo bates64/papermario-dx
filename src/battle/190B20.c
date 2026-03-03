@@ -5,6 +5,7 @@
 #include "script_api/battle.h"
 #include "model.h"
 #include "sprite.h"
+#include "dx/overlay.h"
 
 f32 D_802938A4 = 0.0f;
 
@@ -1427,7 +1428,16 @@ Actor* create_actor(Formation formation) {
         z = formation->home.vec->z;
     }
 
-    formationActor = formation->actor;
+    if (formation->actor != nullptr) {
+        formationActor = formation->actor;
+    } else if (formation->overlay != nullptr) {
+        Overlay* mod = ovl_load(formation->overlay, OVL_ACTOR);
+        formationActor = ovl_sym(mod, "blueprint");
+        ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export 'blueprint'", formation->overlay);
+    } else {
+        PANIC();
+    }
+
     partCount = formationActor->partCount;
 
     for (i = 0; i < ARRAY_COUNT(battleStatus->enemyActors); i++) {

@@ -5,14 +5,9 @@
 #include "game_modes.h"
 #include "dx/config.h"
 #include "dx/versioning.h"
-
-void load_autoload_modules(void);
-
 void state_init_startup(void) {
     gOverrideFlags |= GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
     gGameStatus.startupState = 3;
-
-    load_autoload_modules();
 }
 
 void state_step_startup(void) {

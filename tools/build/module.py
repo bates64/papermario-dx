@@ -62,7 +62,7 @@ def generate_build_ninja(module_dir, dx_root, name, sources, version="us"):
     )
     syms_ld = f"ver/{version}/build/syms.ld"
     module_ld = "tools/build/module.ld"
-    module_internal = "tools/build/module_internal.py"
+    module_internal = "tools/build/overlay.py"
 
     ninja_path = dx_root / build_dir / "build.ninja"
     with open(ninja_path, "w") as f:
@@ -160,13 +160,10 @@ def cmd_apply(args):
         print(f"error: syms.ld not found at {syms_path}", file=sys.stderr)
         sys.exit(1)
 
-    MODULE_FLAG_AUTOLOAD = 1 << 0
     flags = 0
-    if config.get("autoload", False):
-        flags |= MODULE_FLAG_AUTOLOAD
 
     cmd = [
-        sys.executable, str(dx / "tools/build/module_internal.py"),
+        sys.executable, str(dx / "tools/build/overlay.py"),
         "apply", str(input_rom), str(output_rom),
         str(syms_path), name, str(module_path), f"0x{flags:X}",
     ]

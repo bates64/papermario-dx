@@ -8,6 +8,7 @@
 #include "nu/nusys.h"
 #include "backtrace.h"
 #include "PR/osint.h"
+#include "dx/overlay.h"
 
 /** @brief Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
@@ -378,17 +379,13 @@ char* load_symbol_string(char* dest, u32 addr, int n) {
     return (char*)((u32)dest + (addr & 3));
 }
 
-extern const char* module_sym_for_addr(u32 addr, const char** out_module_name,
-                                       u32* out_debug_rom_start, u32* out_debug_rom_end,
-                                       u32* out_module_base);
-
 /**
- * @brief Look up a symbol in a module's debug symbol table stored in ROM.
+ * @brief Look up a symbol in an overlay's debug symbol table stored in ROM.
  *
  * Addresses in the table are stored as offsets from LINK_ADDR (0x80000000).
- * The caller passes `offset = addr - module_base` as the lookup key.
+ * The caller passes `offset = addr - overlay_base` as the lookup key.
  */
-s32 module_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* out) {
+s32 ovl_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* out) {
     #define symbolsPerChunk 0x1000
     #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
 
@@ -427,15 +424,15 @@ s32 module_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol
 }
 
 void backtrace_address_to_string(u32 address, char* dest) {
-    const char* module_name = NULL;
-    u32 debugRomStart = 0, debugRomEnd = 0, moduleBase = 0;
-    const char* module_sym = module_sym_for_addr(address, &module_name,
-                                                  &debugRomStart, &debugRomEnd, &moduleBase);
-    if (module_sym != NULL) {
+    const char* ovl_name = NULL;
+    u32 debugRomStart = 0, debugRomEnd = 0, ovlBase = 0;
+    const char* ovl_sym_name = ovl_resolve_addr(address, &ovl_name,
+                                              &debugRomStart, &debugRomEnd, &ovlBase);
+    if (ovl_sym_name != NULL) {
         if (debugRomStart != 0) {
-            u32 offset = address - moduleBase;
+            u32 offset = address - ovlBase;
             Symbol sym;
-            s32 sym_offset = module_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
+            s32 sym_offset = ovl_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
             if (sym_offset >= 0 && sym_offset < 0x1000) {
                 char name[0x40];
                 char file[0x40];
@@ -443,13 +440,13 @@ void backtrace_address_to_string(u32 address, char* dest) {
                 char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
                 if (filep == NULL)
-                    sprintf(dest, "%s (%s)", namep, module_name);
+                    sprintf(dest, "%s (%s)", namep, ovl_name);
                 else
-                    sprintf(dest, "%s (%s %s)", namep, module_name, filep);
+                    sprintf(dest, "%s (%s %s)", namep, ovl_name, filep);
                 return;
             }
         }
-        sprintf(dest, "%s (%s)", module_sym, module_name);
+        sprintf(dest, "%s (%s)", ovl_sym_name, ovl_name);
         return;
     }
 

@@ -321,9 +321,21 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "mod_link",
+        description="link module $out",
+        command=f"{cross}ld --emit-relocs -nostdlib -T {BUILD_TOOLS}/module.ld -T $syms $in -o $out",
+    )
+
+    ninja.rule(
+        "mod_convert",
+        description="convert module $out",
+        command=f"$python {BUILD_TOOLS}/overlay.py convert $in $out",
+    )
+
+    ninja.rule(
         "mod_apply",
         description="Applying $name",
-        command=f"$python {BUILD_TOOLS}/module_internal.py apply $in $out $syms $name $module $flags $elf_flag",
+        command=f"$python {BUILD_TOOLS}/overlay.py apply $in $out $syms $name $module $flags $type_flag $elf_flag",
     )
 
 
@@ -1417,60 +1429,77 @@ class Configure:
 
         return segment_size_map
 
+    def find_asset_modules(self):
+        """Find dynamic module sources across asset stacks.
+
+        Returns a dict of module_name -> (source_path, type_index).
+        Higher-priority asset stack layers take precedence.
+        """
+        modules = {}
+
+        # OVL_ACTOR (type_index=0): battle/actor/*.c
+        for stack_dir in self.asset_stack:
+            actor_dir = ROOT / f"assets/{stack_dir}/battle/actor"
+            if not actor_dir.is_dir():
+                continue
+            for c_file in sorted(actor_dir.glob("*.c")):
+                name = c_file.stem
+                if name not in modules:
+                    modules[name] = (c_file, 0)
+
+        return modules
+
     def write_modules(self, ninja: ninja_syntax.Writer) -> str:
         """Write module build statements. Returns the final ROM path."""
-        from module import generate_build_ninja, load_module_toml, find_sources
+        prev_rom = str(self.base_rom_path())
 
-        MODULE_FLAG_AUTOLOAD = 1 << 0
-        dx_root = ROOT.resolve()
+        asset_modules = self.find_asset_modules()
+        precompiled_header_path = Path("include/common.h.gch")
 
-        modules_dir = ROOT / "modules"
-        current_rom = str(self.base_rom_path())
+        for name, (src_path, type_index) in sorted(asset_modules.items()):
+            build_dir = self.build_path() / "ovl" / name
 
-        if not modules_dir.is_dir():
-            ninja.build(str(self.rom_path()), "cp", current_rom)
-            return str(self.rom_path())
+            obj_path = build_dir / f"{name}.o"
+            elf_path = build_dir / f"{name}.elf"
+            module_path = build_dir / f"{name}.module"
 
-        modules = []
-        for module_dir in sorted(modules_dir.iterdir()):
-            if not module_dir.is_dir():
-                continue
+            ninja.build(
+                str(obj_path),
+                "cc_modern",
+                str(src_path),
+                implicit=[str(precompiled_header_path)],
+                order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
+                variables={
+                    "version": self.version,
+                    "cflags": "-fforce-addr -fno-common",
+                    "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
+                },
+            )
 
-            config = load_module_toml(module_dir)
-            name = config.get("name", module_dir.name)
-            sources = find_sources(module_dir)
-            if not sources:
-                continue
+            ninja.build(
+                str(elf_path),
+                "mod_link",
+                str(obj_path),
+                implicit=[str(self.syms_path())],
+                variables={"syms": str(self.syms_path())},
+            )
 
-            flags = 0
-            if config.get("autoload", False):
-                flags |= MODULE_FLAG_AUTOLOAD
-
-            modules.append((name, module_dir, sources, config, flags))
-
-        if not modules:
-            ninja.build(str(self.rom_path()), "cp", current_rom)
-            return str(self.rom_path())
-
-        prev_rom = current_rom
-        for name, module_dir, sources, config, flags in modules:
-            build_dir = module_dir / "build"
-
-            generate_build_ninja(module_dir, dx_root, name, sources, self.version)
-            ninja.subninja(str(build_dir / "build.ninja"))
-
-            elf_path = str(build_dir / f"{name}.elf")
-            module_path = str(build_dir / f"{name}.module")
+            ninja.build(
+                str(module_path),
+                "mod_convert",
+                str(elf_path),
+            )
 
             next_rom = str(build_dir / f"{name}.z64")
             ninja.build(
                 next_rom, "mod_apply", prev_rom,
-                implicit=[module_path, str(self.syms_path()), elf_path, CRC_TOOL],
+                implicit=[str(module_path), str(self.syms_path()), str(elf_path), CRC_TOOL],
                 variables={
                     "syms": str(self.syms_path()),
                     "name": name,
-                    "module": module_path,
-                    "flags": f"0x{flags:X}",
+                    "module": str(module_path),
+                    "flags": "0x0",
+                    "type_flag": f"--type-index {type_index}",
                     "elf_flag": f"--elf {elf_path}",
                 },
             )
