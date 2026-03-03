@@ -215,7 +215,7 @@ void ovl_unload_type(OverlayType type) {
     }
 }
 
-void* ovl_sym(const Overlay* mod, const char* name) {
+void* ovl_import(const Overlay* mod, const char* name) {
     const ModuleExport* exp = mod_exports(mod);
     const char* str = mod_strtab(mod);
 

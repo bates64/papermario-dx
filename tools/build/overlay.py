@@ -55,13 +55,17 @@ class ElfSection:
         self.content = data
 
 
+STV_DEFAULT = 0
+STV_HIDDEN = 2
+
 class ElfSymbol:
-    def __init__(self, name, st_value, st_size, st_info, st_shndx):
+    def __init__(self, name, st_value, st_size, st_info, st_other, st_shndx):
         self.name = name
         self.value = st_value
         self.size = st_size
         self.binding = st_info >> 4
         self.type = st_info & 0xF
+        self.visibility = st_other & 0x3
         self.shndx = st_shndx
 
 
@@ -173,7 +177,7 @@ class Elf32:
                     )
 
                 self.symbols.append(
-                    ElfSymbol(name, st_value, st_size, st_info, st_shndx)
+                    ElfSymbol(name, st_value, st_size, st_info, st_other, st_shndx)
                 )
 
     def get_section(self, name):
@@ -236,6 +240,8 @@ def collect_exports(elf):
     exports = []
     for sym in elf.symbols:
         if sym.binding != STB_GLOBAL:
+            continue
+        if sym.visibility != STV_DEFAULT:
             continue
         if sym.shndx == 0:
             continue

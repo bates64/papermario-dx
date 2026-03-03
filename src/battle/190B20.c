@@ -1432,7 +1432,7 @@ Actor* create_actor(Formation formation) {
         formationActor = formation->actor;
     } else if (formation->overlay != nullptr) {
         Overlay* mod = ovl_load(formation->overlay, OVL_ACTOR);
-        formationActor = ovl_sym(mod, "blueprint");
+        formationActor = ovl_import(mod, "blueprint");
         ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export 'blueprint'", formation->overlay);
     } else {
         PANIC();

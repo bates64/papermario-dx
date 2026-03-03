@@ -1471,7 +1471,7 @@ class Configure:
                 order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
                 variables={
                     "version": self.version,
-                    "cflags": "-fforce-addr -fno-common",
+                    "cflags": "-fforce-addr -fno-common -fvisibility=hidden",
                     "cppflags": f"-DVERSION_{self.version.upper()} -DMODERN_COMPILER",
                 },
             )
