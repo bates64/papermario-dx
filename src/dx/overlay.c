@@ -15,9 +15,9 @@ typedef struct {
     u32 flags;
     u32 debugRomStart;
     u32 debugRomEnd;
-} ModuleEntry;
+} OverlayDirectoryEntry;
 
-_Static_assert(sizeof(ModuleEntry) == 84, "ModuleEntry size must match overlay.py");
+_Static_assert(sizeof(OverlayDirectoryEntry) == 84, "DirectoryEntry size must match overlay.py");
 
 typedef struct {
     u32 magic;
@@ -33,12 +33,12 @@ typedef struct {
     u32 dtor_offset, dtor_count;
     u32 export_offset, export_count;
     u32 strtab_offset, strtab_size;
-} ModuleHeader;
+} OverlayHeader;
 
 typedef struct {
     u32 offset;
     u32 name_offset;
-} ModuleExport;
+} OverlayExport;
 
 struct Overlay {
     char name[64];
@@ -46,7 +46,7 @@ struct Overlay {
     u8* blob;
     u8* base;
     u8* bss;
-    ModuleHeader* hdr;
+    OverlayHeader* hdr;
     u32 debugRomStart;
     u32 debugRomEnd;
     b32 loaded;
@@ -58,25 +58,25 @@ volatile u32 ovlDirectoryRomAddr[OVL_NUM_TYPES] = {};
 
 static Overlay overlays[MAX_OVERLAYS];
 
-static const ModuleExport* mod_exports(const Overlay* mod) {
-    return (const ModuleExport*)(mod->blob + mod->hdr->export_offset);
+static const OverlayExport* ovl_exports(const Overlay* ovl) {
+    return (const OverlayExport*)(ovl->blob + ovl->hdr->export_offset);
 }
 
-static const char* mod_strtab(const Overlay* mod) {
-    return (const char*)(mod->blob + mod->hdr->strtab_offset);
+static const char* ovl_strtab(const Overlay* ovl) {
+    return (const char*)(ovl->blob + ovl->hdr->strtab_offset);
 }
 
-static void apply_relocs(Overlay* mod) {
-    u32 load = (u32)mod->base;
+static void apply_relocs(Overlay* ovl) {
+    u32 load = (u32)ovl->base;
     u32 delta = load - LINK_ADDR;
-    ModuleHeader* hdr = mod->hdr;
+    OverlayHeader* hdr = ovl->hdr;
 
-    const u32* r32 = (const u32*)(mod->blob + hdr->r32_offset);
+    const u32* r32 = (const u32*)(ovl->blob + hdr->r32_offset);
     for (u32 idx = 0; idx < hdr->r32_count; idx++) {
         *(u32*)(load + r32[idx]) += delta;
     }
 
-    const u32* r26 = (const u32*)(mod->blob + hdr->r26_offset);
+    const u32* r26 = (const u32*)(ovl->blob + hdr->r26_offset);
     for (u32 idx = 0; idx < hdr->r26_count; idx++) {
         u32* loc = (u32*)(load + r26[idx]);
         u32 target = (((*loc & 0x03FFFFFFu) << 2) + delta);
@@ -84,8 +84,8 @@ static void apply_relocs(Overlay* mod) {
     }
 
     ASSERT_MSG(hdr->hi16_count == hdr->lo16_count, "HI16/LO16 count mismatch");
-    const u32* hi16 = (const u32*)(mod->blob + hdr->hi16_offset);
-    const u32* lo16 = (const u32*)(mod->blob + hdr->lo16_offset);
+    const u32* hi16 = (const u32*)(ovl->blob + hdr->hi16_offset);
+    const u32* lo16 = (const u32*)(ovl->blob + hdr->lo16_offset);
     for (u32 idx = 0; idx < hdr->hi16_count; idx++) {
         u32* hi_loc = (u32*)(load + hi16[idx]);
         u32* lo_loc = (u32*)(load + lo16[idx]);
@@ -103,9 +103,9 @@ static void apply_relocs(Overlay* mod) {
     }
 }
 
-static void run_table(Overlay* mod, u32 offset, u32 count) {
-    u32* table = (u32*)(mod->blob + offset);
-    s32 delta = (u32)mod->base - LINK_ADDR;
+static void run_table(Overlay* ovl, u32 offset, u32 count) {
+    u32* table = (u32*)(ovl->blob + offset);
+    s32 delta = (u32)ovl->base - LINK_ADDR;
 
     for (u32 i = 0; i < count; i++) {
         void (*fn)(void) = (void (*)(void))(table[i] + delta);
@@ -113,7 +113,7 @@ static void run_table(Overlay* mod, u32 offset, u32 count) {
     }
 }
 
-static b32 find_in_directory(OverlayType type, const char* name, ModuleEntry* out) {
+static b32 find_in_directory(OverlayType type, const char* name, OverlayDirectoryEntry* out) {
     u32 dirAddr = ovlDirectoryRomAddr[type];
     if (dirAddr == 0) return false;
 
@@ -121,10 +121,10 @@ static b32 find_in_directory(OverlayType type, const char* name, ModuleEntry* ou
     nuPiReadRom(dirAddr, header, sizeof(header));
     u32 count = header[1];
 
-    ALIGNED(16) ModuleEntry entry;
+    ALIGNED(16) OverlayDirectoryEntry entry;
     u32 entriesAddr = dirAddr + sizeof(header);
     for (u32 i = 0; i < count; i++) {
-        nuPiReadRom(entriesAddr + i * sizeof(ModuleEntry), &entry, sizeof(ModuleEntry));
+        nuPiReadRom(entriesAddr + i * sizeof(OverlayDirectoryEntry), &entry, sizeof(OverlayDirectoryEntry));
         if (strcmp(entry.name, name) == 0) {
             *out = entry;
             return true;
@@ -140,10 +140,10 @@ Overlay* ovl_load(const char* name, OverlayType type) {
         }
     }
 
-    Overlay* mod = nullptr;
+    Overlay* ovl = nullptr;
     for (s32 i = 0; i < MAX_OVERLAYS; i++) {
         if (!overlays[i].loaded) {
-            mod = &overlays[i];
+            ovl = &overlays[i];
             break;
         }
     }
@@ -151,14 +151,14 @@ Overlay* ovl_load(const char* name, OverlayType type) {
 
     u32 j;
     for (j = 0; j < 63 && name[j] != '\0'; j++) {
-        mod->name[j] = name[j];
+        ovl->name[j] = name[j];
     }
-    mod->name[j] = '\0';
+    ovl->name[j] = '\0';
 
-    mod->type = type;
-    mod->loaded = true;
+    ovl->type = type;
+    ovl->loaded = true;
 
-    ModuleEntry entry;
+    OverlayDirectoryEntry entry;
     b32 found = find_in_directory(type, name, &entry);
     ASSERT_MSG(found, "Overlay '%s' not found", name);
 
@@ -166,45 +166,45 @@ Overlay* ovl_load(const char* name, OverlayType type) {
     void* romData = malloc(romSize);
     nuPiReadRom(entry.romStart, romData, romSize);
 
-    mod->debugRomStart = entry.debugRomStart;
-    mod->debugRomEnd = entry.debugRomEnd;
+    ovl->debugRomStart = entry.debugRomStart;
+    ovl->debugRomEnd = entry.debugRomEnd;
 
-    mod->blob = (u8*)romData;
-    mod->hdr = (ModuleHeader*)romData;
+    ovl->blob = (u8*)romData;
+    ovl->hdr = (OverlayHeader*)romData;
 
-    ASSERT_MSG(mod->hdr->magic == MOD_MAGIC, "Invalid overlay %s", name);
-    ASSERT_MSG(mod->hdr->version == MOD_VERSION, "Overlay %s has version %lu, expected %lu", name, mod->hdr->version, (u32)MOD_VERSION);
+    ASSERT_MSG(ovl->hdr->magic == MOD_MAGIC, "Invalid overlay %s", name);
+    ASSERT_MSG(ovl->hdr->version == MOD_VERSION, "Overlay %s has version %lu, expected %lu", name, ovl->hdr->version, (u32)MOD_VERSION);
 
-    mod->base = mod->blob + mod->hdr->text_offset;
+    ovl->base = ovl->blob + ovl->hdr->text_offset;
 
-    mod->bss = nullptr;
-    if (mod->hdr->bss_size > 0) {
-        mod->bss = (u8*)malloc(mod->hdr->bss_size);
-        memset(mod->bss, 0, mod->hdr->bss_size);
+    ovl->bss = nullptr;
+    if (ovl->hdr->bss_size > 0) {
+        ovl->bss = (u8*)malloc(ovl->hdr->bss_size);
+        memset(ovl->bss, 0, ovl->hdr->bss_size);
     }
 
-    apply_relocs(mod);
+    apply_relocs(ovl);
 
-    osWritebackDCache(mod->base, mod->hdr->text_size + mod->hdr->data_size);
-    osInvalICache(mod->base, mod->hdr->text_size);
+    osWritebackDCache(ovl->base, ovl->hdr->text_size + ovl->hdr->data_size);
+    osInvalICache(ovl->base, ovl->hdr->text_size);
 
-    run_table(mod, mod->hdr->ctor_offset, mod->hdr->ctor_count);
+    run_table(ovl, ovl->hdr->ctor_offset, ovl->hdr->ctor_count);
 
-    return mod;
+    return ovl;
 }
 
-void ovl_unload(Overlay* mod) {
-    if (mod == nullptr || !mod->loaded) return;
+void ovl_unload(Overlay* ovl) {
+    if (ovl == nullptr || !ovl->loaded) return;
 
-    run_table(mod, mod->hdr->dtor_offset, mod->hdr->dtor_count);
+    run_table(ovl, ovl->hdr->dtor_offset, ovl->hdr->dtor_count);
 
-    free(mod->bss);
-    free(mod->blob);
-    mod->blob = nullptr;
-    mod->base = nullptr;
-    mod->bss = nullptr;
-    mod->hdr = nullptr;
-    mod->loaded = false;
+    free(ovl->bss);
+    free(ovl->blob);
+    ovl->blob = nullptr;
+    ovl->base = nullptr;
+    ovl->bss = nullptr;
+    ovl->hdr = nullptr;
+    ovl->loaded = false;
 }
 
 void ovl_unload_type(OverlayType type) {
@@ -215,27 +215,27 @@ void ovl_unload_type(OverlayType type) {
     }
 }
 
-void* ovl_import(const Overlay* mod, const char* name) {
-    const ModuleExport* exp = mod_exports(mod);
-    const char* str = mod_strtab(mod);
+void* ovl_import(const Overlay* ovl, const char* name) {
+    const OverlayExport* exp = ovl_exports(mod);
+    const char* str = ovl_strtab(mod);
 
-    for (u32 i = 0; i < mod->hdr->export_count; i++) {
+    for (u32 i = 0; i < ovl->hdr->export_count; i++) {
         if (strcmp(str + exp[i].name_offset, name) == 0) {
-            return mod->base + exp[i].offset;
+            return ovl->base + exp[i].offset;
         }
     }
     return nullptr;
 }
 
-static const char* name_for_addr(const Overlay* mod, u32 addr) {
-    u32 off = addr - (u32)mod->base;
-    const ModuleExport* exp = mod_exports(mod);
-    const char* str = mod_strtab(mod);
+static const char* name_for_addr(const Overlay* ovl, u32 addr) {
+    u32 off = addr - (u32)ovl->base;
+    const OverlayExport* exp = ovl_exports(mod);
+    const char* str = ovl_strtab(mod);
 
     const char* best = nullptr;
     u32 best_off = 0;
 
-    for (u32 i = 0; i < mod->hdr->export_count; i++) {
+    for (u32 i = 0; i < ovl->hdr->export_count; i++) {
         if (exp[i].offset <= off && exp[i].offset >= best_off) {
             best_off = exp[i].offset;
             best = str + exp[i].name_offset;
@@ -244,9 +244,9 @@ static const char* name_for_addr(const Overlay* mod, u32 addr) {
     return best;
 }
 
-static b32 contains(const Overlay* mod, u32 addr) {
-    u32 b = (u32)mod->base;
-    return addr >= b && addr < b + mod->hdr->text_size;
+static b32 contains(const Overlay* ovl, u32 addr) {
+    u32 b = (u32)ovl->base;
+    return addr >= b && addr < b + ovl->hdr->text_size;
 }
 
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
@@ -254,18 +254,18 @@ const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
                              u32* outOverlayBase) {
     for (s32 i = 0; i < MAX_OVERLAYS; i++) {
         if (!overlays[i].loaded) continue;
-        Overlay* mod = &overlays[i];
+        Overlay* ovl = &overlays[i];
 
-        if (contains(mod, addr)) {
-            const char* sym = name_for_addr(mod, addr);
+        if (contains(ovl, addr)) {
+            const char* sym = name_for_addr(ovl, addr);
             if (outOverlayName)
-                *outOverlayName = mod->name;
+                *outOverlayName = ovl->name;
             if (outDebugRomStart)
-                *outDebugRomStart = mod->debugRomStart;
+                *outDebugRomStart = ovl->debugRomStart;
             if (outDebugRomEnd)
-                *outDebugRomEnd = mod->debugRomEnd;
+                *outDebugRomEnd = ovl->debugRomEnd;
             if (outOverlayBase)
-                *outOverlayBase = (u32)mod->base;
+                *outOverlayBase = (u32)ovl->base;
             return sym;
         }
     }

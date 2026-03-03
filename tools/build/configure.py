@@ -321,21 +321,21 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "mod_link",
-        description="link module $out",
+        "ovl_link",
+        description="link overlay $out",
         command=f"{cross}ld --emit-relocs -nostdlib -T {BUILD_TOOLS}/module.ld -T $syms $in -o $out",
     )
 
     ninja.rule(
-        "mod_convert",
-        description="convert module $out",
+        "ovl_convert",
+        description="convert overlay $out",
         command=f"$python {BUILD_TOOLS}/overlay.py convert $in $out",
     )
 
     ninja.rule(
-        "mod_apply",
-        description="Applying $name",
-        command=f"$python {BUILD_TOOLS}/overlay.py apply $in $out $syms $name $module $flags $type_flag $elf_flag",
+        "ovl_apply",
+        description="Applying overlay $name",
+        command=f"$python {BUILD_TOOLS}/overlay.py apply $in $out $syms $name $overlay $flags $type_flag $elf_flag",
     )
 
 
@@ -1429,13 +1429,13 @@ class Configure:
 
         return segment_size_map
 
-    def find_asset_modules(self):
-        """Find dynamic module sources across asset stacks.
+    def find_overlays(self):
+        """Find overlay sources across asset stacks.
 
-        Returns a dict of module_name -> (source_path, type_index).
+        Returns a dict of overlay_name -> (source_path, type_index).
         Higher-priority asset stack layers take precedence.
         """
-        modules = {}
+        overlays = {}
 
         # OVL_ACTOR (type_index=0): battle/actor/*.c
         for stack_dir in self.asset_stack:
@@ -1444,24 +1444,24 @@ class Configure:
                 continue
             for c_file in sorted(actor_dir.glob("*.c")):
                 name = c_file.stem
-                if name not in modules:
-                    modules[name] = (c_file, 0)
+                if name not in overlays:
+                    overlays[name] = (c_file, 0)
 
-        return modules
+        return overlays
 
-    def write_modules(self, ninja: ninja_syntax.Writer) -> str:
-        """Write module build statements. Returns the final ROM path."""
+    def write_overlays(self, ninja: ninja_syntax.Writer) -> str:
+        """Write overlay build statements. Returns the final ROM path."""
         prev_rom = str(self.base_rom_path())
 
-        asset_modules = self.find_asset_modules()
+        overlays = self.find_overlays()
         precompiled_header_path = Path("include/common.h.gch")
 
-        for name, (src_path, type_index) in sorted(asset_modules.items()):
+        for name, (src_path, type_index) in sorted(overlays.items()):
             build_dir = self.build_path() / "ovl" / name
 
             obj_path = build_dir / f"{name}.o"
             elf_path = build_dir / f"{name}.elf"
-            module_path = build_dir / f"{name}.module"
+            ovl_path = build_dir / f"{name}.ovl"
 
             ninja.build(
                 str(obj_path),
@@ -1478,26 +1478,26 @@ class Configure:
 
             ninja.build(
                 str(elf_path),
-                "mod_link",
+                "ovl_link",
                 str(obj_path),
                 implicit=[str(self.syms_path())],
                 variables={"syms": str(self.syms_path())},
             )
 
             ninja.build(
-                str(module_path),
-                "mod_convert",
+                str(ovl_path),
+                "ovl_convert",
                 str(elf_path),
             )
 
             next_rom = str(build_dir / f"{name}.z64")
             ninja.build(
-                next_rom, "mod_apply", prev_rom,
-                implicit=[str(module_path), str(self.syms_path()), str(elf_path), CRC_TOOL],
+                next_rom, "ovl_apply", prev_rom,
+                implicit=[str(ovl_path), str(self.syms_path()), str(elf_path), CRC_TOOL],
                 variables={
                     "syms": str(self.syms_path()),
                     "name": name,
-                    "module": str(module_path),
+                    "overlay": str(ovl_path),
                     "flags": "0x0",
                     "type_flag": f"--type-index {type_index}",
                     "elf_flag": f"--elf {elf_path}",
@@ -1713,7 +1713,7 @@ if __name__ == "__main__":
 
         all.append(str(configure.rom_ok_path()))
         all.append(str(configure.syms_path()))
-        all.append(configure.write_modules(ninja))
+        all.append(configure.write_overlays(ninja))
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)

@@ -37,13 +37,13 @@ typedef enum {
 Overlay* ovl_load(const char* name, OverlayType type);
 
 /// Unload an overlay.
-void ovl_unload(Overlay* mod);
+void ovl_unload(Overlay* ovl);
 
 /// Unload all overlays of a given type.
 void ovl_unload_type(OverlayType type);
 
 /// Look up an exported symbol by name. Returns nullptr if not found.
-void* ovl_import(const Overlay* mod, const char* name);
+void* ovl_import(const Overlay* ovl, const char* name);
 
 /// Searches all loaded overlays for the symbol name nearest to `addr`.
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,

@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-Module compiler.
-
-Subcommands for ninja:
-  module.py convert <elf> <output>
-  module.py apply <input_rom> <output_rom> <syms> <name> <module_file> <flags> [--elf ELF]
-"""
 
 import argparse
 import shutil
@@ -16,8 +9,8 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
-MOD_MAGIC = b"MOD\x00"
-MOD_VERSION = 2
+OVL_MAGIC = b"MOD\x00"
+OVL_VERSION = 2
 CROSS = "mips-linux-gnu-"
 
 R_MIPS_NONE = 0
@@ -266,8 +259,8 @@ def read_section_data(elf, names):
     return b"", 0
 
 
-def elf_to_module(input_path, output_path):
-    """Convert a linked ELF (with --emit-relocs) into a .module file."""
+def elf_to_overlay(input_path, output_path):
+    """Convert a linked ELF (with --emit-relocs) into an overlay file."""
     with open(input_path, "rb") as f:
         elf_data = f.read()
 
@@ -343,7 +336,7 @@ def elf_to_module(input_path, output_path):
     strtab_off = off
     off += len(strtab)
 
-    header = struct.pack(">4sI", MOD_MAGIC, MOD_VERSION)
+    header = struct.pack(">4sI", OVL_MAGIC, OVL_VERSION)
     header += struct.pack(">II", text_off, text_size)
     header += struct.pack(">II", data_off, data_size)
     header += struct.pack(">I", bss_size)
@@ -383,10 +376,10 @@ def elf_to_module(input_path, output_path):
     )
 
 
-# Module directory layout (must match module.c)
-MODULE_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + flags + debugRomStart + debugRomEnd
-MODULE_DIR_CAPACITY = 1024
-MODULE_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
+# Overlay directory layout (must match overlay.c)
+OVL_DIR_ENTRY_SIZE = 64 + 4 + 4 + 4 + 4 + 4  # name[64] + romStart + romEnd + flags + debugRomStart + debugRomEnd
+OVL_DIR_CAPACITY = 1024
+OVL_DIR_HEADER_SIZE = 4 + 4  # magic(u32) + count(u32)
 
 
 def parse_syms(syms_path):
@@ -407,10 +400,10 @@ def parse_syms(syms_path):
     return syms
 
 
-def get_or_create_module_directory(syms, rom_path, type_index=0):
-    """Get or create the module directory in the ROM, returning its ROM offset.
+def get_or_create_overlay_directory(syms, rom_path, type_index=0):
+    """Get or create the overlay directory in the ROM, returning its ROM offset.
 
-    ovlDirectoryRomAddr is an array of u32 pointers keyed by module type.
+    ovlDirectoryRomAddr is an array of u32 pointers keyed by overlay type.
     type_index selects which element to use.
 
     On first invocation (the pointer is zero), creates the directory at the end
@@ -440,28 +433,20 @@ def get_or_create_module_directory(syms, rom_path, type_index=0):
             if padding > 0:
                 f.write(b"\x00" * padding)
             f.write(struct.pack(">II", 0x4D4F4444, 0))  # MODD magic, count=0
-            f.write(b"\x00" * (MODULE_DIR_ENTRY_SIZE * MODULE_DIR_CAPACITY))
+            f.write(b"\x00" * (OVL_DIR_ENTRY_SIZE * OVL_DIR_CAPACITY))
 
             f.seek(ptr_rom_offset)
             f.write(struct.pack(">I", dir_rom_addr))
 
-            print(f"  created module directory at ROM 0x{dir_rom_addr:08X}")
+            print(f"  created overlay directory at ROM 0x{dir_rom_addr:08X}")
 
     print(f"  ovlDirectoryRomAddr: ROM 0x{ptr_rom_offset:08X} -> directory at ROM 0x{dir_rom_addr:08X}")
     return dir_rom_addr
 
 
-def apply_module(module_data, input_rom_path, output_rom_path, name, dir_rom_offset, flags, debug_symbols=None):
-    """Apply a module to a ROM, writing a new ROM file.
-
-    Copies input_rom_path to output_rom_path, then appends the module data and
-    updates the module directory. Does not mutate the input ROM.
-
-    If debug_symbols is provided (list from module_readelf), a debug symbol table
-    is also appended after the module data.
-    """
+def apply_overlay(overlay_data, input_rom_path, output_rom_path, name, dir_rom_offset, flags, debug_symbols=None):
     if len(name) >= 64:
-        print(f"error: module name '{name}' exceeds 63 characters", file=sys.stderr)
+        print(f"error: overlay name '{name}' exceeds 63 characters", file=sys.stderr)
         sys.exit(1)
 
     shutil.copy2(input_rom_path, output_rom_path)
@@ -470,11 +455,11 @@ def apply_module(module_data, input_rom_path, output_rom_path, name, dir_rom_off
         rom_data = f.read()
 
     count = struct.unpack(">I", rom_data[dir_rom_offset + 4 : dir_rom_offset + 8])[0]
-    entries_offset = dir_rom_offset + MODULE_DIR_HEADER_SIZE
+    entries_offset = dir_rom_offset + OVL_DIR_HEADER_SIZE
 
     existing_slot = None
     for i in range(count):
-        entry_off = entries_offset + i * MODULE_DIR_ENTRY_SIZE
+        entry_off = entries_offset + i * OVL_DIR_ENTRY_SIZE
         entry_name = rom_data[entry_off : entry_off + 64]
         entry_name = entry_name.split(b"\x00", 1)[0].decode("ascii")
         if entry_name == name:
@@ -484,8 +469,8 @@ def apply_module(module_data, input_rom_path, output_rom_path, name, dir_rom_off
     if existing_slot is not None:
         slot = existing_slot
     else:
-        if count >= MODULE_DIR_CAPACITY:
-            print("error: module directory is full", file=sys.stderr)
+        if count >= OVL_DIR_CAPACITY:
+            print("error: max overlays of this type reached", file=sys.stderr)
             sys.exit(1)
         slot = count
         count += 1
@@ -498,44 +483,34 @@ def apply_module(module_data, input_rom_path, output_rom_path, name, dir_rom_off
         f.seek(rom_end)
         if padding > 0:
             f.write(b"\x00" * padding)
-        f.write(module_data)
-        module_rom_end = rom_start + len(module_data)
+        f.write(overlay_data)
+        overlay_rom_end = rom_start + len(overlay_data)
 
         debug_rom_start = 0
         debug_rom_end = 0
         if debug_symbols:
-            debug_rom_start = (module_rom_end + 15) & ~15
-            debug_padding = debug_rom_start - module_rom_end
+            debug_rom_start = (overlay_rom_end + 15) & ~15
+            debug_padding = debug_rom_start - overlay_rom_end
             debug_blob = build_debug_symbol_table(debug_symbols, debug_rom_start)
-            f.seek(module_rom_end)
+            f.seek(overlay_rom_end)
             if debug_padding > 0:
                 f.write(b"\x00" * debug_padding)
             f.write(debug_blob)
             debug_rom_end = debug_rom_start + len(debug_blob)
-            print(
-                f"  debug symbols: ROM 0x{debug_rom_start:08X}-0x{debug_rom_end:08X} "
-                f"({len(debug_blob)} bytes, {len(debug_symbols)} symbols)"
-            )
 
         f.seek(dir_rom_offset + 4)
         f.write(struct.pack(">I", count))
 
-        entry_off = entries_offset + slot * MODULE_DIR_ENTRY_SIZE
+        entry_off = entries_offset + slot * OVL_DIR_ENTRY_SIZE
         f.seek(entry_off)
         name_bytes = name.encode("ascii")
         f.write(name_bytes + b"\x00" * (64 - len(name_bytes)))
-        f.write(struct.pack(">IIIII", rom_start, module_rom_end, flags,
+        f.write(struct.pack(">IIIII", rom_start, overlay_rom_end, flags,
                             debug_rom_start, debug_rom_end))
 
-    print(
-        f"  attached '{name}' "
-        f"(ROM 0x{rom_start:08X}-0x{module_rom_end:08X}, {len(module_data)} bytes, "
-        f"slot {slot}, flags=0x{flags:X})"
-    )
 
-
-def module_readelf(elf_path):
-    """Extract demangled function names + file:line from a module ELF.
+def overlay_readelf(elf_path):
+    """Extract demangled function names + file:line from an overlay ELF.
 
     Returns a list of (offset, name, file_basename, line_number) sorted by offset.
     Addresses are stored as offsets from LINK_ADDR (0x80000000).
@@ -595,7 +570,7 @@ def module_readelf(elf_path):
 
 
 def build_debug_symbol_table(symbols, rom_base):
-    """Build a debug symbol table blob in the same format as the main symbol table.
+    """Build a debug symbol table blob.
 
     rom_base is the ROM offset where this blob will be placed, used to compute
     absolute ROM offsets for strings.
@@ -639,50 +614,48 @@ def build_debug_symbol_table(symbols, rom_base):
 
 
 def cmd_convert(args):
-    """Subcommand: convert an ELF to .module format."""
-    elf_to_module(args.elf, args.output)
+    """Subcommand: convert an ELF to overlay format."""
+    elf_to_overlay(args.elf, args.output)
 
 
 def cmd_apply(args):
-    """Subcommand: apply a module to a ROM (non-mutating)."""
-    print(f"module {args.name}")
+    """Subcommand: apply an overlay to a ROM (non-mutating)."""
 
     syms = parse_syms(args.syms)
-    dir_offset = get_or_create_module_directory(syms, args.input_rom, args.type_index)
+    dir_offset = get_or_create_overlay_directory(syms, args.input_rom, args.type_index)
 
-    with open(args.module_file, "rb") as f:
-        module_data = f.read()
+    with open(args.overlay_file, "rb") as f:
+        overlay_data = f.read()
 
     flags = int(args.flags, 0)
 
     debug_symbols = None
     if args.elf:
-        debug_symbols = module_readelf(args.elf)
-        print(f"  {len(debug_symbols)} debug symbols extracted")
+        debug_symbols = overlay_readelf(args.elf)
 
-    apply_module(module_data, args.input_rom, args.output_rom, args.name, dir_offset, flags, debug_symbols)
+    apply_overlay(overlay_data, args.input_rom, args.output_rom, args.name, dir_offset, flags, debug_symbols)
 
     n64crc = SCRIPT_DIR / "rom" / "n64crc"
     subprocess.run([str(n64crc), args.output_rom], check=True)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Module build tools for Paper Mario")
+    parser = argparse.ArgumentParser(description="Overlay builder")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    p_convert = subparsers.add_parser("convert", help="Convert ELF to .module format")
+    p_convert = subparsers.add_parser("convert", help="Convert ELF to overlay format")
     p_convert.add_argument("elf", help="Input ELF file")
-    p_convert.add_argument("output", help="Output .module file")
+    p_convert.add_argument("output", help="Output file")
     p_convert.set_defaults(func=cmd_convert)
 
-    p_apply = subparsers.add_parser("apply", help="Apply a module to a ROM")
+    p_apply = subparsers.add_parser("apply", help="Apply an overlay to a ROM")
     p_apply.add_argument("input_rom", help="Input ROM file (not modified)")
     p_apply.add_argument("output_rom", help="Output ROM file")
     p_apply.add_argument("syms", help="Symbol file (syms.ld)")
-    p_apply.add_argument("name", help="Module name")
-    p_apply.add_argument("module_file", help="Module file (.module)")
-    p_apply.add_argument("flags", help="Module flags (hex or decimal)")
-    p_apply.add_argument("--type-index", type=int, default=0, help="Module type index into ovlDirectoryRomAddr array")
+    p_apply.add_argument("name", help="Overlay name")
+    p_apply.add_argument("overlay_file", help="Overlay file (.ovl)")
+    p_apply.add_argument("flags", help="Overlay flags (hex or decimal)")
+    p_apply.add_argument("--type-index", type=int, default=0, help="Overlay type index")
     p_apply.add_argument("--elf", help="ELF file for debug symbol extraction")
     p_apply.set_defaults(func=cmd_apply)
 
