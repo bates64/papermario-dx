@@ -1452,14 +1452,6 @@ def cmd_link(args):
     with open(args.output, "wb") as f:
         f.write(ovl_bytes)
 
-    total_relocs = 0  # already counted in link_overlay
-    name = Path(args.output).name
-    print(
-        f"  {name}: {len(ovl_bytes)} bytes "
-        f"(text={text_size} data={data_size} bss={bss_size} "
-        f"exports={len(exports)})"
-    )
-
     # Build debug symbols from the input .o files
     elfs = []
     for path in args.objects:

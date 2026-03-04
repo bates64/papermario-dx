@@ -83,14 +83,11 @@ if __name__ == "__main__":
         # seek to end
         f.seek(0, 2)
         symbol_table_addr = f.tell()
-        print(f"ROM is 0x{symbol_table_addr:08X} bytes")
 
         # align
         if symbol_table_addr % 0x10 != 0:
             f.write(b"\x00" * (0x10 - (symbol_table_addr % 0x10)))
             symbol_table_addr = f.tell()
-
-        print(f"placing symbol table at ROM 0x{symbol_table_addr:08X}")
 
         # write header (see backtrace.h)
         f.seek(symbol_table_addr)
@@ -131,8 +128,5 @@ if __name__ == "__main__":
         padding_bytes = b"\x00" * (padding_size - f.tell())
         f.write(padding_bytes)
 
-        print("symbol table size: {} kib".format((f.tell() - symbol_table_addr) / 1024))
-
-        print(f"updating SYMBOL_TABLE_PTR_ROM_ADDR")
         f.seek(SYMBOL_TABLE_PTR_ROM_ADDR)
         f.write(struct.pack(">I", symbol_table_addr))
