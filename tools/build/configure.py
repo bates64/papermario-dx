@@ -115,7 +115,7 @@ def write_ninja_rules(
     ninja.rule(
         "z64",
         description="rom $out",
-        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out && {BUILD_TOOLS}/rom/n64crc $out",
+        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out",
         pool="console",
     )
 
@@ -317,19 +317,14 @@ def write_ninja_rules(
 
     ninja.rule(
         "syms",
-        command=r"""${cross}nm -g $in | awk '/ [TtDdBbA] /{print "PROVIDE(" $$3, "=", "0x" $$1, ");"}' > $out""",
+        command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $in $out",
+        restat=True,
     )
 
     ninja.rule(
-        "ovl_link",
-        description="link overlay $out",
-        command=f"{cross}ld --emit-relocs -nostdlib $ldflags -T {BUILD_TOOLS}/module.ld -T $syms $in -o $out",
-    )
-
-    ninja.rule(
-        "ovl_convert",
-        description="convert overlay $out",
-        command=f"$python {BUILD_TOOLS}/overlay.py convert $in $out",
+        "ovl_link_convert",
+        description="link overlay $ovl_src",
+        command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $in",
     )
 
     ninja.rule(
@@ -514,7 +509,7 @@ class Configure:
         return self.elf_path().with_suffix(".map")
 
     def syms_path(self) -> Path:
-        return self.build_path() / "syms.ld"
+        return self.build_path() / "syms.pkl"
 
     def resolve_src_paths(self, src_paths: List[Path]) -> List[str]:
         out = []
@@ -1424,7 +1419,6 @@ class Configure:
                 str(self.base_rom_path()),
                 "z64",
                 str(self.elf_path()),
-                implicit=[CRC_TOOL],
                 variables={"version": self.version},
             )
 
@@ -1513,8 +1507,8 @@ class Configure:
         for src_path, type_index in overlays:
             name = src_path.stem
             build_dir = self.build_path() / "ovl" / str(type_index) / name
-            elf_path = build_dir / f"{name}.elf"
             ovl_path = build_dir / f"{name}.ovl"
+            debug_syms_path = build_dir / f"{name}.ovl.debug_syms"
             objects = []
 
             c_files = []
@@ -1547,38 +1541,37 @@ class Configure:
             if len(objects) == 0:
                 continue
 
-            ldflags = ""
+            link_addr = "0x80000000"
             if type_index == 1:  # maps
-                ldflags = "--defsym OVERLAY_BASE=0x80240000"
-
-            ninja.build(
-                str(elf_path),
-                "ovl_link",
-                objects,
-                implicit=[str(self.syms_path())],
-                variables={"syms": str(self.syms_path()), "ldflags": ldflags},
-            )
+                link_addr = "0x80240000"
 
             ninja.build(
                 str(ovl_path),
-                "ovl_convert",
-                str(elf_path),
+                "ovl_link_convert",
+                objects,
+                implicit=[str(self.syms_path())],
+                implicit_outputs=[str(debug_syms_path)],
+                variables={
+                    "syms": str(self.syms_path()),
+                    "link_addr": link_addr,
+                    "ovl_src": str(src_path.relative_to(ROOT)),
+                },
             )
 
             manifest_entries.append({
                 "name": name,
                 "type_index": type_index,
                 "ovl": str(ovl_path),
-                "elf": str(elf_path),
+                "debug_syms": str(debug_syms_path),
             })
             implicit_deps.append(str(ovl_path))
-            implicit_deps.append(str(elf_path))
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         with open(manifest_path, "w") as f:
             json.dump(manifest_entries, f)
 
+        implicit_deps.append(str(BUILD_TOOLS / "overlay.py"))
         ninja.build(
             str(self.rom_path()), "ovl_apply", str(self.base_rom_path()),
             implicit=implicit_deps,
