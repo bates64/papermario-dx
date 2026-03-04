@@ -1,5 +1,4 @@
-#ifndef DX_CONFIG_H
-#define DX_CONFIG_H
+#pragma once
 
 /// Creates the version string that appears on the file select menu.
 /// Also used to sign save files created with this mod.
@@ -13,11 +12,11 @@
 #define DX_DEBUG_MENU 1
 
 /// Loads last used save file.
-#define DX_QUICK_LAUNCH 1
+#define DX_QUICK_LAUNCH 0
 
 /// Quick launch into this battle.
 /// Comment out to disable,
-//#define DX_QUICK_LAUNCH_BATTLE BTL_ARN_FORMATION_0C, BTL_ARN_STAGE_00
+//#define DX_QUICK_LAUNCH_BATTLE BTL_NOK_FORMATION_00, BTL_NOK_STAGE_00
 
 /// Skips logos (Nintendo, Intelligent Systems, etc.).
 #define DX_SKIP_LOGOS 1
@@ -39,9 +38,7 @@
 
 /// Enables the profiler, which shows lots of performance info on screen.
 /// Press L + D-Pad Up to show/hide the profiler.
-#define USE_PROFILER 1
+#define USE_PROFILER 0
 
 /// Skip laggy blur operations when opening the pause menu on emulator
 #define DX_PAUSE_LAG_FIX 1
-
-#endif
