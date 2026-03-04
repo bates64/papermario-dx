@@ -1,3 +1,4 @@
+import bisect
 import io
 import struct
 import subprocess
@@ -42,16 +43,11 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         if addr in addr2name:
             symbols.append((addr, addr2name[addr], file_basename, line_number))
         else:
-            # find closest addr2name < addr
-            closest_addr = None
-            for a in sorted_addr2name_addrs:
-                if a < addr:
-                    closest_addr = a
-                else:
-                    break
-            if closest_addr is not None:
+            # find closest addr2name < addr via binary search
+            i = bisect.bisect_right(sorted_addr2name_addrs, addr) - 1
+            if i >= 0:
                 symbols.append(
-                    (addr, addr2name[closest_addr], file_basename, line_number)
+                    (addr, addr2name[sorted_addr2name_addrs[i]], file_basename, line_number)
                 )
 
     # non-debug builds
@@ -73,11 +69,6 @@ if __name__ == "__main__":
     elf = "ver/us/build/papermario.elf"
 
     symbols = readelf(elf)
-    root_dir = (
-        subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
-        .decode("utf-8")
-        .strip()
-    )
 
     with open(z64, "r+b") as f:
         # seek to end
@@ -90,43 +81,41 @@ if __name__ == "__main__":
             symbol_table_addr = f.tell()
 
         # write header (see backtrace.h)
-        f.seek(symbol_table_addr)
-        f.write(b"SYMS")
-        f.write(struct.pack(">I", len(symbols)))
-
         sizeof_symbol = 4 + 4 + 4  # sizeof(Symbol)
-        strings_begin = f.tell() + sizeof_symbol * len(symbols)
+        header_size = 4 + 4  # "SYMS" + count
+        strings_begin = symbol_table_addr + header_size + sizeof_symbol * len(symbols)
         strings = bytearray()
         string_map = {}
 
-        # for deduplication
         def add_string(s: str):
-            global strings
             if s not in string_map:
                 string_map[s] = strings_begin + len(strings)
-                strings += s.encode("utf-8")
-                strings += b"\0"
+                strings.extend(s.encode("utf-8"))
+                strings.append(0)
             return string_map[s]
 
-        for addr, name, file_basename, line_number in symbols:
-            # file_line = file_line.replace(root_dir + "/", "")
+        buf = bytearray()
+        buf += b"SYMS"
+        buf += struct.pack(">I", len(symbols))
 
-            f.write(struct.pack(">I", addr))
-            f.write(struct.pack(">I", add_string(name)))
+        for addr, name, file_basename, line_number in symbols:
+            buf += struct.pack(">I", addr)
+            buf += struct.pack(">I", add_string(name))
 
             if file_basename == "":
-                f.write(struct.pack(">I", 0))
+                buf += struct.pack(">I", 0)
             else:
-                f.write(
-                    struct.pack(">I", add_string(f"{file_basename}:{line_number}"))
-                )  # can make more efficient
+                buf += struct.pack(">I", add_string(f"{file_basename}:{line_number}"))
 
-        f.write(strings)
+        buf += strings
 
-        # Pad to the nearest 16-byte alignment
-        padding_size = (f.tell() + 15) & ~15
-        padding_bytes = b"\x00" * (padding_size - f.tell())
-        f.write(padding_bytes)
+        # pad to 16-byte alignment
+        total = symbol_table_addr + len(buf)
+        padding = (16 - total % 16) % 16
+        buf += b"\x00" * padding
+
+        f.seek(symbol_table_addr)
+        f.write(buf)
 
         f.seek(SYMBOL_TABLE_PTR_ROM_ADDR)
         f.write(struct.pack(">I", symbol_table_addr))
