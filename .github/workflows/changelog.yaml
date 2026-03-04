@@ -1,0 +1,23 @@
+name: Changelog
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: needs updating?
+        run: |
+          CHANGED=$(git diff --name-only origin/main...HEAD)
+          API_CHANGED=$(echo "$CHANGED" | grep -E '^(src/|include/)' || true)
+          CHANGELOG_CHANGED=$(echo "$CHANGED" | grep 'manual/changelog.md' || true)
+
+          if [ -n "$API_CHANGED" ] && [ -z "$CHANGELOG_CHANGED" ]; then
+            echo "::warning::Please document your changes in manual/changelog.md."
+          fi
