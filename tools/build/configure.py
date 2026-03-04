@@ -93,19 +93,19 @@ def write_ninja_rules(
 
     ninja.rule(
         "ld",
-        description="link($version) $out",
+        description="Linking engine",
         command=f"{ld} {ld_args}",
     )
 
     ninja.rule(
         "shape_ld",
-        description="link($version) shape $out",
+        description="Linking map shape $out",
         command=f"{ld} -T src/map_shape.ld $in -o $out",
     )
 
     ninja.rule(
         "shape_objcopy",
-        description="objcopy($version) shape $out",
+        description="Extracting map shape binary $out",
         command=f"{cross}objcopy $in $out -O binary",
     )
 
@@ -114,30 +114,30 @@ def write_ninja_rules(
         Z64_DEBUG = " -gS -R .data -R .note -R .eh_frame -R .gnu.attributes -R .comment -R .options"
     ninja.rule(
         "z64",
-        description="rom $out",
+        description="Creating engine ROM without overlays",
         command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out",
         pool="console",
     )
 
     ninja.rule(
         "z64_ique",
-        description="rom $out",
+        description="Creating iQue ROM",
         command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG}",
     )
 
     ninja.rule(
         "sha1sum",
-        description="check $in",
+        description="Verifying checksum",
         command="sha1sum -c $in && touch $out" if DO_SHA1_CHECK else "touch $out",
     )
 
     ninja.rule(
-        "cpp", description="cpp $in", command=f"{cpp} $in {extra_cppflags} -P -o $out"
+        "cpp", description="Preprocessing $in", command=f"{cpp} $in {extra_cppflags} -P -o $out"
     )
 
     ninja.rule(
         "cc_modern",
-        description="CC $in",
+        description="Compiling $in",
         command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
@@ -145,7 +145,7 @@ def write_ninja_rules(
 
     ninja.rule(
         "cxx_modern",
-        description="CXX $in",
+        description="Compiling $in",
         command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
@@ -153,183 +153,208 @@ def write_ninja_rules(
 
     ninja.rule(
         "dead_cc_fix",
-        description="dead_cc_fix $in",
+        description="Fixing dead code symbols in $in",
         command=f"{cross}objcopy --redefine-sym sqrtf=dead_sqrtf $in $out",
     )
 
     ninja.rule(
         "bin",
-        description="bin $in",
+        description="Extracting binary data from $in",
         command=f"{cross}objcopy -I binary -O {BFDNAME} --set-section-alignment .data=8 $in $out",
     )
 
     ninja.rule(
         "cp",
-        description="cp $in $out",
+        description="Copying $in to $out",
         command=f"cp $in $out",
     )
 
     ninja.rule(
         "as",
-        description="as $in",
+        description="Assembling $in",
         command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude -o $out",
     )
 
     ninja.rule(
         "img",
-        description="img($img_type) $in",
+        description="Converting $in to $img_type image",
         command=f"$python {BUILD_TOOLS}/img/build.py $img_type $in $out $img_flags",
     )
 
     ninja.rule(
         "pigment",
-        description="img($img_type) $in",
+        description="Converting $in to $img_type image",
         command=f"{PIGMENT64} to-bin $img_flags -f $img_type -o $out $in",
     )
 
     ninja.rule(
         "img_header",
-        description="img_header $in",
+        description="Generating header for image $in",
         command=f'$python {BUILD_TOOLS}/img/header.py $in $out "$c_name"',
     )
 
     ninja.rule(
         "yay0",
-        description="yay0 $in",
+        description="Compressing $in",
         command=f"crunch64 compress yay0 $in $out",
     )
 
     ninja.rule(
         "npc_sprite",
-        description="sprite $sprite_name",
+        description="Building sprite $sprite_name",
         command=f"$python {BUILD_TOOLS}/sprite/npc_sprite.py $out $sprite_name $asset_stack",
     )
 
     ninja.rule(
         "sprites",
-        description="sprites $out $header_out",
+        description="Packing sprites",
         command=f"$python {BUILD_TOOLS}/sprite/sprites.py $out $header_out $build_dir $asset_stack",
     )
 
     ninja.rule(
         "sprite_header",
-        description="sprite_header $sprite_name",
+        description="Generating header for sprite $sprite_name",
         command=f"$python {BUILD_TOOLS}/sprite/header.py $out $sprite_name $sprite_id $asset_stack",
     )
 
     ninja.rule(
         "msg",
-        description="msg $in",
+        description="Building messages in $in",
         command=f"$python {BUILD_TOOLS}/msg/parse_compile.py $version $in $out",
     )
 
     ninja.rule(
         "icons",
+        description="Building icons",
         command=f"$python {BUILD_TOOLS}/icons.py $out $header_path $asset_stack",
     )
 
     ninja.rule(
         "move_data",
+        description="Generating move data",
         command=f"$python {BUILD_TOOLS}/move_data.py $out $in",
     )
 
     ninja.rule(
         "item_data",
+        description="Generating item data",
         command=f"$python {BUILD_TOOLS}/item_data.py $out $in $asset_stack",
     )
 
     ninja.rule(
         "actor_types",
+        description="Generating actor types",
         command=f"$python {BUILD_TOOLS}/actor_types.py $out $in",
     )
 
     ninja.rule(
         "world_map",
+        description="Generating world map",
         command=f"$python {BUILD_TOOLS}/world_map.py $in $out",
     )
 
     ninja.rule(
         "recipes",
+        description="Generating recipes",
         command=f"$python {BUILD_TOOLS}/recipes.py $in $out",
     )
 
     ninja.rule(
         "msg_combine",
-        description="msg_combine $out",
+        description="Combining messages",
         command=f"$python {BUILD_TOOLS}/msg/combine.py $out $in",
     )
 
     ninja.rule(
         "mapfs",
-        description="mapfs $out",
+        description="Building map filesystem",
         command=f"$python {BUILD_TOOLS}/mapfs/combine.py vanilla $out $in",
     )
 
     ninja.rule(
         "tex",
-        description="tex $out",
+        description="Building texture $tex_name",
         command=f"$python {BUILD_TOOLS}/mapfs/tex.py $out $tex_name $asset_stack",
     )
 
     ninja.rule(
         "pack_title_data",
-        description="pack_title_data $out",
+        description="Packing title screen data",
         command=f"$python {BUILD_TOOLS}/mapfs/pack_title_data.py $version $out $in",
     )
 
     ninja.rule(
-        "map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out"
+        "map_header",
+        description="Generating map header for $in",
+        command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out",
     )
 
-    ninja.rule("charset", command=f"$python {BUILD_TOOLS}/pm_charset.py $out $in")
+    ninja.rule(
+        "charset",
+        description="Building charset",
+        command=f"$python {BUILD_TOOLS}/pm_charset.py $out $in",
+    )
 
     ninja.rule(
         "charset_palettes",
+        description="Building charset palettes",
         command=f"$python {BUILD_TOOLS}/pm_charset_palettes.py $out $in",
     )
 
     ninja.rule(
         "sprite_shading_profiles",
+        description="Building sprite shading profiles",
         command=f"$python {BUILD_TOOLS}/sprite/sprite_shading_profiles.py $in $out $header_path",
     )
 
     ninja.rule(
-        "imgfx_data", command=f"$python {BUILD_TOOLS}/imgfx/imgfx_data.py $in $out"
-    )
-
-    ninja.rule("shape", command=f"$python {BUILD_TOOLS}/mapfs/shape.py $in $out")
-
-    ninja.rule(
-        "effect_data", command=f"$python {BUILD_TOOLS}/effects.py $in_yaml $out_dir"
+        "imgfx_data",
+        description="Generating image effects data",
+        command=f"$python {BUILD_TOOLS}/imgfx/imgfx_data.py $in $out",
     )
 
     ninja.rule(
-        "pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack"
+        "shape",
+        description="Converting map shape $in",
+        command=f"$python {BUILD_TOOLS}/mapfs/shape.py $in $out",
     )
 
-    ninja.rule("flips", command=f"bash -c 'flips $baserom $in $out || true'")
+    ninja.rule(
+        "effect_data",
+        description="Generating effect data",
+        command=f"$python {BUILD_TOOLS}/effects.py $in_yaml $out_dir",
+    )
+
+    ninja.rule(
+        "pm_sbn",
+        description="Packing audio",
+        command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack",
+    )
+
+    ninja.rule("flips", description="Creating patch file", command=f"bash -c 'flips $baserom $in $out || true'")
 
     ninja.rule(
         "check_segment_sizes",
-        description="check segment sizes $in",
+        description="Checking segment sizes",
         command=f"$python {BUILD_TOOLS}/check_segment_sizes.py $in $data > $out",
     )
 
     ninja.rule(
         "syms",
+        description="Reading engine symbols for overlays",
         command=f"$python {BUILD_TOOLS}/overlay.py gen-syms $in $out",
         restat=True,
     )
 
     ninja.rule(
         "ovl_link_convert",
-        description="link overlay $ovl_src",
+        description="Linking overlay $ovl_src",
         command=f"$python {BUILD_TOOLS}/overlay.py link $syms $out $link_addr $in",
     )
 
     ninja.rule(
         "ovl_apply",
-        description="Applying overlay $name",
+        description="Applying overlays",
         command=f"$python {BUILD_TOOLS}/overlay.py apply-all $in $out $syms $manifest",
     )
 
@@ -337,7 +362,7 @@ def write_ninja_rules(
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
     ninja.rule(
         "cc_tool",
-        description="cc_tool $in",
+        description="Building tool $out",
         command=f"cc -w $in -O3 -o $out",
     )
 
