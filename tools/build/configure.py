@@ -1826,3 +1826,31 @@ if __name__ == "__main__":
 
     ninja.build("all", "phony", all)
     ninja.default("all")
+
+    # Generator rule: re-run configure.py when inputs change.
+    # Directory deps ensure new source files trigger a reconfigure.
+    ninja.rule(
+        "configure",
+        description="Reconfiguring build.ninja",
+        command=f"{sys.executable} {' '.join(sys.argv)}",
+        generator=True,
+        pool="console",
+    )
+
+    configure_deps = [str(BUILD_TOOLS / "configure.py")]
+    for version in versions:
+        configure_deps.append(f"ver/{version}/splat.yaml")
+        if args.debug:
+            p = f"ver/{version}/splat-debug.yaml"
+            if os.path.exists(p):
+                configure_deps.append(p)
+        if args.shift:
+            p = f"ver/{version}/splat-shift.yaml"
+            if os.path.exists(p):
+                configure_deps.append(p)
+
+    for top in ["src", "include", "assets"]:
+        for dirpath, dirnames, _ in os.walk(ROOT / top):
+            configure_deps.append(str(Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else dirpath))
+
+    ninja.build("build.ninja", "configure", str(BUILD_TOOLS / "configure.py"), implicit=configure_deps)
