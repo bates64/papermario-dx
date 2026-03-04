@@ -51,7 +51,7 @@ vram_classes:
   # World
   - { name: world_model_anim, vram: 0x80234000, vram_symbol: Vine0Base } # ???
   - { name: map, vram: 0x80240000, follows_classes: [world_model_anim] }
-  - { name: heaps2, vram: 0x80267FF0 }
+  - { name: heaps2, vram: 0x80267FF0, follows_classes: [map] }
   - { name: world_script_api, vram: 0x80280000, follows_classes: [heaps2] }
 
   # Totally linear past this point
