@@ -138,7 +138,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="Compiling $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.h -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -146,7 +146,7 @@ def write_ninja_rules(
     ninja.rule(
         "cxx_modern",
         description="Compiling $in",
-        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cxx_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -include common.hpp -std=c++20 -D_LANGUAGE_C_PLUS_PLUS -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -596,7 +596,7 @@ class Configure:
         generated_code = []
         inc_img_bins = []
         precompiled_header_path = Path("include/common.h.gch")
-        cxx_precompiled_header_path = Path("include/dx/prelude.hpp.gch")
+        cxx_precompiled_header_path = Path("include/common.hpp.gch")
 
         def build(
             object_paths: Union[Path, List[Path]],
@@ -741,7 +741,7 @@ class Configure:
             )
 
         build([precompiled_header_path], [Path("include/common.h")], "cc_modern")
-        build([cxx_precompiled_header_path], [Path("include/dx/prelude.hpp")], "cxx_modern")
+        build([cxx_precompiled_header_path], [Path("include/common.hpp")], "cxx_modern")
 
         import splat
 
@@ -1524,7 +1524,8 @@ class Configure:
         import json
 
         overlays = self.find_overlays()
-        precompiled_header_path = Path("include/common.h.gch")
+        c_precompiled_header_path = Path("include/common.h.gch")
+        cxx_precompiled_header_path = Path("include/common.hpp.gch")
 
         manifest_entries = []
         implicit_deps = [str(self.syms_path()), CRC_TOOL]
@@ -1548,12 +1549,18 @@ class Configure:
                 c_files.append(src_path)
 
             for c_file in c_files:
+                if c_file.suffix == ".cpp":
+                    task = "cxx_modern"
+                    pch = cxx_precompiled_header_path
+                else:
+                    task = "cc_modern"
+                    pch = c_precompiled_header_path
                 obj_path = build_dir / (c_file.name + ".o")
                 ninja.build(
                     str(obj_path),
-                    "cc_modern",
+                    task,
                     str(c_file),
-                    implicit=[str(precompiled_header_path)],
+                    implicit=[str(pch)],
                     order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
                     variables={
                         "version": self.version,
