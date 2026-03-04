@@ -6,6 +6,7 @@ import pickle
 import struct
 import subprocess
 import sys
+import zlib
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -28,6 +29,8 @@ SHT_STRTAB = 3
 SHT_RELA = 4
 SHT_NOBITS = 8
 SHT_REL = 9
+
+SHF_COMPRESSED = 0x800
 
 STB_LOCAL = 0
 STB_GLOBAL = 1
@@ -146,6 +149,13 @@ class Elf32:
                 if sh_type != SHT_NOBITS
                 else b""
             )
+
+            # Decompress SHF_COMPRESSED sections (gcc -gz)
+            if (sh_flags & SHF_COMPRESSED) and len(sec_data) >= 12:
+                ch_type, ch_size, ch_addralign = struct.unpack(">III", sec_data[:12])
+                if ch_type == 1:  # ELFCOMPRESS_ZLIB
+                    sec_data = zlib.decompress(sec_data[12:], bufsize=ch_size)
+                    sh_size = len(sec_data)
 
             self.sections.append(
                 ElfSection(name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize, sec_data)
