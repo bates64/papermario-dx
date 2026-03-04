@@ -446,31 +446,17 @@ class Configure:
         self.linker_entries = split.linker_writer.entries
         self.asset_stack: List[str] = split.config["asset_stack"]
 
-        # Map overlay code is compiled as an overlay, not linked into the main ROM.
-        # Discard non-data sections from map overlay .o files in the linker script
-        # to prevent orphan .text sections from causing relocation errors.
-        self._discard_map_overlay_text_sections()
+        self.discard_map_linker_entries()
 
-    # TODO: remove hack
-    def _discard_map_overlay_text_sections(self):
-        """Post-process the linker script to discard .text/.rodata/.bss from map overlay .o files.
+    def discard_map_linker_entries(self):
+        """Post-process the linker script to remove all map overlay segments.
 
-        Map overlay segments in splat.yaml only need their .data sections linked into the ROM.
-        Without discarding, the .text sections become orphan sections whose relocations cannot
-        be resolved (the code references functions at addresses too far away).
+        splat.yaml has some map segments that are only for splitting. Maps are compiled
+        to .ovl files now, not linked by the main linker.
         """
-        import splat.segtypes.common.data
-        import splat.segtypes.common.c
-
-        # Collect .o paths for map overlay C/data segments
         discard_objs = set()
         for entry in self.linker_entries:
             seg = entry.segment
-            if not (isinstance(seg, splat.segtypes.common.c.CommonSegC) or (
-                isinstance(seg, splat.segtypes.common.data.CommonSegData)
-                and seg.type[0] == "."
-            )):
-                continue
             most_parent = seg.get_most_parent()
             if most_parent.vram_class is not None and most_parent.vram_class.name == "map":
                 if entry.object_path is not None:
@@ -480,26 +466,9 @@ class Configure:
             return
 
         ld_path = self.linker_script_path()
-        text = ld_path.read_text()
-
-        discard_lines = "\n".join(
-            f"        {obj}(.text* .rodata* .bss*);" for obj in sorted(discard_objs)
-        )
-        text = text.replace(
-            "/DISCARD/ :\n    {\n        *(.eh_frame);",
-            f"/DISCARD/ :\n    {{\n        *(.eh_frame);\n{discard_lines}",
-        )
-
-        # Provide placeholder addresses for symbols referenced by map overlay data
-        # but defined in files without splat segments. The actual definitions come
-        # from the overlay at runtime; these just satisfy the linker.
-        text = text.replace(
-            "SECTIONS",
-            "PROVIDE(pra_31_stairs_lights = 0);\nSECTIONS",
-            1,
-        )
-
-        ld_path.write_text(text)
+        lines = ld_path.read_text().splitlines(keepends=True)
+        filtered = [line for line in lines if not any(obj in line for obj in discard_objs)]
+        ld_path.write_text("".join(filtered))
 
     def build_path(self) -> Path:
         return Path(f"ver/{self.version}/build")
