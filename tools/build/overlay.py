@@ -276,7 +276,7 @@ def _align(val, alignment):
 def link_overlay(obj_paths, syms, link_addr):
     """Pure-Python linker: link .o files into an overlay, returning ovl_bytes.
 
-    Section layout follows module.ld:
+    Section layout:
       .text (.text, .text.*, .rodata, .rodata.*)
       .ctors (.ctors, .init_array)
       .dtors (.dtors, .fini_array)
@@ -289,13 +289,11 @@ def link_overlay(obj_paths, syms, link_addr):
         with open(path, "rb") as f:
             elfs.append(Elf32(f.read()))
 
-    # Section name groups matching module.ld's layout.
+    # Section name groups
     # Each output section is a list of (pattern_group, ...) passes, mirroring
     # how GNU ld processes input-section wildcards: each *(...) line collects
     # matching sections from all inputs in input order before moving to the
     # next *(...) line.
-    #
-    # module.ld .text section:  *(.text .text.*) then *(.rodata .rodata.*)
     TEXT_GROUPS = [(".text",), (".rodata",)]
     CTORS_GROUPS = [(".ctors",), (".init_array",)]
     DTORS_GROUPS = [(".dtors",), (".fini_array",)]
