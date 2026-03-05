@@ -122,14 +122,13 @@ void flashing_box_shockwave_update(EffectInstance* effect) {
 
 void flashing_box_shockwave_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = flashing_box_shockwave_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_SURFACE_XLU_LAYER3;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void flashing_box_shockwave_appendGfx(void* effect) {

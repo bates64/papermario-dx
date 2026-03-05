@@ -284,5 +284,3 @@ char versionString[] = "Prg Ver.04/05/18 10:52";
 #else
 char versionString[] = "Prg Ver.??/??/?? ??:??";
 #endif
-
-static const f32 pad[] = {0.0f, 0.0f};

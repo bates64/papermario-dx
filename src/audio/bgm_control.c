@@ -87,7 +87,7 @@ void bgm_update_music_control(void) {
     s16 pushedFlag = MUSIC_FLAG_PUSHING;
     s32 flags;
 
-    for (i; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
+    for (; i < ARRAY_COUNT(gMusicControlData); i++, music++) {
         switch (music->state) {
             case MUSIC_STATE_IDLE:
                 break;

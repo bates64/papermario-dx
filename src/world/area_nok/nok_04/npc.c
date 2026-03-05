@@ -129,7 +129,6 @@ API_CALLABLE(N(SetThreadTargetLengthAngle)) {
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
 
-    &N(ThreadData);
     N(ThreadData).targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
     N(ThreadData).targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
     N(ThreadData).duration = duration;

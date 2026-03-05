@@ -255,7 +255,6 @@ HitResult calc_player_damage_enemy(void) {
     s32 missedAllOrNothing;
     s32 isFireDamage;
     s32 isShockDamage;
-    s32 isWaterDamage;
     s32 isIceDamage;
     s32 wasSpecialHit;
     s32 wasStatusInflicted;
@@ -263,7 +262,6 @@ HitResult calc_player_damage_enemy(void) {
 
     canBeShocked = false;
     isFireDamage = false;
-    isWaterDamage = false;
     isShockDamage = false;
     isIceDamage = false;
     wasSpecialHit = false;
@@ -391,7 +389,7 @@ HitResult calc_player_damage_enemy(void) {
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
             fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-            isWaterDamage = true;
+
         }
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {
@@ -1788,7 +1786,7 @@ API_CALLABLE(PlayerBasicJumpToGoal) {
     Bytecode* args = script->ptrReadPos;
     Actor* player = battleStatus->playerActor;
     ActorState* playerState = &player->state;
-    f32 posX, posY, posZ;
+    f32 posX, posZ;
     f32 goalX, goalZ;
     f64 accel;
 
@@ -1822,7 +1820,6 @@ API_CALLABLE(PlayerBasicJumpToGoal) {
         goalX = playerState->goalPos.x;
         goalZ = playerState->goalPos.z;
         posX = playerState->curPos.x;
-        posY = playerState->curPos.y;
         posZ = playerState->curPos.z;
         playerState->angle = atan2(posX, posZ, goalX, goalZ);
         playerState->dist = dist2D(posX, posZ, goalX, goalZ);
@@ -1945,7 +1942,7 @@ API_CALLABLE(PlayerSuperJumpToGoal) {
     Bytecode* args = script->ptrReadPos;
     Actor* player = gBattleStatus.playerActor;
     ActorState* playerState = &player->state;
-    f32 posX, posY, posZ;
+    f32 posX, posZ;
     f32 goalX, goalZ;
     f32 temp;
     f64 temp_f20;
@@ -1995,7 +1992,6 @@ API_CALLABLE(PlayerSuperJumpToGoal) {
             goalX = playerState->goalPos.x;
             goalZ = playerState->goalPos.z;
             posX = playerState->curPos.x;
-            posY = playerState->curPos.y;
             posZ = playerState->curPos.z;
             playerState->angle = atan2(posX, posZ, goalX, goalZ);
             playerState->dist = dist2D(posX, posZ, goalX, goalZ);
@@ -2046,7 +2042,6 @@ API_CALLABLE(PlayerSuperJumpToGoal) {
             goalX = playerState->goalPos.x;
             goalZ = playerState->goalPos.z;
             posX = playerState->curPos.x;
-            posY = playerState->curPos.y;
             posZ = playerState->curPos.z;
             playerState->angle = atan2(posX, posZ, goalX, goalZ);
             playerState->dist = dist2D(posX, posZ, goalX, goalZ);
@@ -2201,7 +2196,7 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
     Bytecode* args = script->ptrReadPos;
     Actor* player = gBattleStatus.playerActor;
     ActorState* playerState = &player->state;
-    f32 posX, posY, posZ;
+    f32 posX, posZ;
     f32 goalX, goalZ;
     f32 speed;
     f32 temp;
@@ -2263,7 +2258,6 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
             goalX = playerState->goalPos.x;
             goalZ = playerState->goalPos.z;
             posX = playerState->curPos.x;
-            posY = playerState->curPos.y;
             posZ = playerState->curPos.z;
             playerState->angle = atan2(posX, posZ, goalX, goalZ);
             playerState->dist = dist2D(posX, posZ, goalX, goalZ);
@@ -2304,7 +2298,6 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
             goalX = playerState->goalPos.x;
             goalZ = playerState->goalPos.z;
             posX = playerState->curPos.x;
-            posY = playerState->curPos.y;
             posZ = playerState->curPos.z;
             playerState->angle = atan2(posX, posZ, goalX, goalZ);
             playerState->dist = dist2D(posX, posZ, goalX, goalZ);
@@ -2360,7 +2353,6 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
             goalX = playerState->goalPos.x;
             goalZ = playerState->goalPos.z;
             posX = playerState->curPos.x;
-            posY = playerState->curPos.y;
             posZ = playerState->curPos.z;
             playerState->angle = atan2(posX, posZ, goalX, goalZ);
             playerState->dist = dist2D(posX, posZ, goalX, goalZ);

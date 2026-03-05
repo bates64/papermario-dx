@@ -206,7 +206,6 @@ API_CALLABLE(CanInteractWithShopItem) {
 }
 
 API_CALLABLE(BeginShopItemInteraction) {
-    static Evt* ShopInteractScript;
     static s32 ShopInteractScriptID;
 
     Shop* shop = gGameStatusPtr->mapShop;
@@ -226,7 +225,6 @@ API_CALLABLE(BeginShopItemInteraction) {
 
             childScript = start_script(&EVS_ShopPurchaseDialog, EVT_PRIORITY_1, 0);
             childScript->varTable[0] = currentItemSlot;
-            ShopInteractScript = childScript;
             ShopInteractScriptID = childScript->id;
             shop->flags |= SHOP_FLAG_INTERACT_SCRIPT_RUNNING;
             return ApiStatus_BLOCK;

@@ -104,12 +104,12 @@ API_CALLABLE(N(SetVineBoneRot)) {
 
 API_CALLABLE(N(SetVineBoneScale)) {
     Bytecode* args = script->ptrReadPos;
-    s32 vineIdx = evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
-    LavaPiranhaVine* vines = (LavaPiranhaVine*) evt_get_variable(nullptr, MV_VinesData);
+    evt_get_variable(script, *args++);
+    evt_get_variable(nullptr, MV_VinesData);
 
     // do nothing
     return ApiStatus_DONE2;

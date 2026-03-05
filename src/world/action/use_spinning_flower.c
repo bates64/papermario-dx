@@ -38,7 +38,6 @@ static s32 get_entity_below_spinning_flower(void) {
 void action_update_use_spinning_flower(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Entity* entityByIndex;
-    s32* TempPointer;
     s32 entityID;
     f32 inputMagnitude;
     f32 inputAngle;
@@ -65,7 +64,6 @@ void action_update_use_spinning_flower(void) {
         gCollisionStatus.curFloor = -1;
 #endif
 
-        TempPointer = &SpinningFlower_EntityIndex;
         if (entityID >= 0){
             if (entityID & COLLISION_WITH_ENTITY_BIT) {
                 SpinningFlower_EntityIndex = entityID & 0x3FF;

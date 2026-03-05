@@ -419,14 +419,14 @@ API_CALLABLE(SetGoalPos) {
         x = evt_get_variable(script, *args);
     }
 
-    *args++;
+    args++;
     if (*args == ACTOR_API_SKIP_ARG) {
         y = walk->goalPos.y;
     } else {
         y = evt_get_variable(script, *args);
     }
 
-    *args++;
+    args++;
     if (*args == ACTOR_API_SKIP_ARG) {
         z = walk->goalPos.z;
     } else {
@@ -459,14 +459,14 @@ API_CALLABLE(SetIdleGoal) {
         x = evt_get_variable(script, *args);
     }
 
-    *args++;
+    args++;
     if (*args == ACTOR_API_SKIP_ARG) {
         y = fly->goalPos.y;
     } else {
         y = evt_get_variable(script, *args);
     }
 
-    *args++;
+    args++;
     if (*args == ACTOR_API_SKIP_ARG) {
         z = fly->goalPos.z;
     } else {

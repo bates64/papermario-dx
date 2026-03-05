@@ -755,7 +755,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
     u16 soundInfo;
     u32 priority, polyphonyMode, useSpecificPlayerMode;
     s32 v1;
-    s32* normalSounds;
+
 
     #define NEXT_POLY_TRACK trackCount--; if (trackCount <= 0 ) { break; } cmdList += 2;
 
@@ -800,7 +800,7 @@ void au_sfx_try_sound(SoundManager* manager, SoundRequest* request, SoundManager
                 cmdList = (u16*)customSEF;
             } else {
                 sectionIndex = ((soundIDLower - 1) >> 8) + 4;
-                normalSounds = manager->normalSounds[sectionIndex];
+
                 v1 = soundIndex - 0xC0;
                 cmdList = (u16*)&manager->normalSounds[sectionIndex][v1];
             }

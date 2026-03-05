@@ -354,7 +354,6 @@ s32 draw_box(s32 flags, WindowStyle windowStyle, s32 posX, s32 posY, s32 posZ, s
     s32 tmem = 0x100;
     u32 bgScrollOffsetX, bgScrollOffsetY;
 
-    s32 foo;
 
     if (windowStyle.defaultStyleID <= WINDOW_STYLE_MAX && windowStyle.defaultStyleID >= 0) {
         defaultStyle = &gBoxDefaultStyles[windowStyle.defaultStyleID];

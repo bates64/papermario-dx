@@ -3340,13 +3340,11 @@ Gfx N(D_80251A50_C0F2D0)[] = {
     gsSPEndDisplayList(),
 };
 
-static s32 N(pad_1)[] = { 0, 0 };
 
 #include "smash_bridges_skeleton.inc.c"
 
 Lights1 N(D_80253140_C109C0) = gdSPDefLights1(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-static s32 N(pad_2)[] = { 0, 0 };
 
 Mtx N(D_80253160_C109E0) = {{
     { 0x10000,       0,          1,          0 },

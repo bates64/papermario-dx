@@ -97,13 +97,12 @@ void entity_HeartBlockContent_set_initial_pos(Entity* entity) {
 
 void entity_HeartBlockContent__reset(Entity* entity) {
     HeartBlockContentData* data;
-    Entity* blockEntity;
 
     entity->renderSetupFunc = entity_HeartBlockContent_setupGfx;
     entity->alpha = 255;
     data = entity->dataBuf.heartBlockContent;
     entity->flags |= ENTITY_FLAG_ALWAYS_FACE_CAMERA;
-    blockEntity = get_entity_by_index(data->parentEntityIndex);
+    get_entity_by_index(data->parentEntityIndex);
 
     if (data->unk_09 == 0) {
         data->unk_09 = 1;

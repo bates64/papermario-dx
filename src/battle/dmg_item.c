@@ -56,7 +56,6 @@ HitResult calc_item_damage_enemy(void) {
     s32 wasSpecialHit = false;
     s32 actorClass;
     s32 isFireDamage = false;
-    s32 isWaterDamage = false;
     s32 isShockDamage = false;
     s32 isIceDamage = false;
     Actor* target;
@@ -104,7 +103,7 @@ HitResult calc_item_damage_enemy(void) {
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
         fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-        isWaterDamage = true;
+
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {
         fx_big_snowflakes(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f);

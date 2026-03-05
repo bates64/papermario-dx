@@ -346,7 +346,6 @@ void au_mseq_load_track_fade_info(AmbienceManager* manager, AmbiencePlayer* play
 
 void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
     u8 isVolumeChanged[16];
-    u8 isPitchChanged[16];
     AuGlobals* globals;
     u8 fadeVolChanged;
     AmbienceVoiceState* voiceState;
@@ -365,7 +364,6 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
     fadeVolChanged = false;
     for (i = 0; i < 16U; i++) { // required to use unsigned literal
         isVolumeChanged[i] = false;
-        isPitchChanged[i] = false;
     }
 
     if (player->resetRequired == true) {
@@ -410,7 +408,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                     if (voice->priority == manager->priority && trackIdx != TRACK_ID_DRUM) {
                         voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
                         voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
-                        isPitchChanged[i - player->firstVoiceIdx] = true;
+
                     }
                 }
             }
@@ -524,7 +522,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                         }
                         if (i < player->lastVoiceIdx) {
                             isVolumeChanged[i - player->firstVoiceIdx] = true;
-                            isPitchChanged[i - player->firstVoiceIdx] = true;
+    
                             voiceState = &manager->voiceStates[i - player->firstVoiceIdx];
                             // set playerIndex, trackIndex and tune
                             voiceState->info.all = player->id.all + (trackIdx << 16) + (arg1 << 8);
@@ -668,7 +666,7 @@ void au_mseq_player_update(AmbienceManager* manager, AmbiencePlayer* player) {
                             if (voice->priority == manager->priority && trackIdx != TRACK_ID_DRUM) {
                                 voice->pitchRatio = au_compute_pitch_ratio(voiceState->pitch + (track->tuneLerp.current >> 16)) * track->instrument->pitchRatio;
                                 voice->syncFlags |= AU_VOICE_SYNC_FLAG_PITCH;
-                                isPitchChanged[i - player->firstVoiceIdx] = 1;
+
                             }
                         }
                     }

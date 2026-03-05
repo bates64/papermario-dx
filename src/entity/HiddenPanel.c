@@ -375,6 +375,3 @@ EntityBlueprint Entity_HiddenPanel = {
     .entityType = ENTITY_TYPE_HIDDEN_PANEL,
     .aabbSize = { 60, 0, 60 }
 };
-
-//TODO remove this
-static const f32 rodata_alignment[] = {0.0f, 0.0f};

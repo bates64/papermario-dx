@@ -195,7 +195,7 @@ API_CALLABLE(N(ShowRadialShimmer)) {
 API_CALLABLE(N(FadeInSpiritNpc)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(NPC_StarSpirit);
-    (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
+    evt_get_variable(script, MV_EndChapterDataPtr);
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;

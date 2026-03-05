@@ -363,7 +363,7 @@ API_CALLABLE(N(SetVineBoneRot)) {
 
 API_CALLABLE(N(SetVineBoneScale)) {
     Bytecode* args = script->ptrReadPos;
-    s32 vineIdx = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
@@ -545,7 +545,6 @@ API_CALLABLE(N(CreateVineRenderer)) {
     return ApiStatus_DONE2;
 }
 
-static s32 N(unused);
 static s32 N(unusedArray)[64];
 
 EvtScript N(EVS_Init) = {

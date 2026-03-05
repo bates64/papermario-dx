@@ -790,8 +790,8 @@ void item_entity_update(ItemEntity* entity) {
                 return;
             case ITEM_SCRIPT_OP_SetImage:
                 entity->nextUpdate = *args++;
-                *args++;
-                *args++;
+                args++;
+                args++;
                 if (gGameStatusPtr->context == CONTEXT_WORLD) {
                     entity->lookupRasterIndex  = *args++;
                     entity->lookupPaletteIndex = *args++;
