@@ -498,7 +498,6 @@ API_CALLABLE(N(UseAbility)) {
                 kooper->moveSpeed = 0.0f;
             } else {
                 if (kooper->planarFlyDist > 140.0f) {
-                    label2:
                     script->USE_STATE = SHELL_TOSS_STATE_RETURN;
                     kooper->moveSpeed = 0.0f;
                     sfx_play_sound_at_npc(SOUND_NONE, SOUND_SPACE_DEFAULT, NPC_PARTNER);

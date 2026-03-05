@@ -1821,7 +1821,6 @@ void appendGfx_player_actor(void* arg0) {
         create_status_debuff(player->hudElementDataIndex, STATUS_KEY_STOP);
     }
 
-end:
     set_status_icons_properties(player->hudElementDataIndex,
         playerPosX, playerPosY, playerPosZ,
         player->actorBlueprint->statusIconOffset.x * player->scalingFactor,
