@@ -154,7 +154,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
     Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    (MobileAISettings*)evt_get_variable(script, *args++);
     s32 bulletNpcID;
     Enemy* bulletEnemy;
     f32 deltaY;

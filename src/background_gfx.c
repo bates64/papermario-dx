@@ -246,8 +246,6 @@ void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
 
 // transfers the framebuffer into the depth buffer and applies filters
 void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
-    Color_RGBA8 filterBuf0[6];
-    Color_RGBA8 filterBuf1;
     s32 y;
     s32 x;
 

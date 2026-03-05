@@ -64,7 +64,6 @@ HitResult calc_item_damage_enemy(void) {
     Evt* script;
     s32 attackDamage;
     s32 temp;
-    s32 targetDefense;
     ActorState* state;
     s32 dispatchEvent;
     s32 wasStatusInflicted;

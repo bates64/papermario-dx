@@ -46,7 +46,6 @@ void action_update_use_spinning_flower(void) {
     f32 dx;
     f32 ascentVelocity;
     f32 distToCenter;
-    s8 switchCondition;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {
         playerStatus->flags &= ~PS_FLAG_ACTION_STATE_CHANGED;

@@ -129,7 +129,7 @@ API_CALLABLE(N(SetThreadTargetLengthAngle)) {
     s32 temp_s0_3 = evt_get_variable(script, *args++);
     s32 duration = evt_get_variable(script, *args++);
 
-    FuzzyThread* thread = &N(ThreadData); //needed to match
+    &N(ThreadData);
     N(ThreadData).targetAngle = temp_s0_3 / NUM_THREAD_SEGMENTS;
     N(ThreadData).targetLength = (f32)goal / NUM_THREAD_SEGMENTS;
     N(ThreadData).duration = duration;
@@ -266,7 +266,7 @@ void N(build_gfx_thread)(void) {
     f32 y = N(ThreadData).anchorPos.y;
     f32 z = N(ThreadData).anchorPos.z;
     s32 i;
-    f32 segAngle, segLength, fs3;
+    f32 segAngle, segLength;
 
     N(ThreadData).overshootVel += 0.2;
     if (N(ThreadData).duration != 0.0f) {

@@ -69,7 +69,6 @@ void btl_state_update_end_player_turn(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     Actor* player = battleStatus->playerActor;
     Actor* partner = battleStatus->partnerActor;
-    Evt* script;
 
     if (gBattleSubState == BTL_SUBSTATE_INIT) {
         btl_substate_try_hpfp_recovery();

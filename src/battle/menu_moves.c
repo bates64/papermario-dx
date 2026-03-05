@@ -256,7 +256,6 @@ s32 btl_submenu_moves_update(void) {
     s32 x, y;
     s32 msgWidth;
     s32 msgHeight;
-    s32 msgX;
     s32 msgID;
     s32 cond;
     HudElemID hid;

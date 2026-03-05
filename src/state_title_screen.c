@@ -200,7 +200,6 @@ void state_init_title_screen(void) {
 }
 
 void state_step_title_screen(void) {
-    s32 temp;
     u32 pressedButtons = gGameStatusPtr->pressedButtons[0];
 
     set_curtain_scale(1.0f);
@@ -555,7 +554,6 @@ void title_screen_draw_copyright(f32 moveAlpha) {
                         0, 0, 0x0400, 0x0400);
 #else
     for (i = 0; i < COPYRIGHT_TEX_CHUNKS; i++) {
-        s32 k = 10 * i;
         alpha = 0; // TODO figure out why this is needed
 
         gDPLoadTextureTile(gMainGfxPos++, COPYRIGHT_IMG(k, i), G_IM_FMT_IA, G_IM_SIZ_8b,

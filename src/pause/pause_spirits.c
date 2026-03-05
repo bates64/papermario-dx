@@ -20,7 +20,6 @@ void pause_spirits_update(MenuPanel* panel);
 void pause_spirits_cleanup(MenuPanel* panel);
 
 static s32 gPauseSpiritsSpriteIDs[7];
-static s32 D_802706DC;
 static s32 gPauseSpiritsIndexes[7];
 static s32 gPauseSpiritsNumSpirits;
 
@@ -146,7 +145,7 @@ MenuPanel gPausePanelSpirits = {
 void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     Matrix4f matrix1;
     Matrix4f matrix2;
-    s32 i, j;
+    s32 i;
     s32 color;
     s32 alpha;
     s32 index;
@@ -154,7 +153,6 @@ void pause_spirits_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 widt
     f32 offsetY;
     s32 x1, y1, x2, y2;
     f32 frameCounter;
-    f32 scale;
 
     gDPPipeSync(gMainGfxPos++);
     gSPViewport(gMainGfxPos++, &gPauseSpiritsViewport);

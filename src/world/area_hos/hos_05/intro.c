@@ -294,7 +294,7 @@ API_CALLABLE(N(InitWorldTintMode)) {
 API_CALLABLE(N(SetStarSpiritSparkleTrailPos)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, *args++);
-    s32 subtype = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     s32 posX = evt_get_float_variable(script, *args++);
     s32 posY = evt_get_float_variable(script, *args++);
     s32 posZ = evt_get_float_variable(script, *args++);
@@ -306,7 +306,6 @@ API_CALLABLE(N(SetStarSpiritSparkleTrailPos)) {
 }
 
 API_CALLABLE(N(SetCardCaptureState1)) {
-    Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
     effect->data.somethingRotating[N(D_802495DC_A3381C) + 1].state = 1;
@@ -315,7 +314,6 @@ API_CALLABLE(N(SetCardCaptureState1)) {
 }
 
 API_CALLABLE(N(SetCardCaptureState3)) {
-    Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(0));
 
     effect->data.somethingRotating[N(D_802495E0_A33820) + 1].state = 3;
@@ -324,7 +322,6 @@ API_CALLABLE(N(SetCardCaptureState3)) {
 }
 
 API_CALLABLE(N(SetLightRayPos)) {
-    Bytecode* args = script->ptrReadPos;
     EffectInstance* effect = (EffectInstance*) evt_get_variable(script, ArrayVar(16));
 
     effect->data.lightRays->pos.x = script->varTable[0];

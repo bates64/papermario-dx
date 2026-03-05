@@ -165,7 +165,6 @@ void gather_energy_pink_appendGfx(void* effect) {
     Camera* camera = &gCameras[gCurrentCameraID];
     Matrix4f sp20;
     Matrix4f sp60;
-    Matrix4f unused;
     u16 perspNorm;
     s32 alpha;
     s32 idx;

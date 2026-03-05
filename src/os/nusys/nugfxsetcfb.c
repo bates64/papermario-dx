@@ -2,7 +2,6 @@
 #include "nu/nusys.h"
 
 void nuGfxSetCfb(u16** framebuf, u32 framebufnum) {
-    u32 i;
 
     nuGfxCfb = framebuf;
     nuGfxCfbNum = framebufnum;

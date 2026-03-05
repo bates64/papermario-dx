@@ -120,7 +120,6 @@ void big_smoke_puff_render(EffectInstance* effect) {
 }
 
 void big_smoke_puff_appendGfx(void* effect) {
-    EffectInstance* eff = (EffectInstance*)effect;
     BigSmokePuffFXData* data = ((EffectInstance*)effect)->data.bigSmokePuff;
     Matrix4f mtx;
     s32 i;

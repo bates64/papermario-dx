@@ -75,7 +75,6 @@ void landing_dust_main(s32 type, f32 x, f32 y, f32 z, f32 angle) {
     EffectInstance* effect;
     LandingDustFXData* data;
     f32 theta;
-    f32 temp_f20_2;
     s32 numParts;
     s32 i;
 

@@ -42,7 +42,6 @@ API_CALLABLE(N(PlayExplosionFX)) {
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
     s16 selectedMoveID;
-    s32 soundID;
 
     fx_smoke_ring(0, x, y, z);
     selectedMoveID = battleStatus->selectedMoveID;
