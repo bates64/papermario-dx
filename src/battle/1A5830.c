@@ -286,7 +286,7 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     }
 
     if (target->transparentStatus == STATUS_KEY_TRANSPARENT
-        || (targetPart->eventFlags & ACTOR_EVENT_FLAG_BURIED && !(battleStatus->curAttackElement & DAMAGE_TYPE_QUAKE))
+        || ((targetPart->eventFlags & ACTOR_EVENT_FLAG_BURIED) && !(battleStatus->curAttackElement & DAMAGE_TYPE_QUAKE))
     ) {
         return HIT_RESULT_MISS;
     }
@@ -598,43 +598,43 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
         && !(gBattleStatus.flags2 & BS_FLAGS2_IS_FIRST_STRIKE)
         && !(actorClass == ACTOR_PLAYER && is_ability_active(ABILITY_HEALTHY_HEALTHY) && (rand_int(100) < 50)))
     {
-        if (battleStatus->curAttackStatus & STATUS_FLAG_SHRINK && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_SHRINK) && try_inflict_status(target, STATUS_KEY_SHRINK, STATUS_TURN_MOD_SHRINK)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_POISON && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_POISON) && try_inflict_status(target, STATUS_KEY_POISON, STATUS_TURN_MOD_POISON)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_STONE && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STONE) && try_inflict_status(target, STATUS_KEY_STONE, STATUS_TURN_MOD_STONE)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_SLEEP && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_SLEEP) && try_inflict_status(target, STATUS_KEY_SLEEP, STATUS_TURN_MOD_SLEEP)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_DIZZY && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_DIZZY) && try_inflict_status(target, STATUS_KEY_DIZZY, STATUS_TURN_MOD_DIZZY)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_STOP && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STOP) && try_inflict_status(target, STATUS_KEY_STOP, STATUS_TURN_MOD_STOP)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_STATIC && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_STATIC) && try_inflict_status(target, STATUS_KEY_STATIC, STATUS_TURN_MOD_STATIC)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_PARALYZE) && try_inflict_status(target, STATUS_KEY_PARALYZE, STATUS_TURN_MOD_PARALYZE)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_UNUSED && try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_UNUSED) && try_inflict_status(target, STATUS_KEY_UNUSED, STATUS_TURN_MOD_UNUSED)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }
-        if (battleStatus->curAttackStatus & STATUS_FLAG_FROZEN && target->debuff != STATUS_KEY_FROZEN && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN)) {
+        if ((battleStatus->curAttackStatus & STATUS_FLAG_FROZEN) && target->debuff != STATUS_KEY_FROZEN && try_inflict_status(target, STATUS_KEY_FROZEN, STATUS_TURN_MOD_FROZEN)) {
             statusInflicted = true;
             wasSpecialHit = true;
         }

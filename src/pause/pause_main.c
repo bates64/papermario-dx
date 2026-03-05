@@ -737,7 +737,7 @@ void pause_handle_input(s32 pressed, s32 held) {
         pause_tutorial_input(&gPausePressedButtons, &gPauseHeldButtons);
     }
 
-    if ((gPausePressedButtons & BUTTON_START) || (gPauseMenuCurrentTab == 0) && (gPausePressedButtons & BUTTON_B)) {
+    if ((gPausePressedButtons & BUTTON_START) || ((gPauseMenuCurrentTab == 0) && (gPausePressedButtons & BUTTON_B))) {
         enforce_hpfp_limits();
         sfx_play_sound(SOUND_MENU_CLOSE);
         set_game_mode(GAME_MODE_UNPAUSE);

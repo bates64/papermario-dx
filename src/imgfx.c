@@ -279,7 +279,7 @@ void func_8013A4D0(void) {
     }
 
     for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if ((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID && (*ImgFXInstances)[i].colorBuf != nullptr) {
+        if (((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID) && (*ImgFXInstances)[i].colorBuf != nullptr) {
             if ((*ImgFXInstances)[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MULTIPLY) {
                 continue;
             }

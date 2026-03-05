@@ -406,7 +406,7 @@ void pause_tabs_update(MenuPanel* tab) {
 
     gPauseTabsHorizScrollPos += delta;
 
-    if ((gPauseTabsPreviousTab != 0 || tab->col != 5) && (gPauseTabsPreviousTab < tab->col || gPauseTabsPreviousTab == 5 && tab->col == 0)) {
+    if ((gPauseTabsPreviousTab != 0 || tab->col != 5) && (gPauseTabsPreviousTab < tab->col || (gPauseTabsPreviousTab == 5 && tab->col == 0))) {
         fpUpdateActive = pause_update_page_active_1;
         fpUpdateInactive = pause_update_page_inactive_1;
     } else {

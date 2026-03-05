@@ -1778,7 +1778,7 @@ void dx_debug_draw_collision() {
     for (i = 0; i < gCollisionData.numColliders; i++) {
         Collider* collider = &gCollisionData.colliderList[i];
 
-        if (collider->flags & COLLIDER_FLAG_IGNORE_PLAYER && !DebugCollisionMenu[DBC_SHOW_DISABLED].state) {
+        if ((collider->flags & COLLIDER_FLAG_IGNORE_PLAYER) && !DebugCollisionMenu[DBC_SHOW_DISABLED].state) {
             continue;
         }
 

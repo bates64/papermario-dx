@@ -381,7 +381,7 @@ SoundInstance* sfx_get_env_sound_instance(s32 soundID) {
     s32 i;
 
     for (i = 0; i < MAX_SOUND_INSTANCES; i++, sound++) {
-        if (sound->flags & SOUND_INSTANCE_FLAG_ACTIVE && sound->soundID == soundID) {
+        if ((sound->flags & SOUND_INSTANCE_FLAG_ACTIVE) && sound->soundID == soundID) {
             return sound;
         }
     }
