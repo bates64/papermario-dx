@@ -1666,10 +1666,22 @@ typedef struct {
 /*
  * Generic Gfx Packet
  */
+#ifdef __clang__
+// clang rejects pointer-to-integer casts in static initializers.
+// Since we only use clang for analysis, widen w1 to uintptr_t so pointer values are accepted as constant expressions.
+#include <stdint.h>
+typedef struct {
+	unsigned int w0;
+	uintptr_t    w1;
+} Gwords;
+#define _GBI_W1_CAST (uintptr_t)
+#else
 typedef struct {
 	unsigned int w0;
 	unsigned int w1;
 } Gwords;
+#define _GBI_W1_CAST (unsigned int)
+#endif
 
 /*
  * This union is the fundamental type of the display list.
@@ -1714,7 +1726,7 @@ typedef union {
 
 #define	gsDma0p(c, s, l)						\
 {{									\
-	_SHIFTL((c), 24, 8) | _SHIFTL((l), 0, 24), (unsigned int)(s)	\
+	_SHIFTL((c), 24, 8) | _SHIFTL((l), 0, 24), _GBI_W1_CAST(s)	\
 }}
 
 #define	gDma1p(pkt, c, s, l, p)						\
@@ -1730,7 +1742,7 @@ typedef union {
 {{									\
 	(_SHIFTL((c), 24, 8) | _SHIFTL((p), 16, 8) | 			\
 	 _SHIFTL((l), 0, 16)), 						\
-        (unsigned int)(s)						\
+        _GBI_W1_CAST(s)						\
 }}
 
 #define	gDma2p(pkt, c, adrs, len, idx, ofs)				\
@@ -1744,7 +1756,7 @@ typedef union {
 {{									\
 	(_SHIFTL((c),24,8)|_SHIFTL(((len)-1)/8,19,5)|			\
 	 _SHIFTL((ofs)/8,8,8)|_SHIFTL((idx),0,8)),			\
-        (unsigned int)(adrs)						\
+        _GBI_W1_CAST(adrs)						\
 }}
 
 #define	gSPNoOp(pkt)		gDma0p(pkt, G_SPNOOP, 0, 0)
@@ -1780,7 +1792,7 @@ typedef union {
 # define	gsSPVertex(v, n, v0)					\
 {{									\
 	(_SHIFTL(G_VTX,24,8)|_SHIFTL((n),12,8)|_SHIFTL((v0)+(n),1,7)),	\
-        (unsigned int)(v)						\
+        _GBI_W1_CAST(v)						\
 }}
 #elif	(defined(F3DEX_GBI)||defined(F3DLP_GBI))
 /*
@@ -1850,7 +1862,7 @@ typedef union {
 
 #define	gsImmp1(c, p0)							\
 {{									\
-	_SHIFTL((c), 24, 8), (unsigned int)(p0)				\
+	_SHIFTL((c), 24, 8), _GBI_W1_CAST(p0)				\
 }}
 
 #define	gImmp2(pkt, c, p0, p1)						\
@@ -1893,7 +1905,7 @@ typedef union {
 #define	gsImmp21(c, p0, p1, dat)					\
 {{									\
 	_SHIFTL((c), 24, 8) | _SHIFTL((p0), 8, 16) | _SHIFTL((p1), 0, 8),\
-        (unsigned int) (dat)						\
+        _GBI_W1_CAST (dat)						\
 }}
 
 #ifdef	F3DEX_GBI_2
@@ -2293,7 +2305,7 @@ typedef union {
 {{									\
 	_SHIFTL(G_MODIFYVTX,24,8)|					\
 	_SHIFTL((where),16,8)|_SHIFTL((vtx)*2,0,16),			\
-	(unsigned int)(val)						\
+	_GBI_W1_CAST(val)						\
 }}
 #else
 # define gSPModifyVertex(pkt, vtx, where, val)				\
@@ -2318,7 +2330,7 @@ typedef union {
 #define	G_BZ_ORTHO	1
 
 #define	G_DEPTOZSrg(zval, near, far, flag, zmin, zmax)			\
-(((unsigned int)FTOFIX32(((flag) == G_BZ_PERSP ? 			\
+((_GBI_W1_CASTFTOFIX32(((flag) == G_BZ_PERSP ? 			\
 			  (1.0f-(float)(near)/(float)(zval)) / 		\
 			  (1.0f-(float)(near)/(float)(far )) :		\
 			  ((float)(zval) - (float)(near)) /		\
@@ -2341,7 +2353,7 @@ typedef union {
 
 #define	gsSPBranchLessZrg(dl, vtx, zval, near, far, flag, zmin, zmax)	      \
 {{	_SHIFTL(G_RDPHALF_1,24,8),					      \
-	(unsigned int)(dl),						}},    \
+	_GBI_W1_CAST(dl),						}},    \
 {{	_SHIFTL(G_BRANCH_Z,24,8)|_SHIFTL((vtx)*5,12,12)|_SHIFTL((vtx)*2,0,12),\
 	G_DEPTOZSrg(zval, near, far, flag, zmin, zmax),			}}
 
@@ -2370,9 +2382,9 @@ typedef union {
 
 #define	gsSPBranchLessZraw(dl, vtx, zval)				\
 {{	_SHIFTL(G_RDPHALF_1,24,8),					      \
-	(unsigned int)(dl),						}},    \
+	_GBI_W1_CAST(dl),						}},    \
 {{	_SHIFTL(G_BRANCH_Z,24,8)|_SHIFTL((vtx)*5,12,12)|_SHIFTL((vtx)*2,0,12),\
-	(unsigned int)(zval),						}}
+	_GBI_W1_CAST(zval),						}}
 
 /*
  * gSPLoadUcode   RSP loads specified ucode.
@@ -2393,10 +2405,10 @@ typedef union {
 
 #define	gsSPLoadUcodeEx(uc_start, uc_dstart, uc_dsize)			\
 {{	_SHIFTL(G_RDPHALF_1,24,8),					\
-	(unsigned int)(uc_dstart),				}},	\
+	_GBI_W1_CAST(uc_dstart),				}},	\
 {{	_SHIFTL(G_LOAD_UCODE,24,8)|					\
 	  _SHIFTL((int)(uc_dsize)-1,0,16),				\
-	(unsigned int)(uc_start),				}}
+	_GBI_W1_CAST(uc_start),				}}
 
 #define	gSPLoadUcode(pkt, uc_start, uc_dstart)				\
         gSPLoadUcodeEx((pkt), (uc_start), (uc_dstart), SP_UCODE_DATA_SIZE)
@@ -2427,7 +2439,7 @@ typedef union {
 {{									\
 	_SHIFTL(G_DMA_IO,24,8)|_SHIFTL((flag),23,1)|			\
 	_SHIFTL((dmem)/8,13,10)|_SHIFTL((size)-1,0,12),			\
-	(unsigned int)(dram)						\
+	_GBI_W1_CAST(dram)						\
 }}
 
 #define	gSPDmaRead(pkt,dmem,dram,size)	gSPDma_io((pkt),0,(dmem),(dram),(size))
@@ -2860,7 +2872,7 @@ typedef union {
 
 #define	gsSPSetGeometryMode(word)					\
 {{									\
-	_SHIFTL(G_SETGEOMETRYMODE, 24, 8), (unsigned int)(word)		\
+	_SHIFTL(G_SETGEOMETRYMODE, 24, 8), _GBI_W1_CAST(word)		\
 }}
 
 #define	gSPClearGeometryMode(pkt, word)					\
@@ -2873,7 +2885,7 @@ typedef union {
 
 #define	gsSPClearGeometryMode(word)					\
 {{									\
-	_SHIFTL(G_CLEARGEOMETRYMODE, 24, 8), (unsigned int)(word)	\
+	_SHIFTL(G_CLEARGEOMETRYMODE, 24, 8), _GBI_W1_CAST(word)	\
 }}
 #endif	/* F3DEX_GBI_2 */
 
@@ -2889,7 +2901,7 @@ typedef union {
 #define	gsSPSetOtherMode(cmd, sft, len, data)				\
 {{									\
 	_SHIFTL(cmd,24,8)|_SHIFTL(32-(sft)-(len),8,8)|_SHIFTL((len)-1,0,8), \
-	(unsigned int)(data)						\
+	_GBI_W1_CAST(data)						\
 }}
 #else
 #define	gSPSetOtherMode(pkt, cmd, sft, len, data)			\
@@ -2904,7 +2916,7 @@ typedef union {
 #define	gsSPSetOtherMode(cmd, sft, len, data)				\
 {{									\
 	_SHIFTL(cmd, 24, 8) | _SHIFTL(sft, 8, 8) | _SHIFTL(len, 0, 8),	\
-	(unsigned int)(data)						\
+	_GBI_W1_CAST(data)						\
 }}
 #endif
 
@@ -3012,7 +3024,7 @@ typedef union {
 {{									\
 	_SHIFTL(cmd, 24, 8) | _SHIFTL(fmt, 21, 3) |			\
 	_SHIFTL(siz, 19, 2) | _SHIFTL((width)-1, 0, 12),		\
-	(unsigned int)(i)						\
+	_GBI_W1_CAST(i)						\
 }}
 
 #define	gDPSetColorImage(pkt, f, s, w, i)	gSetImage(pkt, G_SETCIMG, f, s, w, i)
@@ -3044,7 +3056,7 @@ typedef union {
 #define	gsDPSetCombine(muxs0, muxs1)					\
 {{									\
 	_SHIFTL(G_SETCOMBINE, 24, 8) | _SHIFTL(muxs0, 0, 24),		\
-	(unsigned int)(muxs1)						\
+	_GBI_W1_CAST(muxs1)						\
 }}
 
 #define	GCCc0w0(saRGB0, mRGB0, saA0, mA0)				\
@@ -3092,7 +3104,7 @@ typedef union {
 	_SHIFTL(GCCc0w0(G_CCMUX_##a0, G_CCMUX_##c0,			\
 		       G_ACMUX_##Aa0, G_ACMUX_##Ac0) |			\
 	       GCCc1w0(G_CCMUX_##a1, G_CCMUX_##c1), 0, 24),		\
-	(unsigned int)(GCCc0w1(G_CCMUX_##b0, G_CCMUX_##d0,		\
+	_GBI_W1_CAST(GCCc0w1(G_CCMUX_##b0, G_CCMUX_##d0,		\
 			       G_ACMUX_##Ab0, G_ACMUX_##Ad0) |		\
 		       GCCc1w1(G_CCMUX_##b1, G_ACMUX_##Aa1,		\
 			       G_ACMUX_##Ac1, G_CCMUX_##d1,		\
@@ -3122,7 +3134,7 @@ typedef union {
 
 #define	gsDPSetColor(c, d)						\
 {{									\
-	_SHIFTL(c, 24, 8), (unsigned int)(d)				\
+	_SHIFTL(c, 24, 8), _GBI_W1_CAST(d)				\
 }}
 
 #define	DPRGBColor(pkt, cmd, r, g, b, a)				\
@@ -3215,7 +3227,7 @@ typedef union {
 #define	gsDPSetOtherMode(mode0, mode1)					\
 {{									\
 	_SHIFTL(G_RDPSETOTHERMODE,24,8)|_SHIFTL(mode0,0,24),		\
-	(unsigned int)(mode1)						\
+	_GBI_W1_CAST(mode1)						\
 }}
 
 /*
@@ -4547,15 +4559,15 @@ typedef union {
 }
 
 #define gsDPWord(wordhi, wordlo)			\
-    gsImmp1(G_RDPHALF_1, (unsigned int)(wordhi)),	\
-    gsImmp1(G_RDPHALF_2, (unsigned int)(wordlo))
+    gsImmp1(G_RDPHALF_1, _GBI_W1_CAST(wordhi)),	\
+    gsImmp1(G_RDPHALF_2, _GBI_W1_CAST(wordlo))
 
 #define gDPWord(pkt, wordhi, wordlo)      		\
 {							\
     Gfx *_g = (Gfx *)(pkt);				\
 							\
-    gImmp1(pkt, G_RDPHALF_1, (unsigned int)(wordhi));	\
-    gImmp1(pkt, G_RDPHALF_2, (unsigned int)(wordlo));	\
+    gImmp1(pkt, G_RDPHALF_1, _GBI_W1_CAST(wordhi));	\
+    gImmp1(pkt, G_RDPHALF_2, _GBI_W1_CAST(wordlo));	\
 }
 
 #define	gDPFullSync(pkt)	gDPNoParam(pkt, G_RDPFULLSYNC)

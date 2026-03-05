@@ -1,22 +1,49 @@
-Checks: '-*,clang-analyzer-core.*,clang-analyzer-deadcode.*,readability-*,-readability-magic-numbers,-readability-else-after-return,-readability-named-parameter,-readability-braces-around-statements,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-function-size,-readability-non-const-parameter,readability-identifier-naming'
+Checks: >
+  -*,
+  clang-analyzer-core.*,
+  clang-analyzer-deadcode.*,
+  clang-analyzer-security.*,
+  bugprone-suspicious-semicolon,
+  bugprone-sizeof-expression,
+  bugprone-integer-division,
+  bugprone-suspicious-missing-comma,
+  bugprone-bool-pointer-implicit-conversion,
+  misc-redundant-expression,
+  misc-unused-using-declarations,
+  performance-unnecessary-copy-initialization,
+  performance-type-promotion-in-math-fn,
+  readability-*,
+  -readability-magic-numbers,
+  -readability-math-missing-parentheses,
+  -readability-else-after-return,
+  -readability-named-parameter,
+  -readability-braces-around-statements,
+  -readability-isolate-declaration,
+  -readability-uppercase-literal-suffix,
+  -readability-function-size,
+  -readability-function-cognitive-complexity,
+  -readability-non-const-parameter,
+  -readability-implicit-bool-conversion,
+  -readability-inconsistent-declaration-parameter-name,
+  -readability-identifier-length,
+  -readability-enum-initial-value,
+  -readability-avoid-unconditional-preprocessor-if,
+  -readability-avoid-nested-conditional-operator,
+
 CheckOptions:
-  # TEMP: this only disabled because mips2c outputs snake_case
-  #- key: readability-identifier-naming.LocalVariableCase
-  #  value: camelBack
+  - key: readability-identifier-naming.LocalVariableCase
+    value: camelBack
 
   - key: readability-identifier-naming.ParameterCase
     value: camelBack
 
-  #- key: readability-identifier-naming.TypedefCase
-  #  value: CamelCase
+  - key: readability-identifier-naming.MemberCase
+    value: camelBack
+  - key: readability-identifier-naming.MemberIgnoredRegexp
+    value: '^(unk|pad|unused)_.*'
 
-  # TODO: rename all unk_XXX members
-  #- key: readability-identifier-naming.MemberCase
-  #  value: camelBack
-
-  # TODO: rename all D_XXXXXXXX symbols
-  #- key: readability-identifier-naming.GlobalVariableCase
-  #  value: CamelCase
-  #- key: readability-identifier-naming.GlobalVariablePrefix
-  #  value: g
-HeaderFilterRegex: '(src|include)\/[^P].*\.h' # ignore include/PR/
+# Ignore include/PR/ (SDK headers) and include/nu/ (nusys library headers).
+# Note: files using N64 GFX macros (gsDPLoadTextureBlock etc.) produce
+# clang-diagnostic-error because clang rejects GCC's non-constant initializer
+# extension. These cannot be suppressed — filter the output or exclude the files.
+HeaderFilterRegex: '(src|include)/(?!PR/|nu/).*\.h'

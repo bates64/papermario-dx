@@ -5,7 +5,6 @@
         120
     ],
     "clang-tidy.compilerArgs": [
-        "-std=gnu89",
         "-Iinclude",
         "-Iinclude/PR",
         "-Iver/current/build/include",
