@@ -16,8 +16,6 @@ API_CALLABLE(N(UpdateEnchantedBowserColors)) {
     u8 colG[RGBA_BUF_SIZE];
     u8 colB[RGBA_BUF_SIZE];
     s32 colorRGBA;
-    s32 temp;
-    s32 lol;
 
     if (actor == nullptr) {
         return ApiStatus_DONE2;

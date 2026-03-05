@@ -31,7 +31,6 @@ EffectInstance* purple_ring_main(
     f32 var_f24;
     f32 var_f20;
     f32 var_f22;
-    Matrix4f unused;
 
     if (arg4 == 0.0f && arg5 == 0.0f && arg6 == 0.0f) {
         return nullptr;

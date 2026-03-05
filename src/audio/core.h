@@ -19,10 +19,6 @@ s32 nuAuDmaCallBack(s32 addr, s32 len, void *state, u8 useDma);
 // ----------------------------------------------------------------------------------
 void au_release_voice(u8 index);
 void au_engine_init(s32 outputRate);
-static void au_reset_instrument(Instrument* instrument);
-static void au_reset_drum_entry(BGMDrumInfo* arg0);
-static void au_reset_instrument_entry(BGMInstrumentInfo* arg0);
-
 /// this is called once per video frame update (50 or 60 times per second)
 void au_update_clients_for_video_frame(void);
 

@@ -2667,7 +2667,7 @@ typedef struct EffectSharedData {
 } EffectSharedData; // size = 0x20
 
 typedef struct EffectTableEntry {
-    /* 0x00 */ void (*entryPoint);
+    /* 0x00 */ void* entryPoint;
     /* 0x04 */ void* dmaStart;
     /* 0x08 */ void* dmaEnd;
     /* 0x0C */ void* dmaDest;

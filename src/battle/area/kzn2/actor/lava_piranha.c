@@ -352,8 +352,8 @@ API_CALLABLE(N(SetVineBoneRot)) {
     Bytecode* args = script->ptrReadPos;
     s32 vineIdx = evt_get_variable(script, *args++);
     s32 jointIdx = evt_get_variable(script, *args++);
-    s32 rx = evt_get_variable(script, *args++);
-    s32 ry = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     f32 rz = evt_get_variable(script, *args++);
     LavaPiranhaVine* vine = &N(VineData)[vineIdx];
 
@@ -363,13 +363,11 @@ API_CALLABLE(N(SetVineBoneRot)) {
 
 API_CALLABLE(N(SetVineBoneScale)) {
     Bytecode* args = script->ptrReadPos;
-    s32 vineIdx = evt_get_variable(script, *args++);
-    s32 jointIdx = evt_get_variable(script, *args++);
-    s32 sx = evt_get_variable(script, *args++);
-    s32 sy = evt_get_variable(script, *args++);
-    s32 sz = evt_get_variable(script, *args++);
-    LavaPiranhaVine* vine = &N(VineData)[vineIdx];
-
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     // do nothing
     return ApiStatus_DONE2;
 }
@@ -547,7 +545,6 @@ API_CALLABLE(N(CreateVineRenderer)) {
     return ApiStatus_DONE2;
 }
 
-static s32 N(unused);
 static s32 N(unusedArray)[64];
 
 EvtScript N(EVS_Init) = {

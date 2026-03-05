@@ -35,7 +35,6 @@ EffectInstance* motion_blur_flame_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f
     EffectInstance* effect;
     MotionBlurFlameFXData* data;
     s32 numParts = 1;
-    s32 i;
 
     bp.init = motion_blur_flame_init;
     bp.update = motion_blur_flame_update;

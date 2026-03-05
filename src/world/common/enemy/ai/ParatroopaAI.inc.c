@@ -12,7 +12,6 @@ enum AiStateParatroopa {
 };
 
 void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
-    Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yawTemp;

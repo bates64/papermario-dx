@@ -84,14 +84,10 @@ void windy_leaves_init(EffectInstance* effect) {
 
 void windy_leaves_update(EffectInstance* effect) {
     WindyLeavesFXData* part = effect->data.windyLeaves;
-    f32 temp_f0_2;
-    f32 temp_f4;
     s32 temp_v0;
-    s32 temp_v0_2;
     s32 temp_a1;
     s32 i;
     s32 temp;
-    s32 temp2;
 
     part->unk_28--;
     part->unk_2C++;

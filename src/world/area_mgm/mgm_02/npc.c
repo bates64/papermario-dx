@@ -256,7 +256,7 @@ API_CALLABLE(N(CreateSignpost)) {
 API_CALLABLE(N(OnHitBox)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 hitModelID = evt_get_variable(script, LVarA);
-    s32 hitColliderID = evt_get_variable(script, LVarB); // unused
+    evt_get_variable(script, LVarB);
     s32 i;
 
     for (i = 0; i < NUM_BOXES; i++) {
@@ -759,6 +759,8 @@ API_CALLABLE(N(RunMinigame)) {
                     break;
                 case BOX_STATE_PEACH_DONE:
                     break;
+                default:
+                    break;
             }
         } else {
             if (data->box[i].state == BOX_STATE_EMPTY_INIT) {
@@ -964,6 +966,8 @@ API_CALLABLE(N(CleanupGame)) {
                         npc->curAnim = ANIM_Bobomb_Dizzy;
                         enable_npc_shadow(npc);
                     }
+                    break;
+                default:
                     break;
             }
         }

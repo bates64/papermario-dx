@@ -240,8 +240,6 @@ void appendGfx_message(MessagePrintState* printer, s16 posX, s16 posY, u16 addit
     f64 temp_f0;
     f32 temp_f0_2;
     f32 temp_f2_2;
-    f64 temp_f20_2;
-    f64 temp_f22;
     f32 temp_f2;
     f64 temp_f2_3;
     s32 temp_s0_7;

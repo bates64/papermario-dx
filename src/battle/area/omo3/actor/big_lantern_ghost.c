@@ -176,10 +176,8 @@ API_CALLABLE(N(update_effect)) {
     s32 partX, partY, partZ;
     f32 posX, posY, posZ;
     f32 rotX, rotY, rotZ;
-    f32 yaw;
     f32 f24, f22;
     s32 opacity;
-    s32 compListIdx;
 
     if (actor == nullptr) {
         set_screen_overlay_alpha(SCREEN_LAYER_BACK, 0.0f);

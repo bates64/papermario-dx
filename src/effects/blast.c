@@ -30,7 +30,6 @@ void blast_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     EffectInstance* effect;
     BlastFXData* part;
     s32 numParts = 1;
-    s32 randInt;
 
     bp.init = blast_init;
     bp.update = blast_update;

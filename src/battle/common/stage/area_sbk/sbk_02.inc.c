@@ -16,7 +16,6 @@ API_CALLABLE(N(UpdateSunPos)) {
     f32 z;
     f32 angle;
 #if !VERSION_PAL
-    Matrix4f mtxUnused;
 #endif
 
     angle = evt_get_variable(script, *args++) / 10.0;

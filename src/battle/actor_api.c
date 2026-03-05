@@ -812,7 +812,6 @@ API_CALLABLE(SetEnemyTargetOffset) {
 API_CALLABLE(SetAnimation) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    Actor* actor;
     s32 partID;
     AnimID animID;
 
@@ -852,7 +851,6 @@ API_CALLABLE(GetAnimation) {
 API_CALLABLE(SetAnimationRate) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    Actor* actor;
     s32 partID;
     f32 rate;
 
@@ -1727,7 +1725,6 @@ API_CALLABLE(SetPartFlagBits) {
 API_CALLABLE(SetPartTargetFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    ActorPart* actorPart;
     s32 flagBits;
     s32 partID;
 
@@ -1774,7 +1771,6 @@ API_CALLABLE(GetPartFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     s32 partID;
-    ActorPart* actorPart;
     s32 outVar;
 
     if (actorID == ACTOR_SELF) {
@@ -1793,7 +1789,6 @@ API_CALLABLE(GetPartTargetFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     s32 partID;
-    ActorPart* actorPart;
     s32 outVar;
 
     if (actorID == ACTOR_SELF) {
@@ -1811,7 +1806,6 @@ API_CALLABLE(GetPartTargetFlags) {
 API_CALLABLE(SetPartEventFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    ActorPart* actorPart;
     s32 flagBits;
     s32 partID;
 
@@ -1881,7 +1875,6 @@ API_CALLABLE(GetPartEventFlags) {
 API_CALLABLE(SetPartImmunityFlags) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    ActorPart* actorPart;
     s32 flagBits;
     s32 partID;
 
@@ -2359,7 +2352,6 @@ API_CALLABLE(CreateHomeTargetList) {
 }
 
 API_CALLABLE(InitTargetIterator) {
-    Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.actorID);
     SelectableTarget* selectableTarget = &actor->targetData[actor->targetIndexList[actor->selectedTargetIndex]];
 
@@ -2814,10 +2806,6 @@ API_CALLABLE(GetStatusFlags) {
     Actor* actor;
     s32 actorClass;
     s8 debuff;
-    s8 staticStatus;
-    s8 stoneStatus;
-    s8 koStatus;
-    s8 transStatus;
     ActorPart* partsTable;
     s32 flags;
 

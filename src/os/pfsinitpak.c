@@ -5,7 +5,6 @@
 s32 __osPfsCheckRamArea(OSPfs *pfs);
 
 s32 osPfsInitPak(OSMesgQueue *queue, OSPfs *pfs, int channel) {
-    int k;
     s32 ret;
     u16 sum;
     u16 isum;

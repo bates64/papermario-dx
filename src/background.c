@@ -81,7 +81,6 @@ void appendGfx_background_texture(void) {
     s32 bgXOffset;
     s16 texOffsetY;
 
-    u8* newvar;
 
     enum {
         BG_BLEND_NONE           = 0,

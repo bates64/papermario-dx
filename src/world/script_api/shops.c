@@ -255,7 +255,6 @@ enum PurchaseDialogState {
 };
 
 API_CALLABLE(ShowShopPurchaseDialog) {
-    PlayerData* playerData = &gPlayerData;
     s32 shopItemSlot = script->varTable[0];
     Shop* shop = gGameStatusPtr->mapShop;
     ShopItemData* shopInventory = &shop->staticInventory[shopItemSlot];

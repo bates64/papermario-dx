@@ -143,6 +143,8 @@ void N(animate_and_draw_record)(void* renderData) {
                 data->state = RECORD_STATE_DONE;
             }
             break;
+        default:
+            break;
     }
     N(draw_record_display)(data, data->alpha);
 }

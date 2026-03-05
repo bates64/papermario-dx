@@ -37,7 +37,7 @@ void gfx_init_state(void) {
     gSPDisplayList(gMainGfxPos++, OS_K0_TO_PHYSICAL(D_80074210));
 }
 
-s32 gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s32 y, s32 x, Color_RGBA8* out) {
+void gfx_frame_filter_pass_0(const u16* frameBuffer0, const u16* frameBuffer1, s32 y, s32 x, Color_RGBA8* out) {
     s32 pixel = SCREEN_WIDTH * y + x;
 
     out->a = (frameBuffer1[pixel] >> 2) & 0xF;
@@ -246,8 +246,6 @@ void func_80027774(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
 
 // transfers the framebuffer into the depth buffer and applies filters
 void gfx_transfer_frame_to_depth(u16* frameBuffer0, u16* frameBuffer1, u16* zBuffer) {
-    Color_RGBA8 filterBuf0[6];
-    Color_RGBA8 filterBuf1;
     s32 y;
     s32 x;
 

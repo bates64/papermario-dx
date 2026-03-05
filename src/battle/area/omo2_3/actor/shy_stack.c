@@ -68,8 +68,8 @@ enum N(ActorParams) {
 // doesn't actually do anything
 API_CALLABLE(N(PrintDebugValue)) {
     Bytecode* args = script->ptrReadPos;
-    char* name = (char*) *args++;
-    s32 value = evt_get_variable(script, *args++);
+    args++;
+    evt_get_variable(script, *args++);
 
     return ApiStatus_DONE2;
 }

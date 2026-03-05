@@ -12,7 +12,6 @@ API_CALLABLE(N(UnkFunc62)) {
     f32 oldActorY;
     f32 oldActorX;
     f64 currentPosX64;
-    f32 temp_f8_2;
     f64 velocity;
     f64 temp_f20_6;
     f64 temp_f22_2;

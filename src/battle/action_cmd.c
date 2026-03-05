@@ -544,7 +544,6 @@ s32 check_block_input(s32 buttonMask) {
     s32 mash = false;
     s32 bufferPos;
     s32 i;
-    s32 ignoreWindow;
 
     battleStatus->blockResult = BLOCK_RESULT_FAIL;
 

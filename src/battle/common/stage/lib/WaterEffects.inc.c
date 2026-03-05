@@ -14,9 +14,6 @@ API_CALLABLE(N(UpdateAnimatedFish)) {
     f32 vt2 = 0.0f;
     f32 vt3;
     f32 vt4;
-    f32 vt5;
-    f32 vt6;
-    f32 vt7;
 
     f64 temp_f20;
     f64 temp_f20_2;

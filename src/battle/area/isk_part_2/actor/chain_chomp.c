@@ -276,7 +276,7 @@ ActorBlueprint NAMESPACE = {
 
 API_CALLABLE(func_8021866C_4EFB0C) {
     Bytecode* args = script->ptrReadPos;
-    s32 var1 = *args++;
+    args++;
 
     evt_get_variable(script, *args++);
     return ApiStatus_DONE2;

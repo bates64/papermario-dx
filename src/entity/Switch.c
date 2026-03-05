@@ -312,6 +312,7 @@ s32 entity_RedSwitch_animate_scale(Entity* entity) {
         data->animStateScaleY = 0;
         exec_entity_commandlist(entity);
     }
+    return 0;
 }
 
 void entity_base_switch_start_bound_script(Entity* entity) {

@@ -1,10 +1,10 @@
 #include "common.h"
 
-extern s8 ui_box_bg_tile_png[];
-extern s8 ui_box_corners4_png[];
-extern s8 pause_image_1439F0_png[];
-extern s8 pause_image_143BF0_png[];
-extern s8 pause_image_143FF0_png[];
+extern u8 ui_box_bg_tile_png[];
+extern u8 ui_box_corners4_png[];
+extern u8 pause_image_1439F0_png[];
+extern u8 pause_image_143BF0_png[];
+extern u8 pause_image_143FF0_png[];
 
 //TODO replace with array when pause_stats_draw_contents is matched
 WindowStyleCustom gPauseWS_0 = {

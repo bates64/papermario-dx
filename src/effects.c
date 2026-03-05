@@ -298,7 +298,7 @@ s32 load_effect(s32 effectIndex) {
 
     // Look for a loaded effect matching the desired index
     for (i = 0, sharedData = &gEffectSharedData[0]; i < ARRAY_COUNT(gEffectSharedData); i++) {
-        if (sharedData->flags & FX_SHARED_DATA_LOADED && sharedData->effectIndex == effectIndex) {
+        if ((sharedData->flags & FX_SHARED_DATA_LOADED) && sharedData->effectIndex == effectIndex) {
             break;
         }
         sharedData++;

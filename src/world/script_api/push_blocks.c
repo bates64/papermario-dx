@@ -503,7 +503,7 @@ API_CALLABLE(GetGridIndexFromPos) {
     Bytecode* args = script->ptrReadPos;
     s32 blockSystemID = evt_get_variable(script, *args++);
     s32 posX = evt_get_variable(script, *args++);
-    s32 posY = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     s32 posZ = evt_get_variable(script, *args++);
     Bytecode outVarX = *args++;
     Bytecode outVarZ = *args++;

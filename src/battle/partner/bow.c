@@ -102,7 +102,6 @@ API_CALLABLE(N(IsPlayerImmobile)) {
 
 API_CALLABLE(N(RestorePlayerIdleAnimations)) {
     BattleStatus* battleStatus = &gBattleStatus;
-    Actor* playerActor = battleStatus->playerActor;
     ActorPart* playerActorPartTable = battleStatus->playerActor->partsTable;
     playerActorPartTable->idleAnimations = bMarioIdleAnims;
 

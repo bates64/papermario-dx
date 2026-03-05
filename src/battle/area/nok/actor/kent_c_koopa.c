@@ -1164,7 +1164,7 @@ API_CALLABLE(N(GetCoinTrajectory)) {
 
 API_CALLABLE(N(UnusedFunc)) {
     Bytecode* args = script->ptrReadPos;
-    Bytecode var1 = *args++;
+    args++;
 
     evt_get_variable(script, *args++);
     return ApiStatus_DONE2;

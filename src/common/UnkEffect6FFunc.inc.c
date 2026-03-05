@@ -4,7 +4,7 @@
 API_CALLABLE(N(UnkEffect6FFunc)) {
     Bytecode* args = script->ptrReadPos;
     EffectInstance* effect;
-    s32 unusedType = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     s32 posX = evt_get_variable(script, *args++);
     s32 posY = evt_get_variable(script, *args++);
     s32 posZ = evt_get_variable(script, *args++);
