@@ -1,0 +1,32 @@
+name: Format
+
+on:
+  pull_request:
+    paths:
+      - "**.c"
+      - "**.cpp"
+      - "**.h"
+      - "**.hpp"
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - name: Get changed files
+        id: changed
+        run: |
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep -E '\.(c|cpp|h|hpp)$' || true)
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$files" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check formatting
+        if: steps.changed.outputs.files != ''
+        run: |
+          echo "${{ steps.changed.outputs.files }}" | xargs nix develop --command python3 tools/format.py --check

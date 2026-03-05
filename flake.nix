@@ -74,6 +74,7 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
+            treefmt
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
