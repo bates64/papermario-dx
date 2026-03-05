@@ -819,9 +819,9 @@ HitResult calc_partner_damage_enemy(void) {
         }
     }
 
-    if (battleStatus->lastAttackDamage < 1
-        && !(wasSpecialHit || wasStatusInflicted)
-        || targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE
+    if ((battleStatus->lastAttackDamage < 1
+        && !(wasSpecialHit || wasStatusInflicted))
+        || (targetPart->flags & ACTOR_PART_FLAG_DAMAGE_IMMUNE)
     ) {
         sfx_play_sound_at_position(SOUND_IMMUNE, SOUND_SPACE_DEFAULT, state->goalPos.x, state->goalPos.y, state->goalPos.z);
     }

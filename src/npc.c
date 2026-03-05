@@ -2356,7 +2356,7 @@ void make_npcs(s32 flags, s32 mapID, s32* npcGroupList) {
     }
 }
 
-s32 kill_encounter(Enemy* enemy) {
+void kill_encounter(Enemy* enemy) {
     Encounter* encounter = gCurrentEncounter.encounterList[enemy->encounterIndex];
     s32 i;
 
