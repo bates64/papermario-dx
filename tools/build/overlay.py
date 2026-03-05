@@ -29,6 +29,8 @@ SHT_STRTAB = 3
 SHT_RELA = 4
 SHT_NOBITS = 8
 SHT_REL = 9
+SHT_INIT_ARRAY = 14
+SHT_FINI_ARRAY = 15
 
 SHF_COMPRESSED = 0x800
 
@@ -325,7 +327,7 @@ def link_overlay(obj_paths, syms, link_addr):
                         if sec.type != SHT_NOBITS:
                             continue
                     else:
-                        if sec.type != SHT_PROGBITS:
+                        if sec.type not in (SHT_PROGBITS, SHT_INIT_ARRAY, SHT_FINI_ARRAY):
                             continue
 
                     align = max(sec.addralign, 1)
@@ -1489,7 +1491,7 @@ def cmd_link(args):
                         if sec.type != SHT_NOBITS:
                             continue
                     else:
-                        if sec.type != SHT_PROGBITS:
+                        if sec.type not in (SHT_PROGBITS, SHT_INIT_ARRAY, SHT_FINI_ARRAY):
                             continue
                     align = max(sec.addralign, 1)
                     cur_addr = _align(cur_addr, align)
