@@ -72,7 +72,7 @@ void entity_base_block_play_vanish_effect(Entity* entity) {
     fx_cold_breath(0, entity->pos.x, entity->pos.y, entity->pos.z, 1.0f, 0x3C);
 }
 
-f32 entity_block_hit_init_scale(Entity* entity) {
+void entity_block_hit_init_scale(Entity* entity) {
     s32 type = get_entity_type(entity->listIndex);
     if (type == ENTITY_TYPE_HAMMER1_BLOCK_TINY || type == ENTITY_TYPE_HAMMER2_BLOCK_TINY || type == ENTITY_TYPE_HAMMER3_BLOCK_TINY) {
         entity->scale.y = 0.23f;

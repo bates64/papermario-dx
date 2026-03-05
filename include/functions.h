@@ -177,7 +177,7 @@ s32 entity_RedSwitch_animate_scale(Entity* entity);
 void entity_base_switch_start_bound_script(Entity* entity);
 void entity_base_switch_animate_scale(Entity* entity);
 void entity_base_switch_init(Entity* entity);
-f32 entity_block_hit_init_scale(Entity* entity);
+void entity_block_hit_init_scale(Entity* entity);
 void entity_block_hit_animate_scale(Entity* entity);
 s32 entity_block_handle_collision(Entity* entity);
 void entity_BlueSwitch_init(Entity* entity);
