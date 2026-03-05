@@ -198,7 +198,6 @@ EvtScript EVS_WorldKooper_Update = {
 };
 
 API_CALLABLE(N(UseAbility)) {
-    Camera* cam;
     ItemEntity* heldItem;
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -209,7 +208,6 @@ API_CALLABLE(N(UseAbility)) {
     f32 testLength;
     s32 actionState;
     f32 moveAngle;
-    f32 colheight;
     f32 angleToStartPos;
 
     #define USE_STATE functionTemp[0]

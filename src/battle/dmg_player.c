@@ -1057,7 +1057,6 @@ b32 dispatch_damage_event_player(s32 damageAmount, s32 event, b32 noHitSound) {
     PlayerData* playerData = &gPlayerData;
     Actor* player = battleStatus->playerActor;
     ActorState* state = &player->state;
-    s32 oldHPChangeCounter;
     s32 flags;
     s32 dispatchEvent;
     s32 oldPlayerHP;
@@ -2210,7 +2209,6 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
     f64 temp_f20;
     f64 temp_f20_2;
     f64 temp_f20_4;
-    f64 temp_f20_5;
     f64 temp_f20_6;
     f64 temp_f20_7;
 
@@ -2218,7 +2216,6 @@ API_CALLABLE(PlayerUltraJumpToGoal) {
     f64 temp_f22_2;
     f64 temp_f22_3;
     f64 temp_f22_4;
-    f64 temp_f22_5;
     f64 temp_f22_6;
 
     enum {

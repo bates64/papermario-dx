@@ -808,10 +808,7 @@ s32 dispatch_damage_event_actor(Actor* actor, s32 damageAmount, s32 originalEven
     BattleStatus* battleStatus = &gBattleStatus;
     ActorState* state = &actor->state;
     s32 dispatchEvent = originalEvent;
-    s32 currentAttackDamage;
-    s32 hpChangeCounter;
     s32 hpChange;
-    s32 flagCheck;
     s32 new_var;
 
     battleStatus->curAttackDamage = damageAmount;
@@ -1957,7 +1954,6 @@ API_CALLABLE(RunPartTo) {
     s32 actorID, partID;
     f32 posX, posY, posZ;
     f32 goalX, goalY, goalZ;
-    f32 deltaDist;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
@@ -2822,7 +2818,6 @@ API_CALLABLE(EnemyDamageTarget) {
     Actor* actor;
     s32 outVar;
     s32 hitResult;
-    s32 battleStatusFlags1Temp;
     s32 battleFlagsModifier;
 
     if (actorID == ACTOR_SELF) {
@@ -2942,7 +2937,6 @@ API_CALLABLE(EnemyTestTarget) {
     s32 outVar;
     s32 hitResult;
     u8 attackStatus;
-    s32 battleStatusFlags1Temp;
     s32 battleFlagsModifier;
 
     if (actorID == ACTOR_SELF) {
@@ -3416,7 +3410,6 @@ API_CALLABLE(CopyStatusEffects) {
 API_CALLABLE(ClearStatusEffects) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
-    s32 flag;
     Actor* actor;
 
     if (actorID == ACTOR_SELF) {

@@ -128,7 +128,6 @@ void filemenu_draw_contents_file_create_header(
     }
 #else
     s32 xOffset;
-    s32 yOffset;
     s32 i;
 
     filemenu_draw_message(filemenu_get_menu_message(FILE_MESSAGE_ENTER_A_FILE_NAME), baseX + 10, baseY + 6, 255, 0, 0);
@@ -343,7 +342,6 @@ void filemenu_draw_contents_choose_name(
 #endif
 
 void filemenu_choose_name_init(MenuPanel* menu) {
-    s32 width;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(filemenu_createfile_hudScripts); i++) {

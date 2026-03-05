@@ -987,7 +987,7 @@ API_CALLABLE(MakeOwnerTargetIndex) {
     Actor* actor = get_actor(script->owner1.actorID);
     s32 numTargets = actor->targetListLength;
     s8* targetList = actor->targetIndexList;
-    s32 arg1 = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     s32 arg2 = evt_get_variable(script, *args++);
     s32 otherArg = *args++;
     SelectableTarget* selectableTarget;
@@ -1053,7 +1053,6 @@ API_CALLABLE(GetActorLevel) {
 
 API_CALLABLE(PartnerDamageEnemy) {
     BattleStatus* battleStatus = &gBattleStatus;
-    PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Actor* enemy = get_actor(script->owner1.enemyID);
     s32 retVar = *args++;
@@ -1292,7 +1291,6 @@ API_CALLABLE(PartnerPowerBounceEnemy) {
 
 API_CALLABLE(PartnerTestEnemy) {
     BattleStatus* battleStatus = &gBattleStatus;
-    PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     Actor* enemy = get_actor(script->owner1.enemyID);
     s32 outVar;

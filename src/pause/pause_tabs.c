@@ -380,7 +380,6 @@ void pause_tabs_update(MenuPanel* tab) {
     s32 absValue;
     f32 delta;
     f32 deltaBefore;
-    f32 f7;
     void (*fpUpdateInactive)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
                                  f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
     void (*fpUpdateActive)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,

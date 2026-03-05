@@ -2355,7 +2355,6 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
     PAL_PTR palIn;
     PAL_PTR palOut;
     s32 i, j;
-    s32 temp;
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite == SPRITE_MODE_PLAYER) {

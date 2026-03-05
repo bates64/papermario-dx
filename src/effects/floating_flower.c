@@ -141,7 +141,7 @@ void floating_flower_render(EffectInstance* effect) {
 }
 
 void floating_flower_appendGfx(void* effect) {
-    Matrix4f mtxTransform, mtxUnused;
+    Matrix4f mtxTransform;
     EffectInstance* effectTemp = effect;
     FloatingFlowerFXData* part = effectTemp->data.floatingFlower;
     u32 alpha;

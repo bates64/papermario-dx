@@ -322,7 +322,6 @@ void au_mseq_load_track_fade_info(AmbienceManager* manager, AmbiencePlayer* play
     MSEQHeader* mseqFile;
     MSEQTrackData* trackData;
     AmbienceTrack* track;
-    s32 offset;
     s32 count;
 
     mseqFile = player->mseqFile;

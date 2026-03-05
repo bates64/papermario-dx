@@ -99,7 +99,6 @@ void N(DrawMashMeter)(s32 posX, s32 posY, s32 fillValue) {
     s32 i;
     s32 cutOff;
     s32 offsetX;
-    s32 s2;
     s32 filledWidth;
     s32 r, g, b;
 

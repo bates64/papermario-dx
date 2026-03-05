@@ -804,7 +804,6 @@ void btl_draw_enemy_health_bars(void) {
             if (enemy != nullptr) {
                 s32 currentHP;
                 s32 temp;
-                s32 ones;
 
                 currentHP = enemy->curHP;
                 temp = (currentHP * 25) / enemy->maxHP;

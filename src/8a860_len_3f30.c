@@ -351,18 +351,12 @@ s32 popup_menu_update(void) {
     s32 posX;
     s32 posY;
     s32 width;
-    s32 height;
     HudElemID hid;
     s32 cond;
     s32 buttons;
     s32 msgID;
     s32 i;
 
-    s32 var_s5 = 0;
-    s32 var_s6 = 0; // maybe 6 before 5
-    s32 msgWidth;
-    s32 width2;
-    s32 posX2;
 
     switch (gPopupState) {
         case POPUP_STATE_INIT:
@@ -1386,7 +1380,7 @@ s32 popup_menu_update(void) {
 
 void popup_draw_menu_content(s32* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
     s32 x, y;
-    s32 x1, y1;
+    s32 y1;
     s32 offset;
     s32 sp28;
     s32 dy;
@@ -2220,7 +2214,6 @@ void popup_draw_star_pieces_content(s32* userData, s32 x, s32 y) {
 }
 
 void create_standard_popup_menu(PopupMenu* popup) {
-    PopupMenu* otherPopup;
     s8 entryCount;
     s32 initialPos;
     s32 numEntries;

@@ -2467,7 +2467,6 @@ void create_encounters(void) {
 
     Npc* newNpc;
     s32 newNpcIndex;
-    s32 npcCount;
 
     NpcSettings* npcSettings;
     NpcData* npcData;

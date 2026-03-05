@@ -944,7 +944,6 @@ void load_player_actor(void) {
     DecorationTable* decorations;
     ActorPartMovement* partMovement;
     s32 i;
-    s32 j;
 
     player = battleStatus->playerActor = heap_malloc(sizeof(*player));
 
@@ -1410,7 +1409,6 @@ Actor* create_actor(Formation formation) {
     Actor* actor;
     ActorBlueprint* formationActor;
     ActorPart* part;
-    ActorPartBlueprint* partBP;
     Evt* takeTurnScript;
     s32 partCount;
     f32 x, y, z;

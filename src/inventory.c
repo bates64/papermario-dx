@@ -2145,7 +2145,6 @@ void add_star_power(s32 amt) {
     PlayerData* playerData = &gPlayerData;
     StatusBar* statusBar = &gStatusBar;
     s32 maxPower;
-    s32 newPower;
 
     statusBar->shimmerState = STATUS_SHIMMER_BEGIN;
     statusBar->shimmerTime = 60;

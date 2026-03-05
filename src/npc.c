@@ -929,7 +929,6 @@ void appendGfx_npc(void* data) {
 }
 
 void render_npcs(void) {
-    Npc* npc;
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
     Camera* cam = &gCameras[gCurrentCamID];

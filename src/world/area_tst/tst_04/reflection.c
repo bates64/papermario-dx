@@ -90,10 +90,7 @@ void N(worker_update_animator)(void) {
 }
 
 void N(worker_render_animator)(void) {
-    Matrix4f m0;
     Matrix4f m1;
-    Matrix4f m2;
-    Matrix4f m3;
     Mtx m4;
 
     guTranslateF(m1, -484.0f, 25.0f, -40.0f);

@@ -73,14 +73,13 @@ void N(ChompChainAddPolarPos)(ChompChain* script, f32 magnitude, f32 angleDeg) {
 
 void N(ChompChainGetPolarX)(f32* x, f32 magnitude, f32 angleDeg) {
     f32 angle = DEG_TO_RAD(angleDeg);
-    f32 dirX = sin_rad(angle);
+    sin_rad(angle);
     f32 dirY = cos_rad(angle);
 
     *x = magnitude * dirY;
 }
 
 API_CALLABLE(N(ChompChainUpdate)) {
-    Bytecode* args = script->ptrReadPos;
     f32 sp18;
     Actor* actor;
     ActorPart* part;
@@ -89,7 +88,6 @@ API_CALLABLE(N(ChompChainUpdate)) {
     f32 angle;
     f32 prevX, prevY;
     s32 baseChainPart;
-    s32 posZ;
     s32 i;
 
     actor = get_actor(script->owner1.actorID);

@@ -256,7 +256,7 @@ API_CALLABLE(N(CreateSignpost)) {
 API_CALLABLE(N(OnHitBox)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 hitModelID = evt_get_variable(script, LVarA);
-    s32 hitColliderID = evt_get_variable(script, LVarB); // unused
+    evt_get_variable(script, LVarB);
     s32 i;
 
     for (i = 0; i < NUM_BOXES; i++) {

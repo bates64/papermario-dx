@@ -138,7 +138,6 @@ void ice_shard_appendGfx(void* effect) {
     s32 texCoordT;
     s32 envAlpha;
     Matrix4f sp20;
-    Matrix4f unused;
 
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));

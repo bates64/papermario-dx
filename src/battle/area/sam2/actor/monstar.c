@@ -164,7 +164,6 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
     u8 colR[RGBA_BUF_SIZE];
     u8 colG[RGBA_BUF_SIZE];
     u8 colB[RGBA_BUF_SIZE];
-    u8 colA[RGBA_BUF_SIZE];
 
     if (isInitialCall) {
         script->functionTemp[1] = 0;

@@ -37,7 +37,6 @@ void stars_burst_main(
     EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
     StarsBurstFXData* part;
-    Matrix4f unused;
     s32 numParts = arg6;
     f32 temp;
     s32 i;

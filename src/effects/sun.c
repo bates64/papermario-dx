@@ -149,7 +149,6 @@ void sun_appendGfx(void* argEffect) {
     EffectInstance* effect = (EffectInstance*) argEffect;
     SunFXData* data;
     Matrix4f mtx;
-    Matrix4f mtxUnused;
     s32 alpha;
     s32 offsetS;
     s32 fromRight;

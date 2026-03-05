@@ -281,7 +281,6 @@ API_CALLABLE(SetModelFlags) {
 
 void apply_transform_to_children(ApiStatus (*apiFunc)(Evt*, s32), Evt* script) {
     Evt localEvt;
-    ModelTreeInfo* parentModelInfo;
     ModelTreeInfo* childModelInfo;
     s32 parentModelID;
     s32 originalArg;
@@ -596,7 +595,6 @@ API_CALLABLE(ResetFromLava) {
 
 s32 get_lava_reset_pos(f32* outX, f32* outY, f32* outZ) {
     Vec4f *temp_v0;
-    s32 temp_a0;
     LavaReset* lavaReset = gLavaResetList;
 
     if (LastSafeFloor == -1) {

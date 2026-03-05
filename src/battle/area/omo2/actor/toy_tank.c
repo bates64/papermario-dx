@@ -56,7 +56,7 @@ API_CALLABLE(N(UpdateBulbGlowPos)) {
     s32 x = evt_get_variable(script, *args++);
     s32 y = evt_get_variable(script, *args++);
     s32 z = evt_get_variable(script, *args++);
-    s32 rotation = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     BulbGlowFXData* effectData = ((EffectInstance*) evt_get_variable(script, *args++))->data.bulbGlow;
 
     effectData->pos.x = x;

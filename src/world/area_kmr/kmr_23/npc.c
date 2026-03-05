@@ -195,7 +195,7 @@ API_CALLABLE(N(ShowRadialShimmer)) {
 API_CALLABLE(N(FadeInSpiritNpc)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(NPC_StarSpirit);
-    EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
+    (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
@@ -214,7 +214,6 @@ API_CALLABLE(N(FadeInSpiritNpc)) {
 
 API_CALLABLE(N(FlashScreenWhite)) {
     EndChapter* data = (EndChapter*) evt_get_variable(script, MV_EndChapterDataPtr);
-    EffectInstance* effect;
 
     enum FunctionState {
         FADE_TO_WHITE   = 0,
