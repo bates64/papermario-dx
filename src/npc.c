@@ -1338,7 +1338,7 @@ void npc_render_without_adjusted_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
     }
 }
 
-s32 npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
+void npc_render_with_watt_idle_palettes(Npc* npc, s32 arg1, Matrix4f mtx) {
     s32 i, j;
     s32 brightness;
     PAL_PTR src;
@@ -1443,7 +1443,7 @@ u16 npc_blend_palette_colors(u16 colorA, u16 colorB, s32 lerpAlpha) {
     return PACK_PAL_RGBA(r, g, b, a);
 }
 
-s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx) {
+void npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentIntervals, Matrix4f mtx) {
     PAL_PTR color1;
     PAL_PTR color2;
     PAL_PTR outColor;
@@ -1579,7 +1579,7 @@ s32 npc_render_with_single_pal_blending(Npc* npc, s32 yaw, b32 hasDifferentInter
     }
 }
 
-s32 npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
+void npc_render_with_double_pal_blending(Npc* npc, s32 yaw, Matrix4f mtx) {
     PAL_PTR color1;
     PAL_PTR color2;
     PAL_PTR outColor;
@@ -1763,7 +1763,7 @@ void npc_remove_decoration(Npc* npc, s32 idx) {
     npc->decorationType[idx] = NPC_DECORATION_NONE;
 }
 
-s32 npc_update_decorations(Npc* npc) {
+void npc_update_decorations(Npc* npc) {
     s32 i;
 
     for (i = 0; i < MAX_NPC_DECORATIONS; i++) {
