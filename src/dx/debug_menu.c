@@ -81,7 +81,7 @@ void dx_debug_set_map_info(char* mapName, s32 entryID) {
     LastMapEntry = entryID;
 }
 
-void dx_debug_set_battle_info(s32 battleID, char* stageName) {
+void dx_debug_set_battle_info(s32 battleID, const char* stageName) {
     s32 len = strlen(stageName);
 
     strcpy(LastStageName, stageName);
