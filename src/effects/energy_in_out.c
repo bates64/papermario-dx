@@ -226,14 +226,13 @@ void energy_in_out_update(EffectInstance* effect) {
 
 void energy_in_out_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = energy_in_out_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void func_E00D6978(void) {

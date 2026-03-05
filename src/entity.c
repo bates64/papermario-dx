@@ -883,7 +883,7 @@ void reload_world_entity_data(void) {
             if (bp->entityType == ENTITY_TYPE_RESET_MUNCHLESIA) {
                 gfxData = (void*)gEntityHeapBottom;
                 temp1 = dma_copy(dmaList[0].start, dmaList[0].end, gfxData) >> 2;
-                dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + temp1 * 4)) >> 2;
+                dma_copy(dmaList[1].start, dmaList[1].end, (void*)(gEntityHeapBottom + temp1 * 4));
                 animData = (void*)(gEntityHeapBottom + temp1 * 4);
                 entity_swizzle_anim_pointers(bp, animData, gfxData);
             } else {

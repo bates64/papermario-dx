@@ -167,7 +167,6 @@ HitResult calc_partner_damage_enemy(void) {
     s32 hitResult = HIT_RESULT_HIT;
     s32 partImmuneToElement = false;
     s32 isFireDamage = false;
-    s32 isWaterDamage = false;
     s32 isShockDamage = false;
     s32 isIceDamage = false;
     s32 wasSpecialHit = false;
@@ -361,7 +360,6 @@ HitResult calc_partner_damage_enemy(void) {
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
             fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-            isWaterDamage = true;
         }
 
         if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {

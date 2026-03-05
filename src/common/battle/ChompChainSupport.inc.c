@@ -80,6 +80,9 @@ void N(ChompChainGetPolarX)(f32* x, f32 magnitude, f32 angleDeg) {
 }
 
 API_CALLABLE(N(ChompChainUpdate)) {
+#if CHOMP_CHAIN_UPDATE_Z == true
+    Bytecode* args = script->ptrReadPos;
+#endif
     f32 sp18;
     Actor* actor;
     ActorPart* part;
@@ -88,6 +91,9 @@ API_CALLABLE(N(ChompChainUpdate)) {
     f32 angle;
     f32 prevX, prevY;
     s32 baseChainPart;
+#if CHOMP_CHAIN_UPDATE_Z == true
+    s32 posZ;
+#endif
     s32 i;
 
     actor = get_actor(script->owner1.actorID);

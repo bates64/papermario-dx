@@ -1699,7 +1699,9 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
     u16 endl;
 
     u8 c;
+#if VERSION_IQUE
     u8 prevChar;
+#endif
 
     scale = 1.0f;
     c = 0;
@@ -1738,7 +1740,9 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
     lineCount = 0;
 
     do {
+#if VERSION_IQUE
         prevChar = c;
+#endif
         c = message[i++];
         switch (c) {
             case MSG_CHAR_READ_VARIANT0:

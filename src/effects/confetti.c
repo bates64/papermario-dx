@@ -233,14 +233,13 @@ void confetti_update(EffectInstance* effect) {
 
 void confetti_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = confetti_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 0;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void confetti_appendGfx(void* effect) {

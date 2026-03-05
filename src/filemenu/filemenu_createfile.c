@@ -185,7 +185,9 @@ void filemenu_draw_contents_choose_name(
     s32 layer;
     s32 flags;
     s32 color;
+#if VERSION_PAL
     s32 xNudge;
+#endif
     Window* window = &gWindows[WIN_FILES_INPUT_KEYBOARD];
 
     if ((window->flags & WINDOW_FLAG_INITIAL_ANIMATION) && window->fpUpdate.func == filemenu_update_change_layout) {
@@ -261,7 +263,9 @@ void filemenu_draw_contents_choose_name(
                         }
                         if (specialChar == MSG_CHAR_MENU_SPACE || specialChar == MSG_CHAR_MENU_BACK || specialChar == MSG_CHAR_MENU_END) {
                             yOffset--;
+#if VERSION_PAL
                             xNudge = 9;
+#endif
                         }
 #if VERSION_PAL
                         filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);
@@ -317,7 +321,9 @@ void filemenu_draw_contents_choose_name(
                     }
                     if (specialChar == MSG_CHAR_MENU_SPACE || specialChar == MSG_CHAR_MENU_BACK || specialChar == MSG_CHAR_MENU_END) {
                         yOffset--;
+#if VERSION_PAL
                         xNudge = 9;
+#endif
                     }
 #if VERSION_PAL
                     filemenu_draw_message((u8*)c, baseX + xOffset + ((8 - xNudge) / 2), baseY + yOffset, 255, color, flags);

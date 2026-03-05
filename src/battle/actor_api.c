@@ -3034,16 +3034,14 @@ API_CALLABLE(ResetActorSounds) {
     s32 actorID = evt_get_variable(script, *args++);
     Actor* actor;
     s32 soundType;
-    s32 sound1;
-    s32 sound2;
 
     if (actorID == ACTOR_SELF) {
         actorID = script->owner1.actorID;
     }
 
     soundType = evt_get_variable(script, *args++);
-    sound1 = evt_get_variable(script, *args++);
-    sound2 = evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
+    evt_get_variable(script, *args++);
     actor = get_actor(actorID);
 
     switch (soundType) {

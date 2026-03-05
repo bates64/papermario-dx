@@ -242,7 +242,6 @@ API_CALLABLE(N(TurboChargeUnwindWatt)) {
     f32 theta;
     f32 sinTheta;
     f32 cosTheta;
-    f32 distance;
     f32 angle;
     f32 deltaX;
     f32 deltaY;
@@ -294,7 +293,6 @@ API_CALLABLE(N(TurboChargeUnwindWatt)) {
             theta = DEG_TO_RAD(partner->state.angle);
             sinTheta = sin_rad(theta);
             cosTheta = cos_rad(theta);
-            distance = partner->state.dist;
             angle = partner->state.angle;
             angle += partner->state.vel;
             deltaX = partner->state.dist * sinTheta;

@@ -22,16 +22,6 @@ void explosion_main(s32 type, f32 x, f32 y, f32 z) {
     ExplosionFXData* data;
     s32 numParts = 3;
 
-    // TODO this terrible if-else required to match
-    s32 dumb;
-    s32 temp;
-    if (type != 0) {
-        dumb = 0;
-    } else {
-        temp = 0;
-        dumb = temp;
-    }
-
     bpPtr->unk_00 = 0;
     bpPtr->init = explosion_init;
     bpPtr->update = explosion_update;
@@ -151,14 +141,13 @@ void explosion_update(EffectInstance* effect) {
 
 void explosion_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = explosion_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 10;
     renderTask.renderMode = RENDER_MODE_CLOUD_NO_ZCMP;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void explosion_appendGfx(void* effect) {

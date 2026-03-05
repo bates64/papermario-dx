@@ -240,8 +240,6 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     b32 wasSpecialHit = false;
     b32 statusInflicted = false;
     b32 isFire = false;
-    b32 isWater = false;
-    b32 isIce = false;
     b32 isElectric = false;
     b32 madeElectricContact = false;
     b32 isPlayer;
@@ -324,11 +322,9 @@ HitResult calc_enemy_damage_target(Actor* attacker) {
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_WATER) {
         fx_water_splash(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f, 1.0f, 24);
-        isWater = true;
     }
     if (battleStatus->curAttackElement & DAMAGE_TYPE_ICE) {
         fx_big_snowflakes(0, state->goalPos.x, state->goalPos.y, state->goalPos.z + 5.0f);
-        isIce = true;
     }
 
     if (!(attacker->staticStatus == STATUS_KEY_STATIC)
@@ -1511,7 +1507,7 @@ API_CALLABLE(RunToGoal) {
     Actor* actor;
     ActorState* actorState;
     s32 actorID;
-    f32 posX, posY, posZ;
+    f32 posX, posZ;
     f32 goalX, goalY, goalZ;
 
     if (isInitialCall) {
@@ -1537,7 +1533,6 @@ API_CALLABLE(RunToGoal) {
         goalY = actorState->goalPos.y;
         goalZ = actorState->goalPos.z;
         posX = actorState->curPos.x;
-        posY = actorState->curPos.y;
         posZ = actorState->curPos.z;
 
         actorState->unk_18.x = goalX;
@@ -1635,7 +1630,7 @@ API_CALLABLE(IdleRunToGoal) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor;
     ActorMovement* movement;
-    f32 posX, posY, posZ;
+    f32 posX, posZ;
     f32 goalX, goalY, goalZ;
     s32 actorID;
 
@@ -1662,7 +1657,6 @@ API_CALLABLE(IdleRunToGoal) {
         goalZ = movement->goalPos.z;
 
         posX = movement->curPos.x;
-        posY = movement->curPos.y;
         posZ = movement->curPos.z;
 
         movement->unk_18.x = goalX;
@@ -1953,7 +1947,7 @@ API_CALLABLE(RunPartTo) {
     ActorPartMovement* movement;
     s32 actorID, partID;
     f32 posX, posY, posZ;
-    f32 goalX, goalY, goalZ;
+    f32 goalX, goalZ;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;
@@ -1981,7 +1975,6 @@ API_CALLABLE(RunPartTo) {
         movement->moveTime = evt_get_variable(script, *args++);
 
         goalX = movement->goalPos.x;
-        goalY = movement->goalPos.y;
         goalZ = movement->goalPos.z;
 
         movement->absolutePos.x = part->absolutePos.x;
@@ -1989,7 +1982,6 @@ API_CALLABLE(RunPartTo) {
         movement->absolutePos.z = part->absolutePos.z;
 
         posX = movement->absolutePos.x;
-        posY = movement->absolutePos.y;
         posZ = movement->absolutePos.z;
 
         movement->angle = atan2(posX, posZ, goalX, goalZ);

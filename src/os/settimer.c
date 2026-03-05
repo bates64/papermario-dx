@@ -1,7 +1,6 @@
 #include "PR/osint.h"
 
 int osSetTimer(OSTimer *t, OSTime countdown, OSTime interval, OSMesgQueue *mq, OSMesg msg) {
-    OSTime time;
     OSTimer* next;
     u32 count;
     u32 value;
@@ -29,7 +28,7 @@ int osSetTimer(OSTimer *t, OSTime countdown, OSTime interval, OSMesgQueue *mq, O
         }
     }
 
-    time = __osInsertTimer(t);
+    __osInsertTimer(t);
     __osSetTimerIntr(__osTimerList->next->value);
     __osRestoreInt(saveMask);
 

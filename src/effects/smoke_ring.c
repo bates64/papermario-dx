@@ -108,14 +108,13 @@ void smoke_ring_update(EffectInstance* effect) {
 
 void smoke_ring_render(EffectInstance* effect) {
     RenderTask renderTask;
-    RenderTask* retTask;
 
     renderTask.appendGfx = smoke_ring_appendGfx;
     renderTask.appendGfxArg = effect;
     renderTask.dist = 0;
     renderTask.renderMode = RENDER_MODE_PASS_THROUGH;
 
-    retTask = queue_render_task(&renderTask);
+    queue_render_task(&renderTask);
 }
 
 void smoke_ring_appendGfx(void* effect) {

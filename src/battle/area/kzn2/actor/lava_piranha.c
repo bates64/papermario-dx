@@ -368,8 +368,6 @@ API_CALLABLE(N(SetVineBoneScale)) {
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
     evt_get_variable(script, *args++);
-    &N(VineData)[vineIdx];
-
     // do nothing
     return ApiStatus_DONE2;
 }
