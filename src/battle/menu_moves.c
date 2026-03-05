@@ -286,9 +286,9 @@ s32 btl_submenu_moves_update(void) {
 
                         if (
                             MovesOptionSortPriority[temp1] != MovesOptionSortPriority[temp2] ||
-                            (MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2]) &&
+                            ((MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2]) &&
                             (MovesOptionDisplayCosts[temp1] != MovesOptionDisplayCosts[temp2] ||
-                                MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2])
+                                MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2]))
                         )
                         {
                             s32 swapTemp = MovesOptionIndexMap[i];

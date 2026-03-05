@@ -605,7 +605,7 @@ void npc_render_worker_do_nothing(void);
 
 void make_npcs(s32 flags, s32 mapID, s32* npcGroupList);
 
-s32 kill_encounter(Enemy* enemy);
+void kill_encounter(Enemy* enemy);
 
 void kill_enemy(Enemy* enemy);
 
