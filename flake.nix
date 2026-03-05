@@ -61,7 +61,7 @@
           name = "papermario-dx";
           venvDir = "./venv";
           packages = with pkgs; [
-            ninja # needed for ninja -t compdb in run, as n2 doesn't support it
+            ninja # needed for ninja -t compdb in configure, as n2 doesn't support it
             n2 # same as ninja, but with prettier output
             zlib
             libyaml

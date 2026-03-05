@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 import os
+import re
 import shutil
 from typing import List, Dict, Set, Union
 from pathlib import Path
@@ -1466,3 +1467,24 @@ if __name__ == "__main__":
 
     ninja.build("all", "phony", all_rom_oks)
     ninja.default("all")
+
+    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
+    # so clangd and clang-tidy can parse the compile commands.
+    ninja.close()
+    try:
+        compdb = subprocess.run(
+            ["ninja", "-t", "compdb"],
+            capture_output=True,
+            text=True,
+        )
+        if compdb.returncode == 0:
+            entries = json.loads(compdb.stdout)
+            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
+            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            for entry in entries:
+                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
+                parts = entry["command"].split()
+                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+            (ROOT / "compile_commands.json").write_text(json.dumps(entries, indent=2) + "\n")
+    except FileNotFoundError:
+        pass  # ninja not installed
