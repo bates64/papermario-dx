@@ -965,6 +965,8 @@ API_CALLABLE(N(CleanupGame)) {
                         enable_npc_shadow(npc);
                     }
                     break;
+                default:
+                    break;
             }
         }
         return ApiStatus_BLOCK;

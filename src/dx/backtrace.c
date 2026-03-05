@@ -202,6 +202,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                 exception_ra = nullptr;
                 func_start = 0;
                 break;
+            default:
+                break;
         }
 
         if (is_valid_address((uint32_t)ra)) {
@@ -260,6 +262,8 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
                 exception_ra = nullptr;
                 func_start = 0;
+                break;
+            default:
                 break;
         }
 

@@ -687,6 +687,8 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             break;
         case IMGFX_CLEAR:
             break;
+        default:
+            break;
     }
 }
 
@@ -789,6 +791,8 @@ void imgfx_make_mesh(ImgFXState* state) {
         case IMGFX_COLOR_BUF_SET_MODULATE:
             imgfx_mesh_load_colors(state);
             break;
+        default:
+            break;
     }
 }
 
@@ -843,6 +847,8 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                     break;
                 case IMGFX_RENDER_MODULATE_SHADE_RGB:
                     renderType = IMGFX_RENDER_MODULATE_SHADE_RGBA;
+                    break;
+                default:
                     break;
             }
             primAlpha = state->ints.color.a * ifxImgAlpha;
@@ -1505,6 +1511,8 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                     case IMGFX_RENDER_MULTIPLY_SHADE_ALPHA:
                         alpha = -1;
                         break;
+                    default:
+                        break;
                 }
 
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
@@ -1574,6 +1582,8 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                             break;
                         case IMGFX_RENDER_MULTIPLY_SHADE_ALPHA:
                             alpha2 = -1;
+                            break;
+                        default:
                             break;
                     }
 
@@ -1674,7 +1684,8 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
                         case IMGFX_RENDER_MULTIPLY_SHADE_ALPHA:
                             alpha = -1;
                             break;
-
+                        default:
+                            break;
                     }
                     create_shading_palette(mtx,
                                            (imgfx_vtxBuf[ulIdx].v.tc[0] >> 5) - 0x100, (imgfx_vtxBuf[ulIdx].v.tc[1] >> 5) - 0x100,
@@ -1742,7 +1753,8 @@ void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
                 case IMGFX_RENDER_MULTIPLY_SHADE_ALPHA:
                     alpha = -1;
                     break;
-
+                default:
+                    break;
             }
             create_shading_palette(mtx, 0, 0, ImgFXCurrentTexturePtr->tex.width, ImgFXCurrentTexturePtr->tex.height, alpha, state->otherModeL);
         } else {
