@@ -198,6 +198,7 @@ EvtScript EVS_SearchBush = {
     // read SearchBushConfig
     UseBuf(LVar0)
     BufRead4(LVar1, LVar2, LVar3, LVar4) // bush models, drops, vectors, callback
+    BufRead1(LVar5) // bush type
     Thread
         Call(ShakeFoliageModels, LVar1, SOUND_SEARCH_BUSH, Float(0.1), Float(1.0), LVarF)
     EndThread
@@ -214,7 +215,7 @@ EvtScript EVS_SearchBush = {
 
 EvtScript EVS_ShakeTree = {
     SetTimescale(Float(2.0))
-    // get player Y to find bottom of bush
+    // get player Y to find bottom of tree
     Call(GetGameContext, LVarF)
     IfEq(LVarF, CONTEXT_BATTLE)
         Call(GetActorPos, ACTOR_PLAYER, LVar1, LVarF, LVar2)
