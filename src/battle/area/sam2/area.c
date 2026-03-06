@@ -2,7 +2,6 @@
 
 extern ActorBlueprint A(monstar);
 extern ActorBlueprint A(paragoomba);
-extern ActorBlueprint A(gray_magikoopa);
 
 extern Stage A(sam_01);
 extern Stage A(sam_02);
@@ -19,7 +18,7 @@ Formation A(Formation_01) = {
 
 Formation A(Formation_02) = {
     ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(gray_magikoopa), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("gray_magikoopa", BTL_POS_GROUND_C, 9),
 };
 
 BattleList A(Formations) = {

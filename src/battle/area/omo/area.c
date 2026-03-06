@@ -1,16 +1,7 @@
 #include "area.h"
 
-extern ActorBlueprint A(red_shy_guy);
-extern ActorBlueprint A(blue_shy_guy);
-extern ActorBlueprint A(yellow_shy_guy);
-extern ActorBlueprint A(pink_shy_guy);
-extern ActorBlueprint A(green_shy_guy);
 extern ActorBlueprint A(anti_guy);
-extern ActorBlueprint A(medi_guy);
 extern ActorBlueprint A(groove_guy);
-extern ActorBlueprint A(spy_guy);
-extern ActorBlueprint A(sky_guy);
-extern ActorBlueprint A(pyro_guy);
 
 extern Stage A(omo_01);
 extern Stage A(omo_02);
@@ -23,220 +14,220 @@ extern Stage A(omo_06);
 extern Stage A(omo_07);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(blue_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(blue_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("blue_shy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("blue_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_04) = {
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("pink_shy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("pink_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_05) = {
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_06) = {
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_07) = {
-    ACTOR_BY_IDX(A(blue_shy_guy), BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("blue_shy_guy", BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_08) = {
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_09) = {
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(blue_shy_guy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("blue_shy_guy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_0A) = {
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("pink_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0B) = {
-    ACTOR_BY_IDX(A(pink_shy_guy), BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pink_shy_guy", BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_0C) = {
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0D) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_0E) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0F) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(yellow_shy_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("yellow_shy_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_10) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_11) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_12) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_13) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(green_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("green_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_14) = {
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_15) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_16) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_17) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_18) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_19) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_1A) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_1B) = {
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_1C) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_1D) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_1E) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_1F) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_20) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_21) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_22) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_23) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_24) = {
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spy_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spy_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_25) = {
@@ -252,33 +243,33 @@ Formation A(Formation_26) = {
 
 Formation A(Formation_27) = {
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_28) = {
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_29) = {
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_2A) = {
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(pyro_guy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("pyro_guy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_2B) = {
     ACTOR_BY_IDX(A(groove_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(blue_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(sky_guy), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("blue_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("sky_guy", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_2C) = {

@@ -8,8 +8,7 @@
 
 #define NAMESPACE A(groove_guy)
 
-extern ActorBlueprint A(red_shy_guy);
-extern ActorBlueprint A(medi_guy);
+
 
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
@@ -830,7 +829,7 @@ EvtScript N(EVS_SummonMediGuy) = {
 Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
 
 Formation N(ShyGuyFormation) = {
-    ACTOR_BY_POS(A(red_shy_guy), N(SummonPos), 100),
+    OVL_ACTOR_BY_POS("red_shy_guy", N(SummonPos), 100),
 };
 
 Formation N(GrooveGuyFormation) = {
@@ -838,5 +837,5 @@ Formation N(GrooveGuyFormation) = {
 };
 
 Formation N(MediGuyFormation) = {
-    ACTOR_BY_POS(A(medi_guy), N(SummonPos), 100),
+    OVL_ACTOR_BY_POS("medi_guy", N(SummonPos), 100),
 };

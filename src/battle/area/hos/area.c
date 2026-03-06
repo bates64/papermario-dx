@@ -1,6 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(ember);
 extern ActorBlueprint A(goombario_tutor);
 extern ActorBlueprint A(magikoopa_flying);
 
@@ -13,14 +12,14 @@ Formation A(Formation_00) = {
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(ember), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(ember), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("ember", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("ember", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(ember), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(ember), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(ember), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("ember", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("ember", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("ember", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_03) = {

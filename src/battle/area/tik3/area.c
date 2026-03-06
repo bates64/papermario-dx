@@ -1,8 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(swooper);
-extern ActorBlueprint A(swoopula);
-
 extern Stage A(tik_01);
 extern Stage A(tik_02);
 extern Stage A(tik_03);
@@ -10,25 +7,25 @@ extern Stage A(tik_04);
 extern Stage A(tik_05);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(swooper), BTL_POS_TOP_B, 10),
-    ACTOR_BY_IDX(A(swooper), BTL_POS_TOP_C, 9),
+    OVL_ACTOR_BY_IDX("swooper", BTL_POS_TOP_B, 10),
+    OVL_ACTOR_BY_IDX("swooper", BTL_POS_TOP_C, 9),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(swooper), BTL_POS_TOP_A, 10),
-    ACTOR_BY_IDX(A(swooper), BTL_POS_TOP_B, 9),
-    ACTOR_BY_IDX(A(swooper), BTL_POS_TOP_C, 8),
+    OVL_ACTOR_BY_IDX("swooper", BTL_POS_TOP_A, 10),
+    OVL_ACTOR_BY_IDX("swooper", BTL_POS_TOP_B, 9),
+    OVL_ACTOR_BY_IDX("swooper", BTL_POS_TOP_C, 8),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(swoopula), BTL_POS_TOP_B, 10),
-    ACTOR_BY_IDX(A(swoopula), BTL_POS_TOP_C, 9),
+    OVL_ACTOR_BY_IDX("swoopula", BTL_POS_TOP_B, 10),
+    OVL_ACTOR_BY_IDX("swoopula", BTL_POS_TOP_C, 9),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(swoopula), BTL_POS_TOP_A, 10),
-    ACTOR_BY_IDX(A(swoopula), BTL_POS_TOP_B, 9),
-    ACTOR_BY_IDX(A(swoopula), BTL_POS_TOP_C, 8),
+    OVL_ACTOR_BY_IDX("swoopula", BTL_POS_TOP_A, 10),
+    OVL_ACTOR_BY_IDX("swoopula", BTL_POS_TOP_B, 9),
+    OVL_ACTOR_BY_IDX("swoopula", BTL_POS_TOP_C, 8),
 };
 
 BattleList A(Formations) = {

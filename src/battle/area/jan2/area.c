@@ -1,6 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(putrid_piranha);
 extern ActorBlueprint A(white_magikoopa);
 
 extern Stage A(jan_00);
@@ -13,24 +12,24 @@ extern Stage A(jan_04);
 extern Stage A(jan_04b);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(putrid_piranha), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("putrid_piranha", BTL_POS_GROUND_C, 8),
     ACTOR_BY_IDX(A(white_magikoopa), BTL_POS_GROUND_D, 7),
 };
 

@@ -1,8 +1,6 @@
 #include "area.h"
 
-extern ActorBlueprint A(goomba);
 extern ActorBlueprint A(paragoomba);
-extern ActorBlueprint A(spiked_goomba);
 
 extern Stage A(kmr_02);
 extern Stage A(kmr_03);
@@ -11,66 +9,66 @@ extern Stage A(kmr_05);
 extern Stage A(kmr_06);
 
 Formation A(Formation_00) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_01) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 9 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_02) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_A }, .priority = 10 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 9 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 8 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_03) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_C }, .priority = 9 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_04) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_A }, .priority = 10 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 9 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 8 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_D }, .priority = 7 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_05) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
-    { &A(spiked_goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 9 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_06) = {
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_A }, .priority = 10 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_B }, .priority = 9 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 8 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_D }, .priority = 7 },
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_A, 10),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 8),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_07) = {
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_B }, .priority = 10 },
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 10),
 };
 
 Formation A(Formation_08) = {
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_B }, .priority = 10 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_C }, .priority = 9 },
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 10),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_09) = {
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_A }, .priority = 10 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_B }, .priority = 9 },
-    { &A(paragoomba), .home = { .index = BTL_POS_AIR_C }, .priority = 8 },
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_A, 10),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 9),
+    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0A) = {
-    { &A(spiked_goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
+    OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_0B) = {
-    { &A(spiked_goomba), .home = { .index = BTL_POS_GROUND_B }, .priority = 10 },
-    { &A(goomba), .home = { .index = BTL_POS_GROUND_C }, .priority = 9 },
+    OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 9),
 };
 
 BattleList A(Formations) = {
