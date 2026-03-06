@@ -24,8 +24,6 @@ extern Addr gEffectGlobals;
 
 #include "effects/effect_table.c"
 
-s32 D_8007FEB8[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 5, 3, 4, 13, 60, 0, 512, 0, 0, 3, 0 };
-
 /// Used for unbound function points in effect structs.
 void stub_effect_delegate(EffectInstance* effect) {
 }

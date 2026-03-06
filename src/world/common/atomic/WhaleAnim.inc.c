@@ -137,4 +137,24 @@ void N(unkAngleFunc003)(void) {
     }
 }
 
-#include "world/common/todo/UnkFloatFunc001.inc.c"
+// Similar to CosInterpMinMax
+API_CALLABLE(N(UnkFloatFunc001)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 tvar = *args++;
+    s32 time = evt_get_variable(script, tvar);
+    s32 out = *args++;
+    f32 min = evt_get_float_variable(script, *args++);
+    f32 max = evt_get_float_variable(script, *args++);
+    s32 period = evt_get_variable(script, *args++);
+    b32 oneshot = evt_get_variable(script, *args++);
+    f32 phase = evt_get_float_variable(script, *args++);
+    f32 diff = (max - min) / 2;
+
+    if (oneshot && period < time) {
+        time = period;
+        evt_set_variable(script, tvar, period);
+    }
+
+    evt_set_float_variable(script, out, (min + diff) - (diff * cos_deg(((time * 180.0f) / period) + phase)));
+    return ApiStatus_DONE2;
+}
