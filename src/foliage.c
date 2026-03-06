@@ -132,7 +132,6 @@ API_CALLABLE(ShakeFoliageModels) {
     }
 }
 
-/// @apiparam FoliageDropList* drops
 API_CALLABLE(SpawnFoliageDrops) {
     Bytecode* args = script->ptrReadPos;
     FoliageDropList* list = (FoliageDropList*) evt_get_variable(script, *args++);
@@ -162,7 +161,6 @@ API_CALLABLE(SpawnFoliageDrops) {
     return ApiStatus_DONE2;
 }
 
-/// @apiparam FoliageVectorList* vectors
 API_CALLABLE(SpawnShakeTreeFX) {
     Bytecode* args = script->ptrReadPos;
     FoliageVectorList* list = (FoliageVectorList*) evt_get_variable(script, *args++);
@@ -194,10 +192,8 @@ EvtScript EVS_SearchBush = {
     Call(GetGameContext, LVarF)
     IfEq(LVarF, CONTEXT_BATTLE)
         Call(GetActorPos, ACTOR_PLAYER, LVar1, LVarF, LVar2)
-        // Call(PlaySound, SOUND_SEARCH_BUSH)
     Else
         Call(GetPlayerPos, LVar1, LVarF, LVar2)
-        // Call(PlaySoundAtPlayer, SOUND_SEARCH_BUSH, SOUND_SPACE_DEFAULT)
     EndIf
     // read SearchBushConfig
     UseBuf(LVar0)
@@ -222,12 +218,8 @@ EvtScript EVS_ShakeTree = {
     Call(GetGameContext, LVarF)
     IfEq(LVarF, CONTEXT_BATTLE)
         Call(GetActorPos, ACTOR_PLAYER, LVar1, LVarF, LVar2)
-        // Call(PlaySound, SOUND_SMACK_TREE)
-        // Call(PlaySound, SOUND_SHAKE_TREE_LEAVES)
     Else
         Call(GetPlayerPos, LVar1, LVarF, LVar2) // get player Y (ignore X and Z)
-        // Call(PlaySoundAtPlayer, SOUND_SMACK_TREE, SOUND_SPACE_DEFAULT)
-        // Call(PlaySoundAtPlayer, SOUND_SHAKE_TREE_LEAVES, SOUND_SPACE_DEFAULT)
     EndIf
     // read ShakeTreeConfig
     UseBuf(LVar0)

@@ -1,7 +1,16 @@
-#ifndef _FOLIAGE_H_
-#define _FOLIAGE_H_
+#pragma once
 
 #include "common.h"
+
+// Execute this script to animate a shaking bush and potentially spawn an item from it.
+// Expects a SearchBushConfig on LVar0.
+// Typically used with BindTrigger.
+extern EvtScript EVS_SearchBush;
+
+// Execute this script to animate a shaking tree and potentially spawn items from it.
+// Expects a ShakeTreeConfig on LVar0.
+// Typically used with BindTrigger.
+extern EvtScript EVS_ShakeTree;
 
 typedef enum BushType {
     BUSH_TYPE_STANDARD  = 0,
@@ -51,8 +60,3 @@ typedef struct ShakeTreeConfig {
     EvtScript* callback;
     TreeType type;
 } ShakeTreeConfig;
-
-extern EvtScript EVS_SearchBush;
-extern EvtScript EVS_ShakeTree;
-
-#endif
