@@ -136,7 +136,6 @@ void pause_map_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s
     s32 i, j;
     s32 tileHeight;
     s32 x1, y1, x2, y2;
-    s32 x1a, y1a, x2a, y2a;
     s32 posX, posY;
     s32 ult;
     PauseMapSpace* mapSpace;

@@ -887,7 +887,6 @@ void reload_world_entity_data(void) {
                 animData = (void*)(gEntityHeapBottom + temp1 * 4);
                 entity_swizzle_anim_pointers(bp, animData, gfxData);
             } else {
-                s32 temp5;
                 s32 q;
 
                 dataLength = ((dmaList[0].end - dmaList[0].start) >> 2);
@@ -948,7 +947,6 @@ s32 is_entity_data_loaded(Entity* entity, EntityBlueprint* blueprint, s32* loade
     EntityBlueprint** blueprints;
     s32 i;
     s32 ret;
-    s32 size;
     DmaEntry* entDmaList;
 
     *loadedStart = 0;
@@ -1009,7 +1007,6 @@ void load_simple_entity_data(Entity* entity, EntityBlueprint* bp, s32 listIndex)
     s32 loadedStart;
     s32 loadedEnd;
     s32 entitySize;
-    u32 temp;
     s32 totalSize;
 
     entity->vertexSegment = 0xA;

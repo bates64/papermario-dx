@@ -9,7 +9,6 @@ enum {
 };
 
 void N(GetFirstTriangleNormal)(Gfx* inGfx, f32* outNx, f32* outNy, f32* outNz) {
-    s32 dummy[2];
     Gfx* gfx = inGfx;
     s32 readState;
     f32 v1x, v1y, v1z;

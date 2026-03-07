@@ -1046,7 +1046,7 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
             triangle->normal.y = gEntityColliderNormals[j].y;
             triangle->normal.z = gEntityColliderNormals[j].z;
 
-            if (hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices)) {
+            if ((hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices))) {
                 break;
             }
         }

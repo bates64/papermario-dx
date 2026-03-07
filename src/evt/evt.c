@@ -1197,7 +1197,6 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     Evt* newScript;
     s32 nargs;
     s32 opcode;
-    s32 i;
 
     Bytecode* startLine = script->ptrNextLine;
     Bytecode* endLine = startLine;

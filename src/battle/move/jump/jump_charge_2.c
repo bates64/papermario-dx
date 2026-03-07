@@ -18,7 +18,6 @@ API_CALLABLE(N(func_802A1108_74D678)) {
     s32 var1 = evt_get_variable(script, *args++);
     s32 var2 = evt_get_variable(script, *args++);
     s32 var3 = evt_get_variable(script, *args++);
-    s32* var4;
 
     fx_stat_change(2, var1, var2, var3, 1.0f, 60);
 

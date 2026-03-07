@@ -255,7 +255,6 @@ API_CALLABLE(N(JumpOnTarget)) {
 }
 
 API_CALLABLE(N(OnMissHeadbonk)) {
-    BattleStatus* battleStatus = &gBattleStatus;
     Actor* partner = gBattleStatus.partnerActor;
     Vec3f* pos = &partner->state.curPos;
 

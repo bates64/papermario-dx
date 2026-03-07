@@ -51,7 +51,7 @@ void N(worker_draw_fake_player)(void) {
 
 void N(appendGfx_fake_player)(void* data) {
     Npc* npc = data;
-    Matrix4f mtxTransform, mtxTranslate, sp98, mtxScale;
+    Matrix4f mtxTransform, mtxTranslate, mtxScale;
 
     npc_get_render_yaw(npc);
     guRotateF(mtxTransform, npc->renderYaw + gCameras[gCurrentCamID].curYaw, 0.0f, 1.0f, 0.0f);

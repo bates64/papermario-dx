@@ -2498,7 +2498,6 @@ void func_801363A0(ItemEntity* item) {
     s32 offsetY;
     s32 posY;
     s32 height;
-    s32 v1;
 
     switch (item->state) {
         case ITEM_PICKUP_STATE_SHOW_GOT_ITEM:

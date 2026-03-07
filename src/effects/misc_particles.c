@@ -303,7 +303,6 @@ void misc_particles_appendGfx(void* effect) {
     s32 variation = particle->variation;
     f32 alphaScale = (particle->innerColor.a / 255.0f) * particle->scale;
     Matrix4f mtxTransform;
-    Matrix4f unused;
     s32 i;
 
     gDPPipeSync(gMainGfxPos++);

@@ -903,7 +903,7 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
         }
     }
 
-    if (yaw > 90 && yaw <= 270 || yaw >= -270 && yaw < -90) {
+    if ((yaw > 90 && yaw <= 270) || (yaw >= -270 && yaw < -90)) {
         zscale = -1.5f;
     } else {
         zscale = 1.5f;
@@ -1125,7 +1125,7 @@ s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* pal
         }
     }
 
-    if (yaw > 90 && yaw <= 270 || yaw >= -270 && yaw < -90) {
+    if ((yaw > 90 && yaw <= 270) || (yaw >= -270 && yaw < -90)) {
         zscale = -1.5f;
     } else {
         zscale = 1.5f;

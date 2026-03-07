@@ -196,7 +196,6 @@ void lightning_bolt_appendGfx(void* effect) {
     f32 deltaX, deltaY, deltaZ;
     LightningBoltFXData* data = ((EffectInstance*)effect)->data.lightningBolt;
     Matrix4f sp10;
-    Matrix4f unused;
     s32 i;
     f32 edgeLength;
 

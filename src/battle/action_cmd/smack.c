@@ -113,7 +113,6 @@ void N(update)(void) {
     Actor* partnerActor = battleStatus->partnerActor;
     HudElemID hid;
     s32 cutoff;
-    s32 idx;
 
     switch (acs->state) {
         case AC_STATE_INIT:

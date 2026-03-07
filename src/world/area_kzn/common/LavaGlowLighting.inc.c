@@ -19,7 +19,6 @@ API_CALLABLE(N(ApplyLavaGlowLighting)) {
     s32 glowMode = evt_get_variable(script, *args++);
     ModelIDList* modelIDs = (ModelIDList*) evt_get_variable(script, *args++);
     f32 deltaX;
-    f32 scale;
     s32 fogStart;
     f32 baseAlpha;
     f32 slowOsc, fastOsc;

@@ -24,8 +24,6 @@ EffectInstance* fire_breath_main(
     FireBreathFXData* data;
     EffectInstance* effect;
     s32 numParts = 1;
-    s32* temp_a0;
-    f32 phi_f0;
 
     bp.unk_00 = 0;
     bp.init = fire_breath_init;

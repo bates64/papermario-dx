@@ -30,7 +30,6 @@ BSS s8 D_802700D[7]; //padding
 
 static s32 gPauseTutorialFrameCounter;
 #if !VERSION_IQUE
-static s32 D_802700E4;
 #endif
 static HudElemID gPauseCommonHIDs[8];
 static s32 gPauseShownDescMsg;
@@ -257,7 +256,6 @@ void pause_set_cursor_pos(s32 windowID, s32 posX, s32 posY) {
 void pause_interp_cursor(void) {
     s32 xDelta;
     s32 yDelta;
-    s32* opacity;
 
     xDelta = (gPauseCursorTargetPosX - gPauseCursorPosX) * 0.5;
     yDelta = (gPauseCursorTargetPosY - gPauseCursorPosY) * 0.5;
@@ -720,7 +718,7 @@ void pause_handle_input(s32 pressed, s32 held) {
     s32 width;
     s32 maxLineChars;
     s32 numLines;
-    s32 i,j;
+    s32 i;
     MenuPanel** menuPanels;
     s32 currentDescMsg = gPauseCurrentDescMsg;
     MenuPanel* currentPanel = gPausePanels[gPauseMenuCurrentTab];
@@ -737,7 +735,7 @@ void pause_handle_input(s32 pressed, s32 held) {
         pause_tutorial_input(&gPausePressedButtons, &gPauseHeldButtons);
     }
 
-    if ((gPausePressedButtons & BUTTON_START) || (gPauseMenuCurrentTab == 0) && (gPausePressedButtons & BUTTON_B)) {
+    if ((gPausePressedButtons & BUTTON_START) || ((gPauseMenuCurrentTab == 0) && (gPausePressedButtons & BUTTON_B))) {
         enforce_hpfp_limits();
         sfx_play_sound(SOUND_MENU_CLOSE);
         set_game_mode(GAME_MODE_UNPAUSE);

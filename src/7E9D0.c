@@ -546,7 +546,7 @@ void peach_check_for_parasol_input(void) {
                     }
                 }
             }
-        } else if (gGameStatusPtr->peachFlags & PEACH_FLAG_HAS_PARASOL && playerStatus->pressedButtons & BUTTON_B) {
+        } else if ((gGameStatusPtr->peachFlags & PEACH_FLAG_HAS_PARASOL) && (playerStatus->pressedButtons & BUTTON_B)) {
             set_action_state(ACTION_STATE_USE_SNEAKY_PARASOL);
         }
     }

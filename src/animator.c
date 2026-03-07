@@ -411,7 +411,6 @@ AnimatorNode* add_anim_node(ModelAnimator* animator, s32 parentNodeID, AnimatorN
     AnimatorNode* ret;
     AnimatorNode* child;
     s32 nextUniqueID;
-    s32 nullRootNode;
     s32 i;
 
     ret = heap_malloc(sizeof(*ret));

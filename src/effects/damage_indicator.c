@@ -153,7 +153,6 @@ void damage_indicator_update(EffectInstance* effect) {
 
     part++;
     for (i = 1; i < effect->numParts; i++, part++) {
-        f32 x, y, z;
 
         if (timeLeft > 5) {
             part->relPos.x = part->relPos.x * 0.75;

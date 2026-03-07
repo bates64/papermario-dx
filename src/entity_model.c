@@ -72,7 +72,6 @@ void clear_entity_models(void) {
 }
 
 void init_entity_models(void) {
-    s32 i;
 
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         gCurrentEntityModelList = &gWorldEntityModelList;

@@ -44,7 +44,6 @@ void action_update_state_23(void) {
     f32 miscTempVariable;
     f32 playerXOffset;
     f32 playerZOffset;
-    f32 zDelta;
     f32 playerOffsetTempVar;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

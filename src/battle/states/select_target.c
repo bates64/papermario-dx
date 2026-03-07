@@ -246,8 +246,6 @@ void btl_state_update_select_target(void) {
 void btl_state_draw_select_target(void) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 msgID;
-    s32 msgX;
-    s32 msgY;
     s32 targetListLength;
     s32 currentPartner;
     s32 actorID;

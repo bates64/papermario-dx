@@ -1664,8 +1664,6 @@ s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle)
 
 void render_transformed_hud_elements(void) {
     s32 sortedElements[ARRAY_COUNT(*gHudElements)];
-    HudElement* hudElement;
-    s32 flags;
     s32 count, i;
 
     if (gCurrentCamID == CAM_HUD) {

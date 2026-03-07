@@ -388,7 +388,7 @@ void entity_HeartBlock_wait_for_close_tutorial(Entity* entity) {
     }
 }
 
-s8 entity_HeartBlock_create_child_entity(Entity* entity, EntityBlueprint* bp) {
+void entity_HeartBlock_create_child_entity(Entity* entity, EntityBlueprint* bp) {
     s32 useAltSparkleType = CreateEntityVarArgBuffer[0];
     Entity* childEntity;
     HeartBlockContentData* data;

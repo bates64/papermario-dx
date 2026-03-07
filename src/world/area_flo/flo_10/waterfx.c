@@ -14,7 +14,6 @@ EvtScript N(EVS_SetupWaterEffect) = {
 
 void N(UnkModelFunc000)(s32 x1, s32 y1, s32 x2, s32 y2) {
     s32 i;
-    f32 f0;
     s32 n, m;
     u16* img;
     s32 alpha;

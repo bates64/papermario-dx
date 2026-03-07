@@ -17,7 +17,6 @@ void fire_flower_render(EffectInstance* effect);
 
 EffectInstance* fire_flower_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
     EffectBlueprint bp;
-    EffectBlueprint* bpPtr = &bp;
     EffectInstance* effect;
     FireFlowerFXData* part;
     Vec3i* partData;

@@ -316,9 +316,8 @@ void N(card_worker_update)(void) {
     f32 sp48, sp4C, sp50, sp54;
     f32 sp58, sp5C, sp60, sp64;
     f32 sp68, sp6C, sp70, sp74;
-    EffectInstance* effect;
     EnergyInOutFXData* data;
-    s32 i, j;
+    s32 j;
 
     switch (evt_get_variable(N(CreatorScript), RITUAL_VAR_STATE)) {
         case RITUAL_STATE_INIT:
