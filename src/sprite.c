@@ -1068,7 +1068,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     s32 i = spriteInstanceID & 0xFF;
     s32 animIndex = SPR_UNPACK_ANIM(animID);
 
-    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %x", spriteInstanceID);
+    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %lx", spriteInstanceID);
 
     compList = SpriteInstances[i].componentList;
     spriteData = SpriteInstances[i].spriteData;
