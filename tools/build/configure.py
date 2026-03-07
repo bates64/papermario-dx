@@ -265,6 +265,12 @@ def write_ninja_rules(
     )
 
     ninja.rule(
+        "gen_areas",
+        description="Generating area/map tables",
+        command=f"$python {BUILD_TOOLS}/gen_areas.py $out $src_dir --asset-stack $asset_stack",
+    )
+
+    ninja.rule(
         "world_map",
         description="Generating world map",
         command=f"$python {BUILD_TOOLS}/world_map.py $in $out",
@@ -667,6 +673,16 @@ class Configure:
             self.build_path() / "include/world_map.inc.c",
             [Path("src/world_map.xml")],
             "world_map",
+        )
+
+        build(
+            self.build_path() / "include/world/gAreas.inc.c",
+            [],
+            "gen_areas",
+            variables={
+                "src_dir": "src/world",
+                "asset_stack": ",".join(self.asset_stack),
+            },
         )
 
         if self.version == "jp":
@@ -1492,7 +1508,7 @@ class Configure:
     def find_overlays(self) -> List[Tuple[Path, int]]:
         overlay_types = [
             "battle/actor/*",
-            "world/area_*/*/",
+            "world/area/*/*/",
         ]
 
         # Collect overlays keyed by (type_index, name). Later entries in the
@@ -1508,6 +1524,15 @@ class Configure:
             for type_index, glob_str in enumerate(overlay_types):
                 for match in search_dir.glob(glob_str, case_sensitive=True):
                     if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
+                        continue
+                    # Skip asset directories that contain no compilable source files
+                    # (only .inc.c/.inc.cpp), so they don't shadow src/ overlays
+                    if match.is_dir() and not any(
+                        f.suffix in (".c", ".cpp")
+                        and not f.name.endswith(".inc.c")
+                        and not f.name.endswith(".inc.cpp")
+                        for f in match.iterdir()
+                    ):
                         continue
                     found[(type_index, match.stem)] = (match, type_index)
 

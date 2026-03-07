@@ -133,7 +133,6 @@ void state_step_end_battle(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     MapSettings* mapSettings;
-    MapConfig* mapConfig;
 
     if (BattleTransitionDelay >= 0) {
         BattleTransitionDelay--;
@@ -144,7 +143,6 @@ void state_step_end_battle(void) {
             nuContRmbForceStopEnd();
             sfx_stop_env_sounds();
             mapSettings = get_current_map_settings();
-            mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
             btl_restore_world_cameras();
             gGameStatusPtr->context = CONTEXT_WORLD;
             func_8005AF84();
@@ -184,9 +182,9 @@ void state_step_end_battle(void) {
                 initialize_collision();
                 restore_map_collision_data();
 
-                load_map_bg(mapConfig->bgName);
-                if (mapSettings->background != nullptr) {
-                    set_background(mapSettings->background);
+                if (mapSettings->bgName != nullptr) {
+                    load_map_bg(wMapBgName);
+                    set_background(&gBackgroundImage);
                 } else {
                     set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
                         SCREEN_INSET_X, SCREEN_INSET_Y);

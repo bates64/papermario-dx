@@ -694,7 +694,8 @@ const s32 MapSizeX = 50;
 void dx_debug_update_select_area() {
     s32 i, j, idx;
     s32 nrows, ncols;
-    s32 numAreas = ARRAY_COUNT(gAreas) - 1;
+    s32 numAreas;
+    for (numAreas = 0; gAreas[numAreas].maps != nullptr; numAreas++) {}
     s32 prev = SelectAreaMenuPos;
 
     // select optimal shape for the menu based on numAreas
@@ -748,7 +749,7 @@ void dx_debug_update_select_area() {
         for (j = 0; j < nrows; j++) {
             if (idx < numAreas) {
                 s32 color = (SelectAreaMenuPos == idx) ? HighlightColor : DefaultColor;
-                char* name = &(gAreas[idx].id)[5]; // trim "area_" prefix
+                char* name = gAreas[idx].id;
                 dx_debug_draw_ascii(name, color, SubmenuPosX + i * AreaSizeX, SubmenuPosY + (j + 1) * RowHeight);
             }
             idx++;
