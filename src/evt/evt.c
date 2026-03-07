@@ -1124,6 +1124,7 @@ s32 evt_trigger_on_activate_lock(Trigger* trigger) {
         trigger->runningScript = nullptr;
         trigger->flags &= ~TRIGGER_ACTIVATED;
     }
+    return 0;
 }
 
 ApiStatus evt_handle_bind_lock(Evt* script) {

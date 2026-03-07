@@ -1416,7 +1416,7 @@ if __name__ == "__main__":
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
-    extra_cflags += " -Wreturn-type"
+    extra_cflags += " -Werror=return-type"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
