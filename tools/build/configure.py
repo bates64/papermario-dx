@@ -1800,10 +1800,13 @@ if __name__ == "__main__":
 
     # Generator rule: re-run configure.py when inputs change.
     # Directory deps ensure new source files trigger a reconfigure.
+    argv = list(sys.argv)
+    if "--clean" in argv:
+        argv.remove("--clean")
     ninja.rule(
         "configure",
         description="Reconfiguring build.ninja",
-        command=f"{sys.executable} {' '.join(sys.argv)}",
+        command=f"{sys.executable} {' '.join(argv)}",
         generator=True,
         pool="console",
     )
