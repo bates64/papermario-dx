@@ -7,8 +7,6 @@
 #include "game_modes.h"
 #include "battle/states/states.h"
 
-extern "C" {
-
 BSS StageListRow* gCurrentStagePtr;
 BSS s32 gBattleState;
 BSS BattleStatus gBattleStatus;
@@ -21,18 +19,8 @@ BSS s32 gCurrentStageID;
 BSS Battle* gOverrideBattlePtr;
 BSS Battle* gCurrentBattlePtr;
 
-
-#define BTL_AREA(id, debugName) { \
-    .name = debugName, \
-    .dmaStart = battle_area_##id##_ROM_START, \
-    .dmaEnd = battle_area_##id##_ROM_END, \
-    .dmaDest = battle_area_##id##_VRAM, \
-    .battles = &battle::area::id::Battles, \
-    .stages = &battle::area::id::Stages, \
-}
-
 // standard battle area table entry
-#define BTL_AREA_C(id, debugName) { \
+#define BTL_AREA(id, debugName) { \
     .name = debugName, \
     .dmaStart = battle_area_##id##_ROM_START, \
     .dmaEnd = battle_area_##id##_ROM_END, \
@@ -66,46 +54,46 @@ BSS Battle* gCurrentBattlePtr;
 /// - FormationNames in battle_names.h
 /// - battle_tables.h
 BattleArea gBattleAreas[] = {
-    BTL_AREA_C(kmr_part_1, "KMR Part 1"),
-    BTL_AREA_C(kmr_part_2, "エリア ＫＭＲ その２"),
-    BTL_AREA_C(kmr_part_3, "エリア ＫＭＲ その３"),
-    BTL_AREA_C(mac, "エリア ＭＡＣ"),
-    BTL_AREA_C(hos, "エリア ＨＯＳ"),
-    BTL_AREA_C(nok, "エリア ＮＯＫ"),
-    BTL_AREA_C(trd_part_1, "エリア ＴＲＤ その１"),
-    BTL_AREA_C(trd_part_2, "エリア ＴＲＤ その２"),
-    BTL_AREA_C(trd_part_3, "エリア ＴＲＤ その３"),
-    BTL_AREA_C(iwa, "エリア ＩＷＡ"),
-    BTL_AREA_C(sbk, "エリア ＳＢＫ"),
-    BTL_AREA_C(isk_part_1, "エリア ＩＳＫ その１"),
-    BTL_AREA_C(isk_part_2, "エリア ＩＳＫ その２"),
-    BTL_AREA_C(mim, "エリア ＭＩＭ"),
-    BTL_AREA_C(arn, "エリア ＡＲＮ"),
-    BTL_AREA_C(dgb, "エリア ＤＧＢ"),
-    BTL_AREA_C(omo, "エリア ＯＭＯ"),
-    BTL_AREA_C(omo2, "エリア ＯＭＯ２"),
-    BTL_AREA_C(omo3, "エリア ＯＭＯ３"),
-    BTL_AREA_C(kgr, "エリア ＫＧＲ"),
-    BTL_AREA_C(jan, "エリア ＪＡＮ"),
-    BTL_AREA_C(jan2, "エリア ＪＡＮ２"),
-    BTL_AREA_C(kzn, "エリア ＫＺＮ"),
+    BTL_AREA(kmr_part_1, "KMR Part 1"),
+    BTL_AREA(kmr_part_2, "エリア ＫＭＲ その２"),
+    BTL_AREA(kmr_part_3, "エリア ＫＭＲ その３"),
+    BTL_AREA(mac, "エリア ＭＡＣ"),
+    BTL_AREA(hos, "エリア ＨＯＳ"),
+    BTL_AREA(nok, "エリア ＮＯＫ"),
+    BTL_AREA(trd_part_1, "エリア ＴＲＤ その１"),
+    BTL_AREA(trd_part_2, "エリア ＴＲＤ その２"),
+    BTL_AREA(trd_part_3, "エリア ＴＲＤ その３"),
+    BTL_AREA(iwa, "エリア ＩＷＡ"),
+    BTL_AREA(sbk, "エリア ＳＢＫ"),
+    BTL_AREA(isk_part_1, "エリア ＩＳＫ その１"),
+    BTL_AREA(isk_part_2, "エリア ＩＳＫ その２"),
+    BTL_AREA(mim, "エリア ＭＩＭ"),
+    BTL_AREA(arn, "エリア ＡＲＮ"),
+    BTL_AREA(dgb, "エリア ＤＧＢ"),
+    BTL_AREA(omo, "エリア ＯＭＯ"),
+    BTL_AREA(omo2, "エリア ＯＭＯ２"),
+    BTL_AREA(omo3, "エリア ＯＭＯ３"),
+    BTL_AREA(kgr, "エリア ＫＧＲ"),
+    BTL_AREA(jan, "エリア ＪＡＮ"),
+    BTL_AREA(jan2, "エリア ＪＡＮ２"),
+    BTL_AREA(kzn, "エリア ＫＺＮ"),
     BTL_AREA_DMA(kzn2, "エリア ＫＺＮ２"),
-    BTL_AREA_C(flo, "エリア ＦＬＯ"),
-    BTL_AREA_C(flo2, "エリア ＦＬＯ２"),
-    BTL_AREA_C(tik, "エリア ＴＩＫ"),
-    BTL_AREA_C(tik2, "エリア ＴＩＫ２"),
-    BTL_AREA_C(tik3, "エリア ＴＩＫ３"),
-    BTL_AREA_C(sam, "エリア ＳＡＭ"),
-    BTL_AREA_C(sam2, "エリア ＳＡＭ２"),
-    BTL_AREA_C(pra, "エリア ＰＲＡ"),
-    BTL_AREA_C(pra2, "エリア ＰＲＡ２"),
-    BTL_AREA_C(pra3, "エリア ＰＲＡ３"),
-    BTL_AREA_C(kpa, "エリア ＫＰＡ"),
-    BTL_AREA_C(kpa2, "エリア ＫＰＡ２"),
-    BTL_AREA_C(kpa3, "エリア ＫＰＡ３"),
-    BTL_AREA_C(kpa4, "エリア ＫＰＡ４"),
-    BTL_AREA_C(kkj, "エリア ＫＫＪ"),
-    BTL_AREA_C(dig, "エリア ＤＩＧ"),
+    BTL_AREA(flo, "エリア ＦＬＯ"),
+    BTL_AREA(flo2, "エリア ＦＬＯ２"),
+    BTL_AREA(tik, "エリア ＴＩＫ"),
+    BTL_AREA(tik2, "エリア ＴＩＫ２"),
+    BTL_AREA(tik3, "エリア ＴＩＫ３"),
+    BTL_AREA(sam, "エリア ＳＡＭ"),
+    BTL_AREA(sam2, "エリア ＳＡＭ２"),
+    BTL_AREA(pra, "エリア ＰＲＡ"),
+    BTL_AREA(pra2, "エリア ＰＲＡ２"),
+    BTL_AREA(pra3, "エリア ＰＲＡ３"),
+    BTL_AREA(kpa, "エリア ＫＰＡ"),
+    BTL_AREA(kpa2, "エリア ＫＰＡ２"),
+    BTL_AREA(kpa3, "エリア ＫＰＡ３"),
+    BTL_AREA(kpa4, "エリア ＫＰＡ４"),
+    BTL_AREA(kkj, "エリア ＫＫＪ"),
+    BTL_AREA(dig, "エリア ＤＩＧ"),
     BTL_AREA_AUX(omo2_1, "エリア ＯＭＯ２＿１"),
     BTL_AREA_AUX(omo2_2, "エリア ＯＭＯ２＿２"),
     BTL_AREA_AUX(omo2_3, "エリア ＯＭＯ２＿３"),
@@ -130,7 +118,7 @@ void load_battle_section(void) {
     BattleArea* battleArea = &gBattleAreas[UNPACK_BTL_AREA(gCurrentBattleID)];
     s32 battleIdx = UNPACK_BTL_INDEX(gCurrentBattleID);
 
-    dma_copy((u8*)battleArea->dmaStart, (u8*)battleArea->dmaEnd, (u8*)battleArea->dmaDest);
+    dma_copy(battleArea->dmaStart, battleArea->dmaEnd, battleArea->dmaDest);
 
     gCurrentBattlePtr = &(*battleArea->battles)[battleIdx];
 
@@ -325,5 +313,3 @@ void load_demo_battle(u32 index) {
     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
     load_battle(battleID);
 }
-
-} // extern "C"

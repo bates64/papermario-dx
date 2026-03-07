@@ -350,7 +350,7 @@ segments:
     - [auto, hasm, os/decode_yay0]
     - [auto, c, os/osFlash]
     - [0x4AC90, pm_effect_loads, effect_loads]
-    - [auto, cpp, battle/battle]
+    - [auto, c, battle/battle]
     - [0x4E5A0, bin, n_aspMain_text]
     - start: 0x4F200
       type: .data
