@@ -1,6 +1,6 @@
 #include "kmr_02.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_kusa1);
 
@@ -96,15 +96,15 @@ BombTrigger N(BombPos_Tree1) = {
 
 EvtScript N(EVS_SetupFoliage) = {
     Set(LVar0, Ref(N(SearchBush_Bush1)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o356, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o356, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush2)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o357, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o357, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush3)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o414, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o414, 1, 0)
     Set(GF_KMR02_Tree1_Goomnut, false)
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o570, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o570, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     Return
     End
 };

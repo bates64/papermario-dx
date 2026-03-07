@@ -1,7 +1,7 @@
 #include "jan_00.h"
 #include "effects.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o241, MODEL_o242);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o240);
@@ -32,8 +32,8 @@ BombTrigger N(D_80247A1C_B27F5C) = {
 EvtScript N(EVS_80247A2C) = {
     Set(AF_JAN00_TreeDrop1, false)
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o282, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(D_80247A1C_B27F5C)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o282, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(D_80247A1C_B27F5C)), 1, 0)
     Return
     End
 };

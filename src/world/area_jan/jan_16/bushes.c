@@ -1,8 +1,5 @@
 #include "jan_16.h"
-
-#define NAME_SUFFIX _Bushes
-#include "common/foliage.inc.c"
-#define NAME_SUFFIX
+#include "foliage.h"
 
 FoliageModelList N(Bush1_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o63);
 
@@ -62,13 +59,13 @@ SearchBushConfig N(SearchBush_Bush4) = {
 
 EvtScript N(EVS_SetupBushes) = {
     Set(LVar0, Ref(N(SearchBush_Bush1)))
-    BindTrigger(Ref(N(EVS_SearchBush_Bushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o126, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o126, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush2)))
-    BindTrigger(Ref(N(EVS_SearchBush_Bushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o127, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o127, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush3)))
-    BindTrigger(Ref(N(EVS_SearchBush_Bushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o128, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush4)))
-    BindTrigger(Ref(N(EVS_SearchBush_Bushes)), TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o129, 1, 0)
     Return
     End
 };

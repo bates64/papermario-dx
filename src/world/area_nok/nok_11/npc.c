@@ -7,7 +7,7 @@
 #include "world/common/npc/JrTroopa.inc.c"
 #include "world/common/enemy/KentCKoopa.inc.c"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 EvtScript N(EVS_JrTroopa_RunFX) = {
     Loop(0)
@@ -48,7 +48,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Call(SetCamProperties, CAM_DEFAULT, Float(90.0), -190, 0, -40, 200, Float(15.0), Float(-8.5))
     Wait(15 * DT)
     Set(LVar0, Ref(N(SearchBush_Scene)))
-    Exec(N(EVS_SearchBush))
+    Exec(EVS_SearchBush)
     Wait(15 * DT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(SetNpcJumpscale, NPC_SELF, Float(1.0))

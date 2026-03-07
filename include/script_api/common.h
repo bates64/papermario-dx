@@ -1151,6 +1151,12 @@ API_CALLABLE(ClampAngleFloat);
 API_CALLABLE(GetLanguage);
 #endif
 
+/// Get current @ref GameContext from @ref GameStatus
+/// Use this to tell whether the script is executing in world or battle.
+/// @evtapi
+/// @param (out) GameContext
+API_CALLABLE(GetGameContext);
+
 /// @}
 
 /// @{

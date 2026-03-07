@@ -761,12 +761,12 @@ API_CALLABLE(PlaySoundAtModel) {
     Bytecode* args = script->ptrReadPos;
     s32 modelID = evt_get_variable(script, *args++);
     s32 soundID = evt_get_variable(script, *args++);
-    s32 var3 = evt_get_variable(script, *args++);
+    s32 soundSpace = evt_get_variable(script, *args++);
     f32 x, y, z;
     f32 sx, sy, sz;
 
     get_model_center_and_size(modelID, &x, &y, &z, &sx, &sy, &sz);
-    sfx_play_sound_at_position(soundID, var3, x, y, z);
+    sfx_play_sound_at_position(soundID, soundSpace, x, y, z);
 
     return ApiStatus_DONE2;
 }

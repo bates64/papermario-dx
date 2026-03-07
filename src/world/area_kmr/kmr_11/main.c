@@ -1,8 +1,5 @@
 #include "kmr_11.h"
-
-#define NAME_SUFFIX _Scripted
-#include "common/foliage.inc.c"
-#define NAME_SUFFIX
+#include "foliage.h"
 
 API_CALLABLE(N(SetupFog)) {
     set_world_fog_dist(980, 1000);
@@ -137,7 +134,7 @@ EvtScript N(EVS_Main) = {
         Wait(1)
     EndIf
     Set(LVar0, Ref(N(SearchBush_SwitchBush)))
-    BindTrigger(Ref(N(EVS_SearchBush_Scripted)), TRIGGER_WALL_PRESS_A, COLLIDER_kusa4, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_kusa4, 1, 0)
     Call(SetGroupVisibility, MODEL_event_cam, MODEL_GROUP_HIDDEN)
     Call(TranslateGroup, MODEL_g172, NPC_DISPOSE_LOCATION)
     Call(TranslateGroup, MODEL_g173, NPC_DISPOSE_LOCATION)
