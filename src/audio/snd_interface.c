@@ -863,7 +863,6 @@ void snd_song_clear_music_events(void) {
     globals->musicEventQueuePos = globals->musicEventQueue;
 }
 
-static const f32 padding[] = {0.0f};
 
 void snd_register_callback(AuCallback func, s32 index) {
     gSoundGlobals->audioThreadCallbacks[index] = func;

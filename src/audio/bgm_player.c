@@ -1501,7 +1501,6 @@ void au_bgm_player_update_playing(BGMPlayer *player) {
     }
 }
 
-static const f32 padding[] = {0.0f}; // at least after au_bgm_player_audio_frame_update
 
 void au_BGMCmd_E0_MasterTempo(BGMPlayer* player, BGMPlayerTrack* track) {
     u32 bpm = player->seqCmdArgs.MasterTempo.value;

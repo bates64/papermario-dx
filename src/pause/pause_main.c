@@ -895,4 +895,3 @@ void pause_sort_item_list(s16* arr, s32 len, s32 (*compare)(s16*, s16 *)) {
     }
 }
 
-static const f32 rodata_padding[] = {0.0f, 0.0f, 0.0f};

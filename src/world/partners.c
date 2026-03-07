@@ -1700,7 +1700,6 @@ void partner_walking_follow_player(Npc* partner) {
     }
 }
 
-static const f32 padding = 0.0f;
 
 void partner_flying_enable(Npc* partner, s32 val) {
     PlayerPathElement* it = gPlayerMoveHistory;
