@@ -1,15 +1,24 @@
- // global heap, unlike general heap it is not wiped between maps/battles
+// global heap, unlike general heap it is not wiped between maps/battles
 
 #include "common.h"
+#include "ld_addrs.h"
+
+#define RAM_END 0x80800000
 
 static bool heapCreated = false;
-static BSS HeapNode heap[1000]; // TODO: move to a new segment and increase size
+static HeapNode* heap;
 
-extern "C" void* malloc(size_t size) {
+static void ensure_heap(void) {
     if (!heapCreated) {
-        _heap_create(heap, sizeof(heap));
+        heap = (HeapNode*)&heaps3_VRAM_END;
+        u32 size = RAM_END - (u32)heap;
+        _heap_create(heap, size);
         heapCreated = true;
     }
+}
+
+extern "C" void* malloc(size_t size) {
+    ensure_heap();
     return _heap_malloc(heap, size);
 }
 
@@ -22,6 +31,7 @@ extern "C" void* realloc(void* ptr, size_t size) {
 }
 
 extern "C" void* calloc(size_t nmemb, size_t size) {
+    ensure_heap();
     size_t total = nmemb * size;
     void* ptr = _heap_malloc(heap, total);
     if (ptr != nullptr) {
