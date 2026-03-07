@@ -27,6 +27,23 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
+
+SOURCE_DIRS = ["src", "include", "assets"]
+
+def _walk_source_file_list():
+    """Returns a sorted list of all files and directories under SOURCE_DIRS."""
+    file_list = []
+    for top in SOURCE_DIRS:
+        top_path = ROOT / top
+        if not top_path.exists():
+            continue
+        for dirpath, dirnames, filenames in os.walk(top_path):
+            dirnames.sort()
+            rel = Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else Path(dirpath)
+            file_list.append(str(rel) + "/")
+            for f in sorted(filenames):
+                file_list.append(str(rel / f))
+    return file_list
 CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 PIGMENT64 = "pigment64"
@@ -1649,6 +1666,11 @@ if __name__ == "__main__":
     )
     parser.add_argument("--no-ccache", action="store_true", help="Use ccache")
     parser.add_argument(
+        "--incremental",
+        action="store_true",
+        help="Exit early if no source files were added or deleted (used by generator rule)",
+    )
+    parser.add_argument(
         "--c-maps",
         action="store_true",
         help="Convert map binaries to C as part of the build process",
@@ -1657,6 +1679,13 @@ if __name__ == "__main__":
     args.shift = not args.no_shift
     args.non_matching = not args.no_non_matching
     args.ccache = not args.no_ccache
+
+    if args.incremental:
+        stamp = ROOT / "build" / "source_files.stamp"
+        file_list = _walk_source_file_list()
+        new_content = "\n".join(file_list) + "\n"
+        if stamp.exists() and stamp.read_text() == new_content:
+            exit(0)
 
     version_err_msg = ""
     missing_tools = []
@@ -1799,10 +1828,11 @@ if __name__ == "__main__":
     ninja.default("all")
 
     # Generator rule: re-run configure.py when inputs change.
-    # Directory deps ensure new source files trigger a reconfigure.
     argv = list(sys.argv)
     if "--clean" in argv:
         argv.remove("--clean")
+    if "--incremental" not in argv:
+        argv.append("--incremental")
     ninja.rule(
         "configure",
         description="Reconfiguring build.ninja",
@@ -1828,3 +1858,9 @@ if __name__ == "__main__":
             configure_deps.append(str(Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else dirpath))
 
     ninja.build("build.ninja", "configure", str(BUILD_TOOLS / "configure.py"), implicit=configure_deps)
+
+    # Write the source file stamp after all work (including splat which may produce
+    # files under assets/) so the stamp reflects the final state.
+    stamp = ROOT / "build" / "source_files.stamp"
+    stamp.parent.mkdir(parents=True, exist_ok=True)
+    stamp.write_text("\n".join(_walk_source_file_list()) + "\n")
