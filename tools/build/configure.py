@@ -1490,22 +1490,28 @@ class Configure:
         return segment_size_map
 
     def find_overlays(self) -> List[Tuple[Path, int]]:
-        overlays = []
-
         overlay_types = [
-            "src/battle/actor/*",
-            "src/world/area_*/*/",
+            "battle/actor/*",
+            "world/area_*/*/",
         ]
-        for type_index, glob_str in enumerate(overlay_types):
-            for match in ROOT.glob(glob_str, case_sensitive=True):
-                if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
-                    continue
-                overlays.append((
-                    match,
-                    type_index,
-                ))
 
-        return sorted(overlays, key=lambda x: x[0].stem)
+        # Collect overlays keyed by (type_index, name). Later entries in the
+        # asset stack override earlier ones; src/ is the lowest-priority layer.
+        found: Dict[Tuple[int, str], Tuple[Path, int]] = {}
+
+        search_dirs = [ROOT / "src"] + [
+            ROOT / "assets" / d for d in reversed(self.asset_stack)
+        ]
+        for search_dir in search_dirs:
+            if not search_dir.exists():
+                continue
+            for type_index, glob_str in enumerate(overlay_types):
+                for match in search_dir.glob(glob_str, case_sensitive=True):
+                    if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
+                        continue
+                    found[(type_index, match.stem)] = (match, type_index)
+
+        return sorted(found.values(), key=lambda x: x[0].stem)
 
     def write_overlays(self, ninja: ninja_syntax.Writer) -> str:
         """Write overlay build statements. Returns the final ROM path."""
