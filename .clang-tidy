@@ -42,8 +42,5 @@ CheckOptions:
   - key: readability-identifier-naming.MemberIgnoredRegexp
     value: '^(unk|pad|unused)_.*'
 
-# Ignore include/PR/ (SDK headers) and include/nu/ (nusys library headers).
-# Note: files using N64 GFX macros (gsDPLoadTextureBlock etc.) produce
-# clang-diagnostic-error because clang rejects GCC's non-constant initializer
-# extension. These cannot be suppressed — filter the output or exclude the files.
+# Ignore include/PR/ (libultra) and include/nu/ (nusys)
 HeaderFilterRegex: '(src|include)/(?!PR/|nu/).*\.h'
