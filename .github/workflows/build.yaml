@@ -53,6 +53,40 @@ jobs:
         with:
           name: ${{ steps.repo-name.outputs.repository-name }}.bps
           path: ver/us/build/papermario.bps
+
+      - name: Get changed files
+        if: github.event_name == 'pull_request'
+        id: changed
+        run: |
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only | grep -E '\.(c|cpp|h|hpp)$' || true)
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$files" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check formatting
+        if: github.event_name == 'pull_request' && steps.changed.outputs.files != ''
+        continue-on-error: true
+        run: |
+          nix develop --command bash -c 'echo "$1" | xargs python3 tools/format.py --check' _ "${{ steps.changed.outputs.files }}"
+
+      - name: Run clang-tidy
+        if: github.event_name == 'pull_request' && steps.changed.outputs.files != ''
+        continue-on-error: true
+        run: |
+          nix develop --command bash -c '
+            echo "$1" | xargs clang-tidy -p . --quiet 2>&1 | while IFS= read -r line; do
+              if echo "$line" | grep -qE "^[^:]+\.(c|cpp|h|hpp):[0-9]+:[0-9]+: (warning|error):"; then
+                file=$(echo "$line" | cut -d: -f1)
+                lineno=$(echo "$line" | cut -d: -f2)
+                col=$(echo "$line" | cut -d: -f3)
+                rest=$(echo "$line" | cut -d: -f4-)
+                echo "::warning file=$file,line=$lineno,col=$col::$rest"
+              fi
+            done
+          ' _ "${{ steps.changed.outputs.files }}"
+
   release:
     name: Release
     runs-on: ubuntu-latest

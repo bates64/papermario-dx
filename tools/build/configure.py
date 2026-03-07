@@ -1412,7 +1412,7 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wall -Wno-narrowing -Winline"
+    extra_cflags += " -Wall -Wno-narrowing -Winline -Wno-unused-but-set-variable"
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors

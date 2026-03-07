@@ -504,7 +504,7 @@ def main():
         if result != source:
             any_changed = True
             if args.check:
-                print(f"would reformat {path}", file=sys.stderr)
+                print(f"::warning file={path},title=File not formatted::This file was changed, but it isn't formatted correctly. Run treefmt to format this file.")
             else:
                 with open(path, "w") as f:
                     f.write(result)
