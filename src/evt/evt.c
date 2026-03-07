@@ -2,6 +2,7 @@
 #include "vars_access.h"
 #include "dx/config.h"
 #include "dx/debug_menu.h"
+#include "dx/backtrace.h"
 
 extern u32* gMapFlags;
 extern s32* gMapVars;
@@ -1379,7 +1380,11 @@ s32 evt_execute_next_command(Evt* script) {
         #endif
 
         commandsExecuted++;
-        ASSERT_MSG(commandsExecuted < 10000, "Script %p is blocking for ages (infinite loop?)", script->ptrFirstLine);
+        if (commandsExecuted >= 10000) {
+            char scriptName[0x80];
+            backtrace_address_to_string((u32)script->ptrFirstLine, scriptName);
+            PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
+        }
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:
