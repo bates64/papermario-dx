@@ -29,9 +29,11 @@
 /// is a directory, all C/C++ files inside it (excluding `*.inc.c` and `*.inc.cpp`) are compiled
 /// and linked together. If the match is a single file, that file alone is the overlay.
 ///
-/// For example, `src/world/area_kmr/kmr_02/` is a directory matching `src/world/area_*/*/`,
+/// For example, `src/world/area_kmr/kmr_02/` is a directory matching `src/world/area/*/*/`,
 /// so it becomes an #OVL_MAP overlay named "kmr_02". `src/battle/actor/goomba.c` matches
 /// `src/battle/actor/*`, so it becomes an OVL_ACTOR overlay named "goomba".
+///
+/// Source files are sourced from both `src` and `assets` subdirectories.
 ///
 /// ## Importing and exporting
 ///
@@ -88,8 +90,8 @@ extern "C" {
 typedef struct Overlay Overlay;
 
 typedef enum {
-    OVL_ACTOR, ///< `src/battle/actor/*`
-    OVL_MAP,   ///< `src/world/area_*/*/` -- only one loaded at a time
+    OVL_ACTOR, ///< `battle/actor/*`
+    OVL_MAP,   ///< `world/area_*/*/` -- only one loaded at a time
     OVL_NUM_TYPES,
 } OverlayType;
 
