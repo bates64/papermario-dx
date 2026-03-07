@@ -1481,6 +1481,8 @@ class Configure:
         ]
         for type_index, glob_str in enumerate(overlay_types):
             for match in ROOT.glob(glob_str, case_sensitive=True):
+                if match.name.endswith(".inc.c") or match.name.endswith(".inc.cpp"):
+                    continue
                 overlays.append((
                     match,
                     type_index,
