@@ -1,6 +1,6 @@
 #include "sbk_55.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o56);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o55);
@@ -30,8 +30,8 @@ BombTrigger N(BombPos_Tree1) = {
 
 EvtScript N(EVS_SetupFoliage) = {
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o191, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o191, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     Return
     End
 };

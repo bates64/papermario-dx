@@ -4,7 +4,7 @@
 #include "world/common/npc/Rosie.inc.c"
 #include "world/common/npc/Dummy.inc.c"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 #include "world/common/complete/GiveReward.inc.c"
 #include "world/common/complete/KeyItemChoice.inc.c"

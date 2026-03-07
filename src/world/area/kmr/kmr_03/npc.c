@@ -3,8 +3,6 @@
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
-#include "world/common/todo/CheckPartnerFlags1000.inc.c"
-
 API_CALLABLE(N(func_802401B0_8C8140)) {
     Npc* npc = get_npc_unsafe(NPC_Goompa);
 

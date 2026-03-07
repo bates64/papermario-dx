@@ -1,6 +1,6 @@
 #include "flo_24.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_o125, MODEL_o126, MODEL_o127, MODEL_o128, MODEL_o129, MODEL_o130);
 FoliageModelList N(Tree1_TrunkModels) = FOLIAGE_MODEL_LIST(MODEL_o124);
@@ -38,8 +38,8 @@ EvtScript N(EVS_SetupFoliage) = {
     Set(AF_FLO_TreeDrop_BubbleBerry1, false)
     Set(AF_FLO_TreeDrop_BubbleBerry2, false)
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o124, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o124, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     Return
     End
 };

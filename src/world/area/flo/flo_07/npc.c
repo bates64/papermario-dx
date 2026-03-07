@@ -1,9 +1,7 @@
 #include "flo_07.h"
+#include "foliage.h"
 
 #include "world/common/npc/Posie.inc.c"
-
-#include "common/foliage.inc.c"
-
 #include "world/common/complete/GiveReward.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
@@ -225,8 +223,8 @@ BombTrigger N(BombPos_CrystalTree) = {
 
 EvtScript N(EVS_SetupFoliage) = {
     Set(LVar0, Ref(N(ShakeTree_CrystalTree)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o5, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_CrystalTree)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o5, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_CrystalTree)), 1, 0)
     Return
     End
 };

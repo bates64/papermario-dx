@@ -1,6 +1,6 @@
 #include "nok_01.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 FoliageModelList N(Bush5_BushModels) = FOLIAGE_MODEL_LIST(MODEL_o315);
 
@@ -189,32 +189,32 @@ BombTrigger N(BombPos_Tree1) = {
 
 EvtScript N(EVS_SetupFoliage) = {
     Set(LVar0, Ref(N(SearchBush_Bush5)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o312, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o312, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH6_2)
         Set(LVar0, Ref(N(SearchBush_Bush3)))
     Else
         Set(LVar0, Ref(N(SearchBush_Bush4)))
     EndIf
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o313, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o313, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush6)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o419, 1, 0)
     Exec(N(EVS_Bush6_HideFlowers))
     Set(LVar0, Ref(N(SearchBush_Bush7)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o420, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o420, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush8)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o421, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o421, 1, 0)
     Set(LVar0, Ref(N(SearchBush_Bush9)))
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o422, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o422, 1, 0)
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH3_2)
         Set(LVar0, Ref(N(SearchBush_Bush1)))
     Else
         Set(LVar0, Ref(N(SearchBush_Bush2)))
     EndIf
-    BindTrigger(Ref(N(EVS_SearchBush)), TRIGGER_WALL_PRESS_A, COLLIDER_o423, 1, 0)
+    BindTrigger(Ref(EVS_SearchBush), TRIGGER_WALL_PRESS_A, COLLIDER_o423, 1, 0)
     Exec(N(EVS_Bush2_HideFlowers))
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     // bind the same tree a second time for the koopa shell stuck inside
     BindTrigger(Ref(N(EVS_Scene_RecoverTreeShell)), TRIGGER_WALL_HAMMER, COLLIDER_o323, 1, 0)
     BindTrigger(Ref(N(EVS_Scene_RecoverTreeShell)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)

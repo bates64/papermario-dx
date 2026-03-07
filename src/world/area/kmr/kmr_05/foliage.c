@@ -1,6 +1,6 @@
 #include "kmr_05.h"
 
-#include "common/foliage.inc.c"
+#include "foliage.h"
 
 API_CALLABLE(N(func_8024173C_8CF7AC)) {
     if (get_enemy_safe(NPC_06) == nullptr) {
@@ -66,8 +66,8 @@ BombTrigger N(BombPos_Tree1) = {
 
 EvtScript N(EVS_SetupFoliage) = {
     Set(LVar0, Ref(N(ShakeTree_Tree1)))
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_WALL_HAMMER, COLLIDER_o1238, 1, 0)
-    BindTrigger(Ref(N(EVS_ShakeTree)), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_WALL_HAMMER, COLLIDER_o1238, 1, 0)
+    BindTrigger(Ref(EVS_ShakeTree), TRIGGER_POINT_BOMB, Ref(N(BombPos_Tree1)), 1, 0)
     Return
     End
 };

@@ -1,8 +1,6 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-#include "world/common/todo/CheckPartnerFlags1000.inc.c"
-
 #define NAME_SUFFIX _6
 #include "world/common/npc/GoombaFamily_Wander.inc.c"
 #include "wander_territories.inc.c"
