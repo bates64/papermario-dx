@@ -537,18 +537,22 @@ def build_ordered_areas(discovered: Dict[str, set]) -> List[tuple]:
         seen_areas.add(area_id)
         if area_id not in VANILLA_MAP_ORDER:
             continue
+        if area_id not in discovered:
+            continue
 
+        discovered_set = discovered[area_id]
         vanilla_maps = VANILLA_MAP_ORDER[area_id]
-        # Use vanilla order, then append any new maps
-        ordered_maps = list(vanilla_maps)  # includes duplicates like kkj_26
 
-        if area_id in discovered:
-            # Deduplicate vanilla list for comparison
-            vanilla_set = set(vanilla_maps)
-            new_maps = sorted(m for m in discovered[area_id] if m not in vanilla_set)
-            ordered_maps.extend(new_maps)
+        # Keep vanilla maps that exist on disk, in vanilla order
+        ordered_maps = [m for m in vanilla_maps if m in discovered_set]
 
-        result.append((area_id, ordered_maps))
+        # Append any new maps not in vanilla
+        vanilla_set = set(vanilla_maps)
+        new_maps = sorted(m for m in discovered_set if m not in vanilla_set)
+        ordered_maps.extend(new_maps)
+
+        if ordered_maps:
+            result.append((area_id, ordered_maps))
 
     # Append new areas not in vanilla
     new_areas = sorted(a for a in discovered if a not in seen_areas)

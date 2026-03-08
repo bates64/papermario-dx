@@ -675,9 +675,23 @@ class Configure:
             "world_map",
         )
 
+        # When maps are added or removed, rerun gen_areas
+        gen_areas_stamp = self.build_path() / "gen_areas.stamp"
+        area_dirs = []
+        for area_root in [ROOT / "src" / "world" / "area"] + [
+            ROOT / "assets" / d / "world" / "area" for d in self.asset_stack
+        ]:
+            if area_root.is_dir():
+                for area_dir in sorted(area_root.iterdir()):
+                    if area_dir.is_dir():
+                        for map_dir in sorted(area_dir.iterdir()):
+                            if map_dir.is_dir():
+                                area_dirs.append(str(map_dir.relative_to(ROOT)))
+        gen_areas_stamp.parent.mkdir(parents=True, exist_ok=True)
+        gen_areas_stamp.write_text("\n".join(area_dirs) + "\n")
         build(
             self.build_path() / "include/world/gAreas.inc.c",
-            [],
+            [Path(BUILD_TOOLS / "gen_areas.py"), gen_areas_stamp],
             "gen_areas",
             variables={
                 "src_dir": "src/world",
