@@ -196,7 +196,7 @@ typedef struct EnemyDrops {
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
 
-typedef struct {
+typedef struct EnemyDetectVolume {
     /* 0x00 */ s32 skipPlayerDetectChance;
     /* 0x04 */ enum TerritoryShape shape;
     /* 0x08 */ s32 pointX;
