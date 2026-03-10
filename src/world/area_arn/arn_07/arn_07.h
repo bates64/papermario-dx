@@ -1,5 +1,4 @@
-/// @file arn_07.h
-/// @brief Gusty Gulch - Windmill Exterior
+/// Gusty Gulch - Windmill Exterior
 
 #include "common.h"
 #include "message_ids.h"

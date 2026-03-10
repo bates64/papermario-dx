@@ -1,5 +1,4 @@
-/// @file jan_08.h
-/// @brief Jade Jungle - SW Jungle (Super Block)
+/// Jade Jungle - SW Jungle (Super Block)
 
 #include "common.h"
 #include "message_ids.h"

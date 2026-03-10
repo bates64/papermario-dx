@@ -1,5 +1,4 @@
-/// @file kmr_12.h
-/// @brief Goomba Region - Goomba Road 4
+/// Goomba Region - Goomba Road 4
 
 #include "common.h"
 #include "message_ids.h"

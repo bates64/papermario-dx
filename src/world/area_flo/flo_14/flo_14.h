@@ -1,5 +1,4 @@
-/// @file flo_14.h
-/// @brief Flower Fields - (NW) Bubble Flower
+/// Flower Fields - (NW) Bubble Flower
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file isk_16.h
-/// @brief Dry Dry Ruins - Tutankoopa Room
+/// Dry Dry Ruins - Tutankoopa Room
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file flo_00.h
-/// @brief Flower Fields - Center
+/// Flower Fields - Center
 
 #include "common.h"
 #include "message_ids.h"

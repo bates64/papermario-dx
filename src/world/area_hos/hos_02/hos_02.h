@@ -1,5 +1,4 @@
-/// @file hos_02.h
-/// @brief Shooting Star Summit - Star Way
+/// Shooting Star Summit - Star Way
 
 #include "common.h"
 #include "message_ids.h"

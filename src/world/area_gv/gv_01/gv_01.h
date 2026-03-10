@@ -1,5 +1,4 @@
-/// @file gv_01.h
-/// @brief  - Game Over Screen
+///  - Game Over Screen
 
 #include "common.h"
 #include "message_ids.h"

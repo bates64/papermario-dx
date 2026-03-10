@@ -1,5 +1,4 @@
-/// @file kpa_53.h
-/// @brief Bowser's Castle - Fake Peach Hallway
+/// Bowser's Castle - Fake Peach Hallway
 
 #include "common.h"
 #include "message_ids.h"

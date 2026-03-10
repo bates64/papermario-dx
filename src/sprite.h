@@ -148,7 +148,7 @@ void spr_get_player_raster_info(SpriteRasterInfo* out, s32 playerSpriteID, s32 r
 
 PAL_PTR* spr_get_player_palettes(s32 spriteIndex);
 
-/// @param animID - Set MSB for tail allocation (i.e. `0x80XXYYZZ`)
+/// Set MSB of `animID` for tail allocation (i.e. `0x80XXYYZZ`).
 s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList);
 
 s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale);

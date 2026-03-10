@@ -1,5 +1,4 @@
-/// @file flo_03.h
-/// @brief Flower Fields - (East) Petunia's Field
+/// Flower Fields - (East) Petunia's Field
 
 #include "common.h"
 #include "message_ids.h"

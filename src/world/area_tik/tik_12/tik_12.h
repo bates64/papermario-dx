@@ -1,5 +1,4 @@
-/// @file tik_12.h
-/// @brief Toad Town Tunnels - Metal Block Room (B3)
+/// Toad Town Tunnels - Metal Block Room (B3)
 
 #include "common.h"
 #include "message_ids.h"

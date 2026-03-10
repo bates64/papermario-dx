@@ -1,5 +1,4 @@
-/// @file flo_15.h
-/// @brief Flower Fields - (NW) Sun Tower
+/// Flower Fields - (NW) Sun Tower
 
 #include "common.h"
 #include "message_ids.h"

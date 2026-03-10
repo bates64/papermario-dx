@@ -10,14 +10,14 @@ enum SurfaceWalkEffect {
 
 void player_surface_spawn_fx(void);
 
-/// Select the type of surface effect spawned by the player while moving
+/// Select the type of surface effect spawned by the player while moving.
 /// The effect is reset between maps, so include this in the Main script for every map you wish to change.
-/// @param type enum value from SurfaceWalkEffect
+/// `effect` is an enum value from SurfaceWalkEffect.
 void surface_set_walk_effect(s32 effect);
 
-/// Select the type of surface effect spawned by the player while moving
+/// Select the type of surface effect spawned by the player while moving.
 /// The effect is reset between maps, so include this in the Main script for every map you wish to change.
-/// @param type enum value from SurfaceWalkEffect
+/// @param type
 /// @evtapi
 API_CALLABLE(SetSurfaceWalkEffect);
 

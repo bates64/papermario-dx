@@ -1,5 +1,4 @@
-/// @file kpa_101.h
-/// @brief Bowser's Castle - Ultra Shroom Room
+/// Bowser's Castle - Ultra Shroom Room
 
 #include "common.h"
 #include "message_ids.h"

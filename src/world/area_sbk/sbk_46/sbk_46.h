@@ -1,5 +1,4 @@
-/// @file sbk_46.h
-/// @brief Dry Dry Desert - S1E3 North of Oasis
+/// Dry Dry Desert - S1E3 North of Oasis
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file mgm_03.h
-/// @brief Minigame - Large empty test room
+/// Minigame - Large empty test room
 
 #include "common.h"
 #include "message_ids.h"

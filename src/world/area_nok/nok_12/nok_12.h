@@ -1,5 +1,4 @@
-/// @file nok_12.h
-/// @brief Koopa Region - Pleasant Path Bridge
+/// Koopa Region - Pleasant Path Bridge
 
 #include "common.h"
 #include "message_ids.h"

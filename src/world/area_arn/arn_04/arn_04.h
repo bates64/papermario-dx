@@ -1,5 +1,4 @@
-/// @file arn_04.h
-/// @brief Gusty Gulch - Wasteland Ascent 2
+/// Gusty Gulch - Wasteland Ascent 2
 
 #include "common.h"
 #include "message_ids.h"

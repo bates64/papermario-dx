@@ -1,5 +1,4 @@
-/// @file isk_13.h
-/// @brief Dry Dry Ruins - Lunar Stone Room
+/// Dry Dry Ruins - Lunar Stone Room
 
 #include "common.h"
 #include "message_ids.h"

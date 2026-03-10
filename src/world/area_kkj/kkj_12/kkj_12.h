@@ -1,5 +1,4 @@
-/// @file kkj_12.h
-/// @brief Peach's Castle - Stairs Hallway (3F)
+/// Peach's Castle - Stairs Hallway (3F)
 
 #include "common.h"
 #include "message_ids.h"

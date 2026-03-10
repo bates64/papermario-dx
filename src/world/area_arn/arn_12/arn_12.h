@@ -1,5 +1,4 @@
-/// @file arn_12.h
-/// @brief Gusty Gulch - Tunnel 2
+/// Gusty Gulch - Tunnel 2
 
 #include "common.h"
 #include "message_ids.h"

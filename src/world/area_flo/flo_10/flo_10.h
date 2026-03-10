@@ -1,5 +1,4 @@
-/// @file flo_10.h
-/// @brief Flower Fields - (SE) Lily's Fountain
+/// Flower Fields - (SE) Lily's Fountain
 
 #include "common.h"
 #include "message_ids.h"

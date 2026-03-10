@@ -1,6 +1,4 @@
-/// @file script_api/common.h
 /// EVT scripting API functions available at all times.
-/// @sa script_api/battle.h script_api/map.h
 
 // Command for reading all declarations in a source file:
 // $ cat src/evt/*.c | grep "ApiStatus [^{]*" -o | sed "s/ $/;/"
@@ -26,28 +24,30 @@ extern "C" {
 /// @param z
 API_CALLABLE(TranslateModel);
 
-/// Rotates the model the given amount on the selected axis.
+/// Rotates the model the given amount on the selected axis. `x`, `y`, and `z` are booleans
+/// selecting which axes to rotate on.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x Whether to rotate on X axis
-/// @param y Whether to rotate on Y axis
-/// @param z Whether to rotate on Z axis
+/// @param x
+/// @param y
+/// @param z
 API_CALLABLE(RotateModel);
 
-/// Scales the model the given amount along the selected axis.
+/// Scales the model the given amount along the selected axis. `x`, `y`, and `z` are booleans
+/// selecting which axes to scale on.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x Whether to scale on X axis
-/// @param y Whether to scale on Y axis
-/// @param z Whether to scale on Z axis
+/// @param x
+/// @param y
+/// @param z
 API_CALLABLE(ScaleModel);
 
 /// Returns the given model's index.
 /// @evtapi
 /// @param modelID
-/// @vars {out | \ref LVar0 | Returns the index of the model. }
+/// @evtout LVar0 index
 API_CALLABLE(GetModelIndex);
 
 /// @evtapi
@@ -62,9 +62,9 @@ API_CALLABLE(CloneModel);
 /// Returns the center of the given model.
 /// @evtapi
 /// @param modelID
-/// @vars {out | \ref LVar0 int posX | Returns X coordinate of the given model. }
-/// @vars {out | \ref LVar1 int posY | Returns Y coordinate of the given model. }
-/// @vars {out | \ref LVar2 int posZ | Returns Z coordinate of the given model. }
+/// @evtout LVar0 posX
+/// @evtout LVar1 posY
+/// @evtout LVar2 posZ
 API_CALLABLE(GetModelCenter);
 
 /// Sets a model's pannerID and sets the texture pan flag
@@ -78,10 +78,11 @@ API_CALLABLE(SetTexPanner);
 /// @param bool
 API_CALLABLE(SetCustomGfxEnabled);
 
+/// Either parameter can be -1 for no change.
 /// @evtapi
 /// @param modelID
-/// @param customGfxIndex -1 for no change
-/// @param fogType -1 for no change
+/// @param customGfxIndex
+/// @param fogType
 API_CALLABLE(SetModelCustomGfx);
 
 /// @evtapi
@@ -99,16 +100,17 @@ API_CALLABLE(EnableTexPanning);
 /// @param bool
 API_CALLABLE(EnableModel);
 
-/// Enables or disables the given group.
+/// Enables or disables the given group. `mode` can be 0 (disabled), 1 (enabled),
+/// 2 (all others disabled), or 3 (all others enabled).
 /// @evtapi
 /// @param modelID
-/// @param mode "0 = disabled, 1 = enabled, 2 = all others disabled, 3 = all others enabled"
+/// @param mode
 API_CALLABLE(SetGroupVisibility);
 
-/// Sets offsets for texture panners.
+/// Sets offsets for texture panners. `tile` is 0 for main or 1 for aux.
 /// @evtapi
 /// @param panID
-/// @param tile "0 = main | 1 = aux"
+/// @param tile
 /// @param offsetU
 /// @param offsetV
 API_CALLABLE(SetTexPanOffset);
@@ -119,11 +121,11 @@ API_CALLABLE(SetCustomGfx);
 /// @evtapi
 API_CALLABLE(SetCustomGfxBuilders);
 
-/// Sets flags for models.
+/// Sets flags for models. `bool` is 1 to set or 0 to clear.
 /// @evtapi
 /// @param modelID
 /// @param flagbits
-/// @param bool 1 = set, 0 = clear
+/// @param bool
 API_CALLABLE(SetModelFlags);
 
 /// @evtapi
@@ -143,22 +145,24 @@ API_CALLABLE(SetTransformGroupEnabled);
 /// @param z
 API_CALLABLE(TranslateGroup);
 
-/// Rotates the given group's position.
+/// Rotates the given group's position. `x`, `y`, and `z` are booleans selecting which axes
+/// to rotate on.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x Whether to rotate on X axis
-/// @param y Whether to rotate on Y axis
-/// @param z Whether to rotate on Z axis
+/// @param x
+/// @param y
+/// @param z
 API_CALLABLE(RotateGroup);
 
-/// Scales the given group's position.
+/// Scales the given group's position. `x`, `y`, and `z` are booleans selecting which axes
+/// to scale on.
 /// @evtapi
 /// @param modelID
 /// @param angle
-/// @param x Whether to scale on X axis
-/// @param y Whether to scale on Y axis
-/// @param z Whether to scale on Z axis
+/// @param x
+/// @param y
+/// @param z
 API_CALLABLE(ScaleGroup);
 
 /// @evtapi
@@ -173,12 +177,13 @@ API_CALLABLE(EnableGroup);
 /// @evtapi
 /// @param copyIndex
 /// @param modelID
-/// @param bool "0 = clear, 1 = get"
+/// @param bool
 API_CALLABLE(MakeLocalVertexCopy);
 
-/// Set flags for collider + siblings + children.
+/// Set flags for collider + siblings + children. `mode` is 0 to set bits, 1 to clear bits,
+/// 2 to replace, or 3 to replace lowest 16 bits.
 /// @evtapi
-/// @param mode 0 = set bits, 1 = clear bits, 2 = replace, 3 = replace lowest 16 bits
+/// @param mode
 /// @param colliderID
 /// @param flags
 API_CALLABLE(ModifyColliderFlags);
@@ -189,9 +194,9 @@ API_CALLABLE(ResetFromLava);
 /// Returns the center of the given collider.
 /// @evtapi
 /// @param modelID
-/// @vars {out | \ref LVar0 int posX | Returns X coordinate of the given collider. }
-/// @vars {out | \ref LVar1 int posY | Returns Y coordinate of the given collider. }
-/// @vars {out | \ref LVar2 int posZ | Returns Z coordinate of the given collider. }
+/// @evtout LVar0 posX
+/// @evtout LVar1 posY
+/// @evtout LVar2 posZ
 API_CALLABLE(GetColliderCenter);
 
 /// Associates a model with a collider and applies the model's transformation.
@@ -222,7 +227,7 @@ API_CALLABLE(GotoMap);
 /// @param mapName
 /// @param entryID
 /// @param transitionType
-/// @see ScreenTransitions in enums.h
+/// See [`ScreenTransitions`].
 API_CALLABLE(GotoMapSpecial);
 
 /// @evtapi
@@ -233,17 +238,17 @@ API_CALLABLE(GotoMapByID);
 
 /// Returns the entryID of the Entry that the player entered the map from.
 /// @evtapi
-/// @vars {out | \ref LVar0 int entryID }
+/// @evtout LVar0 entryID
 API_CALLABLE(GetEntryID);
 
 /// Returns the mapID of the map the player is currently on.
 /// @evtapi
-/// @vars {out | \ref LVar0 int mapID }
+/// @evtout LVar0 mapID
 API_CALLABLE(GetMapID);
 
 /// Returns the way the player loaded into the map, commonly used by to put the player in the correct position for save blocks.
 /// @evtapi
-/// @vars {out | \ref LVar0 int LoadType }
+/// @evtout LVar0 LoadType
 API_CALLABLE(GetLoadType);
 
 /// @evtapi
@@ -891,27 +896,27 @@ API_CALLABLE(SetMessageValue);
 
 /// Hides the player's shadow if `hide` is `true`, shows it if `false`.
 /// @evtapi
-/// @param hide Whether to hide the player's shadow.
-/// @see disable_player_shadow, enable_player_shadow
+/// @param hide
+/// See [`disable_player_shadow`], [`enable_player_shadow`].
 API_CALLABLE(HidePlayerShadow);
 
 /// Disables player physics if `disable` is `true`, enables it if `false`.
 /// @evtapi
-/// @param disable Whether to disable player physics.
-/// @see disable_player_static_collisions, enable_player_static_collisions
+/// @param disable
+/// See [`disable_player_static_collisions`], [`enable_player_static_collisions`].
 API_CALLABLE(DisablePlayerPhysics);
 
 /// Disables player and partner input, and disables the status menu.
 /// @evtapi
-/// @param disable Whether to disable player input.
+/// @param disable
 API_CALLABLE(DisablePlayerInput);
 
-/// Sets the player position.
+/// Sets the player position. A `y` of `-1000` is used for hiding the player.
 /// @evtapi
 /// @param x
-/// @param y `-1000` is used for hiding the player.
+/// @param y
 /// @param z
-/// @see GetPlayerPos
+/// See [`GetPlayerPos`].
 API_CALLABLE(SetPlayerPos);
 
 /// Overrides the player collision size.
@@ -920,10 +925,10 @@ API_CALLABLE(SetPlayerPos);
 /// @param diameter
 API_CALLABLE(SetPlayerCollisionSize);
 
-/// Sets the move speed of the player for subequent \ref PlayerMoveTo calls.
+/// Sets the move speed of the player for subequent [`PlayerMoveTo`] calls.
 /// @evtapi
-/// @param speed Float multiplier.
-/// @see SetNpcSpeed
+/// @param speed
+/// See [`SetNpcSpeed`].
 API_CALLABLE(SetPlayerSpeed);
 
 /// @evtapi
@@ -985,14 +990,14 @@ API_CALLABLE(FullyRestoreSP);
 
 /// Enables switching to the given partner.
 /// @evtapi
-/// @param partnerID The \ref PartnerIDs "partner id" to enable.
-/// @see DisablePartner
+/// @param partnerID
+/// See [`DisablePartner`].
 API_CALLABLE(EnablePartner);
 
 /// Disables switching to the given partner.
 /// @evtapi
-/// @param partnerID The \ref PartnerIDs "partner id" to disable.
-/// @see EnablePartner
+/// @param partnerID
+/// See [`EnablePartner`].
 API_CALLABLE(DisablePartner);
 
 /// @evtapi
@@ -1043,7 +1048,7 @@ API_CALLABLE(InterruptUsePartner);
 /// Enables and disables the 8-bit Mario easter egg.
 ///
 /// @evtapi
-/// @param disable Disable the easter egg if `true`, enable it if `false`.
+/// @param disable
 ///
 /// Whilst active, the player uses a retro sprite, and the following actions are disabled:
 /// - Spin dash
@@ -1052,7 +1057,7 @@ API_CALLABLE(InterruptUsePartner);
 /// - Menus
 /// - Partner usage and partner switching
 ///
-/// @see PA_FLAG_8BIT_MARIO
+/// See [`PA_FLAG_8BIT_MARIO`].
 API_CALLABLE(Disable8bitMario);
 
 /// @evtapi
@@ -1115,11 +1120,11 @@ API_CALLABLE(func_802D4D14);
 API_CALLABLE(func_802D4D88);
 
 /// @evtapi
-/// @see GetNextPathPos
+/// See [`GetNextPathPos`].
 API_CALLABLE(LoadPath);
 
 /// @evtapi
-/// @see LoadPath
+/// See [`LoadPath`].
 API_CALLABLE(GetNextPathPos);
 
 /// @evtapi
@@ -1151,10 +1156,10 @@ API_CALLABLE(ClampAngleFloat);
 API_CALLABLE(GetLanguage);
 #endif
 
-/// Get current @ref GameContext from @ref GameStatus
+/// Get current [`GameContext`] from [`GameStatus`].
 /// Use this to tell whether the script is executing in world or battle.
 /// @evtapi
-/// @param (out) GameContext
+/// @evtout LVar0 gameContext
 API_CALLABLE(GetGameContext);
 
 /// @}
@@ -1417,7 +1422,7 @@ API_CALLABLE(ShowSleepBubble);
 API_CALLABLE(SetSleepBubbleTimeLeft);
 
 /// @evtapi
-/// @see PlayEffect
+/// See [`PlayEffect`].
 API_CALLABLE(PlayEffect_impl);
 
 /// @}
@@ -1429,14 +1434,14 @@ API_CALLABLE(PlayEffect_impl);
 /// Creates an entity.
 ///
 /// @evtapi
-/// @param blueprint Pointer to \ref EntityBlueprint to use.
+/// @param blueprint
 /// @param x
 /// @param y
 /// @param z
-/// @param flags \ref EntityFlags
-/// @param ... Varargs.
-/// @param MAKE_ENTITY_END Terminates the varargs.
-/// @vars{out | \ref LVar0 | Created entity's ID.}
+/// @param flags
+/// @param ...
+/// @param MAKE_ENTITY_END
+/// @evtout LVar0 entityID
 API_CALLABLE(MakeEntity);
 
 /// @evtapi
@@ -1463,7 +1468,7 @@ API_CALLABLE(AssignPanelFlag);
 /// @evtapi
 API_CALLABLE(AssignCrateFlag);
 
-/// Removes a trigger previously bound with \ref BindTrigger.
+/// Removes a trigger previously bound with [`BindTrigger`].
 /// @evtapi
 /// @param triggerPtr
 API_CALLABLE(DeleteTrigger);

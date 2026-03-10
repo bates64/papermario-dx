@@ -1,5 +1,4 @@
-/// @file kmr_03.h
-/// @brief Goomba Region - Bottom of the Cliff
+/// Goomba Region - Bottom of the Cliff
 
 #include "common.h"
 #include "message_ids.h"

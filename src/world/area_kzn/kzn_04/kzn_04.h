@@ -1,5 +1,4 @@
-/// @file kzn_04.h
-/// @brief Mt Lavalava - Fire Bar Bridge
+/// Mt Lavalava - Fire Bar Bridge
 
 #include "common.h"
 #include "message_ids.h"

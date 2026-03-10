@@ -1,5 +1,4 @@
-/// @file omo_02.h
-/// @brief Shy Guy's Toybox - RED Boss Barricade
+/// Shy Guy's Toybox - RED Boss Barricade
 
 #include "common.h"
 #include "message_ids.h"

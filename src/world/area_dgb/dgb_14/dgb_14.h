@@ -1,5 +1,4 @@
-/// @file dgb_14.h
-/// @brief Tubba's Castle - Stairs to Third Floor
+/// Tubba's Castle - Stairs to Third Floor
 
 #include "common.h"
 #include "message_ids.h"

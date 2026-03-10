@@ -1,5 +1,4 @@
-/// @file kpa_51.h
-/// @brief Bowser's Castle - Hall to Water Puzzle
+/// Bowser's Castle - Hall to Water Puzzle
 
 #include "common.h"
 #include "message_ids.h"

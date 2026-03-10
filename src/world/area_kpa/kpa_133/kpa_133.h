@@ -1,5 +1,4 @@
-/// @file kpa_133.h
-/// @brief Bowser's Castle - Left Water Puzzle
+/// Bowser's Castle - Left Water Puzzle
 
 #include "common.h"
 #include "message_ids.h"

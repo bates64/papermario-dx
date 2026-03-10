@@ -1,5 +1,4 @@
-/// @file kkj_23.h
-/// @brief Peach's Castle - Rooftop (5F)
+/// Peach's Castle - Rooftop (5F)
 
 #include "common.h"
 #include "message_ids.h"

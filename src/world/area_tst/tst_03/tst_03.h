@@ -1,5 +1,4 @@
-/// @file tst_03.h
-/// @brief Testing - Entity Test
+/// Testing - Entity Test
 
 #include "common.h"
 #include "message_ids.h"

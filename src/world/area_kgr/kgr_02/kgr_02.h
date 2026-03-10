@@ -1,5 +1,4 @@
-/// @file kgr_02.h
-/// @brief Inside the Whale - Whale Stomach
+/// Inside the Whale - Whale Stomach
 
 #include "common.h"
 #include "message_ids.h"

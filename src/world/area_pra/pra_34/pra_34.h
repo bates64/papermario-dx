@@ -1,5 +1,4 @@
-/// @file pra_34.h
-/// @brief Crystal Palace - Mirror Hole Room
+/// Crystal Palace - Mirror Hole Room
 
 #include "common.h"
 #include "message_ids.h"

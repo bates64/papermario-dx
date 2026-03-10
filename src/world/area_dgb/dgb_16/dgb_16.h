@@ -1,5 +1,4 @@
-/// @file dgb_16.h
-/// @brief Tubba's Castle - Sleeping Clubbas Room (3F)
+/// Tubba's Castle - Sleeping Clubbas Room (3F)
 
 #include "common.h"
 #include "message_ids.h"

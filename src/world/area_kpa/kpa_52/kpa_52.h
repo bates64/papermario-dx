@@ -1,5 +1,4 @@
-/// @file kpa_52.h
-/// @brief Bowser's Castle - Split Level Hall
+/// Bowser's Castle - Split Level Hall
 
 #include "common.h"
 #include "message_ids.h"

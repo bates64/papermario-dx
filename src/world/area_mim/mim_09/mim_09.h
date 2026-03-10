@@ -1,5 +1,4 @@
-/// @file mim_09.h
-/// @brief Forever Forest - Flowers Appear (FP Plus)
+/// Forever Forest - Flowers Appear (FP Plus)
 
 #include "common.h"
 #include "message_ids.h"

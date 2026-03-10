@@ -1,5 +1,4 @@
-/// @file dgb_06.h
-/// @brief Tubba's Castle - Basement
+/// Tubba's Castle - Basement
 
 #include "common.h"
 #include "message_ids.h"

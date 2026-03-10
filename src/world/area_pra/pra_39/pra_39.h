@@ -1,5 +1,4 @@
-/// @file pra_39.h
-/// @brief Crystal Palace - Shooting Star Hall
+/// Crystal Palace - Shooting Star Hall
 
 #include "common.h"
 #include "message_ids.h"

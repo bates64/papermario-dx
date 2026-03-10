@@ -277,7 +277,7 @@ Trigger* get_trigger_by_id(s32 triggerID) {
     return (*gCurrentTriggerListPtr)[triggerID];
 }
 
-/// @returns true if colliderID is bound to an interaction trigger (press A) and the player can use it.
+/// Returns true if colliderID is bound to an interaction trigger (press A) and the player can use it.
 s32 should_collider_allow_interact(s32 colliderID) {
     s32 i;
 

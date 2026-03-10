@@ -1,5 +1,4 @@
-/// @file tik_19.h
-/// @brief Toad Town Tunnels - Under the Toad Town Pond
+/// Toad Town Tunnels - Under the Toad Town Pond
 
 #include "common.h"
 #include "message_ids.h"

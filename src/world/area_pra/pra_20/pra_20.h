@@ -1,5 +1,4 @@
-/// @file pra_20.h
-/// @brief Crystal Palace - Mirrored Door Room
+/// Crystal Palace - Mirrored Door Room
 
 #include "common.h"
 #include "message_ids.h"

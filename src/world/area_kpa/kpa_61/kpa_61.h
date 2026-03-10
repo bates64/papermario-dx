@@ -1,5 +1,4 @@
-/// @file kpa_61.h
-/// @brief Bowser's Castle - Battlement
+/// Bowser's Castle - Battlement
 
 #include "common.h"
 #include "message_ids.h"

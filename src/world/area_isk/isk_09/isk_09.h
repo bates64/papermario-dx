@@ -1,5 +1,4 @@
-/// @file isk_09.h
-/// @brief Dry Dry Ruins - Super Hammer Room
+/// Dry Dry Ruins - Super Hammer Room
 
 #include "common.h"
 #include "message_ids.h"

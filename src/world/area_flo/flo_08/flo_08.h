@@ -1,5 +1,4 @@
-/// @file flo_08.h
-/// @brief Flower Fields - (SE) Briar Platforming
+/// Flower Fields - (SE) Briar Platforming
 
 #include "common.h"
 #include "message_ids.h"

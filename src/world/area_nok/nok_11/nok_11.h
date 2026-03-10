@@ -1,5 +1,4 @@
-/// @file nok_11.h
-/// @brief Koopa Region - Pleasant Path Entry
+/// Koopa Region - Pleasant Path Entry
 
 #include "common.h"
 #include "message_ids.h"

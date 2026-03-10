@@ -1,5 +1,4 @@
-/// @file trd_08.h
-/// @brief Koopa Bros Fortress - Dungeon Fire Room
+/// Koopa Bros Fortress - Dungeon Fire Room
 
 #include "common.h"
 #include "message_ids.h"

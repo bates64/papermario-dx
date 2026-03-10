@@ -1,5 +1,4 @@
-/// @file hos_10.h
-/// @brief Shooting Star Summit - Ending Descent Scene
+/// Shooting Star Summit - Ending Descent Scene
 
 #include "common.h"
 #include "message_ids.h"

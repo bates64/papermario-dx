@@ -1,5 +1,4 @@
-/// @file omo_08.h
-/// @brief Shy Guy's Toybox - GRN Station
+/// Shy Guy's Toybox - GRN Station
 
 #include "common.h"
 #include "message_ids.h"

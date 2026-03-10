@@ -1,5 +1,4 @@
-/// @file sbk_64.h
-/// @brief Dry Dry Desert - S3E1
+/// Dry Dry Desert - S3E1
 
 #include "common.h"
 #include "message_ids.h"

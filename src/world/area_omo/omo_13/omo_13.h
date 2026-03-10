@@ -1,5 +1,4 @@
-/// @file omo_13.h
-/// @brief Shy Guy's Toybox - BLU Anti-Guy Hall
+/// Shy Guy's Toybox - BLU Anti-Guy Hall
 
 #include "common.h"
 #include "message_ids.h"

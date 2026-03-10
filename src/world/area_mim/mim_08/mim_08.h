@@ -1,5 +1,4 @@
-/// @file mim_08.h
-/// @brief Forever Forest - Laughing Rock
+/// Forever Forest - Laughing Rock
 
 #include "common.h"
 #include "message_ids.h"

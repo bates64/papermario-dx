@@ -1,5 +1,4 @@
-/// @file kmr_10.h
-/// @brief Goomba Region - Toad Town Entrance
+/// Goomba Region - Toad Town Entrance
 
 #include "common.h"
 #include "message_ids.h"

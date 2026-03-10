@@ -21,22 +21,24 @@ API_CALLABLE(CreatePushBlockGrid);
 API_CALLABLE(SetPushBlock);
 API_CALLABLE(GetPushBlock);
 
+/// Fill a row of a [`PushBlockGrid`] from `startZ` to `endZ` (inclusive) along constant `gridX`.
+/// Be wary of placing too many `PUSH_GRID_BLOCK` occupants.
 /// @evtapi
-/// Fill a row of a `PushBlockGrid` from startZ to endZ (inclusive) along constant gridX
 /// @param gridSystemID
-/// @param gridX fixed x grid cell
-/// @param startZ first z grid cell to be filled
-/// @param endZ last z grid cell to be filled
-/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+/// @param gridX
+/// @param startZ
+/// @param endZ
+/// @param occupant
 API_CALLABLE(FillPushBlockX);
 
+/// Fill a row of a [`PushBlockGrid`] from `startX` to `endX` (inclusive) along constant `gridZ`.
+/// Be wary of placing too many `PUSH_GRID_BLOCK` occupants.
 /// @evtapi
-/// Fill a row of a `PushBlockGrid` from startX to endX (inclusive) along constant gridZ
 /// @param gridSystemID
-/// @param gridZ fixed z grid cell
-/// @param startX first x grid cell to be filled
-/// @param endX last x grid cell to be filled
-/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+/// @param gridZ
+/// @param startX
+/// @param endX
+/// @param occupant
 API_CALLABLE(FillPushBlockZ);
 
 API_CALLABLE(GetGridIndexFromPos);

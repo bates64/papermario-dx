@@ -1,5 +1,4 @@
-/// @file tik_05.h
-/// @brief Toad Town Tunnels - Spring Room (B2)
+/// Toad Town Tunnels - Spring Room (B2)
 
 #include "common.h"
 #include "message_ids.h"

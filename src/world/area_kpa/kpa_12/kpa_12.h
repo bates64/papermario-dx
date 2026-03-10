@@ -1,5 +1,4 @@
-/// @file kpa_12.h
-/// @brief Bowser's Castle - Lava Channel 1
+/// Bowser's Castle - Lava Channel 1
 
 #include "common.h"
 #include "message_ids.h"

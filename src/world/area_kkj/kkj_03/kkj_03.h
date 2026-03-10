@@ -1,5 +1,4 @@
-/// @file kkj_03.h
-/// @brief Peach's Castle - Intro Window Hallway (4F)
+/// Peach's Castle - Intro Window Hallway (4F)
 
 #include "common.h"
 #include "message_ids.h"

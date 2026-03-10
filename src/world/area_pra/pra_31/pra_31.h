@@ -1,5 +1,4 @@
-/// @file pra_31.h
-/// @brief Crystal Palace - Dino Puzzle Room
+/// Crystal Palace - Dino Puzzle Room
 
 #include "common.h"
 #include "message_ids.h"

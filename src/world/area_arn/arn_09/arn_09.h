@@ -1,5 +1,4 @@
-/// @file arn_09.h
-/// @brief Gusty Gulch - Windmill Tunnel Entry
+/// Gusty Gulch - Windmill Tunnel Entry
 
 #include "common.h"
 #include "message_ids.h"

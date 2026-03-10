@@ -1,5 +1,4 @@
-/// @file trd_03.h
-/// @brief Koopa Bros Fortress - Central Hall
+/// Koopa Bros Fortress - Central Hall
 
 #include "common.h"
 #include "message_ids.h"

@@ -9,13 +9,13 @@
 #include "backtrace.h"
 #include "PR/osint.h"
 
-/** @brief Enable to debug why a backtrace is wrong */
+/** Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
 
-/** @brief Function alignment enfored by the compiler (-falign-functions). */
+/** Function alignment enfored by the compiler (-falign-functions). */
 #define FUNCTION_ALIGNMENT      32
 
-/** @brief The "type" of funciton as categorized by the backtrace heuristic (__bt_analyze_func) */
+/** The "type" of funciton as categorized by the backtrace heuristic (__bt_analyze_func) */
 typedef enum {
     BT_FUNCTION,                ///< Regular function with a stack frame
     BT_FUNCTION_FRAMEPOINTER,   ///< The function uses the register fp as frame pointer (normally, this happens only when the function uses alloca)
@@ -23,7 +23,7 @@ typedef enum {
     BT_LEAF                     ///< Leaf function (no calls), no stack frame allocated, sp/ra not modified
 } bt_func_type;
 
-/** @brief Description of a function for the purpose of backtracing (filled by __bt_analyze_func) */
+/** Description of a function for the purpose of backtracing (filled by __bt_analyze_func) */
 typedef struct {
     bt_func_type type;       ///< Type of the function
     int stack_size;          ///< Size of the stack frame
@@ -46,7 +46,7 @@ typedef struct {
 
 bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool from_exception);
 
-/** @brief Converts virtual addresses to physical
+/** Converts virtual addresses to physical
  *
  * If addr is a virtual address, its physical equivalent is returned. If it's already physical, it will be unchanged. If
  * the address is invalid, -1 is returned.
@@ -55,7 +55,7 @@ static u32 get_physical_address(u32 addr) {
     return 0x80000000 | osVirtualToPhysical((void*)addr);
 }
 
-/** @brief Check if addr is a valid PC address */
+/** Check if addr is a valid PC address */
 static bool is_valid_address(uint32_t addr) {
     addr = get_physical_address(addr);
     return addr >= 0x80000400 && addr < 0x80800000 && (addr & 3) == 0;
@@ -313,13 +313,12 @@ int backtrace_thread(void **buffer, int size, OSThread *thread) {
 }
 
 /**
- * @brief Uses the symbol table to look up the symbol corresponding to the given address.
+ * Uses the symbol table to look up the symbol corresponding to the given address.
  *
  * The address should be inside some function, otherwise an incorrect symbol will be returned.
  *
- * @param address Address to look up
- * @param out Output symbol
- * @return Offset into out->address, -1 if not found
+ * Looks up `address` and writes the result into `out`.
+ * Returns offset into `out->address`, -1 if not found.
  */
 s32 address2symbol(u32 address, Symbol* out) {
     #define symbolsPerChunk 0x1000
@@ -427,7 +426,7 @@ void debug_backtrace(void) {
 }
 
 /**
- * @brief Analyze a function to find out its stack frame layout and properties (useful for backtracing).
+ * Analyze a function to find out its stack frame layout and properties (useful for backtracing).
  *
  * This function implements the core heuristic used by the backtrace engine. It analyzes the actual
  * code of a function in memory instruction by instruction, trying to find out whether the function
@@ -467,18 +466,15 @@ void debug_backtrace(void) {
  *      properly aligned), but it is the best we can do. Worst case, in this specific case of a leaf
  *      function interrupted by the exception, the stack trace will be wrong from this point on.
  *
- * @param func                        Output function description structure
- * @param ptr                         Pointer to the function code at the point where the backtrace starts.
- *                                    This is normally the point where a JAL opcode is found, as we are walking
- *                                    up the call stack.
- * @param func_start                  Start of the function being analyzed. This is optional: the heuristic can work
- *                                    without this hint, but it is useful in certain situations (eg: to better
- *                                    walk up after an exception).
- * @param from_exception              If true, this function was interrupted by an exception. This is a hint that
- *                                    the function *might* even be a leaf function without a stack frame, and that
- *                                    we must use special heuristics for it.
+ * `func` is the output function description structure. `ptr` is a pointer to the function code at the
+ * point where the backtrace starts; this is normally the point where a JAL opcode is found, as we are
+ * walking up the call stack. `func_start` is the start of the function being analyzed. This is optional:
+ * the heuristic can work without this hint, but it is useful in certain situations (eg: to better walk
+ * up after an exception). If `from_exception` is true, this function was interrupted by an exception.
+ * This is a hint that the function *might* even be a leaf function without a stack frame, and that we
+ * must use special heuristics for it.
  *
- * @return true if the backtrace can continue, false if must be aborted (eg: we are within invalid memory)
+ * Returns true if the backtrace can continue, false if must be aborted (eg: we are within invalid memory).
  */
 bool __bt_analyze_func(bt_func_t *func, uint32_t *ptr, uint32_t func_start, bool from_exception) {
     // exceptasm.s

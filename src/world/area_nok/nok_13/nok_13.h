@@ -1,5 +1,4 @@
-/// @file nok_13.h
-/// @brief Koopa Region - Pleasant Crossroads
+/// Koopa Region - Pleasant Crossroads
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file pra_35.h
-/// @brief Crystal Palace - Triple Dip Room
+/// Crystal Palace - Triple Dip Room
 
 #include "common.h"
 #include "message_ids.h"

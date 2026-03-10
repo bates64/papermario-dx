@@ -1,5 +1,4 @@
-/// @file kzn_03.h
-/// @brief Mt Lavalava - Central Cavern
+/// Mt Lavalava - Central Cavern
 
 #include "common.h"
 #include "message_ids.h"

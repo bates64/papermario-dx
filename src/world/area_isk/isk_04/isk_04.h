@@ -1,5 +1,4 @@
-/// @file isk_04.h
-/// @brief Dry Dry Ruins - Descending Stairs 1
+/// Dry Dry Ruins - Descending Stairs 1
 
 #include "common.h"
 #include "message_ids.h"

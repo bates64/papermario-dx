@@ -1,5 +1,4 @@
-/// @file flo_22.h
-/// @brief Flower Fields - (East) Old Well
+/// Flower Fields - (East) Old Well
 
 #include "common.h"
 #include "message_ids.h"

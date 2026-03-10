@@ -1308,7 +1308,7 @@ typedef struct AmbienceSavedVoice {
 } AmbienceSavedVoice; // size = 0x4
 
 /**
- * @brief Compact identifier for a voice used by the ambience system.
+ * Compact identifier for a voice used by the ambience system.
  *
  * This union is used to track ownership and identity of each voice slot
  * controlled by an ambience player. It can be accessed either as individual

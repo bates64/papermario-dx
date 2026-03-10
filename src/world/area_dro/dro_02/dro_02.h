@@ -1,8 +1,7 @@
 #ifndef _DRO_02_H_
 #define _DRO_02_H_
 
-/// @file dro_02.h
-/// @brief Dry Dry Outpost - Outpost 2
+/// Dry Dry Outpost - Outpost 2
 
 #include "common.h"
 #include "message_ids.h"

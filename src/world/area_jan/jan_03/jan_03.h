@@ -1,5 +1,4 @@
-/// @file jan_03.h
-/// @brief Jade Jungle - Village Buildings
+/// Jade Jungle - Village Buildings
 
 #include "common.h"
 #include "message_ids.h"

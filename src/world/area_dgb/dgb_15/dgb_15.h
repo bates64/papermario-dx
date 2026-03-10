@@ -1,5 +1,4 @@
-/// @file dgb_15.h
-/// @brief Tubba's Castle - West Hall (3F)
+/// Tubba's Castle - West Hall (3F)
 
 #include "common.h"
 #include "message_ids.h"

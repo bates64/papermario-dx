@@ -1,5 +1,4 @@
-/// @file isk_11.h
-/// @brief Dry Dry Ruins - Stone Puzzle Room
+/// Dry Dry Ruins - Stone Puzzle Room
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file kpa_33.h
-/// @brief Bowser's Castle - Upper Grand Hall
+/// Bowser's Castle - Upper Grand Hall
 
 #include "common.h"
 #include "message_ids.h"

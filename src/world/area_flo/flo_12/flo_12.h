@@ -1,5 +1,4 @@
-/// @file flo_12.h
-/// @brief Flower Fields - (West) Rosie's Trellis
+/// Flower Fields - (West) Rosie's Trellis
 
 #include "common.h"
 #include "message_ids.h"

@@ -970,7 +970,7 @@ typedef struct BattleStatus {
     /* 0x1AD */ char unk_1AD;
     /* 0x1AE */ s16 submenuIcons[24]; /* icon IDs */
     /* 0x1DE */ u8 submenuMoves[24]; /* move IDs */
-    /* 0x1F6 */ s8 submenuStatus[24]; ///< @see enum BattleSubmenuStatus
+    /* 0x1F6 */ s8 submenuStatus[24]; ///< See [`BattleSubmenuStatus`].
     /* 0x20E */ u8 submenuMoveCount;
     /* 0x20F */ char unk_20F;
     /* 0x210 */ s32 curButtonsDown;
@@ -1020,7 +1020,7 @@ typedef struct MoveData {
     /* 0x04 */ s32 flags;
     /* 0x08 */ s32 shortDescMsg;
     /* 0x0C */ s32 fullDescMsg;
-    /* 0x10 */ s8 category; ///< @see enum MoveType
+    /* 0x10 */ s8 category; ///< See [`MoveType`].
     /* 0x11 */ s8 costFP;
     /* 0x12 */ s8 costBP;
     /* 0x13 */ u8 actionTip;
@@ -1415,7 +1415,7 @@ typedef struct GameStatus {
     /* 0x07D */ b8 keepUsingPartnerOnMapChange;
     /* 0x07E */ u8 peachFlags; // see PeachFlags enum
     /* 0x07F */ s8 peachDisguise; // see PeachDisguises enum
-    /* 0x080 */ u8 peachBakingIngredient; ///< @see PeachBakingItems enum
+    /* 0x080 */ u8 peachBakingIngredient; ///< See [`PeachBakingItems`]. enum
     /* 0x081 */ b8 multiplayerEnabled;
     /* 0x082 */ Vec2b altViewportOffset;
     /* 0x084 */ s8 playerSpriteSet;

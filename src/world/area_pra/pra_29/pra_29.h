@@ -1,5 +1,4 @@
-/// @file pra_29.h
-/// @brief Crystal Palace - Hidden Bridge Room
+/// Crystal Palace - Hidden Bridge Room
 
 #include "common.h"
 #include "message_ids.h"

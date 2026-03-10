@@ -1,5 +1,4 @@
-/// @file hos_00.h
-/// @brief Shooting Star Summit - Shooting Star Path
+/// Shooting Star Summit - Shooting Star Path
 
 #include "common.h"
 #include "message_ids.h"

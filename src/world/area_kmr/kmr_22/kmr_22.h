@@ -1,5 +1,4 @@
-/// @file kmr_22.h
-/// @brief Goomba Region - Chapter Start
+/// Goomba Region - Chapter Start
 
 #include "common.h"
 #include "message_ids.h"

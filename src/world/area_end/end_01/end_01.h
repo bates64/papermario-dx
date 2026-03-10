@@ -1,5 +1,4 @@
-/// @file end_01.h
-/// @brief Ending - Parade (Night)
+/// Ending - Parade (Night)
 
 #include "common.h"
 #include "message_ids.h"

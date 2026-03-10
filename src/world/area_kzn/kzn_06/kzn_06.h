@@ -1,5 +1,4 @@
-/// @file kzn_06.h
-/// @brief Mt Lavalava - Flowing Lava Puzzle
+/// Mt Lavalava - Flowing Lava Puzzle
 
 #include "common.h"
 #include "message_ids.h"

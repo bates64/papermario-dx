@@ -1,5 +1,4 @@
-/// @file tst_13.h
-/// @brief Testing - Partners and Shockwave
+/// Testing - Partners and Shockwave
 
 #include "common.h"
 #include "message_ids.h"

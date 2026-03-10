@@ -1,5 +1,4 @@
-/// @file omo_10.h
-/// @brief Shy Guy's Toybox - RED Station
+/// Shy Guy's Toybox - RED Station
 
 #include "common.h"
 #include "message_ids.h"

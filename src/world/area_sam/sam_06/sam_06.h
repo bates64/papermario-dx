@@ -1,5 +1,4 @@
-/// @file sam_06.h
-/// @brief Mt Shiver - Starborn Valley
+/// Mt Shiver - Starborn Valley
 
 #include "common.h"
 #include "message_ids.h"

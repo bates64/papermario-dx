@@ -1,5 +1,4 @@
-/// @file tst_11.h
-/// @brief Testing - Reflection Test
+/// Testing - Reflection Test
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file iwa_00.h
-/// @brief Mt Rugged - Mt Rugged 1
+/// Mt Rugged - Mt Rugged 1
 
 #include "common.h"
 #include "message_ids.h"

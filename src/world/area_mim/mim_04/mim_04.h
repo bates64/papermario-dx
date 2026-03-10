@@ -1,5 +1,4 @@
-/// @file mim_04.h
-/// @brief Forever Forest - Tree Face (Bub-ulb)
+/// Forever Forest - Tree Face (Bub-ulb)
 
 #include "common.h"
 #include "message_ids.h"

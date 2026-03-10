@@ -1,5 +1,4 @@
-/// @file jan_23.h
-/// @brief Jade Jungle - Great Treetop Roost
+/// Jade Jungle - Great Treetop Roost
 
 #include "common.h"
 #include "message_ids.h"

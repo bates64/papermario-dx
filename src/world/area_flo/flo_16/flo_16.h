@@ -1,5 +1,4 @@
-/// @file flo_16.h
-/// @brief Flower Fields - (NE) Elevators
+/// Flower Fields - (NE) Elevators
 
 #include "common.h"
 #include "message_ids.h"

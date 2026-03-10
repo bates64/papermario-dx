@@ -3878,7 +3878,7 @@ void build_custom_gfx(void) {
 }
 
 // weird temps necessary to match
-/// @returns true if mtx is nullptr or identity.
+/// Returns true if mtx is nullptr or identity.
 s32 is_identity_fixed_mtx(Mtx* mtx) {
     s32* mtxIt = (s32*)mtx;
     s32* identityIt;

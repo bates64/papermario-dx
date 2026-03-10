@@ -1,5 +1,4 @@
-/// @file kzn_22.h
-/// @brief Mt Lavalava - Rising Lava 2
+/// Mt Lavalava - Rising Lava 2
 
 #include "common.h"
 #include "message_ids.h"
