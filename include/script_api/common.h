@@ -481,14 +481,6 @@ API_CALLABLE(SetCamViewport);
 
 /// @evtapi
 /// @param camID
-/// @param skipRecalc
-/// @param dist
-/// @param fovScale
-/// @param pitch
-API_CALLABLE(SetNoInterpCamParams);
-
-/// @evtapi
-/// @param camID
 /// @param R
 /// @param G
 /// @param B
@@ -1203,28 +1195,10 @@ API_CALLABLE(PlayMerleeGatherFX);
 API_CALLABLE(PlayMerleeOrbFX);
 
 /// @evtapi
-API_CALLABLE(ShowMerleeCoinMessage);
-
-/// @evtapi
-API_CALLABLE(ShowMerleeRanOutMessage);
-
-/// @evtapi
 API_CALLABLE(FadeBackgroundDarken);
 
 /// @evtapi
 API_CALLABLE(FadeBackgroundLighten);
-
-/// @evtapi
-API_CALLABLE(FadeInMerlee);
-
-/// @evtapi
-API_CALLABLE(FadeOutMerlee);
-
-/// @evtapi
-API_CALLABLE(MerleeUpdateFX);
-
-/// @evtapi
-API_CALLABLE(MerleeStopFX);
 
 /// @evtapi
 /// @evtout LVar0 x
@@ -1235,18 +1209,6 @@ API_CALLABLE(GetCamLookAtObjVector);
 /// @evtapi
 /// @evtout LVar0 result
 API_CALLABLE(HasMerleeCasts);
-
-/// @evtapi
-/// @param posX
-/// @param posY
-/// @param posZ
-API_CALLABLE(PlayMerleeGatherFX);
-
-/// @evtapi
-/// @param posX
-/// @param posY
-/// @param posZ
-API_CALLABLE(PlayMerleeOrbFX);
 
 /// @evtapi
 API_CALLABLE(OnDefeatEnemy);
@@ -2200,10 +2162,7 @@ API_CALLABLE(ShowSleepBubble);
 /// @param timeLeft
 API_CALLABLE(SetSleepBubbleTimeLeft);
 
-/// @evtapi
-/// @param effectID
-/// @param ...
-/// See [`PlayEffect`].
+// Undocumented because [PlayEffect] should be used instead
 API_CALLABLE(PlayEffect_impl);
 
 /// @}
@@ -2211,9 +2170,9 @@ API_CALLABLE(PlayEffect_impl);
 /// @{
 /// @name Entity
 
-// TODO: document varargs better
 /// Creates an entity.
 ///
+/// Takes a variable number of arguments depending on the entity blueprint.
 /// @evtapi
 /// @param blueprint
 /// @param x

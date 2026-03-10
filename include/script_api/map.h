@@ -10,15 +10,60 @@
 extern "C" {
 #endif
 
-API_CALLABLE(MakeNpcs);
+/// @evtapi
+/// @param aiSettingsPtr
 API_CALLABLE(BasicAI_Main);
-API_CALLABLE(ResetFromLava);
+
+/// @evtapi
+/// @param itemPositionsPtr
+/// @param inventoryPtr
+/// @param sellPricesPtr
+/// @param inventoryItemFlagsPtr
 API_CALLABLE(MakeShop);
+
+/// @evtapi
+/// @param shopOwnerPtr
 API_CALLABLE(MakeShopOwner);
+
+/// @evtapi
+/// @param packedFlags
+/// @param openDoorScript
+/// @param moveWallsScript
+/// @param dropDoorScript
+/// @param stateListenerScript
+/// @param doorInColliderID
+/// @param doorOutColliderID
+/// @param interiorModelGroup
+/// @param interiorNPCList
 API_CALLABLE(CreateMapRoom);
+
+/// @evtapi
+/// @param outResult
+/// @param actionState
 API_CALLABLE(CheckActionState);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param sizeNx
+/// @param sizeNz
+/// @param centerX
+/// @param centerY
+/// @param centerZ
+/// @param inputGridDataPtr
 API_CALLABLE(CreatePushBlockGrid);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param gridX
+/// @param gridZ
+/// @param occupant
 API_CALLABLE(SetPushBlock);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param gridX
+/// @param gridZ
+/// @param outOccupant
 API_CALLABLE(GetPushBlock);
 
 /// Fill a row of a [`PushBlockGrid`] from `startZ` to `endZ` (inclusive) along constant `gridX`.
@@ -41,8 +86,21 @@ API_CALLABLE(FillPushBlockX);
 /// @param occupant
 API_CALLABLE(FillPushBlockZ);
 
+/// @evtapi
+/// @param blockSystemID
+/// @param posX
+/// @param posY
+/// @param posZ
+/// @param outGridX
+/// @param outGridZ
 API_CALLABLE(GetGridIndexFromPos);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param fallCallback
 API_CALLABLE(SetPushBlockFallEffect);
+
+/// @evtapi
 API_CALLABLE(TeleportPartnerToPlayer);
 
 extern EvtScript EnterWalk;
