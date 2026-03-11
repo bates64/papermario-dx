@@ -1,7 +1,7 @@
 #include "common.h"
 #include "filemenu.h"
 #include "hud_element.h"
-#include "audio/public.h"
+#include "audio.h"
 #include "fio.h"
 #include "game_modes.h"
 #include "dx/config.h"

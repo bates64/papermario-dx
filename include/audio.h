@@ -1,7 +1,7 @@
-#ifndef _AUDIO_PUBLIC_H_
-#define _AUDIO_PUBLIC_H_
+#ifndef _AUDIO_H_
+#define _AUDIO_H_
 
-#include "audio.h"
+#include "audio/audio.h"
 
 // ----------------------------------------------------------------------------------
 // snd_interface.c

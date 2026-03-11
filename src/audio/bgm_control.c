@@ -1,6 +1,6 @@
 #include "common.h"
 #include "npc.h"
-#include "audio.h"
+#include "audio/audio.h"
 
 void bgm_update_volume(void);
 void bgm_set_target_volume(s32 volume);

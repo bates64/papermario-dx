@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "model.h"
 
 typedef s8 TlbEntry[0x1000];

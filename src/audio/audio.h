@@ -1,5 +1,5 @@
-#ifndef _AUDIO_H_
-#define _AUDIO_H_
+#ifndef _AUDIO_INTERNAL_H_
+#define _AUDIO_INTERNAL_H_
 #include "nu/nusys.h"
 #include "nu/nualsgi.h"
 #include "PR/n_abi.h"
