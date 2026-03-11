@@ -6086,7 +6086,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, area]
-    - [auto, c, actor/paragoomba]
     - [auto, c, stage/kmr_02]
     - [auto, c, stage/kmr_03]
     - [auto, c, stage/kmr_04]
@@ -6119,7 +6118,6 @@ segments:
     - [auto, c, area]
     - [auto, c, actor/tutorial_spiked_goomba]
     - [auto, c, actor/tutorial_paragoomba]
-    - [auto, c, actor/paragoomba]
     - [auto, c, actor/jr_troopa]
     - [auto, c, actor/egg_jr_troopa]
     - [auto, c, actor/para_jr_troopa]
@@ -6169,7 +6167,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, area]
-    - [auto, c, actor/paragoomba]
     - [auto, c, actor/kent_c_koopa]
     - [auto, c, stage/nok_01]
     - [auto, c, stage/nok_02]
@@ -6641,7 +6638,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/monstar]
-    - [auto, c, actor/paragoomba]
     - [auto, c, stage/sam_01]
     - [auto, c, stage/sam_02]
     - [auto, c, stage/sam_02b]
