@@ -211,7 +211,7 @@ typedef struct StageListRow {
 typedef StageListRow StageList[];
 
 typedef struct BattleArea {
-    /* 0x00 */ const char* name; ///< JP debug name.
+    /* 0x00 */ char* name; ///< JP debug name.
     /* 0x04 */ void* dmaStart;
     /* 0x08 */ void* dmaEnd;
     /* 0x0C */ void* dmaDest;
