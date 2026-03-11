@@ -1,6 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(paragoomba);
 extern ActorBlueprint A(kent_c_koopa);
 
 extern Stage A(nok_01);
@@ -19,13 +18,13 @@ Formation A(Formation_01) = {
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_03) = {
     OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_04) = {
@@ -87,21 +86,21 @@ Formation A(Formation_0D) = {
 
 Formation A(Formation_0E) = {
     OVL_ACTOR_BY_IDX("koopa_troopa", BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0F) = {
     OVL_ACTOR_BY_IDX("koopa_troopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_10) = {
     OVL_ACTOR_BY_IDX("koopa_troopa", BTL_POS_GROUND_A, 10),
     OVL_ACTOR_BY_IDX("koopa_troopa", BTL_POS_GROUND_B, 9),
     OVL_ACTOR_BY_IDX("spiked_goomba", BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_D, 7),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_D, 7),
 };
 
 Formation A(Formation_11) = {
