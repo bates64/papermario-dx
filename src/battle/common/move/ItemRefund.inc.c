@@ -1,7 +1,7 @@
 #include "common.h"
 #include "hud_element.h"
 
-static s32 itemIcon;
+static HudElemID itemHID;
 
 // out LVar0: time caller should wait for coin spawns
 API_CALLABLE(N(GiveRefund)) {
@@ -58,8 +58,8 @@ API_CALLABLE(N(GiveRefund)) {
         }
         hud_element_set_render_pos(hid, iconX + 36, iconY - 63);
 #else
-        itemIcon = hud_element_create(&HES_Refund);
-        hud_element_set_render_pos(itemIcon, iconX + 36, iconY - 63);
+        itemHID = hud_element_create(&HES_Refund);
+        hud_element_set_render_pos(itemHID, iconX + 36, iconY - 63);
 #endif
     }
 
@@ -73,7 +73,7 @@ API_CALLABLE(N(GiveRefundCleanup)) {
     s32 sellValue = gItemTable[battleStatus->moveArgument].sellValue;
 
     if (player_team_is_ability_active(battleStatus->playerActor, ABILITY_REFUND) && sellValue > 0) {
-        hud_element_free(itemIcon);
+        hud_element_free(itemHID);
     }
 
     return ApiStatus_DONE2;

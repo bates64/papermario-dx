@@ -29,8 +29,6 @@ BSS s8 gPauseMenuCurrentTab;
 BSS s8 D_802700D[7]; //padding
 
 static s32 gPauseTutorialFrameCounter;
-#if !VERSION_IQUE
-#endif
 static HudElemID gPauseCommonHIDs[8];
 static s32 gPauseShownDescMsg;
 static s32 gPauseDescTextMaxPos;
@@ -894,4 +892,3 @@ void pause_sort_item_list(s16* arr, s32 len, s32 (*compare)(s16*, s16 *)) {
         }
     }
 }
-

@@ -430,7 +430,7 @@ void hud_element_clear_cache(void);
 void init_hud_element_list(void);
 
 /// Creates a new HUD element and returns its ID.
-s32 hud_element_create(HudScript* anim);
+HudElemID hud_element_create(HudScript* anim);
 
 void update_hud_elements(void);
 

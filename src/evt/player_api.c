@@ -517,6 +517,7 @@ API_CALLABLE(UseEntryHeading) {
     s32 var1 = evt_get_variable(script, *args++);
     s32 var2 = evt_get_variable(script, *args++);
     f32 entryX = script->varTable[1] = (*mapSettings->entryList)[gGameStatusPtr->entryID].x;
+    f32 entryY = script->varTable[2] = (*mapSettings->entryList)[gGameStatusPtr->entryID].y;
     f32 entryZ = script->varTable[3] = (*mapSettings->entryList)[gGameStatusPtr->entryID].z;
     f32 cosTheta;
     f32 sinTheta;

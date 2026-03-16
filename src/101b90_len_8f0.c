@@ -237,7 +237,7 @@ void spr_load_npc_extra_anims(SpriteAnimData* header, u32* extraAnimList) {
     void* writePos;
     SpriteRasterCacheEntry** rasterList;
     SpriteRasterCacheEntry* raster;
-    u16** oldPalList;
+    PAL_PTR* oldPalList;
     // one extra required for 'done' sentinel
     s32 sawRaster[100 + 1];
     s32 i;
