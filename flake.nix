@@ -140,6 +140,10 @@
         devShells.default = pkgsCross.mkShell {
           name = "papermario-dx";
           venvDir = "./venv";
+          # Disable nixpkgs hardening flags (stackprotector, fortify, pic, etc.)
+          # that the cross-compiler wrapper injects. These change MIPS code
+          # generation and would cause Linux builds to differ from Windows.
+          NIX_HARDENING_ENABLE = "";
           packages = with pkgs; [
             ninja # needed for ninja -t compdb in configure, as n2 doesn't support it
             n2 # same as ninja, but with prettier output

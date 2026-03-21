@@ -21,7 +21,7 @@ ROOT = Path(__file__).parent.parent.parent
 if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
-BUILD_TOOLS = Path("tools/build")
+BUILD_TOOLS = "tools/build"
 
 import shutil
 if shutil.which("n64crc"):
@@ -36,6 +36,11 @@ RUST_TOOLS = [
     (PIGMENT64, "pigment64", "0.4.2"),
     (CRUNCH64, "crunch64-cli", "0.3.1"),
 ]
+
+
+def posix(path) -> str:
+    """Return path as string with forward slashes for cross-platform build.ninja compatibility."""
+    return str(path).replace("\\", "/")
 
 
 def exec_shell(command: List[str]) -> str:
@@ -425,9 +430,9 @@ class Configure:
 
             if path is not None:
                 if path.is_dir():
-                    out.extend(sorted(glob(str(path) + "/**/*", recursive=True)))
+                    out.extend(posix(p) for p in sorted(glob(str(path) + "/**/*", recursive=True)))
                 else:
-                    out.append(str(path))
+                    out.append(posix(path))
 
         return out
 
@@ -444,7 +449,7 @@ class Configure:
                 if glob_part not in ret:
                     ret[glob_part] = p
 
-        return [str(v) for v in ret.values()]
+        return [posix(v) for v in ret.values()]
 
     @lru_cache(maxsize=None)
     def resolve_asset_path(self, path: Path) -> Path:
@@ -489,24 +494,25 @@ class Configure:
             if not isinstance(object_paths, list):
                 object_paths = [object_paths]
 
-            object_strs = [str(obj) for obj in object_paths]
+            object_strs = [posix(obj) for obj in object_paths]
             needs_build = False
 
             for object_path in object_paths:
+                obj_posix = posix(object_path)
                 if object_path.suffixes[-1] == ".o":
-                    built_objects.add(str(object_path))
+                    built_objects.add(obj_posix)
                 elif object_path.suffix.endswith(".h") or object_path.suffix.endswith(".c"):
-                    generated_code.append(str(object_path))
+                    generated_code.append(obj_posix)
                 elif object_path.name.endswith(".png.bin") or object_path.name.endswith(".pal.bin"):
-                    inc_img_bins.append(str(object_path))
+                    inc_img_bins.append(obj_posix)
 
                 # don't rebuild objects if we've already seen all of them
-                if not str(object_path) in skip_outputs:
+                if obj_posix not in skip_outputs:
                     needs_build = True
 
             for i_output in implicit_outputs:
                 if i_output.endswith(".h"):
-                    generated_code.append(i_output)
+                    generated_code.append(posix(i_output))
 
             if needs_build:
                 skip_outputs.update(object_strs)
@@ -518,7 +524,7 @@ class Configure:
                     order_only.append("generated_code_" + self.version)
                     order_only.append("inc_img_bins_" + self.version)
                     if task == "cc_modern" and object_paths[0].suffixes[-1] != ".gch":
-                        implicit.append(str(precompiled_header_path))
+                        implicit.append(posix(precompiled_header_path))
 
                 inputs = self.resolve_src_paths(src_paths)
                 for dir in asset_deps:
@@ -545,8 +551,8 @@ class Configure:
             [effect_yaml],
             "effect_data",
             variables={
-                "in_yaml": str(effect_yaml),
-                "out_dir": str(effect_data_outdir),
+                "in_yaml": posix(effect_yaml),
+                "out_dir": posix(effect_data_outdir),
             },
         )
 
@@ -705,7 +711,7 @@ class Configure:
 
                 # Dead cod
                 if isinstance(seg.parent.yaml, dict) and seg.parent.yaml.get("dead_code", False):
-                    obj_path = str(entry.object_path)
+                    obj_path = posix(entry.object_path)
                     init_obj_path = Path(obj_path + ".dead")
                     build(
                         init_obj_path,
@@ -913,7 +919,7 @@ class Configure:
                             "sprite_name": sprite_name,
                             "asset_stack": ",".join(self.asset_stack),
                         },
-                        asset_deps=[str(sprite_dir)],
+                        asset_deps=[posix(sprite_dir)],
                     )
                     build(yay0_path, [bin_path], "yay0")
 
@@ -930,7 +936,7 @@ class Configure:
                     )
 
                 # Sprites .bin
-                sprite_player_header_path = str(self.build_path() / "include/sprite/player.h")
+                sprite_player_header_path = posix(self.build_path() / "include/sprite/player.h")
 
                 build(
                     entry.object_path.with_suffix(".bin"),
@@ -938,7 +944,7 @@ class Configure:
                     "sprites",
                     variables={
                         "header_out": sprite_player_header_path,
-                        "build_dir": str(self.build_path() / "assets" / self.version / "sprite"),
+                        "build_dir": posix(self.build_path() / "assets" / self.version / "sprite"),
                         "asset_stack": ",".join(self.asset_stack),
                     },
                     implicit_outputs=[sprite_player_header_path],
@@ -968,7 +974,7 @@ class Configure:
 
             elif seg.type == "pm_icons":
                 # make icons.bin
-                header_path = str(self.build_path() / "include" / "icon_offsets.h")
+                header_path = posix(self.build_path() / "include" / "icon_offsets.h")
                 build(
                     entry.object_path.with_suffix(""),
                     entry.src_paths,
@@ -1163,7 +1169,7 @@ class Configure:
                 build(entry.object_path.with_suffix(""), bin_yay0s, "mapfs")
                 build(entry.object_path, [entry.object_path.with_suffix("")], "bin")
             elif seg.type == "pm_sprite_shading_profiles":
-                header_path = str(self.build_path() / "include/sprite/sprite_shading_profiles.h")
+                header_path = posix(self.build_path() / "include/sprite/sprite_shading_profiles.h")
                 build(
                     entry.object_path.with_suffix(""),
                     entry.src_paths,
@@ -1207,59 +1213,59 @@ class Configure:
 
         # Run undefined_syms through cpp
         ninja.build(
-            str(self.undefined_syms_path()),
+            posix(self.undefined_syms_path()),
             "cpp",
-            str(self.version_path / "undefined_syms.txt"),
+            posix(self.version_path / "undefined_syms.txt"),
         )
 
         # Build elf, z64, ok
-        additional_objects = [str(self.undefined_syms_path())]
+        additional_objects = [posix(self.undefined_syms_path())]
 
         ninja.build(
-            str(self.elf_path()),
+            posix(self.elf_path()),
             "ld",
-            str(self.linker_script_path()),
-            implicit=[str(obj) for obj in built_objects] + additional_objects,
-            variables={"version": self.version, "mapfile": str(self.map_path())},
+            posix(self.linker_script_path()),
+            implicit=list(built_objects) + additional_objects,
+            variables={"version": self.version, "mapfile": posix(self.map_path())},
         )
 
         if self.version == "ique":
             ninja.build(
-                str(self.rom_path()),
+                posix(self.rom_path()),
                 "z64_ique",
-                str(self.elf_path()),
+                posix(self.elf_path()),
                 variables={"version": self.version},
             )
         else:
             ninja.build(
-                str(self.rom_path()),
+                posix(self.rom_path()),
                 "z64",
-                str(self.elf_path()),
+                posix(self.elf_path()),
                 implicit=[CRC_TOOL] if CRC_TOOL != "n64crc" else [],
                 variables={"version": self.version},
             )
 
         if not non_matching:
             ninja.build(
-                str(self.rom_ok_path()),
+                posix(self.rom_ok_path()),
                 "sha1sum",
                 f"ver/{self.version}/checksum.sha1",
-                implicit=[str(self.rom_path())],
+                implicit=[posix(self.rom_path())],
             )
         else:
             ninja.build(
-                str(self.rom_ok_path()),
+                posix(self.rom_ok_path()),
                 "check_segment_sizes",
-                str(self.elf_path()),
+                posix(self.elf_path()),
                 variables={"data": json.dumps(json.dumps(self.get_segment_max_sizes(), separators=(",", ":")))},
-                implicit=[str(self.rom_path())],
+                implicit=[posix(self.rom_path())],
             )
 
         ninja.build(
-            str(self.patch_path()),
+            posix(self.patch_path()),
             "flips",
-            str(self.rom_path()),
-            variables={"baserom": str(self.baserom_path())},
+            posix(self.rom_path()),
+            variables={"baserom": posix(self.baserom_path())},
         )
 
         ninja.build("generated_code_" + self.version, "phony", generated_code)
@@ -1291,7 +1297,7 @@ class Configure:
 
         current.symlink_to(self.version)
 
-        ninja.build("ver/current/build/papermario.z64", "phony", str(self.rom_path()))
+        ninja.build("ver/current/build/papermario.z64", "phony", posix(self.rom_path()))
 
 
 if __name__ == "__main__":
@@ -1474,7 +1480,7 @@ if __name__ == "__main__":
         configure.split(not args.no_split_assets, args.split_code, args.shift, args.debug)
         configure.write_ninja(ninja, skip_files, non_matching, args.c_maps)
 
-        all_rom_oks.append(str(configure.rom_ok_path()))
+        all_rom_oks.append(posix(configure.rom_ok_path()))
 
     assert first_configure, "no versions configured"
     first_configure.make_current(ninja)
