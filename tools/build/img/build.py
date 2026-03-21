@@ -210,7 +210,7 @@ class Converter:
             img.preamble(True)
             palettes = [img.palette(alpha="force")]
 
-            for palettepath in glob(self.infile.split(".")[0] + ".*.png"):
+            for palettepath in sorted(glob(self.infile.split(".")[0] + ".*.png")):
                 pal = png.Reader(palettepath)
                 pal.preamble(True)
                 palettes.append(pal.palette(alpha="force"))

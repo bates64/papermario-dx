@@ -107,7 +107,7 @@ def write_ninja_rules(
     ninja.rule(
         "z64",
         description="rom $out",
-        command=f"$python {BUILD_TOOLS}/make_rom.py {cross} $in $out{z64_debug_flags}",
+        command=f"$python {BUILD_TOOLS}/make_rom.py {cross} {CRC_TOOL} $in $out{z64_debug_flags}",
         pool="console",
     )
 
@@ -425,7 +425,7 @@ class Configure:
 
             if path is not None:
                 if path.is_dir():
-                    out.extend(glob(str(path) + "/**/*", recursive=True))
+                    out.extend(sorted(glob(str(path) + "/**/*", recursive=True)))
                 else:
                     out.append(str(path))
 
@@ -439,7 +439,7 @@ class Configure:
         for stack_dir in self.asset_stack:
             path_stem = f"assets/{stack_dir}/{asset_dir}"
 
-            for p in Path(path_stem).glob("**/*"):
+            for p in sorted(Path(path_stem).glob("**/*")):
                 glob_part = p.relative_to(path_stem)
                 if glob_part not in ret:
                     ret[glob_part] = p
