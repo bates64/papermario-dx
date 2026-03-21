@@ -22,7 +22,12 @@ if ROOT.is_absolute():
     ROOT = ROOT.relative_to(Path.cwd())
 
 BUILD_TOOLS = Path("tools/build")
-CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
+
+import shutil
+if shutil.which("n64crc"):
+    CRC_TOOL = "n64crc"
+else:
+    CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 PIGMENT64 = "pigment64"
 CRUNCH64 = "crunch64"
@@ -96,26 +101,26 @@ def write_ninja_rules(
         command=f"{cross}objcopy $in $out -O binary",
     )
 
-    Z64_DEBUG = ""
+    z64_debug_flags = ""
     if debug:
-        Z64_DEBUG = " -gS -R .data -R .note -R .eh_frame -R .gnu.attributes -R .comment -R .options"
+        z64_debug_flags = " -gS -R .data -R .note -R .eh_frame -R .gnu.attributes -R .comment -R .options"
     ninja.rule(
         "z64",
         description="rom $out",
-        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG} && python3 {BUILD_TOOLS}/append_symbol_table.py $out && {BUILD_TOOLS}/rom/n64crc $out",
+        command=f"$python {BUILD_TOOLS}/make_rom.py {cross} $in $out{z64_debug_flags}",
         pool="console",
     )
 
     ninja.rule(
         "z64_ique",
         description="rom $out",
-        command=f"{cross}objcopy $in $out -O binary{Z64_DEBUG}",
+        command=f"{cross}objcopy $in $out -O binary{z64_debug_flags}",
     )
 
     ninja.rule(
         "sha1sum",
         description="check $in",
-        command="sha1sum -c $in && touch $out" if DO_SHA1_CHECK else "touch $out",
+        command=f"$python -c \"open('$out','w').close()\"",
     )
 
     ninja.rule("cpp", description="cpp $in", command=f"{cpp} $in {extra_cppflags} -P -o $out")
@@ -157,7 +162,7 @@ def write_ninja_rules(
     ninja.rule(
         "as",
         description="as $in",
-        command=f"{cpp} {CPPFLAGS} {extra_cppflags} $cppflags $in -o  - | {cross}as -EB -march=vr4300 -mtune=vr4300 -Iinclude -o $out",
+        command=f"{cross}gcc -c -x assembler-with-cpp -fno-pic -mno-abicalls {CPPFLAGS} {extra_cppflags} $cppflags -EB -march=vr4300 -mtune=vr4300 $in -o $out",
     )
 
     ninja.rule(
@@ -293,23 +298,23 @@ def write_ninja_rules(
 
     ninja.rule("pm_sbn", command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack")
 
-    ninja.rule("flips", command=f"bash -c 'flips $baserom $in $out || true'")
+    ninja.rule("flips", command=f"$python -c \"import subprocess;subprocess.run(['flips','$baserom','$in','$out'])\"")
 
     ninja.rule(
         "check_segment_sizes",
         description="check segment sizes $in",
-        command=f"$python {BUILD_TOOLS}/check_segment_sizes.py $in $data > $out",
+        command=f"$python {BUILD_TOOLS}/check_segment_sizes.py $in $data $out",
     )
 
 
 def write_ninja_for_tools(ninja: ninja_syntax.Writer):
-    ninja.rule(
-        "cc_tool",
-        description="cc_tool $in",
-        command=f"cc -w $in -O3 -o $out",
-    )
-
-    ninja.build(CRC_TOOL, "cc_tool", f"{BUILD_TOOLS}/rom/n64crc.c")
+    if CRC_TOOL != "n64crc":
+        ninja.rule(
+            "cc_tool",
+            description="cc_tool $in",
+            command=f"cc -w $in -O3 -o $out",
+        )
+        ninja.build(CRC_TOOL, "cc_tool", f"{BUILD_TOOLS}/rom/n64crc.c")
 
 
 def does_iconv_work() -> bool:
@@ -1230,7 +1235,7 @@ class Configure:
                 str(self.rom_path()),
                 "z64",
                 str(self.elf_path()),
-                implicit=[CRC_TOOL],
+                implicit=[CRC_TOOL] if CRC_TOOL != "n64crc" else [],
                 variables={"version": self.version},
             )
 

@@ -9,6 +9,7 @@ import sys
 argv.pop(0)  # python3
 elf_path = argv.pop(0)
 jsonstr = argv.pop(0)
+out_path = argv.pop(0) if argv else None
 
 
 def read_elf():
@@ -46,4 +47,8 @@ if fail:
     )
     exit(1)
 else:
-    print("ok")
+    msg = "ok"
+    print(msg)
+    if out_path:
+        with open(out_path, "w") as f:
+            f.write(msg + "\n")
