@@ -13,7 +13,7 @@ jsonstr = argv.pop(0)
 
 def read_elf():
     result = subprocess.run(["mips-linux-gnu-nm", elf_path], stdout=subprocess.PIPE)
-    lines = result.stdout.decode().split("\n")
+    lines = result.stdout.decode().splitlines()
     symbols = {}
     for line in lines:
         splitted = line.split(" ")
