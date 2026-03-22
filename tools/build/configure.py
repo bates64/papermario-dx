@@ -247,7 +247,9 @@ def write_ninja_rules(
     ninja.rule(
         "mapfs",
         description="mapfs $out",
-        command=f"$python {BUILD_TOOLS}/mapfs/combine.py $version $out $in",
+        command=f"$python {BUILD_TOOLS}/mapfs/combine.py $version $out $out.rsp",
+        rspfile="$out.rsp",
+        rspfile_content="$in_newline",
     )
 
     ninja.rule(
@@ -264,11 +266,18 @@ def write_ninja_rules(
 
     ninja.rule("map_header", command=f"$python {BUILD_TOOLS}/mapfs/map_header.py $in $out")
 
-    ninja.rule("charset", command=f"$python {BUILD_TOOLS}/pm_charset.py $out $in")
+    ninja.rule(
+        "charset",
+        command=f"$python {BUILD_TOOLS}/pm_charset.py $out $out.rsp",
+        rspfile="$out.rsp",
+        rspfile_content="$in_newline",
+    )
 
     ninja.rule(
         "charset_palettes",
-        command=f"$python {BUILD_TOOLS}/pm_charset_palettes.py $out $in",
+        command=f"$python {BUILD_TOOLS}/pm_charset_palettes.py $out $out.rsp",
+        rspfile="$out.rsp",
+        rspfile_content="$in_newline",
     )
 
     ninja.rule(
@@ -311,7 +320,7 @@ def does_iconv_work() -> bool:
         sub = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=stdin, cwd=ROOT)
         return sub.stdout
 
-    expected_stdout = run(["tools/build/iconv.py", "UTF-8", "CP932"], stdin)
+    expected_stdout = run([sys.executable, "tools/build/iconv.py", "UTF-8", "CP932"], stdin)
     actual_stdout = run(["iconv", "--from", "UTF-8", "--to", "CP932"], stdin)
     return expected_stdout == actual_stdout
 

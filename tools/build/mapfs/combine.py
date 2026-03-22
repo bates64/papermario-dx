@@ -89,10 +89,17 @@ if __name__ == "__main__":
     version = argv.pop(0)
     out = argv.pop(0)
 
+    paths = []
+    for arg in argv:
+        if arg.endswith(".rsp"):
+            paths.extend(Path(arg).read_text().split())
+        else:
+            paths.append(arg)
+
     assets = []
     pre_write_assets = {}
 
-    for path in argv:
+    for path in paths:
         path = Path(path)
         if path.suffixes[-2:] == [".raw", ".dat"]:
             pre_write_assets[path.with_suffix("").stem] = path
