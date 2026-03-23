@@ -65,7 +65,7 @@ void show_damage_fx(Actor* actor, f32 x, f32 y, f32 z, s32 damage);
 b32 entity_raycast_down(f32*, f32*, f32*, f32*, f32*, f32*);
 
 void step_game_loop(void);
-s32 resume_all_group(s32 groupFlags);
+void resume_all_group(s32 groupFlags);
 f32 length2D(f32 x, f32 y);
 void player_input_to_move_vector(f32* angle, f32* magnitude);
 void game_input_to_move_vector(f32* x, f32* y);
@@ -177,7 +177,7 @@ s32 entity_RedSwitch_animate_scale(Entity* entity);
 void entity_base_switch_start_bound_script(Entity* entity);
 void entity_base_switch_animate_scale(Entity* entity);
 void entity_base_switch_init(Entity* entity);
-f32 entity_block_hit_init_scale(Entity* entity);
+void entity_block_hit_init_scale(Entity* entity);
 void entity_block_hit_animate_scale(Entity* entity);
 s32 entity_block_handle_collision(Entity* entity);
 void entity_BlueSwitch_init(Entity* entity);
@@ -347,8 +347,8 @@ void set_script_priority(Evt* script, s32 priority);
 void set_script_group(Evt* script, s32 groupFlags);
 void suspend_group_others(Evt* script, s32 groupFlags);
 void resume_group_others(Evt* script, s32 groupFlags);
-s32 suspend_all_script(s32 id);
-s32 resume_all_script(s32 id);
+void suspend_all_script(s32 id);
+void resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
 b32 is_point_outside_territory(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);

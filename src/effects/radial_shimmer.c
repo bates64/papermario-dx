@@ -288,7 +288,6 @@ void radial_shimmer_appendGfx(void* effect) {
     Matrix4f sp20, sp60;
     u16 spA0;
     EffectInstance* effectTemp = effect;
-    RadialShimmerFXData* dataOrig = effectTemp->data.radialShimmer;
     RadialShimmerFXData* data = effectTemp->data.radialShimmer;
     Camera* camera = &gCameras[gCurrentCameraID];
     s32 temp_f0;
@@ -298,12 +297,9 @@ void radial_shimmer_appendGfx(void* effect) {
     Gfx* dlist2;
     Gfx* dlist1;
     s32 temp_s5;
-    s32 temp_t1;
     s32 var_a3;
     s32 alpha;
     s32 other;
-    s32 t1;
-    s32 t2;
     s32 i;
 
     temp_s5 = data->unk_00;

@@ -909,7 +909,7 @@ void filemenu_init(s32 mode) {
             } else {
                 gSaveSlotMetadata[i].hasData = false;
                 gSaveSlotMetadata[i].validData = false;
-                memset(gSaveSlotMetadata[i].modName, ARRAY_COUNT(gSaveSlotMetadata[i].modName), 0);
+                memset(gSaveSlotMetadata[i].modName, 0, ARRAY_COUNT(gSaveSlotMetadata[i].modName));
             }
         }
 

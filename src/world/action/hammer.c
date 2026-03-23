@@ -296,9 +296,7 @@ void action_hammer_end_swing(void) {
     s32 result;
     s32 hammerLevel;
     s32 soundID;
-    u32 unk_BC;
     s32 ten;
-    s32 ret;
     s32 i;
 
     yaw = player_get_side_angle();

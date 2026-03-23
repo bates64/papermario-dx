@@ -136,7 +136,6 @@ void radiating_energy_orb_appendGfx(void* effect) {
     s32 temp_s2 = unk_1C & 1;
     Matrix4f sp18;
     Matrix4f sp58;
-    Matrix4f unused;
     s32 i;
 
     if (temp_s2) {

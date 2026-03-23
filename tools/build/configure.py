@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 import os
+import re
 import shutil
 from typing import List, Dict, Set, Union
 from pathlib import Path
@@ -122,7 +123,7 @@ def write_ninja_rules(
     ninja.rule(
         "cc_modern",
         description="CC $in",
-        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
+        command=f"{ccache}{cc_modern} {cflags_modern} $cflags {CPPFLAGS} {extra_cppflags} $cppflags -D_LANGUAGE_C --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion -Werror=implicit -Werror=old-style-declaration -Werror=missing-parameter-type -Wno-error=int-conversion -Wno-error=incompatible-pointer-types -MD -MF $out.d $in -o $out",
         depfile="$out.d",
         deps="gcc",
     )
@@ -1411,11 +1412,11 @@ if __name__ == "__main__":
     if args.shift:
         extra_cppflags += " -DSHIFT"
 
-    extra_cflags += " -Wall -Wno-narrowing -Winline"
+    extra_cflags += " -Wall -Wno-narrowing -Winline -Wno-unused-but-set-variable"
 
     # Warnings made into errors by default in GCC 14
     # https://gcc.gnu.org/gcc-14/porting_to.html#warnings-as-errors
-    extra_cflags += " --warn-missing-parameter-type -Wincompatible-pointer-types -Wint-conversion  -Wreturn-type"
+    extra_cflags += " -Werror=return-type"
 
     # add splat to python import path
     sys.path.insert(0, str((ROOT / args.splat / "src").resolve()))
@@ -1466,3 +1467,24 @@ if __name__ == "__main__":
 
     ninja.build("all", "phony", all_rom_oks)
     ninja.default("all")
+
+    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
+    # so clangd and clang-tidy can parse the compile commands.
+    ninja.close()
+    try:
+        compdb = subprocess.run(
+            ["ninja", "-t", "compdb"],
+            capture_output=True,
+            text=True,
+        )
+        if compdb.returncode == 0:
+            entries = json.loads(compdb.stdout)
+            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
+            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            for entry in entries:
+                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
+                parts = entry["command"].split()
+                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+            (ROOT / "compile_commands.json").write_text(json.dumps(entries, indent=2) + "\n")
+    except FileNotFoundError:
+        pass  # ninja not installed

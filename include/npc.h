@@ -492,19 +492,19 @@ void npc_draw_with_palswap(Npc* npc, s32 arg1, Matrix4f mtx);
 
 void npc_render_without_adjusted_palettes(Npc* npc, s32 arg1, Matrix4f mtx);
 
-s32 npc_render_with_watt_idle_palettes(Npc*, s32, Matrix4f mtx);
+void npc_render_with_watt_idle_palettes(Npc*, s32, Matrix4f mtx);
 
 u16 npc_blend_palette_colors(u16 colorA, u16 colorB, s32 lerpAlpha);
 
-s32 npc_render_with_single_pal_blending(Npc*, s32, s32, Matrix4f mtx);
+void npc_render_with_single_pal_blending(Npc*, s32, s32, Matrix4f mtx);
 
-s32 npc_render_with_double_pal_blending(Npc*, s32, Matrix4f mtx);
+void npc_render_with_double_pal_blending(Npc*, s32, Matrix4f mtx);
 
 void npc_set_decoration(Npc* npc, s32 idx, s32 decorationType);
 
 void npc_remove_decoration(Npc* npc, s32 idx);
 
-s32 npc_update_decorations(Npc* npc);
+void npc_update_decorations(Npc* npc);
 
 void npc_reset_current_decoration(Npc* npc, s32 idx);
 
@@ -605,7 +605,7 @@ void npc_render_worker_do_nothing(void);
 
 void make_npcs(s32 flags, s32 mapID, s32* npcGroupList);
 
-s32 kill_encounter(Enemy* enemy);
+void kill_encounter(Enemy* enemy);
 
 void kill_enemy(Enemy* enemy);
 

@@ -43,6 +43,7 @@ s32 entity_ArrowSign_handle_collision(Entity* entity) {
         (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_WALL)) {
         entity_start_script(entity);
     }
+    return 0;
 }
 
 EntityScript Entity_ArrowSign_Script = {

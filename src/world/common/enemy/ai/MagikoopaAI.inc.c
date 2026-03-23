@@ -101,7 +101,6 @@ void N(MagikoopaAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
 void N(MagikoopaAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe((s32) enemy->npcID);
-    f32 scale;
     s16 alpha;
 
     if (enemy->varTable[0] == 0) {
@@ -234,10 +233,6 @@ API_CALLABLE(N(MagikoopaAI_Main)) {
     EnemyDetectVolume* territoryPtr = &territory;
     Bytecode* args = script->ptrReadPos;
     MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
-    f32 posX;
-    f32 posY;
-    f32 posZ;
-    f32 hitDepth;
 
     territory.skipPlayerDetectChance = 0;
     territory.shape = enemy->territory->wander.detectShape;

@@ -61,7 +61,7 @@
           name = "papermario-dx";
           venvDir = "./venv";
           packages = with pkgs; [
-            ninja # needed for ninja -t compdb in run, as n2 doesn't support it
+            ninja # needed for ninja -t compdb in configure, as n2 doesn't support it
             n2 # same as ninja, but with prettier output
             zlib
             libyaml
@@ -74,6 +74,8 @@
             (callPackage ./tools/pigment64.nix {})
             (callPackage ./tools/crunch64.nix {})
             star-rod.packages.${system}.default
+            clang-tools
+            treefmt
           ] ++ (if pkgs.stdenv.isLinux then [ pkgs.flips ] else []); # https://github.com/NixOS/nixpkgs/issues/373508
           shellHook = ''
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64

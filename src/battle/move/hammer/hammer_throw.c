@@ -8,7 +8,6 @@
 
 #include "battle/common/move/HammerSupport.inc.c"
 
-static s32 pad_images = 0;
 
 INCLUDE_IMG("battle/move/hammer/dusty_hammer.png", battle_move_hammer_throw_dusty_hammer_png);
 INCLUDE_PAL("battle/move/hammer/dusty_hammer.pal", battle_move_hammer_throw_dusty_hammer_pal);

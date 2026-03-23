@@ -46,7 +46,6 @@ s32 _show_message(Evt* script, s32 isInitialCall, s32 mode) {
     s32 targetNpcID;
     s32 msgID;
     s32 animID;
-    s32 ret;
 
     targetNpc = nullptr;
 

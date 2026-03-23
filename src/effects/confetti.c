@@ -61,7 +61,6 @@ EffectInstance* confetti_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
     f32 temp_f30;
     s32 temp_fp;
     s32 np;
-    s32 var_v0;
     s32 i;
 
     switch (arg0) {
@@ -256,7 +255,6 @@ void confetti_appendGfx(void* effect) {
     s32 unk_28;
     s32 unk_2C;
     Gfx* spA0;
-    s32 spA4;
     Gfx* savedGfxPos;
     s32 unk_24;
     Color_RGB8* color;

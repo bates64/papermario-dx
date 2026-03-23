@@ -465,7 +465,6 @@ API_CALLABLE(SetNpcYaw) {
 }
 
 API_CALLABLE(InterpNpcYaw) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     f32* initialYaw = &script->functionTempF[1];
     f32* deltaYaw = &script->functionTempF[2];

@@ -52,7 +52,7 @@ void player_surface_spawn_fx(void) {
         surfaceType = PrevSurfaceType;
     }
 
-    if (gPlayerStatus.actionState == ACTION_STATE_LAND && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED) {
+    if (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)) {
         LandedTimeInAir = PrevTimeInAir;
     }
 
@@ -104,8 +104,8 @@ void player_surface_spawn_basic_fx(void) {
     }
 
     // spawn effects if ground pounding
-    if ((gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND && gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND)
-     || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND)
+    if ((gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
+     || (gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND && (gPlayerStatus.flags & PS_FLAG_SPECIAL_LAND))
     ) {
         x = gPlayerStatus.pos.x;
         y = gPlayerStatus.pos.y;
@@ -297,8 +297,8 @@ void player_surface_spawn_snow_fx(void) {
     if (gPlayerStatus.actionState == ACTION_STATE_WALK
         || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-        || (gPlayerStatus.actionState == ACTION_STATE_LAND && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
+        || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
     ) {
         if (PlayerSnowSpawnDelay++ >= 4) {
             PlayerSnowSpawnDelay = 0;
@@ -325,8 +325,8 @@ void player_surface_spawn_hedges_fx(void) {
     if (gPlayerStatus.actionState == ACTION_STATE_WALK
         || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-        || (gPlayerStatus.actionState == ACTION_STATE_LAND && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
+        || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
     ) {
         if (PlayerHedgeSpawnDelay++ >= 4) {
             PlayerHedgeSpawnDelay = 0;
@@ -351,8 +351,8 @@ void player_surface_spawn_water_fx(void) {
     if (gPlayerStatus.actionState == ACTION_STATE_WALK
         || gPlayerStatus.actionState == ACTION_STATE_RUN
         || (gPlayerStatus.actionState == ACTION_STATE_SPIN && gPlayerStatus.actionSubstate == 0)
-        || (gPlayerStatus.actionState == ACTION_STATE_LAND && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
-        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED)
+        || (gPlayerStatus.actionState == ACTION_STATE_LAND && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
+        || (gPlayerStatus.actionState == ACTION_STATE_IDLE && (gPlayerStatus.flags & PS_FLAG_ACTION_STATE_CHANGED))
     ) {
         if (PlayerWaterSpawnDelay++ >= 4) {
             PlayerWaterSpawnDelay = 0;

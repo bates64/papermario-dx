@@ -136,7 +136,6 @@ void flame_render(EffectInstance* effect) {
     FlameFXData* data = effect->data.flame;
     RenderTask renderTask;
     RenderTask* renderTaskPtr = &renderTask;
-    RenderTask* retTask;
     s32 outDist;
     f32 outX;
     f32 outY;

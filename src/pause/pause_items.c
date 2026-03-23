@@ -9,7 +9,6 @@ void pause_items_cleanup(MenuPanel* panel);
 
 static s16 gPauseItemsItemIDs[100];
 static s32 gPauseItemsCurrentPage;
-static s32 D_802704CC;
 static PauseItemPage gPauseItemsPages[20];
 static s32 gPauseItemsSelectedIndex;
 static u32 D_802705C4;
@@ -118,7 +117,6 @@ void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     s32 sp6C;
     s32 sp70;
     s32 isNone;
-    s32* sp78;
     PauseItemPage* page;
     s32 x1, y1, x2, y2;
     s16 itemID;
@@ -355,13 +353,8 @@ void pause_items_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
 void pause_items_load_items(s32 invItems) {
     PlayerData* playerData = &gPlayerData;
     s32 i;
-    s16* itemIDs;
-    s32 pageNum;
-    s16* itemMenuNumItems;
     s32 totalItems = 0;
     PauseItemPage* page;
-    s32 items;
-    s16* itemMenuItemIDs;
 
     D_802705D0 = 0;
     if (invItems == true) {

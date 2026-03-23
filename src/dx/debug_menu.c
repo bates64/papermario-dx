@@ -81,7 +81,7 @@ void dx_debug_set_map_info(char* mapName, s32 entryID) {
     LastMapEntry = entryID;
 }
 
-void dx_debug_set_battle_info(s32 battleID, char* stageName) {
+void dx_debug_set_battle_info(s32 battleID, const char* stageName) {
     s32 len = strlen(stageName);
 
     strcpy(LastStageName, stageName);
@@ -840,7 +840,7 @@ void dx_debug_update_select_map() {
 }
 
 void dx_debug_update_select_entry() {
-    s32 idx, areaID, mapID;
+    s32 idx;
     MapConfig map = gAreas[SelectAreaMenuPos].maps[SelectMapMenuPos];
 
     // handle input
@@ -963,7 +963,6 @@ void dx_debug_begin_battle() {
 
 void dx_debug_update_select_battle() {
     s32 idx;
-    char fmtBuf[16];
     s32 maxAreaTens = ARRAY_COUNT(gBattleAreas) >> 4;
 
     // handle input
@@ -1268,7 +1267,7 @@ void dx_debug_update_edit_items() {
     DebugItemsMenu* menu;
     s16* invItems;
     s32 invSize;
-    s32 i, j;
+    s32 i;
 
     switch (DebugMenuState) {
         case DBM_INV_EDIT_ITEMS:
@@ -1405,7 +1404,7 @@ s32 DebugGearPos = 0;
 
 void dx_debug_update_edit_gear() {
     s32 idx;
-    s32 val, dx;
+    s32 dx;
 
     if (DebugStateChanged) {
         DebugGearValues[DEBUG_GEAR_BOOTS] = gPlayerData.bootsLevel;
@@ -1778,7 +1777,7 @@ void dx_debug_draw_collision() {
     for (i = 0; i < gCollisionData.numColliders; i++) {
         Collider* collider = &gCollisionData.colliderList[i];
 
-        if (collider->flags & COLLIDER_FLAG_IGNORE_PLAYER && !DebugCollisionMenu[DBC_SHOW_DISABLED].state) {
+        if ((collider->flags & COLLIDER_FLAG_IGNORE_PLAYER) && !DebugCollisionMenu[DBC_SHOW_DISABLED].state) {
             continue;
         }
 
@@ -2317,8 +2316,6 @@ void dx_debug_evt_resume_all() {
 }
 
 void dx_debug_update_evt_main() {
-    s32 count;
-    s32 idx;
 
     dx_debug_update_evt_list();
 

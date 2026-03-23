@@ -10,7 +10,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-static s32 _pad = 0; // XXX
 
 #include "battle/move/item/strange_cake1.png.h"
 INCLUDE_IMG("battle/move/item/strange_cake1.png", battle_item_strange_cake1_png);
@@ -47,7 +46,6 @@ BSS s32 D_802A2DFC;
 BSS s32 D_802A2E00;
 
 void N(func_802A123C_73153C(void)) {
-    s32 var_s3;
     s32 id;
     s32 i;
 

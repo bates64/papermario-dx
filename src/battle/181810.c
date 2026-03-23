@@ -519,8 +519,6 @@ s32 is_actor_health_bar_visible(Actor* actor) {
 s32 is_actortype_health_bar_visible(s32 actorType) {
     BattleStatus* battleStatus = &gBattleStatus;
     s32 flags;
-    s32 byteIdx;
-    s32 flagIdx;
 
     if (is_ability_active(ABILITY_PEEKABOO)) {
         return true;
