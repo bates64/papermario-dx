@@ -59,7 +59,7 @@ let
 
   requirements = ../../requirements.txt;
 
-  # Download all Python build dependencies for offline installation.
+  # Download all Python build dependencies for offline installation (Linux, used by wineRom).
   pythonDeps = pkgs.stdenvNoCC.mkDerivation {
     name = "papermario-python-deps";
     outputHashMode = "recursive";
@@ -69,6 +69,48 @@ let
     buildCommand = ''
       export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
       pip download -r ${requirements} setuptools wheel -d $out
+    '';
+  };
+
+  # Download Windows-compatible wheels for pre-installation into the toolchain.
+  # Some packages (e.g. ninja_syntax) only have sdists on PyPI, so we can't use
+  # --platform win_amd64 --only-binary=:all: for everything. Instead we build
+  # all wheels first (which creates universal wheels from sdists), then replace
+  # any Linux-specific wheels with their Windows counterparts.
+  pythonDepsWindows = pkgs.stdenvNoCC.mkDerivation {
+    name = "papermario-python-deps-windows";
+    outputHashMode = "recursive";
+    outputHashAlgo = "sha256";
+    outputHash = "sha256-zrMEwffdltfh51U5xF4DI+mJpMnNwA7YMV2b19Ya+CM=";
+    nativeBuildInputs = [
+      pkgs.python3
+      pkgs.python3Packages.pip
+      pkgs.python3Packages.setuptools
+      pkgs.python3Packages.wheel
+      pkgs.cacert
+    ];
+    buildCommand = ''
+      export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+      export HOME=$(mktemp -d)
+      mkdir -p $out
+
+      # Build wheels for all packages including transitive dependencies.
+      # Pure Python sdist-only packages (e.g. ninja_syntax) become py3-none-any wheels.
+      pip wheel -r ${requirements} setuptools -w /tmp/all-wheels --quiet
+
+      for whl in /tmp/all-wheels/*.whl; do
+        name=$(basename "$whl")
+        if echo "$name" | grep -qE '(linux|manylinux|macosx)'; then
+          # Platform-specific wheel: download Windows version instead
+          pkg=$(echo "$name" | sed 's/-[0-9].*//')
+          pip download \
+            --platform win_amd64 --python-version 3.13 --implementation cp --abi cp313 \
+            --only-binary=:all: --no-deps \
+            "$pkg" -d $out --quiet
+        else
+          cp "$whl" $out/
+        fi
+      done
     '';
   };
 
@@ -145,7 +187,7 @@ let
   '';
 
   zip = pkgs.runCommand "papermario-dx-windows-toolchain" {
-    nativeBuildInputs = [ pkgs.zip ];
+    nativeBuildInputs = [ pkgs.zip pkgs.unzip ];
   } ''
     dir=papermario-dx-windows
     mkdir -p $dir/bin $dir/python
@@ -175,28 +217,13 @@ let
     # n64crc (pre-built so Windows users don't need a host C compiler)
     cp ${n64crc-windows}/bin/n64crc.exe $dir/bin/
 
-    # Embeddable Python
+    # Embeddable Python with pre-installed packages
     cp -rL ${python-windows}/* $dir/python/
-
-    # Python requirements for pip install
-    cp ${requirements} $dir/requirements.txt
-
-    # Wrapper scripts
-    cat > $dir/setup.bat << 'SETUP_EOF'
-    @echo off
-    setlocal
-
-    set "TOOLCHAIN_DIR=%~dp0"
-    set "PATH=%TOOLCHAIN_DIR%bin;%TOOLCHAIN_DIR%python;%PATH%"
-
-    echo Installing Python packages...
-    python.exe "%TOOLCHAIN_DIR%python\get-pip.py" --no-warn-script-location
-    python.exe -m pip install setuptools --no-warn-script-location
-    python.exe -m pip install -r "%TOOLCHAIN_DIR%requirements.txt" --no-warn-script-location
-
-    echo.
-    echo Setup complete. You can now use build.bat to build the project.
-    SETUP_EOF
+    rm -f $dir/python/get-pip.py
+    mkdir -p $dir/python/Lib/site-packages
+    for whl in ${pythonDepsWindows}/*.whl; do
+      unzip -o -q "$whl" -d $dir/python/Lib/site-packages
+    done
 
     cat > $dir/build.bat << 'BUILD_EOF'
     @echo off
@@ -224,7 +251,7 @@ in
 zip // {
   passthru = {
     inherit mips-toolchain python-windows ninja-windows n64crc-windows
-            pigment64-windows crunch64-windows wineRom pythonDeps;
+            pigment64-windows crunch64-windows wineRom pythonDeps pythonDepsWindows;
 
     tests.wine = pkgs.runCommand "mips-toolchain-windows-test" {
       nativeBuildInputs = [ pkgs.wineWow64Packages.stable ];
