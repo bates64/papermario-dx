@@ -49,6 +49,7 @@ let
 
   python-windows = pkgs.callPackage ./python.nix {};
   ninja-windows = pkgs.callPackage ./ninja.nix {};
+  ccache-windows = pkgs.callPackage ./ccache.nix {};
   n64crc-windows = import ./n64crc.nix { stdenv = mingwStdenv; };
 
   pigment64-windows = mingw.callPackage ../pigment64.nix {};
@@ -214,6 +215,9 @@ let
     # ninja
     cp ${ninja-windows}/bin/ninja.exe $dir/bin/
 
+    # ccache
+    cp ${ccache-windows}/bin/ccache.exe $dir/bin/
+
     # n64crc (pre-built so Windows users don't need a host C compiler)
     cp ${n64crc-windows}/bin/n64crc.exe $dir/bin/
 
@@ -235,7 +239,7 @@ let
 
     if not exist build.ninja (
         echo Running configure...
-        python.exe tools/build/configure.py --no-ccache
+        python.exe tools/build/configure.py
     )
 
     echo Building...
@@ -250,7 +254,7 @@ let
 in
 zip // {
   passthru = {
-    inherit mips-toolchain python-windows ninja-windows n64crc-windows
+    inherit mips-toolchain python-windows ninja-windows ccache-windows n64crc-windows
             pigment64-windows crunch64-windows wineRom pythonDeps pythonDepsWindows;
 
     tests.wine = pkgs.runCommand "mips-toolchain-windows-test" {

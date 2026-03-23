@@ -139,7 +139,7 @@ jobs:
         run: |
           $env:PATH = "$PWD\papermario-dx-windows\bin;$PWD\papermario-dx-windows\python;$env:PATH"
           $env:PYTHONUTF8 = "1"
-          python.exe tools/build/configure.py --no-ccache
+          python.exe tools/build/configure.py
           ninja.exe
       - name: Compute ROM SHA256
         id: windows-rom-sha
