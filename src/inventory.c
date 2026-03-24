@@ -98,15 +98,20 @@ void clear_player_data(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
-        playerData->badges[i] = ITEM_NONE;
+        // playerData->badges[i] = ITEM_NONE;
+        playerData->badges[0] = ITEM_PEEKABOO;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        playerData->invItems[i] = ITEM_NONE;
+        // playerData->invItems[i] = ITEM_NONE;
+        playerData->invItems[0] = ITEM_MUSHROOM;
+        playerData->invItems[1] = ITEM_SUPER_SHROOM;
+        playerData->invItems[2] = ITEM_LIFE_SHROOM;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        playerData->equippedBadges[i] = ITEM_NONE;
+        // playerData->equippedBadges[i] = ITEM_NONE;
+        playerData->equippedBadges[0] = ITEM_PEEKABOO;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->storedItems); i++) {
