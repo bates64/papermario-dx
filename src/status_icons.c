@@ -352,7 +352,6 @@ void init_all_status_icons(void) {
 }
 
 void update_all_status_icons(void* data) {
-    PopupMessage* popup = data;
     HudStatusIcon* icon;
     s32 elementID;
     s32 i;
@@ -581,7 +580,6 @@ void update_all_status_icons(void* data) {
 }
 
 void draw_all_status_icons(void* data) {
-    PopupMessage* popup = data;
     HudStatusIcon* icon;
     s32 elementId;
     f32 x, y, z;

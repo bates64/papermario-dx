@@ -687,9 +687,9 @@ void hud_element_setup_cam(void) {
     gCameras[CAM_HUD].flags &= ~(CAMERA_FLAG_DISABLED | CAMERA_FLAG_LEAD_PLAYER);
 }
 
-s32 hud_element_create(HudScript* anim) {
+HudElemID hud_element_create(HudScript* anim) {
     HudElement* hudElement;
-    s32 id;
+    HudElemID id;
 
     for (id = 0; id < ARRAY_COUNT(*gHudElements); id++) {
         if ((*gHudElements)[id] == nullptr) {
@@ -1664,8 +1664,6 @@ s32 gather_and_sort_hud_elements(s32* sortedElements, b32 isBattle)
 
 void render_transformed_hud_elements(void) {
     s32 sortedElements[ARRAY_COUNT(*gHudElements)];
-    HudElement* hudElement;
-    s32 flags;
     s32 count, i;
 
     if (gCurrentCamID == CAM_HUD) {

@@ -37,6 +37,7 @@ ApiStatus N(UnkDistFunc)(Evt* script, MobileAISettings* aiSettings, EnemyDetectV
             script->functionTemp[0] = 14;
         }
     }
+    return ApiStatus_BLOCK;
 }
 
 void N(UnkNpcAIFunc12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {

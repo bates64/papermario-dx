@@ -118,7 +118,7 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                     // Use the frame pointer to refer to the current frame.
                     sp = fp;
                     if (!is_valid_address((uint32_t)sp)) {
-                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08lx\n", (uint32_t)sp);
+                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08x\n", (uint32_t)sp);
                         return;
                     }
                 }
@@ -202,6 +202,8 @@ static void backtrace_foreach(void (*cb)(void *arg, void *ptr), void *arg) {
                 exception_ra = nullptr;
                 func_start = 0;
                 break;
+            case BT_EXCEPTION:
+                break;
         }
 
         if (is_valid_address((uint32_t)ra)) {
@@ -239,7 +241,7 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                     // Use the frame pointer to refer to the current frame.
                     sp = fp;
                     if (!is_valid_address((uint32_t)sp)) {
-                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08lx\n", (uint32_t)sp);
+                        debugf("backtrace: interrupted because of invalid frame pointer 0x%08x\n", (uint32_t)sp);
                         return;
                     }
                 }
@@ -260,6 +262,8 @@ static void backtrace_foreach_foreign(void (*cb)(void *arg, void *ptr), void *ar
                 sp = (uint32_t*)((uint32_t)sp + func.stack_size);
                 exception_ra = nullptr;
                 func_start = 0;
+                break;
+            case BT_EXCEPTION:
                 break;
         }
 
@@ -338,7 +342,7 @@ s32 address2symbol(u32 address, Symbol* out) {
         return -1;
     }
     if (symt.symbolCount <= 0) {
-        debugf("address2symbol: no symbols available (symbolCount=%d)\n", symt.symbolCount);
+        debugf("address2symbol: no symbols available (symbolCount=%lu)\n", symt.symbolCount);
         return -1;
     }
 
@@ -398,14 +402,14 @@ void backtrace_address_to_string(u32 address, char* dest) {
             if (offset == 0)
                 sprintf(dest, "%s", namep);
             else
-                sprintf(dest, "%s+0x%X", namep, offset);
+                sprintf(dest, "%s+0x%lX", namep, offset);
         else
             if (offset == 0)
                 sprintf(dest, "%s (%s)", namep, filep);
             else
-                sprintf(dest, "%s (%s+0x%X)", namep, filep, offset);
+                sprintf(dest, "%s (%s+0x%lX)", namep, filep, offset);
     } else {
-        sprintf(dest, "%p", address);
+        sprintf(dest, "0x%lX", address);
     }
 }
 

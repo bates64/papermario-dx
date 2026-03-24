@@ -38,7 +38,6 @@ enum {
 // iterate through the display list, checking each vertex's distance from (0,0,0) and return the minimum distance
 // this creates a spherical collision volume for the flying debris
 void N(DetermineSphericalSize)(Gfx* displayList, s32* outDist) {
-    char pad[0x8];
     Gfx* dlist = displayList;
     u8 cmd;
 

@@ -208,11 +208,11 @@ void update_triggers(void) {
             }
         }
 
-        if (listTrigger->flags & TRIGGER_GAME_FLAG_SET && get_global_flag(listTrigger->varIndex) == 0) {
+        if ((listTrigger->flags & TRIGGER_GAME_FLAG_SET) && get_global_flag(listTrigger->varIndex) == 0) {
             continue;
         }
 
-        if (listTrigger->flags & TRIGGER_AREA_FLAG_SET && get_area_flag(listTrigger->varIndex) == 0) {
+        if ((listTrigger->flags & TRIGGER_AREA_FLAG_SET) && get_area_flag(listTrigger->varIndex) == 0) {
             continue;
         }
 

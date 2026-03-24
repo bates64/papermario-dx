@@ -93,7 +93,6 @@ void entity_Munchlesia_init(Entity* entity) {
 }
 
 void func_802BC050_E2E980(Entity* entity) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (entity->collisionFlags & ENTITY_COLLISION_PLAYER_TOUCH_FLOOR) {
         Entity* resetMunchlesia;

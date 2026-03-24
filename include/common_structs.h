@@ -598,7 +598,7 @@ typedef struct ShadowBlueprint {
     /* 0x02 */ s16 typeDataSize;
     /* 0x04 */ UNK_PTR renderCommandList;
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
-    /* 0x0C */ ShadowCallback(onCreateCallback);
+    /* 0x0C */ ShadowCallback onCreateCallback;
     /* 0x10 */ char unk_10[0x10];
     /* 0x20 */ u8 entityType;
     /* 0x21 */ char aabbSize[3];
@@ -1493,7 +1493,7 @@ typedef struct PushBlockGrid {
     /* 0x05 */ u8 numCellsZ;
     /* 0x06 */ char unk_06[2];
     /* 0x08 */ Vec3i centerPos;
-    /* 0x14 */ PushBlockFallCallback(dropCallback);
+    /* 0x14 */ PushBlockFallCallback dropCallback;
     /* 0x18 */ char unk_18[4];
 } PushBlockGrid; // size = 0x1C
 

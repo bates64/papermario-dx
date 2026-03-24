@@ -35,13 +35,9 @@ BSS PlayerSpriteCacheEntry PlayerRasterCache[18];
 #define SPR_SWIZZLE(base,offset) ((void*)((s32)(offset) + (s32)(base)))
 
 void spr_swizzle_anim_offsets(s32 arg0, s32 base, void* spriteData) {
-    u8* buffer;
     SpriteAnimComponent*** animList;
     SpriteAnimComponent** compList;
     SpriteAnimComponent* comp;
-    s32 animOffset;
-    s32 compOffset;
-    s32 temp;
 
     // required to match, spriteData->animList would be nicer
     animList = (SpriteAnimComponent***) spriteData;
@@ -241,8 +237,7 @@ void spr_load_npc_extra_anims(SpriteAnimData* header, u32* extraAnimList) {
     void* writePos;
     SpriteRasterCacheEntry** rasterList;
     SpriteRasterCacheEntry* raster;
-    u16** oldPalList;
-    u16* palette;
+    PAL_PTR* oldPalList;
     // one extra required for 'done' sentinel
     s32 sawRaster[100 + 1];
     s32 i;

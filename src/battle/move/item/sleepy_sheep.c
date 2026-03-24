@@ -170,7 +170,6 @@ API_CALLABLE(N(func_802A1848_71EE98)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-static s32 _pad = 0;
 
 #include "battle/move/item/sleepy_sheep1.png.h"
 INCLUDE_IMG("battle/move/item/sleepy_sheep1.png", battle_item_sleepy_sheep1_png);

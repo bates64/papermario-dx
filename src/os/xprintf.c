@@ -230,4 +230,3 @@ static void _Putfld(_Pft *x, va_list *args, char type, char *buff) {
     }
 }
 
-static const s32 padding[] = {0, 0};

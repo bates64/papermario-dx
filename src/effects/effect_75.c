@@ -18,7 +18,6 @@ EffectInstance* effect_75_main(s32 arg0, f32 posX, f32 posY, f32 posZ, f32 scale
     EffectInstance* effect;
     Effect75FXData* data;
     s32 numParts = 1;
-    s32 i;
 
     bp.init = effect_75_init;
     bp.update = effect_75_update;

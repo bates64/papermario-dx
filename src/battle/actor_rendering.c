@@ -1821,7 +1821,6 @@ void appendGfx_player_actor(void* arg0) {
         create_status_debuff(player->hudElementDataIndex, STATUS_KEY_STOP);
     }
 
-end:
     set_status_icons_properties(player->hudElementDataIndex,
         playerPosX, playerPosY, playerPosZ,
         player->actorBlueprint->statusIconOffset.x * player->scalingFactor,
@@ -2356,7 +2355,6 @@ void render_with_fear_palettes(b32 isNpcSprite, ActorPart* part, s32 yaw, Matrix
     PAL_PTR palIn;
     PAL_PTR palOut;
     s32 i, j;
-    s32 temp;
 
     if (decorations->resetPalAdjust) {
         if (isNpcSprite == SPRITE_MODE_PLAYER) {

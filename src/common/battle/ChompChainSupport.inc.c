@@ -89,7 +89,6 @@ API_CALLABLE(N(ChompChainUpdate)) {
     f32 angle;
     f32 prevX, prevY;
     s32 baseChainPart;
-    s32 posZ;
     s32 i;
 
     actor = get_actor(script->owner1.actorID);
@@ -98,7 +97,7 @@ API_CALLABLE(N(ChompChainUpdate)) {
     }
 
     #if CHOMP_CHAIN_UPDATE_Z == true
-    posZ = evt_get_variable(script, *args++);
+    f32 posZ = evt_get_variable(script, *args++);
     #endif
 
     baseChainPart = CHOMP_CHAIN_FIRST_PART_IDX;
@@ -179,7 +178,7 @@ API_CALLABLE(N(ChompChainUpdate)) {
         if (chain->settleAmt > 4.0) {
             chain->settleAmt = 4.0f;
         }
-        
+
         #if CHOMP_CHAIN_UPDATE_Z == true
         chain->curPos.z = posZ;
         #endif

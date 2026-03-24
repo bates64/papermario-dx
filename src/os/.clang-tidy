@@ -1,0 +1,6 @@
+InheritParentConfig: true
+Checks: >
+  -readability-identifier-naming,
+  -readability-redundant-casting,
+  -readability-redundant-control-flow,
+  -bugprone-sizeof-expression,

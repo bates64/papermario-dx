@@ -102,7 +102,6 @@ void action_update_idle(void) {
 
 void action_update_idle_peach(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    PlayerData* playerData = &gPlayerData;
     f32 angle, magnitude;
 
     if (playerStatus->flags & PS_FLAG_ACTION_STATE_CHANGED) {

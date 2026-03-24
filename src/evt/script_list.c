@@ -813,7 +813,7 @@ void resume_group_script(Evt* script, s32 groupFlags) {
     }
 }
 
-s32 suspend_all_script(s32 id) {
+void suspend_all_script(s32 id) {
     s32 i;
 
     for (i = 0; i < MAX_SCRIPTS; i++) {
@@ -825,7 +825,7 @@ s32 suspend_all_script(s32 id) {
     }
 }
 
-s32 resume_all_script(s32 id) {
+void resume_all_script(s32 id) {
     s32 i;
     Evt* scriptContextPtr;
 
@@ -873,7 +873,7 @@ void suspend_all_group(s32 groupFlags) {
     }
 }
 
-s32 resume_all_group(s32 groupFlags) {
+void resume_all_group(s32 groupFlags) {
     s32 i;
     Evt* scriptContextPtr;
 

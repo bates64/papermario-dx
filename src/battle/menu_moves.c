@@ -256,7 +256,6 @@ s32 btl_submenu_moves_update(void) {
     s32 x, y;
     s32 msgWidth;
     s32 msgHeight;
-    s32 msgX;
     s32 msgID;
     s32 cond;
     HudElemID hid;
@@ -286,9 +285,9 @@ s32 btl_submenu_moves_update(void) {
 
                         if (
                             MovesOptionSortPriority[temp1] != MovesOptionSortPriority[temp2] ||
-                            (MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2]) &&
+                            ((MovesOptionDisplayCosts[temp1] >= MovesOptionDisplayCosts[temp2]) &&
                             (MovesOptionDisplayCosts[temp1] != MovesOptionDisplayCosts[temp2] ||
-                                MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2])
+                                MovesOptionBPCosts[temp1] >= MovesOptionBPCosts[temp2]))
                         )
                         {
                             s32 swapTemp = MovesOptionIndexMap[i];

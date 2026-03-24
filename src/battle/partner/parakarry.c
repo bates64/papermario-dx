@@ -40,11 +40,8 @@ extern EvtScript N(airLift);
 extern EvtScript N(airRaid);
 
 static EffectInstance* airRaidEffect;
-static s32 D_8023BD74_unused;
 static s32 hudMarkers[7];
-static s32 D_8023BD94_unused;
 static s32 hudShimmers[6];
-static s32 D_8023BDB0_unused;
 static s32 hudTarget;
 static s32 hudTargetRotation;
 static s32 shellShotTimer;
@@ -59,7 +56,6 @@ enum N(ActorPartIDs) {
 
 API_CALLABLE(N(ShellShotActionCommand)) {
     BattleStatus* battleStatus = &gBattleStatus;
-    ActionCommandStatus* actionCommandStatus = &gActionCommandStatus;
     Actor* parakarry = battleStatus->partnerActor;
     ActorState* state = &parakarry->state;
     Actor* targetActor;

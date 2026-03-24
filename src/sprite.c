@@ -903,7 +903,7 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
         }
     }
 
-    if (yaw > 90 && yaw <= 270 || yaw >= -270 && yaw < -90) {
+    if ((yaw > 90 && yaw <= 270) || (yaw >= -270 && yaw < -90)) {
         zscale = -1.5f;
     } else {
         zscale = 1.5f;
@@ -1068,7 +1068,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     s32 i = spriteInstanceID & 0xFF;
     s32 animIndex = SPR_UNPACK_ANIM(animID);
 
-    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %x", spriteInstanceID);
+    ASSERT_MSG(i <= MaxLoadedSpriteInstanceID, "Invalid sprite instance ID %lx", spriteInstanceID);
 
     compList = SpriteInstances[i].componentList;
     spriteData = SpriteInstances[i].spriteData;
@@ -1125,7 +1125,7 @@ s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* pal
         }
     }
 
-    if (yaw > 90 && yaw <= 270 || yaw >= -270 && yaw < -90) {
+    if ((yaw > 90 && yaw <= 270) || (yaw >= -270 && yaw < -90)) {
         zscale = -1.5f;
     } else {
         zscale = 1.5f;

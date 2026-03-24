@@ -62,8 +62,4 @@ INCLUDE_PAL("charset/letter_content_11.pal", charset_letter_content_11_pal_OFFSE
 INCLUDE_IMG("charset/letter_content_12.png", charset_letter_content_12_OFFSET);
 INCLUDE_PAL("charset/letter_content_12.pal", charset_letter_content_12_pal_OFFSET);
 
-#if VERSION_US || VERSION_PAL
-static int padding2[] = {0, 0};
-#endif
-
 int something = 0x03E00008;

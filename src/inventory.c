@@ -58,19 +58,19 @@ void clear_player_data(void) {
     ShowingCoinCounter = false;
     HidingCoinCounter = false;
 
-    playerData->curHP = 10;
-    playerData->curMaxHP = 10;
-    playerData->hardMaxHP = 10;
-    playerData->curFP = 5;
-    playerData->curMaxFP = 5;
-    playerData->hardMaxFP = 5;
-    playerData->maxBP = 3;
-    playerData->level = 1;
+    playerData->curHP = 40;
+    playerData->curMaxHP = 40;
+    playerData->hardMaxHP = 40;
+    playerData->curFP = 30;
+    playerData->curMaxFP = 30;
+    playerData->hardMaxFP = 30;
+    playerData->maxBP = 30;
+    playerData->level = 21;
     playerData->bootsLevel = 0;
-    playerData->hammerLevel = -1;
-    playerData->hasActionCommands = false;
-    playerData->coins = 0;
-    playerData->starPieces = 0;
+    playerData->hammerLevel = 0;
+    playerData->hasActionCommands = true;
+    playerData->coins = 100;
+    playerData->starPieces = 50;
     playerData->starPoints = 0;
     playerData->unused_011 = 0;
     playerData->unused_288 = 0;
@@ -1128,7 +1128,7 @@ void update_status_bar(void) {
     }
 
     while (true) {
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1138,7 +1138,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
 
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1147,7 +1147,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[1], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1155,7 +1155,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[2], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1163,7 +1163,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[3], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1172,7 +1172,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1181,7 +1181,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1190,7 +1190,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1200,7 +1200,7 @@ void update_status_bar(void) {
 
         s1 = 0;
         sp50++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
     }
@@ -2150,7 +2150,6 @@ void add_star_power(s32 amt) {
     PlayerData* playerData = &gPlayerData;
     StatusBar* statusBar = &gStatusBar;
     s32 maxPower;
-    s32 newPower;
 
     statusBar->shimmerState = STATUS_SHIMMER_BEGIN;
     statusBar->shimmerTime = 60;

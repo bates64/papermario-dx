@@ -42,7 +42,6 @@ enum MagikoopaMoveResult {
 };
 
 void N(FlyingMagikoopaAI_15)(Evt* arg0, MobileAISettings* arg1, EnemyDetectVolume* arg2) {
-    f32 dist;
     f32 distToHit;
     f32 randomDist;
     f32 baseYaw;

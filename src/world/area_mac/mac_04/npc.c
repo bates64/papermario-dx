@@ -133,7 +133,6 @@ s32 N(get_total_equipped_bp_cost)(void) {
 }
 
 API_CALLABLE(N(EnforceNewStatLimits)) {
-    PlayerData* playerData = &gPlayerData;
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
     s32 bpCost = N(get_total_equipped_bp_cost)();

@@ -284,7 +284,7 @@ block_17:
             break;
         case WORLD_MENU_STATE_DELAY:
             flags = ~PS_FLAG_PAUSED;
-            if (!should_cancel_open_world_menu() || is_picking_up_item() || OpenMenuDisableCount < playerStatus->inputDisabledCount != 0) {
+            if (!should_cancel_open_world_menu() || is_picking_up_item() || (OpenMenuDisableCount < playerStatus->inputDisabledCount) != 0) {
                 playerStatus->flags &= flags;
                 enable_player_input();
                 partner_enable_input();

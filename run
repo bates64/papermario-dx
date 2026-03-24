@@ -91,7 +91,6 @@ def main():
             print("error: configure failed")
             exit(1)
         hash.write_new_hash()
-        os.system("ninja -t compdb > compile_commands.json")
 
     os.system("clear")
     if os.system(f"n2 {ROM}") != 0:
