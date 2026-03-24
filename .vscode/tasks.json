@@ -9,6 +9,9 @@
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "windows": {
+        "command": "build.bat"
       }
     },
     {
