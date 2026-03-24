@@ -234,22 +234,13 @@ let
       unzip -o -q "$whl" -d $dir/python/Lib/site-packages
     done
 
-    cat > $dir/build.bat << 'BUILD_EOF'
+    cat > $dir/shell.bat << 'SHELL_EOF'
     @echo off
-    setlocal
-
     set "TOOLCHAIN_DIR=%~dp0"
     set "PATH=%TOOLCHAIN_DIR%bin;%TOOLCHAIN_DIR%python;%PATH%"
     set "PYTHONUTF8=1"
-
-    if not exist build.ninja (
-        echo Running configure...
-        python.exe tools/build/configure.py
-    )
-
-    echo Building...
-    ninja.exe
-    BUILD_EOF
+    cmd /k echo papermario-dx development shell. Run 'python tools/build/configure.py' then 'ninja' to build.
+    SHELL_EOF
 
     mkdir -p $out
     cd $dir/..
