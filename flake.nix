@@ -56,10 +56,94 @@
           '';
           sha256 = "9ec6d2a5c2fca81ab86312328779fd042b5f3b920bf65df9f6b87b376883cb5b";
         };
+        windowsToolchain = import ./tools/windows {
+          inherit pkgs nixpkgs-binutils-2_39 baseRom;
+          mipsCrossGcc = pkgsCross.stdenv.cc;
+          src = self;
+        };
+        pythonDeps = windowsToolchain.passthru.pythonDeps;
+        requirementsExtra = ./requirements_extra.txt;
+        pythonDepsExtra = pkgs.stdenvNoCC.mkDerivation {
+          name = "papermario-python-deps-extra";
+          outputHashMode = "recursive";
+          outputHashAlgo = "sha256";
+          outputHash = "sha256-UpAKsz4JCCWJHl6hTpIi/dzLISDF7RcGuY/hFjAMex8=";
+          nativeBuildInputs = [ pkgs.python3 pkgs.python3Packages.pip pkgs.cacert ];
+          buildCommand = ''
+            export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+            pip download -r ${./requirements.txt} -r ${requirementsExtra} setuptools wheel -d $out
+          '';
+        };
+        linuxRom = pkgs.runCommand "papermario-linux-rom" {
+          nativeBuildInputs = [
+            pkgsCross.stdenv.cc
+            binutils2_39
+            pkgs.python3
+            pkgs.python3Packages.pip
+            pkgs.python3Packages.virtualenv
+            pkgs.ninja
+            pkgs.gcc
+            pkgs.git
+            pkgs.libyaml
+            pkgs.iconv
+            (pkgs.callPackage ./tools/pigment64.nix {})
+            (pkgs.callPackage ./tools/crunch64.nix {})
+          ] ++ pkgs.lib.optional pkgs.stdenv.isLinux pkgs.flips;
+          # Disable nixpkgs hardening flags (zerocallusedregs, fortify, etc.)
+          # that the cross-compiler wrapper injects. The build system manages
+          # its own flags and we want output identical to the Windows toolchain.
+          NIX_HARDENING_ENABLE = "";
+        } ''
+          cp -r --no-preserve=mode ${self} build
+          chmod -R u+w build
+          find build -name '*.py' -exec chmod +x {} +
+          cd build
+          git init --quiet
+          cp ${baseRom} ver/us/baserom.z64
+          patchShebangs --build tools/
+
+          virtualenv venv --quiet
+          source venv/bin/activate
+          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+
+          export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+          python3 tools/build/configure.py --no-ccache
+          ninja
+
+          mkdir -p $out
+          cp ver/us/build/papermario.z64 $out/
+          ${pkgs.lib.optionalString pkgs.stdenv.isLinux
+            "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
+        '';
       in {
+        packages = {
+          default = linuxRom;
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          windows-toolchain = windowsToolchain;
+          windows-rom = windowsToolchain.passthru.wineRom;
+        };
+
+        checks = pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          windows-toolchain = windowsToolchain.passthru.tests.wine;
+          windows-toolchain-build = windowsToolchain.passthru.tests.build;
+          windows-linux-match = pkgs.runCommand "windows-linux-rom-match" {} ''
+            if cmp -s ${linuxRom}/papermario.z64 ${windowsToolchain.passthru.wineRom}/papermario.z64; then
+              echo "=== Linux and Windows ROMs match ==="
+              touch $out
+            else
+              echo "=== ERROR: Linux and Windows ROMs differ ==="
+              exit 1
+            fi
+          '';
+        };
+
         devShells.default = pkgsCross.mkShell {
           name = "papermario-dx";
           venvDir = "./venv";
+          # Disable nixpkgs hardening flags (stackprotector, fortify, pic, etc.)
+          # that the cross-compiler wrapper injects. These change MIPS code
+          # generation and would cause Linux builds to differ from Windows.
+          NIX_HARDENING_ENABLE = "";
           packages = with pkgs; [
             ninja # needed for ninja -t compdb in configure, as n2 doesn't support it
             n2 # same as ninja, but with prettier output
@@ -81,11 +165,10 @@
             rm -f ./ver/us/baserom.z64 && cp ${baseRom} ./ver/us/baserom.z64
             export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
 
-            # Install python packages (TODO: use derivations)
+            # Install python packages from cached wheels (offline)
             virtualenv venv --quiet
             source venv/bin/activate
-            pip install -r ${./requirements.txt} --quiet
-            pip install -r ${./requirements_extra.txt} --quiet
+            pip install --no-index --find-links=${pythonDepsExtra} -r ${./requirements.txt} -r ${./requirements_extra.txt} --quiet
           '';
         };
       }
