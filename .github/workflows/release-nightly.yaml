@@ -1,0 +1,19 @@
+name: Release Nightly
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    name: Update dx-nightly tag
+    if: github.repository == 'bates64/papermario-dx'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move dx-nightly tag
+        run: |
+          git tag -f dx-nightly
+          git push origin -f dx-nightly
