@@ -17,6 +17,8 @@ expected/
 ctx.c.m2c
 /data2c
 .nix-profile*
+/result
+/papermario-dx-windows/
 
 # Build artifacts
 build.ninja

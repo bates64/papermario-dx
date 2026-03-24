@@ -1,13 +1,15 @@
-name: Release
+name: Release DX
 on:
   push:
     tags:
-      - "v*"
+      - "dx-*"
 
 jobs:
-  windows-toolchain:
-    name: Windows Toolchain
+  release:
+    name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v25
@@ -25,24 +27,19 @@ jobs:
           BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
       - name: Verify Windows and Linux ROMs match
         run: nix build .#checks.x86_64-linux.windows-linux-match
+      - name: Build game
+        run: nix build .#default
       - name: Build Windows toolchain
-        run: nix build .#windows-toolchain
-      - name: Upload toolchain as artifact
-        uses: actions/upload-artifact@v4
+        run: nix build .#windows-toolchain --out-link result-toolchain
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
         with:
-          name: papermario-dx-windows.zip
-          path: result/papermario-dx-windows.zip
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    needs: windows-toolchain
-    permissions:
-      contents: write
-    steps:
-      - name: Download Windows toolchain artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: papermario-dx-windows.zip
+          string-case: paramCase
+      - name: Copy patch file
+        run: cp result/papermario.bps ${{ steps.repo-name.outputs.repository-name }}.bps
       - uses: softprops/action-gh-release@v2
         with:
-          files: papermario-dx-windows.zip
+          files: |
+            ${{ steps.repo-name.outputs.repository-name }}.bps
+            result-toolchain/papermario-dx-windows.zip

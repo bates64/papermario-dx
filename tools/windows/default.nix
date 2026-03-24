@@ -51,6 +51,7 @@ let
   ninja-windows = pkgs.callPackage ./ninja.nix {};
   ccache-windows = pkgs.callPackage ./ccache.nix {};
   n64crc-windows = import ./n64crc.nix { stdenv = mingwStdenv; };
+  busybox-windows = pkgs.callPackage ./busybox.nix {};
 
   pigment64-windows = mingw.callPackage ../pigment64.nix {};
   crunch64-windows = mingw.callPackage ../crunch64.nix {};
@@ -211,6 +212,10 @@ let
     # Rust tools
     cp ${pigment64-windows}/bin/pigment64.exe $dir/bin/
     cp ${crunch64-windows}/bin/crunch64.exe $dir/bin/
+
+    # busybox (Unix utilities: cp, etc.)
+    cp ${busybox-windows}/bin/busybox.exe $dir/bin/
+    cp ${busybox-windows}/bin/busybox.exe $dir/bin/cp.exe
 
     # ninja
     cp ${ninja-windows}/bin/ninja.exe $dir/bin/

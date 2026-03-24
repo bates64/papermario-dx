@@ -678,16 +678,6 @@ class Configure:
                 if "effects" in entry.src_paths[0].parts:
                     cflags += " -fno-tree-loop-distribute-patterns"  # Don't call memset etc
 
-                encoding = "CP932"  # similar to SHIFT-JIS, but includes backslash and tilde
-                if version == "ique":
-                    encoding = "EUC-JP"
-
-                iconv = f"tools/build/iconv.py UTF-8 {encoding}"
-
-                # use tools/sjis-escape.py for src/battle/area/tik2/area.c
-                if version != "ique" and seg.dir.parts[-3:] == ("battle", "area", "tik2") and seg.name == "area":
-                    iconv += " | tools/sjis-escape.py"
-
                 # Dead cod
                 if isinstance(seg.parent.yaml, dict) and seg.parent.yaml.get("dead_code", False):
                     obj_path = posix(entry.object_path)
@@ -699,7 +689,6 @@ class Configure:
                         variables={
                             "cflags": cflags,
                             "cppflags": cppflags,
-                            "iconv": iconv,
                         },
                     )
                     build(
@@ -722,7 +711,6 @@ class Configure:
                         variables={
                             "cflags": cflags,
                             "cppflags": cppflags,
-                            "iconv": iconv,
                         },
                     )
 
@@ -1101,7 +1089,6 @@ class Configure:
                                 variables={
                                     "cflags": "",
                                     "cppflags": f"-DVERSION_{self.version.upper()}",
-                                    "iconv": "tools/build/iconv.py UTF-8 CP932",
                                 },
                             )
                             build(elf_path, [o_path], "shape_ld")
@@ -1184,7 +1171,6 @@ class Configure:
                     variables={
                         "cflags": "",
                         "cppflags": f"-DVERSION_{self.version.upper()}",
-                        "iconv": "tools/build/iconv.py UTF-8 CP932",
                     },
                 )
             else:
