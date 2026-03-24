@@ -58,19 +58,19 @@ void clear_player_data(void) {
     ShowingCoinCounter = false;
     HidingCoinCounter = false;
 
-    playerData->curHP = 40;
-    playerData->curMaxHP = 40;
-    playerData->hardMaxHP = 40;
-    playerData->curFP = 30;
-    playerData->curMaxFP = 30;
-    playerData->hardMaxFP = 30;
-    playerData->maxBP = 30;
-    playerData->level = 21;
+    playerData->curHP = 10;
+    playerData->curMaxHP = 10;
+    playerData->hardMaxHP = 10;
+    playerData->curFP = 5;
+    playerData->curMaxFP = 5;
+    playerData->hardMaxFP = 5;
+    playerData->maxBP = 3;
+    playerData->level = 1;
     playerData->bootsLevel = 0;
-    playerData->hammerLevel = 0;
-    playerData->hasActionCommands = true;
-    playerData->coins = 100;
-    playerData->starPieces = 50;
+    playerData->hammerLevel = -1;
+    playerData->hasActionCommands = false;
+    playerData->coins = 0;
+    playerData->starPieces = 0;
     playerData->starPoints = 0;
     playerData->unused_011 = 0;
     playerData->unused_288 = 0;
@@ -98,20 +98,15 @@ void clear_player_data(void) {
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->badges); i++) {
-        // playerData->badges[i] = ITEM_NONE;
-        playerData->badges[0] = ITEM_PEEKABOO;
+        playerData->badges[i] = ITEM_NONE;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->invItems); i++) {
-        // playerData->invItems[i] = ITEM_NONE;
-        playerData->invItems[0] = ITEM_MUSHROOM;
-        playerData->invItems[1] = ITEM_SUPER_SHROOM;
-        playerData->invItems[2] = ITEM_LIFE_SHROOM;
+        playerData->invItems[i] = ITEM_NONE;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->equippedBadges); i++) {
-        // playerData->equippedBadges[i] = ITEM_NONE;
-        playerData->equippedBadges[0] = ITEM_PEEKABOO;
+        playerData->equippedBadges[i] = ITEM_NONE;
     }
 
     for (i = 0; i < ARRAY_COUNT(playerData->storedItems); i++) {
