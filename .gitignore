@@ -18,7 +18,6 @@ ctx.c.m2c
 /data2c
 .nix-profile*
 /result
-/papermario-dx-windows/
 
 # Build artifacts
 build.ninja
@@ -66,3 +65,5 @@ build/
 .cache/clangd/
 # compile_commands.json requires hardcoded paths, so it can't be committed
 compile_commands.json
+# DX ephemeral data (clangd index, configure cache, etc.)
+/.dx/

@@ -1453,6 +1453,13 @@ if __name__ == "__main__":
     ninja.build("all", "phony", all_rom_oks)
     ninja.default("all")
 
+    # Fetch pre-built clangd index from the matching dx-* GitHub release.
+    try:
+        from clangd_index import fetch_clangd_index
+        fetch_clangd_index(ROOT)
+    except Exception:
+        pass
+
     # Generate compile_commands.json with MIPS cross-compiler flags stripped,
     # so clangd and clang-tidy can parse the compile commands.
     ninja.close()

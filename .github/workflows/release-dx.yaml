@@ -36,6 +36,8 @@ jobs:
         uses: MariachiBear/get-repo-name-action@v1.1.0
         with:
           string-case: paramCase
+      - name: Build clangd index
+        run: nix build .#clangd-index --out-link result-clangd-index
       - name: Copy patch file
         run: cp result/papermario.bps ${{ steps.repo-name.outputs.repository-name }}.bps
       - uses: softprops/action-gh-release@v2
@@ -43,3 +45,4 @@ jobs:
           files: |
             ${{ steps.repo-name.outputs.repository-name }}.bps
             result-toolchain/papermario-dx-windows.zip
+            result-clangd-index/papermario-dx.idx
