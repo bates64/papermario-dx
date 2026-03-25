@@ -34,32 +34,13 @@ jobs:
       - name: Build Windows toolchain
         run: nix build .#windows-toolchain --out-link result-toolchain
       - name: Build clangd index
-        run: |
-          nix develop --command bash -c '
-            ./configure
-            ninja -t compdb > compile_commands.json
-          '
-
-          # Fetch clangd-indexer
-          TAG=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r .tag_name)
-          curl -L -o clangd_indexing_tools.zip \
-            "https://github.com/clangd/clangd/releases/download/$TAG/clangd_indexing_tools-linux-$TAG.zip"
-          unzip clangd_indexing_tools.zip
-          INDEXER=$(find . -name 'clangd-indexer' -type f)
-          chmod +x "$INDEXER"
-
-          # Build index in YAML format so we can make paths portable
-          "$INDEXER" --format=yaml --executor=all-TUs compile_commands.json > papermario-dx.yaml
-
-          # Replace absolute CI paths with $$ROOT$$ placeholder
-          sed -i "s|$(pwd)/|\\$\\$ROOT\\$\\$/|g" papermario-dx.yaml
-          mv papermario-dx.yaml papermario-dx.idx
+        run: nix build .#clangd-index --out-link result-clangd-index
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: dx-nightly
           files: |
             result-toolchain/papermario-dx-windows.zip
-            papermario-dx.idx
+            result-clangd-index/papermario-dx.idx
       - name: Notify docs repo
         run: |
           gh api repos/star-haven/docs/dispatches \

@@ -115,12 +115,62 @@
           ${pkgs.lib.optionalString pkgs.stdenv.isLinux
             "flips --create --bps ${baseRom} ver/us/build/papermario.z64 $out/papermario.bps"}
         '';
+
+        clangdIndexingTools = pkgs.callPackage ./tools/clangd-indexing-tools.nix {};
+        clangdIndex = pkgs.runCommand "papermario-dx-clangd-index" {
+          nativeBuildInputs = [
+            pkgsCross.stdenv.cc
+            binutils2_39
+            pkgs.python3
+            pkgs.python3Packages.pip
+            pkgs.python3Packages.virtualenv
+            pkgs.ninja
+            pkgs.gcc
+            pkgs.git
+            pkgs.libyaml
+            pkgs.iconv
+            (pkgs.callPackage ./tools/pigment64.nix {})
+            (pkgs.callPackage ./tools/crunch64.nix {})
+            clangdIndexingTools
+          ];
+          NIX_HARDENING_ENABLE = "";
+        } ''
+          cp -r --no-preserve=mode ${self} build
+          chmod -R u+w build
+          find build -name '*.py' -exec chmod +x {} +
+          cd build
+          git init --quiet
+          cp ${baseRom} ver/us/baserom.z64
+          patchShebangs --build tools/
+
+          virtualenv venv --quiet
+          source venv/bin/activate
+          pip install --no-index --find-links=${pythonDeps} -r requirements.txt --quiet
+
+          export PAPERMARIO_LD="${binutils2_39}/bin/mips-linux-gnu-ld"
+          python3 tools/build/configure.py --no-ccache
+          ninja
+
+          # Build binary RIFF index with a known path prefix.
+          # configure.py uses rewrite_index_paths.py to replace it with
+          # the local project root at download time.
+          clangd-indexer --executor=all-TUs compile_commands.json > papermario-dx.idx
+
+          # Rewrite paths in the RIFF string table
+          python3 tools/build/rewrite_index_paths.py papermario-dx.idx \
+            "$(pwd)/" '$$ROOT$$/'
+
+          mkdir -p $out
+          mv papermario-dx.idx $out/papermario-dx.idx
+        '';
+
       in {
         packages = {
           default = linuxRom;
         } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           windows-toolchain = windowsToolchain;
           windows-rom = windowsToolchain.passthru.wineRom;
+          clangd-index = clangdIndex;
         };
 
         checks = pkgs.lib.optionalAttrs (system == "x86_64-linux") {

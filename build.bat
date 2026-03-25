@@ -2,8 +2,12 @@
 setlocal enabledelayedexpansion
 
 set "REPO=bates64/papermario-dx"
-set "TOOLCHAIN_DIR=%~dp0papermario-dx-windows"
-set "TOOLCHAIN_ZIP=%~dp0papermario-dx-windows.zip"
+set "DX_DIR=%~dp0.dx"
+set "TOOLCHAIN_DIR=%DX_DIR%\windows"
+set "TOOLCHAIN_ZIP=%DX_DIR%\papermario-dx-windows.zip"
+
+:: Ensure .dx directory exists
+if not exist "%DX_DIR%" mkdir "%DX_DIR%"
 
 :: Check for git
 where git >nul 2>nul
@@ -30,8 +34,8 @@ del "%TEMP%\dx-tag-hash.txt" 2>nul
 :: Check if toolchain needs downloading
 set "NEED_DOWNLOAD=0"
 if not exist "%TOOLCHAIN_DIR%\bin\ninja.exe" set "NEED_DOWNLOAD=1"
-if exist "%TOOLCHAIN_DIR%\.tag" (
-    set /p CURRENT_TAG=<"%TOOLCHAIN_DIR%\.tag"
+if exist "%DX_DIR%\windows-tag" (
+    set /p CURRENT_TAG=<"%DX_DIR%\windows-tag"
     if not "!CURRENT_TAG!"=="%TAG_HASH%" set "NEED_DOWNLOAD=1"
 ) else (
     if exist "%TOOLCHAIN_DIR%" set "NEED_DOWNLOAD=1"
@@ -52,17 +56,18 @@ if "%NEED_DOWNLOAD%"=="1" (
         exit /b 1
     )
 
-    :: Extract
+    :: Extract (zip contains papermario-dx-windows/ dir, rename to .dx/windows/)
     echo Extracting toolchain...
-    tar -xf "%TOOLCHAIN_ZIP%" -C "%~dp0."
+    tar -xf "%TOOLCHAIN_ZIP%" -C "%DX_DIR%"
     if errorlevel 1 (
         echo Error: failed to extract toolchain.
         exit /b 1
     )
+    ren "%DX_DIR%\papermario-dx-windows" windows
     del "%TOOLCHAIN_ZIP%"
 
     :: Record the tag commit hash so we can detect updates (including force-moved tags)
-    echo %TAG_HASH%> "%TOOLCHAIN_DIR%\.tag"
+    echo %TAG_HASH%> "%DX_DIR%\windows-tag"
 )
 
 :: Set up PATH
