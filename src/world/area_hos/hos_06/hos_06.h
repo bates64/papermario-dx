@@ -1,5 +1,4 @@
-/// @file hos_06.h
-/// @brief Shooting Star Summit - Merluvlee's House
+/// Shooting Star Summit - Merluvlee's House
 
 #include "common.h"
 #include "message_ids.h"

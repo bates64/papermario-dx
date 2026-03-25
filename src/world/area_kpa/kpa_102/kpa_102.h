@@ -1,5 +1,4 @@
-/// @file kpa_102.h
-/// @brief Bowser's Castle - Blue Fire Bridge
+/// Bowser's Castle - Blue Fire Bridge
 
 #include "common.h"
 #include "message_ids.h"

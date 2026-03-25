@@ -1,5 +1,4 @@
-/// @file kzn_09.h
-/// @brief Mt Lavalava - Zipline Cavern
+/// Mt Lavalava - Zipline Cavern
 
 #include "common.h"
 #include "message_ids.h"

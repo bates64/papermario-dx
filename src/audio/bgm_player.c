@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 
 BSS void (*CurrentSeqCmdHandler)(BGMPlayer*, BGMPlayerTrack*);

@@ -1,5 +1,4 @@
-/// @file nok_04.h
-/// @brief Koopa Region - Fuzzy Forest
+/// Koopa Region - Fuzzy Forest
 
 #include "common.h"
 #include "message_ids.h"

@@ -103,7 +103,7 @@ void crash_screen_draw_rect(s32 x, s32 y, s32 width, s32 height) {
     }
 }
 
-/** @returns X advance */
+/// Returns X advance.
 s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     s32 shift = ((glyph % 5) * 6);
     u16 width = gCrashScreen.width;
@@ -188,7 +188,7 @@ char* crash_screen_copy_to_buf(char* dest, const char* src, size_t size) {
     return dest + size;
 }
 
-/// @returns Y advance
+/// Returns y advance.
 s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     u8* ptr;
     u32 glyph;
@@ -234,7 +234,7 @@ s32 crash_screen_printf(s32 x, s32 y, const char* fmt, ...) {
     va_end(args);
 }
 
-/// @returns Y advance
+/// Returns y advance.
 s32 crash_screen_printf_proportional(s32 x, s32 y, const char* fmt, ...) {
     u8* ptr;
     u32 glyph;

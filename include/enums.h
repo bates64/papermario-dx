@@ -2989,7 +2989,7 @@ enum PartnerStates {
     PARTNER_CMD_ABORT               = 10,
 };
 
-/// @see gAreas
+/// See [`gAreas`].
 enum Areas {
     AREA_KMR,
     AREA_MAC,
@@ -3118,7 +3118,7 @@ enum PlayerStatusFlags {
     PS_FLAG_ACTION_STATE_CHANGED             = 0x80000000,
 };
 
-/// @see PlayerStatus::animFlags
+/// See [`PlayerStatus::animFlags`].
 enum PlayerStatusAnimFlags {
     /* Whether Mario is in the process of using Watt (but isn't necessarily holding them yet) */
     PA_FLAG_USING_WATT                       = 0x00000001,

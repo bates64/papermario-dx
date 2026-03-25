@@ -1,5 +1,4 @@
-/// @file flo_09.h
-/// @brief Flower Fields - (East) Triple Tree Path
+/// Flower Fields - (East) Triple Tree Path
 
 #include "common.h"
 #include "message_ids.h"

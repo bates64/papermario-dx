@@ -1,5 +1,4 @@
-/// @file pra_01.h
-/// @brief Crystal Palace - Entrance
+/// Crystal Palace - Entrance
 
 #include "common.h"
 #include "message_ids.h"

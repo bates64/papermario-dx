@@ -1,5 +1,4 @@
-/// @file flo_21.h
-/// @brief Flower Fields - Huff N Puff Room
+/// Flower Fields - Huff N Puff Room
 
 #include "common.h"
 #include "message_ids.h"

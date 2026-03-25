@@ -1,5 +1,4 @@
-/// @file kpa_95.h
-/// @brief Bowser's Castle - West Upper Jail
+/// Bowser's Castle - West Upper Jail
 
 #include "common.h"
 #include "message_ids.h"

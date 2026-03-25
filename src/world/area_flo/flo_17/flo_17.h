@@ -1,5 +1,4 @@
-/// @file flo_17.h
-/// @brief Flower Fields - (NE) Fallen Logs
+/// Flower Fields - (NE) Fallen Logs
 
 #include "common.h"
 #include "message_ids.h"

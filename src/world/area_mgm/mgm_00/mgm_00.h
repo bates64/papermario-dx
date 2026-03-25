@@ -1,5 +1,4 @@
-/// @file mgm_00.h
-/// @brief Minigame - Playroom Lobby
+/// Minigame - Playroom Lobby
 
 #include "common.h"
 #include "message_ids.h"

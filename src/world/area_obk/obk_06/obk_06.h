@@ -1,5 +1,4 @@
-/// @file obk_06.h
-/// @brief Boo's Mansion - Library
+/// Boo's Mansion - Library
 
 #include "common.h"
 #include "message_ids.h"

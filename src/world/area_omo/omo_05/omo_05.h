@@ -1,5 +1,4 @@
-/// @file omo_05.h
-/// @brief Shy Guy's Toybox - PNK Gourmet Guy Crossing
+/// Shy Guy's Toybox - PNK Gourmet Guy Crossing
 
 #include "common.h"
 #include "message_ids.h"

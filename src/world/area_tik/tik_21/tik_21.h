@@ -1,5 +1,4 @@
-/// @file tik_21.h
-/// @brief Toad Town Tunnels - Hidden Blocks Room (B2)
+/// Toad Town Tunnels - Hidden Blocks Room (B2)
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file pra_33.h
-/// @brief Crystal Palace - Turnstyle Room
+/// Crystal Palace - Turnstyle Room
 
 #include "common.h"
 #include "message_ids.h"

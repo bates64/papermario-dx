@@ -1,5 +1,4 @@
-/// @file jan_01.h
-/// @brief Jade Jungle - Beach
+/// Jade Jungle - Beach
 
 #include "common.h"
 #include "message_ids.h"

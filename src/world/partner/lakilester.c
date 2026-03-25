@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../partners.h"
+#include "world/partners.h"
 #include "effects.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/player.h"

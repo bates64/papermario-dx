@@ -21,7 +21,6 @@
         "**/*.i": true,
         "**/build/src": true,
         "ctx.c": true,
-        "docs/doxygen": true,
         "expected": true,
         "ver/jp/expected": true,
         "ver/us/expected": true,
@@ -51,7 +50,6 @@
     },
     "C_Cpp.autoAddFileAssociations": false,
     "C_Cpp.default.cStandard": "c89",
-    "C_Cpp.doxygen.generateOnType": false,
     "files.exclude": {
         "**/.git": true,
         "**/.splat_cache": true,

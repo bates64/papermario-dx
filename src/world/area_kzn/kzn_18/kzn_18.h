@@ -1,5 +1,4 @@
-/// @file kzn_18.h
-/// @brief Mt Lavalava - Boss Antechamber
+/// Mt Lavalava - Boss Antechamber
 
 #include "common.h"
 #include "message_ids.h"

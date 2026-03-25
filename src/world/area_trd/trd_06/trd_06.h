@@ -1,5 +1,4 @@
-/// @file trd_06.h
-/// @brief Koopa Bros Fortress - Jail
+/// Koopa Bros Fortress - Jail
 
 #include "common.h"
 #include "message_ids.h"

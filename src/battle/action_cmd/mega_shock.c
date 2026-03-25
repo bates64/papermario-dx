@@ -1,7 +1,7 @@
 #include "common.h"
 
 
-#include "audio/public.h"
+#include "audio.h"
 #include "battle/action_cmd.h"
 
 #define NAMESPACE action_command_mega_shock

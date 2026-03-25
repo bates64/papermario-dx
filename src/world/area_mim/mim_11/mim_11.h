@@ -1,5 +1,4 @@
-/// @file mim_11.h
-/// @brief Forever Forest - Outside Boo's Mansion
+/// Forever Forest - Outside Boo's Mansion
 
 #include "common.h"
 #include "message_ids.h"

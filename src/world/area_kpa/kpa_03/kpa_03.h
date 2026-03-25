@@ -1,5 +1,4 @@
-/// @file kpa_03.h
-/// @brief Bowser's Castle - Dark Cave 2
+/// Bowser's Castle - Dark Cave 2
 
 #include "common.h"
 #include "message_ids.h"

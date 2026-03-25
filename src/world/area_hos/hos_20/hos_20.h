@@ -1,5 +1,4 @@
-/// @file hos_20.h
-/// @brief Shooting Star Summit - Riding Star Ship Scene
+/// Shooting Star Summit - Riding Star Ship Scene
 
 #include "common.h"
 #include "message_ids.h"

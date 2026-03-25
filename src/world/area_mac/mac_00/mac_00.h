@@ -1,5 +1,4 @@
-/// @file mac_00.h
-/// @brief Toad Town - Gate District
+/// Toad Town - Gate District
 
 #include "common.h"
 #include "message_ids.h"

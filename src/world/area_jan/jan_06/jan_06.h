@@ -1,5 +1,4 @@
-/// @file jan_06.h
-/// @brief Jade Jungle - NE Jungle (Raven Statue)
+/// Jade Jungle - NE Jungle (Raven Statue)
 
 #include "common.h"
 #include "message_ids.h"

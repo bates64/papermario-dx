@@ -1,5 +1,4 @@
-/// @file kkj_15.h
-/// @brief Peach's Castle - Passage Outlet (2F)
+/// Peach's Castle - Passage Outlet (2F)
 
 #include "common.h"
 #include "message_ids.h"

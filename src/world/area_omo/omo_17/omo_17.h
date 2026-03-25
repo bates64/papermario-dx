@@ -1,5 +1,4 @@
-/// @file omo_17.h
-/// @brief Shy Guy's Toybox - PNK Tracks Hallway
+/// Shy Guy's Toybox - PNK Tracks Hallway
 
 #include "common.h"
 #include "message_ids.h"

@@ -9,6 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct Enemy;
+struct MobileAISettings;
+struct EnemyDetectVolume;
+
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
 #endif
@@ -100,7 +104,7 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
 void replace_window_update(s32 idx, s8 arg1, WindowUpdateFunc pendingFunc);
 void decode_yay0(void* src, void* dst);
 
-s32 ai_check_player_dist(Enemy* enemy, s32 arg1, f32 arg2, f32 arg3);
+s32 ai_check_player_dist(struct Enemy* enemy, s32 arg1, f32 arg2, f32 arg3);
 
 //pause
 void pause_init(void);
@@ -219,7 +223,7 @@ void set_time_freeze_mode(s32);
 
 NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID);
 
-/// Same as \ref get_map_IDs_by_name, but will panic if the map doesn't exist.
+/// Same as [`get_map_IDs_by_name`], but will panic if the map doesn't exist.
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID);
 
 void transform_point(Matrix4f mtx, f32 inX, f32 inY, f32 inZ, f32 inS, f32* outX, f32* outY, f32* outZ, f32* outW);
@@ -285,22 +289,15 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
                        f32* hitY, f32* hitZ, f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
 
 /// Test a general ray from a given starting position and direction against all entities.
-/// If one is hit, returns the position and normal of the hit and the length along the ray on the output params.
-/// All output params are invalid when a value of `NO_COLLIDER` is returned.
-/// @param startX origin x position of the ray
-/// @param startY origin y position of the ray
-/// @param startZ origin z position of the ray
-/// @param dirX normalized x direction of the ray
-/// @param dirY normalized y direction of the ray
-/// @param dirZ normalized z direction of the ray
-/// @param[out] hitX normalized x position of the hit
-/// @param[out] hitY normalized y position of the hit
-/// @param[out] hitZ normalized z position of the hit
-/// @param[in,out] hitDepth as input, maximum length of the ray; as output, distance along the ray of the hit
-/// @param[out] hitNx x normal direction of the hit
-/// @param[out] hitNy y normal direction of the hit
-/// @param[out] hitNz z normal direction of the hit
-/// @returns entity index or `NO_COLLIDER` is none is hit
+/// If one is hit, returns the position and normal of the hit and the length along the ray
+/// via the output parameters. All output parameters are invalid when `NO_COLLIDER` is returned.
+///
+/// `startX`/`startY`/`startZ` are the ray origin. `dirX`/`dirY`/`dirZ` are the normalized
+/// ray direction. `hitX`/`hitY`/`hitZ` receive the hit position. `hitNx`/`hitNy`/`hitNz`
+/// receive the hit normal. `hitDepth` is both input (maximum ray length) and output (distance
+/// to the hit).
+///
+/// Returns entity index or `NO_COLLIDER` if none is hit.
 s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f32 dirZ, f32* hitX, f32* hitY, f32* hitZ,
                       f32* hitDepth, f32* hitNx, f32* hitNy, f32* hitNz);
 
@@ -471,7 +468,7 @@ f32 dist2D(f32 ax, f32 ay, f32 bx, f32 by);
 f32 dist3D(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void add_vec2D_polar(f32* x, f32* y, f32 r, f32 theta);
 
-#include "audio/public.h"
+#include "audio.h"
 
 void basic_window_update(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
                    f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
@@ -495,7 +492,7 @@ void create_part_shadow(s32 actorID, s32 partID);
 void remove_part_shadow(s32 actorID, s32 partID);
 void create_part_shadow_by_ref(s32 arg0, ActorPart* part);
 
-void spawn_drops(Enemy* enemy);
+void spawn_drops(struct Enemy* enemy);
 
 void set_part_pal_adjustment(ActorPart*, s32);
 char* int_to_string(s32, char*, s32);
@@ -693,14 +690,14 @@ void set_curtain_fade(f32 fade);
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_wander(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_loiter(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_chase(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
-void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory);
+void basic_ai_wander_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_wander(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_loiter(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_found_player_jump_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_found_player_jump(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_chase_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_chase(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
+void basic_ai_lose_player(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
 void basic_ai_suspend(Evt* script);
 
 s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
@@ -714,8 +711,8 @@ s32 imgfx_get_free_instances(s32);
 void free_worker(s32);
 
 b32 ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW);
-void basic_ai_loiter_init(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
-void PatrolAI_LoiterInit(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory);
+void basic_ai_loiter_init(Evt* script, struct MobileAISettings* aiSettings, struct EnemyDetectVolume* territory);
+void PatrolAI_LoiterInit(Evt* script, struct MobileAISettings* aiSettings, struct EnemyDetectVolume* territory);
 
 s32 func_80263230(Actor*, Actor*);
 void set_part_glow_pal(ActorPart*, s32);

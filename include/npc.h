@@ -162,7 +162,7 @@ typedef struct ItemDrop {
     /* 0x04 */ s16 flagIdx;
 } ItemDrop; // size = 0x06
 
-/// @brief Describes heart/flower drop chances after defeating an Npc in the overworld.
+/// Describes heart/flower drop chances after defeating an Npc in the overworld.
 ///
 /// The algorithm for calculating the number of hearts/flowers from a StatDrop is:
 /// - If current HP/FP > cutoff, drop 0.
@@ -196,7 +196,7 @@ typedef struct EnemyDrops {
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
 
-typedef struct {
+typedef struct EnemyDetectVolume {
     /* 0x00 */ s32 skipPlayerDetectChance;
     /* 0x04 */ enum TerritoryShape shape;
     /* 0x08 */ s32 pointX;
@@ -436,7 +436,7 @@ void npc_do_world_collision(Npc* npc);
 
 void npc_do_other_npc_collision(Npc* npc);
 
-/// @returns true if a collision occurred
+/// Returns true if a collision occurred.
 s32 npc_do_player_collision(Npc* npc);
 
 void npc_try_apply_gravity(Npc* npc);
@@ -457,7 +457,7 @@ void npc_move_heading(Npc* npc, f32 speed, f32 yaw);
 
 Npc* get_npc_unsafe(s32 npcID);
 
-/// @returns nullptr if not found
+/// Returns nullptr if not found.
 Npc* get_npc_safe(s32 npcID);
 
 void enable_npc_shadow(Npc* npc);
@@ -536,30 +536,20 @@ void npc_update_decoration_charged(Npc* npc, s32 idx);
 
 void npc_remove_decoration_charged(Npc* npc, s32 idx);
 
-/// Finds the closest NPC to a given point within a radius. Ignores Y position.
+/// Finds the closest NPC to a given point within `radius`. Ignores Y position.
 ///
-/// NPCs with NPC_FLAG_PARTNER set are ignored.
-/// See also npc_find_closest_simple(), which requires that NPC_FLAG_PARTNER be set.
+/// NPCs with `NPC_FLAG_PARTNER` set are ignored.
+/// See also [`npc_find_closest_simple`], which requires that `NPC_FLAG_PARTNER` be set.
 ///
-/// @param x        X position
-/// @param y        Y position (unused)
-/// @param z        Z position
-/// @param radius   No NPCs further than this distance will be considered
-///
-/// @returns nullptr if there are no NPCs within radius
+/// Returns nullptr if there are no NPCs within radius.
 Npc* npc_find_closest(f32 x, f32 y, f32 z, f32 radius);
 
-/// Finds the closest simple-hitbox NPC to a given point within a radius. Ignores Y position.
+/// Finds the closest simple-hitbox NPC to a given point within `radius`. Ignores Y position.
 ///
-/// Only NPCs with NPC_FLAG_PARTNER set are considered.
-/// See also npc_find_closest(), which requires that NPC_FLAG_PARTNER be unset.
+/// Only NPCs with `NPC_FLAG_PARTNER` set are considered.
+/// See also [`npc_find_closest`], which requires that `NPC_FLAG_PARTNER` be unset.
 ///
-/// @param x        X position
-/// @param y        Y position (unused)
-/// @param z        Z position
-/// @param radius   No NPCs further than this distance will be considered
-///
-/// @returns nullptr if there are no NPCs within radius
+/// Returns nullptr if there are no NPCs within radius.
 Npc* npc_find_closest_simple(f32 x, f32 y, f32 z, f32 radius);
 
 //s32 npc_find_standing_on_entity();
@@ -609,54 +599,32 @@ void kill_encounter(Enemy* enemy);
 
 void kill_enemy(Enemy* enemy);
 
-/// Binds the specified ai script to the specified enemy
-///
-/// @param enemy               pointer to the enemy to bind the script to
-/// @param aiScriptBytecode    pointer to the script to be bound.
+/// Binds the specified AI script to the specified enemy.
 s32 bind_enemy_ai(Enemy* enemy, EvtScript* aiScriptBytecode);
 
-/// Binds the specified auxillary script to the specified enemy
-///
-/// @param enemy               pointer to the enemy to bind the script to
-/// @param auxScriptBytecode   pointer to the script to be bound.
+/// Binds the specified auxiliary script to the specified enemy.
 s32 bind_enemy_aux(Enemy* enemy, EvtScript* auxScriptBytecode);
 
-/// Binds the specified interact script to the specified enemy
-///
-/// @param enemy                    pointer to the enemy to bind the script to
-/// @param interactScriptBytecode   pointer to the script to be bound.
+/// Binds the specified interact script to the specified enemy.
 s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode);
 
-/// Binds the specified ai script to the npc matching the specified npcId
-///
-/// @param npcID           ID of the desired npc
-/// @param npcAiBytecode   pointer to the script to be bound.
+/// Binds the specified AI script to the NPC matching `npcID`.
 void bind_npc_ai(s32 npcID, EvtScript* npcAiBytecode);
 
-/// Binds the specified auxillary script to the npc matching the specified npcId
-///
-/// @param npcID           ID of the desired npc
-/// @param npcAuxBytecode  pointer to the script to be bound.
+/// Binds the specified auxiliary script to the NPC matching `npcID`.
 void bind_npc_aux(s32 npcID, EvtScript* npcAuxBytecode);
 
-/// Binds the specified interact script to the npc matching the specified npcId
-///
-/// @param npcID                ID of the desired npc
-/// @param npcInteractBytecode  pointer to the script to be bound.
+/// Binds the specified interact script to the NPC matching `npcID`.
 void bind_npc_interact(s32 npcID, EvtScript* npcInteractBytecode);
 
-/// Looks for an enemy matching the specified npcID.
-///
-/// @param npcID   ID of the npc bound to the desired enemy.
-///
-/// @returns pointer to Enemy struct, if one is found. If one is not found, a panic occurs.
+/// Looks for an enemy matching the specified `npcID`, which is the ID of the NPC bound to the
+/// desired enemy. Returns a pointer to the Enemy struct if one is found. If one is not found, a
+/// panic occurs.
 Enemy* get_enemy(s32 npcID);
 
-/// Same as get_enemy(), with the exception of always returning a value if an enemy is not found.
-///
-/// @param npcID   ID of the npc bound to the desired enemy.
-///
-/// @returns pointer to Enemy struct, if one is found. Otherwise, nullptr.
+/// Same as get_enemy(), except it always returns a value. Takes `npcID`, the ID of the NPC bound
+/// to the desired enemy. Returns a pointer to the Enemy struct if one is found, or nullptr
+/// otherwise.
 Enemy* get_enemy_safe(s32 npcID);
 
 void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);

@@ -1,5 +1,4 @@
-/// @file hos_03.h
-/// @brief Shooting Star Summit - Star Haven
+/// Shooting Star Summit - Star Haven
 
 #include "common.h"
 #include "message_ids.h"

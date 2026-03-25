@@ -1,5 +1,4 @@
-/// @file omo_14.h
-/// @brief Shy Guy's Toybox - RED Boss Antechamber
+/// Shy Guy's Toybox - RED Boss Antechamber
 
 #include "common.h"
 #include "message_ids.h"

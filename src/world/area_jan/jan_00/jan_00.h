@@ -1,5 +1,4 @@
-/// @file jan_00.h
-/// @brief Jade Jungle - Whale Cove
+/// Jade Jungle - Whale Cove
 
 #include "common.h"
 #include "message_ids.h"

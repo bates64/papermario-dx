@@ -1,5 +1,4 @@
-/// @file kzn_07.h
-/// @brief Mt Lavalava - Ultra Hammer Room
+/// Mt Lavalava - Ultra Hammer Room
 
 #include "common.h"
 #include "message_ids.h"

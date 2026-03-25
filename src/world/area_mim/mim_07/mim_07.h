@@ -1,5 +1,4 @@
-/// @file mim_07.h
-/// @brief Forever Forest - Flowers Vanish
+/// Forever Forest - Flowers Vanish
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file pra_36.h
-/// @brief Crystal Palace - Palace Key Hall
+/// Crystal Palace - Palace Key Hall
 
 #include "common.h"
 #include "message_ids.h"

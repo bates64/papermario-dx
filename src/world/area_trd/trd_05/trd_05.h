@@ -1,5 +1,4 @@
-/// @file trd_05.h
-/// @brief Koopa Bros Fortress - Right Tower
+/// Koopa Bros Fortress - Right Tower
 
 #include "common.h"
 #include "message_ids.h"

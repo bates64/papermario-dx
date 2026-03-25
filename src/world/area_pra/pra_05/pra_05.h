@@ -1,5 +1,4 @@
-/// @file pra_05.h
-/// @brief Crystal Palace - Blue Key Room
+/// Crystal Palace - Blue Key Room
 
 #include "common.h"
 #include "message_ids.h"

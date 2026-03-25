@@ -1,5 +1,4 @@
-/// @file kmr_04.h
-/// @brief Goomba Region - Jr. Troopa's Playground
+/// Goomba Region - Jr. Troopa's Playground
 
 #include "common.h"
 #include "message_ids.h"

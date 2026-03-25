@@ -1,5 +1,4 @@
-/// @file kzn_19.h
-/// @brief Mt Lavalava - Boss Room
+/// Mt Lavalava - Boss Room
 
 #include "common.h"
 #include "message_ids.h"

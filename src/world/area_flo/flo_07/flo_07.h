@@ -1,5 +1,4 @@
-/// @file flo_07.h
-/// @brief Flower Fields - (SW) Posie and Crystal Tree
+/// Flower Fields - (SW) Posie and Crystal Tree
 
 #include "common.h"
 #include "message_ids.h"

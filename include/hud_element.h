@@ -421,8 +421,8 @@ extern "C" {
 
 void hud_element_load_script(HudElement* hudElement, HudScript* anim);
 
-/// @param clamp        0 = repeat; 1 = clamp
-/// @param dropShadow   Whether to render a drop shadow or not
+/// `clamp` selects the wrap mode: 0 = repeat, 1 = clamp.
+/// `dropShadow` controls whether to render a drop shadow.
 void hud_element_draw_rect(HudElement* hudElement, s16 texSizeX, s16 texSizeY, s16 drawSizeX, s16 drawSizeY, s16 offsetX, s16 offsetY, s32 clamp, s32 dropShadow);
 
 void hud_element_clear_cache(void);
@@ -430,11 +430,11 @@ void hud_element_clear_cache(void);
 void init_hud_element_list(void);
 
 /// Creates a new HUD element and returns its ID.
-HudElemID hud_element_create(HudScript* anim);
+s32 hud_element_create(HudScript* anim);
 
 void update_hud_elements(void);
 
-/// @returns 0 if frame is completed
+/// Returns 0 if frame is completed.
 s32 hud_element_update(HudElement* hudElement);
 
 // first pass for rendering hud elements
@@ -488,7 +488,7 @@ void hud_element_set_flags(s32 id, s32 flags);
 /// Turns off the given flags.
 void hud_element_clear_flags(s32 id, s32 flags);
 
-/// @see hud_element_clear_cache
+/// See [`hud_element_clear_cache`].
 void ALT_clear_hud_element_cache(void);
 
 void hud_element_set_scale(s32 index, f32 scale);
@@ -499,7 +499,7 @@ s32 hud_element_get_variable(s32 id);
 
 void hud_element_set_variable(s32 id, s32 arg1);
 
-/// @param opacity 0 = invisible; 255 = opaque
+/// `opacity` ranges from 0 (invisible) to 255 (opaque).
 void hud_element_set_alpha(s32 id, s32 opacity);
 
 void hud_element_set_tint(s32 id, s32 r, s32 g, s32 b);

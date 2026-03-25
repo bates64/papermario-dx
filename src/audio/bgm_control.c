@@ -1,6 +1,6 @@
 #include "common.h"
 #include "npc.h"
-#include "audio.h"
+#include "audio/audio.h"
 
 void bgm_update_volume(void);
 void bgm_set_target_volume(s32 volume);
@@ -30,7 +30,7 @@ MusicControlData BlankMusicControlData = {
 };
 
 /// Lists the songs that are forced to use the variation determined by `map.songVariation & 1`.
-/// @see bgm_get_map_default_variation
+/// See [`bgm_get_map_default_variation`].
 s32 SongsUsingVariationFlag[] = {
     SONG_SPECIAL_BATTLE,
     SONG_TUBBA_BLUBBA_BATTLE,
@@ -45,8 +45,8 @@ s16 NextVolumeUpdateTimer = 0;
 /// If the given song ID is present in SongsUsingVariationFlag, returns the current
 /// map's `songVariation & 1` value. Otherwise, returns -1.
 ///
-/// @see SongsUsingVariationFlag
-/// @returns -1: no override; 0: override to variation 0; 1 override to variation 1
+/// See [`SongsUsingVariationFlag`].
+/// Returns -1: no override; 0: override to variation 0; 1 override to variation 1.
 s32 bgm_get_map_default_variation(s32 songID) {
     u32 i;
 

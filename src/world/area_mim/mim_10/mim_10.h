@@ -1,5 +1,4 @@
-/// @file mim_10.h
-/// @brief Forever Forest - Exit to Toad Town
+/// Forever Forest - Exit to Toad Town
 
 #include "common.h"
 #include "message_ids.h"

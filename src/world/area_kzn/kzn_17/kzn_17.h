@@ -1,5 +1,4 @@
-/// @file kzn_17.h
-/// @brief Mt Lavalava - Spike Roller Trap
+/// Mt Lavalava - Spike Roller Trap
 
 #include "common.h"
 #include "message_ids.h"

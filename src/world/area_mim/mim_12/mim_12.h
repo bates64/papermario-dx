@@ -1,5 +1,4 @@
-/// @file mim_12.h
-/// @brief Forever Forest - Exit to Gusty Gulch
+/// Forever Forest - Exit to Gusty Gulch
 
 #include "common.h"
 #include "message_ids.h"

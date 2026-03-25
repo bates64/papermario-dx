@@ -1,5 +1,4 @@
-/// @file pra_21.h
-/// @brief Crystal Palace - Huge Statue Room
+/// Crystal Palace - Huge Statue Room
 
 #include "common.h"
 #include "message_ids.h"

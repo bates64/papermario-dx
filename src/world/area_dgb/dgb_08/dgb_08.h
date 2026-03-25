@@ -1,5 +1,4 @@
-/// @file dgb_08.h
-/// @brief Tubba's Castle - East Hall (1/2F)
+/// Tubba's Castle - East Hall (1/2F)
 
 #include "common.h"
 #include "message_ids.h"

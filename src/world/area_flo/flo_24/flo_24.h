@@ -1,5 +1,4 @@
-/// @file flo_24.h
-/// @brief Flower Fields - (SE) Water Level Room
+/// Flower Fields - (SE) Water Level Room
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file kpa_111.h
-/// @brief Bowser's Castle - Room with Hidden Door 1
+/// Bowser's Castle - Room with Hidden Door 1
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file trd_10.h
-/// @brief Koopa Bros Fortress - Boss Battle Room
+/// Koopa Bros Fortress - Boss Battle Room
 
 #include "common.h"
 #include "message_ids.h"

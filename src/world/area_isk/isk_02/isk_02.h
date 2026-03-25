@@ -1,5 +1,4 @@
-/// @file isk_02.h
-/// @brief Dry Dry Ruins - Sarcophagus Hall 1
+/// Dry Dry Ruins - Sarcophagus Hall 1
 
 #include "common.h"
 #include "message_ids.h"

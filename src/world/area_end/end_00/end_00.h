@@ -1,5 +1,4 @@
-/// @file end_00.h
-/// @brief Ending - Parade (Day)
+/// Ending - Parade (Day)
 
 #include "common.h"
 #include "message_ids.h"

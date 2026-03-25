@@ -259,7 +259,7 @@ s32 remove_item(s32 itemID) {
 }
 
 /// Search player inventory for `itemID` and return first matching array index.
-/// @returns the index of the given item in the player's inventory, or -1 if not found
+/// Returns the index of the given item in the player's inventory, or -1 if not found.
 s32 find_item(s32 itemID) {
     s32 idx;
 
@@ -305,7 +305,7 @@ s32 find_item(s32 itemID) {
 }
 
 /// Search player inventory for `itemID` and count the number matches.
-/// @returns the number of items matching `itemID`
+/// Returns the number of items matching `itemID`.
 s32 count_item(s32 itemID) {
     s32 idx;
     s32 sum = 0;

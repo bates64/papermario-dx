@@ -1,5 +1,4 @@
-/// @file obk_07.h
-/// @brief Boo's Mansion - Record Player Room
+/// Boo's Mansion - Record Player Room
 
 #include "common.h"
 #include "message_ids.h"

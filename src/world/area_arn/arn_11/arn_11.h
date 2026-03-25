@@ -1,5 +1,4 @@
-/// @file arn_11.h
-/// @brief Gusty Gulch - Tubba's Heart Chamber
+/// Gusty Gulch - Tubba's Heart Chamber
 
 #include "common.h"
 #include "message_ids.h"

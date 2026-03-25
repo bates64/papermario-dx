@@ -1,5 +1,4 @@
-/// @file jan_17.h
-/// @brief Jade Jungle - Lower Great Tree Interior
+/// Jade Jungle - Lower Great Tree Interior
 
 #include "common.h"
 #include "message_ids.h"

@@ -31,15 +31,15 @@ void au_reset_nonfree_voice(AuVoice* arg0, u8 arg1);
 void au_reset_voice(AuVoice* voice, u8 voiceIdx);
 
 /**
- * @brief Converts a linear pitch value (in cents) into a frequency ratio suitable for adjusting playback speed.
+ * Converts a linear pitch value (in cents) into a frequency ratio suitable for adjusting playback speed.
  *
  * This function computes the playback rate corresponding to a pitch shift (up or down) in cents.
  * Positive values increase pitch (higher frequency), and negative values decrease it.
  * Recall 100 cents = 1 semitone, and therefore 1200 cents = 1 octave.
  *
- * @param tuning The pitch offset in cents, from +4095 (~ 40.95 semitones up) to -16383 (~ 163.83 semitones down)
+ * `tuning` is the pitch offset in cents, from +4095 (~ 40.95 semitones up) to -16383 (~ 163.83 semitones down).
  *
- * @return Floating point output rate multiplier. Multiply this with the base sample rate to apply the pitch.
+ * Returns floating point output rate multiplier. Multiply this with the base sample rate to apply the pitch.
  */
 f32 au_compute_pitch_ratio(s32 tuning);
 
@@ -150,23 +150,24 @@ void au_update_voices(AuGlobals* globals);
 void au_voice_after_volume_change(AuVoice* voice);
 
 /**
- * @brief Converts envelope step duration from microseconds to num samples delta.
+ * Converts envelope step duration from microseconds to num samples delta.
  *
  * Uses AU_FRAME_USEC as the base time slice, returning the number of audio samples
  * corresponding to the provided duration.
  *
- * @param msecs Time duration in microseconds.
- * @return Number of samples that should pass in this interval.
+ * `usecs` is the time duration in microseconds.
+ *
+ * Returns number of samples that should pass in this interval.
  */
 s32 au_voice_get_delta(s32 usecs);
 
 /**
- * @brief Starts a new voice with the given envelope data.
+ * Starts a new voice with the given envelope data.
  *
  * Initializes envelope state and prepares the press phase for playback.
  *
- * @param voice Pointer to the voice being started.
- * @param envData Envelope command lists (press and release) to use.
+ * `voice` is a pointer to the voice being started. `envData` provides the envelope
+ * command lists (press and release) to use.
  */
 void au_voice_start(AuVoice* voice, EnvelopeData* envData);
 

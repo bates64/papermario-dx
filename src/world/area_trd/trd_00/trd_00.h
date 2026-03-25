@@ -1,5 +1,4 @@
-/// @file trd_00.h
-/// @brief Koopa Bros Fortress - Fortress Exterior
+/// Koopa Bros Fortress - Fortress Exterior
 
 #include "common.h"
 #include "message_ids.h"

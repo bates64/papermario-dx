@@ -1,5 +1,4 @@
-/// @file kpa_82.h
-/// @brief Bowser's Castle - Guard Door 2
+/// Bowser's Castle - Guard Door 2
 
 #include "common.h"
 #include "message_ids.h"

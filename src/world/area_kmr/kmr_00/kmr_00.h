@@ -1,5 +1,4 @@
-/// @file kmr_00.h
-/// @brief Goomba Region - Forest Clearing
+/// Goomba Region - Forest Clearing
 
 #include "common.h"
 #include "message_ids.h"

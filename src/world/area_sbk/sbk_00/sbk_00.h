@@ -1,5 +1,4 @@
-/// @file sbk_00.h
-/// @brief Dry Dry Desert - N3W3
+/// Dry Dry Desert - N3W3
 
 #include "common.h"
 #include "message_ids.h"

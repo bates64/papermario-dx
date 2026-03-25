@@ -1,5 +1,4 @@
-/// @file dgb_13.h
-/// @brief Tubba's Castle - Hidden Bedroom (2F)
+/// Tubba's Castle - Hidden Bedroom (2F)
 
 #include "common.h"
 #include "message_ids.h"

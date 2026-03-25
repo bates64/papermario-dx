@@ -1,5 +1,4 @@
-/// @file omo_01.h
-/// @brief Shy Guy's Toybox - BLU Large Playroom
+/// Shy Guy's Toybox - BLU Large Playroom
 
 #include "common.h"
 #include "message_ids.h"

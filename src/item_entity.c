@@ -1550,7 +1550,7 @@ void auto_collect_item_entity(s32 index) {
     item->flags |= ITEM_ENTITY_FLAG_AUTO_COLLECT;
 }
 
-/// @returns true when "you got X" popup is on-screen
+/// Returns true when "you got X" popup is on-screen.
 b32 is_picking_up_item(void) {
 #if VERSION_JP
     return isPickingUpItem;

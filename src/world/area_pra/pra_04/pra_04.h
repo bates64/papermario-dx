@@ -1,5 +1,4 @@
-/// @file pra_04.h
-/// @brief Crystal Palace - Reflected Save Room
+/// Crystal Palace - Reflected Save Room
 
 #include "common.h"
 #include "message_ids.h"

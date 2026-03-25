@@ -1,5 +1,4 @@
-/// @file isk_18.h
-/// @brief Dry Dry Ruins - Deep Tunnel
+/// Dry Dry Ruins - Deep Tunnel
 
 #include "common.h"
 #include "message_ids.h"

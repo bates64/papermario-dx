@@ -86,7 +86,7 @@ BSS s32 IsGroupHeal;
 BSS s8 ApplyingBuff;
 BSS s32 D_8029FBD8_pad[2];
 
-#include "action_cmd.h"
+#include "battle/action_cmd.h"
 
 BSS ActionCommandStatus gActionCommandStatus;
 

@@ -1,5 +1,4 @@
-/// @file jan_10.h
-/// @brief Jade Jungle - Western Dead End
+/// Jade Jungle - Western Dead End
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file sbk_21.h
-/// @brief Dry Dry Desert - N1W2
+/// Dry Dry Desert - N1W2
 
 #include "common.h"
 #include "message_ids.h"

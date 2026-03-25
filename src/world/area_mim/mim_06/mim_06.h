@@ -1,5 +1,4 @@
-/// @file mim_06.h
-/// @brief Forever Forest - Bee Hive (Path Splits)
+/// Forever Forest - Bee Hive (Path Splits)
 
 #include "common.h"
 #include "message_ids.h"

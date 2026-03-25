@@ -1,5 +1,4 @@
-/// @file kkj_01.h
-/// @brief Peach's Castle - Intro Upper Hall (2F)
+/// Peach's Castle - Intro Upper Hall (2F)
 
 #include "common.h"
 #include "message_ids.h"

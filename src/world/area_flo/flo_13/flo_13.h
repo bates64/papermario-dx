@@ -1,5 +1,4 @@
-/// @file flo_13.h
-/// @brief Flower Fields - (NW) Lakilester
+/// Flower Fields - (NW) Lakilester
 
 #include "common.h"
 #include "message_ids.h"

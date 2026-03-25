@@ -1,5 +1,4 @@
-/// @file kpa_16.h
-/// @brief Bowser's Castle - Lava Control Room
+/// Bowser's Castle - Lava Control Room
 
 #include "common.h"
 #include "message_ids.h"

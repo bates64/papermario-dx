@@ -1,5 +1,4 @@
-/// @file sam_10.h
-/// @brief Mt Shiver - Shiver Mountain Peaks
+/// Mt Shiver - Shiver Mountain Peaks
 
 #include "common.h"
 #include "message_ids.h"

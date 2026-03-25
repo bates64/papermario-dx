@@ -1,5 +1,4 @@
-/// @file jan_19.h
-/// @brief Jade Jungle - Upper Great Tree Interior
+/// Jade Jungle - Upper Great Tree Interior
 
 #include "common.h"
 #include "message_ids.h"

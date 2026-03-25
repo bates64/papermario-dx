@@ -1,5 +1,4 @@
-/// @file arn_05.h
-/// @brief Gusty Gulch - Ghost Town 2
+/// Gusty Gulch - Ghost Town 2
 
 #include "common.h"
 #include "message_ids.h"

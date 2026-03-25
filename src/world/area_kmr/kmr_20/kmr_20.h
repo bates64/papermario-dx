@@ -1,5 +1,4 @@
-/// @file kmr_20.h
-/// @brief Goomba Region - Mario's House
+/// Goomba Region - Mario's House
 
 #include "common.h"
 #include "message_ids.h"

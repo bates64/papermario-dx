@@ -1,5 +1,4 @@
-/// @file mim_01.h
-/// @brief Forever Forest - Flower Sounds
+/// Forever Forest - Flower Sounds
 
 #include "common.h"
 #include "message_ids.h"

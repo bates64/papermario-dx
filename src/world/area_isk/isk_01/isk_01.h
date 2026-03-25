@@ -1,5 +1,4 @@
-/// @file isk_01.h
-/// @brief Dry Dry Ruins - Entrance
+/// Dry Dry Ruins - Entrance
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file sbk_24.h
-/// @brief Dry Dry Desert - N1E1 Palm Trio
+/// Dry Dry Desert - N1E1 Palm Trio
 
 #include "common.h"
 #include "message_ids.h"

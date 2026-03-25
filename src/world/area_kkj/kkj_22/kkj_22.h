@@ -1,5 +1,4 @@
-/// @file kkj_22.h
-/// @brief Peach's Castle - Double Staircase (4F)
+/// Peach's Castle - Double Staircase (4F)
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file pra_16.h
-/// @brief Crystal Palace - Red Mirror Hall
+/// Crystal Palace - Red Mirror Hall
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file jan_22.h
-/// @brief Jade Jungle - Path to the Volcano
+/// Jade Jungle - Path to the Volcano
 
 #include "common.h"
 #include "message_ids.h"

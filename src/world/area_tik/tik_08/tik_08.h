@@ -1,5 +1,4 @@
-/// @file tik_08.h
-/// @brief Toad Town Tunnels - Second Level Entry (B2)
+/// Toad Town Tunnels - Second Level Entry (B2)
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file osr_03.h
-/// @brief Peach's Castle Grounds - Outside Hijacked Castle
+/// Peach's Castle Grounds - Outside Hijacked Castle
 
 #include "common.h"
 #include "message_ids.h"

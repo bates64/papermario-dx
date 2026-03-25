@@ -1,5 +1,4 @@
-/// @file kpa_60.h
-/// @brief Bowser's Castle - Ship Enter/Exit Scenes
+/// Bowser's Castle - Ship Enter/Exit Scenes
 
 #include "common.h"
 #include "message_ids.h"

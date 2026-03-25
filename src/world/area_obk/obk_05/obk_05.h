@@ -1,5 +1,4 @@
-/// @file obk_05.h
-/// @brief Boo's Mansion - Pot Room
+/// Boo's Mansion - Pot Room
 
 #include "common.h"
 #include "message_ids.h"

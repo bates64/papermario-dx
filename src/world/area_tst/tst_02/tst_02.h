@@ -1,5 +1,4 @@
-/// @file tst_02.h
-/// @brief Testing - Jump Height Test
+/// Testing - Jump Height Test
 
 #include "common.h"
 #include "message_ids.h"

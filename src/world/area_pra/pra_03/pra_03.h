@@ -1,5 +1,4 @@
-/// @file pra_03.h
-/// @brief Crystal Palace - Save Room
+/// Crystal Palace - Save Room
 
 #include "common.h"
 #include "message_ids.h"

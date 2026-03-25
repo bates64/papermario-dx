@@ -1,5 +1,4 @@
-/// @file pra_32.h
-/// @brief Crystal Palace - Crystal Summit
+/// Crystal Palace - Crystal Summit
 
 #include "common.h"
 #include "message_ids.h"

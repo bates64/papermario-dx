@@ -1,5 +1,4 @@
-/// @file kpa_40.h
-/// @brief Bowser's Castle - Maze Guide Room
+/// Bowser's Castle - Maze Guide Room
 
 #include "common.h"
 #include "message_ids.h"

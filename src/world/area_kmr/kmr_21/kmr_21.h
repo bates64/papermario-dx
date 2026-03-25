@@ -1,5 +1,4 @@
-/// @file kmr_21.h
-/// @brief Goomba Region - Title Screen
+/// Goomba Region - Title Screen
 
 #include "common.h"
 #include "message_ids.h"

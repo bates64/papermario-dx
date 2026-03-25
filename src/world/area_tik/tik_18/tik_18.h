@@ -1,5 +1,4 @@
-/// @file tik_18.h
-/// @brief Toad Town Tunnels - Hall to Blooper 1 (B1)
+/// Toad Town Tunnels - Hall to Blooper 1 (B1)
 
 #include "common.h"
 #include "message_ids.h"

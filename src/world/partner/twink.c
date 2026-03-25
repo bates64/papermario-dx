@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../partners.h"
+#include "world/partners.h"
 #include "twink.h"
 
 #define NAMESPACE world_twink

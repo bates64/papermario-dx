@@ -1,5 +1,4 @@
-/// @file dgb_03.h
-/// @brief Tubba's Castle - Table/Clock Room (1/2F)
+/// Tubba's Castle - Table/Clock Room (1/2F)
 
 #include "common.h"
 #include "message_ids.h"

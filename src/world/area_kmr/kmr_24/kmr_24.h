@@ -1,5 +1,4 @@
-/// @file kmr_24.h
-/// @brief Goomba Region - Save and Continue
+/// Goomba Region - Save and Continue
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,4 @@
-/// @file trd_09.h
-/// @brief Koopa Bros Fortress - Battlement
+/// Koopa Bros Fortress - Battlement
 
 #include "common.h"
 #include "message_ids.h"

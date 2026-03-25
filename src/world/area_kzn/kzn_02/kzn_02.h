@@ -1,5 +1,4 @@
-/// @file kzn_02.h
-/// @brief Mt Lavalava - First Lava Lake
+/// Mt Lavalava - First Lava Lake
 
 #include "common.h"
 #include "message_ids.h"

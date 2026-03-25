@@ -1,5 +1,4 @@
-/// @file kzn_23.h
-/// @brief Mt Lavalava - Volcano Escape
+/// Mt Lavalava - Volcano Escape
 
 #include "common.h"
 #include "message_ids.h"

@@ -1,5 +1,5 @@
 #include "common_structs.h"
-#include "partners.h"
+#include "world/partners.h"
 #include "macros.h"
 
 #include "ld_addrs.h"

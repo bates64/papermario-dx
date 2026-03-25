@@ -1,5 +1,4 @@
-/// @file omo_06.h
-/// @brief Shy Guy's Toybox - PNK Station
+/// Shy Guy's Toybox - PNK Station
 
 #include "common.h"
 #include "message_ids.h"

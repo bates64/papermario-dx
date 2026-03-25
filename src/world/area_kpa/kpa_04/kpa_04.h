@@ -1,5 +1,4 @@
-/// @file kpa_04.h
-/// @brief Bowser's Castle - Cave Exit
+/// Bowser's Castle - Cave Exit
 
 #include "common.h"
 #include "message_ids.h"

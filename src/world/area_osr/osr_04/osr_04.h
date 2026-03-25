@@ -1,5 +1,4 @@
-/// @file osr_04.h
-/// @brief Peach's Castle Grounds - Castle Hijacking Scene
+/// Peach's Castle Grounds - Castle Hijacking Scene
 
 #include "common.h"
 #include "message_ids.h"

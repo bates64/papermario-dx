@@ -755,19 +755,21 @@ extern "C" {
         End \
     }
 
-/// Enable camera using standard parameters for clip distances and FOV
-/// @param r background red color
-/// @param g background green color
-/// @param b background blue color
+/// Enable camera using standard parameters for clip distances and FOV.
+/// `r`, `g`, and `b` are the background color.
+/// @param r
+/// @param g
+/// @param b
 #define EVT_SETUP_CAMERA_DEFAULT(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \
     Call(SetCamEnabled, CAM_DEFAULT, true)
 
-/// Enable camera using standard parameters for clip distances and FOV with LeadPlayer disabled
-/// @param r background red color
-/// @param g background green color
-/// @param b background blue color
+/// Enable camera using standard parameters for clip distances and FOV with LeadPlayer disabled.
+/// `r`, `g`, and `b` are the background color.
+/// @param r
+/// @param g
+/// @param b
 #define EVT_SETUP_CAMERA_NO_LEAD(r, g, b) \
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 4096) \
     Call(SetCamBGColor, CAM_DEFAULT, r, g, b) \

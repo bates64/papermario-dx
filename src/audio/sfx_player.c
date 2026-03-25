@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 
 static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID);

@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 #include "message_ids.h"
 #include "sprite.h"
 #include "sprite/npc/WorldEldstar.h"

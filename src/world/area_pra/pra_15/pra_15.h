@@ -1,5 +1,4 @@
-/// @file pra_15.h
-/// @brief Crystal Palace - Star Piece Cave
+/// Crystal Palace - Star Piece Cave
 
 #include "common.h"
 #include "message_ids.h"

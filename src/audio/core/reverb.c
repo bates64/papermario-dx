@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 
 #define SWAP16(in, out) \
@@ -134,7 +134,7 @@ static void _init_lpfilter(AuLowPass* filter) {
     }
 }
 
-/// @param effectType from enum AuEffectType
+/// Creates an FX instance using the given `effectType` from enum AuEffectType.
 void au_fx_create(AuFX* fx, u8 effectType, ALHeap* heap) {
     AuDelay* delay;
     u16 i;
@@ -272,11 +272,11 @@ void au_fx_load_preset(AuFX* fx, u8 effectType) {
  * - Applies optional lowpass filtering.
  * - Mixes result into wet output buffer.
  *
- * @param fx         Pointer to FX state (delay taps, buffers, etc.)
- * @param ptr        Pointer to the current audio command list position.
- * @param wetDmem    DMEM offset to mix wet output into.
- * @param tempDmem   Base DMEM offset for temporary working buffers.
- * @return           Updated command list pointer.
+ * `fx` points to the FX state (delay taps, buffers, etc.). `ptr` is the current audio
+ * command list position. `wetDmem` is the DMEM offset to mix wet output into, and
+ * `tempDmem` is the base DMEM offset for temporary working buffers.
+ *
+ * Returns updated command list pointer.
  */
 Acmd* au_pull_fx(AuFX* fx, Acmd* ptr, s16 wetDmem, s16 tempDmem) {
     Acmd* cmdBufPos = ptr;

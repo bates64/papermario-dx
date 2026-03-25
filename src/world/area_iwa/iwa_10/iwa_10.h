@@ -1,5 +1,4 @@
-/// @file iwa_10.h
-/// @brief Mt Rugged - Train Station
+/// Mt Rugged - Train Station
 
 #include "common.h"
 #include "message_ids.h"
