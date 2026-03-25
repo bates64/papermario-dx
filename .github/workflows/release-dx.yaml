@@ -36,6 +36,26 @@ jobs:
         uses: MariachiBear/get-repo-name-action@v1.1.0
         with:
           string-case: paramCase
+      - name: Build clangd index
+        run: |
+          nix develop --command bash -c '
+            ./configure
+            ninja -t compdb > compile_commands.json
+          '
+
+          TAG=$(curl -s https://api.github.com/repos/clangd/clangd/releases/latest | jq -r .tag_name)
+          curl -L -o clangd_indexing_tools.zip \
+            "https://github.com/clangd/clangd/releases/download/$TAG/clangd_indexing_tools-linux-$TAG.zip"
+          unzip clangd_indexing_tools.zip
+          INDEXER=$(find . -name 'clangd-indexer' -type f)
+          chmod +x "$INDEXER"
+
+          # Build index in YAML format so we can make paths portable
+          "$INDEXER" --format=yaml --executor=all-TUs compile_commands.json > papermario-dx.yaml
+
+          # Replace absolute CI paths with $$ROOT$$ placeholder
+          sed -i "s|$(pwd)/|\\$\\$ROOT\\$\\$/|g" papermario-dx.yaml
+          mv papermario-dx.yaml papermario-dx.idx
       - name: Copy patch file
         run: cp result/papermario.bps ${{ steps.repo-name.outputs.repository-name }}.bps
       - uses: softprops/action-gh-release@v2
@@ -43,3 +63,4 @@ jobs:
           files: |
             ${{ steps.repo-name.outputs.repository-name }}.bps
             result-toolchain/papermario-dx-windows.zip
+            papermario-dx.idx

@@ -66,3 +66,5 @@ build/
 .cache/clangd/
 # compile_commands.json requires hardcoded paths, so it can't be committed
 compile_commands.json
+# DX ephemeral data (clangd index, configure cache, etc.)
+/.dx/
