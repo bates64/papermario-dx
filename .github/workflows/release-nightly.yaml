@@ -30,3 +30,9 @@ jobs:
         with:
           tag_name: dx-nightly
           files: result-toolchain/papermario-dx-windows.zip
+      - name: Notify docs repo
+        run: |
+          gh api repos/star-haven/docs/dispatches \
+            -f event_type=update-papermario-dx
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}
