@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../partners.h"
+#include "world/partners.h"
 
 extern s32 DoorModelsSwingCCW[3];
 extern s32 DoorModelsSwingCW[3];

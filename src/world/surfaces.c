@@ -1,4 +1,4 @@
-#include "surfaces.h"
+#include "world/surfaces.h"
 #include "effects.h"
 
 void player_surface_spawn_basic_fx(void);

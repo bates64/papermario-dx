@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "hud_element.h"
-#include "battle.h"
+#include "battle/battle.h"
 #include "battle/action_cmd/jump.h"
 #include "battle/action_cmd/hammer.h"
 #include "battle/action_cmd/flee.h"

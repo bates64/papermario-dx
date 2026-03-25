@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 
 #if VERSION_PAL
 #define TABS_CURSOR_OFFSET_X (-4)

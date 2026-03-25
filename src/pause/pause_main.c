@@ -1,7 +1,7 @@
 #include "ld_addrs.h"
 #include "message_ids.h"
 #include "sprite.h"
-#include "pause_common.h"
+#include "pause/pause_common.h"
 #include "game_modes.h"
 #include "sprite/npc/Goombaria.h"
 #include "sprite/npc/WorldGoombario.h"

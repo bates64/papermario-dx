@@ -1,7 +1,7 @@
 #include "common.h"
 #include "sprite/npc/WorldGoombario.h"
 #include "goombario.h"
-#include "../src/world/partners.h"
+#include "world/partners.h"
 #include "message_ids.h"
 #include "entity.h"
 

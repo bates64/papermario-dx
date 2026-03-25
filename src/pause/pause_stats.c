@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 
 void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 void pause_stats_init(MenuPanel* panel);

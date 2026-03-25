@@ -1,6 +1,6 @@
 #include "common.h"
 #include "effects.h"
-#include "../src/world/partners.h"
+#include "world/partners.h"
 #include "npc.h"
 #include "sprite/npc/WorldWatt.h"
 #include "sprite.h"
