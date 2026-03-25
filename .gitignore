@@ -38,7 +38,6 @@ build.ninja
 baserom.*
 build/
 !tools/build
-/docs/doxygen/
 /include/ld_addrs.h
 /include/message_ids.h
 /include/sprite/

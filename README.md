@@ -6,7 +6,7 @@
 
 This is a fork of the [Paper Mario decompilation][papermario-repo] which provides a flexible, easy-to-use base for creating romhacks.
 
-To get started, [read the manual](manual/introduction.md).
+To get started, [read the docs](https://docs.starhaven.dev).
 
 [discord]: https://discord.gg/star-haven
 [discord-badge]: https://img.shields.io/discord/279322074412089344?color=%237289DA&logo=discord&logoColor=ffffff
@@ -33,10 +33,3 @@ To get started, [read the manual](manual/introduction.md).
 
 [libgcc_vr4300]: https://github.com/Decompollaborate/libgcc_vr4300
 
-<div class="section_buttons">
-
-|                                          Next |
-|----------------------------------------------:|
-|[Introduction](manual/introduction.md)         |
-
-</div>
