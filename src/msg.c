@@ -277,7 +277,6 @@ void update_messages(void) {
 s32 _update_message(MessagePrintState* printer) {
     f32 speechPan;
     u8 cond;
-    s32 buttons;
     s16 endPosDist;
     s16 lineIncAmt;
     s32 charsToPrint;
@@ -651,12 +650,10 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
     u8 argW;
     u8 argE;
     u8 sp10[4];
-    s32 addr;
     s16 offset;
     s32 i;
     u8* romAddr;
     u8* romEnd;
-    s32 temp;
     void* a2;
     s8 s8 = arg2 & 1;
     u8* printBuf = &printer->printBuffer[printer->printBufferPos];
@@ -1156,7 +1153,6 @@ void msg_copy_to_print_buffer(MessagePrintState* printer, s32 arg1, s32 arg2) {
                             s32 a0 = 1;
                             argQ = gMessageMsgVars[arg][printer->varBufferReadPos++];
                             if (argQ >= MSG_CONTROL_CHAR) {
-                                s32 tmp;
 
                                 switch (argQ) {
                                     case MSG_CHAR_READ_ENDL:

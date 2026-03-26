@@ -35,7 +35,6 @@ EffectInstance* embers_main(
     EffectBlueprint bp;
     EffectInstance* effect;
     EmbersFXData* part;
-    s32 numParts;
     f32 temp1;
     s32 i;
 

@@ -110,7 +110,6 @@ API_CALLABLE(N(SetVineBoneScale)) {
     s32 sy = evt_get_variable(script, *args++);
     s32 sz = evt_get_variable(script, *args++);
     LavaPiranhaVine* vines = (LavaPiranhaVine*) evt_get_variable(nullptr, MV_VinesData);
-    LavaPiranhaVine* vine = &vines[vineIdx];
 
     // do nothing
     return ApiStatus_DONE2;

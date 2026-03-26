@@ -692,14 +692,8 @@ void update_camera_zone_interp(Camera* camera) {
     f32 targetY;
     f32 targetZ;
     f32 maxDelta;
-    f32 panPhase;
-    f32 panRad;
-    f32 cosAngle;
-    f32 temp_f24;
-    f64 temp_f22_2;
     b32 allParamsMatch;
     s32 changingZone;
-    f32 dist;
 
     targetX = camera->targetPos.x;
     targetY = camera->targetPos.y;

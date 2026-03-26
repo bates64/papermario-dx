@@ -1550,7 +1550,7 @@ void auto_collect_item_entity(s32 index) {
     item->flags |= ITEM_ENTITY_FLAG_AUTO_COLLECT;
 }
 
-/// @returns true when "you got X" popup is on-screen
+/// Returns true when "you got X" popup is on-screen.
 b32 is_picking_up_item(void) {
 #if VERSION_JP
     return isPickingUpItem;
@@ -2498,7 +2498,6 @@ void func_801363A0(ItemEntity* item) {
     s32 offsetY;
     s32 posY;
     s32 height;
-    s32 v1;
 
     switch (item->state) {
         case ITEM_PICKUP_STATE_SHOW_GOT_ITEM:

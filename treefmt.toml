@@ -1,0 +1,4 @@
+[formatter.c]
+command = "python3"
+options = ["tools/format.py"]
+includes = ["*.c", "*.cpp", "*.h", "*.hpp"]

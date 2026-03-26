@@ -2,6 +2,7 @@
 #include "vars_access.h"
 #include "dx/config.h"
 #include "dx/debug_menu.h"
+#include "dx/backtrace.h"
 
 extern u32* gMapFlags;
 extern s32* gMapVars;
@@ -1123,6 +1124,7 @@ s32 evt_trigger_on_activate_lock(Trigger* trigger) {
         trigger->runningScript = nullptr;
         trigger->flags &= ~TRIGGER_ACTIVATED;
     }
+    return 0;
 }
 
 ApiStatus evt_handle_bind_lock(Evt* script) {
@@ -1197,7 +1199,6 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     Evt* newScript;
     s32 nargs;
     s32 opcode;
-    s32 i;
 
     Bytecode* startLine = script->ptrNextLine;
     Bytecode* endLine = startLine;
@@ -1236,13 +1237,13 @@ s32 evt_handle_print_debug_var(Evt* script) {
     s32 flagBitPos;
 
     if (var <= EVT_LIMIT) {
-        sprintf(evtDebugPrintBuffer, "ADDR     [%08X]", var);
+        sprintf(evtDebugPrintBuffer, "ADDR     [%08lX]", var);
     } else if (var <= EVT_FIXED_CUTOFF) {
         sprintf(evtDebugPrintBuffer, "FLOAT    [%4.2f]", evt_fixed_var_to_float(var));
     } else if (var <= EVT_ARRAY_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_ARRAY_FLAG(var);
         flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "UF(%3d)  [%d]", var, script->flagArray[var / 32] & (1 << flagBitPos));
+        sprintf(evtDebugPrintBuffer, "UF(%3ld)  [%ld]", var, script->flagArray[var / 32] & (1 << flagBitPos));
     } else if (var <= EVT_ARRAY_VAR_CUTOFF) {
         s32 arrayVal;
 
@@ -1250,11 +1251,11 @@ s32 evt_handle_print_debug_var(Evt* script) {
         arrayVal = script->array[var];
 
         if (script->array[var] <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "UW(%3d)  [%08X]", arrayVal);
+            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%08lX]", var, arrayVal);
         } else if (arrayVal <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "UW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(arrayVal));
+            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(arrayVal));
         } else {
-            sprintf(evtDebugPrintBuffer, "UW(%3d)  [%d]", var, arrayVal);
+            sprintf(evtDebugPrintBuffer, "UW(%3ld)  [%ld]", var, arrayVal);
         }
     } else if (var <= EVT_GAME_BYTE_CUTOFF) {
         s32 globalByte;
@@ -1263,11 +1264,11 @@ s32 evt_handle_print_debug_var(Evt* script) {
         globalByte = get_global_byte(var);
 
         if (globalByte <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "GSW(%3d) [%08X]", globalByte);
+            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%08lX]", var, globalByte);
         } else if (globalByte <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "GSW(%3d) [%4.2f]", var, evt_fixed_var_to_float(globalByte));
+            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%4.2f]", var, evt_fixed_var_to_float(globalByte));
         } else {
-            sprintf(evtDebugPrintBuffer, "GSW(%3d) [%d]", var, globalByte);
+            sprintf(evtDebugPrintBuffer, "GSW(%3ld) [%ld]", var, globalByte);
         }
     } else if (var <= EVT_AREA_BYTE_CUTOFF) {
         s32 areaByte;
@@ -1276,26 +1277,26 @@ s32 evt_handle_print_debug_var(Evt* script) {
         areaByte = get_area_byte(var);
 
         if (areaByte <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "LSW(%3d) [%08X]", areaByte);
+            sprintf(evtDebugPrintBuffer, "LSW(%3ld) [%08lX]", var, areaByte);
         } else if (areaByte <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "LSW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(areaByte));
+            sprintf(evtDebugPrintBuffer, "LSW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(areaByte));
         } else {
-            sprintf(evtDebugPrintBuffer, "LSW(%3d) [%d]", var, areaByte);
+            sprintf(evtDebugPrintBuffer, "LSW(%3ld) [%ld]", var, areaByte);
         }
     } else if (var <= EVT_GAME_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_GAME_FLAG(var);
-        sprintf(evtDebugPrintBuffer, "GSWF(%3d)[%d]", var, get_global_flag(var));
+        sprintf(evtDebugPrintBuffer, "GSWF(%3ld)[%ld]", var, get_global_flag(var));
     } else if (var <= EVT_AREA_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_AREA_FLAG(var);
-        sprintf(evtDebugPrintBuffer, "LSWF(%3d)[%d]", var, get_area_flag(var));
+        sprintf(evtDebugPrintBuffer, "LSWF(%3ld)[%ld]", var, get_area_flag(var));
     } else if (var <= EVT_MAP_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_MAP_FLAG(var);
         flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "GF(%3d)  [%d]", var, gMapFlags[var / 32] & (1 << flagBitPos));
+        sprintf(evtDebugPrintBuffer, "GF(%3ld)  [%ld]", var, gMapFlags[var / 32] & (1 << flagBitPos));
     } else if (var <= EVT_LOCAL_FLAG_CUTOFF) {
         var = EVT_INDEX_OF_LOCAL_FLAG(var);
         flagBitPos = var % 32;
-        sprintf(evtDebugPrintBuffer, "LF(%3d)  [%d]", var, script->varFlags[var / 32] & (1 << flagBitPos));
+        sprintf(evtDebugPrintBuffer, "LF(%3ld)  [%ld]", var, script->varFlags[var / 32] & (1 << flagBitPos));
     } else if (var <= EVT_MAP_VAR_CUTOFF) {
         s32 mapVar;
 
@@ -1303,11 +1304,11 @@ s32 evt_handle_print_debug_var(Evt* script) {
         mapVar = gMapVars[var];
 
         if (mapVar <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "GW(%3d)  [%08X]", mapVar);
+            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%08lX]", var, mapVar);
         } else if (mapVar <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "GW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(mapVar));
+            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(mapVar));
         } else {
-            sprintf(evtDebugPrintBuffer, "GW(%3d)  [%d]", var, mapVar);
+            sprintf(evtDebugPrintBuffer, "GW(%3ld)  [%ld]", var, mapVar);
         }
     } else if (var <= EVT_LOCAL_VAR_CUTOFF) {
         s32 tableVar;
@@ -1316,14 +1317,14 @@ s32 evt_handle_print_debug_var(Evt* script) {
         tableVar = script->varTable[var];
 
         if (tableVar <= EVT_LIMIT) {
-            sprintf(evtDebugPrintBuffer, "LW(%3d)  [%08X]", tableVar);
+            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%08lX]", var, tableVar);
         } else if (tableVar <= EVT_FIXED_CUTOFF) {
-            sprintf(evtDebugPrintBuffer, "LW(%3d)  [%4.2f]", var, evt_fixed_var_to_float(tableVar));
+            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%4.2f]", var, evt_fixed_var_to_float(tableVar));
         } else {
-            sprintf(evtDebugPrintBuffer, "LW(%3d)  [%d]", var, tableVar);
+            sprintf(evtDebugPrintBuffer, "LW(%3ld)  [%ld]", var, tableVar);
         }
     } else {
-        sprintf(evtDebugPrintBuffer, "         [%d]", var);
+        sprintf(evtDebugPrintBuffer, "         [%ld]", var);
     }
 
     return ApiStatus_DONE2;
@@ -1380,7 +1381,11 @@ s32 evt_execute_next_command(Evt* script) {
         #endif
 
         commandsExecuted++;
-        ASSERT_MSG(commandsExecuted < 10000, "Script %x is blocking for ages (infinite loop?)", script->ptrFirstLine);
+        if (commandsExecuted >= 10000) {
+            char scriptName[0x80];
+            backtrace_address_to_string((u32)script->ptrFirstLine, scriptName);
+            PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
+        }
 
         switch (script->curOpcode) {
             case EVT_OP_INTERNAL_FETCH:

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "audio/audio.h"
 
 #define MAX_SOUND_INSTANCES 10
 
@@ -219,7 +219,6 @@ void sfx_compute_spatialized_sound_params_full(f32 x, f32 y, f32 z, s16* volume,
     f32 volAmtOffsetX, volAmtDeltaY, volAmtDepth;
     f32 offsetX, offsetY, depth;
     f32 volTemp, panTemp;
-    s32 phi_v0;
 
     get_screen_coords(gCurrentCameraID, x, y, z, &screenX, &screenY, &screenZ);
 
@@ -381,7 +380,7 @@ SoundInstance* sfx_get_env_sound_instance(s32 soundID) {
     s32 i;
 
     for (i = 0; i < MAX_SOUND_INSTANCES; i++, sound++) {
-        if (sound->flags & SOUND_INSTANCE_FLAG_ACTIVE && sound->soundID == soundID) {
+        if ((sound->flags & SOUND_INSTANCE_FLAG_ACTIVE) && sound->soundID == soundID) {
             return sound;
         }
     }

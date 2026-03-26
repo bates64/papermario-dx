@@ -122,7 +122,6 @@ API_CALLABLE(N(start)) {
 void N(update)(void) {
     ActionCommandStatus* acs = &gActionCommandStatus;
     BattleStatus* battleStatus = &gBattleStatus;
-    Actor* partner = battleStatus->partnerActor;
     HudElemID hid;
     f32 oneThird;
     s32 inputWindow;

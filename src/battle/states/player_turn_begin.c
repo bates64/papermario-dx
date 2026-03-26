@@ -149,7 +149,6 @@ void update_status_damage(void) {
     Actor* player = battleStatus->playerActor;
     ActorPart* part = &player->partsTable[0];
     s8 debuffDuration;
-    s32 koDuration;
     s32 prevDuration;
     s32 i;
 

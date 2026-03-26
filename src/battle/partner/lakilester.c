@@ -50,7 +50,6 @@ static HudElemID HID_AnalogStick;
 static s32 HudStickPosX;
 static s32 HudStickPosY;
 static b32 SpinyFlipTargetingDone;
-static s32 D_8023D2CC;
 static s32 EnemyHurricaneChances[MAX_ENEMY_ACTORS];
 static s32 NumEnemiesBeingBlown;
 static s32 IsHurricaneActive;
@@ -395,20 +394,13 @@ API_CALLABLE(N(SpinyFlipActionCommand)) {
     HudElemID hid;
     s32 i;
 
-    f32 temp_f0_5;
     f32 theta;
     f32 sinTheta;
     f32 cosTheta;
     f32 temp_f2;
-    f32 temp_f2_2;
     f32 temp_f8;
-    s32 (**var_s3)[0];
-    s32 (*temp_a0)[0];
-    s32 temp_a0_2;
     s32 temp_f10;
     HudElemID hidAim;
-    s32 temp_v1_2;
-    s32* var_s0;
 
     enum SpinyFlipState {
         SPINY_FLIP_INIT     = 0,

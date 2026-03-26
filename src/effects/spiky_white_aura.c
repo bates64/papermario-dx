@@ -87,7 +87,6 @@ void spiky_white_aura_main(s32 arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
             ASSERT(effect->data.spikyWhiteAura != nullptr);
 
             for (i = 0; i < numParts; i++, part++) {
-                Camera* camera = &gCameras[gCurrentCameraID]; // required to match
                 f32 (*matrix)[4] = &sp30[0]; // required to match
 
                 part->unk_00 = arg0;

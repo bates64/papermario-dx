@@ -159,7 +159,6 @@ void underwater_appendGfx(void* effect) {
     s32 edgeX, edgeY;
     s32 vtxIdx;
     Matrix4f mtx;
-    Matrix4f unused_matrix;
     s32 i, j;
 
     gDPPipeSync(gMainGfxPos++);

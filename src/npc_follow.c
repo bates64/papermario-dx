@@ -108,7 +108,6 @@ void npc_follow_npc(Npc* npc) {
     f32 dist;
     NpcHistoryPoint* historyPoint;
     f32 targetX, targetY, targetZ;
-    f32 theta;
     f32 yaw;
 
     get_npc_pos(followData->targetNpcID, &x, &y, &z, &airborne);

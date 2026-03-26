@@ -1,0 +1,49 @@
+name: Release Nightly
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release
+    if: github.repository == 'bates64/papermario-dx'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move dx-nightly tag
+        run: |
+          git tag -f dx-nightly
+          git push origin -f dx-nightly
+      - uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v15
+        with:
+          name: papermario-dx
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Download base ROM
+        run: |
+          curl -L $BASEROM_US_URL -o papermario.us.z64
+          nix-store --add-fixed sha256 papermario.us.z64
+        env:
+          BASEROM_US_URL: ${{ secrets.BASEROM_US_URL }}
+      - name: Build Windows toolchain
+        run: nix build .#windows-toolchain --out-link result-toolchain
+      - name: Build clangd index
+        run: nix build .#clangd-index --out-link result-clangd-index
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dx-nightly
+          files: |
+            result-toolchain/papermario-dx-windows.zip
+            result-clangd-index/papermario-dx.idx
+      - name: Notify docs repo
+        run: |
+          gh api repos/star-haven/docs/dispatches \
+            -f event_type=update-papermario-dx
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}

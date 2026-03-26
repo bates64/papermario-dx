@@ -394,6 +394,3 @@ s32 get_time_freeze_mode(void) {
     return gTimeFreezeMode;
 }
 
-#if VERSION_IQUE
-static const f32 rodata_padding[] = {0.0f, 0.0f};
-#endif

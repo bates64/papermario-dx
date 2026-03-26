@@ -380,7 +380,7 @@ void apply_constraints_to_lead_amount(Camera* camera) {
                 }
             }
 
-            if (leadAmount > 0.0f && camera->leadConstrainDir > 0 || leadAmount < 0.0f && camera->leadConstrainDir < 0) {
+            if ((leadAmount > 0.0f && camera->leadConstrainDir > 0) || (leadAmount < 0.0f && camera->leadConstrainDir < 0)) {
                 camera->leadInterpAlpha = 0.0f;
                 camera->leadAmount = 0.0f;
             }

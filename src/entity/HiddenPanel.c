@@ -114,7 +114,7 @@ void entity_HiddenPanel_flip_over(Entity* entity) {
     s32 flipAxis;
 
     yaw = clamp_angle(gCameras[CAM_DEFAULT].curYaw + 45.0f);
-    if (yaw < 90.0f || yaw >= 180.0f && yaw < 270.0f) {
+    if (yaw < 90.0f || (yaw >= 180.0f && yaw < 270.0f)) {
         rotAngle = entity->rot.z;
         flipAxis = 1;
     } else {
@@ -376,5 +376,4 @@ EntityBlueprint Entity_HiddenPanel = {
     .aabbSize = { 60, 0, 60 }
 };
 
-//TODO remove this
-static const f32 rodata_alignment[] = {0.0f, 0.0f};
+

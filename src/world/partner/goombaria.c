@@ -1,6 +1,6 @@
 #include "common.h"
 #include "goombaria.h"
-#include "../partners.h"
+#include "world/partners.h"
 
 #define NAMESPACE world_goombaria
 

@@ -1,5 +1,5 @@
 #include "common_structs.h"
-#include "partners.h"
+#include "world/partners.h"
 #include "macros.h"
 
 #include "ld_addrs.h"
@@ -1238,7 +1238,6 @@ void partner_walking_follow_player(Npc* partner) {
     f32 yaw;
     f32 temp_a3;
     f32 angle;
-    s32 var_a1;
     PlayerPathElement* currentSnapshot;
 
     switch (wPartnerFollowState) {
@@ -1701,10 +1700,8 @@ void partner_walking_follow_player(Npc* partner) {
     }
 }
 
-static const f32 padding = 0.0f;
 
 void partner_flying_enable(Npc* partner, s32 val) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerPathElement* it = gPlayerMoveHistory;
     s32 i;
 
@@ -2522,7 +2519,6 @@ void partner_do_player_collision(Npc* partner) {
 void partner_move_to_goal(Npc* partner, s32 isFlying) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x, y, z, temp;
-    s32 var_a1;
 
     switch (D_8010CFCE) {
         case 0:

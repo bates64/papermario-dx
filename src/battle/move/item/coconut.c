@@ -10,7 +10,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 #include "battle/common/move/UseItem.inc.c"
 
-static s32 _pad = 0;
 
 #include "battle/move/item/coconut.png.h"
 INCLUDE_IMG("battle/move/item/coconut.png", battle_item_coconut_png);

@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 #include "message_ids.h"
 
 extern Gfx PauseGfxOrbs[];
@@ -12,7 +12,6 @@ void pause_badges_cleanup(MenuPanel* panel);
 static s16 gPauseBadgesItemIds[128];
 static s32 gPauseBadgesCurrentPage;
 #if !VERSION_IQUE
-static s32 D_80270284;
 #endif
 static PauseItemPage gPauseBadgesPages[20];
 static s32 gPauseBadgesSelectedIndex;
@@ -27,7 +26,6 @@ static s32 gPauseBadgesLevel;
 static s32 gPauseBadgesCurrentTab;
 static s32 gPauseBadgesShowNotEnoughBP;
 #if !VERSION_IQUE
-static s32 D_802703A4;
 #endif
 static s32 gPauseBadgesIconIDs[22];
 
@@ -364,7 +362,6 @@ void pause_badges_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width
     PlayerData* playerData = &gPlayerData;
     PauseItemPage* currentPage = &gPauseBadgesPages[gPauseBadgesCurrentPage];
     s32 bpAmountX;
-    s32 msg2;
 
     costBP = 0;
     canBeEquipped = false;

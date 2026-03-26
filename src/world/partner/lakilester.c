@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../partners.h"
+#include "world/partners.h"
 #include "effects.h"
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/player.h"
@@ -372,7 +372,6 @@ void N(update_riding_physics)(Npc* lakilester) {
     f32 hitDepth, sp40, sp44, sp48, sp4C, sinAngle, cosAngle;
     f32 moveAngle, moveSpeed;
     f32 x, y, z;
-    f32 temp_f0_3;
     s32 raycastBelowResult;
     s32 currentSurfaceType;
     s32 belowSurfaceType;
@@ -1178,7 +1177,6 @@ API_CALLABLE(N(EnterMap)) {
     Npc* lakilester = get_npc_unsafe(NPC_PARTNER);
     f32 temp_f0, temp_f2, temp_f4;
     f32* temp_s0_2;
-    s32 temp_v0_2;
 
     if (isInitialCall) {
         script->functionTemp[0] = 0;

@@ -11,7 +11,6 @@
 #include "battle/common/move/ItemRefund.inc.c"
 
 API_CALLABLE(N(func_802A123C_72A98C)) {
-    BattleStatus* battleStatus = &gBattleStatus;
     Actor* enemy = get_actor(script->owner1.enemyID);
     Actor* target = get_actor(enemy->targetActorID);
 
@@ -55,7 +54,6 @@ API_CALLABLE(N(func_802A12E0_72AA30)) {
 
 #include "battle/common/move/UseItem.inc.c"
 
-static s32 _pad = 0; // XXX
 
 #include "battle/move/item/insecticide_herb.png.h"
 INCLUDE_IMG("battle/move/item/insecticide_herb.png", battle_item_insecticide_herb_png);

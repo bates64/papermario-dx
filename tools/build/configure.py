@@ -2,6 +2,7 @@
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -1872,6 +1873,13 @@ if __name__ == "__main__":
     ninja.build("all", "phony", all)
     ninja.default("all")
 
+    # Fetch pre-built clangd index from the matching dx-* GitHub release.
+    try:
+        from clangd_index import fetch_clangd_index
+        fetch_clangd_index(ROOT)
+    except Exception:
+        pass
+
     # Generator rule: re-run configure.py when inputs change.
     argv = list(sys.argv)
     if "--clean" in argv:
@@ -1903,6 +1911,27 @@ if __name__ == "__main__":
             configure_deps.append(str(Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else dirpath))
 
     ninja.build("build.ninja", "configure", str(BUILD_TOOLS / "configure.py"), implicit=configure_deps)
+
+    # Generate compile_commands.json with MIPS cross-compiler flags stripped,
+    # so clangd and clang-tidy can parse the compile commands.
+    ninja.close()
+    try:
+        compdb = subprocess.run(
+            ["ninja", "-t", "compdb"],
+            capture_output=True,
+            text=True,
+        )
+        if compdb.returncode == 0:
+            entries = json.loads(compdb.stdout)
+            strip_re = re.compile(r"^(-m\S+|-f\S+|-g\S+|-G\d+|--warn-\S+)$")
+            cross_cc_re = re.compile(r"^(ccache\s+)?mips-linux-gnu-g(cc|\+\+)(?=\s)")
+            for entry in entries:
+                entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
+                parts = entry["command"].split()
+                entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
+            (ROOT / "compile_commands.json").write_text(json.dumps(entries, indent=2) + "\n")
+    except FileNotFoundError:
+        pass  # ninja not installed
 
     # Write the source file stamp after all work (including splat which may produce
     # files under assets/) so the stamp reflects the final state.

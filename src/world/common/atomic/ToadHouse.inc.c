@@ -1,6 +1,6 @@
 #include "common.h"
 #include "npc.h"
-#include "../../partners.h"
+#include "world/partners.h"
 
 API_CALLABLE(N(ToadHouse_DisableStatusBar)) {
     status_bar_ignore_changes();

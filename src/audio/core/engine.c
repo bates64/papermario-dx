@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 #include "ld_addrs.h"
 
@@ -9,6 +9,10 @@ BGMPlayer* gBGMPlayerC;
 SoundManager* gSoundManager;
 AuGlobals* gSoundGlobals;
 AmbienceManager* gAuAmbienceManager;
+
+static void au_reset_instrument(Instrument* instrument);
+static void au_reset_drum_entry(BGMDrumInfo* arg0);
+static void au_reset_instrument_entry(BGMInstrumentInfo* arg0);
 
 // data
 extern u16 PerceptualVolumeLevels[9];
@@ -558,7 +562,6 @@ void au_get_bgm_player(u32 playerIndex, BGMPlayer** outPlayer) {
 AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
     AuResult status;
     SBNFileEntry fileEntry;
-    SBNFileEntry fileEntry2;
     SBNFileEntry* bkFileEntry;
     AuGlobals* globals = gSoundGlobals;
     InitSongEntry* songInfo;
@@ -595,10 +598,7 @@ AuResult au_load_song_files(u32 songID, BGMHeader* bgmFile, BGMPlayer* player) {
                 bkFileEntry = &globals->sbnFileList[bkFileIndex];
 
                 offset = (bkFileEntry->offset & 0xFFFFFF) + globals->baseRomOffset;
-                fileEntry2.offset = offset;
-
                 data = bkFileEntry->data;
-                fileEntry2.data = data;
 
                 if ((data >> 0x18) == AU_FMT_BK) {
                     au_load_aux_bank(offset, i);
@@ -748,7 +748,6 @@ void au_load_INIT(AuGlobals* globals, s32 romAddr, ALHeap* heap) {
     SBNFileEntry* entry;
     s32 fileListSize, initBase, size;
     s32 songListOffset, mseqListOffset;
-    s32* data;
     s32 numEntries;
     s32* romPtr = &globals->baseRomOffset;
 
@@ -1082,7 +1081,6 @@ BKFileBuffer* au_load_static_BK_to_bank(s32* inAddr, void* outAddr, s32 bankInde
     BKHeader localHeader;
     BKHeader* header = &localHeader;
     InstrumentBank* group;
-    Instrument* instruments;
     Instrument** inst;
     s32 instrumentCount;
     u32 keepReading;

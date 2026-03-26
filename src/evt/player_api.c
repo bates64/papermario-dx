@@ -826,8 +826,6 @@ API_CALLABLE(func_802D2C14) {
 API_CALLABLE(SetPlayerPushVelocity) {
     Bytecode* args = script->ptrReadPos;
     f32 x = evt_get_variable(script, *args++);
-    f32 y;
-    f32 z;
 
     gPlayerStatus.pushVel.x = x;
     gPlayerStatus.pushVel.y = evt_get_variable(script, *args++);

@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 #include "message_ids.h"
 #include "hud_element.h"
 #include "sprite.h"
@@ -643,7 +643,6 @@ void pause_partners_init(MenuPanel* panel) {
 void pause_partners_handle_input(MenuPanel* panel) {
     s32 delta;
     s32 level, level2;
-    s32 partnerID;
     s32 oldPos;
 
     if (gPausePartnersNumPartners >= 2 && (gPausePartnersLevel == 0 || (gPauseHeldButtons & (BUTTON_Z | BUTTON_R)))) {

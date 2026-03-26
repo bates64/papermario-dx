@@ -93,7 +93,6 @@ void static_status_init(EffectInstance* effect) {
 void static_status_update(EffectInstance* effect) {
     StaticStatusFXData* part = effect->data.staticStatus;
     s32 type = part->type;
-    s32 unk_28;
     s32 time;
     f32 interpAmt;
     f32 initialAmt;

@@ -17,6 +17,7 @@ expected/
 ctx.c.m2c
 /data2c
 .nix-profile*
+/result
 
 # Build artifacts
 build.ninja
@@ -38,7 +39,6 @@ ver/*/*.ld
 baserom.*
 build/
 !tools/build
-/docs/doxygen/
 /include/ld_addrs.h
 /include/message_ids.h
 /include/sprite/
@@ -65,5 +65,8 @@ build/
 
 # clangd
 .cache/clangd/
+.clangd
 # compile_commands.json requires hardcoded paths, so it can't be committed
 compile_commands.json
+# DX ephemeral data (clangd index, configure cache, etc.)
+/.dx/

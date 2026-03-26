@@ -517,7 +517,6 @@ void btl_state_update_celebration(void) {
     s32 width;
     s32 itemHudElemID;
 
-    Evt* takeTurnScript;
     Evt* script;
 
     s32 tensDigit;
@@ -529,7 +528,6 @@ void btl_state_update_celebration(void) {
     s32 i;
     s32 j;
 
-    HudScript* new_var;
 
     switch (gBattleSubState) {
         case BTL_SUBSTATE_INIT:

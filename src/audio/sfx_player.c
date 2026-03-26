@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 
 static void au_sfx_play_sound(SoundManager* manager, SoundPlayer* player, s8* readPos, SoundRequest* request, s32 priority, s32 exclusiveID);
@@ -1178,8 +1178,6 @@ static void au_sfx_update_basic(SoundManager* manager, SoundPlayer* player, AuVo
     s16 volume;
     s32 tune;
     s32 pan;
-    s32 a;
-    s32 b;
 
     switch (player->state) {
         case SND_PLAYER_STATE_CONTINUE:
@@ -1274,9 +1272,7 @@ static s16 au_sfx_get_scaled_volume(SoundManager* manager, SoundPlayer* player) 
 }
 
 static void au_sfx_update_sequence(SoundManager* manager, SoundPlayer* player, AuVoice* voice, u8 voiceIdx) {
-    s32* var_v0_3;
     s32 pitchShift;
-    s32 temp_a0;
     u8 opcode;
     u32 playLength;
     s32 startedNewVoice;

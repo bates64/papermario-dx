@@ -42,7 +42,6 @@ void interact_inspect_dismiss(void);
 
 void interact_inspect_setup(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
-    f32 new_var;
 
     if (playerStatus->animFlags & PA_FLAG_INTERACT_PROMPT_AVAILABLE) {
         mem_clear(InspectIconPtr, sizeof(*InspectIconPtr));

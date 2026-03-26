@@ -4,7 +4,7 @@
 #include "common.h"
 
 /**
- * @brief ROM address of the pointer to the symbol table.
+ * ROM address of the pointer to the symbol table.
  *
  * This particular location is an unused part of the header lol.
  * Don't modify this without also updating append_symbol_table.py.
@@ -25,7 +25,7 @@ typedef struct SymbolTable {
 } SymbolTable;
 
 /**
- * @brief Walk the stack and return the current call stack
+ * Walk the stack and return the current call stack
  *
  * This function will analyze the current execution context,
  * walking the stack and returning informations on the active
@@ -39,20 +39,21 @@ typedef struct SymbolTable {
  * is able to correctly walk backward the interrupt handler and
  * show the context even before the exception was triggered.
  *
- * @param buffer    Empty array of pointers. This will be populated with pointers
- *                  to the return addresses for each call frame.
- * @param size      Size of the buffer, that is, maximum number of call frames
- *                  that will be walked by the function.
- * @return          Number of call frames walked (at most, size).
+ * `buffer` should be an empty array of pointers, which will be populated with
+ * pointers to the return addresses for each call frame. `size` specifies the
+ * size of the buffer, that is, the maximum number of call frames that will be
+ * walked by the function.
+ *
+ * Returns number of call frames walked (at most, `size`).
  */
 int backtrace(void **buffer, int size);
 
 int backtrace_thread(void **buffer, int size, OSThread *thread);
 
-/** @brief Print a backtrace. */
+/** Print a backtrace. */
 void debug_backtrace(void);
 
-/** @brief Converts a function address to a string representation using its name, offset, and file. */
+/** Converts a function address to a string representation using its name, offset, and file. */
 void backtrace_address_to_string(u32 address, char* dest);
 
 #endif

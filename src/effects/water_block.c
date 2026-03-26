@@ -215,7 +215,6 @@ void func_E00B4574(void) {
 
 void water_block_appendGfx(void* effect) {
     Matrix4f sp20;
-    Matrix4f sp60;
     WaterBlockFXData* data = ((EffectInstance*)effect)->data.waterBlock;
     s32 alpha = data->color.a;
     Vtx* vtxBase;

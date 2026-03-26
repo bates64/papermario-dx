@@ -1,5 +1,5 @@
 #include "common.h"
-#include "../src/world/partners.h"
+#include "world/partners.h"
 #include "sprite/npc/WorldKooper.h"
 #include "sprite/player.h"
 #include "effects.h"
@@ -198,7 +198,6 @@ EvtScript EVS_WorldKooper_Update = {
 };
 
 API_CALLABLE(N(UseAbility)) {
-    Camera* cam;
     ItemEntity* heldItem;
     EncounterStatus* currentEncounter = &gCurrentEncounter;
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -209,7 +208,6 @@ API_CALLABLE(N(UseAbility)) {
     f32 testLength;
     s32 actionState;
     f32 moveAngle;
-    f32 colheight;
     f32 angleToStartPos;
 
     #define USE_STATE functionTemp[0]
@@ -498,7 +496,6 @@ API_CALLABLE(N(UseAbility)) {
                 kooper->moveSpeed = 0.0f;
             } else {
                 if (kooper->planarFlyDist > 140.0f) {
-                    label2:
                     script->USE_STATE = SHELL_TOSS_STATE_RETURN;
                     kooper->moveSpeed = 0.0f;
                     sfx_play_sound_at_npc(SOUND_NONE, SOUND_SPACE_DEFAULT, NPC_PARTNER);

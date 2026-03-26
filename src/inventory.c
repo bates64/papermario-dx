@@ -259,7 +259,7 @@ s32 remove_item(s32 itemID) {
 }
 
 /// Search player inventory for `itemID` and return first matching array index.
-/// @returns the index of the given item in the player's inventory, or -1 if not found
+/// Returns the index of the given item in the player's inventory, or -1 if not found.
 s32 find_item(s32 itemID) {
     s32 idx;
 
@@ -305,7 +305,7 @@ s32 find_item(s32 itemID) {
 }
 
 /// Search player inventory for `itemID` and count the number matches.
-/// @returns the number of items matching `itemID`
+/// Returns the number of items matching `itemID`.
 s32 count_item(s32 itemID) {
     s32 idx;
     s32 sum = 0;
@@ -1123,7 +1123,7 @@ void update_status_bar(void) {
     }
 
     while (true) {
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1133,7 +1133,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
 
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1142,7 +1142,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[1], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1150,7 +1150,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[2], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1158,7 +1158,7 @@ void update_status_bar(void) {
         hud_element_set_render_pos(id, x + sp50 * 20 + StatusBarSPIncrementOffsets[3], y - 2);
         hud_element_draw_next(id);
         s1++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1167,7 +1167,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1176,7 +1176,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1185,7 +1185,7 @@ void update_status_bar(void) {
         hud_element_draw_next(id);
         s1++;
 
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
         i++;
@@ -1195,7 +1195,7 @@ void update_status_bar(void) {
 
         s1 = 0;
         sp50++;
-        if (i >= limit || i >= s7 && !showAddedBar) {
+        if (i >= limit || (i >= s7 && !showAddedBar)) {
             break;
         }
     }
@@ -2145,7 +2145,6 @@ void add_star_power(s32 amt) {
     PlayerData* playerData = &gPlayerData;
     StatusBar* statusBar = &gStatusBar;
     s32 maxPower;
-    s32 newPower;
 
     statusBar->shimmerState = STATUS_SHIMMER_BEGIN;
     statusBar->shimmerTime = 60;

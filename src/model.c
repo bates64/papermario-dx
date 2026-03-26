@@ -1381,10 +1381,9 @@ void appendGfx_model(void* data) {
     s32 mtxLoadMode;
     s32 tintCombineType;
     ModelNodeProperty* prop;
-    s32 temp;
 
     s32 fogMin, fogMax;
-    s32 fogR, fogG, fogB, fogA;
+    s32 fogR, fogG, fogB;
     Gfx** gfxPos = &gMainGfxPos;
 
     mtxPushMode = G_MTX_PUSH;
@@ -3070,7 +3069,6 @@ void make_texture_gfx(TextureHeader* header, Gfx** gfxPos, IMG_PTR raster, PAL_P
     s32 auxMasks, auxMaskt;
     s32 mainBitDepth;
     s32 auxBitDepth;
-    s32 temp;
 
     mainWidth = header->mainW;
     mainHeight = header->mainH;
@@ -3338,7 +3336,6 @@ void load_model_transforms(ModelNode* model, ModelNode* parent, Matrix4f mdlTran
     ModelBlueprint modelBP;
     ModelBlueprint* modelBPptr = &modelBP;
     ModelNodeProperty* prop;
-    ModelNode* modelTemp;
     s32 i;
 
     if (model->groupData != nullptr && model->groupData->numChildren != 0) {
@@ -3881,7 +3878,7 @@ void build_custom_gfx(void) {
 }
 
 // weird temps necessary to match
-/// @returns true if mtx is nullptr or identity.
+/// Returns true if mtx is nullptr or identity.
 s32 is_identity_fixed_mtx(Mtx* mtx) {
     s32* mtxIt = (s32*)mtx;
     s32* identityIt;
@@ -3960,7 +3957,6 @@ void mdl_get_remap_tint_params(u8* primR, u8* primG, u8* primB, u8* envR, u8* en
 }
 
 void mdl_get_vertex_count(Gfx* gfx, s32* numVertices, Vtx** baseVtx, s32* gfxCount, Vtx* baseAddr) {
-    s8 stuff[2];
 
     s32 vtxCount;
     u32 w0, w1;
@@ -4185,7 +4181,7 @@ void mdl_project_tex_coords(s32 modelID, Gfx* outGfx, Matrix4f arg2, Vtx* arg3) 
         f32 f0a = f0 - f4;
         f32 f10a = f10 - f6;
 
-        f32 f0b, f4a, f2b, f8a, f6a, f0c, f8b, f2c, f12a, f2d, f4b, f0d, f6b, f0e;
+        f32 f0b, f4a, f2b, f8a, f6a, f0c, f2c, f12a;
 
         sp40 = f0a / f10a; // used later
         f0b = f12 * sp40;
@@ -4211,7 +4207,7 @@ void mdl_project_tex_coords(s32 modelID, Gfx* outGfx, Matrix4f arg2, Vtx* arg3) 
         f32 f0 = f2 / f14 * f8;
         f32 f10 = f2 / f14 * f12;
 
-        f32 f0b, f4a, f2b, f8a, f6a, f0c, f8b, f2c, f12a, f2d, f4b, f0d, f6b, f0e;
+        f32 f0b, f4a, f2b, f8a, f6a, f0c, f8b;
 
         var_f30 = (f0 - f4) / (f10 - f6); // used later
         f0b = f12 * var_f30;

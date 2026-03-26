@@ -10,37 +10,97 @@
 extern "C" {
 #endif
 
-API_CALLABLE(MakeNpcs);
+/// @evtapi
+/// @param aiSettingsPtr
 API_CALLABLE(BasicAI_Main);
-API_CALLABLE(ResetFromLava);
+
+/// @evtapi
+/// @param itemPositionsPtr
+/// @param inventoryPtr
+/// @param sellPricesPtr
+/// @param inventoryItemFlagsPtr
 API_CALLABLE(MakeShop);
+
+/// @evtapi
+/// @param shopOwnerPtr
 API_CALLABLE(MakeShopOwner);
+
+/// @evtapi
+/// @param packedFlags
+/// @param openDoorScript
+/// @param moveWallsScript
+/// @param dropDoorScript
+/// @param stateListenerScript
+/// @param doorInColliderID
+/// @param doorOutColliderID
+/// @param interiorModelGroup
+/// @param interiorNPCList
 API_CALLABLE(CreateMapRoom);
+
+/// @evtapi
+/// @param outResult
+/// @param actionState
 API_CALLABLE(CheckActionState);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param sizeNx
+/// @param sizeNz
+/// @param centerX
+/// @param centerY
+/// @param centerZ
+/// @param inputGridDataPtr
 API_CALLABLE(CreatePushBlockGrid);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param gridX
+/// @param gridZ
+/// @param occupant
 API_CALLABLE(SetPushBlock);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param gridX
+/// @param gridZ
+/// @param outOccupant
 API_CALLABLE(GetPushBlock);
 
+/// Fill a row of a [`PushBlockGrid`] from `startZ` to `endZ` (inclusive) along constant `gridX`.
+/// Be wary of placing too many `PUSH_GRID_BLOCK` occupants.
 /// @evtapi
-/// Fill a row of a `PushBlockGrid` from startZ to endZ (inclusive) along constant gridX
 /// @param gridSystemID
-/// @param gridX fixed x grid cell
-/// @param startZ first z grid cell to be filled
-/// @param endZ last z grid cell to be filled
-/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+/// @param gridX
+/// @param startZ
+/// @param endZ
+/// @param occupant
 API_CALLABLE(FillPushBlockX);
 
+/// Fill a row of a [`PushBlockGrid`] from `startX` to `endX` (inclusive) along constant `gridZ`.
+/// Be wary of placing too many `PUSH_GRID_BLOCK` occupants.
 /// @evtapi
-/// Fill a row of a `PushBlockGrid` from startX to endX (inclusive) along constant gridZ
 /// @param gridSystemID
-/// @param gridZ fixed z grid cell
-/// @param startX first x grid cell to be filled
-/// @param endX last x grid cell to be filled
-/// @param occupant `PushGridOccupant` to fill with, be wary of placing too many PUSH_GRID_BLOCK
+/// @param gridZ
+/// @param startX
+/// @param endX
+/// @param occupant
 API_CALLABLE(FillPushBlockZ);
 
+/// @evtapi
+/// @param blockSystemID
+/// @param posX
+/// @param posY
+/// @param posZ
+/// @param outGridX
+/// @param outGridZ
 API_CALLABLE(GetGridIndexFromPos);
+
+/// @evtapi
+/// @param blockSystemID
+/// @param fallCallback
 API_CALLABLE(SetPushBlockFallEffect);
+
+/// @evtapi
 API_CALLABLE(TeleportPartnerToPlayer);
 
 extern EvtScript EnterWalk;

@@ -906,7 +906,7 @@ void phys_main_collision_below(void) {
         phys_adjust_cam_on_landing();
     }
 
-    if (playerStatus->flags & PS_FLAG_SLIDING && phys_should_player_be_sliding()) {
+    if ((playerStatus->flags & PS_FLAG_SLIDING) && phys_should_player_be_sliding()) {
         set_action_state(ACTION_STATE_SLIDING);
     }
 

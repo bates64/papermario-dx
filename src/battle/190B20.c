@@ -945,7 +945,6 @@ void load_player_actor(void) {
     DecorationTable* decorations;
     ActorPartMovement* partMovement;
     s32 i;
-    s32 j;
 
     player = battleStatus->playerActor = heap_malloc(sizeof(*player));
 
@@ -1411,7 +1410,6 @@ Actor* create_actor(Formation formation) {
     Actor* actor;
     ActorBlueprint* formationActor;
     ActorPart* part;
-    ActorPartBlueprint* partBP;
     Evt* takeTurnScript;
     s32 partCount;
     f32 x, y, z;
@@ -2567,18 +2565,18 @@ void remove_player_buffs(s32 buffs) {
         battleStatus->hustleTurns = 0;
         battleStatus->flags1 &= ~BS_FLAGS1_HUSTLED;
     }
-    if (buffs & PLAYER_BUFF_STATIC && (player->staticStatus != 0)) {
+    if ((buffs & PLAYER_BUFF_STATIC) && (player->staticStatus != 0)) {
         player->staticDuration = 0;
         player->staticStatus = 0;
         remove_status_static(player->hudElementDataIndex);
     }
-    if (buffs & PLAYER_BUFF_TRANSPARENT && (player->transparentStatus != 0)) {
+    if ((buffs & PLAYER_BUFF_TRANSPARENT) && (player->transparentStatus != 0)) {
         player->transparentDuration = 0;
         player->transparentStatus = 0;
         playerActorParts->flags &= ~ACTOR_PART_FLAG_TRANSPARENT;
         remove_status_transparent(player->hudElementDataIndex);
     }
-    if (buffs & PLAYER_BUFF_WATER_BLOCK && (battleStatus->waterBlockTurnsLeft != 0)) {
+    if ((buffs & PLAYER_BUFF_WATER_BLOCK) && (battleStatus->waterBlockTurnsLeft != 0)) {
         battleStatus->waterBlockTurnsLeft = 0;
         battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_WATER_BLOCK].turnsLeft = 0;
         battleStatus->waterBlockEffect->flags |= FX_INSTANCE_FLAG_DISMISS;
@@ -2591,11 +2589,11 @@ void remove_player_buffs(s32 buffs) {
         battleStatus->waterBlockEffect = nullptr;
         sfx_play_sound(SOUND_DESTROY_WATER_BLOCK);
     }
-    if (buffs & PLAYER_BUFF_TURBO_CHARGE && (battleStatus->turboChargeTurnsLeft != 0)) {
+    if ((buffs & PLAYER_BUFF_TURBO_CHARGE) && (battleStatus->turboChargeTurnsLeft != 0)) {
         battleStatus->turboChargeTurnsLeft = 0;
         battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_TURBO_CHARGE].turnsLeft = 0;
     }
-    if (buffs & PLAYER_BUFF_CLOUD_NINE && (battleStatus->cloudNineTurnsLeft != 0)) {
+    if ((buffs & PLAYER_BUFF_CLOUD_NINE) && (battleStatus->cloudNineTurnsLeft != 0)) {
         battleStatus->cloudNineTurnsLeft = 0;
         battleStatus->buffEffect->data.partnerBuff->unk_0C[FX_BUFF_DATA_CLOUD_NINE].turnsLeft = 0;
         remove_effect(battleStatus->cloudNineEffect);

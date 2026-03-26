@@ -96,7 +96,6 @@ void N(update)(void) {
     HudElemID hid;
     s32 fillPct;
     s32 cutoff;
-    s32 idx;
 
     switch (acs->state) {
         case AC_STATE_INIT:

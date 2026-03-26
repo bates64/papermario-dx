@@ -208,11 +208,11 @@ void update_triggers(void) {
             }
         }
 
-        if (listTrigger->flags & TRIGGER_GAME_FLAG_SET && get_global_flag(listTrigger->varIndex) == 0) {
+        if ((listTrigger->flags & TRIGGER_GAME_FLAG_SET) && get_global_flag(listTrigger->varIndex) == 0) {
             continue;
         }
 
-        if (listTrigger->flags & TRIGGER_AREA_FLAG_SET && get_area_flag(listTrigger->varIndex) == 0) {
+        if ((listTrigger->flags & TRIGGER_AREA_FLAG_SET) && get_area_flag(listTrigger->varIndex) == 0) {
             continue;
         }
 
@@ -277,7 +277,7 @@ Trigger* get_trigger_by_id(s32 triggerID) {
     return (*gCurrentTriggerListPtr)[triggerID];
 }
 
-/// @returns true if colliderID is bound to an interaction trigger (press A) and the player can use it.
+/// Returns true if colliderID is bound to an interaction trigger (press A) and the player can use it.
 s32 should_collider_allow_interact(s32 colliderID) {
     s32 i;
 

@@ -1,5 +1,5 @@
 #include "common.h"
-#include "audio.h"
+#include "audio/audio.h"
 #include "audio/core.h"
 
 static u8* snd_song_get_track_volumes_set(MusicTrackVols arg0);
@@ -863,7 +863,6 @@ void snd_song_clear_music_events(void) {
     globals->musicEventQueuePos = globals->musicEventQueue;
 }
 
-static const f32 padding[] = {0.0f};
 
 void snd_register_callback(AuCallback func, s32 index) {
     gSoundGlobals->audioThreadCallbacks[index] = func;

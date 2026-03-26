@@ -12,7 +12,7 @@ typedef struct GameModeData {
     /* 0x04 */ void (*init)(void);
     /* 0x08 */ void (*step)(void);
     /* 0x0C */ void (*renderBackUI)(void);
-    /* 0x10 */ void (*renderFrontUI)(void); ///< @see render_game_mode_frontUI
+    /* 0x10 */ void (*renderFrontUI)(void); ///< See [`render_game_mode_frontUI`].
 } GameModeData; // size = 0x14
 
 const GameModeData GameModeTemplates[] = {

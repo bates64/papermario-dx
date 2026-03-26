@@ -1,4 +1,4 @@
-#include "pause_common.h"
+#include "pause/pause_common.h"
 
 void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 void pause_stats_init(MenuPanel* panel);
@@ -166,7 +166,6 @@ MenuPanel gPausePanelStats = {
 INCLUDE_ASM(void, "pause/pause_stats", pause_stats_draw_contents);
 #else
 void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening) {
-    StatsEntryData* statsEntryData;
     PlayerData* playerData;
     s16 bootsLevel;
     s16 hammerLevel;
@@ -176,7 +175,6 @@ void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width,
     s32 curIncrement;
     b32 drawingFirst;
     s32 powBarIdx;
-    s32 boxWidth;
     s16 level;
     s32 frameCount;
     s32 powFullBars;
