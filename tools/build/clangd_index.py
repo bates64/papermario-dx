@@ -65,11 +65,22 @@ def _update_clangd_config(root: Path, idx_path: Path):
     abs_idx = str(idx_path.resolve())
     abs_root = str(root.resolve()) + "/"
 
+    default_header = (
+        "CompileFlags:\n"
+        "  Add: -Wno-unknown-warning-option\n"
+        "  Remove: [-m*, -f*, -g*]\n"
+        "InlayHints:\n"
+        "  Designators: No\n"
+    )
+
     # Read existing config, preserving other sections
     existing_lines = []
     if clangd_path.exists():
         with open(clangd_path) as f:
             existing_lines = f.readlines()
+
+    if not existing_lines:
+        existing_lines = [l + "\n" for l in default_header.splitlines()]
 
     # Remove any existing Index section
     filtered = []
