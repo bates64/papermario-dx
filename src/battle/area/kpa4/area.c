@@ -3,7 +3,6 @@
 extern ActorBlueprint A(bombshell_blaster);
 extern ActorBlueprint A(bombshell_bill);
 extern ActorBlueprint A(magikoopa);
-extern ActorBlueprint A(koopatrol);
 
 extern Stage A(kpa_01);
 extern Stage A(kpa_01b);
@@ -45,7 +44,7 @@ Vec3i A(pos_3) = { 130, 0, 25 };
 Formation A(Formation_03) = {
     ACTOR_BY_POS(A(bombshell_blaster), A(blaster_pos_1), 10),
     ACTOR_BY_POS(A(bombshell_blaster), A(blaster_pos_2), 9),
-    ACTOR_BY_POS(A(koopatrol), A(pos_3), 8),
+    OVL_ACTOR_BY_POS("koopatrol", A(pos_3), 8),
 };
 
 Formation A(Formation_04) = {

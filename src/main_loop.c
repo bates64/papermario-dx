@@ -269,7 +269,12 @@ void gfx_draw_frame(void) {
     dx_debug_console_main();
     #endif
 
-    ASSERT((s32)(((u32)(gMainGfxPos - gDisplayContext->mainGfx) << 3) >> 3) < ARRAY_COUNT(gDisplayContext->mainGfx));
+    {
+        s32 used = gMainGfxPos - gDisplayContext->mainGfx;
+        s32 capacity = ARRAY_COUNT(gDisplayContext->mainGfx);
+        s32 maskedUsed = (s32)(((u32)used << 3) >> 3);
+        ASSERT_MSG(maskedUsed < capacity, "gMainGfxPos overflow: %0.1fkiB (%ld%%%%)", (used - capacity) * (s32)sizeof(Gfx) / 1024.0f, (long)(used * 100 / capacity));
+    }
 
     gDPFullSync(gMainGfxPos++);
     gSPEndDisplayList(gMainGfxPos++);

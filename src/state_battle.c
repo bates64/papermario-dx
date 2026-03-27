@@ -6,6 +6,7 @@
 #include "battle/battle.h"
 #include "model.h"
 #include "game_modes.h"
+#include "dx/overlay.h"
 
 extern u16 gFrameBuf0[];
 extern u16 gFrameBuf1[];
@@ -132,7 +133,6 @@ void state_step_end_battle(void) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     PlayerData* playerData = &gPlayerData;
     MapSettings* mapSettings;
-    MapConfig* mapConfig;
 
     if (BattleTransitionDelay >= 0) {
         BattleTransitionDelay--;
@@ -143,7 +143,6 @@ void state_step_end_battle(void) {
             nuContRmbForceStopEnd();
             sfx_stop_env_sounds();
             mapSettings = get_current_map_settings();
-            mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
             btl_restore_world_cameras();
             gGameStatusPtr->context = CONTEXT_WORLD;
             func_8005AF84();
@@ -165,6 +164,8 @@ void state_step_end_battle(void) {
             init_entity_data();
             init_trigger_list();
 
+            ovl_unload_type(OVL_ACTOR);
+
             if (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_ENABLED) {
                 npc_reload_all();
                 playerStatus->animFlags = SavedWorldAnimFlags;
@@ -181,13 +182,9 @@ void state_step_end_battle(void) {
                 initialize_collision();
                 restore_map_collision_data();
 
-                if (mapConfig->dmaStart != nullptr) {
-                    dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-                }
-
-                load_map_bg(mapConfig->bgName);
-                if (mapSettings->background != nullptr) {
-                    set_background(mapSettings->background);
+                if (mapSettings->bgName != nullptr) {
+                    load_map_bg(wMapBgName);
+                    set_background(&gBackgroundImage);
                 } else {
                     set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
                         SCREEN_INSET_X, SCREEN_INSET_Y);

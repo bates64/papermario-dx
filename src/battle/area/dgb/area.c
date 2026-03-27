@@ -1,6 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(clubba);
 extern ActorBlueprint A(tubba_blubba);
 
 extern Stage A(dgb_01);
@@ -10,25 +9,25 @@ extern Stage A(dgb_04);
 extern Stage A(dgb_05);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_D, 7),
 };
 
 Vec3i A(vector3D_8021B348) = { 75, 0, 10 };

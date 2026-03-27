@@ -1,12 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(spear_guy);
-extern ActorBlueprint A(jungle_fuzzy);
-extern ActorBlueprint A(medi_guy);
-extern ActorBlueprint A(spike_top);
-extern ActorBlueprint A(hurt_plant);
-extern ActorBlueprint A(m_bush);
-
 extern Stage A(jan_00);
 extern Stage A(jan_01);
 extern Stage A(jan_01b);
@@ -17,104 +10,104 @@ extern Stage A(jan_04);
 extern Stage A(jan_04b);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_B, 10, 0),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_C, 9, 1),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_B, 10, 0),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_C, 9, 1),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_B, 9, 1),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_C, 8, 1),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_B, 9, 1),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_C, 8, 1),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_B, 10, 0),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_B, 10, 0),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_04) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_05) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_C, 8, 1),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_C, 8, 1),
 };
 
 Formation A(Formation_06) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_C, 8, 1),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_C, 8, 1),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_07) = {
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_A, 10, 0),
-    ACTOR_BY_IDX(A(medi_guy), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_A, 10, 0),
+    OVL_ACTOR_BY_IDX("medi_guy", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_08) = {
-    ACTOR_BY_IDX(A(hurt_plant), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(hurt_plant), BTL_POS_GROUND_C, 10),
+    OVL_ACTOR_BY_IDX("hurt_plant", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("hurt_plant", BTL_POS_GROUND_C, 10),
 };
 
 Formation A(Formation_09) = {
-    ACTOR_BY_IDX(A(hurt_plant), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(hurt_plant), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(hurt_plant), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("hurt_plant", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("hurt_plant", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("hurt_plant", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0A) = {
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0B) = {
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0C) = {
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_0D) = {
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spear_guy), BTL_POS_GROUND_B, 9, 1),
-    ACTOR_BY_IDX(A(jungle_fuzzy), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spear_guy", BTL_POS_GROUND_B, 9, 1),
+    OVL_ACTOR_BY_IDX("jungle_fuzzy", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0E) = {
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0F) = {
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_10) = {
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(m_bush), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("m_bush", BTL_POS_GROUND_D, 7),
 };
 
 BattleList A(Formations) = {

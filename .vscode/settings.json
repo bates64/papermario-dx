@@ -52,16 +52,17 @@
     "C_Cpp.default.cStandard": "c89",
     "files.exclude": {
         "**/.git": true,
-        "**/.splat_cache": true,
-        ".ninja*": true,
-        "ver/current": true,
-        "expected": true,
-        "**/*.i": true,
-        ".run_hash": true,
-        ".n2_db": true,
-        "venv": true,
-        "compile_commands.json": true,
-        ".nix-profile*": true,
+        "**/.jj": true,
+        "**/.direnv": true,
+        "**/.cache": true,
+        "**/build": true,
+        "**/.n2_db": true,
+        "**/.ninja_deps": true,
+        "**/.run_hash": true,
+        "**/.starrod": true,
+        "**/.dx": true,
+        "**/venv": true,
+        "**/*.o": true
     },
     "[python]": {
         "editor.formatOnType": true,
@@ -76,4 +77,5 @@
     "search.useIgnoreFiles": false,
     "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
     "workbench.editor.labelFormat": "short",
+    "editor.fontFamily": "'Monaspace Neon', monospace",
 }

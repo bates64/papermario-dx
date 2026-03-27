@@ -11,13 +11,6 @@ extern Stage A(omo_06);
 extern Stage A(omo_07);
 
 extern ActorBlueprint A(big_lantern_ghost);
-extern ActorBlueprint A(goomba);
-extern ActorBlueprint A(clubba);
-extern ActorBlueprint A(fuzzy);
-extern ActorBlueprint A(hammer_bro);
-extern ActorBlueprint A(pokey);
-extern ActorBlueprint A(koopatrol);
-extern ActorBlueprint A(red_shy_guy);
 
 Vec3i A(big_lantern_ghost_pos) = { 30, 0, 10 };
 
@@ -26,52 +19,52 @@ Formation A(Formation_00) = {
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(goomba), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(goomba), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(goomba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("goomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(clubba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("clubba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_04) = {
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_05) = {
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_06) = {
-    ACTOR_BY_IDX(A(hammer_bro), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(hammer_bro), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("hammer_bro", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("hammer_bro", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_07) = {
-    ACTOR_BY_IDX(A(hammer_bro), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("hammer_bro", BTL_POS_GROUND_B, 10),
 };
 
 Formation A(Formation_08) = {
-    ACTOR_BY_IDX(A(pokey), BTL_POS_GROUND_B, 10, 0, true),
-    ACTOR_BY_IDX(A(pokey), BTL_POS_GROUND_C,  9, 0, true),
+    OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10, 0, true),
+    OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_C,  9, 0, true),
 };
 
 Formation A(Formation_09) = {
-    ACTOR_BY_IDX(A(koopatrol), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(koopatrol), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("koopatrol", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("koopatrol", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0A) = {
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_B, 10),
 };
 
 BattleList A(Formations) = {

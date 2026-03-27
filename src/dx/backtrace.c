@@ -8,6 +8,7 @@
 #include "nu/nusys.h"
 #include "backtrace.h"
 #include "PR/osint.h"
+#include "dx/overlay.h"
 
 /** Enable to debug why a backtrace is wrong */
 #define BACKTRACE_DEBUG 0
@@ -346,10 +347,9 @@ s32 address2symbol(u32 address, Symbol* out) {
     }
 
     // Read symbols in chunks
-    static Symbol chunk[chunkSize];
+    static Symbol chunk[symbolsPerChunk];
     s32 i;
     for (i = 0; i < symt.symbolCount; i++) {
-        // Do we need to load the next chunk?
         if (i % symbolsPerChunk == 0) {
             u32 chunkAddr = symbolTableRomAddr + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
             nuPiReadRom(chunkAddr, chunk, chunkSize);
@@ -361,11 +361,8 @@ s32 address2symbol(u32 address, Symbol* out) {
             *out = sym;
             return 0;
         } else if (address < sym.address) {
-            // Symbols are sorted by address, so if we passed the address, we can stop
             break;
         } else {
-            // Keep searching, but remember this as the last symbol
-            // incase we don't find an exact match
             *out = sym;
         }
     }
@@ -385,7 +382,77 @@ char* load_symbol_string(char* dest, u32 addr, int n) {
     return (char*)((u32)dest + (addr & 3));
 }
 
+/**
+ * @brief Look up a symbol in an overlay's debug symbol table stored in ROM.
+ *
+ * Addresses in the table are stored as offsets from LINK_ADDR (0x80000000).
+ * The caller passes `offset = addr - overlay_base` as the lookup key.
+ */
+s32 ovl_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* out) {
+    #define symbolsPerChunk 0x1000
+    #define chunkSize ((sizeof(Symbol) * symbolsPerChunk))
+
+    SymbolTable symt;
+    nuPiReadRom(debugRomStart, &symt, sizeof(SymbolTable));
+    if (symt.magic[0] != 'S' || symt.magic[1] != 'Y' || symt.magic[2] != 'M' || symt.magic[3] != 'S') {
+        return -1;
+    }
+    if (symt.symbolCount <= 0) {
+        return -1;
+    }
+
+    static Symbol chunk[symbolsPerChunk];
+    s32 i;
+    for (i = 0; i < symt.symbolCount; i++) {
+        if (i % symbolsPerChunk == 0) {
+            u32 chunkAddr = debugRomStart + sizeof(SymbolTable) + (i / symbolsPerChunk) * chunkSize;
+            nuPiReadRom(chunkAddr, chunk, chunkSize);
+        }
+
+        Symbol sym = chunk[i % symbolsPerChunk];
+
+        if (sym.address == offset) {
+            *out = sym;
+            return 0;
+        } else if (offset < sym.address) {
+            break;
+        } else {
+            *out = sym;
+        }
+    }
+    return offset - out->address;
+
+    #undef symbolsPerChunk
+    #undef chunkSize
+}
+
 void backtrace_address_to_string(u32 address, char* dest) {
+    const char* ovl_name = NULL;
+    u32 debugRomStart = 0, debugRomEnd = 0, ovlBase = 0;
+    const char* ovl_sym_name = ovl_resolve_addr(address, &ovl_name,
+                                              &debugRomStart, &debugRomEnd, &ovlBase);
+    if (ovl_sym_name != NULL) {
+        if (debugRomStart != 0) {
+            u32 offset = address - ovlBase;
+            Symbol sym;
+            s32 sym_offset = ovl_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
+            if (sym_offset >= 0 && sym_offset < 0x1000) {
+                char name[0x40];
+                char file[0x40];
+                char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
+                char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+
+                if (filep == NULL)
+                    sprintf(dest, "%s (%s)", namep, ovl_name);
+                else
+                    sprintf(dest, "%s (%s %s)", namep, ovl_name, filep);
+                return;
+            }
+        }
+        sprintf(dest, "%s (%s)", ovl_sym_name, ovl_name);
+        return;
+    }
+
     Symbol sym;
     s32 offset = address2symbol(address, &sym);
 

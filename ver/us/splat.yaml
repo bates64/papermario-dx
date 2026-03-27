@@ -109,6 +109,8 @@ segments:
     - [auto, c, dx/backtrace]
     - [auto, c, dx/debug_menu]
     - [auto, c, dx/profiling]
+    - [auto, c, dx/overlay]
+    - [auto, cpp, dx/heap]
     - [auto, c, os/nusys/nugfxtaskmgr, -fforce-addr]
     - [auto, c, os/nusys/nusimgr]
     - [auto, c, load_obfuscation_shims]
@@ -348,7 +350,7 @@ segments:
     - [auto, hasm, os/decode_yay0]
     - [auto, c, os/osFlash]
     - [0x4AC90, pm_effect_loads, effect_loads]
-    - [auto, cpp, battle/battle]
+    - [auto, c, battle/battle]
     - [0x4E5A0, bin, n_aspMain_text]
     - start: 0x4F200
       type: .data
@@ -6084,9 +6086,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, area]
-    - [auto, c, actor/goomba]
-    - [auto, c, actor/spiked_goomba]
-    - [auto, c, actor/paragoomba]
     - [auto, c, stage/kmr_02]
     - [auto, c, stage/kmr_03]
     - [auto, c, stage/kmr_04]
@@ -6119,7 +6118,6 @@ segments:
     - [auto, c, area]
     - [auto, c, actor/tutorial_spiked_goomba]
     - [auto, c, actor/tutorial_paragoomba]
-    - [auto, c, actor/paragoomba]
     - [auto, c, actor/jr_troopa]
     - [auto, c, actor/egg_jr_troopa]
     - [auto, c, actor/para_jr_troopa]
@@ -6157,7 +6155,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/goombario_tutor]
-    - [auto, c, actor/ember]
     - [auto, c, actor/magikoopa]
     - [auto, c, stage/hos_01]
     - [auto, c, stage/hos_00]
@@ -6170,12 +6167,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, area]
-    - [auto, c, actor/goomba]
-    - [auto, c, actor/paragoomba]
-    - [auto, c, actor/spiked_goomba]
-    - [auto, c, actor/koopa_troopa]
-    - [auto, c, actor/fuzzy]
-    - [auto, c, actor/paratroopa]
     - [auto, c, actor/kent_c_koopa]
     - [auto, c, stage/nok_01]
     - [auto, c, stage/nok_02]
@@ -6190,9 +6181,6 @@ segments:
     - [auto, c, area]
     - [auto, c, actor/bullet_bill]
     - [auto, c, actor/bill_blaster]
-    - [auto, c, actor/bob_omb]
-    - [auto, c, actor/koopa_troopa]
-    - [auto, c, actor/paratroopa]
     - [auto, c, stage/trd_01]
     - [auto, c, stage/trd_02]
     - [auto, c, stage/trd_02b]
@@ -6247,10 +6235,7 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, area]
-    - [auto, c, actor/cleft]
-    - [auto, c, actor/monty_mole]
     - [auto, c, actor/buzzar]
-    - [auto, c, actor/whacka]
     - [auto, c, stage/iwa_01]
     - [auto, c, stage/iwa_01b]
     - [auto, c, stage/iwa_02]
@@ -6260,8 +6245,6 @@ segments:
     vram_class: battle_area
     subalign: 16 # BSS alignment hack
     subsegments:
-    - [auto, c, actor/pokey]
-    - [auto, c, actor/bandit]
     - [auto, c, stage/sbk_02]
     - [auto, c, area]
   - dir: battle/area/isk_part_1
@@ -6270,10 +6253,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/pokey_mummy]
-    - [auto, c, actor/swooper]
-    - [auto, c, actor/buzzy_beetle]
-    - [auto, c, actor/stone_chomp]
     - [auto, c, stage/isk_00]
     - [auto, c, stage/isk_01]
     - [auto, c, stage/isk_02]
@@ -6316,9 +6295,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/forest_fuzzy]
-    - [auto, c, actor/bzzap]
-    - [auto, c, actor/piranha_plant]
     - [auto, c, stage/mim_01]
     - [auto, c, area]
   - dir: battle/area/arn
@@ -6327,9 +6303,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/hyper_goomba]
-    - [auto, c, actor/hyper_paragoomba]
-    - [auto, c, actor/hyper_cleft]
     - [auto, c, actor/tubbas_heart]
     - [auto, c, actor/tubba_blubba]
     - [auto, c, stage/arn_01]
@@ -6345,7 +6318,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/clubba]
     - [auto, c, actor/tubba_blubba]
     - [auto, c, stage/dgb_01]
     - [auto, c, stage/dgb_02]
@@ -6359,17 +6331,8 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/red_shy_guy]
-    - [auto, c, actor/blue_shy_guy]
-    - [auto, c, actor/yellow_shy_guy]
-    - [auto, c, actor/pink_shy_guy]
-    - [auto, c, actor/green_shy_guy]
     - [auto, c, actor/anti_guy]
-    - [auto, c, actor/medi_guy]
     - [auto, c, actor/groove_guy]
-    - [auto, c, actor/spy_guy]
-    - [auto, c, actor/sky_guy]
-    - [auto, c, actor/pyro_guy]
     - [auto, c, stage/omo_01]
     - [auto, c, stage/omo_02]
     - [auto, c, stage/omo_03]
@@ -6449,13 +6412,6 @@ segments:
     - [auto, c, stage/omo_05b]
     - [auto, c, stage/omo_06]
     - [auto, c, stage/omo_07]
-    - [auto, c, actor/goomba]
-    - [auto, c, actor/clubba]
-    - [auto, c, actor/fuzzy]
-    - [auto, c, actor/hammer_bro]
-    - [auto, c, actor/pokey]
-    - [auto, c, actor/koopatrol]
-    - [auto, c, actor/red_shy_guy]
     - [auto, c, area]
   - dir: battle/area/kgr
     type: code
@@ -6472,12 +6428,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/spear_guy]
-    - [auto, c, actor/hurt_plant]
-    - [auto, c, actor/jungle_fuzzy]
-    - [auto, c, actor/m_bush]
-    - [auto, c, actor/medi_guy]
-    - [auto, c, actor/spike_top]
     - [auto, c, stage/jan_00]
     - [auto, c, stage/jan_01]
     - [auto, c, stage/jan_01b]
@@ -6493,7 +6443,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/putrid_piranha]
     - [auto, c, actor/white_magikoopa]
     - [auto, c, stage/jan_00]
     - [auto, c, stage/jan_01]
@@ -6510,10 +6459,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/lava_bubble]
-    - [auto, c, actor/putrid_piranha]
-    - [auto, c, actor/spike_top]
-    - [auto, c, actor/medi_guy]
     - [auto, c, actor/red_magikoopa]
     - [auto, c, actor/white_magikoopa]
     - [auto, c, stage/kzn_01]
@@ -6596,12 +6541,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/lakitu]
-    - [auto, c, actor/spiny]
-    - [auto, c, actor/crazee_dayzee]
-    - [auto, c, actor/bzzap]
-    - [auto, c, actor/amazy_dayzee]
-    - [auto, c, actor/ruff_puff]
-    - [auto, c, actor/medi_guy]
     - [auto, c, actor/red_magikoopa]
     - [auto, c, actor/green_magikoopa]
     - [auto, c, actor/white_magikoopa]
@@ -6644,14 +6583,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/dark_koopa]
-    - [auto, c, actor/dark_paratroopa]
-    - [auto, c, actor/gloomba]
-    - [auto, c, actor/spiked_gloomba]
-    - [auto, c, actor/paragloomba]
-    - [auto, c, actor/buzzy_beetle]
-    - [auto, c, actor/spike_top]
-    - [auto, c, actor/spiny]
     - [auto, c, stage/tik_01]
     - [auto, c, stage/tik_02]
     - [auto, c, stage/tik_03]
@@ -6680,8 +6611,6 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/swooper]
-    - [auto, c, actor/swoopula]
     - [auto, c, stage/tik_01]
     - [auto, c, stage/tik_02]
     - [auto, c, stage/tik_03]
@@ -6695,11 +6624,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/duplighost]
-    - [auto, c, actor/gulpit]
-    - [auto, c, actor/gulpit_rocks]
-    - [auto, c, actor/white_clubba]
-    - [auto, c, actor/frost_piranha]
-    - [auto, c, actor/gray_magikoopa]
     - [auto, c, stage/sam_01]
     - [auto, c, stage/sam_02]
     - [auto, c, stage/sam_02b]
@@ -6714,8 +6638,6 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/monstar]
-    - [auto, c, actor/paragoomba]
-    - [auto, c, actor/gray_magikoopa]
     - [auto, c, stage/sam_01]
     - [auto, c, stage/sam_02]
     - [auto, c, stage/sam_02b]
@@ -6744,13 +6666,9 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/swoopula]
-    - [auto, c, actor/albino_dino]
-    - [auto, c, actor/white_clubba]
     - [auto, c, actor/red_magikoopa]
     - [auto, c, actor/green_magikoopa]
     - [auto, c, actor/yellow_magikoopa]
-    - [auto, c, actor/gray_magikoopa]
     - [auto, c, actor/white_magikoopa]
     - [auto, c, stage/pra_01]
     - [auto, c, stage/pra_02]
@@ -6776,10 +6694,7 @@ segments:
     subalign: 8
     subsegments:
     - [auto, c, actor/duplighost]
-    - [auto, c, actor/swoopula]
-    - [auto, c, actor/white_clubba]
     - [auto, c, actor/red_magikoopa]
-    - [auto, c, actor/gray_magikoopa]
     - [auto, c, stage/pra_01]
     - [auto, c, stage/pra_02]
     - [auto, c, stage/pra_03]
@@ -6793,12 +6708,7 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/bony_beetle]
-    - [auto, c, actor/dry_bones]
-    - [auto, c, actor/hammer_bro]
-    - [auto, c, actor/koopatrol]
     - [auto, c, actor/magikoopa]
-    - [auto, c, actor/ember]
     - [auto, c, stage/kpa_01]
     - [auto, c, stage/kpa_01b]
     - [auto, c, stage/kpa_02]
@@ -6847,7 +6757,6 @@ segments:
     subsegments:
     - [auto, c, actor/bombshell_blaster]
     - [auto, c, actor/bombshell_bill]
-    - [auto, c, actor/koopatrol]
     - [auto, c, actor/magikoopa]
     - [auto, c, stage/kpa_01]
     - [auto, c, stage/kpa_01b]
@@ -6879,14 +6788,7 @@ segments:
     vram_class: battle_area
     subalign: 8
     subsegments:
-    - [auto, c, actor/koopa_troopa]
-    - [auto, c, actor/fuzzy]
-    - [auto, c, actor/pokey]
-    - [auto, c, actor/bandit]
-    - [auto, c, actor/red_shy_guy]
     - [auto, c, actor/tubba_blubba]
-    - [auto, c, actor/monty_mole]
-    - [auto, c, actor/whacka]
     - [auto, c, stage/dig_01]
     - [auto, c, stage/dig_02]
     - [auto, c, stage/dig_03]
@@ -8103,7 +8005,7 @@ segments:
 ### maps ###
 ############
   - name: machi
-    dir: world/area_mac/machi
+    dir: world/area/mac/machi
     type: code
     start: 0x7E73A0
     vram_class: map
@@ -8117,7 +8019,7 @@ segments:
     - [auto, c, misstar]
     - [auto, c, partner]
   - name: mac_00
-    dir: world/area_mac/mac_00
+    dir: world/area/mac/mac_00
     type: code
     start: 0x7EAD10
     vram_class: map
@@ -8138,7 +8040,7 @@ segments:
     - [auto, c, epilogue_npc]
     - [auto, c, epilogue]
   - name: mac_01
-    dir: world/area_mac/mac_01
+    dir: world/area/mac/mac_01
     type: code
     start: 0x800880
     vram_class: map
@@ -8162,13 +8064,13 @@ segments:
       name: npc
       subsegments:
       - [0x970C40]
-      - [0x80BE10, vtx_common, ../../toad_house/blanket]
-      - [0x80D3F0, gfx_common, ../../toad_house/blanket]
-      - [0x80D558, rgba16, ../../toad_house/blanket, 16, 32, namespaced]
+      - [0x80BE10, vtx_common, ../../../toad_house/blanket]
+      - [0x80D3F0, gfx_common, ../../../toad_house/blanket]
+      - [0x80D558, rgba16, ../../../toad_house/blanket, 16, 32, namespaced]
       - [0x80D958]
     - [0x81F9C0]
   - name: mac_02
-    dir: world/area_mac/mac_02
+    dir: world/area/mac/mac_02
     type: code
     start: 0x8232C0
     vram_class: map
@@ -8182,7 +8084,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, music_mix]
   - name: mac_03
-    dir: world/area_mac/mac_03
+    dir: world/area/mac/mac_03
     type: code
     start: 0x831800
     vram_class: map
@@ -8197,7 +8099,7 @@ segments:
     - [auto, c, oinks]
     - [auto, c, demo]
   - name: mac_04
-    dir: world/area_mac/mac_04
+    dir: world/area/mac/mac_04
     type: code
     start: 0x842BD0
     vram_class: map
@@ -8213,7 +8115,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, music_mix]
   - name: mac_05
-    dir: world/area_mac/mac_05
+    dir: world/area/mac/mac_05
     type: code
     start: 0x852170
     vram_class: map
@@ -8227,7 +8129,7 @@ segments:
     - [auto, c, rooms]
     - [auto, c, club64_sign]
   - name: mac_06
-    dir: world/area_mac/mac_06
+    dir: world/area/mac/mac_06
     type: code
     start: 0x864B40
     vram_class: map
@@ -8237,7 +8139,7 @@ segments:
     - [auto, c, whale]
     - [auto, c, npc]
   - name: tik_01
-    dir: world/area_tik/tik_01
+    dir: world/area/tik/tik_01
     type: code
     start: 0x8694B0
     vram_class: map
@@ -8249,7 +8151,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_02
-    dir: world/area_tik/tik_02
+    dir: world/area/tik/tik_02
     type: code
     start: 0x86C740
     vram_class: map
@@ -8261,7 +8163,7 @@ segments:
     - [auto, c, drips]
     - [auto, c, npc]
   - name: tik_03
-    dir: world/area_tik/tik_03
+    dir: world/area/tik/tik_03
     type: code
     start: 0x86EB00
     vram_class: map
@@ -8274,7 +8176,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, demo]
   - name: tik_04
-    dir: world/area_tik/tik_04
+    dir: world/area/tik/tik_04
     type: code
     start: 0x871A30
     vram_class: map
@@ -8286,7 +8188,7 @@ segments:
     - [auto, c, platforms]
     - [auto, c, npc]
   - name: tik_05
-    dir: world/area_tik/tik_05
+    dir: world/area/tik/tik_05
     type: code
     start: 0x874DC0
     vram_class: map
@@ -8298,7 +8200,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_06
-    dir: world/area_tik/tik_06
+    dir: world/area/tik/tik_06
     type: code
     start: 0x876EE0
     vram_class: map
@@ -8309,7 +8211,7 @@ segments:
     - [auto, c, drips]
     - [auto, c, entity]
   - name: tik_07
-    dir: world/area_tik/tik_07
+    dir: world/area/tik/tik_07
     type: code
     start: 0x879BE0
     vram_class: map
@@ -8322,7 +8224,7 @@ segments:
     - [auto, c, platforms]
     - [auto, c, npc]
   - name: tik_08
-    dir: world/area_tik/tik_08
+    dir: world/area/tik/tik_08
     type: code
     start: 0x87EDF0
     vram_class: map
@@ -8334,7 +8236,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_09
-    dir: world/area_tik/tik_09
+    dir: world/area/tik/tik_09
     type: code
     start: 0x8821C0
     vram_class: map
@@ -8346,7 +8248,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_10
-    dir: world/area_tik/tik_10
+    dir: world/area/tik/tik_10
     type: code
     start: 0x8863C0
     vram_class: map
@@ -8357,7 +8259,7 @@ segments:
     - [auto, c, drips]
     - [auto, c, entity]
   - name: tik_12
-    dir: world/area_tik/tik_12
+    dir: world/area/tik/tik_12
     type: code
     start: 0x888BD0
     vram_class: map
@@ -8369,7 +8271,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_14
-    dir: world/area_tik/tik_14
+    dir: world/area/tik/tik_14
     type: code
     start: 0x88D600
     vram_class: map
@@ -8380,7 +8282,7 @@ segments:
     - [auto, c, drips]
     - [auto, c, entity]
   - name: tik_15
-    dir: world/area_tik/tik_15
+    dir: world/area/tik/tik_15
     type: code
     start: 0x88FBA0
     vram_class: map
@@ -8392,7 +8294,7 @@ segments:
     - [auto, c, drips]
     - [auto, c, npc]
   - name: tik_17
-    dir: world/area_tik/tik_17
+    dir: world/area/tik/tik_17
     type: code
     start: 0x892A20
     vram_class: map
@@ -8402,7 +8304,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: tik_18
-    dir: world/area_tik/tik_18
+    dir: world/area/tik/tik_18
     type: code
     start: 0x8956E0
     vram_class: map
@@ -8414,7 +8316,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: tik_19
-    dir: world/area_tik/tik_19
+    dir: world/area/tik/tik_19
     type: code
     start: 0x8975E0
     vram_class: map
@@ -8424,7 +8326,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: tik_20
-    dir: world/area_tik/tik_20
+    dir: world/area/tik/tik_20
     type: code
     start: 0x89A350
     vram_class: map
@@ -8435,7 +8337,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: tik_21
-    dir: world/area_tik/tik_21
+    dir: world/area/tik/tik_21
     type: code
     start: 0x89D7A0
     vram_class: map
@@ -8445,7 +8347,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: tik_22
-    dir: world/area_tik/tik_22
+    dir: world/area/tik/tik_22
     type: code
     start: 0x89FEC0
     vram_class: map
@@ -8454,7 +8356,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: tik_23
-    dir: world/area_tik/tik_23
+    dir: world/area/tik/tik_23
     type: code
     start: 0x8A23D0
     vram_class: map
@@ -8465,7 +8367,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_24
-    dir: world/area_tik/tik_24
+    dir: world/area/tik/tik_24
     type: code
     start: 0x8A5A80
     vram_class: map
@@ -8477,7 +8379,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: tik_25
-    dir: world/area_tik/tik_25
+    dir: world/area/tik/tik_25
     type: code
     start: 0x8A7F80
     vram_class: map
@@ -8487,7 +8389,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kgr_01
-    dir: world/area_kgr/kgr_01
+    dir: world/area/kgr/kgr_01
     type: code
     start: 0x8A9A10
     vram_class: map
@@ -8496,7 +8398,7 @@ segments:
     - [auto, c, wiggle]
     - [auto, c, extra]
   - name: kgr_02
-    dir: world/area_kgr/kgr_02
+    dir: world/area/kgr/kgr_02
     type: code
     start: 0x8AA450
     vram_class: map
@@ -8506,7 +8408,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, extra]
   - name: kmr_00
-    dir: world/area_kmr/kmr_00
+    dir: world/area/kmr/kmr_00
     type: code
     start: 0x8ABF90
     vram_class: map
@@ -8518,7 +8420,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kmr_02
-    dir: world/area_kmr/kmr_02
+    dir: world/area/kmr/kmr_02
     type: code
     start: 0x8B0070
     vram_class: map
@@ -8541,7 +8443,7 @@ segments:
       - [0x8C7D70, palette, heart_block]
       - [0x8C7D90]
   - name: kmr_03
-    dir: world/area_kmr/kmr_03
+    dir: world/area/kmr/kmr_03
     type: code
     start: 0x8C7F90
     vram_class: map
@@ -8554,7 +8456,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, fall_down]
   - name: kmr_04
-    dir: world/area_kmr/kmr_04
+    dir: world/area/kmr/kmr_04
     type: code
     start: 0x8CA900
     subalign: 8
@@ -8574,7 +8476,7 @@ segments:
       - [0x8CC970, palette, hammer_block_message]
       - [0x8CC990]
   - name: kmr_05
-    dir: world/area_kmr/kmr_05
+    dir: world/area/kmr/kmr_05
     type: code
     start: 0x8CE070
     vram_class: map
@@ -8586,7 +8488,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: kmr_06
-    dir: world/area_kmr/kmr_06
+    dir: world/area/kmr/kmr_06
     type: code
     start: 0x8D1510
     vram_class: map
@@ -8598,7 +8500,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, sticker_sign]
   - name: kmr_07
-    dir: world/area_kmr/kmr_07
+    dir: world/area/kmr/kmr_07
     type: code
     start: 0x8D3DC0
     vram_class: map
@@ -8609,7 +8511,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kmr_09
-    dir: world/area_kmr/kmr_09
+    dir: world/area/kmr/kmr_09
     type: code
     start: 0x8D5E00
     vram_class: map
@@ -8620,7 +8522,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kmr_10
-    dir: world/area_kmr/kmr_10
+    dir: world/area/kmr/kmr_10
     type: code
     start: 0x8D84D0
     vram_class: map
@@ -8632,7 +8534,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: kmr_11
-    dir: world/area_kmr/kmr_11
+    dir: world/area/kmr/kmr_11
     type: code
     start: 0x8DA100
     vram_class: map
@@ -8650,7 +8552,7 @@ segments:
     - [auto, c, bridge_skeleton]
     - [auto, c, bridge_animation]
   - name: kmr_12
-    dir: world/area_kmr/kmr_12
+    dir: world/area/kmr/kmr_12
     type: code
     start: 0x8EB360
     vram_class: map
@@ -8661,7 +8563,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kmr_20
-    dir: world/area_kmr/kmr_20
+    dir: world/area/kmr/kmr_20
     type: code
     start: 0x8EBE20
     vram_class: map
@@ -8687,7 +8589,7 @@ segments:
       - [0x8FEB70, gfx, records_screen]
       - [0x8FEBE0]
   - name: kmr_21
-    dir: world/area_kmr/kmr_21
+    dir: world/area/kmr/kmr_21
     type: code
     start: 0x8FEE80
     vram_class: map
@@ -8695,7 +8597,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: kmr_22
-    dir: world/area_kmr/kmr_22
+    dir: world/area/kmr/kmr_22
     type: code
     start: 0x8FF670
     vram_class: map
@@ -8713,7 +8615,7 @@ segments:
       - [0x901570, gfx, lava_piranha_vine]
       - [0x901650]
   - name: kmr_23
-    dir: world/area_kmr/kmr_23
+    dir: world/area/kmr/kmr_23
     type: code
     start: 0x907A30
     vram_class: map
@@ -8732,7 +8634,7 @@ segments:
       - [0x9091B8, ia8, window_lr, 8, 8]
       - [0x9091F8]
   - name: kmr_24
-    dir: world/area_kmr/kmr_24
+    dir: world/area/kmr/kmr_24
     type: code
     start: 0x90B240
     vram_class: map
@@ -8740,7 +8642,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: kmr_30
-    dir: world/area_kmr/kmr_30
+    dir: world/area/kmr/kmr_30
     type: code
     start: 0x90B6D0
     vram_class: map
@@ -8750,7 +8652,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, the_end]
   - name: iwa_00
-    dir: world/area_iwa/iwa_00
+    dir: world/area/iwa/iwa_00
     type: code
     start: 0x90CC40
     vram_class: map
@@ -8761,7 +8663,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, slide]
   - name: iwa_01
-    dir: world/area_iwa/iwa_01
+    dir: world/area/iwa/iwa_01
     type: code
     start: 0x90F6B0
     vram_class: map
@@ -8781,7 +8683,7 @@ segments:
       - [0x9134B0, gfx, splash]
       - [0x913578]
   - name: iwa_02
-    dir: world/area_iwa/iwa_02
+    dir: world/area/iwa/iwa_02
     type: code
     start: 0x915D70
     vram_class: map
@@ -8791,7 +8693,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: iwa_03
-    dir: world/area_iwa/iwa_03
+    dir: world/area/iwa/iwa_03
     type: code
     start: 0x918BB0
     vram_class: map
@@ -8802,7 +8704,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, slide]
   - name: iwa_04
-    dir: world/area_iwa/iwa_04
+    dir: world/area/iwa/iwa_04
     type: code
     start: 0x91B8E0
     vram_class: map
@@ -8813,7 +8715,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: iwa_10
-    dir: world/area_iwa/iwa_10
+    dir: world/area/iwa/iwa_10
     type: code
     start: 0x91E570
     vram_class: map
@@ -8828,7 +8730,7 @@ segments:
     - [auto, c, new_partner]
     - [auto, c, foliage]
   - name: iwa_11
-    dir: world/area_iwa/iwa_11
+    dir: world/area/iwa/iwa_11
     type: code
     start: 0x9269F0
     vram_class: map
@@ -8840,7 +8742,7 @@ segments:
     - [auto, c, scenery]
     - [auto, c, npc]
   - name: sbk_00
-    dir: world/area_sbk/sbk_00
+    dir: world/area/sbk/sbk_00
     type: code
     start: 0x929270
     vram_class: map
@@ -8850,7 +8752,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sbk_01
-    dir: world/area_sbk/sbk_01
+    dir: world/area/sbk/sbk_01
     type: code
     start: 0x929A90
     vram_class: map
@@ -8858,7 +8760,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_02 #TODO
-    dir: world/area_sbk/sbk_02
+    dir: world/area/sbk/sbk_02
     type: code
     start: 0x92A2B0
     vram_class: map
@@ -8870,7 +8772,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sbk_03
-    dir: world/area_sbk/sbk_03
+    dir: world/area/sbk/sbk_03
     type: code
     start: 0x92F8B0
     vram_class: map
@@ -8878,7 +8780,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_04
-    dir: world/area_sbk/sbk_04
+    dir: world/area/sbk/sbk_04
     type: code
     start: 0x9304D0
     vram_class: map
@@ -8886,7 +8788,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_05
-    dir: world/area_sbk/sbk_05
+    dir: world/area/sbk/sbk_05
     type: code
     start: 0x930CF0
     vram_class: map
@@ -8895,7 +8797,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: sbk_06
-    dir: world/area_sbk/sbk_06
+    dir: world/area/sbk/sbk_06
     type: code
     start: 0x9325C0
     vram_class: map
@@ -8905,7 +8807,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_10
-    dir: world/area_sbk/sbk_10
+    dir: world/area/sbk/sbk_10
     type: code
     start: 0x933C80
     vram_class: map
@@ -8913,7 +8815,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_11
-    dir: world/area_sbk/sbk_11
+    dir: world/area/sbk/sbk_11
     type: code
     start: 0x934040
     vram_class: map
@@ -8921,7 +8823,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_12
-    dir: world/area_sbk/sbk_12
+    dir: world/area/sbk/sbk_12
     type: code
     start: 0x934D40
     vram_class: map
@@ -8929,7 +8831,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_13
-    dir: world/area_sbk/sbk_13
+    dir: world/area/sbk/sbk_13
     type: code
     start: 0x9357E0
     vram_class: map
@@ -8937,7 +8839,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_14
-    dir: world/area_sbk/sbk_14
+    dir: world/area/sbk/sbk_14
     type: code
     start: 0x9366E0
     vram_class: map
@@ -8945,7 +8847,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_15
-    dir: world/area_sbk/sbk_15
+    dir: world/area/sbk/sbk_15
     type: code
     start: 0x936CD0
     vram_class: map
@@ -8953,7 +8855,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_16
-    dir: world/area_sbk/sbk_16
+    dir: world/area/sbk/sbk_16
     type: code
     start: 0x937570
     vram_class: map
@@ -8961,7 +8863,7 @@ segments:
     - [auto, c, main]
     - [auto, c, foliage]
   - name: sbk_20
-    dir: world/area_sbk/sbk_20
+    dir: world/area/sbk/sbk_20
     type: code
     start: 0x938590
     vram_class: map
@@ -8970,14 +8872,14 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: sbk_21
-    dir: world/area_sbk/sbk_21
+    dir: world/area/sbk/sbk_21
     type: code
     start: 0x939560
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: sbk_22
-    dir: world/area_sbk/sbk_22
+    dir: world/area/sbk/sbk_22
     type: code
     start: 0x939930
     vram_class: map
@@ -8986,7 +8888,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sbk_23
-    dir: world/area_sbk/sbk_23
+    dir: world/area/sbk/sbk_23
     type: code
     start: 0x93A760
     vram_class: map
@@ -8994,7 +8896,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_24
-    dir: world/area_sbk/sbk_24
+    dir: world/area/sbk/sbk_24
     type: code
     start: 0x93AC30
     vram_class: map
@@ -9004,7 +8906,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: sbk_25
-    dir: world/area_sbk/sbk_25
+    dir: world/area/sbk/sbk_25
     type: code
     start: 0x93C280
     vram_class: map
@@ -9014,7 +8916,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_26
-    dir: world/area_sbk/sbk_26
+    dir: world/area/sbk/sbk_26
     type: code
     start: 0x93DCD0
     vram_class: map
@@ -9023,7 +8925,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: sbk_30
-    dir: world/area_sbk/sbk_30
+    dir: world/area/sbk/sbk_30
     type: code
     start: 0x93F5B0
     vram_class: map
@@ -9034,7 +8936,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: sbk_31
-    dir: world/area_sbk/sbk_31
+    dir: world/area/sbk/sbk_31
     type: code
     start: 0x944000
     vram_class: map
@@ -9042,7 +8944,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_32
-    dir: world/area_sbk/sbk_32
+    dir: world/area/sbk/sbk_32
     type: code
     start: 0x944A60
     vram_class: map
@@ -9050,7 +8952,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_33
-    dir: world/area_sbk/sbk_33
+    dir: world/area/sbk/sbk_33
     type: code
     start: 0x9459D0
     vram_class: map
@@ -9059,7 +8961,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: sbk_34
-    dir: world/area_sbk/sbk_34
+    dir: world/area/sbk/sbk_34
     type: code
     start: 0x945ED0
     vram_class: map
@@ -9068,7 +8970,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: sbk_35
-    dir: world/area_sbk/sbk_35
+    dir: world/area/sbk/sbk_35
     type: code
     start: 0x9486B0
     vram_class: map
@@ -9077,7 +8979,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: sbk_36
-    dir: world/area_sbk/sbk_36
+    dir: world/area/sbk/sbk_36
     type: code
     start: 0x949E60
     vram_class: map
@@ -9086,7 +8988,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_40
-    dir: world/area_sbk/sbk_40
+    dir: world/area/sbk/sbk_40
     type: code
     start: 0x94B3A0
     vram_class: map
@@ -9095,7 +8997,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sbk_41
-    dir: world/area_sbk/sbk_41
+    dir: world/area/sbk/sbk_41
     type: code
     start: 0x94C040
     vram_class: map
@@ -9103,7 +9005,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_42
-    dir: world/area_sbk/sbk_42
+    dir: world/area/sbk/sbk_42
     type: code
     start: 0x94C510
     vram_class: map
@@ -9111,7 +9013,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_43
-    dir: world/area_sbk/sbk_43
+    dir: world/area/sbk/sbk_43
     type: code
     start: 0x94D170
     vram_class: map
@@ -9119,7 +9021,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_44
-    dir: world/area_sbk/sbk_44
+    dir: world/area/sbk/sbk_44
     type: code
     start: 0x94D5A0
     vram_class: map
@@ -9127,7 +9029,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_45
-    dir: world/area_sbk/sbk_45
+    dir: world/area/sbk/sbk_45
     type: code
     start: 0x94E4A0
     vram_class: map
@@ -9135,7 +9037,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_46
-    dir: world/area_sbk/sbk_46
+    dir: world/area/sbk/sbk_46
     type: code
     start: 0x94E9A0
     vram_class: map
@@ -9145,14 +9047,14 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_50
-    dir: world/area_sbk/sbk_50
+    dir: world/area/sbk/sbk_50
     type: code
     start: 0x950610
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: sbk_51
-    dir: world/area_sbk/sbk_51
+    dir: world/area/sbk/sbk_51
     type: code
     start: 0x950970
     vram_class: map
@@ -9160,7 +9062,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_52
-    dir: world/area_sbk/sbk_52
+    dir: world/area/sbk/sbk_52
     type: code
     start: 0x951670
     vram_class: map
@@ -9168,7 +9070,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_53
-    dir: world/area_sbk/sbk_53
+    dir: world/area/sbk/sbk_53
     type: code
     start: 0x951AE0
     vram_class: map
@@ -9176,7 +9078,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_54
-    dir: world/area_sbk/sbk_54
+    dir: world/area/sbk/sbk_54
     type: code
     start: 0x952580
     vram_class: map
@@ -9184,7 +9086,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_55
-    dir: world/area_sbk/sbk_55
+    dir: world/area/sbk/sbk_55
     type: code
     start: 0x952A50
     vram_class: map
@@ -9194,7 +9096,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_56
-    dir: world/area_sbk/sbk_56
+    dir: world/area/sbk/sbk_56
     type: code
     start: 0x953FC0
     vram_class: map
@@ -9203,7 +9105,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: sbk_60
-    dir: world/area_sbk/sbk_60
+    dir: world/area/sbk/sbk_60
     type: code
     start: 0x9569F0
     vram_class: map
@@ -9211,7 +9113,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_61
-    dir: world/area_sbk/sbk_61
+    dir: world/area/sbk/sbk_61
     type: code
     start: 0x956F90
     vram_class: map
@@ -9219,7 +9121,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_62
-    dir: world/area_sbk/sbk_62
+    dir: world/area/sbk/sbk_62
     type: code
     start: 0x957350
     vram_class: map
@@ -9227,7 +9129,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_63
-    dir: world/area_sbk/sbk_63
+    dir: world/area/sbk/sbk_63
     type: code
     start: 0x957D70
     vram_class: map
@@ -9235,7 +9137,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: sbk_64
-    dir: world/area_sbk/sbk_64
+    dir: world/area/sbk/sbk_64
     type: code
     start: 0x958590
     vram_class: map
@@ -9243,14 +9145,14 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: sbk_65
-    dir: world/area_sbk/sbk_65
+    dir: world/area/sbk/sbk_65
     type: code
     start: 0x958950
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: sbk_66
-    dir: world/area_sbk/sbk_66
+    dir: world/area/sbk/sbk_66
     type: code
     start: 0x958CB0
     vram_class: map
@@ -9260,7 +9162,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: sbk_99
-    dir: world/area_sbk/sbk_99
+    dir: world/area/sbk/sbk_99
     type: code
     start: 0x95AEB0
     vram_class: map
@@ -9268,7 +9170,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: dro_01
-    dir: world/area_dro/dro_01
+    dir: world/area/dro/dro_01
     type: code
     start: 0x95B200
     vram_class: map
@@ -9282,7 +9184,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: dro_02
-    dir: world/area_dro/dro_02
+    dir: world/area/dro/dro_02
     type: code
     start: 0x9691C0
     vram_class: map
@@ -9310,7 +9212,7 @@ segments:
       - [0x973AE0]
     - [0x9780D0]
   - name: isk_01
-    dir: world/area_isk/isk_01
+    dir: world/area/isk/isk_01
     type: code
     start: 0x978140
     vram_class: map
@@ -9321,7 +9223,7 @@ segments:
     - [auto, c, haze]
     - [auto, c, entity]
   - name: isk_02
-    dir: world/area_isk/isk_02
+    dir: world/area/isk/isk_02
     type: code
     start: 0x978710
     vram_class: map
@@ -9333,7 +9235,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: isk_03
-    dir: world/area_isk/isk_03
+    dir: world/area/isk/isk_03
     type: code
     start: 0x979E50
     vram_class: map
@@ -9344,7 +9246,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, switch]
   - name: isk_04
-    dir: world/area_isk/isk_04
+    dir: world/area/isk/isk_04
     type: code
     start: 0x97B630
     vram_class: map
@@ -9357,7 +9259,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, demo]
   - name: isk_05
-    dir: world/area_isk/isk_05
+    dir: world/area/isk/isk_05
     type: code
     start: 0x97DAD0
     vram_class: map
@@ -9367,7 +9269,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: isk_06
-    dir: world/area_isk/isk_06
+    dir: world/area/isk/isk_06
     type: code
     start: 0x980A20
     vram_class: map
@@ -9378,7 +9280,7 @@ segments:
     - [auto, c, sand]
     - [auto, c, switch]
   - name: isk_07
-    dir: world/area_isk/isk_07
+    dir: world/area/isk/isk_07
     type: code
     start: 0x982440
     vram_class: map
@@ -9392,7 +9294,7 @@ segments:
     - [auto, c, switch]
     - [auto, c, ambush]
   - name: isk_08
-    dir: world/area_isk/isk_08
+    dir: world/area/isk/isk_08
     type: code
     start: 0x984E30
     vram_class: map
@@ -9402,7 +9304,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: isk_09
-    dir: world/area_isk/isk_09
+    dir: world/area/isk/isk_09
     type: code
     start: 0x9864E0
     vram_class: map
@@ -9414,7 +9316,7 @@ segments:
     - [auto, c, stairs]
     - [auto, c, switch]
   - name: isk_10
-    dir: world/area_isk/isk_10
+    dir: world/area/isk/isk_10
     type: code
     start: 0x988B60
     vram_class: map
@@ -9424,7 +9326,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, bombable]
   - name: isk_11
-    dir: world/area_isk/isk_11
+    dir: world/area/isk/isk_11
     type: code
     start: 0x98AA10
     vram_class: map
@@ -9437,7 +9339,7 @@ segments:
     - [auto, c, puzzle]
     - [auto, c, lock]
   - name: isk_12
-    dir: world/area_isk/isk_12
+    dir: world/area/isk/isk_12
     type: code
     start: 0x98D640
     vram_class: map
@@ -9448,7 +9350,7 @@ segments:
     - [auto, c, sand]
     - [auto, c, switch]
   - name: isk_13
-    dir: world/area_isk/isk_13
+    dir: world/area/isk/isk_13
     type: code
     start: 0x98F7E0
     vram_class: map
@@ -9458,7 +9360,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: isk_14
-    dir: world/area_isk/isk_14
+    dir: world/area/isk/isk_14
     type: code
     start: 0x992730
     vram_class: map
@@ -9468,7 +9370,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: isk_16
-    dir: world/area_isk/isk_16
+    dir: world/area/isk/isk_16
     type: code
     start: 0x9951F0
     vram_class: map
@@ -9479,7 +9381,7 @@ segments:
     - [auto, c, boss]
     - [auto, c, entity]
   - name: isk_18
-    dir: world/area_isk/isk_18
+    dir: world/area/isk/isk_18
     type: code
     start: 0x997F70
     vram_class: map
@@ -9489,7 +9391,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: isk_19
-    dir: world/area_isk/isk_19
+    dir: world/area/isk/isk_19
     type: code
     start: 0x999740
     vram_class: map
@@ -9499,7 +9401,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: trd_00
-    dir: world/area_trd/trd_00
+    dir: world/area/trd/trd_00
     type: code
     start: 0x999C70
     vram_class: map
@@ -9509,7 +9411,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: trd_01
-    dir: world/area_trd/trd_01
+    dir: world/area/trd/trd_01
     type: code
     start: 0x99C990
     vram_class: map
@@ -9519,7 +9421,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: trd_02
-    dir: world/area_trd/trd_02
+    dir: world/area/trd/trd_02
     type: code
     start: 0x9A0FE0
     vram_class: map
@@ -9529,7 +9431,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: trd_03
-    dir: world/area_trd/trd_03
+    dir: world/area/trd/trd_03
     type: code
     start: 0x9A4650
     vram_class: map
@@ -9540,7 +9442,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, puzzle]
   - name: trd_04
-    dir: world/area_trd/trd_04
+    dir: world/area/trd/trd_04
     type: code
     start: 0x9A83F0
     vram_class: map
@@ -9550,7 +9452,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: trd_05
-    dir: world/area_trd/trd_05
+    dir: world/area/trd/trd_05
     type: code
     start: 0x9AE700
     vram_class: map
@@ -9561,7 +9463,7 @@ segments:
     - [auto, c, trap]
     - [auto, c, npc]
   - name: trd_06
-    dir: world/area_trd/trd_06
+    dir: world/area/trd/trd_06
     type: code
     start: 0x9B1790
     vram_class: map
@@ -9573,7 +9475,7 @@ segments:
     - [auto, c, npc_koopa_bros]
     - [auto, c, entity]
   - name: trd_07
-    dir: world/area_trd/trd_07
+    dir: world/area/trd/trd_07
     type: code
     start: 0x9B6980
     vram_class: map
@@ -9583,7 +9485,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, magic_doors]
   - name: trd_08
-    dir: world/area_trd/trd_08
+    dir: world/area/trd/trd_08
     type: code
     start: 0x9BB2A0
     vram_class: map
@@ -9593,7 +9495,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: trd_09
-    dir: world/area_trd/trd_09
+    dir: world/area/trd/trd_09
     type: code
     start: 0x9BD660
     vram_class: map
@@ -9604,7 +9506,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, demo]
   - name: trd_10
-    dir: world/area_trd/trd_10
+    dir: world/area/trd/trd_10
     type: code
     start: 0x9C2910
     vram_class: map
@@ -9614,7 +9516,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, fake_bowser]
   - name: nok_01
-    dir: world/area_nok/nok_01
+    dir: world/area/nok/nok_01
     type: code
     start: 0x9C53E0
     vram_class: map
@@ -9629,7 +9531,7 @@ segments:
     - [auto, c, radio]
     - [auto, c, foliage]
   - name: nok_02
-    dir: world/area_nok/nok_02
+    dir: world/area/nok/nok_02
     type: code
     start: 0x9D7020
     vram_class: map
@@ -9646,7 +9548,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, epilogue]
   - name: nok_03
-    dir: world/area_nok/nok_03
+    dir: world/area/nok/nok_03
     type: code
     start: 0x9EB7F0
     vram_class: map
@@ -9657,7 +9559,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: nok_04
-    dir: world/area_nok/nok_04
+    dir: world/area/nok/nok_04
     type: code
     start: 0x9EDBF0
     vram_class: map
@@ -9669,7 +9571,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, new_partner]
   - name: nok_11
-    dir: world/area_nok/nok_11
+    dir: world/area/nok/nok_11
     type: code
     start: 0x9F4A40
     vram_class: map
@@ -9680,7 +9582,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: nok_12
-    dir: world/area_nok/nok_12
+    dir: world/area/nok/nok_12
     type: code
     start: 0x9FA7F0
     vram_class: map
@@ -9694,7 +9596,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, demo]
   - name: nok_13
-    dir: world/area_nok/nok_13
+    dir: world/area/nok/nok_13
     type: code
     start: 0xA00600
     vram_class: map
@@ -9706,7 +9608,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, musical_hill]
   - name: nok_14
-    dir: world/area_nok/nok_14
+    dir: world/area/nok/nok_14
     type: code
     start: 0xA02840
     vram_class: map
@@ -9718,7 +9620,7 @@ segments:
     - [auto, c, bridge]
     - [auto, c, npc]
   - name: nok_15
-    dir: world/area_nok/nok_15
+    dir: world/area/nok/nok_15
     type: code
     start: 0xA06F00
     vram_class: map
@@ -9730,7 +9632,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: hos_00
-    dir: world/area_hos/hos_00
+    dir: world/area/hos/hos_00
     type: code
     start: 0xA0BCF0
     vram_class: map
@@ -9744,7 +9646,7 @@ segments:
     - [auto, c, scenes]
     - [auto, c, shade_gfx]
   - name: hos_01
-    dir: world/area_hos/hos_01
+    dir: world/area/hos/hos_01
     type: code
     start: 0xA10880
     vram_class: map
@@ -9757,7 +9659,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, star_way]
   - name: hos_02
-    dir: world/area_hos/hos_02
+    dir: world/area/hos/hos_02
     type: code
     start: 0xA16220
     vram_class: map
@@ -9770,7 +9672,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, descent]
   - name: hos_03
-    dir: world/area_hos/hos_03
+    dir: world/area/hos/hos_03
     type: code
     start: 0xA1B100
     vram_class: map
@@ -9785,7 +9687,7 @@ segments:
     - [auto, c, shop]
     - [auto, c, entity]
   - name: hos_04
-    dir: world/area_hos/hos_04
+    dir: world/area/hos/hos_04
     type: code
     start: 0xA26ED0
     vram_class: map
@@ -9799,7 +9701,7 @@ segments:
     - [auto, c, starship]
     - [auto, c, narrator]
   - name: hos_05
-    dir: world/area_hos/hos_05
+    dir: world/area/hos/hos_05
     type: code
     start: 0xA2A240
     vram_class: map
@@ -9814,7 +9716,7 @@ segments:
     - [auto, c, model_fx]
     - [auto, c, star_ship]
   - name: hos_06
-    dir: world/area_hos/hos_06
+    dir: world/area/hos/hos_06
     type: code
     start: 0xA394E0
     vram_class: map
@@ -9827,7 +9729,7 @@ segments:
     - [auto, c, merluvlee]
     - [auto, c, chest]
   - name: hos_10
-    dir: world/area_hos/hos_10
+    dir: world/area/hos/hos_10
     type: code
     start: 0xA3F740
     vram_class: map
@@ -9841,7 +9743,7 @@ segments:
     - [auto, c, pre_title]
     - [auto, c, ending]
   - name: hos_20
-    dir: world/area_hos/hos_20
+    dir: world/area/hos/hos_20
     type: code
     start: 0xA45930
     vram_class: map
@@ -9850,7 +9752,7 @@ segments:
     - [auto, c, main]
     - [auto, c, starship]
   - name: kpa_01
-    dir: world/area_kpa/kpa_01
+    dir: world/area/kpa/kpa_01
     type: code
     start: 0xA46F60
     vram_class: map
@@ -9861,7 +9763,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_03
-    dir: world/area_kpa/kpa_03
+    dir: world/area/kpa/kpa_03
     type: code
     start: 0xA485C0
     vram_class: map
@@ -9872,7 +9774,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_04
-    dir: world/area_kpa/kpa_04
+    dir: world/area/kpa/kpa_04
     type: code
     start: 0xA4BF60
     vram_class: map
@@ -9882,7 +9784,7 @@ segments:
     - [auto, c, main]
     - [auto, c, statues]
   - name: kpa_08
-    dir: world/area_kpa/kpa_08
+    dir: world/area/kpa/kpa_08
     type: code
     start: 0xA4CA20
     vram_class: map
@@ -9893,7 +9795,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kpa_09
-    dir: world/area_kpa/kpa_09
+    dir: world/area/kpa/kpa_09
     type: code
     start: 0xA4F000
     vram_class: map
@@ -9904,7 +9806,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kpa_10
-    dir: world/area_kpa/kpa_10
+    dir: world/area/kpa/kpa_10
     type: code
     start: 0xA51980
     vram_class: map
@@ -9915,7 +9817,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_11
-    dir: world/area_kpa/kpa_11
+    dir: world/area/kpa/kpa_11
     type: code
     start: 0xA528C0
     vram_class: map
@@ -9926,7 +9828,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kpa_12
-    dir: world/area_kpa/kpa_12
+    dir: world/area/kpa/kpa_12
     type: code
     start: 0xA54950
     vram_class: map
@@ -9936,7 +9838,7 @@ segments:
     - [auto, c, main]
     - [auto, c, platforms]
   - name: kpa_13
-    dir: world/area_kpa/kpa_13
+    dir: world/area/kpa/kpa_13
     type: code
     start: 0xA55F20
     vram_class: map
@@ -9947,7 +9849,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, platforms]
   - name: kpa_14
-    dir: world/area_kpa/kpa_14
+    dir: world/area/kpa/kpa_14
     type: code
     start: 0xA574B0
     vram_class: map
@@ -9958,7 +9860,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, platforms]
   - name: kpa_15
-    dir: world/area_kpa/kpa_15
+    dir: world/area/kpa/kpa_15
     type: code
     start: 0xA59390
     vram_class: map
@@ -9968,7 +9870,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kpa_16
-    dir: world/area_kpa/kpa_16
+    dir: world/area/kpa/kpa_16
     type: code
     start: 0xA5A030
     vram_class: map
@@ -9979,7 +9881,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kpa_17
-    dir: world/area_kpa/kpa_17
+    dir: world/area/kpa/kpa_17
     type: code
     start: 0xA5CA20
     vram_class: map
@@ -9990,7 +9892,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_32
-    dir: world/area_kpa/kpa_32
+    dir: world/area/kpa/kpa_32
     type: code
     start: 0xA5E0C0
     vram_class: map
@@ -10000,7 +9902,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: kpa_33
-    dir: world/area_kpa/kpa_33
+    dir: world/area/kpa/kpa_33
     type: code
     start: 0xA5F080
     vram_class: map
@@ -10010,7 +9912,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: kpa_40
-    dir: world/area_kpa/kpa_40
+    dir: world/area/kpa/kpa_40
     type: code
     start: 0xA60040
     vram_class: map
@@ -10019,7 +9921,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_41
-    dir: world/area_kpa/kpa_41
+    dir: world/area/kpa/kpa_41
     type: code
     start: 0xA60470
     vram_class: map
@@ -10028,7 +9930,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_50
-    dir: world/area_kpa/kpa_50
+    dir: world/area/kpa/kpa_50
     type: code
     start: 0xA609D0
     vram_class: map
@@ -10038,7 +9940,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_51
-    dir: world/area_kpa/kpa_51
+    dir: world/area/kpa/kpa_51
     type: code
     start: 0xA64090
     vram_class: map
@@ -10048,7 +9950,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_52
-    dir: world/area_kpa/kpa_52
+    dir: world/area/kpa/kpa_52
     type: code
     start: 0xA67100
     vram_class: map
@@ -10059,7 +9961,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_53
-    dir: world/area_kpa/kpa_53
+    dir: world/area/kpa/kpa_53
     type: code
     start: 0xA6ACA0
     vram_class: map
@@ -10070,7 +9972,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_60
-    dir: world/area_kpa/kpa_60
+    dir: world/area/kpa/kpa_60
     type: code
     start: 0xA6CB00
     vram_class: map
@@ -10081,7 +9983,7 @@ segments:
     - [auto, c, main]
     - [auto, c, scenes]
   - name: kpa_61
-    dir: world/area_kpa/kpa_61
+    dir: world/area/kpa/kpa_61
     type: code
     start: 0xA6E3E0
     vram_class: map
@@ -10092,7 +9994,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_62
-    dir: world/area_kpa/kpa_62
+    dir: world/area/kpa/kpa_62
     type: code
     start: 0xA72220
     vram_class: map
@@ -10102,7 +10004,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: kpa_63
-    dir: world/area_kpa/kpa_63
+    dir: world/area/kpa/kpa_63
     type: code
     start: 0xA735B0
     vram_class: map
@@ -10113,7 +10015,7 @@ segments:
     - [auto, c, main]
     - [auto, c, scenes]
   - name: kpa_70
-    dir: world/area_kpa/kpa_70
+    dir: world/area/kpa/kpa_70
     type: code
     start: 0xA74870
     vram_class: map
@@ -10125,7 +10027,7 @@ segments:
     - [auto, c, chain_skele]
     - [auto, c, chain_anim]
   - name: kpa_81
-    dir: world/area_kpa/kpa_81
+    dir: world/area/kpa/kpa_81
     type: code
     start: 0xA784C0
     vram_class: map
@@ -10135,7 +10037,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_82
-    dir: world/area_kpa/kpa_82
+    dir: world/area/kpa/kpa_82
     type: code
     start: 0xA7A500
     vram_class: map
@@ -10145,7 +10047,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_83
-    dir: world/area_kpa/kpa_83
+    dir: world/area/kpa/kpa_83
     type: code
     start: 0xA83490
     vram_class: map
@@ -10155,7 +10057,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_90
-    dir: world/area_kpa/kpa_90
+    dir: world/area/kpa/kpa_90
     type: code
     start: 0xA867B0
     vram_class: map
@@ -10164,7 +10066,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_91
-    dir: world/area_kpa/kpa_91
+    dir: world/area/kpa/kpa_91
     type: code
     start: 0xA86A50
     vram_class: map
@@ -10175,7 +10077,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_94
-    dir: world/area_kpa/kpa_94
+    dir: world/area/kpa/kpa_94
     type: code
     start: 0xA8C7C0
     vram_class: map
@@ -10184,7 +10086,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_95
-    dir: world/area_kpa/kpa_95
+    dir: world/area/kpa/kpa_95
     type: code
     start: 0xA8CA80
     vram_class: map
@@ -10195,7 +10097,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_96
-    dir: world/area_kpa/kpa_96
+    dir: world/area/kpa/kpa_96
     type: code
     start: 0xA927C0
     vram_class: map
@@ -10205,7 +10107,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_100
-    dir: world/area_kpa/kpa_100
+    dir: world/area/kpa/kpa_100
     type: code
     start: 0xA93160
     vram_class: map
@@ -10215,7 +10117,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kpa_101
-    dir: world/area_kpa/kpa_101
+    dir: world/area/kpa/kpa_101
     type: code
     start: 0xA93440
     vram_class: map
@@ -10225,7 +10127,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kpa_102
-    dir: world/area_kpa/kpa_102
+    dir: world/area/kpa/kpa_102
     type: code
     start: 0xA93740
     vram_class: map
@@ -10235,7 +10137,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_111
-    dir: world/area_kpa/kpa_111
+    dir: world/area/kpa/kpa_111
     type: code
     start: 0xA99590
     vram_class: map
@@ -10247,7 +10149,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kpa_112
-    dir: world/area_kpa/kpa_112
+    dir: world/area/kpa/kpa_112
     type: code
     start: 0xA9C990
     vram_class: map
@@ -10256,7 +10158,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_113
-    dir: world/area_kpa/kpa_113
+    dir: world/area/kpa/kpa_113
     type: code
     start: 0xA9CC30
     vram_class: map
@@ -10268,7 +10170,7 @@ segments:
     - [auto, c, statues]
     - [auto, c, npc]
   - name: kpa_114
-    dir: world/area_kpa/kpa_114
+    dir: world/area/kpa/kpa_114
     type: code
     start: 0xA9E980
     vram_class: map
@@ -10278,7 +10180,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kpa_115
-    dir: world/area_kpa/kpa_115
+    dir: world/area/kpa/kpa_115
     type: code
     start: 0xA9ED40
     vram_class: map
@@ -10289,7 +10191,7 @@ segments:
     - [auto, c, statues]
     - [auto, c, npc]
   - name: kpa_116
-    dir: world/area_kpa/kpa_116
+    dir: world/area/kpa/kpa_116
     type: code
     start: 0xAA1EE0
     vram_class: map
@@ -10298,7 +10200,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_117
-    dir: world/area_kpa/kpa_117
+    dir: world/area/kpa/kpa_117
     type: code
     start: 0xAA2180
     vram_class: map
@@ -10307,7 +10209,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_118
-    dir: world/area_kpa/kpa_118
+    dir: world/area/kpa/kpa_118
     type: code
     start: 0xAA23C0
     vram_class: map
@@ -10316,7 +10218,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_119
-    dir: world/area_kpa/kpa_119
+    dir: world/area/kpa/kpa_119
     type: code
     start: 0xAA2660
     vram_class: map
@@ -10326,7 +10228,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, main]
   - name: kpa_121
-    dir: world/area_kpa/kpa_121
+    dir: world/area/kpa/kpa_121
     type: code
     start: 0xAA28F0
     vram_class: map
@@ -10335,7 +10237,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kpa_130
-    dir: world/area_kpa/kpa_130
+    dir: world/area/kpa/kpa_130
     type: code
     start: 0xAA2D20
     vram_class: map
@@ -10345,7 +10247,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kpa_133
-    dir: world/area_kpa/kpa_133
+    dir: world/area/kpa/kpa_133
     type: code
     start: 0xAA7480
     vram_class: map
@@ -10358,7 +10260,7 @@ segments:
     - [auto, c, water]
     - [auto, c, ease]
   - name: kpa_134
-    dir: world/area_kpa/kpa_134
+    dir: world/area/kpa/kpa_134
     type: code
     start: 0xAA8FA0
     vram_class: map
@@ -10371,7 +10273,7 @@ segments:
     - [auto, c, panels]
     - [auto, c, entity]
   - name: osr_00
-    dir: world/area_osr/osr_00
+    dir: world/area/osr/osr_00
     type: code
     start: 0xAAC830
     subalign: 16
@@ -10384,7 +10286,7 @@ segments:
     - [auto, c, npc_epilogue]
     - [auto, c, scenes]
   - name: osr_01
-    dir: world/area_osr/osr_01
+    dir: world/area/osr/osr_01
     type: code
     start: 0xAAFFF0
     subalign: 16
@@ -10395,7 +10297,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: osr_02
-    dir: world/area_osr/osr_02
+    dir: world/area/osr/osr_02
     type: code
     start: 0xAB2170
     vram_class: map
@@ -10406,7 +10308,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, npc_peach]
   - name: osr_03
-    dir: world/area_osr/osr_03
+    dir: world/area/osr/osr_03
     type: code
     start: 0xAB6290
     vram_class: map
@@ -10419,7 +10321,7 @@ segments:
     - [auto, c, interlude]
     - [auto, c, ending]
   - name: osr_04
-    dir: world/area_osr/osr_04
+    dir: world/area/osr/osr_04
     type: code
     start: 0xAB92B0
     vram_class: map
@@ -10428,7 +10330,7 @@ segments:
     - [auto, c, main]
     - [auto, c, assault]
   - name: kkj_00
-    dir: world/area_kkj/kkj_00
+    dir: world/area/kkj/kkj_00
     type: code
     start: 0xABB290
     vram_class: map
@@ -10441,7 +10343,7 @@ segments:
     - [auto, c, npc_ending]
     - [auto, c, scene_ending]
   - name: kkj_01
-    dir: world/area_kkj/kkj_01
+    dir: world/area/kkj/kkj_01
     type: code
     start: 0xAC5170
     vram_class: map
@@ -10451,7 +10353,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kkj_02
-    dir: world/area_kkj/kkj_02
+    dir: world/area/kkj/kkj_02
     type: code
     start: 0xAC8D20
     vram_class: map
@@ -10461,7 +10363,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kkj_03
-    dir: world/area_kkj/kkj_03
+    dir: world/area/kkj/kkj_03
     type: code
     start: 0xAC9710
     vram_class: map
@@ -10472,7 +10374,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, scenes]
   - name: kkj_10
-    dir: world/area_kkj/kkj_10
+    dir: world/area/kkj/kkj_10
     type: code
     start: 0xACAB20
     vram_class: map
@@ -10483,7 +10385,7 @@ segments:
     - [auto, c, npcs_early]
     - [auto, c, npcs_later]
   - name: kkj_11
-    dir: world/area_kkj/kkj_11
+    dir: world/area/kkj/kkj_11
     type: code
     start: 0xACE140
     vram_class: map
@@ -10496,7 +10398,7 @@ segments:
     - [auto, c, npcs_early]
     - [auto, c, npcs_later]
   - name: kkj_12
-    dir: world/area_kkj/kkj_12
+    dir: world/area/kkj/kkj_12
     type: code
     start: 0xAD4090
     vram_class: map
@@ -10505,7 +10407,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kkj_13
-    dir: world/area_kkj/kkj_13
+    dir: world/area/kkj/kkj_13
     type: code
     start: 0xAD5ED0
     vram_class: map
@@ -10517,7 +10419,7 @@ segments:
     - [auto, c, npcs_intro]
     - [auto, c, intro_scenes]
   - name: kkj_14
-    dir: world/area_kkj/kkj_14
+    dir: world/area/kkj/kkj_14
     type: code
     start: 0xADAEA0
     vram_class: map
@@ -10539,7 +10441,7 @@ segments:
     - [auto, c, chapter6]
     - [auto, c, chapter7]
   - name: kkj_15
-    dir: world/area_kkj/kkj_15
+    dir: world/area/kkj/kkj_15
     type: code
     start: 0xAE5590
     vram_class: map
@@ -10556,7 +10458,7 @@ segments:
     - [auto, c, npc_chapter1]
     - [auto, c, npc_chapter3]
   - name: kkj_16
-    dir: world/area_kkj/kkj_16
+    dir: world/area/kkj/kkj_16
     type: code
     start: 0xAED410
     vram_class: map
@@ -10568,7 +10470,7 @@ segments:
     - [auto, c, stealth]
     - [auto, c, entity]
   - name: kkj_17
-    dir: world/area_kkj/kkj_17
+    dir: world/area/kkj/kkj_17
     type: code
     start: 0xAF1C60
     vram_class: map
@@ -10578,7 +10480,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, chest]
   - name: kkj_18
-    dir: world/area_kkj/kkj_18
+    dir: world/area/kkj/kkj_18
     type: code
     start: 0xAF2CA0
     vram_class: map
@@ -10589,7 +10491,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, gourmet]
   - name: kkj_19
-    dir: world/area_kkj/kkj_19
+    dir: world/area/kkj/kkj_19
     type: code
     start: 0xAF7950
     vram_class: map
@@ -10601,7 +10503,7 @@ segments:
     - [auto, c, npcs_peach]
     - [auto, c, baking]
   - name: kkj_20
-    dir: world/area_kkj/kkj_20
+    dir: world/area/kkj/kkj_20
     type: code
     start: 0xAFDB40
     vram_class: map
@@ -10612,7 +10514,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kkj_21
-    dir: world/area_kkj/kkj_21
+    dir: world/area/kkj/kkj_21
     type: code
     start: 0xB022A0
     vram_class: map
@@ -10620,7 +10522,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: kkj_22
-    dir: world/area_kkj/kkj_22
+    dir: world/area/kkj/kkj_22
     type: code
     start: 0xB024F0
     vram_class: map
@@ -10629,7 +10531,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: kkj_23
-    dir: world/area_kkj/kkj_23
+    dir: world/area/kkj/kkj_23
     type: code
     start: 0xB02880
     vram_class: map
@@ -10641,7 +10543,7 @@ segments:
     - [auto, c, npcs_peach]
     - [auto, c, scene]
   - name: kkj_24
-    dir: world/area_kkj/kkj_24
+    dir: world/area/kkj/kkj_24
     type: code
     start: 0xB06570
     vram_class: map
@@ -10651,7 +10553,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: kkj_25
-    dir: world/area_kkj/kkj_25
+    dir: world/area/kkj/kkj_25
     type: code
     start: 0xB06A00
     vram_class: map
@@ -10667,7 +10569,7 @@ segments:
     - [auto, c, bowser_defeated]
     - [auto, c, entity]
   - name: kkj_26
-    dir: world/area_kkj/kkj_26
+    dir: world/area/kkj/kkj_26
     type: code
     start: 0xB13120
     vram_class: map
@@ -10677,7 +10579,7 @@ segments:
     - [auto, c, scenes]
     - [auto, c, demo]
   - name: kkj_27
-    dir: world/area_kkj/kkj_27
+    dir: world/area/kkj/kkj_27
     type: code
     start: 0xB13D70
     vram_class: map
@@ -10687,7 +10589,7 @@ segments:
     - [auto, c, main]
     - [auto, c, rotating_wall]
   - name: kkj_28
-    dir: world/area_kkj/kkj_28
+    dir: world/area/kkj/kkj_28
     type: code
     start: 0xB14EA0
     vram_class: map
@@ -10695,7 +10597,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: kkj_29
-    dir: world/area_kkj/kkj_29
+    dir: world/area/kkj/kkj_29
     type: code
     start: 0xB150B0
     vram_class: map
@@ -10705,7 +10607,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, quiz]
   - name: tst_01
-    dir: world/area_tst/tst_01
+    dir: world/area/tst/tst_01
     type: code
     start: 0xB1A900
     vram_class: map
@@ -10713,7 +10615,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: tst_02
-    dir: world/area_tst/tst_02
+    dir: world/area/tst/tst_02
     type: code
     start: 0xB1AC30
     vram_class: map
@@ -10721,7 +10623,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: tst_03
-    dir: world/area_tst/tst_03
+    dir: world/area/tst/tst_03
     type: code
     start: 0xB1AF80
     vram_class: map
@@ -10729,7 +10631,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: tst_04
-    dir: world/area_tst/tst_04
+    dir: world/area/tst/tst_04
     type: code
     start: 0xB1B570
     vram_class: map
@@ -10739,14 +10641,14 @@ segments:
     - [auto, c, reflection]
     - [auto, c, npc]
   - name: tst_10
-    dir: world/area_tst/tst_10
+    dir: world/area/tst/tst_10
     type: code
     start: 0xB1C540
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: tst_11
-    dir: world/area_tst/tst_11
+    dir: world/area/tst/tst_11
     type: code
     start: 0xB1CA50
     vram_class: map
@@ -10754,14 +10656,14 @@ segments:
     - [auto, c, main]
     - [auto, c, extra]
   - name: tst_12
-    dir: world/area_tst/tst_12
+    dir: world/area/tst/tst_12
     type: code
     start: 0xB1D2F0
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: tst_13
-    dir: world/area_tst/tst_13
+    dir: world/area/tst/tst_13
     type: code
     start: 0xB1D760
     vram_class: map
@@ -10776,14 +10678,14 @@ segments:
       - [0xB1FFC0, gfx, shockwave]
       - [0xB20350]
   - name: tst_20
-    dir: world/area_tst/tst_20
+    dir: world/area/tst/tst_20
     type: code
     start: 0xB20470
     vram_class: map
     subsegments:
     - [auto, c, main]
   - name: jan_00
-    dir: world/area_jan/jan_00
+    dir: world/area/jan/jan_00
     type: code
     start: 0xB20540
     vram_class: map
@@ -10795,7 +10697,7 @@ segments:
     - [auto, c, whale]
     - [auto, c, foliage]
   - name: jan_01
-    dir: world/area_jan/jan_01
+    dir: world/area/jan/jan_01
     type: code
     start: 0xB28030
     vram_class: map
@@ -10807,7 +10709,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: jan_02
-    dir: world/area_jan/jan_02
+    dir: world/area/jan/jan_02
     type: code
     start: 0xB2C470
     vram_class: map
@@ -10819,7 +10721,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, foliage]
   - name: jan_03
-    dir: world/area_jan/jan_03
+    dir: world/area/jan/jan_03
     type: code
     start: 0xB34BD0
     vram_class: map
@@ -10833,7 +10735,7 @@ segments:
     - [auto, c, rooms]
     - [auto, c, foliage]
   - name: jan_04
-    dir: world/area_jan/jan_04
+    dir: world/area/jan/jan_04
     type: code
     start: 0xB44770
     vram_class: map
@@ -10850,7 +10752,7 @@ segments:
     - [auto, c, bushes]
     - [auto, c, demo]
   - name: jan_05
-    dir: world/area_jan/jan_05
+    dir: world/area/jan/jan_05
     type: code
     start: 0xB4AA70
     vram_class: map
@@ -10864,7 +10766,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, entity]
   - name: jan_06
-    dir: world/area_jan/jan_06
+    dir: world/area/jan/jan_06
     type: code
     start: 0xB52830
     vram_class: map
@@ -10878,7 +10780,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, bushes]
   - name: jan_07
-    dir: world/area_jan/jan_07
+    dir: world/area/jan/jan_07
     type: code
     start: 0xB59870
     vram_class: map
@@ -10890,7 +10792,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, bushes]
   - name: jan_08
-    dir: world/area_jan/jan_08
+    dir: world/area/jan/jan_08
     type: code
     start: 0xB5E2B0
     vram_class: map
@@ -10903,7 +10805,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, trees]
   - name: jan_09
-    dir: world/area_jan/jan_09
+    dir: world/area/jan/jan_09
     type: code
     start: 0xB65AB0
     vram_class: map
@@ -10915,7 +10817,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, entity]
   - name: jan_10
-    dir: world/area_jan/jan_10
+    dir: world/area/jan/jan_10
     type: code
     start: 0xB6C390
     vram_class: map
@@ -10929,7 +10831,7 @@ segments:
     - [auto, c, bushes]
     - [auto, c, entity]
   - name: jan_11
-    dir: world/area_jan/jan_11
+    dir: world/area/jan/jan_11
     type: code
     start: 0xB70860
     vram_class: map
@@ -10939,7 +10841,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: jan_12
-    dir: world/area_jan/jan_12
+    dir: world/area/jan/jan_12
     type: code
     start: 0xB730B0
     vram_class: map
@@ -10951,7 +10853,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: jan_13
-    dir: world/area_jan/jan_13
+    dir: world/area/jan/jan_13
     type: code
     start: 0xB767B0
     vram_class: map
@@ -10962,7 +10864,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, entity]
   - name: jan_14
-    dir: world/area_jan/jan_14
+    dir: world/area/jan/jan_14
     type: code
     start: 0xB7A050
     vram_class: map
@@ -10973,7 +10875,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, npc]
   - name: jan_15
-    dir: world/area_jan/jan_15
+    dir: world/area/jan/jan_15
     type: code
     start: 0xB7D920
     vram_class: map
@@ -10984,7 +10886,7 @@ segments:
     - [auto, c, trees]
     - [auto, c, entity]
   - name: jan_16
-    dir: world/area_jan/jan_16
+    dir: world/area/jan/jan_16
     type: code
     start: 0xB80000
     vram_class: map
@@ -10996,7 +10898,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, bushes]
   - name: jan_17
-    dir: world/area_jan/jan_17
+    dir: world/area/jan/jan_17
     type: code
     start: 0xB837C0
     vram_class: map
@@ -11006,7 +10908,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: jan_18
-    dir: world/area_jan/jan_18
+    dir: world/area/jan/jan_18
     type: code
     start: 0xB83B90
     vram_class: map
@@ -11016,7 +10918,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: jan_19
-    dir: world/area_jan/jan_19
+    dir: world/area/jan/jan_19
     type: code
     start: 0xB83E60
     vram_class: map
@@ -11026,7 +10928,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: jan_22
-    dir: world/area_jan/jan_22
+    dir: world/area/jan/jan_22
     type: code
     start: 0xB84180
     vram_class: map
@@ -11040,7 +10942,7 @@ segments:
     - [auto, c, bushes]
     - [auto, c, trees]
   - name: jan_23
-    dir: world/area_jan/jan_23
+    dir: world/area/jan/jan_23
     type: code
     start: 0xB8FCD0
     vram_class: map
@@ -11050,7 +10952,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: mim_01
-    dir: world/area_mim/mim_01
+    dir: world/area/mim/mim_01
     type: code
     start: 0xB93440
     vram_class: map
@@ -11063,7 +10965,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_02
-    dir: world/area_mim/mim_02
+    dir: world/area/mim/mim_02
     type: code
     start: 0xB97C00
     vram_class: map
@@ -11075,7 +10977,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, hint]
   - name: mim_03
-    dir: world/area_mim/mim_03
+    dir: world/area/mim/mim_03
     type: code
     start: 0xB9B480
     vram_class: map
@@ -11088,7 +10990,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_04
-    dir: world/area_mim/mim_04
+    dir: world/area/mim/mim_04
     type: code
     start: 0xB9D960
     vram_class: map
@@ -11101,7 +11003,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_05
-    dir: world/area_mim/mim_05
+    dir: world/area/mim/mim_05
     type: code
     start: 0xBA0730
     vram_class: map
@@ -11114,7 +11016,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_06
-    dir: world/area_mim/mim_06
+    dir: world/area/mim/mim_06
     type: code
     start: 0xBA4780
     vram_class: map
@@ -11127,7 +11029,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_07
-    dir: world/area_mim/mim_07
+    dir: world/area/mim/mim_07
     type: code
     start: 0xBAA140
     vram_class: map
@@ -11140,7 +11042,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_08
-    dir: world/area_mim/mim_08
+    dir: world/area/mim/mim_08
     type: code
     start: 0xBAD940
     vram_class: map
@@ -11152,7 +11054,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_09
-    dir: world/area_mim/mim_09
+    dir: world/area/mim/mim_09
     type: code
     start: 0xBB2E00
     vram_class: map
@@ -11165,7 +11067,7 @@ segments:
     - [auto, c, gate]
     - [auto, c, npc]
   - name: mim_10
-    dir: world/area_mim/mim_10
+    dir: world/area/mim/mim_10
     type: code
     start: 0xBB59E0
     vram_class: map
@@ -11176,7 +11078,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: mim_11
-    dir: world/area_mim/mim_11
+    dir: world/area/mim/mim_11
     type: code
     start: 0xBB7070
     vram_class: map
@@ -11189,7 +11091,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: mim_12
-    dir: world/area_mim/mim_12
+    dir: world/area/mim/mim_12
     type: code
     start: 0xBBB380
     vram_class: map
@@ -11201,7 +11103,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, gate]
   - name: obk_01
-    dir: world/area_obk/obk_01
+    dir: world/area/obk/obk_01
     type: code
     start: 0xBBD1A0
     vram_class: map
@@ -11215,7 +11117,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: obk_02
-    dir: world/area_obk/obk_02
+    dir: world/area/obk/obk_02
     type: code
     start: 0xBC2A90
     vram_class: map
@@ -11228,7 +11130,7 @@ segments:
     - [auto, c, clock]
     - [auto, c, entity]
   - name: obk_03
-    dir: world/area_obk/obk_03
+    dir: world/area/obk/obk_03
     type: code
     start: 0xBC4280
     vram_class: map
@@ -11242,7 +11144,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, rocking_chair]
   - name: obk_04
-    dir: world/area_obk/obk_04
+    dir: world/area/obk/obk_04
     type: code
     start: 0xBC7E60
     vram_class: map
@@ -11255,7 +11157,7 @@ segments:
     - [auto, c, hole]
     - [auto, c, game]
   - name: obk_05
-    dir: world/area_obk/obk_05
+    dir: world/area/obk/obk_05
     type: code
     start: 0xBCD060
     vram_class: map
@@ -11268,7 +11170,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: obk_06
-    dir: world/area_obk/obk_06
+    dir: world/area/obk/obk_06
     type: code
     start: 0xBCE690
     vram_class: map
@@ -11279,7 +11181,7 @@ segments:
     - [auto, c, bombable]
     - [auto, c, entity]
   - name: obk_07
-    dir: world/area_obk/obk_07
+    dir: world/area/obk/obk_07
     type: code
     start: 0xBCEBF0
     vram_class: map
@@ -11292,7 +11194,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, phonograph]
   - name: obk_08
-    dir: world/area_obk/obk_08
+    dir: world/area/obk/obk_08
     type: code
     start: 0xBD3870
     vram_class: map
@@ -11305,7 +11207,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, game]
   - name: obk_09
-    dir: world/area_obk/obk_09
+    dir: world/area/obk/obk_09
     type: code
     start: 0xBDA7B0
     vram_class: map
@@ -11318,7 +11220,7 @@ segments:
     - [auto, c, new_partner]
     - [auto, c, epilogue]
   - name: arn_02
-    dir: world/area_arn/arn_02
+    dir: world/area/arn/arn_02
     type: code
     start: 0xBDD1B0
     vram_class: map
@@ -11329,7 +11231,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: arn_03
-    dir: world/area_arn/arn_03
+    dir: world/area/arn/arn_03
     type: code
     start: 0xBDED90
     vram_class: map
@@ -11340,7 +11242,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_04
-    dir: world/area_arn/arn_04
+    dir: world/area/arn/arn_04
     type: code
     start: 0xBE37B0
     vram_class: map
@@ -11351,7 +11253,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_05
-    dir: world/area_arn/arn_05
+    dir: world/area/arn/arn_05
     type: code
     start: 0xBE7BE0
     vram_class: map
@@ -11362,7 +11264,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_07
-    dir: world/area_arn/arn_07
+    dir: world/area/arn/arn_07
     type: code
     start: 0xBECDF0
     vram_class: map
@@ -11374,7 +11276,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: arn_08
-    dir: world/area_arn/arn_08
+    dir: world/area/arn/arn_08
     type: code
     start: 0xBF47A0
     vram_class: map
@@ -11388,7 +11290,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_09
-    dir: world/area_arn/arn_09
+    dir: world/area/arn/arn_09
     type: code
     start: 0xBF6060
     vram_class: map
@@ -11400,7 +11302,7 @@ segments:
     - [auto, c, launch]
     - [auto, c, npc]
   - name: arn_10
-    dir: world/area_arn/arn_10
+    dir: world/area/arn/arn_10
     type: code
     start: 0xBF6A00
     vram_class: map
@@ -11411,7 +11313,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_11
-    dir: world/area_arn/arn_11
+    dir: world/area/arn/arn_11
     type: code
     start: 0xBF7680
     vram_class: map
@@ -11421,7 +11323,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: arn_12
-    dir: world/area_arn/arn_12
+    dir: world/area/arn/arn_12
     type: code
     start: 0xBF8790
     vram_class: map
@@ -11432,7 +11334,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: arn_13
-    dir: world/area_arn/arn_13
+    dir: world/area/arn/arn_13
     type: code
     start: 0xBF9410
     vram_class: map
@@ -11443,7 +11345,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: dgb_00
-    dir: world/area_dgb/dgb_00
+    dir: world/area/dgb/dgb_00
     type: code
     start: 0xBFA0A0
     vram_class: map
@@ -11454,7 +11356,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: dgb_01
-    dir: world/area_dgb/dgb_01
+    dir: world/area/dgb/dgb_01
     type: code
     start: 0xBFD880
     vram_class: map
@@ -11526,7 +11428,7 @@ segments:
     - [0xC20C70]
   - name: dgb_01_smash_bridges # DMAd at the beginning of tubba blubba's castle (bridge cutscene)
     type: code
-    dir: world/area_dgb
+    dir: world/area/dgb
     start: 0xC20F40
     vram_class: dgb_01_smash_bridges
     subsegments:
@@ -11826,7 +11728,7 @@ segments:
       - [0xC2E980, vtx, vtx/C2E980]
       - [0xC2EA60, vtx, vtx/C2EA60]
   - name: dgb_02
-    dir: world/area_dgb/dgb_02
+    dir: world/area/dgb/dgb_02
     type: code
     start: 0xC2EBA0
     vram_class: map
@@ -11836,7 +11738,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: dgb_03
-    dir: world/area_dgb/dgb_03
+    dir: world/area/dgb/dgb_03
     type: code
     start: 0xC314E0
     vram_class: map
@@ -11848,7 +11750,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: dgb_04
-    dir: world/area_dgb/dgb_04
+    dir: world/area/dgb/dgb_04
     type: code
     start: 0xC36530
     vram_class: map
@@ -11859,7 +11761,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: dgb_05
-    dir: world/area_dgb/dgb_05
+    dir: world/area/dgb/dgb_05
     type: code
     start: 0xC3AA10
     vram_class: map
@@ -11871,7 +11773,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: dgb_06
-    dir: world/area_dgb/dgb_06
+    dir: world/area/dgb/dgb_06
     type: code
     start: 0xC3D080
     vram_class: map
@@ -11882,7 +11784,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: dgb_07
-    dir: world/area_dgb/dgb_07
+    dir: world/area/dgb/dgb_07
     type: code
     start: 0xC3DBF0
     vram_class: map
@@ -11893,7 +11795,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: dgb_08
-    dir: world/area_dgb/dgb_08
+    dir: world/area/dgb/dgb_08
     type: code
     start: 0xC3FDB0
     vram_class: map
@@ -11904,7 +11806,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: dgb_09
-    dir: world/area_dgb/dgb_09
+    dir: world/area/dgb/dgb_09
     type: code
     start: 0xC46BE0
     vram_class: map
@@ -11915,7 +11817,7 @@ segments:
     - [auto, c, breakable]
     - [auto, c, npc]
   - name: dgb_10
-    dir: world/area_dgb/dgb_10
+    dir: world/area/dgb/dgb_10
     type: code
     start: 0xC4C390
     vram_class: map
@@ -11926,7 +11828,7 @@ segments:
     - [auto, c, hole]
     - [auto, c, entity]
   - name: dgb_11
-    dir: world/area_dgb/dgb_11
+    dir: world/area/dgb/dgb_11
     type: code
     start: 0xC4D3E0
     vram_class: map
@@ -11936,7 +11838,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: dgb_12
-    dir: world/area_dgb/dgb_12
+    dir: world/area/dgb/dgb_12
     type: code
     start: 0xC4DEF0
     vram_class: map
@@ -11947,7 +11849,7 @@ segments:
     - [auto, c, spikes]
     - [auto, c, entity]
   - name: dgb_13
-    dir: world/area_dgb/dgb_13
+    dir: world/area/dgb/dgb_13
     type: code
     start: 0xC4E960
     vram_class: map
@@ -11958,7 +11860,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, drawer]
   - name: dgb_14
-    dir: world/area_dgb/dgb_14
+    dir: world/area/dgb/dgb_14
     type: code
     start: 0xC4F030
     vram_class: map
@@ -11968,7 +11870,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: dgb_15
-    dir: world/area_dgb/dgb_15
+    dir: world/area/dgb/dgb_15
     type: code
     start: 0xC4F510
     vram_class: map
@@ -11979,7 +11881,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: dgb_16
-    dir: world/area_dgb/dgb_16
+    dir: world/area/dgb/dgb_16
     type: code
     start: 0xC52540
     vram_class: map
@@ -11990,7 +11892,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: dgb_17
-    dir: world/area_dgb/dgb_17
+    dir: world/area/dgb/dgb_17
     type: code
     start: 0xC55A60
     vram_class: map
@@ -12000,7 +11902,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: dgb_18
-    dir: world/area_dgb/dgb_18
+    dir: world/area/dgb/dgb_18
     type: code
     start: 0xC55F40
     vram_class: map
@@ -12011,7 +11913,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kzn_01
-    dir: world/area_kzn/kzn_01
+    dir: world/area/kzn/kzn_01
     type: code
     start: 0xC599D0
     vram_class: map
@@ -12020,7 +11922,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kzn_02
-    dir: world/area_kzn/kzn_02
+    dir: world/area/kzn/kzn_02
     type: code
     start: 0xC5A740
     vram_class: map
@@ -12031,7 +11933,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, demo]
   - name: kzn_03
-    dir: world/area_kzn/kzn_03
+    dir: world/area/kzn/kzn_03
     type: code
     start: 0xC60D10
     vram_class: map
@@ -12042,7 +11944,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, ziplines]
   - name: kzn_04
-    dir: world/area_kzn/kzn_04
+    dir: world/area/kzn/kzn_04
     type: code
     start: 0xC68130
     vram_class: map
@@ -12052,7 +11954,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kzn_05
-    dir: world/area_kzn/kzn_05
+    dir: world/area/kzn/kzn_05
     type: code
     start: 0xC6C0D0
     vram_class: map
@@ -12060,7 +11962,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: kzn_06
-    dir: world/area_kzn/kzn_06
+    dir: world/area/kzn/kzn_06
     type: code
     start: 0xC6C920
     vram_class: map
@@ -12070,7 +11972,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, extra]
   - name: kzn_07
-    dir: world/area_kzn/kzn_07
+    dir: world/area/kzn/kzn_07
     type: code
     start: 0xC6E330
     vram_class: map
@@ -12081,7 +11983,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kzn_08
-    dir: world/area_kzn/kzn_08
+    dir: world/area/kzn/kzn_08
     type: code
     start: 0xC71480
     vram_class: map
@@ -12092,7 +11994,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, extra]
   - name: kzn_09
-    dir: world/area_kzn/kzn_09
+    dir: world/area/kzn/kzn_09
     type: code
     start: 0xC76CE0
     vram_class: map
@@ -12103,7 +12005,7 @@ segments:
     - [auto, c, zipline]
     - [auto, c, npc]
   - name: kzn_10
-    dir: world/area_kzn/kzn_10
+    dir: world/area/kzn/kzn_10
     type: code
     start: 0xC7E180
     vram_class: map
@@ -12112,7 +12014,7 @@ segments:
     - [auto, c, main]
     - [auto, c, tromp]
   - name: kzn_11
-    dir: world/area_kzn/kzn_11
+    dir: world/area/kzn/kzn_11
     type: code
     start: 0xC801A0
     vram_class: map
@@ -12122,7 +12024,7 @@ segments:
     - [auto, c, platforms]
     - [auto, c, npc]
   - name: kzn_17
-    dir: world/area_kzn/kzn_17
+    dir: world/area/kzn/kzn_17
     type: code
     start: 0xC85AB0
     vram_class: map
@@ -12133,7 +12035,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, tromp]
   - name: kzn_18
-    dir: world/area_kzn/kzn_18
+    dir: world/area/kzn/kzn_18
     type: code
     start: 0xC8C0A0
     vram_class: map
@@ -12143,7 +12045,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: kzn_19
-    dir: world/area_kzn/kzn_19
+    dir: world/area/kzn/kzn_19
     type: code
     start: 0xC8DBB0
     vram_class: map
@@ -12165,7 +12067,7 @@ segments:
       - [0xC91688, gfx_common, ../../lava_piranha/vine]
       - [0xC91768]
   - name: kzn_20
-    dir: world/area_kzn/kzn_20
+    dir: world/area/kzn/kzn_20
     type: code
     start: 0xC95F30
     vram_class: map
@@ -12175,7 +12077,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: kzn_22
-    dir: world/area_kzn/kzn_22
+    dir: world/area/kzn/kzn_22
     type: code
     start: 0xC9A200
     vram_class: map
@@ -12186,7 +12088,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: kzn_23
-    dir: world/area_kzn/kzn_23
+    dir: world/area/kzn/kzn_23
     type: code
     start: 0xC9C300
     vram_class: map
@@ -12196,7 +12098,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: flo_00
-    dir: world/area_flo/flo_00
+    dir: world/area/flo/flo_00
     type: code
     start: 0xC9DF20
     vram_class: map
@@ -12209,7 +12111,7 @@ segments:
     - [auto, c, beanstalk]
     - [auto, c, entity]
   - name: flo_03
-    dir: world/area_flo/flo_03
+    dir: world/area/flo/flo_03
     type: code
     start: 0xCA72A0
     vram_class: map
@@ -12221,7 +12123,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, entity]
   - name: flo_07
-    dir: world/area_flo/flo_07
+    dir: world/area/flo/flo_07
     type: code
     start: 0xCAC1F0
     vram_class: map
@@ -12231,7 +12133,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: flo_08
-    dir: world/area_flo/flo_08
+    dir: world/area/flo/flo_08
     type: code
     start: 0xCAED40
     vram_class: map
@@ -12244,7 +12146,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, vines]
   - name: flo_09
-    dir: world/area_flo/flo_09
+    dir: world/area/flo/flo_09
     type: code
     start: 0xCB5000
     vram_class: map
@@ -12256,7 +12158,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, npc]
   - name: flo_10
-    dir: world/area_flo/flo_10
+    dir: world/area/flo/flo_10
     type: code
     start: 0xCB9200
     vram_class: map
@@ -12270,7 +12172,7 @@ segments:
     - [auto, c, waterfx]
     - [auto, c, foliage]
   - name: flo_11
-    dir: world/area_flo/flo_11
+    dir: world/area/flo/flo_11
     type: code
     start: 0xCBDCD0
     vram_class: map
@@ -12281,7 +12183,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: flo_12
-    dir: world/area_flo/flo_12
+    dir: world/area/flo/flo_12
     type: code
     start: 0xCC0E30
     vram_class: map
@@ -12291,7 +12193,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: flo_13
-    dir: world/area_flo/flo_13
+    dir: world/area/flo/flo_13
     type: code
     start: 0xCC3810
     vram_class: map
@@ -12303,7 +12205,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, new_partner]
   - name: flo_14
-    dir: world/area_flo/flo_14
+    dir: world/area/flo/flo_14
     type: code
     start: 0xCCB310
     vram_class: map
@@ -12316,7 +12218,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, logs]
   - name: flo_15
-    dir: world/area_flo/flo_15
+    dir: world/area/flo/flo_15
     type: code
     start: 0xCD06C0
     vram_class: map
@@ -12328,7 +12230,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, stairs]
   - name: flo_16
-    dir: world/area_flo/flo_16
+    dir: world/area/flo/flo_16
     type: code
     start: 0xCD1E30
     vram_class: map
@@ -12341,7 +12243,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, puzzle]
   - name: flo_17
-    dir: world/area_flo/flo_17
+    dir: world/area/flo/flo_17
     type: code
     start: 0xCD72E0
     vram_class: map
@@ -12353,7 +12255,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: flo_18
-    dir: world/area_flo/flo_18
+    dir: world/area/flo/flo_18
     type: code
     start: 0xCDC6A0
     vram_class: map
@@ -12365,7 +12267,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, foliage]
   - name: flo_19
-    dir: world/area_flo/flo_19
+    dir: world/area/flo/flo_19
     type: code
     start: 0xCE36F0
     vram_class: map
@@ -12377,7 +12279,7 @@ segments:
     - [auto, c, clouds]
     - [auto, c, beanstalk]
   - name: flo_21
-    dir: world/area_flo/flo_21
+    dir: world/area/flo/flo_21
     type: code
     start: 0xCE6700
     vram_class: map
@@ -12388,7 +12290,7 @@ segments:
     - [auto, c, clouds]
     - [auto, c, npc]
   - name: flo_22
-    dir: world/area_flo/flo_22
+    dir: world/area/flo/flo_22
     type: code
     start: 0xCEC240
     vram_class: map
@@ -12400,7 +12302,7 @@ segments:
     - [auto, c, well]
     - [auto, c, foliage]
   - name: flo_23
-    dir: world/area_flo/flo_23
+    dir: world/area/flo/flo_23
     type: code
     start: 0xCEE260
     vram_class: map
@@ -12411,7 +12313,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: flo_24
-    dir: world/area_flo/flo_24
+    dir: world/area/flo/flo_24
     type: code
     start: 0xCF0940
     vram_class: map
@@ -12423,7 +12325,7 @@ segments:
     - [auto, c, water]
     - [auto, c, entity]
   - name: flo_25
-    dir: world/area_flo/flo_25
+    dir: world/area/flo/flo_25
     type: code
     start: 0xCF2BD0
     vram_class: map
@@ -12436,7 +12338,7 @@ segments:
     - [auto, c, foliage]
     - [auto, c, vine]
   - name: sam_01
-    dir: world/area_sam/sam_01
+    dir: world/area/sam/sam_01
     type: code
     start: 0xCF7B70
     vram_class: map
@@ -12449,7 +12351,7 @@ segments:
     - [auto, c, scenes]
     - [auto, c, entity]
   - name: sam_02
-    dir: world/area_sam/sam_02
+    dir: world/area/sam/sam_02
     type: code
     start: 0xD05730
     vram_class: map
@@ -12462,7 +12364,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, shop]
   - name: sam_03
-    dir: world/area_sam/sam_03
+    dir: world/area/sam/sam_03
     type: code
     start: 0xD110C0
     vram_class: map
@@ -12473,7 +12375,7 @@ segments:
     - [auto, c, npc1]
     - [auto, c, npc2]
   - name: sam_04
-    dir: world/area_sam/sam_04
+    dir: world/area/sam/sam_04
     type: code
     start: 0xD135D0
     vram_class: map
@@ -12485,7 +12387,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sam_05
-    dir: world/area_sam/sam_05
+    dir: world/area/sam/sam_05
     type: code
     start: 0xD187E0
     vram_class: map
@@ -12521,7 +12423,7 @@ segments:
       - [0xD1F890, vtx, monstar]
     - [0xD1FCB0]
   - name: sam_06
-    dir: world/area_sam/sam_06
+    dir: world/area/sam/sam_06
     type: code
     start: 0xD1FE90
     vram_class: map
@@ -12533,7 +12435,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: sam_07
-    dir: world/area_sam/sam_07
+    dir: world/area/sam/sam_07
     type: code
     start: 0xD2BD30
     vram_class: map
@@ -12545,7 +12447,7 @@ segments:
     - [auto, c, frozen_pit]
     - [auto, c, npc]
   - name: sam_08
-    dir: world/area_sam/sam_08
+    dir: world/area/sam/sam_08
     type: code
     start: 0xD2FC80
     vram_class: map
@@ -12557,7 +12459,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, scenes]
   - name: sam_09
-    dir: world/area_sam/sam_09
+    dir: world/area/sam/sam_09
     type: code
     start: 0xD362F0
     vram_class: map
@@ -12568,7 +12470,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, sockets]
   - name: sam_10
-    dir: world/area_sam/sam_10
+    dir: world/area/sam/sam_10
     type: code
     start: 0xD37800
     vram_class: map
@@ -12580,7 +12482,7 @@ segments:
     - [auto, c, stairs]
     - [auto, c, npc]
   - name: sam_11
-    dir: world/area_sam/sam_11
+    dir: world/area/sam/sam_11
     type: code
     start: 0xD3A5D0
     vram_class: map
@@ -12596,7 +12498,7 @@ segments:
     - [auto, c, pond_anim]
     - [auto, c, pond_skele]
   - name: sam_12
-    dir: world/area_sam/sam_12
+    dir: world/area/sam/sam_12
     type: code
     start: 0xD4BA20
     vram_class: map
@@ -12608,7 +12510,7 @@ segments:
     - [auto, c, scenes]
     - [auto, c, entity]
   - name: pra_01
-    dir: world/area_pra/pra_01
+    dir: world/area/pra/pra_01
     type: code
     start: 0xD4D040
     vram_class: map
@@ -12619,7 +12521,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: pra_02
-    dir: world/area_pra/pra_02
+    dir: world/area/pra/pra_02
     type: code
     start: 0xD4FFF0
     vram_class: map
@@ -12630,7 +12532,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: pra_03
-    dir: world/area_pra/pra_03
+    dir: world/area/pra/pra_03
     type: code
     start: 0xD53CB0
     vram_class: map
@@ -12640,7 +12542,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_04
-    dir: world/area_pra/pra_04
+    dir: world/area/pra/pra_04
     type: code
     start: 0xD54690
     vram_class: map
@@ -12651,7 +12553,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: pra_05
-    dir: world/area_pra/pra_05
+    dir: world/area/pra/pra_05
     type: code
     start: 0xD55BB0
     vram_class: map
@@ -12661,7 +12563,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_06
-    dir: world/area_pra/pra_06
+    dir: world/area/pra/pra_06
     type: code
     start: 0xD57430
     vram_class: map
@@ -12671,7 +12573,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_09
-    dir: world/area_pra/pra_09
+    dir: world/area/pra/pra_09
     type: code
     start: 0xD58890
     vram_class: map
@@ -12681,7 +12583,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_10
-    dir: world/area_pra/pra_10
+    dir: world/area/pra/pra_10
     type: code
     start: 0xD5F2B0
     vram_class: map
@@ -12691,7 +12593,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_11
-    dir: world/area_pra/pra_11
+    dir: world/area/pra/pra_11
     type: code
     start: 0xD61500
     vram_class: map
@@ -12701,7 +12603,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_12
-    dir: world/area_pra/pra_12
+    dir: world/area/pra/pra_12
     type: code
     start: 0xD62D10
     vram_class: map
@@ -12711,7 +12613,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_13
-    dir: world/area_pra/pra_13
+    dir: world/area/pra/pra_13
     type: code
     start: 0xD645E0
     vram_class: map
@@ -12721,7 +12623,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_14
-    dir: world/area_pra/pra_14
+    dir: world/area/pra/pra_14
     type: code
     start: 0xD67D00
     vram_class: map
@@ -12731,7 +12633,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_15
-    dir: world/area_pra/pra_15
+    dir: world/area/pra/pra_15
     type: code
     start: 0xD69810
     vram_class: map
@@ -12741,7 +12643,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_16
-    dir: world/area_pra/pra_16
+    dir: world/area/pra/pra_16
     type: code
     start: 0xD69B20
     vram_class: map
@@ -12750,7 +12652,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: pra_18
-    dir: world/area_pra/pra_18
+    dir: world/area/pra/pra_18
     type: code
     start: 0xD6B620
     vram_class: map
@@ -12760,7 +12662,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_19
-    dir: world/area_pra/pra_19
+    dir: world/area/pra/pra_19
     type: code
     start: 0xD6E9B0
     vram_class: map
@@ -12770,7 +12672,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_20
-    dir: world/area_pra/pra_20
+    dir: world/area/pra/pra_20
     type: code
     start: 0xD763A0
     vram_class: map
@@ -12779,7 +12681,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
   - name: pra_21
-    dir: world/area_pra/pra_21
+    dir: world/area/pra/pra_21
     type: code
     start: 0xD77F20
     vram_class: map
@@ -12789,7 +12691,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_22
-    dir: world/area_pra/pra_22
+    dir: world/area/pra/pra_22
     type: code
     start: 0xD78880
     vram_class: map
@@ -12799,7 +12701,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_27
-    dir: world/area_pra/pra_27
+    dir: world/area/pra/pra_27
     type: code
     start: 0xD799F0
     vram_class: map
@@ -12809,7 +12711,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_28
-    dir: world/area_pra/pra_28
+    dir: world/area/pra/pra_28
     type: code
     start: 0xD7B2A0
     vram_class: map
@@ -12819,7 +12721,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_29
-    dir: world/area_pra/pra_29
+    dir: world/area/pra/pra_29
     type: code
     start: 0xD7CB50
     vram_class: map
@@ -12830,7 +12732,7 @@ segments:
     - [auto, c, main]
     - [auto, c, bridge]
   - name: pra_31
-    dir: world/area_pra/pra_31
+    dir: world/area/pra/pra_31
     type: code
     start: 0xD7ED60
     vram_class: map
@@ -12918,7 +12820,7 @@ segments:
       - [0xD869E0]
     - [0xD869E0]
   - name: pra_32
-    dir: world/area_pra/pra_32
+    dir: world/area/pra/pra_32
     type: code
     start: 0xD86A00
     vram_class: map
@@ -12928,7 +12830,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_33
-    dir: world/area_pra/pra_33
+    dir: world/area/pra/pra_33
     type: code
     start: 0xD896E0
     vram_class: map
@@ -12938,7 +12840,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_34
-    dir: world/area_pra/pra_34
+    dir: world/area/pra/pra_34
     type: code
     start: 0xD8B3B0
     vram_class: map
@@ -12948,7 +12850,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: pra_35
-    dir: world/area_pra/pra_35
+    dir: world/area/pra/pra_35
     type: code
     start: 0xD8D250
     vram_class: map
@@ -12959,7 +12861,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: pra_36
-    dir: world/area_pra/pra_36
+    dir: world/area/pra/pra_36
     type: code
     start: 0xD91700
     vram_class: map
@@ -12969,7 +12871,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_37
-    dir: world/area_pra/pra_37
+    dir: world/area/pra/pra_37
     type: code
     start: 0xD92F40
     vram_class: map
@@ -12979,7 +12881,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_38
-    dir: world/area_pra/pra_38
+    dir: world/area/pra/pra_38
     type: code
     start: 0xD955F0
     vram_class: map
@@ -12989,7 +12891,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_39
-    dir: world/area_pra/pra_39
+    dir: world/area/pra/pra_39
     type: code
     start: 0xD97890
     vram_class: map
@@ -12999,7 +12901,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: pra_40
-    dir: world/area_pra/pra_40
+    dir: world/area/pra/pra_40
     type: code
     start: 0xD999B0
     vram_class: map
@@ -13009,7 +12911,7 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
   - name: omo_01
-    dir: world/area_omo/omo_01
+    dir: world/area/omo/omo_01
     type: code
     start: 0xD9AEF0
     vram_class: map
@@ -13021,7 +12923,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: omo_02
-    dir: world/area_omo/omo_02
+    dir: world/area/omo/omo_02
     type: code
     start: 0xD9D4D0
     vram_class: map
@@ -13034,7 +12936,7 @@ segments:
     - [auto, c, barricade]
     - [auto, c, npc]
   - name: omo_03
-    dir: world/area_omo/omo_03
+    dir: world/area/omo/omo_03
     type: code
     start: 0xDA5240
     vram_class: map
@@ -13049,7 +12951,7 @@ segments:
     - [auto, c, train_drop]
     - [auto, c, epilogue]
   - name: omo_04
-    dir: world/area_omo/omo_04
+    dir: world/area/omo/omo_04
     type: code
     start: 0xDAD400
     vram_class: map
@@ -13062,7 +12964,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, scenes]
   - name: omo_05
-    dir: world/area_omo/omo_05
+    dir: world/area/omo/omo_05
     type: code
     start: 0xDB22C0
     vram_class: map
@@ -13074,7 +12976,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: omo_06
-    dir: world/area_omo/omo_06
+    dir: world/area/omo/omo_06
     type: code
     start: 0xDB7910
     vram_class: map
@@ -13087,7 +12989,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: omo_07
-    dir: world/area_omo/omo_07
+    dir: world/area/omo/omo_07
     type: code
     start: 0xDBD2B0
     vram_class: map
@@ -13100,7 +13002,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, scenes]
   - name: omo_08
-    dir: world/area_omo/omo_08
+    dir: world/area/omo/omo_08
     type: code
     start: 0xDC43D0
     vram_class: map
@@ -13113,7 +13015,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: omo_09
-    dir: world/area_omo/omo_09
+    dir: world/area/omo/omo_09
     type: code
     start: 0xDCCCD0
     vram_class: map
@@ -13128,7 +13030,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, scenes]
   - name: omo_10
-    dir: world/area_omo/omo_10
+    dir: world/area/omo/omo_10
     type: code
     start: 0xDD79B0
     vram_class: map
@@ -13141,7 +13043,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: omo_11
-    dir: world/area_omo/omo_11
+    dir: world/area/omo/omo_11
     type: code
     start: 0xDDC830
     vram_class: map
@@ -13153,7 +13055,7 @@ segments:
     - [auto, c, entity]
     - [auto, c, npc]
   - name: omo_12
-    dir: world/area_omo/omo_12
+    dir: world/area/omo/omo_12
     type: code
     start: 0xDDF310
     vram_class: map
@@ -13164,7 +13066,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, new_partner]
   - name: omo_13
-    dir: world/area_omo/omo_13
+    dir: world/area/omo/omo_13
     type: code
     start: 0xDE2490
     vram_class: map
@@ -13176,7 +13078,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: omo_14
-    dir: world/area_omo/omo_14
+    dir: world/area/omo/omo_14
     type: code
     start: 0xDE56B0
     vram_class: map
@@ -13186,7 +13088,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: omo_15
-    dir: world/area_omo/omo_15
+    dir: world/area/omo/omo_15
     type: code
     start: 0xDE8770
     vram_class: map
@@ -13196,7 +13098,7 @@ segments:
     - [auto, c, main]
     - [auto, c, npc]
   - name: omo_16
-    dir: world/area_omo/omo_16
+    dir: world/area/omo/omo_16
     type: code
     start: 0xDEBED0
     vram_class: map
@@ -13206,7 +13108,7 @@ segments:
     - [auto, c, train]
     - [auto, c, npc]
   - name: omo_17
-    dir: world/area_omo/omo_17
+    dir: world/area/omo/omo_17
     type: code
     start: 0xDEEEA0
     vram_class: map
@@ -13218,7 +13120,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, entity]
   - name: end_00
-    dir: world/area_end/end_00
+    dir: world/area/end/end_00
     type: code
     start: 0xDF6A00
     vram_class: map
@@ -13236,7 +13138,7 @@ segments:
     - [auto, c, crystal_king]
     - [auto, c, bowser]
   - name: end_01
-    dir: world/area_end/end_01
+    dir: world/area/end/end_01
     type: code
     start: 0xE05360
     vram_class: map
@@ -13250,7 +13152,7 @@ segments:
     - [auto, c, shyguy_float]
     - [auto, c, peach_float]
   - name: mgm_00
-    dir: world/area_mgm/mgm_00
+    dir: world/area/mgm/mgm_00
     type: code
     start: 0xE0E7A0
     vram_class: map
@@ -13260,7 +13162,7 @@ segments:
     - [auto, c, npc]
     - [auto, c, scoreboard]
   - name: mgm_01
-    dir: world/area_mgm/mgm_01
+    dir: world/area/mgm/mgm_01
     type: code
     start: 0xE12760
     vram_class: map
@@ -13284,7 +13186,7 @@ segments:
       - [0xE15CA0, palette, panel_bowser]
       - [0xE15CC0]
   - name: mgm_02
-    dir: world/area_mgm/mgm_02
+    dir: world/area/mgm/mgm_02
     type: code
     start: 0xE15D80
     vram_class: map
@@ -13301,7 +13203,7 @@ segments:
       - [0xE1E220, palette, panel_peach]
       - [0xE1E240]
   - name: mgm_03
-    dir: world/area_mgm/mgm_03
+    dir: world/area/mgm/mgm_03
     type: code
     start: 0xE1E380
     vram_class: map
@@ -13309,7 +13211,7 @@ segments:
     - [auto, c, settings]
     - [auto, c, main]
   - name: gv_01
-    dir: world/area_gv/gv_01
+    dir: world/area/gv/gv_01
     type: code
     start: 0xE1E460
     vram_class: map

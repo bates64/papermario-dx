@@ -55,8 +55,10 @@
 #	endif /* AUD_PROFILE */
 #endif /* EMULATOR */
 
+#ifndef __cplusplus
 #ifndef nullptr
 #define nullptr 0
+#endif
 #endif
 
 #define AL_FX_BUFFER_SIZE       8192

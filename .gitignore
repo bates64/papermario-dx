@@ -23,7 +23,7 @@ ctx.c.m2c
 build.ninja
 .ninja*
 .n2_db
-*.ld
+ver/*/*.ld
 !src/map_shape.ld
 *.elf
 *.z64
@@ -33,6 +33,8 @@ build.ninja
 *.msg.h
 *.i
 *.o
+*.gch
+*.gch.d
 *.zip
 baserom.*
 build/
