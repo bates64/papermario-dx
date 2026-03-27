@@ -76,7 +76,7 @@ char LastStageName[16];
 s32 LastMapEntry;
 s32 LastBattleID;
 
-void dx_debug_set_map_info(char* mapName, s32 entryID) {
+void dx_debug_set_map_info(const char* mapName, s32 entryID) {
     strcpy(LastMapName, mapName);
     LastMapEntry = entryID;
 }
@@ -760,7 +760,7 @@ void dx_debug_update_select_map() {
     s32 i, j, idx;
     s32 numRows, numCols;
     s32 curCol, maxCol, startCol;
-    MapConfig* maps = gAreas[SelectAreaMenuPos].maps;
+    const char* const* maps = gAreas[SelectAreaMenuPos].maps;
     s32 numMaps = gAreas[SelectAreaMenuPos].mapCount;
     s32 prev = SelectMapMenuPos;
 
@@ -815,7 +815,7 @@ void dx_debug_update_select_map() {
         for (j = 0; j < numRows; j++) {
             if (idx < numMaps) {
                 s32 color = (SelectMapMenuPos == idx) ? HighlightColor : DefaultColor;
-                char* name = maps[idx].id;
+                const char* name = maps[idx];
                 dx_debug_draw_ascii(name, color, SubmenuPosX + (i - startCol) * MapSizeX, SubmenuPosY + (j + 1) * RowHeight);
             }
             idx++;
@@ -842,7 +842,7 @@ void dx_debug_update_select_map() {
 
 void dx_debug_update_select_entry() {
     s32 idx;
-    MapConfig map = gAreas[SelectAreaMenuPos].maps[SelectMapMenuPos];
+    const char* map = gAreas[SelectAreaMenuPos].maps[SelectMapMenuPos];
 
     // handle input
     if (RELEASED(BUTTON_L)) {
@@ -876,7 +876,7 @@ void dx_debug_update_select_entry() {
 
     for (idx = 0; idx < ARRAY_COUNT(DebugQuickSaveMenu); idx++) {
         char fmtBuf[16];
-        dx_debug_draw_ascii(map.id, DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
+        dx_debug_draw_ascii(map, DefaultColor, SubmenuPosX, SubmenuPosY + RowHeight);
         dx_debug_draw_ascii("Entry:", DefaultColor, SubmenuPosX, SubmenuPosY + 2 * RowHeight);
         sprintf(fmtBuf, "%2lX", SelectedEntryValue);
         dx_debug_draw_ascii(fmtBuf, HighlightColor, SubmenuPosX + 40, SubmenuPosY + 2 * RowHeight);

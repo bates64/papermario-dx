@@ -569,9 +569,9 @@ def generate(out_path: Path, areas: List[tuple]):
 
         for area_id, maps in areas:
             var_name = f"{area_id}_maps"
-            f.write(f"static MapConfig {var_name}[] = {{\n")
+            f.write(f"static const char* {var_name}[] = {{\n")
             for map_id in maps:
-                f.write(f'    {{ "{map_id}" }},\n')
+                f.write(f'    "{map_id}",\n')
             f.write("};\n\n")
 
         f.write("AreaConfig gAreas[] = {\n")

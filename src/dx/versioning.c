@@ -12,8 +12,7 @@ void fio_serialize_state() {
 
     saveData->player = gPlayerData;
 
-    saveData->areaID = gGameStatus.areaID;
-    saveData->mapID = gGameStatus.mapID;
+    saveData->mapHash = hash_string(gAreas[gGameStatus.areaID].maps[gGameStatus.mapID]);
     saveData->entryID = gGameStatus.entryID;
     saveData->savePos.x = gGameStatus.savedPos.x;
     saveData->savePos.y = gGameStatus.savedPos.y;
@@ -65,10 +64,12 @@ void ver_deserialize_standard() {
     // simply copy the saved player data
     gPlayerData = saveData->player;
 
-    // copy saved game status fields to GameStatus
-    gGameStatus.areaID = saveData->areaID;
-    gGameStatus.mapID = saveData->mapID;
-    gGameStatus.entryID = saveData->entryID;
+    if (!get_map_IDs_by_hash(saveData->mapHash, &gGameStatus.areaID, &gGameStatus.mapID)) {
+        get_map_IDs_by_name_checked(NEW_GAME_MAP_ID, &gGameStatus.areaID, &gGameStatus.mapID);
+        gGameStatus.entryID = NEW_GAME_ENTRY_ID;
+    } else {
+        gGameStatus.entryID = saveData->entryID;
+    }
     gGameStatus.savedPos.x = saveData->savePos.x;
     gGameStatus.savedPos.y = saveData->savePos.y;
     gGameStatus.savedPos.z = saveData->savePos.z;
@@ -518,10 +519,15 @@ void ver_deserialize_vanilla_save(SaveData* newSave) {
     newSave->summary.timePlayed = oldSave.summary.timePlayed;
     newSave->summary.spiritsRescued = oldSave.summary.spiritsRescued;
 
-    // copy world location
-    newSave->areaID = oldSave.areaID;
-    newSave->mapID = oldSave.mapID;
-    newSave->entryID = oldSave.entryID;
+    if (oldSave.areaID >= 0 && oldSave.mapID >= 0
+        && gAreas[oldSave.areaID].maps != nullptr
+        && oldSave.mapID < gAreas[oldSave.areaID].mapCount) {
+        newSave->mapHash = hash_string(gAreas[oldSave.areaID].maps[oldSave.mapID]);
+        newSave->entryID = oldSave.entryID;
+    } else {
+        newSave->mapHash = hash_string(NEW_GAME_MAP_ID);
+        newSave->entryID = NEW_GAME_ENTRY_ID;
+    }
     newSave->savePos = oldSave.savePos;
 
     // defeat flags are unchanged

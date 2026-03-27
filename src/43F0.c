@@ -55,6 +55,15 @@ void dma_write_block(Addr dramAddr, u32 devAddr, s32 size);
 
 #define ROM_CHUNK_SIZE 0x2000
 
+u32 hash_string(const char* str) {
+    u32 hash = 0x811c9dc5;
+    while (*str) {
+        hash ^= (u8)*str++;
+        hash *= 0x01000193;
+    }
+    return hash;
+}
+
 f32 length2D(f32 x, f32 y) {
     return sqrtf(SQ(x) + SQ(y));
 }

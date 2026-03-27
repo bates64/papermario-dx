@@ -39,13 +39,9 @@ typedef struct MapSettings {
     s8 sfxReverb;
 } MapSettings;
 
-typedef struct MapConfig {
-    char* id;
-} MapConfig;
-
 typedef struct AreaConfig {
     s32 mapCount;
-    MapConfig* maps;
+    const char* const* maps;
     char* id; ///< "area_xxx"
 } AreaConfig;
 

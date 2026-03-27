@@ -20,7 +20,7 @@
 #define ASSET_TABLE_HEADER_SIZE 0x20
 #define ASSET_TABLE_FIRST_ENTRY (ASSET_TABLE_ROM_START + ASSET_TABLE_HEADER_SIZE)
 
-BSS MapConfig* gMapConfig;
+BSS const char* gMapId;
 BSS MapSettings gMapSettings;
 
 char wMapHitName[0x18];
@@ -52,7 +52,7 @@ void load_map_script_lib(void) {
 
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
-    MapConfig* mapConfig;
+    const char* mapId;
     s32 decompressedSize;
 
     ovl_unload_type(OVL_MAP);
@@ -96,34 +96,34 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
 
     ASSERT_MSG(gAreas[areaID].maps != nullptr, "Invalid area ID %d", areaID);
     ASSERT_MSG(mapID < gAreas[areaID].mapCount, "Invalid map ID %d in %s", mapID, gAreas[areaID].id);
-    mapConfig = &gAreas[areaID].maps[mapID];
+    mapId = gAreas[areaID].maps[mapID];
 
     #if DX_DEBUG_MENU
-    dx_debug_set_map_info(mapConfig->id, gGameStatus.entryID);
+    dx_debug_set_map_info(mapId, gGameStatus.entryID);
     #endif
 
-    sprintf(wMapShapeName, "%s_shape", mapConfig->id);
-    sprintf(wMapHitName, "%s_hit", mapConfig->id);
+    sprintf(wMapShapeName, "%s_shape", mapId);
+    sprintf(wMapHitName, "%s_hit", mapId);
 
-    gMapConfig = mapConfig;
+    gMapId = mapId;
     load_map_script_lib();
 
     // TODO: don't use NAMESPACE in maps
     char symSettings[32];
     char symInit[32];
-    sprintf(symSettings, "%s_settings", mapConfig->id);
-    sprintf(symInit, "%s_map_init", mapConfig->id);
+    sprintf(symSettings, "%s_settings", mapId);
+    sprintf(symInit, "%s_map_init", mapId);
 
-    Overlay* ovl = ovl_load(mapConfig->id, OVL_MAP);
+    Overlay* ovl = ovl_load(mapId, OVL_MAP);
     MapSettings* settings = ovl_import(ovl, symSettings);
-    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapConfig->id);
+    ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapId);
     gMapSettings = *settings;
 
     if (gMapSettings.textureArchive != nullptr) {
         sprintf(wMapTexName, "%s_tex", gMapSettings.textureArchive);
     } else {
         char texStr[17];
-        strcpy(texStr, mapConfig->id);
+        strcpy(texStr, mapId);
         texStr[3] = '\0';
         sprintf(wMapTexName, "%s_tex", texStr);
     }
@@ -230,23 +230,36 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gGameStatusPtr->mainScriptID = start_script_in_group(gMapSettings.main, EVT_PRIORITY_0, 0, EVT_GROUP_NEVER_PAUSE)->id;
 }
 
-MapConfig* get_current_map_config(void) {
-    return gMapConfig;
-}
-
 MapSettings* get_current_map_settings(void) {
     return &gMapSettings;
 }
 
-NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
+NODISCARD b32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID) {
     s32 i;
     s32 j;
-    MapConfig* maps;
+    const char* const* maps;
 
-    // TODO: Potentially a fake match? Difficult to not set the temp in the for conditional.
     for (i = 0; (maps = gAreas[i].maps) != nullptr; i++) {
         for (j = 0; j < gAreas[i].mapCount; j++) {
-            if (strcmp(maps[j].id, mapName) == 0) {
+            if (strcmp(maps[j], mapName) == 0) {
+                *areaID = i;
+                *mapID = j;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+NODISCARD b32 get_map_IDs_by_hash(u32 hash, s16* areaID, s16* mapID) {
+    s32 i;
+    s32 j;
+    const char* const* maps;
+
+    for (i = 0; (maps = gAreas[i].maps) != nullptr; i++) {
+        for (j = 0; j < gAreas[i].mapCount; j++) {
+            if (hash_string(maps[j]) == hash) {
                 *areaID = i;
                 *mapID = j;
                 return true;
