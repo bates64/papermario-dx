@@ -56,8 +56,15 @@ if "%NEED_DOWNLOAD%"=="1" (
         exit /b 1
     )
 
-    :: Extract (zip contains papermario-dx-windows/ dir, rename to .dx/windows/)
+    :: Extract
     echo Extracting toolchain...
+    where tar >nul 2>nul
+    if errorlevel 1 (
+        echo msgbox "tar is not available on this system (Windows 7)." ^& vbCrLf ^& vbCrLf ^& "Please manually extract:" ^& vbCrLf ^& "%TOOLCHAIN_ZIP%" ^& vbCrLf ^& vbCrLf ^& "To the following directory:" ^& vbCrLf ^& "%DX_DIR%\windows" ^& vbCrLf ^& vbCrLf ^& "Then run build.bat again.", vbOKOnly, "papermario-dx" > "%TEMP%\dx-notar.vbs"
+        wscript "%TEMP%\dx-notar.vbs"
+        del "%TEMP%\dx-notar.vbs"
+        exit /b 1
+    )
     tar -xf "%TOOLCHAIN_ZIP%" -C "%DX_DIR%"
     if errorlevel 1 (
         echo Error: failed to extract toolchain.
