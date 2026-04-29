@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 IfGt(LVar2, 85)
                     Goto(10)
                 EndIf
-                Call(DisablePlayerInput, false)
+                Call(DisablePlayerInput, true)
                 Call(N(AwaitPartnerGrounded))
                 Call(DisablePartnerAI, 0)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
