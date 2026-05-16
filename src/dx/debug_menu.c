@@ -183,10 +183,12 @@ void dx_debug_draw_ascii_with_effect(char* text, s32 color, s32 posX, s32 posY, 
 }
 
 void dx_debug_draw_msg(s32 msgID, s32 color, s32 alpha, s32 posX, s32 posY) {
-    ALIGNED(8) char buf[128] = {
+    char buf[128] = {
         MSG_CHAR_READ_FUNCTION, MSG_READ_FUNC_SIZE, 12, 12,
     };
-    dma_load_msg(msgID, &buf[4]);
+    ALIGNED(8) char dmaBuf[124];
+    dma_load_msg(msgID, dmaBuf);
+    memcpy(&buf[4], dmaBuf, sizeof(dmaBuf));
     draw_msg((s32)buf, posX, posY, alpha, color, 0);
 }
 
