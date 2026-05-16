@@ -3,6 +3,7 @@
 import argparse
 import os
 import pickle
+import shutil
 import struct
 import subprocess
 import sys
@@ -1536,8 +1537,8 @@ def cmd_apply(args):
     with open(args.output_rom, "wb") as f:
         f.write(rom_data)
 
-    n64crc = SCRIPT_DIR / "rom" / "n64crc"
-    subprocess.run([str(n64crc), args.output_rom], check=True)
+    n64crc = shutil.which("n64crc") or str(SCRIPT_DIR / "rom" / "n64crc")
+    subprocess.run([n64crc, args.output_rom], check=True)
 
 
 def cmd_apply_all(args):
@@ -1591,8 +1592,8 @@ def cmd_apply_all(args):
     with open(args.output_rom, "wb") as f:
         f.write(rom_data)
 
-    n64crc = SCRIPT_DIR / "rom" / "n64crc"
-    subprocess.run([str(n64crc), args.output_rom], check=True)
+    n64crc = shutil.which("n64crc") or str(SCRIPT_DIR / "rom" / "n64crc")
+    subprocess.run([n64crc, args.output_rom], check=True)
 
 
 def main():
