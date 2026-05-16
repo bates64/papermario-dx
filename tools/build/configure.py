@@ -31,6 +31,7 @@ BUILD_TOOLS = Path("tools/build")
 
 SOURCE_DIRS = ["src", "include", "assets"]
 
+
 def _walk_source_file_list():
     """Returns a sorted list of all files and directories under SOURCE_DIRS."""
     file_list = []
@@ -40,11 +41,17 @@ def _walk_source_file_list():
             continue
         for dirpath, dirnames, filenames in os.walk(top_path):
             dirnames.sort()
-            rel = Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else Path(dirpath)
+            rel = (
+                Path(dirpath).relative_to(ROOT)
+                if Path(dirpath).is_absolute()
+                else Path(dirpath)
+            )
             file_list.append(str(rel) + "/")
             for f in sorted(filenames):
                 file_list.append(str(rel / f))
     return file_list
+
+
 CRC_TOOL = f"{BUILD_TOOLS}/rom/n64crc"
 
 PIGMENT64 = "pigment64"
@@ -150,7 +157,9 @@ def write_ninja_rules(
     )
 
     ninja.rule(
-        "cpp", description="Preprocessing $in", command=f"{cpp} $in {extra_cppflags} -P -o $out"
+        "cpp",
+        description="Preprocessing $in",
+        command=f"{cpp} $in {extra_cppflags} -P -o $out",
     )
 
     ninja.rule(
@@ -355,7 +364,11 @@ def write_ninja_rules(
         command=f"$python {BUILD_TOOLS}/audio/sbn.py $out $asset_stack",
     )
 
-    ninja.rule("flips", description="Creating patch file", command=f"bash -c 'flips $baserom $in $out || true'")
+    ninja.rule(
+        "flips",
+        description="Creating patch file",
+        command=f"bash -c 'flips $baserom $in $out || true'",
+    )
 
     ninja.rule(
         "check_segment_sizes",
@@ -391,30 +404,6 @@ def write_ninja_for_tools(ninja: ninja_syntax.Writer):
     )
 
     ninja.build(CRC_TOOL, "cc_tool", f"{BUILD_TOOLS}/rom/n64crc.c")
-
-
-def does_iconv_work() -> bool:
-    # run iconv and see if it works
-    stdin = "エリア ＯＭＯ２＿１".encode("utf-8")
-
-    def run(command, stdin):
-        sub = subprocess.run(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            input=stdin,
-            cwd=ROOT,
-        )
-        return sub.stdout
-
-    expected_stdout = run(["tools/build/iconv.py", "UTF-8", "CP932"], stdin)
-    actual_stdout = run(["iconv", "--from", "UTF-8", "--to", "CP932"], stdin)
-    return expected_stdout == actual_stdout
-
-
-use_python_iconv = not does_iconv_work()
-if use_python_iconv:
-    print("warning: iconv doesn't work, using python implementation")
 
 
 class Configure:
@@ -482,7 +471,10 @@ class Configure:
         for entry in self.linker_entries:
             seg = entry.segment
             most_parent = seg.get_most_parent()
-            if most_parent.vram_class is not None and most_parent.vram_class.name == "map":
+            if (
+                most_parent.vram_class is not None
+                and most_parent.vram_class.name == "map"
+            ):
                 if entry.object_path is not None:
                     discard_objs.add(str(entry.object_path))
 
@@ -491,7 +483,9 @@ class Configure:
 
         ld_path = self.linker_script_path()
         lines = ld_path.read_text().splitlines(keepends=True)
-        filtered = [line for line in lines if not any(obj in line for obj in discard_objs)]
+        filtered = [
+            line for line in lines if not any(obj in line for obj in discard_objs)
+        ]
         ld_path.write_text("".join(filtered))
 
     def build_path(self) -> Path:
@@ -849,10 +843,7 @@ class Configure:
                 if version == "ique":
                     encoding = "EUC-JP"
 
-                if use_python_iconv:
-                    iconv = f"tools/build/iconv.py UTF-8 {encoding}"
-                else:
-                    iconv = f"iconv --from UTF-8 --to {encoding}"
+                iconv = f"iconv --from UTF-8 --to {encoding}"
 
                 # use tools/sjis-escape.py for src/battle/area/tik2/area.c
                 if (
@@ -915,7 +906,9 @@ class Configure:
                             src_paths = [subseg.out_path().relative_to(ROOT)]
                             inc_dir = self.build_path() / "include" / subseg.dir
                             bin_path = (
-                                self.build_path() / subseg.dir / (subseg.name + ".png.bin")
+                                self.build_path()
+                                / subseg.dir
+                                / (subseg.name + ".png.bin")
                             )
 
                             build(
@@ -948,11 +941,15 @@ class Configure:
                                 "img_header",
                                 vars,
                             )
-                        elif isinstance(subseg, splat.segtypes.n64.palette.N64SegPalette):
+                        elif isinstance(
+                            subseg, splat.segtypes.n64.palette.N64SegPalette
+                        ):
                             src_paths = [subseg.out_path().relative_to(ROOT)]
                             inc_dir = self.build_path() / "include" / subseg.dir
                             bin_path = (
-                                self.build_path() / subseg.dir / (subseg.name + ".pal.bin")
+                                self.build_path()
+                                / subseg.dir
+                                / (subseg.name + ".pal.bin")
                             )
 
                             build(
@@ -1595,7 +1592,10 @@ class Configure:
                     task,
                     str(c_file),
                     implicit=[str(pch)],
-                    order_only=["generated_code_" + self.version, "inc_img_bins_" + self.version],
+                    order_only=[
+                        "generated_code_" + self.version,
+                        "inc_img_bins_" + self.version,
+                    ],
                     variables={
                         "version": self.version,
                         "cflags": "-fno-common -fvisibility=hidden",
@@ -1624,12 +1624,14 @@ class Configure:
                 },
             )
 
-            manifest_entries.append({
-                "name": name,
-                "type_index": type_index,
-                "ovl": str(ovl_path),
-                "debug_syms": str(debug_syms_path),
-            })
+            manifest_entries.append(
+                {
+                    "name": name,
+                    "type_index": type_index,
+                    "ovl": str(ovl_path),
+                    "debug_syms": str(debug_syms_path),
+                }
+            )
             implicit_deps.append(str(ovl_path))
 
         manifest_path = self.build_path() / "ovl" / "manifest.json"
@@ -1639,7 +1641,9 @@ class Configure:
 
         implicit_deps.append(str(BUILD_TOOLS / "overlay.py"))
         ninja.build(
-            str(self.rom_path()), "ovl_apply", str(self.base_rom_path()),
+            str(self.rom_path()),
+            "ovl_apply",
+            str(self.base_rom_path()),
             implicit=implicit_deps,
             variables={
                 "syms": str(self.syms_path()),
@@ -1876,6 +1880,7 @@ if __name__ == "__main__":
     # Fetch pre-built clangd index from the matching dx-* GitHub release.
     try:
         from clangd_index import fetch_clangd_index
+
         fetch_clangd_index(ROOT)
     except Exception:
         pass
@@ -1908,9 +1913,20 @@ if __name__ == "__main__":
 
     for top in ["src", "include", "assets"]:
         for dirpath, dirnames, _ in os.walk(ROOT / top):
-            configure_deps.append(str(Path(dirpath).relative_to(ROOT) if Path(dirpath).is_absolute() else dirpath))
+            configure_deps.append(
+                str(
+                    Path(dirpath).relative_to(ROOT)
+                    if Path(dirpath).is_absolute()
+                    else dirpath
+                )
+            )
 
-    ninja.build("build.ninja", "configure", str(BUILD_TOOLS / "configure.py"), implicit=configure_deps)
+    ninja.build(
+        "build.ninja",
+        "configure",
+        str(BUILD_TOOLS / "configure.py"),
+        implicit=configure_deps,
+    )
 
     # Generate compile_commands.json with MIPS cross-compiler flags stripped,
     # so clangd and clang-tidy can parse the compile commands.
@@ -1929,7 +1945,9 @@ if __name__ == "__main__":
                 entry["command"] = cross_cc_re.sub(r"\1cc", entry["command"])
                 parts = entry["command"].split()
                 entry["command"] = " ".join(p for p in parts if not strip_re.match(p))
-            (ROOT / "compile_commands.json").write_text(json.dumps(entries, indent=2) + "\n")
+            (ROOT / "compile_commands.json").write_text(
+                json.dumps(entries, indent=2) + "\n"
+            )
     except FileNotFoundError:
         pass  # ninja not installed
 
