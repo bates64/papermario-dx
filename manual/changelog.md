@@ -1,5 +1,0 @@
-# Changelog
-
-## `main`
-
-Hello, world!
