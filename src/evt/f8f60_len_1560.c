@@ -16,8 +16,8 @@ enum {
 API_CALLABLE(MakeLerp) {
     Bytecode* ptrReadPos = script->ptrReadPos;
 
-    script->varTableF[LERP_VAR_C] = evt_get_float_variable(script, *ptrReadPos++); // start
-    script->varTableF[LERP_VAR_D] = evt_get_float_variable(script, *ptrReadPos++); // end
+    script->varTable[LERP_VAR_C] = evt_get_variable(script, *ptrReadPos++); // start
+    script->varTable[LERP_VAR_D] = evt_get_variable(script, *ptrReadPos++); // end
     script->varTable[LERP_VAR_F] = evt_get_variable(script, *ptrReadPos++); // duration
     script->varTable[LERP_VAR_B] = evt_get_variable(script, *ptrReadPos++); // easing type
     script->varTable[LERP_VAR_E] = 0; // elapsed
@@ -26,10 +26,10 @@ API_CALLABLE(MakeLerp) {
 }
 
 API_CALLABLE(UpdateLerp) {
-    evt_set_float_variable(script, LocalVar(LERP_VAR_0), update_lerp(
+    evt_set_variable(script, LocalVar(LERP_VAR_0), update_lerp(
         script->varTable[LERP_VAR_B],
-        script->varTableF[LERP_VAR_C],
-        script->varTableF[LERP_VAR_D],
+        script->varTable[LERP_VAR_C],
+        script->varTable[LERP_VAR_D],
         script->varTable[LERP_VAR_E],
         script->varTable[LERP_VAR_F]
     ));

@@ -12,13 +12,13 @@ typedef struct SaveInfo {
 #define GLOBALS_PAGE_1 6
 #define GLOBALS_PAGE_2 7
 
-BSS SaveData FetchSaveBuffer;
+BSS SaveData FetchSaveBuffer ALIGNED8;
 BSS SaveInfo LogicalSaveInfo[4];  // 4 save slots presented to the player
 BSS SaveInfo PhysicalSaveInfo[6]; // 6 saves as represented on the EEPROM
 BSS s32 NextAvailablePhysicalSave;
 
-SaveGlobals gSaveGlobals;
-SaveData gCurrentSaveFile;
+SaveGlobals gSaveGlobals ALIGNED8;
+SaveData gCurrentSaveFile ALIGNED8;
 
 char MagicSaveString[] = "Mario Story 006";
 
@@ -240,6 +240,8 @@ b32 fio_read_flash(s32 pageNum, void* readBuffer, u32 numBytes) {
     s8* buf = (s8*)readBuffer;
     s32 amt;
     u16 i;
+
+    ASSERT_MSG(((u32)buf & 7) == 0, "fio_read_flash: dest not 8-byte aligned");
 
     osInvalDCache(buf, numBytes);
     osCreateMesgQueue(&mesgQueue, &mesg, 1);
