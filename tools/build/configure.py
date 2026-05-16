@@ -489,7 +489,7 @@ class Configure:
                 and most_parent.vram_class.name == "map"
             ):
                 if entry.object_path is not None:
-                    discard_objs.add(str(entry.object_path))
+                    discard_objs.add(posix(entry.object_path))
 
         if not discard_objs:
             return
@@ -1567,10 +1567,10 @@ class Configure:
 
             c_files = []
             if src_path.is_dir():
-                for c_file in src_path.glob("*.c"):
+                for c_file in sorted(src_path.glob("*.c")):
                     if not c_file.name.endswith(".inc.c"):
                         c_files.append(c_file)
-                for c_file in src_path.glob("*.cpp"):
+                for c_file in sorted(src_path.glob("*.cpp")):
                     if not c_file.name.endswith(".inc.c"):
                         c_files.append(c_file)
             else:

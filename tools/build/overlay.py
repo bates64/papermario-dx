@@ -1072,7 +1072,7 @@ def parse_debug_line(elf):
                     if file_idx < len(file_names):
                         fname = file_names[file_idx][0]
                         if fname.endswith(".c") or fname.endswith(".cpp"):
-                            basename = fname.rsplit("/", 1)[-1]
+                            basename = fname.replace("\\", "/").rsplit("/", 1)[-1]
                             results.append((address, basename, line))
                 elif opcode == 2:  # DW_LNS_advance_pc
                     adv, pos = _read_uleb128(data, pos)
@@ -1104,7 +1104,7 @@ def parse_debug_line(elf):
                 if file_idx < len(file_names):
                     fname = file_names[file_idx][0]
                     if fname.endswith(".c") or fname.endswith(".cpp"):
-                        basename = fname.rsplit("/", 1)[-1]
+                        basename = fname.replace("\\", "/").rsplit("/", 1)[-1]
                         results.append((address, basename, line))
 
         pos = unit_end

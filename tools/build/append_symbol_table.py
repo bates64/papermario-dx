@@ -29,7 +29,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
 
         # npc.c                                    120          0x8003910c               x
         elif len(parts) >= 4 and parts[2].startswith("0x"):
-            file_basename = parts[0]
+            file_basename = parts[0].replace("\\", "/").rsplit("/", 1)[-1]
             if not file_basename.endswith(".c") and not file_basename.endswith(".cpp"):
                 continue
             line_number = int(parts[1])
