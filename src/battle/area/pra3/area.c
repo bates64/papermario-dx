@@ -1,10 +1,7 @@
 #include "area.h"
 
-extern ActorBlueprint A(swoopula);
 extern ActorBlueprint A(duplighost);
 extern ActorBlueprint A(red_magikoopa);
-extern ActorBlueprint A(gray_magikoopa);
-extern ActorBlueprint A(white_clubba);
 
 extern Stage A(pra_01);
 extern Stage A(pra_02);
@@ -21,8 +18,8 @@ Vec3i A(pos_swoopula)[] = {
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_POS(A(swoopula), A(pos_swoopula)[0], 10),
-    ACTOR_BY_POS(A(swoopula), A(pos_swoopula)[1], 9),
+    OVL_ACTOR_BY_POS("swoopula", A(pos_swoopula)[0], 10),
+    OVL_ACTOR_BY_POS("swoopula", A(pos_swoopula)[1], 9),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_C, 8),
 };
 
@@ -51,12 +48,12 @@ Formation A(Formation_05) = {
 Formation A(Formation_06) = {
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_POS(A(swoopula), A(pos_swoopula)[2], 8),
+    OVL_ACTOR_BY_POS("swoopula", A(pos_swoopula)[2], 8),
 };
 
 Formation A(Formation_07) = {
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_POS(A(swoopula), A(pos_swoopula)[1], 9),
+    OVL_ACTOR_BY_POS("swoopula", A(pos_swoopula)[1], 9),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_C, 8),
 };
 
@@ -73,20 +70,20 @@ Formation A(Formation_09) = {
 
 Formation A(Formation_0A) = {
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(white_clubba), BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_0B) = {
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_A, 10),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(gray_magikoopa), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("gray_magikoopa", BTL_POS_GROUND_C, 8),
     ACTOR_BY_IDX(A(red_magikoopa), BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_0C) = {
-    ACTOR_BY_IDX(A(white_clubba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(white_clubba), BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("white_clubba", BTL_POS_GROUND_B, 9),
     ACTOR_BY_IDX(A(duplighost), BTL_POS_GROUND_C, 8),
 };
 

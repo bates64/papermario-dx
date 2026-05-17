@@ -6,7 +6,6 @@
 
 #define NAMESPACE A(lakitu)
 
-extern ActorBlueprint A(spiny);
 
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
@@ -390,7 +389,7 @@ EvtScript N(EVS_Attack_SpinyToss) = {
 Vec3i N(SummonPos) = { NPC_DISPOSE_LOCATION };
 
 Formation N(SpinyFormation) = {
-    ACTOR_BY_POS(A(spiny), N(SummonPos), 100, 1),
+    OVL_ACTOR_BY_POS("spiny", N(SummonPos), 100, 1),
 };
 
 EvtScript N(EVS_Move_SummonSpiny) = {

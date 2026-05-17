@@ -14,22 +14,6 @@ To get started, [read the docs](https://docs.starhaven.dev).
 [releases]: https://github.com/bates64/papermario-dx/releases
 [download]: https://github.com/bates64/papermario-dx/releases/download/latest/papermario.bps
 
-### List of changes (incomplete)
+### Stability
 
-- US release only (no JP, PAL, or iQue - none of these are near 100% yet).
-- Default configure flags: `--shift --modern-gcc --non-matching --ccache`
-- Backtrace (call stack) on crash screen including file names and line numbers.
-    - You can call [`debug_backtrace()`](src/dx/backtrace.h) to print a backtrace in any function.
-    - Failed assertions (`ASSERT`) will trigger the crash screen and print a backtrace instead of hanging.
-    - Backtraces provide filenames and line numbers for files with debug symbols (pass `--debug` to configure to enable for all files).
-- `assets/star_rod_build` directory for Star Rod to write assets to.
-- Fixed many bugs / incorrect behaviour.
-- Skip compiling or linking dead code.
-- Link with [libgcc_vr4300] to provide compiler intrinsics.
-- Added a debug/cheats menu.
-- Enemy HP is now a `s16`, increasing the cap to 32767.
-- Added support for badges with negative BP costs.
-- Additional features can be configured in [src/dx/config.h](src/dx/config.h).
-
-[libgcc_vr4300]: https://github.com/Decompollaborate/libgcc_vr4300
-
+Game functions and structs are available but have **no stability guarantees**. They may be renamed, removed, or changed in any release.

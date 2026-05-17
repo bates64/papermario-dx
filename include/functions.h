@@ -221,10 +221,14 @@ s32 disable_player_input(void);
 void func_80027088(s32);
 void set_time_freeze_mode(s32);
 
-NODISCARD s32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID);
+u32 hash_string(const char* str);
+
+NODISCARD b32 get_map_IDs_by_name(const char* mapName, s16* areaID, s16* mapID);
 
 /// Same as [`get_map_IDs_by_name`], but will panic if the map doesn't exist.
 void get_map_IDs_by_name_checked(const char* mapName, s16* areaID, s16* mapID);
+
+NODISCARD b32 get_map_IDs_by_hash(u32 hash, s16* areaID, s16* mapID);
 
 void transform_point(Matrix4f mtx, f32 inX, f32 inY, f32 inZ, f32 inS, f32* outX, f32* outY, f32* outZ, f32* outW);
 void try_player_footstep_sounds(s32 arg0);

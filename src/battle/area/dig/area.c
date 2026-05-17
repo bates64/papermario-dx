@@ -1,10 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(fuzzy);
-extern ActorBlueprint A(monty_mole);
-extern ActorBlueprint A(pokey);
-extern ActorBlueprint A(bandit);
-extern ActorBlueprint A(red_shy_guy);
 extern ActorBlueprint A(tubba_blubba);
 
 extern Stage A(nok_04);
@@ -20,29 +15,29 @@ extern EvtScript A(dig_04_script);
 extern EvtScript A(dig_05_script);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(fuzzy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("fuzzy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(monty_mole), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(monty_mole), BTL_POS_GROUND_C, 9),
-    ACTOR_BY_IDX(A(monty_mole), BTL_POS_GROUND_D, 8),
+    OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("monty_mole", BTL_POS_GROUND_D, 8),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(pokey), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(bandit), BTL_POS_GROUND_C, 9),
-    ACTOR_BY_IDX(A(pokey), BTL_POS_GROUND_D, 8),
+    OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("bandit", BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("pokey", BTL_POS_GROUND_D, 8),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(red_shy_guy), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("red_shy_guy", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_04) = {

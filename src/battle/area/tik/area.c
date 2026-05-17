@@ -1,14 +1,5 @@
 #include "area.h"
 
-extern ActorBlueprint A(dark_koopa);
-extern ActorBlueprint A(dark_paratroopa);
-extern ActorBlueprint A(gloomba);
-extern ActorBlueprint A(spiked_gloomba);
-extern ActorBlueprint A(paragloomba);
-extern ActorBlueprint A(buzzy_beetle);
-extern ActorBlueprint A(spike_top);
-extern ActorBlueprint A(spiny);
-
 extern Stage A(tik_01);
 extern Stage A(tik_02);
 extern Stage A(tik_03);
@@ -16,153 +7,153 @@ extern Stage A(tik_04);
 extern Stage A(tik_05);
 
 Formation A(Formation_00) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_02) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_03) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_04) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_05) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_06) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_07) = {
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(dark_koopa), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("dark_koopa", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_08) = {
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_C, 9),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 9),
 };
 
 Formation A(Formation_09) = {
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(dark_paratroopa), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("dark_paratroopa", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0A) = {
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0B) = {
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_0C) = {
-    ACTOR_BY_IDX(A(paragloomba), BTL_POS_AIR_A, 10),
-    ACTOR_BY_IDX(A(paragloomba), BTL_POS_AIR_B, 9),
-    ACTOR_BY_IDX(A(paragloomba), BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_A, 10),
+    OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_B, 9),
+    OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_C, 8),
 };
 
 Formation A(Formation_0D) = {
-    ACTOR_BY_IDX(A(paragloomba), BTL_POS_AIR_B, 10),
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0E) = {
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_0F) = {
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(gloomba), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("gloomba", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_10) = {
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_11) = {
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_12) = {
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(paragloomba), BTL_POS_AIR_C, 8),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("paragloomba", BTL_POS_AIR_C, 8),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_13) = {
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_D, 7),
 };
 
 Formation A(Formation_14) = {
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(spike_top), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("spike_top", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_15) = {
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spiked_gloomba), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(buzzy_beetle), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spiked_gloomba", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("buzzy_beetle", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_16) = {
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_B, 10),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_C, 9),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 10),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 9),
 };
 
 Formation A(Formation_17) = {
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
 };
 
 Formation A(Formation_18) = {
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_A, 10),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_B, 9),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_C, 8),
-    ACTOR_BY_IDX(A(spiny), BTL_POS_GROUND_D, 7),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_A, 10),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_B, 9),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_C, 8),
+    OVL_ACTOR_BY_IDX("spiny", BTL_POS_GROUND_D, 7),
 };
 
 BattleList A(Formations) = {

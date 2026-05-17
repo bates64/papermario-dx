@@ -144,7 +144,6 @@ void state_init_unpause(void) {
 
 void state_step_unpause(void) {
     MapSettings* mapSettings;
-    MapConfig* mapConfig;
     void* mapShape;
     u32 assetSize;
 
@@ -166,7 +165,6 @@ void state_step_unpause(void) {
                     pause_cleanup();
                     gOverrideFlags &= ~GLOBAL_OVERRIDES_DISABLE_DRAW_FRAME;
                     mapSettings = get_current_map_settings();
-                    mapConfig = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
                     gGameStatusPtr->context = CONTEXT_WORLD;
                     gGameStatusPtr->backgroundFlags &= ~BACKGROUND_RENDER_STATE_MASK;
                     func_8005AF84();
@@ -195,13 +193,9 @@ void state_step_unpause(void) {
                     initialize_collision();
                     restore_map_collision_data();
 
-                    if (mapConfig->dmaStart != nullptr) {
-                        dma_copy(mapConfig->dmaStart, mapConfig->dmaEnd, mapConfig->dmaDest);
-                    }
-
-                    load_map_bg(mapConfig->bgName);
-                    if (mapSettings->background != nullptr) {
-                        set_background(mapSettings->background);
+                    if (mapSettings->bgName != nullptr) {
+                        load_map_bg(wMapBgName);
+                        set_background(&gBackgroundImage);
                     } else {
                         set_background_size(SCREEN_XMAX - SCREEN_XMIN, SCREEN_YMAX - SCREEN_YMIN,
                             SCREEN_INSET_X, SCREEN_INSET_Y);

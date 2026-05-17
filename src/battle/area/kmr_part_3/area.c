@@ -6,7 +6,6 @@ extern ActorBlueprint A(para_jr_troopa);
 extern ActorBlueprint A(spiked_para_jr_troopa);
 extern ActorBlueprint A(mage_jr_troopa);
 extern ActorBlueprint A(final_jr_troopa);
-extern ActorBlueprint A(paragoomba);
 extern ActorBlueprint A(tutorial_paragoomba);
 extern ActorBlueprint A(tutorial_spiked_goomba);
 
@@ -26,7 +25,7 @@ Formation A(Formation_00) = {
 };
 
 Formation A(Formation_01) = {
-    ACTOR_BY_IDX(A(paragoomba), BTL_POS_AIR_B, 10),
+    OVL_ACTOR_BY_IDX("paragoomba", BTL_POS_AIR_B, 10),
     ACTOR_BY_IDX(A(tutorial_paragoomba), BTL_POS_AIR_C, 9),
 };
 
