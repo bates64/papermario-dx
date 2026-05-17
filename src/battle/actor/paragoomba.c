@@ -29,8 +29,8 @@ enum N(ActorPartIDs) {
 };
 
 enum N(ActorParams) {
-    DMG_SKY_DIVE        = 2,
-    DMG_HEADBONK        = 2,
+    DMG_SKY_DIVE        = 1,
+    DMG_HEADBONK        = 1,
 };
 
 s32 N(DownedDefense)[] = {
@@ -43,18 +43,18 @@ s32 N(FlyingDefense)[] = {
     ELEMENT_END,
 };
 
-s32 N(DownedFlyingStatusTable)[] = {
+s32 N(DownedStatusTable)[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
-    STATUS_KEY_SLEEP,              70,
+    STATUS_KEY_SLEEP,             100,
     STATUS_KEY_POISON,            100,
     STATUS_KEY_FROZEN,            100,
-    STATUS_KEY_DIZZY,              80,
+    STATUS_KEY_DIZZY,             100,
     STATUS_KEY_UNUSED,            100,
     STATUS_KEY_STATIC,            100,
-    STATUS_KEY_PARALYZE,           90,
-    STATUS_KEY_SHRINK,             80,
-    STATUS_KEY_STOP,               90,
+    STATUS_KEY_PARALYZE,          100,
+    STATUS_KEY_SHRINK,            100,
+    STATUS_KEY_STOP,              100,
     STATUS_TURN_MOD_DEFAULT,        0,
     STATUS_TURN_MOD_SLEEP,          0,
     STATUS_TURN_MOD_POISON,         0,
@@ -71,15 +71,15 @@ s32 N(DownedFlyingStatusTable)[] = {
 s32 N(FlyingStatusTable)[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
-    STATUS_KEY_SLEEP,              70,
+    STATUS_KEY_SLEEP,             100,
     STATUS_KEY_POISON,             80,
     STATUS_KEY_FROZEN,            100,
-    STATUS_KEY_DIZZY,              90,
-    STATUS_KEY_UNUSED,      80,
+    STATUS_KEY_DIZZY,             100,
+    STATUS_KEY_UNUSED,             80,
     STATUS_KEY_STATIC,             80,
-    STATUS_KEY_PARALYZE,           90,
-    STATUS_KEY_SHRINK,             80,
-    STATUS_KEY_STOP,               90,
+    STATUS_KEY_PARALYZE,          100,
+    STATUS_KEY_SHRINK,            100,
+    STATUS_KEY_STOP,              100,
     STATUS_TURN_MOD_DEFAULT,        0,
     STATUS_TURN_MOD_SLEEP,          0,
     STATUS_TURN_MOD_POISON,         0,
@@ -148,15 +148,15 @@ export ActorBlueprint blueprint = {
     .flags = ACTOR_FLAG_FLYING,
     .type = ACTOR_TYPE_PARAGOOMBA,
     .level = ACTOR_LEVEL_PARAGOOMBA,
-    .maxHP = 7,
+    .maxHP = 2,
     .partCount = ARRAY_COUNT(N(ActorParts)),
     .partsData = N(ActorParts),
     .initScript = &N(EVS_Flying_Init),
     .statusTable = N(FlyingStatusTable),
-    .escapeChance = 65,
-    .airLiftChance = 95,
-    .hurricaneChance = 90,
-    .spookChance = 80,
+    .escapeChance = 90,
+    .airLiftChance = 100,
+    .hurricaneChance = 100,
+    .spookChance = 100,
     .upAndAwayChance = 95,
     .spinSmashReq = 0,
     .powerBounceChance = 100,
@@ -553,7 +553,7 @@ EvtScript N(EVS_KnockDown) = {
     Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_Goomba_Idle)
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_FLYING, false)
     Call(SetStatusTable, ACTOR_SELF, Ref(N(DownedFlyingStatusTable)))
-    Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_GLOOMBA)
+    Call(SetActorType, ACTOR_SELF, ACTOR_TYPE_GOOMBA)
     ExecWait(N(EVS_Downed_Init))
     Call(SetActorFlagBits, ACTOR_SELF, ACTOR_FLAG_TYPE_CHANGED, true)
     Call(HPBarToHome, ACTOR_SELF)
