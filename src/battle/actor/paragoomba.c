@@ -43,7 +43,7 @@ s32 N(FlyingDefense)[] = {
     ELEMENT_END,
 };
 
-s32 N(DownedStatusTable)[] = {
+s32 N(DownedFlyingStatusTable)[] = {
     STATUS_KEY_NORMAL,              0,
     STATUS_KEY_DEFAULT,             0,
     STATUS_KEY_SLEEP,             100,
