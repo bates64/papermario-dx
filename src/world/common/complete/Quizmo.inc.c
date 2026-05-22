@@ -575,22 +575,22 @@ EvtScript N(EVS_Quizmo_SetQuizCamera) = {
     Call(N(Quizmo_GetCamVfov), 0, QUIZ_ARRAY_SAVED_FOV)
     Call(N(Quizmo_SetCamVfov), 0, 25) //TODO
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    Call(SetPanTarget, 0, LVar0, LVar1, LVar2)
-    Call(UseSettingsFrom, 0, LVar0, LVar1, LVar2)
-    Call(GetCamType, 0, LVar1, LVar2)
-    Call(SetCamType, 0, LVar1, 0)
-    Call(GetCamDistance, 0, LVar0)
+    Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
+    Call(GetCamType, CAM_DEFAULT, LVar1, LVar2)
+    Call(SetCamType, CAM_DEFAULT, LVar1, 0)
+    Call(GetCamDistance, CAM_DEFAULT, LVar0)
     IfGt(LVar0, 0)
         SetF(LVar0, 370)
     Else
         SetF(LVar0, -370)
     EndIf
-    Call(SetCamDistance, 0, LVar0)
-    Call(GetCamPitch, 0, LVar0, LVar1)
+    Call(SetCamDistance, CAM_DEFAULT, LVar0)
+    Call(GetCamPitch, CAM_DEFAULT, LVar0, LVar1)
     SetF(LVar0, Float(13.0))
     SetF(LVar1, Float(-10.0))
-    Call(SetCamPitch, 0, LVar0, LVar1)
-    Call(PanToTarget, 0, 0, true)
+    Call(SetCamPitch, CAM_DEFAULT, LVar0, LVar1)
+    Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Return
     End

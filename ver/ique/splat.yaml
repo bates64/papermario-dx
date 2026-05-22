@@ -50,7 +50,7 @@ segments:
     - [auto, c, background_gfx]
     - [auto, c, input]
     - [auto, c, rumble]
-    - [auto, c, 43F0]
+    - [auto, c, math_util]
     - [auto, c, heap]
     - [auto, c, fio]
     - [auto, c, curtains]
@@ -346,7 +346,7 @@ segments:
     - [auto, c, global_hud_scripts]
     - [auto, c, world/surfaces]
     - [auto, c, status_star_shimmer]
-    - [auto, c, 8a860_len_3f30]
+    - [auto, c, popup_menu]
     - [auto, c, draw_box]
     - start: 0x90570
       type: .data
