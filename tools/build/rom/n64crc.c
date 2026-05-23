@@ -191,34 +191,22 @@ int main(int argc, char **argv) {
 
 	//Check CIC BootChip
 	cic = N64GetCIC(buffer);
-	printf("BootChip: ");
-	printf((cic ? "CIC-NUS-%d\n" : "Unknown\n"), cic);
 
 	//Calculate CRC
 	if (N64CalcCRC(crc, buffer)) {
 		printf("Unable to calculate CRC\n");
 	}
 	else {
-		printf("CRC 1: 0x%08X  ", BYTES2LONG(&buffer[N64_CRC1]));
-		printf("Calculated: 0x%08X ", crc[0]);
-		if (crc[0] == BYTES2LONG(&buffer[N64_CRC1]))
-			printf("(Good)\n");
-		else{
+		if (crc[0] != BYTES2LONG(&buffer[N64_CRC1])) {
 			Write32(buffer, N64_CRC1, crc[0]);
 			fseek(fin, N64_CRC1, SEEK_SET);
 			fwrite(&buffer[N64_CRC1], 1, 4, fin);
-			printf("(Fixed)\n");
 		}
 
-		printf("CRC 2: 0x%08X  ", BYTES2LONG(&buffer[N64_CRC2]));
-		printf("Calculated: 0x%08X ", crc[1]);
-		if (crc[1] == BYTES2LONG(&buffer[N64_CRC2]))
-			printf("(Good)\n");
-		else{
+		if (crc[1] != BYTES2LONG(&buffer[N64_CRC2])) {
 			Write32(buffer, N64_CRC2, crc[1]);
 			fseek(fin, N64_CRC2, SEEK_SET);
 			fwrite(&buffer[N64_CRC2], 1, 4, fin);
-			printf("(Fixed)\n");
 		}
 	}
 

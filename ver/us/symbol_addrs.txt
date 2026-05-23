@@ -818,7 +818,6 @@ remove_all_effects = 0x8005A4E0; // type:func rom:0x358E0
 load_effect = 0x8005A564; // type:func rom:0x35964
 load_map_script_lib = 0x8005A6C0; // type:func rom:0x35AC0
 load_map_by_IDs = 0x8005A6F4; // type:func rom:0x35AF4
-get_current_map_config = 0x8005ABD8; // type:func rom:0x35FD8
 get_current_map_settings = 0x8005ABE8; // type:func rom:0x35FE8
 get_map_IDs_by_name = 0x8005ABF8; // type:func rom:0x35FF8
 load_asset_by_name = 0x8005ACE8; // type:func rom:0x360E8

@@ -152,8 +152,7 @@ typedef struct SaveData {
     /* 0x0038 */ s32 saveSlot;
     /* 0x003C */ s32 saveCount;
     /* 0x0040 */ PlayerData player;
-    /* 0x0468 */ s16 areaID;
-    /* 0x046A */ s16 mapID;
+    /* 0x0468 */ u32 mapHash;
     /* 0x046C */ s16 entryID;
     /* 0x046E */ unsigned char unk_46E[2];
     /* 0x0470 */ s32 enemyDefeatFlags[60][12];

@@ -52,9 +52,7 @@ s32 bgm_get_map_default_variation(s32 songID) {
 
     for (i = 0; i < ARRAY_COUNT(SongsUsingVariationFlag); i++) {
         if (SongsUsingVariationFlag[i] == songID) {
-            MapConfig* map = &gAreas[gGameStatusPtr->areaID].maps[gGameStatusPtr->mapID];
-
-            return map->songVariation & 1;
+            return get_current_map_settings()->songVariation & 1;
         }
     }
 

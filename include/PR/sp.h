@@ -125,16 +125,20 @@ typedef struct sprite Sprite;
  * Misc constants
  */
 
+#ifndef __cplusplus
 #ifndef nullptr
 #define nullptr			0
 #endif
+#endif
 
+#ifndef __cplusplus
 #ifndef true
 #define true			1
 #endif
 
 #ifndef false
 #define false			0
+#endif
 #endif
 
 /*

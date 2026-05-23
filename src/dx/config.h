@@ -1,5 +1,4 @@
-#ifndef DX
-#define DX
+#pragma once
 
 /// Creates the version string that appears on the file select menu.
 /// Also used to sign save files created with this mod.
@@ -39,9 +38,7 @@
 
 /// Enables the profiler, which shows lots of performance info on screen.
 /// Press L + D-Pad Up to show/hide the profiler.
-#define USE_PROFILER 1
+#define USE_PROFILER 0
 
 /// Skip laggy blur operations when opening the pause menu on emulator
 #define DX_PAUSE_LAG_FIX 1
-
-#endif
