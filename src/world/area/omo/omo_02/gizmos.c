@@ -70,14 +70,16 @@ s32 N(RockingHorseModels)[] = {
     MODEL_o569,
 };
 
-#define ROCKING_SOUND_LOCATION -706.0f, 0.0f, 102.0f
-#import "../common/RockingHorse.inc.c"
+#include "../common/RockingHorse.inc.c"
 
 EvtScript N(EVS_SetupGizmos) = {
     Exec(N(EVS_Gizmos_Wheels))
     Exec(N(EVS_Gizmos_Shutters))
     Exec(N(EVS_Gizmos_Empty1))
     Exec(N(EVS_Gizmos_Empty2))
+    Set(LVarA, -706)
+    Set(LVarB, 0)
+    Set(LVarC, 102)
     Exec(N(EVS_Gizmos_RockingHorses))
     Wait(1)
     Return
