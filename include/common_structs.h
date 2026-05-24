@@ -1860,6 +1860,7 @@ typedef struct Actor {
     /* 0x000 */ s32 flags;
     /* 0x004 */ s32 flags2;
     /* 0x008 */ struct ActorBlueprint* actorBlueprint;
+    /*       */ struct Overlay* overlay;
     /* 0x00C */ ActorState state;
     /* 0x0C8 */ ActorMovement fly;
     /* 0x124 */ char unk_124[16];

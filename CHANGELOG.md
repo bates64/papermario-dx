@@ -21,6 +21,8 @@ First versioned release. The following changes are relative to [vanilla Paper Ma
     - Backtraces provide filenames and line numbers for files with debug symbols.
 - `assets/star_rod_build` directory for Star Rod to write assets to.
 - Link with [libgcc_vr4300] to provide compiler intrinsics.
+- EVT script instructions `ExecOnActor` and `ExecWaitOnActor`, which are similar to `Exec` and `ExecWait` but execute the script as a specific actor.
+- EVT API function `DoesActorExport` to query whether an actor's overlay exports a symbol.
 
 ### Changed
 

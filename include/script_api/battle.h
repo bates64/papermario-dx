@@ -1602,6 +1602,32 @@ API_CALLABLE(CancelEnemyTurn);
 /// @param event
 API_CALLABLE(DispatchEventPlayer);
 
+/// @evtapi
+/// @param actor
+/// @param symbolName
+/// @param outResult
+///
+/// Checks whether the given actor's overlay exports a symbol with the given name.
+///
+/// For example, this will exec an exported `EVS_OnHit` script on `ACTOR_ENEMY0` if it has one:
+/// ```
+/// Call(DoesActorExport, ACTOR_ENEMY0, "EVS_OnHit", LVar0)
+/// IfTrue(LVar0)
+///     ExecOnActor(ACTOR_ENEMY0, "EVS_OnHit")
+/// EndIf
+/// ```
+API_CALLABLE(DoesActorExport);
+
+/// Runs an EVT script exported by the given actor's overlay, as that actor,
+/// without waiting for it to finish.
+#define ExecOnActor(actor, scriptName) Call(ExecOnActor_impl, actor, (Bytecode)(scriptName))
+API_CALLABLE(ExecOnActor_impl);
+
+/// Runs an EVT script exported by the given actor's overlay, as that actor,
+/// and waits for it to finish.
+#define ExecWaitOnActor(actor, scriptName) Call(ExecWaitOnActor_impl, actor, (Bytecode)(scriptName))
+API_CALLABLE(ExecWaitOnActor_impl);
+
 extern EvtScript EVS_Mario_HandlePhase;
 extern EvtScript EVS_Peach_HandlePhase;
 extern EvtScript EVS_ExecuteMarioAction;

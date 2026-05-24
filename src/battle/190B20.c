@@ -1426,11 +1426,12 @@ Actor* create_actor(Formation formation) {
         z = formation->home.vec->z;
     }
 
+    Overlay* ovl = nullptr;
     if (formation->actor != nullptr) {
         formationActor = formation->actor;
     } else if (formation->overlay != nullptr) {
-        Overlay* mod = ovl_load(formation->overlay, OVL_ACTOR);
-        formationActor = ovl_import(mod, "blueprint");
+        ovl = ovl_load(formation->overlay, OVL_ACTOR);
+        formationActor = ovl_import(ovl, "blueprint");
         ASSERT_MSG(formationActor != nullptr, "Actor '%s' does not export 'blueprint'", formation->overlay);
     } else {
         PANIC();
@@ -1451,6 +1452,7 @@ Actor* create_actor(Formation formation) {
     actor->ordinal = battleStatus->nextActorOrdinal++;
     actor->footStepCounter = 0;
     actor->actorBlueprint = formationActor;
+    actor->overlay = ovl;
     actor->actorType = formationActor->type;
     actor->flags = formationActor->flags;
     actor->homePos.x = actor->curPos.x = x;
