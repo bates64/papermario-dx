@@ -11,7 +11,6 @@ GuardAISettings N(AISettings_ShyGuy_Guard) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 50.0f,
-    .unk_AI_20 = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy_Guard) = {

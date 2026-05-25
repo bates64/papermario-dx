@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_BuzzyBeetle) = {
     .chaseSpeed = 4.5f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 40.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BuzzyBeetle) = {
@@ -35,7 +35,7 @@ MobileAISettings N(AISettings_SpikeTop) = {
     .chaseSpeed = 7.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 40.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_SpikeTop) = {
@@ -56,7 +56,7 @@ MobileAISettings N(AISettings_BonyBeetle) = {
     .playerSearchInterval = 3,
     .chaseSpeed = 6.0f,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BonyBeetle) = {

@@ -49,7 +49,7 @@ MobileAISettings N(AISettings_Clubba_Wander) = {
     .chaseUpdateInterval = 12,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 90.0f,
-    .unk_AI_2C = 3,
+    .loiterMode = 3,
 };
 
 EvtScript N(EVS_NpcAI_Clubba_Wander) = {
@@ -89,7 +89,7 @@ MobileAISettings N(AISettings_Clubba_Patrol) = {
     .chaseUpdateInterval = 12,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 90.0f,
-    .unk_AI_2C = 3,
+    .loiterMode = 3,
 };
 
 EvtScript N(EVS_NpcAI_Clubba_Patrol) = {
@@ -129,7 +129,7 @@ MobileAISettings N(AISettings_Clubba_Napping) = {
     .chaseUpdateInterval = 15,
     .chaseRadius = 200.0f,
     .chaseOffsetDist = 160.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Clubba_Napping) = {

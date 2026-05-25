@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_RuffPuff) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 120.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_RuffPuff) = {

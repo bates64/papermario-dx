@@ -139,7 +139,7 @@ MobileAISettings N(AISettings_StoneChomp) = {
     .chaseTurnRate = 70,
     .chaseUpdateInterval = 10,
     .chaseRadius = 500.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_StoneChomp) = {

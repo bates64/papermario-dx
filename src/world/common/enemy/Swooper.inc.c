@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_Swooper) = {
     .chaseTurnRate = 60,
     .chaseUpdateInterval = 15,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Swooper) = {
@@ -31,7 +31,7 @@ MobileAISettings N(AISettings_Swoopula) = {
     .chaseTurnRate = 60,
     .chaseUpdateInterval = 15,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Swoopula) = {

@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_HyperGoomba) = {
     .chaseTurnRate = 70,
     .chaseUpdateInterval = 1,
     .chaseRadius = 180.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_HyperGoomba) = {

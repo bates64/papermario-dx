@@ -22,7 +22,7 @@ MobileAISettings N(AISettings_Short) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Short) = {
@@ -47,7 +47,7 @@ MobileAISettings N(AISettings_Koopa) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa) = {
@@ -72,7 +72,7 @@ MobileAISettings N(AISettings_ShyGuy) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy) = {

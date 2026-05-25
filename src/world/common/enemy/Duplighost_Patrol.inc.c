@@ -10,7 +10,7 @@ MobileAISettings N(AISettings_Duplighost_Patrol) = {
     .chaseTurnRate = 30,
     .chaseUpdateInterval = 3,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Duplighost_Patrol) = {

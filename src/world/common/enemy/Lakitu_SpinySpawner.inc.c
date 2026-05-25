@@ -15,7 +15,7 @@ MobileAISettings N(AISettings_Lakitu_SpinySpawner) = {
     .chaseUpdateInterval = 10,
     .chaseRadius = 80.0f,
     .chaseOffsetDist = 70.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Lakitu_SpinySpawner) = {
@@ -52,7 +52,7 @@ MobileAISettings N(AISettings_SpawnedSpiny) = {
     .chaseSpeed = 6.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 3,
+    .loiterMode = 3,
 };
 
 EvtScript N(EVS_NpcAI_SpawnedSpiny) = {

@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_CrazyDayzee) = {
     .chaseUpdateInterval = 3,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_CrazyDayzee) = {

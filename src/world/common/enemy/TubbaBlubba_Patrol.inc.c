@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_Tubba_Patrol) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 170.0f,
     .chaseOffsetDist = 90.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Tubba_Patrol) = {

@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_ShyGuy_Patrol) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 50.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy_Patrol) = {

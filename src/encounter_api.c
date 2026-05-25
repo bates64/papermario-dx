@@ -161,7 +161,7 @@ API_CALLABLE(DoNpcDefeat) {
     Evt* newScript;
 
     kill_script(script);
-    npc->curAnim = owner->animList[6];
+    npc->curAnim = owner->animList[ENEMY_ANIM_INDEX_DEATH];
     newScript = start_script(&EVS_NpcDefeat, EVT_PRIORITY_A, 0);
     owner->defeatScript = newScript;
     owner->defeatScriptID = newScript->id;

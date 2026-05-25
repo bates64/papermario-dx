@@ -7,7 +7,7 @@ MobileAISettings N(AISettings_SpearGuy_Patrol) = {
     .moveTime = 30,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_SpearGuy_Patrol) = {

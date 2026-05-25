@@ -68,7 +68,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                 w = 1000.0f;
                 npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &w);
                 npc->moveToPos.y = y + temp_f24;
-                script->functionTemp[0] = 12;
+                script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
                 return;
             }
         }
@@ -105,10 +105,10 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                 return;
             }
         }
-        script->functionTemp[0] = 2;
+        script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
         script->functionTemp[1] = (rand_int(1000) % 3) + 2;
-        if ((aiSettings->unk_AI_2C <= 0) || (aiSettings->moveTime <= 0) || (script->functionTemp[1] == 0)) {
-            script->functionTemp[0] = 0;
+        if ((aiSettings->loiterMode <= 0) || (aiSettings->moveTime <= 0) || (script->functionTemp[1] == 0)) {
+            script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         }
     }
 }

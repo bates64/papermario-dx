@@ -9,7 +9,7 @@ MobileAISettings N(AISettings_Ninji_Wander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Ninji_Wander) = {
@@ -30,7 +30,7 @@ MobileAISettings N(AISettings_ShiverToad_Wander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShiverToad_Wander) = {

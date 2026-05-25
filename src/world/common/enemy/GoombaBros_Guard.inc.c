@@ -9,7 +9,6 @@ GuardAISettings N(AISettings_GoombaBros_Guard) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 3,
     .chaseRadius = 150.0f,
-    .unk_AI_20 = 1,
 };
 
 EvtScript N(EVS_NpcAI_GoombaBros_Guard) = {

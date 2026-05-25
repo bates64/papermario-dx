@@ -26,7 +26,7 @@ MobileAISettings N(AISettings_Magikoopa) = {
     .chaseTurnRate = 90,
     .chaseUpdateInterval = 15,
     .chaseRadius = 200.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Magikoopa) = {

@@ -12,7 +12,6 @@ GuardAISettings N(AISettings_Bobomb_Guard) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 65.0f,
-    .unk_AI_20 = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bobomb_Guard) = {

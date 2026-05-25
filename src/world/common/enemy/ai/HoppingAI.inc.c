@@ -96,7 +96,7 @@ void N(HoppingAI_Hop)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
 
-            if (aiSettings->unk_AI_2C <= 0) {
+            if (aiSettings->loiterMode <= 0) {
                 script->AI_TEMP_STATE = AI_STATE_HOP_INIT;
             } else if (aiSettings->moveTime <= 0) {
                 script->AI_TEMP_STATE = AI_STATE_HOP_INIT;

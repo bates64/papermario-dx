@@ -16,7 +16,7 @@ EvtScript N(EVS_NpcAI_BillBlaster) = {
 
 MobileAISettings N(AISettings_BulletBill) = {
     .chaseSpeed = 3.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BulletBill) = {
@@ -40,7 +40,7 @@ EvtScript N(EVS_NpcAI_BombshellBlaster) = {
 
 MobileAISettings N(AISettings_BombshellBill) = {
     .chaseSpeed = 7.3f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BombshellBill) = {

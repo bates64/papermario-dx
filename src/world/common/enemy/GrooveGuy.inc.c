@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_GrooveGuy) = {
     .chaseTurnRate = 20,
     .chaseUpdateInterval = 1,
     .chaseRadius = 140.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_GrooveGuy) = {

@@ -62,7 +62,7 @@ MobileAISettings N(AISettings_Bandit) = {
     .chaseUpdateInterval = 100,
     .chaseRadius = 550.0f,
     .chaseOffsetDist = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bandit) = {

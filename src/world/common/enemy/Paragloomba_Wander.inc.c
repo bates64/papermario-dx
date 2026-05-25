@@ -10,7 +10,7 @@ MobileAISettings N(AISettings_Paragloomba_Wander) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 2,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Paragloomba_Wander) = {

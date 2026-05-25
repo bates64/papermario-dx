@@ -120,7 +120,7 @@ MobileAISettings N(AISettings_Tubba) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 80.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 #include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"

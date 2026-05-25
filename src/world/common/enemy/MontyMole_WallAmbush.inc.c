@@ -33,7 +33,7 @@ MobileAISettings N(AISettings_MontyMole_WallAmbush) = {
     .chaseUpdateInterval = 25,
     .chaseRadius = 120.0f,
     .chaseOffsetDist = 70.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_MontyMole_WallAmbush) = {

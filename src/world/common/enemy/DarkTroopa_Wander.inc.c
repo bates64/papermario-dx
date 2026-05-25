@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_DarkTroopa_Wander) = {
     .chaseSpeed = 9.0f,
     .chaseRadius = 90.0f,
     .chaseOffsetDist = 70.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_DarkTroopa_Wander) = {

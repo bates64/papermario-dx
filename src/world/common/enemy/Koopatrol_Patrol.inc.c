@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_Koopatrol_Patrol) = {
     .chaseSpeed = 11.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 60.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Koopatrol_Patrol) = {

@@ -101,7 +101,7 @@ typedef struct MobileAISettings {
     /* 0x20 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
     /* 0x24 */ f32 chaseRadius;
     /* 0x28 */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for chase volume overlap, creates directionality to enemy 'sight'
-    /* 0x2C */ s32 unk_AI_2C;               // probably a boolean for enable loitering after a wander movement
+    /* 0x2C */ s32 loiterMode;              // enable loitering after movement when > 0
 } MobileAISettings; // size = 0x30
 
 typedef struct GuardAISettings {
@@ -113,8 +113,7 @@ typedef struct GuardAISettings {
     /* 0x14 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
     /* 0x18 */ f32 chaseRadius;
     /* 0x1C */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for alert volume overlap, creates directionality to enemy 'sight'
-    /* 0x20 */ s32 unk_AI_20;               // probably equivalent to unk_AI_2C in MobileAISettings
-} GuardAISettings; // size = 0x24
+} GuardAISettings; // size = 0x20
 
 struct FireBarData;
 typedef void (*FireBarCallback)(struct FireBarData*, s32);

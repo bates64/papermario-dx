@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_KoopaTroopa_Wander) = {
     .chaseSpeed = 7.5f,
     .chaseRadius = 80.0f,
     .chaseOffsetDist = 60.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa_Wander) = {

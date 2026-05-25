@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_LavaBubble) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_LavaBubble) = {

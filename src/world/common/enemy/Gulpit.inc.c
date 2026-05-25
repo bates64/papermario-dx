@@ -14,7 +14,7 @@ MobileAISettings N(AISettings_Gulpit) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 20,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Gulpit) = {

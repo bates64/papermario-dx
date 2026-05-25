@@ -617,7 +617,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
         if (npc->duration <= 0) {
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = rand_int(1000) % 3 + 2;
-            if (aiSettings->unk_AI_2C <= 0 || aiSettings->waitTime <= 0) {
+            if (aiSettings->loiterMode <= 0 || aiSettings->waitTime <= 0) {
                 script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
             }
         }

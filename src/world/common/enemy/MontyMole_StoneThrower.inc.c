@@ -30,7 +30,7 @@ MobileAISettings N(AISettings_MontyMole_StoneThrower) = {
     .playerSearchInterval = 2,
     .chaseSpeed = 7.5f,
     .chaseRadius = 110.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_MontyMole_StoneThrower) = {

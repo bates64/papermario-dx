@@ -49,7 +49,7 @@ MobileAISettings N(AISettings_FrostClubba_Wander) = {
     .chaseUpdateInterval = 15,
     .chaseRadius = 200.0f,
     .chaseOffsetDist = 160.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_FrostClubba_Wander) = {
@@ -87,7 +87,7 @@ MobileAISettings N(AISettings_FrostClubba_Patrol) = {
     .chaseUpdateInterval = 10,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 50.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_FrostClubba_Patrol) = {
@@ -127,7 +127,7 @@ MobileAISettings N(AISettings_FrostClubba_Napping) = {
     .chaseUpdateInterval = 15,
     .chaseRadius = 200.0f,
     .chaseOffsetDist = 160.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_FrostClubba_Napping) = {

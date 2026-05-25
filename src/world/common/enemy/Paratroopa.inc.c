@@ -14,7 +14,7 @@ MobileAISettings N(AISettings_ParaTroopa) = {
     .chaseUpdateInterval = 10,
     .chaseRadius = 150.0f,
     .chaseOffsetDist = 20.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ParaTroopa) = {

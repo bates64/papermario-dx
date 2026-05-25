@@ -81,7 +81,7 @@ void N(PatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
         if (dist2D(npc->pos.x, npc->pos.z, x, z) <= npc->moveSpeed) {
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
-            if ((aiSettings->unk_AI_2C <= 0) || (aiSettings->moveTime <= 0) ||
+            if ((aiSettings->loiterMode <= 0) || (aiSettings->moveTime <= 0) ||
                 (aiSettings->waitTime <= 0) || (script->functionTemp[1] == 0)) {
                 script->AI_TEMP_STATE = AI_STATE_LOITER_POST;
             }

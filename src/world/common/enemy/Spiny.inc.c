@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_Spiny) = {
     .chaseSpeed = 6.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 3,
+    .loiterMode = 3,
 };
 
 EvtScript N(EVS_NpcAI_Spiny) = {

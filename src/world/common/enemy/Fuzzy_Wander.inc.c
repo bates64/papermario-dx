@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_Fuzzy_Wander) = {
     .chaseTurnRate = 70,
     .chaseUpdateInterval = 10,
     .chaseRadius = 200.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Fuzzy_Wander) = {

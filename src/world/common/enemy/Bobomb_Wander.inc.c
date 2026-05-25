@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_Bobomb) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 65.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bobomb_Wander) = {

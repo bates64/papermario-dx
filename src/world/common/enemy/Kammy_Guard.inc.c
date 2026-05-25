@@ -7,7 +7,6 @@
 GuardAISettings N(AISettings_Kammy_Guard) = {
     .playerSearchInterval = -1,
     .chaseRadius = 300.0f,
-    .unk_AI_20 = 30,
 };
 
 EvtScript N(EVS_NpcAI_Kammy_Guard) = {

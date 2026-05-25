@@ -30,7 +30,7 @@ MobileAISettings N(AISettings_DryBones) = {
     .chaseSpeed = 1.0f,
     .chaseRadius = 150.0f,
     .chaseOffsetDist = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_DryBones) = {
