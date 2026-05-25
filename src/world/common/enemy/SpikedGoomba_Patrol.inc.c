@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_SpikedGoomba_Patrol) = {
     .height = 23,
     .radius = 23,
     .level = ACTOR_LEVEL_SPIKED_GOOMBA,
-    .ai = &N(EVS_NpcAI_SpikedGoomba_Patrol),
+    .doAI = &N(EVS_NpcAI_SpikedGoomba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

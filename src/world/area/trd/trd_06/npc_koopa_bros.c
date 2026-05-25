@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_KoopaBros),
+    .doAI = &N(EVS_NpcAI_KoopaBros),
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 

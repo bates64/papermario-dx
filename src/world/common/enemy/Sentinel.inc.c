@@ -116,6 +116,6 @@ NpcSettings N(NpcSettings_Sentinel) = {
     .height = 38,
     .radius = 32,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_Sentinel),
-    .ai = &N(EVS_NpcAI_Sentinel),
+    .doAI = &N(EVS_NpcAI_Sentinel),
+    .auxAI = &N(EVS_NpcAuxAI_Sentinel),
 };

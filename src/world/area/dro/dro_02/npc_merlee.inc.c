@@ -834,8 +834,8 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
 NpcSettings N(NpcSettings_Merlee) = {
     .height = 32,
     .radius = 32,
-    .otherAI = &N(EVS_NpcAuxAI_Merlee),
+    .doAI = &N(EVS_NpcAI_Merlee),
+    .auxAI = &N(EVS_NpcAuxAI_Merlee),
     .onInteract = &N(EVS_NpcInteract_Merlee),
-    .ai = &N(EVS_NpcAI_Merlee),
     .level = ACTOR_LEVEL_NONE,
 };

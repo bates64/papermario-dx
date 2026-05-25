@@ -91,7 +91,7 @@ NpcSettings N(NpcSettings_MBush) = {
     .radius = 30,
     .level = ACTOR_LEVEL_M_BUSH,
     .onInteract = &N(EVS_NpcInteract_MBush),
-    .ai = &N(EVS_NpcAI_MBush),
+    .doAI = &N(EVS_NpcAI_MBush),
     .onDefeat = &N(EVS_NpcDefeat_MBush),
 };
 

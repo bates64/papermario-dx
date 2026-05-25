@@ -30,7 +30,7 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
     .height = 50,
     .radius = 36,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .ai = &N(EVS_NpcAI_PutridPiranha),
+    .doAI = &N(EVS_NpcAI_PutridPiranha),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -65,6 +65,6 @@ NpcSettings N(NpcSettings_PutridPiranha_Hitbox) = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .ai = &N(EVS_NpcAI_PutridPiranha_Hitbox),
+    .doAI = &N(EVS_NpcAI_PutridPiranha_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
 };

@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_PokeyMummy) = {
     .height = 72,
     .radius = 15,
     .level = ACTOR_LEVEL_POKEY_MUMMY,
-    .ai = &N(EVS_NpcAI_PokeyMummy),
+    .doAI = &N(EVS_NpcAI_PokeyMummy),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

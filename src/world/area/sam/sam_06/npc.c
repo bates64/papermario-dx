@@ -22,7 +22,7 @@ NpcSettings N(NpcSettings_Ninji_Wander) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Ninji_Wander),
+    .doAI = &N(EVS_NpcAI_Ninji_Wander),
 };
 
 MobileAISettings N(AISettings_ShiverToad_Wander) = {
@@ -43,7 +43,7 @@ NpcSettings N(NpcSettings_ShiverToad_Wander) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_ShiverToad_Wander),
+    .doAI = &N(EVS_NpcAI_ShiverToad_Wander),
 };
 
 #include "world/common/npc/Toad_Stationary.inc.c"

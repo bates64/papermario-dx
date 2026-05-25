@@ -355,60 +355,6 @@ s32 get_coin_drop_amount(Enemy* enemy) {
     return amt;
 }
 
-void func_80048E34(Enemy* enemy, s32 arg1, s32 arg2) {
-    Evt* newScript;
-
-    if (enemy->aiScript != nullptr) {
-        kill_script_by_ID(enemy->aiScriptID);
-        enemy->aiScript = nullptr;
-    }
-
-    if (enemy->unk_BC != nullptr) {
-        kill_script_by_ID(enemy->unk_C0);
-        enemy->unk_BC = nullptr;
-    }
-
-    if (enemy->aiBytecode != nullptr) {
-        enemy->unk_C8 = arg2;
-        newScript = start_script(enemy->aiBytecode, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-        enemy->aiScript = newScript;
-        enemy->aiScriptID = newScript->id;
-        newScript->owner2.npcID = enemy->npcID;
-        newScript->owner1.enemy = enemy;
-    }
-
-    if (enemy->unk_B8 != nullptr) {
-        enemy->unk_C4 = arg1;
-        newScript = start_script(enemy->unk_B8, EVT_PRIORITY_A, EVT_FLAG_RUN_IMMEDIATELY);
-        enemy->unk_BC = newScript;
-        enemy->unk_C0 = newScript->id;
-        newScript->owner2.npcID = enemy->npcID;
-        newScript->owner1.enemy = enemy;
-    }
-}
-
-s32 func_80048F0C(void) {
-    EncounterStatus* currentEncounter = &gCurrentEncounter;
-    s32 i;
-    s32 j;
-
-    for (i = 0; i < currentEncounter->numEncounters; i++) {
-        Encounter* encounter = currentEncounter->encounterList[i];
-
-        if (encounter != nullptr) {
-            for (j = 0; j < encounter->count; j++) {
-                Enemy* enemy = encounter->enemy[j];
-
-                if (enemy != nullptr && !(enemy->flags & ENEMY_FLAG_DISABLE_AI)) {
-                    get_npc_unsafe(enemy->npcID);
-                }
-            }
-        }
-    }
-
-    return 0;
-}
-
 b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ) {
     f32 dist1;
     f32 dist2;

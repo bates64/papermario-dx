@@ -35,7 +35,7 @@ NpcSettings N(NpcSettings_Lakitu_SpinySpawner) = {
     .height = 28,
     .radius = 24,
     .level = ACTOR_LEVEL_LAKITU,
-    .ai = &N(EVS_NpcAI_Lakitu_SpinySpawner),
+    .doAI = &N(EVS_NpcAI_Lakitu_SpinySpawner),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -89,7 +89,7 @@ NpcSettings N(NpcSettings_SpawnedSpiny) = {
     .height = 21,
     .radius = 22,
     .level = ACTOR_LEVEL_SPINY,
-    .ai = &N(EVS_NpcAI_SpawnedSpiny),
+    .doAI = &N(EVS_NpcAI_SpawnedSpiny),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_SpawnedSpiny),
 };

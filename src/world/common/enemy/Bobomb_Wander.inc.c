@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_Bobomb_Wander) = {
     .height = 23,
     .radius = 20,
     .level = ACTOR_LEVEL_BOB_OMB,
-    .ai = &N(EVS_NpcAI_Bobomb_Wander),
+    .doAI = &N(EVS_NpcAI_Bobomb_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

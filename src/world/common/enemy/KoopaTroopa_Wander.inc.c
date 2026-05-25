@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_KoopaTroopa_Wander) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPA_TROOPA,
-    .ai = &N(EVS_NpcAI_KoopaTroopa_Wander),
+    .doAI = &N(EVS_NpcAI_KoopaTroopa_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

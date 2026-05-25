@@ -31,7 +31,7 @@ NpcSettings N(NpcSettings_Gulpit) = {
     .height = 48,
     .radius = 36,
     .level = ACTOR_LEVEL_GULPIT,
-    .ai = &N(EVS_NpcAI_Gulpit),
+    .doAI = &N(EVS_NpcAI_Gulpit),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -53,7 +53,7 @@ NpcSettings N(NpcSettings_Gulpit_Hitbox) = {
     .height = 32,
     .radius = 22,
     .level = ACTOR_LEVEL_GULPIT,
-    .ai = &N(EVS_NpcAI_Gulpit_Hitbox),
+    .doAI = &N(EVS_NpcAI_Gulpit_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
     .actionFlags = AI_ACTION_08,
 };

@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_LavaBubble) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_LAVA_BUBBLE,
-    .ai = &N(EVS_NpcAI_LavaBubble),
+    .doAI = &N(EVS_NpcAI_LavaBubble),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

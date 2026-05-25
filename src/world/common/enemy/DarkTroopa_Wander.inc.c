@@ -30,7 +30,7 @@ NpcSettings N(NpcSettings_DarkTroopa_Wander) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_DARK_KOOPA,
-    .ai = &N(EVS_NpcAI_DarkTroopa_Wander),
+    .doAI = &N(EVS_NpcAI_DarkTroopa_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

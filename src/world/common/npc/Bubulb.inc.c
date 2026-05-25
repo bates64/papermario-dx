@@ -10,5 +10,5 @@ NpcSettings N(NpcSettings_Bubulb) = {
     .height = 42,
     .radius = 26,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_Bubulb),
+    .auxAI = &N(EVS_NpcAuxAI_Bubulb),
 };

@@ -56,7 +56,7 @@ NpcSettings N(NpcSettings_SpyGuy) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_SPY_GUY,
-    .ai = &N(EVS_NpcAI_SpyGuy),
+    .doAI = &N(EVS_NpcAI_SpyGuy),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -119,7 +119,7 @@ EvtScript N(EVS_NpcHit_SpyGuyRock) = {
 NpcSettings N(NpcSettings_SpyGuyRock) = {
     .height = 7,
     .radius = 7,
-    .ai = &N(EVS_NpcAI_SpyGuyRock_Projectile),
+    .doAI = &N(EVS_NpcAI_SpyGuyRock_Projectile),
     .onHit = &N(EVS_NpcHit_SpyGuyRock),
     .onDefeat = &N(EVS_NpcDefeat_SpyGuyRock),
     .actionFlags = AI_ACTION_08,

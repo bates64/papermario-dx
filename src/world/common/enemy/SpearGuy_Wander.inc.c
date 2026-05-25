@@ -64,7 +64,7 @@ NpcSettings N(NpcSettings_SpearGuy_Wander) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .ai = &N(EVS_NpcAI_SpearGuy_Wander),
+    .doAI = &N(EVS_NpcAI_SpearGuy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -86,7 +86,7 @@ NpcSettings N(NpcSettings_SpearGuy_Hitbox) = {
     .height = 8,
     .radius = 20,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .ai = &N(EVS_NpcAI_SpearGuy_Hitbox),
+    .doAI = &N(EVS_NpcAI_SpearGuy_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_SpearGuy_Hitbox),
     .actionFlags = AI_ACTION_08,
 };

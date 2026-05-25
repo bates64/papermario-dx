@@ -28,7 +28,7 @@ NpcSettings N(NpcSettings_Koopatrol_Patrol) = {
     .height = 40,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPATROL,
-    .ai = &N(EVS_NpcAI_Koopatrol_Patrol),
+    .doAI = &N(EVS_NpcAI_Koopatrol_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

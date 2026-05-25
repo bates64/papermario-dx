@@ -30,7 +30,7 @@ NpcSettings N(NpcSettings_FrostPiranha) = {
     .height = 50,
     .radius = 36,
     .level = ACTOR_LEVEL_FROST_PIRANHA,
-    .ai = &N(EVS_NpcAI_FrostPiranha),
+    .doAI = &N(EVS_NpcAI_FrostPiranha),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -65,7 +65,7 @@ NpcSettings N(NpcSettings_FrostPiranha_Hitbox) = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_FROST_PIRANHA,
-    .ai = &N(EVS_NpcAI_FrostPiranha_Hitbox),
+    .doAI = &N(EVS_NpcAI_FrostPiranha_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
 };
 

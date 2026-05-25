@@ -23,7 +23,7 @@ NpcSettings N(NpcSettings_Duplighost_Patrol) = {
     .height = 30,
     .radius = 30,
     .level = ACTOR_LEVEL_DUPLIGHOST,
-    .ai = &N(EVS_NpcAI_Duplighost_Patrol),
+    .doAI = &N(EVS_NpcAI_Duplighost_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

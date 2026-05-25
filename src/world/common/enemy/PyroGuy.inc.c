@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_PyroGuy) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_PYRO_GUY,
-    .ai = &N(EVS_NpcAI_PyroGuy),
+    .doAI = &N(EVS_NpcAI_PyroGuy),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

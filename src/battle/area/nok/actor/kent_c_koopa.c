@@ -250,7 +250,7 @@ ActorBlueprint NAMESPACE = {
 };
 
 EvtScript N(EVS_Init) = {
-    Call(func_8027D434, ACTOR_SELF, PRT_WEAK_POINT, 70)
+    Call(SetTargetPriorityOffset, ACTOR_SELF, PRT_WEAK_POINT, 70)
     Call(SetPartSize, ACTOR_SELF, PRT_WEAK_POINT, 30, 30)
     Call(BindTakeTurn, ACTOR_SELF, Ref(N(EVS_TakeTurn)))
     Call(BindIdle, ACTOR_SELF, Ref(N(EVS_Idle)))

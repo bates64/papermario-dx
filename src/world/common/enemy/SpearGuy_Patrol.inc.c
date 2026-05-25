@@ -20,5 +20,5 @@ NpcSettings N(NpcSettings_SpearGuy_Patrol) = {
     .height = 28,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_SpearGuy_Patrol),
+    .doAI = &N(EVS_NpcAI_SpearGuy_Patrol),
 };

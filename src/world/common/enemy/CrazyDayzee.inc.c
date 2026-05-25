@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_CrazyDayzee) = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_CRAZEE_DAYZEE,
-    .ai = &N(EVS_NpcAI_CrazyDayzee),
+    .doAI = &N(EVS_NpcAI_CrazyDayzee),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

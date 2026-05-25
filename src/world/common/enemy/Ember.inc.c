@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Ember) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_EMBER,
-    .ai = &N(EVS_NpcAI_Ember),
+    .doAI = &N(EVS_NpcAI_Ember),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

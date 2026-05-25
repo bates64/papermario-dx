@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_Fuzzy_Wander) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_FUZZY,
-    .ai = &N(EVS_NpcAI_Fuzzy_Wander),
+    .doAI = &N(EVS_NpcAI_Fuzzy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

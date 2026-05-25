@@ -207,22 +207,10 @@ s32 get_defeated(s32 mapID, s32 encounterID) {
 }
 
 void set_defeated(s32 mapID, s32 encounterID) {
-    EncounterStatus* currentEncounter = &gCurrentEncounter;
-    s32 encounterIdx = encounterID / 32;
-    s32 encounterShift;
-    s32 flag;
+    s32 index = encounterID / 32;
+    s32 shift = encounterID % 32;
 
-    flag = encounterID % 32;
-    encounterShift = flag;
-    flag = currentEncounter->defeatFlags[mapID][encounterIdx];
-    currentEncounter->defeatFlags[mapID][encounterIdx] = flag | (1 << encounterShift);
-
-    // TODO: The below should work but has regalloc issues:
-    /*EncounterStatus *currentEncounter = &gCurrentEncounter;
-    s32 encounterIdx = encounterID / 32;
-    s32 encounterShift = encounterID % 32;
-
-    currentEncounter->defeatFlags[mapID][encounterIdx] |= (1 << encounterShift);*/
+    gCurrentEncounter.defeatFlags[mapID][index] |= (1 << shift);
 }
 
 API_CALLABLE(ShowMerleeCoinMessage) {
@@ -691,17 +679,6 @@ void update_encounters_neutral(void) {
             npcYaw = npc->yaw;
             colHeight = npc->collisionHeight;
             colRadius = npc->collisionDiameter / 2;
-
-            if (enemy->unk_DC != 0) {
-                npcYaw = npc->yawCamOffset;
-                if (npcYaw < 180.0f) {
-                    npcYaw = clamp_angle(camera->curYaw - 90.0f);
-                } else {
-                    npcYaw = clamp_angle(camera->curYaw + 90.0f);
-                }
-
-                add_vec2D_polar(&npcX, &npcZ, enemy->unk_DC, npcYaw);
-            }
 
             dx = npcX - playerX;
             dz = npcZ - playerZ;
@@ -2549,9 +2526,9 @@ void create_encounters(void) {
                         enemy->initBytecode = nullptr;
                     }
                     enemy->interactBytecode = npcSettings->onInteract;
-                    enemy->aiBytecode = npcSettings->ai;
+                    enemy->aiBytecode = npcSettings->doAI;
                     enemy->hitBytecode = npcSettings->onHit;
-                    enemy->auxBytecode = npcSettings->aux;
+                    enemy->auxBytecode = npcSettings->doAux;
                     enemy->defeatBytecode = npcSettings->onDefeat;
                     enemy->initScript = nullptr;
                     enemy->interactScript = nullptr;
@@ -2569,19 +2546,14 @@ void create_encounters(void) {
                     enemy->aiDetectFlags = npcData->aiDetectFlags;
 
                     enemy->aiFlags = npcData->aiFlags;
-                    enemy->unk_DC = 0;
                     enemy->aiSuspendTime = 0;
-                    enemy->unk_B8 = (EvtScript*)npcSettings->unk_24; // ??
-                    enemy->unk_BC = nullptr;
-                    enemy->unk_C0 = 0;
-                    enemy->unk_C4 = 0;
 
                     enemy->animList = (s32*)&npcData->animations;
                     enemy->territory = &npcData->territory;
 
                     enemy->flags = npcSettings->flags;
                     enemy->flags |= npcData->flags;
-                    enemy->unk_64 = nullptr;
+
                     enemy->tattleMsg = npcData->tattle;
                     if (npcData->initVarCount != 0) {
                         if (npcData->initVarCount == 1) {
@@ -2661,12 +2633,15 @@ void create_encounters(void) {
                     if (enemy->flags & ENEMY_FLAG_DONT_UPDATE_SHADOW_Y) {
                         newNpc->flags |= NPC_FLAG_DONT_UPDATE_SHADOW_Y;
                     }
-                    enemy->scriptGroup = EVT_GROUP_HOSTILE_NPC;
+
                     if (enemy->flags & ENEMY_FLAG_PASSIVE) {
                         enemy->scriptGroup = EVT_GROUP_PASSIVE_NPC;
+                    } else {
+                        enemy->scriptGroup = EVT_GROUP_HOSTILE_NPC;
                     }
-                    if (npcSettings->otherAI != nullptr) {
-                        script = start_script(npcSettings->otherAI, EVT_PRIORITY_A, 0);
+
+                    if (npcSettings->auxAI != nullptr) {
+                        script = start_script(npcSettings->auxAI, EVT_PRIORITY_A, 0);
                         enemy->aiScript = script;
                         enemy->aiScriptID = script->id;
                         script->owner1.enemy = enemy;

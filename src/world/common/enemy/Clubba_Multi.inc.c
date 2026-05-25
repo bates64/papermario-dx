@@ -66,7 +66,7 @@ NpcSettings N(NpcSettings_Clubba_Wander) = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Clubba_Wander),
+    .doAI = &N(EVS_NpcAI_Clubba_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -106,7 +106,7 @@ NpcSettings N(NpcSettings_Clubba_Patrol) = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Clubba_Patrol),
+    .doAI = &N(EVS_NpcAI_Clubba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -146,7 +146,7 @@ NpcSettings N(NpcSettings_Clubba_Napping) = {
     .height = 36,
     .radius = 34,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Clubba_Napping),
+    .doAI = &N(EVS_NpcAI_Clubba_Napping),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -172,7 +172,7 @@ NpcSettings N(NpcSettings_Clubba_Hitbox) = {
     .height = 14,
     .radius = 18,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Clubba_Hitbox),
+    .doAI = &N(EVS_NpcAI_Clubba_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Clubba),
     .actionFlags = AI_ACTION_08,
 };

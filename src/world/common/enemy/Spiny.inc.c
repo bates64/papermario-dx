@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Spiny) = {
     .height = 21,
     .radius = 22,
     .level = ACTOR_LEVEL_SPINY,
-    .ai = &N(EVS_NpcAI_Spiny),
+    .doAI = &N(EVS_NpcAI_Spiny),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

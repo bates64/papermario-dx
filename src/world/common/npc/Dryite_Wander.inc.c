@@ -17,7 +17,7 @@ EvtScript N(EVS_NpcAI_Dryite_Wander) = {
 NpcSettings N(NpcSettings_Dryite_Wander) = {
     .height = 26,
     .radius = 23,
-    .ai = &N(EVS_NpcAI_Dryite_Wander),
+    .doAI = &N(EVS_NpcAI_Dryite_Wander),
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

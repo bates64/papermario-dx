@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_ForestFuzzy_Wander) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_FOREST_FUZZY,
-    .ai = &N(EVS_NpcAI_ForestFuzzy_Wander),
+    .doAI = &N(EVS_NpcAI_ForestFuzzy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

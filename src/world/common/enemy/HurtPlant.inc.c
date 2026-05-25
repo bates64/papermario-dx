@@ -55,7 +55,7 @@ NpcSettings N(NpcSettings_HurtPlant) = {
     .radius = 28,
     .level = ACTOR_LEVEL_HURT_PLANT,
     .onInteract = &N(EVS_NpcInteract_HurtPlant),
-    .ai = &N(EVS_NpcAI_HurtPlant),
+    .doAI = &N(EVS_NpcAI_HurtPlant),
     .onDefeat = &N(EVS_NpcDefeat_HurtPlant),
 };
 

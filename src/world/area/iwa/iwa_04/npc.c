@@ -273,8 +273,8 @@ NpcSettings N(NpcSettings_Buzzar) = {
     .defaultAnim = ANIM_Buzzar_Anim05,
     .height = 32,
     .radius = 32,
-    .otherAI = &N(EVS_NpcAuxAI_Buzzar),
-    .ai = &N(EVS_NpcAI_Buzzar),
+    .doAI = &N(EVS_NpcAI_Buzzar),
+    .auxAI = &N(EVS_NpcAuxAI_Buzzar),
     .onDefeat = &N(EVS_NpcDefeat_Buzzar),
 };
 

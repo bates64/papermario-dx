@@ -18,7 +18,7 @@ NpcSettings N(NpcSettings_Toad_Wander) = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Toad_Wander),
+    .doAI = &N(EVS_NpcAI_Toad_Wander),
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 
@@ -26,6 +26,6 @@ NpcSettings N(NpcSettings_ToadKid_Wander) = {
     .height = 23,
     .radius = 19,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Toad_Wander),
+    .doAI = &N(EVS_NpcAI_Toad_Wander),
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };

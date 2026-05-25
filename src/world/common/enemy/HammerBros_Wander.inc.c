@@ -49,7 +49,7 @@ NpcSettings N(NpcSettings_HammerBros_Wander) = {
     .height = 36,
     .radius = 24,
     .level = ACTOR_LEVEL_HAMMER_BROS,
-    .ai = &N(EVS_NpcAI_HammerBros),
+    .doAI = &N(EVS_NpcAI_HammerBros),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -111,7 +111,7 @@ EvtScript N(EVS_NpcHit_HammerBros_Hammer) = {
 NpcSettings N(NpcSettings_HammerBros_Hammer) = {
     .height = 12,
     .radius = 12,
-    .ai = &N(EVS_NpcAI_HammerBros_Hammer),
+    .doAI = &N(EVS_NpcAI_HammerBros_Hammer),
     .onHit = &N(EVS_NpcHit_HammerBros_Hammer),
     .onDefeat = &N(EVS_NpcDefeat_HammerBros_Hammer),
     .actionFlags = AI_ACTION_08,

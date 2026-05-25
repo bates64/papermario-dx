@@ -31,7 +31,7 @@ NpcSettings N(NpcSettings_Bzzap) = {
     .height = 26,
     .radius = 24,
     .level = ACTOR_LEVEL_BZZAP,
-    .ai = &N(EVS_NpcAI_Bzzap),
+    .doAI = &N(EVS_NpcAI_Bzzap),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

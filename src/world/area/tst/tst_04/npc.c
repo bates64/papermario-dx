@@ -41,13 +41,12 @@ NpcSettings N(NpcSettings_Goompa) = {
     .defaultAnim = ANIM_Goompa_Talk,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_Goompa),
+    .doAux = &N(EVS_NpcAux_Goompa),
+    .doAI = &N(EVS_NpcAI_Goompa),
+    .auxAI = &N(EVS_NpcAuxAI_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
-    .ai = &N(EVS_NpcAI_Goompa),
     .onHit = &N(EVS_NpcHit_Goompa),
-    .aux = &N(EVS_NpcAux_Goompa),
     .onDefeat = &N(EVS_NpcDefeat_Goompa),
-    .unk_24 = 200,
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
 };
 

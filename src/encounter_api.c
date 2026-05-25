@@ -148,20 +148,6 @@ API_CALLABLE(GetBattleOutcome) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_800445A8) {
-    Bytecode* args = script->ptrReadPos;
-
-    evt_set_variable(script, *args++, script->owner1.enemy->unk_C4);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_800445D4) {
-    Bytecode* args = script->ptrReadPos;
-
-    evt_set_variable(script, *args++, script->owner1.enemy->unk_C8);
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(GetOwnerEncounterTrigger) {
     Bytecode* args = script->ptrReadPos;
 

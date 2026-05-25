@@ -986,14 +986,6 @@ API_CALLABLE(RemoveEncounter);
 API_CALLABLE(GetBattleOutcome);
 
 /// @evtapi
-/// @param outValue
-API_CALLABLE(func_800445A8);
-
-/// @evtapi
-/// @param outValue
-API_CALLABLE(func_800445D4);
-
-/// @evtapi
 /// @param outTrigger
 API_CALLABLE(GetOwnerEncounterTrigger);
 

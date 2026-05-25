@@ -27,7 +27,7 @@ NpcSettings N(NpcSettings_HyperGoomba_Patrol) = {
     .height = 20,
     .radius = 23,
     .level = ACTOR_LEVEL_HYPER_GOOMBA,
-    .ai = &N(EVS_NpcAI_HyperGoomba_Patrol),
+    .doAI = &N(EVS_NpcAI_HyperGoomba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

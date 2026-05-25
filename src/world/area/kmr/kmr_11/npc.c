@@ -285,9 +285,9 @@ NpcSettings N(NpcSettings_Kammy) = {
     .defaultAnim = ANIM_WorldKammy_Anim0A,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_Kammy),
-    .ai = &N(EVS_NpcAI_Kammy),
-    .aux = &N(EVS_NpcAux_Kammy),
+    .auxAI = &N(EVS_NpcAuxAI_Kammy),
+    .doAI = &N(EVS_NpcAI_Kammy),
+    .doAux = &N(EVS_NpcAux_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
 };
 

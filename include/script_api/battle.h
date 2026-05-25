@@ -1547,7 +1547,7 @@ API_CALLABLE(SetBattleState);
 /// @param actorID
 /// @param partIndex
 /// @param targetPriorityOffset
-API_CALLABLE(func_8027D434);
+API_CALLABLE(SetTargetPriorityOffset);
 
 /// @evtapi
 /// @param actorID

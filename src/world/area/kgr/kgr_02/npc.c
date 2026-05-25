@@ -280,11 +280,10 @@ NpcSettings N(NpcSettings_Fuzzipede) = {
     .defaultAnim = ANIM_Fuzzipede_Anim04,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_Fuzzipede),
-    .ai = &N(EVS_NpcAI_Fuzzipede),
+    .auxAI = &N(EVS_NpcAuxAI_Fuzzipede),
+    .doAI = &N(EVS_NpcAI_Fuzzipede),
     .onHit = &N(EVS_NpcHit_Fuzzipede),
     .onDefeat = &N(EVS_NpcDefeat_Fuzzipede),
-    .unk_24 = 100,
 };
 
 NpcData N(NpcData_Fuzzipede) = {

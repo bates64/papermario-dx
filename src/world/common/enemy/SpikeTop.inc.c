@@ -93,7 +93,7 @@ NpcSettings N(NpcSettings_BuzzyBeetle) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_BUZZY_BEETLE,
-    .ai = &N(EVS_NpcAI_BuzzyBeetle),
+    .doAI = &N(EVS_NpcAI_BuzzyBeetle),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -102,7 +102,7 @@ NpcSettings N(NpcSettings_BuzzyBeetle_Ceiling) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_BUZZY_BEETLE,
-    .ai = &N(EVS_NpcAI_BuzzyBeetle_Ceiling),
+    .doAI = &N(EVS_NpcAI_BuzzyBeetle_Ceiling),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -111,7 +111,7 @@ NpcSettings N(NpcSettings_SpikeTop) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_SPIKE_TOP,
-    .ai = &N(EVS_NpcAI_SpikeTop),
+    .doAI = &N(EVS_NpcAI_SpikeTop),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -120,7 +120,7 @@ NpcSettings N(NpcSettings_BonyBeetle) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_BONY_BEETLE,
-    .ai = &N(EVS_NpcAI_BonyBeetle),
+    .doAI = &N(EVS_NpcAI_BonyBeetle),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

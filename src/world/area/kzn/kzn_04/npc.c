@@ -115,7 +115,7 @@ NpcSettings N(NpcSettings_FireBar_01) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_01),
+    .doAI = &N(EVS_NpcAI_FireBar_01),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -123,7 +123,7 @@ NpcSettings N(NpcSettings_FireBar_02) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_02),
+    .doAI = &N(EVS_NpcAI_FireBar_02),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -131,7 +131,7 @@ NpcSettings N(NpcSettings_FireBar_03) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_03),
+    .doAI = &N(EVS_NpcAI_FireBar_03),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 

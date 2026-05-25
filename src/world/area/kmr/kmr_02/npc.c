@@ -114,17 +114,7 @@ EvtScript N(EVS_NpcAI_GoombaFamily_NoAI) = {
 };
 
 EvtScript N(EVS_NpcIdle_Goombario) = {
-    Call(func_800445D4, LVar0)
-    Switch(LVar0)
-        CaseEq(100)
-            ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-        CaseOrEq(101)
-        CaseOrEq(102)
-        CaseOrEq(3)
-        CaseOrEq(103)
-            ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-        EndCaseGroup
-    EndSwitch
+    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
     Return
     End
 };
@@ -1084,17 +1074,7 @@ EvtScript N(EVS_NpcInit_Goompapa) = {
 };
 
 EvtScript N(EVS_NpcIdle_Goomama) = {
-    Call(func_800445D4, LVar0)
-    Switch(LVar0)
-        CaseEq(100)
-            ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-        CaseOrEq(101)
-        CaseOrEq(102)
-        CaseOrEq(3)
-        CaseOrEq(103)
-            ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-        EndCaseGroup
-    EndSwitch
+    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
     Return
     End
 };
@@ -1190,23 +1170,13 @@ EvtScript N(EVS_NpcInit_Goomama) = {
 };
 
 EvtScript N(EVS_NpcIdle_Gooma) = {
-    Call(func_800445D4, LVar0)
-    Switch(LVar0)
-        CaseEq(100)
-            Label(0)
-            Switch(GB_StoryProgress)
-                CaseEq(STORY_CH0_GOOMBARIO_JOINED_PARTY)
-                    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-            EndSwitch
-            Wait(1)
-            Goto(0)
-        CaseOrEq(101)
-        CaseOrEq(102)
-        CaseOrEq(3)
-        CaseOrEq(103)
-            ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
-        EndCaseGroup
-    EndSwitch
+    Label(0)
+        Switch(GB_StoryProgress)
+            CaseEq(STORY_CH0_GOOMBARIO_JOINED_PARTY)
+                ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
+        EndSwitch
+        Wait(1)
+        Goto(0)
     Return
     End
 };

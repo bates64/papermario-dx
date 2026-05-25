@@ -215,9 +215,9 @@ NpcSettings N(NpcSettings_StarRod) = {
     .defaultAnim = ANIM_StarRod_Still,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_StarRod),
+    .auxAI = &N(EVS_NpcAuxAI_StarRod),
     .onInteract = &N(EVS_NpcInteract_StarRod),
-    .ai = &N(EVS_NpcAI_StarRod),
+    .doAI = &N(EVS_NpcAI_StarRod),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
@@ -226,7 +226,7 @@ NpcSettings N(NpcSettings_Koopa) = {
     .height = 24,
     .radius = 24,
     .onInteract = &N(EVS_NpcInteract_Koopa),
-    .ai = &N(EVS_NpcAI_Koopa),
+    .doAI = &N(EVS_NpcAI_Koopa),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
@@ -235,7 +235,7 @@ NpcSettings N(NpcSettings_Kolorado) = {
     .height = 24,
     .radius = 24,
     .onInteract = &N(EVS_NpcInteract_Kolorado),
-    .ai = &N(EVS_NpcAI_Kolorado),
+    .doAI = &N(EVS_NpcAI_Kolorado),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
@@ -243,7 +243,7 @@ NpcSettings N(NpcSettings_Goompa) = {
     .defaultAnim = ANIM_Goompa_Walk,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_Goompa),
+    .auxAI = &N(EVS_NpcAuxAI_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
     .onHit = &N(EVS_NpcHit_Goompa),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE,

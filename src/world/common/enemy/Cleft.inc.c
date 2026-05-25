@@ -27,7 +27,7 @@ NpcSettings N(NpcSettings_Cleft) = {
     .height = 26,
     .radius = 24,
     .level = ACTOR_LEVEL_CLEFT,
-    .ai = &N(EVS_NpcAI_Cleft),
+    .doAI = &N(EVS_NpcAI_Cleft),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

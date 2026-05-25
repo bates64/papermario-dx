@@ -9,7 +9,7 @@ NpcSettings N(NpcSettings_Unused) = {
     .height = 70,
     .radius = 25,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_Unused),
+    .auxAI = &N(EVS_NpcAuxAI_Unused),
 };
 
 #include "world/common/complete/KeyItemChoice.inc.c"

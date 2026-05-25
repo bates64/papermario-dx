@@ -2414,10 +2414,6 @@ void kill_enemy(Enemy* enemy) {
     free_npc(get_npc_unsafe(enemy->npcID));
     #endif
 
-    if (enemy->unk_64 != nullptr) {
-        heap_free(enemy->unk_64);
-    }
-
     for (j = 0; j < ARRAY_COUNT(encounter->enemy); j++) {
         if (encounter->enemy[j] == enemy) {
             encounter->enemy[j] = nullptr;

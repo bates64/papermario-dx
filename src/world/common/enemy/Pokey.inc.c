@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Pokey) = {
     .height = 72,
     .radius = 15,
     .level = ACTOR_LEVEL_POKEY,
-    .ai = &N(EVS_NpcAI_Pokey),
+    .doAI = &N(EVS_NpcAI_Pokey),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -28,7 +28,7 @@ NpcSettings N(NpcSettings_KoopaTroopa_Patrol) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPA_TROOPA,
-    .ai = &N(EVS_NpcAI_KoopaTroopa_Patrol),
+    .doAI = &N(EVS_NpcAI_KoopaTroopa_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

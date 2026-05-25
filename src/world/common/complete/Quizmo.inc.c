@@ -210,12 +210,6 @@ API_CALLABLE(N(Quizmo_RenderInit)) {
     return ApiStatus_DONE1;
 }
 
-API_CALLABLE(N(Quizmo_NPC_Aux_Impl)) {
-    // does nothing, probably a default/template function for NPCs
-    get_npc_unsafe(script->owner2.npcID);
-    return ApiStatus_BLOCK;
-}
-
 void N(Quizmo_NPC_OnRender)(Npc* npc) {
     Camera* camera = &gCameras[gCurrentCamID];
 
@@ -1195,47 +1189,17 @@ EvtScript N(EVS_Quizmo_NPC_Interact) = {
 };
 
 EvtScript N(EVS_Quizmo_NPC_Aux) = {
-    Call(N(Quizmo_NPC_Aux_Impl))
     Return
     End
 };
 
-MobileAISettings N(Quizmo_MobileAISettings) = {
-    .moveSpeed = 0.7f,
-    .moveTime = 30,
-    .waitTime = 20,
-    .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
-};
-
-EvtScript N(EVS_Quizmo_Npc_AI) = {
-    Call(BasicAI_Main, Ref(N(Quizmo_MobileAISettings)))
-    Return
-    End
-};
-
-// primary quizmo NpcSettings
 NpcSettings N(NpcSettings_ChuckQuizmo) = {
     .defaultAnim = ANIM_ChuckQuizmo_Idle,
     .height = 35,
     .radius = 28,
-    .otherAI = &N(EVS_Quizmo_NPC_OtherAI),
+    .doAux = &N(EVS_Quizmo_NPC_Aux),
+    .auxAI = &N(EVS_Quizmo_NPC_OtherAI),
     .onInteract = &N(EVS_Quizmo_NPC_Interact),
-    .aux = &N(EVS_Quizmo_NPC_Aux),
     .flags = BASE_PASSIVE_FLAGS,
     .level = ACTOR_LEVEL_NONE,
-};
-
-// alternate (unused?) variant of quizmo with AI and ENEMY_FLAG_IGNORE_WORLD_COLLISION unset
-NpcSettings N(Quizmo_AltNpcSettings) = {
-    .defaultAnim = ANIM_ChuckQuizmo_Idle,
-    .height = 35,
-    .radius = 28,
-    .otherAI = &N(EVS_Quizmo_NPC_OtherAI),
-    .onInteract = &N(EVS_Quizmo_NPC_Interact),
-    .ai = &N(EVS_Quizmo_Npc_AI),
-    .aux = &N(EVS_Quizmo_NPC_Aux),
-    .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = 16,
 };

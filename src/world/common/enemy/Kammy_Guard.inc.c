@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_Kammy_Guard) = {
     .height = 40,
     .radius = 30,
     .level = ACTOR_LEVEL_MAGIKOOPA,
-    .ai = &N(EVS_NpcAI_Kammy_Guard),
+    .doAI = &N(EVS_NpcAI_Kammy_Guard),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

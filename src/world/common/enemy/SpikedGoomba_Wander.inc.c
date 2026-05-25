@@ -23,7 +23,7 @@ NpcSettings N(NpcSettings_SpikedGoomba_Wander) = {
     .height = 23,
     .radius = 23,
     .level = ACTOR_LEVEL_SPIKED_GOOMBA,
-    .ai = &N(EVS_NpcAI_SpikedGoomba_Wander),
+    .doAI = &N(EVS_NpcAI_SpikedGoomba_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

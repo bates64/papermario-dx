@@ -25,9 +25,9 @@ NpcSettings N(NpcSettings_Conductor) = {
     .defaultAnim = ANIM_TrainToad_Blue_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_Conductor),
+    .auxAI = &N(EVS_NpcAuxAI_Conductor),
     .onInteract = &N(EVS_NpcInteract_Conductor),
-    .ai = &N(EVS_NpcAI_Conductor),
+    .doAI = &N(EVS_NpcAI_Conductor),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 

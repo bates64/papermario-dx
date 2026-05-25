@@ -19,5 +19,5 @@ NpcSettings N(NpcSettings_Penguin_Wander) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Penguin_Wander),
+    .doAI = &N(EVS_NpcAI_Penguin_Wander),
 };

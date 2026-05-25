@@ -68,7 +68,7 @@ NpcSettings N(NpcSettings_Magikoopa) = {
     .height = 32,
     .radius = 28,
     .level = ACTOR_LEVEL_MAGIKOOPA,
-    .ai = &N(EVS_NpcAI_Magikoopa),
+    .doAI = &N(EVS_NpcAI_Magikoopa),
     .onHit = &N(EVS_NpcHit_Magikoopa),
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa),
 };
@@ -133,16 +133,16 @@ EvtScript N(EVS_NpcDefeat_Magikoopa_Hitbox) = {
 
 NpcSettings N(NpcSettings_Magikoopa_GroundHitbox) = {
     .defaultAnim = ANIM_Magikoopa_Anim00,
-    .otherAI = &N(EVS_NpcAuxAI_Magikoopa_GroundHitbox),
-    .ai = &N(EVS_NpcAI_Magikoopa_Hitbox),
+    .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
+    .auxAI = &N(EVS_NpcAuxAI_Magikoopa_GroundHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa_Hitbox),
 };
 
 NpcSettings N(NpcSettings_Magikoopa_FlyingHitbox) = {
     .defaultAnim = ANIM_FlyingMagikoopa_Anim00,
-    .otherAI = &N(EVS_NpcAuxAI_Magikoopa_FlyingHitbox),
-    .ai = &N(EVS_NpcAI_Magikoopa_Hitbox),
+    .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
+    .auxAI = &N(EVS_NpcAuxAI_Magikoopa_FlyingHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa_Hitbox),
 };

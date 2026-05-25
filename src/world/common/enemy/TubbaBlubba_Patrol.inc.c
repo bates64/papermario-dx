@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_TubbaBlubba_Patrol) = {
     .height = 90,
     .radius = 65,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Tubba_Patrol),
+    .doAI = &N(EVS_NpcAI_Tubba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -47,7 +47,7 @@ NpcSettings N(NpcSettings_DryBones) = {
     .height = 32,
     .radius = 24,
     .level = ACTOR_LEVEL_DRY_BONES,
-    .ai = &N(EVS_NpcAI_DryBones),
+    .doAI = &N(EVS_NpcAI_DryBones),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -110,7 +110,7 @@ EvtScript N(EVS_NpcHit_ThrownBone) = {
 NpcSettings N(NpcSettings_ThrownBone) = {
     .height = 12,
     .radius = 12,
-    .ai = &N(EVS_NpcAI_ThrownBone),
+    .doAI = &N(EVS_NpcAI_ThrownBone),
     .onHit = &N(EVS_NpcHit_ThrownBone),
     .onDefeat = &N(EVS_NpcDefeat_ThrownBone),
     .actionFlags = AI_ACTION_08,

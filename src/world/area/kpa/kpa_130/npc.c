@@ -106,7 +106,7 @@ NpcSettings N(NpcSettings_BillBlaster) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .ai = &N(EVS_NpcAI_BillBlaster),
+    .doAI = &N(EVS_NpcAI_BillBlaster),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
 };
@@ -115,7 +115,7 @@ NpcSettings N(NpcSettings_BulletBill) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .ai = &N(EVS_NpcAI_BulletBill),
+    .doAI = &N(EVS_NpcAI_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BulletBill),
 };
@@ -124,7 +124,7 @@ NpcSettings N(NpcSettings_BombshellBlaster) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BOMBSHELL_BLASTER,
-    .ai = &N(EVS_NpcAI_BombshellBlaster),
+    .doAI = &N(EVS_NpcAI_BombshellBlaster),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
 };
@@ -133,7 +133,7 @@ NpcSettings N(NpcSettings_BombshellBill) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BOMBSHELL_BILL,
-    .ai = &N(EVS_NpcAI_BombshellBill),
+    .doAI = &N(EVS_NpcAI_BombshellBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBill),
 };

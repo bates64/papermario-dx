@@ -27,7 +27,7 @@ NpcSettings N(NpcSettings_Paragloomba_Wander) = {
     .height = 20,
     .radius = 21,
     .level = ACTOR_LEVEL_PARAGLOOMBA,
-    .ai = &N(EVS_NpcAI_Paragloomba_Wander),
+    .doAI = &N(EVS_NpcAI_Paragloomba_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

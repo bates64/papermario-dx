@@ -2787,27 +2787,8 @@ API_CALLABLE(SetIdleAnimations) {
     }
 
     partID = evt_get_variable(script, *args++);
-    idleAnims = (u32*) evt_get_variable(script, *args++);
+    idleAnims = (AnimID*) evt_get_variable(script, *args++);
     get_actor_part(get_actor(actorID), partID)->idleAnimations = idleAnims;
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_8027CC10) {
-    Bytecode* args = script->ptrReadPos;
-    s32 actorID = evt_get_variable(script, *args++);
-    s32 partID;
-
-    if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.actorID;
-    }
-
-    partID = evt_get_variable(script, *args++);
-
-    // weirdly unused
-    evt_get_variable(script, *args++);
-    evt_get_variable(script, *args++);
-
-    get_actor_part(get_actor(actorID), partID);
     return ApiStatus_DONE2;
 }
 
@@ -3084,7 +3065,7 @@ API_CALLABLE(SetTargetOffset) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_8027D434) {
+API_CALLABLE(SetTargetPriorityOffset) {
     Bytecode* args = script->ptrReadPos;
     s32 actorID = evt_get_variable(script, *args++);
     s32 partID;

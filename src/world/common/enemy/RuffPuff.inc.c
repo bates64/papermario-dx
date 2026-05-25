@@ -30,7 +30,7 @@ NpcSettings N(NpcSettings_RuffPuff) = {
     .height = 24,
     .radius = 28,
     .level = ACTOR_LEVEL_RUFF_PUFF,
-    .ai = &N(EVS_NpcAI_RuffPuff),
+    .doAI = &N(EVS_NpcAI_RuffPuff),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

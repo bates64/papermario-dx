@@ -37,10 +37,8 @@ MobileAISettings N(AISettings_MontyMole_WallAmbush) = {
 };
 
 EvtScript N(EVS_NpcAI_MontyMole_WallAmbush) = {
-    Call(func_800445D4, LVar0)
-    IfEq(LVar0, 100)
-        Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, true)
-        Label(10)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, true)
+    Label(10)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar2, 130)
         Call(IsPlayerWithin, LVar0, LVar2, 80, LVar3)
@@ -48,28 +46,27 @@ EvtScript N(EVS_NpcAI_MontyMole_WallAmbush) = {
             Wait(1)
             Goto(10)
         EndIf
-        Call(GetSelfNpcID, LVar0)
-        Add(LVar0, 1)
-        Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
-        Add(LVar2, 30)
-        Add(LVar3, 50)
-        Call(SetNpcPos, LVar0, LVar1, LVar2, LVar3)
-        Wait(1)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, false)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-        Call(EnableNpcShadow, NPC_SELF, true)
-        Call(SetNpcAnimation, NPC_SELF, ANIM_MontyMole_Anim0E)
-        Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
-        Sub(LVar2, 30)
-        Add(LVar3, 80)
-        Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
-        Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
-        Call(NpcJump0, NPC_SELF, LVar1, LVar2, LVar3, 20)
-        Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
-        Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
-        Call(NpcFacePlayer, NPC_SELF, 0)
-        Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
-    EndIf
+    Call(GetSelfNpcID, LVar0)
+    Add(LVar0, 1)
+    Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
+    Add(LVar2, 30)
+    Add(LVar3, 50)
+    Call(SetNpcPos, LVar0, LVar1, LVar2, LVar3)
+    Wait(1)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, false)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
+    Call(EnableNpcShadow, NPC_SELF, true)
+    Call(SetNpcAnimation, NPC_SELF, ANIM_MontyMole_Anim0E)
+    Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
+    Sub(LVar2, 30)
+    Add(LVar3, 80)
+    Call(SetNpcJumpscale, NPC_SELF, Float(0.7))
+    Call(PlaySoundAtNpc, NPC_SELF, SOUND_MOLE_POP, SOUND_SPACE_DEFAULT)
+    Call(NpcJump0, NPC_SELF, LVar1, LVar2, LVar3, 20)
+    Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, false)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DISABLE_AI, false)
+    Call(NpcFacePlayer, NPC_SELF, 0)
+    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_BEGIN_WITH_CHASING, true)
     Call(BasicAI_Main, Ref(N(AISettings_MontyMole_WallAmbush)))
     Return
     End
@@ -79,8 +76,8 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
-    .otherAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush),
-    .ai = &N(EVS_NpcAI_MontyMole_WallAmbush),
+    .doAI = &N(EVS_NpcAI_MontyMole_WallAmbush),
+    .auxAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -90,6 +87,6 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush_Hole) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
-    .otherAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole),
+    .auxAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole),
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };
