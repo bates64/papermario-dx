@@ -99,9 +99,9 @@ NpcSettings N(NpcSettings_Misstar) = {
     .defaultAnim = ANIM_WorldMisstar_Idle,
     .height = 24,
     .radius = 24,
-    .auxAI = &N(EVS_NpcAuxAI_Misstar),
-    .doAI = &N(EVS_NpcAI_Misstar),
     .doAux = &N(EVS_NpcAux_Misstar),
+    .doAI = &N(EVS_NpcAI_Misstar),
+    .auxAI = &N(EVS_NpcAuxAI_Misstar),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 

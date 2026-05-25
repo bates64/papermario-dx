@@ -39,8 +39,8 @@ NpcSettings N(NpcSettings_AmazyDayzee) = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_AMAZY_DAYZEE,
+    .doAux = &N(EVS_NpcAux_AmazyDayzee),
     .doAI = &N(EVS_NpcAI_AmazyDayzee),
     .onHit = &EnemyNpcHit,
-    .doAux = &N(EVS_NpcAux_AmazyDayzee),
     .onDefeat = &EnemyNpcDefeat,
 };

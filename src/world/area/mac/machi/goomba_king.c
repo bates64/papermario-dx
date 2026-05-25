@@ -35,9 +35,9 @@ NpcSettings N(NpcSettings_GoombaKing) = {
     .defaultAnim = ANIM_GoombaKing_Idle,
     .height = 24,
     .radius = 24,
+    .doAI = &N(EVS_NpcAI_GoombaKing),
     .auxAI = &N(EVS_NpcAuxAI_GoombaKing),
     .onInteract = &N(EVS_NpcInteract_GoombaKing),
-    .doAI = &N(EVS_NpcAI_GoombaKing),
     .onHit = &N(EVS_NpcHit_GoombaKing),
     .flags = BASE_PASSIVE_FLAGS,
 };

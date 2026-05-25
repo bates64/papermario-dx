@@ -215,9 +215,9 @@ NpcSettings N(NpcSettings_StarRod) = {
     .defaultAnim = ANIM_StarRod_Still,
     .height = 24,
     .radius = 24,
+    .doAI = &N(EVS_NpcAI_StarRod),
     .auxAI = &N(EVS_NpcAuxAI_StarRod),
     .onInteract = &N(EVS_NpcInteract_StarRod),
-    .doAI = &N(EVS_NpcAI_StarRod),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
@@ -225,8 +225,8 @@ NpcSettings N(NpcSettings_Koopa) = {
     .defaultAnim = ANIM_Koopa_Walk,
     .height = 24,
     .radius = 24,
-    .onInteract = &N(EVS_NpcInteract_Koopa),
     .doAI = &N(EVS_NpcAI_Koopa),
+    .onInteract = &N(EVS_NpcInteract_Koopa),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
@@ -234,8 +234,8 @@ NpcSettings N(NpcSettings_Kolorado) = {
     .defaultAnim = ANIM_Kolorado_Walk,
     .height = 24,
     .radius = 24,
-    .onInteract = &N(EVS_NpcInteract_Kolorado),
     .doAI = &N(EVS_NpcAI_Kolorado),
+    .onInteract = &N(EVS_NpcInteract_Kolorado),
     .flags = ENEMY_FLAG_PASSIVE,
 };
 
