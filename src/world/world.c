@@ -108,14 +108,13 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     gMapId = mapId;
     load_map_script_lib();
 
-    // TODO: don't use NAMESPACE in maps
-    char symSettings[32];
-    char symInit[32];
-    sprintf(symSettings, "%s_settings", mapId);
-    sprintf(symInit, "%s_map_init", mapId);
-
     Overlay* ovl = ovl_load(mapId, OVL_MAP);
-    MapSettings* settings = ovl_import(ovl, symSettings);
+    MapSettings* settings = ovl_import(ovl, "settings");
+    if (settings == nullptr) { // TODO: don't use NAMESPACE in maps
+        char symSettings[32];
+        sprintf(symSettings, "%s_settings", mapId);
+        settings = ovl_import(ovl, symSettings);
+    }
     ASSERT_MSG(settings != nullptr, "Map '%s' does not export 'settings'", mapId);
     gMapSettings = *settings;
 
@@ -132,7 +131,12 @@ void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
         strcpy(wMapBgName, gMapSettings.bgName);
     }
 
-    s32 (*init)(void) = ovl_import(ovl, symInit);
+    s32 (*init)(void) = ovl_import(ovl, "map_init");
+    if (init == nullptr) { // TODO: don't use NAMESPACE in maps
+        char symInit[32];
+        sprintf(symInit, "%s_map_init", mapId);
+        init = ovl_import(ovl, symInit);
+    }
     if (init != nullptr) {
         skipLoadingAssets = init();
     }
