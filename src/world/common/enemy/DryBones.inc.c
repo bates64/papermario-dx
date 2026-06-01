@@ -113,5 +113,5 @@ NpcSettings N(NpcSettings_ThrownBone) = {
     .doAI = &N(EVS_NpcAI_ThrownBone),
     .onHit = &N(EVS_NpcHit_ThrownBone),
     .onDefeat = &N(EVS_NpcDefeat_ThrownBone),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

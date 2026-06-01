@@ -174,5 +174,5 @@ NpcSettings N(NpcSettings_Clubba_Hitbox) = {
     .level = ACTOR_LEVEL_CLUBBA,
     .doAI = &N(EVS_NpcAI_Clubba_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Clubba),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

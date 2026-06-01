@@ -709,10 +709,10 @@ API_CALLABLE(SelfEnemyOverrideSyncPos) {
     Enemy* owner = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
-    owner->hitboxIsActive = evt_get_variable(script, *args++);
-    owner->unk_10.x = npc->pos.x;
-    owner->unk_10.y = npc->pos.y;
-    owner->unk_10.z = npc->pos.z;
+    owner->firstStrikeActive = evt_get_variable(script, *args++);
+    owner->attackOriginPos.x = npc->pos.x;
+    owner->attackOriginPos.y = npc->pos.y;
+    owner->attackOriginPos.z = npc->pos.z;
 
     return ApiStatus_DONE2;
 }
@@ -803,21 +803,21 @@ API_CALLABLE(func_80045838) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 soundID = evt_get_variable(script, *args++);
-    s32 upperSoundFLags = evt_get_variable(script, *args++);
+    s32 upperSoundFlags = evt_get_variable(script, *args++);
     Npc* npc = resolve_npc(script, npcID);
 
     if (npc == nullptr) {
         return ApiStatus_DONE2;
     }
 
-    ai_enemy_play_sound(npc, soundID, upperSoundFLags);
+    ai_enemy_play_sound(npc, soundID, upperSoundFlags);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_800458CC) {
+API_CALLABLE(EnemyHasNoSpinReaction) {
     Bytecode* args = script->ptrReadPos;
 
-    evt_set_variable(script, *args++, script->owner1.enemy->npcSettings->actionFlags & AI_ACTION_08);
+    evt_set_variable(script, *args++, script->owner1.enemy->npcSettings->actionFlags & AI_ACTION_NO_SPIN_REACTION);
     return ApiStatus_DONE2;
 }
 

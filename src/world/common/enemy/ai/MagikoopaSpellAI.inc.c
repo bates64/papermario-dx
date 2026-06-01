@@ -6,7 +6,7 @@ s32 N(MagikoopaAI_CanShootSpell)(Evt* script, f32 arg1, f32 arg2, EnemyDetectVol
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCamID];
 
-    if (basic_ai_check_player_dist(territory, enemy, arg1, arg2, 0)) {
+    if (basic_ai_check_player_dist(territory, enemy, arg1, arg2, false)) {
         f32 angle;
         f32 t1;
 
@@ -84,10 +84,10 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
                 npc1->pos.x = sp20Ptr->pos.x;
                 npc1->pos.y = npc2->pos.y + enemy->varTable[1];
                 npc1->pos.z = sp20Ptr->pos.z;
-                enemy->hitboxIsActive = true;
-                enemy->unk_10.x = npc1->pos.x;
-                enemy->unk_10.y = npc1->pos.y;
-                enemy->unk_10.z = npc1->pos.z;
+                enemy->firstStrikeActive = true;
+                enemy->attackOriginPos.x = npc1->pos.x;
+                enemy->attackOriginPos.y = npc1->pos.y;
+                enemy->attackOriginPos.z = npc1->pos.z;
                 npc1->moveSpeed = 3.6f;
 
                 t1 = fabsf(npc1->pos.x - gPlayerStatusPtr->pos.x);

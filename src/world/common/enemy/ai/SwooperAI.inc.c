@@ -51,7 +51,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
             if (aiSettings->playerSearchInterval >= 0) {
                 if (script->functionTemp[1] <= 0) {
                     script->functionTemp[1] = aiSettings->playerSearchInterval;
-                    if (basic_ai_check_player_dist(detectVolumePtr, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0) != 0) {
+                    if (basic_ai_check_player_dist(detectVolumePtr, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
                         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                         script->functionTemp[0] = 10;
                     }

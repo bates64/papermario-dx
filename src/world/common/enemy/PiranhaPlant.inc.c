@@ -67,5 +67,5 @@ NpcSettings N(NpcSettings_PiranhaPlant_Hitbox) = {
     .level = ACTOR_LEVEL_PIRANHA_PLANT,
     .doAI = &N(EVS_NpcAI_PiranhaPlant_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

@@ -31,7 +31,7 @@ NpcData N(NpcData_FrostClubba)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = FROST_CLUBBA_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_CLUBBA_MACE_HITBOX(NPC_FrostClubba_Hitbox),
 };

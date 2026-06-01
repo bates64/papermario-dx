@@ -23,10 +23,10 @@ void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 
     dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
     npc->moveSpeed = 7.0f;
-    enemy->unk_10.x = npc->pos.x;
-    enemy->unk_10.y = npc->pos.y;
-    enemy->unk_10.z = npc->pos.z;
-    enemy->hitboxIsActive = true;
+    enemy->attackOriginPos.x = npc->pos.x;
+    enemy->attackOriginPos.y = npc->pos.y;
+    enemy->attackOriginPos.z = npc->pos.z;
+    enemy->firstStrikeActive = true;
 
     ai_enemy_play_sound(npc, SOUND_PARAGOOMBA_DIVE, 0);
     yawTemp = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
@@ -45,7 +45,7 @@ void N(ParatroopaAI_Dive)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->duration--;
 
     if (npc->duration <= 0) {
-        enemy->hitboxIsActive = false;
+        enemy->firstStrikeActive = false;
         npc->jumpScale = 0.3f;
         npc->jumpVel = 0.0f;
         npc->moveSpeed = 3.0f;

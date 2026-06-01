@@ -52,7 +52,7 @@ NpcSettings N(NpcSettings_MontyMole_StoneThrower) = {
     .doAI = &N(EVS_NpcAI_MontyMole_StoneThrower),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
 MobileAISettings N(AISettings_MontyMole_Stone) = {
@@ -116,7 +116,7 @@ NpcSettings N(NpcSettings_MontyMole_Stone) = {
     .doAI = &N(EVS_NpcAI_MontyMole_Stone),
     .onHit = &N(EVS_NpcHit_MontyMole_Stone),
     .onDefeat = &N(EVS_NpcDefeat_MontyMole_Stone),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
 #define MONTY_MOLE_STONE_HITBOX(npcID) \

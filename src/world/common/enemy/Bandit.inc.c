@@ -115,5 +115,5 @@ NpcSettings N(NpcSettings_Bandit) = {
     .doAI = &N(EVS_NpcAI_Bandit),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_Bandit),
-    .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER | AI_ACTION_04,
+    .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER | AI_ACTION_CHASE_REQUIRES_PATH,
 };

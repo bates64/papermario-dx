@@ -67,7 +67,7 @@ s32 N(MeleeHitbox_CanSeePlayer)(Evt* script) {
     f32 angle;
     s32 ret = true;
 
-    if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > hitboxEnemy->AI_VAR_HITNPC_2) {
+    if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > hitboxEnemy->AI_VAR_HITNPC_SIGHT_RANGE) {
         ret = false;
     }
 
@@ -78,7 +78,7 @@ s32 N(MeleeHitbox_CanSeePlayer)(Evt* script) {
     }
 
     if (fabsf(get_clamped_angle_diff(angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                                     gPlayerStatusPtr->pos.z))) > hitboxEnemy->AI_VAR_HITNPC_3) {
+                                     gPlayerStatusPtr->pos.z))) > hitboxEnemy->AI_VAR_HITNPC_SIGHT_ANGLE) {
         ret = false;
     }
 
@@ -105,7 +105,7 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
     f32 posX, posZ;
 
     if (isInitialCall || (hitboxEnemy->aiFlags & AI_FLAG_SUSPEND)) {
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
         hitboxNpc->duration = 0;
         hitboxNpc->flags |= (NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION);
         hitboxEnemy->flags |= ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER;
@@ -121,7 +121,7 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
         case 0:
             baseEnemy = get_enemy(hitboxEnemy->npcID - 1);
             baseNpc = get_npc_unsafe(baseEnemy->npcID);
-            hitboxEnemy->hitboxIsActive = true;
+            hitboxEnemy->firstStrikeActive = true;
             if (baseEnemy->AI_VAR_ATTACK_STATE == MELEE_HITBOX_STATE_ACTIVE) {
                 if (hitboxEnemy->AI_VAR_HITNPC_SOUND != 0) {
                     ai_enemy_play_sound(baseNpc, hitboxEnemy->AI_VAR_HITNPC_SOUND, 0);
@@ -131,34 +131,34 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
                 add_vec2D_polar(&posX, &posZ, hitboxEnemy->AI_VAR_HITNPC_DIST, 270.0f - baseNpc->renderYaw);
 
                 hitboxNpc->pos.x = posX;
-                hitboxEnemy->unk_10.x = hitboxNpc->pos.x;
+                hitboxEnemy->attackOriginPos.x = hitboxNpc->pos.x;
 
                 hitboxNpc->pos.y = baseNpc->pos.y + hitboxEnemy->AI_VAR_HITNPC_YOFFSET;
-                hitboxEnemy->unk_10.y = hitboxNpc->pos.y;
+                hitboxEnemy->attackOriginPos.y = hitboxNpc->pos.y;
 
                 hitboxNpc->pos.z = posZ;
-                hitboxEnemy->unk_10.z = hitboxNpc->pos.z;
+                hitboxEnemy->attackOriginPos.z = hitboxNpc->pos.z;
 
                 hitboxNpc->yaw = atan2(hitboxNpc->pos.x, hitboxNpc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
                 hitboxEnemy->flags &= ~(ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER);
                 hitboxNpc->duration = 0;
-                script->functionTemp[0] = 1;
+                script->AI_TEMP_STATE = 1;
             }
             break;
         case 1:
             baseEnemy = get_enemy(hitboxEnemy->npcID - 1);
-            get_npc_unsafe(baseEnemy->npcID);
+            baseNpc = get_npc_unsafe(baseEnemy->npcID);
             hitboxNpc->duration++;
-            if (hitboxNpc->duration >= hitboxEnemy->AI_VAR_HITNPC_4) {
-                hitboxEnemy->hitboxIsActive = false;
+            if (hitboxNpc->duration >= hitboxEnemy->AI_VAR_HITNPC_DURATION) {
+                hitboxEnemy->firstStrikeActive = false;
             }
             if (baseEnemy->AI_VAR_ATTACK_STATE == MELEE_HITBOX_STATE_POST) {
                 hitboxEnemy->flags |= ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER;
                 hitboxNpc->pos.x = NPC_DISPOSE_POS_X;
                 hitboxNpc->pos.y = NPC_DISPOSE_POS_Y;
                 hitboxNpc->pos.z = NPC_DISPOSE_POS_Z;
-                hitboxEnemy->hitboxIsActive = true;
-                script->functionTemp[0] = 0;
+                hitboxEnemy->firstStrikeActive = true;
+                script->AI_TEMP_STATE = 0;
             }
             break;
     }

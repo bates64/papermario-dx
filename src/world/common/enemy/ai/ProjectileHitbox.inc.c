@@ -54,7 +54,7 @@ void N(UnkNpcAIFunc48)(Evt* script, f32 arg1, f32 arg2, EnemyDetectVolume* terri
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (basic_ai_check_player_dist(territory, enemy, arg1, arg2, 1) == 0) {
+    if (!basic_ai_check_player_dist(territory, enemy, arg1, arg2, true)) {
         EffectInstance* sp28;
 
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &sp28);
@@ -183,10 +183,10 @@ API_CALLABLE(N(ProjectileAI_Main)) {
                         npc->pos.z = npc2->pos.z;
                         add_vec2D_polar(&npc->pos.x, &npc->pos.z, enemy->varTable[3], 270.0f - npc2->renderYaw);
                         npc->pos.y = npc2->pos.y + enemy->varTable[2];
-                        enemy->hitboxIsActive = vt0;
-                        enemy->unk_10.x = npc->pos.x;
-                        enemy->unk_10.y = npc->pos.y;
-                        enemy->unk_10.z = npc->pos.z;
+                        enemy->firstStrikeActive = vt0;
+                        enemy->attackOriginPos.x = npc->pos.x;
+                        enemy->attackOriginPos.y = npc->pos.y;
+                        enemy->attackOriginPos.z = npc->pos.z;
                         npc->rot.x = 0.0f;
                         npc->rot.y = 0.0f;
                         npc->rot.z = 0.0f;

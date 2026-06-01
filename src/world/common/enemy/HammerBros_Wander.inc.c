@@ -114,7 +114,7 @@ NpcSettings N(NpcSettings_HammerBros_Hammer) = {
     .doAI = &N(EVS_NpcAI_HammerBros_Hammer),
     .onHit = &N(EVS_NpcHit_HammerBros_Hammer),
     .onDefeat = &N(EVS_NpcDefeat_HammerBros_Hammer),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
 AnimID N(ExtraAnims_HammerBros_Hammer)[] = {

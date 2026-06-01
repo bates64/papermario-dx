@@ -172,5 +172,5 @@ NpcSettings N(NpcSettings_FrostClubba_Hitbox) = {
     .level = ACTOR_LEVEL_WHITE_CLUBBA,
     .doAI = &N(EVS_NpcAI_FrostClubba_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_FrostClubba),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

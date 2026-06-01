@@ -11,8 +11,41 @@
 #include "npc.h"
 #include "effects.h"
 
+enum AiStateFlying {
+    // basic flying enemies wander about and occasionally loiter
+    AI_FLYING_STATE_WANDER_INIT            = 0,
+    AI_FLYING_STATE_WANDER                 = 1,
+    AI_FLYING_STATE_LOITER_INIT            = 2,
+    AI_FLYING_STATE_LOITER                 = 3,
+    // alerted flying enemies perform a short upward aerial 'hop' over 5 frames
+    AI_FLYING_STATE_ALERT_INIT             = 10,
+    AI_FLYING_STATE_ALERT                  = 11,
+    // while chasing, flying enemies swoop toward the player (after optional delay)
+    AI_FLYING_STATE_CHASE_INIT             = 12,
+    AI_FLYING_STATE_CHASE_DELAY            = 13,
+    AI_FLYING_STATE_CHASE                  = 14,
+};
+
+enum AiVarsFlying {
+    AI_FLYING_VAR_FLAGS             = 0,
+    AI_FLYING_VAR_BOB_AMPLITUDE     = 1, // amplitude of bobbing during wander and loiter
+    AI_FLYING_VAR_BOB_PHASE         = 2,
+    AI_FLYING_VAR_HOVER_HEIGHT      = 3, // height above ground at initial position
+    AI_FLYING_VAR_PREV_Y            = 4,
+    AI_FLYING_VAR_CHASE_VELY        = 5, // y velocity to use during chase swoop
+    AI_FLYING_VAR_CHASE_ACCEL       = 6, // y acceleration to use during chase swoop
+    AI_FLYING_VAR_HOVER_BASE        = 7, // y level of ground under initial position
+    AI_FLYING_VAR_DETECT_COOLDOWN    = 9, // unused
+};
+
+enum AiVarsFlag {
+    AI_FLYING_FLAG_01           = 0x01,
+    AI_FLYING_FLAG_10           = 0x10,
+    AI_FLYING_FLAG_MASK         = 0x11,
+};
+
 f32 N(FlyingAI_JumpVels)[] = {
-    4.5, 3.5, 2.6, 2.0, 1.5, 20.0,
+    4.5, 3.5, 2.6, 2.0, 1.5,
 };
 
 void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -35,29 +68,29 @@ void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     } else {
         npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
     }
-    enemy->varTable[4] = npc->pos.y * 100.0;
-    script->functionTemp[0] = AI_STATE_WANDER;
+    enemy->varTable[AI_FLYING_VAR_PREV_Y] = npc->pos.y * 100.0;
+    script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER;
 }
 
 void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 cond = false;
-    f32 vt7 = (f32)enemy->varTable[7] / 100.0;
-    f32 vt3 = (f32)enemy->varTable[3] / 100.0;
-    f32 vt4 = (f32)enemy->varTable[4] / 100.0;
-    f32 vt1 = (f32)enemy->varTable[1] / 100.0;
+    f32 hoverBase = (f32)enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
+    f32 hoverHeight = (f32)enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
+    f32 prevY = (f32)enemy->varTable[AI_FLYING_VAR_PREV_Y] / 100.0;
+    f32 bobAmplitude = (f32)enemy->varTable[AI_FLYING_VAR_BOB_AMPLITUDE] / 100.0;
     f32 posX, posY, posZ, posW;
-    f32 temp_f24;
+    f32 initialY;
 
-    enemy->varTable[4] = npc->pos.y * 100.0;
+    enemy->varTable[AI_FLYING_VAR_PREV_Y] = npc->pos.y * 100.0;
 
-    temp_f24 = vt3 + vt7;
+    initialY = hoverBase + hoverHeight;
 
-    if ((enemy->varTable[0] & 0x11) == 1) {
+    if ((enemy->varTable[AI_FLYING_VAR_FLAGS] & AI_FLYING_FLAG_MASK) == AI_FLYING_FLAG_01) {
         if (npc->flags & NPC_FLAG_FLYING) {
-            if (vt1 < temp_f24 - npc->pos.y) {
-                enemy->varTable[0] |= 0x10;
+            if (bobAmplitude < initialY - npc->pos.y) {
+                enemy->varTable[AI_FLYING_VAR_FLAGS] |= AI_FLYING_FLAG_10;
             }
         } else {
             posX = npc->pos.x;
@@ -65,41 +98,38 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             posZ = npc->pos.z;
             posW = 1000.0f;
             npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
-            if (vt1 < (vt3 - posW)) {
-                enemy->varTable[0] |= 0x10;
+            if (bobAmplitude < (hoverHeight - posW)) {
+                enemy->varTable[AI_FLYING_VAR_FLAGS] |= AI_FLYING_FLAG_10;
             }
         }
     }
 
-    if ((enemy->varTable[0] & 0x11) == 0x11) {
-        f64 test;
+    if ((enemy->varTable[AI_FLYING_VAR_FLAGS] & AI_FLYING_FLAG_MASK) == (AI_FLYING_FLAG_01 | AI_FLYING_FLAG_10)) {
         f32 yTemp;
 
         if (npc->flags & NPC_FLAG_FLYING) {
-            yTemp = temp_f24;
-            test = vt4 + ((temp_f24 - vt4) * 0.09);
-            npc->pos.y = test;
+            yTemp = initialY;
+            npc->pos.y = prevY + ((initialY - prevY) * 0.09);
         } else {
             posX = npc->pos.x;
-            posY = vt4;
+            posY = prevY;
             posZ = npc->pos.z;
             posW = 1000.0f;
             npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
 
             yTemp = posY;
-            yTemp += vt3;
-            test = vt4 + ((yTemp - vt4) * 0.09);
-            npc->pos.y = test;
+            yTemp += hoverHeight;
+            npc->pos.y = prevY + ((yTemp - prevY) * 0.09);
         }
 
         if (fabsf(yTemp - npc->pos.y) < 1.0) {
             npc->pos.y = yTemp;
-            enemy->varTable[0] &= ~0x10;
+            enemy->varTable[AI_FLYING_VAR_FLAGS] &= ~AI_FLYING_FLAG_10;
         }
     } else {
-        if (enemy->varTable[1] > 0) {
-            f32 sinTemp = sin_deg(enemy->varTable[2]);
-            s32 hit;
+        if (enemy->varTable[AI_FLYING_VAR_BOB_AMPLITUDE] > 0) {
+            f32 bobAmount = sin_deg(enemy->varTable[AI_FLYING_VAR_BOB_PHASE]);
+            b32 hit;
 
             if (npc->flags & NPC_FLAG_FLYING) {
                 hit = false;
@@ -112,31 +142,31 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             }
 
             if (hit) {
-                npc->pos.y = posY + vt3 + (sinTemp * vt1);
+                npc->pos.y = posY + hoverHeight + (bobAmount * bobAmplitude);
             } else {
-                npc->pos.y = temp_f24 + (sinTemp * vt1);
+                npc->pos.y = initialY + (bobAmount * bobAmplitude);
             }
 
-            enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 10);
+            enemy->varTable[AI_FLYING_VAR_BOB_PHASE] = clamp_angle(enemy->varTable[AI_FLYING_VAR_BOB_PHASE] + 10);
         }
     }
 
-    if (enemy->varTable[9] <= 0) {
+    if (enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN] <= 0) {
         if (aiSettings->playerSearchInterval >= 0) {
             if (script->functionTemp[1] <= 0) {
                 script->functionTemp[1] = aiSettings->playerSearchInterval;
                 if (gPlayerStatusPtr->pos.y < (npc->pos.y + npc->collisionHeight) + 10.0 &&
-                    basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0) != 0)
+                    basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0))
                 {
                     EffectInstance* emoteTemp;
-                    fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xC, &emoteTemp);
+                    fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
                     npc->moveToPos.y = npc->pos.y;
                     ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
 
                     if (enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER) {
-                        script->AI_TEMP_STATE = AI_STATE_ALERT_INIT;
+                        script->AI_TEMP_STATE = AI_FLYING_STATE_ALERT_INIT;
                     } else {
-                        script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
+                        script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE_INIT;
                     }
                     return;
                 }
@@ -144,7 +174,7 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             script->functionTemp[1]--;
         }
     } else {
-        enemy->varTable[9]--;
+        enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN]--;
     }
 
     if (is_point_outside_territory(enemy->territory->wander.wanderShape,
@@ -166,13 +196,13 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
 
-    enemy->varTable[4] = npc->pos.y * 100.0;
+    enemy->varTable[AI_FLYING_VAR_PREV_Y] = npc->pos.y * 100.0;
     if (aiSettings->moveTime > 0) {
         if ((npc->duration <= 0) || (--npc->duration <= 0)) {
-            script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
+            script->AI_TEMP_STATE = AI_FLYING_STATE_LOITER_INIT;
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
             if (aiSettings->loiterMode <= 0 || aiSettings->waitTime <= 0 || script->functionTemp[1] < 3) {
-                script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+                script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
             }
         }
     }
@@ -185,24 +215,25 @@ void N(FlyingAI_LoiterInit)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     npc->duration = (aiSettings->waitTime / 2) + rand_int((aiSettings->waitTime / 2) + 1);
     npc->yaw = clamp_angle(npc->yaw + rand_int(180) - 90.0f);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-    script->functionTemp[0] = 3;
+    script->AI_TEMP_STATE = AI_FLYING_STATE_LOITER;
 }
 
 void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
+    f32 hoverHeight = enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
+    f32 hoverBase = enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
     f32 posX, posY, posZ, posW;
-    f32 hoverHeight = (f32)enemy->varTable[3] / 100.0;
-    f32 temp_f26 = hoverHeight + (f32)((f32)enemy->varTable[7] / 100.0);
-    EffectInstance* var;
+    EffectInstance* emoteTemp;
 
     if (npc->duration > 0) {
         npc->duration--;
     }
 
-    if (enemy->varTable[1] > 0) {
-        f32 undulateAmplitude = (f32)enemy->varTable[1] / 100.0;
-        f32 undulateAmount = sin_deg(enemy->varTable[2]);
+    // calculate new height with bobbing added in
+    if (enemy->varTable[AI_FLYING_VAR_BOB_AMPLITUDE] > 0) {
+        f32 bobAmplitude = enemy->varTable[AI_FLYING_VAR_BOB_AMPLITUDE] / 100.0;
+        f32 bobAmount = sin_deg(enemy->varTable[AI_FLYING_VAR_BOB_PHASE]);
         b32 hasCollision;
 
         if (npc->flags & NPC_FLAG_FLYING) {
@@ -216,31 +247,33 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
         }
 
         if (hasCollision) {
-            npc->pos.y = posY + hoverHeight + (undulateAmount * undulateAmplitude);
+            npc->pos.y = posY + hoverHeight + (bobAmount * bobAmplitude);
         } else {
-            npc->pos.y = temp_f26 + (undulateAmount * undulateAmplitude);
+            npc->pos.y = hoverBase + hoverHeight + (bobAmount * bobAmplitude);
         }
 
-        enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 10);
+        enemy->varTable[AI_FLYING_VAR_BOB_PHASE] = clamp_angle(enemy->varTable[AI_FLYING_VAR_BOB_PHASE] + 10);
     }
 
-    if (enemy->varTable[9] <= 0) {
+    // try player detection
+    if (enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN] <= 0) {
         if ((gPlayerStatusPtr->pos.y < npc->pos.y + npc->collisionHeight + 10.0)
-            && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1)) {
-            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &var);
+            && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
+            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
             npc->moveToPos.y = npc->pos.y;
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             if (enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER) {
-                script->AI_TEMP_STATE = AI_STATE_ALERT_INIT;
+                script->AI_TEMP_STATE = AI_FLYING_STATE_ALERT_INIT;
             } else {
-                script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
+                script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE_INIT;
             }
             return;
         }
     } else {
-        enemy->varTable[9]--;
+        enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN]--;
     }
 
+    // try looking around
     if ((npc->turnAroundYawAdjustment == 0) && (npc->duration <= 0)) {
         script->functionTemp[1]--;
         if (script->functionTemp[1] > 0) {
@@ -249,7 +282,7 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             }
             npc->duration = (rand_int(1000) % 11) + 5;
         } else {
-            script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+            script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
         }
     }
 }
@@ -262,7 +295,7 @@ void N(FlyingAI_JumpInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->duration = 0;
     npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
-    script->functionTemp[0] = AI_STATE_ALERT;
+    script->AI_TEMP_STATE = AI_FLYING_STATE_ALERT;
 }
 
 void N(FlyingAI_Jump)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -270,16 +303,16 @@ void N(FlyingAI_Jump)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->pos.y += N(FlyingAI_JumpVels)[npc->duration++];
-    if (npc->duration >= 5) {
-        script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
+    if (npc->duration >= ARRAY_COUNT(N(FlyingAI_JumpVels))) {
+        script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE_INIT;
     }
 }
 
 void N(FlyingAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 jumpVel = (f32)enemy->varTable[5] / 100.0;
-    f32 jumpScale = (f32)enemy->varTable[6] / 100.0;
+    f32 jumpVel = enemy->varTable[AI_FLYING_VAR_CHASE_VELY] / 100.0;
+    f32 jumpScale = enemy->varTable[AI_FLYING_VAR_CHASE_ACCEL] / 100.0;
 
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
     npc->jumpVel = jumpVel;
@@ -287,54 +320,50 @@ void N(FlyingAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     npc->moveSpeed = aiSettings->chaseSpeed;
     npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
 
-    enemy->varTable[2] = 0;
+    enemy->varTable[AI_FLYING_VAR_BOB_PHASE] = 0;
 
-    if (enemy->npcSettings->actionFlags & AI_ACTION_02) {
+    if (enemy->npcSettings->actionFlags & AI_ACTION_CANT_FIRST_STRIKE) {
         npc->duration = 3;
-        script->AI_TEMP_STATE = AI_STATE_CHASE;
+        script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE_DELAY;
     } else {
         npc->duration = 1;
-        script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
-        enemy->unk_10.x = npc->pos.x;
-        enemy->unk_10.y = npc->pos.y;
-        enemy->unk_10.z = npc->pos.z;
-        enemy->hitboxIsActive = true;
+        script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE;
+        enemy->attackOriginPos.x = npc->pos.x;
+        enemy->attackOriginPos.y = npc->pos.y;
+        enemy->attackOriginPos.z = npc->pos.z;
+        enemy->firstStrikeActive = true;
     }
 }
 
-void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(FlyingAI_ChaseDelay)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if ((npc->duration <= 0) || (--npc->duration <= 0)) {
         if (npc->turnAroundYawAdjustment == 0) {
             npc->duration = 0;
-            script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
+            script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE;
         }
     }
 }
 
-void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, posW;
     f32 deltaAngle;
-    f32 temp_f20;
-    f32 temp_f22;
     f32 temp_f2;
     s32 hitBelow;
     f32 angle;
-    f32 a = enemy->varTable[3];
-    f32 b = enemy->varTable[7];
+    f32 hoverHeight = enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
+    f32 hoverBase = enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
 
     npc->jumpVel += npc->jumpScale;
-    temp_f20 = a / 100.0;
-    temp_f22 = b / 100.0;
     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
 
     if (npc->jumpVel >= 0.0) {
         npc->pos.y += npc->jumpVel;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
-        enemy->hitboxIsActive = false;
+        enemy->firstStrikeActive = false;
         if (!(npc->flags & NPC_FLAG_FLYING)) {
             posX = npc->pos.x;
             posY = npc->pos.y;
@@ -345,13 +374,13 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
             hitBelow = false;
         }
         if (hitBelow) {
-            temp_f2 = posY + temp_f20;
+            temp_f2 = posY + hoverHeight;
             if (temp_f2 <= npc->pos.y) {
                 npc->pos.y = temp_f2;
-                script->functionTemp[0] = 0;
+                script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
             }
         } else if (npc->pos.y >= npc->moveToPos.y) {
-            script->functionTemp[0] = 0;
+            script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
         }
     } else if (npc->jumpVel < 0.0) {
         npc->duration++;
@@ -371,8 +400,8 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
         }
 
         if (npc->flags & NPC_FLAG_FLYING) {
-            if (npc->pos.y + npc->jumpVel < temp_f22) {
-                npc->pos.y = temp_f22;
+            if (npc->pos.y + npc->jumpVel < hoverBase) {
+                npc->pos.y = hoverBase;
                 npc->jumpVel = 0.0f;
             } else {
                 npc->pos.y += npc->jumpVel;
@@ -392,7 +421,7 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
                 npc->pos.y += npc->jumpVel;
             }
             return;
-        } else if (fabsf(npc->jumpVel) < ((npc->pos.y - temp_f22) + npc->collisionHeight)) {
+        } else if (fabsf(npc->jumpVel) < ((npc->pos.y - hoverBase) + npc->collisionHeight)) {
             npc->pos.y = npc->pos.y + npc->jumpVel;
             return;
         }
@@ -403,7 +432,7 @@ void N(FlyingAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 void N(FlyingAI_Init)(Npc* npc, Enemy* enemy, Evt* script, MobileAISettings* aiSettings) {
     f32 posX, posY, posZ, depth;
 
-    script->functionTemp[0] = 0;
+    script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
     npc->duration = 0;
 
     npc->flags &= ~NPC_FLAG_GRAVITY;
@@ -419,10 +448,10 @@ void N(FlyingAI_Init)(Npc* npc, Enemy* enemy, Evt* script, MobileAISettings* aiS
     posZ = npc->pos.z;
     depth = 1000.0f;
     npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &depth);
-    enemy->varTable[2] = 0;
-    enemy->varTable[9] = 0;
-    enemy->varTable[3] = (depth * 100.0) + 0.5;
-    enemy->varTable[7] = (posY * 100.0) + 0.5;
+    enemy->varTable[AI_FLYING_VAR_BOB_PHASE] = 0;
+    enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN] = 0;
+    enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] = (depth * 100.0) + 0.5;
+    enemy->varTable[AI_FLYING_VAR_HOVER_BASE] = (posY * 100.0) + 0.5;
     script->functionTemp[1] = aiSettings->playerSearchInterval;
     enemy->aiFlags |= AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE;
 }
@@ -458,29 +487,29 @@ API_CALLABLE(N(FlyingAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_WANDER_INIT:
+        case AI_FLYING_STATE_WANDER_INIT:
             N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
-        case AI_STATE_WANDER:
+        case AI_FLYING_STATE_WANDER:
             N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
             break;
-        case AI_STATE_LOITER_INIT:
+        case AI_FLYING_STATE_LOITER_INIT:
             N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
-        case AI_STATE_LOITER:
+        case AI_FLYING_STATE_LOITER:
             N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
             break;
-        case AI_STATE_ALERT_INIT:
+        case AI_FLYING_STATE_ALERT_INIT:
             N(FlyingAI_JumpInit)(script, aiSettings, territoryPtr);
-        case AI_STATE_ALERT:
+        case AI_FLYING_STATE_ALERT:
             N(FlyingAI_Jump)(script, aiSettings, territoryPtr);
             break;
-        case AI_STATE_CHASE_INIT:
+        case AI_FLYING_STATE_CHASE_INIT:
             N(FlyingAI_ChaseInit)(script, aiSettings, territoryPtr);
             break;
-        case AI_STATE_CHASE:
-            N(FlyingAI_Chase)(script, aiSettings, territoryPtr);
+        case AI_FLYING_STATE_CHASE_DELAY:
+            N(FlyingAI_ChaseDelay)(script, aiSettings, territoryPtr);
             break;
-        case AI_STATE_LOSE_PLAYER:
-            N(FlyingAI_LosePlayer)(script, aiSettings, territoryPtr);
+        case AI_FLYING_STATE_CHASE:
+            N(FlyingAI_Chase)(script, aiSettings, territoryPtr);
             break;
     }
 

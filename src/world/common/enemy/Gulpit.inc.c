@@ -55,7 +55,7 @@ NpcSettings N(NpcSettings_Gulpit_Hitbox) = {
     .level = ACTOR_LEVEL_GULPIT,
     .doAI = &N(EVS_NpcAI_Gulpit_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
 AnimID N(ExtraAnims_Gulpit_Hitbox)[] = {

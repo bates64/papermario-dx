@@ -49,10 +49,10 @@ void N(UnkNpcAIFunc12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     f32 f3;
 
     if (npc->duration == enemy->varTable[4] - 1) {
-        enemy->unk_10.x = npc->pos.x;
-        enemy->unk_10.y = npc->pos.y;
-        enemy->unk_10.z = npc->pos.z;
-        enemy->hitboxIsActive = true;
+        enemy->attackOriginPos.x = npc->pos.x;
+        enemy->attackOriginPos.y = npc->pos.y;
+        enemy->attackOriginPos.z = npc->pos.z;
+        enemy->firstStrikeActive = true;
     }
 
     f1 = npc->pos.x;
@@ -65,7 +65,7 @@ void N(UnkNpcAIFunc12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     }
 
     if ((npc->duration <= 0) || (--npc->duration <= 0) || (temp != 0)) {
-        enemy->hitboxIsActive = false;
+        enemy->firstStrikeActive = false;
         npc->curAnim = enemy->animList[10];
         npc->duration = 0;
         script->functionTemp[0] = 15;

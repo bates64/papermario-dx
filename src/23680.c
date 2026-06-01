@@ -372,7 +372,7 @@ b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, 
     }
 }
 
-b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, s8 useWorldYaw) {
+b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus;
@@ -436,7 +436,7 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
     }
 
     if (skipCheckForPlayer == 0) {
-        if (enemy->aiDetectFlags & AI_DETECT_SENSITIVE_MOTION) {
+        if (enemy->aiDetectFlags & AI_DETECT_MOTION_SENSITIVE) {
             if (playerStatus->actionState == ACTION_STATE_WALK) {
                 radius *= 1.15;
             } else if (playerStatus->actionState == ACTION_STATE_RUN) {
@@ -445,7 +445,7 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
         }
         x = npc->pos.x;
         z = npc->pos.z;
-        if (useWorldYaw & 0xFF) {
+        if (useWorldYaw) {
             add_vec2D_polar(&x, &z, fwdPosOffset, npc->yaw);
         } else {
             add_vec2D_polar(&x, &z, fwdPosOffset, 270.0f - npc->renderYaw);
@@ -494,7 +494,7 @@ void ai_enemy_play_sound(Npc* npc, s32 soundID, s32 upperSoundFlags) {
         soundFlags |= SOUND_PARAM_MUTE;
     }
 
-    if (enemy->npcSettings->actionFlags & AI_ACTION_20) {
+    if (enemy->npcSettings->actionFlags & AI_ACTION_MUTE_OFFSCREEN) {
         soundFlags |= SOUND_PARAM_CLIP_OFFSCREEN_ANY;
     }
 
@@ -543,7 +543,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     if (aiSettings->playerSearchInterval >= 0) {
         if (script->functionTemp[1] <= 0) {
             script->functionTemp[1] = aiSettings->playerSearchInterval;
-            if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0)) {
+            if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
@@ -604,7 +604,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
 
     // perform the motion
     if (enemy->territory->wander.wanderSize.x | enemy->territory->wander.wanderSize.z | stillWithinTerritory) {
-        if (!npc->turnAroundYawAdjustment) {
+        if (npc->turnAroundYawAdjustment == 0) {
             npc_move_heading(npc, npc->moveSpeed, npc->yaw);
         } else {
             return;
@@ -642,7 +642,7 @@ void basic_ai_loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     EffectInstance* emoteTemp;
 
     if (aiSettings->playerSearchInterval >= 0) {
-        if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 0)) {
+        if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
@@ -753,7 +753,7 @@ void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume
     EffectInstance* sp28;
     f32 x, y, z;
 
-    if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1)) {
+    if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
         fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &sp28);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
@@ -761,13 +761,13 @@ void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume
         return;
     }
 
-    if (enemy->npcSettings->actionFlags & AI_ACTION_04) {
+    if (enemy->npcSettings->actionFlags & AI_ACTION_CHASE_REQUIRES_PATH) {
         if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z) > (npc->moveSpeed * 5.0)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
             if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
-                fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xC, &sp28);
+                fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &sp28);
                 npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
                 npc->duration = 15;
                 script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;

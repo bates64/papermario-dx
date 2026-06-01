@@ -188,7 +188,7 @@ NpcData N(NpcData_RuffPuff) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = RUFF_PUFF_DROPS,
     .animations = RUFF_PUFF_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_Bzzap) = {
@@ -211,7 +211,7 @@ NpcData N(NpcData_Bzzap) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = BZZAP_DROPS,
     .animations = BZZAP_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(DefaultNPCs) = {

@@ -1,6 +1,9 @@
 #include "PokeyMummy.h"
 
-#include "world/common/todo/SetInstigatorValue_3.inc.c"
+API_CALLABLE(N(SetInstigatorValue)) {
+    script->owner1.enemy->instigatorValue = 3;
+    return ApiStatus_DONE2;
+}
 
 MobileAISettings N(AISettings_PokeyMummy) = {
     .moveSpeed = 1.8f,
@@ -16,7 +19,7 @@ MobileAISettings N(AISettings_PokeyMummy) = {
 };
 
 EvtScript N(EVS_NpcAI_PokeyMummy) = {
-    Call(N(SetInstigatorValue_3))
+    Call(N(SetInstigatorValue))
     Call(BasicAI_Main, Ref(N(AISettings_PokeyMummy)))
     Return
     End

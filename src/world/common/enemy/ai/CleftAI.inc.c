@@ -126,7 +126,7 @@ void N(CleftAI_FindPlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     Npc* npc = get_npc_unsafe(enemy->npcID);
     EffectInstance* var;
 
-    if (basic_ai_check_player_dist(volume, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 0)) {
+    if (basic_ai_check_player_dist(volume, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         script->AI_TEMP_STATE = AI_STATE_CLEFT_CHASE_INIT;
     } else {
@@ -165,10 +165,10 @@ void N(CleftAI_RevUp)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
 
     npc->duration--;
     if (npc->duration <= 0) {
-        enemy->unk_10.x = npc->pos.x;
-        enemy->unk_10.y = npc->pos.y;
-        enemy->unk_10.z = npc->pos.z;
-        enemy->hitboxIsActive = true;
+        enemy->attackOriginPos.x = npc->pos.x;
+        enemy->attackOriginPos.y = npc->pos.y;
+        enemy->attackOriginPos.z = npc->pos.z;
+        enemy->firstStrikeActive = true;
         npc->moveSpeed = aiSettings->chaseSpeed;
         npc->duration = dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
                                gPlayerStatusPtr->pos.z) / npc->moveSpeed + 0.9;
@@ -210,7 +210,7 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     }
     if (phi_s1) {
         script->AI_TEMP_STATE = AI_STATE_CLEFT_FIND_PLAYER_INIT;
-        enemy->hitboxIsActive = false;
+        enemy->firstStrikeActive = false;
     }
 }
 
@@ -234,7 +234,7 @@ void N(CleftAI_ReturnHome)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (basic_ai_check_player_dist(volume, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 0)) {
+    if (basic_ai_check_player_dist(volume, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         script->AI_TEMP_STATE = AI_STATE_CLEFT_CHASE_INIT;
     } else if (dist2D(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z) <= npc->moveSpeed) {

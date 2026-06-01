@@ -124,7 +124,6 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     npc->homePos.x = 0.0f;
     npc->homePos.y = 0.0f;
     npc->homePos.z = 0.0f;
-    npc->unk_96 = 0; // TODO: fix
     npc->verticalRenderOffset = 0;
     npc->alpha = 255;
     npc->hideAlpha = 255;

@@ -138,8 +138,8 @@ EvtScript EnemyNpcHit = {
             ExecWait(EVS_NpcHitRecoil)
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
-                Call(func_800458CC, LVar0)
-                IfEq(LVar0, 0)
+                Call(EnemyHasNoSpinReaction, LVar0)
+                IfEq(LVar0, false)
                     Set(LVarA, 0)
                     Loop(30)
                         Add(LVarA, 40)
@@ -726,10 +726,10 @@ void update_encounters_neutral(void) {
                             break;
                         }
                     }
-                    if (enemy->hitboxIsActive) {
-                        npcX = enemy->unk_10.x;
-                        npcY = enemy->unk_10.y;
-                        npcZ = enemy->unk_10.z;
+                    if (enemy->firstStrikeActive) {
+                        npcX = enemy->attackOriginPos.x;
+                        npcY = enemy->attackOriginPos.y;
+                        npcZ = enemy->attackOriginPos.z;
                     }
 
                     angle1 = fabsf(get_clamped_angle_diff(atan2(playerX, playerZ, npcX, npcZ), playerYaw));
@@ -905,7 +905,7 @@ void update_encounters_neutral(void) {
                 fx_damage_stars(FX_DAMAGE_STARS_3, testX, testY, testZ, 0.0f, -1.0f, 0.0f, 3);
                 // if the hitbox is active, trigger a first strike
                 firstStrikeType = FIRST_STRIKE_NONE;
-                if (enemy->hitboxIsActive) {
+                if (enemy->firstStrikeActive) {
                     if (is_ability_active(ABILITY_CHILL_OUT)) {
                         firstStrikeType = FIRST_STRIKE_NONE;
                     } else {
@@ -2541,7 +2541,7 @@ void create_encounters(void) {
                     enemy->hitScriptID = 0;
                     enemy->auxScriptID = 0;
                     enemy->defeatScriptID = 0;
-                    enemy->hitboxIsActive = false;
+                    enemy->firstStrikeActive = false;
                     enemy->instigatorValue = 0;
                     enemy->aiDetectFlags = npcData->aiDetectFlags;
 
@@ -2585,10 +2585,9 @@ void create_encounters(void) {
                     newNpc->npcID = npcData->id;
                     newNpc->collisionDiameter = npcSettings->radius;
                     newNpc->collisionHeight = npcSettings->height;
-                    enemy->spawnPos[0] = newNpc->pos.x = npcData->pos.x;
-                    enemy->spawnPos[1] = newNpc->pos.y = npcData->pos.y;
-                    enemy->spawnPos[2] = newNpc->pos.z = npcData->pos.z;
-                    newNpc->unk_96 = 0;
+                    enemy->spawnPos.x = newNpc->pos.x = npcData->pos.x;
+                    enemy->spawnPos.y = newNpc->pos.y = npcData->pos.y;
+                    enemy->spawnPos.z = newNpc->pos.z = npcData->pos.z;
                     newNpc->planarFlyDist = 0.0f;
                     newNpc->homePos.x = newNpc->pos.x;
                     newNpc->homePos.y = newNpc->pos.y;

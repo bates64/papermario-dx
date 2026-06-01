@@ -122,5 +122,5 @@ NpcSettings N(NpcSettings_SpyGuyRock) = {
     .doAI = &N(EVS_NpcAI_SpyGuyRock_Projectile),
     .onHit = &N(EVS_NpcHit_SpyGuyRock),
     .onDefeat = &N(EVS_NpcDefeat_SpyGuyRock),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

@@ -1145,7 +1145,7 @@ API_CALLABLE(func_80045838);
 
 /// @evtapi
 /// @param outResult
-API_CALLABLE(func_800458CC);
+API_CALLABLE(EnemyHasNoSpinReaction);
 
 /// @evtapi
 /// @param skipReaction

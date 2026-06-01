@@ -36,9 +36,9 @@ API_CALLABLE(N(TackleAI_Main)) {
     }
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
-        script->AI_TEMP_STATE = 0;
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
-        enemy->hitboxIsActive = false;
+        enemy->firstStrikeActive = false;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
         npc->collisionHeight = enemy->varTable[6];
@@ -55,7 +55,7 @@ API_CALLABLE(N(TackleAI_Main)) {
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             EffectInstance* emoteTemp;
 
-            script->AI_TEMP_STATE = 99;
+            script->AI_TEMP_STATE = AI_STATE_SUSPEND;
             script->functionTemp[1] = 0;
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 40, &emoteTemp);
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
@@ -79,13 +79,13 @@ API_CALLABLE(N(TackleAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case 0:
+        case AI_STATE_WANDER_INIT:
             basic_ai_wander_init(script, aiSettings, territoryPtr);
             npc->collisionHeight = enemy->varTable[6];
-        case 1:
+        case AI_STATE_WANDER:
             basic_ai_wander(script, aiSettings, territoryPtr);
             break;
-        case 2:
+        case AI_STATE_LOITER_INIT:
             basic_ai_loiter_init(script, aiSettings, territoryPtr);
             if (enemy->varTable[7] == 6) {
                 if (rand_int(100) < 33) {
@@ -102,7 +102,7 @@ API_CALLABLE(N(TackleAI_Main)) {
                     return ApiStatus_BLOCK;
                 }
             }
-        case 3:
+        case AI_STATE_LOITER:
             basic_ai_loiter(script, aiSettings, territoryPtr);
             break;
         case 12:
@@ -116,7 +116,7 @@ API_CALLABLE(N(TackleAI_Main)) {
         case 15:
             N(set_script_owner_npc_col_height)(script, aiSettings, territoryPtr);
             break;
-        case 99:
+        case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
             break;
     }

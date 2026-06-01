@@ -88,5 +88,5 @@ NpcSettings N(NpcSettings_SpearGuy_Hitbox) = {
     .level = ACTOR_LEVEL_SPEAR_GUY,
     .doAI = &N(EVS_NpcAI_SpearGuy_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_SpearGuy_Hitbox),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

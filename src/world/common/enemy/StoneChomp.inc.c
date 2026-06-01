@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcHit_StoneChomp) = {
             ExecWait(EVS_NpcHitRecoil)
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
-                Call(func_800458CC, LVar0)
+                Call(EnemyHasNoSpinReaction, LVar0)
                 IfEq(LVar0, 0)
                     Set(LVarA, 0)
                     Loop(30)
