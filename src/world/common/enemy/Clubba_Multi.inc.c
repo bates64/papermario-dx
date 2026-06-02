@@ -7,7 +7,7 @@ EvtScript N(EVS_NpcDefeat_Clubba) = {
             Call(RemoveNpc, NPC_SELF)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(OnPlayerFled, 1)
+            Call(OnPlayerFled, true)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)

@@ -76,7 +76,7 @@ EvtScript N(EVS_NpcDefeat_SpawnedSpiny) = {
             Call(SetSelfVar, 10, 100)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)

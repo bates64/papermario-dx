@@ -30,7 +30,7 @@ API_CALLABLE(N(RangedAttackAI_Main)) {
     territory.detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
-        script->AI_TEMP_STATE = 0;
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;

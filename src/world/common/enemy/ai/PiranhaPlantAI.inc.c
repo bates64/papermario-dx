@@ -23,11 +23,10 @@ void N(PiranhaPlantAI_00)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_01)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EffectInstance* temp;
 
     if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
         ai_enemy_play_sound(npc, SOUND_BURROW_DIG, 0);
-        fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, &temp);
+        fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
         npc->duration = enemy->varTable[8];
@@ -237,7 +236,6 @@ void N(PiranhaPlantAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EffectInstance* temp;
 
     npc->duration++;
     if (npc->duration == enemy->varTable[13]) {
@@ -250,7 +248,7 @@ void N(PiranhaPlantAI_12)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
         enemy->varTable[0] = 4;
         npc->duration = 8;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        fx_emote(EMOTE_FRUSTRATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, &temp);
+        fx_emote(EMOTE_FRUSTRATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, nullptr);
         script->functionTemp[0] = 13;
     }
 }
@@ -269,12 +267,11 @@ void N(PiranhaPlantAI_13)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EffectInstance* retVal;
 
     npc->duration--;
     if (npc->duration == 0) {
         if (!basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
-            fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1, 2, -20, 15, &retVal);
+            fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1, 2, -20, 15, nullptr);
         }
         npc->duration = 0;
         script->functionTemp[0] = 0;

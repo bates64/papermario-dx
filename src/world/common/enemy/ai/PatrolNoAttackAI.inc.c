@@ -1,5 +1,8 @@
-#ifndef _PATROL_AI_NO_ATTACK_
-#define _PATROL_AI_NO_ATTACK_
+#pragma once
+
+// Basic Patrol AI follows a patrol path and will chase a player who comes within
+// their detection range. This AI has no means of attacking; they can initiate
+// battles on contact, but can't First Strike the player.
 
 #include "common.h"
 #include "npc.h"
@@ -31,12 +34,12 @@ API_CALLABLE(N(PatrolNoAttackAI_Main)) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->patrol.isFlying) {
+        if (enemy->territory->patrol.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
@@ -89,8 +92,8 @@ API_CALLABLE(N(PatrolNoAttackAI_Main)) {
         case AI_STATE_LOSE_PLAYER:
             N(PatrolAI_LosePlayer)(script, npcAISettings, territoryPtr);
             break;
-        case AI_STATE_PATROL_15:
-            N(PatrolNoAttackAI_15)(script, npcAISettings, territoryPtr);
+        case AI_STATE_PATROL_RESUME:
+            N(PatrolAI_Resume)(script, npcAISettings, territoryPtr);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
@@ -98,5 +101,3 @@ API_CALLABLE(N(PatrolNoAttackAI_Main)) {
     }
     return ApiStatus_BLOCK;
 }
-
-#endif

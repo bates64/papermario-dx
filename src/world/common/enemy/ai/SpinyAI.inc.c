@@ -6,7 +6,7 @@
 #include "sprite/npc/Spiny.h"
 
 // prerequisites
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 API_CALLABLE(N(SpinyAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
@@ -59,8 +59,7 @@ API_CALLABLE(N(SpinyAI_Main)) {
             npc->jumpScale = 1.0f;
             script->AI_TEMP_STATE = 102;
         } else {
-            EffectInstance* emoteTemp;
-            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0x28, &emoteTemp);
+            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 40, nullptr);
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
             script->functionTemp[1] = 0;
             script->AI_TEMP_STATE = 200;
@@ -72,7 +71,7 @@ API_CALLABLE(N(SpinyAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case 0:
+        case AI_STATE_WANDER_INIT:
             basic_ai_wander_init(script, aiSettings, territoryPtr);
             npc->collisionHeight = enemy->varTable[6];
             if (enemy->varTable[13] != 0) {
@@ -86,25 +85,25 @@ API_CALLABLE(N(SpinyAI_Main)) {
             }
             basic_ai_wander(script, aiSettings, territoryPtr);
             break;
-        case 1:
+        case AI_STATE_WANDER:
             basic_ai_wander(script, aiSettings, territoryPtr);
             break;
-        case 2:
+        case AI_STATE_LOITER_INIT:
             basic_ai_loiter_init(script, aiSettings, territoryPtr);
-        case 3:
+        case AI_STATE_LOITER:
             basic_ai_loiter(script, aiSettings, territoryPtr);
             break;
-        case 12:
-            N(set_script_owner_npc_anim)(script, aiSettings, territoryPtr);
-        case 13:
-            N(UnkDistFunc)(script, aiSettings, territoryPtr);
+        case AI_STATE_TACKLE_INIT:
+            N(TackleAI_InitTackle)(script, aiSettings, territoryPtr);
+        case AI_STATE_PRE_TACKLE:
+            N(TackleAI_PreTackle)(script, aiSettings, territoryPtr);
             npc->collisionHeight = enemy->varTable[6];
             break;
-        case 14:
-            N(UnkNpcAIFunc12)(script, aiSettings, territoryPtr);
+        case AI_STATE_TACKLE:
+            N(TackleAI_Tackle)(script, aiSettings, territoryPtr);
             break;
-        case 15:
-            N(set_script_owner_npc_col_height)(script, aiSettings, territoryPtr);
+        case AI_STATE_POST_TACKLE:
+            N(TackleAI_PostTackle)(script, aiSettings, territoryPtr);
             break;
         case 100:
             if (enemy->varTable[10] != 2) {

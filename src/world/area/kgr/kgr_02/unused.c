@@ -1,7 +1,7 @@
 #include "kgr_02.h"
 #include "nu/nusys.h"
 
-extern s32 N(D_80240970_8AADC0);
+s32 N(D_80240970_8AADC0) = 0;
 
 void N(func_80240160_8AA5B0)(s32 x1, s32 y1, s32 x2, s32 y2, s32 arg4) {
     s32 i;

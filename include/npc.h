@@ -202,7 +202,7 @@ typedef struct EnemyDetectVolume {
     /* 0x10 */ s32 sizeX;
     /* 0x14 */ s32 sizeZ;
     /* 0x18 */ f32 halfHeight;
-    /* 0x1C */ s16 detectFlags;  // 1 = ignore partner hiding (bow/sushie dont work) | 2 = ignore elevation
+    /* 0x1C */ s16 detectFlags; // see: TerritoryFlags
 } EnemyDetectVolume; // size = 0x20
 
 typedef struct {

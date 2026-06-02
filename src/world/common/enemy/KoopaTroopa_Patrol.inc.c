@@ -1,6 +1,6 @@
 #include "KoopaTroopa.h"
 
-#include "world/common/enemy/ai/KoopaPatrolAI.inc.c"
+#include "world/common/enemy/ai/TacklePatrolAI.inc.c"
 
 MobileAISettings N(AISettings_KoopaTroopa_Patrol) = {
     .moveSpeed = 1.5f,
@@ -16,10 +16,11 @@ MobileAISettings N(AISettings_KoopaTroopa_Patrol) = {
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa_Patrol) = {
-    Call(SetSelfVar, 2, 8)
-    Call(SetSelfVar, 3, 12)
-    Call(SetSelfVar, 5, 10)
-    Call(N(KoopaPatrolAI_Main), Ref(N(AISettings_KoopaTroopa_Patrol)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 8)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 12)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 10)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_KOOPATROL)
+    Call(N(TacklePatrolAI_Main), Ref(N(AISettings_KoopaTroopa_Patrol)))
     Return
     End
 };

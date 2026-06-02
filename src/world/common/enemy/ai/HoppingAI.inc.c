@@ -48,8 +48,7 @@ void N(HoppingAI_Hop)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
         if (script->functionTemp[1] <= 0) {
             script->functionTemp[1] = aiSettings->playerSearchInterval;
             if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
-                EffectInstance* emoteTemp;
-                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
                 script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
@@ -125,8 +124,7 @@ void N(HoppingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectV
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     if (aiSettings->playerSearchInterval >= 0 && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
-        EffectInstance* emoteTemp;
-        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
@@ -162,7 +160,6 @@ void N(HoppingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ;
     f32 groundY, hitDepth;
-    EffectInstance* emoteTemp;
 
     if (npc->moveSpeed > 0.0) {
         posX = npc->pos.x;
@@ -196,7 +193,7 @@ void N(HoppingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
 
             if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
-                fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+                fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
                 npc->duration = 25;
                 script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
             }

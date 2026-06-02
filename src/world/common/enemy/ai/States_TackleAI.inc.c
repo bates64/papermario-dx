@@ -4,90 +4,129 @@
 #include "common.h"
 #include "npc.h"
 
-// used with KoopaPatrolAI, TackleAI, SpinyAI
+// used with TacklePatrolAI, TackleAI, SpinyAI
 // all functions only used here
 
-void N(set_script_owner_npc_anim)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+enum AiVarsTackle {
+    AI_TACKLE_VAR_PRE_DELAY = 2, // IN: delay time before dashing
+    AI_TACKLE_VAR_MIN_CHASE_TIME = 3, // IN: minimum time to dash during tackle
+    AI_TACKLE_VAR_CHASE_TIME = 4, // computed chase time to target
+    AI_TACKLE_VAR_POST_DELAY = 5, // IN: delay time after dashing
+    AI_TACKLE_VAR_HEIGHT = 6, // original collision height
+    AI_TACKLE_VAR_TYPE  = 7, // IN: see TackleEnemyType
+    AI_TACKLE_VAR_SPIKY = 8, // boolean tracking whether BonyBeetle spikes are extended
+    AI_TACKLE_VAR_CHANGE_TIME = 9, // duration to suspend AI while BonyBeetle swaps spike state
+};
+
+enum TackleEnemyType {
+    TACKLER_KOOPA_TROOPA    = 0,
+    TACKLER_DARK_TROOPA     = 1,
+    TACKLER_BUZZY_BEETLE    = 2,
+    TACKLER_SPIKE_TOP       = 3,
+    TACKLER_SPINY           = 4,
+    TACKLER_KOOPATROL       = 5,
+    TACKLER_BONY_BEETLE     = 6,
+};
+
+void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
-    npc->duration = enemy->varTable[2];
+    npc->duration = enemy->varTable[AI_TACKLE_VAR_PRE_DELAY];
     npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-    script->AI_TEMP_STATE = 13;
+    script->AI_TEMP_STATE = AI_STATE_PRE_TACKLE;
 }
 
-ApiStatus N(UnkDistFunc)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
+    f32 dist;
 
-    if ((npc->duration <= 0) || (--npc->duration <= 0)) {
-        if (npc->turnAroundYawAdjustment == 0) {
-            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
-            npc->moveSpeed = aiSettings->chaseSpeed;
-            if ((enemy->varTable[7] == 5) || (enemy->varTable[7] == 0) || (enemy->varTable[7] == 1)) {
-                npc->collisionHeight = enemy->varTable[6] / 2;
-            }
-            npc->duration = (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
-                                    gPlayerStatusPtr->pos.z) / npc->moveSpeed) + 0.8;
-            if (npc->duration < enemy->varTable[3]) {
-                npc->duration = enemy->varTable[3];
-            }
-            enemy->varTable[4] = npc->duration;
-            script->functionTemp[0] = 14;
-        }
+    if (npc->duration > 0) {
+        npc->duration--;
     }
-    return ApiStatus_BLOCK;
+    if (npc->duration > 0) {
+        return;
+    }
+
+    if (npc->turnAroundYawAdjustment != 0) {
+        return;
+    }
+
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
+    npc->moveSpeed = aiSettings->chaseSpeed;
+
+    // koopa collision height is halved during the tackle
+    switch (enemy->varTable[AI_TACKLE_VAR_TYPE]) {
+        case TACKLER_KOOPA_TROOPA:
+        case TACKLER_DARK_TROOPA:
+        case TACKLER_KOOPATROL:
+            npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT] / 2;
+            break;
+    }
+
+    dist = dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+    npc->duration = (dist / npc->moveSpeed) + 0.8;
+    if (npc->duration < enemy->varTable[AI_TACKLE_VAR_MIN_CHASE_TIME]) {
+        npc->duration = enemy->varTable[AI_TACKLE_VAR_MIN_CHASE_TIME];
+    }
+    enemy->varTable[AI_TACKLE_VAR_CHASE_TIME] = npc->duration;
+    script->AI_TEMP_STATE = AI_STATE_TACKLE;
 }
 
-void N(UnkNpcAIFunc12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 temp;
-    f32 f1;
-    f32 f2;
-    f32 f3;
+    b32 hit;
+    f32 posX;
+    f32 posY;
+    f32 posZ;
 
-    if (npc->duration == enemy->varTable[4] - 1) {
+    if (npc->duration == enemy->varTable[AI_TACKLE_VAR_CHASE_TIME] - 1) {
         enemy->attackOriginPos.x = npc->pos.x;
         enemy->attackOriginPos.y = npc->pos.y;
         enemy->attackOriginPos.z = npc->pos.z;
         enemy->firstStrikeActive = true;
     }
 
-    f1 = npc->pos.x;
-    f2 = npc->pos.y;
-    f3 = npc->pos.z;
+    posX = npc->pos.x;
+    posY = npc->pos.y;
+    posZ = npc->pos.z;
 
-    temp = npc_test_move_simple_with_slipping(npc->collisionChannel, &f1, &f2, &f3, npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter);
-    if (temp == 0) {
+    hit = npc_test_move_simple_with_slipping(npc->collisionChannel, &posX, &posY, &posZ, npc->moveSpeed, npc->yaw, npc->collisionHeight, npc->collisionDiameter);
+    if (!hit) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
+
+        if (npc->duration > 0) {
+            npc->duration--;
+        }
+        if (npc->duration > 0) {
+            return;
+        }
     }
 
-    if ((npc->duration <= 0) || (--npc->duration <= 0) || (temp != 0)) {
-        enemy->firstStrikeActive = false;
-        npc->curAnim = enemy->animList[10];
-        npc->duration = 0;
-        script->functionTemp[0] = 15;
-    }
+    enemy->firstStrikeActive = false;
+    npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_TACKLE_POST];
+    npc->duration = 0;
+    script->AI_TEMP_STATE = AI_STATE_POST_TACKLE;
 }
 
-void N(set_script_owner_npc_col_height)(Evt* script, MobileAISettings* aiSettings,
-                                        EnemyDetectVolume* territory) {
+void N(TackleAI_PostTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration++;
     if (npc->duration == 3) {
-        npc->collisionHeight = enemy->varTable[6];
+        npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
     }
 
-    if (npc->duration < enemy->varTable[5]) {
+    if (npc->duration < enemy->varTable[AI_TACKLE_VAR_POST_DELAY]) {
         return;
     }
 
-    npc->collisionHeight = enemy->varTable[6];
-    script->functionTemp[0] = 0;
+    npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
+    script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
 }
 
 #endif

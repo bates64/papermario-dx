@@ -1,6 +1,6 @@
 #include "Koopatrol.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_Koopatrol_Wander) = {
     .moveSpeed = 1.0f,
@@ -16,11 +16,11 @@ MobileAISettings N(AISettings_Koopatrol_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_Koopatrol_Wander) = {
-    Call(SetSelfVar, 2, 5)
-    Call(SetSelfVar, 3, 4)
-    Call(SetSelfVar, 5, 10)
-    Call(SetSelfVar, 7, 5)
-    Call(N(TackleAI_Main), Ref(N(AISettings_Koopatrol_Wander)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 4)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 10)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_KOOPATROL)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_Koopatrol_Wander)))
     Return
     End
 };

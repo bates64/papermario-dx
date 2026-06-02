@@ -82,13 +82,13 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
             // fallthrough
         case AI_STATE_MELEE_HITBOX_PRE:
             N(MeleeHitbox_31)(script);
-            if (script->functionTemp[0] != AI_STATE_MELEE_HITBOX_ACTIVE) {
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_ACTIVE) {
                 break;
             }
             // fallthrough
         case AI_STATE_MELEE_HITBOX_ACTIVE:
             N(MeleeHitbox_32)(script);
-            if (script->functionTemp[0] != AI_STATE_MELEE_HITBOX_MISS) {
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_MISS) {
                 break;
             }
             // fallthrough

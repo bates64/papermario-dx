@@ -34,7 +34,6 @@ void N(MeleeHitbox_31)(Evt* script) {
 void N(MeleeHitbox_32)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EffectInstance* emoteTemp;
 
     npc->duration--;
     if (npc->duration <= 0) {
@@ -42,7 +41,7 @@ void N(MeleeHitbox_32)(Evt* script) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = enemy->AI_VAR_MELEE_MISS_TIME;
         if (enemy->AI_VAR_MELEE_MISS_TIME >= 8) {
-            fx_emote(EMOTE_FRUSTRATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, enemy->AI_VAR_MELEE_MISS_TIME - 1, &emoteTemp);
+            fx_emote(EMOTE_FRUSTRATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, enemy->AI_VAR_MELEE_MISS_TIME - 1, nullptr);
         }
         script->AI_TEMP_STATE = AI_STATE_MELEE_HITBOX_MISS;
     }

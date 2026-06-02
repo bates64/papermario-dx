@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcDefeat_Bandit) = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(DisablePlayerInput, true)
             Set(HAS_COIN_FLAG, true)

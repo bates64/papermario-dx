@@ -17,8 +17,6 @@ API_CALLABLE(N(AwaitPartnerNotWatt)) {
     }
 }
 
-s32 N(D_80240970_8AADC0) = 0;
-
 EvtScript N(EVS_Dummy) = {
     Wait(1)
     Return

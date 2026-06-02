@@ -1,7 +1,7 @@
 #include "common.h"
 #include "DarkTroopa.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_DarkTroopa_Wander) = {
     .moveSpeed = 2.0f,
@@ -17,11 +17,11 @@ MobileAISettings N(AISettings_DarkTroopa_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_DarkTroopa_Wander) = {
-    Call(SetSelfVar, 2, 6)
-    Call(SetSelfVar, 3, 4)
-    Call(SetSelfVar, 5, 13)
-    Call(SetSelfVar, 7, 1)
-    Call(N(TackleAI_Main), Ref(N(AISettings_DarkTroopa_Wander)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 6)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 4)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 13)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_DARK_TROOPA)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_DarkTroopa_Wander)))
     Return
     End
 };

@@ -1,6 +1,6 @@
 #include "SpikeTop.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_BuzzyBeetle) = {
     .moveSpeed = 1.0f,
@@ -16,11 +16,11 @@ MobileAISettings N(AISettings_BuzzyBeetle) = {
 };
 
 EvtScript N(EVS_NpcAI_BuzzyBeetle) = {
-    Call(SetSelfVar, 2, 5)
-    Call(SetSelfVar, 3, 2)
-    Call(SetSelfVar, 5, 5)
-    Call(SetSelfVar, 7, 2)
-    Call(N(TackleAI_Main), Ref(N(AISettings_BuzzyBeetle)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 2)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 5)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BUZZY_BEETLE)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle)))
     Return
     End
 };
@@ -39,11 +39,11 @@ MobileAISettings N(AISettings_SpikeTop) = {
 };
 
 EvtScript N(EVS_NpcAI_SpikeTop) = {
-    Call(SetSelfVar, 2, 4)
-    Call(SetSelfVar, 3, 10)
-    Call(SetSelfVar, 5, 4)
-    Call(SetSelfVar, 7, 3)
-    Call(N(TackleAI_Main), Ref(N(AISettings_SpikeTop)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 4)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 10)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 4)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_SPIKE_TOP)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_SpikeTop)))
     Return
     End
 };
@@ -60,11 +60,11 @@ MobileAISettings N(AISettings_BonyBeetle) = {
 };
 
 EvtScript N(EVS_NpcAI_BonyBeetle) = {
-    Call(SetSelfVar, 2, 3)
-    Call(SetSelfVar, 3, 8)
-    Call(SetSelfVar, 5, 6)
-    Call(SetSelfVar, 7, 6)
-    Call(N(TackleAI_Main), Ref(N(AISettings_BonyBeetle)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 3)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 8)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 6)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BONY_BEETLE)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BonyBeetle)))
     Return
     End
 };
@@ -80,11 +80,11 @@ EvtScript N(EVS_NpcAI_BuzzyBeetle_Ceiling) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim00)
     Call(N(func_802408B4_97BEE4))
     Call(SelfEnemyOverrideSyncPos, 0)
-    Call(SetSelfVar, 2, 5)
-    Call(SetSelfVar, 3, 2)
-    Call(SetSelfVar, 5, 5)
-    Call(SetSelfVar, 7, 2)
-    Call(N(TackleAI_Main), Ref(N(AISettings_BuzzyBeetle)))
+    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 2)
+    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 5)
+    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BUZZY_BEETLE)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle)))
     Return
     End
 };

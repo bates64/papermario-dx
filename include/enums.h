@@ -497,7 +497,6 @@ enum Emotes {
     EMOTE_QUESTION           = 2,
     EMOTE_FRUSTRATION        = 3,
     EMOTE_ELLIPSIS           = 4,
-    EMOTE_INVALID            = 5,
 };
 
 enum Emoters {
@@ -3467,6 +3466,7 @@ enum EnemyAnimIndices {
     ENEMY_ANIM_INDEX_HIT          = 7,
     ENEMY_ANIM_INDEX_MELEE_PRE    = 8,
     ENEMY_ANIM_INDEX_MELEE_HIT    = 9,
+    ENEMY_ANIM_INDEX_TACKLE_POST  = 10,
 };
 
 enum AnyEnemyAnims {
@@ -4177,7 +4177,7 @@ enum EnemyAIStates {
     AI_STATE_CHASE_INIT             = 12,
     AI_STATE_CHASE                  = 13,
     AI_STATE_LOSE_PLAYER            = 14,
-    AI_STATE_PATROL_15              = 15,
+    AI_STATE_PATROL_RESUME          = 15,
     AI_RETURN_HOME_INIT             = 40,
     AI_RETURN_HOME                  = 41,
     AI_STATE_SUSPEND                = 99,
@@ -4191,6 +4191,11 @@ enum EnemyAIStates {
     AI_STATE_PROJECTILE_HITBOX_31   = 31,
     AI_STATE_PROJECTILE_HITBOX_32   = 32,
     AI_STATE_PROJECTILE_HITBOX_33   = 33,
+    // tackle ai
+    AI_STATE_TACKLE_INIT            = 12,
+    AI_STATE_PRE_TACKLE             = 13,
+    AI_STATE_TACKLE                 = 14,
+    AI_STATE_POST_TACKLE            = 15,
 };
 
 enum EnemyActionFlags {

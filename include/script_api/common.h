@@ -966,9 +966,6 @@ API_CALLABLE(IsStartingConversation);
 API_CALLABLE(LoadDemoBattle);
 
 /// @evtapi
-API_CALLABLE(func_80044290);
-
-/// @evtapi
 /// @param createMode
 /// @param npcGroupList
 API_CALLABLE(MakeNpcs);
@@ -1115,16 +1112,9 @@ API_CALLABLE(ClearDefeatedEnemies);
 API_CALLABLE(SetEnemyFlagBits);
 
 /// @evtapi
-API_CALLABLE(func_8004572C);
-
-/// @evtapi
 /// @param index
 /// @param outAnimation
 API_CALLABLE(GetSelfAnimationFromTable);
-
-/// @evtapi
-/// @param value
-API_CALLABLE(func_80045798);
 
 /// @evtapi
 /// @param instigatorValue
@@ -1141,7 +1131,7 @@ API_CALLABLE(GetEncounterTriggerHitTier);
 /// @param npcID
 /// @param soundID
 /// @param flags
-API_CALLABLE(func_80045838);
+API_CALLABLE(PlaySoundAtEnemy);
 
 /// @evtapi
 /// @param outResult

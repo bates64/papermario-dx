@@ -2237,9 +2237,7 @@ typedef struct PartnerStatus {
     /* 0x014 */ s8 inputDisabledCount;
     /* 0x015 */ char unk_15[3];
     /* 0x018 */ Npc npc;
-    /* 0x358 */ s32 unk_358;
-    /* 0x35C */ char unk_35C[0x4];
-} PartnerStatus; // size = 0x360
+} PartnerStatus; // size = 0x358
 
 typedef struct SpriteRasterInfo {
     /* 0x00 */ IMG_PTR raster;

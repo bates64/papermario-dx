@@ -31,7 +31,6 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z, w;
-    EffectInstance* emoteTemp;
     f32 temp_f20;
     f32 temp_f22;
     f32 temp_f24;
@@ -60,7 +59,7 @@ void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
         if (script->functionTemp[1] <= 0) {
             script->functionTemp[1] = aiSettings->playerSearchInterval;
             if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
-                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 x = npc->pos.x;
                 y = npc->pos.y;
@@ -117,7 +116,6 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
-    EffectInstance* emoteTemp;
     f32 var1 = enemy->varTable[3];
     f32 var2;
     f32 temp_f20;
@@ -139,7 +137,7 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     npc->pos.y = posY + temp_f22 + (sin_deg(enemy->varTable[2]) * temp_f20);
     enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 12);
     if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
-        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         script->AI_TEMP_STATE = AI_FLYING_STATE_CHASE_INIT;
         return;

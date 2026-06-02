@@ -175,7 +175,6 @@ void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, posW;
     f32 idleHeight = (f32)enemy->varTable[3] / 100.0;
-    EffectInstance* emoteTemp;
 
     npc->pos.y += 2.5;
     posX = npc->pos.x;
@@ -186,7 +185,7 @@ void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     if (!(npc->pos.y < posY + idleHeight)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         npc->pos.y = posY + idleHeight;
-        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, &emoteTemp);
+        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, nullptr);
         npc->duration = 10;
         script->AI_TEMP_STATE = AI_STATE_SENTINEL_POST_LOSE_PLAYER;
     }
@@ -242,7 +241,6 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     f32 temp_f24 = idleHeight + (f32)((f32)enemy->varTable[7] / 100.0);
     f32 undulateAmplitude = (f32)enemy->varTable[1] / 100.0;
     f32 undulateAmount = sin_deg(enemy->varTable[2]);
-    EffectInstance* emoteTemp;
 
     if (npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth)) {
         npc->pos.y = posY + idleHeight + (undulateAmount * undulateAmplitude);
@@ -254,7 +252,7 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     if (script->functionTemp[1] <= 0) {
         script->functionTemp[1] = aiSettings->playerSearchInterval;
         if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius * 0.5, aiSettings->alertOffsetDist * 0.5, 0)) {
-            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
+            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             npc->moveToPos.y = npc->pos.y;
             script->AI_TEMP_STATE = AI_STATE_SENTINEL_CHASE_INIT;

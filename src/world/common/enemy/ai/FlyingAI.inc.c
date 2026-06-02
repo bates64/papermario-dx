@@ -158,8 +158,7 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                 if (gPlayerStatusPtr->pos.y < (npc->pos.y + npc->collisionHeight) + 10.0 &&
                     basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0))
                 {
-                    EffectInstance* emoteTemp;
-                    fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
+                    fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
                     npc->moveToPos.y = npc->pos.y;
                     ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
 
@@ -224,7 +223,6 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     f32 hoverHeight = enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
     f32 hoverBase = enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
     f32 posX, posY, posZ, posW;
-    EffectInstance* emoteTemp;
 
     if (npc->duration > 0) {
         npc->duration--;
@@ -259,7 +257,7 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     if (enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN] <= 0) {
         if ((gPlayerStatusPtr->pos.y < npc->pos.y + npc->collisionHeight + 10.0)
             && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
-            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, &emoteTemp);
+            fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             npc->moveToPos.y = npc->pos.y;
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             if (enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER) {

@@ -5,12 +5,6 @@
 #include "sprite/npc/Fire.h"
 #include "world/common/enemy/ai/FireBarAI.inc.c"
 
-s32 N(FireBar_Sounds)[] = {
-    SOUND_SEQ_FIRE_BAR_0, SOUND_SEQ_FIRE_BAR_1, SOUND_SEQ_FIRE_BAR_2, SOUND_SEQ_FIRE_BAR_3,
-    SOUND_SEQ_FIRE_BAR_4, SOUND_SEQ_FIRE_BAR_5, SOUND_SEQ_FIRE_BAR_6, SOUND_SEQ_FIRE_BAR_7,
-    SOUND_SEQ_FIRE_BAR_8, SOUND_SEQ_FIRE_BAR_9, SOUND_SEQ_FIRE_BAR_9,
-};
-
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)

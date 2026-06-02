@@ -32,10 +32,6 @@ API_CALLABLE(LoadDemoBattle) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80044290) {
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(MakeNpcs) {
     Bytecode* args = script->ptrReadPos;
 
@@ -757,23 +753,12 @@ API_CALLABLE(SetEnemyFlagBits) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_8004572C) {
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(GetSelfAnimationFromTable) {
     Bytecode* args = script->ptrReadPos;
     Enemy* owner = script->owner1.enemy;
     s32 animIdx = evt_get_variable(script, *args++);
 
     evt_set_variable(script, *args++, owner->animList[animIdx]);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_80045798) {
-    Bytecode* args = script->ptrReadPos;
-
-    gPartnerStatus.unk_358 = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -797,7 +782,7 @@ API_CALLABLE(GetEncounterTriggerHitTier) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80045838) {
+API_CALLABLE(PlaySoundAtEnemy) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 soundID = evt_get_variable(script, *args++);
@@ -823,7 +808,7 @@ API_CALLABLE(OnPlayerFled) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    s32 skipReaction = evt_get_variable(script, *args++);
+    b32 skipReaction = evt_get_variable(script, *args++);
 
     enemy->aiFlags |= AI_FLAG_SUSPEND;
 
@@ -844,7 +829,7 @@ API_CALLABLE(OnPlayerFled) {
             f32 z = npc->pos.z;
             f32 a = 100.0f;
 
-            if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &a) != 0) {
+            if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &a)) {
                 npc->pos.y = y;
             }
             npc->flags &= ~NPC_FLAG_JUMPING;

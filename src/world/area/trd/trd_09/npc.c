@@ -414,7 +414,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
         Add(LVar2, 11)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
         Call(InterpNpcYaw, NPC_SELF, LVar4, 0)
-        Call(func_80045838, NPC_SELF, SOUND_BLASTER_FIRE, SOUND_PARAM_MORE_QUIET)
+        Call(PlaySoundAtEnemy, NPC_SELF, SOUND_BLASTER_FIRE, SOUND_PARAM_MORE_QUIET)
         Set(LVarA, LVar1)
         Sub(LVarA, 10)
         Set(LVarB, LVar2)
@@ -431,7 +431,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
             CaseEq(NPC_BillBlaster_03)
                 Call(NpcMoveTo, NPC_SELF, -450, LVar3, 0)
         EndSwitch
-        Call(func_80045838, NPC_SELF, SOUND_SEQ_BULLET_BILL_EXPLODE, SOUND_SPACE_DEFAULT)
+        Call(PlaySoundAtEnemy, NPC_SELF, SOUND_SEQ_BULLET_BILL_EXPLODE, SOUND_SPACE_DEFAULT)
         Call(SetNpcAnimation, NPC_SELF, ANIM_BulletBill_Hurt)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 5)
@@ -458,7 +458,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
             EndThread
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
     EndSwitch
     Return
     End

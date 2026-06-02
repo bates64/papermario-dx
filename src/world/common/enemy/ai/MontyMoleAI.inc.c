@@ -160,19 +160,18 @@ static void N(MontyMoleAI_Surface)(Evt* script, MobileAISettings* aiSettings, En
 static void N(MontyMoleAI_DrawRock)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EffectInstance* emoteOut;
 
     npc->duration--;
     if ((npc->duration) <= 0) {
         if (!N(MontyMoleAI_CanAttack)(script, territory, aiSettings->alertRadius * 1.1, aiSettings->alertOffsetDist)) {
-            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteOut);
+            fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
             npc->curAnim = ANIM_MontyMole_Anim01; // cancel attack
             npc->duration = 30;
-            script->AI_TEMP_STATE =  AI_STATE_MOLE_PRE_BURROW;
+            script->AI_TEMP_STATE = AI_STATE_MOLE_PRE_BURROW;
         } else {
             npc->curAnim = ANIM_MontyMole_Anim1B; // throw rock
             npc->duration = 15;
-            script->AI_TEMP_STATE =  AI_STATE_MOLE_THROW_ROCK;
+            script->AI_TEMP_STATE = AI_STATE_MOLE_THROW_ROCK;
         }
     }
 }
@@ -268,31 +267,31 @@ API_CALLABLE(N(MontyMoleAI_Main)) {
             // fallthrough
         case AI_STATE_MOLE_WANDER:
             N(MontyMoleAI_Wander)(script, aiSettings, territoryPtr);
-            return ApiStatus_BLOCK;
+            break;
         case AI_STATE_MOLE_PRE_SURFACE:
             N(MontyMoleAI_PreSurface)(script, aiSettings, territoryPtr);
             // fallthrough
         case AI_STATE_MOLE_SURFACE:
             N(MontyMoleAI_Surface)(script, aiSettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_MOLE_DRAW_ROCK) {
-                return ApiStatus_BLOCK;
+                break;
             } // else fallthrough
         case AI_STATE_MOLE_DRAW_ROCK:
             N(MontyMoleAI_DrawRock)(script, aiSettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_MOLE_THROW_ROCK) {
-                return ApiStatus_BLOCK;
+                break;
             } // else fallthrough
         case AI_STATE_MOLE_THROW_ROCK:
             N(MontyMoleAI_ThrowRock)(script, aiSettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_MOLE_UNUSED) {
-                return ApiStatus_BLOCK;
+                break;
             } // else fallthrough
         case AI_STATE_MOLE_PRE_BURROW:
             N(MontyMoleAI_PreBurrow)(script, aiSettings, territoryPtr);
-            return ApiStatus_BLOCK;
+            break;
         case AI_STATE_MOLE_BURROW:
             N(MontyMoleAI_Burrow)(script, aiSettings, territoryPtr);
-            return ApiStatus_BLOCK;
+            break;
     }
     return ApiStatus_BLOCK;
 }

@@ -33,8 +33,7 @@ void N(ClubbaNappingAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 shouldWakeUp = false;
-    EffectInstance* emoteTemp;
+    b32 shouldWakeUp = false;
     f32 posX, posZ;
 
     if (basic_ai_check_player_dist(territory, enemy, 80.0f, 0.0f, false)) {
@@ -72,7 +71,7 @@ void N(ClubbaNappingAI_Sleep)(Evt* script, MobileAISettings* aiSettings, EnemyDe
         ai_enemy_play_sound(npc, SOUND_SEQ_SNAP_AWAKE, 0);
         npc->curAnim = enemy->animList[11];
         npc->duration = 10;
-        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_WAKE_UP;
     }
