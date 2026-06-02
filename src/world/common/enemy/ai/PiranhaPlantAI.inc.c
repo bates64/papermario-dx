@@ -317,6 +317,7 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PIRANHA_PLANT_00:
             N(PiranhaPlantAI_00)(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_PIRANHA_PLANT_01:
             N(PiranhaPlantAI_01)(script, npcAISettings, territoryPtr);
             break;
@@ -325,21 +326,25 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_11) {
                 break;
             }
+            // fallthrough
         case AI_STATE_PIRANHA_PLANT_11:
             N(PiranhaPlantAI_11)(script, npcAISettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_12) {
                 break;
             }
+            // fallthrough
         case AI_STATE_PIRANHA_PLANT_12:
             N(PiranhaPlantAI_12)(script, npcAISettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_13) {
                 break;
             }
+            // fallthrough
         case AI_STATE_PIRANHA_PLANT_13:
             N(PiranhaPlantAI_13)(script, npcAISettings, territoryPtr);
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
+            // fallthrough
         case AI_STATE_LOSE_PLAYER:
             N(PiranhaPlantAI_LosePlayer)(script, npcAISettings, territoryPtr);
             break;

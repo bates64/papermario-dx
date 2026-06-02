@@ -201,7 +201,7 @@ NpcSettings N(NpcSettings_StoneChomp) = {
     .radius = 32,
     .level = ACTOR_LEVEL_STONE_CHOMP,
     .doAI = &N(EVS_NpcAI_StoneChomp),
-    .auxAI = &N(EVS_NpcAuxAI_StoneChomp),
+    .onCreate = &N(EVS_NpcAuxAI_StoneChomp),
     .onHit = &N(EVS_NpcHit_StoneChomp),
     .onDefeat = &N(EVS_NpcDefeat_StoneChomp),
 };

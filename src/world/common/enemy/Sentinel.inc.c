@@ -117,5 +117,5 @@ NpcSettings N(NpcSettings_Sentinel) = {
     .radius = 32,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_Sentinel),
-    .auxAI = &N(EVS_NpcAuxAI_Sentinel),
+    .onCreate = &N(EVS_NpcAuxAI_Sentinel),
 };

@@ -60,20 +60,20 @@ API_CALLABLE(N(KoopaPatrolAI_Main)) {
     }
 
     switch (script->functionTemp[0]) {
-        case 0:
+        case AI_STATE_PATROL_INIT:
             N(PatrolAI_MoveInit)(script, settings, territoryPtr);
             npc->collisionHeight = enemy->varTable[6];
             // fallthrough
-        case 1:
+        case AI_STATE_PATROL:
             N(PatrolAI_Move)(script, settings, territoryPtr);
             break;
-        case 2:
+        case AI_STATE_LOITER_INIT:
             N(PatrolAI_LoiterInit)(script, settings, territoryPtr);
              // fallthrough
-        case 3:
+        case AI_STATE_LOITER:
             N(PatrolAI_Loiter)(script, settings, territoryPtr);
             break;
-        case 4:
+        case AI_STATE_LOITER_POST:
             N(PatrolAI_PostLoiter)(script, settings, territoryPtr);
             break;
         case 12:

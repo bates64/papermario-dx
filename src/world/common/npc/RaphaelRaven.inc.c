@@ -10,5 +10,5 @@ NpcSettings N(NpcSettings_RaphaelRaven) = {
     .height = 98,
     .radius = 80,
     .level = ACTOR_LEVEL_NONE,
-    .auxAI = &N(EVS_NpcAuxAI_RaphaelRaven),
+    .onCreate = &N(EVS_NpcAuxAI_RaphaelRaven),
 };

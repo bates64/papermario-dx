@@ -175,7 +175,7 @@ void N(MagikoopaAI_21)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
         add_vec2D_polar(&posX, &posZ, 17.0f, 270.0f - npc->renderYaw);
         fx_gather_energy_pink(0, posX, posY, posZ, 0.1f, 0xD);
         npc->duration = 0xF;
-        script->AI_TEMP_STATE = 0x16;
+        script->AI_TEMP_STATE = 22;
     }
 }
 
@@ -187,7 +187,7 @@ void N(MagikoopaAI_22)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     if (temp_v0->duration <= 0) {
         temp_v0->curAnim = temp_s0->animList[9];
         temp_v0->duration = 9;
-        script->AI_TEMP_STATE = 0x17;
+        script->AI_TEMP_STATE = 23;
     }
 }
 
@@ -209,7 +209,7 @@ void N(MagikoopaAI_23)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
             ai_enemy_play_sound(npc, SOUND_SPELL_CAST2, 0);
             get_enemy(enemy->npcID + 1)->varTable[0] = projectileEnemy;
             npc->duration = 0x14;
-            script->AI_TEMP_STATE = 0x18;
+            script->AI_TEMP_STATE = 24;
         }
     }
 }

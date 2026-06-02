@@ -592,7 +592,7 @@ API_CALLABLE(N(func_80243068_96C228)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_Merlee) = {
+EvtScript N(EVS_NpcCreate_Merlee) = {
     Return
     End
 };
@@ -835,7 +835,7 @@ NpcSettings N(NpcSettings_Merlee) = {
     .height = 32,
     .radius = 32,
     .doAI = &N(EVS_NpcAI_Merlee),
-    .auxAI = &N(EVS_NpcAuxAI_Merlee),
+    .onCreate = &N(EVS_NpcCreate_Merlee),
     .onInteract = &N(EVS_NpcInteract_Merlee),
     .level = ACTOR_LEVEL_NONE,
 };

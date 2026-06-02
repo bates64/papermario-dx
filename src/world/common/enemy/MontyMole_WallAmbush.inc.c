@@ -77,7 +77,7 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush) = {
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
     .doAI = &N(EVS_NpcAI_MontyMole_WallAmbush),
-    .auxAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush),
+    .onCreate = &N(EVS_NpcAuxAI_MontyMole_WallAmbush),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -87,6 +87,6 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush_Hole) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
-    .auxAI = &N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole),
+    .onCreate = &N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole),
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };

@@ -274,7 +274,7 @@ NpcSettings N(NpcSettings_Buzzar) = {
     .height = 32,
     .radius = 32,
     .doAI = &N(EVS_NpcAI_Buzzar),
-    .auxAI = &N(EVS_NpcAuxAI_Buzzar),
+    .onCreate = &N(EVS_NpcAuxAI_Buzzar),
     .onDefeat = &N(EVS_NpcDefeat_Buzzar),
 };
 

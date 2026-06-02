@@ -143,15 +143,15 @@ typedef struct NpcSettings {
     /* 0x00 */ AnimID defaultAnim;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 radius;
-    /* 0x08 */ EvtScript* doAux;
+    /* 0x08 */ EvtScript* doAux; // run every frame, often used for spawning effects or modulating ImgFX
     /* 0x0C */ EvtScript* doAI;
-    /* 0x10 */ EvtScript* auxAI;
+    /* 0x10 */ EvtScript* onCreate; // run when enemy is first created, before Npc init script
     /* 0x14 */ EvtScript* onInteract;
     /* 0x18 */ EvtScript* onHit;
     /* 0x1C */ EvtScript* onDefeat;
-    /* 0x20 */ s32 flags;
+    /* 0x20 */ s32 flags; // see: EnemyFlags
     /* 0x24 */ s16 level;
-    /* 0x26 */ s16 actionFlags;  // action flags: 1 = jump on seeing player
+    /* 0x26 */ s16 actionFlags;  // see: EnemyActionFlags
 } NpcSettings; // size = 0x28
 
 typedef struct ItemDrop {
@@ -298,12 +298,12 @@ typedef struct Enemy {
     /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
     /* 0x16 */ char unk_16[2];
     /* 0x18 */ NpcSettings* npcSettings;
-    /* 0x1C */ EvtScript* initBytecode;
-    /* 0x20 */ EvtScript* interactBytecode;
-    /* 0x24 */ EvtScript* aiBytecode;
-    /* 0x28 */ EvtScript* hitBytecode;
-    /* 0x2C */ EvtScript* auxBytecode;
-    /* 0x30 */ EvtScript* defeatBytecode;
+    /* 0x1C */ EvtScript* initSource; // from Npc::init
+    /* 0x20 */ EvtScript* interactSource;
+    /* 0x24 */ EvtScript* aiSource;
+    /* 0x28 */ EvtScript* hitSource;
+    /* 0x2C */ EvtScript* auxSource;
+    /* 0x30 */ EvtScript* defeatSource;
     /* 0x34 */ struct Evt* initScript;
     /* 0x38 */ struct Evt* interactScript;
     /* 0x3C */ struct Evt* aiScript;
@@ -321,20 +321,19 @@ typedef struct Enemy {
     /*      */      f32 varTableF[16];
     /*      */      void* varTablePtr[16];
     /*      */ };
-    /* 0xA4 */ u8 aiDetectFlags; // detect player flags: 1 = require line of sight | 2 = adjust hitbox for moving player
+    /* 0xA4 */ u8 aiDetectFlags; // see: EnemyDetectFlags
     /* 0xA5 */ char unk_AD[3];
-    /* 0xA8 */ u32 aiFlags;
+    /* 0xA8 */ u32 aiFlags; // see: EnemyAIFlags
     /* 0xAC */ s8 aiSuspendTime;
     /* 0xAD */ s8 instigatorValue; // value is passed to first actor in formation if a battle is triggered with this enemy
     /* 0xAE */ char unk_B6[2];
-    /* 0xB0 */ s32 unk_C8;
-    /* 0xCC */ s32* animList;
-    /* 0xD0 */ EnemyTerritory* territory;
-    /* 0xD4 */ EnemyDrops* drops;
-    /* 0xD8 */ u32 tattleMsg;
-    /* 0xDC */ s16 savedNpcYaw;
-    /* 0xDE */ char unk_E2[2];
-} Enemy; // size = 0xE0
+    /* 0xB0 */ s32* animList;
+    /* 0xB4 */ EnemyTerritory* territory;
+    /* 0xB8 */ EnemyDrops* drops;
+    /* 0xBC */ u32 tattleMsg;
+    /* 0xD0 */ s16 savedNpcYaw;
+    /* 0xD2 */ char unk_E2[2];
+} Enemy; // size = 0xD4
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;

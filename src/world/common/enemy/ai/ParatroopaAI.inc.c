@@ -5,10 +5,10 @@
 
 // ai-specific states
 enum AiStateParatroopa {
-    AI_STATE_PARATROOPA_WINDUP          = 12,
+    AI_STATE_PARATROOPA_WINDUP          = AI_FLYING_STATE_CHASE_INIT,
     AI_STATE_PARATROOPA_DIVE            = 13,
     AI_STATE_PARATROOPA_OVERSHOOT       = 14,
-    AI_STATE_PARATROOPA_RESET           = 15
+    AI_STATE_PARATROOPA_RESET           = 15,
 };
 
 void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -91,7 +91,7 @@ void N(ParatroopaAI_Reset)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
 
     npc->duration--;
     if (npc->duration <= 0) {
-        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
     }
 }
 
@@ -115,7 +115,7 @@ API_CALLABLE(N(ParatroopaAI_Main)) {
     if (isInitialCall) {
         N(FlyingAI_Init)(npc, enemy, script, aiSettings);
         enemy->varTable[8] = npc->collisionHeight;
-        script->AI_TEMP_STATE = 0;
+        script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
     }
 
     npc->verticalRenderOffset = -3;
@@ -128,33 +128,33 @@ API_CALLABLE(N(ParatroopaAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_WANDER_INIT:
+        case AI_FLYING_STATE_WANDER_INIT:
             N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case AI_STATE_WANDER:
+        case AI_FLYING_STATE_WANDER:
             N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
             if (script->AI_TEMP_STATE != 2) {
                 break;
             }
             // fallthrough
-        case AI_STATE_LOITER_INIT:
+        case AI_FLYING_STATE_LOITER_INIT:
             N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case AI_STATE_LOITER:
+        case AI_FLYING_STATE_LOITER:
             N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != AI_STATE_ALERT_INIT) {
+            if (script->AI_TEMP_STATE != AI_FLYING_STATE_ALERT_INIT) {
                 break;
             }
             // fallthrough
-        case AI_STATE_ALERT_INIT:
+        case AI_FLYING_STATE_ALERT_INIT:
             N(FlyingAI_JumpInit)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != AI_STATE_ALERT) {
+            if (script->AI_TEMP_STATE != AI_FLYING_STATE_ALERT) {
                 break;
             }
             // fallthrough
-        case AI_STATE_ALERT:
+        case AI_FLYING_STATE_ALERT:
             N(FlyingAI_Jump)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != AI_STATE_PARATROOPA_WINDUP) {
+            if (script->AI_TEMP_STATE != AI_FLYING_STATE_CHASE_INIT) {
                 break;
             }
             // fallthrough

@@ -134,7 +134,7 @@ EvtScript N(EVS_NpcDefeat_Magikoopa_Hitbox) = {
 NpcSettings N(NpcSettings_Magikoopa_GroundHitbox) = {
     .defaultAnim = ANIM_Magikoopa_Anim00,
     .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
-    .auxAI = &N(EVS_NpcAuxAI_Magikoopa_GroundHitbox),
+    .onCreate = &N(EVS_NpcAuxAI_Magikoopa_GroundHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa_Hitbox),
 };
@@ -142,7 +142,7 @@ NpcSettings N(NpcSettings_Magikoopa_GroundHitbox) = {
 NpcSettings N(NpcSettings_Magikoopa_FlyingHitbox) = {
     .defaultAnim = ANIM_FlyingMagikoopa_Anim00,
     .doAI = &N(EVS_NpcAI_Magikoopa_Hitbox),
-    .auxAI = &N(EVS_NpcAuxAI_Magikoopa_FlyingHitbox),
+    .onCreate = &N(EVS_NpcAuxAI_Magikoopa_FlyingHitbox),
     .onHit = &N(EVS_NpcHit_Magikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa_Hitbox),
 };

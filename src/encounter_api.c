@@ -204,11 +204,11 @@ void start_battle(Evt* script, s32 songID) {
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
         if (enemy != nullptr && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)) {
-            if (enemy->hitBytecode != nullptr) {
+            if (enemy->hitSource != nullptr) {
                 Evt* hitEvtInstance;
                 enemy->encountered = true;
 
-                hitEvtInstance = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
+                hitEvtInstance = start_script(enemy->hitSource, EVT_PRIORITY_A, 0);
 
                 enemy->hitScript = hitEvtInstance;
                 enemy->hitScriptID = hitEvtInstance->id;
@@ -276,10 +276,10 @@ API_CALLABLE(StartBossBattle) {
         enemy = encounter->enemy[i];
         if ((enemy != nullptr && (
             !(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)
-            ) && enemy->hitBytecode != nullptr) {
+            ) && enemy->hitSource != nullptr) {
             enemy->encountered = true;
 
-            script = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
+            script = start_script(enemy->hitSource, EVT_PRIORITY_A, 0);
             enemy->hitScript = script;
             enemy->hitScriptID = script->id;
 
@@ -353,8 +353,7 @@ API_CALLABLE(BindNpcAI) {
         kill_script_by_ID(enemy->aiScriptID);
     }
 
-    enemy->unk_C8 = 100;
-    enemy->aiBytecode = newScriptSource;
+    enemy->aiSource = newScriptSource;
     scriptTemp = start_script(newScriptSource, EVT_PRIORITY_A, 0);
     enemy->aiScript = scriptTemp;
     enemy->aiScriptID = scriptTemp->id;
@@ -375,7 +374,7 @@ API_CALLABLE(BindNpcIdle) {
     }
 
     owner = get_enemy(npcID);
-    owner->aiBytecode = aiBytecode;
+    owner->aiSource = aiBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -406,8 +405,7 @@ API_CALLABLE(RestartNpcAI) {
         kill_script_by_ID(enemy->aiScriptID);
     }
 
-    enemy->unk_C8 = 100;
-    newScript = start_script(enemy->aiBytecode, EVT_PRIORITY_A, 0);
+    newScript = start_script(enemy->aiSource, EVT_PRIORITY_A, 0);
     enemy->aiScript = newScript;
     enemy->aiScriptID = newScript->id;
     newScript->owner1.enemy = enemy;
@@ -474,7 +472,7 @@ API_CALLABLE(SetNpcAux) {
     }
 
     if (newScriptSource != nullptr) {
-        enemy->auxBytecode = newScriptSource;
+        enemy->auxSource = newScriptSource;
         scriptTemp = start_script(newScriptSource, EVT_PRIORITY_A, 0);
         enemy->auxScript = scriptTemp;
         enemy->auxScriptID = scriptTemp->id;
@@ -496,7 +494,7 @@ API_CALLABLE(BindNpcAux) {
     }
 
     npc = get_enemy(npcID);
-    npc->auxBytecode = auxBytecode;
+    npc->auxSource = auxBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -527,7 +525,7 @@ API_CALLABLE(RestartNpcAux) {
         kill_script_by_ID(enemy->auxScriptID);
     }
 
-    newScript = start_script(enemy->auxBytecode, EVT_PRIORITY_A, 0);
+    newScript = start_script(enemy->auxSource, EVT_PRIORITY_A, 0);
     enemy->auxScript = newScript;
     enemy->auxScriptID = newScript->id;
     newScript->owner1.enemy = enemy;
@@ -575,7 +573,7 @@ API_CALLABLE(BindNpcInteract) {
     if (npc->interactScript != nullptr) {
         kill_script_by_ID(npc->interactScriptID);
     }
-    npc->interactBytecode = interactBytecode;
+    npc->interactSource = interactBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -595,7 +593,7 @@ API_CALLABLE(BindNpcHit) {
     if (npc->hitScript != nullptr) {
         kill_script_by_ID(npc->hitScriptID);
     }
-    npc->hitBytecode = hitBytecode;
+    npc->hitSource = hitBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -611,7 +609,7 @@ API_CALLABLE(BindNpcDefeat) {
     }
 
     npc = get_enemy(npcID);
-    npc->defeatBytecode = defeatBytecode;
+    npc->defeatSource = defeatBytecode;
 
     return ApiStatus_DONE2;
 }

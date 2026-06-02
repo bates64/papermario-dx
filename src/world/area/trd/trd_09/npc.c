@@ -138,7 +138,7 @@ NpcSettings N(missing_80240CE4) = {
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
     .doAI = &N(D_80240844_9BDEA4),
-    .auxAI = &N(EVS_NpcAuxAI_BillBlaster),
+    .onCreate = &N(EVS_NpcAuxAI_BillBlaster),
     .onHit = &N(EVS_NpcHit_BillBlaster),
     .onDefeat = &N(D_80240B80_9BE1E0),
 };
@@ -149,7 +149,7 @@ NpcSettings N(missing_80240D10) = {
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
     .doAI = &N(D_80240C1C_9BE27C),
-    .auxAI = &N(EVS_NpcAuxAI_BulletBill),
+    .onCreate = &N(EVS_NpcAuxAI_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(D_80240C2C_9BE28C),
 };
@@ -470,7 +470,7 @@ NpcSettings N(NpcSettings_KoopaBros_Red) = {
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_KoopaBros_Red),
-    .auxAI = &N(EVS_NpcAuxAI_KoopaBros_Red),
+    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_Red),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -480,7 +480,7 @@ NpcSettings N(NpcSettings_KoopaBros_Black) = {
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_KoopaBros_Black),
-    .auxAI = &N(EVS_NpcAuxAI_KoopaBros_Black),
+    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_Black),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -490,7 +490,7 @@ NpcSettings N(NpcSettings_KoopaBros_Yellow) = {
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_KoopaBros_Yellow),
-    .auxAI = &N(EVS_NpcAuxAI_KoopaBros_Yellow),
+    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_Yellow),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -500,7 +500,7 @@ NpcSettings N(NpcSettings_KoopaBros_Green) = {
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_KoopaBros_Green),
-    .auxAI = &N(EVS_NpcAuxAI_KoopaBros_Green),
+    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_Green),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -510,7 +510,7 @@ NpcSettings N(NpcSettings_BillBlaster) = {
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
     .doAI = &N(EVS_NpcAI_BillBlaster),
-    .auxAI = &N(EVS_NpcAuxAI_BillBlaster),
+    .onCreate = &N(EVS_NpcAuxAI_BillBlaster),
     .onHit = &N(EVS_NpcHit_BillBlaster),
 };
 
@@ -520,7 +520,7 @@ NpcSettings N(NpcSettings_BulletBill) = {
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
     .doAI = &N(EVS_NpcAI_BulletBill),
-    .auxAI = &N(EVS_NpcAuxAI_BulletBill),
+    .onCreate = &N(EVS_NpcAuxAI_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BulletBill),
 };

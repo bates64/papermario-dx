@@ -327,7 +327,7 @@ API_CALLABLE(N(CleftAI_Main)) {
             || (script->AI_TEMP_STATE == AI_STATE_CLEFT_CHASE)
             || (script->AI_TEMP_STATE == AI_STATE_CLEFT_CHASE_COOLDOWN))
             && N(CleftAI_CanSeePlayer)(script, npcAISettings, volume)) {
-        script->AI_TEMP_STATE = 20;
+        script->AI_TEMP_STATE = AI_STATE_CLEFT_REV_UP_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {

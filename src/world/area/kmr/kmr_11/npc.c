@@ -287,7 +287,7 @@ NpcSettings N(NpcSettings_Kammy) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Kammy),
     .doAI = &N(EVS_NpcAI_Kammy),
-    .auxAI = &N(EVS_NpcAuxAI_Kammy),
+    .onCreate = &N(EVS_NpcAuxAI_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
 };
 

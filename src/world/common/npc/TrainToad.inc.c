@@ -9,5 +9,5 @@ NpcSettings N(NpcSettings_TrainToad) = {
     .height = 32,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .auxAI = &N(EVS_NpcAuxAI_TrainToad),
+    .onCreate = &N(EVS_NpcAuxAI_TrainToad),
 };

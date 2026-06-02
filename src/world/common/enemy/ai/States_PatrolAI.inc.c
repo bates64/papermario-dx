@@ -9,13 +9,11 @@
 void N(PatrolAI_MoveInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 ret;
+    f32 dist;
     f32 max;
-    f32 posX;
-    f32 posZ;
+    f32 posX, posZ;
+    s32 pointX, pointZ;
     s32 i;
-    s32 j;
-    s32 x, z;
 
     script->functionTemp[1] = 0;
     max = 32767.0f;
@@ -23,14 +21,13 @@ void N(PatrolAI_MoveInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     posZ = npc->pos.z;
     script->AI_PATROL_GOAL_INDEX = 0;
 
-    for (i = 0, j = 0; i < enemy->territory->patrol.numPoints; i++, j++) {
-        //TODO strange match -- index and array are backwards!
-        x = i[enemy->territory->patrol.points].x;
-        z = i[enemy->territory->patrol.points].z;
-        ret = dist2D(posX, posZ, x, z);
-        if (ret < max) {
-            max = ret;
-            script->AI_PATROL_GOAL_INDEX = j;
+    for (i = 0; i < enemy->territory->patrol.numPoints; i++) {
+        pointX = enemy->territory->patrol.points[i].x;
+        pointZ = enemy->territory->patrol.points[i].z;
+        dist = dist2D(posX, posZ, pointX, pointZ);
+        if (dist < max) {
+            max = dist;
+            script->AI_PATROL_GOAL_INDEX = i;
         }
     }
 
@@ -54,7 +51,7 @@ void N(PatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
         if (script->functionTemp[1] <= 0) {
             script->functionTemp[1] = aiSettings->playerSearchInterval;
             if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
-                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xF, &emoteTemp);
+                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 if (enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER) {
                     script->AI_TEMP_STATE = AI_STATE_ALERT_INIT;
@@ -73,9 +70,8 @@ void N(PatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
         } else {
             npc_surface_spawn_fx(npc, SURFACE_INTERACT_RUN);
         }
-        //TODO strange match -- index and array are backwards!
-        x = script->AI_PATROL_GOAL_INDEX[enemy->territory->patrol.points].x;
-        z = script->AI_PATROL_GOAL_INDEX[enemy->territory->patrol.points].z;
+        x = enemy->territory->patrol.points[script->AI_PATROL_GOAL_INDEX].x;
+        z = enemy->territory->patrol.points[script->AI_PATROL_GOAL_INDEX].z;
         npc->yaw = atan2(npc->pos.x, npc->pos.z, x, z);
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
         if (dist2D(npc->pos.x, npc->pos.z, x, z) <= npc->moveSpeed) {
@@ -109,7 +105,7 @@ void N(PatrolAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     EffectInstance* emoteTemp;
 
     if ((aiSettings->playerSearchInterval >= 0) && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
-        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xF, &emoteTemp);
+        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         if (!(enemy->npcSettings->actionFlags & AI_ACTION_JUMP_WHEN_SEE_PLAYER)) {
@@ -129,7 +125,7 @@ void N(PatrolAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                 if (!(enemy->npcSettings->actionFlags & AI_ACTION_LOOK_AROUND_DURING_LOITER)) {
                     npc->yaw = clamp_angle(npc->yaw + 180.0f);
                 }
-                npc->duration = aiSettings->waitTime / 2 + rand_int(aiSettings->waitTime / 2 + 1);
+                npc->duration = (aiSettings->waitTime / 2) + rand_int(aiSettings->waitTime / 2 + 1);
             } else {
                 script->AI_TEMP_STATE = AI_STATE_LOITER_POST;
             }
@@ -163,7 +159,7 @@ void N(PatrolAI_JumpInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->jumpScale = 2.0f;
     npc->moveToPos.y = npc->pos.y;
     npc->flags |= NPC_FLAG_JUMPING;
-    script->functionTemp[0] = AI_STATE_ALERT;
+    script->AI_TEMP_STATE = AI_STATE_ALERT;
 }
 
 void N(PatrolAI_Jump)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -197,14 +193,14 @@ void N(PatrolAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
         angle = npc->yaw;
 
         if (angleDiff < 0.0f) {
-            angle += -aiSettings->chaseTurnRate;
+            angle -= aiSettings->chaseTurnRate;
         } else {
             angle += aiSettings->chaseTurnRate;
         }
     }
 
     npc->yaw = clamp_angle(angle);
-    script->functionTemp[0] = 13;
+    script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
 void N(PatrolAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -237,7 +233,7 @@ void N(PatrolAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
         if (enemy->aiFlags & AI_FLAG_80) {
             script->AI_TEMP_STATE = AI_STATE_PATROL_15;
         } else {
-            script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+            script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
         }
     }
 }
@@ -249,7 +245,7 @@ void N(PatrolNoAttackAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 
     // get next patrol point
     for (i = script->AI_PATROL_GOAL_INDEX; i < enemy->territory->patrol.numPoints; i++) {
-        if (i[enemy->territory->patrol.points].y <= npc->pos.y) {
+        if (enemy->territory->patrol.points[i].y <= npc->pos.y) {
             script->AI_PATROL_GOAL_INDEX = i;
             break;
         }

@@ -2399,11 +2399,11 @@ void kill_enemy(Enemy* enemy) {
         kill_script_by_ID(enemy->defeatScriptID);
     }
 
-    enemy->interactBytecode = nullptr;
-    enemy->aiBytecode = nullptr;
-    enemy->hitBytecode = nullptr;
-    enemy->auxBytecode = nullptr;
-    enemy->defeatBytecode = nullptr;
+    enemy->interactSource = nullptr;
+    enemy->aiSource = nullptr;
+    enemy->hitSource = nullptr;
+    enemy->auxSource = nullptr;
+    enemy->defeatSource = nullptr;
 
     #if DX_DEBUG_MENU
     if (enemy->npcID != (s16) DX_DEBUG_DUMMY_ID) {
@@ -2437,7 +2437,7 @@ s32 bind_enemy_ai(Enemy* enemy, EvtScript* aiScriptBytecode) {
     if (enemy->aiScript != nullptr) {
         kill_script_by_ID(enemy->aiScript->id);
     }
-    enemy->aiBytecode = aiScriptBytecode;
+    enemy->aiSource = aiScriptBytecode;
     aiScript = enemy->aiScript = start_script(aiScriptBytecode, EVT_PRIORITY_A, 0);
     id = enemy->aiScriptID = aiScript->id;
     aiScript->owner1.enemy = enemy;
@@ -2451,7 +2451,7 @@ s32 bind_enemy_aux(Enemy* enemy, EvtScript* auxScriptBytecode) {
     if (enemy->auxScript != nullptr) {
         kill_script_by_ID(enemy->auxScript->id);
     }
-    enemy->auxBytecode = auxScriptBytecode;
+    enemy->auxSource = auxScriptBytecode;
     auxScript = enemy->auxScript = start_script(auxScriptBytecode, EVT_PRIORITY_A, 0);
     id = enemy->auxScriptID = auxScript->id;
     auxScript->owner1.enemy = enemy;
@@ -2465,7 +2465,7 @@ s32 bind_enemy_interact(Enemy* enemy, EvtScript* interactScriptBytecode) {
     if (enemy->interactScript != nullptr) {
         kill_script_by_ID(enemy->interactScript->id);
     }
-    enemy->interactBytecode = interactScriptBytecode;
+    enemy->interactSource = interactScriptBytecode;
     interactScript = enemy->interactScript = start_script(interactScriptBytecode, EVT_PRIORITY_A, 0);
     id = enemy->interactScriptID = interactScript->id;
     interactScript->owner1.enemy = enemy;
