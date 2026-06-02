@@ -123,7 +123,7 @@ API_CALLABLE(N(StoneChompFXC)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_StoneChomp) = {
+EvtScript N(EVS_NpcCreate_StoneChomp) = {
     Call(N(StoneChompFXA))
     Return
     End
@@ -201,7 +201,7 @@ NpcSettings N(NpcSettings_StoneChomp) = {
     .radius = 32,
     .level = ACTOR_LEVEL_STONE_CHOMP,
     .doAI = &N(EVS_NpcAI_StoneChomp),
-    .onCreate = &N(EVS_NpcAuxAI_StoneChomp),
+    .onCreate = &N(EVS_NpcCreate_StoneChomp),
     .onHit = &N(EVS_NpcHit_StoneChomp),
     .onDefeat = &N(EVS_NpcDefeat_StoneChomp),
 };

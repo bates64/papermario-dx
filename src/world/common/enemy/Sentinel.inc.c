@@ -4,7 +4,7 @@
 
 #include "world/common/enemy/ai/SentinelAI.inc.c"
 
-EvtScript N(EVS_NpcAuxAI_Sentinel) = {
+EvtScript N(EVS_NpcCreate_Sentinel) = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_DONT_UPDATE_SHADOW_Y | NPC_FLAG_JUMPING, true)
     Return
@@ -117,5 +117,5 @@ NpcSettings N(NpcSettings_Sentinel) = {
     .radius = 32,
     .level = ACTOR_LEVEL_NONE,
     .doAI = &N(EVS_NpcAI_Sentinel),
-    .onCreate = &N(EVS_NpcAuxAI_Sentinel),
+    .onCreate = &N(EVS_NpcCreate_Sentinel),
 };

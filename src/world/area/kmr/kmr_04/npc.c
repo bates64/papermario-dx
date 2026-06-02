@@ -7,7 +7,7 @@ NpcSettings N(NpcSettings_JrTroopa) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-EvtScript N(EVS_NpcAuxAI_Goompa) = {
+EvtScript N(EVS_NpcCreate_Goompa) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION, true)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
@@ -243,7 +243,7 @@ NpcSettings N(NpcSettings_Goompa) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Goompa),
     .doAI = &N(EVS_NpcAI_Goompa),
-    .onCreate = &N(EVS_NpcAuxAI_Goompa),
+    .onCreate = &N(EVS_NpcCreate_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
     .onDefeat = &N(EVS_NpcDefeat_Goompa),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION,

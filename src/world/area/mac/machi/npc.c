@@ -106,7 +106,7 @@ API_CALLABLE(N(SetupChapter2)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_Goompa) = {
+EvtScript N(EVS_NpcCreate_Goompa) = {
     Return
     End
 };
@@ -142,7 +142,7 @@ EvtScript N(EVS_NpcAI_Unused) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_Unused) = {
+EvtScript N(EVS_NpcCreate_Unused) = {
     Return
     End
 };
@@ -183,7 +183,7 @@ EvtScript N(EVS_NpcAI_StarRod) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_StarRod) = {
+EvtScript N(EVS_NpcCreate_StarRod) = {
     Call(N(SetupStarRodPaletteCycling))
     Return
     End
@@ -216,7 +216,7 @@ NpcSettings N(NpcSettings_StarRod) = {
     .height = 24,
     .radius = 24,
     .doAI = &N(EVS_NpcAI_StarRod),
-    .onCreate = &N(EVS_NpcAuxAI_StarRod),
+    .onCreate = &N(EVS_NpcCreate_StarRod),
     .onInteract = &N(EVS_NpcInteract_StarRod),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -243,7 +243,7 @@ NpcSettings N(NpcSettings_Goompa) = {
     .defaultAnim = ANIM_Goompa_Walk,
     .height = 24,
     .radius = 24,
-    .onCreate = &N(EVS_NpcAuxAI_Goompa),
+    .onCreate = &N(EVS_NpcCreate_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
     .onHit = &N(EVS_NpcHit_Goompa),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE,

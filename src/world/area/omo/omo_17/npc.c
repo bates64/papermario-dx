@@ -6,7 +6,7 @@
 #include "world/common/enemy/SkyGuy.inc.c"
 #include "world/common/enemy/SpyGuy.inc.c"
 
-EvtScript N(EVS_NpcAuxAI_Conductor) = {
+EvtScript N(EVS_NpcCreate_Conductor) = {
     Return
     End
 };
@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_Conductor) = {
     .height = 24,
     .radius = 24,
     .doAI = &N(EVS_NpcAI_Conductor),
-    .onCreate = &N(EVS_NpcAuxAI_Conductor),
+    .onCreate = &N(EVS_NpcCreate_Conductor),
     .onInteract = &N(EVS_NpcInteract_Conductor),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };

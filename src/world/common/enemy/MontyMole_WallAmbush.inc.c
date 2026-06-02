@@ -1,6 +1,6 @@
 #include "MontyMole.h"
 
-EvtScript N(EVS_NpcAuxAI_MontyMole_WallAmbush) = {
+EvtScript N(EVS_NpcCreate_MontyMole_WallAmbush) = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INACTIVE, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -10,7 +10,7 @@ EvtScript N(EVS_NpcAuxAI_MontyMole_WallAmbush) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole) = {
+EvtScript N(EVS_NpcCreate_MontyMole_WallAmbush_Hole) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -77,7 +77,7 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush) = {
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
     .doAI = &N(EVS_NpcAI_MontyMole_WallAmbush),
-    .onCreate = &N(EVS_NpcAuxAI_MontyMole_WallAmbush),
+    .onCreate = &N(EVS_NpcCreate_MontyMole_WallAmbush),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -87,6 +87,6 @@ NpcSettings N(NpcSettings_MontyMole_WallAmbush_Hole) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_MONTY_MOLE,
-    .onCreate = &N(EVS_NpcAuxAI_MontyMole_WallAmbush_Hole),
+    .onCreate = &N(EVS_NpcCreate_MontyMole_WallAmbush_Hole),
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
 };

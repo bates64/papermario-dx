@@ -269,7 +269,7 @@ EvtScript N(EVS_NpcDefeat_Fuzzipede) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_Fuzzipede) = {
+EvtScript N(EVS_NpcCreate_Fuzzipede) = {
     Call(SetNpcPos, NPC_SELF, 100, 80, -80)
     Exec(N(EVS_Fuzzipede_ReactToLight))
     Return
@@ -281,7 +281,7 @@ NpcSettings N(NpcSettings_Fuzzipede) = {
     .height = 24,
     .radius = 24,
     .doAI = &N(EVS_NpcAI_Fuzzipede),
-    .onCreate = &N(EVS_NpcAuxAI_Fuzzipede),
+    .onCreate = &N(EVS_NpcCreate_Fuzzipede),
     .onHit = &N(EVS_NpcHit_Fuzzipede),
     .onDefeat = &N(EVS_NpcDefeat_Fuzzipede),
 };

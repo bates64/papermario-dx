@@ -39,7 +39,7 @@ API_CALLABLE(N(MisstarFlyAway)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcAuxAI_Misstar) = {
+EvtScript N(EVS_NpcCreate_Misstar) = {
     Return
     End
 };
@@ -101,7 +101,7 @@ NpcSettings N(NpcSettings_Misstar) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Misstar),
     .doAI = &N(EVS_NpcAI_Misstar),
-    .onCreate = &N(EVS_NpcAuxAI_Misstar),
+    .onCreate = &N(EVS_NpcCreate_Misstar),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 

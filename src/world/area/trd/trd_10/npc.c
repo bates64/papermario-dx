@@ -11,7 +11,7 @@ API_CALLABLE(N(IsPartnerBombette)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_01) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_01) = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -181,7 +181,7 @@ EvtScript N(EVS_NpcDefeat_KoopaBros_01) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_02) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_02) = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcDefeat_KoopaBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_03) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_03) = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -249,7 +249,7 @@ EvtScript N(EVS_NpcDefeat_KoopaBros_03) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_04) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_04) = {
     IfGe(GB_StoryProgress, STORY_CH1_DEFEATED_KOOPA_BROS)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -289,7 +289,7 @@ NpcSettings N(NpcSettings_KoopaBros_01) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_KoopaBros_01),
     .doAI = &N(EVS_NpcAI_KoopaBros_01),
-    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_01),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_01),
     .onInteract = &N(EVS_NpcInteract_KoopaBros_01),
     .onHit = &N(EVS_NpcHit_KoopaBros_01),
     .onDefeat = &N(EVS_NpcDefeat_KoopaBros_01),
@@ -302,7 +302,7 @@ NpcSettings N(NpcSettings_KoopaBros_02) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_KoopaBros_02),
     .doAI = &N(EVS_NpcAI_KoopaBros_02),
-    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_02),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_02),
     .onInteract = &N(EVS_NpcInteract_KoopaBros_02),
     .onHit = &N(EVS_NpcHit_KoopaBros_02),
     .onDefeat = &N(EVS_NpcDefeat_KoopaBros_02),
@@ -315,7 +315,7 @@ NpcSettings N(NpcSettings_KoopaBros_03) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_KoopaBros_03),
     .doAI = &N(EVS_NpcAI_KoopaBros_03),
-    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_03),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_03),
     .onInteract = &N(EVS_NpcInteract_KoopaBros_03),
     .onHit = &N(EVS_NpcHit_KoopaBros_03),
     .onDefeat = &N(EVS_NpcDefeat_KoopaBros_03),
@@ -328,7 +328,7 @@ NpcSettings N(NpcSettings_KoopaBros_04) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_KoopaBros_04),
     .doAI = &N(EVS_NpcAI_KoopaBros_04),
-    .onCreate = &N(EVS_NpcAuxAI_KoopaBros_04),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_04),
     .onInteract = &N(EVS_NpcInteract_KoopaBros_04),
     .onHit = &N(EVS_NpcHit_KoopaBros_04),
     .onDefeat = &N(EVS_NpcDefeat_KoopaBros_04),

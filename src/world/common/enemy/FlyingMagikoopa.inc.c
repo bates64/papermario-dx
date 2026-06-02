@@ -58,14 +58,14 @@ AnimID N(ExtraAnims_FlyingMagikoopa)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_NpcAuxAI_FlyingMagikoopa_AltHitbox) = {
+EvtScript N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox) = {
     Call(SetSelfVar, 1, 10)
     Call(SetSelfVar, 2, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_FlyingMagikoopa_Hitbox) = {
+EvtScript N(EVS_NpcCreate_FlyingMagikoopa_Hitbox) = {
     Call(SetSelfVar, 1, 0)
     Call(SetSelfVar, 2, 55)
     Return
@@ -108,7 +108,7 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox) = {
 NpcSettings N(NpcSettings_FlyingMagikoopa_AltHitbox) = {
     .defaultAnim = ANIM_Magikoopa_Anim00,
     .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
-    .onCreate = &N(EVS_NpcAuxAI_FlyingMagikoopa_AltHitbox),
+    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox),
     .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
 };
@@ -116,7 +116,7 @@ NpcSettings N(NpcSettings_FlyingMagikoopa_AltHitbox) = {
 NpcSettings N(NpcSettings_FlyingMagikoopa_Hitbox) = {
     .defaultAnim = ANIM_FlyingMagikoopa_Anim00,
     .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
-    .onCreate = &N(EVS_NpcAuxAI_FlyingMagikoopa_Hitbox),
+    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_Hitbox),
     .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
 };

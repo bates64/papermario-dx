@@ -4,7 +4,7 @@
 
 extern EvtScript N(EVS_NpcInteract_HeartPlant);
 
-EvtScript N(EVS_NpcAuxAI_HeartPlant) = {
+EvtScript N(EVS_NpcCreate_HeartPlant) = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetSelfVar, 0, 0)
     Call(SetSelfVar, 1, 0)
@@ -44,7 +44,7 @@ NpcSettings N(NpcSettings_HeartPlant) = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcAuxAI_HeartPlant),
+    .onCreate = &N(EVS_NpcCreate_HeartPlant),
     .onInteract = &N(EVS_NpcInteract_HeartPlant),
 };
 

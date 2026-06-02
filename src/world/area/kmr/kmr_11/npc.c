@@ -171,7 +171,7 @@ EvtScript N(EVS_NpcDefeat_GoombaBros_02) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_Kammy) = {
+EvtScript N(EVS_NpcCreate_Kammy) = {
     IfGe(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -287,7 +287,7 @@ NpcSettings N(NpcSettings_Kammy) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Kammy),
     .doAI = &N(EVS_NpcAI_Kammy),
-    .onCreate = &N(EVS_NpcAuxAI_Kammy),
+    .onCreate = &N(EVS_NpcCreate_Kammy),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
 };
 

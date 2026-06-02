@@ -13,7 +13,7 @@ API_CALLABLE(N(AddMerlarHoverMotion)) {
     return ApiStatus_BLOCK;
 }
 
-EvtScript N(EVS_NpcAuxAI_Merlar) = {
+EvtScript N(EVS_NpcCreate_Merlar) = {
     Return
     End
 };
@@ -22,7 +22,7 @@ NpcSettings N(NpcSettings_Merlar) = {
     .height = 60,
     .radius = 60,
     .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcAuxAI_Merlar),
+    .onCreate = &N(EVS_NpcCreate_Merlar),
 };
 
 EvtScript N(EVS_NpcAux_Merlar) = {

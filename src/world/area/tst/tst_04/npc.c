@@ -5,7 +5,7 @@ API_CALLABLE(N(DisableOwnerShadow)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_Goompa) = {
+EvtScript N(EVS_NpcCreate_Goompa) = {
     Call(N(DisableOwnerShadow))
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_CAMERA_FOR_YAW, true)
     Return
@@ -43,7 +43,7 @@ NpcSettings N(NpcSettings_Goompa) = {
     .radius = 24,
     .doAux = &N(EVS_NpcAux_Goompa),
     .doAI = &N(EVS_NpcAI_Goompa),
-    .onCreate = &N(EVS_NpcAuxAI_Goompa),
+    .onCreate = &N(EVS_NpcCreate_Goompa),
     .onInteract = &N(EVS_NpcInteract_Goompa),
     .onHit = &N(EVS_NpcHit_Goompa),
     .onDefeat = &N(EVS_NpcDefeat_Goompa),
