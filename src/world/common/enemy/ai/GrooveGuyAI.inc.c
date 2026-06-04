@@ -9,7 +9,7 @@ void N(GrooveGuyAI_02)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     npc->duration = 0;
     set_npc_yaw(npc, 270.0f);
     enemy->varTable[0] = 0;
-    script->functionTemp[0] = 3;
+    script->AI_TEMP_STATE = 3;
 }
 
 void N(GrooveGuyAI_03)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -37,7 +37,7 @@ void N(GrooveGuyAI_03)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
                 npc->curAnim = ANIM_GrooveGuy_Anim0D;
             }
             enemy->varTable[1]++;
-            if (enemy->varTable[1] >= 0x41) {
+            if (enemy->varTable[1] > 0x40) {
                 enemy->varTable[0] = 2;
             }
             break;
@@ -61,7 +61,7 @@ void N(GrooveGuyAI_03)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     if (enemy->varTable[0] == 4) {
         npc->rot.y = 0.0f;
         set_npc_yaw(npc, 270.0f);
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
     }
 }
 
@@ -87,24 +87,24 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
     territory.detectFlags = 0;
 
     if (isInitialCall || enemy->aiFlags & AI_FLAG_SUSPEND) {
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->wander.isFlying) {
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
-            script->functionTemp[0] = 99;
+            script->AI_TEMP_STATE = 99;
             script->functionTemp[1] = 0;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
-            script->functionTemp[0] = 12;
+            script->AI_TEMP_STATE = 12;
         }
         enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         enemy->flags &= ~ENEMY_FLAG_BEGIN_WITH_CHASING;
@@ -118,7 +118,7 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
         }
     }
 
-    switch (script->functionTemp[0]) {
+    switch (script->AI_TEMP_STATE) {
         case 0x0:
             basic_ai_wander_init(script, aiSettings, territoryPtr);
             // fallthrough
@@ -142,7 +142,7 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
             // fallthrough
         case 0xD:
             basic_ai_chase(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0xE) {
+            if (script->AI_TEMP_STATE != 0xE) {
                 break;
             }
         case 0xE:

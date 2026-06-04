@@ -40,21 +40,21 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
         npc->duration = 0;
         enemy->firstStrikeActive = false;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        npc->flags &= ~NPC_FLAG_JUMPING;
         npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
         enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME] = 0;
 
-        if (!enemy->territory->wander.isFlying) {
+        npc->flags &= ~NPC_FLAG_JUMPING;
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = 0;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 40, nullptr);
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {

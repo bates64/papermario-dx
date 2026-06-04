@@ -84,27 +84,26 @@ void N(GuardAI_Alert)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolum
 void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 tempAngle;
-    f32 angleDiff;
+    f32 angle;
+    f32 deltaAngle;
 
     npc->duration = (aiSettings->chaseUpdateInterval / 2) + rand_int(aiSettings->chaseUpdateInterval / 2 + 1);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
     npc->moveSpeed = aiSettings->chaseSpeed;
 
-    tempAngle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-    angleDiff = get_clamped_angle_diff(npc->yaw, tempAngle);
+    angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+    deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
 
-    if (aiSettings->chaseTurnRate < fabsf(angleDiff)) {
-        tempAngle = npc->yaw;
-
-        if (angleDiff < 0.0f) {
-            tempAngle += -aiSettings->chaseTurnRate;
+    // cap the turn rate
+    if (aiSettings->chaseTurnRate < fabsf(deltaAngle)) {
+        if (deltaAngle < 0.0f) {
+            angle = npc->yaw - aiSettings->chaseTurnRate;
         } else {
-            tempAngle += aiSettings->chaseTurnRate;
+            angle = npc->yaw + aiSettings->chaseTurnRate;
         }
     }
+    npc->yaw = clamp_angle(angle);
 
-    npc->yaw = clamp_angle(tempAngle);
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
@@ -219,7 +218,7 @@ API_CALLABLE(N(GuardAI_Main)) {
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = 15;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_GUARD_RETURN_HOME_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
             script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;

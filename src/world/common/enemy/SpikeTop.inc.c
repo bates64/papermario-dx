@@ -69,17 +69,52 @@ EvtScript N(EVS_NpcAI_BonyBeetle) = {
     End
 };
 
-#include "world/common/todo/AwaitPlayerNearNpc.inc.c"
+API_CALLABLE(N(BuzzyBeetle_OffsetHeight)) {
+    Npc* npc = get_npc_safe(script->owner2.npcID);
+
+    npc->verticalRenderOffset = npc->collisionHeight;
+    npc->pos.y -= (f32) npc->collisionHeight;
+
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(BuzzyBeetle_AwaitPlayerNear)) {
+    PlayerStatus* playerStatus = &gPlayerStatus;
+    Npc* npc = get_npc_safe(script->owner2.npcID);
+
+    if (dist2D(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z) < 50.0f) {
+        return ApiStatus_DONE2;
+    }
+
+    return ApiStatus_BLOCK;
+}
+
+API_CALLABLE(N(BuzzyBeetle_AwaitLanding)) {
+    EncounterStatus* currentEncounter = &gCurrentEncounter;
+    Enemy* enemy = script->owner1.enemy;
+    Npc* npc = get_npc_safe(script->owner2.npcID);
+
+    if (isInitialCall) {
+        npc->verticalRenderOffset = 0;
+    }
+
+    if (npc->flags & NPC_FLAG_GROUNDED) {
+        currentEncounter->encounterList[enemy->encounterIndex]->battle = enemy->varTable[0];
+        return ApiStatus_DONE2;
+    }
+
+    return ApiStatus_BLOCK;
+}
 
 EvtScript N(EVS_NpcAI_BuzzyBeetle_Ceiling) = {
-    Call(N(func_80240814_97BE44))
+    Call(N(BuzzyBeetle_OffsetHeight))
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim0F)
-    Call(N(AwaitPlayerNearNpc))
-    Call(SelfEnemyOverrideSyncPos, 1)
+    Call(N(BuzzyBeetle_AwaitPlayerNear))
+    Call(EnemyEnableFirstStrike, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim00)
-    Call(N(func_802408B4_97BEE4))
-    Call(SelfEnemyOverrideSyncPos, 0)
+    Call(N(BuzzyBeetle_AwaitLanding))
+    Call(EnemyEnableFirstStrike, false)
     Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
     Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 2)
     Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 5)

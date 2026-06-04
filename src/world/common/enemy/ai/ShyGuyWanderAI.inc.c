@@ -8,7 +8,7 @@ void N(ShyGuyWanderAI_14)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->moveSpeed *= 0.6;
     npc->curAnim = enemy->animList[12];
     npc->duration = 5;
-    script->functionTemp[0] = 0xF;
+    script->AI_TEMP_STATE = 15;
 }
 
 void N(ShyGuyWanderAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -26,7 +26,7 @@ void N(ShyGuyWanderAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
         npc->curAnim = enemy->animList[11];
         npc->duration = 10;
-        script->functionTemp[0] = 16;
+        script->AI_TEMP_STATE = 16;
     }
 }
 
@@ -42,7 +42,7 @@ void N(ShyGuyWanderAI_16)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->duration--;
     if (npc->duration == 0) {
         npc->duration = 30;
-        script->functionTemp[0] = 17;
+        script->AI_TEMP_STATE = 17;
     }
 }
 
@@ -53,7 +53,7 @@ void N(ShyGuyWanderAI_17)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->duration--;
     if (npc->duration == 0) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
     }
 }
 
@@ -79,24 +79,24 @@ API_CALLABLE(N(ShyGuyWanderAI_Main)) {
     territory.detectFlags = 0;
 
    if (isInitialCall || enemy->aiFlags & AI_FLAG_SUSPEND) {
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->wander.isFlying) {
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
-            script->functionTemp[0] = 99;
+            script->AI_TEMP_STATE = 99;
             script->functionTemp[1] = 0;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
-            script->functionTemp[0] = 12;
+            script->AI_TEMP_STATE = 12;
         }
         enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         enemy->flags &= ~ENEMY_FLAG_BEGIN_WITH_CHASING;
@@ -110,7 +110,7 @@ API_CALLABLE(N(ShyGuyWanderAI_Main)) {
         }
     }
 
-    switch (script->functionTemp[0]) {
+    switch (script->AI_TEMP_STATE) {
         case 0x0:
             basic_ai_wander_init(script, aiSettings, territoryPtr);
             // fallthrough
@@ -134,25 +134,25 @@ API_CALLABLE(N(ShyGuyWanderAI_Main)) {
             // fallthrough
         case 0xD:
             basic_ai_chase(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0xE) {
+            if (script->AI_TEMP_STATE != 0xE) {
                 break;
             }
            // fallthrough
         case 0xE:
             N(ShyGuyWanderAI_14)(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0xF) {
+            if (script->AI_TEMP_STATE != 0xF) {
                 break;
             }
            // fallthrough
         case 0xF:
             N(ShyGuyWanderAI_15)(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0x10) {
+            if (script->AI_TEMP_STATE != 0x10) {
                 break;
             }
             // fallthrough
         case 0x10:
             N(ShyGuyWanderAI_16)(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0x11) {
+            if (script->AI_TEMP_STATE != 0x11) {
                 break;
             }
             // fallthrough

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "world/common/enemy/ai/HoppingAI.inc.c"
 
 void N(StoneChompAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -71,4 +73,3 @@ API_CALLABLE(N(StoneChompAI_Main)) {
     }
     return ApiStatus_BLOCK;
 }
-

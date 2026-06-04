@@ -211,16 +211,6 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
 #define AI_VAR_MELEE_HIT_TIME  varTable[2]
 #define AI_VAR_MELEE_MISS_TIME varTable[3]
 #define AI_VAR_NEXT_STATE      varTable[7]
-// melee hitbox
-#define AI_VAR_HITNPC_YOFFSET       varTable[0]
-#define AI_VAR_HITNPC_DIST          varTable[1]
-#define AI_VAR_HITNPC_SIGHT_RANGE   varTable[2]
-#define AI_VAR_HITNPC_SIGHT_ANGLE   varTable[3]
-#define AI_VAR_HITNPC_DURATION      varTable[4]
-#define AI_VAR_HITNPC_SOUND         varTable[15]
-// projectile hitbox
-#define VAR_PROJECTILE_HITBOX_STATE varTable[0]
-#define AI_PROJECTILE_AMMO_COUNT varTable[3]
 
 #define INTEGER_LOG2(x) ((x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
 

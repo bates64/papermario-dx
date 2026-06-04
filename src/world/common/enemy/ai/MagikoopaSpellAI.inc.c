@@ -49,7 +49,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
     f32 t2;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
         npc1->duration = 0;
         npc1->flags |= NPC_FLAG_FLIP_INSTANTLY | NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION |  NPC_FLAG_INVISIBLE;
         enemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_JUMP |
@@ -61,7 +61,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
         }
     }
 
-    switch (script->functionTemp[0]) {
+    switch (script->AI_TEMP_STATE) {
         case 0:
             enemy->varTable[3] = nullptr;
             npc1->collisionDiameter = 20;
@@ -70,7 +70,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
             npc1->pos.y = NPC_DISPOSE_POS_Y;
             npc1->pos.z = NPC_DISPOSE_POS_Z;
             enemy->varTable[0] = 0;
-            script->functionTemp[0] = 1;
+            script->AI_TEMP_STATE = 1;
             // fallthrough
         case 1:
             if (enemy->varTable[0] == 1) {
@@ -105,7 +105,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
                                                     gPlayerStatusPtr->pos.y + 10.0f + 14.0f,
                                                     gPlayerStatusPtr->pos.z, duration);
                 npc1->duration = duration;
-                script->functionTemp[0] = 2;
+                script->AI_TEMP_STATE = 2;
             }
             break;
         case 2:
@@ -125,7 +125,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
             npc1->pos.y -= npc1->collisionHeight * 0.5;
             enemy->varTable[0] = 3;
             npc1->duration = 0;
-            script->functionTemp[0] = 4;
+            script->AI_TEMP_STATE = 4;
             break;
         case 4:
             npc1->duration++;
@@ -141,7 +141,7 @@ API_CALLABLE(N(MagikoopaAI_SpellMain)) {
                 npc1->collisionHeight = 20;
             } else if (npc1->duration >= 16) {
                 enemy->varTable[0] = 0;
-                script->functionTemp[0] = 0;
+                script->AI_TEMP_STATE = 0;
             }
             break;
     }

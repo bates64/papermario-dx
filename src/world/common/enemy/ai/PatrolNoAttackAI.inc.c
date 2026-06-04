@@ -44,7 +44,7 @@ API_CALLABLE(N(PatrolNoAttackAI_Main)) {
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = 0;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_PATROL_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
             script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;

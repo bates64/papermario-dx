@@ -4217,32 +4217,12 @@ enum TerritoryFlags {
     AI_TERRITORY_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
 };
 
-enum PiranhaPlantStates {
-    AI_STATE_PIRANHA_PLANT_00       = 0,
-    AI_STATE_PIRANHA_PLANT_01       = 1,
-    AI_STATE_PIRANHA_PLANT_10       = 10,
-    AI_STATE_PIRANHA_PLANT_11       = 11,
-    AI_STATE_PIRANHA_PLANT_12       = 12,
-    AI_STATE_PIRANHA_PLANT_13       = 13,
-    AI_STATE_PIRANHA_PLANT_14       = 14,
-    AI_STATE_PIRANHA_PLANT_SUSPEND  = 99
-};
-
 enum MeleeHitboxAttackStates {
     MELEE_HITBOX_STATE_NONE         = 0,
     MELEE_HITBOX_STATE_INIT         = 1,
     MELEE_HITBOX_STATE_PRE          = 2,
     MELEE_HITBOX_STATE_ACTIVE       = 3,  // hitbox is active
     MELEE_HITBOX_STATE_POST         = 4
-};
-
-enum ProjectileHitboxAttackStates {
-    PROJECTILE_HITBOX_STATE_NONE        = 0,
-    PROJECTILE_HITBOX_STATE_INIT        = 1,
-    PROJECTILE_HITBOX_STATE_PRE         = 2,
-    PROJECTILE_HITBOX_STATE_ACTIVE      = 3,  // hitbox is active
-    PROJECTILE_HITBOX_STATE_POST        = 4,
-    PROJECTILE_HITBOX_STATE_DONE        = 100
 };
 
 enum MusicSettingsFlags {

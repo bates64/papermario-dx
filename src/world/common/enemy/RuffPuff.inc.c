@@ -1,6 +1,5 @@
 #include "RuffPuff.h"
 
-#include "world/common/enemy/ai/FlyingAI.inc.c"
 #include "world/common/enemy/ai/FlyingNoAttackAI.inc.c"
 
 MobileAISettings N(AISettings_RuffPuff) = {

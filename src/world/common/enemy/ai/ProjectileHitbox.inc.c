@@ -5,6 +5,10 @@
 #include "npc.h"
 #include "effects.h"
 
+// projectile hitbox
+#define VAR_PROJECTILE_HITBOX_STATE varTable[0]
+#define AI_PROJECTILE_AMMO_COUNT varTable[3]
+
 s32 N(ProjectileHitbox_GetUsableProjectileID)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
@@ -58,14 +62,14 @@ void N(UnkNpcAIFunc48)(Evt* script, f32 arg1, f32 arg2, EnemyDetectVolume* terri
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
-        script->functionTemp[0] = 33;
+        script->AI_TEMP_STATE = 33;
     } else {
         s32 npcID = N(ProjectileHitbox_GetUsableProjectileID)(script);
 
         if (npcID != NPC_SELF && get_enemy(npcID)->varTable[0] == 0 && npc->turnAroundYawAdjustment == 0) {
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
             npc->duration = enemy->varTable[1];
-            script->functionTemp[0] = 30;
+            script->AI_TEMP_STATE = 30;
         }
     }
 }
@@ -90,7 +94,7 @@ void N(ProjectileHitbox_30)(Evt* script) {
             hitboxEnemy->varTable[0] = 1;
         }
         npc->duration = enemy->varTable[2];
-        script->functionTemp[0] = AI_STATE_PROJECTILE_HITBOX_33;
+        script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_33;
     }
 }
 
@@ -98,7 +102,7 @@ void N(ProjectileHitbox_31)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
 
     get_npc_unsafe(enemy->npcID)->duration = enemy->varTable[2];
-    script->functionTemp[0] = AI_STATE_PROJECTILE_HITBOX_33;
+    script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_33;
 }
 
 void N(ProjectileHitbox_32)(Evt* script) {
@@ -111,7 +115,7 @@ void N(ProjectileHitbox_32)(Evt* script) {
     if (enemy2->varTable[0] == 0) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = enemy->varTable[2];
-        script->functionTemp[0] = AI_STATE_PROJECTILE_HITBOX_33;
+        script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_33;
     }
 }
 
@@ -121,7 +125,7 @@ void N(ProjectileHitbox_33)(Evt* script) {
 
     npc->duration--;
     if (npc->duration <= 0) {
-        script->functionTemp[0] = AI_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
     }
 }
 
@@ -146,7 +150,7 @@ API_CALLABLE(N(ProjectileAI_Main)) {
             }
 
             if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
-                script->functionTemp[0] = 0;
+                script->AI_TEMP_STATE = 0;
                 npc->duration = 0;
                 npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_INVISIBLE;
                 disable_npc_shadow(npc);
@@ -160,14 +164,14 @@ API_CALLABLE(N(ProjectileAI_Main)) {
                 }
             }
 
-            switch (script->functionTemp[0]) {
+            switch (script->AI_TEMP_STATE) {
                 default:
                     return 0;
                 case 0:
                     npc->flags |= NPC_FLAG_INVISIBLE;
                     disable_npc_shadow(npc);
                     enemy->varTable[0] = 0;
-                    script->functionTemp[0] = 1;
+                    script->AI_TEMP_STATE = 1;
                     // fallthrough
                 case 1:
                     vt0 = enemy->varTable[0];
@@ -197,7 +201,7 @@ API_CALLABLE(N(ProjectileAI_Main)) {
                         enemy->flags &= ~(ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
                                           ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH);
                         npc->duration = 90;
-                        script->functionTemp[0] = 2;
+                        script->AI_TEMP_STATE = 2;
                         break;
                     }
                     return 0;
@@ -254,7 +258,7 @@ API_CALLABLE(N(ProjectileAI_Main)) {
                 npc->flags &= ~NPC_FLAG_JUMPING;
                 enemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
                                 ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH;
-                script->functionTemp[0] = 0;
+                script->AI_TEMP_STATE = 0;
             }
         }
     }
@@ -275,7 +279,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
     s32 cond;
 
     if (isInitialCall) {
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = 0;
     }
 
     if (get_enemy_safe(enemy->npcID) == nullptr) {
@@ -292,7 +296,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
     }
 
     npc = get_npc_unsafe(enemy->npcID);
-    switch (script->functionTemp[0]) {
+    switch (script->AI_TEMP_STATE) {
         case 0:
             fx_walking_dust(2, npc->pos.x, npc->pos.y, npc->pos.z, 0.0f, 0.0f);
             yaw = clamp_angle(camera->curYaw);
@@ -308,7 +312,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
             npc->jumpVel = 10.0f;
             npc->jumpScale = 0.9f;
             npc->moveSpeed *= 1.2;
-            script->functionTemp[0] = 1;
+            script->AI_TEMP_STATE = 1;
             // fallthrough
         case 1:
             x = npc->pos.x;
@@ -358,7 +362,7 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
                 npc->flags &= ~NPC_FLAG_JUMPING;
                 enemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
                                 ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH;
-                script->functionTemp[0] = 0;
+                script->AI_TEMP_STATE = 0;
                 evt_set_variable(script, LVar0, 1);
                 return ApiStatus_DONE2;
             }

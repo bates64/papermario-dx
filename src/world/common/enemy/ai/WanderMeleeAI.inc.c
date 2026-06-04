@@ -1,5 +1,4 @@
-#ifndef _WANDER_MELEE_AI_
-#define _WANDER_MELEE_AI_
+#pragma once
 
 // Used by:
 // - Clubba + White Clubba
@@ -36,17 +35,17 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->wander.isFlying) {
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = AI_STATE_WANDER_INIT;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
         enemy->AI_VAR_ATTACK_STATE = MELEE_HITBOX_STATE_NONE;
@@ -111,5 +110,3 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-
-#endif

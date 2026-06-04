@@ -218,13 +218,17 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
         script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_INIT;
         npc->duration = 30;
         npc->curAnim = enemy->animList[10];
-        npc->flags &= ~NPC_FLAG_JUMPING;
         enemy->AI_VAR_ATTACK_STATE = MELEE_HITBOX_STATE_NONE;
-        if (!enemy->territory->wander.isFlying) {
-            npc->flags = (npc->flags | NPC_FLAG_GRAVITY) & ~NPC_FLAG_FLYING;
+
+        npc->flags &= ~NPC_FLAG_JUMPING;
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
         } else {
-            npc->flags = (npc->flags & ~NPC_FLAG_GRAVITY) | NPC_FLAG_FLYING;
+            npc->flags |= NPC_FLAG_GRAVITY;
+            npc->flags &= ~NPC_FLAG_FLYING;
         }
+
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
             script->AI_TEMP_STATE_AFTER_SUSPEND = AI_RETURN_HOME_INIT;

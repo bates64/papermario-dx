@@ -1,8 +1,14 @@
-#ifndef _AI_MELEE_HITBOX_INC_
-#define _AI_MELEE_HITBOX_INC_ 0
+#pragma once
 
 #include "common.h"
 #include "effects.h"
+
+#define AI_VAR_HITNPC_YOFFSET       varTable[0]
+#define AI_VAR_HITNPC_DIST          varTable[1]
+#define AI_VAR_HITNPC_SIGHT_RANGE   varTable[2]
+#define AI_VAR_HITNPC_SIGHT_ANGLE   varTable[3]
+#define AI_VAR_HITNPC_DURATION      varTable[4]
+#define AI_VAR_HITNPC_SOUND         varTable[15]
 
 void N(MeleeHitbox_30)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
@@ -164,5 +170,3 @@ API_CALLABLE(N(MeleeHitbox_Main)) {
 
     return ApiStatus_BLOCK;
 }
-
-#endif

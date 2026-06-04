@@ -1,5 +1,4 @@
-#ifndef _AI_TACKLE_STATES_INC_
-#define _AI_TACKLE_STATES_INC_ 0
+#pragma once
 
 #include "common.h"
 #include "npc.h"
@@ -8,14 +7,14 @@
 // all functions only used here
 
 enum AiVarsTackle {
-    AI_TACKLE_VAR_PRE_DELAY = 2, // IN: delay time before dashing
-    AI_TACKLE_VAR_MIN_CHASE_TIME = 3, // IN: minimum time to dash during tackle
-    AI_TACKLE_VAR_CHASE_TIME = 4, // computed chase time to target
-    AI_TACKLE_VAR_POST_DELAY = 5, // IN: delay time after dashing
-    AI_TACKLE_VAR_HEIGHT = 6, // original collision height
-    AI_TACKLE_VAR_TYPE  = 7, // IN: see TackleEnemyType
-    AI_TACKLE_VAR_SPIKY = 8, // boolean tracking whether BonyBeetle spikes are extended
-    AI_TACKLE_VAR_CHANGE_TIME = 9, // duration to suspend AI while BonyBeetle swaps spike state
+    AI_TACKLE_VAR_PRE_DELAY         = 2, // IN: delay time before dashing
+    AI_TACKLE_VAR_MIN_CHASE_TIME    = 3, // IN: minimum time to dash during tackle
+    AI_TACKLE_VAR_CHASE_TIME        = 4, // computed chase time to target
+    AI_TACKLE_VAR_POST_DELAY        = 5, // IN: delay time after dashing
+    AI_TACKLE_VAR_HEIGHT            = 6, // original collision height
+    AI_TACKLE_VAR_TYPE              = 7, // IN: see TackleEnemyType
+    AI_TACKLE_VAR_SPIKY             = 8, // boolean tracking whether BonyBeetle spikes are extended
+    AI_TACKLE_VAR_CHANGE_TIME       = 9, // duration to suspend AI while BonyBeetle swaps spike state
 };
 
 enum TackleEnemyType {
@@ -128,5 +127,3 @@ void N(TackleAI_PostTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
     script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
 }
-
-#endif

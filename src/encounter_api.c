@@ -698,7 +698,7 @@ API_CALLABLE(SetSelfEnemyFlagBits) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(SelfEnemyOverrideSyncPos) {
+API_CALLABLE(EnemyEnableFirstStrike) {
     Bytecode* args = script->ptrReadPos;
     Enemy* owner = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(script->owner2.npcID);

@@ -20,8 +20,8 @@ MobileAISettings N(AISettings_BulletBill) = {
 };
 
 EvtScript N(EVS_NpcAI_BulletBill) = {
-    Call(SelfEnemyOverrideSyncPos, 1)
-    Call(SetSelfVar, 0, 0)
+    Call(EnemyEnableFirstStrike, true)
+    Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_LIFECYCLE_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(N(BulletBillAI_Main), Ref(N(AISettings_BulletBill)))
     Return
@@ -44,8 +44,8 @@ MobileAISettings N(AISettings_BombshellBill) = {
 };
 
 EvtScript N(EVS_NpcAI_BombshellBill) = {
-    Call(SelfEnemyOverrideSyncPos, 1)
-    Call(SetSelfVar, 0, 0)
+    Call(EnemyEnableFirstStrike, true)
+    Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_LIFECYCLE_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(N(BulletBillAI_Main), Ref(N(AISettings_BombshellBill)))
     Return
@@ -73,7 +73,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
-            Call(SetSelfVar, 0, 0)
+            Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_LIFECYCLE_IDLE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_BulletBill)))
         CaseEq(OUTCOME_PLAYER_FLED)
@@ -90,7 +90,7 @@ EvtScript N(EVS_NpcDefeat_BombshellBill) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetSelfVar, 0, 100)
+            Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_LIFECYCLE_DONE)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(OnPlayerFled, false)
@@ -139,13 +139,13 @@ NpcSettings N(NpcSettings_BombshellBill) = {
 };
 
 EvtScript N(EVS_NpcInit_BombshellBlaster) = {
-    Call(SetSelfVar, 1, -995)
+    Call(SetSelfVar, AI_VAR_BLASTER_RANGE, -995)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_BombshellBlaster_03) = {
-    Call(SetSelfVar, 1, 30)
+    Call(SetSelfVar, AI_VAR_BLASTER_RANGE, 30)
     Return
     End
 };

@@ -125,7 +125,7 @@ void N(FlyingMagikoopaAI_15)(Evt* arg0, MobileAISettings* arg1, EnemyDetectVolum
         npc->moveSpeed = 3.0f;
         npc->jumpVel = 1.4f;
         npc->jumpScale = 0.2f;
-        arg0->functionTemp[0] = 16;
+        arg0->AI_TEMP_STATE = 16;
     }
 }
 
@@ -139,7 +139,7 @@ void N(FlyingMagikoopaAI_16)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 
     if (npc->turnAroundYawAdjustment == 0) {
         enemy->varTable[5] = npc->pos.y * 100.0;
-        script->functionTemp[0] = 17;
+        script->AI_TEMP_STATE = 17;
     }
 }
 
@@ -164,14 +164,14 @@ void N(FlyingMagikoopaAI_17)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     if (limitY <= npc->pos.y) {
         npc->pos.y = limitY;
         enemy->varTable[0] = 0;
-        script->functionTemp[0] = 10;
+        script->AI_TEMP_STATE = 10;
     } else if (npc->duration >= enemy->varTable[3]) {
         if (enemy->varTable[0] >= 180.0) {
             if (enemy->varTable[0] < 270.0) {
                 enemy->varTable[0] = clamp_angle(540 - enemy->varTable[0]);
             }
         }
-        script->functionTemp[0] = 10;
+        script->AI_TEMP_STATE = 10;
     }
 }
 
@@ -180,7 +180,7 @@ void N(FlyingMagikoopaAI_20)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration = 40;
-    script->functionTemp[0] = 21;
+    script->AI_TEMP_STATE = 21;
 }
 
 void N(FlyingMagikoopaAI_21)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -194,7 +194,7 @@ void N(FlyingMagikoopaAI_21)(Evt* script, MobileAISettings* aiSettings, EnemyDet
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
         npc->curAnim = enemy->animList[0];
         npc->duration = 15;
-        script->functionTemp[0] = 50;
+        script->AI_TEMP_STATE = 50;
     } else if ((N(MagikoopaAI_CanShootSpell)(script, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, territory) == 1) && (npc->turnAroundYawAdjustment == 0)) {
         ai_enemy_play_sound(npc, SOUND_SPELL_CAST1, 0);
         npc->curAnim = enemy->animList[8];
@@ -204,7 +204,7 @@ void N(FlyingMagikoopaAI_21)(Evt* script, MobileAISettings* aiSettings, EnemyDet
         add_vec2D_polar(&posX, &posZ, 30.0f, 270.0f - npc->renderYaw);
         fx_gather_energy_pink(0, posX, posY, posZ, 0.1f, 13);
         npc->duration = 15;
-        script->functionTemp[0] = 22;
+        script->AI_TEMP_STATE = 22;
     }
 }
 
@@ -216,7 +216,7 @@ void N(FlyingMagikoopaAI_22)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     if (npc->duration <= 0) {
         npc->curAnim = enemy->animList[9];
         npc->duration = 7;
-        script->functionTemp[0] = 23;
+        script->AI_TEMP_STATE = 23;
     }
 }
 
@@ -232,12 +232,12 @@ void N(FlyingMagikoopaAI_23)(Evt* script, MobileAISettings* aiSettings, EnemyDet
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             npc->curAnim = enemy->animList[0];
             npc->duration = 15;
-            script->functionTemp[0] =  50;
+            script->AI_TEMP_STATE =  50;
         } else {
             ai_enemy_play_sound(npc, SOUND_SPELL_CAST2, 0);
             get_enemy(enemy->npcID + 1)->varTable[0] = canShoot;
             npc->duration = 20;
-            script->functionTemp[0] = 24;
+            script->AI_TEMP_STATE = 24;
         }
     }
 }

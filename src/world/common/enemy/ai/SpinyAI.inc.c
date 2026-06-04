@@ -163,18 +163,18 @@ API_CALLABLE(N(SpinyAI_Main)) {
                     enemy->varTable[10] = 5;
                     if (enemy->varTable[13] != 0) {
                         if (npc->pos.y <= 0.0) {
-                            npc->flags &= ~NPC_FLAG_GRAVITY;
                             npc->flags |= NPC_FLAG_FLYING;
+                            npc->flags &= ~NPC_FLAG_GRAVITY;
                         } else {
                             npc->flags |= NPC_FLAG_GRAVITY;
                             npc->flags &= ~NPC_FLAG_FLYING;
                         }
-                    } else if (!enemy->territory->wander.isFlying) {
+                    } else if (enemy->territory->wander.isFlying) {
+                        npc->flags |= NPC_FLAG_FLYING;
+                        npc->flags &= ~NPC_FLAG_GRAVITY;
+                    } else {
                         npc->flags |= NPC_FLAG_GRAVITY;
                         npc->flags &= ~NPC_FLAG_FLYING;
-                    } else {
-                        npc->flags &= ~NPC_FLAG_GRAVITY;
-                        npc->flags |= NPC_FLAG_FLYING;
                     }
                     npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
                     npc->flags &= ~NPC_FLAG_JUMPING;

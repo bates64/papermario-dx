@@ -6,37 +6,31 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* npcAISettings, En
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
+    f32 posXFwd, posYFwd, posZFwd;
+    f32 posXCW, posYCW, posZCW;
+    f32 posXCCW, posYCCW, posZCCW;
+
     f32 deltaYaw;
     f32 yawFwd;
     f32 distFwd;
     f32 distCW;
     f32 distCCW;
-    s32 detectedPlayer;
-
-    f32 posXFwd;
-    f32 posYFwd;
-    f32 posZFwd;
-    f32 posXCW;
-    f32 posYCW;
-    f32 posZCW;
-    f32 posXCCW;
-    f32 posYCCW;
-    f32 posZCCW;
+    b32 detectedPlayer;
 
     npc->duration = npcAISettings->chaseUpdateInterval / 2 + rand_int(npcAISettings->chaseUpdateInterval / 2 + 1);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
     npc->moveSpeed = npcAISettings->chaseSpeed;
     detectedPlayer = false;
 
+    // get a heading directly away from the player
     yawFwd = clamp_angle(atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
                                  gPlayerStatusPtr->pos.z) + 180.0f);
     deltaYaw = get_clamped_angle_diff(npc->yaw, yawFwd);
     if (npcAISettings->chaseTurnRate < fabsf(deltaYaw)) {
-        yawFwd = npc->yaw;
         if (deltaYaw < 0.0f) {
-            yawFwd += -npcAISettings->chaseTurnRate;
+            yawFwd = npc->yaw - npcAISettings->chaseTurnRate;
         } else {
-            yawFwd += npcAISettings->chaseTurnRate;
+            yawFwd = npc->yaw + npcAISettings->chaseTurnRate;
         }
     }
 
@@ -98,11 +92,10 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* npcAISettings, En
 
             deltaYaw = get_clamped_angle_diff(npc->yaw, yawFwd);
             if (npcAISettings->chaseTurnRate < fabsf(deltaYaw)) {
-                yawFwd = npc->yaw;
                 if (deltaYaw < 0.0f) {
-                    yawFwd += -npcAISettings->chaseTurnRate;
+                    yawFwd = npc->yaw - npcAISettings->chaseTurnRate;
                 } else {
-                    yawFwd += npcAISettings->chaseTurnRate;
+                    yawFwd = npc->yaw + npcAISettings->chaseTurnRate;
                 }
             }
             npc->yaw = clamp_angle(yawFwd);
@@ -169,48 +162,59 @@ API_CALLABLE(N(AvoidPlayerAI_Main)) {
     territory.detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
-        script->functionTemp[0] = AI_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->wander.isFlying) {
+
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
+
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
-            script->functionTemp[0] = AI_STATE_SUSPEND;
-            script->functionTemp[1] = AI_STATE_WANDER_INIT;
+            script->AI_TEMP_STATE = AI_STATE_SUSPEND;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
     }
 
-    switch (script->functionTemp[0]) {
+    switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
             basic_ai_wander_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_WANDER:
             basic_ai_wander(script, npcAISettings, territoryPtr);
             break;
+
         case AI_STATE_LOITER_INIT:
             basic_ai_loiter_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_LOITER:
             basic_ai_loiter(script, npcAISettings, territoryPtr);
             break;
+
         case AI_STATE_ALERT_INIT:
             basic_ai_found_player_jump_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_ALERT:
             basic_ai_found_player_jump(script, npcAISettings, territoryPtr);
             break;
+
         case AI_STATE_CHASE_INIT:
             N(AvoidPlayerAI_ChaseInit)(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_CHASE:
             N(AvoidPlayerAI_Chase)(script, npcAISettings, territoryPtr);
             break;
+
         case AI_STATE_LOSE_PLAYER:
             N(AvoidPlayerAI_LosePlayer)(script, npcAISettings, territoryPtr);
             break;
+
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
             break;

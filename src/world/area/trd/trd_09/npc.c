@@ -394,7 +394,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
     Label(1)
         Call(SetSelfVar, 0, 0)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SelfEnemyOverrideSyncPos, 0)
+        Call(EnemyEnableFirstStrike, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Label(2)
@@ -407,7 +407,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_BulletBill_Fire)
         Call(EnableNpcShadow, NPC_SELF, true)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
-        Call(SelfEnemyOverrideSyncPos, 1)
+        Call(EnemyEnableFirstStrike, true)
         Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
         Call(GetNpcYaw, LVar0, LVar4)
         Call(AddVectorPolar, LVar1, LVar3, Float(14.0), LVar4)
@@ -686,7 +686,7 @@ EvtScript N(EVS_NpcIdle_BulletBill_Demo) = {
 
 EvtScript N(EVS_NpcInit_BulletBill_Demo) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BulletBill_Demo)))
-    Call(SelfEnemyOverrideSyncPos, 1)
+    Call(EnemyEnableFirstStrike, true)
     Return
     End
 };

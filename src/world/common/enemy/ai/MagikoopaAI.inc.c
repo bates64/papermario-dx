@@ -95,7 +95,7 @@ void N(MagikoopaAI_10)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
         }
     }
     npc->duration = 0;
-    script->AI_TEMP_STATE = 0xB;
+    script->AI_TEMP_STATE = 11;
 }
 
 void N(MagikoopaAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -315,7 +315,7 @@ API_CALLABLE(N(MagikoopaAI_OnPlayerFled)) {
     npc->alpha = 255;
     npc->curAnim = enemy->animList[2];
     npc->duration = 0;
-    script->functionTemp[0] = 0;
+    script->AI_TEMP_STATE = 0;
     return ApiStatus_DONE2;
 }
 

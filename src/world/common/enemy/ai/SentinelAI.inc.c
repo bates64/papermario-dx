@@ -51,17 +51,20 @@ void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDet
         npc->duration = aiSettings->chaseUpdateInterval / 2 + rand_int(aiSettings->chaseUpdateInterval / 2 + 1);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
         npc->moveSpeed = aiSettings->chaseSpeed;
+
         angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
+
+        // cap the turn rate
         if (aiSettings->chaseTurnRate < fabsf(deltaAngle)) {
-            angle = npc->yaw;
             if (deltaAngle < 0.0f) {
-                angle += -aiSettings->chaseTurnRate;
+                angle = npc->yaw - aiSettings->chaseTurnRate;
             } else {
-                angle += aiSettings->chaseTurnRate;
+                angle = npc->yaw + aiSettings->chaseTurnRate;
             }
         }
         npc->yaw = clamp_angle(angle);
+
         script->AI_TEMP_STATE = AI_STATE_SENTINEL_CHASE;
     }
 }

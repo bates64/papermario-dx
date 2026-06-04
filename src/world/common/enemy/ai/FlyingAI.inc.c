@@ -1,11 +1,10 @@
+#pragma once
+
 // This AI is used by:
 // - Paragoomba + variants
 // - Paratroopa + variants
 // - Sky Guy
 // - Bzzap
-
-#ifndef _AI_FLYING_INC_
-#define _AI_FLYING_INC_ 0
 
 #include "common.h"
 #include "npc.h"
@@ -35,7 +34,7 @@ enum AiVarsFlying {
     AI_FLYING_VAR_CHASE_VELY        = 5, // y velocity to use during chase swoop
     AI_FLYING_VAR_CHASE_ACCEL       = 6, // y acceleration to use during chase swoop
     AI_FLYING_VAR_HOVER_BASE        = 7, // y level of ground under initial position
-    AI_FLYING_VAR_DETECT_COOLDOWN    = 9, // unused
+    AI_FLYING_VAR_DETECT_COOLDOWN   = 9, // unused
 };
 
 enum AiVarsFlag {
@@ -384,14 +383,16 @@ void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
         npc->duration++;
         if (npc->duration >= aiSettings->chaseUpdateInterval) {
             npc->duration = 0;
+
             angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
             deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
+
+            // cap the turn rate
             if (aiSettings->chaseTurnRate < fabsf(deltaAngle)) {
-                angle = npc->yaw;
                 if (deltaAngle < 0.0f) {
-                    angle += -aiSettings->chaseTurnRate;
+                    angle = npc->yaw - aiSettings->chaseTurnRate;
                 } else {
-                    angle += aiSettings->chaseTurnRate;
+                    angle = npc->yaw + aiSettings->chaseTurnRate;
                 }
             }
             npc->yaw = clamp_angle(angle);
@@ -513,5 +514,3 @@ API_CALLABLE(N(FlyingAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-
-#endif

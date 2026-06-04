@@ -27,16 +27,18 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->patrol.isFlying) {
+
+        if (enemy->territory->patrol.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
+
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = AI_STATE_PATROL_INIT;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_PATROL_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
         enemy->varTable[0] = 0;

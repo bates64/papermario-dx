@@ -186,16 +186,17 @@ void N(CleftAI_RevUp)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
 void N(CleftAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* volume) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
+    EnemyTerritoryWander* wander = &enemy->territory->wander;
     f32 posX, posY, posZ;
     b32 done = false;
 
     npc_surface_spawn_fx(npc, SURFACE_INTERACT_RUN);
     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
 
-    if (is_point_outside_territory(enemy->territory->wander.detectShape,
-            enemy->territory->wander.detectPos.x, enemy->territory->wander.detectPos.z,
+    if (is_point_outside_territory(wander->detectShape,
+            wander->detectPos.x, wander->detectPos.z,
             npc->pos.x, npc->pos.z,
-            enemy->territory->wander.detectSize.x, enemy->territory->wander.detectSize.z)) {
+            wander->detectSize.x, wander->detectSize.z)) {
         done = true;
     }
 

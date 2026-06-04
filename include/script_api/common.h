@@ -1095,8 +1095,8 @@ API_CALLABLE(SetSelfEnemyFlags);
 API_CALLABLE(SetSelfEnemyFlagBits);
 
 /// @evtapi
-/// @param hitboxIsActive
-API_CALLABLE(SelfEnemyOverrideSyncPos);
+/// @param isActive
+API_CALLABLE(EnemyEnableFirstStrike);
 
 /// @evtapi
 /// @param outNpcID
