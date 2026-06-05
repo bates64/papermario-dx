@@ -1,6 +1,9 @@
+#pragma once
+
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 #include "sprite.h"
 
 // required include args
@@ -13,7 +16,6 @@
 #define AI_SENTINEL_LAST_NPC 0
 #endif
 
-// prerequisites
 #include "world/common/enemy/ai/FlyingAI.inc.c"
 
 enum AiStateSentinel {

@@ -1,11 +1,12 @@
-// spiny AI
+#pragma once
 
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/Spiny.h"
 
-// prerequisites
 #include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 API_CALLABLE(N(SpinyAI_Main)) {

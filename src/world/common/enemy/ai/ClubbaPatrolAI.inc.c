@@ -1,8 +1,12 @@
+#pragma once
+
 #include "common.h"
+#include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 #include "world/partners.h"
 
-// prerequisites
-#include "world/common/enemy/ai/MeleeHitbox.inc.c"
+#include "world/common/enemy/ai/MeleeAttack.inc.c"
 #include "world/common/enemy/ai/States_PatrolAI.inc.c"
 
 API_CALLABLE(N(ClubbaPatrolAI_Main)) {
@@ -44,8 +48,8 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
         enemy->varTable[0] = 0;
     }
 
-    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_HITBOX_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanSeePlayer)(script)) {
-        script->AI_TEMP_STATE = AI_STATE_MELEE_HITBOX_INIT;
+    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanTargetPlayer)(script)) {
+        script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
@@ -79,23 +83,23 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
         case AI_STATE_LOSE_PLAYER:
             N(PatrolAI_LosePlayer)(script, npcAISettings, territoryPtr);
             break;
-        case AI_STATE_MELEE_HITBOX_INIT:
-            N(MeleeHitbox_30)(script);
+        case AI_STATE_MELEE_ATTACK_INIT:
+            N(MeleeAttacker_Init)(script);
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_PRE:
-            N(MeleeHitbox_31)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_ACTIVE) {
+        case AI_STATE_MELEE_ATTACK_PRE:
+            N(MeleeAttacker_Pre)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_ACTIVE:
-            N(MeleeHitbox_32)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_MISS) {
+        case AI_STATE_MELEE_ATTACK_SWING:
+            N(MeleeAttacker_Swing)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_MISS:
-            N(MeleeHitbox_33)(script);
+        case AI_STATE_MELEE_ATTACK_POST:
+            N(MeleeAttacker_Post)(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

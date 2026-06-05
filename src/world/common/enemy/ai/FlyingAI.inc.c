@@ -7,10 +7,11 @@
 // - Bzzap
 
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
-enum AiStateFlying {
+enum FlyingAiStates {
     // basic flying enemies wander about and occasionally loiter
     AI_FLYING_STATE_WANDER_INIT            = 0,
     AI_FLYING_STATE_WANDER                 = 1,
@@ -25,7 +26,7 @@ enum AiStateFlying {
     AI_FLYING_STATE_CHASE                  = 14,
 };
 
-enum AiVarsFlying {
+enum FlyingAiVars {
     AI_FLYING_VAR_FLAGS             = 0,
     AI_FLYING_VAR_BOB_AMPLITUDE     = 1, // amplitude of bobbing during wander and loiter
     AI_FLYING_VAR_BOB_PHASE         = 2,
@@ -34,7 +35,7 @@ enum AiVarsFlying {
     AI_FLYING_VAR_CHASE_VELY        = 5, // y velocity to use during chase swoop
     AI_FLYING_VAR_CHASE_ACCEL       = 6, // y acceleration to use during chase swoop
     AI_FLYING_VAR_HOVER_BASE        = 7, // y level of ground under initial position
-    AI_FLYING_VAR_DETECT_COOLDOWN   = 9, // unused
+    AI_FLYING_VAR_DETECT_COOLDOWN   = 9, // time before next player can be detected
 };
 
 enum AiVarsFlag {
@@ -74,12 +75,12 @@ void N(FlyingAI_WanderInit)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 cond = false;
+    b32 shouldReturn = false;
     f32 hoverBase = (f32)enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
     f32 hoverHeight = (f32)enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
     f32 prevY = (f32)enemy->varTable[AI_FLYING_VAR_PREV_Y] / 100.0;
     f32 bobAmplitude = (f32)enemy->varTable[AI_FLYING_VAR_BOB_AMPLITUDE] / 100.0;
-    f32 posX, posY, posZ, posW;
+    f32 posX, posY, posZ, hitDepth;
     f32 initialY;
 
     enemy->varTable[AI_FLYING_VAR_PREV_Y] = npc->pos.y * 100.0;
@@ -95,9 +96,9 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             posX = npc->pos.x;
             posY = npc->pos.y;
             posZ = npc->pos.z;
-            posW = 1000.0f;
-            npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
-            if (bobAmplitude < (hoverHeight - posW)) {
+            hitDepth = 1000.0f;
+            npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
+            if (bobAmplitude < (hoverHeight - hitDepth)) {
                 enemy->varTable[AI_FLYING_VAR_FLAGS] |= AI_FLYING_FLAG_10;
             }
         }
@@ -113,8 +114,8 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             posX = npc->pos.x;
             posY = prevY;
             posZ = npc->pos.z;
-            posW = 1000.0f;
-            npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
+            hitDepth = 1000.0f;
+            npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
 
             yTemp = posY;
             yTemp += hoverHeight;
@@ -136,8 +137,8 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                 posX = npc->pos.x;
                 posY = npc->pos.y;
                 posZ = npc->pos.z;
-                posW = 1000.0f;
-                hit = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
+                hitDepth = 1000.0f;
+                hit = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
             }
 
             if (hit) {
@@ -180,14 +181,14 @@ void N(FlyingAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
                                enemy->territory->wander.centerPos.z,
                                npc->pos.x, npc->pos.z,
                                enemy->territory->wander.wanderSize.x, enemy->territory->wander.wanderSize.z)) {
-        posW = dist2D(enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z);
-        if (npc->moveSpeed < posW) {
+        hitDepth = dist2D(enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z);
+        if (npc->moveSpeed < hitDepth) {
             npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
-            cond = true;
+            shouldReturn = true;
         }
     }
 
-    if (enemy->territory->wander.wanderSize.x | enemy->territory->wander.wanderSize.z | cond) {
+    if ((enemy->territory->wander.wanderSize.x != 0) || (enemy->territory->wander.wanderSize.z != 0) || shouldReturn) {
         if (npc->turnAroundYawAdjustment != 0) {
             return;
         }
@@ -221,7 +222,7 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 hoverHeight = enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
     f32 hoverBase = enemy->varTable[AI_FLYING_VAR_HOVER_BASE] / 100.0;
-    f32 posX, posY, posZ, posW;
+    f32 posX, posY, posZ, hitDepth;
 
     if (npc->duration > 0) {
         npc->duration--;
@@ -239,8 +240,8 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             posX = npc->pos.x;
             posY = npc->pos.y;
             posZ = npc->pos.z;
-            posW = 1000.0f;
-            hasCollision = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
+            hitDepth = 1000.0f;
+            hasCollision = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
         }
 
         if (hasCollision) {
@@ -287,10 +288,9 @@ void N(FlyingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
 void N(FlyingAI_JumpInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    PlayerStatus* playerStatus = gPlayerStatusPtr;
 
     npc->duration = 0;
-    npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
+    npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
     script->AI_TEMP_STATE = AI_FLYING_STATE_ALERT;
 }
@@ -346,9 +346,8 @@ void N(FlyingAI_ChaseDelay)(Evt* script, MobileAISettings* aiSettings, EnemyDete
 void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 posX, posY, posZ, posW;
+    f32 posX, posY, posZ, hitDepth;
     f32 deltaAngle;
-    f32 temp_f2;
     s32 hitBelow;
     f32 angle;
     f32 hoverHeight = enemy->varTable[AI_FLYING_VAR_HOVER_HEIGHT] / 100.0;
@@ -365,15 +364,14 @@ void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
             posX = npc->pos.x;
             posY = npc->pos.y;
             posZ = npc->pos.z;
-            posW = 1000.0f;
-            hitBelow = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW);
+            hitDepth = 1000.0f;
+            hitBelow = npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
         } else {
             hitBelow = false;
         }
         if (hitBelow) {
-            temp_f2 = posY + hoverHeight;
-            if (temp_f2 <= npc->pos.y) {
-                npc->pos.y = temp_f2;
+            if (posY + hoverHeight <= npc->pos.y) {
+                npc->pos.y = posY + hoverHeight;
                 script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
             }
         } else if (npc->pos.y >= npc->moveToPos.y) {
@@ -411,9 +409,9 @@ void N(FlyingAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
         posX = npc->pos.x;
         posY = npc->pos.y + npc->collisionHeight;
         posZ = npc->pos.z;
-        posW = (fabsf(npc->jumpVel) + npc->collisionHeight) + 10.0;
-        if (npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &posW)) {
-            if (posW <= (npc->collisionHeight + fabsf(npc->jumpVel))) {
+        hitDepth = (fabsf(npc->jumpVel) + npc->collisionHeight) + 10.0;
+        if (npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth)) {
+            if (hitDepth <= (npc->collisionHeight + fabsf(npc->jumpVel))) {
                 npc->jumpVel = 0.0f;
                 npc->pos.y = posY;
             } else {

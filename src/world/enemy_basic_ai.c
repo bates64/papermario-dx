@@ -1,6 +1,7 @@
 #include "common.h"
 #include "effects.h"
 #include "npc.h"
+#include "world/ai.h"
 
 void ai_suspend_for_time(Evt* script) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
@@ -205,21 +206,21 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
     return false;
 }
 
-s32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed) {
+b32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posZ;
 
     if (chance >= 0) {
-        s32 skipCheckForPlayer;
+        b32 skipCheckForPlayer;
 
         if (chance != 0) {
-            skipCheckForPlayer = rand_int(chance + 1);
+            skipCheckForPlayer = (rand_int(chance + 1) != 0);
         } else {
-            skipCheckForPlayer = 0;
+            skipCheckForPlayer = false;
         }
 
-        if (skipCheckForPlayer == 0) {
+        if (!skipCheckForPlayer) {
             posX = npc->pos.x;
             posZ = npc->pos.z;
             add_vec2D_polar(&posX, &posZ, moveSpeed, 270.0f - npc->renderYaw);

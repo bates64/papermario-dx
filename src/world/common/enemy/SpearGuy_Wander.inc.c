@@ -51,10 +51,10 @@ MobileAISettings N(AISettings_SpearGuy_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_SpearGuy_Wander) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 1, 5)
-    Call(SetSelfVar, 2, 12)
-    Call(SetSelfVar, 3, 9)
+    Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
+    Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
+    Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 12)
+    Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 9)
     Call(N(SpearGuyAI_Main), Ref(N(AISettings_SpearGuy_Wander)))
     Return
     End
@@ -71,12 +71,12 @@ NpcSettings N(NpcSettings_SpearGuy_Wander) = {
 
 EvtScript N(EVS_NpcAI_SpearGuy_Hitbox) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetSelfVar, 0, 4)
-    Call(SetSelfVar, 1, 22)
-    Call(SetSelfVar, 2, 40)
-    Call(SetSelfVar, 3, 28)
-    Call(SetSelfVar, 4, 1)
-    Call(SetSelfVar, 15, 0)
+    Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 4)
+    Call(SetSelfVar, AI_VAR_HITBOX_DIST, 22)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_RANGE, 40)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_ANGLE, 28)
+    Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 1)
+    Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_NONE)
     Call(N(MeleeHitbox_Main))
     Return
     End

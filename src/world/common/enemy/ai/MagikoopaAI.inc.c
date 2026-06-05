@@ -1,5 +1,9 @@
+#pragma once
+
 #include "common.h"
+#include "effects.h"
 #include "npc.h"
+#include "world/ai.h"
 #include "sprite.h"
 
 typedef struct MagikoopaTeleportAnim {
@@ -7,9 +11,6 @@ typedef struct MagikoopaTeleportAnim {
     f32 scaleY;
     u8 alpha;
 } MagikoopaTeleportAnim;
-
-#define ENEMY_FLAG_COMBINATION (ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | \
-    ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_SKIP_BATTLE)
 
 extern MagikoopaTeleportAnim N(MagikoopaAI_TeleportAnim)[];
 
@@ -38,7 +39,7 @@ void N(MagikoopaAI_01)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     npc->duration++;
     if (npc->duration == 4) {
         disable_npc_shadow(npc);
-        enemy->flags |= ENEMY_FLAG_COMBINATION;
+        enemy->flags |= ENEMY_INTANGIBLE_FLAGS;
     }
 
     if (N(MagikoopaAI_TeleportAnim)[npc->duration].alpha == 0) {
@@ -123,7 +124,7 @@ void N(MagikoopaAI_11)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     npc->duration++;
     if (npc->duration == 5) {
         enable_npc_shadow(npc);
-        enemy->flags &= ~ENEMY_FLAG_COMBINATION;
+        enemy->flags &= ~ENEMY_INTANGIBLE_FLAGS;
     }
     if (enemy->varTable[0] == 0) {
         if (npc->duration >= 20) {

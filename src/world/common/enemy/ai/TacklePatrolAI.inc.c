@@ -1,11 +1,12 @@
 #pragma once
 
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/BonyBeetle.h"
 
-// prerequisites
 #include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"
 #include "world/common/enemy/ai/States_TackleAI.inc.c"
 

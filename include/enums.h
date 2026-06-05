@@ -2966,9 +2966,9 @@ enum PartnerActions {
     PARTNER_ACTION_USE              = 1, // generic state
     PARTNER_ACTION_KOOPER_GATHER    = 1,
     PARTNER_ACTION_KOOPER_TOSS      = 2,
-    PARTNER_ACTION_BOMBETTE_1       = 1,
-    PARTNER_ACTION_BOMBETTE_2       = 2,
-    PARTNER_ACTION_BOMBETTE_3       = 3,
+    PARTNER_ACTION_BOMBETTE_LIT     = 1, // fuse lit and walking, equal to PARTNER_ACTION_USE
+    PARTNER_ACTION_BOMBETTE_BLAST   = 2, // several frames during a blast, during which bombetteExplosionPos is valid
+    PARTNER_ACTION_BOMBETTE_RECOVER = 3, // recovering after a blast
     PARTNER_ACTION_PARAKARRY_HOVER  = 1,
     PARTNER_ACTION_WATT_SHINE       = 1,
     PARTNER_ACTION_LAKILESTER_1     = 1,
@@ -3464,9 +3464,9 @@ enum EnemyAnimIndices {
     ENEMY_ANIM_INDEX_05           = 5,
     ENEMY_ANIM_INDEX_DEATH        = 6,
     ENEMY_ANIM_INDEX_HIT          = 7,
-    ENEMY_ANIM_INDEX_MELEE_PRE    = 8,
-    ENEMY_ANIM_INDEX_MELEE_HIT    = 9,
-    ENEMY_ANIM_INDEX_TACKLE_POST  = 10,
+    ENEMY_ANIM_INDEX_MELEE_PRE    = 8, //TODO these are probably AI-specific
+    ENEMY_ANIM_INDEX_MELEE_HIT    = 9, //TODO these are probably AI-specific
+    ENEMY_ANIM_INDEX_TACKLE_POST  = 10, //TODO these are probably AI-specific
 };
 
 enum AnyEnemyAnims {
@@ -4149,6 +4149,15 @@ enum EnemyFlags {
     | ENEMY_FLAG_ENABLE_HIT_SCRIPT \
     )
 
+#define ENEMY_INTANGIBLE_FLAGS \
+    ( ENEMY_FLAG_SKIP_BATTLE \
+    | ENEMY_FLAG_CANT_INTERACT \
+    | ENEMY_FLAG_IGNORE_TOUCH \
+    | ENEMY_FLAG_IGNORE_JUMP \
+    | ENEMY_FLAG_IGNORE_HAMMER \
+    | ENEMY_FLAG_IGNORE_PARTNER \
+    )
+
 // used with enemy->aiFlags
 enum EnemyAIFlags {
     AI_FLAG_1                           = 0x00000001,
@@ -4181,16 +4190,16 @@ enum EnemyAIStates {
     AI_RETURN_HOME_INIT             = 40,
     AI_RETURN_HOME                  = 41,
     AI_STATE_SUSPEND                = 99,
-    // melee hitboxes
-    AI_STATE_MELEE_HITBOX_INIT      = 30,
-    AI_STATE_MELEE_HITBOX_PRE       = 31,
-    AI_STATE_MELEE_HITBOX_ACTIVE    = 32,
-    AI_STATE_MELEE_HITBOX_MISS      = 33,
-    // projectile hitboxes
-    AI_STATE_PROJECTILE_HITBOX_30   = 30,
-    AI_STATE_PROJECTILE_HITBOX_31   = 31,
-    AI_STATE_PROJECTILE_HITBOX_32   = 32,
-    AI_STATE_PROJECTILE_HITBOX_33   = 33,
+    // melee attacks
+    AI_STATE_MELEE_ATTACK_INIT      = 30,
+    AI_STATE_MELEE_ATTACK_PRE       = 31,
+    AI_STATE_MELEE_ATTACK_SWING     = 32,
+    AI_STATE_MELEE_ATTACK_POST      = 33,
+    // ranged attacks
+    AI_STATE_RANGED_ATTACK_30       = 30,
+    AI_STATE_RANGED_ATTACK_31       = 31,
+    AI_STATE_RANGED_ATTACK_32       = 32,
+    AI_STATE_RANGED_ATTACK_33       = 33,
     // tackle ai
     AI_STATE_TACKLE_INIT            = 12,
     AI_STATE_PRE_TACKLE             = 13,
@@ -4215,14 +4224,6 @@ enum EnemyDetectFlags {
 enum TerritoryFlags {
     AI_TERRITORY_IGNORE_HIDING      = 0x01, // bow and sushi dont prevent enemy detection
     AI_TERRITORY_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
-};
-
-enum MeleeHitboxAttackStates {
-    MELEE_HITBOX_STATE_NONE         = 0,
-    MELEE_HITBOX_STATE_INIT         = 1,
-    MELEE_HITBOX_STATE_PRE          = 2,
-    MELEE_HITBOX_STATE_ACTIVE       = 3,  // hitbox is active
-    MELEE_HITBOX_STATE_POST         = 4
 };
 
 enum MusicSettingsFlags {

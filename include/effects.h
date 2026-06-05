@@ -1,5 +1,4 @@
-#ifndef _EFFECTS_H_
-#define _EFFECTS_H_
+#pragma once
 
 #include "types.h"
 #include "common_structs.h"
@@ -2690,5 +2689,3 @@ s32 load_effect(s32 effectIndex);
 #ifdef __cplusplus
 } // extern "C"
 #endif
-
-#endif // _EFFECTS_H_

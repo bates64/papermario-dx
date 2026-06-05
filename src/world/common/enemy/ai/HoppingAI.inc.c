@@ -1,6 +1,9 @@
+#pragma once
+
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
 void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;

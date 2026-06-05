@@ -1,13 +1,12 @@
 #include "SpyGuy.h"
 
-#include "world/common/enemy/ai/RangedAttackAI.inc.c"
+#include "world/common/enemy/ai/WanderRangedAI.inc.c"
+#include "world/common/todo/GetEncounterEnemyIsOwner.inc.c"
 
 API_CALLABLE(N(SetSpyGuyInstigatorValue)) {
     script->owner1.enemy->instigatorValue = 3;
     return ApiStatus_DONE2;
 }
-
-#include "world/common/todo/GetEncounterEnemyIsOwner.inc.c"
 
 EvtScript N(EVS_NpcDefeat_SpyGuyRock) = {
     Call(GetBattleOutcome, LVar0)

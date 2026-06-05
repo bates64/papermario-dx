@@ -1,6 +1,6 @@
 #include "DryBones.h"
 
-#include "world/common/enemy/ai/RangedAttackAI.inc.c"
+#include "world/common/enemy/ai/WanderRangedAI.inc.c"
 #include "world/common/todo/GetEncounterEnemyIsOwner.inc.c"
 
 EvtScript N(EVS_NpcDefeat_ThrownBone) = {

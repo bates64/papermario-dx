@@ -1,16 +1,16 @@
 #pragma once
 
+#include "common.h"
+#include "npc.h"
+#include "world/ai.h"
+
 // Used by:
 // - Clubba + White Clubba
 // - Spear Guy
 // - Piranha Plant
 // - Putrid Piranha + Frost Piranha
 
-#include "common.h"
-#include "npc.h"
-
-// prerequisites
-#include "world/common/enemy/ai/MeleeHitbox.inc.c"
+#include "world/common/enemy/ai/MeleeAttack.inc.c"
 
 API_CALLABLE(N(WanderMeleeAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
@@ -48,13 +48,13 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
             script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
-        enemy->AI_VAR_ATTACK_STATE = MELEE_HITBOX_STATE_NONE;
+        enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_NONE;
     }
 
-    if (script->AI_TEMP_STATE < AI_STATE_MELEE_HITBOX_INIT
-            && enemy->AI_VAR_ATTACK_STATE == MELEE_HITBOX_STATE_NONE
-            && N(MeleeHitbox_CanSeePlayer)(script)) {
-        script->AI_TEMP_STATE = AI_STATE_MELEE_HITBOX_INIT;
+    if (script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
+            && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
+            && N(MeleeHitbox_CanTargetPlayer)(script)) {
+        script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
@@ -85,23 +85,23 @@ API_CALLABLE(N(WanderMeleeAI_Main)) {
         case AI_STATE_LOSE_PLAYER:
             basic_ai_lose_player(script, npcAISettings, territoryPtr);
             break;
-        case AI_STATE_MELEE_HITBOX_INIT:
-            N(MeleeHitbox_30)(script);
+        case AI_STATE_MELEE_ATTACK_INIT:
+            N(MeleeAttacker_Init)(script);
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_PRE:
-            N(MeleeHitbox_31)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_ACTIVE) {
+        case AI_STATE_MELEE_ATTACK_PRE:
+            N(MeleeAttacker_Pre)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_ACTIVE:
-            N(MeleeHitbox_32)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_MISS) {
+        case AI_STATE_MELEE_ATTACK_SWING:
+            N(MeleeAttacker_Swing)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_MISS:
-            N(MeleeHitbox_33)(script);
+        case AI_STATE_MELEE_ATTACK_POST:
+            N(MeleeAttacker_Post)(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

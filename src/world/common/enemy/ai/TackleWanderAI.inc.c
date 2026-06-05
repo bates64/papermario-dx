@@ -1,14 +1,15 @@
-#ifndef _TACKLE_AI_H
-#define _TACKLE_AI_H
+#pragma once
+
+#include "common.h"
+#include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
+
 // TackleAI
 // used by Koopas, Koopatrols, Spinys, Buzzy Beetles
 
-#include "common.h"
-#include "npc.h"
-#include "effects.h"
 #include "sprite/npc/BonyBeetle.h"
 
-// prerequisites
 #include "world/common/enemy/ai/States_TackleAI.inc.c"
 
 API_CALLABLE(N(TackleWanderAI_Main)) {
@@ -145,5 +146,3 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-
-#endif

@@ -1,9 +1,11 @@
-#ifndef _AI_PATROL_INC_
-#define _AI_PATROL_INC_ 0
+#pragma once
 
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
+
+#define AI_PATROL_GOAL_INDEX           functionTemp[2]
 
 // selects the next patrol point
 void N(PatrolAI_MoveInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -252,5 +254,3 @@ void N(PatrolAI_Resume)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     script->functionTemp[1] = 0;
     script->AI_TEMP_STATE = AI_STATE_PATROL;
 }
-
-#endif

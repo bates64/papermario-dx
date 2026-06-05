@@ -1,7 +1,6 @@
 #include "pra_37.h"
 
-#define INCLUDE_FROST_CLUBBA_WANDER
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Wander.inc.c"
 
 EvtScript N(EVS_NpcInit_FrostClubba) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)

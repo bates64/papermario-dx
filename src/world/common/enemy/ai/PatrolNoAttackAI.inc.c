@@ -1,13 +1,13 @@
 #pragma once
 
+#include "common.h"
+#include "npc.h"
+#include "world/ai.h"
+
 // Basic Patrol AI follows a patrol path and will chase a player who comes within
 // their detection range. This AI has no means of attacking; they can initiate
 // battles on contact, but can't First Strike the player.
 
-#include "common.h"
-#include "npc.h"
-
-// prerequisites
 #include "world/common/enemy/ai/States_PatrolAI.inc.c"
 
 API_CALLABLE(N(PatrolNoAttackAI_Main)) {

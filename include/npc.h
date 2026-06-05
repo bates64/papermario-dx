@@ -1,5 +1,4 @@
-#ifndef _NPC_H_
-#define _NPC_H_
+#pragma once
 
 #include "common_structs.h"
 #include "enums.h"
@@ -619,6 +618,4 @@ void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"
-#endif
-
 #endif

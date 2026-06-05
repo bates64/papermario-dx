@@ -1,5 +1,8 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
 
 void N(ShyGuyWanderAI_14)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territoryPtr) {
     Enemy* enemy = script->owner1.enemy;

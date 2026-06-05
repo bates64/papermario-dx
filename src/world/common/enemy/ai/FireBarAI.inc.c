@@ -1,5 +1,4 @@
-#ifndef _AI_FIRE_BAR_INC_
-#define _AI_FIRE_BAR_INC_ 0
+#pragma once
 
 #include "common.h"
 
@@ -166,5 +165,3 @@ void N(FireBarAI_Callback)(FireBarData* data, s32 mode) {
     }
     return;
 }
-
-#endif

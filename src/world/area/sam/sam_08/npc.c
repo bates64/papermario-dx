@@ -14,8 +14,7 @@ NpcSettings N(NpcSettings_Duplighost) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#define INCLUDE_FROST_CLUBBA_WANDER
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Wander.inc.c"
 
 EvtScript N(EVS_NpcInteract_TrueKooperA) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldKooper_Talk, ANIM_WorldKooper_Idle, 0, MSG_CH7_012B)

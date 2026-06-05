@@ -1,10 +1,7 @@
 #include "pra_35.h"
 
-#define INCLUDE_FROST_CLUBBA_PATROL
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Patrol.inc.c"
 #include "world/common/enemy/Duplighost_Patrol.inc.c"
-
-#include "world/common/enemy/ai/WanderMeleeAI.inc.c"
 
 EvtScript N(EVS_NpcInit_EnableReflection) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)

@@ -1,5 +1,8 @@
+#pragma once
+
 #include "common.h"
 #include "effects.h"
+#include "world/ai.h"
 
 s32 N(MagikoopaAI_CanShootSpell)(Evt* script, f32 arg1, f32 arg2, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;

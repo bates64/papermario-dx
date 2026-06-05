@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
 
 // used with TacklePatrolAI, TackleAI, SpinyAI
 // all functions only used here

@@ -1,6 +1,9 @@
+#pragma once
+
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
 void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;

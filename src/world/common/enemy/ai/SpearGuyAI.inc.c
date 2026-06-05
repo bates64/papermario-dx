@@ -1,6 +1,10 @@
+#pragma once
+
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/SpearGuy.h"
 
 void N(SpearGuyAI_LoiterInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
@@ -77,7 +81,6 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     }
 }
 
-// prerequisites
 #include "world/common/enemy/ai/WanderMeleeAI.inc.c"
 
 API_CALLABLE(N(SpearGuyAI_Main)) {
@@ -116,34 +119,38 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
             script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
-        enemy->varTable[0] = 0;
+        enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_NONE;
     }
 
-    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_HITBOX_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanSeePlayer)(script)) {
-        script->AI_TEMP_STATE = AI_STATE_MELEE_HITBOX_INIT;
+    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanTargetPlayer)(script)) {
+        script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
             basic_ai_wander_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_WANDER:
             basic_ai_wander(script, npcAISettings, territoryPtr);
             break;
 
         case AI_STATE_LOITER_INIT:
             N(SpearGuyAI_LoiterInit)(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_LOITER:
             N(SpearGuyAI_Loiter)(script, npcAISettings, territoryPtr);
             break;
 
         case AI_STATE_ALERT_INIT:
             basic_ai_found_player_jump_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_ALERT:
             basic_ai_found_player_jump(script, npcAISettings, territoryPtr);
             break;
 
         case AI_STATE_CHASE_INIT:
             basic_ai_chase_init(script, npcAISettings, territoryPtr);
+            // fallthrough
         case AI_STATE_CHASE:
             basic_ai_chase(script, npcAISettings, territoryPtr);
             break;
@@ -152,24 +159,26 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
             basic_ai_lose_player(script, npcAISettings, territoryPtr);
             break;
 
-        case AI_STATE_MELEE_HITBOX_INIT:
-            N(MeleeHitbox_30)(script);
-        case AI_STATE_MELEE_HITBOX_PRE:
-            N(MeleeHitbox_31)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_ACTIVE) {
+        case AI_STATE_MELEE_ATTACK_INIT:
+            N(MeleeAttacker_Init)(script);
+            // fallthrough
+        case AI_STATE_MELEE_ATTACK_PRE:
+            N(MeleeAttacker_Pre)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
-        case AI_STATE_MELEE_HITBOX_ACTIVE:
-            N(MeleeHitbox_32)(script);
-            if (script->AI_TEMP_STATE != AI_STATE_MELEE_HITBOX_MISS) {
+        case AI_STATE_MELEE_ATTACK_SWING:
+            N(MeleeAttacker_Swing)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
-        case AI_STATE_MELEE_HITBOX_MISS:
-            N(MeleeHitbox_33)(script);
+        case AI_STATE_MELEE_ATTACK_POST:
+            N(MeleeAttacker_Post)(script);
             break;
 
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
+            break;
     }
 
     return ApiStatus_BLOCK;

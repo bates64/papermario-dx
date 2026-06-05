@@ -1,5 +1,8 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
 
 #include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"
 

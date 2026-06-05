@@ -1,5 +1,8 @@
 #pragma once
 
+#include "common.h"
+#include "world/ai.h"
+
 #include "world/common/enemy/ai/HoppingAI.inc.c"
 
 void N(StoneChompAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {

@@ -200,17 +200,7 @@ typedef s32 Difficulty2D[AC_DIFFICULTY_LEN][2];
     (ptr)[2] = -0.18230f; \
     (ptr)[3] =  0.01152f; \
 
-/* common AI function and script variables */
-// ai script
-#define AI_TEMP_STATE                  functionTemp[0]
-#define AI_TEMP_STATE_AFTER_SUSPEND    functionTemp[1]
-#define AI_PATROL_GOAL_INDEX           functionTemp[2]
-// melee enemy
-#define AI_VAR_ATTACK_STATE    varTable[0]
-#define AI_VAR_MELEE_PRE_TIME  varTable[1]
-#define AI_VAR_MELEE_HIT_TIME  varTable[2]
-#define AI_VAR_MELEE_MISS_TIME varTable[3]
-#define AI_VAR_NEXT_STATE      varTable[7]
+#define CLAMP(value, min, max) MIN(MAX((value), (min)), (max))
 
 #define INTEGER_LOG2(x) ((x) <= 2 ? 1 : (x) <= 4 ? 2 : (x) <= 8 ? 3 : (x) <= 16 ? 4 : (x) <= 32 ? 5 : (x) <= 64 ? 6 : (x) <= 128 ? 7 : (x) <= 256 ? 8 : (x) <= 512 ? 9 : 10)
 

@@ -1,5 +1,9 @@
-#ifndef _AI_GUARD_H_
-#define _AI_GUARD_H_
+#pragma once
+
+#include "common.h"
+#include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
 // Used in:
 // - kmr_02 Toad
@@ -17,10 +21,6 @@ enum AiStateGuard {
     AI_STATE_GUARD_RETURN_HOME_INIT    = 15,
     AI_STATE_GUARD_RETURN_HOME         = 16
 };
-
-#include "common.h"
-#include "npc.h"
-#include "effects.h"
 
 void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
@@ -261,5 +261,3 @@ API_CALLABLE(N(GuardAI_Main)) {
     }
     return ApiStatus_BLOCK;
 }
-
-#endif

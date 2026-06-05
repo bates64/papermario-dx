@@ -251,7 +251,7 @@ API_CALLABLE(N(UseAbility)) {
             N(MaintainPosAfterBlast) = false;
             N(TriggeredEarlyDetonation) = false;
             npc->flags &= ~(NPC_FLAG_JUMPING | NPC_FLAG_GRAVITY | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_FLYING);
-            partnerStatus->partnerActionState = PARTNER_ACTION_USE;
+            partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_LIT;
             partnerStatus->actingPartner = PARTNER_BOMBETTE;
             N(PlayerWasFacingLeft) = partner_force_player_flip_done();
             enable_npc_blur(npc);
@@ -431,7 +431,7 @@ API_CALLABLE(N(UseAbility)) {
             collisionStatus->bombetteExplosionPos.z = npc->pos.z;
             N(blast_affect_entities)(npc);
             N(IsBlasting) = true;
-            partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_2;
+            partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_BLAST;
             script->functionTemp[1] = 3;
             script->USE_STATE++;
             break;
@@ -440,7 +440,7 @@ API_CALLABLE(N(UseAbility)) {
                 script->functionTemp[1]--;
                 break;
             }
-            partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_3;
+            partnerStatus->partnerActionState = PARTNER_ACTION_BOMBETTE_RECOVER;
             N(IsBlasting) = false;
             npc->jumpVel = ((playerStatus->pos.y - npc->pos.y) / 20.0f) + 30.0;
             npc->moveSpeed = 0.8f;

@@ -1,6 +1,9 @@
-#include "common.h"
+#pragma once
 
-// prerequisites
+#include "common.h"
+#include "npc.h"
+#include "world/ai.h"
+
 #include "world/common/enemy/ai/FlyingAI.inc.c"
 
 // ai-specific states

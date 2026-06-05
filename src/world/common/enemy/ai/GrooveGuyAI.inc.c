@@ -1,5 +1,10 @@
+#pragma once
+
 #include "common.h"
+#include "effects.h"
 #include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/GrooveGuy.h"
 
 void N(GrooveGuyAI_02)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {

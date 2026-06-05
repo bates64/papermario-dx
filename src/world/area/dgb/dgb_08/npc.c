@@ -9,8 +9,7 @@ NpcSettings N(NpcSettings_Yakkey) = {
     .level = ACTOR_LEVEL_CLUBBA,
 };
 
-#define INCLUDE_CLUBBA_WANDER
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
 #define AI_SENTINEL_LAST_NPC  NPC_Tubba

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
 enum AiStateCleft {
     AI_STATE_CLEFT_HIDING_INIT          = 0,

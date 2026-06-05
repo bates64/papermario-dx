@@ -1,8 +1,7 @@
 #include "dgb_09.h"
 
-#define INCLUDE_CLUBBA_WANDER
-#define INCLUDE_CLUBBA_NAPPING
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
+#include "world/common/enemy/Clubba_Napping.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel

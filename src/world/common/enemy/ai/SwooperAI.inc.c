@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
 
 enum AiStateSwooper {
     AI_STATE_SWOOPER_HANG_INIT      = 0,

@@ -1,8 +1,11 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/MontyMole.h"
 
-// prerequisites
 #include "world/common/enemy/ai/ProjectileHitbox.inc.c"
 
 // ensure state handlers conform to expected signature
@@ -26,14 +29,6 @@ enum AiStateMontyMole {
     AI_STATE_MOLE_PRE_BURROW    = 20,   // delay before burrowing back underground
     AI_STATE_MOLE_BURROW        = 21,   // burrow underground
 };
-
-#define INTANGIBLE_MONTY_MOLE_NPC_FLAGS \
-    ENEMY_FLAG_SKIP_BATTLE \
-    | ENEMY_FLAG_IGNORE_TOUCH \
-    | ENEMY_FLAG_IGNORE_JUMP \
-    | ENEMY_FLAG_IGNORE_HAMMER \
-    | ENEMY_FLAG_IGNORE_PARTNER \
-    | ENEMY_FLAG_CANT_INTERACT
 
 static s32 N(MontyMoleAI_CanAttack)(Evt* script, EnemyDetectVolume* territory, f32 radius, f32 arg3) {
     Camera* cam;
@@ -80,7 +75,7 @@ static void N(MontyMoleAI_Init)(Evt* script, MobileAISettings* aiSettings, Enemy
     } else {
         npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
     }
-    enemy->flags |= INTANGIBLE_MONTY_MOLE_NPC_FLAGS;
+    enemy->flags |= ENEMY_INTANGIBLE_FLAGS;
     npc->flags |= NPC_FLAG_INVISIBLE;
     script->functionTemp[1] = 0;
     script->AI_TEMP_STATE = AI_STATE_MOLE_WANDER;
@@ -148,7 +143,7 @@ static void N(MontyMoleAI_Surface)(Evt* script, MobileAISettings* aiSettings, En
 
     npc->duration--;
     if (npc->duration == 2) {
-        enemy->flags &= ~(INTANGIBLE_MONTY_MOLE_NPC_FLAGS);
+        enemy->flags &= ~ENEMY_INTANGIBLE_FLAGS;
     }
     if (npc->duration <= 0) {
         npc->curAnim = ANIM_MontyMole_Anim18; // get and throw rock
@@ -222,7 +217,7 @@ static void N(MontyMoleAI_Burrow)(Evt* script, MobileAISettings* aiSettings, Ene
 
     npc->duration--;
     if (npc->duration == 3) {
-        enemy->flags |= INTANGIBLE_MONTY_MOLE_NPC_FLAGS;
+        enemy->flags |= ENEMY_INTANGIBLE_FLAGS;
     }
     if (npc->duration <= 0) {
         npc->flags |= NPC_FLAG_INVISIBLE;

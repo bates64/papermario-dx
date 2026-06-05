@@ -1,5 +1,9 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/Lakitu.h"
 
 // required include args
@@ -209,7 +213,7 @@ API_CALLABLE(N(LakituAI_Main)) {
             spinyEnemy->varTable[11] = enemy->npcID;
             npc->duration = 15;
             npc->curAnim = ANIM_Lakitu_Anim14;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_30;
+            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_30;
         }
     }
 
@@ -226,7 +230,7 @@ API_CALLABLE(N(LakituAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_PROJECTILE_HITBOX_30:
+        case AI_STATE_RANGED_ATTACK_30:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
@@ -234,9 +238,9 @@ API_CALLABLE(N(LakituAI_Main)) {
             spinyEnemy = get_enemy(enemy->varTable[4]);
             spinyEnemy->varTable[10] = 2;
             npc->duration = 5;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_31;
+            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_31;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_31:
+        case AI_STATE_RANGED_ATTACK_31:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
@@ -245,17 +249,17 @@ API_CALLABLE(N(LakituAI_Main)) {
             spinyEnemy = get_enemy(enemy->varTable[4]);
             spinyEnemy->varTable[10] = 3;
             npc->duration = 10;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_32;
+            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_32;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_32:
+        case AI_STATE_RANGED_ATTACK_32:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
             }
             npc->duration = 3;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_33;
+            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_33;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_33:
+        case AI_STATE_RANGED_ATTACK_33:
             npc->duration--;
             if (npc->duration <= 0) {
                 script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
@@ -263,7 +267,7 @@ API_CALLABLE(N(LakituAI_Main)) {
             break;
     }
 
-    if (script->AI_TEMP_STATE == AI_STATE_PROJECTILE_HITBOX_30 || script->AI_TEMP_STATE == AI_STATE_PROJECTILE_HITBOX_31) {
+    if (script->AI_TEMP_STATE == AI_STATE_RANGED_ATTACK_30 || script->AI_TEMP_STATE == AI_STATE_RANGED_ATTACK_31) {
         f32 playerDist;
         f32 lerpDist;
 

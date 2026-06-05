@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/ai/MontyMoleAI.inc.c"
 
-#include "world/common/enemy/ai/RangedAttackAI.inc.c"
+#include "world/common/enemy/ai/WanderRangedAI.inc.c"
 
 #include "world/common/todo/GetEncounterEnemyIsOwner.inc.c"
 

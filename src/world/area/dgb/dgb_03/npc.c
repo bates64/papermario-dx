@@ -1,9 +1,8 @@
 #include "dgb_03.h"
 
-#define INCLUDE_CLUBBA_WANDER
-#define INCLUDE_CLUBBA_PATROL
-#define INCLUDE_CLUBBA_NAPPING
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
+#include "world/common/enemy/Clubba_Patrol.inc.c"
+#include "world/common/enemy/Clubba_Napping.inc.c"
 
 EvtScript N(EVS_NpcInit_Clubba_Napping) = {
     Call(GetEntryID, LVar0)

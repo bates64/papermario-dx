@@ -1153,7 +1153,7 @@ s32 phys_can_player_interact(void) {
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         if (gPartnerStatus.actingPartner == PARTNER_BOMBETTE) {
-            if (gPartnerStatus.partnerActionState <= PARTNER_ACTION_BOMBETTE_2) {
+            if (gPartnerStatus.partnerActionState <= PARTNER_ACTION_BOMBETTE_BLAST) {
                 ret = false;
             }
         } else {

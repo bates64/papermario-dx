@@ -1,48 +1,51 @@
+#pragma once
+
 #include "common.h"
 #include "effects.h"
+#include "world/ai.h"
 
 #define FIRST_BULLET_NPCID  50
 #define LAST_BULLET_NPCID   59
 
-enum AiStateBullet {
+enum BulletAiStates {
     AI_STATE_BULLET_INIT        = 0,
     AI_STATE_BULLET_READY       = 1,
     AI_STATE_BULLET_FIRED       = 2,
     AI_STATE_BULLET_HIT         = 3,
 };
 
-enum AiVarsBullet {
+enum BulletAiVars {
     AI_VAR_BULLET_STATUS        = 0, // see: BulletLifecycle
     AI_VAR_BULLET_PARENT        = 1, // npcID of bullet's blaster
     AI_VAR_BULLET_RANGE         = 2, // limiting x position of bullets
 };
 
-enum AiStateBlaster {
+enum BlasterAiStates {
     AI_STATE_BLASTER_INIT       = 0,
     AI_STATE_BLASTER_PREPARE    = 10,
     AI_STATE_BLASTER_FIRE       = 11,
     AI_STATE_BLASTER_COOLDOWN   = 12,
 };
 
-enum AiVarsBlaster {
+enum BlasterAiVars {
     AI_VAR_BLASTER_CHILD        = 0, // npcID of blaster's latest bullet
     AI_VAR_BLASTER_RANGE        = 1, // limiting x position of bullets
 };
 
 // coordinates state between bullets and blaster, marking bullets as either available for firing or not
-enum BulletLifecycle {
-    BULLET_LIFECYCLE_IDLE       = 0, // bullet is unoccupied and ready to be fired
-    BULLET_LIFECYCLE_RESERVED   = 1, // bullet has been selected for firing, awaiting blast animation to finish
-    BULLET_LIFECYCLE_FIRING     = 2,
-    BULLET_LIFECYCLE_ACTIVE     = 3, // bullet has been fired and is moving
-    BULLET_LIFECYCLE_DONE       = 100, // bullet has completed its motion and waiting to reset
+enum BulletStatus {
+    BULLET_STATUS_IDLE          = 0, // bullet is unoccupied and ready to be fired
+    BULLET_STATUS_RESERVED      = 1, // bullet has been selected for firing, awaiting blast animation to finish
+    BULLET_STATUS_FIRING        = 2,
+    BULLET_STATUS_ACTIVE        = 3, // bullet has been fired and is moving
+    BULLET_STATUS_DONE          = 100, // bullet has completed its motion and waiting to reset
 };
 
 s32 N(BillBlasterAI_GetIdleBulletNpcID)(void) {
     s32 i;
 
     for (i = FIRST_BULLET_NPCID; i <= LAST_BULLET_NPCID; i++) {
-        if (get_enemy(i)->varTable[AI_VAR_BULLET_STATUS] == BULLET_LIFECYCLE_IDLE) {
+        if (get_enemy(i)->varTable[AI_VAR_BULLET_STATUS] == BULLET_STATUS_IDLE) {
             return i;
         }
     }
@@ -60,13 +63,13 @@ API_CALLABLE(N(BulletBillAI_Main)) {
     f32 nextX, nextZ;
     f32 deltaY;
 
-    if (isInitialCall || enemy->varTable[AI_VAR_BULLET_STATUS] == BULLET_LIFECYCLE_DONE) {
+    if (isInitialCall || enemy->varTable[AI_VAR_BULLET_STATUS] == BULLET_STATUS_DONE) {
         script->AI_TEMP_STATE = AI_STATE_BULLET_INIT;
         npc->duration = 0;
         enemy->aiFlags |= AI_FLAG_SKIP_EMOTE_AFTER_FLEE;
         enemy->flags |= ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN;
         npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
-        enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_IDLE;
+        enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_IDLE;
         enemy->varTable[AI_VAR_BULLET_PARENT] = -1;
     }
 
@@ -87,15 +90,15 @@ API_CALLABLE(N(BulletBillAI_Main)) {
             npc->flags |= NPC_FLAG_INVISIBLE;
             npc->flags &= ~NPC_FLAG_DONT_UPDATE_SHADOW_Y;
             disable_npc_shadow(npc);
-            enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_IDLE;
+            enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_IDLE;
             script->AI_TEMP_STATE = AI_STATE_BULLET_READY;
             // fallthrough
         case AI_STATE_BULLET_READY:
             // do nothing until a blaster has reserved this bullet and set status to firing
-            if (enemy->varTable[AI_VAR_BULLET_STATUS] != BULLET_LIFECYCLE_FIRING) {
+            if (enemy->varTable[AI_VAR_BULLET_STATUS] != BULLET_STATUS_FIRING) {
                 break;
             }
-            enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_ACTIVE;
+            enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_ACTIVE;
             blasterNpc = get_npc_unsafe(get_enemy(enemy->varTable[AI_VAR_BULLET_PARENT])->npcID);
             npc->flags &= ~NPC_FLAG_INVISIBLE;
             npc->pos.x = blasterNpc->pos.x;
@@ -158,7 +161,7 @@ API_CALLABLE(N(BulletBillAI_Main)) {
             break;
     }
     if (done) {
-        enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_DONE;
+        enemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_DONE;
     }
 
     return ApiStatus_BLOCK;
@@ -206,7 +209,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
             enemy->varTable[AI_VAR_BLASTER_CHILD] = bulletNpcID;
             if (bulletNpcID > 0) {
                 bulletEnemy = get_enemy(bulletNpcID);
-                bulletEnemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_RESERVED;
+                bulletEnemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_RESERVED;
                 bulletEnemy->varTable[AI_VAR_BULLET_PARENT] = enemy->npcID;
                 bulletEnemy->varTable[AI_VAR_BULLET_RANGE] = enemy->varTable[AI_VAR_BLASTER_RANGE];
                 npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
@@ -225,7 +228,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
             }
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
             bulletEnemy = get_enemy(enemy->varTable[AI_VAR_BLASTER_CHILD]);
-            bulletEnemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_LIFECYCLE_FIRING;
+            bulletEnemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_FIRING;
             ai_enemy_play_sound(npc, SOUND_BLASTER_FIRE, SOUND_PARAM_MORE_QUIET);
             npc->duration = 5;
             script->AI_TEMP_STATE = AI_STATE_BLASTER_COOLDOWN;
