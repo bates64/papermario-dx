@@ -5,6 +5,10 @@
 #include "npc.h"
 #include "world/ai.h"
 
+enum AvoidAiAnims {
+    AI_ANIM_AVOID_8             = 8,
+};
+
 void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
@@ -106,7 +110,7 @@ void N(AvoidPlayerAI_ChaseInit)(Evt* script, MobileAISettings* npcAISettings, En
     }
     if (detectedPlayer) {
         npc->duration = 10;
-        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
+        npc->curAnim = enemy->animList[AI_ANIM_AVOID_8];
     }
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
@@ -121,7 +125,7 @@ void N(AvoidPlayerAI_Chase)(Evt* script, MobileAISettings* npcAISettings, EnemyD
         npc->duration = 25;
         script->AI_TEMP_STATE = AI_STATE_LOSE_PLAYER;
     } else {
-        if (npc->curAnim != enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE]) {
+        if (npc->curAnim != enemy->animList[AI_ANIM_AVOID_8]) {
             if (npc->moveSpeed < 4.0) {
                 npc_surface_spawn_fx(npc, SURFACE_INTERACT_WALK);
             } else {

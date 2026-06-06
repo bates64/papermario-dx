@@ -6,19 +6,33 @@
 
 #include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"
 
-void N(ShyGuyPatrolAI_14)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territoryPtr) {
+#ifndef _SHYGUY_STATES_
+#define _SHYGUY_STATES_
+enum ShyGuyAiStates {
+    AI_STATE_SHYGUY_TRIP    = 15, // trip animation
+    AI_STATE_SHYGUY_FALL    = 16, // fall animation
+    AI_STATE_SHYGUY_LAY     = 17, // lay on the ground after falling
+};
+
+enum ShyGuyAiAnims {
+    AI_ANIM_SHYGUY_FALL     = 11,
+    AI_ANIM_SHYGUY_TRIP     = 12,
+};
+#endif
+
+void N(ShyGuyPatrolAI_TripInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territoryPtr) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    npc->moveSpeed *= 0.6;
-    npc->curAnim = enemy->animList[12];
+    npc->moveSpeed *= 0.6f;
+    npc->curAnim = enemy->animList[AI_ANIM_SHYGUY_TRIP];
     npc->duration = 5;
-    script->AI_TEMP_STATE = 15;
+    script->AI_TEMP_STATE = AI_STATE_SHYGUY_TRIP;
 }
 
-void N(ShyGuyPatrolAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ShyGuyPatrolAI_Trip)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
-    Npc* npc = get_npc_unsafe((s32) enemy->npcID);
+    Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yaw = npc->yaw;
 
     if (!ai_check_fwd_collisions(npc, npc->moveSpeed, &yaw, nullptr, nullptr, nullptr)) {
@@ -27,15 +41,15 @@ void N(ShyGuyPatrolAI_15)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
     npc->duration--;
     if (npc->duration == 0) {
-        npc->moveSpeed *= 0.6;
+        npc->moveSpeed *= 0.6f;
 
-        npc->curAnim = enemy->animList[11];
+        npc->curAnim = enemy->animList[AI_ANIM_SHYGUY_FALL];
         npc->duration = 10;
-        script->AI_TEMP_STATE = 16;
+        script->AI_TEMP_STATE = AI_STATE_SHYGUY_FALL;
     }
 }
 
-void N(ShyGuyPatrolAI_16)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ShyGuyPatrolAI_Fall)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 yaw = npc->yaw;
@@ -47,18 +61,18 @@ void N(ShyGuyPatrolAI_16)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->duration--;
     if (npc->duration == 0) {
         npc->duration = 30;
-        script->AI_TEMP_STATE = 17;
+        script->AI_TEMP_STATE = AI_STATE_SHYGUY_LAY;
     }
 }
 
-void N(ShyGuyPatrolAI_17)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ShyGuyPatrolAI_Lay)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration--;
     if (npc->duration == 0) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        script->AI_TEMP_STATE = 0;
+        script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
     }
 }
 
@@ -83,8 +97,8 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
     territory.halfHeight = 65.0f;
     territory.detectFlags = 0;
 
-   if (isInitialCall || enemy->aiFlags & AI_FLAG_SUSPEND) {
-        script->AI_TEMP_STATE = 0;
+   if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
+        script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
@@ -99,14 +113,15 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
-            script->AI_TEMP_STATE = 99;
-            script->functionTemp[1] = 0;
+            script->AI_TEMP_STATE = AI_STATE_SUSPEND;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_PATROL_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
-            script->AI_TEMP_STATE = 12;
+            script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
             enemy->flags &= ~ENEMY_FLAG_BEGIN_WITH_CHASING;
         }
 
+        // snap to ground
         posX = npc->pos.x;
         posY = npc->pos.y + npc->collisionHeight;
         posZ = npc->pos.z;
@@ -117,52 +132,60 @@ API_CALLABLE(N(ShyGuyPatrolAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case 0x0:
+        case AI_STATE_PATROL_INIT:
             N(PatrolAI_MoveInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case 0x1:
+        case AI_STATE_PATROL:
             N(PatrolAI_Move)(script, aiSettings, territoryPtr);
             break;
-        case 0x2:
+
+        case AI_STATE_LOITER_INIT:
             N(PatrolAI_LoiterInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case 0x3:
+        case AI_STATE_LOITER:
             N(PatrolAI_Loiter)(script, aiSettings, territoryPtr);
             break;
-        case 0x4:
+        case AI_STATE_LOITER_POST:
             N(PatrolAI_PostLoiter)(script, aiSettings, territoryPtr);
             break;
-        case 0xA:
+
+        case AI_STATE_ALERT_INIT:
             N(PatrolAI_JumpInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case 0xB:
+        case AI_STATE_ALERT:
             N(PatrolAI_Jump)(script, aiSettings, territoryPtr);
             break;
-        case 0xC:
+
+        case AI_STATE_CHASE_INIT:
             N(PatrolAI_ChaseInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case 0xD:
+        case AI_STATE_CHASE:
             N(PatrolAI_Chase)(script, aiSettings, territoryPtr);
             break;
-        case 0xE:
-            N(ShyGuyPatrolAI_14)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != 0xF) {
+
+        case AI_STATE_LOSE_PLAYER:
+            N(ShyGuyPatrolAI_TripInit)(script, aiSettings, territoryPtr);
+            if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_TRIP) {
                 break;
             }
-        case 0xF:
-            N(ShyGuyPatrolAI_15)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != 0x10) {
+            // fallthrough
+        case AI_STATE_SHYGUY_TRIP:
+            N(ShyGuyPatrolAI_Trip)(script, aiSettings, territoryPtr);
+            if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_FALL) {
                 break;
             }
-        case 0x10:
-            N(ShyGuyPatrolAI_16)(script, aiSettings, territoryPtr);
-            if (script->AI_TEMP_STATE != 0x11) {
+            // fallthrough
+        case AI_STATE_SHYGUY_FALL:
+            N(ShyGuyPatrolAI_Fall)(script, aiSettings, territoryPtr);
+            if (script->AI_TEMP_STATE != AI_STATE_SHYGUY_LAY) {
                 break;
             }
-        case 0x11:
-            N(ShyGuyPatrolAI_17)(script, aiSettings, territoryPtr);
+            // fallthrough
+        case AI_STATE_SHYGUY_LAY:
+            N(ShyGuyPatrolAI_Lay)(script, aiSettings, territoryPtr);
             break;
-        case 0x63:
+
+        case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
             break;
     }

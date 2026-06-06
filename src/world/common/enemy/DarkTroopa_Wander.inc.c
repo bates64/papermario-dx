@@ -17,10 +17,10 @@ MobileAISettings N(AISettings_DarkTroopa_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_DarkTroopa_Wander) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 6)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 4)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 13)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_DARK_TROOPA)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 6)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 4)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 13)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_DARK_TROOPA)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_DarkTroopa_Wander)))
     Return
     End

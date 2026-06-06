@@ -2,20 +2,6 @@
 
 #include "world/common/enemy/ai/MagikoopaAI.inc.c"
 
-MagikoopaTeleportAnim N(MagikoopaAI_TeleportAnim)[] = {
-    { 0.80f, 1.0f, 200 },
-    { 0.60f, 1.0f, 180 },
-    { 0.50f, 1.0f, 160 },
-    { 0.40f, 1.0f, 140 },
-    { 0.30f, 1.1f, 120 },
-    { 0.20f, 1.3f, 110 },
-    { 0.15f, 1.6f, 100 },
-    { 0.12f, 2.0f, 90 },
-    { 0.11f, 3.0f, 80 },
-    { 0.10f, 4.0f, 70 },
-    {}
-};
-
 MobileAISettings N(AISettings_Magikoopa) = {
     .moveSpeed = 1.0f,
     .moveTime = 120,
@@ -85,31 +71,31 @@ AnimID N(ExtraAnims_Magikoopa)[] = {
 };
 
 EvtScript N(EVS_NpcCreate_Magikoopa_GroundHitbox) = {
-    Call(SetSelfVar, 1, 10)
-    Call(SetSelfVar, 2, 40)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 10)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 40)
     Return
     End
 };
 
 EvtScript N(EVS_NpcCreate_Magikoopa_FlyingHitbox) = {
-    Call(SetSelfVar, 1, 0)
-    Call(SetSelfVar, 2, 55)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 0)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 55)
     Return
     End
 };
 
 EvtScript N(EVS_NpcAI_Magikoopa_Hitbox) = {
-    Call(N(MagikoopaAI_SpellMain))
+    Call(N(MagikoopaSpellAI_Main))
     Return
     End
 };
 
 EvtScript N(EVS_NpcHit_Magikoopa_Hitbox) = {
-    Call(N(MagikoopaAI_OnHitInit))
+    Call(N(MagikoopaSpellAI_OnHitInit))
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(MagikoopaAI_OnHit))
+    Call(N(MagikoopaSpellAI_OnHit))
     Exec(EnemyNpcHit)
     Return
     End

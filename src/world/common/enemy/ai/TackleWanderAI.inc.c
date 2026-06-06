@@ -5,9 +5,6 @@
 #include "npc.h"
 #include "world/ai.h"
 
-// TackleAI
-// used by Koopas, Koopatrols, Spinys, Buzzy Beetles
-
 #include "sprite/npc/BonyBeetle.h"
 
 #include "world/common/enemy/ai/States_TackleAI.inc.c"
@@ -30,8 +27,8 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
     territory.detectFlags = 0;
 
     if (isInitialCall) {
-        enemy->varTable[AI_TACKLE_VAR_HEIGHT] = npc->collisionHeight;
-        enemy->varTable[AI_TACKLE_VAR_SPIKY] = false;
+        enemy->varTable[AI_VAR_TACKLE_HEIGHT] = npc->collisionHeight;
+        enemy->varTable[AI_VAR_TACKLE_SPIKY] = false;
         enemy->instigatorValue = 0;
         enemy->aiFlags |= AI_FLAG_SKIP_EMOTE_AFTER_FLEE;
     }
@@ -41,8 +38,8 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
         npc->duration = 0;
         enemy->firstStrikeActive = false;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
-        npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
-        enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME] = 0;
+        npc->collisionHeight = enemy->varTable[AI_VAR_TACKLE_HEIGHT];
+        enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] = 0;
 
         npc->flags &= ~NPC_FLAG_JUMPING;
         if (enemy->territory->wander.isFlying) {
@@ -64,9 +61,9 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
         }
     }
 
-    if (enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME] > 0) {
-        enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME]--;
-        if (enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME] == 0) {
+    if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] > 0) {
+        enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME]--;
+        if (enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] == 0) {
             if (npc->curAnim == ANIM_BonyBeetle_Anim2E ||
                 npc->curAnim == ANIM_BonyBeetle_Anim2F)
             {
@@ -80,25 +77,25 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
             basic_ai_wander_init(script, aiSettings, territoryPtr);
-            npc->collisionHeight = enemy->varTable[AI_TACKLE_VAR_HEIGHT];
+            npc->collisionHeight = enemy->varTable[AI_VAR_TACKLE_HEIGHT];
             // fallthrough
         case AI_STATE_WANDER:
             basic_ai_wander(script, aiSettings, territoryPtr);
             break;
         case AI_STATE_LOITER_INIT:
             basic_ai_loiter_init(script, aiSettings, territoryPtr);
-            if (enemy->varTable[AI_TACKLE_VAR_TYPE] == TACKLER_BONY_BEETLE) {
+            if (enemy->varTable[AI_VAR_TACKLE_TYPE] == TACKLER_BONY_BEETLE) {
                 if (rand_int(100) < 33) {
-                    if (enemy->varTable[AI_TACKLE_VAR_SPIKY]) {
-                        enemy->varTable[AI_TACKLE_VAR_SPIKY] = false;
+                    if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
+                        enemy->varTable[AI_VAR_TACKLE_SPIKY] = false;
                         enemy->instigatorValue = 0;
                         npc->curAnim = ANIM_BonyBeetle_Anim2F;
                     } else {
-                        enemy->varTable[AI_TACKLE_VAR_SPIKY] = true;
+                        enemy->varTable[AI_VAR_TACKLE_SPIKY] = true;
                         enemy->instigatorValue = 1;
                         npc->curAnim = ANIM_BonyBeetle_Anim2E;
                     }
-                    enemy->varTable[AI_TACKLE_VAR_CHANGE_TIME] = 7;
+                    enemy->varTable[AI_VAR_TACKLE_CHANGE_TIME] = 7;
                     return ApiStatus_BLOCK;
                 }
             }
@@ -123,13 +120,13 @@ API_CALLABLE(N(TackleWanderAI_Main)) {
             break;
     }
 
-    if (enemy->varTable[AI_TACKLE_VAR_TYPE] == TACKLER_BONY_BEETLE) {
-        if (enemy->varTable[AI_TACKLE_VAR_SPIKY]) {
+    if (enemy->varTable[AI_VAR_TACKLE_TYPE] == TACKLER_BONY_BEETLE) {
+        if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
             enemy->instigatorValue = 1;
         } else {
             enemy->instigatorValue = 0;
         }
-        if (enemy->varTable[AI_TACKLE_VAR_SPIKY]) {
+        if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
             switch (npc->curAnim) {
                 case ANIM_BonyBeetle_Anim04:
                 case ANIM_BonyBeetle_Anim0C:

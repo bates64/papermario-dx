@@ -25,11 +25,12 @@ MobileAISettings N(AISettings_Sentinel) = {
 };
 
 EvtScript N(EVS_NpcAI_Sentinel) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 5, -650)
-    Call(SetSelfVar, 6, 30)
-    Call(SetSelfVar, 1, 600)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
     Call(N(SentinelAI_Main), Ref(N(AISettings_Sentinel)))
+    // AI returns control to script when the player is caught
     Call(DisablePlayerInput, true)
     Wait(2)
     Label(20)

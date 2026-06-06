@@ -16,10 +16,10 @@ MobileAISettings N(AISettings_KoopaTroopa_Patrol) = {
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa_Patrol) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 8)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 12)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 10)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_KOOPATROL)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 8)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 12)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPATROL)
     Call(N(TacklePatrolAI_Main), Ref(N(AISettings_KoopaTroopa_Patrol)))
     Return
     End

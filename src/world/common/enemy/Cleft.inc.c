@@ -1,4 +1,3 @@
-
 #include "Cleft.h"
 
 #include "world/common/enemy/ai/CleftAI.inc.c"
@@ -18,7 +17,8 @@ MobileAISettings N(AISettings_Cleft) = {
 };
 
 EvtScript N(EVS_NpcAI_Cleft) = {
-    Call(N(CleftAI_Main), Ref(N(AISettings_Cleft)), 16)
+    Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 16)
+    Call(N(CleftAI_Main), Ref(N(AISettings_Cleft)))
     Return
     End
 };

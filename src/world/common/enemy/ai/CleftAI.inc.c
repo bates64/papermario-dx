@@ -5,7 +5,7 @@
 #include "npc.h"
 #include "world/ai.h"
 
-enum AiStateCleft {
+enum CleftAiStates {
     AI_STATE_CLEFT_HIDING_INIT          = 0,
     AI_STATE_CLEFT_HIDING               = 1,
     AI_STATE_CLEFT_PRE_AMBUSH           = 2,
@@ -19,14 +19,23 @@ enum AiStateCleft {
     AI_STATE_CLEFT_REV_UP               = 21,
     AI_STATE_CLEFT_TACKLE               = 22,
     AI_STATE_CLEFT_LOSE_PLAYER          = 40,
-    AI_STATE_RETURN_HOME                = 41,
+    AI_STATE_CLEFT_RETURN_HOME          = 41,
     AI_STATE_CLEFT_DISGUISE_INIT        = 50,
     AI_STATE_CLEFT_DISGUISE             = 51,
     AI_STATE_CLEFT_POST_DISGUISE        = 52
 };
 
-enum AiVarsCleft {
-    AI_CLEFT_VAR_DASH_DELAY = 10, // delay time before dashing
+enum CleftAiVars {
+    AI_VAR_CLEFT_DASH_DELAY             = 10, // delay time before dashing
+};
+
+enum CleftAiAnims {
+    AI_ANIM_CLEFT_HIDDEN                = 8,
+    AI_ANIM_CLEFT_LOSE_CAMO             = 9,
+    AI_ANIM_CLEFT_REVEAL                = 10,
+    AI_ANIM_CLEFT_DISGUISE              = 11,
+    AI_ANIM_CLEFT_DASH                  = 13,
+    AI_ANIM_CLEFT_USE_CAMO              = 14,
 };
 
 b32 N(CleftAI_CanSeePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* volume) {
@@ -35,11 +44,11 @@ b32 N(CleftAI_CanSeePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     Camera* camera = &gCameras[gCurrentCamID];
     f32 playerX, playerZ;
     f32 angle;
-    b32 seesPlayer = false;
 
-    if (ai_check_player_dist(enemy, 0, aiSettings->alertRadius, aiSettings->alertOffsetDist)) {
-        seesPlayer = true;
+    if (!ai_check_player_dist(enemy, 0, aiSettings->alertRadius, aiSettings->alertOffsetDist)) {
+        return false;
     }
+
     if (clamp_angle(get_clamped_angle_diff(camera->curYaw, npc->yaw)) < 180.0) {
         angle = 90.0f;
     } else {
@@ -49,15 +58,18 @@ b32 N(CleftAI_CanSeePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     playerX = gPlayerStatusPtr->pos.x;
     playerZ = gPlayerStatusPtr->pos.z;
     if (fabsf(get_clamped_angle_diff(angle, atan2(npc->pos.x, npc->pos.z, playerX, playerZ))) > 75.0) {
-        seesPlayer = false;
+        return false;
     }
+
     if (fabsf(npc->pos.y - gPlayerStatusPtr->pos.y) >= 40.0f) {
-        seesPlayer = false;
+        return false;
     }
+
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
-        seesPlayer = false;
+        return false;
     }
-    return seesPlayer;
+
+    return true;
 }
 
 void N(CleftAI_HidingInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* volume) {
@@ -69,7 +81,7 @@ void N(CleftAI_HidingInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     npc->collisionDiameter = 24;
     script->functionTemp[1] = 0;
     npc->duration = 0;
-    npc->curAnim = enemy->animList[8];
+    npc->curAnim = enemy->animList[AI_ANIM_CLEFT_HIDDEN];
     script->AI_TEMP_STATE = AI_STATE_CLEFT_HIDING;
 }
 
@@ -80,7 +92,7 @@ void N(CleftAI_Hiding)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     if (script->functionTemp[1] <= 0) {
         script->functionTemp[1] = aiSettings->playerSearchInterval;
         if (basic_ai_check_player_dist(volume, enemy, aiSettings->alertRadius * 0.85, aiSettings->alertOffsetDist, false)) {
-            npc->curAnim = enemy->animList[9];
+            npc->curAnim = enemy->animList[AI_ANIM_CLEFT_LOSE_CAMO];
             fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             npc->duration = 12;
@@ -99,7 +111,7 @@ void N(CleftAI_PreAmbush)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     if (npc->duration <= 0) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         enable_npc_shadow(npc);
-        npc->curAnim = enemy->animList[10];
+        npc->curAnim = enemy->animList[AI_ANIM_CLEFT_REVEAL];
         npc->duration = 8;
         script->AI_TEMP_STATE = AI_STATE_CLEFT_AMBUSH;
     }
@@ -154,8 +166,8 @@ void N(CleftAI_RevUpInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    npc->duration = enemy->varTable[AI_CLEFT_VAR_DASH_DELAY];
-    npc->curAnim = enemy->animList[13];
+    npc->duration = enemy->varTable[AI_VAR_CLEFT_DASH_DELAY];
+    npc->curAnim = enemy->animList[AI_ANIM_CLEFT_DASH];
     script->AI_TEMP_STATE = AI_STATE_CLEFT_REV_UP;
 }
 
@@ -197,7 +209,8 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     if (is_point_outside_territory(wander->detectShape,
             wander->detectPos.x, wander->detectPos.z,
             npc->pos.x, npc->pos.z,
-            wander->detectSize.x, wander->detectSize.z)) {
+            wander->detectSize.x, wander->detectSize.z)
+    ) {
         done = true;
     }
 
@@ -206,7 +219,8 @@ void N(CleftAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVol
     posZ = npc->pos.z;
     if (npc_test_move_simple_with_slipping(npc->collisionChannel,
             &posX, &posY, &posZ,
-            1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter)) {
+            1.0f, npc->yaw, npc->collisionHeight, npc->collisionDiameter)
+    ) {
         done = true;
     }
 
@@ -232,7 +246,7 @@ void N(CleftAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
         } else {
             npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
         }
-        script->AI_TEMP_STATE = AI_STATE_RETURN_HOME;
+        script->AI_TEMP_STATE = AI_STATE_CLEFT_RETURN_HOME;
     }
 }
 
@@ -262,7 +276,7 @@ void N(CleftAI_DisguiseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDet
 
     if (npc->turnAroundYawAdjustment == 0 && npc->duration <= 0) {
         npc->duration = 8;
-        npc->curAnim = enemy->animList[11];
+        npc->curAnim = enemy->animList[AI_ANIM_CLEFT_DISGUISE];
         script->AI_TEMP_STATE = AI_STATE_CLEFT_DISGUISE;
     }
 }
@@ -274,7 +288,7 @@ void N(CleftAI_Disguise)(Evt* script, MobileAISettings* aiSettings, EnemyDetectV
     npc->duration--;
     if (npc->duration <= 0) {
         npc->duration = 8;
-        npc->curAnim = enemy->animList[14];
+        npc->curAnim = enemy->animList[AI_ANIM_CLEFT_USE_CAMO];
         script->AI_TEMP_STATE = AI_STATE_CLEFT_POST_DISGUISE;
     }
 }
@@ -297,8 +311,6 @@ API_CALLABLE(N(CleftAI_Main)) {
     EnemyDetectVolume curVolume;
     EnemyDetectVolume* volume = &curVolume;
 
-    enemy->varTable[AI_CLEFT_VAR_DASH_DELAY] = evt_get_variable(script, *args++);
-
     curVolume.skipPlayerDetectChance = 0;
     curVolume.shape = enemy->territory->wander.detectShape;
     curVolume.pointX = enemy->territory->wander.detectPos.x;
@@ -309,7 +321,7 @@ API_CALLABLE(N(CleftAI_Main)) {
     curVolume.detectFlags = 0;
 
     if (isInitialCall) {
-        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_CLEFT_HIDING_INIT;
         npc->duration = 0;
 
         npc->flags &= ~NPC_FLAG_JUMPING;
@@ -400,11 +412,11 @@ API_CALLABLE(N(CleftAI_Main)) {
 
         case AI_STATE_CLEFT_LOSE_PLAYER:
             N(CleftAI_LosePlayer)(script, npcAISettings, volume);
-            if (script->AI_TEMP_STATE != AI_STATE_RETURN_HOME) {
+            if (script->AI_TEMP_STATE != AI_STATE_CLEFT_RETURN_HOME) {
                 break;
             }
             // fallthrough
-        case AI_STATE_RETURN_HOME:
+        case AI_STATE_CLEFT_RETURN_HOME:
             N(CleftAI_ReturnHome)(script, npcAISettings, volume);
             break;
 

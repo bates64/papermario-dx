@@ -6,19 +6,9 @@
 
 #include "sprite/npc/MontyMole.h"
 
-#include "world/common/enemy/ai/ProjectileHitbox.inc.c"
+#include "world/common/enemy/ai/RangedAttack.inc.c"
 
-// ensure state handlers conform to expected signature
-static AIStateHandler N(MontyMoleAI_Init);
-static AIStateHandler N(MontyMoleAI_Wander);
-static AIStateHandler N(MontyMoleAI_PreSurface);
-static AIStateHandler N(MontyMoleAI_Surface);
-static AIStateHandler N(MontyMoleAI_DrawRock);
-static AIStateHandler N(MontyMoleAI_ThrowRock);
-static AIStateHandler N(MontyMoleAI_PreBurrow);
-static AIStateHandler N(MontyMoleAI_Burrow);
-
-enum AiStateMontyMole {
+enum MontyMoleAiStates {
     AI_STATE_MOLE_INIT          = 0,    // choose random heading and duration for next state
     AI_STATE_MOLE_WANDER        = 1,    // wander around 'underground'
     AI_STATE_MOLE_PRE_SURFACE   = 12,   // delay before emerging from underground
@@ -30,21 +20,20 @@ enum AiStateMontyMole {
     AI_STATE_MOLE_BURROW        = 21,   // burrow underground
 };
 
-static s32 N(MontyMoleAI_CanAttack)(Evt* script, EnemyDetectVolume* territory, f32 radius, f32 arg3) {
-    Camera* cam;
-    Enemy* enemy;
-    Npc* npc;
+s32 N(MontyMoleAI_CanAttack)(Evt* script, EnemyDetectVolume* territory, f32 radius, f32 arg3) {
+    Enemy* enemy = script->owner1.enemy;
+    Npc* npc = get_npc_unsafe(enemy->npcID);
+    Camera* cam = &gCameras[gCurrentCamID];
     f32 angle;
     s32 retVal;
 
-    enemy = script->owner1.enemy;
-    npc = get_npc_unsafe(enemy->npcID);
-    cam = &gCameras[gCurrentCamID];
     retVal = basic_ai_check_player_dist(territory, enemy, radius * 1.1, arg3, false);
+
     // check npc facing angle for sight of player
-    angle = 270.0f;
     if (clamp_angle(get_clamped_angle_diff(cam->curYaw, npc->yaw)) < 180.0) {
         angle = 90.0f;
+    } else {
+        angle = 270.0f;
     }
     if (fabsf(get_clamped_angle_diff(angle, atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z))) > 60.0) {
         retVal = false;
@@ -64,7 +53,7 @@ static s32 N(MontyMoleAI_CanAttack)(Evt* script, EnemyDetectVolume* territory, f
     return retVal;
 }
 
-static void N(MontyMoleAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -81,24 +70,21 @@ static void N(MontyMoleAI_Init)(Evt* script, MobileAISettings* aiSettings, Enemy
     script->AI_TEMP_STATE = AI_STATE_MOLE_WANDER;
 }
 
-static void N(MontyMoleAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    Npc dummyNpc;
+    f32 posX, posY, posZ;
     f32 hitDepth;
 
-    if (is_point_outside_territory(enemy->territory->wander.wanderShape,
-            enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z,
-            npc->pos.x, npc->pos.z,
-            enemy->territory->wander.wanderSize.x, enemy->territory->wander.wanderSize.z)) {
+    if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
     }
-    dummyNpc.pos.x = npc->pos.x;
-    dummyNpc.pos.y = npc->pos.y + 1.0f;
-    dummyNpc.pos.z = npc->pos.z;
-    npc_move_heading(&dummyNpc, npc->moveSpeed + npc->collisionDiameter, npc->yaw);
+    posX = npc->pos.x;
+    posY = npc->pos.y + 1.0f;
+    posZ = npc->pos.z;
+    add_vec2D_polar(&posX, &posZ, npc->moveSpeed + npc->collisionDiameter, npc->yaw);
     hitDepth = 1000.0f;
-    if (npc_raycast_down_sides(0, &dummyNpc.pos.x, &dummyNpc.pos.y, &dummyNpc.pos.z, &hitDepth) && (hitDepth < 5.0f)) {
+    if (npc_raycast_down_sides(0, &posX, &posY, &posZ, &hitDepth) && (hitDepth < 5.0f)) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
     }
     if (npc->flags & NPC_FLAG_COLLDING_FORWARD_WITH_WORLD) {
@@ -125,7 +111,7 @@ static void N(MontyMoleAI_Wander)(Evt* script, MobileAISettings* aiSettings, Ene
     }
 }
 
-static void N(MontyMoleAI_PreSurface)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_PreSurface)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -137,7 +123,7 @@ static void N(MontyMoleAI_PreSurface)(Evt* script, MobileAISettings* aiSettings,
     script->AI_TEMP_STATE = AI_STATE_MOLE_SURFACE;
 }
 
-static void N(MontyMoleAI_Surface)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_Surface)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -152,7 +138,7 @@ static void N(MontyMoleAI_Surface)(Evt* script, MobileAISettings* aiSettings, En
     }
 }
 
-static void N(MontyMoleAI_DrawRock)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_DrawRock)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -171,7 +157,7 @@ static void N(MontyMoleAI_DrawRock)(Evt* script, MobileAISettings* aiSettings, E
     }
 }
 
-static void N(MontyMoleAI_ThrowRock)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_ThrowRock)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* moleEnemy;
     Enemy* rockEnemy;
     Npc* moleNpc;
@@ -198,7 +184,7 @@ static void N(MontyMoleAI_ThrowRock)(Evt* script, MobileAISettings* aiSettings, 
     }
 }
 
-static void N(MontyMoleAI_PreBurrow)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_PreBurrow)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -211,7 +197,7 @@ static void N(MontyMoleAI_PreBurrow)(Evt* script, MobileAISettings* aiSettings, 
     }
 }
 
-static void N(MontyMoleAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(MontyMoleAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 

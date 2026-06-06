@@ -4,6 +4,33 @@
 #include "effects.h"
 #include "world/ai.h"
 
+enum MeleeAttackerAiStates {
+    AI_STATE_MELEE_ATTACK_INIT      = 30,
+    AI_STATE_MELEE_ATTACK_PRE       = 31,
+    AI_STATE_MELEE_ATTACK_SWING     = 32,
+    AI_STATE_MELEE_ATTACK_POST      = 33,
+};
+
+enum MeleeAttackerAiVars {
+    AI_VAR_MELEE_STATUS         = 0, // see: MeleeAttackPhase
+    AI_VAR_MELEE_PRE_TIME       = 1,
+    AI_VAR_MELEE_SWING_TIME     = 2,
+    AI_VAR_MELEE_POST_TIME      = 3,
+};
+
+enum MeleeAttackerAiAnims {
+    AI_ANIM_MELEE_PRE           = 8,
+    AI_ANIM_MELEE_HIT           = 9,
+};
+
+enum MeleeAttackPhase {
+    MELEE_ATTACK_PHASE_NONE     = 0,
+    MELEE_ATTACK_PHASE_INIT     = 1,
+    MELEE_ATTACK_PHASE_PRE      = 2,
+    MELEE_ATTACK_PHASE_SWING    = 3, // hitbox is active
+    MELEE_ATTACK_PHASE_POST     = 4,
+};
+
 enum HitboxAiStates {
     AI_STATE_HITBOX_IDLE        = 0,
     AI_STATE_HITBOX_ACTIVE      = 1,
@@ -18,21 +45,6 @@ enum HitboxAiVars {
     AI_VAR_HITBOX_SOUND         = 15,
 };
 
-enum MeleeAttackerAiVars {
-    AI_VAR_MELEE_STATUS         = 0, // see: MeleeAttackPhase
-    AI_VAR_MELEE_PRE_TIME       = 1,
-    AI_VAR_MELEE_SWING_TIME     = 2,
-    AI_VAR_MELEE_POST_TIME      = 3,
-};
-
-enum MeleeAttackPhase {
-    MELEE_ATTACK_PHASE_NONE     = 0,
-    MELEE_ATTACK_PHASE_INIT     = 1,
-    MELEE_ATTACK_PHASE_PRE      = 2,
-    MELEE_ATTACK_PHASE_SWING    = 3, // hitbox is active
-    MELEE_ATTACK_PHASE_POST     = 4,
-};
-
 void N(MeleeAttacker_Init)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
@@ -42,7 +54,7 @@ void N(MeleeAttacker_Init)(Evt* script) {
     if (npc->turnAroundYawAdjustment == 0) {
         enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_PRE;
         npc->duration = enemy->varTable[AI_VAR_MELEE_PRE_TIME];
-        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
+        npc->curAnim = enemy->animList[AI_ANIM_MELEE_PRE];
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_PRE;
     }
 }
@@ -55,7 +67,7 @@ void N(MeleeAttacker_Pre)(Evt* script) {
     if (npc->duration <= 0) {
         enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_SWING;
         npc->duration = enemy->varTable[AI_VAR_MELEE_SWING_TIME];
-        npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
+        npc->curAnim = enemy->animList[AI_ANIM_MELEE_HIT];
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_SWING;
     }
 }

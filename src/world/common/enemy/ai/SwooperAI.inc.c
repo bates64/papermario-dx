@@ -4,7 +4,7 @@
 #include "npc.h"
 #include "world/ai.h"
 
-enum AiStateSwooper {
+enum SwooperAiStates {
     AI_STATE_SWOOPER_HANG_INIT      = 0,
     AI_STATE_SWOOPER_HANG_IDLE      = 1,  // hang and periodically search for player
     AI_STATE_SWOOPER_DETACH_INIT    = 10, // compute jump params to leap from perch (covers 30% of distance to goal)
@@ -15,9 +15,13 @@ enum AiStateSwooper {
     AI_STATE_SWOOPER_COOLDOWN       = 15, // time after reattaching before detection is possible again
 };
 
-enum AiVarsSwooper {
+enum SwooperAiVars {
     AI_VAR_SWOOPER_UNUSED_TIME      = 0,
     AI_VAR_SWOOPER_FLOOR_Y          = 1,
+};
+
+enum SwooperAiAnims {
+    AI_ANIM_SWOOPER_HANG            = 0,
 };
 
 API_CALLABLE(N(SwooperAI_Main)) {
@@ -61,7 +65,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_SWOOPER_HANG_INIT:
-            npc->curAnim = enemy->animList[0];
+            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
             npc->verticalRenderOffset = npc->collisionHeight;
             npc->flags |= NPC_FLAG_UPSIDE_DOWN;
             script->functionTemp[1] = 0;
@@ -83,7 +87,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
             }
             // fallthrough
         case AI_STATE_SWOOPER_DETACH_INIT:
-            npc->curAnim = enemy->animList[3];
+            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
             npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
             npc->jumpScale = 1.3f;
             npc->jumpVel = 0.0f;
@@ -200,7 +204,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
             }
             // fallthrough
         case AI_STATE_SWOOPER_REATTACH:
-            npc->curAnim = enemy->animList[8];
+            npc->curAnim = enemy->animList[AI_ANIM_SWOOPER_HANG];
             npc->verticalRenderOffset = npc->collisionHeight;
             npc->flags |= NPC_FLAG_UPSIDE_DOWN;
             npc->duration = 15;

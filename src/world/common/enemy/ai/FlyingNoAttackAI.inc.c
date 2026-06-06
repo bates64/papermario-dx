@@ -56,7 +56,7 @@ void N(FlyingNoAttackAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyD
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 30;
         script->AI_TEMP_STATE = AI_STATE_FNA_LOSE_PLAYER;
-        enemy->varTable[AI_FLYING_VAR_DETECT_COOLDOWN] = 30;
+        enemy->varTable[AI_VAR_FLYING_DETECT_COOLDOWN] = 30;
         return;
     }
 
@@ -94,9 +94,9 @@ void N(FlyingNoAttackAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, E
 
     npc->duration--;
     if (npc->duration <= 0) {
-        enemy->varTable[AI_FLYING_VAR_BOB_PHASE] = 0;
+        enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = 0;
         npc->duration = 0;
-        script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
 }
 
@@ -119,7 +119,7 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
 
     if (isInitialCall) {
         N(FlyingAI_Init)(npc, enemy, script, aiSettings);
-        script->AI_TEMP_STATE = AI_FLYING_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
     npc->verticalRenderOffset = -2;
 
@@ -131,22 +131,22 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_FLYING_STATE_WANDER_INIT:
+        case AI_STATE_FLYING_WANDER_INIT:
             N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case AI_FLYING_STATE_WANDER:
+        case AI_STATE_FLYING_WANDER:
             N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
             break;
-        case AI_FLYING_STATE_LOITER_INIT:
+        case AI_STATE_FLYING_LOITER_INIT:
             N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case AI_FLYING_STATE_LOITER:
+        case AI_STATE_FLYING_LOITER:
             N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
             break;
-        case AI_FLYING_STATE_ALERT_INIT:
+        case AI_STATE_FLYING_ALERT_INIT:
             N(FlyingAI_JumpInit)(script, aiSettings, territoryPtr);
             // fallthrough
-        case AI_FLYING_STATE_ALERT:
+        case AI_STATE_FLYING_ALERT:
             N(FlyingAI_Jump)(script, aiSettings, territoryPtr);
             break;
         case AI_STATE_FNA_CHASE_INIT:

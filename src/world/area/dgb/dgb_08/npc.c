@@ -12,7 +12,7 @@ NpcSettings N(NpcSettings_Yakkey) = {
 #include "world/common/enemy/Clubba_Wander.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
-#define AI_SENTINEL_LAST_NPC  NPC_Tubba
+#define AI_SENTINEL_LAST_NPC  NPC_Sentinel_02
 #include "world/common/enemy/Sentinel.inc.c"
 
 NpcSettings N(NpcSettings_LastClubba) = {
@@ -89,7 +89,7 @@ API_CALLABLE(N(SetTubbaPatrolTerritory)) {
 API_CALLABLE(N(SetTubbaPatrolMode)) {
     if (get_enemy_safe(NPC_Tubba)) {
         Enemy* enemy = get_enemy(NPC_Tubba);
-        enemy->aiFlags |= AI_FLAG_80;
+        enemy->aiFlags |= AI_FLAG_CAN_RESUME_PATROL;
         return ApiStatus_DONE2;
     }
 

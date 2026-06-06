@@ -11,7 +11,7 @@
 // - Dry Bones
 // - Hammer Bros
 
-#include "world/common/enemy/ai/ProjectileHitbox.inc.c"
+#include "world/common/enemy/ai/RangedAttack.inc.c"
 
 API_CALLABLE(N(RangedAttackAI_Main)) {
     EnemyDetectVolume territory;
@@ -77,8 +77,8 @@ API_CALLABLE(N(RangedAttackAI_Main)) {
             break;
         case AI_STATE_CHASE_INIT:
             dist = dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-            if (enemy->varTable[AI_VAR_RANGED_0] == 0 || enemy->varTable[AI_VAR_RANGED_0] < dist) {
-                N(UnkNpcAIFunc48)(script, settings->chaseRadius, settings->chaseOffsetDist, territoryPtr);
+            if (enemy->varTable[AI_VAR_RANGED_MIN_DIST] == 0 || enemy->varTable[AI_VAR_RANGED_MIN_DIST] < dist) {
+                N(RangedAttack_TryTakeShot)(script, settings->chaseRadius, settings->chaseOffsetDist, territoryPtr);
                 if (script->AI_TEMP_STATE != AI_STATE_CHASE_INIT) {
                     break;
                 }
@@ -91,17 +91,17 @@ API_CALLABLE(N(RangedAttackAI_Main)) {
         case AI_STATE_LOSE_PLAYER:
             basic_ai_lose_player(script, settings, territoryPtr);
             break;
-        case AI_STATE_RANGED_ATTACK_30:
-            N(ProjectileHitbox_30(script));
+        case AI_STATE_RANGED_ATTACK_FIRE:
+            N(RangedAttack_Fire(script));
             break;
-        case AI_STATE_RANGED_ATTACK_31:
-            N(ProjectileHitbox_31(script));
+        case AI_STATE_RANGED_ATTACK_CANCEL:
+            N(RangedAttack_Cancel(script));
             break;
-        case AI_STATE_RANGED_ATTACK_32:
-            N(ProjectileHitbox_32(script));
+        case AI_STATE_RANGED_ATTACK_AWAIT:
+            N(RangedAttack_Await(script));
             break;
-        case AI_STATE_RANGED_ATTACK_33:
-            N(ProjectileHitbox_33(script));
+        case AI_STATE_RANGED_ATTACK_COOLDOWN:
+            N(RangedAttack_Cooldown(script));
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

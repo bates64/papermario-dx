@@ -1,6 +1,7 @@
 #include "common.h"
 #include "npc.h"
 #include "effects.h"
+#include "world/ai.h"
 #include "battle/battle.h"
 
 API_CALLABLE(SetEncounterStatusFlags) {

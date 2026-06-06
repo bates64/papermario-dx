@@ -170,7 +170,7 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDe
                     dist = 200.0f;
                     hasGroundBelow = npc_raycast_down_sides(npc->collisionChannel, &testX, &testY, &testZ, &dist);
                     if (!higherPathBlocked && hasGroundBelow && dist > 80.0 && dist < 120.0 && npc->pos.y != testY) {
-                        // there was a path at the slightly higher position, and there is ground ar +/- 20 units
+                        // there was a path at the slightly higher position, and there is ground at ±20 units
                         // of the expected position of the ambush location. this indicates a step or slight slope,
                         // which can addressed with a snap-to-ground later. keep the original ambush location.
                         allowGroundSnap = true;

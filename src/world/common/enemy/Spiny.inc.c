@@ -16,10 +16,10 @@ MobileAISettings N(AISettings_Spiny) = {
 };
 
 EvtScript N(EVS_NpcAI_Spiny) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 3)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 18)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 3)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_SPINY)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_Spiny)))
     Return
     End

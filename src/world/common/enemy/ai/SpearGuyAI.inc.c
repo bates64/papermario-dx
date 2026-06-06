@@ -7,76 +7,96 @@
 
 #include "sprite/npc/SpearGuy.h"
 
+enum SpearGuyAiVars {
+    AI_VAR_SPEAR_DANCE_PHASE    = 0,
+    AI_VAR_SPEAR_DANCE_TIME     = 1,
+};
+
+enum SpearGuyLoiterPhase {
+    SPEAR_DANCE_PHASE_INIT          = 0,
+    SPEAR_DANCE_PHASE_CHANT_INIT    = 1,
+    SPEAR_DANCE_PHASE_CHANT         = 2,
+    SPEAR_DANCE_PHASE_SHAKE_INIT    = 3,
+    SPEAR_DANCE_PHASE_SHAKE         = 4,
+    SPEAR_DANCE_PHASE_SWEAT_INIT    = 5,
+    SPEAR_DANCE_PHASE_SWEAT         = 6,
+    SPEAR_DANCE_PHASE_DONE          = 7,
+};
+
 void N(SpearGuyAI_LoiterInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration = 0;
     set_npc_yaw(npc, 270.0f);
-    enemy->varTable[0] = 0;
+    enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_INIT;
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
 void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    s32 d100;
 
-    if (enemy->varTable[0] == 0) {
+    if (enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] == SPEAR_DANCE_PHASE_INIT) {
         if (rand_int(100) >= 50) {
-            enemy->varTable[0] = 3;
+            enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SHAKE_INIT;
         } else {
-            enemy->varTable[0] = 1;
+            enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_CHANT_INIT;
         }
         set_npc_yaw(npc, 270.0f);
     }
 
-    switch (enemy->varTable[0]) {
-        case 1:
-            enemy->varTable[0] = 2;
-            enemy->varTable[1] = 0;
+    switch (enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE]) {
+        case SPEAR_DANCE_PHASE_CHANT_INIT:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_CHANT;
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
             npc->curAnim = ANIM_SpearGuy_Anim0F;
-        case 2:
-            enemy->varTable[1]++;
-            if (enemy->varTable[1] > 50) {
-                enemy->varTable[0] = 5;
+            // fallthrough
+        case SPEAR_DANCE_PHASE_CHANT:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME]++;
+            if (enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] > 50) {
+                enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SWEAT_INIT;
             }
             break;
-        case 3:
-            enemy->varTable[0] = 4;
-            enemy->varTable[1] = 0;
+
+        case SPEAR_DANCE_PHASE_SHAKE_INIT:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SHAKE;
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
             npc->curAnim = ANIM_SpearGuy_Anim10;
-        case 4:
-            enemy->varTable[1]++;
-            if (enemy->varTable[1] == 25) {
+            // fallthrough
+        case SPEAR_DANCE_PHASE_SHAKE:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME]++;
+            if (enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] == 25) {
                 npc->yaw = 90.0f;
             }
-            if (enemy->varTable[1] > 60) {
-                enemy->varTable[0] = 5;
+            if (enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] > 60) {
+                enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SWEAT_INIT;
             }
             break;
-        case 5:
-            enemy->varTable[0] = 6;
-            enemy->varTable[1] = 0;
+
+        case SPEAR_DANCE_PHASE_SWEAT_INIT:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SWEAT;
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] = 0;
             npc->curAnim = ANIM_SpearGuy_Anim03;
             fx_sweat(0, npc->pos.x, npc->pos.y, npc->pos.z, npc->collisionHeight, 0, 10);
-        case 6:
-            enemy->varTable[1]++;
-            if (enemy->varTable[1] > 10) {
-                d100 = rand_int(100);
-
+            // fallthrough
+        case SPEAR_DANCE_PHASE_SWEAT:
+            enemy->varTable[AI_VAR_SPEAR_DANCE_TIME]++;
+            if (enemy->varTable[AI_VAR_SPEAR_DANCE_TIME] > 10) {
+                s32 d100 = rand_int(100);
+                // note: because rand_int is inclusive, there's a 5/101 chance for CHANT and a 6/101 for SHAKE
                 if (d100 < 90) {
-                    enemy->varTable[0] = 7;
-                } else if (d100 >= 95) {
-                    enemy->varTable[0] = 3;
-                } else {
-                    enemy->varTable[0] = 1;
+                    enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_DONE;
+                } else if (d100 >= 95) { // 95, ..., 100
+                    enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_SHAKE_INIT;
+                } else { // 90, ..., 94
+                    enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] = SPEAR_DANCE_PHASE_CHANT_INIT;
                 }
             }
             break;
     }
 
-    if (enemy->varTable[0] == 7) {
+    if (enemy->varTable[AI_VAR_SPEAR_DANCE_PHASE] == SPEAR_DANCE_PHASE_DONE) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
     }
 }
@@ -85,11 +105,11 @@ void N(SpearGuyAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
 API_CALLABLE(N(SpearGuyAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
-    Npc *npc = get_npc_unsafe(enemy->npcID);
+    Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
     EnemyDetectVolume territory;
     EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* npcAISettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
 
     territory.skipPlayerDetectChance = 0;
     territory.shape = enemy->territory->wander.detectShape;
@@ -122,41 +142,47 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
         enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_NONE;
     }
 
-    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanTargetPlayer)(script)) {
+    // melee attack cannot start during an ongoing attack OR during the spear dance
+    // due to overlap between AI_VAR_MELEE_STATUS and AI_VAR_SPEAR_DANCE_PHASE
+    // this is probably intentional.
+    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT)
+        && (enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE)
+        && N(MeleeHitbox_CanTargetPlayer)(script)
+    ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
-            basic_ai_wander_init(script, npcAISettings, territoryPtr);
+            basic_ai_wander_init(script, aiSettings, territoryPtr);
             // fallthrough
         case AI_STATE_WANDER:
-            basic_ai_wander(script, npcAISettings, territoryPtr);
+            basic_ai_wander(script, aiSettings, territoryPtr);
             break;
 
         case AI_STATE_LOITER_INIT:
-            N(SpearGuyAI_LoiterInit)(script, npcAISettings, territoryPtr);
+            N(SpearGuyAI_LoiterInit)(script, aiSettings, territoryPtr);
             // fallthrough
         case AI_STATE_LOITER:
-            N(SpearGuyAI_Loiter)(script, npcAISettings, territoryPtr);
+            N(SpearGuyAI_Loiter)(script, aiSettings, territoryPtr);
             break;
 
         case AI_STATE_ALERT_INIT:
-            basic_ai_found_player_jump_init(script, npcAISettings, territoryPtr);
+            basic_ai_found_player_jump_init(script, aiSettings, territoryPtr);
             // fallthrough
         case AI_STATE_ALERT:
-            basic_ai_found_player_jump(script, npcAISettings, territoryPtr);
+            basic_ai_found_player_jump(script, aiSettings, territoryPtr);
             break;
 
         case AI_STATE_CHASE_INIT:
-            basic_ai_chase_init(script, npcAISettings, territoryPtr);
+            basic_ai_chase_init(script, aiSettings, territoryPtr);
             // fallthrough
         case AI_STATE_CHASE:
-            basic_ai_chase(script, npcAISettings, territoryPtr);
+            basic_ai_chase(script, aiSettings, territoryPtr);
             break;
 
         case AI_STATE_LOSE_PLAYER:
-            basic_ai_lose_player(script, npcAISettings, territoryPtr);
+            basic_ai_lose_player(script, aiSettings, territoryPtr);
             break;
 
         case AI_STATE_MELEE_ATTACK_INIT:
@@ -167,11 +193,13 @@ API_CALLABLE(N(SpearGuyAI_Main)) {
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
+            // fallthrough
         case AI_STATE_MELEE_ATTACK_SWING:
             N(MeleeAttacker_Swing)(script);
             if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
+            // fallthrough
         case AI_STATE_MELEE_ATTACK_POST:
             N(MeleeAttacker_Post)(script);
             break;

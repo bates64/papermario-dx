@@ -59,31 +59,31 @@ AnimID N(ExtraAnims_FlyingMagikoopa)[] = {
 };
 
 EvtScript N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox) = {
-    Call(SetSelfVar, 1, 10)
-    Call(SetSelfVar, 2, 40)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 10)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 40)
     Return
     End
 };
 
 EvtScript N(EVS_NpcCreate_FlyingMagikoopa_Hitbox) = {
-    Call(SetSelfVar, 1, 0)
-    Call(SetSelfVar, 2, 55)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 0)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 55)
     Return
     End
 };
 
 EvtScript N(EVS_NpcAI_FlyingMagikoopa_Hitbox) = {
-    Call(N(MagikoopaAI_SpellMain))
+    Call(N(MagikoopaSpellAI_Main))
     Return
     End
 };
 
 EvtScript N(EVS_NpcHit_FlyingMagikoopa_Hitbox) = {
-    Call(N(FlyingMagikoopaAI_OnHitInit))
+    Call(N(MagikoopaSpellAI_OnHitInit))
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(FlyingMagikoopaAI_OnHit))
+    Call(N(MagikoopaSpellAI_OnHit))
     Exec(EnemyNpcHit)
     Return
     End

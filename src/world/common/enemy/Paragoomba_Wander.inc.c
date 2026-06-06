@@ -32,5 +32,5 @@ NpcSettings N(NpcSettings_Paragoomba_Wander) = {
     .doAI = &N(EVS_NpcAI_Paragoomba_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
-    .actionFlags = AI_ACTION_CANT_FIRST_STRIKE,
+    .actionFlags = AI_ACTION_NO_FIRST_STRIKE,
 };

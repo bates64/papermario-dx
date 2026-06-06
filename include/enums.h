@@ -3464,9 +3464,6 @@ enum EnemyAnimIndices {
     ENEMY_ANIM_INDEX_05           = 5,
     ENEMY_ANIM_INDEX_DEATH        = 6,
     ENEMY_ANIM_INDEX_HIT          = 7,
-    ENEMY_ANIM_INDEX_MELEE_PRE    = 8, //TODO these are probably AI-specific
-    ENEMY_ANIM_INDEX_MELEE_HIT    = 9, //TODO these are probably AI-specific
-    ENEMY_ANIM_INDEX_TACKLE_POST  = 10, //TODO these are probably AI-specific
 };
 
 enum AnyEnemyAnims {
@@ -4149,15 +4146,6 @@ enum EnemyFlags {
     | ENEMY_FLAG_ENABLE_HIT_SCRIPT \
     )
 
-#define ENEMY_INTANGIBLE_FLAGS \
-    ( ENEMY_FLAG_SKIP_BATTLE \
-    | ENEMY_FLAG_CANT_INTERACT \
-    | ENEMY_FLAG_IGNORE_TOUCH \
-    | ENEMY_FLAG_IGNORE_JUMP \
-    | ENEMY_FLAG_IGNORE_HAMMER \
-    | ENEMY_FLAG_IGNORE_PARTNER \
-    )
-
 // used with enemy->aiFlags
 enum EnemyAIFlags {
     AI_FLAG_1                           = 0x00000001,
@@ -4167,49 +4155,12 @@ enum EnemyAIFlags {
     AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE   = 0x00000010,
     AI_FLAG_OUTSIDE_TERRITORY           = 0x00000020,
     AI_FLAG_NEEDS_HEADING               = 0x00000040,
-    AI_FLAG_80                          = 0x00000080,
-};
-
-enum EnemyAIStates {
-    // basic states
-    AI_STATE_WANDER_INIT            = 0,
-    AI_STATE_WANDER                 = 1,
-    AI_STATE_PATROL_INIT            = 0,
-    AI_STATE_PATROL                 = 1,
-    AI_STATE_HOP_INIT               = 0,
-    AI_STATE_HOP                    = 1,
-    AI_STATE_LOITER_INIT            = 2,
-    AI_STATE_LOITER                 = 3,
-    AI_STATE_LOITER_POST            = 4,
-    AI_STATE_ALERT_INIT             = 10,
-    AI_STATE_ALERT                  = 11,
-    AI_STATE_CHASE_INIT             = 12,
-    AI_STATE_CHASE                  = 13,
-    AI_STATE_LOSE_PLAYER            = 14,
-    AI_STATE_PATROL_RESUME          = 15,
-    AI_RETURN_HOME_INIT             = 40,
-    AI_RETURN_HOME                  = 41,
-    AI_STATE_SUSPEND                = 99,
-    // melee attacks
-    AI_STATE_MELEE_ATTACK_INIT      = 30,
-    AI_STATE_MELEE_ATTACK_PRE       = 31,
-    AI_STATE_MELEE_ATTACK_SWING     = 32,
-    AI_STATE_MELEE_ATTACK_POST      = 33,
-    // ranged attacks
-    AI_STATE_RANGED_ATTACK_30       = 30,
-    AI_STATE_RANGED_ATTACK_31       = 31,
-    AI_STATE_RANGED_ATTACK_32       = 32,
-    AI_STATE_RANGED_ATTACK_33       = 33,
-    // tackle ai
-    AI_STATE_TACKLE_INIT            = 12,
-    AI_STATE_PRE_TACKLE             = 13,
-    AI_STATE_TACKLE                 = 14,
-    AI_STATE_POST_TACKLE            = 15,
+    AI_FLAG_CAN_RESUME_PATROL           = 0x00000080,
 };
 
 enum EnemyActionFlags {
     AI_ACTION_JUMP_WHEN_SEE_PLAYER          = 0x01, // enemy hops when detecting the player
-    AI_ACTION_CANT_FIRST_STRIKE             = 0x02, // only implemented for flying enemy AI
+    AI_ACTION_NO_FIRST_STRIKE               = 0x02, // prevents enemy from first-striking; only implemented for flying enemy AI
     AI_ACTION_CHASE_REQUIRES_PATH           = 0x04, // enemy will only continue chasing the player while an unobstructed path to the player exists
     AI_ACTION_NO_SPIN_REACTION              = 0x08, // enemy will not spin around when a battle is initiated with the player's spin move
     AI_ACTION_LOOK_AROUND_DURING_LOITER     = 0x10, // enemy will randomly look left and right while loitering
@@ -4334,7 +4285,7 @@ enum CameraUpdateMode {
     // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
     CAM_UPDATE_UNUSED_RADIAL        = 1,
 
-    // this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+    // this camera tracks targetPos, clamped within the rectangular region given by ± xLimit and ± zLimit
     // y-position is drawn from lookAt_obj_target
     // does not use easing or interpolation
     CAM_UPDATE_UNUSED_CONFINED      = 4,

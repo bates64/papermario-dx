@@ -5,6 +5,16 @@
 #include "npc.h"
 #include "world/ai.h"
 
+enum HoppingAiVars {
+    AI_VAR_HOPPING_KIND         = 10, // type of hopper (unused)
+};
+
+enum HoppingEnemyType {
+    HOPPING_KIND_FUZZY          = 0,
+    HOPPING_KIND_FOREST_FUZZY   = 1,
+    HOPPING_KIND_JUNGLE_FUZZY   = 2,
+};
+
 void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
@@ -17,12 +27,7 @@ void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     npc->jumpScale = 1.5f;
     ai_enemy_play_sound(npc, SOUND_SEQ_FUZZY_HOP, 0);
 
-    if (is_point_outside_territory(enemy->territory->wander.wanderShape,
-                               enemy->territory->wander.centerPos.x,
-                               enemy->territory->wander.centerPos.z,
-                               npc->pos.x, npc->pos.z,
-                               enemy->territory->wander.wanderSize.x, enemy->territory->wander.wanderSize.z))
-    {
+    if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
         x = npc->pos.x;
         y = npc->pos.y;
@@ -30,8 +35,8 @@ void N(HoppingAI_HopInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 
         for (i = 0; i < 6; i++) {
             if (npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, 25.0f,
-                                                   npc->yaw, npc->collisionHeight, npc->collisionDiameter))
-            {
+                npc->yaw, npc->collisionHeight, npc->collisionDiameter)
+            ) {
                 npc->yaw += 30.0;
             } else {
                 break;
@@ -98,11 +103,7 @@ void N(HoppingAI_Hop)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
 
-            if (aiSettings->loiterMode <= 0) {
-                script->AI_TEMP_STATE = AI_STATE_HOP_INIT;
-            } else if (aiSettings->moveTime <= 0) {
-                script->AI_TEMP_STATE = AI_STATE_HOP_INIT;
-            } else if (script->functionTemp[1] == 0) {
+            if (aiSettings->loiterMode <= 0 || aiSettings->moveTime <= 0 || script->functionTemp[1] == 0) {
                 script->AI_TEMP_STATE = AI_STATE_HOP_INIT;
             }
             return;
@@ -224,7 +225,6 @@ API_CALLABLE(N(HoppingAI_Main)) {
     EnemyDetectVolume territory;
     EnemyDetectVolume* territoryPtr;
 
-    enemy->varTable[10] = evt_get_variable(script, *args++);
     territory.skipPlayerDetectChance = 0;
     territory.shape = enemy->territory->wander.detectShape;
     territory.pointX = enemy->territory->wander.detectPos.x;
@@ -237,8 +237,8 @@ API_CALLABLE(N(HoppingAI_Main)) {
 
     if (isInitialCall) {
         script->AI_TEMP_STATE = AI_STATE_HOP_INIT;
-        npc->duration = 0;
         script->functionTemp[1] = 0;
+        npc->duration = 0;
         npc->flags &= ~NPC_FLAG_JUMPING;
         npc->flags &= ~NPC_FLAG_GRAVITY;
         npc->flags |= NPC_FLAG_FLYING;

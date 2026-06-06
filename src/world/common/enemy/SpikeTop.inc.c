@@ -16,10 +16,10 @@ MobileAISettings N(AISettings_BuzzyBeetle) = {
 };
 
 EvtScript N(EVS_NpcAI_BuzzyBeetle) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 2)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 5)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BUZZY_BEETLE)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle)))
     Return
     End
@@ -39,10 +39,10 @@ MobileAISettings N(AISettings_SpikeTop) = {
 };
 
 EvtScript N(EVS_NpcAI_SpikeTop) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 4)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 10)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 4)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_SPIKE_TOP)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 4)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 10)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 4)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPIKE_TOP)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_SpikeTop)))
     Return
     End
@@ -60,10 +60,10 @@ MobileAISettings N(AISettings_BonyBeetle) = {
 };
 
 EvtScript N(EVS_NpcAI_BonyBeetle) = {
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 3)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 8)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 6)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BONY_BEETLE)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 8)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 6)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BONY_BEETLE)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_BonyBeetle)))
     Return
     End
@@ -115,10 +115,10 @@ EvtScript N(EVS_NpcAI_BuzzyBeetle_Ceiling) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_BuzzyBeetle_Anim00)
     Call(N(BuzzyBeetle_AwaitLanding))
     Call(EnemyEnableFirstStrike, false)
-    Call(SetSelfVar, AI_TACKLE_VAR_PRE_DELAY, 5)
-    Call(SetSelfVar, AI_TACKLE_VAR_MIN_CHASE_TIME, 2)
-    Call(SetSelfVar, AI_TACKLE_VAR_POST_DELAY, 5)
-    Call(SetSelfVar, AI_TACKLE_VAR_TYPE, TACKLER_BUZZY_BEETLE)
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 2)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 5)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_BUZZY_BEETLE)
     Call(N(TackleWanderAI_Main), Ref(N(AISettings_BuzzyBeetle)))
     Return
     End

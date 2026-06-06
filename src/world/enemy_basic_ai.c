@@ -120,6 +120,24 @@ b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, 
     }
 }
 
+ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ) {
+    return is_point_outside_territory(
+        wander->wanderShape,
+        wander->centerPos.x, wander->centerPos.z,
+        pointX, pointZ,
+        wander->wanderSize.x, wander->wanderSize.z
+    );
+}
+
+ALWAYS_INLINE b32 is_point_outside_detect_territory(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
+    return is_point_outside_territory(
+        detect->shape,
+        detect->pointX, detect->pointZ,
+        pointX, pointZ,
+        detect->sizeX, detect->sizeZ
+    );
+}
+
 b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
@@ -618,7 +636,7 @@ API_CALLABLE(BasicAI_Main) {
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
-
+            // fallthrough
         case AI_STATE_LOSE_PLAYER:
             basic_ai_lose_player(script, aiSettings, &territory);
             break;

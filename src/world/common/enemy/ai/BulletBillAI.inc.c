@@ -20,6 +20,10 @@ enum BulletAiVars {
     AI_VAR_BULLET_RANGE         = 2, // limiting x position of bullets
 };
 
+enum BulletAiAnims {
+    AI_ANIM_BULLET_8            = 8,
+};
+
 enum BlasterAiStates {
     AI_STATE_BLASTER_INIT       = 0,
     AI_STATE_BLASTER_PREPARE    = 10,
@@ -212,7 +216,7 @@ API_CALLABLE(N(BillBlasterAI_Main)) {
                 bulletEnemy->varTable[AI_VAR_BULLET_STATUS] = BULLET_STATUS_RESERVED;
                 bulletEnemy->varTable[AI_VAR_BULLET_PARENT] = enemy->npcID;
                 bulletEnemy->varTable[AI_VAR_BULLET_RANGE] = enemy->varTable[AI_VAR_BLASTER_RANGE];
-                npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
+                npc->curAnim = enemy->animList[AI_ANIM_BULLET_8];
                 npc->duration = 10;
                 script->AI_TEMP_STATE = AI_STATE_BLASTER_FIRE;
             } else {

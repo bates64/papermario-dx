@@ -985,7 +985,7 @@ void npc_move_heading(Npc* npc, f32 speed, f32 yaw) {
     f32 cos = cos_rad(angle);
 
     npc->pos.x += speed * sin;
-    npc->pos.z += -speed * cos;
+    npc->pos.z -= speed * cos;
 }
 
 Npc* get_npc_unsafe(s32 npcID) {

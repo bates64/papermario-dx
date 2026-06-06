@@ -1,7 +1,7 @@
 #include "dgb_01.h"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
-#define AI_SENTINEL_LAST_NPC  NPC_Tubba
+#define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
 #include "world/common/enemy/Sentinel.inc.c"
 
 #include "world/common/enemy/Clubba.h"

@@ -5,47 +5,67 @@
 #include "npc.h"
 #include "world/ai.h"
 
+#define MISSILE_INTANGIBLE_FLAGS \
+    ( ENEMY_FLAG_CANT_INTERACT \
+    | ENEMY_FLAG_IGNORE_TOUCH \
+    | ENEMY_FLAG_IGNORE_JUMP \
+    | ENEMY_FLAG_IGNORE_HAMMER \
+    | ENEMY_FLAG_IGNORE_PARTNER \
+    )
+
+enum RangedAttackerAiStates {
+    AI_STATE_RANGED_ATTACK_FIRE     = 30,
+    AI_STATE_RANGED_ATTACK_CANCEL   = 31, // unused
+    AI_STATE_RANGED_ATTACK_AWAIT    = 32, // unused and buggy (only respects first ammo)
+    AI_STATE_RANGED_ATTACK_COOLDOWN = 33, // delay after losing target or finishing an attack
+};
+
 enum RangedAttackerAiVars {
-    AI_VAR_RANGED_0                 = 0,
+    AI_VAR_RANGED_MIN_DIST          = 0,
     AI_VAR_RANGED_PRE_TIME          = 1,
     AI_VAR_RANGED_POST_TIME         = 2,
     AI_VAR_RANGED_AMMO_COUNT        = 3,
 };
 
+enum RangedAttackerAiAnims {
+    AI_ANIM_RANGED_DRAW             = 8,
+    AI_ANIM_RANGED_FIRE             = 9,
+};
+
 enum MissileAiStates {
-    AI_STATE_MISSLE_0           = 0,
-    AI_STATE_MISSLE_1           = 1,
-    AI_STATE_MISSLE_2           = 2,
+    AI_STATE_MISSILE_INIT            = 0,
+    AI_STATE_MISSILE_READY           = 1,
+    AI_STATE_MISSILE_FIRED           = 2,
 };
 
 enum MissileAiVars {
-    AI_VAR_MISSILE_STATUS       = 0,
-    AI_VAR_MISSILE_FLAGS        = 1,
-    AI_VAR_MISSILE_2            = 2,
-    AI_VAR_MISSILE_3            = 3,
-    AI_VAR_MISSILE_OWNER        = 4,
+    AI_VAR_MISSILE_STATUS           = 0, // see: MissileStatus
+    AI_VAR_MISSILE_FLAGS            = 1, // see: MissileAiFlags
+    AI_VAR_MISSILE_SPAWN_Y          = 2, // additional y-offset from parent npc when spawned
+    AI_VAR_MISSILE_SPAWN_R          = 3, // additional radial offset from parent npc when spawned
+    AI_VAR_MISSILE_OWNER            = 4, // npcID which fired this missile
 };
 
 enum MissileAiFlags {
-    AI_MISSILE_FLAG_SPINNING    = 0x1,
-    AI_MISSILE_FLAG_2           = 0x2,
+    AI_MISSILE_FLAG_SPINNING        = 0x1,
+    AI_MISSILE_FLAG_CENTERED        = 0x2,
 };
 
 enum MissileStatus {
-    MISSILE_STATUS_IDLE         = 0, // bullet is unoccupied and ready to be fired
-    MISSILE_STATUS_1            = 1, // reserved?
-    MISSILE_STATUS_2            = 2,
-    MISSILE_STATUS_3            = 3,
-    MISSILE_STATUS_5            = 5,
+    MISSILE_STATUS_IDLE             = 0, // missile is unoccupied and ready to be fired
+    MISSILE_STATUS_REQUESTED        = 1, // launch requested by attacker
+    MISSILE_STATUS_ACTIVE           = 2, // missile is moving through the air
+    MISSILE_STATUS_REFLECTING       = 3, // bounced by the player
+    MISSILE_STATUS_DESTROYED        = 4, // destroyed by player
+    MISSILE_STATUS_DONE             = 5,
 };
 
 enum MissileReflectAiStates {
-    AI_STATE_MISSLE_REFLECT_0           = 0,
-    AI_STATE_MISSLE_REFLECT_1           = 1,
-    AI_STATE_MISSLE_REFLECT_2           = 2,
+    AI_STATE_MISSILE_REFLECT_INIT   = 0,
+    AI_STATE_MISSILE_REFLECT_ACTIVE = 1,
 };
 
-s32 N(ProjectileHitbox_GetUsableProjectileID)(Evt* script) {
+s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[gCurrentCamID];
@@ -85,20 +105,20 @@ s32 N(ProjectileHitbox_GetUsableProjectileID)(Evt* script) {
 
         // choose the first idle projectile hitbox
         for (i = 0; i < enemy->varTable[AI_VAR_RANGED_AMMO_COUNT]; i++) {
-            s32 projectileNpcID = enemy->npcID + i + 1;
-            Enemy* projectileEnemy = get_enemy(projectileNpcID);
+            s32 missileNpcID = enemy->npcID + i + 1;
+            Enemy* missile = get_enemy(missileNpcID);
 
-            get_npc_unsafe(projectileNpcID);
+            get_npc_unsafe(missileNpcID);
 
-            if (projectileEnemy->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE) {
-                return projectileNpcID;
+            if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE) {
+                return missileNpcID;
             }
         }
     }
     return -1;
 }
 
-void N(UnkNpcAIFunc48)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* territory) {
+void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -106,67 +126,66 @@ void N(UnkNpcAIFunc48)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* t
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
-        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_33;
+        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
     } else {
-        s32 npcID = N(ProjectileHitbox_GetUsableProjectileID)(script);
+        s32 npcID = N(RangedAttack_GetUsableMissileID)(script);
 
         if (npcID >= 0
             && get_enemy(npcID)->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE
             && npc->turnAroundYawAdjustment == 0
         ) {
-            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_PRE];
+            npc->curAnim = enemy->animList[AI_ANIM_RANGED_DRAW];
             npc->duration = enemy->varTable[AI_VAR_RANGED_PRE_TIME];
-            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_30;
+            script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_FIRE;
         }
     }
 }
 
-void N(ProjectileHitbox_30)(Evt* script) {
+void N(RangedAttack_Fire)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    Enemy* missileEnemy;
+    Enemy* missile;
     s32 npcID;
 
     npc->duration--;
     if (npc->duration <= 0) {
-        npcID = N(ProjectileHitbox_GetUsableProjectileID)(script);
+        npcID = N(RangedAttack_GetUsableMissileID)(script);
         if (npcID < 0) {
             fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         } else {
-            npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_MELEE_HIT];
-            missileEnemy = get_enemy(npcID);
-            missileEnemy->varTable[AI_VAR_MISSILE_OWNER] = enemy->npcID;
-            missileEnemy->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_1;
+            missile = get_enemy(npcID);
+            missile->varTable[AI_VAR_MISSILE_OWNER] = enemy->npcID;
+            missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_REQUESTED;
+            npc->curAnim = enemy->animList[AI_ANIM_RANGED_FIRE];
         }
         npc->duration = enemy->varTable[AI_VAR_RANGED_POST_TIME];
-        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_33;
+        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
     }
 }
 
-void N(ProjectileHitbox_31)(Evt* script) {
+void N(RangedAttack_Cancel)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
 
     get_npc_unsafe(enemy->npcID)->duration = enemy->varTable[AI_VAR_RANGED_POST_TIME];
-    script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_33;
+    script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
 }
 
-void N(ProjectileHitbox_32)(Evt* script) {
+void N(RangedAttack_Await)(Evt* script) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    Enemy* missileEnemy = get_enemy(enemy->npcID + 1);
-    Npc* missileNpc = get_npc_unsafe(missileEnemy->npcID);
+    Enemy* missile = get_enemy(enemy->npcID + 1);
+    Npc* missileNpc = get_npc_unsafe(missile->npcID);
 
     npc->yaw = atan2(npc->pos.x, npc->pos.z, missileNpc->pos.x, missileNpc->pos.z);
-    if (missileEnemy->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE) {
+    if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_IDLE) {
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = enemy->varTable[AI_VAR_RANGED_POST_TIME];
-        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_33;
+        script->AI_TEMP_STATE = AI_STATE_RANGED_ATTACK_COOLDOWN;
     }
 }
 
-// TODO same as ParatroopaAI_Reset, but removes the extra args since it affects codegen...?
-void N(ProjectileHitbox_33)(Evt* script) {
+void N(RangedAttack_Cooldown)(Evt* script) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->duration--;
@@ -175,10 +194,18 @@ void N(ProjectileHitbox_33)(Evt* script) {
     }
 }
 
-API_CALLABLE(N(ProjectileAI_Main)) {
+enum MissileStopReason {
+    MISSILE_STOP_NONE                = 0,
+    MISSILE_STOP_HIT_WALL            = 1,
+    MISSILE_STOP_HIT_GROUND          = 10,
+    MISSILE_STOP_NEAR_FLOOR          = 11,
+    MISSILE_STOP_TIMEOUT             = 20,
+};
+
+API_CALLABLE(N(MissileAI_Main)) {
     Enemy* missile = script->owner1.enemy;
     Bytecode* args = script->ptrReadPos;
-    s32 phi_s6 = 0;
+    s32 stopReason = MISSILE_STOP_NONE;
     f32 x, y, z;
     f32 hitDepth;
     Npc* npc;
@@ -189,19 +216,19 @@ API_CALLABLE(N(ProjectileAI_Main)) {
         return ApiStatus_BLOCK;
     }
 
-    if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_5) {
+    if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_DONE) {
         return ApiStatus_BLOCK;
     }
 
     aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
     npc = get_npc_unsafe(missile->npcID);
 
-    if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_2) {
+    if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_CENTERED) {
         npc->verticalRenderOffset = npc->collisionHeight / 2;
     }
 
     if (isInitialCall || (missile->aiFlags & AI_FLAG_SUSPEND)) {
-        script->AI_TEMP_STATE = AI_STATE_MISSLE_0;
+        script->AI_TEMP_STATE = AI_STATE_MISSILE_INIT;
         npc->duration = 0;
         npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_INVISIBLE;
         disable_npc_shadow(npc);
@@ -215,52 +242,54 @@ API_CALLABLE(N(ProjectileAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_MISSLE_0:
+        case AI_STATE_MISSILE_INIT:
             npc->flags |= NPC_FLAG_INVISIBLE;
             disable_npc_shadow(npc);
             missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_IDLE;
-            script->AI_TEMP_STATE = AI_STATE_MISSLE_1;
+            script->AI_TEMP_STATE = AI_STATE_MISSILE_READY;
             // fallthrough
-        case AI_STATE_MISSLE_1:
-            if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_1) {
-                missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_2;
-                parentNpc = get_npc_unsafe(missile->varTable[AI_VAR_MISSILE_OWNER]);
-                npc->pos.x = parentNpc->pos.x;
-                npc->pos.y = parentNpc->pos.y + missile->varTable[AI_VAR_MISSILE_2];
-                npc->pos.z = parentNpc->pos.z;
-                add_vec2D_polar(&npc->pos.x, &npc->pos.z, missile->varTable[AI_VAR_MISSILE_3], 270.0f - parentNpc->renderYaw);
-                missile->firstStrikeActive = true;
-                missile->attackOriginPos.x = npc->pos.x;
-                missile->attackOriginPos.y = npc->pos.y;
-                missile->attackOriginPos.z = npc->pos.z;
-                npc->rot.x = 0.0f;
-                npc->rot.y = 0.0f;
-                npc->rot.z = 0.0f;
-                npc->moveSpeed = aiSettings->moveSpeed;
-                npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-                npc->jumpVel = aiSettings->alertRadius;
-                npc->jumpScale = aiSettings->alertOffsetDist;
-                npc->moveToPos.y = parentNpc->pos.y;
-                npc->flags &= ~NPC_FLAG_INVISIBLE;
-                enable_npc_shadow(npc);
-                npc->flags |= NPC_FLAG_JUMPING;
-                missile->flags &= ~(ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
-                                    ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH);
-                npc->duration = 90;
-                script->AI_TEMP_STATE = AI_STATE_MISSLE_2;
+        case AI_STATE_MISSILE_READY:
+            // wait for a launch request
+            if (missile->varTable[AI_VAR_MISSILE_STATUS] != MISSILE_STATUS_REQUESTED) {
                 break;
             }
+            missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_ACTIVE;
+            parentNpc = get_npc_unsafe(missile->varTable[AI_VAR_MISSILE_OWNER]);
+            npc->pos.x = parentNpc->pos.x;
+            npc->pos.y = parentNpc->pos.y + missile->varTable[AI_VAR_MISSILE_SPAWN_Y];
+            npc->pos.z = parentNpc->pos.z;
+            add_vec2D_polar(&npc->pos.x, &npc->pos.z, missile->varTable[AI_VAR_MISSILE_SPAWN_R], 270.0f - parentNpc->renderYaw);
+            missile->firstStrikeActive = true;
+            missile->attackOriginPos.x = npc->pos.x;
+            missile->attackOriginPos.y = npc->pos.y;
+            missile->attackOriginPos.z = npc->pos.z;
+            npc->rot.x = 0.0f;
+            npc->rot.y = 0.0f;
+            npc->rot.z = 0.0f;
+            npc->moveSpeed = aiSettings->moveSpeed;
+            npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+            npc->jumpVel = aiSettings->alertRadius;
+            npc->jumpScale = aiSettings->alertOffsetDist;
+            npc->moveToPos.y = parentNpc->pos.y;
+            npc->flags &= ~NPC_FLAG_INVISIBLE;
+            enable_npc_shadow(npc);
+            npc->flags |= NPC_FLAG_JUMPING;
+            missile->flags &= ~MISSILE_INTANGIBLE_FLAGS;
+            npc->duration = 90;
+            script->AI_TEMP_STATE = AI_STATE_MISSILE_FIRED;
             break;
-        case AI_STATE_MISSLE_2:
+        case AI_STATE_MISSILE_FIRED:
+            // test forward motion
             x = npc->pos.x;
             y = npc->pos.y + (npc->collisionHeight * 0.5);
             z = npc->pos.z;
-            if (npc_test_move_taller_with_slipping(
-                0, &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight))
-            {
-                phi_s6 = 1;
+            if (npc_test_move_taller_with_slipping(0, &x, &y, &z,
+                npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight)
+            ) {
+                stopReason = MISSILE_STOP_HIT_WALL;
             }
 
+            // test vertical motion
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
@@ -271,18 +300,20 @@ API_CALLABLE(N(ProjectileAI_Main)) {
             ) {
                 npc->pos.y = y;
                 npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-                phi_s6 = 10;
+                stopReason = MISSILE_STOP_HIT_GROUND;
             }
 
+            // very close to floor?
             if (hitDepth < 1.0) {
-                phi_s6 = 11;
+                stopReason = MISSILE_STOP_NEAR_FLOOR;
             }
+
             npc->duration--;
             if (npc->duration <= 0) {
-                phi_s6 = 20;
+                stopReason = MISSILE_STOP_TIMEOUT;
             }
 
-            if (phi_s6 == 0) {
+            if (stopReason == MISSILE_STOP_NONE) {
                 if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_SPINNING) {
                     npc->rot.z += 40.0;
                 }
@@ -299,45 +330,54 @@ API_CALLABLE(N(ProjectileAI_Main)) {
                 npc->flags |= NPC_FLAG_INVISIBLE;
                 disable_npc_shadow(npc);
                 npc->flags &= ~NPC_FLAG_JUMPING;
-                missile->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
-                                ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH;
-                script->AI_TEMP_STATE = AI_STATE_MISSLE_0;
+                missile->flags |= MISSILE_INTANGIBLE_FLAGS;
+                script->AI_TEMP_STATE = AI_STATE_MISSILE_INIT;
             }
             break;
     }
     return ApiStatus_BLOCK;
 }
 
-API_CALLABLE(N(ProjectileAI_Reflect)) {
-    Enemy* missileEnemy = script->owner1.enemy;
+enum ReflectEndReason {
+    REFLECT_STOP_NONE                = 0,
+    REFLECT_STOP_HIT_WALL            = 1,
+    REFLECT_STOP_HIT_GROUND          = 10,
+    REFLECT_STOP_NEAR_FLOOR          = 11,
+    REFLECT_STOP_TIMEOUT             = 20,
+};
+
+API_CALLABLE(N(MissileAI_Reflect)) {
+    Enemy* missile = script->owner1.enemy;
     Camera* camera = &gCameras[gCurrentCamID];
-    s32 phi_s4 = 0;
+    s32 stopReason = REFLECT_STOP_NONE;
     Npc* npc;
     f32 x, y, z;
     f32 hitDepth;
     f32 yaw;
-    s32 cond;
+    b32 hitGround;
 
     if (isInitialCall) {
-        script->AI_TEMP_STATE = AI_STATE_MISSLE_REFLECT_0;
+        script->AI_TEMP_STATE = AI_STATE_MISSILE_REFLECT_INIT;
     }
 
-    if (get_enemy_safe(missileEnemy->npcID) == nullptr) {
-        evt_set_variable(script, LVar0, 0);
-        return ApiStatus_DONE2;
-    }
-    if (missileEnemy->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_5) {
-        evt_set_variable(script, LVar0, 0);
-        return ApiStatus_DONE2;
-    }
-    if (get_enemy_safe(missileEnemy->npcID) == nullptr) {
-        evt_set_variable(script, LVar0, 0);
+    if (get_enemy_safe(missile->npcID) == nullptr) {
+        evt_set_variable(script, LVar0, false);
         return ApiStatus_DONE2;
     }
 
-    npc = get_npc_unsafe(missileEnemy->npcID);
+    if (missile->varTable[AI_VAR_MISSILE_STATUS] == MISSILE_STATUS_DONE) {
+        evt_set_variable(script, LVar0, false);
+        return ApiStatus_DONE2;
+    }
+
+    if (get_enemy_safe(missile->npcID) == nullptr) {
+        evt_set_variable(script, LVar0, false);
+        return ApiStatus_DONE2;
+    }
+
+    npc = get_npc_unsafe(missile->npcID);
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_MISSLE_REFLECT_0:
+        case AI_STATE_MISSILE_REFLECT_INIT:
             fx_walking_dust(2, npc->pos.x, npc->pos.y, npc->pos.z, 0.0f, 0.0f);
             yaw = clamp_angle(camera->curYaw);
             if (clamp_angle(get_clamped_angle_diff(camera->curYaw, gPlayerStatusPtr->curYaw)) < 180.0) {
@@ -349,64 +389,71 @@ API_CALLABLE(N(ProjectileAI_Reflect)) {
             npc->jumpVel = 10.0f;
             npc->jumpScale = 0.9f;
             npc->moveSpeed *= 1.2;
-            script->AI_TEMP_STATE = AI_STATE_MISSLE_REFLECT_1;
+            script->AI_TEMP_STATE = AI_STATE_MISSILE_REFLECT_ACTIVE;
             // fallthrough
-        case AI_STATE_MISSLE_REFLECT_1:
+        case AI_STATE_MISSILE_REFLECT_ACTIVE:
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
-            if (!npc_test_move_simple_with_slipping(0,
-                &x, &y, &z, npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight)
+            if (npc_test_move_simple_with_slipping(0, &x, &y, &z,
+                npc->moveSpeed, npc->yaw, npc->collisionDiameter, npc->collisionHeight)
             ) {
-                npc_move_heading(npc, npc->moveSpeed, npc->yaw);
+                stopReason = REFLECT_STOP_HIT_WALL;
             } else {
-                phi_s4 = 1;
+                npc_move_heading(npc, npc->moveSpeed, npc->yaw);
             }
 
-            cond = false;
+            hitGround = false;
             if (npc->jumpVel < 0.0) {
                 x = npc->pos.x;
                 y = npc->pos.y + 13.0;
                 z = npc->pos.z;
                 hitDepth = fabsf(npc->jumpVel) + 16.0;
-                if ((npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth) != 0) &&
-                    (hitDepth <= (fabsf(npc->jumpVel) + 13.0)))
-                {
-                    cond = true;
+                if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth)
+                    && (hitDepth <= (fabsf(npc->jumpVel) + 13.0))
+                ) {
+                    hitGround = true;
                 }
             }
 
-            if (!cond) {
+            if (hitGround) {
+                stopReason = REFLECT_STOP_HIT_GROUND;
+            } else {
                 npc->pos.y += npc->jumpVel;
                 npc->jumpVel -= npc->jumpScale;
-            } else {
-                phi_s4 = 10;
             }
 
             npc->duration--;
             if (npc->duration <= 0) {
-                phi_s4 = 11;
+                stopReason = REFLECT_STOP_TIMEOUT;
             }
 
-            if (phi_s4 != 0) {
+            if (stopReason != REFLECT_STOP_NONE) {
                 fx_walking_dust(2, npc->pos.x, npc->pos.y, npc->pos.z, 0, 0);
-                missileEnemy->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_IDLE;
+                missile->varTable[AI_VAR_MISSILE_STATUS] = MISSILE_STATUS_IDLE;
                 npc->pos.x = NPC_DISPOSE_POS_X;
                 npc->pos.y = NPC_DISPOSE_POS_Y;
                 npc->pos.z = NPC_DISPOSE_POS_Z;
                 npc->flags |= NPC_FLAG_INVISIBLE;
                 disable_npc_shadow(npc);
                 npc->flags &= ~NPC_FLAG_JUMPING;
-                missileEnemy->flags |= ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_HAMMER |
-                                ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_TOUCH;
-                script->AI_TEMP_STATE = AI_STATE_MISSLE_REFLECT_0;
-                evt_set_variable(script, LVar0, 1);
+                missile->flags |= MISSILE_INTANGIBLE_FLAGS;
+                script->AI_TEMP_STATE = AI_STATE_MISSILE_REFLECT_INIT;
+                evt_set_variable(script, LVar0, true);
                 return ApiStatus_DONE2;
             }
-            if (missileEnemy->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_SPINNING) {
+
+            if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_SPINNING) {
                 npc->rot.z += 60.0;
             }
             break;
     }
     return ApiStatus_BLOCK;
+}
+
+API_CALLABLE(N(GetEncounterEnemyIsOwner)) {
+    Enemy* enemy = script->owner1.enemy;
+
+    evt_set_variable(script, LVar0, gCurrentEncounter.curEnemy == enemy);
+    return ApiStatus_DONE2;
 }

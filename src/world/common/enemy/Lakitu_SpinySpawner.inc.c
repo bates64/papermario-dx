@@ -19,13 +19,10 @@ MobileAISettings N(AISettings_Lakitu_SpinySpawner) = {
 };
 
 EvtScript N(EVS_NpcAI_Lakitu_SpinySpawner) = {
-    #ifdef DEBUG_LAKITU
-    EVT_DEBUG_LOG(Ref("JUGEMU MOVE"))
-    #endif
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 5, -650)
-    Call(SetSelfVar, 6, 30)
-    Call(SetSelfVar, 1, 400)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(4.0))
     Call(N(LakituAI_Main), Ref(N(AISettings_Lakitu_SpinySpawner)))
     Return
     End
@@ -56,13 +53,10 @@ MobileAISettings N(AISettings_SpawnedSpiny) = {
 };
 
 EvtScript N(EVS_NpcAI_SpawnedSpiny) = {
-    Call(SetSelfVar, 2, 3)
-    Call(SetSelfVar, 3, 18)
-    Call(SetSelfVar, 5, 3)
-    Call(SetSelfVar, 7, 4)
-    #ifdef DEBUG_LAKITU
-    EVT_DEBUG_LOG(Ref("TOGEZO TYPE1 : NORMAL MOVE"))
-    #endif
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
     Call(N(SpinyAI_Main), Ref(N(AISettings_SpawnedSpiny)))
     Return
     End
@@ -73,7 +67,7 @@ EvtScript N(EVS_NpcDefeat_SpawnedSpiny) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetSelfVar, 10, 100)
+            Call(SetSelfVar, AI_VAR_SPINY_STATUS, SPINY_STATUS_RESET)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(OnPlayerFled, false)

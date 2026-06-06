@@ -283,9 +283,6 @@ typedef struct NpcGroup {
 
 typedef NpcGroup NpcGroupList[];
 
-// function signature used for state handlers in AI main functions
-typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* territory);
-
 typedef struct Enemy {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s8 encounterIndex;
@@ -392,8 +389,6 @@ typedef struct EncounterStatus {
 } EncounterStatus; // size = 0xBF4
 
 extern EncounterStatus gCurrentEncounter;
-
-b32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
 
 /// The default Npc::onUpdate and Npc::onRender callback.
 void STUB_npc_callback(Npc*);

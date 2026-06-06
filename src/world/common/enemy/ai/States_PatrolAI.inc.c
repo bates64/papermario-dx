@@ -5,30 +5,30 @@
 #include "npc.h"
 #include "world/ai.h"
 
-#define AI_PATROL_GOAL_INDEX           functionTemp[2]
+#define AI_PATROL_GOAL_INDEX    functionTemp[2]
 
-// selects the next patrol point
 void N(PatrolAI_MoveInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 dist;
-    f32 max;
+    f32 nearest;
     f32 posX, posZ;
     s32 pointX, pointZ;
     s32 i;
 
-    script->functionTemp[1] = 0;
-    max = 32767.0f;
+    nearest = 32767.0f;
     posX = npc->pos.x;
     posZ = npc->pos.z;
+    script->functionTemp[1] = 0;
     script->AI_PATROL_GOAL_INDEX = 0;
 
+    // select the next patrol point
     for (i = 0; i < enemy->territory->patrol.numPoints; i++) {
         pointX = enemy->territory->patrol.points[i].x;
         pointZ = enemy->territory->patrol.points[i].z;
         dist = dist2D(posX, posZ, pointX, pointZ);
-        if (dist < max) {
-            max = dist;
+        if (dist < nearest) {
+            nearest = dist;
             script->AI_PATROL_GOAL_INDEX = i;
         }
     }
@@ -78,8 +78,7 @@ void N(PatrolAI_Move)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolu
         if (dist2D(npc->pos.x, npc->pos.z, x, z) <= npc->moveSpeed) {
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = (rand_int(1000) % 3) + 2;
-            if ((aiSettings->loiterMode <= 0) || (aiSettings->moveTime <= 0) ||
-                (aiSettings->waitTime <= 0) || (script->functionTemp[1] == 0)) {
+            if ((aiSettings->loiterMode <= 0) || (aiSettings->moveTime <= 0) || (aiSettings->waitTime <= 0)) {
                 script->AI_TEMP_STATE = AI_STATE_LOITER_POST;
             }
             if (rand_int(10000) % 100 < aiSettings->moveTime) {
@@ -137,9 +136,9 @@ void N(PatrolAI_PostLoiter)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    script->functionTemp[2]++;
-    if (script->functionTemp[2] >= enemy->territory->patrol.numPoints) {
-        script->functionTemp[2] = 0;
+    script->AI_PATROL_GOAL_INDEX++;
+    if (script->AI_PATROL_GOAL_INDEX >= enemy->territory->patrol.numPoints) {
+        script->AI_PATROL_GOAL_INDEX = 0;
     }
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_WALK];
     if (enemy->territory->patrol.moveSpeedOverride < 0) {
@@ -227,8 +226,8 @@ void N(PatrolAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration--;
-    if (npc->duration == 0) {
-        if (enemy->aiFlags & AI_FLAG_80) {
+    if (npc->duration <= 0) {
+        if (enemy->aiFlags & AI_FLAG_CAN_RESUME_PATROL) {
             script->AI_TEMP_STATE = AI_STATE_PATROL_RESUME;
         } else {
             script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;

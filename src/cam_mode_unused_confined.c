@@ -2,7 +2,7 @@
 #include "camera.h"
 
 // implements CAM_UPDATE_UNUSED_CONFINED
-// this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+// this camera tracks targetPos, clamped within the rectangular region given by ± xLimit and ± zLimit
 // y-position is drawn from lookAt_obj_target
 // does not use easing or interpolation
 // uses a boom arm, but pitch and yaw are always zero

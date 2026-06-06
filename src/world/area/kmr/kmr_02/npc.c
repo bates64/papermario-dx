@@ -22,7 +22,7 @@ BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
-API_CALLABLE(N(func_80242014_8B2084)) {
+API_CALLABLE(N(AwaitPartnerGrounded)) {
     if (get_npc_unsafe(NPC_PARTNER)->flags & NPC_FLAG_GROUNDED) {
         return ApiStatus_DONE2;
     } else {
@@ -383,7 +383,7 @@ EvtScript N(EVS_PromptForBadgeTutorial) = {
 
 EvtScript N(EVS_ReturnToVillage) = {
     Call(DisablePlayerInput, true)
-    Call(N(func_80242014_8B2084))
+    Call(N(AwaitPartnerGrounded))
     Call(DisablePartnerAI, 0)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001D)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
@@ -434,7 +434,7 @@ EvtScript N(EVS_ReturnToVillage) = {
         Call(SetPlayerSpeed, Float(3.0 / DT))
         Call(PlayerMoveTo, -238, -33, 0)
     EndThread
-    Call(N(func_80242014_8B2084))
+    Call(N(AwaitPartnerGrounded))
     Call(DisablePartnerAI, 0)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_WearyWalk)

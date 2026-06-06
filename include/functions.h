@@ -104,8 +104,6 @@ void get_msg_properties(s32 msgID, s32* height, s32* width, s32* maxLineChars, s
 void replace_window_update(s32 idx, s8 arg1, WindowUpdateFunc pendingFunc);
 void decode_yay0(void* src, void* dst);
 
-b32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed);
-
 //pause
 void pause_init(void);
 void pause_handle_input(s32 buttonsPressed, s32 buttonsHeld);
@@ -263,8 +261,6 @@ s32 count_power_plus(s32);
 
 s32 phys_can_player_interact(void);
 
-void ai_enemy_play_sound(Npc* npc, s32 arg1, s32 arg2);
-
 HitID player_test_move_without_slipping(PlayerStatus*, f32*, f32*, f32*, f32, f32, s32*);
 HitID player_test_move_with_slipping(PlayerStatus* playerStatus, f32* posX, f32* posY, f32* posZ, f32 speed, f32 heading);
 
@@ -352,7 +348,6 @@ void suspend_all_script(s32 id);
 void resume_all_script(s32 id);
 
 s32 create_shadow_type(s32 type, f32 x, f32 y, f32 z);
-b32 is_point_outside_territory(s32 shape, f32 pointX, f32 pointY, f32 centerX, f32 centerY, f32 sizeX, f32 sizeZ);
 
 b32 npc_raycast_down_around(s32, f32*, f32*, f32*, f32*, f32, f32);
 b32 npc_raycast_down_sides(s32 ignoreFlags, f32* posX, f32* posY, f32* posZ, f32* hitDepth);
@@ -694,16 +689,6 @@ void set_curtain_fade(f32 fade);
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-void basic_ai_wander_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_wander(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_loiter(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_found_player_jump_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_found_player_jump(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_chase_init(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_chase(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_lose_player(Evt* script, struct MobileAISettings* npcAISettings, struct EnemyDetectVolume* territory);
-void basic_ai_suspend(Evt* script);
-
 s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
 
 void init_entity_models(void);
@@ -713,10 +698,6 @@ s32 imgfx_appendGfx_component(s32, ImgFXTexture*, u32, Matrix4f);
 void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
 void free_worker(s32);
-
-b32 ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW);
-void basic_ai_loiter_init(Evt* script, struct MobileAISettings* aiSettings, struct EnemyDetectVolume* territory);
-void PatrolAI_LoiterInit(Evt* script, struct MobileAISettings* aiSettings, struct EnemyDetectVolume* territory);
 
 s32 func_80263230(Actor*, Actor*);
 void set_part_glow_pal(ActorPart*, s32);

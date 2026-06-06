@@ -2,6 +2,7 @@
 
 #include "common.h"
 
+// maps using this AI must implement this
 extern EvtScript N(EVS_FireBar_Defeated);
 
 enum {

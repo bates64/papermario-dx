@@ -14,6 +14,8 @@ enum NappingClubbaAiStates {
     AI_STATE_NAPPING_CLUBBA_WAKE_UP             = 2,
     AI_STATE_NAPPING_CLUBBA_LOITER_INIT         = 3,
     AI_STATE_NAPPING_CLUBBA_LOITER              = 4,
+    AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT    = 40,
+    AI_STATE_NAPPING_CLUBBA_RETURN_HOME         = 41,
     AI_STATE_NAPPING_CLUBBA_FALL_ASLEEP         = 50,
 };
 
@@ -112,7 +114,7 @@ void N(ClubbaNappingAI_WakeUp)(Evt* script, MobileAISettings* aiSettings, EnemyD
     npc->duration--;
     if (npc->duration <= 0) {
         npc->duration = 1;
-        enemy->varTable[AI_VAR_NEXT_STATE] = AI_RETURN_HOME_INIT;
+        enemy->varTable[AI_VAR_NEXT_STATE] = AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT;
         script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_LOITER_INIT;
     }
 }
@@ -151,7 +153,7 @@ void N(ClubbaNappingAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyD
 
         // didnt see player, continue to next state
         nextState = enemy->varTable[AI_VAR_NEXT_STATE];
-        if (nextState == AI_RETURN_HOME_INIT) {
+        if (nextState == AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT) {
             npc->duration = 20;
             script->AI_TEMP_STATE = nextState;
         } else if (nextState == AI_STATE_NAPPING_CLUBBA_FALL_ASLEEP) {
@@ -173,7 +175,7 @@ void N(ClubbaNappingAI_ReturnHomeInit)(Evt* script, MobileAISettings* aiSettings
         } else {
             npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
         }
-        script->AI_TEMP_STATE = AI_RETURN_HOME;
+        script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_RETURN_HOME;
     }
 }
 
@@ -247,16 +249,18 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_RETURN_HOME_INIT;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT;
             npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         }
         enemy->aiFlags &= ~AI_FLAG_SUSPEND;
     }
 
+    // begin an attack, if able
     if (script->AI_TEMP_STATE >= AI_STATE_ALERT_INIT
             && script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
             && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
-            && N(MeleeHitbox_CanTargetPlayer)(script)) {
+            && N(MeleeHitbox_CanTargetPlayer)(script)
+    ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
@@ -288,7 +292,7 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
         case AI_STATE_LOSE_PLAYER:
             basic_ai_lose_player(script, npcAISettings, territoryPtr);
             npc->duration = 15;
-            enemy->varTable[AI_VAR_NEXT_STATE] = AI_RETURN_HOME_INIT;
+            enemy->varTable[AI_VAR_NEXT_STATE] = AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT;
             script->AI_TEMP_STATE = AI_STATE_NAPPING_CLUBBA_LOITER_INIT;
             break;
         case AI_STATE_MELEE_ATTACK_INIT: // pre swing
@@ -309,13 +313,13 @@ API_CALLABLE(N(ClubbaNappingAI_Main)) {
         case AI_STATE_MELEE_ATTACK_POST:
             N(MeleeAttacker_Post)(script);
             break;
-        case AI_RETURN_HOME_INIT:
+        case AI_STATE_NAPPING_CLUBBA_RETURN_HOME_INIT:
             N(ClubbaNappingAI_ReturnHomeInit)(script, npcAISettings, territoryPtr);
-            if (script->AI_TEMP_STATE != AI_RETURN_HOME) {
+            if (script->AI_TEMP_STATE != AI_STATE_NAPPING_CLUBBA_RETURN_HOME) {
                 break;
             }
             // fallthrough
-        case AI_RETURN_HOME:
+        case AI_STATE_NAPPING_CLUBBA_RETURN_HOME:
             N(ClubbaNappingAI_ReturnHome)(script, npcAISettings, territoryPtr);
             break;
         case AI_STATE_NAPPING_CLUBBA_FALL_ASLEEP:

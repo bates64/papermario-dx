@@ -45,10 +45,15 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
             script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_PATROL_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
-        enemy->varTable[0] = 0;
+
+        enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_NONE;
     }
 
-    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanTargetPlayer)(script)) {
+    // begin an attack, if able
+    if (script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
+        && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
+        && N(MeleeHitbox_CanTargetPlayer)(script)
+    ) {
         script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 

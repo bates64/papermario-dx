@@ -17,7 +17,8 @@ MobileAISettings N(AISettings_HyperCleft) = {
 };
 
 EvtScript N(EVS_NpcAI_HyperCleft) = {
-    Call(N(CleftAI_Main), Ref(N(AISettings_HyperCleft)), 8)
+    Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 8)
+    Call(N(CleftAI_Main), Ref(N(AISettings_HyperCleft)))
     Return
     End
 };
