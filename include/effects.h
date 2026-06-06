@@ -60,7 +60,7 @@ typedef struct WalkingDustFXData {
 // Used by both flower_splash and flower_trail
 typedef struct FlowerFXData {
     /* 0x00 */ s32 alive;
-    /* 0x04 */ u16 triggeredByNpc;
+    /* 0x04 */ b16 triggeredByNpc;
     /* 0x06 */ s16 timeLeft;
     /* 0x08 */ u8 primAlpha;
     /* 0x09 */ s8 useAltColor;
