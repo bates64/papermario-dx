@@ -65,8 +65,7 @@ void N(ParatroopaAI_Dive)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     }
 }
 
-void N(ParatroopaAI_Overshoot)(Evt* script, MobileAISettings *arg1, EnemyDetectVolume *arg2)
-{
+void N(ParatroopaAI_Overshoot)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
