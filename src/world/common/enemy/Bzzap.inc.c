@@ -18,10 +18,10 @@ MobileAISettings N(AISettings_Bzzap) = {
 };
 
 EvtScript N(EVS_NpcAI_Bzzap) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 5, -630)
-    Call(SetSelfVar, 6, 50)
-    Call(SetSelfVar, 1, 200)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.3f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.5f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(2.0f))
     Call(N(FlyingAI_Main), Ref(N(AISettings_Bzzap)))
     Return
     End

@@ -1,4 +1,4 @@
-
+#pragma once
 #include "Bandit.h"
 
 #define HAS_COIN_FLAG    AreaFlag(1)

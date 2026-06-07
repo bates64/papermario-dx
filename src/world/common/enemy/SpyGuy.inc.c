@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SpyGuy.h"
 
 #include "world/common/enemy/ai/WanderRangedAI.inc.c"

@@ -16,10 +16,10 @@ MobileAISettings N(AISettings_Paragoomba_Wander) = {
 };
 
 EvtScript N(EVS_NpcAI_Paragoomba_Wander) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 5, -500)
-    Call(SetSelfVar, 6, 21)
-    Call(SetSelfVar, 1, 580)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-5.0f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.21f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(5.8f))
     Call(N(FlyingAI_Main), Ref(N(AISettings_Paragoomba_Wander)))
     Return
     End

@@ -15,10 +15,10 @@ MobileAISettings N(AISettings_LavaBubble) = {
 };
 
 EvtScript N(EVS_NpcAI_LavaBubble) = {
-    Call(SetSelfVar, 0, 1)
-    Call(SetSelfVar, 5, 0)
-    Call(SetSelfVar, 6, 0)
-    Call(SetSelfVar, 1, 150)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, AI_FLYING_FLAG_INTERPY)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(0.0f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.0f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(1.5f))
     Call(N(FlyingNoAttackAI_Main), Ref(N(AISettings_LavaBubble)))
     Return
     End

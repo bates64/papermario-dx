@@ -1,3 +1,4 @@
+#pragma once
 #include "AmazyDayzee.h"
 
 #include "world/common/enemy/ai/AvoidPlayerAI.inc.c"

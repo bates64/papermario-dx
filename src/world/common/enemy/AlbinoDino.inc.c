@@ -1,3 +1,4 @@
+#pragma once
 #include "AlbinoDino.h"
 
 EvtScript N(EVS_NpcCreate_AlbinoDino) = {

@@ -19,7 +19,7 @@ MobileAISettings N(AISettings_ParaTroopa) = {
 
 EvtScript N(EVS_NpcAI_ParaTroopa) = {
     Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
-    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
     Call(N(ParatroopaAI_Main), Ref(N(AISettings_ParaTroopa)))
     Return
     End

@@ -1,24 +1,31 @@
+#pragma once
+
 #include "MBush.h"
 #include "sprite/player.h"
+
+#define EVAR_INTERACTED 0
+#define EVAR_SAVED_X 0
+#define EVAR_SAVED_Y 0
+#define EVAR_SAVED_Z 0
 
 EvtScript N(EVS_NpcAI_MBush) = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)
-    Call(SetSelfVar, 0, 0)
+    Call(SetSelfVar, EVAR_INTERACTED, false)
     Label(0)
-    Call(GetSelfVar, 0, LVar0)
-    IfEq(LVar0, 0)
-        Wait(1)
-        Goto(0)
-    EndIf
+        Call(GetSelfVar, EVAR_INTERACTED, LVar0)
+        IfEq(LVar0, false)
+            Wait(1)
+            Goto(0)
+        EndIf
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(DisablePlayerInput, true)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SEARCH_BUSH, SOUND_SPACE_DEFAULT)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(SetSelfVar, 10, LVar0)
-    Call(SetSelfVar, 11, LVar1)
-    Call(SetSelfVar, 12, LVar2)
+    Call(SetSelfVar, EVAR_SAVED_X, LVar0)
+    Call(SetSelfVar, EVAR_SAVED_Y, LVar1)
+    Call(SetSelfVar, EVAR_SAVED_Z, LVar2)
     Add(LVar0, 2)
     Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Wait(1)
@@ -55,10 +62,12 @@ EvtScript N(EVS_NpcAI_MBush) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Call(DisablePlayerInput, false)
     Call(StartBattle)
-}; // fallthrough :(
+    Return
+    End
+};
 
 EvtScript N(EVS_NpcInteract_MBush) = {
-    Call(SetSelfVar, 0, 1)
+    Call(SetSelfVar, EVAR_INTERACTED, true)
     Return
     End
 };
@@ -70,9 +79,9 @@ EvtScript N(EVS_NpcDefeat_MBush) = {
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim05)
-            Call(GetSelfVar, 10, LVar0)
-            Call(GetSelfVar, 11, LVar1)
-            Call(GetSelfVar, 12, LVar2)
+            Call(GetSelfVar, EVAR_SAVED_X, LVar0)
+            Call(GetSelfVar, EVAR_SAVED_Y, LVar1)
+            Call(GetSelfVar, EVAR_SAVED_Z, LVar2)
             Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 8)
             Call(EnableNpcShadow, NPC_SELF, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)

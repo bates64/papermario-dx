@@ -1,13 +1,9 @@
 #include "dgb_08.h"
 
+#include "world/common/npc/Yakkey.inc.c"
+
 #include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba.inc.c"
-
-NpcSettings N(NpcSettings_Yakkey) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_CLUBBA,
-};
 
 #include "world/common/enemy/Clubba_Wander.inc.c"
 

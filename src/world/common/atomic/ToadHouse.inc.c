@@ -99,8 +99,3 @@ API_CALLABLE(N(ToadHouse_GetPartnerBackOut)) {
     switch_to_partner((s8)evt_get_variable(script, readFromVar));
     return ApiStatus_DONE2;
 }
-
-// do nothing (unused)
-API_CALLABLE(N(ToadHouse_Stub)) {
-    return ApiStatus_DONE2;
-}

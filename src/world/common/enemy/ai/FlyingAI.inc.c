@@ -27,14 +27,14 @@ enum FlyingAiStates {
 };
 
 enum FlyingAiVars {
-    AI_VAR_FLYING_FLAGS             = 0,
-    AI_VAR_FLYING_BOB_AMPLITUDE     = 1, // amplitude of bobbing during wander and loiter
+    AI_VAR_FLYING_FLAGS             = 0, // IN: see: FlyingAiFlags
+    AI_VAR_FLYING_BOB_AMPLITUDE     = 1, // IN: (packed float) amplitude of bobbing during wander and loiter
     AI_VAR_FLYING_BOB_PHASE         = 2,
     AI_VAR_FLYING_HOVER_HEIGHT      = 3, // height above ground at initial position
-    AI_VAR_FLYING_PREV_Y            = 4,
-    AI_VAR_FLYING_CHASE_VELY        = 5, // y velocity to use during chase swoop
-    AI_VAR_FLYING_CHASE_ACCEL       = 6, // y acceleration to use during chase swoop
-    AI_VAR_FLYING_HOVER_BASE        = 7, // y level of ground under initial position
+    AI_VAR_FLYING_PREV_Y            = 4, // (packed float) prev value used for interpolation
+    AI_VAR_FLYING_CHASE_VELY        = 5, // IN: (packed float) y velocity to use during chase swoop
+    AI_VAR_FLYING_CHASE_ACCEL       = 6, // IN: (packed float) y acceleration to use during chase swoop
+    AI_VAR_FLYING_HOVER_BASE        = 7, // (packed float) y level of ground under initial position
     AI_VAR_FLYING_DETECT_COOLDOWN   = 9, // time before next player can be detected
 };
 
