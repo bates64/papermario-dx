@@ -41,7 +41,7 @@ void basic_ai_suspend(Evt* script);
 
 b32 ai_check_fwd_collisions(Npc* npc, f32 time, f32* outYaw, f32* outDistFwd, f32* outDistCW, f32* outDistCCW);
 b32 is_point_outside_territory(s32 shape, f32 centerX, f32 centerZ, f32 pointX, f32 pointZ, f32 sizeX, f32 sizeZ);
-b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw);
+b32 basic_ai_check_player_dist(EnemyDetectVolume* detect, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw);
 b32 ai_check_player_dist(Enemy* enemy, s32 chance, f32 radius, f32 moveSpeed);
 
 void ai_enemy_play_sound(Npc* npc, s32 soundID, s32 upperSoundFlags);
@@ -49,10 +49,10 @@ void ai_try_set_state(Evt* script, s32 state);
 
 // convenience wrappers for is_point_outside_territory
 b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander, f32 pointX, f32 pointZ);
-b32 is_point_outside_detect_territory(EnemyDetectVolume* detect, f32 pointX, f32 pointZ);
+b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ);
 
 // function signature used for state handlers in AI main functions
-typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* territory);
+typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect);
 
 AIStateHandler(basic_ai_wander_init);
 AIStateHandler(basic_ai_wander);

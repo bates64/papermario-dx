@@ -25,24 +25,24 @@ enum SwooperAiAnims {
 };
 
 API_CALLABLE(N(SwooperAI_Main)) {
-    EnemyDetectVolume detectVolume;
-    PlayerStatus* playerStatus = &gPlayerStatus;
-    EnemyDetectVolume* detectVolumePtr = &detectVolume;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
+    PlayerStatus* playerStatus = &gPlayerStatus;
     f32 x, y, z, hitDepth;
     f32 floorY;
 
-    detectVolumePtr->skipPlayerDetectChance = 0;
-    detectVolumePtr->shape = enemy->territory->wander.detectShape;
-    detectVolumePtr->pointX = enemy->territory->wander.detectPos.x;
-    detectVolumePtr->pointZ = enemy->territory->wander.detectPos.z;
-    detectVolumePtr->sizeX = enemy->territory->wander.detectSize.x;
-    detectVolumePtr->sizeZ = enemy->territory->wander.detectSize.z;
-    detectVolumePtr->halfHeight = 500.0f;
-    detectVolumePtr->detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 500.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
         script->AI_TEMP_STATE = AI_STATE_SWOOPER_HANG_INIT;
@@ -72,10 +72,10 @@ API_CALLABLE(N(SwooperAI_Main)) {
             script->AI_TEMP_STATE = AI_STATE_SWOOPER_HANG_IDLE;
             // fallthrough
         case AI_STATE_SWOOPER_HANG_IDLE:
-            if (aiSettings->playerSearchInterval >= 0) {
+            if (settings->playerSearchInterval >= 0) {
                 if (script->functionTemp[1] <= 0) {
-                    script->functionTemp[1] = aiSettings->playerSearchInterval;
-                    if (basic_ai_check_player_dist(detectVolumePtr, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
+                    script->functionTemp[1] = settings->playerSearchInterval;
+                    if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
                         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                         script->AI_TEMP_STATE = AI_STATE_SWOOPER_DETACH_INIT;
                     }
@@ -91,7 +91,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
             npc->yaw = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
             npc->jumpScale = 1.3f;
             npc->jumpVel = 0.0f;
-            npc->moveSpeed = aiSettings->moveSpeed;
+            npc->moveSpeed = settings->moveSpeed;
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
@@ -136,7 +136,7 @@ API_CALLABLE(N(SwooperAI_Main)) {
             floorY = enemy->varTable[AI_VAR_SWOOPER_FLOOR_Y];
             y = (floorY + 10.0) - npc->pos.y;
 
-            npc->moveSpeed = aiSettings->chaseSpeed;
+            npc->moveSpeed = settings->chaseSpeed;
             npc->duration = npc->planarFlyDist / npc->moveSpeed;
             if (npc->duration == 0) {
                 npc->duration = 1;
@@ -172,16 +172,16 @@ API_CALLABLE(N(SwooperAI_Main)) {
                     npc->moveSpeed = 0.0f;
                 } else if (npc->jumpVel < -2.5) {
                     npc->duration++;
-                    if (npc->duration >= aiSettings->chaseUpdateInterval) {
+                    if (npc->duration >= settings->chaseUpdateInterval) {
                         f32 angle = atan2(npc->pos.x, npc->pos.z, playerStatus->pos.x, playerStatus->pos.z);
                         f32 angleDiff = get_clamped_angle_diff(npc->yaw, angle);
 
                         // cap the turn rate
-                        if (aiSettings->chaseTurnRate < fabsf(angleDiff)) {
+                        if (settings->chaseTurnRate < fabsf(angleDiff)) {
                             if (angleDiff < 0.0f) {
-                                angle = npc->yaw - aiSettings->chaseTurnRate;
+                                angle = npc->yaw - settings->chaseTurnRate;
                             } else {
-                                angle = npc->yaw + aiSettings->chaseTurnRate;
+                                angle = npc->yaw + settings->chaseTurnRate;
                             }
                         }
                         npc->yaw = clamp_angle(angle);

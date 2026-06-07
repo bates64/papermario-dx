@@ -20,7 +20,7 @@ enum GrooveDancePhases {
     DANCE_PHASE_DONE            = 4,
 };
 
-void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -30,7 +30,7 @@ void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 animPart;
@@ -87,21 +87,21 @@ void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
 API_CALLABLE(N(GrooveGuyAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
     f32 posX, posY, posZ;
     f32 hitDepth;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
@@ -138,37 +138,37 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
-            basic_ai_wander_init(script, aiSettings, territoryPtr);
+            basic_ai_wander_init(script, settings, detect);
             // fallthrough
         case AI_STATE_WANDER:
-            basic_ai_wander(script, aiSettings, territoryPtr);
+            basic_ai_wander(script, settings, detect);
             break;
 
         case AI_STATE_LOITER_INIT:
-            N(GrooveGuyAI_DanceInit)(script, aiSettings, territoryPtr);
+            N(GrooveGuyAI_DanceInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(GrooveGuyAI_Dance)(script, aiSettings, territoryPtr);
+            N(GrooveGuyAI_Dance)(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
-            basic_ai_found_player_jump_init(script, aiSettings, territoryPtr);
+            basic_ai_found_player_jump_init(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            basic_ai_found_player_jump(script, aiSettings, territoryPtr);
+            basic_ai_found_player_jump(script, settings, detect);
             break;
 
         case AI_STATE_CHASE_INIT:
-            basic_ai_chase_init(script, aiSettings, territoryPtr);
+            basic_ai_chase_init(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            basic_ai_chase(script, aiSettings, territoryPtr);
+            basic_ai_chase(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
             // fallthrough
         case AI_STATE_LOSE_PLAYER:
-            basic_ai_lose_player(script, aiSettings, territoryPtr);
+            basic_ai_lose_player(script, settings, detect);
             break;
 
         case AI_STATE_SUSPEND:

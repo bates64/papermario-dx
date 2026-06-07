@@ -41,7 +41,7 @@ enum TackleEnemyType {
     TACKLER_BONY_BEETLE     = 6,
 };
 
-void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -51,7 +51,7 @@ void N(TackleAI_InitTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     script->AI_TEMP_STATE = AI_STATE_PRE_TACKLE;
 }
 
-void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 dist;
@@ -68,7 +68,7 @@ void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     }
 
     npc->curAnim = enemy->animList[AI_ANIM_TACKLE_HIT];
-    npc->moveSpeed = aiSettings->chaseSpeed;
+    npc->moveSpeed = settings->chaseSpeed;
 
     // koopa collision height is halved during the tackle
     switch (enemy->varTable[AI_VAR_TACKLE_TYPE]) {
@@ -88,7 +88,7 @@ void N(TackleAI_PreTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     script->AI_TEMP_STATE = AI_STATE_TACKLE;
 }
 
-void N(TackleAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_Tackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 hit;
@@ -125,7 +125,7 @@ void N(TackleAI_Tackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
     script->AI_TEMP_STATE = AI_STATE_POST_TACKLE;
 }
 
-void N(TackleAI_PostTackle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(TackleAI_PostTackle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 

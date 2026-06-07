@@ -14,18 +14,18 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->patrol.detectShape;
-    territory.pointX = enemy->territory->patrol.detectPos.x;
-    territory.pointZ = enemy->territory->patrol.detectPos.z;
-    territory.sizeX = enemy->territory->patrol.detectSize.x;
-    territory.sizeZ = enemy->territory->patrol.detectSize.z;
-    territory.halfHeight = 100.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->patrol.detectShape;
+    detect->pointX = enemy->territory->patrol.detectPos.x;
+    detect->pointZ = enemy->territory->patrol.detectPos.z;
+    detect->sizeX = enemy->territory->patrol.detectSize.x;
+    detect->sizeZ = enemy->territory->patrol.detectSize.z;
+    detect->halfHeight = 100.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
         enemy->varTable[AI_VAR_TACKLE_HEIGHT] = npc->collisionHeight;
@@ -77,14 +77,14 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PATROL_INIT:
-            N(PatrolAI_MoveInit)(script, aiSettings, territoryPtr);
+            N(PatrolAI_MoveInit)(script, settings, detect);
             npc->collisionHeight = enemy->varTable[AI_VAR_TACKLE_HEIGHT];
             // fallthrough
         case AI_STATE_PATROL:
-            N(PatrolAI_Move)(script, aiSettings, territoryPtr);
+            N(PatrolAI_Move)(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(PatrolAI_LoiterInit)(script, aiSettings, territoryPtr);
+            N(PatrolAI_LoiterInit)(script, settings, detect);
             if (enemy->varTable[AI_VAR_TACKLE_TYPE] == TACKLER_BONY_BEETLE) {
                 if (rand_int(100) < 33) {
                     if (enemy->varTable[AI_VAR_TACKLE_SPIKY]) {
@@ -102,22 +102,22 @@ API_CALLABLE(N(TacklePatrolAI_Main)) {
             }
              // fallthrough
         case AI_STATE_LOITER:
-            N(PatrolAI_Loiter)(script, aiSettings, territoryPtr);
+            N(PatrolAI_Loiter)(script, settings, detect);
             break;
         case AI_STATE_LOITER_POST:
-            N(PatrolAI_PostLoiter)(script, aiSettings, territoryPtr);
+            N(PatrolAI_PostLoiter)(script, settings, detect);
             break;
         case AI_STATE_TACKLE_INIT:
-            N(TackleAI_InitTackle)(script, aiSettings, territoryPtr);
+            N(TackleAI_InitTackle)(script, settings, detect);
              // fallthrough
         case AI_STATE_PRE_TACKLE:
-            N(TackleAI_PreTackle)(script, aiSettings, territoryPtr);
+            N(TackleAI_PreTackle)(script, settings, detect);
             break;
         case AI_STATE_TACKLE:
-            N(TackleAI_Tackle)(script, aiSettings, territoryPtr);
+            N(TackleAI_Tackle)(script, settings, detect);
             break;
         case AI_STATE_POST_TACKLE:
-            N(TackleAI_PostTackle)(script, aiSettings, territoryPtr);
+            N(TackleAI_PostTackle)(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

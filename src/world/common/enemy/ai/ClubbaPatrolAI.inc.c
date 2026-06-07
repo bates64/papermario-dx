@@ -13,18 +13,18 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* npcAISettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->patrol.detectShape;
-    territory.pointX = enemy->territory->patrol.detectPos.x;
-    territory.pointZ = enemy->territory->patrol.detectPos.z;
-    territory.sizeX = enemy->territory->patrol.detectSize.x;
-    territory.sizeZ = enemy->territory->patrol.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->patrol.detectShape;
+    detect->pointX = enemy->territory->patrol.detectPos.x;
+    detect->pointZ = enemy->territory->patrol.detectPos.z;
+    detect->sizeX = enemy->territory->patrol.detectSize.x;
+    detect->sizeZ = enemy->territory->patrol.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
@@ -59,34 +59,34 @@ API_CALLABLE(N(ClubbaPatrolAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PATROL_INIT:
-            N(PatrolAI_MoveInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_MoveInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_PATROL:
-            N(PatrolAI_Move)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Move)(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(PatrolAI_LoiterInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_LoiterInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(PatrolAI_Loiter)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Loiter)(script, settings, detect);
             break;
         case AI_STATE_LOITER_POST:
-            N(PatrolAI_PostLoiter)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_PostLoiter)(script, settings, detect);
             break;
         case AI_STATE_ALERT_INIT:
-            N(PatrolAI_JumpInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_JumpInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(PatrolAI_Jump)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Jump)(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
-            N(PatrolAI_ChaseInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_ChaseInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(PatrolAI_Chase)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Chase)(script, settings, detect);
             break;
         case AI_STATE_LOSE_PLAYER:
-            N(PatrolAI_LosePlayer)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_LosePlayer)(script, settings, detect);
             break;
         case AI_STATE_MELEE_ATTACK_INIT:
             N(MeleeAttacker_Init)(script);

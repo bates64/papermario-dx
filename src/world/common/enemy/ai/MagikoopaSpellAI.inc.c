@@ -26,14 +26,14 @@ enum SpellStatus {
     SPELL_STATUS_FIZZLING       = 3, // missed and is ready for cleanup
 };
 
-s32 N(MagikoopaAI_CanShootSpell)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* territory) {
+s32 N(MagikoopaAI_CanShootSpell)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Camera* camera = &gCameras[gCurrentCamID];
     f32 sideYaw;
     f32 angle;
 
-    if (!basic_ai_check_player_dist(territory, enemy, radius, offset, false)) {
+    if (!basic_ai_check_player_dist(detect, enemy, radius, offset, false)) {
         return -1;
     }
 

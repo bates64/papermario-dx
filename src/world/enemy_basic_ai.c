@@ -129,7 +129,7 @@ ALWAYS_INLINE b32 is_point_outside_wander_territory(EnemyTerritoryWander* wander
     );
 }
 
-ALWAYS_INLINE b32 is_point_outside_detect_territory(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
+ALWAYS_INLINE b32 is_point_outside_detect_volume(EnemyDetectVolume* detect, f32 pointX, f32 pointZ) {
     return is_point_outside_territory(
         detect->shape,
         detect->pointX, detect->pointZ,
@@ -138,7 +138,7 @@ ALWAYS_INLINE b32 is_point_outside_detect_territory(EnemyDetectVolume* detect, f
     );
 }
 
-b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw) {
+b32 basic_ai_check_player_dist(EnemyDetectVolume* detect, Enemy* enemy, f32 radius, f32 fwdPosOffset, b8 useWorldYaw) {
     Npc* npc = get_npc_unsafe(enemy->npcID);
     PlayerStatus* playerStatus = &gPlayerStatus;
     PartnerStatus* partnerStatus;
@@ -152,28 +152,27 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
 
     partnerStatus = &gPartnerStatus;
     if (partnerStatus->actingPartner == PARTNER_BOW && partnerStatus->partnerActionState
-            && !(territory->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
+            && !(detect->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
         return false;
     }
 
     if (partnerStatus->actingPartner == PARTNER_SUSHIE && partnerStatus->partnerActionState
-            && !(territory->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
+            && !(detect->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
         return false;
     }
 
-    if (territory->skipPlayerDetectChance < 0) {
+    if (detect->skipPlayerDetectChance < 0) {
         return false;
     }
 
-    if (territory->halfHeight <= fabsf(npc->pos.y - playerStatus->pos.y)
-            && !(territory->detectFlags & AI_TERRITORY_IGNORE_ELEVATION)) {
+    if (detect->halfHeight <= fabsf(npc->pos.y - playerStatus->pos.y)
+            && !(detect->detectFlags & AI_TERRITORY_IGNORE_ELEVATION)) {
         return false;
     }
 
-    if (((territory->sizeX != 0) || (territory->sizeZ != 0)) && is_point_outside_territory(territory->shape,
-            territory->pointX, territory->pointZ,
-            playerStatus->pos.x, playerStatus->pos.z,
-            territory->sizeX, territory->sizeZ)) {
+    if (((detect->sizeX != 0) || (detect->sizeZ != 0))
+        && is_point_outside_detect_volume(detect, playerStatus->pos.x, playerStatus->pos.z)
+    ) {
         return false;
     }
 
@@ -195,10 +194,10 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* territory, Enemy* enemy, f32 r
         }
     }
 
-    if (territory->skipPlayerDetectChance == 0) {
+    if (detect->skipPlayerDetectChance == 0) {
         skipCheckForPlayer = 0;
     } else {
-        skipCheckForPlayer = rand_int(territory->skipPlayerDetectChance + 1);
+        skipCheckForPlayer = rand_int(detect->skipPlayerDetectChance + 1);
     }
 
     if (skipCheckForPlayer == 0) {
@@ -276,18 +275,18 @@ void ai_try_set_state(Evt* script, s32 state) {
     }
 }
 
-void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
+void basic_ai_wander_init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     // chose a random direction and move time
-    npc->duration = (npcAISettings->moveTime / 2) + rand_int((npcAISettings->moveTime / 2) + 1);
+    npc->duration = (settings->moveTime / 2) + rand_int((settings->moveTime / 2) + 1);
     npc->yaw = clamp_angle(npc->yaw + rand_int(60) - 30.0f);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_WALK];
     script->functionTemp[1] = 0;
 
     if (enemy->territory->wander.moveSpeedOverride < 0) {
-        npc->moveSpeed = npcAISettings->moveSpeed;
+        npc->moveSpeed = settings->moveSpeed;
     } else {
         npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
     }
@@ -297,7 +296,7 @@ void basic_ai_wander_init(Evt* script, MobileAISettings* npcAISettings, EnemyDet
     script->AI_TEMP_STATE = AI_STATE_WANDER;
 }
 
-void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void basic_ai_wander(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     EnemyTerritoryWander* wander = &enemy->territory->wander;
@@ -306,15 +305,15 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     f32 yaw;
 
     // search for the player
-    if (aiSettings->playerSearchInterval >= 0) {
+    if (settings->playerSearchInterval >= 0) {
         if (script->functionTemp[1] <= 0) {
-            script->functionTemp[1] = aiSettings->playerSearchInterval;
-            if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
+            script->functionTemp[1] = settings->playerSearchInterval;
+            if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
                 yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-                if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
+                if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, settings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
                     npc->yaw = yaw;
                     ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                     fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
@@ -334,8 +333,7 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     }
 
     // check if we've wandered beyond the boundary of the territory
-    if (is_point_outside_territory(wander->wanderShape, wander->centerPos.x, wander->centerPos.z,
-            npc->pos.x, npc->pos.z, wander->wanderSize.x, wander->wanderSize.z)
+    if (is_point_outside_wander_territory(&wander, npc->pos.x, npc->pos.z)
         && npc->moveSpeed < dist2D(wander->centerPos.x, wander->centerPos.z, npc->pos.x, npc->pos.z)
     ) {
         if (!(enemy->aiFlags & AI_FLAG_OUTSIDE_TERRITORY)) {
@@ -373,41 +371,41 @@ void basic_ai_wander(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     }
 
     // decide to loiter or continue wandering
-    if (aiSettings->moveTime > 0) {
+    if (settings->moveTime > 0) {
         npc->duration--;
         if (npc->duration <= 0) {
             script->AI_TEMP_STATE = AI_STATE_LOITER_INIT;
             script->functionTemp[1] = rand_int(1000) % 3 + 2;
-            if (aiSettings->loiterMode <= 0 || aiSettings->waitTime <= 0) {
+            if (settings->loiterMode <= 0 || settings->waitTime <= 0) {
                 script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
             }
         }
     }
 }
 
-void basic_ai_loiter_init(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void basic_ai_loiter_init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    npc->duration = (aiSettings->waitTime / 2) + rand_int((aiSettings->waitTime / 2) + 1);
+    npc->duration = (settings->waitTime / 2) + rand_int((settings->waitTime / 2) + 1);
     npc->yaw = clamp_angle(npc->yaw + rand_int(180) - 90.0f);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
     script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void basic_ai_loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void basic_ai_loiter(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z;
     f32 yaw;
 
-    if (aiSettings->playerSearchInterval >= 0) {
-        if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
+    if (settings->playerSearchInterval >= 0) {
+        if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
             x = npc->pos.x;
             y = npc->pos.y;
             z = npc->pos.z;
             yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-            if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, aiSettings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
+            if (!npc_test_move_simple_with_slipping(npc->collisionChannel, &x, &y, &z, settings->chaseSpeed, yaw, npc->collisionHeight, npc->collisionDiameter)) {
                 npc->yaw = yaw;
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
@@ -430,7 +428,7 @@ void basic_ai_loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
                 if (!(enemy->npcSettings->actionFlags & AI_ACTION_LOOK_AROUND_DURING_LOITER)) {
                     npc->yaw = clamp_angle(npc->yaw + 180.0f);
                 }
-                npc->duration = (aiSettings->waitTime / 2) + rand_int(aiSettings->waitTime / 2 + 1);
+                npc->duration = (settings->waitTime / 2) + rand_int(settings->waitTime / 2 + 1);
                 return;
             }
             script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
@@ -438,7 +436,7 @@ void basic_ai_loiter(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolum
     }
 }
 
-void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
+void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -451,7 +449,7 @@ void basic_ai_found_player_jump_init(Evt* script, MobileAISettings* npcAISetting
     script->AI_TEMP_STATE = AI_STATE_ALERT;
 }
 
-void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
+void basic_ai_found_player_jump(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
     b32 done = false;
 
@@ -472,7 +470,7 @@ void basic_ai_found_player_jump(Evt* script, MobileAISettings* npcAISettings, En
     }
 }
 
-void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
+void basic_ai_chase_init(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 skipTurnAround = false;
@@ -492,30 +490,30 @@ void basic_ai_chase_init(Evt* script, MobileAISettings* npcAISettings, EnemyDete
         f32 angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         f32 deltaAngleToPlayer = get_clamped_angle_diff(npc->yaw, angle);
 
-        if (npcAISettings->chaseTurnRate < fabsf(deltaAngleToPlayer)) {
+        if (settings->chaseTurnRate < fabsf(deltaAngleToPlayer)) {
             if (deltaAngleToPlayer < 0.0f) {
-                angle = npc->yaw - npcAISettings->chaseTurnRate;
+                angle = npc->yaw - settings->chaseTurnRate;
             } else {
-                angle = npc->yaw + npcAISettings->chaseTurnRate;
+                angle = npc->yaw + settings->chaseTurnRate;
             }
         }
         npc->yaw = clamp_angle(angle);
-        npc->duration = (npcAISettings->chaseUpdateInterval / 2) + rand_int((npcAISettings->chaseUpdateInterval / 2) + 1);
+        npc->duration = (settings->chaseUpdateInterval / 2) + rand_int((settings->chaseUpdateInterval / 2) + 1);
     } else {
         npc->duration = 0;
     }
 
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
-    npc->moveSpeed = npcAISettings->chaseSpeed;
+    npc->moveSpeed = settings->chaseSpeed;
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
-void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void basic_ai_chase(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 x, y, z;
 
-    if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
+    if (!basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
         fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
@@ -552,7 +550,7 @@ void basic_ai_chase(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume
     }
 }
 
-void basic_ai_lose_player(Evt* script, MobileAISettings* npcAISettings, EnemyDetectVolume* territory) {
+void basic_ai_lose_player(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -568,17 +566,18 @@ API_CALLABLE(BasicAI_Main) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || enemy->aiFlags & AI_FLAG_SUSPEND) {
         script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
@@ -608,37 +607,37 @@ API_CALLABLE(BasicAI_Main) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_WANDER_INIT:
-            basic_ai_wander_init(script, aiSettings, &territory);
+            basic_ai_wander_init(script, settings, detect);
             // fallthrough
         case AI_STATE_WANDER:
-            basic_ai_wander(script, aiSettings, &territory);
+            basic_ai_wander(script, settings, detect);
             break;
 
         case AI_STATE_LOITER_INIT:
-            basic_ai_loiter_init(script, aiSettings, &territory);
+            basic_ai_loiter_init(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            basic_ai_loiter(script, aiSettings, &territory);
+            basic_ai_loiter(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
-            basic_ai_found_player_jump_init(script, aiSettings, &territory);
+            basic_ai_found_player_jump_init(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            basic_ai_found_player_jump(script, aiSettings, &territory);
+            basic_ai_found_player_jump(script, settings, detect);
             break;
 
         case AI_STATE_CHASE_INIT:
-            basic_ai_chase_init(script, aiSettings, &territory);
+            basic_ai_chase_init(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            basic_ai_chase(script, aiSettings, &territory);
+            basic_ai_chase(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
             // fallthrough
         case AI_STATE_LOSE_PLAYER:
-            basic_ai_lose_player(script, aiSettings, &territory);
+            basic_ai_lose_player(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

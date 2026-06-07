@@ -70,13 +70,13 @@ s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
     Bytecode* args = script->ptrReadPos;
     Camera* camera = &gCameras[gCurrentCamID];
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
     f32 facingAngle;
     f32 angleToPlayer;
     f32 deltaAngle;
     s32 i;
 
-    if (ai_check_player_dist(enemy, 0, aiSettings->chaseRadius, aiSettings->chaseOffsetDist)) {
+    if (ai_check_player_dist(enemy, 0, settings->chaseRadius, settings->chaseOffsetDist)) {
         if (clamp_angle(get_clamped_angle_diff(camera->curYaw, npc->yaw)) < 180.0) {
             facingAngle = 90.0f;
         } else {
@@ -118,11 +118,11 @@ s32 N(RangedAttack_GetUsableMissileID)(Evt* script) {
     return -1;
 }
 
-void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* territory) {
+void N(RangedAttack_TryTakeShot)(Evt* script, f32 radius, f32 offset, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (!basic_ai_check_player_dist(territory, enemy, radius, offset, true)) {
+    if (!basic_ai_check_player_dist(detect, enemy, radius, offset, true)) {
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 20;
@@ -210,7 +210,7 @@ API_CALLABLE(N(MissileAI_Main)) {
     f32 hitDepth;
     Npc* npc;
     Npc* parentNpc;
-    MobileAISettings* aiSettings;
+    MobileAISettings* settings;
 
     if (get_enemy_safe(missile->npcID) == nullptr) {
         return ApiStatus_BLOCK;
@@ -220,7 +220,7 @@ API_CALLABLE(N(MissileAI_Main)) {
         return ApiStatus_BLOCK;
     }
 
-    aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    settings = (MobileAISettings*)evt_get_variable(script, *args++);
     npc = get_npc_unsafe(missile->npcID);
 
     if (missile->varTable[AI_VAR_MISSILE_FLAGS] & AI_MISSILE_FLAG_CENTERED) {
@@ -266,10 +266,10 @@ API_CALLABLE(N(MissileAI_Main)) {
             npc->rot.x = 0.0f;
             npc->rot.y = 0.0f;
             npc->rot.z = 0.0f;
-            npc->moveSpeed = aiSettings->moveSpeed;
+            npc->moveSpeed = settings->moveSpeed;
             npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-            npc->jumpVel = aiSettings->alertRadius;
-            npc->jumpScale = aiSettings->alertOffsetDist;
+            npc->jumpVel = settings->alertRadius;
+            npc->jumpScale = settings->alertOffsetDist;
             npc->moveToPos.y = parentNpc->pos.y;
             npc->flags &= ~NPC_FLAG_INVISIBLE;
             enable_npc_shadow(npc);

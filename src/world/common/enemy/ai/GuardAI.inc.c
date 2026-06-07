@@ -25,7 +25,7 @@ enum GuardAiVars {
     AI_VAR_GUARD_ORIGINAL_YAW           = 0,
 };
 
-void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -37,17 +37,17 @@ void N(GuardAI_IdleInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVo
     }
 
     if (enemy->territory->wander.moveSpeedOverride <= 0) {
-        npc->moveSpeed = aiSettings->chaseSpeed;
+        npc->moveSpeed = settings->chaseSpeed;
     } else {
         npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
     }
 }
 
-void N(GuardAI_Idle)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_Idle)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (aiSettings->playerSearchInterval >= 0 && basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
+    if (settings->playerSearchInterval >= 0 && basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
         fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
@@ -60,7 +60,7 @@ void N(GuardAI_Idle)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume
     }
 }
 
-void N(GuardAI_AlertInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_AlertInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->jumpVel = 10.0f;
@@ -70,7 +70,7 @@ void N(GuardAI_AlertInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectV
     script->AI_TEMP_STATE = AI_STATE_ALERT;
 }
 
-void N(GuardAI_Alert)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_Alert)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->pos.y += npc->jumpVel;
@@ -84,25 +84,25 @@ void N(GuardAI_Alert)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolum
     }
 }
 
-void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 angle;
     f32 deltaAngle;
 
-    npc->duration = (aiSettings->chaseUpdateInterval / 2) + rand_int(aiSettings->chaseUpdateInterval / 2 + 1);
+    npc->duration = (settings->chaseUpdateInterval / 2) + rand_int(settings->chaseUpdateInterval / 2 + 1);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
-    npc->moveSpeed = aiSettings->chaseSpeed;
+    npc->moveSpeed = settings->chaseSpeed;
 
     angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
     deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
 
     // cap the turn rate
-    if (aiSettings->chaseTurnRate < fabsf(deltaAngle)) {
+    if (settings->chaseTurnRate < fabsf(deltaAngle)) {
         if (deltaAngle < 0.0f) {
-            angle = npc->yaw - aiSettings->chaseTurnRate;
+            angle = npc->yaw - settings->chaseTurnRate;
         } else {
-            angle = npc->yaw + aiSettings->chaseTurnRate;
+            angle = npc->yaw + settings->chaseTurnRate;
         }
     }
     npc->yaw = clamp_angle(angle);
@@ -110,11 +110,11 @@ void N(GuardAI_ChaseInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectV
     script->AI_TEMP_STATE = AI_STATE_CHASE;
 }
 
-void N(GuardAI_Chase)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_Chase)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
+    if (!basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
         fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 25;
@@ -132,7 +132,7 @@ void N(GuardAI_Chase)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolum
     }
 }
 
-void N(GuardAI_LosePlayer)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_LosePlayer)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     if (npc->duration > 0) {
@@ -143,13 +143,13 @@ void N(GuardAI_LosePlayer)(Evt* script, GuardAISettings* aiSettings, EnemyDetect
     }
 }
 
-void N(GuardAI_ReturnHomeInit)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_ReturnHomeInit)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_WALK];
     if (enemy->territory->wander.moveSpeedOverride < 0) {
-        npc->moveSpeed = aiSettings->chaseSpeed * 0.3;
+        npc->moveSpeed = settings->chaseSpeed * 0.3;
     } else {
         npc->moveSpeed = enemy->territory->wander.moveSpeedOverride / 32767.0;
     }
@@ -157,14 +157,14 @@ void N(GuardAI_ReturnHomeInit)(Evt* script, GuardAISettings* aiSettings, EnemyDe
     script->AI_TEMP_STATE = AI_STATE_GUARD_RETURN_HOME;
 }
 
-void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (aiSettings->playerSearchInterval >= 0) {
+    if (settings->playerSearchInterval >= 0) {
         if (script->functionTemp[1] <= 0) {
-            script->functionTemp[1] = aiSettings->playerSearchInterval;
-            if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, false)) {
+            script->functionTemp[1] = settings->playerSearchInterval;
+            if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, false)) {
                 fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
@@ -194,21 +194,21 @@ void N(GuardAI_ReturnHome)(Evt* script, GuardAISettings* aiSettings, EnemyDetect
 }
 
 API_CALLABLE(N(GuardAI_Main)) {
-    Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    GuardAISettings* aiSettings = (GuardAISettings*)evt_get_variable(script, *args++);
+    Bytecode* args = script->ptrReadPos;
+    GuardAISettings* settings = (GuardAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_GUARD_IDLE_INIT;
@@ -237,35 +237,35 @@ API_CALLABLE(N(GuardAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_GUARD_IDLE_INIT:
-            N(GuardAI_IdleInit)(script, aiSettings, territoryPtr);
+            N(GuardAI_IdleInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_GUARD_IDLE:
-            N(GuardAI_Idle)(script, aiSettings, territoryPtr);
+            N(GuardAI_Idle)(script, settings, detect);
             break;
 
         case AI_STATE_ALERT_INIT:
-            N(GuardAI_AlertInit)(script, aiSettings, territoryPtr);
+            N(GuardAI_AlertInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(GuardAI_Alert)(script, aiSettings, territoryPtr);
+            N(GuardAI_Alert)(script, settings, detect);
             break;
 
         case AI_STATE_CHASE_INIT:
-            N(GuardAI_ChaseInit)(script, aiSettings, territoryPtr);
+            N(GuardAI_ChaseInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(GuardAI_Chase)(script, aiSettings, territoryPtr);
+            N(GuardAI_Chase)(script, settings, detect);
             break;
 
         case AI_STATE_LOSE_PLAYER:
-            N(GuardAI_LosePlayer)(script, aiSettings, territoryPtr);
+            N(GuardAI_LosePlayer)(script, settings, detect);
             break;
 
         case AI_STATE_GUARD_RETURN_HOME_INIT:
-            N(GuardAI_ReturnHomeInit)(script, aiSettings, territoryPtr);
+            N(GuardAI_ReturnHomeInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_GUARD_RETURN_HOME:
-            N(GuardAI_ReturnHome)(script, aiSettings, territoryPtr);
+            N(GuardAI_ReturnHome)(script, settings, detect);
             break;
 
         case AI_STATE_SUSPEND:

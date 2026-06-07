@@ -23,7 +23,7 @@ enum ParatroopaAiAnims {
     AI_ANIM_PARATROOPA_SHELL_EXIT       = 11,
 };
 
-void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -46,7 +46,7 @@ void N(ParatroopaAI_Windup)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     script->AI_TEMP_STATE = AI_STATE_PARATROOPA_DIVE;
 }
 
-void N(ParatroopaAI_Dive)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ParatroopaAI_Dive)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
@@ -65,7 +65,7 @@ void N(ParatroopaAI_Dive)(Evt* script, MobileAISettings* aiSettings, EnemyDetect
     }
 }
 
-void N(ParatroopaAI_Overshoot)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ParatroopaAI_Overshoot)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
@@ -95,7 +95,7 @@ void N(ParatroopaAI_Overshoot)(Evt* script, MobileAISettings* aiSettings, EnemyD
     }
 }
 
-void N(ParatroopaAI_Reset)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(ParatroopaAI_Reset)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Npc* npc = get_npc_unsafe(script->owner1.enemy->npcID);
 
     npc->duration--;
@@ -105,24 +105,24 @@ void N(ParatroopaAI_Reset)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
 }
 
 API_CALLABLE(N(ParatroopaAI_Main)) {
-    Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    Bytecode* args = script->ptrReadPos;
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 120.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 120.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, aiSettings);
+        N(FlyingAI_Init)(npc, enemy, script, settings);
         enemy->varTable[AI_VAR_PARATROOPA_HEIGHT] = npc->collisionHeight;
         script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
@@ -138,55 +138,55 @@ API_CALLABLE(N(ParatroopaAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_FLYING_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
+            N(FlyingAI_WanderInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_WANDER:
-            N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
+            N(FlyingAI_Wander)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_FLYING_LOITER_INIT) {
                 break;
             }
             // fallthrough
         case AI_STATE_FLYING_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
+            N(FlyingAI_LoiterInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_FLYING_LOITER:
-            N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
+            N(FlyingAI_Loiter)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_FLYING_ALERT_INIT) {
                 break;
             }
             // fallthrough
         case AI_STATE_FLYING_ALERT_INIT:
-            N(FlyingAI_JumpInit)(script, aiSettings, territoryPtr);
+            N(FlyingAI_JumpInit)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_FLYING_ALERT) {
                 break;
             }
             // fallthrough
         case AI_STATE_FLYING_ALERT:
-            N(FlyingAI_Jump)(script, aiSettings, territoryPtr);
+            N(FlyingAI_Jump)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_FLYING_CHASE_INIT) {
                 break;
             }
             // fallthrough
         case AI_STATE_PARATROOPA_WINDUP:
-            N(ParatroopaAI_Windup)(script, aiSettings, territoryPtr);
+            N(ParatroopaAI_Windup)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PARATROOPA_DIVE) {
                 break;
             }
             // fallthrough
         case AI_STATE_PARATROOPA_DIVE:
-            N(ParatroopaAI_Dive)(script, aiSettings, territoryPtr);
+            N(ParatroopaAI_Dive)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PARATROOPA_OVERSHOOT) {
                 break;
             }
             // fallthrough
         case AI_STATE_PARATROOPA_OVERSHOOT:
-            N(ParatroopaAI_Overshoot)(script, aiSettings, territoryPtr);
+            N(ParatroopaAI_Overshoot)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PARATROOPA_RESET) {
                 break;
             }
             // fallthrough
         case AI_STATE_PARATROOPA_RESET:
-            N(ParatroopaAI_Reset)(script, aiSettings, territoryPtr);
+            N(ParatroopaAI_Reset)(script, settings, detect);
             break;
     }
 

@@ -44,7 +44,7 @@ enum PiranhaPlantAiAnims {
     AI_ANIM_PIRANHA_PLANT_BITE      = 11,
 };
 
-void N(PiranhaPlantAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Init)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -58,11 +58,11 @@ void N(PiranhaPlantAI_Init)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     }
 }
 
-void N(PiranhaPlantAI_Idle)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Idle)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
+    if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
         ai_enemy_play_sound(npc, SOUND_BURROW_DIG, 0);
         fx_emote(EMOTE_EXCLAMATION, npc, 0, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 10, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
@@ -72,7 +72,7 @@ void N(PiranhaPlantAI_Idle)(Evt* script, MobileAISettings* aiSettings, EnemyDete
     }
 }
 
-void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     b32 usedTruncatedPos = false;
@@ -209,26 +209,26 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDe
             }
         }
 
-        // clamp position to territory
-        if (is_point_outside_territory(territory->shape, territory->pointX, territory->pointZ, npc->pos.x, npc->pos.z, territory->sizeX, territory->sizeZ)) {
-            switch (territory->shape) {
+        // clamp position to detect
+        if (is_point_outside_detect_volume(detect, npc->pos.x, npc->pos.z)) {
+            switch (detect->shape) {
                 case SHAPE_CYLINDER:
-                    dist = dist2D(npc->pos.x, npc->pos.z, territory->pointX, territory->pointZ);
-                    if (territory->sizeX < dist) {
-                        f32 angle = atan2(territory->pointX, territory->pointZ, npc->pos.x, npc->pos.z);
-                        npc->pos.x = territory->pointX;
-                        npc->pos.z = territory->pointZ;
-                        add_vec2D_polar(&npc->pos.x, &npc->pos.z, territory->sizeX, angle);
+                    dist = dist2D(npc->pos.x, npc->pos.z, detect->pointX, detect->pointZ);
+                    if (detect->sizeX < dist) {
+                        f32 angle = atan2(detect->pointX, detect->pointZ, npc->pos.x, npc->pos.z);
+                        npc->pos.x = detect->pointX;
+                        npc->pos.z = detect->pointZ;
+                        add_vec2D_polar(&npc->pos.x, &npc->pos.z, detect->sizeX, angle);
                     }
                     break;
                 case SHAPE_RECT:
                     npc->pos.x = CLAMP(npc->pos.x,
-                        territory->pointX - territory->sizeX,
-                        territory->pointX + territory->sizeX);
+                        detect->pointX - detect->sizeX,
+                        detect->pointX + detect->sizeX);
 
                     npc->pos.z = CLAMP(npc->pos.z,
-                        territory->pointZ - territory->sizeZ,
-                        territory->pointZ + territory->sizeZ);
+                        detect->pointZ - detect->sizeZ,
+                        detect->pointZ + detect->sizeZ);
                     break;
             }
         }
@@ -253,7 +253,7 @@ void N(PiranhaPlantAI_Burrow)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     }
 }
 
-void N(PiranhaPlantAI_Emerge)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Emerge)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -268,7 +268,7 @@ void N(PiranhaPlantAI_Emerge)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     }
 }
 
-void N(PiranhaPlantAI_Attack)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Attack)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -289,7 +289,7 @@ void N(PiranhaPlantAI_Attack)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     }
 }
 
-void N(PiranhaPlantAI_Cooldown)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_Cooldown)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -300,13 +300,13 @@ void N(PiranhaPlantAI_Cooldown)(Evt* script, MobileAISettings* aiSettings, Enemy
     }
 }
 
-void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(PiranhaPlantAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration--;
     if (npc->duration <= 0) {
-        if (!basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, false)) {
+        if (!basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
             fx_emote(EMOTE_QUESTION, npc, 0, npc->collisionHeight, 1, 2, -20, 15, nullptr);
         }
         npc->duration = 0;
@@ -318,18 +318,18 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* npcAISettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 200.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 200.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_PIRANHA_PLANT_INIT;
@@ -346,40 +346,40 @@ API_CALLABLE(N(PiranhaPlantAI_Main)) {
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PIRANHA_PLANT_INIT:
-            N(PiranhaPlantAI_Init)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Init)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_IDLE) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_IDLE:
-            N(PiranhaPlantAI_Idle)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Idle)(script, settings, detect);
             break;
         case AI_STATE_PIRANHA_PLANT_BURROW:
-            N(PiranhaPlantAI_Burrow)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Burrow)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_EMERGE) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_EMERGE:
-            N(PiranhaPlantAI_Emerge)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Emerge)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_ATTACK) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_ATTACK:
-            N(PiranhaPlantAI_Attack)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Attack)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_PIRANHA_PLANT_COOLDOWN) {
                 break;
             }
             // fallthrough
         case AI_STATE_PIRANHA_PLANT_COOLDOWN:
-            N(PiranhaPlantAI_Cooldown)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_Cooldown)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
             // fallthrough
         case AI_STATE_LOSE_PLAYER:
-            N(PiranhaPlantAI_LosePlayer)(script, npcAISettings, territoryPtr);
+            N(PiranhaPlantAI_LosePlayer)(script, settings, detect);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

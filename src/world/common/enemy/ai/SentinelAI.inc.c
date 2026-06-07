@@ -49,7 +49,7 @@ enum SentinelAiAnims {
 
 #define SENTINEL_AI_DESCEND_RATE    (1.8f)
 
-void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 deltaAngle;
@@ -58,19 +58,19 @@ void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     npc->duration--;
     if (npc->duration <= 0) {
         npc->flags &= ~NPC_FLAG_FLIP_INSTANTLY;
-        npc->duration = aiSettings->chaseUpdateInterval / 2 + rand_int(aiSettings->chaseUpdateInterval / 2 + 1);
+        npc->duration = settings->chaseUpdateInterval / 2 + rand_int(settings->chaseUpdateInterval / 2 + 1);
         npc->curAnim = enemy->animList[AI_ANIM_SENTINEL_CHASE];
-        npc->moveSpeed = aiSettings->chaseSpeed;
+        npc->moveSpeed = settings->chaseSpeed;
 
         angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
 
         // cap the turn rate
-        if (aiSettings->chaseTurnRate < fabsf(deltaAngle)) {
+        if (settings->chaseTurnRate < fabsf(deltaAngle)) {
             if (deltaAngle < 0.0f) {
-                angle = npc->yaw - aiSettings->chaseTurnRate;
+                angle = npc->yaw - settings->chaseTurnRate;
             } else {
-                angle = npc->yaw + aiSettings->chaseTurnRate;
+                angle = npc->yaw + settings->chaseTurnRate;
             }
         }
         npc->yaw = clamp_angle(angle);
@@ -79,11 +79,11 @@ void N(SentinelAI_ChaseInit)(Evt* script, MobileAISettings* aiSettings, EnemyDet
     }
 }
 
-void N(SentinelAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
-    if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
+    if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
         npc_move_heading(npc, npc->moveSpeed, npc->yaw);
         if (dist2D(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x,
                    gPlayerStatusPtr->pos.z) <= (npc->moveSpeed * 2.5)) {
@@ -101,7 +101,7 @@ void N(SentinelAI_Chase)(Evt* script, MobileAISettings* aiSettings, EnemyDetectV
     }
 }
 
-void N(SentinelAI_DescendInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_DescendInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     s32 i;
@@ -123,7 +123,7 @@ void N(SentinelAI_DescendInit)(Evt* script, MobileAISettings* aiSettings, EnemyD
     script->AI_TEMP_STATE = AI_STATE_SENTINEL_DESCEND;
 }
 
-void N(SentinelAI_Descend)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_Descend)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -131,7 +131,7 @@ void N(SentinelAI_Descend)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
 
     sfx_adjust_env_sound_pos(SOUND_LOOP_SENTINEL_ALARM, SOUND_SPACE_FULL, npc->pos.x, npc->pos.y, npc->pos.z);
 
-    if (!basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, true)) {
+    if (!basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
         enemy->varTable[AI_VAR_FLYING_FLAGS] &= ~AI_SENTINEL_FLAG_GRABBING;
         npc->rot.y = 0.0f;
         npc->flags &= ~NPC_FLAG_FLIP_INSTANTLY;
@@ -168,7 +168,7 @@ void N(SentinelAI_Descend)(Evt* script, MobileAISettings* aiSettings, EnemyDetec
     }
 }
 
-void N(SentinelAI_LosePlayerInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_LosePlayerInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -183,7 +183,7 @@ void N(SentinelAI_LosePlayerInit)(Evt* script, MobileAISettings* aiSettings, Ene
     script->AI_TEMP_STATE = AI_STATE_SENTINEL_LOSE_PLAYER;
 }
 
-void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX, posY, posZ, hitDepth;
@@ -204,7 +204,7 @@ void N(SentinelAI_LosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     }
 }
 
-void N(SentinelAI_PostLosePlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_PostLosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -214,7 +214,7 @@ void N(SentinelAI_PostLosePlayer)(Evt* script, MobileAISettings* aiSettings, Ene
     }
 }
 
-void N(SentinelAI_GrabPlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_GrabPlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
@@ -231,19 +231,19 @@ void N(SentinelAI_GrabPlayer)(Evt* script, MobileAISettings* aiSettings, EnemyDe
     }
 }
 
-void N(SentinelAI_ReturnHomeInit)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_ReturnHomeInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     enemy->varTable[AI_VAR_FLYING_FLAGS] &= ~AI_SENTINEL_FLAG_GRABBING;
     npc->flags &= ~NPC_FLAG_FLIP_INSTANTLY;
-    npc->moveSpeed = 2.0 * aiSettings->moveSpeed;
+    npc->moveSpeed = 2.0 * settings->moveSpeed;
     enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = 0;
     enemy->varTable[AI_VAR_FLYING_PREV_Y] = AI_PACK_FLT(npc->pos.y);
     script->functionTemp[1] = 30;
 }
 
-void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     f32 posX = npc->pos.x;
@@ -264,8 +264,8 @@ void N(SentinelAI_ReturnHome)(Evt* script, MobileAISettings* aiSettings, EnemyDe
 
     enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = clamp_angle(enemy->varTable[AI_VAR_FLYING_BOB_PHASE] + 12);
     if (script->functionTemp[1] <= 0) {
-        script->functionTemp[1] = aiSettings->playerSearchInterval;
-        if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius * 0.5, aiSettings->alertOffsetDist * 0.5, 0)) {
+        script->functionTemp[1] = settings->playerSearchInterval;
+        if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius * 0.5, settings->alertOffsetDist * 0.5, 0)) {
             fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 12, nullptr);
             ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
             npc->moveToPos.y = npc->pos.y;
@@ -290,79 +290,79 @@ API_CALLABLE(N(SentinelAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args);
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 125.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 125.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
         script->AI_TEMP_STATE = AI_STATE_SENTINEL_WANDER_INIT;
-        N(FlyingAI_Init)(npc, enemy, script, aiSettings);
+        N(FlyingAI_Init)(npc, enemy, script, settings);
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_SENTINEL_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
+            N(FlyingAI_WanderInit)(script, settings, detect);
             set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_CLEAR, 0, 0, 0, 0, 0);
             // fallthrough
         case AI_STATE_SENTINEL_WANDER:
-            N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
+            N(FlyingAI_Wander)(script, settings, detect);
             if (script->AI_TEMP_STATE == AI_STATE_SENTINEL_CHASE_INIT) {
                 npc->duration = 6;
             }
             break;
         case AI_STATE_SENTINEL_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
+            N(FlyingAI_LoiterInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_LOITER:
-            N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
+            N(FlyingAI_Loiter)(script, settings, detect);
             if (script->AI_TEMP_STATE == AI_STATE_SENTINEL_CHASE_INIT) {
                 npc->duration = 6;
             }
             break;
         case AI_STATE_SENTINEL_CHASE_INIT:
-            N(SentinelAI_ChaseInit)(script, aiSettings, territoryPtr);
+            N(SentinelAI_ChaseInit)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SENTINEL_CHASE) {
                 break;
             }
             // fallthrough
         case AI_STATE_SENTINEL_CHASE:
-            N(SentinelAI_Chase)(script, aiSettings, territoryPtr);
+            N(SentinelAI_Chase)(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_DESCEND_INIT:
-            N(SentinelAI_DescendInit)(script, aiSettings, territoryPtr);
+            N(SentinelAI_DescendInit)(script, settings, detect);
             if (script->AI_TEMP_STATE != AI_STATE_SENTINEL_DESCEND) {
                 break;
             }
             // fallthrough
         case AI_STATE_SENTINEL_DESCEND:
-            N(SentinelAI_Descend)(script, aiSettings, territoryPtr);
+            N(SentinelAI_Descend)(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_LOSE_PLAYER_INIT:
-            N(SentinelAI_LosePlayerInit)(script, aiSettings, territoryPtr);
+            N(SentinelAI_LosePlayerInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_LOSE_PLAYER:
-            N(SentinelAI_LosePlayer)(script, aiSettings, territoryPtr);
+            N(SentinelAI_LosePlayer)(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_POST_LOSE_PLAYER:
-            N(SentinelAI_PostLosePlayer)(script, aiSettings, territoryPtr);
+            N(SentinelAI_PostLosePlayer)(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_GRAB_PLAYER:
-            N(SentinelAI_GrabPlayer)(script, aiSettings, territoryPtr);
+            N(SentinelAI_GrabPlayer)(script, settings, detect);
             break;
         case AI_STATE_SENTINEL_RETURN_HOME_INIT:
-            N(SentinelAI_ReturnHomeInit)(script, aiSettings, territoryPtr);
+            N(SentinelAI_ReturnHomeInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_SENTINEL_RETURN_HOME:
-            N(SentinelAI_ReturnHome)(script, aiSettings, territoryPtr);
+            N(SentinelAI_ReturnHome)(script, settings, detect);
             break;
     }
 

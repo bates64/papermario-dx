@@ -60,7 +60,7 @@ s32 N(BillBlasterAI_GetIdleBulletNpcID)(void) {
 API_CALLABLE(N(BulletBillAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *script->ptrReadPos);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *script->ptrReadPos);
     b32 reachedRangeLimit = false;
     b32 done = false;
     Npc* blasterNpc;
@@ -109,7 +109,7 @@ API_CALLABLE(N(BulletBillAI_Main)) {
             npc->pos.y = blasterNpc->pos.y + 11.0;
             npc->pos.z = blasterNpc->pos.z + 1.0;
             npc->yaw = blasterNpc->yaw;
-            npc->moveSpeed = aiSettings->chaseSpeed;
+            npc->moveSpeed = settings->chaseSpeed;
             add_vec2D_polar(&npc->pos.x, &npc->pos.z, 25.0f, npc->yaw);
             if (npc->yaw < 180.0f) {
                 npc->renderYaw = 180.0f;
@@ -172,10 +172,10 @@ API_CALLABLE(N(BulletBillAI_Main)) {
 }
 
 API_CALLABLE(N(BillBlasterAI_Main)) {
-    Bytecode* args = script->ptrReadPos;
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    Bytecode* args = script->ptrReadPos;
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
     s32 bulletNpcID;
     Enemy* bulletEnemy;
     f32 deltaY;
