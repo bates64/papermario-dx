@@ -302,7 +302,7 @@ def write_ninja_rules(
     ninja.rule(
         "msg_combine",
         description="Combining messages",
-        command=f"$python {BUILD_TOOLS}/msg/combine.py $out $in",
+        command=f"$python {BUILD_TOOLS}/msg/combine.py $out --layer-sizes $layer_sizes $in",
     )
 
     ninja.rule(
@@ -1137,13 +1137,27 @@ class Configure:
 
             elif seg.type == "pm_msg":
                 msg_bins = []
+                layer_sizes = []
+                bin_idx = 0
 
-                for section_idx, msg_path in enumerate(entry.src_paths):
-                    bin_path = (
-                        entry.object_path.with_suffix("") / f"{section_idx:02X}.bin"
-                    )
-                    msg_bins.append(bin_path)
-                    build(bin_path, [msg_path], "msg")
+                # Process each asset stack layer, lowest priority first
+                for stack_dir in reversed(self.asset_stack):
+                    msg_dir = Path(f"assets/{stack_dir}/msg")
+                    layer_count = 0
+                    if msg_dir.exists():
+                        for msg_file in sorted(msg_dir.glob("*.msg")):
+                            bin_path = entry.object_path.with_suffix("") / f"{bin_idx:02X}.bin"
+                            msg_bins.append(bin_path)
+                            skip_outputs.add(posix(bin_path))
+                            ninja.build(
+                                outputs=[posix(bin_path)],
+                                rule="msg",
+                                inputs=[posix(msg_file)],
+                                variables={"version": self.version},
+                            )
+                            bin_idx += 1
+                            layer_count += 1
+                    layer_sizes.append(str(layer_count))
 
                 build(
                     [
@@ -1152,6 +1166,7 @@ class Configure:
                     ],
                     msg_bins,
                     "msg_combine",
+                    variables={"layer_sizes": ",".join(layer_sizes)},
                 )
                 build(entry.object_path, [entry.object_path.with_suffix(".bin")], "bin")
 
