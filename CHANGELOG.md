@@ -29,6 +29,10 @@ First versioned release. The following changes are relative to [vanilla Paper Ma
 - Modern compiler toolchain (GCC).
 - Enemy max HP increased to 32767.
 - Badges can cost negative BP.
+- Message file improvements:
+    - Messages are automatically discovered at `assets/*/msg/*.msg`.
+    - You can now override a message using its name, e.g. `#message:0C:(CH1_0000)`.
+    - It is now an error to have duplicate message names or IDs (within the same layer of the asset stack).
 
 ### Removed
 

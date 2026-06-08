@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 from sys import argv
-from collections import OrderedDict
-import re
+
 import msgpack
-import os
 
 
 class Message:
@@ -16,42 +14,39 @@ class Message:
         self.header_file_index = header_file_index
 
 
-def write_if_unique(f, name, value, seen, warned):
-    if name in seen:
-        if name not in warned:
-            print(f"warning: duplicate: {name}")
-            warned.add(name)
-        return
-    seen.add(name)
-    f.write(f"#define {name} {value}\n")
+def file_to_layer(file_index, layer_sizes):
+    cumulative = 0
+    for layer, size in enumerate(layer_sizes):
+        cumulative += size
+        if file_index < cumulative:
+            return layer
+    return len(layer_sizes) - 1
 
 
 if __name__ == "__main__":
     if len(argv) < 3:
-        print("usage: combine.py [out.bin] [out.h] [compiled...]")
+        print("usage: combine.py [out.bin] [out.h] [--layer-sizes SIZES] [compiled...]")
         exit(1)
 
-    _, outfile, header_file, *infiles = argv
+    _, outfile, header_file, *rest = argv
+
+    # Parse --layer-sizes if present
+    layer_sizes = None
+    if "--layer-sizes" in rest:
+        idx = rest.index("--layer-sizes")
+        layer_sizes = [int(x) for x in rest[idx + 1].split(",")]
+        rest = rest[:idx] + rest[idx + 2 :]
+
+    infiles = rest
 
     messages = []
-    # header_files = []
 
     for i, infile in enumerate(infiles):
-        # if infile == "--headers":
-        #     header_files = infiles[i+1:]
-        #     break
-
         with open(infile, "rb") as f:
             messages.extend(Message(msg, i) for msg in msgpack.unpack(f))
 
     with open(outfile, "wb") as f:
-        # sectioned+indexed, followed by just sectioned, followed by just indexed, followed by named (unsectioned & unindexed)
-        # messages.sort(key=lambda msg: bool(msg.section)<<2 + bool(msg.index))
-
-        names = set()
-
         sections = []
-        # messages_by_file = {}
 
         for message in messages:
             if message.section is None:
@@ -67,25 +62,40 @@ if __name__ == "__main__":
             section = sections[section_idx]
 
             if message.index is None:
-                message.index = len(section)
+                # Look up existing message with this name to override it
+                if message.name:
+                    for idx, existing in section.items():
+                        if existing.name == message.name:
+                            message.index = idx
+                            break
+                if message.index is None:
+                    message.index = len(section)
 
-            # if message.name:
-            #     if message.name in names:
-            #         print(f"error: multiple messages with name '{message.name}'")
-            #         exit(1)
-            #     else:
-            #         names.add(message.name)
-
-            # if message.header_file_index in messages_by_file:
-            #     messages_by_file[message.header_file_index].add(message)
-            # else:
-            #     messages_by_file[message.header_file_index] = set([message])
-
+            # Only allow overrides between asset stack layers
             if message.index in section:
-                print(f"warning: multiple messages allocated to id {section_idx:02X}:{message.index:03X}")
+                existing = section[message.index]
 
-                if section[message.index].name and message.name:
-                    print(f"warning: message '{section[message.index].name}' and '{message.name}' conflict")
+                if layer_sizes is not None:
+                    msg_layer = file_to_layer(message.header_file_index, layer_sizes)
+                    existing_layer = file_to_layer(
+                        existing.header_file_index, layer_sizes
+                    )
+
+                    if msg_layer == existing_layer:
+                        if (
+                            existing.name
+                            and message.name
+                            and existing.name == message.name
+                        ):
+                            print(
+                                f"error: duplicate message '{message.name}' in same layer"
+                            )
+                            exit(1)
+                        else:
+                            print(
+                                f"error: multiple messages allocated to id {section_idx:02X}:{message.index:03X} in same layer"
+                            )
+                            exit(1)
 
             section[message.index] = message
 
@@ -94,7 +104,9 @@ if __name__ == "__main__":
         section_offsets = []
         for section in sections:
             # convert dict into sorted list
-            section = [msg for idx, msg in sorted(section.items(), key=lambda ele: ele[0])]
+            section = [
+                msg for idx, msg in sorted(section.items(), key=lambda ele: ele[0])
+            ]
 
             message_offsets = []
             for message in section:
@@ -117,12 +129,20 @@ if __name__ == "__main__":
         f.write(b"\0\0\0\0")
 
     with open(header_file, "w") as f:
-        f.write(f"#pragma once\n" "\n" '#include "messages.h"\n' "\n")
+        f.write(f'#pragma once\n\n#include "messages.h"\n\n')
 
-        seen = set()
-        warned = set()
+        seen = {}
         for message in messages:
             if message.name:
-                write_if_unique(f, f"MSG_{message.name}", f"MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})", seen, warned)
+                define_name = f"MSG_{message.name}"
+                value = f"MESSAGE_ID(0x{message.section:02X}, 0x{message.index:03X})"
+                if define_name in seen:
+                    if seen[define_name] != value:
+                        print(
+                            f"warning: conflicting values for {define_name}: {seen[define_name]} vs {value}"
+                        )
+                else:
+                    seen[define_name] = value
+                    f.write(f"#define {define_name} {value}\n")
 
         f.write("\n")
