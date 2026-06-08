@@ -2,8 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "common/SetAngleClamped.inc.c"
-
 s32 N(CloneSet1)[] = {
     CLONED_MODEL(0), CLONED_MODEL(1), CLONED_MODEL(2), CLONED_MODEL(3)
 };
@@ -166,7 +164,7 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
         Call(DisablePlayerPhysics, true)
         Call(SetPlayerAnimation, ANIM_Mario1_Flail)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
-        Call(N(SetAngleClamped), LVar3, LVar0, LVar2, 0, 0)
+        Call(GetFloatAngleClamped, LVar3, LVar0, LVar2, 0, 0)
         Call(GetDist2D, LVar4, LVar0, LVar2, 0, 0)
         SetF(LVar5, LVar4)
         DivF(LVar5, Float(5.0))

@@ -1,4 +1,9 @@
-#include "world/common/todo/GetPlayerCoins.inc.c"
+#include "common.h"
+
+API_CALLABLE(N(GetPlayerCoins)) {
+    script->varTable[0] = gPlayerData.coins;
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(GetCurrentStatMaxima)) {
     Bytecode* args = script->ptrReadPos;

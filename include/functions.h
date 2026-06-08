@@ -274,7 +274,12 @@ f32 cos_deg(f32 x);
 f32 sin_rad(f32 x);
 f32 cos_rad(f32 x);
 s32 round(f32);
+
+/// Calculates a clockwise yaw angle in degrees from (startX, startZ) to (endX, endZ).
+/// Convention: 0 = -Z, 90 = +X, 180 = +Z, 270 = -X.
+/// Returns 0.0f if the points are identical.
 f32 atan2(f32 startX, f32 startZ, f32 endX, f32 endZ);
+
 f32 clamp_angle(f32 theta);
 s32 sign(s32 value);
 
@@ -334,7 +339,7 @@ void func_80255FD8(void);
 void set_actor_glow_pal(Actor* actor, s32 arg1);
 
 void btl_set_popup_duration(s32 duration);
-void switch_to_partner(s32 arg0);
+void switch_to_partner(s32 partnerID);
 s8 get_current_partner_id(void);
 
 void delete_trigger(Trigger* toDelete);

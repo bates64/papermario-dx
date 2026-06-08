@@ -1,7 +1,7 @@
 #include "kzn_22.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(GetFloorCollider2)) {
+API_CALLABLE(N(GetPlayerFloorCollider2)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     Exec(N(EVS_ShakeScreen))
     Label(0)
         // wait for player to reach top of stairs
-        Call(N(GetFloorCollider2), LVar0)
+        Call(N(GetPlayerFloorCollider2), LVar0)
         IfNe(LVar0, COLLIDER_o544)
             Wait(1)
             Goto(0)

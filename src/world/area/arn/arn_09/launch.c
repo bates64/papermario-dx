@@ -8,7 +8,7 @@ EvtScript N(EVS_LaunchPlayer) = {
     Set(AF_ARN_01, true)
     Call(DisablePlayerInput, true)
     Call(SetPlayerActionState, ACTION_STATE_FALLING)
-    Call(func_802D2484)
+    Call(AwaitAnyPlayerFloorTouch)
     Call(SetPlayerActionState, ACTION_STATE_LAUNCH)
     Call(SetPlayerJumpscale, Float(1.5))
     Call(PlayerJump, 50, 0, 0, 16)

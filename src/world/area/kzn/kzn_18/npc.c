@@ -3,8 +3,6 @@
 #include "world/common/npc/Kolorado.inc.c"
 #include "world/common/enemy/PutridPiranhaSentinel.inc.c"
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 EvtScript N(EVS_NpcIdle_Kolorado) = {
     IfLt(GB_StoryProgress, STORY_CH5_KOLORADO_RAN_AHEAD)
         Label(0)
@@ -32,7 +30,7 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
     EndIf
     Loop(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, COLLIDER_o442)
             BreakLoop
         EndIf

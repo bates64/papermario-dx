@@ -1,6 +1,10 @@
 #include "common.h"
 #include "sprite/npc/Kolorado.h"
 
+u32 N(WhaleRootAnimPhase) = 0;
+s32 N(WhaleBodyAnimPhase) = -1;
+s32 N(WhaleBellyAnimPhase) = -1;
+
 Npc* N(resolve_npc)(Evt* script, s32 npcIdOrPtr) {
     if (npcIdOrPtr == NPC_SELF) {
         return get_npc_safe(script->owner2.npcID);
@@ -11,7 +15,7 @@ Npc* N(resolve_npc)(Evt* script, s32 npcIdOrPtr) {
     }
 }
 
-API_CALLABLE(N(UnkAngleFunc001)) {
+API_CALLABLE(N(MakeWhaleRootPos)) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 outX = *args++;
@@ -24,9 +28,9 @@ API_CALLABLE(N(UnkAngleFunc001)) {
         return ApiStatus_DONE2;
     }
 
-    N(unkAngle1) += 4;
-    if (N(unkAngle1) >= 360) {
-        N(unkAngle1) -= 360;
+    N(WhaleRootAnimPhase) += 4;
+    if (N(WhaleRootAnimPhase) >= 360) {
+        N(WhaleRootAnimPhase) -= 360;
     }
 
     y = npc->pos.y;
@@ -35,7 +39,7 @@ API_CALLABLE(N(UnkAngleFunc001)) {
         npc->curAnim == ANIM_Kolorado_Talk ||
         npc->curAnim == ANIM_Kolorado_HurtStill)
     {
-        y += 2.0f * sin_deg(N(unkAngle1));
+        y += 2.0f * sin_deg(N(WhaleRootAnimPhase));
     }
 
     evt_set_float_variable(script, outX, npc->pos.x);
@@ -44,7 +48,9 @@ API_CALLABLE(N(UnkAngleFunc001)) {
     return ApiStatus_DONE2;
 }
 
-void N(unkVtxFunc001)(Vtx* firstVertex, Vtx* copiedVertices, s32 numVertices, s32* wagPhasePtr) {
+/// Applies a bend to the copied whale vertices based on their local X position,
+/// starting at x = 30 (in local space), and increasing further along the tail.
+void N(BendWhaleBody)(Vtx* referenceVertices, Vtx* copiedVertices, s32 numVertices, s32* wagPhasePtr) {
     s32 wagPhase;
     s32 bendPow, bendFrac;
     s32 i, j;
@@ -53,7 +59,6 @@ void N(unkVtxFunc001)(Vtx* firstVertex, Vtx* copiedVertices, s32 numVertices, s3
     f32 angle;
     s32 offset;
 
-    wagPhase = *wagPhasePtr;
     switch (get_npc_safe(NPC_Whale)->curAnim) {
         case ANIM_Kolorado_Still:
         case ANIM_Kolorado_Yell:
@@ -70,14 +75,15 @@ void N(unkVtxFunc001)(Vtx* firstVertex, Vtx* copiedVertices, s32 numVertices, s3
         case ANIM_Kolorado_Idle:
         case ANIM_Kolorado_Shout:
             if (*wagPhasePtr < 0) {
-                wagPhase = 0;
                 *wagPhasePtr = 0;
             }
             break;
     }
 
+    wagPhase = *wagPhasePtr;
+
     for (i = 0; i < numVertices; i++) {
-        vtxPos = firstVertex[i].v.ob;
+        vtxPos = referenceVertices[i].v.ob;
         offset = 30;
 
         if (vtxPos[0] > 30) {
@@ -103,58 +109,36 @@ void N(unkVtxFunc001)(Vtx* firstVertex, Vtx* copiedVertices, s32 numVertices, s3
     }
 }
 
-void N(unkAngleFunc002)(void) {
+void N(build_gfx_whale_body)(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
 
     mdl_get_copied_vertices(VTX_COPY_1, &firstVertex, &copiedVertices, &numVertices);
-    N(unkVtxFunc001)(firstVertex, copiedVertices, numVertices, &N(unkAngle2));
+    N(BendWhaleBody)(firstVertex, copiedVertices, numVertices, &N(WhaleBodyAnimPhase));
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_1));
-    if (N(unkAngle2) >= 0) {
-        N(unkAngle2) += 4;
+    if (N(WhaleBodyAnimPhase) >= 0) {
+        N(WhaleBodyAnimPhase) += 4;
     }
-    if (N(unkAngle2) >= 360) {
-        N(unkAngle2) = -1;
+    if (N(WhaleBodyAnimPhase) >= 360) {
+        N(WhaleBodyAnimPhase) = -1;
     }
 }
 
-void N(unkAngleFunc003)(void) {
+void N(build_gfx_whale_belly)(void) {
     Vtx* firstVertex;
     Vtx* copiedVertices;
     s32 numVertices;
 
     mdl_get_copied_vertices(VTX_COPY_2, &firstVertex, &copiedVertices, &numVertices);
-    N(unkVtxFunc001)(firstVertex, copiedVertices, numVertices, &N(unkAngle3));
+    N(BendWhaleBody)(firstVertex, copiedVertices, numVertices, &N(WhaleBellyAnimPhase));
 
     gSPDisplayList(gMainGfxPos++, mdl_get_copied_gfx(VTX_COPY_2));
-    if (N(unkAngle3) >= 0) {
-        N(unkAngle3) += 4;
+    if (N(WhaleBellyAnimPhase) >= 0) {
+        N(WhaleBellyAnimPhase) += 4;
     }
-    if (N(unkAngle3) >= 360) {
-        N(unkAngle3) = -1;
+    if (N(WhaleBellyAnimPhase) >= 360) {
+        N(WhaleBellyAnimPhase) = -1;
     }
-}
-
-// Similar to CosInterpMinMax
-API_CALLABLE(N(UnkFloatFunc001)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 tvar = *args++;
-    s32 time = evt_get_variable(script, tvar);
-    s32 out = *args++;
-    f32 min = evt_get_float_variable(script, *args++);
-    f32 max = evt_get_float_variable(script, *args++);
-    s32 period = evt_get_variable(script, *args++);
-    b32 oneshot = evt_get_variable(script, *args++);
-    f32 phase = evt_get_float_variable(script, *args++);
-    f32 diff = (max - min) / 2;
-
-    if (oneshot && period < time) {
-        time = period;
-        evt_set_variable(script, tvar, period);
-    }
-
-    evt_set_float_variable(script, out, (min + diff) - (diff * cos_deg(((time * 180.0f) / period) + phase)));
-    return ApiStatus_DONE2;
 }

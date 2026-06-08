@@ -310,7 +310,7 @@ API_CALLABLE(RemoveItemEntity) {
 
 API_CALLABLE(SetItemPos) {
     Bytecode* args = script->ptrReadPos;
-    ItemEntity* ptrItemEntity;
+    ItemEntity* itemEntity;
     s32 itemEntityIndex;
     s32 x, y, z;
 
@@ -319,10 +319,28 @@ API_CALLABLE(SetItemPos) {
     y = evt_get_variable(script, *args++);
     z = evt_get_variable(script, *args++);
 
-    ptrItemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
-    ptrItemEntity->pos.x = x;
-    ptrItemEntity->pos.y = y;
-    ptrItemEntity->pos.z = z;
+    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    itemEntity->pos.x = x;
+    itemEntity->pos.y = y;
+    itemEntity->pos.z = z;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(GetItemPos) {
+    Bytecode* args = script->ptrReadPos;
+    ItemEntity* itemEntity;
+    s32 itemEntityIndex;
+    Bytecode outX, outY, outZ;
+
+    itemEntityIndex = evt_get_variable(script, *args++);
+    outX = *args++;
+    outY = *args++;
+    outZ = *args++;
+
+    itemEntity = (ItemEntity*) get_item_entity(itemEntityIndex);
+    evt_set_variable(script, outX, itemEntity->pos.x);
+    evt_set_variable(script, outY, itemEntity->pos.y);
+    evt_set_variable(script, outZ, itemEntity->pos.z);
     return ApiStatus_DONE2;
 }
 

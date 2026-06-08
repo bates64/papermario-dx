@@ -220,8 +220,6 @@ EvtScript N(EVS_UnlockStoreroom) = {
     End
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
 s32 N(StoreroomKeyList)[] = {
     ITEM_STOREROOM_KEY,
     ITEM_NONE
@@ -239,8 +237,7 @@ EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
         Return
     EndIf
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 155, 48, -480)
-    Set(LVar0, MV_StoreroomLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_StoreroomLockEntityID)
     Wait(5)
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
@@ -263,8 +260,7 @@ EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
 };
 
 EvtScript N(EVS_ForceStoreroomUnlock) = {
-    Set(LVar0, MV_StoreroomLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_StoreroomLockEntityID)
     Return
     End
 };

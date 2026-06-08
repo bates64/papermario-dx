@@ -1292,7 +1292,10 @@ EvtScript N(EVS_NpcInteract_Toad) = {
     End
 };
 
-#include "world/common/todo/SyncStatusBar.inc.c"
+API_CALLABLE(N(SyncStatusBar)) {
+    sync_status_bar();
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(func_8024295C_8B29CC)) {
     Bytecode* args = script->ptrReadPos;

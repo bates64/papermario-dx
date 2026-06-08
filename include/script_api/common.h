@@ -1444,7 +1444,7 @@ API_CALLABLE(DisablePartner);
 API_CALLABLE(UseEntryHeading);
 
 /// @evtapi
-API_CALLABLE(func_802D2148);
+API_CALLABLE(RestorePlayerCameraFollow);
 
 /// @evtapi
 /// @param moveDist
@@ -1454,15 +1454,22 @@ API_CALLABLE(func_802D2148);
 /// @evtout LVar3 goalPosZ
 API_CALLABLE(UseExitHeading);
 
+/// Block the script until the player is touching a floor in a controllable action state
+/// (idle, walk, spin, etc)
 /// @evtapi
-API_CALLABLE(WaitForPlayerTouchingFloor);
+API_CALLABLE(AwaitPlayerTouchingFloor);
 
+/// Block the script until the player is touching a floor regardless of action state
 /// @evtapi
-API_CALLABLE(func_802D2484);
+API_CALLABLE(AwaitAnyPlayerFloorTouch);
 
 /// @evtapi
 /// @param outResult
 API_CALLABLE(IsPlayerOnValidFloor);
+
+/// @evtapi
+/// @param outResult
+API_CALLABLE(GetPlayerFloorCollider);
 
 /// @evtapi
 API_CALLABLE(WaitForPlayerMoveToComplete);
@@ -1490,9 +1497,14 @@ API_CALLABLE(FacePlayerTowardPoint);
 /// @param disabled
 API_CALLABLE(DisablePulseStone);
 
+/// returns partnerID of current partner if using their ability, otherwise PARTNER_NONE
 /// @evtapi
 /// @param outPartnerID
 API_CALLABLE(GetPartnerInUse);
+
+/// @evtapi partnerID
+/// @param outPartnerID
+API_CALLABLE(SwitchToPartner);
 
 /// @evtapi
 API_CALLABLE(ForceUsePartner);
@@ -1547,6 +1559,21 @@ API_CALLABLE(MakeLerp);
 /// @evtout LVar1 done
 API_CALLABLE(UpdateLerp);
 
+/// Computes a cosine interpolation between `min` and `max` using the current value of `time`.
+/// The caller owns and advances `time`; this only reads it, except that `onlyOnce` clamps
+/// `time` to `duration` after the interpolation completes.
+///
+/// `phaseOffset` is measured in degrees.
+/// @evtapi
+/// @param time
+/// @param outValue
+/// @param min
+/// @param max
+/// @param duration
+/// @param onlyOnce
+/// @param phaseOffset
+API_CALLABLE(CosInterpMinMax);
+
 /// @evtapi
 /// @param max
 /// @param outValue
@@ -1595,12 +1622,6 @@ API_CALLABLE(AwaitPlayerLeave);
 API_CALLABLE(AddVectorPolar);
 
 /// @evtapi
-API_CALLABLE(func_802D4BDC);
-
-/// @evtapi
-API_CALLABLE(func_802D4C4C);
-
-/// @evtapi
 /// @param value
 API_CALLABLE(func_802D4CC4);
 
@@ -1628,12 +1649,48 @@ API_CALLABLE(LoadPath);
 /// See [`LoadPath`].
 API_CALLABLE(GetNextPathPos);
 
+/// Calculates a clockwise yaw angle from (x1, z1) to (x2, z2) in the XZ plane.
+///
+/// Angle convention:
+///   0   = -Z direction
+///   90  = +X direction
+///   180 = +Z direction
+///   270 = -X direction
+///
+/// @evtapi
+/// @param outAngle
+/// @param x1
+/// @param z1
+/// @param x2
+/// @param z2
+API_CALLABLE(GetAngleBetweenPoints);
+
+API_CALLABLE(GetFloatAngleClamped);
+
+/// Calculates a counter-clockwise rotation angle from (x1, z1) to (x2, z2) in the XZ plane.
+///
+/// Angle convention:
+///   0   = +Z direction
+///   90  = -X direction
+///   180 = -Z direction
+///   270 = +X direction
+///
+/// If the start and end points are identical, outAngle is left unchanged.
+///
+/// @evtapi
+/// @param outAngle
+/// @param x1
+/// @param z1
+/// @param x2
+/// @param z2
+API_CALLABLE(CalcActorRotation);
+
 /// @evtapi
 /// @param outDist
-/// @param X1
-/// @param Y1
-/// @param X2
-/// @param Y2
+/// @param x1
+/// @param y1
+/// @param x2
+/// @param y2
 API_CALLABLE(GetDist2D);
 
 /// @evtapi
@@ -2009,6 +2066,13 @@ API_CALLABLE(SetItemPos);
 
 /// @evtapi
 /// @param itemEntityIndex
+/// @param outX
+/// @param outY
+/// @param outZ
+API_CALLABLE(GetItemPos);
+
+/// @evtapi
+/// @param itemEntityIndex
 /// @param flags
 /// @param mode
 API_CALLABLE(SetItemFlags);
@@ -2197,6 +2261,26 @@ API_CALLABLE(AssignPanelFlag);
 /// @evtapi
 /// @param flagVar
 API_CALLABLE(AssignCrateFlag);
+
+/// @evtapi
+/// @param entityID
+/// @param x
+/// @param y
+/// @param z
+API_CALLABLE(GetEntityPosition);
+
+/// @evtapi
+/// @param entityID
+/// @param x
+/// @param y
+/// @param z
+API_CALLABLE(SetEntityPosition);
+
+/// Sets ENTITY_FLAG_USED for a given entity. Use this to open padlocks and remotely
+/// trigger item blocks.
+/// @evtapi
+/// @param entityID
+API_CALLABLE(SetEntityUsed);
 
 /// Removes a trigger previously bound with [`BindTrigger`].
 /// @evtapi

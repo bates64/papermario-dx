@@ -17,8 +17,6 @@ API_CALLABLE(N(PlaySpringAnimation)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SetEntityPosition.inc.c"
-
 EvtScript N(EVS_BreakBlock_DropSpring) = {
     IfEq(GF_TIK05_SpringBrick, true)
         Return
@@ -29,7 +27,7 @@ EvtScript N(EVS_BreakBlock_DropSpring) = {
     Call(MakeLerp, 75, 105, 8, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_Unk_00, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_Unk_00, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -39,7 +37,7 @@ EvtScript N(EVS_BreakBlock_DropSpring) = {
     Call(MakeLerp, LVar0, -10, 22, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_Unk_00, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_Unk_00, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)

@@ -1503,6 +1503,39 @@ API_CALLABLE(AssignCrateFlag) {
     return ApiStatus_DONE1;
 }
 
+API_CALLABLE(GetEntityPosition) {
+    Bytecode* args = script->ptrReadPos;
+    Entity* entity = get_entity_by_index(evt_get_variable(script, *args++));
+
+    evt_set_variable(script, *args++, entity->pos.x);
+    evt_set_variable(script, *args++, entity->pos.y);
+    evt_set_variable(script, *args++, entity->pos.z);
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetEntityPosition) {
+    Bytecode* args = script->ptrReadPos;
+    s32 entityIndex = evt_get_variable(script, *args++);
+    s32 x = evt_get_variable(script, *args++);
+    s32 y = evt_get_variable(script, *args++);
+    s32 z = evt_get_variable(script, *args++);
+    Entity* entity = get_entity_by_index(entityIndex);
+
+    entity->pos.x = x;
+    entity->pos.y = y;
+    entity->pos.z = z;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(SetEntityUsed) {
+    Bytecode* args = script->ptrReadPos;
+    s32 entityIndex = evt_get_variable(script, *args++);
+    Entity* entity = get_entity_by_index(entityIndex);
+
+    entity->flags |= ENTITY_FLAG_USED;
+    return ApiStatus_DONE2;
+}
+
 s32 create_entity_shadow(Entity* entity, f32 x, f32 y, f32 z) {
     u16 bpFlags = entity->blueprint->flags;
     s32 type;

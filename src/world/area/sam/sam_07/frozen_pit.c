@@ -116,9 +116,6 @@ API_CALLABLE(N(AnimateIceShattering)) {
     return ApiStatus_BLOCK;
 }
 
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 API_CALLABLE(N(AwaitPlayerNotPoundingFloor)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
@@ -184,7 +181,7 @@ EvtScript N(EVS_Blast_FragileIce) = {
 
 EvtScript N(EVS_UseGreenSwitch) = {
     Call(DisablePlayerInput, true)
-    Call(N(GetEntityPosition), MV_SwitchEntityID, LVar7, LVar8, LVar9)
+    Call(GetEntityPosition, MV_SwitchEntityID, LVar7, LVar8, LVar9)
     IfEq(GF_SAM07_FloorRaised, false)
         Call(PlaySoundAtCollider, COLLIDER_m1_yuka, SOUND_SAM07_RAISE_FLOOR, 0)
         Sub(LVar8, -180)
@@ -195,7 +192,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(TranslateModel, MODEL_m1_kabe, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_m1_yuka)
             Add(LVar0, LVar8)
-            Call(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
+            Call(SetEntityPosition, MV_SwitchEntityID, LVar7, LVar0, LVar9)
             Call(EnableCameraFollowPlayerY)
             Wait(1)
             Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))
@@ -216,7 +213,7 @@ EvtScript N(EVS_UseGreenSwitch) = {
             Call(TranslateModel, MODEL_m1_kabe, 0, LVar0, 0)
             Call(UpdateColliderTransform, COLLIDER_m1_yuka)
             Add(LVar0, LVar8)
-            Call(N(SetEntityPositionF), MV_SwitchEntityID, LVar7, LVar0, LVar9)
+            Call(SetEntityPosition, MV_SwitchEntityID, LVar7, LVar0, LVar9)
             Call(EnableCameraFollowPlayerY)
             Wait(1)
             Call(N(AwaitPlayerNotPoundingFloor), COLLIDER_m1_yuka, ENTITY_COLLIDER_ID(0))

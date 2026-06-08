@@ -48,8 +48,6 @@ EvtScript N(EVS_DoNothing) = {
 
 #include "../common/GetIntoShell.inc.c"
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 EvtScript N(EVS_NpcInteract_Kooper) = {
     IfLt(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
         Set(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
@@ -84,7 +82,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
             Call(PlayerFaceNpc, NPC_Kooper, false)
         EndThread
         Thread
-            Call(N(SwitchToPartner), 1)
+            Call(SwitchToPartner, PARTNER_GOOMBARIO)
             Call(DisablePartnerAI, 0)
             Call(NpcMoveTo, NPC_PARTNER, -55, -130, 15 * DT)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)

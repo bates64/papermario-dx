@@ -69,7 +69,7 @@ enum {
 };
 
 enum {
-    MV_SwitchEntityIdx      = MapVar(0),
+    MV_EntityID_Switch      = MapVar(0),
     MV_OrbitingEffectAIdx   = MapVar(0),
     MV_OrbitingEffectBIdx   = MapVar(1),
     MV_Unk_0A               = MapVar(10), // KNOCK_DOWN_MAP_VAR

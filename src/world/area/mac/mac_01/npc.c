@@ -33,14 +33,16 @@ NpcSettings N(NpcSettings_Parakarry) = {
 #define KNOCK_DOWN_MAP_VAR MV_KnockdownWorker
 #include "world/common/complete/KnockDownPlayer.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
 #include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
-#include "world/common/todo/GetPlayerCoins.inc.c"
+API_CALLABLE(N(GetPlayerCoins)) {
+    script->varTable[0] = gPlayerData.coins;
+    return ApiStatus_DONE2;
+}
 
 s32 N(LetterList_Merlon)[] = {
     ITEM_LETTER_TO_MERLON,

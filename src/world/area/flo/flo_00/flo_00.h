@@ -29,7 +29,7 @@ enum {
 
 enum {
     MV_BeanstalkSceneSync       = MapVar(10),
-    MV_BeanstalkItemEntity      = MapVar(11),
+    MV_ItemEntity_Beanstalk     = MapVar(11),
 };
 
 #define NAMESPACE flo_00

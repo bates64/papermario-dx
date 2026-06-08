@@ -5,11 +5,6 @@
 #include "world/common/npc/Dryite_Stationary.inc.c"
 
 #include "world/common/complete/GiveReward.inc.c"
-#if VERSION_JP
-#include "world/common/todo/SomeItemEntityFunc.inc.c"
-#include "world/common/todo/IsItemBadge.inc.c"
-#include "world/area/iwa/common/UnkScriptJP00.inc.c"
-#endif
 
 EvtScript N(EVS_NpcInteract_TrainToad_01) = {
     Call(GetEntryID, LVar0)

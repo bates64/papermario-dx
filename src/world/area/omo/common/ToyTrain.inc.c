@@ -1,19 +1,73 @@
 #include "common.h"
 #include "sprite/player.h"
 
-#include "common/SetAngleClamped.inc.c"
+API_CALLABLE(N(CompareFloats)) {
+    Bytecode* args = script->ptrReadPos;
+    f32 temp_f20 = evt_get_float_variable(script, *args++);
+    f32 temp = evt_get_float_variable(script, *args++);
 
-#include "common/CompareFloats.inc.c"
+    if (temp < temp_f20) {
+        evt_set_variable(script, *args++, true);
+    } else {
+        evt_set_variable(script, *args++, false);
+    }
+    return ApiStatus_DONE2;
+}
 
-#include "common/AdvanceBuffer.inc.c"
+API_CALLABLE(N(AdvanceBuffer)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 constant = evt_get_variable(script, *args++);
+    s32 size = evt_get_variable(script, *args++);
+    s32 count = evt_get_variable(script, *args++);
 
-#include "common/SetPlayerStatusPosYaw.inc.c"
+    script->buffer = &script->buffer[constant + size * count];
+    return ApiStatus_DONE2;
+}
 
-#include "common/SetNpcPosYaw.inc.c"
+API_CALLABLE(N(SetPlayerStatusPosYaw)) {
+    Bytecode* args = script->ptrReadPos;
+    f32 x = evt_get_float_variable(script, *args++);
+    f32 y = evt_get_float_variable(script, *args++);
+    f32 z = evt_get_float_variable(script, *args++);
+    f32 yaw = evt_get_float_variable(script, *args++);
 
-#include "common/CosInterpMinMax.inc.c"
+    gPlayerStatus.pos.x = x;
+    gPlayerStatus.pos.y = y;
+    gPlayerStatus.pos.z = z;
+    gPlayerStatus.targetYaw = yaw;
+    return ApiStatus_DONE2;
+}
 
-#include "common/IsAOrBPressed.inc.c"
+API_CALLABLE(N(SetNpcPosYaw)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 npcID = evt_get_variable(script, *args++);
+    f32 x = evt_get_float_variable(script, *args++);
+    f32 y = evt_get_float_variable(script, *args++);
+    f32 z = evt_get_float_variable(script, *args++);
+    f32 yaw = evt_get_float_variable(script, *args++);
+    Npc* npc = get_npc_safe(npcID);
+
+    npc->pos.x = x;
+    npc->pos.y = y;
+    npc->pos.z = z;
+    npc->yaw = yaw;
+    npc->colliderPos.x = npc->pos.x;
+    npc->colliderPos.y = npc->pos.y;
+    npc->colliderPos.z = npc->pos.z;
+    npc->flags |= NPC_FLAG_DIRTY_SHADOW;
+    return ApiStatus_DONE2;
+}
+
+API_CALLABLE(N(IsAOrBPressed)) {
+    script->varTable[0] = false;
+    if (gGameStatusPtr->pressedButtons[0] & BUTTON_A) {
+        script->varTable[0] = true;
+    }
+    if (gGameStatusPtr->pressedButtons[0] & BUTTON_B) {
+        script->varTable[0] = true;
+    }
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_Scene_RideTrain) = {
     MallocArray(20, LVar0)
@@ -84,22 +138,22 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     CaseEq(0)
                         SetF(ArrayVar(10), Float(10.0))
                     CaseEq(1)
-                        Call(N(CosInterpMinMax), ArrayVar(18), ArrayVar(10), Float(0.0), Float(10.0), 100, 1, Float(0.0))
+                        Call(CosInterpMinMax, ArrayVar(18), ArrayVar(10), Float(0.0), Float(10.0), 100, 1, Float(0.0))
                         Add(ArrayVar(18), 1)
                     CaseEq(2)
                         Set(LVar0, ArrayVar(13))
                         Set(LVar1, ArrayVar(17))
-                        Call(N(CosInterpMinMax), LVar0, ArrayVar(10), Float(10.0), Float(2.0), LVar1, 0, Float(0.0))
+                        Call(CosInterpMinMax, LVar0, ArrayVar(10), Float(10.0), Float(2.0), LVar1, 0, Float(0.0))
                     CaseEq(3)
                         Set(LVar0, ArrayVar(13))
                         Set(LVar1, ArrayVar(17))
                         Div(LVar1, 2)
-                        Call(N(CosInterpMinMax), LVar0, ArrayVar(10), Float(1.0), Float(10.0), LVar1, 0, Float(0.0))
+                        Call(CosInterpMinMax, LVar0, ArrayVar(10), Float(1.0), Float(10.0), LVar1, 0, Float(0.0))
                 EndSwitch
                 Call(GetDist2D, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
                 Call(N(CompareFloats), LVar0, ArrayVar(10), LVar2)
                 IfEq(LVar2, 1)
-                    Call(N(SetAngleClamped), LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
+                    Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
                     Call(AddVectorPolar, ArrayVar(0), ArrayVar(1), ArrayVar(10), LVar0)
                 Else
                     SetF(LVar1, ArrayVar(10))
@@ -115,14 +169,14 @@ EvtScript N(EVS_Scene_RideTrain) = {
                         Set(MF_TrainUnk_00, false)
                         Set(LFlag1, true)
                     Else
-                        Call(N(SetAngleClamped), LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
+                        Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
                         Call(AddVectorPolar, ArrayVar(0), ArrayVar(1), LVar1, LVar0)
                     EndIf
                 EndIf
                 Call(GetDist2D, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                 Call(N(CompareFloats), LVar0, ArrayVar(10), LVar2)
                 IfEq(LVar2, 1)
-                    Call(N(SetAngleClamped), LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
+                    Call(GetFloatAngleClamped, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                     Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), ArrayVar(10), LVar0)
                 Else
                     SetF(LVar1, ArrayVar(10))
@@ -138,18 +192,18 @@ EvtScript N(EVS_Scene_RideTrain) = {
                         Set(MF_TrainUnk_00, false)
                         Set(LFlag1, false)
                     Else
-                        Call(N(SetAngleClamped), LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
+                        Call(GetFloatAngleClamped, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                         Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), LVar1, LVar0)
                     EndIf
                 EndIf
                 IfEq(MV_TrainUnk_00, 100)
                     IfEq(LFlag1, true)
-                        Call(N(SetAngleClamped), LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(5), ArrayVar(6))
+                        Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(5), ArrayVar(6))
                         SetF(ArrayVar(5), ArrayVar(0))
                         SetF(ArrayVar(6), ArrayVar(1))
                         Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), Float(80.0), LVar0)
                     Else
-                        Call(N(SetAngleClamped), LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(0), ArrayVar(1))
+                        Call(GetFloatAngleClamped, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(0), ArrayVar(1))
                         SetF(ArrayVar(0), ArrayVar(5))
                         SetF(ArrayVar(1), ArrayVar(6))
                         Call(AddVectorPolar, ArrayVar(0), ArrayVar(1), Float(80.0), LVar0)
@@ -161,7 +215,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 AddF(LVar1, ArrayVar(6))
                 DivF(LVar0, Float(2.0))
                 DivF(LVar1, Float(2.0))
-                Call(N(SetAngleClamped), LVar2, ArrayVar(5), ArrayVar(6), ArrayVar(0), ArrayVar(1))
+                Call(GetFloatAngleClamped, LVar2, ArrayVar(5), ArrayVar(6), ArrayVar(0), ArrayVar(1))
                 SetF(MV_TrainPos, LVar0)
                 SetF(MV_TrainUnk_0C, LVar1)
                 SetF(MV_TrainUnk_0D, LVar2)

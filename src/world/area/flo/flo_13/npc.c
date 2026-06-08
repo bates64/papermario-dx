@@ -15,8 +15,6 @@ NpcSettings N(NpcSettings_Lakilester) = {
 #define AI_LAKITU_LAST_SPINY_ID     NPC_Spiny_06
 #include "world/common/enemy/Lakitu_SpinySpawner.inc.c"
 
-#include "world/common/todo/UnkFunc42.inc.c"
-
 API_CALLABLE(N(PlayLakiluluFlightSounds)) {
     Npc* npc = get_npc_unsafe(NPC_Lakilulu);
     s16 volume;
@@ -97,7 +95,7 @@ EvtScript N(EVS_Lakliester_ManageYaw) = {
     Call(GetNpcPos, NPC_Lakilester, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilester, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Lakilester, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)
@@ -115,7 +113,7 @@ EvtScript N(EVS_Laklilulu_ManageYaw) = {
     Call(GetNpcPos, NPC_Lakilulu, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Lakilulu, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Lakilulu, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)

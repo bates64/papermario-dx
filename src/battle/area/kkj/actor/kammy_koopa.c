@@ -184,9 +184,6 @@ EvtScript N(EVS_HandleEvent) = {
     End
 };
 
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 API_CALLABLE(N(BlockAppear)) {
     Entity* entity = get_entity_by_index(script->varTable[9]);
 
@@ -301,11 +298,11 @@ EvtScript N(EVS_TakeTurn) = {
         Call(N(FadeInScreenBlur))
     EndThread
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_KAMMY_RAISE_OBJECT)
-    Call(N(GetEntityPosition), LVar9, LVar2, LVar3, LVar4)
+    Call(GetEntityPosition, LVar9, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar3, 300, 20, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPositionF), LVar9, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar9, LVar2, LVar0, LVar4)
         Wait(1)
         IfNe(LVar1, 1)
             BreakLoop
@@ -330,12 +327,12 @@ EvtScript N(EVS_TakeTurn) = {
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_KAMMY_LOWER_OBJECT)
     Set(LVar5, LVar1)
     Add(LVar5, 200)
-    Call(N(SetEntityPositionF), LVar9, LVar0, LVar5, LVar2)
-    Call(N(GetEntityPosition), LVar9, LVar2, LVar3, LVar4)
+    Call(SetEntityPosition, LVar9, LVar0, LVar5, LVar2)
+    Call(GetEntityPosition, LVar9, LVar2, LVar3, LVar4)
     Call(MakeLerp, LVar5, LVar1, 20, EASING_CUBIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPositionF), LVar9, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar9, LVar2, LVar0, LVar4)
         Wait(1)
         IfNe(LVar1, 1)
             BreakLoop

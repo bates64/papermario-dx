@@ -106,13 +106,11 @@ EvtScript N(EVS_Init) = {
     End
 };
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Set(LVarF, 0)
     Loop(0)
-        Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-        Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
         Add(LVarF, 1)
         Call(SetActorScale, ACTOR_SELF, LVar1, LVar0, Float(1.0))
         IfGe(LVarF, 30)

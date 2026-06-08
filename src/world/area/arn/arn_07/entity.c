@@ -1,9 +1,6 @@
 #include "arn_07.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_UnlockDoor) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -22,10 +19,9 @@ EvtScript N(EVS_UnlockDoor) = {
     Call(RemoveItem, ITEM_MYSTICAL_KEY)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-    Call(N(GetEntityPosition), MV_Unk_00, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_Unk_00, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_Unk_00)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_Unk_00)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return

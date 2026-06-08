@@ -1,9 +1,6 @@
 #include "kpa_60.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 s32 N(KeyList_FrontDoor)[] = {
     ITEM_BOWSER_CASTLE_KEY,
     ITEM_NONE
@@ -22,10 +19,9 @@ EvtScript N(EVS_UnlockPrompt_FrontDoor) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_KPA62_UnlockedFrontDoor, true)
-    Call(N(GetEntityPosition), MV_PadLockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_PadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadLockEntityID)
-    Call(N(RemovePadlock))
+    Set(SetEntityUsed, MV_PadlockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)
@@ -38,7 +34,7 @@ EvtScript N(EVS_UnlockPrompt_FrontDoor) = {
 EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_KPA62_UnlockedFrontDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), -200, 10, -207, 0, MAKE_ENTITY_END)
-        Set(MV_PadLockEntityID, LVar0)
+        Set(MV_PadlockEntityID, LVar0)
         BindPadlock(Ref(N(EVS_UnlockPrompt_FrontDoor)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList_FrontDoor)), 0, 1)
     Else
         BindTrigger(Ref(N(EVS_ExitDoor_kpa_70_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittn, 1, 0)

@@ -2,9 +2,6 @@
 #include "kpa_14.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 s32 N(KeyList_BowsersCastle)[] = {
     ITEM_BOWSER_CASTLE_KEY,
     ITEM_NONE
@@ -23,10 +20,9 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_KPA14_UnlockedDoor, true)
-    Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_PadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Set(SetEntityUsed, MV_PadlockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)

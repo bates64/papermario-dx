@@ -1,11 +1,7 @@
 #include "common.h"
 
-BSS CameraRig CurrentCamRig;
-BSS f32 D_800A08DC;
-BSS f32 D_800A08E0;
-BSS f32 D_800A08E4;
-BSS f32 D_800A08E8;
-BSS f32 D_800A08EC;
+BSS CameraRig InterpolatedCamRig;
+BSS Vec3f PrevLineConstraintTargetDelta;
 
 CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
     f32 hitX, hitY, hitZ;
@@ -20,13 +16,7 @@ CameraControlSettings* test_ray_zone_aabb(f32 x, f32 y, f32 z) {
     return gZoneCollisionData.colliderList[zoneID].camSettings;
 }
 
-enum CameraSettingsPtrType {
-    CAMERA_SETTINGS_PTR_MINUS_2     = -2,
-    CAMERA_SETTINGS_PTR_MINUS_1     = -1,
-    CAMERA_SETTINGS_PTR_NULL        = 0,
-};
-
-void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* configuration, f32 x, f32 y, f32 z) {
+void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* rig, f32 x, f32 y, f32 z) {
     f32 Ax = controller->points.two.Ax;
     f32 Az = controller->points.two.Az;
     f32 Bx = controller->points.two.Bx;
@@ -40,15 +30,48 @@ void apply_fixed_orientation(CameraControlSettings* controller, CameraRig* confi
         f32 dist2 = SQ(ABx) + SQ(ABz);
 
         // only move camera along the line perpendicular to AB passing through B
-        configuration->targetPos.x = Bx - ABz * (perpdot / dist2);
-        configuration->targetPos.y = y;
-        configuration->targetPos.z = Bz + ABx * (perpdot / dist2);
+        rig->targetPos.x = Bx - ABz * (perpdot / dist2);
+        rig->targetPos.y = y;
+        rig->targetPos.z = Bz + ABx * (perpdot / dist2);
     } else {
-        configuration->targetPos.x = x;
-        configuration->targetPos.y = y;
-        configuration->targetPos.z = z;
+        rig->targetPos.x = x;
+        rig->targetPos.y = y;
+        rig->targetPos.z = z;
     }
 }
+
+/*
+ * While transitioning from one zone to another, we do not interpolate directly
+ * from the previous frame's camera parameters to the current frame's parameters.
+ * Instead, we solve two camera rigs on every frame:
+ *
+ *  prevRig: how the old settings would view the current target sample
+ *  newRig:  how the new settings would view the current target sample
+ *
+ * The final camera is an interpolation between those two rigs. This allows
+ * smooth transitions between dissimilar zones while the player continues to
+ * move or even doubles back and re-enters the first zone.
+ *
+ * Some previous states cannot be reconstructed, so prevSettingsPtr may contain
+ * sentinel values instead:
+ *
+ *  PREV_SETTINGS_FIXED_RIG :
+ *    The previous rig came from CAM_CONTROL_FIXED_POS_AND_ORIENTATION. That
+ *    mode fully specifies the rig, so there is no meaningful previous
+ *    controller to re-evaluate during interpolation.
+ *
+ *  PREV_SETTINGS_LINE_CONSTRAINT:
+ *    Used for line-constrained modes, or when a new zone transition begins
+ *    before the previous interpolation finishes. The previous target position
+ *    is reconstructed from the new rig plus PrevLineConstraintTargetDelta so
+ *    the transition preserves the prior camera offset instead of snapping.
+ */
+
+#define PREV_SETTINGS_FIXED_RIG  \
+    ((CameraControlSettings*) -2)
+
+#define PREV_SETTINGS_LINE_CONSTRAINT \
+    ((CameraControlSettings*) -1)
 
 void update_camera_from_controller(
     Camera* camera,
@@ -70,8 +93,10 @@ void update_camera_from_controller(
     y = y1;
     z = z1;
 
-    if ((s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_2 && (s32)curSettings != CAMERA_SETTINGS_PTR_MINUS_1) {
-        if (curSettings == CAMERA_SETTINGS_PTR_NULL) {
+    if (curSettings != PREV_SETTINGS_FIXED_RIG
+        && curSettings != PREV_SETTINGS_LINE_CONSTRAINT
+    ) {
+        if (curSettings == nullptr) {
             curRig->targetPos.x = x;
             curRig->targetPos.y = y;
             curRig->targetPos.z = z;
@@ -174,7 +199,7 @@ void update_camera_from_controller(
                     break;
                 case CAM_CONTROL_CONSTRAIN_TO_LINE:
                 case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE:
-                    *prevSettingsPtr = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
+                    *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
                     break;
             }
         }
@@ -215,7 +240,7 @@ void update_camera_from_controller(
                     curRig->targetPos.x = Bx;
                     curRig->targetPos.y = By;
                     curRig->targetPos.z = Bz;
-                    *prevSettingsPtr = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_2;
+                    *prevSettingsPtr = PREV_SETTINGS_FIXED_RIG;
                 }
                 break;
             case CAM_CONTROL_FIXED_ORIENTATION:
@@ -251,9 +276,9 @@ void update_camera_from_controller(
                 if (changingZone) {
                     if (*interpAlpha != 1.0f) {
                         prevSettings = *prevSettingsPtr;
-                        if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
-                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                        if ((prevSettings != PREV_SETTINGS_FIXED_RIG
+                                && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                                && prevSettings != nullptr)
                             && prevSettings->type == curSettings->type
                             && prevSettings->boomLength == curSettings->boomLength
                             && prevSettings->boomPitch == curSettings->boomPitch
@@ -309,9 +334,9 @@ void update_camera_from_controller(
                     if (changingZone) {
                         if (*interpAlpha != 1.0f) {
                             prevSettings = *prevSettingsPtr;
-                            if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                            if ((prevSettings != PREV_SETTINGS_FIXED_RIG
+                                    && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                                    && prevSettings != nullptr)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)
@@ -371,9 +396,9 @@ void update_camera_from_controller(
                     if (changingZone) {
                         if (*interpAlpha != 1.0f) {
                             prevSettings = *prevSettingsPtr;
-                            if (((s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_2
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_MINUS_1
-                                    && (s32)prevSettings != CAMERA_SETTINGS_PTR_NULL)
+                            if ((prevSettings != PREV_SETTINGS_FIXED_RIG
+                                    && prevSettings != PREV_SETTINGS_LINE_CONSTRAINT
+                                    && prevSettings != nullptr)
                                 && (prevSettings->type == curSettings->type)
                                 && (prevSettings->boomLength == curSettings->boomLength)
                                 && (prevSettings->boomPitch == curSettings->boomPitch)
@@ -456,12 +481,12 @@ void update_camera_from_controller(
 
                         curRig->targetPos.y = y;
                     }
-                    *prevSettingsPtr = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
+                    *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
                 }
                 break;
             case CAM_CONTROL_LOOK_AT_POINT_CONSTAIN_TO_LINE:
                 {
-                    // camera position is projected onto a line defined by BC, while the yaw faces point A
+                    // target position is projected onto a line defined by BC, while the yaw faces point A
                     f32 Ax = curSettings->points.three.Ax;
                     f32 Az = curSettings->points.three.Az;
                     f32 Bx = curSettings->points.three.Bx;
@@ -473,9 +498,9 @@ void update_camera_from_controller(
                         f32 CBx = Bx - Cx;
                         f32 CBz = Bz - Cz;
                         f32 dist2 = SQ(CBx) + SQ(CBz);
-                        dist2 = (CBx * (x - Cx) + CBz * (z - Cz)) / dist2;
-                        f32 Px = Cx + dist2 * CBx;
-                        f32 Pz = Cz + dist2 * CBz;
+                        f32 t = (CBx * (x - Cx) + CBz * (z - Cz)) / dist2;
+                        f32 Px = Cx + t * CBx;
+                        f32 Pz = Cz + t * CBz;
 
                         curRig->targetPos.x = Px;
                         curRig->targetPos.y = y;
@@ -508,15 +533,14 @@ void update_camera_from_controller(
                             curRig->boomPitch = curSettings->boomPitch;
                             curRig->viewPitch = curSettings->viewPitch;
                             curRig->targetPos.x = Bx;
-                            curRig->targetPos.y = y;
                             curRig->targetPos.z = Bz;
                         } else if (changingZone) {
                             curRig->targetPos.x = Bx;
-                            curRig->targetPos.y = y;
                             curRig->targetPos.z = Bz;
                         }
+                        curRig->targetPos.y = y;
                     }
-                    *prevSettingsPtr = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
+                    *prevSettingsPtr = PREV_SETTINGS_LINE_CONSTRAINT;
                 }
                 break;
         }
@@ -535,15 +559,15 @@ void update_camera_from_controller(
         }
     }
 
-    if (*prevSettingsPtr == (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1) {
+    if (*prevSettingsPtr == PREV_SETTINGS_LINE_CONSTRAINT) {
         if (changingZone) {
-            D_800A08E4 = prevRig->targetPos.x - newRig->targetPos.x;
-            D_800A08E8 = prevRig->targetPos.y - newRig->targetPos.y;
-            D_800A08EC = prevRig->targetPos.z - newRig->targetPos.z;
+            PrevLineConstraintTargetDelta.x = prevRig->targetPos.x - newRig->targetPos.x;
+            PrevLineConstraintTargetDelta.y = prevRig->targetPos.y - newRig->targetPos.y;
+            PrevLineConstraintTargetDelta.z = prevRig->targetPos.z - newRig->targetPos.z;
         }
-        prevRig->targetPos.x = newRig->targetPos.x + D_800A08E4;
-        prevRig->targetPos.y = newRig->targetPos.y + D_800A08E8;
-        prevRig->targetPos.z = newRig->targetPos.z + D_800A08EC;
+        prevRig->targetPos.x = newRig->targetPos.x + PrevLineConstraintTargetDelta.x;
+        prevRig->targetPos.y = newRig->targetPos.y + PrevLineConstraintTargetDelta.y;
+        prevRig->targetPos.z = newRig->targetPos.z + PrevLineConstraintTargetDelta.z;
     }
 }
 
@@ -636,28 +660,28 @@ f32 get_maximum_interp_delta(Camera* camera) {
 }
 
 void set_camera_from_rig(Camera* camera, CameraRig* rig) {
-    camera->curBoomLength = CurrentCamRig.boomLength;
-    camera->curBoomYaw = CurrentCamRig.boomYaw + D_800A08E0;;
+    camera->curBoomLength = rig->boomLength;
+    camera->curBoomYaw = rig->boomYaw;
     camera->curYaw = camera->curBoomYaw;
     camera->targetOffsetY = 0.0f;
 
     f32 sinBoomYaw = sin_deg(camera->curBoomYaw);
     f32 cosBoomYaw = cos_deg(camera->curBoomYaw);
-    f32 cosBoomPitch = cos_deg(CurrentCamRig.boomPitch + D_800A08DC);
-    f32 sinBoomPitch = sin_deg(CurrentCamRig.boomPitch + D_800A08DC);
+    f32 cosBoomPitch = cos_deg(rig->boomPitch);
+    f32 sinBoomPitch = sin_deg(rig->boomPitch);
 
     if (!(camera->moveFlags & CAMERA_MOVE_NO_INTERP_Y)) {
-        camera->lookAt_eye.y = CurrentCamRig.targetPos.y + (CurrentCamRig.boomLength * sinBoomPitch);
+        camera->lookAt_eye.y = rig->targetPos.y + (rig->boomLength * sinBoomPitch);
     }
 
-    camera->lookAt_eye.x = CurrentCamRig.targetPos.x - (sinBoomYaw * CurrentCamRig.boomLength * cosBoomPitch);
-    camera->lookAt_eye.z = CurrentCamRig.targetPos.z + (cosBoomYaw * CurrentCamRig.boomLength * cosBoomPitch);
-    f32 cosViewPitch = cos_deg(CurrentCamRig.viewPitch);
-    f32 sinViewPitch = sin_deg(CurrentCamRig.viewPitch);
+    camera->lookAt_eye.x = rig->targetPos.x - (sinBoomYaw * rig->boomLength * cosBoomPitch);
+    camera->lookAt_eye.z = rig->targetPos.z + (cosBoomYaw * rig->boomLength * cosBoomPitch);
+    f32 cosViewPitch = cos_deg(rig->viewPitch);
+    f32 sinViewPitch = sin_deg(rig->viewPitch);
 
-    f32 dx = CurrentCamRig.targetPos.x - camera->lookAt_eye.x;
-    f32 dy = CurrentCamRig.targetPos.y - camera->lookAt_eye.y;
-    f32 dz = CurrentCamRig.targetPos.z - camera->lookAt_eye.z;
+    f32 dx = rig->targetPos.x - camera->lookAt_eye.x;
+    f32 dy = rig->targetPos.y - camera->lookAt_eye.y;
+    f32 dz = rig->targetPos.z - camera->lookAt_eye.z;
     f32 dr = SQ(dx) + SQ(dz);
     if (dr != 0.0f) {
         dr = sqrtf(dr);
@@ -669,8 +693,8 @@ void set_camera_from_rig(Camera* camera, CameraRig* rig) {
     camera->lookAt_obj.x = camera->lookAt_eye.x + (sinBoomYaw * projectedRadius);
     camera->lookAt_obj.z = camera->lookAt_eye.z - (cosBoomYaw * projectedRadius);
 
-    camera->lookAt_yaw = -CurrentCamRig.boomYaw;
-    camera->lookAt_pitch = -CurrentCamRig.boomPitch - CurrentCamRig.viewPitch;
+    camera->lookAt_yaw = -rig->boomYaw;
+    camera->lookAt_pitch = -rig->boomPitch - rig->viewPitch;
 
     camera->lookAt_obj_target.x = camera->lookAt_obj.x;
     camera->lookAt_obj_target.y = camera->lookAt_obj.y;
@@ -719,8 +743,6 @@ void update_camera_zone_interp(Camera* camera) {
         camera->prevTargetPos.z = 0.0f;
         camera->prevUseOverride = false;
         camera->prevPrevUseOverride = false;
-        D_800A08DC = 0.0f;
-        D_800A08E0 = 0.0f;
     }
 
     // determine current y-position
@@ -793,11 +815,11 @@ void update_camera_zone_interp(Camera* camera) {
             if (camera->interpAlpha == 1.0f) {
                 camera->prevSettings = camera->curSettings;
             } else {
-                camera->prevSettings = (CameraControlSettings*) CAMERA_SETTINGS_PTR_MINUS_1;
+                camera->prevSettings = PREV_SETTINGS_LINE_CONSTRAINT;
             }
             camera->panActive = false;
             changingZone = true;
-            camera->prevRig = CurrentCamRig;
+            camera->prevRig = InterpolatedCamRig;
             camera->curSettings = nextSettings;
 
             camera->interpAlpha = 0.0f;
@@ -896,9 +918,9 @@ void update_camera_zone_interp(Camera* camera) {
         camera->linearInterp = 0.0f;
     }
 
-    // interpolate rig parameters between prevRig and nextRig, storing them in CurrentCamRig
+    // interpolate rig parameters between prevRig and nextRig, storing them in InterpolatedCamRig
 
-    #define CAM_INTERP(field) CurrentCamRig.field = \
+    #define CAM_INTERP(field) InterpolatedCamRig.field = \
         (camera->prevRig.field  * (1.0f - camera->interpAlpha)) + (camera->nextRig.field  * camera->interpAlpha)
 
     CAM_INTERP(boomYaw);
@@ -911,8 +933,8 @@ void update_camera_zone_interp(Camera* camera) {
 
     #undef CAM_INTERP
 
-    CurrentCamRig.boomLength *= (camera->params.world.zoomPercent / 100.0f);
+    InterpolatedCamRig.boomLength *= (camera->params.world.zoomPercent / 100.0f);
 
-    // calculate camera position and orientation based on CurrentCamRig
-    set_camera_from_rig(camera, &CurrentCamRig);
+    // calculate camera position and orientation based on InterpolatedCamRig
+    set_camera_from_rig(camera, &InterpolatedCamRig);
 }

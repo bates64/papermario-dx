@@ -1,8 +1,6 @@
 #include "kpa_113.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
 s32 N(KeyList_BowsersCastle)[] = {
     ITEM_BOWSER_CASTLE_KEY,
     ITEM_NONE
@@ -24,8 +22,7 @@ EvtScript N(EVS_UnlockPrompt_LockedDoor) = {
     Call(PlaySound, SOUND_USE_KEY)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_KPA113_UnlockedDoor, true)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Set(SetEntityUsed, MV_PadlockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)

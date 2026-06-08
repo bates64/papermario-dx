@@ -191,11 +191,6 @@ API_CALLABLE(N(SuperBlock_ShowSelectPartnerMenu)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SuperBlock_SwitchToPartner)) {
-    switch_to_partner(evt_get_variable(script, *script->ptrReadPos));
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(N(SuperBlock_LoadCurrentPartnerName)) {
     set_message_text_var(gPartnerPopupProperties[gPlayerData.curPartner].nameMsg, 0);
     return ApiStatus_DONE2;
@@ -518,7 +513,7 @@ EvtScript N(SuperBlock_OnHit) = {
     Call(EnablePartnerAI)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, LVarB)
-        Call(N(SuperBlock_SwitchToPartner), LVarB)
+        Call(SwitchToPartner, LVarB)
     Else
         Call(func_802CF56C, 2)
     EndIf

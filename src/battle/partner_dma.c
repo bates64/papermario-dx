@@ -14,13 +14,13 @@ extern ActorBlueprint battle_partner_lakilester;
 extern ActorBlueprint battle_partner_bow;
 extern ActorBlueprint battle_partner_twink;
 
-#define BATTLE_PARTNER_ENTRY(name, Y) \
+#define BATTLE_PARTNER_ENTRY(name, posY) \
     { \
         (u32)battle_partner_##name##_ROM_START, \
         (u32)battle_partner_##name##_ROM_END, \
         battle_partner_##name##_VRAM, \
         &battle_partner_##name, \
-        Y \
+        posY \
     }
 
 PartnerDMAData bPartnerDmaTable[] = {

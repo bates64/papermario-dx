@@ -176,24 +176,22 @@ EvtScript N(EVS_HandlePhase) = {
     End
 };
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_Idle) = {
     Set(LVarF, 0)
     Loop(0)
         Call(GetActorVar, ACTOR_SELF, AVAR_WobbleMode, LVarA)
         Switch(LVarA)
             CaseEq(0)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
                 Add(LVarF, 1)
             CaseEq(1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
                 Add(LVarF, 3)
             CaseEq(2)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
                 Add(LVarF, 5)
         EndSwitch
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)

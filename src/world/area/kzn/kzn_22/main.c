@@ -89,7 +89,7 @@ EvtScript N(EVS_InterruptPartnersInLava) = {
     End
 };
 
-API_CALLABLE(N(GetFloorCollider1)) {
+API_CALLABLE(N(GetPlayerFloorCollider1)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -109,7 +109,7 @@ EvtScript N(EVS_UpdateLavaLevel) = {
         Switch(LVarA)
             CaseEq(0)
                 // state 0: wait for player to stand on one of the steps
-                Call(N(GetFloorCollider1), LVar0)
+                Call(N(GetPlayerFloorCollider1), LVar0)
                 IfEq(LVar0, COLLIDER_o357)
                     Exec(N(EVS_InterruptPartnersInLava))
                     Call(EnableModel, MODEL_yu, true)

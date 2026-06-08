@@ -1,8 +1,6 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 API_CALLABLE(N(DrawAppearSparkles)) {
     Bytecode* args = script->ptrReadPos;
     s32 type = evt_get_variable(script, *args++);
@@ -236,7 +234,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetCamDistance, CAM_DEFAULT, 300)
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.0))
-    Call(N(SwitchToPartner), PARTNER_GOOMBARIO)
+    Call(SwitchToPartner, PARTNER_GOOMBARIO)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 30)
     Add(LVar2, 30)

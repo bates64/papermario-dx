@@ -338,8 +338,8 @@ EvtScript N(EVS_NpcIdle_FuzzyWithShell) = {
             Call(SetNpcPos, NPC_FuzzyWithShell, NPC_DISPOSE_LOCATION)
             Return
         EndIf
-        Call(N(CosInterpMinMax), LVar0, LVar1, -50, 50, 120, 0, 180)
-        Call(N(CosInterpMinMax), LVar0, LVar2, -32, 32, 120, 0, 30)
+        Call(CosInterpMinMax, LVar0, LVar1, -50, 50, 120, 0, 180)
+        Call(CosInterpMinMax, LVar0, LVar2, -32, 32, 120, 0, 30)
         Add(LVar1, LVarA)
         Add(LVar2, LVarC)
         Call(SetNpcAnimation, NPC_FuzzyWithShell, ANIM_Fuzzy_Run)

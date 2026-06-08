@@ -6,8 +6,6 @@
 #include "wander_territories.inc.c"
 #define NAME_SUFFIX
 
-#include "world/common/todo/UnkFunc42.inc.c"
-
 Vec3f N(FlightPath_KammyAppear)[] = {
     {  473.0,   150.0,  301.0 },
     {  234.0,    80.0,  200.0 },
@@ -54,7 +52,7 @@ EvtScript N(EVS_MakeNpcsFaceKammy) = {
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Kammy, LVar3, LVar4, LVar5)
-        Call(N(UnkFunc42))
+        Call(GetAngleBetweenPoints, LVarA, LVar0, LVar2, LVar3, LVar5)
         Call(InterpNpcYaw, NPC_Kammy, LVarA, 0)
         Set(LVar0, LVar3)
         Set(LVar1, LVar4)

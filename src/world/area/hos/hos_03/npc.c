@@ -4,7 +4,6 @@
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/StarSpirit_Wander.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouseHos.data.inc.c"
 

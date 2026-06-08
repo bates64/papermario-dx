@@ -11,7 +11,6 @@
 #include "world/common/npc/Toad_Stationary.inc.c"
 #include "world/common/npc/Bobomb.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
@@ -90,8 +89,6 @@ API_CALLABLE(N(IsNpcFacingRight)) {
     evt_set_variable(script, outVar, outVal);
     return ApiStatus_DONE2;
 }
-
-#include "common/CosInterpMinMax.inc.c"
 
 API_CALLABLE(N(SpawnExplosionEffect)) {
     Bytecode* args = script->ptrReadPos;

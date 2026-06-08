@@ -1,4 +1,4 @@
-#include "world/common/todo/GetFloorCollider.inc.c"
+#include "common.h"
 
 API_CALLABLE(N(IsPartnerBow)) {
     if (gPartnerStatus.actingPartner == PARTNER_BOW) {
@@ -165,7 +165,7 @@ EvtScript N(EVS_HiddenRoom_WaitForOuttaSight) = {
         ExecWait(N(EVS_SuspiciousGuy_RevealSecretRoom))
     Else
         ExecWait(N(EVS_SuspiciousGuy_RunAway))
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         Thread
             Wait(10 * DT)
             Exec(N(EVS_HiddenRoom_WaitForOuttaSight))

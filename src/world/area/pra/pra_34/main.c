@@ -99,9 +99,6 @@ EvtScript N(EVS_ExitDoors_pra_29_2) = {
     End
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 s32 N(PalaceKeyList)[] = {
     ITEM_CRYSTAL_PALACE_KEY,
     ITEM_NONE
@@ -125,14 +122,12 @@ EvtScript N(EVS_UnlockPrompt_Doors) = {
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GF_PRA34_UnlockedDoor, true)
-    Call(N(GetEntityPosition), MV_FarPadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_FarPadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetEntityPosition), MV_NearPadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_NearPadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_FarPadlockEntityID)
-    Call(N(RemovePadlock))
-    Set(LVar0, MV_NearPadlockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_FarPadlockEntityID)
+    Call(SetEntityUsed, MV_NearPadlockEntityID)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return

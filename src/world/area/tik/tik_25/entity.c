@@ -7,7 +7,6 @@ API_CALLABLE(N(DismissGotItem)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/SetEntityPosition.inc.c"
 #include "world/common/util/PlaySpringReboundAnimation.inc.c"
 
 EvtScript N(EVS_SetupGiantChest_UltraBoots) = {
@@ -36,7 +35,7 @@ EvtScript N(EVS_OnBreakBlock_SpringR) = {
     Call(MakeLerp, -50, -20, 8, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringR, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringR, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -46,7 +45,7 @@ EvtScript N(EVS_OnBreakBlock_SpringR) = {
     Call(MakeLerp, LVar0, -135, 22, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringR, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringR, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -71,7 +70,7 @@ EvtScript N(EVS_OnBreakBlock_SpringL) = {
     Call(MakeLerp, -20, 10, 8, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringL, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringL, LVar5, LVar0, 0)
         Wait(1)
         Add(LVar5, 2)
         IfEq(LVar1, 0)
@@ -81,7 +80,7 @@ EvtScript N(EVS_OnBreakBlock_SpringL) = {
     Call(MakeLerp, LVar0, -135, 22, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_EntityID_SpringL, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_EntityID_SpringL, LVar5, LVar0, 0)
         Wait(1)
         Add(LVar5, 2)
         IfEq(LVar1, 0)

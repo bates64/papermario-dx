@@ -38,8 +38,6 @@ s32 N(TreeHidingSpotPositions)[] = {
     281, 156, 202,
 };
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_AnimBranch_JumpTo) = {
     Set(LVar2, LVar0)
     Set(LVar3, LVar1)
@@ -58,7 +56,7 @@ EvtScript N(EVS_AnimBranch_JumpTo) = {
         Add(LVar6, 1)
         SetF(LVar9, LVar8)
         MulF(LVar9, Float(-1.0))
-        Call(N(CosInterpMinMax), LVar6, LVar7, LVar9, LVar8, 3, 0, 0)
+        Call(CosInterpMinMax, LVar6, LVar7, LVar9, LVar8, 3, 0, 0)
         MulF(LVar8, Float(0.90625))
         Call(TranslateModel, LVar2, LVar7, LVar0, 0)
         IfEq(LVar1, 1)

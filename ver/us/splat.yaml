@@ -877,6 +877,7 @@ segments:
     - [auto, c, script_list]
     - [auto, c, evt]
     - [auto, c, map_api]
+    - [auto, c, math_api]
     - [auto, c, cam_api]
     - [auto, c, model_api]
     - [auto, c, npc_api]

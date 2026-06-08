@@ -16,8 +16,6 @@ API_CALLABLE(N(MuteAmbience)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 NpcSettings N(NpcSettings_Dummy) = {
     .height = 40,
     .radius = 24,
@@ -146,7 +144,7 @@ EvtScript N(EVS_ChargeAtPlayer) = {
 EvtScript N(EVS_NpcIdle_Guards) = {
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o785)
             Goto(0)
         EndIf

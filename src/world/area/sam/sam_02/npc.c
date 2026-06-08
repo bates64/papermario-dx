@@ -3,7 +3,6 @@
 
 #include "sprite/npc/ShiverToad.h"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 

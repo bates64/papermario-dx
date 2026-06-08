@@ -1,13 +1,9 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#define NAME_SUFFIX _StarWay
-#include "world/common/todo/GetFloorCollider.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_Scene_StarWayOpened) = {
     Label(0)
-        Call(N(GetFloorCollider_StarWay), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o234)
             Wait(1)
             Goto(0)

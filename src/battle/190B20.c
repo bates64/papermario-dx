@@ -1179,12 +1179,12 @@ void load_partner_actor(void) {
         nuPiReadRom(partnerData->dmaStart, partnerData->dmaDest, partnerData->dmaEnd - partnerData->dmaStart);
         if ((gBattleStatus.flags2 & BS_FLAGS2_PEACH_BATTLE) || (gGameStatusPtr->demoBattleFlags & DEMO_BTL_FLAG_PARTNER_ACTING)) {
             x = -95.0f;
-            y = partnerData->y;
+            y = partnerData->posY;
             z = 0.0f;
             gBattleStatus.flags1 |= BS_FLAGS1_PLAYER_IN_BACK;
         } else {
             x = -130.0f;
-            y = partnerData->y;
+            y = partnerData->posY;
             z = -10.0f;
         }
         partCount = actorBP->partCount;

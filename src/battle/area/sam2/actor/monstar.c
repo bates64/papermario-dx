@@ -193,8 +193,6 @@ API_CALLABLE(N(UpdateMonstarImgFX)) {
     #undef RGBA_BUF_SIZE
 }
 
-#include "common/Dist3D.inc.c"
-
 #include "common/UnkBackgroundFunc3.inc.c"
 
 #include "common/SetBackgroundAlpha.inc.c"

@@ -15,7 +15,7 @@ enum {
 };
 
 enum {
-    MV_SpringEntityIndex        = MapVar(0),
+    MV_EntityID_Spring          = MapVar(0),
     MV_GoombaBrosDefeated       = MapVar(0), // reused
 };
 

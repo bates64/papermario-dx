@@ -1,8 +1,6 @@
 #include "isk_04.h"
 #include "effects.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
 s32 N(ItemList_RuinsKey)[] = {
     ITEM_RUINS_KEY,
     ITEM_NONE
@@ -42,8 +40,7 @@ EvtScript N(EVS_UnlockDoorPrompt) = {
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 600, -330, 100)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_ISK04_UnlockedDoor, true)
-    Set(LVar0, MV_RuinsLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_RuinsLockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(PlaySoundAtCollider, COLLIDER_deilittsw, SOUND_ISK_DOOR_OPEN, SOUND_SPACE_DEFAULT)

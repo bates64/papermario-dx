@@ -9,17 +9,9 @@ API_CALLABLE(N(SaveSpinningRoofHintTime)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetFloorCollider)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-
-    evt_set_variable(script, outVar, gCollisionStatus.curFloor);
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_Scene_TreeOrbitReaction) = {
     Loop(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, COLLIDER_ground)
             BreakLoop
         EndIf

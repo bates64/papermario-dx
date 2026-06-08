@@ -1,9 +1,5 @@
 #include "mac_05.h"
 
-u32 N(unkAngle1) = 0;
-s32 N(unkAngle2) = -1;
-s32 N(unkAngle3) = -1;
-
 #include "world/common/atomic/WhaleAnim.inc.c"
 
 API_CALLABLE(N(UnkPlayerPosFunc)) {
@@ -22,7 +18,7 @@ API_CALLABLE(N(UnkPlayerPosFunc)) {
 #include "world/common/atomic/WhaleGeyser.inc.c"
 
 EvtScript N(D_80250A5C_862BCC) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 30, 60, 30, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
     Return
@@ -30,7 +26,7 @@ EvtScript N(D_80250A5C_862BCC) = {
 };
 
 EvtScript N(D_80250AD4_862C44) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 0, 30, 30, 1, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 0, 30, 30, 1, 0)
     SetF(LVar1, LVar0)
     DivF(LVar1, Float(3.0))
     Call(RotateModel, MODEL_o173, LVar0, 0, 0, 1)
@@ -47,7 +43,7 @@ EvtScript N(D_80250AD4_862C44) = {
     Call(TranslateModel, MODEL_o183, 5, 68, 0)
     Call(TranslateModel, MODEL_o167, -60, -29, 51)
     Call(TranslateModel, MODEL_o168, -60, -29, -51)
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 0, -40, 30, 1, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 0, -40, 30, 1, 0)
     Call(TranslateModel, MODEL_bero, LVar0, 0, 0)
     IfGe(LVarC, 30)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
@@ -58,7 +54,7 @@ EvtScript N(D_80250AD4_862C44) = {
 };
 
 EvtScript N(D_80250D58_862EC8) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 0, -30, 8, 1, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 0, -30, 8, 1, 0)
     AddF(LVar0, Float(30.0))
     SetF(LVar1, LVar0)
     DivF(LVar1, Float(3.0))
@@ -76,7 +72,7 @@ EvtScript N(D_80250D58_862EC8) = {
     Call(TranslateModel, MODEL_o183, 5, 68, 0)
     Call(TranslateModel, MODEL_o167, -60, -29, 51)
     Call(TranslateModel, MODEL_o168, -60, -29, -51)
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 0, -40, 120, 1, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 0, -40, 120, 1, 0)
     Call(TranslateModel, MODEL_bero, LVar0, 0, 0)
     Return
     End
@@ -98,7 +94,7 @@ EvtScript N(D_80250FB4_863124) = {
     Call(GetNpcVar, NPC_Whale, 0, LVar3)
     Call(N(UnkPlayerPosFunc))
     Call(N(SetWhaleGeyserPos), LVar3, LVar0, LVar1, LVar2)
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 30, 60, 30, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
     Return
@@ -141,7 +137,7 @@ EvtScript N(D_80251244_8633B4) = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(UnkFloatFunc001), LVarC, LVar0, Float(-1.0), Float(1.0), 3, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, Float(-1.0), Float(1.0), 3, 0, 0)
     Call(TranslateModel, MODEL_o173, LVar0, 0, 0)
     Call(TranslateGroup, MODEL_dou, LVar0, 0, 0)
     Call(TranslateModel, MODEL_o170, LVar0, 0, 0)
@@ -155,8 +151,8 @@ EvtScript N(D_80251244_8633B4) = {
 };
 
 EvtScript N(D_802513AC_86351C) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, Float(-6.0), Float(6.0), 3, 0, 0)
-    Call(N(UnkFloatFunc001), LVarC, LVar1, Float(6.0), Float(-6.0), 2, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, Float(-6.0), Float(6.0), 3, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar1, Float(6.0), Float(-6.0), 2, 0, 0)
     Call(TranslateModel, MODEL_o173, LVar0, LVar1, 0)
     Call(TranslateGroup, MODEL_dou, LVar0, LVar1, 0)
     Call(TranslateModel, MODEL_o170, LVar0, LVar1, 0)
@@ -176,7 +172,7 @@ EvtScript N(D_802514EC_86365C) = {
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(UnkFloatFunc001), LVarC, LVar0, Float(-1.0), Float(1.0), 3, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, Float(-1.0), Float(1.0), 3, 0, 0)
     Call(TranslateModel, MODEL_o173, LVar0, 0, 0)
     Call(TranslateGroup, MODEL_dou, LVar0, 0, 0)
     Call(TranslateModel, MODEL_o170, LVar0, 0, 0)
@@ -190,7 +186,7 @@ EvtScript N(D_802514EC_86365C) = {
 };
 
 EvtScript N(D_80251654_8637C4) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 30, 60, 30, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
     Return
@@ -198,7 +194,7 @@ EvtScript N(D_80251654_8637C4) = {
 };
 
 EvtScript N(D_802516CC_86383C) = {
-    Call(N(UnkFloatFunc001), LVarC, LVar0, 0, 8, 3, 0, 0)
+    Call(CosInterpMinMax, LVarC, LVar0, 0, 8, 3, 0, 0)
     Set(LVar1, LVar0)
     Div(LVar1, 3)
     Call(RotateModel, MODEL_o173, LVar0, 0, 0, 1)
@@ -217,7 +213,7 @@ EvtScript N(D_802516CC_86383C) = {
     Call(TranslateModel, MODEL_o168, -60, -29, -51)
     Set(LVar0, LVarC)
     Mul(LVar0, 2)
-    Call(N(UnkFloatFunc001), LVar0, LVar0, 30, 60, 3, 0, 0)
+    Call(CosInterpMinMax, LVar0, LVar0, 30, 60, 3, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
     Return
@@ -227,14 +223,14 @@ EvtScript N(D_802516CC_86383C) = {
 EvtScript N(EVS_SetupWhale) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(MakeLocalVertexCopy, VTX_COPY_1, MODEL_karada, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(unkAngleFunc002)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_1, Ref(N(build_gfx_whale_body)), nullptr)
     Call(SetModelCustomGfx, MODEL_karada, CUSTOM_GFX_1, -1)
     Call(MakeLocalVertexCopy, VTX_COPY_2, MODEL_onaka, true)
-    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(unkAngleFunc003)), nullptr)
+    Call(SetCustomGfxBuilders, CUSTOM_GFX_2, Ref(N(build_gfx_whale_belly)), nullptr)
     Call(SetModelCustomGfx, MODEL_onaka, CUSTOM_GFX_2, -1)
     Thread
         Label(0)
-        Call(N(UnkAngleFunc001), 0, LVar0, LVar1, LVar2)
+        Call(N(MakeWhaleRootPos), NPC_Whale, LVar0, LVar1, LVar2)
         SubF(LVar0, -80)
         SubF(LVar1, -18)
         SubF(LVar2, 420)

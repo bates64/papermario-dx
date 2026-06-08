@@ -1,7 +1,5 @@
 #include "iwa_10.h"
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_SpawnSmoke) = {
     Call(PlaySoundAtModel, MODEL_07, SOUND_SEQ_TRAIN_CHUG, SOUND_SPACE_DEFAULT)
     SetF(LVar0, MV_TrainMoveDist)
@@ -152,18 +150,18 @@ EvtScript N(EVS_AnimateTrain) = {
         Call(RotateModel, MODEL_13, LVar0, 0, 0, 1)
         MulF(LVar0, Float(0.6))
         Call(RotateModel, MODEL_10, LVar0, 0, 0, 1)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar1, -10, 10, 75, 0, -90)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar1, -10, 10, 75, 0, -90)
         Call(TranslateModel, MODEL_14, LVar0, LVar1, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
         Add(LVar0, 5)
         Call(TranslateModel, MODEL_16, LVar0, -14, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, 0, -20, 75, 0, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar1, -10, 10, 75, 0, -90)
+        Call(CosInterpMinMax, LVar2, LVar0, 0, -20, 75, 0, 0)
+        Call(CosInterpMinMax, LVar2, LVar1, -10, 10, 75, 0, -90)
         Call(TranslateModel, MODEL_15, LVar0, LVar1, 0)
-        Call(N(CosInterpMinMax), LVar2, LVar0, -40, 40, 75, 0, 90)
+        Call(CosInterpMinMax, LVar2, LVar0, -40, 40, 75, 0, 90)
         Call(RotateModel, MODEL_15, LVar0, 0, 0, 1)
-        Call(N(CosInterpMinMax), LVarC, LVar0, -30, 30, 10, 0, 0)
+        Call(CosInterpMinMax, LVarC, LVar0, -30, 30, 10, 0, 0)
         Call(RotateModel, MODEL_09, LVar0, 0, 0, 1)
         IfNe(MV_TrainMoveSpeed, 0)
             IfEq(LVarD, 0)
@@ -174,8 +172,8 @@ EvtScript N(EVS_AnimateTrain) = {
             EndIf
         EndIf
         IfLe(LVarD, 20)
-            Call(N(CosInterpMinMax), LVarD, LVar0, Float(0.703), Float(1.0), 10, 0, 180)
-            Call(N(CosInterpMinMax), LVarD, LVar2, Float(0.0), Float(0.296), 10, 0, 180)
+            Call(CosInterpMinMax, LVarD, LVar0, Float(0.703), Float(1.0), 10, 0, 180)
+            Call(CosInterpMinMax, LVarD, LVar2, Float(0.0), Float(0.296), 10, 0, 180)
             SetF(LVar1, Float(0.296))
             SubF(LVar1, LVar2)
             AddF(LVar1, Float(1.0))

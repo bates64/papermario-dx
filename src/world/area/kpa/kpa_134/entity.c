@@ -1,19 +1,6 @@
 #include "kpa_134.h"
 #include "entity.h"
 
-API_CALLABLE(N(UnusedSetEntityPosition)) {
-    Entity* entity = get_entity_by_index(script->varTable[10]);
-
-    entity->pos.x = script->varTable[0];
-    entity->pos.y = script->varTable[1];
-    entity->pos.z = script->varTable[2];
-    return ApiStatus_DONE2;
-}
-
-#include "world/common/todo/SetEntityPosition.inc.c"
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_BreakBlock_Brick) = {
     IfEq(GF_KPA134_BlueSwitch, true)
         Return
@@ -23,7 +10,7 @@ EvtScript N(EVS_BreakBlock_Brick) = {
     Call(MakeLerp, 355, 370, 4, EASING_QUADRATIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_SwitchEntityID, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_SwitchEntityID, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -33,7 +20,7 @@ EvtScript N(EVS_BreakBlock_Brick) = {
     Call(MakeLerp, LVar0, 240, 16, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), MV_SwitchEntityID, LVar5, LVar0, 0)
+        Call(SetEntityPosition, MV_SwitchEntityID, LVar5, LVar0, 0)
         Wait(1)
         Sub(LVar5, 2)
         IfEq(LVar1, 0)
@@ -63,10 +50,9 @@ EvtScript N(EVS_UnlockPrompt_Door) = {
     EndIf
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_KPA134_UnlockedDoor, true)
-    Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_PadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Set(SetEntityUsed, MV_PadlockEntityID)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)

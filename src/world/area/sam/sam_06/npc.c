@@ -69,7 +69,6 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 
 #include "sprite/npc/ShiverToad.h"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
@@ -161,7 +160,7 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
     Call(DisablePlayerInput, true)
     Call(SetPlayerSpeed, Float(3.0 / DT))
@@ -241,7 +240,7 @@ EvtScript N(EVS_Scene_Merle_WaitingOnHill) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
     Call(DisablePlayerInput, true)
     Loop(0)
@@ -315,9 +314,9 @@ EvtScript N(EVS_Scene_Merle_EnterHouse) = {
     Call(GetPartnerInUse, LVar0)
     IfEq(LVar0, PARTNER_LAKILESTER)
         Call(InterruptUsePartner)
-        Call(WaitForPlayerTouchingFloor)
+        Call(AwaitPlayerTouchingFloor)
     EndIf
-    Call(WaitForPlayerTouchingFloor)
+    Call(AwaitPlayerTouchingFloor)
     Call(DisablePlayerInput, true)
     Loop(0)
         Wait(1)

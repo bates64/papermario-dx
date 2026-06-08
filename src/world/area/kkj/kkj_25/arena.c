@@ -2,13 +2,7 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 #include "world/common/util/SetLightningBoltPurple.inc.c"
-
-#include "world/common/todo/SetEntityPositionF.inc.c"
-
-#include "world/common/todo/GetEntityPosition.inc.c"
 
 API_CALLABLE(N(SpawnLensFlare)) {
     Bytecode* args = script->ptrReadPos;
@@ -41,16 +35,16 @@ EvtScript N(EVS_ArenaEyesFlash) = {
 EvtScript N(EVS_BowserActivatesSwitch) = {
     Thread
         Wait(20)
-        Call(N(GetEntityPosition), MV_SwitchEntityIdx, LVar7, LVar8, LVar9)
+        Call(GetEntityPosition, MV_EntityID_Switch, LVar7, LVar8, LVar9)
         Call(MakeLerp, 0, -13, 5, EASING_COS_IN_OUT)
         Label(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPositionF), MV_SwitchEntityIdx, LVar7, LVar0, LVar9)
+        Call(SetEntityPosition, MV_EntityID_Switch, LVar7, LVar0, LVar9)
         IfEq(LVar1, 1)
             Goto(0)
         EndIf
         Wait(30)
-        Call(N(SetEntityPositionF), MV_SwitchEntityIdx, LVar7, -20, LVar9)
+        Call(SetEntityPosition, MV_EntityID_Switch, LVar7, -20, LVar9)
         Call(SetNpcFlagBits, NPC_Bowser_01, NPC_FLAG_DIRTY_SHADOW, true)
     EndThread
     Thread
@@ -117,7 +111,7 @@ s32 N(BridgeModels)[] = {
 
 EvtScript N(EVS_Scene_BowserTrapsMario) = {
     Label(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o128)
             Wait(1)
             Goto(0)
@@ -141,7 +135,7 @@ EvtScript N(EVS_Scene_BowserTrapsMario) = {
         IfNe(LVar0, PARTNER_NONE)
             Call(GetCurrentPartnerID, LVar1)
             IfNe(LVar1, PARTNER_LAKILESTER)
-                Call(WaitForPlayerTouchingFloor)
+                Call(AwaitPlayerTouchingFloor)
             EndIf
             Call(InterruptUsePartner)
             Wait(5)

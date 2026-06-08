@@ -253,8 +253,6 @@ API_CALLABLE(N(GetItemNameRaw)) {
 }
 #endif
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
 
@@ -389,7 +387,7 @@ EvtScript N(EVS_TakeIngredient) = {
         Return
     EndIf
     // get itemID of current station
-    Call(N(GetFloorCollider), LVar0)
+    Call(GetPlayerFloorCollider, LVar0)
     Switch(LVar0)
         CaseEq(COLLIDER_o101)
             Set(LVar0, ITEM_BAKING_SUGAR)
@@ -423,7 +421,7 @@ EvtScript N(EVS_TakeIngredient) = {
         // picking up an ingredient while not holding any
         Call(N(GetItemNameRaw), LVarA)
         Call(SetMessageText, LVarA, 0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         Switch(LVar0)
             CaseEq(COLLIDER_o101)
                 Set(LVar0, PEACH_BAKING_SUGAR)
@@ -464,7 +462,7 @@ EvtScript N(EVS_TakeIngredient) = {
             Call(ShowChoice, MSG_Choice_002B)
             IfEq(LVar0, 0)
                 ExecWait(N(EVS_ReturnHeldIngredient))
-                Call(N(GetFloorCollider), LVar0)
+                Call(GetPlayerFloorCollider, LVar0)
                 Switch(LVar0)
                     CaseEq(COLLIDER_o101)
                         Set(LVar0, PEACH_BAKING_SUGAR)

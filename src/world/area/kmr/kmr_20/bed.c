@@ -1,7 +1,6 @@
 #include "kmr_20.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
@@ -15,7 +14,13 @@ API_CALLABLE(N(SetAmbienceVolumeHalf_Bed)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/WaitForPlayerToLand.inc.c"
+API_CALLABLE(N(WaitForPlayerToLand)) {
+    script->varTable[0] = false;
+    if ((gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) && (gPartnerStatus.actingPartner == PARTNER_BOMBETTE)) {
+        script->varTable[0] = true;
+    }
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
     Set(LVar0, MSG_CH0_0106)
@@ -114,7 +119,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
 
 EvtScript N(EVS_UseBed) = {
     Call(N(WaitForPlayerToLand))
-    IfEq(LVar0, 1)
+    IfEq(LVar0, true)
         Return
     EndIf
     Call(DisablePlayerInput, true)

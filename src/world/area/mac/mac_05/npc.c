@@ -691,8 +691,6 @@ EvtScript N(D_80249D80_85BEF0) = {
     End
 };
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 API_CALLABLE(N(func_802430B4_855224)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_safe(-4);
@@ -718,7 +716,7 @@ API_CALLABLE(N(func_802430B4_855224)) {
 EvtScript N(D_80249E84_85BFF4) = {
     Set(LVarA, 0)
     Loop(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, 29)
             Set(LVar5, 0)
             Call(GetPlayerActionState, LVar1)

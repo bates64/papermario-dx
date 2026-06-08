@@ -433,8 +433,6 @@ EvtScript N(EVS_Attack_Slingshot) = {
 
 #include "common/ItemEntityJumpToPos.inc.c"
 
-#include "common/GetItemEntityPosition.inc.c"
-
 #include "common/DisableRandomAbility.inc.c"
 
 #include "common/battle/CheckPlayerCanLoseCommand.inc.c"
@@ -578,7 +576,7 @@ EvtScript N(EVS_Attack_Mallet) = {
                     EndIf
                 Call(SetAnimation, ACTOR_SELF, PRT_MAIN, ANIM_SpyGuy_Anim07)
                 Call(GetActorVar, ACTOR_SELF, AVAR_Knockoff_ItemIdx, LVar0)
-                Call(N(GetItemEntityPosition), LVar0, LVar1, LVar2, LVar3)
+                Call(GetItemPos, LVar0, LVar1, LVar2, LVar3)
                 Add(LVar1, 20)
                 Sub(LVar3, 2)
                 Call(SetActorSpeed, ACTOR_SELF, Float(4.0))

@@ -55,7 +55,7 @@ API_CALLABLE(N(UpdatePlatformShadows)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GetFloorCollider)) {
+API_CALLABLE(GetPlayerFloorCollider) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -75,7 +75,7 @@ API_CALLABLE(N(PausePlatformsDuringPound)) {
 }
 
 EvtScript N(EVS_UpdatePlatforms) = {
-    Call(N(GetFloorCollider), LVarA)
+    Call(GetPlayerFloorCollider, LVarA)
     SetF(LVar0, Float(0.0))
     Label(0)
         Call(N(PausePlatformsDuringPound))
@@ -93,7 +93,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
         UseArray(MV_Unk_00)
         Call(N(UpdatePlatformShadows))
         Wait(1)
-        Call(N(GetFloorCollider), LVarB)
+        Call(GetPlayerFloorCollider, LVarB)
         Call(GetPlayerActionState, LVarC)
         IfEq(LVarB, LVar3)
             IfNe(LVarC, ACTION_STATE_JUMP)
@@ -113,7 +113,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
         UseArray(MV_Unk_00)
         Call(N(UpdatePlatformShadows))
         Wait(1)
-        Call(N(GetFloorCollider), LVarB)
+        Call(GetPlayerFloorCollider, LVarB)
         Call(GetPlayerActionState, LVarC)
         IfEq(LVarB, LVar3)
             IfNe(LVarC, ACTION_STATE_JUMP)

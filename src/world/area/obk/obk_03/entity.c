@@ -5,26 +5,23 @@
 extern EvtScript N(EVS_HitSwitch_Second);
 extern EvtScript N(EVS_HitSwitch_Third);
 
-#include "world/common/todo/SetEntityPosition.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_SecondSwitch_Drop) = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(10)
-        Call(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
+        Call(GetEntityPosition, LVar7, LVarA, LVarB, LVarC)
         Call(PlaySoundAt, SOUND_FALL_QUICK, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EndThread
     Call(MakeLerp, LVar3, LVar5, LVar6, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), LVar7, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar7, LVar2, LVar0, LVar4)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
         Wait(1)
     EndLoop
-    Call(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
+    Call(GetEntityPosition, LVar7, LVarA, LVarB, LVarC)
     Call(PlaySoundAt, SOUND_OBJECT_LAND, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     Call(ShakeCam, CAM_DEFAULT, 0, LVar8, Float(1.0))
     Wait(10)
@@ -37,19 +34,19 @@ EvtScript N(EVS_ThirdSwitch_Drop) = {
     Call(DisablePlayerInput, true)
     Thread
         Wait(10)
-        Call(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
+        Call(GetEntityPosition, LVar7, LVarA, LVarB, LVarC)
         Call(PlaySoundAt, SOUND_LARGE_FALL_QUICK, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     EndThread
     Call(MakeLerp, LVar3, LVar5, LVar6, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(N(SetEntityPosition), LVar7, LVar2, LVar0, LVar4)
+        Call(SetEntityPosition, LVar7, LVar2, LVar0, LVar4)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
         Wait(1)
     EndLoop
-    Call(N(GetEntityPosition), LVar7, LVarA, LVarB, LVarC)
+    Call(GetEntityPosition, LVar7, LVarA, LVarB, LVarC)
     Call(PlaySoundAt, SOUND_HEAVY_OBJECT_DROP, SOUND_SPACE_DEFAULT, LVarA, LVarB, LVarC)
     Call(ShakeCam, CAM_DEFAULT, 0, LVar8, Float(1.0))
     Wait(10)

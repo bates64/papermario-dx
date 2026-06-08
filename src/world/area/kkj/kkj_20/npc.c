@@ -3,7 +3,6 @@
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/ToadHouseBlanketAnim.inc.c"
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 

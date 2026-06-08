@@ -1,8 +1,18 @@
 #include "sam_01.h"
 #include "sprite/player.h"
 
-#include "common/GetItemEntityPosition.inc.c"
-#include "world/common/todo/GetLeftRightPoints.inc.c"
+API_CALLABLE(N(GetLeftRightPoints)) {
+    Bytecode* args = script->ptrReadPos;
+    s32 posX = evt_get_variable(script, *args++);
+    s32 posZ = evt_get_variable(script, *args++);
+    f32 dist = evt_get_variable(script, *args++);
+
+    script->varTable[0] = posX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[1] = posZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 270.0f + dist) * 100.0f);
+    script->varTable[2] = posX + (sin_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
+    script->varTable[3] = posZ - (cos_deg(gCameras[CAM_DEFAULT].curYaw + 90.0f + dist) * 100.0f);
+    return ApiStatus_DONE2;
+}
 
 EvtScript N(EVS_MayorCarryGift) = {
     Call(GetNpcPos, NPC_MayorPenguin, LVar0, LVar1, LVar2)
@@ -28,7 +38,7 @@ EvtScript N(EVS_MayorCarryGift) = {
 };
 
 EvtScript N(EVS_HerringwayCarryPresent) = {
-    Call(N(GetItemEntityPosition), MV_PresentItemID, LVarA, LVarB, LVarC)
+    Call(GetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
     Loop(6)
         Call(SetItemPos, MV_PresentItemID, LVarA, LVarB, LVarC)
         Add(LVarC, 10)

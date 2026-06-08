@@ -111,9 +111,6 @@ s32 N(KeyList)[] = {
     ITEM_NONE
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
@@ -132,10 +129,9 @@ EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     Call(RemoveKeyItemAt, LVar1)
     Call(CloseChoicePopup)
     Set(GF_SAM11_UnlockedDoor, true)
-    Call(N(GetEntityPosition), MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_PadlockEntityID, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_PadlockEntityID)
-    Call(N(RemovePadlock))
+    Set(SetEntityUsed, MV_PadlockEntityID)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return

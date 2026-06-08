@@ -9,8 +9,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 EvtScript N(EVS_GetRescuedYoshiCount) = {
     Set(LVar0, 0)
     Add(LVar0, GF_JAN05_SavedYoshi)
@@ -75,7 +73,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
         Call(DisablePartnerAI, 0)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 2, MSG_CH5_0028)
     Else
-        Call(N(SwitchToPartner), PARTNER_SUSHIE)
+        Call(SwitchToPartner, PARTNER_SUSHIE)
         Call(SpeakToPlayer, NPC_PARTNER, -1, -1, 5, MSG_CH5_0029)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
         Wait(15 * DT)

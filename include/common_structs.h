@@ -2450,7 +2450,7 @@ typedef struct PartnerDMAData {
     /* 0x04 */ u32 dmaEnd;
     /* 0x08 */ void* dmaDest;
     /* 0x0C */ struct ActorBlueprint* ActorBlueprint;
-    /* 0x10 */ s32 y;
+    /* 0x10 */ s32 posY;
 } PartnerDMAData; // size = 0x14
 
 typedef struct MsgVoice {

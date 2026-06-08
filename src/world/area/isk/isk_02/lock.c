@@ -1,7 +1,5 @@
 #include "isk_02.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
 s32 N(KeyList)[] = {
     ITEM_RUINS_KEY,
     ITEM_NONE,
@@ -21,8 +19,7 @@ EvtScript N(EVS_UnlockDoor) = {
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 272, 60, 486)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_ISK02_UnlockedDoor, true)
-    Set(LVar0, MV_EntityID_Padlock)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     Set(LVar1, 0)
     Wait(5)
     Call(PlaySoundAtCollider, COLLIDER_deilittne, SOUND_ISK_DOOR_OPEN, SOUND_SPACE_DEFAULT)

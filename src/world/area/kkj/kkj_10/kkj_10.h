@@ -15,7 +15,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityIdx = MapVar(0),
+    MV_EntityID_Padlock = MapVar(0),
 };
 
 #define NAMESPACE kkj_10

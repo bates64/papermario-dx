@@ -1,8 +1,6 @@
 #include "isk_04.h"
 #include "world/partners.h"
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 EvtScript N(EVS_ProvideDemoInputs) = {
     Call(EnableWorldStatusBar, false)
     Call(DemoSetButtons, BUTTON_C_DOWN)
@@ -24,7 +22,7 @@ EvtScript N(EVS_ProvideDemoInputs) = {
     Call(DemoJoystickXY, -2, 21)
     Wait(1)
     Call(DemoJoystickXY, -1, -1)
-    Call(N(SwitchToPartner), PARTNER_BOMBETTE)
+    Call(SwitchToPartner, PARTNER_BOMBETTE)
     Wait(57)
     Call(DemoSetButtons, BUTTON_C_DOWN)
     Wait(4)

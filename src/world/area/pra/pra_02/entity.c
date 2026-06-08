@@ -2,11 +2,6 @@
 #include "entity.h"
 #include "effects.h"
 
-#define NAME_SUFFIX _Unused
-#include "world/common/todo/SetEntityPositionF.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-#define NAME_SUFFIX
-
 s32 N(RedKeyList)[] = {
     ITEM_RED_KEY,
     ITEM_NONE
@@ -52,7 +47,13 @@ EvtScript N(EVS_LowerPoundableSwitch) = {
     End
 };
 
-#include "world/common/todo/IsPlayerPounding.inc.c"
+API_CALLABLE(N(IsPlayerPounding)) {
+    script->varTable[0] = false;
+    if (gPlayerStatus.actionState == ACTION_STATE_SPIN_POUND || gPlayerStatus.actionState == ACTION_STATE_TORNADO_POUND) {
+        script->varTable[0] = true;
+    }
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(UpdatePadlockPosition)) {
     Bytecode* args = script->ptrReadPos;
@@ -158,9 +159,6 @@ EvtScript N(EVS_UpdatePadlockPositions) = {
     End
 };
 
-#include "world/common/todo/RemovePadlock.inc.c"
-#include "world/common/todo/GetEntityPosition.inc.c"
-
 EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
@@ -182,16 +180,14 @@ EvtScript N(EVS_ItemPrompt_RedPadlock) = {
     Set(GF_PRA02_UnlockedRedDoor, true)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_16_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_16_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne, 1, 0)
-    Call(N(GetEntityPosition), MV_NearRedPadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_NearRedPadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetEntityPosition), MV_FarRedPadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_FarRedPadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_NearRedPadlock)
+    Call(SetEntityUsed, MV_NearRedPadlock)
     Set(MV_NearRedPadlock, -1)
-    Call(N(RemovePadlock))
-    Set(LVar0, MV_FarRedPadlock)
+    Call(SetEntityUsed, MV_FarRedPadlock)
     Set(MV_FarRedPadlock, -1)
-    Call(N(RemovePadlock))
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return
@@ -219,16 +215,14 @@ EvtScript N(EVS_ItemPrompt_BluePadlock) = {
     Set(GF_PRA02_UnlockedBlueDoor, true)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_13_0)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittse2, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_pra_13_3)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittne2, 1, 0)
-    Call(N(GetEntityPosition), MV_NearBluePadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_NearBluePadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(N(GetEntityPosition), MV_FarBluePadlock, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_FarBluePadlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(LVar0, MV_NearBluePadlock)
+    Call(SetEntityUsed, MV_NearBluePadlock)
     Set(MV_NearBluePadlock, -1)
-    Call(N(RemovePadlock))
-    Set(LVar0, MV_FarBluePadlock)
+    Call(SetEntityUsed, MV_FarBluePadlock)
     Set(MV_FarBluePadlock, -1)
-    Call(N(RemovePadlock))
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return

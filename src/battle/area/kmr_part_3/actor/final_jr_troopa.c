@@ -30,8 +30,6 @@ extern EvtScript N(EVS_Attack_MagicSpell);
 extern EvtScript N(EVS_Attack_LightningBolt);
 extern EvtScript N(EVS_Move_HealSelf);
 
-API_CALLABLE(N(CalculateArcsinDeg));
-
 #include "common/battle/SetAbsoluteStatusOffsets.inc.c"
 
 enum N(ActorPartIDs) {
@@ -985,7 +983,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Loop(20)
                 Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                 Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar0)
                 Set(LVar1, LVar4)
                 Set(LVar2, LVar5)
@@ -1006,7 +1004,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
             Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
             Loop(14)
                 Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-                Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+                Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
                 Set(LVar7, LVar0)
                 Add(LVar7, 180)
                 Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar7)
@@ -1045,7 +1043,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Loop(20)
         Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-        Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+        Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
         Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar0)
         Set(LVar1, LVar4)
         Set(LVar2, LVar5)
@@ -1066,7 +1064,7 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     Call(GetActorPos, ACTOR_SELF, LVar1, LVar2, LVar3)
     Loop(14)
         Call(GetActorPos, ACTOR_SELF, LVar4, LVar5, LVar6)
-        Call(N(CalculateArcsinDeg), LVar1, LVar2, LVar4, LVar5, LVar0)
+        Call(CalcActorRotation, LVar0, LVar1, LVar2, LVar4, LVar5)
         Set(LVar7, LVar0)
         Add(LVar7, 180)
         Call(SetPartRotation, ACTOR_SELF, PRT_FLYING, 0, 0, LVar7)
@@ -1089,8 +1087,6 @@ EvtScript N(EVS_Attack_SpikeDive) = {
     Return
     End
 };
-
-#include "common/CalculateArcsinDeg.inc.c"
 
 EvtScript N(EVS_Attack_MagicSpell) = {
     Call(UseIdleAnimation, ACTOR_SELF, false)
@@ -1190,8 +1186,6 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Return
     End
 };
-
-#include "common/Dist3D.inc.c" // Not used?
 
 #include "common/UnkBackgroundFunc3.inc.c"
 

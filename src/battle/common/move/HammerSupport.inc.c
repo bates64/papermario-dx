@@ -22,7 +22,19 @@ API_CALLABLE(N(IsBerserkerEquipped)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/ShouldMovesAutoSucceed.inc.c"
+API_CALLABLE(N(ShouldMovesAutoSucceed)) {
+    script->varTable[0] = false;
+
+    if (is_ability_active(ABILITY_RIGHT_ON)) {
+        script->varTable[0] = true;
+    }
+
+    if (gBattleStatus.flags1 & BS_FLAGS1_AUTO_SUCCEED_ACTION) {
+        script->varTable[0] = true;
+    }
+
+    return ApiStatus_DONE2;
+}
 
 // Move the player into position 32 units to the left of the target enemy
 EvtScript N(EVS_HammerSupport_SmashApproach) = {

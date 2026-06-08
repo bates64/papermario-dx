@@ -2,8 +2,6 @@
 
 #include "../common/FallingStars.inc.c"
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 EvtScript N(EVS_GotoMap_kmr_24_0) = {
     Call(FadeOutMusic, 0, 1500)
     Call(GotoMapSpecial, Ref("kmr_24"), kmr_24_ENTRY_0, TRANSITION_AFTER_SAVE_PROMPT)
@@ -103,7 +101,7 @@ EvtScript N(EVS_EnterStarBeam) = {
     Call(SetMusic, 0, SONG_SHOOTING_STAR_SUMMIT, 0, VOL_LEVEL_FULL)
     Call(DisablePlayerInput, false)
     Label(20)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o234)
             Wait(1)
             Goto(20)

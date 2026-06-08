@@ -10,11 +10,9 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 EvtScript N(EVS_ControlUpperVisibility) = {
     Label(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         Switch(LVar0)
             CaseEq(COLLIDER_o18)
                 Goto(10)
@@ -32,7 +30,7 @@ EvtScript N(EVS_ControlUpperVisibility) = {
                 Call(EnableGroup, MODEL_g39, false)
                 Wait(1)
                 Label(15)
-                    Call(N(GetFloorCollider), LVar1)
+                    Call(GetPlayerFloorCollider, LVar1)
                     IfEq(LVar1, -1)
                         Wait(1)
                         Goto(15)

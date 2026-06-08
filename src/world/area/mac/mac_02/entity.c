@@ -1,8 +1,6 @@
 #include "mac_02.h"
 #include "entity.h"
 
-#include "world/common/todo/RemovePadlock.inc.c"
-
 s32 N(ItemList_OddKey)[] = {
     ITEM_ODD_KEY,
     ITEM_NONE
@@ -20,8 +18,7 @@ EvtScript N(EVS_ChooseItem_OddKey) = {
         Return
     EndIf
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, -470, 30, -155)
-    Set(LVar0, MV_BlueHouseLockEntityID)
-    Call(N(RemovePadlock))
+    Call(SetEntityUsed, MV_BlueHouseLockEntityID)
     Wait(5)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_MAC02_UnlockedHouse, true)

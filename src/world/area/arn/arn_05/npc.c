@@ -19,8 +19,6 @@ API_CALLABLE(N(AwaitCDownPress)) {
     }
 }
 
-#include "world/common/todo/SwitchToPartner.inc.c"
-
 EvtScript N(EVS_NpcInteract_Boo_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
@@ -392,7 +390,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
     Call(SpeakToPlayer, NPC_Boo_03, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 0, MSG_CH3_00A1)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_BOW)
-        Call(N(SwitchToPartner), PARTNER_BOW)
+        Call(SwitchToPartner, PARTNER_BOW)
         Thread
             Set(MV_Unk_00, 0)
             Call(ShowMessageAtScreenPos, MSG_CH3_00A2, 160, 40)

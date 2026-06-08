@@ -16,8 +16,6 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
     End
 };
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 API_CALLABLE(N(IsPartnerWatt)) {
     if (gPartnerStatus.actingPartner == PARTNER_WATT) {
         script->varTable[9] = true;
@@ -30,7 +28,7 @@ API_CALLABLE(N(IsPartnerWatt)) {
 EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, 10)
             Goto(0)
         EndIf

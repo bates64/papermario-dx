@@ -360,7 +360,7 @@ Vec3f N(FlightPath2)[] = {
     { 270.0, 175.0, -30.0 },
 };
 
-API_CALLABLE(N(GetFloorCollider)) {
+API_CALLABLE(GetPlayerFloorCollider) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;
 
@@ -387,7 +387,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     EndIf
     // wait for player to reach the top of the stairs
     Label(0)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfNe(LVar0, COLLIDER_o870)
             Wait(1)
             Goto(0)

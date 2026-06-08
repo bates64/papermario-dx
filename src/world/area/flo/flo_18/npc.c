@@ -1,8 +1,6 @@
 #include "flo_18.h"
 #include "sprite/player.h"
 
-#include "world/common/todo/UnkFunc42.inc.c"
-
 #include "world/common/enemy/Lakitu.h"
 #include "world/common/enemy/YMagikoopa.h"
 

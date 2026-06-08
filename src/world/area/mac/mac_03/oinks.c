@@ -9,8 +9,10 @@ typedef struct LilOinkReward {
     /* 0x08 */ s32 chance;
 } LilOinkReward; // size = 0x0C
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-#include "world/common/todo/GetPlayerCoins.inc.c"
+API_CALLABLE(N(GetPlayerCoins)) {
+    script->varTable[0] = gPlayerData.coins;
+    return ApiStatus_DONE2;
+}
 
 API_CALLABLE(N(DismissCoinCounter)) {
     hide_coin_counter_immediately();
@@ -328,7 +330,7 @@ EvtScript N(EVS_UseMachinePrompt) = {
     Call(DisablePlayerInput, false)
     Label(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         IfEq(LVar0, COLLIDER_step)
             Goto(0)
         EndIf
@@ -388,7 +390,7 @@ EvtScript N(EVS_SpawnLilOinkPrize) = {
 };
 
 EvtScript N(EVS_OpenCapsule) = {
-    Call(N(GetFloorCollider), LVar0)
+    Call(GetPlayerFloorCollider, LVar0)
     IfNe(LVar0, COLLIDER_hummer)
         Return
     EndIf

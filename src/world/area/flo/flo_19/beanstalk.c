@@ -49,8 +49,6 @@ API_CALLABLE(N(SetScreenFadeAmount)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/CosInterpMinMax.inc.c"
-
 EvtScript N(EVS_FadeOutToBlack) = {
     Set(LVar0, 0)
     Label(10)
@@ -175,7 +173,7 @@ EvtScript N(EVS_Enter_Beanstalk) = {
     Set(LVarF, 0)
     Loop(344)
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, -210, 0, 344, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, -210, 0, 344, 0, 0)
         SetF(LVar1, LVar0)
         MulF(LVar1, Float(-3.0))
         Call(TranslateModel, MODEL_o142, Float(1.313), LVar0, Float(-0.56640625))
@@ -275,7 +273,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
             Set(LVarF, 0)
             Loop(344)
                 Add(LVarF, 1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, 0, -210, 344, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, 0, -210, 344, 0, 0)
                 SetF(LVar1, LVar0)
                 MulF(LVar1, Float(-3.0))
                 Call(TranslateModel, MODEL_o142, Float(1.313), LVar0, Float(-0.56640625))
@@ -366,7 +364,7 @@ EvtScript N(EVS_Scene_BeanstalkGrowing) = {
             EndIf
         EndIf
         Add(LVarF, 1)
-        Call(N(CosInterpMinMax), LVarF, LVar0, -350, 0, 400, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar0, -350, 0, 400, 0, 0)
         SetF(MV_BeanstalkGrowthProgress, LVarF)
         MulF(MV_BeanstalkGrowthProgress, Float(1.6))
         SetF(LVar2, LVar0)

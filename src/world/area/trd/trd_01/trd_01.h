@@ -20,7 +20,7 @@ enum {
 };
 
 enum {
-    MV_Padlock_EntityIndex          = MapVar(0),
+    MV_EntityID_Padlock             = MapVar(0),
 };
 
 enum {

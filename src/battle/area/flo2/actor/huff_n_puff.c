@@ -127,8 +127,6 @@ API_CALLABLE(N(SetHealthBarPos)) {
     return ApiStatus_DONE2;
 }
 
-#include "common/CosInterpMinMax.inc.c"
-
 API_CALLABLE(N(SetTuffPuffPos)) {
     Bytecode* args = script->ptrReadPos;
 
@@ -567,16 +565,16 @@ EvtScript N(EVS_Idle) = {
         Call(GetActorVar, ACTOR_SELF, AVAR_WobbleMode, LVarA)
         Switch(LVarA)
             CaseEq(0)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.97), Float(1.03), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.03), Float(0.97), 15, 0, 0)
                 Add(LVarF, 1)
             CaseEq(1)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.95), Float(1.05), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.05), Float(0.95), 15, 0, 0)
                 Add(LVarF, 3)
             CaseEq(2)
-                Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
-                Call(N(CosInterpMinMax), LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar0, Float(0.9), Float(1.1), 15, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar1, Float(1.1), Float(0.9), 15, 0, 0)
                 Add(LVarF, 5)
         EndSwitch
         Call(GetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2393,8 +2391,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
     Call(GetActorVar, ACTOR_SELF, AVAR_ScaleY, LVar1)
     Set(LVarF, 0)
     Loop(20)
-        Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.3), 10, 0, 0)
-        Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.7), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.3), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.7), 10, 0, 0)
         MulF(LVar2, LVar0)
         MulF(LVar3, LVar1)
         Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2404,8 +2402,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
     EndLoop
     Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_JIGGLE)
     Loop(20)
-        Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
-        Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
+        Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
         MulF(LVar2, LVar0)
         MulF(LVar3, LVar1)
         Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2513,8 +2511,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
         Set(LVarF, 0)
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_WOBBLE)
         Loop(20)
-            Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0)
-            Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0)
             MulF(LVar2, LVar0)
             MulF(LVar3, LVar1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2524,8 +2522,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
         EndLoop
         Call(PlaySoundAtActor, ACTOR_SELF, SOUND_HUFF_N_PUFF_WOBBLE)
         Loop(20)
-            Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
-            Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0)
             MulF(LVar2, LVar0)
             MulF(LVar3, LVar1)
             Call(SetActorVar, ACTOR_SELF, AVAR_ScaleX, LVar2)
@@ -2555,8 +2553,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
                 Call(GetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleY, LVar1) \
                 Set(LVarF, 0) \
                 Loop(20) \
-                    Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0) \
-                    Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.5), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.5), 10, 0, 0) \
                     MulF(LVar2, LVar0) \
                     MulF(LVar3, LVar1) \
                     Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleX, LVar2) \
@@ -2565,8 +2563,8 @@ EvtScript N(EVS_Attack_GroupSlam) = {
                     Wait(1) \
                 EndLoop \
                 Loop(20) \
-                    Call(N(CosInterpMinMax), LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0) \
-                    Call(N(CosInterpMinMax), LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar2, Float(1.0), Float(1.2), 10, 0, 0) \
+                    Call(CosInterpMinMax, LVarF, LVar3, Float(1.0), Float(0.8), 10, 0, 0) \
                     MulF(LVar2, LVar0) \
                     MulF(LVar3, LVar1) \
                     Call(SetActorVar, ArrayVar(idx), AVAR_TuffPuff_ScaleX, LVar2) \

@@ -151,7 +151,6 @@ EvtScript N(EVS_Init) = {
 };
 
 #include "common/StartRumbleWithParams.inc.c"
-#include "common/CosInterpMinMax.inc.c"
 
 API_CALLABLE(N(GetActorPartOpacity)) {
     Bytecode* args = script->ptrReadPos;
@@ -243,7 +242,7 @@ EvtScript N(EVS_Idle) = {
             Call(GetActorVar, ACTOR_SELF, AVAR_Clone2_ID, LVar2)
             Call(ActorExists, LVar1, LVar3)
             IfEq(LVar3, true)
-                Call(N(CosInterpMinMax), LVarF, LVar4, Float(128.0), Float(254.0), 20, 0, 0)
+                Call(CosInterpMinMax, LVarF, LVar4, Float(128.0), Float(254.0), 20, 0, 0)
                 Set(LVar4, LVar4)
                 Call(SetPartAlpha, ACTOR_SELF, PRT_MAIN, LVar4)
                 Call(SetPartAlpha, LVar1, PRT_MAIN, LVar4)
@@ -312,7 +311,7 @@ EvtScript N(EVS_UpdateHovering) = {
             Set(LVar4, 41)
             Add(LVar4, LVarE)
             Call(SetActorPos, LVar2, LVar3, LVar4, LVar5)
-            Call(N(CosInterpMinMax), LVarF, LVar0, Float(0.0), Float(5.0), 30, 0, 0)
+            Call(CosInterpMinMax, LVarF, LVar0, Float(0.0), Float(5.0), 30, 0, 0)
             Set(LVarA, LVarB)
             Set(LVarB, LVarC)
             Set(LVarC, LVarD)

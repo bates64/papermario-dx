@@ -1,6 +1,9 @@
 #include "kkj_03.h"
 
-#include "world/common/todo/SetPlayerSpriteSet2_MapInit.inc.c"
+export s32 N(map_init)(void) {
+    gGameStatusPtr->playerSpriteSet = PLAYER_SPRITES_COMBINED_EPILOGUE;
+    return false;
+}
 
 EntryList N(Entrances) = {
     [kkj_03_ENTRY_0]    {  -95.0,    0.0,    0.0,   90.0 },

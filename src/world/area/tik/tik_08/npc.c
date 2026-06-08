@@ -1,13 +1,11 @@
 #include "tik_08.h"
 
-#include "world/common/todo/GetFloorCollider.inc.c"
-
 #include "world/common/enemy/Blooper.inc.c"
 
 EvtScript N(EVS_NpcIdle_Blooper) = {
     Loop(0)
         Wait(1)
-        Call(N(GetFloorCollider), LVar0)
+        Call(GetPlayerFloorCollider, LVar0)
         Call(GetPlayerPos, LVar1, LVar2, LVar3)
         IfEq(LVar0, 11)
             IfGe(LVar2, -20)
