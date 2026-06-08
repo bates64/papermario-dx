@@ -1165,7 +1165,7 @@ ApiStatus evt_handle_thread(Evt* script) {
     Bytecode* endLine = startLine;
     do {
         opcode = *endLine++;
-        nargs = *endLine++;
+        nargs = EVT_CMD_ARGC(*endLine++);
         endLine += nargs;
     } while (opcode != EVT_OP_END_THREAD);
 
@@ -1201,7 +1201,7 @@ ApiStatus evt_handle_child_thread(Evt* script) {
     Bytecode* endLine = startLine;
     do {
         opcode = *endLine++;
-        nargs = *endLine++;
+        nargs = EVT_CMD_ARGC(*endLine++);
         endLine += nargs;
     } while (opcode != EVT_OP_END_CHILD_THREAD);
 
