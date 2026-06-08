@@ -607,15 +607,22 @@ def extract_debug_info_from_objects(obj_paths, section_map, sec_vma_map, elfs, l
 
     Returns a debug blob (SYMS format) with rom_base=0.
     """
+    STT_OBJECT = 1
     STT_FUNC = 2
 
     addr2name = {}
+    addr2file = {}  # addr -> file basename (from object file path)
     all_line_entries = []
 
     for elf_idx, elf in enumerate(elfs):
-        # Collect FUNC symbols
+        obj_basename = obj_paths[elf_idx].replace("\\", "/").rsplit("/", 1)[-1]
+        # Strip .o extension to get source file name (e.g. "main.c.o" -> "main.c")
+        if obj_basename.endswith(".o"):
+            obj_basename = obj_basename[:-2]
+
+        # Collect FUNC and OBJECT symbols
         for sym in elf.symbols:
-            if sym.type != STT_FUNC or sym.value == 0:
+            if sym.type not in (STT_FUNC, STT_OBJECT) or sym.value == 0:
                 continue
             if sym.shndx in (SHN_UNDEF, SHN_ABS, SHN_COMMON):
                 continue
@@ -626,6 +633,7 @@ def extract_debug_info_from_objects(obj_paths, section_map, sec_vma_map, elfs, l
             name = itanium_demangle(sym.name)
             if not name.startswith("dead_"):
                 addr2name[addr] = name
+                addr2file[addr] = obj_basename
 
         # Parse .debug_line (may fail for compressed/unusual debug sections)
         try:
@@ -665,6 +673,13 @@ def extract_debug_info_from_objects(obj_paths, section_map, sec_vma_map, elfs, l
                 symbols.append(
                     (addr - link_addr, addr2name[closest_addr], file_basename, line_number)
                 )
+
+    # Add symbols that have no debug line info (e.g. EvtScript data)
+    addrs_with_line = set(addr for addr, _, _ in all_line_entries)
+    for addr, name in addr2name.items():
+        if addr not in addrs_with_line:
+            file_basename = addr2file.get(addr, "")
+            symbols.append((addr - link_addr, name, file_basename, -1))
 
     if len(symbols) == 0:
         for addr, name in addr2name.items():

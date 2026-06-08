@@ -473,6 +473,7 @@ typedef struct Evt {
     /* 0x164 */ Bytecode* ptrCurLine;
     /* 0x168 */ b8 debugPaused;
     /* 0x169 */ s8 debugStep;
+    /* 0x16A */ u16 curLine;
 } Evt; // size = 0x16C
 
 typedef Evt* ScriptList[MAX_SCRIPTS];

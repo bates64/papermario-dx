@@ -34,7 +34,10 @@ void ovl_unload_type(OverlayType type);
 /// Look up an exported symbol by name. Returns nullptr if not found.
 void* ovl_import(const Overlay* ovl, const char* name);
 
-/// Searches all loaded overlays for the symbol name nearest to `addr`.
+/// Searches all loaded overlays for the symbol nearest to `addr`.
+/// Returns an empty string (not NULL) if the address is in an overlay but has
+/// no matching export, so the caller can still use the debug symbol table.
+/// Returns nullptr if the address is not in any loaded overlay.
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
                              u32* outDebugRomStart, u32* outDebugRomEnd,
                              u32* outOverlayBase);

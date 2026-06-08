@@ -8,7 +8,7 @@ extern u32* gMapFlags;
 extern s32* gMapVars;
 
 extern char evtDebugPrintBuffer[0x100];
-Bytecode* EvtCallingLine;
+Evt* EvtCurrentScript;
 
 Bytecode* evt_find_label(Evt* script, s32 arg1);
 Bytecode* evt_skip_if(Evt* script);
@@ -891,8 +891,6 @@ ApiStatus evt_handle_call(Evt* script) {
     s32 isInitialCall;
     ApiFunc func;
     ApiStatus ret;
-    EvtCallingLine = script->ptrCurLine;
-
     if (script->blocked) {
         isInitialCall = false;
         func = script->callFunction;
@@ -907,7 +905,6 @@ ApiStatus evt_handle_call(Evt* script) {
         ret = func(script, isInitialCall);
     }
 
-    EvtCallingLine = nullptr;
     return ret;
 }
 
@@ -1358,6 +1355,7 @@ ApiStatus evt_handle_debug_breakpoint(Evt* script) {
 }
 
 s32 evt_execute_next_command(Evt* script) {
+    EvtCurrentScript = script;
     s32 commandsExecuted = 0;
 
     while (true) {
@@ -1383,7 +1381,7 @@ s32 evt_execute_next_command(Evt* script) {
         commandsExecuted++;
         if (commandsExecuted >= 10000) {
             char scriptName[0x80];
-            backtrace_address_to_string((u32)script->ptrFirstLine, scriptName);
+            backtrace_address_to_string((u32)script->ptrFirstLine, scriptName, -1);
             PANIC_MSG("Script %s is blocking for ages (infinite loop?)", scriptName);
         }
 
@@ -1393,6 +1391,8 @@ s32 evt_execute_next_command(Evt* script) {
                 lines = script->ptrNextLine;
                 script->curOpcode = *lines++;
                 nargs = *lines++;
+                script->curLine = EVT_CMD_LINE(nargs);
+                nargs = EVT_CMD_ARGC(nargs);
                 script->ptrReadPos = lines;
                 script->blocked = false;
                 script->curArgc = nargs;
@@ -2087,7 +2087,7 @@ Bytecode* evt_skip_if(Evt* script) {
 
     do {
         opcode = *pos++;
-        nargs = *pos++;
+        nargs = EVT_CMD_ARGC(*pos++);
         pos += nargs;
 
         switch (opcode) {
@@ -2126,7 +2126,7 @@ Bytecode* evt_skip_else(Evt* script) {
 
     do {
         opcode = *pos++;
-        nargs = *pos++;
+        nargs = EVT_CMD_ARGC(*pos++);
         pos += nargs;
 
         switch (opcode) {
@@ -2175,7 +2175,7 @@ Bytecode* evt_goto_end_case(Evt* script) {
     do {
         opcode = pos++;
         nargs = pos++;
-        pos += *nargs;
+        pos += EVT_CMD_ARGC(*nargs);
 
         switch (*opcode) {
             case EVT_OP_END:
@@ -2203,7 +2203,7 @@ Bytecode* evt_goto_next_case(Evt* script) {
     do {
         opcode = pos++;
         nargs = pos++;
-        pos += *nargs;
+        pos += EVT_CMD_ARGC(*nargs);
 
         switch (*opcode) {
             case EVT_OP_END:
@@ -2245,7 +2245,7 @@ Bytecode* evt_goto_end_loop(Evt* script) {
 
     do {
         opcode = *pos++;
-        nargs = *pos++;
+        nargs = EVT_CMD_ARGC(*pos++);
         pos += nargs;
 
         switch (opcode) {

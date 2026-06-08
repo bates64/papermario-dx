@@ -53,7 +53,20 @@ int backtrace_thread(void **buffer, int size, OSThread *thread);
 /** Print a backtrace. */
 void debug_backtrace(void);
 
-/** Converts a function address to a string representation using its name, offset, and file. */
-void backtrace_address_to_string(u32 address, char* dest);
+/// Resolved symbol information for a backtrace frame.
+typedef struct {
+    char name[0x40];     ///< Function/symbol name, or hex address fallback.
+    char file[0x40];     ///< Source file basename (e.g. "main.c"), or empty.
+    char overlay[0x20];  ///< Overlay name (e.g. "kmr_20"), or empty.
+    s32 line;            ///< Source line number, or -1 if unknown.
+} ResolvedSym;
+
+/// Resolve an address into structured symbol information.
+/// If `lineOverride` >= 0, it replaces the symbol table's line number (used for EVT scripts).
+void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride);
+
+/// Converts a function address to a string representation using its name, offset, and file.
+/// If line >= 0, it overrides the file's line number (used for EVT script lines).
+void backtrace_address_to_string(u32 address, char* dest, s32 line);
 
 #endif
