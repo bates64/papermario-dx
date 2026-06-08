@@ -32,6 +32,15 @@ INCLUDE_IMG("crash_screen/font.png", gCrashScreenFont);
 // The font image is on 6x7 grid
 #define GLYPH(x, y) (x + (y * 5))
 
+// RGBA5551 colors
+#define COLOR_WHITE  0xFFFF
+#define COLOR_RED    0xF801
+#define COLOR_YELLOW 0xFFE1
+#define COLOR_CYAN   0x07FF
+#define COLOR_GREY   0x8C63
+
+u16 gCrashScreenColor = COLOR_WHITE;
+
 const char* gFaultCauses[18] = {
     "Interrupt",
     "TLB modification",
@@ -110,6 +119,7 @@ s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
     const u32* data = &((u32*)gCrashScreenFont)[glyph / 5 * 7];
     s32 i;
     s32 j;
+    u16 color = gCrashScreenColor;
 
     switch (glyph) {
         case GLYPH(3, 10): // ;
@@ -133,7 +143,7 @@ s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
 
             for (j = 0; j < 6; j++) {
                 if (bit & rowMask) {
-                    *ptr++ = 0xFFFF; // white
+                    *ptr++ = color;
                 } else {
                     ptr++; // dont draw
                 }
@@ -150,7 +160,7 @@ s32 crash_screen_draw_glyph(s32 x, s32 y, s32 glyph) {
             u32 rowMask = *data++;
 
             for (j = 0; j < 6; j++) {
-                u16 temp = (bit & rowMask) ? 0xFFFF : 1;
+                u16 temp = (bit & rowMask) ? color : 1;
 
                 ptr[0] = temp;
                 ptr[1] = temp;
@@ -308,23 +318,236 @@ void crash_screen_print_fpcsr(u32 value) {
     }
 }
 
-void crash_screen_draw(OSThread* faultedThread) {
-    s16 causeIndex;
+static const char* sRegNames[32] = {
+    "zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
+    "t0",   "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+    "s0",   "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+    "t8",   "t9", "k0", "k1", "gp", "sp", "fp", "ra",
+};
 
-    s32 bt[8];
+#define RD(op) (((op) >> 11) & 0x1F)
+#define RT(op) (((op) >> 16) & 0x1F)
+#define RS(op) (((op) >> 21) & 0x1F)
+#define IMM(op) ((s16)((op) & 0xFFFF))
+#define SA(op) (((op) >> 6) & 0x1F)
+#define TARGET(op, pc) ((((pc) & 0xF0000000) | (((op) & 0x03FFFFFF) << 2)))
+
+/// Disassemble a single MIPS instruction into buf. Returns buf.
+static char* crash_screen_disasm(u32 pc, u32 op, char* buf) {
+    u32 opcode = op >> 26;
+    u32 func = op & 0x3F;
+
+    // Load/store instructions
+    switch (opcode) {
+        case 0x20: sprintf(buf, "lb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x21: sprintf(buf, "lh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x23: sprintf(buf, "lw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x24: sprintf(buf, "lbu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x25: sprintf(buf, "lhu   %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x28: sprintf(buf, "sb    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x29: sprintf(buf, "sh    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x2B: sprintf(buf, "sw    %s, %d(%s)", sRegNames[RT(op)], IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x31: sprintf(buf, "lwc1  f%d, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
+        case 0x39: sprintf(buf, "swc1  f%d, %d(%s)", RT(op), IMM(op), sRegNames[RS(op)]); return buf;
+    }
+
+    // ALU immediate
+    switch (opcode) {
+        case 0x09: sprintf(buf, "addiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
+        case 0x0C: sprintf(buf, "andi  %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16)IMM(op)); return buf;
+        case 0x0D: sprintf(buf, "ori   %s, %s, 0x%X", sRegNames[RT(op)], sRegNames[RS(op)], (u16)IMM(op)); return buf;
+        case 0x0A: sprintf(buf, "slti  %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
+        case 0x0B: sprintf(buf, "sltiu %s, %s, %d", sRegNames[RT(op)], sRegNames[RS(op)], IMM(op)); return buf;
+        case 0x0F: sprintf(buf, "lui   %s, 0x%04X", sRegNames[RT(op)], (u16)IMM(op)); return buf;
+    }
+
+    // Branch
+    switch (opcode) {
+        case 0x04: sprintf(buf, "beq   %s, %s, 0x%08X", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x05: sprintf(buf, "bne   %s, %s, 0x%08X", sRegNames[RS(op)], sRegNames[RT(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x06: sprintf(buf, "blez  %s, 0x%08X", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
+        case 0x07: sprintf(buf, "bgtz  %s, 0x%08X", sRegNames[RS(op)], pc + 4 + (IMM(op) << 2)); return buf;
+    }
+
+    // Jump
+    if (opcode == 0x02) { sprintf(buf, "j     0x%08X", TARGET(op, pc)); return buf; }
+    if (opcode == 0x03) { sprintf(buf, "jal   0x%08X", TARGET(op, pc)); return buf; }
+
+    // SPECIAL (opcode 0)
+    if (opcode == 0x00) {
+        if (op == 0) { sprintf(buf, "nop"); return buf; }
+        switch (func) {
+            case 0x08: sprintf(buf, "jr    %s", sRegNames[RS(op)]); return buf;
+            case 0x09: sprintf(buf, "jalr  %s", sRegNames[RS(op)]); return buf;
+            case 0x21:
+                if (RT(op) == 0) { sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]); return buf; }
+                sprintf(buf, "addu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x23: sprintf(buf, "subu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x24: sprintf(buf, "and   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x25:
+                if (RT(op) == 0) { sprintf(buf, "move  %s, %s", sRegNames[RD(op)], sRegNames[RS(op)]); return buf; }
+                sprintf(buf, "or    %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x26: sprintf(buf, "xor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x27: sprintf(buf, "nor   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x2A: sprintf(buf, "slt   %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x2B: sprintf(buf, "sltu  %s, %s, %s", sRegNames[RD(op)], sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x00: sprintf(buf, "sll   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x02: sprintf(buf, "srl   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x03: sprintf(buf, "sra   %s, %s, %d", sRegNames[RD(op)], sRegNames[RT(op)], SA(op)); return buf;
+            case 0x18: sprintf(buf, "mult  %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x19: sprintf(buf, "multu %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x1A: sprintf(buf, "div   %s, %s", sRegNames[RS(op)], sRegNames[RT(op)]); return buf;
+            case 0x10: sprintf(buf, "mfhi  %s", sRegNames[RD(op)]); return buf;
+            case 0x12: sprintf(buf, "mflo  %s", sRegNames[RD(op)]); return buf;
+        }
+    }
+
+    sprintf(buf, ".word 0x%08X", op);
+    return buf;
+}
+
+/// Print disassembly context around the crash PC (1 line before, crash line, 1 line after).
+static s32 crash_screen_print_disasm(s32 x, s32 y, u32 pc) {
+    char buf[64];
+
+    for (s32 i = -1; i <= 1; i++) {
+        u32 addr = pc + (i * 4);
+        u32 phys = 0x80000000 | osVirtualToPhysical((void*)addr);
+        if (phys < 0x80000400 || phys >= 0x80800000 || (addr & 3) != 0) {
+            continue;
+        }
+        u32 instr = *(u32*)phys;
+        crash_screen_disasm(addr, instr, buf);
+
+        if (i == 0) {
+            gCrashScreenColor = COLOR_WHITE;
+            y = crash_screen_printf(x, y, "  > %08X: %s", addr, buf);
+        } else {
+            gCrashScreenColor = COLOR_GREY;
+            y = crash_screen_printf(x, y, "    %08X: %s", addr, buf);
+        }
+    }
+
+    return y;
+}
+
+/// Formats a human-readable error message for the crash.
+static s32 crash_screen_print_error(s32 x, s32 y, OSThread* faultedThread) {
+    __OSThreadContext* ctx = &faultedThread->context;
+    s16 causeIndex = ((ctx->cause >> 2) & 0x1F);
+
+    gCrashScreenColor = COLOR_RED;
+
+    if (crashScreenAssertMessage[0] != '\0') {
+        y = crash_screen_printf_proportional(x, y, crashScreenAssertMessage);
+        gCrashScreenColor = COLOR_WHITE;
+        return y;
+    }
+
+    u32 badvaddr = (u32)ctx->badvaddr;
+
+    switch (causeIndex) {
+        case 1: // TLB modification
+            y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08X", badvaddr);
+            break;
+        case 2: // TLB exception on load
+            if (badvaddr == 0) {
+                y = crash_screen_printf_proportional(x, y, "Attempt to read from nullptr");
+            } else {
+                y = crash_screen_printf_proportional(x, y, "Segfault: read from 0x%08X", badvaddr);
+            }
+            break;
+        case 3: // TLB exception on store
+            if (badvaddr == 0) {
+                y = crash_screen_printf_proportional(x, y, "Attempt to write to nullptr");
+            } else {
+                y = crash_screen_printf_proportional(x, y, "Segfault: write to 0x%08X", badvaddr);
+            }
+            break;
+        case 4: // Address error on load
+            y = crash_screen_printf_proportional(x, y, "Unaligned read from 0x%08X", badvaddr);
+            break;
+        case 5: // Address error on store
+            y = crash_screen_printf_proportional(x, y, "Unaligned write to 0x%08X", badvaddr);
+            break;
+        case 6: // Bus error on inst
+        case 7: // Bus error on data
+            y = crash_screen_printf_proportional(x, y, "Bus error at 0x%08X", badvaddr);
+            break;
+        case 10: // Reserved instruction
+            y = crash_screen_printf_proportional(x, y, "Invalid instruction at 0x%08X", (u32)ctx->pc);
+            break;
+        case 12: // Arithmetic overflow
+            y = crash_screen_printf_proportional(x, y, "Integer overflow");
+            break;
+        case 13: // Trap
+            y = crash_screen_printf_proportional(x, y, "Trap");
+            break;
+        case 15: { // Floating point exception
+            u32 fpcsr = ctx->fpcsr;
+            u32 flag = 0x20000;
+            const char* fpCause = "Float exception";
+            for (s32 i = 0; i < 6; i++, flag >>= 1) {
+                if (fpcsr & flag) {
+                    fpCause = gFPCSRFaultCauses[i];
+                    break;
+                }
+            }
+            y = crash_screen_printf_proportional(x, y, "Float: %s", fpCause);
+            break;
+        }
+        default: {
+            // Fall back to raw cause name
+            s16 idx = causeIndex;
+            if (idx == 23) idx = 16;
+            if (idx == 31) idx = 17;
+            y = crash_screen_printf_proportional(x, y, "%s", gFaultCauses[idx]);
+            break;
+        }
+    }
+
+    gCrashScreenColor = COLOR_WHITE;
+    return y;
+}
+
+/// Print the location line (file:line and overlay) for a resolved symbol.
+/// Returns y advance.
+static s32 crash_screen_print_location(s32 x, s32 y, ResolvedSym* sym) {
+    b32 hasFile = sym->file[0] != '\0';
+    b32 hasOverlay = sym->overlay[0] != '\0';
+    b32 hasLine = sym->line >= 0;
+
+    if (!hasFile && !hasOverlay && !hasLine) {
+        return y;
+    }
+
+    gCrashScreenColor = COLOR_GREY;
+    if (hasFile && hasLine && hasOverlay) {
+        y = crash_screen_printf_proportional(x, y, "    %s:%ld (%s)", sym->file, sym->line, sym->overlay);
+    } else if (hasFile && hasLine) {
+        y = crash_screen_printf_proportional(x, y, "    %s:%ld", sym->file, sym->line);
+    } else if (hasFile && hasOverlay) {
+        y = crash_screen_printf_proportional(x, y, "    %s (%s)", sym->file, sym->overlay);
+    } else if (hasOverlay && hasLine) {
+        y = crash_screen_printf_proportional(x, y, "    %s:%ld", sym->overlay, sym->line);
+    } else if (hasOverlay) {
+        y = crash_screen_printf_proportional(x, y, "    (%s)", sym->overlay);
+    } else if (hasFile) {
+        y = crash_screen_printf_proportional(x, y, "    %s", sym->file);
+    } else {
+        y = crash_screen_printf_proportional(x, y, "    :%ld", sym->line);
+    }
+
+    return y;
+}
+
+void crash_screen_draw(OSThread* faultedThread) {
+    __OSThreadContext* ctx = &faultedThread->context;
+    s32 bt[16];
     s32 max = backtrace_thread((void**)bt, ARRAY_COUNT(bt), faultedThread);
     s32 i = 0;
-    static char buf[0x200];
-
-    causeIndex = ((faultedThread->context.cause >> 2) & 0x1F);
-
-    if (causeIndex == 23) {
-        causeIndex = 16;
-    }
-
-    if (causeIndex == 31) {
-        causeIndex = 17;
-    }
+    ResolvedSym sym;
+    b32 isFirstFrame = true;
 
     osWritebackDCacheAll();
 
@@ -334,32 +557,13 @@ void crash_screen_draw(OSThread* faultedThread) {
     crash_screen_draw_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Print error message
-    b32 isException = false;
-    if (crashScreenAssertMessage[0] == '\0') {
-        y += crash_screen_printf_proportional(x, y, "Exception in thread %d: %s", faultedThread->id, gFaultCauses[causeIndex]);
-        isException = true;
-    } else {
-        y += crash_screen_printf_proportional(x, y, crashScreenAssertMessage);
+    y = crash_screen_print_error(x, y, faultedThread);
+    if (crashScreenAssertMessage[0] != '\0') {
         i = 1; // Don't include is_debug_panic line in backtrace.
     }
+    y += 5;
 
     b32 hasEvtBacktrace = EvtCurrentScript != nullptr;
-
-    if (isException && !hasEvtBacktrace) {
-        __OSThreadContext* ctx = &faultedThread->context;
-        crash_screen_printf_proportional(x, y, "Registers:");
-        y += 10;
-        crash_screen_printf(x, y, "  a0 = 0x%08X     a1 = 0x%08X", (u32)ctx->a0, (u32)ctx->a1);
-        y += 10;
-        crash_screen_printf(x, y, "  a2 = 0x%08X     a3 = 0x%08X", (u32)ctx->a2, (u32)ctx->a3);
-        y += 10;
-
-        y += 10;
-    }
-
-    // Print backtrace
-    crash_screen_printf_proportional(x, y, "Call stack:");
-    y += 10;
 
     if (hasEvtBacktrace) {
         // Print C backtrace, stopping at EVT engine internals
@@ -369,73 +573,47 @@ void crash_screen_draw(OSThread* faultedThread) {
             if (addr >= (u32)evt_execute_next_command && addr < (u32)evt_execute_next_command + 0x2000) {
                 break;
             }
-            backtrace_address_to_string(addr, buf, -1);
-            crash_screen_printf_proportional(x, y, "  in %s", buf);
-            y += 10;
+            backtrace_resolve_addr(addr, &sym, -1);
+            gCrashScreenColor = COLOR_CYAN;
+            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            y = crash_screen_print_location(x, y, &sym);
+            if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
+                y += 5;
+                y = crash_screen_print_disasm(x, y, (u32)ctx->pc);
+                y += 5;
+                isFirstFrame = false;
+            }
         }
 
         // Print EVT script chain (innermost to outermost)
         Evt* s = EvtCurrentScript;
         while (s != nullptr) {
-            backtrace_address_to_string((u32)s->ptrFirstLine, buf, s->curLine);
-            crash_screen_printf_proportional(x, y, "  in %s", buf);
-            y += 10;
+            backtrace_resolve_addr((u32)s->ptrFirstLine, &sym, s->curLine);
+            gCrashScreenColor = COLOR_YELLOW;
+            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            y = crash_screen_print_location(x, y, &sym);
             s = s->blockingParent;
         }
     } else {
         for (; i < max; i++) {
-            backtrace_address_to_string(bt[i], buf, -1);
-            crash_screen_printf_proportional(x, y, "  in %s", buf);
-            y += 10;
+            backtrace_resolve_addr(bt[i], &sym, -1);
+            gCrashScreenColor = COLOR_CYAN;
+            y = crash_screen_printf_proportional(x, y, "%s", sym.name);
+            y = crash_screen_print_location(x, y, &sym);
+            if (isFirstFrame && crashScreenAssertMessage[0] == '\0') {
+                y += 5;
+                y = crash_screen_print_disasm(x, y, (u32)ctx->pc);
+                y += 5;
+                isFirstFrame = false;
+            }
         }
     }
 
-    y += 10;
+    gCrashScreenColor = COLOR_WHITE;
 
     osViBlack(0);
     osViRepeatLine(0);
     osViSwapBuffer(gCrashScreen.frameBuf);
-
-    /*
-    crash_screen_draw_rect(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT - 30);
-
-    crash_screen_printf(30, 35, "PC:%08XH   SR:%08XH   VA:%08XH", ctx->pc, ctx->sr, ctx->badvaddr);
-    crash_screen_printf(30, 50, "AT:%08XH   V0:%08XH   V1:%08XH", (u32)ctx->at, (u32)ctx->v0, (u32)ctx->v1);
-    crash_screen_printf(30, 45, "A0: %08X   A1: %08X   A2: %08X", (u32)ctx->a0, (u32)ctx->a1, (u32)ctx->a2);
-    crash_screen_printf(30, 70, "A3:%08XH   T0:%08XH   T1:%08XH", (u32)ctx->a3, (u32)ctx->t0, (u32)ctx->t1);
-    crash_screen_printf(30, 80, "T2:%08XH   T3:%08XH   T4:%08XH", (u32)ctx->t2, (u32)ctx->t3, (u32)ctx->t4);
-    crash_screen_printf(30, 90, "T5:%08XH   T6:%08XH   T7:%08XH", (u32)ctx->t5, (u32)ctx->t6, (u32)ctx->t7);
-    crash_screen_printf(30, 100, "S0:%08XH   S1:%08XH   S2:%08XH", (u32)ctx->s0, (u32)ctx->s1, (u32)ctx->s2);
-    crash_screen_printf(30, 110, "S3:%08XH   S4:%08XH   S5:%08XH", (u32)ctx->s3, (u32)ctx->s4, (u32)ctx->s5);
-    crash_screen_printf(30, 120, "S6:%08XH   S7:%08XH   T8:%08XH", (u32)ctx->s6, (u32)ctx->s7, (u32)ctx->t8);
-    crash_screen_printf(30, 130, "T9:%08XH   GP:%08XH   SP:%08XH", (u32)ctx->t9, (u32)ctx->gp, (u32)ctx->sp);
-    crash_screen_printf(30, 140, "S8:%08XH   RA:%08XH", (u32)ctx->s8, (u32)ctx->ra);
-
-    crash_screen_print_fpcsr(ctx->fpcsr);
-
-    crash_screen_print_fpr(30, 170, 0, &ctx->fp0.f.f_even);
-    crash_screen_print_fpr(120, 170, 2, &ctx->fp2.f.f_even);
-    crash_screen_print_fpr(210, 170, 4, &ctx->fp4.f.f_even);
-    crash_screen_print_fpr(30, 180, 6, &ctx->fp6.f.f_even);
-    crash_screen_print_fpr(120, 180, 8, &ctx->fp8.f.f_even);
-    crash_screen_print_fpr(210, 180, 10, &ctx->fp10.f.f_even);
-    crash_screen_print_fpr(30, 190, 12, &ctx->fp12.f.f_even);
-    crash_screen_print_fpr(120, 190, 14, &ctx->fp14.f.f_even);
-    crash_screen_print_fpr(210, 190, 16, &ctx->fp16.f.f_even);
-    crash_screen_print_fpr(30, 200, 18, &ctx->fp18.f.f_even);
-    crash_screen_print_fpr(120, 200, 20, &ctx->fp20.f.f_even);
-    crash_screen_print_fpr(210, 200, 22, &ctx->fp22.f.f_even);
-    crash_screen_print_fpr(30, 210, 24, &ctx->fp24.f.f_even);
-    crash_screen_print_fpr(120, 210, 26, &ctx->fp26.f.f_even);
-    crash_screen_print_fpr(210, 210, 28, &ctx->fp28.f.f_even);
-    crash_screen_print_fpr(30, 220, 30, &ctx->fp30.f.f_even);
-
-    crash_screen_sleep(500);
-
-    // all of these null terminators needed to pad the rodata section for this file
-    // can potentially fix this problem in another way?
-    crash_screen_printf(210, 140, "MM:%08XH\0\0\0\0\0\0\0\0", *(u32*)ctx->pc);
-    */
 }
 
 OSThread* crash_screen_get_faulted_thread(void) {

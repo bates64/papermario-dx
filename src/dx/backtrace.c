@@ -426,74 +426,115 @@ s32 ovl_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* o
     #undef chunkSize
 }
 
-// If line >= 0, strip any existing ":line" from filep and replace with the given line number.
-static void format_symbol(char* dest, const char* namep, char* filep, const char* ovl_name, s32 line) {
-    // Strip existing ":line" from file string if we're overriding it
-    if (line >= 0 && filep != nullptr) {
+/// Extract file basename and line number from a symbol table file string.
+/// File strings are stored as "file.c:123" or just "file.c" (with line -1).
+/// If lineOverride >= 0, it replaces the parsed line number.
+static void parse_file_string(char* filep, char* outFile, s32 outFileSize, s32* outLine, s32 lineOverride) {
+    outFile[0] = '\0';
+    *outLine = -1;
+
+    if (filep != nullptr) {
         char* colon = strchr(filep, ':');
-        if (colon) *colon = '\0';
+        if (colon != nullptr) {
+            *colon = '\0';
+            // Parse line number (no atoi available)
+            s32 num = 0;
+            for (char* p = colon + 1; *p >= '0' && *p <= '9'; p++) {
+                num = num * 10 + (*p - '0');
+            }
+            *outLine = num;
+        }
+        strncpy(outFile, filep, outFileSize - 1);
+        outFile[outFileSize - 1] = '\0';
     }
 
-    if (ovl_name != nullptr) {
-        if (filep == nullptr && line >= 0)
-            sprintf(dest, "%s (%s:%ld)", namep, ovl_name, line);
-        else if (filep == nullptr)
-            sprintf(dest, "%s (%s)", namep, ovl_name);
-        else if (line >= 0)
-            sprintf(dest, "%s (%s %s:%ld)", namep, ovl_name, filep, line);
-        else
-            sprintf(dest, "%s (%s %s)", namep, ovl_name, filep);
-    } else {
-        if (filep == nullptr && line >= 0)
-            sprintf(dest, "%s (:%ld)", namep, line);
-        else if (filep == nullptr)
-            sprintf(dest, "%s", namep);
-        else if (line >= 0)
-            sprintf(dest, "%s (%s:%ld)", namep, filep, line);
-        else
-            sprintf(dest, "%s (%s)", namep, filep);
+    if (lineOverride >= 0) {
+        *outLine = lineOverride;
     }
 }
 
-void backtrace_address_to_string(u32 address, char* dest, s32 line) {
+void backtrace_resolve_addr(u32 address, ResolvedSym* out, s32 lineOverride) {
+    out->name[0] = '\0';
+    out->file[0] = '\0';
+    out->overlay[0] = '\0';
+    out->line = -1;
+
     const char* ovl_name = nullptr;
     u32 debugRomStart = 0, debugRomEnd = 0, ovlBase = 0;
     const char* ovl_sym_name = ovl_resolve_addr(address, &ovl_name,
                                               &debugRomStart, &debugRomEnd, &ovlBase);
     if (ovl_sym_name != nullptr) {
+        if (ovl_name != nullptr) {
+            strncpy(out->overlay, ovl_name, sizeof(out->overlay) - 1);
+        }
+
         if (debugRomStart != 0) {
             u32 offset = address - ovlBase;
             Symbol sym;
             s32 sym_offset = ovl_address2symbol(offset, debugRomStart, debugRomEnd, &sym);
             if (sym_offset >= 0 && sym_offset < 0x1000) {
-                char name[0x40];
-                char file[0x40];
-                char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
-                char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+                char name_buf[0x40];
+                char file_buf[0x40];
+                char* namep = load_symbol_string(name_buf, sym.nameOffset, ARRAY_COUNT(name_buf));
+                char* filep = load_symbol_string(file_buf, sym.fileOffset, ARRAY_COUNT(file_buf));
 
-                format_symbol(dest, namep, filep, ovl_name, line);
+                if (namep != nullptr) {
+                    strncpy(out->name, namep, sizeof(out->name) - 1);
+                }
+                parse_file_string(filep, out->file, sizeof(out->file), &out->line, lineOverride);
                 return;
             }
         }
-        if (ovl_sym_name[0] != '\0')
-            sprintf(dest, "%s (%s)", ovl_sym_name, ovl_name);
-        else
-            sprintf(dest, "0x%08lX (%s)", address, ovl_name);
+        if (ovl_sym_name[0] != '\0') {
+            strncpy(out->name, ovl_sym_name, sizeof(out->name) - 1);
+        } else {
+            sprintf(out->name, "0x%08lX", address);
+        }
+        if (lineOverride >= 0) out->line = lineOverride;
         return;
     }
 
     Symbol sym;
     s32 offset = address2symbol(address, &sym);
 
-    if (offset >= 0 && offset < 0x1000) { // 0x1000 = arbitrary func size limit
-        char name[0x40];
-        char file[0x40];
-        char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
-        char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
+    if (offset >= 0 && offset < 0x1000) {
+        char name_buf[0x40];
+        char file_buf[0x40];
+        char* namep = load_symbol_string(name_buf, sym.nameOffset, ARRAY_COUNT(name_buf));
+        char* filep = load_symbol_string(file_buf, sym.fileOffset, ARRAY_COUNT(file_buf));
 
-        format_symbol(dest, namep, filep, nullptr, line);
+        if (namep != nullptr) {
+            strncpy(out->name, namep, sizeof(out->name) - 1);
+        }
+        parse_file_string(filep, out->file, sizeof(out->file), &out->line, lineOverride);
     } else {
-        sprintf(dest, "0x%08lX", address);
+        sprintf(out->name, "0x%08lX", address);
+        if (lineOverride >= 0) out->line = lineOverride;
+    }
+}
+
+void backtrace_address_to_string(u32 address, char* dest, s32 line) {
+    ResolvedSym sym;
+    backtrace_resolve_addr(address, &sym, line);
+
+    // Build a single-line string for debug_backtrace() and other callers
+    s32 pos = sprintf(dest, "%s", sym.name);
+    b32 hasMeta = sym.file[0] != '\0' || sym.overlay[0] != '\0' || sym.line >= 0;
+    if (hasMeta) {
+        pos += sprintf(dest + pos, " (");
+        if (sym.overlay[0] != '\0') {
+            pos += sprintf(dest + pos, "%s", sym.overlay);
+            if (sym.file[0] != '\0') {
+                pos += sprintf(dest + pos, " ");
+            }
+        }
+        if (sym.file[0] != '\0') {
+            pos += sprintf(dest + pos, "%s", sym.file);
+        }
+        if (sym.line >= 0) {
+            pos += sprintf(dest + pos, ":%ld", sym.line);
+        }
+        sprintf(dest + pos, ")");
     }
 }
 
