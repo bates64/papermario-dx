@@ -1,3 +1,4 @@
+#pragma once
 #include "Whacka.h"
 
 NpcSettings N(NpcSettings_Whacka) = {

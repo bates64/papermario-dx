@@ -4,12 +4,6 @@
 #include "sprite/npc/Fire.h"
 #include "world/common/enemy/ai/FireBarAI.inc.c"
 
-s32 N(FireBar_Sounds)[] = {
-    SOUND_SEQ_FIRE_BAR_0, SOUND_SEQ_FIRE_BAR_1, SOUND_SEQ_FIRE_BAR_2, SOUND_SEQ_FIRE_BAR_3,
-    SOUND_SEQ_FIRE_BAR_4, SOUND_SEQ_FIRE_BAR_5, SOUND_SEQ_FIRE_BAR_6, SOUND_SEQ_FIRE_BAR_7,
-    SOUND_SEQ_FIRE_BAR_8, SOUND_SEQ_FIRE_BAR_9, SOUND_SEQ_FIRE_BAR_9,
-};
-
 EvtScript N(EVS_FireBar_Defeated) = {
     Set(LVarA, LVar0)
     Set(LVarB, LVar1)
@@ -115,7 +109,7 @@ NpcSettings N(NpcSettings_FireBar_01) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_01),
+    .doAI = &N(EVS_NpcAI_FireBar_01),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -123,7 +117,7 @@ NpcSettings N(NpcSettings_FireBar_02) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_02),
+    .doAI = &N(EVS_NpcAI_FireBar_02),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 
@@ -131,7 +125,7 @@ NpcSettings N(NpcSettings_FireBar_03) = {
     .defaultAnim = ANIM_Fire_Brighest_Burn,
     .height = 12,
     .radius = 20,
-    .ai = &N(EVS_NpcAI_FireBar_03),
+    .doAI = &N(EVS_NpcAI_FireBar_03),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
 };
 

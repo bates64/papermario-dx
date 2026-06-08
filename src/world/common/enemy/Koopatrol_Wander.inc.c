@@ -1,6 +1,6 @@
 #include "Koopatrol.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_Koopatrol_Wander) = {
     .moveSpeed = 1.0f,
@@ -12,15 +12,15 @@ MobileAISettings N(AISettings_Koopatrol_Wander) = {
     .chaseSpeed = 11.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 40.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Koopatrol_Wander) = {
-    Call(SetSelfVar, 2, 5)
-    Call(SetSelfVar, 3, 4)
-    Call(SetSelfVar, 5, 10)
-    Call(SetSelfVar, 7, 5)
-    Call(N(TackleAI_Main), Ref(N(AISettings_Koopatrol_Wander)))
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 5)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 4)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPATROL)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_Koopatrol_Wander)))
     Return
     End
 };
@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Koopatrol_Wander) = {
     .height = 40,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPATROL,
-    .ai = &N(EVS_NpcAI_Koopatrol_Wander),
+    .doAI = &N(EVS_NpcAI_Koopatrol_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -1,7 +1,6 @@
 #include "dgb_07.h"
 
-#define INCLUDE_CLUBBA_NAPPING
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Napping.inc.c"
 
 NpcData N(NpcData_Clubba_01)[] = {
     {
@@ -25,7 +24,7 @@ NpcData N(NpcData_Clubba_01)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),
 };

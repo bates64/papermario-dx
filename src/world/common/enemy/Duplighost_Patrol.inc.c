@@ -10,7 +10,7 @@ MobileAISettings N(AISettings_Duplighost_Patrol) = {
     .chaseTurnRate = 30,
     .chaseUpdateInterval = 3,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Duplighost_Patrol) = {
@@ -23,7 +23,7 @@ NpcSettings N(NpcSettings_Duplighost_Patrol) = {
     .height = 30,
     .radius = 30,
     .level = ACTOR_LEVEL_DUPLIGHOST,
-    .ai = &N(EVS_NpcAI_Duplighost_Patrol),
+    .doAI = &N(EVS_NpcAI_Duplighost_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

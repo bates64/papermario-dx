@@ -70,7 +70,7 @@ MobileAISettings N(AISettings_SwitchedWander) = {
     .moveTime = 15,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcIdle_SwitchedWander) = {

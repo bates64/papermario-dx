@@ -1,8 +1,7 @@
 #include "dgb_09.h"
 
-#define INCLUDE_CLUBBA_WANDER
-#define INCLUDE_CLUBBA_NAPPING
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
+#include "world/common/enemy/Clubba_Napping.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel
 #define AI_SENTINEL_LAST_NPC  NPC_Sentinel
@@ -30,7 +29,7 @@ NpcData N(NpcData_Clubba_Wander)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Wander_Hitbox),
 };
@@ -68,7 +67,7 @@ NpcData N(NpcData_Clubba_Napping)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Napping_Hitbox),
 };

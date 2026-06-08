@@ -7,7 +7,7 @@ MobileAISettings N(AISettings_YoshiKid_Patrol) = {
     .moveTime = 30,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_YoshiKid_Patrol) = {
@@ -20,5 +20,5 @@ NpcSettings N(NpcSettings_YoshiKid_Patrol) = {
     .height = 28,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_YoshiKid_Patrol),
+    .doAI = &N(EVS_NpcAI_YoshiKid_Patrol),
 };

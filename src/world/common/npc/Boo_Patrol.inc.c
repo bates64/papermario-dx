@@ -106,7 +106,7 @@ MobileAISettings N(AISettings_Boo_Patrol) = {
     .playerSearchInterval = 10,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 80.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Boo_Patrol) = {
@@ -119,5 +119,5 @@ NpcSettings N(NpcSettings_Boo_Patrol) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Boo_Patrol),
+    .doAI = &N(EVS_NpcAI_Boo_Patrol),
 };

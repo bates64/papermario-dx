@@ -99,7 +99,7 @@ segments:
     - [auto, c, background_gfx]
     - [auto, c, input]
     - [auto, c, rumble]
-    - [auto, c, 43F0]
+    - [auto, c, math_util]
     - [auto, c, heap]
     - [auto, c, fio]
     - [auto, c, dx/versioning]
@@ -140,8 +140,8 @@ segments:
     - [auto, c, encounter]
     - [auto, c, encounter_api]
     - [auto, c, status_icons]
-    - [auto, c, 23680]
-    - [auto, c, 25AF0]
+    - [auto, c, world/enemy_drops]
+    - [auto, c, world/enemy_basic_ai]
     - [auto, c, audio/core/system]
     - [auto, c, audio/sfx_player]
     - [auto, c, audio/bgm_player]
@@ -405,7 +405,7 @@ segments:
     - [auto, c, global_hud_scripts]
     - [auto, c, world/surfaces]
     - [auto, c, status_star_shimmer]
-    - [auto, c, 8a860_len_3f30]
+    - [auto, c, popup_menu]
     - [auto, c, draw_box]
     - start: 0x919B0
       type: .data

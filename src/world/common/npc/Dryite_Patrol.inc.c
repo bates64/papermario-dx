@@ -7,7 +7,7 @@ MobileAISettings N(AISettings_Dryite_Patrol) = {
     .moveTime = 30,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Dryite_Patrol) = {
@@ -19,7 +19,7 @@ EvtScript N(EVS_NpcAI_Dryite_Patrol) = {
 NpcSettings N(NpcSettings_Dryite_Patrol) = {
     .height = 26,
     .radius = 23,
-    .ai = &N(EVS_NpcAI_Dryite_Patrol),
+    .doAI = &N(EVS_NpcAI_Dryite_Patrol),
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

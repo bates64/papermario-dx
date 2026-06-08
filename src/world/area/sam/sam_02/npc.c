@@ -392,7 +392,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = SHIVER_TOAD_RED_ANIMS,
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_FLAG_8,
+        .aiDetectFlags = AI_DETECT_SIGHT,
         .tattle = MSG_NpcTattle_SAM02_ToadHouseToad,
     },
     {

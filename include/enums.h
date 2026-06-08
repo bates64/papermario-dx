@@ -497,7 +497,6 @@ enum Emotes {
     EMOTE_QUESTION           = 2,
     EMOTE_FRUSTRATION        = 3,
     EMOTE_ELLIPSIS           = 4,
-    EMOTE_INVALID            = 5,
 };
 
 enum Emoters {
@@ -2967,9 +2966,9 @@ enum PartnerActions {
     PARTNER_ACTION_USE              = 1, // generic state
     PARTNER_ACTION_KOOPER_GATHER    = 1,
     PARTNER_ACTION_KOOPER_TOSS      = 2,
-    PARTNER_ACTION_BOMBETTE_1       = 1,
-    PARTNER_ACTION_BOMBETTE_2       = 2,
-    PARTNER_ACTION_BOMBETTE_3       = 3,
+    PARTNER_ACTION_BOMBETTE_LIT     = 1, // fuse lit and walking, equal to PARTNER_ACTION_USE
+    PARTNER_ACTION_BOMBETTE_BLAST   = 2, // several frames during a blast, during which bombetteExplosionPos is valid
+    PARTNER_ACTION_BOMBETTE_RECOVER = 3, // recovering after a blast
     PARTNER_ACTION_PARAKARRY_HOVER  = 1,
     PARTNER_ACTION_WATT_SHINE       = 1,
     PARTNER_ACTION_LAKILESTER_1     = 1,
@@ -3465,8 +3464,6 @@ enum EnemyAnimIndices {
     ENEMY_ANIM_INDEX_05           = 5,
     ENEMY_ANIM_INDEX_DEATH        = 6,
     ENEMY_ANIM_INDEX_HIT          = 7,
-    ENEMY_ANIM_INDEX_MELEE_PRE    = 8,
-    ENEMY_ANIM_INDEX_MELEE_HIT    = 9,
 };
 
 enum AnyEnemyAnims {
@@ -4149,7 +4146,7 @@ enum EnemyFlags {
     | ENEMY_FLAG_ENABLE_HIT_SCRIPT \
     )
 
-// used with enemy->aiFlags
+// used with Enemy::aiFlags
 enum EnemyAIFlags {
     AI_FLAG_1                           = 0x00000001,
     AI_FLAG_CANT_DETECT_PLAYER          = 0x00000002,
@@ -4158,87 +4155,26 @@ enum EnemyAIFlags {
     AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE   = 0x00000010,
     AI_FLAG_OUTSIDE_TERRITORY           = 0x00000020,
     AI_FLAG_NEEDS_HEADING               = 0x00000040,
-    AI_FLAG_80                          = 0x00000080,
-};
-
-enum EnemyAIStates {
-    // basic states
-    AI_STATE_WANDER_INIT            = 0,
-    AI_STATE_WANDER                 = 1,
-    AI_STATE_PATROL_INIT            = 0,
-    AI_STATE_PATROL                 = 1,
-    AI_STATE_HOP_INIT               = 0,
-    AI_STATE_HOP                    = 1,
-    AI_STATE_LOITER_INIT            = 2,
-    AI_STATE_LOITER                 = 3,
-    AI_STATE_LOITER_POST            = 4,
-    AI_STATE_ALERT_INIT             = 10,
-    AI_STATE_ALERT                  = 11,
-    AI_STATE_CHASE_INIT             = 12,
-    AI_STATE_CHASE                  = 13,
-    AI_STATE_LOSE_PLAYER            = 14,
-    AI_STATE_PATROL_15              = 15,
-    AI_RETURN_HOME_INIT             = 40,
-    AI_RETURN_HOME                  = 41,
-    AI_STATE_SUSPEND                = 99,
-    // melee hitboxes
-    AI_STATE_MELEE_HITBOX_INIT      = 30,
-    AI_STATE_MELEE_HITBOX_PRE       = 31,
-    AI_STATE_MELEE_HITBOX_ACTIVE    = 32,
-    AI_STATE_MELEE_HITBOX_MISS      = 33,
-    // projectile hitboxes
-    AI_STATE_PROJECTILE_HITBOX_30   = 30,
-    AI_STATE_PROJECTILE_HITBOX_31   = 31,
-    AI_STATE_PROJECTILE_HITBOX_32   = 32,
-    AI_STATE_PROJECTILE_HITBOX_33   = 33,
+    AI_FLAG_CAN_RESUME_PATROL           = 0x00000080,
 };
 
 enum EnemyActionFlags {
-    AI_ACTION_JUMP_WHEN_SEE_PLAYER          = 0x01,
-    AI_ACTION_02                            = 0x02,
-    AI_ACTION_04                            = 0x04,
-    AI_ACTION_08                            = 0x08,
-    AI_ACTION_LOOK_AROUND_DURING_LOITER     = 0x10,
-    AI_ACTION_20                            = 0x20
+    AI_ACTION_JUMP_WHEN_SEE_PLAYER          = 0x01, // enemy hops when detecting the player
+    AI_ACTION_NO_FIRST_STRIKE               = 0x02, // prevents enemy from first-striking; only implemented for flying enemy AI
+    AI_ACTION_CHASE_REQUIRES_PATH           = 0x04, // enemy will only continue chasing the player while an unobstructed path to the player exists
+    AI_ACTION_NO_SPIN_REACTION              = 0x08, // enemy will not spin around when a battle is initiated with the player's spin move
+    AI_ACTION_LOOK_AROUND_DURING_LOITER     = 0x10, // enemy will randomly look left and right while loitering
+    AI_ACTION_MUTE_OFFSCREEN                = 0x20, // enemy AI will not produce sounds when offscreen
 };
 
 enum EnemyDetectFlags {
-    AI_DETECT_SIGHT                 = 0x01,
-    AI_DETECT_SENSITIVE_MOTION      = 0x02,
-    AI_DETECT_FLAG_8                = 0x08,
+    AI_DETECT_SIGHT                 = 0x01, // enemy requires line of sight for detecting the player
+    AI_DETECT_MOTION_SENSITIVE      = 0x02, // enemy will have an easier time detecting a moving player
 };
 
-enum TerritoryFlags {
-    AI_TERRITORY_IGNORE_HIDING      = 0x01, // bow and sushi dont prevent enemy detection
-    AI_TERRITORY_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
-};
-
-enum PiranhaPlantStates {
-    AI_STATE_PIRANHA_PLANT_00       = 0,
-    AI_STATE_PIRANHA_PLANT_01       = 1,
-    AI_STATE_PIRANHA_PLANT_10       = 10,
-    AI_STATE_PIRANHA_PLANT_11       = 11,
-    AI_STATE_PIRANHA_PLANT_12       = 12,
-    AI_STATE_PIRANHA_PLANT_13       = 13,
-    AI_STATE_PIRANHA_PLANT_14       = 14,
-    AI_STATE_PIRANHA_PLANT_SUSPEND  = 99
-};
-
-enum MeleeHitboxAttackStates {
-    MELEE_HITBOX_STATE_NONE         = 0,
-    MELEE_HITBOX_STATE_INIT         = 1,
-    MELEE_HITBOX_STATE_PRE          = 2,
-    MELEE_HITBOX_STATE_ACTIVE       = 3,  // hitbox is active
-    MELEE_HITBOX_STATE_POST         = 4
-};
-
-enum ProjectileHitboxAttackStates {
-    PROJECTILE_HITBOX_STATE_NONE        = 0,
-    PROJECTILE_HITBOX_STATE_INIT        = 1,
-    PROJECTILE_HITBOX_STATE_PRE         = 2,
-    PROJECTILE_HITBOX_STATE_ACTIVE      = 3,  // hitbox is active
-    PROJECTILE_HITBOX_STATE_POST        = 4,
-    PROJECTILE_HITBOX_STATE_DONE        = 100
+enum DetectVolumeFlags {
+    AI_DETECT_FLAG_IGNORE_HIDING      = 0x01, // bow and sushi dont prevent enemy detection
+    AI_DETECT_FLAG_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
 };
 
 enum MusicSettingsFlags {
@@ -4349,7 +4285,7 @@ enum CameraUpdateMode {
     // unless lookAt_obj_target is greater than a minimum distance from targetPos to prevent wild movements.
     CAM_UPDATE_UNUSED_RADIAL        = 1,
 
-    // this camera tracks targetPos, clamped within the rectangular region given by +/- xLimit and +/- zLimit
+    // this camera tracks targetPos, clamped within the rectangular region given by ± xLimit and ± zLimit
     // y-position is drawn from lookAt_obj_target
     // does not use easing or interpolation
     CAM_UPDATE_UNUSED_CONFINED      = 4,

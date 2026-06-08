@@ -24,7 +24,7 @@ NpcData N(NpcData_Magikoopa)[] = {
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,
         .extraAnimations = N(ExtraAnims_Magikoopa),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_Spell)
 };

@@ -752,35 +752,26 @@ void collision_main_lateral(void) {
 }
 
 HitID collision_check_player_intersecting_world(s32 mode, s32 offsetY, f32 yaw) {
+    const s32 NUM_CHECKS = 4;
     HitID ret = NO_COLLIDER;
     f32 angle = 0.0f;
     s32 i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < NUM_CHECKS; i++) {
         f32 x = gPlayerStatusPtr->pos.x;
         f32 y = gPlayerStatusPtr->pos.y + offsetY;
         f32 z = gPlayerStatusPtr->pos.z;
-        s32 hitID, hitID2;
+        HitID hitID;
 
         hitID = player_test_lateral_overlap(mode, gPlayerStatusPtr, &x, &y, &z, 0.0f, angle);
 
-        // required to match
-        if (hitID > 0 || hitID == 0) {
-            hitID2 = hitID;
-        } else if (hitID == -1) {
-            hitID2 = hitID;
-        } else {
-            hitID2 = hitID;
+        if (hitID > NO_COLLIDER) {
+            ret = hitID;
         }
-
-        if (hitID2 > NO_COLLIDER) {
-            ret = hitID2;
-        }
-        gPlayerStatusPtr = gPlayerStatusPtr;
 
         gPlayerStatusPtr->pos.x = x;
         gPlayerStatusPtr->pos.z = z;
-        angle += 90.0f;
+        angle += 360.0f / NUM_CHECKS;
     }
 
     return ret;
@@ -788,11 +779,12 @@ HitID collision_check_player_intersecting_world(s32 mode, s32 offsetY, f32 yaw) 
 
 // unused
 HitID collision_check_pos_intersecting_world(s32 mode, s32 offsetY, f32 arg2, f32* outX, f32* outY, f32* outZ) {
+    const s32 NUM_CHECKS = 4;
     HitID ret = NO_COLLIDER;
     f32 angle = 0.0f;
     s32 i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < NUM_CHECKS; i++) {
         f32 x = *outX;
         f32 y = *outY + offsetY;
         f32 z = *outZ;
@@ -804,7 +796,7 @@ HitID collision_check_pos_intersecting_world(s32 mode, s32 offsetY, f32 arg2, f3
 
         *outX = x;
         *outZ = z;
-        angle += 90.0f;
+        angle += 360.0f / NUM_CHECKS;
     }
 
     return ret;
@@ -1161,7 +1153,7 @@ s32 phys_can_player_interact(void) {
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
         if (gPartnerStatus.actingPartner == PARTNER_BOMBETTE) {
-            if (gPartnerStatus.partnerActionState <= PARTNER_ACTION_BOMBETTE_2) {
+            if (gPartnerStatus.partnerActionState <= PARTNER_ACTION_BOMBETTE_BLAST) {
                 ret = false;
             }
         } else {

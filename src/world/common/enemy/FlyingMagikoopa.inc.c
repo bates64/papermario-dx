@@ -14,7 +14,7 @@ MobileAISettings N(AISettings_FlyingMagikoopa) = {
     .chaseUpdateInterval = 10,
     .chaseRadius = 150.0f,
     .chaseOffsetDist = 20.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_FlyingMagikoopa) = {
@@ -29,7 +29,7 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa) = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -42,7 +42,7 @@ NpcSettings N(NpcSettings_FlyingMagikoopa) = {
     .height = 33,
     .radius = 32,
     .level = ACTOR_LEVEL_FLYING_MAGIKOOPA,
-    .ai = &N(EVS_NpcAI_FlyingMagikoopa),
+    .doAI = &N(EVS_NpcAI_FlyingMagikoopa),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa),
 };
@@ -58,32 +58,32 @@ AnimID N(ExtraAnims_FlyingMagikoopa)[] = {
     ANIM_LIST_END
 };
 
-EvtScript N(EVS_NpcAuxAI_FlyingMagikoopa_AltHitbox) = {
-    Call(SetSelfVar, 1, 10)
-    Call(SetSelfVar, 2, 40)
+EvtScript N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox) = {
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 10)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 40)
     Return
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_FlyingMagikoopa_Hitbox) = {
-    Call(SetSelfVar, 1, 0)
-    Call(SetSelfVar, 2, 55)
+EvtScript N(EVS_NpcCreate_FlyingMagikoopa_Hitbox) = {
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_Y, 0)
+    Call(SetSelfVar, AI_VAR_SPELL_SPAWN_R, 55)
     Return
     End
 };
 
 EvtScript N(EVS_NpcAI_FlyingMagikoopa_Hitbox) = {
-    Call(N(MagikoopaAI_SpellMain))
+    Call(N(MagikoopaSpellAI_Main))
     Return
     End
 };
 
 EvtScript N(EVS_NpcHit_FlyingMagikoopa_Hitbox) = {
-    Call(N(FlyingMagikoopaAI_OnHitInit))
+    Call(N(MagikoopaSpellAI_OnHitInit))
     IfEq(LVar0, 0)
         Return
     EndIf
-    Call(N(FlyingMagikoopaAI_OnHit))
+    Call(N(MagikoopaSpellAI_OnHit))
     Exec(EnemyNpcHit)
     Return
     End
@@ -96,7 +96,7 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox) = {
             Call(RemoveNpc, NPC_SELF)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(OnPlayerFled, 1)
+            Call(OnPlayerFled, true)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -107,16 +107,16 @@ EvtScript N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox) = {
 
 NpcSettings N(NpcSettings_FlyingMagikoopa_AltHitbox) = {
     .defaultAnim = ANIM_Magikoopa_Anim00,
-    .otherAI = &N(EVS_NpcAuxAI_FlyingMagikoopa_AltHitbox),
-    .ai = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
+    .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
+    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_AltHitbox),
     .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
 };
 
 NpcSettings N(NpcSettings_FlyingMagikoopa_Hitbox) = {
     .defaultAnim = ANIM_FlyingMagikoopa_Anim00,
-    .otherAI = &N(EVS_NpcAuxAI_FlyingMagikoopa_Hitbox),
-    .ai = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
+    .doAI = &N(EVS_NpcAI_FlyingMagikoopa_Hitbox),
+    .onCreate = &N(EVS_NpcCreate_FlyingMagikoopa_Hitbox),
     .onHit = &N(EVS_NpcHit_FlyingMagikoopa_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa_Hitbox),
 };

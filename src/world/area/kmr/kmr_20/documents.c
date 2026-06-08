@@ -27,10 +27,6 @@ BSS s32 N(LetterWorkerID);
 BSS s32 N(LetterAlpha);
 BSS MessageImageData N(LetterImgData)[2];
 
-#define NAME_SUFFIX _Unused
-#include "foliage.h"
-#define NAME_SUFFIX
-
 void N(worker_draw_letter)(void) {
     N(LetterAlpha) += 20;
     if (N(LetterAlpha) > 255) {

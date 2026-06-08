@@ -5,7 +5,7 @@ EvtScript N(EVS_GoombaKing_Init) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_GoombaKing) = {
+EvtScript N(EVS_NpcCreate_GoombaKing) = {
     Call(SetNpcScale, NPC_SELF, Float(0.5), Float(0.5), Float(0.5))
     Return
     End
@@ -35,9 +35,9 @@ NpcSettings N(NpcSettings_GoombaKing) = {
     .defaultAnim = ANIM_GoombaKing_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_GoombaKing),
+    .doAI = &N(EVS_NpcAI_GoombaKing),
+    .onCreate = &N(EVS_NpcCreate_GoombaKing),
     .onInteract = &N(EVS_NpcInteract_GoombaKing),
-    .ai = &N(EVS_NpcAI_GoombaKing),
     .onHit = &N(EVS_NpcHit_GoombaKing),
     .flags = BASE_PASSIVE_FLAGS,
 };

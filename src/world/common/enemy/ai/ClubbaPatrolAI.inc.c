@@ -1,99 +1,110 @@
+#pragma once
+
 #include "common.h"
+#include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 #include "world/partners.h"
 
-// prerequisites
-#include "world/common/enemy/ai/MeleeHitbox.inc.c"
+#include "world/common/enemy/ai/MeleeAttack.inc.c"
 #include "world/common/enemy/ai/States_PatrolAI.inc.c"
 
 API_CALLABLE(N(ClubbaPatrolAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* npcAISettings = (MobileAISettings*)evt_get_variable(script, *args++);
+    MobileAISettings* settings = (MobileAISettings*)evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->patrol.detectShape;
-    territory.pointX = enemy->territory->patrol.detectPos.x;
-    territory.pointZ = enemy->territory->patrol.detectPos.z;
-    territory.sizeX = enemy->territory->patrol.detectSize.x;
-    territory.sizeZ = enemy->territory->patrol.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->patrol.detectShape;
+    detect->pointX = enemy->territory->patrol.detectPos.x;
+    detect->pointZ = enemy->territory->patrol.detectPos.z;
+    detect->sizeX = enemy->territory->patrol.detectSize.x;
+    detect->sizeZ = enemy->territory->patrol.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
         script->AI_TEMP_STATE = AI_STATE_PATROL_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->patrol.isFlying) {
+
+        if (enemy->territory->patrol.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
+
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
             script->AI_TEMP_STATE = AI_STATE_SUSPEND;
-            script->functionTemp[1] = AI_STATE_PATROL_INIT;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_PATROL_INIT;
             enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         }
-        enemy->varTable[0] = 0;
+
+        enemy->varTable[AI_VAR_MELEE_STATUS] = MELEE_ATTACK_PHASE_NONE;
     }
 
-    if ((script->AI_TEMP_STATE < AI_STATE_MELEE_HITBOX_INIT) && (enemy->varTable[0] == 0) && N(MeleeHitbox_CanSeePlayer)(script)) {
-        script->AI_TEMP_STATE = AI_STATE_MELEE_HITBOX_INIT;
+    // begin an attack, if able
+    if (script->AI_TEMP_STATE < AI_STATE_MELEE_ATTACK_INIT
+        && enemy->varTable[AI_VAR_MELEE_STATUS] == MELEE_ATTACK_PHASE_NONE
+        && N(MeleeHitbox_CanTargetPlayer)(script)
+    ) {
+        script->AI_TEMP_STATE = AI_STATE_MELEE_ATTACK_INIT;
     }
 
     switch (script->AI_TEMP_STATE) {
         case AI_STATE_PATROL_INIT:
-            N(PatrolAI_MoveInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_MoveInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_PATROL:
-            N(PatrolAI_Move)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Move)(script, settings, detect);
             break;
         case AI_STATE_LOITER_INIT:
-            N(PatrolAI_LoiterInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_LoiterInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_LOITER:
-            N(PatrolAI_Loiter)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Loiter)(script, settings, detect);
             break;
         case AI_STATE_LOITER_POST:
-            N(PatrolAI_PostLoiter)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_PostLoiter)(script, settings, detect);
             break;
         case AI_STATE_ALERT_INIT:
-            N(PatrolAI_JumpInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_JumpInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_ALERT:
-            N(PatrolAI_Jump)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Jump)(script, settings, detect);
             break;
         case AI_STATE_CHASE_INIT:
-            N(PatrolAI_ChaseInit)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_ChaseInit)(script, settings, detect);
             // fallthrough
         case AI_STATE_CHASE:
-            N(PatrolAI_Chase)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_Chase)(script, settings, detect);
             break;
         case AI_STATE_LOSE_PLAYER:
-            N(PatrolAI_LosePlayer)(script, npcAISettings, territoryPtr);
+            N(PatrolAI_LosePlayer)(script, settings, detect);
             break;
-        case AI_STATE_MELEE_HITBOX_INIT:
-            N(MeleeHitbox_30)(script);
+        case AI_STATE_MELEE_ATTACK_INIT:
+            N(MeleeAttacker_Init)(script);
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_PRE:
-            N(MeleeHitbox_31)(script);
-            if (script->functionTemp[0] != AI_STATE_MELEE_HITBOX_ACTIVE) {
+        case AI_STATE_MELEE_ATTACK_PRE:
+            N(MeleeAttacker_Pre)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_SWING) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_ACTIVE:
-            N(MeleeHitbox_32)(script);
-            if (script->functionTemp[0] != AI_STATE_MELEE_HITBOX_MISS) {
+        case AI_STATE_MELEE_ATTACK_SWING:
+            N(MeleeAttacker_Swing)(script);
+            if (script->AI_TEMP_STATE != AI_STATE_MELEE_ATTACK_POST) {
                 break;
             }
             // fallthrough
-        case AI_STATE_MELEE_HITBOX_MISS:
-            N(MeleeHitbox_33)(script);
+        case AI_STATE_MELEE_ATTACK_POST:
+            N(MeleeAttacker_Post)(script);
             break;
         case AI_STATE_SUSPEND:
             basic_ai_suspend(script);

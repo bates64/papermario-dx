@@ -22,7 +22,7 @@ MobileAISettings N(AISettings_Short) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Short) = {
@@ -35,7 +35,7 @@ NpcSettings N(NpcSettings_Short) = {
     .height = 22,
     .radius = 24,
     .level = ACTOR_LEVEL_GOOMBA,
-    .ai = &N(EVS_NpcAI_Short),
+    .doAI = &N(EVS_NpcAI_Short),
 };
 
 MobileAISettings N(AISettings_Koopa) = {
@@ -47,7 +47,7 @@ MobileAISettings N(AISettings_Koopa) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa) = {
@@ -60,7 +60,7 @@ NpcSettings N(NpcSettings_KoopaTroopa) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_DARK_KOOPA,
-    .ai = &N(EVS_NpcAI_KoopaTroopa),
+    .doAI = &N(EVS_NpcAI_KoopaTroopa),
 };
 
 MobileAISettings N(AISettings_ShyGuy) = {
@@ -72,7 +72,7 @@ MobileAISettings N(AISettings_ShyGuy) = {
     .chaseTurnRate = 10,
     .chaseUpdateInterval = 1,
     .chaseRadius = 1.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy) = {
@@ -85,7 +85,7 @@ NpcSettings N(NpcSettings_ShyGuy) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .ai = &N(EVS_NpcAI_ShyGuy),
+    .doAI = &N(EVS_NpcAI_ShyGuy),
 };
 
 #include "world/common/complete/KeyItemChoice.inc.c"

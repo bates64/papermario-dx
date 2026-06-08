@@ -1,6 +1,6 @@
 #include "Spiny.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_Spiny) = {
     .moveSpeed = 1.5f,
@@ -12,15 +12,15 @@ MobileAISettings N(AISettings_Spiny) = {
     .chaseSpeed = 6.0f,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 3,
+    .loiterMode = 3,
 };
 
 EvtScript N(EVS_NpcAI_Spiny) = {
-    Call(SetSelfVar, 2, 3)
-    Call(SetSelfVar, 3, 18)
-    Call(SetSelfVar, 5, 3)
-    Call(SetSelfVar, 7, 4)
-    Call(N(TackleAI_Main), Ref(N(AISettings_Spiny)))
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 18)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 3)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_SPINY)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_Spiny)))
     Return
     End
 };
@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Spiny) = {
     .height = 21,
     .radius = 22,
     .level = ACTOR_LEVEL_SPINY,
-    .ai = &N(EVS_NpcAI_Spiny),
+    .doAI = &N(EVS_NpcAI_Spiny),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

@@ -14,14 +14,14 @@ MobileAISettings N(AISettings_Gulpit) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 20,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Gulpit) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 1, 5)
-    Call(SetSelfVar, 2, 13)
-    Call(SetSelfVar, 3, 30)
+    Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
+    Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
+    Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 13)
+    Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 30)
     Call(N(WanderMeleeAI_Main), Ref(N(AISettings_Gulpit)))
     Return
     End
@@ -31,19 +31,19 @@ NpcSettings N(NpcSettings_Gulpit) = {
     .height = 48,
     .radius = 36,
     .level = ACTOR_LEVEL_GULPIT,
-    .ai = &N(EVS_NpcAI_Gulpit),
+    .doAI = &N(EVS_NpcAI_Gulpit),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
 EvtScript N(EVS_NpcAI_Gulpit_Hitbox) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetSelfVar, 0, 6)
-    Call(SetSelfVar, 1, 28)
-    Call(SetSelfVar, 2, 55)
-    Call(SetSelfVar, 3, 32)
-    Call(SetSelfVar, 4, 10)
-    Call(SetSelfVar, 15, 0)
+    Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 6)
+    Call(SetSelfVar, AI_VAR_HITBOX_DIST, 28)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_RANGE, 55)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_ANGLE, 32)
+    Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 10)
+    Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_NONE)
     Call(N(MeleeHitbox_Main))
     Return
     End
@@ -53,9 +53,9 @@ NpcSettings N(NpcSettings_Gulpit_Hitbox) = {
     .height = 32,
     .radius = 22,
     .level = ACTOR_LEVEL_GULPIT,
-    .ai = &N(EVS_NpcAI_Gulpit_Hitbox),
+    .doAI = &N(EVS_NpcAI_Gulpit_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
 AnimID N(ExtraAnims_Gulpit_Hitbox)[] = {

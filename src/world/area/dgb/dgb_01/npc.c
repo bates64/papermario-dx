@@ -1,7 +1,7 @@
 #include "dgb_01.h"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
-#define AI_SENTINEL_LAST_NPC  NPC_Tubba
+#define AI_SENTINEL_LAST_NPC  NPC_Sentinel_04
 #include "world/common/enemy/Sentinel.inc.c"
 
 #include "world/common/enemy/Clubba.h"
@@ -386,7 +386,7 @@ NpcData N(NpcData_Tubba_Floor2) = {
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
     .extraAnimations = N(ExtraAnims_Tubba),
-    .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_Tubba_Floor1) = {
@@ -419,7 +419,7 @@ NpcData N(NpcData_Tubba_Floor1) = {
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
     .extraAnimations = N(ExtraAnims_Tubba),
-    .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(DefaultNPCs) = {

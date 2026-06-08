@@ -110,33 +110,9 @@ EvtScript N(EVS_NpcInit_YoshiKid) = {
     End
 };
 
-// unchanged from MBush.inc.c
-EvtScript N(EVS_NpcDefeat_MBush_Copy) = {
-    Call(GetBattleOutcome, LVar0)
-    Switch(LVar0)
-        CaseEq(OUTCOME_PLAYER_WON)
-            Call(DoNpcDefeat)
-        CaseEq(OUTCOME_PLAYER_FLED)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim05)
-            Call(GetSelfVar, 10, LVar0)
-            Call(GetSelfVar, 11, LVar1)
-            Call(GetSelfVar, 12, LVar2)
-            Call(NpcJump1, NPC_SELF, LVar0, LVar1, LVar2, 8)
-            Call(EnableNpcShadow, NPC_SELF, false)
-            Call(SetNpcAnimation, NPC_SELF, ANIM_MBush_Anim00)
-            Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-            Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_MBush)))
-        CaseEq(OUTCOME_ENEMY_FLED)
-            Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
-            Call(RemoveNpc, NPC_SELF)
-    EndSwitch
-    Return
-    End
-};
-
 EvtScript N(EVS_NpcInit_MBush_01) = {
     Call(SetNpcCollisionSize, NPC_SELF, 60, 30)
-    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_MBush_Copy)))
+    Call(BindNpcDefeat, NPC_SELF, Ref(N(EVS_NpcDefeat_MBush)))
     Return
     End
 };
@@ -163,7 +139,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
         .extraAnimations = N(ExtraAnims_SpearGuy),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
 };

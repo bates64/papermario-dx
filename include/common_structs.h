@@ -252,7 +252,7 @@ typedef struct Npc {
     /* 0x08C */ s16 turnAroundYawAdjustment;
     /* 0x08E */ s16 duration; // TODO: name less vaguely
     /* 0x090 */ Vec3s homePos;
-    /* 0x096 */ s16 unk_96;
+    /* 0x096 */ unsigned char pad_96[2];
     /* 0x098 */ s16 imgfxType;
     /* 0x09A */ s16 imgfxArg1;
     /* 0x09C */ s16 imgfxArg2;
@@ -2238,9 +2238,7 @@ typedef struct PartnerStatus {
     /* 0x014 */ s8 inputDisabledCount;
     /* 0x015 */ char unk_15[3];
     /* 0x018 */ Npc npc;
-    /* 0x358 */ s32 unk_358;
-    /* 0x35C */ char unk_35C[0x4];
-} PartnerStatus; // size = 0x360
+} PartnerStatus; // size = 0x358
 
 typedef struct SpriteRasterInfo {
     /* 0x00 */ IMG_PTR raster;

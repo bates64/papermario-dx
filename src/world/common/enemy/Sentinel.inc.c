@@ -4,8 +4,8 @@
 
 #include "world/common/enemy/ai/SentinelAI.inc.c"
 
-EvtScript N(EVS_NpcAuxAI_Sentinel) = {
-    Call(SetSelfEnemyFlagBits, ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN, true)
+EvtScript N(EVS_NpcCreate_Sentinel) = {
+    Call(SetSelfEnemyFlagBits, ENEMY_INTANGIBLE_FLAGS | ENEMY_FLAG_IGNORE_SPIN, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_DONT_UPDATE_SHADOW_Y | NPC_FLAG_JUMPING, true)
     Return
     End
@@ -21,15 +21,16 @@ MobileAISettings N(AISettings_Sentinel) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 1,
     .chaseRadius = 240.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Sentinel) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 5, -650)
-    Call(SetSelfVar, 6, 30)
-    Call(SetSelfVar, 1, 600)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, 0)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-6.5f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.3f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(6.0f))
     Call(N(SentinelAI_Main), Ref(N(AISettings_Sentinel)))
+    // AI returns control to script when the player is caught
     Call(DisablePlayerInput, true)
     Wait(2)
     Label(20)
@@ -50,12 +51,12 @@ EvtScript N(EVS_NpcAI_Sentinel) = {
     Add(LVar1, 20)
     Add(LVar2, 2)
     Call(SetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
-    Call(func_80045838, -1, SOUND_SENTINEL_PICKUP, 0)
+    Call(PlaySoundAtEnemy, NPC_SELF, SOUND_SENTINEL_PICKUP, SOUND_SPACE_DEFAULT)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Sentinel_Anim08)
     Wait(10)
     Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
     Wait(10)
-    Call(func_80045838, -1, SOUND_LRAW_SENTINEL_ALARM | SOUND_ID_TRIGGER_CHANGE_SOUND, 0)
+    Call(PlaySoundAtEnemy, NPC_SELF, SOUND_LRAW_SENTINEL_ALARM | SOUND_ID_TRIGGER_CHANGE_SOUND, SOUND_SPACE_DEFAULT)
     Thread
         Loop(100)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -116,6 +117,6 @@ NpcSettings N(NpcSettings_Sentinel) = {
     .height = 38,
     .radius = 32,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_Sentinel),
-    .ai = &N(EVS_NpcAI_Sentinel),
+    .doAI = &N(EVS_NpcAI_Sentinel),
+    .onCreate = &N(EVS_NpcCreate_Sentinel),
 };

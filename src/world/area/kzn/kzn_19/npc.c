@@ -660,7 +660,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
         .extraAnimations = N(ExtraAnims_LavaPiranha),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
         .id = NPC_LavaBud_01,
@@ -672,7 +672,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
         .extraAnimations = N(ExtraAnims_LavaBud),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
         .id = NPC_LavaBud_02,
@@ -684,7 +684,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
         .extraAnimations = N(ExtraAnims_LavaBud),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
 };
 

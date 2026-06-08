@@ -7,7 +7,7 @@ MobileAISettings N(AISettings_KoopaBros) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_KoopaBros) = {
@@ -20,7 +20,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_KoopaBros),
+    .doAI = &N(EVS_NpcAI_KoopaBros),
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 

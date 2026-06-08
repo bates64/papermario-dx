@@ -5,7 +5,7 @@ MobileAISettings N(AISettings_BooWander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Boo_Wander) = {
@@ -18,5 +18,5 @@ NpcSettings N(NpcSettings_Boo_Wander) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Boo_Wander),
+    .doAI = &N(EVS_NpcAI_Boo_Wander),
 };

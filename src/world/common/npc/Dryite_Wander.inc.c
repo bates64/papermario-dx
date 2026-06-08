@@ -5,7 +5,7 @@ MobileAISettings N(AISettings_Dryite_Wander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Dryite_Wander) = {
@@ -17,7 +17,7 @@ EvtScript N(EVS_NpcAI_Dryite_Wander) = {
 NpcSettings N(NpcSettings_Dryite_Wander) = {
     .height = 26,
     .radius = 23,
-    .ai = &N(EVS_NpcAI_Dryite_Wander),
+    .doAI = &N(EVS_NpcAI_Dryite_Wander),
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = 16,
 };

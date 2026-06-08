@@ -12,15 +12,15 @@ MobileAISettings N(AISettings_PutridPiranha) = {
 };
 
 EvtScript N(EVS_NpcAI_PutridPiranha) = {
-    Call(SetSelfVar, 7, 1)
-    Call(SetSelfVar, 8, 10)
-    Call(SetSelfVar, 9, 9)
-    Call(SetSelfVar, 10, 12)
-    Call(SetSelfVar, 11, 7)
-    Call(SetSelfVar, 12, 30)
-    Call(SetSelfVar, 13, 15)
-    Call(SetSelfVar, 14, 18)
-    Call(SetSelfVar, 15, 15)
+    Call(SetSelfVar, AI_VAR_PIRANHA_PATH_USING_COLLISION, true)
+    Call(SetSelfVar, AI_VAR_PIRANHA_BURROW_TIME, 10)
+    Call(SetSelfVar, AI_VAR_PIRANHA_INTANGIBLE_TIME, 9)
+    Call(SetSelfVar, AI_VAR_PIRANHA_EMERGE_TIME, 12)
+    Call(SetSelfVar, AI_VAR_PIRANHA_TANGIBLE_TIME, 7)
+    Call(SetSelfVar, AI_VAR_PIRANHA_WINDUP_ANIM_TIME, 15)
+    Call(SetSelfVar, AI_VAR_PIRANHA_BEGIN_ATTACK_TIME, 18)
+    Call(SetSelfVar, AI_VAR_PIRANHA_END_ATTACK_TIME, 30)
+    Call(SetSelfVar, AI_VAR_PIRANHA_COOLDOWN_TIME, 15)
     Call(N(PiranhaPlantAI_Main), Ref(N(AISettings_PutridPiranha)))
     Return
     End
@@ -30,17 +30,17 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
     .height = 50,
     .radius = 36,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .ai = &N(EVS_NpcAI_PutridPiranha),
+    .doAI = &N(EVS_NpcAI_PutridPiranha),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
 EvtScript N(EVS_NpcAI_PutridPiranha_Hitbox) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetSelfVar, 0, 14)
-    Call(SetSelfVar, 1, 28)
-    Call(SetSelfVar, 4, 3)
-    Call(SetSelfVar, 15, SOUND_PIRANHA_BITE)
+    Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 14)
+    Call(SetSelfVar, AI_VAR_HITBOX_DIST, 28)
+    Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 3)
+    Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_PIRANHA_BITE)
     Call(N(MeleeHitbox_Main))
     Return
     End
@@ -65,6 +65,6 @@ NpcSettings N(NpcSettings_PutridPiranha_Hitbox) = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_PUTRID_PIRANHA,
-    .ai = &N(EVS_NpcAI_PutridPiranha_Hitbox),
+    .doAI = &N(EVS_NpcAI_PutridPiranha_Hitbox),
     .onDefeat = &N(EVS_GenericHitboxDefeat),
 };

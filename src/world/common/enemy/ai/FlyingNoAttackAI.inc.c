@@ -1,116 +1,125 @@
+#pragma once
+
 #include "common.h"
-#include "npc.h"
 #include "effects.h"
+#include "npc.h"
+#include "world/ai.h"
 
 // This AI is used by:
 // - Lava Bubble
 // - Ruff Puff
 // - Ember
 
-void N(FlyingNoAttackAI_12)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+#include "world/common/enemy/ai/FlyingAI.inc.c"
+
+enum {
+    AI_STATE_FNA_CHASE_INIT     = 12,
+    AI_STATE_FNA_CHASE          = 13,
+    AI_STATE_FNA_LOSE_PLAYER    = 20,
+};
+
+void N(FlyingNoAttackAI_ChaseInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 tempAngle;
-    f32 angleDiff;
+    f32 angle;
+    f32 deltaAngle;
 
-    npc->duration = (aiSettings->chaseUpdateInterval / 2) + rand_int(aiSettings->chaseUpdateInterval / 2 + 1);
+    npc->duration = (settings->chaseUpdateInterval / 2) + rand_int(settings->chaseUpdateInterval / 2 + 1);
     npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_CHASE];
-    npc->moveSpeed = aiSettings->chaseSpeed;
+    npc->moveSpeed = settings->chaseSpeed;
 
-    tempAngle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-    angleDiff = get_clamped_angle_diff(npc->yaw, tempAngle);
+    angle = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
+    deltaAngle = get_clamped_angle_diff(npc->yaw, angle);
 
-    if (aiSettings->chaseTurnRate < fabsf(angleDiff)) {
-        tempAngle = npc->yaw;
-
-        if (angleDiff < 0.0f) {
-            tempAngle += -aiSettings->chaseTurnRate;
+    // cap the turn rate
+    if (settings->chaseTurnRate < fabsf(deltaAngle)) {
+        if (deltaAngle < 0.0f) {
+            angle = npc->yaw - settings->chaseTurnRate;
         } else {
-            tempAngle += aiSettings->chaseTurnRate;
+            angle = npc->yaw + settings->chaseTurnRate;
         }
     }
+    npc->yaw = clamp_angle(angle);
 
-    npc->yaw = clamp_angle(tempAngle);
-    script->functionTemp[0] = 13;
+    script->AI_TEMP_STATE = AI_STATE_FNA_CHASE;
 }
 
-void N(FlyingNoAttackAI_13)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(FlyingNoAttackAI_Chase)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 x, y, z, w;
-    EffectInstance* var;
-    s32 flag;
-    f32 temp_f6;
+    f32 x, y, z, hitDepth;
+    f32 distY;
+    b32 hitFloor;
 
-    if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1) == 0) {
-        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 0xF, &var);
+    if (!basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
+        fx_emote(EMOTE_QUESTION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
         npc->duration = 30;
-        script->functionTemp[0] = 20;
-        enemy->varTable[9] = 30;
+        script->AI_TEMP_STATE = AI_STATE_FNA_LOSE_PLAYER;
+        enemy->varTable[AI_VAR_FLYING_DETECT_COOLDOWN] = 30;
         return;
     }
 
     npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-    flag = 0;
+    hitFloor = false;
     if (!(npc->flags & NPC_FLAG_FLYING)) {
         x = npc->pos.x;
         y = npc->pos.y + npc->collisionHeight;
         z = npc->pos.z;
-        w = npc->collisionHeight + 3.0;
-        if ((npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &w) != 0) && (w < npc->collisionHeight)) {
-            flag = 1;
+        hitDepth = npc->collisionHeight + 3.0; // test a length slightly taller than the npc
+        if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth) && (hitDepth < npc->collisionHeight)) {
+            hitFloor = true;
         }
     }
 
-    if (flag) {
+    if (hitFloor) {
         npc->pos.y = y + 1.0;
     } else {
-        temp_f6 = npc->pos.y - (gPlayerStatusPtr->pos.y + 6.0);
-        if ((temp_f6 < 0.0) || (temp_f6 > 4.0)) {
-            temp_f6 = -temp_f6;
-            npc->pos.y += temp_f6 * 0.06;
+        // interp to player y-position
+        distY = npc->pos.y - (gPlayerStatusPtr->pos.y + 6.0);
+        if ((distY < 0.0) || (distY > 4.0)) {
+            npc->pos.y += -distY * 0.06;
         }
     }
     if (npc->duration > 0) {
         npc->duration--;
         return;
     }
-    script->functionTemp[0] = 12;
+    script->AI_TEMP_STATE = AI_STATE_FNA_CHASE_INIT;
 }
 
-void N(FlyingNoAttackAI_20)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(FlyingNoAttackAI_LosePlayer)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration--;
     if (npc->duration <= 0) {
-        enemy->varTable[2] = 0;
+        enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = 0;
         npc->duration = 0;
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
 }
 
 API_CALLABLE(N(FlyingNoAttackAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
-    Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args);
+    Bytecode* args = script->ptrReadPos;
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 120.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 120.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, aiSettings);
-        script->functionTemp[0] = 0;
+        N(FlyingAI_Init)(npc, enemy, script, settings);
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
     npc->verticalRenderOffset = -2;
 
@@ -121,32 +130,35 @@ API_CALLABLE(N(FlyingNoAttackAI_Main)) {
         enemy->aiFlags &= ~AI_FLAG_SUSPEND;
     }
 
-    switch (script->functionTemp[0]) {
-        case 0:
-            N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
-        case 1:
-            N(FlyingAI_Wander)(script, aiSettings, territoryPtr);
+    switch (script->AI_TEMP_STATE) {
+        case AI_STATE_FLYING_WANDER_INIT:
+            N(FlyingAI_WanderInit)(script, settings, detect);
+            // fallthrough
+        case AI_STATE_FLYING_WANDER:
+            N(FlyingAI_Wander)(script, settings, detect);
             break;
-        case 2:
-            N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
-        case 3:
-            N(FlyingAI_Loiter)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_LOITER_INIT:
+            N(FlyingAI_LoiterInit)(script, settings, detect);
+            // fallthrough
+        case AI_STATE_FLYING_LOITER:
+            N(FlyingAI_Loiter)(script, settings, detect);
             break;
-        case 10:
-            N(FlyingAI_JumpInit)(script, aiSettings, territoryPtr);
-        case 11:
-            N(FlyingAI_Jump)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_ALERT_INIT:
+            N(FlyingAI_JumpInit)(script, settings, detect);
+            // fallthrough
+        case AI_STATE_FLYING_ALERT:
+            N(FlyingAI_Jump)(script, settings, detect);
             break;
-        case 12:
-            N(FlyingNoAttackAI_12)(script, aiSettings, territoryPtr);
-        case 13:
-            N(FlyingNoAttackAI_13)(script, aiSettings, territoryPtr);
+        case AI_STATE_FNA_CHASE_INIT:
+            N(FlyingNoAttackAI_ChaseInit)(script, settings, detect);
+            // fallthrough
+        case AI_STATE_FNA_CHASE:
+            N(FlyingNoAttackAI_Chase)(script, settings, detect);
             break;
-        case 20:
-            N(FlyingNoAttackAI_20)(script, aiSettings, territoryPtr);
+        case AI_STATE_FNA_LOSE_PLAYER:
+            N(FlyingNoAttackAI_LosePlayer)(script, settings, detect);
             break;
     }
 
     return ApiStatus_BLOCK;
 }
-

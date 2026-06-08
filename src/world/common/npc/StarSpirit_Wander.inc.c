@@ -7,7 +7,7 @@ MobileAISettings N(AISettings_StarSpirit_Wander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_StarSpirit_Wander) = {
@@ -24,19 +24,19 @@ NpcSettings N(NpcSettings_StarSpirit_Wander) = {
     .height = 26,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_StarSpirit_Wander),
+    .doAI = &N(EVS_NpcAI_StarSpirit_Wander),
 };
 
 NpcSettings N(NpcSettings_StarKid_Wander) = {
     .height = 20,
     .radius = 20,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_StarSpirit_Wander),
+    .doAI = &N(EVS_NpcAI_StarSpirit_Wander),
 };
 
 NpcSettings N(NpcSettings_StarMan_Wander) = {
     .height = 22,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_StarSpirit_Wander),
+    .doAI = &N(EVS_NpcAI_StarSpirit_Wander),
 };

@@ -966,9 +966,6 @@ API_CALLABLE(IsStartingConversation);
 API_CALLABLE(LoadDemoBattle);
 
 /// @evtapi
-API_CALLABLE(func_80044290);
-
-/// @evtapi
 /// @param createMode
 /// @param npcGroupList
 API_CALLABLE(MakeNpcs);
@@ -984,14 +981,6 @@ API_CALLABLE(RemoveEncounter);
 /// @evtapi
 /// @param outBattleOutcome
 API_CALLABLE(GetBattleOutcome);
-
-/// @evtapi
-/// @param outValue
-API_CALLABLE(func_800445A8);
-
-/// @evtapi
-/// @param outValue
-API_CALLABLE(func_800445D4);
 
 /// @evtapi
 /// @param outTrigger
@@ -1106,8 +1095,8 @@ API_CALLABLE(SetSelfEnemyFlags);
 API_CALLABLE(SetSelfEnemyFlagBits);
 
 /// @evtapi
-/// @param hitboxIsActive
-API_CALLABLE(SelfEnemyOverrideSyncPos);
+/// @param isActive
+API_CALLABLE(EnemyEnableFirstStrike);
 
 /// @evtapi
 /// @param outNpcID
@@ -1123,16 +1112,9 @@ API_CALLABLE(ClearDefeatedEnemies);
 API_CALLABLE(SetEnemyFlagBits);
 
 /// @evtapi
-API_CALLABLE(func_8004572C);
-
-/// @evtapi
 /// @param index
 /// @param outAnimation
 API_CALLABLE(GetSelfAnimationFromTable);
-
-/// @evtapi
-/// @param value
-API_CALLABLE(func_80045798);
 
 /// @evtapi
 /// @param instigatorValue
@@ -1149,11 +1131,11 @@ API_CALLABLE(GetEncounterTriggerHitTier);
 /// @param npcID
 /// @param soundID
 /// @param flags
-API_CALLABLE(func_80045838);
+API_CALLABLE(PlaySoundAtEnemy);
 
 /// @evtapi
 /// @param outResult
-API_CALLABLE(func_800458CC);
+API_CALLABLE(EnemyHasNoSpinReaction);
 
 /// @evtapi
 /// @param skipReaction

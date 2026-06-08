@@ -14,7 +14,7 @@ MobileAISettings N(AISettings_HyperGoomba_Patrol) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 3,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_HyperGoomba_Patrol) = {
@@ -27,7 +27,7 @@ NpcSettings N(NpcSettings_HyperGoomba_Patrol) = {
     .height = 20,
     .radius = 23,
     .level = ACTOR_LEVEL_HYPER_GOOMBA,
-    .ai = &N(EVS_NpcAI_HyperGoomba_Patrol),
+    .doAI = &N(EVS_NpcAI_HyperGoomba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

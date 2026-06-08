@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_ShyGuy_Patrol) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 50.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy_Patrol) = {
@@ -32,7 +32,7 @@ NpcSettings N(NpcSettings_ShyGuy_Patrol) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .ai = &N(EVS_NpcAI_ShyGuy_Patrol),
+    .doAI = &N(EVS_NpcAI_ShyGuy_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,
@@ -42,7 +42,7 @@ NpcSettings N(NpcSettings_ShyGuy_Patrol_Passive) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .ai = &N(EVS_NpcAI_ShyGuy_Patrol_Passive),
+    .doAI = &N(EVS_NpcAI_ShyGuy_Patrol_Passive),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

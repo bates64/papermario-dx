@@ -1,114 +1,132 @@
+#pragma once
+
 #include "common.h"
+#include "effects.h"
 #include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/GrooveGuy.h"
 
-void N(GrooveGuyAI_02)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+enum GrooveAiVars {
+    AI_VAR_GROOVE_DANCE_PHASE   = 0,
+    AI_VAR_GROOVE_DANCE_TIME    = 1,
+};
+
+enum GrooveDancePhases {
+    DANCE_PHASE_POINT_INIT      = 0,
+    DANCE_PHASE_POINT           = 1,
+    DANCE_PHASE_SPIN_INIT       = 2,
+    DANCE_PHASE_SPIN            = 3,
+    DANCE_PHASE_DONE            = 4,
+};
+
+void N(GrooveGuyAI_DanceInit)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
 
     npc->duration = 0;
     set_npc_yaw(npc, 270.0f);
-    enemy->varTable[0] = 0;
-    script->functionTemp[0] = 3;
+    enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_POINT_INIT;
+    script->AI_TEMP_STATE = AI_STATE_LOITER;
 }
 
-void N(GrooveGuyAI_03)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
-    Npc* npc = get_npc_unsafe((s32) enemy->npcID);
-    s32 phase;
+    Npc* npc = get_npc_unsafe(enemy->npcID);
+    s32 animPart;
 
-    switch (enemy->varTable[0]) {
-        case 0:
-            enemy->varTable[0] = 1;
-            enemy->varTable[1] = 0;
+    switch (enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE]) {
+        case DANCE_PHASE_POINT_INIT:
+            enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_POINT;
+            enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] = 0;
             npc->curAnim = ANIM_GrooveGuy_Anim0C;
             set_npc_yaw(npc, 270.0f);
             npc->rot.y = 0.0f;
             // fallthrough
-        case 1:
-            phase = enemy->varTable[1] % 16;
-            if (phase < 4) {
+        case DANCE_PHASE_POINT:
+            animPart = enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] % 16;
+            if (animPart < 4) {
                 npc->curAnim = ANIM_GrooveGuy_Anim0C;
-            } else if (phase < 8) {
+            } else if (animPart < 8) {
                 npc->curAnim = ANIM_GrooveGuy_Anim0B;
-            } else if (phase < 12) {
+            } else if (animPart < 12) {
                 npc->curAnim = ANIM_GrooveGuy_Anim0C;
-            } else  if (phase < 16) {
+            } else {
                 npc->curAnim = ANIM_GrooveGuy_Anim0D;
             }
-            enemy->varTable[1]++;
-            if (enemy->varTable[1] >= 0x41) {
-                enemy->varTable[0] = 2;
+            enemy->varTable[AI_VAR_GROOVE_DANCE_TIME]++;
+            if (enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] > 64) {
+                enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_SPIN_INIT;
             }
             break;
-        case 2:
-            enemy->varTable[0] = 3;
-            enemy->varTable[1] = 0;
+        case DANCE_PHASE_SPIN_INIT:
+            enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_SPIN;
+            enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] = 0;
             npc->rot.y = 0.0f;
             npc->curAnim = ANIM_GrooveGuy_Anim0C;
             // fallthrough
-        case 3:
+        case DANCE_PHASE_SPIN:
             npc->rot.y += 35.0;
             if (npc->rot.y > 360.0) {
                 npc->rot.y -= 360.0;
             }
-            enemy->varTable[1]++;
-            if (enemy->varTable[1] >= 0x2E) {
-                enemy->varTable[0] = 4;
+            enemy->varTable[AI_VAR_GROOVE_DANCE_TIME]++;
+            if (enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] > 45) {
+                enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_DONE;
             }
             break;
     }
-    if (enemy->varTable[0] == 4) {
+
+    if (enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] == DANCE_PHASE_DONE) {
         npc->rot.y = 0.0f;
         set_npc_yaw(npc, 270.0f);
-        script->functionTemp[0] = 0;
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
     }
 }
 
 API_CALLABLE(N(GrooveGuyAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
     Bytecode* args = script->ptrReadPos;
-    MobileAISettings* aiSettings = (MobileAISettings*) evt_get_variable(script, *args++);
-    f32 posX;
-    f32 posY;
-    f32 posZ;
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
+    f32 posX, posY, posZ;
     f32 hitDepth;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 65.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 65.0f;
+    detect->detectFlags = 0;
 
-    if (isInitialCall || enemy->aiFlags & AI_FLAG_SUSPEND) {
-        script->functionTemp[0] = 0;
+    if (isInitialCall || (enemy->aiFlags & AI_FLAG_SUSPEND)) {
+        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
         npc->duration = 0;
         npc->curAnim = enemy->animList[ENEMY_ANIM_INDEX_IDLE];
 
         npc->flags &= ~NPC_FLAG_JUMPING;
-        if (!enemy->territory->wander.isFlying) {
+        if (enemy->territory->wander.isFlying) {
+            npc->flags |= NPC_FLAG_FLYING;
+            npc->flags &= ~NPC_FLAG_GRAVITY;
+        } else {
             npc->flags |= NPC_FLAG_GRAVITY;
             npc->flags &= ~NPC_FLAG_FLYING;
-        } else {
-            npc->flags &= ~NPC_FLAG_GRAVITY;
-            npc->flags |= NPC_FLAG_FLYING;
         }
 
         if (enemy->aiFlags & AI_FLAG_SUSPEND) {
-            script->functionTemp[0] = 99;
-            script->functionTemp[1] = 0;
+            script->AI_TEMP_STATE = AI_STATE_SUSPEND;
+            script->AI_TEMP_STATE_AFTER_SUSPEND = AI_STATE_WANDER_INIT;
         } else if (enemy->flags & ENEMY_FLAG_BEGIN_WITH_CHASING) {
-            script->functionTemp[0] = 12;
+            script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
         }
         enemy->aiFlags &= ~AI_FLAG_SUSPEND;
         enemy->flags &= ~ENEMY_FLAG_BEGIN_WITH_CHASING;
 
+        // snap to ground
         hitDepth = 100.0f;
         posX = npc->pos.x;
         posY = npc->pos.y + npc->collisionHeight;
@@ -118,39 +136,45 @@ API_CALLABLE(N(GrooveGuyAI_Main)) {
         }
     }
 
-    switch (script->functionTemp[0]) {
-        case 0x0:
-            basic_ai_wander_init(script, aiSettings, territoryPtr);
+    switch (script->AI_TEMP_STATE) {
+        case AI_STATE_WANDER_INIT:
+            basic_ai_wander_init(script, settings, detect);
             // fallthrough
-        case 0x1:
-            basic_ai_wander(script, aiSettings, territoryPtr);
+        case AI_STATE_WANDER:
+            basic_ai_wander(script, settings, detect);
             break;
-        case 0x2:
-            N(GrooveGuyAI_02)(script, aiSettings, territoryPtr);
+
+        case AI_STATE_LOITER_INIT:
+            N(GrooveGuyAI_DanceInit)(script, settings, detect);
             // fallthrough
-        case 0x3:
-            N(GrooveGuyAI_03)(script, aiSettings, territoryPtr);
+        case AI_STATE_LOITER:
+            N(GrooveGuyAI_Dance)(script, settings, detect);
             break;
-        case 0xA:
-            basic_ai_found_player_jump_init(script, aiSettings, territoryPtr);
+
+        case AI_STATE_ALERT_INIT:
+            basic_ai_found_player_jump_init(script, settings, detect);
             // fallthrough
-        case 0xB:
-            basic_ai_found_player_jump(script, aiSettings, territoryPtr);
+        case AI_STATE_ALERT:
+            basic_ai_found_player_jump(script, settings, detect);
             break;
-        case 0xC:
-            basic_ai_chase_init(script, aiSettings, territoryPtr);
+
+        case AI_STATE_CHASE_INIT:
+            basic_ai_chase_init(script, settings, detect);
             // fallthrough
-        case 0xD:
-            basic_ai_chase(script, aiSettings, territoryPtr);
-            if (script->functionTemp[0] != 0xE) {
+        case AI_STATE_CHASE:
+            basic_ai_chase(script, settings, detect);
+            if (script->AI_TEMP_STATE != AI_STATE_LOSE_PLAYER) {
                 break;
             }
-        case 0xE:
-            basic_ai_lose_player(script, aiSettings, territoryPtr);
+            // fallthrough
+        case AI_STATE_LOSE_PLAYER:
+            basic_ai_lose_player(script, settings, detect);
             break;
-        case 0x63:
+
+        case AI_STATE_SUSPEND:
             basic_ai_suspend(script);
             break;
     }
-    return 0;
+
+    return ApiStatus_BLOCK;
 }

@@ -1,17 +1,16 @@
 #include "DryBones.h"
 
-#include "world/common/enemy/ai/RangedAttackAI.inc.c"
-#include "world/common/todo/GetEncounterEnemyIsOwner.inc.c"
+#include "world/common/enemy/ai/WanderRangedAI.inc.c"
 
 EvtScript N(EVS_NpcDefeat_ThrownBone) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetSelfVar, 0, 5)
+            Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_DONE)
             Call(RemoveNpc, NPC_SELF)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(OnPlayerFled, 1)
+            Call(OnPlayerFled, true)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -30,14 +29,14 @@ MobileAISettings N(AISettings_DryBones) = {
     .chaseSpeed = 1.0f,
     .chaseRadius = 150.0f,
     .chaseOffsetDist = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_DryBones) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 1, 15)
-    Call(SetSelfVar, 2, 10)
-    Call(SetSelfVar, 3, 2)
+    Call(SetSelfVar, AI_VAR_RANGED_MIN_DIST, 0)
+    Call(SetSelfVar, AI_VAR_RANGED_PRE_TIME, 15)
+    Call(SetSelfVar, AI_VAR_RANGED_POST_TIME, 10)
+    Call(SetSelfVar, AI_VAR_RANGED_AMMO_COUNT, 2)
     Call(N(RangedAttackAI_Main), Ref(N(AISettings_DryBones)))
     Return
     End
@@ -47,7 +46,7 @@ NpcSettings N(NpcSettings_DryBones) = {
     .height = 32,
     .radius = 24,
     .level = ACTOR_LEVEL_DRY_BONES,
-    .ai = &N(EVS_NpcAI_DryBones),
+    .doAI = &N(EVS_NpcAI_DryBones),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
@@ -60,11 +59,11 @@ MobileAISettings N(AISettings_ThrownBone) = {
 };
 
 EvtScript N(EVS_NpcAI_ThrownBone) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 1, 3)
-    Call(SetSelfVar, 2, 15)
-    Call(SetSelfVar, 3, 15)
-    Call(N(ProjectileAI_Main), Ref(N(AISettings_ThrownBone)))
+    Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
+    Call(SetSelfVar, AI_VAR_MISSILE_FLAGS, AI_MISSILE_FLAG_SPINNING | AI_MISSILE_FLAG_CENTERED)
+    Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_Y, 15)
+    Call(SetSelfVar, AI_VAR_MISSILE_SPAWN_R, 15)
+    Call(N(MissileAI_Main), Ref(N(AISettings_ThrownBone)))
     Return
     End
 };
@@ -84,19 +83,19 @@ EvtScript N(EVS_NpcHit_ThrownBone) = {
     Switch(LVar0)
         CaseOrEq(ENCOUNTER_TRIGGER_HAMMER)
         CaseOrEq(ENCOUNTER_TRIGGER_SPIN)
-            Call(SetSelfVar, 0, 3)
-            Call(N(ProjectileAI_Reflect))
+            Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_REFLECTING)
+            Call(N(MissileAI_Reflect))
             IfEq(LVar0, 0)
                 Return
             EndIf
         EndCaseGroup
         CaseOrEq(ENCOUNTER_TRIGGER_JUMP)
         CaseOrEq(ENCOUNTER_TRIGGER_PARTNER)
-            Call(SetSelfVar, 0, 4)
+            Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_DESTROYED)
             Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
             PlayEffect(EFFECT_WALKING_DUST, 2, LVar0, LVar1, LVar2, 0, 0)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(SetSelfVar, 0, 0)
+            Call(SetSelfVar, AI_VAR_MISSILE_STATUS, MISSILE_STATUS_IDLE)
         EndCaseGroup
         CaseDefault
             Call(SetBattleAsScripted)
@@ -110,8 +109,8 @@ EvtScript N(EVS_NpcHit_ThrownBone) = {
 NpcSettings N(NpcSettings_ThrownBone) = {
     .height = 12,
     .radius = 12,
-    .ai = &N(EVS_NpcAI_ThrownBone),
+    .doAI = &N(EVS_NpcAI_ThrownBone),
     .onHit = &N(EVS_NpcHit_ThrownBone),
     .onDefeat = &N(EVS_NpcDefeat_ThrownBone),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

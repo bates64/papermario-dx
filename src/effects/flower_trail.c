@@ -44,7 +44,7 @@ void flower_trail_update_part(FlowerFXData* effect) {
     }
 }
 
-void flower_trail_main(s32 triggeredByNpc, f32 posX, f32 posY, f32 posZ, f32 angle, f32 direction) {
+void flower_trail_main(b32 triggeredByNpc, f32 posX, f32 posY, f32 posZ, f32 angle, f32 direction) {
     EffectBlueprint bp;
     EffectInstance* effect;
     FlowerFXData* part;

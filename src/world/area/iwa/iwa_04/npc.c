@@ -47,7 +47,7 @@ EvtScript N(EVS_MonitorFlyingAnimation) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_Buzzar) = {
+EvtScript N(EVS_NpcCreate_Buzzar) = {
     IfEq(GF_IWA04_Defeated_Buzzar, true)
         Call(RemoveNpc, NPC_SELF)
     Else
@@ -273,8 +273,8 @@ NpcSettings N(NpcSettings_Buzzar) = {
     .defaultAnim = ANIM_Buzzar_Anim05,
     .height = 32,
     .radius = 32,
-    .otherAI = &N(EVS_NpcAuxAI_Buzzar),
-    .ai = &N(EVS_NpcAI_Buzzar),
+    .doAI = &N(EVS_NpcAI_Buzzar),
+    .onCreate = &N(EVS_NpcCreate_Buzzar),
     .onDefeat = &N(EVS_NpcDefeat_Buzzar),
 };
 

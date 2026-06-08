@@ -1040,7 +1040,6 @@ void partner_initialize_data(void) {
     partnerStatus->inputDisabledCount = 0;
     partnerStatus->shouldResumeAbility = false;
     partnerStatus->partnerActionState = 0;
-    partnerStatus->unk_358 = 0;
     partnerStatus->partnerAction_unk_2 = false;
     wPartner = nullptr;
     wSavedPartnerPosX = 0;

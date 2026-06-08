@@ -27,7 +27,7 @@ EvtScript N(EVS_NpcDefeat_SpearGuy_Hitbox) = {
             Call(RemoveNpc, NPC_SELF)
         CaseEq(OUTCOME_PLAYER_FLED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
-            Call(OnPlayerFled, 1)
+            Call(OnPlayerFled, true)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -47,14 +47,14 @@ MobileAISettings N(AISettings_SpearGuy_Wander) = {
     .chaseTurnRate = 20,
     .chaseUpdateInterval = 1,
     .chaseRadius = 120.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_SpearGuy_Wander) = {
-    Call(SetSelfVar, 0, 0)
-    Call(SetSelfVar, 1, 5)
-    Call(SetSelfVar, 2, 12)
-    Call(SetSelfVar, 3, 9)
+    Call(SetSelfVar, AI_VAR_MELEE_STATUS, MELEE_ATTACK_PHASE_NONE)
+    Call(SetSelfVar, AI_VAR_MELEE_PRE_TIME, 5)
+    Call(SetSelfVar, AI_VAR_MELEE_SWING_TIME, 12)
+    Call(SetSelfVar, AI_VAR_MELEE_POST_TIME, 9)
     Call(N(SpearGuyAI_Main), Ref(N(AISettings_SpearGuy_Wander)))
     Return
     End
@@ -64,19 +64,19 @@ NpcSettings N(NpcSettings_SpearGuy_Wander) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .ai = &N(EVS_NpcAI_SpearGuy_Wander),
+    .doAI = &N(EVS_NpcAI_SpearGuy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };
 
 EvtScript N(EVS_NpcAI_SpearGuy_Hitbox) = {
     Call(EnableNpcShadow, NPC_SELF, false)
-    Call(SetSelfVar, 0, 4)
-    Call(SetSelfVar, 1, 22)
-    Call(SetSelfVar, 2, 40)
-    Call(SetSelfVar, 3, 28)
-    Call(SetSelfVar, 4, 1)
-    Call(SetSelfVar, 15, 0)
+    Call(SetSelfVar, AI_VAR_HITBOX_YOFFSET, 4)
+    Call(SetSelfVar, AI_VAR_HITBOX_DIST, 22)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_RANGE, 40)
+    Call(SetSelfVar, AI_VAR_HITBOX_SIGHT_ANGLE, 28)
+    Call(SetSelfVar, AI_VAR_HITBOX_STRIKE_TIME, 1)
+    Call(SetSelfVar, AI_VAR_HITBOX_SOUND, SOUND_NONE)
     Call(N(MeleeHitbox_Main))
     Return
     End
@@ -86,7 +86,7 @@ NpcSettings N(NpcSettings_SpearGuy_Hitbox) = {
     .height = 8,
     .radius = 20,
     .level = ACTOR_LEVEL_SPEAR_GUY,
-    .ai = &N(EVS_NpcAI_SpearGuy_Hitbox),
+    .doAI = &N(EVS_NpcAI_SpearGuy_Hitbox),
     .onDefeat = &N(EVS_NpcDefeat_SpearGuy_Hitbox),
-    .actionFlags = AI_ACTION_08,
+    .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };

@@ -1,7 +1,6 @@
 #include "sam_10.h"
 
-#define INCLUDE_FROST_CLUBBA_WANDER
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Wander.inc.c"
 
 NpcData N(NpcData_Clubba)[] = {
     {
@@ -24,7 +23,7 @@ NpcData N(NpcData_Clubba)[] = {
         .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = FROST_CLUBBA_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_CLUBBA_MACE_HITBOX(NPC_FrostClubba_Hitbox),
 };

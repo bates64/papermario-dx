@@ -6,7 +6,7 @@ MobileAISettings N(AISettings_Koopa_Wander) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Koopa_Wander) = {
@@ -19,13 +19,13 @@ NpcSettings N(NpcSettings_Koopa_Wander) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Koopa_Wander),
+    .doAI = &N(EVS_NpcAI_Koopa_Wander),
     .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
 };
 
 NpcSettings N(NpcSettings_TallKoopa_Wander) = {
     .height = 42,
     .radius = 24,
-    .ai = &N(EVS_NpcAI_Koopa_Wander),
+    .doAI = &N(EVS_NpcAI_Koopa_Wander),
     .level = ACTOR_LEVEL_NONE,
 };

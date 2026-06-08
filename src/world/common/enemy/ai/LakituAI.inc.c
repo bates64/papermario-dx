@@ -1,5 +1,9 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
+#include "world/ai.h"
+
 #include "sprite/npc/Lakitu.h"
 
 // required include args
@@ -12,14 +16,25 @@
 #define AI_LAKITU_LAST_SPINY_ID 0
 #endif
 
-// prerequisites
+#include "world/common/enemy/ai/SpinyAI.inc.c"
 #include "world/common/enemy/ai/FlyingAI.inc.c"
+
+enum LakituAiStates {
+    AI_STATE_LAKITU_HOLD_INIT   = 30,
+    AI_STATE_LAKITU_HOLD        = 31,
+    AI_STATE_LAKITU_THROW       = 32,
+    AI_STATE_LAKITU_COOLDOWN    = 33,
+};
+
+enum LakituAiVars {
+    AI_VAR_LAKITU_HELD_SPINY    = 4, // npcID of held spiny; temporarily aliases AI_VAR_FLYING_PREV_Y during a throw
+};
 
 s32 N(LakituAI_GetAvailableSpiny)(void) {
     s32 npcID;
 
     for (npcID = AI_LAKITU_FIRST_SPINY_ID; npcID <= AI_LAKITU_LAST_SPINY_ID; npcID++) {
-        if (get_enemy(npcID)->varTable[10] == 0) {
+        if (get_enemy(npcID)->varTable[AI_VAR_SPINY_STATUS] == SPINY_STATUS_IDLE) {
             return npcID;
         }
     }
@@ -27,121 +42,108 @@ s32 N(LakituAI_GetAvailableSpiny)(void) {
     return -1;
 }
 
-void N(LakituAI_Wander)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(LakituAI_Wander)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    f32 x, y, z, w;
-    EffectInstance* emoteTemp;
-    f32 temp_f20;
-    f32 temp_f22;
-    f32 temp_f24;
-    f32 var1 = enemy->varTable[4];
-    f32 var2 = enemy->varTable[3];
-    f32 var3;
+    f32 bobAmplitude = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_BOB_AMPLITUDE]);
+    f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
+    f32 smoothY = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_PREV_Y]);
+    f32 x, y, z, hitDepth;
+    f32 targetY, deltaY;
 
-    temp_f22 = var1 / 100.0;
-    temp_f24 = var2 / 100.0;
     if (npc->duration > 0) {
         npc->duration--;
     }
-    var3 = enemy->varTable[1];
-    temp_f20 = var3 / 100.0;
 
     x = npc->pos.x;
     y = npc->pos.y;
     z = npc->pos.z;
-    w = 1000.0f;
+    hitDepth = 1000.0f;
+    npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth);
 
-    npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &w);
-    npc->pos.y = y + temp_f24 + (sin_deg(enemy->varTable[2]) * temp_f20);
-    enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 12);
+    // bob hoverHeight units above the current ground
+    npc->pos.y = y + hoverHeight + (sin_deg(enemy->varTable[AI_VAR_FLYING_BOB_PHASE]) * bobAmplitude);
+    enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = clamp_angle(enemy->varTable[AI_VAR_FLYING_BOB_PHASE] + 12);
 
-    if (aiSettings->playerSearchInterval >= 0) {
+    if (settings->playerSearchInterval >= 0) {
         if (script->functionTemp[1] <= 0) {
-            script->functionTemp[1] = aiSettings->playerSearchInterval;
-            if (basic_ai_check_player_dist(territory, enemy, aiSettings->alertRadius, aiSettings->alertOffsetDist, 0) != 0) {
-                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+            script->functionTemp[1] = settings->playerSearchInterval;
+            if (basic_ai_check_player_dist(detect, enemy, settings->alertRadius, settings->alertOffsetDist, false)) {
+                fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
                 ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
                 x = npc->pos.x;
                 y = npc->pos.y;
                 z = npc->pos.z;
-                w = 1000.0f;
-                npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &w);
-                npc->moveToPos.y = y + temp_f24;
-                script->functionTemp[0] = 12;
+                hitDepth = 1000.0f;
+                npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth);
+                npc->moveToPos.y = y + hoverHeight;
+                script->AI_TEMP_STATE = AI_STATE_FLYING_CHASE_INIT;
                 return;
             }
         }
         script->functionTemp[1]--;
     }
 
-    if (is_point_outside_territory(enemy->territory->wander.wanderShape, enemy->territory->wander.centerPos.x,
-                               enemy->territory->wander.centerPos.z, npc->pos.x, npc->pos.z, enemy->territory->wander.wanderSize.x,
-                               enemy->territory->wander.wanderSize.z) != 0) {
+    if (is_point_outside_wander_territory(&enemy->territory->wander, npc->pos.x, npc->pos.z)) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, enemy->territory->wander.centerPos.x, enemy->territory->wander.centerPos.z);
     }
 
     if (npc->turnAroundYawAdjustment == 0) {
         if (npc->duration > 0) {
             npc_move_heading(npc, npc->moveSpeed, npc->yaw);
-            if (enemy->varTable[0] & 1) {
+            if (enemy->varTable[AI_VAR_FLYING_FLAGS] & AI_FLYING_FLAG_INTERPY) {
                 x = npc->pos.x;
-                y = temp_f22;
+                y = smoothY;
                 z = npc->pos.z;
-                w = 1000.0f;
-                npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &w);
-                y += temp_f24;
-                w = y - temp_f22;
-                if (w > 2.0) {
-                    temp_f22 += 2.0;
-                } else if (w < -2.0) {
-                    temp_f22 -= 2.0;
+                hitDepth = 1000.0f;
+                npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &hitDepth);
+
+                targetY = y + hoverHeight;
+                deltaY = deltaY - smoothY;
+
+                if (deltaY > 2.0) {
+                    smoothY += 2.0;
+                } else if (deltaY < -2.0) {
+                    smoothY -= 2.0;
                 } else {
-                    temp_f22 = y;
+                    smoothY = targetY;
                 }
-                enemy->varTable[4] = (temp_f22 * 100.0);
+                enemy->varTable[AI_VAR_FLYING_PREV_Y] = AI_PACK_FLT(smoothY);
             }
-            if (npc->duration > 0) {
-                return;
+        } else {
+            script->AI_TEMP_STATE = AI_STATE_FLYING_LOITER_INIT;
+            script->functionTemp[1] = (rand_int(1000) % 3) + 2;
+            if ((settings->loiterMode <= 0) || (settings->moveTime <= 0) || (script->functionTemp[1] == 0)) {
+                script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
             }
-        }
-        script->functionTemp[0] = 2;
-        script->functionTemp[1] = (rand_int(1000) % 3) + 2;
-        if ((aiSettings->unk_AI_2C <= 0) || (aiSettings->moveTime <= 0) || (script->functionTemp[1] == 0)) {
-            script->functionTemp[0] = 0;
         }
     }
 }
 
-void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVolume* territory) {
+void N(LakituAI_Loiter)(Evt* script, MobileAISettings* settings, EnemyDetectVolume* detect) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
+    f32 hoverHeight = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_HOVER_HEIGHT]);
+    f32 bobAmplitude = AI_UNPACK_FLT(enemy->varTable[AI_VAR_FLYING_BOB_AMPLITUDE]);
     f32 posX, posY, posZ, hitDepth;
-    EffectInstance* emoteTemp;
-    f32 var1 = enemy->varTable[3];
-    f32 var2;
-    f32 temp_f20;
-    f32 temp_f22;
 
-    temp_f22 = var1 / 100.0;
     if (npc->duration > 0) {
         npc->duration--;
     }
-    var2 = enemy->varTable[1];
-    temp_f20 = var2 / 100.0;
 
     posX = npc->pos.x;
     posY = npc->pos.y;
     posZ = npc->pos.z;
     hitDepth = 1000.0f;
-
     npc_raycast_down_sides(npc->collisionChannel, &posX, &posY, &posZ, &hitDepth);
-    npc->pos.y = posY + temp_f22 + (sin_deg(enemy->varTable[2]) * temp_f20);
-    enemy->varTable[2] = clamp_angle(enemy->varTable[2] + 12);
-    if (basic_ai_check_player_dist(territory, enemy, aiSettings->chaseRadius, aiSettings->chaseOffsetDist, 1) != 0) {
-        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, &emoteTemp);
+
+    npc->pos.y = posY + hoverHeight + (sin_deg(enemy->varTable[AI_VAR_FLYING_BOB_PHASE]) * bobAmplitude);
+    enemy->varTable[AI_VAR_FLYING_BOB_PHASE] = clamp_angle(enemy->varTable[AI_VAR_FLYING_BOB_PHASE] + 12);
+
+    if (basic_ai_check_player_dist(detect, enemy, settings->chaseRadius, settings->chaseOffsetDist, true)) {
+        fx_emote(EMOTE_EXCLAMATION, npc, 0.0f, npc->collisionHeight, 1.0f, 2.0f, -20.0f, 15, nullptr);
         ai_enemy_play_sound(npc, SOUND_AI_ALERT_A, SOUND_PARAM_MORE_QUIET);
-        script->AI_TEMP_STATE = AI_STATE_CHASE_INIT;
+        script->AI_TEMP_STATE = AI_STATE_FLYING_CHASE_INIT;
         return;
     }
 
@@ -152,31 +154,31 @@ void N(LakituAI_Loiter)(Evt* script, MobileAISettings* aiSettings, EnemyDetectVo
             npc->duration = (rand_int(1000) % 11) + 5;
             return;
         }
-        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
 }
 
 API_CALLABLE(N(LakituAI_Main)) {
     Enemy* enemy = script->owner1.enemy;
-    Bytecode* args = script->ptrReadPos;
     Npc* npc = get_npc_unsafe(enemy->npcID);
-    EnemyDetectVolume territory;
-    EnemyDetectVolume* territoryPtr = &territory;
-    MobileAISettings* aiSettings = (MobileAISettings*)evt_get_variable(script, *args);
+    Bytecode* args = script->ptrReadPos;
+    MobileAISettings* settings = (MobileAISettings*) evt_get_variable(script, *args++);
+    EnemyDetectVolume detectVolume;
+    EnemyDetectVolume* detect = &detectVolume;
     Enemy* spinyEnemy;
 
-    territory.skipPlayerDetectChance = 0;
-    territory.shape = enemy->territory->wander.detectShape;
-    territory.pointX = enemy->territory->wander.detectPos.x;
-    territory.pointZ = enemy->territory->wander.detectPos.z;
-    territory.sizeX = enemy->territory->wander.detectSize.x;
-    territory.sizeZ = enemy->territory->wander.detectSize.z;
-    territory.halfHeight = 120.0f;
-    territory.detectFlags = 0;
+    detect->skipPlayerDetectChance = 0;
+    detect->shape = enemy->territory->wander.detectShape;
+    detect->pointX = enemy->territory->wander.detectPos.x;
+    detect->pointZ = enemy->territory->wander.detectPos.z;
+    detect->sizeX = enemy->territory->wander.detectSize.x;
+    detect->sizeZ = enemy->territory->wander.detectSize.z;
+    detect->halfHeight = 120.0f;
+    detect->detectFlags = 0;
 
     if (isInitialCall) {
-        N(FlyingAI_Init)(npc, enemy, script, aiSettings);
-        script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+        N(FlyingAI_Init)(npc, enemy, script, settings);
+        script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
     }
     npc->verticalRenderOffset = -3;
 
@@ -188,93 +190,91 @@ API_CALLABLE(N(LakituAI_Main)) {
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_WANDER_INIT:
-            N(FlyingAI_WanderInit)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_WANDER_INIT:
+            N(FlyingAI_WanderInit)(script, settings, detect);
             // fallthrough
-        case AI_STATE_WANDER:
-            N(LakituAI_Wander)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_WANDER:
+            N(LakituAI_Wander)(script, settings, detect);
             break;
-        case AI_STATE_LOITER_INIT:
-            N(FlyingAI_LoiterInit)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_LOITER_INIT:
+            N(FlyingAI_LoiterInit)(script, settings, detect);
             // fallthrough
-        case AI_STATE_LOITER:
-            N(LakituAI_Loiter)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_LOITER:
+            N(LakituAI_Loiter)(script, settings, detect);
             break;
     }
 
-    if (script->AI_TEMP_STATE == AI_STATE_CHASE_INIT) {
+    if (script->AI_TEMP_STATE == AI_STATE_FLYING_CHASE_INIT) {
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
-        enemy->varTable[4] = N(LakituAI_GetAvailableSpiny)();
-        if (enemy->varTable[4] >= 0) {
-            spinyEnemy = get_enemy(enemy->varTable[4]);
-            spinyEnemy->varTable[10] = 1;
-            spinyEnemy->varTable[11] = enemy->npcID;
+        enemy->varTable[AI_VAR_LAKITU_HELD_SPINY] = N(LakituAI_GetAvailableSpiny)();
+        if (enemy->varTable[AI_VAR_LAKITU_HELD_SPINY] >= 0) {
+            // found a spiny, reserve it and play lifting animation
+            spinyEnemy = get_enemy(enemy->varTable[AI_VAR_LAKITU_HELD_SPINY]);
+            spinyEnemy->varTable[AI_VAR_SPINY_STATUS] = SPINY_STATUS_RESERVED;
+            spinyEnemy->varTable[AI_VAR_SPINY_THROWER] = enemy->npcID;
             npc->duration = 15;
             npc->curAnim = ANIM_Lakitu_Anim14;
-            script->AI_TEMP_STATE = 30;
+            script->AI_TEMP_STATE = AI_STATE_LAKITU_HOLD_INIT;
         }
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_CHASE_INIT:
-            N(FlyingAI_ChaseInit)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_CHASE_INIT:
+            N(FlyingAI_ChaseInit)(script, settings, detect);
             // fallthrough
-        case AI_STATE_CHASE:
-            N(FlyingAI_Chase)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_CHASE_DELAY:
+            N(FlyingAI_ChaseDelay)(script, settings, detect);
             break;
-        case AI_STATE_LOSE_PLAYER:
-            N(FlyingAI_LosePlayer)(script, aiSettings, territoryPtr);
+        case AI_STATE_FLYING_CHASE:
+            N(FlyingAI_Chase)(script, settings, detect);
             break;
     }
 
     switch (script->AI_TEMP_STATE) {
-        case AI_STATE_PROJECTILE_HITBOX_30:
+        case AI_STATE_LAKITU_HOLD_INIT:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
             }
-            spinyEnemy = get_enemy(enemy->varTable[4]);
-            spinyEnemy->varTable[10] = 2;
+            spinyEnemy = get_enemy(enemy->varTable[AI_VAR_LAKITU_HELD_SPINY]);
+            spinyEnemy->varTable[AI_VAR_SPINY_STATUS] = SPINY_STATUS_HOLD_REQUEST;
             npc->duration = 5;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_31;
+            script->AI_TEMP_STATE = AI_STATE_LAKITU_HOLD;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_31:
+        case AI_STATE_LAKITU_HOLD:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
             }
             npc->curAnim = ANIM_Lakitu_Anim15;
-            spinyEnemy = get_enemy(enemy->varTable[4]);
-            spinyEnemy->varTable[10] = 3;
+            spinyEnemy = get_enemy(enemy->varTable[AI_VAR_LAKITU_HELD_SPINY]);
+            spinyEnemy->varTable[AI_VAR_SPINY_STATUS] = SPINY_STATUS_THROW_REQUEST;
             npc->duration = 10;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_32;
+            script->AI_TEMP_STATE = AI_STATE_LAKITU_THROW;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_32:
+        case AI_STATE_LAKITU_THROW:
             npc->duration--;
             if (npc->duration > 0) {
                 break;
             }
             npc->duration = 3;
-            script->AI_TEMP_STATE = AI_STATE_PROJECTILE_HITBOX_33;
+            script->AI_TEMP_STATE = AI_STATE_LAKITU_COOLDOWN;
             // fallthrough
-        case AI_STATE_PROJECTILE_HITBOX_33:
+        case AI_STATE_LAKITU_COOLDOWN:
             npc->duration--;
             if (npc->duration <= 0) {
-                script->AI_TEMP_STATE = AI_STATE_WANDER_INIT;
+                script->AI_TEMP_STATE = AI_STATE_FLYING_WANDER_INIT;
             }
             break;
     }
 
-    if (script->AI_TEMP_STATE == AI_STATE_PROJECTILE_HITBOX_30 || script->AI_TEMP_STATE == AI_STATE_PROJECTILE_HITBOX_31) {
+    if (script->AI_TEMP_STATE == AI_STATE_LAKITU_HOLD_INIT || script->AI_TEMP_STATE == AI_STATE_LAKITU_HOLD) {
         f32 playerDist;
         f32 lerpDist;
 
         npc->yaw = atan2(npc->pos.x, npc->pos.z, gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z);
         playerDist = dist2D(gPlayerStatusPtr->pos.x, gPlayerStatusPtr->pos.z, npc->pos.x, npc->pos.z);
-        if (!is_point_outside_territory(territoryPtr->shape,
-                territoryPtr->pointX, territoryPtr->pointZ,
-                npc->pos.x, npc->pos.z,
-                territoryPtr->sizeX, territoryPtr->sizeZ)) {
+        if (!is_point_outside_detect_volume(detect, npc->pos.x, npc->pos.z)) {
             if ((playerDist > 30.0) && (npc->turnAroundYawAdjustment == 0)) {
                 lerpDist = playerDist - 20.0;
                 if (lerpDist < 0.0) {
@@ -283,7 +283,7 @@ API_CALLABLE(N(LakituAI_Main)) {
                 if (lerpDist > 200.0) {
                     lerpDist = 200.0f;
                 }
-                npc->moveSpeed = update_lerp(EASING_LINEAR, aiSettings->moveSpeed, aiSettings->chaseSpeed, lerpDist, 200);
+                npc->moveSpeed = update_lerp(EASING_LINEAR, settings->moveSpeed, settings->chaseSpeed, lerpDist, 200);
                 npc_move_heading(npc, npc->moveSpeed, npc->yaw);
             }
         }
@@ -291,4 +291,3 @@ API_CALLABLE(N(LakituAI_Main)) {
 
     return ApiStatus_BLOCK;
 }
-

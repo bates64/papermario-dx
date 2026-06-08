@@ -15,7 +15,7 @@ MobileAISettings N(AISettings_Pokey) = {
     .chaseTurnRate = 45,
     .chaseUpdateInterval = 6,
     .chaseRadius = 300.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Pokey) = {
@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_Pokey) = {
     .height = 72,
     .radius = 15,
     .level = ACTOR_LEVEL_POKEY,
-    .ai = &N(EVS_NpcAI_Pokey),
+    .doAI = &N(EVS_NpcAI_Pokey),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

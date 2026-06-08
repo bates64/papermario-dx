@@ -34,7 +34,7 @@ NpcData N(NpcData_Koopatrol_01) = {
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
     .extraAnimations = N(ExtraAnims_Koopatrol),
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_Koopatrol_02) = {
@@ -58,7 +58,7 @@ NpcData N(NpcData_Koopatrol_02) = {
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
     .extraAnimations = N(ExtraAnims_Koopatrol),
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_BonyBeetle_01) = {
@@ -81,7 +81,7 @@ NpcData N(NpcData_BonyBeetle_01) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS_ALT,
     .animations = BONY_BEETLE_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_BonyBeetle_02) = {
@@ -104,7 +104,7 @@ NpcData N(NpcData_BonyBeetle_02) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = BONY_BEETLE_DROPS,
     .animations = BONY_BEETLE_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_Magikoopa_01)[] = {
@@ -129,7 +129,7 @@ NpcData N(NpcData_Magikoopa_01)[] = {
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,
         .extraAnimations = N(ExtraAnims_Magikoopa),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_01_Spell),
 };

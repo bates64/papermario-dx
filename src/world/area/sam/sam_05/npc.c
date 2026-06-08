@@ -395,7 +395,7 @@ NpcData N(NpcData_Gulpit)[] = {
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
         .extraAnimations = N(ExtraAnims_Gulpit),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_Hitbox),
 };
@@ -422,7 +422,7 @@ NpcData N(NpcData_FrostPiranha_01)[] = {
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
         .extraAnimations = N(ExtraAnims_FrostPiranha),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_01_Hitbox),
 };
@@ -449,7 +449,7 @@ NpcData N(NpcData_FrostPiranha_02)[] = {
         .drops = FROST_PIRANHA_DROPS,
         .animations = FROST_PIRANHA_ANIMS,
         .extraAnimations = N(ExtraAnims_FrostPiranha),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_PIRANHA_HITBOX(NPC_FrostPiranha_02_Hitbox),
 };

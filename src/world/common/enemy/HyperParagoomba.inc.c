@@ -1,3 +1,5 @@
+#pragma once
+
 #include "HyperParagoomba.h"
 
 #include "world/common/enemy/ai/FlyingAI.inc.c"
@@ -12,14 +14,14 @@ MobileAISettings N(AISettings_HyperParagoomba) = {
     .chaseTurnRate = 5,
     .chaseUpdateInterval = 1,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_HyperParagoomba) = {
-    Call(SetSelfVar, 0, 1)
-    Call(SetSelfVar, 5, -850)
-    Call(SetSelfVar, 6, 60)
-    Call(SetSelfVar, 1, 700)
+    Call(SetSelfVar, AI_VAR_FLYING_FLAGS, AI_FLYING_FLAG_INTERPY)
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_VELY, AI_PACK_FLT(-8.5f))
+    Call(SetSelfVar, AI_VAR_FLYING_CHASE_ACCEL, AI_PACK_FLT(0.6f))
+    Call(SetSelfVar, AI_VAR_FLYING_BOB_AMPLITUDE, AI_PACK_FLT(7.0f))
     Call(N(FlyingAI_Main), Ref(N(AISettings_HyperParagoomba)))
     Return
     End
@@ -29,7 +31,7 @@ NpcSettings N(NpcSettings_HyperParagoomba) = {
     .height = 18,
     .radius = 20,
     .level = ACTOR_LEVEL_HYPER_GOOMBA,
-    .ai = &N(EVS_NpcAI_HyperParagoomba),
+    .doAI = &N(EVS_NpcAI_HyperParagoomba),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

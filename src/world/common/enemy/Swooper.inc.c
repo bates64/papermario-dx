@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_Swooper) = {
     .chaseTurnRate = 60,
     .chaseUpdateInterval = 15,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Swooper) = {
@@ -31,7 +31,7 @@ MobileAISettings N(AISettings_Swoopula) = {
     .chaseTurnRate = 60,
     .chaseUpdateInterval = 15,
     .chaseRadius = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Swoopula) = {
@@ -44,7 +44,7 @@ NpcSettings N(NpcSettings_Swooper) = {
     .height = 20,
     .radius = 20,
     .level = ACTOR_LEVEL_SWOOPER,
-    .ai = &N(EVS_NpcAI_Swooper),
+    .doAI = &N(EVS_NpcAI_Swooper),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .flags = ENEMY_FLAG_FLYING,
@@ -54,7 +54,7 @@ NpcSettings N(NpcSettings_Swoopula) = {
     .height = 20,
     .radius = 20,
     .level = ACTOR_LEVEL_SWOOPULA,
-    .ai = &N(EVS_NpcAI_Swoopula),
+    .doAI = &N(EVS_NpcAI_Swoopula),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .flags = ENEMY_FLAG_FLYING,

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "npc.h"
 #include "effects.h"
+#include "world/ai.h"
 #include "battle/battle.h"
 
 API_CALLABLE(SetEncounterStatusFlags) {
@@ -29,10 +30,6 @@ API_CALLABLE(LoadDemoBattle) {
     Bytecode* args = script->ptrReadPos;
 
     load_demo_battle(evt_get_variable(script, *args++));
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_80044290) {
     return ApiStatus_DONE2;
 }
 
@@ -148,20 +145,6 @@ API_CALLABLE(GetBattleOutcome) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_800445A8) {
-    Bytecode* args = script->ptrReadPos;
-
-    evt_set_variable(script, *args++, script->owner1.enemy->unk_C4);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_800445D4) {
-    Bytecode* args = script->ptrReadPos;
-
-    evt_set_variable(script, *args++, script->owner1.enemy->unk_C8);
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(GetOwnerEncounterTrigger) {
     Bytecode* args = script->ptrReadPos;
 
@@ -175,7 +158,7 @@ API_CALLABLE(DoNpcDefeat) {
     Evt* newScript;
 
     kill_script(script);
-    npc->curAnim = owner->animList[6];
+    npc->curAnim = owner->animList[ENEMY_ANIM_INDEX_DEATH];
     newScript = start_script(&EVS_NpcDefeat, EVT_PRIORITY_A, 0);
     owner->defeatScript = newScript;
     owner->defeatScriptID = newScript->id;
@@ -218,11 +201,11 @@ void start_battle(Evt* script, s32 songID) {
     for (i = 0; i < encounter->count; i++) {
         enemy = encounter->enemy[i];
         if (enemy != nullptr && (!(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)) {
-            if (enemy->hitBytecode != nullptr) {
+            if (enemy->hitSource != nullptr) {
                 Evt* hitEvtInstance;
                 enemy->encountered = true;
 
-                hitEvtInstance = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
+                hitEvtInstance = start_script(enemy->hitSource, EVT_PRIORITY_A, 0);
 
                 enemy->hitScript = hitEvtInstance;
                 enemy->hitScriptID = hitEvtInstance->id;
@@ -290,10 +273,10 @@ API_CALLABLE(StartBossBattle) {
         enemy = encounter->enemy[i];
         if ((enemy != nullptr && (
             !(enemy->flags & ENEMY_FLAG_ENABLE_HIT_SCRIPT) || enemy == currentEncounter->curEnemy)
-            ) && enemy->hitBytecode != nullptr) {
+            ) && enemy->hitSource != nullptr) {
             enemy->encountered = true;
 
-            script = start_script(enemy->hitBytecode, EVT_PRIORITY_A, 0);
+            script = start_script(enemy->hitSource, EVT_PRIORITY_A, 0);
             enemy->hitScript = script;
             enemy->hitScriptID = script->id;
 
@@ -367,8 +350,7 @@ API_CALLABLE(BindNpcAI) {
         kill_script_by_ID(enemy->aiScriptID);
     }
 
-    enemy->unk_C8 = 100;
-    enemy->aiBytecode = newScriptSource;
+    enemy->aiSource = newScriptSource;
     scriptTemp = start_script(newScriptSource, EVT_PRIORITY_A, 0);
     enemy->aiScript = scriptTemp;
     enemy->aiScriptID = scriptTemp->id;
@@ -389,7 +371,7 @@ API_CALLABLE(BindNpcIdle) {
     }
 
     owner = get_enemy(npcID);
-    owner->aiBytecode = aiBytecode;
+    owner->aiSource = aiBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -420,8 +402,7 @@ API_CALLABLE(RestartNpcAI) {
         kill_script_by_ID(enemy->aiScriptID);
     }
 
-    enemy->unk_C8 = 100;
-    newScript = start_script(enemy->aiBytecode, EVT_PRIORITY_A, 0);
+    newScript = start_script(enemy->aiSource, EVT_PRIORITY_A, 0);
     enemy->aiScript = newScript;
     enemy->aiScriptID = newScript->id;
     newScript->owner1.enemy = enemy;
@@ -488,7 +469,7 @@ API_CALLABLE(SetNpcAux) {
     }
 
     if (newScriptSource != nullptr) {
-        enemy->auxBytecode = newScriptSource;
+        enemy->auxSource = newScriptSource;
         scriptTemp = start_script(newScriptSource, EVT_PRIORITY_A, 0);
         enemy->auxScript = scriptTemp;
         enemy->auxScriptID = scriptTemp->id;
@@ -510,7 +491,7 @@ API_CALLABLE(BindNpcAux) {
     }
 
     npc = get_enemy(npcID);
-    npc->auxBytecode = auxBytecode;
+    npc->auxSource = auxBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -541,7 +522,7 @@ API_CALLABLE(RestartNpcAux) {
         kill_script_by_ID(enemy->auxScriptID);
     }
 
-    newScript = start_script(enemy->auxBytecode, EVT_PRIORITY_A, 0);
+    newScript = start_script(enemy->auxSource, EVT_PRIORITY_A, 0);
     enemy->auxScript = newScript;
     enemy->auxScriptID = newScript->id;
     newScript->owner1.enemy = enemy;
@@ -589,7 +570,7 @@ API_CALLABLE(BindNpcInteract) {
     if (npc->interactScript != nullptr) {
         kill_script_by_ID(npc->interactScriptID);
     }
-    npc->interactBytecode = interactBytecode;
+    npc->interactSource = interactBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -609,7 +590,7 @@ API_CALLABLE(BindNpcHit) {
     if (npc->hitScript != nullptr) {
         kill_script_by_ID(npc->hitScriptID);
     }
-    npc->hitBytecode = hitBytecode;
+    npc->hitSource = hitBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -625,7 +606,7 @@ API_CALLABLE(BindNpcDefeat) {
     }
 
     npc = get_enemy(npcID);
-    npc->defeatBytecode = defeatBytecode;
+    npc->defeatSource = defeatBytecode;
 
     return ApiStatus_DONE2;
 }
@@ -718,15 +699,15 @@ API_CALLABLE(SetSelfEnemyFlagBits) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(SelfEnemyOverrideSyncPos) {
+API_CALLABLE(EnemyEnableFirstStrike) {
     Bytecode* args = script->ptrReadPos;
     Enemy* owner = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
-    owner->hitboxIsActive = evt_get_variable(script, *args++);
-    owner->unk_10.x = npc->pos.x;
-    owner->unk_10.y = npc->pos.y;
-    owner->unk_10.z = npc->pos.z;
+    owner->firstStrikeActive = evt_get_variable(script, *args++);
+    owner->attackOriginPos.x = npc->pos.x;
+    owner->attackOriginPos.y = npc->pos.y;
+    owner->attackOriginPos.z = npc->pos.z;
 
     return ApiStatus_DONE2;
 }
@@ -773,23 +754,12 @@ API_CALLABLE(SetEnemyFlagBits) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_8004572C) {
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(GetSelfAnimationFromTable) {
     Bytecode* args = script->ptrReadPos;
     Enemy* owner = script->owner1.enemy;
     s32 animIdx = evt_get_variable(script, *args++);
 
     evt_set_variable(script, *args++, owner->animList[animIdx]);
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(func_80045798) {
-    Bytecode* args = script->ptrReadPos;
-
-    gPartnerStatus.unk_358 = evt_get_variable(script, *args++);
     return ApiStatus_DONE2;
 }
 
@@ -813,25 +783,25 @@ API_CALLABLE(GetEncounterTriggerHitTier) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_80045838) {
+API_CALLABLE(PlaySoundAtEnemy) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 soundID = evt_get_variable(script, *args++);
-    s32 upperSoundFLags = evt_get_variable(script, *args++);
+    s32 upperSoundFlags = evt_get_variable(script, *args++);
     Npc* npc = resolve_npc(script, npcID);
 
     if (npc == nullptr) {
         return ApiStatus_DONE2;
     }
 
-    ai_enemy_play_sound(npc, soundID, upperSoundFLags);
+    ai_enemy_play_sound(npc, soundID, upperSoundFlags);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(func_800458CC) {
+API_CALLABLE(EnemyHasNoSpinReaction) {
     Bytecode* args = script->ptrReadPos;
 
-    evt_set_variable(script, *args++, script->owner1.enemy->npcSettings->actionFlags & AI_ACTION_08);
+    evt_set_variable(script, *args++, script->owner1.enemy->npcSettings->actionFlags & AI_ACTION_NO_SPIN_REACTION);
     return ApiStatus_DONE2;
 }
 
@@ -839,7 +809,7 @@ API_CALLABLE(OnPlayerFled) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);
     Bytecode* args = script->ptrReadPos;
-    s32 skipReaction = evt_get_variable(script, *args++);
+    b32 skipReaction = evt_get_variable(script, *args++);
 
     enemy->aiFlags |= AI_FLAG_SUSPEND;
 
@@ -860,7 +830,7 @@ API_CALLABLE(OnPlayerFled) {
             f32 z = npc->pos.z;
             f32 a = 100.0f;
 
-            if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &a) != 0) {
+            if (npc_raycast_down_sides(npc->collisionChannel, &x, &y, &z, &a)) {
                 npc->pos.y = y;
             }
             npc->flags &= ~NPC_FLAG_JUMPING;

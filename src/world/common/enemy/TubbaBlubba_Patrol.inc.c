@@ -13,7 +13,7 @@ MobileAISettings N(AISettings_Tubba_Patrol) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 170.0f,
     .chaseOffsetDist = 90.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Tubba_Patrol) = {
@@ -26,7 +26,7 @@ NpcSettings N(NpcSettings_TubbaBlubba_Patrol) = {
     .height = 90,
     .radius = 65,
     .level = ACTOR_LEVEL_CLUBBA,
-    .ai = &N(EVS_NpcAI_Tubba_Patrol),
+    .doAI = &N(EVS_NpcAI_Tubba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

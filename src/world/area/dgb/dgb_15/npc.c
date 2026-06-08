@@ -1,15 +1,10 @@
 #include "dgb_15.h"
 
-#define INCLUDE_CLUBBA_WANDER
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/npc/Yakkey.inc.c"
+
+#include "world/common/enemy/Clubba_Wander.inc.c"
 
 #include "world/common/enemy/TubbaBlubba.inc.c"
-
-NpcSettings N(NpcSettings_Yakkey) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_CLUBBA,
-};
 
 extern EvtScript N(EVS_NpcAI_Tubba);
 
@@ -120,7 +115,7 @@ MobileAISettings N(AISettings_Tubba) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 80.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 #include "world/common/enemy/ai/PatrolNoAttackAI.inc.c"
@@ -190,7 +185,7 @@ NpcData N(NpcData_Tubba) = {
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANIMS,
-    .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(DefaultNPCs) = {

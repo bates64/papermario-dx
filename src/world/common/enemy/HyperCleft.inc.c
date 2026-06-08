@@ -13,11 +13,12 @@ MobileAISettings N(AISettings_HyperCleft) = {
     .chaseUpdateInterval = 3,
     .chaseRadius = 100.0f,
     .chaseOffsetDist = 60.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_HyperCleft) = {
-    Call(N(CleftAI_Main), Ref(N(AISettings_HyperCleft)), 8)
+    Call(SetSelfVar, AI_VAR_CLEFT_DASH_DELAY, 8)
+    Call(N(CleftAI_Main), Ref(N(AISettings_HyperCleft)))
     Return
     End
 };
@@ -26,7 +27,7 @@ NpcSettings N(NpcSettings_HyperCleft) = {
     .height = 24,
     .radius = 24,
     .level = ACTOR_LEVEL_HYPER_CLEFT,
-    .ai = &N(EVS_NpcAI_HyperCleft),
+    .doAI = &N(EVS_NpcAI_HyperCleft),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

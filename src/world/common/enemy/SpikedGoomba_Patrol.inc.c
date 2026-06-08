@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_SpikedGoomba_Patrol) = {
     .chaseTurnRate = 180,
     .chaseUpdateInterval = 3,
     .chaseRadius = 150.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_SpikedGoomba_Patrol) = {
@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_SpikedGoomba_Patrol) = {
     .height = 23,
     .radius = 23,
     .level = ACTOR_LEVEL_SPIKED_GOOMBA,
-    .ai = &N(EVS_NpcAI_SpikedGoomba_Patrol),
+    .doAI = &N(EVS_NpcAI_SpikedGoomba_Patrol),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

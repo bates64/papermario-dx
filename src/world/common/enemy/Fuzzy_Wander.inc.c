@@ -12,12 +12,13 @@ MobileAISettings N(AISettings_Fuzzy_Wander) = {
     .chaseTurnRate = 70,
     .chaseUpdateInterval = 10,
     .chaseRadius = 200.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Fuzzy_Wander) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
-    Call(N(HoppingAI_Main), Ref(N(AISettings_Fuzzy_Wander)), 0)
+    Call(SetSelfVar, AI_VAR_HOPPING_KIND, HOPPING_KIND_FUZZY)
+    Call(N(HoppingAI_Main), Ref(N(AISettings_Fuzzy_Wander)))
     Return
     End
 };
@@ -26,7 +27,7 @@ NpcSettings N(NpcSettings_Fuzzy_Wander) = {
     .height = 20,
     .radius = 22,
     .level = ACTOR_LEVEL_FUZZY,
-    .ai = &N(EVS_NpcAI_Fuzzy_Wander),
+    .doAI = &N(EVS_NpcAI_Fuzzy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

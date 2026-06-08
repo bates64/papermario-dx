@@ -12,7 +12,7 @@ MobileAISettings N(AISettings_GrooveGuy) = {
     .chaseTurnRate = 20,
     .chaseUpdateInterval = 1,
     .chaseRadius = 140.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_GrooveGuy) = {
@@ -25,7 +25,7 @@ NpcSettings N(NpcSettings_GrooveGuy) = {
     .height = 24,
     .radius = 22,
     .level = ACTOR_LEVEL_GROOVE_GUY,
-    .ai = &N(EVS_NpcAI_GrooveGuy),
+    .doAI = &N(EVS_NpcAI_GrooveGuy),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

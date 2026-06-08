@@ -12,7 +12,6 @@ GuardAISettings N(AISettings_Bobomb_Guard) = {
     .chaseUpdateInterval = 2,
     .chaseRadius = 110.0f,
     .chaseOffsetDist = 65.0f,
-    .unk_AI_20 = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bobomb_Guard) = {
@@ -25,7 +24,7 @@ NpcSettings N(NpcSettings_Bobomb_Guard) = {
     .height = 23,
     .radius = 20,
     .level = ACTOR_LEVEL_BOB_OMB,
-    .ai = &N(EVS_NpcAI_Bobomb_Guard),
+    .doAI = &N(EVS_NpcAI_Bobomb_Guard),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

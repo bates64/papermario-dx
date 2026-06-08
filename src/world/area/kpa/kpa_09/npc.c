@@ -23,7 +23,7 @@ NpcData N(NpcData_DryBones)[] = {
         .flags = ENEMY_FLAG_FLYING,
         .drops = DRY_BONES_DROPS,
         .animations = DRY_BONES_ANIMS,
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     DRY_BONES_BONE_HITBOX(NPC_DryBones_Bone1),
     DRY_BONES_BONE_HITBOX(NPC_DryBones_Bone2),

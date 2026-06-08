@@ -1,5 +1,4 @@
-#ifndef _NPC_H_
-#define _NPC_H_
+#pragma once
 
 #include "common_structs.h"
 #include "enums.h"
@@ -101,7 +100,7 @@ typedef struct MobileAISettings {
     /* 0x20 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
     /* 0x24 */ f32 chaseRadius;
     /* 0x28 */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for chase volume overlap, creates directionality to enemy 'sight'
-    /* 0x2C */ s32 unk_AI_2C;               // probably a boolean for enable loitering after a wander movement
+    /* 0x2C */ s32 loiterMode;              // enable loitering after movement when > 0
 } MobileAISettings; // size = 0x30
 
 typedef struct GuardAISettings {
@@ -113,8 +112,7 @@ typedef struct GuardAISettings {
     /* 0x14 */ s32 chaseUpdateInterval;     // how often to re-run chase init and re-acquire player position (frames)
     /* 0x18 */ f32 chaseRadius;
     /* 0x1C */ f32 chaseOffsetDist;         // offset along npc->yaw of the test point for alert volume overlap, creates directionality to enemy 'sight'
-    /* 0x20 */ s32 unk_AI_20;               // probably equivalent to unk_AI_2C in MobileAISettings
-} GuardAISettings; // size = 0x24
+} GuardAISettings; // size = 0x20
 
 struct FireBarData;
 typedef void (*FireBarCallback)(struct FireBarData*, s32);
@@ -144,17 +142,16 @@ typedef struct NpcSettings {
     /* 0x00 */ AnimID defaultAnim;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 radius;
-    /* 0x08 */ UNK_PTR otherAI;
-    /* 0x0C */ EvtScript* onInteract;
-    /* 0x10 */ EvtScript* ai;
-    /* 0x14 */ EvtScript* onHit;
-    /* 0x18 */ EvtScript* aux;
+    /* 0x08 */ EvtScript* doAux; // run every frame, often used for spawning effects or modulating ImgFX
+    /* 0x0C */ EvtScript* doAI;
+    /* 0x10 */ EvtScript* onCreate; // run when enemy is first created, before Npc init script
+    /* 0x14 */ EvtScript* onInteract;
+    /* 0x18 */ EvtScript* onHit;
     /* 0x1C */ EvtScript* onDefeat;
-    /* 0x20 */ s32 flags;
-    /* 0x24 */ s32 unk_24;
-    /* 0x28 */ s16 level;
-    /* 0x2A */ s16 actionFlags;  // action flags: 1 = jump on seeing player
-} NpcSettings; // size = 0x2C
+    /* 0x20 */ s32 flags; // see: EnemyFlags
+    /* 0x24 */ s16 level;
+    /* 0x26 */ s16 actionFlags;  // see: EnemyActionFlags
+} NpcSettings; // size = 0x28
 
 typedef struct ItemDrop {
     /* 0x00 */ s16 item;
@@ -195,17 +192,6 @@ typedef struct EnemyDrops {
 } EnemyDrops; // size = 0xB8
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
-
-typedef struct EnemyDetectVolume {
-    /* 0x00 */ s32 skipPlayerDetectChance;
-    /* 0x04 */ enum TerritoryShape shape;
-    /* 0x08 */ s32 pointX;
-    /* 0x0C */ s32 pointZ;
-    /* 0x10 */ s32 sizeX;
-    /* 0x14 */ s32 sizeZ;
-    /* 0x18 */ f32 halfHeight;
-    /* 0x1C */ s16 detectFlags;  // 1 = ignore partner hiding (bow/sushie dont work) | 2 = ignore elevation
-} EnemyDetectVolume; // size = 0x20
 
 typedef struct {
     /* 0x00 */ Vec3i centerPos;
@@ -269,9 +255,7 @@ typedef struct NpcData {
         /* 0x38 */ s32 anim_E;
         /* 0x3C */ s32 anim_F;
     } animations;
-    /* 0x1E0 */ s8 unk__1E0;
-    /* 0x1E1 */ s8 unk__1E1;
-    /* 0x1E2 */ s8 unk__1E2;
+    /* 0x1E0 */ char pad_1E0[3];
     /* 0x1E3 */ u8 aiDetectFlags;
     /* 0x1E4 */ u32 aiFlags;
     /* 0x1E8 */ AnimID* extraAnimations;
@@ -288,26 +272,23 @@ typedef struct NpcGroup {
 
 typedef NpcGroup NpcGroupList[];
 
-// function signature used for state handlers in AI main functions
-typedef void AIStateHandler(Evt* script, MobileAISettings* settings, EnemyDetectVolume* territory);
-
 typedef struct Enemy {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s8 encounterIndex;
     /* 0x05 */ s8 encountered;
     /* 0x06 */ u8 scriptGroup; /* scripts launched for this npc controller will be assigned this group */
-    /* 0x07 */ s8 hitboxIsActive; // when set, contact will trigger a first strike
+    /* 0x07 */ s8 firstStrikeActive; // when set, contact will trigger a first strike
     /* 0x08 */ s16 npcID;
-    /* 0x0A */ s16 spawnPos[3];
-    /* 0x10 */ Vec3s unk_10;    //TODO hitbox pos?
+    /* 0x0A */ Vec3s spawnPos;
+    /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
     /* 0x16 */ char unk_16[2];
     /* 0x18 */ NpcSettings* npcSettings;
-    /* 0x1C */ EvtScript* initBytecode;
-    /* 0x20 */ EvtScript* interactBytecode;
-    /* 0x24 */ EvtScript* aiBytecode;
-    /* 0x28 */ EvtScript* hitBytecode;
-    /* 0x2C */ EvtScript* auxBytecode;
-    /* 0x30 */ EvtScript* defeatBytecode;
+    /* 0x1C */ EvtScript* initSource; // from Npc::init
+    /* 0x20 */ EvtScript* interactSource;
+    /* 0x24 */ EvtScript* aiSource;
+    /* 0x28 */ EvtScript* hitSource;
+    /* 0x2C */ EvtScript* auxSource;
+    /* 0x30 */ EvtScript* defeatSource;
     /* 0x34 */ struct Evt* initScript;
     /* 0x38 */ struct Evt* interactScript;
     /* 0x3C */ struct Evt* aiScript;
@@ -320,32 +301,24 @@ typedef struct Enemy {
     /* 0x58 */ s32 hitScriptID;
     /* 0x5C */ s32 auxScriptID;
     /* 0x60 */ s32 defeatScriptID;
-    /* 0x64 */ UNK_PTR unk_64;
-    /* 0x68 */ char unk_68[4];
-    /* 0x6C */ union {
+    /* 0x64 */ union {
     /*      */      s32 varTable[16];
     /*      */      f32 varTableF[16];
     /*      */      void* varTablePtr[16];
     /*      */ };
-    /* 0xAC */ u8 aiDetectFlags; // detect player flags: 1 = require line of sight | 2 = adjust hitbox for moving player
-    /* 0xAD */ char unk_AD[3];
-    /* 0xB0 */ u32 aiFlags;
-    /* 0xB4 */ s8 aiSuspendTime;
-    /* 0xB5 */ s8 instigatorValue; // value is passed to first actor in formation if a battle is triggered with this enemy
-    /* 0xB6 */ char unk_B6[2];
-    /* 0xB8 */ EvtScript* unk_B8; // some bytecode
-    /* 0xBC */ struct Evt* unk_BC; // some script
-    /* 0xC0 */ s32 unk_C0; // some script ID
-    /* 0xC4 */ s32 unk_C4;
-    /* 0xC8 */ s32 unk_C8;
-    /* 0xCC */ s32* animList;
-    /* 0xD0 */ EnemyTerritory* territory;
-    /* 0xD4 */ EnemyDrops* drops;
-    /* 0xD8 */ u32 tattleMsg;
-    /* 0xDC */ s32 unk_DC;
-    /* 0xE0 */ s16 savedNpcYaw;
-    /* 0xE2 */ char unk_E2[6];
-} Enemy; // size = 0xE8
+    /* 0xA4 */ u8 aiDetectFlags; // see: EnemyDetectFlags
+    /* 0xA5 */ char unk_AD[3];
+    /* 0xA8 */ u32 aiFlags; // see: EnemyAIFlags
+    /* 0xAC */ s8 aiSuspendTime;
+    /* 0xAD */ s8 instigatorValue; // value is passed to first actor in formation if a battle is triggered with this enemy
+    /* 0xAE */ char unk_B6[2];
+    /* 0xB0 */ s32* animList;
+    /* 0xB4 */ EnemyTerritory* territory;
+    /* 0xB8 */ EnemyDrops* drops;
+    /* 0xBC */ u32 tattleMsg;
+    /* 0xD0 */ s16 savedNpcYaw;
+    /* 0xD2 */ char unk_E2[2];
+} Enemy; // size = 0xD4
 
 typedef struct Encounter {
     /* 0x00 */ s32 count;
@@ -405,8 +378,6 @@ typedef struct EncounterStatus {
 } EncounterStatus; // size = 0xBF4
 
 extern EncounterStatus gCurrentEncounter;
-
-b32 basic_ai_check_player_dist(EnemyDetectVolume* arg0, Enemy* arg1, f32 arg2, f32 arg3, s8 arg4);
 
 /// The default Npc::onUpdate and Npc::onRender callback.
 void STUB_npc_callback(Npc*);
@@ -631,6 +602,4 @@ void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"
-#endif
-
 #endif

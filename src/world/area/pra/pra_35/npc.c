@@ -1,10 +1,7 @@
 #include "pra_35.h"
 
-#define INCLUDE_FROST_CLUBBA_PATROL
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Patrol.inc.c"
 #include "world/common/enemy/Duplighost_Patrol.inc.c"
-
-#include "world/common/enemy/ai/WanderMeleeAI.inc.c"
 
 EvtScript N(EVS_NpcInit_EnableReflection) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
@@ -36,7 +33,7 @@ NpcData N(NpcData_Clubba)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = FROST_CLUBBA_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_CLUBBA_MACE_HITBOX(NPC_Clubba_Hitbox),
 };
@@ -64,7 +61,7 @@ NpcData N(NpcData_Duplighost) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = DUPLIGHOST_DROPS,
     .animations = DUPLIGHOST_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(DefaultNPCs) = {

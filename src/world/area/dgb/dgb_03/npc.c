@@ -1,9 +1,8 @@
 #include "dgb_03.h"
 
-#define INCLUDE_CLUBBA_WANDER
-#define INCLUDE_CLUBBA_PATROL
-#define INCLUDE_CLUBBA_NAPPING
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
+#include "world/common/enemy/Clubba_Patrol.inc.c"
+#include "world/common/enemy/Clubba_Napping.inc.c"
 
 EvtScript N(EVS_NpcInit_Clubba_Napping) = {
     Call(GetEntryID, LVar0)
@@ -35,7 +34,7 @@ NpcData N(NpcData_Clubba_Wander)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Wander_Hitbox),
 };
@@ -63,7 +62,7 @@ NpcData N(NpcData_Clubba_Patrol)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Patrol_Hitbox),
 };
@@ -90,7 +89,7 @@ NpcData N(NpcData_Clubba_Napping)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_Napping_Hitbox),
 };

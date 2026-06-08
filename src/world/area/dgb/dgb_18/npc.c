@@ -5,6 +5,8 @@
 extern EvtScript N(EVS_NpcAI_Tubba_Chase);
 extern EvtScript N(EVS_NpcAI_Tubba_WakeUp);
 
+#include "world/common/npc/Yakkey.inc.c"
+
 #include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba.inc.c"
 
@@ -36,12 +38,6 @@ API_CALLABLE(N(UnusedChasePlayer)) {
 
     return ApiStatus_BLOCK;
 }
-
-NpcSettings N(NpcSettings_Yakkey) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_CLUBBA,
-};
 
 EvtScript N(EVS_Scene_TubbaFallsAsleep) = {
     Label(10)

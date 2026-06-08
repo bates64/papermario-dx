@@ -1,4 +1,4 @@
-
+#pragma once
 #include "Bandit.h"
 
 #define HAS_COIN_FLAG    AreaFlag(1)
@@ -62,7 +62,7 @@ MobileAISettings N(AISettings_Bandit) = {
     .chaseUpdateInterval = 100,
     .chaseRadius = 550.0f,
     .chaseOffsetDist = 100.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bandit) = {
@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcDefeat_Bandit) = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(DisablePlayerInput, true)
             Set(HAS_COIN_FLAG, true)
@@ -112,8 +112,8 @@ NpcSettings N(NpcSettings_Bandit) = {
     .height = 26,
     .radius = 24,
     .level = ACTOR_LEVEL_BANDIT,
-    .ai = &N(EVS_NpcAI_Bandit),
+    .doAI = &N(EVS_NpcAI_Bandit),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_Bandit),
-    .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER | AI_ACTION_04,
+    .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER | AI_ACTION_CHASE_REQUIRES_PATH,
 };

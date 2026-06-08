@@ -1,19 +1,14 @@
 #include "dgb_08.h"
 
+#include "world/common/npc/Yakkey.inc.c"
+
 #include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba.inc.c"
 
-NpcSettings N(NpcSettings_Yakkey) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_CLUBBA,
-};
-
-#define INCLUDE_CLUBBA_WANDER
-#include "world/common/enemy/Clubba_Multi.inc.c"
+#include "world/common/enemy/Clubba_Wander.inc.c"
 
 #define AI_SENTINEL_FIRST_NPC NPC_Sentinel_01
-#define AI_SENTINEL_LAST_NPC  NPC_Tubba
+#define AI_SENTINEL_LAST_NPC  NPC_Sentinel_02
 #include "world/common/enemy/Sentinel.inc.c"
 
 NpcSettings N(NpcSettings_LastClubba) = {
@@ -90,7 +85,7 @@ API_CALLABLE(N(SetTubbaPatrolTerritory)) {
 API_CALLABLE(N(SetTubbaPatrolMode)) {
     if (get_enemy_safe(NPC_Tubba)) {
         Enemy* enemy = get_enemy(NPC_Tubba);
-        enemy->aiFlags |= AI_FLAG_80;
+        enemy->aiFlags |= AI_FLAG_CAN_RESUME_PATROL;
         return ApiStatus_DONE2;
     }
 
@@ -226,7 +221,7 @@ NpcData N(NpcData_Clubba_01)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),
 };
@@ -253,7 +248,7 @@ NpcData N(NpcData_Clubba_02)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_02_Hitbox),
 };
@@ -280,7 +275,7 @@ NpcData N(NpcData_Clubba_03)[] = {
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
         .extraAnimations = N(ExtraAnims_Clubba),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_03_Hitbox),
 };
@@ -415,7 +410,7 @@ NpcData N(NpcData_LastClubba) = {
     .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = CLUBBA_ANIMS,
-    .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     .tattle = MSG_NpcTattle_LastClubba,
 };
 
@@ -453,7 +448,7 @@ NpcData N(NpcData_Clubba_Unused) = {
     .drops = CLUBBA_DROPS,
     .animations = CLUBBA_ANIMS,
     .extraAnimations = N(ExtraAnims_Clubba),
-    .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(BeforeNPCs) = {

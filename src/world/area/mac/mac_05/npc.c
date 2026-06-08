@@ -139,7 +139,7 @@ API_CALLABLE(N(IncreaseMaxSP)) {
 
 API_CALLABLE(N(func_80242A90_854C00)) {
     Bytecode* args = script->ptrReadPos;
-    s32 mode = evt_get_variable(script, *args++);
+    u32 mode = evt_get_variable(script, *args++);
     s32 outVarX = *args++;
     s32 outVarY = *args++;
     s32 outVarZ = *args++;

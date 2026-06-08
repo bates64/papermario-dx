@@ -8,7 +8,8 @@ typedef struct RockingHorse {
     /* 0x0C */ f32 rockPhaseAngularVel;
     /* 0x10 */ f32 rockPhase;
     /* 0x14 */ s32 modelID;
-} RockingHorse; // size = 0x18
+    /* 0x18 */ Vec3i soundPos;
+} RockingHorse; // size = 0x24
 
 API_CALLABLE(N(UpdateRockingHorses)) {
     Matrix4f mtxPivot, mtxRotate;
@@ -32,6 +33,9 @@ API_CALLABLE(N(UpdateRockingHorses)) {
             horse->rockPhaseAngularVel = 3.5f;
             horse->rockPhase = 0;
             horse->lastRockAngle = 0;
+            horse->soundPos.x = evt_get_variable(script, LVarA);
+            horse->soundPos.y = evt_get_variable(script, LVarB);
+            horse->soundPos.z = evt_get_variable(script, LVarC);
         }
     }
 
@@ -39,15 +43,11 @@ API_CALLABLE(N(UpdateRockingHorses)) {
     for (i = 0; i < ARRAY_COUNT(N(RockingHorseModels)); i++, horse++) {
         horse->rockPhase += horse->rockPhaseAngularVel;
         horse->rockPhase = clamp_angle(horse->rockPhase);
-        #ifdef ROCKING_USE_SIN_DEG
         rockAngle = sin_deg(horse->rockPhase) * 20.0f;
-        #else
-        rockAngle = sin_rad((horse->rockPhase * 3.14f) / 180.0f) * 20.0f;
-        #endif
         offsetY = SQ(rockAngle) / 90.0f;
         if (i == 0) {
             if ((horse->lastRockAngle >= 0.0f && rockAngle < 0.0f) || (horse->lastRockAngle < 0.0f && rockAngle >= 0.0f)) {
-                sfx_play_sound_at_position(SOUND_CREAKY_ROCKING, SOUND_SPACE_DEFAULT, ROCKING_SOUND_LOCATION);
+                sfx_play_sound_at_position(SOUND_CREAKY_ROCKING, SOUND_SPACE_DEFAULT, horse->soundPos.x, horse->soundPos.y, horse->soundPos.z);
             }
             horse->lastRockAngle = rockAngle;
         }

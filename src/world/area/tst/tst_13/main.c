@@ -19,7 +19,7 @@ export MapSettings N(settings) = {
 
 #include "world/common/atomic/BetaFloorPanels.inc.c"
 
-EvtScript N(EVS_NpcAuxAI_00) = {
+EvtScript N(EVS_NpcCreate_00) = {
     Return
     End
 };
@@ -88,7 +88,7 @@ NpcSettings N(NpcSettings_00) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_00),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -97,7 +97,7 @@ NpcSettings N(NpcSettings_01) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_01),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -106,7 +106,7 @@ NpcSettings N(NpcSettings_02) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_02),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -115,7 +115,7 @@ NpcSettings N(NpcSettings_03) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_03),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -124,7 +124,7 @@ NpcSettings N(NpcSettings_04) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_04),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -133,7 +133,7 @@ NpcSettings N(NpcSettings_05) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_05),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -142,7 +142,7 @@ NpcSettings N(NpcSettings_06) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_06),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -151,7 +151,7 @@ NpcSettings N(NpcSettings_07) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_07),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -160,7 +160,7 @@ NpcSettings N(NpcSettings_08) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_08),
     .flags = ENEMY_FLAG_PASSIVE,
 };
@@ -169,7 +169,7 @@ NpcSettings N(NpcSettings_09) = {
     .defaultAnim = ANIM_Koopa_Idle,
     .height = 24,
     .radius = 24,
-    .otherAI = &N(EVS_NpcAuxAI_00),
+    .onCreate = &N(EVS_NpcCreate_00),
     .onInteract = &N(EVS_NpcInteract_09),
     .flags = ENEMY_FLAG_PASSIVE,
 };

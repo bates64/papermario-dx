@@ -1,10 +1,10 @@
 #include "common.h"
 
+s32 NpcHitQueryAheadY;
+s32 NpcHitQueryBehindLeftY;
 s32 NpcHitQueryBehindRightY;
 s32 NpcHitQueryBehindCollider;
 s32 NpcHitQueryAheadCollider;
-s32 NpcHitQueryAheadY;
-s32 NpcHitQueryBehindLeftY;
 s32 NpcHitQueryColliderID;
 
 PlayerStatus* gPlayerStatusPtr = &gPlayerStatus;

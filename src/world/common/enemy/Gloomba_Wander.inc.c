@@ -8,7 +8,7 @@ MobileAISettings N(AISettings_Gloomba_Wander) = {
     .chaseTurnRate = 15,
     .chaseUpdateInterval = 1,
     .chaseRadius = 90.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Gloomba_Wander) = {
@@ -21,7 +21,7 @@ NpcSettings N(NpcSettings_Gloomba_Wander) = {
     .height = 20,
     .radius = 23,
     .level = ACTOR_LEVEL_GLOOMBA,
-    .ai = &N(EVS_NpcAI_Gloomba_Wander),
+    .doAI = &N(EVS_NpcAI_Gloomba_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

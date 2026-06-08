@@ -123,7 +123,7 @@ API_CALLABLE(N(StoneChompFXC)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_StoneChomp) = {
+EvtScript N(EVS_NpcCreate_StoneChomp) = {
     Call(N(StoneChompFXA))
     Return
     End
@@ -139,7 +139,7 @@ MobileAISettings N(AISettings_StoneChomp) = {
     .chaseTurnRate = 70,
     .chaseUpdateInterval = 10,
     .chaseRadius = 500.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_StoneChomp) = {
@@ -167,7 +167,7 @@ EvtScript N(EVS_NpcHit_StoneChomp) = {
             ExecWait(EVS_NpcHitRecoil)
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
-                Call(func_800458CC, LVar0)
+                Call(EnemyHasNoSpinReaction, LVar0)
                 IfEq(LVar0, 0)
                     Set(LVarA, 0)
                     Loop(30)
@@ -200,8 +200,8 @@ NpcSettings N(NpcSettings_StoneChomp) = {
     .height = 32,
     .radius = 32,
     .level = ACTOR_LEVEL_STONE_CHOMP,
-    .otherAI = &N(EVS_NpcAuxAI_StoneChomp),
-    .ai = &N(EVS_NpcAI_StoneChomp),
+    .doAI = &N(EVS_NpcAI_StoneChomp),
+    .onCreate = &N(EVS_NpcCreate_StoneChomp),
     .onHit = &N(EVS_NpcHit_StoneChomp),
     .onDefeat = &N(EVS_NpcDefeat_StoneChomp),
 };

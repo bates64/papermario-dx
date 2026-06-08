@@ -24,7 +24,7 @@ API_CALLABLE(N(GetBulletBillVar)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcAuxAI_BillBlaster) = {
+EvtScript N(EVS_NpcCreate_BillBlaster) = {
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN, true)
     Return
     End
@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcHit_BillBlaster) = {
             ExecWait(EVS_NpcHitRecoil)
         CaseEq(ENCOUNTER_TRIGGER_SPIN)
             Thread
-                Call(func_800458CC, LVar0)
+                Call(EnemyHasNoSpinReaction, LVar0)
                 IfEq(LVar0, 0)
                     Set(LVarA, 0)
                     Loop(30)
@@ -107,7 +107,7 @@ EvtScript N(D_80240B80_9BE1E0) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_BulletBill) = {
+EvtScript N(EVS_NpcCreate_BulletBill) = {
     Return
     End
 };
@@ -137,8 +137,8 @@ NpcSettings N(missing_80240CE4) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .otherAI = &N(EVS_NpcAuxAI_BillBlaster),
-    .ai = &N(D_80240844_9BDEA4),
+    .doAI = &N(D_80240844_9BDEA4),
+    .onCreate = &N(EVS_NpcCreate_BillBlaster),
     .onHit = &N(EVS_NpcHit_BillBlaster),
     .onDefeat = &N(D_80240B80_9BE1E0),
 };
@@ -148,13 +148,13 @@ NpcSettings N(missing_80240D10) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .otherAI = &N(EVS_NpcAuxAI_BulletBill),
-    .ai = &N(D_80240C1C_9BE27C),
+    .doAI = &N(D_80240C1C_9BE27C),
+    .onCreate = &N(EVS_NpcCreate_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(D_80240C2C_9BE28C),
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_Red) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_Red) = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -240,7 +240,7 @@ EvtScript N(EVS_NpcAI_KoopaBros_Red) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_Black) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_Black) = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -248,7 +248,7 @@ EvtScript N(EVS_NpcAuxAI_KoopaBros_Black) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_Yellow) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_Yellow) = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -256,7 +256,7 @@ EvtScript N(EVS_NpcAuxAI_KoopaBros_Yellow) = {
     End
 };
 
-EvtScript N(EVS_NpcAuxAI_KoopaBros_Green) = {
+EvtScript N(EVS_NpcCreate_KoopaBros_Green) = {
     IfGe(GB_StoryProgress, STORY_CH1_KOOPA_BROS_FIRING_BLASTERS)
         Call(RemoveNpc, NPC_SELF)
     EndIf
@@ -394,7 +394,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
     Label(1)
         Call(SetSelfVar, 0, 0)
         Call(EnableNpcShadow, NPC_SELF, false)
-        Call(SelfEnemyOverrideSyncPos, 0)
+        Call(EnemyEnableFirstStrike, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
         Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
         Label(2)
@@ -407,14 +407,14 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
         Call(SetNpcAnimation, NPC_SELF, ANIM_BulletBill_Fire)
         Call(EnableNpcShadow, NPC_SELF, true)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, false)
-        Call(SelfEnemyOverrideSyncPos, 1)
+        Call(EnemyEnableFirstStrike, true)
         Call(GetNpcPos, LVar0, LVar1, LVar2, LVar3)
         Call(GetNpcYaw, LVar0, LVar4)
         Call(AddVectorPolar, LVar1, LVar3, Float(14.0), LVar4)
         Add(LVar2, 11)
         Call(SetNpcPos, NPC_SELF, LVar1, LVar2, LVar3)
         Call(InterpNpcYaw, NPC_SELF, LVar4, 0)
-        Call(func_80045838, -1, SOUND_BLASTER_FIRE, SOUND_PARAM_MORE_QUIET)
+        Call(PlaySoundAtEnemy, NPC_SELF, SOUND_BLASTER_FIRE, SOUND_PARAM_MORE_QUIET)
         Set(LVarA, LVar1)
         Sub(LVarA, 10)
         Set(LVarB, LVar2)
@@ -431,7 +431,7 @@ EvtScript N(EVS_NpcAI_BulletBill) = {
             CaseEq(NPC_BillBlaster_03)
                 Call(NpcMoveTo, NPC_SELF, -450, LVar3, 0)
         EndSwitch
-        Call(func_80045838, -1, SOUND_SEQ_BULLET_BILL_EXPLODE, 0)
+        Call(PlaySoundAtEnemy, NPC_SELF, SOUND_SEQ_BULLET_BILL_EXPLODE, SOUND_SPACE_DEFAULT)
         Call(SetNpcAnimation, NPC_SELF, ANIM_BulletBill_Hurt)
         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
         Add(LVar1, 5)
@@ -458,7 +458,7 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
             EndThread
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
     EndSwitch
     Return
     End
@@ -469,8 +469,8 @@ NpcSettings N(NpcSettings_KoopaBros_Red) = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_KoopaBros_Red),
-    .ai = &N(EVS_NpcAI_KoopaBros_Red),
+    .doAI = &N(EVS_NpcAI_KoopaBros_Red),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_Red),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -479,8 +479,8 @@ NpcSettings N(NpcSettings_KoopaBros_Black) = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_KoopaBros_Black),
-    .ai = &N(EVS_NpcAI_KoopaBros_Black),
+    .doAI = &N(EVS_NpcAI_KoopaBros_Black),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_Black),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -489,8 +489,8 @@ NpcSettings N(NpcSettings_KoopaBros_Yellow) = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_KoopaBros_Yellow),
-    .ai = &N(EVS_NpcAI_KoopaBros_Yellow),
+    .doAI = &N(EVS_NpcAI_KoopaBros_Yellow),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_Yellow),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -499,8 +499,8 @@ NpcSettings N(NpcSettings_KoopaBros_Green) = {
     .height = 34,
     .radius = 24,
     .level = ACTOR_LEVEL_NONE,
-    .otherAI = &N(EVS_NpcAuxAI_KoopaBros_Green),
-    .ai = &N(EVS_NpcAI_KoopaBros_Green),
+    .doAI = &N(EVS_NpcAI_KoopaBros_Green),
+    .onCreate = &N(EVS_NpcCreate_KoopaBros_Green),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
 };
 
@@ -509,8 +509,8 @@ NpcSettings N(NpcSettings_BillBlaster) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .otherAI = &N(EVS_NpcAuxAI_BillBlaster),
-    .ai = &N(EVS_NpcAI_BillBlaster),
+    .doAI = &N(EVS_NpcAI_BillBlaster),
+    .onCreate = &N(EVS_NpcCreate_BillBlaster),
     .onHit = &N(EVS_NpcHit_BillBlaster),
 };
 
@@ -519,8 +519,8 @@ NpcSettings N(NpcSettings_BulletBill) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .otherAI = &N(EVS_NpcAuxAI_BulletBill),
-    .ai = &N(EVS_NpcAI_BulletBill),
+    .doAI = &N(EVS_NpcAI_BulletBill),
+    .onCreate = &N(EVS_NpcCreate_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BulletBill),
 };
@@ -686,7 +686,7 @@ EvtScript N(EVS_NpcIdle_BulletBill_Demo) = {
 
 EvtScript N(EVS_NpcInit_BulletBill_Demo) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_BulletBill_Demo)))
-    Call(SelfEnemyOverrideSyncPos, 1)
+    Call(EnemyEnableFirstStrike, true)
     Return
     End
 };

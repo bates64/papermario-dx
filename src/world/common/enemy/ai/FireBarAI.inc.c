@@ -1,16 +1,20 @@
-#ifndef _AI_FIRE_BAR_INC_
-#define _AI_FIRE_BAR_INC_ 0
+#pragma once
 
 #include "common.h"
 
-// from data
-extern s32 N(FireBar_Sounds)[11];
+// maps using this AI must implement this
 extern EvtScript N(EVS_FireBar_Defeated);
 
 enum {
     FIRE_BAR_SLOW_DOWN  = 0,
     FIRE_BAR_SPEED_UP   = 1,
     FIRE_BAR_HIT        = 2,
+};
+
+s32 N(FireBar_Sounds)[] = {
+    SOUND_SEQ_FIRE_BAR_0, SOUND_SEQ_FIRE_BAR_1, SOUND_SEQ_FIRE_BAR_2, SOUND_SEQ_FIRE_BAR_3,
+    SOUND_SEQ_FIRE_BAR_4, SOUND_SEQ_FIRE_BAR_5, SOUND_SEQ_FIRE_BAR_6, SOUND_SEQ_FIRE_BAR_7,
+    SOUND_SEQ_FIRE_BAR_8, SOUND_SEQ_FIRE_BAR_9, SOUND_SEQ_FIRE_BAR_9,
 };
 
 API_CALLABLE(N(FireBarAI_Main)) {
@@ -52,7 +56,7 @@ API_CALLABLE(N(FireBarAI_Main)) {
     }
 
     if (get_time_freeze_mode() != TIME_FREEZE_NONE) {
-        return 0;
+        return ApiStatus_BLOCK;
     }
 
     data = script->functionTempPtr[1];
@@ -162,5 +166,3 @@ void N(FireBarAI_Callback)(FireBarData* data, s32 mode) {
     }
     return;
 }
-
-#endif

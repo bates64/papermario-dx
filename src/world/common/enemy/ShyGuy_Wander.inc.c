@@ -14,7 +14,7 @@ MobileAISettings N(AISettings_ShyGuy_Wander) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 140.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy_Wander) = {
@@ -27,7 +27,7 @@ NpcSettings N(NpcSettings_ShyGuy_Wander) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .ai = &N(EVS_NpcAI_ShyGuy_Wander),
+    .doAI = &N(EVS_NpcAI_ShyGuy_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

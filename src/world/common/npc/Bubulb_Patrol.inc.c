@@ -8,7 +8,7 @@ MobileAISettings N(AISettings_Bubulb_Patrol) = {
     .moveTime = 30,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Bubulb_Patrol) = {
@@ -21,5 +21,5 @@ NpcSettings N(NpcSettings_Bubulb_Patrol) = {
     .height = 42,
     .radius = 28,
     .level = ACTOR_LEVEL_NONE,
-    .ai = &N(EVS_NpcAI_Bubulb_Patrol),
+    .doAI = &N(EVS_NpcAI_Bubulb_Patrol),
 };

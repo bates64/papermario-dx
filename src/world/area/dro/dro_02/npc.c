@@ -20,7 +20,7 @@ MobileAISettings N(AISettings_Archeologist) = {
     .moveTime = 60,
     .waitTime = 30,
     .playerSearchInterval = -1,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_Archeologist) = {
@@ -32,7 +32,7 @@ EvtScript N(EVS_NpcAI_Archeologist) = {
 NpcSettings N(NpcSettings_Archeologist_Wander) = {
     .height = 35,
     .radius = 24,
-    .ai = &N(EVS_NpcAI_Archeologist),
+    .doAI = &N(EVS_NpcAI_Archeologist),
     .level = ACTOR_LEVEL_NONE,
     .actionFlags = AI_FLAG_SKIP_IDLE_ANIM_AFTER_FLEE,
 };
@@ -40,7 +40,7 @@ NpcSettings N(NpcSettings_Archeologist_Wander) = {
 NpcSettings N(NpcSettings_Archeologist) = {
     .height = 42,
     .radius = 24,
-    .ai = &N(EVS_NpcAI_Archeologist),
+    .doAI = &N(EVS_NpcAI_Archeologist),
     .level = ACTOR_LEVEL_NONE,
 };
 
@@ -443,7 +443,7 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Merlee,
         .pos = { -130.0f, 0.0f, -400.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcAuxAI_Merlee),
+        .init = &N(EVS_NpcCreate_Merlee),
         .settings = &N(NpcSettings_Merlee),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,

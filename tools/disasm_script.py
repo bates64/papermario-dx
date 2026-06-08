@@ -453,7 +453,7 @@ replace_funcs = {
     "SetActorPaletteSwapParams": {0: "ActorIDs"},
     "EnableActorPaletteEffects": {0: "ActorIDs"},
     "HideHealthBar": {0: "ActorIDs"},
-    "func_8027D434": {0: "ActorIDs"},
+    "SetTargetPriorityOffset": {0: "ActorIDs"},
     "SetProjectileTargetOffset": {0: "ActorIDs"},
     "GetInstigatorValue": {0: "ActorIDs"},
     "SetNpcFoldParams": {0: "NpcIDs"},

@@ -11,11 +11,11 @@
 EvtScript N(EVS_NpcIdle_JungleFuzzy) = {
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Label(0)
-    Call(GetSelfVar, 7, LVar0)
-    Wait(1)
-    IfEq(LVar0, 0)
-        Goto(0)
-    EndIf
+        Call(GetSelfVar, 7, LVar0)
+        Wait(1)
+        IfEq(LVar0, 0)
+            Goto(0)
+        EndIf
     Call(SetNpcAnimation, NPC_SELF, ANIM_Fuzzy_Jungle_Anim09)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_FLYING, false)
@@ -41,20 +41,20 @@ EvtScript N(EVS_NpcInit_JungleFuzzy) = {
 
 EvtScript N(EVS_YoshiKid_WatchPlayerProximinity) = {
     Label(1)
-    Call(GetSelfVar, 0, LVar0)
-    Switch(LVar0)
-        CaseEq(0)
-            Call(AwaitPlayerLeave, -308, -270, 70)
-            Call(SetSelfVar, 0, 1)
-        CaseEq(1)
-            Call(AwaitPlayerApproach, -308, -270, 50)
-            Call(DisablePlayerInput, true)
-            Call(ShowMessageAtScreenPos, MSG_CH5_00B8, 160, 40)
-            Call(DisablePlayerInput, false)
-            Call(SetSelfVar, 0, 0)
-    EndSwitch
-    Wait(1)
-    Goto(1)
+        Call(GetSelfVar, 0, LVar0)
+        Switch(LVar0)
+            CaseEq(0)
+                Call(AwaitPlayerLeave, -308, -270, 70)
+                Call(SetSelfVar, 0, 1)
+            CaseEq(1)
+                Call(AwaitPlayerApproach, -308, -270, 50)
+                Call(DisablePlayerInput, true)
+                Call(ShowMessageAtScreenPos, MSG_CH5_00B8, 160, 40)
+                Call(DisablePlayerInput, false)
+                Call(SetSelfVar, 0, 0)
+        EndSwitch
+        Wait(1)
+        Goto(1)
     Return
     End
 };
@@ -262,7 +262,7 @@ NpcData N(NpcData_JungleFuzzy) = {
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
     .extraAnimations = N(ExtraAnims_JungleFuzzy),
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_SpearGuy)[] = {
@@ -287,7 +287,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
         .extraAnimations = N(ExtraAnims_SpearGuy),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
 };

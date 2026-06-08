@@ -11,7 +11,6 @@ GuardAISettings N(AISettings_ShyGuy_Guard) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 160.0f,
     .chaseOffsetDist = 50.0f,
-    .unk_AI_20 = 1,
 };
 
 EvtScript N(EVS_NpcAI_ShyGuy_Guard) = {
@@ -24,7 +23,7 @@ NpcSettings N(NpcSettings_ShyGuy_Guard) = {
     .height = 23,
     .radius = 22,
     .level = ACTOR_LEVEL_SHY_GUY,
-    .ai = &N(EVS_NpcAI_ShyGuy_Guard),
+    .doAI = &N(EVS_NpcAI_ShyGuy_Guard),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
     .actionFlags = AI_ACTION_JUMP_WHEN_SEE_PLAYER,

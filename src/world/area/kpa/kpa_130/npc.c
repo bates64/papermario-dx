@@ -16,12 +16,12 @@ EvtScript N(EVS_NpcAI_BillBlaster) = {
 
 MobileAISettings N(AISettings_BulletBill) = {
     .chaseSpeed = 3.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BulletBill) = {
-    Call(SelfEnemyOverrideSyncPos, 1)
-    Call(SetSelfVar, 0, 0)
+    Call(EnemyEnableFirstStrike, true)
+    Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(N(BulletBillAI_Main), Ref(N(AISettings_BulletBill)))
     Return
@@ -40,12 +40,12 @@ EvtScript N(EVS_NpcAI_BombshellBlaster) = {
 
 MobileAISettings N(AISettings_BombshellBill) = {
     .chaseSpeed = 7.3f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_BombshellBill) = {
-    Call(SelfEnemyOverrideSyncPos, 1)
-    Call(SetSelfVar, 0, 0)
+    Call(EnemyEnableFirstStrike, true)
+    Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
     Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     Call(N(BulletBillAI_Main), Ref(N(AISettings_BombshellBill)))
     Return
@@ -58,7 +58,7 @@ EvtScript N(EVS_NpcDefeat_BombshellBlaster) = {
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -73,11 +73,11 @@ EvtScript N(EVS_NpcDefeat_BulletBill) = {
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
             Call(DoNpcDefeat)
-            Call(SetSelfVar, 0, 0)
+            Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_IDLE)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
             Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_BulletBill)))
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetNpcPos, NPC_SELF, NPC_DISPOSE_LOCATION)
     EndSwitch
@@ -90,10 +90,10 @@ EvtScript N(EVS_NpcDefeat_BombshellBill) = {
     Call(GetBattleOutcome, LVar0)
     Switch(LVar0)
         CaseEq(OUTCOME_PLAYER_WON)
-            Call(SetSelfVar, 0, 100)
+            Call(SetSelfVar, AI_VAR_BULLET_STATUS, BULLET_STATUS_DONE)
             Call(DoNpcDefeat)
         CaseEq(OUTCOME_PLAYER_FLED)
-            Call(OnPlayerFled, 0)
+            Call(OnPlayerFled, false)
         CaseEq(OUTCOME_ENEMY_FLED)
             Call(SetEnemyFlagBits, NPC_SELF, ENEMY_FLAG_FLED, true)
             Call(RemoveNpc, NPC_SELF)
@@ -106,7 +106,7 @@ NpcSettings N(NpcSettings_BillBlaster) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BILL_BLASTER,
-    .ai = &N(EVS_NpcAI_BillBlaster),
+    .doAI = &N(EVS_NpcAI_BillBlaster),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
 };
@@ -115,7 +115,7 @@ NpcSettings N(NpcSettings_BulletBill) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BULLET_BILL,
-    .ai = &N(EVS_NpcAI_BulletBill),
+    .doAI = &N(EVS_NpcAI_BulletBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BulletBill),
 };
@@ -124,7 +124,7 @@ NpcSettings N(NpcSettings_BombshellBlaster) = {
     .height = 26,
     .radius = 32,
     .level = ACTOR_LEVEL_BOMBSHELL_BLASTER,
-    .ai = &N(EVS_NpcAI_BombshellBlaster),
+    .doAI = &N(EVS_NpcAI_BombshellBlaster),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBlaster),
 };
@@ -133,19 +133,19 @@ NpcSettings N(NpcSettings_BombshellBill) = {
     .height = 14,
     .radius = 31,
     .level = ACTOR_LEVEL_BOMBSHELL_BILL,
-    .ai = &N(EVS_NpcAI_BombshellBill),
+    .doAI = &N(EVS_NpcAI_BombshellBill),
     .onHit = &EnemyNpcHit,
     .onDefeat = &N(EVS_NpcDefeat_BombshellBill),
 };
 
 EvtScript N(EVS_NpcInit_BombshellBlaster) = {
-    Call(SetSelfVar, 1, -995)
+    Call(SetSelfVar, AI_VAR_BLASTER_RANGE, -995)
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_BombshellBlaster_03) = {
-    Call(SetSelfVar, 1, 30)
+    Call(SetSelfVar, AI_VAR_BLASTER_RANGE, 30)
     Return
     End
 };

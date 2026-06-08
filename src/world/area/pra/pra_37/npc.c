@@ -1,7 +1,6 @@
 #include "pra_37.h"
 
-#define INCLUDE_FROST_CLUBBA_WANDER
-#include "world/common/enemy/FrostClubba_Multi.inc.c"
+#include "world/common/enemy/FrostClubba_Wander.inc.c"
 
 EvtScript N(EVS_NpcInit_FrostClubba) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_REFLECT_FLOOR, true)
@@ -31,7 +30,7 @@ NpcData N(NpcData_FrostClubba)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = FROST_CLUBBA_DROPS,
         .animations = FROST_CLUBBA_ANIMS,
-        .aiDetectFlags = AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     FROST_CLUBBA_MACE_HITBOX(NPC_FrostClubba_Hitbox),
 };

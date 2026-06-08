@@ -23,7 +23,7 @@ NpcData N(NpcData_LavaBubble_01) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcData N(NpcData_LavaBubble_02) = {
@@ -46,7 +46,7 @@ NpcData N(NpcData_LavaBubble_02) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = LAVA_BUBBLE_DROPS,
     .animations = LAVA_BUBBLE_ANIMS,
-    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+    .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
 NpcGroupList N(DefaultNPCs) = {

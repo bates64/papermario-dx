@@ -227,7 +227,7 @@ void player_surface_spawn_flower_fx(void) {
             z = gPlayerStatus.pos.z + (gPlayerStatus.colliderDiameter * cosAngle * -0.4f);
             y = gPlayerStatus.pos.y + 15.5f;
 
-            fx_flower_trail(0, x, y, z, -gPlayerStatus.curYaw + rand_int(10) - 5.0f, PlayerFlowerTrailVariant);
+            fx_flower_trail(false, x, y, z, -gPlayerStatus.curYaw + rand_int(10) - 5.0f, PlayerFlowerTrailVariant);
             PlayerFlowerTrailVariant = !PlayerFlowerTrailVariant;
         }
         return;
@@ -494,7 +494,7 @@ void npc_surface_spawn_flower_fx(Npc* npc, SurfaceInteractMode mode) {
         z = npc->pos.z + (npc->collisionDiameter * cosAngle * -0.4f);
         y = npc->pos.y + 15.5f;
 
-        fx_flower_trail(1, x, y, z, -npc->yaw + rand_int(10) - 5.0f, NpcFlowerTrailVariant);
+        fx_flower_trail(true, x, y, z, -npc->yaw + rand_int(10) - 5.0f, NpcFlowerTrailVariant);
         NpcFlowerTrailVariant = !NpcFlowerTrailVariant;
     }
 }

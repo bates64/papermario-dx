@@ -1,6 +1,6 @@
 #include "KoopaTroopa.h"
 
-#include "world/common/enemy/ai/TackleAI.inc.c"
+#include "world/common/enemy/ai/TackleWanderAI.inc.c"
 
 MobileAISettings N(AISettings_KoopaTroopa_Wander) = {
     .moveSpeed = 1.5f,
@@ -12,15 +12,15 @@ MobileAISettings N(AISettings_KoopaTroopa_Wander) = {
     .chaseSpeed = 7.5f,
     .chaseRadius = 80.0f,
     .chaseOffsetDist = 60.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_KoopaTroopa_Wander) = {
-    Call(SetSelfVar, 2, 8)
-    Call(SetSelfVar, 3, 12)
-    Call(SetSelfVar, 5, 10)
-    Call(SetSelfVar, 7, 0)
-    Call(N(TackleAI_Main), Ref(N(AISettings_KoopaTroopa_Wander)))
+    Call(SetSelfVar, AI_VAR_TACKLE_PRE_DELAY, 8)
+    Call(SetSelfVar, AI_VAR_TACKLE_MIN_CHASE_TIME, 12)
+    Call(SetSelfVar, AI_VAR_TACKLE_POST_DELAY, 10)
+    Call(SetSelfVar, AI_VAR_TACKLE_TYPE, TACKLER_KOOPA_TROOPA)
+    Call(N(TackleWanderAI_Main), Ref(N(AISettings_KoopaTroopa_Wander)))
     Return
     End
 };
@@ -29,7 +29,7 @@ NpcSettings N(NpcSettings_KoopaTroopa_Wander) = {
     .height = 35,
     .radius = 24,
     .level = ACTOR_LEVEL_KOOPA_TROOPA,
-    .ai = &N(EVS_NpcAI_KoopaTroopa_Wander),
+    .doAI = &N(EVS_NpcAI_KoopaTroopa_Wander),
     .onHit = &EnemyNpcHit,
     .onDefeat = &EnemyNpcDefeat,
 };

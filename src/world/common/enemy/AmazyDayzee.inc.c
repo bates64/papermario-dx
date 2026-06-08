@@ -1,3 +1,4 @@
+#pragma once
 #include "AmazyDayzee.h"
 
 #include "world/common/enemy/ai/AvoidPlayerAI.inc.c"
@@ -14,7 +15,7 @@ MobileAISettings N(AISettings_AmazyDayzee) = {
     .chaseUpdateInterval = 1,
     .chaseRadius = 140.0f,
     .chaseOffsetDist = 30.0f,
-    .unk_AI_2C = 1,
+    .loiterMode = 1,
 };
 
 EvtScript N(EVS_NpcAI_AmazyDayzee) = {
@@ -39,8 +40,8 @@ NpcSettings N(NpcSettings_AmazyDayzee) = {
     .height = 30,
     .radius = 24,
     .level = ACTOR_LEVEL_AMAZY_DAYZEE,
-    .ai = &N(EVS_NpcAI_AmazyDayzee),
+    .doAux = &N(EVS_NpcAux_AmazyDayzee),
+    .doAI = &N(EVS_NpcAI_AmazyDayzee),
     .onHit = &EnemyNpcHit,
-    .aux = &N(EVS_NpcAux_AmazyDayzee),
     .onDefeat = &EnemyNpcDefeat,
 };

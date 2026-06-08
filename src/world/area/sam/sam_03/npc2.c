@@ -24,7 +24,7 @@ NpcData N(NpcData_Gulpit_01)[] = {
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
         .extraAnimations = N(ExtraAnims_Gulpit),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_01_Hitbox),
 };
@@ -51,7 +51,7 @@ NpcData N(NpcData_Gulpit_02)[] = {
         .drops = GULPIT_DROPS,
         .animations = GULPIT_ANIMS,
         .extraAnimations = N(ExtraAnims_Gulpit),
-        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_SENSITIVE_MOTION,
+        .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     GULPIT_HITBOX(NPC_Gulpit_02_Hitbox),
 };

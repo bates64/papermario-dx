@@ -1,16 +1,20 @@
+#pragma once
+
 #include "HurtPlant.h"
 #include "sprite/player.h"
+
+#define EVAR_INTERACTED 0
 
 EvtScript N(EVS_NpcAI_HurtPlant) = {
     Call(EnableNpcShadow, NPC_SELF, false)
     Call(SetNpcAnimation, NPC_SELF, ANIM_HurtPlant_Anim01)
-    Call(SetSelfVar, 0, 0)
+    Call(SetSelfVar, EVAR_INTERACTED, false)
     Label(0)
-    Call(GetSelfVar, 0, LVar0)
-    IfEq(LVar0, 0)
-        Wait(1)
-        Goto(0)
-    EndIf
+        Call(GetSelfVar, EVAR_INTERACTED, LVar0)
+        IfEq(LVar0, false)
+            Wait(1)
+            Goto(0)
+        EndIf
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(DisablePlayerInput, true)
@@ -30,7 +34,7 @@ EvtScript N(EVS_NpcAI_HurtPlant) = {
 };
 
 EvtScript N(EVS_NpcInteract_HurtPlant) = {
-    Call(SetSelfVar, 0, 1)
+    Call(SetSelfVar, EVAR_INTERACTED, true)
     Return
     End
 };
@@ -54,8 +58,8 @@ NpcSettings N(NpcSettings_HurtPlant) = {
     .height = 20,
     .radius = 28,
     .level = ACTOR_LEVEL_HURT_PLANT,
+    .doAI = &N(EVS_NpcAI_HurtPlant),
     .onInteract = &N(EVS_NpcInteract_HurtPlant),
-    .ai = &N(EVS_NpcAI_HurtPlant),
     .onDefeat = &N(EVS_NpcDefeat_HurtPlant),
 };
 
