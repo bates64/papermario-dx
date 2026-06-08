@@ -50,6 +50,7 @@ struct Overlay {
     OverlayType type;
     u8* base; ///< Where the text/data/bss/meta is.
     u32 text_size;
+    u32 load_size; ///< text + data
     OverlayExport* exports;
     u32 export_count;
     const char* strtab;
@@ -207,6 +208,7 @@ Overlay* ovl_load(const char* name, OverlayType type) {
 
     // Set up pointers into loaded region
     ovl->text_size = hdr.text_size;
+    ovl->load_size = hdr.load_size;
     ovl->export_count = hdr.export_count;
     ovl->exports = (OverlayExport*)meta_base;
     ovl->strtab = (const char*)(meta_base + hdr.export_count * sizeof(OverlayExport));
@@ -294,7 +296,7 @@ static const char* name_for_addr(const Overlay* ovl, u32 addr) {
 static b32 contains(const Overlay* ovl, u32 addr) {
     if (ovl->name[0] == '\0') return false;
     u32 b = (u32)ovl->base;
-    return addr >= b && addr < b + ovl->text_size;
+    return addr >= b && addr < b + ovl->load_size;
 }
 
 const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
@@ -313,7 +315,7 @@ const char* ovl_resolve_addr(u32 addr, const char** outOverlayName,
                 *outDebugRomEnd = ovl->debugRomEnd;
             if (outOverlayBase)
                 *outOverlayBase = (u32)ovl->base;
-            return sym;
+            return sym != nullptr ? sym : "";
         }
     }
     return nullptr;

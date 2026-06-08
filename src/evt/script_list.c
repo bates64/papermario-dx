@@ -131,7 +131,7 @@ void find_script_labels(Evt* script) {
     curLine = script->ptrNextLine;
     while (j < ARRAY_COUNT(script->labelIndices)) {
         type = *curLine++;
-        numArgs = *curLine++;
+        numArgs = EVT_CMD_ARGC(*curLine++);
         label = *curLine;
         curLine += numArgs;
 
@@ -604,6 +604,7 @@ void update_scripts(void) {
         }
     }
     IsUpdatingScripts = false;
+    EvtCurrentScript = nullptr;
 }
 
 // Does nothing, is cursed

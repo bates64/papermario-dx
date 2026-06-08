@@ -343,9 +343,9 @@ void crash_screen_draw(OSThread* faultedThread) {
         i = 1; // Don't include is_debug_panic line in backtrace.
     }
 
-    // Print register values
-    // TODO: print registers relevant to the exception
-    if (isException) {
+    b32 hasEvtBacktrace = EvtCurrentScript != nullptr;
+
+    if (isException && !hasEvtBacktrace) {
         __OSThreadContext* ctx = &faultedThread->context;
         crash_screen_printf_proportional(x, y, "Registers:");
         y += 10;
@@ -360,10 +360,34 @@ void crash_screen_draw(OSThread* faultedThread) {
     // Print backtrace
     crash_screen_printf_proportional(x, y, "Call stack:");
     y += 10;
-    for (; i < max; i++) {
-        backtrace_address_to_string(bt[i], buf);
-        crash_screen_printf_proportional(x, y, "  in %s", buf);
-        y += 10;
+
+    if (hasEvtBacktrace) {
+        // Print C backtrace, stopping at EVT engine internals
+        extern s32 evt_execute_next_command(Evt*);
+        for (; i < max; i++) {
+            u32 addr = bt[i];
+            if (addr >= (u32)evt_execute_next_command && addr < (u32)evt_execute_next_command + 0x2000) {
+                break;
+            }
+            backtrace_address_to_string(addr, buf, -1);
+            crash_screen_printf_proportional(x, y, "  in %s", buf);
+            y += 10;
+        }
+
+        // Print EVT script chain (innermost to outermost)
+        Evt* s = EvtCurrentScript;
+        while (s != nullptr) {
+            backtrace_address_to_string((u32)s->ptrFirstLine, buf, s->curLine);
+            crash_screen_printf_proportional(x, y, "  in %s", buf);
+            y += 10;
+            s = s->blockingParent;
+        }
+    } else {
+        for (; i < max; i++) {
+            backtrace_address_to_string(bt[i], buf, -1);
+            crash_screen_printf_proportional(x, y, "  in %s", buf);
+            y += 10;
+        }
     }
 
     y += 10;

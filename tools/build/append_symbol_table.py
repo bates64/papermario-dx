@@ -20,7 +20,7 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
         parts = line.split()
 
         #  75082: 8048d5bc    44 FUNC    GLOBAL DEFAULT 1845 func_802BC0B8_E2E9E8
-        if len(parts) == 8 and parts[3] == "FUNC":
+        if len(parts) == 8 and parts[3] in ("FUNC", "OBJECT"):
             addr = int(parts[1], 16)
             name = parts[-1]
             if name.startswith("dead_"):
@@ -49,6 +49,20 @@ def readelf(elf: str) -> List[Tuple[int, str, str, int]]:
                 symbols.append(
                     (addr, addr2name[sorted_addr2name_addrs[i]], file_basename, line_number)
                 )
+
+    # Add symbols that have no debug line info (e.g. data/EvtScript symbols).
+    # Try to find the file from the nearest debug line entry.
+    sorted_line_addrs = sorted(addr2line.keys())
+    addrs_with_line = set(addr2line.keys())
+    for addr, name in addr2name.items():
+        if addr not in addrs_with_line:
+            # Find closest debug line entry to guess the source file
+            i = bisect.bisect_right(sorted_line_addrs, addr) - 1
+            if i >= 0:
+                file_basename = addr2line[sorted_line_addrs[i]][0]
+                symbols.append((addr, name, file_basename, -1))
+            else:
+                symbols.append((addr, name, "", -1))
 
     # non-debug builds
     if len(symbols) == 0:

@@ -204,10 +204,10 @@ extern "C" {
 ///         Bytecode argv[argc];
 ///     }
 /// This macro expands to the given opcode and argv, with argc calculated automatically.
-
+/// The line number is also encoded into the upper nibble of argc for debugging purposes.
 #define EVT_CMD(opcode, argv...) \
     opcode, \
-    (sizeof((Bytecode[]){argv})/sizeof(Bytecode)), \
+    (sizeof((Bytecode[]){argv})/sizeof(Bytecode)) | (__LINE__ << 16), \
     ##argv
 
 /// Signals the end of EVT script data. A script missing this will likely crash on load.

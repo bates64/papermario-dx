@@ -6,6 +6,11 @@
 // Should be at least the width of a pointer i.e. intptr_t
 typedef s32 Bytecode;
 
+// The argc word in EVT bytecode encodes both the argument count (low 16 bits)
+// and the source line number (high 16 bits) for crash diagnostics.
+#define EVT_CMD_ARGC(raw) ((raw) & 0xFFFF)
+#define EVT_CMD_LINE(raw) ((u32)(raw) >> 16)
+
 enum {
     EVT_OP_INTERNAL_FETCH,
     EVT_OP_END,
@@ -104,6 +109,9 @@ enum {
     EVT_OP_94,
     EVT_OP_DEBUG_BREAKPOINT,
 };
+
+/// The script currently being executed by evt_execute_next_command, or nullptr.
+extern struct Evt* EvtCurrentScript;
 
 #define MAKE_ENTITY_END      0x80000000
 

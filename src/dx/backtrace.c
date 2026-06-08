@@ -426,12 +426,41 @@ s32 ovl_address2symbol(u32 offset, u32 debugRomStart, u32 debugRomEnd, Symbol* o
     #undef chunkSize
 }
 
-void backtrace_address_to_string(u32 address, char* dest) {
-    const char* ovl_name = NULL;
+// If line >= 0, strip any existing ":line" from filep and replace with the given line number.
+static void format_symbol(char* dest, const char* namep, char* filep, const char* ovl_name, s32 line) {
+    // Strip existing ":line" from file string if we're overriding it
+    if (line >= 0 && filep != nullptr) {
+        char* colon = strchr(filep, ':');
+        if (colon) *colon = '\0';
+    }
+
+    if (ovl_name != nullptr) {
+        if (filep == nullptr && line >= 0)
+            sprintf(dest, "%s (%s:%ld)", namep, ovl_name, line);
+        else if (filep == nullptr)
+            sprintf(dest, "%s (%s)", namep, ovl_name);
+        else if (line >= 0)
+            sprintf(dest, "%s (%s %s:%ld)", namep, ovl_name, filep, line);
+        else
+            sprintf(dest, "%s (%s %s)", namep, ovl_name, filep);
+    } else {
+        if (filep == nullptr && line >= 0)
+            sprintf(dest, "%s (:%ld)", namep, line);
+        else if (filep == nullptr)
+            sprintf(dest, "%s", namep);
+        else if (line >= 0)
+            sprintf(dest, "%s (%s:%ld)", namep, filep, line);
+        else
+            sprintf(dest, "%s (%s)", namep, filep);
+    }
+}
+
+void backtrace_address_to_string(u32 address, char* dest, s32 line) {
+    const char* ovl_name = nullptr;
     u32 debugRomStart = 0, debugRomEnd = 0, ovlBase = 0;
     const char* ovl_sym_name = ovl_resolve_addr(address, &ovl_name,
                                               &debugRomStart, &debugRomEnd, &ovlBase);
-    if (ovl_sym_name != NULL) {
+    if (ovl_sym_name != nullptr) {
         if (debugRomStart != 0) {
             u32 offset = address - ovlBase;
             Symbol sym;
@@ -442,14 +471,14 @@ void backtrace_address_to_string(u32 address, char* dest) {
                 char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
                 char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
-                if (filep == NULL)
-                    sprintf(dest, "%s (%s)", namep, ovl_name);
-                else
-                    sprintf(dest, "%s (%s %s)", namep, ovl_name, filep);
+                format_symbol(dest, namep, filep, ovl_name, line);
                 return;
             }
         }
-        sprintf(dest, "%s (%s)", ovl_sym_name, ovl_name);
+        if (ovl_sym_name[0] != '\0')
+            sprintf(dest, "%s (%s)", ovl_sym_name, ovl_name);
+        else
+            sprintf(dest, "0x%08lX (%s)", address, ovl_name);
         return;
     }
 
@@ -462,20 +491,9 @@ void backtrace_address_to_string(u32 address, char* dest) {
         char* namep = load_symbol_string(name, sym.nameOffset, ARRAY_COUNT(name));
         char* filep = load_symbol_string(file, sym.fileOffset, ARRAY_COUNT(file));
 
-        offset = 0; // Don't show offsets
-
-        if (filep == nullptr)
-            if (offset == 0)
-                sprintf(dest, "%s", namep);
-            else
-                sprintf(dest, "%s+0x%lX", namep, offset);
-        else
-            if (offset == 0)
-                sprintf(dest, "%s (%s)", namep, filep);
-            else
-                sprintf(dest, "%s (%s+0x%lX)", namep, filep, offset);
+        format_symbol(dest, namep, filep, nullptr, line);
     } else {
-        sprintf(dest, "0x%lX", address);
+        sprintf(dest, "0x%08lX", address);
     }
 }
 
@@ -487,7 +505,7 @@ void debug_backtrace(void) {
 
     debugf("Backtrace:\n");
     for (i = 0; i < max; i++) {
-        backtrace_address_to_string(bt[i], buf);
+        backtrace_address_to_string(bt[i], buf, -1);
         debugf("    %s\n", buf);
     }
 }

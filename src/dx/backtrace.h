@@ -53,7 +53,10 @@ int backtrace_thread(void **buffer, int size, OSThread *thread);
 /** Print a backtrace. */
 void debug_backtrace(void);
 
-/** Converts a function address to a string representation using its name, offset, and file. */
-void backtrace_address_to_string(u32 address, char* dest);
+/**
+ * Converts a function address to a string representation using its name, offset, and file.
+ * If line >= 0, it overrides the file's line number (used for EVT script lines).
+ */
+void backtrace_address_to_string(u32 address, char* dest, s32 line);
 
 #endif
