@@ -4146,7 +4146,7 @@ enum EnemyFlags {
     | ENEMY_FLAG_ENABLE_HIT_SCRIPT \
     )
 
-// used with enemy->aiFlags
+// used with Enemy::aiFlags
 enum EnemyAIFlags {
     AI_FLAG_1                           = 0x00000001,
     AI_FLAG_CANT_DETECT_PLAYER          = 0x00000002,
@@ -4172,9 +4172,9 @@ enum EnemyDetectFlags {
     AI_DETECT_MOTION_SENSITIVE      = 0x02, // enemy will have an easier time detecting a moving player
 };
 
-enum TerritoryFlags {
-    AI_TERRITORY_IGNORE_HIDING      = 0x01, // bow and sushi dont prevent enemy detection
-    AI_TERRITORY_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
+enum DetectVolumeFlags {
+    AI_DETECT_FLAG_IGNORE_HIDING      = 0x01, // bow and sushi dont prevent enemy detection
+    AI_DETECT_FLAG_IGNORE_ELEVATION   = 0x02, // vertical size of detection volume is ignored
 };
 
 enum MusicSettingsFlags {

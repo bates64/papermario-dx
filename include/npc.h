@@ -193,17 +193,6 @@ typedef struct EnemyDrops {
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
 
-typedef struct EnemyDetectVolume {
-    /* 0x00 */ s32 skipPlayerDetectChance;
-    /* 0x04 */ enum TerritoryShape shape;
-    /* 0x08 */ s32 pointX;
-    /* 0x0C */ s32 pointZ;
-    /* 0x10 */ s32 sizeX;
-    /* 0x14 */ s32 sizeZ;
-    /* 0x18 */ f32 halfHeight;
-    /* 0x1C */ s16 detectFlags; // see: TerritoryFlags
-} EnemyDetectVolume; // size = 0x20
-
 typedef struct {
     /* 0x00 */ Vec3i centerPos;
     /* 0x0C */ VecXZi wanderSize;

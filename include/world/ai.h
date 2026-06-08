@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 #define AI_TEMP_STATE                  functionTemp[0]
 #define AI_TEMP_STATE_AFTER_SUSPEND    functionTemp[1]
@@ -35,6 +36,17 @@ enum BasicAIStates {
     AI_STATE_PATROL_RESUME          = 15,
     AI_STATE_SUSPEND                = 99,
 };
+
+typedef struct EnemyDetectVolume {
+    /* 0x00 */ s32 skipPlayerDetectChance;
+    /* 0x04 */ enum TerritoryShape shape;
+    /* 0x08 */ s32 pointX;
+    /* 0x0C */ s32 pointZ;
+    /* 0x10 */ s32 sizeX;
+    /* 0x14 */ s32 sizeZ;
+    /* 0x18 */ f32 halfHeight;
+    /* 0x1C */ s16 detectFlags; // see: DetectVolumeFlags
+} EnemyDetectVolume; // size = 0x20
 
 void ai_suspend_for_time(Evt* script);
 void basic_ai_suspend(Evt* script);

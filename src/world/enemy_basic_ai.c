@@ -152,12 +152,12 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* detect, Enemy* enemy, f32 radi
 
     partnerStatus = &gPartnerStatus;
     if (partnerStatus->actingPartner == PARTNER_BOW && partnerStatus->partnerActionState
-            && !(detect->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
+            && !(detect->detectFlags & AI_DETECT_FLAG_IGNORE_HIDING)) {
         return false;
     }
 
     if (partnerStatus->actingPartner == PARTNER_SUSHIE && partnerStatus->partnerActionState
-            && !(detect->detectFlags & AI_TERRITORY_IGNORE_HIDING)) {
+            && !(detect->detectFlags & AI_DETECT_FLAG_IGNORE_HIDING)) {
         return false;
     }
 
@@ -166,7 +166,7 @@ b32 basic_ai_check_player_dist(EnemyDetectVolume* detect, Enemy* enemy, f32 radi
     }
 
     if (detect->halfHeight <= fabsf(npc->pos.y - playerStatus->pos.y)
-            && !(detect->detectFlags & AI_TERRITORY_IGNORE_ELEVATION)) {
+            && !(detect->detectFlags & AI_DETECT_FLAG_IGNORE_ELEVATION)) {
         return false;
     }
 

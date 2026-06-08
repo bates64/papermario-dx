@@ -11,7 +11,6 @@
 
 struct Enemy;
 struct MobileAISettings;
-struct EnemyDetectVolume;
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 extern "C" {
