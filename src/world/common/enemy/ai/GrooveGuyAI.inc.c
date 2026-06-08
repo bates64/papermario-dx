@@ -71,7 +71,7 @@ void N(GrooveGuyAI_Dance)(Evt* script, MobileAISettings* settings, EnemyDetectVo
                 npc->rot.y -= 360.0;
             }
             enemy->varTable[AI_VAR_GROOVE_DANCE_TIME]++;
-            if (enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] >= 46) {
+            if (enemy->varTable[AI_VAR_GROOVE_DANCE_TIME] > 45) {
                 enemy->varTable[AI_VAR_GROOVE_DANCE_PHASE] = DANCE_PHASE_DONE;
             }
             break;
