@@ -102,6 +102,6 @@ void N(UpdateIntroMessages)(IntroMessage** introMessageLists) {
 API_CALLABLE(N(SetCurtainCallback)) {
     Bytecode* args = script->ptrReadPos;
 
-    set_curtain_draw_callback((void (*)) evt_get_variable(script, *args++));
+    set_curtain_draw_callback((VoidCallback) evt_get_variable(script, *args++));
     return ApiStatus_DONE2;
 }

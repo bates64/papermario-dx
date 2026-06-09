@@ -99,7 +99,6 @@ Vec2i gPauseSpiritsCursorPositions[] = {
 MenuWindowBP gPauseSpiritsWindowsBPs[] = {
     {
         .windowID = WIN_PAUSE_SPIRITS,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,
@@ -113,7 +112,6 @@ MenuWindowBP gPauseSpiritsWindowsBPs[] = {
     },
     {
         .windowID = WIN_PAUSE_SPIRITS_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 86, .y = 124 },
         .width = 120,
         .height = 20,

@@ -134,6 +134,7 @@ API_CALLABLE(N(UpdateSearchlight)) {
     return ApiStatus_DONE2;
 }
 
+//TODO replace callsites with engine version in math_api
 API_CALLABLE(N(GetAngleBetweenPoints)) {
     Bytecode* args = script->ptrReadPos;
     s32 outVar = *args++;

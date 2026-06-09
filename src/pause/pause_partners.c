@@ -202,7 +202,6 @@ s32 gPausePartnersNextPortraitIndex = -1;
 MenuWindowBP gPausePartnersWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_PARTNERS,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,
@@ -215,7 +214,6 @@ MenuWindowBP gPausePartnersWindowBPs[] = {
         .style = { .customStyle = &gPauseWS_20 }
     }, {
         .windowID = WIN_PAUSE_PARTNERS_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 8, .y = 103 },
         .width = 112,
         .height = 20,
@@ -228,7 +226,6 @@ MenuWindowBP gPausePartnersWindowBPs[] = {
         .style = { .customStyle = &gPauseWS_22 }
     }, {
         .windowID = WIN_PAUSE_PARTNERS_MOVELIST,
-        .unk_01 = 0,
         .pos = { .x = 133, .y = 36 },
         .width = 140,
         .height = 80,
@@ -241,7 +238,6 @@ MenuWindowBP gPausePartnersWindowBPs[] = {
         .style = { -1 }
     }, {
         .windowID = WIN_PAUSE_PARTNERS_MOVELIST_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 12, .y = -6 },
         .width = 80,
         .height = 16,
@@ -254,7 +250,6 @@ MenuWindowBP gPausePartnersWindowBPs[] = {
         .style = { -1 }
     }, {
         .windowID = WIN_PAUSE_PARTNERS_MOVELIST_FLOWER,
-        .unk_01 = 0,
         .pos = { .x = 102, .y = -12 },
         .width = 32,
         .height = 32,

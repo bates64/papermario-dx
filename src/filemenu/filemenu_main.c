@@ -132,7 +132,6 @@ u8 filemenu_main_gridData[] = {
 MenuWindowBP filemenu_main_windowBPs[] = {
     {
         .windowID = WIN_FILES_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 0 },
         .width = 0,
         .height = 0,
@@ -146,7 +145,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_STEREO,
-        .unk_01 = 0,
         .pos = { .x = -2, .y = 6 },
         .width = 68,
         .height = 20,
@@ -160,7 +158,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_MONO,
-        .unk_01 = 0,
         .pos = { .x = 221, .y = 6 },
         .width = 68,
         .height = 20,
@@ -174,7 +171,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_OPTION_LEFT,
-        .unk_01 = 0,
         .pos = { .x = 5, .y = 171 },
         .width = 88,
         .height = 16,
@@ -188,7 +184,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_OPTION_CENTER,
-        .unk_01 = 0,
         .pos = { .x = 0, .y = 171 },
         .width = 88,
         .height = 16,
@@ -202,7 +197,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_OPTION_RIGHT,
-        .unk_01 = 0,
         .pos = { .x = 195, .y = 171 },
         .width = 88,
         .height = 16,
@@ -216,7 +210,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT3_BODY,
-        .unk_01 = 0,
         .pos = { .x = 9, .y = 110 },
         .width = 130,
         .height = 54,
@@ -230,7 +223,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT3_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = -8 },
         .width = 124 + OFFSET_WIDTH,
         .height = 15,
@@ -244,7 +236,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT4_BODY,
-        .unk_01 = 0,
         .pos = { .x = 149, .y = 110 },
         .width = 130,
         .height = 54,
@@ -258,7 +249,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT4_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = -8 },
         .width = 124 + OFFSET_WIDTH,
         .height = 15,
@@ -272,7 +262,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT1_BODY,
-        .unk_01 = 0,
         .pos = { .x = 9, .y = 41 },
         .width = 130 + OFFSET_WIDTH,
         .height = 54,
@@ -286,7 +275,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT1_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = -8 },
         .width = 124 + OFFSET_WIDTH,
         .height = 15,
@@ -300,7 +288,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT2_BODY,
-        .unk_01 = 0,
         .pos = { .x = 149, .y = 41 },
         .width = 130,
         .height = 54,
@@ -314,7 +301,6 @@ MenuWindowBP filemenu_main_windowBPs[] = {
     },
     {
         .windowID = WIN_FILES_SLOT2_TITLE,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = -8 },
         .width = 124 + OFFSET_WIDTH,
         .height = 15,

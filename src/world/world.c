@@ -53,7 +53,7 @@ void load_map_script_lib(void) {
 void load_map_by_IDs(s16 areaID, s16 mapID, s16 loadType) {
     s32 skipLoadingAssets = 0;
     const char* mapId;
-    s32 decompressedSize;
+    u32 decompressedSize;
 
     ovl_unload_type(OVL_MAP);
 
@@ -300,7 +300,7 @@ void* load_asset_by_name(const char* assetName, u32* decompressedSize) {
     return ret;
 }
 
-s32 get_asset_offset(char* assetName, s32* compressedSize) {
+s32 get_asset_offset(char* assetName, u32* compressedSize) {
     AssetHeader firstHeader;
     AssetHeader* assetTableBuffer;
     AssetHeader* curAsset;

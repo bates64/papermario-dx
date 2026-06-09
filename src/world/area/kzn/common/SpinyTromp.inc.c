@@ -2,7 +2,27 @@
 #include "world/area/kzn/kzn.h"
 #include "sprite/player.h"
 
-API_CALLABLE(N(SpinyTrompHit)) {
+#define SPINY_TROMP_RADIUS 55
+
+#ifndef SPINY_TROMP_START_X
+#error  SPINY_TROMP_START_X must be defined for SpinyTromp
+#define SPINY_TROMP_START_X 0
+#endif
+
+#ifndef SPINY_TROMP_START_Y
+#error  SPINY_TROMP_START_Y must be defined for SpinyTromp
+#define SPINY_TROMP_START_Y 0
+#endif
+
+enum {
+    VAR_TROMP_0             = 0,
+    VAR_TROMP_1             = 1,
+    VAR_TROMP_2             = 2,
+    VAR_TROMP_ROLL_ANGLE    = 3,
+    VAR_TROMP_5             = 5,
+};
+
+API_CALLABLE(N(SpinyTromp_DamagePlayer)) {
     subtract_hp(1);
     return ApiStatus_DONE2;
 }
@@ -16,52 +36,53 @@ API_CALLABLE(N(SpinyTromp_GetActingPartner)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnkFunc46)) {
-    f32 var1 = script->varTable[0];
-    f32 var2 = script->varTable[2];
-    f32 var3 = 0.0f;
-    f32 var4 = 2000.0f;
+API_CALLABLE(N(SpinyTromp_SnapToGround)) {
+    f32 posX = script->varTable[0];
+    f32 posY = script->varTable[2];
+    f32 posZ = 0.0f;
+    f32 hitDepth = 2000.0f;
 
-    if (npc_raycast_down_sides(COLLIDER_FLAG_IGNORE_PLAYER, &var1, &var2, &var3, &var4)) {
-        script->varTable[0] = var1;
-        script->varTable[2] = var2 + 55.0f;
+    if (npc_raycast_down_sides(COLLIDER_FLAG_IGNORE_PLAYER, &posX, &posY, &posZ, &hitDepth)) {
+        script->varTable[0] = posX;
+        script->varTable[2] = posY + SPINY_TROMP_RADIUS;
     }
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(SpinyTromp_CheckDist)) {
-    f32 x = script->varTable[0] - gPlayerStatus.pos.x;
-    f32 y = script->varTable[2] - gPlayerStatus.pos.y;
-    f32 z = 0.0f - gPlayerStatus.pos.z;
+API_CALLABLE(N(SpinyTromp_GetPlayerDist)) {
+    f32 dx = script->varTable[0] - gPlayerStatus.pos.x;
+    f32 dy = script->varTable[2] - gPlayerStatus.pos.y;
+    f32 dz = 0.0f - gPlayerStatus.pos.z;
 
-    script->varTable[4] = sqrtf(SQ(x) + SQ(y) + SQ(z));
+    script->varTable[4] = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnkFunc48)) {
+API_CALLABLE(N(SpinyTromp_SetPlayerPitch)) {
     gPlayerStatus.pitch = evt_get_variable(script, *script->ptrReadPos);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnkFunc49)) {
+// update small position offset applied to model as it rolls
+API_CALLABLE(N(SpinyTromp_UpdateRollWobble)) {
     script->varTable[5] = (cos_deg(-(f32) script->varTable[3] - 35.0) * 3.0) - 2.3;
     script->varTable[6] = sin_deg(-(f32) script->varTable[3] - 35.0) * 5.0;
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnkFunc50)) {
-    f32 x = UNK_FUNC_50_LVar1 - script->varTable[0];
-    f32 z = UNK_FUNC_50_LVar2 - script->varTable[2];
+API_CALLABLE(N(SpinyTromp_UpdateRollAngle)) {
+    f32 dx = SPINY_TROMP_START_X - script->varTable[0];
+    f32 dy = SPINY_TROMP_START_Y - script->varTable[2];
 
-    script->varTable[3] = -sqrtf(SQ(x) + SQ(z));
+    script->varTable[3] = -sqrtf(SQ(dx) + SQ(dy));
 
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(UnkFunc51)) {
+API_CALLABLE(N(SpinyTromp_UpdateSoundPos)) {
     Bytecode* args = script->ptrReadPos;
 
     script->functionTemp[0] = evt_get_variable(script, *args++);
@@ -72,7 +93,7 @@ API_CALLABLE(N(UnkFunc51)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_80240D10_C7EE90) = {
+EvtScript N(EVS_SpinyTromp_HitPlayer) = {
     Call(DisablePlayerInput, true)
     Label(10)
     Call(GetPartnerInUse, LVar0)
@@ -98,15 +119,15 @@ EvtScript N(D_80240D10_C7EE90) = {
     IfLt(LVar0, 180)
         Call(InterpPlayerYaw, 90, 1)
         Wait(1)
-        Call(N(UnkFunc48), 20)
+        Call(N(SpinyTromp_SetPlayerPitch), 20)
     Else
         Call(InterpPlayerYaw, 270, 1)
         Wait(1)
-        Call(N(UnkFunc48), -20)
+        Call(N(SpinyTromp_SetPlayerPitch), -20)
     EndIf
     Call(SetPlayerAnimation, ANIM_Mario1_Fallen)
     Wait(1)
-    Call(N(SpinyTrompHit))
+    Call(N(SpinyTromp_DamagePlayer))
     Call(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_SET_WAVY, Float(3.0), Float(3.0), 0, 0)
     Label(1)
         Wait(1)
@@ -116,7 +137,7 @@ EvtScript N(D_80240D10_C7EE90) = {
     Wait(30)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Fallen, IMGFX_CLEAR, 0, 0, 0, 0)
     Call(SetPlayerAnimation, ANIM_Mario1_GetUp)
-    Call(N(UnkFunc48), 0)
+    Call(N(SpinyTromp_SetPlayerPitch), 0)
     Label(2)
     Call(DisablePlayerInput, false)
     Return

@@ -1,6 +1,6 @@
 #include "pause/pause_common.h"
 
-void pause_stats_draw_contents(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+MenuPanelDrawContentFunc pause_stats_draw_contents;
 void pause_stats_init(MenuPanel* panel);
 void pause_stats_handle_input(MenuPanel* panel);
 void pause_stats_cleanup(MenuPanel* panel);
@@ -121,18 +121,10 @@ HudScript* gPauseStatsStarElements[] = { &HES_StatusStar1, &HES_StatusStar3, &HE
                                          &HES_StatusStar4, &HES_StatusStar5, &HES_StatusStar6,
                                          &HES_StatusStar7 };
 s32 D_8024F46C[] = { -1, 1, 2, 4, 5, 7, 8 };
-// s32 D_8024F46C = -1;
-// s32 D_8024F470 = 1;
-// s32 D_8024F474 = 2;
-// s32 D_8024F478 = 4;
-// s32 D_8024F47C = 5;
-// s32 D_8024F480 = 7;
-// s32 D_8024F484 = 8;
 
 MenuWindowBP gStatsMenuWindowBPs[] = {
     {
         .windowID = WIN_PAUSE_STATS,
-        .unk_01 = 0,
         .pos = { .x = 3, .y = 16 },
         .width = 289,
         .height = 154,

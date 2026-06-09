@@ -686,14 +686,14 @@ void update_curtains(void);
 // render_curtains
 void set_curtain_scale_goal(f32 scale);
 void set_curtain_scale(f32 scale);
-void set_curtain_draw_callback(UNK_FUN_PTR(callback));
+void set_curtain_draw_callback(VoidCallback callback);
 void set_curtain_fade_goal(f32 fade);
 void set_curtain_fade(f32 fade);
 
 void crash_screen_init(void);
 void crash_screen_set_draw_info(u16* frameBufPtr, s16 width, s16 height);
 
-s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void));
+s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc);
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
@@ -753,7 +753,7 @@ void func_800EF3E4(void);
 void enable_player_shadow(void);
 s32 get_msg_lines(s32 messageID);
 void set_window_properties(s32 panelID, s32 posX, s32 posY, s32 width, s32 height, u8, void* drawContents, void* drawContentsArg, s8 parent);
-void set_window_update(s32 panelID, s32);
+void set_window_update(s32 panelID, s32 func);
 void set_windows_visible(s32 groupIdx);
 
 void partner_disable_input(void);
@@ -899,7 +899,7 @@ void render_entities(void);
 void render_player(void);
 void render_workers_scene(void);
 void render_effects_scene(void);
-s32 get_asset_offset(char*, s32*);
+s32 get_asset_offset(char*, u32*);
 void initialize_status_bar(void);
 void status_bar_start_blinking_fp(void);
 s32 is_status_bar_visible(void);

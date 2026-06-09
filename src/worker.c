@@ -29,7 +29,7 @@ void init_worker_list(void) {
     }
 }
 
-s32 create_worker_scene(void (*updateFunc)(void), void (*renderFunc)(void)) {
+s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc) {
     Worker* worker;
     s32 i;
 

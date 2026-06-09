@@ -206,7 +206,7 @@ BSS f32 gCurtainScale;
 BSS f32 gCurtainScaleGoal;
 BSS f32 gCurtainFade;
 BSS f32 gCurtainFadeGoal;
-BSS UNK_FUN_PTR(gCurtainDrawCallback);
+BSS VoidCallback gCurtainDrawCallback;
 BSS Mtx D_8009BAA8[2];
 
 void initialize_curtains(void) {
@@ -291,7 +291,7 @@ void set_curtain_scale(f32 scale) {
     gCurtainScale = scale;
 }
 
-void set_curtain_draw_callback(UNK_FUN_PTR(callback)) {
+void set_curtain_draw_callback(VoidCallback callback) {
     gCurtainDrawCallback = callback;
 }
 

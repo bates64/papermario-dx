@@ -59,10 +59,10 @@ extern WindowStyle gWindowStyles[];
 extern u16 gCurrentDoorSounds;
 extern u16 gCurrentRoomDoorSounds;
 
-extern UNK_FUN_PTR(TalkNotificationCallback);
-extern UNK_FUN_PTR(InteractNotificationCallback);
-extern UNK_FUN_PTR(ISpyNotificationCallback);
-extern UNK_FUN_PTR(PulseStoneNotificationCallback);
+extern VoidCallback TalkNotificationCallback;
+extern VoidCallback InteractNotificationCallback;
+extern VoidCallback ISpyNotificationCallback;
+extern VoidCallback PulseStoneNotificationCallback;
 
 extern Entity* TweesterTouchingPartner;
 extern Entity* TweesterTouchingPlayer;

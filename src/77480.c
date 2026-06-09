@@ -29,10 +29,10 @@ extern Addr inspect_icon_ROM_START;
 extern Addr inspect_icon_ROM_END;
 #endif
 
-void (*ISpyNotificationCallback)(void);
-void (*PulseStoneNotificationCallback)(void);
-void (*TalkNotificationCallback)(void);
-void (*InteractNotificationCallback)(void);
+VoidCallback ISpyNotificationCallback;
+VoidCallback PulseStoneNotificationCallback;
+VoidCallback TalkNotificationCallback;
+VoidCallback InteractNotificationCallback;
 s32 D_8010C950;
 
 PlayerStatus gPlayerStatus;

@@ -1,16 +1,14 @@
 #include "sam_01.h"
 #include "entity.h"
 
-#define NAME_SUFFIX _Entity
 #include "world/common/entity/Chest.inc.c"
 
 EvtScript N(EVS_OpenChest_AttackFXE) = EVT_OPEN_CHEST(ITEM_ATTACK_FX_E, GF_SAM01_Chest_AttackFXE);
-#define NAME_SUFFIX
 
 EvtScript N(EVS_MakeEntities) = {
     Call(MakeEntity, Ref(Entity_Chest), 95, 0, -180, 270, 0, MAKE_ENTITY_END)
     Call(AssignChestFlag, GF_SAM01_Chest_AttackFXE)
-    Call(AssignScript, Ref(N(EVS_OpenChest_AttackFXE_Entity)))
+    Call(AssignScript, Ref(N(EVS_OpenChest_AttackFXE)))
     Call(SetEntityCullMode, 1)
     IfLt(GB_StoryProgress, STORY_CH7_MAYOR_MURDER_SOLVED)
         Call(MakeItemEntity, ITEM_PRESENT, -325, 0, -240, ITEM_SPAWN_MODE_DECORATION, 0)
