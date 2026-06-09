@@ -2539,7 +2539,7 @@ void remove_part_shadow(s32 actorID, s32 partID) {
     delete_shadow(part->shadowIndex);
 }
 
-void create_part_shadow_by_ref(UNK_TYPE arg0, ActorPart* part) {
+void create_part_shadow_by_ref(ActorPart* part) {
     part->flags &= ~ACTOR_PART_FLAG_NO_SHADOW;
     part->shadowIndex = create_shadow_type(SHADOW_VARYING_CIRCLE, part->curPos.x, part->curPos.y, part->curPos.z);
     part->shadowScale = part->size.x / 24.0;

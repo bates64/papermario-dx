@@ -1,57 +1,53 @@
 #include "common.h"
 #include "npc.h"
 
-API_CALLABLE(N(UnkFunc62)) {
+enum {
+    FAKE_GOOMBARIO_JUMP_INIT         = 0,
+    FAKE_GOOMBARIO_JUMP_TRAVEL       = 1,
+    FAKE_GOOMBARIO_JUMP_BOUNCE_INIT  = 2,
+    FAKE_GOOMBARIO_JUMP_BOUNCE       = 3,
+};
+
+enum {
+    FAKE_GOOMBARIO_ARC_STANDARD      = 0,
+    FAKE_GOOMBARIO_ARC_BOUNCE_ONLY   = 1,
+    FAKE_GOOMBARIO_ARC_HIGHER        = 2,
+    FAKE_GOOMBARIO_ARC_HEADBONK      = 3,
+    FAKE_GOOMBARIO_ARC_HEADBONK_HIGH = 4,
+};
+
+API_CALLABLE(N(FakeGoombarioJumpOnTarget)) {
     Bytecode* args = script->ptrReadPos;
     Actor* actor = get_actor(script->owner1.enemyID);
     ActorState* state = &actor->state;
-    f32 stateCurrentX;
-    f32 stateCurrentZ;
-    f32 stateGoalX;
-    f32 stateGoalZ;
-    f32 oldActorY;
     f32 oldActorX;
-    f64 currentPosX64;
-    f64 velocity;
-    f64 temp_f20_6;
-    f64 temp_f22_2;
-    f64 temp_f22_3;
-    f64 temp_f22_5;
-    f64 temp_f22_6;
-    f32 temp;
-    f64 phi_f20;
-    f32 phi_f0;
-    f64 phi_f2;
-    f64 phi_f20_2;
-    f32 phi_f0_2;
-    f64 phi_f2_2;
+    f32 oldActorY;
+    f32 remainingDist;
+    f32 phaseScale;
 
     if (isInitialCall) {
         actor->state.moveTime = evt_get_variable(script, *args++);
         actor->state.moveArcAmplitude = evt_get_variable(script, *args++);
         script->functionTemp[1] = 0;
-        script->functionTemp[0] = 0;
-        if (actor->state.moveArcAmplitude == 1) {
-            script->functionTemp[0] = 2;
+        script->functionTemp[0] = FAKE_GOOMBARIO_JUMP_INIT;
+        if (actor->state.moveArcAmplitude == FAKE_GOOMBARIO_ARC_BOUNCE_ONLY) {
+            script->functionTemp[0] = FAKE_GOOMBARIO_JUMP_BOUNCE_INIT;
         }
     }
 
-    if (script->functionTemp[0] == 0) {
+    if (script->functionTemp[0] == FAKE_GOOMBARIO_JUMP_INIT) {
         state->curPos.x = actor->curPos.x;
         state->curPos.y = actor->curPos.y;
-        stateGoalX = state->goalPos.x;
-        stateGoalZ = state->goalPos.z;
-        stateCurrentX = state->curPos.x;
-        stateCurrentZ = actor->curPos.z;
-        state->curPos.z = stateCurrentZ;
-        state->angle = atan2(stateCurrentX, stateCurrentZ, stateGoalX, stateGoalZ);
-        state->dist = dist2D(stateCurrentX, stateCurrentZ, stateGoalX, stateGoalZ);
+        state->curPos.z = actor->curPos.z;
+        state->angle = atan2(state->curPos.x, state->curPos.z, state->goalPos.x, state->goalPos.z);
+        state->dist = dist2D(state->curPos.x, state->curPos.z, state->goalPos.x, state->goalPos.z);
+
         if (state->moveTime == 0) {
             state->moveTime = state->dist / state->speed;
-            temp = state->dist - (state->moveTime * state->speed);
+            remainingDist = state->dist - (state->moveTime * state->speed);
         } else {
             state->speed = state->dist / state->moveTime;
-            temp = state->dist - (state->moveTime * state->speed);
+            remainingDist = state->dist - (state->moveTime * state->speed);
         }
 
         if (state->moveTime == 0) {
@@ -63,52 +59,29 @@ API_CALLABLE(N(UnkFunc62)) {
         state->velStep.z = (state->goalPos.z - state->curPos.z) / state->moveTime;
         state->acceleration = PI_S / state->moveTime;
         state->vel = 0.0f;
-        state->speed += temp / state->moveTime;
+        state->speed += remainingDist / state->moveTime;
 
-        if (state->moveArcAmplitude < 3) {
-            state->unk_24 = 90.0f;
-            state->unk_28 = 360 / state->moveTime;
-            temp = state->dist;
-            temp -= 20.0;
-            temp /= 6.0;
-            temp += 47.0;
-            state->bounceDivisor = temp;
-            if (state->moveArcAmplitude == 2) {
-                state->bounceDivisor *= 1.12;
-            }
-            state->unk_18.x = 0.0f;
-            state->unk_18.y = 0.0f;
-            phi_f20 = state->vel;
-            temp_f22_2 = state->acceleration;
-            phi_f0 = sin_rad(DEG_TO_RAD(state->unk_24));
-            phi_f2 = 0.53;
-            state->vel = phi_f20 + ((phi_f0 * phi_f2 * temp_f22_2) + temp_f22_2);
-        } else {
-            state->unk_24 = 90.0f;
-            state->unk_28 = 360 / state->moveTime;
-            temp = state->dist;
-            temp -= 20.0;
-            temp /= 6.0;
-            temp += 47.0;
-            state->bounceDivisor = temp;
-            if (state->moveArcAmplitude == 4) {
-                state->bounceDivisor *= 1.25;
-            }
-            state->unk_18.x = 0.0f;
-            state->unk_18.y = 0.0f;
-            velocity = state->vel;
-            temp_f22_3 = state->acceleration;
-            phi_f0 = sin_rad(DEG_TO_RAD(state->unk_24));
-            phi_f2 = 0.8;
-            state->vel = velocity + ((phi_f0 * phi_f2 * temp_f22_3) + temp_f22_3);
+        state->unk_24 = 90.0f; // sine phase
+        state->unk_28 = 360 / state->moveTime; // phase step
+        state->bounceDivisor = ((state->dist - 20.0f) / 6.0f) + 47.0f;
+        if (state->moveArcAmplitude == FAKE_GOOMBARIO_ARC_HIGHER) {
+            state->bounceDivisor *= 1.12;
         }
+        if (state->moveArcAmplitude == FAKE_GOOMBARIO_ARC_HEADBONK_HIGH) {
+            state->bounceDivisor *= 1.25;
+        }
+        state->unk_18.x = 0.0f; // previous Y before sine arc
+        state->unk_18.y = 0.0f; // current Y after sine arc
+        phaseScale = (state->moveArcAmplitude < FAKE_GOOMBARIO_ARC_HEADBONK) ? 0.53f : 0.8f;
+        state->vel += (sin_rad(DEG_TO_RAD(state->unk_24)) * phaseScale * state->acceleration) + state->acceleration;
+
         set_actor_anim(ACTOR_SELF, 1, state->animJumpRise);
         sfx_play_sound(SOUND_QUICK_PLAYER_JUMP);
-        script->functionTemp[0] = 1;
+        script->functionTemp[0] = FAKE_GOOMBARIO_JUMP_TRAVEL;
     }
 
     switch (script->functionTemp[0]) {
-        case 1:
+        case FAKE_GOOMBARIO_JUMP_TRAVEL:
             if (state->vel > PI_S / 2) {
                 set_actor_anim(ACTOR_SELF, 1, state->animJumpFall);
             }
@@ -127,19 +100,8 @@ API_CALLABLE(N(UnkFunc62)) {
 
             actor->rot.z = -atan2(oldActorX, -oldActorY, actor->curPos.x, -actor->curPos.y);
             state->unk_18.y = actor->curPos.y;
-            if (state->moveArcAmplitude < 3) {
-                phi_f20_2 = state->vel;
-                temp_f22_5 = state->acceleration;
-                phi_f0_2 = sin_rad(DEG_TO_RAD(state->unk_24));
-                phi_f2_2 = 0.53;
-                state->vel = phi_f20_2 + ((phi_f0_2 * phi_f2_2 * temp_f22_5) + temp_f22_5);
-            } else {
-                temp_f20_6 = state->vel;
-                temp_f22_6 = state->acceleration;
-                phi_f0_2 = sin_rad(DEG_TO_RAD(state->unk_24));
-                phi_f2_2 = 0.8;
-                state->vel = temp_f20_6 + ((phi_f0_2 * phi_f2_2 * temp_f22_6) + temp_f22_6);
-            }
+            phaseScale = (state->moveArcAmplitude < FAKE_GOOMBARIO_ARC_HEADBONK) ? 0.53f : 0.8f;
+            state->vel += (sin_rad(DEG_TO_RAD(state->unk_24)) * phaseScale * state->acceleration) + state->acceleration;
 
             state->unk_24 += state->unk_28;
             state->unk_24 = clamp_angle(state->unk_24);
@@ -152,7 +114,7 @@ API_CALLABLE(N(UnkFunc62)) {
                 return ApiStatus_DONE1;
             }
             break;
-        case 2:
+        case FAKE_GOOMBARIO_JUMP_BOUNCE_INIT:
             state->moveTime = 1;
             state->acceleration = 1.8f;
             state->unk_24 = 90.0f;
@@ -162,11 +124,10 @@ API_CALLABLE(N(UnkFunc62)) {
             state->curPos.x = actor->curPos.x;
             state->curPos.y = actor->curPos.y;
             state->curPos.z = actor->curPos.z;
-            script->functionTemp[0] = 3;
+            script->functionTemp[0] = FAKE_GOOMBARIO_JUMP_BOUNCE;
             // fallthrough
-        case 3:
-            currentPosX64 = state->curPos.x; // required to match
-            state->curPos.x = currentPosX64 + state->bounceDivisor * sin_rad(DEG_TO_RAD(state->unk_24)) / 33.0;
+        case FAKE_GOOMBARIO_JUMP_BOUNCE:
+            state->curPos.x += state->bounceDivisor * sin_rad(DEG_TO_RAD(state->unk_24)) / 33.0;
             state->curPos.y -= state->bounceDivisor * sin_rad(DEG_TO_RAD(state->unk_24));
             state->unk_24 += state->unk_28;
             state->unk_24 = clamp_angle(state->unk_24);

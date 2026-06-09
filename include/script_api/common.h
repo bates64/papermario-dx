@@ -1678,7 +1678,7 @@ API_CALLABLE(GetFloatAngleClamped);
 /// If the start and end points are identical, outAngle is left unchanged.
 ///
 /// @evtapi
-/// @param outAngle
+/// @param outAngle integer values only
 /// @param x1
 /// @param z1
 /// @param x2

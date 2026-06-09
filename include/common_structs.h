@@ -13,7 +13,7 @@ typedef ApiStatus(*ApiFunc)(struct Evt*, s32);
 
 typedef Bytecode EvtScript[];
 
-typedef void NoArgCallback(void*);
+typedef void (*VoidCallback)(void);
 typedef void (*AuCallback)(void);
 
 #define MSG_PTR u8*
@@ -167,7 +167,7 @@ typedef struct HeapNode {
 typedef struct NpcMotionBlur {
     /* 0x00 */ s8 unused;
     /* 0x01 */ s8 index; ///< Current blur ring buffer index
-    /* 0x02 */ char unk_02[2]; // padding?
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 posX[NPC_BLUR_FRAMES];
     /* 0x54 */ f32 posY[NPC_BLUR_FRAMES];
     /* 0xA4 */ f32 posZ[NPC_BLUR_FRAMES];
@@ -180,12 +180,12 @@ typedef struct NpcChompBlur {
 
 typedef struct NpcQuizmoBlur {
     /* 0x00 */ s32 flags;
-    /* 0x04 */ char unk_04[0x4];
+    /* 0x04 */ PAD(4);
 } NpcQuizmoBlur; // size = 0x8;
 
 typedef struct NpcHistoryPoint {
     /* 0x00 */ b8 isAirborne;
-    /* 0x01 */ char unk_01[0x3];
+    /* 0x01 */ PAD(3);
     /* 0x04 */ Vec3f pos;
 } NpcHistoryPoint; // size = 0x10
 
@@ -252,7 +252,7 @@ typedef struct Npc {
     /* 0x08C */ s16 turnAroundYawAdjustment;
     /* 0x08E */ s16 duration; // TODO: name less vaguely
     /* 0x090 */ Vec3s homePos;
-    /* 0x096 */ unsigned char pad_96[2];
+    /* 0x096 */ PAD(2);
     /* 0x098 */ s16 imgfxType;
     /* 0x09A */ s16 imgfxArg1;
     /* 0x09C */ s16 imgfxArg2;
@@ -260,25 +260,25 @@ typedef struct Npc {
     /* 0x0A0 */ s16 imgfxArg4;
     /* 0x0A2 */ u16 imgfxFlags;
     /* 0x0A4 */ s8 npcID;
-    /* 0x0A5 */ char unk_A5;
+    /* 0x0A5 */ PAD(1);
     /* 0x0A6 */ s16 collisionDiameter;
     /* 0x0A8 */ s16 collisionHeight;
     /* 0x0AA */ s8 renderMode;
     /* 0x0AB */ s8 verticalRenderOffset;
     /* 0x0AC */ u8 alpha;
     /* 0x0AD */ u8 hideAlpha; ///< Used when hiding NPCs; Multiplied with Npc::alpha
-    /* 0x0AE */ char unk_AE[2];
+    /* 0x0AE */ PAD(2);
     /* 0x0B0 */ AnimID* extraAnimList;
     /* 0x0B4 */ s8 palSwapType; // 0..4 inclusive
     /* 0x0B5 */ s8 palSwapPrevType;
     /* 0x0B6 */ s8 resetPalAdjust;
     /* 0x0B7 */ s8 palAnimState;
-    /* 0x0B8 */ char unk_B8[4];
+    /* 0x0B8 */ PAD(4);
     /* 0x0BC */ s16 nextPalTime;
     /* 0x0BE */ s16 palBlendAlpha;
     /* 0x0C0 */ s8 spriteColorVariations;
     /* 0x0C1 */ s8 originalPalettesCount;
-    /* 0x0C2 */ char unk_C2[2];
+    /* 0x0C2 */ PAD(2);
     /* 0x0C4 */ PAL_PTR* originalPalettesList;
     /* 0x0C8 */ PAL_BIN copiedPalettes[16][SPR_PAL_SIZE];
     /* 0x2C8 */ PAL_PTR adjustedPalettes[16];
@@ -297,7 +297,7 @@ typedef struct Npc {
     /* 0x32E */ s8 changedDecoration[MAX_NPC_DECORATIONS];
     /* 0x330 */ s8 decorationInitialized[MAX_NPC_DECORATIONS];
     /* 0x332 */ s16 decorationGlowPhase[MAX_NPC_DECORATIONS];
-    /* 0x336 */ char unk_336[10];
+    /* 0x336 */ PAD(10);
 } Npc; // size = 0x340
 
 typedef Npc* NpcList[MAX_NPCS];
@@ -320,14 +320,14 @@ typedef struct PlayerData {
     /* 0x008 */ s8 maxBP;
     /* 0x009 */ s8 level;
     /* 0x00A */ b8 hasActionCommands;
-    /* 0x00B */ char pad_00B;
+    /* 0x00B */ PAD(1);
     /* 0x00C */ s16 coins;
-    /* 0x00E */ char unused_00E;
+    /* 0x00E */ PAD(1);
     /* 0x00F */ u8 starPieces;
     /* 0x010 */ s8 starPoints;
     /* 0x011 */ s8 unused_011;
     /* 0x012 */ s8 curPartner;
-    /* 0x013 */ char pad_013;
+    /* 0x013 */ PAD(1);
     /* 0x014 */ PartnerData partners[12];
     /* 0x074 */ s16 keyItems[32];
     /* 0x0B4 */ s16 badges[128];
@@ -337,13 +337,13 @@ typedef struct PlayerData {
     /* 0x288 */ s8 unused_288;
     /* 0x289 */ s8 merleeSpellType;
     /* 0x28A */ s8 merleeCastsLeft;
-    /* 0x28B */ char pad_28B;
+    /* 0x28B */ PAD(1);
     /* 0x28C */ s16 merleeTurnCount;
     /* 0x28E */ s8 maxStarPower;
-    /* 0x28F */ char pad_28F;
+    /* 0x28F */ PAD(1);
     /* 0x290 */ s16 starPower;
     /* 0x292 */ s8 starBeamLevel;
-    /* 0x293 */ char pad_293;
+    /* 0x293 */ PAD(1);
     /* 0x294 */ u16 actionCommandAttempts;
     /* 0x296 */ u16 actionCommandSuccesses;
     /* 0x298 */ u16 hitsTaken;
@@ -360,7 +360,7 @@ typedef struct PlayerData {
     /* 0x2B0 */ s32 runningStepsTaken;
     /* 0x2B4 */ u32 totalCoinsEarned;
     /* 0x2B8 */ s16 idleFrameCounter; /* frames with no inputs, overflows ever ~36 minutes of idling */
-    /* 0x2BA */ char pad_2BA[2];
+    /* 0x2BA */ PAD(2);
     /* 0x2BC */ u32 frameCounter; /* increases by 2 per frame */
     /* 0x2C0 */ u16 quizzesAnswered;
     /* 0x2C2 */ u16 quizzesCorrect;
@@ -375,8 +375,8 @@ typedef struct PlayerData {
     /* 0x336 */ u16 smashGamePlays;
     /* 0x338 */ u32 smashGameTotal; /* all-time winnings, max = 99999 */
     /* 0x33C */ u16 smashGameRecord;
-    /* 0x33E */ char pad_33E[2];
-    /* 0x340 */ char reserved[0xE8]; // unused
+    /* 0x33E */ PAD(2);
+    /* 0x340 */ u8 reserved[0xE8]; // unused
 } PlayerData; // size = 0x428
 
 typedef struct Trigger {
@@ -398,7 +398,7 @@ typedef struct Trigger {
     /* 0x28 */ s32* itemList;
     /* 0x2C */ s32 tattleMsg;
     /* 0x30 */ u8 hasPlayerInteractPrompt;
-    /* 0x31 */ char unk_31[3];
+    /* 0x31 */ PAD(3);
     /* 0x34 */ s32 runningScriptID;
 } Trigger; // size = 0x38
 
@@ -407,10 +407,10 @@ typedef Trigger* TriggerList[MAX_TRIGGERS];
 typedef struct TriggerBlueprint {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s16 varIndex;
-    /* 0x06 */ char unk_06[2];
+    /* 0x06 */ PAD(2);
     /* 0x08 */ s32 colliderID;
     /* 0x0C */ s32 (*onActivateFunc)(struct Trigger*);
-    /* 0x10 */ char unk_10[4];
+    /* 0x10 */ PAD(4);
     /* 0x14 */ s32 tattleMsg;
     /* 0x18 */ s32 hasPlayerInteractPrompt;
     /* 0x1C */ s32* itemList;
@@ -428,8 +428,8 @@ typedef struct Evt {
     /* 0x008 */ Bytecode* ptrNextLine;
     /* 0x00C */ Bytecode* ptrReadPos;
     /* 0x010 */ s8 labelIndices[16];
-    /* 0x020 */ UNK_PTR labelPositions[16];
-    /* 0x060 */ UNK_PTR userData; /* unknown pointer; allocated on the heap, free'd in kill_script() */
+    /* 0x020 */ Bytecode* labelPositions[16];
+    /* 0x060 */ void* userData; /* unknown pointer; allocated on the heap, free'd in kill_script() */
     /* 0x064 */ struct Evt* blockingParent; /* parent? */
     /* 0x068 */ struct Evt* childScript;
     /* 0x06C */ struct Evt* parentScript; /* brother? */
@@ -509,13 +509,16 @@ typedef struct DmaEntry {
     void* end;
 } DmaEntry;
 
+typedef s32 EntityScript[];
+typedef s32 EntityModelScript[];
+
 typedef struct EntityBlueprint {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 typeDataSize;
     /* 0x04 */ UNK_PTR renderCommandList;
     /* 0x08 */ UNK_PTR modelAnimationNodes;
     /* 0x0C */ void (*fpInit)(struct Entity*);
-    /* 0x10 */ UNK_PTR updateEntityScript;
+    /* 0x10 */ EntityScript* updateEntityScript;
     /* 0x14 */ EntityCallback fpHandleCollision;
     /* 0x18 */ union {
                 DmaEntry dma;
@@ -601,7 +604,7 @@ typedef struct ShadowBlueprint {
     /* 0x0C */ ShadowCallback onCreateCallback;
     /* 0x10 */ char unk_10[0x10];
     /* 0x20 */ u8 entityType;
-    /* 0x21 */ char aabbSize[3];
+    /* 0x21 */ u8 aabbSize[3];
 } ShadowBlueprint; // size = 0x24
 
 typedef struct Shadow {
@@ -680,7 +683,7 @@ typedef struct StatusBar {
     /* 0x42 */ s16 displayStarpoints;
     /* 0x44 */ s8 ignoreChanges; /* set != 0 to prevent automatic opening from HP/FP changes */
     /* 0x45 */ b8 openInputDisabled;
-    /* 0x45 */ s8 alwaysShown; // when set, the status bar will always be shown. used while browsing a shop.
+    /* 0x46 */ s8 alwaysShown; // when set, the status bar will always be shown. used while browsing a shop.
     /* 0x47 */ s8 disabled; /* set != 0 for menu to be disabled completely */
     /* 0x48 */ s16 displayStarPower;
     /* 0x4A */ b8 hpBlinking;
@@ -794,6 +797,7 @@ typedef struct Camera {
                         s16 xLimit;
                         s16 zLimit;
                     } confined;
+                    PAD(16); // force size
                 } params;
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
@@ -804,15 +808,15 @@ typedef struct Camera {
     /* 0x060 */ Vec3f targetPos; // target for camera rig, often but not necessarily the player position
     /* 0x06C */ f32 curYaw;
     /* 0x070 */ f32 interpYaw; // no camera mode actually uses this for interpolation
-    /* 0x078 */ f32 curBoomLength;
-    /* 0x074 */ f32 curBoomPitch;
-    /* 0x084 */ f32 curBoomYaw;
-    /* 0x07C */ f32 targetOffsetY;
-    /* 0x088 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_RADIAL
-    /* 0x090 */ f32 lookAt_yaw;
-    /* 0x094 */ f32 lookAt_pitch;
-    /* 0x0A0 */ Vp vp;
-    /* 0x0B0 */ Vp vpAlt;
+    /* 0x074 */ f32 curBoomLength;
+    /* 0x078 */ f32 curBoomPitch;
+    /* 0x07C */ f32 curBoomYaw;
+    /* 0x080 */ f32 targetOffsetY;
+    /* 0x084 */ f32 targetBoomYaw; // only used by CAM_UPDATE_UNUSED_RADIAL
+    /* 0x088 */ f32 lookAt_yaw;
+    /* 0x08C */ f32 lookAt_pitch;
+    /* 0x090 */ Vp vp;
+    /* 0x0A0 */ Vp vpAlt;
     /* 0x0D4 */ Matrix4f mtxPerspective;
     /* 0x114 */ Matrix4f mtxViewPlayer; // centers on player
     /* 0x154 */ Matrix4f mtxViewLeading; // leads player slightly
@@ -875,7 +879,7 @@ typedef struct BattleStatus {
     /* 0x06C */ s16 cancelTargetMenuSubstate; // might be more generally for returning from nested 'inner' state
     /* 0x06E */ s16 acceptTargetMenuSubstate; // might be more generally for returning from nested 'inner' state
     /* 0x070 */ s16 enabledMenusFlags; // zero'd bits will be unavailable, used only for tutorial battles
-    /* 0x072 */ char unk_72[2];
+    /* 0x072 */ PAD(2);
     /* 0x074 */ s32 enabledStarPowersFlags; // zero'd bits will be unavailable, used only for tutorial battles
     /* 0x078 */ s8 totalStarPoints;
     /* 0x079 */ s8 pendingStarPoints; /* how many to add */
@@ -897,7 +901,7 @@ typedef struct BattleStatus {
     /* 0x08C */ s8 stateFreezeCount;
     /* 0x08D */ s8 endBattleFadeOutRate;
     /* 0x08E */ s8 initialEnemyCount; /* used for SP award bonus */
-    /* 0x08F */ char unk_8F[1];
+    /* 0x08F */ PAD(1);
     /* 0x090 */ s16 unk_90;
     /* 0x092 */ s8 reflectFlags;
     /* 0x093 */ s8 nextActorOrdinal;
@@ -916,16 +920,16 @@ typedef struct BattleStatus {
     /* 0x0A0 */ struct EffectInstance* waterBlockEffect;
     /* 0x0A4 */ s8 cloudNineTurnsLeft;
     /* 0x0A5 */ s8 cloudNineDodgeChance; /* = 50/101 ≈ 49.5% */
-    /* 0x0A6 */ char unk_A6[2];
+    /* 0x0A6 */ PAD(2);
     /* 0x0A8 */ struct EffectInstance* cloudNineEffect;
     /* 0x0AC */ s8 merleeAttackBoost;
     /* 0x0AD */ s8 merleeDefenseBoost;
     /* 0x0AE */ s8 hammerLossTurns;
     /* 0x0AF */ s8 jumpLossTurns;
     /* 0x0B0 */ s8 itemLossTurns;
-    /* 0x0B1 */ char unk_B1[3];
-    /* 0x0B4 */ UNK_FUN_PTR(preUpdateCallback);
-    /* 0x0B8 */ UNK_FUN_PTR(initBattleCallback);
+    /* 0x0B1 */ PAD(3);
+    /* 0x0B4 */ VoidCallback(preUpdateCallback);
+    /* 0x0B8 */ VoidCallback(initBattleCallback);
     /* 0x0BC */ struct Evt* controlScript; /* control handed over to this when changing partners */
     /* 0x0C0 */ s32 controlScriptID;
     /* 0x0C4 */ struct Evt* camMovementScript;
@@ -940,39 +944,39 @@ typedef struct BattleStatus {
     /* 0x172 */ s16 activeEnemyActorID; /* (during enemy turn) enemy currently using their move */
     /* 0x174 */ struct Actor* curTurnEnemy;
     /* 0x178 */ s8 moveCategory; ///< 0 = jump, 1 = hammer, 5 = partner, ...
-    /* 0x179 */ char unk_179;
+    /* 0x179 */ PAD(1);
     /* 0x17A */ s16 moveArgument; // argument provided for move; can be hammer/boots level, itemID, etc
     /* 0x17C */ s16 selectedMoveID;
     /* 0x17E */ s16 curAttackDamage;
     /* 0x180 */ s16 lastAttackDamage;
-    /* 0x182 */ char unk_182[2];
+    /* 0x182 */ PAD(2);
     /* 0x184 */ s32 curTargetListFlags; /* set when creating a target list, also obtain from the flags field of moves */
     /* 0x188 */ s32 curAttackElement;
     /* 0x18C */ s32 curAttackEventSuppression;
     /* 0x190 */ s32 curAttackStatus;
     /* 0x194 */ u8 statusChance;
     /* 0x195 */ s8 statusDuration;
-    /* 0x196 */ char unk_196;
+    /* 0x196 */ PAD(1);
     /* 0x197 */ s8 sampleTargetHomeIndex;
     /* 0x198 */ s8 powerBounceCounter;
     /* 0x199 */ s8 wasStatusInflicted; /* during last attack */
     /* 0x19A */ u8 curDamageSource;
-    /* 0x19B */ char unk_19B[5];
+    /* 0x19B */ PAD(5);
     /* 0x1A0 */ s16 curTargetID; /* selected? */
     /* 0x1A2 */ s8 curTargetPart; /* selected? */
-    /* 0x1A3 */ char unk_1A3;
+    /* 0x1A3 */ PAD(1);
     /* 0x1A4 */ s16 curTargetID2;
     /* 0x1A6 */ s8 curTargetPart2;
     /* 0x1A7 */ s8 battlePhase;
     /* 0x1A8 */ s16 attackerActorID;
     /* 0x1AA */ s16 lastSelectedItem; // itemID of most recently selected item
     /* 0x1AC */ s8 lastSelectedPartner; // partnerID of most recently selected partner
-    /* 0x1AD */ char unk_1AD;
+    /* 0x1AD */ PAD(1);
     /* 0x1AE */ s16 submenuIcons[24]; /* icon IDs */
     /* 0x1DE */ u8 submenuMoves[24]; /* move IDs */
     /* 0x1F6 */ s8 submenuStatus[24]; ///< See [`BattleSubmenuStatus`].
     /* 0x20E */ u8 submenuMoveCount;
-    /* 0x20F */ char unk_20F;
+    /* 0x20F */ PAD(1);
     /* 0x210 */ s32 curButtonsDown;
     /* 0x214 */ s32 curButtonsPressed;
     /* 0x218 */ s32 curButtonsHeld;
@@ -991,7 +995,7 @@ typedef struct BattleStatus {
     /* 0x438 */ struct Stage* curStage;
     /* 0x43C */ struct EffectInstance* buffEffect;
     /* 0x440 */ u8 tattleFlags[28];
-    /* 0x45C */ char unk_45C[4];
+    /* 0x45C */ PAD(4);
 } BattleStatus; // size = 0x460
 
 typedef struct TextureHeader {
@@ -1064,7 +1068,7 @@ typedef struct AnimatorNode {
     /* 0xF4 */ s16 flags;
     /* 0xF6 */ s16 uniqueIndex;
     /* 0xF8 */ s16 vertexStartOffset;
-    /* 0xFA */ char unk_FA[2];
+    /* 0xFA */ PAD(2);
     /* 0xFC */ union {
     /*      */   s32 modelID;
     /*      */   Vtx* vtxList;
@@ -1075,47 +1079,45 @@ typedef struct AnimatorNodeBlueprint {
     /* 0x00 */ void* displayList;
     /* 0x04 */ Vec3f basePos;
     /* 0x10 */ Vec3f rot;
-    /* 0x1C */ char unk_1C[0x4];
-} AnimatorNodeBlueprint; // size = 0x20
+} AnimatorNodeBlueprint; // size = 0x1C
 
 typedef struct StaticAnimatorNode {
     /* 0x00 */ void* displayList; // sometimes StaticAnimatorNode*, sometimes Gfx*???
     /* 0x04 */ Vec3s rot; /* range = -180,180 */
-    /* 0x0A */ char unk_0A[0x2];
+    /* 0x0A */ PAD(2);
     /* 0x0C */ Vec3f pos;
     /* 0x18 */ struct StaticAnimatorNode* sibling;
     /* 0x1C */ struct StaticAnimatorNode* child;
     /* 0x20 */ s16 vertexStartOffset;
-    /* 0x22 */ char unk_22[0x2];
+    /* 0x22 */ PAD(2);
     /* 0x24 */ Vtx* vtxList;
     /* 0x28 */ s16 modelID;
-    /* 0x2A */ char unk_2A[0x2];
+    /* 0x2A */ PAD(2);
 } StaticAnimatorNode; // size = 0x2C
 
 typedef struct ModelAnimator {
     /* 0x000 */ u32 flags;
     /* 0x004 */ s8 renderMode;
-    /* 0x005 */ char unk_05[3];
+    /* 0x005 */ PAD(3);
     /* 0x008 */ s16* animReadPos;
     /* 0x00C */ s16* savedReadPos;
     /* 0x010 */ AnimatorNode* rootNode;
     /* 0x014 */ AnimatorNode* nodeCache[0x7A];
-    /* 0x08E */ u8 nextUniqueID;
-    /* 0x08F */ u8 staticNodeIDs[0x7A]; // ?
-    /* 0x109 */ char unk_08F[0x1];
-    /* 0x10A */ f32 nextUpdateTime;
-    /* 0x10E */ f32 timeScale;
-    /* 0x112 */ Mtx mtx;
-    /* 0x152 */ void* baseAddr;
-    /* 0x156 */ s16* animationBuffer;
-    /* 0x15A */ StaticAnimatorNode* staticNodes[0x7A];
-    /* 0x342 */ StaticAnimatorNode** staticRoot;
-    /* 0x346 */ s32 treeIndexPos;
-    /* 0x34A */ s32 savedTreePos;
-    /* 0x34E */ void (*fpRenderCallback)(void*);
-    /* 0x352 */ void* renderCallbackArg;
-    /* 0x356 */ char unk_2DC[4];
-} ModelAnimator; // size = 0x35A
+    /* 0x1FC */ u8 nextUniqueID;
+    /* 0x1FD */ u8 staticNodeIDs[0x7A]; // ?
+    /* 0x277 */ PAD(1);
+    /* 0x278 */ f32 nextUpdateTime;
+    /* 0x27C */ f32 timeScale;
+    /* 0x280 */ Mtx mtx;
+    /* 0x2C0 */ void* baseAddr;
+    /* 0x2C4 */ s16* animationBuffer;
+    /* 0x2C8 */ StaticAnimatorNode* staticNodes[0x7A];
+    /* 0x4B0 */ StaticAnimatorNode** staticRoot;
+    /* 0x4B4 */ s32 treeIndexPos;
+    /* 0x4B8 */ s32 savedTreePos;
+    /* 0x4BC */ void (*fpRenderCallback)(void*);
+    /* 0x4C0 */ void* renderCallbackArg;
+} ModelAnimator; // size = 0x4C4
 
 typedef ModelAnimator* AnimatedMeshList[MAX_ANIMATED_MESHES];
 
@@ -1836,13 +1838,13 @@ typedef struct ActorState { // TODO: Make the first field of this an ActorMoveme
     /* 0x48 */ f32 angle;
     /* 0x4C */ f32 dist;
     /* 0x50 */ f32 bounceDivisor;
-    /* 0x54 */ char unk_54[0x4];
+    /* 0x54 */ PAD(4);
     /* 0x58 */ s32 animJumpRise;
     /* 0x5C */ s32 animJumpFall;
     /* 0x60 */ s32 animJumpLand;
     /* 0x64 */ s16 moveTime;
     /* 0x66 */ s16 moveArcAmplitude;
-    /* 0x68 */ char unk_68[3];
+    /* 0x68 */ PAD(3);
     /* 0x6B */ u8 jumpPartIndex;
     /* 0x6C */ union {
     /*      */     s32 functionTemp[4];
@@ -1863,18 +1865,18 @@ typedef struct Actor {
     /*       */ struct Overlay* overlay;
     /* 0x00C */ ActorState state;
     /* 0x0C8 */ ActorMovement fly;
-    /* 0x124 */ char unk_124[16];
+    /* 0x124 */ PAD(16);
     /* 0x134 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x135 */ u8 footStepCounter;
     /* 0x136 */ u8 actorType;
-    /* 0x137 */ char unk_137;
+    /* 0x137 */ PAD(1);
     /* 0x138 */ Vec3f homePos;
     /* 0x144 */ Vec3f curPos;
     /* 0x150 */ Vec3s headOffset;
     /* 0x156 */ Vec3s healthBarPos;
     /* 0x15C */ Vec3f rot;
     /* 0x168 */ Vec3s rotPivotOffset;
-    /* 0x16E */ char unk_16E[2];
+    /* 0x16E */ PAD(2);
     /* 0x170 */ Vec3f scale;
     /* 0x17C */ Vec3f scaleModifier; /* multiplies normal scale factors componentwise */
     /* 0x188 */ f32 scalingFactor;
@@ -1885,13 +1887,13 @@ typedef struct Actor {
     /* 0x196 */ Vec2b statusTextOffset;
     /* 0x198 */ Vec2b healthBarOffset;
     /* 0x19A */ s8 verticalRenderOffset; // visual only, does not affect target position
-    /* 0x19B */ char unk_19B[1];
+    /* 0x19B */ PAD(1);
     /* 0x19C */ s32 actorTypeData1[6]; /* 4 = jump sound, 5 = attack sound */ // TODO: struct
     /* 0x1B4 */ s16 actorTypeData1b[2];
     /* 0x1B8 */ s16 curHP;
     /* 0x1BA */ s16 maxHP;
     /* 0x1BC */ s8 healthFraction; /* used to render HP bar */
-    /* 0x1BD */ char unk_1BD[3];
+    /* 0x1BD */ PAD(3);
     /* 0x1C0 */ EvtScript* idleSource;
     /* 0x1C4 */ EvtScript* takeTurnSource;
     /* 0x1C8 */ EvtScript* handleEventSource;
@@ -1912,14 +1914,14 @@ typedef struct Actor {
     /* 0x1F8 */ s16 lastDamageTaken;
     /* 0x1FA */ s16 hpChangeCounter;
     /* 0x1FC */ s16 damageCounter;
-    /* 0x1FE */ char unk_1FE[2];
+    /* 0x1FE */ PAD(2);
     /* 0x200 */ struct EffectInstance* attackResultEffect;
     /* 0x204 */ s8 actionRatingCombo;
     /* 0x205 */ s8 actionRatingTime;
     /* 0x206 */ s8 healthBarHideTime;
     /* 0x207 */ s8 extraCoinBonus;
     /* 0x208 */ s8 instigatorValue; // from the enemy which initiated the encounter if this actor is first in the formation. allows that enemy to pass information to its actor.
-    /* 0x209 */ char unk_209[3];
+    /* 0x209 */ PAD(3);
     /* 0x20C */ s32* statusTable;
     /* 0x210 */ s8 debuff;
     /* 0x211 */ s8 debuffDuration;
@@ -1931,7 +1933,7 @@ typedef struct Actor {
     /* 0x217 */ s8 koDuration;
     /* 0x218 */ s8 transparentStatus; /* 0E = yes */
     /* 0x219 */ s8 transparentDuration;
-    /* 0x21A */ char unk_21A[2];
+    /* 0x21A */ PAD(2);
     /* 0x21C */ s8 statusAfflicted;
     /* 0x21D */ s8 disableDismissTimer;
     /* 0x21E */ s16 unk_21E;
@@ -1940,16 +1942,16 @@ typedef struct Actor {
     /* 0x222 */ s8 defenseBoost;
     /* 0x223 */ s8 chillOutAmount; /* attack reduction */
     /* 0x224 */ s8 chillOutTurns;
-    /* 0x225 */ char unk_225[3];
+    /* 0x225 */ PAD(3);
     /* 0x228 */ struct EffectInstance* icePillarEffect;
     /* 0x22C */ struct SelectableTarget targetData[MAX_ENEMY_ACTORS];
     /* 0x40C */ s8 targetListLength;
     /* 0x40D */ s8 targetIndexList[MAX_ENEMY_ACTORS]; /* into targetData */
     /* 0x425 */ s8 selectedTargetIndex; /* into target index list */
     /* 0x426 */ s8 targetPartID;
-    /* 0x427 */ char unk_427[1];
+    /* 0x427 */ PAD(1);
     /* 0x428 */ s16 targetActorID;
-    /* 0x42A */ char unk_42A[2];
+    /* 0x42A */ PAD(2);
     /* 0x42C */ union {
     /*       */     struct Shadow* ptr;
     /*       */     s32 id;
@@ -1970,10 +1972,6 @@ typedef struct BackgroundHeader {
     /* 0x0E */ u16 height;
 } BackgroundHeader; // size = 0x10
 
-typedef struct FontData {
-    /* 0x00 */ char unk_00[24];
-} FontData; // size = 0x18
-
 typedef struct SlideParams {
     /* 0x00 */ f32 heading;
     /* 0x04 */ f32 maxDescendAccel;
@@ -1987,7 +1985,7 @@ typedef struct PlayerStatus {
     /* 0x004 */ u32 animFlags;
     /* 0x008 */ s16 curStateTime;
     /* 0x00A */ s8 shiverTime;
-    /* 0x00B */ char unk_0B;
+    /* 0x00B */ PAD(1);
     /* 0x00C */ s8 peachDisguise;
     /* 0x00D */ s8 availableDisguiseType; ///< set in main map scripts
     /* 0x00E */ u8 curAlpha;
@@ -2020,13 +2018,13 @@ typedef struct PlayerStatus {
     /* 0x0A0 */ f32 heading;
     /* 0x0A4 */ AnimID trueAnimation; ///< Encoding back-facing sprite
     /* 0x0A8 */ f32 spriteFacingAngle; /* angle of sprite, relative to camera, from 0 to 180 */
-    /* 0x0AC */ char unk_AC[4];
+    /* 0x0AC */ PAD(4);
     /* 0x0B0 */ s16 colliderHeight;
     /* 0x0B2 */ s16 colliderDiameter;
     /* 0x0B4 */ s8 actionState;
     /* 0x0B5 */ s8 prevActionState;
     /* 0x0B6 */ s8 actionSubstate;
-    /* 0x0B7 */ char unk_B7;
+    /* 0x0B7 */ PAD(1);
     /* 0x0B8 */ AnimID anim;
     /* 0x0BC */ u16 animNotifyValue;
     /* 0x0BE */ s8 renderMode;
@@ -2051,9 +2049,9 @@ typedef struct PlayerStatus {
     /* 0x168 */ s32 stickXBuffer[10];
     /* 0x190 */ s32 stickYBuffer[10];
     /* 0x1B8 */ s32 inputBufPos;
-    /* 0x1BC */ char unk_1BC[196];
+    /* 0x1BC */ PAD(196);
     /* 0x280 */ s8 poundImpactDelay; // governs period of immobility after landing a ground pound
-    /* 0x281 */ char unk_281[7];
+    /* 0x281 */ PAD(7);
 } PlayerStatus; // size = 0x288
 
 typedef struct Path {
@@ -2136,29 +2134,35 @@ typedef union {
     WindowStyleCustom* customStyle;
 } WindowStyle TRANSPARENT_UNION;
 
+typedef void WindowUpdateCallback(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ,
+    f32* scaleX, f32* scaleY, f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+
 typedef union {
     int i;
-    void (*func)(s32 windowIndex, s32* flags, s32* posX, s32* posY, s32* posZ, f32* scaleX, f32* scaleY,
-                                 f32* rotX, f32* rotY, f32* rotZ, s32* darkening, s32* opacity);
+    WindowUpdateCallback* func;
 } WindowUpdateFunc TRANSPARENT_UNION;
+
+typedef void MenuPanelDrawContentFunc(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 
 typedef struct MenuWindowBP {
     /* 0x00 */ s8 windowID;
-    /* 0x01 */ char unk_01;
+    /* 0x01 */ PAD(1);
     /* 0x02 */ Vec2s pos;
     /* 0x06 */ s16 width;
     /* 0x08 */ s16 height;
     /* 0x0A */ u8 priority;
-    /* 0x0B */ char unk_0B;
-    /* 0x0C */ void (*fpDrawContents)(MenuPanel* menu, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
+    /* 0x0B */ PAD(1);
+    /* 0x0C */ MenuPanelDrawContentFunc* fpDrawContents;
     /* 0x10 */ MenuPanel* tab;
     /* 0x14 */ s8 parentID;
-    /* 0x15 */ char unk_15[3];
+    /* 0x15 */ PAD(3);
     /* 0x18 */ WindowUpdateFunc fpUpdate;
     /* 0x1C */ u8 extraFlags;
-    /* 0x1D */ char unk_1D[3];
+    /* 0x1D */ PAD(3);
     /* 0x20 */ WindowStyle style;
 } MenuWindowBP; // size = 0x24;
+
+typedef void WindowDrawContentFunc(void* userData, s32 baseX, s32 baseY, s32 width, s32 height, s32 opacity, s32 darkening);
 
 typedef struct {
     /* 0x00 */ u8 flags;
@@ -2170,10 +2174,10 @@ typedef struct {
     /* 0x0C */ Vec2s pos;
     /* 0x10 */ s16 width;
     /* 0x12 */ s16 height;
-    /* 0x14 */ UNK_FUN_PTR(fpDrawContents);
+    /* 0x14 */ WindowDrawContentFunc* fpDrawContents;
     /* 0x18 */ void* drawContentsArg0;
     /* 0x1C */ u8 updateCounter;
-    /* 0x1D */ char unk_1D[3];
+    /* 0x1D */ PAD(3);
 } Window; // size = 0x20
 
 #if VERSION_JP

@@ -124,7 +124,7 @@ void find_script_labels(Evt* script) {
 
     for (i = 0; i < ARRAY_COUNT(script->labelIndices); i++) {
         script->labelIndices[i] = -1;
-        script->labelPositions[i] = 0;
+        script->labelPositions[i] = nullptr;
     }
 
     j = 0;

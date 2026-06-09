@@ -3,9 +3,6 @@
 
 #include "common.h"
 
-typedef s32 EntityScript[];
-typedef s32 EntityModelScript[];
-
 extern s32 CreateEntityVarArgBuffer[];
 
 enum {

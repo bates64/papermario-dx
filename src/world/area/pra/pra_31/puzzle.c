@@ -271,8 +271,6 @@ API_CALLABLE(N(GetPlayerPushLerpValues)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/todo/UnkFunc12.inc.c"
-
 API_CALLABLE(N(GetDinoStatuePosRot)) {
     Bytecode* args = script->ptrReadPos;
     s32 idx = evt_get_variable(script, *args++);
@@ -439,13 +437,13 @@ EvtScript N(EVS_UpdateStatuePositions) = {
     End
 };
 
-#include "world/common/todo/UnkFunc11.inc.c"
+#include "world/common/todo/PushObjectSupport.inc.c"
 
 EvtScript N(EVS_PushStatue_Impl) = {
     Call(N(GetPlayerPushDirection), LVarA)
     Call(InterpPlayerYaw, LVar0, 0)
     Loop(20)
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Return
         Else
@@ -460,7 +458,7 @@ EvtScript N(EVS_PushStatue_Impl) = {
         Loop(0)
             Call(SetPlayerActionState, ACTION_STATE_PUSHING_BLOCK)
             Call(UpdateLerp)
-            Call(N(UnkFunc12))
+            Call(N(UpdatePlayerPushPosition))
             Wait(1)
             IfEq(LVar1, 0)
                 BreakLoop
@@ -479,10 +477,10 @@ EvtScript N(EVS_PushStatue_Impl) = {
     Thread
         Call(DisablePlayerInput, false)
         Wait(2)
-        Call(N(UnkFunc11), LVar9)
+        Call(N(IsPlayerPushingCollider), LVar9)
         IfEq(LVar0, 0)
             Wait(2)
-            Call(N(UnkFunc11), LVar9)
+            Call(N(IsPlayerPushingCollider), LVar9)
             IfEq(LVar0, 0)
                 Call(SetPlayerActionState, ACTION_STATE_IDLE)
             EndIf

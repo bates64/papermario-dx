@@ -11,13 +11,13 @@ enum {
 API_CALLABLE(N(SetModelTintMode)) {
     Bytecode* args = script->ptrReadPos;
     s32 mode = evt_get_variable(script, *args++);
-    s32 testS0 = evt_get_variable(script, *args++);
+    s32 modelIDList = evt_get_variable(script, *args++);
     s32 tintType = evt_get_variable(script, *args++);
-    s32* modelIDList = (s32*) testS0;
+    s32* curModelID = (s32*) modelIDList;
     s32 listIndex;
     Model* mdl;
 
-    if (modelIDList == PTR_LIST_END) {
+    if (curModelID == PTR_LIST_END) {
         mdl_set_all_tint_type(tintType);
         return ApiStatus_DONE2;
     }
@@ -25,23 +25,23 @@ API_CALLABLE(N(SetModelTintMode)) {
     switch (mode) {
         case APPLY_TINT_MODELS:
             while (true) {
-                if (*modelIDList == 0xFFFF) {
+                if (*curModelID == 0xFFFF) {
                     break;
                 }
-                listIndex = get_model_list_index_from_tree_index(*modelIDList);
+                listIndex = get_model_list_index_from_tree_index(*curModelID);
                 mdl = get_model_from_list_index(listIndex);
                 set_mdl_custom_gfx_set(mdl, CUSTOM_GFX_NONE, tintType);
-                modelIDList++;
+                curModelID++;
             };
             break;
 
         case APPLY_TINT_GROUPS:
             while (true) {
-                if (*modelIDList == 0xFFFF) {
+                if (*curModelID == 0xFFFF) {
                     break;
                 }
-                mdl_group_set_custom_gfx(*modelIDList, CUSTOM_GFX_NONE, tintType, false);
-                modelIDList++;
+                mdl_group_set_custom_gfx(*curModelID, CUSTOM_GFX_NONE, tintType, false);
+                curModelID++;
             };
             break;
 

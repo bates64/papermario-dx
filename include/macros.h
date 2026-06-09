@@ -38,6 +38,14 @@
 
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 
+#define _PAD_CONCAT_INNER(a, b) a ## b
+#define _PAD_CONCAT(a, b) _PAD_CONCAT_INNER(a, b)
+#ifdef __COUNTER__
+#define PAD(x) u8 _PAD_CONCAT(pad_, __COUNTER__)[x]
+#else
+#define PAD(x) u8 _PAD_CONCAT(pad_, __LINE__)[x]
+#endif
+
 #define PTR_LIST_END ((void*) -1)
 
 #define API_CALLABLE(name) ApiStatus name(Evt* script, b32 isInitialCall)

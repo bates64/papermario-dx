@@ -493,7 +493,7 @@ s32 player_team_is_ability_active(Actor* actor, s32 ability);
 
 void create_part_shadow(s32 actorID, s32 partID);
 void remove_part_shadow(s32 actorID, s32 partID);
-void create_part_shadow_by_ref(s32 arg0, ActorPart* part);
+void create_part_shadow_by_ref(ActorPart* part);
 
 void spawn_drops(struct Enemy* enemy);
 

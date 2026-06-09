@@ -173,7 +173,8 @@ API_CALLABLE(CosInterpMinMax) {
     return ApiStatus_DONE2;
 }
 
-void load_path_data(s32 num, f32* normalizedLengths, Vec3f* pathPositions, Vec3f* outVectors) {
+// precomputes a natural cubic spline through `pathPositions` to be used by `sample_spline_path`
+void calc_spline_path(s32 num, f32* normalizedLengths, Vec3f* pathPositions, Vec3f* outVectors) {
     f32* lenBuf = heap_malloc(num * sizeof(f32));
     Vec3f* vecBuf = heap_malloc(num * sizeof(Vec3f));
     s32 i;
@@ -242,20 +243,21 @@ void load_path_data(s32 num, f32* normalizedLengths, Vec3f* pathPositions, Vec3f
     heap_free(vecBuf);
 }
 
-void get_path_position(f32 alpha, Vec3f* outPos, s32 numVectors, f32* normalizedLengths, Vec3f* pathPoints, Vec3f* vectors) {
+void sample_spline_path(f32 alpha, Vec3f* outPos, s32 numVectors, f32* normalizedLengths, Vec3f* pathPoints, Vec3f* vectors) {
     s32 limit = numVectors - 1;
     f32 curLength;
     f32 curProgress;
     f32 ax, ay, az, bx, by, bz, dx, dy, dz;
     s32 i;
 
+    // binary search the normalized length table
     for (i = 0; i < limit;) {
-        s32 temp_v1 = (i + limit) / 2;
+        s32 searchIdx = (i + limit) / 2;
 
-        if (normalizedLengths[temp_v1] < alpha) {
-            i = temp_v1 + 1;
+        if (normalizedLengths[searchIdx] < alpha) {
+            i = searchIdx + 1;
         } else {
-            limit = temp_v1;
+            limit = searchIdx;
         }
     }
 
@@ -295,7 +297,7 @@ API_CALLABLE(LoadPath) {
     path->lengths = heap_malloc(numVectors * sizeof(f32));
     path->staticVectorList = vectorList;
     path->vectors = heap_malloc(numVectors * sizeof(Vec3f));
-    load_path_data(path->numVectors, path->lengths, path->staticVectorList, path->vectors);
+    calc_spline_path(path->numVectors, path->lengths, path->staticVectorList, path->vectors);
 
     path->timeElapsed = 0;
     path->timeLeft = time - 1;
@@ -329,7 +331,7 @@ API_CALLABLE(GetNextPathPos) {
             break;
     }
 
-    get_path_position(alpha, &pos, path->numVectors, path->lengths, path->staticVectorList, path->vectors);
+    sample_spline_path(alpha, &pos, path->numVectors, path->lengths, path->staticVectorList, path->vectors);
     script->varTable[1] = FLOAT_TO_FIXED(pos.x);
     script->varTable[2] = FLOAT_TO_FIXED(pos.y);
     script->varTable[3] = FLOAT_TO_FIXED(pos.z);
@@ -362,13 +364,16 @@ f32 sin_lookup_table[] = {
     0.999391f, 0.999848f, 1.000000f,
 };
 
-u32 calc_vector_rot_impl(f32 x, f32 y) {
-    f32 sinAngle = abs(y) / length2D(x, y);
+u32 calc_vector_rot_impl(f32 dx, f32 dy) {
+    // use trig identity to get sin(theta) = dy / hypot
+    f32 sinAngle = abs(dy) / length2D(dx, dy);
     u16 minAngle = 0;
     u16 maxAngle = 90;
     u16 ret;
     u16 i;
 
+    // obtain theta from value of sin(theta) via lookup table with one entry per angle
+    // binary search needs 7 iterations because the table has 91 entries and 2^7 > 91 > 2^6
     for (i = 0; i < 7; i++) {
         u16 midAngle = minAngle + ((maxAngle - minAngle) / 2);
 
@@ -379,21 +384,22 @@ u32 calc_vector_rot_impl(f32 x, f32 y) {
         }
     }
 
+    // choose whichever is closer
     if (fabsf(sin_lookup_table[minAngle] - sinAngle) < fabsf(sin_lookup_table[maxAngle] - sinAngle)) {
         ret = minAngle;
     } else {
         ret = maxAngle;
     }
 
-    if (x < 0.0f && y >= 0.0f) {
+    if (dx < 0.0f && dy >= 0.0f) {
         ret = 180 - ret;
     }
 
-    if (x < 0.0f && y < 0.0f) {
+    if (dx < 0.0f && dy < 0.0f) {
         ret += 180;
     }
 
-    if (x >= 0.0f && y < 0.0f) {
+    if (dx >= 0.0f && dy < 0.0f) {
         ret = 360 - ret;
     }
 
