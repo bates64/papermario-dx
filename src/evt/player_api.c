@@ -548,7 +548,7 @@ API_CALLABLE(UseExitHeading) {
     if (can_trigger_loading_zone()) {
         s32 walkDistance = evt_get_variable(script, *args++);
         s32 entryID = evt_get_variable(script, *args++);
-        f32 entryYaw = (*mapSettings->entryList)[gGameStatusPtr->entryID].yaw;
+        f32 entryYaw = (*mapSettings->entryList)[entryID].yaw;
         f32 entryX = (*mapSettings->entryList)[entryID].x;
         f32 entryY = (*mapSettings->entryList)[entryID].y;
         f32 entryZ = (*mapSettings->entryList)[entryID].z;
