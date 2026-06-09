@@ -81,7 +81,7 @@ typedef struct SpriteAnimData {
     /* 0x08 */ s32 maxComponents;
     /* 0x0C */ s32 colorVariations;
     /* 0x10 */ SpriteAnimComponent** animListStart[VLA];
-} SpriteAnimData; // size = 0x14
+} SpriteAnimData; // size = 0x10
 
 typedef struct SpriteInstance {
     /* 0x00 */ s32 spriteIndex;

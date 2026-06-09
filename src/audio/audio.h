@@ -511,7 +511,7 @@ typedef struct Fade {
     /* 0x14 */ s32 envelopeStep;
     /* 0x18 */ s16 envelopeTarget;
     /* 0x1A */ s16 envelopeTicks;
-} Fade; // size = 0x10
+} Fade; // size = 0x1C
 
 typedef struct AuDelay {
     /* 0x00 */ u32 input;
@@ -701,8 +701,8 @@ typedef Instrument* InstrumentBank[16];
 typedef struct SoundLerp {
     /* 0x0 */ s16_16 current;
     /* 0x4 */ s16_16 step;
-    /* 0xA */ s16 time;
-    /* 0x8 */ s16 goal;
+    /* 0x8 */ s16 time;
+    /* 0xA */ s16 goal;
 } SoundLerp; // size = 0xC
 
 typedef struct SoundPlayChange {
@@ -719,7 +719,7 @@ typedef struct SoundPlayChange {
 
 typedef struct SoundPlayer {
     /* 0x00 */ AuFilePos sefDataReadPos;
-    /* 0x04 */ char pad_4[0xC];
+    /* 0x04 */ PAD(0xC);
     /* 0x10 */ EnvelopeData envelope;
     /* 0x18 */ u8* envelopCustomPressProfile;
     /* 0x1C */ Instrument* sfxInstrumentRef;
@@ -735,15 +735,15 @@ typedef struct SoundPlayer {
     /* 0x80 */ AuFilePos alternativeDataPos;
     /* 0x84 */ s8 alternativeType;
     /* 0x85 */ u8 triggers;
-    /* 0x86 */ char pad_86[2];
+    /* 0x86 */ PAD(2);
     /* 0x88 */ s8* loopStartPos;
     /* 0x8C */ u8 loopIterCount; // loopIterCount = 0 for infinite loop
-    /* 0x8D */ char pad_8D[1];
+    /* 0x8D */ PAD(1);
     /* 0x8E */ u16 delay;
     /* 0x90 */ u16 playLength;
     /* 0x92 */ s16 coarseTune;
     /* 0x94 */ s8 fineTune;
-    /* 0x95 */ char pad_95[1];
+    /* 0x95 */ PAD(1);
     /* 0x96 */ u16 curSoundID;
     /* 0x98 */ u8 priority;
     /* 0x99 */ u8 exclusiveID;
@@ -760,8 +760,8 @@ typedef struct SoundPlayer {
     /* 0xA4 */ s16 masterPitchShift;
     /* 0xA6 */ s16 masterVolume;
     /* 0xA8 */ u8 masterPan;
-    /* 0xA8 */ u8 state;
-    /* 0xA9 */ char pad_AA[2];
+    /* 0xA9 */ u8 state;
+    /* 0xAA */ PAD(2);
 } SoundPlayer; // size = 0xAC
 
 typedef struct SoundManagerMusicEvent {
@@ -867,20 +867,20 @@ typedef struct AuVoice {
 } AuVoice; // size = 0x48
 
 typedef struct BGMFileInfo {
-    /* 0x10 */ u8 timingPreset;
-    /* 0x11 */ char pad_11[3];
-    /* 0x14 */ u16 compositions[4];
-    /* 0x1C */ u16 drums;
-    /* 0x1E */ u16 drumCount;
-    /* 0x20 */ u16 instruments;
-    /* 0x22 */ u16 instrumentCount;
+    /* 0x00 */ u8 timingPreset;
+    /* 0x01 */ PAD(3);
+    /* 0x04 */ u16 compositions[4];
+    /* 0x0C */ u16 drums;
+    /* 0x0E */ u16 drumCount;
+    /* 0x10 */ u16 instruments;
+    /* 0x12 */ u16 instrumentCount;
 } BGMFileInfo; // size = 0x14
 
 typedef struct BGMHeader {
     /* 0x00 */ s32 signature; // 'BGM '
     /* 0x04 */ s32 size; // including header
     /* 0x08 */ s32 name;
-    /* 0x0C */ char pad_C[4];
+    /* 0x0C */ PAD(4);
     /* 0x10 */ BGMFileInfo info;
 } BGMHeader; // size = 0x24
 
@@ -894,7 +894,7 @@ typedef struct BGMDrumInfo {
     /* 0x8 */ u8 randVolume;
     /* 0x9 */ u8 randPan;
     /* 0xA */ u8 randReverb;
-    /* 0xB */ char pad_B[1];
+    /* 0xB */ PAD(1);
 } BGMDrumInfo; // size = 0xC
 
 typedef struct BGMInstrumentInfo {
@@ -904,7 +904,7 @@ typedef struct BGMInstrumentInfo {
     /* 0x04 */ u8 reverb;
     /* 0x05 */ s8 coarseTune;
     /* 0x06 */ s8 fineTune;
-    /* 0x07 */ char pad_7[1];
+    /* 0x07 */ PAD(1);
 } BGMInstrumentInfo; // size = 0x8
 
 typedef struct AUFileMetadata {
@@ -919,7 +919,7 @@ typedef struct SBNFileEntry {
     //TODO try replacing the data field with these
     struct {
     /* 0x4 */ s8 fmt;
-    /* 0x5 */ char pad_05[1];
+    /* 0x5 */ PAD(1);
     /* 0x6 */ s16 size;
     };
     };
@@ -946,7 +946,7 @@ typedef struct SEFHeader {
     /* 0x0F */ char unused_0F[1]; // always 0
     /* 0x10 */ u16 sections[8];
     /* 0x20 */ u16 section2000;
-} SEFHeader; // size = 0x22
+} SEFHeader; // size = 0x24
 
 typedef struct INITHeader {
     /* 0x00 */ AUFileMetadata mdata; // uses identifer 'INIT'
@@ -983,12 +983,12 @@ typedef struct PEREntry {
 
 typedef struct BKHeader {
     /* 0x00 */ u16 signature; // 'BK'
-    /* 0x02 */ char pad_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ s32 size;
     /* 0x08 */ s32 name;
     /* 0x0C */ u16 format; // 'CR', 'DR', 'SR'
     /* 0x0E */ u8 swizzled;
-    /* 0x0E */ char pad_0E[3];
+    /* 0x0F */ PAD(3);
     /* 0x12 */ u16 instruments[16];
     /* 0x32 */ u16 instrumetsLength;
     /* 0x34 */ u16 loopStatesStart;
@@ -1013,7 +1013,7 @@ typedef struct BKFileBuffer {
 typedef struct AuEffectChange {
     /* 0x0 */ u8 type;
     /* 0x1 */ u8 changed;
-    /* 0x2 */ char pad_02[2];
+    /* 0x2 */ PAD(2);
 } AuEffectChange;
 
 typedef struct BGMPlayerSnapshot {
@@ -1123,13 +1123,13 @@ typedef struct BGMPlayerTrack {
 
 typedef struct SeqNote {
     /* 0x00 */ Instrument* ins;
-    /* 0x00 */ f32 pitchRatio;
+    /* 0x04 */ f32 pitchRatio;
     /* 0x08 */ s16 volume;
     /* 0x0A */ s16 detune;
     /* 0x0C */ s32 length; /// attack + sustain time
     /* 0x10 */ u16 tremoloDelay;
     /* 0x12 */ u8 tremoloDepth;
-    /* 0x12 */ u8 tremoloPhase;
+    /* 0x13 */ u8 tremoloPhase;
     /* 0x14 */ s16 randDetune;
     /* 0x16 */ u8 velocity;
     /* 0x17 */ u8 pendingTick;
@@ -1202,7 +1202,7 @@ typedef struct BGMPlayer {
     /* 0x222 */ u8 unused_222;
     /* 0x223 */ u8 conditionalLoopFlags; /// No means to modify value is implemented
     /* 0x224 */ u8 effectValues[4];
-    /* 0x227 */ char pad_228[2];
+    /* 0x228 */ char pad_228[2];
     /* 0x22A */ u8 polyphonyCounts[8];
     /* 0x232 */ u8 bFadeConfigSetsVolume;
     /* 0x233 */ u8 initLinkMute; /// Used to mute any linked tracks after the first one encountered.
@@ -1229,7 +1229,7 @@ typedef struct SongStartRequest {
     /* 0x10 */ s32 variation;
     /* 0x14 */ s32 unused_14;
     /* 0x18 */ char pad_18[8];
-} SongStartRequest; // size = 0x1C or 0x20
+} SongStartRequest; // size = 0x20
 
 typedef struct SongFadeOutRequest {
     /* 0x00 */ s32 songName;
@@ -1239,7 +1239,7 @@ typedef struct SongFadeOutRequest {
     /* 0x10 */ AuCallback doneCallback;
     /* 0x14 */ s32 onPush;
     /* 0x18 */ char pad_18[8];
-} SongFadeOutRequest; // size = 0x1C or 0x20
+} SongFadeOutRequest; // size = 0x20
 
 typedef struct SongSuspendRequest {
     /* 0x00 */ s32 songName;
@@ -1249,7 +1249,7 @@ typedef struct SongSuspendRequest {
     /* 0x10 */ s32 index;
     /* 0x14 */ s32 pauseMode; /// if true, the player is paused, else it will be saved to a snapshot
     /* 0x18 */ char pad_18[8];
-} SongSuspendRequest; // size = 0x1C or 0x20
+} SongSuspendRequest; // size = 0x20
 
 typedef struct SongResumeRequest {
     /* 0x00 */ s32 songName;
@@ -1259,7 +1259,7 @@ typedef struct SongResumeRequest {
     /* 0x10 */ s32 index;
     /* 0x14 */ s32 pauseMode;
     /* 0x18 */ char pad_18[8];
-} SongResumeRequest; // size = 0x1C or 0x20
+} SongResumeRequest; // size = 0x20
 
 typedef struct SongSwapLinkedRequest {
     /* 0x00 */ s32 songName;
@@ -1267,8 +1267,8 @@ typedef struct SongSwapLinkedRequest {
     /* 0x08 */ char unused_08[4];
     /* 0x0C */ char unused_0C[4];
     /* 0x10 */ b32 enabled; // 0 or 1
-    /* 0x18 */ char pad_14[0xC];
-} SongSwapLinkedRequest; // size = 0x1C or 0x20
+    /* 0x14 */ char pad_14[0xC];
+} SongSwapLinkedRequest; // size = 0x20
 
 typedef struct MSEQTrackData {
     /* 0x0 */ u8 trackIndex;
@@ -1304,7 +1304,7 @@ typedef struct AmbienceSavedVoice {
     /* 0x0 */ u8 trackIndex;
     /* 0x1 */ u8 tune;
     /* 0x2 */ s8 volume;
-    /* 0x4 */ char pad_03[1];
+    /* 0x3 */ char pad_03[1];
 } AmbienceSavedVoice; // size = 0x4
 
 /**

@@ -10,7 +10,7 @@ typedef struct StarOutlineState2 {
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ f32 unk_24;
-    /* 0x38 */ f32 unk_28;
+    /* 0x28 */ f32 unk_28;
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ s32 effectEnded;
 } StarOutlineState2; // size = 0x34

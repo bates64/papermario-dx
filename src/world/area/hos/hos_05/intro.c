@@ -18,11 +18,11 @@ typedef struct StoryGraphicData {
     /* 0x08 */ PAL_PTR palFront;
     /* 0x0C */ IMG_PTR imgBack;
     /* 0x10 */ PAL_PTR palBack;
-    /* 0x14 */ char unk_14[0x4];
+    /* 0x14 */ PAD(4);
     /* 0x18 */ IMG_PTR imgTape;
     /* 0x1C */ IMG_PTR imgBowser;
     /* 0x20 */ PAL_PTR palBowser;
-    /* 0x24 */ char unk_24[0x18];
+    /* 0x24 */ PAD(0x18);
     /* 0x3C */ s16 frontImgPosX;
     /* 0x3E */ s16 frontImgPosY;
     /* 0x40 */ s16 backImgPosX;
@@ -31,11 +31,11 @@ typedef struct StoryGraphicData {
     /* 0x46 */ u16 silhouettePosY;
     /* 0x48 */ s16 tapePosX;
     /* 0x4A */ s16 tapePosY;
-    /* 0x4C */ char unk_4C[0xC];
+    /* 0x4C */ PAD(0xC);
     /* 0x58 */ s16 flipOrder;
     /* 0x5A */ s16 storyPageAlpha;
     /* 0x5C */ s16 tapeAlpha;
-    /* 0x60 */ char unk_6E[0x2];
+    /* 0x5E */ PAD(2);
 } StoryGraphicData; // size = 0x60
 
 s32 N(missing_802494FC_94FC)[] = {

@@ -5,7 +5,7 @@
 #include "dx/config.h"
 
 typedef struct SaveInfo {
-    /* 0x08 */ s32 slot;
+    /* 0x00 */ s32 slot;
     /* 0x04 */ s32 count;
 } SaveInfo; // size = 0x8
 

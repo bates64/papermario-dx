@@ -14,7 +14,7 @@ typedef struct {
     /* 0x9CC */ u16* frameBuf;
     /* 0x9D0 */ u16 width;
     /* 0x9D2 */ u16 height;
-} CrashScreen; // size = 0x9D4
+} CrashScreen; // size = 0x9D8
 
 BSS CrashScreen gCrashScreen;
 

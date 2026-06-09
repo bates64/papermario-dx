@@ -25,9 +25,9 @@ typedef struct MapRoom {
     /* 0x1C */ VecXZf posExitA;
     /* 0x24 */ VecXZf posExitB;
     /* 0x2C */ EvtScript* overrideOpenDoor;
-    /* 0x2C */ EvtScript* overrideMoveWall;
-    /* 0x2C */ EvtScript* overrideDropDoor;
-    /* 0x2C */ EvtScript* stateListenerScript;
+    /* 0x30 */ EvtScript* overrideMoveWall;
+    /* 0x34 */ EvtScript* overrideDropDoor;
+    /* 0x38 */ EvtScript* stateListenerScript;
     /* 0x3C */ s32 modelID;
     /* 0x40 */ s32 bgColor[3];
     /* 0x4C */ s32 scriptIDs[4];

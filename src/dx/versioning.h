@@ -100,7 +100,7 @@ typedef struct VanillaPlayerData {
     /* 0x336 */ u16 smashGamePlays;
     /* 0x338 */ u32 smashGameTotal;
     /* 0x33C */ u16 smashGameRecord;
-    /* 0x340 */ unsigned char pad_33E[0xEA];
+    /* 0x33E */ unsigned char pad_33E[0xEA];
 } VanillaPlayerData; // size = 0x428
 
 /// SaveData struct from unmodified Paper Mario
@@ -122,9 +122,9 @@ typedef struct VanillaSaveData {
     /* 0x12B0 */ s32 areaFlags[8];
     /* 0x12D0 */ s8 areaBytes[16];
     /* 0x12E0 */ s8 debugEnemyContact;
-    /* 0x12E0 */ b8 debugUnused1;
-    /* 0x12E0 */ b8 debugUnused2;
-    /* 0x12E0 */ b8 musicEnabled;
+    /* 0x12E1 */ b8 debugUnused1;
+    /* 0x12E2 */ b8 debugUnused2;
+    /* 0x12E3 */ b8 musicEnabled;
     /* 0x12E4 */ unsigned char unk_12E4[0x2];
     /* 0x12E6 */ Vec3s savePos;
     /* 0x12EC */ VanillaSaveFileSummary summary;
@@ -154,29 +154,29 @@ typedef struct SaveData {
     /* 0x0040 */ PlayerData player;
     /* 0x0468 */ u32 mapHash;
     /* 0x046C */ s16 entryID;
-    /* 0x046E */ unsigned char unk_46E[2];
+    /* 0x046E */ PAD(2);
     /* 0x0470 */ s32 enemyDefeatFlags[60][12];
     /* 0x0FB0 */ s32 globalFlags[64];
     /* 0x10B0 */ s8 globalBytes[512];
     /* 0x12B0 */ s32 areaFlags[8];
     /* 0x12D0 */ s8 areaBytes[16];
     /* 0x12E0 */ s8 debugEnemyContact;
-    /* 0x12E0 */ b8 debugUnused1;
-    /* 0x12E0 */ b8 debugUnused2;
-    /* 0x12E0 */ b8 musicEnabled;
-    /* 0x12E4 */ unsigned char unk_12E4[0x2];
+    /* 0x12E1 */ b8 debugUnused1;
+    /* 0x12E2 */ b8 debugUnused2;
+    /* 0x12E3 */ b8 musicEnabled;
+    /* 0x12E4 */ PAD(2);
     /* 0x12E6 */ Vec3s savePos;
     /* 0x12EC */ SaveFileSummary summary;
-    /* 0x1304 */ unsigned char unk_1304[0x7C];
+    /* 0x1304 */ PAD(0x7C);
 } SaveData; // size = 0x1380
 
 extern SaveData gCurrentSaveFile;
 
 typedef struct SaveSlotMetadata {
     /* 0x00 */ char modName[28]; /* always non-null for DX saves */
-    /* 0x29 */ b8 hasData;
-    /* 0x2A */ b8 validData;
-    /* 0x2B */ unsigned char pad[5];
-} SaveSlotMetadata; // size = 0x18
+    /* 0x1C */ b8 hasData;
+    /* 0x1D */ b8 validData;
+    /* 0x1E */ PAD(2);
+} SaveSlotMetadata; // size = 0x20
 
 #endif

@@ -766,7 +766,7 @@ typedef struct Camera {
     /* 0x012 */ s16 nearClip;
     /* 0x014 */ s16 farClip;
     /* 0x018 */ f32 vfov;
-                union {
+    /* 0x01C */ union {
                     struct {
                         s16 zoomPercent;
                     } world;
@@ -817,50 +817,50 @@ typedef struct Camera {
     /* 0x08C */ f32 lookAt_pitch;
     /* 0x090 */ Vp vp;
     /* 0x0A0 */ Vp vpAlt;
-    /* 0x0D4 */ Matrix4f mtxPerspective;
-    /* 0x114 */ Matrix4f mtxViewPlayer; // centers on player
-    /* 0x154 */ Matrix4f mtxViewLeading; // leads player slightly
-    /* 0x194 */ Matrix4f mtxViewShaking; // used while ShakeCam is active
-    /* 0x1FC */ void (*fpDoPreRender)(struct Camera*);
-    /* 0x200 */ void (*fpDoPostRender)(struct Camera*);
-    /* 0x204 */ Mtx* mtxBillboard; // rotation matrix created from -curBoomYaw
-    /* 0x444 */ CameraControlSettings* prevSettings;
-    /* 0x448 */ CameraControlSettings* curSettings;
-    /* 0x44C */ CameraRig prevRig;
-    /* 0x468 */ CameraRig nextRig;
-    /* 0x484 */ f32 interpAlpha;
-    /* 0x488 */ f32 linearInterp;
-    /* 0x48C */ f32 linearInterpRate;
-    /* 0x490 */ f32 moveSpeed;
-    /* 0x494 */ f32 yinterpGoal;
-    /* 0x498 */ f32 yinterpAlpha;
-    /* 0x49C */ f32 yinterpRate; // smaller is faster; not valid for values less than 1.0, unstable below 0.5
-    /* 0x4A0 */ f32 yinterpCur;
-    /* 0x4A4 */ Vec3f prevTargetPos;
-    /* 0x4B0 */ Vec3f movePos;
-    /* 0x4C8 */ Vec3f prevMovePos;
-    /* 0x4BC */ Vec3f prevPrevMovePos;
-    /* 0x4D8 */ CameraControlSettings overrideSettings;
-    /* 0x504 */ b16 useOverrideSettings;
-    /* 0x4D6 */ b16 prevUseOverride;
-    /* 0x4D4 */ b16 prevPrevUseOverride;
-    /* 0x506 */ b16 panActive;
-    /* 0x508 */ f32 interpEasingParameter; // controls whether easing for camera rig interpolation is more cosine-like (values near 0) or quadratic (values near 1)
-    /* 0x50C */ f32 leadAmount;
-    /* 0x510 */ f32 targetLeadAmount;
-    /* 0x514 */ f32 leadInterpAlpha;
-    /* 0x518 */ f32 accumulatedStickLead;
-    /* 0x51C */ s32 increasingLeadInterp;
-    /* 0x520 */ f32 leadAmtScale;
-    /* 0x524 */ f32 prevLeadPosX;
-    /* 0x528 */ f32 prevLeadPosZ;
-    /* 0x52C */ s32 leadConstrainDir;
-    /* 0x530 */ b32 needsInitialConstrainDir;
-    /* 0x534 */ CameraControlSettings* prevLeadSettings;
-    /* 0x550 */ f32 unusedLeadAmt;
-    /* 0x554 */ s16 unusedLeadCounter;
-    /* 0x556 */ s16 unusedLeadDir;
-} Camera; // size = 0x558
+    /* 0x0B0 */ Matrix4f mtxPerspective;
+    /* 0x0F0 */ Matrix4f mtxViewPlayer; // centers on player
+    /* 0x130 */ Matrix4f mtxViewLeading; // leads player slightly
+    /* 0x170 */ Matrix4f mtxViewShaking; // used while ShakeCam is active
+    /* 0x1B0 */ void (*fpDoPreRender)(struct Camera*);
+    /* 0x1B4 */ void (*fpDoPostRender)(struct Camera*);
+    /* 0x1B8 */ Mtx* mtxBillboard; // rotation matrix created from -curBoomYaw
+    /* 0x1BC */ CameraControlSettings* prevSettings;
+    /* 0x1C0 */ CameraControlSettings* curSettings;
+    /* 0x1C4 */ CameraRig prevRig;
+    /* 0x1E0 */ CameraRig nextRig;
+    /* 0x1FC */ f32 interpAlpha;
+    /* 0x200 */ f32 linearInterp;
+    /* 0x204 */ f32 linearInterpRate;
+    /* 0x208 */ f32 moveSpeed;
+    /* 0x20C */ f32 yinterpGoal;
+    /* 0x210 */ f32 yinterpAlpha;
+    /* 0x214 */ f32 yinterpRate; // smaller is faster; not valid for values less than 1.0, unstable below 0.5
+    /* 0x218 */ f32 yinterpCur;
+    /* 0x21C */ Vec3f prevTargetPos;
+    /* 0x228 */ Vec3f movePos;
+    /* 0x234 */ Vec3f prevMovePos;
+    /* 0x240 */ Vec3f prevPrevMovePos;
+    /* 0x24C */ CameraControlSettings overrideSettings;
+    /* 0x278 */ b16 useOverrideSettings;
+    /* 0x27A */ b16 prevUseOverride;
+    /* 0x27C */ b16 prevPrevUseOverride;
+    /* 0x27E */ b16 panActive;
+    /* 0x280 */ f32 interpEasingParameter; // controls whether easing for camera rig interpolation is more cosine-like (values near 0) or quadratic (values near 1)
+    /* 0x284 */ f32 leadAmount;
+    /* 0x288 */ f32 targetLeadAmount;
+    /* 0x28C */ f32 leadInterpAlpha;
+    /* 0x290 */ f32 accumulatedStickLead;
+    /* 0x294 */ s32 increasingLeadInterp;
+    /* 0x298 */ f32 leadAmtScale;
+    /* 0x29C */ f32 prevLeadPosX;
+    /* 0x2A0 */ f32 prevLeadPosZ;
+    /* 0x2A4 */ s32 leadConstrainDir;
+    /* 0x2A8 */ b32 needsInitialConstrainDir;
+    /* 0x2AC */ CameraControlSettings* prevLeadSettings;
+    /* 0x2B0 */ f32 unusedLeadAmt;
+    /* 0x2B4 */ s16 unusedLeadCounter;
+    /* 0x2B6 */ s16 unusedLeadDir;
+} Camera; // size = 0x2B8
 
 typedef struct BattleStatus {
     /* 0x000 */ s32 flags1;
@@ -1117,7 +1117,7 @@ typedef struct ModelAnimator {
     /* 0x4B8 */ s32 savedTreePos;
     /* 0x4BC */ void (*fpRenderCallback)(void*);
     /* 0x4C0 */ void* renderCallbackArg;
-} ModelAnimator; // size = 0x4C4
+} ModelAnimator; // size = 0x4C8
 
 typedef ModelAnimator* AnimatedMeshList[MAX_ANIMATED_MESHES];
 
@@ -1323,7 +1323,7 @@ typedef struct MessageCharset {
     /* 0x4 */ u16 charRasterSize; // in bytes
     /* 0x6 */ char unk_06[0x2];
     /* 0x8 */ MessageCharData* rasters;
-} MessageCharset; // size = 0xA;
+} MessageCharset; // size = 0xC;
 
 typedef struct MesasgeFontGlyphData {
     /* 0x0 */ IMG_PTR raster;
@@ -1715,19 +1715,19 @@ typedef struct DecorationTable {
     /* 0x750 */ s8 glowState;
     /* 0x751 */ b8 glowStateChanged;
     /* 0x752 */ s8 glowUnk1;
-    /* 0x753 */ char pad753[5];
+    /* 0x753 */ PAD(5);
     /* 0x758 */ s16 glowUnk2;
     /* 0x75A */ s16 glowUnk3;
     /* 0x75C */ s16 glowPhase;
-    /* 0x75E */ char pad75E[6];
+    /* 0x75E */ PAD(6);
     /* 0x764 */ s8 flashState;
     /* 0x765 */ s8 flashStateChanged;
     /* 0x766 */ s8 flashMode;
     /* 0x767 */ s8 flashFramesLeft;
     /* 0x768 */ u8 flashEnabled;
-    /* 0x769 */ char unk_769[3];
+    /* 0x769 */ PAD(3);
     /* 0x76C */ PAL_PTR flashPalettes[16];
-    /* 0x78C */ char unk_7AC[0x2C];
+    /* 0x7AC */ PAD(0x2C);
     /* 0x7D8 */ s8 blurUnused;
     /* 0x7D9 */ s8 blurBufferPos;
     /* 0x7DA */ s8 blurDrawCount;
@@ -1742,20 +1742,20 @@ typedef struct DecorationTable {
     /* 0x88C */ u8 rotY[ACTOR_BLUR_FRAMES];
     /* 0x89C */ u8 rotZ[ACTOR_BLUR_FRAMES];
     /* 0x8AC */ s8 blurDisableDelay; // infinite when zero
-    /* 0x8AD */ char unk_8AD[3];
+    /* 0x8AD */ PAD(3);
     /* substruct for decorations? */
     /* 0x8B0 */ struct EffectInstance* effect[MAX_ACTOR_DECORATIONS];
     /* 0x8B8 */ s8 type[MAX_ACTOR_DECORATIONS];
     /* 0x8BA */ u8 changed[MAX_ACTOR_DECORATIONS];
     /* 0x8BC */ s8 state[MAX_ACTOR_DECORATIONS];
     /* 0x8BE */ s16 stateResetTimer[MAX_ACTOR_DECORATIONS];
-    /* 0x8C2 */ char unk_8C0[4];
+    /* 0x8C2 */ PAD(4);
     /* 0x8C6 */ DecorationData decorData[MAX_ACTOR_DECORATIONS];
 } DecorationTable; // size = 0x8E8
 
 typedef struct PlayerPathElement {
     /* 0x00 */ b8 isJumping;
-    /* 0x03 */ char unk_01[3];
+    /* 0x01 */ PAD(3);
     /* 0x04 */ Vec3f pos;
 } PlayerPathElement; // size = 0x10
 
@@ -1862,106 +1862,106 @@ typedef struct Actor {
     /* 0x000 */ s32 flags;
     /* 0x004 */ s32 flags2;
     /* 0x008 */ struct ActorBlueprint* actorBlueprint;
-    /*       */ struct Overlay* overlay;
-    /* 0x00C */ ActorState state;
-    /* 0x0C8 */ ActorMovement fly;
-    /* 0x124 */ PAD(16);
-    /* 0x134 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
-    /* 0x135 */ u8 footStepCounter;
-    /* 0x136 */ u8 actorType;
-    /* 0x137 */ PAD(1);
-    /* 0x138 */ Vec3f homePos;
-    /* 0x144 */ Vec3f curPos;
-    /* 0x150 */ Vec3s headOffset;
-    /* 0x156 */ Vec3s healthBarPos;
-    /* 0x15C */ Vec3f rot;
-    /* 0x168 */ Vec3s rotPivotOffset;
-    /* 0x16E */ PAD(2);
-    /* 0x170 */ Vec3f scale;
-    /* 0x17C */ Vec3f scaleModifier; /* multiplies normal scale factors componentwise */
-    /* 0x188 */ f32 scalingFactor;
-    /* 0x18C */ f32 yaw;
-    /* 0x190 */ Vec2bu size;
-    /* 0x192 */ s16 actorID;
-    /* 0x194 */ Vec2b statusIconOffset;
-    /* 0x196 */ Vec2b statusTextOffset;
-    /* 0x198 */ Vec2b healthBarOffset;
-    /* 0x19A */ s8 verticalRenderOffset; // visual only, does not affect target position
-    /* 0x19B */ PAD(1);
-    /* 0x19C */ s32 actorTypeData1[6]; /* 4 = jump sound, 5 = attack sound */ // TODO: struct
-    /* 0x1B4 */ s16 actorTypeData1b[2];
-    /* 0x1B8 */ s16 curHP;
-    /* 0x1BA */ s16 maxHP;
-    /* 0x1BC */ s8 healthFraction; /* used to render HP bar */
-    /* 0x1BD */ PAD(3);
-    /* 0x1C0 */ EvtScript* idleSource;
-    /* 0x1C4 */ EvtScript* takeTurnSource;
-    /* 0x1C8 */ EvtScript* handleEventSource;
-    /* 0x1CC */ EvtScript* handlePhaseSource;
-    /* 0x1D0 */ struct Evt* idleScript;
-    /* 0x1D4 */ struct Evt* takeTurnScript;
-    /* 0x1D8 */ struct Evt* handleEventScript;
-    /* 0x1DC */ struct Evt* handlePhaseScript;
-    /* 0x1E0 */ s32 idleScriptID;
-    /* 0x1E4 */ s32 takeTurnScriptID;
-    /* 0x1E8 */ s32 handleEventScriptID;
-    /* 0x1EC */ s32 handlePhaseScriptID;
-    /* 0x1F0 */ s8 lastEventType;
-    /* 0x1F1 */ s8 turnPriority;
-    /* 0x1F2 */ s8 enemyIndex; /* actorID = this | 200 */
-    /* 0x1F3 */ s8 numParts;
-    /* 0x1F4 */ struct ActorPart* partsTable;
-    /* 0x1F8 */ s16 lastDamageTaken;
-    /* 0x1FA */ s16 hpChangeCounter;
-    /* 0x1FC */ s16 damageCounter;
-    /* 0x1FE */ PAD(2);
-    /* 0x200 */ struct EffectInstance* attackResultEffect;
-    /* 0x204 */ s8 actionRatingCombo;
-    /* 0x205 */ s8 actionRatingTime;
-    /* 0x206 */ s8 healthBarHideTime;
-    /* 0x207 */ s8 extraCoinBonus;
-    /* 0x208 */ s8 instigatorValue; // from the enemy which initiated the encounter if this actor is first in the formation. allows that enemy to pass information to its actor.
-    /* 0x209 */ PAD(3);
-    /* 0x20C */ s32* statusTable;
-    /* 0x210 */ s8 debuff;
-    /* 0x211 */ s8 debuffDuration;
-    /* 0x212 */ s8 staticStatus; /* 0B = yes */
-    /* 0x213 */ s8 staticDuration;
-    /* 0x214 */ s8 stoneStatus; /* 0C = yes */
-    /* 0x215 */ s8 stoneDuration;
-    /* 0x216 */ s8 koStatus; /* 0D = yes */
-    /* 0x217 */ s8 koDuration;
-    /* 0x218 */ s8 transparentStatus; /* 0E = yes */
-    /* 0x219 */ s8 transparentDuration;
-    /* 0x21A */ PAD(2);
-    /* 0x21C */ s8 statusAfflicted;
-    /* 0x21D */ s8 disableDismissTimer;
-    /* 0x21E */ s16 unk_21E;
-    /* 0x220 */ b8 isGlowing; // also used for goombario charge amount
-    /* 0x221 */ s8 attackBoost;
-    /* 0x222 */ s8 defenseBoost;
-    /* 0x223 */ s8 chillOutAmount; /* attack reduction */
-    /* 0x224 */ s8 chillOutTurns;
-    /* 0x225 */ PAD(3);
-    /* 0x228 */ struct EffectInstance* icePillarEffect;
-    /* 0x22C */ struct SelectableTarget targetData[MAX_ENEMY_ACTORS];
-    /* 0x40C */ s8 targetListLength;
-    /* 0x40D */ s8 targetIndexList[MAX_ENEMY_ACTORS]; /* into targetData */
-    /* 0x425 */ s8 selectedTargetIndex; /* into target index list */
-    /* 0x426 */ s8 targetPartID;
-    /* 0x427 */ PAD(1);
-    /* 0x428 */ s16 targetActorID;
-    /* 0x42A */ PAD(2);
-    /* 0x42C */ union {
+    /* 0x00C */ struct Overlay* overlay;
+    /* 0x010 */ ActorState state;
+    /* 0x0CC */ ActorMovement fly;
+    /* 0x128 */ PAD(16);
+    /* 0x138 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
+    /* 0x139 */ u8 footStepCounter;
+    /* 0x13A */ u8 actorType;
+    /* 0x13B */ PAD(1);
+    /* 0x13C */ Vec3f homePos;
+    /* 0x148 */ Vec3f curPos;
+    /* 0x154 */ Vec3s headOffset;
+    /* 0x15A */ Vec3s healthBarPos;
+    /* 0x160 */ Vec3f rot;
+    /* 0x16C */ Vec3s rotPivotOffset;
+    /* 0x172 */ PAD(2);
+    /* 0x174 */ Vec3f scale;
+    /* 0x180 */ Vec3f scaleModifier; /* multiplies normal scale factors componentwise */
+    /* 0x18C */ f32 scalingFactor;
+    /* 0x190 */ f32 yaw;
+    /* 0x194 */ Vec2bu size;
+    /* 0x196 */ s16 actorID;
+    /* 0x198 */ Vec2b statusIconOffset;
+    /* 0x19A */ Vec2b statusTextOffset;
+    /* 0x19C */ Vec2b healthBarOffset;
+    /* 0x19E */ s8 verticalRenderOffset; // visual only, does not affect target position
+    /* 0x19F */ PAD(1);
+    /* 0x1A0 */ s32 actorTypeData1[6]; /* 4 = jump sound, 5 = attack sound */ // TODO: struct
+    /* 0x1B8 */ s16 actorTypeData1b[2];
+    /* 0x1BC */ s16 curHP;
+    /* 0x1BE */ s16 maxHP;
+    /* 0x1C0 */ s8 healthFraction; /* used to render HP bar */
+    /* 0x1C1 */ PAD(3);
+    /* 0x1C4 */ EvtScript* idleSource;
+    /* 0x1C8 */ EvtScript* takeTurnSource;
+    /* 0x1CC */ EvtScript* handleEventSource;
+    /* 0x1D0 */ EvtScript* handlePhaseSource;
+    /* 0x1D4 */ struct Evt* idleScript;
+    /* 0x1D8 */ struct Evt* takeTurnScript;
+    /* 0x1DC */ struct Evt* handleEventScript;
+    /* 0x1E0 */ struct Evt* handlePhaseScript;
+    /* 0x1E4 */ s32 idleScriptID;
+    /* 0x1E8 */ s32 takeTurnScriptID;
+    /* 0x1EC */ s32 handleEventScriptID;
+    /* 0x1F0 */ s32 handlePhaseScriptID;
+    /* 0x1F4 */ s8 lastEventType;
+    /* 0x1F5 */ s8 turnPriority;
+    /* 0x1F6 */ s8 enemyIndex; /* actorID = this | 200 */
+    /* 0x1F7 */ s8 numParts;
+    /* 0x1F8 */ struct ActorPart* partsTable;
+    /* 0x1FC */ s16 lastDamageTaken;
+    /* 0x1FE */ s16 hpChangeCounter;
+    /* 0x200 */ s16 damageCounter;
+    /* 0x202 */ PAD(2);
+    /* 0x204 */ struct EffectInstance* attackResultEffect;
+    /* 0x208 */ s8 actionRatingCombo;
+    /* 0x209 */ s8 actionRatingTime;
+    /* 0x20A */ s8 healthBarHideTime;
+    /* 0x20B */ s8 extraCoinBonus;
+    /* 0x20C */ s8 instigatorValue; // from the enemy which initiated the encounter if this actor is first in the formation. allows that enemy to pass information to its actor.
+    /* 0x20D */ PAD(3);
+    /* 0x210 */ s32* statusTable;
+    /* 0x214 */ s8 debuff;
+    /* 0x215 */ s8 debuffDuration;
+    /* 0x216 */ s8 staticStatus; /* 0B = yes */
+    /* 0x217 */ s8 staticDuration;
+    /* 0x218 */ s8 stoneStatus; /* 0C = yes */
+    /* 0x219 */ s8 stoneDuration;
+    /* 0x21A */ s8 koStatus; /* 0D = yes */
+    /* 0x21B */ s8 koDuration;
+    /* 0x21C */ s8 transparentStatus; /* 0E = yes */
+    /* 0x21D */ s8 transparentDuration;
+    /* 0x21E */ PAD(2);
+    /* 0x220 */ s8 statusAfflicted;
+    /* 0x221 */ s8 disableDismissTimer;
+    /* 0x222 */ s16 unk_21E;
+    /* 0x224 */ b8 isGlowing; // also used for goombario charge amount
+    /* 0x225 */ s8 attackBoost;
+    /* 0x226 */ s8 defenseBoost;
+    /* 0x227 */ s8 chillOutAmount; /* attack reduction */
+    /* 0x228 */ s8 chillOutTurns;
+    /* 0x229 */ PAD(3);
+    /* 0x22C */ struct EffectInstance* icePillarEffect;
+    /* 0x230 */ struct SelectableTarget targetData[MAX_ENEMY_ACTORS];
+    /* 0x410 */ s8 targetListLength;
+    /* 0x411 */ s8 targetIndexList[MAX_ENEMY_ACTORS]; /* into targetData */
+    /* 0x429 */ s8 selectedTargetIndex; /* into target index list */
+    /* 0x42A */ s8 targetPartID;
+    /* 0x42B */ PAD(1);
+    /* 0x42C */ s16 targetActorID;
+    /* 0x42E */ PAD(2);
+    /* 0x430 */ union {
     /*       */     struct Shadow* ptr;
     /*       */     s32 id;
-    /* 0x42C */ } shadow;
-    /* 0x430 */ f32 shadowScale; /* = actor size / 24.0 */
-    /* 0x434 */ s16 renderMode; /* initially 0xD, set to 0x22 if any part is transparent */
-    /* 0x436 */ s16 hudElementDataIndex;
-    /* 0x438 */ s32 loopingSoundID[2];
-    /* 0x440 */ struct EffectInstance* disableEffect;
-} Actor; // size = 0x444
+    /* 0x430 */ } shadow;
+    /* 0x434 */ f32 shadowScale; /* = actor size / 24.0 */
+    /* 0x438 */ s16 renderMode; /* initially 0xD, set to 0x22 if any part is transparent */
+    /* 0x43A */ s16 hudElementDataIndex;
+    /* 0x43C */ s32 loopingSoundID[2];
+    /* 0x444 */ struct EffectInstance* disableEffect;
+} Actor; // size = 0x448
 
 typedef struct BackgroundHeader {
     /* 0x00 */ IMG_PTR raster;
@@ -1978,7 +1978,7 @@ typedef struct SlideParams {
     /* 0x08 */ f32 launchVel;
     /* 0x0C */ f32 maxDescendVel;
     /* 0x10 */ f32 integrator[4];
-} SlideParams; // size = 0x14
+} SlideParams; // size = 0x20
 
 typedef struct PlayerStatus {
     /* 0x000 */ s32 flags; // PlayerStatusFlags
@@ -2196,7 +2196,7 @@ typedef struct {
     /* 0x10630 */ Gfx backgroundGfx[0x200]; // used by gfx_task_background
 #if VERSION_PAL
     // TODO: find where this space belongs to
-    s32 pad[0x300];
+    /* 0x11630 */ s32 pad[0x300];
 #endif
     /* 0x11630 */ Mtx matrixStack[0x200];
 } DisplayContext; // size = 0x19630
@@ -2352,7 +2352,7 @@ typedef struct ImgFXWorkingTexture {
     /* 0x1E */ s16 unk_1E;
     /* 0x20 */ char unk_20[0x4];
     /* 0x24 */ u8 alphaMultiplier;
-} ImgFXWorkingTexture; // size = 0x25
+} ImgFXWorkingTexture; // size = 0x28
 
 typedef struct SongUpdateEvent {
     /* 0x00 */ s32 songName;
@@ -2363,7 +2363,7 @@ typedef struct SongUpdateEvent {
     /* 0x14 */ s32 unk14;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ s32 unk1C; // may be fake
-} SongUpdateEvent; // size = 0x1C or 0x20
+} SongUpdateEvent; // size = 0x20
 
 // unfortunately, cant use bitfield for this
 // format: ABCC00DD
@@ -2401,12 +2401,12 @@ typedef struct CreditsEntry {
     /* 0x2C */ s32 perCharDelayOut;
     /* 0x30 */ s32 next;
     /* 0x34 */ s16 flags;
-    /* 0x36 */ char pad_36[2];
+    /* 0x36 */ PAD(2);
 } CreditsEntry; // size = 0x38
 
 typedef struct CreditsLine {
     /* 0x00 */ u8* message;
-    /* 0x04 */ char unk_04[0x4];
+    /* 0x04 */ PAD(4);
     /* 0x08 */ s32 time;
     /* 0x0C */ s32 state;
     /* 0x10 */ s32 palette;
@@ -2414,18 +2414,18 @@ typedef struct CreditsLine {
     /* 0x18 */ s32 appearMode;
     /* 0x1C */ s32 appearTime;
     /* 0x20 */ s32 perCharDelayIn;
-    /* 0x24 */ char unk_24[0x10];
+    /* 0x24 */ PAD(16);
     /* 0x34 */ s32 holdMode;
     /* 0x38 */ s32 holdTime;
-    /* 0x3C */ char unk_3C[0x10];
+    /* 0x3C */ PAD(16);
     /* 0x4C */ s32 vanishMode;
     /* 0x50 */ s32 vanishTime;
     /* 0x54 */ s32 perCharDelayOut;
-    /* 0x58 */ char unk_58[0x10];
+    /* 0x58 */ PAD(16);
     /* 0x68 */ s32 posX;
     /* 0x6C */ s32 posY;
     /* 0x70 */ s16 flags;
-    /* 0x72 */ char unk_72[2];
+    /* 0x72 */ PAD(2);
 } CreditsLine; // size = 0x74
 
 typedef struct CreditsChar {
@@ -2441,7 +2441,7 @@ typedef struct CreditsChar {
 typedef struct CreditsData {
     /* 0x00 */ u32 workerID;
     /* 0x04 */ CreditsLine lines[32];
-} CreditsData; // size = 0x74
+} CreditsData; // size = 0xE84
 
 typedef struct CreditsPairOffset {
     /* 0x00 */ u8 firstChar;

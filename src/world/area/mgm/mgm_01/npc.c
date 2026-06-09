@@ -48,8 +48,8 @@ typedef struct JumpGamePanel {
     /* 0x48 */ f32 startAngle;
     /* 0x4C */ f32 endAngle;
     /* 0x50 */ f32 curScale;
-    /* 0x50 */ f32 startScale;
-    /* 0x50 */ f32 endScale;
+    /* 0x54 */ f32 startScale;
+    /* 0x58 */ f32 endScale;
 } JumpGamePanel; /* size = 5C */
 
 typedef struct JumpGameData {

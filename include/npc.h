@@ -307,17 +307,17 @@ typedef struct Enemy {
     /*      */      void* varTablePtr[16];
     /*      */ };
     /* 0xA4 */ u8 aiDetectFlags; // see: EnemyDetectFlags
-    /* 0xA5 */ char unk_AD[3];
+    /* 0xA5 */ PAD(3);
     /* 0xA8 */ u32 aiFlags; // see: EnemyAIFlags
     /* 0xAC */ s8 aiSuspendTime;
     /* 0xAD */ s8 instigatorValue; // value is passed to first actor in formation if a battle is triggered with this enemy
-    /* 0xAE */ char unk_B6[2];
+    /* 0xAE */ PAD(2);
     /* 0xB0 */ s32* animList;
     /* 0xB4 */ EnemyTerritory* territory;
     /* 0xB8 */ EnemyDrops* drops;
     /* 0xBC */ u32 tattleMsg;
     /* 0xD0 */ s16 savedNpcYaw;
-    /* 0xD2 */ char unk_E2[2];
+    /* 0xD2 */ PAD(2);
 } Enemy; // size = 0xD4
 
 typedef struct Encounter {

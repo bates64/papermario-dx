@@ -10,18 +10,18 @@ typedef struct PackedShadingLightSource {
     /* 0x04 */ Vec3s pos;
     /* 0x0A */ f32 falloff;
     /* 0x0E */ s8 unk_14;
-    /* 0x0F */ char pad_0F[0x1];
+    /* 0x0F */ PAD(1);
 } __attribute__((packed)) PackedShadingLightSource; // size = 0x10
 
 /// Packed equivalent of SpriteShadingProfile as baked into the ROM
 typedef struct PackedShadingProfile {
     /* 0x00 */ u8 count;
-    /* 0x01 */ char pad_01[0x1];
+    /* 0x01 */ PAD(1);
     /* 0x02 */ Color_RGB8 ambientColor;
     /* 0x05 */ u8 ambientPower;
     /* 0x06 */ PackedShadingLightSource sources[7];
-    /* 0x76 */ char pad_86[0xA];
-} __attribute__((packed)) PackedShadingProfile; // size = 0x100
+    /* 0x76 */ PAD(10);
+} __attribute__((packed)) PackedShadingProfile; // size = 0x80
 
 s32 ShadingOffsetsBuffer[2];
 PackedShadingProfile PackedShadingData;

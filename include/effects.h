@@ -357,7 +357,7 @@ enum DamageStarsFXTypes {
 
 typedef struct DamageStarsFXData {
     /* 0x00 */ s32 type;
-    /* 0x14 */ Vec3f pos;
+    /* 0x04 */ Vec3f pos;
     /* 0x10 */ Vec3f vel;
     /* 0x1C */ f32 rollAngle;
     /* 0x20 */ f32 rollAngleVel;
