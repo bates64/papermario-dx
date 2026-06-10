@@ -49,7 +49,6 @@ enum {
 };
 
 BSS EffectInstance* N(BeamEffect);
-BSS char N(padding)[4];
 BSS s32 N(MiscParticlesTimeLeft)[8];
 BSS s32 N(SpiritsMoveTime)[8];
 BSS s32 N(StarBeamStage);

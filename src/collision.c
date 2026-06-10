@@ -9,18 +9,18 @@ typedef struct HitFile {
 typedef struct ColliderBackupEntry {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s16 parentModelIndex;
-    /* 0x06 */ char pad_06[2];
+    /* 0x06 */ PAD(2);
 } ColliderBackupEntry; // size = 0x08
 
 typedef struct HitFileHeader {
     /* 0x00 */ s16 numColliders;
-    /* 0x02 */ char pad_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ s32 collidersOffset;
     /* 0x08 */ s16 numVertices;
-    /* 0x0A */ char pad_0A[2];
+    /* 0x0A */ PAD(2);
     /* 0x0C */ s32 verticesOffset;
     /* 0x10 */ s16 boundingBoxesDataSize;
-    /* 0x12 */ char pad_12[2];
+    /* 0x12 */ PAD(2);
     /* 0x14 */ s32 boundingBoxesOffset;
 } HitFileHeader; // size = 0x18
 
@@ -100,12 +100,6 @@ void backup_map_collision_data(void) {
     }
 
     gZoneCollisionData.numColliders = 0;
-}
-
-void func_8005AF84(void) {
-}
-
-void func_8005AF8C(void) {
 }
 
 void initialize_collision(void) {

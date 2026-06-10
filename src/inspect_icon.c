@@ -10,14 +10,14 @@ typedef struct InspectIconData {
     /* 0x0C */ f32 yaw;
     /* 0x10 */ f32 scale;
     /* 0x14 */ s32 holdTime;
-    /* 0x18 */ char unk_18[0x4];
+    /* 0x18 */ PAD(4);
     /* 0x1C */ s32 alpha; // unused
-    /* 0x20 */ char unk_20[0x1];
+    /* 0x20 */ PAD(1);
     /* 0x21 */ s8 iconBounceVel;
     /* 0x22 */ s8 iconBounceDir;
     /* 0x23 */ u8 state;
     /* 0x24 */ u8 brightness;
-    /* 0x25 */ char unk_25[0x3];
+    /* 0x25 */ PAD(3);
 } InspectIconData; // size = 0x28
 
 enum {

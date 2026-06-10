@@ -1,8 +1,6 @@
 #include "battle/battle.h"
 #include "vars_access.h"
 
-BSS char D_8029F660[0x400]; // unused?
-
 BSS MessagePrintState* gSpeakingActorPrintCtx;
 BSS MessagePrintState* D_8029FA64;
 BSS s32 gSpeakingActorPrintIsDone; // unk_08

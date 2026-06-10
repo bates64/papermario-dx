@@ -13,20 +13,21 @@ enum {
 
 typedef struct GameRecords {
     /* 0x00 */ u16 state;
-    /* 0x02 */ char unk_02[0x2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ s32 lerpTime;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ char unk_0C[0xC];
+    /* 0x0C */ PAD(12);
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 alpha;
     /* 0x1C */ s16 lastAlpha;
-    /* 0x1E */ char unk_1E[0x2];
+    /* 0x1E */ PAD(2);
     /* 0x20 */ s32 workerID;
     /* 0x24 */ u16 equippedBadges;
     /* 0x26 */ s16 recipesFoundCount;
     /* 0x28 */ s16 totalRecipesCount;
-} GameRecords;
+    /* 0x2A */ PAD(2);
+} GameRecords; // size = 0x2C
 
 s32 N(RecipeFoundVars)[] = {
     GF_MAC02_DiscoveredRecipe_00, GF_MAC02_DiscoveredRecipe_01,

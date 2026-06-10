@@ -5,9 +5,9 @@
 typedef struct PulseStoneData {
     /* 0x00 */ Vec3f pos;
     /* 0x0C */ f32 scale;
-    /* 0x10 */ char unk_10[0x8];
+    /* 0x10 */ PAD(8);
     /* 0x18 */ s32 appearDelay;
-    /* 0x1C */ char unk_1C[0x4];
+    /* 0x1C */ PAD(4);
     /* 0x20 */ s32 pingTime;
     /* 0x24 */ s32 state;
 } PulseStoneData; // size = 0x28

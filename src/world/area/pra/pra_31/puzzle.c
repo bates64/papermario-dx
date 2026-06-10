@@ -19,7 +19,7 @@ typedef struct DinoData {
 typedef struct DinoPuzzleData {
     /* 0x00 */ DinoData dinos[DINO_COUNT];
     /* 0x48 */ s16 cells[GRID_SIZE_Z][GRID_SIZE_X];
-    /* 0x7E */ char unk_7E[0x2];
+    /* 0x7E */ PAD(2);
 } DinoPuzzleData; // size = 0x80
 
 enum {

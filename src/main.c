@@ -7,9 +7,9 @@ u8 nuYieldBuf[NU_GFX_YIELD_BUF_SIZE];
 OSThread __osThreadSave;
 u8 nuBootStack[0x2000] ALIGNED(8);
 
-// used in effects/gfx/flame.c
-unsigned char D_800B32E0[0x800] ALIGNED(16);
-unsigned char D_800B3AE0[0x800] ALIGNED(16);
+// 32x64 I8 RDP scratch textures used by the flame effect (effects/gfx/flame)
+IMG_BIN GeneratedFlameTexture[0x800] ALIGNED(16); // output texture
+IMG_BIN FlameTextureGenBuffer[0x800] ALIGNED(16); // scratch space for building the texture
 
 s16 D_80074010 = 8; // might be an array, could be size 1-8
 

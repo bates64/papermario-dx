@@ -2225,9 +2225,9 @@ typedef struct SpiritCardFXData {
     /* 0x1C */ struct EffectInstance* child;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 yaw;
-    /* 0x28 */ char unk_28[0xC];
+    /* 0x28 */ PAD(12);
     /* 0x34 */ u8 chapter;
-    /* 0x35 */ char unk_35[3];
+    /* 0x35 */ PAD(3);
 } SpiritCardFXData; // size = 0x38
 
 #define MAX_LIL_OINKS 11
@@ -2275,20 +2275,29 @@ typedef struct LilOinkFXData {
     /* 0x13C */ s8 animTime[MAX_LIL_OINKS];
 } LilOinkFXData; // size = 0x148
 
+enum {
+    CARD_RING_STATE_IDLE            = 0,
+    CARD_RING_STATE_CAPTURE_INIT    = 1,
+    CARD_RING_STATE_CAPTURE         = 2,
+    CARD_RING_STATE_GATHER_INIT     = 3,
+    CARD_RING_STATE_GATHER          = 4,
+    CARD_RING_STATE_DONE            = 5,
+};
+
 typedef struct SomethingRotatingFXData {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 type;
     /* 0x04 */ Vec3f pos;
-    /* 0x10 */ s32 unk_10;
-    /* 0x14 */ s32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ f32 unk_20;
+    /* 0x10 */ s32 timeLeft;
+    /* 0x14 */ s32 lifetime;
+    /* 0x18 */ f32 scale;
+    /* 0x1C */ f32 tiltAngle;
+    /* 0x20 */ f32 spinAngle;
     /* 0x24 */ u8 primAlpha;
-    /* 0x25 */ s8 unk_25;
+    /* 0x25 */ u8 envAlpha;
     /* 0x26 */ Color_RGB8 env;
     /* 0x29 */ u8 state;
-    /* 0x2A */ char unk_2A[2];
-    /* 0x2C */ f32 unk_2C;
+    /* 0x2A */ PAD(2);
+    /* 0x2C */ f32 radius;
 } SomethingRotatingFXData; // size = 0x30
 
 typedef struct BreakingJunkFXData {

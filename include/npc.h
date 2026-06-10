@@ -188,7 +188,7 @@ typedef struct EnemyDrops {
     /* 0x72 */ StatDrop flowerDrops[8];
     /* 0xB2 */ s16 minCoinBonus;
     /* 0xB4 */ s16 maxCoinBonus;
-    /* 0xB6 */ char unk_DE[2];
+    /* 0xB6 */ PAD(2);
 } EnemyDrops; // size = 0xB8
 
 enum TerritoryShape { SHAPE_CYLINDER, SHAPE_RECT };
@@ -217,7 +217,7 @@ typedef struct {
 typedef union {
     EnemyTerritoryWander wander;
     EnemyTerritoryPatrol patrol;
-    char PADDING[0xC0];
+    PAD(0xC0); // force size
 } EnemyTerritory; // size = 0xC0
 
 typedef union NpcInitialVars {
@@ -255,7 +255,7 @@ typedef struct NpcData {
         /* 0x38 */ s32 anim_E;
         /* 0x3C */ s32 anim_F;
     } animations;
-    /* 0x1E0 */ char pad_1E0[3];
+    /* 0x1E0 */ PAD(3);
     /* 0x1E3 */ u8 aiDetectFlags;
     /* 0x1E4 */ u32 aiFlags;
     /* 0x1E8 */ AnimID* extraAnimations;
@@ -281,7 +281,7 @@ typedef struct Enemy {
     /* 0x08 */ s16 npcID;
     /* 0x0A */ Vec3s spawnPos;
     /* 0x10 */ Vec3s attackOriginPos; // intial position when firstStrikeActive is set
-    /* 0x16 */ char unk_16[2];
+    /* 0x16 */ PAD(2);
     /* 0x18 */ NpcSettings* npcSettings;
     /* 0x1C */ EvtScript* initSource; // from Npc::init
     /* 0x20 */ EvtScript* interactSource;
@@ -326,12 +326,12 @@ typedef struct Encounter {
     /* 0x44 */ s16 battle;
     /* 0x46 */ s16 stage;
     /* 0x48 */ s16 encounterID;
-    /* 0x4A */ char unk_4C[2];
+    /* 0x4A */ PAD(2);
 } Encounter; // size = 0x4C
 
 typedef struct FieldStatus {
     /* 0x00 */ s8 status;
-    /* 0x01 */ char pad_01;
+    /* 0x01 */ PAD(1);
     /* 0x02 */ s16 duration;
 } FieldStatus;
 
@@ -340,13 +340,13 @@ typedef struct EncounterStatus {
     /* 0x004 */ s8 firstStrikeType; // see enum: FirstStrikeType
     /* 0x005 */ s8 hitType; // see enum: EncounterTriggers
     /* 0x006 */ s8 hitTier; // 0 = normal, 1 = super, 2 = ultra
-    /* 0x007 */ char unk_07;
+    /* 0x007 */ s8 unk_07;
     /* 0x008 */ s8 unk_08;
     /* 0x009 */ s8 battleOutcome; // see enum: EncounterOutcomes
     /* 0x00A */ s8 battleTriggerCooldown; ///< set to 15 after victory, 45 after fleeing
     /* 0x00B */ b8 hasMerleeCoinBonus; /* triple coins when true */
     /* 0x00C */ u8 damageTaken; /* valid after battle */
-    /* 0x00D */ char unk_0D;
+    /* 0x00D */ PAD(1);
     /* 0x00E */ s16 coinsEarned; /* valid after battle */
     /* 0x010 */ s8 instigatorValue;
     /* 0x011 */ s8 forbidFleeing;
@@ -360,7 +360,7 @@ typedef struct EncounterStatus {
     /* 0x01F */ u8 curEntryIndex;
     /* 0x020 */ s8 mapID;
     /* 0x021 */ s8 resetMapEncounterFlags;
-    /* 0x022 */ char unk_22[2];
+    /* 0x022 */ PAD(2);
     /* 0x024 */ s32* npcGroupList;
     /* 0x028 */ Encounter* encounterList[24];
     /* 0x088 */ Encounter* curEncounter;

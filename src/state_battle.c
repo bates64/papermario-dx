@@ -145,8 +145,6 @@ void state_step_end_battle(void) {
             mapSettings = get_current_map_settings();
             btl_restore_world_cameras();
             gGameStatusPtr->context = CONTEXT_WORLD;
-            func_8005AF84();
-            func_8002ACDC();
             sfx_clear_env_sounds(1);
             gGameStatusPtr->peachFlags &= ~PEACH_FLAG_IS_PEACH;
             battle_heap_create();

@@ -5,7 +5,7 @@ extern VirtualEntityList bBattleVirtualEntityList;
 extern VirtualEntityList wWorldVirtualEntityList;
 extern VirtualEntityList* gCurrentVirtualEntityListPtr;
 
-s32 create_worker_backUI(void (*updateFunc)(void), void (*drawFunc)(void));
+s32 create_worker_backUI(VoidCallback updateFunc, VoidCallback drawFunc);
 
 void virtual_entity_appendGfx_quad(u8 r, u8 g, u8 b, u8 a, u16 left, u16 top, u16 right, u16 bottom) {
     gDPPipeSync(gMainGfxPos++);

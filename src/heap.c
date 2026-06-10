@@ -27,10 +27,6 @@ s32 battle_heap_create(void) {
     }
 }
 
-s32 func_8002ACDC(void) {
-    return 0;
-}
-
 void* heap_malloc(s32 size) {
     if (gGameStatusPtr->context == CONTEXT_WORLD) {
         return general_heap_malloc(size);

@@ -72,19 +72,19 @@ typedef struct ImgFXState {
     /* 0x04 */ u8 subdivY;
     /* 0x05 */ s8 lastAnimCmd;
     /* 0x06 */ s8 lastColorCmd;
-    /* 0x07 */ char unk_07[0x1];
+    /* 0x07 */ PAD(1);
     /* 0x08 */ u16 firstVtxIdx;
     /* 0x0A */ u16 lastVtxIdx;
     /* 0x0C */ u16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 nextIdx;
     /* 0x14 */ s32 flags;
-    /* 0x18 */ char unk_18[0x4];
+    /* 0x18 */ PAD(4);
     /* 0x1C */ ImgFXIntVars ints;
     /* 0x3C */ ImgFXFloatVars floats;
     /* 0x5C */ Color_RGBA8* colorBuf;
     /* 0x60 */ u16 colorBufCount;
-    /* 0x62 */ char unk_62[0x2];
+    /* 0x62 */ PAD(2);
     /* 0x64 */ u8* curAnimOffset;
     /* 0x68 */ Vtx* vtxBufs[2];
     /* 0x70 */ Gfx* gfxBufs[2];
@@ -95,7 +95,7 @@ typedef struct ImgFXCacheEntry {
     /* 0x00 */ s32* data;
     /* 0x04 */ u8 staleCooldownTimer;
     /* 0x05 */ u8 usingContextualHeap;
-    /* 0x06 */ char unk_06[0x2];
+    /* 0x06 */ PAD(2);
 } ImgFXCacheEntry; // size = 0x8
 
 enum ImgFXAnimFlags {

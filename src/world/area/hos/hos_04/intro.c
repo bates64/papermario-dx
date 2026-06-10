@@ -52,7 +52,6 @@ API_CALLABLE(N(BlockForever)) {
     return ApiStatus_BLOCK;
 }
 
-#define INTRO_MATH_EXTENDED
 #include "../common/IntroMathUtil.inc.c"
 
 f32 N(TargetBoomLengthPre) = 700;

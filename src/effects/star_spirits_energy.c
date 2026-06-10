@@ -17,7 +17,7 @@ Gfx* D_E0122BA4[] = { D_09004E00_412090 };
 
 typedef struct UnkStarSpiritsEnergy {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02;
+    /* 0x02 */ PAD(1);
     /* 0x03 */ u8 unk_03;
 } UnkStarSpiritsEnergy; // size = 0x4
 

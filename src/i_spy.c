@@ -4,9 +4,9 @@
 typedef struct ISpyNotification {
     /* 0x00 */ Vec3f pos;
     /* 0x0C */ f32 scale;
-    /* 0x10 */ char unk_10[8];
+    /* 0x10 */ PAD(8);
     /* 0x18 */ s32 time;
-    /* 0x1C */ char unk_1C[4];
+    /* 0x1C */ PAD(4);
     /* 0x20 */ s32 flashCount;
     /* 0x24 */ s32 state;
     /* 0x28 */ s32 alpha;

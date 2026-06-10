@@ -8,7 +8,7 @@ typedef struct UnkStruct {
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u8 sizeScale;
-    /* 0x09 */ char unk_09[1];
+    /* 0x09 */ PAD(1);
 } UnkStruct; // size = 0xA
 
 extern Gfx D_09000280_3B8AE0[];

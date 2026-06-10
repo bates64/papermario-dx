@@ -296,7 +296,6 @@ void load_engine_data(void) {
     DMA_COPY_SEGMENT(font_width);
 
     gOverrideFlags = 0;
-    gGameStatusPtr->unk_79 = 0;
     gGameStatusPtr->backgroundFlags = 0;
     gGameStatusPtr->musicEnabled = true;
     gGameStatusPtr->healthBarsEnabled = true;

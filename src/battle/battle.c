@@ -305,7 +305,7 @@ void load_demo_battle(u32 index) {
             break;
     }
 
-    evt_set_variable(nullptr, GF_Tutorial_SwapTurnOrder, 1);
+    evt_set_variable(nullptr, GF_Tutorial_SwapTurnOrder, true);
     gCurrentEncounter.unk_07 = 0;
     gCurrentEncounter.instigatorValue = 0;
     set_battle_stage(BTL_STAGE_DEFAULT);

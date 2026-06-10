@@ -33,7 +33,6 @@ int _Printf(outfun prout, char *arg, const char *fmt, va_list args);
 
 f32 signF(f32 val);
 
-s32 func_8002ACDC(void);
 void load_obfuscation_shims(void);
 
 void* heap_malloc(s32 size);
@@ -919,7 +918,6 @@ void set_max_star_power(s8);
 void sync_status_bar(void);
 void create_cameras(void);
 void func_80045AC0(void);
-void func_8005AF84(void);
 void npc_follow_init(Npc*, s32, FollowAnims*, f32, f32, s32, s32);
 void npc_update_npc_tracking(Npc*);
 void npc_follow_npc(Npc*);

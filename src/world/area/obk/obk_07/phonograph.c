@@ -34,7 +34,7 @@ typedef struct PhonographData {
     /* 0x03C */ HudElemID buttonHID;
     /* 0x040 */ HudElemID meterHID;
     /* 0x044 */ HudElemID okHID;
-    /* 0x048 */ char unk_48[0x4];
+    /* 0x048 */ PAD(4);
     /* 0x04C */ s32 updateScaleScriptID;
     /* 0x050 */ s32 updateCrankScriptID;
     /* 0x054 */ s32 updateRecordScriptID;
@@ -47,7 +47,7 @@ typedef struct PhonographData {
     /* 0x1D4 */ s32 meterFillAmount;
     /* 0x1D8 */ s32 unk_1D8;
     /* 0x1DC */ s8 unk_1DC;
-    /* 0x1DD */ char unk_1DD[0x3];
+    /* 0x1DD */ PAD(3);
 } PhonographData; // size = 0x1E0
 
 enum {

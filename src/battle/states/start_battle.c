@@ -116,7 +116,7 @@ void btl_state_update_normal_start(void) {
             battleStatus->itemUsesLeft = 0;
             battleStatus->hammerCharge = 0;
             battleStatus->jumpCharge = 0;
-            battleStatus->unk_98 = 0;
+            battleStatus->overcharged = false;
             battleStatus->hpDrainCount = 0;
             gBattleStatus.flags2 |= BS_FLAGS2_CAN_FLEE;
             if (currentEncounter->forbidFleeing) {

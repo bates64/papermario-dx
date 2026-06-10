@@ -14,20 +14,17 @@ WindowStyleCustom gPauseWS_0 = {
         .bitDepth = G_IM_SIZ_8b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0},
         .size = 0
     },
     .corners = {
         .imgData = nullptr,
         .fmt = G_IM_FMT_RGBA,
         .bitDepth = G_IM_SIZ_4b,
-        .size1 = { .x = 0, .y = 0},
-        .size2 = { .x = 0, .y = 0},
-        .size3 = { .x = 0, .y = 0},
-        .size4 = { .x = 0, .y = 0},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { .x = 0, .y = 0 },
+        .size2 = { .x = 0, .y = 0 },
+        .size3 = { .x = 0, .y = 0 },
+        .size4 = { .x = 0, .y = 0 },
     },
-    .unk_1C = { 0, 0, 0, 0},
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_CONST_0, PM_CC_CONST_0),
     .transparentCombineMode =  gsDPSetCombineMode(PM_CC_WINDOW_4, G_CC_PASS2),
     .color1 = { 64, 92, 246, 255 },
@@ -40,20 +37,17 @@ WindowStyleCustom gPauseWS_1 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0},
         .size = 128
     },
     .corners = {
         .imgData = ui_box_corners4_png,
         .fmt = G_IM_FMT_IA,
         .bitDepth = G_IM_SIZ_8b,
-        .size1 = { .x = 8, .y = 8},
-        .size2 = { .x = 8, .y = 8},
-        .size3 = { .x = 8, .y = 8},
-        .size4 = { .x = 8, .y = 8},
-        .unk_0D = { 0, 0, 0}
+        .size1 = { .x = 8, .y = 8 },
+        .size2 = { .x = 8, .y = 8 },
+        .size3 = { .x = 8, .y = 8 },
+        .size4 = { .x = 8, .y = 8 },
     },
-    .unk_1C = { 0, 0, 0, 0},
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 226, 225, 216, 255 },
@@ -66,7 +60,6 @@ WindowStyleCustom gPauseWS_2 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -77,9 +70,7 @@ WindowStyleCustom gPauseWS_2 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 226, 225, 216, 255 },
@@ -92,7 +83,6 @@ WindowStyleCustom gPauseWS_3 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -103,9 +93,7 @@ WindowStyleCustom gPauseWS_3 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 240, 199, 78, 255 },
@@ -118,7 +106,6 @@ WindowStyleCustom gPauseWS_4 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -129,9 +116,7 @@ WindowStyleCustom gPauseWS_4 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 0xFD, 0x74, 0x4A, 0xFF },
@@ -144,7 +129,6 @@ WindowStyleCustom gPauseWS_5 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -155,9 +139,7 @@ WindowStyleCustom gPauseWS_5 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 39, 72, 225, 255 },
@@ -170,7 +152,6 @@ WindowStyleCustom gPauseWS_6 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -181,9 +162,7 @@ WindowStyleCustom gPauseWS_6 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 34, 238, 201, 255 },
@@ -196,7 +175,6 @@ WindowStyleCustom gPauseWS_7 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -207,9 +185,7 @@ WindowStyleCustom gPauseWS_7 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 104, 255, 81, 255 },
@@ -222,7 +198,6 @@ WindowStyleCustom gPauseWS_8 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -233,9 +208,7 @@ WindowStyleCustom gPauseWS_8 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 173, 114, 194, 255 },
@@ -248,7 +221,6 @@ WindowStyleCustom gPauseWS_9 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -259,9 +231,7 @@ WindowStyleCustom gPauseWS_9 = {
         .size2 = { .x = 0, .y = 0 },
         .size3 = { .x = 0, .y = 0 },
         .size4 = { .x = 0, .y = 0 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPNoOp(),
     .transparentCombineMode = gsDPNoOp(),
     .color1 = { 0, 0, 0, 0 },
@@ -274,7 +244,6 @@ WindowStyleCustom gPauseWS_10 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -285,9 +254,7 @@ WindowStyleCustom gPauseWS_10 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 240, 199, 78, 255 },
@@ -300,7 +267,6 @@ WindowStyleCustom gPauseWS_11 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -311,9 +277,7 @@ WindowStyleCustom gPauseWS_11 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 213, 165, 116, 255 },
@@ -326,7 +290,6 @@ WindowStyleCustom gPauseWS_12 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -337,9 +300,7 @@ WindowStyleCustom gPauseWS_12 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 226, 216, 179, 255 },
@@ -352,7 +313,6 @@ WindowStyleCustom gPauseWS_13 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -363,9 +323,7 @@ WindowStyleCustom gPauseWS_13 = {
         .size2 = { .x = 16, .y = 16 },
         .size3 = { .x = 16, .y = 16 },
         .size4 = { .x = 16, .y = 16 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 253, 116, 74, 255 },
@@ -378,7 +336,6 @@ WindowStyleCustom gPauseWS_14 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -389,9 +346,7 @@ WindowStyleCustom gPauseWS_14 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 245, 185, 160, 255 },
@@ -404,7 +359,6 @@ WindowStyleCustom gPauseWS_15 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -415,9 +369,7 @@ WindowStyleCustom gPauseWS_15 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 216, 191, 182, 255 },
@@ -430,7 +382,6 @@ WindowStyleCustom gPauseWS_16 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -441,9 +392,7 @@ WindowStyleCustom gPauseWS_16 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 202, 170, 165, 255 },
@@ -456,7 +405,6 @@ WindowStyleCustom gPauseWS_17 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -467,9 +415,7 @@ WindowStyleCustom gPauseWS_17 = {
         .size2 = { .x = 16, .y = 16 },
         .size3 = { .x = 16, .y = 16 },
         .size4 = { .x = 16, .y = 16 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 39, 72, 225, 255 },
@@ -482,7 +428,6 @@ WindowStyleCustom gPauseWS_18 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -493,9 +438,7 @@ WindowStyleCustom gPauseWS_18 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 198, 207, 222, 255 },
@@ -508,7 +451,6 @@ WindowStyleCustom gPauseWS_19 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -519,9 +461,7 @@ WindowStyleCustom gPauseWS_19 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 207, 210, 242, 255 },
@@ -534,7 +474,6 @@ WindowStyleCustom gPauseWS_20 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -545,9 +484,7 @@ WindowStyleCustom gPauseWS_20 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 202, 217, 214, 255 },
@@ -560,7 +497,6 @@ WindowStyleCustom gPauseWS_21 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -571,9 +507,7 @@ WindowStyleCustom gPauseWS_21 = {
         .size2 = { .x = 16, .y = 16 },
         .size3 = { .x = 16, .y = 16 },
         .size4 = { .x = 16, .y = 16 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 222, 237, 234, 255 },
@@ -586,7 +520,6 @@ WindowStyleCustom gPauseWS_22 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -597,9 +530,7 @@ WindowStyleCustom gPauseWS_22 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 14, 218, 181, 255 },
@@ -612,7 +543,6 @@ WindowStyleCustom gPauseWS_23 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -623,9 +553,7 @@ WindowStyleCustom gPauseWS_23 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 193, 225, 193, 255 },
@@ -638,7 +566,6 @@ WindowStyleCustom gPauseWS_24 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -649,9 +576,7 @@ WindowStyleCustom gPauseWS_24 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 104, 255, 81, 255 },
@@ -664,7 +589,6 @@ WindowStyleCustom gPauseWS_25 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -675,9 +599,7 @@ WindowStyleCustom gPauseWS_25 = {
         .size2 = { .x = 16, .y = 16 },
         .size3 = { .x = 16, .y = 16 },
         .size4 = { .x = 16, .y = 16 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 207, 250, 200, 255 },
@@ -690,7 +612,6 @@ WindowStyleCustom gPauseWS_26 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -701,9 +622,7 @@ WindowStyleCustom gPauseWS_26 = {
         .size2 = { .x = 8, .y = 8 },
         .size3 = { .x = 8, .y = 8 },
         .size4 = { .x = 8, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 216, 202, 219, 255 },
@@ -716,7 +635,6 @@ WindowStyleCustom gPauseWS_27 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 16,
         .height = 16,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 128
     },
     .corners = {
@@ -727,9 +645,7 @@ WindowStyleCustom gPauseWS_27 = {
         .size2 = { .x = 16, .y = 16 },
         .size3 = { .x = 16, .y = 16 },
         .size4 = { .x = 16, .y = 16 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_2, PM_CC_WINDOW_1),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_WINDOW_3, PM_CC_WINDOW_1),
     .color1 = { 236, 222, 239, 255 },
@@ -742,7 +658,6 @@ WindowStyleCustom gPauseWS_28 = {
         .bitDepth = G_IM_SIZ_4b,
         .width = 0,
         .height = 0,
-        .unk_07 = { 0, 0, 0, 0 },
         .size = 0
     },
     .corners = {
@@ -753,9 +668,7 @@ WindowStyleCustom gPauseWS_28 = {
         .size2 = { .x = 16, .y = 8 },
         .size3 = { .x = 16, .y = 8 },
         .size4 = { .x = 16, .y = 8 },
-        .unk_0D = { 0, 0, 0 },
     },
-    .unk_1C = { 0, 0, 0, 0 },
     .opaqueCombineMode = gsDPSetCombineMode(PM_CC_15, G_CC_PASS2),
     .transparentCombineMode = gsDPSetCombineMode(PM_CC_14, G_CC_PASS2),
     .color1 = { 173, 114, 194, 255 },
