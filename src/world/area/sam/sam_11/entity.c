@@ -11,7 +11,6 @@ s32 N(TargetBackgroundColB) = 0;
 API_CALLABLE(N(UpdateHouseShowHide)) {
     u8 r, g, b, a;
     u8 alpha;
-    s32 temp_a2;
 
     if (isInitialCall) {
         mdl_group_set_custom_gfx(script->varTable[1], CUSTOM_GFX_NONE, ENV_TINT_SHROUD, true);

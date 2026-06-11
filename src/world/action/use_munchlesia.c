@@ -36,7 +36,7 @@ void action_update_use_munchlesia(void) {
             Munchlesia_LateralVelocity = 4.0f;
             Munchlesia_LaunchAccel = 1.0f;
             Munchlesia_LateralVelocity = 1.875f;
-            playerStatus->actionSubstate++; // SUBSTATE_EJECT
+            playerStatus->actionSubstate = SUBSTATE_EJECT;
             Munchlesia_LaunchYaw = playerStatus->targetYaw;
             break;
         case SUBSTATE_EJECT:
@@ -47,7 +47,7 @@ void action_update_use_munchlesia(void) {
             gCameras[CAM_DEFAULT].targetPos.y = playerStatus->pos.y;
             gCameras[CAM_DEFAULT].targetPos.z = playerStatus->pos.z;
             if (Munchlesia_LaunchVelocity <= 0.0f) {
-                playerStatus->actionSubstate++; // SUBSTATE_FALL
+                playerStatus->actionSubstate = SUBSTATE_FALL;
             }
             break;
         case SUBSTATE_FALL:
@@ -63,7 +63,7 @@ void action_update_use_munchlesia(void) {
                 suggest_player_anim_always_forward(ANIM_MarioW2_Collapse);
                 playerStatus->pos.y = hitPosY;
                 D_802B62E0 = 10;
-                playerStatus->actionSubstate++; // SUBSTATE_CRASH
+                playerStatus->actionSubstate = SUBSTATE_CRASH;
             }
             break;
         case SUBSTATE_CRASH:

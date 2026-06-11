@@ -50,8 +50,8 @@ EvtScript N(EVS_Main) = {
         Call(MakeNpcs, false, Ref(N(AfterNPCs)))
     EndIf
     IfEq(GF_ARN03_WaitingForPackage, true)
-        Set(MV_Unk_00, 450)
-        Set(MV_Unk_01, 450)
+        Set(MV_Koot_Time, 450)
+        Set(MV_Koot_WaitLength, 450)
     EndIf
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupMusic))

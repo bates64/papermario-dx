@@ -118,11 +118,11 @@ EvtScript N(EVS_NpcInit_Boo_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Boo_02) = {
-    IfNe(MV_Unk_00, 0)
-        IfGe(MV_Unk_00, MV_Unk_01)
+    IfNe(MV_Koot_Time, 0)
+        IfGe(MV_Koot_Time, MV_Koot_WaitLength)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0081)
             EVT_GIVE_REWARD(ITEM_KOOT_PACKAGE)
-            Set(MV_Unk_00, 0)
+            Set(MV_Koot_Time, 0)
             Set(GF_ARN03_RecievedPackage, true)
             Set(GF_ARN03_WaitingForPackage, false)
             Return
@@ -154,14 +154,14 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
             ExecWait(N(EVS_MarioSalute))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007F)
             Call(EndSpeech, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0)
-            Set(MV_Unk_00, 0)
-            Set(MV_Unk_01, 450 * DT)
+            Set(MV_Koot_Time, 0)
+            Set(MV_Koot_WaitLength, 450 * DT)
             Set(GF_ARN03_WaitingForPackage, true)
             Thread
                 Loop(0)
-                    Add(MV_Unk_00, 1)
+                    Add(MV_Koot_Time, 1)
                     Wait(1)
-                    IfGe(MV_Unk_00, MV_Unk_01)
+                    IfGe(MV_Koot_Time, MV_Koot_WaitLength)
                         BreakLoop
                     EndIf
                 EndLoop

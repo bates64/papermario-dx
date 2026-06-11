@@ -356,9 +356,9 @@ API_CALLABLE(N(SuperBlock_AnimateEnergyOrbs)) {
     }
 
     for (i = 0; i < SUPER_BLOCK_NUM_ORBS; i++) {
-        userData->orbEffects[i]->data.motionBlurFlame->pos.x = userData->posX[i];
-        userData->orbEffects[i]->data.motionBlurFlame->pos.y = userData->posY[i];
-        userData->orbEffects[i]->data.motionBlurFlame->pos.z = userData->posZ[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.x = userData->posX[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.y = userData->posY[i];
+        userData->orbEffects[i]->data.motionBlurFlame->posOffset.z = userData->posZ[i];
     }
 
     return ApiStatus_BLOCK;

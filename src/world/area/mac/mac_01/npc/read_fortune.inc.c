@@ -107,15 +107,15 @@ API_CALLABLE(N(func_802443E0_804C60)) {
         ty = temp_f28 * cos_deg(temp_f24);
         guTranslateF(sp68, tx, ty, 0.0f);
         guMtxCatF(sp68, sp28, sp28);
-        effects[i]->data.motionBlurFlame->pos.x = sp28[3][0];
-        effects[i]->data.motionBlurFlame->pos.y = sp28[3][1];
-        effects[i]->data.motionBlurFlame->pos.z = sp28[3][2];
+        effects[i]->data.motionBlurFlame->posOffset.x = sp28[3][0];
+        effects[i]->data.motionBlurFlame->posOffset.y = sp28[3][1];
+        effects[i]->data.motionBlurFlame->posOffset.z = sp28[3][2];
     }
 
     script->functionTemp[0]--;
     if (script->functionTemp[0] < 16) {
         for (i = 0; i < ARRAY_COUNT(effects); i++) {
-            effects[i]->data.motionBlurFlame->unk_4C = script->functionTemp[0];
+            effects[i]->data.motionBlurFlame->alpha = script->functionTemp[0];
         }
     }
 

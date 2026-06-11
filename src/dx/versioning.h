@@ -12,7 +12,7 @@ typedef struct SaveGlobals {
     /* 0x34 */ s32 crc2;
     /* 0x38 */ s32 useMonoSound;
     /* 0x3C */ u32 lastFileSelected;
-    /* 0x40 */ s8 reserved[64]; // unused
+    /* 0x40 */ u8 reserved[64]; // unused
 } SaveGlobals; // size = 0x80
 
 typedef struct VanillaSaveFileSummary {

@@ -170,7 +170,7 @@ typedef struct HeartBlockContentData {
 typedef struct WoodenCrateData {
     /* 0x000 */ s32 itemID;
     /* 0x004 */ u16 globalFlagIndex;
-    /* 0x006 */ u8 unk_06[2];
+    /* 0x006 */ PAD(2);
     /* 0x008 */ Gfx** fragmentsGfx;
     /* 0x00C */ f32 basePosY;
     /* 0x010 */ s8 fragmentRebounds[36];
@@ -369,7 +369,7 @@ typedef struct TrumpetPlantData {
 
 typedef struct MunchlesiaData {
     /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s8 unk_04[0x8];
+    /* 0x04 */ PAD(8);
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;

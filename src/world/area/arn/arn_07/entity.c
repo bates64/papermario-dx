@@ -19,9 +19,9 @@ EvtScript N(EVS_UnlockDoor) = {
     Call(RemoveItem, ITEM_MYSTICAL_KEY)
     Call(CloseChoicePopup)
     Set(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
-    Call(GetEntityPosition, MV_Unk_00, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetEntityUsed, MV_Unk_00)
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
     Unbind
     Return
@@ -38,7 +38,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfLt(GB_StoryProgress, STORY_CH3_UNLOCKED_WINDY_MILL)
         Call(MakeEntity, Ref(Entity_Padlock), 10, 30, -155, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_BindLockTrigger)))
-        Set(MV_Unk_00, LVar0)
+        Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Return
     End

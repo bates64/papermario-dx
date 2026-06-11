@@ -359,9 +359,9 @@ typedef struct PlayerData {
     /* 0x2AC */ s32 walkingStepsTaken;
     /* 0x2B0 */ s32 runningStepsTaken;
     /* 0x2B4 */ u32 totalCoinsEarned;
-    /* 0x2B8 */ s16 idleFrameCounter; /* frames with no inputs, overflows ever ~36 minutes of idling */
+    /* 0x2B8 */ s16 idleFrameCounter; // frames with no inputs, overflows ever ~36 minutes of idling
     /* 0x2BA */ PAD(2);
-    /* 0x2BC */ u32 frameCounter; /* increases by 2 per frame */
+    /* 0x2BC */ u32 frameCounter; // increases by 2 per frame
     /* 0x2C0 */ u16 quizzesAnswered;
     /* 0x2C2 */ u16 quizzesCorrect;
     /* 0x2C4 */ s32 partnerUnlockedTime[12];
@@ -370,10 +370,10 @@ typedef struct PlayerData {
     /* 0x328 */ s32 droTreeHintTime;
     /* 0x32C */ u16 starPiecesCollected;
     /* 0x32E */ u16 jumpGamePlays;
-    /* 0x330 */ u32 jumpGameTotal; /* all-time winnings, max = 99999 */
+    /* 0x330 */ u32 jumpGameTotal; // all-time winnings, max = 99999
     /* 0x334 */ u16 jumpGameRecord;
     /* 0x336 */ u16 smashGamePlays;
-    /* 0x338 */ u32 smashGameTotal; /* all-time winnings, max = 99999 */
+    /* 0x338 */ u32 smashGameTotal; // all-time winnings, max = 99999
     /* 0x33C */ u16 smashGameRecord;
     /* 0x33E */ PAD(2);
     /* 0x340 */ u8 reserved[0xE8]; // unused
@@ -2192,7 +2192,7 @@ typedef struct {
     /* 0x10630 */ Gfx backgroundGfx[0x200]; // used by gfx_task_background
 #if VERSION_PAL
     // TODO: find where this space belongs to
-    /* 0x11630 */ s32 pad[0x300];
+    /* 0x11630 */ PAD(0xC00);
 #endif
     /* 0x11630 */ Mtx matrixStack[0x200];
 } DisplayContext; // size = 0x19630
