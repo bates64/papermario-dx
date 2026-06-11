@@ -16,12 +16,12 @@ typedef struct BigSmokePuffFXData {
     /* 0x1C */ f32 partY;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
-    /* 0x28 */ char unk_28[0x4];
+    /* 0x28 */ PAD(4);
 } BigSmokePuffFXData; // size = 0x2C
 
 typedef struct LandingDustFXData {
     /* 0x00 */ u16 type;
-    /* 0x02 */ char unk_02[0x2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 x;
     /* 0x08 */ f32 y;
     /* 0x0C */ f32 z;
@@ -46,7 +46,7 @@ typedef struct WalkingDustFXData {
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
-    /* 0x14 */ char unk_14[0x44];
+    /* 0x14 */ PAD(0x44);
     /* 0x58 */ f32 unk_58;
     /* 0x5C */ f32 unk_5C;
     /* 0x60 */ f32 unk_60;
@@ -64,7 +64,7 @@ typedef struct FlowerFXData {
     /* 0x06 */ s16 timeLeft;
     /* 0x08 */ u8 primAlpha;
     /* 0x09 */ s8 useAltColor;
-    /* 0x0A */ char unk_0A[0x2];
+    /* 0x0A */ PAD(2);
     /* 0x0C */ Vec3f pos;
     /* 0x18 */ Vec3f scale;
     /* 0x24 */ Vec3f rot;
@@ -79,10 +79,10 @@ typedef struct FlowerFXData {
 
 typedef struct CloudPuffFXData {
     /* 0x00 */ s32 alive;
-    /* 0x04 */ char unk_04[0x2];
+    /* 0x04 */ PAD(2);
     /* 0x06 */ s16 timeLeft;
     /* 0x08 */ u8 alpha;
-    /* 0x09 */ char unk_09[0x3];
+    /* 0x09 */ PAD(3);
     /* 0x0C */ Vec3f pos;
     /* 0x18 */ Vec3f scale;
     /* 0x24 */ f32 rescaleX;
@@ -102,7 +102,7 @@ typedef struct CloudTrailFXData {
     /* 0x04 */ u16 unk_04;
     /* 0x06 */ s16 lifetime;
     /* 0x08 */ u8 alpha;
-    /* 0x09 */ char unk_09[0x3];
+    /* 0x09 */ PAD(3);
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -113,30 +113,30 @@ typedef struct CloudTrailFXData {
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
-    /* 0x34 */ char unk_34[0x4];
+    /* 0x34 */ PAD(4);
     /* 0x38 */ f32 unk_38;
     /* 0x3C */ f32 unk_3C;
     /* 0x40 */ f32 unk_40;
     /* 0x44 */ s32 unk_44;
-    /* 0x48 */ char unk_48[0x8];
+    /* 0x48 */ PAD(8);
 } CloudTrailFXData; // size = 0x50
 
 typedef struct FootprintFXData {
     /* 0x00 */ s32 alive;
-    /* 0x04 */ char unk_04[0x2];
+    /* 0x04 */ PAD(2);
     /* 0x06 */ s16 lifetime;
     /* 0x08 */ u8 alpha;
-    /* 0x09 */ char unk_09[0x3];
+    /* 0x09 */ PAD(3);
     /* 0x0C */ Vec3f pos;
     /* 0x18 */ Vec3f scale; /* unused */
     /* 0x24 */ Vec3f rot;
     /* 0x30 */ Mtx mtx;
     /* 0x70 */ s32 unk_70;
-    /* 0x74 */ char unk_74[0x8];
+    /* 0x74 */ PAD(8);
     /* 0x7C */ s32 unk_7C;
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ s32 unk_84;
-    /* 0x88 */ char unk_88[0x8];
+    /* 0x88 */ PAD(8);
     /* 0x90 */ f32 unk_90;
     /* 0x94 */ f32 unk_94;
 } FootprintFXData; // size = 0x98
@@ -328,7 +328,7 @@ typedef struct ShatteringStonesFXData {
 
 typedef struct SmokeRingFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -369,7 +369,7 @@ typedef struct DamageStarsFXData {
 typedef struct ExplosionFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ Vec3f pos;
-    /* 0x10 */ char unk_10[0x10];
+    /* 0x10 */ PAD(0x10);
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 unk_28;
@@ -419,7 +419,7 @@ typedef struct SpikyWhiteAuraFXData {
 
 typedef struct SmokeImpactFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -468,7 +468,7 @@ typedef struct PurpleRingFXData {
     /* 0x77 */ u8 unk_77;
     /* 0x78 */ u8 unk_78;
     /* 0x79 */ u8 unk_79;
-    /* 0x7A */ char unk_7A[2];
+    /* 0x7A */ PAD(2);
 } PurpleRingFXData; // size = 0x7C
 
 enum FlameFXTypes {
@@ -500,7 +500,7 @@ typedef struct StarsBurstFXData {
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ f32 unk_18;
-    /* 0x1C */ char unk_1C[8];
+    /* 0x1C */ PAD(8);
     /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ s32 unk_2C;
@@ -547,7 +547,7 @@ typedef struct RingBlastFXData {
 // Likely to be the same as GreenImpactFXData and RedImpactFXData
 typedef struct ShockwaveFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2]; // likely padding
+    /* 0x02 */ PAD(2); // likely padding
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -567,7 +567,7 @@ typedef struct ShockwaveFXData {
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ Color_RGB8 prim;
     /* 0x53 */ Color_RGB8 env;
-    /* 0x56 */ char unk_56[2]; // likely padding
+    /* 0x56 */ PAD(2); // likely padding
 } ShockwaveFXData; // size = 0x58
 
 typedef struct MusicNoteFXData {
@@ -599,7 +599,7 @@ typedef struct SweatFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
-    /* 0x14 */ char unk_14[0x04];
+    /* 0x14 */ PAD(4);
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ f32 unk_20;
@@ -648,12 +648,12 @@ typedef struct FallingLeavesFXData {
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
     /* 0x2C */ s32 unk_2C;
-    /* 0x30 */ char unk_30[4];
+    /* 0x30 */ PAD(4);
 } FallingLeavesFXData; // size = 0x34
 
 typedef struct StarsSpreadFXData {
     /* 0x00 */ s16 unk_00;
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -670,7 +670,7 @@ typedef struct StarsSpreadFXData {
 
 typedef struct SteamBurstFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -714,7 +714,7 @@ typedef struct BigSnowflakesFXData {
 
 typedef struct DebuffFXData {
     /* 0x00 */ s16 type;
-    /* 0x02 */ char unk_02[2];
+    /* 0x02 */ PAD(2);
     /* 0x04 */ Vec3f pos;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -728,13 +728,13 @@ typedef struct DebuffFXData {
     /* 0x34 */ s32 alpha;
     /* 0x38 */ Color_RGB8 primCol;
     /* 0x3B */ Color_RGB8 envCol;
-    /* 0x3E */ char unk_3E[2];
+    /* 0x3E */ PAD(2);
 } DebuffFXData; // size = 0x40
 
 // Likely to be the same as RedImpactFXData and ShockwaveFXData
 typedef struct GreenImpactFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2]; // likely padding
+    /* 0x02 */ PAD(2); // likely padding
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -756,7 +756,7 @@ typedef struct GreenImpactFXData {
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ Color_RGB8 unk_50;
     /* 0x53 */ Color_RGB8 unk_53;
-    /* 0x56 */ char unk_56[2]; // likely padding
+    /* 0x56 */ PAD(2); // likely padding
 } GreenImpactFXData; // size = 0x58
 
 typedef struct RadialShimmerFXData {
@@ -792,7 +792,7 @@ typedef struct RadialShimmerFXData {
     /* 0x6B */ u8 unk_6B;
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ u8 unk_6D;
-    /* 0x6E */ char unk_6E[2];
+    /* 0x6E */ PAD(2);
 } RadialShimmerFXData; // size = 0x70
 
 typedef struct EndingDecalsFXData {
@@ -809,7 +809,7 @@ typedef struct EndingDecalsFXData {
     /* 0x27 */ u8 unk_27;
     /* 0x28 */ u8 unk_28;
     /* 0x29 */ u8 unk_29;
-    /* 0x2A */ char unk_2A[2];
+    /* 0x2A */ PAD(2);
 } EndingDecalsFXData; // size = 0x2C
 
 typedef struct LightRaysFXData {
@@ -821,12 +821,12 @@ typedef struct LightRaysFXData {
     /* 0x24 */ s32 alpha;
     /* 0x28 */ s32 timeLeft;
     /* 0x2C */ s32 lifetime;
-    /* 0x30 */ char unk_30[4];
+    /* 0x30 */ PAD(4);
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
     /* 0x3C */ f32 unk_3C;
     /* 0x40 */ f32 unk_40;
-    /* 0x44 */ char unk_44[4];
+    /* 0x44 */ PAD(4);
     /* 0x48 */ f32 unk_48;
     /* 0x4C */ f32 unk_4C;
     /* 0x50 */ f32 unk_50;
@@ -944,7 +944,7 @@ typedef struct EnergyShockwaveFXData {
     /* 0x50 */ u8 unk_50;
     /* 0x51 */ u8 unk_51;
     /* 0x52 */ s8 unk_52;
-    /* 0x53 */ char unk_53[1];
+    /* 0x53 */ PAD(1);
 } EnergyShockwaveFXData; // size = 0x54
 
 typedef struct ShimmerWaveFXData {
@@ -1141,7 +1141,7 @@ typedef struct FireworkFXData {
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
-    /* 0x18 */ char unk_18[4];
+    /* 0x18 */ PAD(4);
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ f32 unk_24;
@@ -1156,7 +1156,7 @@ typedef struct FireworkFXData {
     /* 0x3F */ u8 unk_3F;
     /* 0x40 */ u8 unk_40;
     /* 0x41 */ u8 unk_41;
-    /* 0x42 */ char unk_42[2];
+    /* 0x42 */ PAD(2);
 } FireworkFXData; // size = 0x44
 
 typedef struct ConfettiFXData {
@@ -1238,7 +1238,7 @@ typedef struct AttackResultTextFXData {
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ b32 isVisible;
     /* 0x28 */ f32 scale;
-    /* 0x2C */ char unk_2C[0x4];
+    /* 0x2C */ PAD(4);
     /* 0x30 */ Vec2f vel;
 } AttackResultTextFXData; // size = 0x38
 
@@ -1339,11 +1339,11 @@ typedef struct QuizmoStageFXData {
    /* 0x34 */ s32 lightScrollDelay;
    /* 0x38 */ s32 unkEffectMode;
    /* 0x3C */ s32 unk_3C; // stage hidden when == 0xFF
-   /* 0x40 */ char unk_40[0x04];
+   /* 0x40 */ PAD(4);
 } QuizmoStageFXData; // size 0x44
 
 typedef struct RadiatingEnergyOrbFXData {
-    /* 0x00 */ char unk_00[4];
+    /* 0x00 */ PAD(4);
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -1352,7 +1352,7 @@ typedef struct RadiatingEnergyOrbFXData {
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ f32 unk_20;
-    /* 0x24 */ char unk_24[4];
+    /* 0x24 */ PAD(4);
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
@@ -1372,7 +1372,7 @@ typedef struct MotionBlurFlameFXData {
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ s32 unk_50;
     /* 0x54 */ s32 unk_54;
-    /* 0x58 */ char unk_58[4];
+    /* 0x58 */ PAD(4);
     /* 0x5C */ s32 unk_5C;
     /* 0x60 */ s32 unk_60;
     /* 0x64 */ s32 unk_64;
@@ -1723,7 +1723,7 @@ typedef struct Effect63FXData {
     /* 0x50 */ f32 unk_50;
     /* 0x54 */ f32 unk_54;
     /* 0x58 */ f32 unk_58;
-    /* 0x5C */ char unk_5C[4];
+    /* 0x5C */ PAD(4);
     /* 0x60 */ f32 unk_60;
     /* 0x64 */ f32 unk_64;
     /* 0x68 */ f32 unk_68;
@@ -1860,7 +1860,7 @@ typedef struct WhirlwindFXData {
 // Likely to be the same as GreenImpactFXData and ShockwaveFXData
 typedef struct RedImpactFXData {
     /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[2]; // likely padding
+    /* 0x02 */ PAD(2); // likely padding
     /* 0x04 */ f32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -1882,7 +1882,7 @@ typedef struct RedImpactFXData {
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ Color_RGB8 unk_50;
     /* 0x53 */ Color_RGB8 unk_53;
-    /* 0x56 */ char unk_56[2]; // likely padding
+    /* 0x56 */ PAD(2); // likely padding
 } RedImpactFXData; // size = 0x58
 
 typedef struct FloatingCloudPuffFXData {
@@ -1925,16 +1925,16 @@ typedef struct EnergyInOutFXData {
 typedef struct Effect6BFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ Vec3f pos;
-    /* 0x10 */ char unk_10[12];
+    /* 0x10 */ PAD(12);
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ s32 unk_20;
-    /* 0x24 */ char unk_24[8];
+    /* 0x24 */ PAD(8);
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ f32 scale;
     /* 0x38 */ f32 unk_38;
     /* 0x3C */ s32 unk_3C;
-    /* 0x40 */ char unk_40[0x4];
+    /* 0x40 */ PAD(4);
 } Effect6BFXData; // size = 0x44
 
 typedef struct TattleWindowFXData {
@@ -2043,7 +2043,7 @@ typedef struct MiscParticlesFXData {
     /* 0x14 */ f32 scaleY;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
-    /* 0x20 */ char unk_20[4];
+    /* 0x20 */ PAD(4);
     /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ s32 animTime;
@@ -2359,7 +2359,7 @@ typedef struct IcePillarFXData {
     /* 0x20 */ f32 scale;
     /* 0x24 */ s8 unk_24;
     /* 0x25 */ s8 unk_25;
-    /* 0x26 */ char unk_26[0x2];
+    /* 0x26 */ PAD(2);
     /* 0x28 */ struct EffectInstance* miscParticles;
 } IcePillarFXData; // size = 0x2C
 
@@ -2376,7 +2376,7 @@ typedef struct SunFXData {
     /* 0x14 */ s32 lifeTime;
     /* 0x18 */ Color_RGB8 primColor;
     /* 0x1B */ Color_RGBA8 envColor;
-    /* 0x1F */ char unk_1F[0x1];
+    /* 0x1F */ PAD(1);
     /* 0x20 */ f32 texScrollAmt[5];
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ s32 alpha;

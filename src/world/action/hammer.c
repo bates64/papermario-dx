@@ -296,7 +296,6 @@ void action_hammer_end_swing(void) {
     s32 result;
     s32 hammerLevel;
     s32 soundID;
-    s32 ten;
     s32 i;
 
     yaw = player_get_side_angle();
@@ -413,8 +412,8 @@ void action_hammer_end_swing(void) {
         }
 
         HammerHit->unk_14 = 0;
-        ten = 10; // required to match
-        if (HammerHit->unk_1C != 0 || HammerHit->timer > ten) {
+
+        if (HammerHit->unk_1C != 0 || HammerHit->timer > 10) {
             playerStatus->flags &= ~PS_FLAG_HAMMER_CHECK;
             set_action_state(ACTION_STATE_IDLE);
         }

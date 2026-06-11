@@ -52,7 +52,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Call(SetNpcAnimation, NPC_Bow, ANIM_WorldBow_CelebrateSlow)
     Wait(30)
     Call(FadeOutMusic, 0, 1000)
-    Call(GotoMap, Ref(NEXT_EPILOGUE_MAP), omo_03_ENTRY_5)
+    Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_5)
     Wait(100)
     Return
     End

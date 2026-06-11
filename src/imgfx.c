@@ -24,21 +24,21 @@ typedef union ImgFXIntVars {
     } wavy;
     // type-specific color args (sharing second 0x10 bytes)
     struct {
-        char unk_00[0x10];
+        PAD(0x10);
         s32 r;
         s32 g;
         s32 b;
         s32 a;
     } color;
     struct {
-        char unk_00[0x10];
+        PAD(0x10);
         s32 mode;
         s32 noiseAmt;
-        char unk_18[4];
+        PAD(4);
         s32 alphaAmt;
     } hologram;
     struct {
-        char unk_00[0x10];
+        PAD(0x10);
         ImgFXOverlayTexture* pattern;
         s32 alpha;
     } overlay;
@@ -58,7 +58,7 @@ typedef union ImgFXFloatVars {
     } wavy;
     // type-specific color state (sharing second 0x10 bytes)
     struct {
-        char unk_00[0x10];
+        PAD(0x10);
         f32 posX;
         f32 posY;
     } overlay;
@@ -507,11 +507,7 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             state->ints.raw[1][0] = -1;
 
             state->flags &= IMGFX_FLAG_VALID;
-            if (flags != 0) {
-                state->flags |= flags;
-            } else {
-                state->flags |= 0; // required to match
-            }
+            state->flags |= flags;
             return;
         case IMGFX_UNK_1:
             state->lastAnimCmd = IMGFX_CLEAR;
@@ -1067,7 +1063,6 @@ void imgfx_mesh_make_strip(ImgFXState* state) {
     s32 stepY;
     s32 rightColor;
     s32 leftColor;
-    s32 temp2;
     s32 nextY;
 
     stepY = (128 * 32) / ImgFXCurrentTexturePtr->tex.width;
@@ -1085,7 +1080,7 @@ void imgfx_mesh_make_strip(ImgFXState* state) {
     imgfx_vtxBuf[imgfx_vtxCount].v.ob[1] = offsetY;
     imgfx_vtxBuf[imgfx_vtxCount].v.ob[2] = 0;
     imgfx_vtxBuf[imgfx_vtxCount].v.tc[0] = (0 + 256) * 32;
-    imgfx_vtxBuf[imgfx_vtxCount].v.tc[1] = temp2 = (0 + 256) * 32; // required to match
+    imgfx_vtxBuf[imgfx_vtxCount].v.tc[1] = (0 + 256) * 32;
     imgfx_vtxBuf[imgfx_vtxCount].v.cn[0] = 240;
     imgfx_vtxBuf[imgfx_vtxCount].v.cn[1] = 240;
     imgfx_vtxBuf[imgfx_vtxCount].v.cn[2] = 240;
@@ -1094,7 +1089,7 @@ void imgfx_mesh_make_strip(ImgFXState* state) {
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.ob[1] = offsetY;
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.ob[2] = 0;
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.tc[0] = (ImgFXCurrentTexturePtr->tex.width + 256) * 32;
-    imgfx_vtxBuf[imgfx_vtxCount + 1].v.tc[1] = temp2;
+    imgfx_vtxBuf[imgfx_vtxCount + 1].v.tc[1] = (0 + 256) * 32;
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.cn[0] = 120;
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.cn[1] = 120;
     imgfx_vtxBuf[imgfx_vtxCount + 1].v.cn[2] = 120;
@@ -1215,8 +1210,6 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
             state->gfxBufs[0] = nullptr;
         }
         if (state->gfxBufs[1] != nullptr) {
-            // imgfx_add_to_cache(state->gfxBufs[1], 1);
-            romEnd = (u8*) state->gfxBufs[1]; // required to match
             imgfx_add_to_cache(state->gfxBufs[1], 1);
             state->gfxBufs[1] = nullptr;
         }

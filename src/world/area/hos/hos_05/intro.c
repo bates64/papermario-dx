@@ -43,7 +43,7 @@ typedef struct StoryGraphicData {
     /* 0x46 */ u16 silhouettePosY;
     /* 0x48 */ s16 tapePosX;
     /* 0x4A */ s16 tapePosY;
-    /* 0x4C */ PAD(0xC);
+    /* 0x4C */ PAD(12);
     /* 0x58 */ s16 flipOrder;
     /* 0x5A */ s16 storyPageAlpha;
     /* 0x5C */ s16 tapeAlpha;

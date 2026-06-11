@@ -602,7 +602,7 @@ typedef struct ShadowBlueprint {
     /* 0x04 */ UNK_PTR renderCommandList;
     /* 0x08 */ struct StaticAnimatorNode** animModelNode;
     /* 0x0C */ ShadowCallback onCreateCallback;
-    /* 0x10 */ PAD(16);
+    /* 0x10 */ PAD(0x10);
     /* 0x20 */ u8 entityType;
     /* 0x21 */ u8 aabbSize[3];
 } ShadowBlueprint; // size = 0x24
@@ -797,7 +797,7 @@ typedef struct Camera {
                         s16 xLimit;
                         s16 zLimit;
                     } confined;
-                    PAD(16); // force size
+                    PAD(0x10); // force size
                 } params;
     /* 0x02C */ s16 bgColor[3];
     /* 0x032 */ Vec3s targetScreenCoords; // screen coords corresponding to targetPos
@@ -1444,7 +1444,7 @@ typedef struct GameStatus {
     /* 0x0B8 */ s16 screenColorR;
     /* 0x0BA */ s16 screenColorG;
     /* 0x0BC */ s16 screenColorB;
-    /* 0x0BE */ PAD(94);
+    /* 0x0BE */ PAD(0x5E);
     /* 0x11C */ Vec3f playerGroundTraceAngles;
     /* 0x128 */ Vec3f playerGroundTraceNormal;
     /* 0x134 */ u16 frameCounter;
@@ -1861,7 +1861,7 @@ typedef struct Actor {
     /* 0x00C */ struct Overlay* overlay;
     /* 0x010 */ ActorState state;
     /* 0x0CC */ ActorMovement fly;
-    /* 0x128 */ PAD(16);
+    /* 0x128 */ PAD(0x10);
     /* 0x138 */ u8 ordinal; // unique identifier for actor, holds a value of N for the Nth actor spawned
     /* 0x139 */ u8 footStepCounter;
     /* 0x13A */ u8 actorType;
@@ -2045,7 +2045,7 @@ typedef struct PlayerStatus {
     /* 0x168 */ s32 stickXBuffer[10];
     /* 0x190 */ s32 stickYBuffer[10];
     /* 0x1B8 */ s32 inputBufPos;
-    /* 0x1BC */ PAD(196);
+    /* 0x1BC */ PAD(0xC4);
     /* 0x280 */ s8 poundImpactDelay; // governs period of immobility after landing a ground pound
     /* 0x281 */ PAD(7);
 } PlayerStatus; // size = 0x288
@@ -2410,14 +2410,14 @@ typedef struct CreditsLine {
     /* 0x18 */ s32 appearMode;
     /* 0x1C */ s32 appearTime;
     /* 0x20 */ s32 perCharDelayIn;
-    /* 0x24 */ PAD(16);
+    /* 0x24 */ PAD(0x10);
     /* 0x34 */ s32 holdMode;
     /* 0x38 */ s32 holdTime;
-    /* 0x3C */ PAD(16);
+    /* 0x3C */ PAD(0x10);
     /* 0x4C */ s32 vanishMode;
     /* 0x50 */ s32 vanishTime;
     /* 0x54 */ s32 perCharDelayOut;
-    /* 0x58 */ PAD(16);
+    /* 0x58 */ PAD(0x10);
     /* 0x68 */ s32 posX;
     /* 0x6C */ s32 posY;
     /* 0x70 */ s16 flags;

@@ -1413,7 +1413,7 @@ class Configure:
                     [c_file_path],
                     "cc_modern",
                     variables={
-                        "cflags": "-O0 -g0",
+                        "cflags": "",
                         "cppflags": f"-DVERSION_{self.version.upper()}",
                     },
                 )
@@ -1747,6 +1747,10 @@ if __name__ == "__main__":
                 build_ninja.exists()
                 and build_ninja.stat().st_mtime_ns >= newest_config_input
             ):
+                # Generated files can refresh source-directory mtimes after
+                # build.ninja is written. If the source list and real configure
+                # inputs are unchanged, refresh the manifest timestamp so ninja
+                # does not rebuild it until hitting its 100-try dirty limit.
                 os.utime(build_ninja, None)
                 exit(0)
 

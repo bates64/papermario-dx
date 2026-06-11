@@ -139,8 +139,8 @@ API_CALLABLE(N(func_80245028_8058A8)) {
         script->varTable[1] = -1;
         return ApiStatus_DONE2;
     }
-    partnerID = menu->userIndex[script->functionTemp[1] - 1];
-    script->varTable[1] = partnerID; // TODO required to match (use of partnerID temp)
+
+    script->varTable[1] = menu->userIndex[script->functionTemp[1] - 1];
     D_80262F68 = script->functionTemp[1] - 1;
     return ApiStatus_DONE2;
 }

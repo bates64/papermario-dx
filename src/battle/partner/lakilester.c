@@ -69,19 +69,19 @@ enum N(ActorParams) {
 };
 
 typedef struct HurricaneState {
-    /* 0x00 */ char unk_00[0x44];
+    /* 0x00 */ PAD(0x44);
     /* 0x44 */ s16 breathSizeIncrease;
     /* 0x46 */ s16 unk_46;
-    /* 0x48 */ char unk_48[0xC];
+    /* 0x48 */ PAD(12);
     /* 0x54 */ s16 unk_54;
-    /* 0x56 */ char unk_56[0x4];
+    /* 0x56 */ PAD(4);
     /* 0x5A */ s16 startingTotalPower;
     /* 0x5C */ s8 state;
     /* 0x5D */ s8 unk_5D;
-    /* 0x5E */ char unk_5E[0x12];
+    /* 0x5E */ PAD(0x12);
     /* 0x70 */ s16 intensity;
     /* 0x72 */ s16 totalPower;
-    /* 0x74 */ char unk_74[0x10];
+    /* 0x74 */ PAD(0x10);
 } HurricaneState;
 
 s32 N(DefaultAnims)[] = {

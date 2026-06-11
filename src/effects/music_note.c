@@ -18,19 +18,19 @@ extern Gfx D_09001368_35B948[];
 Gfx* D_E004C660[] = { D_09001038_35B618, D_090010C0_35B6A0, D_09001148_35B728, D_090011D0_35B7B0,
                       D_09001258_35B838, D_090012E0_35B8C0, D_09001368_35B948 };
 
-s8 D_E004C67C[] = {
-    254, 172, 172,
-    254, 172, 213,
-    254, 180, 154,
-    213, 180, 254,
-    180, 180, 254,
-    180, 221, 254,
-    180, 254, 254,
-    180, 254, 213,
-    180, 254, 180,
-    213, 254, 180,
-    254, 254, 180,
-    254, 213, 172,
+Color_RGB8 D_E004C67C[] = {
+    { 254, 172, 172 },
+    { 254, 172, 213 },
+    { 254, 180, 154 },
+    { 213, 180, 254 },
+    { 180, 180, 254 },
+    { 180, 221, 254 },
+    { 180, 254, 254 },
+    { 180, 254, 213 },
+    { 180, 254, 180 },
+    { 213, 254, 180 },
+    { 254, 254, 180 },
+    { 254, 213, 172 },
 };
 
 void music_note_main(s32 type, f32 posX, f32 posY, f32 posZ) {
@@ -132,19 +132,16 @@ void music_note_appendGfx(void* data) {
     EffectInstance* effect = data;
     MusicNoteFXData* fxData = effect->data.musicNote;
     Matrix4f mtxTransform, mtxTemp;
-    s32 colorIdx = fxData->lifetime;
-    s32 dlistIdx = fxData->noteType;
-    s32 rgbOffset;
+    s32 noteType = fxData->noteType;
+    s32 colorIdx;
 
-    // TODO required to match - need to initialize define twice for some reason
-    rgbOffset = (colorIdx * 3) % ARRAY_COUNT(D_E004C67C);
-    rgbOffset = (colorIdx * 3) % ARRAY_COUNT(D_E004C67C);
+    colorIdx = fxData->lifetime % ARRAY_COUNT(D_E004C67C);
 
     gDPPipeSync(gMainGfxPos++);
     gSPSegment(gMainGfxPos++, 0x09, VIRTUAL_TO_PHYSICAL(((EffectInstance*)effect)->shared->graphics));
     gSPDisplayList(gMainGfxPos++, D_09000FC0_35B5A0);
     gDPSetPrimColor(gMainGfxPos++, 0, 0,
-        D_E004C67C[rgbOffset], D_E004C67C[rgbOffset + 1], D_E004C67C[rgbOffset + 2], fxData->alpha
+        D_E004C67C[colorIdx].r, D_E004C67C[colorIdx].g, D_E004C67C[colorIdx].b, fxData->alpha
     );
     guTranslateF(mtxTransform, fxData->pos.x, fxData->pos.y, fxData->pos.z);
     guRotateF(mtxTemp, -gCameras[gCurrentCameraID].curYaw, 0.0f, 1.0f, 0.0f);
@@ -153,7 +150,7 @@ void music_note_appendGfx(void* data) {
     guMtxCatF(mtxTemp, mtxTransform, mtxTransform);
     guMtxF2L(mtxTransform, &gDisplayContext->matrixStack[gMatrixListPos]);
     gSPMatrix(gMainGfxPos++, &gDisplayContext->matrixStack[gMatrixListPos++], G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-    gSPDisplayList(gMainGfxPos++, D_E004C660[dlistIdx]);
+    gSPDisplayList(gMainGfxPos++, D_E004C660[noteType]);
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
     gDPPipeSync(gMainGfxPos++);
 }

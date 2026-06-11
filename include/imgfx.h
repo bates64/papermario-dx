@@ -7,7 +7,7 @@ typedef struct ImgFXVtx {
     /* 0x00 */ s16 ob[3];
     /* 0x06 */ u8 tc[2];
     /* 0x08 */ s8 cn[3];
-    /* 0x0B */ char unk_0B
+    /* 0x0B */ PAD(1);
 } ImgFXVtx; // size = 0x0C
 
 typedef struct ImgFXAnimHeader {

@@ -31,7 +31,7 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
         }
         offset /= 2;
 
-        // space-based and time-based undulations are the second componet of the y-offset
+        // space-based and time-based undulations are the second component of the y-offset
         // reuse of the pct variable is not ideal, but required to match
         pct = 2.0f + 2.0f * sin_rad(
             (f32)vd->ob[0] * 0.06 +
@@ -40,7 +40,7 @@ void N(add_tongue_deformation)(Vtx* src, Vtx* dest, s32 numVertices, s32 time) {
         offset += pct;
 
         // modulate y-offset based on vertex x-position
-        // this anchors the tongue in the back of the throat and makes the unudulations
+        // this anchors the tongue in the back of the throat and makes the undulations
         // more prominent closer toward the tip of the tongue
         pct = 200 - vd->ob[0];
         if (pct < 0) {

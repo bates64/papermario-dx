@@ -20,5 +20,3 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern NpcGroupList N(DefaultNPCs);
-
-extern const char N(KPA_17)[];

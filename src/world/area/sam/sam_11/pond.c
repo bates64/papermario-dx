@@ -6,34 +6,33 @@
 
 API_CALLABLE(N(SpawnIceShards)) {
     EffectInstance* effect;
-    f32 a5;
+    f32 velY;
     f32 posZ;
     f32 posX;
-    f32 t1;
-    f32 t2;
+    f32 velX;
+    f32 velZ;
     s32 i;
 
     for (i = 0; i < 24; i++) {
-        posX = t1 = ((i % 6) * 40) - 100;
-        posZ = t2 = ((i / 6) * 40) - 100;
+        posX = ((i % 6) * 40) - 100;
+        posZ = ((i / 6) * 40) - 100;
 
-        a5 = 0.0f; // TODO required to match;
+        velX = posX * 0.1;
+        velZ = velZ * 0.1;
+        velY = 4.0f;
+
         posX += 0.0f;
         posZ += 250.0f;
 
-        t1 *= 0.1;
-        t2 *= 0.1;
-
         effect = fx_ice_shard(i & 1, posX, -10.0f, posZ, 2.0 * ((i & 3) + 1.0), ((i & 3) * 4) + 30);
 
-        a5 = 4.0f;
         effect->data.iceShard->animFrame = 0.0f;
         effect->data.iceShard->animRate = (rand_int(10) * 0.2) + 0.1;
         effect->data.iceShard->rot = i * 35;
         effect->data.iceShard->angularVel = rand_int(10) - 5;
-        effect->data.iceShard->vel.x = t1;
-        effect->data.iceShard->vel.y = a5;
-        effect->data.iceShard->vel.z = t2;
+        effect->data.iceShard->vel.x = velX;
+        effect->data.iceShard->vel.y = velY;
+        effect->data.iceShard->vel.z = velZ;
         effect->data.iceShard->gravAccel = -0.1f;
     }
     return ApiStatus_DONE2;

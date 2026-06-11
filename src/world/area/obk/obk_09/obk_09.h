@@ -31,6 +31,3 @@ extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(EpilogueNPCs);
 
 API_CALLABLE(N(LoadPartyImage));
-
-//TODO awkward
-extern const char NEXT_EPILOGUE_MAP[];

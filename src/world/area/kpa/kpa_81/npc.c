@@ -203,7 +203,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Wait(65)
     Call(DisablePlayerInput, false)
     Set(GB_KPA81_BowserDoorState, 1)
-    Call(GotoMap, Ref(N(KPA_17)), kpa_17_ENTRY_0)
+    Call(GotoMap, Ref("kpa_17"), kpa_17_ENTRY_0)
     Return
     End
 };

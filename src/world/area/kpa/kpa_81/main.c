@@ -45,9 +45,6 @@ EvtScript N(EVS_ExitDoors_kpa_32_0) = {
 
 EvtScript N(EVS_ExitWalk_kpa_04_1) = EVT_EXIT_WALK(60, kpa_81_ENTRY_3, "kpa_04", kpa_04_ENTRY_1);
 
-// required to match -- needs to be forward-declared here
-const char N(KPA_17)[] = "kpa_17";
-
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_kpa_50_1)), TRIGGER_WALL_PRESS_A, COLLIDER_deilittw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitWalk_kpa_04_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deilin, 1, 0)

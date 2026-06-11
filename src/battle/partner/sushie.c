@@ -39,7 +39,6 @@ API_CALLABLE(N(SetSquirtAngle)) {
 
     partner->state.goalPos.x += targetPart->projectileTargetOffset.x;
     partner->state.goalPos.y += targetPart->projectileTargetOffset.y;
-    partner->state.goalPos.z = partner->state.goalPos.z; // required to match
 
     partner->state.curPos.x = partner->curPos.x + 8.0f;
     partner->state.curPos.y = partner->curPos.y + 16.0f;

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "effects_internal.h"
 
-extern char D_09000000_3803A0[][0x200];
+extern IMG_BIN D_09000000_3803A0[][0x200];
 extern Gfx D_09000D40_3810E0[];
 extern Gfx D_09000DE0_381180[];
 extern Gfx D_09000EB8_381258[];
