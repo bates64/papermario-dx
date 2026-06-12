@@ -167,7 +167,7 @@ EvtScript N(EVS_PressSwitch_Right) = {
 
 EvtScript N(EVS_SetupSwitches) = {
     Set(MF_EitherSwitchPressed, false)
-    Set(AF_JAN01_TreeDrop_StarPiece, false)
+    Set(MF_Unk_0A, false)
     Exec(N(EVS_UpdateDirectionArrow))
     Call(ParentColliderToModel, COLLIDER_o920, MODEL_y_b1)
     Call(ParentColliderToModel, COLLIDER_o921, MODEL_y_b2)

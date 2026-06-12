@@ -22,7 +22,7 @@ enum {
     MV_CliffTopBush1OffsetR     = MapVar(2),
     MV_CliffTopBush2OffsetL     = MapVar(3),
     MV_CliffTopBush2OffsetR     = MapVar(4),
-    MV_Unk_05       = MapVar(5),
+    MV_PlayerSpinAngle          = MapVar(5),
 };
 
 #define NAMESPACE jan_09

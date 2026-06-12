@@ -22,7 +22,7 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece           = MapFlag(10),
+    MF_Drop_Bush1       = MapFlag(10),
 };
 
 #define NAMESPACE mim_11

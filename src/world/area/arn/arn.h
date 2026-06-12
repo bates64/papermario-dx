@@ -26,10 +26,10 @@ enum {
     AF_ARN_03           = AreaFlag(3),
     AF_ARN_04           = AreaFlag(4),
     AF_ARN_05           = AreaFlag(5),
-    AF_ARN_06           = AreaFlag(6),
-    AF_ARN_07           = AreaFlag(7),
-    AF_ARN_08           = AreaFlag(8),
-    AF_ARN_09           = AreaFlag(9),
+    AF_ARN05_Boo1DialogueToggle     = AreaFlag(6),
+    AF_ARN05_Boo2DialogueToggle     = AreaFlag(7),
+    AF_ARN05_Boo5DialogueToggle     = AreaFlag(8),
+    AF_ARN05_Boo3GaveRecentAdvice   = AreaFlag(9),
 };
 
 #endif

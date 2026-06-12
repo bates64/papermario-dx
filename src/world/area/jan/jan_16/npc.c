@@ -21,7 +21,7 @@ NpcSettings N(NpcSettings_Raven) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-EvtScript N(D_802412D4_B812D4) = {
+EvtScript N(EVS_Scene_ReachedRaphaelsTree) = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_RAPHAELS_TREE)
         Call(EnableGroup, MODEL_g38, false)

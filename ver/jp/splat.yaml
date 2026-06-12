@@ -10473,7 +10473,6 @@ segments:
     - [auto, c, main]
     - [auto, c, entity]
     - [auto, c, npc]
-    - [auto, c, unused]
     - [auto, c, trees]
     - [auto, c, scenes]
     - [auto, c, treasure]

@@ -211,6 +211,10 @@ typedef struct NpcFollowData {
     /* 0x2A0 */ f32 walkRadius;
 } NpcFollowData; // size = 0x2A4
 
+typedef struct KeepAwayData {
+    /* 0x00 */ b32 isStarted;
+} KeepAwayData; // size = 0x4
+
 #define MAX_NPC_DECORATIONS 2
 
 typedef struct Npc {
@@ -229,8 +233,8 @@ typedef struct Npc {
                 NpcQuizmoBlur* quizmo;
                 NpcFollowData* followData;
                 struct Npc*    keepAwayNpc;
-                s32*           keepAwayStarted;
-                } blur;
+                KeepAwayData*  keepAwayData;
+                } userData;
     /* 0x024 */ s32 spriteInstanceID;
     /* 0x028 */ AnimID curAnim;
     /* 0x02C */ s32 animNotifyValue;

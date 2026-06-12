@@ -22,7 +22,7 @@ enum {
 };
 
 enum {
-    MV_Unk_0A       = MapVar(10),
+    MV_BranchWobbleVel  = MapVar(10),
 };
 
 #define NAMESPACE jan_16
@@ -30,7 +30,7 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(D_802412D4_B812D4);
+extern EvtScript N(EVS_Scene_ReachedRaphaelsTree);
 extern EvtScript N(EVS_MakeEntities);
 
 extern NpcGroupList N(DefaultNPCs);

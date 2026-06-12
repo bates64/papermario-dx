@@ -37,15 +37,10 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-#if VERSION_PAL
-    MV_Unk_04       = MapVar(5),
-    MV_Unk_05       = MapVar(6),
-#else
-    MV_Unk_04       = MapVar(4),
-    MV_Unk_05       = MapVar(5),
-#endif
+    MV_HologramNoiseBase    = MapVar(0),
+    MV_HologramAlpha        = MapVar(1),
+    MV_KammySoundsTID       = MapVar(4),
+    MV_TrackKammyTID        = MapVar(5),
 };
 
 enum {
@@ -64,7 +59,7 @@ extern EvtScript N(EVS_PopSong);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_SetupToadHouse);
 extern EvtScript N(EVS_SetWallsDown_ToadHouse);
-extern EvtScript N(EVS_Scene_KammyStrikes);
+extern EvtScript N(EVS_Scene_KammyCrushesGate);
 extern EvtScript N(EVS_NpcAux_Kammy);
 extern EvtScript N(EVS_SummonGateBlock);
 extern EvtScript N(EVS_NpcInteract_ToadHouse);

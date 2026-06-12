@@ -25,7 +25,7 @@ enum {
 
 enum {
     MV_BubbleFXPtr  = MapVar(0),
-    MV_Unk_01   = MapVar(1),
+    MV_HaloFXPtr    = MapVar(1),
 };
 
 #define NAMESPACE hos_10

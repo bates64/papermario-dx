@@ -204,8 +204,8 @@ API_CALLABLE(N(Quizmo_RenderInit)) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
     npc->onRender = N(Quizmo_NPC_OnRender);
-    npc->blur.quizmo = heap_malloc(sizeof(*npc->blur.quizmo));
-    npc->blur.quizmo->flags = 0;
+    npc->userData.quizmo = heap_malloc(sizeof(*npc->userData.quizmo));
+    npc->userData.quizmo->flags = 0;
 
     return ApiStatus_DONE1;
 }
@@ -213,7 +213,7 @@ API_CALLABLE(N(Quizmo_RenderInit)) {
 void N(Quizmo_NPC_OnRender)(Npc* npc) {
     Camera* camera = &gCameras[gCurrentCamID];
 
-    if (npc->blur.quizmo->flags & 1) {
+    if (npc->userData.quizmo->flags & 1) {
         clamp_angle(-camera->curYaw);
     }
 }

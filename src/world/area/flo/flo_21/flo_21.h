@@ -31,11 +31,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00           = MapVar(0),
-    MV_Unk_01           = MapVar(1),
-    MV_Unk_02           = MapVar(2),
-    MV_Unk_03           = MapVar(3),
-    MV_Unk_04           = MapVar(4),
+    MV_SpiritCardData   = MapVar(1),
     MV_BossDefeated     = MapVar(10),
     MV_HuffScaleX       = MapVar(11),
     MV_HuffScaleY       = MapVar(12),

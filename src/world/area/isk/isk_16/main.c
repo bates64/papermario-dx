@@ -1,7 +1,7 @@
 #include "isk_16.h"
 #include "sprite/player.h"
 
-#define STAR_SPIRIT_DATA_VAR MV_Unk_01
+#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/todo/StarSpiritEffectFunc.inc.c"
 
 EvtScript N(EVS_SpawnStarCard) = {

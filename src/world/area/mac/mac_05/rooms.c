@@ -50,7 +50,7 @@ EvtScript N(D_802525B0_864720) = {
             Call(EnableModel, MODEL_o139, false)
             Call(EnableModel, MODEL_o140, false)
         CaseEq(3)
-            Set(AF_JAN01_TreeDrop_StarPiece, false)
+            Set(MF_Unk_0A, false)
             Call(EnableGroup, MODEL_bar_inn, false)
             Call(EnableModel, MODEL_o139, true)
             Call(EnableModel, MODEL_o140, true)

@@ -1,7 +1,7 @@
 #include "dro_02.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_PartyWatchingMoustafa) = {
+EvtScript N(EVS_PartyFaceMoustafa ) = {
     Loop(0)
         Call(PlayerFaceNpc, NPC_Moustafa, false)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Moustafa, 0)
@@ -170,15 +170,15 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
                 Call(ContinueSpeech, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B6)
             EndIf
             IfEq(LVarB, 1)
-                IfEq(MF_Unk_00, false)
-                    Set(MF_Unk_00, true)
+                IfEq(MF_SheekTauntPending, false)
+                    Set(MF_SheekTauntPending, true)
                     Thread
                         Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                         Call(AwaitPlayerLeave, LVar0, LVar2, 50)
                         Call(DisablePlayerInput, true)
                         Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00C2)
                         Call(DisablePlayerInput, false)
-                        Set(MF_Unk_00, false)
+                        Set(MF_SheekTauntPending, false)
                     EndThread
                 EndIf
             EndIf
@@ -193,7 +193,7 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Call(PlayerMoveTo, -391, -260, 0)
             Call(InterpPlayerYaw, 90, 3)
             Call(SetNpcFlagBits, NPC_DisguisedMoustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-            ExecGetTID(N(EVS_PartyWatchingMoustafa), LVarA)
+            ExecGetTID(N(EVS_PartyFaceMoustafa ), LVarA)
             Call(SetNpcFlagBits, NPC_Moustafa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
             Call(FadeOutMusic, 0, 500)
             IfEq(GF_DRO02_Sheek_AskedAboutMoustafa, true)

@@ -37,7 +37,7 @@ EvtScript N(EVS_OnShakeTree1) = {
     IfEq(GF_KMR05_Tree1_Coin, true)
         Return
     EndIf
-    IfEq(AF_JAN01_TreeDrop_StarPiece, true)
+    IfEq(MF_Unk_0A, true)
         Return
     EndIf
     Wait(10)
@@ -47,7 +47,7 @@ EvtScript N(EVS_OnShakeTree1) = {
     Else
         Call(MakeItemEntity, ITEM_COIN, 436, 300, -180, ITEM_SPAWN_MODE_FALL, GF_KMR05_Tree1_Coin)
     EndIf
-    Set(AF_JAN01_TreeDrop_StarPiece, true)
+    Set(MF_Unk_0A, true)
     Return
     End
 };

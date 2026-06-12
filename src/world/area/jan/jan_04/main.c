@@ -57,7 +57,6 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_MakeEntities))
     Exec(N(EVS_SetupTrees))
     Exec(N(EVS_SetupBushes))
-    Exec(N(EVS_SetupUnused))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o52, SURFACE_TYPE_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o53, SURFACE_TYPE_DOCK_WALL)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_o54, SURFACE_TYPE_DOCK_WALL)

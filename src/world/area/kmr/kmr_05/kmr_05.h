@@ -23,7 +23,7 @@ enum {
 };
 
 enum {
-    AF_JAN01_TreeDrop_StarPiece           = MapFlag(10),
+    MF_Unk_0A           = MapFlag(10),
 };
 
 #define NAMESPACE kmr_05

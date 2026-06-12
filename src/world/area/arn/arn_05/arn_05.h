@@ -23,8 +23,8 @@ enum {
 };
 
 enum {
-    MV_Unk_00           = MapVar(0),
-    MV_Unk_01           = MapVar(1),
+    MV_BowPromptDone        = MapVar(0),
+    MV_TubbaApproachDone    = MapVar(1),
 };
 
 #define NAMESPACE arn_05

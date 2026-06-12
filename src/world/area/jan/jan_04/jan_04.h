@@ -23,11 +23,6 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-};
-
-enum {
     MF_TreeDrop_Letter  = MapFlag(10),
 };
 
@@ -42,7 +37,6 @@ extern EvtScript N(EVS_Scene_TreasureChest);
 extern EvtScript N(EVS_Scene_Epilogue);
 extern EvtScript N(EVS_SetupTrees);
 extern EvtScript N(EVS_SetupBushes);
-extern EvtScript N(EVS_SetupUnused);
 extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_PlayDemoScene);
 

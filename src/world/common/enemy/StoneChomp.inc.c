@@ -13,7 +13,7 @@ API_CALLABLE(N(StoneChompFXA)) {
 
     npc = get_npc_safe(script->owner2.npcID);
     blurData = heap_malloc(8 * sizeof(*blurData));
-    npc->blur.chomp = blurData;
+    npc->userData.chomp = blurData;
 
     bp.flags = NPC_FLAG_IGNORE_ENTITY_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_WORLD_COLLISION
         | NPC_FLAG_FLYING | NPC_FLAG_INVISIBLE;
@@ -48,7 +48,7 @@ API_CALLABLE(N(StoneChompFXB)) {
 
     floorY = (f32) script->owner1.enemy->varTable[0];
     ownerNpc = get_npc_safe(script->owner2.npcID);
-    blurData = ownerNpc->blur.chomp;
+    blurData = ownerNpc->userData.chomp;
     posX = ownerNpc->pos.x;
     posY = ownerNpc->pos.y + (ownerNpc->collisionHeight * 0.2f);
     posZ = ownerNpc->pos.z;
@@ -113,7 +113,7 @@ API_CALLABLE(N(StoneChompFXB)) {
 }
 
 API_CALLABLE(N(StoneChompFXC)) {
-    NpcChompBlur* blurData = get_npc_safe(script->owner2.npcID)->blur.chomp;
+    NpcChompBlur* blurData = get_npc_safe(script->owner2.npcID)->userData.chomp;
     s32 i;
 
     for (i = 0; i < 8; i++, blurData++) {

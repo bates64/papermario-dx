@@ -11,18 +11,6 @@
 #include "sprite/npc/WorldLakilester.h"
 #include "sprite/npc/WorldBow.h"
 
-#define NAME_SUFFIX _Unused2A
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
-#define NAME_SUFFIX _Unused2B
-#include "world/common/npc/Dummy.inc.c"
-#define NAME_SUFFIX _Unused2A
-#include "world/common/npc/StarSpirit.inc.c"
-#include "world/common/npc/StarRod.inc.c"
-#define NAME_SUFFIX
-
 API_CALLABLE(N(FadeScreenToRedAndWhite)) {
     enum FT_states {
         TEMP_FADE_TO_RED    = 0,

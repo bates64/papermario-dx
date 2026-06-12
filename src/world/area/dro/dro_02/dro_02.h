@@ -18,6 +18,8 @@
 #include "sprite/npc/WorldParakarry.h"
 #include "sprite/npc/Archeologist.h"
 #include "sprite/npc/Dryite.h"
+#include "sprite/npc/Moustafa.h"
+#include "sprite/npc/DisguisedMoustafa.h"
 
 enum {
     NPC_Archeologist            = 0,
@@ -35,7 +37,7 @@ enum {
 };
 
 enum {
-    MF_Unk_00           = MapFlag(0),
+    MF_SheekTauntPending        = MapFlag(0),
 };
 
 #define NAMESPACE dro_02
@@ -49,6 +51,5 @@ extern EvtScript N(EVS_PlayRestMusic);
 extern EvtScript N(EVS_PlayMoustafaMusic);
 
 extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(8024D434);
 
 #endif

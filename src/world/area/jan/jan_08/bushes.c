@@ -5,7 +5,7 @@
 #include "../common/MoveBushTemplates.h"
 
 EvtScript N(EVS_MoveBush_Separate) = EVT_MOVE_BUSHES(COLLIDER_o70,
-    MODEL_o67, MODEL_o68, MV_Unk_00, MV_Unk_01);
+    MODEL_o67, MODEL_o68, MV_BushMoveL, MV_BushMoveR);
 
 EvtScript N(EVS_Inspect_SeparateBushes) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o70, COLLIDER_FLAGS_UPPER_MASK)
@@ -14,9 +14,9 @@ EvtScript N(EVS_Inspect_SeparateBushes) = {
     Call(MakeLerp, 0, 45, 30, EASING_CUBIC_OUT)
     Loop(0)
         Call(UpdateLerp)
-        SetF(MV_Unk_01, LVar0)
-        SetF(MV_Unk_00, MV_Unk_01)
-        MulF(MV_Unk_00, -1)
+        SetF(MV_BushMoveR, LVar0)
+        SetF(MV_BushMoveL, MV_BushMoveR)
+        MulF(MV_BushMoveL, -1)
         Wait(1)
         IfEq(LVar1, 0)
             BreakLoop

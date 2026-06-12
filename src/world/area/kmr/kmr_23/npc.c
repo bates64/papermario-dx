@@ -520,7 +520,7 @@ EvtScript N(EVS_Scene_EndOfChapter) = {
     Call(ShowMessageAtScreenPos, LVar1, 160, 40)
     Call(N(ShowMessagesBehindCurtains))
     Wait(15 * DT)
-    Set(AF_JAN01_TreeDrop_StarPiece, true)
+    Set(MF_Unk_0A, true)
     Return
     End
 };

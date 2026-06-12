@@ -1,50 +1,5 @@
 #include "flo_21.h"
 
-s32 N(UnusedScaleVectors)[] = {
-    Float(1.0), Float(1.0),
-    Float(1.0), Float(1.0),
-    Float(1.0), Float(1.0),
-    Float(1.1), Float(1.1),
-    Float(1.1), Float(1.1),
-    Float(1.1), Float(1.1),
-    Float(1.0), Float(1.0),
-    Float(1.0), Float(1.0),
-    Float(1.0), Float(1.0),
-    Float(0.9), Float(0.9),
-    Float(0.9), Float(0.9),
-    Float(0.9), Float(0.9),
-};
-
-EvtScript N(EVS_UnkInit_00) = {
-    AddF(MV_Unk_00, Float(-1.5))
-    Return
-    End
-};
-
-EvtScript N(EVS_UnkInit_01) = {
-    AddF(MV_Unk_01, Float(-1.5))
-    Return
-    End
-};
-
-EvtScript N(EVS_UnkInit_02) = {
-    AddF(MV_Unk_02, Float(-1.5))
-    Return
-    End
-};
-
-EvtScript N(EVS_UnkInit_03) = {
-    AddF(MV_Unk_03, Float(-1.5))
-    Return
-    End
-};
-
-EvtScript N(EVS_UnkInit_04) = {
-    AddF(MV_Unk_04, Float(-1.5))
-    Return
-    End
-};
-
 EvtScript N(EVS_SetupCloudPuffs) = {
     Thread
         Set(LVarF, 0)

@@ -4,6 +4,12 @@
 
 #include "world/common/util/SetLightningBoltPurple.inc.c"
 
+enum {
+    BRIDGE_STATE_NORMAL     = 0,
+    BRIDGE_STATE_SHAKING    = 10,
+    BRIDGE_STATE_FALLING    = 11,
+};
+
 API_CALLABLE(N(SpawnLensFlare)) {
     Bytecode* args = script->ptrReadPos;
     f32 posX = evt_get_float_variable(script, *args++);
@@ -14,15 +20,6 @@ API_CALLABLE(N(SpawnLensFlare)) {
     fx_lens_flare(0, posX, posY, posZ, duration);
     return ApiStatus_DONE2;
 }
-
-#define NAME_SUFFIX _Unused1A
-#include "world/common/npc/Bowser.inc.c"
-#include "world/common/npc/Dummy.inc.c"
-#include "world/common/enemy/Kammy_Flying.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
-#define NAME_SUFFIX _Unused1B
-#include "world/common/npc/Dummy.inc.c"
-#define NAME_SUFFIX
 
 EvtScript N(EVS_ArenaEyesFlash) = {
     Call(PlaySoundAt, SOUND_KKJ_ARENA_LENS_FLARE, SOUND_SPACE_DEFAULT, 300, -70, 280)
@@ -48,7 +45,7 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
         Call(SetNpcFlagBits, NPC_Bowser_01, NPC_FLAG_DIRTY_SHADOW, true)
     EndThread
     Thread
-        Set(MV_Unk_0A, 0)
+        Set(MV_BridgeCollapseState, BRIDGE_STATE_NORMAL)
         Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Jump)
         Wait(10)
         Call(SetNpcAnimation, NPC_Bowser_01, ANIM_WorldBowser_Land)
@@ -58,7 +55,7 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
         Loop(0)
             Call(ShakeCam, CAM_DEFAULT, 0, 1, Float(2.0))
             Wait(1)
-            IfEq(MV_Unk_0A, 11)
+            IfEq(MV_BridgeCollapseState, BRIDGE_STATE_FALLING)
                 BreakLoop
             EndIf
         EndLoop
@@ -69,23 +66,6 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
     Set(AF_KKJ_1A, true)
-    Return
-    End
-};
-
-EvtScript N(EVS_802459E4) = {
-    Call(GetCurrentPartnerID, LVar0)
-    Switch(LVar0)
-        CaseEq(PARTNER_GOOMBARIO)
-        CaseEq(PARTNER_KOOPER)
-        CaseEq(PARTNER_BOMBETTE)
-        CaseEq(PARTNER_SUSHIE)
-        CaseDefault
-            Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
-            Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-            Set(LVar1, 19)
-            Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
-    EndSwitch
     Return
     End
 };
@@ -116,14 +96,9 @@ EvtScript N(EVS_Scene_BowserTrapsMario) = {
             Wait(1)
             Goto(0)
         EndIf
-#if VERSION_PAL
     Call(DisablePlayerInput, true)
-#endif
     Thread
         Wait(1)
-#if !VERSION_PAL
-        Call(DisablePlayerInput, true)
-#endif
         Call(PlayerFaceNpc, NPC_Bowser_01, false)
         Call(GetPartnerInUse, LVar0)
         Call(GetCurrentPartnerID, LVar1)
@@ -229,7 +204,7 @@ EvtScript N(EVS_AnimateBridgeCollapsing) = {
     EndLoop
     Thread
         Wait(15)
-        Set(MV_Unk_0A, 11)
+        Set(MV_BridgeCollapseState, BRIDGE_STATE_FALLING)
     EndThread
     UseBuf(Ref(N(BridgeModels)))
     Set(LVar2, 35)
@@ -300,7 +275,7 @@ EvtScript N(EVS_Scene_ActivateMachine) = {
         Wait(30)
         Call(SetPlayerAnimation, ANIM_MarioW2_Shocked)
     EndThread
-    Set(MV_Unk_0A, 10)
+    Set(MV_BridgeCollapseState, BRIDGE_STATE_SHAKING)
     ExecWait(N(EVS_AnimateBridgeCollapsing))
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
     Call(SetPlayerPos, 100, 0, 0)

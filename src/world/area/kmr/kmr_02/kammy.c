@@ -48,7 +48,7 @@ EvtScript N(EVS_PlayKammyFlightSounds) = {
     End
 };
 
-EvtScript N(EVS_MakeNpcsFaceKammy) = {
+EvtScript N(EVS_UpdateKammyTracking) = {
     Call(GetNpcPos, NPC_Kammy, LVar0, LVar1, LVar2)
     Label(0)
         Call(GetNpcPos, NPC_Kammy, LVar3, LVar4, LVar5)
@@ -72,7 +72,7 @@ EvtScript N(EVS_MakeNpcsFaceKammy) = {
     End
 };
 
-EvtScript N(EVS_Scene_KammyStrikes) = {
+EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(DisablePlayerInput, true)
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
@@ -86,8 +86,8 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
     Call(ShowMessageAtScreenPos, MSG_CH0_0059, 160, 40)
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim15)
     Thread
-        ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_Unk_04)
-        ExecGetTID(N(EVS_MakeNpcsFaceKammy), MV_Unk_05)
+        ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
+        ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
         Call(LoadPath, 40 * DT, Ref(N(FlightPath_KammyAppear)), ARRAY_COUNT(N(FlightPath_KammyAppear)), EASING_LINEAR)
         Label(10)
             Call(GetNextPathPos)
@@ -143,8 +143,8 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         IfEq(LVar0, 1)
             Goto(30)
         EndIf
-    KillThread(MV_Unk_04)
-    KillThread(MV_Unk_05)
+    KillThread(MV_KammySoundsTID)
+    KillThread(MV_TrackKammyTID)
     Call(PlaySoundAtNpc, NPC_Kammy, SOUND_SKID, SOUND_SPACE_DEFAULT)
     Thread
         Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim10)
@@ -278,11 +278,11 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         EndLoop
     EndThread
     Call(SetNpcAnimation, NPC_Kammy, ANIM_WorldKammy_Anim15)
-    ExecGetTID(N(EVS_MakeNpcsFaceKammy), MV_Unk_05)
+    ExecGetTID(N(EVS_UpdateKammyTracking), MV_TrackKammyTID)
     Wait(40 * DT)
     Call(SpeakToPlayer, NPC_Kammy, ANIM_WorldKammy_Anim16, ANIM_WorldKammy_Anim13, 0x200, MSG_CH0_005E)
     Call(FadeOutMusic, 0, 3000 * DT)
-    ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_Unk_04)
+    ExecGetTID(N(EVS_PlayKammyFlightSounds), MV_KammySoundsTID)
     Call(LoadPath, 90 * DT, Ref(N(FlightPath_KammyDepart)), ARRAY_COUNT(N(FlightPath_KammyDepart)), EASING_QUADRATIC_IN)
     Label(70)
         Call(GetNextPathPos)
@@ -291,8 +291,8 @@ EvtScript N(EVS_Scene_KammyStrikes) = {
         IfEq(LVar0, 1)
             Goto(70)
         EndIf
-    KillThread(MV_Unk_04)
-    KillThread(MV_Unk_05)
+    KillThread(MV_KammySoundsTID)
+    KillThread(MV_TrackKammyTID)
     Wait(20 * DT)
     Exec(N(EVS_SetupMusic))
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Angry)

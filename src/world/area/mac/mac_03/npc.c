@@ -460,10 +460,10 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
         Call(ContinueSpeech, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
         Wait(10)
         Call(InterpNpcYaw, NPC_SELF, 90, 0)
-        Set(MF_Unk_08, true)
+        Set(MF_HeardOinkExplanation, true)
         Return
     EndIf
-    IfEq(MF_Unk_07, false)
+    IfEq(MF_OinkCapsuleOpened, false)
         Set(LVar0, MSG_MAC_Station_0054)
     Else
         Call(N(GetOinkCount))

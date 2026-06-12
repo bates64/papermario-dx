@@ -1980,7 +1980,7 @@ API_CALLABLE(N(AwaitSongFinished)) {
 }
 
 EvtScript N(D_8024E23C_8603AC) = {
-    Set(AF_JAN01_TreeDrop_StarPiece, true)
+    Set(MF_Unk_0A, true)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_CANT_INTERACT, true)
     Call(InterpNpcYaw, NPC_Chanterelle, 270, 0)
     Call(SetMusic, 0, SONG_POP_DIVA_SONG, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -1993,10 +1993,10 @@ EvtScript N(D_8024E23C_8603AC) = {
     ChildThread
         Wait(30)
         Call(N(AwaitSongFinished))
-        Set(AF_JAN01_TreeDrop_StarPiece, false)
+        Set(MF_Unk_0A, false)
     EndChildThread
     Loop(0)
-        IfEq(AF_JAN01_TreeDrop_StarPiece, false)
+        IfEq(MF_Unk_0A, false)
             BreakLoop
         EndIf
         Wait(1)

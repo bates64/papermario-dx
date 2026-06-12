@@ -30,12 +30,6 @@ API_CALLABLE(N(GiveWoodenHammer)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80240444_8CAD44)) {
-    exec_entity_commandlist(get_entity_by_index(script->varTable[0]));
-
-    return ApiStatus_DONE2;
-}
-
 EvtScript N(EVS_GotHammer) = {
     Call(SetPlayerAnimation, ANIM_MarioW1_Lift)
     Call(GetPlayerPos, LVar5, LVar6, LVar7)
@@ -58,7 +52,7 @@ EvtScript N(EVS_GotHammer) = {
     EndThread
     Loop(0)
         Wait(1)
-        IfEq(MF_Unk_12, true)
+        IfEq(MF_GotHammerDone, true)
             BreakLoop
         EndIf
     EndLoop
@@ -71,13 +65,13 @@ EvtScript N(EVS_GotHammer) = {
 
 EvtScript N(EVS_OnSearch_HammerBush) = {
     Call(AdjustCam, CAM_DEFAULT, Float(8.0), 0, Float(300.0), Float(19.0), Float(-9.0))
-    Set(MF_Unk_12, false)
+    Set(MF_GotHammerDone, false)
     Exec(N(EVS_GotHammer))
     Call(N(GiveWoodenHammer))
     Wait(30 * DT)
     Call(N(SetMessageImage_HammerBlock))
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_FoundHammer, 160, 40)
-    Set(MF_Unk_12, true)
+    Set(MF_GotHammerDone, true)
     Call(DisablePartnerAI, 0)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00AA)
@@ -144,7 +138,7 @@ FoliageDropList N(Bush1_Drops) = {
             .pos = { 248, 17, 97 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush1_Coin,
-            .spawnFlag = AF_JAN01_TreeDrop_StarPiece,
+            .spawnFlag = MF_Drop_Bush1,
         },
     }
 };
@@ -172,7 +166,7 @@ FoliageDropList N(Bush2_Drops) = {
             .pos = { 99, 17, 237 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS,
             .pickupFlag = GF_KMR04_Bush2_Coin,
-            .spawnFlag = MF_Unk_0B,
+            .spawnFlag = MF_Drop_Bush2,
         },
     }
 };
@@ -200,14 +194,14 @@ FoliageDropList N(Bush3_Drops) = {
             .pos = { 50, 18, -200 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush3_CoinA,
-            .spawnFlag = MF_Unk_0C,
+            .spawnFlag = MF_Drop_Bush3A,
         },
         {
             .itemID = ITEM_COIN,
             .pos = { 50, 18, -200 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush3_CoinB,
-            .spawnFlag = MF_Unk_0D,
+            .spawnFlag = MF_Drop_Bush3B,
         },
     }
 };
@@ -235,7 +229,7 @@ FoliageDropList N(Bush4_Drops) = {
             .pos = { -49, 20, 146 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush4_Coin,
-            .spawnFlag = MF_Unk_0E,
+            .spawnFlag = MF_Drop_Bush4,
         },
     }
 };
@@ -263,7 +257,7 @@ FoliageDropList N(Bush5_Drops) = {
             .pos = { -148, 16, -150 },
             .spawnMode = ITEM_SPAWN_MODE_TOSS_SPAWN_ONCE,
             .pickupFlag = GF_KMR04_Bush5_Coin,
-            .spawnFlag = MF_Unk_0F,
+            .spawnFlag = MF_Drop_Bush5,
         },
     }
 };

@@ -178,25 +178,25 @@ EvtScript N(EVS_NpcInit_Boo_02) = {
     End
 };
 
-EvtScript N(802428CC) = {
+EvtScript N(EVS_PrankBoo_Setup) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
         Add(LVar0, 60)
-        Call(SetNpcYaw, NPC_Boo_05, 90)
+        Call(SetNpcYaw, NPC_Boo_Prankster, 90)
     Else
         Sub(LVar0, 60)
-        Call(SetNpcYaw, NPC_Boo_05, 270)
+        Call(SetNpcYaw, NPC_Boo_Prankster, 270)
     EndIf
     Add(LVar1, 20)
-    Call(SetNpcPos, NPC_Boo_05, LVar0, LVar1, LVar2)
-    Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, 0, 0, 0, 0)
+    Call(SetNpcPos, NPC_Boo_Prankster, LVar0, LVar1, LVar2)
+    Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, 0, 0, 0, 0)
     Wait(1)
     Return
     End
 };
 
-EvtScript N(802429D4) = {
+EvtScript N(EVS_PrankBoo_Appear) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
@@ -208,18 +208,18 @@ EvtScript N(802429D4) = {
         Call(MakeLerp, 0, 255, 40, EASING_LINEAR)
         Label(10)
         Call(UpdateLerp)
-        Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     EndThread
-    Call(NpcMoveTo, NPC_Boo_05, LVar0, LVar2, 40)
+    Call(NpcMoveTo, NPC_Boo_Prankster, LVar0, LVar2, 40)
     Return
     End
 };
 
-EvtScript N(80242B0C) = {
+EvtScript N(EVS_PrankBoo_Vanish) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_SELF, LVar3, LVar4, LVar5)
     IfGt(LVar0, LVar3)
@@ -231,28 +231,27 @@ EvtScript N(80242B0C) = {
         Call(MakeLerp, 255, 0, 40, EASING_LINEAR)
         Label(10)
         Call(UpdateLerp)
-        Call(SetNpcImgFXParams, NPC_Boo_05, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
+        Call(SetNpcImgFXParams, NPC_Boo_Prankster, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(10)
         EndIf
     EndThread
-    Call(NpcMoveTo, NPC_Boo_05, LVar0, LVar2, 40)
-    Call(SetNpcPos, NPC_Boo_05, NPC_DISPOSE_LOCATION)
+    Call(NpcMoveTo, NPC_Boo_Prankster, LVar0, LVar2, 40)
+    Call(SetNpcPos, NPC_Boo_Prankster, NPC_DISPOSE_LOCATION)
     Return
     End
 };
 
-EvtScript N(80242C60) = {
-    ExecWait(N(802429D4))
-    Set(MV_Unk_02, 0)
-    Set(MV_Unk_03, 0)
+EvtScript N(EVS_PrankBoo_Scare) = {
+    ExecWait(N(EVS_PrankBoo_Appear))
+    Set(MV_PrankDone, false)
     Thread
         Wait(25)
         Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Cower)
         Loop(0)
-            IfEq(MV_Unk_02, 1)
+            IfEq(MV_PrankDone, true)
                 BreakLoop
             EndIf
             Wait(1)
@@ -260,13 +259,13 @@ EvtScript N(80242C60) = {
         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Boo_Tan_Idle)
     EndThread
-    Call(SetNpcAnimation, NPC_Boo_05, ANIM_Boo_Tan_Spook)
-    Call(EndSpeech, NPC_Boo_05, ANIM_Boo_Tan_Spook, ANIM_Boo_Tan_Spook, 5)
+    Call(SetNpcAnimation, NPC_Boo_Prankster, ANIM_Boo_Tan_Spook)
+    Call(EndSpeech, NPC_Boo_Prankster, ANIM_Boo_Tan_Spook, ANIM_Boo_Tan_Spook, 5)
     Wait(30)
-    Call(SetNpcAnimation, NPC_Boo_05, ANIM_Boo_Tan_Idle)
+    Call(SetNpcAnimation, NPC_Boo_Prankster, ANIM_Boo_Tan_Idle)
     Wait(10)
-    ExecWait(N(80242B0C))
-    Set(MV_Unk_02, 1)
+    ExecWait(N(EVS_PrankBoo_Vanish))
+    Set(MV_PrankDone, true)
     Wait(15)
     Return
     End
@@ -297,11 +296,11 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0086)
-            ExecWait(N(802428CC))
-            Call(PlayerFaceNpc, NPC_Boo_05, true)
-            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_05, 1)
-            Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_0087)
-            ExecWait(N(80242C60))
+            ExecWait(N(EVS_PrankBoo_Setup))
+            Call(PlayerFaceNpc, NPC_Boo_Prankster, true)
+            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_Prankster, 1)
+            Call(SpeakToPlayer, NPC_Boo_Prankster, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_0087)
+            ExecWait(N(EVS_PrankBoo_Scare))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0088)
             Call(DisablePlayerPhysics, false)
             Call(EnablePartnerAI)
@@ -316,11 +315,11 @@ EvtScript N(EVS_NpcInteract_Boo_03) = {
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 1)
             EndThread
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0089)
-            ExecWait(N(802428CC))
-            Call(PlayerFaceNpc, NPC_Boo_05, true)
-            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_05, 1)
-            Call(SpeakToPlayer, NPC_Boo_05, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_008A)
-            ExecWait(N(80242C60))
+            ExecWait(N(EVS_PrankBoo_Setup))
+            Call(PlayerFaceNpc, NPC_Boo_Prankster, true)
+            Call(NpcFaceNpc, NPC_PARTNER, NPC_Boo_Prankster, 1)
+            Call(SpeakToPlayer, NPC_Boo_Prankster, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 5, MSG_CH3_008A)
+            ExecWait(N(EVS_PrankBoo_Scare))
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008B)
             Call(DisablePlayerPhysics, false)
             Call(EnablePartnerAI)
@@ -447,7 +446,7 @@ NpcData N(NpcData_Boo_04) = {
 };
 
 NpcData N(NpcData_Boo_05) = {
-    .id = NPC_Boo_05,
+    .id = NPC_Boo_Prankster,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
     .init = &N(EVS_NpcInit_Boo_05),

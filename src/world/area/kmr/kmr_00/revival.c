@@ -96,13 +96,14 @@ API_CALLABLE(N(func_802405CC_8AC55C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802405F0_8AC580)) {
-    enum {
-        FUNC_STATE_0        = 0,
-        FUNC_STATE_1        = 1,
-        FUNC_STATE_2        = 2,
-        FUNC_STATE_3        = 3
-    };
+enum {
+    APPEAR_STATE_0        = 0,
+    APPEAR_STATE_1        = 1,
+    APPEAR_STATE_2        = 2,
+    APPEAR_STATE_3        = 3
+};
+
+API_CALLABLE(N(StarSpiritAppear)) {
 
 #if VERSION_PAL
 #define VAR_1 varTable[11]
@@ -121,7 +122,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
         script->functionTemp[1] = evt_get_variable(script, *args++);
         script->functionTemp[2] = evt_get_variable(script, *args++);
         script->varTable[15] = evt_get_variable(script, *args++);
-        script->functionTemp[0] = FUNC_STATE_0;
+        script->functionTemp[0] = APPEAR_STATE_0;
         script->VAR_1 = 0;
 #if VERSION_PAL
         script->varTable[13] = 0;
@@ -132,7 +133,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
 
     npc = get_npc_unsafe(script->functionTemp[1]);
     switch (script->functionTemp[0]) {
-        case FUNC_STATE_0:
+        case APPEAR_STATE_0:
             npc->pos.x = 0.0f;
             npc->pos.y = NPC_DISPOSE_POS_Y;
             npc->pos.z = -50.0f;
@@ -144,10 +145,10 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
                 npc->pos.y += (-npc->pos.z + -50.0f + 70.0f / DT) * 0.15f;
                 sfx_play_sound_at_position(SOUND_SEQ_STAR_SPIRIT_APPEAR, SOUND_SPACE_DEFAULT, npc->pos.x, npc->pos.y, npc->pos.z);
                 fx_sparkles(FX_SPARKLES_0, npc->pos.x, npc->pos.y + 20.0f, npc->pos.z, 20.0f);
-                script->functionTemp[0] = FUNC_STATE_1;
+                script->functionTemp[0] = APPEAR_STATE_1;
             }
             break;
-        case FUNC_STATE_1:
+        case APPEAR_STATE_1:
             npc->pos.x = 0.0f;
             npc->pos.z = -50.0f;
             npc->pos.y = 100.0f;
@@ -157,11 +158,11 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
                 fx_sparkles(FX_SPARKLES_3, npc->pos.x, npc->pos.y + 10.0f, npc->pos.z, 10.0f);
             }
             if (script->VAR_1 > 256) {
-                script->functionTemp[0] = FUNC_STATE_2;
+                script->functionTemp[0] = APPEAR_STATE_2;
                 script->VAR_2 = 0;
             }
             break;
-        case FUNC_STATE_2:
+        case APPEAR_STATE_2:
             npc->pos.x = 0.0f;
             npc->pos.z = -50.0f;
             npc->pos.y = 100.0f - (script->VAR_2 * 0.3f);
@@ -171,7 +172,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
                 fx_sparkles(FX_SPARKLES_3, npc->pos.x, npc->pos.y + 10.0f, npc->pos.z, 10.0f);
             }
             if (script->VAR_2++ > 180) {
-                script->functionTemp[0] = FUNC_STATE_3;
+                script->functionTemp[0] = APPEAR_STATE_3;
                 script->VAR_2 = 0;
             }
 
@@ -180,7 +181,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
             script->VAR_2 = script->varTable[14] >> 16;
 #endif
             break;
-        case FUNC_STATE_3:
+        case APPEAR_STATE_3:
             npc->moveToPos.y -= 0.03f;
             npc->pos.x = 0.0f;
             npc->pos.z = -50.0f;
@@ -192,8 +193,8 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
             }
             if (npc->moveToPos.y < 0.0f) {
 #if VERSION_PAL
-                var = evt_get_variable(nullptr, MV_Unk_02);
-                evt_set_variable(nullptr, MV_Unk_02, var + 1);
+                var = evt_get_variable(nullptr, MV_SpiritArrivalCount);
+                evt_set_variable(nullptr, MV_SpiritArrivalCount, var + 1);
 #endif
                 retVal = ApiStatus_DONE2;
             }
@@ -211,7 +212,7 @@ API_CALLABLE(N(func_802405F0_8AC580)) {
     return retVal;
 }
 
-API_CALLABLE(N(func_80240BD8_8ACB68)) {
+API_CALLABLE(N(StarSpiritVanish)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc;
 
@@ -234,12 +235,12 @@ API_CALLABLE(N(func_80240BD8_8ACB68)) {
 }
 
 #if VERSION_PAL
-API_CALLABLE(N(func_PAL_80240D08)) {
-    if (evt_get_variable(nullptr, MV_Unk_02) == 7) {
+API_CALLABLE(N(AwaitAllArrived_PAL)) {
+    if (evt_get_variable(nullptr, MV_SpiritArrivalCount) == 7) {
         return ApiStatus_DONE2;
+    } else {
+        return ApiStatus_BLOCK;
     }
-
-    return ApiStatus_BLOCK;
 }
 #endif
 
@@ -258,7 +259,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
         Call(EnableModel, MODEL_ha2_3, false)
         Return
     EndIf
-    SetF(MV_Unk_01, Float(0.0))
+    SetF(MV_SpiritHologramOffset, Float(0.0))
     Call(N(func_80240388_8AC318))
     Call(N(func_80240000_8ABF90), 255, 255, 255, 60, 60, 60, 0)
     Call(FadeOutMusic, 0, 500)
@@ -289,11 +290,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
             Call(TranslateModel, MODEL_reef_3, LVar0, 0, 0)
             Call(TranslateModel, MODEL_reef_4, LVar1, 0, 0)
             AddF(LVar0, Float(-0.66 / DT))
-#if VERSION_PAL
-            AddF(LVar1, Float(0.79296875)) // 0.66 / DT rounds slightly off
-#else
             AddF(LVar1, Float(0.66 / DT))
-#endif
             Wait(1)
         EndLoop
     EndThread
@@ -339,28 +336,28 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Wait(90 * DT)
     Call(func_802D4D88)
 #if VERSION_PAL
-    Set(MV_Unk_02, 0)
+    Set(MV_SpiritArrivalCount, 0)
 #endif
     Thread
-        Call(N(func_802405F0_8AC580), 1, 0, 180)
+        Call(N(StarSpiritAppear), NPC_Eldstar, 0, 180)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 2, 1, 30)
+        Call(N(StarSpiritAppear), NPC_Mamar, 1, 30)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 3, 2, 90)
+        Call(N(StarSpiritAppear), NPC_Skolar, 2, 90)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 4, 3, 150)
+        Call(N(StarSpiritAppear), NPC_Muskular, 3, 150)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 5, 4, 0)
+        Call(N(StarSpiritAppear), NPC_Misstar, 4, 0)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 6, 5, 60)
+        Call(N(StarSpiritAppear), NPC_Klevar, 5, 60)
     EndThread
     Thread
-        Call(N(func_802405F0_8AC580), 7, 6, 120)
+        Call(N(StarSpiritAppear), NPC_Kalmar, 6, 120)
     EndThread
     Thread
         Wait(330 * DT)
@@ -376,7 +373,7 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Wait(550 * DT)
 #if VERSION_PAL
     Wait(15 * DT)
-    Call(N(func_PAL_80240D08))
+    Call(N(AwaitAllArrived_PAL))
 #endif
     Call(GetNpcPos, NPC_Kalmar, LVar6, LVar7, LVar8)
     Call(GetNpcPos, NPC_Mamar, LVar9, LVarA, LVarB)
@@ -554,19 +551,19 @@ EvtScript N(EVS_Scene_MarioRevived) = {
     Call(SpeakToPlayer, NPC_Eldstar, ANIM_WorldEldstar_Wave, ANIM_WorldEldstar_Wave, 5, MSG_CH0_0003)
     Thread
         Wait(15 * DT)
-        Call(N(func_80240BD8_8ACB68), NPC_Misstar)
+        Call(N(StarSpiritVanish), NPC_Misstar)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Mamar)
+        Call(N(StarSpiritVanish), NPC_Mamar)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Klevar)
+        Call(N(StarSpiritVanish), NPC_Klevar)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Skolar)
+        Call(N(StarSpiritVanish), NPC_Skolar)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Kalmar)
+        Call(N(StarSpiritVanish), NPC_Kalmar)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Muskular)
+        Call(N(StarSpiritVanish), NPC_Muskular)
         Wait(2)
-        Call(N(func_80240BD8_8ACB68), NPC_Eldstar)
+        Call(N(StarSpiritVanish), NPC_Eldstar)
     EndThread
     Call(FadeOutMusic, 0, 5000 * DT)
     Thread

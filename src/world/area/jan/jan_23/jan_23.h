@@ -22,7 +22,7 @@ enum {
 };
 
 enum {
-    MV_Unk_05       = MapVar(5),
+    MV_NeedsCamMotion   = MapVar(5),
 };
 
 enum {

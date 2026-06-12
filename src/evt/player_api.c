@@ -787,14 +787,13 @@ API_CALLABLE(DisablePulseStone) {
 API_CALLABLE(GetPartnerInUse) {
     Bytecode* args = script->ptrReadPos;
     Bytecode outVar = *args++;
-    PlayerData* playerData = &gPlayerData;
-    s32 currentPartner = PARTNER_NONE;
+    s32 actingPartner = PARTNER_NONE;
 
     if (gPartnerStatus.partnerActionState != PARTNER_ACTION_NONE) {
-        currentPartner = playerData->curPartner;
+        actingPartner = gPlayerData.curPartner;
     }
 
-    evt_set_variable(script, outVar, currentPartner);
+    evt_set_variable(script, outVar, actingPartner);
     return ApiStatus_DONE2;
 }
 

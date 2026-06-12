@@ -76,7 +76,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Set(MF_Unk_00, false)
+    Set(MF_SheekTauntPending, false)
     BindTrigger(Ref(N(EVS_OnReadPoster)), TRIGGER_WALL_PRESS_A, COLLIDER_poster, 1, 0)
     Thread
         Loop(0)

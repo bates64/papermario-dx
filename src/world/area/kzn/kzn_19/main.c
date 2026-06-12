@@ -3,7 +3,7 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
-#define STAR_SPIRIT_DATA_VAR MV_Unk_01
+#define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/todo/StarSpiritEffectFunc.inc.c"
 
 EvtScript N(EVS_TrySpawningStarCard) = {

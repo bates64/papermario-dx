@@ -13,13 +13,13 @@
 #include "sprite/npc/ChainChomp.h"
 
 enum {
-    NPC_Tutankoopa_01           = 0,
-    NPC_Tutankoopa_02           = 1,
-    NPC_ChainChomp              = 2,
+    NPC_Tutankoopa_01       = 0,
+    NPC_Tutankoopa_02       = 1,
+    NPC_ChainChomp          = 2,
 };
 
 enum {
-    MV_Unk_01               = MapVar(1),
+    MV_SpiritCardData       = MapVar(1),
 };
 
 #define NAMESPACE isk_16

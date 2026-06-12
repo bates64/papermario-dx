@@ -40,7 +40,7 @@ void npc_follow_init(Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpee
     NpcFollowData* followData;
     s32 i;
 
-    npc->blur.followData = followData = heap_malloc(sizeof(*followData));
+    npc->userData.followData = followData = heap_malloc(sizeof(*followData));
     ASSERT(followData != nullptr);
 
     for (i = 0; i < ARRAY_COUNT(followData->moveHistory); i++) {
@@ -66,7 +66,7 @@ void npc_follow_init(Npc* npc, s32 targetNpcID, FollowAnims* anims, f32 walkSpee
 }
 
 void npc_update_npc_tracking(Npc* npc) {
-    NpcFollowData* followData = npc->blur.followData;
+    NpcFollowData* followData = npc->userData.followData;
     f32 x, y, z;
     s32 airborne;
     s32 isAirborne;
@@ -101,7 +101,7 @@ void npc_update_npc_tracking(Npc* npc) {
 }
 
 void npc_follow_npc(Npc* npc) {
-    NpcFollowData* followData = npc->blur.followData;
+    NpcFollowData* followData = npc->userData.followData;
     f32 x, y, z;
     s32 airborne;
     f32 currentX, currentY, currentZ;

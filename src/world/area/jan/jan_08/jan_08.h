@@ -21,9 +21,9 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
-    MV_Unk_01       = MapVar(1),
-    MV_SuperBlock   = MapVar(2),
+    MV_BushMoveL        = MapVar(0),
+    MV_BushMoveR        = MapVar(1),
+    MV_SuperBlock       = MapVar(2),
 };
 
 #define NAMESPACE jan_08

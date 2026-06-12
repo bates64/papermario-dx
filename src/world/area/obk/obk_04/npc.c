@@ -17,10 +17,9 @@ enum {
 
 API_CALLABLE(N(InitHiddenBoo)) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
-    s32* isGameStarted = heap_malloc(sizeof(s32));
+    npc->userData.keepAwayData = heap_malloc(sizeof(s32));
+    npc->userData.keepAwayData->isStarted = false;
 
-    npc->blur.keepAwayStarted = isGameStarted;
-    *isGameStarted = false;
     npc->planarFlyDist = 125.0f; // default ring radius
     npc->yaw = 0.0f;
     npc->pos.x = 0.0f;
@@ -87,7 +86,7 @@ s32 N(SetRingMovement)(s32 arg0) {
 
 API_CALLABLE(N(UpdateHiddenBoo)) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
-    s32* temp_s3 = npc->blur.any;
+    s32* temp_s3 = npc->userData.any;
     s32 temp_v0;
 
     switch (script->functionTemp[1]) {
@@ -155,7 +154,7 @@ API_CALLABLE(N(UpdateHiddenBoo)) {
 API_CALLABLE(N(InitKeepAwayBoo)) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
 
-    npc->blur.keepAwayNpc = get_npc_unsafe(NPC_Boo_01);
+    npc->userData.keepAwayNpc = get_npc_unsafe(NPC_Boo_01);
     script->functionTemp[2] = script->owner2.npcID * 45; // starting yaw
     npc->flags |= NPC_FLAG_IGNORE_CAMERA_FOR_YAW;
     script->functionTemp[1] = RING_STATE_0;
@@ -164,18 +163,19 @@ API_CALLABLE(N(InitKeepAwayBoo)) {
 
 API_CALLABLE(N(UpdateKeepAwayBoo)) {
     Npc* npc = get_npc_unsafe(script->owner2.npcID);
-    Npc* hiddenBoo = npc->blur.keepAwayNpc;
+    Npc* hiddenBoo = npc->userData.keepAwayNpc;
     f32 posX, posY, posZ;
     f32 interpAlpha, alphaSquared, alphaCubed;
     f32 deltaX, deltaZ;
-    s32* isGameStarted;
+    b32 isGameStarted;
     f32 yaw;
 
-    isGameStarted = hiddenBoo->blur.keepAwayStarted;
+    isGameStarted = hiddenBoo->userData.keepAwayData->isStarted;
+
     switch (script->functionTemp[1]) {
         case RING_STATE_0:
             npc->yaw = clamp_angle(script->functionTemp[2] + hiddenBoo->yaw);
-            if (*isGameStarted == true) {
+            if (isGameStarted) {
                 script->functionTemp[1] = RING_STATE_1;
                 npc->duration = rand_int(20) + 10;
             }

@@ -72,7 +72,7 @@ enum {
     MV_EntityID_Switch      = MapVar(0),
     MV_OrbitingEffectAIdx   = MapVar(0),
     MV_OrbitingEffectBIdx   = MapVar(1),
-    MV_Unk_0A               = MapVar(10), // KNOCK_DOWN_MAP_VAR
+    MV_BridgeCollapseState  = MapVar(10),
     MV_ArenaState           = MapVar(11),
     MV_DestructState        = MapVar(12),
     MV_PrevDestructState    = MapVar(13),

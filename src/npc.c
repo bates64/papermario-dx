@@ -108,7 +108,7 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
     npc->collisionDiameter = 32;
     npc->collisionHeight = 64;
     npc->renderMode = 13;
-    npc->blur.any = nullptr;
+    npc->userData.any = nullptr;
     npc->yaw = 0.0f;
     npc->jumpVel = 0.0f;
     npc->pos.x = 0.0f;
@@ -206,9 +206,9 @@ void free_npc_by_index(s32 listIndex) {
     npc = (*gCurrentNpcListPtr)[listIndex];
     if (npc != nullptr) {
         if (npc->flags) {
-            if (npc->blur.any != nullptr) {
-                heap_free(npc->blur.any);
-                npc->blur.any = nullptr;
+            if (npc->userData.any != nullptr) {
+                heap_free(npc->userData.any);
+                npc->userData.any = nullptr;
             }
 
             if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -235,9 +235,9 @@ void free_npc_by_index(s32 listIndex) {
 void free_npc(Npc* npc) {
     s32 i;
 
-    if (npc->blur.any != nullptr) {
-        heap_free(npc->blur.any);
-        npc->blur.any = nullptr;
+    if (npc->userData.any != nullptr) {
+        heap_free(npc->userData.any);
+        npc->userData.any = nullptr;
     }
 
     if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
@@ -1068,7 +1068,7 @@ void enable_npc_blur(Npc* npc) {
         npc->flags |= NPC_FLAG_MOTION_BLUR;
 
         motionBlur = heap_malloc(sizeof(*motionBlur));
-        npc->blur.motion = motionBlur;
+        npc->userData.motion = motionBlur;
         ASSERT(motionBlur != nullptr);
         motionBlur->unused = 0;
         motionBlur->index = 0;
@@ -1085,13 +1085,13 @@ void disable_npc_blur(Npc* npc) {
     if (npc->flags & NPC_FLAG_MOTION_BLUR) {
         npc->flags &= ~NPC_FLAG_MOTION_BLUR;
 
-        heap_free(npc->blur.motion);
-        npc->blur.motion = nullptr;
+        heap_free(npc->userData.motion);
+        npc->userData.motion = nullptr;
     }
 }
 
 void update_npc_blur(Npc* npc) {
-    NpcMotionBlur* motionBlur = npc->blur.motion;
+    NpcMotionBlur* motionBlur = npc->userData.motion;
     s32 index = motionBlur->index;
 
     motionBlur->posX[index] = npc->pos.x;
@@ -1118,7 +1118,7 @@ void appendGfx_npc_blur(void* data) {
 
     strideIdx = 0;
     drawIdx = 0;
-    blur = npc->blur.motion;
+    blur = npc->userData.motion;
     bufPos = blur->index;
 
     while (true) {

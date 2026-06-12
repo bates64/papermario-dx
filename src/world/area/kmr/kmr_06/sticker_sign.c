@@ -223,8 +223,8 @@ EvtScript N(EVS_OnInspect_StickerSign) = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Sign_EatMushroomsTip, 160, 40)
     IfEq(GF_KMR06_Item_Mushroom, false)
-        IfEq(AF_JAN01_TreeDrop_StarPiece, false)
-            Set(AF_JAN01_TreeDrop_StarPiece, true)
+        IfEq(MF_Unk_0A, false)
+            Set(MF_Unk_0A, true)
             Thread
                 Wait(2)
                 SetF(LVar0, Float(0.0))

@@ -928,7 +928,7 @@ EvtScript N(EVS_NpcInit_Goompa) = {
     End
 };
 
-EvtScript N(D_8024BEF8_8BBF68) = {
+EvtScript N(EVS_Goompapa_PaceNearGate) = {
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Walk)
     Call(NpcMoveTo, NPC_Goompapa, 272, 281, 20 * DT)
     Call(GetNpcYaw, NPC_Goompapa, LVar3)
@@ -954,10 +954,10 @@ EvtScript N(EVS_NpcIdle_Goompapa) = {
     Label(0)
         Switch(GB_StoryProgress)
             CaseLt(STORY_CH0_MET_GOOMPA)
-                ExecWait(N(D_8024BEF8_8BBF68))
+                ExecWait(N(EVS_Goompapa_PaceNearGate))
             CaseLt(STORY_CH0_GATE_CRUSHED)
                 IfEq(GF_KMR02_Met_Goompapa, false)
-                    ExecWait(N(D_8024BEF8_8BBF68))
+                    ExecWait(N(EVS_Goompapa_PaceNearGate))
                 EndIf
             CaseLt(STORY_CH0_SMASHED_GATE_BLOCK)
             CaseDefault
@@ -1003,7 +1003,7 @@ EvtScript N(EVS_NpcInteract_Goompapa) = {
                 Wait(45)
                 Call(FadeInMusic, 0, SONG_KAMMY_KOOPA_THEME, 0, 500, 0, 127)
             EndThread
-            ExecWait(N(EVS_Scene_KammyStrikes))
+            ExecWait(N(EVS_Scene_KammyCrushesGate))
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
             Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_0063)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
@@ -1418,8 +1418,8 @@ EvtScript N(EVS_Scene_EldstarsPlea) = {
     Call(PlaySoundAtNpc, NPC_Eldstar_02, SOUND_STAR_SPIRIT_APPEAR_A, SOUND_SPACE_DEFAULT)
     PlayEffect(EFFECT_SPARKLES, 0, -198, 115, -272, 10)
     Call(SetNpcPos, NPC_Eldstar_02, -198, 140, -272)
-    Set(MV_Unk_01, 120)
-    SetF(MV_Unk_00, 0)
+    Set(MV_HologramAlpha, 120)
+    SetF(MV_HologramNoiseBase, 0)
     Call(BindNpcAI, NPC_Eldstar_02, Ref(N(EVS_NpcAI_Eldstar_02)))
     Thread
         Call(MakeLerp, 0, 120, 80 * DT, EASING_LINEAR)
@@ -1465,12 +1465,12 @@ EvtScript N(EVS_Scene_EldstarsPlea) = {
     Call(MakeLerp, 120, 60, 20 * DT, EASING_LINEAR)
     Label(5)
         Call(UpdateLerp)
-        Set(MV_Unk_01, LVar0)
+        Set(MV_HologramAlpha, LVar0)
         Wait(1)
         IfEq(LVar1, 1)
             Goto(5)
         EndIf
-    SetF(MV_Unk_00, 50)
+    SetF(MV_HologramNoiseBase, 50)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -1624,7 +1624,7 @@ s16 N(D_8024E538_8BE5A8)[] = {
     1, 3, 5, 7, 7, 5, 3
 };
 
-API_CALLABLE(N(func_80242F7C_8B2FEC)) {
+API_CALLABLE(N(UpdateEldstarHoverOffset)) {
     Npc* npc;
 
     if (isInitialCall) {
@@ -1650,7 +1650,7 @@ EvtScript N(EVS_NpcAI_Eldstar_02_NoAI) = {
 
 EvtScript N(EVS_NpcAI_Eldstar_02) = {
     Thread
-        Call(N(func_80242F7C_8B2FEC))
+        Call(N(UpdateEldstarHoverOffset))
     EndThread
     Call(RandInt, 100, LVar0)
     Add(LVar0, 1)
@@ -1672,22 +1672,22 @@ EvtScript N(EVS_NpcAI_Eldstar_02) = {
         EndIf
         Loop(LVar1)
             SetF(ArrayVar(0), Float(90.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
             SetF(ArrayVar(0), Float(100.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
             SetF(ArrayVar(0), Float(130.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
             SetF(ArrayVar(0), Float(120.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
             SetF(ArrayVar(0), Float(110.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
             SetF(ArrayVar(0), Float(100.0))
-            AddF(ArrayVar(0), MV_Unk_00)
+            AddF(ArrayVar(0), MV_HologramNoiseBase)
             Wait(1)
         EndLoop
         Goto(0)
@@ -1695,11 +1695,11 @@ EvtScript N(EVS_NpcAI_Eldstar_02) = {
     SetF(LVar0, Float(100.0))
     Label(1)
     Loop(50)
-        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), 0, MV_Unk_01)
+        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), 0, MV_HologramAlpha)
         Wait(1)
     EndLoop
     Loop(50)
-        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), 0, MV_Unk_01)
+        Call(SetNpcImgFXParams, NPC_SELF, IMGFX_HOLOGRAM, IMGFX_HOLOGRAM_NOISE, ArrayVar(0), 0, MV_HologramAlpha)
         Wait(1)
     EndLoop
     Goto(1)
