@@ -25,12 +25,12 @@ enum {
 };
 
 enum {
-    MV_TrainRideState      = MapVar(0),
-    MV_TrainPath      = MapVar(1),
-    MV_TrainUnk_02      = MapVar(2),
-    MV_TrainPosX         = MapVar(11),
-    MV_TrainPosZ      = MapVar(12),
-    MV_TrainYaw      = MapVar(13),
+    MV_TrainRideState       = MapVar(0),
+    MV_TrainPath            = MapVar(1),
+    MV_TrainSpeedMode       = MapVar(2),
+    MV_TrainPosX            = MapVar(11),
+    MV_TrainPosZ            = MapVar(12),
+    MV_TrainYaw             = MapVar(13),
 };
 
 enum {

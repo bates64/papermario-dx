@@ -10,7 +10,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 
 EvtScript N(EVS_EnterMap) = {
     Call(GetLoadType, LVar1)
-    IfEq(LVar1, 1)
+    IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(N(EVS_BindExitTriggers))
         Return

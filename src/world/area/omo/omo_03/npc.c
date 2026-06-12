@@ -49,7 +49,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
             EndIf
         Else
             IfEq(AF_OMO_06, false)
-                ExecWait(N(EVS_8024705C))
+                ExecWait(N(EVS_Conductor_ChooseRoute))
             Else
                 ExecWait(N(EVS_80246108))
             EndIf

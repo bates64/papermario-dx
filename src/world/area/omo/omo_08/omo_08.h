@@ -14,7 +14,7 @@
 
 enum {
     NPC_Conductor           = 0,
-    NPC_TrainToad    = 1,
+    NPC_TrainToad           = 1,
     NPC_ShyGuy_01           = 2,
     NPC_ShyGuy_02           = 3,
     NPC_ShyGuy_03           = 4,
@@ -22,21 +22,20 @@ enum {
 };
 
 enum {
-    MV_TrainRideState          = MapVar(0),
-    MV_TrainPath          = MapVar(1),
-    MV_TrainUnk_02          = MapVar(2),
+    MV_TrainRideState       = MapVar(0),
+    MV_TrainPath            = MapVar(1),
+    MV_TrainSpeedMode       = MapVar(2),
     MV_ArrowTexUOffset      = MapVar(9),
-    MV_TrainPosX             = MapVar(11),
-    MV_TrainPosZ          = MapVar(12),
-    MV_TrainYaw          = MapVar(13),
+    MV_TrainPosX            = MapVar(11),
+    MV_TrainPosZ            = MapVar(12),
+    MV_TrainYaw             = MapVar(13),
     MV_BoxHitCount          = MapVar(14),
     MV_BoxHitSequence       = MapVar(15),
 };
 
 enum {
-    MF_TrainRideActive          = MapFlag(0),
+    MF_TrainRideActive      = MapFlag(0),
     MF_EitherSwitchPressed  = MapFlag(1),
-    MF_Unk_0A               = MapFlag(10),
 };
 
 #define NAMESPACE omo_08
@@ -44,7 +43,7 @@ enum {
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
 extern EvtScript N(EVS_SetupTrain);
-extern EvtScript N(EVS_80247100);
+extern EvtScript N(EVS_Conductor_ChooseRoute);
 extern EvtScript N(EVS_SetupBoxes);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);

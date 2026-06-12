@@ -6,41 +6,41 @@ EvtScript N(D_8024262C_DEE4FC) = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Wait(140)
-        Switch(GB_OMO_TrainDestination)
-            CaseEq(0)
-                IfEq(AB_OMO_6, 1)
+        Switch(GB_OMO_TrainRoute)
+            CaseEq(TRAIN_ROUTE_BLUE_PINK)
+                IfEq(AB_OMO_6, OMO_STATION_PINK)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000B)
                 EndIf
-            CaseEq(1)
-                IfEq(AB_OMO_6, 2)
+            CaseEq(TRAIN_ROUTE_PINK_GREEN)
+                IfEq(AB_OMO_6, OMO_STATION_GREEN)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000C)
                 EndIf
-            CaseEq(2)
-                IfEq(AB_OMO_6, 3)
+            CaseEq(TRAIN_ROUTE_GREEN_RED)
+                IfEq(AB_OMO_6, OMO_STATION_RED)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000D)
                 EndIf
-            CaseEq(3)
-                IfEq(AB_OMO_6, 0)
+            CaseEq(TRAIN_ROUTE_RED_BLUE)
+                IfEq(AB_OMO_6, OMO_STATION_BLUE)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000A)
                 EndIf
         EndSwitch
     Else
         Wait(140)
-        Switch(GB_OMO_TrainDestination)
-            CaseEq(0)
-                IfEq(AB_OMO_6, 0)
+        Switch(GB_OMO_TrainRoute)
+            CaseEq(TRAIN_ROUTE_BLUE_PINK)
+                IfEq(AB_OMO_6, OMO_STATION_BLUE)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000A)
                 EndIf
-            CaseEq(1)
-                IfEq(AB_OMO_6, 1)
+            CaseEq(TRAIN_ROUTE_PINK_GREEN)
+                IfEq(AB_OMO_6, OMO_STATION_PINK)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000B)
                 EndIf
-            CaseEq(2)
-                IfEq(AB_OMO_6, 2)
+            CaseEq(TRAIN_ROUTE_GREEN_RED)
+                IfEq(AB_OMO_6, OMO_STATION_GREEN)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000C)
                 EndIf
-            CaseEq(3)
-                IfEq(AB_OMO_6, 3)
+            CaseEq(TRAIN_ROUTE_RED_BLUE)
+                IfEq(AB_OMO_6, OMO_STATION_RED)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000D)
                 EndIf
         EndSwitch
@@ -51,26 +51,26 @@ EvtScript N(D_8024262C_DEE4FC) = {
 
 EvtScript N(D_802428CC_DEE79C) = {
     Label(0)
-    Call(GetPlayerPos, LVar0, LVar1, LVar2)
-    IfLt(LVar0, -2000)
-        Set(LVar0, -2000)
-    EndIf
-    IfGt(LVar0, 2000)
-        Set(LVar0, 2000)
-    EndIf
-    Call(SetCamTarget, CAM_DEFAULT, LVar0, Float(50.0), LVar2)
-    Wait(1)
-    Goto(0)
+        Call(GetPlayerPos, LVar0, LVar1, LVar2)
+        IfLt(LVar0, -2000)
+            Set(LVar0, -2000)
+        EndIf
+        IfGt(LVar0, 2000)
+            Set(LVar0, 2000)
+        EndIf
+        Call(SetCamTarget, CAM_DEFAULT, LVar0, Float(50.0), LVar2)
+        Wait(1)
+        Goto(0)
     Return
     End
 };
 
-s32 N(D_80242984_DEE854)[] = {
+s32 N(TrainPath_D_80242984_DEE854)[] = {
     -1550, Float(0.0), Float(90.0), 1550, Float(0.0),
     -1, -1, -1
 };
 
-s32 N(D_802429A4_DEE874)[] = {
+s32 N(TrainPath_D_802429A4_DEE874)[] = {
     1550, Float(0.0), Float(270.0), -1550, Float(0.0),
     -1, -1, -1
 };
@@ -97,9 +97,9 @@ EvtScript N(EVS_802429C4) = {
     Exec(N(D_8024262C_DEE4FC))
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
-        Set(MV_TrainRideState, 0)
-        Set(MV_TrainPath, Ref(N(D_80242984_DEE854)))
-        Set(MV_TrainUnk_02, 0)
+        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainPath, Ref(N(TrainPath_D_80242984_DEE854)))
+        Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
         Set(MF_TrainRideActive, true)
         Thread
@@ -112,14 +112,14 @@ EvtScript N(EVS_802429C4) = {
             IfLt(MV_TrainPosX, 1400)
                 Goto(10)
             EndIf
-            Switch(GB_OMO_TrainDestination)
-                CaseEq(0)
+            Switch(GB_OMO_TrainRoute)
+                CaseEq(TRAIN_ROUTE_BLUE_PINK)
                     Call(GotoMap, Ref("omo_06"), omo_06_ENTRY_2)
-                CaseEq(1)
+                CaseEq(TRAIN_ROUTE_PINK_GREEN)
                     Call(GotoMap, Ref("omo_08"), omo_08_ENTRY_1)
-                CaseEq(2)
+                CaseEq(TRAIN_ROUTE_GREEN_RED)
                     Call(GotoMap, Ref("omo_10"), omo_10_ENTRY_2)
-                CaseEq(3)
+                CaseEq(TRAIN_ROUTE_RED_BLUE)
                     Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_2)
             EndSwitch
             Wait(100)
@@ -128,9 +128,9 @@ EvtScript N(EVS_802429C4) = {
             ExecWait(N(EVS_TrainUnk_G))
         EndThread
     Else
-        Set(MV_TrainRideState, 0)
-        Set(MV_TrainPath, Ref(N(D_802429A4_DEE874)))
-        Set(MV_TrainUnk_02, 0)
+        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainPath, Ref(N(TrainPath_D_802429A4_DEE874)))
+        Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
         Set(MF_TrainRideActive, true)
         Thread
@@ -143,14 +143,14 @@ EvtScript N(EVS_802429C4) = {
             IfGt(MV_TrainPosX, -1400)
                 Goto(30)
             EndIf
-            Switch(GB_OMO_TrainDestination)
-                CaseEq(0)
+            Switch(GB_OMO_TrainRoute)
+                CaseEq(TRAIN_ROUTE_BLUE_PINK)
                     Call(GotoMap, Ref("omo_03"), omo_03_ENTRY_3)
-                CaseEq(1)
+                CaseEq(TRAIN_ROUTE_PINK_GREEN)
                     Call(GotoMap, Ref("omo_06"), omo_06_ENTRY_3)
-                CaseEq(2)
+                CaseEq(TRAIN_ROUTE_GREEN_RED)
                     Call(GotoMap, Ref("omo_08"), omo_08_ENTRY_2)
-                CaseEq(3)
+                CaseEq(TRAIN_ROUTE_RED_BLUE)
                     Call(GotoMap, Ref("omo_10"), omo_10_ENTRY_3)
             EndSwitch
             Wait(100)

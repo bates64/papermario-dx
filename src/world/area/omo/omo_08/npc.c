@@ -5,7 +5,7 @@
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
     Call(DisablePlayerInput, true)
-    ExecWait(N(EVS_80247100))
+    ExecWait(N(EVS_Conductor_ChooseRoute))
     Call(DisablePlayerInput, false)
     Return
     End

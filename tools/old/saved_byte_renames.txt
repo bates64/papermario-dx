@@ -213,7 +213,7 @@ GameByte(211) GB_Unused_DGB_08
 GameByte(212) GB_Unused_DGB_09
 GameByte(213) GB_Unused_DGB_0A
 GameByte(214) GB_Unused_OMO_00
-GameByte(215) GB_OMO_TrainDestination
+GameByte(215) GB_OMO_TrainRoute
 GameByte(216) GB_OMO_PeachChoice1
 GameByte(217) GB_OMO_PeachChoice2
 GameByte(218) GB_OMO_PeachChoice3

@@ -62,7 +62,7 @@ EvtScript N(EVS_EnterMap) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     SuspendGroup(EVT_GROUP_FLAG_INTERACT)
     Call(GetLoadType, LVar1)
-    IfEq(LVar1, 1)
+    IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
         Exec(N(EVS_BindExitTriggers))
         Return

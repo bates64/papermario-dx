@@ -1,3 +1,5 @@
+#pragma once
+
 #include "common.h"
 #include "npc.h"
 
@@ -125,4 +127,3 @@ EvtScript N(EVS_UpdateTexturePan) = {
     Return
     End
 };
-
