@@ -68,11 +68,7 @@ NpcSettings N(NpcSettings_Bootler) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/JrTroopa.inc.c"
 
 EvtScript N(EVS_Bootler_SpookPlayer) = {
     ChildThread
@@ -96,12 +92,6 @@ EvtScript N(EVS_Bootler_SpookPlayer) = {
     End
 };
 
-#if VERSION_PAL
-#define VAR_1 (15.0)
-#else
-#define VAR_1 (12.0)
-#endif
-
 EvtScript N(EVS_Scene_BootlersInvitation) = {
     Call(N(AwaitPlayerApproachForest))
     Call(SetCamPerspective, CAM_DEFAULT, CAM_UPDATE_FROM_ZONE, 25, 16, 650)
@@ -115,7 +105,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
     Call(DisablePlayerInput, true)
     Call(SetNpcPos, NPC_Bootler, 200, 44, 0)
     Call(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, 0, 0, 0, 0)
-    Set(MV_Unk_00, true)
+    Set(MV_ScenePlaying, true) // note: never cleared by this script
     Call(SetMusic, 0, SONG_BOOS_MANSION, 0, VOL_LEVEL_FULL)
     Wait(20 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_LookUp)
@@ -131,7 +121,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
     Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)
     SetF(LVar0, Float(0.0))
     Loop(20 * DT)
-        AddF(LVar0, Float(VAR_1))
+        AddF(LVar0, Float(12.0 / DT))
         Call(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
     EndLoop
@@ -156,7 +146,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
     Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_APPEAR_A, SOUND_SPACE_DEFAULT)
     SetF(LVar0, Float(240.0))
     Loop(20 * DT)
-        SubF(LVar0, Float(VAR_1))
+        SubF(LVar0, Float(12.0 / DT))
         Call(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
     EndLoop
@@ -169,7 +159,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
         Call(SetNpcScale, NPC_Bootler, Float(3.0), Float(3.0), Float(3.0))
         SetF(LVar0, Float(0.0))
         Loop(20 * DT)
-            AddF(LVar0, Float(VAR_1))
+            AddF(LVar0, Float(12.0 / DT))
             Call(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
             Wait(1)
         EndLoop
@@ -182,7 +172,7 @@ EvtScript N(EVS_Scene_BootlersInvitation) = {
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     SetF(LVar0, Float(240.0))
     Loop(20 * DT)
-        SubF(LVar0, Float(VAR_1))
+        SubF(LVar0, Float(12.0 / DT))
         Call(SetNpcImgFXParams, NPC_Bootler, IMGFX_SET_ALPHA, LVar0, 0, 0, 0)
         Wait(1)
     EndLoop
@@ -219,10 +209,10 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     End
 };
 
-EvtScript N(EVS_NpcIdle_JrTroopa) = {
+EvtScript N(EVS_NpcIdle_JrTroopa_Escape) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
-    Set(MV_Unk_00, true)
+    Set(MV_ScenePlaying, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(SetCamProperties, CAM_DEFAULT, Float(3.0 / DT), LVar0, LVar1, LVar2, 300, 15, -7)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 5, MSG_CH3_0023)
@@ -232,7 +222,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 25 * DT)
     Call(ResetCam, CAM_DEFAULT, Float(90.0))
     Set(GF_MIM10_JrTroopaEscaped, true)
-    Set(MV_Unk_00, false)
+    Set(MV_ScenePlaying, false)
     Call(DisablePlayerInput, false)
     Call(RemoveNpc, NPC_SELF)
     Return
@@ -240,7 +230,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
 };
 
 EvtScript N(EVS_NpcInit_JrTroopa) = {
-    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa)))
+    Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_JrTroopa_Escape)))
     IfEq(GF_MIM10_JrTroopaEscaped, true)
         Call(RemoveNpc, NPC_SELF)
         Return
@@ -289,24 +279,7 @@ NpcData N(NpcData_JrTroopa) = {
     .settings = &N(NpcSettings_JrTroopa),
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_JrTroopa_Idle,
-        .walk   = ANIM_JrTroopa_Walk,
-        .run    = ANIM_JrTroopa_Walk,
-        .chase  = ANIM_JrTroopa_Walk,
-        .anim_4 = ANIM_JrTroopa_Idle,
-        .anim_5 = ANIM_JrTroopa_Idle,
-        .death  = ANIM_JrTroopa_Idle,
-        .hit    = ANIM_JrTroopa_Idle,
-        .anim_8 = ANIM_JrTroopa_Idle,
-        .anim_9 = ANIM_JrTroopa_Idle,
-        .anim_A = ANIM_JrTroopa_Idle,
-        .anim_B = ANIM_JrTroopa_Idle,
-        .anim_C = ANIM_JrTroopa_Idle,
-        .anim_D = ANIM_JrTroopa_Idle,
-        .anim_E = ANIM_JrTroopa_Idle,
-        .anim_F = ANIM_JrTroopa_Idle,
-    },
+    .animations = JR_TROOPA_ANIMS,
 };
 
 NpcGroupList N(DefaultNPCs) = {

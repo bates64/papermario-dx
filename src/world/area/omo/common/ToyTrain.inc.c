@@ -3,13 +3,14 @@
 
 API_CALLABLE(N(CompareFloats)) {
     Bytecode* args = script->ptrReadPos;
-    f32 temp_f20 = evt_get_float_variable(script, *args++);
-    f32 temp = evt_get_float_variable(script, *args++);
+    f32 a = evt_get_float_variable(script, *args++);
+    f32 b = evt_get_float_variable(script, *args++);
+    s32 outVar = *args++;
 
-    if (temp < temp_f20) {
-        evt_set_variable(script, *args++, true);
+    if (b < a) {
+        evt_set_variable(script, outVar, true);
     } else {
-        evt_set_variable(script, *args++, false);
+        evt_set_variable(script, outVar, false);
     }
     return ApiStatus_DONE2;
 }
@@ -81,9 +82,9 @@ EvtScript N(EVS_Scene_RideTrain) = {
     SetF(ArrayVar(16), Float(0.0))
     Set(AF_OMO_03, false)
     Label(0)
-        Switch(MV_TrainUnk_00)
+        Switch(MV_TrainRideState)
             CaseEq(0)
-                UseBuf(MV_TrainUnk_01)
+                UseBuf(MV_TrainPath)
                 BufRead3(LVar0, LVar1, LVar2)
                 SetF(ArrayVar(0), LVar0)
                 SetF(ArrayVar(1), LVar1)
@@ -95,9 +96,9 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), Float(40.0), LVar3)
                 SetF(ArrayVar(11), LVar0)
                 SetF(ArrayVar(12), LVar1)
-                SetF(MV_TrainPos, ArrayVar(11))
-                SetF(MV_TrainUnk_0C, ArrayVar(12))
-                SetF(MV_TrainUnk_0D, LVar2)
+                SetF(MV_TrainPosX, ArrayVar(11))
+                SetF(MV_TrainPosZ, ArrayVar(12))
+                SetF(MV_TrainYaw, LVar2)
                 SetF(ArrayVar(17), Float(0.0))
                 Label(11)
                     BufRead2(LVar2, LVar3)
@@ -114,16 +115,16 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 SetF(ArrayVar(10), Float(0.0))
                 SetF(ArrayVar(13), Float(0.0))
                 Set(ArrayVar(18), 0)
-                IfEq(MF_TrainUnk_00, true)
-                    Set(MV_TrainUnk_00, 1)
+                IfEq(MF_TrainRideActive, true)
+                    Set(MV_TrainRideState, 1)
                 EndIf
             CaseEq(1)
-                UseBuf(MV_TrainUnk_01)
+                UseBuf(MV_TrainPath)
                 Call(N(AdvanceBuffer), 3, 0, 0)
                 BufRead2(LVar0, LVar1)
                 IfEq(LVar0, -1)
-                    Set(MV_TrainUnk_00, 100)
-                    Set(MF_TrainUnk_00, false)
+                    Set(MV_TrainRideState, 100)
+                    Set(MF_TrainRideActive, false)
                 Else
                     SetF(ArrayVar(2), LVar0)
                     SetF(ArrayVar(3), LVar1)
@@ -131,7 +132,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     SetF(ArrayVar(7), LVar0)
                     SetF(ArrayVar(8), LVar1)
                     Set(ArrayVar(9), 1)
-                    Set(MV_TrainUnk_00, 10)
+                    Set(MV_TrainRideState, 10)
                 EndIf
             CaseEq(10)
                 Switch(MV_TrainUnk_02)
@@ -160,13 +161,13 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     SubF(LVar1, LVar0)
                     SetF(ArrayVar(0), ArrayVar(2))
                     SetF(ArrayVar(1), ArrayVar(3))
-                    UseBuf(MV_TrainUnk_01)
+                    UseBuf(MV_TrainPath)
                     Call(N(AdvanceBuffer), 3, 2, ArrayVar(4))
                     BufRead2(ArrayVar(2), ArrayVar(3))
                     Add(ArrayVar(4), 1)
                     IfEq(ArrayVar(2), -1)
-                        Set(MV_TrainUnk_00, 100)
-                        Set(MF_TrainUnk_00, false)
+                        Set(MV_TrainRideState, 100)
+                        Set(MF_TrainRideActive, false)
                         Set(LFlag1, true)
                     Else
                         Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(2), ArrayVar(3))
@@ -183,20 +184,20 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     SubF(LVar1, LVar0)
                     SetF(ArrayVar(5), ArrayVar(7))
                     SetF(ArrayVar(6), ArrayVar(8))
-                    UseBuf(MV_TrainUnk_01)
+                    UseBuf(MV_TrainPath)
                     Call(N(AdvanceBuffer), 3, 2, ArrayVar(9))
                     BufRead2(ArrayVar(7), ArrayVar(8))
                     Add(ArrayVar(9), 1)
                     IfEq(ArrayVar(7), -1)
-                        Set(MV_TrainUnk_00, 100)
-                        Set(MF_TrainUnk_00, false)
+                        Set(MV_TrainRideState, 100)
+                        Set(MF_TrainRideActive, false)
                         Set(LFlag1, false)
                     Else
                         Call(GetFloatAngleClamped, LVar0, ArrayVar(5), ArrayVar(6), ArrayVar(7), ArrayVar(8))
                         Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), LVar1, LVar0)
                     EndIf
                 EndIf
-                IfEq(MV_TrainUnk_00, 100)
+                IfEq(MV_TrainRideState, 100)
                     IfEq(LFlag1, true)
                         Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(5), ArrayVar(6))
                         SetF(ArrayVar(5), ArrayVar(0))
@@ -216,9 +217,9 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 DivF(LVar0, Float(2.0))
                 DivF(LVar1, Float(2.0))
                 Call(GetFloatAngleClamped, LVar2, ArrayVar(5), ArrayVar(6), ArrayVar(0), ArrayVar(1))
-                SetF(MV_TrainPos, LVar0)
-                SetF(MV_TrainUnk_0C, LVar1)
-                SetF(MV_TrainUnk_0D, LVar2)
+                SetF(MV_TrainPosX, LVar0)
+                SetF(MV_TrainPosZ, LVar1)
+                SetF(MV_TrainYaw, LVar2)
                 Call(GetDist2D, LVar3, LVar0, LVar1, ArrayVar(11), ArrayVar(12))
                 AddF(ArrayVar(13), LVar3)
                 SetF(ArrayVar(14), ArrayVar(13))
@@ -258,27 +259,27 @@ EvtScript N(EVS_Scene_RideTrain) = {
                         EndIf
                     EndIf
                 EndIf
-                SetF(LVar0, MV_TrainPos)
-                SetF(LVar1, MV_TrainUnk_0C)
-                SetF(LVar2, MV_TrainUnk_0D)
+                SetF(LVar0, MV_TrainPosX)
+                SetF(LVar1, MV_TrainPosZ)
+                SetF(LVar2, MV_TrainYaw)
                 Call(AddVectorPolar, LVar0, LVar1, Float(15.0), LVar2)
-                Call(N(SetPlayerStatusPosYaw), LVar0, 50, LVar1, MV_TrainUnk_0D)
-                SetF(LVar0, MV_TrainPos)
-                SetF(LVar1, MV_TrainUnk_0C)
-                SetF(LVar2, MV_TrainUnk_0D)
+                Call(N(SetPlayerStatusPosYaw), LVar0, 50, LVar1, MV_TrainYaw)
+                SetF(LVar0, MV_TrainPosX)
+                SetF(LVar1, MV_TrainPosZ)
+                SetF(LVar2, MV_TrainYaw)
                 AddF(LVar2, Float(180.0))
                 Call(AddVectorPolar, LVar0, LVar1, Float(15.0), LVar2)
-                Call(N(SetNpcPosYaw), -4, LVar0, 50, LVar1, MV_TrainUnk_0D)
-                SetF(LVar0, MV_TrainPos)
-                SetF(LVar1, MV_TrainUnk_0C)
-                SetF(LVar2, MV_TrainUnk_0D)
+                Call(N(SetNpcPosYaw), -4, LVar0, 50, LVar1, MV_TrainYaw)
+                SetF(LVar0, MV_TrainPosX)
+                SetF(LVar1, MV_TrainPosZ)
+                SetF(LVar2, MV_TrainYaw)
                 IfLt(LVar2, 180)
                     AddF(LVar2, Float(90.0))
                 Else
                     SubF(LVar2, Float(90.0))
                 EndIf
                 Call(AddVectorPolar, LVar0, LVar1, Float(20.0), LVar2)
-                Call(N(SetNpcPosYaw), 0, LVar0, 50, LVar1, MV_TrainUnk_0D)
+                Call(N(SetNpcPosYaw), 0, LVar0, 50, LVar1, MV_TrainYaw)
             CaseEq(100)
         EndSwitch
         Call(TranslateGroup, MODEL_p2, Float(79.1), Float(-27.93), Float(-29.53))
@@ -287,13 +288,13 @@ EvtScript N(EVS_Scene_RideTrain) = {
         Call(RotateGroup, MODEL_p3, Float(45.0), Float(0.0), Float(0.0), Float(1.0))
         Call(TranslateGroup, MODEL_p5, Float(40.5), Float(-20.0), Float(-0.4))
         Call(TranslateGroup, MODEL_p6, Float(-39.5), Float(-20.0), Float(-0.4))
-        Call(TranslateGroup, MODEL_popo, MV_TrainPos, Float(10.0), MV_TrainUnk_0C)
-        IfLt(MV_TrainUnk_0D, 180)
-            SetF(LVar1, MV_TrainUnk_0D)
+        Call(TranslateGroup, MODEL_popo, MV_TrainPosX, Float(10.0), MV_TrainPosZ)
+        IfLt(MV_TrainYaw, 180)
+            SetF(LVar1, MV_TrainYaw)
             SubF(LVar1, Float(90.0))
             Call(RotateGroup, MODEL_popo, LVar1, Float(0.0), Float(-1.0), Float(0.0))
         Else
-            SetF(LVar1, MV_TrainUnk_0D)
+            SetF(LVar1, MV_TrainYaw)
             SubF(LVar1, Float(180.0))
             SubF(LVar1, Float(90.0))
             Call(RotateGroup, MODEL_popo, LVar1, Float(0.0), Float(-1.0), Float(0.0))
@@ -304,7 +305,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
         Call(TranslateGroup, MODEL_p3, Float(35.1), Float(27.93), Float(29.53))
         Call(TranslateGroup, MODEL_p5, Float(-40.5), Float(20.0), Float(0.4))
         Call(TranslateGroup, MODEL_p6, Float(39.5), Float(20.0), Float(0.4))
-        IfLt(MV_TrainUnk_0D, 180)
+        IfLt(MV_TrainYaw, 180)
             Call(RotateGroup, MODEL_p5, ArrayVar(14), Float(0.0), Float(0.0), Float(-1.0))
             Call(RotateGroup, MODEL_p6, ArrayVar(14), Float(0.0), Float(0.0), Float(-1.0))
         Else
@@ -324,8 +325,8 @@ EvtScript N(EVS_Scene_RideTrain) = {
             SubF(ArrayVar(16), Float(360.0))
         EndIf
         Call(RotateGroup, MODEL_p4, ArrayVar(16), Float(0.0), Float(1.0), Float(0.0))
-        SetF(ArrayVar(11), MV_TrainPos)
-        SetF(ArrayVar(12), MV_TrainUnk_0C)
+        SetF(ArrayVar(11), MV_TrainPosX)
+        SetF(ArrayVar(12), MV_TrainPosZ)
         Wait(1)
         Goto(0)
     Return
@@ -506,9 +507,9 @@ EvtScript N(EVS_TrainUnk_E) = {
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    SetF(LVar0, MV_TrainPos)
-    SetF(LVar1, MV_TrainUnk_0C)
-    SetF(LVar2, MV_TrainUnk_0D)
+    SetF(LVar0, MV_TrainPosX)
+    SetF(LVar1, MV_TrainPosZ)
+    SetF(LVar2, MV_TrainYaw)
     IfLt(LVar2, 180)
         AddF(LVar2, Float(90.0))
     Else
@@ -554,9 +555,9 @@ EvtScript N(EVS_TrainUnk_AltE) = {
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Set(AF_OMO_06, true)
-    SetF(LVar0, MV_TrainPos)
-    SetF(LVar1, MV_TrainUnk_0C)
-    SetF(LVar2, MV_TrainUnk_0D)
+    SetF(LVar0, MV_TrainPosX)
+    SetF(LVar1, MV_TrainPosZ)
+    SetF(LVar2, MV_TrainYaw)
     Thread
         Call(SetNpcAnimation, NPC_Conductor, ANIM_TrainToad_Walk)
         Call(SetNpcSpeed, NPC_Conductor, Float(3.5))

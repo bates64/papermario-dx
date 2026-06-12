@@ -21,7 +21,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_802431F0_BB0B30) = {
+EvtScript N(EVS_HiveTree_OnHit) = {
     Loop(6)
         Set(LVar0, 2)
         Call(TranslateModel, MODEL_o507, LVar0, 0, LVar0)
@@ -36,7 +36,7 @@ EvtScript N(D_802431F0_BB0B30) = {
     Call(TranslateModel, MODEL_o507, LVar0, 0, LVar0)
     Call(TranslateModel, MODEL_o508, LVar0, 0, LVar0)
     Wait(1)
-    Set(MV_Unk_00, 1)
+    Set(MV_HitHiveTree, true)
     Return
     End
 };
@@ -54,7 +54,7 @@ EvtScript N(EVS_Main) = {
     Exec(EnterWalk)
     Wait(1)
     Exec(N(EVS_SetupMusic))
-    BindTrigger(Ref(N(D_802431F0_BB0B30)), TRIGGER_WALL_HAMMER, COLLIDER_o473, 1, 0)
+    BindTrigger(Ref(N(EVS_HiveTree_OnHit)), TRIGGER_WALL_HAMMER, COLLIDER_o473, 1, 0)
     Call(N(SetForeverForestFog))
     Thread
         Label(0)

@@ -1,11 +1,7 @@
 #include "kmr_04.h"
 #include "effects.h"
 
-NpcSettings N(NpcSettings_JrTroopa) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/JrTroopa.inc.c"
 
 EvtScript N(EVS_NpcCreate_Goompa) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_GRAVITY, false)
@@ -266,24 +262,7 @@ NpcData N(NpcData_JrTroopa) = {
     .settings = &N(NpcSettings_JrTroopa),
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_JrTroopa_Idle,
-        .walk   = ANIM_JrTroopa_Walk,
-        .run    = ANIM_JrTroopa_Walk,
-        .chase  = ANIM_JrTroopa_Walk,
-        .anim_4 = ANIM_JrTroopa_Idle,
-        .anim_5 = ANIM_JrTroopa_Idle,
-        .death  = ANIM_JrTroopa_Idle,
-        .hit    = ANIM_JrTroopa_Idle,
-        .anim_8 = ANIM_JrTroopa_Idle,
-        .anim_9 = ANIM_JrTroopa_Idle,
-        .anim_A = ANIM_JrTroopa_Idle,
-        .anim_B = ANIM_JrTroopa_Idle,
-        .anim_C = ANIM_JrTroopa_Idle,
-        .anim_D = ANIM_JrTroopa_Idle,
-        .anim_E = ANIM_JrTroopa_Idle,
-        .anim_F = ANIM_JrTroopa_Idle,
-    },
+    .animations = JR_TROOPA_ANIMS,
 };
 
 NpcData N(NpcData_GoombaFamily) = {

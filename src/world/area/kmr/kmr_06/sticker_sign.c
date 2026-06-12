@@ -17,7 +17,7 @@ typedef struct StickerData {
     /* 0x3C */ f32 fallSpeed;
     /* 0x40 */ f32 gravity;
     /* 0x44 */ s32 duration;
-} StickerData;
+} StickerData; // size = 0x48
 
 void N(appendGfx_sticker)(void* renderData) {
     ImgFXTexture ifxImg;
@@ -223,8 +223,8 @@ EvtScript N(EVS_OnInspect_StickerSign) = {
     Call(DisablePlayerInput, true)
     Call(ShowMessageAtScreenPos, MSG_Menus_Sign_EatMushroomsTip, 160, 40)
     IfEq(GF_KMR06_Item_Mushroom, false)
-        IfEq(MF_Unk_0A, false)
-            Set(MF_Unk_0A, true)
+        IfEq(MF_SignDroppedMushroom, false)
+            Set(MF_SignDroppedMushroom, true)
             Thread
                 Wait(2)
                 SetF(LVar0, Float(0.0))

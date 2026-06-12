@@ -101,7 +101,7 @@ API_CALLABLE(N(IsPlayerInputDisabled)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(MonitorCurrenFloor)) {
+API_CALLABLE(N(MonitorCurrentFloor)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
 
     if (playerStatus->lastGoodPos.y == 385) {
@@ -338,10 +338,10 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
 
 EvtScript N(EVS_LandOnRightRoof) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
-    IfEq(MF_Unk_00, true)
+    IfEq(MF_RoofLandTriggerGuard, true)
         Return
     EndIf
-    Set(MF_Unk_00, true)
+    Set(MF_RoofLandTriggerGuard, true)
     Label(10)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(GetPlayerActionState, LVar3)
@@ -369,7 +369,7 @@ EvtScript N(EVS_LandOnRightRoof) = {
         EndIf
     ExecWait(N(EVS_SetEntityHideMode_LeftHouse))
     Exec(N(EVS_OnExitRightHouse))
-    Set(MF_Unk_00, false)
+    Set(MF_RoofLandTriggerGuard, false)
     Return
     End
 };
@@ -420,12 +420,12 @@ EvtScript N(EVS_MakeEntities) = {
         Set(MV_PadlockEntityID, LVar0)
     EndIf
     Thread
-        Call(N(MonitorCurrenFloor))
+        Call(N(MonitorCurrentFloor))
     EndThread
     Call(MakeEntity, Ref(Entity_ScriptSpring), 224, 150, -328, 0, MAKE_ENTITY_END)
     Call(AssignScript, Ref(N(EVS_UseSpring)))
     Call(SetEntityCullMode, 1)
-    Set(MF_Unk_00, false)
+    Set(MF_RoofLandTriggerGuard, false)
     BindTrigger(Ref(N(EVS_TouchFloor_RightRoof)), TRIGGER_FLOOR_TOUCH, COLLIDER_o570, 1, 0)
     BindTrigger(Ref(N(EVS_TouchFloor_LeftRoof)), TRIGGER_FLOOR_TOUCH, COLLIDER_g_yuki2, 1, 0)
     Call(MakeItemEntity, ITEM_WAREHOUSE_KEY, 0, -60, 220, ITEM_SPAWN_MODE_KEY, GF_SAM11_Item_WarehouseKey)

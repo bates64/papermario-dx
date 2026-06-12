@@ -67,7 +67,7 @@ API_CALLABLE(N(CanChillOutHit)) {
 }
 
 API_CALLABLE(N(InflictChillOutHit)) {
-    Actor* enemy = get_actor(script->owner1.enemyID);
+    Actor* enemy = get_actor(script->owner1.actorID);
     Actor* target = get_actor(enemy->targetActorID);
     ActorPart* targetPart = get_actor_part(target, enemy->targetPartID);
     f32 x, y, z;

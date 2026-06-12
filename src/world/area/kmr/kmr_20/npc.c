@@ -249,11 +249,11 @@ EvtScript N(EVS_NpcIdle_Luigi_InBasement) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Luigi_Idle)
     Label(10)
         Wait(1)
-        IfEq(MF_Unk_0C, false)
+        IfEq(MF_HouseInteriorVisible, false)
             Goto(10)
         EndIf
     Label(20)
-        IfEq(MF_Unk_0C, false)
+        IfEq(MF_HouseInteriorVisible, false)
             Goto(10)
         EndIf
         Call(GetNpcVar, NPC_SELF, 0, LVar0)
@@ -271,7 +271,7 @@ EvtScript N(EVS_NpcIdle_Luigi_InBasement) = {
         Add(LVarB, 55)
         Sub(LVarC, 1)
         PlayEffect(EFFECT_MUSIC_NOTE, 0, LVarA, LVarB, LVarC)
-        IfEq(MF_Unk_0C, false)
+        IfEq(MF_HouseInteriorVisible, false)
             Goto(10)
         EndIf
         Call(GetNpcVar, NPC_SELF, 0, LVar0)
@@ -287,8 +287,7 @@ EvtScript N(EVS_NpcIdle_Luigi_InBasement) = {
 
 EvtScript N(EVS_NpcIdle_Luigi_InBedroom) = {
     Label(10)
-        Set(LVar0, MF_Unk_0C)
-        IfEq(LVar0, 1)
+        IfEq(MF_HouseInteriorVisible, 1)
             Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_INVISIBLE, false)
         Else
             Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_INVISIBLE, true)
@@ -301,7 +300,7 @@ EvtScript N(EVS_NpcIdle_Luigi_InBedroom) = {
 
 EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
     Set(GF_KMR20_CaughtLuigiInBasement, true)
-    Set(AF_KMR_0C, true)
+    Set(AF_KMR20_DiaryBlockedByLuigi, true)
     Call(SetNpcAnimation, NPC_Luigi_0, ANIM_Luigi_Idle)
     Call(SetNpcVar, NPC_Luigi_0, 0, 1)
     Wait(1)
@@ -393,7 +392,7 @@ EvtScript N(EVS_Scene_CaughtLuigiInBasement) = {
 
 EvtScript N(EVS_NpcIdle_Luigi_ReadingMail) = {
     Label(10)
-    IfEq(MF_Unk_0C, false)
+    IfEq(MF_HouseInteriorVisible, false)
         Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_INVISIBLE, true)
         Wait(1)
         Goto(10)

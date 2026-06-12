@@ -43,7 +43,7 @@ EvtScript N(EVS_Main) = {
     ExecWait(N(EVS_MakeEntities))
     IfLt(GB_StoryProgress, STORY_CH2_UNCOVERED_DRY_DRY_RUINS)
         PlayEffect(EFFECT_SUN, 0, 0, 0, 0, 0, 0, 0)
-        Set(MV_Unk_00, LVarF)
+        Set(MV_Effect_Sun, LVarF)
     EndIf
     IfEq(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
         Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_1, VOL_LEVEL_FULL)

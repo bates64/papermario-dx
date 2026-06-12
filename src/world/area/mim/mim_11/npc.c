@@ -1,14 +1,7 @@
 #include "mim_11.h"
 
-void increment_max_star_power(void);
-
 #include "world/common/npc/Boo.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
-
-API_CALLABLE(N(IncreaseMaxSP)) {
-    increment_max_star_power();
-    return ApiStatus_DONE2;
-}
 
 API_CALLABLE(N(AnimateStarSpiritBobbing)) {
     Npc* npc;

@@ -1019,7 +1019,7 @@ API_CALLABLE(JumpToGoal) {
     if (script->functionTemp[0] == 0) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         script->functionTempPtr[1] = actor = get_actor(actorID);
         actorState = &actor->state;
@@ -1302,7 +1302,7 @@ API_CALLABLE(JumpWithBounce) {
     if (!script->functionTemp[0]) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         script->functionTempPtr[1] = actor = get_actor(actorID);
         actorState = &actor->state;
@@ -1444,7 +1444,7 @@ API_CALLABLE(FallToGoal) {
         s32 actorID = evt_get_variable(script, *args++);
 
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         actor = get_actor(actorID);
         state = &actor->state;
@@ -1521,7 +1521,7 @@ API_CALLABLE(RunToGoal) {
     if (!script->functionTemp[0]) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         script->functionTempPtr[1] = actor = get_actor(actorID);
         actorState = &actor->state;
@@ -2150,7 +2150,7 @@ API_CALLABLE(FlyToGoal) {
     if (isInitialCall) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         script->functionTempPtr[1] = actor = get_actor(actorID);
         actorState = &actor->state;
@@ -2305,7 +2305,7 @@ API_CALLABLE(IdleFlyToGoal) {
     if (isInitialCall) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         script->functionTempPtr[1] = actor = get_actor(actorID);
         movement = &actor->fly;
@@ -2702,7 +2702,7 @@ API_CALLABLE(DropStarPoints) {
 
     actorID = evt_get_variable(script, *args++);
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
     dropper = get_actor(actorID);
 
@@ -2802,7 +2802,7 @@ API_CALLABLE(EnemyDamageTarget) {
     s32 battleFlagsModifier;
 
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
 
     actor = get_actor(actorID);
@@ -2921,7 +2921,7 @@ API_CALLABLE(EnemyTestTarget) {
     s32 battleFlagsModifier;
 
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
 
     actor = get_actor(actorID);

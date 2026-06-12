@@ -12,15 +12,15 @@
 #include "sprite/npc/Goompa.h"
 
 enum {
-    NPC_Goompa                  = 0,
+    NPC_Goompa          = 0,
 };
 
 enum {
-    MV_Unk_00               = MapVar(0),
+    MV_GoompaHitCount   = MapVar(0),
 };
 
 enum {
-    MF_Unk_0A               = MapFlag(10),
+    MF_Tree1_Mushroom   = MapFlag(10),
 };
 
 #define NAMESPACE kmr_03

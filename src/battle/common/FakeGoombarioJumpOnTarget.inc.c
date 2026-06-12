@@ -18,7 +18,7 @@ enum {
 
 API_CALLABLE(N(FakeGoombarioJumpOnTarget)) {
     Bytecode* args = script->ptrReadPos;
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     ActorState* state = &actor->state;
     f32 oldActorX;
     f32 oldActorY;

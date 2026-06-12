@@ -809,15 +809,15 @@ s32 test_ray_colliders(s32 ignoreFlags, f32 startX, f32 startY, f32 startZ, f32 
     for (i = 0; i < collisionData->numColliders; i++) {
         collider = &collisionData->colliderList[i];
 
-        if ((collider->flags & ignoreFlags) ||
-            collider->numTriangles == 0     ||
-            max_x < collider->aabb->min.x   ||
-            min_x > collider->aabb->max.x   ||
-            max_z < collider->aabb->min.z   ||
-            min_z > collider->aabb->max.z   ||
-            max_y < collider->aabb->min.y   ||
-            min_y > collider->aabb->max.y)
-        {
+        if ((collider->flags & ignoreFlags)
+            || collider->numTriangles == 0
+            || max_x < collider->aabb->min.x
+            || min_x > collider->aabb->max.x
+            || max_z < collider->aabb->min.z
+            || min_z > collider->aabb->max.z
+            || max_y < collider->aabb->min.y
+            || min_y > collider->aabb->max.y
+        ) {
             continue;
         }
 
@@ -1040,7 +1040,7 @@ s32 test_ray_entities(f32 startX, f32 startY, f32 startZ, f32 dirX, f32 dirY, f3
             triangle->normal.y = gEntityColliderNormals[j].y;
             triangle->normal.z = gEntityColliderNormals[j].z;
 
-            if ((hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices))) {
+            if (hasCollision = test_ray_triangle_general(&entityTriangle, boxVertices)) {
                 break;
             }
         }

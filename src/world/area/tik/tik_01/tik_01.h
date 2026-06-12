@@ -10,11 +10,11 @@
 #include "mapfs/tik_01_hit.h"
 
 enum {
-    NPC_Blooper                 = 0,
+    NPC_Blooper             = 0,
 };
 
 enum {
-    MV_Unk_01       = MapVar(1),
+    MV_EntityID_Switch      = MapVar(1),
 };
 
 #define NAMESPACE tik_01

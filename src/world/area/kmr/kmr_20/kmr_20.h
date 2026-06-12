@@ -24,14 +24,14 @@ enum {
 };
 
 enum {
-    MV_RecordsDataPtr       = MapVar(10),
+    MV_RecordsDataPtr           = MapVar(10),
 };
 
 enum {
-    MF_LuigiWaiting         = MapFlag(10),
-    MF_ReadyForPlayerEntry  = MapFlag(11),
-    MF_Unk_0C               = MapFlag(12),
-    MF_LuigiInBasement      = MapFlag(13),
+    MF_LuigiWaiting             = MapFlag(10),
+    MF_ReadyForPlayerEntry      = MapFlag(11),
+    MF_HouseInteriorVisible     = MapFlag(12),
+    MF_LuigiInBasement          = MapFlag(13),
 };
 
 #define NAMESPACE kmr_20

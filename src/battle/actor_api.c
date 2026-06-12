@@ -2364,7 +2364,7 @@ API_CALLABLE(InitTargetIterator) {
 
 API_CALLABLE(SetOwnerTarget) {
     Bytecode* args = script->ptrReadPos;
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     s16 actorID = evt_get_variable(script, *args++);
 
     actor->targetPartID = evt_get_variable(script, *args++);
@@ -2530,7 +2530,7 @@ API_CALLABLE(GetTargetListLength) {
 
 API_CALLABLE(GetOwnerTarget) {
     Bytecode* args = script->ptrReadPos;
-    Actor* actor = get_actor(script->owner1.enemyID);
+    Actor* actor = get_actor(script->owner1.actorID);
     s32 actorID = *args++;
     s32 partID = *args++;
 
@@ -2725,7 +2725,7 @@ API_CALLABLE(RemoveActorDecoration) {
     ActorPart* actorPart;
 
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
     actor = get_actor(actorID);
     actorPart = get_actor_part(actor, partID);
@@ -3156,7 +3156,7 @@ API_CALLABLE(GetActorAttackBoost) {
     Bytecode attackBoost;
 
     if (enemyID == ACTOR_SELF) {
-        enemyID = script->owner1.enemyID;
+        enemyID = script->owner1.actorID;
     }
 
     attackBoost = *args++;
@@ -3170,7 +3170,7 @@ API_CALLABLE(GetActorDefenseBoost) {
     Bytecode defenseBoost;
 
     if (enemyID == ACTOR_SELF) {
-        enemyID = script->owner1.enemyID;
+        enemyID = script->owner1.actorID;
     }
 
     defenseBoost = *args++;
@@ -3655,7 +3655,7 @@ API_CALLABLE(HealActor) {
     if (script->functionTemp[0] == 0) {
         actorID = evt_get_variable(script, *args++);
         if (actorID == ACTOR_SELF) {
-            actorID = script->owner1.enemyID;
+            actorID = script->owner1.actorID;
         }
         hpBoost = evt_get_variable(script, *args++);
         IsGroupHeal = evt_get_variable(script, *args++);
@@ -3673,7 +3673,7 @@ API_CALLABLE(HealActor) {
         script->functionTemp[3] = 5;
         script->functionTemp[0] = 1;
     }
-    get_actor(script->owner1.enemyID);
+    get_actor(script->owner1.actorID);
     actor = script->functionTempPtr[1];
     hpBoost = script->functionTemp[2];
 
@@ -3776,13 +3776,13 @@ API_CALLABLE(CopyBuffs) {
     Actor* actorTo;
 
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
     actorFrom = get_actor(actorID);
 
     actorID = evt_get_variable(script, *args++);
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
     actorTo = get_actor(actorID);
 

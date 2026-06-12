@@ -21,14 +21,14 @@ EvtScript N(EVS_SetWallRot_House) = {
     Call(RotateGroup, MODEL_g34, LVar0, -1, 0, 0)
     Switch(LVar0)
         CaseEq(90)
-            Set(MF_Unk_0C, true)
+            Set(MF_HouseInteriorVisible, true)
             Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_INVISIBLE, false)
             Call(EnableGroup, MODEL_g60, false)
             Call(EnableGroup, MODEL_g34, false)
         CaseEq(0)
-            IfEq(MF_Unk_0C, true)
+            IfEq(MF_HouseInteriorVisible, true)
                 Call(EnableGroup, MODEL_g72, true)
-                Set(MF_Unk_0C, false)
+                Set(MF_HouseInteriorVisible, false)
                 Call(SetNpcFlagBits, NPC_Luigi_0, NPC_FLAG_INVISIBLE, true)
             EndIf
         CaseDefault

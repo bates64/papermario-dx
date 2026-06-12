@@ -1,5 +1,4 @@
-#ifndef _WORLD_AREA_KMR_KMR_H_
-#define _WORLD_AREA_KMR_KMR_H_
+#pragma once
 
 enum {
     AB_KMR_0            = AreaByte(0),
@@ -21,14 +20,12 @@ enum {
 };
 
 enum {
-    AF_KMR_04       = AreaFlag(4),
-    AF_KMR_06       = AreaFlag(6),
-    AF_KMR_07       = AreaFlag(7),
-    AF_KMR_08       = AreaFlag(8),
-    AF_KMR_09       = AreaFlag(9),
-    AF_KMR_0B       = AreaFlag(11),
-    AF_KMR_0C       = AreaFlag(12),
-    AF_KMR_0D       = AreaFlag(13),
+    AF_KMR_04                       = AreaFlag(4),
+    AF_KMR03_LastHitGoompaWithJump  = AreaFlag(6),
+    AF_KMR03_HitGoompaWithHammer    = AreaFlag(7),
+    AF_KMR_08                       = AreaFlag(8),
+    AF_KMR_09                       = AreaFlag(9),
+    AF_KMR_0B                       = AreaFlag(11),
+    AF_KMR20_DiaryBlockedByLuigi    = AreaFlag(12),
+    AF_KMR_0D                       = AreaFlag(13),
 };
-
-#endif

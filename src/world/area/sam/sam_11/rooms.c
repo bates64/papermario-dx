@@ -153,7 +153,7 @@ EvtScript N(EVS_RoomListener_RightHouse) = {
 
 s32 N(InteriorNPCs_LeftHouse)[] = {
     NPC_Herringway,
-    NPC_0B,
+    NPC_Unassigned_0B,
     -1
 };
 

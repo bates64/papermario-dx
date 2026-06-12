@@ -9,7 +9,7 @@
 #include "battle/common/move/ItemRefund.inc.c"
 
 API_CALLABLE(N(SpawnLightningFX)) {
-    Actor* enemyTarget = get_actor(script->owner1.enemyID);
+    Actor* enemyTarget = get_actor(script->owner1.actorID);
     Actor* actor = get_actor(enemyTarget->targetActorID);
     f32 posY, posX, posZ;
     s32 scaleX, scaleY;

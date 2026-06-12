@@ -276,7 +276,7 @@ void render_curtains(void) {
 
             gSPDisplayList(gMainGfxPos++, &TheaterInitGfx);
             gSPDisplayList(gMainGfxPos++, &NoControllerSetupTexGfx);
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0xFF, 0x20, 0x10, alpha);
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, 255, 32, 16, alpha);
             gSPDisplayList(gMainGfxPos++, &NoControllerGfx);
         }
     }

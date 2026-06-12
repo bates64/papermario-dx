@@ -2131,11 +2131,6 @@ s32 add_star_pieces(s32 amt) {
     return playerData->starPieces;
 }
 
-void increment_max_star_power(void) {
-    gPlayerData.maxStarPower++;
-    gPlayerData.starPower = gPlayerData.maxStarPower * SP_PER_BAR;
-}
-
 void set_max_star_power(s8 newMax) {
     gPlayerData.maxStarPower = newMax;
     gPlayerData.starPower = newMax * SP_PER_BAR;

@@ -111,23 +111,23 @@ EvtScript N(EVS_NpcHit_Goompa) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Injured)
     Wait(10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goompa_Idle)
-    Add(MV_Unk_00, 1)
-    IfLt(MV_Unk_00, 3)
+    Add(MV_GoompaHitCount, 1)
+    IfLt(MV_GoompaHitCount, 3)
         Call(GetOwnerEncounterTrigger, LVar0)
         Switch(LVar0)
             CaseEq(ENCOUNTER_TRIGGER_JUMP)
                 Call(SetNpcVar, NPC_Goompa, 0, 1)
-                IfEq(AF_KMR_06, true)
+                IfEq(AF_KMR03_LastHitGoompaWithJump, true)
                 Else
-                    Set(AF_KMR_06, true)
-                    Set(AF_KMR_07, false)
+                    Set(AF_KMR03_LastHitGoompaWithJump, true)
+                    Set(AF_KMR03_HitGoompaWithHammer, false)
                 EndIf
             CaseEq(ENCOUNTER_TRIGGER_HAMMER)
                 Call(SetNpcVar, NPC_Goompa, 0, 1)
-                IfEq(AF_KMR_07, true)
+                IfEq(AF_KMR03_HitGoompaWithHammer, true)
                 Else
-                    Set(AF_KMR_06, false)
-                    Set(AF_KMR_07, true)
+                    Set(AF_KMR03_LastHitGoompaWithJump, false)
+                    Set(AF_KMR03_HitGoompaWithHammer, true)
                 EndIf
         EndSwitch
         Wait(10)

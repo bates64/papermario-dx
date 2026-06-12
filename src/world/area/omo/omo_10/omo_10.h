@@ -17,17 +17,17 @@ enum {
 };
 
 enum {
-    MV_TrainUnk_00          = MapVar(0),
-    MV_TrainUnk_01          = MapVar(1),
+    MV_TrainRideState          = MapVar(0),
+    MV_TrainPath          = MapVar(1),
     MV_TrainUnk_02          = MapVar(2),
     MV_ArrowTexUOffset      = MapVar(9),
-    MV_TrainPos             = MapVar(11),
-    MV_TrainUnk_0C          = MapVar(12),
-    MV_TrainUnk_0D          = MapVar(13),
+    MV_TrainPosX             = MapVar(11),
+    MV_TrainPosZ          = MapVar(12),
+    MV_TrainYaw          = MapVar(13),
 };
 
 enum {
-    MF_TrainUnk_00          = MapFlag(0),
+    MF_TrainRideActive          = MapFlag(0),
     MF_EitherSwitchPressed  = MapFlag(1),
     MF_Unk_0A               = MapFlag(10),
 };

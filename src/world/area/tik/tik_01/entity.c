@@ -8,7 +8,7 @@ EvtScript N(EVS_SpawnSwitch) = {
     Call(MakeLerp, 200, -10, 25, EASING_QUADRATIC_IN)
     Loop(0)
         Call(UpdateLerp)
-        Call(SetEntityPosition, MV_Unk_01, LVar2, LVar0, 25)
+        Call(SetEntityPosition, MV_EntityID_Switch, LVar2, LVar0, 25)
         IfEq(LVar1, 0)
             BreakLoop
         EndIf
@@ -69,10 +69,10 @@ EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_TIK01_WarpPipes, false)
         Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
         Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK_03))
-        Set(MV_Unk_01, LVar0)
+        Set(MV_EntityID_Switch, LVar0)
         BindTrigger(Ref(N(EVS_OnSwitchActivate)), TRIGGER_AREA_FLAG_SET, AF_TIK_03, 1, 0)
         IfEq(GF_TIK01_Defeated_Blooper, true)
-            Call(SetEntityPosition, MV_Unk_01, 125, -10, 25)
+            Call(SetEntityPosition, MV_EntityID_Switch, 125, -10, 25)
         EndIf
     EndIf
     Call(MakeEntity, Ref(Entity_BlueWarpPipe), 150, -10, -82, 0, tik_01_ENTRY_2,

@@ -27,8 +27,8 @@ enum {
 };
 
 enum {
-    MF_Unk_0A               = MapFlag(10),
-    MF_Unk_0B               = MapFlag(11),
+    MF_EndChapterSceneDone  = MapFlag(10),
+    MF_SpiritReleased       = MapFlag(11),
 };
 
 #define NAMESPACE kmr_23

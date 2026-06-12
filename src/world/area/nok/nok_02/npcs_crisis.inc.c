@@ -1,3 +1,5 @@
+#include "nok_02.h"
+
 API_CALLABLE(N(SpawnExplosionEffect)) {
     Bytecode* args = script->ptrReadPos;
     f32 posY;
@@ -43,29 +45,6 @@ API_CALLABLE(N(IsPlayerOrKoopaNearby)) {
     }
 
     script->varTable[0] = outVal;
-    return ApiStatus_DONE2;
-}
-
-API_CALLABLE(N(IsPlayerWalking)) {
-    PlayerStatus* playerStatus = &gPlayerStatus;
-
-    if (playerStatus->curSpeed >= 4.0f) {
-        script->varTable[2]++;
-        if (script->varTable[2] > 2) {
-            script->varTable[2] = 2;
-        }
-    } else {
-        script->varTable[2] = 0;
-    }
-
-    script->varTable[0] = true;
-    if (script->varTable[2] >= 2) {
-        script->varTable[0] = false;
-    }
-    if (playerStatus->curSpeed == 0.0f) {
-        script->varTable[0] = false;
-    }
-
     return ApiStatus_DONE2;
 }
 
@@ -265,27 +244,52 @@ EvtScript N(EVS_Koopa_01_FaceShell) = {
     End
 };
 
-EvtScript N(D_8024BDB0_9E2DD0) = {
+API_CALLABLE(N(IsPlayerSneaking)) {
+    PlayerStatus* playerStatus = &gPlayerStatus;
+
+    if (playerStatus->curSpeed >= 4.0f) {
+        script->varTable[2]++;
+        if (script->varTable[2] > 2) {
+            script->varTable[2] = 2;
+        }
+    } else {
+        script->varTable[2] = 0;
+    }
+
+    script->varTable[0] = true;
+    if (script->varTable[2] >= 2) {
+        script->varTable[0] = false;
+    }
+    if (playerStatus->curSpeed == 0.0f) {
+        script->varTable[0] = false;
+    }
+
+    return ApiStatus_DONE2;
+}
+
+EvtScript N(EVS_Koopa_01_CoordinateWithPlayer) = {
     SetGroup(EVT_GROUP_HOSTILE_NPC)
-    Set(LVar3, 0)
-    Set(LVar4, 0)
+    Set(LVar3, 0) // player trying to catch thief
+    Set(LVar4, 0) // prev state of LVar3
     Loop(0)
-        Call(N(IsPlayerWalking))
+        Call(N(IsPlayerSneaking))
         Call(IsPlayerWithin, -150, 250, 150, LVar1)
         IfEq(LVar1, true)
             IfEq(LVar0, 1)
-                Set(LVar3, 1)
+                Set(LVar3, 1) // sneaking and in bounds
             Else
-                Set(LVar3, 0)
+                Set(LVar3, 0) // in bounds, but not sneaking
                 Wait(20)
             EndIf
         Else
-            Set(LVar3, 0)
+            Set(LVar3, 0) // not in bounds
         EndIf
         IfNe(LVar3, LVar4)
             IfEq(LVar3, 0)
+                // player stopping sneaking near thief, resume koopa panic
                 ExecGetTID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
             Else
+                // player started sneaking near thief, stop koopa interference
                 IfNe(MV_KoopaChaseThiefScript, -1)
                     KillThread(MV_KoopaChaseThiefScript)
                     Set(MV_KoopaChaseThiefScript, -1)
@@ -316,7 +320,7 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
     ExecGetTID(N(EVS_TetherShellToFuzzy), LVar9)
     ExecGetTID(N(EVS_FuzzyThief_AvoidCapture), LVar8)
     ExecGetTID(N(EVS_Koopa_01_ChaseThief), MV_KoopaChaseThiefScript)
-    ExecGetTID(N(D_8024BDB0_9E2DD0), MV_Unk_01)
+    ExecGetTID(N(EVS_Koopa_01_CoordinateWithPlayer), MV_KoopaChaseMonitorTID)
     Label(10)
     IfEq(GF_NOK02_RecoveredShellA, false)
         Wait(1)
@@ -328,9 +332,9 @@ EvtScript N(EVS_NpcIdle_Koopa_01_Crisis) = {
         IfEq(LVar0, 1)
             KillThread(MV_KoopaChaseThiefScript)
         EndIf
-        IsThreadRunning(MV_Unk_01, LVar0)
+        IsThreadRunning(MV_KoopaChaseMonitorTID, LVar0)
         IfEq(LVar0, 1)
-            KillThread(MV_Unk_01)
+            KillThread(MV_KoopaChaseMonitorTID)
         EndIf
         Call(DisablePlayerInput, true)
         Thread

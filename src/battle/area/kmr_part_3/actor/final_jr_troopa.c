@@ -5,11 +5,6 @@
 
 #define NAMESPACE A(final_jr_troopa)
 
-// Invalid value used in some scripts here == -91,999,590
-// The closest evt variable for this is MapFlag(-1999590), which is way out of range.
-// Looks like it was supposed to be a value for Float(), but its likewise out of range.
-#define INVALID_VAR 0xFA84329A
-
 extern EvtScript N(EVS_Init);
 extern EvtScript N(EVS_Idle);
 extern EvtScript N(EVS_TakeTurn);
@@ -1106,7 +1101,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
@@ -1129,7 +1124,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
             Else
                 Set(LVar6, -3)
                 Set(LVar7, 8)
-                SetF(LVar8, INVALID_VAR)
+                SetF(LVar8, Float(0.4))
             EndIf
             Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
             Add(LVar0, LVar6)
@@ -1172,7 +1167,7 @@ EvtScript N(EVS_Attack_MagicSpell) = {
     Else
         Set(LVar6, -3)
         Set(LVar7, 8)
-        SetF(LVar8, INVALID_VAR)
+        SetF(LVar8, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar6)
@@ -1207,7 +1202,7 @@ EvtScript N(EVS_Attack_LightningBolt) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)
@@ -1332,7 +1327,7 @@ EvtScript N(EVS_Move_HealSelf) = {
     Else
         Set(LVar3, 0)
         Set(LVar4, 14)
-        SetF(LVar5, INVALID_VAR)
+        SetF(LVar5, Float(0.4))
     EndIf
     Call(GetActorPos, ACTOR_SELF, LVar0, LVar1, LVar2)
     Add(LVar0, LVar3)

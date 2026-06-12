@@ -15,7 +15,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
+    MV_PlatformShadowsArray     = MapVar(0),
 };
 
 #define NAMESPACE tik_04

@@ -232,7 +232,7 @@ typedef struct Npc {
                 NpcChompBlur*  chomp;
                 NpcQuizmoBlur* quizmo;
                 NpcFollowData* followData;
-                struct Npc*    keepAwayNpc;
+                struct Npc*    controlNpc; ///< Used by Boos in the Keep Away minigame
                 KeepAwayData*  keepAwayData;
                 } userData;
     /* 0x024 */ s32 spriteInstanceID;
@@ -458,17 +458,15 @@ typedef struct Evt {
     /* 0x140 */ s32* flagArray;
     /* 0x144 */ s32 id;
     /* 0x148 */ union {
-        s32 enemyID;
-        s32 actorID;
-        struct Enemy* enemy; ///< For overworld scripts owned by an Npc
-        struct Actor* actor; ///< For battle scripts
-    } owner1;                ///< Initially -1
+    /*       */     s32 actorID;
+    /*       */     struct Enemy* enemy; ///< For overworld scripts owned by an Enemy AI
+    /*       */     struct Actor* actor; ///< For battle scripts
+    /* 0x148 */ } owner1;                ///< Initially -1
     /* 0x14C */ union {
-        s32 npcID;
-        s32 triggerID;
-        struct Npc* npc;            ///< For overworld scripts owned by an Npc
-        struct Trigger* trigger;
-    } owner2;                       ///< Initially -1
+    /*       */     s32 npcID;
+    /*       */     struct Npc* npc;            ///< For overworld scripts owned by an Npc
+    /*       */     struct Trigger* trigger;    ///< For overworld scripts bound to a Trigger
+    /* 0x14C */ } owner2;                       ///< Initially -1
     /* 0x150 */ f32 timeScale;
     /* 0x154 */ f32 frameCounter;
     /* 0x158 */ s32 unk_158;

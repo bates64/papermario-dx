@@ -76,7 +76,7 @@ s32 N(D_802429A4_DEE874)[] = {
 };
 
 API_CALLABLE(N(CheckForSceneSkip)) {
-    f32 trainPos = evt_get_float_variable(script, MV_TrainPos);
+    f32 trainPos = evt_get_float_variable(script, MV_TrainPosX);
 
     script->varTable[0] = 0;
     if (fabsf(trainPos) < 2000.0f && (gGameStatusPtr->pressedButtons[0] & BUTTON_A)) {
@@ -97,11 +97,11 @@ EvtScript N(EVS_802429C4) = {
     Exec(N(D_8024262C_DEE4FC))
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
-        Set(MV_TrainUnk_00, 0)
-        Set(MV_TrainUnk_01, Ref(N(D_80242984_DEE854)))
+        Set(MV_TrainRideState, 0)
+        Set(MV_TrainPath, Ref(N(D_80242984_DEE854)))
         Set(MV_TrainUnk_02, 0)
         Exec(N(EVS_Scene_RideTrain))
-        Set(MF_TrainUnk_00, true)
+        Set(MF_TrainRideActive, true)
         Thread
             Label(10)
             Call(N(CheckForSceneSkip))
@@ -109,7 +109,7 @@ EvtScript N(EVS_802429C4) = {
                 Goto(11)
             EndIf
             Wait(1)
-            IfLt(MV_TrainPos, 1400)
+            IfLt(MV_TrainPosX, 1400)
                 Goto(10)
             EndIf
             Switch(GB_OMO_TrainDestination)
@@ -128,11 +128,11 @@ EvtScript N(EVS_802429C4) = {
             ExecWait(N(EVS_TrainUnk_G))
         EndThread
     Else
-        Set(MV_TrainUnk_00, 0)
-        Set(MV_TrainUnk_01, Ref(N(D_802429A4_DEE874)))
+        Set(MV_TrainRideState, 0)
+        Set(MV_TrainPath, Ref(N(D_802429A4_DEE874)))
         Set(MV_TrainUnk_02, 0)
         Exec(N(EVS_Scene_RideTrain))
-        Set(MF_TrainUnk_00, true)
+        Set(MF_TrainRideActive, true)
         Thread
             Label(30)
             Call(N(CheckForSceneSkip))
@@ -140,7 +140,7 @@ EvtScript N(EVS_802429C4) = {
                 Goto(31)
             EndIf
             Wait(1)
-            IfGt(MV_TrainPos, -1400)
+            IfGt(MV_TrainPosX, -1400)
                 Goto(30)
             EndIf
             Switch(GB_OMO_TrainDestination)

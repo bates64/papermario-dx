@@ -413,7 +413,7 @@ API_CALLABLE(N(MuteAmbienceVolume_Documents)){
 EvtScript N(EVS_Inspect_LuigisDiary) = {
     Call(DisablePlayerInput, true)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        IfEq(AF_KMR_0C, true)
+        IfEq(AF_KMR20_DiaryBlockedByLuigi, true)
             Call(ShowMessageAtScreenPos, MSG_CH0_00EC, 160, 40)
             Call(DisablePlayerInput, false)
             Return
@@ -494,7 +494,7 @@ EvtScript N(EVS_Setup_SecretPanel) = {
     Call(DisablePlayerInput, true)
     Call(N(MuteAmbienceVolume_Documents))
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPIRIT_RESCUED)
-        IfEq(AF_KMR_0C, true)
+        IfEq(AF_KMR20_DiaryBlockedByLuigi, true)
             Call(EnableModel, MODEL_o200, false)
         EndIf
     EndIf

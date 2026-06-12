@@ -6,10 +6,10 @@
 
 EvtScript N(EVS_NpcIdle_Bzzap) = {
     Label(100)
-    Wait(1)
-    IfEq(MV_Unk_00, 0)
-        Goto(100)
-    EndIf
+        Wait(1)
+        IfEq(MV_HitHiveTree, false)
+            Goto(100)
+        EndIf
     Call(SetNpcPos, NPC_SELF, -280, 108, 0)
     Call(SetNpcJumpscale, NPC_SELF, Float(0.0))
     Call(NpcJump1, NPC_SELF, -280, 50, 10, 5)

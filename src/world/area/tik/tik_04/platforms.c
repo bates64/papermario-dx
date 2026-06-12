@@ -90,7 +90,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
         IfLt(LVar0, Float(-120.0))
             AddF(LVar0, Float(0.5))
         EndIf
-        UseArray(MV_Unk_00)
+        UseArray(MV_PlatformShadowsArray)
         Call(N(UpdatePlatformShadows))
         Wait(1)
         Call(GetPlayerFloorCollider, LVarB)
@@ -110,7 +110,7 @@ EvtScript N(EVS_UpdatePlatforms) = {
         AddF(LVar5, Float(30.0))
         Call(TranslateModel, LVar2, -10, LVar5, 0)
         Call(UpdateColliderTransform, LVar4)
-        UseArray(MV_Unk_00)
+        UseArray(MV_PlatformShadowsArray)
         Call(N(UpdatePlatformShadows))
         Wait(1)
         Call(GetPlayerFloorCollider, LVarB)
@@ -145,8 +145,8 @@ EvtScript N(EVS_SetupPlatforms) = {
     Call(UpdateColliderTransform, COLLIDER_erb1)
     Call(UpdateColliderTransform, COLLIDER_erb2)
     BindTrigger(Ref(N(EVS_OnTouchPlatform)), TRIGGER_FLOOR_TOUCH, COLLIDER_erb1, 1, 0)
-    MallocArray(2, MV_Unk_00)
-    UseArray(MV_Unk_00)
+    MallocArray(2, MV_PlatformShadowsArray)
+    UseArray(MV_PlatformShadowsArray)
     Call(N(CreatePlatformShadows))
     Call(N(UpdatePlatformShadows))
     Return

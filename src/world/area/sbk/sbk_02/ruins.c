@@ -5,7 +5,7 @@
 #include "world/common/atomic/ApplyTint.inc.c"
 
 API_CALLABLE(N(HideSun)) {
-    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Unk_00);
+    EffectInstance* effect = (EffectInstance*)evt_get_variable(script, MV_Effect_Sun);
 
     effect->data.sun->targetAlpha = 0;
     return ApiStatus_DONE2;

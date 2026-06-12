@@ -45,8 +45,8 @@ enum {
 };
 
 enum {
-    MF_Unk_01       = MapFlag(1),
-    MF_Unk_0A       = MapFlag(10),
+    MF_WhaleDepartureReady      = MapFlag(1),
+    MF_DivaSongPlaying          = MapFlag(10),
 };
 
 #define NAMESPACE mac_05

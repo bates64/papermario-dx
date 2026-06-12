@@ -40,14 +40,14 @@ EvtScript N(EVS_EnterTrain) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(omo_17_ENTRY_4)
-            Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(EVS_TrainPath_LeftToRight)))
+            Set(MV_TrainRideState, 0)
+            Set(MV_TrainPath, Ref(N(EVS_TrainPath_LeftToRight)))
             Set(MV_TrainUnk_02, 0)
             Exec(N(EVS_Scene_RideTrain))
-            Set(MF_TrainUnk_00, true)
+            Set(MF_TrainRideActive, true)
             Thread
                 Label(10)
-                IfLt(MV_TrainPos, 600)
+                IfLt(MV_TrainPosX, 600)
                     Wait(1)
                     Goto(10)
                 EndIf
@@ -55,14 +55,14 @@ EvtScript N(EVS_EnterTrain) = {
                 Wait(100)
             EndThread
         CaseEq(omo_17_ENTRY_5)
-            Set(MV_TrainUnk_00, 0)
-            Set(MV_TrainUnk_01, Ref(N(EVS_TrainPath_RightToLeft)))
+            Set(MV_TrainRideState, 0)
+            Set(MV_TrainPath, Ref(N(EVS_TrainPath_RightToLeft)))
             Set(MV_TrainUnk_02, 0)
             Exec(N(EVS_Scene_RideTrain))
-            Set(MF_TrainUnk_00, true)
+            Set(MF_TrainRideActive, true)
             Thread
                 Label(20)
-                IfGt(MV_TrainPos, -600)
+                IfGt(MV_TrainPosX, -600)
                     Wait(1)
                     Goto(20)
                 EndIf

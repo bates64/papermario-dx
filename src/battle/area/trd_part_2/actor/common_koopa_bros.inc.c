@@ -257,7 +257,7 @@ API_CALLABLE(N(GetTowerFallPosition)) {
         }
     }
 
-    ownerState = get_actor(script->owner1.enemyID)->state.varTable[AVAR_Koopa_State];
+    ownerState = get_actor(script->owner1.actorID)->state.varTable[AVAR_Koopa_State];
     switch (height) {
         case 2:
             switch (ownerState) {

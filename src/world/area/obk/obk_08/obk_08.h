@@ -33,7 +33,7 @@ enum {
     MV_KeepAwayRingPaused   = MapVar(2),
     MV_ThrowTargetNpc       = MapVar(3),
     MV_KeepAwayResult       = MapVar(4),
-    MV_Unk_Angle            = MapVar(5),
+    MV_LeaderBooThrowYaw    = MapVar(5),
     MV_ItemCarrierNpc       = MapVar(6),
     MV_KnockdownPosX        = MapVar(7),
     MV_KnockdownPosY        = MapVar(8),

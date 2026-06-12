@@ -1,30 +1,11 @@
 #include "mac_05.h"
 #include "sprite/player.h"
 
-void increment_max_star_power(void);
-
-NpcSettings N(NpcSettings_Whale) = {
-    .height = 24,
-    .radius = 48,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/Whale.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
-
-NpcSettings N(NpcSettings_JrTroopa_01) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/JrTroopa.inc.c"
 #include "world/common/npc/Toad_Patrol.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
-
-NpcSettings N(NpcSettings_Unused1) = {
-    .height = 48,
-    .radius = 32,
-    .level = ACTOR_LEVEL_NONE,
-};
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
@@ -130,13 +111,6 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     End
 };
 
-#if VERSION_JP
-API_CALLABLE(N(IncreaseMaxSP)) {
-    increment_max_star_power();
-    return ApiStatus_DONE2;
-}
-#endif
-
 API_CALLABLE(N(func_80242A90_854C00)) {
     Bytecode* args = script->ptrReadPos;
     u32 mode = evt_get_variable(script, *args++);
@@ -175,7 +149,7 @@ API_CALLABLE(N(func_80242A90_854C00)) {
     }
     if (mode < 3) {
         angle = -npc->yaw;
-        posX = npc->pos.x + 30.0f + sin_deg(angle) * radius;
+        posX = npc->pos.x + sin_deg(angle) * radius + 30.0f;
         posZ = npc->pos.z + cos_deg(angle) * radius;
         posY = npc->pos.y + 50.0f;
     }
@@ -283,7 +257,7 @@ API_CALLABLE(N(func_80242E84_854FF4)) {
             }
             break;
         case 1:
-            if (evt_get_variable(nullptr, MF_Unk_01)) {
+            if (evt_get_variable(nullptr, MF_WhaleDepartureReady)) {
                 npc->pos.x += 3.0f;
                 script->functionTemp[1]--;
                 if (script->functionTemp[1] <= 0) {
@@ -691,33 +665,32 @@ EvtScript N(D_80249D80_85BEF0) = {
     End
 };
 
-API_CALLABLE(N(func_802430B4_855224)) {
+API_CALLABLE(N(GetBombetteBlastFloor)) {
     Bytecode* args = script->ptrReadPos;
-    Npc* npc = get_npc_safe(-4);
-    s32 outVal = -1;
+    Npc* npc = get_npc_safe(NPC_PARTNER);
+    HitID result = NO_COLLIDER;
 
     if (gCollisionStatus.bombetteExploded >= 0) {
-        f32 temp = 11.0f;
         f32 x = npc->pos.x;
-        f32 y = npc->pos.y + temp;
+        f32 y = npc->pos.y + 11.0f;
         f32 z = npc->pos.z;
+        f32 depth = 12.0f;
 
-        temp = 12.0f;
-        if (npc_raycast_down_around(npc->collisionChannel, &x, &y, &z, &temp, npc->yaw, npc->collisionDiameter) &&
-            temp <= 12.0f)
-        {
-            outVal = NpcHitQueryColliderID;
+        if (npc_raycast_down_around(npc->collisionChannel, &x, &y, &z, &depth, npc->yaw, npc->collisionDiameter)
+            && depth <= 12.0f
+        ) {
+            result = NpcHitQueryColliderID;
         }
     }
-    evt_set_variable(script, *args++, outVal);
+    evt_set_variable(script, *args++, result);
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_80249E84_85BFF4) = {
+EvtScript N(EVS_AwaitWhaleWakeupHit) = {
     Set(LVarA, 0)
     Loop(0)
         Call(GetPlayerFloorCollider, LVar0)
-        IfEq(LVar0, 29)
+        IfEq(LVar0, COLLIDER_o236)
             Set(LVar5, 0)
             Call(GetPlayerActionState, LVar1)
             IfEq(LVar1, ACTION_STATE_HAMMER)
@@ -768,9 +741,9 @@ EvtScript N(D_80249E84_85BFF4) = {
                 Return
             EndIf
         EndIf
-        Call(N(func_802430B4_855224), LVar2)
-        IfEq(LVar2, 29)
-            IfEq(LVar0, 29)
+        Call(N(GetBombetteBlastFloor), LVar2)
+        IfEq(LVar2, COLLIDER_o236)
+            IfEq(LVar0, COLLIDER_o236)
                 Set(LFlag0, true)
             EndIf
             Return
@@ -781,8 +754,8 @@ EvtScript N(D_80249E84_85BFF4) = {
     End
 };
 
-EvtScript N(D_8024A1F8_85C368) = {
-    ExecWait(N(D_80249E84_85BFF4))
+EvtScript N(EVS_Scene_WakeWhale) = {
+    ExecWait(N(EVS_AwaitWhaleWakeupHit))
     Call(DisablePlayerInput, true)
     Wait(10)
     Call(PlaySoundAt, SOUND_WHALE_JIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 480)
@@ -1037,16 +1010,16 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
     Else
         Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B1)
     EndIf
-    Set(MF_Unk_01, false)
+    Set(MF_WhaleDepartureReady, false)
     Thread
         Call(N(func_80242E84_854FF4), 0)
         Call(GotoMap, Ref("mac_06"), mac_06_ENTRY_0)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AF)
-        Set(MF_Unk_01, true)
+        Set(MF_WhaleDepartureReady, true)
     Else
-        Set(MF_Unk_01, true)
+        Set(MF_WhaleDepartureReady, true)
     EndIf
     Return
     End
@@ -1074,7 +1047,7 @@ EvtScript N(EVS_NpcInit_Toad_01) = {
         Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Run)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetNpcPos, NPC_Whale, -73, -53, 480)
-        Exec(N(D_8024A1F8_85C368))
+        Exec(N(EVS_Scene_WakeWhale))
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -1186,7 +1159,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-API_CALLABLE(N(func_802431B0_855320)) {
+API_CALLABLE(N(UpdateJrTroopaSwimEffects)) {
     Npc* npc = get_npc_safe(NPC_JrTroopa_01);
     f32 x = npc->pos.x + 20.0f;
     f32 y = npc->pos.y;
@@ -1199,25 +1172,24 @@ API_CALLABLE(N(func_802431B0_855320)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(D_8024BCBC_85DE2C) = {
+EvtScript N(EVS_UpdateJrTroopaSwimEffects) = {
     Loop(0)
-        Call(N(func_802431B0_855320))
+        Call(N(UpdateJrTroopaSwimEffects))
         Wait(5)
     EndLoop
     Return
     End
 };
 
-API_CALLABLE(N(func_80243254_8553C4)) {
+API_CALLABLE(N(GetPointNearPlayerTowardNpc)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
-    s32 outVar0 = *args++;
-    s32 outVar1 = *args++;
+    s32 outVarX = *args++;
+    s32 outVarZ = *args++;
     Npc* npc = resolve_npc(script, npcID);
     f32 theta;
-    f32 x;
-    f32 z;
+    f32 x, z;
 
     if (npc == nullptr) {
         return ApiStatus_DONE2;
@@ -1226,8 +1198,8 @@ API_CALLABLE(N(func_80243254_8553C4)) {
     theta = clamp_angle(atan2(playerStatus->pos.x, playerStatus->pos.z, npc->pos.x, npc->pos.z));
     x = playerStatus->pos.x + (sin_deg(theta) * 40.0f);
     z = playerStatus->pos.z - (cos_deg(theta) * 40.0f);
-    evt_set_variable(script, outVar0, x);
-    evt_set_variable(script, outVar1, z);
+    evt_set_variable(script, outVarX, x);
+    evt_set_variable(script, outVarZ, z);
     return ApiStatus_DONE2;
 }
 
@@ -1243,7 +1215,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Wait(45)
     Exec(N(EVS_80244298))
     Call(PlaySound, SOUND_LOOP_JR_TROOPA_SWIM)
-    ExecGetTID(N(D_8024BCBC_85DE2C), LVar9)
+    ExecGetTID(N(EVS_UpdateJrTroopaSwimEffects), LVar9)
     Call(SetNpcPos, NPC_SELF, 150, -30, 490)
     Wait(5)
     Thread
@@ -1302,7 +1274,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa_01) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_RunBack)
     Wait(15)
     Thread
-        Call(N(func_80243254_8553C4), -1, LVar0, LVar2)
+        Call(N(GetPointNearPlayerTowardNpc), NPC_SELF, LVar0, LVar2)
         Call(NpcMoveTo, NPC_SELF, LVar0, LVar2, 45)
     EndThread
     Call(PanToTarget, CAM_DEFAULT, 0, false)
@@ -1802,8 +1774,9 @@ EvtScript N(EVS_NpcInit_Toad_02) = {
     End
 };
 
-s32 N(D_8024D704_85F874)[] = {
-    104, 0
+s32 N(ItemList_Melody)[] = {
+    ITEM_MELODY,
+    ITEM_NONE
 };
 
 EvtScript N(EVS_NpcInteract_ArtistToad) = {
@@ -1865,7 +1838,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0079)
         EndIf
-        Set(LVar0, Ref(N(D_8024D704_85F874)))
+        Set(LVar0, Ref(N(ItemList_Melody)))
         Set(LVar1, 10)
         ExecWait(N(EVS_ChooseKeyItem))
         Switch(LVar0)
@@ -1979,8 +1952,8 @@ API_CALLABLE(N(AwaitSongFinished)) {
     }
 }
 
-EvtScript N(D_8024E23C_8603AC) = {
-    Set(MF_Unk_0A, true)
+EvtScript N(EVS_Chanterelle_PerformSong) = {
+    Set(MF_DivaSongPlaying, true)
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_CANT_INTERACT, true)
     Call(InterpNpcYaw, NPC_Chanterelle, 270, 0)
     Call(SetMusic, 0, SONG_POP_DIVA_SONG, BGM_VARIATION_1, VOL_LEVEL_FULL)
@@ -1993,10 +1966,10 @@ EvtScript N(D_8024E23C_8603AC) = {
     ChildThread
         Wait(30)
         Call(N(AwaitSongFinished))
-        Set(MF_Unk_0A, false)
+        Set(MF_DivaSongPlaying, false)
     EndChildThread
     Loop(0)
-        IfEq(MF_Unk_0A, false)
+        IfEq(MF_DivaSongPlaying, false)
             BreakLoop
         EndIf
         Wait(1)
@@ -2040,7 +2013,7 @@ EvtScript N(EVS_NpcInteract_Chanterelle) = {
         Call(ContinueSpeech, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006E)
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_Chanterelle_Talk, ANIM_Chanterelle_Idle, 0, MSG_MAC_Port_006F)
-        Exec(N(D_8024E23C_8603AC))
+        Exec(N(EVS_Chanterelle_PerformSong))
     EndIf
     Return
     End
@@ -2204,27 +2177,10 @@ NpcData N(NpcData_JrTroopa_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopa_01),
-        .settings = &N(NpcSettings_JrTroopa_01),
+        .settings = &N(NpcSettings_JrTroopa),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_JrTroopa_Idle,
-            .walk   = ANIM_JrTroopa_Walk,
-            .run    = ANIM_JrTroopa_Walk,
-            .chase  = ANIM_JrTroopa_Walk,
-            .anim_4 = ANIM_JrTroopa_Idle,
-            .anim_5 = ANIM_JrTroopa_Idle,
-            .death  = ANIM_JrTroopa_Idle,
-            .hit    = ANIM_JrTroopa_Idle,
-            .anim_8 = ANIM_JrTroopa_Idle,
-            .anim_9 = ANIM_JrTroopa_Idle,
-            .anim_A = ANIM_JrTroopa_Idle,
-            .anim_B = ANIM_JrTroopa_Idle,
-            .anim_C = ANIM_JrTroopa_Idle,
-            .anim_D = ANIM_JrTroopa_Idle,
-            .anim_E = ANIM_JrTroopa_Idle,
-            .anim_F = ANIM_JrTroopa_Idle,
-        },
+        .animations = JR_TROOPA_ANIMS,
         .extraAnimations = N(ExtraAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
@@ -2233,27 +2189,10 @@ NpcData N(NpcData_JrTroopa_01)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 270,
         .init = &N(EVS_NpcInit_JrTroopa_02),
-        .settings = &N(NpcSettings_JrTroopa_01),
+        .settings = &N(NpcSettings_JrTroopa),
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_JrTroopa_Idle,
-            .walk   = ANIM_JrTroopa_Walk,
-            .run    = ANIM_JrTroopa_Walk,
-            .chase  = ANIM_JrTroopa_Walk,
-            .anim_4 = ANIM_JrTroopa_Idle,
-            .anim_5 = ANIM_JrTroopa_Idle,
-            .death  = ANIM_JrTroopa_Idle,
-            .hit    = ANIM_JrTroopa_Idle,
-            .anim_8 = ANIM_JrTroopa_Idle,
-            .anim_9 = ANIM_JrTroopa_Idle,
-            .anim_A = ANIM_JrTroopa_Idle,
-            .anim_B = ANIM_JrTroopa_Idle,
-            .anim_C = ANIM_JrTroopa_Idle,
-            .anim_D = ANIM_JrTroopa_Idle,
-            .anim_E = ANIM_JrTroopa_Idle,
-            .anim_F = ANIM_JrTroopa_Idle,
-        },
+        .animations = JR_TROOPA_ANIMS,
         .extraAnimations = N(ExtraAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
@@ -2268,24 +2207,7 @@ NpcData N(NpcData_Toad_04)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Blue_Idle,
-            .walk   = ANIM_Toad_Blue_Walk,
-            .run    = ANIM_Toad_Blue_Run,
-            .chase  = ANIM_Toad_Blue_Run,
-            .anim_4 = ANIM_Toad_Blue_Idle,
-            .anim_5 = ANIM_Toad_Blue_Idle,
-            .death  = ANIM_Toad_Blue_Disappointed,
-            .hit    = ANIM_Toad_Blue_Disappointed,
-            .anim_8 = ANIM_Toad_Blue_Run,
-            .anim_9 = ANIM_Toad_Blue_Run,
-            .anim_A = ANIM_Toad_Blue_Run,
-            .anim_B = ANIM_Toad_Blue_Run,
-            .anim_C = ANIM_Toad_Blue_Run,
-            .anim_D = ANIM_Toad_Blue_Run,
-            .anim_E = ANIM_Toad_Blue_Run,
-            .anim_F = ANIM_Toad_Blue_Run,
-        },
+        .animations = TOAD_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_MAC_PortGuide,
     },
     {
@@ -2296,24 +2218,7 @@ NpcData N(NpcData_Toad_04)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Blue_Idle,
-            .walk   = ANIM_Toad_Blue_Walk,
-            .run    = ANIM_Toad_Blue_Run,
-            .chase  = ANIM_Toad_Blue_Run,
-            .anim_4 = ANIM_Toad_Blue_Idle,
-            .anim_5 = ANIM_Toad_Blue_Idle,
-            .death  = ANIM_Toad_Blue_Disappointed,
-            .hit    = ANIM_Toad_Blue_Disappointed,
-            .anim_8 = ANIM_Toad_Blue_Run,
-            .anim_9 = ANIM_Toad_Blue_Run,
-            .anim_A = ANIM_Toad_Blue_Run,
-            .anim_B = ANIM_Toad_Blue_Run,
-            .anim_C = ANIM_Toad_Blue_Run,
-            .anim_D = ANIM_Toad_Blue_Run,
-            .anim_E = ANIM_Toad_Blue_Run,
-            .anim_F = ANIM_Toad_Blue_Run,
-        },
+        .animations = TOAD_BLUE_ANIMS,
         .tattle = MSG_NpcTattle_MAC_SeaLover,
     },
     {
@@ -2324,24 +2229,7 @@ NpcData N(NpcData_Toad_04)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Red_Idle,
-            .walk   = ANIM_Toad_Red_Walk,
-            .run    = ANIM_Toad_Red_Run,
-            .chase  = ANIM_Toad_Red_Run,
-            .anim_4 = ANIM_Toad_Red_Idle,
-            .anim_5 = ANIM_Toad_Red_Idle,
-            .death  = ANIM_Toad_Red_Disappointed,
-            .hit    = ANIM_Toad_Red_Disappointed,
-            .anim_8 = ANIM_Toad_Red_Run,
-            .anim_9 = ANIM_Toad_Red_Run,
-            .anim_A = ANIM_Toad_Red_Run,
-            .anim_B = ANIM_Toad_Red_Run,
-            .anim_C = ANIM_Toad_Red_Run,
-            .anim_D = ANIM_Toad_Red_Run,
-            .anim_E = ANIM_Toad_Red_Run,
-            .anim_F = ANIM_Toad_Red_Run,
-        },
+        .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_MAC_WellTraveledToad,
     },
     {
@@ -2366,24 +2254,7 @@ NpcData N(NpcData_Toad_04)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Yellow_Idle,
-            .walk   = ANIM_Toad_Yellow_Walk,
-            .run    = ANIM_Toad_Yellow_Run,
-            .chase  = ANIM_Toad_Yellow_Run,
-            .anim_4 = ANIM_Toad_Yellow_Idle,
-            .anim_5 = ANIM_Toad_Yellow_Idle,
-            .death  = ANIM_Toad_Yellow_Disappointed,
-            .hit    = ANIM_Toad_Yellow_Disappointed,
-            .anim_8 = ANIM_Toad_Yellow_Run,
-            .anim_9 = ANIM_Toad_Yellow_Run,
-            .anim_A = ANIM_Toad_Yellow_Run,
-            .anim_B = ANIM_Toad_Yellow_Run,
-            .anim_C = ANIM_Toad_Yellow_Run,
-            .anim_D = ANIM_Toad_Yellow_Run,
-            .anim_E = ANIM_Toad_Yellow_Run,
-            .anim_F = ANIM_Toad_Yellow_Run,
-        },
+        .animations = TOAD_YELLOW_ANIMS,
         .tattle = MSG_NpcTattle_MAC_SingsOffKey,
     },
 };
@@ -2425,24 +2296,7 @@ NpcData N(NpcData_Bartender)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Red_Idle,
-            .walk   = ANIM_Toad_Red_Walk,
-            .run    = ANIM_Toad_Red_Run,
-            .chase  = ANIM_Toad_Red_Run,
-            .anim_4 = ANIM_Toad_Red_Idle,
-            .anim_5 = ANIM_Toad_Red_Idle,
-            .death  = ANIM_Toad_Red_Disappointed,
-            .hit    = ANIM_Toad_Red_Disappointed,
-            .anim_8 = ANIM_Toad_Red_Run,
-            .anim_9 = ANIM_Toad_Red_Run,
-            .anim_A = ANIM_Toad_Red_Run,
-            .anim_B = ANIM_Toad_Red_Run,
-            .anim_C = ANIM_Toad_Red_Run,
-            .anim_D = ANIM_Toad_Red_Run,
-            .anim_E = ANIM_Toad_Red_Run,
-            .anim_F = ANIM_Toad_Red_Run,
-        },
+        .animations = TOAD_RED_ANIMS,
         .tattle = MSG_NpcTattle_Club64_Waiter,
     },
     {
@@ -2509,24 +2363,7 @@ NpcData N(NpcData_Bartender)[] = {
         .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Toad_Pink_Idle,
-            .walk   = ANIM_Toad_Pink_Walk,
-            .run    = ANIM_Toad_Pink_Run,
-            .chase  = ANIM_Toad_Pink_Run,
-            .anim_4 = ANIM_Toad_Pink_Idle,
-            .anim_5 = ANIM_Toad_Pink_Idle,
-            .death  = ANIM_Toad_Pink_Idle,
-            .hit    = ANIM_Toad_Pink_Disappointed,
-            .anim_8 = ANIM_Toad_Pink_Run,
-            .anim_9 = ANIM_Toad_Pink_Run,
-            .anim_A = ANIM_Toad_Pink_Run,
-            .anim_B = ANIM_Toad_Pink_Run,
-            .anim_C = ANIM_Toad_Pink_Run,
-            .anim_D = ANIM_Toad_Pink_Run,
-            .anim_E = ANIM_Toad_Pink_Run,
-            .anim_F = ANIM_Toad_Pink_Run,
-        },
+        .animations = TOAD_PINK_ANIMS,
         .tattle = MSG_NpcTattle_PrizeToad,
     },
 };
@@ -2540,24 +2377,7 @@ NpcData N(NpcData_ChuckQuizmo) = {
     .settings = &N(NpcSettings_ChuckQuizmo),
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_ChuckQuizmo_Idle,
-        .walk   = ANIM_ChuckQuizmo_Walk,
-        .run    = ANIM_ChuckQuizmo_Run,
-        .chase  = ANIM_ChuckQuizmo_Run,
-        .anim_4 = ANIM_ChuckQuizmo_Idle,
-        .anim_5 = ANIM_ChuckQuizmo_Idle,
-        .death  = ANIM_ChuckQuizmo_Still,
-        .hit    = ANIM_ChuckQuizmo_Still,
-        .anim_8 = ANIM_ChuckQuizmo_Run,
-        .anim_9 = ANIM_ChuckQuizmo_Run,
-        .anim_A = ANIM_ChuckQuizmo_Run,
-        .anim_B = ANIM_ChuckQuizmo_Run,
-        .anim_C = ANIM_ChuckQuizmo_Run,
-        .anim_D = ANIM_ChuckQuizmo_Run,
-        .anim_E = ANIM_ChuckQuizmo_Run,
-        .anim_F = ANIM_ChuckQuizmo_Run,
-    },
+    .animations = QUIZMO_ANIMS,
     .tattle = MSG_NpcTattle_ChuckQuizmo,
 };
 

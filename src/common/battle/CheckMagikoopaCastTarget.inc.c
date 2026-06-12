@@ -7,7 +7,7 @@ API_CALLABLE(N(CheckMagikoopaCastTarget)) {
     s32 actorID = evt_get_variable(script, *args++);
 
     if (actorID == ACTOR_SELF) {
-        actorID = script->owner1.enemyID;
+        actorID = script->owner1.actorID;
     }
 
     actor = get_actor(actorID);

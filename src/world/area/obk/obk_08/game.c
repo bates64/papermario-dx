@@ -1,6 +1,6 @@
 #include "obk_08.h"
 
-API_CALLABLE(N(func_80241220_BD4A90)) {
+API_CALLABLE(N(UpdateLeaderOrbitPos)) {
     Npc* leaderBoo = get_npc_unsafe(NPC_LeaderBoo);
     Npc* hiddenBoo = get_npc_unsafe(NPC_HiddenBoo);
 
@@ -11,12 +11,12 @@ API_CALLABLE(N(func_80241220_BD4A90)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_802412BC_BD4B2C)) {
+API_CALLABLE(N(AdvanceLeaderThrowYaw)) {
     script->varTable[0] = clamp_angle(script->varTable[0] - 2);
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241300_BD4B70)) {
+API_CALLABLE(N(FindThrowTargetAtYaw)) {
     Npc* npc1 = get_npc_unsafe(NPC_KeepAwayBoo1);
     Npc* npc2 = get_npc_unsafe(NPC_KeepAwayBoo2);
     Npc* npc3 = get_npc_unsafe(NPC_KeepAwayBoo3);
@@ -67,6 +67,7 @@ API_CALLABLE(N(func_80241300_BD4B70)) {
     return ApiStatus_DONE2;
 }
 
+// find a position outside the keep away ring for the player
 API_CALLABLE(N(GetPlayerPosOutsideKeepAwayRing)) {
     f32 dist = dist2D(gPlayerStatus.pos.x, gPlayerStatus.pos.z, 0.0f, 0.0f);
     f32 posX, posY, posZ, yaw;
@@ -195,8 +196,8 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         EndLoop
         Wait(10)
         Set(LVar0, 270)
-        Set(MV_Unk_Angle, LVar0)
-        Call(N(func_80241220_BD4A90))
+        Set(MV_LeaderBooThrowYaw, LVar0)
+        Call(N(UpdateLeaderOrbitPos))
         Call(MakeLerp, 0, 255, 30, EASING_LINEAR)
         Loop(0)
             Call(UpdateLerp)
@@ -235,10 +236,10 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
         Call(RandInt, 20, LVar0)
         Add(LVar0, 360)
         Set(LVarB, LVar0)
-        Set(LVar0, MV_Unk_Angle)
+        Set(LVar0, MV_LeaderBooThrowYaw)
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
             Wait(1)
             Add(LVarA, -2)
             IfLe(LVarA, 0)
@@ -246,9 +247,9 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             EndIf
         EndLoop
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
-            Call(N(func_80241300_BD4B70))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
+            Call(N(FindThrowTargetAtYaw))
             Wait(1)
             IfEq(LVar1, true)
                 BreakLoop
@@ -272,8 +273,8 @@ EvtScript N(EVS_Scene_BoosUnleashed) = {
             Call(SetItemPos, MV_KeepAwayItem, NPC_DISPOSE_LOCATION)
         EndThread
         Loop(0)
-            Call(N(func_80241220_BD4A90))
-            Call(N(func_802412BC_BD4B2C))
+            Call(N(UpdateLeaderOrbitPos))
+            Call(N(AdvanceLeaderThrowYaw))
             Wait(1)
             Add(LVarB, -2)
             IfLe(LVarB, 0)

@@ -16,7 +16,7 @@ enum {
 };
 
 enum {
-    MV_Unk_00       = MapVar(0),
+    MV_EntityID_Switch          = MapVar(0),
 };
 
 #define NAMESPACE tik_09

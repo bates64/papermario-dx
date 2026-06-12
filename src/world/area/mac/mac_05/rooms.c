@@ -43,14 +43,12 @@ EvtScript N(D_802525B0_864720) = {
         CaseEq(0)
             Call(SetMusic, 0, SONG_CLUB64, 0, VOL_LEVEL_FULL)
             Call(StopSound, SOUND_LOOP_MAC_HARBOR_WATER)
-#if !VERSION_JP
             Call(StopTrackingSoundPos, SOUND_LRAW_MAC_HARBOR_WATER)
-#endif
             Call(EnableGroup, MODEL_bar_inn, true)
             Call(EnableModel, MODEL_o139, false)
             Call(EnableModel, MODEL_o140, false)
         CaseEq(3)
-            Set(MF_Unk_0A, false)
+            Set(MF_DivaSongPlaying, false)
             Call(EnableGroup, MODEL_bar_inn, false)
             Call(EnableModel, MODEL_o139, true)
             Call(EnableModel, MODEL_o140, true)

@@ -247,9 +247,9 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeet, ANIM_RaphaelRaven_IdleNoFeet, 5, MSG_CH5_00DB)
     Wait(20 * DT)
     Thread
-        Set(MF_Unk_00, false)
+        Set(MF_RaphaelShoutingDone, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeetAngry, ANIM_RaphaelRaven_TalkNoFeetAngry, 5, MSG_CH5_00DC)
-        Set(MF_Unk_00, true)
+        Set(MF_RaphaelShoutingDone, true)
     EndThread
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 128, 10)
     Call(SetNpcAnimation, NPC_SELF, ANIM_RaphaelRaven_TalkNoFeetAngry)
@@ -268,7 +268,7 @@ EvtScript N(EVS_NpcInteract_RaphaelRaven_Before) = {
     EndLoop
     Call(SetMotionBlurParams, 0, 0, 0, 320, 240, 0, 10)
     Label(2)
-        IfEq(MF_Unk_00, false)
+        IfEq(MF_RaphaelShoutingDone, false)
             Wait(1)
             Goto(2)
         EndIf

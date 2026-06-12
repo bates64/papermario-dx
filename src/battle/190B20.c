@@ -1674,7 +1674,7 @@ Actor* create_actor(Formation formation) {
     actor->actorID = actor->enemyIndex | ACTOR_CLASS_ENEMY;
     takeTurnScript = start_script(actor->takeTurnSource, EVT_PRIORITY_A, 0);
     actor->takeTurnScriptID = takeTurnScript->id;
-    takeTurnScript->owner1.enemyID = actor->enemyIndex | ACTOR_CLASS_ENEMY;
+    takeTurnScript->owner1.actorID = actor->actorID;
     actor->shadow.id = create_shadow_type(SHADOW_VARYING_CIRCLE, actor->curPos.x, actor->curPos.y, actor->curPos.z);
     actor->shadowScale = actor->size.x / 24.0;
     actor->disableEffect = fx_disable_x(0, -142.0f, 34.0f, 1.0f, 0);
