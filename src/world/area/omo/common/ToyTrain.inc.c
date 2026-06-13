@@ -1,6 +1,11 @@
 #include "common.h"
 #include "sprite/player.h"
 
+typedef Bytecode TrainPath;
+#define TRAIN_PATH_BEGIN(x, z, yaw) Float(x), Float(z), Float(yaw)
+#define TRAIN_PATH_POINT(x, z)      Float(x), Float(z)
+#define TRAIN_PATH_END              -1, -1, -1
+
 enum TrainStations {
     OMO_STATION_BLUE            = 0, // omo_03
     OMO_STATION_PINK            = 1, // omo_06
@@ -18,10 +23,14 @@ enum TrainRoute {
 };
 
 enum TrainStates {
-    TRAIN_STATE_0       = 0,
-    TRAIN_STATE_1       = 1,
-    TRAIN_STATE_10      = 10,
-    TRAIN_STATE_100     = 100,
+    // Initialize the engine and carriage positions, then measure the path length.
+    TRAIN_STATE_INIT        = 0,
+    // Read the first waypoint and initialize the two path cursors.
+    TRAIN_STATE_BEGIN       = 1,
+    // Move both path cursors toward their current waypoints and update the train transform.
+    TRAIN_STATE_TRAVEL      = 10,
+    // The end-of-path sentinel was reached; keep rendering the train at its final position.
+    TRAIN_STATE_DONE        = 100,
 };
 
 enum TrainSpeedMode {
@@ -110,10 +119,10 @@ EvtScript N(EVS_Scene_RideTrain) = {
     SetF(ArrayVar(14), Float(0.0))
     SetF(ArrayVar(15), Float(0.0))
     SetF(ArrayVar(16), Float(0.0))
-    Set(AF_OMO_03, false)
+    Set(AF_OMO_TrainSoundToggle, false)
     Label(0)
         Switch(MV_TrainRideState)
-            CaseEq(TRAIN_STATE_0)
+            CaseEq(TRAIN_STATE_INIT)
                 UseBuf(MV_TrainPath)
                 BufRead3(LVar0, LVar1, LVar2)
                 SetF(ArrayVar(0), LVar0)
@@ -146,14 +155,14 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 SetF(ArrayVar(13), Float(0.0))
                 Set(ArrayVar(18), 0)
                 IfEq(MF_TrainRideActive, true)
-                    Set(MV_TrainRideState, TRAIN_STATE_1)
+                    Set(MV_TrainRideState, TRAIN_STATE_BEGIN)
                 EndIf
-            CaseEq(TRAIN_STATE_1)
+            CaseEq(TRAIN_STATE_BEGIN)
                 UseBuf(MV_TrainPath)
                 Call(N(AdvanceBuffer), 3, 0, 0)
                 BufRead2(LVar0, LVar1)
                 IfEq(LVar0, -1)
-                    Set(MV_TrainRideState, TRAIN_STATE_100)
+                    Set(MV_TrainRideState, TRAIN_STATE_DONE)
                     Set(MF_TrainRideActive, false)
                 Else
                     SetF(ArrayVar(2), LVar0)
@@ -162,9 +171,9 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     SetF(ArrayVar(7), LVar0)
                     SetF(ArrayVar(8), LVar1)
                     Set(ArrayVar(9), 1)
-                    Set(MV_TrainRideState, TRAIN_STATE_10)
+                    Set(MV_TrainRideState, TRAIN_STATE_TRAVEL)
                 EndIf
-            CaseEq(TRAIN_STATE_10)
+            CaseEq(TRAIN_STATE_TRAVEL)
                 Switch(MV_TrainSpeedMode)
                     CaseEq(TRAIN_SPEED_CONSTANT)
                         SetF(ArrayVar(10), Float(10.0))
@@ -196,7 +205,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     BufRead2(ArrayVar(2), ArrayVar(3))
                     Add(ArrayVar(4), 1)
                     IfEq(ArrayVar(2), -1)
-                        Set(MV_TrainRideState, TRAIN_STATE_100)
+                        Set(MV_TrainRideState, TRAIN_STATE_DONE)
                         Set(MF_TrainRideActive, false)
                         Set(LFlag1, true)
                     Else
@@ -219,7 +228,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     BufRead2(ArrayVar(7), ArrayVar(8))
                     Add(ArrayVar(9), 1)
                     IfEq(ArrayVar(7), -1)
-                        Set(MV_TrainRideState, TRAIN_STATE_100)
+                        Set(MV_TrainRideState, TRAIN_STATE_DONE)
                         Set(MF_TrainRideActive, false)
                         Set(LFlag1, false)
                     Else
@@ -227,7 +236,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                         Call(AddVectorPolar, ArrayVar(5), ArrayVar(6), LVar1, LVar0)
                     EndIf
                 EndIf
-                IfEq(MV_TrainRideState, TRAIN_STATE_100)
+                IfEq(MV_TrainRideState, TRAIN_STATE_DONE)
                     IfEq(LFlag1, true)
                         Call(GetFloatAngleClamped, LVar0, ArrayVar(0), ArrayVar(1), ArrayVar(5), ArrayVar(6))
                         SetF(ArrayVar(5), ArrayVar(0))
@@ -264,7 +273,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     IfLt(ArrayVar(15), -10)
                         SetF(ArrayVar(15), Float(-10.0))
                         Set(LFlag0, true)
-                        IfEq(AF_OMO_03, false)
+                        IfEq(AF_OMO_TrainSoundToggle, false)
                             Call(PlaySound, SOUND_OMO_TOY_TRAIN_WHISTLE_A)
                         Else
                             Call(PlaySound, SOUND_OMO_TOY_TRAIN_WHISTLE_B)
@@ -280,12 +289,12 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     IfGt(ArrayVar(15), 10)
                         SetF(ArrayVar(15), Float(10.0))
                         Set(LFlag0, false)
-                        IfEq(AF_OMO_03, false)
+                        IfEq(AF_OMO_TrainSoundToggle, false)
                             Call(PlaySound, SOUND_OMO_TOY_TRAIN_CLICK)
-                            Set(AF_OMO_03, true)
+                            Set(AF_OMO_TrainSoundToggle, true)
                         Else
                             Call(PlaySound, SOUND_OMO_TOY_TRAIN_CLICK)
-                            Set(AF_OMO_03, false)
+                            Set(AF_OMO_TrainSoundToggle, false)
                         EndIf
                     EndIf
                 EndIf
@@ -310,7 +319,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 EndIf
                 Call(AddVectorPolar, LVar0, LVar1, Float(20.0), LVar2)
                 Call(N(SetNpcPosYaw), 0, LVar0, 50, LVar1, MV_TrainYaw)
-            CaseEq(TRAIN_STATE_100)
+            CaseEq(TRAIN_STATE_DONE)
                 // do nothing
         EndSwitch
         Call(TranslateGroup, MODEL_p2, Float(79.1), Float(-27.93), Float(-29.53))
@@ -515,7 +524,7 @@ EvtScript N(EVS_TrainUnk_E) = {
 };
 
 EvtScript N(EVS_TrainUnk_F) = {
-    Switch(AB_OMO_6)
+    Switch(AB_OMO_TrainDest)
         CaseEq(OMO_STATION_BLUE)
             Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_3, TRANSITION_TOY_TRAIN)
         CaseEq(OMO_STATION_PINK)
@@ -531,9 +540,9 @@ EvtScript N(EVS_TrainUnk_F) = {
 };
 
 EvtScript N(EVS_TrainUnk_G) = {
-    Switch(AB_OMO_5)
+    Switch(AB_OMO_TrainOrigin)
         CaseEq(OMO_STATION_BLUE)
-            Switch(AB_OMO_6)
+            Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_PINK)
                     Call(GotoMapSpecial, Ref("omo_06"), omo_06_ENTRY_2, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_GREEN)
@@ -542,7 +551,7 @@ EvtScript N(EVS_TrainUnk_G) = {
                     Call(GotoMapSpecial, Ref("omo_10"), omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_PINK)
-            Switch(AB_OMO_6)
+            Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
                     Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_GREEN)
@@ -551,7 +560,7 @@ EvtScript N(EVS_TrainUnk_G) = {
                     Call(GotoMapSpecial, Ref("omo_10"), omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_GREEN)
-            Switch(AB_OMO_6)
+            Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
                     Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_PINK)
@@ -564,7 +573,7 @@ EvtScript N(EVS_TrainUnk_G) = {
                     Call(GotoMapSpecial, Ref("omo_10"), omo_10_ENTRY_2, TRANSITION_TOY_TRAIN)
             EndSwitch
         CaseEq(OMO_STATION_RED)
-            Switch(AB_OMO_6)
+            Switch(AB_OMO_TrainDest)
                 CaseEq(OMO_STATION_BLUE)
                     Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_2, TRANSITION_TOY_TRAIN)
                 CaseEq(OMO_STATION_PINK)

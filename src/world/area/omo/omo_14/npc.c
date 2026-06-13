@@ -96,7 +96,6 @@ Vec2i N(CrowdChaseGoalPositions)[] = {
 
 EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
     SetF(LVarA, Float(3.5 / DT))
-    Set(AF_OMO_11, false)
     Call(SetNpcSpeed, NPC_SELF, LVarA)
     Label(0)
     Call(GetSelfVar, 0, LVar0)
@@ -141,9 +140,6 @@ EvtScript N(EVS_NpcIdle_ShyGuy_Loner) = {
                                 Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
                                 Call(SetNpcJumpscale, NPC_SELF, Float(1.0))
                                 Call(NpcJump0, NPC_SELF, LVar0, 0, LVar2, 15 * DT)
-                            EndIf
-                            IfEq(AF_OMO_11, false)
-                                Set(AF_OMO_11, true)
                             EndIf
                             UseBuf(Ref(N(CrowdChaseGoalPositions)))
                             BufRead2(LVar1, LVar2)

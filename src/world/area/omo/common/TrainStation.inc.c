@@ -1,13 +1,13 @@
 #include "common.h"
 
-extern Vec2i N(TrainConductorPos);
-extern s32 N(TrainPath_DepartRight)[];
-extern s32 N(TrainPath_DepartLeft)[];
-extern s32 N(TrainPath_ArriveRight)[];
-extern s32 N(TrainPath_PassthroughRight)[];
-extern s32 N(TrainPath_ArriveLeft)[];
-extern s32 N(TrainPath_PassthroughLeft)[];
-extern s32 N(TrainPath_Idle)[];
+extern Vec2i N(ConductorPos);
+extern TrainPath N(TrainPath_DepartRight)[];
+extern TrainPath N(TrainPath_DepartLeft)[];
+extern TrainPath N(TrainPath_ArriveRight)[];
+extern TrainPath N(TrainPath_PassthroughRight)[];
+extern TrainPath N(TrainPath_ArriveLeft)[];
+extern TrainPath N(TrainPath_PassthroughLeft)[];
+extern TrainPath N(TrainPath_Idle)[];
 
 #ifndef TRAIN_STATION_ID
 #error TRAIN_STATION_ID is not defined!
@@ -46,11 +46,11 @@ EvtScript N(EVS_Train_DepartRight) = {
     Wait(10)
     Call(DisablePlayerPhysics, true)
     Exec(N(EVS_TrainUnk_C))
-    Set(AB_OMO_5, TRAIN_STATION_ID)
+    Set(AB_OMO_TrainOrigin, TRAIN_STATION_ID)
     Set(LVar0, Ref(N(TrainPath_DepartRight)))
     ExecWait(N(EVS_TrainUnk_D))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
-    Set(MV_TrainRideState, TRAIN_STATE_0)
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
     Set(MV_TrainPath, Ref(N(TrainPath_DepartRight)))
     Set(MV_TrainSpeedMode, TRAIN_SPEED_ACCELERATE)
     Set(MF_TrainRideActive, true)
@@ -74,11 +74,11 @@ EvtScript N(EVS_Train_DepartLeft) = {
     Wait(10)
     Call(DisablePlayerPhysics, true)
     Exec(N(EVS_TrainUnk_C))
-    Set(AB_OMO_5, TRAIN_STATION_ID)
+    Set(AB_OMO_TrainOrigin, TRAIN_STATION_ID)
     Set(LVar0, Ref(N(TrainPath_DepartLeft)))
     ExecWait(N(EVS_TrainUnk_D))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
-    Set(MV_TrainRideState, TRAIN_STATE_0)
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
     Set(MV_TrainPath, Ref(N(TrainPath_DepartLeft)))
     Set(MV_TrainSpeedMode, TRAIN_SPEED_ACCELERATE)
     Set(MF_TrainRideActive, true)
@@ -100,8 +100,8 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
-    IfEq(AB_OMO_6, TRAIN_STATION_ID)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+    IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_ArriveRight)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_DECELERATE)
         Exec(N(EVS_Scene_RideTrain))
@@ -109,15 +109,15 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Wait(1)
         ExecGetTID(N(EVS_TrainUnk_A), LVarB)
         Label(10)
-        IfEq(MF_TrainRideActive, true)
-            Wait(1)
-            Goto(10)
-        EndIf
+            IfEq(MF_TrainRideActive, true)
+                Wait(1)
+                Goto(10)
+            EndIf
         Wait(20)
         KillThread(LVarB)
         Exec(N(EVS_TrainUnk_B))
         Call(EnableCameraFollowPlayerY)
-        Set(LVar9, Ref(N(TrainConductorPos)))
+        Set(LVar9, Ref(N(ConductorPos)))
         ExecWait(N(EVS_TrainUnk_E))
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, TRAIN_ARRIVAL_MESSAGE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
@@ -126,7 +126,7 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Call(DisablePlayerInput, false)
     Else
         Exec(N(EVS_TrainUnk_A))
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_PassthroughRight)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -134,10 +134,10 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Wait(1)
         Exec(N(EVS_TrainUnk_H))
         Label(20)
-        IfGt(MV_TrainPosX, TRAIN_LEFT_THRESHOLD)
-            Wait(1)
-            Goto(20)
-        EndIf
+            IfGt(MV_TrainPosX, TRAIN_LEFT_THRESHOLD)
+                Wait(1)
+                Goto(20)
+            EndIf
         Call(GotoMap, Ref("omo_16"), omo_16_ENTRY_1)
         Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
         Wait(100)
@@ -152,8 +152,8 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
     Call(SetPlayerActionState, ACTION_STATE_LAND)
     Call(DisablePartnerAI, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
-    IfEq(AB_OMO_6, TRAIN_STATION_ID)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+    IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_ArriveLeft)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_DECELERATE)
         Exec(N(EVS_Scene_RideTrain))
@@ -169,7 +169,7 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
         KillThread(LVarB)
         Exec(N(EVS_TrainUnk_B))
         Call(EnableCameraFollowPlayerY)
-        Set(LVar9, Ref(N(TrainConductorPos)))
+        Set(LVar9, Ref(N(ConductorPos)))
         ExecWait(N(EVS_TrainUnk_E))
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, TRAIN_ARRIVAL_MESSAGE)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, TRAIN_COLLIDER, COLLIDER_FLAGS_UPPER_MASK)
@@ -178,7 +178,7 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
         Call(DisablePlayerInput, false)
     Else
         Exec(N(EVS_TrainUnk_A))
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_PassthroughLeft)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -202,7 +202,7 @@ EvtScript N(EVS_SetupTrain) = {
     ExecWait(N(EVS_SetupSwitches))
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_Idle)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -215,7 +215,7 @@ EvtScript N(EVS_SetupTrain) = {
             CaseEq(TRAIN_RIGHT_ENTRY)
                 Exec(N(EVS_Train_ArriveFromRight))
             CaseDefault
-                Set(MV_TrainRideState, TRAIN_STATE_0)
+                Set(MV_TrainRideState, TRAIN_STATE_INIT)
                 Set(MV_TrainPath, Ref(N(TrainPath_Idle)))
                 Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
                 Exec(N(EVS_Scene_RideTrain))

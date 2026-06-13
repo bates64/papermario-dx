@@ -13,17 +13,17 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
         IfEq(LVar0, ITEM_TOY_TRAIN)
             Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0002)
         Else
-            IfEq(AF_OMO_05, false)
+            IfEq(AF_OMO03_Conductor_DialogueToggle, false)
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_SadTalk, ANIM_TrainToad_SadIdle, 0, MSG_CH4_0000)
-                Set(AF_OMO_05, true)
+                Set(AF_OMO03_Conductor_DialogueToggle, true)
             Else
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_SadTalk, ANIM_TrainToad_SadIdle, 0, MSG_CH4_0001)
-                Set(AF_OMO_05, false)
+                Set(AF_OMO03_Conductor_DialogueToggle, false)
             EndIf
         EndIf
     Else
         IfEq(GF_OMO03_LearnedAboutTrainSwitches, false)
-            IfEq(AF_OMO_05, false)
+            IfEq(AF_OMO03_Conductor_DialogueToggle, false)
                 Thread
                     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
                     Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
@@ -42,13 +42,13 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0005)
                     Set(GF_OMO03_LearnedAboutTrainSwitches, true)
                 EndIf
-                Set(AF_OMO_05, true)
+                Set(AF_OMO03_Conductor_DialogueToggle, true)
             Else
                 Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0004)
                 Set(GF_OMO03_LearnedAboutTrainSwitches, true)
             EndIf
         Else
-            IfEq(AF_OMO_06, false)
+            IfEq(AF_OMO03_TrainStuck, false)
                 ExecWait(N(EVS_Conductor_ChooseRoute))
             Else
                 ExecWait(N(EVS_80246108))

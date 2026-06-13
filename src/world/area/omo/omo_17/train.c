@@ -18,16 +18,16 @@ EvtScript N(D_80245CEC_DF4B8C) = {
     End
 };
 
-s32 N(EVS_TrainPath_LeftToRight)[] = {
-    Float(-720.0), Float(0.0), Float(90.0),
-    Float(720.0), Float(0.0),
-    -1, -1, -1,
+TrainPath N(EVS_TrainPath_LeftToRight)[] = {
+    TRAIN_PATH_BEGIN(-720.0, 0.0, 90.0),
+    TRAIN_PATH_POINT(720.0, 0.0),
+    TRAIN_PATH_END,
 };
 
-s32 N(EVS_TrainPath_RightToLeft)[] = {
-    Float(720.0), Float(0.0), Float(270.0),
-    Float(-720.0), Float(0.0),
-    -1, -1, -1,
+TrainPath N(EVS_TrainPath_RightToLeft)[] = {
+    TRAIN_PATH_BEGIN(720.0, 0.0, 270.0),
+    TRAIN_PATH_POINT(-720.0, 0.0),
+    TRAIN_PATH_END,
 };
 
 EvtScript N(EVS_EnterTrain) = {
@@ -40,7 +40,7 @@ EvtScript N(EVS_EnterTrain) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(omo_17_ENTRY_4)
-            Set(MV_TrainRideState, TRAIN_STATE_0)
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
             Set(MV_TrainPath, Ref(N(EVS_TrainPath_LeftToRight)))
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
             Exec(N(EVS_Scene_RideTrain))
@@ -55,7 +55,7 @@ EvtScript N(EVS_EnterTrain) = {
                 Wait(100)
             EndThread
         CaseEq(omo_17_ENTRY_5)
-            Set(MV_TrainRideState, TRAIN_STATE_0)
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
             Set(MV_TrainPath, Ref(N(EVS_TrainPath_RightToLeft)))
             Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
             Exec(N(EVS_Scene_RideTrain))

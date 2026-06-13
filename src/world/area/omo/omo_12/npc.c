@@ -211,7 +211,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
         EndSwitch
     EndIf
     Call(PlaySound, SOUND_OMO_LANTERN_BREAK)
-    Set(AF_OMO_10, false)
+    Set(AF_OMO12_StopLanternFlicker, false)
     Loop(8)
         Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, true)
         Wait(3)
@@ -228,7 +228,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
             Call(SetNpcFlagBits, NPC_LaternTop, NPC_FLAG_INVISIBLE, false)
             Call(SetNpcFlagBits, NPC_LaternBottom, NPC_FLAG_INVISIBLE, false)
             Wait(2)
-            IfEq(AF_OMO_10, false)
+            IfEq(AF_OMO12_StopLanternFlicker, false)
                 Goto(10)
             EndIf
     EndThread
@@ -265,7 +265,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     Set(AB_OMO12_LightSource, LIGHT_FROM_WATT)
     Set(AB_OMO12_LightPowerMod, 72)
     Wait(40 * DT)
-    Set(AF_OMO_10, true)
+    Set(AF_OMO12_StopLanternFlicker, true)
     Call(SetNpcPos, NPC_LaternTop, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_LaternBottom, NPC_DISPOSE_LOCATION)
     Wait(25)

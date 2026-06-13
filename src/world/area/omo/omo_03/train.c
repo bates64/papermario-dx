@@ -1,9 +1,10 @@
 #include "omo_03.h"
 
+// these are not really necessary in this file, but are written explicitly
+// to mirror pattern in stations which use the shared TrainStation.inc.c
 #define TRAIN_STATION_ID  OMO_STATION_BLUE
 #define TRAIN_ROUTE_LEFT  TRAIN_ROUTE_RED_BLUE
 #define TRAIN_ROUTE_RIGHT TRAIN_ROUTE_BLUE_PINK
-#define TRAIN_COLLIDER COLLIDER_o898
 #define TRAIN_ARRIVAL_MESSAGE MSG_CH4_000E
 #define TRAIN_LEFT_THRESHOLD -350
 #define TRAIN_RIGHT_THRESHOLD 350
@@ -16,7 +17,7 @@
 EvtScript N(EVS_TrainUnk_AltD) = {
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Set(AF_OMO_06, false)
+    Set(AF_OMO03_TrainStuck, false)
     Call(GetPlayerPos, LVar1, LVar2, LVar3)
     IfLt(LVar2, 50)
         UseBuf(LVar9)
@@ -81,7 +82,7 @@ EvtScript N(EVS_TrainUnk_AltE) = {
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Set(AF_OMO_06, true)
+    Set(AF_OMO03_TrainStuck, true)
     SetF(LVar0, MV_TrainPosX)
     SetF(LVar1, MV_TrainPosZ)
     SetF(LVar2, MV_TrainYaw)
@@ -116,32 +117,34 @@ EvtScript N(EVS_TrainUnk_AltE) = {
     End
 };
 
-Vec2i N(D_80246080_DAB2C0) = {
+Vec2i N(ConductorPos) = {
     170, -115
 };
 
-Vec2i N(D_80246088_DAB2C8) = {
+Vec2i N(ConductorPos_Blockage) = {
     -383, -240
 };
 
-Vec2i N(D_80246090_DAB2D0)[] = {
+Vec2i N(BoardingPath_Blockage)[] = {
     { -360, -195 },
     { -335, -215 },
 };
 
-s32 N(TrainPath_802460A0_DAB2E0)[] = {
-    Float(-298.93), Float(-288.62), Float(140.0),
-    Float(-262.5), Float(-245.336), Float(0.0),
-    Float(-175.0), Float(169.89), Float(-220.49),
-    -1, -1, -1
+TrainPath N(TrainPath_ResumeArrival)[] = {
+    TRAIN_PATH_BEGIN(-298.93, -288.62, 140.0),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(169.89, -220.49),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_802460D0_DAB310)[] = {
-    Float(-298.93), Float(-288.62), Float(140.0),
-    Float(-262.5), Float(-245.336), Float(0.0),
-    Float(-175.0), Float(262.5), Float(-245.336),
-    Float(479.165), Float(-503.546),
-    -1, -1, -1
+TrainPath N(TrainPath_ResumePassthrough)[] = {
+    TRAIN_PATH_BEGIN(-298.93, -288.62, 140.0),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(262.5, -245.336),
+    TRAIN_PATH_POINT(479.165, -503.546),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_80246108) = {
@@ -167,12 +170,12 @@ EvtScript N(EVS_80246108) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
         ExecGetTID(N(EVS_TrainUnk_C), LVarB)
-        Set(LVar0, Ref(N(TrainPath_802460A0_DAB2E0)))
-        Set(LVar9, Ref(N(D_80246090_DAB2D0)))
+        Set(LVar0, Ref(N(TrainPath_ResumeArrival)))
+        Set(LVar9, Ref(N(BoardingPath_Blockage)))
         ExecWait(N(EVS_TrainUnk_AltD))
-        IfEq(AB_OMO_6, TRAIN_STATION_ID)
-            Set(MV_TrainRideState, TRAIN_STATE_0)
-            Set(MV_TrainPath, Ref(N(TrainPath_802460A0_DAB2E0)))
+        IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
+            Set(MV_TrainPath, Ref(N(TrainPath_ResumeArrival)))
             Set(MV_TrainSpeedMode, TRAIN_SPEED_PARTIAL_PATH)
             Set(MF_TrainRideActive, true)
             Label(20)
@@ -184,7 +187,7 @@ EvtScript N(EVS_80246108) = {
             KillThread(LVarB)
             Exec(N(EVS_TrainUnk_B))
             Call(EnableCameraFollowPlayerY)
-            Set(LVar9, Ref(N(D_80246080_DAB2C0)))
+            Set(LVar9, Ref(N(ConductorPos)))
             ExecWait(N(EVS_TrainUnk_E))
             Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_000E)
             Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
@@ -193,17 +196,17 @@ EvtScript N(EVS_80246108) = {
             Call(EnablePartnerAI)
             Call(DisablePlayerInput, false)
         Else
-            Set(MV_TrainRideState, TRAIN_STATE_0)
-            Set(MV_TrainPath, Ref(N(TrainPath_802460D0_DAB310)))
+            Set(MV_TrainRideState, TRAIN_STATE_INIT)
+            Set(MV_TrainPath, Ref(N(TrainPath_ResumePassthrough)))
             Set(MV_TrainSpeedMode, TRAIN_SPEED_ACCELERATE)
             Set(MF_TrainRideActive, true)
             Wait(1)
             Exec(N(EVS_TrainUnk_H))
             Label(30)
-            IfLt(MV_TrainPosX, TRAIN_RIGHT_THRESHOLD)
-                Wait(1)
-                Goto(30)
-            EndIf
+                IfLt(MV_TrainPosX, TRAIN_RIGHT_THRESHOLD)
+                    Wait(1)
+                    Goto(30)
+                EndIf
             Call(GotoMap, Ref("omo_16"), omo_16_ENTRY_0)
             Set(GB_OMO_TrainRoute, TRAIN_ROUTE_RIGHT)
             Wait(100)
@@ -214,11 +217,11 @@ EvtScript N(EVS_80246108) = {
     End
 };
 
-s32 N(TrainPath_DepartRight)[] = {
-    Float(131.251), Float(-210.168), Float(74.997),
-    Float(262.5), Float(-245.336), Float(479.165),
-    Float(-503.546),
-    -1, -1, -1
+TrainPath N(TrainPath_DepartRight)[] = {
+    TRAIN_PATH_BEGIN(131.251, -210.168, 74.997),
+    TRAIN_PATH_POINT(262.5, -245.336),
+    TRAIN_PATH_POINT(479.165, -503.546),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_Train_DepartRight) = {
@@ -231,10 +234,10 @@ EvtScript N(EVS_Train_DepartRight) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_TrainUnk_C))
-    Set(AB_OMO_5, TRAIN_STATION_ID)
+    Set(AB_OMO_TrainOrigin, TRAIN_STATION_ID)
     Set(LVar0, Ref(N(TrainPath_DepartRight)))
     ExecWait(N(EVS_TrainUnk_D))
-    Set(MV_TrainRideState, TRAIN_STATE_0)
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
     Set(MV_TrainPath, Ref(N(TrainPath_DepartRight)))
     Set(MV_TrainSpeedMode, TRAIN_SPEED_ACCELERATE)
     Set(MF_TrainRideActive, true)
@@ -250,12 +253,13 @@ EvtScript N(EVS_Train_DepartRight) = {
     End
 };
 
-s32 N(TrainPath_DepartLeft)[] = {
-    Float(131.251), Float(-210.168), Float(254.997),
-    Float(0.0), Float(-175.0), Float(-262.5),
-    Float(-245.336), Float(-353.418), Float(-353.688),
-    Float(-479.165), Float(-503.546),
-    -1, -1, -1
+TrainPath N(TrainPath_DepartLeft)[] = {
+    TRAIN_PATH_BEGIN(131.251, -210.168, 254.997),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(-353.418, -353.688),
+    TRAIN_PATH_POINT(-479.165, -503.546),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_Train_DepartLeft) = {
@@ -268,10 +272,10 @@ EvtScript N(EVS_Train_DepartLeft) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
     Exec(N(EVS_TrainUnk_C))
-    Set(AB_OMO_5, TRAIN_STATION_ID)
+    Set(AB_OMO_TrainOrigin, TRAIN_STATION_ID)
     Set(LVar0, Ref(N(TrainPath_DepartLeft)))
     ExecWait(N(EVS_TrainUnk_D))
-    Set(MV_TrainRideState, TRAIN_STATE_0)
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
     Set(MV_TrainPath, Ref(N(TrainPath_DepartLeft)))
     Set(MV_TrainSpeedMode, TRAIN_SPEED_ACCELERATE)
     Set(MF_TrainRideActive, true)
@@ -287,20 +291,23 @@ EvtScript N(EVS_Train_DepartLeft) = {
     End
 };
 
-s32 N(TrainPath_ArriveRight)[] = {
-    Float(414.885), Float(-426.942), Float(219.92),
-    Float(353.553), Float(-353.553), Float(262.5),
-    Float(-245.336), Float(92.61), Float(-199.49),
-    -1, -1, -1
+TrainPath N(TrainPath_ArriveRight)[] = {
+    TRAIN_PATH_BEGIN(414.885, -426.942, 219.92),
+    TRAIN_PATH_POINT(353.553, -353.553),
+    TRAIN_PATH_POINT(262.5, -245.336),
+    TRAIN_PATH_POINT(92.61, -199.49),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_PassthroughRight)[] = {
-    Float(414.885), Float(-426.942), Float(219.92),
-    Float(353.553), Float(-353.553), Float(262.5),
-    Float(-245.336), Float(0.0), Float(-175.0),
-    Float(-262.5), Float(-245.336), Float(-353.418),
-    Float(-353.688), Float(-479.165), Float(-503.546),
-    -1, -1, -1
+TrainPath N(TrainPath_PassthroughRight)[] = {
+    TRAIN_PATH_BEGIN(414.885, -426.942, 219.92),
+    TRAIN_PATH_POINT(353.553, -353.553),
+    TRAIN_PATH_POINT(262.5, -245.336),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(-353.418, -353.688),
+    TRAIN_PATH_POINT(-479.165, -503.546),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_Train_ArriveFromRight) = {
@@ -310,8 +317,8 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
     Call(DisablePartnerAI, 0)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
-    IfEq(AB_OMO_6, TRAIN_STATION_ID)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+    IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_ArriveRight)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_DECELERATE)
         Exec(N(EVS_Scene_RideTrain))
@@ -319,15 +326,15 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Wait(1)
         ExecGetTID(N(EVS_TrainUnk_A), LVarB)
         Label(10)
-        IfEq(MF_TrainRideActive, true)
-            Wait(1)
-            Goto(10)
-        EndIf
+            IfEq(MF_TrainRideActive, true)
+                Wait(1)
+                Goto(10)
+            EndIf
         Wait(20)
         KillThread(LVarB)
         Exec(N(EVS_TrainUnk_B))
         Call(EnableCameraFollowPlayerY)
-        Set(LVar9, Ref(N(D_80246080_DAB2C0)))
+        Set(LVar9, Ref(N(ConductorPos)))
         ExecWait(N(EVS_TrainUnk_E))
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_000E)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
@@ -337,7 +344,7 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Call(DisablePlayerInput, false)
     Else
         Exec(N(EVS_TrainUnk_A))
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_PassthroughRight)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -345,10 +352,10 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
         Wait(1)
         Exec(N(EVS_TrainUnk_H))
         Label(20)
-        IfGt(MV_TrainPosX, TRAIN_LEFT_THRESHOLD)
-            Wait(1)
-            Goto(20)
-        EndIf
+            IfGt(MV_TrainPosX, TRAIN_LEFT_THRESHOLD)
+                Wait(1)
+                Goto(20)
+            EndIf
         Call(GotoMap, Ref("omo_16"), omo_16_ENTRY_1)
         Set(GB_OMO_TrainRoute, TRAIN_ROUTE_LEFT)
         Wait(100)
@@ -357,28 +364,30 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
     End
 };
 
-s32 N(TrainPath_D_80246BE0_DABE20)[] = {
-    Float(-414.885), Float(-426.942), Float(140.075),
-    Float(-353.418), Float(-353.688), Float(-262.5),
-    Float(-245.336), Float(0.0), Float(-175.0),
-    Float(169.89), Float(-220.49),
-    -1, -1, -1
+TrainPath N(TrainPath_ArriveLeft)[] = {
+    TRAIN_PATH_BEGIN(-414.885, -426.942, 140.075),
+    TRAIN_PATH_POINT(-353.418, -353.688),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(169.89, -220.49),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_D_80246C18_DABE58)[] = {
-    Float(-414.885), Float(-426.942), Float(140.075),
-    Float(-353.418), Float(-353.688), Float(-273.25),
-    Float(-257.95),
-    -1, -1, -1
+TrainPath N(TrainPath_ArriveLeftBlocked)[] = {
+    TRAIN_PATH_BEGIN(-414.885, -426.942, 140.075),
+    TRAIN_PATH_POINT(-353.418, -353.688),
+    TRAIN_PATH_POINT(-273.25, -257.95),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_D_80246C40_DABE80)[] = {
-    Float(-414.885), Float(-426.942), Float(140.075),
-    Float(-353.418), Float(-353.688), Float(-262.5),
-    Float(-245.336), Float(0.0), Float(-175.0),
-    Float(262.5), Float(-245.336), Float(479.165),
-    Float(-503.546),
-    -1, -1, -1
+TrainPath N(TrainPath_PassthroughLeft)[] = {
+    TRAIN_PATH_BEGIN(-414.885, -426.942, 140.075),
+    TRAIN_PATH_POINT(-353.418, -353.688),
+    TRAIN_PATH_POINT(-262.5, -245.336),
+    TRAIN_PATH_POINT(0.0, -175.0),
+    TRAIN_PATH_POINT(262.5, -245.336),
+    TRAIN_PATH_POINT(479.165, -503.546),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_Train_ArriveFromLeft) = {
@@ -390,15 +399,15 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(GF_OMO03_BlueSwitchActivated, false)
-        Set(MV_TrainPath, Ref(N(TrainPath_D_80246C18_DABE58)))
+        Set(MV_TrainPath, Ref(N(TrainPath_ArriveLeftBlocked)))
     Else
-        IfEq(AB_OMO_6, TRAIN_STATION_ID)
-            Set(MV_TrainPath, Ref(N(TrainPath_D_80246BE0_DABE20)))
+        IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
+            Set(MV_TrainPath, Ref(N(TrainPath_ArriveLeft)))
         Else
             Goto(15) // continue to next station
         EndIf
     EndIf
-    Set(MV_TrainRideState, TRAIN_STATE_0)
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
     Set(MV_TrainSpeedMode, TRAIN_SPEED_DECELERATE)
     Exec(N(EVS_Scene_RideTrain))
     Set(MF_TrainRideActive, true)
@@ -414,11 +423,11 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
     Exec(N(EVS_TrainUnk_B))
     Call(EnableCameraFollowPlayerY)
     IfEq(GF_OMO03_BlueSwitchActivated, true)
-        Set(LVar9, Ref(N(D_80246080_DAB2C0)))
+        Set(LVar9, Ref(N(ConductorPos)))
         ExecWait(N(EVS_TrainUnk_E))
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_000E)
     Else
-        Set(LVar9, Ref(N(D_80246088_DAB2C8)))
+        Set(LVar9, Ref(N(ConductorPos_Blockage)))
         ExecWait(N(EVS_TrainUnk_AltE))
         Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_SadTalk, ANIM_TrainToad_SadIdle, 0, MSG_CH4_0013)
     EndIf
@@ -432,8 +441,8 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
     // continue to next station
     Label(15)
     Exec(N(EVS_TrainUnk_A))
-    Set(MV_TrainRideState, TRAIN_STATE_0)
-    Set(MV_TrainPath, Ref(N(TrainPath_D_80246C40_DABE80)))
+    Set(MV_TrainRideState, TRAIN_STATE_INIT)
+    Set(MV_TrainPath, Ref(N(TrainPath_PassthroughLeft)))
     Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
     Exec(N(EVS_Scene_RideTrain))
     Set(MF_TrainRideActive, true)
@@ -480,7 +489,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                     Loop(LVar0)
                         BufRead1(LVar1)
                     EndLoop
-                    Set(AB_OMO_6, LVar1)
+                    Set(AB_OMO_TrainDest, LVar1)
                     ExecWait(N(EVS_Train_DepartLeft))
                 Else
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -498,7 +507,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
-                        Set(AB_OMO_6, LVar1)
+                        Set(AB_OMO_TrainDest, LVar1)
                         ExecWait(N(EVS_Train_DepartRight))
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -512,7 +521,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
-                        Set(AB_OMO_6, LVar1)
+                        Set(AB_OMO_TrainDest, LVar1)
                         ExecWait(N(EVS_Train_DepartRight))
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -526,7 +535,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
-                        Set(AB_OMO_6, LVar1)
+                        Set(AB_OMO_TrainDest, LVar1)
                         ExecWait(N(EVS_Train_DepartRight))
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -538,9 +547,9 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
     End
 };
 
-s32 N(TrainPath_Idle)[] = {
-    Float(131.251), Float(-210.168), Float(74.997),
-    -1, -1, -1
+TrainPath N(TrainPath_Idle)[] = {
+    TRAIN_PATH_BEGIN(131.251, -210.168, 74.997),
+    TRAIN_PATH_END
 };
 
 EvtScript N(EVS_SetupTrain) = {
@@ -553,7 +562,7 @@ EvtScript N(EVS_SetupTrain) = {
     EndIf
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_Idle)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -569,7 +578,7 @@ EvtScript N(EVS_SetupTrain) = {
                 Call(EnableGroup, MODEL_popo, false)
                 Call(EnableGroup, MODEL_po, true)
             CaseDefault
-                Set(MV_TrainRideState, TRAIN_STATE_0)
+                Set(MV_TrainRideState, TRAIN_STATE_INIT)
                 Set(MV_TrainPath, Ref(N(TrainPath_Idle)))
                 Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
                 Exec(N(EVS_Scene_RideTrain))
@@ -583,7 +592,6 @@ EvtScript N(EVS_SetupTrain) = {
 #undef TRAIN_STATION_ID
 #undef TRAIN_ROUTE_LEFT
 #undef TRAIN_ROUTE_RIGHT
-#undef TRAIN_COLLIDER
 #undef TRAIN_ARRIVAL_MESSAGE
 #undef TRAIN_LEFT_THRESHOLD
 #undef TRAIN_RIGHT_THRESHOLD

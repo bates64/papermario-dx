@@ -8,19 +8,19 @@ EvtScript N(D_8024262C_DEE4FC) = {
         Wait(140)
         Switch(GB_OMO_TrainRoute)
             CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                IfEq(AB_OMO_6, OMO_STATION_PINK)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_PINK)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000B)
                 EndIf
             CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                IfEq(AB_OMO_6, OMO_STATION_GREEN)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_GREEN)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000C)
                 EndIf
             CaseEq(TRAIN_ROUTE_GREEN_RED)
-                IfEq(AB_OMO_6, OMO_STATION_RED)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_RED)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000D)
                 EndIf
             CaseEq(TRAIN_ROUTE_RED_BLUE)
-                IfEq(AB_OMO_6, OMO_STATION_BLUE)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_BLUE)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000A)
                 EndIf
         EndSwitch
@@ -28,19 +28,19 @@ EvtScript N(D_8024262C_DEE4FC) = {
         Wait(140)
         Switch(GB_OMO_TrainRoute)
             CaseEq(TRAIN_ROUTE_BLUE_PINK)
-                IfEq(AB_OMO_6, OMO_STATION_BLUE)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_BLUE)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000A)
                 EndIf
             CaseEq(TRAIN_ROUTE_PINK_GREEN)
-                IfEq(AB_OMO_6, OMO_STATION_PINK)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_PINK)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000B)
                 EndIf
             CaseEq(TRAIN_ROUTE_GREEN_RED)
-                IfEq(AB_OMO_6, OMO_STATION_GREEN)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_GREEN)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000C)
                 EndIf
             CaseEq(TRAIN_ROUTE_RED_BLUE)
-                IfEq(AB_OMO_6, OMO_STATION_RED)
+                IfEq(AB_OMO_TrainDest, OMO_STATION_RED)
                     Call(SpeakToPlayer, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 5, MSG_CH4_000D)
                 EndIf
         EndSwitch
@@ -65,14 +65,16 @@ EvtScript N(D_802428CC_DEE79C) = {
     End
 };
 
-s32 N(TrainPath_D_80242984_DEE854)[] = {
-    -1550, Float(0.0), Float(90.0), 1550, Float(0.0),
-    -1, -1, -1
+TrainPath N(TrainPath_D_80242984_DEE854)[] = {
+    TRAIN_PATH_BEGIN(-1550.0, 0.0, 90.0),
+    TRAIN_PATH_POINT(1550.0, 0.0),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_D_802429A4_DEE874)[] = {
-    1550, Float(0.0), Float(270.0), -1550, Float(0.0),
-    -1, -1, -1
+TrainPath N(TrainPath_D_802429A4_DEE874)[] = {
+    TRAIN_PATH_BEGIN(1550.0, 0.0, 270.0),
+    TRAIN_PATH_POINT(-1550.0, 0.0),
+    TRAIN_PATH_END
 };
 
 API_CALLABLE(N(CheckForSceneSkip)) {
@@ -97,7 +99,7 @@ EvtScript N(EVS_802429C4) = {
     Exec(N(D_8024262C_DEE4FC))
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_D_80242984_DEE854)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))
@@ -128,7 +130,7 @@ EvtScript N(EVS_802429C4) = {
             ExecWait(N(EVS_TrainUnk_G))
         EndThread
     Else
-        Set(MV_TrainRideState, TRAIN_STATE_0)
+        Set(MV_TrainRideState, TRAIN_STATE_INIT)
         Set(MV_TrainPath, Ref(N(TrainPath_D_802429A4_DEE874)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
         Exec(N(EVS_Scene_RideTrain))

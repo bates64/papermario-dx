@@ -15,53 +15,60 @@
 
 #include "../common/TrainStation.inc.c"
 
-Vec2i N(TrainConductorPos) = {
+Vec2i N(ConductorPos) = {
     50, 45
 };
 
-s32 N(TrainPath_DepartRight)[] = {
-    Float(-1.825), Float(-35.275), Float(66.038),
-    Float(162.917), Float(-108.494), Float(353.442),
-    Float(-353.717), Float(414.885), Float(-426.942),
-    -1, -1, -1
+TrainPath N(TrainPath_DepartRight)[] = {
+    TRAIN_PATH_BEGIN(-1.825, -35.275, 66.038),
+    TRAIN_PATH_POINT(162.917, -108.494),
+    TRAIN_PATH_POINT(353.442, -353.717),
+    TRAIN_PATH_POINT(414.885, -426.942),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_DepartLeft)[] = {
-    Float(-1.825), Float(-35.275), Float(246.038),
-    Float(-166.506), Float(37.917), Float(-500.0),
-    Float(0.279), Float(-600.0), Float(0.558),
-    -1, -1, -1
+TrainPath N(TrainPath_DepartLeft)[] = {
+    TRAIN_PATH_BEGIN(-1.825, -35.275, 246.038),
+    TRAIN_PATH_POINT(-166.506, 37.917),
+    TRAIN_PATH_POINT(-500.0, 0.279),
+    TRAIN_PATH_POINT(-600.0, 0.558),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_ArriveRight)[] = {
-    Float(414.885),  Float(-426.942), Float(219.925),
-    Float(353.442),  Float(-353.717), Float(162.917),
-    Float(-108.494), Float(-38.38),   Float(-19.05),
-    -1, -1, -1
+TrainPath N(TrainPath_ArriveRight)[] = {
+    TRAIN_PATH_BEGIN(414.885, -426.942, 219.925),
+    TRAIN_PATH_POINT(353.442, -353.717),
+    TRAIN_PATH_POINT(162.917, -108.494),
+    TRAIN_PATH_POINT(-38.38, -19.05),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_PassthroughRight)[] = {
-    Float(414.885), Float(-426.942), Float(219.925),
-    Float(353.442), Float(-353.717), Float(162.917),
-    Float(-108.494), Float(-166.506), Float(37.917),
-    Float(-500.0), Float(0.279), Float(-600.0),
-    Float(0.558),  -1, -1, -1
+TrainPath N(TrainPath_PassthroughRight)[] = {
+    TRAIN_PATH_BEGIN(414.885, -426.942, 219.925),
+    TRAIN_PATH_POINT(353.442, -353.717),
+    TRAIN_PATH_POINT(162.917, -108.494),
+    TRAIN_PATH_POINT(-166.506, 37.917),
+    TRAIN_PATH_POINT(-500.0, 0.279),
+    TRAIN_PATH_POINT(-600.0, 0.558),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_ArriveLeft)[] = {
-    Float(-600.0), Float(0.558), Float(89.875),
-    Float(-500.0), Float(0.279), Float(-166.506),
-    Float(37.917), Float(34.74), Float(-51.5),
-    -1, -1, -1
+TrainPath N(TrainPath_ArriveLeft)[] = {
+    TRAIN_PATH_BEGIN(-600.0, 0.558, 89.875),
+    TRAIN_PATH_POINT(-500.0, 0.279),
+    TRAIN_PATH_POINT(-166.506, 37.917),
+    TRAIN_PATH_POINT(34.74, -51.5),
+    TRAIN_PATH_END
 };
 
-s32 N(TrainPath_PassthroughLeft)[] = {
-    Float(-600.0), Float(0.558), Float(89.875),
-    Float(-500.0), Float(0.279), Float(-166.506),
-    Float(37.917), Float(162.917), Float(-108.494),
-    Float(353.442), Float(-353.717), Float(414.885),
-    Float(-426.942),
-    -1, -1, -1
+TrainPath N(TrainPath_PassthroughLeft)[] = {
+    TRAIN_PATH_BEGIN(-600.0, 0.558, 89.875),
+    TRAIN_PATH_POINT(-500.0, 0.279),
+    TRAIN_PATH_POINT(-166.506, 37.917),
+    TRAIN_PATH_POINT(162.917, -108.494),
+    TRAIN_PATH_POINT(353.442, -353.717),
+    TRAIN_PATH_POINT(414.885, -426.942),
+    TRAIN_PATH_END
 };
 
 s32 N(LeftStations)[] = {
@@ -91,7 +98,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                     Loop(LVar0)
                         BufRead1(LVar1)
                     EndLoop
-                    Set(AB_OMO_6, LVar1)
+                    Set(AB_OMO_TrainDest, LVar1)
                     ExecWait(N(EVS_Train_DepartLeft))
                 Else
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -105,7 +112,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                     Loop(LVar0)
                         BufRead1(LVar1)
                     EndLoop
-                    Set(AB_OMO_6, LVar1)
+                    Set(AB_OMO_TrainDest, LVar1)
                     ExecWait(N(EVS_Train_DepartLeft))
                 Else
                     Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -125,7 +132,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
-                        Set(AB_OMO_6, LVar1)
+                        Set(AB_OMO_TrainDest, LVar1)
                         ExecWait(N(EVS_Train_DepartRight))
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -140,7 +147,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
                         Loop(LVar0)
                             BufRead1(LVar1)
                         EndLoop
-                        Set(AB_OMO_6, LVar1)
+                        Set(AB_OMO_TrainDest, LVar1)
                         ExecWait(N(EVS_Train_DepartRight))
                     Else
                         Call(ContinueSpeech, NPC_Conductor, ANIM_TrainToad_Talk, ANIM_TrainToad_Idle, 0, MSG_CH4_0008)
@@ -152,7 +159,7 @@ EvtScript N(EVS_Conductor_ChooseRoute) = {
     End
 };
 
-s32 N(TrainPath_Idle)[] = {
-    Float(-1.825), Float(-35.275), Float(66.038),
-    -1, -1, -1
+TrainPath N(TrainPath_Idle)[] = {
+    TRAIN_PATH_BEGIN(-1.825, -35.275, 66.038),
+    TRAIN_PATH_END
 };
