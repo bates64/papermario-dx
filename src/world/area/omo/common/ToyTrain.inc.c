@@ -109,7 +109,7 @@ API_CALLABLE(N(IsAOrBPressed)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_Scene_RideTrain) = {
+EvtScript N(EVS_UpdateTrain) = {
     MallocArray(20, LVar0)
     UseArray(LVar0)
     SetF(ArrayVar(2), Float(0.0))
@@ -308,7 +308,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                 SetF(LVar2, MV_TrainYaw)
                 AddF(LVar2, Float(180.0))
                 Call(AddVectorPolar, LVar0, LVar1, Float(15.0), LVar2)
-                Call(N(SetNpcPosYaw), -4, LVar0, 50, LVar1, MV_TrainYaw)
+                Call(N(SetNpcPosYaw), NPC_PARTNER, LVar0, 50, LVar1, MV_TrainYaw)
                 SetF(LVar0, MV_TrainPosX)
                 SetF(LVar1, MV_TrainPosZ)
                 SetF(LVar2, MV_TrainYaw)
@@ -318,7 +318,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
                     SubF(LVar2, Float(90.0))
                 EndIf
                 Call(AddVectorPolar, LVar0, LVar1, Float(20.0), LVar2)
-                Call(N(SetNpcPosYaw), 0, LVar0, 50, LVar1, MV_TrainYaw)
+                Call(N(SetNpcPosYaw), NPC_Conductor, LVar0, 50, LVar1, MV_TrainYaw)
             CaseEq(TRAIN_STATE_DONE)
                 // do nothing
         EndSwitch
@@ -373,7 +373,7 @@ EvtScript N(EVS_Scene_RideTrain) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_A) = {
+EvtScript N(EVS_UpdateCameraDuringTrainRide) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetCamTarget, CAM_DEFAULT, LVar0, 0, LVar2)
@@ -383,7 +383,7 @@ EvtScript N(EVS_TrainUnk_A) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_B) = {
+EvtScript N(EVS_RestoreCameraAfterTrainRide) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(MakeLerp, 0, LVar1, 45, EASING_LINEAR)
     Loop(0)
@@ -399,7 +399,7 @@ EvtScript N(EVS_TrainUnk_B) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_C) = {
+EvtScript N(EVS_LowerCameraBeforeTrainRide) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(MakeLerp, LVar1, 0, 40, EASING_LINEAR)
     Loop(0)
@@ -420,7 +420,7 @@ EvtScript N(EVS_TrainUnk_C) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_D) = {
+EvtScript N(EVS_BoardTrain) = {
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Thread
@@ -477,7 +477,7 @@ EvtScript N(EVS_TrainUnk_D) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_E) = {
+EvtScript N(EVS_DisembarkTrain) = {
     Call(StopSound, SOUND_LRAW_TOYBOX_TRAIN_GEAR)
     Call(SetMusic, 0, SONG_SHY_GUY_TOYBOX, 0, VOL_LEVEL_FULL)
     Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
@@ -523,7 +523,7 @@ EvtScript N(EVS_TrainUnk_E) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_F) = {
+EvtScript N(EVS_SkipTrainRideToDestination) = {
     Switch(AB_OMO_TrainDest)
         CaseEq(OMO_STATION_BLUE)
             Call(GotoMapSpecial, Ref("omo_03"), omo_03_ENTRY_3, TRANSITION_TOY_TRAIN)
@@ -539,7 +539,7 @@ EvtScript N(EVS_TrainUnk_F) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_G) = {
+EvtScript N(EVS_SkipTrainRideToNextStation) = {
     Switch(AB_OMO_TrainOrigin)
         CaseEq(OMO_STATION_BLUE)
             Switch(AB_OMO_TrainDest)
@@ -595,7 +595,7 @@ EvtScript N(EVS_TrainUnk_G) = {
     End
 };
 
-EvtScript N(EVS_TrainUnk_H) = {
+EvtScript N(EVS_AwaitTrainRideSkip) = {
     Label(10)
         Wait(1)
         Call(N(IsAOrBPressed))
@@ -603,9 +603,9 @@ EvtScript N(EVS_TrainUnk_H) = {
             Goto(10)
         EndIf
     IfEq(AF_OMO_UsingRightSwitch, false)
-        ExecWait(N(EVS_TrainUnk_F))
+        ExecWait(N(EVS_SkipTrainRideToDestination))
     Else
-        ExecWait(N(EVS_TrainUnk_G))
+        ExecWait(N(EVS_SkipTrainRideToNextStation))
     EndIf
     Return
     End

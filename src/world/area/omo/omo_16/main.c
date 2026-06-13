@@ -6,7 +6,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     Call(SetMusic, 0, SONG_TOYBOX_TRAIN, 0, VOL_LEVEL_FULL)
-    ExecWait(N(EVS_802429C4))
+    ExecWait(N(EVS_Scene_TrainTraveling))
     Wait(3)
     Return
     End

@@ -31,5 +31,5 @@ enum {
 #define NAMESPACE omo_16
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_802429C4);
+extern EvtScript N(EVS_Scene_TrainTraveling);
 extern NpcGroupList N(DefaultNPCs);

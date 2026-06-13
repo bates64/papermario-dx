@@ -51,7 +51,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
             IfEq(AF_OMO03_TrainStuck, false)
                 ExecWait(N(EVS_Conductor_ChooseRoute))
             Else
-                ExecWait(N(EVS_80246108))
+                ExecWait(N(EVS_Conductor_ResumeStuckTrain))
             EndIf
         EndIf
     EndIf

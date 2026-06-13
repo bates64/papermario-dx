@@ -48,7 +48,7 @@ extern EvtScript N(EVS_Scene_EnterSpring);
 extern EvtScript N(EVS_SetupGizmos);
 extern EvtScript N(EVS_SetupTrain);
 extern EvtScript N(EVS_Conductor_ChooseRoute);
-extern EvtScript N(EVS_80246108);
+extern EvtScript N(EVS_Conductor_ResumeStuckTrain);
 extern EvtScript N(EVS_Scene_Epilogue);
 extern EvtScript N(EVS_Scene_TrainDropped);
 extern EvtScript N(EVS_MakeEntities);

@@ -2345,7 +2345,7 @@ enum Locations {
 
 typedef enum ScreenTransition {
     TRANSITION_STANDARD                 = 0,    // fade to/from black
-    TRANSITION_TOY_TRAIN                = 1,    // similar to TRANSITION_TOY_TRAIN, but fade applies to whole screen
+    TRANSITION_TOY_TRAIN                = 1,    // similar to TRANSITION_STANDARD, but fade applies to whole screen
     TRANSITION_END_DEMO_SCENE_BLACK     = 2,    // rapidly fade to black
     TRANSITION_END_DEMO_SCENE_WHITE     = 3,    // slow fade to white -> rapid fade in from white
     TRANSITION_BEGIN_OR_END_GAME        = 4,    // slow fade to/from black

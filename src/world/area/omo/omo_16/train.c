@@ -2,7 +2,7 @@
 
 #include "../common/ToyTrain.inc.c"
 
-EvtScript N(D_8024262C_DEE4FC) = {
+EvtScript N(EVS_Conductor_AnnounceArrival) = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Wait(140)
@@ -49,7 +49,7 @@ EvtScript N(D_8024262C_DEE4FC) = {
     End
 };
 
-EvtScript N(D_802428CC_DEE79C) = {
+EvtScript N(EVS_UpdateCameraDuringLongTrainRide) = {
     Label(0)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         IfLt(LVar0, -2000)
@@ -65,13 +65,13 @@ EvtScript N(D_802428CC_DEE79C) = {
     End
 };
 
-TrainPath N(TrainPath_D_80242984_DEE854)[] = {
+TrainPath N(TrainPath_LeftToRight)[] = {
     TRAIN_PATH_BEGIN(-1550.0, 0.0, 90.0),
     TRAIN_PATH_POINT(1550.0, 0.0),
     TRAIN_PATH_END
 };
 
-TrainPath N(TrainPath_D_802429A4_DEE874)[] = {
+TrainPath N(TrainPath_RightToLeft)[] = {
     TRAIN_PATH_BEGIN(1550.0, 0.0, 270.0),
     TRAIN_PATH_POINT(-1550.0, 0.0),
     TRAIN_PATH_END
@@ -91,18 +91,18 @@ API_CALLABLE(N(CheckForSceneSkip)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_802429C4) = {
+EvtScript N(EVS_Scene_TrainTraveling) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(DisablePartnerAI, 0)
-    Exec(N(D_802428CC_DEE79C))
-    Exec(N(D_8024262C_DEE4FC))
+    Exec(N(EVS_UpdateCameraDuringLongTrainRide))
+    Exec(N(EVS_Conductor_AnnounceArrival))
     Call(GetEntryID, LVar0)
     IfEq(LVar0, omo_16_ENTRY_0)
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(N(TrainPath_D_80242984_DEE854)))
+        Set(MV_TrainPath, Ref(N(TrainPath_LeftToRight)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
-        Exec(N(EVS_Scene_RideTrain))
+        Exec(N(EVS_UpdateTrain))
         Set(MF_TrainRideActive, true)
         Thread
             Label(10)
@@ -127,13 +127,13 @@ EvtScript N(EVS_802429C4) = {
             Wait(100)
             Return
             Label(11)
-            ExecWait(N(EVS_TrainUnk_G))
+            ExecWait(N(EVS_SkipTrainRideToNextStation))
         EndThread
     Else
         Set(MV_TrainRideState, TRAIN_STATE_INIT)
-        Set(MV_TrainPath, Ref(N(TrainPath_D_802429A4_DEE874)))
+        Set(MV_TrainPath, Ref(N(TrainPath_RightToLeft)))
         Set(MV_TrainSpeedMode, TRAIN_SPEED_CONSTANT)
-        Exec(N(EVS_Scene_RideTrain))
+        Exec(N(EVS_UpdateTrain))
         Set(MF_TrainRideActive, true)
         Thread
             Label(30)
@@ -158,7 +158,7 @@ EvtScript N(EVS_802429C4) = {
             Wait(100)
             Return
             Label(31)
-            ExecWait(N(EVS_TrainUnk_F))
+            ExecWait(N(EVS_SkipTrainRideToDestination))
         EndThread
     EndIf
     Return
