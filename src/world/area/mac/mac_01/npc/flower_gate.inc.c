@@ -533,11 +533,11 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
                 Set(LVar1, MSG_MAC_Plaza_006C)
         EndSwitch
     EndIf
-    IfEq(AF_MAC_14, false)
-        Set(AF_MAC_14, true)
+    IfEq(AF_MAC01_ToggleDialogue_MinhT, false)
+        Set(AF_MAC01_ToggleDialogue_MinhT, true)
     Else
         Set(LVar0, LVar1)
-        Set(AF_MAC_14, false)
+        Set(AF_MAC01_ToggleDialogue_MinhT, false)
     EndIf
     Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, LVar0)
     IfEq(LVar2, 1)

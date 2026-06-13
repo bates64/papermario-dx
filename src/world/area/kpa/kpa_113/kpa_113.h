@@ -14,7 +14,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID  = MapVar(1),
+    MV_EntityID_Padlock  = MapVar(1),
 };
 
 #define NAMESPACE kpa_113

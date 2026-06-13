@@ -2,12 +2,12 @@
 
 #include "world/common/atomic/WhaleAnim.inc.c"
 
-API_CALLABLE(N(UnkPlayerPosFunc)) {
-    Npc* player = get_npc_safe(ACTOR_PLAYER);
-    f32 yaw = -player->yaw;
-    f32 x = player->pos.x + 30.0f + (sin_deg(yaw) * 70.0f);
-    f32 z = player->pos.z + (cos_deg(yaw) * 70.0f);
-    f32 y = player->pos.y + 50.0f;
+API_CALLABLE(N(GetWhaleHeadPos)) {
+    Npc* whale = get_npc_safe(NPC_Whale);
+    f32 yaw = -whale->yaw;
+    f32 x = whale->pos.x + 30.0f + (sin_deg(yaw) * 70.0f);
+    f32 z = whale->pos.z + (cos_deg(yaw) * 70.0f);
+    f32 y = whale->pos.y + 50.0f;
 
     evt_set_float_variable(script, LVar0, x);
     evt_set_float_variable(script, LVar1, y);
@@ -17,7 +17,7 @@ API_CALLABLE(N(UnkPlayerPosFunc)) {
 
 #include "world/common/atomic/WhaleGeyser.inc.c"
 
-EvtScript N(D_80250A5C_862BCC) = {
+EvtScript N(EVS_WhaleState_Still) = {
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
@@ -25,7 +25,7 @@ EvtScript N(D_80250A5C_862BCC) = {
     End
 };
 
-EvtScript N(D_80250AD4_862C44) = {
+EvtScript N(EVS_WhaleState_Yell) = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, 30, 30, 1, 0)
     SetF(LVar1, LVar0)
     DivF(LVar1, Float(3.0))
@@ -53,7 +53,7 @@ EvtScript N(D_80250AD4_862C44) = {
     End
 };
 
-EvtScript N(D_80250D58_862EC8) = {
+EvtScript N(EVS_WhaleState_IdleSad) = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, -30, 8, 1, 0)
     AddF(LVar0, Float(30.0))
     SetF(LVar1, LVar0)
@@ -78,21 +78,21 @@ EvtScript N(D_80250D58_862EC8) = {
     End
 };
 
-EvtScript N(D_80250FA4_863114) = {
+EvtScript N(EVS_WhaleState_WalkSad) = {
     Return
     End
 };
 
-EvtScript N(D_80250FB4_863124) = {
+EvtScript N(EVS_WhaleState_Shout) = {
     Call(GetNpcVar, NPC_Whale, 0, LVar3)
     IfEq(LVar3, 0)
-        Call(N(UnkPlayerPosFunc))
+        Call(N(GetWhaleHeadPos))
         Call(PlaySoundAt, SOUND_LOOP_WHALE_GEYSER, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
         Call(N(CreateWhaleGeyser), 0, LVar0, LVar1, LVar2, 0, -1, 0, 30)
         Call(SetNpcVar, NPC_Whale, 0, LVar0)
     EndIf
     Call(GetNpcVar, NPC_Whale, 0, LVar3)
-    Call(N(UnkPlayerPosFunc))
+    Call(N(GetWhaleHeadPos))
     Call(N(SetWhaleGeyserPos), LVar3, LVar0, LVar1, LVar2)
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
@@ -101,12 +101,12 @@ EvtScript N(D_80250FB4_863124) = {
     End
 };
 
-EvtScript N(D_8025110C_86327C) = {
+EvtScript N(EVS_WhaleState_TalkSad) = {
     Return
     End
 };
 
-EvtScript N(D_8025111C_86328C) = {
+EvtScript N(EVS_WhaleState_HurtStill) = {
     IfGe(LVarC, 0)
         IfLe(LVarC, 2)
             Call(EnableModel, MODEL_o170, false)
@@ -130,7 +130,7 @@ EvtScript N(D_8025111C_86328C) = {
     End
 };
 
-EvtScript N(D_80251244_8633B4) = {
+EvtScript N(EVS_WhaleState_Run) = {
     Set(LVar0, LVarC)
     Div(LVar0, 20)
     Mod(LVar0, 2)
@@ -150,7 +150,7 @@ EvtScript N(D_80251244_8633B4) = {
     End
 };
 
-EvtScript N(D_802513AC_86351C) = {
+EvtScript N(EVS_WhaleState_Panic) = {
     Call(CosInterpMinMax, LVarC, LVar0, Float(-6.0), Float(6.0), 3, 0, 0)
     Call(CosInterpMinMax, LVarC, LVar1, Float(6.0), Float(-6.0), 2, 0, 0)
     Call(TranslateModel, MODEL_o173, LVar0, LVar1, 0)
@@ -165,7 +165,7 @@ EvtScript N(D_802513AC_86351C) = {
     End
 };
 
-EvtScript N(D_802514EC_86365C) = {
+EvtScript N(EVS_WhaleState_Talk) = {
     Set(LVar0, LVarC)
     Div(LVar0, 20)
     Mod(LVar0, 2)
@@ -185,7 +185,7 @@ EvtScript N(D_802514EC_86365C) = {
     End
 };
 
-EvtScript N(D_80251654_8637C4) = {
+EvtScript N(EVS_WhaleState_Idle) = {
     Call(CosInterpMinMax, LVarC, LVar0, 30, 60, 30, 0, 0)
     Call(RotateModel, MODEL_o167, LVar0, 1, 0, 0)
     Call(RotateModel, MODEL_o168, LVar0, -1, 0, 0)
@@ -193,7 +193,7 @@ EvtScript N(D_80251654_8637C4) = {
     End
 };
 
-EvtScript N(D_802516CC_86383C) = {
+EvtScript N(EVS_WhaleState_Walk) = {
     Call(CosInterpMinMax, LVarC, LVar0, 0, 8, 3, 0, 0)
     Set(LVar1, LVar0)
     Div(LVar1, 3)
@@ -299,36 +299,36 @@ EvtScript N(EVS_SetupWhale) = {
             Switch(LVarB)
                 CaseEq(ANIM_Kolorado_IdleSad)
                     Call(PlaySoundAtNpc, NPC_Whale, SOUND_WHALE_CLOSE_MOUTH, SOUND_SPACE_DEFAULT)
-                    Set(LVarD, Ref(N(D_80250D58_862EC8)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_IdleSad)))
                 CaseEq(ANIM_Kolorado_Still)
-                    Set(LVarD, Ref(N(D_80250A5C_862BCC)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Still)))
                 CaseEq(ANIM_Kolorado_Yell)
                     Call(PlaySoundAtNpc, NPC_Whale, SOUND_WHALE_OPEN_MOUTH, SOUND_SPACE_DEFAULT)
-                    Set(LVarD, Ref(N(D_80250AD4_862C44)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Yell)))
                 CaseEq(ANIM_Kolorado_Idle)
-                    Set(LVarD, Ref(N(D_80251654_8637C4)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Idle)))
                 CaseEq(ANIM_Kolorado_Walk)
-                    Set(LVarD, Ref(N(D_802516CC_86383C)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Walk)))
                 CaseEq(ANIM_Kolorado_WalkSad)
-                    Set(LVarD, Ref(N(D_80250FA4_863114)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_WalkSad)))
                     Call(EnableModel, MODEL_o170, false)
                     Call(EnableModel, MODEL_o183, false)
                 CaseEq(ANIM_Kolorado_Run)
-                    Set(LVarD, Ref(N(D_80251244_8633B4)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Run)))
                     Call(EnableModel, MODEL_o170, false)
                     Call(EnableModel, MODEL_o183, false)
                 CaseEq(ANIM_Kolorado_Panic)
-                    Set(LVarD, Ref(N(D_802513AC_86351C)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Panic)))
                     Call(EnableModel, MODEL_o170, false)
                     Call(EnableModel, MODEL_o183, false)
                 CaseEq(ANIM_Kolorado_Talk)
-                    Set(LVarD, Ref(N(D_802514EC_86365C)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Talk)))
                 CaseEq(ANIM_Kolorado_Shout)
-                    Set(LVarD, Ref(N(D_80250FB4_863124)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_Shout)))
                 CaseEq(ANIM_Kolorado_TalkSad)
-                    Set(LVarD, Ref(N(D_8025110C_86327C)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_TalkSad)))
                 CaseEq(ANIM_Kolorado_HurtStill)
-                    Set(LVarD, Ref(N(D_8025111C_86328C)))
+                    Set(LVarD, Ref(N(EVS_WhaleState_HurtStill)))
             EndSwitch
         EndIf
         ExecWait(LVarD)
@@ -342,7 +342,7 @@ EvtScript N(EVS_SetupWhale) = {
     End
 };
 
-EvtScript N(EVS_802522B8) = {
+EvtScript N(EVS_SetWhaleIdleSad) = {
     Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_IdleSad)
     Return
     End

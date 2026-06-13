@@ -7,7 +7,7 @@ extern EvtScript N(EVS_80241C10);
 extern NpcGroupList N(DefaultNPCs);
 extern EvtScript N(EVS_MakeEntities);
 
-extern EvtScript N(EVS_802467AC);
+extern EvtScript N(EVS_SetupWhale);
 extern EvtScript N(EVS_80247A2C);
 
 #include "world/common/atomic/TexturePan.inc.c"
@@ -53,7 +53,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
         Exec(N(EVS_UpdateTexturePan))
     EndThread
-    Exec(N(EVS_802467AC))
+    Exec(N(EVS_SetupWhale))
     Exec(N(EVS_80247A2C))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitne, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilitse, COLLIDER_FLAGS_UPPER_MASK)

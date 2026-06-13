@@ -10,7 +10,7 @@
 #include "mapfs/kpa_62_hit.h"
 
 enum {
-    MV_PadlockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
 };
 
 #define NAMESPACE kpa_62

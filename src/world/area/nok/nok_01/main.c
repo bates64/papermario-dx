@@ -92,9 +92,9 @@ EvtScript N(EVS_Main) = {
     Call(SetModelTexVariant, MODEL_o340, LVar0)
 #endif
     Set(GF_MAP_KoopaVillage, true)
-    Set(AF_NOK01_Dialogue_RelaxedKoopa, false)
-    Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
-    Set(AF_NOK01_Dialogue_Bobomb_02, false)
+    Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
+    Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
+    Set(AF_NOK01_ToggleDialogue_Bobomb2, false)
     Set(AF_NOK_0E, false)
     Set(GF_NOK01_Bush4_KoopaLeaf, false)
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
@@ -116,7 +116,7 @@ EvtScript N(EVS_Main) = {
     Wait(1)
     ExecWait(N(EVS_SetupFoliage))
     Exec(N(EVS_SetupMusic))
-    Set(AB_NOK_0, 0)
+    Set(AB_NOK01_RadioStation, 0)
     Exec(N(EVS_EnterMap))
     Return
     End

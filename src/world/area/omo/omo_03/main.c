@@ -60,7 +60,7 @@ EvtScript N(EVS_Main) = {
         Call(SetModelTexVariant, MODEL_o, LVar0)
         Call(SetModelTexVariant, MODEL_n, LVar0)
 #endif
-    Set(AF_OMO03_Conductor_DialogueToggle, false)
+    Set(AF_OMO03_ToggleDialogue_Conductor, false)
     Set(GF_MAP_ShyGuysToybox, true)
     Call(GetEntryID, LVar0)
     IfNe(LVar0, omo_03_ENTRY_5)

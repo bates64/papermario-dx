@@ -119,7 +119,7 @@ def build(inputs: List[Path], output: Path):
                 f.write("    {\n")
                 for vtx in frame:
                     f.write(
-                        f"        {{ {{{vtx.x}, {vtx.y}, {vtx.z}}}, {{{vtx.u}, {vtx.v}}}, {{{vtx.r}, {vtx.g}, {vtx.b}}}, {vtx.a} }},\n"
+                        f"        {{ {{{vtx.x}, {vtx.y}, {vtx.z}}}, {{{vtx.u}, {vtx.v}}}, {{{vtx.r}, {vtx.g}, {vtx.b}}} }},\n"
                     )
                 f.write("    },\n")
             f.write("};\n\n")

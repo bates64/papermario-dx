@@ -417,7 +417,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_SAM11_UnlockedDoor, false)
         Call(MakeEntity, Ref(Entity_Padlock), 153, 8, -145, 0, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_Interact_Padlock)))
-        Set(MV_PadlockEntityID, LVar0)
+        Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Thread
         Call(N(MonitorCurrentFloor))

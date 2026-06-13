@@ -28,28 +28,28 @@ EvtScript N(EVS_NpcInteract_Composer) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_DialogueToggle_Composer, false)
+            IfEq(AF_DRO01_ToggleDialogue_Composer, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007C)
-                Set(AF_DRO_DialogueToggle_Composer, true)
+                Set(AF_DRO01_ToggleDialogue_Composer, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007D)
-                Set(AF_DRO_DialogueToggle_Composer, false)
+                Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
-            IfEq(AF_DRO_DialogueToggle_Composer, false)
+            IfEq(AF_DRO01_ToggleDialogue_Composer, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007E)
-                Set(AF_DRO_DialogueToggle_Composer, true)
+                Set(AF_DRO01_ToggleDialogue_Composer, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_007F)
-                Set(AF_DRO_DialogueToggle_Composer, false)
+                Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
         CaseDefault
-            IfEq(AF_DRO_DialogueToggle_Composer, false)
+            IfEq(AF_DRO01_ToggleDialogue_Composer, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_0080)
-                Set(AF_DRO_DialogueToggle_Composer, true)
+                Set(AF_DRO01_ToggleDialogue_Composer, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_0081)
-                Set(AF_DRO_DialogueToggle_Composer, false)
+                Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
     EndSwitch
     Set(LVar0, Ref(N(LyricsList)))

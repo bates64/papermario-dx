@@ -27,7 +27,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_MIM()
     Set(AB_MIM_2, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)
-    Set(AF_MIM03_Oaklie_DialogueToggle, false)
+    Set(AF_MIM03_ToggleDialogue_Oaklie, false)
     ExecWait(N(EVS_SetupGates))
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))

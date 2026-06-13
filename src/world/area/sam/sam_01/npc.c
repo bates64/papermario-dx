@@ -215,7 +215,7 @@ EvtScript N(EVS_NpcIdle_PenguinPatrol) = {
     Label(0)
         Switch(GB_StoryProgress)
             CaseEq(STORY_CH7_HERRINGWAY_AT_MAYORS_HOUSE)
-                IfEq(AF_SAM_03, true)
+                IfEq(AF_SAM01_InsideMayorOffice, true)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     IfLt(LVar2, -130)
                         ExecWait(N(EVS_Scene_MysterySolved))
@@ -229,7 +229,7 @@ EvtScript N(EVS_NpcIdle_PenguinPatrol) = {
 };
 
 EvtScript N(EVS_NpcInteract_Herringway) = {
-    IfEq(AF_SAM_04, false)
+    IfEq(AF_SAM01_InsideMayorFoyer, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D3)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_Herringway_Talk, ANIM_Herringway_Idle, 0, MSG_CH7_00D4)

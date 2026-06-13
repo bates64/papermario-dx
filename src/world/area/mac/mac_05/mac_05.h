@@ -52,8 +52,8 @@ enum {
 #define NAMESPACE mac_05
 
 extern EvtScript N(EVS_Main);
-extern EvtScript N(EVS_802496FC);
-extern EvtScript N(EVS_80248878);
+extern EvtScript N(EVS_Scene_ArriveByWhale);
+extern EvtScript N(EVS_Scene_FuzzipedeDefeated);
 extern EvtScript N(EVS_SetupWhale);
 extern EvtScript N(EVS_SetupRooms);
 extern EvtScript N(EVS_SetupMusic);

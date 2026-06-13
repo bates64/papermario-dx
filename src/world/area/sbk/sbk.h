@@ -22,8 +22,8 @@ enum {
 
 enum {
     AF_BanditHasCoin    = AreaFlag(1),
-    AF_SBK_02           = AreaFlag(2),
-    AF_SBK_03           = AreaFlag(3),
+    AF_SBK30_ToggleDialogue_Archeologist1 = AreaFlag(2),
+    AF_SBK30_ToggleDialogue_Archeologist2 = AreaFlag(3),
     AF_SBK_04           = AreaFlag(4),
     AF_SBK_05           = AreaFlag(5),
     AF_SBK_06           = AreaFlag(6),

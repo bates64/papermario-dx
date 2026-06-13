@@ -16,7 +16,7 @@ enum {
 };
 
 enum {
-    MV_PadlockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
 };
 
 #define NAMESPACE dgb_15

@@ -246,12 +246,12 @@ s32 N(ItemList_Cookbook)[] = {
 };
 
 EvtScript N(EVS_TayceT_RequestCookbook) = {
-    IfEq(AF_MAC_01, false)
+    IfEq(AF_MAC02_ToggleDialogue_TayceT, false)
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001D)
-        Set(AF_MAC_01, true)
+        Set(AF_MAC02_ToggleDialogue_TayceT, true)
     Else
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001E)
-        Set(AF_MAC_01, false)
+        Set(AF_MAC02_ToggleDialogue_TayceT, false)
     EndIf
     Set(LVar0, Ref(N(ItemList_Cookbook)))
     Set(LVar1, 0)
@@ -278,12 +278,12 @@ EvtScript N(EVS_TayceT_Cook) = {
     Call(DisablePlayerInput, true)
     IfEq(GF_MAC02_Met_TayceT, false)
         Set(GF_MAC02_Met_TayceT, true)
-        Set(AF_MAC_01, true)
+        Set(AF_MAC02_ToggleDialogue_TayceT, true)
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0000)
     Else
-        IfEq(AF_MAC_01, false)
+        IfEq(AF_MAC02_ToggleDialogue_TayceT, false)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0001)
-            Set(AF_MAC_01, true)
+            Set(AF_MAC02_ToggleDialogue_TayceT, true)
         Else
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0002)
         EndIf
@@ -466,7 +466,7 @@ EvtScript N(EVS_NpcInit_TayceT) = {
             EndIf
         EndIf
     EndIf
-    Set(AF_MAC_01, false)
+    Set(AF_MAC02_ToggleDialogue_TayceT, false)
     Return
     End
 };

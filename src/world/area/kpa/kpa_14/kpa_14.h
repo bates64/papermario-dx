@@ -10,7 +10,7 @@
 #include "mapfs/kpa_14_hit.h"
 
 enum {
-    MV_PadlockEntityID          = MapVar(0),
+    MV_EntityID_Padlock          = MapVar(0),
     MV_LastFloorBeforeLavaFall  = MapVar(10),
     MV_TakingLavaFallDamage     = MapVar(11),
 };

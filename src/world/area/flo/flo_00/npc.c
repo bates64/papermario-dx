@@ -220,13 +220,13 @@ EvtScript N(EVS_NpcInteract_Bubulb1) = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_Talk, ANIM_Bubulb_Pink_Idle, 0, MSG_CH6_0019)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Switch(AF_FLO_PinkBubulbDialogueToggle)
+            Switch(AF_FLO00_ToggleDialogue_PinkBubulb)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001A)
-                    Set(AF_FLO_PinkBubulbDialogueToggle, true)
+                    Set(AF_FLO00_ToggleDialogue_PinkBubulb, true)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001B)
-                    Set(AF_FLO_PinkBubulbDialogueToggle, false)
+                    Set(AF_FLO00_ToggleDialogue_PinkBubulb, false)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_HappyTalk, ANIM_Bubulb_Pink_HappyGentle, 0, MSG_CH6_001C)
@@ -246,13 +246,13 @@ EvtScript N(EVS_NpcInteract_Bubulb2) = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0020)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Switch(AF_FLO_PurpleBubulbDialogueToggle)
+            Switch(AF_FLO00_ToggleDialogue_PurpleBubulb)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0021)
-                    Set(AF_FLO_PurpleBubulbDialogueToggle, true)
+                    Set(AF_FLO00_ToggleDialogue_PurpleBubulb, true)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0022)
-                    Set(AF_FLO_PurpleBubulbDialogueToggle, false)
+                    Set(AF_FLO00_ToggleDialogue_PurpleBubulb, false)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Purple_Talk, ANIM_Bubulb_Purple_Idle, 0, MSG_CH6_0023)
@@ -272,13 +272,13 @@ EvtScript N(EVS_NpcInteract_Bubulb_03) = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_Talk, ANIM_Bubulb_Green_Idle, 0, MSG_CH6_0027)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Switch(AF_FLO_GreenBubulbDialogueToggle)
+            Switch(AF_FLO00_ToggleDialogue_GreenBubulb)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_0028)
-                    Set(AF_FLO_GreenBubulbDialogueToggle, true)
+                    Set(AF_FLO00_ToggleDialogue_GreenBubulb, true)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_0029)
-                    Set(AF_FLO_GreenBubulbDialogueToggle, false)
+                    Set(AF_FLO00_ToggleDialogue_GreenBubulb, false)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Green_HappyTalk, ANIM_Bubulb_Green_HappyGentle, 0, MSG_CH6_002A)
@@ -298,13 +298,13 @@ EvtScript N(EVS_NpcInteract_Bubulb_04) = {
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_Talk, ANIM_Bubulb_Yellow_Idle, 0, MSG_CH6_002E)
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Switch(AF_FLO_YellowBubulbDialogueToggle)
+            Switch(AF_FLO00_ToggleDialogue_YellowBubulb)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_002F)
-                    Set(AF_FLO_YellowBubulbDialogueToggle, true)
+                    Set(AF_FLO00_ToggleDialogue_YellowBubulb, true)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_0030)
-                    Set(AF_FLO_YellowBubulbDialogueToggle, false)
+                    Set(AF_FLO00_ToggleDialogue_YellowBubulb, false)
             EndSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Yellow_HappyTalk, ANIM_Bubulb_Yellow_HappyGentle, 0, MSG_CH6_0031)
@@ -314,28 +314,28 @@ EvtScript N(EVS_NpcInteract_Bubulb_04) = {
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_01) = {
-    Set(AF_FLO_PinkBubulbDialogueToggle, false)
+    Set(AF_FLO00_ToggleDialogue_PinkBubulb, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb1)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_02) = {
-    Set(AF_FLO_PurpleBubulbDialogueToggle, false)
+    Set(AF_FLO00_ToggleDialogue_PurpleBubulb, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb2)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_03) = {
-    Set(AF_FLO_GreenBubulbDialogueToggle, false)
+    Set(AF_FLO00_ToggleDialogue_GreenBubulb, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_03)))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_Bubulb_04) = {
-    Set(AF_FLO_YellowBubulbDialogueToggle, false)
+    Set(AF_FLO00_ToggleDialogue_YellowBubulb, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Bubulb_04)))
     Return
     End
@@ -348,56 +348,56 @@ EvtScript N(EVS_NpcInteract_Tolielup) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH6_GOT_MAGICAL_BEAN)
-            Switch(AB_FLO_TolielupDialogue)
+            Switch(AB_FLO00_DialogueState_Tolielup)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0035)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 1)
+                    Set(AB_FLO00_DialogueState_Tolielup, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0038)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 2)
+                    Set(AB_FLO00_DialogueState_Tolielup, 2)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0039)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 0)
+                    Set(AB_FLO00_DialogueState_Tolielup, 0)
             EndSwitch
         CaseLt(STORY_CH6_GOT_CRYSTAL_BERRY)
-            Switch(AB_FLO_TolielupDialogue)
+            Switch(AB_FLO00_DialogueState_Tolielup)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0036)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 1)
+                    Set(AB_FLO00_DialogueState_Tolielup, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0038)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 2)
+                    Set(AB_FLO00_DialogueState_Tolielup, 2)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0039)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 0)
+                    Set(AB_FLO00_DialogueState_Tolielup, 0)
             EndSwitch
         CaseLt(STORY_CH6_DESTROYED_PUFF_PUFF_MACHINE)
-            Switch(AB_FLO_TolielupDialogue)
+            Switch(AB_FLO00_DialogueState_Tolielup)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0037)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 1)
+                    Set(AB_FLO00_DialogueState_Tolielup, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0038)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 2)
+                    Set(AB_FLO00_DialogueState_Tolielup, 2)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0039)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 0)
+                    Set(AB_FLO00_DialogueState_Tolielup, 0)
             EndSwitch
         CaseLt(STORY_CH6_STAR_SPIRIT_RESCUED)
-            Switch(AB_FLO_TolielupDialogue)
+            Switch(AB_FLO00_DialogueState_Tolielup)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0039)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)
-                    Set(AB_FLO_TolielupDialogue, 1)
+                    Set(AB_FLO00_DialogueState_Tolielup, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Tolielup_Talk, ANIM_Tolielup_Idle, 0, MSG_CH6_0038)
                     Call(EndSpeech, NPC_SELF, ANIM_Tolielup_Laugh, ANIM_Tolielup_Laugh, 0)

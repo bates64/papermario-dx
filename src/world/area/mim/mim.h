@@ -21,9 +21,9 @@ enum {
 };
 
 enum {
-    AF_MIM_01                       = AreaFlag(1),
-    AF_MIM03_Oaklie_DialogueToggle  = AreaFlag(2),
-    AF_MIM04_Bubulb_DialogueToggle  = AreaFlag(4),
+    AF_MIM11_MansionGateOpen                       = AreaFlag(1),
+    AF_MIM03_ToggleDialogue_Oaklie         = AreaFlag(2),
+    AF_MIM04_ToggleDialogue_Bubulb         = AreaFlag(4),
     AF_MIM12_BackgroundLitUp        = AreaFlag(3),
 };
 

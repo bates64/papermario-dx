@@ -579,7 +579,7 @@ EvtScript N(EVS_SetupBridge) = {
         Call(TranslateGroup, MODEL_move1, 0, -120, 0)
         Call(UpdateColliderTransform, COLLIDER_m1_kabe)
         Call(EnableModel, MODEL_m1_kabe, false)
-        BindTrigger(Ref(N(EVS_Scene_ImposterAppears)), TRIGGER_AREA_FLAG_SET, AF_SAM_06, 1, 0)
+        BindTrigger(Ref(N(EVS_Scene_ImposterAppears)), TRIGGER_AREA_FLAG_SET, AF_SAM08_ImposterSwitchPressed, 1, 0)
     EndIf
     Return
     End

@@ -46,7 +46,7 @@ enum {
     MV_DialogueState_Penguin5   = MapVar(3),
     MV_DialogueState_Penguin6   = MapVar(4),
     MV_DialogueState_Patrol     = MapVar(5),
-    MV_PadlockEntityID          = MapVar(6),
+    MV_EntityID_Padlock          = MapVar(6),
     MV_PondDamageInProgress     = MapVar(7),
     MV_CurrentFloor             = MapVar(7),
     MV_ThrownOut                = MapVar(9),

@@ -38,7 +38,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_doa)
             Set(LVar3, DOOR_SWING_IN)
             ExecWait(EnterSplitSingleDoor)
-            Set(AF_ARN_01, false)
+            Set(AF_ARN_UsingWellSpring, false)
             Exec(N(EVS_BindExitTriggers))
         CaseEq(arn_08_ENTRY_1)
             Call(DisablePlayerInput, true)

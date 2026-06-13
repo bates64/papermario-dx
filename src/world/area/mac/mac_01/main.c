@@ -129,7 +129,7 @@ EvtScript N(EVS_Main) = {
     Set(AF_MAC_11, false)
     Set(AF_MAC_12, false)
     Set(AF_MAC_13, false)
-    Set(AF_MAC_14, false)
+    Set(AF_MAC01_ToggleDialogue_MinhT, false)
     Set(AF_MAC_15, false)
     IfLt(GB_StoryProgress, STORY_EPILOGUE)
         Exec(N(EVS_SetupBadgeShop))

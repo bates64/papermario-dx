@@ -760,7 +760,7 @@ EvtScript N(EVS_Scene_KoopaBrosUnmasked) = {
     Set(AF_MAC_11, false)
     Set(AF_MAC_12, false)
     Set(AF_MAC_13, false)
-    Set(AF_MAC_14, false)
+    Set(AF_MAC01_ToggleDialogue_MinhT, false)
     Call(RemoveEncounter, NPC_KoopaBros_01)
     Return
     End
@@ -2452,4 +2452,3 @@ NpcGroupList N(NinjiMeetingNPCs) = {
     NPC_GROUP(N(NpcData_Townsfolk)),
     {}
 };
-

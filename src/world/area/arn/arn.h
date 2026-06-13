@@ -21,15 +21,15 @@ enum {
 };
 
 enum {
-    AF_ARN_01           = AreaFlag(1),
-    AF_ARN_02           = AreaFlag(2),
-    AF_ARN_03           = AreaFlag(3),
-    AF_ARN_04           = AreaFlag(4),
-    AF_ARN_05           = AreaFlag(5),
-    AF_ARN05_Boo1DialogueToggle     = AreaFlag(6),
-    AF_ARN05_Boo2DialogueToggle     = AreaFlag(7),
-    AF_ARN05_Boo5DialogueToggle     = AreaFlag(8),
-    AF_ARN05_Boo3GaveRecentAdvice   = AreaFlag(9),
+    AF_ARN_UsingWellSpring            = AreaFlag(1),
+    AF_ARN03_ToggleDialogue_Boo1      = AreaFlag(2),
+    AF_ARN03_ToggleDialogue_Boo2      = AreaFlag(3),
+    AF_ARN03_ToggleDialogue_Boo3      = AreaFlag(4),
+    AF_ARN03_ToggleDialogue_Boo4      = AreaFlag(5),
+    AF_ARN05_ToggleDialogue_Boo1      = AreaFlag(6),
+    AF_ARN05_ToggleDialogue_Boo2      = AreaFlag(7),
+    AF_ARN05_ToggleDialogue_Boo5      = AreaFlag(8),
+    AF_ARN05_Boo3GaveRecentAdvice     = AreaFlag(9),
 };
 
 #endif

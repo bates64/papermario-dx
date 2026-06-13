@@ -19,9 +19,9 @@ EvtScript N(EVS_UnlockPrompt_UpperDoor) = {
     Call(RemoveItem, ITEM_TUBBA_CASTLE_KEY)
     Call(CloseChoicePopup)
     Set(GF_DGB03_UnlockedThirdFloor, true)
-    Call(GetEntityPosition, MV_PadlockEntityID, LVar0, LVar1, LVar2)
+    Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Call(SetEntityUsed, MV_PadlockEntityID)
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return
@@ -38,7 +38,7 @@ EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_DGB03_UnlockedThirdFloor, false)
         Call(MakeEntity, Ref(Entity_Padlock), -355, 218, 75, 80, MAKE_ENTITY_END)
         Call(AssignScript, Ref(N(EVS_OpenLockedDoor)))
-        Set(MV_PadlockEntityID, LVar0)
+        Set(MV_EntityID_Padlock, LVar0)
     EndIf
     Call(MakeItemEntity, ITEM_STAR_PIECE, 0, 75, 100, ITEM_SPAWN_MODE_FIXED_NEVER_VANISH, GF_DGB03_Item_StarPiece)
     Return

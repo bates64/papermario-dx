@@ -65,7 +65,7 @@ EvtScript N(EVS_BowserActivatesSwitch) = {
     Call(NpcJump0, NPC_Bowser_01, 300, 0, 0, 20)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_FLOOR_SWITCH_ACTIVATE, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_Bowser_01, SOUND_LARGE_NPC_IMPACT, SOUND_SPACE_DEFAULT)
-    Set(AF_KKJ_1A, true)
+    Set(AF_KKJ25_ActivatedArenaSwitch, true)
     Return
     End
 };
@@ -259,7 +259,7 @@ Vec3i N(PowerUpBoltOrigins2)[] = {
 };
 
 EvtScript N(EVS_Scene_ActivateMachine) = {
-    Set(AF_KKJ_1A, false)
+    Set(AF_KKJ25_ActivatedArenaSwitch, false)
     Wait(10)
     Call(UseSettingsFrom, CAM_DEFAULT, -150, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, -150, 0, 0)

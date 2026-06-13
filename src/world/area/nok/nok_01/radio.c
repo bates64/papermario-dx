@@ -1,8 +1,19 @@
 #include "nok_01.h"
 #include "sprite/player.h"
 
+enum RadioStation {
+    RADIO_STATION_ISLAND_SOUNDS     = 0,
+    RADIO_STATION_GOLDEN_OLDIES     = 1,
+    RADIO_STATION_HOT_HITS          = 2,
+    RADIO_STATION_INFORMATION       = 3,
+    RADIO_STATION_COUNT             = 4,
+};
+
 s16 N(StationMseqMapping)[] = {
-    0, 2, 1, 4
+    [RADIO_STATION_ISLAND_SOUNDS]   0,
+    [RADIO_STATION_GOLDEN_OLDIES]   2,
+    [RADIO_STATION_HOT_HITS]        1,
+    [RADIO_STATION_INFORMATION]     4,
 };
 
 API_CALLABLE(N(InitializeRadio)) {
@@ -99,24 +110,26 @@ EvtScript N(EVS_Interact_Radio) = {
     Call(SetPlayerAnimation, ANIM_MarioW2_RideLaki)
     Wait(7)
     Call(SetPlayerAnimation, ANIM_Mario1_Idle)
-    Add(AB_NOK_0, 1)
-    IfGe(AB_NOK_0, 4)
-        Set(AB_NOK_0, 0)
+    // increment channel
+    Add(AB_NOK01_RadioStation, 1)
+    IfGe(AB_NOK01_RadioStation, RADIO_STATION_COUNT)
+        Set(AB_NOK01_RadioStation, 0)
     EndIf
+    // skip HOT_HITS if not unlocked
     IfNe(GF_MAC05_SimonGotMelody, true)
-        IfEq(AB_NOK_0, 2)
-            Add(AB_NOK_0, 1)
+        IfEq(AB_NOK01_RadioStation, RADIO_STATION_HOT_HITS)
+            Add(AB_NOK01_RadioStation, 1)
         EndIf
     EndIf
-    Call(N(SetRadioStation), AB_NOK_0)
-    Switch(AB_NOK_0)
-        CaseEq(0) // island sounds
+    Call(N(SetRadioStation), AB_NOK01_RadioStation)
+    Switch(AB_NOK01_RadioStation)
+        CaseEq(RADIO_STATION_ISLAND_SOUNDS)
             Call(ShowMessageAtScreenPos, MSG_CH1_002F, 160, 40)
-        CaseEq(1) // golden oldies
+        CaseEq(RADIO_STATION_GOLDEN_OLDIES)
             Call(ShowMessageAtScreenPos, MSG_CH1_0030, 160, 40)
-        CaseEq(2) // hot hits
+        CaseEq(RADIO_STATION_HOT_HITS)
             Call(ShowMessageAtScreenPos, MSG_CH1_0031, 160, 40)
-        CaseEq(3) // information
+        CaseEq(RADIO_STATION_INFORMATION)
             Call(ShowMessageAtScreenPos, MSG_CH1_0032, 160, 40)
             ExecWait(N(EVS_InitiateTradingEvent))
     EndSwitch

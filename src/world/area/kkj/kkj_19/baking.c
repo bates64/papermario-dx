@@ -582,19 +582,19 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
             Call(RemoveItemEntity, AB_KKJ19_CakeItemIdx)
             Switch(LVar0)
                 CaseEq(ITEM_BAKING_STRAWBERRY)
-                    IfEq(AB_KKJ19_AddedIcing, false)
+                    IfEq(AF_KKJ19_AddedIcing, false)
                         Call(MakeItemEntity, ITEM_CAKE_WITH_BERRIES, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                         Set(AB_KKJ19_CakeItemIdx, LVar0)
                     Else
                         Call(MakeItemEntity, ITEM_CAKE_DONE, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                         Set(AB_KKJ19_CakeItemIdx, LVar0)
                     EndIf
-                    Set(AB_KKJ19_AddedBerries, true)
+                    Set(AF_KKJ19_AddedBerries, true)
                 CaseDefault
                     Call(MakeItemEntity, ITEM_CAKE_WITH_ICING, 287, 20, -30, ITEM_SPAWN_MODE_DECORATION, 0)
                     Set(AB_KKJ19_CakeItemIdx, LVar0)
-                    Set(AB_KKJ19_AddedIcing, true)
-                    Set(AB_KKJ19_AddedBerries, false)
+                    Set(AF_KKJ19_AddedIcing, true)
+                    Set(AF_KKJ19_AddedBerries, false)
             EndSwitch
     EndSwitch
     Add(AB_KKJ19_BakeStepProgress, 1)
@@ -649,10 +649,10 @@ EvtScript N(EVS_CloseOverDoor) = {
 };
 
 EvtScript N(EVS_PickupFinalCake) = {
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(LVar0, PEACH_BAKING_CAKE_WITH_ICING)
     Else
-        IfEq(AB_KKJ19_AddedIcing, false)
+        IfEq(AF_KKJ19_AddedIcing, false)
             Set(LVar0, PEACH_BAKING_CAKE_WITH_BERRIES)
         Else
             Set(LVar0, PEACH_BAKING_COMPLETE_CAKE)
@@ -1370,8 +1370,8 @@ EvtScript N(EVS_ManageBaking) = {
     Set(AB_KKJ19_CurrentBakeStep, BAKE_STEP_DECORATING)
     Set(AB_KKJ19_BakeStepProgress, 0)
     Set(AF_KKJ19_CanTakeIngredients, true)
-    Set(AB_KKJ19_AddedIcing, false)
-    Set(AB_KKJ19_AddedBerries, false)
+    Set(AF_KKJ19_AddedIcing, false)
+    Set(AF_KKJ19_AddedBerries, false)
     // wait for peach to tell twink shes done
     Label(LBL_DECORATE_WAITING)
         Call(ResetCam, CAM_DEFAULT, Float(4.0 / DT))
@@ -1414,7 +1414,7 @@ EvtScript N(EVS_ManageBaking) = {
             Goto(LBL_START_OVER)
         EndIf
     ExecWait(N(EVS_ReturnHeldIngredient))
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(AF_KKJ19_FailedBakingTask, true)
     EndIf
     IfEq(AF_KKJ19_FailedBakingTask, false)

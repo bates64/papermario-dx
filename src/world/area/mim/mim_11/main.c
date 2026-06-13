@@ -4,7 +4,7 @@
 
 #include "world/common/atomic/TexturePan.inc.c"
 
-API_CALLABLE(N(func_802405EC_BB765C)) {
+API_CALLABLE(N(SetupFog)) {
     enable_world_fog();
     set_world_fog_dist(960, 1000);
     set_world_fog_color(32, 30, 28, 255);
@@ -19,7 +19,7 @@ API_CALLABLE(N(func_802405EC_BB765C)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_8024066C_BB76DC)) {
+API_CALLABLE(N(UpdateMansionRevealCamera)) {
     Camera* cam = &gCameras[gCurrentCameraID];
     s32 retVal = ApiStatus_BLOCK;
 
@@ -49,7 +49,7 @@ API_CALLABLE(N(func_8024066C_BB76DC)) {
     return retVal;
 }
 
-API_CALLABLE(N(func_80240790_BB7800)) {
+API_CALLABLE(N(OrbitMansionRevealCamera)) {
     Camera* cam = &gCameras[CAM_DEFAULT];
     f32 angle1, angle2, moveAngle;
 
@@ -86,10 +86,10 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
     Call(SetCamPosC, CAM_DEFAULT, 0, 0)
     Call(SetPanTarget, CAM_DEFAULT, 75, 0, 309)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(func_8024066C_BB76DC))
+    Call(N(UpdateMansionRevealCamera))
     Wait(30)
     ChildThread
-        Call(N(func_80240790_BB7800))
+        Call(N(OrbitMansionRevealCamera))
         Wait(90)
         Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
         Loop(0)
@@ -162,7 +162,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 };
 
 EvtScript N(EVS_EnterMap) = {
-    Set(AF_MIM_01, true)
+    Set(AF_MIM11_MansionGateOpen, true)
     Call(GetLoadType, LVar1)
     IfEq(LVar1, LOAD_FROM_FILE_SELECT)
         Exec(EnterSavePoint)
@@ -172,7 +172,7 @@ EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
         CaseEq(mim_11_ENTRY_0)
-            Set(AF_MIM_01, false)
+            Set(AF_MIM11_MansionGateOpen, false)
             IfLt(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 Set(GB_StoryProgress, STORY_CH3_ARRIVED_AT_BOOS_MANSION)
                 ExecWait(N(EVS_Scene_ReachedMansion))
@@ -233,11 +233,11 @@ EvtScript N(EVS_Main) = {
     Call(EnableGroup, MODEL_g62, false)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
-    Exec(N(D_802430E0_BBA150))
+    Exec(N(EVS_SetupMansionGate))
     Exec(N(EVS_SetupFoliage))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))
-    Call(N(func_802405EC_BB765C))
+    Call(N(SetupFog))
     Return
     End
 };

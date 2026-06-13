@@ -22,12 +22,12 @@ API_CALLABLE(N(AwaitCDownPress)) {
 EvtScript N(EVS_NpcInteract_Boo_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN05_Boo1DialogueToggle, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0092)
-                Set(AF_ARN05_Boo1DialogueToggle, true)
+                Set(AF_ARN05_ToggleDialogue_Boo1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0093)
-                Set(AF_ARN05_Boo1DialogueToggle, false)
+                Set(AF_ARN05_ToggleDialogue_Boo1, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0095)
@@ -51,12 +51,12 @@ EvtScript N(EVS_NpcInteract_Boo_01_Mourning) = {
 EvtScript N(EVS_NpcInteract_Boo_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN05_Boo2DialogueToggle, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0099)
-                Set(AF_ARN05_Boo2DialogueToggle, true)
+                Set(AF_ARN05_ToggleDialogue_Boo2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009A)
-                Set(AF_ARN05_Boo2DialogueToggle, false)
+                Set(AF_ARN05_ToggleDialogue_Boo2, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_009C)
@@ -138,12 +138,12 @@ EvtScript N(EVS_NpcInteract_Boo_04) = {
 EvtScript N(EVS_NpcInteract_Boo_05) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN05_Boo5DialogueToggle, false)
+            IfEq(AF_ARN05_ToggleDialogue_Boo5, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B3)
-                Set(AF_ARN05_Boo5DialogueToggle, true)
+                Set(AF_ARN05_ToggleDialogue_Boo5, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B4)
-                Set(AF_ARN05_Boo5DialogueToggle, false)
+                Set(AF_ARN05_ToggleDialogue_Boo5, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00B6)

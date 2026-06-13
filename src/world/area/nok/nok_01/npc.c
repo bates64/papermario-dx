@@ -366,12 +366,12 @@ EvtScript N(EVS_NpcInit_MortT) = {
 
 EvtScript N(EVS_NpcInteract_RelaxedKoopa) = {
     IfLt(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
-        IfEq(AF_NOK01_Dialogue_RelaxedKoopa, false)
+        IfEq(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0021)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, true)
+            Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, true)
         Else
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0022)
-            Set(AF_NOK01_Dialogue_RelaxedKoopa, false)
+            Set(AF_NOK01_ToggleDialogue_RelaxedKoopa, false)
         EndIf
         Return
     EndIf
@@ -379,7 +379,7 @@ EvtScript N(EVS_NpcInteract_RelaxedKoopa) = {
         Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0023)
         Return
     EndIf
-    Switch(AB_NOK_0)
+    Switch(AB_NOK01_RadioStation)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_RelaxedKoopa, ANIM_Koopa_LeanBackTalk, ANIM_Koopa_LeanBack, 5, MSG_CH1_0024)
         CaseEq(1)

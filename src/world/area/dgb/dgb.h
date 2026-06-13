@@ -24,7 +24,7 @@ enum {
     AF_DGB_01               = AreaFlag(1),
     AF_DGB_02               = AreaFlag(2),
     AF_DGB_03               = AreaFlag(3),
-    AF_DGB06_Boo_Dialogue   = AreaFlag(4),
+    AF_DGB06_ToggleDialogue_Boo = AreaFlag(4),
 };
 
 #endif

@@ -2,8 +2,8 @@
 #define _WORLD_AREA_FLO_FLO_H_
 
 enum {
-    AB_FLO_TolielupDialogue             = AreaByte(0),
-    AB_FLO_PetuniaDialogue              = AreaByte(1),
+    AB_FLO00_DialogueState_Tolielup     = AreaByte(0),
+    AB_FLO03_DialogueState_Petunia      = AreaByte(1),
     AB_FLO_CrystalTreeHitCount          = AreaByte(2),
     AB_FLO_PoiseKickedOutCount          = AreaByte(3),
     AB_FLO_TreePuzzle_FirstCorrect      = AreaByte(4),
@@ -22,15 +22,15 @@ enum {
 
 enum {
     // flo_07
-    AF_FLO_PoiseHintDialogue            = AreaFlag(5),
-    AF_FLO_MadeCrystalBerry             = AreaFlag(6),
+    AF_FLO07_ToggleDialogue_Posie        = AreaFlag(5),
+    AF_FLO_MadeCrystalBerry              = AreaFlag(6),
     // flo_00
     AF_FLO_BeanstalkFacingRight         = AreaFlag(16),
     AF_FLO_PlatingInstructionsToggle    = AreaFlag(17),
-    AF_FLO_PinkBubulbDialogueToggle     = AreaFlag(18),
-    AF_FLO_PurpleBubulbDialogueToggle   = AreaFlag(19),
-    AF_FLO_GreenBubulbDialogueToggle    = AreaFlag(20),
-    AF_FLO_YellowBubulbDialogueToggle   = AreaFlag(21),
+    AF_FLO00_ToggleDialogue_PinkBubulb   = AreaFlag(18),
+    AF_FLO00_ToggleDialogue_PurpleBubulb = AreaFlag(19),
+    AF_FLO00_ToggleDialogue_GreenBubulb  = AreaFlag(20),
+    AF_FLO00_ToggleDialogue_YellowBubulb = AreaFlag(21),
     // flo_12
     AF_FLO_GivenCrystalBerry            = AreaFlag(22),
     // flo_03

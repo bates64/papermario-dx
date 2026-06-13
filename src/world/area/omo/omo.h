@@ -36,7 +36,7 @@ enum {
     AF_OMO_UsingRightSwitch             = AreaFlag(2),
     AF_OMO_TrainSoundToggle             = AreaFlag(3),
     AF_OMO03_EnteringViaSpring          = AreaFlag(4), // prevents the spring from immediately launching the player back out
-    AF_OMO03_Conductor_DialogueToggle   = AreaFlag(5),
+    AF_OMO03_ToggleDialogue_Conductor      = AreaFlag(5),
     AF_OMO03_TrainStuck                 = AreaFlag(6),
     AF_OMO07_NpcPool0                   = AreaFlag(7),
     AF_OMO07_NpcPool1                   = AreaFlag(8),

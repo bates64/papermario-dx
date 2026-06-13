@@ -12,12 +12,12 @@
 EvtScript N(EVS_NpcInteract_Boo_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_02, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0073)
-                Set(AF_ARN_02, true)
+                Set(AF_ARN03_ToggleDialogue_Boo1, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0074)
-                Set(AF_ARN_02, false)
+                Set(AF_ARN03_ToggleDialogue_Boo1, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0075)
@@ -133,12 +133,12 @@ EvtScript N(EVS_NpcInteract_Boo_02) = {
     EndIf
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_03, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0079)
-                Set(AF_ARN_03, true)
+                Set(AF_ARN03_ToggleDialogue_Boo2, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007A)
-                Set(AF_ARN_03, false)
+                Set(AF_ARN03_ToggleDialogue_Boo2, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_007B)
@@ -274,12 +274,12 @@ EvtScript N(EVS_PrankBoo_Scare) = {
 EvtScript N(EVS_NpcInteract_Boo_03) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_04, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo3, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0082)
-                Set(AF_ARN_04, true)
+                Set(AF_ARN03_ToggleDialogue_Boo3, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0083)
-                Set(AF_ARN_04, false)
+                Set(AF_ARN03_ToggleDialogue_Boo3, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_0084)
@@ -337,12 +337,12 @@ EvtScript N(EVS_NpcInit_Boo_03) = {
 EvtScript N(EVS_NpcInteract_Boo_04) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH3_TUBBA_CHASED_MARIO_IN_FOYER)
-            IfEq(AF_ARN_05, false)
+            IfEq(AF_ARN03_ToggleDialogue_Boo4, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008C)
-                Set(AF_ARN_05, true)
+                Set(AF_ARN03_ToggleDialogue_Boo4, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008D)
-                Set(AF_ARN_05, false)
+                Set(AF_ARN03_ToggleDialogue_Boo4, false)
             EndIf
         CaseLt(STORY_CH3_DEFEATED_TUBBA_BLUBBA)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_008E)

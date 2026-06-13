@@ -40,10 +40,10 @@ BombTrigger N(BombPos_Wall) = {
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
-    Set(AB_KPA17_Toad1_Dialogue, 0)
-    Set(AB_KPA17_Toad2_Dialogue, 0)
-    Set(AB_KPA17_Toad3_Dialogue, 0)
-    Set(AB_KPA17_Toad4_Dialogue, 0)
+    Set(AB_KPA17_DialogueState_Toad1, 0)
+    Set(AB_KPA17_DialogueState_Toad2, 0)
+    Set(AB_KPA17_DialogueState_ToadGuard, 0)
+    Set(AB_KPA17_DialogueState_ToadMinister, 0)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))

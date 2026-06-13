@@ -11299,7 +11299,6 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, entity]
-    - [auto, c, launch]
     - [auto, c, npc]
   - name: arn_10
     dir: world/area/arn/arn_10

@@ -10,7 +10,7 @@
 #include "mapfs/kpa_60_hit.h"
 
 enum {
-    MV_PadlockEntityID  = MapVar(0),
+    MV_EntityID_Padlock  = MapVar(0),
     MV_Starship_PosX    = MapVar(10),
     MV_Starship_PosY    = MapVar(11),
     MV_Starship_PosZ    = MapVar(12),

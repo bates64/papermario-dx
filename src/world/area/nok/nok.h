@@ -2,7 +2,7 @@
 #define _WORLD_AREA_NOK_NOK_H_
 
 enum {
-    AB_NOK_0            = AreaByte(0),
+    AB_NOK01_RadioStation = AreaByte(0),
     AB_NOK_1            = AreaByte(1),
     AB_NOK_2            = AreaByte(2),
     AB_NOK_Unused_3     = AreaByte(3),
@@ -29,10 +29,10 @@ enum {
     AF_NOK04_TauntMsgDone   = AreaFlag(6),
     AF_NOK04_FleeMsgDone    = AreaFlag(7),
     AF_NOK04_CamPanDone     = AreaFlag(8),
-    AF_NOK01_Dialogue_RelaxedKoopa      = AreaFlag(9),
-    AF_NOK01_Dialogue_Bobomb_01_Crisis  = AreaFlag(10),
-    AF_NOK01_Dialogue_Bobomb_01         = AreaFlag(11),
-    AF_NOK01_Dialogue_Bobomb_02         = AreaFlag(12),
+    AF_NOK01_ToggleDialogue_RelaxedKoopa  = AreaFlag(9),
+    AF_NOK01_ToggleDialogue_Bobomb1Crisis = AreaFlag(10),
+    AF_NOK01_ToggleDialogue_Bobomb1       = AreaFlag(11),
+    AF_NOK01_ToggleDialogue_Bobomb2       = AreaFlag(12),
     AF_NOK_0E               = AreaFlag(14),
     AF_NOK_0F               = AreaFlag(15),
     AF_NOK_10               = AreaFlag(16),

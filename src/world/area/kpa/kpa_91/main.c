@@ -32,9 +32,9 @@ EvtScript N(EVS_OpenCellDoor) = {
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_BOWSERS_CASTLE)
-    Set(AB_KPA91_Toad2_Dialogue, 0)
-    Set(AB_KPA91_Dryite_Dialogue, 0)
-    Set(AB_KPA91_Toad3_Dialogue, 0)
+    Set(AB_KPA91_DialogueState_Toad2, 0)
+    Set(AB_KPA91_DialogueState_Dryite, 0)
+    Set(AB_KPA91_DialogueState_ToadGuard, 0)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))

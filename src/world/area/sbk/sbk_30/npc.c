@@ -216,12 +216,12 @@ EvtScript N(EVS_NpcIdle_Archeologist_01) = {
 EvtScript N(EVS_NpcInteract_Archeologist_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
-            IfEq(AF_SBK_02, false)
+            IfEq(AF_SBK30_ToggleDialogue_Archeologist1, false)
                 Set(LVar0, MSG_CH2_004E)
-                Set(AF_SBK_02, true)
+                Set(AF_SBK30_ToggleDialogue_Archeologist1, true)
             Else
                 Set(LVar0, MSG_CH2_004F)
-                Set(AF_SBK_02, false)
+                Set(AF_SBK30_ToggleDialogue_Archeologist1, false)
             EndIf
         CaseDefault
             IfEq(GF_SBK_GaveArtifactToKolorado, false)
@@ -251,12 +251,12 @@ EvtScript N(EVS_NpcInit_Archeologist_01) = {
 EvtScript N(EVS_NpcInteract_Archeologist_02) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_GOT_PULSE_STONE)
-            IfEq(AF_SBK_03, false)
+            IfEq(AF_SBK30_ToggleDialogue_Archeologist2, false)
                 Set(LVar0, MSG_CH2_0052)
-                Set(AF_SBK_03, true)
+                Set(AF_SBK30_ToggleDialogue_Archeologist2, true)
             Else
                 Set(LVar0, MSG_CH2_0053)
-                Set(AF_SBK_03, false)
+                Set(AF_SBK30_ToggleDialogue_Archeologist2, false)
             EndIf
         CaseDefault
             IfEq(GF_SBK_GaveArtifactToKolorado, false)

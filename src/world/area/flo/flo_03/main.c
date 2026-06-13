@@ -24,7 +24,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     Set(AF_FLO_TreeDrop_RedBerry1, false)
     Set(AF_FLO_TreeDrop_RedBerry2, false)
-    Set(AB_FLO_PetuniaDialogue, 0)
+    Set(AB_FLO03_DialogueState_Petunia, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_MakeEntities))
     ExecWait(N(EVS_SetupMoles))

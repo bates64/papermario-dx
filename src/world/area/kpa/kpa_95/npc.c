@@ -81,39 +81,39 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
 };
 
 EvtScript N(EVS_NpcInteract_Toad_02) = {
-    Switch(AB_KPA95_Toad2_Dialogue)
+    Switch(AB_KPA95_DialogueState_Toad2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_0069)
-            Set(AB_KPA95_Toad2_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_Toad2, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Blue_Talk, ANIM_Toad_Blue_Idle, 0, MSG_CH8_006A)
-            Set(AB_KPA95_Toad2_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_Toad2, 0)
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_ToadGuard) = {
-    Switch(AB_KPA95_Toad3_Dialogue)
+    Switch(AB_KPA95_DialogueState_ToadGuard)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Green_Talk, ANIM_ToadGuard_Green_Idle, 0, MSG_CH8_006B)
-            Set(AB_KPA95_Toad3_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_ToadGuard, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Green_Talk, ANIM_ToadGuard_Green_Idle, 0, MSG_CH8_006C)
-            Set(AB_KPA95_Toad3_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_ToadGuard, 0)
     EndSwitch
     Return
     End
 };
 
 EvtScript N(EVS_NpcInteract_Penguin) = {
-    Switch(AB_KPA95_Penguin_Dialogue)
+    Switch(AB_KPA95_DialogueState_Penguin)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH8_006D)
-            Set(AB_KPA95_Penguin_Dialogue, 1)
+            Set(AB_KPA95_DialogueState_Penguin, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Penguin_Talk, ANIM_Penguin_Idle, 0, MSG_CH8_006E)
-            Set(AB_KPA95_Penguin_Dialogue, 0)
+            Set(AB_KPA95_DialogueState_Penguin, 0)
     EndSwitch
     Return
     End

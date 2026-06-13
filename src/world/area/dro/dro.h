@@ -2,10 +2,10 @@
 #define _WORLD_AREA_DRO_DRO_H_
 
 enum {
-    AB_DRO_0            = AreaByte(0),
-    AB_DRO_1            = AreaByte(1),
-    AB_DRO_2            = AreaByte(2),
-    AB_DRO_3            = AreaByte(3),
+    AB_DRO01_DialogueState_Mouser1       = AreaByte(0),
+    AB_DRO01_DialogueState_Dryite1       = AreaByte(1),
+    AB_DRO01_DialogueState_Dryite2       = AreaByte(2),
+    AB_DRO02_DialogueState_Archeologist  = AreaByte(3),
     AB_DRO_SHOP_PREV1   = AreaByte(4),
     AB_DRO_SHOP_PREV2   = AreaByte(5),
     AB_DRO_SHOP_PREV3   = AreaByte(6),
@@ -21,11 +21,11 @@ enum {
 };
 
 enum {
-    AF_DRO_01                       = AreaFlag(1),
-    AF_DRO_DialogueToggle_Composer  = AreaFlag(2),
-    AF_DRO_03                       = AreaFlag(3),
-    AF_DRO_04                       = AreaFlag(4),
-    AF_DRO_05                       = AreaFlag(5),
+    AF_DRO01_ToggleDialogue_HintDryite = AreaFlag(1),
+    AF_DRO01_ToggleDialogue_Composer   = AreaFlag(2),
+    AF_DRO02_ToggleDialogue_Dryite2    = AreaFlag(3),
+    AF_DRO02_ToggleDialogue_Mouser1    = AreaFlag(4),
+    AF_DRO02_ToggleDialogue_Mouser2    = AreaFlag(5),
 };
 
 extern MapSettings dro_01_settings;

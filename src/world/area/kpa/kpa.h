@@ -2,22 +2,22 @@
 #define _WORLD_AREA_KPA_KPA_H_
 
 enum {
-    AB_KPA_Unused_0             = AreaByte(0),
-    AB_KPA17_Toad1_Dialogue     = AreaByte(1),
-    AB_KPA17_Toad2_Dialogue     = AreaByte(2),
-    AB_KPA17_Toad3_Dialogue     = AreaByte(3),
-    AB_KPA17_Toad4_Dialogue     = AreaByte(4),
-    AB_KPA91_Toad2_Dialogue     = AreaByte(5),
-    AB_KPA91_Toad3_Dialogue     = AreaByte(6),
-    AB_KPA91_Dryite_Dialogue    = AreaByte(7),
-    AB_KPA95_Toad2_Dialogue     = AreaByte(8),
-    AB_KPA95_Toad3_Dialogue     = AreaByte(9),
-    AB_KPA95_Penguin_Dialogue   = AreaByte(10),
-    AB_KPA_MazeProgress         = AreaByte(11),
-    AB_KPA82_QuizRound          = AreaByte(12),
-    AB_KPA82_RightAnswers       = AreaByte(13),
-    AB_KPA82_WrongAnswers       = AreaByte(14),
-    AB_KPA_Unused_F             = AreaByte(15),
+    AB_KPA_Unused_0                     = AreaByte(0),
+    AB_KPA17_DialogueState_Toad1         = AreaByte(1),
+    AB_KPA17_DialogueState_Toad2         = AreaByte(2),
+    AB_KPA17_DialogueState_ToadGuard     = AreaByte(3),
+    AB_KPA17_DialogueState_ToadMinister  = AreaByte(4),
+    AB_KPA91_DialogueState_Toad2         = AreaByte(5),
+    AB_KPA91_DialogueState_ToadGuard     = AreaByte(6),
+    AB_KPA91_DialogueState_Dryite        = AreaByte(7),
+    AB_KPA95_DialogueState_Toad2         = AreaByte(8),
+    AB_KPA95_DialogueState_ToadGuard     = AreaByte(9),
+    AB_KPA95_DialogueState_Penguin       = AreaByte(10),
+    AB_KPA_MazeProgress                 = AreaByte(11),
+    AB_KPA82_QuizRound                  = AreaByte(12),
+    AB_KPA82_RightAnswers               = AreaByte(13),
+    AB_KPA82_WrongAnswers               = AreaByte(14),
+    AB_KPA_Unused_F                     = AreaByte(15),
 };
 
 enum {

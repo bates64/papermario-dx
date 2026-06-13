@@ -38,16 +38,16 @@ EvtScript N(EVS_NpcInteract_Mouser_01) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0062)
         Return
     EndIf
-    Switch(AB_DRO_0)
+    Switch(AB_DRO01_DialogueState_Mouser1)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_005F)
-            Add(AB_DRO_0, 1)
+            Add(AB_DRO01_DialogueState_Mouser1, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0060)
-            Add(AB_DRO_0, 1)
+            Add(AB_DRO01_DialogueState_Mouser1, 1)
         CaseEq(2)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0061)
-            Sub(AB_DRO_0, 1)
+            Sub(AB_DRO01_DialogueState_Mouser1, 1)
     EndSwitch
     Return
     End
@@ -63,20 +63,20 @@ EvtScript N(EVS_NpcInteract_Dryite_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH2_STAR_SPRIT_DEPARTED)
             IfGe(GB_StoryProgress, STORY_CH2_BOUGHT_SECRET_ITEMS)
-                IfEq(AB_DRO_1, 2)
-                    Set(AB_DRO_1, 0)
+                IfEq(AB_DRO01_DialogueState_Dryite1, 2)
+                    Set(AB_DRO01_DialogueState_Dryite1, 0)
                 EndIf
             EndIf
-            Switch(AB_DRO_1)
+            Switch(AB_DRO01_DialogueState_Dryite1)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0063)
-                    Add(AB_DRO_1, 1)
+                    Add(AB_DRO01_DialogueState_Dryite1, 1)
                 CaseEq(1)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0064)
-                    Add(AB_DRO_1, 1)
+                    Add(AB_DRO01_DialogueState_Dryite1, 1)
                 CaseEq(2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0065)
-                    Set(AB_DRO_1, 0)
+                    Set(AB_DRO01_DialogueState_Dryite1, 0)
             EndSwitch
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Yellow_Talk, ANIM_Dryite_Yellow_Idle, 0, MSG_CH2_0066)
@@ -95,19 +95,19 @@ EvtScript N(EVS_NpcInit_Dryite_01) = {
 
 EvtScript N(EVS_NpcInteract_Dryite_02) = {
      //@bug this dialogue was probably supposed to cycle 0 --> 1 --> 2 --> 3 --> 0 ...
-    Switch(AB_DRO_2)
+    Switch(AB_DRO01_DialogueState_Dryite2)
         CaseEq(0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0068)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0069)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(2)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_006A)
-            Add(AB_DRO_2, 1)
+            Add(AB_DRO01_DialogueState_Dryite2, 1)
         CaseEq(3)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_006B)
-            Set(AB_DRO_2, 0)
+            Set(AB_DRO01_DialogueState_Dryite2, 0)
     EndSwitch
     Return
     End

@@ -463,12 +463,12 @@ EvtScript N(EVS_Scene_GiveKitchenKey) = {
 
 EvtScript N(EVS_Scene_JudgeCake) = {
     Call(DisablePlayerInput, true)
-    IfEq(AB_KKJ19_AddedBerries, false)
+    IfEq(AF_KKJ19_AddedBerries, false)
         Set(MV_CakeItemIdx, ITEM_CAKE_WITH_ICING)
         Set(LVar0, ANIM_Peach3_PresentBerryCake)
         Set(LVar1, ANIM_Peach1_HoldIcingCake)
     Else
-        IfEq(AB_KKJ19_AddedIcing, false)
+        IfEq(AF_KKJ19_AddedIcing, false)
             Set(MV_CakeItemIdx, ITEM_CAKE_WITH_BERRIES)
             Set(LVar0, ANIM_Peach3_PresentIcingCake)
             Set(LVar1, ANIM_Peach1_HoldBerryCake)

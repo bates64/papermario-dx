@@ -465,11 +465,11 @@ EvtScript N(EVS_NpcHit_FuzzyWithShell) = {
 };
 
 EvtScript N(EVS_NpcInteract_Bobomb_01_Crisis) = {
-    IfEq(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
-        Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, true)
+    IfEq(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, true)
         Set(LVar0, MSG_CH1_003D)
     Else
-        Set(AF_NOK01_Dialogue_Bobomb_01_Crisis, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb1Crisis, false)
         Set(LVar0, MSG_CH1_003E)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, LVar0)
@@ -484,11 +484,11 @@ EvtScript N(EVS_NpcInit_Bobomb_01_Crisis) = {
 };
 
 EvtScript N(EVS_NpcInteract_Bobomb_02_Crisis) = {
-    IfEq(AF_NOK01_Dialogue_Bobomb_02, false)
-        Set(AF_NOK01_Dialogue_Bobomb_02, true)
+    IfEq(AF_NOK01_ToggleDialogue_Bobomb2, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb2, true)
         Set(LVar0, MSG_CH1_0044)
     Else
-        Set(AF_NOK01_Dialogue_Bobomb_02, false)
+        Set(AF_NOK01_ToggleDialogue_Bobomb2, false)
         Set(LVar0, MSG_CH1_0045)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Red_Talk, ANIM_WorldBobomb_Red_Idle, 0, LVar0)
