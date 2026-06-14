@@ -1,7 +1,7 @@
 #pragma once
 #include "common.h"
 
-//TODO this is very confusing, along with AB_MIM_GateState
+// TODO this is very confusing, along with AB_MIM_GateTraversal
 // All the names are likely wrong but the purpose of each and
 // their interations are unclear.
 enum ForestGateStates {
@@ -11,27 +11,29 @@ enum ForestGateStates {
 };
 
 enum AreaBytesMIM {
-    AB_MIM_Unused_0     = AreaByte(0),
-    AB_MIM_1            = AreaByte(1),
-    AB_MIM_2            = AreaByte(2),
-    AB_MIM_Unused_3     = AreaByte(3),
-    AB_MIM_Unused_4     = AreaByte(4),
-    AB_MIM_Unused_5     = AreaByte(5),
-    AB_MIM_Unused_6     = AreaByte(6),
-    AB_MIM_Unused_7     = AreaByte(7),
-    AB_MIM_Unused_8     = AreaByte(8),
-    AB_MIM_Unused_9     = AreaByte(9),
-    AB_MIM_Unused_A     = AreaByte(10),
-    AB_MIM_Unused_B     = AreaByte(11),
-    AB_MIM_Unused_C     = AreaByte(12),
-    AB_MIM_Unused_D     = AreaByte(13),
-    AB_MIM_Unused_E     = AreaByte(14),
-    AB_MIM_Unused_F     = AreaByte(15),
+    AB_MIM_Unused_0                         = AreaByte(0x0),
+    AB_MIM_GateTraversal                    = AreaByte(0x1),
+    AB_MIM_2                                = AreaByte(0x2),
+    AB_MIM_Unused_3                         = AreaByte(0x3),
+    AB_MIM_Unused_4                         = AreaByte(0x4),
+    AB_MIM_Unused_5                         = AreaByte(0x5),
+    AB_MIM_Unused_6                         = AreaByte(0x6),
+    AB_MIM_Unused_7                         = AreaByte(0x7),
+    AB_MIM_Unused_8                         = AreaByte(0x8),
+    AB_MIM_Unused_9                         = AreaByte(0x9),
+    AB_MIM_Unused_A                         = AreaByte(0xA),
+    AB_MIM_Unused_B                         = AreaByte(0xB),
+    AB_MIM_Unused_C                         = AreaByte(0xC),
+    AB_MIM_Unused_D                         = AreaByte(0xD),
+    AB_MIM_Unused_E                         = AreaByte(0xE),
+    AB_MIM_Unused_F                         = AreaByte(0xF),
 };
 
 enum AreaFlagsMIM {
-    AF_MIM11_MansionGateOpen        = AreaFlag(1),
-    AF_MIM03_ToggleDialogue_Oaklie  = AreaFlag(2),
-    AF_MIM04_ToggleDialogue_Bubulb  = AreaFlag(4),
-    AF_MIM12_BackgroundLitUp        = AreaFlag(3),
+    // AF_MIM_00 unused
+    AF_MIM11_MansionGateOpen                = AreaFlag(0x01),
+    AF_MIM03_ToggleDialogue_Oaklie          = AreaFlag(0x02),
+    AF_MIM12_BackgroundLitUp                = AreaFlag(0x03),
+    AF_MIM04_ToggleDialogue_Bubulb          = AreaFlag(0x04),
+    // AF_MIM_05 - AF_MIM_FF unused
 };

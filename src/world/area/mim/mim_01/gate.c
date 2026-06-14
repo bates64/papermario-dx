@@ -80,7 +80,7 @@ EvtScript N(EVS_PlayGateSounds) = {
 
 EvtScript N(EVS_UseGate) = {
     Exec(N(EVS_PlayGateSounds))
-    Switch(AB_MIM_1)
+    Switch(AB_MIM_GateTraversal)
         CaseEq(MIM_USEGATE_SIDE_A)
             Thread
                 Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
@@ -112,7 +112,7 @@ EvtScript N(EVS_UseGate) = {
                 Goto(20)
             EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, MIM_USEGATE_INNER)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
             Set(GF_MIM_ChoosingPath, true)
         CaseEq(MIM_USEGATE_INNER)
             Thread
@@ -144,7 +144,7 @@ EvtScript N(EVS_UseGate) = {
             IfEq(LVar1, 1)
                 Goto(40)
             EndIf
-            Set(AB_MIM_1, MIM_USEGATE_SIDE_B)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
         CaseEq(MIM_USEGATE_SIDE_B)
             Thread
                 Call(MakeLerp, -10, 90, 10, EASING_QUADRATIC_IN)
@@ -176,7 +176,7 @@ EvtScript N(EVS_UseGate) = {
                 Goto(60)
             EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, MIM_USEGATE_INNER)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
     EndSwitch
     Return
     End
@@ -222,7 +222,7 @@ EvtScript N(EVS_UseGate_West) = {
     Set(LVar9, 32)
     Exec(N(EVS_PlayGateSounds))
     Call(DisablePlayerInput, true)
-    IfNe(AB_MIM_1, MIM_USEGATE_INNER)
+    IfNe(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
         Thread
             Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
             Label(10)
@@ -252,7 +252,7 @@ EvtScript N(EVS_UseGate_West) = {
                 Goto(20)
             EndIf
         Exec(N(EVS_ResetGates))
-        Set(AB_MIM_1, MIM_USEGATE_INNER)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
         Set(GF_MIM_ChoosingPath, true)
     Else
         Thread
@@ -283,7 +283,7 @@ EvtScript N(EVS_UseGate_West) = {
             IfEq(LVar1, 1)
                 Goto(40)
             EndIf
-        Set(AB_MIM_1, MIM_USEGATE_SIDE_A)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_A)
     EndIf
     Call(DisablePlayerInput, false)
     Return

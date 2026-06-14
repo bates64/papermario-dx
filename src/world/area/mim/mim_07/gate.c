@@ -76,7 +76,7 @@ EvtScript N(EVS_UseGate) = {
         Wait(19)
         Call(PlaySoundAtCollider, LVar9, SOUND_FOREST_GATE_CLOSE, SOUND_SPACE_DEFAULT)
     EndThread
-    Switch(AB_MIM_1)
+    Switch(AB_MIM_GateTraversal)
         CaseEq(MIM_USEGATE_SIDE_A)
             Thread
                 Call(MakeLerp, 10, 90, 10, EASING_QUADRATIC_IN)
@@ -108,7 +108,7 @@ EvtScript N(EVS_UseGate) = {
                     Goto(20)
                 EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, MIM_USEGATE_INNER)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
             Set(GF_MIM_ChoosingPath, true)
         CaseEq(MIM_USEGATE_INNER)
             Thread
@@ -140,7 +140,7 @@ EvtScript N(EVS_UseGate) = {
                 IfEq(LVar1, 1)
                     Goto(40)
                 EndIf
-            Set(AB_MIM_1, MIM_USEGATE_SIDE_B)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
         CaseEq(MIM_USEGATE_SIDE_B)
             Thread
                 Call(MakeLerp, -10, 90, 10, EASING_QUADRATIC_IN)
@@ -172,7 +172,7 @@ EvtScript N(EVS_UseGate) = {
                     Goto(60)
                 EndIf
             Exec(N(EVS_ResetGates))
-            Set(AB_MIM_1, MIM_USEGATE_INNER)
+            Set(AB_MIM_GateTraversal, MIM_USEGATE_INNER)
     EndSwitch
     Return
     End
@@ -237,12 +237,12 @@ EvtScript N(EVS_UseGate_West) = {
 EvtScript N(EVS_SetupGates) = {
     IfEq(GF_MIM_ChoosingPath, false)
         Set(GF_MIM_ChoosingPath, true)
-        Set(AB_MIM_1, MIM_USEGATE_SIDE_B)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_B)
         Set(LVar1, 2)
         Set(LVar2, -10)
     Else
         Set(GF_MIM_ChoosingPath, false)
-        Set(AB_MIM_1, MIM_USEGATE_SIDE_A)
+        Set(AB_MIM_GateTraversal, MIM_USEGATE_SIDE_A)
         Set(LVar1, 0)
         Set(LVar2, 10)
     EndIf
