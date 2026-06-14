@@ -1,5 +1,6 @@
 #include "mac_05.h"
 #include "sprite/player.h"
+#include "world/common/atomic/Whale.h"
 
 #include "world/common/npc/Whale.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
@@ -271,7 +272,7 @@ API_CALLABLE(N(UpdateWhaleTravel)) {
 
     switch (script->functionTemp[2]) {
         case 0:
-            npc->curAnim = ANIM_Kolorado_Idle;
+            npc->curAnim = XNIM_Whale_Swim;
             npc->yaw -= 1.0f;
             npc->pos.x += 3.0f;
             script->functionTemp[1]--;
@@ -386,9 +387,9 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Wait(20)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_009F)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_009F)
     Wait(20)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Shout)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Spout)
     Call(GetNpcPos, NPC_Whale, LVar0, LVar1, LVar2)
     Add(LVar0, 40)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -429,7 +430,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
         Call(NpcJump0, NPC_Kolorado, -380, -10, 372, 20)
         Call(NpcFaceNpc, NPC_Kolorado, NPC_Whale, 0)
     EndThread
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
     Wait(60)
     Call(NpcFacePlayer, NPC_Kolorado, 0)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Fuzzipede, 0)
@@ -449,7 +450,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Call(SetCamDistance, CAM_DEFAULT, 400)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(SpeakToPlayer, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 5, MSG_MAC_Port_00A0)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00A1)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Whale, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -485,7 +486,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00A3)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00A3)
     Call(GetNpcPos, NPC_Kolorado, LVar0, LVar1, LVar2)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -550,7 +551,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AB)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.5))
     Thread
@@ -620,7 +621,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
     KillThread(LVarA)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_TalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Still)
     Call(InterpNpcYaw, NPC_Whale, 270, 60)
     Thread
         Call(SetNpcJumpscale, NPC_Whale, 0)
@@ -753,9 +754,9 @@ EvtScript N(EVS_AwaitWhaleWakeupHit) = {
                         Call(SetPlayerAnimation, ANIM_Mario1_Idle)
                     EndThread
                     Call(PlaySoundAt, SOUND_WHALE_JIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 480)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Panic)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shake)
                     Wait(10)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
                     Call(DisablePlayerInput, false)
                     Add(LVarA, 1)
                 EndIf
@@ -783,7 +784,7 @@ EvtScript N(EVS_Scene_WakeWhale) = {
     Call(DisablePlayerInput, true)
     Wait(10)
     Call(PlaySoundAt, SOUND_WHALE_JIGGLE, SOUND_SPACE_DEFAULT, 0, 0, 480)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Panic)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shake)
     Wait(10)
     Call(DisablePlayerPhysics, true)
     ExecGetTID(N(EVS_UpdateWhaleWakeupCamera), LVarA)
@@ -791,14 +792,14 @@ EvtScript N(EVS_Scene_WakeWhale) = {
         Exec(N(EVS_EjectPlayerAndPartner))
     EndIf
     Wait(10)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Run)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shiver)
     Wait(20)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Run, ANIM_Kolorado_Run, 5, MSG_MAC_Port_0090)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Shiver, XNIM_Whale_Shiver, 5, MSG_MAC_Port_0090)
     IfEq(LFlag0, false)
         Exec(N(EVS_MovePlayerAndPartnerOffWhale))
     EndIf
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
     Call(MakeLerp, 480, 372, 50, EASING_COS_IN_OUT)
     Label(0)
         Call(UpdateLerp)
@@ -824,9 +825,9 @@ EvtScript N(EVS_Scene_WakeWhale) = {
             Wait(1)
             Goto(2)
         EndIf
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_HurtStill)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_WakeUp)
     Wait(50)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
     KillThread(LVarA)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
@@ -867,7 +868,7 @@ EvtScript N(EVS_Scene_WakeWhale) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Exec(N(EVS_80244314))
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0092)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0092)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -905,7 +906,7 @@ EvtScript N(EVS_Scene_WakeWhale) = {
         Call(NpcFaceNpc, NPC_PARTNER, NPC_Whale, 0)
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_0094)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_0094)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(GetNpcPos, NPC_Kolorado, LVar3, LVar4, LVar5)
     Add(LVar0, LVar3)
@@ -928,7 +929,7 @@ EvtScript N(EVS_Scene_WakeWhale) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Set(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
     Wait(50)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -943,29 +944,29 @@ EvtScript N(EVS_Scene_WakeWhale) = {
     End
 };
 
-EvtScript N(EVS_NpcInteract_Toad_01) = {
+EvtScript N(EVS_NpcInteract_Whale) = {
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_FUZZIPEDE)
         IfGe(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
             IfLt(GB_StoryProgress, STORY_CH5_ENTERED_WHALE)
                 Call(GetNpcAnimation, NPC_Whale, LVar0)
-                IfEq(LVar0, ANIM_Kolorado_Yell)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_IdleSad)
+                IfEq(LVar0, XNIM_Whale_OpenMouth)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_CloseMouth)
                     Wait(15)
                 EndIf
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
-                Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0097)
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
+                Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0097)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
                 Wait(30)
                 Return
             Else
                 Call(GetNpcAnimation, NPC_Whale, LVar0)
-                IfEq(LVar0, ANIM_Kolorado_Yell)
-                    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_IdleSad)
+                IfEq(LVar0, XNIM_Whale_OpenMouth)
+                    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_CloseMouth)
                     Wait(15)
                 EndIf
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
-                Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Talk, 5, MSG_MAC_Port_0098)
-                Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
+                Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Sick, 5, MSG_MAC_Port_0098)
+                Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
                 Wait(30)
                 Return
             EndIf
@@ -974,19 +975,19 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
         EndIf
     EndIf
     Call(DisablePlayerPhysics, true)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B0)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B0)
     Call(ShowChoice, MSG_Choice_0010)
     IfEq(LVar0, 1)
-        Call(ContinueSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B2)
+        Call(ContinueSpeech, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B2)
         Call(DisablePlayerPhysics, false)
         Return
     Else
-        Call(EndSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5)
+        Call(EndSpeech, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5)
     EndIf
     Call(SetNpcJumpscale, NPC_SELF, 0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Call(NpcJump0, NPC_SELF, -220, -30, 372, 20)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_TalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Still)
     Call(InterpNpcYaw, NPC_Whale, 180, 60)
     Set(LVar0, 0)
     Exec(N(EVS_UpdateWhaleCamera))
@@ -1027,12 +1028,12 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
         Thread
             Call(N(UpdateWhaleRiderPosition), WHALE_RIDER_KOLORADO)
         EndThread
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AE)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Shout)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AE)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Spout)
         Wait(30)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
     Else
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00B1)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00B1)
     EndIf
     Set(MF_WhaleDepartureReady, false)
     Thread
@@ -1040,7 +1041,7 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
         Call(GotoMap, Ref("mac_06"), mac_06_ENTRY_0)
     EndThread
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
-        Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_MAC_Port_00AF)
+        Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_MAC_Port_00AF)
         Set(MF_WhaleDepartureReady, true)
     Else
         Set(MF_WhaleDepartureReady, true)
@@ -1049,26 +1050,26 @@ EvtScript N(EVS_NpcInteract_Toad_01) = {
     End
 };
 
-EvtScript N(EVS_NpcInit_Toad_01) = {
-    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Toad_01)))
+EvtScript N(EVS_NpcInit_Whale) = {
+    Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Whale)))
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_Whale, NPC_FLAG_HAS_SHADOW, false)
     Call(InterpNpcYaw, NPC_Whale, 270, 0)
     IfLt(GB_StoryProgress, STORY_CH3_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_Whale, NPC_DISPOSE_LOCATION)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH4_STAR_SPRIT_DEPARTED)
         Call(SetNpcPos, NPC_Whale, 0, -60, 290)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_WalkSad)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sleep)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_WHALE_MOUTH_OPEN)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira, COLLIDER_FLAGS_UPPER_MASK)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Run)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Shiver)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_kujira_atari, COLLIDER_FLAGS_UPPER_MASK)
         Call(SetNpcPos, NPC_Whale, -73, -53, 480)
         Exec(N(EVS_Scene_WakeWhale))
@@ -1076,16 +1077,16 @@ EvtScript N(EVS_NpcInit_Toad_01) = {
     EndIf
     Call(GetEntryID, LVar0)
     IfEq(LVar0, mac_05_ENTRY_2)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
         Call(SetNpcPos, NPC_Whale, -220, 10, 372)
         Return
     EndIf
     IfLt(GB_StoryProgress, STORY_CH5_DEFEATED_FUZZIPEDE)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Talk)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Sick)
         Call(SetNpcPos, NPC_Whale, -220, 10, 372)
         Return
     EndIf
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Still)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Idle)
     Call(SetNpcPos, NPC_Whale, -220, 10, 372)
     Return
     End
@@ -2117,11 +2118,11 @@ EvtScript N(EVS_NpcInit_TradeEventToad) = {
     End
 };
 
-NpcData N(NpcData_Toad_01) = {
+NpcData N(NpcData_Whale) = {
     .id = NPC_Whale,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 270,
-    .init = &N(EVS_NpcInit_Toad_01),
+    .init = &N(EVS_NpcInit_Whale),
     .settings = &N(NpcSettings_Whale),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
@@ -2195,7 +2196,7 @@ AnimID N(LimitAnims_JrTroopa)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_JrTroopa_01)[] = {
+NpcData N(NpcData_JrTroopa)[] = {
     {
         .id = NPC_JrTroopa_01,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -2222,7 +2223,7 @@ NpcData N(NpcData_JrTroopa_01)[] = {
     },
 };
 
-NpcData N(NpcData_Toad_04)[] = {
+NpcData N(NpcData_Toads)[] = {
     {
         .id = NPC_Toad_04,
         .pos = { 320.0f, 0.0f, -300.0f },
@@ -2409,8 +2410,8 @@ NpcGroupList N(NpcSetA) = {
     NPC_GROUP(N(NpcData_Fuzzipede)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     NPC_GROUP(N(NpcData_ChuckQuizmo)),
     {}
 };
@@ -2420,17 +2421,17 @@ NpcGroupList N(NpcSetB) = {
     NPC_GROUP(N(NpcData_Fuzzipede)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     {}
 };
 
 NpcGroupList N(NpcSetC) = {
-    NPC_GROUP(N(NpcData_JrTroopa_01), BTL_KMR_3_FORMATION_05),
+    NPC_GROUP(N(NpcData_JrTroopa), BTL_KMR_3_FORMATION_05),
     NPC_GROUP(N(NpcData_Kolorado)),
     NPC_GROUP(N(NpcData_Fishmael)),
     NPC_GROUP(N(NpcData_Bartender)),
-    NPC_GROUP(N(NpcData_Toad_04)),
-    NPC_GROUP(N(NpcData_Toad_01)),
+    NPC_GROUP(N(NpcData_Toads)),
+    NPC_GROUP(N(NpcData_Whale)),
     {}
 };

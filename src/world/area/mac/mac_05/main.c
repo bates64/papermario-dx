@@ -1,4 +1,5 @@
 #include "mac_05.h"
+#include "world/common/atomic/Whale.h"
 
 #include "world/common/atomic/TexturePan.inc.c"
 
@@ -125,7 +126,7 @@ EvtScript N(EVS_EnterMap) = {
                     EndIf
                 EndLoop
             EndThread
-            Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Yell)
+            Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_OpenMouth)
             Wait(30)
             Call(SetPlayerPos, -280, -10, 371)
             Call(EnablePartnerAI)

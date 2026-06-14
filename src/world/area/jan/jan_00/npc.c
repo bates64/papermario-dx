@@ -2,6 +2,7 @@
 #include "effects.h"
 #include "npc.h"
 #include "sprite/player.h"
+#include "world/common/atomic/Whale.h"
 
 #include "world/common/npc/Whale.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
@@ -192,7 +193,7 @@ API_CALLABLE(N(UpdateWhaleTravel)) {
 
     switch (script->functionTemp[2]) {
         case 0:
-            npc->curAnim = ANIM_Kolorado_Idle;
+            npc->curAnim = XNIM_Whale_Swim;
             npc->yaw -= 1.0f;
             npc->pos.x -= 3.0f;
             script->functionTemp[1]--;
@@ -345,11 +346,11 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     EndIf
     Call(NpcMoveTo, NPC_PARTNER, 230, 20, 10)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
-    Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_TalkSad)
+    Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Still)
     Call(SetNpcJumpscale, NPC_Whale, 0)
     Call(NpcJump0, NPC_Whale, 158, -10, -38, 20)
     Call(InterpPlayerYaw, 270, 0)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_CH5_0000)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_CH5_0000)
     Call(SetMusic, 0, SONG_YOSHIS_VILLAGE, 0, VOL_LEVEL_FULL)
     IfLt(GB_StoryProgress, STORY_CH5_REACHED_LAVA_LAVA_ISLAND)
         Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 300, 15, Float(-6.0))
@@ -369,7 +370,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
             Call(NpcFacePlayer, NPC_Kolorado_02, 4)
         EndThread
         Call(SpeakToPlayer, NPC_Kolorado_02, ANIM_Kolorado_Panic, ANIM_Kolorado_Yell, 5, MSG_CH5_0002)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(SetNpcSpeed, NPC_Kolorado_02, Float(6.0))
         Call(SetNpcAnimation, NPC_Kolorado_02, ANIM_Kolorado_Walk)
         Call(NpcMoveTo, NPC_Kolorado_02, 330, 190, 0)
@@ -420,10 +421,10 @@ Vec3f N(KoloradoBoardingPath)[] = {
 EvtScript N(EVS_NpcInteract_Kolorado_01) = {
     Call(DisablePlayerPhysics, true)
     Call(InterpPlayerYaw, 270, 0)
-    Call(SpeakToPlayer, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_CH5_0003)
+    Call(SpeakToPlayer, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_CH5_0003)
     Call(ShowChoice, MSG_Choice_0010)
     IfEq(LVar0, 1)
-        Call(ContinueSpeech, NPC_Whale, ANIM_Kolorado_Walk, ANIM_Kolorado_Still, 5, MSG_CH5_0005)
+        Call(ContinueSpeech, NPC_Whale, XNIM_Whale_Talk, XNIM_Whale_Idle, 5, MSG_CH5_0005)
         Call(DisablePlayerPhysics, false)
         Return
     EndIf
@@ -516,7 +517,7 @@ EvtScript N(EVS_NpcInteract_Kolorado_01) = {
 EvtScript N(EVS_NpcInit_Kolorado_01) = {
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_NO_SPRITE, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_HAS_SHADOW, false)
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Still)
+    Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Idle)
     Call(InterpNpcYaw, NPC_SELF, 90, 0)
     Call(GetEntryID, LVar0)
     IfEq(LVar0, jan_00_ENTRY_0)

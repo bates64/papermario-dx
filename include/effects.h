@@ -1025,9 +1025,7 @@ typedef struct Effect3DFXData {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ Vec3f pos;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ f32 unk_18;
-    /* 0x1C */ f32 unk_1C;
+    /* 0x14 */ Vec3f vel;
     /* 0x20 */ f32 unk_20;
     /* 0x24 */ f32 unk_24;
     /* 0x28 */ f32 unk_28;
@@ -1043,8 +1041,8 @@ typedef struct Effect3DFXData {
     /* 0x50 */ f32 unk_50;
     /* 0x54 */ f32 unk_54;
     /* 0x58 */ s32 unk_58;
-    /* 0x5C */ s32 unk_5C;
-    /* 0x60 */ s32 unk_60;
+    /* 0x5C */ s32 timeLeft;
+    /* 0x60 */ s32 lifetime;
     /* 0x64 */ s32 unk_64;
 } Effect3DFXData; // size = 0x68
 
@@ -2505,7 +2503,7 @@ typedef union {
     struct ShimmerWaveFXData*           shimmerWave;
     struct AuraFXData*                  aura;
     struct BulbGlowFXData*              bulbGlow;
-    struct Effect3DFXData*              unk_3D;
+    struct Effect3DFXData*              whaleSpout;
     struct BlastFXData*                 blast;
     struct FireFlowerFXData*            fireFlower;
     struct RecoverFXData*               recover;

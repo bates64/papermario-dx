@@ -1,6 +1,7 @@
 #include "mac_06.h"
 #include "model.h"
 #include "effects.h"
+#include "world/common/atomic/Whale.h"
 
 #define CLONED_MODEL_GULL   CLONED_MODEL(1000)
 
@@ -111,7 +112,7 @@ API_CALLABLE(N(ManageWhaleSpoutPrompt)) {
             break;
 
         case SPOUT_STATE_BEGIN:
-            whaleNpc->curAnim = ANIM_Kolorado_Shout;
+            whaleNpc->curAnim = XNIM_Whale_Spout;
             N(SpoutHeight) = 0.0f;
             N(SpoutVelocity) = 5.0f;
             N(SpoutState) = SPOUT_STATE_RISING;
@@ -127,7 +128,7 @@ API_CALLABLE(N(ManageWhaleSpoutPrompt)) {
             } else {
                 N(SpoutVelocity) -= 2.0f;
             }
-            if (whaleNpc->curAnim == ANIM_Kolorado_Idle) {
+            if (whaleNpc->curAnim == XNIM_Whale_Swim) {
                 N(SpoutVelocity) = 4.0f;
                 N(SpoutState) = SPOUT_STATE_FALLING;
             }
@@ -162,7 +163,7 @@ EvtScript N(EVS_NpcIdle_Whale) = {
             Call(N(ManageWhaleSpoutPrompt))
         EndThread
         Wait(150)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, 500, LVar1, 500, 120, 0, EASING_COS_IN)
         IfEq(GF_StartedChapter5, false)
             Set(GF_StartedChapter5, true)
@@ -185,7 +186,7 @@ EvtScript N(EVS_NpcIdle_Whale) = {
             Call(N(ManageWhaleSpoutPrompt))
         EndThread
         Wait(150)
-        Call(SetNpcAnimation, NPC_Whale, ANIM_Kolorado_Idle)
+        Call(SetNpcAnimation, NPC_Whale, XNIM_Whale_Swim)
         Call(NpcFlyTo, NPC_Whale, -500, LVar1, 500, 120, 0, EASING_COS_IN)
         Call(GotoMap, Ref("mac_05"), mac_05_ENTRY_1)
     EndIf
@@ -267,7 +268,7 @@ EvtScript N(EVS_NpcInit_Whale) = {
         Call(SetNpcPos, NPC_SELF, 300, 0, 500)
     EndIf
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Whale)))
-    Call(SetNpcAnimation, NPC_SELF, ANIM_Kolorado_Idle)
+    Call(SetNpcAnimation, NPC_SELF, XNIM_Whale_Swim)
     Call(DisablePlayerPhysics, true)
     Call(DisablePlayerInput, true)
     Call(DisablePartnerAI, 0)

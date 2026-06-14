@@ -1207,7 +1207,7 @@ API_CALLABLE(OnFleeBattleDrops);
 /// @param npcID
 /// @param talkAnim
 /// @param idleAnim
-/// @param flags
+/// @param flags -- see SpeechFlags
 /// @param messageID
 API_CALLABLE(SpeakToPlayer);
 
