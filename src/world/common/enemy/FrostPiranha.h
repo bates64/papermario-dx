@@ -44,5 +44,5 @@
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
     .drops = NO_DROPS, \
     .animations = FROST_PIRANHA_ANIMS, \
-    .extraAnimations = N(ExtraAnims_FrostPiranha_Hitbox), \
+    .limitAnimations = N(LimitAnims_FrostPiranha_Hitbox), \
 }

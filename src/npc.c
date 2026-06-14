@@ -84,7 +84,7 @@ void init_npc_list(void) {
     gNpcPlayerCollisionsEnabled = true;
 }
 
-s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
+s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* limitAnimList, s32 isPeachNpc) {
     Npc* npc;
     s32 i;
     s32 j;
@@ -164,12 +164,12 @@ s32 create_npc_impl(NpcBlueprint* blueprint, AnimID* animList, s32 isPeachNpc) {
         npc->onRender = &STUB_npc_callback;
     }
     if (!isPeachNpc) {
-        npc->extraAnimList = animList;
+        npc->limitAnimList = limitAnimList;
         if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE)) {
             if (!(npc->flags & NPC_FLAG_PARTNER)) {
-                npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, animList);
+                npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, limitAnimList);
             } else {
-                npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim | SPRITE_ID_TAIL_ALLOCATE, animList);
+                npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim | SPRITE_ID_TAIL_ALLOCATE, limitAnimList);
             }
         } else {
             npc->flags |= NPC_FLAG_INVISIBLE;
@@ -189,8 +189,8 @@ s32 create_basic_npc(NpcBlueprint* blueprint) {
     return create_npc_impl(blueprint, nullptr, false);
 }
 
-s32 create_standard_npc(NpcBlueprint* blueprint, AnimID* animList) {
-    return create_npc_impl(blueprint, animList, false);
+s32 create_standard_npc(NpcBlueprint* blueprint, AnimID* limitAnimList) {
+    return create_npc_impl(blueprint, limitAnimList, false);
 }
 
 s32 create_peach_npc(NpcBlueprint* blueprint) {
@@ -727,7 +727,7 @@ void update_npcs(void) {
                             if (npc->spriteInstanceID < 0) {
                                 npc->spriteInstanceID++;
                                 if (npc->spriteInstanceID == -1) {
-                                    npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, npc->extraAnimList);
+                                    npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, npc->limitAnimList);
                                     ASSERT(npc->spriteInstanceID >= 0);
                                     spr_update_sprite(npc->spriteInstanceID, npc->curAnim, npc->animationSpeed);
                                 }
@@ -1041,13 +1041,13 @@ void disable_npc_shadow(Npc* npc) {
     }
 }
 
-void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList) {
+void set_npc_sprite(Npc* npc, s32 anim, AnimID* limitAnimList) {
     ASSERT((npc->flags & NPC_FLAG_HAS_NO_SPRITE) || spr_free_sprite(npc->spriteInstanceID) == 0);
 
-    npc->extraAnimList = extraAnimList;
+    npc->limitAnimList = limitAnimList;
 
     if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE)) {
-        npc->spriteInstanceID = spr_load_npc_sprite(anim, extraAnimList);
+        npc->spriteInstanceID = spr_load_npc_sprite(anim, limitAnimList);
         ASSERT(npc->spriteInstanceID >= 0);
     }
 
@@ -1211,9 +1211,9 @@ void npc_reload_all(void) {
             if (npc->flags && !(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {
                 if (!(npc->flags & NPC_FLAG_HAS_NO_SPRITE)) {
                     if (!(npc->flags & NPC_FLAG_PARTNER)) {
-                        npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, npc->extraAnimList);
+                        npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim, npc->limitAnimList);
                     } else {
-                        npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim | SPRITE_ID_TAIL_ALLOCATE, npc->extraAnimList);
+                        npc->spriteInstanceID = spr_load_npc_sprite(npc->curAnim | SPRITE_ID_TAIL_ALLOCATE, npc->limitAnimList);
                     }
                 }
                 if (!(npc->flags & NPC_FLAG_NO_ANIMS_LOADED)) {

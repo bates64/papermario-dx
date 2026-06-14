@@ -3,8 +3,8 @@
 #include "sprite/player.h"
 
 #include "world/common/enemy/HyperParagoomba.inc.c"
-#include "world/common/npc/TubbasHeart.inc.c"
 #include "world/common/enemy/TubbaBlubba.inc.c"
+#include "world/common/npc/TubbasHeart.inc.c"
 #include "world/common/npc/Boo.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
 
@@ -365,7 +365,7 @@ EvtScript N(EVS_NpcInit_Bootler) = {
     End
 };
 
-AnimID N(ExtraAnims_Tubba)[] = {
+AnimID N(LimitAnims_Tubba)[] = {
     ANIM_WorldTubba_Anim00,
     ANIM_WorldTubba_Anim22,
     ANIM_WorldTubba_Anim23,
@@ -377,17 +377,17 @@ AnimID N(ExtraAnims_Tubba)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Boo)[] = {
+AnimID N(LimitAnims_Boo)[] = {
     ANIM_Boo_Still,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_GustyBoo)[] = {
+AnimID N(LimitAnims_GustyBoo)[] = {
     ANIM_Boo_Tan_Still,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bootler)[] = {
+AnimID N(LimitAnims_Bootler)[] = {
     ANIM_Bootler_Idle,
     ANIM_LIST_END
 };
@@ -569,7 +569,7 @@ NpcData N(NpcData_Tubba)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = TUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Tubba),
+        .limitAnimations = N(LimitAnims_Tubba),
     },
     {
         .id = NPC_TubbasHeart,
@@ -593,7 +593,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_02,
@@ -604,7 +604,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_03,
@@ -615,7 +615,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_04,
@@ -626,7 +626,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_GustyBoo),
+        .limitAnimations = N(LimitAnims_GustyBoo),
     },
     {
         .id = NPC_Boo_05,
@@ -637,7 +637,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boo),
+        .limitAnimations = N(LimitAnims_Boo),
     },
     {
         .id = NPC_Boo_06,
@@ -648,7 +648,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boo),
+        .limitAnimations = N(LimitAnims_Boo),
     },
 };
 
@@ -706,7 +706,7 @@ NpcData N(NpcData_Bootler) = {
         .anim_E = ANIM_Bootler_Dejected,
         .anim_F = ANIM_Bootler_Quaver,
     },
-    .extraAnimations = N(ExtraAnims_Bootler),
+    .limitAnimations = N(LimitAnims_Bootler),
 };
 
 EvtScript N(EVS_NpcInit_HyperParagoomba) = {

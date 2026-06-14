@@ -62,12 +62,7 @@ API_CALLABLE(N(DarkenBackground)) {
     return retVal;
 }
 
-NpcSettings N(NpcSettings_Bootler) = {
-    .height = 24,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/Bootler.inc.c"
 #include "world/common/npc/JrTroopa.inc.c"
 
 EvtScript N(EVS_Bootler_SpookPlayer) = {
@@ -251,24 +246,7 @@ NpcData N(NpcData_Bootler) = {
     .settings = &N(NpcSettings_Bootler),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Bootler_Idle,
-        .walk   = ANIM_Bootler_Walk,
-        .run    = ANIM_Bootler_Run,
-        .chase  = ANIM_Bootler_Run,
-        .anim_4 = ANIM_Bootler_Idle,
-        .anim_5 = ANIM_Bootler_Idle,
-        .death  = ANIM_Bootler_Still,
-        .hit    = ANIM_Bootler_Still,
-        .anim_8 = ANIM_Bootler_Shock,
-        .anim_9 = ANIM_Bootler_Panic,
-        .anim_A = ANIM_Bootler_Dejected,
-        .anim_B = ANIM_Bootler_Quaver,
-        .anim_C = ANIM_Bootler_Shock,
-        .anim_D = ANIM_Bootler_Panic,
-        .anim_E = ANIM_Bootler_Dejected,
-        .anim_F = ANIM_Bootler_Quaver,
-    },
+    .animations = BOOTLER_ANIMS,
 };
 
 NpcData N(NpcData_JrTroopa) = {

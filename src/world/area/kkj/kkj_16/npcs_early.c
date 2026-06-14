@@ -168,7 +168,7 @@ EvtScript N(EVS_NpcInit_Koopatrol_04) = {
     End
 };
 
-AnimID N(ExtraAnims_HammerBros)[] = {
+AnimID N(LimitAnims_HammerBros)[] = {
     ANIM_HammerBros_Anim00,
     ANIM_HammerBros_Anim02,
     ANIM_HammerBros_Anim04,
@@ -178,7 +178,7 @@ AnimID N(ExtraAnims_HammerBros)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim00,
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim04,
@@ -199,7 +199,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros),
     },
     {
         .id = NPC_Koopatrol_01,
@@ -210,7 +210,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_02,
@@ -221,7 +221,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_03,
@@ -232,7 +232,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_04,
@@ -243,7 +243,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
 };
 

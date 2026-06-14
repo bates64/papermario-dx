@@ -742,7 +742,7 @@ EvtScript N(EVS_NpcInit_Sushie) = {
     End
 };
 
-AnimID N(ExtraAnims_VillageLeader)[] = {
+AnimID N(LimitAnims_VillageLeader)[] = {
     ANIM_VillageLeader_Idle,
     ANIM_VillageLeader_IdleSad,
     ANIM_VillageLeader_Walk,
@@ -764,11 +764,11 @@ NpcData N(NpcData_VillageLeader) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = YOSHI_LEADER_ANIMS,
-    .extraAnimations = N(ExtraAnims_VillageLeader),
+    .limitAnimations = N(LimitAnims_VillageLeader),
     .tattle = MSG_NpcTattle_VillageLeader,
 };
 
-AnimID N(ExtraAnims_Sushie)[] = {
+AnimID N(LimitAnims_Sushie)[] = {
     ANIM_WorldSushie_Idle,
     ANIM_WorldSushie_Run,
     ANIM_WorldSushie_Talk,
@@ -784,11 +784,11 @@ NpcData N(NpcData_Sushie) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = SUSHIE_ANIMS,
-    .extraAnimations = N(ExtraAnims_Sushie),
+    .limitAnimations = N(LimitAnims_Sushie),
     .tattle = MSG_NpcTattle_Sushie,
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_IdleSad,
     ANIM_Kolorado_Walk,
@@ -805,7 +805,7 @@ NpcData N(NpcData_Kolorado) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kolorado),
+    .limitAnimations = N(LimitAnims_Kolorado),
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
@@ -1016,7 +1016,7 @@ NpcData N(NpcData_Toad)[] = {
     },
 };
 
-AnimID N(ExtraAnims_Raven)[] = {
+AnimID N(LimitAnims_Raven)[] = {
     ANIM_Raven_Still,
     ANIM_Raven_Idle,
     ANIM_Raven_Talk,
@@ -1033,7 +1033,7 @@ NpcData N(NpcData_Ravens)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = RAVEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Raven),
+        .limitAnimations = N(LimitAnims_Raven),
         .tattle = MSG_NpcTattle_RavenA,
     },
     {

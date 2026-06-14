@@ -378,7 +378,7 @@ EvtScript N(EVS_NpcInit_Yoshi_03) = {
     End
 };
 
-AnimID N(ExtraAnims_Councillor)[] = {
+AnimID N(LimitAnims_Councillor)[] = {
     ANIM_LeadersFriend_TalkSit,
     ANIM_LeadersFriend_TalkSitSad,
     ANIM_LeadersFriend_IdleSit,
@@ -407,7 +407,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = YOSHI_COUNCILLOR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Councillor),
+        .limitAnimations = N(LimitAnims_Councillor),
         .tattle = MSG_NpcTattle_LeadersFriend,
     },
     {

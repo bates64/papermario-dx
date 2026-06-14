@@ -495,7 +495,7 @@ EvtScript N(EVS_NpcInit_JrTroopa) = {
     End
 };
 
-AnimID N(ExtraAnims_KoopaBros)[] = {
+AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_KoopaBros_Black_Shock,
     ANIM_KoopaBros_Black_Idle,
     ANIM_KoopaBros_Black_IdleCrouch,
@@ -517,7 +517,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosRed,
@@ -528,7 +528,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosYlw,
@@ -539,7 +539,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBrosGrn,
@@ -550,7 +550,7 @@ NpcData N(NpcData_Enemies)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_JrTroopa,

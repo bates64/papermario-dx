@@ -346,7 +346,7 @@ NpcData N(NpcData_Townsfolk)[] = {
     },
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Fly,
     ANIM_Twink_Talk,
@@ -363,7 +363,7 @@ NpcData N(NpcData_Chapter4)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TWINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Twink),
+        .limitAnimations = N(LimitAnims_Twink),
     },
     {
         .id = NPC_ShyGuy_01,

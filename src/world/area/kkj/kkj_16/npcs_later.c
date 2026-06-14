@@ -5,7 +5,7 @@
 
 #include "world/common/enemy/HammerBros.inc.c"
 
-AnimID N(ExtraAnims_HammerBros)[] = {
+AnimID N(LimitAnims_HammerBros)[] = {
     ANIM_HammerBros_Anim00,
     ANIM_HammerBros_Anim02,
     ANIM_HammerBros_Anim03,
@@ -196,7 +196,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros),
     },
     {
         .id = NPC_HammerBros_02,
@@ -207,7 +207,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros),
     },
     {
         .id = NPC_HammerBros_03,
@@ -218,7 +218,7 @@ NpcData N(NpcData_Minions)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = HAMMER_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_HammerBros),
+        .limitAnimations = N(LimitAnims_HammerBros),
     },
 };
 

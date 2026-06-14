@@ -385,7 +385,7 @@ NpcData N(NpcData_Chapter5)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
-        .extraAnimations = N(D_80243848_902EB8),
+        .limitAnimations = N(D_80243848_902EB8),
     },
     {
         .id = NPC_LavaBud_01,
@@ -396,7 +396,7 @@ NpcData N(NpcData_Chapter5)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(D_80243854_902EC4),
+        .limitAnimations = N(D_80243854_902EC4),
     },
     {
         .id = NPC_LavaBud_02,
@@ -407,7 +407,7 @@ NpcData N(NpcData_Chapter5)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL,
         .drops = NO_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(D_80243854_902EC4),
+        .limitAnimations = N(D_80243854_902EC4),
     },
 };
 

@@ -69,12 +69,12 @@ NpcSettings N(NpcSettings_FrostPiranha_Hitbox) = {
     .onDefeat = &N(EVS_GenericHitboxDefeat),
 };
 
-AnimID N(ExtraAnims_FrostPiranha_Hitbox)[] = {
+AnimID N(LimitAnims_FrostPiranha_Hitbox)[] = {
     ANIM_LargePiranha_Frost_Anim00,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_FrostPiranha)[] = {
+AnimID N(LimitAnims_FrostPiranha)[] = {
     ANIM_LargePiranha_Frost_Anim00,
     ANIM_LargePiranha_Frost_Anim01,
     ANIM_LargePiranha_Frost_Anim0E,

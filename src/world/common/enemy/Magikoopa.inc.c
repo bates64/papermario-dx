@@ -59,7 +59,7 @@ NpcSettings N(NpcSettings_Magikoopa) = {
     .onDefeat = &N(EVS_NpcDefeat_Magikoopa),
 };
 
-AnimID N(ExtraAnims_Magikoopa)[] = {
+AnimID N(LimitAnims_Magikoopa)[] = {
     ANIM_Magikoopa_Anim00,
     ANIM_Magikoopa_Anim01,
     ANIM_Magikoopa_Anim01,

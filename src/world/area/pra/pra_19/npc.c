@@ -10,19 +10,8 @@ NpcSettings N(NpcSettings_Kooper) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-NpcSettings N(NpcSettings_Goompa) = {
-    .height = 22,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
-};
-
-NpcSettings N(NpcSettings_KoopaKoot) = {
-    .height = 32,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
-
+#include "world/common/npc/GoombaFamily.inc.c"
+#include "world/common/npc/KoopaKoot.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
 
 NpcSettings N(NpcSettings_Duplighost) = {
@@ -997,7 +986,7 @@ EvtScript N(EVS_NpcInit_Duplighost_Kolorado) = {
     End
 };
 
-AnimID N(ExtraAnims_Goompa)[] = {
+AnimID N(LimitAnims_Goompa)[] = {
     ANIM_Goompa_Idle,
     ANIM_Goompa_Walk,
     ANIM_Goompa_Talk,
@@ -1005,7 +994,7 @@ AnimID N(ExtraAnims_Goompa)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Luigi)[] = {
+AnimID N(LimitAnims_Luigi)[] = {
     ANIM_Luigi_Idle,
     ANIM_Luigi_Walk,
     ANIM_Luigi_Talk,
@@ -1013,7 +1002,7 @@ AnimID N(ExtraAnims_Luigi)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_KoopaKoot)[] = {
+AnimID N(LimitAnims_KoopaKoot)[] = {
     ANIM_KoopaKoot_Idle,
     ANIM_KoopaKoot_Walk,
     ANIM_KoopaKoot_Talk,
@@ -1021,7 +1010,7 @@ AnimID N(ExtraAnims_KoopaKoot)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Walk,
     ANIM_Kolorado_Talk,
@@ -1029,7 +1018,7 @@ AnimID N(ExtraAnims_Kolorado)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Duplighost)[] = {
+AnimID N(LimitAnims_Duplighost)[] = {
     ANIM_Duplighost_Anim02,
     ANIM_Duplighost_Anim03,
     ANIM_Duplighost_Anim05,
@@ -1070,28 +1059,11 @@ NpcData N(NpcData_Imposters)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FakeGoompa),
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &N(NpcSettings_GoombaFamily),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Goompa_Idle,
-            .walk   = ANIM_Goompa_Walk,
-            .run    = ANIM_Goompa_Run,
-            .chase  = ANIM_Goompa_Run,
-            .anim_4 = ANIM_Goompa_Idle,
-            .anim_5 = ANIM_Goompa_Idle,
-            .death  = ANIM_Goompa_Still,
-            .hit    = ANIM_Goompa_Still,
-            .anim_8 = ANIM_Goompa_Run,
-            .anim_9 = ANIM_Goompa_Run,
-            .anim_A = ANIM_Goompa_Run,
-            .anim_B = ANIM_Goompa_Run,
-            .anim_C = ANIM_Goompa_Run,
-            .anim_D = ANIM_Goompa_Run,
-            .anim_E = ANIM_Goompa_Run,
-            .anim_F = ANIM_Goompa_Run,
-        },
-        .extraAnimations = N(ExtraAnims_Goompa),
+        .animations = GOOMPA_ANIMS,
+        .limitAnimations = N(LimitAnims_Goompa),
     },
     {
         .id = NPC_FakeLuigi,
@@ -1102,7 +1074,7 @@ NpcData N(NpcData_Imposters)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .extraAnimations = N(ExtraAnims_Luigi),
+        .limitAnimations = N(LimitAnims_Luigi),
     },
     {
         .id = NPC_FakeKoopaKoot,
@@ -1112,25 +1084,8 @@ NpcData N(NpcData_Imposters)[] = {
         .settings = &N(NpcSettings_KoopaKoot),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaKoot_Idle,
-            .walk   = ANIM_KoopaKoot_Idle,
-            .run    = ANIM_KoopaKoot_Idle,
-            .chase  = ANIM_KoopaKoot_Idle,
-            .anim_4 = ANIM_KoopaKoot_Idle,
-            .anim_5 = ANIM_KoopaKoot_Idle,
-            .death  = ANIM_KoopaKoot_Idle,
-            .hit    = ANIM_KoopaKoot_Idle,
-            .anim_8 = ANIM_KoopaKoot_Idle,
-            .anim_9 = ANIM_KoopaKoot_Idle,
-            .anim_A = ANIM_KoopaKoot_Idle,
-            .anim_B = ANIM_KoopaKoot_Idle,
-            .anim_C = ANIM_KoopaKoot_Idle,
-            .anim_D = ANIM_KoopaKoot_Idle,
-            .anim_E = ANIM_KoopaKoot_Idle,
-            .anim_F = ANIM_KoopaKoot_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_KoopaKoot),
+        .animations = KOOPA_KOOT_ANIMS,
+        .limitAnimations = N(LimitAnims_KoopaKoot),
     },
     {
         .id = NPC_FakeKolorado,
@@ -1141,7 +1096,7 @@ NpcData N(NpcData_Imposters)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kolorado),
+        .limitAnimations = N(LimitAnims_Kolorado),
     },
     {
         .id = NPC_ExamplePlayer,
@@ -1169,7 +1124,7 @@ NpcData N(NpcData_Imposters)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_ExampleKooper,
@@ -1227,7 +1182,7 @@ NpcData N(NpcData_Duplighosts)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_LuigiGhost,
@@ -1255,7 +1210,7 @@ NpcData N(NpcData_Duplighosts)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_KoopaKootGhost,
@@ -1283,7 +1238,7 @@ NpcData N(NpcData_Duplighosts)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_KoloradoGhost,
@@ -1311,7 +1266,7 @@ NpcData N(NpcData_Duplighosts)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
     {
         .id = NPC_Duplighost_Controller,
@@ -1339,7 +1294,7 @@ NpcData N(NpcData_Duplighosts)[] = {
             .anim_E = ANIM_Duplighost_Anim02,
             .anim_F = ANIM_Duplighost_Anim02,
         },
-        .extraAnimations = N(ExtraAnims_Duplighost),
+        .limitAnimations = N(LimitAnims_Duplighost),
     },
 };
 
@@ -1516,28 +1471,11 @@ NpcData N(NpcData_Targets)[] = {
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
         .init = &N(EVS_NpcInit_TargetGoompa),
-        .settings = &N(NpcSettings_Goompa),
+        .settings = &N(NpcSettings_GoombaFamily),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Goompa_Idle,
-            .walk   = ANIM_Goompa_Walk,
-            .run    = ANIM_Goompa_Run,
-            .chase  = ANIM_Goompa_Run,
-            .anim_4 = ANIM_Goompa_Idle,
-            .anim_5 = ANIM_Goompa_Idle,
-            .death  = ANIM_Goompa_Still,
-            .hit    = ANIM_Goompa_Still,
-            .anim_8 = ANIM_Goompa_Run,
-            .anim_9 = ANIM_Goompa_Run,
-            .anim_A = ANIM_Goompa_Run,
-            .anim_B = ANIM_Goompa_Run,
-            .anim_C = ANIM_Goompa_Run,
-            .anim_D = ANIM_Goompa_Run,
-            .anim_E = ANIM_Goompa_Run,
-            .anim_F = ANIM_Goompa_Run,
-        },
-        .extraAnimations = N(ExtraAnims_Goompa),
+        .animations = GOOMPA_ANIMS,
+        .limitAnimations = N(LimitAnims_Goompa),
     },
     {
         .id = NPC_TargetLuigi,
@@ -1548,7 +1486,7 @@ NpcData N(NpcData_Targets)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
-        .extraAnimations = N(ExtraAnims_Luigi),
+        .limitAnimations = N(LimitAnims_Luigi),
     },
     {
         .id = NPC_TargetKoopaKoot,
@@ -1558,25 +1496,8 @@ NpcData N(NpcData_Targets)[] = {
         .settings = &N(NpcSettings_KoopaKoot),
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_KoopaKoot_Idle,
-            .walk   = ANIM_KoopaKoot_Idle,
-            .run    = ANIM_KoopaKoot_Idle,
-            .chase  = ANIM_KoopaKoot_Idle,
-            .anim_4 = ANIM_KoopaKoot_Idle,
-            .anim_5 = ANIM_KoopaKoot_Idle,
-            .death  = ANIM_KoopaKoot_Idle,
-            .hit    = ANIM_KoopaKoot_Idle,
-            .anim_8 = ANIM_KoopaKoot_Idle,
-            .anim_9 = ANIM_KoopaKoot_Idle,
-            .anim_A = ANIM_KoopaKoot_Idle,
-            .anim_B = ANIM_KoopaKoot_Idle,
-            .anim_C = ANIM_KoopaKoot_Idle,
-            .anim_D = ANIM_KoopaKoot_Idle,
-            .anim_E = ANIM_KoopaKoot_Idle,
-            .anim_F = ANIM_KoopaKoot_Idle,
-        },
-        .extraAnimations = N(ExtraAnims_KoopaKoot),
+        .animations = KOOPA_KOOT_ANIMS,
+        .limitAnimations = N(LimitAnims_KoopaKoot),
     },
     {
         .id = NPC_TargetKolorado,
@@ -1587,7 +1508,7 @@ NpcData N(NpcData_Targets)[] = {
         .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_NO_DROPS | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kolorado),
+        .limitAnimations = N(LimitAnims_Kolorado),
     },
 };
 

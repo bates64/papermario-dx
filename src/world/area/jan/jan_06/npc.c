@@ -5,7 +5,7 @@
 #include "world/common/enemy/HurtPlant.inc.c"
 #include "world/common/enemy/SpearGuy_Wander.inc.c"
 
-AnimID N(ExtraAnims_JungleFuzzy)[] = {
+AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_Fuzzy_Blue_Idle,
     ANIM_Fuzzy_Blue_Walk,
     ANIM_Fuzzy_Blue_Run,
@@ -33,11 +33,11 @@ NpcData N(NpcData_JungleFuzzy) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .extraAnimations = N(ExtraAnims_JungleFuzzy),
+    .limitAnimations = N(LimitAnims_JungleFuzzy),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
-AnimID N(ExtraAnims_SpearGuy_Custom)[] = {
+AnimID N(LimitAnims_SpearGuy_Custom)[] = {
     ANIM_SpearGuy_Anim03,
     ANIM_SpearGuy_Anim04,
     ANIM_SpearGuy_Anim05,
@@ -74,7 +74,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy_Custom),
+        .limitAnimations = N(LimitAnims_SpearGuy_Custom),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox),

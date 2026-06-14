@@ -331,7 +331,7 @@ EvtScript N(EVS_NpcInit_CaptivePeach) = {
     End
 };
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
@@ -357,7 +357,7 @@ NpcData N(NpcData_Bowser_Body) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_Bowser_Prop) = {
@@ -369,7 +369,7 @@ NpcData N(NpcData_Bowser_Prop) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_CaptivePeach) = {

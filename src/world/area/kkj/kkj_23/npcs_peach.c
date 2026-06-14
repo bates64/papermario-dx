@@ -10,7 +10,7 @@
 #include "world/common/enemy/Kammy.inc.c"
 #include "world/common/enemy/Koopatrol_Stationary.inc.c"
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim00,
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim02,
@@ -122,7 +122,7 @@ EvtScript N(EVS_NpcInit_Koopatrol_02) = {
     End
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_WorldKammy_Anim01,
     ANIM_WorldKammy_Anim02,
     ANIM_WorldKammy_Anim04,
@@ -139,7 +139,7 @@ NpcData N(NpcData_Kammy)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KAMMY_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy),
     },
     {
         .id = NPC_Koopatrol_01,
@@ -150,7 +150,7 @@ NpcData N(NpcData_Kammy)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_02,
@@ -161,7 +161,7 @@ NpcData N(NpcData_Kammy)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
 };
 

@@ -102,7 +102,7 @@ SpriteAnimData* spr_load_sprite(s32 idx, s32 isPlayerSprite, s32 useTailAlloc) {
     // swizzle raster array
     data = (s32**)animData->rastersOffset;
     data = SPR_SWIZZLE(ALIGN4(animData), data);
-    animData->rastersOffset = (SpriteRasterCacheEntry**)data;
+    animData->rastersOffset = (SpriteRasterEntry**)data;
 
     while (true) {
         ptr1 = *data;
@@ -112,7 +112,7 @@ SpriteAnimData* spr_load_sprite(s32 idx, s32 isPlayerSprite, s32 useTailAlloc) {
         // swizzle each raster cache entry
         ptr1 = SPR_SWIZZLE(ALIGN4(animData), ptr1);
         *data++ = ptr1;
-        image = ((SpriteRasterCacheEntry*)ptr1)->image;
+        image = ((SpriteRasterEntry*)ptr1)->image;
 
         if (!isPlayerSprite) {
             // swizzle image pointer in the cache entry
@@ -222,58 +222,59 @@ void spr_update_player_raster_cache(void) {
     }
 }
 
-void spr_load_npc_extra_anims(SpriteAnimData* header, u32* extraAnimList) {
-    u8* src;
+void spr_npc_unload_unused_assets(SpriteAnimData* spriteData, AnimID* limitAnimList) {
+    u8* rasterDataSrc;
     s32 imgID;
-    s32 rasterSize;
-    s32 remaining;
+    s32 rasterBlockSize;
+    s32 cmdsRemaining;
     u16 animCmd;
-    u16* cmdList;
-    u32 extraAnimID;
-    u8* dataPos;
-    void* copyEnd;
-    SpriteAnimComponent* comp;
-    SpriteAnimComponent** compList;
-    void* writePos;
-    SpriteRasterCacheEntry** rasterList;
-    SpriteRasterCacheEntry* raster;
-    PAL_PTR* oldPalList;
+    u16* cmdReadPos;
+    u32 animID;
+    u8* compactWritePos;
+    void* lastRetainedRaster;
+    SpriteAnimComponent* animComponent;
+    SpriteAnimComponent** animComponents;
+    void* tableWritePos;
+    SpriteRasterEntry** rasterReadPos;
+    SpriteRasterEntry* raster;
+    PAL_PTR* paletteReadPos;
+    PAL_PTR palette;
     // one extra required for 'done' sentinel
-    s32 sawRaster[100 + 1];
+    s32 keepRaster[100 + 1];
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(sawRaster) - 1; i++) {
-        sawRaster[i] = false;
+    for (i = 0; i < ARRAY_COUNT(keepRaster) - 1; i++) {
+        keepRaster[i] = false;
     }
 
-    while ((extraAnimID = *extraAnimList++) != -1) {
-        compList = header->animListStart[extraAnimID & 0xFF];
-        while ((comp = *compList++) != PTR_LIST_END) {
-            cmdList = comp->cmdList;
-            remaining = (s16) comp->cmdListSize / 2;
-            while (remaining > 0) {
-                animCmd = *cmdList++;
-                remaining--;
+    // mark every raster appearing in animations from limitAnimList
+    while ((animID = *limitAnimList++) != ANIM_LIST_END) {
+        animComponents = spriteData->animListStart[animID & 0xFF];
+        while ((animComponent = *animComponents++) != PTR_LIST_END) {
+            cmdReadPos = animComponent->cmdList;
+            cmdsRemaining = (s16) animComponent->cmdListSize / 2;
+            while (cmdsRemaining > 0) {
+                animCmd = *cmdReadPos++;
+                cmdsRemaining--;
                 switch (animCmd & 0xF000) {
                     case 0x1000:
-                        i = animCmd; // required to match
-                        imgID = i & 0xFF;
-                        if (imgID < ARRAY_COUNT(sawRaster) - 1) {
-                            sawRaster[imgID] = true;
+                        imgID = animCmd & 0xFF;
+                        if (imgID < ARRAY_COUNT(keepRaster) - 1) {
+                            keepRaster[imgID] = true;
                         }
                         break;
                     case 0x3000:
-                        cmdList++;
-                        remaining--;
+                        cmdReadPos++;
+                        cmdsRemaining--;
                         // fallthrough
                     case 0x4000:
-                        cmdList++;
-                        remaining--;
+                        cmdReadPos++;
+                        cmdsRemaining--;
                         // fallthrough
                     case 0x7000:
                     case 0x5000:
-                        cmdList++;
-                        remaining--;
+                        cmdReadPos++;
+                        cmdsRemaining--;
                         // fallthrough
                     case 0x0000:
                     case 0x2000:
@@ -285,64 +286,66 @@ void spr_load_npc_extra_anims(SpriteAnimData* header, u32* extraAnimList) {
         }
     }
 
-    rasterList = header->rastersOffset;
-    raster = *rasterList;
-    dataPos = raster->image;
+    rasterReadPos = spriteData->rastersOffset;
+    raster = *rasterReadPos;
+    compactWritePos = raster->image;
 
-    for (i = 0; i < ARRAY_COUNT(sawRaster) - 1; i++) {
-        if ((raster = *rasterList) == PTR_LIST_END) {
+    // pack retained raster data and cache entries over the discarded blocks
+    for (i = 0; i < ARRAY_COUNT(keepRaster) - 1; i++) {
+        if ((raster = *rasterReadPos) == PTR_LIST_END) {
             break;
         }
-        if (sawRaster[i]) {
-            src = raster->image;
-            rasterSize = (raster->width * raster->height) / 2;
-            copyEnd = &dataPos[rasterSize];
-            rasterSize += 8;
-            if (dataPos != src) {
-                raster->image = dataPos;
-                bcopy(src, dataPos, rasterSize);
+        if (keepRaster[i]) {
+            rasterDataSrc = raster->image;
+            rasterBlockSize = (raster->width * raster->height) / 2;
+            lastRetainedRaster = &compactWritePos[rasterBlockSize];
+            rasterBlockSize += sizeof(*raster);
+            if (compactWritePos != rasterDataSrc) {
+                raster->image = compactWritePos;
+                bcopy(rasterDataSrc, compactWritePos, rasterBlockSize);
             }
-            *rasterList = copyEnd;
-            dataPos += rasterSize;
+            *rasterReadPos = lastRetainedRaster;
+            compactWritePos += rasterBlockSize;
         }
-        rasterList++;
+        rasterReadPos++;
     }
     // sentinel value to mark end of valid data
-    sawRaster[i] = true;
+    keepRaster[i] = true;
 
-    writePos = dataPos;
+    tableWritePos = compactWritePos;
 
-    // copy raster list
-    rasterList = header->rastersOffset;
-    header->rastersOffset = writePos;
+    // rebuild the raster table, redirecting discarded slots to a valid retained entry
+    rasterReadPos = spriteData->rastersOffset;
+    spriteData->rastersOffset = tableWritePos;
 
-    for (i = 0; i < ARRAY_COUNT(sawRaster) - 1; i++) {
-        raster = *rasterList++;
-        if (sawRaster[i]) {
-            *(SpriteRasterCacheEntry**) writePos = raster;
+    for (i = 0; i < ARRAY_COUNT(keepRaster) - 1; i++) {
+        raster = *rasterReadPos++;
+        if (keepRaster[i]) {
+            *(SpriteRasterEntry**) tableWritePos = raster;
         } else {
-            *(SpriteRasterCacheEntry**) writePos = (SpriteRasterCacheEntry*) copyEnd;
+            *(SpriteRasterEntry**) tableWritePos = lastRetainedRaster;
         }
-        writePos += 4;
+        tableWritePos += 4;
         if (raster == PTR_LIST_END) {
             break;
         }
     }
 
-    // copy palette list
-    oldPalList = header->palettesOffset;
-    header->palettesOffset = writePos;
+    // relocate the palette pointer table; the palette data itself is retained unchanged
+    paletteReadPos = spriteData->palettesOffset;
+    spriteData->palettesOffset = tableWritePos;
 
-    for (i = 0; i < ARRAY_COUNT(sawRaster) - 1; i++) {
-        raster = (SpriteRasterCacheEntry*)*oldPalList++; // required to match
-        *(u16**)writePos = (u16*)raster;
-        writePos += 4;
-        if (raster == PTR_LIST_END) {
+    for (i = 0; i < ARRAY_COUNT(keepRaster) - 1; i++) {
+        palette = *paletteReadPos++;
+        *(PAL_PTR*)tableWritePos = palette;
+        tableWritePos += sizeof(PAL_PTR);
+        if (palette == PTR_LIST_END) {
             break;
         }
     }
 
-    _heap_realloc(&heap_spriteHead, header, (s32)writePos - (s32)header);
+    // compact the sprite in memory
+    _heap_realloc(&heap_spriteHead, spriteData, (s32)tableWritePos - (s32)spriteData);
 }
 
 SpriteComponent** spr_allocate_components(s32 count) {

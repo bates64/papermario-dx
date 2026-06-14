@@ -137,7 +137,7 @@ EvtScript N(EVS_NpcInit_HarryT_Epilogue) = {
     End
 };
 
-AnimID N(ExtraAnims_Luigi_Epilogue)[] = {
+AnimID N(LimitAnims_Luigi_Epilogue)[] = {
     ANIM_Luigi_Still,
     ANIM_Luigi_Idle,
     ANIM_Luigi_Walk,
@@ -154,24 +154,24 @@ NpcData N(NpcData_Luigi_Epilogue) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
-    .extraAnimations = N(ExtraAnims_Luigi_Epilogue),
+    .limitAnimations = N(LimitAnims_Luigi_Epilogue),
 };
 
-AnimID N(ExtraAnims_Goompapa_Epilogue)[] = {
+AnimID N(LimitAnims_Goompapa_Epilogue)[] = {
     ANIM_Goompapa_Still,
     ANIM_Goompapa_Idle,
     ANIM_Goompapa_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Goomama_Epilogue)[] = {
+AnimID N(LimitAnims_Goomama_Epilogue)[] = {
     ANIM_Goomama_Still,
     ANIM_Goomama_Idle,
     ANIM_Goomama_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Gooma_Epilogue)[] = {
+AnimID N(LimitAnims_Gooma_Epilogue)[] = {
     ANIM_Gooma_Still,
     ANIM_Gooma_Idle,
     ANIM_Gooma_Talk,
@@ -188,7 +188,7 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMPAPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Goompapa_Epilogue),
+        .limitAnimations = N(LimitAnims_Goompapa_Epilogue),
         .tattle = MSG_NpcTattle_Goompapa,
     },
     {
@@ -200,7 +200,7 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMAMA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Goomama_Epilogue),
+        .limitAnimations = N(LimitAnims_Goomama_Epilogue),
         .tattle = MSG_NpcTattle_Goomama,
     },
     {
@@ -212,19 +212,19 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Gooma_Epilogue),
+        .limitAnimations = N(LimitAnims_Gooma_Epilogue),
         .tattle = MSG_NpcTattle_Gooma,
     },
 };
 
-AnimID N(ExtraAnims_Quizmo_Epilogue)[] = {
+AnimID N(LimitAnims_Quizmo_Epilogue)[] = {
     ANIM_ChuckQuizmo_Still,
     ANIM_ChuckQuizmo_Idle,
     ANIM_ChuckQuizmo_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_VannaT_Epilogue)[] = {
+AnimID N(LimitAnims_VannaT_Epilogue)[] = {
     ANIM_VannaT_Still,
     ANIM_VannaT_Happy,
     ANIM_VannaT_Wave,
@@ -258,7 +258,7 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
             .anim_E = ANIM_ChuckQuizmo_Run,
             .anim_F = ANIM_ChuckQuizmo_Run,
         },
-        .extraAnimations = N(ExtraAnims_Quizmo_Epilogue),
+        .limitAnimations = N(LimitAnims_Quizmo_Epilogue),
         .tattle = MSG_NpcTattle_ChuckQuizmo,
     },
     {
@@ -287,26 +287,26 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
             .anim_E = ANIM_VannaT_Still,
             .anim_F = ANIM_VannaT_Still,
         },
-        .extraAnimations = N(ExtraAnims_VannaT_Epilogue),
+        .limitAnimations = N(LimitAnims_VannaT_Epilogue),
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
 };
 
-AnimID N(ExtraAnims_TheMaster_Epilogue)[] = {
+AnimID N(LimitAnims_TheMaster_Epilogue)[] = {
     ANIM_TheMaster_Still,
     ANIM_TheMaster_Idle,
     ANIM_TheMaster_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Chan_Epilogue)[] = {
+AnimID N(LimitAnims_Chan_Epilogue)[] = {
     ANIM_Chan_Still,
     ANIM_Chan_Idle,
     ANIM_Chan_Run,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Lee_Epilogue)[] = {
+AnimID N(LimitAnims_Lee_Epilogue)[] = {
     ANIM_Lee_Still,
     ANIM_Lee_Idle,
     ANIM_Lee_Talk,
@@ -340,7 +340,7 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
             .anim_E = ANIM_TheMaster_Still,
             .anim_F = ANIM_TheMaster_Still,
         },
-        .extraAnimations = N(ExtraAnims_TheMaster_Epilogue),
+        .limitAnimations = N(LimitAnims_TheMaster_Epilogue),
         .tattle = MSG_NpcTattle_TheMaster,
     },
     {
@@ -354,7 +354,7 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .animations = {
             .idle   = ANIM_Chan_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Chan_Epilogue),
+        .limitAnimations = N(LimitAnims_Chan_Epilogue),
         .tattle = MSG_NpcTattle_Chan,
     },
     {
@@ -368,12 +368,12 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .animations = {
             .idle   = ANIM_Lee_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Lee_Epilogue),
+        .limitAnimations = N(LimitAnims_Lee_Epilogue),
         .tattle = MSG_NpcTattle_Lee,
     },
 };
 
-AnimID N(ExtraAnims_HarryT_Epilogue)[] = {
+AnimID N(LimitAnims_HarryT_Epilogue)[] = {
     ANIM_HarryT_Still,
     ANIM_HarryT_Idle,
     ANIM_HarryT_Talk,
@@ -396,7 +396,7 @@ NpcData N(NpcData_Toad_01_Epilogue)[] = {
             .chase  = ANIM_HarryT_Run,
             .anim_4 = ANIM_HarryT_Idle,
         },
-        .extraAnimations = N(ExtraAnims_HarryT_Epilogue),
+        .limitAnimations = N(LimitAnims_HarryT_Epilogue),
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
     {
@@ -414,7 +414,7 @@ NpcData N(NpcData_Toad_01_Epilogue)[] = {
             .chase  = ANIM_HarryT_Run,
             .anim_4 = ANIM_HarryT_Idle,
         },
-        .extraAnimations = N(ExtraAnims_HarryT_Epilogue),
+        .limitAnimations = N(LimitAnims_HarryT_Epilogue),
         .tattle = MSG_NpcTattle_MAC00_ShopOwner,
     },
 };

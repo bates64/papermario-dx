@@ -17,7 +17,7 @@ EvtScript N(EVS_NpcDefeat_FrostClubba) = {
     End
 };
 
-AnimID N(ExtraAnims_FrostClubba)[] = {
+AnimID N(LimitAnims_FrostClubba)[] = {
     ANIM_WorldClubba_Anim00,
     ANIM_WorldClubba_Anim02,
     ANIM_WorldClubba_Anim03,
@@ -30,7 +30,7 @@ AnimID N(ExtraAnims_FrostClubba)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_FrostClubba_Hitbox)[] = {
+AnimID N(LimitAnims_FrostClubba_Hitbox)[] = {
     ANIM_WorldClubba_Anim00,
     ANIM_LIST_END
 };

@@ -2577,7 +2577,7 @@ void create_encounters(void) {
                     bp->onUpdate = nullptr;
                     bp->onRender = nullptr;
                     if (!(enemy->flags & ENEMY_FLAG_USE_PLAYER_SPRITE)) {
-                        newNpcIndex = create_standard_npc(bp, npcData->extraAnimations);
+                        newNpcIndex = create_standard_npc(bp, npcData->limitAnimations);
                     } else {
                         newNpcIndex = create_peach_npc(bp);
                     }

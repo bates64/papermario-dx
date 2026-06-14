@@ -138,7 +138,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .settings = &N(NpcSettings_SpearGuy_Wander),
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy),
+        .limitAnimations = N(LimitAnims_SpearGuy),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
@@ -152,7 +152,7 @@ NpcData N(NpcData_HurtPlant) = {
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .limitAnimations = N(LimitAnims_HurtPlant),
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 

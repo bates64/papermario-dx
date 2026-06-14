@@ -5,7 +5,7 @@
 #include "world/common/npc/Bowser.inc.c"
 #include "world/common/enemy/Koopatrol_Stationary.inc.c"
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
@@ -15,7 +15,7 @@ AnimID N(ExtraAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim06,
     ANIM_WorldKoopatrol_Anim08,
@@ -33,7 +33,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOWSER_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bowser),
+        .limitAnimations = N(LimitAnims_Bowser),
     },
     {
         .id = NPC_Kammy,
@@ -43,7 +43,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_KoopaBros_01,
@@ -53,7 +53,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
 };
 

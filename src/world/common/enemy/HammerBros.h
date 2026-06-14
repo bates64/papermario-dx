@@ -73,5 +73,5 @@
         .anim_E = ANIM_HammerBros_Anim0D, \
         .anim_F = ANIM_HammerBros_Anim0D, \
     }, \
-    .extraAnimations = N(ExtraAnims_HammerBros_Hammer), \
+    .limitAnimations = N(LimitAnims_HammerBros_Hammer), \
 }

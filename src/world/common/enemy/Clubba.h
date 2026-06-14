@@ -64,5 +64,5 @@
     .flags = ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DROPS, \
     .drops = NO_DROPS, \
     .animations = CLUBBA_ANIMS, \
-    .extraAnimations = N(ExtraAnims_Clubba_Hitbox), \
+    .limitAnimations = N(LimitAnims_Clubba_Hitbox), \
 }

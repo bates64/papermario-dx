@@ -598,7 +598,7 @@ EvtScript N(EVS_NpcInit_Watt) = {
     End
 };
 
-AnimID N(ExtraAnims_LanternGhost)[] = {
+AnimID N(LimitAnims_LanternGhost)[] = {
     ANIM_BigLanternGhost_Anim01,
     ANIM_BigLanternGhost_Anim06,
     ANIM_BigLanternGhost_Anim07,
@@ -622,7 +622,7 @@ NpcData N(NpcData_BigLanternGhost) = {
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
@@ -668,7 +668,7 @@ NpcData N(NpcData_LanternTop) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 
@@ -683,7 +683,7 @@ NpcData N(NpcData_LanternBottom) = {
     .flags = ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_CANT_INTERACT,
     .drops = NO_DROPS,
     .animations = BIG_LANTERN_GHOST_ANIMS,
-    .extraAnimations = N(ExtraAnims_LanternGhost),
+    .limitAnimations = N(LimitAnims_LanternGhost),
     .tattle = MSG_NpcTattle_OMO_Lantern,
 };
 

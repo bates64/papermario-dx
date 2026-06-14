@@ -573,7 +573,7 @@ EvtScript N(EVS_NpcInit_RuffPuff) = {
     End
 };
 
-AnimID N(ExtraAnims_HuffNPuff)[] = {
+AnimID N(LimitAnims_HuffNPuff)[] = {
     ANIM_HuffNPuff_Anim00,
     ANIM_HuffNPuff_Anim01,
     ANIM_HuffNPuff_Anim02,
@@ -595,7 +595,7 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
     {
         .id = NPC_HuffNPuff_02,
@@ -606,7 +606,7 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
     {
         .id = NPC_HuffNPuff_03,
@@ -617,11 +617,11 @@ NpcData N(NpcData_HuffNPuff)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = NO_DROPS,
         .animations = HUFF_N_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_HuffNPuff),
+        .limitAnimations = N(LimitAnims_HuffNPuff),
     },
 };
 
-AnimID N(ExtraAnims_RuffPuff)[] = {
+AnimID N(LimitAnims_RuffPuff)[] = {
     ANIM_RuffPuff_Dizzy,
     ANIM_LIST_END
 };
@@ -636,7 +636,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_02,
@@ -647,7 +647,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_03,
@@ -658,7 +658,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_04,
@@ -669,7 +669,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_05,
@@ -680,7 +680,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_06,
@@ -691,7 +691,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_07,
@@ -702,7 +702,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_08,
@@ -713,7 +713,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_09,
@@ -724,7 +724,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_10,
@@ -735,7 +735,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_11,
@@ -746,7 +746,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_12,
@@ -757,7 +757,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_13,
@@ -768,7 +768,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_14,
@@ -779,7 +779,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
     {
         .id = NPC_RuffPuff_15,
@@ -790,7 +790,7 @@ NpcData N(NpcData_RuffPuffs)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_IGNORE_PLAYER_COLLISION,
         .drops = NO_DROPS,
         .animations = RUFF_PUFF_ANIMS,
-        .extraAnimations = N(ExtraAnims_RuffPuff),
+        .limitAnimations = N(LimitAnims_RuffPuff),
     },
 };
 

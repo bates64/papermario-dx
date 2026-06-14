@@ -10,8 +10,6 @@ extern EvtScript N(EVS_NpcAI_Tubba_WakeUp);
 #include "world/common/enemy/TubbaBlubba_Patrol.inc.c"
 #include "world/common/enemy/TubbaBlubba.inc.c"
 
-#include "world/common/todo/UnkFunc1.inc.c"
-
 API_CALLABLE(N(UnusedChasePlayer)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     Npc* npc = get_npc_unsafe(NPC_Tubba);
@@ -332,6 +330,8 @@ EvtScript N(EVS_NpcAI_Tubba_Chase) = {
     Return
     End
 };
+
+#include "world/common/todo/UnkFunc1.inc.c"
 
 EvtScript N(EVS_NpcDefeat_Tubba) = {
     Call(N(UnkFunc1))

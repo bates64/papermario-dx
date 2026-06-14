@@ -64,8 +64,6 @@ EvtScript N(EVS_NpcIdle_Tubba) = {
     End
 };
 
-#include "world/common/todo/UnkFunc1.inc.c"
-
 API_CALLABLE(N(SetTubbaPatrolTerritory)) {
     if (get_enemy_safe(NPC_Tubba)) {
         Enemy* enemy = get_enemy(NPC_Tubba);
@@ -121,6 +119,8 @@ EvtScript N(EVS_NpcAI_Tubba) = {
     Return
     End
 };
+
+#include "world/common/todo/UnkFunc1.inc.c"
 
 EvtScript N(EVS_NpcDefeat_Tubba) = {
     Call(N(UnkFunc1))
@@ -220,7 +220,7 @@ NpcData N(NpcData_Clubba_01)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),
@@ -247,7 +247,7 @@ NpcData N(NpcData_Clubba_02)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_02_Hitbox),
@@ -274,7 +274,7 @@ NpcData N(NpcData_Clubba_03)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_03_Hitbox),
@@ -447,7 +447,7 @@ NpcData N(NpcData_Clubba_Unused) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = CLUBBA_DROPS,
     .animations = CLUBBA_ANIMS,
-    .extraAnimations = N(ExtraAnims_Clubba),
+    .limitAnimations = N(LimitAnims_Clubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 

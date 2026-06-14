@@ -47,7 +47,7 @@ NpcSettings N(NpcSettings_FlyingMagikoopa) = {
     .onDefeat = &N(EVS_NpcDefeat_FlyingMagikoopa),
 };
 
-AnimID N(ExtraAnims_FlyingMagikoopa)[] = {
+AnimID N(LimitAnims_FlyingMagikoopa)[] = {
     ANIM_FlyingMagikoopa_Anim00,
     ANIM_FlyingMagikoopa_Anim01,
     ANIM_FlyingMagikoopa_Anim01,

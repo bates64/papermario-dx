@@ -58,12 +58,12 @@ NpcSettings N(NpcSettings_Gulpit_Hitbox) = {
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
-AnimID N(ExtraAnims_Gulpit_Hitbox)[] = {
+AnimID N(LimitAnims_Gulpit_Hitbox)[] = {
     ANIM_Gulpit_Anim00,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Gulpit)[] = {
+AnimID N(LimitAnims_Gulpit)[] = {
     ANIM_Gulpit_Anim00,
     ANIM_Gulpit_Anim01,
     ANIM_Gulpit_Anim0B,

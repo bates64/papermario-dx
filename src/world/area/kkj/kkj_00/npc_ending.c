@@ -47,7 +47,7 @@ EvtScript N(EVS_NpcInit_ToadGuard_03) = {
     End
 };
 
-AnimID N(ExtraAnims_Peach)[] = {
+AnimID N(LimitAnims_Peach)[] = {
     ANIM_Peach1_Still,
     ANIM_Peach1_Idle,
     ANIM_Peach2_TalkIdle,
@@ -60,7 +60,7 @@ AnimID N(ExtraAnims_Peach)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Minister)[] = {
+AnimID N(LimitAnims_Minister)[] = {
     ANIM_ToadMinister_Still,
     ANIM_ToadMinister_Idle,
     ANIM_ToadMinister_Walk,
@@ -68,164 +68,164 @@ AnimID N(ExtraAnims_Minister)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_TayceT)[] = {
+AnimID N(LimitAnims_TayceT)[] = {
     ANIM_TayceT_Still,
     ANIM_TayceT_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_RussT)[] = {
+AnimID N(LimitAnims_RussT)[] = {
     ANIM_RussT_Still,
     ANIM_RussT_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_ShiverToad)[] = {
+AnimID N(LimitAnims_ShiverToad)[] = {
     ANIM_ShiverToad_Red_Still,
     ANIM_ShiverToad_Red_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Toad)[] = {
+AnimID N(LimitAnims_Toad)[] = {
     ANIM_Toad_Red_Still,
     ANIM_Toad_Red_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Toadette)[] = {
+AnimID N(LimitAnims_Toadette)[] = {
     ANIM_Toadette_Orange_Still,
     ANIM_Toadette_Orange_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_ToadGuard)[] = {
+AnimID N(LimitAnims_ToadGuard)[] = {
     ANIM_ToadGuard_Red_Still,
     ANIM_ToadGuard_Red_Idle,
     ANIM_ToadGuard_Red_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Goombario)[] = {
+AnimID N(LimitAnims_Goombario)[] = {
     ANIM_WorldGoombario_Still,
     ANIM_WorldGoombario_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kooper)[] = {
+AnimID N(LimitAnims_Kooper)[] = {
     ANIM_WorldKooper_Still,
     ANIM_WorldKooper_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bombette)[] = {
+AnimID N(LimitAnims_Bombette)[] = {
     ANIM_WorldBombette_Still,
     ANIM_WorldBombette_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Parakarry)[] = {
+AnimID N(LimitAnims_Parakarry)[] = {
     ANIM_WorldParakarry_Still,
     ANIM_WorldParakarry_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bow)[] = {
+AnimID N(LimitAnims_Bow)[] = {
     ANIM_WorldBow_Still,
     ANIM_WorldBow_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Watt)[] = {
+AnimID N(LimitAnims_Watt)[] = {
     ANIM_WorldWatt_Still,
     ANIM_WorldWatt_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Sushie)[] = {
+AnimID N(LimitAnims_Sushie)[] = {
     ANIM_WorldSushie_Still,
     ANIM_WorldSushie_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Lakilester)[] = {
+AnimID N(LimitAnims_Lakilester)[] = {
     ANIM_WorldLakilester_Still,
     ANIM_WorldLakilester_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Merlon)[] = {
+AnimID N(LimitAnims_Merlon)[] = {
     ANIM_Merlon_Still,
     ANIM_Merlon_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Merluvlee)[] = {
+AnimID N(LimitAnims_Merluvlee)[] = {
     ANIM_Merluvlee_Still,
     ANIM_Merluvlee_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Merlow)[] = {
+AnimID N(LimitAnims_Merlow)[] = {
     ANIM_Merlow_Still,
     ANIM_Merlow_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Merlee)[] = {
+AnimID N(LimitAnims_Merlee)[] = {
     ANIM_WorldMerlee_Still,
     ANIM_WorldMerlee_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Merle)[] = {
+AnimID N(LimitAnims_Merle)[] = {
     ANIM_Merle_Still,
     ANIM_Merle_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Lakilulu)[] = {
+AnimID N(LimitAnims_Lakilulu)[] = {
     ANIM_Lakilulu_Still,
     ANIM_Lakilulu_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bootler)[] = {
+AnimID N(LimitAnims_Bootler)[] = {
     ANIM_Bootler_Still,
     ANIM_Bootler_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Goompa)[] = {
+AnimID N(LimitAnims_Goompa)[] = {
     ANIM_Goompa_Still,
     ANIM_Goompa_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Goombaria)[] = {
+AnimID N(LimitAnims_Goombaria)[] = {
     ANIM_Goombaria_Still,
     ANIM_Goombaria_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Yoshi)[] = {
+AnimID N(LimitAnims_Yoshi)[] = {
     ANIM_Yoshi_Green_Still,
     ANIM_Yoshi_Green_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Penguin)[] = {
+AnimID N(LimitAnims_Penguin)[] = {
     ANIM_Penguin_Still,
     ANIM_Penguin_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Dryite)[] = {
+AnimID N(LimitAnims_Dryite)[] = {
     ANIM_Dryite_Green_Still,
     ANIM_Dryite_Green_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Ninji)[] = {
+AnimID N(LimitAnims_Ninji)[] = {
     ANIM_Ninji_Still,
     ANIM_Ninji_Idle,
     ANIM_LIST_END
@@ -239,7 +239,7 @@ NpcData N(NpcData_Peach) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
-    .extraAnimations = N(ExtraAnims_Peach),
+    .limitAnimations = N(LimitAnims_Peach),
 };
 
 NpcData N(NpcData_SpecialToads)[] = {
@@ -251,7 +251,7 @@ NpcData N(NpcData_SpecialToads)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_MINISTER_ANIMS,
-        .extraAnimations = N(ExtraAnims_Minister),
+        .limitAnimations = N(LimitAnims_Minister),
     },
     {
         .id = NPC_TayceT,
@@ -263,7 +263,7 @@ NpcData N(NpcData_SpecialToads)[] = {
         .animations = {
             .idle   = ANIM_TayceT_Idle,
         },
-        .extraAnimations = N(ExtraAnims_TayceT),
+        .limitAnimations = N(LimitAnims_TayceT),
     },
     {
         .id = NPC_RussT_02,
@@ -291,7 +291,7 @@ NpcData N(NpcData_SpecialToads)[] = {
             .anim_E = ANIM_RussT_Idle,
             .anim_F = ANIM_RussT_Idle,
         },
-        .extraAnimations = N(ExtraAnims_RussT),
+        .limitAnimations = N(LimitAnims_RussT),
     },
     {
         .id = NPC_ShiverToad_02,
@@ -319,7 +319,7 @@ NpcData N(NpcData_SpecialToads)[] = {
             .anim_E = ANIM_ShiverToad_Green_Idle,
             .anim_F = ANIM_ShiverToad_Green_Idle,
         },
-        .extraAnimations = N(ExtraAnims_ShiverToad),
+        .limitAnimations = N(LimitAnims_ShiverToad),
     },
 };
 
@@ -349,7 +349,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldGoombario_Run,
             .anim_F = ANIM_WorldGoombario_Run,
         },
-        .extraAnimations = N(ExtraAnims_Goombario),
+        .limitAnimations = N(LimitAnims_Goombario),
     },
     {
         .id = NPC_Kooper,
@@ -376,7 +376,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldKooper_Still,
             .anim_F = ANIM_WorldKooper_Still,
         },
-        .extraAnimations = N(ExtraAnims_Kooper),
+        .limitAnimations = N(LimitAnims_Kooper),
     },
     {
         .id = NPC_Bombette,
@@ -403,7 +403,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldBombette_Still,
             .anim_F = ANIM_WorldBombette_Still,
         },
-        .extraAnimations = N(ExtraAnims_Bombette),
+        .limitAnimations = N(LimitAnims_Bombette),
     },
     {
         .id = NPC_Parakarry,
@@ -430,7 +430,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldParakarry_Idle,
             .anim_F = ANIM_WorldParakarry_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Parakarry),
+        .limitAnimations = N(LimitAnims_Parakarry),
     },
     {
         .id = NPC_Bow,
@@ -457,7 +457,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldBow_Run,
             .anim_F = ANIM_WorldBow_Run,
         },
-        .extraAnimations = N(ExtraAnims_Bow),
+        .limitAnimations = N(LimitAnims_Bow),
     },
     {
         .id = NPC_Watt,
@@ -486,7 +486,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldWatt_Idle,
             .anim_F = ANIM_WorldWatt_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Watt),
+        .limitAnimations = N(LimitAnims_Watt),
     },
     {
         .id = NPC_Sushie,
@@ -513,7 +513,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldSushie_Idle,
             .anim_F = ANIM_WorldSushie_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Sushie),
+        .limitAnimations = N(LimitAnims_Sushie),
     },
     {
         .id = NPC_Lakilester,
@@ -540,7 +540,7 @@ NpcData N(NpcData_Party)[] = {
             .anim_E = ANIM_WorldLakilester_Idle,
             .anim_F = ANIM_WorldLakilester_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Lakilester),
+        .limitAnimations = N(LimitAnims_Lakilester),
     },
 };
 
@@ -555,7 +555,7 @@ NpcData N(NpcData_Wizards)[] = {
         .animations = {
             .idle   = ANIM_Merlon_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Merlon),
+        .limitAnimations = N(LimitAnims_Merlon),
     },
     {
         .id = NPC_Merluvlee,
@@ -567,7 +567,7 @@ NpcData N(NpcData_Wizards)[] = {
         .animations = {
             .idle   = ANIM_Merluvlee_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Merluvlee),
+        .limitAnimations = N(LimitAnims_Merluvlee),
     },
     {
         .id = NPC_Merlow,
@@ -579,7 +579,7 @@ NpcData N(NpcData_Wizards)[] = {
         .animations = {
             .idle   = ANIM_Merlow_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Merlow),
+        .limitAnimations = N(LimitAnims_Merlow),
     },
     {
         .id = NPC_Merlee,
@@ -606,7 +606,7 @@ NpcData N(NpcData_Wizards)[] = {
             .anim_E = ANIM_WorldMerlee_Idle,
             .anim_F = ANIM_WorldMerlee_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Merlee),
+        .limitAnimations = N(LimitAnims_Merlee),
     },
     {
         .id = NPC_Merle,
@@ -633,7 +633,7 @@ NpcData N(NpcData_Wizards)[] = {
             .anim_E = ANIM_Merle_Idle,
             .anim_F = ANIM_Merle_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Merle),
+        .limitAnimations = N(LimitAnims_Merle),
     },
 };
 
@@ -663,7 +663,7 @@ NpcData N(NpcData_PartyFamily)[] = {
             .anim_E = ANIM_Lakilulu_Idle,
             .anim_F = ANIM_Lakilulu_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Lakilulu),
+        .limitAnimations = N(LimitAnims_Lakilulu),
     },
     {
         .id = NPC_Bootler,
@@ -690,7 +690,7 @@ NpcData N(NpcData_PartyFamily)[] = {
             .anim_E = ANIM_Bootler_Dejected,
             .anim_F = ANIM_Bootler_Quaver,
         },
-        .extraAnimations = N(ExtraAnims_Bootler),
+        .limitAnimations = N(LimitAnims_Bootler),
     },
     {
         .id = NPC_Goompa,
@@ -717,7 +717,7 @@ NpcData N(NpcData_PartyFamily)[] = {
             .anim_E = ANIM_Goompa_Run,
             .anim_F = ANIM_Goompa_Run,
         },
-        .extraAnimations = N(ExtraAnims_Goompa),
+        .limitAnimations = N(LimitAnims_Goompa),
     },
     {
         .id = NPC_Goombaria,
@@ -744,7 +744,7 @@ NpcData N(NpcData_PartyFamily)[] = {
             .anim_E = ANIM_Goombaria_Run,
             .anim_F = ANIM_Goombaria_Run,
         },
-        .extraAnimations = N(ExtraAnims_Goombaria),
+        .limitAnimations = N(LimitAnims_Goombaria),
     },
 };
 
@@ -774,7 +774,7 @@ NpcData N(NpcData_Visitors)[] = {
             .anim_E = ANIM_Yoshi_Blue_Idle,
             .anim_F = ANIM_Yoshi_Blue_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Yoshi),
+        .limitAnimations = N(LimitAnims_Yoshi),
     },
     {
         .id = NPC_Penguin_02,
@@ -801,7 +801,7 @@ NpcData N(NpcData_Visitors)[] = {
             .anim_E = ANIM_Penguin_Idle,
             .anim_F = ANIM_Penguin_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Penguin),
+        .limitAnimations = N(LimitAnims_Penguin),
     },
     {
         .id = NPC_Penguin_03,
@@ -828,7 +828,7 @@ NpcData N(NpcData_Visitors)[] = {
             .anim_E = ANIM_Penguin_Idle,
             .anim_F = ANIM_Penguin_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Penguin),
+        .limitAnimations = N(LimitAnims_Penguin),
     },
     {
         .id = NPC_Dryite,
@@ -855,7 +855,7 @@ NpcData N(NpcData_Visitors)[] = {
             .anim_E = ANIM_Dryite_Yellow_Idle,
             .anim_F = ANIM_Dryite_Yellow_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Dryite),
+        .limitAnimations = N(LimitAnims_Dryite),
     },
     {
         .id = NPC_Ninji,
@@ -882,7 +882,7 @@ NpcData N(NpcData_Visitors)[] = {
             .anim_E = ANIM_Ninji_Idle,
             .anim_F = ANIM_Ninji_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Ninji),
+        .limitAnimations = N(LimitAnims_Ninji),
     },
 };
 
@@ -895,7 +895,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
     },
     {
         .id = NPC_Toad_05,
@@ -905,7 +905,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
     },
     {
         .id = NPC_Toad_06,
@@ -915,7 +915,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
     },
     {
         .id = NPC_Toad_07,
@@ -925,7 +925,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
     },
 };
 
@@ -939,7 +939,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toadette),
+        .limitAnimations = N(LimitAnims_Toadette),
     },
     {
         .id = NPC_Toadette_04,
@@ -950,7 +950,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toadette),
+        .limitAnimations = N(LimitAnims_Toadette),
     },
     {
         .id = NPC_Toadette_05,
@@ -960,7 +960,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toadette),
+        .limitAnimations = N(LimitAnims_Toadette),
     },
     {
         .id = NPC_Toadette_06,
@@ -970,7 +970,7 @@ NpcData N(NpcData_Toadettes)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toadette),
+        .limitAnimations = N(LimitAnims_Toadette),
     },
 };
 
@@ -984,7 +984,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
     {
         .id = NPC_ToadGuard_04,
@@ -994,7 +994,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_BLUE_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
     {
         .id = NPC_ToadGuard_05,
@@ -1004,7 +1004,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
     {
         .id = NPC_ToadGuard_06,
@@ -1014,7 +1014,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
     {
         .id = NPC_ToadGuard_07,
@@ -1024,7 +1024,7 @@ NpcData N(NpcData_ToadGuards)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
 };
 

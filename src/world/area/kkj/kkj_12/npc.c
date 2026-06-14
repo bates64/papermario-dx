@@ -16,7 +16,7 @@ API_CALLABLE(N(DisableLightSource1)) {
 #include "world/common/enemy/Koopatrol_Stationary.inc.c"
 #include "world/common/npc/Dummy.inc.c"
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim00,
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim02,
@@ -32,7 +32,7 @@ AnimID N(ExtraAnims_Koopatrol)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Clubba)[] = {
+AnimID N(LimitAnims_Clubba)[] = {
     ANIM_WorldClubba_Anim00,
     ANIM_WorldClubba_Anim02,
     ANIM_WorldClubba_Anim03,
@@ -235,7 +235,7 @@ NpcData N(NpcData_Koopatrol_01)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Koopatrol_02,
@@ -246,7 +246,7 @@ NpcData N(NpcData_Koopatrol_01)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = KOOPATROL_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopatrol),
+        .limitAnimations = N(LimitAnims_Koopatrol),
     },
     {
         .id = NPC_Clubba,
@@ -256,7 +256,7 @@ NpcData N(NpcData_Koopatrol_01)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
     },
 };
 

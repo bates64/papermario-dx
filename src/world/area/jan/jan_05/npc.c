@@ -232,7 +232,7 @@ NpcData N(NpcData_YoshiKid) = {
     .tattle = MSG_NpcTattle_PurpleYoshiKid,
 };
 
-AnimID N(ExtraAnims_JungleFuzzy)[] = {
+AnimID N(LimitAnims_JungleFuzzy)[] = {
     ANIM_Fuzzy_Jungle_Idle,
     ANIM_Fuzzy_Jungle_Walk,
     ANIM_Fuzzy_Jungle_Run,
@@ -261,7 +261,7 @@ NpcData N(NpcData_JungleFuzzy) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = JUNGLE_FUZZY_DROPS,
     .animations = JUNGLE_FUZZY_ANIMS,
-    .extraAnimations = N(ExtraAnims_JungleFuzzy),
+    .limitAnimations = N(LimitAnims_JungleFuzzy),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -286,7 +286,7 @@ NpcData N(NpcData_SpearGuy)[] = {
         .settings = &N(NpcSettings_SpearGuy_Wander),
         .drops = SPEAR_GUY_DROPS,
         .animations = SPEAR_GUY_ANIMS,
-        .extraAnimations = N(ExtraAnims_SpearGuy),
+        .limitAnimations = N(LimitAnims_SpearGuy),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     SPEAR_GUY_HITBOX(NPC_SpearGuy_Hitbox)
@@ -311,7 +311,7 @@ NpcData N(NpcData_HurtPlant) = {
     .flags = HURT_PLANT_FLAGS,
     .drops = HURT_PLANT_DROPS,
     .animations = HURT_PLANT_ANIMS,
-    .extraAnimations = N(ExtraAnims_HurtPlant),
+    .limitAnimations = N(LimitAnims_HurtPlant),
     .tattle = MSG_NpcTattle_HeartPlant,
 };
 

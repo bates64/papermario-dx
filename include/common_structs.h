@@ -272,7 +272,7 @@ typedef struct Npc {
     /* 0x0AC */ u8 alpha;
     /* 0x0AD */ u8 hideAlpha; ///< Used when hiding NPCs; Multiplied with Npc::alpha
     /* 0x0AE */ PAD(2);
-    /* 0x0B0 */ AnimID* extraAnimList;
+    /* 0x0B0 */ AnimID* limitAnimList;
     /* 0x0B4 */ s8 palSwapType; // 0..4 inclusive
     /* 0x0B5 */ s8 palSwapPrevType;
     /* 0x0B6 */ s8 resetPalAdjust;

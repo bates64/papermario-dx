@@ -66,7 +66,7 @@ EvtScript N(EVS_NpcInit_Twink_02) = {
     End
 };
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
     ANIM_WorldBowser_Talk,
@@ -75,7 +75,7 @@ AnimID N(ExtraAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Peach)[] = {
+AnimID N(LimitAnims_Peach)[] = {
     ANIM_Peach1_Idle,
     ANIM_Peach1_Walk,
     ANIM_Peach2_RaiseArms,
@@ -83,13 +83,13 @@ AnimID N(ExtraAnims_Peach)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_BattleKammy_Anim04,
     ANIM_BattleKammy_Anim06,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Talk,
     ANIM_Twink_Cringe,
@@ -105,7 +105,7 @@ NpcData N(NpcData_Bowser) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_Peach) = {
@@ -117,7 +117,7 @@ NpcData N(NpcData_Peach) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
-    .extraAnimations = N(ExtraAnims_Peach),
+    .limitAnimations = N(LimitAnims_Peach),
 };
 
 NpcData N(NpcData_Kammy) = {
@@ -146,7 +146,7 @@ NpcData N(NpcData_Kammy) = {
         .anim_E = ANIM_BattleKammy_Anim00,
         .anim_F = ANIM_BattleKammy_Anim00,
     },
-    .extraAnimations = N(ExtraAnims_Kammy),
+    .limitAnimations = N(LimitAnims_Kammy),
 };
 
 NpcData N(NpcData_Twink) = {
@@ -158,7 +158,7 @@ NpcData N(NpcData_Twink) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
-    .extraAnimations = N(ExtraAnims_Twink),
+    .limitAnimations = N(LimitAnims_Twink),
 };
 
 NpcData N(NpcData_StarRod) = {

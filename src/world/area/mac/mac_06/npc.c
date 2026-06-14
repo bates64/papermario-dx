@@ -423,7 +423,7 @@ NpcData N(NpcData_Kolorado) = {
     .animations = KOLORADO_ANIMS,
 };
 
-AnimID N(ExtraAnims_JrTroopa)[] = {
+AnimID N(LimitAnims_JrTroopa)[] = {
     ANIM_JrTroopa_Still,
     ANIM_JrTroopa_Idle,
     ANIM_JrTroopa_ChargeTripped,
@@ -439,7 +439,7 @@ NpcData N(NpcData_JrTroopa) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = JR_TROOPA_ANIMS,
-    .extraAnimations = N(ExtraAnims_JrTroopa),
+    .limitAnimations = N(LimitAnims_JrTroopa),
     .tattle = MSG_NpcTattle_JrTroopa,
 };
 

@@ -189,21 +189,21 @@ EvtScript N(EVS_NpcInit_ToadGuard_02) = {
     End
 };
 
-AnimID N(ExtraAnims_YoshiLeader)[] = {
+AnimID N(LimitAnims_YoshiLeader)[] = {
     ANIM_VillageLeader_Still,
     ANIM_VillageLeader_Idle,
     ANIM_VillageLeader_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Yoshi)[] = {
+AnimID N(LimitAnims_Yoshi)[] = {
     ANIM_Yoshi_Green_Still,
     ANIM_Yoshi_Green_Idle,
     ANIM_Yoshi_Green_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_YoshiKid)[] = {
+AnimID N(LimitAnims_YoshiKid)[] = {
     ANIM_YoshiKid_Green_Still,
     ANIM_YoshiKid_Green_Idle,
     ANIM_YoshiKid_Green_Talk,
@@ -220,7 +220,7 @@ NpcData N(NpcData_Yoshis)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_LEADER_ANIMS,
-        .extraAnimations = N(ExtraAnims_YoshiLeader),
+        .limitAnimations = N(LimitAnims_YoshiLeader),
         .tattle = MSG_NpcTattle_VillageLeader,
     },
     {
@@ -232,7 +232,7 @@ NpcData N(NpcData_Yoshis)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Yoshi),
+        .limitAnimations = N(LimitAnims_Yoshi),
         .tattle = MSG_NpcTattle_GenericYoshi,
     },
     {
@@ -244,26 +244,26 @@ NpcData N(NpcData_Yoshis)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = YOSHI_KID_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_YoshiKid),
+        .limitAnimations = N(LimitAnims_YoshiKid),
         .tattle = MSG_NpcTattle_GreenYoshiKid,
     },
 };
 
-AnimID N(ExtraAnims_MayorPenguin)[] = {
+AnimID N(LimitAnims_MayorPenguin)[] = {
     ANIM_MayorPenguin_Still,
     ANIM_MayorPenguin_Idle,
     ANIM_MayorPenguin_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_MayorPenguinWife)[] = {
+AnimID N(LimitAnims_MayorPenguinWife)[] = {
     ANIM_MayorPenguinWife_Still,
     ANIM_MayorPenguinWife_Idle,
     ANIM_MayorPenguinWife_Laugh,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Penguin)[] = {
+AnimID N(LimitAnims_Penguin)[] = {
     ANIM_Penguin_Still,
     ANIM_Penguin_Idle,
     ANIM_Penguin_Talk,
@@ -280,7 +280,7 @@ NpcData N(NpcData_Penguins)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MAYOR_PENGUIN_ANIMS,
-        .extraAnimations = N(ExtraAnims_MayorPenguin),
+        .limitAnimations = N(LimitAnims_MayorPenguin),
         .tattle = MSG_NpcTattle_MayorPenguin,
     },
     {
@@ -292,7 +292,7 @@ NpcData N(NpcData_Penguins)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MAYOR_PENGUIN_WIFE_ANIMS,
-        .extraAnimations = N(ExtraAnims_MayorPenguinWife),
+        .limitAnimations = N(LimitAnims_MayorPenguinWife),
         .tattle = MSG_NpcTattle_MayorPenguinWife,
     },
     {
@@ -304,7 +304,7 @@ NpcData N(NpcData_Penguins)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Penguin),
+        .limitAnimations = N(LimitAnims_Penguin),
     },
     {
         .id = NPC_Penguin_02,
@@ -315,18 +315,18 @@ NpcData N(NpcData_Penguins)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = PENGUIN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Penguin),
+        .limitAnimations = N(LimitAnims_Penguin),
     },
 };
 
-AnimID N(ExtraAnims_Moustafa)[] = {
+AnimID N(LimitAnims_Moustafa)[] = {
     ANIM_Moustafa_Still,
     ANIM_Moustafa_Idle,
     ANIM_Moustafa_Shout,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Mouser)[] = {
+AnimID N(LimitAnims_Mouser)[] = {
     ANIM_Mouser_Blue_Still,
     ANIM_Mouser_Blue_Idle,
     ANIM_Mouser_Blue_Talk,
@@ -343,7 +343,7 @@ NpcData N(NpcData_Mousers)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSTAFA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Moustafa),
+        .limitAnimations = N(LimitAnims_Moustafa),
         .tattle = MSG_NpcTattle_Moustafa,
     },
     {
@@ -355,11 +355,11 @@ NpcData N(NpcData_Mousers)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = MOUSER_PURPLE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Mouser),
+        .limitAnimations = N(LimitAnims_Mouser),
     },
 };
 
-AnimID N(ExtraAnims_Boos)[] = {
+AnimID N(LimitAnims_Boos)[] = {
     ANIM_Boo_Still,
     ANIM_Boo_Idle,
     ANIM_Boo_Talk,
@@ -376,7 +376,7 @@ NpcData N(NpcData_Boos)[] = {
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = NORMAL_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boos),
+        .limitAnimations = N(LimitAnims_Boos),
     },
     {
         .id = NPC_Boo_02,
@@ -387,18 +387,18 @@ NpcData N(NpcData_Boos)[] = {
         .flags = COMMON_PASSIVE_FLAGS,
         .drops = NO_DROPS,
         .animations = GUSTY_BOO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Boos),
+        .limitAnimations = N(LimitAnims_Boos),
     },
 };
 
-AnimID N(ExtraAnims_Toad)[] = {
+AnimID N(LimitAnims_Toad)[] = {
     ANIM_Toad_Red_Still,
     ANIM_Toad_Red_Idle,
     ANIM_Toad_Red_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_ToadGuard)[] = {
+AnimID N(LimitAnims_ToadGuard)[] = {
     ANIM_ToadGuard_Red_Still,
     ANIM_ToadGuard_Red_Idle,
     ANIM_ToadGuard_Red_Talk,
@@ -415,7 +415,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
     },
     {
         .id = NPC_ToadGuard_01,
@@ -426,7 +426,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
     {
         .id = NPC_ToadGuard_02,
@@ -437,7 +437,7 @@ NpcData N(NpcData_Toads)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GUARD_YELLOW_ANIMS,
-        .extraAnimations = N(ExtraAnims_ToadGuard),
+        .limitAnimations = N(LimitAnims_ToadGuard),
     },
 };
 

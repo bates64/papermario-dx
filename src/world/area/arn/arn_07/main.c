@@ -2,7 +2,7 @@
 #include "sprite/player.h"
 
 #define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
-#include "world/common/todo/StarSpiritEffectFunc.inc.c"
+#include "world/common/atomic/StarSpiritCard.inc.c"
 
 s32 N(KeyList)[] = {
     ITEM_MYSTICAL_KEY,

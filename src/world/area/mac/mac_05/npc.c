@@ -2155,7 +2155,7 @@ NpcData N(NpcData_Fishmael) = {
     .tattle = MSG_NpcTattle_Fishmael,
 };
 
-AnimID N(ExtraAnims_Fuzzipede)[] = {
+AnimID N(LimitAnims_Fuzzipede)[] = {
     ANIM_Fuzzipede_Anim00,
     ANIM_Fuzzipede_Anim04,
     ANIM_Fuzzipede_Anim08,
@@ -2175,11 +2175,11 @@ NpcData N(NpcData_Fuzzipede) = {
     .animations = {
         .idle   = ANIM_Fuzzipede_Anim04,
     },
-    .extraAnimations = N(ExtraAnims_Fuzzipede),
+    .limitAnimations = N(LimitAnims_Fuzzipede),
     .tattle = MSG_NpcTattle_Fuzzipede,
 };
 
-AnimID N(ExtraAnims_JrTroopa)[] = {
+AnimID N(LimitAnims_JrTroopa)[] = {
     ANIM_JrTroopa_Still,
     ANIM_JrTroopa_PointStill,
     ANIM_JrTroopa_Idle,
@@ -2205,7 +2205,7 @@ NpcData N(NpcData_JrTroopa_01)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_JrTroopa),
+        .limitAnimations = N(LimitAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
     {
@@ -2217,7 +2217,7 @@ NpcData N(NpcData_JrTroopa_01)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_SKIP_BATTLE | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER | ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_SPIN,
         .drops = NO_DROPS,
         .animations = JR_TROOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_JrTroopa),
+        .limitAnimations = N(LimitAnims_JrTroopa),
         .tattle = MSG_NpcTattle_JrTroopa,
     },
 };

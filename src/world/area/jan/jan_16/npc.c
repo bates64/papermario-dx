@@ -2,24 +2,8 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-EvtScript N(EVS_NpcCreate_RaphaelRaven) = {
-    Call(SetNpcScale, NPC_SELF, Float(1.5), Float(1.5), Float(1.5))
-    Return
-    End
-};
-
-NpcSettings N(NpcSettings_RaphaelRaven) = {
-    .height = 98,
-    .radius = 80,
-    .level = ACTOR_LEVEL_NONE,
-    .onCreate = &N(EVS_NpcCreate_RaphaelRaven),
-};
-
-NpcSettings N(NpcSettings_Raven) = {
-    .height = 26,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-};
+#include "world/common/npc/RaphaelRaven.inc.c"
+#include "world/common/npc/Raven.inc.c"
 
 EvtScript N(EVS_Scene_ReachedRaphaelsTree) = {
     Call(DisablePlayerInput, true)
@@ -231,24 +215,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_RaphaelRaven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_GRAVITY | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_RaphaelRaven_Idle,
-            .walk   = ANIM_RaphaelRaven_Idle,
-            .run    = ANIM_RaphaelRaven_Idle,
-            .chase  = ANIM_RaphaelRaven_Idle,
-            .anim_4 = ANIM_RaphaelRaven_Idle,
-            .anim_5 = ANIM_RaphaelRaven_Idle,
-            .death  = ANIM_RaphaelRaven_Idle,
-            .hit    = ANIM_RaphaelRaven_Idle,
-            .anim_8 = ANIM_RaphaelRaven_Idle,
-            .anim_9 = ANIM_RaphaelRaven_Idle,
-            .anim_A = ANIM_RaphaelRaven_Idle,
-            .anim_B = ANIM_RaphaelRaven_Idle,
-            .anim_C = ANIM_RaphaelRaven_Idle,
-            .anim_D = ANIM_RaphaelRaven_Idle,
-            .anim_E = ANIM_RaphaelRaven_Idle,
-            .anim_F = ANIM_RaphaelRaven_Idle,
-        },
+        .animations = RAPHAEL_RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RaphaelRaven,
     },
     {
@@ -259,24 +226,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_Raven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Raven_Idle,
-            .walk   = ANIM_Raven_Idle,
-            .run    = ANIM_Raven_Idle,
-            .chase  = ANIM_Raven_Idle,
-            .anim_4 = ANIM_Raven_Idle,
-            .anim_5 = ANIM_Raven_Idle,
-            .death  = ANIM_Raven_Idle,
-            .hit    = ANIM_Raven_Idle,
-            .anim_8 = ANIM_Raven_Idle,
-            .anim_9 = ANIM_Raven_Idle,
-            .anim_A = ANIM_Raven_Idle,
-            .anim_B = ANIM_Raven_Idle,
-            .anim_C = ANIM_Raven_Idle,
-            .anim_D = ANIM_Raven_Idle,
-            .anim_E = ANIM_Raven_Idle,
-            .anim_F = ANIM_Raven_Idle,
-        },
+        .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenA,
     },
     {
@@ -287,29 +237,8 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_Raven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Raven_Idle,
-            .walk   = ANIM_Raven_Idle,
-            .run    = ANIM_Raven_Idle,
-            .chase  = ANIM_Raven_Idle,
-            .anim_4 = ANIM_Raven_Idle,
-            .anim_5 = ANIM_Raven_Idle,
-            .death  = ANIM_Raven_Idle,
-            .hit    = ANIM_Raven_Idle,
-            .anim_8 = ANIM_Raven_Idle,
-            .anim_9 = ANIM_Raven_Idle,
-            .anim_A = ANIM_Raven_Idle,
-            .anim_B = ANIM_Raven_Idle,
-            .anim_C = ANIM_Raven_Idle,
-            .anim_D = ANIM_Raven_Idle,
-            .anim_E = ANIM_Raven_Idle,
-            .anim_F = ANIM_Raven_Idle,
-        },
-#if VERSION_JP
-        .tattle = MSG_NpcTattle_0121,
-#else
+        .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenB,
-#endif
     },
     {
         .id = NPC_Raven_03,
@@ -319,24 +248,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_Raven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Raven_Idle,
-            .walk   = ANIM_Raven_Idle,
-            .run    = ANIM_Raven_Idle,
-            .chase  = ANIM_Raven_Idle,
-            .anim_4 = ANIM_Raven_Idle,
-            .anim_5 = ANIM_Raven_Idle,
-            .death  = ANIM_Raven_Idle,
-            .hit    = ANIM_Raven_Idle,
-            .anim_8 = ANIM_Raven_Idle,
-            .anim_9 = ANIM_Raven_Idle,
-            .anim_A = ANIM_Raven_Idle,
-            .anim_B = ANIM_Raven_Idle,
-            .anim_C = ANIM_Raven_Idle,
-            .anim_D = ANIM_Raven_Idle,
-            .anim_E = ANIM_Raven_Idle,
-            .anim_F = ANIM_Raven_Idle,
-        },
+        .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenC,
     },
     {
@@ -347,24 +259,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_Raven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Raven_Idle,
-            .walk   = ANIM_Raven_Idle,
-            .run    = ANIM_Raven_Idle,
-            .chase  = ANIM_Raven_Idle,
-            .anim_4 = ANIM_Raven_Idle,
-            .anim_5 = ANIM_Raven_Idle,
-            .death  = ANIM_Raven_Idle,
-            .hit    = ANIM_Raven_Idle,
-            .anim_8 = ANIM_Raven_Idle,
-            .anim_9 = ANIM_Raven_Idle,
-            .anim_A = ANIM_Raven_Idle,
-            .anim_B = ANIM_Raven_Idle,
-            .anim_C = ANIM_Raven_Idle,
-            .anim_D = ANIM_Raven_Idle,
-            .anim_E = ANIM_Raven_Idle,
-            .anim_F = ANIM_Raven_Idle,
-        },
+        .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenD,
     },
     {
@@ -375,24 +270,7 @@ NpcData N(NpcData_RaphaelRaven)[] = {
         .settings = &N(NpcSettings_Raven),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = NO_DROPS,
-        .animations = {
-            .idle   = ANIM_Raven_Idle,
-            .walk   = ANIM_Raven_Idle,
-            .run    = ANIM_Raven_Idle,
-            .chase  = ANIM_Raven_Idle,
-            .anim_4 = ANIM_Raven_Idle,
-            .anim_5 = ANIM_Raven_Idle,
-            .death  = ANIM_Raven_Idle,
-            .hit    = ANIM_Raven_Idle,
-            .anim_8 = ANIM_Raven_Idle,
-            .anim_9 = ANIM_Raven_Idle,
-            .anim_A = ANIM_Raven_Idle,
-            .anim_B = ANIM_Raven_Idle,
-            .anim_C = ANIM_Raven_Idle,
-            .anim_D = ANIM_Raven_Idle,
-            .anim_E = ANIM_Raven_Idle,
-            .anim_F = ANIM_Raven_Idle,
-        },
+        .animations = RAVEN_ANIMS,
         .tattle = MSG_NpcTattle_RavenE,
     },
 };

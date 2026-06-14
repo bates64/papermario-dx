@@ -63,7 +63,7 @@ NpcSettings N(NpcSettings_HurtPlant) = {
     .onDefeat = &N(EVS_NpcDefeat_HurtPlant),
 };
 
-AnimID N(ExtraAnims_HurtPlant)[] = {
+AnimID N(LimitAnims_HurtPlant)[] = {
     ANIM_HurtPlant_Anim00,
     ANIM_HurtPlant_Anim01,
     ANIM_HurtPlant_Anim02,

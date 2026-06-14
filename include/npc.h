@@ -258,7 +258,7 @@ typedef struct NpcData {
     /* 0x1E0 */ PAD(3);
     /* 0x1E3 */ u8 aiDetectFlags;
     /* 0x1E4 */ u32 aiFlags;
-    /* 0x1E8 */ AnimID* extraAnimations;
+    /* 0x1E8 */ AnimID* limitAnimations;
     /* 0x1EC */ s32 tattle;
 } NpcData; // size = 0x1F0
 
@@ -598,7 +598,7 @@ Enemy* get_enemy(s32 npcID);
 /// otherwise.
 Enemy* get_enemy_safe(s32 npcID);
 
-void set_npc_sprite(Npc* npc, s32 anim, AnimID* extraAnimList);
+void set_npc_sprite(Npc* npc, s32 anim, AnimID* limitAnimList);
 
 #ifdef _LANGUAGE_C_PLUS_PLUS
 } // extern "C"

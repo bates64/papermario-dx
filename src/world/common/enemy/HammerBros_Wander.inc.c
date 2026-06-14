@@ -115,7 +115,7 @@ NpcSettings N(NpcSettings_HammerBros_Hammer) = {
     .actionFlags = AI_ACTION_NO_SPIN_REACTION,
 };
 
-AnimID N(ExtraAnims_HammerBros_Hammer)[] = {
+AnimID N(LimitAnims_HammerBros_Hammer)[] = {
     ANIM_HammerBros_Anim0D,
     ANIM_LIST_END
 };

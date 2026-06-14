@@ -7,7 +7,7 @@ extern EvtScript N(EVS_SetupFakeBowser);
 extern NpcGroupList N(DefaultNPCs);
 
 #define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
-#include "world/common/todo/StarSpiritEffectFunc.inc.c"
+#include "world/common/atomic/StarSpiritCard.inc.c"
 
 API_CALLABLE(N(SetMapChangeFadeRate)) {
     set_map_change_fade_rate(10);

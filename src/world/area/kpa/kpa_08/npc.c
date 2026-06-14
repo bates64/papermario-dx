@@ -23,7 +23,7 @@ NpcData N(NpcData_Magikoopa)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Magikoopa),
+        .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_Spell)

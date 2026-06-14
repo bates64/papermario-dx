@@ -27,7 +27,7 @@
 #include "npc/toad_4.inc.c"
 #include "npc/bubulb.inc.c"
 
-AnimID N(ExtraAnims_TayceT)[] = {
+AnimID N(LimitAnims_TayceT)[] = {
     ANIM_TayceT_Still,
     ANIM_TayceT_Idle,
     ANIM_TayceT_Walk,
@@ -40,7 +40,7 @@ AnimID N(ExtraAnims_TayceT)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bubulb)[] = {
+AnimID N(LimitAnims_Bubulb)[] = {
     ANIM_Bubulb_Pink_Still,
     ANIM_Bubulb_Pink_BuriedStill,
     ANIM_Bubulb_Pink_Idle,
@@ -62,7 +62,7 @@ NpcData N(NpcData_TayceT)[] = {
         .animations = {
             .idle   = ANIM_TayceT_Idle,
         },
-        .extraAnimations = N(ExtraAnims_TayceT),
+        .limitAnimations = N(LimitAnims_TayceT),
         .tattle = MSG_NpcTattle_TayceT,
     },
     {
@@ -87,7 +87,7 @@ NpcData N(NpcData_TayceT)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bubulb),
+        .limitAnimations = N(LimitAnims_Bubulb),
         .tattle = MSG_NpcTattle_MAC_Bubulb_Revealed,
     },
     {
@@ -205,7 +205,7 @@ NpcData N(NpcData_Bootler) = {
     .animations = BOOTLER_ANIMS,
 };
 
-AnimID N(ExtraAnims_ShyGuy)[] = {
+AnimID N(LimitAnims_ShyGuy)[] = {
     ANIM_ShyGuy_Red_Anim00,
     ANIM_ShyGuy_Red_Anim01,
     ANIM_ShyGuy_Red_Anim02,
@@ -225,7 +225,7 @@ NpcData N(NpcData_ShyGuy) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = RED_SHY_GUY_ANIMS,
-    .extraAnimations = N(ExtraAnims_ShyGuy),
+    .limitAnimations = N(LimitAnims_ShyGuy),
 };
 
 NpcGroupList N(NpcGroup4) = {

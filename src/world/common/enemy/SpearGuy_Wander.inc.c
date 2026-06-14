@@ -2,7 +2,7 @@
 
 #include "world/common/enemy/ai/SpearGuyAI.inc.c"
 
-AnimID N(ExtraAnims_SpearGuy)[] = {
+AnimID N(LimitAnims_SpearGuy)[] = {
     ANIM_SpearGuy_Anim00,
     ANIM_SpearGuy_Anim03,
     ANIM_SpearGuy_Anim05,
@@ -15,7 +15,7 @@ AnimID N(ExtraAnims_SpearGuy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_SpearGuy_Hitbox)[] = {
+AnimID N(LimitAnims_SpearGuy_Hitbox)[] = {
     ANIM_SpearGuy_Anim00,
     ANIM_LIST_END,
 };

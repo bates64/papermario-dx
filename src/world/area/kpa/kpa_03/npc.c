@@ -4,7 +4,7 @@
 #include "world/common/enemy/SpikeTop.inc.c"
 #include "world/common/enemy/Magikoopa.inc.c"
 
-AnimID N(ExtraAnims_Koopatrol)[] = {
+AnimID N(LimitAnims_Koopatrol)[] = {
     ANIM_WorldKoopatrol_Anim01,
     ANIM_WorldKoopatrol_Anim04,
     ANIM_WorldKoopatrol_Anim06,
@@ -33,7 +33,7 @@ NpcData N(NpcData_Koopatrol_01) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
-    .extraAnimations = N(ExtraAnims_Koopatrol),
+    .limitAnimations = N(LimitAnims_Koopatrol),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -57,7 +57,7 @@ NpcData N(NpcData_Koopatrol_02) = {
     .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
     .drops = KOOPATROL_DROPS,
     .animations = KOOPATROL_ANIMS,
-    .extraAnimations = N(ExtraAnims_Koopatrol),
+    .limitAnimations = N(LimitAnims_Koopatrol),
     .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -128,7 +128,7 @@ NpcData N(NpcData_Magikoopa_01)[] = {
         .flags = ENEMY_FLAG_IGNORE_ENTITY_COLLISION,
         .drops = MAGINO_DROPS,
         .animations = MAGIKOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Magikoopa),
+        .limitAnimations = N(LimitAnims_Magikoopa),
         .aiDetectFlags = AI_DETECT_SIGHT | AI_DETECT_MOTION_SENSITIVE,
     },
     MAGIKOOPA_SPELL_HITBOX(NPC_Magikoopa_01_Spell),

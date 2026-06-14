@@ -1878,7 +1878,7 @@ NpcData N(NpcData_Toad) = {
     .tattle = MSG_NpcTattle_KMR_ToadHouseToad,
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_WorldKammy_Anim15,
     ANIM_WorldKammy_Anim10,
     ANIM_WorldKammy_Anim0E,
@@ -1909,7 +1909,7 @@ NpcData N(NpcData_Kammy) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kammy),
+    .limitAnimations = N(LimitAnims_Kammy),
 };
 
 NpcData N(NpcData_ChuckQuizmo) = {
@@ -1951,7 +1951,7 @@ EvtScript N(EVS_NpcInit_Eldstar_02) = {
     End
 };
 
-AnimID N(ExtraAnims_Eldstar)[] = {
+AnimID N(LimitAnims_Eldstar)[] = {
     ANIM_WorldEldstar_Idle,
     ANIM_WorldEldstar_Wave,
     ANIM_Goompa_Still, // ??
@@ -1968,7 +1968,7 @@ NpcData N(NpcData_Eldstar_Prologue)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Eldstar),
+        .limitAnimations = N(LimitAnims_Eldstar),
     },
     {
         .id = NPC_Eldstar_02,
@@ -1979,7 +1979,7 @@ NpcData N(NpcData_Eldstar_Prologue)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Eldstar),
+        .limitAnimations = N(LimitAnims_Eldstar),
     },
 };
 
@@ -2184,7 +2184,7 @@ NpcData N(NpcData_Epilogue)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_HAS_NO_SPRITE | ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
         .drops = NO_DROPS,
         .animations = ELDSTAR_ANIMS,
-        .extraAnimations = N(ExtraAnims_Eldstar),
+        .limitAnimations = N(LimitAnims_Eldstar),
     },
     {
         .id = NPC_Parakarry,

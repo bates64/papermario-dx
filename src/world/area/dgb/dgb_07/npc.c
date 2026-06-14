@@ -23,7 +23,7 @@ NpcData N(NpcData_Clubba_01)[] = {
         .flags = ENEMY_FLAG_FLYING,
         .drops = CLUBBA_DROPS,
         .animations = CLUBBA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Clubba),
+        .limitAnimations = N(LimitAnims_Clubba),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     CLUBBA_MACE_HITBOX(NPC_Clubba_01_Hitbox),

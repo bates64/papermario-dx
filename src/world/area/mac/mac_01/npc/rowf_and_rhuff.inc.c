@@ -692,7 +692,7 @@ EvtScript N(EVS_NpcInit_Rhuff) = {
     End
 };
 
-AnimID N(ExtraAnims_Rowf)[] = {
+AnimID N(LimitAnims_Rowf)[] = {
     ANIM_Rowf_Still,
     ANIM_Rowf_Idle,
     ANIM_Rowf_Walk,
@@ -727,7 +727,7 @@ NpcData N(NpcData_RowfAndRhuff)[] = {
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Rowf),
+        .limitAnimations = N(LimitAnims_Rowf),
         .tattle = MSG_NpcTattle_Rowf,
     },
     {
@@ -741,7 +741,7 @@ NpcData N(NpcData_RowfAndRhuff)[] = {
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Rowf),
+        .limitAnimations = N(LimitAnims_Rowf),
         .tattle = MSG_NpcTattle_Rhuff,
     },
 };

@@ -638,13 +638,13 @@ NpcData N(NpcData_Misstar) = {
     .tattle = MSG_NpcTattle_Misstar,
 };
 
-AnimID N(ExtraAnims_LavaPiranha)[] = {
+AnimID N(LimitAnims_LavaPiranha)[] = {
     ANIM_LavaPiranha_Anim03,
     ANIM_LavaPiranha_Anim0E,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_LavaBud)[] = {
+AnimID N(LimitAnims_LavaBud)[] = {
     ANIM_LavaBud_Anim03,
     ANIM_LIST_END
 };
@@ -659,7 +659,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_HEAD_ANIMS,
-        .extraAnimations = N(ExtraAnims_LavaPiranha),
+        .limitAnimations = N(LimitAnims_LavaPiranha),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
@@ -671,7 +671,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(ExtraAnims_LavaBud),
+        .limitAnimations = N(LimitAnims_LavaBud),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
     {
@@ -683,7 +683,7 @@ NpcData N(NpcData_LavaPiranha)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_NO_DELAY_AFTER_FLEE,
         .drops = LAVA_PIRANHA_DROPS,
         .animations = LAVA_PIRANHA_BUD_ANIMS,
-        .extraAnimations = N(ExtraAnims_LavaBud),
+        .limitAnimations = N(LimitAnims_LavaBud),
         .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
     },
 };

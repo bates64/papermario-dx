@@ -66,17 +66,17 @@ typedef struct SpriteAnimComponent {
 } SpriteAnimComponent; // size = 0xC
 
 // TODO: consider moving to 101b90_len_8f0 (sprite_cache)
-typedef struct SpriteRasterCacheEntry {
+typedef struct SpriteRasterEntry {
     /* 0x00 */ IMG_PTR image;
     /* 0x04 */ u8 width;
     /* 0x05 */ u8 height;
     /* 0x06 */ s8 palette;
     /* 0x07 */ s8 quadCacheIndex;
-} SpriteRasterCacheEntry; // size = 0x8
+} SpriteRasterEntry; // size = 0x8
 
 /// Sprite data header.
 typedef struct SpriteAnimData {
-    /* 0x00 */ SpriteRasterCacheEntry** rastersOffset;
+    /* 0x00 */ SpriteRasterEntry** rastersOffset;
     /* 0x04 */ PAL_PTR* palettesOffset;
     /* 0x08 */ s32 maxComponents;
     /* 0x0C */ s32 colorVariations;
@@ -149,7 +149,7 @@ void spr_get_player_raster_info(SpriteRasterInfo* out, s32 playerSpriteID, s32 r
 PAL_PTR* spr_get_player_palettes(s32 spriteIndex);
 
 /// Set MSB of `animID` for tail allocation (i.e. `0x80XXYYZZ`).
-s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList);
+s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList);
 
 s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale);
 

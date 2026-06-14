@@ -23,7 +23,11 @@ BSS s32 SpriteCurBaseRot[3];
 BSS s32 SpriteUpdateNotifyValue;
 
 SpriteComponent** spr_allocate_components(s32);
-void spr_load_npc_extra_anims(SpriteAnimData*, u32*);
+
+/// Discards rasters not referenced by `limitAnimList` and compacts the sprite allocation.
+/// Animation data and palettes remain loaded.
+void spr_npc_unload_unused_assets(SpriteAnimData*, AnimID* limitAnimList);
+
 void spr_init_player_raster_cache(s32 cacheSize, s32 maxRasterSize);
 
 Quad SpriteQuadTemplate = {
@@ -312,7 +316,7 @@ void spr_appendGfx_component_flat(
 }
 
 void spr_appendGfx_component(
-    SpriteRasterCacheEntry* cache,
+    SpriteRasterEntry* cache,
     f32 dx, f32 dy, f32 dz,
     f32 rotX, f32 rotY, f32 rotZ,
     f32 scaleX, f32 scaleY, f32 scaleZ,
@@ -424,8 +428,8 @@ void spr_transform_point(s32 rotX, s32 rotY, s32 rotZ, f32 inX, f32 inY, f32 inZ
 }
 
 void spr_draw_component(s32 drawOpts, SpriteComponent* component, SpriteAnimComponent* anim,
-        SpriteRasterCacheEntry** cache, PAL_PTR* palettes, f32 zscale, Matrix4f mtx) {
-    SpriteRasterCacheEntry* cacheEntry;
+        SpriteRasterEntry** cache, PAL_PTR* palettes, f32 zscale, Matrix4f mtx) {
+    SpriteRasterEntry* cacheEntry;
     s32 paletteIdx;
     PAL_PTR pal;
     f32 dx, dy, dz;
@@ -661,10 +665,10 @@ void spr_component_update_commands(SpriteComponent* comp, SpriteAnimComponent* a
 }
 
 void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compList,
-                                 SpriteRasterCacheEntry** rasterCacheEntry, s32 overridePalette)
+                                 SpriteRasterEntry** rasterCacheEntry, s32 overridePalette)
 {
     SpriteComponent* listComp;
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
 
     if (comp->initialized) {
         comp->compPos.x = comp->posOffset.x;
@@ -691,7 +695,7 @@ void spr_component_update_finish(SpriteComponent* comp, SpriteComponent** compLi
 }
 
 s32 spr_component_update(s32 curNotifyValue, SpriteComponent** compList, SpriteAnimComponent** animList,
-        SpriteRasterCacheEntry** rasterCache, s32 overridePalette) {
+        SpriteRasterEntry** rasterCache, s32 overridePalette) {
     SpriteComponent** compListIt;
 
     SpriteUpdateNotifyValue = curNotifyValue;
@@ -822,7 +826,7 @@ s32 spr_update_player_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     SpriteComponent** compList;
     SpriteComponent* component;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
     s32 spriteID = SPR_UNPACK_SPR(animID);
     s32 instanceIdx = spriteInstanceID & 0xFF;
     CurPlayerSpriteIndex = spriteID - 1;
@@ -868,7 +872,7 @@ s32 spr_draw_player_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* 
     SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
     PAL_PTR* palettes;
     f32 zscale;
     u32 alpha;
@@ -987,7 +991,7 @@ void set_player_imgfx_all(s32 animID, ImgFXType imgfxType, s32 arg2, s32 arg3, s
 
 void spr_get_player_raster_info(SpriteRasterInfo* out, s32 playerSpriteID, s32 rasterIndex) {
     SpriteAnimData* sprite;
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
     u16** paletteOffsetCopy;
 
     playerSpriteID--;
@@ -1012,7 +1016,7 @@ PAL_PTR* spr_get_player_palettes(s32 spriteIndex) {
     }
 }
 
-s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
+s32 spr_load_npc_sprite(s32 animID, AnimID* limitAnimList) {
     SpriteAnimData* header;
     SpriteComponent** compList;
     s32 listIndex;
@@ -1042,8 +1046,8 @@ s32 spr_load_npc_sprite(s32 animID, u32* extraAnimList) {
         header = spr_load_sprite(spriteIndex - 1, false, useTailAlloc);
         SpriteInstances[listIndex].spriteData = header;
         NpcSpriteData[spriteIndex] = header;
-        if (extraAnimList != nullptr) {
-            spr_load_npc_extra_anims(header, extraAnimList);
+        if (limitAnimList != nullptr) {
+            spr_npc_unload_unused_assets(header, limitAnimList);
         }
     }
     compList = spr_allocate_components(header->maxComponents);
@@ -1062,7 +1066,7 @@ s32 spr_update_sprite(s32 spriteInstanceID, s32 animID, f32 timeScale) {
     SpriteAnimData* spriteData;
     SpriteComponent** compList;
     SpriteAnimComponent** animList;
-    SpriteRasterCacheEntry** rasterList;
+    SpriteRasterEntry** rasterList;
 
     s32 palID;
     s32 i = spriteInstanceID & 0xFF;
@@ -1095,7 +1099,7 @@ s32 spr_draw_npc_sprite(s32 spriteInstanceID, s32 yaw, s32 alphaIn, PAL_PTR* pal
     SpriteAnimData* spriteData;
     SpriteAnimComponent** animComps;
     SpriteComponent** components;
-    SpriteRasterCacheEntry** rasters;
+    SpriteRasterEntry** rasters;
     PAL_PTR* palettes;
     f32 zscale;
     u32 alpha;
@@ -1278,7 +1282,7 @@ s32 spr_get_comp_position(s32 spriteIdx, s32 compListIdx, s32* outX, s32* outY, 
 
 s32 spr_get_npc_raster_info(SpriteRasterInfo* out, s32 npcSpriteID, s32 rasterIndex) {
     SpriteAnimData* sprite = NpcSpriteData[npcSpriteID];
-    SpriteRasterCacheEntry* cache;
+    SpriteRasterEntry* cache;
     PAL_PTR* paletteOffsetCopy;
 
     if (sprite != nullptr) {

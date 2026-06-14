@@ -165,7 +165,7 @@ EvtScript N(EVS_NpcInit_Kalmar) = {
     End
 };
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_Walk,
     ANIM_WorldBowser_Talk,
@@ -174,7 +174,7 @@ AnimID N(ExtraAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Peach)[] = {
+AnimID N(LimitAnims_Peach)[] = {
     ANIM_Peach1_Idle,
     ANIM_Peach1_Walk,
     ANIM_Peach2_RaiseArms,
@@ -186,7 +186,7 @@ AnimID N(ExtraAnims_Peach)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_BattleKammy_Anim04,
     ANIM_BattleKammy_Anim06,
     ANIM_BattleKammy_Anim0C,
@@ -194,44 +194,44 @@ AnimID N(ExtraAnims_Kammy)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Eldstar)[] = {
+AnimID N(LimitAnims_Eldstar)[] = {
     ANIM_WorldEldstar_Idle,
     ANIM_WorldEldstar_Wave,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Mamar)[] = {
+AnimID N(LimitAnims_Mamar)[] = {
     ANIM_WorldMamar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Skolar)[] = {
+AnimID N(LimitAnims_Skolar)[] = {
     ANIM_WorldSkolar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Muskular)[] = {
+AnimID N(LimitAnims_Muskular)[] = {
     ANIM_WorldMuskular_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Misstar)[] = {
+AnimID N(LimitAnims_Misstar)[] = {
     ANIM_WorldMisstar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Klevar)[] = {
+AnimID N(LimitAnims_Klevar)[] = {
     ANIM_WorldKlevar_Idle,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kalmar)[] = {
+AnimID N(LimitAnims_Kalmar)[] = {
     ANIM_WorldKalmar_Idle,
     ANIM_LIST_END
 };
@@ -245,7 +245,7 @@ NpcData N(NpcData_Bowser) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_DELAY_AFTER_FLEE | ENEMY_FLAG_NO_DROPS,
     .drops = NO_DROPS,
     .animations = BOWSER_ANIMS,
-    .extraAnimations = N(ExtraAnims_Bowser),
+    .limitAnimations = N(LimitAnims_Bowser),
 };
 
 NpcData N(NpcData_Peach) = {
@@ -257,7 +257,7 @@ NpcData N(NpcData_Peach) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_USE_PLAYER_SPRITE,
     .drops = NO_DROPS,
     .animations = PEACH_ANIMS,
-    .extraAnimations = N(ExtraAnims_Peach),
+    .limitAnimations = N(LimitAnims_Peach),
 };
 
 NpcData N(NpcData_Kammy)[] = {
@@ -287,7 +287,7 @@ NpcData N(NpcData_Kammy)[] = {
             .anim_E = ANIM_BattleKammy_Anim00,
             .anim_F = ANIM_BattleKammy_Anim00,
         },
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy),
     },
     {
         .id = NPC_Kammy_04,
@@ -315,7 +315,7 @@ NpcData N(NpcData_Kammy)[] = {
             .anim_E = ANIM_BattleKammy_Anim00,
             .anim_F = ANIM_BattleKammy_Anim00,
         },
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy),
     },
 };
 
@@ -328,7 +328,7 @@ NpcData N(NpcData_Twink) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
-    .extraAnimations = N(ExtraAnims_Twink),
+    .limitAnimations = N(LimitAnims_Twink),
 };
 
 NpcData N(NpcData_Eldstar) = {
@@ -340,7 +340,7 @@ NpcData N(NpcData_Eldstar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = ELDSTAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Eldstar),
+    .limitAnimations = N(LimitAnims_Eldstar),
 };
 
 NpcData N(NpcData_Mamar) = {
@@ -352,7 +352,7 @@ NpcData N(NpcData_Mamar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MAMAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Mamar),
+    .limitAnimations = N(LimitAnims_Mamar),
 };
 
 NpcData N(NpcData_Skolar) = {
@@ -364,7 +364,7 @@ NpcData N(NpcData_Skolar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = SKOLAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Skolar),
+    .limitAnimations = N(LimitAnims_Skolar),
 };
 
 NpcData N(NpcData_Muskular) = {
@@ -376,7 +376,7 @@ NpcData N(NpcData_Muskular) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MUSKULAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Muskular),
+    .limitAnimations = N(LimitAnims_Muskular),
 };
 
 NpcData N(NpcData_Misstar) = {
@@ -388,7 +388,7 @@ NpcData N(NpcData_Misstar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = MISSTAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Misstar),
+    .limitAnimations = N(LimitAnims_Misstar),
 };
 
 NpcData N(NpcData_Klevar) = {
@@ -400,7 +400,7 @@ NpcData N(NpcData_Klevar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KLEVAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Klevar),
+    .limitAnimations = N(LimitAnims_Klevar),
 };
 
 NpcData N(NpcData_Kalmar) = {
@@ -412,7 +412,7 @@ NpcData N(NpcData_Kalmar) = {
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KALMAR_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kalmar),
+    .limitAnimations = N(LimitAnims_Kalmar),
 };
 
 #define NAME_SUFFIX

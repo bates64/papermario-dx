@@ -335,7 +335,7 @@ NpcData N(NpcData_Sentinel_04) = {
     .animations = SENTINEL_ANIMS,
 };
 
-AnimID N(ExtraAnims_Tubba)[] = {
+AnimID N(LimitAnims_Tubba)[] = {
     ANIM_WorldTubba_Anim06,
     ANIM_WorldTubba_Anim10,
     ANIM_WorldTubba_Anim09,
@@ -359,7 +359,7 @@ NpcData N(NpcData_Tubba_Floor3) = {
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = NO_DROPS,
     .animations = TUBBA_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
 };
 
 NpcData N(NpcData_Tubba_Floor2) = {
@@ -385,7 +385,7 @@ NpcData N(NpcData_Tubba_Floor2) = {
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 
@@ -418,7 +418,7 @@ NpcData N(NpcData_Tubba_Floor1) = {
     .flags = ENEMY_FLAG_ACTIVE_WHILE_OFFSCREEN,
     .drops = CLUBBA_DROPS,
     .animations = TUBBA_ANGRY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Tubba),
+    .limitAnimations = N(LimitAnims_Tubba),
     .aiDetectFlags = AI_DETECT_MOTION_SENSITIVE,
 };
 

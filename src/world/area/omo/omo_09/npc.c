@@ -342,7 +342,7 @@ NpcData N(NpcData_ShyGuy_05) = {
     .animations = RED_SHY_GUY_ANIMS,
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_WorldKammy_Anim0E,
     ANIM_WorldKammy_Anim0F,
     ANIM_WorldKammy_Anim10,
@@ -361,7 +361,7 @@ NpcData N(NpcData_Kammy) = {
     .flags = ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = KAMMY_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kammy),
+    .limitAnimations = N(LimitAnims_Kammy),
 };
 
 EvtScript N(EVS_ShyGuy_Thief) = {

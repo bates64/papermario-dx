@@ -15,7 +15,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
     .onDefeat = &EnemyNpcDefeat,
 };
 
-AnimID N(ExtraAnims_Bowser)[] = {
+AnimID N(LimitAnims_Bowser)[] = {
     ANIM_WorldBowser_Still,
     ANIM_WorldBowser_Idle,
     ANIM_WorldBowser_BrandishIdle,
@@ -25,14 +25,14 @@ AnimID N(ExtraAnims_Bowser)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Kammy)[] = {
+AnimID N(LimitAnims_Kammy)[] = {
     ANIM_WorldKammy_Anim01,
     ANIM_WorldKammy_Anim02,
     ANIM_WorldKammy_Anim04,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_KoopaBros)[] = {
+AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_KoopaBros_Black_Walk,
     ANIM_KoopaBros_Black_Run,
     ANIM_KoopaBros_Black_Idle,
@@ -54,7 +54,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BOWSER_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bowser),
+        .limitAnimations = N(LimitAnims_Bowser),
     },
     {
         .id = NPC_Kammy,
@@ -64,7 +64,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = KAMMY_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kammy),
+        .limitAnimations = N(LimitAnims_Kammy),
     },
     {
         .id = NPC_KoopaBros_01,
@@ -74,7 +74,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = BLACK_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_02,
@@ -84,7 +84,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = RED_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_03,
@@ -94,7 +94,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = YELLOW_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_04,
@@ -104,7 +104,7 @@ NpcData N(NpcData_Characters)[] = {
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = GREEN_KOOPA_BROS_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
 };
 

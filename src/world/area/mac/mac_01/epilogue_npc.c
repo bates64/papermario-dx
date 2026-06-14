@@ -160,35 +160,35 @@ EvtScript N(EVS_NpcInit_Composer) = {
     End
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Still,
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_KoloradoWife)[] = {
+AnimID N(LimitAnims_KoloradoWife)[] = {
     ANIM_KoloradoWife_Still,
     ANIM_KoloradoWife_Idle,
     ANIM_KoloradoWife_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_KoopaKoot)[] = {
+AnimID N(LimitAnims_KoopaKoot)[] = {
     ANIM_KoopaKoot_Still,
     ANIM_KoopaKoot_Idle,
     ANIM_KoopaKoot_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Koopa)[] = {
+AnimID N(LimitAnims_Koopa)[] = {
     ANIM_Koopa_Still,
     ANIM_Koopa_Idle,
     ANIM_Koopa_Talk,
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bobomb)[] = {
+AnimID N(LimitAnims_Bobomb)[] = {
     ANIM_WorldBobomb_Green_Still,
     ANIM_WorldBobomb_Green_Idle,
     ANIM_WorldBobomb_Green_Talk,
@@ -205,7 +205,7 @@ NpcData N(NpcData_Koopas)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOLORADO_ANIMS,
-        .extraAnimations = N(ExtraAnims_Kolorado),
+        .limitAnimations = N(LimitAnims_Kolorado),
     },
     {
         .id = NPC_KoloradoWife,
@@ -216,7 +216,7 @@ NpcData N(NpcData_Koopas)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOLORADO_WIFE_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoloradoWife),
+        .limitAnimations = N(LimitAnims_KoloradoWife),
     },
     {
         .id = NPC_KoopaKoot,
@@ -227,7 +227,7 @@ NpcData N(NpcData_Koopas)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_KOOT_ANIMS,
-        .extraAnimations = N(ExtraAnims_KoopaKoot),
+        .limitAnimations = N(LimitAnims_KoopaKoot),
     },
     {
         .id = NPC_Koopa,
@@ -238,7 +238,7 @@ NpcData N(NpcData_Koopas)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = KOOPA_ANIMS,
-        .extraAnimations = N(ExtraAnims_Koopa),
+        .limitAnimations = N(LimitAnims_Koopa),
     },
     {
         .id = NPC_Bobomb,
@@ -249,11 +249,11 @@ NpcData N(NpcData_Koopas)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BOBOMB_BLUE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bobomb),
+        .limitAnimations = N(LimitAnims_Bobomb),
     },
 };
 
-AnimID N(ExtraAnims_Rowf)[] = {
+AnimID N(LimitAnims_Rowf)[] = {
     ANIM_Rowf_Still,
     ANIM_Rowf_Idle,
     ANIM_Rowf_Talk,
@@ -272,7 +272,7 @@ NpcData N(NpcData_RowfAndRhuff)[] = {
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Rowf),
+        .limitAnimations = N(LimitAnims_Rowf),
         .tattle = MSG_NpcTattle_Rowf,
     },
     {
@@ -286,12 +286,12 @@ NpcData N(NpcData_RowfAndRhuff)[] = {
         .animations = {
             .idle   = ANIM_Rowf_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Rowf),
+        .limitAnimations = N(LimitAnims_Rowf),
         .tattle = MSG_NpcTattle_Rhuff,
     },
 };
 
-AnimID N(ExtraAnims_Dryite)[] = {
+AnimID N(LimitAnims_Dryite)[] = {
     ANIM_Dryite_Green_Still,
     ANIM_Dryite_Green_Idle,
     ANIM_Dryite_Green_Talk,
@@ -308,7 +308,7 @@ NpcData N(NpcData_Dryites)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Dryite),
+        .limitAnimations = N(LimitAnims_Dryite),
     },
     {
         .id = NPC_Dryite_02,
@@ -319,11 +319,11 @@ NpcData N(NpcData_Dryites)[] = {
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = DRYITE_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Dryite),
+        .limitAnimations = N(LimitAnims_Dryite),
     },
 };
 
-AnimID N(ExtraAnims_Chanterelle)[] = {
+AnimID N(LimitAnims_Chanterelle)[] = {
     ANIM_Chanterelle_Still,
     ANIM_Chanterelle_Idle,
     ANIM_Chanterelle_Sing,
@@ -331,7 +331,7 @@ AnimID N(ExtraAnims_Chanterelle)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Poet)[] = {
+AnimID N(LimitAnims_Poet)[] = {
     ANIM_Musician_Poet_Still,
     ANIM_Musician_Poet_Idle,
     ANIM_Musician_Poet_Talk,
@@ -365,7 +365,7 @@ NpcData N(NpcData_Artists)[] = {
             .anim_E = ANIM_Chanterelle_Still,
             .anim_F = ANIM_Chanterelle_Still,
         },
-        .extraAnimations = N(ExtraAnims_Chanterelle),
+        .limitAnimations = N(LimitAnims_Chanterelle),
         .tattle = MSG_NpcTattle_PopDiva_CantSing,
     },
     {
@@ -394,7 +394,7 @@ NpcData N(NpcData_Artists)[] = {
             .anim_E = ANIM_Musician_Poet_Idle,
             .anim_F = ANIM_Musician_Poet_Idle,
         },
-        .extraAnimations = N(ExtraAnims_Poet),
+        .limitAnimations = N(LimitAnims_Poet),
         .tattle = MSG_NpcTattle_MasterPoet,
     },
     {
@@ -423,7 +423,7 @@ NpcData N(NpcData_Artists)[] = {
             .anim_E = ANIM_Musician_Composer_Still,
             .anim_F = ANIM_Musician_Composer_Still,
         },
-        .extraAnimations = N(ExtraAnims_Poet),
+        .limitAnimations = N(LimitAnims_Poet),
         .tattle = MSG_NpcTattle_Composer,
     },
 };

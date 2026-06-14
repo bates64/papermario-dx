@@ -1132,7 +1132,7 @@ NpcData N(NpcData_DarkToads)[] = {
     },
 };
 
-AnimID N(ExtraAnims_KoopaBros)[] = {
+AnimID N(LimitAnims_KoopaBros)[] = {
     ANIM_KoopaBros_Black_Run,
     ANIM_KoopaBros_Black_Idle,
     ANIM_KoopaBros_Black_Hurt,
@@ -1166,7 +1166,7 @@ NpcData N(NpcData_KoopaBros)[] = {
             .anim_E = ANIM_KoopaBros_Black_Run,
             .anim_F = ANIM_KoopaBros_Black_Run,
         },
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_02,
@@ -1193,7 +1193,7 @@ NpcData N(NpcData_KoopaBros)[] = {
             .anim_E = ANIM_KoopaBros_Red_Run,
             .anim_F = ANIM_KoopaBros_Red_Run,
         },
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_03,
@@ -1220,7 +1220,7 @@ NpcData N(NpcData_KoopaBros)[] = {
             .anim_E = ANIM_KoopaBros_Yellow_Run,
             .anim_F = ANIM_KoopaBros_Yellow_Run,
         },
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
     {
         .id = NPC_KoopaBros_04,
@@ -1247,7 +1247,7 @@ NpcData N(NpcData_KoopaBros)[] = {
             .anim_E = ANIM_KoopaBros_Green_Run,
             .anim_F = ANIM_KoopaBros_Green_Run,
         },
-        .extraAnimations = N(ExtraAnims_KoopaBros),
+        .limitAnimations = N(LimitAnims_KoopaBros),
     },
 };
 
@@ -2081,7 +2081,7 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
     End
 };
 
-AnimID N(ExtraAnims_Toad)[] = {
+AnimID N(LimitAnims_Toad)[] = {
     ANIM_Toad_Red_Still,
     ANIM_Toad_Red_Idle,
     ANIM_Toad_Red_Walk,
@@ -2090,7 +2090,7 @@ AnimID N(ExtraAnims_Toad)[] = {
     ANIM_LIST_END
 };
 
-AnimID N(ExtraAnims_Bubulb)[] = {
+AnimID N(LimitAnims_Bubulb)[] = {
     ANIM_Bubulb_Pink_Idle,
     ANIM_Bubulb_Pink_EmbedIdle,
     ANIM_Bubulb_Pink_Talk,
@@ -2107,7 +2107,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_RunsHisMouth,
     },
     {
@@ -2131,7 +2131,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_KnowsTheGossip,
     },
     {
@@ -2157,7 +2157,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_PrincessFan,
     },
     {
@@ -2183,7 +2183,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_KnowsTheRumors,
     },
     {
@@ -2209,7 +2209,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_CrushingOnMinhT,
     },
     {
@@ -2221,7 +2221,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_GREEN_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_SeeksTheSouth,
     },
     {
@@ -2233,7 +2233,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
-        .extraAnimations = N(ExtraAnims_Toad),
+        .limitAnimations = N(LimitAnims_Toad),
         .tattle = MSG_NpcTattle_MAC_ToadHouseToad,
     },
     {
@@ -2245,7 +2245,7 @@ NpcData N(NpcData_Townsfolk)[] = {
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = BUBULB_PINK_ANIMS,
-        .extraAnimations = N(ExtraAnims_Bubulb),
+        .limitAnimations = N(LimitAnims_Bubulb),
         .tattle = MSG_NpcTattle_MAC_FlowerGateBubulb,
     },
     {
@@ -2302,11 +2302,11 @@ NpcData N(NpcData_Parakarry) = {
         .anim_E = ANIM_WorldParakarry_Idle,
         .anim_F = ANIM_WorldParakarry_Idle,
     },
-    .extraAnimations = N(ExtraAnims_Parakarry),
+    .limitAnimations = N(LimitAnims_Parakarry),
     .tattle = MSG_NpcTattle_MAC_Parakarry,
 };
 
-AnimID N(ExtraAnims_Twink)[] = {
+AnimID N(LimitAnims_Twink)[] = {
     ANIM_Twink_Idle,
     ANIM_Twink_Fly,
     ANIM_Twink_Talk,
@@ -2322,7 +2322,7 @@ NpcData N(NpcData_Twink) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
     .animations = TWINK_ANIMS,
-    .extraAnimations = N(ExtraAnims_Twink),
+    .limitAnimations = N(LimitAnims_Twink),
 };
 
 NpcData N(NpcData_ShyGuys)[] = {
@@ -2368,7 +2368,7 @@ NpcData N(NpcData_ShyGuys)[] = {
     },
 };
 
-AnimID N(ExtraAnims_Kolorado)[] = {
+AnimID N(LimitAnims_Kolorado)[] = {
     ANIM_Kolorado_Still,
     ANIM_Kolorado_Idle,
     ANIM_Kolorado_Talk,
@@ -2384,7 +2384,7 @@ NpcData N(NpcData_Kolorado) = {
     .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
     .drops = NO_DROPS,
     .animations = KOLORADO_ANIMS,
-    .extraAnimations = N(ExtraAnims_Kolorado),
+    .limitAnimations = N(LimitAnims_Kolorado),
     .tattle = MSG_NpcTattle_Kolorado,
 };
 
