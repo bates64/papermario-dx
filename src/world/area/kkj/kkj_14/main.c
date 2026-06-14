@@ -38,7 +38,7 @@ EvtScript N(EVS_EndPeachChapter7) = {
 EvtScript N(EVS_ExitDoor_GrandHall) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(AF_KKJ_13, true)
+    Set(AF_KKJ14_CaughtUsingDoor, true)
     Call(UseDoorSounds, DOOR_SOUNDS_BASIC)
     Set(LVar0, kkj_14_ENTRY_0)
     Set(LVar1, COLLIDER_ttw)
@@ -59,7 +59,7 @@ EvtScript N(EVS_ExitDoor_GrandHall) = {
 EvtScript N(EVS_ExitDoors_Balcony) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
     Call(DisablePlayerInput, true)
-    Set(AF_KKJ_13, false)
+    Set(AF_KKJ14_CaughtUsingDoor, false)
     Call(UseDoorSounds, DOOR_SOUNDS_DOOR)
     Set(LVar0, kkj_14_ENTRY_1)
     Set(LVar1, COLLIDER_tte)
@@ -77,7 +77,7 @@ EvtScript N(EVS_ExitDoors_Balcony) = {
 
 EvtScript N(EVS_ExitWalk_SecretPassage) = {
     SetGroup(EVT_GROUP_EXIT_MAP)
-    Set(AF_KKJ_13, false)
+    Set(AF_KKJ14_CaughtUsingDoor, false)
     Call(UseExitHeading, 60, kkj_14_ENTRY_2)
     Exec(ExitWalk)
     IfEq(GF_KKJ14_SkipSecretPassage, false)
@@ -184,7 +184,7 @@ EvtScript N(EVS_Main) = {
                 Set(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
                 Set(GB_KKJ_CaughtCount, 0)
                 Set(GF_KKJ14_SkipSecretPassage, false)
-                Set(AF_KKJ_06, false)
+                Set(AF_KKJ_PeachSawGrandHall, false)
                 Call(MakeNpcs, false, Ref(N(Chapter2NPCs)))
             CaseEq(kkj_14_ENTRY_6)
                 Set(GB_StoryProgress, STORY_CH3_BEGAN_PEACH_MISSION)

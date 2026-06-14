@@ -53,7 +53,7 @@ EvtScript N(EVS_EnterMap) = {
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_TUBBAS_MANOR)
     Call(SetSpriteShading, SHADING_NONE)
-    Set(AF_DGB_01, false)
+    Set(AF_DGB_CloseCallWithTubba, false)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
     IfEq(GF_DGB16_EscapedFromTubba, false)
         Call(MakeNpcs, true, Ref(N(DefaultNPCs)))

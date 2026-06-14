@@ -247,7 +247,7 @@ EvtScript N(EVS_Scene_FallIntoCell) = {
     Call(SetCamPosB, CAM_DEFAULT, -100, 0)
     Call(SetCamDistance, CAM_DEFAULT, 360)
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)

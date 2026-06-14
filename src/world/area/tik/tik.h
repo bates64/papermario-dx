@@ -20,8 +20,8 @@ enum AreaBytesTIK {
 };
 
 enum AreaFlagsTIK {
-    AF_TIK_02       = AreaFlag(2),
-    AF_TIK_03       = AreaFlag(3),
-    AF_TIK_04       = AreaFlag(4),
-    AF_TIK_05       = AreaFlag(5),
+    AF_TIK15_RipCheatoRepeatVisit   = AreaFlag(2),
+    AF_TIK01_Switch_WarpPipe        = AreaFlag(3),
+    AF_TIK08_Switch_WarpPipe        = AreaFlag(4),
+    AF_TIK09_Switch_WarpPipe        = AreaFlag(5),
 };

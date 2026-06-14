@@ -20,7 +20,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar2, MODEL_o31)
             Set(LVar3, MODEL_o30)
             ExecWait(EnterDoubleDoor)
-            IfEq(AF_DGB_01, true)
+            IfEq(AF_DGB_CloseCallWithTubba, true)
                 Wait(5)
                 Call(SetPlayerAnimation, ANIM_MarioW2_SleepStanding)
                 Wait(20)

@@ -611,7 +611,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
         EndIf
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerFlagBits, PS_FLAG_NO_CHANGE_PARTNER | PS_FLAG_NO_PARTNER_USAGE, true)
     Wait(60)
     Call(SetPlayerAnimation, ANIM_Mario1_Question)
@@ -742,7 +742,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 IfEq(MV_RevealedFakeKoopaKoot, 1)
                     IfEq(MV_RevealedFakeKolorado, 1)
                         Call(DisablePlayerInput, true)
-                        Call(DisablePartnerAI, 0)
+                        Call(DisablePartnerAI, false)
                         Call(GetNpcPos, NPC_FakeKooper, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_FakeKooper, NPC_DISPOSE_LOCATION)

@@ -481,7 +481,7 @@ EvtScript N(EVS_NpcIdle_Merle) = {
 
 EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(NpcMoveTo, NPC_PARTNER, -28, -80, 0)
         Call(EnablePartnerAI)
@@ -516,7 +516,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Call(SetGroupVisibility, MODEL_k_naiso, MODEL_GROUP_HIDDEN)
     Call(GetNpcPos, NPC_Merle, LVar0, LVar1, LVar2)
     Call(PlayerFaceNpc, NPC_Merle, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Merle, 0)
     Call(EnablePartnerAI)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)

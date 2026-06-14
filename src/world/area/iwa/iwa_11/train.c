@@ -312,7 +312,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
 EvtScript N(EVS_TravelToToadTown) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 270, 0)
@@ -348,7 +348,7 @@ EvtScript N(EVS_TravelToToadTown) = {
 EvtScript N(EVS_TravelToMtRugged) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 90, 0)

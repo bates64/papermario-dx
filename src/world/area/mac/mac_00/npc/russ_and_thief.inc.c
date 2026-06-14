@@ -287,9 +287,9 @@ s32 N(ItemList_RussDocuments2)[] = {
 };
 
 EvtScript N(EVS_ItemPrompt_Dictionary) = {
-    IfEq(AF_MAC_0D, false)
+    IfEq(AF_MAC00_HeardDictionaryLament, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000A)
-        Set(AF_MAC_0D, true)
+        Set(AF_MAC00_HeardDictionaryLament, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000B)
     EndIf

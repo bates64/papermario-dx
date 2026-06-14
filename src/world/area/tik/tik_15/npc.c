@@ -54,14 +54,14 @@ API_CALLABLE(N(CheckPlayerHasEnoughCoins)) {
 }
 
 EvtScript N(EVS_NpcInteract_RipCheato) = {
-    IfEq(AF_TIK_02, false)
+    IfEq(AF_TIK15_RipCheatoRepeatVisit, false)
         IfEq(GF_TIK15_Met_RipCheato, false)
             Set(LVar0, MSG_MGM_0001)
             Set(GF_TIK15_Met_RipCheato, true)
         Else
             Set(LVar0, MSG_MGM_0002)
         EndIf
-        Set(AF_TIK_02, true)
+        Set(AF_TIK15_RipCheatoRepeatVisit, true)
     Else
         Set(LVar0, MSG_MGM_0003)
     EndIf
@@ -116,7 +116,7 @@ EvtScript N(EVS_NpcInteract_RipCheato) = {
 
 EvtScript N(EVS_NpcInit_RipCheato) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_RipCheato)))
-    Set(AF_TIK_02, false)
+    Set(AF_TIK15_RipCheatoRepeatVisit, false)
     Return
     End
 };

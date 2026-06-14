@@ -93,9 +93,9 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     EndIf
     IfGe(GB_StoryProgress, STORY_CH2_ARRIVED_AT_DRY_DRY_OUTPOST)
         IfEq(GF_DRO02_Sheek_SpokeTo, false)
-            IfEq(AF_SBK_04, false)
+            IfEq(AF_SBK30_KoloradoHint1, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_0039)
-                Set(AF_SBK_04, true)
+                Set(AF_SBK30_KoloradoHint1, true)
                 Goto(50)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_003A)
@@ -103,10 +103,10 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             EndIf
         EndIf
         IfEq(GF_DRO02_Sheek_AskedAboutRuins, false)
-            IfEq(AF_SBK_05, false)
+            IfEq(AF_SBK30_KoloradoHint2, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_003B)
                 Set(GF_SBK30_Kolorado_SharedRumorAboutMoustafa, true)
-                Set(AF_SBK_05, true)
+                Set(AF_SBK30_KoloradoHint2, true)
                 Goto(50)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_003C)
@@ -115,9 +115,9 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
         EndIf
         IfEq(GF_SBK30_Kolorado_SharedRumorAboutMoustafa, true)
             IfEq(GF_DRO02_Sheek_AskedAboutMoustafa, false)
-                IfEq(AF_SBK_06, false)
+                IfEq(AF_SBK30_KoloradoHint3, false)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_003D)
-                    Set(AF_SBK_06, true)
+                    Set(AF_SBK30_KoloradoHint3, true)
                     Goto(50)
                 Else
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH2_003E)
@@ -135,7 +135,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     IfEq(LVar0, PARTNER_KOOPER)
         IfEq(GF_SBK30_KooperMetKolorado, false)
             Set(GF_SBK30_KooperMetKolorado, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldKooper_CelebrateLoop, ANIM_WorldKooper_Idle, 0, NPC_SELF, MSG_CH2_0047)
             Call(SpeakToNpc, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, NPC_PARTNER, MSG_CH2_0048)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldKooper_CelebrateLoop, ANIM_WorldKooper_Idle, 0, NPC_SELF, MSG_CH2_0049)

@@ -111,7 +111,7 @@ extern EvtScript N(EVS_Pipe_ExitVertical_Impl);
 EvtScript N(EVS_Pipe_EnterVertical) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(HidePlayerShadow, true)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
     Call(GetCurrentPartnerID, LVar0)
@@ -137,7 +137,7 @@ EvtScript N(EVS_Pipe_EnterVertical) = {
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
         Thread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Sub(LVar2, 3)
             Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -188,7 +188,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(EnableNpcShadow, NPC_PARTNER, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
         Call(InterpNpcYaw, NPC_PARTNER, LVar0, 0)

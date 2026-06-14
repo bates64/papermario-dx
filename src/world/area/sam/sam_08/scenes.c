@@ -85,7 +85,7 @@ EvtScript N(EVS_Scene_ImposterAppears) = {
     EndIf
     Call(InterpPlayerYaw, 270, 0)
     Wait(70 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
     Call(SetNpcAnimation, NPC_Kooper_01A, ANIM_WorldKooper_Idle)

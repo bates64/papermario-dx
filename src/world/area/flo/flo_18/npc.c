@@ -54,7 +54,7 @@ Vec3f N(RetreatPath_Lakitu_03)[] = {
 
 EvtScript N(EVS_Scene_LakilesterLikesBeingGood) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 30, 0, 50)
     Call(InterpPlayerYaw, 90, 0)
     Call(SetNpcPos, NPC_PARTNER, 65, 0, 50)
@@ -176,7 +176,7 @@ EvtScript N(EVS_ChargeAtPlayer) = {
 
 EvtScript N(EVS_Scene_GangDefeated) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, 65, LVar1, 80)
     Call(SetNpcYaw, NPC_PARTNER, 270)
@@ -197,7 +197,7 @@ EvtScript N(EVS_Scene_GangDefeated) = {
         Call(NpcJump0, NPC_PARTNER, LVar1, LVar2, LVar3, 30 * DT)
     EndIf
     Call(NpcFacePlayer, NPC_PARTNER, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldLakilester_Talk, ANIM_WorldLakilester_Idle, 5, MSG_CH6_00C1)
     Call(EnablePartnerAI)
     Wait(20 * DT)
@@ -219,7 +219,7 @@ EvtScript N(EVS_Scene_GangDefeated) = {
     EndIf
     Call(PlayerFaceNpc, NPC_PARTNER, false)
     Call(NpcFacePlayer, NPC_PARTNER, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldLakilester_Talk, ANIM_WorldLakilester_Idle, 5, MSG_CH6_00C2)
     Call(EnablePartnerAI)
     Call(PutPartnerAway)

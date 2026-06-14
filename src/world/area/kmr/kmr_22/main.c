@@ -152,7 +152,7 @@ EvtScript N(EVS_Main) = {
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
     Call(GetCurrentPartnerID, LVar0)
     IfNe(LVar0, PARTNER_NONE)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
     EndIf

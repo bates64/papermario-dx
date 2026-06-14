@@ -136,7 +136,7 @@ EvtScript N(EVS_CarryPeachAway_Ch1) = {
 
 EvtScript N(EVS_Inspect_Door) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_004A)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -160,7 +160,7 @@ EvtScript N(EVS_Inspect_BowsersDiary) = {
     Call(SetPlayerPos, -164, 0, -53)
     Call(InterpPlayerYaw, 225, 0)
     Call(SetPlayerFlagBits, PS_FLAG_NO_FLIPPING, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcJump0, NPC_PARTNER, -225, 50, -80, 20 * DT)
     Call(NpcFacePlayer, NPC_PARTNER, 0)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 5, MSG_Peach_004B)

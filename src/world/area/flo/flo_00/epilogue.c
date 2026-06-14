@@ -19,7 +19,7 @@ EvtScript N(EVS_Scene_Epilogue) = {
     Call(SetPlayerPos, -400, 0, 200)
     Call(SetNpcPos, NPC_PARTNER, -380, 0, 200)
     Call(func_802CF56C, 2)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     EVT_VEC3I_SET(LVar0, 230, 0, 350)

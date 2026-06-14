@@ -94,7 +94,7 @@ API_CALLABLE(N(CheckForSceneSkip)) {
 EvtScript N(EVS_Scene_TrainTraveling) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_UpdateCameraDuringLongTrainRide))
     Exec(N(EVS_Conductor_AnnounceArrival))
     Call(GetEntryID, LVar0)

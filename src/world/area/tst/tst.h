@@ -20,5 +20,5 @@ enum AreaBytesTST {
 };
 
 enum AreaFlagsTST {
-    AF_TST_00           = AreaFlag(0),
+    AF_TST10_DisabledExitCameras    = AreaFlag(0),
 };

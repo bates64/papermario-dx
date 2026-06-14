@@ -15,7 +15,7 @@ EvtScript N(EVS_ExitFall_jan_16_4) = {
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_LAKILESTER)
         Thread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
             IfEq(LVar0, 0)
                 Call(GetPlayerPos, LVar2, LVar3, LVar4)

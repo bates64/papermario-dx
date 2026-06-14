@@ -441,7 +441,7 @@ EvtScript N(EVS_Scene_YakkeyShouts) = {
     Call(SetNpcAnimation, NPC_Tubba, ANIM_WorldTubba_Anim05)
     Call(SpeakToPlayer, NPC_Tubba, ANIM_WorldTubba_Anim13, ANIM_WorldTubba_Anim05, 5, MSG_CH3_00FB)
     Wait(15)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

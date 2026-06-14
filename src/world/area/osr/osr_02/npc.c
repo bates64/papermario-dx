@@ -121,7 +121,7 @@ EvtScript N(EVS_Twink_FlyAway) = {
 
 EvtScript N(EVS_Scene_ReturnStarRod) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetMusic, 0, SONG_STAR_SPIRIT_THEME, BGM_VARIATION_2, VOL_LEVEL_FULL)
     Call(SetPlayerPos, 15, 0, 30)
     Call(InterpPlayerYaw, 90, 0)

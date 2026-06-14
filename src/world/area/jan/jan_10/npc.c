@@ -36,11 +36,11 @@ EvtScript N(EVS_NpcInit_JungleFuzzy) = {
 };
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
@@ -50,7 +50,7 @@ EvtScript N(EVS_YoshiKid_CryForHelp) = {
 
 EvtScript N(EVS_NpcInteract_YoshiKid) = {
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), 0, 350, Float(17.0), Float(-7.0))
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_SUSHIE)

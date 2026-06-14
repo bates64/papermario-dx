@@ -10,11 +10,11 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
     IfEq(LVar0, 2)
         Return
     EndIf
-    IfEq(AF_JAN_08, true)
+    IfEq(AF_JAN04_IgnoreSushieTreeHit, true)
         Return
     EndIf
     Call(DisablePlayerInput, true)
-    Set(AF_JAN_08, true)
+    Set(AF_JAN04_IgnoreSushieTreeHit, true)
     Call(SetNpcFlagBits, NPC_Sushie, NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     IfEq(GF_JAN04_SushieTreeHitCounterB, false)
         IfEq(GF_JAN04_SushieTreeHitCounterA, false)
@@ -36,7 +36,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
             Call(ResetCam, CAM_DEFAULT, Float(90.0))
             Set(GF_JAN04_SushieTreeHitCounterA, true)
             Wait(10 * DT)
-            Set(AF_JAN_08, false)
+            Set(AF_JAN04_IgnoreSushieTreeHit, false)
         Else
             Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
             Call(PlaySoundAtNpc, NPC_Sushie, SOUND_SUSHIE_FLOP, SOUND_SPACE_DEFAULT)
@@ -44,7 +44,7 @@ EvtScript N(EVS_ShakeTree_Sushie) = {
             Set(GF_JAN04_SushieTreeHitCounterA, false)
             Set(GF_JAN04_SushieTreeHitCounterB, true)
             Wait(10 * DT)
-            Set(AF_JAN_08, false)
+            Set(AF_JAN04_IgnoreSushieTreeHit, false)
         EndIf
     Else
         Call(SetNpcJumpscale, NPC_Sushie, Float(1.0))
@@ -138,7 +138,7 @@ EvtScript N(EVS_NpcIdle_Sushie) = {
     Else
         Call(SetSelfVar, 0, 1)
     EndIf
-    Set(AF_JAN_08, false)
+    Set(AF_JAN04_IgnoreSushieTreeHit, false)
     BindTrigger(Ref(N(EVS_ShakeTree_Sushie)), TRIGGER_WALL_HAMMER, COLLIDER_o34, 1, 0)
     BindTrigger(Ref(N(EVS_ShakeTree_Sushie)), TRIGGER_POINT_BOMB, Ref(N(BombPos_SushieTree)), 1, 0)
     ExecGetTID(N(EVS_Sushie_ScoldPlayerLeaving), LVar9)

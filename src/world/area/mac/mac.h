@@ -20,32 +20,36 @@ enum AreaBytesMAC {
 };
 
 enum AreaFlagsMAC {
+    // AF_MAC_00 unused
     AF_MAC02_ToggleDialogue_TayceT      = AreaFlag(1),
-    AF_ExitingToybox                    = AreaFlag(2),
-    AF_MAC_0D                           = AreaFlag(13),
-    AF_MAC_0E                           = AreaFlag(14),
-    AF_MAC_0F                           = AreaFlag(15),
-    AF_MAC_10                           = AreaFlag(16),
-    AF_MAC_11                           = AreaFlag(17),
-    AF_MAC_12                           = AreaFlag(18),
-    AF_MAC_13                           = AreaFlag(19),
+    AF_MAC_ExitingToybox                = AreaFlag(2),
+    // AF_MAC_03 - AF_MAC_0C unused
+    AF_MAC00_HeardDictionaryLament      = AreaFlag(13),
+    AF_MAC01_Unread_0E                  = AreaFlag(14),
+    AF_MAC01_Unread_0F                  = AreaFlag(15),
+    AF_MAC01_Unread_10                  = AreaFlag(16),
+    AF_MAC01_Unread_11                  = AreaFlag(17),
+    AF_MAC01_Unread_12                  = AreaFlag(18),
+    AF_MAC01_Unread_13                  = AreaFlag(19),
     AF_MAC01_ToggleDialogue_MinhT       = AreaFlag(20),
-    AF_MAC_15                           = AreaFlag(21),
-    AF_MAC_16                           = AreaFlag(22),
-    AF_MAC_17                           = AreaFlag(23),
-    AF_MAC_18                           = AreaFlag(24),
-    AF_MAC_19                           = AreaFlag(25),
-    AF_MAC_1A                           = AreaFlag(26),
-    AF_MAC_1B                           = AreaFlag(27),
-    AF_MAC_1C                           = AreaFlag(28),
-    AF_MAC_1D                           = AreaFlag(29),
-    AF_MAC_1E                           = AreaFlag(30),
-    AF_MAC_20                           = AreaFlag(32),
-    AF_MAC_21                           = AreaFlag(33),
-    AF_MAC_22                           = AreaFlag(34),
-    AF_MAC_23                           = AreaFlag(35),
-    AF_MAC_24                           = AreaFlag(36),
-    AF_MAC_25                           = AreaFlag(37),
+    AF_MAC01_Unread_15                  = AreaFlag(21),
+    AF_MAC02_Unread_16                  = AreaFlag(22),
+    AF_MAC02_Unread_17                  = AreaFlag(23),
+    AF_MAC02_Unread_18                  = AreaFlag(24),
+    AF_MAC02_Unread_19                  = AreaFlag(25),
+    AF_MAC02_Unread_1A                  = AreaFlag(26),
+    AF_MAC02_Unread_1B                  = AreaFlag(27),
+    AF_MAC02_Unread_1C                  = AreaFlag(28),
+    AF_MAC02_Unread_1D                  = AreaFlag(29),
+    AF_MAC02_Unread_1E                  = AreaFlag(30),
+    // AF_MAC_30 unused
+    AF_MAC03_Unread_20                  = AreaFlag(32),
+    AF_MAC03_Unread_21                  = AreaFlag(33),
+    AF_MAC03_Unread_22                  = AreaFlag(34),
+    AF_MAC03_Unread_23                  = AreaFlag(35),
+    AF_MAC03_Unread_24                  = AreaFlag(36),
+    AF_MAC03_Unread_25                  = AreaFlag(37),
+    // AF_MAC_26 - AF_MAC_2C unused
     AF_MAC_2D                           = AreaFlag(45),
     AF_MAC_2E                           = AreaFlag(46),
     AF_MAC_30                           = AreaFlag(48),
@@ -55,12 +59,10 @@ enum AreaFlagsMAC {
     AF_MAC05_ToggleDialogue_Simon       = AreaFlag(61),
     AF_MAC_3E                           = AreaFlag(62),
     AF_MAC05_ToggleDialogue_Chanterelle = AreaFlag(63),
-
-    AF_MAC_40                           = AreaFlag(64),
+    AF_MAC01_BadgeShopAccessible        = AreaFlag(64),
     AF_MAC_41                           = AreaFlag(65),
     AF_MAC_43                           = AreaFlag(67),
     AF_MAC_44                           = AreaFlag(68),
-
     AF_MAC00_LoreAvailable_00           = AreaFlag(0x45),
     AF_MAC00_LoreAvailable_01           = AreaFlag(0x46),
     AF_MAC00_LoreAvailable_02           = AreaFlag(0x47),
@@ -97,7 +99,7 @@ enum AreaFlagsMAC {
     AF_MAC00_LoreAvailable_21           = AreaFlag(0x66),
     AF_MAC00_LoreAvailable_22           = AreaFlag(0x67),
     AF_MAC00_LoreAvailable_23           = AreaFlag(0x68),
-
+    // AF_MAC_69 - AF_MAC_76 probably reserved for RussT for 50 possible lore entries
     AF_MAC00_LoreGiven_00               = AreaFlag(0x77),
     AF_MAC00_LoreGiven_01               = AreaFlag(0x78),
     AF_MAC00_LoreGiven_02               = AreaFlag(0x79),
@@ -134,4 +136,6 @@ enum AreaFlagsMAC {
     AF_MAC00_LoreGiven_21               = AreaFlag(0x98),
     AF_MAC00_LoreGiven_22               = AreaFlag(0x99),
     AF_MAC00_LoreGiven_23               = AreaFlag(0x9A),
+    // AF_MAC_9B - AF_MAC_A9 probably reserved for RussT for 50 possible lore entries
+    // AF_MAC_AA - AF_MAC_FF unused
 };

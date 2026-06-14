@@ -28,7 +28,7 @@ EvtScript N(EVS_Bombette_DemonstrateAbility) = {
     Call(SetPanTarget, CAM_DEFAULT, 96, 0, 129)
     Call(SetCamSpeed, CAM_DEFAULT, Float(0.6 / DT))
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))

@@ -401,7 +401,7 @@ EvtScript N(EVS_Couch_AnimateSpring) = {
 
 EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterruptUsePartner)
     Loop(0)
         Wait(1)
@@ -539,7 +539,7 @@ EvtScript N(EVS_TetherCameraToPlayer) = {
 EvtScript N(EVS_LaunchFromCouch_Crash) = {
     Call(DisablePlayerInput, true)
     Call(InterruptUsePartner)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Loop(0)
         Wait(1)
         Call(GetPlayerActionState, LVar0)

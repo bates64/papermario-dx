@@ -267,7 +267,7 @@ EvtScript N(EVS_NpcInteract_Goombaria) = {
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_008F)
             Else
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_008F)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goombaria, MSG_CH0_0090)
                 Call(SpeakToNpc, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, NPC_PARTNER, MSG_CH0_0091)
                 Call(EnablePartnerAI)
@@ -278,7 +278,7 @@ EvtScript N(EVS_NpcInteract_Goombaria) = {
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0092)
             Else
                 Call(SpeakToPlayer, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_CH0_0093)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goombaria, MSG_CH0_0094)
                 Call(SpeakToNpc, NPC_Goombaria, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, NPC_PARTNER, MSG_CH0_0095)
                 Call(EnablePartnerAI)
@@ -384,7 +384,7 @@ EvtScript N(EVS_PromptForBadgeTutorial) = {
 EvtScript N(EVS_ReturnToVillage) = {
     Call(DisablePlayerInput, true)
     Call(N(AwaitPartnerGrounded))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_001D)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
     Call(NpcMoveTo, NPC_PARTNER, -295, -30, 0)
@@ -435,7 +435,7 @@ EvtScript N(EVS_ReturnToVillage) = {
         Call(PlayerMoveTo, -238, -33, 0)
     EndThread
     Call(N(AwaitPartnerGrounded))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_WearyWalk)
     Call(NpcMoveTo, NPC_PARTNER, -168, -15, 0)
@@ -885,7 +885,7 @@ EvtScript N(EVS_NpcInteract_Goompa) = {
                 Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_0042)
             Else
                 Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_0043)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goompa, MSG_CH0_0044)
                 Call(EnablePartnerAI)
             EndIf
@@ -1008,7 +1008,7 @@ EvtScript N(EVS_NpcInteract_Goompapa) = {
             Call(SpeakToPlayer, NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_CH0_0063)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR02_Goompapa_SaidFarewell, false)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goompapa, MSG_CH0_0064)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldGoombario_Idle)
                 Wait(10)
@@ -1092,7 +1092,7 @@ EvtScript N(EVS_NpcInteract_Goomama) = {
             Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0079)
         CaseLt(STORY_CH0_DEFEATED_GOOMBA_KING)
             IfEq(GF_KMR02_Goomama_SaidFarewell, false)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 5, MSG_CH0_007A)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
                 Wait(10)
@@ -1115,7 +1115,7 @@ EvtScript N(EVS_NpcInteract_Goomama) = {
             Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0081)
             Call(GetCurrentPartnerID, LVar0)
             IfEq(LVar0, PARTNER_GOOMBARIO)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goomama, MSG_CH0_0082)
                 Call(EnablePartnerAI)
             EndIf
@@ -1125,7 +1125,7 @@ EvtScript N(EVS_NpcInteract_Goomama) = {
                 Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0083)
             Else
                 Call(SpeakToPlayer, NPC_Goomama, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_CH0_0084)
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Goomama, MSG_CH0_0085)
                 Call(EnablePartnerAI)
             EndIf

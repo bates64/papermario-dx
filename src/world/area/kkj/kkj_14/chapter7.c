@@ -257,7 +257,7 @@ EvtScript N(EVS_FocusCam_Bed) = {
 EvtScript N(EVS_Scene_Chapter7) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
     Call(SetNpcPos, NPC_PARTNER, 440, 65, 0)
     Call(SetNpcYaw, NPC_PARTNER, 270)

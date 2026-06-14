@@ -51,7 +51,7 @@ EvtScript N(EVS_MuteMusicOnPlayerApproach) = {
 
 EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -35, 250, -145)
     Call(SetPanTarget, CAM_DEFAULT, -35, 250, -145)
     Call(SetCamDistance, CAM_DEFAULT, 450)
@@ -227,7 +227,7 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
     Call(EnableModel, MODEL_5, false)
     Call(EnableModel, MODEL_6, false)
     Call(EnableModel, MODEL_7, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(10 * DT)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 20)

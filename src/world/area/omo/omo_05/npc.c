@@ -190,7 +190,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
             Thread
                 Call(ShowMessageAtScreenPos, MSG_CH4_0044, 160, 40)
             EndThread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Surprise)
             Thread
                 Call(SetNpcFlagBits, NPC_GourmetGuy_Fork, NPC_FLAG_INVISIBLE, false)

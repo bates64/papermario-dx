@@ -134,7 +134,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(DisablePlayerInput, true)
     ExecWait(N(EVS_EnsurePartnerNeutral))
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
         Call(EnablePartnerAI)
@@ -144,7 +144,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Label(4)
     ExecWait(N(EVS_EnsurePartnerNeutral))
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)
         Call(EnablePartnerAI)
@@ -180,7 +180,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Call(SetPlayerAnimation, ANIM_MarioW2_Flail)
     Wait(30 * DT)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, ANIM_MarioW2_PanicStill)
     Wait(10 * DT)
     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)

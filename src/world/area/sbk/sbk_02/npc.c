@@ -38,7 +38,7 @@ API_CALLABLE(N(UpgradeStarPowerCh2)) {
 }
 
 EvtScript N(EVS_Scene_RescuedMamar) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)

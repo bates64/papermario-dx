@@ -57,14 +57,14 @@ EvtScript N(EVS_PlayKooperVsFuzzyEffects) = {
             Call(N(SpawnKooperFightingDust))
         EndIf
         Loop(LVar0)
-            IfEq(AF_NOK_12, true)
+            IfEq(AF_NOK02_PauseKooperFightSounds, true)
                 KillThread(MV_KooperFightSoundsScript)
                 Call(TranslateGroup, MODEL_kameki, 0, 0, 0)
                 Label(10)
-                IfEq(AF_NOK_12, true)
-                    Wait(1)
-                    Goto(10)
-                EndIf
+                    IfEq(AF_NOK02_PauseKooperFightSounds, true)
+                        Wait(1)
+                        Goto(10)
+                    EndIf
                 ExecGetTID(N(EVS_UpdateKooperFightSounds), MV_KooperFightSoundsScript)
                 BreakLoop
             EndIf
@@ -211,7 +211,7 @@ EvtScript N(EVS_DropDoor_KootHouse) = {
 EvtScript N(EVS_RoomListener_KooperHouse) = {
     Switch(LVar0)
         CaseEq(ROOM_UPDATE_ENTER_BEGIN)
-            Set(AF_NOK_12, true)
+            Set(AF_NOK02_PauseKooperFightSounds, true)
             IfLt(GB_StoryProgress, STORY_CH1_PROMISED_TO_HELP_KOOPER)
                 ExecWait(N(EVS_Scene_MeetKooper))
                 Set(LVar0, ROOM_UPDATE_REQUEST_CANCEL)
@@ -220,11 +220,11 @@ EvtScript N(EVS_RoomListener_KooperHouse) = {
             Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_VISIBLE)
         CaseEq(ROOM_UPDATE_ENTER_DONE)
             Exec(N(EVS_FuzzyBoss_PlayerEntersKoopersHouse))
-            Set(AF_NOK_10, true)
+            Set(AF_NOK02_InsideKoopersHouse, true)
         CaseEq(ROOM_UPDATE_EXIT_BEGIN)
-            Set(AF_NOK_10, false)
+            Set(AF_NOK02_InsideKoopersHouse, false)
         CaseEq(ROOM_UPDATE_EXIT_END)
-            Set(AF_NOK_12, false)
+            Set(AF_NOK02_PauseKooperFightSounds, false)
             Call(SetGroupVisibility, MODEL_g111, MODEL_GROUP_HIDDEN)
     EndSwitch
     Return

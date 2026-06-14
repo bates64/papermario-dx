@@ -28,7 +28,7 @@ EvtScript N(EVS_OpenAndCloseDoor) = {
 
 EvtScript N(EVS_FirstTimeEnterHall) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, 10, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, 0, 0, 444)
@@ -44,7 +44,7 @@ EvtScript N(EVS_FirstTimeEnterHall) = {
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Wait(30)
-    Set(AF_KKJ_06, true)
+    Set(AF_KKJ_PeachSawGrandHall, true)
     Exec(N(EVS_OpenAndCloseDoor))
     Wait(10)
     Thread

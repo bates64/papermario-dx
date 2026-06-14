@@ -62,7 +62,7 @@ EvtScript N(EVS_UseBasketElevator) = {
     Call(DisablePlayerPhysics, true)
     Call(HidePlayerShadow, true)
     Wait(7)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
@@ -980,12 +980,12 @@ EvtScript N(EVS_NpcHit_Kolorado_HeldCaptive) = {
     IfNe(LVar1, 0)
         Call(DisablePlayerInput, true)
         Wait(5 * DT)
-        Set(AF_JAN_0A, true)
+        Set(AF_JAN22_PauseSpearGuyAttack, true)
         Wait(10 * DT)
         Call(SetNpcAnimation, NPC_SpearGuy, ANIM_SpearGuy_Anim0D)
         Call(NpcFacePlayer, NPC_SELF, 0)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Shout, ANIM_Kolorado_Yell, 0, MSG_CH5_00BD)
-        Set(AF_JAN_0A, false)
+        Set(AF_JAN22_PauseSpearGuyAttack, false)
         Call(SetNpcAnimation, NPC_SpearGuy, ANIM_SpearGuy_Anim10)
         Call(DisablePlayerInput, false)
     EndIf
@@ -1070,7 +1070,7 @@ EvtScript N(EVS_NpcIdle_SpearGuy) = {
             Wait(1)
         EndLoop
     EndChildThread
-    Set(AF_JAN_0A, false)
+    Set(AF_JAN22_PauseSpearGuyAttack, false)
     Set(LVar9, 0)
     Set(LVar8, 2)
     Loop(0)
@@ -1087,18 +1087,18 @@ EvtScript N(EVS_NpcIdle_SpearGuy) = {
         Call(InterpNpcYaw, NPC_Kolorado_01, 270, 2)
         Wait(2)
         Label(1)
-        IfEq(AF_JAN_0A, false)
-            Call(InterpNpcYaw, NPC_Kolorado_01, 90, 2)
-            IfEq(LVar8, 0)
-                Call(PlaySoundAtNpc, NPC_Kolorado_01, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
+            IfEq(AF_JAN22_PauseSpearGuyAttack, false)
+                Call(InterpNpcYaw, NPC_Kolorado_01, 90, 2)
+                IfEq(LVar8, 0)
+                    Call(PlaySoundAtNpc, NPC_Kolorado_01, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
+                    Set(LVar8, 2)
+                EndIf
+                Sub(LVar8, 1)
+            Else
                 Set(LVar8, 2)
+                Wait(1)
+                Goto(1)
             EndIf
-            Sub(LVar8, 1)
-        Else
-            Set(LVar8, 2)
-            Wait(1)
-            Goto(1)
-        EndIf
     EndLoop
     Return
     End
@@ -1224,7 +1224,7 @@ EvtScript N(EVS_Scene_Misstar) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Exec(N(EVS_Misstar_CarryingParty))
     Wait(30 * DT)

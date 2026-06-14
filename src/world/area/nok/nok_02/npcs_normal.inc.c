@@ -141,11 +141,11 @@ EvtScript N(EVS_NpcInit_Koopa_04) = {
 
 EvtScript N(EVS_Dueling_Bobombs) = {
     Label(10)
-        IfEq(AF_NOK_10, false)
+        IfEq(AF_NOK02_InsideKoopersHouse, false)
             Wait(1)
             Goto(10)
         EndIf
-        IfEq(AF_NOK_11, true)
+        IfEq(AF_NOK02_PauseBobombFight, true)
             Wait(1)
             Goto(10)
         EndIf
@@ -158,11 +158,11 @@ EvtScript N(EVS_Dueling_Bobombs) = {
         Call(N(SpawnExplosionEffect), LVar0, LVar1, LVar2)
         Wait(30)
         Label(20)
-            IfEq(AF_NOK_10, false)
+            IfEq(AF_NOK02_InsideKoopersHouse, false)
                 Wait(1)
                 Goto(20)
             EndIf
-            IfEq(AF_NOK_11, true)
+            IfEq(AF_NOK02_PauseBobombFight, true)
                 Wait(1)
                 Goto(20)
             EndIf
@@ -183,11 +183,11 @@ EvtScript N(EVS_Scene_ConfrontBobombs) = {
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_2)
         Call(GetCurrentPartnerID, LVar0)
         IfEq(LVar0, PARTNER_BOMBETTE)
-            Set(AF_NOK_11, true)
+            Set(AF_NOK02_PauseBobombFight, true)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_007B)
             Call(SpeakToNpc, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_007C)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_007D)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, NPC_Bobomb_01, MSG_CH1_007E)
             Call(EnablePartnerAI)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 5, MSG_CH1_007F)
@@ -197,31 +197,31 @@ EvtScript N(EVS_Scene_ConfrontBobombs) = {
             Set(GF_NOK02_ConfrontedBobombs, true)
             Set(GF_MAC02_KootFavor_CurrentComplete, true)
         Else
-            Set(AF_NOK_11, true)
+            Set(AF_NOK02_PauseBobombFight, true)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_007B)
             Call(SpeakToNpc, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_007C)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 5, MSG_CH1_0081)
             Call(SpeakToNpc, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_0082)
-            Set(AF_NOK_11, false)
+            Set(AF_NOK02_PauseBobombFight, false)
         EndIf
     Else
         Call(GetCurrentPartnerID, LVar0)
         IfEq(LVar0, PARTNER_BOMBETTE)
-            Set(AF_NOK_11, true)
+            Set(AF_NOK02_PauseBobombFight, true)
             Call(SpeakToNpc, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_PARTNER, MSG_CH1_0077)
             Call(SpeakToNpc, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, NPC_PARTNER, MSG_CH1_0078)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, NPC_Bobomb_01, MSG_CH1_0079)
             Call(EnablePartnerAI)
             Call(SpeakToPlayer, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 5, MSG_CH1_007A)
-            Set(AF_NOK_11, false)
+            Set(AF_NOK02_PauseBobombFight, false)
         Else
-            Set(AF_NOK_11, true)
+            Set(AF_NOK02_PauseBobombFight, true)
             Call(SpeakToPlayer, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, MSG_CH1_0073)
             Call(SpeakToNpc, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, NPC_Bobomb_02, MSG_CH1_0074)
             Call(SpeakToNpc, NPC_Bobomb_02, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_0075)
             Call(SpeakToNpc, NPC_Bobomb_01, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, NPC_Bobomb_02, MSG_CH1_0076)
-            Set(AF_NOK_11, false)
+            Set(AF_NOK02_PauseBobombFight, false)
         EndIf
     EndIf
     Return
@@ -231,14 +231,14 @@ EvtScript N(EVS_Scene_ConfrontBobombs) = {
 EvtScript N(EVS_NpcInteract_Bobomb_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH4_STAR_SPRIT_DEPARTED)
-            IfEq(AF_NOK_0F, false)
+            IfEq(AF_NOK02_DeclinedBobombInvite, false)
                 Call(GetCurrentPartnerID, LVar0)
                 IfEq(LVar0, PARTNER_BOMBETTE)
-                    Set(AF_NOK_0F, true)
+                    Set(AF_NOK02_DeclinedBobombInvite, true)
                     Call(NpcFacePlayer, NPC_SELF, 0)
                     Call(NpcFaceNpc, NPC_PARTNER, NPC_SELF, 0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_006F)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH1_0070)
                     Call(EnablePartnerAI)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_0071)
@@ -252,7 +252,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_01) = {
             IfEq(GF_NOK02_ConfrontedBobombs, false)
                 ExecWait(N(EVS_Scene_ConfrontBobombs))
             Else
-                Set(AF_NOK_11, true)
+                Set(AF_NOK02_PauseBobombFight, true)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_WorldBobomb_Blue_Talk, ANIM_WorldBobomb_Blue_Idle, 0, MSG_CH1_007F)
             EndIf
     EndSwitch
@@ -268,7 +268,7 @@ EvtScript N(EVS_NpcInteract_Bobomb_02) = {
             IfEq(GF_NOK02_ConfrontedBobombs, false)
                 ExecWait(N(EVS_Scene_ConfrontBobombs))
             Else
-                Set(AF_NOK_11, true)
+                Set(AF_NOK02_PauseBobombFight, true)
                 Call(SpeakToNpc, NPC_SELF, ANIM_WorldBobomb_Green_Talk, ANIM_WorldBobomb_Green_Idle, 0, NPC_Bobomb_01, MSG_CH1_0080)
             EndIf
         CaseGe(STORY_CH7_STAR_SPRIT_DEPARTED)
@@ -314,7 +314,7 @@ EvtScript N(EVS_NpcInit_Bobomb_02) = {
                 Return
             EndIf
             Exec(N(EVS_Dueling_Bobombs))
-            Set(AF_NOK_11, false)
+            Set(AF_NOK02_PauseBobombFight, false)
     EndSwitch
     Return
     End
@@ -351,8 +351,8 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(LVar0, -1)
         Return
     EndIf
-    IfEq(AF_NOK_15, false)
-        Set(AF_NOK_15, true)
+    IfEq(AF_NOK02_KoloradoRequestedArtifact, false)
+        Set(AF_NOK02_KoloradoRequestedArtifact, true)
         IfEq(GF_SBK_KeptArtifactFromKolorado, false)
             Set(GF_SBK_KeptArtifactFromKolorado, false)
             Set(LVar0, MSG_CH1_009B)

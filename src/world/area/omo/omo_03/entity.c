@@ -43,7 +43,7 @@ EvtScript N(EVS_Scene_EnterSpring) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_JUMP)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Add(LVar1, 100)

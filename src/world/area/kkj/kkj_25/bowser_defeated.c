@@ -247,7 +247,7 @@ EvtScript N(EVS_BowserAndKammyBlownAway) = {
 
 EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_ManageShaking))
     Call(SetPlayerPos, 150, 0, 0)
     Call(InterpPlayerYaw, 90, 0)

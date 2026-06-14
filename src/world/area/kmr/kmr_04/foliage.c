@@ -72,7 +72,7 @@ EvtScript N(EVS_OnSearch_HammerBush) = {
     Call(N(SetMessageImage_HammerBlock))
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_FoundHammer, 160, 40)
     Set(MF_GotHammerDone, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00AA)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
@@ -398,12 +398,12 @@ EvtScript N(EVS_OnShakeTree3) = {
     IfEq(GF_KMR04_Tree3_Dolly, true)
         Return
     EndIf
-    IfEq(AF_KMR_09, true)
+    IfEq(AF_KMR04_DollyDropped, true)
         Return
     EndIf
     Wait(15)
     Call(MakeItemEntity, ITEM_DOLLY, 250, 132, -100, ITEM_SPAWN_MODE_FALL_NEVER_VANISH, GF_KMR04_Tree3_Dolly)
-    Set(AF_KMR_09, true)
+    Set(AF_KMR04_DollyDropped, true)
     Thread
         Label(10)
         IfEq(GF_KMR04_Tree3_Dolly, false)
@@ -414,7 +414,7 @@ EvtScript N(EVS_OnShakeTree3) = {
         IfEq(LVar0, PARTNER_GOOMPA)
             Call(DisablePlayerInput, true)
             Wait(5)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00AB)
             Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
             Call(EnablePartnerAI)

@@ -70,7 +70,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
             Wait(15 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 2, MSG_CH5_0028)
     Else
         Call(SwitchToPartner, PARTNER_SUSHIE)
@@ -93,7 +93,7 @@ EvtScript N(EVS_Scene_GetJadeRaven) = {
             Wait(10 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(ContinueSpeech, NPC_PARTNER, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 5, MSG_CH5_002A)
         Wait(10 * DT)
     EndIf

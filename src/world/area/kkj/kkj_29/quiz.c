@@ -910,7 +910,7 @@ EvtScript N(EVS_ManageQuizGame) = {
     Call(RotateModel, MODEL_o57, 120, 0, 1, 0)
     Call(func_802D1270, 250, -30, Float(2.0 / DT))
     ExecWait(N(EVS_CloseDoor))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_TwinkHide))
     Thread
         Call(SetPlayerAnimation, ANIM_Peach2_Gasp)

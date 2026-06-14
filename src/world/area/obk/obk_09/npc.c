@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcInteract_Bootler) = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_BOW)
         Call(SpeakToNpc, NPC_Bootler, ANIM_Bootler_Talk, ANIM_Bootler_Talk, 0, NPC_PARTNER, MSG_CH3_0057)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, NPC_Bootler, MSG_CH3_0058)
         Call(EnablePartnerAI)
         Call(SpeakToPlayer, NPC_Bootler, ANIM_Bootler_Dejected, ANIM_Bootler_Quaver, 0, MSG_CH3_0059)

@@ -145,7 +145,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
         Call(NpcFacePlayer, NPC_SELF, 0)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(NpcMoveTo, NPC_PARTNER, LVar1, -250, 30)
         Call(NpcFaceNpc, NPC_PARTNER, NPC_YoshiKid, 0)

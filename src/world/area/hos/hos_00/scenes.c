@@ -251,7 +251,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
         Call(GetNpcPos, NPC_Twink, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_Twink, LVar0, LVar1, LVar2, 15 * DT)
     EndLoop
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcJumpscale, NPC_PARTNER, 0)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Add(LVar0, 25)
@@ -352,7 +352,7 @@ EvtScript N(EVS_Scene_MeetingTwink) = {
             Wait(1)
         EndLoop
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SpeakToPlayer, NPC_Twink, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_HOS_002F)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_HOS_0030)
@@ -550,7 +550,7 @@ EvtScript N(EVS_Scene_TwinkDeparts) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_HOS_0037)
     Call(EnablePartnerAI)
     Call(SetPlayerAnimation, ANIM_Mario1_NodYes)

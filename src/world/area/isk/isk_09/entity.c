@@ -36,7 +36,7 @@ EvtScript N(EVS_SetupGiantChest_SuperHammer) = {
         Call(PartnerIsFlying, LVar0)
         IfEq(LVar0, false)
             Thread
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(NpcFlyTo, NPC_PARTNER, -222, -347, -531, 20, 0, EASING_LINEAR)
                 Call(InterpNpcYaw, NPC_PARTNER, 70, 0)
                 Loop(0)

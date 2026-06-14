@@ -98,7 +98,7 @@ EvtScript N(EVS_ExitDoor_kpa_63_0) = {
 
 EvtScript N(EVS_EnterFromAirshipDock) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -30, 21, 590)
     Call(SetNpcPos, NPC_PARTNER, -30, 21, 590)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)

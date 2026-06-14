@@ -1,7 +1,7 @@
 EvtScript N(EVS_NpcInteract_Goomama) = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)
-        Call(DisablePartnerAI, 1)
+        Call(DisablePartnerAI, true)
         IfEq(GF_MAC04_HeardGoombaFamilyArgument, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Goomama_Talk, ANIM_Goomama_Idle, 0, MSG_MAC_Housing_00B6)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_MAC_Housing_00B7)
@@ -27,7 +27,7 @@ EvtScript N(EVS_NpcInteract_Goomama) = {
 EvtScript N(EVS_NpcInteract_Goombaria) = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)
-        Call(DisablePartnerAI, 1)
+        Call(DisablePartnerAI, true)
         IfEq(AF_MAC_30, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_MAC_Housing_00C1)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_MAC_Housing_00C2)

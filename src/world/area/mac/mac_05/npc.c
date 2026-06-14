@@ -378,7 +378,7 @@ EvtScript N(EVS_Scene_FuzzipedeDefeated) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -120, 24, 375)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
@@ -580,7 +580,7 @@ EvtScript N(EVS_Scene_ArriveByWhale) = {
     Call(InterpPlayerYaw, 270, 0)
     Set(LVar0, 1)
     ExecGetTID(N(EVS_UpdateWhaleCamera), LVarA)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -659,7 +659,7 @@ EvtScript N(EVS_EjectPlayerAndPartner) = {
         Call(PlayerFaceNpc, NPC_Whale, false)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -678,7 +678,7 @@ EvtScript N(EVS_MovePlayerAndPartnerOffWhale) = {
     Call(PlayerMoveTo, -285, 485, 40)
     Call(PlayerMoveTo, -310, 372, 20)
     Call(PlayerFaceNpc, NPC_Whale, false)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(NpcMoveTo, NPC_PARTNER, -345, 372, 30)
@@ -992,7 +992,7 @@ EvtScript N(EVS_NpcInteract_Whale) = {
     Set(LVar0, 0)
     Exec(N(EVS_UpdateWhaleCamera))
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_tt9, COLLIDER_FLAGS_UPPER_MASK)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
@@ -1316,7 +1316,7 @@ EvtScript N(EVS_NpcInteract_JrTroopa_01) = {
 };
 
 EvtScript N(EVS_NpcDefeat_JrTroopa_01) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Set(GF_MAC01_Defeated_JrTroopa4, true)
     Call(SetPlayerPos, -340, -10, 380)
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
@@ -1822,7 +1822,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Return
     EndIf
     IfEq(GF_MAC05_SimonGaveLyrics, false)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0072)
         Call(SetNpcAnimation, NPC_SELF, ANIM_Musician_Poet_Write)
@@ -1855,7 +1855,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0077)
         EndIf
     Else
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
         IfEq(AF_MAC05_ToggleDialogue_Simon, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0078)

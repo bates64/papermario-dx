@@ -271,7 +271,7 @@ EvtScript N(EVS_OnHitTrapTrigger) = {
     EndLoop
     Wait(10)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Thread
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)

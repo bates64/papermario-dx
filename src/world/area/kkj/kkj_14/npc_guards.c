@@ -29,7 +29,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
     Call(SetMusic, 0, SONG_PEACH_CAUGHT, 0, VOL_LEVEL_FULL)
     Call(SetPlayerPos, -480, 30, -30)
     Call(SetPlayerAnimation, ANIM_Peach2_Carried)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -480, 30, -30)
     Call(SetNpcPos, NPC_Koopatrol_Guard_01, -492, 0, -30)
     Call(SetNpcPos, NPC_Koopatrol_Guard_02, -460, 0, -30)
@@ -160,7 +160,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0159)
         Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_ArmsCrossedTalk, ANIM_Peach2_ArmsCrossedIdle, 5, MSG_Peach_015A)
         IfLt(GB_KKJ_CaughtCount, 3)
-            IfEq(AF_KKJ_13, false)
+            IfEq(AF_KKJ14_CaughtUsingDoor, false)
                 Set(LVar0, MSG_Peach_015B)
             Else
                 Set(LVar0, MSG_Peach_015D)
@@ -173,7 +173,7 @@ EvtScript N(EVS_Scene_TossedBackInRoom) = {
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0176)
         Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_ArmsCrossedTalk, ANIM_Peach2_ArmsCrossedIdle, 5, MSG_Peach_0177)
         IfLt(GB_KKJ_CaughtCount, 3)
-            IfEq(AF_KKJ_13, false)
+            IfEq(AF_KKJ14_CaughtUsingDoor, false)
                 Set(LVar0, MSG_Peach_0178)
             Else
                 Set(LVar0, MSG_Peach_017A)

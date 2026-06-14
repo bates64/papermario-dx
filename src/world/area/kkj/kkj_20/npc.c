@@ -287,7 +287,7 @@ EvtScript N(EVS_Inspect_Dresser_Mario) = {
 EvtScript N(EVS_NpcIdle_Toad) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(SetNpcJumpscale, NPC_PARTNER, Float(0.5))
     Call(NpcJump0, NPC_PARTNER, -86, 40, -25, 15)
     Wait(10)

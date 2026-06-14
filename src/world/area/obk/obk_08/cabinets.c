@@ -56,7 +56,7 @@ EvtScript N(EVS_GetPartnerInUseAnims) = {
 
 EvtScript N(EVS_CrushPlayer) = {
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         ExecWait(N(EVS_GetPartnerInUseAnims))

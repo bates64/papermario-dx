@@ -64,7 +64,7 @@ EvtScript N(EVS_Scene_CrystalKingAppears) = {
     Wait(30 * DT)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
     Call(SetPlayerPos, 475, 100, 116)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(PartnerIsFlying, LVar4)
     IfEq(LVar4, false)
         Call(SetNpcPos, NPC_PARTNER, 452, 116, 120)
@@ -134,7 +134,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     EndThread
     Call(SetEncounterStatusFlags, ENCOUNTER_FLAG_THUMBS_UP, true)
     Call(SetPlayerPos, 475, 100, 116)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetNpcPos, NPC_CrystalKing_01, LVar0, LVar1, LVar2)
     Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)

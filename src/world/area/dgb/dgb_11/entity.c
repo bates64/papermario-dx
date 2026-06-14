@@ -37,13 +37,13 @@ EvtScript N(EVS_LaunchToCeiling) = {
 };
 
 EvtScript N(EVS_UseSpring) = {
-    IfEq(AF_DGB_03, true)
+    IfEq(AF_DGB11_SpringInUse, true)
         Return
     EndIf
-    Set(AF_DGB_03, true)
+    Set(AF_DGB11_SpringInUse, true)
     Call(DisablePlayerInput, true)
     Call(SetZoneEnabled, ZONE_o203, false)
-    IfEq(AF_DGB_02, false)
+    IfEq(AF_DGB11_FallingFromHole, false)
         IfEq(GF_DGB10_BoardedFloor3, false)
             Call(DisablePlayerPhysics, true)
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -78,7 +78,7 @@ EvtScript N(EVS_UseSpring) = {
             Call(SetZoneEnabled, ZONE_o203, true)
             Call(DisablePlayerPhysics, false)
             Call(DisablePlayerInput, false)
-            Set(AF_DGB_03, false)
+            Set(AF_DGB11_SpringInUse, false)
         Else
             Call(DisablePlayerPhysics, true)
             Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -92,7 +92,7 @@ EvtScript N(EVS_UseSpring) = {
             ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
             Call(SetPlayerJumpscale, Float(0.7))
             Call(PlayerJump, 375, 270, -250, 20)
-            Set(AF_DGB_03, false)
+            Set(AF_DGB11_SpringInUse, false)
         EndIf
     Else
         Call(SetPlayerActionState, ACTION_STATE_JUMP)
@@ -100,13 +100,13 @@ EvtScript N(EVS_UseSpring) = {
         Set(LVar3, 25)
         Call(SetPlayerJumpscale, Float(0.7))
         Call(PlayerJump, 375, 0, -175, 15)
-        Set(AF_DGB_02, false)
+        Set(AF_DGB11_FallingFromHole, false)
         KillThread(LVarA)
         Call(SetPlayerActionState, ACTION_STATE_IDLE)
         Wait(2)
         Call(SetZoneEnabled, ZONE_o203, true)
         Call(DisablePlayerInput, false)
-        Set(AF_DGB_03, false)
+        Set(AF_DGB11_SpringInUse, false)
     EndIf
     Return
     End

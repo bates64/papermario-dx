@@ -143,7 +143,7 @@ EvtScript N(EVS_Scene_MarioConfrontsBowser) = {
     Wait(10)
     Thread
 #if VERSION_JP
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
 #endif
         Call(PlayerMoveTo, 580, 0, 25)
     EndThread
@@ -244,7 +244,7 @@ EvtScript N(EVS_BowserFliesAway) = {
 
 EvtScript N(EVS_Scene_BowserDefeated) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(EnableGroup, MODEL_g153, false)
     Call(SetPlayerPos, 525, 0, 0)
 #if !VERSION_JP

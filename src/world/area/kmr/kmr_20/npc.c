@@ -148,7 +148,7 @@ EvtScript N(EVS_Scene_LuigiWaitingAround) = {
         Call(PlayerMoveTo, 556, -158, 30)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(15)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(NpcMoveTo, NPC_PARTNER, 554, -195, 28)

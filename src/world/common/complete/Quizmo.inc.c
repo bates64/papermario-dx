@@ -977,7 +977,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
     Call(N(Quizmo_HideEntities))
     Call(N(Quizmo_HideWorld))
     Exec(N(EVS_Quizmo_SetQuizCamera))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, CHUCK_QUIZMO_NPC_ID, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING | NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)

@@ -152,7 +152,7 @@ EvtScript N(EVS_EnterToybox) = {
 };
 
 EvtScript N(EVS_ExitToybox) = {
-    Set(AF_ExitingToybox, true)
+    Set(AF_MAC_ExitingToybox, true)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     ExecWait(N(EVS_UnshrinkPlayer))
@@ -195,7 +195,7 @@ EvtScript N(EVS_BounceOffSpring) = {
     ExecGetTID(N(EVS_FocusCameraOnPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
     Call(PlayerJump, -430, 20, -45, 15)
-    Set(AF_ExitingToybox, false)
+    Set(AF_MAC_ExitingToybox, false)
     KillThread(LVarA)
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
@@ -205,7 +205,7 @@ EvtScript N(EVS_BounceOffSpring) = {
 };
 
 EvtScript N(EVS_UseSpring_Toybox) = {
-    IfEq(AF_ExitingToybox, false)
+    IfEq(AF_MAC_ExitingToybox, false)
         Exec(N(EVS_EnterToybox))
     Else
         Exec(N(EVS_BounceOffSpring))

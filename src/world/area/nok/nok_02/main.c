@@ -101,11 +101,11 @@ EvtScript N(EVS_Main) = {
         Wait(1)
         Return
     EndIf
-    Set(AF_NOK_0F, false)
-    Set(AF_NOK_10, false)
-    Set(AF_NOK_12, false)
+    Set(AF_NOK02_DeclinedBobombInvite, false)
+    Set(AF_NOK02_InsideKoopersHouse, false)
+    Set(AF_NOK02_PauseKooperFightSounds, false)
     Set(GF_NOK02_Bush1_KoopaLeaf, false)
-    Set(AF_NOK_13, false)
+    Set(AF_NOK02_FuzzyTreeHit, false)
     IfGe(GB_StoryProgress, STORY_CH1_KOOPER_JOINED_PARTY)
         Set(GF_NOK02_RecoveredShellA, true)
         Set(GF_NOK02_RecoveredShellB, true)

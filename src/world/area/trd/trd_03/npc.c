@@ -19,7 +19,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
 EvtScript N(EVS_Scene_GreenKoopaBros) = {
     Call(DisablePlayerInput, true)
     Exec(N(EVS_StartKoopaBrosTheme))
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -720, 0, 75)
     Call(SetPlayerPos, -700, 0, 80)
     Call(SetNpcAnimation, NPC_KoopaBros, ANIM_KoopaBros_Green_IdleCrouch)

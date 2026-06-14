@@ -25,7 +25,7 @@ EvtScript N(EVS_Scene_Arrival) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Set(MV_Starship_Yaw, 0)
     Set(MV_Starship_PosX, 0)
@@ -73,7 +73,7 @@ Vec3f N(FlightPath_Departure)[] = {
 EvtScript N(EVS_Scene_Departure) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(InterpPlayerYaw, 180, 1)
     Call(SetNpcYaw, NPC_PARTNER, 270)

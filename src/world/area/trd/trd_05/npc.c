@@ -21,7 +21,7 @@ NpcSettings N(NpcSettings_KoopaBros) = {
 EvtScript N(EVS_KoopaBros_SetTrap) = {
     Exec(N(EVS_StartKoopaBrosTheme))
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -350, 0, 0)
     Call(SetNpcPos, NPC_PARTNER, -350, 0, 0)
     Call(UseSettingsFrom, CAM_DEFAULT, -70, 240, -10)

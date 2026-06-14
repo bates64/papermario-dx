@@ -9,11 +9,11 @@
 #include "world/common/enemy/SpearGuy_Wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
@@ -52,7 +52,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(AdjustCam, CAM_DEFAULT, Float(4.0), -23, 350, Float(17.0), Float(-7.0))
     Call(NpcFacePlayer, NPC_SELF, 0)
     Call(GetCurrentPartnerID, LVar0)
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Wait(15)
     IfEq(LVar0, PARTNER_SUSHIE)
         Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_SadTalk, ANIM_YoshiKid_Red_SadIdle, 0, MSG_CH5_00B0)

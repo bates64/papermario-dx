@@ -14,11 +14,11 @@ NpcSettings N(NpcSettings_PutridPiranha) = {
 #include "world/common/enemy/SpearGuy_Wander.inc.c"
 
 EvtScript N(EVS_YoshiKid_CryForHelp) = {
-    Set(AF_JAN_02, false)
+    Set(AF_JAN_SavedCurrentYoshiKid, false)
     Loop(0)
         Call(PlaySoundAtNpc, NPC_YoshiKid, SOUND_YOSHI_KID_CRY, SOUND_SPACE_DEFAULT)
         Wait(20)
-        IfEq(AF_JAN_02, true)
+        IfEq(AF_JAN_SavedCurrentYoshiKid, true)
             BreakLoop
         EndIf
     EndLoop
@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(2.5))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(NpcMoveTo, NPC_PARTNER, -55, 5, 30)
@@ -73,7 +73,7 @@ EvtScript N(EVS_NpcIdle_YoshiKid) = {
     EndThread
     Call(PlayerMoveTo, -20, 10, 25)
     Wait(15)
-    Set(AF_JAN_02, true)
+    Set(AF_JAN_SavedCurrentYoshiKid, true)
     Thread
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_EMOTE_IDEA, SOUND_SPACE_DEFAULT)
         Call(ShowEmote, NPC_SELF, EMOTE_EXCLAMATION, 0, 30, EMOTER_NPC, 0, 0, 0, 0)

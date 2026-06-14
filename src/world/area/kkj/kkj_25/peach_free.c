@@ -54,7 +54,7 @@ EvtScript N(EVS_SpawnBowserStarEnergyWaves) = {
 
 EvtScript N(EVS_Scene_PeachBreaksFree) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, ANIM_Mario1_BeforeJump)
     Call(SetPlayerPos, 100, 0, 0)
     Call(PartnerIsFlying, LVar0)

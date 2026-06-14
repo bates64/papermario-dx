@@ -35,7 +35,7 @@ EvtScript N(EVS_EnterTrain) = {
     Call(ParentColliderToModel, COLLIDER_pp1, MODEL_o1)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_UpdateCameraDuringTrainTransition))
     Call(GetEntryID, LVar0)
     Switch(LVar0)

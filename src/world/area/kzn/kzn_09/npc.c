@@ -54,7 +54,7 @@ EvtScript N(EVS_Scene_KoloradoFallsDown) = {
         EndLoop
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(30 * DT)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Call(SetNpcSpeed, NPC_PARTNER, Float(2.0))

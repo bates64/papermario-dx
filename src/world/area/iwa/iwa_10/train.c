@@ -341,7 +341,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
 EvtScript N(EVS_ArriveFromToadTown) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 90, 0)
@@ -437,7 +437,7 @@ EvtScript N(EVS_ArriveFromToadTown) = {
 EvtScript N(EVS_DepartForToadTown) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Set(MV_TrainMoveDist, -90)
     Set(MV_TrainMoveSpeed, 0)

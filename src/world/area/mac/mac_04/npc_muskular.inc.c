@@ -30,7 +30,7 @@ EvtScript N(EVS_NpcIdle_Muskular) = {
 };
 
 EvtScript N(EVS_Scene_RescuedMuskular) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(SetNpcPos, NPC_Muskular, -520, 40, 270)
     Call(PlayerFaceNpc, NPC_Muskular, false)

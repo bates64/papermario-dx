@@ -139,7 +139,7 @@ EvtScript N(EVS_NpcDefeat_Eldstar) = {
 };
 
 EvtScript N(D_80241DA4_99BA14) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(SetNpcPos, NPC_Eldstar, -567, 26, 236)
     Call(PlayerFaceNpc, NPC_Eldstar, false)

@@ -33,7 +33,7 @@ EvtScript N(EVS_ChasePartner) = {
 };
 
 EvtScript N(EVS_FlyPartnerAround) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_FLYING, true)
     Call(EnableNpcBlur, NPC_PARTNER, true)

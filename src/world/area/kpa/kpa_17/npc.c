@@ -70,7 +70,7 @@ EvtScript N(EVS_BlastWall) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Wait(80 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBombette_Talk, ANIM_WorldBombette_Idle, 0, MSG_CH8_0016)
     Call(EnablePartnerAI)

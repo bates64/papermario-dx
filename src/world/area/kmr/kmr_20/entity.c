@@ -42,15 +42,17 @@ EvtScript N(EVS_UseSpring_Basement) = {
     Wait(1)
     ExecGetTID(N(EVS_TetherCamToPlayer), LVarA)
     Call(SetPlayerJumpscale, Float(0.7))
-    IfEq(AF_KMR_0B, false)
+    IfEq(AF_KMR20_SpringCanLaunch, false)
+        // bounce off the spring when falling from above
         Call(PlayerJump, -110, -80, -35, 20)
-        Set(AF_KMR_0B, true)
+        Set(AF_KMR20_SpringCanLaunch, true)
     Else
+        // launch out of the basement
         Call(EnableCameraFollowPlayerY)
         Exec(N(EVS_SecretPanel_FlipBack))
         Call(PlayerJump, -150, 30, -90, 30)
         Call(InterpPlayerYaw, 180, 0)
-        Set(AF_KMR_0B, false)
+        Set(AF_KMR20_SpringCanLaunch, false)
     EndIf
     Wait(30)
     KillThread(LVarA)

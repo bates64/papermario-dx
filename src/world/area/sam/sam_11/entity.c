@@ -262,7 +262,7 @@ EvtScript N(EVS_TouchFloor_LeftRoof) = {
         Call(InterruptUsePartner)
         Wait(20)
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Wait(1)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerPos, -210, LVar1, -380)

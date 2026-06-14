@@ -19,7 +19,7 @@ EvtScript N(EVS_WaitForCloseCall) = {
         Wait(1)
     EndLoop
     Set(GF_DGB15_CloseCallWithTubba, true)
-    Set(AF_DGB_01, true)
+    Set(AF_DGB_CloseCallWithTubba, true)
     Return
     End
 };

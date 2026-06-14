@@ -54,7 +54,7 @@ EvtScript N(EVS_Wisterwood_Introduction) = {
     Call(SetPlayerJumpscale, Float(1.5))
     Call(PlayerJump1, LVar0, LVar1, LVar2, 12 * DT)
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterpPlayerYaw, 270, 0)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     Wait(15 * DT)
@@ -438,7 +438,7 @@ EvtScript N(EVS_NpcIdle_Klevar) = {
 };
 
 EvtScript N(EVS_Scene_RescuedKlevar) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)
@@ -594,7 +594,7 @@ EvtScript N(EVS_NpcInteract_Lakilulu) = {
         IfEq(LVar0, PARTNER_LAKILESTER)
             Call(SpeakToPlayer, NPC_Lakilulu, ANIM_Lakilulu_Talk, ANIM_Lakilulu_Idle, 0, MSG_CH6_0032)
             Wait(10)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldLakilester_Shout, ANIM_WorldLakilester_IdleTough, 5, MSG_CH6_0033)
             Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldLakilester_Idle)
             Call(EndSpeech, NPC_PARTNER, ANIM_WorldLakilester_Talk, ANIM_WorldLakilester_Idle, 5)

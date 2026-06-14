@@ -397,7 +397,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
         EndIf
     Call(DisablePlayerInput, true)
     Wait(25)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INVISIBLE | NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(UseSettingsFrom, CAM_DEFAULT, 386, 0, 93)
     Call(SetPanTarget, CAM_DEFAULT, 386, 0, 93)
@@ -522,7 +522,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
                 IfEq(MV_RevealedFakeBombette3, 1)
                     IfEq(MV_RevealedFakeBombette4, 1)
                         Call(DisablePlayerInput, true)
-                        Call(DisablePartnerAI, 0)
+                        Call(DisablePartnerAI, false)
                         Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
                         Call(SetNpcPos, NPC_Bombette_01, NPC_DISPOSE_LOCATION)
@@ -640,7 +640,7 @@ EvtScript N(EVS_ManageImpostersScene) = {
 
 EvtScript N(EVS_NpcDefeat_Duplighost_05) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetNpcPos, NPC_Bombette_01, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     Call(SetNpcPos, NPC_Bombette_01, NPC_DISPOSE_LOCATION)

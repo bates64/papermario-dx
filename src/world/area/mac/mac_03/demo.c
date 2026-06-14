@@ -64,7 +64,7 @@ EvtScript N(EVS_DemoDepartForMtRugged) = {
     Call(EnableWorldStatusBar, false)
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Set(MV_TrainMoveDist, 0)
     Set(MV_TrainMoveSpeed, 0)

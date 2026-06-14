@@ -142,7 +142,7 @@ EvtScript N(EVS_ExitWalk_mim_12_1) = EVT_EXIT_WALK(60, arn_07_ENTRY_2, "mim_12",
 
 EvtScript N(EVS_Scene_TubbaReunion) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -28, 0, -333)
     Call(SetNpcPos, NPC_PARTNER, -28, 0, -333)
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))

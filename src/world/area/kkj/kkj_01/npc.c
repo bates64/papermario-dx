@@ -78,7 +78,7 @@ EvtScript N(EVS_NpcIdle_Toad_01) = {
 };
 
 EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
-    IfEq(AF_KKJ_02, true)
+    IfEq(AF_KKJ01_GuardAskedAboutBedroom, true)
         Return
     EndIf
     Call(GetEntryID, LVar0)
@@ -88,7 +88,7 @@ EvtScript N(EVS_NpcIdle_ToadGuard_02) = {
     Call(WaitForPlayerInputEnabled)
     Call(DisablePlayerInput, true)
     Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0042)
-    Set(AF_KKJ_02, true)
+    Set(AF_KKJ01_GuardAskedAboutBedroom, true)
     Call(DisablePlayerInput, false)
     Return
     End
@@ -157,7 +157,7 @@ EvtScript N(EVS_NpcInteract_ToadGuard_02) = {
             Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
             Call(SetNpcAnimation, NPC_ToadGuard_02, ANIM_ToadGuard_Yellow_Idle)
             Call(InterpNpcYaw, NPC_SELF, 180, 5)
-            Set(AF_KKJ_01, true)
+            Set(AF_KKJ01_MarioLetIntoBedroom, true)
             BindTrigger(Ref(N(EVS_ExitDoors_kkj_14_0)), TRIGGER_WALL_PRESS_A, COLLIDER_ttn2, 1, 0)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_ToadGuard_Yellow_Talk, ANIM_ToadGuard_Yellow_Idle, 16, MSG_Intro_0041)
@@ -247,7 +247,7 @@ EvtScript N(EVS_NpcInit_ToadGuard_01) = {
 };
 
 EvtScript N(EVS_NpcInit_ToadGuard_02) = {
-    IfEq(AF_KKJ_01, true)
+    IfEq(AF_KKJ01_MarioLetIntoBedroom, true)
         Call(SetNpcPos, NPC_SELF, -50, 0, -245)
         Call(SetSelfVar, 0, 5)
     Else

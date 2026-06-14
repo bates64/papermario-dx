@@ -49,7 +49,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(SetNpcSpeed, NPC_PARTNER, Float(2.0 / DT))
             Call(NpcMoveTo, LVar0, LVar1, LVar2, 0)
             Wait(5 * DT)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A9)
             Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Idle)
             Call(EnablePartnerAI)
@@ -57,7 +57,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(DisablePlayerInput, false)
             Set(GB_StoryProgress, STORY_CH0_LOOKING_FOR_HAMMER)
         CaseEq(STORY_CH0_FOUND_HAMMER)
-            IfEq(AB_KMR_0, 0)
+            IfEq(AB_KMR04_JrTroopaAmbushState, 0)
                 Label(10)
                 Wait(1)
                 Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -75,7 +75,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                 EndIf
                 Call(DisablePlayerInput, true)
                 Call(N(AwaitPartnerGrounded))
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION, true)
                 Call(SetNpcAnimation, NPC_PARTNER, ANIM_Goompa_Walk)
                 Call(SetNpcSpeed, NPC_PARTNER, Float(3.0))
@@ -129,7 +129,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
                         Wait(3)
                     EndLoop
                 EndThread
-                Set(AB_KMR_0, 1)
+                Set(AB_KMR04_JrTroopaAmbushState, 1)
             EndIf
     EndSwitch
     Wait(1)
@@ -150,7 +150,7 @@ EvtScript N(EVS_NpcDefeat_Goompa) = {
 
 EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Label(0)
-        IfEq(AB_KMR_0, 1)
+        IfEq(AB_KMR04_JrTroopaAmbushState, 1)
             Exec(N(EVS_SetJrTroopaMusic))
             Thread
                 Wait(20 * DT)
@@ -225,7 +225,7 @@ EvtScript N(EVS_NpcDefeat_JrTroopa) = {
 #endif
             EndThread
             Exec(N(EVS_SetNormalMusic))
-            Set(AB_KMR_0, 0)
+            Set(AB_KMR04_JrTroopaAmbushState, 0)
             Set(GB_StoryProgress, STORY_CH0_DEFEATED_JR_TROOPA)
             Call(DisablePlayerInput, false)
     EndSwitch

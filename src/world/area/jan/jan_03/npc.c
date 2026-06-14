@@ -634,9 +634,9 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             ExecWait(N(EVS_LetterPrompt_Kolorado))
             ExecWait(N(EVS_LetterReward_Kolorado))
         CaseLt(STORY_CH5_ZIP_LINE_READY)
-            IfEq(AF_JAN_06, false)
+            IfEq(AF_JAN03_KoloradoLocalsHint, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0014)
-                Set(AF_JAN_06, true)
+                Set(AF_JAN03_KoloradoLocalsHint, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0015)
             EndIf
@@ -712,9 +712,9 @@ EvtScript N(EVS_NpcInit_Kolorado) = {
 };
 
 EvtScript N(EVS_NpcInteract_Sushie) = {
-    IfEq(AF_JAN_07, false)
+    IfEq(AF_JAN03_MetSushieDialogue, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0058)
-        Set(AF_JAN_07, true)
+        Set(AF_JAN03_MetSushieDialogue, true)
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_WorldSushie_Talk, ANIM_WorldSushie_Idle, 0, MSG_CH5_0059)
     EndIf

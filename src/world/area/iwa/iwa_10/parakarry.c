@@ -244,9 +244,9 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             EndSwitch
     EndSwitch
     IfEq(LFlag0, true)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(ContinueSpeech, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_001D)
-        Call(N(ChangeNpcToPartner), 4, 4)
+        Call(N(ChangeNpcToPartner), NPC_Parakarry, PARTNER_PARAKARRY)
         Set(GB_StoryProgress, STORY_CH2_PARAKARRY_JOINED_PARTY)
         Call(N(LoadPartyImage))
         Exec(N(EVS_PushSong))

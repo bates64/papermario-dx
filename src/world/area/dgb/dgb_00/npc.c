@@ -219,7 +219,7 @@ EvtScript N(EVS_TubbaTaunting) = {
 
 EvtScript N(EVS_Scene_BoosApproachManor) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 350, 10, -150)
     Call(InterpPlayerYaw, 270, 1)
     Call(SetNpcPos, NPC_PARTNER, 350, 10, -150)
@@ -302,7 +302,7 @@ EvtScript N(EVS_Scene_EscapeFromTubba) = {
     Call(SetPlayerAnimation, ANIM_Mario1_NodYes)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Talk, ANIM_Boo_Tan_Idle, 0, MSG_CH3_00E1)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -375,7 +375,7 @@ EvtScript N(EVS_NpcInteract_Boo_01) = {
     Set(MV_PreventTaunting, true)
     Call(SpeakToPlayer, NPC_Boo_01, ANIM_Boo_Tan_Flail, ANIM_Boo_Tan_Flail, 5, MSG_CH3_00E9)
     Call(SetNpcAnimation, NPC_Boo_01, ANIM_Boo_Tan_Flail)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)
@@ -506,7 +506,7 @@ NpcData N(NpcData_Boo_06) = {
 EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 320, 10, -160)
     Call(PlaySound, SOUND_LRAW_SENTINEL_ALARM)
     Thread
@@ -538,7 +538,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
         Call(PlayerJump1, 175, 50, -35, 40)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(1)
         Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_RUN)
@@ -591,7 +591,7 @@ EvtScript N(EVS_Scene_ThrownOutBySentinel) = {
         CaseEq(PARTNER_BOMBETTE)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, true)
     EndSwitch
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

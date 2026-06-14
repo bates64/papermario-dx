@@ -124,7 +124,7 @@ EvtScript N(EVS_Scene_BowserTrapsMario) = {
                 Add(LVar5, -25)
             EndIf
             Add(LVar3, -10)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcJumpscale, NPC_PARTNER, Float(0.8))
             Call(NpcJump0, NPC_PARTNER, LVar3, LVar1, LVar5, 12)
             Call(EnablePartnerAI)

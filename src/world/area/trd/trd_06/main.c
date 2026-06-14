@@ -26,7 +26,7 @@ EvtScript N(EVS_EnterMap) = {
         CaseLe(trd_06_ENTRY_3)
             Call(DisablePlayerInput, true)
             Call(DisablePlayerPhysics, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
             Call(SetNpcPos, NPC_PARTNER, NPC_DISPOSE_LOCATION)
             Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_INACTIVE, true)
@@ -79,7 +79,7 @@ EvtScript N(EVS_BombWall_Cell) = {
             EndIf
         EndIf
     EndThread
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, ANIM_WorldBombette_Walk)
     Call(SetNpcSpeed, NPC_PARTNER, Float(3.5 / DT))
 #if !VERSION_PAL

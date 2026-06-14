@@ -1,7 +1,11 @@
 #include "kmr_03.h"
 #include "sprite/player.h"
 
+
 #include "world/common/util/ChangeNpcToPartner.inc.c"
+#include "world/common/util/CheckPositionRelativeToPlane.inc.c"
+
+#include "world/common/npc/GoombaFamily.inc.c"
 
 API_CALLABLE(N(func_802401B0_8C8140)) {
     Npc* npc = get_npc_unsafe(NPC_Goompa);
@@ -10,39 +14,30 @@ API_CALLABLE(N(func_802401B0_8C8140)) {
     return ApiStatus_DONE2;
 }
 
-#include "world/common/util/CheckPositionRelativeToPlane.inc.c"
-
-NpcSettings N(NpcSettings_Goompa) = {
-    .height = 22,
-    .radius = 24,
-    .level = ACTOR_LEVEL_NONE,
-    .actionFlags = AI_ACTION_LOOK_AROUND_DURING_LOITER,
-};
-
 EvtScript N(EVS_NpcAux_Goompa) = {
     Label(1)
         IfEq(AF_KMR_08, true)
             Label(100)
-            Call(AwaitPlayerLeave, 294, 123, 170)
-            Call(EnableNpcAI, NPC_Goompa, false)
-            Call(DisablePlayerInput, true)
-            Call(SetNpcSpeed, NPC_Goompa, Float(4.0))
-            Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Run)
-            Call(N(func_802401B0_8C8140))
-            Call(GetAngleToPlayer, NPC_Goompa, LVar2)
-            Loop(LVar1)
-                Call(GetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-                Call(AddVectorPolar, LVar7, LVar9, Float(4.0), LVar2)
-                Call(SetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-                Wait(1)
-            EndLoop
-            Call(PlayerFaceNpc, NPC_Goompa, 3)
-            Call(SetPlayerSpeed, Float(3.0))
-            Call(PlayerMoveTo, 243, 243, 0)
-            Call(SetNpcVar, NPC_Goompa, 0, 1)
-            Call(EnableNpcAI, NPC_Goompa, true)
-            Call(DisablePlayerInput, false)
-            Goto(100)
+                Call(AwaitPlayerLeave, 294, 123, 170)
+                Call(EnableNpcAI, NPC_Goompa, false)
+                Call(DisablePlayerInput, true)
+                Call(SetNpcSpeed, NPC_Goompa, Float(4.0))
+                Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Run)
+                Call(N(func_802401B0_8C8140))
+                Call(GetAngleToPlayer, NPC_Goompa, LVar2)
+                Loop(LVar1)
+                    Call(GetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
+                    Call(AddVectorPolar, LVar7, LVar9, Float(4.0), LVar2)
+                    Call(SetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
+                    Wait(1)
+                EndLoop
+                Call(PlayerFaceNpc, NPC_Goompa, 3)
+                Call(SetPlayerSpeed, Float(3.0))
+                Call(PlayerMoveTo, 243, 243, 0)
+                Call(SetNpcVar, NPC_Goompa, 0, 1)
+                Call(EnableNpcAI, NPC_Goompa, true)
+                Call(DisablePlayerInput, false)
+                Goto(100)
         EndIf
         Wait(1)
     Goto(1)
@@ -90,7 +85,7 @@ EvtScript N(EVS_NpcAI_Goompa) = {
             Call(SetPlayerAnimation, ANIM_MarioW2_SpeakUp)
             Wait(30 * DT)
             Call(SpeakToPlayer, NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle, 0, MSG_CH0_00A8)
-            Call(N(ChangeNpcToPartner), 0, 5)
+            Call(N(ChangeNpcToPartner), NPC_Goompa, PARTNER_GOOMPA)
             Set(GB_StoryProgress, STORY_CH0_GOOMPA_JOINED_PARTY)
             Call(UseSettingsFrom, CAM_DEFAULT, -220, 20, -72)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
@@ -166,27 +161,10 @@ NpcData N(NpcData_GoombaFamily) = {
     .pos = { -50.0f, 0.0f, 80.0f },
     .yaw = 45,
     .init = &N(EVS_NpcInit_Goompa),
-    .settings = &N(NpcSettings_Goompa),
+    .settings = &N(NpcSettings_GoombaFamily),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
     .drops = NO_DROPS,
-    .animations = {
-        .idle   = ANIM_Goompa_Idle,
-        .walk   = ANIM_Goompa_Walk,
-        .run    = ANIM_Goompa_Run,
-        .chase  = ANIM_Goompa_Run,
-        .anim_4 = ANIM_Goompa_Idle,
-        .anim_5 = ANIM_Goompa_Idle,
-        .death  = ANIM_Goompa_Still,
-        .hit    = ANIM_Goompa_Still,
-        .anim_8 = ANIM_Goompa_Run,
-        .anim_9 = ANIM_Goompa_Run,
-        .anim_A = ANIM_Goompa_Run,
-        .anim_B = ANIM_Goompa_Run,
-        .anim_C = ANIM_Goompa_Run,
-        .anim_D = ANIM_Goompa_Run,
-        .anim_E = ANIM_Goompa_Run,
-        .anim_F = ANIM_Goompa_Run,
-    },
+    .animations = GOOMPA_ANIMS,
     .tattle = MSG_NpcTattle_Goompa,
 };
 

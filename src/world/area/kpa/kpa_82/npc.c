@@ -1059,7 +1059,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
     Else
         Call(ContinueSpeech, NPC_SELF, ANIM_ShyGuy_Black_Anim01, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH8_0033)
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Thread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
         Call(DisablePlayerPhysics, true)
@@ -1176,7 +1176,7 @@ EvtScript N(EVS_NpcIdle_Door) = {
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o166, COLLIDER_FLAGS_UPPER_MASK)
     EndThread
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.5 * DT))
         Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
         Call(NpcMoveTo, NPC_PARTNER, 80, 145, 0)

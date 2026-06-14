@@ -105,7 +105,7 @@ EvtScript N(EVS_UseRotatingWall_FirstTime) = {
     Call(SetPlayerAnimation, ANIM_Peach3_AfterPressButton)
     Wait(10 * DT)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, ANIM_Twink_Cringe)
         Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
         Call(NpcJump0, NPC_PARTNER, LVar0, LVar1, LVar2, 10)

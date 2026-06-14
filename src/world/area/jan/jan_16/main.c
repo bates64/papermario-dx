@@ -61,7 +61,7 @@ EvtScript N(EVS_EnterFalling) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, 35, 100, 330)
     Call(SetPanTarget, CAM_DEFAULT, 35, 100, 330)

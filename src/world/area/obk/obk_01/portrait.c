@@ -98,7 +98,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
             EndSwitch
         CaseDefault
             Call(DisablePlayerPhysics, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetPlayerAnimation, SPRITE_ID_BACK_FACING | ANIM_Mario1_BeforeJump)
             Wait(3)
             Call(SetPlayerAnimation, SPRITE_ID_BACK_FACING | ANIM_Mario1_Jump)
@@ -141,7 +141,7 @@ EvtScript N(EVS_Interact_LowerPortrait) = {
 EvtScript N(EVS_Interact_UpperPortrait) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerAnimation, SPRITE_ID_BACK_FACING | ANIM_Mario1_BeforeJump)
     Wait(3)
     Call(SetPlayerAnimation, SPRITE_ID_BACK_FACING | ANIM_Mario1_Jump)

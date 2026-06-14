@@ -16,7 +16,7 @@ EvtScript N(EVS_ExitDoor_kkj_10_0) = EVT_EXIT_DOUBLE_DOOR_SET_SOUNDS(osr_02_ENTR
 
 EvtScript N(EVS_KeepPeachFromBowsersCastle) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0180)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)

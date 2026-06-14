@@ -36,7 +36,7 @@ EvtScript N(EVS_EnterMap) = {
                     Call(SetPlayerPos, -630, 0, 0)
                     Call(GetPartnerInUse, LVar0)
                     IfEq(LVar0, PARTNER_NONE)
-                        Call(DisablePartnerAI, 0)
+                        Call(DisablePartnerAI, false)
                         Call(SetNpcPos, NPC_PARTNER, -660, 0, 0)
                         Wait(1)
                         Call(EnablePartnerAI)

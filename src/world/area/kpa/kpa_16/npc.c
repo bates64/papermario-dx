@@ -97,7 +97,7 @@ EvtScript N(EVS_Scene_LavaShutoff) = {
         EndIf
     EndLoop
     Wait(60 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

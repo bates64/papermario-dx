@@ -17,7 +17,7 @@ EvtScript N(EVS_ExitStarBeam) = {
         EndLoop
     EndIf
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     ExecWait(N(EVS_DescendStarBeam))
     Call(GotoMap, Ref("hos_01"), hos_01_ENTRY_1)
     Wait(100)
@@ -40,7 +40,7 @@ EvtScript N(EVS_BindExitTriggers) = {
 EvtScript N(EVS_EnterStarBeam) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(UseSettingsFrom, CAM_DEFAULT, -1105, -171, 225)
     Call(SetPanTarget, CAM_DEFAULT, -1105, -171, 225)

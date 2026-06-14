@@ -74,7 +74,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(N(SetPeachDepressed))
     Call(SetPlayerAnimation, ANIM_Peach2_SadStill)
     Call(InterpPlayerYaw, 270, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 520, 60, -35)
     Call(SetNpcPos, NPC_Bowser, -450, 0, -20)
     Call(SetNpcPos, NPC_Kammy, -510, 0, -20)
@@ -207,7 +207,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Wait(10)
     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
     Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 5, MSG_Peach_0021)
-    Set(AF_KKJ_03, false)
+    Set(AF_KKJ14_TwinkFlightSync, false)
     ExecGetTID(N(EVS_TwinkTappingOnGlassDoor), LVarA)
     Thread
         Call(UseSettingsFrom, CAM_DEFAULT, 413, 0, -66)
@@ -222,7 +222,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(SetPlayerSpeed, Float(3.0 / DT))
     Call(PlayerMoveTo, 179, -4, 0)
     Call(PlayerMoveTo, 439, -16, 0)
-    Set(AF_KKJ_03, true)
+    Set(AF_KKJ14_TwinkFlightSync, true)
     KillThread(LVarA)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     Wait(15 * DT)
@@ -251,7 +251,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
                 BreakLoop
             EndIf
         EndLoop
-        Set(AF_KKJ_03, false)
+        Set(AF_KKJ14_TwinkFlightSync, false)
     EndThread
     Thread
         Loop(0)
@@ -288,7 +288,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Loop(0)
         Wait(1)
-        IfEq(AF_KKJ_03, false)
+        IfEq(AF_KKJ14_TwinkFlightSync, false)
             BreakLoop
         EndIf
     EndLoop
@@ -423,7 +423,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
         Wait(10 * DT)
         Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
         Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 5, MSG_Peach_002E)
-        Set(AF_KKJ_03, true)
+        Set(AF_KKJ14_TwinkFlightSync, true)
     EndThread
     Thread
         Loop(0)
@@ -448,7 +448,7 @@ EvtScript N(EVS_Scene_Chapter0) = {
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     Loop(0)
         Wait(1)
-        IfEq(AF_KKJ_03, true)
+        IfEq(AF_KKJ14_TwinkFlightSync, true)
             BreakLoop
         EndIf
     EndLoop

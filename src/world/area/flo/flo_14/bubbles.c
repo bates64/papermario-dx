@@ -115,7 +115,7 @@ EvtScript N(EVS_RideBigBubble) = {
         Wait(20)
     EndIf
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
     Call(GetModelCenter, MODEL_o167)

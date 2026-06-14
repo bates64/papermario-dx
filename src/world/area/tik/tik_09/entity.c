@@ -57,9 +57,9 @@ EvtScript N(EVS_PlayRisingPipeSound) = {
 EvtScript N(EVS_MakeEntities) = {
     IfEq(GF_TIK09_WarpPipe, false)
         Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK_05))
+        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK09_Switch_WarpPipe))
         Set(MV_EntityID_Switch, LVar0)
-        BindTrigger(Ref(N(EVS_PlayRisingPipeSound)), TRIGGER_AREA_FLAG_SET, AF_TIK_05, 1, 0)
+        BindTrigger(Ref(N(EVS_PlayRisingPipeSound)), TRIGGER_AREA_FLAG_SET, AF_TIK09_Switch_WarpPipe, 1, 0)
         IfEq(GF_TIK09_Defeated_Ambush, true)
             Call(SetEntityPosition, MV_EntityID_Switch, -10, -10, 10)
         EndIf

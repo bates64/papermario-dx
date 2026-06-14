@@ -244,7 +244,7 @@ EvtScript N(EVS_Exit_Beanstalk) = {
         Call(DisablePlayerInput, true)
         Call(InterruptUsePartner)
         Wait(15)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Set(AF_FLO_RidingBeanstalk, true)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o261, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o351, COLLIDER_FLAGS_UPPER_MASK)

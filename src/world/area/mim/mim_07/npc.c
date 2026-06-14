@@ -114,7 +114,7 @@ EvtScript N(EVS_NpcIdle_JrTroopa) = {
     Call(NpcMoveTo, NPC_SELF, LVar4, LVar5, 30)
     Call(SetNpcAnimation, NPC_SELF, ANIM_JrTroopa_Idle)
     Call(SpeakToPlayer, NPC_SELF, ANIM_JrTroopa_Talk, ANIM_JrTroopa_Idle, 0, MSG_CH3_0019)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

@@ -68,9 +68,9 @@ EvtScript N(EVS_MakeEntities) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o63, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(GF_TIK01_WarpPipes, false)
         Call(MakeEntity, Ref(Entity_BlueSwitch), NPC_DISPOSE_LOCATION, 0, MAKE_ENTITY_END)
-        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK_03))
+        Call(AssignSwitchFlag, EVT_INDEX_OF_AREA_FLAG(AF_TIK01_Switch_WarpPipe))
         Set(MV_EntityID_Switch, LVar0)
-        BindTrigger(Ref(N(EVS_OnSwitchActivate)), TRIGGER_AREA_FLAG_SET, AF_TIK_03, 1, 0)
+        BindTrigger(Ref(N(EVS_OnSwitchActivate)), TRIGGER_AREA_FLAG_SET, AF_TIK01_Switch_WarpPipe, 1, 0)
         IfEq(GF_TIK01_Defeated_Blooper, true)
             Call(SetEntityPosition, MV_EntityID_Switch, 125, -10, 25)
         EndIf

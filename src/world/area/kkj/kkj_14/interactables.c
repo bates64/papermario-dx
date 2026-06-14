@@ -12,7 +12,7 @@ EvtScript N(EVS_Inspect_Fireplace) = {
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
             IfEq(GF_KKJ14_RevealedButton, false)
                 IfEq(AF_KKJ14_InspectedFireplace, false)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
                     Wait(10)
                     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
@@ -46,7 +46,7 @@ EvtScript N(EVS_Inspect_Dresses) = {
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
             IfEq(GF_KKJ14_RevealedButton, false)
                 IfEq(AF_KKJ14_InspectedDresses, false)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_003C)
                     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
                     Wait(10)
@@ -90,7 +90,7 @@ EvtScript N(EVS_Inspect_Vanity) = {
                     Wait(15)
                 EndLoop
             Else
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SpeakToPlayer, NPC_PLAYER, ANIM_Peach2_Talk, ANIM_Peach2_TalkIdle, 5, MSG_Peach_0044)
                 Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_0045)
                 Call(EnablePartnerAI)
@@ -109,7 +109,7 @@ EvtScript N(EVS_Inspect_Photo) = {
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
             IfEq(GF_KKJ14_RevealedButton, false)
                 IfEq(AF_KKJ14_InspectedPhoto, false)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Talk, ANIM_Twink_Idle, 0, MSG_Peach_003E)
                     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
                     Wait(10)
@@ -142,7 +142,7 @@ EvtScript N(EVS_Inspect_Bed) = {
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
             IfEq(GF_KKJ14_RevealedButton, false)
                 IfEq(AF_KKJ14_InspectedBed, false)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
                     Wait(10)
                     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
@@ -175,7 +175,7 @@ EvtScript N(EVS_Inspect_Flowers) = {
         CaseEq(STORY_CH1_BEGAN_PEACH_MISSION)
             IfEq(GF_KKJ14_RevealedButton, false)
                 IfEq(AF_KKJ14_InspectedFlowers, false)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetPlayerAnimation, ANIM_Peach2_RaiseArms)
                     Wait(10)
                     Call(SetPlayerAnimation, ANIM_Peach2_TalkIdle)
@@ -310,7 +310,7 @@ EvtScript N(EVS_OpenHiddenPassage) = {
 EvtScript N(EVS_Inspect_HiddenButton) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     IfEq(GF_KKJ14_RevealedButton, false)
         ExecWait(N(EVS_RevealButton))
     Else
@@ -344,12 +344,12 @@ EvtScript N(EVS_Inspect_HiddenButton) = {
 EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     IfEq(GF_KKJ14_RevealedButton, false)
-        IfEq(AF_KKJ_04, false)
+        IfEq(AF_KKJ14_HiddenButtonRemark, false)
             Call(NpcFacePlayer, NPC_PARTNER, 0)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_Shout, ANIM_Twink_Shout, 5, MSG_Peach_0046)
-            Set(AF_KKJ_04, true)
+            Set(AF_KKJ14_HiddenButtonRemark, true)
         EndIf
         ExecWait(N(EVS_RevealButton))
     Else
@@ -370,7 +370,7 @@ EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
         Call(SetPlayerAnimation, ANIM_Peach1_Idle)
         Call(InterpPlayerYaw, 225, 0)
         Call(InterpNpcYaw, NPC_PARTNER, 225, 0)
-        IfEq(AF_KKJ_05, false)
+        IfEq(AF_KKJ14_HiddenPassageRemark, false)
             Call(GetPlayerPos, LVar0, LVar1, LVar2)
             Call(UseSettingsFrom, CAM_DEFAULT, LVar0, LVar1, LVar2)
             Call(SetPanTarget, CAM_DEFAULT, -120, 25, 0)
@@ -380,11 +380,11 @@ EvtScript N(EVS_Inspect_HiddenButton_FirstTime) = {
             Call(WaitForCam, CAM_DEFAULT, Float(1.0))
         EndIf
         ExecWait(N(EVS_OpenHiddenPassage))
-        IfEq(AF_KKJ_05, false)
+        IfEq(AF_KKJ14_HiddenPassageRemark, false)
             Call(ResetCam, CAM_DEFAULT, Float(3.0 / DT))
             Call(SetPlayerAnimation, ANIM_Peach2_Delighted)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_Twink_ShoutJoy, ANIM_Twink_ShoutJoy, 5, MSG_Peach_0047)
-            Set(AF_KKJ_05, true)
+            Set(AF_KKJ14_HiddenPassageRemark, true)
         EndIf
         Unbind
     EndIf

@@ -34,7 +34,7 @@ EvtScript N(EVS_Scene_Starship) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(TranslateGroup, MODEL_g277, -700, -350, 1600)
     Set(MV_Starship_Yaw, 50)

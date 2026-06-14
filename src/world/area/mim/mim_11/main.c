@@ -112,7 +112,7 @@ EvtScript N(EVS_Scene_ReachedMansion) = {
         Wait(15)
         Call(PlayerFaceNpc, NPC_PARTNER, false)
     EndThread
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(GetCurrentPartnerID, LVar0)
     Switch(LVar0)
         CaseEq(PARTNER_GOOMBARIO)

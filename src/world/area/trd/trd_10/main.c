@@ -98,7 +98,7 @@ EvtScript N(EVS_EnterMap) = {
             Set(LVar3, MODEL_o191)
             ExecWait(EnterDoubleDoor)
         CaseEq(trd_10_ENTRY_1)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcPos, NPC_PARTNER, -253, 0, 0)
             Call(SetNpcYaw, NPC_PARTNER, 90)
             Wait(3)

@@ -117,7 +117,7 @@ EvtScript N(EVS_RotatingWall_FirstTime) = {
 EvtScript N(EVS_EnterRotatingWall) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, 50, 10, -250)
     Call(SetNpcPos, NPC_PARTNER, 10, 30, -250)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)

@@ -108,7 +108,7 @@ EvtScript N(EVS_KammyReturnsToCastle) = {
 EvtScript N(EVS_Scene_BeginInterlude) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(EnableGroup, MODEL_hiru, false)
     Call(EnableGroup, MODEL_niwa, false)

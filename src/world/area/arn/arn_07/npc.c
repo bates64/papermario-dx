@@ -122,7 +122,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     IfEq(LVar6, PARTNER_BOW)
         Set(LVar5, -4)
         Call(func_802CF56C, 0)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcPos, NPC_PARTNER, 257, 25, 0)
     EndIf
     Call(SetCamSpeed, CAM_DEFAULT, Float(90.0))
@@ -150,7 +150,7 @@ EvtScript N(EVS_Scene_BossDefeated) = {
     Wait(10 * DT)
     Thread
         IfNe(LVar6, PARTNER_BOW)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Wait(1)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Bow, 0)
             Wait(5 * DT)
@@ -412,7 +412,7 @@ EvtScript N(EVS_NpcIdle_Skolar) = {
 };
 
 EvtScript N(EVS_Scene_SkolarRescued) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(func_802CF56C, 2)
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Set(LVar3, LVar0)

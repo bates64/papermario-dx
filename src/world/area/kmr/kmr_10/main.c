@@ -12,7 +12,7 @@ EvtScript N(EVS_BindExitTriggers) = {
     End
 };
 
-EvtScript N(D_80240828_8D8CF8) = {
+EvtScript N(EVS_EnterMap) = {
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)
     Return
@@ -29,12 +29,12 @@ EvtScript N(EVS_Main) = {
     Exec(N(EVS_SetupMusic))
     ExecWait(N(EVS_SetupFoliage))
     IfEq(GB_StoryProgress, STORY_CH0_KAMMY_RETURNED_TO_BOWSER)
-        IfEq(AF_KMR_0D, false)
+        IfEq(AF_KMR10_LongEntryDelay, false)
             Wait(50)
-            Set(AF_KMR_0D, true)
+            Set(AF_KMR10_LongEntryDelay, true)
         EndIf
     EndIf
-    Exec(N(D_80240828_8D8CF8))
+    Exec(N(EVS_EnterMap))
     Wait(1)
     Set(GF_MAC01_RowfBadgesChosen, false)
     Return

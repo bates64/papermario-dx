@@ -67,7 +67,7 @@ EvtScript N(EVS_DisableExitCameraZones) = {
     Call(SetZoneEnabled, ZONE_west,  false)
     Call(SetZoneEnabled, ZONE_south, false)
     Call(SetZoneEnabled, ZONE_east,  false)
-    Set(AF_TST_00, false)
+    Set(AF_TST10_DisabledExitCameras, false)
     Return
     End
 };
@@ -86,14 +86,14 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     ExecWait(N(EVS_MakeEntities))
-    IfEq(AF_TST_00, true)
+    IfEq(AF_TST10_DisabledExitCameras, true)
         Call(SetZoneEnabled, ZONE_north, false)
         Call(SetZoneEnabled, ZONE_west,  false)
         Call(SetZoneEnabled, ZONE_south, false)
         Call(SetZoneEnabled, ZONE_east,  false)
-        Set(AF_TST_00, false)
+        Set(AF_TST10_DisabledExitCameras, false)
     Else
-        Set(AF_TST_00, true)
+        Set(AF_TST10_DisabledExitCameras, true)
         BindTrigger(Ref(N(EVS_DisableExitCameraZones)), TRIGGER_FLOOR_TOUCH, COLLIDER_change, 1, 0)
     EndIf
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))

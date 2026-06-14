@@ -914,7 +914,7 @@ EvtScript N(EVS_EnterKitchen_TryAgain) = {
 
 EvtScript N(EVS_ManageBaking) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetCamLeadPlayer, CAM_DEFAULT, false)
     Call(EnableModel, MODEL_o46, false)
     Call(EnableModel, MODEL_o50, false)

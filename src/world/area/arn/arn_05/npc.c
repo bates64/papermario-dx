@@ -397,7 +397,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
             Set(MV_BowPromptDone, true)
         EndThread
         Wait(50 * DT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcYaw, NPC_PARTNER, 90)
         Call(EnablePartnerAI)
         Loop(0)
@@ -407,7 +407,7 @@ EvtScript N(EVS_Scene_TubbaRaid) = {
             EndIf
         EndLoop
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_00A3)
     Call(EnablePartnerAI)
     Call(InterpPlayerYaw, 90, 0)

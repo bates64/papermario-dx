@@ -1762,7 +1762,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Return
     EndSwitch
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar2, 3)
         Call(NpcMoveTo, NPC_PARTNER, LVar0, LVar2, 10)

@@ -161,7 +161,7 @@ EvtScript N(EVS_UseWattTutorial) = {
         Wait(1)
     EndLoop
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldWatt_Celebrate, ANIM_WorldWatt_Idle, 5, MSG_CH4_005C)
     Call(EnablePartnerAI)
     Call(DisablePlayerInput, false)
@@ -314,7 +314,7 @@ EvtScript N(EVS_Scene_ReleaseWatt) = {
     EndIf
     Call(GetPlayerPos, LVar2, LVar3, LVar4)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Add(LVar1, LVar2)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)

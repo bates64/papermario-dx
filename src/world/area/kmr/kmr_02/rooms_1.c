@@ -167,7 +167,7 @@ EvtScript N(EVS_RoomListener_Verdana) = {
                     Call(SetPanTarget, CAM_DEFAULT, LVar0, LVar1, LVar2)
                     Call(PlaySoundAtPlayer, SOUND_PLAYER_LONG_FALL, SOUND_SPACE_DEFAULT)
                     Call(DisablePlayerPhysics, true)
-                    Call(DisablePartnerAI, 0)
+                    Call(DisablePartnerAI, false)
                     Call(SetPlayerAnimation, ANIM_MarioW2_Panic)
                     Call(GetPlayerPos, LVar0, LVar1, LVar2)
                     Thread

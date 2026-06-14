@@ -16,7 +16,7 @@ EvtScript N(EVS_OnTouch_DrainSwitch) = {
     Call(GetNpcPos, NPC_PARTNER, LVar0, LVar1, LVar2)
     IfLt(LVar1, -470)
         Thread
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(SetNpcJumpscale, NPC_PARTNER, Float(2.5))
             Call(NpcJump0, NPC_PARTNER, 529, -470, 82, 10)
             Wait(10)

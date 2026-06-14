@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_01.h
 /// @brief Toad Town - Plaza District
 

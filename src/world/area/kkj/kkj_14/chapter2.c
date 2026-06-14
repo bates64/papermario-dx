@@ -81,7 +81,7 @@ EvtScript N(EVS_FocusCam_Door_Ch2) = {
 EvtScript N(EVS_Scene_Chapter2) = {
     Call(DisablePlayerInput, true)
     Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, 110, 0, -190)
     Call(SetNpcYaw, NPC_PARTNER, 270)
     Call(InterpPlayerYaw, 270, 0)

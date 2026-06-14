@@ -156,7 +156,7 @@ EvtScript N(EVS_Conductor_ResumeStuckTrain) = {
     Else
         Call(DisablePlayerInput, true)
         Call(DisablePlayerPhysics, true)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Thread
             Call(SetNpcFlagBits, NPC_Conductor, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
             Call(SetNpcJumpscale, NPC_Conductor, Float(1.0))
@@ -227,7 +227,7 @@ TrainPath N(TrainPath_DepartRight)[] = {
 EvtScript N(EVS_Train_DepartRight) = {
     Call(FadeOutMusic, 0, 3000)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Wait(10)
     Call(DisablePlayerPhysics, true)
@@ -265,7 +265,7 @@ TrainPath N(TrainPath_DepartLeft)[] = {
 EvtScript N(EVS_Train_DepartLeft) = {
     Call(FadeOutMusic, 0, 3000)
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Wait(10)
     Call(DisablePlayerPhysics, true)
@@ -314,7 +314,7 @@ EvtScript N(EVS_Train_ArriveFromRight) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)
     IfEq(AB_OMO_TrainDest, TRAIN_STATION_ID)
@@ -394,7 +394,7 @@ EvtScript N(EVS_Train_ArriveFromLeft) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
     Call(SetPlayerActionState, ACTION_STATE_LAND)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o939, COLLIDER_FLAGS_UPPER_MASK)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o941, COLLIDER_FLAGS_UPPER_MASK)

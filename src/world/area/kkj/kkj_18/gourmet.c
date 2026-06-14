@@ -495,7 +495,7 @@ EvtScript N(EVS_Scene_JudgeCake) = {
     Set(AF_KKJ_FinishedBakingCake, false)
     Call(N(SetHeldBakingItem), PEACH_BAKING_NONE)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(NpcFlyTo, NPC_PARTNER, -23, 30, 36, 5 * DT, 0, EASING_LINEAR)
         Call(InterpNpcYaw, NPC_PARTNER, 90, 5)
     EndThread

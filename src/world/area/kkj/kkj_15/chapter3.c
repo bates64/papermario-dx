@@ -149,7 +149,7 @@ EvtScript N(EVS_CarryPeachAway_Ch3) = {
 EvtScript N(EVS_Scene_Chapter3) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetMusic, 0, SONG_BOWSER_THEME, 0, VOL_LEVEL_FULL)
     Call(InterpPlayerYaw, 270, 0)
     Call(SetPlayerPos, 50, 10, -250)
@@ -260,25 +260,25 @@ EvtScript N(EVS_Scene_Chapter3) = {
     Call(ShowChoice, MSG_Choice_0026)
     Set(GB_OMO_PeachChoice1, LVar0)
     IfNe(LVar0, 2)
-        Set(AF_KKJ_08, true)
+        Set(AF_KKJ15_LiedAboutWeakPoints, true)
     EndIf
     Call(ContinueSpeech, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_Peach_008C)
     Call(ShowChoice, MSG_Choice_0027)
     Set(GB_OMO_PeachChoice2, LVar0)
     IfNe(LVar0, 2)
-        Set(AF_KKJ_08, true)
+        Set(AF_KKJ15_LiedAboutWeakPoints, true)
     EndIf
     Call(ContinueSpeech, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 0, MSG_Peach_008D)
     Call(ShowChoice, MSG_Choice_0028)
     Set(GB_OMO_PeachChoice3, LVar0)
     IfNe(LVar0, 2)
-        Set(AF_KKJ_08, true)
+        Set(AF_KKJ15_LiedAboutWeakPoints, true)
     EndIf
     Call(ContinueSpeech, NPC_Bowser, ANIM_WorldBowser_TalkEyesClosed, ANIM_WorldBowser_Idle, 0, MSG_Peach_008E)
     Call(InterpNpcYaw, NPC_Bowser, 270, 7)
     Wait(10 * DT)
     Call(SpeakToPlayer, NPC_Bowser, ANIM_WorldBowser_Talk, ANIM_WorldBowser_Idle, 5, MSG_Peach_008F)
-    IfEq(AF_KKJ_08, false)
+    IfEq(AF_KKJ15_LiedAboutWeakPoints, false)
         Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Anim04, ANIM_WorldKammy_Anim01, 0, NPC_Bowser, MSG_Peach_0090)
     Else
         Call(SpeakToNpc, NPC_Kammy, ANIM_WorldKammy_Anim04, ANIM_WorldKammy_Anim01, 0, NPC_Bowser, MSG_Peach_0091)

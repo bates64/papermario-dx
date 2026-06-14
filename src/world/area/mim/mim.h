@@ -1,4 +1,14 @@
 #pragma once
+#include "common.h"
+
+//TODO this is very confusing, along with AB_MIM_GateState
+// All the names are likely wrong but the purpose of each and
+// their interations are unclear.
+enum ForestGateStates {
+    MIM_USEGATE_SIDE_A  = 0,
+    MIM_USEGATE_INNER  = 1,
+    MIM_USEGATE_SIDE_B  = 2,
+};
 
 enum AreaBytesMIM {
     AB_MIM_Unused_0     = AreaByte(0),

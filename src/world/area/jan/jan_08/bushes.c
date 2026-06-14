@@ -43,7 +43,7 @@ EvtScript N(EVS_Inspect_FlipBush) = {
         IfEq(GF_JAN08_SavedYoshi, false)
             Call(GetPlayerPos, LVar3, LVar4, LVar5)
             Thread
-                Call(DisablePartnerAI, 0)
+                Call(DisablePartnerAI, false)
                 Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_IGNORE_WORLD_COLLISION | NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_IGNORE_ENTITY_COLLISION, true)
                 Call(NpcMoveTo, NPC_PARTNER, -315, LVar5, 20)
                 Call(NpcFaceNpc, NPC_PARTNER, NPC_YoshiKid, 0)

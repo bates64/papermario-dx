@@ -4,7 +4,7 @@
 EvtScript N(EVS_Scene_Chapter6) = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 270, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -140, 25, 0)
     Call(SetNpcYaw, NPC_PARTNER, 90)
     Call(UseSettingsFrom, CAM_DEFAULT, -100, 0, 0)

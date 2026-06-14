@@ -182,7 +182,7 @@ Vec3f N(TwinkPath)[] = {
 EvtScript N(EVS_Scene_CastleDescending) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(PlaySound, SOUND_KPA_LIGHT_RAYS | SOUND_ID_TRIGGER_CHANGE_SOUND)
     Call(SetPlayerPos, -130, 200, 1300)
@@ -386,7 +386,7 @@ EvtScript N(EVS_MakeNpcSparkleTrail) = {
 EvtScript N(EVS_Scene_SpiritsFlyingAway) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcFlagBits, NPC_PARTNER, NPC_FLAG_GRAVITY, false)
     Call(SetPlayerPos, NPC_DISPOSE_LOCATION)
     Call(EnableModel, MODEL_o2, false)

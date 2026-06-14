@@ -366,7 +366,7 @@ EvtScript N(EVS_FollowTrainCamera) = {
 EvtScript N(EVS_ArriveFromMtRugged) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Call(SetPlayerActionState, ACTION_STATE_IDLE)
     Call(InterpPlayerYaw, 270, 0)
@@ -469,7 +469,7 @@ EvtScript N(EVS_DepartForMtRugged) = {
     EndIf
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_IDLE)
     Set(MV_TrainMoveDist, 0)
     Set(MV_TrainMoveSpeed, 0)

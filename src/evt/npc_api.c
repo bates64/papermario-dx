@@ -749,10 +749,10 @@ API_CALLABLE(GetPartnerPos) {
 API_CALLABLE(DisablePartnerAI) {
     Bytecode* ptrReadPos = script->ptrReadPos;
 
-    if (evt_get_variable(script, *ptrReadPos++) == 0) {
-        func_800EF314();
-    } else {
+    if (evt_get_variable(script, *ptrReadPos++)) {
         func_800EF300();
+    } else {
+        func_800EF314();
     }
     return ApiStatus_DONE2;
 }

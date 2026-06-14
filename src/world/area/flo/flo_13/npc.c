@@ -332,7 +332,7 @@ EvtScript N(EVS_Lakilulu_FlyAway) = {
         Add(LVar3, 20)
         Call(NpcJump0, NPC_PARTNER, LVar1, LVar2, LVar3, 30 * DT)
     EndIf
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(InterpNpcYaw, NPC_PARTNER, 270, 0)
     Wait(5 * DT)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldLakilester_Talk, ANIM_WorldLakilester_Idle, 5, MSG_CH6_00B5)
@@ -488,7 +488,7 @@ EvtScript N(EVS_Scene_LakilesterDefeated) = {
     Add(LVar0, 30)
     Call(SetNpcSpeed, NPC_Lakilester, Float(3.5 / DT))
     Call(NpcMoveTo, NPC_Lakilester, LVar0, 60, 0)
-    Call(N(ChangeNpcToPartner), 0, 8)
+    Call(N(ChangeNpcToPartner), NPC_Lakilester, PARTNER_LAKILESTER)
     Call(N(LoadPartyImage))
     Exec(N(EVS_PushPartnerSong))
     Wait(15 * DT)

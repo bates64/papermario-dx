@@ -1,7 +1,7 @@
 #pragma once
 
 enum AreaBytesKMR {
-    AB_KMR_0                            = AreaByte(0),
+    AB_KMR04_JrTroopaAmbushState        = AreaByte(0),
     AB_KMR_Unused_1                     = AreaByte(1),
     AB_KMR02_DialogueState_Goombaria    = AreaByte(2),
     AB_KMR_Unused_3                     = AreaByte(3),
@@ -20,12 +20,12 @@ enum AreaBytesKMR {
 };
 
 enum AreaFlagsKMR {
-    AF_KMR_04                       = AreaFlag(4),
-    AF_KMR03_LastHitGoompaWithJump  = AreaFlag(6),
-    AF_KMR03_HitGoompaWithHammer    = AreaFlag(7),
-    AF_KMR_08                       = AreaFlag(8),
-    AF_KMR_09                       = AreaFlag(9),
-    AF_KMR_0B                       = AreaFlag(11),
-    AF_KMR20_DiaryBlockedByLuigi    = AreaFlag(12),
-    AF_KMR_0D                       = AreaFlag(13),
+    AF_KMR11_Switch_SelfDestruct                           = AreaFlag(4),
+    AF_KMR03_LastHitGoompaWithJump      = AreaFlag(6),
+    AF_KMR03_HitGoompaWithHammer        = AreaFlag(7),
+    AF_KMR_08                           = AreaFlag(8),
+    AF_KMR04_DollyDropped               = AreaFlag(9),
+    AF_KMR20_SpringCanLaunch            = AreaFlag(11),
+    AF_KMR20_DiaryBlockedByLuigi        = AreaFlag(12),
+    AF_KMR10_LongEntryDelay             = AreaFlag(13), /// extended delay before entering after prologue Kammy scene
 };

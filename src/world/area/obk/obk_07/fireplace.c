@@ -85,7 +85,7 @@ EvtScript N(EVS_Inspect_Fireplace) = {
     EndThread
     Wait(10)
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Wait(1)
         Call(GetPlayerPos, LVar0, LVar1, LVar2)
         Sub(LVar0, 25)

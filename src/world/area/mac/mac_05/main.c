@@ -111,7 +111,7 @@ EvtScript N(EVS_EnterMap) = {
             Call(SetPlayerPos, -160, -10, 371)
             Call(SetNpcPos, NPC_PARTNER, -160, -10, 371)
             Call(SetEnemyFlagBits, NPC_Whale, ENEMY_FLAG_CANT_INTERACT, true)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(InterruptUsePartner)
             Wait(10)
             Thread

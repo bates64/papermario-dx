@@ -52,7 +52,7 @@ EvtScript N(EVS_NpcIdle_Bootler) = {
     Call(SetPlayerSpeed, Float(4.0 / DT))
     Call(PlayerMoveTo, 430, -40, 0)
     Call(InterpPlayerYaw, 315, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcMoveTo, NPC_PARTNER, 455, -40, 20 * DT)
     Call(InterpNpcYaw, NPC_PARTNER, 315, 0)
     Call(EnablePartnerAI)

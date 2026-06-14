@@ -1,4 +1,6 @@
-API_CALLABLE(N(func_80244984_805204)) {
+#include "../mac_01.h"
+
+API_CALLABLE(N(CountRowfAvailableBadges)) {
     s32 flagBase = GF_MAC01_RowfBadge_00;
     s32 count = 0;
     s32 i;
@@ -132,7 +134,7 @@ EvtScript N(EVS_NpcInteract_Rowf_B) = {
         IfLt(GB_StoryProgress, STORY_CH5_RETURNED_TO_TOAD_TOWN)
             Set(LVar1, MSG_MAC_Plaza_0005)
         Else
-            Call(N(func_80244984_805204))
+            Call(N(CountRowfAvailableBadges))
             IfEq(LVar0, 0)
                 Set(LVar1, MSG_MAC_Plaza_0006)
             Else
@@ -195,7 +197,7 @@ EvtScript N(EVS_NpcInteract_Rhuff_B) = {
 };
 
 EvtScript N(EVS_NpcInteract_Rhuff_C) = {
-    Call(N(func_80244984_805204))
+    Call(N(CountRowfAvailableBadges))
     IfEq(LVar0, 0)
         Call(SpeakToPlayer, NPC_Rhuff, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_000F)
     Else
@@ -600,18 +602,18 @@ API_CALLABLE(N(RowfShop_SetBadgePos)) {
 EvtScript N(EVS_NpcInit_Rowf) = {
     Set(MV_BadgeShopOpenState, 0)
     Set(MV_BadgeShopCloseState, 0)
-    Set(AF_MAC_40, false)
+    Set(AF_MAC01_BadgeShopAccessible, false)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_DEFEATED_JR_TROOPA)
             Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_A)))
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Rowf)))
         CaseLt(STORY_CH3_STAR_SPRIT_DEPARTED)
             Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_B)))
-            Set(AF_MAC_40, true)
+            Set(AF_MAC01_BadgeShopAccessible, true)
         CaseDefault
             IfEq(GF_MAC01_CalculatorReturned, true)
                 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_B)))
-                Set(AF_MAC_40, true)
+                Set(AF_MAC01_BadgeShopAccessible, true)
             Else
                 Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_Rowf_C)))
                 Call(SetNpcPos, NPC_Rowf, -250, 0, 295)
@@ -630,7 +632,7 @@ EvtScript N(EVS_NpcInit_Rowf) = {
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_ju_1, true)
     Call(SetCustomGfxBuilders, CUSTOM_GFX_0, Ref(N(gfx_build_rowf_rug_with_ripples)), nullptr)
     Call(SetModelCustomGfx, MODEL_ju_1, CUSTOM_GFX_0, -1)
-    IfEq(AF_MAC_40, true)
+    IfEq(AF_MAC01_BadgeShopAccessible, true)
         BindTrigger(Ref(N(EVS_EnterBadgeShop)), TRIGGER_FLOOR_TOUCH, COLLIDER_roten, 1, 0)
         BindTrigger(Ref(N(EVS_ExitBadgeShop)), TRIGGER_FLOOR_TOUCH, COLLIDER_o444, 1, 0)
         Call(SetNpcJumpscale, NPC_Rowf, 1)

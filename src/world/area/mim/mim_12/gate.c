@@ -321,7 +321,7 @@ EvtScript N(EVS_Scene_UnlockGate) = {
         EndLoop
     EndIf
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, SPEECH_FACE_SPEAKER_ONLY, MSG_CH3_006C)
     Call(EnablePartnerAI)
     Call(SetNpcPos, NPC_GateBoo_01, -103, 65, 64)
@@ -367,7 +367,7 @@ EvtScript N(EVS_Scene_UnlockGate) = {
     Call(SetNpcPos, NPC_GateBoo_01, NPC_DISPOSE_LOCATION)
     Call(SetNpcPos, NPC_GateBoo_02, NPC_DISPOSE_LOCATION)
     Wait(10 * DT)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldBow_Talk, ANIM_WorldBow_Idle, 0, MSG_CH3_006D)
     Call(EnablePartnerAI)
     Wait(5 * DT)

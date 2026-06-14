@@ -896,7 +896,7 @@ EvtScript N(EVS_Scene_KooperArrives) = {
     Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_IdleAngry)
     Wait(20 * DT)
     Call(SpeakToPlayer, NPC_Kooper, ANIM_KooperWithoutShell_TalkAngry, ANIM_KooperWithoutShell_IdleAngry, 0, MSG_CH1_00C3)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
     Call(SpeakToNpc, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, NPC_Kooper, MSG_CH1_00C4)
     Call(SetNpcAnimation, NPC_Kooper, ANIM_KooperWithoutShell_Idle)

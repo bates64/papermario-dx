@@ -22,7 +22,7 @@ Vec3f N(TwinkPacingPath3)[] = {
 EvtScript N(EVS_Scene_Chapter3) = {
     Call(DisablePlayerInput, true)
     Call(InterpPlayerYaw, 270, 0)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetNpcPos, NPC_PARTNER, -40, 90, 0)
     Call(InterpNpcYaw, NPC_PARTNER, 90, 0)
     Call(AdjustCam, CAM_DEFAULT, Float(90.0), -20, 250, Float(17.0), Float(-11.0))

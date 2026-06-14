@@ -238,7 +238,7 @@ EvtScript N(EVS_UseMagicChest_Mario) = {
 
 EvtScript N(EVS_Interact_MagicChest) = {
     Call(DisablePlayerInput, true)
-    Call(DisablePartnerAI, 1)
+    Call(DisablePartnerAI, true)
     IfLt(GB_StoryProgress, STORY_CH8_REACHED_PEACHS_CASTLE)
         IfEq(GF_KKJ17_FoundMagicChest, false)
             ExecWait(N(EVS_FindMagicChest))

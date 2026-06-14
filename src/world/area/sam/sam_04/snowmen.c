@@ -188,7 +188,7 @@ EvtScript N(EVS_Scene_SnowmenSpeak) = {
     EndThread
     Thread
         Wait(110 * DT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(SetNpcJumpscale, NPC_PARTNER, Float(0.0))
         Call(NpcJump1, NPC_PARTNER, 50, 0, 0, 22)

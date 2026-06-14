@@ -124,7 +124,7 @@ EvtScript N(EVS_RaiseCamera) = {
 };
 
 EvtScript N(EVS_UnleashFountain) = {
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Exec(N(EVS_RaiseFountain))
     Exec(N(EVS_GrowFountain))
     Exec(N(EVS_EnableRainbow))

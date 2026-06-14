@@ -20,8 +20,8 @@ enum AreaBytesDGB {
 };
 
 enum AreaFlagsDGB {
-    AF_DGB_01               = AreaFlag(1),
-    AF_DGB_02               = AreaFlag(2),
-    AF_DGB_03               = AreaFlag(3),
+    AF_DGB_CloseCallWithTubba   = AreaFlag(1),
+    AF_DGB11_FallingFromHole               = AreaFlag(2),
+    AF_DGB11_SpringInUse               = AreaFlag(3),
     AF_DGB06_ToggleDialogue_Boo = AreaFlag(4),
 };

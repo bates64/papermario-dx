@@ -114,7 +114,7 @@ EvtScript N(EVS_Scene_MysteryBegins) = {
     Call(SetCamDistance, CAM_DEFAULT, Float(400.0))
     Call(SetCamSpeed, CAM_DEFAULT, Float(1.4 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(DisablePartnerAI, 0)
+    Call(DisablePartnerAI, false)
     Call(SetPlayerPos, -284, 0, -165)
     Call(InterpPlayerYaw, 180, 0)
     Call(SetNpcPos, NPC_PARTNER, -320, 0, -190)
@@ -361,7 +361,7 @@ EvtScript N(EVS_Scene_MysterySolved) = {
         Wait(20)
     EndIf
     Thread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SetNpcAnimation, NPC_PARTNER, PARTNER_ANIM_WALK)
         Call(SetNpcSpeed, NPC_PARTNER, Float(3.0 / DT))
         Call(NpcMoveTo, NPC_PARTNER, -262, -103, 0)

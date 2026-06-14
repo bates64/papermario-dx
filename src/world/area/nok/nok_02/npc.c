@@ -83,7 +83,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
         EndThread
         Thread
             Call(SwitchToPartner, PARTNER_GOOMBARIO)
-            Call(DisablePartnerAI, 0)
+            Call(DisablePartnerAI, false)
             Call(NpcMoveTo, NPC_PARTNER, -55, -130, 15 * DT)
             Call(NpcFaceNpc, NPC_PARTNER, NPC_Kooper, 0)
             Call(EnablePartnerAI)
@@ -147,7 +147,7 @@ EvtScript N(EVS_NpcInteract_Kooper) = {
             Wait(3 * DT)
             Call(PlayerFaceNpc, NPC_PARTNER, false)
         EndThread
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_CH1_00B7)
         Call(EnablePartnerAI)
         Call(AdjustCam, CAM_DEFAULT, Float(90.0), 0, Float(375.0), Float(17.0), Float(-5.5))
@@ -345,7 +345,7 @@ EvtScript N(EVS_NpcIdle_MiscFuzzy2) = {
         Return
     EndIf
     Label(100)
-        IfEq(AF_NOK_13, false)
+        IfEq(AF_NOK02_FuzzyTreeHit, false)
             Wait(1)
             Goto(100)
         EndIf

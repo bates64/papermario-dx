@@ -100,7 +100,7 @@ EvtScript N(EVS_Scene_MeetingGeneralGuy) = {
         EndIf
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_WATT)
-        Call(DisablePartnerAI, 0)
+        Call(DisablePartnerAI, false)
         Call(SpeakToPlayer, NPC_PARTNER, PARTNER_ANIM_TALK, PARTNER_ANIM_IDLE, 0, MSG_CH4_0075)
         Call(EnablePartnerAI)
     EndIf
