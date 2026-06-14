@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_DGB_DGB_H_
-#define _WORLD_AREA_DGB_DGB_H_
+#pragma once
 
-enum {
+enum AreaBytesDGB {
     AB_DGB_Unused_0     = AreaByte(0),
     AB_DGB_Unused_1     = AreaByte(1),
     AB_DGB_Unused_2     = AreaByte(2),
@@ -20,11 +19,9 @@ enum {
     AB_DGB_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsDGB {
     AF_DGB_01               = AreaFlag(1),
     AF_DGB_02               = AreaFlag(2),
     AF_DGB_03               = AreaFlag(3),
     AF_DGB06_ToggleDialogue_Boo = AreaFlag(4),
 };
-
-#endif

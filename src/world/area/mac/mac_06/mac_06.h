@@ -22,6 +22,6 @@ enum {
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_FlyingGull);
-extern EvtScript N(EVS_WhaleMain);
+extern EvtScript N(EVS_SetupWhale);
 
 extern NpcGroupList N(DefaultNPCs);

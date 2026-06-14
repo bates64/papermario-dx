@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_OSR_OSR_H_
-#define _WORLD_AREA_OSR_OSR_H_
+#pragma once
 
-enum {
+enum AreaBytesOSR {
     AB_OSR_Unused_0     = AreaByte(0),
     AB_OSR_Unused_1     = AreaByte(1),
     AB_OSR_Unused_2     = AreaByte(2),
@@ -20,8 +19,6 @@ enum {
     AB_OSR_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsOSR {
     AF_OSR_01       = AreaFlag(1),
 };
-
-#endif

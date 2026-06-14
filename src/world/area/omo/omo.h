@@ -13,7 +13,7 @@ enum {
 #define CS_FALL()           op_CS_FALL,
 #define CS_END              op_CS_END,
 
-enum {
+enum AreaBytesOMO {
     AB_OMO_Unused_0                     = AreaByte(0),
     AB_OMO12_LightSource                = AreaByte(1),
     AB_OMO12_LightPowerMod              = AreaByte(2),
@@ -32,11 +32,11 @@ enum {
     AB_OMO_Unused_F                     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsOMO {
     AF_OMO_UsingRightSwitch             = AreaFlag(2),
     AF_OMO_TrainSoundToggle             = AreaFlag(3),
     AF_OMO03_EnteringViaSpring          = AreaFlag(4), // prevents the spring from immediately launching the player back out
-    AF_OMO03_ToggleDialogue_Conductor      = AreaFlag(5),
+    AF_OMO03_ToggleDialogue_Conductor   = AreaFlag(5),
     AF_OMO03_TrainStuck                 = AreaFlag(6),
     AF_OMO07_NpcPool0                   = AreaFlag(7),
     AF_OMO07_NpcPool1                   = AreaFlag(8),

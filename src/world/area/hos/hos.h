@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_HOS_HOS_H_
-#define _WORLD_AREA_HOS_HOS_H_
+#pragma once
 
-enum {
+enum AreaBytesHOS {
     AB_HOS_StatcAmt_Eldstar     = AreaByte(0),
     AB_HOS_StatcAmt_Mamar       = AreaByte(1),
     AB_HOS_StatcAmt_Skolar      = AreaByte(2),
@@ -20,13 +19,11 @@ enum {
     AB_HOS_Unused_F             = AreaByte(15),
 };
 
-enum {
-    AF_HOS06_BadgeHints         = AreaFlag(3),
-    AF_HOS06_SuperBlocksHints   = AreaFlag(100),
-    AF_HOS06_StarPieceHints     = AreaFlag(116),
-    AF_HOS_B4                   = AreaFlag(180),
-    AF_HOS_B5                   = AreaFlag(181),
-    AF_HOS06_SpokeWithMerluvlee = AreaFlag(182),
+enum AreaFlagsHOS {
+    AF_HOS06_BadgeHints             = AreaFlag(3),
+    AF_HOS06_SuperBlocksHints       = AreaFlag(100),
+    AF_HOS06_StarPieceHints         = AreaFlag(116),
+    AF_HOS00_SkipTwinkMeetingDelay  = AreaFlag(180),
+    AF_HOS05_SkipMusicChange        = AreaFlag(181),
+    AF_HOS06_SpokeWithMerluvlee     = AreaFlag(182),
 };
-
-#endif

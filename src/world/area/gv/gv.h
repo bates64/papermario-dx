@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_GV_GV_H_
-#define _WORLD_AREA_GV_GV_H_
+#pragma once
 
-enum {
+enum AreaBytesGV {
     AB_GV_Unused_0       = AreaByte(0),
     AB_GV_Unused_1       = AreaByte(1),
     AB_GV_Unused_2       = AreaByte(2),
@@ -20,6 +19,6 @@ enum {
     AB_GV_Unused_F       = AreaByte(15),
 };
 
-#define AF_GV(index) AreaFlag(index)
-
-#endif
+enum AreaFlagsGV {
+    AF_GV_Unused_0     = AreaFlag(0),
+};

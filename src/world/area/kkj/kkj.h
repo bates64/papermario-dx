@@ -1,5 +1,4 @@
-#ifndef _WORLD_AREA_KKJ_KKJ_H_
-#define _WORLD_AREA_KKJ_KKJ_H_
+#pragma once
 
 enum {
     CAKE_TYPE_NONE              = 0, // cake has not been started
@@ -11,7 +10,7 @@ enum {
     CAKE_TYPE_DONE              = 6, // decorated
 };
 
-enum {
+enum AreaBytesKKJ {
     AB_KKJ19_CurrentBakeStep        = AreaByte(0),
     AB_KKJ_CompletedBakeStep        = AreaByte(1),
     AB_KKJ19_HeldIngredient         = AreaByte(2),
@@ -30,7 +29,7 @@ enum {
     AB_KKJ_Unused_F                 = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsKKJ {
     AF_KKJ_01                       = AreaFlag(1),
     AF_KKJ_02                       = AreaFlag(2),
     AF_KKJ_03                       = AreaFlag(3),
@@ -50,12 +49,10 @@ enum {
     AF_KKJ_FinishedBakingCake       = AreaFlag(17),
     AF_KKJ19_CanTakeIngredients     = AreaFlag(18),
     AF_KKJ_13                       = AreaFlag(19),
-    AF_KKJ14_InspectedFireplace       = AreaFlag(20),
-    AF_KKJ14_InspectedDresses         = AreaFlag(21),
-    AF_KKJ14_InspectedPhoto           = AreaFlag(23),
-    AF_KKJ14_InspectedBed             = AreaFlag(24),
-    AF_KKJ14_InspectedFlowers         = AreaFlag(25),
-    AF_KKJ25_ActivatedArenaSwitch                       = AreaFlag(26),
+    AF_KKJ14_InspectedFireplace     = AreaFlag(20),
+    AF_KKJ14_InspectedDresses       = AreaFlag(21),
+    AF_KKJ14_InspectedPhoto         = AreaFlag(23),
+    AF_KKJ14_InspectedBed           = AreaFlag(24),
+    AF_KKJ14_InspectedFlowers       = AreaFlag(25),
+    AF_KKJ25_ActivatedArenaSwitch   = AreaFlag(26),
 };
-
-#endif

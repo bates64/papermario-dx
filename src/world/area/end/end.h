@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_END_END_H_
-#define _WORLD_AREA_END_END_H_
+#pragma once
 
-enum {
+enum AreaBytesEND {
     AB_END_Unused_0       = AreaByte(0),
     AB_END_Unused_1       = AreaByte(1),
     AB_END_Unused_2       = AreaByte(2),
@@ -20,6 +19,6 @@ enum {
     AB_END_Unused_F       = AreaByte(15),
 };
 
-#define AF_END(index) AreaFlag(index)
-
-#endif
+enum AreaFlagsEND {
+    AF_END_Unused_0     = AreaFlag(0),
+};

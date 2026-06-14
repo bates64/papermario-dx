@@ -6,7 +6,7 @@ extern EvtScript N(EVS_ToadHouse_SetDialogue);
 extern EvtScript N(EVS_ToadHouse_ReturnFromRest);
 extern EvtScript N(EVS_ToadHouse_GetInBed);
 
-EvtScript N(8024AC14) = {
+EvtScript N(EVS_ToadHouse_ResetBedCovers) = {
     Call(EnableModel, LVar4, false)
     Call(EnableModel, LVar5, true)
     Call(RotateModel, LVar6, 0, 0, 0, 1)
@@ -15,7 +15,7 @@ EvtScript N(8024AC14) = {
     End
 };
 
-EvtScript N(8024AC8C) = {
+EvtScript N(EVS_ToadHouse_OpenBedCovers) = {
     Set(LVar9, LVar7)
     Set(LVar8, LVar6)
     Set(LVar7, LVar5)
@@ -28,13 +28,13 @@ EvtScript N(8024AC8C) = {
     EndThread
     Call(MakeLerp, 0, 180, 20, EASING_CUBIC_IN)
     Label(1)
-    Call(UpdateLerp)
-    Call(RotateModel, LVar8, LVar0, 0, 0, -1)
-    Call(RotateModel, LVar9, LVar0, 0, 0, -1)
-    IfEq(LVar1, 1)
-        Wait(1)
-        Goto(1)
-    EndIf
+        Call(UpdateLerp)
+        Call(RotateModel, LVar8, LVar0, 0, 0, -1)
+        Call(RotateModel, LVar9, LVar0, 0, 0, -1)
+        IfEq(LVar1, 1)
+            Wait(1)
+            Goto(1)
+        EndIf
     Call(EnableModel, LVar7, false)
     Return
     End
@@ -64,9 +64,9 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(N(ToadHouse_DisableStatusBar))
+    Call(N(ToadHouse_SuspendStatusBar))
     IfNe(LVar4, 0)
-        Exec(N(8024AC8C))
+        Exec(N(EVS_ToadHouse_OpenBedCovers))
     EndIf
     Call(N(ToadHouse_PutPartnerAway), LVarA)
     Wait(20)
@@ -83,9 +83,9 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(8024AC14))
+            Exec(N(EVS_ToadHouse_ResetBedCovers))
         EndIf
-        Call(N(ToadHouse_GetPartnerBackOut), LVarA)
+        Call(N(ToadHouse_GetPartnerOut), LVarA)
         Wait(45)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Label(1)
@@ -101,7 +101,7 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     Call(DisablePlayerPhysics, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
     Call(SpeakToPlayer, NPC_SELF, ANIM_StarMan_Talk, ANIM_StarMan_Idle, 0, LVarB)
-    Call(N(ToadHouse_ShowWorldStatusBar))
+    Call(N(ToadHouse_ResumeStatusBar))
     Return
     End
 };

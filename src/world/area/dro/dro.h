@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_DRO_DRO_H_
-#define _WORLD_AREA_DRO_DRO_H_
+#pragma once
 
-enum {
+enum AreaBytesDRO {
     AB_DRO01_DialogueState_Mouser1       = AreaByte(0),
     AB_DRO01_DialogueState_Dryite1       = AreaByte(1),
     AB_DRO01_DialogueState_Dryite2       = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_DRO_Unused_F            = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsDRO {
     AF_DRO01_ToggleDialogue_HintDryite = AreaFlag(1),
     AF_DRO01_ToggleDialogue_Composer   = AreaFlag(2),
     AF_DRO02_ToggleDialogue_Dryite2    = AreaFlag(3),
@@ -28,7 +27,3 @@ enum {
     AF_DRO02_ToggleDialogue_Mouser2    = AreaFlag(5),
 };
 
-extern MapSettings dro_01_settings;
-extern MapSettings dro_02_settings;
-
-#endif

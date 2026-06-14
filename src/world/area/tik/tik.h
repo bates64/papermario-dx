@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_TIK_TIK_H_
-#define _WORLD_AREA_TIK_TIK_H_
+#pragma once
 
-enum {
+enum AreaBytesTIK {
     AB_TIK_Unused_0     = AreaByte(0),
     AB_TIK_Unused_1     = AreaByte(1),
     AB_TIK_Unused_2     = AreaByte(2),
@@ -20,11 +19,9 @@ enum {
     AB_TIK_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsTIK {
     AF_TIK_02       = AreaFlag(2),
     AF_TIK_03       = AreaFlag(3),
     AF_TIK_04       = AreaFlag(4),
     AF_TIK_05       = AreaFlag(5),
 };
-
-#endif

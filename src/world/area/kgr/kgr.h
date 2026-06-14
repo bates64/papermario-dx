@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_KGR_KGR_H_
-#define _WORLD_AREA_KGR_KGR_H_
+#pragma once
 
-enum {
+enum AreaBytesKGR {
     AB_KGR_Unused_0       = AreaByte(0),
     AB_KGR_Unused_1       = AreaByte(1),
     AB_KGR_Unused_2       = AreaByte(2),
@@ -20,6 +19,6 @@ enum {
     AB_KGR_Unused_F       = AreaByte(15),
 };
 
-#define AF_KGR(index) AreaFlag(index)
-
-#endif
+enum AreaFlagsKGR {
+    AF_KGR_Unused_0     = AreaFlag(0),
+};

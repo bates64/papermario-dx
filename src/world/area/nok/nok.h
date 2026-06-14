@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_NOK_NOK_H_
-#define _WORLD_AREA_NOK_NOK_H_
+#pragma once
 
-enum {
+enum AreaBytesNOK {
     AB_NOK01_RadioStation = AreaByte(0),
     AB_NOK_1            = AreaByte(1),
     AB_NOK_2            = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_NOK_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsNOK {
     AF_NOK12_HitSwitch      = AreaFlag(1),
     AF_NOK14_HitSwitch      = AreaFlag(2),
     AF_NOK04_PlayingGame    = AreaFlag(3),
@@ -42,5 +41,3 @@ enum {
     AF_NOK_14               = AreaFlag(20),
     AF_NOK_15               = AreaFlag(21),
 };
-
-#endif

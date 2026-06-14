@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_KZN_KZN_H_
-#define _WORLD_AREA_KZN_KZN_H_
+#pragma once
 
-enum {
+enum AreaBytesKZN {
     AB_KZN_LastZiplineNpc1      = AreaByte(0),
     AB_KZN_LastZiplineNpc2      = AreaByte(1),
     AB_KZN_Unused_2             = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_KZN_Unused_F             = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsKZN {
     AF_KZN_TrompRollingDone         = AreaFlag(2),
     AF_KZN_TrompHitPlayer           = AreaFlag(3),
     AF_KZN_Tromp1_ShakingDone       = AreaFlag(4),
@@ -44,5 +43,3 @@ enum {
     AF_KZN11_FireBar2_Coins         = AreaFlag(22),
     AF_KZN11_FireBar3_Coins         = AreaFlag(23),
 };
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_FLO_FLO_H_
-#define _WORLD_AREA_FLO_FLO_H_
+#pragma once
 
-enum {
+enum AreaBytesFLO {
     AB_FLO00_DialogueState_Tolielup     = AreaByte(0),
     AB_FLO03_DialogueState_Petunia      = AreaByte(1),
     AB_FLO_CrystalTreeHitCount          = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_FLO_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsFLO {
     // flo_07
     AF_FLO07_ToggleDialogue_Posie        = AreaFlag(5),
     AF_FLO_MadeCrystalBerry              = AreaFlag(6),
@@ -66,5 +65,3 @@ enum {
     AF_FLO_RidingBeanstalk              = AreaFlag(44),
     AF_FLO_BeanstalkFadedOut            = AreaFlag(45),
 };
-
-#endif

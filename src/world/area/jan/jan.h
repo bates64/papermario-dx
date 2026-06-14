@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_JAN_JAN_H_
-#define _WORLD_AREA_JAN_JAN_H_
+#pragma once
 
-enum {
+enum AreaBytesJAN {
     AB_JAN22_ZiplineNpc1            = AreaByte(0),
     AB_JAN22_ZiplineNpc2            = AreaByte(1),
     AB_JAN_2                        = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_JAN_Unused_F                 = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsJAN {
     AF_JAN_02                           = AreaFlag(2),
     AF_JAN_03                           = AreaFlag(3),
     AF_JAN02_RaphaelComment             = AreaFlag(4),
@@ -46,5 +45,3 @@ enum {
     AF_JAN_16                           = AreaFlag(22),
     AF_JAN03_TreeDrop1                  = AreaFlag(23),
 };
-
-#endif

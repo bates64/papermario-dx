@@ -2,12 +2,12 @@
 #include "npc.h"
 #include "world/partners.h"
 
-API_CALLABLE(N(ToadHouse_DisableStatusBar)) {
+API_CALLABLE(N(ToadHouse_SuspendStatusBar)) {
     status_bar_ignore_changes();
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_ShowWorldStatusBar)) {
+API_CALLABLE(N(ToadHouse_ResumeStatusBar)) {
     status_bar_respond_to_changes();
     sync_status_bar();
     return ApiStatus_DONE2;
@@ -42,7 +42,7 @@ API_CALLABLE(N(ToadHouse_AwaitScriptComplete)) {
     }
 }
 
-API_CALLABLE(N(ToadHouse_PartnerSuspendAbilityScript)) {
+API_CALLABLE(N(ToadHouse_SuspendPartnerAbility)) {
     if (gPlayerData.curPartner == PARTNER_NONE) {
         return ApiStatus_DONE2;
     }
@@ -50,7 +50,7 @@ API_CALLABLE(N(ToadHouse_PartnerSuspendAbilityScript)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_PartnerResumeAbilityScript)) {
+API_CALLABLE(N(ToadHouse_ResumePartnerAbility)) {
     partner_resume_ability_script();
     return ApiStatus_DONE2;
 }
@@ -92,10 +92,10 @@ API_CALLABLE(N(ToadHouse_PutPartnerAway)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(ToadHouse_GetPartnerBackOut)) {
+API_CALLABLE(N(ToadHouse_GetPartnerOut)) {
     Bytecode* args = script->ptrReadPos;
     Bytecode readFromVar = *args++;
 
-    switch_to_partner((s8)evt_get_variable(script, readFromVar));
+    switch_to_partner(evt_get_variable(script, readFromVar));
     return ApiStatus_DONE2;
 }

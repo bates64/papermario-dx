@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_IWA_IWA_H_
-#define _WORLD_AREA_IWA_IWA_H_
+#pragma once
 
-enum {
+enum AreaBytesIWA {
     AB_IWA_Unused_0        = AreaByte(0),
     AB_IWA_Unused_1        = AreaByte(1),
     AB_IWA_Unused_2        = AreaByte(2),
@@ -20,9 +19,7 @@ enum {
     AB_IWA_Unused_F        = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsIWA {
     AF_IWA_SpokeWithBubulb     = AreaFlag(1),
     AF_IWA_SpokeWIthDryite      = AreaFlag(2),
 };
-
-#endif

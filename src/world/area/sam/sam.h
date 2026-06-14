@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_SAM_SAM_H_
-#define _WORLD_AREA_SAM_SAM_H_
+#pragma once
 
-enum {
+enum AreaBytesSAM {
     AB_SAM_Unused_0     = AreaByte(0),
     AB_SAM_Unused_1     = AreaByte(1),
     AB_SAM_Unused_2     = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_SAM_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsSAM {
     AF_SAM_Snowing      = AreaFlag(1),
     AF_SAM_LastSnowing  = AreaFlag(2),
     AF_SAM01_InsideMayorOffice      = AreaFlag(3),
@@ -28,5 +27,3 @@ enum {
     AF_SAM_05           = AreaFlag(5),
     AF_SAM08_ImposterSwitchPressed  = AreaFlag(6),
 };
-
-#endif

@@ -202,9 +202,9 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(N(ToadHouse_DisableStatusBar))
+    Call(N(ToadHouse_SuspendStatusBar))
     IfNe(LVar4, 0)
-        Exec(N(EVS_ToadHouse_Unk2))
+        Exec(N(EVS_ToadHouse_OpenBedCovers))
     EndIf
     Call(N(ToadHouse_PutPartnerAway), LVarA)
     Wait(20)
@@ -223,9 +223,9 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(EVS_ToadHouse_Unk1))
+            Exec(N(EVS_ToadHouse_ResetBedCovers))
         EndIf
-        Call(N(ToadHouse_GetPartnerBackOut), LVarA)
+        Call(N(ToadHouse_GetPartnerOut), LVarA)
         Wait(30)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Loop(0)
@@ -243,7 +243,7 @@ EvtScript N(EVS_MeetToadHouseKeeper) = {
     Call(DisablePlayerPhysics, false)
     Call(SetNpcFlagBits, NPC_Toad, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
     Call(SpeakToPlayer, NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVarB)
-    Call(N(ToadHouse_ShowWorldStatusBar))
+    Call(N(ToadHouse_ResumeStatusBar))
     Return
     End
 };

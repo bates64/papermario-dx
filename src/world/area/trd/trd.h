@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_TRD_TRD_H_
-#define _WORLD_AREA_TRD_TRD_H_
+#pragma once
 
-enum {
+enum AreaBytesTRD {
     AB_TRD_Unused_0     = AreaByte(0),
     AB_TRD_Unused_1     = AreaByte(1),
     AB_TRD_Unused_2     = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_TRD_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsTRD {
     AF_TRD01_RaiseStairs        = AreaFlag(1),
     AF_TRD02_LowerStairs        = AreaFlag(2),
     AF_TRD04_LowerStairs        = AreaFlag(4),
@@ -32,5 +31,3 @@ enum {
     AF_TRD08_FireBar2_Coins     = AreaFlag(12),
     AF_TRD_FakeBowserRevealed   = AreaFlag(13),
 };
-
-#endif

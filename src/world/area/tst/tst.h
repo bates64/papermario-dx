@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_TST_TST_H_
-#define _WORLD_AREA_TST_TST_H_
+#pragma once
 
-enum {
+enum AreaBytesTST {
     AB_TST_Unused_0     = AreaByte(0),
     AB_TST_Unused_1     = AreaByte(1),
     AB_TST_Unused_2     = AreaByte(2),
@@ -20,8 +19,6 @@ enum {
     AB_TST_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsTST {
     AF_TST_00           = AreaFlag(0),
 };
-
-#endif

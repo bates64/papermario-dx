@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_ISK_ISK_H_
-#define _WORLD_AREA_ISK_ISK_H_
+#pragma once
 
-enum {
+enum AreaBytesISK {
     AB_ISK_Unused_0        = AreaByte(0),
     AB_ISK_Unused_1        = AreaByte(1),
     AB_ISK_Unused_2        = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_ISK_Unused_F        = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsISK {
     AF_ISK03_SandSwitchActivated    = AreaFlag(1),
     AF_ISK06_SandSwitchActivated    = AreaFlag(2),
     AF_ISK12_SandSwitchActivated    = AreaFlag(3),
@@ -41,5 +40,3 @@ enum {
     AF_ISK12_StairSwitchActivated   = AreaFlag(18),
     AF_ISK14_StoneChompDefeated     = AreaFlag(19),
 };
-
-#endif

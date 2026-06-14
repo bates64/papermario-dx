@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_MIM_MIM_H_
-#define _WORLD_AREA_MIM_MIM_H_
+#pragma once
 
-enum {
+enum AreaBytesMIM {
     AB_MIM_Unused_0     = AreaByte(0),
     AB_MIM_1            = AreaByte(1),
     AB_MIM_2            = AreaByte(2),
@@ -20,11 +19,9 @@ enum {
     AB_MIM_Unused_F     = AreaByte(15),
 };
 
-enum {
-    AF_MIM11_MansionGateOpen                       = AreaFlag(1),
-    AF_MIM03_ToggleDialogue_Oaklie         = AreaFlag(2),
-    AF_MIM04_ToggleDialogue_Bubulb         = AreaFlag(4),
+enum AreaFlagsMIM {
+    AF_MIM11_MansionGateOpen        = AreaFlag(1),
+    AF_MIM03_ToggleDialogue_Oaklie  = AreaFlag(2),
+    AF_MIM04_ToggleDialogue_Bubulb  = AreaFlag(4),
     AF_MIM12_BackgroundLitUp        = AreaFlag(3),
 };
-
-#endif

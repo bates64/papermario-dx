@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_MGM_MGM_H_
-#define _WORLD_AREA_MGM_MGM_H_
+#pragma once
 
-enum {
+enum AreaBytesMGM {
     AB_MGM_Unused_0     = AreaByte(0),
     AB_MGM_Unused_1     = AreaByte(1),
     AB_MGM_Unused_2     = AreaByte(2),
@@ -20,6 +19,6 @@ enum {
     AB_MGM_Unused_F     = AreaByte(15),
 };
 
-#define AF_MGM(index) AreaFlag(index)
-
-#endif
+enum AreaFlagsMGM {
+    AF_MGM_Unused_0     = AreaFlag(0),
+};

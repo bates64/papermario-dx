@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_PRA_PRA_H_
-#define _WORLD_AREA_PRA_PRA_H_
+#pragma once
 
-enum {
+enum AreaBytesPRA {
     AB_PRA_Unused_0     = AreaByte(0),
     AB_PRA_Unused_1     = AreaByte(1),
     AB_PRA_Unused_2     = AreaByte(2),
@@ -20,9 +19,7 @@ enum {
     AB_PRA_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsPRA {
     AF_PRA09_HitSwitch      = AreaFlag(2),
     AF_PRA33_FlippingWall   = AreaFlag(3),
 };
-
-#endif

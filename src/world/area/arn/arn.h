@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_ARN_ARN_H_
-#define _WORLD_AREA_ARN_ARN_H_
+#pragma once
 
-enum {
+enum AreaBytesARN {
     AB_ARN_Unused_0     = AreaByte(0),
     AB_ARN_Unused_1     = AreaByte(1),
     AB_ARN_Unused_2     = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_ARN_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsARN {
     AF_ARN_UsingWellSpring            = AreaFlag(1),
     AF_ARN03_ToggleDialogue_Boo1      = AreaFlag(2),
     AF_ARN03_ToggleDialogue_Boo2      = AreaFlag(3),
@@ -31,5 +30,3 @@ enum {
     AF_ARN05_ToggleDialogue_Boo5      = AreaFlag(8),
     AF_ARN05_Boo3GaveRecentAdvice     = AreaFlag(9),
 };
-
-#endif

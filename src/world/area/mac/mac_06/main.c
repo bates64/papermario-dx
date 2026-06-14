@@ -51,7 +51,7 @@ EvtScript N(EVS_Main) = {
     EVT_SETUP_CAMERA_DEFAULT(0, 0, 0)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     Exec(N(EVS_FlyingGull))
-    Exec(N(EVS_WhaleMain))
+    Exec(N(EVS_SetupWhale))
     Call(SetMusic, 0, SONG_RIDING_THE_WHALE, 0, VOL_LEVEL_FULL)
     Call(PlayAmbientSounds, AMBIENT_BEACH)
     Exec(N(EVS_AnimateWaves))

@@ -6,7 +6,8 @@ extern EvtScript N(EVS_ToadHouse_SetDialogue);
 extern EvtScript N(EVS_ToadHouse_ReturnFromRest);
 extern EvtScript N(EVS_ToadHouse_GetInBed);
 
-EvtScript N(EVS_ToadHouse_Unk1) = {
+// presumably, these are never really used
+EvtScript N(EVS_ToadHouse_ResetBedCovers) = {
     Call(EnableModel, LVar4, false)
     Call(EnableModel, LVar5, true)
     Call(RotateModel, LVar6, 0, 0, 0, 1)
@@ -15,7 +16,8 @@ EvtScript N(EVS_ToadHouse_Unk1) = {
     End
 };
 
-EvtScript N(EVS_ToadHouse_Unk2) = {
+// presumably, these are never really used
+EvtScript N(EVS_ToadHouse_OpenBedCovers) = {
     Set(LVar9, LVar7)
     Set(LVar8, LVar6)
     Set(LVar7, LVar5)
@@ -28,24 +30,25 @@ EvtScript N(EVS_ToadHouse_Unk2) = {
     EndThread
     Call(MakeLerp, 0, 180, 20, EASING_CUBIC_IN)
     Label(1)
-    Call(UpdateLerp)
-    Call(RotateModel, LVar8, LVar0, 0, 0, -1)
-    Call(RotateModel, LVar9, LVar0, 0, 0, -1)
-    IfEq(LVar1, 1)
-        Wait(1)
-        Goto(1)
-    EndIf
+        Call(UpdateLerp)
+        Call(RotateModel, LVar8, LVar0, 0, 0, -1)
+        Call(RotateModel, LVar9, LVar0, 0, 0, -1)
+        IfEq(LVar1, 1)
+            Wait(1)
+            Goto(1)
+        EndIf
     Call(EnableModel, LVar7, false)
     Return
     End
 };
 
-#ifndef ANIM_ShiverToad_Red_Talk
-#define ANIM_ShiverToad_Red_Talk ANIM_Toad_Red_Talk
-#endif
-
-#ifndef ANIM_ShiverToad_Red_Idle
-#define ANIM_ShiverToad_Red_Idle ANIM_Toad_Red_Idle
+// automatically use Shiver City toad if animations are present
+#ifdef ANIM_ShiverToad_Red_Idle
+#define TOAD_HOUSE_ANIM_IDLE ANIM_ShiverToad_Red_Idle
+#define TOAD_HOUSE_ANIM_TALK ANIM_ShiverToad_Red_Talk
+#else
+#define TOAD_HOUSE_ANIM_IDLE ANIM_Toad_Red_Idle
+#define TOAD_HOUSE_ANIM_TALK ANIM_Toad_Red_Talk
 #endif
 
 EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
@@ -61,20 +64,20 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     IfEq(LVar1, 0)
         Set(LVar8, LVar0)
     EndIf
-    Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVar8)
+    Call(SpeakToPlayer, NPC_SELF, TOAD_HOUSE_ANIM_TALK, TOAD_HOUSE_ANIM_IDLE, 0, LVar8)
     Call(ShowChoice, MSG_Choice_0006)
     Wait(3)
     IfEq(LVar0, 1)
-        Call(ContinueSpeech, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVar9)
+        Call(ContinueSpeech, NPC_SELF, TOAD_HOUSE_ANIM_TALK, TOAD_HOUSE_ANIM_IDLE, 0, LVar9)
         Return
     EndIf
-    Call(ContinueSpeech, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVarA)
+    Call(ContinueSpeech, NPC_SELF, TOAD_HOUSE_ANIM_TALK, TOAD_HOUSE_ANIM_IDLE, 0, LVarA)
     Call(SetPlayerJumpscale, 1)
     Call(DisablePlayerPhysics, true)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, true)
-    Call(N(ToadHouse_DisableStatusBar))
+    Call(N(ToadHouse_SuspendStatusBar))
     IfNe(LVar4, 0)
-        Exec(N(EVS_ToadHouse_Unk2))
+        Exec(N(EVS_ToadHouse_OpenBedCovers))
     EndIf
     Call(N(ToadHouse_PutPartnerAway), LVarA)
     Wait(20)
@@ -91,9 +94,9 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
         Call(FullyRestoreHPandFP)
         Call(FullyRestoreSP)
         IfNe(LVar4, 0)
-            Exec(N(EVS_ToadHouse_Unk1))
+            Exec(N(EVS_ToadHouse_ResetBedCovers))
         EndIf
-        Call(N(ToadHouse_GetPartnerBackOut), LVarA)
+        Call(N(ToadHouse_GetPartnerOut), LVarA)
         Wait(45)
         Call(MakeLerp, 255, 0, 30, EASING_LINEAR)
         Label(1)
@@ -108,8 +111,8 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper) = {
     ExecWait(N(EVS_ToadHouse_ReturnFromRest))
     Call(DisablePlayerPhysics, false)
     Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
-    Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Red_Talk, ANIM_ShiverToad_Red_Idle, 0, LVarB)
-    Call(N(ToadHouse_ShowWorldStatusBar))
+    Call(SpeakToPlayer, NPC_SELF, TOAD_HOUSE_ANIM_TALK, TOAD_HOUSE_ANIM_IDLE, 0, LVarB)
+    Call(N(ToadHouse_ResumeStatusBar))
     Return
     End
 };

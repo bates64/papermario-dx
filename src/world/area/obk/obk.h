@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_OBK_OBK_H_
-#define _WORLD_AREA_OBK_OBK_H_
+#pragma once
 
-enum {
+enum AreaBytesOBK {
     AB_OBK_Unused_0     = AreaByte(0),
     AB_OBK_Unused_1     = AreaByte(1),
     AB_OBK_Unused_2     = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_OBK_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsOBK {
     AF_OBK01_CabinetMoved           = AreaFlag(1),
     AF_OBK01_IsPlayerNearPortrait   = AreaFlag(3),
     AF_OBK01_WasPlayerNearPortrait  = AreaFlag(4),
@@ -29,5 +28,3 @@ enum {
     AF_OBK03_HitThirdSwitch         = AreaFlag(7),
     AF_OBK08_KeepAwayStarted        = AreaFlag(8),
 };
-
-#endif

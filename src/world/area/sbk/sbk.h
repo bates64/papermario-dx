@@ -1,7 +1,6 @@
-#ifndef _WORLD_AREA_SBK_SBK_H_
-#define _WORLD_AREA_SBK_SBK_H_
+#pragma once
 
-enum {
+enum AreaBytesSBK {
     AB_SBK_Unused_0     = AreaByte(0),
     AB_SBK_Unused_1     = AreaByte(1),
     AB_SBK_Unused_2     = AreaByte(2),
@@ -20,7 +19,7 @@ enum {
     AB_SBK_Unused_F     = AreaByte(15),
 };
 
-enum {
+enum AreaFlagsSBK {
     AF_BanditHasCoin    = AreaFlag(1),
     AF_SBK30_ToggleDialogue_Archeologist1 = AreaFlag(2),
     AF_SBK30_ToggleDialogue_Archeologist2 = AreaFlag(3),
@@ -28,5 +27,3 @@ enum {
     AF_SBK_05           = AreaFlag(5),
     AF_SBK_06           = AreaFlag(6),
 };
-
-#endif
