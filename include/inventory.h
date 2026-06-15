@@ -2,6 +2,9 @@
 
 #include "common.h"
 
+#define ITEM_ID_MASK  0x0000FFFF
+#define ITEM_VIS_MASK 0x000F0000
+
 /// Add `itemID` to player inventory and return inventory slot in which it was placed.
 /// Returns the index of the new item in the player's inventory, or -1 if there was no room.
 s32 add_item(s32 itemID);

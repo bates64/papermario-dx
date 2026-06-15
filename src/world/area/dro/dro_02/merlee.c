@@ -68,10 +68,6 @@ s8 N(MerleeCoinCosts)[] = {
     50, 20, 5, 0,
 };
 
-#if !VERSION_PAL
-s32 N(pad_XX111)[] = { 0 };
-#endif
-
 INCLUDE_IMG("world/area/dro/dro_02/card.png", dro_02_card);
 INCLUDE_PAL("world/area/dro/dro_02/card.pal", dro_02_card_pal);
 #include "world/area/dro/dro_02/card_1.vtx.inc.c"
@@ -216,6 +212,9 @@ u32 N(appendGfx_ritual_card)(RitualCard* card, Matrix4f mtxParent) {
     SpriteRasterInfo rasterInfo;
     s32 ret;
 
+    // resolves a deadlock where imgfx_appendGfx_component would exit early if uninitialized
+    ifxImg.alpha = 255;
+
     if (card->unk_00 == 0) {
         return 1;
     }
@@ -324,9 +323,7 @@ void N(card_worker_update)(void) {
     f32 sp48, sp4C, sp50, sp54;
     f32 sp58, sp5C, sp60, sp64;
     f32 sp68, sp6C, sp70, sp74;
-    EffectInstance* effect;
-    EnergyInOutFXData* data;
-    s32 i, j;
+    s32 j;
 
     switch (evt_get_variable(N(CreatorScript), RITUAL_VAR_STATE)) {
         case RITUAL_STATE_INIT:
@@ -539,7 +536,7 @@ void N(card_worker_update)(void) {
                     N(D_8024EF90)[j]->data.energyInOut->scale = 0.1f;
                 }
 
-                for (i = 1; i < N(D_8024EF90)[j]->numParts; i++, data++) {
+                for (i = 1; i < N(D_8024EF90)[j]->numParts; i++) {
                     N(D_8024EF90)[j]->data.energyInOut[i].unk_38 += 0.01;
                 }
             }

@@ -1,4 +1,4 @@
-#ifndef _H_INCLUDE_ASSET
+#pragma once
 
 #define ASTRINGIFY_(x) #x
 #define ASTRINGIFY(x) ASTRINGIFY_(x)
@@ -50,6 +50,3 @@
         ".incbin \"ver/"ASTRINGIFY(VERSION)"/build/assets/"ASTRINGIFY(VERSION)"/" FILENAME "\"\n" \
         POPSECTION \
     )
-
-
-#endif // _H_INCLUDE_ASSET
