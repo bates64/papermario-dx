@@ -5,7 +5,6 @@
 #include "world/common/npc/Toad_Wander.inc.c"
 #include "world/common/npc/Toad_Patrol.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/atomic/LetterDelivery.inc.c"
 #define NAME_SUFFIX
 
 s32 N(LetterList_MissT)[] = {
@@ -14,12 +13,12 @@ s32 N(LetterList_MissT)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_MissT) = {
-    Call(N(LetterDelivery_Init_Shared),
+    Call(LetterDelivery_Init,
         NPC_MissT, ANIM_Toadette_Orange_Talk, ANIM_Toadette_Orange_Idle,
         ITEM_LETTER_CHAIN_MISS_T, ITEM_LETTER_CHAIN_LITTLE_MOUSER,
         MSG_MAC_Gate_00FF, MSG_MAC_Gate_0100, MSG_MAC_Gate_0101, MSG_MAC_Gate_0102,
         Ref(N(LetterList_MissT)))
-    ExecWait(N(EVS_DoLetterDelivery_Shared))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

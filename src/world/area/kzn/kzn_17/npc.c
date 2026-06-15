@@ -5,8 +5,6 @@
 #include "world/common/enemy/PutridPiranha.inc.c"
 #include "world/common/enemy/SpikeTop.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_KOLORADO,
     ITEM_NONE

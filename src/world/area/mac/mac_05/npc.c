@@ -1,5 +1,7 @@
 #include "mac_05.h"
 #include "sprite/player.h"
+#include "inventory.h"
+
 #include "world/common/atomic/Whale.h"
 
 #include "world/common/npc/Whale.inc.c"
@@ -10,8 +12,6 @@
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
-
-#include "world/common/atomic/LetterDelivery.inc.c"
 
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,
@@ -38,13 +38,13 @@ s32 N(Fishmael_LetterList)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Fishmael) = {
-    Call(N(LetterDelivery_Init), NPC_Fishmael,
+    Call(LetterDelivery_Init, NPC_Fishmael,
         ANIM_Fishmael_Talk, ANIM_Fishmael_Idle,
         ITEM_LETTER_CHAIN_FISHMAEL, ITEM_LETTER_CHAIN_KOOVER_2,
         MSG_MAC_Port_0064, MSG_MAC_Port_0065,
         MSG_MAC_Port_0066, MSG_MAC_Port_0067,
         Ref(N(Fishmael_LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -54,13 +54,13 @@ s32 N(Kolorado_LetterList)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init), NPC_Kolorado,
+    Call(LetterDelivery_Init, NPC_Kolorado,
         ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
         MSG_MAC_Port_0085, MSG_MAC_Port_0086,
         MSG_MAC_Port_0087, MSG_MAC_Port_0088,
         Ref(N(Kolorado_LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

@@ -6,12 +6,12 @@ s32 N(LetterList_FiceT)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_FiceT) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle,
         ITEM_LETTER_TO_FICE_T, ITEM_NONE,
         MSG_MAC_Bridge_0036, MSG_MAC_Bridge_0037, MSG_MAC_Bridge_0038, 0,
         Ref(N(LetterList_FiceT)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

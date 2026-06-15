@@ -179,12 +179,12 @@ EvtScript N(EVS_DoLetterDelivery) = {
 
 #define EVT_LETTER_PROMPT(npcName, npcID, animTalk, animIdle, msg1, msg2, ms3, msg4, itemID, itemList) \
     EvtScript N(EVS_LetterPrompt_##npcName) = { \
-        Call(N(LetterDelivery_Init), \
+        Call(LetterDelivery_Init, \
             npcID, animTalk, animIdle, \
             itemID, ITEM_NONE, \
             msg1, msg2, ms3, msg4, \
             Ref(itemList)) \
-        ExecWait(N(EVS_DoLetterDelivery)) \
+        ExecWait(EVS_DoLetterDelivery) \
         Return \
         End \
     }

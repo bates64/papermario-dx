@@ -2011,6 +2011,15 @@ API_CALLABLE(HasItem);
 API_CALLABLE(GetItemName);
 
 /// @evtapi
+/// Converts a player's position to the corresponding hand position used when
+/// holding, giving, or receiving an item.
+///
+/// @param posX  (in) Player X position; (out) hand X position.
+/// @param posY  (in) Player Y position; (out) hand Y position.
+/// @param posZ  (in) Player Z position; (out) hand Z position.
+API_CALLABLE(AddPlayerHandsOffset);
+
+/// @evtapi
 /// @param itemID
 /// @param outItemSlot
 API_CALLABLE(FindItem);

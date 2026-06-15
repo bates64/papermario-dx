@@ -19,8 +19,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 API_CALLABLE(N(GetOinkCount)) {
     s32 oinkCount = evt_get_variable(script, GB_MAC03_LilOinkCount);
 
@@ -54,13 +52,13 @@ s32 N(LetterList_A)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_ToadKid1A) = {
-    Call(N(LetterDelivery_Init), NPC_ToadKid_01,
+    Call(LetterDelivery_Init, NPC_ToadKid_01,
         ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
         ITEM_LETTER_CHAIN_DANE_T_1, ITEM_NONE,
         MSG_MAC_Station_0049, MSG_MAC_Station_004A,
         MSG_MAC_Station_004B, MSG_MAC_Station_004C,
         Ref(N(LetterList_A)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -80,13 +78,13 @@ s32 N(LetterList_B)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_ToadKid1B) = {
-    Call(N(LetterDelivery_Init), NPC_ToadKid_01,
+    Call(LetterDelivery_Init, NPC_ToadKid_01,
         ANIM_ToadKid_Red_Talk, ANIM_ToadKid_Red_Idle,
         ITEM_LETTER_CHAIN_DANE_T_2, ITEM_NONE,
         MSG_MAC_Station_004E, MSG_MAC_Station_004F,
         MSG_MAC_Station_0050, MSG_MAC_Station_0051,
         Ref(N(LetterList_B)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

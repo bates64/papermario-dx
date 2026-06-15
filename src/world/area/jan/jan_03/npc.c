@@ -20,20 +20,21 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(RedYoshiKidLetters)[] = {
     ITEM_LETTER_CHAIN_YOSHI_KID,
     ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_YoshiKid_02, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle,
         ITEM_LETTER_CHAIN_YOSHI_KID, ITEM_LETTER_CHAIN_DANE_T_2,
-        MSG_CH5_0079, MSG_CH5_007A, MSG_CH5_007B, MSG_CH5_007C,
+        MSG_CH5_0079,
+        MSG_CH5_007A,
+        MSG_CH5_007B,
+        MSG_CH5_007C,
         Ref(N(RedYoshiKidLetters)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -44,12 +45,12 @@ s32 N(KoloradoLetters)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
         MSG_CH5_001D, MSG_CH5_001E, MSG_CH5_001F, MSG_CH5_0020,
         Ref(N(KoloradoLetters)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

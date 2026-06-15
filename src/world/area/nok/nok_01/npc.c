@@ -17,19 +17,17 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LettersKoover1)[] = {
     ITEM_LETTER_CHAIN_KOOVER_1, ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_Koover1) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
         ITEM_LETTER_CHAIN_KOOVER_1, ITEM_LETTER_CHAIN_FISHMAEL,
         MSG_CH1_0009, MSG_CH1_000A, MSG_CH1_000B, MSG_CH1_000C,
         Ref(N(LettersKoover1)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -39,12 +37,12 @@ s32 N(LettersKoover2)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Koover2) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
         ITEM_LETTER_CHAIN_KOOVER_2, ITEM_LETTER_CHAIN_MR_E,
         MSG_CH1_000D, MSG_CH1_000E, MSG_CH1_000F, MSG_CH1_0010,
         Ref(N(LettersKoover2)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -54,12 +52,12 @@ s32 N(LettersMortT)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_MortT) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_MortT, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
         ITEM_LETTER_TO_MORT_T, ITEM_NONE,
         MSG_CH1_0039, MSG_CH1_003A, MSG_CH1_003B, MSG_CH1_003C,
         Ref(N(LettersMortT)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

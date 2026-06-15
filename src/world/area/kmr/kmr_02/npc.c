@@ -35,8 +35,6 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 #include "world/common/enemy/Kammy_Guard.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 #include "world/common/atomic/MarioSalute.inc.c"
 
 #define NAME_SUFFIX _Npc
@@ -49,12 +47,15 @@ s32 N(LetterList_GoompapaTrade)[] = {
 };
 
 EvtScript N(EVS_LetterTrade_Goompapa) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle,
         ITEM_LETTER_CHAIN_GOOMPAPA_1, ITEM_LETTER_CHAIN_MUSS_T,
-        MSG_CH0_006F, MSG_CH0_0070, MSG_CH0_0071, MSG_CH0_0072,
+        MSG_CH0_006F,
+        MSG_CH0_0070,
+        MSG_CH0_0071,
+        MSG_CH0_0072,
         Ref(N(LetterList_GoompapaTrade)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -65,12 +66,12 @@ s32 N(LetterList_Goompapa)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Goompapa) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle,
         ITEM_LETTER_CHAIN_GOOMPAPA_2, ITEM_NONE,
         MSG_CH0_0073, MSG_CH0_0074, MSG_CH0_0075, MSG_CH0_0076,
         Ref(N(LetterList_Goompapa)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -89,12 +90,12 @@ s32 N(LetterList_Goompa)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Goompa) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle,
         ITEM_LETTER_TO_GOOMPA, ITEM_NONE,
         MSG_CH0_0045, MSG_CH0_0046, MSG_CH0_0047, MSG_CH0_0048,
         Ref(N(LetterList_Goompa)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -168,7 +169,7 @@ EvtScript N(EVS_NpcIdle_Goombaria_NoAI) = {
 
 EvtScript N(EVS_HandOverDolly) = {
     Call(GetPlayerPos, LVar3, LVar4, LVar5)
-    Call(N(AddPlayerHandsOffset), LVar3, LVar4, LVar5)
+    Call(AddPlayerHandsOffset, LVar3, LVar4, LVar5)
     Call(MakeItemEntity, ITEM_DOLLY, LVar3, LVar4, LVar5, ITEM_SPAWN_MODE_DECORATION, 0)
     Call(SetPlayerAnimation, ANIM_MarioW1_TakeItem)
     Wait(30)

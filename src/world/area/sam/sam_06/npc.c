@@ -68,20 +68,18 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList_FrostT)[] = {
     ITEM_LETTER_CHAIN_FROST_T,
     ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_FrostT) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_ShiverToad_03, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle,
         ITEM_LETTER_CHAIN_FROST_T, ITEM_LETTER_CHAIN_GOOMPAPA_2,
         MSG_CH7_00FE, MSG_CH7_00FF, MSG_CH7_0100, MSG_CH7_0101,
         Ref(N(LetterList_FrostT)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

@@ -40,13 +40,10 @@ NpcSettings N(NpcSettings_Archeologist) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
+#include "world/common/npc/Toad_Stationary.inc.c"
 #include "world/common/npc/Dryite_Wander.inc.c"
 #include "world/common/npc/Dryite_Stationary.inc.c"
 #include "world/common/npc/Mouser.inc.c"
-
-#include "world/common/npc/Toad_Stationary.inc.c"
-
-#include "world/common/atomic/LetterDelivery.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
@@ -57,7 +54,7 @@ s32 N(LetterList)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_MrE) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Dryite_01, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle,
         ITEM_LETTER_CHAIN_MR_E, ITEM_LETTER_CHAIN_MISS_T,
         MSG_CH2_0095,
@@ -65,7 +62,7 @@ EvtScript N(EVS_LetterPrompt_MrE) = {
         MSG_CH2_0097,
         MSG_CH2_0098,
         Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

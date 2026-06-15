@@ -6,12 +6,12 @@ s32 N(LetterList_RussT)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_RussT) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_RussT, ANIM_RussT_Talk, ANIM_RussT_Idle,
         ITEM_LETTER_TO_RUSS_T, ITEM_NONE,
         MSG_MAC_Gate_0011, MSG_MAC_Gate_0012, MSG_MAC_Gate_0013, MSG_MAC_Gate_0014,
         Ref(N(LetterList_RussT)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

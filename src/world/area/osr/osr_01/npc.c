@@ -3,8 +3,6 @@
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 EvtScript N(EVS_Scene_Wishing) = {
     Call(DisablePlayerInput, true)
     Call(DisablePlayerPhysics, true)
@@ -73,12 +71,12 @@ EvtScript N(EVS_NpcInteract_Toad) = {
             Set(LVar0, MSG_OSR_000F)
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, LVar0)
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Toad, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
         ITEM_LETTER_CHAIN_MUSS_T, ITEM_LETTER_CHAIN_KOOVER_1,
         MSG_OSR_0010, MSG_OSR_0011, MSG_OSR_0012, MSG_OSR_0013,
         Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     IfEq(LVarC, 1)
         Return
     EndIf

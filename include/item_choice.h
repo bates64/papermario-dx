@@ -11,6 +11,11 @@ extern EvtScript EVS_GiveCoinReward;
 extern API_CALLABLE(LetterDelivery_Init);
 extern EvtScript EVS_DoLetterDelivery;
 
+enum ItemChoiceResult {
+    ITEM_CHOICE_NONE        = 0,  // player did not have any of the requested items
+    ITEM_CHOICE_CANCELED    = -1, // player canceled the choice dialog
+};
+
 enum DeliveryResult {
     DELIVERY_NOT_POSSIBLE   = 0,
     DELIVERY_REJECTED       = 1,

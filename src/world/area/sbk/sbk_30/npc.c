@@ -9,20 +9,18 @@ NpcSettings N(NpcSettings_Archeologist_01) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_KOLORADO,
     ITEM_NONE
 };
 
 EvtScript N(EVS_DeliveryPrompt) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
         MSG_CH2_004A, MSG_CH2_004B, MSG_CH2_004C, MSG_CH2_004D,
         Ref(N(LetterList)))
-        ExecWait(N(EVS_DoLetterDelivery))
+        ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

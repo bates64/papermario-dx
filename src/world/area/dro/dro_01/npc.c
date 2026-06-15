@@ -12,8 +12,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"
 
 s32 N(LetterList)[] = {
@@ -22,12 +20,15 @@ s32 N(LetterList)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_ShopOwner) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle,
         ITEM_LETTER_CHAIN_LITTLE_MOUSER, ITEM_LETTER_CHAIN_FRANKY,
-        MSG_CH2_0089, MSG_CH2_008A, MSG_CH2_008B, MSG_CH2_008C,
+        MSG_CH2_0089,
+        MSG_CH2_008A,
+        MSG_CH2_008B,
+        MSG_CH2_008C,
         Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

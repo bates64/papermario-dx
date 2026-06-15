@@ -8,8 +8,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 #include "npc/russ_and_thief.inc.c"
 
 EvtScript N(EVS_NpcAI_ShyGuy_03) = {

@@ -15,19 +15,17 @@
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList_Kolorado)[] = {
     ITEM_LETTER_TO_KOLORADO, ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
         MSG_CH1_0097, MSG_CH1_0098, MSG_CH1_0099, MSG_CH1_009A,
         Ref(N(LetterList_Kolorado)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

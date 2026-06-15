@@ -10,8 +10,6 @@
 
 #include "world/common/enemy/ShyGuy.h"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 #include "npc/tayce_t.inc.c"
 
 #include "npc/fice_t.inc.c"

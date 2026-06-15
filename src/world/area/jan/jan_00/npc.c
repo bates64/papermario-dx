@@ -9,8 +9,6 @@
 #include "world/common/npc/JrTroopa.inc.c"
 #include "world/common/enemy/HeartPlant.inc.c"
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,
     WHALE_RIDER_PARTNER     = 1,
@@ -35,12 +33,15 @@ s32 N(LetterList)[] = {
 };
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Kolorado_02, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH5_001D, MSG_CH5_001E, MSG_CH5_001F, MSG_CH5_0020,
+        MSG_CH5_001D,
+        MSG_CH5_001E,
+        MSG_CH5_001F,
+        MSG_CH5_0020,
         Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };

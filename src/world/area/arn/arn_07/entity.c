@@ -5,13 +5,13 @@ EvtScript N(EVS_UnlockDoor) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
         Return

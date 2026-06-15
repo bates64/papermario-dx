@@ -15,21 +15,21 @@ NpcSettings N(NpcSettings_Merlow) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#define NAME_SUFFIX _Merlow
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_MERLOW,
     ITEM_NONE
 };
 
 EvtScript N(EVS_LetterPrompt) = {
-    Call(N(LetterDelivery_Init),
+    Call(LetterDelivery_Init,
         NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle,
         ITEM_LETTER_TO_MERLOW, ITEM_NONE,
-        MSG_HOS_0058, MSG_HOS_0059, MSG_HOS_005A, MSG_HOS_005B,
+        MSG_HOS_0058,
+        MSG_HOS_0059,
+        MSG_HOS_005A,
+        MSG_HOS_005B,
         Ref(N(LetterList)))
-    ExecWait(N(EVS_DoLetterDelivery))
+    ExecWait(EVS_DoLetterDelivery)
     Return
     End
 };
@@ -41,7 +41,6 @@ EvtScript N(EVS_LetterReward) = {
     Return
     End
 };
-#define NAME_SUFFIX
 
 EvtScript N(EVS_NpcInteract_Merluvlee_Passthrough) = {
     ExecWait(N(EVS_NpcInteract_Merluvlee))
@@ -151,8 +150,8 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
 }
 
 EvtScript N(EVS_NpcInteract_Merlow) = {
-    ExecWait(N(EVS_LetterPrompt_Merlow))
-    ExecWait(N(EVS_LetterReward_Merlow))
+    ExecWait(N(EVS_LetterPrompt))
+    ExecWait(N(EVS_LetterReward))
     IfNe(LVarC, 0)
         Return
     EndIf

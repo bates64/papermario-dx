@@ -12,8 +12,6 @@ NpcSettings N(NpcSettings_Zipline) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/atomic/LetterDelivery.inc.c"
-
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_KOLORADO,
     ITEM_NONE
