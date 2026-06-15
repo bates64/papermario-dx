@@ -13,4 +13,5 @@
 #include "battle/battle_names.h"
 #include "battle/stage_names.h"
 #include "battle/actor_types.h"
+#include "tex_pan.h"
 #include "dx/debug_menu.h"

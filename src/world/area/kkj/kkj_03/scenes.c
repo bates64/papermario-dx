@@ -1,8 +1,6 @@
 #include "kkj_03.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.h"
-
 EvtScript N(EVS_Scene_MeetingPeach) = {
     Loop(0)
         Wait(1)
@@ -86,7 +84,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_STEP( -200,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

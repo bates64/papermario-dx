@@ -1,3 +1,5 @@
+#include "../mac_00.h"
+
 #include "inventory.h"
 
 API_CALLABLE(N(CheckTradeEventTime)) {

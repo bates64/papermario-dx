@@ -1,7 +1,5 @@
 #include "kzn_02.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_kzn_01_1) = EVT_EXIT_WALK(60, kzn_02_ENTRY_0, "kzn_01", kzn_01_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kzn_03_0) = EVT_EXIT_WALK(60, kzn_02_ENTRY_1, "kzn_03", kzn_03_ENTRY_0);
 
@@ -32,7 +30,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 200,    0,  400, -100)
         TEX_PAN_PARAMS_FREQ(   1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // leaking lava
     Call(SetTexPanner, MODEL_toro, TEX_PANNER_5)
@@ -41,7 +39,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 300, -500,    0,    0)
         TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // lava bubbles
     Call(SetTexPanner, MODEL_poko, TEX_PANNER_D)
@@ -51,7 +49,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP(0x8000,  0,    0,    0)
         TEX_PAN_PARAMS_FREQ(   6,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
@@ -60,7 +58,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
@@ -68,7 +66,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
         TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

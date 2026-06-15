@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 EvtScript N(D_8024B5AC_82E86C) = {
     Call(GetNpcPos, NPC_ShyGuy, LVar2, LVar3, LVar4)
     Add(LVar3, 20)

@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 s32 N(LetterList_FiceT)[] = {
     ITEM_LETTER_TO_FICE_T,
     ITEM_NONE

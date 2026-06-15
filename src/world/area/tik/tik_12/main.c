@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_GotoMap_tik_04_3) = {
     Call(GotoMap, Ref("tik_04"), tik_04_ENTRY_3)
     Wait(100)
@@ -34,7 +32,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_o48, COLLIDER_FLAGS_UPPER_MASK)
     EVT_ENTER_PIPE_HORIZONTAL(COLLIDER_o48, N(EVS_BindExitTriggers))

@@ -1,3 +1,5 @@
+#include "nok_01.h"
+
 #include "sprite/player.h"
 
 EvtScript N(EVS_Scene_RecoverTreeShell) = {

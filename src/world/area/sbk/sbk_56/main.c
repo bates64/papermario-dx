@@ -5,8 +5,6 @@ extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_SetupFoliage);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EntryList N(Entrances) = {
     [sbk_56_ENTRY_0]    { -475.0,    0.0,    0.0,   90.0 },
     [sbk_56_ENTRY_1]    {  475.0,    0.0,    0.0,  270.0 },
@@ -97,7 +95,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   80,   80,  -80,  -80)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

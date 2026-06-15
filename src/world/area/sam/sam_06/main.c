@@ -1,8 +1,6 @@
 #include "sam_06.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "foliage.h"
 
 FoliageModelList N(Tree1_LeafModels)  = FOLIAGE_MODEL_LIST(MODEL_ki2);
@@ -89,7 +87,7 @@ EvtScript N(EVS_TexPan_Fire) = {
         TEX_PAN_PARAMS_STEP(   50,   50,  -70,  300)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

@@ -1,8 +1,6 @@
 #include "obk_04.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_EnterMap) = {
     Call(GetEntryID, LVar0)
     Switch(LVar0)
@@ -62,7 +60,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

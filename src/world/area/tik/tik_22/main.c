@@ -1,7 +1,5 @@
 #include "tik_22.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "world/common/entity/Pipe.inc.c"
 
 API_CALLABLE(N(ResetTrackVolumes)) {
@@ -102,7 +100,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    0,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Wait(1)
     Exec(N(EVS_EnterMap))

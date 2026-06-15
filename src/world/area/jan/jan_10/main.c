@@ -1,7 +1,5 @@
 #include "jan_10.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_jan_09_2) = EVT_EXIT_WALK(60, jan_10_ENTRY_0, "jan_09", jan_09_ENTRY_2);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -34,7 +32,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

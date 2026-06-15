@@ -2,8 +2,6 @@
 
 #include "world/common/atomic/ApplyTint.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(AwaitScriptComplete)) {
     Bytecode* args = script->ptrReadPos;
     s32 waitingScriptID = evt_get_variable(script, *args++);
@@ -50,7 +48,7 @@ EvtScript N(EVS_SetupStarshipAndWater) = {
         TEX_PAN_PARAMS_STEP(  100,  -80,  -50,  120)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o33, TEX_PANNER_1)
     Thread
@@ -58,7 +56,7 @@ EvtScript N(EVS_SetupStarshipAndWater) = {
         TEX_PAN_PARAMS_STEP(  -80,  140,   80, -100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o34, TEX_PANNER_C)
     Return

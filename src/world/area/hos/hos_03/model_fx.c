@@ -1,7 +1,5 @@
 #include "hos_03.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 u16 N(D_80243BCC_A1ECCC) = 0;
 u16 N(D_80243BCE_A1ECCE) = 0;
 
@@ -102,7 +100,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP(  100,  -80,  -50,  120)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o29, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o204, TEX_PANNER_1)
@@ -111,7 +109,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP( -300,  500,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o87, TEX_PANNER_3)
     Call(SetTexPanner, MODEL_o134, TEX_PANNER_3)
@@ -121,7 +119,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP(    0, -800,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o90, TEX_PANNER_4)
     Call(SetTexPanner, MODEL_o135, TEX_PANNER_4)
@@ -131,7 +129,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP(    0,-1500,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o91, TEX_PANNER_5)
     Call(SetTexPanner, MODEL_o136, TEX_PANNER_5)
@@ -141,7 +139,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP(    0, 3000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o159, TEX_PANNER_6)
     Thread
@@ -149,7 +147,7 @@ EvtScript N(EVS_SetupAurora) = {
         TEX_PAN_PARAMS_STEP(    0, 4000,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o160, TEX_PANNER_7)
     Call(MakeLocalVertexCopy, VTX_COPY_0, MODEL_o76, true)

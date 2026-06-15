@@ -1,7 +1,5 @@
 #include "nok_03.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_nok_02_1) = EVT_EXIT_WALK_NOK(60, nok_03_ENTRY_0, "nok_02", nok_02_ENTRY_1);
 EvtScript N(EVS_ExitWalk_nok_04_0) = EVT_EXIT_WALK_NOK(123, nok_03_ENTRY_1, "nok_04", nok_04_ENTRY_0);
 
@@ -21,7 +19,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water
     Call(SetTexPanner, MODEL_suimen1, TEX_PANNER_1)
@@ -30,7 +28,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( -100,    0,  600,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kabemizu, TEX_PANNER_2)
     Thread
@@ -38,7 +36,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP( -100,    0,  400,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

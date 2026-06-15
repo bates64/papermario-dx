@@ -1,7 +1,5 @@
 #include "obk_03.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoor_obk_02_1) = EVT_EXIT_SPLIT_SINGLE_DOOR(obk_03_ENTRY_0, "obk_02", obk_02_ENTRY_1,
     COLLIDER_tt2, MODEL_door_2_1, MODEL_door_2_2, DOOR_SWING_IN);
 
@@ -35,7 +33,7 @@ EvtScript N(EVS_SetupTexPan) = {
         TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

@@ -1,7 +1,5 @@
 #include "kzn_23.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 // should add to zero over a full cycle
 s32 N(LavaFluctuationOffsets)[] = {
      1,  2,  3,  3,  2,  1,
@@ -30,7 +28,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -700,  700,  200, -300)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // smoke
     Call(SetTexPanner, MODEL_kem1, TEX_PANNER_3)
@@ -39,7 +37,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  600, -400)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kem2, TEX_PANNER_4)
     Thread
@@ -47,7 +45,7 @@ EvtScript N(EVS_StartTexPanners) = {
         TEX_PAN_PARAMS_STEP( 500,    0,    0, -400)
         TEX_PAN_PARAMS_FREQ(   1,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

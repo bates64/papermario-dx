@@ -1,3 +1,5 @@
+#include "dgb_01.h"
+
 AnimScript N(AS_SmashBridges) = {
     as_DisableMirroring
     as_SetRotation(1, 0.0, 0.0, 0.0)

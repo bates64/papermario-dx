@@ -1,3 +1,5 @@
+#include "../kmr_22.h"
+
 EvtScript N(EVS_NpcInit_Klevar) = {
     Call(SetNpcAnimation, NPC_SELF, ANIM_WorldKlevar_Still)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_TINT, 0, 0, 0, 128)

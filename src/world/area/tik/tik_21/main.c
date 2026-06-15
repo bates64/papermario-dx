@@ -1,7 +1,5 @@
 #include "tik_21.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript N(EVS_ExitWalk_tik_20_1) = EVT_EXIT_WALK(60, tik_21_ENTRY_0, "tik_20", tik_20_ENTRY_1);
@@ -103,7 +101,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    0,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Wait(1)
     Exec(N(EVS_EnterMap))

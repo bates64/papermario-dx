@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 #include "sprite/player.h"
 
 API_CALLABLE(N(UpgradeStarPowerCh4)) {

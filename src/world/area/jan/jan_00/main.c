@@ -10,8 +10,6 @@ extern EvtScript N(EVS_MakeEntities);
 extern EvtScript N(EVS_SetupWhale);
 extern EvtScript N(EVS_80247A2C);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(func_8024030C_B2084C) {
     fx_sun(FX_SUN_FROM_LEFT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
@@ -42,7 +40,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,  400,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water surface
     Call(SetTexPanner, MODEL_o52, TEX_PANNER_3)
@@ -51,7 +49,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_SetupWhale))
     Exec(N(EVS_80247A2C))

@@ -1,3 +1,5 @@
+#include "../mac_00.h"
+
 s32 N(LetterList_RussT)[] = {
     ITEM_LETTER_TO_RUSS_T,
     ITEM_NONE

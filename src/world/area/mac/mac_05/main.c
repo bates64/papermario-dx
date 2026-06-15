@@ -1,8 +1,6 @@
 #include "mac_05.h"
 #include "world/common/atomic/Whale.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(WaveScaleInterp)) {
     Bytecode* args = script->ptrReadPos;
     s32 tvar = *args++;
@@ -182,7 +180,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,  100,  -70,  -50)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_AnimateFish))
     Exec(N(EVS_AnimateClub64Sign))

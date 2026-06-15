@@ -1,7 +1,5 @@
 #include "mac_01.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_mac_00_1) = EVT_EXIT_WALK(60, mac_01_ENTRY_0, "mac_00", mac_00_ENTRY_1);
 
 EvtScript N(EVS_ExitWalk_nok_11_0) = {
@@ -174,7 +172,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(-100,    0, -200, -200)
         TEX_PAN_PARAMS_FREQ(   1,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     BindTrigger(Ref(N(EVS_Merlon_GiveHint)), TRIGGER_WALL_PRESS_A, COLLIDER_o335, 1, 0)
     Exec(N(EVS_SetupQuickChangeTrigger))

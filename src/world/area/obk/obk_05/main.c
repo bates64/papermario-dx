@@ -1,7 +1,5 @@
 #include "obk_05.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 s32 N(adjust_cam_on_landing)(void) {
     return LANDING_CAM_NEVER_ADJUST;
 }
@@ -83,7 +81,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  300,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

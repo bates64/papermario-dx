@@ -1,3 +1,5 @@
+#include "../mac_00.h"
+
 #include "sprite/player.h"
 
 s32 N(DojoBattleIDs)[] = {

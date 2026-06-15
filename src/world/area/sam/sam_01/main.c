@@ -1,8 +1,6 @@
 #include "sam_01.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_sam_02_0) = EVT_EXIT_WALK(60, sam_01_ENTRY_0, "sam_02", sam_02_ENTRY_0);
 
 EvtScript N(EVS_BindExitTriggers) = {

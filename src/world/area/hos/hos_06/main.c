@@ -1,14 +1,12 @@
 #include "hos_06.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_Animate_MysticPyramid) = {
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_C)
         TEX_PAN_PARAMS_STEP( 0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(      3,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(      0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o185, TEX_PANNER_C)
     Set(LVar0, 0)
@@ -36,7 +34,7 @@ EvtScript N(EVS_TexPan_Stars) = {
         TEX_PAN_PARAMS_STEP( -100,    0,   40,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o103, TEX_PANNER_3)
     Thread
@@ -44,7 +42,7 @@ EvtScript N(EVS_TexPan_Stars) = {
         TEX_PAN_PARAMS_STEP( -200,    0,  100,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o105, TEX_PANNER_1)
     Return

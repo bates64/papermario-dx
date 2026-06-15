@@ -1,7 +1,5 @@
 #include "flo_24.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_Scene_FillWithWater) = {
     Call(DisablePlayerInput, true)
     Call(TranslateGroup, MODEL_g73, 0, 45, 0)
@@ -63,7 +61,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(  140,  -80,  -70,  100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water edge
     Call(SetTexPanner, MODEL_o166, TEX_PANNER_2)
@@ -73,7 +71,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(  -70,  100,  100,  -40)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water falls
     Call(SetTexPanner, MODEL_o189, TEX_PANNER_3)
@@ -82,7 +80,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(    0, -800,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water spreading
     Call(SetTexPanner, MODEL_o192, TEX_PANNER_4)
@@ -91,7 +89,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(    0, -800, -200,  100)
         TEX_PAN_PARAMS_FREQ(    0,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water rising
     Call(SetTexPanner, MODEL_o219, TEX_PANNER_5)
@@ -101,7 +99,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(    0,-2500,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water spreading
     Call(SetTexPanner, MODEL_o218, TEX_PANNER_6)
@@ -110,7 +108,7 @@ EvtScript N(EVS_SetupWater) = {
         TEX_PAN_PARAMS_STEP(    0,-2500, -200,  100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

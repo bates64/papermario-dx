@@ -1,3 +1,5 @@
+#include "nok_02.h"
+
 API_CALLABLE(N(DoCircleSprint)) {
     Bytecode* args = script->ptrReadPos;
     Npc* npc;

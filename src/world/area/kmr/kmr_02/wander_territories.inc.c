@@ -1,3 +1,5 @@
+#include "kmr_02.h"
+
 EnemyTerritoryWander N(WanderTerritory0) = {
     .centerPos = { 0, 0, 0 },
     .wanderSize = { 150, 0 },
@@ -53,15 +55,11 @@ API_CALLABLE(N(SetWanderTerritory)) {
     Bytecode* args = script->ptrReadPos;
     s32 npcID = evt_get_variable(script, *args++);
     s32 territoryIndex = evt_get_variable(script, *args++);
-    s32* wanderData = (s32*) N(WanderTerritories)[territoryIndex];
     Enemy* enemy = get_enemy(npcID);
-    s32 i;
 
-    for (i = 0; i < (s32) (sizeof(enemy->territory->wander) / sizeof(i)); i++) {
-        s32* wander = (s32*) &enemy->territory->wander;
+    // copy territory to enemy
+    enemy->territory->wander = *N(WanderTerritories)[territoryIndex];
 
-        wander[i] = wanderData[i];
-    }
     return ApiStatus_DONE2;
 }
 

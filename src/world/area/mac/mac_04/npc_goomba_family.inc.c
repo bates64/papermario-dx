@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 EvtScript N(EVS_NpcInteract_Goomama) = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)

@@ -1,3 +1,5 @@
+#include "dgb_01.h"
+
 StaticAnimatorNode N(D_80251A80_C0F300) = {
     .pos = { 225.0f, 255.0f, 0.0f },
 };

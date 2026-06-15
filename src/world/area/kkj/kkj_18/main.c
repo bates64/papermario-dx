@@ -1,6 +1,5 @@
 #include "kkj_18.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
 #include "../common/RestoreFromPeachState.inc.c"
 
 Gfx N(setup_gfx_candle_lights)[] = {
@@ -117,7 +116,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,    0,   40,  900)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetModelCustomGfx, MODEL_o56, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)
     Call(SetCustomGfx, CUSTOM_GFX_0, Ref(N(setup_gfx_candle_lights)), nullptr)

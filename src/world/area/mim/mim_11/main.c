@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(SetupFog)) {
     enable_world_fog();
     set_world_fog_dist(960, 1000);

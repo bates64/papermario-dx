@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 #include "sprite/player.h"
 
 EvtScript N(EVS_NpcInit_TwinkEndCh4) = {

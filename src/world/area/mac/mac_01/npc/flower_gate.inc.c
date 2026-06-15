@@ -1,3 +1,5 @@
+#include "../mac_01.h"
+
 EvtScript N(EVS_MinhThankYou) = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_MinhT, LVar0, LVar1, LVar2)

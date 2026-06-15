@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 EvtScript N(EVS_NpcInteract_Bubulb) = {
     IfEq(GF_MAC02_Gift_MagicalSeed1, false)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Bubulb_Pink_BuriedIdle, ANIM_Bubulb_Pink_BuriedIdle, 0, MSG_MAC_Bridge_0085)

@@ -6,8 +6,6 @@ extern EvtScript N(EVS_KoopaBros_SetTrap);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(SetMapChangeFadeRate)) {
     set_map_change_fade_rate(5);
     return ApiStatus_DONE2;
@@ -112,7 +110,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

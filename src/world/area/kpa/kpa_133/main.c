@@ -1,8 +1,6 @@
 #include "kpa_133.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoors_kpa_51_1) = EVT_EXIT_DOUBLE_DOOR(kpa_133_ENTRY_0, "kpa_51", kpa_51_ENTRY_1, COLLIDER_ttw, MODEL_o486, MODEL_o485);
 EvtScript N(EVS_ExitWalk_kpa_134_0) = EVT_EXIT_WALK(40, kpa_133_ENTRY_1, "kpa_134", kpa_134_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kpa_134_2) = EVT_EXIT_WALK(40, kpa_133_ENTRY_2, "kpa_134", kpa_134_ENTRY_2);
@@ -90,7 +88,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  100,   70,  -70)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water surface
     Call(SetTexPanner, MODEL_move, TEX_PANNER_4)
@@ -99,7 +97,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  200, -100,   20,  -20)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))

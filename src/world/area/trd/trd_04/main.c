@@ -9,8 +9,6 @@ extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(NpcGroupBefore);
 extern NpcGroupList N(NpcGroupAfter);
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoors_trd_03_1) = EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_0, "trd_03", trd_03_ENTRY_1,
     COLLIDER_ttw2, MODEL_o6, MODEL_o7);
 
@@ -251,7 +249,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  100,    0, -100,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

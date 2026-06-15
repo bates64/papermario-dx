@@ -1,8 +1,6 @@
 #include "osr_00.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(CreateSunshine)) {
     fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
@@ -49,14 +47,14 @@ EvtScript N(EVS_TexPan_Fountain) = {
         TEX_PAN_PARAMS_STEP(    0, -200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(    0,    0,    0,  300)
         TEX_PAN_PARAMS_FREQ(    0,    0,    0,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

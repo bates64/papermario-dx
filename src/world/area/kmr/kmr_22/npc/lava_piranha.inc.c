@@ -1,3 +1,5 @@
+#include "../kmr_22.h"
+
 #include "include_asset.h"
 
 #include "world/common/enemy/LavaPiranha.h"

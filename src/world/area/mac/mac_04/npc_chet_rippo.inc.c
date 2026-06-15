@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 #include "common.h"
 
 API_CALLABLE(N(GetPlayerCoins)) {

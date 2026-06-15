@@ -1,8 +1,6 @@
 #include "hos_02.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 u16 N(HaloScalePhaseAngle) = 0;
 
 void N(build_gfx_lamp_halos)(void) {
@@ -156,7 +154,7 @@ EvtScript N(EVS_SetupModelFX) = {
         TEX_PAN_PARAMS_STEP(   80, -200,  -50,  100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // custom gfx for lantern glow halos, flags for the entire lamp posts
     Call(SetModelCustomGfx, MODEL_o414, CUSTOM_GFX_0, ENV_TINT_UNCHANGED)

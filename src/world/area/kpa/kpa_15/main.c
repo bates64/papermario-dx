@@ -1,7 +1,5 @@
 #include "kpa_15.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(D_8024074C_A59ADC) = EVT_EXIT_WALK(40, kpa_15_ENTRY_0, "kpa_13", kpa_13_ENTRY_2);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -23,7 +21,7 @@ EvtScript N(D_80240800_A59B90) = {
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o811, TEX_PANNER_0)
     Call(SetTexPanner, MODEL_o813, TEX_PANNER_0)

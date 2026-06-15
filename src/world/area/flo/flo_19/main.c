@@ -1,8 +1,6 @@
 #include "flo_19.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(SpawnSunEffect)) {
     fx_sun(FX_SUN_FROM_RIGHT, 0.0f, 0.0f, 0.0f, 0.0f, 0);
     return ApiStatus_DONE2;
@@ -34,14 +32,14 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -120,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_2)
         TEX_PAN_PARAMS_STEP(  -90,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(GetEntryID, LVar0)
     IfNe(LVar0, flo_19_ENTRY_3)

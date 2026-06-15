@@ -1,7 +1,5 @@
 #include "hos_20.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_TexPan_MotionLines) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)
     Call(GetEntryID, LVar0)
@@ -17,7 +15,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_STEP(-2048,-2048,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_h2, TEX_PANNER_B)
     Thread
@@ -25,7 +23,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_STEP(-6144,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_h3, TEX_PANNER_D)
     Thread
@@ -33,7 +31,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_STEP(    0,-5120,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_h4, TEX_PANNER_A)
     Thread
@@ -41,7 +39,7 @@ EvtScript N(EVS_TexPan_MotionLines) = {
         TEX_PAN_PARAMS_STEP( 1024,-3072,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

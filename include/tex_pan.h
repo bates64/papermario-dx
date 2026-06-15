@@ -1,3 +1,5 @@
+#pragma once
+
 #define TEX_PAN_PARAMS_ID(panID) \
         Set(LVar0, (panID)) \
         Set(LVarD, 0x20000)
@@ -23,4 +25,4 @@
         Set(LVarB, (aux_init_u)) \
         Set(LVarC, (aux_init_v)) \
 
-extern EvtScript N(EVS_UpdateTexturePan);
+extern EvtScript EVS_UpdateTexturePan;

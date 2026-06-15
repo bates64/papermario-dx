@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 EvtScript N(EVS_NpcInteract_NewResident1) = {
     Switch(GB_StoryProgress)
 #if VERSION_JP

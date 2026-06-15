@@ -4,8 +4,6 @@
 
 #include "world/common/todo/GetPeachDisguise.inc.c"
 
-#include "world/common/atomic/TexturePan.h"
-
 EvtScript N(EVS_Inspect_Fireplace) = {
     Call(DisablePlayerInput, true)
     Switch(GB_StoryProgress)
@@ -226,7 +224,7 @@ EvtScript N(EVS_TexPan_Fireplace) = {
         TEX_PAN_PARAMS_STEP(-110,   50,    0,    0)
         TEX_PAN_PARAMS_FREQ(   1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // fire glow
     Call(SetTexPanner, MODEL_o157, TEX_PANNER_A)
@@ -235,7 +233,7 @@ EvtScript N(EVS_TexPan_Fireplace) = {
         TEX_PAN_PARAMS_STEP(   0,    0,   40,  130)
         TEX_PAN_PARAMS_FREQ(   0,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(   0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

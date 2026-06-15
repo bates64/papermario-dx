@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 EvtScript N(EVS_NpcInteract_Toad_01) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)

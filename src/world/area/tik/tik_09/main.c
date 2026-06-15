@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_CloseGates) = {
     Call(DisablePlayerInput, true)
     SetGroup(EVT_GROUP_NEVER_PAUSE)
@@ -82,7 +80,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // waterfalls
     Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
@@ -91,7 +89,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water spreading
     Call(SetTexPanner, MODEL_takib, TEX_PANNER_5)
@@ -100,7 +98,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,-1400,-2600,  -60)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water merging and draining
     Call(SetTexPanner, MODEL_nagare2, TEX_PANNER_6)
@@ -112,7 +110,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  200,  400,  250,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetRenderMode, MODEL_o90, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(SetRenderMode, MODEL_nagab, RENDER_MODE_SURFACE_XLU_LAYER2)

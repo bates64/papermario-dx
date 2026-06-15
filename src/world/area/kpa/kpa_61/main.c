@@ -1,7 +1,5 @@
 #include "kpa_61.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitDoors_kpa_82_1) = EVT_EXIT_DOUBLE_DOOR(kpa_61_ENTRY_0, "kpa_82", kpa_82_ENTRY_1, COLLIDER_tts, MODEL_o34, MODEL_o33);
 EvtScript N(EVS_ExitDoors_kpa_33_1) = EVT_EXIT_DOUBLE_DOOR(kpa_61_ENTRY_1, "kpa_33", kpa_33_ENTRY_1, COLLIDER_ttsw, MODEL_o37, MODEL_o38);
 
@@ -39,7 +37,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_STEP(  -90,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kumo2, TEX_PANNER_2)
     Thread
@@ -47,7 +45,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_STEP( -130,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kumo3, TEX_PANNER_3)
     Thread
@@ -55,7 +53,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_STEP( -120,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_kumo4, TEX_PANNER_4)
     Thread
@@ -63,7 +61,7 @@ EvtScript N(EVS_TexPan_Clouds) = {
         TEX_PAN_PARAMS_STEP(  -70,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 EvtScript N(EVS_NpcInteract_CookingApprentice) = {
     Switch(GB_StoryProgress)
 #if VERSION_JP

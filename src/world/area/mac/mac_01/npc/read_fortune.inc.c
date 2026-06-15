@@ -1,3 +1,5 @@
+#include "../mac_01.h"
+
 API_CALLABLE(N(func_802440FC_80497C)) {
     if (isInitialCall) {
         set_mdl_custom_gfx_set(get_model_from_list_index(get_model_list_index_from_tree_index(MODEL_o283)), CUSTOM_GFX_NONE, ENV_TINT_REMAP);

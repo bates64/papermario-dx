@@ -2,8 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(SpawnIceShards)) {
     EffectInstance* effect;
     f32 posX, posZ;
@@ -335,7 +333,7 @@ EvtScript N(EVS_DamageFrozenPond_After) = {
         TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Exec(N(EVS_LoadPondAnimation))
     Wait(60)
@@ -460,7 +458,7 @@ EvtScript N(EVS_SetupPond) = {
                     TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
                     TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
                     TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-                    Exec(N(EVS_UpdateTexturePan))
+                    Exec(EVS_UpdateTexturePan)
                 EndThread
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o657, COLLIDER_FLAGS_UPPER_MASK)
                 Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o658, COLLIDER_FLAGS_UPPER_MASK)
@@ -479,7 +477,7 @@ EvtScript N(EVS_SetupPond) = {
             TEX_PAN_PARAMS_STEP(   70,   60,   60, -100)
             TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
             TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-            Exec(N(EVS_UpdateTexturePan))
+            Exec(EVS_UpdateTexturePan)
         EndThread
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o657, COLLIDER_FLAGS_UPPER_MASK)
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_CLEAR_BITS, COLLIDER_o658, COLLIDER_FLAGS_UPPER_MASK)

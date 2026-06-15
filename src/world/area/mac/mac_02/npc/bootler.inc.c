@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 EvtScript N(D_8024ACA4_82DF64) = {
     IfEq(LVar0, Float(0.0))
         Call(PlaySoundAtNpc, NPC_Bootler, SOUND_BOO_VANISH_A, SOUND_SPACE_DEFAULT)

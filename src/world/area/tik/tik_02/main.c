@@ -1,7 +1,5 @@
 #include "tik_02.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_ExitWalk_tik_18_1) = EVT_EXIT_WALK(60, tik_02_ENTRY_0, "tik_18", tik_18_ENTRY_1);
 
 EvtScript N(EVS_BindExitTriggers) = {
@@ -28,7 +26,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   50,  200,  110,  500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water leaking
     Call(SetTexPanner, MODEL_mizu, TEX_PANNER_2)
@@ -37,7 +35,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -200, -100, -500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_mizu2, TEX_PANNER_3)
     Thread
@@ -45,7 +43,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0, -250, -100, -500)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // waterfalls
     Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
@@ -54,7 +52,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Set(LVar0, Ref(N(EVS_BindExitTriggers)))
     Exec(EnterWalk)

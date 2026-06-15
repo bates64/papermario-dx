@@ -1,7 +1,5 @@
 #include "flo_07.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 #include "../common/FlowerSpawnRegion.inc.c"
 
 #include "world/common/todo/SpawnSunEffect.inc.c"
@@ -46,7 +44,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP( -100,  100,    0,    0)
         TEX_PAN_PARAMS_FREQ(    1,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // water fall
     Call(SetTexPanner, MODEL_o36, TEX_PANNER_3)
@@ -56,7 +54,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,-1200,    0,    0)
         TEX_PAN_PARAMS_FREQ(    0,    1,    0,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(GetEntryID, LVar0)
     IfEq(LVar0, flo_07_ENTRY_1)

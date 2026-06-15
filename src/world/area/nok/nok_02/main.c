@@ -1,6 +1,5 @@
 #include "nok_02.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
 #include "world/common/entity/Pipe.inc.c"
 
 EvtScript N(EVS_ExitWalk_nok_01_1) = {
@@ -50,7 +49,7 @@ EvtScript N(EVS_TexPan_Flowers) = {
         TEX_PAN_PARAMS_STEP(0x4000,    0,    0,    0)
         TEX_PAN_PARAMS_FREQ(    12,    0,    0,    0)
         TEX_PAN_PARAMS_INIT(     0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Return
     End

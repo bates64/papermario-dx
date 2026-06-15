@@ -2,8 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 EvtScript N(EVS_GotoMap_mac_00_3) = {
     Call(GotoMap, Ref("mac_00"), mac_00_ENTRY_3)
     Wait(100)
@@ -36,7 +34,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(   70,  100,  100,  130)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // falling water
     Call(SetTexPanner, MODEL_taki, TEX_PANNER_4)
@@ -45,7 +43,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(  -50, -900,  -70,-1200)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     // spreading water
     Call(SetTexPanner, MODEL_takib, TEX_PANNER_5)
@@ -54,7 +52,7 @@ EvtScript N(EVS_Main) = {
         TEX_PAN_PARAMS_STEP(    0,-1400,-2600,  -60)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetRenderMode, MODEL_nagare, RENDER_MODE_SURFACE_XLU_LAYER2)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_ttd, COLLIDER_FLAGS_UPPER_MASK)

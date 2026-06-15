@@ -1,8 +1,6 @@
 #include "hos_01.h"
 #include "effects.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 s32 N(GlowingStarAlpha) = 255;
 s32 N(GivingPowerAlpha) = 255;
 
@@ -89,14 +87,14 @@ EvtScript N(EVS_SetupModelFX) = {
         TEX_PAN_PARAMS_STEP(    0,    0, -170,  -70)
         TEX_PAN_PARAMS_FREQ(    0,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_5)
         TEX_PAN_PARAMS_STEP(    0,    0,  200, -100)
         TEX_PAN_PARAMS_FREQ(    0,    0,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o178, TEX_PANNER_4)
     Call(SetTexPanner, MODEL_o179, TEX_PANNER_4)

@@ -1,3 +1,5 @@
+#include "nok_01.h"
+
 EvtScript N(EVS_NpcInteract_Koover_Normal) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH1_KOOPER_JOINED_PARTY)

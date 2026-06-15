@@ -1,3 +1,5 @@
+#include "../mac_01.h"
+
 typedef struct PostOfficeEntry {
     /* 0x00 */ s32 partnerID;
     /* 0x04 */ s32 itemID;

@@ -1,3 +1,5 @@
+#include "mac_04.h"
+
 EvtScript N(EVS_NpcInteract_Toadette_03) = {
     Switch(GB_StoryProgress)
 #if VERSION_JP

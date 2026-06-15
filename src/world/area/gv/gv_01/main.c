@@ -6,8 +6,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 s32 N(DropLetterYCurve)[] = {
     200, 170, 140, 110, 80, 50, 20, 10,
     26, 29, 30, 29, 26, 10, 0, 12,

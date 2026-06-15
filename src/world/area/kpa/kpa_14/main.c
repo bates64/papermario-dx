@@ -2,8 +2,6 @@
 #include "effects.h"
 #include "sprite/player.h"
 
-#include "world/common/atomic/TexturePan.inc.c"
-
 API_CALLABLE(N(GetActingPartner)) {
     if (gPartnerStatus.partnerActionState != 0) {
         script->varTable[9] = gPartnerStatus.actingPartner;
@@ -72,14 +70,14 @@ EvtScript N(EVS_TexPan_Lava) = {
         TEX_PAN_PARAMS_STEP(-1000,    0,-2000,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Thread
         TEX_PAN_PARAMS_ID(TEX_PANNER_1)
         TEX_PAN_PARAMS_STEP( -400,    0, -800,    0)
         TEX_PAN_PARAMS_FREQ(    1,    0,    1,    0)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o631, TEX_PANNER_1)
     Call(SetTexPanner, MODEL_o625, TEX_PANNER_1)

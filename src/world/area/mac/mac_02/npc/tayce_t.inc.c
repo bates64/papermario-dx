@@ -1,3 +1,5 @@
+#include "../mac_02.h"
+
 // Tacye T cooking implementation.
 // Expects Tayce T's NPC ID to be available as enum member NPC_TayceT.
 

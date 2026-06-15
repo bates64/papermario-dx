@@ -6,7 +6,6 @@ u16 StarShrineLightBeamAlpha = 255;
 
 #define NAME_SUFFIX _Starship
 #include "world/common/atomic/ApplyTint.inc.c"
-#include "world/common/atomic/TexturePan.inc.c"
 
 API_CALLABLE(N(SetWorldColorParams)) {
     Bytecode* args;
@@ -196,7 +195,7 @@ EvtScript N(EVS_Starship_Summon) = {
         TEX_PAN_PARAMS_STEP(  -90,   70,  -60,   90)
         TEX_PAN_PARAMS_FREQ(    1,    1,    1,    1)
         TEX_PAN_PARAMS_INIT(    0,    0,    0,    0)
-        Exec(N(EVS_UpdateTexturePan_Starship))
+        Exec(EVS_UpdateTexturePan)
     EndThread
     Call(SetTexPanner, MODEL_o646, TEX_PANNER_9)
     Call(PlaySoundAt, SOUND_STARSHIP_APPEARS, SOUND_SPACE_DEFAULT, 0, 250, 0)
