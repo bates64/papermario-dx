@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_04.h
 /// @brief Toad Town Tunnels - Scales Room (B2)
 

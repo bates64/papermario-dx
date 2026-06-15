@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_09.h
 /// @brief Mt Lavalava - Zipline Cavern
 

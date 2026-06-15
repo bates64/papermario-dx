@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_00.h
 /// @brief Toad Town - Gate District
 

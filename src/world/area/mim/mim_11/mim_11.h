@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_11.h
 /// @brief Forever Forest - Outside Boo's Mansion
 

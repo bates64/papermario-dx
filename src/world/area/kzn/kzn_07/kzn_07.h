@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_07.h
 /// @brief Mt Lavalava - Ultra Hammer Room
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_06.h
 /// @brief Goomba Region - Goomba Road 2
 

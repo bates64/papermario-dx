@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_03.h
 /// @brief Tubba's Castle - Table/Clock Room (1/2F)
 

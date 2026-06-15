@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file gv_01.h
 /// @brief  - Game Over Screen
 

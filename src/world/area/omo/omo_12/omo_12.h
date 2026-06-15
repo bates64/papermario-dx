@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_12.h
 /// @brief Shy Guy's Toybox - RED Lantern Ghost
 

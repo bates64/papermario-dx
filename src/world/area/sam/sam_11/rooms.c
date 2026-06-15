@@ -131,7 +131,7 @@ EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     Set(GF_SAM11_UnlockedDoor, true)
     Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(SetEntityUsed, MV_EntityID_Padlock)
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     ResumeGroup(EVT_GROUP_FLAG_INTERACT)
     Unbind
     Return

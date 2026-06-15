@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_14.h
 /// @brief Koopa Region - Path to Fortress 1
 

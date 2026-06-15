@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_81.h
 /// @brief Bowser's Castle - Guard Door 1
 

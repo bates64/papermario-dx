@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_96.h
 /// @brief Bowser's Castle - Item Shop
 

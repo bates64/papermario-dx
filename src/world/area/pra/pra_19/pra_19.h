@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_19.h
 /// @brief Crystal Palace - Reflection Mimic Room
 

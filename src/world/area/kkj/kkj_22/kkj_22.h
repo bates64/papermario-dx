@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_22.h
 /// @brief Peach's Castle - Double Staircase (4F)
 

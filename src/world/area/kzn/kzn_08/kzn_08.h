@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_08.h
 /// @brief Mt Lavalava - Dizzy Stomp Room
 

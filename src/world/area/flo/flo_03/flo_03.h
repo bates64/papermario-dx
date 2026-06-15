@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_03.h
 /// @brief Flower Fields - (East) Petunia's Field
 

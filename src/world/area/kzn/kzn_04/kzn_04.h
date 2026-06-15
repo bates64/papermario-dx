@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_04.h
 /// @brief Mt Lavalava - Fire Bar Bridge
 

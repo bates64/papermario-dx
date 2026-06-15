@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_06.h
 /// @brief Shooting Star Summit - Merluvlee's House
 

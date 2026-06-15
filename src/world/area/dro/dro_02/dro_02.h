@@ -1,5 +1,4 @@
-#ifndef _DRO_02_H_
-#define _DRO_02_H_
+#pragma once
 
 /// @file dro_02.h
 /// @brief Dry Dry Outpost - Outpost 2
@@ -51,5 +50,3 @@ extern EvtScript N(EVS_PlayRestMusic);
 extern EvtScript N(EVS_PlayMoustafaMusic);
 
 extern EvtScript N(EVS_SetupRooms);
-
-#endif

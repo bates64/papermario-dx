@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_19.h
 /// @brief Dry Dry Ruins - Boss Antechamber
 

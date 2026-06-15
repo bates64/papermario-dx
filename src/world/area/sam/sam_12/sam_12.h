@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_12.h
 /// @brief Mt Shiver - Merlar's Sanctuary
 

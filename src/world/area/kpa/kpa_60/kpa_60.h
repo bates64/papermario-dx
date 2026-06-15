@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_60.h
 /// @brief Bowser's Castle - Ship Enter/Exit Scenes
 

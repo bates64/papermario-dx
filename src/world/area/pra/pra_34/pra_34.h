@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_34.h
 /// @brief Crystal Palace - Mirror Hole Room
 

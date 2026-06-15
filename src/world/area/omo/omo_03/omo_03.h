@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_03.h
 /// @brief Shy Guy's Toybox - BLU Station
 

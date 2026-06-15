@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_02.h
 /// @brief Koopa Bros Fortress - Left Stairway
 

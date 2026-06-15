@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_15.h
 /// @brief Tubba's Castle - West Hall (3F)
 

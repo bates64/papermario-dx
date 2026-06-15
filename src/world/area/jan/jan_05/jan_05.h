@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_05.h
 /// @brief Jade Jungle - SE Jungle (Quake Hammer)
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_37.h
 /// @brief Crystal Palace - P-Up, D-Down Hall
 

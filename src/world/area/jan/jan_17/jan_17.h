@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_17.h
 /// @brief Jade Jungle - Lower Great Tree Interior
 

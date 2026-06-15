@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_14.h
 /// @brief Bowser's Castle - Lava Channel 3
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file iwa_04.h
 /// @brief Mt Rugged - Suspension Bridge
 

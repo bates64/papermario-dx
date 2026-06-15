@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_19.h
 /// @brief Mt Lavalava - Boss Room
 

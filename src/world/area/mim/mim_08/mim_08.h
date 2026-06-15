@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_08.h
 /// @brief Forever Forest - Laughing Rock
 

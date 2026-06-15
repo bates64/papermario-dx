@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_22.h
 /// @brief Toad Town Tunnels - Path to Shiver City (B2)
 

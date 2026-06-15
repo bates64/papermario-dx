@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_03.h
 /// @brief Gusty Gulch - Ghost Town 1
 

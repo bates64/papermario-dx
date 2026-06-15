@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_31.h
 /// @brief Crystal Palace - Dino Puzzle Room
 

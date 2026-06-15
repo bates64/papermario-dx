@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_02.h
 /// @brief Crystal Palace - Entry Hall
 

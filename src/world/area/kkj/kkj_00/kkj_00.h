@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_00.h
 /// @brief Peach's Castle - Intro Entry Hall (1F)
 

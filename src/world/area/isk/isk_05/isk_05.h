@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_05.h
 /// @brief Dry Dry Ruins - Pyramid Stone Room
 

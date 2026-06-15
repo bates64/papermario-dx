@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_09.h
 /// @brief Gusty Gulch - Windmill Tunnel Entry
 

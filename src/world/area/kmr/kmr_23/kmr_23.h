@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_23.h
 /// @brief Goomba Region - Chapter End
 

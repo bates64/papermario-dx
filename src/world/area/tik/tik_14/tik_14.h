@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_14.h
 /// @brief Toad Town Tunnels - Rip Cheato Antechamber (B3)
 

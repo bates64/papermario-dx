@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_00.h
 /// @brief Shooting Star Summit - Shooting Star Path
 

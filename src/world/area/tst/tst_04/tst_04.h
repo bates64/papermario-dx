@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_04.h
 /// @brief Testing - Moving Platforms Test
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_11.h
 /// @brief Goomba Region - Goomba King's Castle
 

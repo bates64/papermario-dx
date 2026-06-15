@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_25.h
 /// @brief Toad Town Tunnels - Ultra Boots Room (B3)
 

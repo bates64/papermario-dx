@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_11.h
 /// @brief Shy Guy's Toybox - RED Moving Platforms
 

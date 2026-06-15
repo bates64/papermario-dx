@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_02.h
 /// @brief Testing - Jump Height Test
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_25.h
 /// @brief Flower Fields - (SW) Path to Crystal Tree
 

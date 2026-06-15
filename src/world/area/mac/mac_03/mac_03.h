@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_03.h
 /// @brief Toad Town - Station District
 

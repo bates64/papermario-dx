@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_61.h
 /// @brief Bowser's Castle - Battlement
 

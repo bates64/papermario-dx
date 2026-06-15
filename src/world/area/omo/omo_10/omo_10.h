@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_10.h
 /// @brief Shy Guy's Toybox - RED Station
 

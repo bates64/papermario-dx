@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_06.h
 /// @brief Tubba's Castle - Basement
 

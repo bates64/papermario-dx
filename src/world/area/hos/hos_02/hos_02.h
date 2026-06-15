@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_02.h
 /// @brief Shooting Star Summit - Star Way
 

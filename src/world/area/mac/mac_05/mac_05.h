@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_05.h
 /// @brief Toad Town - Port District
 

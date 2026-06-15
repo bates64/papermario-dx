@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_52.h
 /// @brief Bowser's Castle - Split Level Hall
 

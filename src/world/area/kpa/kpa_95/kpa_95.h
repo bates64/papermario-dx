@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_95.h
 /// @brief Bowser's Castle - West Upper Jail
 

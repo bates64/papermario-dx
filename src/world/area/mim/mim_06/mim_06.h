@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_06.h
 /// @brief Forever Forest - Bee Hive (Path Splits)
 

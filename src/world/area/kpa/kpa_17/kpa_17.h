@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_17.h
 /// @brief Bowser's Castle - Lower Jail
 

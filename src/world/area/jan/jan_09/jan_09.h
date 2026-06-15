@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_09.h
 /// @brief Jade Jungle - NW Jungle (Large Ledge)
 

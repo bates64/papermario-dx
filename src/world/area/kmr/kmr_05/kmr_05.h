@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_05.h
 /// @brief Goomba Region - Behind the Village
 

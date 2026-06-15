@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_10.h
 /// @brief Koopa Bros Fortress - Boss Battle Room
 

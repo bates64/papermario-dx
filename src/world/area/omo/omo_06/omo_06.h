@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_06.h
 /// @brief Shy Guy's Toybox - PNK Station
 

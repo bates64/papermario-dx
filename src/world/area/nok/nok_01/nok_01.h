@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_01.h
 /// @brief Koopa Region - Koopa Village 1
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_21.h
 /// @brief Crystal Palace - Huge Statue Room
 

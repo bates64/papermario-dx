@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tst_13.h
 /// @brief Testing - Partners and Shockwave
 

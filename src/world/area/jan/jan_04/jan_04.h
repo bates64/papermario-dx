@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_04.h
 /// @brief Jade Jungle - Sushi Tree
 

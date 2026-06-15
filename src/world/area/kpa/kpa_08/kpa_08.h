@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_08.h
 /// @brief Bowser's Castle - Castle Key Timing Puzzle
 

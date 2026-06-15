@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_91.h
 /// @brief Bowser's Castle - East Upper Jail
 

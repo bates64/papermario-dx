@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file hos_05.h
 /// @brief Shooting Star Summit - Star Sanctuary
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_116.h
 /// @brief Bowser's Castle - Dead End Passage
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_05.h
 /// @brief Mt Shiver - Path to Starborn Valley
 

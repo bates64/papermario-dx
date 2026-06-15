@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_01.h
 /// @brief Mt Shiver - Shiver City Mayor Area
 

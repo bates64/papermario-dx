@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_10.h
 /// @brief Goomba Region - Toad Town Entrance
 

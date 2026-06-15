@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_11.h
 /// @brief Koopa Region - Pleasant Path Entry
 

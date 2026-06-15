@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_00.h
 /// @brief Goomba Region - Forest Clearing
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mgm_01.h
 /// @brief Minigame - Jump Attack Minigame
 

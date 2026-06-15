@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_08.h
 /// @brief Dry Dry Ruins - Descending Stairs 2
 

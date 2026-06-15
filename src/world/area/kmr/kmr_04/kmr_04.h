@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_04.h
 /// @brief Goomba Region - Jr. Troopa's Playground
 

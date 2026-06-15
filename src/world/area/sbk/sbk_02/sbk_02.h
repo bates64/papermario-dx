@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_02.h
 /// @brief Dry Dry Desert - N3W1 Ruins Entrance
 

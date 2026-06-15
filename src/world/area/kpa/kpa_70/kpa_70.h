@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_70.h
 /// @brief Bowser's Castle - Entry Lava Hall
 

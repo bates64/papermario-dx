@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_07.h
 /// @brief Dry Dry Ruins - Sarcophagus Hall 2
 

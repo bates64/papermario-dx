@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_17.h
 /// @brief Toad Town Tunnels - Frozen Room (B3)
 

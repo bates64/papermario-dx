@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_25.h
 /// @brief Peach's Castle - Final Boss Arena (6F)
 

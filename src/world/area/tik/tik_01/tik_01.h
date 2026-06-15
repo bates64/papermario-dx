@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_01.h
 /// @brief Toad Town Tunnels - Warp Zone 1 (B1)
 

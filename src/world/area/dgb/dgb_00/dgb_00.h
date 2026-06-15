@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_00.h
 /// @brief Tubba's Castle - Escape Scene
 

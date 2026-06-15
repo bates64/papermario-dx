@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_13.h
 /// @brief Crystal Palace - Blue Mirror Hall 1
 

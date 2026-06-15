@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_02.h
 /// @brief Forever Forest - Stump Eyes
 

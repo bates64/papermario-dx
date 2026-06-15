@@ -21,7 +21,7 @@ EvtScript N(EVS_UnlockPrompt_FrontDoor) = {
     Set(GF_KPA62_UnlockedFrontDoor, true)
     Call(GetEntityPosition, MV_EntityID_Padlock, LVar0, LVar1, LVar2)
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, LVar0, LVar1, LVar2)
-    Set(SetEntityUsed, MV_EntityID_Padlock)
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_04.h
 /// @brief Gusty Gulch - Wasteland Ascent 2
 

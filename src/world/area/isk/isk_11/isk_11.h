@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_11.h
 /// @brief Dry Dry Ruins - Stone Puzzle Room
 

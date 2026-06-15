@@ -1,5 +1,4 @@
-#ifndef _CREDITS_H_
-#define _CREDITS_H_
+#pragma once
 
 #include "common.h"
 #include "message_ids.h"
@@ -42,5 +41,3 @@ enum {
 enum {
     CREDITS_FLAG_1              = 1,
 };
-
-#endif

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_04.h
 /// @brief Koopa Bros Fortress - Right Starway
 

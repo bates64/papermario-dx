@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_62.h
 /// @brief Bowser's Castle - Front Door Exterior
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_14.h
 /// @brief Peach's Castle - Peach's Room (2F)
 

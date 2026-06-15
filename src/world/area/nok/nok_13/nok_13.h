@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_13.h
 /// @brief Koopa Region - Pleasant Crossroads
 

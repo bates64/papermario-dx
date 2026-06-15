@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_00.h
 /// @brief Koopa Bros Fortress - Fortress Exterior
 

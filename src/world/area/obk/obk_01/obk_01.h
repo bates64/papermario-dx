@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_01.h
 /// @brief Boo's Mansion - Foyer
 

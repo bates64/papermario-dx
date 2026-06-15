@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_05.h
 /// @brief Toad Town Tunnels - Spring Room (B2)
 

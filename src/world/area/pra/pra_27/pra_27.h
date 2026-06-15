@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_27.h
 /// @brief Crystal Palace - Palace Key Room
 

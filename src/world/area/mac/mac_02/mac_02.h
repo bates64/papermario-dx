@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_02.h
 /// @brief Toad Town - Southern District
 

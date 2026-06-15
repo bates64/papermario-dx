@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_10.h
 /// @brief Jade Jungle - Western Dead End
 

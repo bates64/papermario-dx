@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_30.h
 /// @brief Dry Dry Desert - W3 Kolorado's Camp
 

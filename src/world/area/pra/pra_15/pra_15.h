@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_15.h
 /// @brief Crystal Palace - Star Piece Cave
 

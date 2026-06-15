@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_04.h
 /// @brief Koopa Region - Fuzzy Forest
 

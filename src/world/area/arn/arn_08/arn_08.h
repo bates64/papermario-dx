@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file arn_08.h
 /// @brief Gusty Gulch - Windmill Interior
 

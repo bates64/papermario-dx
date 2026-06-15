@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_20.h
 /// @brief Crystal Palace - Mirrored Door Room
 

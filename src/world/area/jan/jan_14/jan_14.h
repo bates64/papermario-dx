@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_14.h
 /// @brief Jade Jungle - Deep Jungle 3
 

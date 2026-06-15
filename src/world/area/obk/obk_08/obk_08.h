@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_08.h
 /// @brief Boo's Mansion - Record Room
 

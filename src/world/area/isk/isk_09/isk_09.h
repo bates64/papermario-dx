@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_09.h
 /// @brief Dry Dry Ruins - Super Hammer Room
 

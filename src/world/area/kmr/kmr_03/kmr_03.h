@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_03.h
 /// @brief Goomba Region - Bottom of the Cliff
 

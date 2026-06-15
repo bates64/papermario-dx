@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_21.h
 /// @brief Toad Town Tunnels - Hidden Blocks Room (B2)
 

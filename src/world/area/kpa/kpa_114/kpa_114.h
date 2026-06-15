@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_114.h
 /// @brief Bowser's Castle - Hidden Passage 2
 

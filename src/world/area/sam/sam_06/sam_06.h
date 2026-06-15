@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_06.h
 /// @brief Mt Shiver - Starborn Valley
 

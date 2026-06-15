@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_53.h
 /// @brief Bowser's Castle - Fake Peach Hallway
 

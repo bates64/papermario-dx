@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_13.h
 /// @brief Tubba's Castle - Hidden Bedroom (2F)
 

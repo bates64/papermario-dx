@@ -1,3 +1,5 @@
+#pragma once
+
 #include "common.h"
 #include "message_ids.h"
 #include "map.h"

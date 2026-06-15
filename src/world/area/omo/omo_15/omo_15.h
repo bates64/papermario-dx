@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_15.h
 /// @brief Shy Guy's Toybox - RED General Guy Room
 

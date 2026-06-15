@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_24.h
 /// @brief Goomba Region - Save and Continue
 

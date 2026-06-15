@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_01.h
 /// @brief Dry Dry Ruins - Entrance
 

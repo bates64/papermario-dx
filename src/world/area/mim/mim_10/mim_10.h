@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_10.h
 /// @brief Forever Forest - Exit to Toad Town
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_35.h
 /// @brief Crystal Palace - Triple Dip Room
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file iwa_10.h
 /// @brief Mt Rugged - Train Station
 

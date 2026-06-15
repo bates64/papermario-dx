@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mgm_00.h
 /// @brief Minigame - Playroom Lobby
 

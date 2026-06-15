@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mim_09.h
 /// @brief Forever Forest - Flowers Appear (FP Plus)
 

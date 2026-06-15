@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file end_00.h
 /// @brief Ending - Parade (Day)
 

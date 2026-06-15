@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_54.h
 /// @brief Dry Dry Desert - S2E1 Blue Cactus
 

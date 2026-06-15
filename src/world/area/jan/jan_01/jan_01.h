@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_01.h
 /// @brief Jade Jungle - Beach
 

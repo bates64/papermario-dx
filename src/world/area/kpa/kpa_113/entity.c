@@ -22,7 +22,7 @@ EvtScript N(EVS_UnlockPrompt_LockedDoor) = {
     Call(PlaySound, SOUND_USE_KEY)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_KPA113_UnlockedDoor, true)
-    Set(SetEntityUsed, MV_EntityID_Padlock)
+    Call(SetEntityUsed, MV_EntityID_Padlock)
     Set(LVar1, 0)
     Wait(5)
     Call(CloseChoicePopup)

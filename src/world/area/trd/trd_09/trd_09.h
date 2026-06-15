@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_09.h
 /// @brief Koopa Bros Fortress - Battlement
 

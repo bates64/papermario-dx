@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_40.h
 /// @brief Bowser's Castle - Maze Guide Room
 

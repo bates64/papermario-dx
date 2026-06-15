@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file obk_09.h
 /// @brief Boo's Mansion - Lady Bow's Room
 

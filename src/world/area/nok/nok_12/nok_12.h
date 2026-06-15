@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file nok_12.h
 /// @brief Koopa Region - Pleasant Path Bridge
 

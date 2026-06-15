@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_09.h
 /// @brief Shy Guy's Toybox - GRN Treadmills/Slot Machine
 

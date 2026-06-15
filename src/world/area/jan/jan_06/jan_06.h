@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_06.h
 /// @brief Jade Jungle - NE Jungle (Raven Statue)
 

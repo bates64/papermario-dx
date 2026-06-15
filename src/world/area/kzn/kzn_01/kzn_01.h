@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kzn_01.h
 /// @brief Mt Lavalava - Volcano Entrance
 

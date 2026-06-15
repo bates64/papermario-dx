@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_08.h
 /// @brief Flower Fields - (SE) Briar Platforming
 

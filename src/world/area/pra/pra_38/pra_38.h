@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_38.h
 /// @brief Crystal Palace - Blue Key Hall
 

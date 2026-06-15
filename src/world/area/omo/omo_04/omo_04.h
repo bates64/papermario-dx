@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_04.h
 /// @brief Shy Guy's Toybox - BLU Block City
 

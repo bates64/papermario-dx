@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kmr_02.h
 /// @brief Goomba Region - Goomba Village
 

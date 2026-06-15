@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file flo_11.h
 /// @brief Flower Fields - (West) Maze
 

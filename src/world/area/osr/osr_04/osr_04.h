@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file osr_04.h
 /// @brief Peach's Castle Grounds - Castle Hijacking Scene
 

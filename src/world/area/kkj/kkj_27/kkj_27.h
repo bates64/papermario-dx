@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_27.h
 /// @brief Peach's Castle - Secret Passage (2F)
 

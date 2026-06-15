@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_02.h
 /// @brief Jade Jungle - Village Cove
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kgr_02.h
 /// @brief Inside the Whale - Whale Stomach
 

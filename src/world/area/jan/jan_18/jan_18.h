@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file jan_18.h
 /// @brief Jade Jungle - Great Tree Vine Ascent
 

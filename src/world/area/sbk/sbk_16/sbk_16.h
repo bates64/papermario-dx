@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sbk_16.h
 /// @brief Dry Dry Desert - N2E3
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_23.h
 /// @brief Peach's Castle - Rooftop (5F)
 

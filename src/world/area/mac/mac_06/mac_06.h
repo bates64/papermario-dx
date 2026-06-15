@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_06.h
 /// @brief Toad Town - Riding the Whale
 

@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file dgb_01.h
 /// @brief Tubba's Castle - Great Hall
 

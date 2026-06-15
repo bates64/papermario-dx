@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_18.h
 /// @brief Dry Dry Ruins - Deep Tunnel
 

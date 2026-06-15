@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file omo_01.h
 /// @brief Shy Guy's Toybox - BLU Large Playroom
 

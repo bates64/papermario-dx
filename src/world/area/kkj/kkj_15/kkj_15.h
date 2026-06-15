@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_15.h
 /// @brief Peach's Castle - Passage Outlet (2F)
 

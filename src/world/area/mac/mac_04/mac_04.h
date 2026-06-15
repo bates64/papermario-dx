@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file mac_04.h
 /// @brief Toad Town - Residental District
 

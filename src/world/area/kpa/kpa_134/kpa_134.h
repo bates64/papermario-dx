@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_134.h
 /// @brief Bowser's Castle - Right Water Puzzle
 

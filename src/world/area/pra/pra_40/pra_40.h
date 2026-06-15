@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file pra_40.h
 /// @brief Crystal Palace - Boss Antechamber
 

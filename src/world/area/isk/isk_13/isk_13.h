@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file isk_13.h
 /// @brief Dry Dry Ruins - Lunar Stone Room
 

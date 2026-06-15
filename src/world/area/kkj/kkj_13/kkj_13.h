@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kkj_13.h
 /// @brief Peach's Castle - Window Hallway (4F)
 

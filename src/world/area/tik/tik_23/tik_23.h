@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file tik_23.h
 /// @brief Toad Town Tunnels - Windy Path (B3)
 

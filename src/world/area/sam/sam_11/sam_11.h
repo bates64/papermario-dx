@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file sam_11.h
 /// @brief Mt Shiver - Shiver City Pond Area
 

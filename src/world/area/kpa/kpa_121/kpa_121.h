@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_121.h
 /// @brief Bowser's Castle - Exit to Peach's Castle
 

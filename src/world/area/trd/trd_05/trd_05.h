@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file trd_05.h
 /// @brief Koopa Bros Fortress - Right Tower
 

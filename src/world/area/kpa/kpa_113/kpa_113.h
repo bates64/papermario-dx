@@ -1,3 +1,5 @@
+#pragma once
+
 /// @file kpa_113.h
 /// @brief Bowser's Castle - Room with Hidden Door 2
 
