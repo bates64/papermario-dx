@@ -213,8 +213,6 @@ IMG_PTR spr_get_player_raster(s32 rasterIndex, s32 playerSpriteID) {
 void spr_update_player_raster_cache(void) {
     s32 i;
 
-    func_8013A4D0();
-
     for (i = 0; i < PlayerRasterCacheSize; i++) {
         if (PlayerRasterCache[i].lazyDeleteTime != 0) {
             PlayerRasterCache[i].lazyDeleteTime--;

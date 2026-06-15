@@ -11,11 +11,11 @@
 #include "world/common/npc/Bobomb.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList_Kolorado)[] = {
     ITEM_LETTER_TO_KOLORADO, ITEM_NONE

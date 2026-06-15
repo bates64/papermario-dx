@@ -3,7 +3,7 @@
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 EvtScript N(EVS_Scene_Wishing) = {
     Call(DisablePlayerInput, true)

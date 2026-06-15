@@ -5,7 +5,7 @@
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList_Franky)[] = {
     ITEM_LETTER_CHAIN_FRANKY,

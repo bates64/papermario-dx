@@ -1935,7 +1935,7 @@ void npc_update_decoration_charged(Npc* npc, s32 idx) {
     s32 i;
 
     if (npc->decorationInitialized[idx] == 0) {
-        set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+        set_npc_imgfx_all(npc->spriteInstanceID, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
         npc->decorationInitialized[idx] = 1;
     }
     if (npc->decorationInitialized[idx] == 1) {
@@ -2017,14 +2017,11 @@ Npc* npc_find_closest_simple(f32 x, f32 y, f32 z, f32 radius) {
 s32 npc_find_standing_on_entity(s32 entityIndex) {
     s32 idx = entityIndex | COLLISION_WITH_ENTITY_BIT;
     s32 y = get_entity_by_index(idx)->pos.y - 10.0f;
-    Npc* npc;
+    s32 hit;
     s32 i;
-    s32 var_v1;
-
-    npc->pos = npc->pos; // TODO required to match
 
     for (i = 0; i < ARRAY_COUNT(*gCurrentNpcListPtr); i++) {
-        npc = (*gCurrentNpcListPtr)[i];
+        Npc* npc = (*gCurrentNpcListPtr)[i];
 
         if (npc == nullptr) {
             continue;
@@ -2035,24 +2032,20 @@ s32 npc_find_standing_on_entity(s32 entityIndex) {
         if (npc->flags & (NPC_FLAG_SUSPENDED | NPC_FLAG_INACTIVE)) {
             continue;
         }
-        if (npc->flags & NPC_FLAG_PARTNER) {
-            var_v1 = i; // TODO required to match (dummy if statement to load NPC_FLAG_PARTNER into s5)
-        }
         if (npc->pos.y < y) {
             continue;
         }
         if (npc->flags & (NPC_FLAG_IGNORE_ENTITY_COLLISION | NPC_FLAG_FLYING)) {
-            var_v1 = npc_get_collider_below(npc);
-            if (var_v1 != 0) {
-                if (idx == var_v1) {
+            hit = npc_get_collider_below(npc);
+            if (hit != 0) {
+                if (idx == hit) {
                     return i;
                 }
             }
         } else {
-            var_v1 = npc->curFloor;
-            if (npc->curFloor & COLLISION_WITH_ENTITY_BIT) { // TODO required to match (can't use var_v1)
-                if (idx == var_v1) {
-                    npc->pos = npc->pos; // TODO required to match
+            hit = npc->curFloor;
+            if (npc->curFloor & COLLISION_WITH_ENTITY_BIT) {
+                if (idx == hit) {
                     return i;
                 }
             }

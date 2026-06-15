@@ -9,7 +9,7 @@
 #include "world/common/npc/JrTroopa.inc.c"
 #include "world/common/enemy/HeartPlant.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,

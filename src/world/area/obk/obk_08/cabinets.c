@@ -11,7 +11,7 @@
 #include "sprite/npc/WorldSushie.h"
 #include "sprite/npc/WorldLakilester.h"
 
-#include "world/common/complete/KnockDownPlayer.inc.c"
+#include "world/common/atomic/KnockDownPlayer.inc.c"
 
 API_CALLABLE(N(DamagePlayer1HP)) {
     if (gPlayerData.curHP <= 1) {

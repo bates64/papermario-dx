@@ -17,9 +17,9 @@ NpcSettings N(NpcSettings_ShyGuy) = {
 #include "world/common/npc/Dummy.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 API_CALLABLE(N(GetOinkCount)) {
     s32 oinkCount = evt_get_variable(script, GB_MAC03_LilOinkCount);

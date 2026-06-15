@@ -68,7 +68,7 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList_FrostT)[] = {
     ITEM_LETTER_CHAIN_FROST_T,

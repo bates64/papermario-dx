@@ -75,8 +75,7 @@ typedef struct ImgFXState {
     /* 0x07 */ PAD(1);
     /* 0x08 */ u16 firstVtxIdx;
     /* 0x0A */ u16 lastVtxIdx;
-    /* 0x0C */ u16 unk_0C;
-    /* 0x0E */ s16 unk_0E;
+    /* 0x0C */ PAD(4);
     /* 0x10 */ s16 nextIdx;
     /* 0x14 */ s32 flags;
     /* 0x18 */ PAD(4);
@@ -108,16 +107,14 @@ typedef struct ImgFXRenderMode {
     /* 0x8 */ u8 flags; // only checks true so far. some kind of switch?
 } ImgFXRenderMode; // size = 0xC
 
-typedef ImgFXState ImgFXInstanceList[MAX_IMGFX_INSTANCES];
-
 extern HeapNode heap_spriteHead;
 
 BSS ImgFXWorkingTexture ImgFXCurrentTexture;
 BSS Vtx* ImgFXVtxBuffers[2];
 BSS Vtx* imgfx_vtxBuf;
-BSS ImgFXInstanceList* ImgFXInstances;
+BSS ImgFXState* ImgFXInstances;
 BSS ImgFXAnimHeader ImgFXAnimHeaders[MAX_IMGFX_INSTANCES];
-BSS ImgFXCacheEntry ImgFXDataCache[8];
+BSS ImgFXCacheEntry ImgFXDataCache[16];
 
 // Data
 ImgFXWorkingTexture* ImgFXCurrentTexturePtr = &ImgFXCurrentTexture;
@@ -246,11 +243,11 @@ void imgfx_init(void) {
         ImgFXVtxBuffers[i] = _heap_malloc(&heap_spriteHead, ImgFXVtxBufferCapacity * sizeof(Vtx));
     }
 
-    ImgFXInstances = (ImgFXInstanceList*)_heap_malloc(&heap_spriteHead, sizeof(ImgFXInstanceList));
+    ImgFXInstances = (ImgFXState*) _heap_malloc(&heap_spriteHead, MAX_IMGFX_INSTANCES * sizeof(ImgFXState));
 
-    for (i = 0; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        imgfx_init_instance(&(*ImgFXInstances)[i]);
-        imgfx_clear_instance_data(&(*ImgFXInstances)[i]);
+    for (i = 0; i < MAX_IMGFX_INSTANCES; i++) {
+        imgfx_init_instance(&ImgFXInstances[i]);
+        imgfx_clear_instance_data(&ImgFXInstances[i]);
     }
 
     for (i = 0; i < ARRAY_COUNT(ImgFXDataCache); i++) {
@@ -263,32 +260,32 @@ void imgfx_init(void) {
     imgfx_vtxBuf = ImgFXVtxBuffers[gCurrentDisplayContextIndex];
 }
 
-void func_8013A4D0(void) {
+void imgfx_begin_frame(void) {
     s32 i;
 
     imgfx_vtxBuf = ImgFXVtxBuffers[gCurrentDisplayContextIndex];
     imgfx_vtxCount = 0;
-    imgfx_init_instance(&(*ImgFXInstances)[0]);
+    imgfx_init_instance(&ImgFXInstances[0]);
 
-    (*ImgFXInstances)[0].flags |= IMGFX_FLAG_VALID;
+    ImgFXInstances[0].flags |= IMGFX_FLAG_VALID;
 
-    for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if (((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID) && (*ImgFXInstances)[i].lastAnimCmd != IMGFX_SET_ANIM) {
-            imgfx_cache_instance_data(&(*ImgFXInstances)[i]);
+    for (i = 1; i < MAX_IMGFX_INSTANCES; i++) {
+        if ((ImgFXInstances[i].flags & IMGFX_FLAG_VALID) && ImgFXInstances[i].lastAnimCmd != IMGFX_SET_ANIM) {
+            imgfx_cache_instance_data(&ImgFXInstances[i]);
         }
     }
 
-    for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if (((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID) && (*ImgFXInstances)[i].colorBuf != nullptr) {
-            if ((*ImgFXInstances)[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MULTIPLY) {
+    for (i = 1; i < MAX_IMGFX_INSTANCES; i++) {
+        if ((ImgFXInstances[i].flags & IMGFX_FLAG_VALID) && ImgFXInstances[i].colorBuf != nullptr) {
+            if (ImgFXInstances[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MULTIPLY) {
                 continue;
             }
-            if ((*ImgFXInstances)[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MODULATE) {
+            if (ImgFXInstances[i].lastColorCmd == IMGFX_COLOR_BUF_SET_MODULATE) {
                 continue;
             }
-            general_heap_free((*ImgFXInstances)[i].colorBuf);
-            (*ImgFXInstances)[i].colorBuf = nullptr;
-            (*ImgFXInstances)[i].colorBufCount = 0;
+            heap_free(ImgFXInstances[i].colorBuf);
+            ImgFXInstances[i].colorBuf = nullptr;
+            ImgFXInstances[i].colorBufCount = 0;
         }
     }
 }
@@ -341,9 +338,13 @@ s32 imgfx_get_free_instances(s32 count) {
     s32 firstIdx;
     s32 i;
 
+    if (count <= 0) {
+        return -1;
+    }
+
     numAssigned = 0;
-    for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if (!((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID)) {
+    for (i = 1; i < MAX_IMGFX_INSTANCES; i++) {
+        if (!(ImgFXInstances[i].flags & IMGFX_FLAG_VALID)) {
             numAssigned++;
         }
     }
@@ -356,8 +357,8 @@ s32 imgfx_get_free_instances(s32 count) {
     foundAny = false;
     numAssigned = 0;
     iPrev = -1;
-    for (i = 1; i < ARRAY_COUNT(*ImgFXInstances); i++) {
-        if ((*ImgFXInstances)[i].flags & IMGFX_FLAG_VALID) {
+    for (i = 1; i < MAX_IMGFX_INSTANCES; i++) {
+        if (ImgFXInstances[i].flags & IMGFX_FLAG_VALID) {
             continue;
         }
 
@@ -365,16 +366,16 @@ s32 imgfx_get_free_instances(s32 count) {
             firstIdx = i;
             foundAny = true;
         } else {
-            (*ImgFXInstances)[iPrev].nextIdx = i;
+            ImgFXInstances[iPrev].nextIdx = i;
         }
 
-        (*ImgFXInstances)[i].arrayIdx = i;
-        imgfx_init_instance(&(*ImgFXInstances)[i]);
+        ImgFXInstances[i].arrayIdx = i;
+        imgfx_init_instance(&ImgFXInstances[i]);
         numAssigned++;
-        (*ImgFXInstances)[i].flags |= IMGFX_FLAG_VALID;
+        ImgFXInstances[i].flags |= IMGFX_FLAG_VALID;
         iPrev = i;
         if (numAssigned == count) {
-            (*ImgFXInstances)[i].nextIdx = -1;
+            ImgFXInstances[i].nextIdx = -1;
             break;
         }
     }
@@ -382,23 +383,27 @@ s32 imgfx_get_free_instances(s32 count) {
     return firstIdx;
 }
 
-void imgfx_release_instance(u32 idx) {
-    if (idx < MAX_IMGFX_INSTANCES) {
-        (*ImgFXInstances)[idx].flags = 0;
-        (*ImgFXInstances)[idx].nextIdx = -1;
+void imgfx_release_instance(s32 idx) {
+    if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
+        return;
     }
+
+    ImgFXInstances[idx].flags = 0;
+    ImgFXInstances[idx].nextIdx = -1;
 }
 
-void imgfx_release_instance_chain(u32 idx) {
-    if (idx < MAX_IMGFX_INSTANCES) {
-        s32 next;
+void imgfx_release_instance_chain(s32 idx) {
+    s32 next;
 
-        do {
-            next = (*ImgFXInstances)[idx].nextIdx;
-            imgfx_release_instance(idx);
-            idx = next;
-        } while (next != -1);
+    if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
+        return;
     }
+
+    do {
+        next = ImgFXInstances[idx].nextIdx;
+        imgfx_release_instance(idx);
+        idx = next;
+    } while (next != -1);
 }
 
 s32 imgfx_get_next_instance(s32 idx) {
@@ -406,15 +411,15 @@ s32 imgfx_get_next_instance(s32 idx) {
         return -1;
     }
 
-    if (idx >= MAX_IMGFX_INSTANCES) {
-        return 0xFF;
-    } else {
-        return (*ImgFXInstances)[idx].nextIdx;
-    }
+    return ImgFXInstances[idx].nextIdx;
 }
 
 ImgFXState* imgfx_get_instance(s32 idx) {
-    return &(*ImgFXInstances)[idx];
+    if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
+        return nullptr;
+    }
+
+    return &ImgFXInstances[idx];
 }
 
 void imgfx_cache_instance_data(ImgFXState* state) {
@@ -450,8 +455,7 @@ void imgfx_clear_instance_data(ImgFXState* state) {
 }
 
 void imgfx_init_instance(ImgFXState* state) {
-    s32 i;
-    s32 j;
+    s32 i, j;
 
     state->nextIdx = -1;
     state->lastAnimCmd = IMGFX_CLEAR;
@@ -461,10 +465,6 @@ void imgfx_init_instance(ImgFXState* state) {
     state->renderType = IMGFX_RENDER_DEFAULT;
     state->firstVtxIdx = 0;
     state->lastVtxIdx = 0;
-    state->unk_0C = 0;
-    state->unk_0E = 0;
-    state->ints.raw[0][3] = 255;
-    state->ints.raw[1][3] = 255;
     state->subdivX = 0;
     state->subdivY = 0;
     state->firstVtxIdx = 0;
@@ -483,12 +483,18 @@ void imgfx_init_instance(ImgFXState* state) {
     }
 }
 
-void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
-    ImgFXState* state = &(*ImgFXInstances)[idx];
+void imgfx_update(s32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
+    ImgFXState* state;
     s32 oldFlags;
     u8 r, g, b, a;
 
-    if (!(state->flags & IMGFX_FLAG_VALID) || (idx >= MAX_IMGFX_INSTANCES)) {
+    if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
+        return;
+    }
+
+    state = &ImgFXInstances[idx];
+
+    if (!(state->flags & IMGFX_FLAG_VALID)) {
         return;
     }
 
@@ -523,8 +529,8 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             if (state->colorBuf != nullptr) {
                 heap_free(state->colorBuf);
             }
-            state->colorBufCount = imgfxArg1 * 4;
-            state->colorBuf = heap_malloc(state->colorBufCount);
+            state->colorBufCount = imgfxArg1;
+            state->colorBuf = heap_malloc(state->colorBufCount * sizeof(*state->colorBuf));
             return;
         case IMGFX_OVERLAY:
         case IMGFX_OVERLAY_XLU:
@@ -623,7 +629,7 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             }
             break;
         case IMGFX_COLOR_BUF_SET_MULTIPLY:
-            if (imgfxArg1 < state->colorBufCount) {
+            if (imgfxArg1 >= 0 && imgfxArg1 < state->colorBufCount) {
                 // unpack and store color
                 r = (imgfxArg2 & 0xFF000000) >> 24;
                 g = (imgfxArg2 & 0xFF0000) >> 16;
@@ -644,7 +650,7 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             }
             break;
         case IMGFX_COLOR_BUF_SET_MODULATE:
-            if (imgfxArg1 < state->colorBufCount) {
+            if (imgfxArg1 >= 0 && imgfxArg1 < state->colorBufCount) {
                 // unpack and store color
                 r = (imgfxArg2 & 0xFF000000) >> 24;
                 g = (imgfxArg2 & 0xFF0000) >> 16;
@@ -689,41 +695,41 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
 }
 
 void imgfx_set_state_flags(s32 idx, u16 flagBits, s32 mode) {
-    if ((*ImgFXInstances)[idx].flags & IMGFX_FLAG_VALID) {
+    if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
+        return;
+    }
+
+    if (ImgFXInstances[idx].flags & IMGFX_FLAG_VALID) {
         if (mode) {
-            (*ImgFXInstances)[idx].flags |= flagBits;
+            ImgFXInstances[idx].flags |= flagBits;
         } else {
-            (*ImgFXInstances)[idx].flags &= ~flagBits;
+            ImgFXInstances[idx].flags &= ~flagBits;
         }
     }
 }
 
 s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matrix4f mtx) {
-    ImgFXState* state = &(*ImgFXInstances)[idx];
+    ImgFXState* state;
 
     if (ifxImg->alpha == 0) {
         return IMGFX_RENDER_RESULT_NO;
     }
 
-    state->arrayIdx = idx;
-    state->flags |= flagBits;
     ImgFXCurrentTexturePtr->tex.raster  = ifxImg->raster;
     ImgFXCurrentTexturePtr->tex.palette = ifxImg->palette;
     ImgFXCurrentTexturePtr->tex.width   = ifxImg->width;
     ImgFXCurrentTexturePtr->tex.height  = ifxImg->height;
     ImgFXCurrentTexturePtr->tex.xOffset = ifxImg->xOffset;
     ImgFXCurrentTexturePtr->tex.yOffset = ifxImg->yOffset;
-    ImgFXCurrentTexturePtr->unk_18 = 0;
-    ImgFXCurrentTexturePtr->unk_1E = 0;
     ImgFXCurrentTexturePtr->alphaMultiplier = ifxImg->alpha;
 
     if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
         return IMGFX_RENDER_RESULT_NO;
     }
 
-    if (idx >= MAX_IMGFX_INSTANCES || state == nullptr) {
-        return IMGFX_RENDER_RESULT_NO;
-    }
+    state = &ImgFXInstances[idx];
+    state->arrayIdx = idx;
+    state->flags |= flagBits;
 
     imgfx_make_mesh(state);
     imgfx_appendGfx_mesh(state, mtx);
@@ -1233,6 +1239,7 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
             Gfx* gfxBuffer = state->gfxBufs[i];
             s32 j = 0;
             u32 cmd;
+            s32 offset;
 
             // Loop over the displaylist commands until we hit an ENDDL
             do {
@@ -1243,9 +1250,8 @@ ImgFXAnimHeader* imgfx_load_anim(ImgFXState* state) {
                 if (cmd == G_VTX) {
                     // ImgFXVtx structs are 0xC bytes while Vtx are 0x10, so we need a (4/3) scaling factor
                     // to compute a new, equivalent Vtx[i] address for an existing ImgFXVtx[i] address.
-                    // Unfortunately, using sizeof here does not match.
-                    gfxBuffer[j-1].words.w1 = ((((s32) gfxBuffer[j-1].words.w1 - (s32) anim->keyframesOffset) / 3) * 4) +
-                                              (s32) state->vtxBufs[i];
+                    offset = (s32) gfxBuffer[j-1].words.w1 - (s32) anim->keyframesOffset;
+                    gfxBuffer[j-1].words.w1 = (s32) state->vtxBufs[i] + ((offset * sizeof(Vtx)) / sizeof(ImgFXVtx));
                 }
             } while (cmd != G_ENDDL);
         }
@@ -1469,14 +1475,13 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
         s32 ult = (imgfx_vtxBuf[i + 0].v.tc[1] >> 0x5) - 256;
         s32 lrs = (imgfx_vtxBuf[i + 3].v.tc[0] >> 0x5) - 256;
         s32 lrt = (imgfx_vtxBuf[i + 3].v.tc[1] >> 0x5) - 256;
-        s32 someFlags = IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE;
         s32 alpha;
         s32 alpha2;
 
         if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
             if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
                 && (state->arrayIdx != 0)
-                && (state->flags & someFlags)
+                && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                 && (   state->renderType == IMGFX_RENDER_DEFAULT
                     || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
                     || state->renderType == IMGFX_RENDER_OVERLAY_RGBA
@@ -1514,8 +1519,9 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
                 }
 
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
-                    && ((*ImgFXInstances)[0].arrayIdx != 0)
-                    && (state->flags & someFlags)
+                    // && (ImgFXInstances[0].arrayIdx != 0) -- (?) verify this is OK
+                    && state->arrayIdx != 0
+                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                 ) {
                     cam = &gCameras[gCurrentCamID];
 
@@ -1553,7 +1559,7 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
 
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
                     && state->arrayIdx != 0
-                    && (state->flags & someFlags)
+                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                 ) {
                     alpha2 = 255;
                     cam = &gCameras[gCurrentCamID];
@@ -1612,8 +1618,9 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
         }
 
         if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_SET_VIEWPORT)
-            && (*ImgFXInstances)[0].arrayIdx != 0
-            && (state->flags & someFlags)
+            // && ImgFXInstances[0].arrayIdx != 0 -- (?) verify this is OK
+            && state->arrayIdx != 0
+            && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
         ) {
             cam = &gCameras[gCurrentCamID];
             if (gGameStatusPtr->context == CONTEXT_PAUSE) {
@@ -1654,7 +1661,8 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
             s32 lrIdx = firstVtxIdx + (i + 1) * (state->subdivX + 1) + j + 1;
             if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
-                    && (*ImgFXInstances)[0].arrayIdx != 0
+                    // (?) bugfix: was ImgFXInstances[0].arrayIdx != 0, chaning this lets Kolorado on kzn_17 recieve sprite shading
+                    && state->arrayIdx != 0
                     && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                     && (state->renderType == IMGFX_RENDER_DEFAULT
                         || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
@@ -1814,41 +1822,31 @@ void imgfx_wavy_init(ImgFXState* state) {
 }
 
 void imgfx_mesh_make_wavy(ImgFXState* state) {
-    Vtx* v1;
-    Vtx* v2;
-    Vtx* v3;
-    f32 vx;
-    f32 vy;
-    f32 vz;
-    f32 angle1;
-    f32 angle2;
-    f32 angle3;
-    f32 phase1;
-    f32 phase2;
-    f32 phase3;
-    s32 angleInc;
-    s32 amt;
-    s32 sign;
+    Vtx* vtx;
+    f32 phaseX;
+    f32 phaseY;
+    f32 phaseZ;
+    s32 count;
     s32 i;
 
-    phase1 = (f32) gGameStatusPtr->frameCounter / 10.3;
-    while (phase1 > 360.0) {
-        phase1 -= 360.0;
+    phaseX = gGameStatusPtr->frameCounter / 10.3;
+    while (phaseX > 360.0) {
+        phaseX -= 360.0;
     }
 
-    phase2 = (f32) (gGameStatusPtr->frameCounter + 40) / 11.2;
-    while (phase2 > 360.0) {
-        phase2 -= 360.0;
+    phaseY = (gGameStatusPtr->frameCounter + 40) / 11.2;
+    while (phaseY > 360.0) {
+        phaseY -= 360.0;
     }
 
-    phase3 = (f32) (gGameStatusPtr->frameCounter + 25) / 10.8;
-    while (phase3 > 360.0) {
-        phase3 -= 360.0;
+    phaseZ = (gGameStatusPtr->frameCounter + 25) / 10.8;
+    while (phaseZ > 360.0) {
+        phaseZ -= 360.0;
     }
 
-    state->floats.wavy.phase1 = phase1;
-    state->floats.wavy.phase2 = phase2;
-    state->floats.wavy.phase3 = phase3;
+    state->floats.wavy.phase1 = phaseX;
+    state->floats.wavy.phase2 = phaseY;
+    state->floats.wavy.phase3 = phaseZ;
 
     if (state->floats.wavy.phase1 >= 360.0) {
         state->floats.wavy.phase1-= 360.0;
@@ -1862,33 +1860,21 @@ void imgfx_mesh_make_wavy(ImgFXState* state) {
         state->floats.wavy.phase3 -= 360.0;
     }
 
-    sign = 0;
-    angleInc = 0;
-    amt = (state->lastVtxIdx - state->firstVtxIdx) - state->subdivX;
+    count = (state->lastVtxIdx - state->firstVtxIdx) - state->subdivX;
 
-    for (i = 0; i < amt; i++) {
-        angle1 = state->floats.wavy.phase1 + (angleInc * 45) + (sign * 180);
-        angle2 = state->floats.wavy.phase2 + (angleInc * 45) + (sign * 180);
-        angle3 = state->floats.wavy.phase3 + (angleInc * 45) + (sign * 180);
+    for (i = 0; i < count; i++) {
+        s32 row = i / (state->subdivX + 1);
+        s32 col = i % (state->subdivX + 1);
+        s32 phaseFlip = row & 1;
 
-        //TODO find better match
-        v1 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
-        vx = v1->v.ob[0];
-        v1->v.ob[0] = (vx + (sin_deg(angle1) * state->ints.wavy.mag.x));
+        f32 angleX = state->floats.wavy.phase1 + (col * 45) + (phaseFlip * 180);
+        f32 angleY = state->floats.wavy.phase2 + (col * 45) + (phaseFlip * 180);
+        f32 angleZ = state->floats.wavy.phase3 + (col * 45) + (phaseFlip * 180);
 
-        v2 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
-        vy = v2->v.ob[1];
-        v2->v.ob[1] = (vy + (sin_deg(angle2) * state->ints.wavy.mag.y));
-
-        v3 = (Vtx*)((state->firstVtxIdx + i) * sizeof(Vtx) + (s32)imgfx_vtxBuf);
-        vz = v3->v.ob[2];
-        v3->v.ob[2] = (vz + (sin_deg(angle3) * state->ints.wavy.mag.z));
-
-        angleInc++;
-        if (i % (state->subdivX + 1) == 0) {
-            angleInc = 0;
-            sign = !sign;
-        }
+        vtx = &imgfx_vtxBuf[state->firstVtxIdx + i];
+        vtx->v.ob[0] += sin_rad(angleX) * state->ints.wavy.mag.x;
+        vtx->v.ob[1] += sin_rad(angleY) * state->ints.wavy.mag.y;
+        vtx->v.ob[2] += sin_rad(angleZ) * state->ints.wavy.mag.z;
     }
 }
 

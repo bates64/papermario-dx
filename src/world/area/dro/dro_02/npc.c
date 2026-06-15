@@ -3,7 +3,7 @@
 #include "script_api/battle.h"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 extern NpcSettings N(NpcSettings_Merlee);
 extern EvtScript N(EVS_NpcInit_Merlee);
@@ -46,7 +46,7 @@ NpcSettings N(NpcSettings_Archeologist) = {
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"

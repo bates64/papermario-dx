@@ -6,9 +6,9 @@
 #include "world/common/npc/Dummy.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 #include "npc/russ_and_thief.inc.c"
 

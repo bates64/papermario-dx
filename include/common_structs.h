@@ -2345,12 +2345,9 @@ typedef struct ImgFXTexture {
 
 typedef struct ImgFXWorkingTexture {
     /* 0x00 */ ImgFXTexture tex;
-    /* 0x18 */ s16 unk_18;
-    /* 0x1A */ PAD(4);
-    /* 0x1E */ s16 unk_1E;
-    /* 0x20 */ PAD(4);
-    /* 0x24 */ u8 alphaMultiplier;
-} ImgFXWorkingTexture; // size = 0x28
+    /* 0x18 */ u8 alphaMultiplier;
+    /* 0x19 */ PAD(3);
+} ImgFXWorkingTexture; // size = 0x1C
 
 typedef struct SongUpdateEvent {
     /* 0x00 */ s32 songName;
@@ -2358,10 +2355,7 @@ typedef struct SongUpdateEvent {
     /* 0x08 */ s32 startVolume;
     /* 0x0C */ s32 finalVolume;
     /* 0x10 */ s32 variation;
-    /* 0x14 */ s32 unk14;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ s32 unk1C; // may be fake
-} SongUpdateEvent; // size = 0x20
+} SongUpdateEvent; // size = 0x14
 
 // unfortunately, cant use bitfield for this
 // format: ABCC00DD

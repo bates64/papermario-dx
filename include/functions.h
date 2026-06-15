@@ -570,7 +570,7 @@ void add_xz_vec3f_copy2(Vec3f* vector, f32 speed, f32 angleDeg);
 void play_movement_dust_effects(s32 var0, f32 xPos, f32 yPos, f32 zPos, f32 angleDeg);
 
 void draw_prev_frame_buffer_at_screen_pos(s32, s32, s32, s32, f32);
-void func_8013A4D0(void);
+void imgfx_begin_frame(void);
 
 void btl_draw_ui(void);
 void btl_restore_world_cameras(void);
@@ -696,7 +696,7 @@ s32 create_worker_scene(VoidCallback updateFunc, VoidCallback renderFunc);
 
 void init_entity_models(void);
 f32 phys_get_spin_history(s32 lag, s32* x, s32* y, s32* z);
-void imgfx_update(u32, ImgFXType, s32, s32, s32, s32, s32);
+void imgfx_update(s32, ImgFXType, s32, s32, s32, s32, s32);
 s32 imgfx_appendGfx_component(s32, ImgFXTexture*, u32, Matrix4f);
 void imgfx_update_cache(void);
 s32 imgfx_get_free_instances(s32);
@@ -876,7 +876,7 @@ void remove_part_decor_sparkles(ActorPart*, s32);
 void remove_part_decor_bowser_aura(ActorPart*, s32);
 void remove_part_decor_radiating_stars(ActorPart*, s32);
 void status_bar_ignore_changes(void);
-void imgfx_release_instance(u32);
+void imgfx_release_instance(s32);
 
 void set_script_flags(Evt* script, s32 flags);
 void clear_script_flags(Evt* script, s32 flags);

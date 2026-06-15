@@ -79,7 +79,7 @@ API_CALLABLE(N(UpdateMonstarSpriteEffects)) {
         return ApiStatus_BLOCK;
     }
 
-    set_npc_imgfx_comp(npc->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, 20, 0, 0, 255, 0);
+    set_npc_imgfx_comp(npc->spriteInstanceID, 0, IMGFX_ALLOC_COLOR_BUF, RGBA_BUF_SIZE, 0, 0, 255, 0);
     script->functionTemp[0] += 10;
     if (script->functionTemp[0] >= 360) {
         script->functionTemp[0] %= 360;

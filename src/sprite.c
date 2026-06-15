@@ -822,6 +822,7 @@ void spr_init_sprites(s32 playerSpriteSet) {
 }
 
 void spr_render_init(void) {
+    imgfx_begin_frame();
     spr_update_player_raster_cache();
     spr_clear_quad_cache();
 }

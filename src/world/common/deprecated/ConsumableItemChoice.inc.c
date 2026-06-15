@@ -13,8 +13,8 @@ static s32 N(ItemChoice_List)[ITEM_NUM_CONSUMABLES + 1];
 s32 N(ItemChoice_HasSelectedItem) = 0;
 s32 N(ItemChoice_SelectedItemID) = 0;
 
-#include "world/common/todo/GetNpcCollisionHeight.inc.c"
-#include "world/common/todo/AddPlayerHandsOffset.inc.c"
+#include "world/common/deprecated/GetNpcCollisionHeight.inc.c"
+#include "world/common/deprecated/AddPlayerHandsOffset.inc.c"
 
 API_CALLABLE(N(ItemChoice_WaitForSelection)) {
     Bytecode* args = script->ptrReadPos;

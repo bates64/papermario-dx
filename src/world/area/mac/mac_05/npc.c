@@ -9,9 +9,9 @@
 #include "world/common/npc/Toad_Stationary.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 enum WhaleRider {
     WHALE_RIDER_PLAYER      = 0,

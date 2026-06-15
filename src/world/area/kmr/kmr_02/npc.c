@@ -16,7 +16,7 @@ BSS u8 oldPrimR, oldPrimG, oldPrimB;
 BSS u8 oldEnvR, oldEnvG, oldEnvB;
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 #include "world/common/npc/Toad_Guard.inc.c"
 
@@ -35,7 +35,7 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 #include "world/common/enemy/Kammy_Guard.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"
 

@@ -6,11 +6,11 @@
 #include "world/common/npc/Bootler.inc.c"
 #include "world/common/npc/Bubulb.inc.c"
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 #include "world/common/enemy/ShyGuy.h"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 #include "npc/tayce_t.inc.c"
 

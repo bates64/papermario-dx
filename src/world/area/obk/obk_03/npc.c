@@ -2,7 +2,7 @@
 
 #include "world/common/npc/Boo.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList_Igor)[] = {
     ITEM_LETTER_TO_IGOR,

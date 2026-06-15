@@ -14,7 +14,7 @@ NpcSettings N(NpcSettings_ChetRippo) = {
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Twink.inc.c"
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 EvtScript N(EVS_TossTrainInToybox) = {
     Call(FacePlayerTowardPoint, -440, -150, 0)

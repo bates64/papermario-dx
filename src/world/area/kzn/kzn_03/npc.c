@@ -5,7 +5,7 @@
 #include "world/common/npc/Dummy.inc.c"
 #include "world/common/npc/Kolorado.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_KOLORADO,

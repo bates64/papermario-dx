@@ -15,7 +15,7 @@ INCLUDE_PAL("world/area/lava_piranha/vine.pal", kzn_19_lava_piranha_vine_pal);
 
 #include "world/common/lava_piranha/part2.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {
     ITEM_LETTER_TO_KOLORADO,

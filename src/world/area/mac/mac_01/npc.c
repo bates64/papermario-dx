@@ -28,14 +28,14 @@ NpcSettings N(NpcSettings_Parakarry) = {
 };
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/complete/KnockDownPlayer.inc.c"
+#include "world/common/atomic/KnockDownPlayer.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/complete/LetterDelivery.inc.c"
+#include "world/common/atomic/LetterDelivery.inc.c"
 
 API_CALLABLE(N(GetPlayerCoins)) {
     script->varTable[0] = gPlayerData.coins;

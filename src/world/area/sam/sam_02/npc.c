@@ -12,7 +12,7 @@
 #include "world/common/npc/ShiverToad.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-#include "world/common/complete/Quizmo.inc.c"
+#include "world/common/atomic/Quizmo.inc.c"
 
 EvtScript N(EVS_NpcInteract_Penguin_ShopOwner) = {
     Switch(GB_StoryProgress)
