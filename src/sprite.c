@@ -389,7 +389,7 @@ void spr_appendGfx_component(
         ifxImg.xOffset = -(width / 2);
         ifxImg.yOffset = height;
         ifxImg.alpha = opacity;
-        if (imgfx_appendGfx_component((u8) CurSpriteImgFX, &ifxImg, IMGFX_FLAG_80000, mtxTransform) == 1) {
+        if (imgfx_appendGfx_component((u8) CurSpriteImgFX, &ifxImg, IMGFX_FLAG_AS_SPRITE, mtxTransform) == 1) {
             CurSpriteImgFX &= ~SPR_IMGFX_FLAG_ALL;
         }
     }

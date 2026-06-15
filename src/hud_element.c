@@ -1523,12 +1523,12 @@ void render_complex_hud_element(HudElement* elem) {
 
             if (elem->flags & HUD_ELEMENT_FLAG_NO_FOLD) {
                 if (elem->flags & HUD_ELEMENT_FLAG_ANTIALIASING) {
-                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, mtxOut);
+                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, mtxOut);
                 } else {
-                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_40, mtxOut);
+                    imgfx_appendGfx_component(0, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, mtxOut);
                 }
             } else {
-                imgfx_appendGfx_component(transform->imgfxIdx, &ifxImg, IMGFX_FLAG_40, mtxOut);
+                imgfx_appendGfx_component(transform->imgfxIdx, &ifxImg, IMGFX_FLAG_NO_ZBUFFER, mtxOut);
             }
             break;
         case 2:

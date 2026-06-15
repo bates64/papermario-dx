@@ -4610,28 +4610,34 @@ enum NpcDropFlags {
     NPC_DROP_FLAG_80                = 0x80,
 };
 
+enum ImgFXRenderResult {
+    IMGFX_RENDER_RESULT_NO          = 0,
+    IMGFX_RENDER_RESULT_DONE        = 1,
+    IMGFX_RENDER_RESULT_HOLDING     = 2,
+};
+
 enum ImgFXStateFlags {
     IMGFX_FLAG_VALID                = 0x00000001,
     IMGFX_FLAG_G_CULL_BACK          = 0x00000002,
     IMGFX_FLAG_G_CULL_FRONT         = 0x00000004,
-    IMGFX_FLAG_8                    = 0x00000008,
+    IMGFX_FLAG_UNUSED_A             = 0x00000008, // no remaining effect
     IMGFX_FLAG_SKIP_GFX_SETUP       = 0x00000010,
     IMGFX_FLAG_SKIP_TEX_SETUP       = 0x00000020,
-    IMGFX_FLAG_40                   = 0x00000040,
+    IMGFX_FLAG_NO_ZBUFFER           = 0x00000040,
     IMGFX_FLAG_LOOP_ANIM            = 0x00000080,
     IMGFX_FLAG_REVERSE_ANIM         = 0x00000100, // fold animation plays backwards (from end to start)
-    IMGFX_FLAG_200                  = 0x00000200,
-    IMGFX_FLAG_400                  = 0x00000400,
-    IMGFX_FLAG_800                  = 0x00000800,
+    IMGFX_FLAG_ANIM_INIT            = 0x00000200,
+    IMGFX_FLAG_ALPHA_CVG            = 0x00000400,
+    IMGFX_FLAG_HOLD_DONE            = 0x00000800, // hold on the final frame when finished, prevents auto-disposal
     IMGFX_FLAG_ANIM_DONE            = 0x00001000,
-    IMGFX_FLAG_2000                 = 0x00002000,
-    IMGFX_FLAG_4000                 = 0x00004000,
-    IMGFX_FLAG_8000                 = 0x00008000,
+    IMGFX_FLAG_USE_LIGHTING         = 0x00002000,
+    IMGFX_FLAG_HOLDING              = 0x00004000,
+    IMGFX_FLAG_UNUSED_B             = 0x00008000,
     IMGFX_FLAG_NO_FILTERING         = 0x00010000,
-    IMGFX_FLAG_20000                = 0x00020000,
-    IMGFX_FLAG_40000                = 0x00040000,
-    IMGFX_FLAG_80000                = 0x00080000,
-    IMGFX_FLAG_100000               = 0x00100000,
+    IMGFX_FLAG_FORCE_CLEAR          = 0x00020000,
+    IMGFX_FLAG_UNUSED_C             = 0x00040000,
+    IMGFX_FLAG_AS_SPRITE            = 0x00080000,
+    IMGFX_FLAG_SPRITE_SHADING       = 0x00100000, // allow sprite shading, even if for a non-sprite imgfx
 };
 
 typedef enum ImgFXType {

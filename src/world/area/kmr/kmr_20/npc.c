@@ -670,7 +670,7 @@ EvtScript N(EVS_NpcAI_ShyGuy) = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_NPC_JUMP, SOUND_SPACE_DEFAULT)
     Call(NpcJump0, NPC_SELF, 594, 30, -220, 15)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_ENTER_PIPE, SOUND_SPACE_DEFAULT)
-    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_800)
+    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_HOLD_DONE)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
     Sub(LVar1, 10)

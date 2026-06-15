@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcIdle_Goomba) = {
     Wait(20)
     Call(SetNpcAnimation, NPC_SELF, ANIM_Goomba_Idle)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_FLIP_PAGE, SOUND_SPACE_DEFAULT)
-    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_2000)
+    Call(SetNpcImgFXFlags, NPC_SELF, IMGFX_FLAG_USE_LIGHTING)
     Call(SetNpcImgFXParams, NPC_SELF, IMGFX_SET_ANIM, IMGFX_ANIM_UNFURL, 1, 1, 0)
     Wait(12)
     Wait(5)

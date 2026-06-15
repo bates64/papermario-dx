@@ -62,7 +62,7 @@ EvtScript N(EVS_NpcIdle_Kammy_Broom) = {
         EndIf
         Wait(1)
     EndLoop
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_2000)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_USE_LIGHTING)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_TINT, 0, 0, 0, 0)
     Call(HidePlayerShadow, true)
     Call(DisablePartnerAI, false)

@@ -199,7 +199,7 @@ EvtScript N(EVS_Pipe_EnterHorizontal) = {
         Wait(25)
         Call(HidePlayerShadow, false)
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Loop(40)
         Call(N(Pipe_GetPointAheadOfPlayer), Float(1.0))
@@ -275,7 +275,7 @@ EvtScript N(EVS_Pipe_ExitVertical_Impl) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
     ExecWait(LVarC)
@@ -325,7 +325,7 @@ EvtScript N(EVS_Pipe_ExitHorizontal) = {
     Call(GetPlayerPos, LVar0, LVar1, LVar2)
     Call(SetPlayerPos, LVar0, LVar6, LVar7)
     Call(SetPlayerAnimation, ANIM_Mario1_Still)
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Still, IMGFX_SET_ANIM, IMGFX_ANIM_HORIZONTAL_PIPE_CURL, 1, 1, 0)
     Thread
         Wait(8)

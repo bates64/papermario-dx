@@ -595,7 +595,7 @@ void imgfx_update(u32 idx, ImgFXType type, s32 imgfxArg1, s32 imgfxArg2, s32 img
             state->renderType = IMGFX_RENDER_ANIM;
             state->floats.anim.curFrame = 0.0f;
             state->floats.anim.curIdx = 0.0f;
-            state->flags |= IMGFX_FLAG_200;
+            state->flags |= IMGFX_FLAG_ANIM_INIT;
             break;
         case IMGFX_SET_COLOR:
         case IMGFX_SET_ALPHA:
@@ -700,10 +700,9 @@ void imgfx_set_state_flags(s32 idx, u16 flagBits, s32 mode) {
 
 s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matrix4f mtx) {
     ImgFXState* state = &(*ImgFXInstances)[idx];
-    s32 ret = 0;
 
     if (ifxImg->alpha == 0) {
-        return 0;
+        return IMGFX_RENDER_RESULT_NO;
     }
 
     state->arrayIdx = idx;
@@ -714,16 +713,16 @@ s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matri
     ImgFXCurrentTexturePtr->tex.height  = ifxImg->height;
     ImgFXCurrentTexturePtr->tex.xOffset = ifxImg->xOffset;
     ImgFXCurrentTexturePtr->tex.yOffset = ifxImg->yOffset;
-    ImgFXCurrentTexturePtr->unk_18  = 0;
-    ImgFXCurrentTexturePtr->unk_1E  = 0;
+    ImgFXCurrentTexturePtr->unk_18 = 0;
+    ImgFXCurrentTexturePtr->unk_1E = 0;
     ImgFXCurrentTexturePtr->alphaMultiplier = ifxImg->alpha;
 
     if (idx < 0 || idx >= MAX_IMGFX_INSTANCES) {
-        return 0;
+        return IMGFX_RENDER_RESULT_NO;
     }
 
     if (idx >= MAX_IMGFX_INSTANCES || state == nullptr) {
-        return 0;
+        return IMGFX_RENDER_RESULT_NO;
     }
 
     imgfx_make_mesh(state);
@@ -735,12 +734,16 @@ s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matri
         state->lastAnimCmd = IMGFX_CLEAR;
         state->meshType = 0;
         state->renderType = IMGFX_RENDER_DEFAULT;
-        state->flags &= ~(IMGFX_FLAG_ANIM_DONE | IMGFX_FLAG_800 | IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_LOOP_ANIM);
+        state->flags &= ~(IMGFX_FLAG_ANIM_DONE | IMGFX_FLAG_HOLD_DONE | IMGFX_FLAG_REVERSE_ANIM | IMGFX_FLAG_LOOP_ANIM);
         imgfx_cache_instance_data(state);
-        ret = 1;
-    } else if (state->flags & IMGFX_FLAG_4000) {
-        ret = 2;
-    } else if (state->flags & IMGFX_FLAG_20000) {
+        return IMGFX_RENDER_RESULT_DONE;
+    }
+
+    if (state->flags & IMGFX_FLAG_HOLDING) {
+        return IMGFX_RENDER_RESULT_HOLDING;
+    }
+
+    if (state->flags & IMGFX_FLAG_FORCE_CLEAR) {
         state->lastAnimCmd = IMGFX_CLEAR;
         state->lastColorCmd = IMGFX_CLEAR;
         state->meshType = IMGFX_MESH_DEFAULT;
@@ -748,9 +751,10 @@ s32 imgfx_appendGfx_component(s32 idx, ImgFXTexture* ifxImg, u32 flagBits, Matri
         state->ints.raw[0][0] = -1;
         state->ints.raw[1][0] = -1;
         state->flags &= IMGFX_FLAG_VALID;
-        ret = 1;
+        return IMGFX_RENDER_RESULT_DONE;
     }
-    return ret;
+
+    return IMGFX_RENDER_RESULT_NO;
 }
 
 void imgfx_make_mesh(ImgFXState* state) {
@@ -854,14 +858,14 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
             skipModeChange = true;
         }
 
-        if ((state->flags & IMGFX_FLAG_400) && !skipModeChange) {
+        if ((state->flags & IMGFX_FLAG_ALPHA_CVG) && !skipModeChange) {
             mode1 &= ~CVG_DST_FULL;
             mode2 &= ~CVG_DST_FULL;
             mode1 |= (ALPHA_CVG_SEL | IM_RD);
             mode2 |= (ALPHA_CVG_SEL | IM_RD);
         }
 
-        if (state->flags & IMGFX_FLAG_40) {
+        if (state->flags & IMGFX_FLAG_NO_ZBUFFER) {
             gSPClearGeometryMode(gMainGfxPos++, G_ZBUFFER);
         } else {
             gSPSetGeometryMode(gMainGfxPos++, G_ZBUFFER);
@@ -956,7 +960,7 @@ void imgfx_appendGfx_mesh(ImgFXState* state, Matrix4f mtx) {
                 gSPClearGeometryMode(gMainGfxPos++, G_LIGHTING);
                 break;
             case IMGFX_RENDER_ANIM:
-                if (state->flags & (IMGFX_FLAG_2000 | IMGFX_FLAG_8000)) {
+                if (state->flags & (IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_UNUSED_B)) {
                     Camera* currentCam = &gCameras[gCurrentCameraID];
 
                     gDPSetCombineMode(gMainGfxPos++, G_CC_MODULATEIDECALA, G_CC_MODULATEIDECALA);
@@ -1268,15 +1272,15 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
         return;
     }
 
-    if (state->flags & IMGFX_FLAG_200) {
-        state->flags &= ~IMGFX_FLAG_200;
+    if (state->flags & IMGFX_FLAG_ANIM_INIT) {
+        state->flags &= ~IMGFX_FLAG_ANIM_INIT;
         if (state->flags & IMGFX_FLAG_REVERSE_ANIM) {
             state->floats.anim.curIdx = header->keyframesCount - 1;
         }
     }
     curKeyIdx = state->floats.anim.curIdx;
     absKeyframeInterval = abs(keyframeInterval);
-    if (state->flags & IMGFX_FLAG_4000) {
+    if (state->flags & IMGFX_FLAG_HOLDING) {
         nextKeyIdx = curKeyIdx;
     } else {
         if (state->flags & IMGFX_FLAG_REVERSE_ANIM) {
@@ -1326,7 +1330,7 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = (s16)(curKeyframe[i].ob[2] + (nextKeyframe[i].ob[2] - curKeyframe[i].ob[2]) * lerpAlpha) * 0.01 * ((ImgFXCurrentTexturePtr->tex.width + ImgFXCurrentTexturePtr->tex.height) / 2);
             }
             // get vertex color
-            if (state->flags & (IMGFX_FLAG_2000 | IMGFX_FLAG_8000)) {
+            if (state->flags & (IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_UNUSED_B)) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] = (s16)(curKeyframe[i].cn[0] + (nextKeyframe[i].cn[0] - curKeyframe[i].cn[0]) * lerpAlpha);
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] = (s16)(curKeyframe[i].cn[1] + (nextKeyframe[i].cn[1] - curKeyframe[i].cn[1]) * lerpAlpha);
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = (s16)(curKeyframe[i].cn[2] + (nextKeyframe[i].cn[2] - curKeyframe[i].cn[2]) * lerpAlpha);
@@ -1347,7 +1351,7 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.ob[2] = curKeyframe[i].ob[2] * 0.01 * ((ImgFXCurrentTexturePtr->tex.width + ImgFXCurrentTexturePtr->tex.height) / 2);
             }
             // get vertex color
-            if (state->flags & (IMGFX_FLAG_2000 | IMGFX_FLAG_8000)) {
+            if (state->flags & (IMGFX_FLAG_USE_LIGHTING | IMGFX_FLAG_UNUSED_B)) {
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[0] = curKeyframe[i].cn[0];
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[1] = curKeyframe[i].cn[1];
                 state->vtxBufs[gCurrentDisplayContextIndex][i].v.cn[2] = curKeyframe[i].cn[2];
@@ -1388,9 +1392,9 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                     if (state->flags & IMGFX_FLAG_LOOP_ANIM) {
                         curKeyIdx = header->keyframesCount - 1;
                     } else {
-                        if (state->flags & IMGFX_FLAG_800) {
+                        if (state->flags & IMGFX_FLAG_HOLD_DONE) {
                             curKeyIdx = 0;
-                            state->flags |= IMGFX_FLAG_4000;
+                            state->flags |= IMGFX_FLAG_HOLDING;
                         } else {
                             state->flags |= IMGFX_FLAG_ANIM_DONE;
                         }
@@ -1402,9 +1406,9 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                     if (state->flags & IMGFX_FLAG_LOOP_ANIM) {
                         curKeyIdx = 0;
                     } else {
-                        if (state->flags & IMGFX_FLAG_800) {
+                        if (state->flags & IMGFX_FLAG_HOLD_DONE) {
                             curKeyIdx--;
-                            state->flags |= IMGFX_FLAG_4000;
+                            state->flags |= IMGFX_FLAG_HOLDING;
                         } else {
                             state->flags |= IMGFX_FLAG_ANIM_DONE;
                         }
@@ -1420,9 +1424,9 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 if (state->flags & IMGFX_FLAG_LOOP_ANIM) {
                     curKeyIdx += header->keyframesCount;
                 } else {
-                    if (state->flags & IMGFX_FLAG_800) {
+                    if (state->flags & IMGFX_FLAG_HOLD_DONE) {
                         curKeyIdx = 0;
-                        state->flags |= IMGFX_FLAG_4000;
+                        state->flags |= IMGFX_FLAG_HOLDING;
                     } else {
                         state->flags |= IMGFX_FLAG_ANIM_DONE;
                     }
@@ -1434,9 +1438,9 @@ void imgfx_mesh_anim_update(ImgFXState* state) {
                 if (state->flags & IMGFX_FLAG_LOOP_ANIM) {
                     curKeyIdx %= header->keyframesCount;
                 } else {
-                    if (state->flags & IMGFX_FLAG_800) {
+                    if (state->flags & IMGFX_FLAG_HOLD_DONE) {
                         curKeyIdx = header->keyframesCount - 1;
-                        state->flags |= IMGFX_FLAG_4000;
+                        state->flags |= IMGFX_FLAG_HOLDING;
                     } else {
                         state->flags |= IMGFX_FLAG_ANIM_DONE;
                     }
@@ -1465,7 +1469,7 @@ void imgfx_appendGfx_mesh_basic(ImgFXState* state, Matrix4f mtx) {
         s32 ult = (imgfx_vtxBuf[i + 0].v.tc[1] >> 0x5) - 256;
         s32 lrs = (imgfx_vtxBuf[i + 3].v.tc[0] >> 0x5) - 256;
         s32 lrt = (imgfx_vtxBuf[i + 3].v.tc[1] >> 0x5) - 256;
-        s32 someFlags = IMGFX_FLAG_100000 | IMGFX_FLAG_80000;
+        s32 someFlags = IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE;
         s32 alpha;
         s32 alpha2;
 
@@ -1651,7 +1655,7 @@ void imgfx_appendGfx_mesh_grid(ImgFXState* state, Matrix4f mtx) {
             if (!(state->flags & IMGFX_FLAG_SKIP_TEX_SETUP)) {
                 if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
                     && (*ImgFXInstances)[0].arrayIdx != 0
-                    && (state->flags & (IMGFX_FLAG_100000 | IMGFX_FLAG_80000))
+                    && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
                     && (state->renderType == IMGFX_RENDER_DEFAULT
                         || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
                         || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA)
@@ -1722,7 +1726,7 @@ void imgfx_appendGfx_mesh_anim(ImgFXState* state, Matrix4f mtx) {
         gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, ImgFXCurrentTexturePtr->tex.palette);
         if ((gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED)
-            && (state->flags & (IMGFX_FLAG_100000 | IMGFX_FLAG_80000))
+            && (state->flags & (IMGFX_FLAG_SPRITE_SHADING | IMGFX_FLAG_AS_SPRITE))
             && (state->renderType == IMGFX_RENDER_DEFAULT
                 || state->renderType == IMGFX_RENDER_MULTIPLY_ALPHA
                 || state->renderType == IMGFX_RENDER_MULTIPLY_SHADE_ALPHA

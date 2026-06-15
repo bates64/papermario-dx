@@ -150,7 +150,7 @@ EvtScript N(EVS_Player_EnterPipe_Epilogue) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetPlayerImgFXFlags, IMGFX_FLAG_800)
+    Call(SetPlayerImgFXFlags, IMGFX_FLAG_HOLD_DONE)
     Call(UpdatePlayerImgFX, ANIM_Mario1_Idle, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
     Return
@@ -180,7 +180,7 @@ EvtScript N(EVS_Luigi_EnterPipe_Epilogue) = {
             Wait(1)
         EndLoop
     EndThread
-    Call(SetNpcImgFXFlags, NPC_Luigi_1, IMGFX_FLAG_800)
+    Call(SetNpcImgFXFlags, NPC_Luigi_1, IMGFX_FLAG_HOLD_DONE)
     Call(SetNpcImgFXParams, NPC_Luigi_1, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
     Return
