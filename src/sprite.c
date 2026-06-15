@@ -320,7 +320,7 @@ void spr_appendGfx_component(
     f32 dx, f32 dy, f32 dz,
     f32 rotX, f32 rotY, f32 rotZ,
     f32 scaleX, f32 scaleY, f32 scaleZ,
-    s32 opacity, PAL_PTR palette, Matrix4f mtx)
+    s32 drawOpts, PAL_PTR palette, Matrix4f mtx)
 {
     Matrix4f mtxTransform;
     Matrix4f mtxTemp;
@@ -329,6 +329,9 @@ void spr_appendGfx_component(
     Quad* quad;
     s32 width;
     s32 height;
+    s32 alpha;
+
+    alpha = drawOpts & DRAW_SPRITE_OPACITY_MASK;
 
     guTranslateF(mtxTemp, dx, dy, dz);
     guMtxCatF(mtxTemp, mtx, mtxTransform);
@@ -356,16 +359,16 @@ void spr_appendGfx_component(
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (gSpriteShadingProfile->flags & SPR_SHADING_FLAG_ENABLED) {
-        if ((u8) opacity == 255) {
+        if (alpha == 255) {
             gSPDisplayList(gMainGfxPos++, OpaqueShadedSpriteGfx);
         } else {
             gSPDisplayList(gMainGfxPos++, TranslucentShadedSpriteGfx);
         }
     } else {
-        if ((u8) opacity == 255) {
+        if (alpha == 255) {
             gSPDisplayList(gMainGfxPos++, OpaqueSpriteGfx);
         } else {
-            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, (u8) opacity);
+            gDPSetPrimColor(gMainGfxPos++, 0, 0, 0, 0, 0, alpha);
             gSPDisplayList(gMainGfxPos++, TranslucentSpriteGfx);
         }
     }
@@ -374,23 +377,25 @@ void spr_appendGfx_component(
     height = cache->height;
     quadIndex = cache->quadCacheIndex;
     quad = nullptr;
-    if (!(CurSpriteImgFX & SPR_IMGFX_FLAG_ALL)) {
+    if (!(CurSpriteImgFX & SPR_IMGFX_FLAG_MASK)) {
         quad = spr_get_quad_for_size(&quadIndex, width, height);
         cache->quadCacheIndex = quadIndex;
     }
 
     if (quad != nullptr) {
-        spr_appendGfx_component_flat(quad, cache->image, palette, width, height, rotY, mtxTransform, (u8) opacity);
+        spr_appendGfx_component_flat(quad, cache->image, palette, width, height, rotY, mtxTransform, (u8) drawOpts);
     } else {
+        s32 animResult;
         ifxImg.raster  = cache->image;
         ifxImg.palette = palette;
         ifxImg.width   = width;
         ifxImg.height  = height;
         ifxImg.xOffset = -(width / 2);
         ifxImg.yOffset = height;
-        ifxImg.alpha = opacity;
-        if (imgfx_appendGfx_component((u8) CurSpriteImgFX, &ifxImg, IMGFX_FLAG_AS_SPRITE, mtxTransform) == 1) {
-            CurSpriteImgFX &= ~SPR_IMGFX_FLAG_ALL;
+        ifxImg.alpha = drawOpts;
+        animResult = imgfx_appendGfx_component(CurSpriteImgFX & 0xFF, &ifxImg, IMGFX_FLAG_AS_SPRITE, mtxTransform);
+        if (animResult == IMGFX_RENDER_RESULT_DONE) {
+            CurSpriteImgFX &= ~SPR_IMGFX_FLAG_MASK;
         }
     }
     gSPPopMatrix(gMainGfxPos++, G_MTX_MODELVIEW);
@@ -960,25 +965,25 @@ s32 func_802DDEC4(s32 spriteIdx) {
 }
 
 void set_player_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 flags) {
-    SpriteComponent* component;
-    SpriteComponent** componentListIt;
+    SpriteComponent** compList;
+    SpriteComponent* comp;
     s32 i;
 
     if (CurPlayerAnimInfo[spriteIdx].componentList != nullptr) {
-        componentListIt = CurPlayerAnimInfo[spriteIdx].componentList;
+        compList = CurPlayerAnimInfo[spriteIdx].componentList;
         i = 0;
 
-        while (*componentListIt != PTR_LIST_END) {
-            component = *componentListIt;
-            if (compIdx == -1 || i == compIdx) {
-                imgfx_update(component->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
+        while (*compList != PTR_LIST_END) {
+            comp = *compList;
+            if (compIdx == -1 || compIdx == i) {
+                imgfx_update(comp->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, flags);
                 if (imgfx != IMGFX_CLEAR) {
-                    component->imgfxIdx |= SPR_IMGFX_FLAG_10000000;
+                    comp->imgfxIdx |= SPR_IMGFX_FLAG_ENABLED;
                 } else {
-                    component->imgfxIdx &= ~SPR_IMGFX_FLAG_ALL;
+                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_MASK;
                 }
             }
-            componentListIt++;
+            compList++;
             i++;
         }
     }
@@ -1214,31 +1219,31 @@ s32 get_npc_comp_imgfx_idx(s32 spriteIdx, s32 compIdx) {
 }
 
 void set_npc_imgfx_comp(s32 spriteIdx, s32 compIdx, ImgFXType imgfx, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 imgfxArg5) {
-    SpriteInstance* sprite = &SpriteInstances[spriteIdx];
-    SpriteComponent** componentList;
+    SpriteComponent** compList;
+    SpriteComponent* comp;
     s32 i;
 
-    if (sprite->componentList != nullptr) {
-        componentList = sprite->componentList;
+    if (SpriteInstances[spriteIdx].componentList != nullptr) {
+        compList = SpriteInstances[spriteIdx].componentList;
         i = 0;
 
-        while (*componentList != PTR_LIST_END) {
-            SpriteComponent* comp = *componentList;
-
-            if (compIdx == -1 || i == compIdx) {
-                imgfx_update((u8)comp->imgfxIdx, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
+        while (*compList != PTR_LIST_END) {
+            comp = *compList;
+            if (compIdx == -1 || compIdx == i) {
+                imgfx_update(comp->imgfxIdx & 0xFF, imgfx, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
                 if (imgfx != IMGFX_CLEAR) {
-                    comp->imgfxIdx |= SPR_IMGFX_FLAG_10000000;
+                    comp->imgfxIdx |= SPR_IMGFX_FLAG_ENABLED;
                 } else {
-                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_ALL;
+                    comp->imgfxIdx &= ~SPR_IMGFX_FLAG_MASK;
                 }
             }
-            componentList++;
+            compList++;
             i++;
         }
     }
 }
 
+// applied to all components
 void set_npc_imgfx_all(s32 spriteIdx, ImgFXType imgfxType, s32 imgfxArg1, s32 imgfxArg2, s32 imgfxArg3, s32 imgfxArg4, s32 imgfxArg5) {
     set_npc_imgfx_comp(spriteIdx, -1, imgfxType, imgfxArg1, imgfxArg2, imgfxArg3, imgfxArg4, imgfxArg5);
 }

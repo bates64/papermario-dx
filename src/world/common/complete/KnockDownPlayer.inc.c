@@ -1,12 +1,10 @@
 #include "common.h"
 #include "sprite.h"
 
-#ifndef KNOCK_DOWN_MAP_VAR
-#warning KNOCK_DOWN_MAP_VAR must be defined!
-#endif
+BSS KnockdownData* N(KnockDownDataPtr);
 
 void N(gfx_build_knocked_down_player)(void) {
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
+    KnockdownData* data = N(KnockDownDataPtr);
     ImgFXTexture ifxImg;
     SpriteRasterInfo rasterInfo;
     Matrix4f sp40, sp80;
@@ -58,34 +56,30 @@ API_CALLABLE(N(KnockdownCreate)) {
     Bytecode* args = script->ptrReadPos;
     s32 spriteIndex = evt_get_variable(script, *args++);
     s32 rasterIndex = evt_get_variable(script, *args++);
-    KnockdownData* data = heap_malloc(sizeof(*data));
 
-    data->spriteIndex = spriteIndex;
-    data->rasterIndex = rasterIndex;
-    data->width = gPlayerStatus.colliderHeight;
-    data->height = gPlayerStatus.colliderDiameter;
-    data->pos.x = gPlayerStatus.pos.x;
-    data->pos.y = gPlayerStatus.pos.y;
-    data->pos.z = gPlayerStatus.pos.z;
-    data->rot.x = 0.0f;
-    data->rot.y = 0.0f;
-    data->rot.z = 0.0f;
-    data->scale.x = SPRITE_WORLD_SCALE_F;
-    data->scale.y = SPRITE_WORLD_SCALE_F;
-    data->scale.z = SPRITE_WORLD_SCALE_F;
-    data->imgfxIdx = imgfx_get_free_instances(1);
-    data->workerID = create_worker_scene(nullptr, N(gfx_build_knocked_down_player));
-    evt_set_variable(script, KNOCK_DOWN_MAP_VAR, (s32) data);
+    N(KnockDownDataPtr) = heap_malloc(sizeof(*N(KnockDownDataPtr)));
+    N(KnockDownDataPtr)->spriteIndex = spriteIndex;
+    N(KnockDownDataPtr)->rasterIndex = rasterIndex;
+    N(KnockDownDataPtr)->width = gPlayerStatus.colliderHeight;
+    N(KnockDownDataPtr)->height = gPlayerStatus.colliderDiameter;
+    N(KnockDownDataPtr)->pos.x = gPlayerStatus.pos.x;
+    N(KnockDownDataPtr)->pos.y = gPlayerStatus.pos.y;
+    N(KnockDownDataPtr)->pos.z = gPlayerStatus.pos.z;
+    N(KnockDownDataPtr)->rot.x = 0.0f;
+    N(KnockDownDataPtr)->rot.y = 0.0f;
+    N(KnockDownDataPtr)->rot.z = 0.0f;
+    N(KnockDownDataPtr)->scale.x = SPRITE_WORLD_SCALE_F;
+    N(KnockDownDataPtr)->scale.y = SPRITE_WORLD_SCALE_F;
+    N(KnockDownDataPtr)->scale.z = SPRITE_WORLD_SCALE_F;
+    N(KnockDownDataPtr)->imgfxIdx = imgfx_get_free_instances(1);
+    N(KnockDownDataPtr)->workerID = create_worker_scene(nullptr, N(gfx_build_knocked_down_player));
     return ApiStatus_DONE2;
 }
 
 API_CALLABLE(N(KnockdownDestroy)) {
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
-
-    imgfx_release_instance(data->imgfxIdx);
-    free_worker(data->workerID);
-    heap_free(data);
-    evt_set_variable(script, KNOCK_DOWN_MAP_VAR, nullptr);
+    imgfx_release_instance(N(KnockDownDataPtr)->imgfxIdx);
+    free_worker(N(KnockDownDataPtr)->workerID);
+    heap_free(N(KnockDownDataPtr));
     return ApiStatus_DONE2;
 }
 
@@ -94,11 +88,10 @@ API_CALLABLE(N(KnockdownSetPos)) {
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
 
-    data->pos.x = x;
-    data->pos.y = y;
-    data->pos.z = z;
+    N(KnockDownDataPtr)->pos.x = x;
+    N(KnockDownDataPtr)->pos.y = y;
+    N(KnockDownDataPtr)->pos.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -107,11 +100,10 @@ API_CALLABLE(N(KnockdownSetRot)) {
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
 
-    data->rot.x = x;
-    data->rot.y = y;
-    data->rot.z = z;
+    N(KnockDownDataPtr)->rot.x = x;
+    N(KnockDownDataPtr)->rot.y = y;
+    N(KnockDownDataPtr)->rot.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -120,11 +112,10 @@ API_CALLABLE(N(KnockdownSetScale)) {
     s32 x = evt_get_float_variable(script, *args++);
     s32 y = evt_get_float_variable(script, *args++);
     s32 z = evt_get_float_variable(script, *args++);
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
 
-    data->scale.x = x;
-    data->scale.y = y;
-    data->scale.z = z;
+    N(KnockDownDataPtr)->scale.x = x;
+    N(KnockDownDataPtr)->scale.y = y;
+    N(KnockDownDataPtr)->scale.z = z;
     return ApiStatus_DONE2;
 }
 
@@ -132,9 +123,8 @@ API_CALLABLE(N(KnockdownSetRaster)) {
     Bytecode* args = script->ptrReadPos;
     s32 spriteIndex = evt_get_variable(script, *args++);
     s32 rasterIndex = evt_get_variable(script, *args++);
-    KnockdownData* data = (KnockdownData*) evt_get_variable(nullptr, KNOCK_DOWN_MAP_VAR);
 
-    data->spriteIndex = spriteIndex;
-    data->rasterIndex = rasterIndex;
+    N(KnockDownDataPtr)->spriteIndex = spriteIndex;
+    N(KnockDownDataPtr)->rasterIndex = rasterIndex;
     return ApiStatus_DONE2;
 }

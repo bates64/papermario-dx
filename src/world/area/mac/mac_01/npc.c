@@ -30,7 +30,6 @@ NpcSettings N(NpcSettings_Parakarry) = {
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-#define KNOCK_DOWN_MAP_VAR MV_KnockdownWorker
 #include "world/common/complete/KnockDownPlayer.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"

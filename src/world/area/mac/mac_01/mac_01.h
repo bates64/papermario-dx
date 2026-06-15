@@ -86,7 +86,6 @@ enum {
     MV_RowfRugRippleAmount  = MapVar(0),
     MV_RowfRugRotateAngle   = MapVar(1),
     MV_RowfShopBuyFlags     = MapVar(2),
-    MV_KnockdownWorker      = MapVar(10),
     MV_FortuneFXHandles     = MapVar(12),
     MV_BadgeShopOpenState   = MapVar(13),
     MV_BadgeShopCloseState  = MapVar(14),

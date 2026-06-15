@@ -40,7 +40,6 @@ enum {
     MV_KnockdownPosX        = MapVar(7),
     MV_KnockdownPosY        = MapVar(8),
     MV_KnockdownPosZ        = MapVar(9),
-    MV_Knockdown            = MapVar(10),
     MV_WindowsIdle          = MapVar(11),
     MV_Trigger_NearCabinet  = MapVar(12),
     MV_Trigger_MidCabinet   = MapVar(13),
