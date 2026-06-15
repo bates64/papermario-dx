@@ -1,5 +1,5 @@
 #include "../mac_00.h"
-
+#include "effects.h"
 #include "inventory.h"
 
 API_CALLABLE(N(CheckTradeEventTime)) {
@@ -33,7 +33,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011B)
     EVT_CHOOSE_ANY_CONSUMABLE(NPC_Toad_PrizeToad)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011F)
             Return
         CaseEq(ITEM_KOOPA_LEAF)

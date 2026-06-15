@@ -152,9 +152,7 @@ EvtScript N(EVS_NpcInteract_Franky) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Boo_Talk, ANIM_Boo_Idle, 0, MSG_CH3_0066)
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_Franky))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     IfEq(GB_KootFavor_Current, KOOT_FAVOR_CH5_3)
         IfEq(GF_OBK01_Gift_OldPhoto, false)
             Set(GF_OBK01_Gift_OldPhoto, true)

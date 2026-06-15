@@ -884,9 +884,7 @@ EvtScript N(EVS_NpcInteract_Merlon) = {
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_Merlon))
     ExecWait(N(EVS_LetterReward_Merlon))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
@@ -2050,9 +2048,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
     ExecWait(N(EVS_LetterPrompt_Kolorado))
     ExecWait(N(EVS_LetterReward_Kolorado))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

@@ -152,9 +152,7 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
 EvtScript N(EVS_NpcInteract_Merlow) = {
     ExecWait(N(EVS_LetterPrompt))
     ExecWait(N(EVS_LetterReward))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004C)
         Return

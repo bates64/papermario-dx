@@ -250,7 +250,7 @@ EvtScript N(EVS_ItemPrompt_Mailbag) = {
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0061)
         EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Mailbag), NPC_Postmaster)
         Switch(LVar0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0063)
             CaseDefault
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0062)

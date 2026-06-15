@@ -50,8 +50,8 @@ EvtScript N(EVS_ItemPrompt_Scarf) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_NONE)
+            CaseEq(ITEM_CHOICE_CANCELED)
             CaseDefault
                 Set(GF_SAM04_PlacedScarf, true)
                 Call(RemoveKeyItemAt, LVar1)
@@ -90,8 +90,8 @@ EvtScript N(EVS_ItemPrompt_Bucket) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_NONE)
+            CaseEq(ITEM_CHOICE_CANCELED)
             CaseDefault
                 Set(GF_SAM04_PlacedBucket, true)
                 Call(RemoveKeyItemAt, LVar1)

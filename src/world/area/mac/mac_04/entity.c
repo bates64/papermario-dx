@@ -227,12 +227,12 @@ s32 N(StoreroomKeyList)[] = {
 
 EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
         Call(CloseChoicePopup)
         Return
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Call(CloseChoicePopup)
         Return
     EndIf

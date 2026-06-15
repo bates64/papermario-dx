@@ -355,16 +355,16 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
             IfEq(LVar0, 0)
                 EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
-                    CaseEq(-1)
-                    CaseEq(0)
+                    CaseEq(ITEM_CHOICE_CANCELED)
+                    CaseEq(ITEM_CHOICE_NONE)
                     CaseDefault
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
             Else
                 EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
-                    CaseEq(-1)
-                    CaseEq(0)
+                    CaseEq(ITEM_CHOICE_CANCELED)
+                    CaseEq(ITEM_CHOICE_NONE)
                     CaseDefault
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
@@ -378,11 +378,9 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(N(GetFavorMessages), GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar1)
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
-                #define NAME_SUFFIX _Koot
                 Set(LVar0, ITEM_COIN)
                 ExecWait(EVS_GiveCoinReward)
                 Call(AddCoin, 1)
-                #define NAME_SUFFIX
             Else
                 Call(N(GetFavorMessages), GB_KootFavor_Current)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, LVar2)
@@ -391,7 +389,6 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(AddStarPieces, 3)
             EndIf
             Switch(GB_KootFavor_Completed)
-                #define NAME_SUFFIX _Koot
                 CaseEq(1 + KOOT_FAVOR_CH1_2)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B2)
                     EVT_GIVE_REWARD(ITEM_SILVER_CREDIT)
@@ -399,7 +396,6 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                     Call(SpeakToPlayer, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B3)
                     EVT_GIVE_REWARD(ITEM_GOLD_CREDIT)
                     Call(RemoveItem, ITEM_SILVER_CREDIT)
-                #define NAME_SUFFIX
             EndSwitch
             Set(GB_KootFavor_State, KOOT_FAVOR_STATE_0)
             Goto(90)

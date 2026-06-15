@@ -380,9 +380,7 @@ EvtScript N(EVS_NpcInteract_Toadette) = {
 EvtScript N(EVS_NpcInteract_MissT) = {
     ExecWait(N(EVS_NpcInteract_Toadette))
     ExecWait(N(EVS_LetterPrompt_MissT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

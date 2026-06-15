@@ -397,9 +397,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
     ExecWait(N(EVS_LetterPrompt_Kolorado))
     ExecWait(N(EVS_LetterReward_Kolorado))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

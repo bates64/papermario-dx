@@ -1153,9 +1153,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     ExecWait(N(EVS_ArtifactPrompt_Kolorado))
     ExecWait(N(EVS_LetterPrompt_Kolorado))
     ExecWait(N(EVS_LetterReward_Kolorado))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
@@ -1391,9 +1389,7 @@ EvtScript N(EVS_NpcInteract_Fuzzipede1) = {
     Call(SpeakToNpc, NPC_Fishmael, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, NPC_Fuzzipede, LVar0)
     Call(SpeakToNpc, NPC_Fuzzipede, ANIM_Fuzzipede_Anim24, ANIM_Fuzzipede_Anim04, 0, NPC_Fishmael, LVar1)
     ExecWait(N(EVS_LetterPrompt_Fishmael))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
@@ -1425,9 +1421,7 @@ EvtScript N(EVS_NpcInteract_Fishmael) = {
     EndSwitch
     Call(SpeakToPlayer, NPC_SELF, ANIM_Fishmael_Talk, ANIM_Fishmael_Idle, 0, LVar0)
     ExecWait(N(EVS_LetterPrompt_Fishmael))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
@@ -1858,7 +1852,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         EndIf
         EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Melody), NPC_ArtistToad)
         Switch(LVar0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(EnablePartnerAI)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_007A)
             CaseDefault
@@ -2075,7 +2069,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C1)
     EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradeEventToad)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C5)
             Return
         CaseEq(ITEM_COCONUT)

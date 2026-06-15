@@ -58,7 +58,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
         Call(SpeakToPlayer, NPC_SELF, ANIM_GourmetGuy_Talk, ANIM_GourmetGuy_Idle, 0, MSG_CH4_0041)
     EndIf
     EVT_CHOOSE_ANY_CONSUMABLE(NPC_SELF)
-    IfLe(LVar0, 0)
+    IfLe(LVar0, ITEM_CHOICE_NONE)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_SitIdle)
         Call(ResetCam, CAM_DEFAULT, Float(8.0 / DT))
         Call(DisablePlayerInput, false)

@@ -55,9 +55,7 @@ EvtScript N(EVS_NpcInteract_Nomadimouse) = {
     EndSwitch
     ExecWait(N(EVS_Nomadimouse_LetterDelivery))
     ExecWait(N(EVS_LetterReward_Nomadimouse))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

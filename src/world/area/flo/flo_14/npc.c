@@ -33,7 +33,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     Call(FindItem, ITEM_BUBBLE_BERRY, LVar0)
     IfNe(LVar0, -1)
         EVT_CHOOSE_CONSUMABLE_FROM(N(KeyList), NPC_BubbleFlower)
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0064)
         Else
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0061)

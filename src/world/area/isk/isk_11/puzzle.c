@@ -80,12 +80,12 @@ EvtScript N(EVS_ItemPrompt_Socket1) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_ChompStatue, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
@@ -131,12 +131,12 @@ EvtScript N(EVS_ItemPrompt_Socket2) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_ChompStatue, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
@@ -182,12 +182,12 @@ EvtScript N(EVS_ItemPrompt_Socket3) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_ChompStatue, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
@@ -233,12 +233,12 @@ EvtScript N(EVS_ItemPrompt_Socket4) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_ChompStatue, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
@@ -284,12 +284,12 @@ EvtScript N(EVS_ItemPrompt_Socket5) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_ChompStatue, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return

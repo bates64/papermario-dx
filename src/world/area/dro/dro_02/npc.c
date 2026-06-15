@@ -115,9 +115,7 @@ EvtScript N(EVS_NpcInteract_MrE) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle, 0, MSG_CH2_0094)
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_MrE))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

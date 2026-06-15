@@ -591,9 +591,7 @@ EvtScript N(EVS_NpcInteract_ShiverToad_03) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShiverToad_Green_Talk, ANIM_ShiverToad_Green_Idle, 0, MSG_CH7_00FD)
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_FrostT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

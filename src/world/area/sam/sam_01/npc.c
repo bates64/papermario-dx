@@ -163,9 +163,7 @@ EvtScript N(EVS_NpcInteract_MayorPenguin) = {
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_Mayor))
     ExecWait(N(EVS_LetterReward_Mayor))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

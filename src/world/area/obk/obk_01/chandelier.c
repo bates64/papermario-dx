@@ -476,10 +476,10 @@ EvtScript N(EVS_LaunchFromCouch_GrabChandelier) = {
     EndChildThread
     Call(N(ChandelierTryRelease), LVarA)
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Goto(35)
     EndIf
-    IfNe(LVar0, -1)
+    IfNe(LVar0, ITEM_CHOICE_CANCELED)
         Goto(40)
     EndIf
     Label(35)

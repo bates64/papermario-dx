@@ -319,9 +319,9 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0122)
             Set(GF_MAC00_TranslatedSuspiciousNote, true)
 #endif
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000C)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
     EndSwitch
     Return
     End
@@ -331,7 +331,7 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
     Set(LVarA, 0)
     EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2), NPC_RussT)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)
                 IfEq(GF_MAC00_TranslatedMysteryNote, true)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_0010)
@@ -347,7 +347,7 @@ EvtScript N(EVS_ItemPrompt_Documents) = {
                 EndIf
 #endif
             EndIf
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
         CaseDefault
             IfEq(LVar0, ITEM_MYSTERY_NOTE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000E)
@@ -371,9 +371,7 @@ EvtScript N(EVS_NpcInteract_RussT) = {
             ExecWait(N(EVS_ItemPrompt_Dictionary))
             ExecWait(N(EVS_LetterPrompt_RussT))
             ExecWait(N(EVS_LetterReward_RussT))
-            IfNe(LVarC, 0)
-                Return
-            EndIf
+            EVT_RETURN_IF_DELIVERED()
             Return
         EndIf
         ExecWait(N(EVS_ItemPrompt_Documents))
@@ -384,9 +382,7 @@ EvtScript N(EVS_NpcInteract_RussT) = {
     ExecWait(N(EVS_RussT_GetHint))
     ExecWait(N(EVS_LetterPrompt_RussT))
     ExecWait(N(EVS_LetterReward_RussT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

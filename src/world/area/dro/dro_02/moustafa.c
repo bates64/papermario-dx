@@ -105,11 +105,11 @@ EvtScript N(EVS_NpcInteract_Moustafa) = {
             Label(1)
             EVT_CHOOSE_ANY_CONSUMABLE(NPC_DisguisedMoustafa)
             Switch(LVar0)
-                CaseEq(0)
+                CaseEq(ITEM_CHOICE_NONE)
                     Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B8)
                     Exec(N(EVS_Moustafa_ResetCam))
                     Return
-                CaseEq(-1)
+                CaseEq(ITEM_CHOICE_CANCELED)
                     Call(SpeakToPlayer, NPC_DisguisedMoustafa, ANIM_DisguisedMoustafa_Talk, ANIM_DisguisedMoustafa_Idle, 0, MSG_CH2_00B7)
                     Exec(N(EVS_Moustafa_ResetCam))
                     Return

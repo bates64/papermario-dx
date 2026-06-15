@@ -217,7 +217,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F0)
     EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradingToad)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F4)
             Return
         CaseEq(ITEM_NUTTY_CAKE)

@@ -425,9 +425,9 @@ EvtScript N(D_80258FFC_81987C) = {
     EndIf
     EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Return
         CaseEq(ITEM_MAGICAL_SEED1)
             Set(GF_MAC01_Planted_MagicalSeed1, true)
@@ -457,9 +457,7 @@ EvtScript N(D_80258FFC_81987C) = {
 EvtScript N(EVS_NpcInteract_MinhT) = {
     ExecWait(N(EVS_LetterPrompt_MinhT))
     ExecWait(N(EVS_LetterReward_MinhT))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Set(LVar2, 0)
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_MET_STAR_SPIRITS)
@@ -543,9 +541,9 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
     IfEq(LVar2, 1)
         EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
         Switch(LVar0)
-            CaseEq(0)
+            CaseEq(ITEM_CHOICE_NONE)
                 Return
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Return
             CaseEq(ITEM_MAGICAL_SEED1)
                 Set(GF_MAC01_Planted_MagicalSeed1, true)

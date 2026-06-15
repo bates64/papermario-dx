@@ -219,8 +219,8 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0017)
     EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_FryingPan), NPC_TayceT)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0018)
         CaseDefault
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_TalkHappy, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0019)
@@ -255,7 +255,7 @@ EvtScript N(EVS_TayceT_RequestCookbook) = {
     EndIf
     EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Cookbook), NPC_TayceT)
     Switch(LVar0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001F)
         CaseDefault
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0020)
@@ -304,8 +304,8 @@ EvtScript N(EVS_TayceT_Cook) = {
     Call(N(TayceT_MakeItemList))
     EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), NPC_TayceT)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0006)
 #if VERSION_JP
             Call(ShowChoice, MSG_Choice_0010)
@@ -347,8 +347,8 @@ EvtScript N(EVS_TayceT_Cook) = {
     EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), NPC_TayceT)
     Call(AddItem, LVar8, LVar1)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_0008)
             Call(ShowChoice, MSG_Choice_0008)
             IfEq(LVar0, 0)

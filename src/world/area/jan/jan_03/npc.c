@@ -324,7 +324,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006C)
             EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), NPC_Yoshi_03)
-            IfLe(LVar0, 0)
+            IfLe(LVar0, ITEM_CHOICE_NONE)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006D)
@@ -434,9 +434,7 @@ EvtScript N(EVS_NpcInteract_YoshiKid_02) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_YoshiKid_Red_Talk, ANIM_YoshiKid_Red_Idle, 0, MSG_CH5_0078)
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_RedYoshiKid))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };
@@ -650,7 +648,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
                 EVT_CHOOSE_KEY_ITEM_FROM(N(VolcanoVaseList), NPC_Kolorado)
                 Switch(LVar0)
-                    CaseEq(-1)
+                    CaseEq(ITEM_CHOICE_CANCELED)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)
                         ExecWait(N(EVS_LetterPrompt_Kolorado))
                         ExecWait(N(EVS_LetterReward_Kolorado))

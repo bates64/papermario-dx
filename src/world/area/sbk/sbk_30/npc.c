@@ -140,9 +140,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
     Call(SetNpcAnimation, NPC_SELF, LVar9)
     ExecWait(N(EVS_DeliveryPrompt))
     ExecWait(N(EVS_DeliveryReward))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

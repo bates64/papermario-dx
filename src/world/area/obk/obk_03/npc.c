@@ -34,9 +34,7 @@ EvtScript N(EVS_NpcInteract_Igor) = {
     EndIf
     ExecWait(N(EVS_LetterPrompt_Igor))
     ExecWait(N(EVS_LetterReward_Igor))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

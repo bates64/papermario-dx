@@ -16,9 +16,9 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
         Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0001)
         EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_StoreroomKey), NPC_HarryT)
         Switch(LVar0)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0002)
-            CaseEq(0)
+            CaseEq(ITEM_CHOICE_NONE)
             CaseDefault
                 Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0003)
                 Call(SetNpcFlagBits, NPC_SELF, NPC_FLAG_IGNORE_PLAYER_COLLISION | NPC_FLAG_GRAVITY, true)

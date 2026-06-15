@@ -49,10 +49,10 @@ EvtScript N(EVS_ItemPrompt_StarStoneSocket) = {
         Call(ShowKeyChoicePopup)
         Call(CloseChoicePopup)
         Switch(LVar0)
-            CaseEq(0)
+            CaseEq(ITEM_CHOICE_NONE)
                 Call(DisablePlayerInput, false)
                 Return
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(DisablePlayerInput, false)
                 Return
             CaseDefault

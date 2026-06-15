@@ -77,7 +77,7 @@ EvtScript N(EVS_NpcInteract_Toad) = {
         MSG_OSR_0010, MSG_OSR_0011, MSG_OSR_0012, MSG_OSR_0013,
         Ref(N(LetterList)))
     ExecWait(EVS_DoLetterDelivery)
-    IfEq(LVarC, 1)
+    IfEq(LVarC, DELIVERY_REJECTED)
         Return
     EndIf
     Return

@@ -61,7 +61,7 @@ EvtScript N(EVS_NpcInteract_AntiGuy) = {
         Wait(15)
         Call(EndSpeech, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0)
         EVT_CHOOSE_CONSUMABLE_FROM(N(BribeItemList), NPC_SELF)
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_SELF, ANIM_ShyGuy_Black_Anim11, ANIM_ShyGuy_Black_Anim01, 0, MSG_CH4_004B)
             Call(ShowChoice, MSG_Choice_0044)
             IfEq(LVar0, 0)

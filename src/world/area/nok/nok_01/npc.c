@@ -347,9 +347,7 @@ EvtScript N(EVS_ToadHouse_ReturnFromRest) = {
 EvtScript N(EVS_NpcInteract_MortT) = {
     ExecWait(N(EVS_LetterPrompt_MortT))
     ExecWait(N(EVS_LetterReward_MortT))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_NpcInteract_ToadHouseKeeper))
     Return
     End

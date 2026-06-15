@@ -54,8 +54,8 @@ EvtScript N(EVS_NpcInteract_Composer) = {
     EndSwitch
     EVT_CHOOSE_KEY_ITEM_FROM(N(LyricsList), NPC_ArtistToad)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Composer_Talk, ANIM_Musician_Composer_Idle, 0, MSG_CH2_0082)
             Call(SetNpcAnimation, NPC_SELF, ANIM_Musician_Composer_Write)

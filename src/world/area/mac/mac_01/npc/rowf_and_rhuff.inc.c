@@ -167,8 +167,8 @@ EvtScript N(EVS_NpcInteract_Rowf_C) = {
     Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0008)
     EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Calculator), NPC_Rowf)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_000B)
         CaseDefault
             Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0009)

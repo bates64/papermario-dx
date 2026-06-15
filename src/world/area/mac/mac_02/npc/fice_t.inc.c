@@ -9,7 +9,10 @@ EvtScript N(EVS_LetterPrompt_FiceT) = {
     Call(LetterDelivery_Init,
         NPC_FiceT, ANIM_FiceT_Talk, ANIM_FiceT_Idle,
         ITEM_LETTER_TO_FICE_T, ITEM_NONE,
-        MSG_MAC_Bridge_0036, MSG_MAC_Bridge_0037, MSG_MAC_Bridge_0038, 0,
+        MSG_MAC_Bridge_0036,
+        MSG_MAC_Bridge_0037,
+        MSG_MAC_Bridge_0038,
+        MSG_NONE,
         Ref(N(LetterList_FiceT)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -71,9 +74,7 @@ EvtScript N(EVS_NpcInteract_FiceT) = {
     EndIf
     ExecWait(N(EVS_LetterPrompt_FiceT))
     ExecWait(N(EVS_LetterReward_FiceT))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

@@ -69,8 +69,8 @@ EvtScript N(EVS_KeyItemChoicePopup) = {
     Call(ShowKeyChoicePopup)
     Set(LVarA, LVar0)
     Switch(LVar0)
-        CaseEq(0)
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_NONE)
+        CaseEq(ITEM_CHOICE_CANCELED)
         CaseDefault
             Call(RemoveKeyItemAt, LVar1)
             Call(GetPlayerPos, LVar3, LVar4, LVar5)

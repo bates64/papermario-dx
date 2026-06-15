@@ -7,15 +7,15 @@ s32 N(KeyList)[] = {
 
 EvtScript N(EVS_UnlockDoor) = {
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
-        Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
-        Call(CloseChoicePopup)
-        Return
-    EndIf
-    IfEq(LVar0, -1)
-        Call(CloseChoicePopup)
-        Return
-    EndIf
+    Switch(LVar0)
+        CaseEq(ITEM_CHOICE_NONE)
+            Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
+            Call(CloseChoicePopup)
+            Return
+        CaseEq(ITEM_CHOICE_CANCELED)
+            Call(CloseChoicePopup)
+            Return
+    EndSwitch
     Call(PlaySoundAt, SOUND_USE_KEY, SOUND_SPACE_DEFAULT, 272, 60, 486)
     Call(RemoveKeyItemAt, LVar1)
     Set(GF_ISK02_UnlockedDoor, true)

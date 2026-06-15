@@ -76,3 +76,8 @@ enum DeliveryResult {
 #define EVT_LETTER_CHECK(npcName) \
     ExecWait(N(EVS_LetterPrompt_##npcName)) \
     ExecWait(N(EVS_LetterReward_##npcName))
+
+#define EVT_RETURN_IF_DELIVERED() \
+    IfNe(LVarC, DELIVERY_NOT_POSSIBLE) \
+        Return \
+    EndIf

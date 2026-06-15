@@ -892,9 +892,7 @@ EvtScript N(EVS_NpcInteract_Goompa) = {
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_Goompa))
     ExecWait(N(EVS_LetterReward_Goompa))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_KootFavorCheck_Goompa))
     Return
     End
@@ -1039,14 +1037,10 @@ EvtScript N(EVS_NpcInteract_Goompapa) = {
             EndIf
     EndSwitch
     ExecWait(N(EVS_LetterTrade_Goompapa))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_LetterPrompt_Goompapa))
     ExecWait(N(EVS_LetterReward_Goompapa))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

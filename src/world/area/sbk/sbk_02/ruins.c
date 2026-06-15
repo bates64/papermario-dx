@@ -582,7 +582,7 @@ EvtScript N(EVS_Steps_Unfold) = {
 EvtScript N(EVS_OnInteract_Pedestal) = {
     Call(DisablePulseStone, true)
     Call(ShowKeyChoicePopup)
-    IfLe(LVar0, 0)
+    IfLe(LVar0, ITEM_CHOICE_NONE)
         Call(CloseChoicePopup)
         Call(DisablePulseStone, false)
         Return

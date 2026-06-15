@@ -872,11 +872,11 @@ EvtScript N(EVS_Inspect_Phonograph) = {
     EndIf
     // choose a record
     Call(ShowKeyChoicePopup)
-    IfEq(LVar0, 0)
+    IfEq(LVar0, ITEM_CHOICE_NONE)
         Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Phonograph, 160, 40)
         Goto(100)
     EndIf
-    IfEq(LVar0, -1)
+    IfEq(LVar0, ITEM_CHOICE_CANCELED)
         Goto(100)
     EndIf
     Call(N(GetSelectedRecordIndex))

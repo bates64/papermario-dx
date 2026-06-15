@@ -113,11 +113,11 @@ EvtScript N(EVS_UseSocket1) = {
     IfEq(MV_Socket1_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket1_ItemID, LVar0)
@@ -162,11 +162,11 @@ EvtScript N(EVS_UseSocket2) = {
     IfEq(MV_Socket2_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket2_ItemID, LVar0)
@@ -211,11 +211,11 @@ EvtScript N(EVS_UseSocket3) = {
     IfEq(MV_Socket3_ItemID, -1)
         Call(ShowConsumableChoicePopup)
         Call(CloseChoicePopup)
-        IfEq(LVar0, 0)
+        IfEq(LVar0, ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_SAM09_PlaceItemTip, 160, 40)
             Return
         EndIf
-        IfEq(LVar0, -1)
+        IfEq(LVar0, ITEM_CHOICE_CANCELED)
             Return
         EndIf
         Set(MV_Socket3_ItemID, LVar0)

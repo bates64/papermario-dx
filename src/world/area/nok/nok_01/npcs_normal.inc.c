@@ -20,13 +20,9 @@ EvtScript N(EVS_NpcInteract_Koover_Normal) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Koopa_Talk, ANIM_Koopa_Idle, 0, MSG_CH1_0008)
     EndSwitch
     ExecWait(N(EVS_LetterPrompt_Koover1))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_LetterPrompt_Koover2))
-    IfNe(LVarC, DELIVERY_NOT_POSSIBLE)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

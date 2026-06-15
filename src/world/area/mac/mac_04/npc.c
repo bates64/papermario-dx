@@ -55,14 +55,17 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
-    IfLe(LVar2, 0)
-        IfEq(LVar2, 0)
+    Switch(LVar2)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Toybox, 160, 40)
-        EndIf
-        Call(CloseChoicePopup)
-        Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
-        Return
-    EndIf
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+        CaseEq(ITEM_CHOICE_CANCELED)
+            Call(CloseChoicePopup)
+            Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
+            Return
+    EndSwitch
     Call(DisablePlayerInput, true)
     Call(RemoveKeyItemAt, LVar1)
     Call(PlaySoundAtCollider, COLLIDER_omo_ent, SOUND_OMO_TOYBOX_LID, SOUND_SPACE_DEFAULT)

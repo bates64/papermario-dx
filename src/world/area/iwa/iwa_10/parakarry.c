@@ -192,7 +192,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
     EndIf
     EVT_CHOOSE_KEY_ITEM_FROM(N(LetterList), NPC_Parakarry)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Switch(GB_IWA10_ReturnedLetterCount)
                 CaseEq(0)
                     Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_0012)
@@ -210,7 +210,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
                     EndIf
                     Set(LFlag0, true)
             EndSwitch
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(SpeakToPlayer, NPC_Parakarry, ANIM_WorldParakarry_Talk, ANIM_WorldParakarry_Idle, 0, MSG_CH2_0013)
         CaseDefault
             Call(RemoveKeyItemAt, LVar0)

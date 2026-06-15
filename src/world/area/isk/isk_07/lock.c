@@ -10,12 +10,12 @@ EvtScript N(EVS_UnlockPrompt_RuinsDoor) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     Call(ShowKeyChoicePopup)
     Switch(LVar0)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(ShowMessageAtScreenPos, MSG_Menus_00D8, 160, 40)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return

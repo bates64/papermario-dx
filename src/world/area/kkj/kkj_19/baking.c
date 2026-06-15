@@ -473,11 +473,11 @@ EvtScript N(EVS_ItemPrompt_AddIngredient) = {
     Call(ShowKeyChoicePopup)
     Set(LVar2, LVar0)
     Switch(LVar2)
-        CaseEq(0)
+        CaseEq(ITEM_CHOICE_NONE)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return
-        CaseEq(-1)
+        CaseEq(ITEM_CHOICE_CANCELED)
             Call(CloseChoicePopup)
             Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
             Return

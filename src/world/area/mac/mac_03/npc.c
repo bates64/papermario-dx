@@ -395,14 +395,10 @@ EvtScript N(EVS_NpcInteract_ToadKid_01) = {
     ExecWait(N(EVS_NpcInteract_ToadKid_02))
     ExecWait(N(EVS_LetterPrompt_ToadKid1A))
     ExecWait(N(EVS_LetterReward_ToadKid1A))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     ExecWait(N(EVS_LetterPrompt_ToadKid1B))
     ExecWait(N(EVS_LetterReward_ToadKid1B))
-    IfNe(LVarC, 0)
-        Return
-    EndIf
+    EVT_RETURN_IF_DELIVERED()
     Return
     End
 };

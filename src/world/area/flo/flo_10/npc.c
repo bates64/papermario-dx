@@ -41,7 +41,7 @@ EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
         Call(ShowKeyChoicePopup)
         Set(LVar2, LVar0)
         Switch(LVar2)
-            CaseEq(-1)
+            CaseEq(ITEM_CHOICE_CANCELED)
                 Call(CloseChoicePopup)
                 Call(SetTimeFreezeMode, TIME_FREEZE_NONE)
                 Wait(10 * DT)
