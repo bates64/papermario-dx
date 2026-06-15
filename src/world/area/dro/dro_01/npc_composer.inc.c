@@ -52,9 +52,7 @@ EvtScript N(EVS_NpcInteract_Composer) = {
                 Set(AF_DRO01_ToggleDialogue_Composer, false)
             EndIf
     EndSwitch
-    Set(LVar0, Ref(N(LyricsList)))
-    Set(LVar1, NPC_ArtistToad)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(LyricsList), NPC_ArtistToad)
     Switch(LVar0)
         CaseEq(0)
         CaseEq(-1)

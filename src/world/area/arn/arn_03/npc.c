@@ -4,9 +4,6 @@
 #include "world/common/npc/Boo_Patrol.inc.c"
 #include "world/common/npc/Boo.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 #include "world/common/atomic/MarioSalute.inc.c"
 
 EvtScript N(EVS_NpcInteract_Boo_01) = {

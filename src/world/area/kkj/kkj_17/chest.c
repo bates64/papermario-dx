@@ -5,8 +5,6 @@
 
 extern IconHudScriptPair gItemHudScripts[];
 
-#include "world/common/todo/GetItemName.inc.c"
-
 s32 N(ChestItems)[] = {
     ITEM_POWER_RUSH,
     ITEM_SHOOTING_STAR,
@@ -193,7 +191,7 @@ EvtScript N(EVS_UseMagicChest_Peach) = {
             Wait(10)
             Set(LVar9, LVar0)
             ExecWait(N(EVS_OpenChest))
-            Call(N(GetItemName), LVar9)
+            Call(GetItemName, LVar9, LVar9)
             Call(SetMessageText, LVar9, 0)
             Call(ShowMessageAtScreenPos, MSG_Peach_0198, 160, 40)
             Wait(10)

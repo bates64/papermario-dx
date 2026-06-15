@@ -4,9 +4,6 @@
 
 #include "world/common/npc/StarSpirit.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 API_CALLABLE(N(UpgradeStarPowerCh7)) {
     set_max_star_power(7);
     gPlayerData.curHP = gPlayerData.curMaxHP;

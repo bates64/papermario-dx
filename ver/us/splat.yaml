@@ -830,8 +830,7 @@ segments:
     - [auto, c, animator]
     - [auto, c, foliage]
     - [auto, c, tex_pan]
-    - [auto, c, world/item_choice]
-    - [auto, c, world/get_item]
+    - [auto, c, item_choice]
     - [auto, c, entity_model]
     - [auto, c, worker]
     - [auto, c, msg]
@@ -9199,6 +9198,8 @@ segments:
     - [auto, c, main]
     - [auto, c, rooms]
     - [auto, c, npc]
+    - [auto, c, merlee]
+    - [auto, c, moustafa]
     - start: 0x96DFA0
       type: .data
       name: npc

@@ -7,8 +7,6 @@
 #include <string.h>
 #include "inventory.h"
 
-#include "world/common/todo/GetItemName.inc.c"
-
 typedef struct CookingResult {
     /* 00 */ s32 quality;
     /* 04 */ s32 itemID;
@@ -255,9 +253,7 @@ EvtScript N(EVS_TayceT_RequestCookbook) = {
         Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001E)
         Set(AF_MAC02_ToggleDialogue_TayceT, false)
     EndIf
-    Set(LVar0, Ref(N(ItemList_Cookbook)))
-    Set(LVar1, NPC_TayceT)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Cookbook), NPC_TayceT)
     Switch(LVar0)
         CaseEq(-1)
             Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_001F)
@@ -306,7 +302,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     Label(LABEL_CHOOSE_FIRST)
     Set(LVar3, 0)
     Call(N(TayceT_MakeItemList))
-    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), 0)
+    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), NPC_TayceT)
     Switch(LVar0)
         CaseEq(0)
         CaseEq(-1)
@@ -348,7 +344,7 @@ EvtScript N(EVS_TayceT_Cook) = {
     Call(RemoveItem, LVar8, LVar0)
     Set(LVar3, 0)
     Call(N(TayceT_MakeItemList))
-    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), 0)
+    EVT_CHOOSE_CONSUMABLE_FROM(N(TayceT_ItemChoiceList), NPC_TayceT)
     Call(AddItem, LVar8, LVar1)
     Switch(LVar0)
         CaseEq(0)
@@ -379,11 +375,9 @@ EvtScript N(EVS_TayceT_Cook) = {
 
     // confirm cooking with two ingredients
     // no label here, but this position would be LABEL_CONFIRM_TWO
-    Set(LVar0, LVar8)
-    Call(N(GetItemName), LVar0)
+    Call(GetItemName, LVar8, LVar0)
     Call(SetMessageText, LVar0, 0)
-    Set(LVar1, LVar9)
-    Call(N(GetItemName), LVar1)
+    Call(GetItemName, LVar9, LVar1)
     Call(SetMessageText, LVar1, 1)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000B)
     Call(ShowChoice, MSG_Choice_0010)
@@ -398,8 +392,7 @@ EvtScript N(EVS_TayceT_Cook) = {
 
     // confirm cooking with one ingredient
     Label(LABEL_CONFIRM_ONE)
-    Set(LVar0, LVar8)
-    Call(N(GetItemName), LVar0)
+    Call(GetItemName, LVar8, LVar0)
     Call(SetMessageText, LVar0, 0)
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_Idle, 0, MSG_MAC_Bridge_000A)
     Call(ShowChoice, MSG_Choice_0010)

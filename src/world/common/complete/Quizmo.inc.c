@@ -58,8 +58,6 @@ enum {
     QUIZ_ARRAY_INDEX_ANSWER_RESULT  = 4,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-
 // values for Quizmo npc init vars
 enum {
     QUIZ_AREA_KMR       = 0,
@@ -1077,10 +1075,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 Wait(1)
             EndLoop
             Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
-            Set(LVar0, ITEM_STAR_PIECE)
-            Set(LVar1, 3)
-            ExecWait(N(GiveItemReward))
-            Call(AddStarPieces, 1)
+            EVT_GIVE_STAR_PIECE()
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)
@@ -1096,10 +1091,7 @@ EvtScript N(EVS_Quizmo_QuizMain) = {
                 Wait(1)
             EndLoop
             Call(SetNpcAnimation, CHUCK_QUIZMO_NPC_ID, ANIM_ChuckQuizmo_OpenHat)
-            Set(LVar0, ITEM_STAR_PIECE)
-            Set(LVar1, 1)
-            ExecWait(N(GiveItemReward))
-            Call(AddStarPieces, 1)
+            EVT_GIVE_STAR_PIECE()
             Call(N(Quizmo_SetStageLightsDelay), 15)
             Call(N(Quizmo_SetVannaAnim_Idle))
             Call(SetMessageValue, GB_CompletedQuizzes, 0)

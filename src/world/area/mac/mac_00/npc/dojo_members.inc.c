@@ -232,7 +232,7 @@ EvtScript N(EVS_NpcIdle_TheMaster) = {
                 IfNe(LVar1, -1)
                     Call(RemoveKeyItemAt, LVar1)
                 EndIf
-                ExecWait(N(GiveItemReward))
+                ExecWait(EVS_GiveItemReward)
                 Call(AddItem, LVar0, EVT_IGNORE_ARG)
                 IfLt(GB_MAC00_DojoRank, 5)
                     Call(SpeakToPlayer, NPC_TheMaster, ANIM_TheMaster_Talk, ANIM_TheMaster_Idle, 0, MSG_MAC_Gate_0041)

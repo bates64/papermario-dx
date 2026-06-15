@@ -365,18 +365,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_CH1_009C)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, NPC_Kolorado)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009D)
-            Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, NPC_Kolorado)
-            ExecWait(N(EVS_ChooseKeyItem))
+            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))

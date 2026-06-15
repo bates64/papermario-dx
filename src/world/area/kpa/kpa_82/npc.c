@@ -88,9 +88,6 @@ NpcSettings N(NpcSettings_ShyGuy) = {
     .doAI = &N(EVS_NpcAI_ShyGuy),
 };
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 EvtScript N(EVS_SetCam_MeetingDoor) = {
     Call(SetCamType, CAM_DEFAULT, CAM_CONTROL_FIXED_POS_AND_ORIENTATION, false)
     Call(SetCamSpeed, CAM_DEFAULT, Float(3.0 / DT))

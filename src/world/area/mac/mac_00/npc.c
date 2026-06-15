@@ -8,8 +8,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "npc/russ_and_thief.inc.c"
@@ -427,7 +425,7 @@ NpcData N(NpcData_Waterfront_Family)[] = {
 };
 
 NpcData N(NpcData_PrizeToad) = {
-    .id = NPC_Toad_11,
+    .id = NPC_Toad_PrizeToad,
     .pos = { -112.0f, 0.0f, -62.0f },
     .yaw = 90,
     .init = &N(EVS_NpcInit_TradingToad),

@@ -12,8 +12,6 @@ NpcSettings N(NpcSettings_BubbleFlower) = {
 
 #include "world/common/npc/Dummy.inc.c"
 
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 s32 N(KeyList)[] = {
     ITEM_BUBBLE_BERRY,
     ITEM_NONE
@@ -34,7 +32,7 @@ EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     EndIf
     Call(FindItem, ITEM_BUBBLE_BERRY, LVar0)
     IfNe(LVar0, -1)
-        EVT_CHOOSE_CONSUMABLE_FROM(N(KeyList), 0)
+        EVT_CHOOSE_CONSUMABLE_FROM(N(KeyList), NPC_BubbleFlower)
         IfEq(LVar0, -1)
             Call(SpeakToPlayer, NPC_SELF, -1, -1, 0, MSG_CH6_0064)
         Else

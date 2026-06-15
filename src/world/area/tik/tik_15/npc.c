@@ -15,8 +15,6 @@ NpcSettings N(NpcSettings_RipCheato) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-
 s32 N(CheatoItems)[][2] = {
     { CHEATO_TYPE_STAR_PIECE, ITEM_NONE },
     { CHEATO_TYPE_CONSUMABLE, ITEM_LIFE_SHROOM },

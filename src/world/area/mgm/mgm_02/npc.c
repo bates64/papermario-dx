@@ -879,7 +879,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinReward)) {
+API_CALLABLE(N(GiveCoinWinnings)) {
     SmashGameData* data = get_enemy(SCOREKEEPER_ENEMY_IDX)->varTablePtr[SMASH_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -1671,7 +1671,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_PAL_MGM_0046)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)
@@ -1682,7 +1682,7 @@ EvtScript N(EVS_Toad_GovernGame) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle, 0, MSG_MGM_0042)
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Call(SetSelfVar, 3, 0)

@@ -1,19 +1,15 @@
 #include "dro_02.h"
 #include "effects.h"
 #include "script_api/battle.h"
-#include "entity.h"
-#include "sprite.h"
-#include "sprite/player.h"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
-
-BSS f32 N(D_8024EF80);
-BSS f32 N(D_8024EF84);
-BSS s32 N(RitualStateTime);
-BSS s8 N(pad_D_8024EF8C)[0x4];
-BSS EffectInstance* N(D_8024EF90)[4];
-
 #include "world/common/complete/Quizmo.inc.c"
+
+extern NpcSettings N(NpcSettings_Merlee);
+extern EvtScript N(EVS_NpcInit_Merlee);
+
+extern EvtScript N(EVS_NpcInit_Moustafa);
+extern EvtScript N(EVS_NpcInit_DisguisedMoustafa);
 
 MobileAISettings N(AISettings_Archeologist) = {
     .moveSpeed = 1.5f,
@@ -50,10 +46,6 @@ NpcSettings N(NpcSettings_Archeologist) = {
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "npc_merlee.inc.c"
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/atomic/ToadHouse.inc.c"
@@ -68,7 +60,10 @@ EvtScript N(EVS_LetterPrompt_MrE) = {
     Call(N(LetterDelivery_Init),
         NPC_Dryite_01, ANIM_Dryite_Blue_Talk, ANIM_Dryite_Blue_Idle,
         ITEM_LETTER_CHAIN_MR_E, ITEM_LETTER_CHAIN_MISS_T,
-        MSG_CH2_0095, MSG_CH2_0096, MSG_CH2_0097, MSG_CH2_0098,
+        MSG_CH2_0095,
+        MSG_CH2_0096,
+        MSG_CH2_0097,
+        MSG_CH2_0098,
         Ref(N(LetterList)))
     ExecWait(N(EVS_DoLetterDelivery))
     Return
@@ -234,8 +229,6 @@ EvtScript N(EVS_NpcInit_Mouser_02) = {
     Return
     End
 };
-
-#include "npc_moustafa.inc.c"
 
 EvtScript N(EVS_NpcIdle_Mouser_03) = {
     Call(InterpNpcYaw, NPC_DisguisedMoustafa, 270, 0)
@@ -442,7 +435,7 @@ NpcData N(PassiveNPCs)[] = {
         .id = NPC_Merlee,
         .pos = { -130.0f, 0.0f, -400.0f },
         .yaw = 180,
-        .init = &N(EVS_NpcCreate_Merlee),
+        .init = &N(EVS_NpcInit_Merlee),
         .settings = &N(NpcSettings_Merlee),
         .flags = BASE_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,

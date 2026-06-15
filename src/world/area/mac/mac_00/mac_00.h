@@ -55,7 +55,7 @@ enum {
     NPC_ShyGuyThief             = 21,
     NPC_ShyGuy_02               = 22,
     NPC_GardenShyGuy1           = 23,
-    NPC_Toad_11                 = 24,
+    NPC_Toad_PrizeToad          = 24,
     NPC_Luigi_Epilogue          = 25,
     NPC_Goompapa_Epilogue       = 26,
     NPC_Goomama_Epilogue        = 27,

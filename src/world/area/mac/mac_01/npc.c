@@ -36,7 +36,6 @@ NpcSettings N(NpcSettings_Parakarry) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 API_CALLABLE(N(GetPlayerCoins)) {
@@ -150,18 +149,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_MAC_Plaza_00E5)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, NPC_Kolorado)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E6)
-            Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, NPC_Kolorado)
-            ExecWait(N(EVS_ChooseKeyItem))
+            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))

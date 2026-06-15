@@ -1,14 +1,7 @@
 #include "common.h"
 #include "sprite/npc/WorldParakarry.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-
-enum DeliveryResult {
-    DELIVERY_NOT_POSSIBLE   = 0,
-    DELIVERY_REJECTED       = 1,
-    DELIVERY_ACCEPTED       = 2,
-};
+#include "world/common/deprecated/KeyItemChoice.inc.c"
 
 BSS s32 N(LetterDelivery_SavedNpcAnim);
 

@@ -9,8 +9,6 @@
 INCLUDE_IMG("world/area/kmr/kmr_04/hammer_block_message.png", kmr_04_hammer_block_message_img);
 INCLUDE_PAL("world/area/kmr/kmr_04/hammer_block_message.pal", kmr_04_hammer_block_message_pal);
 
-#include "world/common/complete/GiveReward.inc.c"
-
 static MessageImageData MessageImage;
 
 API_CALLABLE(N(SetMessageImage_HammerBlock)) {

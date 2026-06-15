@@ -6,14 +6,6 @@ extern EvtScript N(EVS_ItemPrompt_Socket3);
 extern EvtScript N(EVS_ItemPrompt_Socket4);
 extern EvtScript N(EVS_ItemPrompt_Socket5);
 
-API_CALLABLE(N(GetItemNameInSocket)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 itemID = evt_get_variable(script, *args++);
-
-    evt_set_variable(script, *args++, gItemTable[itemID & ~0xF0000].nameMsg);
-    return ApiStatus_DONE2;
-}
-
 s32 N(ItemList_Artifacts)[] = {
     ITEM_LUNAR_STONE,
     ITEM_PYRAMID_STONE,
@@ -67,7 +59,7 @@ EvtScript N(EVS_ItemPrompt_Socket1) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     IfNe(GB_ISK11_ItemSocket1, 0)
         Call(DisablePlayerInput, true)
-        Call(N(GetItemNameInSocket), GB_ISK11_ItemSocket1, LVar0)
+        Call(GetItemName, GB_ISK11_ItemSocket1, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_ISK11_TakeItemPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -118,7 +110,7 @@ EvtScript N(EVS_ItemPrompt_Socket2) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     IfNe(GB_ISK11_ItemSocket2, 0)
         Call(DisablePlayerInput, true)
-        Call(N(GetItemNameInSocket), GB_ISK11_ItemSocket2, LVar0)
+        Call(GetItemName, GB_ISK11_ItemSocket2, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_ISK11_TakeItemPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -169,7 +161,7 @@ EvtScript N(EVS_ItemPrompt_Socket3) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     IfNe(GB_ISK11_ItemSocket3, 0)
         Call(DisablePlayerInput, true)
-        Call(N(GetItemNameInSocket), GB_ISK11_ItemSocket3, LVar0)
+        Call(GetItemName, GB_ISK11_ItemSocket3, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_ISK11_TakeItemPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -220,7 +212,7 @@ EvtScript N(EVS_ItemPrompt_Socket4) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     IfNe(GB_ISK11_ItemSocket4, 0)
         Call(DisablePlayerInput, true)
-        Call(N(GetItemNameInSocket), GB_ISK11_ItemSocket4, LVar0)
+        Call(GetItemName, GB_ISK11_ItemSocket4, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_ISK11_TakeItemPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)
@@ -271,7 +263,7 @@ EvtScript N(EVS_ItemPrompt_Socket5) = {
     Call(SetTimeFreezeMode, TIME_FREEZE_PARTIAL)
     IfNe(GB_ISK11_ItemSocket5, 0)
         Call(DisablePlayerInput, true)
-        Call(N(GetItemNameInSocket), GB_ISK11_ItemSocket5, LVar0)
+        Call(GetItemName, GB_ISK11_ItemSocket5, LVar0)
         Call(SetMessageText, LVar0, 0)
         Call(ShowMessageAtScreenPos, MSG_Menus_ISK11_TakeItemPrompt, 160, 40)
         Call(ShowChoice, MSG_Choice_000D)

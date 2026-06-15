@@ -423,9 +423,7 @@ EvtScript N(D_80258FFC_81987C) = {
     IfNe(LVar5, 0)
         Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, MSG_MAC_Plaza_0075)
     EndIf
-    Set(LVar0, Ref(N(ItemList_MagicalSeeds)))
-    Set(LVar1, NPC_MinhT)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
     Switch(LVar0)
         CaseEq(0)
             Return
@@ -543,9 +541,7 @@ EvtScript N(EVS_NpcInteract_MinhT) = {
     EndIf
     Call(SpeakToPlayer, NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle, 0, LVar0)
     IfEq(LVar2, 1)
-        Set(LVar0, Ref(N(ItemList_MagicalSeeds)))
-        Set(LVar1, NPC_MinhT)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_MagicalSeeds), NPC_MinhT)
         Switch(LVar0)
             CaseEq(0)
                 Return

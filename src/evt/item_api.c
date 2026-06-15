@@ -260,6 +260,16 @@ API_CALLABLE(HasItem) {
     return ApiStatus_DONE2;
 }
 
+API_CALLABLE(GetItemName) {
+    Bytecode* args = script->ptrReadPos;
+    s32 itemID = evt_get_variable(script, *args++);
+    Bytecode outVar = *args++;
+    MsgID name = gItemTable[itemID & ~0xF0000].nameMsg;
+
+    evt_set_variable(script, outVar, name);
+    return ApiStatus_DONE2;
+}
+
 API_CALLABLE(MakeItemEntity) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);

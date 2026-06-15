@@ -1,9 +1,6 @@
 #include "kkj_18.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
 

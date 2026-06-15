@@ -5,8 +5,6 @@
 #include "world/common/enemy/Cleft.inc.c"
 #include "world/common/npc/Bubulb.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 NpcData N(NpcData_Cleft_01) = {
     .id = NPC_Cleft_01,
     .pos = { 526.0f, 238.0f, 69.0f },

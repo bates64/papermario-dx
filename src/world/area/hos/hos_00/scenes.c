@@ -1,8 +1,6 @@
 #include "hos_00.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 Vec3f N(TwinkArrivePath)[] = {
     {    0.0,     0.0,    2.0 },
     {   73.0,    -6.0,    2.0 },

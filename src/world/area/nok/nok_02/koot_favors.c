@@ -1,11 +1,5 @@
 #include "nok_02.h"
 
-#define NAME_SUFFIX _Koot
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
-#define NAME_SUFFIX
-
 typedef struct KootFavor {
     /* 0x00 */ s32 requestMsg;
     /* 0x04 */ s32 minorRewardMsg;
@@ -359,9 +353,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
         IfEq(GF_MAC02_KootFavor_CurrentComplete, false)
             Call(N(MakeFavorItemList), GB_KootFavor_Current)
             IfEq(LVar0, 0)
-                Set(LVar0, Ref(N(FavorItemList)))
-                Set(LVar1, 9)
-                ExecWait(N(EVS_ChooseKeyItem_Koot))
+                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
                     CaseEq(-1)
                     CaseEq(0)
@@ -369,9 +361,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                         Set(GF_MAC02_KootFavor_CurrentComplete, true)
                 EndSwitch
             Else
-                Set(LVar0, Ref(N(FavorItemList)))
-                Set(LVar1, 9)
-                ExecWait(N(EVS_ChooseItem_Koot))
+                EVT_CHOOSE_CONSUMABLE_FROM(N(FavorItemList), NPC_KoopaKoot)
                 Switch(LVar0)
                     CaseEq(-1)
                     CaseEq(0)
@@ -390,7 +380,7 @@ EvtScript N(EVS_NpcInteract_KoopaKoot) = {
                 Call(ContinueSpeech, NPC_SELF, ANIM_KoopaKoot_Talk, ANIM_KoopaKoot_Idle, 0, MSG_CH1_00B1)
                 #define NAME_SUFFIX _Koot
                 Set(LVar0, ITEM_COIN)
-                ExecWait(N(GiveCoinReward))
+                ExecWait(EVS_GiveCoinReward)
                 Call(AddCoin, 1)
                 #define NAME_SUFFIX
             Else

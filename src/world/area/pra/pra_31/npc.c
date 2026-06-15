@@ -2,9 +2,6 @@
 
 #include "world/common/enemy/AlbinoDino.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 API_CALLABLE(N(GetAngleToPlayer)) {
     Npc* npc = get_npc_safe(script->owner2.npcID);
 

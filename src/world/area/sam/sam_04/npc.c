@@ -9,9 +9,6 @@ NpcSettings N(NpcSettings_Snowman) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 s32 N(BucketList)[] = {
     ITEM_SNOWMAN_BUCKET,
     ITEM_NONE

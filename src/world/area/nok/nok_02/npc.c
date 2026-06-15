@@ -15,7 +15,6 @@
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList_Kolorado)[] = {

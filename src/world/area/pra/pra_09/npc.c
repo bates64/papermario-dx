@@ -12,9 +12,6 @@ NpcSettings N(NpcSettings_Duplighost) = {
 
 #include "world/common/enemy/Bombette.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 
 API_CALLABLE(N(ChooseImposterBattleFormation)) {

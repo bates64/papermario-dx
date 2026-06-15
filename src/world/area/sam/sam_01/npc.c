@@ -1,9 +1,5 @@
 #include "sam_01.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
-
 #include "world/common/npc/Penguin_Wander.inc.c"
 #include "world/common/npc/Penguin.inc.c"
 

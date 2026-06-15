@@ -389,7 +389,7 @@ API_CALLABLE(N(UpdateRecords)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(GiveCoinReward)) {
+API_CALLABLE(N(GiveCoinWinnings)) {
     JumpGameData* data = (JumpGameData*)get_enemy(SCOREKEEPER_ENEMY_IDX)->varTable[JUMP_DATA_VAR_IDX];
     s32 coinsLeft = data->curScore;
     s32 increment;
@@ -821,7 +821,7 @@ EvtScript N(EVS_ManageMinigame) = {
             EndSwitch
             Call(ShowCoinCounter, true)
             Wait(10)
-            Call(N(GiveCoinReward))
+            Call(N(GiveCoinWinnings))
             Wait(15)
             Call(ShowCoinCounter, false)
             Wait(5)

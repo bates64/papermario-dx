@@ -8,8 +8,6 @@
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Dummy.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 enum {
     RAVEN_SCENE_AWAITING_COMMAND    = 0,
     RAVEN_SCENE_LEAP_INTO_ACTION    = 10,

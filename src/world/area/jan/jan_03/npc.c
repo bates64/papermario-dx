@@ -17,9 +17,6 @@
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
@@ -325,7 +322,7 @@ EvtScript N(EVS_NpcInteract_Yoshi_03) = {
         Call(N(CountFoodItems), LVar0)
         IfNe(LVar0, 0)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006C)
-            EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), 4)
+            EVT_CHOOSE_CONSUMABLE_FROM(N(FoodItemList), NPC_Yoshi_03)
             IfLe(LVar0, 0)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Yoshi_Yellow_Talk, ANIM_Yoshi_Yellow_Idle, 0, MSG_CH5_006E)
             Else
@@ -650,9 +647,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
                 ExecWait(N(EVS_LetterReward_Kolorado))
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
-                Set(LVar0, Ref(N(VolcanoVaseList)))
-                Set(LVar1, NPC_Kolorado)
-                ExecWait(N(EVS_ChooseKeyItem))
+                EVT_CHOOSE_KEY_ITEM_FROM(N(VolcanoVaseList), NPC_Kolorado)
                 Switch(LVar0)
                     CaseEq(-1)
                         Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH5_0017)

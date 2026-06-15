@@ -6,10 +6,6 @@
 #include "world/common/npc/StarSpirit.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
-#include "world/common/complete/GiveReward.inc.c"
-
 EvtScript N(EVS_NpcIdle_Mamar) = {
     Loop(0)
         Loop(10)
@@ -219,7 +215,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F0)
-    EVT_CHOOSE_ANY_CONSUMABLE(2)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradingToad)
     Switch(LVar0)
         CaseEq(-1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_CH2_00F4)

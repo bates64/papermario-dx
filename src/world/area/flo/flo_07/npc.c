@@ -2,7 +2,6 @@
 #include "foliage.h"
 
 #include "world/common/npc/Posie.inc.c"
-#include "world/common/complete/GiveReward.inc.c"
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)

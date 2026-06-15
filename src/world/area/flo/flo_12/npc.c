@@ -6,9 +6,6 @@
 
 #include "foliage.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 s32 N(KeyList)[] = {
     ITEM_CRYSTAL_BERRY,
     ITEM_NONE

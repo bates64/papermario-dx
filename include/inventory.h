@@ -1,5 +1,4 @@
-#ifndef _INVENTORY_H_
-#define _INVENTORY_H_
+#pragma once
 
 #include "common.h"
 
@@ -64,5 +63,3 @@ s32 recover_hp(s32 amt);
 /// Recover player FP. `amt` is the amount to recover, -1 for full, or -2 for full and increase
 /// max by 1 (unused). Returns the new FP value, after recovery has been applied.
 s32 recover_fp(s32 amt);
-
-#endif

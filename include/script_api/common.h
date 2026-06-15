@@ -2007,6 +2007,11 @@ API_CALLABLE(HasItem);
 
 /// @evtapi
 /// @param itemID
+/// @param outName msgID or msg pointer from gItemTable
+API_CALLABLE(GetItemName);
+
+/// @evtapi
+/// @param itemID
 /// @param outItemSlot
 API_CALLABLE(FindItem);
 

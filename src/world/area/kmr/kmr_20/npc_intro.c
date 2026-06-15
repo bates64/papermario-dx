@@ -18,13 +18,6 @@ API_CALLABLE(N(func_80241C9C_8EDABC)) {
     return ApiStatus_DONE2;
 }
 
-API_CALLABLE(N(func_80241CF0_8EDB10)) {
-    Bytecode* args = script->ptrReadPos;
-
-    gCameras[CAM_DEFAULT].moveSpeed = evt_get_float_variable(script, *args++);
-    return ApiStatus_DONE2;
-}
-
 API_CALLABLE(N(SetAmbienceVolumeHalf_Intro)) {
     snd_ambient_set_volume(0, 1000, 63);
     return ApiStatus_DONE2;
@@ -111,16 +104,6 @@ EvtScript N(EVS_Luigi_EnterPipe_Intro) = {
     Call(SetNpcImgFXFlags, NPC_Scene_Luigi, IMGFX_FLAG_800)
     Call(SetNpcImgFXParams, NPC_Scene_Luigi, IMGFX_SET_ANIM, IMGFX_ANIM_VERTICAL_PIPE_CURL, 1, 1, 0)
     Wait(25)
-    Return
-    End
-};
-
-EvtScript N(EVS_FocusCam_Unused) = {
-    Call(UseSettingsFrom, CAM_DEFAULT, 250, 30, -80)
-    Call(PanToTarget, CAM_DEFAULT, 0, true)
-    Call(N(func_80241CF0_8EDB10), Float(1.8))
-    Call(InterpCamTargetPos, 0, 1, 250, 30, -80, 10)
-    Call(N(func_80241CF0_8EDB10), 1)
     Return
     End
 };

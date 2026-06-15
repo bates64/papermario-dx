@@ -2,8 +2,6 @@
 #include "sprite/npc/Lily.h"
 #include "sprite/player.h"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 EvtScript N(EVS_RaiseFountain) = {
     Call(MakeLerp, -50, 170, 385, EASING_LINEAR)
     Label(1)

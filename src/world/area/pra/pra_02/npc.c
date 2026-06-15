@@ -11,7 +11,3 @@ NpcSettings N(NpcSettings_Unused) = {
     .level = ACTOR_LEVEL_NONE,
     .onCreate = &N(EVS_NpcCreate_Unused),
 };
-
-#include "world/common/complete/KeyItemChoice.inc.c"
-
-#include "world/common/complete/NormalItemChoice.inc.c"

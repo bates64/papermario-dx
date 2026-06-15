@@ -11,9 +11,6 @@ NpcSettings N(NpcSettings_Player) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #include "world/common/todo/PlayBigSmokePuff.inc.c"
 
 API_CALLABLE(N(DoNothingWithNpcID)) {

@@ -4,8 +4,6 @@
 #include "world/common/npc/Toad_Stationary.inc.c"
 #include "world/common/npc/Dryite_Stationary.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 EvtScript N(EVS_NpcInteract_TrainToad_01) = {
     Call(GetEntryID, LVar0)
     IfEq(LVar0, iwa_10_ENTRY_0)

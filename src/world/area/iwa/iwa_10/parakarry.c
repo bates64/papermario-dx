@@ -6,8 +6,6 @@
 
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 EvtScript N(EVS_Scene_MeetParakarry) = {
     Label(0)
     Wait(1)
@@ -192,9 +190,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
             Call(AdjustCam, CAM_DEFAULT, Float(4.0 / DT), Float(0.0), Float(300.0), Float(17.5), Float(-10.0))
         EndIf
     EndIf
-    Set(LVar0, Ref(N(LetterList)))
-    Set(LVar1, NPC_Parakarry)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(LetterList), NPC_Parakarry)
     Switch(LVar0)
         CaseEq(0)
             Switch(GB_IWA10_ReturnedLetterCount)

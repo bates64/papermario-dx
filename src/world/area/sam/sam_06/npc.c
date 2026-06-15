@@ -63,10 +63,6 @@ NpcSettings N(NpcSettings_ShiverToad_Stationary) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #include "sprite/npc/ShiverToad.h"
 
 #include "world/common/atomic/ToadHouse.inc.c"

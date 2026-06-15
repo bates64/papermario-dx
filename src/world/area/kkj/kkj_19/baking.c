@@ -4,9 +4,6 @@
 #include "hud_element.h"
 #include "battle/action_cmd.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 #define MIXING_TIME_IN_FRAMES   10 * 30 * DT
 #define MIXING_REQUIRED_INPUTS  27
 
@@ -193,25 +190,6 @@ API_CALLABLE(N(AwaitPlayerPressATimer)) {
     return ApiStatus_BLOCK;
 }
 
-#if VERSION_PAL
-typedef struct BakingIngredient {
-    s32 itemID;
-    s32 nameID;
-} BakingIngredient;
-struct BakingIngredient N(BakingIngredientsNames)[] = {
-    {ITEM_BAKING_FLOUR,      MSG_Menus_BakingFlour},
-    {ITEM_BAKING_SUGAR,      MSG_Menus_BakingSugar},
-    {ITEM_BAKING_SALT,       MSG_Menus_BakingSalt},
-    {ITEM_BAKING_EGG,        MSG_Menus_BakingEgg},
-    {ITEM_BAKING_MILK,       MSG_Menus_BakingMilk},
-    {ITEM_BAKING_STRAWBERRY, MSG_Menus_BakingStrawberry},
-    {ITEM_BAKING_CREAM,      MSG_Menus_BakingCream},
-    {ITEM_BAKING_BUTTER,     MSG_Menus_BakingButter},
-    {ITEM_BAKING_CLEANSER,   MSG_Menus_BakingCleanser},
-    {ITEM_BAKING_WATER,      MSG_Menus_BakingWater},
-};
-#endif
-
 s32 N(BakingIngredientsList)[] = {
     ITEM_BAKING_SUGAR,
     ITEM_BAKING_SALT,
@@ -224,34 +202,6 @@ s32 N(BakingIngredientsList)[] = {
     ITEM_BAKING_FLOUR,
     ITEM_BAKING_MILK,
 };
-
-// unlike the common import, does not mask out 0xF0000 from itemID
-#if VERSION_PAL
-
-API_CALLABLE(N(GetItemNameRaw)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 inOutVar = *args++;
-    s32 itemID = evt_get_variable(script, inOutVar);
-    s32 i;
-
-    for (i = 0; i < ARRAY_COUNT(N(BakingIngredientsNames)); i++) {
-        if (itemID == N(BakingIngredientsNames)[i].itemID) {
-            evt_set_variable(script, inOutVar, N(BakingIngredientsNames)[i].nameID);
-            break;
-        }
-    }
-    return ApiStatus_DONE2;
-}
-#else
-API_CALLABLE(N(GetItemNameRaw)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 inOutVar = *args++;
-    s32 itemID = evt_get_variable(script, inOutVar);
-
-    evt_set_variable(script, inOutVar, gItemTable[itemID].nameMsg);
-    return ApiStatus_DONE2;
-}
-#endif
 
 API_CALLABLE(N(SetHeldBakingItem)) {
     Bytecode* args = script->ptrReadPos;
@@ -419,7 +369,7 @@ EvtScript N(EVS_TakeIngredient) = {
     Set(LVarB, LVar0)
     IfEq(AB_KKJ19_HeldIngredient, PEACH_BAKING_NONE)
         // picking up an ingredient while not holding any
-        Call(N(GetItemNameRaw), LVarA)
+        Call(GetItemName, LVarA, LVarA)
         Call(SetMessageText, LVarA, 0)
         Call(GetPlayerFloorCollider, LVar0)
         Switch(LVar0)
@@ -454,8 +404,8 @@ EvtScript N(EVS_TakeIngredient) = {
         Call(FindItem, LVar0, LVar1)
         IfEq(LVar1, -1)
             Set(LVar9, AB_KKJ19_HeldIngredient)
-            Call(N(GetItemNameRaw), LVar9)
-            Call(N(GetItemNameRaw), LVarA)
+            Call(GetItemName, LVar9, LVar9)
+            Call(GetItemName, LVarA, LVarA)
             Call(SetMessageText, LVar9, 0)
             Call(SetMessageText, LVarA, 1)
             Call(ShowMessageAtScreenPos, MSG_Peach_00E9, 160, 40)
@@ -495,7 +445,7 @@ EvtScript N(EVS_TakeIngredient) = {
             EndIf
         Else
             // placing ingredient back at its station
-            Call(N(GetItemNameRaw), LVarA)
+            Call(GetItemName, LVarA, LVarA)
             Call(SetMessageText, LVarA, 0)
             Call(ShowMessageAtScreenPos, MSG_Peach_00E6, 160, 40)
             Call(ShowChoice, MSG_Choice_002B)

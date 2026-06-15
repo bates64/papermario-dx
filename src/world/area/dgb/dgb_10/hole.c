@@ -1,8 +1,5 @@
 #include "dgb_10.h"
 
-// unused
-#include "world/common/atomic/BetaFloorPanels.inc.c"
-
 API_CALLABLE(N(AwaitFallInHole)) {
     PlayerStatus* playerStatus = &gPlayerStatus;
     s32 entry;

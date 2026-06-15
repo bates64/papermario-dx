@@ -4,8 +4,6 @@
 #include "world/common/npc/Yoshi.inc.c"
 #include "world/common/npc/Yoshi_Patrol.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 

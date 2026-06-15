@@ -14,8 +14,6 @@ s32 N(KeyList)[] = {
     ITEM_NONE
 };
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-
 EvtScript N(EVS_NpcInteract_Oaklie) = {
     IfLt(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)
         Call(SpeakToPlayer, NPC_Oaklie, ANIM_Oaklie_Talk, ANIM_Oaklie_Idle, 0, MSG_CH3_0006)

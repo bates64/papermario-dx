@@ -11,8 +11,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 enum WhaleRider {
@@ -108,18 +106,14 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         Set(LVar0, MSG_MAC_Port_008B)
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
-    Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, NPC_Kolorado)
-    ExecWait(N(EVS_ChooseKeyItem))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
     Switch(LVar0)
         CaseGe(1)
             ExecWait(N(EVS_ArtifactReward_Kolorado))
             BreakSwitch
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008C)
-            Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, NPC_Kolorado)
-            ExecWait(N(EVS_ChooseKeyItem))
+            EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Artifact), NPC_Kolorado)
             Switch(LVar0)
                 CaseGe(1)
                     ExecWait(N(EVS_ArtifactReward_Kolorado))
@@ -1862,9 +1856,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0079)
         EndIf
-        Set(LVar0, Ref(N(ItemList_Melody)))
-        Set(LVar1, NPC_ArtistToad)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_Melody), NPC_ArtistToad)
         Switch(LVar0)
             CaseEq(-1)
                 Call(EnablePartnerAI)
@@ -2081,9 +2073,7 @@ EvtScript N(EVS_NpcInteract_Toad_03) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C1)
-    Set(LVar0, 0)
-    Set(LVar1, 11)
-    ExecWait(N(EVS_ChooseItem))
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_TradeEventToad)
     Switch(LVar0)
         CaseEq(-1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Port_00C5)

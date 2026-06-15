@@ -8,8 +8,6 @@ extern AnimScript Entity_SimpleSpring_AnimLaunch;
 #include "world/common/npc/Luigi.inc.c"
 #include "world/common/enemy/ShyGuy_Stationary.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 API_CALLABLE(N(PlaySpringLaunchAnimation)) {
     Entity* entity = get_entity_by_index(0);
 

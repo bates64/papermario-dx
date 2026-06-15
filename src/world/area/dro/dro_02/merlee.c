@@ -1,7 +1,15 @@
 #include "dro_02.h"
 #include "model.h"
+#include "entity.h"
+#include "sprite.h"
+#include "effects.h"
 #include "sprite/player.h"
 #include "include_asset.h"
+
+BSS f32 N(D_8024EF80);
+BSS f32 N(D_8024EF84);
+BSS s32 N(RitualStateTime);
+BSS EffectInstance* N(D_8024EF90)[4];
 
 // cards used during Merlee's ritual
 typedef struct RitualCard {
@@ -592,16 +600,6 @@ API_CALLABLE(N(func_80243068_96C228)) {
     return ApiStatus_DONE2;
 }
 
-EvtScript N(EVS_NpcCreate_Merlee) = {
-    Return
-    End
-};
-
-EvtScript N(EVS_NpcAI_Merlee) = {
-    Return
-    End
-};
-
 EvtScript N(EVS_PerformRitual) = {
     UseArray(Ref(N(RitualBuffer)))
     Set(RITUAL_VAR_STATE, RITUAL_STATE_INIT)
@@ -831,11 +829,14 @@ EvtScript N(EVS_NpcInteract_Merlee) = {
     End
 };
 
+EvtScript N(EVS_NpcInit_Merlee) = {
+    Return
+    End
+};
+
 NpcSettings N(NpcSettings_Merlee) = {
     .height = 32,
     .radius = 32,
-    .doAI = &N(EVS_NpcAI_Merlee),
-    .onCreate = &N(EVS_NpcCreate_Merlee),
     .onInteract = &N(EVS_NpcInteract_Merlee),
     .level = ACTOR_LEVEL_NONE,
 };

@@ -3,8 +3,8 @@
 #include "effects.h"
 
 #ifndef STAR_SPIRIT_DATA_VAR
-    #error STAR_SPIRIT_DATA_VAR is not defined!
     #define STAR_SPIRIT_DATA_VAR 0
+    #error STAR_SPIRIT_DATA_VAR is not defined!
 #endif
 
 // seems to be a macro in the original based on usage

@@ -12,7 +12,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/complete/Quizmo.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"

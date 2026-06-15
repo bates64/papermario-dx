@@ -7,8 +7,6 @@
 
 #include "world/common/npc/GourmetGuy.inc.c"
 
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 API_CALLABLE(N(JudgeFoodQuality)) {
     Bytecode* args = script->ptrReadPos;
     s32 itemID = evt_get_variable(script, *args++);
@@ -41,23 +39,6 @@ API_CALLABLE(N(SpinCameraAround)) {
     }
 }
 
-BSS s32 N(AllConsumables)[ITEM_NUM_CONSUMABLES + 1];
-
-API_CALLABLE(N(MakeAllConsumablesItemList)) {
-    s32 pos = 0;
-    s32 itemID;
-
-    for (itemID = 0; itemID < NUM_ITEMS; itemID++) {
-        if (item_is_consumable(itemID)) {
-           N(AllConsumables)[pos++] = itemID;
-        }
-    }
-    N(AllConsumables)[pos] = ITEM_NONE;
-
-    return ApiStatus_DONE2;
-}
-
-
 EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Call(DisablePlayerInput, true)
     Call(GetNpcPos, NPC_SELF, LVar0, LVar1, LVar2)
@@ -68,7 +49,6 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Call(SetCamSpeed, CAM_DEFAULT, Float(4.0 / DT))
     Call(PanToTarget, CAM_DEFAULT, 0, true)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Call(N(MakeAllConsumablesItemList))
     Call(NpcFacePlayer, NPC_SELF, 1)
     Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_Idle)
     IfEq(GF_OMO01_Met_GourmetGuy, false)
@@ -77,7 +57,7 @@ EvtScript N(EVS_NpcInteract_GourmetGuy) = {
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_GourmetGuy_Talk, ANIM_GourmetGuy_Idle, 0, MSG_CH4_0041)
     EndIf
-    EVT_CHOOSE_CONSUMABLE_FROM(N(AllConsumables), -1)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_SELF)
     IfLe(LVar0, 0)
         Call(SetNpcAnimation, NPC_SELF, ANIM_GourmetGuy_SitIdle)
         Call(ResetCam, CAM_DEFAULT, Float(8.0 / DT))

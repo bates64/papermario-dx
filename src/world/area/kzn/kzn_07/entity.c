@@ -4,7 +4,7 @@
 
 #include "world/common/atomic/PushBlockGravity.inc.c"
 
-API_CALLABLE(func_802407F4_C6EB24) {
+API_CALLABLE(N(NotifyChestDone)) {
     get_entity_by_index(script->varTable[0])->dataBuf.chest->gotItemDone = true;
     return ApiStatus_DONE2;
 }
@@ -19,7 +19,9 @@ EvtScript N(EVS_MonitorChestStatus) = {
         Wait(60)
         Exec(N(EVS_PlayUpgradeFanfare))
         Call(ShowMessageAtScreenPos, MSG_Menus_0186, 160, 40)
-        Call(func_802407F4_C6EB24)
+        // LVar0 is silently passed into this function, having been set by MakeEntity
+        // in EVS_MakeEntities just before this script was executed
+        Call(N(NotifyChestDone))
         Set(GB_StoryProgress, STORY_CH5_GOT_ULTRA_HAMMER)
     EndIf
     Return

@@ -4,8 +4,6 @@
 
 #include "world/common/npc/Bubulb.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 EvtScript N(EVS_NpcInteract_Bubulb) = {
     IfEq(GF_MIM04_Gift_MagicalSeed3, false)
         Call(PlaySoundAtNpc, NPC_SELF, SOUND_BURROW_SURFACE, SOUND_SPACE_DEFAULT)

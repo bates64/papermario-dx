@@ -10,8 +10,6 @@
 
 #include "world/common/enemy/ShyGuy.h"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "npc/tayce_t.inc.c"

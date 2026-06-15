@@ -35,7 +35,6 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 #include "world/common/enemy/Kammy_Guard.inc.c"
 #include "world/common/npc/StarSpirit.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 #include "world/common/atomic/MarioSalute.inc.c"

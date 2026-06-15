@@ -14,9 +14,7 @@ EvtScript N(EVS_NpcInteract_HarryT) = {
     EndIf
     IfEq(LVar9, 1)
         Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0001)
-        Set(LVar0, Ref(N(ItemList_StoreroomKey)))
-        Set(LVar1, NPC_HarryT)
-        ExecWait(N(EVS_ChooseKeyItem))
+        EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_StoreroomKey), NPC_HarryT)
         Switch(LVar0)
             CaseEq(-1)
                 Call(SpeakToPlayer, NPC_HarryT, ANIM_HarryT_Talk, ANIM_HarryT_Idle, 0, MSG_MAC_Housing_0002)

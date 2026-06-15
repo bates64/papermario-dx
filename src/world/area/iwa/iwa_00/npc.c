@@ -5,8 +5,6 @@
 #include "world/common/enemy/MontyMole_WallAmbush.inc.c"
 #include "world/common/enemy/Whacka.inc.c"
 
-#include "world/common/complete/GiveReward.inc.c"
-
 API_CALLABLE(N(func_80240118_90CD58)) {
     Enemy* enemy = script->owner1.enemy;
     Npc* npc = get_npc_unsafe(enemy->npcID);

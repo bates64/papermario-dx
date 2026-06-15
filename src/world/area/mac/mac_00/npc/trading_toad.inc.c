@@ -31,7 +31,7 @@ EvtScript N(EVS_NpcInteract_TradingToad) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011B)
-    EVT_CHOOSE_ANY_CONSUMABLE(24)
+    EVT_CHOOSE_ANY_CONSUMABLE(NPC_Toad_PrizeToad)
     Switch(LVar0)
         CaseEq(-1)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Toad_Pink_Talk, ANIM_Toad_Pink_Idle, 0, MSG_MAC_Gate_011F)

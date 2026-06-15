@@ -13,8 +13,6 @@ enum {
     KEEP_AWAY_BOO_7     = 7,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-
 API_CALLABLE(N(GetKeepAwayCarrierYaw)) {
     Npc* npc1 = get_npc_unsafe(NPC_KeepAwayBoo1);
     Npc* npc2 = get_npc_unsafe(NPC_KeepAwayBoo2);

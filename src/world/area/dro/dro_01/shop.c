@@ -49,8 +49,6 @@ ShopSellPriceData N(PriceList)[] = {
     {},
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-
 API_CALLABLE(N(HideCoinCounter)) {
     hide_coin_counter_immediately();
     return ApiStatus_DONE2;

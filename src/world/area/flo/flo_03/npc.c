@@ -13,8 +13,6 @@ NpcSettings N(NpcSettings_Petunia) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-
 Vec3i N(BurrowLocations_Mole_01)[] = {
     { -100, 0, 210 },
     { -160, 0, 285 },

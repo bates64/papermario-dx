@@ -9,9 +9,6 @@ NpcSettings N(NpcSettings_Archeologist_01) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-#include "world/common/complete/GiveReward.inc.c"
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
 #include "world/common/complete/LetterDelivery.inc.c"
 
 s32 N(LetterList)[] = {

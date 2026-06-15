@@ -3,9 +3,6 @@
 
 #include "world/common/npc/Toad_Stationary.inc.c"
 
-#include "world/common/complete/KeyItemChoice.inc.c"
-#include "world/common/complete/ConsumableItemChoice.inc.c"
-
 EvtScript N(EVS_EnsurePartnerNeutral) = {
     Call(GetPartnerInUse, LVar0)
     IfNe(LVar0, PARTNER_NONE)
