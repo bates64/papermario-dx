@@ -247,7 +247,7 @@ EvtScript N(EVS_ItemPrompt_Mailbag) = {
     Else
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0061)
         Set(LVar0, Ref(N(ItemList_Mailbag)))
-        Set(LVar1, 3)
+        Set(LVar1, NPC_Postmaster)
         ExecWait(N(EVS_ChooseKeyItem))
         Switch(LVar0)
             CaseEq(-1)

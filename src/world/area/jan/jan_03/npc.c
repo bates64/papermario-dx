@@ -651,7 +651,7 @@ EvtScript N(EVS_NpcInteract_Kolorado) = {
             Else
                 Call(AdjustCam, CAM_DEFAULT, Float(5.0), 0, 325, Float(20.0), Float(-7.5))
                 Set(LVar0, Ref(N(VolcanoVaseList)))
-                Set(LVar1, 15)
+                Set(LVar1, NPC_Kolorado)
                 ExecWait(N(EVS_ChooseKeyItem))
                 Switch(LVar0)
                     CaseEq(-1)

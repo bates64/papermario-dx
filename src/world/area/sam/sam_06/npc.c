@@ -190,7 +190,7 @@ EvtScript N(EVS_Scene_Merle_Greeting) = {
     Call(SpeakToPlayer, NPC_Merle, ANIM_Merle_Talk, ANIM_Merle_Idle, 0, MSG_CH7_00EB)
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
-    Set(AF_SAM_05, true)
+    Set(AF_SAM06_MeetingWithMerle, true)
     Set(GB_StoryProgress, STORY_CH7_ARRIVED_AT_STARBORN_VALLEY)
     Call(DisablePlayerInput, false)
     Set(MF_MerleReady, false)
@@ -561,7 +561,7 @@ EvtScript N(EVS_Scene_Merle_OneLastThing) = {
     Call(WaitForCam, CAM_DEFAULT, Float(1.0))
     Call(PanToTarget, CAM_DEFAULT, 0, false)
     Call(DisablePlayerInput, false)
-    Set(AF_SAM_05, false)
+    Set(AF_SAM06_MeetingWithMerle, false)
     Set(GB_StoryProgress, STORY_CH7_GOT_SNOWMAN_SCARF)
     Return
     End

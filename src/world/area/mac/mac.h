@@ -49,24 +49,21 @@ enum AreaFlagsMAC {
     AF_MAC03_Unread_23                      = AreaFlag(0x23),
     AF_MAC03_Unread_24                      = AreaFlag(0x24),
     AF_MAC03_Unread_25                      = AreaFlag(0x25),
-    // AF_MAC_26 - AF_MAC_2C unused
-    AF_MAC_2D                               = AreaFlag(0x2D),
-    AF_MAC_2E                               = AreaFlag(0x2E),
-    // AF_MAC_2F unused
-    AF_MAC_30                               = AreaFlag(0x30),
-    AF_MAC_31                               = AreaFlag(0x31),
-    AF_MAC_32                               = AreaFlag(0x32),
+    // AF_MAC_26 - AF_MAC_2F unused
+    AF_MAC04_GoombaFamilyDialogue           = AreaFlag(0x30),
+    AF_MAC04_Unread_31                      = AreaFlag(0x31),
+    AF_MAC04_UsedChetRippo                  = AreaFlag(0x32),
     // AF_MAC_33 - AF_MAC_37 unused
-    AF_MAC_38                               = AreaFlag(0x38),
+    AF_MAC05_MetKoloradoDialogue            = AreaFlag(0x38),
     // AF_MAC_39 - AF_MAC_3C unused
     AF_MAC05_ToggleDialogue_Simon           = AreaFlag(0x3D),
-    AF_MAC_3E                               = AreaFlag(0x3E),
+    AF_MAC05_MetSimonBefore                 = AreaFlag(0x3E),
     AF_MAC05_ToggleDialogue_Chanterelle     = AreaFlag(0x3F),
     AF_MAC01_BadgeShopAccessible            = AreaFlag(0x40),
-    AF_MAC_41                               = AreaFlag(0x41),
+    AF_MAC01_DialogueToggle_Rowf            = AreaFlag(0x41),
     // AF_MAC_42 unused
-    AF_MAC_43                               = AreaFlag(0x43),
-    AF_MAC_44                               = AreaFlag(0x44),
+    AF_MAC01_JustDroveShyGuyFromToadHouse   = AreaFlag(0x43),
+    AF_MAC_KoloradoRequestedArtifact        = AreaFlag(0x44),
     AF_MAC00_LoreAvailable_00               = AreaFlag(0x45),
     AF_MAC00_LoreAvailable_01               = AreaFlag(0x46),
     AF_MAC00_LoreAvailable_02               = AreaFlag(0x47),

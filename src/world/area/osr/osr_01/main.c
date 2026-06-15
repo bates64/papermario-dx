@@ -39,7 +39,6 @@ EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_PEACH_CASTLE_GROUNDS)
     Call(SetSpriteShading, SHADING_NONE)
     EVT_SETUP_CAMERA_NO_LEAD(0, 0, 0)
-    Set(AF_OSR_01, false)
     Set(GF_MAP_PeachCastleGrounds, true)
     Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
     ExecWait(N(EVS_PlaySong_Starship))

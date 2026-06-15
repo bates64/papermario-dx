@@ -93,10 +93,10 @@ enum {
 };
 
 enum {
-    MF_MusicMixTrigger1     = MapFlag(10),
-    MF_MusicMixTrigger2     = MapFlag(11),
-    MF_MusicMixTrigger3     = MapFlag(12),
     MF_BadgeShopOpen        = MapFlag(11),
+    MF_MusicMixTrigger1     = MapFlag(10),
+    MF_MusicMixTrigger2     = MF_BadgeShopOpen,
+    MF_MusicMixTrigger3     = MapFlag(12),
     MF_SpawnFlag_Tree1      = MapFlag(13),
     MF_SetupMusicMixes      = MapFlag(14),
     MF_InsideToadHouse      = MapFlag(15),

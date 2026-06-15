@@ -53,7 +53,7 @@ EvtScript N(EVS_NpcInteract_Composer) = {
             EndIf
     EndSwitch
     Set(LVar0, Ref(N(LyricsList)))
-    Set(LVar1, 5)
+    Set(LVar1, NPC_ArtistToad)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseEq(0)

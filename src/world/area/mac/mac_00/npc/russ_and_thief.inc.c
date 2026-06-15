@@ -293,7 +293,7 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
     Else
         Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000B)
     EndIf
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments1))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments1), NPC_RussT)
     Switch(LVar0)
         CaseEq(ITEM_DICTIONARY)
             Call(SpeakToPlayer, NPC_SELF, ANIM_RussT_Talk, ANIM_RussT_Idle, 0, MSG_MAC_Gate_000D)
@@ -327,7 +327,7 @@ EvtScript N(EVS_ItemPrompt_Dictionary) = {
 
 EvtScript N(EVS_ItemPrompt_Documents) = {
     Set(LVarA, 0)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_RussDocuments2), NPC_RussT)
     Switch(LVar0)
         CaseEq(0)
             IfLt(GB_StoryProgress, STORY_CH4_SOLVED_COLOR_PUZZLE)

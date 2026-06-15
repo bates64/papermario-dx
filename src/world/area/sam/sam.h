@@ -25,7 +25,7 @@ enum AreaFlagsSAM {
     AF_SAM_LastSnowing                      = AreaFlag(0x02),
     AF_SAM01_InsideMayorOffice              = AreaFlag(0x03),
     AF_SAM01_InsideMayorFoyer               = AreaFlag(0x04),
-    AF_SAM_05                               = AreaFlag(0x05),
+    AF_SAM06_MeetingWithMerle               = AreaFlag(0x05),
     AF_SAM08_ImposterSwitchPressed          = AreaFlag(0x06),
     // AF_SAM_07 - AF_SAM_FF unused
 };

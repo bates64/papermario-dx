@@ -139,10 +139,9 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(LVar0, -1)
         Return
     EndIf
-    IfEq(AF_MAC_44, false)
-        Set(AF_MAC_44, true)
+    IfEq(AF_MAC_KoloradoRequestedArtifact, false)
+        Set(AF_MAC_KoloradoRequestedArtifact, true)
         IfEq(GF_SBK_KeptArtifactFromKolorado, false)
-            Set(GF_SBK_KeptArtifactFromKolorado, false)
             Set(LVar0, MSG_MAC_Plaza_00E4)
         Else
             Set(LVar0, MSG_MAC_Plaza_00E5)
@@ -152,7 +151,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
     Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, 19)
+    Set(LVar1, NPC_Kolorado)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseGe(1)
@@ -161,7 +160,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E6)
             Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, 19)
+            Set(LVar1, NPC_Kolorado)
             ExecWait(N(EVS_ChooseKeyItem))
             Switch(LVar0)
                 CaseGe(1)
@@ -1763,7 +1762,7 @@ EvtScript N(EVS_NpcInteract_ToadHouseKeeper_B) = {
 };
 
 EvtScript N(EVS_ToadHouse_SetDialogue) = {
-    IfEq(AF_MAC_43, false)
+    IfEq(AF_MAC01_JustDroveShyGuyFromToadHouse, false)
         Set(LVar0, MSG_MAC_Plaza_0015)
         Set(LVar8, MSG_MAC_Plaza_0016)
     Else
@@ -1843,7 +1842,7 @@ EvtScript N(EVS_NpcInit_ToadHouseKeeper) = {
     Else
         Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ToadHouseKeeper)))
     EndIf
-    Set(AF_MAC_43, false)
+    Set(AF_MAC01_JustDroveShyGuyFromToadHouse, false)
     Return
     End
 };
@@ -1934,7 +1933,7 @@ EvtScript N(EVS_NpcHit_ShyGuy_02) = {
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_HIT_PLAYER_NORMAL, SOUND_SPACE_DEFAULT)
     Call(PlaySoundAtNpc, NPC_SELF, SOUND_SHY_GUY_OUCH, SOUND_SPACE_DEFAULT)
     Set(GF_MAC01_ChasedShyGuyFromToadHouse, true)
-    Set(AF_MAC_43, true)
+    Set(AF_MAC01_JustDroveShyGuyFromToadHouse, true)
     Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_ShyGuy_02)))
     Call(SetSelfEnemyFlagBits, ENEMY_FLAG_IGNORE_TOUCH | ENEMY_FLAG_IGNORE_JUMP | ENEMY_FLAG_IGNORE_HAMMER | ENEMY_FLAG_CANT_INTERACT | ENEMY_FLAG_IGNORE_PARTNER, true)
     Return

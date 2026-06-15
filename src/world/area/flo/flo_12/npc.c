@@ -127,7 +127,7 @@ EvtScript N(EVS_NpcInteract_Rosie) = {
                 Call(SetCamProperties, CAM_DEFAULT, Float(4.0), LVar0, LVar1, LVar2, 325, Float(19.0), Float(-9.5))
             EndIf
             Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0094)
-            EVT_CHOOSE_KEY_ITEM_FROM(N(KeyList))
+            EVT_CHOOSE_KEY_ITEM_FROM(N(KeyList), NPC_Rosie)
             Switch(LVar0)
                 CaseLe(0)
                     Call(SpeakToPlayer, NPC_SELF, ANIM_Rosie_TalkHold, ANIM_Rosie_IdleHold, 5, MSG_CH6_0093)

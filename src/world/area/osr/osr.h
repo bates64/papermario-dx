@@ -20,7 +20,6 @@ enum AreaBytesOSR {
 };
 
 enum AreaFlagsOSR {
-    // AF_OSR_00 unused
-    AF_OSR_01                               = AreaFlag(0x01),
-    // AF_OSR_02 - AF_OSR_FF unused
+    AF_OSR_Unused_00                        = AreaFlag(0x00),
+    // AF_OSR_00 - AF_OSR_FF unused
 };

@@ -217,7 +217,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
         Return
     EndIf
     Call(SpeakToPlayer, NPC_TayceT, ANIM_TayceT_Talk, ANIM_TayceT_IdleSad, 0, MSG_MAC_Bridge_0017)
-    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_FryingPan))
+    EVT_CHOOSE_KEY_ITEM_FROM(N(ItemList_FryingPan), NPC_TayceT)
     Switch(LVar0)
         CaseEq(0)
         CaseEq(-1)
@@ -254,7 +254,7 @@ EvtScript N(EVS_TayceT_RequestCookbook) = {
         Set(AF_MAC02_ToggleDialogue_TayceT, false)
     EndIf
     Set(LVar0, Ref(N(ItemList_Cookbook)))
-    Set(LVar1, 0)
+    Set(LVar1, NPC_TayceT)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseEq(-1)

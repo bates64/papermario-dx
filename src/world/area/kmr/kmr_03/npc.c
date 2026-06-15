@@ -1,49 +1,10 @@
 #include "kmr_03.h"
 #include "sprite/player.h"
 
-
 #include "world/common/util/ChangeNpcToPartner.inc.c"
 #include "world/common/util/CheckPositionRelativeToPlane.inc.c"
 
 #include "world/common/npc/GoombaFamily.inc.c"
-
-API_CALLABLE(N(func_802401B0_8C8140)) {
-    Npc* npc = get_npc_unsafe(NPC_Goompa);
-
-    script->varTable[1] = get_xz_dist_to_player(npc->pos.x, npc->pos.z) / npc->moveSpeed * 0.8f;
-    return ApiStatus_DONE2;
-}
-
-EvtScript N(EVS_NpcAux_Goompa) = {
-    Label(1)
-        IfEq(AF_KMR_08, true)
-            Label(100)
-                Call(AwaitPlayerLeave, 294, 123, 170)
-                Call(EnableNpcAI, NPC_Goompa, false)
-                Call(DisablePlayerInput, true)
-                Call(SetNpcSpeed, NPC_Goompa, Float(4.0))
-                Call(SetNpcAnimation, NPC_Goompa, ANIM_Goompa_Run)
-                Call(N(func_802401B0_8C8140))
-                Call(GetAngleToPlayer, NPC_Goompa, LVar2)
-                Loop(LVar1)
-                    Call(GetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-                    Call(AddVectorPolar, LVar7, LVar9, Float(4.0), LVar2)
-                    Call(SetNpcPos, NPC_Goompa, LVar7, LVar8, LVar9)
-                    Wait(1)
-                EndLoop
-                Call(PlayerFaceNpc, NPC_Goompa, 3)
-                Call(SetPlayerSpeed, Float(3.0))
-                Call(PlayerMoveTo, 243, 243, 0)
-                Call(SetNpcVar, NPC_Goompa, 0, 1)
-                Call(EnableNpcAI, NPC_Goompa, true)
-                Call(DisablePlayerInput, false)
-                Goto(100)
-        EndIf
-        Wait(1)
-    Goto(1)
-    Return
-    End
-};
 
 EvtScript N(EVS_NpcAI_Goompa) = {
     Switch(GB_StoryProgress)
@@ -135,7 +96,6 @@ EvtScript N(EVS_NpcHit_Goompa) = {
         Call(SetNpcPos, NPC_Goompa, NPC_DISPOSE_LOCATION)
         Call(SetNpcFlagBits, NPC_Goompa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
         Call(EnablePartnerAI)
-        Call(SetNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Goompa)))
         Call(BindNpcAI, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
     EndIf
     Return
@@ -144,7 +104,6 @@ EvtScript N(EVS_NpcHit_Goompa) = {
 
 EvtScript N(EVS_NpcInit_Goompa) = {
     Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcAI_Goompa)))
-    Call(BindNpcAux, NPC_SELF, Ref(N(EVS_NpcAux_Goompa)))
     Call(BindNpcHit, NPC_SELF, Ref(N(EVS_NpcHit_Goompa)))
     Switch(GB_StoryProgress)
         CaseGe(STORY_CH0_GOOMPA_JOINED_PARTY)

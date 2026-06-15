@@ -87,7 +87,7 @@ EvtScript N(EVS_Main) = {
                 Call(MakeNpcs, false, Ref(N(DefaultNPCs)))
         EndSwitch
     EndIf
-    Set(AF_MAC_31, false)
+    Set(AF_MAC04_Unread_31, false)
     ExecWait(N(EVS_MakeEntities))
     Exec(N(EVS_SetupRooms))
     Exec(N(EVS_SetupFoliage))

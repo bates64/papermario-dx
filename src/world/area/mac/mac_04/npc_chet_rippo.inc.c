@@ -187,14 +187,14 @@ EvtScript N(EVS_NpcInteract_ChetRippo) = {
     Call(PlaySoundAtNpc, NPC_ChetRippo, SOUND_VANISH_IN_SMOKE, SOUND_SPACE_DEFAULT)
     PlayEffect(EFFECT_BIG_SMOKE_PUFF, LVar0, LVar1, LVar2, 1, 1, 1, 1)
     Call(SetNpcPos, NPC_ChetRippo, NPC_DISPOSE_LOCATION)
-    Set(AF_MAC_32, true)
+    Set(AF_MAC04_UsedChetRippo, true)
     Call(N(ForceStatusBarToAppear))
     Return
     End
 };
 
 EvtScript N(EVS_NpcInit_ChetRippo) = {
-    IfEq(AF_MAC_32, false)
+    IfEq(AF_MAC04_UsedChetRippo, false)
         Set(LVar0, 0)
         Call(N(GetCurrentStatMaxima), LVar1, LVar2, LVar3)
         IfLe(LVar1, 5)

@@ -1,7 +1,8 @@
 #pragma once
 #include "Bandit.h"
+#include "world/area/sbk/sbk.h"
 
-#define HAS_COIN_FLAG    AreaFlag(1)
+#define HAS_COIN_FLAG  AF_BanditHasCoin
 
 API_CALLABLE(N(Bandit_TetherStolenCoin)) {
     Bytecode* args = script->ptrReadPos;

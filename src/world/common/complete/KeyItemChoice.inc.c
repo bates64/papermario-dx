@@ -97,14 +97,14 @@ EvtScript N(EVS_ChooseKeyItem) = {
     End
 };
 
-#define EVT_CHOOSE_ANY_KEY_ITEM() \
+#define EVT_CHOOSE_ANY_KEY_ITEM(recipientNpc) \
     Set(LVar0, nullptr) \
-    Set(LVar1, 0) \
+    Set(LVar1, recipientNpc) \
     ExecWait(N(EVS_ChooseKeyItem))
 
-#define EVT_CHOOSE_KEY_ITEM_FROM(itemList) \
+#define EVT_CHOOSE_KEY_ITEM_FROM(itemList, recipientNpc) \
     Set(LVar0, Ref(itemList)) \
-    Set(LVar1, 0) \
+    Set(LVar1, recipientNpc) \
     ExecWait(N(EVS_ChooseKeyItem))
 
 #endif

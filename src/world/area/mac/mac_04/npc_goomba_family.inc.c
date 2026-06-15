@@ -28,11 +28,11 @@ EvtScript N(EVS_NpcInteract_Goombaria) = {
     Call(GetCurrentPartnerID, LVar0)
     IfEq(LVar0, PARTNER_GOOMBARIO)
         Call(DisablePartnerAI, true)
-        IfEq(AF_MAC_30, false)
+        IfEq(AF_MAC04_GoombaFamilyDialogue, false)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_MAC_Housing_00C1)
             Call(SpeakToPlayer, NPC_PARTNER, ANIM_WorldGoombario_Talk, ANIM_WorldGoombario_Idle, 0, MSG_MAC_Housing_00C2)
             Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_MAC_Housing_00C3)
-            Set(AF_MAC_30, true)
+            Set(AF_MAC04_GoombaFamilyDialogue, true)
         Else
             Call(SpeakToPlayer, NPC_SELF, ANIM_Goombaria_Talk, ANIM_Goombaria_Idle, 0, MSG_MAC_Housing_00C4)
         EndIf

@@ -112,13 +112,13 @@ API_CALLABLE(N(HideRowfBadges)) {
 EvtScript N(EVS_NpcInteract_Rowf_A) = {
     IfEq(GF_MAC01_Met_Rowf_Early, false)
         Set(GF_MAC01_Met_Rowf_Early, true)
-        Set(AF_MAC_41, true)
+        Set(AF_MAC01_DialogueToggle_Rowf, true)
         Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0000)
     Else
-        IfEq(AF_MAC_41, true)
+        IfEq(AF_MAC01_DialogueToggle_Rowf, true)
             Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Idle, 0, MSG_MAC_Plaza_0001)
         Else
-            Set(AF_MAC_41, true)
+            Set(AF_MAC01_DialogueToggle_Rowf, true)
             Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Think, 0, MSG_MAC_Plaza_0002)
         EndIf
     EndIf
@@ -166,7 +166,7 @@ EvtScript N(EVS_NpcInteract_Rowf_C) = {
     EndIf
     Call(SpeakToPlayer, NPC_Rowf, ANIM_Rowf_Talk, ANIM_Rowf_Cheer, 0, MSG_MAC_Plaza_0008)
     Set(LVar0, Ref(N(ItemList_Calculator)))
-    Set(LVar1, 1)
+    Set(LVar1, NPC_Rowf)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseEq(0)
@@ -619,7 +619,7 @@ EvtScript N(EVS_NpcInit_Rowf) = {
                 Call(SetNpcPos, NPC_Rowf, -250, 0, 295)
             EndIf
     EndSwitch
-    Set(AF_MAC_41, false)
+    Set(AF_MAC01_DialogueToggle_Rowf, false)
     Call(SetModelFlags, MODEL_ju_2, MODEL_FLAG_DO_BOUNDS_CULLING, false)
     Call(EnableGroup, MODEL_jutan1, false)
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_b1, COLLIDER_FLAGS_UPPER_MASK)

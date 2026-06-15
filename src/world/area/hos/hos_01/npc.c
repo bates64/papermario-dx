@@ -209,8 +209,8 @@ EvtScript N(EVS_Scene_StarSpiritsPlea) = {
         Wait(1)
     EndLoop
 #if VERSION_PAL
-    SetF(MapVar(0), Float(-80.0))
-    SetF(MapVar(1), Float(-80.0))
+    SetF(MV_AlphaAmt_Eldstar, Float(-80.0))
+    SetF(MV_AlphaAmt_Others, Float(-80.0))
 #endif
     Set(MF_SpiritsGone, true)
     Set(AB_HOS_StatcAmt_Eldstar,  0)

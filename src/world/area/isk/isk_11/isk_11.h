@@ -13,8 +13,8 @@
 
 enum {
     MV_LockEntityID             = MapVar(0),
-    MV_HiddenStairsRevealed     = MapVar(0),
-    MV_PlayerPanicDone          = MapVar(1),
+    MV_HiddenStairsRevealed     = MapVar(1),
+    MV_PlayerPanicDone          = MapVar(2),
     MV_ItemEntity_Socket1       = MapVar(10),
     MV_ItemEntity_Socket2       = MapVar(11),
     MV_ItemEntity_Socket3       = MapVar(12),

@@ -45,7 +45,6 @@ EvtScript N(EVS_NpcInteract_NewResident1) = {
 };
 
 EvtScript N(EVS_NpcInit_NewResident1) = {
-    Set(AF_MAC_2D, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_NewResident1)))
     Return
     End
@@ -98,7 +97,6 @@ EvtScript N(EVS_NpcInteract_NewResident2) = {
 };
 
 EvtScript N(EVS_NpcInit_NewResident2) = {
-    Set(AF_MAC_2E, false)
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_NewResident2)))
     Return
     End

@@ -13,7 +13,7 @@ enum ForestGateStates {
 enum AreaBytesMIM {
     AB_MIM_Unused_0                         = AreaByte(0x0),
     AB_MIM_GateTraversal                    = AreaByte(0x1),
-    AB_MIM_2                                = AreaByte(0x2),
+    AB_MIM_PrevMapID                        = AreaByte(0x2),
     AB_MIM_Unused_3                         = AreaByte(0x3),
     AB_MIM_Unused_4                         = AreaByte(0x4),
     AB_MIM_Unused_5                         = AreaByte(0x5),

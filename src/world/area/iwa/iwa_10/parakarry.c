@@ -193,7 +193,7 @@ EvtScript N(EVS_NpcInteract_Parakarry) = {
         EndIf
     EndIf
     Set(LVar0, Ref(N(LetterList)))
-    Set(LVar1, 4)
+    Set(LVar1, NPC_Parakarry)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseEq(0)

@@ -21,7 +21,7 @@ EvtScript N(EVS_Main) = {
     Call(SetSpriteShading, SHADING_MIM_01)
     EVT_SETUP_CAMERA_MIM()
     Set(GF_MAP_ForeverForest, true)
-    Set(AB_MIM_2, GB_MIM_CurrentMapID)
+    Set(AB_MIM_PrevMapID, GB_MIM_CurrentMapID)
     Call(GetMapID, GB_MIM_CurrentMapID)
     ExecWait(N(EVS_SetupGates))
     Call(MakeNpcs, true, Ref(N(DefaultNPCs)))

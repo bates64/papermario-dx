@@ -25,7 +25,7 @@ enum AreaFlagsKMR {
     // AF_KMR_05 unused
     AF_KMR03_LastHitGoompaWithJump          = AreaFlag(0x06),
     AF_KMR03_HitGoompaWithHammer            = AreaFlag(0x07),
-    AF_KMR_08                               = AreaFlag(0x08),
+    // AF_KMR_08 unused
     AF_KMR04_DollyDropped                   = AreaFlag(0x09),
     // AF_KMR_0A unused
     AF_KMR20_SpringCanLaunch                = AreaFlag(0x0B),

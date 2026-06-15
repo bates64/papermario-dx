@@ -97,10 +97,9 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     IfEq(LVar0, -1)
         Return
     EndIf
-    IfEq(AF_MAC_44, false)
-        Set(AF_MAC_44, true)
+    IfEq(AF_MAC_KoloradoRequestedArtifact, false)
+        Set(AF_MAC_KoloradoRequestedArtifact, true)
         IfEq(GF_SBK_KeptArtifactFromKolorado, false)
-            Set(GF_SBK_KeptArtifactFromKolorado, false)
             Set(LVar0, MSG_MAC_Port_0089)
         Else
             Set(LVar0, MSG_MAC_Port_008A)
@@ -110,7 +109,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
     EndIf
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, LVar0)
     Set(LVar0, Ref(N(ItemList_Artifact)))
-    Set(LVar1, 1)
+    Set(LVar1, NPC_Kolorado)
     ExecWait(N(EVS_ChooseKeyItem))
     Switch(LVar0)
         CaseGe(1)
@@ -119,7 +118,7 @@ EvtScript N(EVS_ArtifactPrompt_Kolorado) = {
         CaseDefault
             Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008C)
             Set(LVar0, Ref(N(ItemList_Artifact)))
-            Set(LVar1, 1)
+            Set(LVar1, NPC_Kolorado)
             ExecWait(N(EVS_ChooseKeyItem))
             Switch(LVar0)
                 CaseGe(1)
@@ -1141,9 +1140,9 @@ EvtScript N(EVS_NpcIdle_Kolorado) = {
 EvtScript N(EVS_NpcInteract_Kolorado) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH5_WHALE_MOUTH_OPEN)
-            IfEq(AF_MAC_38, false)
+            IfEq(AF_MAC05_MetKoloradoDialogue, false)
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_0083)
-                Set(AF_MAC_38, true)
+                Set(AF_MAC05_MetKoloradoDialogue, true)
             Else
                 Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_0084)
             EndIf
@@ -1808,7 +1807,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
     Set(GF_MAC05_Met_Simon, true)
     Set(LVarA, 0)
     IfGe(GB_StoryProgress, STORY_CH2_BEGAN_PEACH_MISSION)
-        IfEq(AF_MAC_3E, true)
+        IfEq(AF_MAC05_MetSimonBefore, true)
             Set(LVarA, 1)
         EndIf
     EndIf
@@ -1864,7 +1863,7 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
             Call(SpeakToPlayer, NPC_SELF, ANIM_Musician_Poet_Talk, ANIM_Musician_Poet_Idle, 0, MSG_MAC_Port_0079)
         EndIf
         Set(LVar0, Ref(N(ItemList_Melody)))
-        Set(LVar1, 10)
+        Set(LVar1, NPC_ArtistToad)
         ExecWait(N(EVS_ChooseKeyItem))
         Switch(LVar0)
             CaseEq(-1)
@@ -1961,9 +1960,9 @@ EvtScript N(EVS_NpcInteract_ArtistToad) = {
 EvtScript N(EVS_NpcInit_ArtistToad) = {
     Call(BindNpcInteract, NPC_SELF, Ref(N(EVS_NpcInteract_ArtistToad)))
     Set(AF_MAC05_ToggleDialogue_Simon, false)
-    Set(AF_MAC_3E, false)
+    Set(AF_MAC05_MetSimonBefore, false)
     IfEq(GF_MAC05_Met_Simon, true)
-        Set(AF_MAC_3E, true)
+        Set(AF_MAC05_MetSimonBefore, true)
     EndIf
     Return
     End
