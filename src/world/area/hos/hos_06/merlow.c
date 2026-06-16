@@ -17,27 +17,16 @@ NpcSettings N(NpcSettings_Merlow) = {
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_MERLOW);
 
-EvtScript N(EVS_LetterPrompt) = {
-    Call(LetterDelivery_Init,
-        NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle,
-        ITEM_LETTER_TO_MERLOW, ITEM_NONE,
-        MSG_HOS_0058,
-        MSG_HOS_0059,
-        MSG_HOS_005A,
-        MSG_HOS_005B,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
+EVT_LETTER_PROMPT(Merlow, NPC_Merlow,
+    ANIM_Merlow_Talk, ANIM_Merlow_Idle,
+    MSG_HOS_0058,
+    MSG_HOS_0059,
+    MSG_HOS_005A,
+    MSG_HOS_005B,
+    ITEM_LETTER_TO_MERLOW,
+    N(LetterList));
 
-EvtScript N(EVS_LetterReward) = {
-    IfEq(LVarC, DELIVERY_ACCEPTED)
-        EVT_GIVE_STAR_PIECE()
-    EndIf
-    Return
-    End
-};
+EVT_LETTER_REWARD(Merlow);
 
 EvtScript N(EVS_NpcInteract_Merluvlee_Passthrough) = {
     ExecWait(N(EVS_NpcInteract_Merluvlee))
@@ -147,8 +136,7 @@ API_CALLABLE(N(Merlow_ShopBadgesPopup)) {
 }
 
 EvtScript N(EVS_NpcInteract_Merlow) = {
-    ExecWait(N(EVS_LetterPrompt))
-    ExecWait(N(EVS_LetterReward))
+    EVT_LETTER_CHECK(Merlow)
     EVT_RETURN_IF_DELIVERED()
     IfGe(GB_HOS06_Merlow_PurchaseCount, MERLOW_BADGE_COUNT)
         Call(SpeakToPlayer, NPC_Merlow, ANIM_Merlow_Talk, ANIM_Merlow_Idle, 0, MSG_HOS_004C)

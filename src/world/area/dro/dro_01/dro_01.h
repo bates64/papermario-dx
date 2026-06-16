@@ -38,25 +38,17 @@ enum {
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupMusic);
+extern EvtScript N(EVS_SetupFoliage);
 extern EvtScript N(EVS_MakeEntities);
 extern NpcGroupList N(DefaultNPCs);
 extern NpcGroupList N(Chapter3NPCs);
 
 extern EvtScript N(EVS_SetupRooms);
-extern EvtScript N(EVS_SwingSign_Shop);
 extern EvtScript N(EVS_OpenShopDoor);
 extern EvtScript N(EVS_CloseShopDoor);
+extern EvtScript N(EVS_ShopSignSwing);
 
-extern ShopItemData N(Shop_Inventory)[];
-extern ShopSellPriceData N(Shop_PriceList)[];
-extern ShopItemLocation N(Shop_ItemPositions)[];
-extern ShopOwner N(Shop_Owner);
-
-extern EvtScript N(80244450);
-
-extern EvtScript N(8024CDA0);
-extern EvtScript N(EVS_SetupFoliage);
-extern EvtScript N(main);
-extern EvtScript N(makeEntities);
-extern EvtScript N(unk_80248088);
-extern EvtScript N(unk_8024884C);
+extern ShopItemData N(ShopInventory)[];
+extern ShopSellPriceData N(ShopPriceList)[];
+extern ShopItemLocation N(ShopItemPositions)[];
+extern ShopOwner N(MouserShopOwner);

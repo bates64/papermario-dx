@@ -111,10 +111,10 @@ EvtScript N(EVS_Main) = {
     EndSwitch
     Call(InitVirtualEntityList)
     ExecWait(N(EVS_MakeEntities))
-    Call(MakeShop, Ref(N(Shop_ItemPositions)), Ref(N(Shop_Inventory)), Ref(N(Shop_PriceList)), 0)
-    Call(MakeShopOwner, Ref(N(Shop_Owner)))
+    Call(MakeShop, Ref(N(ShopItemPositions)), Ref(N(ShopInventory)), Ref(N(ShopPriceList)), 0)
+    Call(MakeShopOwner, Ref(N(MouserShopOwner)))
     ExecWait(N(EVS_SetupRooms))
-    Exec(N(EVS_SwingSign_Shop))
+    Exec(N(EVS_ShopSignSwing))
     Exec(N(EVS_SetupMusic))
     Exec(N(EVS_EnterMap))
     Wait(1)

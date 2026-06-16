@@ -1,10 +1,6 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Rooms1
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_SetDoorRot_House) = {
     Call(RotateModel, MODEL_syoumen_enter, LVar0, 0, 1, 0)
     Return
@@ -47,7 +43,7 @@ EvtScript N(EVS_NpcAI_Goombario_NoAI) = {
 };
 
 EvtScript N(EVS_NpcAI_Goombario) = {
-    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander_Rooms1))
+    ExecWait(N(EVS_NpcAI_GoombaFamily_Wander))
     Return
     End
 };

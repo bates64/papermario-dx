@@ -1,5 +1,4 @@
 #include "dro_01.h"
-#define NAMESPACE dro_01_Shop
 #include "sprite/player.h"
 
 s32 N(ShopMessages)[] = {
@@ -28,7 +27,7 @@ s32 N(ShopMessages)[] = {
     [SHOP_MSG_FAREWELL         ] MSG_Shop_16_DR001,
 };
 
-ShopItemData N(Inventory)[] = {
+ShopItemData N(ShopInventory)[] = {
     { .itemID = ITEM_THUNDER_BOLT, .price = 5, .descMsg = MSG_ItemShopDesc_ThunderBolt },
     { .itemID = ITEM_DUSTY_HAMMER, .price = 2, .descMsg = MSG_ItemShopDesc_DustyHammer },
     { .itemID = ITEM_HONEY_SYRUP,  .price = 5, .descMsg = MSG_ItemShopDesc_HoneySyrup },
@@ -38,7 +37,7 @@ ShopItemData N(Inventory)[] = {
     {},
 };
 
-ShopSellPriceData N(PriceList)[] = {
+ShopSellPriceData N(ShopPriceList)[] = {
     { .itemID = ITEM_SNOWMAN_DOLL,  .sellPrice = 12 },
     { .itemID = ITEM_MELON,         .sellPrice = 10 },
     { .itemID = ITEM_ICED_POTATO,   .sellPrice = 10 },
@@ -152,7 +151,7 @@ EvtScript N(EVS_OnBuy) = {
     End
 };
 
-ShopItemLocation N(ItemPositions)[] = {
+ShopItemLocation N(ShopItemPositions)[] = {
     { .posModelID = MODEL_o741, .triggerColliderID = COLLIDER_mono1 },
     { .posModelID = MODEL_o740, .triggerColliderID = COLLIDER_mono2 },
     { .posModelID = MODEL_o738, .triggerColliderID = COLLIDER_mono3 },
@@ -161,12 +160,10 @@ ShopItemLocation N(ItemPositions)[] = {
     { .posModelID = MODEL_o736, .triggerColliderID = COLLIDER_mono6 },
 };
 
-ShopOwner N(Owner) = {
+ShopOwner N(MouserShopOwner) = {
     .npcID = NPC_Mouser_ShopOwner,
     .idleAnim = ANIM_Mouser_Purple_Idle,
     .talkAnim = ANIM_Mouser_Purple_Talk,
     .onBuyEvt = &N(EVS_OnBuy),
     .shopMsgIDs = N(ShopMessages),
 };
-
-#define NAMESPACE dro_01

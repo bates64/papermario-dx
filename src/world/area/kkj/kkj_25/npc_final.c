@@ -17,15 +17,15 @@ s32 N(FlyingKammyHoverOffsets)[] = {
 
 EvtScript N(EVS_NpcAux_Kammy_Broom) = {
     Label(0)
-    UseBuf(Ref(N(FlyingKammyHoverOffsets)))
-    Loop(10)
-        BufRead1(LVar1)
-        Call(GetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)
-        Add(LVar3, LVar1)
-        Call(SetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)
-        Wait(3)
-    EndLoop
-    Goto(0)
+        UseBuf(Ref(N(FlyingKammyHoverOffsets)))
+        Loop(10)
+            BufRead1(LVar1)
+            Call(GetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)
+            Add(LVar3, LVar1)
+            Call(SetNpcPos, NPC_Kammy_05, LVar2, LVar3, LVar4)
+            Wait(3)
+        EndLoop
+        Goto(0)
     Return
     End
 };

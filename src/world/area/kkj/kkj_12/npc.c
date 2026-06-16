@@ -166,10 +166,10 @@ EvtScript N(EVS_NpcIdle_Koopatrol_01) = {
     Call(SetNpcSpeed, NPC_SELF, Float(2.0))
     Loop(0)
         Call(NpcMoveTo, NPC_SELF, 900, 0, 0)
-        Call(N(GetAngleBetweenPoints), LVar0, 900, 0, 800, 0)
+        Call(GetAngleBetweenPoints, LVar0, 900, 0, 800, 0)
         Call(InterpNpcYaw, NPC_SELF, LVar0, 15)
         Call(NpcMoveTo, NPC_SELF, 800, 0, 0)
-        Call(N(GetAngleBetweenPoints), LVar0, 800, 0, 900, 0)
+        Call(GetAngleBetweenPoints, LVar0, 800, 0, 900, 0)
         Call(InterpNpcYaw, NPC_SELF, LVar0, 15)
     EndLoop
     Return

@@ -1,7 +1,5 @@
 #include "hos_10.h"
 
-#define NAME_SUFFIX _FlyAway
-
 NpcSettings N(NpcSettings_Dummy) = {
     .height = 24,
     .radius = 24,
@@ -109,7 +107,7 @@ AnimID N(LimitAnims_Kalmar)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Spirits)[] = {
+NpcData N(NpcData_Spirits_FlyAway)[] = {
     {
         .id = NPC_Twink,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -199,8 +197,6 @@ NpcData N(NpcData_Spirits)[] = {
         .limitAnimations = N(LimitAnims_Kalmar),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(NpcGroup_FlyAway) = {
     NPC_GROUP(N(NpcData_Spirits_FlyAway)),

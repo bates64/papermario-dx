@@ -133,16 +133,3 @@ API_CALLABLE(N(UpdateSearchlight)) {
     evt_set_variable(script, outVar, outVal);
     return ApiStatus_DONE2;
 }
-
-//TODO replace callsites with engine version in math_api
-API_CALLABLE(N(GetAngleBetweenPoints)) {
-    Bytecode* args = script->ptrReadPos;
-    s32 outVar = *args++;
-    s32 Ax = evt_get_variable(script, *args++);
-    s32 Az = evt_get_variable(script, *args++);
-    s32 Bx = evt_get_variable(script, *args++);
-    s32 Bz = evt_get_variable(script, *args++);
-
-    evt_set_variable(script, outVar, atan2(Ax, Az, Bx, Bz));
-    return ApiStatus_DONE2;
-}

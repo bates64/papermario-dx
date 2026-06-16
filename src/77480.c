@@ -813,8 +813,8 @@ void player_reset_data(void) {
     mem_clear(playerStatus, sizeof(PlayerStatus));
     playerStatus->flags = PS_FLAG_HAS_REFLECTION;
     reset_player_status();
-    playerStatus->shadowID = create_shadow_type(SHADOW_VARYING_CIRCLE, playerStatus->pos.x, playerStatus->pos.y,
-                             playerStatus->pos.z);
+    playerStatus->shadowID = create_shadow_type(SHADOW_VARYING_CIRCLE,
+        playerStatus->pos.x, playerStatus->pos.y, playerStatus->pos.z);
     clear_world_menus();
     clear_interact_prompt();
     clear_conversation_prompt();

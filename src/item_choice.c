@@ -153,21 +153,7 @@ EvtScript EVS_GiveCoinReward = {
     End
 };
 
-typedef struct LetterDelivery {
-    /* 0x00 */ s32 recipientID;
-    /* 0x04 */ AnimID recipientTalk;
-    /* 0x08 */ AnimID recipientIdle;
-    /* 0x0C */ MsgID msgGreeting;
-    /* 0x10 */ MsgID msgCancelled;
-    /* 0x14 */ MsgID msgDelivered;
-    /* 0x18 */ MsgID msgRecieved;
-    /* 0x1C */ union {
-    /*      */       s32 letters[5];
-    /*      */       s32* list;
-    /* 0x30 */   };
-} LetterDelivery; // size = 0x30
-
-BSS s32 UnpackedLetterList[6]; // needs one more than LetterDelivery::letters for end-of-list sentinel
+BSS s32 UnpackedLetterList[5]; // needs one more than LetterDelivery::letters for end-of-list sentinel
 BSS s32 DeliverySavedAnim;
 
 API_CALLABLE(UnpackLetterDelivery) {
@@ -209,12 +195,6 @@ API_CALLABLE(UnpackLetterDelivery) {
 
     return ApiStatus_DONE2;
 }
-
-/*
-EvtScript EVS_DeliverLetter = {
-    ExecWait(EVS_DoLetterDelivery)
-}
-*/
 
 API_CALLABLE(LetterDelivery_Init) {
     Bytecode* args = script->ptrReadPos;
@@ -386,6 +366,42 @@ EvtScript EVS_DoLetterDelivery = {
         EndIf
     EndIf
     Call(LetterDelivery_RestoreNpcAnim)
+    Return
+    End
+};
+
+#define EVT_LETTER_PROMPT(npcName, npcID, animTalk, animIdle, msg1, msg2, ms3, msg4, itemID, itemList) \
+    EvtScript N(EVS_LetterPrompt_##npcName) = { \
+        Call(LetterDelivery_Init, \
+            npcID, animTalk, animIdle, \
+            itemID, ITEM_NONE, \
+            msg1, msg2, ms3, msg4, \
+            Ref(itemList)) \
+        ExecWait(EVS_DoLetterDelivery) \
+        Return \
+        End \
+    }
+
+#define EVT_LETTER_REWARD(npcName) \
+    EvtScript N(EVS_LetterReward_##npcName) = { \
+        IfEq(LVarC, DELIVERY_ACCEPTED) \
+            EVT_GIVE_STAR_PIECE() \
+        EndIf \
+        Return \
+        End \
+    }
+
+// expects LetterDelivery* on LVar0
+// returns a DeliveryResult on LVar0
+EvtScript EVS_LetterDelivery = {
+    Call(UnpackLetterDelivery, LVar0)
+    ExecWait(EVS_DoLetterDelivery)
+    IfNe(LVar6, ITEM_NONE)
+        IfEq(LVarC, DELIVERY_ACCEPTED)
+            EVT_GIVE_STAR_PIECE()
+        EndIf
+    EndIf
+    Set(LVar0, LVarC)
     Return
     End
 };

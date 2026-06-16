@@ -1,7 +1,5 @@
 #include "kkj_00.h"
 
-#define NAME_SUFFIX _Intro
-
 #include "world/common/npc/Luigi.inc.c"
 #include "world/common/npc/Toad_Patrol.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
@@ -266,7 +264,7 @@ EvtScript N(EVS_NpcInit_ToadGuard_02) = {
     End
 };
 
-NpcData N(NpcData_Characters)[] = {
+NpcData N(NpcData_Characters_Intro)[] = {
     {
         .id = NPC_Luigi,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -426,8 +424,6 @@ NpcData N(NpcData_Characters)[] = {
         .animations = TOAD_GUARD_BLUE_ANIMS,
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(IntroNPCs) = {
     NPC_GROUP(N(NpcData_Characters_Intro)),

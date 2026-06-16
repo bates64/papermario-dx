@@ -1,11 +1,5 @@
 #include "mac_00.h"
 
-#define NAME_SUFFIX _Epilogue
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/GoombaFamily.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_NpcInteract_Goompapa_Epilogue) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle, 0, MSG_Outro_0024)
     Return
@@ -137,7 +131,7 @@ EvtScript N(EVS_NpcInit_HarryT_Epilogue) = {
     End
 };
 
-AnimID N(LimitAnims_Luigi_Epilogue)[] = {
+AnimID N(LimitAnims_Luigi)[] = {
     ANIM_Luigi_Still,
     ANIM_Luigi_Idle,
     ANIM_Luigi_Walk,
@@ -150,11 +144,11 @@ NpcData N(NpcData_Luigi_Epilogue) = {
     .id = NPC_Luigi_Epilogue,
     .pos = { NPC_DISPOSE_LOCATION },
     .yaw = 90,
-    .settings = &N(NpcSettings_Luigi_Epilogue),
+    .settings = &N(NpcSettings_Luigi),
     .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
     .drops = NO_DROPS,
     .animations = LUIGI_ANIMS,
-    .limitAnimations = N(LimitAnims_Luigi_Epilogue),
+    .limitAnimations = N(LimitAnims_Luigi),
 };
 
 AnimID N(LimitAnims_Goompapa_Epilogue)[] = {
@@ -184,7 +178,7 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .pos = { 70.0f, 0.0f, -30.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Goompapa_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily_Epilogue),
+        .settings = &N(NpcSettings_GoombaFamily),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMPAPA_ANIMS,
@@ -196,7 +190,7 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .pos = { 40.0f, 0.0f, 20.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Goomama_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily_Epilogue),
+        .settings = &N(NpcSettings_GoombaFamily),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMAMA_ANIMS,
@@ -208,7 +202,7 @@ NpcData N(NpcData_GoombaFamilypa_Epilogue)[] = {
         .pos = { 20.0f, 0.0f, -35.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Gooma_Epilogue),
-        .settings = &N(NpcSettings_GoombaFamily_Epilogue),
+        .settings = &N(NpcSettings_GoombaFamily),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = GOOMA_ANIMS,
@@ -237,7 +231,7 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
         .pos = { 545.0f, 20.0f, 150.0f },
         .yaw = 30,
         .init = &N(EVS_NpcInit_ChuckQuizmo_Epilogue),
-        .settings = &N(NpcSettings_Luigi_Epilogue),
+        .settings = &N(NpcSettings_Luigi),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = {
@@ -266,7 +260,7 @@ NpcData N(NpcData_ChuckQuizmo_Epilogue)[] = {
         .pos = { 500.0f, 20.0f, -130.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_VannaT_Epilogue),
-        .settings = &N(NpcSettings_Toad_Stationary_Epilogue),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST,
         .drops = NO_DROPS,
         .animations = {
@@ -319,7 +313,7 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .pos = { 375.0f, 115.0f, -440.0f },
         .yaw = 225,
         .init = &N(EVS_NpcInit_TheMaster_Epilogue),
-        .settings = &N(NpcSettings_Luigi_Epilogue),
+        .settings = &N(NpcSettings_Luigi),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = {
@@ -348,7 +342,7 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan_Epilogue),
-        .settings = &N(NpcSettings_Luigi_Epilogue),
+        .settings = &N(NpcSettings_Luigi),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = {
@@ -362,7 +356,7 @@ NpcData N(NpcData_DojoMembers_Epilogue)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee_Epilogue),
-        .settings = &N(NpcSettings_Luigi_Epilogue),
+        .settings = &N(NpcSettings_Luigi),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = {
@@ -386,7 +380,7 @@ NpcData N(NpcData_Toad_01_Epilogue)[] = {
         .pos = { 430.0f, 20.0f, -373.0f },
         .yaw = 223,
         .init = &N(EVS_NpcInit_Toad_01_Epilogue),
-        .settings = &N(NpcSettings_Toad_Stationary_Epilogue),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {
@@ -404,7 +398,7 @@ NpcData N(NpcData_Toad_01_Epilogue)[] = {
         .pos = { 410.0f, 20.0f, -320.0f },
         .yaw = 43,
         .init = &N(EVS_NpcInit_HarryT_Epilogue),
-        .settings = &N(NpcSettings_Toad_Stationary_Epilogue),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {

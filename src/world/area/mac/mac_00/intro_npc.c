@@ -1,11 +1,5 @@
 #include "mac_00.h"
 
-#define NAME_SUFFIX _Intro
-#include "world/common/npc/Luigi.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/npc/Toad_Wander.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_NpcInit_Chan_Intro) = {
     Call(SetNpcPos, NPC_SELF, 570, 20, -150)
     Call(SetNpcYaw, NPC_SELF, 270)
@@ -39,7 +33,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .id = NPC_Luigi_Intro,
         .pos = { NPC_DISPOSE_LOCATION },
         .yaw = 90,
-        .settings = &N(NpcSettings_Luigi_Intro),
+        .settings = &N(NpcSettings_Luigi),
         .flags = ENEMY_FLAG_PASSIVE | ENEMY_FLAG_DO_NOT_KILL | ENEMY_FLAG_ENABLE_HIT_SCRIPT | ENEMY_FLAG_IGNORE_WORLD_COLLISION | ENEMY_FLAG_IGNORE_PLAYER_COLLISION | ENEMY_FLAG_IGNORE_ENTITY_COLLISION | ENEMY_FLAG_FLYING,
         .drops = NO_DROPS,
         .animations = LUIGI_ANIMS,
@@ -48,7 +42,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .id = NPC_Toad_01,
         .pos = { -150.0f, 0.0f, -275.0f },
         .yaw = 90,
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -75,7 +69,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
                 .detectSize = { 200 },
             }
         },
-        .settings = &N(NpcSettings_Toad_Wander_Intro),
+        .settings = &N(NpcSettings_Toad_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -85,7 +79,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .id = NPC_Toad_03,
         .pos = { 424.0f, 20.0f, -85.0f },
         .yaw = 270,
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -96,7 +90,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .pos = { 310.0f, 115.0f, -390.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Chan_Intro),
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {
@@ -110,7 +104,7 @@ NpcData N(NpcData_IntroNPCs)[] = {
         .pos = { 330.0f, 115.0f, -410.0f },
         .yaw = 45,
         .init = &N(EVS_NpcInit_Lee_Intro),
-        .settings = &N(NpcSettings_Toad_Stationary_Intro),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = {

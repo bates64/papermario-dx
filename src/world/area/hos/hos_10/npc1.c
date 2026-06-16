@@ -1,8 +1,6 @@
 #include "hos_10.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Descent
-
 NpcSettings N(NpcSettings_Dummy) = {
     .height = 24,
     .radius = 24,
@@ -124,7 +122,7 @@ AnimID N(LimitAnims_Kalmar)[] = {
     ANIM_LIST_END
 };
 
-NpcData N(NpcData_Spirits)[] = {
+NpcData N(NpcData_Spirits_Descent)[] = {
     {
         .id = NPC_Peach,
         .pos = { NPC_DISPOSE_LOCATION },
@@ -242,8 +240,6 @@ NpcData N(NpcData_Spirits)[] = {
         .limitAnimations = N(LimitAnims_Kalmar),
     },
 };
-
-#define NAME_SUFFIX
 
 NpcGroupList N(NpcGroup_Descent) = {
     NPC_GROUP(N(NpcData_Spirits_Descent)),

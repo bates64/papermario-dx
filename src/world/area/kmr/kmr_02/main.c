@@ -2,11 +2,6 @@
 
 #include "world/common/entity/Pipe.inc.c"
 
-#define NAME_SUFFIX _Main
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#include "wander_territories.inc.c"
-#define NAME_SUFFIX
-
 EvtScript N(EVS_ExitWalk_kmr_05_1) = EVT_EXIT_WALK(60, kmr_02_ENTRY_2, "kmr_05", kmr_05_ENTRY_1);
 EvtScript N(EVS_ExitWalk_kmr_00_0) = EVT_EXIT_WALK(60, kmr_02_ENTRY_1, "kmr_00", kmr_00_ENTRY_0);
 EvtScript N(EVS_ExitWalk_kmr_09_0) = EVT_EXIT_WALK(60, kmr_02_ENTRY_0, "kmr_09", kmr_09_ENTRY_0);

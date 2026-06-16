@@ -1,12 +1,6 @@
 #include "mac_00.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _Shared
-#include "world/common/npc/Toad_Wander.inc.c"
-#include "world/common/npc/Toad_Patrol.inc.c"
-#include "world/common/npc/Toad_Stationary.inc.c"
-#define NAME_SUFFIX
-
 ITEM_LIST(N(LetterList_MissT), ITEM_LETTER_CHAIN_MISS_T);
 
 EvtScript N(EVS_LetterPrompt_MissT) = {
@@ -576,7 +570,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { -150.0f, 0.0f, -275.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_Toad_04),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_SKIP_BATTLE,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -604,7 +598,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Toad_05),
-        .settings = &N(NpcSettings_Toad_Wander_Shared),
+        .settings = &N(NpcSettings_Toad_Wander),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_RED_ANIMS,
@@ -629,7 +623,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
             }
         },
         .init = &N(EVS_NpcInit_Toad_06),
-        .settings = &N(NpcSettings_Toad_Patrol_Shared),
+        .settings = &N(NpcSettings_Toad_Patrol),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,
@@ -640,7 +634,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { -40.0f, 0.0f, 61.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_FickleLover),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -651,7 +645,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { -15.0f, 0.0f, 60.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_ShamelessLover),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT | ENEMY_FLAG_DO_NOT_AUTO_FACE_PLAYER,
         .drops = NO_DROPS,
         .animations = TOADETTE_PINK_ANIMS,
@@ -662,7 +656,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 426.0f, 20.0f, 268.0f },
         .yaw = 90,
         .init = &N(EVS_NpcInit_KrisT),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_GREEN_ANIMS,
@@ -673,7 +667,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 381.0f, 20.0f, 326.0f },
         .yaw = 180,
         .init = &N(EVS_NpcInit_MissT),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_ORANGE_ANIMS,
@@ -684,7 +678,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 476.0f, 20.0f, 326.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_FelissaT),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOADETTE_PURPLE_ANIMS,
@@ -695,7 +689,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 424.0f, 20.0f, -85.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DojoSpectator),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_BLUE_ANIMS,
@@ -706,7 +700,7 @@ NpcData N(NpcData_SharedTownsfolk)[] = {
         .pos = { 373.0f, 0.0f, 22.0f },
         .yaw = 270,
         .init = &N(EVS_NpcInit_DojoFan),
-        .settings = &N(NpcSettings_Toad_Stationary_Shared),
+        .settings = &N(NpcSettings_Toad_Stationary),
         .flags = COMMON_PASSIVE_FLAGS | ENEMY_FLAG_NO_SHADOW_RAYCAST | ENEMY_FLAG_RAYCAST_TO_INTERACT,
         .drops = NO_DROPS,
         .animations = TOAD_YELLOW_ANIMS,

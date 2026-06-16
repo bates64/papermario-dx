@@ -8432,6 +8432,7 @@ segments:
     - [auto, c, music]
     - [auto, c, main]
     - [auto, c, npc]
+    - [auto, c, wander_territories]
     - [auto, c, rooms_1]
     - [auto, c, entity]
     - [auto, c, rooms_2]
@@ -9186,6 +9187,10 @@ segments:
     - [auto, c, rooms]
     - [auto, c, entity]
     - [auto, c, foliage]
+    - [auto, c, npc_composer]
+    - [auto, c, npc_shop_owner]
+    - [auto, c, npc_hint_dryite]
+    - [auto, c, npc_hint_dryite_companion]
   - name: dro_02
     dir: world/area/dro/dro_02
     type: code

@@ -7,9 +7,14 @@
 
 ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
-EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
-    MSG_CH5_00E4, MSG_CH5_00E5, MSG_CH5_00E6, MSG_CH5_00E7,
-    ITEM_LETTER_TO_KOLORADO, N(LetterList));
+EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado,
+    ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
+    MSG_CH5_00E4,
+    MSG_CH5_00E5,
+    MSG_CH5_00E6,
+    MSG_CH5_00E7,
+    ITEM_LETTER_TO_KOLORADO,
+    N(LetterList));
 
 EVT_LETTER_REWARD(Kolorado);
 

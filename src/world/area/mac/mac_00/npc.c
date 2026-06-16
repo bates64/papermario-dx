@@ -1,9 +1,14 @@
 #include "mac_00.h"
 #include "effects.h"
 
+#include "world/common/npc/Toad_Wander.inc.c"
+#include "world/common/npc/Toad_Patrol.inc.c"
 #include "world/common/npc/Toad_Stationary.inc.c"
-#include "world/common/enemy/ShyGuy_Stationary.inc.c"
+#include "world/common/npc/GoombaFamily.inc.c"
+#include "world/common/npc/Luigi.inc.c"
 #include "world/common/npc/Dummy.inc.c"
+
+#include "world/common/enemy/ShyGuy_Stationary.inc.c"
 
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"

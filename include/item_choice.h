@@ -25,6 +25,21 @@ enum DeliveryResult {
     DELIVERY_ACCEPTED       = 2,
 };
 
+typedef struct LetterDelivery {
+    /* 0x00 */ s32 recipientID;
+    /* 0x04 */ AnimID recipientTalk;
+    /* 0x08 */ AnimID recipientIdle;
+    /* 0x0C */ MsgID msgGreeting;
+    /* 0x10 */ MsgID msgCancelled;
+    /* 0x14 */ MsgID msgDelivered;
+    /* 0x18 */ MsgID msgRecieved;
+    /* 0x1C */ union {
+    /*      */   s32 letters[4];
+    /*      */   s32* list;
+    /* 0x2C */ };
+    /* 0x2C */ s32 reward;
+} LetterDelivery; // size = 0x30
+
 #define EVT_CHOOSE_ANY_CONSUMABLE(recipientNpc) \
     Set(LVar0, nullptr) \
     Set(LVar1, recipientNpc) \

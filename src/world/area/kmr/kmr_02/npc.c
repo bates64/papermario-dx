@@ -37,10 +37,6 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-#define NAME_SUFFIX _Npc
-#include "wander_territories.inc.c"
-#define NAME_SUFFIX
-
 ITEM_LIST(N(LetterList_GoompapaTrade), ITEM_LETTER_CHAIN_GOOMPAPA_1);
 
 EvtScript N(EVS_LetterTrade_Goompapa) = {
@@ -148,8 +144,8 @@ EvtScript N(EVS_NpcInit_Goombario) = {
     Switch(GB_StoryProgress)
         CaseLt(STORY_CH0_GATE_CRUSHED)
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
-            Call(N(SetWanderTerritory_Npc), NPC_Goombario, 2)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander_Npc)))
+            Call(N(SetWanderTerritory), NPC_Goombario, 2)
+            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander)))
         CaseLt(STORY_CH0_GOOMBARIO_JOINED_PARTY)
             Call(SetNpcPos, NPC_SELF, 66, 0, -126)
         CaseGe(STORY_CH0_GOOMBARIO_JOINED_PARTY)
@@ -295,8 +291,8 @@ EvtScript N(EVS_NpcInit_Goombaria) = {
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goombaria_NoAI)))
             Call(SetNpcPos, NPC_SELF, 215, 0, 215)
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
-            Call(N(SetWanderTerritory_Npc), NPC_Goombaria, 3)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander_Npc)))
+            Call(N(SetWanderTerritory), NPC_Goombaria, 3)
+            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander)))
         CaseLt(STORY_CH0_GOOMBARIO_JOINED_PARTY)
             Call(SetNpcPos, NPC_SELF, 94, 0, -109)
         CaseLt(STORY_CH5_STAR_SPRIT_DEPARTED)
@@ -1054,8 +1050,8 @@ EvtScript N(EVS_NpcInit_Goompapa) = {
                 Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Idle)
             EndIf
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
-            Call(N(SetWanderTerritory_Npc), NPC_Goompapa, 0)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander_Npc)))
+            Call(N(SetWanderTerritory), NPC_Goompapa, 0)
+            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander)))
         CaseLt(STORY_CH0_SMASHED_GATE_BLOCK)
             Call(SetNpcPos, NPC_SELF, 258, 0, 258)
             Call(InterpNpcYaw, NPC_SELF, 106, 0)
@@ -1138,8 +1134,8 @@ EvtScript N(EVS_NpcInit_Goomama) = {
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomama)))
         CaseLt(STORY_CH0_GATE_CRUSHED)
         CaseLt(STORY_CH0_FELL_OFF_CLIFF)
-            Call(N(SetWanderTerritory_Npc), NPC_Goomama, 1)
-            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander_Npc)))
+            Call(N(SetWanderTerritory), NPC_Goomama, 1)
+            Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_SwitchedWander)))
         CaseLt(STORY_CH0_LEFT_THE_PLAYGROUND)
             Call(BindNpcIdle, NPC_SELF, Ref(N(EVS_NpcIdle_Goomama)))
         CaseLt(STORY_CH0_GOOMBARIO_JOINED_PARTY)

@@ -12,24 +12,6 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-#include "world/common/util/MonitorPlayerOrbiting.inc.c"
-
-ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_LITTLE_MOUSER);
-
-EvtScript N(EVS_LetterPrompt_ShopOwner) = {
-    Call(LetterDelivery_Init,
-        NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle,
-        ITEM_LETTER_CHAIN_LITTLE_MOUSER, ITEM_LETTER_CHAIN_FRANKY,
-        MSG_CH2_0089,
-        MSG_CH2_008A,
-        MSG_CH2_008B,
-        MSG_CH2_008C,
-        Ref(N(LetterList)))
-    ExecWait(EVS_DoLetterDelivery)
-    Return
-    End
-};
-
 EvtScript N(EVS_NpcInteract_Mouser_01) = {
     IfGe(GB_StoryProgress, STORY_CH2_STAR_SPRIT_DEPARTED)
         Call(SpeakToPlayer, NPC_SELF, ANIM_Mouser_Blue_Talk, ANIM_Mouser_Blue_Idle, 0, MSG_CH2_0062)
@@ -116,11 +98,6 @@ EvtScript N(EVS_NpcInit_Dryite_02) = {
     End
 };
 
-#include "npc_hint_dryite.inc.c"
-#include "npc_hint_dryite_companion.inc.c"
-#include "npc_composer.inc.c"
-#include "npc_shop_owner.inc.c"
-
 EvtScript N(EVS_NpcInteract_Toadette) = {
     Call(SpeakToPlayer, NPC_Toadette_01, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008E)
     Call(SpeakToPlayer, NPC_Toadette_02, ANIM_Toadette_Pink_Talk, ANIM_Toadette_Pink_Idle, 0, MSG_CH2_008F)
@@ -183,6 +160,11 @@ EvtScript N(EVS_NpcInit_Dryite_06) = {
     Return
     End
 };
+
+extern EvtScript N(EVS_NpcInit_HintDryite);
+extern EvtScript N(EVS_NpcInit_Dryite_04);
+extern EvtScript N(EVS_NpcInit_Composer);
+extern EvtScript N(EVS_NpcInit_ShopOwner);
 
 NpcData N(PassiveNPCs)[] = {
     {

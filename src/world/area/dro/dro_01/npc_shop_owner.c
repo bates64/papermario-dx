@@ -96,6 +96,22 @@ EvtScript N(EVS_NpcIdle_ShopOwner) = {
     End
 };
 
+ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_LITTLE_MOUSER);
+
+EvtScript N(EVS_LetterPrompt_ShopOwner) = {
+    Call(LetterDelivery_Init,
+        NPC_Mouser_ShopOwner, ANIM_Mouser_Purple_Talk, ANIM_Mouser_Purple_Idle,
+        ITEM_LETTER_CHAIN_LITTLE_MOUSER, ITEM_LETTER_CHAIN_FRANKY,
+        MSG_CH2_0089,
+        MSG_CH2_008A,
+        MSG_CH2_008B,
+        MSG_CH2_008C,
+        Ref(N(LetterList)))
+    ExecWait(EVS_DoLetterDelivery)
+    Return
+    End
+};
+
 EvtScript N(EVS_NpcInteract_ShopOwner) = {
     IfEq(AB_DRO_SHOP_PREV1, 4)
         IfEq(AB_DRO_SHOP_PREV2, 1)

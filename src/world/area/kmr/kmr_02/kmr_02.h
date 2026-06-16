@@ -72,6 +72,11 @@ extern NpcGroupList N(NpcGroup1);
 extern NpcGroupList N(PrologueNPCs);
 extern NpcGroupList N(DefaultNPCs);
 
+extern API_CALLABLE(N(SetWanderTerritory));
+extern EvtScript N(EVS_NpcIdle_SwitchedWander);
+
+extern EvtScript N(EVS_NpcAI_GoombaFamily_Wander);
+
 extern IMG_BIN N(heart_block_img)[];
 extern PAL_BIN N(heart_block_pal)[];
 

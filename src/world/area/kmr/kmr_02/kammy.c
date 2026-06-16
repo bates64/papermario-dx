@@ -1,11 +1,6 @@
 #include "kmr_02.h"
 #include "sprite/player.h"
 
-#define NAME_SUFFIX _6
-#include "world/common/npc/GoombaFamily_Wander.inc.c"
-#include "wander_territories.inc.c"
-#define NAME_SUFFIX
-
 Vec3f N(FlightPath_KammyAppear)[] = {
     {  473.0,   150.0,  301.0 },
     {  234.0,    80.0,  200.0 },
@@ -335,12 +330,12 @@ EvtScript N(EVS_Scene_KammyCrushesGate) = {
     Call(DisablePlayerPhysics, false)
     Call(DisablePlayerInput, false)
     Call(SetNpcAnimation, NPC_Goompapa, ANIM_Goompapa_Idle)
-    Call(N(SetWanderTerritory_6), NPC_Goomama, 1)
-    Call(BindNpcAI, NPC_Goomama, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
-    Call(N(SetWanderTerritory_6), NPC_Goombario, 2)
-    Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
-    Call(N(SetWanderTerritory_6), NPC_Goombaria, 3)
-    Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander_6)))
+    Call(N(SetWanderTerritory), NPC_Goomama, 1)
+    Call(BindNpcAI, NPC_Goomama, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(N(SetWanderTerritory), NPC_Goombario, 2)
+    Call(BindNpcAI, NPC_Goombario, Ref(N(EVS_NpcIdle_SwitchedWander)))
+    Call(N(SetWanderTerritory), NPC_Goombaria, 3)
+    Call(BindNpcAI, NPC_Goombaria, Ref(N(EVS_NpcIdle_SwitchedWander)))
     Call(SetNpcFlagBits, NPC_Goombaria, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
     Call(SetNpcFlagBits, NPC_Goompapa, NPC_FLAG_IGNORE_PLAYER_COLLISION, false)
     Return
