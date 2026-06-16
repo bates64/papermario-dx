@@ -1,4 +1,5 @@
 #include "sbk_44.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_Main);
 extern NpcGroupList N(DefaultNPCs);
@@ -17,7 +18,6 @@ export MapSettings N(settings) = {
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_44 },
 };
-#include "effects.h"
 
 EvtScript N(EVS_ExitWalk_sbk_43_1) = EVT_EXIT_WALK(60, sbk_44_ENTRY_0, "sbk_43", sbk_43_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_45_0) = EVT_EXIT_WALK(60, sbk_44_ENTRY_1, "sbk_45", sbk_45_ENTRY_0);

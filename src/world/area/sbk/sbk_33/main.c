@@ -1,7 +1,7 @@
 #include "sbk_33.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_MakeEntities);
-#include "effects.h"
 
 EvtScript N(EVS_ExitWalk_sbk_32_1) = EVT_EXIT_WALK(60, sbk_33_ENTRY_0, "sbk_32", sbk_32_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_34_0) = EVT_EXIT_WALK(60, sbk_33_ENTRY_1, "sbk_34", sbk_34_ENTRY_0);

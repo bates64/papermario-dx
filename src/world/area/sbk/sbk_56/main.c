@@ -1,5 +1,6 @@
 
 #include "sbk_56.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_MakeEntities);
@@ -19,7 +20,6 @@ export MapSettings N(settings) = {
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_56 },
 };
-#include "effects.h"
 
 API_CALLABLE(N(StartOasisTracks)) {
     bgm_set_linked_mode(0, 1);

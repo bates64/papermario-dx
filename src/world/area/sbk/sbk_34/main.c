@@ -1,4 +1,5 @@
 #include "sbk_34.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_Main);
 extern EvtScript N(EVS_SetupFoliage);
@@ -18,7 +19,6 @@ export MapSettings N(settings) = {
     .bgName = "sbk_bg",
     .tattle = { MSG_MapTattle_sbk_34 },
 };
-#include "effects.h"
 
 EvtScript N(EVS_ExitWalk_sbk_33_1) = EVT_EXIT_WALK(60, sbk_34_ENTRY_0, "sbk_33", sbk_33_ENTRY_1);
 EvtScript N(EVS_ExitWalk_sbk_35_0) = EVT_EXIT_WALK(60, sbk_34_ENTRY_1, "sbk_35", sbk_35_ENTRY_0);

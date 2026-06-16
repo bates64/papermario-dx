@@ -1,4 +1,5 @@
 #include "sbk_51.h"
+#include "effects.h"
 
 extern EvtScript N(EVS_Main);
 extern NpcGroupList N(DefaultNPCs);
@@ -22,7 +23,6 @@ EvtScript N(EVS_ExitWalk_sbk_50_1) = EVT_EXIT_WALK(60, sbk_51_ENTRY_0, "sbk_50",
 EvtScript N(EVS_ExitWalk_sbk_52_0) = EVT_EXIT_WALK(60, sbk_51_ENTRY_1, "sbk_52", sbk_52_ENTRY_0);
 EvtScript N(EVS_ExitWalk_sbk_41_3) = EVT_EXIT_WALK(60, sbk_51_ENTRY_2, "sbk_41", sbk_41_ENTRY_3);
 EvtScript N(EVS_ExitWalk_sbk_61_2) = EVT_EXIT_WALK(60, sbk_51_ENTRY_3, "sbk_61", sbk_61_ENTRY_2);
-#include "effects.h"
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitWalk_sbk_50_1)), TRIGGER_FLOOR_ABOVE, COLLIDER_deiliw, 1, 0)
