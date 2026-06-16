@@ -4,10 +4,7 @@
 #define STAR_SPIRIT_DATA_VAR MV_SpiritCardData
 #include "world/common/atomic/StarSpiritCard.inc.c"
 
-s32 N(KeyList)[] = {
-    ITEM_MYSTICAL_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_MYSTICAL_KEY);
 
 EvtScript N(EVS_SpawnStarCard) = {
     Call(FadeOutMusic, 0, 1000)

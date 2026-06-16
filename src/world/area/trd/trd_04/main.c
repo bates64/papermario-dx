@@ -26,10 +26,7 @@ EvtScript N(EVS_ExitWalk_trd_07_0) = EVT_EXIT_WALK(60, trd_04_ENTRY_4, "trd_07",
 EvtScript N(EVS_ExitDoors_trd_06_1) = EVT_EXIT_DOUBLE_DOOR(trd_04_ENTRY_5, "trd_06", trd_06_ENTRY_1,
     COLLIDER_tte, MODEL_o29, MODEL_o28);
 
-s32 N(KeyList)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_BindExitTriggers) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_03_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)

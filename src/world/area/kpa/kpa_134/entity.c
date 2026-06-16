@@ -32,10 +32,7 @@ EvtScript N(EVS_BreakBlock_Brick) = {
     End
 };
 
-s32 N(KeyList_BowsersCastle)[] = {
-    ITEM_BOWSER_CASTLE_KEY,
-    ITEM_NONE,
-};
+ITEM_LIST(N(KeyList_BowsersCastle), ITEM_BOWSER_CASTLE_KEY);
 
 EvtScript N(EVS_UnlockPrompt_Door) = {
     Call(ShowKeyChoicePopup)

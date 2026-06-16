@@ -12,10 +12,7 @@ NpcSettings N(NpcSettings_Zipline) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
 EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado, ANIM_Kolorado_Fallen, ANIM_Kolorado_Fallen,
     MSG_CH5_00E8, MSG_CH5_00E9, MSG_CH5_00EA, MSG_CH5_00EB,

@@ -6,12 +6,7 @@ extern EvtScript N(EVS_ItemPrompt_Socket3);
 extern EvtScript N(EVS_ItemPrompt_Socket4);
 extern EvtScript N(EVS_ItemPrompt_Socket5);
 
-s32 N(ItemList_Artifacts)[] = {
-    ITEM_LUNAR_STONE,
-    ITEM_PYRAMID_STONE,
-    ITEM_DIAMOND_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Artifacts), ITEM_LUNAR_STONE, ITEM_PYRAMID_STONE, ITEM_DIAMOND_STONE);
 
 EvtScript N(EVS_SetupPuzzle) = {
     IfLt(GB_StoryProgress, STORY_CH2_SOLVED_ARTIFACT_PUZZLE)

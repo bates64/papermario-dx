@@ -454,12 +454,7 @@ EvtScript N(EVS_Scene_BeanstalkGrewRemark) = {
     End
 };
 
-s32 N(BeanstalkIngredients)[] = {
-    ITEM_FERTILE_SOIL,
-    ITEM_MAGICAL_BEAN,
-    ITEM_MIRACLE_WATER,
-    ITEM_NONE
-};
+ITEM_LIST(N(BeanstalkIngredients), ITEM_FERTILE_SOIL, ITEM_MAGICAL_BEAN, ITEM_MIRACLE_WATER);
 
 EvtScript N(EVS_BeanPatch_ItemPrompt) = {
     Call(DisablePlayerInput, true)

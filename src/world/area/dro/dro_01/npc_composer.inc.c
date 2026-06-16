@@ -1,10 +1,7 @@
 #include "dro_01.h"
 #include "sprite/player.h"
 
-s32 N(LyricsList)[] = {
-    ITEM_LYRICS,
-    ITEM_NONE,
-};
+ITEM_LIST(N(LyricsList), ITEM_LYRICS);
 
 EvtScript N(EVS_NpcInteract_Composer) = {
     IfEq(GF_DRO01_Gift_Melody, true)

@@ -48,10 +48,7 @@ NpcSettings N(NpcSettings_Archeologist) = {
 #include "world/common/atomic/ToadHouse.inc.c"
 #include "world/common/atomic/ToadHouse.data.inc.c"
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_CHAIN_MR_E,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_MR_E);
 
 EvtScript N(EVS_LetterPrompt_MrE) = {
     Call(LetterDelivery_Init,

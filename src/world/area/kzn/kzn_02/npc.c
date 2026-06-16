@@ -5,10 +5,7 @@
 
 #include "world/common/npc/Kolorado.inc.c"
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
 EVT_LETTER_PROMPT(Kolorado, NPC_Kolorado,
     ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,

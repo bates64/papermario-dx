@@ -1,10 +1,7 @@
 #include "kpa_113.h"
 #include "entity.h"
 
-s32 N(KeyList_BowsersCastle)[] = {
-    ITEM_BOWSER_CASTLE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList_BowsersCastle), ITEM_BOWSER_CASTLE_KEY);
 
 EvtScript N(EVS_ExitDoors_kpa_82_0) = EVT_EXIT_DOUBLE_DOOR(kpa_113_ENTRY_1, "kpa_82", kpa_82_ENTRY_0, COLLIDER_deiliett, MODEL_o136, MODEL_o137);
 

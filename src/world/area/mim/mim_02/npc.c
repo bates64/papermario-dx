@@ -9,10 +9,7 @@ EvtScript N(EVS_Unused_DoNothing) = {
 
 #include "world/common/enemy/ForestFuzzy_Wander.inc.c"
 
-s32 N(KeyList)[] = {
-    ITEM_FOREST_PASS,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_FOREST_PASS);
 
 EvtScript N(EVS_NpcInteract_Oaklie) = {
     IfLt(GB_StoryProgress, STORY_CH3_INVITED_TO_BOOS_MANSION)

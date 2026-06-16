@@ -12,10 +12,7 @@ NpcSettings N(NpcSettings_BubbleFlower) = {
 
 #include "world/common/npc/Dummy.inc.c"
 
-s32 N(KeyList)[] = {
-    ITEM_BUBBLE_BERRY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_BUBBLE_BERRY);
 
 EvtScript N(EVS_NpcInteract_BubbleFlower) = {
     IfEq(AF_FLO_BigBubbleReady, true)

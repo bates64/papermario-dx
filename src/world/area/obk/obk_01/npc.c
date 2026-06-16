@@ -5,16 +5,16 @@
 
 #include "world/common/atomic/MarioSalute.inc.c"
 
-s32 N(LetterList_Franky)[] = {
-    ITEM_LETTER_CHAIN_FRANKY,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_Franky), ITEM_LETTER_CHAIN_FRANKY);
 
 EvtScript N(EVS_LetterPrompt_Franky) = {
     Call(LetterDelivery_Init,
         NPC_Franky, ANIM_Boo_Talk, ANIM_Boo_Idle,
         ITEM_LETTER_CHAIN_FRANKY, ITEM_LETTER_CHAIN_DANE_T_1,
-        MSG_CH3_0067, MSG_CH3_0068, MSG_CH3_0069, MSG_CH3_006A,
+        MSG_CH3_0067,
+        MSG_CH3_0068,
+        MSG_CH3_0069,
+        MSG_CH3_006A,
         Ref(N(LetterList_Franky)))
     ExecWait(EVS_DoLetterDelivery)
     Return

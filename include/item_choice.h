@@ -11,6 +11,9 @@ extern EvtScript EVS_GiveCoinReward;
 extern API_CALLABLE(LetterDelivery_Init);
 extern EvtScript EVS_DoLetterDelivery;
 
+#define ITEM_LIST(name, ...) \
+    s32 name[] = { __VA_ARGS__, ITEM_NONE }
+
 enum ItemChoiceResult {
     ITEM_CHOICE_NONE        = 0,  // player did not have any of the requested items
     ITEM_CHOICE_CANCELED    = -1, // player canceled the choice dialog

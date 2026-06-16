@@ -6,10 +6,7 @@
 
 #include "foliage.h"
 
-s32 N(KeyList)[] = {
-    ITEM_CRYSTAL_BERRY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_CRYSTAL_BERRY);
 
 EvtScript N(EVS_Scene_SunReturns) = {
     Call(DisablePlayerInput, true)

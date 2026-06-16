@@ -1,10 +1,7 @@
 #include "kkj_10.h"
 #include "entity.h"
 
-s32 N(PeachKeyList)[] = {
-    ITEM_PEACH_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(PeachKeyList), ITEM_PEACH_KEY);
 
 EvtScript N(EVS_UnlockPrompt_FrontDoor) = {
     Call(ShowKeyChoicePopup)

@@ -197,10 +197,7 @@ EvtScript N(EVS_Scene_TayceTCooking) = {
     End
 };
 
-s32 N(ItemList_FryingPan)[] = {
-    ITEM_FRYING_PAN,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_FryingPan), ITEM_FRYING_PAN);
 
 EvtScript N(EVS_TayceT_FryingPanAndCake) = {
     IfEq(GF_MAC02_TayceT_HoldingCake, true)
@@ -240,10 +237,7 @@ EvtScript N(EVS_TayceT_FryingPanAndCake) = {
     End
 };
 
-s32 N(ItemList_Cookbook)[] = {
-    ITEM_COOKBOOK,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Cookbook), ITEM_COOKBOOK);
 
 EvtScript N(EVS_TayceT_RequestCookbook) = {
     IfEq(AF_MAC02_ToggleDialogue_TayceT, false)

@@ -331,10 +331,7 @@ EvtScript N(EVS_NpcInit_Bobomb_03) = {
     End
 };
 
-s32 N(ItemList_Artifact)[] = {
-    ITEM_ARTIFACT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_CH1_009F)

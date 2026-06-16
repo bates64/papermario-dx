@@ -41,8 +41,10 @@ EvtScript N(EVS_LetterPrompt_Fishmael) = {
     Call(LetterDelivery_Init, NPC_Fishmael,
         ANIM_Fishmael_Talk, ANIM_Fishmael_Idle,
         ITEM_LETTER_CHAIN_FISHMAEL, ITEM_LETTER_CHAIN_KOOVER_2,
-        MSG_MAC_Port_0064, MSG_MAC_Port_0065,
-        MSG_MAC_Port_0066, MSG_MAC_Port_0067,
+        MSG_MAC_Port_0064,
+        MSG_MAC_Port_0065,
+        MSG_MAC_Port_0066,
+        MSG_MAC_Port_0067,
         Ref(N(Fishmael_LetterList)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -57,8 +59,10 @@ EvtScript N(EVS_LetterPrompt_Kolorado) = {
     Call(LetterDelivery_Init, NPC_Kolorado,
         ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_MAC_Port_0085, MSG_MAC_Port_0086,
-        MSG_MAC_Port_0087, MSG_MAC_Port_0088,
+        MSG_MAC_Port_0085,
+        MSG_MAC_Port_0086,
+        MSG_MAC_Port_0087,
+        MSG_MAC_Port_0088,
         Ref(N(Kolorado_LetterList)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -73,10 +77,7 @@ EvtScript N(EVS_LetterReward_Kolorado) = {
     End
 };
 
-s32 N(ItemList_Artifact)[] = {
-    ITEM_ARTIFACT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Port_008E)
@@ -1786,10 +1787,7 @@ EvtScript N(EVS_NpcInit_Toad_02) = {
     End
 };
 
-s32 N(ItemList_Melody)[] = {
-    ITEM_MELODY,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Melody), ITEM_MELODY);
 
 EvtScript N(EVS_NpcInteract_ArtistToad) = {
     Set(GF_MAC05_Met_Simon, true)

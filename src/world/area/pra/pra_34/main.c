@@ -99,10 +99,7 @@ EvtScript N(EVS_ExitDoors_pra_29_2) = {
     End
 };
 
-s32 N(PalaceKeyList)[] = {
-    ITEM_CRYSTAL_PALACE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(PalaceKeyList), ITEM_CRYSTAL_PALACE_KEY);
 
 EvtScript N(EVS_UnlockPrompt_Doors) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)

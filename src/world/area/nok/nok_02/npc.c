@@ -23,7 +23,10 @@ EvtScript N(EVS_LetterPrompt_Kolorado) = {
     Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH1_0097, MSG_CH1_0098, MSG_CH1_0099, MSG_CH1_009A,
+        MSG_CH1_0097,
+        MSG_CH1_0098,
+        MSG_CH1_0099,
+        MSG_CH1_009A,
         Ref(N(LetterList_Kolorado)))
     ExecWait(EVS_DoLetterDelivery)
     Return

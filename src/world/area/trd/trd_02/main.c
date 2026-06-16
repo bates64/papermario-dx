@@ -142,10 +142,7 @@ EvtScript N(D_8024241C_9A33FC) = {
     End
 };
 
-s32 N(D_8024252C_9A350C)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)
@@ -156,7 +153,7 @@ EvtScript N(EVS_Main) = {
     BindTrigger(Ref(N(EVS_ExitDoors_trd_01_1)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw, 1, 0)
     BindTrigger(Ref(N(EVS_ExitDoors_trd_03_0)), TRIGGER_WALL_PRESS_A, COLLIDER_tte, 1, 0)
     IfEq(GF_TRD02_UnlockedDoor, false)
-        BindPadlock(Ref(N(D_80242890_9A3870)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(D_8024252C_9A350C)), 0, 1)
+        BindPadlock(Ref(N(D_80242890_9A3870)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
     Else
         BindTrigger(Ref(N(EVS_ExitDoors_trd_01_2)), TRIGGER_WALL_PRESS_A, COLLIDER_ttw2, 1, 0)
     EndIf

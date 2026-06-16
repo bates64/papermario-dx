@@ -1,10 +1,7 @@
 #include "mac_02.h"
 #include "entity.h"
 
-s32 N(ItemList_OddKey)[] = {
-    ITEM_ODD_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_OddKey), ITEM_ODD_KEY);
 
 EvtScript N(EVS_ChooseItem_OddKey) = {
     Call(ShowKeyChoicePopup)

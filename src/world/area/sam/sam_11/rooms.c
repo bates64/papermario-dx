@@ -106,10 +106,7 @@ EvtScript N(EVS_DropDoor_RightHouse) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_WAREHOUSE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_WAREHOUSE_KEY);
 
 EvtScript N(EVS_UnlockPrompt_LeftHouse) = {
     SetGroup(EVT_GROUP_NEVER_PAUSE)

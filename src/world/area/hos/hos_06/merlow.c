@@ -15,10 +15,7 @@ NpcSettings N(NpcSettings_Merlow) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_MERLOW,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_MERLOW);
 
 EvtScript N(EVS_LetterPrompt) = {
     Call(LetterDelivery_Init,

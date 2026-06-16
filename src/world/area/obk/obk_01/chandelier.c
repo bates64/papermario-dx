@@ -4,10 +4,7 @@
 
 extern EvtScript N(EVS_LaunchFromCouch_Crash);
 
-s32 N(ItemList_BooWeight)[] = {
-    ITEM_BOO_WEIGHT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_BooWeight), ITEM_BOO_WEIGHT);
 
 s32 N(ChandelierModels)[] = {
     MODEL_kusari_1,

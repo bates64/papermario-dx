@@ -25,7 +25,10 @@ EvtScript N(EVS_LetterPrompt_Koover1) = {
     Call(LetterDelivery_Init,
         NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
         ITEM_LETTER_CHAIN_KOOVER_1, ITEM_LETTER_CHAIN_FISHMAEL,
-        MSG_CH1_0009, MSG_CH1_000A, MSG_CH1_000B, MSG_CH1_000C,
+        MSG_CH1_0009,
+        MSG_CH1_000A,
+        MSG_CH1_000B,
+        MSG_CH1_000C,
         Ref(N(LettersKoover1)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -40,7 +43,10 @@ EvtScript N(EVS_LetterPrompt_Koover2) = {
     Call(LetterDelivery_Init,
         NPC_Koover, ANIM_Koopa_Talk, ANIM_Koopa_Idle,
         ITEM_LETTER_CHAIN_KOOVER_2, ITEM_LETTER_CHAIN_MR_E,
-        MSG_CH1_000D, MSG_CH1_000E, MSG_CH1_000F, MSG_CH1_0010,
+        MSG_CH1_000D,
+        MSG_CH1_000E,
+        MSG_CH1_000F,
+        MSG_CH1_0010,
         Ref(N(LettersKoover2)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -55,7 +61,10 @@ EvtScript N(EVS_LetterPrompt_MortT) = {
     Call(LetterDelivery_Init,
         NPC_MortT, ANIM_Toad_Red_Talk, ANIM_Toad_Red_Idle,
         ITEM_LETTER_TO_MORT_T, ITEM_NONE,
-        MSG_CH1_0039, MSG_CH1_003A, MSG_CH1_003B, MSG_CH1_003C,
+        MSG_CH1_0039,
+        MSG_CH1_003A,
+        MSG_CH1_003B,
+        MSG_CH1_003C,
         Ref(N(LettersMortT)))
     ExecWait(EVS_DoLetterDelivery)
     Return

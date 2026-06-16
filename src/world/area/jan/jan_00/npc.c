@@ -27,10 +27,7 @@ enum WhaleTravelMode {
     WHALE_TRAVEL_ARRIVE     = 1,
 };
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
     Call(LetterDelivery_Init,

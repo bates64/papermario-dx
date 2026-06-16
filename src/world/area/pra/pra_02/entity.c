@@ -2,15 +2,9 @@
 #include "entity.h"
 #include "effects.h"
 
-s32 N(RedKeyList)[] = {
-    ITEM_RED_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(RedKeyList), ITEM_RED_KEY);
 
-s32 N(BlueKeyList)[] = {
-    ITEM_BLUE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(BlueKeyList), ITEM_BLUE_KEY);
 
 EvtScript N(EVS_RaisePoundableSwitch) = {
     Call(MakeLerp, -10, 0, 10, EASING_LINEAR)

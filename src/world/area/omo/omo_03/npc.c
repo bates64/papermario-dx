@@ -61,10 +61,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     End
 };
 
-s32 N(ToyTrainList)[] = {
-    ITEM_TOY_TRAIN,
-    ITEM_NONE
-};
+ITEM_LIST(N(ToyTrainList), ITEM_TOY_TRAIN);
 
 EvtScript N(EVS_NpcInteract_Conductor) = {
     BindPadlock(Ref(N(EVS_ItemPrompt_ToyTrain)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ToyTrainList)), 0, 1)

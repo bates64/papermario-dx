@@ -228,10 +228,7 @@ EvtScript N(EVS_BlastWall) = {
     End
 };
 
-s32 N(StarStoneList)[] = {
-    ITEM_STAR_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(StarStoneList), ITEM_STAR_STONE);
 
 EvtScript N(EVS_SetupStairs) = {
     Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_SURFACE, COLLIDER_yuka, SURFACE_TYPE_SNOW)

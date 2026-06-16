@@ -55,10 +55,7 @@ API_CALLABLE(N(InterpWorldEnvColor)) {
     return ApiStatus_BLOCK;
 }
 
-s32 N(PedestalKeyList)[] = {
-    ITEM_PULSE_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(PedestalKeyList), ITEM_PULSE_STONE);
 
 EvtScript N(EVS_Pedestal_Sink) = {
     PlayEffect(EFFECT_SMOKE_IMPACT, 0, 0, 0, 0, 20, 10, 0, 60)

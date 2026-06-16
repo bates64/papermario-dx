@@ -1,9 +1,6 @@
 #include "isk_02.h"
 
-s32 N(KeyList)[] = {
-    ITEM_RUINS_KEY,
-    ITEM_NONE,
-};
+ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
 
 EvtScript N(EVS_UnlockDoor) = {
     Call(ShowKeyChoicePopup)

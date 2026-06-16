@@ -105,10 +105,7 @@ EvtScript N(EVS_ItemPrompt_ToyTrain) = {
     End
 };
 
-s32 N(ItemList_ToyTrain)[] = {
-    ITEM_TOY_TRAIN,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_ToyTrain), ITEM_TOY_TRAIN);
 
 EvtScript N(EVS_Toybox_SetupTrainPrompt) = {
     IfLt(GB_StoryProgress, STORY_CH4_RETURNED_TOY_TRAIN)

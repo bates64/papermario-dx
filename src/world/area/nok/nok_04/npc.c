@@ -849,10 +849,7 @@ EvtScript N(EVS_ShellPrompt) = {
     End
 };
 
-s32 N(ShellList)[] = {
-    ITEM_KOOPER_SHELL,
-    ITEM_NONE
-};
+ITEM_LIST(N(ShellList), ITEM_KOOPER_SHELL);
 
 EvtScript N(EVS_ChooseShell) = {
     BindPadlock(Ref(N(EVS_ShellPrompt)), TRIGGER_FORCE_ACTIVATE, 0, Ref(N(ShellList)), 0, 1)

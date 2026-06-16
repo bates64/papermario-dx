@@ -6,16 +6,16 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-s32 N(MayorLetterList)[] = {
-    ITEM_LETTER_TO_MAYOR_PENGUIN,
-    ITEM_NONE
-};
+ITEM_LIST(N(MayorLetterList), ITEM_LETTER_TO_MAYOR_PENGUIN);
 
 EvtScript N(EVS_LetterPrompt_Mayor) = {
     Call(LetterDelivery_Init,
         NPC_MayorPenguin, ANIM_MayorPenguin_Talk, ANIM_MayorPenguin_Idle,
         ITEM_LETTER_TO_MAYOR_PENGUIN, ITEM_NONE,
-        MSG_CH7_0041, MSG_CH7_0042, MSG_CH7_0043, MSG_CH7_0044,
+        MSG_CH7_0041,
+        MSG_CH7_0042,
+        MSG_CH7_0043,
+        MSG_CH7_0044,
         Ref(N(MayorLetterList)))
     ExecWait(EVS_DoLetterDelivery)
     Return

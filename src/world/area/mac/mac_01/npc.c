@@ -40,16 +40,16 @@ API_CALLABLE(N(GetPlayerCoins)) {
     return ApiStatus_DONE2;
 }
 
-s32 N(LetterList_Merlon)[] = {
-    ITEM_LETTER_TO_MERLON,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_Merlon), ITEM_LETTER_TO_MERLON);
 
 EvtScript N(EVS_LetterPrompt_Merlon) = {
     Call(LetterDelivery_Init,
         NPC_Merlon, ANIM_Merlon_Talk, ANIM_Merlon_Idle,
         ITEM_LETTER_TO_MERLON, ITEM_NONE,
-        MSG_MAC_Plaza_0043, MSG_MAC_Plaza_0044, MSG_MAC_Plaza_0045, MSG_MAC_Plaza_0046,
+        MSG_MAC_Plaza_0043,
+        MSG_MAC_Plaza_0044,
+        MSG_MAC_Plaza_0045,
+        MSG_MAC_Plaza_0046,
         Ref(N(LetterList_Merlon)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -65,16 +65,16 @@ EvtScript N(EVS_LetterReward_Merlon) = {
     End
 };
 
-s32 N(LetterList_MinhT)[] = {
-    ITEM_LETTER_TO_MINH_T,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_MinhT), ITEM_LETTER_TO_MINH_T);
 
 EvtScript N(EVS_LetterPrompt_MinhT) = {
     Call(LetterDelivery_Init,
         NPC_MinhT, ANIM_MinhT_Talk, ANIM_MinhT_Idle,
         ITEM_LETTER_TO_MINH_T, ITEM_NONE,
-        MSG_MAC_Plaza_0078, MSG_MAC_Plaza_0079, MSG_MAC_Plaza_007A, MSG_MAC_Plaza_007B,
+        MSG_MAC_Plaza_0078,
+        MSG_MAC_Plaza_0079,
+        MSG_MAC_Plaza_007A,
+        MSG_MAC_Plaza_007B,
         Ref(N(LetterList_MinhT)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -89,16 +89,16 @@ EvtScript N(EVS_LetterReward_MinhT) = {
     End
 };
 
-s32 N(LetterList_Kolorado)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_Kolorado), ITEM_LETTER_TO_KOLORADO);
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
     Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_MAC_Plaza_00E0, MSG_MAC_Plaza_00E1, MSG_MAC_Plaza_00E2, MSG_MAC_Plaza_00E3,
+        MSG_MAC_Plaza_00E0,
+        MSG_MAC_Plaza_00E1,
+        MSG_MAC_Plaza_00E2,
+        MSG_MAC_Plaza_00E3,
         Ref(N(LetterList_Kolorado)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -113,10 +113,7 @@ EvtScript N(EVS_LetterReward_Kolorado) = {
     End
 };
 
-s32 N(ItemList_Artifact)[] = {
-    ITEM_ARTIFACT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Artifact), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactReward_Kolorado) = {
     Call(SpeakToPlayer, NPC_SELF, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle, 0, MSG_MAC_Plaza_00E8)

@@ -153,7 +153,68 @@ EvtScript EVS_GiveCoinReward = {
     End
 };
 
+typedef struct LetterDelivery {
+    /* 0x00 */ s32 recipientID;
+    /* 0x04 */ AnimID recipientTalk;
+    /* 0x08 */ AnimID recipientIdle;
+    /* 0x0C */ MsgID msgGreeting;
+    /* 0x10 */ MsgID msgCancelled;
+    /* 0x14 */ MsgID msgDelivered;
+    /* 0x18 */ MsgID msgRecieved;
+    /* 0x1C */ union {
+    /*      */       s32 letters[5];
+    /*      */       s32* list;
+    /* 0x30 */   };
+} LetterDelivery; // size = 0x30
+
+BSS s32 UnpackedLetterList[6]; // needs one more than LetterDelivery::letters for end-of-list sentinel
 BSS s32 DeliverySavedAnim;
+
+API_CALLABLE(UnpackLetterDelivery) {
+    Bytecode* args = script->ptrReadPos;
+    LetterDelivery* delivery = (LetterDelivery*) evt_get_variable(script, *args++);
+    s32* letterList;
+    s32 i;
+    s32 count = 0;
+
+    // interpret union as an item list if the first element is a valid itemID
+    if (delivery->letters[0] >= 0 && delivery->letters[0] < NUM_ITEMS) {
+        for (i = 0; i < ARRAY_COUNT(delivery->letters); i++) {
+            s32 itemID = delivery->letters[i];
+            UnpackedLetterList[count++] = delivery->letters[i];
+
+            if (itemID == ITEM_NONE || count > ARRAY_COUNT(UnpackedLetterList)) {
+                break;
+            }
+        }
+        UnpackedLetterList[count] = ITEM_NONE;
+        letterList = UnpackedLetterList;
+    } else {
+        letterList = delivery->list;
+    }
+
+    script->varTable[2] = delivery->recipientID;
+    script->varTable[3] = delivery->recipientTalk;
+    script->varTable[4] = delivery->recipientIdle;
+
+    script->varTable[5] = letterList[0]; // visual item to hand over
+    script->varTable[6] = ITEM_NONE; // unused?
+
+    script->varTable[7] = delivery->msgGreeting;
+    script->varTable[8] = delivery->msgCancelled;
+    script->varTable[9] = delivery->msgDelivered;
+    script->varTable[10] = delivery->msgRecieved;
+
+    script->varTablePtr[11] = letterList;
+
+    return ApiStatus_DONE2;
+}
+
+/*
+EvtScript EVS_DeliverLetter = {
+    ExecWait(EVS_DoLetterDelivery)
+}
+*/
 
 API_CALLABLE(LetterDelivery_Init) {
     Bytecode* args = script->ptrReadPos;
@@ -173,21 +234,23 @@ API_CALLABLE(LetterDelivery_Init) {
 
 static API_CALLABLE(LetterDelivery_CalcLetterPos) {
     Bytecode* args = script->ptrReadPos;
-    s32 varX = *args++;
-    f32 x = evt_get_variable(script, varX);
-    s32 varY = *args++;
-    f32 y = evt_get_variable(script, varY);
-    s32 varZ = *args++;
-    f32 z = evt_get_variable(script, varZ);
+    s32 xVar = *args++;
+    s32 yVar = *args++;
+    s32 zVar = *args++;
+
+    f32 x = evt_get_variable(script, xVar);
+    f32 y = evt_get_variable(script, yVar);
+    f32 z = evt_get_variable(script, zVar);
+    f32 cameraYaw = clamp_angle(gCameras[gCurrentCameraID].curYaw + 180.0f);
+
     Npc* partner = get_npc_unsafe(NPC_PARTNER);
-    f32 currentCamYaw = clamp_angle(gCameras[gCurrentCameraID].curYaw + 180.0f);
 
     add_vec2D_polar(&x, &z, 15.0f, partner->yaw);
-    add_vec2D_polar(&x, &z, 10.0f, currentCamYaw);
+    add_vec2D_polar(&x, &z, 10.0f, cameraYaw);
 
-    evt_set_variable(script, varX, x);
-    evt_set_variable(script, varY, y);
-    evt_set_variable(script, varZ, z);
+    evt_set_variable(script, xVar, x);
+    evt_set_variable(script, yVar, y);
+    evt_set_variable(script, zVar, z);
 
     return ApiStatus_DONE2;
 }

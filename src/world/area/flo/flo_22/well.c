@@ -1,13 +1,7 @@
 #include "flo_22.h"
 #include "sprite/player.h"
 
-s32 N(BerryList)[] = {
-    ITEM_RED_BERRY,
-    ITEM_BLUE_BERRY,
-    ITEM_YELLOW_BERRY,
-    ITEM_BUBBLE_BERRY,
-    ITEM_NONE
-};
+ITEM_LIST(N(BerryList), ITEM_RED_BERRY, ITEM_BLUE_BERRY, ITEM_YELLOW_BERRY, ITEM_BUBBLE_BERRY);
 
 EvtScript N(EVS_SniffleHint) = {
     Call(DisablePlayerInput, true)

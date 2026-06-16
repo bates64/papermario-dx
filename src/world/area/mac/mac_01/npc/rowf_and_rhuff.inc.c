@@ -154,10 +154,7 @@ EvtScript N(EVS_NpcInteract_Rowf_B) = {
     End
 };
 
-s32 N(ItemList_Calculator)[] = {
-    ITEM_CALCULATOR,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Calculator), ITEM_CALCULATOR);
 
 EvtScript N(EVS_NpcInteract_Rowf_C) = {
     IfEq(GF_MAC01_CalculatorReturned, true)

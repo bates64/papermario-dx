@@ -1,15 +1,15 @@
 #include "../mac_00.h"
 
-s32 N(LetterList_RussT)[] = {
-    ITEM_LETTER_TO_RUSS_T,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_RussT), ITEM_LETTER_TO_RUSS_T);
 
 EvtScript N(EVS_LetterPrompt_RussT) = {
     Call(LetterDelivery_Init,
         NPC_RussT, ANIM_RussT_Talk, ANIM_RussT_Idle,
         ITEM_LETTER_TO_RUSS_T, ITEM_NONE,
-        MSG_MAC_Gate_0011, MSG_MAC_Gate_0012, MSG_MAC_Gate_0013, MSG_MAC_Gate_0014,
+        MSG_MAC_Gate_0011,
+        MSG_MAC_Gate_0012,
+        MSG_MAC_Gate_0013,
+        MSG_MAC_Gate_0014,
         Ref(N(LetterList_RussT)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -275,18 +275,9 @@ EvtScript N(EVS_RussT_GetHint) = {
     End
 };
 
-s32 N(ItemList_RussDocuments1)[] = {
-    ITEM_DICTIONARY,
-    ITEM_MYSTERY_NOTE,
-    ITEM_SUSPICIOUS_NOTE,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_RussDocuments1), ITEM_DICTIONARY, ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
-s32 N(ItemList_RussDocuments2)[] = {
-    ITEM_MYSTERY_NOTE,
-    ITEM_SUSPICIOUS_NOTE,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_RussDocuments2), ITEM_MYSTERY_NOTE, ITEM_SUSPICIOUS_NOTE);
 
 EvtScript N(EVS_ItemPrompt_Dictionary) = {
     IfEq(AF_MAC00_HeardDictionaryLament, false)

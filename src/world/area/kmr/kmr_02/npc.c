@@ -41,10 +41,7 @@ API_CALLABLE(N(AwaitPartnerGrounded)) {
 #include "wander_territories.inc.c"
 #define NAME_SUFFIX
 
-s32 N(LetterList_GoompapaTrade)[] = {
-    ITEM_LETTER_CHAIN_GOOMPAPA_1,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_GoompapaTrade), ITEM_LETTER_CHAIN_GOOMPAPA_1);
 
 EvtScript N(EVS_LetterTrade_Goompapa) = {
     Call(LetterDelivery_Init,
@@ -60,16 +57,16 @@ EvtScript N(EVS_LetterTrade_Goompapa) = {
     End
 };
 
-s32 N(LetterList_Goompapa)[] = {
-    ITEM_LETTER_CHAIN_GOOMPAPA_2,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_Goompapa), ITEM_LETTER_CHAIN_GOOMPAPA_2);
 
 EvtScript N(EVS_LetterPrompt_Goompapa) = {
     Call(LetterDelivery_Init,
         NPC_Goompapa, ANIM_Goompapa_Talk, ANIM_Goompapa_Idle,
         ITEM_LETTER_CHAIN_GOOMPAPA_2, ITEM_NONE,
-        MSG_CH0_0073, MSG_CH0_0074, MSG_CH0_0075, MSG_CH0_0076,
+        MSG_CH0_0073,
+        MSG_CH0_0074,
+        MSG_CH0_0075,
+        MSG_CH0_0076,
         Ref(N(LetterList_Goompapa)))
     ExecWait(EVS_DoLetterDelivery)
     Return
@@ -84,16 +81,16 @@ EvtScript N(EVS_LetterReward_Goompapa) = {
     End
 };
 
-s32 N(LetterList_Goompa)[] = {
-    ITEM_LETTER_TO_GOOMPA,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_Goompa), ITEM_LETTER_TO_GOOMPA);
 
 EvtScript N(EVS_LetterPrompt_Goompa) = {
     Call(LetterDelivery_Init,
         NPC_Goompa, ANIM_Goompa_Talk, ANIM_Goompa_Idle,
         ITEM_LETTER_TO_GOOMPA, ITEM_NONE,
-        MSG_CH0_0045, MSG_CH0_0046, MSG_CH0_0047, MSG_CH0_0048,
+        MSG_CH0_0045,
+        MSG_CH0_0046,
+        MSG_CH0_0047,
+        MSG_CH0_0048,
         Ref(N(LetterList_Goompa)))
     ExecWait(EVS_DoLetterDelivery)
     Return

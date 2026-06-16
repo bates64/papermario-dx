@@ -1,10 +1,7 @@
 #include "kpa_60.h"
 #include "entity.h"
 
-s32 N(KeyList_FrontDoor)[] = {
-    ITEM_BOWSER_CASTLE_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList_FrontDoor), ITEM_BOWSER_CASTLE_KEY);
 
 EvtScript N(EVS_UnlockPrompt_FrontDoor) = {
     Call(ShowKeyChoicePopup)

@@ -6,17 +6,17 @@ NpcSettings N(NpcSettings_Nomadimouse) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 N(LetterList_Nomadimouse)[] = {
-    ITEM_LETTER_TO_NOMADIMOUSE,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_NOMADIMOUSE);
 
 EvtScript N(EVS_Nomadimouse_LetterDelivery) = {
     Call(LetterDelivery_Init,
         NPC_Nomadimouse, ANIM_Nomadimouse_Talk, ANIM_Nomadimouse_Idle,
         ITEM_LETTER_TO_NOMADIMOUSE, ITEM_NONE,
-        MSG_CH2_005B, MSG_CH2_005C, MSG_CH2_005D, MSG_CH2_005E,
-        Ref(N(LetterList_Nomadimouse)))
+        MSG_CH2_005B,
+        MSG_CH2_005C,
+        MSG_CH2_005D,
+        MSG_CH2_005E,
+        Ref(N(LetterList)))
     ExecWait(EVS_DoLetterDelivery)
     Return
     End

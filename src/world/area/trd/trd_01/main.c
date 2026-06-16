@@ -261,10 +261,7 @@ EvtScript N(EVS_Scene_RaiseStairs) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_KOOPA_FORTRESS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_KOOPA_FORTRESS_KEY);
 
 EvtScript N(EVS_Main) = {
     Set(GB_WorldLocation, LOCATION_KOOPA_BROS_FORTRESS)

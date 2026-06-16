@@ -10,10 +10,7 @@ extern EvtScript N(EVS_DummyUpdateGuardBoo);
 extern EvtScript N(EVS_GuardBoo_ReturnToPost);
 extern EvtScript N(EVS_NpcAI_GuardBoo_Wary);
 
-s32 N(ItemList_Records)[] = {
-    ITEM_BOO_RECORD,
-    ITEM_NONE
-};
+ITEM_LIST(N(RecordList), ITEM_BOO_RECORD);
 
 s32 N(SongList)[] = {
     SONG_PHONOGRAPH_MUSIC,
@@ -307,7 +304,7 @@ void N(worker_draw_phonograph_hud)(void) {
 
 API_CALLABLE(N(GetSelectedRecordIndex)) {
     s32 outVal = 0;
-    s32* record = N(ItemList_Records);
+    s32* record = N(RecordList);
 
     while (true) {
         if (*record == 0) {
@@ -1171,7 +1168,7 @@ EvtScript N(EVS_SetupPhonograph) = {
     IfLt(GB_StoryProgress, STORY_CH3_PLAYED_THE_RECORD)
         Call(EnableModel, MODEL_reco, false)
     EndIf
-    BindPadlock(Ref(N(EVS_Inspect_Phonograph)), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(N(ItemList_Records)), 0, 1)
+    BindPadlock(Ref(N(EVS_Inspect_Phonograph)), TRIGGER_WALL_PRESS_A, COLLIDER_o344, Ref(N(RecordList)), 0, 1)
     Return
     End
 };

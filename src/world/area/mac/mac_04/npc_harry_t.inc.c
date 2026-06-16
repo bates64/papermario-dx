@@ -1,9 +1,6 @@
 #include "mac_04.h"
 
-s32 N(ItemList_StoreroomKey)[] = {
-    ITEM_STOREROOM_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_StoreroomKey), ITEM_STOREROOM_KEY);
 
 EvtScript N(EVS_NpcInteract_HarryT) = {
     Set(LVar9, 0)

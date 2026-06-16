@@ -9,16 +9,16 @@ NpcSettings N(NpcSettings_Archeologist_01) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
 EvtScript N(EVS_DeliveryPrompt) = {
     Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH2_004A, MSG_CH2_004B, MSG_CH2_004C, MSG_CH2_004D,
+        MSG_CH2_004A,
+        MSG_CH2_004B,
+        MSG_CH2_004C,
+        MSG_CH2_004D,
         Ref(N(LetterList)))
         ExecWait(EVS_DoLetterDelivery)
     Return
@@ -33,10 +33,7 @@ EvtScript N(EVS_DeliveryReward) = {
     End
 };
 
-s32 N(ArtifactList)[] = {
-    ITEM_ARTIFACT,
-    ITEM_NONE
-};
+ITEM_LIST(N(ArtifactList), ITEM_ARTIFACT);
 
 EvtScript N(EVS_ArtifactPrompt) = {
     Set(GF_SBK_GaveArtifactToKolorado, true)

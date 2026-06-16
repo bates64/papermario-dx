@@ -23,10 +23,7 @@ EvtScript N(EVS_Scene_SunReturns) = {
     End
 };
 
-s32 N(KeyList)[] = {
-    ITEM_WATER_STONE,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_WATER_STONE);
 
 EvtScript N(EVS_OnInteract_WaterStoneSocket) = {
     IfEq(GF_FLO10_ShowedLilyTheWaterStone, true)

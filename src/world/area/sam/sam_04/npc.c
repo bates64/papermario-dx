@@ -9,15 +9,9 @@ NpcSettings N(NpcSettings_Snowman) = {
     .level = ACTOR_LEVEL_NONE,
 };
 
-s32 N(BucketList)[] = {
-    ITEM_SNOWMAN_BUCKET,
-    ITEM_NONE
-};
+ITEM_LIST(N(BucketList), ITEM_SNOWMAN_BUCKET);
 
-s32 N(ScarfList)[] = {
-    ITEM_SNOWMAN_SCARF,
-    ITEM_NONE
-};
+ITEM_LIST(N(ScarfList), ITEM_SNOWMAN_SCARF);
 
 EvtScript N(EVS_NpcInteract_Snowman_01) = {
     Call(ShowMessageAtScreenPos, MSG_Menus_Inspect_Snowman, 160, 40)

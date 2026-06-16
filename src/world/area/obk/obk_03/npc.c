@@ -2,17 +2,17 @@
 
 #include "world/common/npc/Boo.inc.c"
 
-s32 N(LetterList_Igor)[] = {
-    ITEM_LETTER_TO_IGOR,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_IGOR);
 
 EvtScript N(EVS_LetterPrompt_Igor) = {
     Call(LetterDelivery_Init,
         NPC_Igor, ANIM_Boo_Talk, ANIM_Boo_Idle,
         ITEM_LETTER_TO_IGOR, ITEM_NONE,
-        MSG_CH3_005D, MSG_CH3_005E, MSG_CH3_005F, MSG_CH3_0060,
-        Ref(N(LetterList_Igor)))
+        MSG_CH3_005D,
+        MSG_CH3_005E,
+        MSG_CH3_005F,
+        MSG_CH3_0060,
+        Ref(N(LetterList)))
     ExecWait(EVS_DoLetterDelivery)
     Return
     End

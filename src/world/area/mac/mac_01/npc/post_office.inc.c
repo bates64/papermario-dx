@@ -38,7 +38,7 @@ PostOfficeEntry N(PostOfficeLetters)[] = {
 API_CALLABLE(N(func_80244E90_805710)) {
     PlayerData* playerData = &gPlayerData;
     s32 var_s2 = -1;
-    u32 i;
+    s32 i;
 
     for (i = 0; i < ARRAY_COUNT(N(PostOfficeLetters)); i++) {
         if (playerData->partners[N(PostOfficeLetters)[i].partnerID].enabled &&
@@ -224,23 +224,7 @@ API_CALLABLE(N(func_80245440_805CC0)) {
     return ApiStatus_DONE2;
 }
 
-#if VERSION_JP
-EvtScript N(D_80256C10_81EF80) = {
-    IfEq(GF_MAC01_Met_Postmaster, false)
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EA)
-        Set(GF_MAC01_Met_Postmaster, true)
-    Else
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EB)
-    EndIf
-    Return
-    End
-};
-#endif
-
-s32 N(ItemList_Mailbag)[] = {
-    ITEM_MAILBAG,
-    ITEM_NONE
-};
+ITEM_LIST(N(ItemList_Mailbag), ITEM_MAILBAG);
 
 EvtScript N(EVS_ItemPrompt_Mailbag) = {
     Call(FindItem, ITEM_MAILBAG, LVar0)
@@ -276,9 +260,6 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
         Call(N(func_80244E90_805710))
         Switch(LVar0)
             CaseEq(-1)
-#if VERSION_JP
-                Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EA)
-#endif
                 Return
             CaseEq(1)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0055)
@@ -287,9 +268,6 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
         Call(N(func_80244E90_805710))
         Switch(LVar0)
             CaseEq(-1)
-#if VERSION_JP
-                Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_00EB)
-#endif
                 Return
             CaseEq(0)
                 Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0057)
@@ -299,41 +277,41 @@ EvtScript N(EVS_NpcInteract_Postmaster) = {
     EndIf
     Call(N(func_80245018_805898))
     Label(0)
-    Call(N(func_80245028_8058A8))
-    Wait(5)
-    IfEq(LVar1, -1)
-        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0059)
+        Call(N(func_80245028_8058A8))
+        Wait(5)
+        IfEq(LVar1, -1)
+            Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_0059)
+            Call(ShowChoice, MSG_Choice_000D)
+            Call(CloseMessage)
+            IfEq(LVar0, 0)
+                Goto(99)
+            Else
+                Goto(0)
+            EndIf
+        EndIf
+        Set(LVarA, LVar1)
+        Call(N(func_8024522C_805AAC))
+        Wait(5)
+        IfEq(LVar1, -1)
+            Goto(0)
+        EndIf
+        Call(N(func_80245440_805CC0))
+        IfEq(LVar1, 1)
+            Wait(30)
+            Call(InterpNpcYaw, NPC_PARTNER, 90, 1)
+        EndIf
+        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005C)
+        Call(ShowMessageAtScreenPos, LVar0, 160, 40)
+        Wait(5)
+        IfLt(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
+            Goto(99)
+        EndIf
+        Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005A)
         Call(ShowChoice, MSG_Choice_000D)
         Call(CloseMessage)
         IfEq(LVar0, 0)
-            Goto(99)
-        Else
             Goto(0)
         EndIf
-    EndIf
-    Set(LVarA, LVar1)
-    Call(N(func_8024522C_805AAC))
-    Wait(5)
-    IfEq(LVar1, -1)
-        Goto(0)
-    EndIf
-    Call(N(func_80245440_805CC0))
-    IfEq(LVar1, 1)
-        Wait(30)
-        Call(InterpNpcYaw, NPC_PARTNER, 90, 1)
-    EndIf
-    Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005C)
-    Call(ShowMessageAtScreenPos, LVar0, 160, 40)
-    Wait(5)
-    IfLt(GB_StoryProgress, STORY_CH1_DEFEATED_JR_TROOPA)
-        Goto(99)
-    EndIf
-    Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005A)
-    Call(ShowChoice, MSG_Choice_000D)
-    Call(CloseMessage)
-    IfEq(LVar0, 0)
-        Goto(0)
-    EndIf
     Label(99)
     IfEq(GF_MAC01_CheckedForLetters, false)
         Call(SpeakToPlayer, NPC_Postmaster, ANIM_Postmaster_Talk, ANIM_Postmaster_Idle, 0, MSG_MAC_Plaza_005D)

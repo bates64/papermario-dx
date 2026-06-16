@@ -14,10 +14,7 @@
 
 #include "world/common/util/MonitorPlayerOrbiting.inc.c"
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_CHAIN_LITTLE_MOUSER,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_CHAIN_LITTLE_MOUSER);
 
 EvtScript N(EVS_LetterPrompt_ShopOwner) = {
     Call(LetterDelivery_Init,

@@ -1,9 +1,6 @@
 #include "../mac_02.h"
 
-s32 N(LetterList_FiceT)[] = {
-    ITEM_LETTER_TO_FICE_T,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList_FiceT), ITEM_LETTER_TO_FICE_T);
 
 EvtScript N(EVS_LetterPrompt_FiceT) = {
     Call(LetterDelivery_Init,

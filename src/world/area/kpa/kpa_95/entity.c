@@ -1,10 +1,7 @@
 #include "kpa_95.h"
 #include "entity.h"
 
-s32 N(KeyList_PrisonCell)[] = {
-    ITEM_PRISON_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList_PrisonCell), ITEM_PRISON_KEY);
 
 EvtScript N(EVS_UnlockPrompt_PrisonCell) = {
     Call(ShowKeyChoicePopup)

@@ -220,10 +220,7 @@ EvtScript N(EVS_UnlockStoreroom) = {
     End
 };
 
-s32 N(StoreroomKeyList)[] = {
-    ITEM_STOREROOM_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(StoreroomKeyList), ITEM_STOREROOM_KEY);
 
 EvtScript N(EVS_ItemPrompt_StoreroomKey) = {
     Call(ShowKeyChoicePopup)

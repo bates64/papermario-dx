@@ -1,10 +1,7 @@
 #include "isk_04.h"
 #include "effects.h"
 
-s32 N(ItemList_RuinsKey)[] = {
-    ITEM_RUINS_KEY,
-    ITEM_NONE
-};
+ITEM_LIST(N(KeyList), ITEM_RUINS_KEY);
 
 BombTrigger N(BombPos_Wall) = {
     .pos = { 510.0f, 25.0f, -184.0f },
@@ -68,7 +65,7 @@ EvtScript N(EVS_SetupObstructions) = {
     EndIf
     IfEq(GF_ISK04_UnlockedDoor, false)
         Call(MakeTransformGroup, MODEL_g304)
-        BindPadlock(Ref(N(EVS_UnlockDoorPrompt)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(ItemList_RuinsKey)), 0, 1)
+        BindPadlock(Ref(N(EVS_UnlockDoorPrompt)), TRIGGER_WALL_PRESS_A, EVT_ENTITY_INDEX(0), Ref(N(KeyList)), 0, 1)
     Else
         Call(ModifyColliderFlags, MODIFY_COLLIDER_FLAGS_SET_BITS, COLLIDER_deilittsw, COLLIDER_FLAGS_UPPER_MASK)
         Call(EnableModel, MODEL_g304, false)

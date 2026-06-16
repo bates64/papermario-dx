@@ -5,10 +5,7 @@
 #include "world/common/enemy/PutridPiranha.inc.c"
 #include "world/common/enemy/SpikeTop.inc.c"
 
-s32 N(LetterList)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(LetterList), ITEM_LETTER_TO_KOLORADO);
 
 EVT_LETTER_PROMPT(Kolorado1, NPC_Kolorado,
     ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,

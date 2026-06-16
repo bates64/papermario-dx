@@ -20,10 +20,7 @@
 #define CHUCK_QUIZMO_NPC_ID NPC_ChuckQuizmo
 #include "world/common/atomic/Quizmo.inc.c"
 
-s32 N(RedYoshiKidLetters)[] = {
-    ITEM_LETTER_CHAIN_YOSHI_KID,
-    ITEM_NONE
-};
+ITEM_LIST(N(RedYoshiKidLetters), ITEM_LETTER_CHAIN_YOSHI_KID);
 
 EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
     Call(LetterDelivery_Init,
@@ -39,16 +36,16 @@ EvtScript N(EVS_LetterPrompt_RedYoshiKid) = {
     End
 };
 
-s32 N(KoloradoLetters)[] = {
-    ITEM_LETTER_TO_KOLORADO,
-    ITEM_NONE
-};
+ITEM_LIST(N(KoloradoLetters), ITEM_LETTER_TO_KOLORADO);
 
 EvtScript N(EVS_LetterPrompt_Kolorado) = {
     Call(LetterDelivery_Init,
         NPC_Kolorado, ANIM_Kolorado_Talk, ANIM_Kolorado_Idle,
         ITEM_LETTER_TO_KOLORADO, ITEM_NONE,
-        MSG_CH5_001D, MSG_CH5_001E, MSG_CH5_001F, MSG_CH5_0020,
+        MSG_CH5_001D,
+        MSG_CH5_001E,
+        MSG_CH5_001F,
+        MSG_CH5_0020,
         Ref(N(KoloradoLetters)))
     ExecWait(EVS_DoLetterDelivery)
     Return
